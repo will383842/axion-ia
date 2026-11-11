@@ -69,7 +69,7 @@ export function masquerListeBlanche(plie: string): string {
   return t;
 }
 
-const NOMBRE = "(?:\\d+|un|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|quinze|vingt|trente)";
+const NOMBRE = "(?:\\d+|une?|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|quinze|vingt|trente)";
 const CONTEXTE_NOUS = /\b(?:nous|notre|nos|williams|consultants?|equipes?)\b/i;
 const VERBE_PRESENCE =
   /(?:interven|venon|vien|part|travaill|oper|rayonn|deplac|consultant|equipe|nous)/i;
@@ -87,7 +87,7 @@ const REGLES: Regle[] = [
     verdict: (ligne, i) =>
       VERBE_PRESENCE.test(ligne.slice(Math.max(0, i - 45), i)) ? "FAUTIF" : "A_VERIFIER",
   },
-  { motif: "base(e)(s) à <Ville>", re: /\bbase[es]?\s+a\s+[A-Z]/g, verdict: "FAUTIF" },
+  { motif: "base(e)(s) à <Ville>", re: /\bbase(?:es|e|s)?\s+a\s+[A-Z]/g, verdict: "FAUTIF" },
   { motif: "notre base", re: /\bnotre\s+base\b/gi, verdict: "FAUTIF" },
   {
     motif: "nos consultants sont/viennent",
@@ -97,7 +97,7 @@ const REGLES: Regle[] = [
   {
     motif: "à N min de",
     re: new RegExp(
-      `\\b(?:(?:est|sont|se\\s+trouvons?|se\\s+trouvent|se\\s+trouve)\\s+)?a\\s+(?:environ\\s+|pres\\s+de\\s+|moins\\s+de\\s+|seulement\\s+|a\\s+peine\\s+)?${NOMBRE}\\s*(?:min\\b|minutes?\\b)\\s+de\\b`,
+      `\\b(?:(?:est|sont|se\\s+trouvons?|se\\s+trouvent|se\\s+trouve)\\s+)?a\\s+(?:environ\\s+|pres\\s+de\\s+|moins\\s+de\\s+|seulement\\s+|a\\s+peine\\s+)?${NOMBRE}\\s*(?:min\\b|minutes?\\b|h\\b(?:\\s*\\d+)?|heures?\\b)\\s+(?:de\\b|du\\b|des\\b|d')`,
       "gi",
     ),
     verdict: (ligne) => (CONTEXTE_NOUS.test(ligne) ? "FAUTIF" : "A_VERIFIER"),

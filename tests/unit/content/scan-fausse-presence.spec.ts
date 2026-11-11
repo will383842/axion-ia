@@ -58,3 +58,17 @@ describe("scan-fausse-presence", () => {
     expect(detecter("Accessible en métro.")[0]?.verdict).toBe("A_VERIFIER");
   });
 });
+
+describe("scan-fausse-presence : trous comblés (relecture RO1)", () => {
+  it.each<[string, string]>([
+    ["Nos consultants sont à 10 min du centre.", "à N min de"],
+    ["Nous sommes à 15 minutes d’Annecy.", "à N min de"],
+    ["Nos consultants se déplacent sur site, à 1 h 30 de Paris.", "à N min de"],
+    ["Nos équipes, basées à Lyon, vous reçoivent.", "base(e)(s) à <Ville>"],
+  ])("détecte : %s", (phrase, motif) => {
+    expect(detecter(phrase).some((x) => x.motif === motif && x.verdict === "FAUTIF")).toBe(true);
+  });
+  it("une distance sans « nous » reste A_VERIFIER", () => {
+    expect(detecter("Peypin est à 12 min d’Aubagne.")[0]?.verdict).toBe("A_VERIFIER");
+  });
+});

@@ -1,12 +1,15 @@
 fichier;ligne;motif;extrait;verdict
 abbeville.ts;77;depuis <Ville>;"branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville."",";A_VERIFIER
 abbeville.ts;163;depuis <Ville>;"branchés sur votre CRM ou ERP. Démos hebdomadaires en visio depuis Abbeville."",";A_VERIFIER
+abbeville.ts;233;à N min de;omme et du Ponthieu. Nos consultants se déplacent sur site, à 1 h 30 de Paris par le train ou 50 minutes d'Amiens, ou interviennent;FAUTIF
 abbeville.ts;248;depuis <Ville>;"q: ""Comment se déroule une mission depuis Paris ou Amiens ?"",";A_VERIFIER
+abbeville.ts;249;à N min de;"a: ""Abbeville est à 1 h 30 de Paris en train, 50 minutes d'Amiens et sur l'A16. Nos consu";FAUTIF
 ablon-sur-seine.ts;8;à deux pas;e du Val-de-Marne, entre Villeneuve-le-Roi et Athis-Mons et à deux pas d'Orly, Axion-IA accompagne les TPE et PME de proximité. Ar;A_VERIFIER
 ablon-sur-seine.ts;10;à deux pas;e du Val-de-Marne, entre Villeneuve-le-Roi et Athis-Mons et à deux pas d'Orly, Axion-IA accompagne les TPE et PME de proximité. Ar;A_VERIFIER
 ablon-sur-seine.ts;56;à N min de;bords de Seine sud. Nos consultants se déplacent sur site, à 25 minutes de Paris-Austerlitz par le RER C (gare sur place), ou intervie;FAUTIF
 ablon-sur-seine.ts;71;depuis <Ville>;"q: ""Comment se déroule une mission depuis Paris ou Orly ?"",";A_VERIFIER
 ablon-sur-seine.ts;72;à N min de;"a: ""Ablon-sur-Seine est à 25 minutes de Paris-Austerlitz par le RER C, avec sa gare sur place, et à";FAUTIF
+ablon-sur-seine.ts;72;à N min de;e Paris-Austerlitz par le RER C, avec sa gare sur place, et à 10 minutes d'Orly. Nos consultants se déplacent sur site ou interviennent;FAUTIF
 acheres.ts;233;à N min de;"e et Cergy-Pontoise. Nos consultants se déplacent sur site, à 35 minutes de Paris par le RER A, ou interviennent en visio."",";FAUTIF
 acheres.ts;248;depuis <Ville>;"q: ""Comment se déroule une mission depuis Paris ou La Défense ?"",";A_VERIFIER
 acheres.ts;249;à N min de;"a: ""Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos";FAUTIF
@@ -64,6 +67,7 @@ antony.ts;132;sur place à <Ville>;"q: ""Intervenez-vous sur place à Antony et 
 antony.ts;243;depuis <Ville>;à Antony sous 5 jours ouvrés après validation. Accès direct depuis Paris par le RER B (5 stations) ou l'A86. Antony est à 8 km de la;A_VERIFIER
 anzin.ts;52;depuis <Ville>;"NESCO. Nos consultants couvrent l'ensemble du Valenciennois depuis Valenciennes centre (5 min)."",";A_VERIFIER
 anzin.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Anzin depuis Valenciennes centre (5 min) ou Lille (50 min). Intervention sur site dan";FAUTIF
+apt.ts;68;à N min de;"a: ""Apt est à 55 min d'Avignon et 50 min d'Aix-en-Provence via N100. Nos consultant";FAUTIF
 arcueil.ts;21;à N min de;rcueil est desservie par le RER B (Laplace, Arcueil-Cachan) à environ 10 min de Denfert-Rochereau. Paris-Orly est à environ 10 km et l'A6 /;A_VERIFIER
 arcueil.ts;23;à N min de;rcueil est desservie par le RER B (Laplace, Arcueil-Cachan) à environ 10 min de Denfert-Rochereau. Paris-Orly est à environ 10 km et l'A6 /;A_VERIFIER
 arcueil.ts;56;à deux pas;"résentiel à Arcueil via le RER B (Laplace, Arcueil-Cachan), à deux pas de l'aqueduc, puis itérations à distance."",";A_VERIFIER
@@ -123,6 +127,7 @@ aulnoye-aymeries.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Aul
 auneau-bleury-saint-symphorien.ts;52;depuis <Ville>;"(Janville-en-Beauce, Voves, Orgères-en-Beauce). Consultants depuis Paris (1h15) ou Chartres (25 min)."",";FAUTIF
 auray.ts;67;depuis <Ville>;"q: ""Comment accéder à Auray depuis Paris ?"",";A_VERIFIER
 aurec-sur-loire.ts;71;depuis <Ville>;"q: ""Comment se passe une mission depuis Saint-Étienne ?"",";A_VERIFIER
+aurec-sur-loire.ts;72;à N min de;"a: ""Nous intervenons depuis le bassin stéphanois, à environ 25 min d'Aurec-sur-Loire. Déplacement sur site ou sessions en visio p";FAUTIF
 aureilhan.ts;68;à N min de;"a: ""Aureilhan est à 5 min de Tarbes centre et 15 min de l'aéroport Tarbes-Lourdes. Gare";FAUTIF
 aurillac.ts;75;depuis <Ville>;"métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals."",";A_VERIFIER
 aurillac.ts;161;depuis <Ville>;"métier branchés sur votre SI. Démos hebdomadaires en visio depuis Aurillac, avec validation continue des Web Vitals."",";A_VERIFIER
@@ -132,6 +137,7 @@ autun.ts;52;depuis <Ville>;à Autun et tout le sud Saône-et-Loire / Morvan. Con
 autun.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Dijon ou Lyon ?"",";A_VERIFIER
 auvers-sur-oise.ts;21;à N min de;"""Gare d'Auvers-sur-Oise (Transilien H) à 35 min de Paris Gare du Nord. Pontoise à 10 min. Cergy-Pontoise à 15";A_VERIFIER
 auvers-sur-oise.ts;23;à N min de;"""Gare d'Auvers-sur-Oise (Transilien H) à 35 min de Paris Gare du Nord. Pontoise à 10 min. Cergy-Pontoise à 15";A_VERIFIER
+auxerre.ts;58;à N min de;"""La filière viticole de Chablis (Chardonnay, à dix minutes d'Auxerre) est un terrain e-commerce naturel : nous construiso";FAUTIF
 auxerre.ts;126;depuis <Ville>;"urs intégrations dès l'installation, sur site ou à distance depuis Auxerre."",";A_VERIFIER
 auxerre.ts;235;depuis <Ville>;"q: ""Williams se déplace-t-il à Auxerre depuis Paris ?"",";FAUTIF
 auxerre.ts;235;Williams se déplace;"q: ""Williams se déplace-t-il à Auxerre depuis Paris ?"",";FAUTIF
@@ -179,7 +185,9 @@ beaune.ts;77;depuis <Ville>;servation pour l'oenotourisme. Démos hebdomadaires 
 beaune.ts;163;depuis <Ville>;servation pour l'oenotourisme. Démos hebdomadaires en visio depuis Beaune ou Dijon, à 45 km, avec validation à chaque étape par vos é;A_VERIFIER
 beaune.ts;249;depuis <Ville>;"SNCF de Beaune et l'A6 facilitent les venues hebdomadaires depuis Paris (2h15 TGV via Dijon) ou Lyon (1h45 par autoroute)."",";A_VERIFIER
 beaupreau-en-mauges.ts;21;à N min de;"""Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Ange";A_VERIFIER
+beaupreau-en-mauges.ts;21;à N min de;"""Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Angers Saint-Laud est à 50";A_VERIFIER
 beaupreau-en-mauges.ts;23;à N min de;"""Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Ange";A_VERIFIER
+beaupreau-en-mauges.ts;23;à N min de;"""Beaupréau-en-Mauges est à 30 min de Cholet et à 45 min d'Angers par la D752. La gare TGV d'Angers Saint-Laud est à 50";A_VERIFIER
 beaupreau-en-mauges.ts;56;à N min de;"Kick-off en présentiel à Beaupréau, itérations à distance — à 30 min de Cholet et 45 min d'Angers."",";A_VERIFIER
 beaupreau-en-mauges.ts;77;depuis <Ville>;"""Greffe IA sur l'existant ou build IA-native depuis Beaupréau : catalogue B2B, e-commerce multi-CMS, chatbot RAG ancré su";A_VERIFIER
 beaupreau-en-mauges.ts;77;depuis <Ville>;"devis et plannings d'atelier. Démos hebdomadaires en visio depuis Cholet ou Angers."",";A_VERIFIER
@@ -217,6 +225,8 @@ bethune.ts;87;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en 
 bethune.ts;173;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en autonomie depuis Béthune, sans verrou technique ni abonnement imposé, avec une docum;A_VERIFIER
 bethune.ts;248;depuis <Ville>;"q: ""Comment se déroule une mission depuis Lille ou Paris ?"",";A_VERIFIER
 bethune.ts;249;depuis <Ville>;"a: ""Nos consultants rejoignent Béthune depuis Lille (40 min) ou Paris (TGV 2h15). Sessions sur site ou en visio";FAUTIF
+betton.ts;21;à N min de;"""Betton à 10 min du centre de Rennes (D175). Gare Rennes TGV à 15 min. Aéroport";A_VERIFIER
+betton.ts;23;à N min de;"""Betton à 10 min du centre de Rennes (D175). Gare Rennes TGV à 15 min. Aéroport";A_VERIFIER
 beuvrages.ts;52;depuis <Ville>;"alenciennes, Saint-Saulve, Bruay-sur-l'Escaut). Consultants depuis Lille (45 min)."",";FAUTIF
 beuvrages.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lille ?"",";A_VERIFIER
 beynes.ts;64;depuis <Ville>;"a: ""Oui, nos consultants se déplacent à Beynes depuis Paris (45 min) ou Versailles (20 min). Interventions sur site dan";FAUTIF
@@ -313,6 +323,7 @@ brindas.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",
 brioude.ts;52;depuis <Ville>;"e l'Allier (Issoire, Langeac, Le Puy-en-Velay). Consultants depuis Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min)."",";FAUTIF
 brioude.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Clermont-Ferrand ?"",";A_VERIFIER
 brive-la-gaillarde.ts;56;depuis <Ville>;orte (Silab, près de 67 M€ de CA dont 60% à l'international depuis Saint-Viance), transforme et expédie en flux tendu (Bledina/Danone, Fran;A_VERIFIER
+bron.ts;135;à N min de;"Villeurbanne, Vénissieux, Chassieu, Saint-Priest, Décines — à environ 15 minutes du centre de Lyon par les tramways T2/T5."",";FAUTIF
 bron.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
 bron.ts;249;nos consultants sont/viennent;"a: ""Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon."",";FAUTIF
 bruay-la-buissiere.ts;233;depuis <Ville>;"q: ""Axion-IA se déplace-t-il à Bruay-la-Buissière depuis Lille ou Paris ?"",";FAUTIF
@@ -437,7 +448,9 @@ cenon.ts;18;en métro/RER/tram/bus ligne;"tertiaires gravitant autour du centre 
 cenon.ts;20;en métro/RER/tram/bus ligne;"tertiaires gravitant autour du centre bordelais accessible en tramway A et E."",";A_VERIFIER
 cenon.ts;22;depuis <Ville>;"ommunale. Aéroport Bordeaux-Mérignac à 25 min. Paris en TGV depuis Bordeaux-Saint-Jean : 2h."",";A_VERIFIER
 cenon.ts;24;depuis <Ville>;"ommunale. Aéroport Bordeaux-Mérignac à 25 min. Paris en TGV depuis Bordeaux-Saint-Jean : 2h."",";A_VERIFIER
+cenon.ts;53;à N min de;ces aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de;A_VERIFIER
 cenon.ts;84;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil en autonomie depuis Cenon, sans verrou ni abonnement imposé, le tout transférable à n;FAUTIF
+cenon.ts;139;à N min de;ces aux entreprises — gravite autour de Bordeaux Métropole, à 10 minutes du centre bordelais par le tramway A. Le Club d'Entreprises de;A_VERIFIER
 cenon.ts;170;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil en autonomie depuis Cenon, sans verrou ni abonnement imposé, le tout transférable à n;FAUTIF
 cenon.ts;230;depuis <Ville>;"s-Bordeaux et Bordeaux centre. Nos consultants se déplacent depuis Paris via Bordeaux-Saint-Jean (TGV 2h) puis tramway A."",";FAUTIF
 ceret.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Perpignan (30 min). Missions sur site dans votre atelier, exploitatio";FAUTIF
@@ -461,7 +474,9 @@ chabeuil.ts;52;nos consultants sont/viennent;"Romans Agglo (Valence à 15 min, R
 chabeuil.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Paris ?"",";A_VERIFIER
 chabeuil.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (1h15 A7) ou Paris (TGV Valence 2h15 + 15 min voitu";FAUTIF
 challans.ts;21;à N min de;"""Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-M";A_VERIFIER
+challans.ts;21;à N min de;"""Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-Monts). La gare de Nantes est à env";A_VERIFIER
 challans.ts;23;à N min de;"""Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-M";A_VERIFIER
+challans.ts;23;à N min de;"""Challans est à 40 min de Nantes par la D937 et à 20 min du littoral (Saint-Jean-de-Monts). La gare de Nantes est à env";A_VERIFIER
 challans.ts;56;à N min de;". Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937."",";A_VERIFIER
 challans.ts;142;à N min de;". Kick-off en présentiel à Challans, itérations à distance, à 40 minutes de Nantes par la D937."",";A_VERIFIER
 challans.ts;253;à N min de;arrons par un audit, puis intervenons sur site ou en visio, à 40 min de Nantes. Livrables documentés, équipes formées, aucune dépen;FAUTIF
@@ -476,6 +491,7 @@ chamalieres.ts;21;depuis <Ville>;"aris à 3h30 en train. Nos consultants se dép
 chamalieres.ts;23;depuis <Ville>;"aris à 3h30 en train. Nos consultants se déplacent sur site depuis Clermont-Ferrand, frais indiqués séparément, ou interviennent en visio."",";FAUTIF
 chamalieres.ts;56;depuis <Ville>;", Beaumont, Cournon). Nos consultants se déplacent sur site depuis Clermont-Ferrand ou interviennent en visio selon votre besoin."",";FAUTIF
 chamalieres.ts;71;depuis <Ville>;"q: ""Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?"",";A_VERIFIER
+chambery.ts;233;à N min de;te la Savoie et les stations de Tarentaise et Maurienne (30 à 90 minutes du centre-ville) pour auditer, intégrer et former les équipes;FAUTIF
 chambery.ts;249;depuis <Ville>;"alles-les-Eaux et l'A43 facilitent les venues hebdomadaires depuis Paris ou Lyon."",";A_VERIFIER
 chamonix-mont-blanc.ts;52;depuis <Ville>;"rvoz, Vallorcine, Argentière). Nos consultants se déplacent depuis Genève (1h) ou Annecy (1h15)."",";FAUTIF
 champagne-au-mont-d-or.ts;52;depuis <Ville>;"à 5 min, Dardilly, Saint-Didier-au-Mont-d'Or). Consultants depuis Lyon (10 min)."",";FAUTIF
@@ -486,6 +502,8 @@ champagne-sur-seine.ts;52;depuis <Ville>;leau, Moret-Loing-et-Orvanne). Nos cons
 champagne-sur-seine.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent à Champagne-sur-Seine depuis Paris (55 min en Transilien R, gare à 5 min à pied). Intervention";FAUTIF
 champagnole.ts;52;depuis <Ville>;"min, Besançon à 1 h). Nos consultants couvrent tout le Jura depuis Besançon ou Lons-le-Saunier."",";FAUTIF
 champagnole.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Champagnole depuis Besançon (1 h) ou Lons-le-Saunier (30 min). Intervention sur site da";FAUTIF
+champniers.ts;21;à N min de;"""Champniers est à 10 min d'Angoulême centre (nord, N10). Gare TGV d'Angoulême à 15 min";A_VERIFIER
+champniers.ts;23;à N min de;"""Champniers est à 10 min d'Angoulême centre (nord, N10). Gare TGV d'Angoulême à 15 min";A_VERIFIER
 change-53.ts;67;depuis <Ville>;"q: ""Comment se passe une mission IA à Changé depuis Laval ?"",";A_VERIFIER
 change.ts;67;depuis <Ville>;"q: ""Comment se passe une mission IA à Changé depuis Le Mans ?"",";A_VERIFIER
 chanteloup-les-vignes.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Paris ?"",";A_VERIFIER
@@ -516,6 +534,7 @@ chartres-de-bretagne.ts;23;depuis <Ville>;"cade sud de Rennes à 5 min. Bruz à 
 chartres-de-bretagne.ts;52;nos consultants sont/viennent;"z, Pont-Péan, Vern-sur-Seiche, Noyal-Châtillon-sur-Seiche). Nos consultants viennent de Rennes centre (10 min) ou interviennent en visio."",";FAUTIF
 chartres-de-bretagne.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Rennes centre (10 min). Gare TER de Chartres-de-Bretagne";FAUTIF
 chartres.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ?"",";A_VERIFIER
+chartres.ts;249;à N min de;"a: ""Chartres est à environ 1h de Paris-Montparnasse en TER direct. Nous nous déplaçons sur s";FAUTIF
 chasse-sur-rhone.ts;52;nos consultants sont/viennent;"u Agglomération (Vienne, Pont-Évêque, Condrieu, Estrablin). Nos consultants viennent de Lyon (30 min A7) ou Saint-Étienne (40 min A47)."",";FAUTIF
 chasse-sur-rhone.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Vienne ?"",";A_VERIFIER
 chasse-sur-rhone.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jour";FAUTIF
@@ -533,8 +552,10 @@ chateaugiron.ts;52;depuis <Ville>;"laine, Ossé, Piré-Chancé). Nos consultants
 chateaugiron.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Châteaugiron depuis Rennes (20 min). Intervention sur site dans vos locaux, bureau, at";FAUTIF
 chateaulin.ts;68;depuis <Ville>;s l'intervention sous 5 jours. Nos consultants se déplacent depuis Quimper (30 min) ou Brest (50 min). Intervention sur site ou en vis;FAUTIF
 chateauneuf-les-martigues.ts;68;à N min de;"a: ""Châteauneuf-les-Martigues est à 15 min de l'aéroport Marseille-Provence et 35 min de Marseille via A5";FAUTIF
+chateaurenard.ts;68;à N min de;"a: ""Châteaurenard est à 15 min d'Avignon et 20 min de la gare TGV via A7. Nos consultants se";FAUTIF
 chateauroux.ts;134;sur place à <Ville>;"q: ""Intervenez-vous sur place à Châteauroux et dans l'Indre ?"",";A_VERIFIER
 chateauroux.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou Limoges ?"",";A_VERIFIER
+chateauroux.ts;249;à N min de;"a: ""Châteauroux est à environ 2h de Paris-Austerlitz en train et à 1h30 de Limoges par l'A20. N";FAUTIF
 chatel-guyon.ts;17;à N min de;l-Guyon est une station thermale historique du Puy-de-Dôme, à 5 min de Riom et 20 min de Clermont-Ferrand. Tissu thermalisme/bien-;A_VERIFIER
 chatel-guyon.ts;19;à N min de;l-Guyon est une station thermale historique du Puy-de-Dôme, à 5 min de Riom et 20 min de Clermont-Ferrand. Tissu thermalisme/bien-;A_VERIFIER
 chatel-guyon.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Clermont-Ferrand ?"",";A_VERIFIER
@@ -720,8 +741,10 @@ cosne-cours-sur-loire.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent �
 coudekerque-branche.ts;21;depuis <Ville>;in. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, frais indiqués séparément, ou interviennent en visio selon;FAUTIF
 coudekerque-branche.ts;23;depuis <Ville>;in. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, frais indiqués séparément, ou interviennent en visio selon;FAUTIF
 coudekerque-branche.ts;77;depuis <Ville>;ts de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de;A_VERIFIER
+coudekerque-branche.ts;77;à N min de;"nt documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau."",";A_VERIFIER
 coudekerque-branche.ts;131;à deux pas;sur le CMS de votre choix, avec chatbot multilingue (utile à deux pas de la frontière belge), paiement, suivi de commande et SEO;A_VERIFIER
 coudekerque-branche.ts;163;depuis <Ville>;ts de traitement documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de;A_VERIFIER
+coudekerque-branche.ts;163;à N min de;"nt documentaire. Démos hebdomadaires en visio depuis Lille, à une heure de Coudekerque-Branche, pour ajuster au fil de l'eau."",";A_VERIFIER
 coudekerque-branche.ts;217;à deux pas;sur le CMS de votre choix, avec chatbot multilingue (utile à deux pas de la frontière belge), paiement, suivi de commande et SEO;A_VERIFIER
 coudekerque-branche.ts;233;depuis <Ville>;"t-Pol-sur-Mer, Grande-Synthe). Nos consultants se déplacent depuis Lille, à 1h, ou interviennent en visio."",";FAUTIF
 coudekerque-branche.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Lille ?"",";A_VERIFIER
@@ -746,6 +769,7 @@ cournonterral.ts;12;depuis <Ville>;"rice:audit-flash|flat}} et des consultants q
 cournonterral.ts;14;depuis <Ville>;"rice:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 20 min via la D5."",";FAUTIF
 cournonterral.ts;52;depuis <Ville>;"melas, Saint-Paul-et-Valmalle. Nos consultants se déplacent depuis Montpellier en 20 min via la D5."",";FAUTIF
 coursan.ts;52;depuis <Ville>;"ude, Vinassan, Salles-d'Aude). Nos consultants se déplacent depuis Narbonne en 5 min."",";FAUTIF
+courthezon.ts;68;à N min de;"a: ""Courthézon est à 10 min d'Orange et 25 min d'Avignon via A7 et D907. Nos consultants s";FAUTIF
 coutances.ts;52;depuis <Ville>;"outainville, Périers, Gavray). Nos consultants se déplacent depuis Caen (1 h 15) ou Saint-Lô (30 min), ou en visio."",";FAUTIF
 coutances.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Caen (1 h 15) ou Saint-Lô (30 min). Gare de Coutances (T";FAUTIF
 coutras.ts;52;depuis <Ville>;"on). Nos consultants se déplacent via la gare de Coutras ou depuis Bordeaux (40 min)."",";FAUTIF
@@ -776,6 +800,7 @@ cuers.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Toulon (25
 cugand-la-bernardiere.ts;52;depuis <Ville>;"ans tout le secteur Clisson / vignoble nantais. Consultants depuis Nantes (30 min) ou gare SNCF Clisson (5 min, TER direct)."",";FAUTIF
 cugand-la-bernardiere.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Nantes (30 min) ou Clisson (5 min). Gare SNCF Clisson en TER direc";FAUTIF
 cuges-les-pins.ts;52;depuis <Ville>;"a Bouilladisse, Roquefort-la-Bédoule, Signes). Accès rapide depuis Aubagne et Marseille."",";A_VERIFIER
+cuges-les-pins.ts;68;à N min de;"a: ""Cuges-les-Pins est à 15 min d'Aubagne et 35 min de Marseille. Nos consultants se déplacent";FAUTIF
 cugnaux.ts;56;à N min de;sations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irrigué;A_VERIFIER
 cugnaux.ts;142;à N min de;sations. Pensé pour cette commune du sud-ouest de Toulouse, à 15 minutes de la rocade ouest et du pôle aéronautique de Blagnac, irrigué;A_VERIFIER
 cugnaux.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Toulouse ?"",";A_VERIFIER
@@ -796,11 +821,14 @@ dax.ts;135;sur place à <Ville>;"a: ""Oui. Après le cadrage sur place à Dax, o
 dax.ts;163;depuis <Ville>;"tratifs branchés sur votre SI. Démos hebdomadaires en visio depuis Dax."",";A_VERIFIER
 dax.ts;221;sur place à <Ville>;"a: ""Oui. Après le cadrage sur place à Dax, on remet un devis ferme en forfait fixe. Le délai dépend d";A_VERIFIER
 dax.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Bordeaux ou Bayonne ?"",";A_VERIFIER
+dax.ts;249;à N min de;"a: ""Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons";FAUTIF
 dax.ts;249;à N min de;"a: ""Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site."",";FAUTIF
 dechy.ts;52;nos consultants sont/viennent;uai, Sin-le-Noble, Flers-en-Escrebieux, Lambres-lez-Douai). Nos consultants viennent de Lille (35 min A1) ou via la gare de Douai (TGV Paris 50;FAUTIF
 dechy.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lille ou Paris ?"",";A_VERIFIER
 dechy.ts;68;depuis <Ville>;"a: ""Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missio";A_VERIFIER
 dechy.ts;68;depuis <Ville>;"a: ""Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missions sur site à Dechy ou en visi";A_VERIFIER
+decines-charpieu.ts;21;à N min de;se situe à 15 km par la Rocade Est, ce qui place la commune à moins de 25 minutes des liaisons nationales et internationales. La proximité de l'A;FAUTIF
+decines-charpieu.ts;23;à N min de;se situe à 15 km par la Rocade Est, ce qui place la commune à moins de 25 minutes des liaisons nationales et internationales. La proximité de l'A;FAUTIF
 delle.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Belfort ou Bâle ?"",";A_VERIFIER
 denain.ts;75;depuis <Ville>;"ue, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau."",";A_VERIFIER
 denain.ts;161;depuis <Ville>;"ue, agents et automatisations. Démos hebdomadaires en visio depuis Denain, code versionné et livré au fil de l'eau."",";A_VERIFIER
@@ -815,6 +843,8 @@ deuil-la-barre.ts;214;depuis <Ville>;"a: ""Oui. Depuis Deuil-la-Barre, on accomp
 deuil-la-barre.ts;234;depuis <Ville>;site sous 5 jours ouvrés après confirmation. Trajet rapide depuis Paris (13 minutes en Transilien ligne H) facilitant la réactivité;A_VERIFIER
 deuil-la-barre.ts;238;depuis <Ville>;"a: ""Nos consultants couvrent depuis Deuil-la-Barre les communes limitrophes : Montmorency, Groslay, Montmagny,";FAUTIF
 deville-les-rouen.ts;52;depuis <Ville>;", Maromme, Notre-Dame-de-Bondeville, Canteleu). Consultants depuis Rouen (10 min) ou Paris (1h20)."",";FAUTIF
+dieppe.ts;21;à N min de;2 heures via Rouen, et l'aéroport de Rouen-Vallée de Seine est à une heure de route. Le port assure la liaison ferry transmanche vers New;FAUTIF
+dieppe.ts;23;à N min de;2 heures via Rouen, et l'aéroport de Rouen-Vallée de Seine est à une heure de route. Le port assure la liaison ferry transmanche vers New;FAUTIF
 digne-les-bains.ts;52;nos consultants sont/viennent;"Provence (Sisteron, Manosque, Forcalquier, Château-Arnoux). Nos consultants viennent d'Aix-en-Provence (1h30 A51) ou Gap (1h nord)."",";FAUTIF
 digne-les-bains.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent sur site à Digne-les-Bains depuis Aix-en-Provence (1h30 A51) ou Gap (1h). Hébergement local possible."",";FAUTIF
 digoin.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Roanne ?"",";A_VERIFIER
@@ -855,6 +885,8 @@ douarnenez.ts;68;depuis <Ville>;"ia la gare de Quimper (TGV, 25 min de route) ou
 douchy-les-mines.ts;52;depuis <Ville>;"ain limitrophe, Valenciennes, Anzin, Lourches). Consultants depuis Lille (50 min)."",";FAUTIF
 douchy-les-mines.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lille ?"",";A_VERIFIER
 douchy-les-mines.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lille (50 min)."",";FAUTIF
+doullens.ts;21;à N min de;"""Doullens est à 30 min d'Amiens centre (RN25). Arras à 30 min (D939). Abbeville à 40";A_VERIFIER
+doullens.ts;23;à N min de;"""Doullens est à 30 min d'Amiens centre (RN25). Arras à 30 min (D939). Abbeville à 40";A_VERIFIER
 doullens.ts;52;depuis <Ville>;"sne, Authie, Bernaville, Lucheux). Nos consultants viennent depuis Amiens (30 min RN25) ou Arras (30 min D939)."",";FAUTIF
 doullens.ts;52;nos consultants sont/viennent;"t le Doullennais (Beauquesne, Authie, Bernaville, Lucheux). Nos consultants viennent depuis Amiens (30 min RN25) ou Arras (30 min D939)."",";FAUTIF
 doullens.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent à Doullens depuis Amiens (30 min RN25) ou Arras (30 min). Mission sur site dans vos";FAUTIF
@@ -911,6 +943,7 @@ egly.ts;64;sur place à <Ville>;Essonne, nous proposons les 5 services Axion-IA 
 egly.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou Massy ?"",";A_VERIFIER
 egly.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris (40 min A6/RN20) ou Massy (20 min). Accès rapide v";FAUTIF
 eguilles.ts;63;depuis <Ville>;"q: ""Comment se passe une mission à Éguilles depuis Aix ou Marseille ?"",";A_VERIFIER
+eguilles.ts;64;à N min de;"a: ""Éguilles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A8. Nos consultan";FAUTIF
 elancourt.ts;86;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en autonomie depuis Élancourt, sans verrou, sans abonnement imposé ni dépendance à un pre;A_VERIFIER
 elancourt.ts;172;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en autonomie depuis Élancourt, sans verrou, sans abonnement imposé ni dépendance à un pre;A_VERIFIER
 elbeuf.ts;52;nos consultants sont/viennent;", Saint-Aubin-lès-Elbeuf, Oissel à 8 km, Louviers à 15 km). Nos consultants viennent de Rouen (25 min) ou Paris (TGV Rouen 1h15 + voiture)."",";FAUTIF
@@ -921,6 +954,7 @@ elven.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Vannes ou R
 embrun.ts;52;nos consultants sont/viennent;"Serre-Ponçon (Chorges, Savines-le-Lac, Les Orres, Réallon). Nos consultants viennent de Gap (45 min sud) ou Briançon (50 min nord)."",";FAUTIF
 embrun.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent sur site à Embrun depuis Gap (45 min) ou Briançon (50 min). Hébergement local possible.""";FAUTIF
 ensues-la-redonne.ts;68;à N min de;"a: ""Ensuès-la-Redonne est à 30 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos";FAUTIF
+entraigues-sur-la-sorgue.ts;68;à N min de;"a: ""Entraigues-sur-la-Sorgue est à 15 min d'Avignon centre et 20 min de la gare TGV via A7. Nos consulta";FAUTIF
 entrelacs.ts;64;depuis <Ville>;"es, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (20 min)."",";FAUTIF
 entrelacs.ts;68;depuis <Ville>;"a: ""Nos consultants seniors interviennent depuis Chambéry (20 min voiture) ou Aix-les-Bains (10 min). Pour les missio";FAUTIF
 epernay.ts;87;depuis <Ville>;ment UE possible. Vos équipes pilotent l'outil en autonomie depuis Épernay, sans verrou ni abonnement imposé, et peuvent le confier à;FAUTIF
@@ -1098,6 +1132,8 @@ francheville.ts;52;depuis <Ville>;", Pierre-Bénite). Couverture Métropole de L
 francheville.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
 francheville.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local p";FAUTIF
 franqueville-saint-pierre.ts;52;depuis <Ville>;"Rouen, Le Mesnil-Esnard, Bonsecours, Darnetal). Consultants depuis Rouen (15 min) ou Paris (1h25)."",";FAUTIF
+frejus.ts;21;à N min de;eille en environ 1h30. L'aéroport Nice-Côte d'Azur se situe à environ 1 heure de route par l'autoroute A8, qui dessert directement la commun;FAUTIF
+frejus.ts;23;à N min de;eille en environ 1h30. L'aéroport Nice-Côte d'Azur se situe à environ 1 heure de route par l'autoroute A8, qui dessert directement la commun;FAUTIF
 frejus.ts;56;sur place à <Ville>;"le, e-commerce multi-CMS et IA réunis dans un même atelier, sur place à Fréjus."",";A_VERIFIER
 fresnes-sur-escaut.ts;52;depuis <Ville>;"ennes, Conde-sur-l'Escaut, Vieux-Conde, Anzin). Consultants depuis Lille (45 min TER) ou Paris (TGV Valenciennes 1h50)."",";FAUTIF
 fresnes.ts;241;base(e)(s) à <Ville>;"a: ""Pour une TPE ou PME basée à Fresnes ou dans le Val-de-Marne, le démarrage opérationnel in";FAUTIF
@@ -1110,6 +1146,7 @@ fronton.ts;52;depuis <Ville>;"-sur-Tarn, Grenade). Nos consultants se déplacent
 fronton.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent à Fronton (30 min depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos";FAUTIF
 frouzins.ts;52;depuis <Ville>;"-Tolosane, Seysses). Nos consultants se déplacent en 18 min depuis Toulouse."",";FAUTIF
 frouzins.ts;64;depuis <Ville>;"a: ""Nos consultants se déplacent à Frouzins depuis Toulouse (18 min). Intervention 1 journée minimum, atelier pratique";FAUTIF
+fuveau.ts;68;à N min de;"a: ""Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se dépla";FAUTIF
 gagny.ts;14;depuis <Ville>;"udit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris."",";FAUTIF
 gagny.ts;14;Williams se déplace;"1-to-1, avec tarifs publics dès {{price:audit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris."",";FAUTIF
 gagny.ts;16;depuis <Ville>;"udit-flash|flat}}. Williams se déplace en moins d'une heure depuis Paris."",";FAUTIF
@@ -1169,6 +1206,8 @@ gleize.ts;52;depuis <Ville>;"limitrophe, Anse, Limas, Belleville à 15 min). Con
 gleize.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
 gleize.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (35 min A6)."",";FAUTIF
 golbey.ts;52;depuis <Ville>;"traine, Thaon-les-Vosges, Dogneville). Accès rapide par N57 depuis Nancy (1h) et par TER ligne Nancy-Belfort."",";A_VERIFIER
+gond-pontouvre.ts;21;à N min de;"""Gond-Pontouvre est à 5 min d'Angoulême centre (nord). Gare TGV d'Angoulême à 10 min (Pari";A_VERIFIER
+gond-pontouvre.ts;23;à N min de;"""Gond-Pontouvre est à 5 min d'Angoulême centre (nord). Gare TGV d'Angoulême à 10 min (Pari";A_VERIFIER
 gonesse.ts;14;depuis <Ville>;"sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km)."",";FAUTIF
 gonesse.ts;16;depuis <Ville>;"sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km)."",";FAUTIF
 gonesse.ts;23;en métro/RER/tram/bus ligne;"""Aéroport Paris-CDG 10 min, Paris Gare du Nord 25 min en RER D, Roissy-en-France 10 min, La Défense 40 min, Cergy 45 min";A_VERIFIER
@@ -1179,6 +1218,7 @@ gorges.ts;52;depuis <Ville>;"e Pallet, Monnières). Nos consultants se déplacen
 gorges.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Nantes ?"",";A_VERIFIER
 gorges.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent depuis Nantes (25 min A83) ou Cholet (35 min). La gare TER de Clisson est";FAUTIF
 gorges.ts;68;à N min de;"tes (25 min A83) ou Cholet (35 min). La gare TER de Clisson est à 5 min de Gorges."",";FAUTIF
+gouesnou.ts;52;à N min de;Plouzané, Le Relecq-Kerhuon, Plougastel-Daoulas). Gouesnou est à 10 min du centre de Brest, couverture immédiate de toutes les zones d;A_VERIFIER
 gournay-en-bray.ts;52;depuis <Ville>;"de Bray (Forges-les-Eaux, Neufchatel-en-Bray). Consultants depuis Rouen (50 min) ou Beauvais (30 min)."",";FAUTIF
 gournay-sur-marne.ts;21;en métro/RER/tram/bus ligne;ER E / Transilien P) à 10 min. Paris Gare de l'Est à 25 min en RER E. Aéroport Paris-Charles de Gaulle à 30 min. Noisy-le-Gran;A_VERIFIER
 gournay-sur-marne.ts;23;en métro/RER/tram/bus ligne;ER E / Transilien P) à 10 min. Paris Gare de l'Est à 25 min en RER E. Aéroport Paris-Charles de Gaulle à 30 min. Noisy-le-Gran;A_VERIFIER
@@ -1432,6 +1472,8 @@ l-isle-adam.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris
 l-isle-adam.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris (45 min Transilien H Gare du Nord → L'Isle-Adam —";FAUTIF
 l-isle-d-abeau.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Paris ?"",";A_VERIFIER
 l-isle-d-abeau.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (40 min A43) ou Paris (TGV Lyon 2h + voiture). Pour";FAUTIF
+l-isle-d-espagnac.ts;21;à N min de;"""L'Isle-d'Espagnac est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 10 min (Paris Montp";A_VERIFIER
+l-isle-d-espagnac.ts;23;à N min de;"""L'Isle-d'Espagnac est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 10 min (Paris Montp";A_VERIFIER
 l-isle-sur-la-sorgue.ts;87;depuis <Ville>;ment UE possible. Vos équipes pilotent l'outil en autonomie depuis L'Isle-sur-la-Sorgue, sans verrou ni abonnement imposé, au rythme des saisons, d;FAUTIF
 l-isle-sur-la-sorgue.ts;173;depuis <Ville>;ment UE possible. Vos équipes pilotent l'outil en autonomie depuis L'Isle-sur-la-Sorgue, sans verrou ni abonnement imposé, au rythme des saisons, d;FAUTIF
 l-union.ts;52;depuis <Ville>;"Jean, Castelginest). Nos consultants se déplacent en 12 min depuis Toulouse centre."",";FAUTIF
@@ -1441,6 +1483,7 @@ la-balme-de-sillingy.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à
 la-bassee.ts;52;nos consultants sont/viennent;out le pays de Weppes (Illies, Herlies, Salomé, Violaines). Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune) ou A1/A26.;FAUTIF
 la-bassee.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent via gare La Bassée-Violaines (TER Lille-Béthune sur place)";FAUTIF
 la-baule-escoublac.ts;52;depuis <Ville>;"chet, Le Pouliguen, Guérande). Nos consultants se déplacent depuis Nantes (1h10) ou Saint-Nazaire (15 min)."",";FAUTIF
+la-bouilladisse.ts;68;à N min de;"a: ""La Bouilladisse est à 10 min d'Aubagne et 30 min de Marseille par A52. Nos consultants se d";FAUTIF
 la-celle-saint-cloud.ts;13;depuis <Ville>;"ion sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L."",";FAUTIF
 la-celle-saint-cloud.ts;15;depuis <Ville>;"ion sur site à {{price:intervention-4h|flat}}, accès rapide depuis Paris via A13/A86 et Transilien L."",";FAUTIF
 la-celle-saint-cloud.ts;235;depuis <Ville>;"les autoroutes A13/A86 facilitent les interventions courtes depuis Paris ou Versailles."",";FAUTIF
@@ -1458,6 +1501,8 @@ la-chevroliere.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent depuis N
 la-colle-sur-loup.ts;52;depuis <Ville>;"bet, Roquefort-les-Pins, Tourrettes-sur-Loup). Accès rapide depuis Nice (25 min) ou Cagnes-sur-Mer (10 min)."",";A_VERIFIER
 la-colle-sur-loup.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Nice ou Cagnes ?"",";A_VERIFIER
 la-colle-sur-loup.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Nice (25 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : de";FAUTIF
+la-couronne.ts;21;à N min de;"""La Couronne est à 8 min d'Angoulême centre (N10). Gare TGV d'Angoulême à 12 min (Paris";A_VERIFIER
+la-couronne.ts;23;à N min de;"""La Couronne est à 8 min d'Angoulême centre (N10). Gare TGV d'Angoulême à 12 min (Paris";A_VERIFIER
 la-crau.ts;52;depuis <Ville>;"de, La Valette, Solliès). Consultants accessibles en 15 min depuis Toulon et 12 min depuis l'aéroport Toulon-Hyères."",";FAUTIF
 la-crau.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Toulon (15 min) ou l'aéroport Toulon-Hyères (12 min). Déplacement";FAUTIF
 la-creche.ts;52;depuis <Ville>;5 min, Saint-Maixent-l'École, Chauray, Échiré). Consultants depuis Poitiers (50 min) ou La Rochelle (1h15). Couverture complète du Haut;FAUTIF
@@ -1521,6 +1566,7 @@ la-roche-sur-yon.ts;36;Williams se déplace;lace IA à La Roche-sur-Yon dès {{p
 la-roche-sur-yon.ts;37;Williams se déplace;lace IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos pr;FAUTIF
 la-roche-sur-yon.ts;235;Williams se déplace;"q: ""Williams se déplace-t-il dans les entreprises de La Roche-sur-Yon ?"",";FAUTIF
 la-roche-sur-yon.ts;236;Williams se déplace;"a: ""Oui, Williams se déplace directement dans vos locaux à La Roche-sur-Yon (85000) en t";FAUTIF
+la-roque-d-antheron.ts;68;à N min de;"a: ""La Roque-d'Anthéron est à 30 min d'Aix-en-Provence et 25 min de Salon-de-Provence. Nos consulta";FAUTIF
 la-roquette-sur-siagne.ts;52;depuis <Ville>;"ur-Siagne). Couverture arrière-pays cannois et accès rapide depuis Cannes (10 min) ou Grasse (15 min)."",";A_VERIFIER
 la-roquette-sur-siagne.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Cannes ?"",";A_VERIFIER
 la-roquette-sur-siagne.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis Cannes (10 min). Formats flexibles : demi-journée audit, journée i";FAUTIF
@@ -1590,6 +1636,7 @@ lambersart.ts;229;nos consultants sont/viennent;"e, Roubaix, Tourcoing, Villeneu
 lambersart.ts;241;sur place à <Ville>;la MEL, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentati;A_VERIFIER
 lambersart.ts;244;depuis <Ville>;"q: ""Comment se passe une intervention depuis Paris ?"",";FAUTIF
 lambersart.ts;245;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris en TGV (1h Lille-Europe) pour les missions sur sit";FAUTIF
+lambesc.ts;68;à N min de;"a: ""Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nos consultants se déplacent";FAUTIF
 lancon-provence.ts;68;à N min de;"a: ""Lançon-Provence est à 10 min de Salon et 35 min de Marseille via A7-A8. Nos consultants se";FAUTIF
 landerneau.ts;68;depuis <Ville>;"a: ""Nos consultants rejoignent Landerneau par la RN12 depuis Brest (20 min) ou via la gare SNCF de Landerneau (TER Brest-Quimp";A_VERIFIER
 landivisiau.ts;52;depuis <Ville>;"Plouescat, Lesneven, Landerneau). Nos consultants viennent depuis Brest (35 min N12) ou Morlaix (20 min N12)."",";FAUTIF
@@ -1657,6 +1704,7 @@ le-bouscat.ts;84;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil 
 le-bouscat.ts;170;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil en autonomie depuis Le Bouscat, sans verrou technique ni abonnement imposé, transf;FAUTIF
 le-bouscat.ts;233;Williams se déplace;"q: ""Williams se déplace-t-il vraiment au Bouscat ?"",";FAUTIF
 le-bouscat.ts;250;depuis <Ville>;"ruges et Eysines, toutes accessibles en moins de 15 minutes depuis Le Bouscat via le tramway TBM ou la rocade bordelaise."",";A_VERIFIER
+le-cannet-des-maures.ts;68;à N min de;"a: ""Le Cannet-des-Maures est à 5 min du Luc et 25 min de Brignoles via A8. Nos consultants se dépla";FAUTIF
 le-cannet.ts;15;depuis <Ville>;les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans;FAUTIF
 le-cannet.ts;17;depuis <Ville>;les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans;FAUTIF
 le-cannet.ts;60;à deux pas;tion et le tourisme — au Cannet « la Madère de la France », à deux pas du Palais des Festivals de Cannes (MIPIM, MIPCOM) et du Mar;A_VERIFIER
@@ -1732,6 +1780,7 @@ le-plessis-trevise.ts;235;Williams se déplace;"a: ""Williams se déplace sur si
 le-plessis-trevise.ts;239;Williams se déplace;"a: ""Williams se déplace habituellement sous 5 à 10 jours ouvrés au Plessis-Trévise.";FAUTIF
 le-poinconnet.ts;52;depuis <Ville>;"n de Châteauroux (Déols, Saint-Maur, Ardentes). Consultants depuis Tours (1h30) ou sur site directement."",";FAUTIF
 le-poire-sur-vie.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis La Roche-sur-Yon (15 min) ou Nantes (50 min). Déplacement sur";FAUTIF
+le-pontet.ts;68;à N min de;"a: ""Le Pontet est à 5 min d'Avignon via A7 et N7. Nos consultants se déplacent dans vos";FAUTIF
 le-pre-saint-gervais.ts;52;depuis <Ville>;"nville, Bagnolet, Bobigny). Accès direct par métro ligne 11 depuis Paris, 20 min Châtelet."",";A_VERIFIER
 le-pre-saint-gervais.ts;52;en métro/RER/tram/bus ligne;", Pantin, Romainville, Bagnolet, Bobigny). Accès direct par métro ligne 11 depuis Paris, 20 min Châtelet."",";FAUTIF
 le-pre-saint-gervais.ts;68;depuis <Ville>;dans vos locaux au Pré-Saint-Gervais, accessibles en 20 min depuis Paris centre (métro ligne 11). Intervention sur vos cas métier ré;A_VERIFIER
@@ -1753,6 +1802,7 @@ le-teich.ts;52;depuis <Ville>;"ios, Gujan-Mestras, Arcachon). Nos consultants se
 le-teil.ts;56;depuis <Ville>;"la-Romaine, Aubenas à 30 min). Nos consultants se déplacent depuis Lyon (1h30) ou Valence (40 min)."",";FAUTIF
 le-teil.ts;71;depuis <Ville>;"q: ""Comment se déroule une mission depuis Lyon ou Valence ?"",";A_VERIFIER
 le-teil.ts;72;depuis <Ville>;"a: ""Nos consultants rejoignent Le Teil depuis Lyon (1h30) ou Valence (40 min). Sessions sur site ou en visio.""";FAUTIF
+le-thor.ts;68;à N min de;"a: ""Le Thor est à 20 min d'Avignon et 10 min de L'Isle-sur-la-Sorgue via N100. Nos cons";FAUTIF
 le-val-d-hazey.ts;52;depuis <Ville>;"Vernon, Courcelles-sur-Seine). Nos consultants se déplacent depuis Paris (1h10 train) ou Rouen (35 min)."",";FAUTIF
 le-val-d-hazey.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou Rouen ?"",";A_VERIFIER
 le-val-d-hazey.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye à 5 min)";FAUTIF
@@ -1781,6 +1831,7 @@ les-andelys.ts;52;depuis <Ville>;"(Gaillon, Vernon, Étrépagny). Nos consultant
 les-andelys.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Rouen ou Paris ?"",";A_VERIFIER
 les-andelys.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye";FAUTIF
 les-angles.ts;52;nos consultants sont/viennent;"Avignon (Villeneuve-lès-Avignon, Rochefort-du-Gard, Saze). Nos consultants sont à 5 min d'Avignon centre et 15 min de la gare TGV."",";FAUTIF
+les-angles.ts;52;à N min de;"euve-lès-Avignon, Rochefort-du-Gard, Saze). Nos consultants sont à 5 min d'Avignon centre et 15 min de la gare TGV."",";FAUTIF
 les-avenieres-veyrins-thuellin.ts;52;nos consultants sont/viennent;"La Tour-du-Pin, Saint-André-le-Gaz, Le Pont-de-Beauvoisin). Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h)."",";FAUTIF
 les-avenieres-veyrins-thuellin.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Chambéry ?"",";A_VERIFIER
 les-avenieres-veyrins-thuellin.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h). Pour les multi-jours, hé";FAUTIF
@@ -1938,6 +1989,7 @@ longpont-sur-orge.ts;68;en métro/RER/tram/bus ligne;"a: ""Nos consultants vienn
 longueau.ts;21;depuis <Ville>;"TGV Haute-Picardie à 25 min. Paris Gare du Nord à 1h15 TGV depuis Amiens. Aéroport Beauvais-Tillé à 1h. A16/A29 accessibles."",";A_VERIFIER
 longueau.ts;23;depuis <Ville>;"TGV Haute-Picardie à 25 min. Paris Gare du Nord à 1h15 TGV depuis Amiens. Aéroport Beauvais-Tillé à 1h. A16/A29 accessibles."",";A_VERIFIER
 longueau.ts;52;nos consultants sont/viennent;omération amiénoise (Amiens, Camon, Rivery, Salouël, Dury). Nos consultants sont à 10 min du centre d'Amiens et couvrent tout le bassin d'em;FAUTIF
+longueau.ts;52;à N min de;ise (Amiens, Camon, Rivery, Salouël, Dury). Nos consultants sont à 10 min du centre d'Amiens et couvrent tout le bassin d'emploi picard.;FAUTIF
 longuenesse.ts;68;depuis <Ville>;"urs ouvrés après validation. Gare Saint-Omer accessible TER depuis Lille (50 min). Nos consultants se déplacent sur site."",";A_VERIFIER
 longvic.ts;21;à N min de;"""Longvic à 10 min de Dijon centre par tram T2 et bus Divia. Aéroport Dijon-Bourg";A_VERIFIER
 longvic.ts;23;à N min de;"""Longvic à 10 min de Dijon centre par tram T2 et bus Divia. Aéroport Dijon-Bourg";A_VERIFIER
@@ -1989,7 +2041,9 @@ luce.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ?"",";
 luce.ts;68;à N min de;": ""Paris Montparnasse à Chartres en 1h15 (TER direct), Lucé à 5 min de Chartres."",";A_VERIFIER
 lucon.ts;52;depuis <Ville>;"ud-Vendée (Fontenay-le-Comte, marais poitevin). Consultants depuis La Roche-sur-Yon (30 min) ou gare SNCF Luçon (TER direct)."",";FAUTIF
 lucon.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis La Roche-sur-Yon (30 min) ou via gare SNCF Luçon (ligne TER).";FAUTIF
+ludon-medoc.ts;21;à N min de;"""Ludon-Médoc est à 25 min du centre de Bordeaux par la rocade et à 10 min de Blanquefort";A_VERIFIER
 ludon-medoc.ts;21;à N min de;n-Médoc est à 25 min du centre de Bordeaux par la rocade et à 10 min de Blanquefort. L'aéroport Bordeaux-Mérignac est à 20 min et l;A_VERIFIER
+ludon-medoc.ts;23;à N min de;"""Ludon-Médoc est à 25 min du centre de Bordeaux par la rocade et à 10 min de Blanquefort";A_VERIFIER
 ludon-medoc.ts;23;à N min de;n-Médoc est à 25 min du centre de Bordeaux par la rocade et à 10 min de Blanquefort. L'aéroport Bordeaux-Mérignac est à 20 min et l;A_VERIFIER
 ludon-medoc.ts;56;depuis <Ville>;"Le Pian-Médoc, Macau). Nos experts IA seniors se déplacent depuis Bordeaux (25 min) ou travaillent en visio."",";FAUTIF
 ludon-medoc.ts;76;depuis <Ville>;un audit, puis intervenons en chai, en atelier ou en visio depuis Bordeaux centre (25 min). Livrables documentés, équipes formées, auc;FAUTIF
@@ -2100,7 +2154,9 @@ massy.ts;249;en métro/RER/tram/bus ligne;"a: ""Massy est à une trentaine de mi
 maubeuge.ts;239;Williams se déplace;"a: ""Williams se déplace sur site à Maubeuge dans un délai de 5 jours ouvrés après v";FAUTIF
 mauges-sur-loire.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Angers ou Nantes ?"",";A_VERIFIER
 mauges-sur-loire.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent d'Angers (50 min) ou de Nantes (45 min via A11). La gare TE";FAUTIF
+maurepas.ts;61;à N min de;"""Position au cœur de l'ouest des Yvelines, à dix minutes du pôle gare de Saint-Quentin-en-Yvelines et à 20 km de Versai";FAUTIF
 maurepas.ts;87;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en autonomie depuis Maurepas, sans verrou ni abonnement imposé, avec une documentation t;A_VERIFIER
+maurepas.ts;147;à N min de;"""Position au cœur de l'ouest des Yvelines, à dix minutes du pôle gare de Saint-Quentin-en-Yvelines et à 20 km de Versai";FAUTIF
 maurepas.ts;173;depuis <Ville>;rme vos équipes pour qu'elles pilotent l'outil en autonomie depuis Maurepas, sans verrou ni abonnement imposé, avec une documentation t;A_VERIFIER
 maurepas.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Versailles ou Paris ?"",";A_VERIFIER
 mayenne.ts;52;depuis <Ville>;"Châteaux, Villaines-la-Juhel). Nos consultants se déplacent depuis Laval (30 min N162)."",";FAUTIF
@@ -2155,6 +2211,7 @@ meximieux.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de 
 meylan.ts;65;depuis <Ville>;"q: ""Comment se déroule une mission Inovallée depuis Paris ?"",";A_VERIFIER
 meylan.ts;66;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris en TGV (Lyon 2h + tram + voiture, ~3h30 total) ou";FAUTIF
 meyreuil.ts;63;depuis <Ville>;"q: ""Proposez-vous des sessions en visio depuis Meyreuil ?"",";A_VERIFIER
+meyreuil.ts;68;à N min de;"a: ""Meyreuil est à 10 min d'Aix et 35 min de Marseille par A52. Nos consultants se dépla";FAUTIF
 mezidon-vallee-d-auge.ts;52;depuis <Ville>;"erre-en-Auge, Livarot, Pont-l'Évêque, Lisieux). Consultants depuis Caen (30 min N13) ou via gare SNCF Mézidon."",";FAUTIF
 mezidon-vallee-d-auge.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Caen (30 min N13) ou par train (gare SNCF Mézidon, nœud";FAUTIF
 migne-auxances.ts;52;depuis <Ville>;"10 min, Buxerolles, Neuville-de-Poitou, Biard). Consultants depuis Paris (TGV 1h40 gare Poitiers)."",";FAUTIF
@@ -2164,9 +2221,12 @@ milhaud.ts;52;nos consultants sont/viennent;"agglo nîmoise sud (Bouillargues, G
 milhaud.ts;52;à N min de;"d (Bouillargues, Garons, Bernis, Langlade). Nos consultants sont à 10 min de Nîmes centre."",";FAUTIF
 millau.ts;8;à deux pas;et de la mégisserie du cuir, au pied des grands causses et à deux pas du plateau du Roquefort. Son économie mêle artisanat d'exce;A_VERIFIER
 millau.ts;10;à deux pas;et de la mégisserie du cuir, au pied des grands causses et à deux pas du plateau du Roquefort. Son économie mêle artisanat d'exce;A_VERIFIER
+millau.ts;21;à N min de;nviron 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Cette position de carrefour des grands causses facil;FAUTIF
+millau.ts;23;à N min de;nviron 110 km, son aéroport à 115 km, Rodez et son aéroport à une heure de route. Cette position de carrefour des grands causses facil;FAUTIF
 millau.ts;131;depuis <Ville>;"ités du causse à une clientèle nationale et internationale, depuis Millau."",";A_VERIFIER
 millau.ts;217;depuis <Ville>;"ités du causse à une clientèle nationale et internationale, depuis Millau."",";A_VERIFIER
 millau.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Montpellier ou Rodez ?"",";A_VERIFIER
+millau.ts;249;à N min de;"a: ""Millau est à environ 110 km de Montpellier et à une heure de Rodez, accessible par l'A75 et le Viaduc. Nous couvrons les";FAUTIF
 mimizan.ts;52;depuis <Ville>;"lalie-en-Born). Couverture océan, lac et forêt. Déplacement depuis Bordeaux ou Mont-de-Marsan."",";FAUTIF
 mimizan.ts;67;depuis <Ville>;"q: ""Comment se déroule une mission depuis Bordeaux ?"",";A_VERIFIER
 mimizan.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent depuis Bordeaux (1h30 par D626+A63). Pour les multi-jours, hébergement loca";FAUTIF
@@ -2175,7 +2235,9 @@ mions.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";
 mions.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait,";FAUTIF
 mios.ts;52;depuis <Ville>;"Teich, Salles, Belin-Béliet). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min)."",";FAUTIF
 mios.ts;68;depuis <Ville>;nsultants interviennent dans vos locaux à Mios ou en visio. Depuis Bordeaux (40 min A63). Tarifs et planning convenus en amont, livrabl;FAUTIF
+miramas.ts;54;à N min de;néa ou Rexel) raccordée à la 2e gare de triage de France et à 25 min du port de Fos. Pour ces acteurs supply chain et e-commerce, o;A_VERIFIER
 miramas.ts;83;depuis <Ville>;s RGPD et AI Act. Vos équipes pilotent l'outil en autonomie depuis Miramas, sans verrou ni abonnement imposé, avec passation documenté;FAUTIF
+miramas.ts;140;à N min de;néa ou Rexel) raccordée à la 2e gare de triage de France et à 25 min du port de Fos. Pour ces acteurs supply chain et e-commerce, o;A_VERIFIER
 miramas.ts;169;depuis <Ville>;s RGPD et AI Act. Vos équipes pilotent l'outil en autonomie depuis Miramas, sans verrou ni abonnement imposé, avec passation documenté;FAUTIF
 miribel.ts;52;depuis <Ville>;"Côtière (Beynost, Neyron, Montluel, Meximieux). Consultants depuis Lyon (20 min)."",";FAUTIF
 miribel.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
@@ -2235,6 +2297,7 @@ montereau-fault-yonne.ts;57;depuis <Ville>;"""Ville desservie en 1h depuis Paris
 montereau-fault-yonne.ts;143;depuis <Ville>;"""Ville desservie en 1h depuis Paris-Gare-de-Lyon, reliée par l'A5 et la RD606 (ex-RN6) mais profondément anc";A_VERIFIER
 montereau-fault-yonne.ts;241;Williams se déplace;"a: ""Williams se déplace à Montereau-Fault-Yonne sous 5 jours ouvrés en moyenne. Acc";FAUTIF
 montesson.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou La Défense ?"",";A_VERIFIER
+monteux.ts;68;à N min de;"a: ""Monteux est à 20 min d'Avignon et 10 min de Carpentras via D942. Nos consultants se";FAUTIF
 montevrain.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Montévrain (40 min depuis Paris via RER A, gare TGV Marne-la-Vallée-Chessy à 5 min). Interv";FAUTIF
 montfermeil.ts;14;depuis <Ville>;éplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (com;A_VERIFIER
 montfermeil.ts;16;depuis <Ville>;éplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (com;A_VERIFIER
@@ -2256,12 +2319,17 @@ montigny-les-cormeilles.ts;12;depuis <Ville>;ransilien J), la ville offre un cad
 montivilliers.ts;52;nos consultants sont/viennent;"10 min, Harfleur, Octeville-sur-Mer, Gonfreville-l'Orcher). Nos consultants viennent de Paris (TGV Le Havre 2h15)."",";FAUTIF
 montivilliers.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ?"",";A_VERIFIER
 montivilliers.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 mi";FAUTIF
+montivilliers.ts;68;à N min de;"iennent de Paris via TGV Le Havre (2h15) puis Montivilliers à 10 min du centre-ville."",";FAUTIF
 montlhery.ts;67;depuis <Ville>;"q: ""Comment se passe une mission à Montlhéry depuis Paris ?"",";A_VERIFIER
 montlhery.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min."",";FAUTIF
+montlucon.ts;21;à N min de;100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routier;FAUTIF
+montlucon.ts;23;à N min de;100 km et à Moulins, dont la gare TGV est à 80 km. Bourges est à une heure de route et l'agglomération est desservie par les axes routier;FAUTIF
 montlucon.ts;248;depuis <Ville>;"q: ""Comment se passe une mission depuis Clermont-Ferrand ou Moulins ?"",";A_VERIFIER
 montluel.ts;21;depuis <Ville>;min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beyno;FAUTIF
+montluel.ts;21;à N min de;"""Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry";FAUTIF
 montluel.ts;21;à N min de;"""Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à";FAUTIF
 montluel.ts;23;depuis <Ville>;min, Bourg-en-Bresse à 45 min. Nos consultants se déplacent depuis Lyon sur toute la Côtière et la plaine de l'Ain : Miribel, Beyno;FAUTIF
+montluel.ts;23;à N min de;"""Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry";FAUTIF
 montluel.ts;23;à N min de;"""Montluel est à 30 min du centre de Lyon et à 15 min de l'aéroport Lyon-Saint-Exupéry, sur l'axe A42. Miribel est à";FAUTIF
 montluel.ts;56;depuis <Ville>;"min, Beynost). Aéroport Saint-Exupéry à 15 min, consultants depuis Lyon (30 min)."",";FAUTIF
 montluel.ts;71;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
@@ -2299,6 +2367,7 @@ montval-sur-loir.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis
 morangis.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou Massy ?"",";A_VERIFIER
 morcenx-la-nouvelle.ts;52;depuis <Ville>;"nesse-Laharie). Couverture forêt, lac et bourg. Déplacement depuis Mont-de-Marsan (25 min)."",";FAUTIF
 morcenx-la-nouvelle.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent depuis Mont-de-Marsan (25 min) ou Dax (40 min). Gare SNCF Morcenx sur la ligne Bo";FAUTIF
+morieres-les-avignon.ts;68;à N min de;"a: ""Morières-lès-Avignon est à 10 min d'Avignon centre et 15 min de la gare TGV via D900 et A7. Nos";FAUTIF
 morlaix.ts;68;depuis <Ville>;"""Nos consultants rejoignent Morlaix par TGV direct (3 h 15 depuis Paris) ou par la RN12 depuis Brest (45 min)."",";A_VERIFIER
 morlaix.ts;68;depuis <Ville>;"Morlaix par TGV direct (3 h 15 depuis Paris) ou par la RN12 depuis Brest (45 min)."",";A_VERIFIER
 mornant.ts;52;depuis <Ville>;"10 min, Givors à 15 min, Saint-Laurent-d'Agny). Consultants depuis Lyon (30 min)."",";FAUTIF
@@ -2318,6 +2387,8 @@ mouans-sartoux.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent depuis C
 mougins.ts;52;nos consultants sont/viennent;"nois (Cannes, Le Cannet, Mouans-Sartoux, Sophia Antipolis). Nos consultants sont à 25 min de l'aéroport Nice-Côte d'Azur."",";FAUTIF
 mougins.ts;52;à N min de;"Cannet, Mouans-Sartoux, Sophia Antipolis). Nos consultants sont à 25 min de l'aéroport Nice-Côte d'Azur."",";FAUTIF
 mouilleron-le-captif.ts;52;depuis <Ville>;"re-sur-Yon, Le Poiré-sur-Vie). Nos consultants se déplacent depuis Nantes (55 min) ou directement sur site."",";FAUTIF
+moulins-les-metz.ts;8;à N min de;at, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''ac;A_VERIFIER
+moulins-les-metz.ts;10;à N min de;at, BTP et restauration. Position résidentielle privilégiée à 10 min du centre de Metz. Axion-IA y intervient pour tous types d''ac;A_VERIFIER
 moulins.ts;52;depuis <Ville>;"phe, Avermes, Souvigny, Bourbon-l'Archambault). Consultants depuis Lyon (2h) ou Clermont-Ferrand (1h30)."",";FAUTIF
 moulins.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ou Clermont ?"",";A_VERIFIER
 mouroux.ts;52;depuis <Ville>;"20 min, Meaux à 25 min). Nos consultants rejoignent Mouroux depuis Paris Est en 55 min via Transilien P."",";FAUTIF
@@ -2374,6 +2445,7 @@ neuilly-sur-seine.ts;129;Williams se déplace;"a: ""Oui. Williams se déplace da
 neuilly-sur-seine.ts;234;Williams se déplace;"q: ""Williams se déplace-t-il à Neuilly-sur-Seine ?"",";FAUTIF
 neuilly-sur-seine.ts;235;base(e)(s) à <Ville>;Neuilly-sur-Seine sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 1 (Pont de Neuilly, L;FAUTIF
 neuilly-sur-seine.ts;235;Williams se déplace;"a: ""Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés (souvent m";FAUTIF
+neuville-de-poitou.ts;68;à N min de;"a: ""Oui, Neuville-de-Poitou est à 10 min du Futuroscope. Nous accompagnons PME tech, prestataires touri";FAUTIF
 neuville-en-ferrain.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Neuville-en-Ferrain depuis Lille (20 min) ou Tourcoing (5 min). Intervention sur site dans v";FAUTIF
 neuville-sur-saone.ts;52;depuis <Ville>;"imitrophe, Rillieux-la-Pape, Caluire-et-Cuire). Consultants depuis Lyon (20 min)."",";FAUTIF
 neuville-sur-saone.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Lyon ?"",";A_VERIFIER
@@ -2419,6 +2491,7 @@ noisy-le-grand.ts;249;depuis <Ville>;"d'Est, centre-ville) ou en visio. Accès r
 noisy-le-roi.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Noisy-le-Roi depuis Paris ou Versailles (10-35 min). Intervention dans vos locaux ou";FAUTIF
 noisy-le-sec.ts;14;depuis <Ville>;stique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flas;FAUTIF
 noisy-le-sec.ts;16;depuis <Ville>;stique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flas;FAUTIF
+noisy-le-sec.ts;56;à N min de;d'activités Le Terminal / Groux (~9,74 ha, ~162 entreprises à moins de 10 min du RER), nous outillons les transporteurs, sociétés de nettoya;FAUTIF
 noisy-le-sec.ts;231;depuis <Ville>;"ntreuil, Romainville, Pantin). Nos consultants se déplacent depuis Paris en 20 min via RER E ou A3."",";FAUTIF
 nort-sur-erdre.ts;52;nos consultants sont/viennent;"is (Sucé-sur-Erdre, Petit-Mars, Héric, Blain, Treillières). Nos consultants viennent de Nantes (25 min TER ou 30 min route D178)."",";FAUTIF
 nort-sur-erdre.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Nantes ?"",";A_VERIFIER
@@ -2465,6 +2538,7 @@ oree-d-anjou.ts;67;depuis <Ville>;"q: ""Comment accédez-vous à Orée d'Anjou d
 oree-d-anjou.ts;68;depuis <Ville>;"a: ""Nos consultants se déplacent depuis Nantes (35 min A11) ou Angers (50 min). La gare TER d'Ancenis est";FAUTIF
 orgeres.ts;52;depuis <Ville>;"r-Seiche, Janzé). Nos consultants rejoignent Rennes en 1h25 depuis Paris (TGV) puis Orgères en 15 min."",";FAUTIF
 orgeres.ts;67;depuis <Ville>;"q: ""Comment Orgères est-elle desservie depuis Paris ?"",";A_VERIFIER
+orgeres.ts;68;à N min de;"a: ""Paris-Rennes en 1h25 (TGV direct). Orgères est à 15 min du centre de Rennes (D163) et à 15 min de l'aéroport Rennes-Sa";A_VERIFIER
 orgeres.ts;68;à N min de;direct). Orgères est à 15 min du centre de Rennes (D163) et à 15 min de l'aéroport Rennes-Saint-Jacques. Mission sur site ou visio;A_VERIFIER
 orgeval.ts;68;depuis <Ville>;"a: ""Nos consultants interviennent à Orgeval via A13 (30 min depuis La Défense, échangeur direct). Gare de Villennes-sur-Seine (Tr";FAUTIF
 orly.ts;61;à deux pas;açabilité fret) et clientèle internationale via l'aéroport, à deux pas du MIN de Rungis : nos chatbots sont multilingues par défau;A_VERIFIER
@@ -2520,6 +2594,8 @@ ozoir-la-ferriere.ts;237;Williams se déplace;"q: ""Williams se déplace-t-il vr
 ozoir-la-ferriere.ts;238;depuis <Ville>;"a: ""Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière,";A_VERIFIER
 ozoir-la-ferriere.ts;238;depuis <Ville>;s Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des TPE et PME ozoiriennes;A_VERIFIER
 ozoir-la-ferriere.ts;249;depuis <Ville>;"q: ""Quelles communes proches couvrez-vous depuis Ozoir-la-Ferrière ?"",";A_VERIFIER
+pace.ts;21;à N min de;"""Pacé à 10 min du centre de Rennes (D29). Gare Rennes TGV à 15 min. Aéroport";A_VERIFIER
+pace.ts;23;à N min de;"""Pacé à 10 min du centre de Rennes (D29). Gare Rennes TGV à 15 min. Aéroport";A_VERIFIER
 pace.ts;68;nos consultants sont/viennent;"a: ""Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site";FAUTIF
 pacy-sur-eure.ts;52;depuis <Ville>;"non, Bueil, Ivry-la-Bataille). Nos consultants se déplacent depuis Paris (1h20 A13) ou Évreux (20 min)."",";FAUTIF
 pacy-sur-eure.ts;67;depuis <Ville>;"q: ""Comment se passe une mission depuis Paris ou Évreux ?"",";A_VERIFIER
@@ -2562,6 +2638,11 @@ perigny.ts;21;à N min de;"""Périgny est à 8 min de La Rochelle centre (sud-es
 perigny.ts;23;à N min de;"""Périgny est à 8 min de La Rochelle centre (sud-est). Gare TGV de La Rochelle à 12";A_VERIFIER
 perigny.ts;68;à N min de;"site dans vos locaux, bureau ou cabinet à Périgny, commune à 12 min de la gare TGV de La Rochelle."",";A_VERIFIER
 pernes-les-fontaines.ts;68;à N min de;"ut en France, sur place ou à distance. Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938."",";A_VERIFIER
+pertuis.ts;8;à N min de;proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie son expertise pour toutes les organi;A_VERIFIER
+pertuis.ts;10;à N min de;proximité dans un bassin de vie de près de 20 000 habitants à 25 min d'Aix. Axion-IA y déploie son expertise pour toutes les organi;A_VERIFIER
+pertuis.ts;68;à N min de;"ce ou à distance, dans vos locaux ou exploitations. Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51."",";A_VERIFIER
+peypin.ts;70;à N min de;stance : sur chantier ou en atelier dans vos locaux. Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Possibilité;A_VERIFIER
+peyrolles-en-provence.ts;68;à N min de;"t en France, sur place ou à distance. Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51."",";A_VERIFIER
 plaisance-du-touch.ts;56;depuis <Ville>;ui répond en continu aux clients du Grand Ouest Toulousain, depuis Tournefeuille jusqu'à Colomiers, sans saturer le personnel de caisse en h;A_VERIFIER
 plaisance-du-touch.ts;85;depuis <Ville>;mpétences inclus. Vos équipes pilotent l'outil en autonomie depuis Plaisance-du-Touch, sans verrou ni abonnement imposé, transférable à tout pres;FAUTIF
 plaisance-du-touch.ts;133;sur place à <Ville>;"a: ""Oui. Après le cadrage sur place à Plaisance-du-Touch — centre-ville, secteur Corail ou siège de l'agglomération";A_VERIFIER
@@ -2575,6 +2656,7 @@ plouzane.ts;68;à N min de;venons partout en France, sur place ou à distance. P
 pontivy.ts;67;depuis <Ville>;"q: ""Comment accéder à Pontivy depuis Rennes ou Vannes ?"",";A_VERIFIER
 pontoise.ts;241;sur place à <Ville>;ontoise, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentati;A_VERIFIER
 porto-vecchio.ts;68;à N min de;"s partout en France, sur place ou à distance. Porto-Vecchio est à 25 min de l'aéroport Figari-Sud Corse (vols directs en saison)."",";A_VERIFIER
+pourrieres.ts;68;à N min de;"lace ou à distance, dans vos locaux ou domaines. Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8."",";A_VERIFIER
 puilboreau.ts;21;à N min de;"""Puilboreau est à 8 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 12 min";A_VERIFIER
 puilboreau.ts;23;à N min de;"""Puilboreau est à 8 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 12 min";A_VERIFIER
 puilboreau.ts;68;à N min de;"ocaux commerciaux, bureau ou entrepôt à Puilboreau, commune à 12 min de la gare TGV de La Rochelle."",";A_VERIFIER
@@ -2593,6 +2675,7 @@ quimper.ts;17;Williams se déplace;taire, reporting. Cadrage clair, conformité 
 quimper.ts;41;Williams se déplace;"fr: ""Intervention sur site à Quimper — Williams se déplace pour cadrer et déployer un agent IA opérationnel (suivi qua";FAUTIF
 quimper.ts;42;Williams se déplace;"en: ""Intervention sur site à Quimper — Williams se déplace pour cadrer et déployer un agent IA opérationnel (suivi qua";FAUTIF
 quimper.ts;236;Williams se déplace;"q: ""Williams se déplace-t-il à Quimper ?"",";FAUTIF
+rambervillers.ts;68;à N min de;"vie par sa gare SNCF (ligne TER Lorraine) et la RN420/RD32, à 30 min d'Épinal et 35 min de Saint-Dié."",";A_VERIFIER
 ramonville-saint-agne.ts;17;en métro/RER/tram/bus ligne;"ch, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville)."",";FAUTIF
 ramonville-saint-agne.ts;19;en métro/RER/tram/bus ligne;"ch, professions libérales, commerces de proximité. Desserte métro ligne B (Ramonville)."",";FAUTIF
 raon-l-etape.ts;68;à N min de;"ie par sa gare SNCF (ligne Lunéville–Saint-Dié) et la RN59, à 15 min de Saint-Dié et 12 min de Baccarat."",";A_VERIFIER
@@ -2605,7 +2688,10 @@ reims.ts;1018;notre agence/bureau/antenne;"q: ""Pouvez-vous intervenir sur site 
 reims.ts;1019;nos consultants sont/viennent;ont par défaut sur site, dans vos locaux ou dans vos caves. Nos consultants sont mobiles sur l'agglomération rémoise et le Grand Reims. Les;FAUTIF
 rennes.ts;76;en métro/RER/tram/bus ligne;s de la Loire). Aéroport Rennes-Saint-Jacques (RNS) à 8 km. Métro ligne A (nord-sud) + ligne B automatique (est-ouest, Cesson-Sévig;FAUTIF
 riedisheim.ts;68;à N min de;distance. Riedisheim, en périphérie immédiate de Mulhouse, est à 10 min de l'autoroute A36 et de la gare de Mulhouse-Ville, avec un ac;A_VERIFIER
+roanne.ts;22;à N min de;"""Roanne est située à environ une heure de Lyon, Saint-Étienne et Clermont-Ferrand. L'autoroute A89 (m";A_VERIFIER
+roanne.ts;24;à N min de;"""Roanne est située à environ une heure de Lyon, Saint-Étienne et Clermont-Ferrand. L'autoroute A89 (m";A_VERIFIER
 rocbaron.ts;68;à N min de;"place ou à distance, dans vos locaux ou domaines. Rocbaron est à 15 min de Brignoles et 40 min de Toulon via A57."",";A_VERIFIER
+rochefort-du-gard.ts;52;à N min de;, Villeneuve-lès-Avignon, Saze, Domazan). Rochefort-du-Gard est à 15 min d'Avignon et 20 min de Nîmes. Nous intervenons partout en Fran;A_VERIFIER
 rochefort.ts;12;Williams se déplace;accompagnement un-à-un dirigeants et sites web augmentés : Williams se déplace sur site. Les ETI locales (Daher, Stelia) sont prises en ch;FAUTIF
 rochefort.ts;14;Williams se déplace;accompagnement un-à-un dirigeants et sites web augmentés : Williams se déplace sur site. Les ETI locales (Daher, Stelia) sont prises en ch;FAUTIF
 rochefort.ts;21;Williams se déplace;, Saintes à 35 km, Niort à 60 km, Bordeaux à 130 km (1h30). Williams se déplace sur site dans toute la Charente-Maritime, sur l'Île d'Aix,;FAUTIF
@@ -2624,7 +2710,12 @@ ronchin.ts;21;en métro/RER/tram/bus ligne;"10 min. Accès direct A1 (Paris 1h T
 ronchin.ts;23;en métro/RER/tram/bus ligne;"10 min. Accès direct A1 (Paris 1h TGV) et A25 (Dunkerque). Métro ligne 1 station CHR B-Calmette à proximité."",";FAUTIF
 rosny-sous-bois.ts;16;en métro/RER/tram/bus ligne;ia RER E (2 gares : Rosny-sous-Bois et Rosny-Bois-Perrier). Métro ligne 11 prolongée jusqu'au terminus Rosny-Bois-Perrier (3 statio;FAUTIF
 rosny-sous-bois.ts;254;en métro/RER/tram/bus ligne;ia RER E (2 gares : Rosny-sous-Bois et Rosny-Bois-Perrier). Métro ligne 11 prolongée jusqu'au terminus Rosny-Bois-Perrier (3 statio;FAUTIF
+rousset.ts;68;à N min de;"rvenons partout en France, sur place ou à distance. Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8."",";A_VERIFIER
+ruelle-sur-touvre.ts;21;à N min de;"""Ruelle-sur-Touvre est à 7 min d'Angoulême centre. Gare TGV d'Angoulême à 10 min (Paris Montp";A_VERIFIER
+ruelle-sur-touvre.ts;23;à N min de;"""Ruelle-sur-Touvre est à 7 min d'Angoulême centre. Gare TGV d'Angoulême à 10 min (Paris Montp";A_VERIFIER
 ruelle-sur-touvre.ts;68;à N min de;"industriels, bureau ou atelier à Ruelle-sur-Touvre, commune à 10 min de la gare TGV d'Angoulême."",";A_VERIFIER
+saint-andre-de-la-roche.ts;17;à N min de;pied du mont Chauve, elle offre un cadre résidentiel calme à 10 min du centre de Nice. Tissu d'artisans BTP, commerces de proximit;A_VERIFIER
+saint-andre-de-la-roche.ts;19;à N min de;pied du mont Chauve, elle offre un cadre résidentiel calme à 10 min du centre de Nice. Tissu d'artisans BTP, commerces de proximit;A_VERIFIER
 saint-andre-les-vergers.ts;21;depuis <Ville>;"Autoroute A5 accessible en 5 min. Paris-Est à 1 h 30 en TGV depuis Troyes. Reims à 1 h 15. Aéroport CDG à 1 h 45."",";A_VERIFIER
 saint-andre-les-vergers.ts;23;depuis <Ville>;"Autoroute A5 accessible en 5 min. Paris-Est à 1 h 30 en TGV depuis Troyes. Reims à 1 h 15. Aéroport CDG à 1 h 45."",";A_VERIFIER
 saint-andre-les-vergers.ts;52;à N min de;"en France, sur place ou à distance. Saint-André-les-Vergers est à 10 min de Troyes centre et 5 min de l'A5."",";A_VERIFIER
@@ -2632,6 +2723,7 @@ saint-andre-lez-lille.ts;21;en métro/RER/tram/bus ligne;"25 min, Tourcoing à 2
 saint-andre-lez-lille.ts;23;en métro/RER/tram/bus ligne;"25 min, Tourcoing à 20 min. Desserte bus Ilevia + proximité métro ligne 1 (Lille)."",";FAUTIF
 saint-arnoult-en-yvelines.ts;68;à N min de;"oult-en-Yvelines est desservie par l'A10 (sortie dédiée) et à 10 min de la gare de Dourdan (RER C)."",";A_VERIFIER
 saint-avold.ts;68;à N min de;"ie par sa gare SNCF (ligne Metz–Forbach) et l'autoroute A4, à 45 min de Metz et 20 min de Forbach."",";A_VERIFIER
+saint-cannat.ts;68;à N min de;nce, sur place ou à distance, dans vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Coûts de déplacement à pa;A_VERIFIER
 saint-chamond.ts;35;sur place à <Ville>;"fr: ""Audit sur place à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces :";A_VERIFIER
 saint-chamond.ts;36;sur place à <Ville>;"en: ""Audit sur place à Saint-Chamond pour PME industrielles, ateliers mécaniques et commerces :";A_VERIFIER
 saint-chamond.ts;39;depuis <Ville>;ond pour automatiser des cas concrets : génération de devis depuis Excel ou ERP, extraction de PDF fournisseurs, suivi qualité, rela;A_VERIFIER
@@ -2699,6 +2791,7 @@ saint-jean-de-la-ruelle.ts;18;en métro/RER/tram/bus ligne;"de quartier, TPE art
 saint-jean-de-la-ruelle.ts;20;en métro/RER/tram/bus ligne;"""Orléans centre à 10 min. Tramway ligne B direct. Gare d'Orléans à 15 min. Paris Austerlitz à 1 h 1";FAUTIF
 saint-jean-de-la-ruelle.ts;22;en métro/RER/tram/bus ligne;"""Orléans centre à 10 min. Tramway ligne B direct. Gare d'Orléans à 15 min. Paris Austerlitz à 1 h 1";FAUTIF
 saint-jean-de-la-ruelle.ts;52;en métro/RER/tram/bus ligne;"dans toute l'agglomération d'Orléans. Accessibilité directe tramway ligne B."",";FAUTIF
+saint-juery.ts;52;à N min de;e-d'Albigeois, Marssac-sur-Tarn, Le Sequestre). Saint-Juéry est à 5 min d'Albi centre. Nous intervenons partout en France, sur place o;A_VERIFIER
 saint-julien-de-concelles.ts;64;sur place à <Ville>;ires de Saint-Julien-de-Concelles, nous proposons audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (traçabilité, q;A_VERIFIER
 saint-julien-en-genevois.ts;8;à N min de;ancaise du Grand Geneve, est un pole transfrontalier majeur a 10 minutes de Geneve centre. Tissu TPE/PME tertiaires, professions libera;A_VERIFIER
 saint-julien-en-genevois.ts;10;à N min de;ancaise du Grand Geneve, est un pole transfrontalier majeur a 10 minutes de Geneve centre. Tissu TPE/PME tertiaires, professions libera;A_VERIFIER
@@ -2707,7 +2800,9 @@ saint-laurent-du-var.ts;127;à N min de;"a: ""Oui. À 5 min de l'aéroport Nice-
 saint-laurent-du-var.ts;241;sur place à <Ville>;t-du-Var, nous proposons les 5 formats Axion-IA : audit IA (Sur place à Stratégique), interventions sur site (formations équipes terrain et bac;A_VERIFIER
 saint-louis.ts;84;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil en autonomie depuis Saint-Louis ou le bassin trinational, sans verrou ni abonnement imposé;FAUTIF
 saint-louis.ts;170;depuis <Ville>;ent UE possible). Vos équipes pilotent l'outil en autonomie depuis Saint-Louis ou le bassin trinational, sans verrou ni abonnement imposé;FAUTIF
+saint-mande.ts;24;à N min de;Mandé est limitrophe de Paris (12e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de;A_VERIFIER
 saint-mande.ts;24;en métro/RER/tram/bus ligne;"2e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de Paris-Orly."",";FAUTIF
+saint-mande.ts;26;à N min de;Mandé est limitrophe de Paris (12e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de;A_VERIFIER
 saint-mande.ts;26;en métro/RER/tram/bus ligne;"2e et 20e arrondissements), à 10 minutes du Châtelet par le métro ligne 1, et à 15 km de l'aéroport de Paris-Orly."",";FAUTIF
 saint-mande.ts;134;sur place à <Ville>;"a: ""Oui. Après le cadrage sur place à Saint-Mandé, on remet un devis ferme en forfait fixe. Le délai dépend d";A_VERIFIER
 saint-mande.ts;220;sur place à <Ville>;"a: ""Oui. Après le cadrage sur place à Saint-Mandé, on remet un devis ferme en forfait fixe. Le délai dépend d";A_VERIFIER
@@ -2718,6 +2813,7 @@ saint-maurice.ts;23;en métro/RER/tram/bus ligne;"""Paris 12e à 5 min (pont de 
 saint-memmie.ts;68;à N min de;"ns partout en France, sur place ou à distance. Saint-Memmie est à 7 min de la gare SNCF de Châlons-en-Champagne."",";A_VERIFIER
 saint-michel-sur-orge.ts;86;depuis <Ville>;ion et passation. Vos équipes pilotent l'outil en autonomie depuis Saint-Michel-sur-Orge, sans verrou technique ni abonnement imposé, et peuvent con;FAUTIF
 saint-michel-sur-orge.ts;172;depuis <Ville>;ion et passation. Vos équipes pilotent l'outil en autonomie depuis Saint-Michel-sur-Orge, sans verrou technique ni abonnement imposé, et peuvent con;FAUTIF
+saint-mitre-les-remparts.ts;68;à N min de;"ons partout en France, sur place ou à distance. Saint-Mitre est à 10 min d'Istres et 45 min de Marseille par A55."",";A_VERIFIER
 saint-paul-les-dax.ts;68;à N min de;tout en France, sur place ou à distance. Saint-Paul-lès-Dax est à 5 min de la gare TGV de Dax. Pour les multi-jours, hébergement local;A_VERIFIER
 saint-pee-sur-nivelle.ts;52;à N min de;enons partout en France, sur place ou à distance. Saint-Pée est à 10 min de la gare de Saint-Jean-de-Luz et 20 min de l'aéroport Biarri;A_VERIFIER
 saint-pierre-d-irube.ts;68;à N min de;on sur site dans vos locaux à Saint-Pierre-d'Irube, commune à 8 min de la gare de Bayonne et 15 min de l'aéroport Biarritz Pays Ba;A_VERIFIER
@@ -2727,6 +2823,8 @@ saint-pierre-en-faucigny.ts;17;à N min de;aucigny est située dans la province 
 saint-pierre-en-faucigny.ts;19;à N min de;aucigny est située dans la province historique du Faucigny, à 5 min de Bonneville et sur l'axe autoroutier Annecy-Genève. Issue de;A_VERIFIER
 saint-prix.ts;21;à N min de;"""Gare de Saint-Prix à 25 min de Paris Gare du Nord (Transilien H). A115 à proximité. Enghie";A_VERIFIER
 saint-prix.ts;23;à N min de;"""Gare de Saint-Prix à 25 min de Paris Gare du Nord (Transilien H). A115 à proximité. Enghie";A_VERIFIER
+saint-pryve-saint-mesmin.ts;68;à N min de;ons partout en France, sur place ou à distance. Saint-Pryvé est à 10 min d'Orléans centre, dont la gare est desservie par TER et Interc;A_VERIFIER
+saint-remy-de-provence.ts;68;à N min de;"en France, sur place ou à distance. Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99."",";A_VERIFIER
 saint-saulve.ts;52;à N min de;ns partout en France, sur place ou à distance. Saint-Saulve est à 10 min de la gare TGV de Valenciennes et desservie par les autoroutes;A_VERIFIER
 saint-saulve.ts;68;à N min de;ns partout en France, sur place ou à distance. Saint-Saulve est à 5 min de Valenciennes centre, 10 min de la gare TGV et desservie par;A_VERIFIER
 saint-sebastien-sur-loire.ts;21;en métro/RER/tram/bus ligne;"""Tramway ligne 3 vers Nantes centre (15 min). Aéroport Nantes-Atlantique 1";FAUTIF
@@ -2738,8 +2836,11 @@ saint-vincent-de-tyrosse.ts;68;à N min de;France, sur place ou à distance. Sai
 saint-xandre.ts;21;à N min de;"""Saint-Xandre est à 10 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 15 min";A_VERIFIER
 saint-xandre.ts;23;à N min de;"""Saint-Xandre est à 10 min de La Rochelle centre (nord). Gare TGV de La Rochelle à 15 min";A_VERIFIER
 saint-xandre.ts;68;à N min de;"ans vos locaux, cabinet ou commerce à Saint-Xandre, commune à 15 min de la gare TGV de La Rochelle."",";A_VERIFIER
+saint-yrieix-sur-charente.ts;21;à N min de;"""Saint-Yrieix-sur-Charente est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 8 min (Paris Montpa";A_VERIFIER
+saint-yrieix-sur-charente.ts;23;à N min de;"""Saint-Yrieix-sur-Charente est à 5 min d'Angoulême centre. Gare TGV d'Angoulême à 8 min (Paris Montpa";A_VERIFIER
 saint-yrieix-sur-charente.ts;68;à N min de;"x, cabinet ou commerce à Saint-Yrieix-sur-Charente, commune à 8 min de la gare TGV d'Angoulême."",";A_VERIFIER
 sainte-genevieve-des-bois.ts;235;Williams se déplace;"a: ""Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-";FAUTIF
+sainte-livrade-sur-lot.ts;68;à N min de;"partout en France, sur place ou à distance. Sainte-Livrade est à 25 min d'Agen par la D911."",";FAUTIF
 sainte-savine.ts;21;depuis <Ville>;"utoroute A5 accessible en 10 min. Paris-Est à 1 h 30 en TGV depuis Troyes. Reims à 1 h 15. Aéroport CDG à 1 h 45."",";A_VERIFIER
 sainte-savine.ts;23;depuis <Ville>;"utoroute A5 accessible en 10 min. Paris-Est à 1 h 30 en TGV depuis Troyes. Reims à 1 h 15. Aéroport CDG à 1 h 45."",";A_VERIFIER
 sainte-savine.ts;52;à N min de;"s partout en France, sur place ou à distance. Sainte-Savine est à 5 min de Troyes centre et 10 min de l'A5."",";A_VERIFIER
@@ -2773,6 +2874,7 @@ savigny-le-temple.ts;36;sur place à <Ville>;"en: ""Audit sur place à Savigny-l
 sceaux.ts;235;Williams se déplace;"a: ""Williams se déplace à Sceaux sous 5 jours ouvrés après validation du devis. Aud";FAUTIF
 schiltigheim.ts;235;Williams se déplace;"q: ""Williams se déplace-t-il à Schiltigheim ?"",";FAUTIF
 schiltigheim.ts;236;Williams se déplace;"a: ""Oui, Williams se déplace à Schiltigheim dans les 5 jours ouvrés suivant la signature";FAUTIF
+segre-en-anjou-bleu.ts;68;à N min de;out en France, sur place ou à distance. Segré-en-Anjou Bleu est à 45 min d'Angers (D775) et de sa gare TGV Saint-Laud. Pour les mission;A_VERIFIER
 seichamps.ts;68;à N min de;"est immédiat de Nancy, est desservie par l'autoroute A33 et à 10 min de la gare SNCF de Nancy."",";A_VERIFIER
 selestat.ts;68;à N min de;"sa gare TER, entre Strasbourg (30 min) et Colmar (20 min), à 25 min de l'aéroport Strasbourg-Entzheim."",";A_VERIFIER
 semeac.ts;68;à N min de;ervenons partout en France, sur place ou à distance. Séméac est à 5 min de Tarbes centre, 7 min de la gare SNCF de Tarbes et 15 min de;A_VERIFIER
@@ -2786,13 +2888,16 @@ sevremoine.ts;210;depuis <Ville>;"q: ""Vendez-vous à l'export et à l'internati
 sevres.ts;53;à deux pas;artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la;A_VERIFIER
 sevres.ts;139;à deux pas;artisans d'art, de cabinets de design et de PME tertiaires, à deux pas du pôle Boulogne-Billancourt – Issy-les-Moulineaux et de la;A_VERIFIER
 seyssins.ts;62;sur place à <Ville>;eyssins, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents convers;A_VERIFIER
+sillingy.ts;52;à N min de;"venons partout en France, sur place ou à distance. Sillingy est à 10 min d'Annecy centre."",";A_VERIFIER
 simiane-collongue.ts;66;à N min de;s commerces de prestige situés à Plan de Campagne (Cabriès, à 10 min de Simiane-Collongue) bénéficient de nos missions content mark;FAUTIF
+simiane-collongue.ts;70;à N min de;à distance, dans vos cabinets ou locaux. Simiane-Collongue est à 15 min d'Aix-en-Provence centre via A51, 30 min de Marseille et 20 mi;A_VERIFIER
 sin-le-noble.ts;21;depuis <Ville>;"0 min. Aéroport Lille-Lesquin à 30 min. Paris à 1h10 en TGV depuis Douai."",";A_VERIFIER
 sin-le-noble.ts;23;depuis <Ville>;"0 min. Aéroport Lille-Lesquin à 30 min. Paris à 1h10 en TGV depuis Douai."",";A_VERIFIER
 soisy-sur-seine.ts;64;sur place à <Ville>;Corbeil, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automa;A_VERIFIER
 somain.ts;68;à N min de;r sa gare SNCF (TER Lille–Valenciennes) et l'autoroute A21, à 15 min de Douai et 20 min de Valenciennes. Intervention sur site ou e;A_VERIFIER
 sommieres.ts;68;à N min de;enons partout en France, sur place ou à distance. Sommières est à 30 min de Nîmes et de Montpellier, à 15 min de l'échangeur A9 de Lune;A_VERIFIER
 sommieres.ts;68;à N min de;istance. Sommières est à 30 min de Nîmes et de Montpellier, à 15 min de l'échangeur A9 de Lunel et 30 min de la gare TGV de Nîmes e;A_VERIFIER
+sorgues.ts;68;à N min de;"rvenons partout en France, sur place ou à distance. Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7."",";A_VERIFIER
 souffelweyersheim.ts;68;à N min de;"desservie par la ligne B du tramway CTS et l'autoroute A35, à 10 min de Strasbourg centre et 25 min de l'aéroport d'Entzheim."",";A_VERIFIER
 soyaux.ts;68;à N min de;"site dans vos locaux, bureau ou commerce à Soyaux, commune à 10 min de la gare TGV d'Angoulême."",";A_VERIFIER
 stains.ts;237;sur place à <Ville>;"a: ""5 services à Stains : audit IA (Sur place à Stratégique), interventions sur site (formations équipes), implémentati";A_VERIFIER
@@ -2815,6 +2920,8 @@ tassin-la-demi-lune.ts;213;sur place à <Ville>;"a: ""Oui. Après le cadrage sur
 tassin-la-demi-lune.ts;221;à deux pas;"a: ""Oui. À deux pas du campus Lyon Ouest d'Écully (École Centrale de Lyon, EM L";A_VERIFIER
 terville.ts;68;à N min de;"u à distance. Terville est desservie par l'autoroute A31 et à 10 min de la gare SNCF de Thionville, à 30 min de Metz."",";A_VERIFIER
 terville.ts;68;à N min de;"l'autoroute A31 et à 10 min de la gare SNCF de Thionville, à 30 min de Metz."",";A_VERIFIER
+teteghem-coudekerque-village.ts;17;à N min de;2016) intégrée à la Communauté Urbaine de Dunkerque (CUD), à 10 minutes du centre dunkerquois et du port. L'économie locale est portée;A_VERIFIER
+teteghem-coudekerque-village.ts;19;à N min de;2016) intégrée à la Communauté Urbaine de Dunkerque (CUD), à 10 minutes du centre dunkerquois et du port. L'économie locale est portée;A_VERIFIER
 thann.ts;52;à N min de;"ur place ou à distance. Thann est desservie par la N66/A36, à 30 min de Mulhouse."",";A_VERIFIER
 thionville.ts;249;à N min de;"place ou à distance, dans tout le nord mosellan. Thionville est à 20 min de Metz et de Luxembourg par le rail."",";A_VERIFIER
 thorigne-fouillard.ts;68;en métro/RER/tram/bus ligne;"e. Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche)."",";FAUTIF
@@ -2857,17 +2964,21 @@ vaires-sur-marne.ts;23;à N min de;"""Gare de Vaires-Torcy (Transilien P) à 25 
 vallauris.ts;10;Williams se déplace;ximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pa;FAUTIF
 vallauris.ts;12;Williams se déplace;ximité immédiate du pôle technologique de Sophia Antipolis. Williams se déplace sur site pour automatiser vos processus en code custom — pa;FAUTIF
 vallauris.ts;236;Williams se déplace;"a: ""Williams se déplace à Vallauris, généralement sous 5 jours ouvrés. La formation";FAUTIF
+valreas.ts;68;à N min de;"dans vos locaux malgré l'enclavement géographique. Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7."",";A_VERIFIER
 vannes.ts;17;depuis <Ville>;naux. L'agroalimentaire et la cosmétique végétale rayonnent depuis La Gacilly (écosystème Yves Rocher) et Cargill. Michelin opère;FAUTIF
 vannes.ts;19;depuis <Ville>;naux. L'agroalimentaire et la cosmétique végétale rayonnent depuis La Gacilly (écosystème Yves Rocher) et Cargill. Michelin opère;FAUTIF
 vanves.ts;13;Williams se déplace;es TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|f;FAUTIF
 vanves.ts;15;Williams se déplace;es TPE, PME et professions libérales du sud-ouest parisien. Williams se déplace sur site pour un Audit sur place 4h à {{price:audit-flash|f;FAUTIF
 vanves.ts;234;Williams se déplace;"q: ""Williams se déplace-t-il à Vanves ?"",";FAUTIF
 vanves.ts;235;Williams se déplace;"a: ""Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins). Nous";FAUTIF
+vedene.ts;68;à N min de;"ervenons partout en France, sur place ou à distance. Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7."",";A_VERIFIER
 veigne.ts;21;depuis <Ville>;"ches (30 min) et N10 vers Poitiers (1h30). Paris à 2h30 TGV depuis Tours."",";A_VERIFIER
 veigne.ts;23;depuis <Ville>;"ches (30 min) et N10 vers Poitiers (1h30). Paris à 2h30 TGV depuis Tours."",";A_VERIFIER
+velaux.ts;68;à N min de;"ervenons partout en France, sur place ou à distance. Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8."",";A_VERIFIER
 vence.ts;21;depuis <Ville>;"d'Azur à 25 min. Grasse à 20 min ouest. Accès autoroute A8 depuis Cagnes-sur-Mer."",";A_VERIFIER
 vence.ts;23;depuis <Ville>;"d'Azur à 25 min. Grasse à 20 min ouest. Accès autoroute A8 depuis Cagnes-sur-Mer."",";A_VERIFIER
 vendenheim.ts;68;à N min de;servie par les autoroutes A4/A35 et le tram strasbourgeois, à 15 min de la gare TGV de Strasbourg et au plus près des zones d'activ;A_VERIFIER
+venelles.ts;68;à N min de;"venons partout en France, sur place ou à distance. Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51."",";A_VERIFIER
 venissieux.ts;13;Williams se déplace;rt les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audi;FAUTIF
 venissieux.ts;15;Williams se déplace;rt les TPE et PME de Vénissieux et de la Métropole de Lyon. Williams se déplace sur site dans le Rhône pour livrer trois prestations : Audi;FAUTIF
 venissieux.ts;234;Williams se déplace;"a: ""Williams se déplace à Vénissieux sous 5 à 10 jours ouvrés après signature. Pour";FAUTIF
@@ -2886,11 +2997,15 @@ vezin-le-coquet.ts;21;en métro/RER/tram/bus ligne;"es à 10 min. Accès direct 
 vezin-le-coquet.ts;23;en métro/RER/tram/bus ligne;"es à 10 min. Accès direct rocade ouest et N24 vers Lorient. Métro ligne b à proximité (Le Gast)."",";FAUTIF
 vezin-le-coquet.ts;68;en métro/RER/tram/bus ligne;"ons partout en France, sur place ou à distance. Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio."",";FAUTIF
 vichy.ts;249;à N min de;"tervenons partout en France, sur place ou à distance. Vichy est à 35 minutes de Clermont-Ferrand et reliée à l'A71 par l'A719."",";A_VERIFIER
+vierzon.ts;59;à N min de;ansporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un por;A_VERIFIER
+vierzon.ts;145;à N min de;ansporteurs et acteurs logistiques adossés au nœud Vierzon, à 1 h 40 de Paris-Austerlitz et 20 minutes de Bourges, gagnent à un por;A_VERIFIER
 vierzon.ts;249;à N min de;"rvenons partout en France, sur place ou à distance. Vierzon est à 20 minutes de Bourges et sur l'A71."",";A_VERIFIER
+vigneux-sur-seine.ts;249;à N min de;"u à distance. Vigneux-sur-Seine est desservie par le RER D, à 10 minutes d'Orly."",";A_VERIFIER
 ville-la-grand.ts;8;à N min de;on Annemasse au coeur du Grand Genève. Position stratégique à 10 min de Genève, tissu services transfrontaliers, PME tertiaires, co;A_VERIFIER
 ville-la-grand.ts;10;à N min de;on Annemasse au coeur du Grand Genève. Position stratégique à 10 min de Genève, tissu services transfrontaliers, PME tertiaires, co;A_VERIFIER
 villefontaine.ts;64;sur place à <Ville>;uvelle), nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automa;A_VERIFIER
 villefranche-sur-saone.ts;139;sur place à <Ville>;ement mobile, e-commerce multi-CMS et IA — avec un kick-off sur place à Villefranche-sur-Saône. Les performances (Web Vitals, accessibilité, conformité) s;A_VERIFIER
+villejuif.ts;249;à N min de;enons partout en France, sur place ou à distance. Villejuif est à 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave;A_VERIFIER
 villenave-d-ornon.ts;8;Williams se déplace;ud de Bordeaux Métropole, sur la rive gauche de la Garonne. Williams se déplace sur site auprès des artisans, commerçants, viticulteurs et;FAUTIF
 villenave-d-ornon.ts;11;Williams se déplace;acteurs de la filière vigne-vin gravitant autour de l'ISVV. Williams se déplace sur place pour cadrer le besoin, livrer du code custom et f;FAUTIF
 villenave-d-ornon.ts;38;sur place à <Ville>;"fr: ""Audit sur place à Villenave-d'Ornon pour TPE viticoles, artisans BTP ou commerçants de la zone";A_VERIFIER
@@ -2902,6 +3017,7 @@ villeneuve-d-ascq.ts;36;sur place à <Ville>;"fr: ""Réaliser un audit sur place
 villeneuve-d-ascq.ts;37;sur place à <Ville>;"en: ""Réaliser un audit sur place à Villeneuve-d'Ascq permet aux TPE et PME du Parc scientifique de la Haute-Born";A_VERIFIER
 villeneuve-d-ascq.ts;235;Williams se déplace;"q: ""Comment Williams se déplace-t-il à Villeneuve-d'Ascq ?"",";FAUTIF
 villeneuve-en-retz.ts;68;à N min de;"tout en France, sur place ou à distance. Villeneuve-en-Retz est à 35 min de l'aéroport Nantes Atlantique."",";A_VERIFIER
+villeneuve-les-avignon.ts;52;à N min de;es Angles, Rochefort-du-Gard, Saze). Villeneuve-lès-Avignon est à 5 min d'Avignon centre et 15 min de la gare TGV. Nous intervenons pa;A_VERIFIER
 villeneuve-loubet.ts;52;à N min de;er, Antibes, Nice, Saint-Laurent-du-Var). Villeneuve-Loubet est à 10 min de l'aéroport Nice-Côte d'Azur. Nous intervenons partout en Fr;A_VERIFIER
 villeneuve-loubet.ts;68;à N min de;"Villeneuve-Loubet, entre Nice (15 min) et Antibes (20 min), est à 10 min de l'aéroport Nice-Côte d'Azur. Tarifs publics."",";A_VERIFIER
 villeneuve-sur-lot.ts;54;base(e)(s) à <Ville>;uré autour du Bureau National Interprofessionnel du Pruneau basé à Villeneuve-sur-Lot : on construit des boutiques e-commerce de;FAUTIF
@@ -2916,6 +3032,7 @@ vincennes.ts;23;en métro/RER/tram/bus ligne;"""Métro ligne 1 : 3 stations à V
 vincennes.ts;25;en métro/RER/tram/bus ligne;"""Métro ligne 1 : 3 stations à Vincennes (Saint-Mandé, Bérault, Château d";FAUTIF
 vincennes.ts;231;en métro/RER/tram/bus ligne;"ay-sous-Bois, Montreuil et Paris (12e et 20e). Accès rapide métro ligne 1, RER A ou en visio."",";FAUTIF
 viroflay.ts;52;à N min de;s, Vélizy-Villacoublay, Chaville, Meudon, Sèvres). Viroflay est à 15 min de Paris-Montparnasse via Transilien N. Nous intervenons parto;A_VERIFIER
+viry-chatillon.ts;249;à N min de;"istance. Viry-Châtillon est desservie par le RER D et l'A6, à 10 minutes d'Orly."",";A_VERIFIER
 vitrolles.ts;12;à deux pas;es, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logisti;A_VERIFIER
 vitrolles.ts;14;à deux pas;es, ville des Bouches-du-Rhône au bord de l'étang de Berre, à deux pas de l'aéroport Marseille-Provence. Au cœur d'un pôle logisti;A_VERIFIER
 vitry-sur-seine.ts;39;Williams se déplace;"fr: ""Intervention collective à Vitry-sur-Seine : Williams se déplace sur site pour former vos équipes aux outils IA adaptés à vo";FAUTIF
@@ -2930,9 +3047,13 @@ wasquehal.ts;23;depuis <Ville>;"5 min. Aéroport Lille-Lesquin à 15 km. Paris �
 wasquehal.ts;87;depuis <Ville>;entation pour que vos équipes pilotent l'outil en autonomie depuis Wasquehal, sans verrou technique ni abonnement imposé, et puissent le;FAUTIF
 wasquehal.ts;173;depuis <Ville>;entation pour que vos équipes pilotent l'outil en autonomie depuis Wasquehal, sans verrou technique ni abonnement imposé, et puissent le;FAUTIF
 wattrelos.ts;118;depuis <Ville>;"""Gérez-vous le e-commerce transfrontalier avec la Belgique depuis Wattrelos ?"",";A_VERIFIER
+wavrin.ts;21;à N min de;"""Gare de Wavrin (TER Lille-Bethune) a 5 min du centre. Lille-Flandres a 20 min en TER. Gare Lille Europe (";A_VERIFIER
+wavrin.ts;23;à N min de;"""Gare de Wavrin (TER Lille-Bethune) a 5 min du centre. Lille-Flandres a 20 min en TER. Gare Lille Europe (";A_VERIFIER
 waziers.ts;21;depuis <Ville>;". Aeroport Lille-Lesquin a 40 min. Paris-Nord a 1h10 en TGV depuis Douai."",";A_VERIFIER
 waziers.ts;23;depuis <Ville>;". Aeroport Lille-Lesquin a 40 min. Paris-Nord a 1h10 en TGV depuis Douai."",";A_VERIFIER
 wissembourg.ts;68;à N min de;"ligne Strasbourg–Neustadt) et l'autoroute A35 puis la D263, à 45 min de Karlsruhe et 35 min de l'aéroport Karlsruhe-Baden-Baden."",";A_VERIFIER
 wittelsheim.ts;68;à N min de;dans le bassin potassique reconverti à l'ouest de Mulhouse, est à 10 min de l'autoroute A36 et 20 min de la gare de Mulhouse-Ville, ave;A_VERIFIER
 woippy.ts;68;à N min de;ervenons partout en France, sur place ou à distance. Woippy est à 10 min de la gare Metz-Ville et de Metz centre, desservie par les aut;A_VERIFIER
 woippy.ts;68;à N min de;"lle et de Metz centre, desservie par les autoroutes A31/A4, à 25 min de Thionville."",";A_VERIFIER
+yerres.ts;249;à N min de;"sur place ou à distance. Yerres est desservie par le RER D, à 15 minutes d'Orly."",";A_VERIFIER
+yutz.ts;64;à N min de;"a: ""Oui, Yutz est à 25 min du Luxembourg. Nous accompagnons les TPE/PME servant les trava";FAUTIF
