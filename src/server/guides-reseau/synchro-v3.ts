@@ -151,8 +151,8 @@ export const SOURCE_CONSENTEMENT_PAGE_GUIDE = "page-guide-reseau";
 export const CANAL_PAR_DEFAUT_PAGE_GUIDE = "commentaire";
 
 /**
- * Interrupteur SÉPARÉ de `newsletter_optin` pour la page : ÉTEINT, et rien ne le lit encore. Il ne
- * s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
+ * Interrupteur de l'accord `optin` de la page : ÉTEINT. Il ne s'allumera qu'après la validation d'un
+ * juriste. Il ne gouverne que la case FACULTATIVE des informations (jamais celle du guide). Aucune ligne
  * `newsletter_subscribers` n'est écrite par ce lot, interrupteur ouvert ou non.
  */
 export function newsletterOptinPageGuideActif(): boolean {
@@ -171,9 +171,12 @@ export interface EntreeEvenementPageGuide {
   readonly prenom: string;
   /** Instant du clic humain (`first_click_at`). */
   readonly clicLe: Date;
-  /** Instant où la case a été cochée (colonne `consenti_le` du contact de la page). */
-  readonly consentiLe: Date;
-  readonly versionConsentement: string;
+  /**
+   * Case FACULTATIVE « informations d'Axion-IA » (colonnes `infos_*` du contact de la page), ou
+   * `null` si elle n'a pas été cochée. Le bloc `consentements` (optin) n'est émis que si elle l'est
+   * ET que l'interrupteur `newsletter_optin` est allumé : la case du guide ne vaut JAMAIS optin.
+   */
+  readonly infos: { readonly consentiLe: Date; readonly version: string } | null;
   readonly guide: string;
   readonly origines: readonly OrigineAEcrire[];
   /** Bloc `consent` de v1 (adresse perso inscrite par consentement), à ne pas perdre. */
@@ -231,14 +234,18 @@ export function evenementPageGuideV3(
       // Même référence que le chemin v1 : le rapprochement outbox ↔ demande (`aPuEntrer…`) la lit.
       subject_ref: `site:guide_request:${e.demandeId}`,
       person: { person_key: personKey, email, first_name: prenom },
-      consentements: [
-        {
-          nature: "optin",
-          date: e.consentiLe.toISOString(),
-          source: SOURCE_CONSENTEMENT_PAGE_GUIDE,
-          version: e.versionConsentement,
-        },
-      ],
+      ...(e.infos && newsletterOptinPageGuideActif()
+        ? {
+            consentements: [
+              {
+                nature: "optin",
+                date: e.infos.consentiLe.toISOString(),
+                source: SOURCE_CONSENTEMENT_PAGE_GUIDE,
+                version: e.infos.version,
+              },
+            ],
+          }
+        : {}),
       guides_recus: [{ guide: e.guide, date: e.clicLe.toISOString() }],
       ...(e.consent
         ? {

@@ -42,8 +42,7 @@ const entree = (sur: Partial<EntreeEvenementPageGuide> = {}): EntreeEvenementPag
   email: "personne@exemple.test",
   prenom: "Camille",
   clicLe: new Date("2026-11-01T10:05:00.000Z"),
-  consentiLe: new Date("2026-11-01T10:00:00.000Z"),
-  versionConsentement: "page-guide-2026-11-08",
+  infos: null,
   guide: "guide-ia",
   origines: [origine()],
   payloadBase: {
@@ -100,11 +99,50 @@ describe("evenementPageGuideV3 — contrat", () => {
     expect(p.verifie).toBe(true);
   });
 
-  it("occurred_at = l'instant du CLIC, la case garde sa propre date", () => {
-    const r = evenementPageGuideV3(entree());
+  it("occurred_at = l'instant du CLIC, la case des informations garde sa propre date", () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const r = evenementPageGuideV3(
+      entree({
+        infos: { consentiLe: new Date("2026-11-01T10:00:00.000Z"), version: "page-guide-infos-x" },
+      }),
+    );
     if (!r.ok) throw new Error("attendu ok");
     expect(r.evenement.occurred_at).toBe("2026-11-01T10:05:00.000Z");
     expect(r.evenement.consentements?.[0]?.date).toBe("2026-11-01T10:00:00.000Z");
+  });
+
+  it("case du guide seule : AUCUN accord optin (jamais déduit de la case du guide)", () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const r = evenementPageGuideV3(entree({ infos: null }));
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.evenement).not.toHaveProperty("consentements");
+  });
+
+  it("case des informations cochée mais interrupteur éteint : rien n'est transmis", () => {
+    delete process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN;
+    const r = evenementPageGuideV3(
+      entree({ infos: { consentiLe: new Date("2026-11-01T10:00:00.000Z"), version: "v" } }),
+    );
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.evenement).not.toHaveProperty("consentements");
+  });
+
+  it("case des informations cochée ET interrupteur allumé : un optin, avec sa propre version", () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const r = evenementPageGuideV3(
+      entree({
+        infos: { consentiLe: new Date("2026-11-01T10:00:00.000Z"), version: "page-guide-infos-x" },
+      }),
+    );
+    if (!r.ok) throw new Error("attendu ok");
+    expect(r.evenement.consentements).toEqual([
+      {
+        nature: "optin",
+        date: "2026-11-01T10:00:00.000Z",
+        source: "page-guide-reseau",
+        version: "page-guide-infos-x",
+      },
+    ]);
   });
 
   it("aucun jeton, pseudo, texte, ni ligne newsletter dans la charge", () => {

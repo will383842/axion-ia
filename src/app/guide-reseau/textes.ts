@@ -1,7 +1,7 @@
 // Textes de la page « Recevoir le guide » (lot S2). Module PUR, sans import de composant.
 // Le texte de la case vient de `content/guides-reseau.ts` (versionné, empreinte sha256) :
 // il n'est JAMAIS recopié ici.
-import { TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
+import { TEXTE_CASE_PAGE_GUIDE, TEXTE_CASE_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 
 export const TEXTES_PAGE_GUIDE = {
   marque: "Axion-IA",
@@ -11,9 +11,9 @@ export const TEXTES_PAGE_GUIDE = {
   prenom: "Prénom",
   email: "Adresse e-mail",
   case: TEXTE_CASE_PAGE_GUIDE,
+  caseInfos: TEXTE_CASE_PAGE_GUIDE_INFOS,
   // ⛔ Cette ligne ne contient NI le mot « STOP » NI « autres informations » (décision de Williams).
-  information:
-    "Vos données servent à vous envoyer le guide et à vous écrire au nom d'Axion-IA. Comment elles sont traitées :",
+  information: "Vos données servent à vous envoyer le guide. Comment elles sont traitées :",
   lienConfidentialite: "politique de confidentialité",
   envoyer: "Recevoir le guide",
   // Chemin sans case (avis RGPD) : texte à valider par Williams avant mise en ligne ; ne pas le reformuler sans lui.

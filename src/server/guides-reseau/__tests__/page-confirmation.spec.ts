@@ -300,6 +300,32 @@ describe("case de consentement", () => {
     expect(ecritures()).toBe(0);
   });
 
+  it("case du guide seule : aucune trace d'accord aux informations (colonnes vides, une seule preuve)", async () => {
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBeUndefined(); // défaut de la base : 'aucune'
+    expect(c.infosConsentiLe).toBeUndefined();
+    expect(bd.preuves.map((p) => p.formRef)).toEqual(["guide-reseau-page"]);
+  });
+
+  it("case des informations cochée : enregistrée « non_transmise », avec sa propre preuve", async () => {
+    expect((await confirmerPageGuide(entree({ infosCochee: true }))).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBe("non_transmise");
+    expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
+    expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
+      "guide-reseau-page",
+      "guide-reseau-page-infos",
+    ]);
+  });
+
+  it("case des informations seule, sans la case du guide → 422, AUCUNE écriture", async () => {
+    const r = await confirmerPageGuide(entree({ caseCochee: false, infosCochee: true }));
+    expect(r).toEqual({ ok: false, statut: 422, erreur: "case" });
+    expect(ecritures()).toBe(0);
+  });
+
   it("prénom vide, espaces seuls, ou plus de 50 caractères → 422 sans écriture", async () => {
     for (const prenom of ["", "   ", "x".repeat(51)]) {
       const r = await confirmerPageGuide(entree({ prenom }));

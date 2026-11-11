@@ -29,7 +29,9 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
       "prénom et l'adresse e-mail",
       "« Recevoir le guide »",
       "consentement distinct",
-      "pas obligatoire pour recevoir le guide",
+      "ne concerne que l'envoi du guide",
+      "facultative et décochée par défaut",
+      "pas nécessaire pour recevoir le guide",
       "pas supprimées automatiquement",
       "« STOP »",
       "nous vous mettons à l'écart de tout envoi ; vos données sont conservées pour garantir que ce choix soit respecté",
@@ -45,6 +47,8 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     expect(s.anchor).toBe("guide-social-networks");
     for (const m of [
       "private message",
+      "only covers sending the guide",
+      "optional and unticked by default",
       '"STOP"',
       "not deleted automatically",
       "we set you aside from any sending; your data is kept to make sure this choice is respected",

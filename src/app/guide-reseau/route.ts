@@ -8,7 +8,7 @@
 //   · interrupteur `PAGE_GUIDE_RESEAU_ENABLED` éteint → 404, rien n'est lu ;
 //   · jeton absent, invalide, expiré, déjà utilisé, guide inconnu, secret mal configuré → la MÊME
 //     page neutre (texte + lien vers le formulaire /guide-ia), jamais la cause ;
-//   · sinon le formulaire : prénom (obligatoire), e-mail, une case obligatoire, un champ piège.
+//   · sinon le formulaire : prénom (obligatoire), e-mail, une case obligatoire (le guide), une case facultative décochée (les informations), un champ piège.
 //
 // Rendu à la demande (`force-dynamic`), jamais au build : le build tourne avec une base factice
 // (`stub.invalid`) et sans le secret du lien, qui n'est lu qu'ici, à la requête.
@@ -79,6 +79,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 <p><label for="email"><strong>${echapper(T.email)}</strong></label><input id="email" name="email" type="email" required maxlength="254" autocomplete="email" inputmode="email" style="${CHAMP}"></p>
 <div aria-hidden="true" style="position:absolute;left:-10000px"><label for="site-web">Site web</label><input id="site-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
 <p style="display:flex;gap:.75rem;align-items:flex-start"><input id="accord" name="accord" type="checkbox" value="oui" required style="width:1.25rem;height:1.25rem;margin-top:.2rem;flex:none"><label for="accord">${echapper(T.case)}</label></p>
+<p style="display:flex;gap:.75rem;align-items:flex-start"><input id="infos" name="infos" type="checkbox" value="oui" style="width:1.25rem;height:1.25rem;margin-top:.2rem;flex:none"><label for="infos">${echapper(T.caseInfos)}</label></p>
 <p style="font-size:.875rem;opacity:.8">${echapper(T.information)} <a href="${echapper(URL_CONFIDENTIALITE)}">${echapper(T.lienConfidentialite)}</a>.</p>
 <p><button type="submit" style="${BOUTON}">${echapper(T.envoyer)}</button></p>
 </form>
