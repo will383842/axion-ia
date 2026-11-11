@@ -34,7 +34,7 @@ const LANDING_MESURE = "apporteur-dossier";
 
 const TITRE = "Dossier apporteur d'affaires : 3 minutes, sans CV · Axion-IA";
 const DESCRIPTION =
-  "Trois minutes, une question par écran, sans CV. Un e-mail de confirmation, puis une invitation à un échange de 15 minutes en visio. Nous répondons à tous.";
+  "Trois minutes, une question par écran, sans CV. Un e-mail de confirmation, puis une invitation à un échange de 15 minutes en visio.";
 
 interface Props {
   params: Promise<{ locale: string }>;

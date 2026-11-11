@@ -199,14 +199,15 @@ describe("le budget de liens de la famille B tient sur la variante la plus charg
 });
 
 describe("la confirmation du dossier suit les décisions du 2026-09-19", () => {
-  it("parle du réseau d'apporteurs, répond « dans les prochaines heures », propose 15 minutes", async () => {
+  it("parle du réseau d'apporteurs, propose 15 minutes, ne promet ni réponse à tous ni délai", async () => {
     const t = texte(
       await html(
         <CandidatureCommercialConfirmeeEmail locale="fr" payload={{ contactName: "Nadia" }} />,
       ),
     );
     expect(t).toMatch(/réseau d'apporteurs d'affaires/);
-    expect(t).toMatch(/dans les prochaines heures/);
+    // 11/11/2026, Williams : jamais « nous répondons à toutes les candidatures », jamais de délai.
+    expect(t).not.toMatch(/prochaines heures|répondons à toutes|quoi qu'il arrive/i);
     expect(t).toMatch(/15 minutes/);
     // Retirés : le métier de vendeur pour autrui, et le délai en semaines.
     expect(t).not.toMatch(/commercial ind/i);
