@@ -65,7 +65,7 @@ export const CHATUZANGE_LE_GOUBET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 25 min voiture). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

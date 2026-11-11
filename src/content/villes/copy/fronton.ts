@@ -49,7 +49,7 @@ export const FRONTON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fronton ?",
-      a: "Oui, Axion-IA intervient à Fronton et dans tout le Frontonnais (Castelnau-d'Estrétefonds, Villemur-sur-Tarn, Grenade). Nos consultants se déplacent en 30 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Fronton et dans tout le Frontonnais (Castelnau-d'Estrétefonds, Villemur-sur-Tarn, Grenade). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fronton ?",
@@ -65,7 +65,7 @@ export const FRONTON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Fronton ?",
-      a: "Nos consultants se déplacent à Fronton (30 min depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux ou au domaine.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux ou au domaine.",
     },
   ],
 };

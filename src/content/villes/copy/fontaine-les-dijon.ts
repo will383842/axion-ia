@@ -49,7 +49,7 @@ export const FONTAINE_LES_DIJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontaine-lès-Dijon ?",
-      a: "Oui, Axion-IA intervient à Fontaine-lès-Dijon et dans tout le nord dijonnais (Talant, Daix, Ahuy, Hauteville-lès-Dijon). Nos consultants se déplacent depuis Dijon centre en 10 minutes par bus Divia.",
+      a: "Oui, Axion-IA intervient à Fontaine-lès-Dijon et dans tout le nord dijonnais (Talant, Daix, Ahuy, Hauteville-lès-Dijon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Fontaine-lès-Dijon  ?",

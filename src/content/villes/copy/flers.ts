@@ -49,7 +49,7 @@ export const FLERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Flers et dans le bocage ornais ?",
-      a: "Oui, Axion-IA intervient à Flers et tout le bocage ornais (Condé-en-Normandie à 15 km, Domfront, Tinchebray). Nos consultants se déplacent depuis Caen (1h) ou Paris (TGV Caen 2h + voiture).",
+      a: "Oui, Axion-IA intervient à Flers et tout le bocage ornais (Condé-en-Normandie à 15 km, Domfront, Tinchebray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de Flers ?",
@@ -61,7 +61,7 @@ export const FLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Flers depuis Paris ?",
-      a: "Nos consultants viennent de Paris (TGV Caen 2h + voiture 1h) ou de Caen (1h).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à Flers ?",

@@ -49,7 +49,7 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagnole et sur le plateau du Jura ?",
-      a: "Oui, Axion-IA intervient à Champagnole et sur l'ensemble du plateau jurassien (Lons-le-Saunier à 30 min, Pontarlier à 40 min, Besançon à 1 h). Nos consultants couvrent tout le Jura depuis Besançon ou Lons-le-Saunier.",
+      a: "Oui, Axion-IA intervient à Champagnole et sur l'ensemble du plateau jurassien (Lons-le-Saunier à 30 min, Pontarlier à 40 min, Besançon à 1 h). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les plasturgistes et lunettiers de Champagnole ?",
@@ -65,7 +65,7 @@ export const CHAMPAGNOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagnole ?",
-      a: "Nos consultants interviennent à Champagnole depuis Besançon (1 h) ou Lons-le-Saunier (30 min). Intervention sur site dans vos locaux industriels, commerce ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, commerce ou cabinet.",
     },
   ],
 };

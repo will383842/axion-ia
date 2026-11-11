@@ -65,7 +65,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (50 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

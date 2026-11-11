@@ -65,7 +65,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bully-les-Mines depuis Lille ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Lens et Liévin sont à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

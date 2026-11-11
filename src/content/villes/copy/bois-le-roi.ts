@@ -49,7 +49,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-le-Roi et dans le secteur de Fontainebleau ?",
-      a: "Oui, Axion-IA intervient à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau à 10 min, Melun à 15 min, Samois-sur-Seine, Chartrettes). Nos consultants rejoignent Bois-le-Roi depuis Paris Gare de Lyon en 45 min via Transilien R.",
+      a: "Oui, Axion-IA intervient à Bois-le-Roi et dans tout le secteur sud Seine-et-Marne (Fontainebleau à 10 min, Melun à 15 min, Samois-sur-Seine, Chartrettes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bois-le-Roi  ?",
@@ -65,7 +65,7 @@ export const BOIS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bois-le-Roi ?",
-      a: "Nos consultants interviennent à Bois-le-Roi depuis Paris Gare de Lyon (45 min via Transilien R, gare de Bois-le-Roi) ou en voiture via A6. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],
 };

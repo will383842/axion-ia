@@ -227,7 +227,7 @@ export const CENON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cenon et sur la rive droite de Bordeaux Métropole ?",
-      a: "Oui, nous intervenons à Cenon et dans les communes voisines de Bordeaux Métropole : Lormont, Floirac, Artigues-près-Bordeaux et Bordeaux centre. Nos consultants se déplacent depuis Paris via Bordeaux-Saint-Jean (TGV 2h) puis tramway A.",
+      a: "Oui, nous intervenons à Cenon et dans les communes voisines de Bordeaux Métropole : Lormont, Floirac, Artigues-près-Bordeaux et Bordeaux centre. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Cenon ?",

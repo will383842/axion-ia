@@ -53,7 +53,7 @@ export const CANEJAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Canéjan et dans le sud bordelais ?",
-      a: "Oui, Axion-IA intervient à Canéjan et dans tout le sud de Bordeaux Métropole (Pessac, Cestas, Léognan, Gradignan). Nos consultants rejoignent Canéjan en 15 min depuis Bordeaux centre par la rocade A630.",
+      a: "Oui, Axion-IA intervient à Canéjan et dans tout le sud de Bordeaux Métropole (Pessac, Cestas, Léognan, Gradignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans BTP de Canéjan ?",

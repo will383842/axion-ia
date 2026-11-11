@@ -65,7 +65,7 @@ export const ESVRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Esvres ?",
-      a: "Nos consultants viennent depuis Tours centre (20 min voiture D943). Pour les missions multi-jours, hébergement local possible (Cormery, Montbazon).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (Cormery, Montbazon).",
     },
   ],
 };

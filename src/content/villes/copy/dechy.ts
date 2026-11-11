@@ -49,7 +49,7 @@ export const DECHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dechy et dans le Douaisis ?",
-      a: "Oui, Axion-IA intervient à Dechy et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Flers-en-Escrebieux, Lambres-lez-Douai). Nos consultants viennent de Lille (35 min A1) ou via la gare de Douai (TGV Paris 50 min).",
+      a: "Oui, Axion-IA intervient à Dechy et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Flers-en-Escrebieux, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de la zone industrielle Dorignies ?",

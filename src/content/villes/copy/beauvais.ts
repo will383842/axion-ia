@@ -132,7 +132,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et travaillez-vous dans tout l'Oise ?",
-            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), avec un kick-off sur site dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nos consultants rejoignent Beauvais depuis Paris en 1h15 par l'A16.",
+            a: "Devis à partir de 24 à 48 h selon la complexité. Nous intervenons à Beauvais et dans tout le sud de l'Oise (Compiègne, Creil, Clermont), avec un kick-off sur site dans vos locaux — usine, bureau d'études, atelier agroalimentaire ou entrepôt de l'Éco-Parc de Beauvais-Tillé. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -246,7 +246,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants rejoignent Beauvais en 1h15 (A16). Sessions sur site ou en visio selon votre préférence.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

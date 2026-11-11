@@ -65,7 +65,7 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Montpellier ou Béziers ?",
-      a: "Nos consultants interviennent depuis Béziers (10 min) ou Montpellier (1h10). Déplacement sur site inclus dans le forfait agglo Béziers. Pour missions multi-jours, hébergement Béziers ou littoral.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site inclus dans le forfait agglo Béziers. Pour missions multi-jours, hébergement Béziers ou littoral.",
     },
   ],
 };

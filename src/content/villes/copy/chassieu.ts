@@ -65,7 +65,7 @@ export const CHASSIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

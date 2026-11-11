@@ -49,7 +49,7 @@ export const CAUDAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caudan et dans Lorient Agglomération ?",
-      a: "Oui, Axion-IA intervient à Caudan et dans toute Lorient Agglomération (Lorient à 10 min, Lanester, Hennebont, Plœmeur, Languidic). Nos consultants couvrent le bassin lorientais depuis Lorient, Vannes (50 min) ou Nantes (2h).",
+      a: "Oui, Axion-IA intervient à Caudan et dans toute Lorient Agglomération (Lorient à 10 min, Lanester, Hennebont, Plœmeur, Languidic). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles des zones Manebos et Kerpont ?",
@@ -65,7 +65,7 @@ export const CAUDAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Caudan ?",
-      a: "Nos consultants interviennent à Caudan depuis Lorient (10 min), Vannes (50 min) ou Nantes (2h). Intervention sur site dans vos locaux, atelier, plateforme ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, atelier, plateforme ou cabinet.",
     },
   ],
 };

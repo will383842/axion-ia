@@ -49,7 +49,7 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chasse-sur-Rhône et arrondissement Vienne ?",
-      a: "Oui, Axion-IA intervient à Chasse-sur-Rhône et toute Vienne Condrieu Agglomération (Vienne, Pont-Évêque, Condrieu, Estrablin). Nos consultants viennent de Lyon (30 min A7) ou Saint-Étienne (40 min A47).",
+      a: "Oui, Axion-IA intervient à Chasse-sur-Rhône et toute Vienne Condrieu Agglomération (Vienne, Pont-Évêque, Condrieu, Estrablin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Lyon-Vienne ?",
@@ -65,7 +65,7 @@ export const CHASSE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Vienne ?",
-      a: "Nos consultants viennent de Lyon (30 min A7) ou Vienne (10 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

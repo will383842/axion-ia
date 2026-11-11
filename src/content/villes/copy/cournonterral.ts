@@ -49,7 +49,7 @@ export const COURNONTERRAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cournonterral et dans quelles communes proches ?",
-      a: "Oui, Axion-IA intervient à Cournonterral et dans les communes limitrophes : Cournonsec, Fabrègues, Pignan, Montbazin, Aumelas, Saint-Paul-et-Valmalle. Nos consultants se déplacent depuis Montpellier en 20 min via la D5.",
+      a: "Oui, Axion-IA intervient à Cournonterral et dans les communes limitrophes : Cournonsec, Fabrègues, Pignan, Montbazin, Aumelas, Saint-Paul-et-Valmalle. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Cournonterral ?",

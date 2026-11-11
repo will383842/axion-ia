@@ -49,7 +49,7 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Étoile-sur-Rhône et sud Valence ?",
-      a: "Oui, Axion-IA intervient à Étoile-sur-Rhône et tout le sud-Valence (Beauvallon, Montoison, Livron-sur-Drôme à 15 min, Loriol). Nos consultants viennent de Lyon (1h A7) ou Valence (15 min).",
+      a: "Oui, Axion-IA intervient à Étoile-sur-Rhône et tout le sud-Valence (Beauvallon, Montoison, Livron-sur-Drôme à 15 min, Loriol). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires Valence Romans Agglo ?",
@@ -65,7 +65,7 @@ export const ETOILE_SUR_RHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

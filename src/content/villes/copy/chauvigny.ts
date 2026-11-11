@@ -65,7 +65,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 25 min route vers Chauvigny. Pour les multi-jours, hébergement local ou Poitiers centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local ou Poitiers centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

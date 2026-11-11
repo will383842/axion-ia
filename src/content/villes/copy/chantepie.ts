@@ -65,7 +65,7 @@ export const CHANTEPIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Chantepie ?",
-      a: "Nos consultants interviennent à Chantepie depuis Rennes (10 min, métro ligne b ou rocade). Intervention sur site dans vos bureaux, atelier ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos bureaux, atelier ou cabinet.",
     },
   ],
 };

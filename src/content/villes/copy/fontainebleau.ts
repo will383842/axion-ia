@@ -65,7 +65,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA depuis Paris ?",
-      a: "Nos consultants rejoignent Fontainebleau en 40 min depuis Paris Gare de Lyon (Transilien R, gare Fontainebleau-Avon). Missions multi-jours possibles avec hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles avec hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

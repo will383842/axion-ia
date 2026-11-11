@@ -49,7 +49,7 @@ export const FLOIRAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Floirac et rive droite Bordeaux ?",
-      a: "Oui, Axion-IA intervient à Floirac et toute la rive droite de Bordeaux Métropole (Cenon, Lormont, Bouliac, Bassens, Carbon-Blanc). Nos consultants se déplacent depuis Bordeaux centre (15 min tramway A) ou depuis Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Floirac et toute la rive droite de Bordeaux Métropole (Cenon, Lormont, Bouliac, Bassens, Carbon-Blanc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Floirac  ?",
@@ -65,7 +65,7 @@ export const FLOIRAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Floirac ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Floirac ou en visio. Depuis Bordeaux centre (15 min tramway). Planning et tarifs convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent directement dans vos locaux à Floirac ou en visio. Nous intervenons partout en France, sur place ou à distance. Planning et tarifs convenus en amont, livrables documentés.",
     },
   ],
 };

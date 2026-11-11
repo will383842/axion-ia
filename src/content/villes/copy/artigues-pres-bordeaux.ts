@@ -49,7 +49,7 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Artigues-près-Bordeaux ?",
-      a: "Oui, Axion-IA intervient à Artigues-près-Bordeaux et dans tout l'est bordelais (Tresses, Fargues-Saint-Hilaire, Floirac, Cenon). Depuis Bordeaux centre (15 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Artigues-près-Bordeaux et dans tout l'est bordelais (Tresses, Fargues-Saint-Hilaire, Floirac, Cenon).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Artigues-près-Bordeaux  ?",
@@ -65,7 +65,7 @@ export const ARTIGUES_PRES_BORDEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Artigues-près-Bordeaux ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux centre (15 min rocade). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

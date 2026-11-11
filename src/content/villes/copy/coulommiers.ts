@@ -49,7 +49,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coulommiers et dans l'est Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient à Coulommiers et dans tout l'est Seine-et-Marne (Rebais, La Ferté-sous-Jouarre, Crécy-la-Chapelle, Jouarre). Nos consultants se déplacent depuis Paris Est (1h10 en Transilien P).",
+      a: "Oui, Axion-IA intervient à Coulommiers et dans tout l'est Seine-et-Marne (Rebais, La Ferté-sous-Jouarre, Crécy-la-Chapelle, Jouarre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Coulommiers ?",
@@ -65,7 +65,7 @@ export const COULOMMIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Coulommiers ?",
-      a: "Nos consultants interviennent à Coulommiers (1h10 depuis Paris Est en Transilien P, ou 1h en voiture via A4). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
     },
   ],
 };

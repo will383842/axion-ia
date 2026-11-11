@@ -49,7 +49,7 @@ export const FERRIERE_LA_GRANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ferrière-la-Grande et dans le val de Sambre ?",
-      a: "Oui, Axion-IA intervient à Ferrière-la-Grande et toute l'agglomération Maubeuge-Val de Sambre (Maubeuge, Louvroil, Feignies, Jeumont). Nos consultants viennent de Lille (1h15) ou Valenciennes (35 min).",
+      a: "Oui, Axion-IA intervient à Ferrière-la-Grande et toute l'agglomération Maubeuge-Val de Sambre (Maubeuge, Louvroil, Feignies, Jeumont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de la vallée de la Sambre ?",

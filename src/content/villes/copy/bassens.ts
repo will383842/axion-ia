@@ -65,7 +65,7 @@ export const BASSENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bassens ?",
-      a: "Nos consultants interviennent dans vos locaux à Bassens ou en visio. Depuis Bordeaux centre (15 min pont Chaban-Delmas). Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Bassens ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés.",
     },
   ],
 };

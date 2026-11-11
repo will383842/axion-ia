@@ -49,7 +49,7 @@ export const FLERS_EN_ESCREBIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Flers-en-Escrebieux et dans le Douaisis ?",
-      a: "Oui, Axion-IA intervient à Flers-en-Escrebieux et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Dechy, Lambres-lez-Douai). Nos consultants viennent de Lille (35 min A1) ou se déplacent depuis la gare de Douai (TGV Paris 50 min).",
+      a: "Oui, Axion-IA intervient à Flers-en-Escrebieux et toute l'agglomération du Douaisis (Douai, Sin-le-Noble, Dechy, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises logistiques du nœud A21/A1 ?",

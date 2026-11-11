@@ -65,7 +65,7 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Challes-les-Eaux ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const GENLIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Genlis ?",
-      a: "Nos consultants se déplacent à Genlis (20 min depuis Dijon). Interventions dans vos locaux atelier, bureau ou commerce. Visio possible pour le suivi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux atelier, bureau ou commerce. Visio possible pour le suivi.",
     },
   ],
 };

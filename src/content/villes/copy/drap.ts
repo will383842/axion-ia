@@ -65,7 +65,7 @@ export const DRAP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Drap depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (15 min D2204 vallée du Paillon). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

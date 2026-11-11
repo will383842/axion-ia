@@ -230,7 +230,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtellerault ?",
-      a: "Oui, Axion-IA intervient à Châtellerault et dans tout le bassin de la Vienne. Nos consultants se déplacent depuis Poitiers (35 min) ou Paris (TGV 1h40) pour rencontrer TPE, PME industrielles et artisans sur site.",
+      a: "Oui, Axion-IA intervient à Châtellerault et dans tout le bassin de la Vienne. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Châtellerault ?",

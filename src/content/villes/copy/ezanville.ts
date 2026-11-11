@@ -49,7 +49,7 @@ export const EZANVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ézanville et dans le nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à Ézanville et dans tout le nord Val-d'Oise (Écouen, Sarcelles, Villiers-le-Bel, Garges-lès-Gonesse). Nos consultants se déplacent depuis Paris Gare du Nord (25 min en Transilien H).",
+      a: "Oui, Axion-IA intervient à Ézanville et dans tout le nord Val-d'Oise (Écouen, Sarcelles, Villiers-le-Bel, Garges-lès-Gonesse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Ézanville ?",
@@ -65,7 +65,7 @@ export const EZANVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ézanville ?",
-      a: "Nos consultants se déplacent à Ézanville depuis Paris (25 min Transilien H gare d'Écouen-Ézanville). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
     },
   ],
 };

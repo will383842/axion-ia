@@ -65,7 +65,7 @@ export const CHAVANOZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
     },
   ],
 };

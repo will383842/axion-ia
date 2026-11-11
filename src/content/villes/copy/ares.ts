@@ -65,7 +65,7 @@ export const ARES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Arès ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux (50 min). Missions adaptées aux saisonnalités du Bassin.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux saisonnalités du Bassin.",
     },
   ],
 };

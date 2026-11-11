@@ -65,7 +65,7 @@ export const FEYTIAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Feytiat depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Feytiat est desservie par le réseau STLC. Visio également possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Feytiat est desservie par le réseau STLC. Visio également possible.",
     },
   ],
 };

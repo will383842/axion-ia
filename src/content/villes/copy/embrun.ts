@@ -49,7 +49,7 @@ export const EMBRUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Embrun et autour du lac Serre-Ponçon ?",
-      a: "Oui, Axion-IA intervient à Embrun et autour du lac de Serre-Ponçon (Chorges, Savines-le-Lac, Les Orres, Réallon). Nos consultants viennent de Gap (45 min sud) ou Briançon (50 min nord).",
+      a: "Oui, Axion-IA intervient à Embrun et autour du lac de Serre-Ponçon (Chorges, Savines-le-Lac, Les Orres, Réallon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme nautique ?",
@@ -65,7 +65,7 @@ export const EMBRUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Embrun ?",
-      a: "Nos consultants se déplacent sur site à Embrun depuis Gap (45 min) ou Briançon (50 min). Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
     },
   ],
 };

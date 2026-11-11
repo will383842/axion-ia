@@ -65,7 +65,7 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Châtenoy-le-Royal ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (25 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

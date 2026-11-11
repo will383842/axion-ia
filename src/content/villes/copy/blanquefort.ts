@@ -65,7 +65,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Blanquefort ?",
-      a: "Nos consultants interviennent dans vos locaux à Blanquefort ou en visio. Depuis Bordeaux centre (25 min tramway C). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Blanquefort ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

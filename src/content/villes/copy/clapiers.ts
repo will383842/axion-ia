@@ -43,7 +43,7 @@ export const CLAPIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clapiers ?",
-      a: "Oui, Axion-IA intervient à Clapiers (34830) et dans les communes voisines de Montpellier Méditerranée Métropole : Castelnau-le-Lez, Jacou, Prades-le-Lez, Montferrier-sur-Lez, Assas et Teyran. Nos consultants se déplacent depuis Montpellier en 12 min via le tramway ligne 5 ou la RD 65.",
+      a: "Oui, Axion-IA intervient à Clapiers (34830) et dans les communes voisines de Montpellier Méditerranée Métropole : Castelnau-le-Lez, Jacou, Prades-le-Lez, Montferrier-sur-Lez, Assas et Teyran. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Clapiers ?",

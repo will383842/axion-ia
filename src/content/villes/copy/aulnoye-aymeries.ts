@@ -65,7 +65,7 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aulnoye-Aymeries ?",
-      a: "Nos consultants interviennent à Aulnoye-Aymeries depuis Lille (1h10 TER direct via gare d'Aulnoye) ou Valenciennes (35 min). Intervention sur site dans votre usine, atelier, commerce ou en visio. Pour missions multi-jours, hébergement à Maubeuge ou Valenciennes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, atelier, commerce ou en visio. Pour missions multi-jours, hébergement à Maubeuge ou Valenciennes.",
     },
   ],
 };

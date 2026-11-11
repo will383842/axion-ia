@@ -65,7 +65,7 @@ export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cormelles-le-Royal ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, commerce, cabinet). Périphérique Caen sud immédiat.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (bureau, commerce, cabinet). Périphérique Caen sud immédiat.",
     },
   ],
 };

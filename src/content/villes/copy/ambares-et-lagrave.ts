@@ -65,7 +65,7 @@ export const AMBARES_ET_LAGRAVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission sur site à Ambarès-et-Lagrave ?",
-      a: "Nos consultants interviennent dans vos locaux à Ambarès-et-Lagrave ou en visio. Depuis Bordeaux centre (20 min rocade). Tarifs et planning fixés en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Ambarès-et-Lagrave ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning fixés en amont, livrables documentés.",
     },
   ],
 };

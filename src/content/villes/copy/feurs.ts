@@ -65,7 +65,7 @@ export const FEURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (35 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

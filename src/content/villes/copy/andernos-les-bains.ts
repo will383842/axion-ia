@@ -65,7 +65,7 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Andernos-les-Bains ?",
-      a: "Nos consultants interviennent dans vos locaux à Andernos-les-Bains ou en visio. Depuis Bordeaux centre (45 min). Missions adaptées aux saisonnalités du Bassin.",
+      a: "Nos consultants interviennent dans vos locaux à Andernos-les-Bains ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux saisonnalités du Bassin.",
     },
   ],
 };

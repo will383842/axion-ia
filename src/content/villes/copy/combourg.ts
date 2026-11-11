@@ -49,7 +49,7 @@ export const COMBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Combourg et nord Ille-et-Vilaine ?",
-      a: "Oui, Axion-IA intervient à Combourg et dans tout le nord de l'Ille-et-Vilaine (Tinténiac, Hédé-Bazouges, Dol-de-Bretagne, Pleine-Fougères). Nos consultants viennent de Rennes (40 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Combourg et dans tout le nord de l'Ille-et-Vilaine (Tinténiac, Hédé-Bazouges, Dol-de-Bretagne, Pleine-Fougères). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial à Combourg ?",
@@ -65,7 +65,7 @@ export const COMBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Combourg ?",
-      a: "Nos consultants viennent de Rennes (40 min via D137). TER possible gare de Combourg (ligne Rennes-Saint-Malo). Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. TER possible gare de Combourg (ligne Rennes-Saint-Malo). Intervention sur site ou en visio.",
     },
   ],
 };

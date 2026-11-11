@@ -49,7 +49,7 @@ export const ERNEE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ernée et dans le nord-ouest Mayenne ?",
-      a: "Oui, Axion-IA intervient à Ernée et dans tout le nord-ouest Mayenne (Gorron, Landivy, Saint-Pierre-des-Landes). Nos consultants se déplacent depuis Laval (30 min) ou Fougères (30 min).",
+      a: "Oui, Axion-IA intervient à Ernée et dans tout le nord-ouest Mayenne (Gorron, Landivy, Saint-Pierre-des-Landes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs laitiers et PME agroalimentaires ?",

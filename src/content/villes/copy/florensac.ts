@@ -65,7 +65,7 @@ export const FLORENSAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission sur Florensac ?",
-      a: "Nos consultants interviennent depuis Montpellier (55 min) ou Béziers (25 min). Gare TGV Agde à 12 min. Déplacement sur site dans le forfait secteur Agde-Pézenas.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans le forfait secteur Agde-Pézenas.",
     },
   ],
 };

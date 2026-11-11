@@ -65,7 +65,7 @@ export const CHAMPAGNE_AU_MONT_D_OR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

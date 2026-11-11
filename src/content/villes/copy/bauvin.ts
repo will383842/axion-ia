@@ -65,7 +65,7 @@ export const BAUVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Lille-Lesquin à 15 min. Missions sur site à Bauvin ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site à Bauvin ou en visio.",
     },
   ],
 };

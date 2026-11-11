@@ -49,7 +49,7 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cornebarrieu ?",
-      a: "Oui, Axion-IA intervient à Cornebarrieu et dans tout le pôle aéroportuaire (Blagnac, Beauzelle, Aussonne). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Cornebarrieu et dans tout le pôle aéroportuaire (Blagnac, Beauzelle, Aussonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Cornebarrieu ?",
@@ -65,7 +65,7 @@ export const CORNEBARRIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Cornebarrieu ?",
-      a: "Nos consultants se déplacent à Cornebarrieu (20 min depuis Toulouse, 5 min de l'aéroport). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
   ],
 };

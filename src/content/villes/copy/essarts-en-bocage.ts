@@ -65,7 +65,7 @@ export const ESSARTS_EN_BOCAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Essarts-en-Bocage ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (20 min) ou Les Herbiers (25 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation.",
     },
   ],
 };

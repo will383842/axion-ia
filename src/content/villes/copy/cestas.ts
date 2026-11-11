@@ -49,7 +49,7 @@ export const CESTAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cestas et au technopôle ?",
-      a: "Oui, Axion-IA intervient à Cestas et dans tout le bassin sud-ouest Bordeaux (Pessac, Gradignan, Léognan, Canéjan). Nos consultants se déplacent depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Cestas et dans tout le bassin sud-ouest Bordeaux (Pessac, Gradignan, Léognan, Canéjan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Cestas  ?",
@@ -65,7 +65,7 @@ export const CESTAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Cestas ?",
-      a: "Nos consultants interviennent dans vos locaux à Cestas (technopôle, zone d'activité, atelier) ou en visio. Depuis Bordeaux centre (20 min rocade). Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Cestas (technopôle, zone d'activité, atelier) ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés.",
     },
   ],
 };

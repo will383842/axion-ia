@@ -65,7 +65,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

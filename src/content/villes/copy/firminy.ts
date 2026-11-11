@@ -65,7 +65,7 @@ export const FIRMINY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (20 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Étienne). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Saint-Étienne). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

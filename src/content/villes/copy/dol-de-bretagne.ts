@@ -49,7 +49,7 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dol-de-Bretagne et environs ?",
-      a: "Oui, Axion-IA intervient à Dol-de-Bretagne et dans tout le pays de Dol (Combourg, Pleine-Fougères, Pontorson, axe vers Saint-Malo et Mont-Saint-Michel). Nos consultants rejoignent Dol en TER depuis Rennes.",
+      a: "Oui, Axion-IA intervient à Dol-de-Bretagne et dans tout le pays de Dol (Combourg, Pleine-Fougères, Pontorson, axe vers Saint-Malo et Mont-Saint-Michel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel-restaurant à Dol ?",

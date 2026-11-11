@@ -49,7 +49,7 @@ export const CUINCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cuincy et dans l'agglomération de Douai ?",
-      a: "Oui, Axion-IA intervient à Cuincy et dans toute la Communauté d'Agglomération du Douaisis (Douai, Lambres-lez-Douai, Flers-en-Escrebieux, Sin-le-Noble). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 8 min.",
+      a: "Oui, Axion-IA intervient à Cuincy et dans toute la Communauté d'Agglomération du Douaisis (Douai, Lambres-lez-Douai, Flers-en-Escrebieux, Sin-le-Noble). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Cuincy  ?",
@@ -65,7 +65,7 @@ export const CUINCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Cuincy ?",
-      a: "Nos consultants interviennent depuis Lille en 35 min ou directement de Douai en 8 min. Cuincy étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

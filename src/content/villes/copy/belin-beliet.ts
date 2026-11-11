@@ -49,7 +49,7 @@ export const BELIN_BELIET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Belin-Béliet ?",
-      a: "Oui, Axion-IA intervient à Belin-Béliet et dans la vallée de la Leyre (Salles, Le Barp, Mios, Hostens). Depuis Bordeaux (40 min A63) ou Paris (TGV 2h + 40 min).",
+      a: "Oui, Axion-IA intervient à Belin-Béliet et dans la vallée de la Leyre (Salles, Le Barp, Mios, Hostens).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Belin-Béliet  ?",
