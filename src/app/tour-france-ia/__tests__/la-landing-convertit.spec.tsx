@@ -1,12 +1,13 @@
 /**
  * LA LANDING DU TOUR EST UNE PAGE DE CONVERSION, ET UNE PAGE VISUELLE (refonte
  * « page de conversion » du 2026-10-26, refonte visuelle du 2026-10-27, modèle
- * « 5 journées offertes par ville, sur sélection » du 2026-10-27).
+ * « 5 entreprises retenues par ville » du 2026-10-27, réaligné sur La Journée IA le
+ * 2026-11-11 : aucune gratuité promise).
  *
  * Trafic visé : un post Facebook ou Instagram, sur téléphone, dans le navigateur
  * intégré, en 4G. Ce qui doit tenir, en plus de `le-tour-est-ouvert.spec.ts` :
  *
- *   · UNE seule action, « Demander ma journée offerte », vers la visio du Tour ;
+ *   · UNE seule action, « Demander ma Journée IA », vers la visio du Tour ;
  *   · le premier écran d'un téléphone : puce, H1, promesse, l'emplacement de la
  *     vidéo (la frise tant qu'elle n'est pas là), bouton, micro-texte, et SOUS LE
  *     BOUTON, dans la même boîte, les conditions et leur lien ;
@@ -106,11 +107,12 @@ async function rendrePage() {
   return render(await TourDeFranceIaPage());
 }
 
-describe("🔑 une seule action : ma journée offerte", () => {
+describe("🔑 une seule action : ma Journée IA", () => {
   it("le libellé dit ce que l'entreprise demande, et il mène à la visio du Tour", () => {
-    expect(LIBELLE_CTA).toBe("Demander ma journée offerte");
-    expect(LIBELLE_CTA_COURT).toBe("Ma journée offerte");
-    for (const l of [LIBELLE_CTA, LIBELLE_CTA_COURT]) expect(l).toMatch(/journée offerte$/);
+    expect(LIBELLE_CTA).toBe("Demander ma Journée IA");
+    expect(LIBELLE_CTA_COURT).toBe("Ma Journée IA");
+    for (const l of [LIBELLE_CTA, LIBELLE_CTA_COURT]) expect(l).toMatch(/Journée IA$/);
+    expect(`${LIBELLE_CTA} ${LIBELLE_CTA_COURT}`).not.toMatch(/offert|gratuit/i);
     // Court : l'en-tête et la barre collante tiennent sur une ligne à 360 px.
     expect(LIBELLE_CTA_COURT.length).toBeLessThanOrEqual(25);
     // La barre collante porte le libellé court, les grands boutons le long.
@@ -142,6 +144,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     const autres = [...code.matchAll(/href=\{([^}]+)\}/g)].map((m) => m[1]);
     expect(autres).toEqual([
       "lienDemande(depuis)",
+      "LIEN_OFFRE.href",
       "LIEN_CONDITIONS.chemin",
       "FONDATEUR.lien.chemin",
       "LIEN_CONDITIONS.chemin",
@@ -307,9 +310,9 @@ describe("🔑 une seule action : ma journée offerte", () => {
     cleanup();
   });
 
-  it("la promesse et la frise : la journée offerte, comprise d'un coup d'œil, sans le vendredi", () => {
+  it("la promesse et la frise : La Journée IA, comprise d'un coup d'œil, sans le vendredi", () => {
     expect(HEROS.promesse).toBe(PROMESSE);
-    expect(PROMESSE).toMatch(/^Une journée offerte dans votre entreprise/);
+    expect(PROMESSE).toMatch(/^La Journée IA dans votre entreprise/);
     expect(PROMESSE).toMatch(/audit \+ formation IA de votre équipe\.$/);
     expect(PROMESSE.length).toBeLessThanOrEqual(90);
     expect(HEROS.frise).toEqual(["Audit", "Formation", "4 h chez vous"]);
@@ -339,8 +342,10 @@ describe("🔑 une seule action : ma journée offerte", () => {
     // 215 mesurés le 2026-10-27, 224 depuis la légende « … ou un membre de son équipe »
     // (9 mots, demandée par le propriétaire : la citation n'est plus attribuée au seul
     // fondateur). Cliquet : ajouter un bouton ou une phrase, c'est en retirer.
+    // 2026-11-11 : 228, avec le lien « Voir La Journée IA » sous la promesse (4 mots,
+    // demandé par le propriétaire : la landing renvoie à /fr/journee-ia).
     const total = n + mots(texteDesBoutons());
-    expect(total, `${total} mots`).toBeLessThanOrEqual(224);
+    expect(total, `${total} mots`).toBeLessThanOrEqual(228);
     for (const titre of [
       VILLE.titre,
       GAINS.titre,
@@ -410,7 +415,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(VILLE.titre).toBe("Votre ville s’ouvre dès 5 demandes");
     expect(VILLE.semaine).toBe("Puis une semaine : une entreprise par jour, du lundi au vendredi.");
     expect(VILLE.legende).toBe("Illustration : aucune ville n’est encore annoncée.");
-    expect(APPEL_FINAL.titre).toBe("5 journées offertes par ville.");
+    expect(APPEL_FINAL.titre).toBe("Votre Journée IA, chez vous.");
     expect(texteVisibleHorsFaq()).not.toMatch(/\d+\s?h\s?\d+|\d{1,2}:\d{2}|\d+\s?heures/);
   });
 
@@ -439,7 +444,7 @@ describe("🔑 une seule action : ma journée offerte", () => {
     expect(FONDATEUR.alt).toBe("Williams Jullin, fondateur d’Axion-IA");
     expect(FONDATEUR.photo).toBe("/illustrations/william-fondateur-axion-ia.webp");
     // Plus aucun « je » de l'entreprise : la page parle en « on » / « nous ». Le seul « je »
-    // du texte est celui du VISITEUR (une question de la FAQ), comme « Ma journée offerte ».
+    // du texte est celui du VISITEUR (une question de la FAQ), comme « Ma Journée IA ».
     const premierePersonne = /(^|[^\p{L}])(je|j’|moi|mon|mes)(?=[^\p{L}]|$)/iu;
     expect(texteVisibleHorsFaq()).not.toMatch(premierePersonne);
     expect(FONDATEUR.citation).toMatch(/^On vient chez vous/);
@@ -909,7 +914,7 @@ describe("🔴 le vocabulaire de la landing", () => {
     for (const c of chiffres) expect(["1", "3", "4", "5", "15", "30"], c).toContain(c);
   });
 
-  it("« offert » et « gratuit » ne disent jamais la visio : elle est « sans engagement »", () => {
+  it("ni « offert » ni « gratuit » : la visio est « sans engagement »", () => {
     expect(MICRO_TEXTE_CTA).toBe("Visio de 30 minutes · sans engagement");
     expect(texte).not.toMatch(/visio[^.\n]*(gratuite|offerte)|gratuite et sans engagement/i);
     // La phrase est écrite UNE fois (contenu.ts) ; la page la cite sous les deux grands boutons.

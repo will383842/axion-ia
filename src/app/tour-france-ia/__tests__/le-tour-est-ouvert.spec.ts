@@ -16,7 +16,8 @@
  *   · le sitemap du Tour, l'index des sitemaps et `llms.txt` citent la route ;
  *   · le contenu ne porte aucun mot interdit, aucun prix, et la page n'importe
  *     aucun composant de la coquille d'Axion ;
- *   · le modèle du 2026-10-27 : « une journée offerte » (audit + formation) aux 5
+ *   · le modèle du 2026-10-27, réaligné le 2026-11-11 (audit SEO/GEO) : La Journée IA
+ *     (audit + formation) amenée dans la ville, SANS gratuité promise, et les 5
  *     entreprises retenues par ville, après une visio, en échange d'un podcast ;
  *     une ville qui s'ouvre dès 5 demandes ; sinon un tarif Tour, sans montant sur
  *     la landing ; le dîner du vendredi facultatif et non compris ; « filmé »
@@ -53,6 +54,7 @@ import {
   HEROS,
   META,
   NOM_DU_TOUR,
+  LIEN_OFFRE,
   PIED,
   PROMESSE,
   toutLeTexte,
@@ -477,13 +479,13 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(FAQ.questions.some((q) => /filmé/.test(q.reponse))).toBe(true);
   });
 
-  it("le H1 est l'accroche validée, suivi de la promesse « journée offerte »", () => {
+  it("le H1 est l'accroche validée, suivi de la promesse « La Journée IA »", () => {
     expect(`${HEROS.titreAvant}${HEROS.titreAccent}${HEROS.titreApres}`).toBe(
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? Nous, si.",
     );
     expect(HEROS.titreAccent).toBe("Nous, si.");
     expect(HEROS.promesse).toBe(
-      "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe.",
+      "La Journée IA dans votre entreprise : audit + formation IA de votre équipe.",
     );
     expect(HEROS.surtitre).toBe("Le Tour France IA arrive dans votre ville");
     const page = lire("src/app/tour-france-ia/page.tsx");
@@ -496,14 +498,14 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(texte.toLowerCase()).not.toContain(BRAND.taglineFr.toLowerCase());
   });
 
-  it("l'offre est COMMUNIQUÉE : une journée offerte, toujours avec sa sélection et sa contrepartie", () => {
-    expect(texte).toMatch(/journée offerte/);
+  it("l'offre est COMMUNIQUÉE : La Journée IA, toujours avec sa sélection et son podcast", () => {
+    expect(texte).toMatch(/La Journée IA/);
     expect(CONDITIONS).toBe(
-      "Offerte aux 5 entreprises retenues par ville, après une visio, en échange d’un podcast chez vous. Votre ville s’ouvre dès 5 demandes.",
+      "Pour 5 entreprises retenues par ville, après une visio, avec un podcast chez vous. Votre ville s’ouvre dès 5 demandes.",
     );
-    expect(META.titre).toMatch(/journée offerte/);
+    expect(META.titre).toMatch(/audit et formation IA/);
     expect(META.description).toBe(
-      "Une journée offerte dans votre entreprise : audit + formation IA de votre équipe. 5 entreprises retenues par ville.",
+      "Le Tour France IA amène La Journée IA dans votre ville : audit + formation IA de votre équipe, chez vous. 5 entreprises retenues par ville.",
     );
     // Les conditions sont affichées sous le bouton du héros ET sous celui de l'appel final.
     const page = lire("src/app/tour-france-ia/page.tsx");
@@ -511,24 +513,23 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(page).toContain("{APPEL_FINAL.conditions}");
     expect(APPEL_FINAL.conditions).toMatch(/retenues/);
     expect(APPEL_FINAL.conditions).toMatch(/podcast/);
-    // La FAQ « offert » dit qui, et ne dit pas la visio offerte.
-    const offert = FAQ.questions.find((q) => q.question === "C’est vraiment offert ?");
-    expect(offert?.reponse).toMatch(/5 entreprises retenues par ville/);
-    expect(offert?.reponse).not.toMatch(/visio/i);
+    // La FAQ dit quelle journée, et renvoie à sa page.
+    const laJournee = FAQ.questions.find((q) => q.question === "Quelle journée recevons-nous ?");
+    expect(laJournee?.reponse).toMatch(/La Journée IA/);
+    expect(laJournee?.reponse).toMatch(/axion-ia\.com\/fr\/journee-ia/);
   });
 
-  it("🔴 « offert » ne qualifie que la journée, l'audit et la formation — jamais la visio, jamais le repas", () => {
-    for (const m of texte.matchAll(/offert(e|s|es)?/gi)) {
-      const avant = texte.slice(Math.max(0, (m.index ?? 0) - 40), m.index);
-      // Exceptions : la question « C’est vraiment offert ? » et les conditions, qui
-      // ouvrent sur « Offerte aux 5 entreprises retenues » (la journée, sous son bouton).
-      const ici = texte.slice(m.index, (m.index ?? 0) + 40);
-      if (/\nC’est vraiment $/.test(avant) || ici.startsWith("Offerte aux 5 entreprises retenues"))
-        continue;
-      expect(avant, avant).toMatch(/(journée|audit|formation)[^.\n]*$/i);
-    }
-    expect(texte).not.toMatch(/visio\s+(offerte|gratuite)|(repas|dîner)\s+(offert|gratuit)/i);
-    expect(texte).not.toMatch(/(offert|gratuit)e?s? (la )?visio/i);
+  it("🔴 aucune gratuité promise (2026-11-11) : ni « offert » ni « gratuit », nulle part", () => {
+    expect(texte).not.toMatch(/offert|gratuit/i);
+    expect(JSON.stringify(jsonLdDuTour())).not.toMatch(/offert|gratuit|"price"/i);
+    expect(lire("src/app/tour-france-ia/opengraph-image.alt.txt")).not.toMatch(/offert|gratuit/i);
+  });
+
+  it("🔴 le renvoi vers La Journée IA : sous la promesse, et dans le pied de page", () => {
+    expect(LIEN_OFFRE.href).toBe("https://axion-ia.com/fr/journee-ia");
+    const page = lire("src/app/tour-france-ia/page.tsx");
+    expect(page).toMatch(/\{HEROS\.promesse\}[\s\S]{0,400}href=\{LIEN_OFFRE\.href\}/);
+    expect(PIED.liens.map((l) => l.href)).toContain(LIEN_OFFRE.href);
   });
 
   it("🔴 le dîner du vendredi : facultatif, NON compris, jamais dans la frise ni dans l'offre", () => {
@@ -540,7 +541,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     expect(HEROS.frise.join(" ")).not.toMatch(/vendredi|soir|dîner|repas/i);
     const q = FAQ.questions.find((x) => x.question === "Le dîner du vendredi est-il compris ?");
     expect(q?.reponse).toBe(
-      "Non. Le repas réseau du vendredi soir est facultatif et n’est pas compris dans la journée offerte.",
+      "Non. Le repas réseau du vendredi soir est facultatif et n’est pas compris dans la journée.",
     );
     expect(texte).toMatch(/vendredi soir \(facultatif\)/);
     // Le vendredi soir n'est jamais dans l'offre du JSON-LD.
@@ -562,16 +563,14 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     );
   });
 
-  it("jamais de vente à conclure ni de signature ; « tarif » n'est dit que pour le tarif Tour", () => {
+  it("jamais de vente à conclure ni de signature ; jamais de « tarif » sur la landing", () => {
     expect(texte).not.toMatch(/signature|signer|\bvente\b|\bvendre\b|\bachat\b/i);
     expect(sources).not.toMatch(/signature|\bvente\b/i);
-    // « tarif » : seulement « un tarif Tour », renvoyé aux conditions générales, sans montant.
-    for (const m of texte.matchAll(/tarif/gi)) {
-      expect(texte.slice(m.index, (m.index ?? 0) + 10)).toBe("tarif Tour");
-    }
+    // 2026-11-11 : plus de « tarif Tour » ; la journée est La Journée IA, détaillée sur sa page.
+    expect(texte).not.toMatch(/tarif/i);
     const nonRetenu = FAQ.questions.find((q) => q.question === "Et si je ne suis pas retenu ?");
     expect(nonRetenu?.reponse).toMatch(
-      /tarif Tour, convenu avec vous \(voir les conditions générales\)/,
+      /La Journée IA chez vous[^.]*\(voir les conditions générales\)/,
     );
   });
 
@@ -583,7 +582,7 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
   });
 
   it("titre ≤ 60, description < 155, six Q/R", () => {
-    expect(META.titre).toBe("Tour France IA dans votre ville\u00a0: une journée offerte");
+    expect(META.titre).toBe("Tour France IA dans votre ville\u00a0: audit et formation IA");
     expect(META.titre.length).toBeLessThanOrEqual(60);
     expect(META.description.length).toBeLessThan(155);
     expect(FAQ.questions).toHaveLength(6);
@@ -632,7 +631,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     expect(service["areaServed"]).toEqual({ "@type": "Country", name: "France" });
     expect(service["audience"]).toEqual({
       "@type": "BusinessAudience",
-      name: "Entreprises, de la TPE à l’ETI",
+      name: "PME et TPE",
     });
   });
 
@@ -645,16 +644,15 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     );
     expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
     expect(description).toMatch(/une ville s’ouvre dès 5 demandes/);
-    expect(description).toMatch(/offerte aux 5 entreprises retenues par ville/);
-    expect(description).toMatch(/en échange d’un podcast/);
-    expect(description).toMatch(/facultatif et non compris dans la journée offerte/);
+    expect(description).toMatch(/5 entreprises sont retenues par ville/);
+    expect(description).toMatch(/un podcast est tourné chez elles/);
+    expect(description).toMatch(/facultatif et non compris dans la journée\./);
   });
 
-  it("l'offre est gratuite : prix 0 en euros, entreprises en France, sans disponibilité ni date", () => {
+  it("l'offre ne porte AUCUN prix et renvoie à La Journée IA ; entreprises en France, sans date", () => {
     expect(service["offers"]).toEqual({
       "@type": "Offer",
-      price: "0",
-      priceCurrency: "EUR",
+      url: "https://axion-ia.com/fr/journee-ia",
       eligibleRegion: { "@type": "Country", name: "France" },
       eligibleCustomerType: "http://purl.org/goodrelations/v1#Business",
       description: DESCRIPTION_DE_L_OFFRE,
@@ -702,7 +700,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
   });
 });
 
-describe("🔴 une ville S'OUVRE dès 5 demandes ; 5 journées offertes par ville, sur sélection (2026-10-27)", () => {
+describe("🔴 une ville S'OUVRE dès 5 demandes ; 5 entreprises retenues par ville, sur sélection (2026-10-27)", () => {
   // Le modèle du 2026-10-27 remplace « quelques places par ville » : 5 demandes
   // ouvrent une ville, 5 entreprises y sont retenues après une visio, en échange
   // d'un podcast. Aucun compteur, aucune liste d'attente, aucun plafond écrit en lettres.
@@ -742,17 +740,18 @@ describe("🔴 une ville S'OUVRE dès 5 demandes ; 5 journées offertes par vill
       expect(s, nom).toMatch(/5 entreprises retenues par ville/);
       expect(s, nom).toMatch(/podcast/);
       expect(s, nom).toMatch(/en intra-entreprise et en présentiel/);
-      expect(s, nom).toMatch(/tarif Tour/);
     }
-    expect(llms).toMatch(/Une journée offerte dans l'entreprise/);
+    // ⚠️ llms.txt (hors périmètre du réalignement du 2026-11-11) porte encore l'ancien
+    // modèle : son réalignement est un lot à part, signalé dans la PR.
+    expect(llms).toMatch(/tarif Tour/);
     expect(llms).toMatch(/conditions-generales/);
   });
 
   it("la FAQ ne porte plus la question « pas encore 5 entreprises » ni celle du Tour cycliste", () => {
     const questions = FAQ.questions.map((q) => q.question);
     expect(questions).toEqual([
-      "C’est vraiment offert ?",
-      "Y a-t-il une contrepartie ?",
+      "Quelle journée recevons-nous ?",
+      "Que demande le Tour en plus ?",
       "Et si je ne suis pas retenu ?",
       "Comment les entreprises sont-elles choisies ?",
       "Combien de temps, et qui participe ?",
@@ -811,7 +810,7 @@ describe("🔴 le nom « Tour France IA » et l'adresse /tour-france-ia (correct
       expect(s, nom).not.toMatch(/repas de midi/i);
     }
     expect(FAQ.questions[0]?.reponse).toBe(
-      "Oui\u00a0: l’audit et la formation, pour les 5 entreprises retenues par ville.",
+      "La Journée IA d’Axion-IA\u00a0: l’audit le matin, la formation de votre équipe l’après-midi. Son déroulé et ses conditions sont détaillés sur sa page, axion-ia.com/fr/journee-ia.",
     );
   });
 

@@ -3,16 +3,16 @@
 //
 // Un seul `@graph` : WebPage, Service, FAQPage, BreadcrumbList.
 //
-// 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES — une
-// journée offerte chez elles (audit + formation d'équipe de 4 h, en intra-entreprise
-// et en présentiel, de la TPE à l'ETI), aux 5 entreprises retenues par ville, en
-// échange d'un podcast (modèle du 2026-10-27). Il garde son nom et l'idée d'un tour qui va
+// 🔑 Le Tour n'est PAS un événement : c'est une offre faite AUX ENTREPRISES — La
+// Journée IA chez elles (audit + formation d'équipe de 4 h, en intra-entreprise et
+// en présentiel, PME et TPE), 5 entreprises retenues par ville, avec un podcast
+// (réaligné le 2026-11-11 : aucune gratuité promise). Il garde son nom et l'idée d'un tour qui va
 // de ville en ville, mais il est décrit comme un `Service` : aucune propriété
 // d'`Event` (ni `startDate`, ni `location`, ni `eventAttendanceMode`, ni `subEvent`,
-// ni `performer`). La gratuité se dit par une `Offer` à 0 €, réservée aux entreprises
-// en France, SANS `availability` ni date : aucune date n'est fixée avant qu'une ville
-// s'ouvre. Sa description est la ligne de conditions VISIBLE (sélection, podcast,
-// seuil de la ville). Le dîner du vendredi soir n'est jamais dans l'`Offer`. La
+// ni `performer`). L'`Offer` ne porte AUCUN prix (ni 0 €, ni montant) : la journée
+// est La Journée IA, citée par son URL. Réservée aux entreprises en France, SANS
+// `availability` ni date : aucune date n'est fixée avant qu'une ville s'ouvre. Sa
+// description est la ligne de conditions VISIBLE (sélection, podcast, seuil de la ville). Le dîner du vendredi soir n'est jamais dans l'`Offer`. La
 // `FAQPage` reprend les six questions de la page, mot pour mot.
 //
 // Aucun nœud `Organization` ni `Person` n'est RECRÉÉ ici : le prestataire est
@@ -23,7 +23,7 @@
 import { BRAND } from "@/lib/brand";
 import { SITE_URL } from "@/lib/site-url";
 
-import { CONDITIONS, DEFINITION, FAQ, META, NOM_DU_TOUR, PROMESSE } from "./contenu";
+import { CONDITIONS, DEFINITION, FAQ, LIEN_OFFRE, META, NOM_DU_TOUR, PROMESSE } from "./contenu";
 
 /**
  * La description du `Service` : le nom du Tour, puis la définition
@@ -67,12 +67,11 @@ export function jsonLdDuTour(): Record<string, unknown> {
         url,
         provider: organisation,
         areaServed: { "@type": "Country", name: "France" },
-        audience: { "@type": "BusinessAudience", name: "Entreprises, de la TPE à l’ETI" },
-        // Dit comme le texte visible : la journée offerte, sa sélection et sa contrepartie.
+        audience: { "@type": "BusinessAudience", name: "PME et TPE" },
+        // Dit comme le texte visible : La Journée IA, sa sélection et son podcast. Aucun prix.
         offers: {
           "@type": "Offer",
-          price: "0",
-          priceCurrency: "EUR",
+          url: LIEN_OFFRE.href,
           eligibleRegion: { "@type": "Country", name: "France" },
           eligibleCustomerType: "http://purl.org/goodrelations/v1#Business",
           description: DESCRIPTION_DE_L_OFFRE,

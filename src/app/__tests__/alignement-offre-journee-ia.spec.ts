@@ -30,6 +30,8 @@ import {
   texteDuRenvoi,
 } from "@/content/renvoi-journee-ia";
 import { getFormationV2 } from "@/content/formations/catalog-v2";
+import { LIEN_OFFRE, toutLeTexte as toutLeTexteDuTour } from "@/app/tour-france-ia/contenu";
+import { jsonLdDuTour } from "@/app/tour-france-ia/jsonld";
 
 const RACINE = process.cwd();
 const lire = (rel: string) => readFileSync(path.join(RACINE, rel), "utf8");
@@ -134,6 +136,14 @@ describe("lien vers /fr/journee-ia sur les quatre pages", () => {
     expect(src).toMatch(/lienRendezVousJourneeIa\("tarifs-heros"\)/);
     expect(src.indexOf('id="journee-ia"')).toBeLessThan(src.indexOf("{cartes.map("));
   });
+
+  it("/tour-france-ia : le lien vers /fr/journee-ia, sous la promesse et dans le pied", () => {
+    expect(LIEN_OFFRE.href).toBe("https://axion-ia.com/fr/journee-ia");
+    expect(toutLeTexteDuTour()).toMatch(/axion-ia\.com\/fr\/journee-ia/);
+    expect(sansCommentaires(lire("src/app/tour-france-ia/page.tsx"))).toMatch(
+      /href=\{LIEN_OFFRE\.href\}/,
+    );
+  });
 });
 
 describe("le rapport : sous 3 jours ouvrés, jamais « 7 jours »", () => {
@@ -148,6 +158,7 @@ describe("le rapport : sous 3 jours ouvrés, jamais « 7 jours »", () => {
       expect(sansCommentaires(lire(f)), f).not.toMatch(SEPT_JOURS);
     }
     expect(texteFormation()).not.toMatch(SEPT_JOURS);
+    expect(toutLeTexteDuTour()).not.toMatch(SEPT_JOURS);
     expect(texteDuRenvoi()).not.toMatch(SEPT_JOURS);
   });
 });
@@ -179,8 +190,10 @@ describe("un seul prix public : celui de La Journée IA, lu dans pricing.ts", ()
     expect(src).toMatch(/Sur devis écrit/);
   });
 
-  it("la fiche formation n'écrit aucun montant", () => {
+  it("la fiche formation et le Tour n'écrivent aucun montant", () => {
     expect(texteFormation().split(prixJourneeIa()).join("")).not.toMatch(MONTANT);
+    expect(toutLeTexteDuTour()).not.toMatch(MONTANT);
+    expect(JSON.stringify(jsonLdDuTour())).not.toMatch(/"price"/);
   });
 
   it("la garantie est reprise mot pour mot", () => {
@@ -199,6 +212,9 @@ describe("aucun mot interdit sur les quatre pages", () => {
   const surfaces = (): ReadonlyArray<readonly [string, string]> => [
     ["renvoi", texteDuRenvoi()],
     ["formation", texteFormation()],
+    ["tour", toutLeTexteDuTour()],
+    ["tour JSON-LD", JSON.stringify(jsonLdDuTour())],
+    ["tour image", lire("src/app/tour-france-ia/opengraph-image.alt.txt")],
     ...[PAGE_AUDIT, PAGE_TARIFS, COMPOSANT_RENVOI, ...COMPOSANTS_AUDIT].map(
       (f) => [f, sansClesInternes(sansCommentaires(lire(f)))] as const,
     ),
@@ -213,5 +229,9 @@ describe("aucun mot interdit sur les quatre pages", () => {
       }
     }
     expect(fautes).toEqual([]);
+  });
+
+  it("aucune gratuité promise sur le Tour", () => {
+    expect(toutLeTexteDuTour()).not.toMatch(/gratuit/i);
   });
 });
