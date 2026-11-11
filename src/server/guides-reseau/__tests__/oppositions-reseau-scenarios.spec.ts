@@ -35,6 +35,8 @@ const { bd, interdit } = vi.hoisted(() => {
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // Aucun contact en base dans ces scénarios : la mise à l'écart ne trouve rien.
+    contactGuideReseau: { updateMany: async () => ({ count: 0 }) },
     emailOpposition: {
       findUnique: async ({ where }: { where: Ligne }) => {
         if (where.id !== undefined) {

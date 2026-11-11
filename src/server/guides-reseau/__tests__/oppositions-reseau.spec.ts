@@ -27,6 +27,7 @@ const { interdit, bd, limite } = vi.hoisted(() => {
     limiteRefusee: false,
     effacement: false,
     videes: 0,
+    contacts: [] as Ligne[],
   };
   return {
     bd,
@@ -43,6 +44,25 @@ const { interdit, bd, limite } = vi.hoisted(() => {
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    contactGuideReseau: {
+      updateMany: async ({
+        where,
+        data,
+      }: {
+        where: { emailKey: string; merciStatut: { notIn: string[] } };
+        data: Ligne;
+      }) => {
+        const cibles = bd.contacts.filter(
+          (c) =>
+            c.emailKey === where.emailKey &&
+            !where.merciStatut.notIn.includes(String(c.merciStatut)),
+        );
+        for (const c of cibles) Object.assign(c, data);
+        return { count: cibles.length };
+      },
+      delete: interdit,
+      deleteMany: interdit,
+    },
     emailOpposition: {
       findUnique: async ({ where }: { where: Ligne }) => {
         bd.appelsPrisma++;
@@ -197,7 +217,7 @@ beforeEach(() => {
   bd.oppositions.length = bd.crm.length = bd.relances.length = 0;
   bd.enqueueEmail.length = bd.sentry.length = 0;
   bd.appelsPrisma = 0;
-  bd.outbox.length = bd.cles.length = 0;
+  bd.outbox.length = bd.cles.length = bd.contacts.length = 0;
   bd.crmPerd = false;
   bd.suppressions = 0;
   bd.effacement = false;
@@ -346,6 +366,43 @@ describe("opposition", () => {
     const r2 = await appel({ ...valide, occurredAt: "2001-01-01T00:00:00.000Z" });
     expect([r1.status, r2.status]).toEqual([200, 200]);
     expect(JSON.stringify(bd.oppositions)).not.toContain("2001");
+  });
+});
+
+describe("opposition : contacts de la page guide mis à l'écart", () => {
+  const cle = hashEmailForLookup(ADRESSE)!;
+  const cleAutre = hashEmailForLookup("autre@exemple.test")!;
+  const peupler = () =>
+    bd.contacts.push(
+      { id: "c1", emailKey: cle, merciStatut: "a_envoyer" },
+      { id: "c2", emailKey: cle, merciStatut: "envoye" },
+      { id: "c3", emailKey: cleAutre, merciStatut: "a_envoyer" },
+      { id: "marque", emailKey: "-", merciStatut: "a_envoyer" },
+    );
+  const statuts = () => bd.contacts.map((c) => c.merciStatut);
+
+  it("les contacts de l'adresse passent à ecarte ; autre adresse et marque '-' intactes ; zéro suppression", async () => {
+    peupler();
+    expect((await appel()).status).toBe(200);
+    expect(statuts()).toEqual(["ecarte", "ecarte", "a_envoyer", "a_envoyer"]);
+    expect(bd.contacts).toHaveLength(4);
+    expect(bd.suppressions).toBe(0);
+  });
+
+  it("adresse inconnue : 200 identique, aucune ligne touchée", async () => {
+    peupler();
+    const r = await appel({ ...valide, email: "inconnue@exemple.test" });
+    expect(r.status).toBe(200);
+    expect(await r.json()).toEqual({ ok: true, type: "opposition", recue: true });
+    expect(statuts()).toEqual(["a_envoyer", "envoye", "a_envoyer", "a_envoyer"]);
+  });
+
+  it("rejeu : aucun changement de plus", async () => {
+    peupler();
+    await appel();
+    const apres = JSON.stringify(bd.contacts);
+    expect((await appel()).status).toBe(200);
+    expect(JSON.stringify(bd.contacts)).toBe(apres);
   });
 });
 
