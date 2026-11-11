@@ -475,9 +475,10 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   // ── AI Act et impact projets ──────────────────────────────────────────────
   {
     id: "impl-050",
-    text: "L'AI Act européen prévoit des obligations spécifiques pour les systèmes IA « à haut risque » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, supervision humaine. Le calendrier d'application a été décalé par l'omnibus numérique : à vérifier sur EUR-Lex.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Annexe III",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "L'AI Act européen prévoit des obligations spécifiques pour les systèmes IA « à haut risque » (recrutement, crédit, contrôle des travailleurs) : documentation technique, évaluation de conformité, supervision humaine. Le règlement (UE) 2026/1744 (omnibus IA) les a reportées au 2 décembre 2027 pour ces usages de l'annexe III : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["implementations"],
     confidence: 0.8,

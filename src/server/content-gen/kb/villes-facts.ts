@@ -952,9 +952,10 @@ export const KB_VILLES_ECONOMY: readonly KbFact[] = [
 export const KB_AI_ACT: readonly KbFact[] = [
   {
     id: "ai-act-001",
-    text: "L'AI Act européen (Règlement UE 2024/1689) est entré en vigueur le 1er août 2024 avec une application progressive : interdictions des pratiques inacceptables depuis le 2 février 2025. Le calendrier des obligations pour les systèmes à haut risque a été décalé par l'omnibus numérique : vérifier les dates en vigueur sur EUR-Lex.",
-    source: "EUR-Lex — Règlement UE 2024/1689",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "L'AI Act européen (Règlement UE 2024/1689) est entré en vigueur le 1er août 2024, avec une application par étapes : pratiques interdites et maîtrise de l'IA (art. 4) depuis le 2 février 2025, modèles d'IA à usage général depuis le 2 août 2025, transparence (art. 50) depuis le 2 août 2026. Le règlement (UE) 2026/1744 (omnibus IA, en vigueur le 27 juillet 2026) a reporté les obligations des systèmes à haut risque au 2 décembre 2027 (annexe III) et au 2 août 2028 (annexe I). Dates à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["audits", "implementations"],
     confidence: 0.8,
@@ -1006,21 +1007,23 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-007",
-    text: "L'AI Act prévoit pour les systèmes d'IA à haut risque de l'annexe III une obligation d'enregistrement dans une base de données européenne avant leur mise sur le marché. La date d'application a été décalée par l'omnibus numérique : à vérifier sur EUR-Lex.",
-    source: "EUR-Lex — Règlement UE 2024/1689, Art. 49",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "L'AI Act prévoit pour les systèmes d'IA à haut risque de l'annexe III une obligation d'enregistrement dans une base de données européenne avant leur mise sur le marché. Comme les autres obligations de l'annexe III, elle a été reportée au 2 décembre 2027 par le règlement (UE) 2026/1744 (omnibus IA) : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.8,
   },
   {
     id: "ai-act-008",
-    text: "Les sanctions prévues par l'AI Act sont parmi les plus élevées au monde : jusqu'à 35 millions d'euros ou 7 % du CA mondial annuel pour violation des interdictions (Art. 5), 15 millions ou 3 % pour autres infractions.",
-    source: "EUR-Lex — Règlement UE 2024/1689, Art. 99",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-25",
+    text: "Les sanctions prévues par l'AI Act (art. 99) vont jusqu'à 35 millions d'euros ou 7 % du CA mondial annuel pour violation des interdictions (art. 5), 15 millions ou 3 % pour la plupart des autres manquements, et 7,5 millions ou 1 % pour des informations inexactes. Pour les PME, c'est le montant le plus bas des deux qui s'applique ; hors PME, c'est le plus élevé des deux. L'extension de ce régime aux petites entreprises de taille intermédiaire par le règlement (UE) 2026/1744 est à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.99,
+    confidence: 0.85,
   },
   {
     id: "ai-act-009",
@@ -1033,12 +1036,13 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-010",
-    text: "Chaque État membre de l'UE devait désigner ses autorités nationales compétentes pour superviser l'AI Act au plus tard le 2 août 2025. En France, la CNIL a été confirmée dans un rôle central de la supervision des systèmes d'IA, aux côtés d'autres autorités sectorielles selon les domaines concernés.",
-    source: "EUR-Lex — Règlement UE 2024/1689, Art. 70",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-08-11",
+    text: "Chaque État membre de l'UE devait désigner ses autorités nationales compétentes pour l'AI Act au plus tard le 2 août 2025. En France, la loi de désignation était encore en discussion au Parlement à l'automne 2026 ; le schéma envisagé confie la coordination à la DGCCRF et un rôle central à la CNIL. État de la désignation : à vérifier sur Légifrance.",
+    source:
+      "EUR-Lex — Règlement UE 2024/1689, art. 70 ; projet de loi de désignation (France, en discussion)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.92,
+    confidence: 0.7,
   },
   {
     id: "ai-act-011",
@@ -1150,18 +1154,20 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-024",
-    text: "L'AI Act prévoit des dispositions transitoires pour les systèmes d'IA à haut risque déjà sur le marché avant la date d'application. Leur périmètre et leurs échéances ont été modifiés par l'omnibus numérique : à vérifier sur EUR-Lex.",
-    source: "EUR-Lex — Règlement UE 2024/1689, Art. 111",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "L'AI Act prévoit des dispositions transitoires pour les systèmes d'IA à haut risque déjà sur le marché avant la date d'application. Le règlement (UE) 2026/1744 (omnibus IA) a déplacé ces dates d'application au 2 décembre 2027 (annexe III) et au 2 août 2028 (annexe I) ; le détail des régimes transitoires est à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.8,
   },
   {
     id: "ai-act-025",
-    text: "Les obligations de transparence de l'AI Act (art. 50) imposent notamment d'informer les personnes qu'elles échangent avec un chatbot ou un assistant virtuel, sauf si cela ressort clairement du contexte. Les échéances de mise en conformité : à vérifier sur EUR-Lex.",
-    source: "EUR-Lex — Règlement UE 2024/1689, Art. 50",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "Les obligations de transparence de l'AI Act (art. 50) imposent notamment d'informer les personnes qu'elles échangent avec un chatbot ou un assistant virtuel, sauf si cela ressort clairement du contexte. Elles s'appliquent depuis le 2 août 2026 ; le règlement (UE) 2026/1744 (omnibus IA) n'a différé que le marquage technique des contenus générés, au 2 décembre 2026, pour les systèmes déjà sur le marché. À vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["implementations"],
     confidence: 0.8,
@@ -1195,10 +1201,11 @@ export const KB_AI_ACT: readonly KbFact[] = [
   },
   {
     id: "ai-act-029",
-    text: "Le Conseil National du Numérique (CNNum) estime le coût moyen de mise en conformité AI Act pour une PME française à 50 000–200 000 euros, incluant audit, documentation technique, formation et adaptation des processus." /* price-exempt: coût conformité marché CNNum, pas un tarif Axion */,
-    source: "CNNum — Rapport AI Act & PME 2025",
-    sourceUrl: "https://www.cnnumerique.fr",
-    verifiedAt: "2026-05-25",
+    text: "L'article 4 de l'AI Act (maîtrise de l'IA) s'applique depuis le 2 février 2025 à toute entreprise qui utilise un système d'IA. Le règlement (UE) 2026/1744 (omnibus IA) l'a réécrit : l'entreprise prend des mesures pour favoriser la maîtrise de l'IA de ses équipes, sans devoir garantir un niveau précis à chaque personne ; la Commission et les États membres doivent soutenir ces efforts, en particulier pour les PME. Libellé exact : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.75,
   },

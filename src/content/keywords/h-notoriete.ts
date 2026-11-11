@@ -414,10 +414,10 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "AI Act et PME françaises — Ce que la conformité implique concrètement",
+      h1: "AI Act et PME françaises : se préparer en 2026, concrètement",
       metaTitle: "AI Act impact PME France 2026 — Guide conformité",
       metaDescription:
-        "L'AI Act entre en vigueur : obligations réelles pour les PME françaises en 2026. Ce qu'il faut faire maintenant pour rester conforme sans sur-investir.",
+        "AI Act : ce qui s'applique déjà aux PME (art. 4, 5 et 50) et ce qui est reporté (haut risque, décembre 2027, annexe III). Agir sans sur-investir.",
       h2Variants: [
         "Quelles PME sont concernées par l'AI Act en 2026 ?",
         "Les obligations concrètes article par article pour les PME",
@@ -426,7 +426,7 @@ export const KW_NOTORIETE_H: KeywordSeed[] = [
     },
     urlCible: "/fr/ressources/ai-act-pme-france-conformite",
     source: "manuel",
-    note: "URGENT — deadline art. 50 août 2026 (P0 audit city domination). Requête très citée — schema LegalDocument + FAQ AEO",
+    note: "URGENT — art. 50 applicable depuis le 2 août 2026 (P0 audit city domination). Requête très citée — schema LegalDocument + FAQ AEO",
   },
 
   {

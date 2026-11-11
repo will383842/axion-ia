@@ -33,9 +33,10 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-002",
-    text: "Le règlement européen sur l'IA (AI Act, Règlement UE 2024/1689) prévoit des obligations renforcées pour les systèmes d'IA dits « à haut risque » (par exemple recrutement et gestion du personnel, évaluation de la solvabilité), avec une évaluation de conformité à la charge du fournisseur du système. Le calendrier d'application de ces obligations a été décalé par l'« omnibus numérique » : vérifier la date en vigueur sur EUR-Lex avant de s'y engager.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act)",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "Le règlement européen sur l'IA (AI Act, Règlement UE 2024/1689) prévoit des obligations renforcées pour les systèmes d'IA dits « à haut risque » (par exemple recrutement et gestion du personnel, évaluation de la solvabilité), avec une évaluation de conformité à la charge du fournisseur du système. Le règlement (UE) 2026/1744 (« omnibus IA », en vigueur le 27 juillet 2026) a reporté ces obligations au 2 décembre 2027 pour les systèmes de l'annexe III et au 2 août 2028 pour l'IA intégrée dans des produits réglementés (annexe I). Vérifier le texte consolidé sur EUR-Lex avant de s'y engager.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.8,
@@ -253,9 +254,10 @@ export const KB_AUDITS: readonly KbFact[] = [
   // ── AI Act et conformité européenne ───────────────────────────────────────
   {
     id: "audit-026",
-    text: "L'AI Act (art. 50) prévoit des obligations de transparence ciblées : informer la personne qu'elle échange avec une IA, signaler les hypertrucages (deepfakes) et certains textes d'information du public générés par IA sans relecture éditoriale humaine. Elles ne visent pas tous les contenus produits avec une IA ; l'art. 50(2) impose en outre aux fournisseurs de systèmes d'IA générative de marquer les contenus synthétiques de façon lisible par machine (obligation du fournisseur de l'outil, pas de l'entreprise qui publie). Dates d'application et délais de mise en conformité : à vérifier sur EUR-Lex (modifiés par l'omnibus numérique).",
-    source: "EUR-Lex — Règlement UE 2024/1689 art. 50",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "L'AI Act (art. 50) prévoit des obligations de transparence ciblées, applicables depuis le 2 août 2026 : informer la personne qu'elle échange avec une IA, signaler les hypertrucages (deepfakes) et certains textes d'information du public générés par IA sans relecture éditoriale humaine. Elles ne visent pas tous les contenus produits avec une IA ; l'art. 50(2) impose en outre aux fournisseurs de systèmes d'IA générative de marquer les contenus synthétiques de façon lisible par machine (obligation du fournisseur de l'outil, pas de l'entreprise qui publie). Selon le règlement (UE) 2026/1744, ce marquage bénéficie d'un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["audits"],
     confidence: 0.8,
