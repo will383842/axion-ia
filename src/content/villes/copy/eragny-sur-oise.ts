@@ -64,7 +64,7 @@ export const ERAGNY_SUR_OISE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
+      q: "Comment se déroule une mission à Éragny-sur-Oise ?",
       a: "Cergy-Pontoise (5 min). Paris La Défense (30 min RER A). Paris centre (40 min). CDG (40 min).",
     },
   ],

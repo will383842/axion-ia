@@ -64,7 +64,7 @@ export const CHATILLON_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Musée du Châtillonnais et du Vase de Vix.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Dijon ?",
+      q: "Comment se déroule une mission à Châtillon-sur-Seine ?",
       a: "Dijon à 1h10 (TER). Paris à 2h30 par A5. Troyes à 1h.",
     },
   ],

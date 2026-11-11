@@ -245,7 +245,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
       a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un chantier réservé aux grands groupes.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Coudekerque-Branche ?",
       a: "Le diagnostic et les sessions clés se déroulent sur site à Coudekerque-Branche ; le suivi se poursuit en visio.",
     },
   ],

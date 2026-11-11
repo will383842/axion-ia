@@ -64,7 +64,7 @@ export const DRAP_COPY: VilleCopy = {
       a: "Pour les professions libérales de Drap (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1 personnalisé.",
     },
     {
-      q: "Comment se déroule une mission à Drap depuis Nice ?",
+      q: "Comment se déroule une mission à Drap ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

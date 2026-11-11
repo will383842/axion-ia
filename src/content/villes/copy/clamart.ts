@@ -245,7 +245,7 @@ export const CLAMART_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Clamart respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Clamart ?",
       a: "Clamart est à environ 15 min de Paris-Montparnasse par le Transilien. Nous nous déplaçons sur site.",
     },
     {

@@ -49,7 +49,7 @@ export const EU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Eu et sur la cote du Treport ?",
-      a: "Oui, Axion-IA intervient a Eu et sur toute la cote (Le Treport, Mers-les-Bains, Criel-sur-Mer). Consultants depuis Rouen (1h30) ou Amiens (1h15).",
+      a: "Oui, Axion-IA intervient a Eu et sur toute la cote (Le Treport, Mers-les-Bains, Criel-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les acteurs du tourisme a Eu ?",

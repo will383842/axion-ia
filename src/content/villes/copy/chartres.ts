@@ -245,7 +245,7 @@ export const CHARTRES_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Chartres respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Chartres ?",
       a: "Chartres est à environ 1h de Paris-Montparnasse en TER direct. Nous nous déplaçons sur site.",
     },
     {

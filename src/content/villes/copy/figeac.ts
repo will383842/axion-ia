@@ -64,7 +64,7 @@ export const FIGEAC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergements, restaurants et acteurs touristiques sur le chemin de Saint-Jacques : chatbots multilingues pèlerins, automatisation réservations, classification avis, marketing IA ciblé saison pèlerinage.",
     },
     {
-      q: "Comment se passe une mission à Figeac depuis Toulouse ?",
+      q: "Comment se déroule une mission à Figeac ?",
       a: "Figeac est à 1h40 de Toulouse par A20. Gare SNCF Figeac (ligne Brive-Toulouse). Pour missions multi-jours, hébergement local centre médiéval. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

@@ -245,7 +245,7 @@ export const BETHUNE_COPY: VilleCopy = {
       a: "Oui, pour l'agroalimentaire : automatisation de la traçabilité, prédiction de la demande, contrôle qualité. Pour la logistique : optimisation des flux et des tournées, agents conversationnels.",
     },
     {
-      q: "Comment se déroule une mission depuis Lille ou Paris ?",
+      q: "Comment se déroule une mission à Béthune ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio.",
     },
   ],

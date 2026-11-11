@@ -49,7 +49,7 @@ export const CONDE_EN_NORMANDIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Condé-en-Normandie et dans le bocage sud ?",
-      a: "Oui, Axion-IA intervient à Condé-en-Normandie et tout le bocage sud-Calvados (Souleuvre-en-Bocage, Valdallière, Athis-Val-de-Rouvre). Consultants depuis Caen (1h10 A84) ou Flers (15 min).",
+      a: "Oui, Axion-IA intervient à Condé-en-Normandie et tout le bocage sud-Calvados (Souleuvre-en-Bocage, Valdallière, Athis-Val-de-Rouvre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bocage ?",

@@ -49,7 +49,7 @@ export const BONSECOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bonsecours et dans l'agglo de Rouen ?",
-      a: "Oui, Axion-IA intervient a Bonsecours et dans toute la metropole rouennaise (Rouen, Le Mesnil-Esnard, Darnetal, Bihorel). Consultants depuis Rouen (10 min) ou Paris (1h25).",
+      a: "Oui, Axion-IA intervient a Bonsecours et dans toute la metropole rouennaise (Rouen, Le Mesnil-Esnard, Darnetal, Bihorel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales de Bonsecours ?",

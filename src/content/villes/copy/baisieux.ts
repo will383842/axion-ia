@@ -60,7 +60,7 @@ export const BAISIEUX_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs transfrontaliers à Baisieux. Cas typiques IA : agents conversationnels bilingues FR/NL, automatisation documents douaniers, optimisation flux logistique cross-border Lille-Tournai-Bruxelles.",
     },
     {
-      q: "Comment se passe une mission à Baisieux depuis Lille ?",
+      q: "Comment se déroule une mission à Baisieux ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
     {

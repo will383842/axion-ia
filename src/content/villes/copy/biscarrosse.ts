@@ -64,7 +64,7 @@ export const BISCARROSSE_COPY: VilleCopy = {
       a: "Pour les PME papetières et forestières autour de Biscarrosse, nous proposons audit IA, implémentation prédiction maintenance, optimisation logistique supply chain bois, classification qualité produits, automatisation reporting production.",
     },
     {
-      q: "Comment se déroule une mission à Biscarrosse depuis Bordeaux ?",
+      q: "Comment se déroule une mission à Biscarrosse ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local (hôtels Biscarrosse-Bourg ou Biscarrosse-Plage). Tarifs publics.",
     },
   ],

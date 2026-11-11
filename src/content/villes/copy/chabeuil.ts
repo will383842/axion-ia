@@ -64,7 +64,7 @@ export const CHABEUIL_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chabeuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Paris ?",
+      q: "Comment se déroule une mission à Chabeuil ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

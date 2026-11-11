@@ -49,7 +49,7 @@ export const FALAISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Falaise et dans le pays de Falaise ?",
-      a: "Oui, Axion-IA intervient à Falaise et tout le pays de Falaise (Potigny, Morteaux-Couliboeuf, Saint-Pierre-Canivet). Consultants depuis Caen (35 min N158).",
+      a: "Oui, Axion-IA intervient à Falaise et tout le pays de Falaise (Potigny, Morteaux-Couliboeuf, Saint-Pierre-Canivet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de Falaise ?",

@@ -49,7 +49,7 @@ export const BRINDAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brindas et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Brindas et tout l'ouest lyonnais (Craponne à 5 min, Vaugneray, Francheville, monts du Lyonnais). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Brindas et tout l'ouest lyonnais (Craponne à 5 min, Vaugneray, Francheville, monts du Lyonnais). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales brindassiens ?",
@@ -64,7 +64,7 @@ export const BRINDAS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Brindas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Brindas ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

@@ -64,7 +64,7 @@ export const DOL_DE_BRETAGNE_COPY: VilleCopy = {
       a: "Outils prédictifs de rendement, gestion parcellaire augmentée, automatisation traçabilité et facturation, optimisation circuits courts, CRM vente directe et marchés pour maraîchers et agriculteurs.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Rennes ?",
+      q: "Comment se déroule une mission à Dol-de-Bretagne ?",
       a: "Paris-Rennes en 1h25 (TGV direct), puis Rennes-Dol en 30 min (TER). Saint-Malo à 25 min. Mission sur site 1 à 5 jours selon le format.",
     },
   ],

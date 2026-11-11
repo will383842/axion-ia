@@ -49,7 +49,7 @@ export const CUGAND_LA_BERNARDIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cugand-la-Bernardière et dans le vignoble nantais ?",
-      a: "Oui, Axion-IA intervient à Cugand-la-Bernardière et dans tout le secteur Clisson / vignoble nantais. Consultants depuis Nantes (30 min) ou gare SNCF Clisson (5 min, TER direct).",
+      a: "Oui, Axion-IA intervient à Cugand-la-Bernardière et dans tout le secteur Clisson / vignoble nantais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs du muscadet Sèvre-et-Maine ?",

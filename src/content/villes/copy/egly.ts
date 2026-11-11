@@ -64,7 +64,7 @@ export const EGLY_COPY: VilleCopy = {
       a: "Pour les PME du sud Essonne, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Égly ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Accès rapide via RER C Brétigny ou route RN20.",
     },
   ],

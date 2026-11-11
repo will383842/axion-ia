@@ -64,7 +64,7 @@ export const FONTAINEBLEAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons l'hôtellerie et la restauration haut de gamme à Fontainebleau : automatisation gestion réservations, yield management IA, chatbots conciergerie multilingues, analyse satisfaction client, optimisation staffing saisonnier.",
     },
     {
-      q: "Comment se déroule une mission Axion-IA depuis Paris ?",
+      q: "Comment se déroule une mission Axion-IA à Fontainebleau ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Missions multi-jours possibles avec hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

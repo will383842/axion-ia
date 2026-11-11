@@ -68,7 +68,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
       a: "Absolument. Toutes nos implémentations respectent le RGPD : minimisation des données, hébergement maîtrisé et traçabilité. C'est un point central de nos missions auprès des cabinets et praticiens chamalièrois.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
+      q: "Comment se déroule une mission à Chamalières ?",
       a: "Le diagnostic et les sessions clés se font sur site à Chamalières ; le suivi se poursuit en visio.",
     },
   ],

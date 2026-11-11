@@ -131,7 +131,7 @@ export const DRAVEIL_COPY: VilleCopy = {
             a: "En Union européenne, par défaut, en conformité RGPD. C'est un point important pour les structures draveilloises manipulant des données sensibles — services à la personne, secteur santé-gériatrie autour de Joffre-Dupuytren, cabinets libéraux. Vous gardez la propriété du code et des accès, sans verrou éditeur.",
           },
           {
-            q: "Comment se passe une mission depuis Paris ?",
+            q: "Comment se déroule une mission à Draveil ?",
             a: "Nous intervenons partout en France, sur place ou à distance. Kick-off et passation en présentiel — au commerce, au cabinet ou sur la ZA de Mainville ; itérations à distance. Devis sous 24 à 48 h selon la complexité.",
           },
         ],
@@ -245,7 +245,7 @@ export const DRAVEIL_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Draveil ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

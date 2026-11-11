@@ -64,7 +64,7 @@ export const ARGENTAN_COPY: VilleCopy = {
       a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME agroalimentaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Caen ?",
+      q: "Comment se déroule une mission à Argentan ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

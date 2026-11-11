@@ -245,7 +245,7 @@ export const BOBIGNY_COPY: VilleCopy = {
       a: "Non. Nous partons de vos outils existants et démarrons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, sans recruter de profil technique.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Bobigny ?",
       a: "Le diagnostic et les sessions clés se font sur site à Bobigny ; le suivi se poursuit en visio. La proximité de Paris (15 min) permet des déplacements rapides, dont les frais sont indiqués séparément, en toute transparence.",
     },
   ],

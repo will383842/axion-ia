@@ -64,7 +64,7 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
       a: "Pour les exploitants agricoles et maraîchers du val de Lys, nous proposons audit sur place {{price:audit-flash|flat}}, implémentation IA prédiction récoltes, classification photos cultures, optimisation vente directe et traçabilité parcelles.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Erquinghem-Lys ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site à Erquinghem-Lys ou en visio.",
     },
   ],

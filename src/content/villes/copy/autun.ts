@@ -49,7 +49,7 @@ export const AUTUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Autun et dans le Morvan ?",
-      a: "Oui, Axion-IA intervient à Autun et tout le sud Saône-et-Loire / Morvan. Consultants depuis Le Creusot-TGV (30 min), Chalon-sur-Saône (50 min), Dijon (1h15), Lyon (2h).",
+      a: "Oui, Axion-IA intervient à Autun et tout le sud Saône-et-Loire / Morvan. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial autunois ?",
@@ -64,7 +64,7 @@ export const AUTUN_COPY: VilleCopy = {
       a: "Audit complet processus IA, implémentation agents conversationnels B2B, automatisation workflow documentaire, CRM augmenté, formation équipes. Tarifs publics adaptés PME.",
     },
     {
-      q: "Comment se passe une mission depuis Dijon ou Lyon ?",
+      q: "Comment se déroule une mission à Autun ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

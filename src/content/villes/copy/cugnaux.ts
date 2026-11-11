@@ -245,7 +245,7 @@ export const CUGNAUX_COPY: VilleCopy = {
       a: "Agents conversationnels, automatisation de la relation client, CRM augmentés et plateformes web sur mesure. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Toulouse ?",
+      q: "Comment se déroule une mission à Cugnaux ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {

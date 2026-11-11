@@ -232,7 +232,7 @@ export const CERGY_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à Cergy ?",
-      a: "Depuis Paris, nous rejoignons Cergy en RER A (~30 min depuis La Défense) ou en voiture via l'A15. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Cergy ?",

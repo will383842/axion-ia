@@ -49,7 +49,7 @@ export const GENLIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Genlis et dans l'est dijonnais ?",
-      a: "Oui, Axion-IA intervient à Genlis et dans toute la plaine de Saône est dijonnais (Auxonne, Longvic, Chevigny-Saint-Sauveur, Saint-Apollinaire). Consultants depuis Dijon (20 min).",
+      a: "Oui, Axion-IA intervient à Genlis et dans toute la plaine de Saône est dijonnais (Auxonne, Longvic, Chevigny-Saint-Sauveur, Saint-Apollinaire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP et second œuvre ?",

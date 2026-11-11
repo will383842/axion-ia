@@ -49,7 +49,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beuvrages et Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Beuvrages et tout le Valenciennois (Anzin limitrophe, Valenciennes, Saint-Saulve, Bruay-sur-l'Escaut). Consultants depuis Lille (45 min).",
+      a: "Oui, Axion-IA intervient à Beuvrages et tout le Valenciennois (Anzin limitrophe, Valenciennes, Saint-Saulve, Bruay-sur-l'Escaut). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP beuvrageois ?",
@@ -64,7 +64,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Beuvrages, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Beuvrages ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],

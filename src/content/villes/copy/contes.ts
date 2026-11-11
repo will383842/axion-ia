@@ -64,7 +64,7 @@ export const CONTES_COPY: VilleCopy = {
       a: "Pour les commerçants de Contes, nous proposons : gestion stocks prédictive, agents conversationnels client, automatisation commandes fournisseurs, CRM fidélisation, marketing digital. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
-      q: "Comment se déroule une mission à Contes depuis Nice ?",
+      q: "Comment se déroule une mission à Contes ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

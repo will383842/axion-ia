@@ -245,7 +245,7 @@ export const FRONTIGNAN_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : restaurateurs, hôteliers, commerçants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : agents conversationnels multilingues et réservations automatisées.",
     },
     {
-      q: "Comment se déroule une mission depuis Montpellier ?",
+      q: "Comment se déroule une mission à Frontignan ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],

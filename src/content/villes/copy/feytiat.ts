@@ -64,7 +64,7 @@ export const FEYTIAT_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Feytiat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission à Feytiat depuis Limoges ?",
+      q: "Comment se déroule une mission à Feytiat ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Feytiat est desservie par le réseau STLC. Visio également possible.",
     },
   ],

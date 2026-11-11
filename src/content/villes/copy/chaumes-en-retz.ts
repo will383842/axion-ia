@@ -49,7 +49,7 @@ export const CHAUMES_EN_RETZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chaumes-en-Retz et Pays de Retz ?",
-      a: "Oui, Axion-IA intervient à Chaumes-en-Retz et tout le Pays de Retz (Pornic, Sainte-Pazanne, Machecoul-Saint-Même). Consultants depuis Nantes (40 min). Couverture complète du sud-ouest Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Chaumes-en-Retz et tout le Pays de Retz (Pornic, Sainte-Pazanne, Machecoul-Saint-Même). Nous intervenons partout en France, sur place ou à distance. Couverture complète du sud-ouest Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles de Chaumes-en-Retz ?",

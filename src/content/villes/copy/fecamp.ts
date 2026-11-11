@@ -64,7 +64,7 @@ export const FECAMP_COPY: VilleCopy = {
       a: "L'audit sur place propose un tarif d'entrée accessible pour les TPE. Pour les PME maritimes et touristiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Le Havre ou Paris ?",
+      q: "Comment se déroule une mission à Fécamp ?",
       a: "Nos consultants viennent du Havre (40 min) ou de Paris (2h30 voiture, ou TGV Le Havre + voiture).",
     },
   ],

@@ -64,7 +64,7 @@ export const CHARNAY_LES_MACON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stock.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Charnay-lès-Mâcon ?",
       a: "Lyon à 1h par A6. Gare TGV Mâcon-Loché à 10 min de Charnay.",
     },
   ],

@@ -232,7 +232,7 @@ export const BEZONS_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Bezons (Val-d'Oise) ?",
-      a: "Oui, nos consultants se rendent à Bezons via le tramway T2 depuis La Défense (12 minutes) ou les autoroutes A14, A15 et A86.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Bezons ?",

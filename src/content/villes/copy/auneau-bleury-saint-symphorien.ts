@@ -49,7 +49,7 @@ export const AUNEAU_BLEURY_SAINT_SYMPHORIEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auneau-Bleury-Saint-Symphorien et en Beauce ?",
-      a: "Oui, Axion-IA intervient à Auneau-Bleury-Saint-Symphorien et toute la Beauce eurélienne (Janville-en-Beauce, Voves, Orgères-en-Beauce). Consultants depuis Paris (1h15) ou Chartres (25 min).",
+      a: "Oui, Axion-IA intervient à Auneau-Bleury-Saint-Symphorien et toute la Beauce eurélienne (Janville-en-Beauce, Voves, Orgères-en-Beauce). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants céréaliers de Beauce ?",

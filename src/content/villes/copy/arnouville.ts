@@ -49,7 +49,7 @@ export const ARNOUVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arnouville et bassin Gonesse-Sarcelles ?",
-      a: "Oui, Axion-IA intervient à Arnouville et tout le bassin Gonesse-Sarcelles (Garges-lès-Gonesse, Villiers-le-Bel, Sarcelles, Gonesse). Consultants depuis Paris Gare du Nord (20 min Transilien H).",
+      a: "Oui, Axion-IA intervient à Arnouville et tout le bassin Gonesse-Sarcelles (Garges-lès-Gonesse, Villiers-le-Bel, Sarcelles, Gonesse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants arnouvillois ?",
@@ -64,7 +64,7 @@ export const ARNOUVILLE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires du nord francilien installées à Arnouville, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Arnouville ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Proximité Roissy-CDG (15 min).",
     },
   ],

@@ -64,8 +64,8 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
       a: "Pour les TPE et professions libérales à Basse-Goulaine, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification dossiers, automatisation courrier et facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants sont à Basse-Goulaine en 10 min depuis Nantes centre via le périphérique sud-est. Première couronne de Nantes Métropole. Tarifs publics et transparents.",
+      q: "Comment se déroule une mission à Basse-Goulaine ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Première couronne de Nantes Métropole. Tarifs publics et transparents.",
     },
   ],
 };

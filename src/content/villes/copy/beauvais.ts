@@ -245,7 +245,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
       a: "Oui, le hub low-cost Beauvais-Tillé génère un écosystème logistique et de services que nous accompagnons : optimisation des flux, agents conversationnels multilingues, automatisation administrative.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Beauvais ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],

@@ -49,7 +49,7 @@ export const FOUQUIERES_LES_LENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Fouquieres-les-Lens et dans le Lensois ?",
-      a: "Oui, Axion-IA intervient a Fouquieres-les-Lens et dans toute l'agglomeration lensoise (Lens, Lievin, Henin-Beaumont, Noyelles-sous-Lens). Consultants depuis Lille (45 min TER) ou Paris (TGV 1h10 via Lens).",
+      a: "Oui, Axion-IA intervient a Fouquieres-les-Lens et dans toute l'agglomeration lensoise (Lens, Lievin, Henin-Beaumont, Noyelles-sous-Lens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les artisans de Fouquieres-les-Lens ?",

@@ -49,7 +49,7 @@ export const FOUESNANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fouesnant et en Cornouaille ?",
-      a: "Oui, Axion-IA intervient à Fouesnant et toute la Cornouaille (Quimper, Concarneau, Bénodet, Pont-l'Abbé, Pont-Aven). Nos consultants viennent via TGV Quimper (20 min depuis Fouesnant) ou par Quimper Cornouaille aéroport (25 min).",
+      a: "Oui, Axion-IA intervient à Fouesnant et toute la Cornouaille (Quimper, Concarneau, Bénodet, Pont-l'Abbé, Pont-Aven). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professionnels du tourisme à Fouesnant ?",

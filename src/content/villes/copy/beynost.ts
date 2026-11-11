@@ -72,7 +72,7 @@ export const BEYNOST_COPY: VilleCopy = {
       a: "Non. Notre cœur de cible, ce sont les TPE et PME de la Côtière. On démarre petit avec un Audit sur place à tarif public et un ROI quantifié avant tout engagement.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Beynost ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

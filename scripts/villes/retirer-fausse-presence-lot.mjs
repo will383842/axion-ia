@@ -1,16 +1,25 @@
 #!/usr/bin/env node
 /**
  * Retire la fausse présence locale des textes `src/content/villes/copy/*.ts`,
- * TRANCHE 1 SUR 3 (le premier tiers des fichiers, par ordre alphabétique).
+ * LOT 1 SUR 3, borné PAR NOM DE FICHIER (abbeville.ts incluse → gentilly.ts
+ * exclue). Les bornes ne dépendent plus du nombre de fichiers : ajouter une
+ * ville ne déplace plus la frontière entre les lots, et aucun fichier n'est
+ * traité par deux lots (le lot 2 commence à gentilly.ts).
  *
  * Axion-IA n'a ni bureau ni consultant basé localement : elle intervient
  * partout en France, sur place ou à distance. Phrases traitées, PHRASE PAR
  * PHRASE (jamais un fragment), remplacées par `NOUVELLE` — ou retirées si la
  * ligne dit déjà « partout en France » :
- *   · « Nos consultants/équipes/experts viennent de X », « interviennent
+ *   · « Nos consultants/équipes/experts (IA) viennent de X », « interviennent
  *     (à X) depuis Y », « rejoignent X … », « couvrent … depuis Y »,
- *     « se déplacent … depuis Y », « sont basés … » ;
- *   · la phrase autonome « Depuis <Ville> (n min). ».
+ *     « se déplacent … depuis Y », « sont basés … » (ainsi que « Notre équipe »
+ *     et « Williams » quand ils « se déplacent … depuis ») ;
+ *   · A · « Consultants depuis <Ville> (n min). » (sans « Nos ») ;
+ *   · la phrase autonome « Depuis <Ville> (n min). » ;
+ *   · B · la question « Comment se passe/déroule une mission … depuis <Ville> ? »
+ *     devient « Comment se déroule une mission à <Ville> ? » (au / aux / à) ;
+ *   · C · « Depuis Paris, nous rejoignons X… », « …rejoignent le site depuis
+ *     Paris-Montparnasse », « — environ N km depuis Paris… ».
  * Même méthode que `retirer-consultants-viennent-de.mjs` (#1911).
  *
  * Usage :
@@ -37,17 +46,43 @@ const DRY_RUN = process.argv.includes("--dry-run");
 
 export const NOUVELLE = "Nous intervenons partout en France, sur place ou à distance.";
 
+/** Bornes du lot 1, par NOM de fichier : [DEBUT, FIN[ (FIN exclue = début du lot 2). */
+export const DEBUT = "abbeville.ts";
+export const FIN_EXCLUE = "gentilly.ts";
+
 const FIN = String.raw`[^."]*\.(?= |"|$)`;
-const SUJET = String.raw`Nos (?:consultants|équipes|experts)(?: seniors)? `;
-const VERBE = String.raw`(?:viennent (?:de|depuis)|se déplacent[^."]{0,40}depuis|interviennent (?:à [^."]{0,40} )?depuis|rejoignent|couvrent[^."]{0,80}depuis|sont basés?)`;
+const SUJET = String.raw`[Nn]os (?:consultants|équipes|experts)(?: IA)?(?: seniors)? `;
+const VERBE = String.raw`(?:viennent (?:de|depuis|via)|rejoignent|sont basés?|[^."]{0,100}\bdepuis (?:[A-ZÉ]|la gare|le centre|l['’]))`;
 export const PHRASE_PRESENCE = new RegExp(
-  String.raw`(^ *|["“] ?|[.!?] )${SUJET}${VERBE}${FIN}`,
+  String.raw`(^ *|["“] ?|[.!?] |Oui, )${SUJET}${VERBE}${FIN}`,
   "gu",
 );
 export const PHRASE_DEPUIS = new RegExp(
-  String.raw`(^ *|["“] ?|[.!?] )Depuis [A-ZÉ][^."()]{1,40}\(\d+ ?(?:h ?\d*|min)[^."()]*\)\.(?= |"|$)`,
+  String.raw`(^ *|["“] ?|[.!?] )[Dd]epuis [A-ZÉ][^."()]{1,40}\(\d+ ?(?:h ?\d*|min)[^."()]*\)\.(?= |"|$)`,
   "gu",
 );
+/** A · « Consultants depuis <Ville> (n min) ou … (n min). » (sans « Nos »). */
+export const PHRASE_CONSULTANTS_DEPUIS = new RegExp(
+  String.raw`(^ *|["“] ?|[.!?] )[Cc]onsultants depuis ${FIN}`,
+  "gu",
+);
+/** C · « Depuis Paris, nous rejoignons Cergy en RER A … ». */
+export const PHRASE_DEPUIS_NOUS_REJOIGNONS = new RegExp(
+  String.raw`(^ *|["“] ?|[.!?] )[Dd]epuis [A-ZÉ][^."(),]{1,40}, nous rejoignons ${FIN}`,
+  "gu",
+);
+/** C · « Notre équipe / Williams se déplace … depuis Paris en 25 minutes … ». */
+export const PHRASE_PARIS_EN_MINUTES = new RegExp(
+  String.raw`(^ *|["“] ?|[.!?] )(?:[Nn]otre équipe|Williams) se déplace[^."]{0,40}depuis Paris en \d+ ?min${FIN}`,
+  "gu",
+);
+/** C · bouts de phrase à retirer sans toucher au reste de la phrase. */
+export const BOUTS = [
+  // « …; nos consultants rejoignent le site depuis Paris-Montparnasse via Angers ou Nantes. »
+  / ?; [Nn]os (?:consultants|experts)(?: IA)? rejoignent le site depuis [^."]*(?=\.)/gu,
+  // « …mise en route — environ 10 km depuis Paris via T1, T2. »
+  / [—–-] environ \d+ ?km depuis [A-ZÉ][^."]*(?=\.)/gu,
+];
 
 /** Bouts orphelins laissés par le remplacement : retirés (jamais remplacés). */
 export const ORPHELINS = [
@@ -62,35 +97,68 @@ export const ORPHELINS = [
   /(?<=[.!?] )Depuis [A-ZÉ][^."()]{1,40}\(\d+ ?(?:min|h)[^."()]*\) ou [^."]*\.(?: |(?="|$))/gu,
 ];
 
-function nettoyer(ligne) {
+/** B · « Comment se passe/déroule une mission [IA|Axion-IA] [à X] depuis … ? » */
+export const QUESTION_MISSION_DEPUIS =
+  /"Comment se (?:passe|déroule) une mission((?: IA| Axion-IA| transfrontalière)?(?: à [^"?]+?| en Corse)?) depuis [^"]*\?"/gu;
+
+/** « Abbeville » → « à Abbeville » ; « Le Havre » → « au Havre » ; « Les Mureaux » → « aux Mureaux ». */
+export function aLaVille(nom) {
+  if (/^Le /u.test(nom)) return `au ${nom.slice(3)}`;
+  if (/^Les /u.test(nom)) return `aux ${nom.slice(4)}`;
+  return `à ${nom}`;
+}
+
+/** Nom de la ville, lu dans le commentaire d'en-tête « // <Ville> (80, Somme) … ». */
+export function nomVille(texte) {
+  return /^\/\/ (.+?) \(\d[\dAB]*[,)]/mu.exec(texte)?.[1] ?? null;
+}
+
+function reecrireQuestion(ligne, ville) {
+  return ligne.replace(QUESTION_MISSION_DEPUIS, (m, milieu) => {
+    if (/ (?:à|en) /u.test(milieu)) return `"Comment se déroule une mission${milieu} ?"`;
+    if (!ville) return m;
+    return `"Comment se déroule une mission${milieu} ${aLaVille(ville)} ?"`;
+  });
+}
+
+function nettoyer(ligne, ville) {
   const dejaDit = ligne.includes("partout en France");
-  const remplace = (_m, avant, decalage, tout) => {
+  const remplace = (_m, avantBrut, decalage, tout) => {
+    const avant = avantBrut === "Oui, " ? "Oui. " : avantBrut;
     if (!dejaDit) return `${avant}${NOUVELLE}`;
     const seule = avant.startsWith('"') && tout[decalage + _m.length] === '"';
     if (seule) return `${avant}${NOUVELLE}`;
     return avant.startsWith('"') || avant.trim() === "" ? avant : avant.slice(0, -1);
   };
-  let l = ligne.replace(PHRASE_PRESENCE, remplace).replace(PHRASE_DEPUIS, remplace);
+  let l = reecrireQuestion(ligne, ville);
+  l = l
+    .replace(PHRASE_PRESENCE, remplace)
+    .replace(PHRASE_DEPUIS, remplace)
+    .replace(PHRASE_CONSULTANTS_DEPUIS, remplace)
+    .replace(PHRASE_DEPUIS_NOUS_REJOIGNONS, remplace)
+    .replace(PHRASE_PARIS_EN_MINUTES, remplace);
+  for (const b of BOUTS) l = l.replace(b, "");
   for (const o of ORPHELINS) l = l.replace(o, "");
   return l.replace(/ (?=")/g, (m, i, t) => (t[i - 1] === "." ? "" : m));
 }
 
-export function tranche(k) {
-  const tous = readdirSync(DOSSIER)
+export function tranche() {
+  return readdirSync(DOSSIER)
     .filter((n) => n.endsWith(".ts") && n !== "types.ts" && !n.startsWith("_"))
-    .sort();
-  const N = tous.length;
-  return tous.slice(Math.floor(((k - 1) * N) / 3), Math.floor((k * N) / 3));
+    .sort()
+    .filter((n) => n >= DEBUT && n < FIN_EXCLUE);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   let lignes = 0;
   let fichiers = 0;
-  for (const nom of tranche(1)) {
+  for (const nom of tranche()) {
     const chemin = join(DOSSIER, nom);
-    const avant = readFileSync(chemin, "utf8").split("\n");
+    const texte = readFileSync(chemin, "utf8");
+    const ville = nomVille(texte);
+    const avant = texte.split("\n");
     const apres = avant.map((l, i) => {
-      const n = nettoyer(l);
+      const n = nettoyer(l, ville);
       if (n !== l) {
         lignes++;
         if (DRY_RUN) console.log(`${nom}:${i + 1}\n  - ${l.trim()}\n  + ${n.trim()}`);

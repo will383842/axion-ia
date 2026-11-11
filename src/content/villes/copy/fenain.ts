@@ -60,7 +60,7 @@ export const FENAIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME logistique et entreposage du bassin minier. Cas typiques IA : automatisation flux entrepôts, prédiction commandes, optimisation tournées, classification documents transport.",
     },
     {
-      q: "Comment se passe une mission à Fenain depuis Lille ou Douai ?",
+      q: "Comment se déroule une mission à Fenain ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
     {

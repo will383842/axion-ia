@@ -49,7 +49,7 @@ export const CUCQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Cucq et au Touquet ?",
-      a: "Oui, Axion-IA intervient a Cucq, au Touquet et sur toute la Cote d'Opale (Etaples, Berck, Montreuil-sur-Mer). Consultants depuis Lille (1h30 TER) ou Paris (TER direct 2h30).",
+      a: "Oui, Axion-IA intervient a Cucq, au Touquet et sur toute la Cote d'Opale (Etaples, Berck, Montreuil-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les agences immobilieres de Cucq ?",

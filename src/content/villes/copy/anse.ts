@@ -49,7 +49,7 @@ export const ANSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Anse et Beaujolais méridional ?",
-      a: "Oui, Axion-IA intervient à Anse et tout le Beaujolais méridional (Villefranche-sur-Saône à 10 min, Limas, Gleizé, Belleville à 20 min). Consultants depuis Lyon (30 min A6).",
+      a: "Oui, Axion-IA intervient à Anse et tout le Beaujolais méridional (Villefranche-sur-Saône à 10 min, Limas, Gleizé, Belleville à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Beaujolais ?",
@@ -64,7 +64,7 @@ export const ANSE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Anse, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Anse ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

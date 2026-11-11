@@ -245,7 +245,7 @@ export const CLICHY_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Clichy respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou La Défense ?",
+      q: "Comment se déroule une mission à Clichy ?",
       a: "Clichy est à environ 15 min de Paris centre et de La Défense, et à 10 min de Paris-Saint-Lazare. Nous nous déplaçons sur site.",
     },
     {

@@ -64,7 +64,7 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME d'Erdre-en-Anjou. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Comment se passe une mission IA depuis Angers ?",
+      q: "Comment se déroule une mission IA à Erdre-en-Anjou ?",
       a: "Nos consultants viennent d'Angers (25 min N162). Déplacement inclus dans la zone nord angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],

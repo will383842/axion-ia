@@ -49,7 +49,7 @@ export const DIVION_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Divion et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Divion et dans tout le bassin minier (Bruay-la-Buissiere, Houdain, Bethune, Barlin). Consultants depuis Lille (1h05 TER) ou Paris (TGV via Lens 1h50).",
+      a: "Oui, Axion-IA intervient a Divion et dans tout le bassin minier (Bruay-la-Buissiere, Houdain, Bethune, Barlin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les artisans BTP de Divion ?",

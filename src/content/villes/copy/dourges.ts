@@ -49,7 +49,7 @@ export const DOURGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Dourges et sur la plateforme Delta 3 ?",
-      a: "Oui, Axion-IA intervient a Dourges et aupres des entreprises de Delta 3 (Henin-Beaumont, Lens, Carvin). Consultants depuis Lille (40 min TER) ou Paris (TGV 1h10).",
+      a: "Oui, Axion-IA intervient a Dourges et aupres des entreprises de Delta 3 (Henin-Beaumont, Lens, Carvin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME logistiques de Dourges ?",

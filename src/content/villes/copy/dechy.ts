@@ -64,7 +64,7 @@ export const DECHY_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales de Dechy, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation agenda, gestion documents) et coaching 1-to-1 dirigeants.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
+      q: "Comment se déroule une mission à Dechy ?",
       a: "Depuis Lille : 35 min via A1. Depuis Paris : TGV Douai en 50 min. Missions sur site à Dechy ou en visio.",
     },
   ],

@@ -64,7 +64,7 @@ export const BERNAY_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Bernay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos produits.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
+      q: "Comment se déroule une mission à Bernay ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

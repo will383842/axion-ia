@@ -49,7 +49,7 @@ export const BRIGNAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brignais et SO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Brignais et tout le SO lyonnais (Oullins à 10 min, Pierre-Bénite, Givors à 15 min, Chaponost). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Brignais et tout le SO lyonnais (Oullins à 10 min, Pierre-Bénite, Givors à 15 min, Chaponost). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales brignairotes ?",
@@ -64,7 +64,7 @@ export const BRIGNAIS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Brignais, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Brignais ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

@@ -64,7 +64,7 @@ export const ARRADON_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les hébergeurs de charme et restaurateurs du golfe du Morbihan sur leurs cas IA : agents conversationnels réservation multilingue, optimisation tarification dynamique, classification avis clients, automatisation channel management.",
     },
     {
-      q: "Comment se passe une mission à Arradon depuis Vannes ?",
+      q: "Comment se déroule une mission à Arradon ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels de charme Arradon/golfe).",
     },
   ],

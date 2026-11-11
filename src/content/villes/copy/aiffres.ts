@@ -49,7 +49,7 @@ export const AIFFRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aiffres et agglomération Niort ?",
-      a: "Oui, Axion-IA intervient à Aiffres et toute l'agglomération niortaise (Niort à 5 min, Chauray, Bessines, Prahecq). Consultants depuis Poitiers (1h10) ou La Rochelle (1h). Couverture complète des Deux-Sèvres.",
+      a: "Oui, Axion-IA intervient à Aiffres et toute l'agglomération niortaise (Niort à 5 min, Chauray, Bessines, Prahecq). Nous intervenons partout en France, sur place ou à distance. Couverture complète des Deux-Sèvres.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires du bassin niortais ?",
@@ -64,7 +64,7 @@ export const AIFFRES_COPY: VilleCopy = {
       a: "Pour les professions libérales d'Aiffres et de l'agglomération niortaise, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Poitiers ou La Rochelle ?",
+      q: "Comment se déroule une mission à Aiffres ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

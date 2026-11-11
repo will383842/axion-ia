@@ -64,7 +64,7 @@ export const CARVIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises du bassin minier en reconversion ou diversification sur leurs cas IA : automatisation processus, agents conversationnels, optimisation production, formation équipes. Toutes tailles (TPE, PME) et tous secteurs.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
+      q: "Comment se déroule une mission à Carvin ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Carvin est accessible directement par l'A1. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

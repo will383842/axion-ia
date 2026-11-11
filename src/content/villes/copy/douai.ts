@@ -245,7 +245,7 @@ export const DOUAI_COPY: VilleCopy = {
       a: "Optimisation des tournées et entrepôts, suivi de livraison, prédiction de maintenance et automatisation administrative. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Douai ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {

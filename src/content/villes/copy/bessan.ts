@@ -50,7 +50,7 @@ export const BESSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bessan et dans la CA Hérault Méditerranée ?",
-      a: "Oui, Axion-IA intervient à Bessan et dans toutes les communes de la CAHM : Agde (6,9 km), Pézenas, Florensac, Vias, Saint-Thibéry, Montblanc. Consultants depuis Montpellier (55 min A9) ou Béziers (20 min).",
+      a: "Oui, Axion-IA intervient à Bessan et dans toutes les communes de la CAHM : Agde (6,9 km), Pézenas, Florensac, Vias, Saint-Thibéry, Montblanc. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour une mission IA à Bessan ?",

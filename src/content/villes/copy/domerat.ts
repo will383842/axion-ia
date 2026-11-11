@@ -68,7 +68,7 @@ export const DOMERAT_COPY: VilleCopy = {
       a: "Non. Nous partons de vos outils existants et démarrons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, pas un grand chantier coûteux réservé aux grandes entreprises.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
+      q: "Comment se déroule une mission à Domérat ?",
       a: "Le diagnostic et les sessions clés se font sur site à Domérat ; le suivi peut se poursuivre en visio.",
     },
   ],

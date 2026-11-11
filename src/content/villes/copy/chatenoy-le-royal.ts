@@ -49,7 +49,7 @@ export const CHATENOY_LE_ROYAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtenoy-le-Royal et Grand Chalon ?",
-      a: "Oui, Axion-IA intervient à Châtenoy-le-Royal et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Saint-Rémy, Saint-Marcel). Consultants depuis Lyon (1h30) ou gare TGV Le Creusot (25 min).",
+      a: "Oui, Axion-IA intervient à Châtenoy-le-Royal et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Saint-Rémy, Saint-Marcel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les enseignes retail des zones commerciales ?",

@@ -246,7 +246,7 @@ export const CHATELLERAULT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châtellerault ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Poitiers. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

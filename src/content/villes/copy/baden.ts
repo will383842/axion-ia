@@ -49,7 +49,7 @@ export const BADEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Baden et dans le golfe du Morbihan ?",
-      a: "Oui, Axion-IA intervient à Baden et sur tout le golfe du Morbihan (Vannes, Auray, Arradon, Larmor-Baden, Île-aux-Moines). Consultants depuis Vannes (15 min). Couverture complète du bassin morbihannais.",
+      a: "Oui, Axion-IA intervient à Baden et sur tout le golfe du Morbihan (Vannes, Auray, Arradon, Larmor-Baden, Île-aux-Moines). Nous intervenons partout en France, sur place ou à distance. Couverture complète du bassin morbihannais.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme nautique ?",

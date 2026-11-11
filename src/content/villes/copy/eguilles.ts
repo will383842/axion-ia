@@ -60,7 +60,7 @@ export const EGUILLES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE indépendants et freelances en télétravail sur des cas IA concrets : automatisation administrative, rédaction assistée, gestion projets augmentée, agents IA veille sectorielle. Sessions en visio ou présentiel.",
     },
     {
-      q: "Comment se passe une mission à Éguilles depuis Aix ou Marseille ?",
+      q: "Comment se déroule une mission à Éguilles ?",
       a: "Éguilles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A8. Nos consultants se déplacent dans vos locaux ou votre domicile professionnel.",
     },
     {
