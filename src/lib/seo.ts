@@ -3,9 +3,16 @@ import { routing, type Locale } from "@/i18n/routing";
 import { env } from "@/env";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
-import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND } from "@/lib/brand";
+import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND, CONTACT_PUBLIC } from "@/lib/brand";
+import {
+  DESCRIPTION_ENTITE_EN,
+  DESCRIPTION_ENTITE_FR,
+  DESCRIPTION_SITE_EN,
+  DESCRIPTION_SITE_FR,
+} from "@/content/journee-ia-commun";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { EDITORIAL_BASELINE_ISO, dateModifiedDeChemin } from "@/lib/seo/fraicheur";
 import { getPageImages, getRepresentativePageImage } from "@/lib/seo/page-images";
 import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 
@@ -51,6 +58,13 @@ export const BRAND_LOGO = {
   height: 512,
 } as const;
 
+/**
+ * `@id` du nœud Service de La Journée IA. Défini ici (et ré-exporté par
+ * `seo/journee-ia-service.ts`, qui construit le nœud) pour que le catalogue
+ * d'offres de l'Organization le référence sans dépendance circulaire.
+ */
+export const JOURNEE_IA_SERVICE_ID = `${SITE_URL}/fr/journee-ia#service`;
+
 // ImageObject réutilisable du logo — `@id` `#logo` partagé pour que
 // Organization / LocalBusiness / publisher pointent la MÊME entité image
 // (déduplication du graphe, cohérence Knowledge Panel).
@@ -95,11 +109,14 @@ export const BUILD_DATE = process.env.BUILD_TIME ?? new Date().toISOString();
  * deploy sans changement de contenu (date-gaming → gaspillage de crawl-budget
  * sur un site jeune). À bumper À LA MAIN lors d'une refonte de contenu large.
  *
- * ⚠️ Garder en sync avec `EDITORIAL_BASELINE` de `src/app/sitemap.ts` et
- * `EDITORIAL_BASELINE_ISO` de `src/app/sitemap-index.xml/route.ts`.
+ * Audit SEO 2026-11-11 (I2) : plus de copie à « garder en sync » — la valeur
+ * DÉRIVE de `EDITORIAL_BASELINE_ISO` (`seo/fraicheur.ts`), que `sitemap.ts` lit
+ * aussi. Pour le `dateModified` d'une page statique, ne PAS utiliser cette
+ * constante : `buildWebPageJsonLd` lit la date réelle de la route
+ * (`dateModifiedDeChemin`), la même que son `<lastmod>`.
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
-export const SITE_EDITORIAL_DATE = "2026-06-08T00:00:00.000Z";
+export const SITE_EDITORIAL_DATE = EDITORIAL_BASELINE_ISO;
 
 interface ProductSeoInput {
   locale: Locale;
@@ -643,7 +660,9 @@ export function buildServiceJsonLd({
   const url = `${SITE_URL}/${locale}${path}`;
 
   // Audit perfection 2026-05-12 : auto-injection `areasServed` par défaut
-  // (France + 13 régions indexable + top villes) si la page n'a rien passé
+  // (France + régions indexables, métropole + DROM — AUCUNE ville depuis
+  // l'audit du 2026-11-11 : ~2 157 villes avec URL pesaient ~248 Ko par nœud)
+  // si la page n'a rien passé
   // explicitement. Élimine le boilerplate sur les ~25 pages services qui
   // utilisaient `buildServiceJsonLd` sans préciser leur couverture. Pour
   // bypass (ex. service hors France), passer explicitement `areasServed: []`.
@@ -896,7 +915,11 @@ interface WebPageJsonLdInput {
   id?: string;
   /** ISO date de publication. */
   datePublished?: string;
-  /** ISO date de dernière modification (signal de fraîcheur). Omis si absent. */
+  /**
+   * ISO date de dernière modification (signal de fraîcheur). Absent : la date
+   * réelle de la route si `path` est une route statique connue (même source que
+   * son `<lastmod>` de `pages.xml`, `seo/fraicheur.ts`), sinon omis.
+   */
   dateModified?: string;
   /**
    * ISO date de dernière revue éditoriale/conformité (E-E-A-T 2026). Distinct de
@@ -986,6 +1009,15 @@ export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
   const resolvedPublisher =
     publisher === null ? undefined : (publisher ?? { "@id": `${SITE_URL}/#organization` });
 
+  // dateModified : la valeur passée, sinon la date réelle de la route statique
+  // (audit SEO 2026-11-11, I2). Jamais antérieure à `datePublished` : une date
+  // de modification avant la publication serait incohérente, on l'omet alors.
+  const dateRouteConnue = dateModified ?? dateModifiedDeChemin(path, locale);
+  const resolvedDateModified =
+    dateRouteConnue && (!datePublished || dateRouteConnue >= datePublished)
+      ? dateRouteConnue
+      : dateModified;
+
   const resolvedSpeakable =
     speakable === true || (typeof speakable === "object" && speakable?.selectors)
       ? buildSpeakableSpecification(
@@ -1008,7 +1040,7 @@ export function buildWebPageJsonLd(input: WebPageJsonLdInput) {
     ...(resolvedIsPartOf ? { isPartOf: resolvedIsPartOf } : {}),
     ...(resolvedPublisher ? { publisher: resolvedPublisher } : {}),
     ...(datePublished ? { datePublished } : {}),
-    ...(dateModified ? { dateModified } : {}),
+    ...(resolvedDateModified ? { dateModified: resolvedDateModified } : {}),
     ...(lastReviewed ? { lastReviewed } : {}),
     ...(reviewedBy
       ? {
@@ -1042,7 +1074,7 @@ export function buildCollectionPageJsonLd(input: Omit<WebPageJsonLdInput, "type"
 
 interface OrganizationJsonLdInput {
   locale: Locale;
-  /** Override default contact email. Defaults to `presse@axion-ia.com`. */
+  /** Override default contact email. Défaut : `COMPANY_EMAIL`, sinon `CONTACT_PUBLIC.email`. */
   contactEmail?: string;
   /** Override default contact type label. Defaults to FR/EN customer service. */
   contactType?: string;
@@ -1135,7 +1167,7 @@ function describeRegistrationNumber(value: string): string {
 // call sites. Tout reste conditionnel : env absent ⇒ champ omis ⇒ 0 régression.
 export function buildOrganizationJsonLd({
   locale,
-  contactEmail = env.COMPANY_EMAIL ?? "contact@axion-ia.com",
+  contactEmail = env.COMPANY_EMAIL ?? CONTACT_PUBLIC.email,
   contactType,
   vatID = env.COMPANY_VAT_NUMBER,
   registrationNumber = env.COMPANY_REGISTRATION_NUMBER,
@@ -1155,9 +1187,10 @@ export function buildOrganizationJsonLd({
     // ImageObject `#logo` partagé (audit Knowledge Panel 2026-07-06).
     logo: buildBrandLogoImageObject(),
     image: { "@id": `${SITE_URL}/#logo` },
-    description: isFr
-      ? "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises."
-      : "Operational B2B AI consultancy — on-site AI sessions, audits and implementation for companies.",
+    // Positionnement actuel (audit SEO 2026-11-11, B3) : partenaire IA des PME et
+    // des TPE, offre phare La Journée IA. Texte repris de `journee-ia-commun.ts`
+    // (mêmes phrases que l'accueil et `llms.txt`), jamais réécrit ici.
+    description: isFr ? DESCRIPTION_ENTITE_FR : DESCRIPTION_ENTITE_EN,
     // Slogan de marque (SSOT `BRAND`) — signal d'identité pour le Knowledge
     // Panel + citabilité LLM (audit Knowledge Panel 2026-07-06).
     slogan: isFr ? BRAND.sloganFr : BRAND.sloganEn,
@@ -1171,7 +1204,7 @@ export function buildOrganizationJsonLd({
     // page interne /company/123134154).
     sameAs: [
       ...buildOrganizationSameAs(),
-      "https://www.linkedin.com/company/axion-ia-france",
+      CONTACT_PUBLIC.linkedinEntreprise,
       // Page Facebook entreprise — adresse propre fournie par Will le 2026-09-23
       // (remplace `profile.php?id=61591668644032`). Jamais le profil PERSONNEL.
       "https://www.facebook.com/axioniacom",
@@ -1213,10 +1246,22 @@ export function buildOrganizationJsonLd({
       // par Will le 2026-08-16.
       "https://www.crunchbase.com/organization/axion-ia",
     ],
+    // Offre phare (audit SEO 2026-11-11, B3) : le catalogue pointe la Journée IA,
+    // référencée par l'`@id` de son nœud Service (émis en entier par l'accueil et
+    // la landing, `seo/journee-ia-service.ts`) — jamais redéfinie ici, donc
+    // aucun second nœud concurrent sous le même `@id`. Avant : `/interventions`,
+    // un hub redirigé. Aucun prix ici : il vit dans le seul nœud Service.
     hasOfferCatalog: {
       "@type": "OfferCatalog",
-      name: isFr ? "Services IA pour entreprises" : "AI services for businesses",
-      url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
+      name: isFr ? "Offres IA d’Axion-IA" : "Axion-IA AI offers",
+      url: `${SITE_URL}/fr/journee-ia`,
+      itemListElement: [
+        {
+          "@type": "Offer",
+          position: 1,
+          itemOffered: { "@id": JOURNEE_IA_SERVICE_ID },
+        },
+      ],
     },
     foundingDate: "2026",
     // Lieu de fondation : pays seulement (décision Williams 2026-11-08, cf.
@@ -1311,9 +1356,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
     name: "Axion-IA",
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,
-    description: isFr
-      ? "Cabinet IA opérationnel — interventions, audits et implémentation IA."
-      : "Operational AI consultancy — on-site sessions, audits and implementation.",
+    description: isFr ? DESCRIPTION_SITE_FR : DESCRIPTION_SITE_EN,
     publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",
