@@ -75,6 +75,12 @@ import { HeroOrbital } from "@/components/sections/HeroOrbital";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
+import {
+  GARANTIE_JOURNEE_IA_CONDITION,
+  GARANTIE_JOURNEE_IA_CONDITION_EN,
+  GARANTIE_JOURNEE_IA_FORMULE,
+  GARANTIE_JOURNEE_IA_FORMULE_EN,
+} from "@/content/garantie-journee-ia";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -1483,23 +1489,16 @@ export default async function FormationsHub({ params }: Props) {
                       // ⚠️ Cette réponse promettait « on rembourse intégralement » si
                       // la formation ne servait à rien, et affirmait que « 100 % de nos
                       // clients » en ressortaient autonomes. Les deux ont été retirés le
-                      // 2026-08-12 (décision Will) :
-                      //   · la garantie de résultat contredisait frontalement les CGV
-                      //     (`src/content/legal.ts`), qui posent une obligation de MOYENS
-                      //     et disent noir sur blanc « aucune garantie de résultat n'est
-                      //     donnée ; les gains, ROI ou performances évoqués sont
-                      //     indicatifs ». Une page publique ne peut pas engager au-delà
-                      //     du contrat ;
-                      //   · « 100 % de nos clients » est une statistique invérifiable, et
-                      //     donc un argument de vente à risque pour un organisme de
-                      //     formation.
-                      // Ne PAS réintroduire de promesse de résultat ici. Ce qui peut être
-                      // affirmé, c'est ce que le devis engage et ce que les CGV prévoient
-                      // — c'est ce que dit la réponse ci-dessous.
+                      // 2026-08-12 : une page publique ne peut pas engager au-delà du
+                      // contrat, et « 100 % de nos clients » est invérifiable.
+                      // Depuis le 2026-11-08 (décision Williams n°2), UNE seule garantie
+                      // est autorisée : celle de la Journée IA, lue dans la constante
+                      // `src/content/garantie-journee-ia.ts`, la même que dans les CGV.
+                      // Ne PAS la réécrire ici, ne PAS en ajouter d'autre, ne PAS
+                      // promettre un résultat.
                       id: "remboursement",
-                      question: "Garantie de résultat ?",
-                      answer:
-                        "Non, et personne de sérieux ne peut en donner une : nos conditions générales posent une obligation de moyens, et les gains évoqués restent indicatifs — ils dépendent de vos outils, de vos données et de ce que vos équipes appliquent ensuite. Ce que nous engageons figure au devis : le programme, la durée, le nombre de participants et les supports remis. En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.",
+                      question: "Proposez-vous une garantie ?",
+                      answer: `Pour nos formations, nous nous engageons sur les moyens : le programme, la durée, le nombre de participants et les supports remis figurent au devis ; les gains évoqués restent indicatifs. La Journée IA porte une garantie écrite : « ${GARANTIE_JOURNEE_IA_FORMULE} » ${GARANTIE_JOURNEE_IA_CONDITION} En cas d'imprévu de votre côté, la session est reportable une fois sans frais ; annulée à plus de 15 jours ouvrés, les acomptes versés vous sont intégralement remboursés.`,
                     },
                   ]
                 : [
@@ -1559,14 +1558,11 @@ export default async function FormationsHub({ params }: Props) {
                         "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to make travel cost-effective and guarantee a complete autonomy transfer to your team. Custom quote including travel and accommodation costs.",
                     },
                     {
-                      // Miroir EN de la correction du 2026-08-12 — voir le commentaire
-                      // détaillé sur l'entrée `remboursement` du bloc FR. Le site est
-                      // servi en français uniquement, mais laisser ici la promesse
-                      // retirée côté FR reviendrait à la garder armée dans le dépôt.
+                      // Miroir EN de l'entrée `remboursement` du bloc FR : mêmes règles,
+                      // même constante (`_EN`, traduction non validée).
                       id: "guarantee",
-                      question: "Guarantee?",
-                      answer:
-                        "No, and no serious provider can give one: our terms set an obligation of means, and any gains mentioned are indicative — they depend on your tools, your data and what your teams apply afterwards. What we do commit to is written in the quote: the programme, the duration, the number of participants and the materials handed over. If something unexpected comes up on your side, the session can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.",
+                      question: "Do you offer a guarantee?",
+                      answer: `For our training courses, we commit to means: the programme, the duration, the number of participants and the materials handed over are set out in the quote; any gains mentioned are indicative. The Journée IA carries a written guarantee: “${GARANTIE_JOURNEE_IA_FORMULE_EN}” ${GARANTIE_JOURNEE_IA_CONDITION_EN} If something unexpected comes up on your side, the session can be postponed once at no cost; cancelled more than 15 working days ahead, any deposit paid is refunded in full.`,
                     },
                   ]
             }

@@ -46,6 +46,10 @@ export const revalidate = 3600;
 // 2026-10-04 : ajout de l'article « Financement par un opérateur de
 // compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
 // heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
+//
+// 2026-11-08 : article « Garantie de la Journée IA » (renvoi depuis « Garanties et
+// responsabilité »), paiement selon l'échéancier du devis (acompte 30 % HT par défaut,
+// sauf particulier), retrait de l'article OPCO (décision 21). FR + EN.
 // La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

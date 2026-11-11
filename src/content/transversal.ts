@@ -585,12 +585,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   {
     id: "facturation",
-    reviewedAt: "2026-08-12",
+    reviewedAt: "2026-11-08",
     related: ["tarifs-publics-transparents", "cout-projet-ia-pme", "budget-demarrer-ia"],
     fr: {
       question: "Comment se passe la facturation ?",
       answer:
-        "Devis fixe, virement bancaire, facture : la mécanique tient en trois temps, sans abonnement ni engagement de durée. Chaque prestation est chiffrée dans un devis détaillé, valable 30 jours ; la commande devient ferme à réception de ce devis signé, accompagné le cas échéant de l'acompte convenu. Le règlement s'effectue par virement, à la commande pour les prestations courantes ; au-delà d'un certain montant, un échelonnement — acompte au démarrage, solde à la livraison — peut être convenu et figure alors au devis.\n\nTous les tarifs publiés sont hors taxes : la TVA française à 20 % s'ajoute sur la facture. Le montant validé avant démarrage est celui qui apparaît sur la facture — pas de régie, pas de facturation à l'heure passée, pas de dépassement de périmètre décidé en cours de route. Un devis personnalisé est établi sous 48 h ouvrées après l'appel de cadrage. Et si un imprévu tombe côté client, la prestation est reportable une fois sans frais, à une date convenue entre les parties.",
+        "Devis fixe, virement bancaire, facture : la mécanique tient en trois temps, sans abonnement ni engagement de durée. Chaque prestation est chiffrée dans un devis détaillé, valable 30 jours ; la commande devient ferme à réception de ce devis signé, accompagné le cas échéant de l'acompte convenu. Les modalités de règlement figurent au devis.\n\nTous les tarifs publiés sont hors taxes : la TVA française à 20 % s'ajoute sur la facture. Le montant validé avant démarrage est celui qui apparaît sur la facture — pas de régie, pas de facturation à l'heure passée, pas de dépassement de périmètre décidé en cours de route. Un devis personnalisé est établi sous 48 h ouvrées après l'appel de cadrage. Et si un imprévu tombe côté client, la prestation est reportable une fois sans frais, à une date convenue entre les parties.",
       keyPoints: [
         "Devis détaillé valable 30 jours : la commande est ferme à la signature",
         "Règlement par virement bancaire, aucun abonnement ni engagement de durée",

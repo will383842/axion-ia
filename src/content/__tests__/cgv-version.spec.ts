@@ -12,8 +12,8 @@ import { getLegal } from "@/content/legal";
 import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 
 /** Empreinte du texte FR pour la version courante. À mettre à jour AVEC CGV_VERSION. */
-const EMPREINTE_TEXTE_FR = "e6b28ee496863794a48493dbea3eca51c3072ab27434c95fe30def155d4c5ab4";
-const VERSION_DE_L_EMPREINTE = "2026-11-07";
+const EMPREINTE_TEXTE_FR = "d354313ce017e5c7993dde08db7bda603a25faca12f51338658d151e964b1253";
+const VERSION_DE_L_EMPREINTE = "2026-11-08";
 
 describe("cgv-version : source unique de la version des CGV", () => {
   it("la version est une date ISO, le libellé la reflète", () => {

@@ -10,8 +10,8 @@
  * sous les yeux. On dit donc les conditions elles-mêmes.
  *
  * ⚠️ Chaque chiffre ci-dessous est une COPIE des conditions générales
- * (`legal.ts`, sections « Prix », « Conditions de paiement », « Annulation, report
- * et remboursement », « Financement par un OPCO »). La copie est gardée par
+ * (`legal.ts`, sections « Prix » et « Annulation, report
+ * et remboursement »). La copie est gardée par
  * `l16-concordance-du-site.spec.ts`, qui rougit si les seuils de la CGV bougent
  * sans que cette liste suive. Les CGV restent le texte opposable.
  *
@@ -21,18 +21,13 @@
 import { EFFECTIF_PLAGE_FR } from "./effectif";
 
 /** Ligne unique, pour une description de section ou une méta. */
-export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Paiement, annulation et prise en charge OPCO : conditions ci-dessous et conditions générales de vente.`;
+export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Annulation et prise en charge OPCO : conditions ci-dessous ; l'annulation est aussi régie par les conditions générales de vente.`;
 
 /** Les conditions réelles, dans l'ordre où le client les rencontre. */
 export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: string }> = [
   {
     titre: "Prix",
     texte: `En euros hors taxes (HT), par groupe ${EFFECTIF_PLAGE_FR}, jamais par personne. La TVA française au taux en vigueur s'applique selon le régime fiscal d'Axion-IA et votre statut ; le détail figure sur le devis et sur la facture.`,
-  },
-  {
-    titre: "Paiement",
-    texte:
-      "Par virement bancaire. Pour une prestation inférieure à 5 000 € HT, le paiement intervient à la commande ; au-delà, un échelonnement peut être convenu au devis. Aucun escompte en cas de paiement anticipé.",
   },
   {
     titre: "Annulation et report",
