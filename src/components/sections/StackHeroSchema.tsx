@@ -114,19 +114,6 @@ export function StackHeroSchema({
         overflow="visible"
       >
         <defs>
-          <radialGradient id="sk-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.25" />
-            <stop offset="60%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="sk-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="sk-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.20" />
-            <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-          </radialGradient>
           <pattern id="sk-grid" width="48" height="48" patternUnits="userSpaceOnUse">
             <path
               d="M 48 0 L 0 0 0 48"
@@ -136,22 +123,10 @@ export function StackHeroSchema({
               strokeOpacity="0.18"
             />
           </pattern>
-          <radialGradient id="sk-grid-mask" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.55" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-          <mask id="sk-vignette-mask">
-            <rect width="100%" height="100%" fill="url(#sk-grid-mask)" />
-          </mask>
         </defs>
 
-        {/* Grille texturée fade vignette (cohérence /interventions) */}
-        <rect width={W} height={H} fill="url(#sk-grid)" mask="url(#sk-vignette-mask)" />
-
-        {/* Halos diffus — terracotta centre, primary haut-droite, sage bas-gauche */}
-        <circle cx={cx} cy={cy} r={380} fill="url(#sk-halo-tc)" />
-        <circle cx={W - 70} cy={120} r={170} fill="url(#sk-halo-pr)" />
-        <circle cx={70} cy={H - 110} r={160} fill="url(#sk-halo-sg)" />
+        {/* Grille texturée (aplat) (cohérence /interventions) */}
+        <rect width={W} height={H} fill="url(#sk-grid)" />
 
         {/* Anneaux concentriques décoratifs centre (ellipses) */}
         <ellipse

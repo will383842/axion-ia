@@ -84,18 +84,23 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
   return (
     <>
       <section className="bg-halo-warm text-fg relative overflow-hidden pt-12 pb-20 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-28">
-        <div
+        <svg
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0"
-          style={{
-            backgroundImage:
-              "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
-            backgroundSize: "40px 40px",
-            maskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            WebkitMaskImage: "radial-gradient(ellipse at center, white 20%, transparent 75%)",
-            opacity: 0.18,
-          }}
-        />
+          className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            <pattern id="ih-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path
+                d="M 40 0 L 0 0 0 40"
+                fill="none"
+                stroke="var(--color-border-strong)"
+                strokeWidth="1"
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#ih-grid)" />
+        </svg>
 
         <Container className="relative">
           {/* Eyebrow → pastille centrée sur la page, au-dessus de la grille. */}

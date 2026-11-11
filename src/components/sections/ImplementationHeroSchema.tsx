@@ -8,7 +8,7 @@
 // Refonte design v4 (2026-06-02, Will) — montée en gamme visuelle :
 //   • connecteurs COURBES (quadratic bezier) à dégradé radial qui s'estompe
 //     vers le centre → impression d'énergie qui irradie
-//   • satellites en SPHÈRES (anneau + cœur + reflet glossy + ombre douce)
+//   • satellites en SPHÈRES (anneau + cœur + ombre douce)
 //     au lieu de dots plats
 //   • anneau de précision GRADUÉ (ticks tous les 15°, ticks longs aux nœuds)
 //   • centre MULTI-COUCHES : disque + halo intérieur + anneaux hairline
@@ -33,8 +33,6 @@ export interface ImplementationHeroSchemaProps {
   ariaLabel: string;
   className?: string;
 }
-
-const ACCENTS: readonly Accent[] = ["terracotta", "primary", "sage", "mocha"];
 
 const accentColor: Record<Accent, string> = {
   terracotta: "var(--color-terracotta)",
@@ -108,22 +106,7 @@ export function ImplementationHeroSchema({
         overflow="visible"
       >
         <defs>
-          {/* Halos diffus de fond */}
-          <radialGradient id="im-halo-tc" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.26" />
-            <stop offset="55%" stopColor="var(--color-terracotta)" stopOpacity="0.06" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="im-halo-pr" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-primary)" stopOpacity="0.16" />
-            <stop offset="100%" stopColor="var(--color-primary)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="im-halo-sg" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-sage)" stopOpacity="0.18" />
-            <stop offset="100%" stopColor="var(--color-sage)" stopOpacity="0" />
-          </radialGradient>
-
-          {/* Grille texturée + masque vignette */}
+          {/* Grille texturée (aplat) */}
           <pattern id="im-grid" width="44" height="44" patternUnits="userSpaceOnUse">
             <path
               d="M 44 0 L 0 0 0 44"
@@ -133,55 +116,6 @@ export function ImplementationHeroSchema({
               strokeOpacity="0.16"
             />
           </pattern>
-          <radialGradient id="im-grid-mask" cx="50%" cy="50%" r="55%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.5" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-          <mask id="im-vignette-mask">
-            <rect width="100%" height="100%" fill="url(#im-grid-mask)" />
-          </mask>
-
-          {/* Reflet glossy réutilisable pour les sphères (highlight blanc). */}
-          <radialGradient id="im-node-gloss" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.7" />
-            <stop offset="100%" stopColor="white" stopOpacity="0" />
-          </radialGradient>
-
-          {/* Halo intérieur du centre (sheen). */}
-          <radialGradient id="im-center-sheen" cx="42%" cy="36%" r="68%">
-            <stop offset="0%" stopColor="white" stopOpacity="0.85" />
-            <stop offset="55%" stopColor="var(--color-paper)" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="var(--color-paper)" stopOpacity="0" />
-          </radialGradient>
-          <radialGradient id="im-center-base" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="var(--color-paper)" />
-            <stop offset="78%" stopColor="var(--color-paper)" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.07" />
-          </radialGradient>
-
-          {/* Dégradé radial des connecteurs : faible au centre, vif au nœud.
-              userSpaceOnUse → s'aligne quel que soit l'angle du spoke. */}
-          {ACCENTS.map((a) => (
-            <radialGradient
-              key={`spoke-${a}`}
-              id={`im-spoke-${a}`}
-              gradientUnits="userSpaceOnUse"
-              cx={cx}
-              cy={cy}
-              r={rx}
-            >
-              <stop offset="0%" stopColor={accentColor[a]} stopOpacity="0.04" />
-              <stop offset="50%" stopColor={accentColor[a]} stopOpacity="0.20" />
-              <stop offset="100%" stopColor={accentColor[a]} stopOpacity="0.55" />
-            </radialGradient>
-          ))}
-
-          {/* Dégradé de l'anneau principal (fade gauche/droite). */}
-          <linearGradient id="im-orbit" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
-            <stop offset="50%" stopColor="var(--color-terracotta)" stopOpacity="0.32" />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity="0.04" />
-          </linearGradient>
 
           {/* Ombre portée douce (profondeur). */}
           <filter id="im-soft-shadow" x="-60%" y="-60%" width="220%" height="220%">
@@ -205,12 +139,7 @@ export function ImplementationHeroSchema({
         </defs>
 
         {/* Grille texturée fade vignette */}
-        <rect width={W} height={H} fill="url(#im-grid)" mask="url(#im-vignette-mask)" />
-
-        {/* Halos diffus */}
-        <circle cx={cx} cy={cy} r={360} fill="url(#im-halo-tc)" />
-        <circle cx={W - 90} cy={120} r={180} fill="url(#im-halo-pr)" />
-        <circle cx={90} cy={H - 110} r={170} fill="url(#im-halo-sg)" />
+        <rect width={W} height={H} fill="url(#im-grid)" />
 
         {/* Anneaux gyroscopiques inclinés — profondeur d'un système en orbite */}
         <ellipse
@@ -265,7 +194,8 @@ export function ImplementationHeroSchema({
           cy={cy}
           rx={rx}
           ry={ry}
-          stroke="url(#im-orbit)"
+          stroke="var(--color-terracotta)"
+          strokeOpacity="0.2"
           strokeWidth="1.25"
           fill="none"
         />
@@ -322,7 +252,8 @@ export function ImplementationHeroSchema({
               <path
                 d={`M ${cx} ${cy} Q ${ctrlX} ${ctrlY} ${pos.x} ${pos.y}`}
                 fill="none"
-                stroke={`url(#im-spoke-${node.accent})`}
+                stroke={accentColor[node.accent]}
+                strokeOpacity="0.3"
                 strokeWidth="1.5"
                 strokeLinecap="round"
               />
@@ -370,8 +301,6 @@ export function ImplementationHeroSchema({
                 strokeWidth="3"
                 filter="url(#im-soft-shadow)"
               />
-              {/* Reflet glossy haut-gauche */}
-              <circle cx={pos.x - 3.2} cy={pos.y - 3.6} r={4.2} fill="url(#im-node-gloss)" />
 
               {/* Label fonction (gras) */}
               <text
@@ -435,8 +364,8 @@ export function ImplementationHeroSchema({
             strokeOpacity="0.14"
             strokeWidth="14"
           />
-          {/* Disque de base (dégradé subtil) */}
-          <circle cx={cx} cy={cy} r={78} fill="url(#im-center-base)" />
+          {/* Disque de base (aplat) */}
+          <circle cx={cx} cy={cy} r={78} fill="var(--color-paper)" />
           {/* Anneau net */}
           <circle
             cx={cx}
@@ -448,8 +377,6 @@ export function ImplementationHeroSchema({
             strokeWidth="1.5"
           />
         </g>
-        {/* Sheen intérieur (au-dessus, hors ombre) */}
-        <circle cx={cx} cy={cy} r={78} fill="url(#im-center-sheen)" />
         {/* Anneau hairline intérieur */}
         <circle
           cx={cx}
