@@ -86,15 +86,15 @@ Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-d
 
 1. CRM : `ORIGINES_V3_ENABLED` et le drapeau `crm.ingest.personnes_enabled` (côté CRM).
 2. `SYNCHRO_CRM_V3`.
-3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED`.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
 4. `PAGE_GUIDE_RESEAU_ENABLED`.
-5. `LIEN_PAGE_GUIDE_ENABLED`.
+5. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
 
 (`OPPOSITIONS_RESEAU_ENABLED` puis le secret du lien restent des prérequis, voir plus haut.)
 
 **Site ET worker redéployés ensemble.** Le rattrapage tourne dans le conteneur **worker**, qui
 lirait l'ancien format si seul le site est mis à jour. Les deux sont bâtis différemment : le worker
-atterrit environ 50 min **avant** l'app (voir « DEUX conteneurs » dans `AGENTS.md`). Poser avec
+atterrit 15 à 18 min (mesuré le 17/10/2026) **avant** l'app (voir « DEUX conteneurs » dans `AGENTS.md`). Poser avec
 `cible=les-deux`, et ne rien allumer tant que l'app ET le worker ne servent pas le même commit
 (contrôler les deux : `x-axion-build-sha` pour l'app, le contenu de `/app/src` pour le worker).
 
@@ -105,9 +105,9 @@ mécanisme de secrets. Distinct de `GUIDES_RESEAU_HMAC_SECRET`.
 
 **Tout arrêter** (ordre inverse de l'allumage), chacun avec `valeur=false`, `redeploy=true` :
 
-1. `LIEN_PAGE_GUIDE_ENABLED`.
+1. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
 2. `PAGE_GUIDE_RESEAU_ENABLED`.
-3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED`.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
 4. `SYNCHRO_CRM_V3` (et `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` s'il avait été allumé), cible `les-deux`.
 5. Côté CRM : `crm.ingest.personnes_enabled`, puis `ORIGINES_V3_ENABLED`.
 
