@@ -85,6 +85,10 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
   `newsletter_subscribers` n'est écrite par ce lot.
 - Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
 - stop sans adresse : abandonné (décision de Williams du 11/11/2026, lien de 48 h en contrepartie).
+- Pose (cible `les-deux` obligatoire, le workflow refuse `site` ou `worker` seuls) :
+  `gh workflow run coolify-drapeau.yml -f cle=SYNCHRO_CRM_V3 -f valeur=true -f cible=les-deux -f redeploy=true`.
+  Même commande pour `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` (à ne **pas** allumer avant l'avis RGPD).
+- Pas encore livré : la route « stop sans adresse » (Studio → site, 4.4) et le rattrapage dédié.
 
 ## `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — les « merci » à envoyer (lot S4a)
 
@@ -98,6 +102,49 @@ validation de la page, pas au clic du lien : la fenêtre de messagerie du résea
 - Réponse : `{"ok":true,"schemaVersion":1,"confirmations":[{"ref":"<empreinte du jeton>","valideLe":"<ISO 8601>"}]}` — rien d'autre (ni adresse, ni clé d'adresse, ni référence de conversation).
 - Une ligne réservée passe à `reserve` et ne ressort plus. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. Une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse perdue) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
 - **Aucune suppression.** Cette route ne fait que lire-réserver ; l'accusé de réception (`envoye`) viendra dans un lot suivant.
+
+
+## Interrupteurs du lot S3 et ordre d'allumage
+
+Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-drapeau.yml`,
+**éteints par défaut** (valeur exactement `true` pour allumer, scope RUN) :
+
+| Variable                          | Rôle                                                   | Défaut |
+| --------------------------------- | ------------------------------------------------------ | ------ |
+| `SYNCHRO_CRM_V3`                  | événement CRM v3 au clic du lien du guide              | éteint |
+| `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` | interrupteur séparé, rien ne le lit encore (avis RGPD) | éteint |
+
+**Ordre d'allumage** (chaque étape n'est faite qu'une fois la précédente vérifiée) :
+
+1. CRM : `ORIGINES_V3_ENABLED` et le drapeau `crm.ingest.personnes_enabled` (côté CRM).
+2. `SYNCHRO_CRM_V3`.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
+4. `PAGE_GUIDE_RESEAU_ENABLED`.
+5. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
+
+(`OPPOSITIONS_RESEAU_ENABLED` puis le secret du lien restent des prérequis, voir plus haut.)
+
+**Site ET worker redéployés ensemble.** Le rattrapage tourne dans le conteneur **worker**, qui
+lirait l'ancien format si seul le site est mis à jour. Les deux sont bâtis différemment : le worker
+atterrit 15 à 18 min (mesuré le 17/10/2026) **avant** l'app (voir « DEUX conteneurs » dans `AGENTS.md`). Poser avec
+`cible=les-deux`, et ne rien allumer tant que l'app ET le worker ne servent pas le même commit
+(contrôler les deux : `x-axion-build-sha` pour l'app, le contenu de `/app/src` pour le worker).
+
+**Secret `GUIDES_RESEAU_LIEN_SECRET`.** Même valeur côté site et côté Studio, posée **avant** d'allumer
+la page. Jamais via un workflow (les entrées en sont visibles), jamais dans un dépôt, un journal ou une PR :
+saisie directe dans les variables d'environnement Coolify (scope RUN), côté Studio par son propre
+mécanisme de secrets. Distinct de `GUIDES_RESEAU_HMAC_SECRET`.
+
+**Tout arrêter** (ordre inverse de l'allumage), chacun avec `valeur=false`, `redeploy=true` :
+
+1. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
+2. `PAGE_GUIDE_RESEAU_ENABLED`.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
+4. `SYNCHRO_CRM_V3` (et `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` s'il avait été allumé), cible `les-deux`.
+5. Côté CRM : `crm.ingest.personnes_enabled`, puis `ORIGINES_V3_ENABLED`.
+
+`OPPOSITIONS_RESEAU_ENABLED` reste **allumé** (un « stop » refusé serait perdu) ; il ne s'éteint que sur
+incident, avec `confirmer_extinction=true`.
 
 ## Secret
 

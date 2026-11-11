@@ -23,3 +23,18 @@ describe("PAGE_GUIDE_RESEAU_ENABLED est documenté et basculable", () => {
     expect(doc).toMatch(/Éteinte par défaut/);
   });
 });
+
+describe("SYNCHRO_CRM_V3 et _NEWSLETTER_OPTIN sont basculables (les-deux) et documentés", () => {
+  const wf = lire(".github/workflows/coolify-drapeau.yml");
+  it("liste fermée du workflow, cible « les-deux » imposée", () => {
+    expect(wf).toContain('- "SYNCHRO_CRM_V3"');
+    expect(wf).toContain('- "SYNCHRO_CRM_V3_NEWSLETTER_OPTIN"');
+    expect(wf).toMatch(/\^SYNCHRO_CRM_V3\(_NEWSLETTER_OPTIN\)\?\$/);
+  });
+  it("la documentation donne l'ordre d'allumage et le secret du lien", () => {
+    const doc = lire("docs/guides-reseau-interrupteurs.md");
+    expect(doc).toContain("SYNCHRO_CRM_V3_NEWSLETTER_OPTIN");
+    expect(doc).toContain("Tout arrêter");
+    expect(doc).toContain("GUIDES_RESEAU_LIEN_SECRET");
+  });
+});
