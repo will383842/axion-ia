@@ -363,7 +363,7 @@ function makeFr(args: {
     ctaBlockTitle: args.ctaBlockTitle ?? "Prête à industrialiser un usage IA ?",
     ctaBlockDescription:
       args.ctaBlockDescription ??
-      "Demandez un devis — réponse sous 48 h ouvrées avec spécification chiffrée du projet.",
+      "Demandez un devis — réponse avec spécification chiffrée du projet.",
     maturity: {
       eyebrow: "Pour qui ça marche",
       title: "Trois niveaux de maturité technique",
@@ -453,7 +453,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
     ],
     ctaBlockTitle: "Ready to industrialize an AI use case?",
     ctaBlockDescription:
-      "Request a quote — reply within 48 business hours with a costed project specification.",
+      "Request a quote — reply with a costed project specification.",
     maturity: {
       eyebrow: "Who it works for",
       title: "Three technical maturity levels",

@@ -20,3 +20,62 @@ describe("les messages ne promettent aucun délai de réponse", () => {
     });
   }
 });
+
+// Fichiers de contenu et de composants nettoyés : aucune promesse de RÉPONSE à un
+// contact. Les délais de LIVRAISON (devis, rapport) ne sont pas visés.
+const PROMESSE_SOURCE =
+  /r[ée]ponse (?:humaine |presse |garantie |cadrée )?sous d|(?:reply|response) within d|on répond sous|nous répondons sous|on revient sous|revenons vers vous sous|recontacte personnellement sous/i;
+
+const FICHIERS = [
+  "src/app/[locale]/a-propos/page.tsx",
+  "src/app/[locale]/appel/page.tsx",
+  "src/app/[locale]/centre-aide/[slug]/page.tsx",
+  "src/app/[locale]/centre-aide/page.tsx",
+  "src/app/[locale]/confirmation/page.tsx",
+  "src/app/[locale]/contact/page.tsx",
+  "src/app/[locale]/demande-devis/confirmation/page.tsx",
+  "src/app/[locale]/demande-devis/page.tsx",
+  "src/app/[locale]/interventions/demande/page.tsx",
+  "src/app/[locale]/interventions/individuel/page.tsx",
+  "src/app/[locale]/presse/[slug]/page.tsx",
+  "src/app/[locale]/presse/page.tsx",
+  "src/app/[locale]/tarifs/page.tsx",
+  "src/app/llms.txt/route.ts",
+  "src/components/formations/FormationDetailPage.tsx",
+  "src/components/forms/UnifiedContactForm.tsx",
+  "src/components/sections/AuditConversionBlocks.tsx",
+  "src/components/sections/AuditDetailPage.tsx",
+  "src/components/sections/ContactHeroSchema.tsx",
+  "src/components/sections/FounderProfile.tsx",
+  "src/components/sections/InterventionDetailPage.tsx",
+  "src/components/sections/PricingGridVille.tsx",
+  "src/components/sections/ProductPageTemplate.tsx",
+  "src/components/services/audit/AuditFaq.tsx",
+  "src/components/services/audit/AuditTrustPills.tsx",
+  "src/components/services/implementation/ImplementationHero.tsx",
+  "src/components/services/sites-web/SitesWebContactBand.tsx",
+  "src/components/ville/OrangeContactBanner.tsx",
+  "src/content/equipe/williams.ts",
+  "src/content/implementation.ts",
+  "src/content/keywords/g1-audit.ts",
+  "src/content/keywords/i-geo.ts",
+  "src/content/keywords/j-presse.ts",
+  "src/content/press.ts",
+  "src/lib/email/templates/audit-confirmed.tsx",
+  "src/lib/email/templates/contact-confirmed.tsx",
+  "src/lib/email/templates/implementation-confirmed.tsx",
+  "src/lib/email/templates/quote-request-received.tsx",
+  "src/lib/schemas/unified-contact-schema.ts",
+  "src/server/chatbot/orchestrator.ts"
+];
+
+describe("les fichiers nettoyés ne promettent aucun délai de réponse", () => {
+  for (const fichier of FICHIERS) {
+    it(fichier, () => {
+      const brut = readFileSync(join(process.cwd(), ...fichier.split("/")), "utf8");
+      const fautes = brut.split("
+").filter((ligne) => PROMESSE_SOURCE.test(ligne));
+      expect(fautes).toEqual([]);
+    });
+  }
+});

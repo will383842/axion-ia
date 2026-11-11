@@ -457,7 +457,7 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
         eyebrow="Prendre contact"
         title="Trente minutes suffisent pour savoir"
         titleEm="ce que l'IA vous ferait gagner"
-        description="Vous exposez votre contexte, Williams vous dit ce qui est réaliste, dans quel ordre et à quel coût — ou vous dit qu'il n'y a rien à faire. Réponse humaine sous 48 heures ouvrées."
+        description="Vous exposez votre contexte, Williams vous dit ce qui est réaliste, dans quel ordre et à quel coût — ou vous dit qu'il n'y a rien à faire. Réponse humaine."
         cta={
           <div className="flex flex-wrap items-center gap-4">
             <Cta href="/appel" size="lg" track="equipe-williams-cta-appel">

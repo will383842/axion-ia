@@ -908,7 +908,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     niveau: 3,
     injection: {
       h1: "Demandez votre devis audit IA PME — personnalisé selon votre taille et secteur",
-      metaTitle: "Devis audit IA PME | Axion-IA — Réponse sous 48 h",
+      metaTitle: "Devis audit IA PME | Axion-IA",
       metaDescription:
         "Audit IA PME sur mesure selon votre effectif et secteur. Devis gratuit envoyé sous 48 h. Aucun engagement. Cabinet IA certifié.",
       h2Variants: [
@@ -1704,7 +1704,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       h1: "Demandez votre devis audit IA ETI — livrable CODIR et feuille de route inclus",
       metaTitle: "Devis audit IA ETI | Livrable CODIR Axion-IA",
       metaDescription:
-        "Devis audit IA sur mesure pour ETI. Livrable CODIR, feuille de route 12 mois, préparation à l'AI Act. Réponse sous 48 h.",
+        "Devis audit IA sur mesure pour ETI. Livrable CODIR, feuille de route 12 mois, préparation à l'AI Act.",
       h2Variants: [
         "Que contient le livrable audit IA CODIR pour une ETI ?",
         "Quel budget prévoir pour un audit IA stratégique ETI ?",
