@@ -307,7 +307,11 @@ describe("R7 — pages et composants publics : aucun montant hors Journée IA", 
     // Les cartes de paliers ne montrent un prix que si le palier est affichable.
     expect(tarifs).toMatch(/prixAffichable\(tier\)/);
     const accueil = lire("app/[locale]/page.tsx");
-    expect(accueil).toMatch(/formatTierPrice\(JOURNEE_IA_TIER/);
+    // Maquette v4 : l'accueil ne formate plus lui-même, il résout le jeton {{PRIX}} via
+    // `remplacerJetons`, qui lit `formatTierPrice(JOURNEE_IA_TIER)` dans journee-ia-commun.ts.
+    expect(accueil).toMatch(/remplacerJetons/);
+    expect(lire("app/[locale]/_accueil/contenu.ts")).toMatch(/\{\{PRIX\}\}/);
+    expect(lire("content/journee-ia-commun.ts")).toMatch(/formatTierPrice\(JOURNEE_IA_TIER/);
     expect(accueil).toMatch(/\/journee-ia/);
   });
 

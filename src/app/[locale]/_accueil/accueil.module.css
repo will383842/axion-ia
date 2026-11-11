@@ -1,0 +1,338 @@
+/* Accueil : seulement ce que Tailwind ne dit pas proprement.
+   1. la carte de France (points qui pulsent) ;
+   2. les contrastes des deux blocs de la section « Deux façons de commencer ».
+   Le reste de la page est en classes Tailwind et en jetons de globals.css. */
+
+/* ── 1. Carte de France ───────────────────────────────────────────────────── */
+
+.carteFrance {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 260px;
+  margin-inline: auto;
+  overflow: visible;
+}
+
+@media (min-width: 640px) {
+  .carteFrance {
+    max-width: 360px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carteFrance {
+    max-width: none;
+  }
+}
+
+.coeur {
+  fill: var(--color-terracotta);
+  stroke: var(--color-sand);
+  stroke-width: 2;
+}
+
+/* 3 pulsations, puis le point reste fixe (pas de mouvement permanent). */
+.halo {
+  fill: none;
+  stroke: var(--color-terracotta);
+  stroke-width: 2;
+  opacity: 0.8;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: pulsation 2.8s ease-out 3 both;
+  animation-delay: var(--d, 0s);
+}
+
+@keyframes pulsation {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(3.2);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .halo {
+    animation: none;
+    transform: scale(1.6);
+    opacity: 0.35;
+  }
+}
+
+/* ── 2. Contrastes des deux blocs ─────────────────────────────────────────── */
+
+/* Carte noire : texte ivoire, liens soulignés (jamais la couleur de lien par défaut,
+   terracotta sur noir = 3,1:1 seulement). */
+.sombre a:not([class]) {
+  color: var(--color-mocha-fg);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.sombre a:focus-visible {
+  outline: 2px solid var(--color-terracotta-on-mocha);
+  outline-offset: 3px;
+}
+
+/* Le bouton orange de la carte noire garde un texte noir (5,9:1), pas un lien ivoire. */
+.sombre a.boutonOrange {
+  color: var(--color-ink);
+  text-decoration: none;
+}
+
+/* Carte blanche : filet terracotta en haut, comme la maquette. */
+.blanche {
+  border-top: 4px solid var(--color-terracotta);
+}
+
+/* ── 3. Design v4 : contraste et structure ────────────────────────────────── */
+
+/* Variables dérivées des jetons (aucune couleur écrite en dur). Posées sur le
+   conteneur de la page : tout ce qui est dessous les hérite. */
+.v4 {
+  --v4-ombre-carte:
+    0 1px 2px color-mix(in srgb, var(--color-ink) 5%, transparent),
+    0 12px 28px -16px color-mix(in srgb, var(--color-ink) 24%, transparent);
+  --v4-ombre-carte-survol:
+    0 2px 4px color-mix(in srgb, var(--color-ink) 6%, transparent),
+    0 20px 40px -18px color-mix(in srgb, var(--color-ink) 30%, transparent);
+  --v4-ombre-vedette:
+    0 2px 4px color-mix(in srgb, var(--color-ink) 5%, transparent),
+    0 32px 64px -32px color-mix(in srgb, var(--color-terracotta) 55%, transparent);
+  --v4-ombre-mocha: 0 40px 80px -40px color-mix(in srgb, var(--color-ink) 70%, transparent);
+  --v4-voile-terra: color-mix(in srgb, var(--color-terracotta) 12%, transparent);
+  --v4-voile-terra-2: color-mix(in srgb, var(--color-terracotta) 7%, transparent);
+  --v4-sable-clair: color-mix(in srgb, var(--color-sand) 55%, var(--color-paper));
+}
+
+/* Héros : sable + halo terracotta discret. */
+.heroHalo {
+  background-image:
+    radial-gradient(at 92% 8%, var(--v4-voile-terra) 0px, transparent 55%),
+    radial-gradient(at 8% 92%, var(--v4-voile-terra-2) 0px, transparent 60%);
+}
+
+/* Numéro de section « 01 —— » (décoratif, aria-hidden dans le HTML). */
+.numero {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  color: var(--color-terracotta);
+  font-size: 0.875rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+}
+
+.numero::after {
+  content: "";
+  width: 4rem;
+  height: 2px;
+  background: currentcolor;
+  opacity: 0.55;
+}
+
+/* Sur le terracotta plein de l'appel final. */
+.numeroClair {
+  color: var(--color-mocha-fg);
+}
+
+/* v5 : sur le sable saturé, le terracotta de marque tombe à 4,26:1 ; le foncé tient 6,05:1. */
+.numeroSable {
+  color: var(--color-terracotta-deep);
+}
+
+/* v5 : sur le mocha (section Williams). */
+.numeroSombre {
+  color: var(--color-terracotta-on-mocha);
+}
+
+/* Cartes : fond blanc, bordure 1 px sable saturé (v5 : visible sur le sable), ombre douce. */
+.carte {
+  background: var(--color-paper);
+  border: 1px solid var(--color-sand-deep);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--v4-ombre-carte);
+}
+
+/* v5 : sur une section blanche, la carte passe en sable pour ne pas se fondre (blanc sur blanc). */
+.carteSable {
+  background: var(--color-sand);
+}
+
+.carteSable .schema {
+  background: var(--color-paper);
+}
+
+.carteSurvol {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+@media (hover: hover) {
+  .carteSurvol:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--v4-ombre-carte-survol);
+  }
+}
+
+/* Cartes des composants partagés (six raisons, TPE/PME) : même ombre, survol plus haut. */
+.cartes article {
+  border-color: var(--color-sand-deep);
+  box-shadow: var(--v4-ombre-carte);
+}
+
+@media (hover: hover) and (min-width: 1024px) {
+  .cartes article:hover {
+    box-shadow: var(--v4-ombre-carte-survol);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carteSurvol,
+  .carteSurvol:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
+.vedette {
+  box-shadow: var(--v4-ombre-vedette);
+}
+
+/* Photos (héros, Williams) : bordure + ombre vedette. */
+.photo {
+  border: 1px solid var(--color-border);
+  box-shadow: var(--v4-ombre-vedette);
+}
+
+/* v5 : la section Williams est en mocha. */
+.sombre .photo {
+  border-color: var(--color-border-on-mocha);
+  box-shadow: var(--v4-ombre-mocha);
+}
+
+/* Carte Journée IA en mocha. */
+.mocha {
+  box-shadow: var(--v4-ombre-mocha);
+}
+
+.garantie {
+  background: var(--color-mocha-soft);
+  border: 1px solid var(--color-border-on-mocha);
+  border-left: 4px solid var(--color-terracotta-on-mocha);
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+}
+
+/* Tuile « L'après-midi » : filet gauche accent, texte en 600. */
+.tuileAccent {
+  border-left: 4px solid var(--color-terracotta-on-mocha);
+}
+
+.tuileAccent p {
+  font-weight: 600;
+}
+
+/* Coches dessinées en CSS : « Vous repartez avec ». */
+.coches {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+
+.coches li {
+  position: relative;
+  padding-left: 2rem;
+}
+
+.coches li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: var(--radius-full);
+  background: var(--color-terracotta-soft);
+}
+
+.coches li::after {
+  content: "";
+  position: absolute;
+  left: 0.5rem;
+  top: 0.3em;
+  width: 0.4rem;
+  height: 0.7rem;
+  border: solid var(--color-terracotta);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* En bref : bloc blanc bordé, posé sur le sable saturé (v5). */
+.enBref {
+  background: var(--color-paper);
+  border: 1px solid var(--color-sand-deep);
+  border-left: 3px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+
+/* Schémas posés sur un fond sable clair bordé. */
+.schema {
+  background: var(--v4-sable-clair);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 0.75rem 0.75rem 0;
+  margin-bottom: 1rem;
+}
+
+.schema svg {
+  margin-bottom: 0.5rem;
+}
+
+/* Citation de Williams. */
+.citation {
+  background: var(--color-terracotta-soft);
+  border-left: 4px solid var(--color-terracotta);
+  border-radius: var(--radius-xl);
+}
+
+/* v5 : citation sur la section mocha (texte ivoire sur mocha doux, 11:1). */
+.citationSombre {
+  background: var(--color-mocha-soft);
+  border-left-color: var(--color-terracotta-on-mocha);
+}
+
+/* « Disponible partout en France » : panneau sable arrondi. */
+.panneauFrance {
+  background: var(--color-sand);
+  border: 1px solid var(--color-sand-deep);
+  border-radius: var(--radius-2xl);
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .panneauFrance {
+    padding: 2.5rem;
+  }
+}
+
+/* Mentions sous les cartes : un filet les sépare. */
+.filet {
+  border-top: 1px solid var(--color-sand-deep);
+  padding-top: 1rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .v4 * {
+    scroll-behavior: auto;
+  }
+}
