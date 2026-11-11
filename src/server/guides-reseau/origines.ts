@@ -12,7 +12,7 @@
  */
 import { createHash, createHmac } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import type { DemandeGuideReseau } from "./contrat";
 
