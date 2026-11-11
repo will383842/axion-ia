@@ -21,6 +21,7 @@ import {
   GARANTIE_PHRASE,
   MENTION_DECLARATION_OF,
 } from "@/content/journee-ia-commun";
+import { EFFECTIF_CIBLE, MICRO_TEXTE_RDV } from "@/content/offre";
 
 /** Titre de la page : porte la marque, donc rendu tel quel (`title.absolute`). */
 export const TITRE = "Axion-IA · Audit, formation et automatisation IA pour PME";
@@ -58,7 +59,7 @@ export const CONTENU = {
     sousTitre:
       "Commencez par la Journée IA, chez vous. Le matin, nous cartographions votre entreprise, faisons le point ensemble sur vos priorités et chiffrons vos plus gros gains le jour même, en heures et en euros\u202f: ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes.",
     lienJournee: "Découvrir la Journée IA · {{PRIX}}",
-    reassurance: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+    reassurance: MICRO_TEXTE_RDV,
   },
 
   deuxFacons: {
@@ -211,8 +212,7 @@ export const CONTENU = {
 
   pmeTpe: {
     titre: "Nous accompagnons les PME et les TPE",
-    chapeau:
-      "Axion-IA aide les PME et les TPE françaises, de 5 à 249 salariés, à commencer avec l’IA : une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.",
+    chapeau: `Axion-IA aide les PME et les TPE françaises, ${EFFECTIF_CIBLE}, à commencer avec l’IA : une journée sur place pour cartographier l’entreprise, chiffrer ses plus gros gains et former les équipes, puis la mise en place.`,
     tpe: {
       titre: "TPE",
       accroche: "Le dirigeant fait tout, souvent le soir.",
@@ -337,7 +337,7 @@ export const CONTENU = {
     titre: "Commençons par 45 minutes, gratuitement.",
     texte:
       "Vous nous parlez de ce qui prend du temps à vos équipes : une tâche, ou dix. En 45 minutes, nous voyons ensemble par où commencer. Le reste, nous le repérons pendant l’audit, chez vous. Chaque semaine sans rien changer, ces heures repartent.",
-    reassurance: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+    reassurance: MICRO_TEXTE_RDV,
     ecrireDebut: "Vous préférez écrire ?",
     ecrireLien: "Nous écrire",
     miseAJour: "Page mise à jour le",

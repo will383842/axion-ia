@@ -24,7 +24,7 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.hoisted(() => {
   process.env["AUTH_SECRET"] = "secret-de-test-lot-e-0123456789abcdef";
@@ -622,56 +622,84 @@ const LECTURE_DE_GARDE: Record<Porte, string> = {
   "jeton-mission": "missionFormateur.findUnique",
 };
 
+// Import dynamique lourd (graphe des actions Qualiopi, PDF) : fait UNE fois, ici, avec un
+// délai large. Sinon le premier test qui touche chaque module paie le transform et dépasse
+// 5 s ; Vitest le coupe mais l'action continue en tâche de fond, et ses appels débordent
+// sur le test suivant (compteur `etat.appels` partagé).
+const DELAI_TEST = 15_000;
+beforeAll(async () => {
+  await Promise.all([
+    ...Object.values(A).map((m) => import(/* @vite-ignore */ m)),
+    import("@/app/api/espace-formateur/kit/[sessionId]/route"),
+    import("@/app/api/formateur/lettre-mission/[id]/route"),
+    import("@/app/api/formateur/contrat-travail/[id]/route"),
+  ]);
+}, 120_000);
+
 beforeEach(() => {
+  vi.clearAllMocks();
   etat.statutMission = "en_attente";
   etat.appels = [];
   etat.jeton = null;
   etat.fin = null;
 });
 
+afterEach(async () => {
+  // Laisse s'écouler les promesses résiduelles du test avant que le suivant ne remette à zéro.
+  await new Promise((r) => setTimeout(r, 0));
+});
+
 describe("collaboration CLOSE : chaque action du formateur est refusée, avant tout travail", () => {
-  it.each(LIGNES)("%s", async (_k, l) => {
-    if (l.classe !== "formateur") return;
-    etat.fin = FIN;
-    etat.statutMission = l.statutMission ?? "en_attente";
-    const essais: Array<() => Promise<unknown>> = [];
-    if (l.porte === "session") {
-      // La session la plus large après la fin : ouverte APRÈS la clôture (lecture seule).
-      etat.jeton = await signFormateurSession(
-        TRAINER,
-        "formateur",
-        undefined,
-        versionSessionFormateur({ finCollaborationAt: FIN }),
-      );
-      essais.push(() => l.appel(""));
-    } else {
-      const avant = await tokenMission(0);
-      const sansVersion = await tokenMission();
-      essais.push(
-        () => l.appel(avant),
-        () => l.appel(sansVersion),
-      );
-    }
-    for (const essai of essais) {
-      expect(await issue(essai)).toBe("refusee");
-    }
-    // Rien d'autre que la lecture de garde, une fois par essai au plus.
-    expect(etat.appels.filter((a) => a !== LECTURE_DE_GARDE[l.porte])).toEqual([]);
-    expect(etat.appels.length).toBeLessThanOrEqual(essais.length);
-  });
+  it.each(LIGNES)(
+    "%s",
+    async (_k, l) => {
+      if (l.classe !== "formateur") return;
+      etat.fin = FIN;
+      etat.statutMission = l.statutMission ?? "en_attente";
+      const essais: Array<() => Promise<unknown>> = [];
+      if (l.porte === "session") {
+        // La session la plus large après la fin : ouverte APRÈS la clôture (lecture seule).
+        etat.jeton = await signFormateurSession(
+          TRAINER,
+          "formateur",
+          undefined,
+          versionSessionFormateur({ finCollaborationAt: FIN }),
+        );
+        essais.push(() => l.appel(""));
+      } else {
+        const avant = await tokenMission(0);
+        const sansVersion = await tokenMission();
+        essais.push(
+          () => l.appel(avant),
+          () => l.appel(sansVersion),
+        );
+      }
+      for (const essai of essais) {
+        expect(await issue(essai)).toBe("refusee");
+      }
+      // Rien d'autre que la lecture de garde, une fois par essai au plus.
+      expect(etat.appels.filter((a) => a !== LECTURE_DE_GARDE[l.porte])).toEqual([]);
+      expect(etat.appels.length).toBeLessThanOrEqual(essais.length);
+    },
+    DELAI_TEST,
+  );
 });
 
 describe("témoin — collaboration EN COURS : la même ligne passe la garde", () => {
-  it.each(LIGNES)("%s", async (_k, l) => {
-    if (l.classe !== "formateur") return;
-    etat.fin = null;
-    etat.statutMission = l.statutMission ?? "en_attente";
-    let token = "";
-    if (l.porte === "session")
-      etat.jeton = await signFormateurSession(TRAINER, "formateur", undefined, 0);
-    else token = await tokenMission(0);
-    await issue(() => l.appel(token));
-    const auDela = etat.appels.length - 1;
-    expect(auDela, "le service doit travailler au-delà de la garde").toBeGreaterThan(0);
-  });
+  it.each(LIGNES)(
+    "%s",
+    async (_k, l) => {
+      if (l.classe !== "formateur") return;
+      etat.fin = null;
+      etat.statutMission = l.statutMission ?? "en_attente";
+      let token = "";
+      if (l.porte === "session")
+        etat.jeton = await signFormateurSession(TRAINER, "formateur", undefined, 0);
+      else token = await tokenMission(0);
+      await issue(() => l.appel(token));
+      const auDela = etat.appels.length - 1;
+      expect(auDela, "le service doit travailler au-delà de la garde").toBeGreaterThan(0);
+    },
+    DELAI_TEST,
+  );
 });

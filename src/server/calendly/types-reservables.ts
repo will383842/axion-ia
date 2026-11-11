@@ -34,6 +34,7 @@
 //
 // Module NEUTRE (ni `server-only`, ni Next) : le worker et les tests l'importent.
 
+import { DUREE_RDV, OFFRE_JOURNEE_IA } from "@/content/offre";
 import type { FormatDemande } from "@/server/calendly/reservation";
 import {
   URL_CALENDLY_APPEL_PAR_DEFAUT,
@@ -164,7 +165,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     public: true,
     nom: "Diagnostic IA gratuit",
     titre: "Votre diagnostic IA gratuit",
-    promesse: "Diagnostic IA gratuit, 45 minutes, en visio ou par téléphone, sans engagement",
+    promesse: `${OFFRE_JOURNEE_IA.rendezVous.nom}, ${DUREE_RDV}, en visio ou par téléphone, sans engagement`,
     premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:

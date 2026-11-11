@@ -3,7 +3,8 @@
 // et 100% commission — non réutilisable pour une offre single-location salariée).
 // Gère : remote→TELECOMMUTE vs Place ; baseSalary vs incentiveCompensation ;
 // validThrough déterministe ; garde-fou published & !filled.
-import { SITE_URL } from "@/lib/seo";
+import { BRAND_LOGO, SITE_URL } from "@/lib/seo";
+import { CONTACT_PUBLIC } from "@/lib/brand";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { careerImage } from "@/content/careers/careers-images";
 import { applicantCountryLabel, normalizeApplicantCountries } from "@/lib/careers/format";
@@ -17,8 +18,10 @@ const HIRING_ORG = {
   "@id": `${SITE_URL}/#organization`,
   name: "Axion-IA",
   url: SITE_URL,
-  logo: `${SITE_URL}/opengraph-image`,
-  sameAs: ["https://www.linkedin.com/company/axion-ia-france"],
+  // Vrai logo carré (`BRAND_LOGO`, 512×512), pas la bannière OpenGraph 1200×630
+  // que Google for Jobs recadrait (audit SEO 2026-11-11, M3).
+  logo: BRAND_LOGO.url,
+  sameAs: [CONTACT_PUBLIC.linkedinEntreprise],
 } as const;
 
 /**

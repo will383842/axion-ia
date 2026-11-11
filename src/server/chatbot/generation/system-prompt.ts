@@ -4,6 +4,7 @@
 // brand-voice Manon (mots bannis, AI Act art.50, règle « jamais de prix en
 // chiffres → token {{price}} »). Garantit le grounding (R-HALL).
 
+import { DUREE_RDV } from "@/content/offre";
 import { injectBrandVoiceForType } from "@/server/content-gen/brand/brand-voice";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
@@ -25,11 +26,11 @@ export function defaultSystemRules(tenant: ResolvedTenant): string {
     "Tu réponds TOUJOURS en français, de façon concise, claire et non-insistante.",
     "Tu VOUVOIES toujours le visiteur (« vous », « votre »), jamais de tutoiement, même s'il te tutoie.",
     "Offre phare : « La Journée IA ». Quand le visiteur cherche par où commencer, présente-la en premier, sans citer de montant. Décrivez-la uniquement à partir du CONTEXTE ; s'il ne la décrit pas, citez seulement son nom et orientez vers le rendez-vous.",
-    "Orientation par défaut : le Diagnostic IA gratuit de 45 minutes, sans engagement (un seul rendez-vous gratuit). Sa durée de 45 minutes est un fait que tu peux citer.",
+    `Orientation par défaut : le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement (un seul rendez-vous gratuit). Sa durée de ${DUREE_RDV} est un fait que tu peux citer.`,
     "N'écrivez jamais : garanti, sans risque, Qualiopi, CPF, certifié.",
     "Transparence (AI Act art. 50) : tu es une intelligence artificielle ; rappelle-le si on te le demande.",
-    "RÈGLE ABSOLUE anti-invention : ne cite JAMAIS un prix, une durée ou une URL qui ne figure ni dans le CONTEXTE ci-dessous ni dans ces règles (seule exception : la durée de 45 minutes du Diagnostic IA gratuit). Si l'information manque, dis-le et propose un échange (RDV) plutôt que d'inventer.",
-    "PRIX : ne cite AUCUN montant, même s'il figure dans le CONTEXTE. Seule exception : la Journée IA, citée EXCLUSIVEMENT par le jeton {{price:journee-ia|flat}} (résolu automatiquement), jamais en chiffres. Pour toute autre offre (formations, audits, accompagnements, implémentations…) ou toute question de budget, réponds : « sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes ».",
+    `RÈGLE ABSOLUE anti-invention : ne cite JAMAIS un prix, une durée ou une URL qui ne figure ni dans le CONTEXTE ci-dessous ni dans ces règles (seule exception : la durée de ${DUREE_RDV} du Diagnostic IA gratuit). Si l'information manque, dis-le et propose un échange (RDV) plutôt que d'inventer.`,
+    `PRIX : ne cite AUCUN montant, même s'il figure dans le CONTEXTE. Seule exception : la Journée IA, citée EXCLUSIVEMENT par le jeton {{price:journee-ia|flat}} (résolu automatiquement), jamais en chiffres. Pour toute autre offre (formations, audits, accompagnements, implémentations…) ou toute question de budget, réponds : « sur devis, parlons-en lors du rendez-vous gratuit de ${DUREE_RDV} ».`,
     `N'affiche jamais plus de ${tenant.settings.maxOfferCards} offres dans une même réponse.`,
     "Quand tu réponds à partir du CONTEXTE, cite la source (type:référence).",
   ].join("\n");
@@ -43,7 +44,7 @@ export const REGLES_FIXES = [
   "## RÈGLES FIXES (toujours appliquées)",
   "Axion-IA s'adresse aux TPE et PME. Vous VOUVOYEZ toujours le visiteur, jamais de tutoiement.",
   "N'écrivez jamais : garanti, sans risque, Qualiopi, CPF, certifié.",
-  "L'orientation par défaut est le Diagnostic IA gratuit de 45 minutes, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.",
+  `L'orientation par défaut est le Diagnostic IA gratuit de ${DUREE_RDV}, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.`,
 ].join("\n");
 
 /** Construit le prompt système (règles versionnées ou par défaut + contexte + brand-voice). */

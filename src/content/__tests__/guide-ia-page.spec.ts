@@ -173,17 +173,13 @@ describe("sortie de page : celle du guide (p. 40)", () => {
 });
 
 describe("un seul nom pour le guide", () => {
-  it("menu, pied de page et llms.txt disent « Guide IA entreprise »", () => {
+  // Le méga-menu « Ressources » de l'en-tête a disparu à la refonte du 2026-11-11 :
+  // les ressources vivent désormais au pied de page, seul lien de navigation restant.
+  it("pied de page et llms.txt disent « Guide IA entreprise »", () => {
     expect(NOM_GUIDE.fr).toBe("Guide IA entreprise");
     expect(lire("src/components/nav/Footer.tsx")).toContain('"Guide IA entreprise"');
-    expect(lire("src/components/nav/HeaderResourcesMenu.tsx")).toContain(
-      'labelFr: "Guide IA entreprise"',
-    );
     expect(lire("src/app/llms.txt/route.ts")).toContain("[Guide IA entreprise 2026]");
-    for (const f of [
-      "src/components/nav/Footer.tsx",
-      "src/components/nav/HeaderResourcesMenu.tsx",
-    ]) {
+    for (const f of ["src/components/nav/Footer.tsx", "src/components/nav/Header.tsx"]) {
       expect(lire(f)).not.toMatch(/Guide IA opérationnelle|Guide de l'IA/);
     }
   });
