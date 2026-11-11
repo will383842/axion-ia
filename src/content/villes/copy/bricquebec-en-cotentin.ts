@@ -49,7 +49,7 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bricquebec-en-Cotentin ?",
-      a: "Oui, Axion-IA intervient à Bricquebec-en-Cotentin et dans le bocage cotentinois (Valognes, Saint-Sauveur-le-Vicomte, Barneville-Carteret). Nos consultants se déplacent depuis Cherbourg (30 min) ou Caen (1 h 20), ou en visio.",
+      a: "Oui, Axion-IA intervient à Bricquebec-en-Cotentin et dans le bocage cotentinois (Valognes, Saint-Sauveur-le-Vicomte, Barneville-Carteret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs bovins du bocage cotentinois ?",
@@ -65,7 +65,7 @@ export const BRICQUEBEC_EN_COTENTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bricquebec-en-Cotentin ?",
-      a: "Nos consultants viennent de Cherbourg (30 min) ou Valognes (15 min). Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Valognes (TER Paris 2 h 45). Multi-jours : hébergement Valognes ou Cherbourg.",
     },
   ],
 };

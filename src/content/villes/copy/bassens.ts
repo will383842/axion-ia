@@ -49,7 +49,7 @@ export const BASSENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bassens et sur la rive droite ?",
-      a: "Oui, Axion-IA intervient à Bassens et sur toute la rive droite bordelaise (Carbon-Blanc, Lormont, Cenon, Floirac). Nos consultants se déplacent depuis Bordeaux centre (15 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Bassens et sur toute la rive droite bordelaise (Carbon-Blanc, Lormont, Cenon, Floirac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bassens  ?",

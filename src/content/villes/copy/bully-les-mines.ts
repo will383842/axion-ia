@@ -49,7 +49,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bully-les-Mines et dans l'agglo Lens-Liévin ?",
-      a: "Oui, Axion-IA intervient à Bully-les-Mines et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Harnes, Sallaumines, Grenay). Nos consultants viennent de Lille (30 min A21) ou Arras (20 min).",
+      a: "Oui, Axion-IA intervient à Bully-les-Mines et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Harnes, Sallaumines, Grenay). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP du bassin minier ?",
@@ -65,7 +65,7 @@ export const BULLY_LES_MINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bully-les-Mines depuis Lille ?",
-      a: "Nos consultants viennent de Lille (30 min A21/A1) ou Arras (20 min). Lens et Liévin sont à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lens et Liévin sont à 5 min.",
     },
   ],
 };

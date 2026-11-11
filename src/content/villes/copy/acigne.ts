@@ -65,7 +65,7 @@ export const ACIGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Acigné ?",
-      a: "Nos consultants interviennent depuis Rennes en 15 min. Acigné fait partie de Rennes Métropole, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Acigné fait partie de Rennes Métropole, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

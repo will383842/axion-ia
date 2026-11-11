@@ -49,7 +49,7 @@ export const CASTELNAUDARY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castelnaudary et dans le Lauragais ?",
-      a: "Oui, Axion-IA intervient à Castelnaudary et dans tout le Lauragais audois (Bram, Villefranche-de-Lauragais côté Aude, Fanjeaux). Nos consultants viennent de Toulouse (50 min A61) ou Carcassonne (35 min).",
+      a: "Oui, Axion-IA intervient à Castelnaudary et dans tout le Lauragais audois (Bram, Villefranche-de-Lauragais côté Aude, Fanjeaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les conserveries et l'agroalimentaire ?",

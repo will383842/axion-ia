@@ -132,7 +132,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et quel est le délai depuis Lyon ?",
-            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nos consultants viennent de Lyon, à 35 min par l'A43, et se déplacent sur toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Pas de régie ni de dérive horaire cachée.",
+            a: "Après le cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h selon la complexité. Nous intervenons partout en France, sur place ou à distance. Pas de régie ni de dérive horaire cachée.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourgoin-Jallieu et dans la CAPI ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bourgoin-Jallieu et de toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Nos consultants viennent de Lyon, à 35 min par l'A43.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bourgoin-Jallieu et de toute la CAPI (L'Isle-d'Abeau, Villefontaine, La Tour-du-Pin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entrepôts et logisticiens du Nord-Isère ?",
@@ -246,7 +246,7 @@ export const BOURGOIN_JALLIEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (35 min par l'A43).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

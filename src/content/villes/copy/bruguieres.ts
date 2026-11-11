@@ -49,7 +49,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bruguières ?",
-      a: "Oui, Axion-IA intervient à Bruguières et dans tout le nord de Toulouse (Saint-Jory, Castelginest, Castelnau-d'Estrétefonds). Nos consultants se déplacent en 18 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Bruguières et dans tout le nord de Toulouse (Saint-Jory, Castelginest, Castelnau-d'Estrétefonds). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Bruguières ?",
@@ -61,7 +61,7 @@ export const BRUGUIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Bruguières ?",
-      a: "Nos consultants se déplacent à Bruguières depuis Toulouse (18 min A62). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Bruguières ?",
