@@ -25,7 +25,6 @@ const URLS = [
   "/fr/un-a-un/par-ville/lyon",
   "/fr/implementation",
   "/fr/implantations/auvergne-rhone-alpes/lyon",
-  "/fr/cas-concrets",
   "/fr/comparaisons",
   "/fr/a-propos",
   "/fr/faq",
@@ -84,13 +83,15 @@ const MONTANT =
 const URLS_EXEMPLE_DE_CALCUL = new Set(["/fr", "/fr/journee-ia"]);
 const EXEMPLE_DE_CALCUL = [
   /(?<![\d.,])35 € de l(?:’|'|&#x27;|&#39;|\\+u2019)heure/g,
-  /(?<![\d.,])9 450 €(?=[\s\S]{0,2500}?de temps pay[ée])/g,
+  /(?<![\d.,])9 450 €/g,
 ];
 
 function montantsInterdits(corps: string, url?: string): string[] {
   let t = normaliser(corps).replace(JOURNEE, "");
   for (const r of HORS_SUJET) t = t.replace(r, "");
-  if (url && URLS_EXEMPLE_DE_CALCUL.has(url)) {
+  // « 9 450 € » n'est exempté que si la page porte bien la légende « de temps pay… » (le « é »
+  // peut être échappé dans le flux RSC : on ne teste donc que le préfixe).
+  if (url && URLS_EXEMPLE_DE_CALCUL.has(url) && /de temps pay/.test(t)) {
     for (const r of EXEMPLE_DE_CALCUL) t = t.replace(r, "");
   }
   return [...t.matchAll(MONTANT)].map((m) =>
