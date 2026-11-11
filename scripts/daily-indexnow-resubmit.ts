@@ -6,9 +6,8 @@
 // non-réception ponctuelle). Coût zéro (IndexNow free), idempotent côté Bing
 // (re-ping même URL = no-op si déjà connu).
 
-// Marker ES module — évite global namespace conflicts avec autres scripts
-// du dossier `scripts/` (indexnow-ping.ts partage `INDEXNOW_ENDPOINT`).
-export {};
+// Module ES (exports ci-dessous) — évite les conflits de portée globale avec les autres
+// scripts du dossier `scripts/` (indexnow-ping.ts partage `INDEXNOW_ENDPOINT`).
 //
 // Méthode : auto-discovery via sitemap-index.xml live + sub-sitemaps + filter
 // lastmod ≥ J-7. Pas de DB access requis (utilise les XML sitemaps que Will
@@ -22,7 +21,35 @@ export {};
 // Limite : ne couvre que les URLs IN sitemap. Pour KB ressources hors sitemap
 // (V1 = 0 KB entries) ou orphans, voir P1-18 BFS link graph audit.
 
-import { submitToIndexNow } from "../src/lib/indexnow";
+import { appendFileSync } from "node:fs";
+import { submitToIndexNow, type IndexNowResult } from "../src/lib/indexnow";
+
+/** L'endpoint Microsoft (agrégateur) : le premier de la cascade de `src/lib/indexnow.ts`. */
+export const ENDPOINT_MICROSOFT = "https://api.indexnow.org/indexnow";
+
+/**
+ * Audit GEO du 2026-11-11 — le refus de Microsoft était invisible : la cascade bascule sur
+ * Yandex, le lot passe « OK », et le journal ne disait que « acceptées par yandex ». Or
+ * Microsoft, c'est Bing ET Copilot. Cette fonction rend le refus VISIBLE sans faire
+ * échouer le cron : une annotation `::warning::` (affichée sur la page du run) quand
+ * Microsoft n'a pas accepté, `null` sinon. Pure, donc testée sans réseau.
+ */
+export function alerteRefusMicrosoft(
+  result: IndexNowResult,
+  nbUrls: number,
+  gha: boolean,
+): string | null {
+  const tentative = result.attempts.find((a) => a.startsWith(ENDPOINT_MICROSOFT));
+  if (result.accepted === ENDPOINT_MICROSOFT) return null;
+  const detail = tentative ?? `${ENDPOINT_MICROSOFT} → non tenté`;
+  const repli = result.accepted
+    ? `repli accepté par ${result.accepted}`
+    : "aucun repli n'a accepté";
+  const message = `Microsoft (Bing, Copilot) refuse la soumission IndexNow de ${nbUrls} URLs — ${detail} ; ${repli}.`;
+  return gha
+    ? `::warning title=IndexNow Microsoft refuse::${message}`
+    : `[daily-indexnow-resubmit] ${message}`;
+}
 const DEFAULT_SITE_URL = "https://axion-ia.com";
 
 // Fenêtre 7 jours glissante. Cohérent avec cadence factory ~20-100 articles/jour.
@@ -127,6 +154,23 @@ async function pingBatch(urls: string[], host: string, key: string): Promise<voi
   // ce domaine (403 `UserForbiddedToAccessSite`, back-end Microsoft). Sans la
   // bascule, ce cron re-soumettait dans le vide tous les jours, en silence.
   const result = await submitToIndexNow(host, key, urls);
+  const gha = process.env["GITHUB_ACTIONS"] === "true";
+  const alerte = alerteRefusMicrosoft(result, urls.length, gha);
+  if (alerte) {
+    console.warn(alerte);
+    // Résumé du run : visible sans ouvrir le journal.
+    const resume = process.env["GITHUB_STEP_SUMMARY"];
+    if (gha && resume) {
+      try {
+        appendFileSync(
+          resume,
+          `### ⚠️ IndexNow : Microsoft refuse\n\n${result.attempts.map((a) => `- ${a}`).join("\n")}\n`,
+        );
+      } catch {
+        // Le résumé est un confort : son échec ne doit pas masquer l'annotation.
+      }
+    }
+  }
   if (result.accepted) {
     console.log(
       `[daily-indexnow-resubmit] OK — ${urls.length} URLs acceptées par ${result.accepted}.`,
@@ -172,4 +216,5 @@ async function main(): Promise<void> {
   }
 }
 
-void main();
+// Pas d'exécution sous Vitest : le test importe `alerteRefusMicrosoft` seule.
+if (!process.env["VITEST"]) void main();

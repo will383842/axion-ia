@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
-import { BRAND } from "@/lib/brand";
+import { BRAND, FOUNDER, FOUNDER_PERSON_ID, founderUrl } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
@@ -317,12 +317,16 @@ export default async function PressePage({ params, searchParams }: Props) {
   // Person (porte-parole) — expose le fondateur comme source interviewable pour
   // Google / AI Overviews sur « interview fondateur cabinet IA », « porte-parole
   // Axion-IA ». Rattaché à l'Organization via worksFor @id.
+  // Audit GEO 2026-11-11 : même entité que le reste du site — `@id` canonique
+  // (`FOUNDER_PERSON_ID`, …/fr/equipe/williams#person) et nom complet, au lieu d'un
+  // `…/#founder` « Williams » qui fabriquait une seconde personne aux yeux des moteurs.
   const spokespersonJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": `${SITE_URL}/#founder`,
-    name: founder[loc].name,
-    jobTitle: founder[loc].role,
+    "@id": FOUNDER_PERSON_ID,
+    name: FOUNDER.fullName,
+    url: founderUrl(),
+    jobTitle: loc === "fr" ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn,
     description: founder[loc].bio,
     image: `${SITE_URL}/illustrations/home-founder-william.jpg`,
     knowsLanguage: founder.languages.map((l) => (l === "fr" ? "French" : "English")),

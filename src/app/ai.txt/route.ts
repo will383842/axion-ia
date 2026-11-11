@@ -1,98 +1,47 @@
-// P2-26 (audit re-run 2026-05-15 AGENT 2+3) — ai.txt.
+// ai.txt — préférences IA d'Axion-IA (format Spawning.ai / IAB AI Preferences, brouillon).
 //
-// Standard émergent Spawning.ai / IAB AI Preferences draft. Signal coopératif
-// explicite aux crawlers IA training (distinct du `User-Agent: GPTBot` dans
-// robots.txt qui est consenti/non-consenti binaire). `ai.txt` permet de
-// déclarer un consentement granulaire :
-//   - `train-all-models` : autorisation tous LLM training
-//   - `train-specific-models` : whitelist par éditeur (OpenAI, Anthropic, …)
-//   - `train-disallowed` : refus explicite
+// 🔴 Audit GEO du 2026-11-11 : ce fichier déclarait « ai-training: disallow » pour GPTBot,
+// ClaudeBot, Google-Extended et CCBot, alors que robots.txt les AUTORISE (décision du
+// fondateur : option « cité partout »). Deux fichiers officiels contradictoires : un
+// robot qui lit les deux applique le plus restrictif, et c'est la citation qui se perd.
 //
-// Doctrine Axion-IA (révisée 2026-06-22 — alignée sur robots.txt) :
-//   - TRAINING refusé : le contenu éditorial n'a pas à entraîner gratuitement
-//     les modèles (GPTBot/ClaudeBot/Google-Extended/Applebot-Extended bloqués).
-//   - CITATION autorisée : les bots de search/answer (OAI-SearchBot/Claude-Web/
-//     PerplexityBot/Bingbot) citent en temps réel = visibilité AEO/GEO.
-//   - Conformité commerciale : réutilisation concurrentielle sans accord écrit
-//     interdite.
-//
-// Cf. `robots.txt` route.ts (même doctrine : block training / allow citation,
-// + block Bytespider/CCBot/Diffbot/omgili).
+// Les deux fichiers dérivent désormais de la même liste (`src/lib/seo/robots-agents.ts`) :
+//   - robots d'IA (citation et entraînement) : autorisés, comme dans robots.txt ;
+//   - scrapers parasites (`BOTS_BLOQUES`) : refusés, comme dans robots.txt.
+// Verrouillé par `ai.txt/route.spec.ts`.
 
 import { SITE_URL } from "@/lib/seo";
+import { AGENTS_IA_AUTORISES, BOTS_BLOQUES } from "@/lib/seo/robots-agents";
 
 export const runtime = "edge";
 
+const bloc = (agent: string, autorise: boolean) =>
+  autorise
+    ? `User-Agent: ${agent}\nai-training: allow\nai-citation: allow`
+    : `User-Agent: ${agent}\nai-training: disallow\nai-citation: disallow`;
+
 export function GET() {
-  const body = `# ai.txt — Axion-IA AI training preferences
+  const body = `# ai.txt — Axion-IA AI preferences
 # Standard: Spawning.ai / IAB AI Preferences (draft 2025)
 # Source officielle: ${SITE_URL}
 # Voir aussi: ${SITE_URL}/robots.txt et ${SITE_URL}/llms.txt
+# Même politique que robots.txt : les robots d'IA peuvent lire, citer et apprendre
+# du contenu public ; seuls les scrapers parasites sont refusés.
 
 # ─── Préférences globales ─────────────────────────────────────────────────
 User-Agent: *
 Allow: /
-
-# Le contenu public peut être CITÉ en temps réel par les moteurs de réponse,
-# mais NON réutilisé pour l'ENTRAÎNEMENT de modèles sans accord (licence
-# éditoriale Axion-IA, axion-ia.com — voir mentions légales).
-ai-training: disallow
-
-# ─── Bots de CITATION (search-time) — autorisés ───────────────────────────
-# Cités en temps réel par ChatGPT Search / Claude / Perplexity / Bing Copilot.
-# Doctrine AEO/GEO 2026 : citation = nouveau « rang #1 ». Distincts des bots de
-# training (≠ GPTBot/ClaudeBot), donc citation autorisée SANS autoriser le train.
-User-Agent: OAI-SearchBot
-ai-training: disallow
+ai-training: allow
 ai-citation: allow
 
-User-Agent: Claude-Web
-ai-training: disallow
-ai-citation: allow
+# ─── Robots d'IA — autorisés (identiques à robots.txt) ────────────────────
+${AGENTS_IA_AUTORISES.map((a) => bloc(a, true)).join("\n\n")}
 
-User-Agent: Claude-SearchBot
-ai-training: disallow
-ai-citation: allow
+# ─── Scrapers parasites — refusés (identiques à robots.txt) ───────────────
+${BOTS_BLOQUES.map((a) => bloc(a, false)).join("\n\n")}
 
-User-Agent: PerplexityBot
-ai-training: disallow
-ai-citation: allow
-
-User-Agent: Bingbot
-ai-training: disallow
-ai-citation: allow
-
-# ─── Bots de TRAINING — refusés ───────────────────────────────────────────
-User-Agent: GPTBot
-ai-training: disallow
-
-User-Agent: ClaudeBot
-ai-training: disallow
-
-User-Agent: Google-Extended
-ai-training: disallow
-
-User-Agent: Applebot-Extended
-ai-training: disallow
-
-# ─── Disallowlist scrapers/aggregators non-cooperatifs ────────────────────
-# Scrapers connus pour ignorer robots.txt et revendre datasets sans accord.
-User-Agent: Bytespider
-ai-training: disallow
-
-User-Agent: CCBot
-ai-training: disallow
-
-User-Agent: Diffbot
-ai-training: disallow
-
-User-Agent: omgili
-ai-training: disallow
-
-# ─── Conditions commerciales ──────────────────────────────────────────────
-# L'utilisation du contenu Axion-IA pour entraîner un modèle concurrent
-# (cabinet IA, factory IA Custom) à des fins commerciales nécessite un
-# accord écrit préalable. Contact: contact@axion-ia.com
+# ─── Contact ──────────────────────────────────────────────────────────────
+# Pour toute question sur la réutilisation du contenu : contact@axion-ia.com
 commercial-reuse-license: contact@axion-ia.com
 `;
 

@@ -70,8 +70,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // Le titre porte la marque : `buildProductMetadata` bascule alors en
       // `{ absolute }` et n'appose pas une seconde fois « · Axion-IA ».
       title: `${FOUNDER.fullName} — fondateur d'Axion-IA, expert IA en entreprise`,
-      description:
-        "Williams Jullin, fondateur et CEO d'Axion-IA, agence IA opérationnelle basée à Grenoble : audit, formation, coaching et implémentation IA partout en France.",
+      // Audit GEO 2026-11-11 : la description d'entité reprend le slogan déjà publié
+      // (« partenaire IA des PME et des TPE », cf. llms.txt / `EN_BREF_ACCUEIL`), sans
+      // ville ni « agence ». ≤ 155 caractères, verrouillé par le test de la page.
+      description: `${FOUNDER.fullName}, fondateur et CEO d'Axion-IA, partenaire IA des PME et des TPE : audit, formation et mise en place de l'IA, partout en France.`,
       alternates: { fr: `/equipe/williams` },
       ogEyebrow: "Fondateur & CEO",
     });

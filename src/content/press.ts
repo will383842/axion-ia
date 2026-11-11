@@ -3,6 +3,7 @@
 // FR canonical · EN miroir. Parité enforced via tests/content/press.test.ts.
 
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
+import { FOUNDER } from "@/lib/brand";
 import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
@@ -448,15 +449,17 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
     ],
     fr: {
       name: "Williams",
-      role: "Fondateur · lead consultant Axion-IA",
-      bio: "Dix ans en transformation digitale, opérationnel terrain. Williams dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
+      // Voix « nous » (audit GEO 2026-11-11) : la fonction vient de `FOUNDER`, et la bio ne
+      // promet plus que Williams intervient lui-même sur chaque mission.
+      role: FOUNDER.roleLineFr,
+      bio: "Dix ans en transformation digitale, opérationnel terrain. Williams a fondé Axion-IA, et c'est notre approche qu'il porte en interview : démos sur données réelles, plans chiffrés, mise en production rapide. Interviews en français et en anglais : nous répondons sous 48 h ouvrées.",
       quote:
         "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",
     },
     en: {
       name: "Williams",
-      role: "Founder · lead consultant Axion-IA",
-      bio: "Ten years in digital transformation, hands-on field practice. Williams leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
+      role: FOUNDER.roleLineEn,
+      bio: "Ten years in digital transformation, hands-on field practice. Williams founded Axion-IA and speaks for our approach in interviews: demos on real data, costed plans, fast go-live. Interviews in French and English: we reply within 48 business hours.",
       // EN = miroir FR (locale EN désactivée, aucun travail de traduction — Will).
       quote:
         "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",

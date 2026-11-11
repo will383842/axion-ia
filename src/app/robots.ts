@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
+import { BOTS_BLOQUES } from "@/lib/seo/robots-agents";
 
 // Doctrine AI bots — décision de Williams du 09/11/2026 : « être cité par les IA »
 // (option A « cité partout »). Remplace la doctrine du 22/06/2026 « bloquer le
@@ -132,12 +133,8 @@ const COMMON_ALLOW = [
   "/_next/static",
 ];
 
-// Scrapers parasites sans valeur retour : seuls robots bloqués.
-const BOTS_BLOQUES = [
-  "Bytespider", // TikTok
-  "omgili", // scraper parasite
-  "Diffbot", // scraper SaaS sans retour
-];
+// Scrapers parasites sans valeur retour : seuls robots bloqués. Liste partagée avec
+// `ai.txt` (src/lib/seo/robots-agents.ts) pour que les deux fichiers ne divergent plus.
 
 export default function robots(): MetadataRoute.Robots {
   // EN locale désactivé : neutralisation par 301 1-hop UNIQUEMENT (proxy.ts → mapEnToFr).
@@ -158,7 +155,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: dynamicDisallow,
       },
       {
-        userAgent: BOTS_BLOQUES,
+        userAgent: [...BOTS_BLOQUES],
         disallow: "/",
       },
     ],
