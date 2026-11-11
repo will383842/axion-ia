@@ -24,6 +24,10 @@ import {
 } from "@/lib/seo/montant-public-texte";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
 import { SITE_URL } from "@/lib/seo";
+import {
+  APPORTEURS_QUESTIONS_LLMS,
+  EN_BREF_APPORTEURS,
+} from "@/content/recrutement/en-bref-apporteurs";
 import { FOUNDER, founderUrl } from "@/lib/brand";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
@@ -166,6 +170,14 @@ C'est le format pensé pour être cité par les moteurs de réponse IA (Perplexi
 - Chaque article : ${SITE_URL}/fr/actualites/<slug>
 - Flux RSS (fraîcheur / polling crawlers) : ${SITE_URL}/fr/actualites/feed.xml
 - Version markdown brute par article (ingestion LLM directe) : ${SITE_URL}/api/markdown/actualites/<slug>
+
+## Réseau d'apporteurs d'affaires indépendants
+
+${EN_BREF_APPORTEURS}
+
+${APPORTEURS_QUESTIONS_LLMS.map((q) => `**${q.question}** ${q.reponse}`).join("\n\n")}
+
+Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_URL}/fr/devenir-commercial-ia/candidature
 
 ## Méthodologie
 

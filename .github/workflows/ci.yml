@@ -871,7 +871,7 @@ jobs:
       # (« Seuil aligné d'abord, blocage ensuite ») — elle n'avait simplement
       # jamais été appliquée à ce bucket.
       #
-      # Le bucket « Shell partagé » porte donc un CLIQUET à 138 KB (mesure
+      # Le bucket « Shell partagé » porte donc un CLIQUET à 138 KB (relevé à 139 KB le 2026-11-11, ADR 0075 ; mesure
       # 135,75 + ~2 KB de marge pour le bruit d'une montée de dépendance), et la
       # CIBLE de 100 KB reste écrite dans son nom : c'est une dette, pas un
       # budget atteint. Le cliquet n'excuse rien — il empêche la dette de

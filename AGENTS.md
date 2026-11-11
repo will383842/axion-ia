@@ -110,7 +110,7 @@ et l'a toujours été :
   honnête — cumulatif comme son nom l'annonce. ⚠️ Les deux chiffres qui circulaient
   auparavant dans ce fichier (135,78 puis 134,87) étaient tous les deux **faux** : lire la
   sortie de l'étape « Poids du bundle » d'un run récent, jamais cette page.
-  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit) et
+  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit ; **relevé à 139 KB le 2026-11-11**, ADR 0075 — il ne doit plus monter sans réduction) et
   la **CIBLE de 100 KB reste écrite dans son nom**. Le cliquet n'excuse pas la dette : il
   empêche qu'elle grossisse, ce qui est le seul risque qu'une gate sache traiter. Abaisser
   ce seuil se fait APRÈS le travail de réduction — jamais avant, sous peine de rouvrir un
