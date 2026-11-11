@@ -953,7 +953,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-11-08",
     related: ["rgpd-ia", "ia-droit-auteur-contenu", "risques-ia-entreprise"],
     fr: {
-      question: "AI Act : quelles obligations pour les entreprises, dont la formation (article 4) ?",
+      question:
+        "AI Act : quelles obligations pour les entreprises, dont la formation (article 4) ?",
       metaTitle: "AI Act 2026 : obligations des entreprises, article 4 et 50",
       metaDescription:
         "AI Act : article 4 (maîtrise de l'IA par vos équipes), article 5 (pratiques interdites), article 50 (transparence). Haut risque : de fin 2027 à 2028.",

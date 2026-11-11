@@ -45,7 +45,8 @@ export const DEBUT_PROMESSE = "nous vous remboursons";
 export const CONTENU = {
   accroche: {
     surtitre: "PME et TPE",
-    titre: "La Journée IA\u202f: l’audit IA de votre PME le matin, vos équipes formées l’après-midi.",
+    titre:
+      "La Journée IA\u202f: l’audit IA de votre PME le matin, vos équipes formées l’après-midi.",
     // Mots mis en terracotta dans le titre.
     titreAccent: "vos équipes formées l’après-midi.",
     phrase:
@@ -184,8 +185,7 @@ export const CONTENU = {
       { icone: "audit", titre: "La carte de vos services\u202f: où partent vos heures" },
       {
         icone: "calcul",
-        titre:
-          "Vos 3 à 5 plus gros gains, chiffrés en heures et en euros le jour même",
+        titre: "Vos 3 à 5 plus gros gains, chiffrés en heures et en euros le jour même",
       },
       { icone: "formation", titre: "Formation sur vos dossiers" },
       { icone: "regles", titre: "Vos règles d’usage de l’IA" },

@@ -96,8 +96,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // requête (H1 = title). On évite la troncature SERP (~60 car.) : on n'ajoute le
   // suffixe marque que si la question est courte, sinon on la laisse intacte.
   const brand = isFr ? "FAQ Axion-IA" : "Axion-IA FAQ";
-  const titreParDefaut =
-    copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
+  const titreParDefaut = copy.question.length > 50 ? copy.question : `${copy.question} · ${brand}`;
   // Titre et description propres à l'entrée (français seul) : sinon repli ci-dessus.
   const title = isFr && entry.metaTitleFr ? entry.metaTitleFr : titreParDefaut;
   const meta = await buildProductMetadata({

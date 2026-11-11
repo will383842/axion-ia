@@ -353,7 +353,9 @@ export default async function FormationsHub({ params }: Props) {
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
         title={isFr ? "Formation IA en entreprise" : "Boost your teams' productivity"}
-        titleEm={isFr ? "vos équipes formées sur leurs propres tâches" : "with high-impact trainings"}
+        titleEm={
+          isFr ? "vos équipes formées sur leurs propres tâches" : "with high-impact trainings"
+        }
         description={
           // ⚠️ « 100 % clients satisfaits » a été RETIRÉ des quatre variantes le
           // 2026-08-12 (décision Will). C'était une statistique invérifiable,
