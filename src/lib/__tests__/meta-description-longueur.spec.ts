@@ -48,7 +48,6 @@ const APP = path.resolve(process.cwd(), "src", "app");
  * pas : ajouter une page ici, c'est décider qu'elle sera tronquée en prod.
  */
 const DETTE: Readonly<Record<string, number>> = {
-  "src/app/[locale]/implantations/page.tsx": 217,
   "src/app/[locale]/interventions/coaching-decouverte/page.tsx": 233,
   "src/app/[locale]/stack-ia/page.tsx": 221,
   "src/app/[locale]/secteurs/page.tsx": 205,

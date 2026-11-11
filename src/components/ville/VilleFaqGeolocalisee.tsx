@@ -47,11 +47,13 @@ export function VilleFaqGeolocalisee({ villeContext, faqs, isFr }: VilleFaqGeolo
   const sectionId = `ville-faq-${villeContext.villeSlug}`;
   const headingId = `${sectionId}-title`;
 
-  const heading = isFr ? `FAQ — ${villeContext.name}` : `FAQ — ${villeContext.name}`;
+  const heading = isFr
+    ? `Vos questions sur la Journée IA — ${villeContext.name}`
+    : `Your questions — ${villeContext.name}`;
 
   const description = isFr
-    ? `Questions des dirigeants de TPE/PME/ETI/GE de ${villeContext.name}. Notre équipe d'experts répond sous 48 h ouvrées si la vôtre n'y est pas.`
-    : `Questions from TPE/PME/ETI/GE leaders in ${villeContext.name}. Our expert team replies within 48 business hours if yours isn't listed.`;
+    ? "Votre question n’y est pas ? Posez-la pendant le diagnostic gratuit de 45 minutes."
+    : "Your question isn't listed? Ask it during the free 45-minute call.";
 
   // JSON-LD FAQPage + SpeakableSpecification (cible data-faq-q / data-faq-a).
   // Factory centralisée seo.ts — Speakable auto-injecté par défaut.
@@ -117,7 +119,8 @@ export function VilleFaqGeolocalisee({ villeContext, faqs, isFr }: VilleFaqGeolo
         </ul>
       </div>
 
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId={`jsonld-${sectionId}`} />
+      {/* En ligne (2026-11-11) : la FAQPage est dans le HTML servi, pas injectée après hydratation. */}
+      <JsonLd data={faqJsonLd} />
     </section>
   );
 }

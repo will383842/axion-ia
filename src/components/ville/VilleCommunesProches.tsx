@@ -129,7 +129,7 @@ export async function VilleCommunesProches(props: VilleCommunesProchesProps) {
             {isFr
               ? verticale
                 ? `Communes éligibles aux mêmes prestations dans un rayon proche de ${ville.nameFr}, triées par distance.`
-                : `Communes alentours couvertes par Axion-IA, triées par distance depuis ${ville.nameFr}.`
+                : `Communes voisines où nous menons aussi la Journée IA, dans les locaux des entreprises, triées par distance depuis ${ville.nameFr}.`
               : verticale
                 ? `Cities eligible for the same services within close range of ${ville.nameFr}, sorted by distance.`
                 : `Surrounding cities covered by Axion-IA, sorted by distance from ${ville.nameFr}.`}

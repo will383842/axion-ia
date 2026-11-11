@@ -49,8 +49,8 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /^components\/qualiopi\//,
   /^components\/tour\//, // Tour France IA : ne pas toucher
   /^components\/booking\//, // réservation transactionnelle
-  // Portés par le lot `fix/prix-jsonld-llms` (ItemList JSON-LD, schéma du héros contact).
-  /^app\/\[locale\]\/implantations\/page\.tsx$/,
+  // Porté par le lot `fix/prix-jsonld-llms` (schéma du héros contact). Le hub
+  // `/implantations` en est SORTI le 2026-11-11 : il n'affiche plus que la Journée IA.
   /^components\/sections\/ContactHeroSchema\.tsx$/,
 ];
 
