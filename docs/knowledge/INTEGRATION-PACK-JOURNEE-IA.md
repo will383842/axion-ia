@@ -38,7 +38,7 @@ Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
 | Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Rejetée par la porte de doctrine (fausse preuve sociale) : 1 rejet                                            |
 | Tour France IA                 | —                                                 | Exclu                                                                                                         |
 
-Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant autre que 1 490 € HT, le
+Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant en € / euros / EUR autre que 1 490 (la mention « HT » n’est pas vérifiée par le code : à relire), le
 mot « remise », « Grenoble », « Will » (seul), « Aucun gain garanti », et toute promesse de gain ou de remboursement.
 
 ## Chiffres non sourcés à vérifier à la relecture

@@ -14,7 +14,7 @@ import { join } from "node:path";
 import { analyserPack, lignesDepuisJsonl } from "../src/lib/knowledge/pack-journee-ia";
 
 function argument(nom: string): string | undefined {
-  return process.argv.find((a) => a.startsWith(`--${nom}=`))?.split("=")[1];
+  return process.argv.find((a) => a.startsWith(`--${nom}=`))?.slice(nom.length + 3);
 }
 
 async function main() {
@@ -56,11 +56,17 @@ async function main() {
         existants++;
         continue;
       }
-      await prisma.knowledgeEntry.create({
-        data: { ...f.entry, translations: { create: [f.translation] } },
-        select: { id: true },
-      });
-      crees++;
+      try {
+        await prisma.knowledgeEntry.create({
+          data: { ...f.entry, translations: { create: [f.translation] } },
+          select: { id: true },
+        });
+        crees++;
+      } catch (e) {
+        // P2002 : créée entre-temps par une exécution concurrente → déjà présente, on continue.
+        if ((e as { code?: string }).code === "P2002") existants++;
+        else throw e;
+      }
     }
   } finally {
     await prisma.$disconnect();

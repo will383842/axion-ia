@@ -41,6 +41,8 @@ describe("controlerFiche — doctrine et décisions de Williams", () => {
     for (const t of [
       "Remise à 990 € en échange d’un tournage.",
       "Tarif : 2 000 euros.",
+      "990 EUR pour la journée.",
+      "Seulement €990.",
       "Une remise de 10 %.",
     ]) {
       const r = controlerFiche(faq({ answer_draft: t }));
@@ -59,6 +61,21 @@ describe("controlerFiche — doctrine et décisions de Williams", () => {
   });
   it("refuse une fiche qui promet un gain ou un remboursement", () => {
     expect(controlerFiche(faq({ answer_draft: "Gain garanti ou remboursé." })).ok).toBe(false);
+  });
+  it("refuse les variantes d’une promesse de gain", () => {
+    for (const t of [
+      "Aucun gain n’est garanti.",
+      "L’audit garantit un gain.",
+      "Satisfait ou remboursé.",
+    ]) {
+      expect(controlerFiche(faq({ answer_draft: t })).ok, t).toBe(false);
+    }
+  });
+  it("ne rejette pas un millésime suivi du prix autorisé", () => {
+    expect(controlerFiche(faq({ answer_draft: "En 2026, 1 490 € HT." })).ok).toBe(true);
+  });
+  it("contrôle aussi les champs libres repris dans la note", () => {
+    expect(controlerFiche(faq({ source: "Contact Will, Grenoble" })).ok).toBe(false);
   });
   it("refuse une fiche vide", () => {
     expect(controlerFiche(faq({ answer_draft: "" })).ok).toBe(false);
@@ -102,7 +119,8 @@ describe("analyserPack — pack réel", () => {
   });
   it("n’importe que les fiches questions/réponses, toutes en brouillon", () => {
     expect(rapport.aImporter.length + rapport.rejets.length).toBe(63);
-    expect(rapport.aImporter.length).toBeGreaterThan(0);
+    expect(rapport.aImporter.length).toBe(62);
+    expect(rapport.rejets.map((r) => r.id)).toEqual(["GEO-033"]);
     for (const f of rapport.aImporter) {
       expect(f.entry.status).toBe("draft");
       expect(f.entry.publishedAt).toBeNull();

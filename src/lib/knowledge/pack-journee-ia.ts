@@ -75,7 +75,8 @@ export const PREFIXE_SLUG = "pack-journee-ia-";
 
 /** Seul prix affiché : Journée IA 1 490 € HT. */
 const PRIX_AUTORISE = /^1[\s  ]?490$/;
-const MONTANT = /(\d[\d\s  .,]*\d|\d)\s?(€|euros?)/gi;
+const MONTANT =
+  /(\d(?:[\d  ]| (?=\d{3}\b)|[.,](?=\d))*)\s?(?:€|euros?|eur\b)|€\s?(\d(?:[\d  ]| (?=\d{3}\b)|[.,](?=\d))*)/gi;
 
 function texteDeLaFiche(l: LignePack): { titre: string; reponse: string } {
   const s = (v: unknown) => (typeof v === "string" ? v.trim() : "");
@@ -86,14 +87,20 @@ function texteDeLaFiche(l: LignePack): { titre: string; reponse: string } {
 function reglesDuPack(texte: string): string[] {
   const raisons: string[] = [];
   for (const m of texte.matchAll(MONTANT)) {
-    if (!PRIX_AUTORISE.test((m[1] ?? "").trim())) raisons.push(`prix non autorisé : « ${m[0]} »`);
+    const nombre = (m[1] ?? m[2] ?? "").trim();
+    if (!PRIX_AUTORISE.test(nombre)) raisons.push(`prix non autorisé : « ${m[0]} »`);
   }
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
   if (/\bwill\b/i.test(texte)) raisons.push("écrire « Williams », jamais « Will »");
-  if (/aucun gain garanti/i.test(texte)) raisons.push("formule « Aucun gain garanti » interdite");
   if (
-    /(gains?|r[ée]sultats?|retour sur investissement|roi)\s+garanti|garanti[^.]*rembours|rembours[ée]s?\b/i.test(
+    /aucun gain (n[’']est )?garanti|aucune garantie de (gain|r[ée]sultat)|gains? non garantis?/i.test(
+      texte,
+    )
+  )
+    raisons.push("formule « Aucun gain garanti » interdite");
+  if (
+    /(gains?|r[ée]sultats?|retour sur investissement|roi)\s+garanti|garantit?\s+(un|des|le|les)\s+(gains?|r[ée]sultats?)|gains?\s+assur[ée]s?|satisfait ou rembours|garanti[^.]*rembours/i.test(
       texte,
     )
   ) {
@@ -116,7 +123,17 @@ export function controlerFiche(l: LignePack): ControleFiche {
       bodyText: reponse,
     });
     if (!doctrine.valid) raisons.push(doctrine.reason ?? "doctrine");
-    raisons.push(...reglesDuPack(`${titre}\n${reponse}`));
+    const libres = [
+      l.source,
+      l.factual_check,
+      l.canonical_url,
+      l.page_id,
+      l.status,
+      l.publication_gate,
+    ]
+      .filter((v): v is string => typeof v === "string")
+      .join("\n");
+    raisons.push(...reglesDuPack(`${titre}\n${reponse}\n${libres}`));
   }
   return { ok: raisons.length === 0, raisons };
 }
