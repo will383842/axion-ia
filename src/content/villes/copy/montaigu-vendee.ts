@@ -232,7 +232,7 @@ export const MONTAIGU_VENDEE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Montaigu-Vendée ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Montaigu-Vendée. La sortie 4 Boufféré de l'A83 et la gare de Montaigu facilitent un accès rapide depuis Nantes ou Paris (TGV ~2h30).",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Montaigu-Vendée. La sortie 4 Boufféré de l'A83 et la gare de Montaigu facilitent un accès rapide.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Montaigu-Vendée ?",

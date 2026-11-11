@@ -49,7 +49,7 @@ export const ONDRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ondres et le littoral landais ?",
-      a: "Oui, Axion-IA intervient à Ondres et tout le littoral sud des Landes (Tarnos, Labenne, Capbreton, Saint-Martin-de-Seignanx). Couverture plage et bourg. Déplacement depuis Bayonne (12 min A63).",
+      a: "Oui, Axion-IA intervient à Ondres et tout le littoral sud des Landes (Tarnos, Labenne, Capbreton, Saint-Martin-de-Seignanx). Couverture plage et bourg. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les hébergeurs saisonniers ?",

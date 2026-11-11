@@ -10,9 +10,9 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Limeil-Brévannes, commune de 27 406 habitants du Val-de-Marne située à 16 km au sud-est de Paris. Notre cabinet intervient sur site auprès des entreprises du tissu local et des établissements de santé, notamment autour de l'hôpital Émile-Roux (AP-HP, gériatrie). Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées aux PME industrielles, services et commerces du secteur. Les ETI viennent en complément.",
   directAnswerFr:
-    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nous intervenons partout en France, sur place ou à distance. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nous intervenons partout en France, sur place ou à distance, pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
   directAnswerEn:
-    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nous intervenons partout en France, sur place ou à distance. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
+    "À Limeil-Brévannes (Val-de-Marne, 27 406 habitants), Axion-IA cible en priorité les TPE et PME locales — commerces, services, sous-traitants industriels et établissements de santé (dont l'hôpital Émile-Roux de l'AP-HP). Nous intervenons partout en France, sur place ou à distance, pour auditer, automatiser et implémenter des solutions IA en code custom. Les ETI sont accompagnées en complément. Le bassin couvre également Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
   seoHook: "PME services & santé",
   ecosystemFr:
     "Limeil-Brévannes s'insère dans le bassin sud-est francilien, à 16 km de Paris. La commune accueille l'hôpital Émile-Roux de l'AP-HP (spécialisé en gériatrie) et plusieurs employeurs industriels comme Sodern, Philips et Ommic SAS. Le bassin est connecté par les RN 19 et 406, le RER A (Boissy-Saint-Léger), le RER D (Créteil-Pompadour, Villeneuve-Saint-Georges), la ligne 8 du métro via Pointe du Lac et le téléphérique Câble 1. Communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Yerres et Villecresnes.",
@@ -231,10 +231,10 @@ export const LIMEIL_BREVANNES_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Limeil-Brévannes ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation. Accès rapide par RER A (Boissy-Saint-Léger) ou RER D (Créteil-Pompadour) depuis Paris.",
+      a: "Déplacement sur site dans les 5 jours ouvrés suivant la confirmation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Quelles communes proches sont couvertes depuis Limeil-Brévannes ?",
+      q: "Quelles communes proches sont couvertes ?",
       a: "Nous couvrons les communes limitrophes : Créteil, Bonneuil-sur-Marne, Valenton, Boissy-Saint-Léger, Villecresnes et Yerres.",
     },
     {

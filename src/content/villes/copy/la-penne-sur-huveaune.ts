@@ -49,7 +49,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Penne-sur-Huveaune ?",
-      a: "Oui, Axion-IA intervient à La Penne-sur-Huveaune et dans toute la vallée de l'Huveaune (Aubagne, Roquevaire, Gémenos, est Marseille). Accès rapide A50 depuis Marseille centre.",
+      a: "Oui, Axion-IA intervient à La Penne-sur-Huveaune et dans toute la vallée de l'Huveaune (Aubagne, Roquevaire, Gémenos, est Marseille). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à La Penne-sur-Huveaune  ?",

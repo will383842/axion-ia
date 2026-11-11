@@ -50,7 +50,7 @@ export const JACOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jacou et dans les communes limitrophes ?",
-      a: "Oui. Nous intervenons à Jacou (34830) et dans les communes limitrophes : Castelnau-le-Lez, Clapiers, Le Crès et Teyran. Déplacement depuis Montpellier en 12 min via tramway T2 (terminus Jacou) ou voiture.",
+      a: "Oui. Nous intervenons à Jacou (34830) et dans les communes limitrophes : Castelnau-le-Lez, Clapiers, Le Crès et Teyran. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Jacou ?",

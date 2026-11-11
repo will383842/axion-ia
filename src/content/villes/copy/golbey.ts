@@ -49,7 +49,7 @@ export const GOLBEY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Golbey et dans les Vosges ?",
-      a: "Oui, Axion-IA intervient à Golbey et sur toute l'agglomération d'Épinal (Épinal, Chantraine, Thaon-les-Vosges, Dogneville). Accès rapide par N57 depuis Nancy (1h) et par TER ligne Nancy-Belfort.",
+      a: "Oui, Axion-IA intervient à Golbey et sur toute l'agglomération d'Épinal (Épinal, Chantraine, Thaon-les-Vosges, Dogneville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Golbey  ?",

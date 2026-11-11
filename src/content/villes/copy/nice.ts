@@ -154,7 +154,7 @@ export const NICE_COPY: VilleCopy = {
             a: "Oui. Confidentialité stricte dès le démarrage, données traitées exclusivement sur vos infrastructures, aucune extraction vers nos serveurs. Conformité RGPD, modèles testés en local ou sur infra dédiée chez vous si la souveraineté est requise.",
           },
           {
-            q: "Couvrez-vous le bassin Sophia Antipolis depuis Nice ?",
+            q: "Couvrez-vous le bassin Sophia Antipolis ?",
             a: "Oui. Nos consultants se déplacent sur site dans toute la métropole Nice Côte d'Azur, ainsi qu'à Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Sophia est à 20 min de Nice-Ville, une distance de travail courante pour nos missions.",
           },
           {
@@ -1001,7 +1001,7 @@ export const NICE_COPY: VilleCopy = {
       a: "Quatre paliers tarifaires publics couvrent toutes les configurations niçoises et azuréennes — Sur place pour les TPE indépendantes du Vieux-Nice ou de la Promenade, Ciblé pour les PME hôtellerie premium et services Côte d'Azur, Stratégique PME pour les scale-ups Sophia Antipolis et acteurs French Tech, Stratégique ETI pour les groupes hôteliers, opérateurs tourisme d'affaires et grandes tech de Sophia. La grille appliquée à Nice est strictement identique à celle de Paris ou Lyon — aucune pondération PACA.",
     },
     {
-      q: "Intervenez-vous à Sophia Antipolis depuis Nice ?",
+      q: "Intervenez-vous à Sophia Antipolis ?",
       a: "Oui. Sophia Antipolis est à 20 km de Nice-Ville, une distance de travail courante pour nos consultants. Nous couvrons l'ensemble du bassin métropolitain : Grand Arénas, Nice Méridia, Sophia Antipolis, Antibes, Cannes, Grasse et Menton. Tous les formats (audit, intervention, implémentation) sont disponibles en présentiel sur ce périmètre.",
     },
     {

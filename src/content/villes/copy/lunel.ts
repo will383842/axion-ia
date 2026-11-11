@@ -73,7 +73,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio depuis Lunel ou à distance.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio ou à distance.",
           },
           {
             step: "Recette + mise en ligne",
@@ -159,7 +159,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio depuis Lunel ou à distance.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio ou à distance.",
           },
           {
             step: "Recette + mise en ligne",

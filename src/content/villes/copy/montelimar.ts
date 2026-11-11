@@ -226,7 +226,7 @@ export const MONTELIMAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montélimar et dans le sud-drômois ?",
-      a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Déplacement depuis Valence (43 min A7) ou Lyon (1h30).",
+      a: "Oui, Axion-IA intervient à Montélimar et dans les communes voisines (Ancône, Châteauneuf-du-Rhône, Sauzet, Savasse, Allan, Le Teil, Rochemaure). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE nougatière à Montélimar ?",

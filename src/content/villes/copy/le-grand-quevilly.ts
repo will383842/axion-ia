@@ -71,7 +71,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio depuis Rouen.",
+              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const LE_GRAND_QUEVILLY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio depuis Rouen.",
+              "Greffe IA sur l'existant ou build IA-native près des installations de la Seine : portail métier, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de devis, facturation et suivi qualité. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

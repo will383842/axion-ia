@@ -49,7 +49,7 @@ export const LABENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Labenne et le sud des Landes ?",
-      a: "Oui, Axion-IA intervient à Labenne et tout le sud des Landes (Capbreton, Ondres, Tarnos, Saint-Martin-de-Seignanx). Couverture plage, zone commerciale et bourg. Déplacement depuis Bayonne (15 min A63).",
+      a: "Oui, Axion-IA intervient à Labenne et tout le sud des Landes (Capbreton, Ondres, Tarnos, Saint-Martin-de-Seignanx). Couverture plage, zone commerciale et bourg. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les campings labennais ?",

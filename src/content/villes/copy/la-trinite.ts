@@ -49,7 +49,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Trinité et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à La Trinité et dans toute la vallée du Paillon (Drap, Contes, L'Escarène, Peillon). Couverture Métropole Nice Côte d'Azur complète et accès rapide depuis Nice centre (10 min).",
+      a: "Oui, Axion-IA intervient à La Trinité et dans toute la vallée du Paillon (Drap, Contes, L'Escarène, Peillon). Couverture Métropole Nice Côte d'Azur complète.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans BTP de La Trinité ?",

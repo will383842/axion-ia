@@ -64,7 +64,7 @@ export const HERIC_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
     },
     {
-      q: "Comment se déroule une intervention depuis Nantes ?",
+      q: "Comment se déroule une intervention à Héric ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],

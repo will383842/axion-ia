@@ -49,7 +49,7 @@ export const PARENTIS_EN_BORN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parentis-en-Born et le pays de Born ?",
-      a: "Oui, Axion-IA intervient à Parentis-en-Born et tout le pays de Born (Biscarrosse, Mimizan, Sainte-Eulalie-en-Born, Gastes, Ychoux). Couverture lac, forêt et bourg. Déplacement depuis Bordeaux ou Mont-de-Marsan.",
+      a: "Oui, Axion-IA intervient à Parentis-en-Born et tout le pays de Born (Biscarrosse, Mimizan, Sainte-Eulalie-en-Born, Gastes, Ychoux). Couverture lac, forêt et bourg. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les entreprises pétrolières ?",

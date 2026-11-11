@@ -12,9 +12,9 @@ export const LORMONT_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Lormont, commune de 25 769 habitants située sur la rive droite de la Garonne à 6 km au nord de Bordeaux. Membre de Bordeaux Métropole, Lormont concentre une activité économique structurée autour des centres commerciaux des 4 Pavillons et de Génicart, de la logistique portuaire de Carriet et de zones industrielles couvrant environ 59,5 hectares. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour les commerces, artisans et prestataires de services locaux, avec un accès direct par les tramways A et E.",
   directAnswerFr:
-    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nous intervenons partout en France, sur place ou à distance.",
+    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP, et dans les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac, via le tramway et la rocade A630. Nous intervenons partout en France, sur place ou à distance.",
   directAnswerEn:
-    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP. Nous intervenons partout en France, sur place ou à distance.",
+    "Axion-IA intervient à Lormont pour les TPE, PME et plus rarement ETI implantées sur la rive droite bordelaise. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les commerces des 4 Pavillons et de Génicart, les activités logistiques portuaires de Carriet et les artisans du BTP, et dans les communes limitrophes d'Artigues-près-Bordeaux, Bassens, Bordeaux, Carbon-Blanc, Cenon, Sainte-Eulalie et Yvrac, via le tramway et la rocade A630. Nous intervenons partout en France, sur place ou à distance.",
   seoHook: "commerce, logistique portuaire & BTP",
   ecosystemFr:
     "Lormont s'appuie sur trois pôles économiques majeurs : les centres commerciaux des 4 Pavillons et de Génicart, la logistique portuaire de Carriet sur la Garonne, et environ 59,5 hectares de zones industrielles. La commune est intégrée à Bordeaux Métropole, traversée par les tramways A et E, et reliée à la rocade A630 par quatre sorties. Le pont d'Aquitaine assure depuis 1967 la liaison rive gauche–rive droite vers Bordeaux.",
@@ -41,8 +41,8 @@ export const LORMONT_COPY: VilleCopy = {
       en: "Nos interventions à Lormont automatisent typiquement des tâches répétitives de PME locales : devis BTP, suivi commercial centres 4 Pavillons et Génicart, ou réponses clients commerce et restauration.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
-      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Bordeaux en 15 minutes via le tramway A.",
+      fr: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
+      en: "Pour les TPE et PME de Lormont, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
     },
     unAUn: {
       fr: "L'accompagnement un-à-un à Lormont permet aux dirigeants de TPE/PME de la rive droite bordelaise de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
@@ -233,7 +233,7 @@ export const LORMONT_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Lormont ?",
-      a: "Notre équipe se déplace sur site à Lormont sous 5 jours ouvrés en moyenne, avec accès direct depuis Bordeaux centre par les tramways A et E ou via la rocade A630.",
+      a: "Notre équipe se déplace sur site à Lormont sous 5 jours ouvrés en moyenne, avec accès direct par les tramways A et E ou via la rocade A630.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Lormont ?",

@@ -232,7 +232,7 @@ export const NEUILLY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Neuilly-sur-Seine ?",
-      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
+      a: "Oui, Williams se déplace sur site à Neuilly-sur-Seine sous 5 jours ouvrés. L'accès s'effectue par la ligne 1 (Pont de Neuilly, Les Sablons, Porte Maillot), le tramway T3b ou la RN 13.",
     },
     {
       q: "Quelles communes proches de Neuilly-sur-Seine couvrez-vous ?",

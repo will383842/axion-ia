@@ -235,7 +235,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
+      q: "Quelles communes proches couvrez-vous ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tout le sud-est parisien est accessible facilement.",
     },
     {
@@ -248,7 +248,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Ivry-sur-Seine ?",
-      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple depuis Paris.",
+      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple.",
     },
   ],
 };

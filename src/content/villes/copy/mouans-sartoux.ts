@@ -49,7 +49,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouans-Sartoux et bassin Grasse-Cannes ?",
-      a: "Oui, Axion-IA intervient à Mouans-Sartoux et sur tout le bassin Grasse-Cannes (Mougins, Pégomas, La Roquette-sur-Siagne, Peymeinade). Couverture arrière-pays azuréen et accès rapide depuis Nice (35 min A8) ou Cannes (15 min).",
+      a: "Oui, Axion-IA intervient à Mouans-Sartoux et sur tout le bassin Grasse-Cannes (Mougins, Pégomas, La Roquette-sur-Siagne, Peymeinade). Couverture arrière-pays azuréen.",
     },
     {
       q: "Travaillez-vous avec les TPE agriculture bio et circuits courts ?",

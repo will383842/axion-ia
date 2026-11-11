@@ -232,7 +232,7 @@ export const LE_PERREUX_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention Axion-IA au Perreux-sur-Marne ?",
-      a: "Williams se déplace au Perreux-sur-Marne sous 5 à 10 jours ouvrés après validation. La proximité du RER E (gare de Nogent – Le Perreux) facilite des interventions express depuis Paris.",
+      a: "Williams se déplace au Perreux-sur-Marne sous 5 à 10 jours ouvrés après validation. La proximité du RER E (gare de Nogent – Le Perreux) facilite des interventions express.",
     },
     {
       q: "Intervenez-vous dans les communes proches du Perreux-sur-Marne ?",

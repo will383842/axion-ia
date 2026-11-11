@@ -51,7 +51,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
+        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance.",
         whyHere: [
           "Nœud ferroviaire majeur du Nord-Pas-de-Calais (gare TGV, Paris-Nord en 1h50) et logistique liée aux parcs d'activité comme le P.A.E. de la Creule et la zone industrielle : pour les acteurs du transport et des services, on construit des portails clients, du suivi de flux en temps réel et des parcours augmentés à l'IA, branchés sur vos ERP et outils métier existants.",
           "Commerce de centre-ville dense autour de l'église Saint-Éloi et de son clocher de 1512 : pour les commerçants et artisans flamands, on conçoit des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, recherche sémantique de catalogue et chatbot d'aide à l'achat multilingue, le tout mobile-first.",
@@ -72,7 +72,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -126,7 +126,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises de la zone industrielle et du P.A.E. de la Creule ?",
-            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site depuis Lille pour le cadrage, puis on itère à distance.",
+            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site pour le cadrage, puis on itère à distance.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -137,7 +137,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce du centre en pleine saison. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act — registre des traitements, droit à l'effacement : propriété totale, aucun verrou ni abonnement imposé, transférable à tout prestataire des Hauts-de-France ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance depuis Lille (40 min via A25).",
+        hero: "Axion-IA conçoit et augmente à Hazebrouck des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la capitale économique du Houtland flamand, où le tissu mêle commerce de centre-ville autour de l'église Saint-Éloi et de son clocher de 1512, santé portée par le Centre hospitalier, PME services héritières du textile, agriculture flamande et activité des parcs comme le P.A.E. de la Creule. Avec la frontière belge à 15 km et la gare TGV (Paris-Nord en 1h50), la dimension transfrontalière et multilingue est native. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Hazebrouck, itérations à distance.",
         whyHere: [
           "Nœud ferroviaire majeur du Nord-Pas-de-Calais (gare TGV, Paris-Nord en 1h50) et logistique liée aux parcs d'activité comme le P.A.E. de la Creule et la zone industrielle : pour les acteurs du transport et des services, on construit des portails clients, du suivi de flux en temps réel et des parcours augmentés à l'IA, branchés sur vos ERP et outils métier existants.",
           "Commerce de centre-ville dense autour de l'église Saint-Éloi et de son clocher de 1512 : pour les commerçants et artisans flamands, on conçoit des vitrines et boutiques e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento) avec click-and-collect, recherche sémantique de catalogue et chatbot d'aide à l'achat multilingue, le tout mobile-first.",
@@ -158,7 +158,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis Lille, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, prise de rendez-vous, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -212,7 +212,7 @@ export const HAZEBROUCK_COPY: VilleCopy = {
           },
           {
             q: "Accompagnez-vous les entreprises de la zone industrielle et du P.A.E. de la Creule ?",
-            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site depuis Lille pour le cadrage, puis on itère à distance.",
+            a: "Oui. Pour les TPE, PME et ETI implantées sur la zone industrielle d'Hazebrouck ou le P.A.E. de la Creule — logistique, services aux entreprises, agroalimentaire flamand — on conçoit des portails clients, du suivi de flux en temps réel et des automatisations branchées sur vos ERP. On se déplace sur site pour le cadrage, puis on itère à distance.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

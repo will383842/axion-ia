@@ -49,7 +49,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Roquette-sur-Siagne ?",
-      a: "Oui, Axion-IA intervient à La Roquette-sur-Siagne et dans toute la vallée de la Siagne (Pégomas, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture arrière-pays cannois et accès rapide depuis Cannes (10 min) ou Grasse (15 min).",
+      a: "Oui, Axion-IA intervient à La Roquette-sur-Siagne et dans toute la vallée de la Siagne (Pégomas, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture arrière-pays cannois.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",

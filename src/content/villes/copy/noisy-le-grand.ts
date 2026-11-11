@@ -246,7 +246,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Grand ?",
-      a: "Nos consultants se déplacent sur site (Mont d'Est, centre-ville) ou en visio. Accès rapide par le RER A depuis Paris (20 min).",
+      a: "Nos consultants se déplacent sur site (Mont d'Est, centre-ville) ou en visio. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

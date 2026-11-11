@@ -75,6 +75,8 @@ export function estFautive(phrase) {
   if (/\bconsultants?\b[^.]{0,60}depuis [A-ZÉ]/iu.test(phrase)) return true;
   // 3 : « Nous arrivons en 1h10 depuis Paris-Montparnasse … ».
   if (/^Nous arrivons\b[^.]*depuis/u.test(phrase)) return true;
+  // Passe finale : « Déplacement depuis Lille (27 km). », « Accès rapide par RER B depuis Paris. »
+  if (/^(?:[Dd]éplacements?|[Aa]ccès rapide)\b[^.]*depuis [A-ZÉ]/u.test(phrase)) return true;
   if (/^[Dd]epuis [A-ZÉ][^()]{0,40}\(/u.test(phrase)) return true;
   if (/^[Dd]epuis [A-ZÉ][^,.]{0,40}, (?:nous|nos)\b/u.test(phrase)) return true;
   return /depuis nos bureaux|bureaux proches de/u.test(phrase);
@@ -82,6 +84,18 @@ export function estFautive(phrase) {
 
 /** Bouts de phrase fautifs (C), traités avant le découpage en phrases. */
 const BOUTS_C = [
+  // Passe finale : « …, des tarifs publics dès X et des consultants qui se déplacent en tramway T4 ou voiture
+  // depuis Paris. » (Les Pavillons-sous-Bois) → seul le segment fautif est remplacé, la liste des cibles reste.
+  [
+    /, des tarifs publics dès (\{\{[^}]*\}\}) et des consultants qui se déplacent en tramway T4 ou voiture depuis Paris\./gu,
+    " et des tarifs publics dès $1. Nous intervenons partout en France, sur place ou à distance.",
+  ],
+  // Passe finale : « Nos consultants se déplacent sur site depuis Paris pour auditer… » → la finalité est
+  // un fait, pas une origine : elle est conservée.
+  [
+    /\b[Nn]os (?:consultants|équipes|experts)(?: IA)? se déplacent(?: sur site)? depuis [A-ZÉ][\p{L}'’-]*(?: [A-ZÉ][\p{L}'’-]*)*(?: \([^)]*\))? (pour [^.]*)\./gu,
+    "Nous intervenons partout en France, sur place ou à distance, $1.",
+  ],
   // « …: nos experts IA se déplacent depuis Paris, avec des frais… »
   [
     /\b[Nn]os experts(?: IA)? se déplacent depuis [A-ZÉ][\p{L}'’ -]*?(?=[,.;])/gu,
@@ -119,6 +133,60 @@ const BOUTS_C = [
   // 4 : « …, déplacement rapide depuis Paris (16 km). » (Gonesse).
   [/,? déplacement rapide depuis Paris(?: \(\d+ ?km\))?/gu, ""],
 ];
+
+const NOM = "[A-ZÉ][\\p{L}'’-]*(?: [A-ZÉ][\\p{L}'’-]*)*";
+const re = (src, flags = "gu") => new RegExp(src.replaceAll("<NOM>", NOM), flags);
+
+/**
+ * Passe finale — règle générale : un texte ne dit jamais que l'équipe, un
+ * consultant ou Williams PART d'une ville (« depuis <Ville> »). On retire le
+ * segment d'origine, on garde le reste (délai, moyen d'accès, finalité).
+ */
+const REGLE_GENERALE = [
+  // Délai conservé : « Déplacement depuis Lille (27 km) … sous 5 jours ouvrés. »
+  [re("\\bDéplacement depuis [^.]*? (sous \\d+ jours ouvrés)"), "Déplacement $1"],
+  // Questions de FAQ : « …-t-il à X depuis Paris ? », « Couvrez/Intervenez-vous … depuis Nice ? ».
+  [re('(se déplace-t-il à [^"?]*?) depuis Paris(?= ?\\?)'), "$1"],
+  [
+    re(
+      '((?:[Cc]ouvrez|[Ii]ntervenez)-vous [^"?]*?|communes proches (?:couvrez-vous|sont couvertes)) depuis <NOM>(?= ?\\?)',
+    ),
+    "$1",
+  ],
+  [re("(pour une intervention) depuis Paris ou la banlieue"), "$1"],
+  // Bouts de phrase.
+  [re("(On se déplace sur site) depuis <NOM>(?= pour)"), "$1"],
+  [re("(sans surcoût de déplacement) depuis <NOM>"), "$1"],
+  [re(" \\(déplacement depuis <NOM>\\)"), ""],
+  [re("(déplacements?) depuis (?:<NOM>)( est inclus)"), "$1$2"],
+  [re(", déplacement (?:rapide )?depuis <NOM>(?: ou <NOM>)?(?=\\.)"), ""],
+  [re(", avec déplacements depuis <NOM>[^.]*(?=\\.)"), ""],
+  [re("(déplacement très simple) depuis <NOM>"), "$1"],
+  [re("(accès direct) depuis <NOM>(?: centre)? (par)"), "$1 $2"],
+  [re("(interventions? (?:express|courtes|rapides?)) depuis <NOM>(?: ou <NOM>)?"), "$1"],
+  [re("(intervenons [^.]*?visio) depuis <NOM>(?: centre)? \\(\\d+ min\\)"), "$1"],
+  [re("(accès rapide) depuis <NOM> (via [^.]*)"), "accès $2"],
+  [re("((?:l'|un )accès rapide) depuis [^.]*(?=\\.)"), "$1"],
+  [re(",? (?:et )?accès rapide[^.]*? depuis <NOM>[^.]*(?=\\.)"), ""],
+  [re(" \\(souvent moins, étant basé à Paris\\)"), ""],
+  [re("(itérations à distance) depuis <NOM>(?: \\([^)]*\\))?"), "$1"],
+  // EN
+  [re("(travel costs) from [A-Z][\\p{L}-]+"), "$1"],
+  [
+    re("Our consultants travel from Paris \\(([^)]*)\\) across the western Hauts-de-Seine\\."),
+    "We work across France, on site or remotely, including the western Hauts-de-Seine ($1).",
+  ],
+];
+
+function regleGenerale(ligne, ville) {
+  let r = ligne;
+  for (const [motif, remplacement] of REGLE_GENERALE) r = r.replace(motif, remplacement);
+  // « Démos hebdomadaires en visio depuis Lille » : seulement si ce n'est pas la ville de la page (client).
+  r = r.replace(re("(Démos hebdomadaires en visio) depuis (<NOM>)"), (m, a, v) =>
+    v === ville ? m : a,
+  );
+  return r;
+}
 
 function boutsC(ligne) {
   let r = ligne;
@@ -171,15 +239,18 @@ export function aLaVille(ville) {
 }
 
 const QUESTION_B =
-  /Comment se (?:passe|déroule|deroule) une mission(?: Axion-IA| IA)?[^"?]*? depuis [^"?]*\?/gu;
+  /Comment se (?:passe|déroule|deroule) une (mission|intervention)(?: Axion-IA| IA)?[^"?]*? depuis [^"?]*\?/gu;
 
 export function questionB(ligne, ville) {
   if (!ville) return ligne;
-  return ligne.replace(QUESTION_B, () => `Comment se déroule une mission ${aLaVille(ville)} ?`);
+  return ligne.replace(
+    QUESTION_B,
+    (_m, nom) => `Comment se déroule une ${nom} ${aLaVille(ville)} ?`,
+  );
 }
 
 export function nettoyerLigne(ligne, ville = null) {
-  const base = finaliser(nettoyer(boutsC(questionB(ligne, ville))));
+  const base = regleGenerale(finaliser(nettoyer(boutsC(questionB(ligne, ville)))), ville);
   if (base === ligne) return ligne;
   return base.replace(APRES_NOUVELLE, (m, nouvelle, suite) =>
     ORPHELIN.test(suite) ? nouvelle : m,

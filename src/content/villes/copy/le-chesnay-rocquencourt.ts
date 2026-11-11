@@ -226,7 +226,7 @@ export const LE_CHESNAY_ROCQUENCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Chesnay-Rocquencourt ?",
-      a: "Oui, Axion-IA intervient au Chesnay-Rocquencourt et toute l'agglomération Versailles Grand Parc (Versailles, Viroflay, Vélizy-Villacoublay, Buc, Bièvres). Couverture ouest yvelinois et accès rapide depuis Paris (30 min RER C).",
+      a: "Oui, Axion-IA intervient au Chesnay-Rocquencourt et toute l'agglomération Versailles Grand Parc (Versailles, Viroflay, Vélizy-Villacoublay, Buc, Bièvres). Couverture ouest yvelinois.",
     },
     {
       q: "Accompagnez-vous les professions libérales (médecins, avocats) ?",

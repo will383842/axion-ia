@@ -169,6 +169,44 @@ const MOTIFS: readonly Motif[] = [
   },
 ];
 
+/**
+ * PASSE FINALE · RÈGLE GÉNÉRALE (au lieu d'une liste de motifs ponctuels).
+ *
+ * Un texte ne doit jamais laisser croire que l'équipe, un consultant ou
+ * Williams PART d'une ville : « <mot du champ> … depuis <Ville ou nom propre> »,
+ * quel que soit le mot (déplacement, intervention, accès rapide, mission…),
+ * en FR comme en EN (« travelling from », « travel costs from »).
+ */
+const REGLE_GENERALE =
+  /(?:se déplac|déplacements?|interventions?|intervenons|consultants?|équipe|experts?|Williams|[Nn]ous|\bon\b|[Aa]ccès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
+const REGLE_GENERALE_EN =
+  /(?:travel|travels|travelling|traveling|consultants?|experts?|Williams|we send|we travel)\b[^."?]{0,60}\b(?:from|travelling from|travels from) (?:Paris|Lille|Lyon|Bordeaux|Nantes|Versailles|Marseille|Toulouse|Strasbourg|Rennes|Nice|Montpellier|Rouen|Caen)\b/u;
+const QUESTION_MISSION = /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u;
+
+/**
+ * Liste blanche ÉTROITE : faux positifs de la règle générale.
+ *  · « …équipes pilotent l'outil en autonomie depuis <Ville> » : ce sont les
+ *    équipes DU CLIENT (autonomie après la mission), pas les nôtres ;
+ *  · « TER station N minutes from <Ville> » : accès au lieu pour le client.
+ */
+const LISTE_BLANCHE: readonly RegExp[] = [
+  // Indication d'accès au lieu pour le client (gare à N minutes de Strasbourg), pas une origine d'équipe.
+  /TER station \d+ minutes from /u,
+  /[ée]quipes?[^."?]{0,80}autonomie depuis /u,
+];
+
+function fautes(motifs: readonly RegExp[]): string[] {
+  return TRANCHE.flatMap((nom) =>
+    readFileSync(join(DOSSIER, nom), "utf8")
+      .split("\n")
+      .flatMap((ligne, i) =>
+        motifs.some((m) => m.test(ligne)) && !LISTE_BLANCHE.some((b) => b.test(ligne))
+          ? [`${nom}:${i + 1}`]
+          : [],
+      ),
+  );
+}
+
 function occurrences(motif: RegExp): string[] {
   return TRANCHE.flatMap((nom) =>
     readFileSync(join(DOSSIER, nom), "utf8")
@@ -197,4 +235,36 @@ describe("villes · lot 2/3 sans fausse présence locale", () => {
       expect(occurrences(motif)).toEqual([]);
     });
   }
+
+  describe("passe finale · règle générale", () => {
+    it("motif vivant : une ligne fautive est reconnue, une saine non", () => {
+      for (const fautive of [
+        "Nos experts IA se déplacent depuis Paris en 30 min.",
+        "Accès rapide par le RER A depuis Paris (20 min).",
+        "Williams intervient sur site, déplacement depuis Lille.",
+        "Les interventions courtes depuis Versailles.",
+      ]) {
+        expect(REGLE_GENERALE.test(fautive), fautive).toBe(true);
+      }
+      for (const saine of [
+        "Nous intervenons partout en France, sur place ou à distance.",
+        "La gare est accessible depuis le centre-ville.",
+      ]) {
+        expect(REGLE_GENERALE.test(saine), saine).toBe(false);
+      }
+      expect(REGLE_GENERALE_EN.test("Our consultants travel from Paris to your site.")).toBe(true);
+      expect(REGLE_GENERALE_EN.test("Travel costs are billed separately.")).toBe(false);
+      expect(QUESTION_MISSION.test("Comment se déroule une intervention depuis Nantes ?")).toBe(
+        true,
+      );
+      expect(QUESTION_MISSION.test("Comment se déroule une intervention à Nantes ?")).toBe(false);
+      expect(
+        LISTE_BLANCHE.some((b) => b.test("Vos équipes pilotent l'outil en autonomie depuis Lyon")),
+      ).toBe(true);
+    });
+
+    it("0 occurrence de la règle générale (FR + EN + questions) hors liste blanche", () => {
+      expect(fautes([REGLE_GENERALE, REGLE_GENERALE_EN, QUESTION_MISSION])).toEqual([]);
+    });
+  });
 });

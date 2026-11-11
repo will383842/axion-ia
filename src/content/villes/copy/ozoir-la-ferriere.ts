@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés selon disponibilités. Formation collective livrée en 2 à 4 semaines selon complexité du cadrage. Pour les artisans BTP en pic de charge, planification adaptée au calendrier de chantiers.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Ozoir-la-Ferrière ?",
+      q: "Quelles communes proches couvrez-vous ?",
       a: "Axion-IA intervient aussi sur Pontault-Combault, Roissy-en-Brie, Lésigny, Pontcarré, Férolles-Attilly, Chevry-Cossigny et Gretz-Armainvilliers, ainsi que plus largement l'est seine-et-marnais.",
     },
     {

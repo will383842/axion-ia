@@ -49,7 +49,7 @@ export const MORCENX_LA_NOUVELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Morcenx-la-Nouvelle et le cœur des Landes ?",
-      a: "Oui, Axion-IA intervient à Morcenx-la-Nouvelle et les communes voisines (Arjuzanx, Ygos-Saint-Saturnin, Carcen-Ponson, Onesse-Laharie). Couverture forêt, lac et bourg. Déplacement depuis Mont-de-Marsan (25 min).",
+      a: "Oui, Axion-IA intervient à Morcenx-la-Nouvelle et les communes voisines (Arjuzanx, Ygos-Saint-Saturnin, Carcen-Ponson, Onesse-Laharie). Couverture forêt, lac et bourg. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les exploitants forestiers ?",

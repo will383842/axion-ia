@@ -64,7 +64,7 @@ export const LA_MONTAGNE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud-ouest nantais.",
     },
     {
-      q: "Comment se passe une intervention depuis Nantes ?",
+      q: "Comment se déroule une intervention à La Montagne ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],

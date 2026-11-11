@@ -231,7 +231,7 @@ export const MONTIGNY_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Montigny-lès-Metz ?",
-      a: "Nous nous déplaçons à Montigny-lès-Metz sous 5 jours ouvrés en moyenne. La gare TGV de Metz-Ville (à 2 km, Paris en 1 h 25) et l'A31 rendent l'accès rapide depuis toute la France.",
+      a: "Nous nous déplaçons à Montigny-lès-Metz sous 5 jours ouvrés en moyenne. La gare TGV de Metz-Ville (à 2 km, Paris en 1 h 25) et l'A31 rendent l'accès rapide.",
     },
     {
       q: "Intervenez-vous aussi à Metz, Marly ou Moulins-lès-Metz ?",

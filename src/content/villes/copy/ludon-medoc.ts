@@ -73,7 +73,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ludon-Médoc ?",
-      a: "Nous démarrons par un audit, puis intervenons en chai, en atelier ou en visio depuis Bordeaux centre (25 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons en chai, en atelier ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

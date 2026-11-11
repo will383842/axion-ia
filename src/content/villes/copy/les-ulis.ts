@@ -74,7 +74,7 @@ export const LES_ULIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio depuis Courtaboeuf, avec priorisation continue selon vos retours d'équipe technique.",
+              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio, avec priorisation continue selon vos retours d'équipe technique.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const LES_ULIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio depuis Courtaboeuf, avec priorisation continue selon vos retours d'équipe technique.",
+              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio, avec priorisation continue selon vos retours d'équipe technique.",
           },
           {
             step: "Recette + mise en ligne",

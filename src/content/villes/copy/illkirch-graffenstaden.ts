@@ -246,7 +246,7 @@ const VILLE_COPY: VilleCopy = {
       a: "Audit sur place bookable sous 5 à 10 jours ouvrés. Formation collective livrée en 2 à 4 semaines selon complexité. Axion-IA peut intervenir dès la semaine suivante pour cadrer un besoin urgent (panne de process, automatisation à fenêtre courte).",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Illkirch-Graffenstaden ?",
+      q: "Quelles communes proches couvrez-vous ?",
       a: "Axion-IA intervient aussi sur Strasbourg, Ostwald, Geispolsheim, Eschau, Fegersheim et plus largement l'Eurométropole.",
     },
     {

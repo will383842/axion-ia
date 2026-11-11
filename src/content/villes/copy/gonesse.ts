@@ -221,7 +221,7 @@ export const GONESSE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 24-48 h depending on complexity; travel costs from Paris billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
+          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 24-48 h depending on complexity; travel costs billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
       },
     },
   },
