@@ -333,12 +333,16 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
         description={
           isFr
             ? isBookable
-              ? `${prixVisible ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}` : "Sur devis"}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
+              ? prixVisible
+                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
+                : "Sur devis. Réservez un appel : le devis et le planning suivent sous 48 h ouvrées."
               : prixVisible
                 ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
                 : `Sur devis selon votre contexte. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
             : isBookable
-              ? `${prixVisible ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}` : "On request"}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
+              ? prixVisible
+                ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
+                : "On request. Book a call: the quote and schedule follow within 48 business hours."
               : prixVisible
                 ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
                 : `On request based on your context. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`

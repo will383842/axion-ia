@@ -312,7 +312,7 @@ export function buildWilliamsFaq({
       id: "zone-geographique",
       question: "Williams Jullin intervient-il dans toute la France ?",
       answer:
-        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — au même tarif public qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
+        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — aux mêmes conditions tarifaires qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
     },
     {
       id: "equipe",

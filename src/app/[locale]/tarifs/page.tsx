@@ -139,7 +139,13 @@ export default async function PricingPage({ params }: Props) {
     ? "Combien coûte l'IA pour votre entreprise ? Formations, audits, coaching et implémentation sur devis, sans engagement. Seul prix fixe : la Journée IA."
     : "Axion-IA AI services: trainings, audits, 1-to-1 coaching, implementations and AI web platforms, each on quote. Only the AI Day has a fixed price.";
 
-  const heroEyebrow = isFr ? "Tarifs · sur devis" : "Pricing · on quote";
+  const heroEyebrow = PRIX_PUBLICS_AFFICHES
+    ? isFr
+      ? "Tarifs"
+      : "Pricing"
+    : isFr
+      ? "Tarifs · sur devis"
+      : "Pricing · on quote";
   const heroTitle = PRIX_PUBLICS_AFFICHES
     ? isFr
       ? "Nos tarifs IA en"

@@ -12,7 +12,7 @@
 // Trois règles, fichier par fichier, sur le code rendu au public :
 //   R1 — aucun appel à un formateur BRUT ;
 //   R2 — aucun montant brut interpolé (`${…priceFlat…}`, `String(…priceMin…)`, commissions) ;
-//   R3 — aucun montant en € écrit en dur, hors Journée IA (1 490 €) et hors exceptions
+//   R3 — aucun montant en € écrit en dur (le 1 490 € ne s écrit que sous journee-ia/**, hors périmètre) et hors exceptions
 //        justifiées une à une ci-dessous (chiffres qui ne sont PAS un prix d'Axion-IA) ;
 //   R4 — aucune promesse de « tarifs publics / transparents / prix de départ » qui ne soit
 //        pas gouvernée par l'interrupteur `PRIX_PUBLICS_AFFICHES` (4 lignes au-dessus).
@@ -72,6 +72,9 @@ const CONTENUS: ReadonlyArray<string> = [
   "content/formations/conditions-tarifaires.ts",
   "content/villes/index.ts",
   "content/villes/resolve-with-copy.ts",
+  "content/transversal.ts",
+  "content/faq-categories.ts",
+  "content/faq-resources.ts",
 ];
 
 /**
@@ -103,10 +106,19 @@ function walk(dir: string): string[] {
   return out;
 }
 
+/**
+ * Données SEO (`content/keywords/*.ts`) : scannées pour la PROMESSE de prix publics (R4) seulement.
+ * Leurs montants en € (économies clients, fourchettes de marché, quelques « à partir de » à
+ * traiter) relèvent d'un lot dédié : dette signalée en PR, pas masquée par une exemption globale.
+ */
+const KEYWORDS: string[] = walk(path.join(SRC, "content", "keywords"));
+const EST_KEYWORDS = (fichier: string): boolean => fichier.startsWith("content/keywords/");
+
 const FICHIERS: string[] = [
   ...walk(path.join(SRC, "app", "[locale]")),
   ...walk(path.join(SRC, "components")),
   ...CONTENUS.map((c) => path.join(SRC, c)),
+  ...KEYWORDS,
 ].filter((abs) => !HORS_PERIMETRE.some((re) => re.test(rel(abs))));
 
 // Retire les commentaires (blocs, commentaires JSX, lignes `//`) : un prix cité en
@@ -136,7 +148,6 @@ const PROMESSE_PUBLIQUE =
 
 // ── R3 ──────────────────────────────────────────────────────────────────────
 const MONTANT_EUR = /\d[\d.,\s  ]*(?:k\s?€|M€|€|EUR\b|euros?\b)|(?:€|k€)\s*\d[\d.,]*/gi;
-const JOURNEE_IA = /1[\s  ]?490[\s  ]?€/g;
 
 /**
  * Montants en € qui ne sont PAS un prix d'Axion-IA, laissés volontairement — motif exact,
@@ -194,26 +205,11 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
     motif: /> 5 000 € HT|> €5,000/,
     raison: "seuil de qualification d'une demande de devis, pas un prix d'offre",
   },
-  // ── R4 : lignes que modifie la PR 1857 (textes publics) — reprises après sa fusion ──
-  {
-    fichier: "components/sections/FounderProfile.tsx",
-    motif: /même tarif public/,
-    raison: "ligne réécrite par la PR 1857 : y toucher ici créerait un conflit",
-  },
-  {
-    fichier: "content/equipe/williams.ts",
-    motif: /même tarif public/,
-    raison: "ligne réécrite par la PR 1857 : y toucher ici créerait un conflit",
-  },
-  {
-    fichier: "app/[locale]/a-propos/page.tsx",
-    motif: /même tarif public|same public rate/,
-    raison: "ligne réécrite par la PR 1857 : y toucher ici créerait un conflit",
-  },
   {
     fichier: "content/transversal.ts",
-    motif: /les tarifs publics affichés sont identiques|ni les tarifs publics affichés/,
-    raison: "réponses FAQ réécrites par la PR 1857 (l.216 et l.266) : conflit sinon",
+    motif: /formatAmount\(/,
+    raison:
+      "montants de la réponse « modules » : branche atteinte seulement si PRIX_PUBLICS_AFFICHES (retour anticipé sinon, l.38-40)",
   },
   // ── R1 / R2 : accès aux montants qui ne sont PAS un rendu public ──────────
   {
@@ -258,8 +254,8 @@ function violations(abs: string): Violation[] {
       .slice(Math.max(0, i - 4), i + 1)
       .some((x) => x.includes("PRIX_PUBLICS_AFFICHES"));
     if (PROMESSE_PUBLIQUE.test(l) && !gouvernee) push("R4", l);
-    if (!(fichier in FICHIERS_EXEMPTES)) {
-      const sans = l.replace(JOURNEE_IA, "");
+    if (!(fichier in FICHIERS_EXEMPTES) && !EST_KEYWORDS(fichier)) {
+      const sans = l;
       for (const m of sans.matchAll(MONTANT_EUR)) {
         // « 0 € » nu, « 2 € » de démonstration : seul un nombre ≥ 10 est un prix crédible.
         const n = Number.parseFloat(m[0].replace(/[^\d]/g, ""));

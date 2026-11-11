@@ -160,7 +160,7 @@ export default async function About({ params }: Props) {
           id: "couverture-paris",
           question: "Axion-IA intervient-il à Paris et en Île-de-France ?",
           answer:
-            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, au même tarif public qu'en région. Les interventions sont menées partout en France.",
+            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, aux mêmes conditions tarifaires qu'en région. Les interventions sont menées partout en France.",
         },
         {
           id: "depuis-quand",
@@ -236,7 +236,7 @@ export default async function About({ params }: Props) {
           id: "couverture-paris",
           question: "Does Axion-IA operate in Paris and the Île-de-France region?",
           answer:
-            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, at the same public rate as the rest of the country. Engagements are run across France.",
+            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, on the same pricing terms as the rest of the country. Engagements are run across France.",
         },
         {
           id: "depuis-quand",

@@ -24,6 +24,7 @@ import {
   getEntryTier,
   getTierById,
   formatTierPrice,
+  prixAffichable,
 } from "@/content/pricing";
 
 export interface VilleServiceDetailSectionProps {
@@ -71,8 +72,12 @@ const SERVICE_META = {
     labelEn: "AI sessions",
     eyebrowFr: "Interventions IA en entreprise",
     eyebrowEn: "Corporate AI sessions",
-    ctaFr: `Voir le calendrier · ${formatTierPrice(formationJourTier, "fr", { compact: true })}`,
-    ctaEn: `View the calendar · ${formatTierPrice(formationJourTier, "en", { compact: true })}`,
+    ctaFr: prixAffichable(formationJourTier)
+      ? `Voir le calendrier · ${formatTierPrice(formationJourTier, "fr", { compact: true })}`
+      : "Voir le calendrier",
+    ctaEn: prixAffichable(formationJourTier)
+      ? `View the calendar · ${formatTierPrice(formationJourTier, "en", { compact: true })}`
+      : "View the calendar",
   },
   implementation: {
     accent: "sage" as const,
@@ -91,8 +96,12 @@ const SERVICE_META = {
     labelEn: "1-to-1 AI coaching",
     eyebrowFr: "Coaching IA individuel",
     eyebrowEn: "Individual AI coaching",
-    ctaFr: `Démarrer mon accompagnement · ${formatTierPrice(unAUnTier, "fr", { compact: true })}`,
-    ctaEn: `Start my coaching · ${formatTierPrice(unAUnTier, "en", { compact: true })}`,
+    ctaFr: prixAffichable(unAUnTier)
+      ? `Démarrer mon accompagnement · ${formatTierPrice(unAUnTier, "fr", { compact: true })}`
+      : "Démarrer mon accompagnement",
+    ctaEn: prixAffichable(unAUnTier)
+      ? `Start my coaching · ${formatTierPrice(unAUnTier, "en", { compact: true })}`
+      : "Start my coaching",
   },
   // 2026-06-04 — 5e verticale sites web & SaaS augmentés IA. CTA sans montant
   // (devis sur mesure 48 h, comme implementation) pour rester agnostique du

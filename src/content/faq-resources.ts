@@ -47,8 +47,8 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       href: "/tarifs",
       labelFr: "Tarifs",
       labelEn: "Pricing",
-      descFr: "Prix publics et modalités, sans surprise.",
-      descEn: "Public pricing and terms, no surprises.",
+      descFr: "Devis et modalités, sans surprise.",
+      descEn: "Quotes and terms, no surprises.",
     },
   ],
   interventions: [
@@ -113,8 +113,8 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       href: "/tarifs",
       labelFr: "Tarifs détaillés",
       labelEn: "Detailed pricing",
-      descFr: "Prix publics, TVA et modalités de paiement.",
-      descEn: "Public pricing, VAT and payment terms.",
+      descFr: "Devis, TVA et modalités de paiement.",
+      descEn: "Quotes, VAT and payment terms.",
     },
     {
       href: "/demande-devis",
