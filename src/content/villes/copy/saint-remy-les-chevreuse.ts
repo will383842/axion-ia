@@ -61,11 +61,11 @@ export const SAINT_REMY_LES_CHEVREUSE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi sur le plateau de Saclay ?",
-      a: "Oui, nous couvrons Saint-Rémy-lès-Chevreuse et le plateau de Saclay (15 min). PME technologiques, startups deeptech, laboratoires et entreprises du cluster Paris-Saclay. Interventions sur site ou en visio, formats flexibles.",
+      a: "Oui, nous couvrons Saint-Rémy-lès-Chevreuse et le plateau de Saclay. PME technologiques, startups deeptech, laboratoires et entreprises du cluster Paris-Saclay. Interventions sur site ou en visio, formats flexibles.",
     },
     {
       q: "Comment se déroule une mission à Saint-Rémy-lès-Chevreuse ?",
-      a: "Nos consultants interviennent à Saint-Rémy-lès-Chevreuse depuis Paris (45 min RER B terminus). Intervention dans vos locaux, en espace de coworking ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, en espace de coworking ou en visio.",
     },
   ],
 };

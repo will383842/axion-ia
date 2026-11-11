@@ -133,7 +133,7 @@ export function SectionsPub({
                   </svg>
                   Compléter mon dossier · 3 minutes
                 </Link>
-                <p className="micro">Sans CV · une question par écran · nous répondons à tous</p>
+                <p className="micro">Sans CV · une question par écran</p>
               </div>
             )}
           </div>
@@ -500,9 +500,7 @@ export function SectionsPub({
               Compléter mon dossier · 3 minutes
             </Link>
           )}
-          <p className="reassur-t">
-            Sans exclusivité · Aucun frais d’entrée · Nous répondons à tous
-          </p>
+          <p className="reassur-t">Sans exclusivité · Aucun frais d’entrée</p>
         </div>
       </section>
     </>

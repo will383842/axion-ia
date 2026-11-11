@@ -49,7 +49,7 @@ export const TREBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trèbes et agglo Carcassonne ?",
-      a: "Oui, Axion-IA intervient à Trèbes et dans toute l'agglomération carcassonnaise (Carcassonne, Villemoustaussou, Capendu, Conques-sur-Orbiel). Nos consultants se déplacent depuis Carcassonne en 10 min.",
+      a: "Oui, Axion-IA intervient à Trèbes et dans toute l'agglomération carcassonnaise (Carcassonne, Villemoustaussou, Capendu, Conques-sur-Orbiel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les domaines viticoles Minervois autour de Trèbes ?",
@@ -65,7 +65,7 @@ export const TREBES_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Trèbes ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Trèbes. Format flexible : dans vos locaux, au domaine, en visio ou à Carcassonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Trèbes. Format flexible : dans vos locaux, au domaine ou en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

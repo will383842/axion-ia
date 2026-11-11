@@ -49,7 +49,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Max et Métropole Grand Nancy ?",
-      a: "Oui, Axion-IA intervient à Saint-Max et toute la Métropole du Grand Nancy. Consultants depuis Metz (50 min), Strasbourg (1 h 40) ou Paris (1 h 30 via TGV).",
+      a: "Oui, Axion-IA intervient à Saint-Max et toute la Métropole du Grand Nancy. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Max  ?",
@@ -64,7 +64,7 @@ export const SAINT_MAX_COPY: VilleCopy = {
       a: "Oui, devis intelligents, planning chantiers, automatisation administrative, gestion documentaire cabinets, facturation augmentée pour artisans et professionnels libéraux.",
     },
     {
-      q: "Comment accéder à Saint-Max depuis Paris ?",
+      q: "Comment accéder à Saint-Max ?",
       a: "Paris-Est à 1 h 30 (TGV via Nancy + 10 min). Autoroute A33 accessible en 10 min. Nancy centre à 10 min.",
     },
   ],

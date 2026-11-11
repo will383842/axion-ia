@@ -49,7 +49,7 @@ export const SISTERON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sisteron et dans le Sisteronais ?",
-      a: "Oui, Axion-IA intervient à Sisteron et dans tout le Sisteronais (Laragne-Montéglin, Ribiers, Volonne). Nos consultants viennent d'Aix-en-Provence (1h30 A51) ou Gap (50 min nord).",
+      a: "Oui, Axion-IA intervient à Sisteron et dans tout le Sisteronais (Laragne-Montéglin, Ribiers, Volonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tourisme et hôtellerie du Sisteronais ?",
@@ -65,7 +65,7 @@ export const SISTERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sisteron ?",
-      a: "Nos consultants se déplacent sur site à Sisteron depuis Aix-en-Provence (1h30 A51) ou Gap (50 min). Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
     },
   ],
 };

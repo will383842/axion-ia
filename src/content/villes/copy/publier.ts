@@ -49,7 +49,7 @@ export const PUBLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Publier et dans le Chablais ?",
-      a: "Oui, Axion-IA intervient à Publier et sur tout le Chablais lémanique (Thonon-les-Bains à 5 min, Évian-les-Bains à 5 min, Sciez, Douvaine). Nos consultants couvrent le bassin du lac Léman depuis Genève ou Annecy.",
+      a: "Oui, Axion-IA intervient à Publier et sur tout le Chablais lémanique (Thonon-les-Bains à 5 min, Évian-les-Bains à 5 min, Sciez, Douvaine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les établissements thermaux d'Amphion ?",
@@ -64,8 +64,8 @@ export const PUBLIER_COPY: VilleCopy = {
       a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures de diagnostic. Adapté aux TPE et PME du Chablais, il identifie les cas d'usage IA à fort ROI pour votre activité (thermalisme, tourisme, hôtellerie, commerce). Tarifs publics, sans engagement.",
     },
     {
-      q: "Comment se déroule une mission IA à Publier depuis Genève ?",
-      a: "Nos consultants interviennent à Publier depuis Genève (40 min) ou Annecy. Pour les missions multi-jours, hébergement local sur la rive du Léman.",
+      q: "Comment se déroule une mission IA à Publier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local sur la rive du Léman.",
     },
   ],
 };

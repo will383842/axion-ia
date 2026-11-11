@@ -49,7 +49,7 @@ export const SAINT_JORY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jory ?",
-      a: "Oui, Axion-IA intervient à Saint-Jory et dans tout le nord de Toulouse (Bruguières, Castelnau-d'Estrétefonds, Grenade). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Saint-Jory et dans tout le nord de Toulouse (Bruguières, Castelnau-d'Estrétefonds, Grenade). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Jory ?",
@@ -61,7 +61,7 @@ export const SAINT_JORY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Jory ?",
-      a: "Nos consultants se déplacent à Saint-Jory depuis Toulouse (20 min A62). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Saint-Jory ?",

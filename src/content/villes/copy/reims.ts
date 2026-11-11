@@ -50,9 +50,9 @@ export const REIMS_COPY: VilleCopy = {
   },
 
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Gare TGV Champagne-Ardenne à 45 min de Paris. Aucun lock-in technologique, vos équipes gardent la main.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Reims (51100) sur site dans le Grand Reims et le bassin Champagne. Nous accompagnons les TPE, PME, ETI et grandes entreprises rémois — maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery), industries bioéconomie (Pomacle-Bazancourt), tertiaire NEOMA/Sciences Po — sur leurs cas IA opérationnels : diagnostic chiffré, démos sur vos vraies données, plan d'action concret. Aucun lock-in technologique, vos équipes gardent la main.",
   directAnswerEn:
-    "Axion-IA is a senior AI experts consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. Champagne-Ardenne TGV station, 45 min from Paris. No tech lock-in, your teams stay in control.",
+    "Axion-IA is a senior AI experts consultancy delivering on site in Reims (51100) across Greater Reims and the Champagne basin. We support micro-businesses, SMEs, mid-caps and large enterprises — Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery), bioeconomy industries (Pomacle-Bazancourt), tertiary sector (NEOMA, Sciences Po) — on their operational AI use cases: costed diagnosis, demos on your real data, concrete action plan. No tech lock-in, your teams stay in control.",
 
   seoHook: "champagne, logistique & santé",
 
@@ -84,7 +84,7 @@ export const REIMS_COPY: VilleCopy = {
           "Les grandes maisons de Champagne (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) ont des équipes commerciales, export, marketing et RH éligibles à des cas IA structurés — comptes-rendus de dégustation, traduction multilingue automatique, qualification de leads B2B internationaux.",
           "L'industrie Pomacle-Bazancourt (bioraffinerie 3 Mt biomasse/an) et le pôle Bioeconomy For Change regroupent des ETI et PME industrielles avec des workflows qualité, R&D et supply chain candidats à l'automatisation IA.",
           "NEOMA Business School, Sciences Po Reims et l'URCA forment chaque année des milliers de jeunes professionnels : leurs équipes pédagogiques et administratives accélèrent significativement avec l'IA sur la gestion de contenu, le suivi étudiant, la production de rapports.",
-          "Aucun supplément géographique : le tarif est le même à Reims qu'à Paris. La gare TGV Champagne-Ardenne (Bezannes) permet un kick-off en quelques heures depuis n'importe quelle métropole française.",
+          "Aucun supplément géographique : le tarif est identique partout en France. Nous intervenons partout en France, sur place ou à distance.",
           "Restitutions toujours en présentiel dans vos locaux à Reims ou en bassin Champagne. Plan d'action remis en main propre, exécutable avec n'importe quel prestataire ou en interne.",
         ],
         methodology: [
@@ -176,7 +176,7 @@ export const REIMS_COPY: VilleCopy = {
           "Major Champagne houses (LVMH/MHCS, Taittinger, Vranken-Pommery, Lanson-BCC) have commercial, export, marketing and HR teams eligible for structured AI use cases — tasting notes, automatic multilingual translation, international B2B lead qualification.",
           "Pomacle-Bazancourt industry (3 Mt biomass/year biorefinery) and the Bioeconomy For Change hub group industrial SMEs and mid-caps with quality, R&D and supply chain workflows ripe for AI automation.",
           "NEOMA Business School, Sciences Po Reims and URCA train thousands of young professionals each year: their academic and administrative teams accelerate significantly with AI for content management, student tracking and report production.",
-          "No geographic surcharge: the same price in Reims as in Paris. Champagne-Ardenne TGV station (Bezannes) enables a kick-off within hours from any French metropolis.",
+          "No geographic surcharge: the same price anywhere in France. We work anywhere in France, on site or remotely.",
           "Read-outs always in person at your Reims or Champagne basin offices. Action plan handed over face to face, executable with any vendor or in-house.",
         ],
         methodology: [
@@ -266,7 +266,7 @@ export const REIMS_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Reims se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient dans une maison de Champagne, une ETI agroalimentaire ou une école de management.",
         whyHere: [
-          "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nos consultants y interviennent en journée sans nuit contrainte, et couvrent aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
+          "Nous intervenons à Reims et dans tout le bassin Champagne, jusqu'à Épernay, Châlons et Troyes. Plus largement, nous intervenons partout en France, sur place ou à distance.",
           "Le tissu économique rémois est multi-sectoriel : maisons de Champagne export-intensives, industries bioéconomie, structures académiques (NEOMA, Sciences Po, URCA) — chaque session est calibrée sur votre vocabulaire métier.",
           "Le format collectif (1 journée) est calibré pour les PME et maisons familiales du Grand Reims de quelques dizaines à une centaine de collaborateurs.",
           "Le format Dirigeants est adapté aux CODIR des grandes maisons de Champagne ou des directions régionales de grands groupes (LVMH, Pernod Ricard) implantés à Reims.",
@@ -333,7 +333,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants peuvent-ils venir dans le bassin Champagne (Épernay, Châlons, Troyes) ?",
-            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne. La gare TGV de Bezannes et le réseau autoroutier permettent d'atteindre Épernay (~30 km), Châlons-en-Champagne (~45 km) et Troyes (~80 km) dans la même journée.",
+            a: "Oui. Nous couvrons l'ensemble du bassin Champagne-Ardenne, dont Épernay (~30 km de Reims), Châlons-en-Champagne (~45 km) et Troyes (~80 km). Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Les outils installés sur les postes sont-ils adaptés au secteur Champagne ?",
@@ -358,7 +358,7 @@ export const REIMS_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Reims come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether in a Champagne house, an agri-food mid-cap or a business school.",
         whyHere: [
-          "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — our consultants intervene there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
+          "We work in Reims and across the Champagne basin, as far as Épernay, Châlons and Troyes. We work anywhere in France, on site or remotely.",
           "Reims' economic fabric is multi-sectoral: export-intensive Champagne houses, bioeconomy industries, academic structures (NEOMA, Sciences Po, URCA) — each session is calibrated to your sector vocabulary.",
           "The one-day format is calibrated for Grand Reims SMEs and family houses from a few dozen to about a hundred staff.",
           "The Executives format suits the executive committees of major Champagne houses or regional leadership of large groups (LVMH, Pernod Ricard) based in Reims.",
@@ -425,7 +425,7 @@ export const REIMS_COPY: VilleCopy = {
           },
           {
             q: "Can your consultants come to the Champagne basin (Épernay, Châlons, Troyes)?",
-            a: "Yes. We cover the entire Champagne-Ardenne basin. Bezannes TGV station and the motorway network allow reaching Épernay (~30 km), Châlons-en-Champagne (~45 km) and Troyes (~80 km) within the same day.",
+            a: "Yes. We cover the entire Champagne-Ardenne basin, including Épernay (~30 km from Reims), Châlons-en-Champagne (~45 km) and Troyes (~80 km). We work anywhere in France, on site or remotely.",
           },
           {
             q: "Are the tools installed on workstations adapted to the Champagne sector?",
@@ -1000,7 +1000,7 @@ export const REIMS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Reims ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Reims qu'à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, choix calibré selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
     },
     {
       q: "Axion-IA intervient-il auprès des maisons de Champagne ?",
@@ -1008,7 +1008,7 @@ export const REIMS_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous le bassin Champagne au-delà de Reims ?",
-      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay (~30 km), Châlons-en-Champagne (~45 km), Troyes (~80 km), ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). La gare TGV Champagne-Ardenne facilite nos déplacements.",
+      a: "Oui. Nos interventions couvrent l'ensemble du bassin Champagne-Ardenne : Épernay (~30 km), Châlons-en-Champagne (~45 km), Troyes (~80 km), ainsi que les communes du Grand Reims (Bezannes, Tinqueux, Cormontreuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs rémois sont prioritaires pour l'IA opérationnelle ?",

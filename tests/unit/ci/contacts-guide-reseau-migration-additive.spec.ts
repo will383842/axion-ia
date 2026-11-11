@@ -117,8 +117,9 @@ describe("migration contacts_guide_reseau : additive", () => {
     // rattrapage horaire du guide (`rattrapage.ts` : un `findFirst` pour savoir si la demande vient
     // de la page, afin de rendre le lien de désinscription ; aucune écriture ni suppression), et
     // la mise à l'écart par adresse (`mise-a-l-ecart.ts` : un `updateMany` vers `ecarte`, jamais
-    // de suppression ; appelé par l'effacement et l'opposition reçus en message privé), le lecteur
-    // des « merci » à envoyer (`confirmations.ts`, lot S4a), et la preuve de l'accord en trois
+    // de suppression ; appelé par l'effacement et l'opposition reçus en message privé), la
+    // réservation des « merci » (`confirmations.ts`, lot S4a : des `UPDATE` de `merci_statut`, jamais
+    // de suppression ; regroupement des PR 1937 et 1938), et la preuve de l'accord en trois
     // états (`preuve-page-guide.ts` : des `updateMany` d'état, jamais de suppression).
     expect(fautifs).toEqual([
       "src/app/guide-reseau/route.ts",

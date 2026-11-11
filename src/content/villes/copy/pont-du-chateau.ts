@@ -64,7 +64,7 @@ export const PONT_DU_CHATEAU_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Pont-du-Château ?",
       a: "Clermont-Ferrand (15 min). Aéroport Clermont à 25 min.",
     },
   ],

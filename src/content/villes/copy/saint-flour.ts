@@ -49,7 +49,7 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Flour et Cantal est ?",
-      a: "Oui, Axion-IA intervient à Saint-Flour et tout le Cantal est (Neussargues, Massiac, Ruynes-en-Margeride). Consultants depuis Clermont-Ferrand (1h30 A75) ou Aurillac (1h).",
+      a: "Oui, Axion-IA intervient à Saint-Flour et tout le Cantal est (Neussargues, Massiac, Ruynes-en-Margeride). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs Salers/Aubrac ?",
@@ -64,7 +64,7 @@ export const SAINT_FLOUR_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont ?",
+      q: "Comment se déroule une mission à Saint-Flour ?",
       a: "Clermont-Ferrand (1h30 A75). Coûts de déplacement à part, tarification transparente.",
     },
   ],

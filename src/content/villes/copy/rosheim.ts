@@ -49,7 +49,7 @@ export const ROSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosheim et Route des Vins ?",
-      a: "Oui, Axion-IA intervient à Rosheim et toute la Route des Vins du Bas-Rhin (Obernai, Boersch, Ottrott, Bischoffsheim). Consultants depuis Strasbourg (25 min) ou gare TER Rosheim.",
+      a: "Oui, Axion-IA intervient à Rosheim et toute la Route des Vins du Bas-Rhin (Obernai, Boersch, Ottrott, Bischoffsheim). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs AOC Alsace ?",

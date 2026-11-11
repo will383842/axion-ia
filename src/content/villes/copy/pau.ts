@@ -228,15 +228,15 @@ export const PAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pau et dans l'agglomération Pau Béarn Pyrénées ?",
-      a: "Oui. Nous intervenons à Pau (64000) et dans les 31 communes de la Communauté d'agglomération Pau Béarn Pyrénées : Jurançon, Bizanos, Gelos, Lons, Billère, Lescar, Idron et au-delà. Déplacement depuis le centre-ville en 5 à 20 min.",
+      a: "Oui. Nous intervenons à Pau (64000) et dans les 31 communes de la Communauté d'agglomération Pau Béarn Pyrénées : Jurançon, Bizanos, Gelos, Lons, Billère, Lescar, Idron et au-delà. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Pau ?",
       a: "Audit sur place {{price:audit-flash|flat}} (diagnostic et plan d'action sous 7 jours), Formation 4 h {{price:intervention-4h|flat}} (atelier sur site), Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Tarifs publics affichés, pas de devis opaque.",
     },
     {
-      q: "Quels délais de déplacement pour une mission à Pau depuis Paris ou Bordeaux ?",
-      a: "Nos consultants se déplacent sous 5 jours ouvrés. Accès Pau via TGV Paris-Montparnasse (4 h), TGV Bordeaux Saint-Jean (2 h via A65 ou rail), aéroport Pau Pyrénées (vols quotidiens Paris-Orly, Lyon, Amsterdam). Possibilité d'audit visio sous 48 h.",
+      q: "Quels délais de déplacement pour une mission à Pau ?",
+      a: "Nous intervenons sous 5 jours ouvrés. Pau est desservie par le TGV, la gare Bordeaux Saint-Jean (2 h via A65 ou rail) et l'aéroport Pau Pyrénées. Possibilité d'audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD et AI Act pour les missions à Pau ?",

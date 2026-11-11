@@ -25,7 +25,7 @@ export function faqPrincipale(p: Chiffres): QuestionReponse[] {
     },
     {
       question: `Que se passe-t-il après ma demande ?`,
-      reponse: `Vous remplissez un dossier de 3 minutes, sans CV. Vous recevez un e-mail de confirmation, puis, si nous poursuivons ensemble, une invitation à un échange de 15 minutes en visio et un contrat à lire avant de signer. Nous répondons à tous.`,
+      reponse: `Vous remplissez un dossier de 3 minutes, sans CV. Vous recevez un e-mail de confirmation, puis, si nous poursuivons ensemble, une invitation à un échange de 15 minutes en visio et un contrat à lire avant de signer.`,
     },
     {
       question: `Comment suis-je payé ?`,

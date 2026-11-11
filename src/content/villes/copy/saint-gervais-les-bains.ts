@@ -49,7 +49,7 @@ export const SAINT_GERVAIS_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gervais-les-Bains et au Val Montjoie ?",
-      a: "Oui, Axion-IA intervient à Saint-Gervais-les-Bains et dans tout le Val Montjoie (Les Contamines-Montjoie, Megève, Combloux, Passy). Nos consultants se déplacent depuis Annecy (1h15) ou Genève (1h15).",
+      a: "Oui, Axion-IA intervient à Saint-Gervais-les-Bains et dans tout le Val Montjoie (Les Contamines-Montjoie, Megève, Combloux, Passy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Gervais-les-Bains ?",

@@ -49,7 +49,7 @@ export const PETIT_CAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Petit-Caux et sur la cote d'Albatre ?",
-      a: "Oui, Axion-IA intervient a Petit-Caux et sur toute la cote d'Albatre (Dieppe, Le Treport, Eu, Criel-sur-Mer). Consultants depuis Rouen (1h) ou Paris (2h15).",
+      a: "Oui, Axion-IA intervient a Petit-Caux et sur toute la cote d'Albatre (Dieppe, Le Treport, Eu, Criel-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les hebergeurs touristiques de Petit-Caux ?",

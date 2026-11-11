@@ -49,7 +49,7 @@ export const VETRAZ_MONTHOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Vetraz-Monthoux et dans l'agglomeration d'Annemasse ?",
-      a: "Oui, Axion-IA intervient a Vetraz-Monthoux et dans toute l'agglomeration annemassienne du Grand Geneve (Annemasse, Gaillard, Ambilly, Ville-la-Grand, Cranves-Sales). Nos consultants sont a 10 min de Geneve et 40 min d'Annecy.",
+      a: "Oui, Axion-IA intervient a Vetraz-Monthoux et dans toute l'agglomeration annemassienne du Grand Geneve (Annemasse, Gaillard, Ambilly, Ville-la-Grand, Cranves-Sales). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises transfrontalieres de Vetraz-Monthoux ?",

@@ -49,7 +49,7 @@ export const PIERRELATTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pierrelatte et bassin Tricastin ?",
-      a: "Oui, Axion-IA intervient à Pierrelatte et tout le bassin Tricastin sud-Drôme (Saint-Paul-Trois-Châteaux, Bollène à 10 min, Donzère, Grignan). Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min).",
+      a: "Oui, Axion-IA intervient à Pierrelatte et tout le bassin Tricastin sud-Drôme (Saint-Paul-Trois-Châteaux, Bollène à 10 min, Donzère, Grignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants techniques du Tricastin ?",
@@ -64,8 +64,8 @@ export const PIERRELATTE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Pierrelatte, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Pierrelatte ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

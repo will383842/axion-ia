@@ -49,7 +49,7 @@ export const VESOUL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vesoul et en Haute-Saône ?",
-      a: "Oui, Axion-IA intervient à Vesoul et dans toute la Haute-Saône (Besançon à 45 min, Belfort à 50 min, Dijon à 1 h 15). Nos consultants couvrent le département depuis Besançon ou Dijon.",
+      a: "Oui, Axion-IA intervient à Vesoul et dans toute la Haute-Saône (Besançon à 45 min, Belfort à 50 min, Dijon à 1 h 15). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les sous-traitants automobile de Vesoul ?",
@@ -65,7 +65,7 @@ export const VESOUL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vesoul ?",
-      a: "Nos consultants interviennent à Vesoul depuis Besançon (45 min) ou Dijon (1 h 15). Gare SNCF Vesoul sur la ligne Paris-Belfort. Intervention sur site dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Vesoul sur la ligne Paris-Belfort. Intervention sur site dans vos locaux.",
     },
   ],
 };

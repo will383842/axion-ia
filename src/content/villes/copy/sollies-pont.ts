@@ -53,7 +53,7 @@ export const SOLLIES_PONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Solliès-Pont et dans la vallée du Gapeau ?",
-      a: "Oui, Axion-IA intervient à Solliès-Pont et dans toute la vallée du Gapeau (Solliès-Toucas, Solliès-Ville, La Farlède, Belgentier, Cuers). Nos consultants se déplacent sur site depuis l'aire toulonnaise ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Solliès-Pont et dans toute la vallée du Gapeau (Solliès-Toucas, Solliès-Ville, La Farlède, Belgentier, Cuers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations de cerise de Solliès et de figue AOP ?",

@@ -65,7 +65,7 @@ export const THUIR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Thuir ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre cave, exploitation ou commerce. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre cave, exploitation ou commerce. Visio possible.",
     },
   ],
 };

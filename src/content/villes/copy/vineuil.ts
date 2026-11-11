@@ -49,7 +49,7 @@ export const VINEUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vineuil près de Blois ?",
-      a: "Oui, Axion-IA intervient à Vineuil et dans toute l'agglomération de Blois. Consultants sur site, déplacement depuis Blois en 5 min.",
+      a: "Oui, Axion-IA intervient à Vineuil et dans toute l'agglomération de Blois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vineuil  ?",

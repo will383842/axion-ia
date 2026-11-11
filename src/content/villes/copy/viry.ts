@@ -49,7 +49,7 @@ export const VIRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viry et dans le Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Viry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois, Valleiry, Collonges-sous-Salève, Annemasse). Nos consultants se déplacent depuis Annecy (40 min) ou Genève (15 min).",
+      a: "Oui, Axion-IA intervient à Viry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois, Valleiry, Collonges-sous-Salève, Annemasse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Viry ?",

@@ -53,7 +53,7 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Denis-lès-Bourg ?",
-      a: "Oui, Axion-IA intervient à Saint-Denis-lès-Bourg et dans toute l'agglomération burgienne (Bourg-en-Bresse à 5 min, Viriat, Péronnas). Nos consultants viennent de Lyon (1h) ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Saint-Denis-lès-Bourg et dans toute l'agglomération burgienne (Bourg-en-Bresse à 5 min, Viriat, Péronnas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs et exploitants bressois ?",
@@ -69,7 +69,7 @@ export const SAINT_DENIS_LES_BOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Denis-lès-Bourg ?",
-      a: "Nos consultants viennent de Lyon (1h, A40/A42), la gare de Bourg est à 10 min (Paris 2h). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",

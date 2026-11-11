@@ -49,7 +49,7 @@ export const ROCHEFORT_DU_GARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rochefort-du-Gard ?",
-      a: "Oui, Axion-IA intervient à Rochefort-du-Gard et entre Nîmes et Avignon (Les Angles, Villeneuve-lès-Avignon, Saze, Domazan). Nos consultants sont à 15 min d'Avignon et 20 min de Nîmes.",
+      a: "Oui, Axion-IA intervient à Rochefort-du-Gard et entre Nîmes et Avignon (Les Angles, Villeneuve-lès-Avignon, Saze, Domazan). Rochefort-du-Gard est à 15 min d'Avignon et 20 min de Nîmes. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Rochefort-du-Gard  ?",

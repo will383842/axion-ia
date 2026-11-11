@@ -49,7 +49,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tomblaine et est Nancy ?",
-      a: "Oui, Axion-IA intervient à Tomblaine et tout l'est de la Métropole du Grand Nancy (Essey-lès-Nancy, Saint-Max, Pulnoy, Saulxures-lès-Nancy). Consultants depuis Nancy centre (10 min).",
+      a: "Oui, Axion-IA intervient à Tomblaine et tout l'est de la Métropole du Grand Nancy (Essey-lès-Nancy, Saint-Max, Pulnoy, Saulxures-lès-Nancy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services et commerçants de Tomblaine ?",
@@ -65,7 +65,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Tomblaine ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos locaux tertiaires, commerce ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux tertiaires, commerce ou cabinet.",
     },
   ],
 };

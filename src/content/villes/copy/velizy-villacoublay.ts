@@ -74,7 +74,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le technopôle : espace client, portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur votre documentation, agents et automatisations. Démos hebdomadaires en visio, code versionné et revu en continu.",
+              "Greffe IA sur l'existant ou build IA-native pour les entreprises du technopôle : espace client, portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur votre documentation, agents et automatisations. Démos hebdomadaires en visio, code versionné et revu en continu.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const VELIZY_VILLACOUBLAY_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le technopôle : espace client, portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur votre documentation, agents et automatisations. Démos hebdomadaires en visio, code versionné et revu en continu.",
+              "Greffe IA sur l'existant ou build IA-native pour les entreprises du technopôle : espace client, portail fournisseurs, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique sur votre documentation, agents et automatisations. Démos hebdomadaires en visio, code versionné et revu en continu.",
           },
           {
             step: "Recette + mise en ligne",

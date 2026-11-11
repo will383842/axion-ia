@@ -226,7 +226,7 @@ export const WATTRELOS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wattrelos ?",
-      a: "Oui, Axion-IA intervient à Wattrelos et dans la métropole lilloise : Roubaix, Tourcoing, Leers, Lille. Déplacement sur site possible, accès via A22 ou TER depuis Lille.",
+      a: "Oui, Axion-IA intervient à Wattrelos et dans la métropole lilloise : Roubaix, Tourcoing, Leers, Lille. Déplacement sur site possible. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Wattrelos ?",

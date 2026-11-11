@@ -49,7 +49,7 @@ export const REDON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Redon et dans le Pays de Redon ?",
-      a: "Oui, Axion-IA intervient à Redon et dans tout le Pays de Redon (Allaire, Saint-Nicolas-de-Redon, Bains-sur-Oust, Pipriac). Nos consultants arrivent par TER depuis Rennes (50 min) ou Nantes (50 min).",
+      a: "Oui, Axion-IA intervient à Redon et dans tout le Pays de Redon (Allaire, Saint-Nicolas-de-Redon, Bains-sur-Oust, Pipriac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du Pays de Redon ?",
@@ -65,7 +65,7 @@ export const REDON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Redon ?",
-      a: "Nos consultants arrivent par TER depuis Rennes (50 min) ou Nantes (50 min) — gare de Redon sur le noeud TGV Rennes-Nantes-Quimper.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -18,9 +18,9 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
   ecosystemEn:
     "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces TPE et PME, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
   distancesFr:
-    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Logistique et entreposage",
     "Transport routier de marchandises",
@@ -132,7 +132,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Ris-Orangis ?",
-            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nos consultants se déplacent depuis Paris, à environ 25 km par l'A6 et le RER D.",
+            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -218,11 +218,11 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start a project in Ris-Orangis?",
-            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; our consultants travel from Paris, about 25 km via the A6 and RER D.",
+            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; we work anywhere in France, on site or remotely (Ris-Orangis is about 25 km south of Paris, served by the A6 and RER D).",
           },
         ],
         guarantees:
-          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs from Paris listed separately, with full transparency.",
+          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs listed separately, with full transparency.",
       },
     },
   },
@@ -230,7 +230,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ris-Orangis et dans Grand Paris Sud ?",
-      a: "Oui. Nous couvrons Ris-Orangis et l'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Grigny). Nos consultants se déplacent sur site depuis Paris, à 25 km, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Ris-Orangis et l'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Grigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de commerce, BTP et services ?",
@@ -245,7 +245,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
       a: "Non. Nous partons de vos logiciels existants et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un chantier réservé aux grands groupes.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Ris-Orangis ?",
       a: "Le diagnostic et les sessions clés se font sur site à Ris-Orangis ; le suivi se poursuit en visio. Le RER D et l'A6 permettent des déplacements rapides, dont les frais sont indiqués séparément, en toute transparence.",
     },
   ],

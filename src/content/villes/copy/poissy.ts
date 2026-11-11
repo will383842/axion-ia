@@ -18,9 +18,9 @@ export const POISSY_COPY: VilleCopy = {
   ecosystemEn:
     "Poissy est marquée par l'usine automobile Stellantis, héritière directe de l'historique site PSA Peugeot Citroën, qui irrigue un dense réseau de sous-traitants et de fournisseurs de rang 2 et 3 dans toute la Seine aval. Autour de ce socle industriel cohabitent les commerces du centre ancien, près de la collégiale Notre-Dame, et un tissu de PME de services et de logistique. Ces petites structures, soumises à la pression de cadence et de qualité de la filière auto, ont tout à gagner à industrialiser leurs tâches administratives avec l'IA.",
   distancesFr:
-    "Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en une vingtaine de minutes. L'A13 et l'A14 desservent directement la commune vers la capitale et la Normandie. L'aéroport de Paris-Charles-de-Gaulle se trouve à environ 45 km, Paris-Orly à environ 40 km. Cette connexion rapide à l'ouest francilien rend nos déplacements sur site fluides, jusqu'aux zones industrielles de la Seine aval.",
+    "Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en une vingtaine de minutes. L'A13 et l'A14 desservent directement la commune vers la capitale et la Normandie. L'aéroport de Paris-Charles-de-Gaulle se trouve à environ 45 km, Paris-Orly à environ 40 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en une vingtaine de minutes. L'A13 et l'A14 desservent directement la commune vers la capitale et la Normandie. L'aéroport de Paris-Charles-de-Gaulle se trouve à environ 45 km, Paris-Orly à environ 40 km. Cette connexion rapide à l'ouest francilien rend nos déplacements sur site fluides, jusqu'aux zones industrielles de la Seine aval.",
+    "Poissy est reliée à Paris par le RER A et la ligne J du Transilien depuis sa gare, avec La Défense atteignable en une vingtaine de minutes. L'A13 et l'A14 desservent directement la commune vers la capitale et la Normandie. L'aéroport de Paris-Charles-de-Gaulle se trouve à environ 45 km, Paris-Orly à environ 40 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Construction automobile et sous-traitance (filière Stellantis)",
     "Travail des métaux et produits métalliques",
@@ -233,7 +233,7 @@ export const POISSY_COPY: VilleCopy = {
       a: "Oui. Les fournisseurs et sous-traitants de la filière Stellantis à Poissy figurent parmi nos cibles prioritaires. Nous automatisons leurs flux administratifs et leur reporting qualité, sans toucher à leurs lignes de production ni à leurs systèmes critiques.",
     },
     {
-      q: "Axion-IA se déplace-t-il dans vos locaux à Poissy ?",
+      q: "Comment se passe une intervention à Poissy ?",
       a: "Oui, nos experts IA interviennent sur site à Poissy, des ateliers de la Seine aval aux commerces du centre historique. L'observation terrain reste le meilleur point de départ pour cibler les automatisations réellement utiles.",
     },
     {

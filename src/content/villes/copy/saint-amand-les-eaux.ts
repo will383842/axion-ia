@@ -49,7 +49,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Amand-les-Eaux et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Saint-Amand-les-Eaux et dans tout le Valenciennois (Valenciennes, Condé-sur-l'Escaut, Mortagne-du-Nord, Vieux-Condé). Nos consultants couvrent l'ensemble du bassin amandinois et la vallée de la Scarpe depuis Lille (45 min) ou Valenciennes (20 min).",
+      a: "Oui, Axion-IA intervient à Saint-Amand-les-Eaux et dans tout le Valenciennois (Valenciennes, Condé-sur-l'Escaut, Mortagne-du-Nord, Vieux-Condé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Amand-les-Eaux  ?",
@@ -61,7 +61,7 @@ export const SAINT_AMAND_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Amand-les-Eaux ?",
-      a: "Nos consultants interviennent à Saint-Amand-les-Eaux depuis Lille (45 min) ou Valenciennes (20 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Saint-Amand-les-Eaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Saint-Amand-les-Eaux.",
     },
     {
       q: "Proposez-vous des solutions IA pour l'artisanat faïencier ?",

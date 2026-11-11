@@ -49,7 +49,7 @@ export const PORT_JEROME_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Port-Jerome-sur-Seine et dans le pole petrochimique ?",
-      a: "Oui, Axion-IA intervient a Port-Jerome-sur-Seine et sur tout le pole petrochimique de la basse Seine (Lillebonne, Gonfreville-l'Orcher, Grand-Couronne). Consultants depuis Rouen (50 min) ou Le Havre (30 min).",
+      a: "Oui, Axion-IA intervient a Port-Jerome-sur-Seine et sur tout le pole petrochimique de la basse Seine (Lillebonne, Gonfreville-l'Orcher, Grand-Couronne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Port-Jerome ?",

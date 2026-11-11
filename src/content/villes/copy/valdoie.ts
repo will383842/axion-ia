@@ -49,7 +49,7 @@ export const VALDOIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valdoie et agglo Belfort ?",
-      a: "Oui, Axion-IA intervient à Valdoie et toute l'agglomération belfortaine (Belfort, Offemont, Bavilliers, Cravanche). Consultants depuis Belfort (5 min) ou Mulhouse (40 min).",
+      a: "Oui, Axion-IA intervient à Valdoie et toute l'agglomération belfortaine (Belfort, Offemont, Bavilliers, Cravanche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME sous-traitantes industries Belfort ?",
@@ -64,7 +64,7 @@ export const VALDOIE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Belfort ?",
+      q: "Comment se déroule une mission à Valdoie ?",
       a: "Belfort centre (5 min) ou TGV Belfort-Montbéliard (15 min).",
     },
   ],

@@ -49,7 +49,7 @@ export const SAUJON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saujon et dans le bassin thermal ?",
-      a: "Oui, Axion-IA intervient à Saujon et tout le bassin Saujon-Royan-Saintes. Nos consultants accèdent facilement via la gare de Saujon (TER Royan 10 min, Saintes 20 min) ou la route Royan-Saintes.",
+      a: "Oui, Axion-IA intervient à Saujon et tout le bassin Saujon-Royan-Saintes. Nous intervenons partout en France, sur place ou à distance. Saujon est desservie par sa gare TER (Royan à 10 min, Saintes à 20 min) et la route Royan-Saintes.",
     },
     {
       q: "Quels services IA pour les professionnels du thermalisme à Saujon ?",
@@ -65,7 +65,7 @@ export const SAUJON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saujon ?",
-      a: "Nos consultants accèdent à Saujon par TER (Royan 10 min, Saintes 20 min) ou voiture. Mission sur site dans votre établissement thermal, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement thermal, cabinet ou commerce à Saujon.",
     },
   ],
 };

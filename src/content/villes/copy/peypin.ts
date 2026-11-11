@@ -51,7 +51,7 @@ export const PEYPIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Peypin et dans le bassin minier reconverti ?",
-      a: "Oui, Axion-IA intervient à Peypin et dans toutes les communes du pays minier reconverti : Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive. Accès direct via A52, consultants depuis Aubagne (12 min) ou Marseille (30 min).",
+      a: "Oui, Axion-IA intervient à Peypin et dans toutes les communes du pays minier reconverti : Auriol, La Bouilladisse, La Destrousse, Saint-Savournin, Cadolive. Accès direct via A52. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP rénovation énergétique ?",
@@ -66,8 +66,8 @@ export const PEYPIN_COPY: VilleCopy = {
       a: "Oui, les entreprises de désamiantage et travaux publics liées à la reconversion post-charbon du bassin Gardanne-Provence bénéficient de nos missions IA : classification photos chantier, génération automatique de PPSPS, suivi conformité réglementaire, planification multi-équipes.",
     },
     {
-      q: "Comment se déplace Axion-IA à Peypin depuis Aubagne ou Marseille ?",
-      a: "Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Nos consultants viennent sur chantier ou en atelier dans vos locaux. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session.",
+      q: "Comment se déroule une intervention à Peypin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance : sur chantier ou en atelier dans vos locaux. Peypin est à 12 min d'Aubagne via A52 et 30 min de Marseille via A50. Possibilité de regrouper plusieurs artisans du bassin (Auriol, La Bouilladisse) sur une même session.",
     },
   ],
 };

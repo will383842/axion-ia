@@ -49,7 +49,7 @@ export const QUETIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quetigny et dans l'est dijonnais ?",
-      a: "Oui, Axion-IA intervient à Quetigny et dans tout le bassin est de Dijon (Chevigny-Saint-Sauveur, Saint-Apollinaire, Crimolois). Nos consultants se déplacent depuis Dijon en 10 minutes via le tram T1.",
+      a: "Oui, Axion-IA intervient à Quetigny et dans tout le bassin est de Dijon (Chevigny-Saint-Sauveur, Saint-Apollinaire, Crimolois). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Quetigny  ?",

@@ -49,7 +49,7 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Rambert-d'Albon et nord-Drôme ?",
-      a: "Oui, Axion-IA intervient à Saint-Rambert-d'Albon et tout le nord-Drôme (Sablons, Le Péage-de-Roussillon limitrophe Isère, Saint-Vallier). Nos consultants viennent de Lyon (50 min A7) ou Valence (30 min).",
+      a: "Oui, Axion-IA intervient à Saint-Rambert-d'Albon et tout le nord-Drôme (Sablons, Le Péage-de-Roussillon limitrophe Isère, Saint-Vallier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques axe A7 ?",
@@ -64,8 +64,8 @@ export const SAINT_RAMBERT_D_ALBON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Rambert-d'Albon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (50 min A7) ou Valence (30 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Rambert-d'Albon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

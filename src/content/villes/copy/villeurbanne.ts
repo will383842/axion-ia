@@ -96,8 +96,8 @@ export const VILLEURBANNE_COPY: VilleCopy = {
       a: "Oui. Nous accompagnons les startups et spin-offs issus de l'écosystème INSA Booster, Pulsalys (SATT), Bel Air Camp et du campus Doua. Notre offre est calibrée pour les structures deep tech et deep-industry qui veulent passer du POC IA à un déploiement opérationnel.",
     },
     {
-      q: "Comment rejoindre vos locaux villeurbannais depuis Lyon ou la Métropole ?",
-      a: "Villeurbanne est accessible en métro TCL ligne A (stations Laurent Bonnevay ou Gratte-Ciel), en tramway T1/T4 et en voiture depuis le périphérique nord ou l'A42. La gare TGV Lyon Part-Dieu est à environ 3 km. Nos consultants se déplacent directement dans vos locaux villeurbannais.",
+      q: "Comment se passe une intervention à Villeurbanne ?",
+      a: "Nos consultants se déplacent directement dans vos locaux villeurbannais. Nous intervenons partout en France, sur place ou à distance. Villeurbanne est desservie par le métro TCL ligne A (stations Laurent Bonnevay ou Gratte-Ciel), le tramway T1/T4, le périphérique nord et l'A42 ; la gare TGV Lyon Part-Dieu est à environ 3 km.",
     },
     {
       q: "Axion-IA travaille-t-il avec FORVIA MATERI'ACT ou les ETI industrielles de Villeurbanne ?",
@@ -195,7 +195,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes proches de Villeurbanne (Vaulx-en-Velin, Bron, Caluire) ?",
-            a: "Oui. La Métropole de Lyon est notre zone d'intervention complète. Nos consultants se déplacent dans toutes les communes — Vaulx-en-Velin (Carré de Soie), Bron, Caluire-et-Cuire, Saint-Priest, Vénissieux. Villeurbanne est notre base principale dans la zone nord-est lyonnaise.",
+            a: "Oui. Nos consultants se déplacent dans toutes les communes de la Métropole de Lyon — Vaulx-en-Velin (Carré de Soie), Bron, Caluire-et-Cuire, Saint-Priest, Vénissieux. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit à Villeurbanne ?",
@@ -287,7 +287,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
           },
           {
             q: "Do you cover communes near Villeurbanne (Vaulx-en-Velin, Bron, Caluire)?",
-            a: "Yes. The Métropole de Lyon is our full territory. Our consultants travel to all communes — Vaulx-en-Velin (Carré de Soie), Bron, Caluire-et-Cuire, Saint-Priest, Vénissieux. Villeurbanne is our main base in the north-east Lyon area.",
+            a: "Yes. Our consultants travel to all communes of the Métropole de Lyon — Vaulx-en-Velin (Carré de Soie), Bron, Caluire-et-Cuire, Saint-Priest, Vénissieux. We work anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you in Villeurbanne?",
@@ -304,7 +304,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         hero: "Les interventions IA Axion-IA à Villeurbanne (69100) se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — ingénierie, IT, R&D, industrie matériaux, services.",
         whyHere: [
           "Villeurbanne est l'un de nos principaux terrains d'intervention IT et ingénierie en France : les équipes R&D du campus Doua (INSA, UCBL, Inria), les développeurs et intégrateurs IT de Gratte-Ciel et les collaborateurs industriels de FORVIA MATERI'ACT représentent des profils exigeants que nous accompagnons régulièrement.",
-          "Tous les quartiers de Villeurbanne couverts en présentiel : Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie, Charpennes, Cusset, Bonnevay. Nous venons dans vos locaux — sans supplément de zone.",
+          "Tous les quartiers de Villeurbanne couverts en présentiel : Gratte-Ciel, campus LyonTech-La Doua, Carré de Soie, Charpennes, Cusset, Bonnevay. Nous venons dans vos locaux.",
           "Le format collectif (1 journée) est calibré pour les PME IT et les équipes R&D de quelques personnes à une centaine de collaborateurs. Les ingénieurs et développeurs repartent avec des outils configurés sur leurs vrais projets.",
           "Le format Conférence convient aux plénières d'entreprise (auditoriums campus Doua, salles Carré de Soie, espaces Bel Air Camp).",
           "Le format Dirigeants permet un cadrage en huis-clos pour les comités de direction des ETI industrielles et des startups deep tech en phase de scale.",
@@ -396,7 +396,7 @@ export const VILLEURBANNE_COPY: VilleCopy = {
         hero: "Axion-IA's AI sessions in Villeurbanne (69100) come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — engineering, IT, R&D, materials industry, services.",
         whyHere: [
           "Villeurbanne is one of our top IT and engineering engagement grounds in France: R&D teams at campus Doua (INSA, UCBL, Inria), IT developers and integrators around Gratte-Ciel, and industrial staff at FORVIA MATERI'ACT are demanding profiles we regularly support.",
-          "All Villeurbanne districts covered in person: Gratte-Ciel, LyonTech-La Doua campus, Carré de Soie, Charpennes, Cusset, Bonnevay. We come to your offices — no zone surcharge.",
+          "All Villeurbanne districts covered in person: Gratte-Ciel, LyonTech-La Doua campus, Carré de Soie, Charpennes, Cusset, Bonnevay. We come to your offices.",
           "The group format is calibrated for IT SMEs and R&D teams from a few people to about a hundred staff. Engineers and developers leave with tools configured for their real projects.",
           "The Talk format suits corporate plenaries (campus Doua auditoriums, Carré de Soie rooms, Bel Air Camp spaces).",
           "The Executives format enables in-camera framing for industrial mid-cap and deep tech startup executive committees in scale phase.",

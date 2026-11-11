@@ -39,6 +39,7 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { ServiceJourneyBand } from "@/components/services/ServiceJourneyBand";
+import { RenvoiJourneeIa } from "@/components/sections/RenvoiJourneeIa";
 
 // ============================================================================
 // Hub /audit — refonte 2026-05-31 (Will), best practices 2026 alignées sur
@@ -60,7 +61,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
   const titleStr =
     loc === "fr"
-      ? "Audit IA en entreprise · plan d'action chiffré · Axion-IA"
+      ? "Audit IA en entreprise · cartographie, priorités · Axion-IA"
       : "Enterprise AI audit · costed action plan · Axion-IA";
   return {
     ...(await buildProductMetadata({
@@ -69,7 +70,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: titleStr,
       description:
         loc === "fr"
-          ? "Audit IA : cartographie complète de votre entreprise, identification des priorités et rapport chiffré sous 7 jours. Premiers gains visibles en quelques jours. Partout en France."
+          ? "Audit IA : nous cartographions vos tâches et chiffrons vos priorités. Point de départ recommandé : La Journée IA, rapport complet sous 3 jours ouvrés."
           : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
     })),
     title: { absolute: titleStr },
@@ -92,7 +93,7 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "L'audit IA en entreprise rigoureux, complet et minutieux — la référence française. 4 niveaux selon la taille (TPE, PME, ETI, grande entreprise). Cartographie détaillée, ROI chiffré, feuille de route actionnable. Partout en France."
+      ? "Audit IA en entreprise, partout en France. Point de départ recommandé : La Journée IA, dans vos locaux (audit de 2 à 4 h le matin, 4 h de formation l'après-midi, rapport complet sous 3 jours ouvrés). Au-delà, l'audit approfondi est un autre cadrage, sur devis écrit : cartographie détaillée, gains chiffrés, feuille de route."
       : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
     serviceType: "AI audit",
   });
@@ -106,7 +107,7 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Comment réserver un audit IA Axion-IA" : "How to book an Axion-IA AI audit",
     description: isFr
-      ? "3 étapes pour cadrer et organiser votre audit IA stratégique avec Axion-IA — du premier contact à la restitution finale avec roadmap 6-12 mois."
+      ? "3 étapes pour cadrer votre audit IA avec Axion-IA : du premier contact à La Journée IA, ou à un audit approfondi sur devis écrit."
       : "3 steps to scope and run your strategic AI audit with Axion-IA — from first contact to final read-out with 6-12 month roadmap.",
     steps: [
       {
@@ -118,13 +119,13 @@ export default async function AuditHub({ params }: Props) {
       {
         name: isFr ? "Niveau d'audit calibré" : "Calibrated audit tier",
         text: isFr
-          ? "On vous recommande le niveau d'audit IA optimal selon votre taille : Audit sur place (TPE), Ciblé (PME), Stratégique PME ou Stratégique ETI. Devis transparent à partir de 24-48 h ouvrées selon la complexité."
+          ? "Pour la plupart des PME et des TPE, nous recommandons La Journée IA : l'audit le matin, la formation de vos équipes l'après-midi, et votre rapport complet sous 3 jours ouvrés. Si votre situation demande un audit approfondi, nous vous remettons un devis écrit sous 48 h ouvrées."
           : "We recommend the optimal AI audit tier based on your size: On-site audit (small business), Targeted (SME), Strategic SME or Strategic mid-cap. Transparent quote from 24-48 business hours depending on complexity.",
       },
       {
         name: isFr ? "Kick-off et restitution" : "Kick-off and read-out",
         text: isFr
-          ? "Audit conduit sur 2 à 6 semaines selon le niveau choisi. Restitution finale avec cartographie IA, ROI chiffré par cas d'usage prioritaire, et roadmap 6-12 mois d'implémentation."
+          ? "La Journée IA se déroule en une journée dans vos locaux, rapport complet sous 3 jours ouvrés. Un audit approfondi, lui, se conduit sur 2 à 6 semaines selon le périmètre, avec une restitution finale : cartographie, gains chiffrés par cas d'usage prioritaire et feuille de route de mise en œuvre."
           : "Audit conducted over 2 to 6 weeks depending on chosen tier. Final read-out with AI mapping, quantified ROI per priority use case, and 6-12 month implementation roadmap.",
       },
     ],
@@ -144,7 +145,7 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "Audit IA en entreprise partout en France : on cartographie où l'IA vous fait gagner du temps et de l'argent, et vous repartez avec un plan d'action chiffré et priorisé."
+      ? "Audit IA en entreprise partout en France : nous cartographions où l'IA vous fait gagner du temps et de l'argent. Point de départ recommandé : La Journée IA."
       : "Enterprise AI audit across France: we map where AI saves you time and money, and you leave with a costed, prioritised action plan.",
     speakable: true,
     ...(buildPrimaryImageOfPage("/audit")
@@ -180,6 +181,16 @@ export default async function AuditHub({ params }: Props) {
 
       {/* HERO value-first — sans prix (best practice 2026) */}
       <AuditHero isFr={isFr} />
+
+      {/* POINT DE DÉPART RECOMMANDÉ — La Journée IA (audit SEO/GEO du 11/11/2026) :
+          cette page ne concurrence plus la landing /journee-ia, elle y renvoie.
+          Placé juste après le héros : le h1 reste le premier titre de la page. */}
+      {isFr ? (
+        <RenvoiJourneeIa
+          depuis="page-audit-renvoi"
+          precision="L’audit approfondi, au-delà de cette journée, est un autre cadrage : nous le chiffrons sur devis écrit, sous 48 h ouvrées."
+        />
+      ) : null}
 
       {/* PREUVE SOCIALE — bandeau logos clients défilant, juste après le hero
           (Will 2026-05-31). */}
@@ -271,10 +282,12 @@ export default async function AuditHub({ params }: Props) {
       />
 
       {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Service inline (SEO racine
-          critique), ItemList déféré afterInteractive (-100 à -200 ms TBT). */}
+          critique). 2026-11-11 : l'ItemList n'est plus déféré, il est servi dans le
+          HTML comme les autres nœuds (lisible par les robots qui n'exécutent pas
+          de JavaScript). */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={auditPageJsonLd} />
-      <JsonLd data={itemListJsonLd} strategy="afterInteractive" scriptId="jsonld-audit-itemlist" />
+      <JsonLd data={itemListJsonLd} />
       {auditImagesJsonLd ? <JsonLd data={auditImagesJsonLd} /> : null}
       <JsonLd data={auditHowToJsonLd} />
     </>

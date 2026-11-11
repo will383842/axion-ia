@@ -49,7 +49,7 @@ export const SAINT_JULIEN_EN_GENEVOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Julien-en-Genevois et dans le Grand Geneve ?",
-      a: "Oui, Axion-IA intervient a Saint-Julien-en-Genevois et dans tout le bassin transfrontalier du Grand Geneve (Annemasse, Gaillard, Ferney-Voltaire, Gex). Nos consultants se deplacent depuis Annecy (35 min) ou Lyon (1h30).",
+      a: "Oui, Axion-IA intervient a Saint-Julien-en-Genevois et dans tout le bassin transfrontalier du Grand Geneve (Annemasse, Gaillard, Ferney-Voltaire, Gex). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises transfrontalieres du Grand Geneve ?",

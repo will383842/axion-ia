@@ -49,7 +49,7 @@ export const PETIT_COURONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Petit-Couronne et dans la boucle de Seine ?",
-      a: "Oui, Axion-IA intervient a Petit-Couronne et dans toute la boucle de Seine (Grand-Couronne, Rouen sud, Elbeuf). Consultants depuis Rouen (10 min) ou Paris (1h30).",
+      a: "Oui, Axion-IA intervient a Petit-Couronne et dans toute la boucle de Seine (Grand-Couronne, Rouen sud, Elbeuf). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Petit-Couronne ?",

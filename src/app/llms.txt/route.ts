@@ -14,10 +14,25 @@
 // deploy (sans changement comportement, juste cache-busting).
 // Source de vérité = ce fichier, build expected sections = Modules,
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
-// Galerie & ressources, Contact & presse, Stratégie & positionnement.
+// Galerie & ressources, Contact & presse, Faits pratiques.
 
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
-import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  CONDITION_GARANTIE,
+  DESCRIPTION_SERVICE_JOURNEE_IA,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_AUDIT_LLMS,
+  LIBELLE_SITES_WEB_FR,
+  anglaisServi,
+  enteteFaitsLlms,
+  pagesEssentiellesLlms,
+  sectionFaitsPratiquesLlms,
+} from "@/app/_llms/faits-communs";
+import { avisPublies } from "@/server/reviews/presence";
 import {
   CODAGE_TIERS,
   UN_A_UN_TIERS,
@@ -47,7 +62,13 @@ export const runtime = "nodejs";
 export const revalidate = 3600;
 
 export async function GET() {
-  const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL);
+  const [videos, avisEnLigne] = await Promise.all([videosPubliees(), avisPublies()]);
+  const sectionVideos = sectionVideosLlms(videos, SITE_URL);
+  // Avis clients : même règle que les pages /avis (404 tant qu'aucun avis n'est publié).
+  // Annoncer /fr/avis et son flux sans avis publié, c'était envoyer les moteurs sur des 404.
+  const ligneAvis = avisEnLigne
+    ? `- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; nous publions les avis positifs comme négatifs. Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.\n`
+    : "";
   // Tour France IA (2026-10-25 ; modèle « 5 journées offertes par ville, sur
   // sélection, en échange d'un podcast » le 2026-10-27) : section visible SEULEMENT quand la landing est
   // ouverte (`TOUR_PUBLIC`, vrai depuis l'ouverture). Refermée, elle répond 404 : la citer
@@ -66,7 +87,7 @@ export async function GET() {
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
-  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  // Sites web IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
   const sitesWebEntry = marquerSurDevis(getEntryLabel(CODAGE_TIERS, "fr")).replace(
     /^(dès\s|À partir de )/,
     "à partir de ",
@@ -81,21 +102,24 @@ export async function GET() {
 > Cabinet IA opérationnel B2B pour entreprises, fondé en France. Offre phare : La Journée IA.
 > ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
-> Langues : FR (canonique), EN (miroir, actuellement désactivé en faveur des 301 FR).
-> Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
+${enteteFaitsLlms()
+  .map((l) => `> ${l}`)
+  .join("\n")}
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
+
+${pagesEssentiellesLlms(SITE_URL)}
 
 ## Offre phare : La Journée IA
 
-- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA)} ${RAPPORT_COMPLET} Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/formations/tarifs.
-- [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
+- [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — ${DESCRIPTION_AUDIT_LLMS} Livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
 - [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
-- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.
+- [${LIBELLE_SITES_WEB_FR}](${SITE_URL}/fr/sites-web-augmentes) — sites web avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.
 
 ## Direction — personne référente
 
@@ -103,9 +127,8 @@ export async function GET() {
 
 ## Preuve & méthode
 
-${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).\n` : ""}- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
-- [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
-- [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA vs alternatives (cabinets, agences, SaaS).
+${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).\n` : ""}${ligneAvis}- [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
+- [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA face aux autres options (cabinets de conseil, agences, logiciels prêts à l'emploi).
 - [Stack IA 2026](${SITE_URL}/fr/stack-ia) — 11 outils en 5 fonctions, doctrine cabinet.
 
 ## Connaissances & contenu
@@ -132,7 +155,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 - Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) par commune.
 - Secteurs × activités : ${SITE_URL}/fr/secteurs/{secteur}/{activite} — pages métier croisées (constat, avant/après, KPI), anti-doorway HCU.
 - Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
-- ~2 150 communes couvertes, Tier 1 grandes métropoles (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…) → Tier 3 longue traîne (indexation progressive).
+- Couverture par paliers : grandes métropoles d'abord (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…), puis villes moyennes et longue traîne (indexation progressive).
 
 ## Réseau d'apporteurs d'affaires indépendants
 
@@ -154,22 +177,15 @@ ${sectionVideos}${sectionTour}
 - [Page presse & dossier journalistes](${SITE_URL}/fr/presse) — kit média + contact dédié.
 - [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com (réponse < 48h).
 
-## Stratégie & positionnement
-
-- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
-- Notifications Telegram + emails automatiques (relais ZeptoMail).
-- Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
-- Pas de mensualité, pas d'engagement, devis fixe.
-- Hébergement Hetzner (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.
+${sectionFaitsPratiquesLlms(SITE_URL)}
 
 ## Optional
 
 - [Verbose llms.txt](${SITE_URL}/llms-full.txt) — version étendue avec contenus inline.
-- [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps (~17 500 URLs).
+- [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps.
 - [Sitemap base de connaissances](${SITE_URL}/sitemap-knowledge.xml) — toutes les fiches citables publiées, avec leur date de dernière révision.
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
-- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, miroir EN.
-- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
+${anglaisServi() ? `- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, version anglaise.\n` : ""}- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
 - [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images dédiées).
 - [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
 - [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
@@ -181,8 +197,7 @@ ${sectionVideos}${sectionTour}
 - \`/fr/mes-donnees\` — espace utilisateur authentifié (RGPD self-service).
 - \`/fr/design\`, \`/fr/components\` — pages design system / preview internes.
 - \`/api/*\` (sauf \`/api/og\`) — endpoints serveur (auth, admin, GDPR, webhooks).
-- \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
-`;
+${anglaisServi() ? "" : "- \`/en/*\` — version anglaise désactivée (redirection 301 vers l'équivalent français).\n"}`;
 
   return new Response(recollerMontantsMasques(body), {
     status: 200,

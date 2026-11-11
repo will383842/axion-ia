@@ -49,7 +49,7 @@ export const SERIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sérignan ?",
-      a: "Oui, Axion-IA intervient à Sérignan et sur tout le littoral biterrois (Valras-Plage, Sauvian, Villeneuve-lès-Béziers). Nos consultants viennent depuis Montpellier ou Béziers.",
+      a: "Oui, Axion-IA intervient à Sérignan et sur tout le littoral biterrois (Valras-Plage, Sauvian, Villeneuve-lès-Béziers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les domaines viticoles ?",

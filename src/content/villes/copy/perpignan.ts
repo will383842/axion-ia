@@ -91,11 +91,11 @@ export const PERPIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi dans les communes de la Métropole (Canet, Rivesaltes, Saint-Estève) ?",
-      a: "Oui. La Perpignan Méditerranée Métropole est notre zone d'intervention complète : Saint-Estève, Cabestany, Bompas, Le Soler, Canet-en-Roussillon, Saleilles, Rivesaltes et les autres communes. Aucun supplément de zone.",
+      a: "Oui. Nous intervenons dans toute la Perpignan Méditerranée Métropole : Saint-Estève, Cabestany, Bompas, Le Soler, Canet-en-Roussillon, Saleilles, Rivesaltes et les autres communes. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Pouvez-vous démarrer une mission rapidement depuis Perpignan ?",
-      a: "Le délai de démarrage dépend de votre besoin (urgence, complexité, taille). Nous calons une date lors du brief de cadrage initial et tenons l'engagement contractuel à la signature. La gare TGV intra-muros facilite nos déplacements sur site.",
+      q: "Pouvez-vous démarrer une mission rapidement à Perpignan ?",
+      a: "Le délai de démarrage dépend de votre besoin (urgence, complexité, taille). Nous calons une date lors du brief de cadrage initial et tenons l'engagement contractuel à la signature. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les startups et acteurs de la French Tech Perpignan ?",

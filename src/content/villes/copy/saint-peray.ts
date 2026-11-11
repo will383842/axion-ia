@@ -49,7 +49,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Péray et crus septentrionaux ?",
-      a: "Oui, Axion-IA intervient à Saint-Péray et tous les crus septentrionaux rive droite (Cornas limitrophe, Tournon-sur-Rhône, Saint-Joseph). Valence face rive. Consultants depuis Lyon (1h) ou Valence (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-Péray et tous les crus septentrionaux rive droite (Cornas limitrophe, Tournon-sur-Rhône, Saint-Joseph). Valence face rive. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Saint-Péray/Cornas ?",
@@ -64,7 +64,7 @@ export const SAINT_PERAY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission à Saint-Péray ?",
       a: "Lyon (1h) ou Valence (10 min).",
     },
   ],

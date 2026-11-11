@@ -49,7 +49,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Peymeinade et arrière-pays grassois ?",
-      a: "Oui, Axion-IA intervient à Peymeinade et dans tout l'arrière-pays grassois (Le Tignet, Cabris, Spéracèdes, Saint-Cézaire-sur-Siagne). Couverture bassin Grasse-Cannes et accès depuis Nice (45 min) ou Cannes (25 min).",
+      a: "Oui, Axion-IA intervient à Peymeinade et dans tout l'arrière-pays grassois (Le Tignet, Cabris, Spéracèdes, Saint-Cézaire-sur-Siagne), ainsi que dans le bassin Grasse-Cannes. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Peymeinade ?",
@@ -65,7 +65,7 @@ export const PEYMEINADE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Peymeinade ?",
-      a: "Nos consultants interviennent depuis Grasse (10 min) ou Cannes (25 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays inclus dans le forfait depuis le littoral azuréen.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays inclus dans le forfait.",
     },
   ],
 };

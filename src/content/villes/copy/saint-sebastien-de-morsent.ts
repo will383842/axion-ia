@@ -49,7 +49,7 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Sébastien-de-Morsent et dans l'agglo Évreux ?",
-      a: "Oui, Axion-IA intervient à Saint-Sébastien-de-Morsent et dans toute l'agglomération Évreux Portes de Normandie (Évreux, Mesnils-sur-Iton, Gravigny, Normanville). Nos consultants se déplacent depuis Paris (1h10 train) ou Rouen (50 min).",
+      a: "Oui, Axion-IA intervient à Saint-Sébastien-de-Morsent et dans toute l'agglomération Évreux Portes de Normandie (Évreux, Mesnils-sur-Iton, Gravigny, Normanville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et de santé ?",
@@ -64,8 +64,8 @@ export const SAINT_SEBASTIEN_DE_MORSENT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Saint-Sébastien-de-Morsent, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h10 train gare Évreux-Normandie, puis 10 min) ou d'Évreux centre (5 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Sébastien-de-Morsent ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

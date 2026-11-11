@@ -49,7 +49,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Saturnin-lès-Avignon et dans le Grand Avignon ?",
-      a: "Oui, Axion-IA intervient à Saint-Saturnin-lès-Avignon et dans toute l'agglomération du Grand Avignon (Avignon, Le Pontet, Morières-lès-Avignon, Vedène, Sorgues). Consultants accessibles en 10 min depuis Avignon centre via D942.",
+      a: "Oui, Axion-IA intervient à Saint-Saturnin-lès-Avignon et dans toute l'agglomération du Grand Avignon (Avignon, Le Pontet, Morières-lès-Avignon, Vedène, Sorgues). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE artisans et professions libérales ?",
@@ -65,7 +65,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saturnin-lès-Avignon ?",
-      a: "Nos consultants interviennent depuis Avignon (10 min) ou via Gare TGV Avignon (15 min). Déplacement sur site dans vos locaux professionnels, atelier, cabinet ou commerce. Grand Avignon bien desservi via A7 et A9.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, cabinet ou commerce. Grand Avignon bien desservi via A7 et A9.",
     },
   ],
 };

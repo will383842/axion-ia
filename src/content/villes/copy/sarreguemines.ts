@@ -18,9 +18,9 @@ export const SARREGUEMINES_COPY: VilleCopy = {
   ecosystemEn:
     "Sarreguemines tire son histoire de la faïencerie qui a fait sa réputation mondiale et structuré son savoir-faire céramique et plasturgie. Aujourd'hui, l'économie locale s'appuie sur la sous-traitance automobile et industrielle tournée vers la Sarre allemande toute proche, le commerce transfrontalier dynamisé par les travailleurs et clients venus d'outre-Rhin, ainsi qu'un tissu dense de TPE artisanales et de PME de services. Cette position frontalière impose des enjeux spécifiques de bilinguisme, de logistique et de conformité multi-juridiction que l'IA peut adresser.",
   distancesFr:
-    "Sarrebruck (Allemagne) à 20 min, gare TGV de Forbach à 25 min, Metz à 1h, aéroport de Sarrebruck-Ensheim à 25 min et aéroport de Luxembourg à 1h15. Nos consultants se déplacent depuis Metz et Strasbourg.",
+    "Sarrebruck (Allemagne) à 20 min, gare TGV de Forbach à 25 min, Metz à 1h, aéroport de Sarrebruck-Ensheim à 25 min et aéroport de Luxembourg à 1h15. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Sarrebruck (Allemagne) à 20 min, gare TGV de Forbach à 25 min, Metz à 1h, aéroport de Sarrebruck-Ensheim à 25 min et aéroport de Luxembourg à 1h15. Nos consultants se déplacent depuis Metz et Strasbourg.",
+    "Sarrebruck (Allemagne) à 20 min, gare TGV de Forbach à 25 min, Metz à 1h, aéroport de Sarrebruck-Ensheim à 25 min et aéroport de Luxembourg à 1h15. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Industrie céramique et faïence",
     "Plasturgie et sous-traitance automobile",
@@ -230,7 +230,7 @@ export const SARREGUEMINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sarreguemines et dans le bassin frontalier ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Sarreguemines, Forbach, Sarralbe et tout le secteur frontalier mosellan. Nos consultants se déplacent depuis Metz et Strasbourg pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Sarreguemines, Forbach, Sarralbe et tout le secteur frontalier mosellan. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises industrielles héritières de la faïence ?",

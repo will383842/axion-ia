@@ -54,7 +54,8 @@ const BENEFITS: ReadonlyArray<Benefit> = [
     icon: ShieldCheck,
     titleFr: "Des décisions sécurisées",
     titleEn: "Secured decisions",
-    bodyFr: "Faisabilité, qualité des données, conformité AI Act : vous décidez sur du solide.",
+    bodyFr:
+      "Faisabilité, qualité des données, règlement européen sur l'IA : vous décidez sur du solide.",
     bodyEn: "Feasibility, data quality, AI Act compliance: you decide on solid ground.",
   },
   {

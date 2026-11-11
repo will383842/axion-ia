@@ -49,7 +49,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosny-sur-Seine et dans le bassin mantois ?",
-      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie à 5 min, Les Mureaux, Bonnières-sur-Seine). Nos consultants se déplacent via A13 ou Transilien J depuis Paris Saint-Lazare.",
+      a: "Oui, Axion-IA intervient à Rosny-sur-Seine et dans tout le bassin mantois (Mantes-la-Jolie à 5 min, Les Mureaux, Bonnières-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de l'axe Seine ?",
@@ -65,7 +65,7 @@ export const ROSNY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosny-sur-Seine ?",
-      a: "Nos consultants interviennent à Rosny-sur-Seine via A13 (45 min depuis La Défense) ou Transilien J (gare de Rosny-sur-Seine).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

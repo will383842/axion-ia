@@ -64,8 +64,8 @@ export const VENELLES_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Venelles) ou en visio. Idéal pour les cadres et indépendants en télétravail dans le bassin aixois.",
     },
     {
-      q: "Comment Axion-IA se déplace-t-il à Venelles ?",
-      a: "Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Venelles ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Venelles est à 10 min d'Aix-en-Provence et 30 min de Marseille via A51.",
     },
   ],
 };

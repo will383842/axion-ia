@@ -49,7 +49,7 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-d'Oléron et sur l'île ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Oléron et sur toute l'île d'Oléron. Nos consultants accèdent facilement via le pont d'Oléron (Rochefort 35 min, La Rochelle 50 min). Déplacements adaptés à l'insularité.",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-d'Oléron et sur toute l'île d'Oléron, reliée au continent par le pont d'Oléron. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les ostréiculteurs de l'île d'Oléron ?",
@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_OLERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Oléron ?",
-      a: "Nos consultants accèdent à l'île d'Oléron par le pont (Rochefort 35 min). Mission sur site dans votre parc ostréicole, hôtel ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre parc ostréicole, hôtel ou commerce sur l'île d'Oléron.",
     },
   ],
 };

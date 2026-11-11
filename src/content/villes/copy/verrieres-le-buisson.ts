@@ -64,7 +64,7 @@ export const VERRIERES_LE_BUISSON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Antony ou Paris ?",
+      q: "Comment se déroule une mission à Verrières-le-Buisson ?",
       a: "Antony (5 min). Massy TGV (10 min). Paris centre (25 min). Aéroport Orly (15 min).",
     },
   ],
