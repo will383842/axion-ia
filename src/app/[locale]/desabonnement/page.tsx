@@ -8,6 +8,8 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
+// Module PUR (node:crypto seulement) : pas de Prisma, pas de files.
+import { estJetonOpposition } from "@/server/email/opposition-jeton";
 
 // Unsubscribe landing — RFC 8058 (List-Unsubscribe) + RGPD compliance.
 // Public, no-index — accessed via signed token in email footers.
@@ -95,10 +97,10 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
   ];
 
   const hasToken = typeof token === "string" && token.length > 0;
-  // Lot 1b (2026-09-02) : un jeton `op1.` porte une OPPOSITION aux sollicitations
+  // Lot 1b (2026-09-02) : un jeton `op1.` ou `op2.` porte une OPPOSITION aux sollicitations
   // commerciales (depuis n'importe quel e-mail), pas un désabonnement de liste.
   // La page dit lequel des deux elle confirme.
-  const estOpposition = hasToken && token.startsWith("op1.");
+  const estOpposition = hasToken && estJetonOpposition(token);
 
   return (
     <>
