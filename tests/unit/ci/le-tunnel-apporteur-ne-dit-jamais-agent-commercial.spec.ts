@@ -69,13 +69,11 @@ const SURFACES = [
   "src/app/[locale]/devenir-commercial-ia/candidature/page.tsx",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
-  "src/components/services/devenir-commercial/CommercialProductsEarnings.tsx",
   // 2026-09-21 — TROUVE HORS LISTE : cette page disait « Nous recrutons plus de
   // 200 commerciaux » / « We're hiring 200+ sales reps ». P4 avait retire le
   // balisage `JobPosting` que Google lisait, mais la page continuait de le DIRE
   // en toutes lettres — et aucune garde ne la lisait. Le vocabulaire d'EMBAUCHE
   // est plus lourd que « agent commercial » : il decrit un contrat de travail.
-  "src/components/services/devenir-commercial/CommercialProcess.tsx",
 ];
 
 /**

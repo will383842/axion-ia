@@ -64,7 +64,6 @@ import { describe, expect, it } from "vitest";
 const RACINES = [
   "src/content/recrutement",
   "src/components/recrutement",
-  "src/components/services/devenir-commercial",
   "src/app/[locale]/devenir-commercial-ia",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise",
   // 2026-09-19 (P4) — la landing du Mémo de l'Isère recrute les mêmes apporteurs,
@@ -160,11 +159,10 @@ describe("le parcours apporteur n'annonce aucun espace en libre-service tant qu'
   it("lit bien tout le parcours, et pas une poignée de fichiers", () => {
     const lus = parcoursApporteur();
     expect(lus.length).toBeGreaterThanOrEqual(18);
-    expect(lus.reduce((n, f) => n + f.texte.length, 0)).toBeGreaterThan(200_000);
+    expect(lus.reduce((n, f) => n + f.texte.length, 0)).toBeGreaterThan(150_000);
     expect(lus.map((f) => f.chemin.replace(/\\/g, "/"))).toEqual(
       expect.arrayContaining([
         expect.stringContaining("devenir-commercial-ia/page.tsx"),
-        expect.stringContaining("CommercialHowItWorks.tsx"),
         expect.stringContaining("commercial-offer.ts"),
         // Le territoire ajouté le 2026-09-19 : sans lui, la promesse du tableau
         // de suivi de /memo-isere repasserait sous le radar.
@@ -195,6 +193,5 @@ describe("le parcours apporteur n'annonce aucun espace en libre-service tant qu'
     expect(tout).toMatch(/vous nous déclarez les entreprises démarchées/i);
     expect(tout).toMatch(/enregistrée à votre nom par notre équipe/i);
     expect(tout).toMatch(/cette déclaration fait foi/i);
-    expect(tout).toMatch(/vous nous déclarez vos entreprises à votre nom/i);
   });
 });

@@ -42,6 +42,8 @@ const PORTES: ReadonlyArray<readonly [string, string, string]> = [
   ["src/app/[locale]/page.tsx", "accueil-mobile", "Échanger 45 min — sans engagement"],
   ["src/components/nav/Header.tsx", "entete", 't("cta.bookCall")'],
   ["src/components/nav/Header.tsx", "entete-mobile", 't("cta.bookCall")'],
+  // Refonte en-tête/pied du 2026-11-11 : le pied du méga-menu « Nos prestations ».
+  ["src/components/nav/Header.tsx", "entete-megamenu", "ou réservez un appel"],
   ["src/components/nav/Footer.tsx", "pied", "Réserver un appel"],
   ["src/components/services/audit/AuditHero.tsx", "page-audit", "Réserver un appel"],
   ["src/app/[locale]/formations/page.tsx", "page-formation", "Réserver un appel"],
