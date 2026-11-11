@@ -16,9 +16,9 @@ export function Ruban() {
       <text className={s.lb} x="244" y="11" textAnchor="middle">
         {ruban.formation}
       </text>
-      <rect x="0" y="16" width="113" height="26" rx="5" fill="var(--color-terracotta-on-mocha)" />
-      <rect x="169" y="16" width="151" height="26" rx="5" fill="var(--color-terracotta)" />
-      <circle cx="311" cy="29" r="6" fill="var(--color-ink)" />
+      <rect x="0" y="16" width="113" height="26" rx="5" fill="var(--color-terracotta)" />
+      <rect x="169" y="16" width="151" height="26" rx="5" fill="var(--color-ink)" />
+      <circle cx="311" cy="29" r="6" fill="var(--color-paper)" />
       <text className={s.hr} x="0" y="58">
         {debutAudit}
       </text>
