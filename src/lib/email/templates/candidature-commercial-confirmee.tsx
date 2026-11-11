@@ -13,9 +13,9 @@
 //      (`docs/partners/ANTI-REQUALIFICATION.md`). Le nom technique du gabarit
 //      reste, il n'est lu par personne.
 //   2. « On revient vers toi dans les prochaines semaines » est RETIRÉ, remplacé
-//      par « dans les prochaines heures ». Cela lève, pour ce message, la règle
-//      du 2026-08-23 (« aucun délai de réponse promis ») — décision explicite de
-//      Will, qui répond lui-même.
+//      par « dans les prochaines heures ». PÉRIMÉ depuis le 2026-11-11 : Williams retire
+//      toute promesse de délai ; la règle du 2026-08-23 (« aucun délai de réponse
+//      promis ») s'applique de nouveau à ce message.
 //   3. L'échange proposé dure 15 minutes (et non « 15 à 30 »).
 //
 // 🔴 2026-11-11 — décision de Williams, qui REMPLACE B5 (19/09, « pas de lien de
