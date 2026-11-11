@@ -48,7 +48,7 @@ export function faqDossier(p: Chiffres): QuestionReponse[] {
     },
     {
       question: `Que se passe-t-il après l’envoi ?`,
-      reponse: `Vous recevez un e-mail de confirmation avec la Journée IA en une page. Si nous poursuivons ensemble, une invitation à un échange de 15 minutes en visio, puis un contrat écrit à lire avant de signer. Nous répondons à tous.`,
+      reponse: `Vous recevez un e-mail de confirmation avec la Journée IA en une page. Si nous poursuivons ensemble, une invitation à un échange de 15 minutes en visio, puis un contrat écrit à lire avant de signer.`,
     },
     {
       question: `Faut-il un SIREN pour remplir le dossier ?`,
