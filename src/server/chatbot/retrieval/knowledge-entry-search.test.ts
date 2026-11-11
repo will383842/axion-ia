@@ -110,6 +110,58 @@ describe("interrupteur CHATBOT_KB_UNIFIED", () => {
     expect(hybrid).toHaveBeenCalledWith("t", "q", {});
     warn.mockRestore();
   });
+
+  it("allumé : lecture des fiches trop lente → repli sur la recherche actuelle, aucune exception", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const hybrid = vi.fn().mockResolvedValue(CHUNKS);
+    const recherche = creerRechercheChatbot({
+      env: { CHATBOT_KB_UNIFIED: "true" },
+      hybrid,
+      delaiFichesMs: 20,
+      knowledgeEntry: vi.fn(() => new Promise<RetrievedChunk[]>(() => {})),
+    });
+    await expect(recherche("t", "q", {})).resolves.toBe(CHUNKS);
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
+  it("allumé : fiches et recherche actuelle partent en parallèle", async () => {
+    const ordre: string[] = [];
+    const hybrid = vi.fn(async () => {
+      ordre.push("hybrid");
+      return CHUNKS;
+    });
+    const ke = vi.fn(async () => {
+      ordre.push("ke");
+      return [FICHE];
+    });
+    const recherche = creerRechercheChatbot({
+      env: { CHATBOT_KB_UNIFIED: "true" },
+      hybrid,
+      knowledgeEntry: ke,
+    });
+    await recherche("t", "q", {});
+    expect(ordre.sort()).toEqual(["hybrid", "ke"]);
+  });
+
+  it("allumé : une fiche dont le sourceRef est déjà dans les chunks est ignorée (doublon)", async () => {
+    const doublon: RetrievedChunk = { ...FICHE, id: "ke:x", sourceRef: CHUNKS[0]!.sourceRef };
+    const recherche = creerRechercheChatbot({
+      env: { CHATBOT_KB_UNIFIED: "true" },
+      hybrid: vi.fn().mockResolvedValue(CHUNKS),
+      knowledgeEntry: vi.fn().mockResolvedValue([doublon]),
+    });
+    expect(await recherche("t", "q", {})).toBe(CHUNKS);
+  });
+
+  it("allumé : la recherche actuelle en erreur reste une erreur", async () => {
+    const recherche = creerRechercheChatbot({
+      env: { CHATBOT_KB_UNIFIED: "true" },
+      hybrid: vi.fn().mockRejectedValue(new Error("db")),
+      knowledgeEntry: vi.fn().mockResolvedValue([FICHE]),
+    });
+    await expect(recherche("t", "q", {})).rejects.toThrow("db");
+  });
 });
 
 describe("chercherDansKnowledgeEntry", () => {

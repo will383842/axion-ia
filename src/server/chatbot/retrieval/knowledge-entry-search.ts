@@ -122,8 +122,22 @@ export async function chercherDansKnowledgeEntry(
   );
 }
 
+/** Borne de lecture des fiches : au-delà, on se replie sur la recherche actuelle. */
+export const FICHES_DELAI_MAX_MS = 1_500;
+
+/** Rejette si `p` ne répond pas avant `ms` (le minuteur est toujours libéré). */
+function avecDelai<T>(p: Promise<T>, ms: number): Promise<T> {
+  let minuteur: ReturnType<typeof setTimeout> | undefined;
+  const limite = new Promise<never>((_, rejet) => {
+    minuteur = setTimeout(() => rejet(new Error(`lecture des fiches > ${ms} ms`)), ms);
+  });
+  return Promise.race([p, limite]).finally(() => clearTimeout(minuteur));
+}
+
 export interface RechercheChatbotDeps {
   readonly env?: Env;
+  /** Borne de lecture des fiches (ms) — 1 500 par défaut ; injectable pour les tests. */
+  readonly delaiFichesMs?: number;
   readonly hybrid?: typeof hybridSearch;
   readonly knowledgeEntry?: typeof chercherDansKnowledgeEntry;
 }
@@ -133,23 +147,43 @@ export interface RechercheChatbotDeps {
  * Interrupteur éteint → `hybridSearch` à l'identique (mêmes arguments, même
  * objet rendu). Allumé → fiches KnowledgeEntry FUSIONNÉES (RRF) avec la base
  * actuelle : les faits vérifiés (kb_fact, FAQ) ne sortent pas du prompt. Si la
- * lecture des fiches est vide ou échoue → repli : résultat de `hybridSearch` seul.
+ * lecture des fiches est vide, échoue ou dépasse 1,5 s → repli : résultat de
+ * `hybridSearch` seul.
+ *
+ * ⚠️ Le score de fusion RRF est plafonné à 1/61 (≈ 0,016) par passage : le seuil de
+ * confiance 0,35 du chatbot ne protège donc presque plus rien quand l'interrupteur
+ * est allumé (aucun score fusionné ne l'atteint). Ce point est à traiter avant
+ * toute mise en service.
  */
 export function creerRechercheChatbot(deps: RechercheChatbotDeps = {}): typeof hybridSearch {
   const hybrid = deps.hybrid ?? hybridSearch;
   const ke = deps.knowledgeEntry ?? chercherDansKnowledgeEntry;
   return async (tenantId, query, opts = {}) => {
     if (!estKbUnifieeActive(deps.env ?? process.env)) return hybrid(tenantId, query, opts);
+    // Fiches et recherche actuelle partent EN PARALLÈLE : la lecture des fiches,
+    // bornée à 1,5 s, n'ajoute donc aucune latence à la recherche actuelle.
+    const [lecture, actuelle] = await Promise.allSettled([
+      avecDelai(
+        Promise.resolve().then(() => ke(query, opts.topK !== undefined ? { topK: opts.topK } : {})),
+        deps.delaiFichesMs ?? FICHES_DELAI_MAX_MS,
+      ),
+      hybrid(tenantId, query, opts),
+    ]);
+    // La recherche actuelle en erreur reste une erreur (comportement d'avant).
+    if (actuelle.status === "rejected") throw actuelle.reason;
+    const chunks = actuelle.value;
     let fiches: RetrievedChunk[] = [];
-    try {
-      fiches = await ke(query, opts.topK !== undefined ? { topK: opts.topK } : {});
-    } catch (err) {
+    if (lecture.status === "fulfilled") {
+      fiches = lecture.value;
+    } else {
       console.warn(
-        "[chatbot:kb-unifiee] lecture KnowledgeEntry en erreur → repli chat_kb_chunks:",
-        err,
+        "[chatbot:kb-unifiee] lecture KnowledgeEntry en erreur ou trop lente → repli chat_kb_chunks:",
+        lecture.reason,
       );
     }
-    const chunks = await hybrid(tenantId, query, opts);
+    // Doublon : une fiche déjà présente dans les chunks (même sourceRef) est ignorée.
+    const refsConnues = new Set(chunks.map((c) => c.sourceRef));
+    fiches = fiches.filter((f) => !refsConnues.has(f.sourceRef));
     if (fiches.length === 0) return chunks;
     const topK = opts.topK ?? RETRIEVAL_TOP_K;
     return reciprocalRankFusion<RetrievedChunk>([fiches, chunks], { topK }).map(
