@@ -337,31 +337,6 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     documentationUrl: "https://www.zoho.com/privacy.html",
   },
   {
-    // Ajouté pour que le renvoi « liste des sous-processeurs » de la politique de confidentialité
-    // (rubrique « Demande d'un guide via les réseaux sociaux ») soit vrai.
-    // ⚠️ À CONFIRMER par Williams : lieu du siège et des serveurs, cadre de transfert, statut du
-    // DPA et activation effective. Rien de tout cela n'est connu du dépôt : on ne l'invente pas,
-    // les champs de lieu restent donc sans pays. Tant que le DPA n'est pas confirmé, l'entrée est
-    // `pending_activation` (la garde « aucun actif sans DPA » l'exige) ; à repasser à `active`
-    // avec le DPA signé, dans la même PR.
-    name: "Zernio",
-    location: "À confirmer",
-    serversLocation: "À confirmer",
-    purposeFr:
-      "Outil de gestion des messages des réseaux sociaux : répond par message privé aux personnes qui commentent un mot-clé sous une publication pour recevoir un guide, et transmet à Axion-IA l'échange pour que le lien du guide puisse être envoyé.",
-    purposeEn:
-      "Social network messaging tool: replies by private message to people who comment a keyword under a post to receive a guide, and passes the exchange to Axion-IA so the guide link can be sent.",
-    dataCategoriesFr:
-      "Nom ou identifiant public sur le réseau, contenu du commentaire et du message privé, date de l'échange, et l'adresse e-mail et le prénom donnés dans le message.",
-    dataCategoriesEn:
-      "Name or public handle on the network, content of the comment and of the private message, date of the exchange, and the email address and first name given in the message.",
-    legalBasis: "6.1.b_contract",
-    dpaStatus: "pending",
-    transferFramework: "scc",
-    category: "communications",
-    activationStatus: "pending_activation",
-  },
-  {
     name: "Telegram FZ-LLC",
     location: "Dubaï, Émirats Arabes Unis (hors UE)",
     serversLocation: "Émirats Arabes Unis + edge global",

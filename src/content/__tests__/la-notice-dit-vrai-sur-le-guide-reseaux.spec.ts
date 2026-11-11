@@ -55,6 +55,13 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     }
   });
 
+  it("⛔ Zernio n'est pas renvoyé à la liste des sous-processeurs (rien d'établi à y publier)", () => {
+    for (const loc of ["fr", "en"] as const) {
+      const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
+      expect(s.body).not.toMatch(/liste des sous-processeurs|sub-processor list/i);
+    }
+  });
+
   it("⛔ l'ancienne promesse de réduction des données est interdite (rien n'est supprimé)", () => {
     for (const loc of ["fr", "en"] as const) {
       const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
