@@ -1403,7 +1403,6 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  *
  * Contenu (Phase B uniquement) :
  *   - le hub `/formations` (priority 0.8)
- *   - la page tarifs `/formations/tarifs` (priority 0.7)
  *   - les 2 listings par catégorie `/formations/metiers` + `/formations/secteurs`
  *   - les 22 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
  *     slug EN miroir routing-only)
@@ -1420,13 +1419,12 @@ function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
   // (hub + tarifs + métiers/secteurs + 22 fiches), ZÉRO mention Qualiopi côté public.
   const entries: MetadataRoute.Sitemap = [];
 
-  // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
+  // Hub /formations · /training.
   const hubs: ReadonlyArray<{ fr: string; en: string; priority: number }> = [
-    // Landing flagship « Toutes nos formations IA entreprise » — priorité max du
-    // module (catalogue complet, cible principale « formation IA entreprise »).
-    { fr: "/formations/entreprise", en: "/formations/entreprise", priority: 0.9 },
+    // /formations/entreprise et /formations/tarifs ne figurent plus ici : elles redirigent en
+    // 301 (next.config) vers /formations et /tarifs ; une URL qui redirige n'a rien à faire
+    // dans un sitemap.
     { fr: "/formations", en: "/training", priority: 0.8 },
-    { fr: "/formations/tarifs", en: "/training/pricing", priority: 0.7 },
   ];
   for (const hub of hubs) {
     const frUrl = `${SITE_URL}/fr${hub.fr}`;

@@ -676,11 +676,11 @@ export default async function FormationsHub({ params }: Props) {
           ))}
         </div>
 
-        {/* Lien grille tarifaire — la page /formations/tarifs porte les 3
-            tableaux (catégorie × durée). href littéral typé (routing.ts). */}
+        {/* Lien grille tarifaire — la page /tarifs est la seule page tarifs
+            (/formations/tarifs redirige en 301 vers elle). href littéral typé (routing.ts). */}
         <p className="mt-8 text-center">
           <Link
-            href="/formations/tarifs"
+            href="/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
             {isFr ? "Voir tous les tarifs en détail" : "See all prices in detail"}
