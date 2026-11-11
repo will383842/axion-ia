@@ -34,12 +34,8 @@ export default function GlobalError({ error, reset }: GlobalErrorProps) {
           <h1 className="racine-titre">
             Le site a rencontré une <span className="racine-accent">erreur fatale</span>
           </h1>
-          <p className="racine-texte">
-            The site hit a fatal error. Nos équipes ont été notifiées.
-          </p>
-          {error.digest ? (
-            <p className="racine-ref">ref: {error.digest}</p>
-          ) : null}
+          <p className="racine-texte">The site hit a fatal error. Nos équipes ont été notifiées.</p>
+          {error.digest ? <p className="racine-ref">ref: {error.digest}</p> : null}
           <button
             type="button"
             onClick={reset}

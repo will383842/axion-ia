@@ -69,10 +69,7 @@ export default function RootNotFound() {
             La page que vous cherchez n&apos;existe pas ou a été déplacée.
           </p>
           <div className="racine-actions">
-            <Link
-              href="/fr"
-              className="racine-bouton"
-            >
+            <Link href="/fr" className="racine-bouton">
               Retour à l&apos;accueil →
             </Link>
           </div>
