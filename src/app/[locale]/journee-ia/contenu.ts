@@ -6,15 +6,14 @@
 // le prix est un jeton (`JETON_PRIX`) que la page remplace par la valeur lue
 // dans `pricing.ts`. Texte repris mot pour mot du plan V5 (section 2).
 
-/** Le jeton que la page remplace par le prix lu dans `pricing.ts`. */
-export const JETON_PRIX = "{{PRIX}}";
+import { CONDITION_GARANTIE, GARANTIE, JETON_PRIX } from "@/content/journee-ia-commun";
+
+// Le jeton de prix et la garantie vivent dans le module commun (partagés avec
+// l'accueil, le JSON-LD et llms*.txt) ; on les réexporte pour les importeurs actuels.
+export { GARANTIE, JETON_PRIX };
 
 /** Le seul libellé de bouton de la page, utilisé en haut et en bas. */
 export const LIBELLE_CTA = "Prendre rendez-vous";
-
-/** La garantie, mot pour mot. */
-export const GARANTIE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
 
 export const CONTENU = {
   accroche: {
@@ -76,8 +75,7 @@ export const CONTENU = {
     declaration:
       "Organisme de formation déclaré sous le n° 84381100438. Cet enregistrement ne vaut pas agrément de l’État.",
     garantie: GARANTIE,
-    condition:
-      "Condition : votre équipe est disponible pendant la journée et nous fournit les chiffres demandés.",
+    condition: CONDITION_GARANTIE,
   },
   rendezVous: {
     titre: "Questions et rendez-vous",

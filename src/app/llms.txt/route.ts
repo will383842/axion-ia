@@ -17,11 +17,10 @@
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
 import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
+import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   CODAGE_TIERS,
-  JOURNEE_IA_TIER,
   UN_A_UN_TIERS,
-  formatTierPrice,
   getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
@@ -85,9 +84,9 @@ export async function GET() {
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
 
-## Offre phare
+## Offre phare : La Journée IA
 
-- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${JOURNEE_IA_TIER.descriptionFr} ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. Les autres prestations sont sur devis.
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
