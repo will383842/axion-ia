@@ -140,8 +140,8 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
           setOpen(!open);
         }}
         className={cn(
-          "text-fg focus-visible:ring-terracotta focus-visible:ring-offset-bg relative inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-3 text-base font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-          "after:bg-terracotta after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:transition-transform motion-reduce:after:transition-none",
+          "text-mocha-fg focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta relative inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-lg px-3 text-base font-semibold tracking-tight whitespace-nowrap focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
+          "after:bg-mocha-fg after:absolute after:inset-x-3 after:bottom-1.5 after:h-0.5 after:origin-left after:transition-transform motion-reduce:after:transition-none",
           open ? "after:scale-x-100" : "after:scale-x-0 hover:after:scale-x-100",
         )}
       >
@@ -154,7 +154,9 @@ export function HeaderPrestationsMenu({ label, panelLabel, children }: HeaderPre
           )}
         />
       </button>
-      {/* Positionné par rapport à la RANGÉE du header (le conteneur `relative` le
+      {/* Le BOUTON est sur la barre terracotta (texte `mocha-fg`) ; le PANNEAU reste
+          sur fond clair (`paper`, textes sombres), comme l'ancien méga-menu.
+          Positionné par rapport à la RANGÉE du header (le conteneur `relative` le
           plus proche) : centré sous la barre, comme dans la maquette. */}
       <div
         ref={panneau}
