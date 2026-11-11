@@ -24,7 +24,7 @@ vi.mock("@/lib/consents", () => ({
 }));
 
 import { confirmerPreuvesAuClic } from "../preuve-page-guide";
-import { FORM_REF_PAGE_GUIDE } from "@/content/guides-reseau";
+import { FORM_REF_PAGE_GUIDE, FORM_REF_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 
 const ADRESSE = "personne@example.test";
 const CASE_LE = new Date("2026-11-08T10:00:00.000Z");
@@ -41,6 +41,9 @@ function contact(o: Record<string, unknown> = {}) {
     preuveStatut: "en_attente",
     preuveConfirmeeLe: null,
     preuveEcarteeLe: null,
+    infosStatut: "aucune",
+    infosVersion: null,
+    infosEmpreinte: null,
     ...o,
   };
 }
@@ -68,6 +71,28 @@ describe("confirmerPreuvesAuClic", () => {
       action: "consent_confirme",
       occurredAt: CLIC_LE,
     });
+  });
+
+  it("🔴 case « informations » cochée → UN consent_confirme de plus pour la ligne infos", async () => {
+    bd.base.contacts.push(
+      contact({ infosStatut: "non_transmise", infosVersion: "i1", infosEmpreinte: "b".repeat(64) }),
+    );
+    await confirmerPreuvesAuClic("d1", CLIC_LE);
+    expect(bd.base.registre).toHaveLength(2);
+    expect(bd.base.registre.filter((r) => r["formRef"] === FORM_REF_PAGE_GUIDE_INFOS)).toEqual([
+      expect.objectContaining({
+        personKey: `h:${ADRESSE}`,
+        action: "consent_confirme",
+        occurredAt: CLIC_LE,
+        consentVersion: `i1.${"b".repeat(32)}`,
+      }),
+    ]);
+  });
+
+  it("case « informations » non cochée → aucune ligne infos au registre", async () => {
+    bd.base.contacts.push(contact());
+    await confirmerPreuvesAuClic("d1", CLIC_LE);
+    expect(bd.base.registre.some((r) => r["formRef"] === FORM_REF_PAGE_GUIDE_INFOS)).toBe(false);
   });
 
   it("🔴 rejeu : un second clic n'écrit aucune nouvelle ligne de registre", async () => {
