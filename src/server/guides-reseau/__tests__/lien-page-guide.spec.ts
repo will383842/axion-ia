@@ -302,6 +302,23 @@ describe("lien-page-guide — ponctuation finale (normaliserJetonRecu)", () => {
     expect(normaliserJetonRecu("")).toBe("");
   });
 
+  it("temps linéaire : 200 000 points + un « x » normalisés en moins de 50 ms", () => {
+    const t = performance.now();
+    normaliserJetonRecu(`${".".repeat(200_000)}x`);
+    expect(performance.now() - t).toBeLessThan(50);
+  });
+
+  it("jeton valide suivi de . , ) (et d'une suite) : inchangé après normalisation", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    for (const fin of [".", ",", ")", ".,)", "!?;:"]) {
+      expect(normaliserJetonRecu(jeton + fin)).toBe(jeton);
+    }
+  });
+
+  it("au-delà de TAILLE_MAX_JETON + 16 : tronqué à cette longueur", () => {
+    expect(normaliserJetonRecu("a".repeat(5000)).length).toBe(1024 + 16);
+  });
+
   it("avec ou sans le point final : même verdict, même empreinte", () => {
     const jeton = creerJeton(DONNEES, SECRET, T0);
     const recu = normaliserJetonRecu(`${jeton}.`);

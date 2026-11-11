@@ -19,6 +19,7 @@ import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
 import {
   empreinteJeton,
   normaliserJetonRecu,
+  TAILLE_MAX_JETON_RECU,
   verifierJeton,
 } from "@/server/guides-reseau/lien-page-guide";
 import { GUIDES_RESEAU_CONNUS, PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
@@ -59,7 +60,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   }
   const brut = req.nextUrl.searchParams.get("j");
   // Ponctuation finale avalée par un client de messagerie : retirée avant toute vérification.
-  const jeton = brut === null ? null : normaliserJetonRecu(brut);
+  // Démesuré : page neutre tout de suite, avant toute normalisation, lecture ou base.
+  const jeton =
+    brut === null || brut.length > TAILLE_MAX_JETON_RECU ? null : normaliserJetonRecu(brut);
 
   if (!(await jetonUtilisable(jeton))) {
     return pageStatique(

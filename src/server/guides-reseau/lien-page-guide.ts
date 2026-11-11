@@ -43,15 +43,26 @@ export type ResultatVerification =
   | { readonly ok: false; readonly motif: "format" | "signature" | "expire" | "champs" };
 
 /** Ponctuation qu'un client de messagerie colle parfois à la fin d'un lien (jamais dans l'alphabet base64url). */
-const PONCTUATION_FINALE = /[.,;:!?)]+$/;
+const PONCTUATION_FINALE = new Set([".", ",", ";", ":", "!", "?", ")"]);
+
+/** Longueur au-delà de laquelle un `j` est refusé sans autre examen (jeton + ponctuation collée). */
+export const TAILLE_MAX_JETON_RECU = TAILLE_MAX_JETON + 16;
 
 /**
  * Retire la ponctuation collée à la fin du jeton reçu (« …AbC. », « …AbC) »). À appeler dans les
  * routes AVANT `verifierJeton` ET AVANT `empreinteJeton` : la vérification et l'usage unique voient
  * ainsi le même jeton, avec ou sans le point final.
+ *
+ * Temps LINÉAIRE (une regex `[…]+$` était quadratique : 200 000 points = plusieurs secondes de
+ * serveur bloqué sur une requête non authentifiée). Une entrée démesurée est tronquée : elle sera
+ * de toute façon refusée par `verifierJeton`.
  */
 export function normaliserJetonRecu(j: string): string {
-  return typeof j === "string" ? j.replace(PONCTUATION_FINALE, "") : j;
+  if (typeof j !== "string") return j;
+  const borne = j.length > TAILLE_MAX_JETON_RECU ? j.slice(0, TAILLE_MAX_JETON_RECU) : j;
+  let fin = borne.length;
+  while (fin > 0 && PONCTUATION_FINALE.has(borne[fin - 1]!)) fin -= 1;
+  return borne.slice(0, fin);
 }
 
 const OPAQUE = /^[A-Za-z0-9_-]{1,64}$/;
