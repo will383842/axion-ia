@@ -64,7 +64,7 @@ export const GORGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles de Clisson et Gorges sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation production, agents IA service client B2B et gestion supply chain.",
     },
     {
-      q: "Comment se déroule une mission depuis Nantes ?",
+      q: "Comment se déroule une mission à Gorges ?",
       a: "Nous intervenons partout en France, sur place ou à distance. La gare TER de Clisson est à 5 min de Gorges.",
     },
   ],

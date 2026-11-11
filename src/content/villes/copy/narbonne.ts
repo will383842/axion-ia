@@ -245,7 +245,7 @@ export const NARBONNE_COPY: VilleCopy = {
       a: "Audit sur place, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : automatisation devis chantiers rénovation patrimoine (centre antique) et résidentiel littoral, OCR factures fournisseurs, suivi planning équipes, génération comptes-rendus de chantier, photos avant/après IA.",
     },
     {
-      q: "Comment se déroule une mission depuis Montpellier, Toulouse ou Perpignan ?",
+      q: "Comment se déroule une mission à Narbonne ?",
       a: "Montpellier 95 km via A9, Toulouse 150 km via A61, Perpignan 60 km via A9. Possibilité de combiner Narbonne + Béziers + Carcassonne ou Narbonne + Perpignan en une journée.",
     },
   ],

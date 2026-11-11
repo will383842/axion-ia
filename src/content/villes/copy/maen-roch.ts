@@ -64,7 +64,7 @@ export const MAEN_ROCH_COPY: VilleCopy = {
       a: "Automatisation devis et factures, agents IA prise de RDV, gestion stocks intelligente, CRM augmenté commerçants de bourg, fidélisation clients. Audit sur place {{price:audit-flash|flat}} adapté aux petites structures rurales.",
     },
     {
-      q: "Comment se déroule une mission IA à Maen Roch depuis Rennes ?",
+      q: "Comment se déroule une mission à Maen Roch ?",
       a: "Rennes-Maen Roch en 50 min par A84. Nos consultants se déplacent sur site pour les missions audit, formation et implémentation. Sessions en visio également possibles.",
     },
   ],

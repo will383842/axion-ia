@@ -64,7 +64,7 @@ export const GUEMENE_PENFAO_COPY: VilleCopy = {
       a: "Oui, nous accompagnons médecins, pharmaciens et paramédicaux de Guémené-Penfao sur des cas IA pratiques : agents IA prise de rendez-vous, automatisation secrétariat, gestion planning, outils de communication patients. RGPD strictement respecté.",
     },
     {
-      q: "Comment se déroule une mission IA depuis Nantes ou Rennes ?",
+      q: "Comment se déroule une mission à Guémené-Penfao ?",
       a: "Nous intervenons partout en France, sur place ou à distance. La gare TER de Redon est à 20 min. Pour les missions multi-jours, hébergement local possible.",
     },
   ],

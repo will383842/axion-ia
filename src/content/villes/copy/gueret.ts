@@ -49,7 +49,7 @@ export const GUERET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guéret et en Creuse ?",
-      a: "Oui, Axion-IA intervient à Guéret et dans toute la Creuse (Aubusson, La Souterraine, Bourganeuf). Consultants via gare SNCF Guéret ou déplacement route depuis Limoges.",
+      a: "Oui, Axion-IA intervient à Guéret et dans toute la Creuse (Aubusson, La Souterraine, Bourganeuf). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Guéret  ?",

@@ -36,6 +36,10 @@
  *   node scripts/villes/retirer-fausse-presence-tranche.mjs
  *   node scripts/villes/retirer-fausse-presence-tranche.mjs --compter
  *
+ * Relecture Opus 2 : « Comment se déroule une mission depuis X ? » (même
+ * remplacement que B), « Consultants … depuis X », « Nous arrivons … depuis X »,
+ * « Williams se déplace … depuis Paris » et « déplacement rapide depuis Paris ».
+ *
  * Idempotent. Verrouillé par `tests/unit/content/villes-tranche-2-sans-fausse-presence.spec.ts`.
  */
 
@@ -67,6 +71,10 @@ export function estFautive(phrase) {
     );
   }
   if (/^Consultants depuis [A-ZÉ]/u.test(phrase)) return true;
+  // 2/3 : « Consultants sur place en 10 min depuis Caen centre. », « …disponibilité consultant depuis Paris … ».
+  if (/\bconsultants?\b[^.]{0,60}depuis [A-ZÉ]/iu.test(phrase)) return true;
+  // 3 : « Nous arrivons en 1h10 depuis Paris-Montparnasse … ».
+  if (/^Nous arrivons\b[^.]*depuis/u.test(phrase)) return true;
   if (/^[Dd]epuis [A-ZÉ][^()]{0,40}\(/u.test(phrase)) return true;
   if (/^[Dd]epuis [A-ZÉ][^,.]{0,40}, (?:nous|nos)\b/u.test(phrase)) return true;
   return /depuis nos bureaux|bureaux proches de/u.test(phrase);
@@ -93,6 +101,23 @@ const BOUTS_C = [
   [/ depuis Paris en \d+ ?(?:min(?:utes)?|h)\b/gu, ""],
   [/ depuis le littoral azuréen/gu, ""],
   [/(frais de déplacement) depuis [A-ZÉ][\p{L}-]*/gu, "$1"],
+  // 4 : « Williams se déplace [sur site] depuis Paris (3 km…) pour… » → l'origine est retirée,
+  // le reste (moyen d'accès, finalité) demeure ; idem « …-t-il à X depuis Paris ? ».
+  [/(Williams se déplac[^."?]*?) depuis (?:Paris|notre base nationale)(?: \(\d[^)]*\))?/gu, "$1"],
+  // 4 : variantes « Williams intervient / se déplaçant depuis Paris », « déplacement Williams depuis Paris ».
+  [/(Williams (?:intervient|se déplaçant)|déplacement Williams) depuis Paris/gu, "$1"],
+  // 4 : « Williams prend le RER E depuis Paris (…, environ 35 min depuis Magenta) » (Ozoir).
+  [
+    /Williams prend le RER E depuis Paris \(([^)]*?), environ 35 min depuis Magenta\)/gu,
+    "Williams prend le RER E ($1)",
+  ],
+  // 4 : « Nous nous déplaçons depuis Martigues vers A, B ainsi que vers Marseille » (Martigues).
+  [
+    /Nous nous déplaçons depuis Martigues vers ([^"]*?), ainsi que vers Marseille/gu,
+    "Nous nous déplaçons à $1, ainsi qu'à Marseille",
+  ],
+  // 4 : « …, déplacement rapide depuis Paris (16 km). » (Gonesse).
+  [/,? déplacement rapide depuis Paris(?: \(\d+ ?km\))?/gu, ""],
 ];
 
 function boutsC(ligne) {
@@ -146,7 +171,7 @@ export function aLaVille(ville) {
 }
 
 const QUESTION_B =
-  /Comment se passe une mission(?: Axion-IA| IA)?(?: (?:à|au|aux) [^"?]*?)? depuis [^"?]*\?/gu;
+  /Comment se (?:passe|déroule|deroule) une mission(?: Axion-IA| IA)?[^"?]*? depuis [^"?]*\?/gu;
 
 export function questionB(ligne, ville) {
   if (!ville) return ligne;

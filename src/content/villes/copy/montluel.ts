@@ -53,7 +53,7 @@ export const MONTLUEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montluel et sur la Côtière de l'Ain ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Montluel et de toute la Côtière (Miribel à 15 min, Meximieux à 10 min, Beynost). Aéroport Saint-Exupéry à 15 min, consultants depuis Lyon (30 min).",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Montluel et de toute la Côtière (Miribel à 15 min, Meximieux à 10 min, Beynost). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques près de Saint-Exupéry ?",

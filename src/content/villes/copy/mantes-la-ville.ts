@@ -241,7 +241,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales mantevillois, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Mantes-la-Ville ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],

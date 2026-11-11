@@ -64,7 +64,7 @@ export const LA_TRINITE_COPY: VilleCopy = {
       a: "Pour les professions libérales de La Trinité (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription consultations, classification dossiers, agents IA prise de RDV. Coaching 1-to-1 personnalisé.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ?",
+      q: "Comment se déroule une mission à La Trinité ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

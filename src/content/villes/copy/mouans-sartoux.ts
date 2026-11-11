@@ -64,7 +64,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
       a: "Pour les acteurs culturels de Mouans-Sartoux (Festival du livre, associations, éditeurs), nous proposons : agents conversationnels visiteurs, automatisation billetterie, gestion bénévoles, classification archives, promotion événementielle IA.",
     },
     {
-      q: "Comment se déroule une mission depuis Cannes ou Nice ?",
+      q: "Comment se déroule une mission à Mouans-Sartoux ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

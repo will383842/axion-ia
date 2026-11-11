@@ -8,7 +8,7 @@ const PITCH_FR =
   "Axion-IA accompagne les TPE et PME d'Ozoir-la-Ferrière, commune de 21 238 habitants en Seine-et-Marne, à 31 km à l'est de Paris. Williams se déplace sur site auprès des artisans, commerçants, professions libérales et PME de la zone d'activités locale pour livrer du code custom — Python ou TypeScript — pérenne, documenté, sans dépendance no-code.";
 
 const DIRECT_ANSWER_FR =
-  "Axion-IA intervient à Ozoir-la-Ferrière pour les TPE et PME de Seine-et-Marne : artisans du BTP de la Brie, commerçants du marché du mercredi et samedi (Place Horizon), entreprises de la zone d'activités locale, professions libérales et cabinets indépendants. Williams se déplace en RER E direct depuis Paris (35 min, branche E4 vers Tournan) pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
+  "Axion-IA intervient à Ozoir-la-Ferrière pour les TPE et PME de Seine-et-Marne : artisans du BTP de la Brie, commerçants du marché du mercredi et samedi (Place Horizon), entreprises de la zone d'activités locale, professions libérales et cabinets indépendants. Williams se déplace en RER E direct pour cadrer le besoin sur place, livrer du code custom et former l'équipe. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, 1-à-1 {{price:intervention-dirigeants|flat}}.";
 
 const ECOSYSTEM_FR =
   "Ozoir-la-Ferrière compte 21 238 habitants (Insee 2023, +4,46 % depuis 2017) et est classée centre urbain intermédiaire de l'unité urbaine de Paris. Le tissu économique repose sur une zone d'activités industrielle et commerciale, le commerce indépendant (marché bi-hebdomadaire Place Horizon), l'artisanat BTP très présent dans la Brie, les transports terrestres (proximité RN4 et A4) et un appareil de services aux entreprises et particuliers typique d'une couronne francilienne résidentielle.";
@@ -235,7 +235,7 @@ const VILLE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Ozoir-la-Ferrière ?",
-      a: "Oui. Williams prend le RER E depuis Paris (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière, environ 35 min depuis Magenta) pour intervenir sur site auprès des TPE et PME ozoiriennes.",
+      a: "Oui. Williams prend le RER E (branche E4 vers Tournan-en-Brie, gare d'Ozoir-la-Ferrière) pour intervenir sur site auprès des TPE et PME ozoiriennes.",
     },
     {
       q: "Quels secteurs locaux Axion-IA accompagne-t-il à Ozoir-la-Ferrière ?",

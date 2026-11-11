@@ -64,7 +64,7 @@ export const LANGUEUX_COPY: VilleCopy = {
       a: "Optimisation supply chain, prédiction demande, gestion entrepôt augmentée, automatisation commandes et traçabilité, reporting temps réel pour logisticiens et distributeurs.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Rennes ?",
+      q: "Comment se déroule une mission à Langueux ?",
       a: "Paris-Saint-Brieuc en 2h45 (TGV direct). Rennes à 1h (N12). Gare Saint-Brieuc à 10 min de Langueux.",
     },
   ],

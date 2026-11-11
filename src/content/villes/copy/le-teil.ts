@@ -68,7 +68,7 @@ export const LE_TEIL_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission au Teil ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio.",
     },
   ],

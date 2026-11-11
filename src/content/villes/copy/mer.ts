@@ -49,7 +49,7 @@ export const MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mer dans le Loir-et-Cher ?",
-      a: "Oui, Axion-IA intervient à Mer et dans tout le nord blésois. Consultants sur site depuis Blois (20 min) ou Orléans (40 min).",
+      a: "Oui, Axion-IA intervient à Mer et dans tout le nord blésois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Mer  ?",

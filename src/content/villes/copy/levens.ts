@@ -64,7 +64,7 @@ export const LEVENS_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales de Levens, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Coaching 1-to-1 ou audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission à Levens depuis Nice ?",
+      q: "Comment se déroule une mission à Levens ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

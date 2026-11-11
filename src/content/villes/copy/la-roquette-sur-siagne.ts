@@ -64,7 +64,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
       a: "Pour les professions libérales et commerces de La Roquette-sur-Siagne, nous proposons : automatisation secrétariat, agents IA client, gestion stocks, CRM augmenté, classification documents. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission depuis Cannes ?",
+      q: "Comment se déroule une mission à La Roquette-sur-Siagne ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays cannois inclus dans le forfait.",
     },
   ],

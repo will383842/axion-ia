@@ -64,7 +64,7 @@ export const LAMBALLE_ARMOR_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, gestion réservations IA, optimisation avis clients et e-réputation, fidélisation, reporting saisonnalité, marketing autour du Haras national et de la baie de Saint-Brieuc.",
     },
     {
-      q: "Comment se déroule une mission depuis Rennes ou Paris ?",
+      q: "Comment se déroule une mission à Lamballe-Armor ?",
       a: "Rennes à 1h. Paris-Montparnasse à 2h45 en TGV (gare Lamballe). Saint-Brieuc à 15 min.",
     },
   ],

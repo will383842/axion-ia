@@ -64,7 +64,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
       a: "Pour les professions libérales du moyen-pays azuréen (avocats, médecins, architectes, consultants), nous proposons : automatisation secrétariat, transcription, classification documents, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ou Cagnes ?",
+      q: "Comment se déroule une mission à La Colle-sur-Loup ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

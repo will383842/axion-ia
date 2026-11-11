@@ -64,7 +64,7 @@ export const MIMIZAN_COPY: VilleCopy = {
       a: "Pour les TPE commerçants et artisans à Mimizan, audit sur place {{price:audit-flash|flat}}, coaching 1-to-1, intervention formation. Cas typiques : automatisation devis, gestion stocks saisonniers, agents IA communication, facturation automatisée.",
     },
     {
-      q: "Comment se déroule une mission depuis Bordeaux ?",
+      q: "Comment se déroule une mission à Mimizan ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local (Mimizan-Bourg ou Mimizan-Plage).",
     },
   ],
