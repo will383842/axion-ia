@@ -103,14 +103,15 @@ describe("controleFidelite — correctifs de fiabilité (PR de suivi #1912)", ()
     expect(c[0]).toMatchObject({ nature: "contradictoire", valeurFiche: "31 %" });
   });
 
-  it("une valeur d'une phrase de la fiche sans rapport avec le propos ne rend pas « contradictoire »", () => {
+  it("une fiche qui partage 3 mots avec l'article, répartis sur plusieurs phrases, ne rend pas « contradictoire »", () => {
     const fiche: FicheConnaissance = {
-      id: "hors-sujet",
+      id: "multi-phrases",
       titre: "Budget",
-      texte: "Le budget formation moyen atteint 4 % de la masse salariale.",
+      texte:
+        "Les boulangeries artisanales ouvrent tôt le matin. Le budget formation moyen atteint 4 % de la masse salariale.",
     };
     const c = controleFidelite(
-      "<p>Les boulangeries artisanales réduisent leurs invendus de 18 % en hiver.</p>",
+      "<p>Les boulangeries artisanales réduisent leurs invendus de 18 % grâce au budget formation.</p>",
       [fiche],
     );
     expect(c).toHaveLength(1);

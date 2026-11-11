@@ -36,12 +36,12 @@ Les constats se lisent dans `GenerationLog` (étape `validation`, « Contrôle d
 
 ## ⛔ Avant d'allumer (suivi de #1912, 11/11/2026)
 
-Ne PAS passer `CONTENT_FIDELITY_CHECK` à `true` avant les corrections de fiabilité de la PR de
-suivi (faux « non étayé » sur les années finales, « contradictoire » exigeant une phrase de
+Ne PAS passer `CONTENT_FIDELITY_CHECK` à `true` avant les corrections de fiabilité de
+#1915/#1917 (faux « non étayé » sur les années finales, « contradictoire » exigeant une phrase de
 fiche du même propos, doublons). Commencer par `dry-run`, lire les constats dans
 `GenerationLog` pendant une semaine, puis seulement décider de `true` (décision de Williams).
 Limite connue : les valeurs sont comparées sans l'unité (« 12,4 % » est validé par
-« 12.4 milliards »).
+« 12.4 milliards »). Les effectifs et nombres sans % ni € ne sont plus contrôlés.
 
 ## Limites assumées (contrôle lexical)
 

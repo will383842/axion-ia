@@ -49,7 +49,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-lès-Valence et Valence Romans Agglo ?",
-      a: "Oui, Axion-IA intervient à Bourg-lès-Valence et toute Valence Romans Agglo (Valence, Romans-sur-Isère, Portes-lès-Valence, Bourg-de-Péage, Saint-Marcel-lès-Valence). Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence-TGV 2h15).",
+      a: "Oui, Axion-IA intervient à Bourg-lès-Valence et toute Valence Romans Agglo (Valence, Romans-sur-Isère, Portes-lès-Valence, Bourg-de-Péage, Saint-Marcel-lès-Valence). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles drômoises ?",
@@ -65,7 +65,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
     },
   ],
 };

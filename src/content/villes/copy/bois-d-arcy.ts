@@ -49,7 +49,7 @@ export const BOIS_D_ARCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bois-d'Arcy et secteur Versailles ?",
-      a: "Oui, Axion-IA intervient à Bois-d'Arcy et tout le secteur Versailles / Saint-Quentin-en-Yvelines (Fontenay-le-Fleury, Saint-Cyr-l'École, Montigny-le-Bretonneux, Villepreux). Nos consultants se déplacent depuis Paris (35 min train).",
+      a: "Oui, Axion-IA intervient à Bois-d'Arcy et tout le secteur Versailles / Saint-Quentin-en-Yvelines (Fontenay-le-Fleury, Saint-Cyr-l'École, Montigny-le-Bretonneux, Villepreux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP à Bois-d'Arcy ?",

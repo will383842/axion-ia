@@ -49,7 +49,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carbon-Blanc ?",
-      a: "Oui, Axion-IA intervient à Carbon-Blanc et sur toute la rive droite (Bassens, Lormont, Cenon, Floirac). Nos consultants se déplacent depuis Bordeaux centre (15 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Carbon-Blanc et sur toute la rive droite (Bassens, Lormont, Cenon, Floirac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Carbon-Blanc  ?",

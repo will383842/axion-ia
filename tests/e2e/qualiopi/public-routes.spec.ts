@@ -69,7 +69,7 @@ const ROUTES_SI_AVIS_PUBLIES = new Set(["/fr/avis"]);
 const avisPublies = process.env["E2E_AVIS_PUBLIES"] === "true";
 /**
  * Cas concrets — ÉTEINTS le 2026-11-08 (`CAS_CONCRETS_AFFICHES = false`,
- * src/content/preuves-sociales.ts) : la page répond 404 VOULU. Retirée de la liste ;
+ * src/content/preuves-sociales.ts) : la page redirige en 301 vers /fr/methodologie. Retirée de la liste ;
  * poser `E2E_CAS_CONCRETS_AFFICHES=true` pour l'auditer le jour où ils reviennent.
  */
 const ROUTES_SI_CAS_CONCRETS = new Set(["/fr/cas-concrets"]);

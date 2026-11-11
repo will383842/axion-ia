@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 import withBundleAnalyzer from "@next/bundle-analyzer";
 import createNextIntlPlugin from "next-intl/plugin";
+import { CAS_CONCRETS_AFFICHES } from "./src/content/preuves-sociales";
 
 // next-intl plugin wires `src/i18n/request.ts` so Server Components can
 // call `getMessages()` / `getTranslations()` without explicit context.
@@ -278,10 +279,23 @@ const nextConfig: NextConfig = {
     return [
       // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
       // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
-      // restent en filet. Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
-      { source: "/fr/cas-concrets", destination: "/fr/methodologie", statusCode: 301 },
-      { source: "/fr/cas-concrets/:path+", destination: "/fr/methodologie", statusCode: 301 },
-      { source: "/en/case-studies/:path*", destination: "/fr/methodologie", statusCode: 301 },
+      // restent en filet. Les redirections ne sont posées que tant que l'interrupteur
+      // `CAS_CONCRETS_AFFICHES` est à false. ⚠️ Une 301 est mise en mémoire par les navigateurs
+      // et par Google : même si l'interrupteur repasse à true et que ces règles disparaissent
+      // de la config, ceux qui l'ont déjà vue continueront d'être renvoyés vers /fr/methodologie
+      // (purge du cache navigateur / réexploration Google nécessaires pour revenir en arrière).
+      // Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
+      ...(CAS_CONCRETS_AFFICHES
+        ? []
+        : [
+            { source: "/fr/cas-concrets", destination: "/fr/methodologie", statusCode: 301 },
+            {
+              source: "/fr/cas-concrets/:path+",
+              destination: "/fr/methodologie",
+              statusCode: 301,
+            },
+            { source: "/en/case-studies/:path*", destination: "/fr/methodologie", statusCode: 301 },
+          ]),
       // ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA à
       // 1 490 € HT). Fichiers STATIQUES de `public/` porteurs de prix : servis hors du
       // middleware et des pages, l'interrupteur `PRIX_PUBLICS_AFFICHES` ne les atteint pas.
