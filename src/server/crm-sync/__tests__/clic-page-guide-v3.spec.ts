@@ -92,7 +92,7 @@ vi.mock("@/lib/prisma", () => {
 vi.mock("@/server/queue/queues", () => ({ crmSyncQueue: null }));
 vi.mock("@/lib/email/nature-adresse", () => ({ natureAdresse: () => base.nature }));
 vi.mock("@/lib/security/email-hash", () => ({
-  hashEmailForLookup: () => "5f993926a55434647f8c8e17b3142d54ea62a879ea4fc468ac72d8b51740a59f", // 64 hex, comme la vraie empreinte (SITE-429)
+  hashEmailForLookup: () => "abababababababababababababababababababababababababababababababab", // 64 hex, comme la vraie empreinte (SITE-429)
   normalizeEmail: (e: string) => e.trim().toLowerCase(),
 }));
 vi.mock("@/lib/pii-crypto", () => ({
