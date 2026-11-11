@@ -27,6 +27,8 @@ describe("llms-full.txt — apporteurs d'affaires", () => {
   });
 
   it("n'emploie pas le vocabulaire interdit (poste, recrutement, candidature, Qualiopi)", () => {
-    expect(SECTION).not.toMatch(/recrut|candidature|qualiopi|freelance|grenoble/i);
+    // Les adresses (URL) gardent leur ancien nom : on ne lit que le texte.
+    const texte = SECTION.replace(/https?://S+/g, "");
+    expect(texte).not.toMatch(/recrut|candidature|qualiopi|freelance|grenoble/i);
   });
 });
