@@ -130,22 +130,54 @@ export function sansCommentaires(src: string): string {
   // de ligne restent exacts). Les chaînes ' et " se ferment en fin de ligne (une apostrophe de
   // texte JSX ne doit pas avaler la suite du fichier) : l'erreur possible va dans le sens
   // d'un scan PLUS strict, jamais plus faible.
+  // Gabarits imbriqués : une pile suit les « `…` » et les « ${ … } » qu'ils contiennent, pour
+  // qu'un gabarit dans une expression de gabarit ne ferme pas la chaîne du dehors.
+  // Littéral d'expression régulière (« /\/\// ») : un « // » précédé d'un antislash n'ouvre
+  // pas de commentaire.
+  type Cadre = { type: "gabarit" } | { type: "expr"; accolades: number };
+  const pile: Cadre[] = [];
   let out = "";
   let guillemet: string | null = null;
   for (let i = 0; i < src.length; i++) {
     const c = src[i] as string;
     const n = src[i + 1];
+    const haut = pile[pile.length - 1];
     if (guillemet) {
       out += c;
       if (c === "\\" && n !== undefined) {
         out += n;
         i++;
-      } else if (c === guillemet || (c === "\n" && guillemet !== "`")) {
+      } else if (c === guillemet || c === "\n") {
         guillemet = null;
       }
       continue;
     }
-    if (c === "/" && n === "/") {
+    if (haut?.type === "gabarit") {
+      out += c;
+      if (c === "\\" && n !== undefined) {
+        out += n;
+        i++;
+      } else if (c === "`") {
+        pile.pop();
+      } else if (c === "$" && n === "{") {
+        out += n;
+        i++;
+        pile.push({ type: "expr", accolades: 0 });
+      }
+      continue;
+    }
+    if (haut?.type === "expr") {
+      if (c === "{") haut.accolades++;
+      else if (c === "}") {
+        if (haut.accolades === 0) {
+          pile.pop();
+          out += c;
+          continue;
+        }
+        haut.accolades--;
+      }
+    }
+    if (c === "/" && n === "/" && src[i - 1] !== "\\") {
       while (i < src.length && src[i] !== "\n") {
         out += " ";
         i++;
@@ -160,7 +192,8 @@ export function sansCommentaires(src: string): string {
       i = stop - 1;
       continue;
     }
-    if (c === "'" || c === '"' || c === "`") guillemet = c;
+    if (c === "'" || c === '"') guillemet = c;
+    else if (c === "`") pile.push({ type: "gabarit" });
     out += c;
   }
   return out;
@@ -323,6 +356,25 @@ describe("sansCommentaires — ne confond pas une chaîne avec un commentaire", 
     expect(out).not.toContain("99 €");
     expect(out).not.toContain("19 €");
     expect(out.split("\n")).toHaveLength(src.split("\n").length);
+  });
+
+  it("n'ouvre pas de commentaire sur un « // » précédé d'un antislash (regex /\\/\\//)", () => {
+    const src = ['const r = /\\/\\//; const p = 49 + " €";', "// vrai 99 €"].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain('49 + " €"');
+    expect(out).not.toContain("99 €");
+  });
+
+  it("gère les gabarits imbriqués sans mal repérer la fin de chaîne", () => {
+    const src = [
+      'const a = `x ${ cond ? `y // 29 €` : "z" } // fin 39 € `;',
+      "const b = 1; // vrai 99 €",
+    ].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain("29 €");
+    expect(out).toContain("39 €");
+    expect(out).not.toContain("99 €");
+    expect(out.split("\n")).toHaveLength(2);
   });
 });
 

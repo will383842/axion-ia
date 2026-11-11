@@ -279,8 +279,11 @@ const nextConfig: NextConfig = {
     return [
       // Cas concrets éteints (2026-11-08, retrait juridique) : URLs déjà indexées → 301 vers la
       // page la plus proche (/fr/methodologie), plutôt qu'un 404 sec. Les notFound() des pages
-      // restent en filet. Les redirections ne s'appliquent que tant que l'interrupteur
-      // `CAS_CONCRETS_AFFICHES` est à false : s'il repasse à true, les pages reviennent.
+      // restent en filet. Les redirections ne sont posées que tant que l'interrupteur
+      // `CAS_CONCRETS_AFFICHES` est à false. ⚠️ Une 301 est mise en mémoire par les navigateurs
+      // et par Google : même si l'interrupteur repasse à true et que ces règles disparaissent
+      // de la config, ceux qui l'ont déjà vue continueront d'être renvoyés vers /fr/methodologie
+      // (purge du cache navigateur / réexploration Google nécessaires pour revenir en arrière).
       // Garde : src/content/__tests__/cas-concrets-eteints.spec.ts.
       ...(CAS_CONCRETS_AFFICHES
         ? []

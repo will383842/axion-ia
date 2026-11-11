@@ -3,7 +3,7 @@
  *
  * Les 5 cas de `case-studies.ts` sont inventés et présentés comme « réellement
  * livrés ». Tant que `CAS_CONCRETS_AFFICHES` est `false` :
- *  - les pages et le flux RSS répondent 404 ;
+ *  - les pages sont redirigées en 301 vers /fr/methodologie (flux RSS compris) ;
  *  - plus aucun lien (en-tête, pied, menu Ressources) ;
  *  - ni sitemap `cas-concrets` ni ligne dans `llms.txt` / `llms-full.txt`.
  * Le contenu n'est pas effacé.
