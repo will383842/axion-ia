@@ -65,7 +65,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (1h45). Coûts de déplacement à part, tarification transparente.",
+      a: "Lyon (1h45). Tarification transparente.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BRIOUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Tarification transparente.",
     },
   ],
 };

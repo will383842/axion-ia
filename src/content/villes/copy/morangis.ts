@@ -65,7 +65,7 @@ export const MORANGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min). Tarification transparente.",
     },
   ],
 };

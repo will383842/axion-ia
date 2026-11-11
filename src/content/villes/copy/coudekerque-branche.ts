@@ -18,9 +18,9 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   ecosystemEn:
     "Coudekerque-Branche fait partie de la communauté urbaine de Dunkerque, premier port industriel des Hauts-de-France et grand pôle sidérurgique et énergétique du littoral. Autour des sites majeurs gravite un dense réseau de TPE et PME de sous-traitance, maintenance industrielle, logistique, transport routier et BTP, complété par un commerce de proximité actif. Ces structures, souvent dirigées par des indépendants ou de petites équipes, jonglent avec planning, devis et conformité, autant de domaines où des automatisations IA bien ciblées font gagner un temps précieux.",
   distancesFr:
-    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, frais indiqués séparément, ou interviennent en visio selon le format.",
+    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, ou interviennent en visio selon le format.",
   distancesEn:
-    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, frais indiqués séparément, ou interviennent en visio selon le format.",
+    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, ou interviennent en visio selon le format.",
   topSectorsNaf: [
     "Sous-traitance industrielle et maintenance (port, sidérurgie)",
     "Logistique portuaire et entreposage",

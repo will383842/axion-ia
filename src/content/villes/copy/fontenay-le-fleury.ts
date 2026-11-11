@@ -65,7 +65,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Versailles ou Paris ?",
-      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Coûts de déplacement à part, tarification transparente.",
+      a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Tarification transparente.",
     },
   ],
 };

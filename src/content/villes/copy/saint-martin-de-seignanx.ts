@@ -65,7 +65,7 @@ export const SAINT_MARTIN_DE_SEIGNANX_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Martin-de-Seignanx ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement ou zone d'activités à Saint-Martin-de-Seignanx, à 15 min de Bayonne par l'A63. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement ou zone d'activités à Saint-Martin-de-Seignanx, à 15 min de Bayonne par l'A63. Tarification transparente.",
     },
   ],
 };

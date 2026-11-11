@@ -179,7 +179,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "13 régions métropolitaines, Corse comprise, et les 5 DROM",
         "Entreprises francophones à l'étranger, sur devis selon la zone",
         "Sur site ou à distance, selon ce que la mission exige vraiment",
-        "Mêmes conditions tarifaires partout, frais de déplacement facturés en sus",
+        "Mêmes conditions tarifaires partout",
         "Les 5 prestations disponibles sur l'ensemble du territoire",
       ],
       facts: [
@@ -243,7 +243,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le prix ne dépend pas de la ville",
           detail:
-            "Les tarifs sont les mêmes de Paris à Perpignan. Seuls les frais de déplacement varient selon la zone, et ils sont chiffrés à part, pas noyés dans le forfait.",
+            "Les tarifs sont les mêmes de Paris à Perpignan.",
         },
         {
           title: "Les grandes villes ne passent pas devant",
@@ -260,7 +260,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         // surface du site a l'affirmer, et elle contredisait la doctrine tenue
         // partout ailleurs (frais de deplacement factures en sus, sur une ligne
         // distincte du devis). Ne pas le reintroduire.
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere.",
     },
   },
   {

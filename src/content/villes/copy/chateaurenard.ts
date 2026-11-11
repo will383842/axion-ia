@@ -65,7 +65,7 @@ export const CHATEAURENARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Châteaurenard ?",
-      a: "Châteaurenard est à 15 min d'Avignon et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux ou au MIN. Coûts de déplacement à part, tarification transparente.",
+      a: "Châteaurenard est à 15 min d'Avignon et 20 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux ou au MIN. Tarification transparente.",
     },
   ],
 };

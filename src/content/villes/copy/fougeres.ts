@@ -18,9 +18,9 @@ export const FOUGERES_COPY: VilleCopy = {
   ecosystemEn:
     "Fougères, sous-préfecture d'Ille-et-Vilaine aux portes de la Normandie et du Maine, conjugue patrimoine et industrie. Sa cité médiévale et son château fort en font une destination touristique, tandis que son tissu économique, hérité de la grande tradition de la chaussure, s'est tourné vers la sous-traitance électronique, la plasturgie et l'agroalimentaire. Autour de ces PME gravitent des TPE artisanales, des commerces de centre-ville et des acteurs du tourisme. Ce profil de petites structures, souvent dirigées par leur fondateur, est idéal pour des automatisations IA ciblées et un gain de temps concret.",
   distancesFr:
-    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, frais indiqués séparément, ou interviennent en visio.",
+    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, ou interviennent en visio.",
   distancesEn:
-    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, frais indiqués séparément, ou interviennent en visio.",
+    "Rennes et sa gare TGV à 1h (55 km), Saint-Malo à 1h, Le Mont-Saint-Michel à 45 min, Laval à 50 min. Aéroport de Rennes à 60 km. Paris à 3h15 via Rennes. Nos consultants se déplacent sur site depuis Rennes, ou interviennent en visio.",
   topSectorsNaf: [
     "Sous-traitance électronique et plasturgie",
     "Industrie agroalimentaire",

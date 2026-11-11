@@ -65,7 +65,7 @@ export const AUXONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Dijon ?",
-      a: "Dijon (30 min A39) ou Dole (20 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Dijon (30 min A39) ou Dole (20 min). Tarification transparente.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (10 min). Aéroport Genève-Cointrin à 10 min. Coûts de déplacement à part, tarification transparente.",
+      a: "Nos consultants viennent de Lyon (1h30) ou Genève (10 min). Aéroport Genève-Cointrin à 10 min. Tarification transparente.",
     },
   ],
 };
