@@ -128,7 +128,7 @@ Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-d
 
 1. CRM : `ORIGINES_V3_ENABLED` et le drapeau `crm.ingest.personnes_enabled` (côté CRM).
 2. `SYNCHRO_CRM_V3`.
-3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — liste fermée du workflow `coolify-drapeau.yml` (cible `site`, `true`/`false`).
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — liste fermée du workflow `coolify-drapeau.yml` (cible `site`, `true`/`false`). **Précondition : n'allumer qu'une fois le Studio prêt à accuser chaque merci** (`envoye`, `hors_fenetre` ou `echec` sur `/issue`) ; sinon chaque merci est repris après 10 min et renvoyé pendant 48 h (un seul interrupteur couvre la réservation et l'accusé).
 4. `PAGE_GUIDE_RESEAU_ENABLED`.
 5. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
 

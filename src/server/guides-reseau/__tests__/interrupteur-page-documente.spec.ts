@@ -61,3 +61,21 @@ describe("CONFIRMATIONS_PAGE_GUIDE_ENABLED est basculable (site, true|false) et 
     expect(doc).not.toMatch(/CONFIRMATIONS_PAGE_GUIDE_ENABLED`[^\n]*hors workflow/);
   });
 });
+
+describe("relecture PR 1958 — ordre d'allumage et texte sans case", () => {
+  const doc = lire("docs/guides-reseau-interrupteurs.md");
+  it("l'ordre d'allumage exige que le Studio accuse chaque merci avant CONFIRMATIONS_PAGE_GUIDE_ENABLED (jamais deux fois le même merci)", () => {
+    const etape = doc.split("\n").find((l) => /^3\.\s+`CONFIRMATIONS_PAGE_GUIDE_ENABLED`/.test(l));
+    expect(etape).toBeDefined();
+    expect(etape).toMatch(/Studio/);
+    expect(etape).toMatch(/envoye/);
+    expect(etape).toMatch(/hors_fenetre/);
+    expect(etape).toMatch(/echec/);
+  });
+  it("la documentation ne garde aucune marque de conflit", () => {
+    expect(doc).not.toMatch(/^(<<<<<<<|=======|>>>>>>>)/m);
+  });
+  it("textes.ts n'affirme pas que le texte sans case est « validé par Williams » (non vérifiable)", () => {
+    expect(lire("src/app/guide-reseau/textes.ts")).not.toMatch(/validé par Williams/);
+  });
+});
