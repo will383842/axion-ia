@@ -48,6 +48,16 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
 - À la validation : case obligatoire (422 sinon), adresse **opposée** = réponse identique à un succès (rien d'envoyé ni
   écrit), MX « non » = message d'erreur, MX inconnu = la demande passe, guide déjà parti il y a < 24 h = pas de second
   envoi. Aucune ligne `newsletter_subscribers`. L'e-mail du guide porte un lien de désinscription (porte d'opposition).
+- **Écriture atomique (fiche SITE-ORIG).** La ligne `contacts_guide_reseau`, la demande du guide, l'**origine**
+  (`guide_reseau_origines` : mot, réseau, compte, post, version M1) et la **preuve du consentement**
+  (`consent_events`) sont écrites dans **UNE seule transaction, avant toute réponse**. Un arrêt du conteneur juste
+  après la réponse ne peut donc plus laisser une fiche sans origine ni consentement. Si l'une des écritures échoue,
+  tout est annulé (rien de partiel), le jeton n'est **pas** consommé et la route répond sa page d'erreur neutre
+  (« Erreur. Réessayez dans quelques minutes. ») : la personne peut réessayer avec le même lien. Seul l'e-mail du guide
+  part après la réponse (`after`). Aucun changement de contrat ni de schéma, pas de migration.
+- **Plancher de durée.** La réponse ne part jamais avant `PLANCHER_REPONSE_MS` (250 ms, `page-confirmation.ts`), quelle
+  que soit l'issue (succès, refus, erreur) : une adresse déjà connue et une adresse neuve ne se distinguent pas au
+  chronomètre.
 - **Ordre d'allumage conseillé** : `OPPOSITIONS_RESEAU_ENABLED` d'abord, puis le secret du lien, puis cette page.
 - La route des confirmations (lot S4) n'est **pas** livrée par ce lot ; la synchro CRM est décrite plus bas (lot S3).
 

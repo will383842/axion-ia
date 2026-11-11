@@ -11,23 +11,31 @@
  *   5. l'adresse est-elle opposée ? Le résultat ne change RIEN au déroulé qui suit (M1) ;
  *   6. le domaine reçoit-il des e-mails (MX) ? « non » → message d'erreur ; « inconnu » passe ;
  *   7. limites par jour (personne, post) — celles du chemin de la conversation, réutilisées ;
- *   8. UNE TRANSACTION : verrou de l'adresse, ligne `contacts_guide_reseau` (écrit
- *      `jeton_empreinte`, UNIQUE = usage unique), demande du guide (`retrouverOuCreerDemande`).
+ *   8. UNE SEULE TRANSACTION, AVANT toute réponse : verrou de l'adresse, ligne
+ *      `contacts_guide_reseau` (écrit `jeton_empreinte`, UNIQUE = usage unique), demande du guide
+ *      (`retrouverOuCreerDemande`), ORIGINE (mot, réseau, compte, post, version M1 →
+ *      `guide_reseau_origines`, PAS dans `contacts_guide_reseau`) et PREUVE du consentement
+ *      (`consent_events`, action `consent`). Tout part ensemble ou rien ne part : si le conteneur
+ *      s'arrête juste après la réponse, la fiche relue plus tard par le CRM (au clic) a son
+ *      origine ET sa preuve. Un échec (origine, preuve, base…) annule TOUT et remonte : la route
+ *      répond sa page d'erreur neutre, le jeton n'est PAS consommé, la personne peut réessayer.
  *      Un jeton déjà utilisé fait échouer l'insertion (P2002 sur `jeton_empreinte`) : rien n'est
  *      créé, succès NEUTRE. TOUT AUTRE conflit d'unicité (ex. `guide_requests` : demande
  *      simultanée du formulaire /guide-ia) rejoue la transaction, ou remonte — jamais un succès
  *      sans guide ;
- *   9. l'ORIGINE (mot, réseau, compte, post, version M1) va dans `guide_reseau_origines` et au CRM
- *      (famille `guide_reseau`), PAS dans `contacts_guide_reseau` ;
- *  10. la preuve du consentement (`consent_events`, action `consent`) ;
- *  11. l'e-mail du guide — sauf s'il est déjà parti à cette adresse depuis moins de 24 h. Un échec
- *      de mise en file n'annule rien : la demande est écrite, le rattrapage la reprend.
+ *   9. l'e-mail du guide, APRÈS la réponse (`after`) — sauf s'il est déjà parti à cette adresse
+ *      depuis moins de 24 h. Un échec de mise en file n'annule rien : la demande est écrite, le
+ *      rattrapage la reprend.
+ *
+ * 🕐 PLANCHER DE DURÉE (`PLANCHER_REPONSE_MS`) : la réponse ne part jamais avant ce délai, quelle que
+ * soit l'issue. Une adresse déjà connue (demande existante, mise à jour) et une adresse neuve
+ * (création) ne se distinguent ainsi pas au chronomètre. Un échec attend aussi le plancher.
  *
  * 🔴 M1 — ADRESSE OPPOSÉE : indiscernable d'un succès par la réponse (même 303), par l'état du jeton
  * (consommé dans les deux cas : la ligne est une MARQUE sans donnée personnelle — ni clé d'adresse,
  * ni prénom, ni demande) et par le travail fait (MX, limites, verrou, transaction identiques).
  * Résiduel assumé : la mise en file du guide, la preuve et l'origine ne se font pas pour l'adresse
- * opposée ; leur durée (quelques millisecondes) reste très inférieure au bruit réseau.
+ * opposée ; le plancher de durée absorbe cet écart.
  * 🔴 DÉCISIONS DE WILLIAMS : aucune ligne `newsletter_subscribers` (jamais écrite ici) ; un « stop »
  * l'emporte toujours ; aucune suppression de données de personnes ; origine `message_prive`
  * conservée (aucune migration d'énumération).
@@ -39,7 +47,7 @@ import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { encryptPii } from "@/lib/pii-crypto";
-import { recordConsentEvent } from "@/lib/consents";
+import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
 import { demandeGuideSchema } from "@/lib/schemas/forms";
 import { estOpposee } from "@/server/email/opposition";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
@@ -56,9 +64,14 @@ import {
 } from "@/content/guides-reseau";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
 import { MERCI_STATUT_ECARTE } from "./merci-statut";
-import { hmacConversationRef } from "./origines";
+import {
+  ecrireOrigineDansTransaction,
+  hmacConversationRef,
+  signalerArchiveSiDepassee,
+  type OrigineAEcrire,
+} from "./origines";
 import { VERSIONS_TEXTE_CONNUES } from "./valeurs-connues";
-import { noterOrigineAvec, retrouverOuCreerDemande, sousLesLimites } from "./traitement";
+import { retrouverOuCreerDemande, sousLesLimites } from "./traitement";
 
 export interface EntreeConfirmation {
   readonly jeton: string;
@@ -70,6 +83,8 @@ export interface EntreeConfirmation {
   /** Secret du lien (déjà contrôlé par `lireSecretLien`). */
   readonly secret: string;
   readonly maintenant?: Date;
+  /** Plancher de durée de la réponse (ms). Défaut : `PLANCHER_REPONSE_MS`. Les tests le mettent à 0. */
+  readonly plancherMs?: number | undefined;
 }
 
 export type ResultatConfirmation =
@@ -89,6 +104,14 @@ export function compteAuFormatCrm(compte: string): string | null {
   const c = compte.toLowerCase().replace(/-/g, "_");
   return COMPTE_CRM.test(c) ? c : null;
 }
+
+/**
+ * Durée MINIMALE d'une réponse, en millisecondes. Sans elle, créer une demande (adresse neuve) et
+ * en retrouver une (adresse connue) ne prennent pas le même temps, et le chronomètre d'une
+ * personne malveillante dirait si une adresse est déjà dans la base. 250 ms dépasse largement le
+ * temps d'une transaction normale.
+ */
+export const PLANCHER_REPONSE_MS = 250;
 
 /** Nombre maximal d'essais de la transaction (conflit d'unicité hors jeton : demande simultanée). */
 const ESSAIS_TRANSACTION = 3;
@@ -135,7 +158,28 @@ export function empreinteTexte(texte: string): string {
   return createHash("sha256").update(texte, "utf8").digest("hex");
 }
 
+/** Hachage de contexte de la preuve : sans sel, on renonce à l'élément, pas à la preuve. */
+function sansLever(f: () => string | null): string | null {
+  try {
+    return f();
+  } catch {
+    return null;
+  }
+}
+
+/** Valide la saisie, écrit tout dans UNE transaction, puis ne répond jamais avant le plancher. */
 export async function confirmerPageGuide(e: EntreeConfirmation): Promise<ResultatConfirmation> {
+  const debut = Date.now();
+  try {
+    return await traiterConfirmation(e);
+  } finally {
+    // Réussite, refus ou erreur : la durée de la réponse est la même.
+    const reste = (e.plancherMs ?? PLANCHER_REPONSE_MS) - (Date.now() - debut);
+    if (reste > 0) await new Promise<void>((fin) => setTimeout(fin, reste));
+  }
+}
+
+async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfirmation> {
   const maintenant = e.maintenant ?? new Date();
 
   // 1. Le jeton. Toute cause d'échec donne la MÊME réponse.
@@ -198,7 +242,15 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
   };
   const prenomChiffre = encryptPii(prenom);
   const empreinte = empreinteJeton(e.jeton);
+  // Origine et preuve sont construites AVANT la transaction (une clé HMAC absente lève ici, sans
+  // rien avoir écrit), puis écrites DANS la transaction. Rien pour une adresse opposée.
+  const origine = opposee
+    ? null
+    : construireOrigineDePage(donnees, compte, postRef, empreinte, maintenant);
+  const ipHash = e.ip ? sansLever(() => hashIp(e.ip as string)) : null;
+  const agentHash = e.userAgent ? sansLever(() => hashUserAgent(e.userAgent as string)) : null;
   let demande: { id: string; downloadToken: string } | null = null;
+  let totalArchive = 0;
   for (let essai = 1; ; essai++) {
     try {
       demande = await prisma.$transaction(async (tx) => {
@@ -249,6 +301,22 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
           data: { guideRequestId: d.id },
           select: { id: true },
         });
+        // 3) L'ORIGINE (historique v3) et 4) la PREUVE du consentement : dans la MÊME transaction.
+        //    Aucune des deux n'avale son erreur ici : elle annule le contact et la demande aussi.
+        const ecrite = await ecrireOrigineDansTransaction(tx, emailKey, origine!);
+        totalArchive = ecrite.total;
+        await tx.consentEvent.create({
+          data: {
+            personKey: emailKey,
+            formRef: FORM_REF_PAGE_GUIDE,
+            consentVersion: versionPreuveCase(),
+            action: "consent",
+            occurredAt: maintenant,
+            ipHash,
+            userAgent: agentHash,
+          },
+          select: { id: true },
+        });
         return { id: d.id, downloadToken: d.downloadToken };
       });
       break;
@@ -276,19 +344,13 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
     return { ok: true };
   }
   const demandeFaite = demande;
+  signalerArchiveSiDepassee(totalArchive);
 
-  // 9 à 11 : APRÈS la réponse. Le temps de réponse est ainsi le même pour une adresse opposée et
-  // pour une adresse ordinaire (ni l'origine, ni la preuve, ni la mise en file ne s'y comptent).
+  // 9 : APRÈS la réponse, la seule suite : l'e-mail du guide. Sa perte ne perd rien (la demande,
+  // l'origine et la preuve sont déjà validées ; le rattrapage reprend la demande).
   after(async () => {
     try {
-      await suiteApresReponse(e, donnees, demandeFaite, {
-        email,
-        emailKey,
-        empreinte,
-        compte,
-        postRef,
-        maintenant,
-      });
+      await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
     } catch (err) {
       console.error(
         JSON.stringify({
@@ -301,63 +363,48 @@ export async function confirmerPageGuide(e: EntreeConfirmation): Promise<Resulta
   return { ok: true };
 }
 
+/** L'origine de la page (mot, réseau, compte au format CRM, post, version M1). */
+function construireOrigineDePage(
+  donnees: DonneesJeton,
+  compte: string | null,
+  postRef: string | null,
+  empreinte: string,
+  maintenant: Date,
+): OrigineAEcrire {
+  return {
+    mot: donnees.mot,
+    reseau: RESEAU_DU_LIEN[donnees.reseau],
+    guide: donnees.guide,
+    postRef,
+    postUrl: null,
+    canal: null,
+    famille: "guide_reseau",
+    detail: donnees.guide === "guide-ia" ? "guide_ia" : "autre_non_classe",
+    compte,
+    versionTexte: (VERSIONS_TEXTE_CONNUES as readonly string[]).includes(donnees.version_m1)
+      ? donnees.version_m1
+      : null,
+    utmCampagne: null,
+    commentaireRefHmac: null,
+    occurredAt: new Date(Math.floor(maintenant.getTime() / 1000) * 1000),
+    // Dérivée du jeton (usage unique). Lot S3 : JAMAIS de CRM au POST de la page — l'adresse n'est
+    // qu'une saisie ; l'événement part au CLIC du lien du guide (`transmettreClicGuide`), qui
+    // relit cette origine.
+    cleIdempotence: `page-${empreinte.slice(0, 40)}`,
+  };
+}
+
 interface ContexteSuite {
   readonly email: string;
-  readonly emailKey: string;
-  readonly empreinte: string;
-  readonly compte: string | null;
-  readonly postRef: string | null;
   readonly maintenant: Date;
 }
 
 async function suiteApresReponse(
-  e: EntreeConfirmation,
   donnees: DonneesJeton,
   demande: { id: string; downloadToken: string },
-  { email, emailKey, empreinte, compte, postRef, maintenant }: ContexteSuite,
+  { email, maintenant }: ContexteSuite,
 ): Promise<void> {
-  // 9. L'origine : historique v3 (+ CRM sauf compte hors format). Ne lève jamais.
-  const quand = new Date(Math.floor(maintenant.getTime() / 1000) * 1000);
-  await noterOrigineAvec(
-    () => ({
-      mot: donnees.mot,
-      reseau: RESEAU_DU_LIEN[donnees.reseau],
-      guide: donnees.guide,
-      postRef,
-      postUrl: null,
-      canal: null,
-      famille: "guide_reseau",
-      detail: donnees.guide === "guide-ia" ? "guide_ia" : "autre_non_classe",
-      compte,
-      versionTexte: (VERSIONS_TEXTE_CONNUES as readonly string[]).includes(donnees.version_m1)
-        ? donnees.version_m1
-        : null,
-      utmCampagne: null,
-      commentaireRefHmac: null,
-      occurredAt: quand,
-      // Dérivée du jeton (usage unique) : la reprise du même envoi retombe sur la même ligne.
-      cleIdempotence: `page-${empreinte.slice(0, 40)}`,
-    }),
-    email,
-    emailKey,
-    maintenant,
-    // Lot S3 : JAMAIS de CRM au POST de la page. L'adresse n'est qu'une saisie ; l'événement part
-    // au CLIC du lien du guide (`transmettreClicGuide`), qui relit cette origine.
-    false,
-  );
-
-  // 10. La preuve du consentement (ne lève jamais).
-  await recordConsentEvent({
-    email,
-    formRef: FORM_REF_PAGE_GUIDE,
-    consentVersion: versionPreuveCase(),
-    action: "consent",
-    occurredAt: maintenant,
-    ip: e.ip,
-    userAgent: e.userAgent,
-  });
-
-  // 11. L'e-mail du guide, sauf s'il est déjà parti à cette adresse depuis moins de 24 h.
+  // L'e-mail du guide, sauf s'il est déjà parti à cette adresse depuis moins de 24 h.
   //     Un échec de mise en file n'annule rien : la demande est écrite (et le consentement prouvé),
   //     `queued_at` reste vide et le rattrapage la reprend. La personne n'est pas renvoyée en erreur.
   let guide: string;
