@@ -2174,14 +2174,19 @@ describe("evaluerAlertes — signatures_en_attente", () => {
 // existence : c'est le niveau qui décide si Will réagit ou pas, et l'arbitrage
 // RC pro absente ≠ RC pro expirée est une décision métier (procédure § 4.2)
 // qu'une régression silencieuse effacerait.
+// Échéance « à jour » RELATIVE à l'horloge : avec une date absolue (2027-01-10),
+// le test est devenu rouge le 11/11/2026, quand elle est entrée dans la fenêtre
+// d'alerte de 60 jours. Un an devant reste hors de tout seuil.
+const ECHEANCE_LOINTAINE = new Date(Date.now() + 365 * 24 * 60 * 60 * 1000);
+
 describe("vigilance sous-traitance", () => {
   const CONFORME = {
     id: "st-1",
     nom: "Organisme X",
     contratSigneAt: new Date("2026-01-10"),
-    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProEcheanceAt: ECHEANCE_LOINTAINE,
     rcProAttestationUrl: "https://r2/rc.pdf",
-    prochaineVerifAt: new Date("2027-01-10"),
+    prochaineVerifAt: ECHEANCE_LOINTAINE,
   };
 
   beforeEach(() => {
@@ -2250,9 +2255,9 @@ describe("vigilance sous-traitance", () => {
       nom: "Dupont",
       prenom: "Marie",
       sousTraitantContratSigneAt: new Date("2026-01-10"),
-      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProEcheanceAt: ECHEANCE_LOINTAINE,
       rcProAttestationUrl: "https://r2/rc.pdf",
-      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+      sousTraitantProchaineVerifAt: ECHEANCE_LOINTAINE,
     };
 
     it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {
