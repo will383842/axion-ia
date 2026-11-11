@@ -752,6 +752,11 @@ jobs:
           # « Bundle size ». Les suppressions du lancement libèrent déjà ~15 GB.
           sudo apt-get clean || true
           df -h /
+      # Panne du 2026-11-11 : les machines ne résolvaient plus l'archive Ubuntu,
+      # `--with-deps` (9 paquets de polices) échouait après 12 min sur toutes les PR.
+      # Le script bascule sur un miroir de secours, ou échoue en moins d'une minute.
+      - name: Paquets Ubuntu — miroir de secours si l'archive est injoignable
+        run: bash scripts/ci/apt-resistant.sh
       - name: Install Playwright browsers (avant build pour chrome dep)
         run: pnpm exec playwright install --with-deps chromium
       # ENOSPC fix 2026-06-21 : la sortie SSG (~18k pages) + la copie `.next/standalone`
@@ -1692,7 +1697,11 @@ jobs:
       # Fabrique une vidéo de 31 s avec ffmpeg, installé ici faute de garantie sur l'image.
       - name: Vidéos du site — studio factice de bout en bout (Postgres réel)
         run: |
-          sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          # Miroir de secours si l'archive Ubuntu est injoignable (panne du 2026-11-11).
+          if ! command -v ffmpeg > /dev/null 2>&1; then
+            bash scripts/ci/apt-resistant.sh
+            sudo apt-get update -qq && sudo apt-get install -y -qq --no-install-recommends ffmpeg
+          fi
           pnpm test:integration tests/integration/videos/bout-en-bout
 
       # ── T0 — volumétrie (plan de tenue à la charge, § T0) ─────────────────
