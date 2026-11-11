@@ -193,6 +193,10 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   PARTAGES_SECRET: {
     exempt: "Clé HMAC interne des liens privés de fichiers. Aucun tiers ne la reçoit.",
   },
+  OPPOSITION_JETON_SECRET: {
+    exempt:
+      "Clé interne du jeton de désinscription opaque (op2, AES-GCM). Aucun tiers ne la reçoit.",
+  },
   SENTRY_DSN: { tiers: "Sentry" },
   SENTRY_AUTH_TOKEN: { tiers: "Sentry" },
   OPENAI_API_KEY: { tiers: "OpenAI," },
