@@ -21,6 +21,10 @@ import {
   type CommercialCommission,
 } from "@/content/pricing";
 import { getOfferById } from "@/content/offers-catalog";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
 
 export interface CommercialProductsEarningsProps {
   readonly isFr: boolean;
@@ -55,6 +59,9 @@ function percentExample(c: CommercialCommission, isFr: boolean): string | null {
 }
 
 export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsProps): ReactNode {
+  // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`). Le barème chiffré
+  // ci-dessous reste, derrière l'interrupteur ; au public, la règle sans chiffre.
+  if (!COMMISSIONS_PUBLIQUES_AFFICHEES) return <CommercialEarningsSansChiffre isFr={isFr} />;
   const loc = isFr ? "fr" : "en";
   // Les cartes « Formations IA » : les commissions de FORMATION seules — la conférence, au forfait
   // elle aussi, n'est pas une formation (INT-T53-A).
@@ -252,6 +259,58 @@ export function CommercialProductsEarnings({ isFr }: CommercialProductsEarningsP
         {isFr
           ? "Prix des prestations issus de notre grille publique unique — cliquez une carte pour voir le détail de chaque offre."
           : "Service prices come from our single public rate card — click a card to see each offer in detail."}
+      </p>
+    </Section>
+  );
+}
+
+/** R7 — « Ce que vous recommandez & ce que vous gagnez », sans aucun montant ni taux. */
+function CommercialEarningsSansChiffre({ isFr }: CommercialProductsEarningsProps): ReactNode {
+  const produits = [
+    {
+      href: "/formations",
+      Icon: GraduationCap,
+      fr: "Formations IA",
+      en: "AI trainings",
+    },
+    { href: "/audit", Icon: ClipboardCheck, fr: "Audits IA", en: "AI audits" },
+    { href: "/implementation", Icon: Workflow, fr: "Intégrations IA", en: "AI integrations" },
+    { href: "/un-a-un", Icon: UserRound, fr: "Accompagnement 1-to-1", en: "1-on-1 support" },
+  ] as const;
+  return (
+    <Section
+      tone="canvas"
+      eyebrow={isFr ? "Votre commission" : "Your commission"}
+      title={isFr ? COMMISSION_QUALITATIVE.titre : "A commission on every signed engagement"}
+      titleEm={isFr ? "détaillée au contrat." : "set out in your agreement."}
+      description={
+        isFr
+          ? "Chaque mission signée et payée par une entreprise que vous avez présentée ouvre droit à une commission, versée à l'encaissement. Son mode de calcul est détaillé dans votre contrat d'apporteur, remis avant tout engagement."
+          : "Every engagement signed and paid by a company you introduced entitles you to a commission, paid on collection. How it is calculated is set out in your referral agreement, provided before any commitment."
+      }
+    >
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        {produits.map(({ href, Icon, fr, en }) => (
+          <Link
+            key={href}
+            href={href as never}
+            className="group border-terracotta/25 bg-halo-warm hover:border-terracotta/50 flex items-center justify-between gap-3 rounded-2xl border-2 p-6 transition-colors"
+          >
+            <span className="text-fg flex items-center gap-3 text-sm font-semibold">
+              <Icon aria-hidden="true" className="text-terracotta h-5 w-5" />
+              {isFr ? fr : en}
+            </span>
+            <ArrowUpRight
+              aria-hidden="true"
+              className="text-fg-muted group-hover:text-terracotta h-4 w-4"
+            />
+          </Link>
+        ))}
+      </div>
+      <p className="text-fg-muted mt-6 text-sm">
+        {isFr
+          ? COMMISSION_QUALITATIVE.prudence
+          : "Nothing is guaranteed: the commission depends solely on engagements actually signed and paid."}
       </p>
     </Section>
   );
