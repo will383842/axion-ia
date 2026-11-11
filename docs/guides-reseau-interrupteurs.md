@@ -100,8 +100,18 @@ validation de la page, pas au clic du lien : la fenêtre de messagerie du résea
 - Secret : `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT`), **aucun repli** sur celui des vidéos ; absent ou < 32 caractères → `503 reception_non_configuree`. Seau de débit propre : `internal:confirmations-page-guide`.
 - Corps (4 Ko max, champ inconnu → `400`) : `{"schemaVersion":1,"limite":50}` (`limite` facultative, 1 à 50). Ni `GET`, ni chaîne de requête.
 - Réponse : `{"ok":true,"schemaVersion":1,"confirmations":[{"ref":"<empreinte du jeton>","valideLe":"<ISO 8601>"}]}` — rien d'autre (ni adresse, ni clé d'adresse, ni référence de conversation).
-- Une ligne réservée passe à `reserve` et ne ressort plus. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. Une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse perdue) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
-- **Aucune suppression.** Cette route ne fait que lire-réserver ; l'accusé de réception (`envoye`) viendra dans un lot suivant.
+- Une ligne réservée passe à `reserve` : elle ne ressort pas tant que sa réservation a moins de 10 min. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. **Reprise :** une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse ou accusé perdu) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. La reprise ne vise que `reserve` : une ligne `envoye` ou `hors_fenetre` n'est jamais reprise. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
+- **Aucune suppression.**
+
+### Accusé de réception (lot S4b) — `POST /api/interne/confirmations-page-guide/issue`
+
+Sans accusé, un merci déjà envoyé serait repris toutes les 10 min pendant 48 h. Même garde que la route de réservation (interrupteur vérifié en premier, `GUIDES_RESEAU_HMAC_SECRET` sans repli, corps 4 Ko, champ inconnu → `400`, ni `GET` ni chaîne de requête).
+
+- Corps : `{"schemaVersion":1,"issues":[{"ref":"<empreinte>","issue":"envoye"|"hors_fenetre"|"echec"}]}` — 1 à 50 issues.
+- `envoye` / `hors_fenetre` : `reserve` → statut demandé (mise à jour conditionnelle). Un accusé tardif, arrivé après une reprise (ligne revenue à `a_envoyer`), est aussi accepté : le merci est parti, il ne doit pas repartir.
+- `echec` : `reserve` → `a_envoyer` si la ligne est encore dans la fenêtre de 48 h, sinon `expire`.
+- Une ligne `envoye` ne change plus jamais (le rejeu est sans effet) ; `hors_fenetre`, `expire`, `ecarte` non plus. Une `ref` inconnue est ignorée sans erreur. Aucune suppression.
+- Réponse : `{"ok":true,"schemaVersion":1,"recus":<nombre d'issues reçues>}` — rien d'autre ; le journal ne porte que ce nombre.
 
 
 ## Interrupteurs du lot S3 et ordre d'allumage
