@@ -49,7 +49,7 @@ export const BEDARIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bédarieux ?",
-      a: "Oui, Axion-IA intervient à Bédarieux et dans tous les hauts cantons de l'Hérault (Lamalou-les-Bains, Hérépian, Le Bousquet-d'Orb). Nos consultants viennent depuis Montpellier ou Béziers.",
+      a: "Oui, Axion-IA intervient à Bédarieux et dans tous les hauts cantons de l'Hérault (Lamalou-les-Bains, Hérépian, Le Bousquet-d'Orb). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les acteurs du tourisme nature ?",

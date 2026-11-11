@@ -112,7 +112,12 @@ export function montantsInterdits(t: string): string[] {
     ...norme.matchAll(/\d[\d ]*(?:[.,]\d+)?\s*(?:€|euros?\b|EUR\b)/g),
     ...norme.matchAll(/€\s*\d[\d ,.]*/g),
   ].map((m) => m[0].trim());
-  return trouves.filter((m) => !/^1 ?490\b/.test(m) && !/€\s*1 ?490\b/.test(m));
+  // 2026-11-11 (Williams) : la commission de la Journée IA s'affiche (« 500 € HT, à titre indicatif »).
+  const permis = String(COMMISSION_FORMATION_PAR_JOURNEE_EUR);
+  const ok = (m: string) =>
+    new RegExp(`^(?:1 ?490|${permis})\\b`).test(m) ||
+    new RegExp(`€\\s*(?:1 ?490|${permis})\\b`).test(m);
+  return trouves.filter((m) => !ok(m));
 }
 
 /** Taux de commission (« 30 % de la facture », « 15 % sur l'automatisation »,
@@ -161,10 +166,11 @@ async function rendre(noeud: ReactNode): Promise<string> {
 
 describe("témoins de la garde (elle sait voir un montant)", () => {
   it("rougit sur la commission, laisse passer la Journée IA", () => {
-    expect(
-      montantsInterdits(`jusqu'à ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € par journée`),
-    ).toHaveLength(1);
-    expect(montantsInterdits("€500 per day")).toHaveLength(1);
+    expect(montantsInterdits(`${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € HT par journée`)).toEqual(
+      [],
+    );
+    expect(montantsInterdits("jusqu'à 700 € par journée")).toHaveLength(1);
+    expect(montantsInterdits("€900 per day")).toHaveLength(1);
     expect(montantsInterdits("Le plus petit audit démarre à 1 190 € HT")).toHaveLength(1);
     expect(montantsInterdits("La Journée IA : 1 490 € HT")).toEqual([]);
     expect(tauxInterdits("jusqu'à 30 % de la facture")).not.toEqual([]);

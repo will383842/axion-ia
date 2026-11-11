@@ -49,7 +49,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castelnau-d'Estrétefonds ?",
-      a: "Oui, Axion-IA intervient à Castelnau-d'Estrétefonds et sur toute la plateforme Eurocentre (Grenade, Saint-Jory, Fronton). Nos consultants se déplacent en 25 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Castelnau-d'Estrétefonds et sur toute la plateforme Eurocentre (Grenade, Saint-Jory, Fronton). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Castelnau-d'Estrétefonds ?",
@@ -65,7 +65,7 @@ export const CASTELNAU_D_ESTRETEFONDS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Castelnau-d'Estrétefonds ?",
-      a: "Nos consultants se déplacent à Castelnau-d'Estrétefonds (25 min A62 depuis Toulouse). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
   ],
 };

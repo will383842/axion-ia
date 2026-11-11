@@ -39,6 +39,10 @@ import {
   evaluerBarrieresRelecture,
   observerTutoiement,
 } from "@/server/content-gen/quality/barrieres-publication";
+import {
+  decisionFidelite,
+  modeControleFidelite,
+} from "@/server/content-gen/fact-check/fidelite-branchement";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
 import { readContentGenConfig } from "@/server/actions/content-gen/_settings";
 // Fix 2026-08-15 (audit e2e, C8) — lecture du kill switch en fail-SAFE : une
@@ -927,6 +931,51 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       corpus,
       ancreVille: Boolean(dbJob.anchorVilleSlug),
     });
+
+    // Vague 3 (11/11/2026) — contrôle de FIDÉLITÉ aux fiches (`CONTENT_FIDELITY_CHECK`, ÉTEINT
+    // par défaut ; « dry-run » = journal seul). Actif : envoie en RELECTURE, jamais de
+    // suppression ni de dépublication. Fail-open. Cf. docs/knowledge/CONTROLE-FIDELITE.md.
+    const modeFidelite = modeControleFidelite();
+    if (modeFidelite !== "eteint") {
+      try {
+        const decision = await decisionFidelite({
+          mode: modeFidelite,
+          kbEntryIds: output.kbEntryIds,
+          bodyHtml: output.bodyHtml,
+          lireFiches: async (ids) => {
+            const fichesKb = await prisma.knowledgeTranslation.findMany({
+              where: { entryId: { in: [...ids] }, locale: "fr" },
+              select: { entryId: true, title: true, body: true, bodyText: true },
+            });
+            return fichesKb.map((t) => ({
+              id: t.entryId,
+              titre: t.title,
+              texte: t.bodyText || t.body,
+            }));
+          },
+        });
+        if (decision.executee) {
+          const barriereFidelite = decision.barriere;
+          await logStep(
+            contentGenJobId,
+            "validation",
+            barriereFidelite
+              ? `Contrôle de fidélité (${modeFidelite === "actif" ? "actif" : "essai à blanc, sans effet"}) : ${barriereFidelite.libelle}`
+              : `Contrôle de fidélité (${modeFidelite}) : aucune affirmation à relire (${decision.fiches} fiches)`,
+            { mode: modeFidelite, fiches: decision.fiches, ...(barriereFidelite?.detail ?? {}) },
+          );
+          if (decision.aAjouter) barrieresRelecture.push(decision.aAjouter);
+        }
+      } catch (err) {
+        await logStep(
+          contentGenJobId,
+          "validation",
+          `Contrôle de fidélité ignoré (erreur de lecture des fiches) : ${err instanceof Error ? err.message : String(err)}`,
+          { mode: modeFidelite, erreur: true },
+        );
+      }
+    }
+
     const barrieresFail = barrieresRelecture.length > 0;
     if (barrieresFail) {
       await logStep(

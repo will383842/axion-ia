@@ -5,7 +5,7 @@
  * avant tout appel LLM. Hard gate :
  * - ≥ 50 entries publiées (KnowledgeEntry status='published', deletedAt=null)
  * - ≥ 60 % audience='public' (canonical ratio)
- * - lastPublishedAt < 90 jours
+ * - dernière écriture d'une fiche publiée < 180 jours (cf. HARD_GATE_MAX_DAYS_SINCE_LAST)
  *
  * Mode dégradé : `KB_BYPASS=true` env → bypass gate + banner rouge admin.
  */
@@ -17,6 +17,11 @@ export interface KbHealthSnapshot {
   readonly publicPublished: number;
   readonly canonicalRatio: number;
   readonly lastPublishedAt: Date | null;
+  /**
+   * Dernière écriture (horloge de la base, `updatedAt`) d'une fiche publiée. C'est
+   * elle, avec `lastPublishedAt`, qui mesure la fraîcheur du garde-fou.
+   */
+  readonly lastWrittenAt: Date | null;
   /** Fiches publiées dont la date de revue (`reviewDueAt`) est dépassée. Informatif : ne bloque rien. */
   readonly reviewOverdueCount: number;
   /** Part des fiches publiées à relire (0 à 1). Informatif : ne bloque rien. */
@@ -32,7 +37,27 @@ const HARD_GATE_MIN_CANONICAL_RATIO = 0.6;
 // (pas un flux) : à 90 j le gate coupait TOUT le content-gen chaque trimestre
 // sans re-seed. Le signal de revue reste à 90 j (`reviewDueAt` posé par
 // `seed-kb-facts.ts`) : l'admin voit la péremption bien avant le hard stop.
+//
+// ⚠️ À lire avec ce seuil : le blocage RETOMBE 180 jours après la dernière écriture, et
+// cette écriture vient d'un seed lancé À LA MAIN. Le signal mesure donc l'ACTIVITÉ
+// d'ingestion plus que la FRAÎCHEUR des faits : un seed qui republie des fiches périmées
+// remet le compteur à zéro sans qu'un fait ait été revérifié. La fraîcheur réelle se lit
+// dans `reviewOverdueCount` / `reviewOverdueRatio`.
+//
+// Vague 3 (11/11/2026) — « bombe » du 22/04/2027. Pour les fiches de faits,
+// `publishedAt` vaut `verifiedAt`, une date ÉCRITE DANS LE CODE : le fait le plus
+// récent porte « 2026-10-24 », donc le gate aurait coupé le content-gen le
+// 22/04/2027 même si la base était réécrite chaque jour. La fraîcheur se lit
+// désormais sur la plus récente de `publishedAt` et de `updatedAt` (posé par
+// l'horloge de la base à chaque écriture) : jamais plus tôt qu'avant, et plus
+// jamais sur une date figée.
 const HARD_GATE_MAX_DAYS_SINCE_LAST = 180;
+
+function plusRecente(a: Date | null, b: Date | null): Date | null {
+  if (!a) return b;
+  if (!b) return a;
+  return a.getTime() >= b.getTime() ? a : b;
+}
 
 export class KbNotReadyError extends Error {
   constructor(public readonly snapshot: KbHealthSnapshot) {
@@ -55,28 +80,36 @@ function isBypassActive(): boolean {
 export async function getKbHealth(): Promise<KbHealthSnapshot> {
   const bypassMode = isBypassActive();
   try {
-    const [publishedTotal, publicPublished, lastIngest, reviewOverdueCount] = await Promise.all([
-      prisma.knowledgeEntry.count({ where: { status: "published", deletedAt: null } }),
-      prisma.knowledgeEntry.count({
-        where: { status: "published", audience: "public", deletedAt: null },
-      }),
-      prisma.knowledgeEntry.findFirst({
-        where: { status: "published", deletedAt: null },
-        orderBy: { publishedAt: "desc" },
-        select: { publishedAt: true },
-      }),
-      // Fraîcheur : le volume seul ne dit pas si les faits sont périmés. Signal
-      // affiché, pas un blocage (le hard stop reste à 180 j, décision du 11/08).
-      prisma.knowledgeEntry.count({
-        where: { status: "published", deletedAt: null, reviewDueAt: { lt: new Date() } },
-      }),
-    ]);
+    const [publishedTotal, publicPublished, lastIngest, reviewOverdueCount, lastWrite] =
+      await Promise.all([
+        prisma.knowledgeEntry.count({ where: { status: "published", deletedAt: null } }),
+        prisma.knowledgeEntry.count({
+          where: { status: "published", audience: "public", deletedAt: null },
+        }),
+        prisma.knowledgeEntry.findFirst({
+          where: { status: "published", deletedAt: null },
+          orderBy: { publishedAt: "desc" },
+          select: { publishedAt: true },
+        }),
+        // Fraîcheur : le volume seul ne dit pas si les faits sont périmés. Signal
+        // affiché, pas un blocage (le hard stop reste à 180 j, décision du 11/08).
+        prisma.knowledgeEntry.count({
+          where: { status: "published", deletedAt: null, reviewDueAt: { lt: new Date() } },
+        }),
+        prisma.knowledgeEntry.findFirst({
+          where: { status: "published", deletedAt: null },
+          orderBy: { updatedAt: "desc" },
+          select: { updatedAt: true },
+        }),
+      ]);
     const reviewOverdueRatio = publishedTotal > 0 ? reviewOverdueCount / publishedTotal : 0;
 
     const canonicalRatio = publishedTotal > 0 ? publicPublished / publishedTotal : 0;
     const lastPublishedAt = lastIngest?.publishedAt ?? null;
-    const daysSinceLast = lastPublishedAt
-      ? (Date.now() - lastPublishedAt.getTime()) / 86_400_000
+    const lastWrittenAt = lastWrite?.updatedAt ?? null;
+    const derniereActivite = plusRecente(lastPublishedAt, lastWrittenAt);
+    const daysSinceLast = derniereActivite
+      ? (Date.now() - derniereActivite.getTime()) / 86_400_000
       : Number.POSITIVE_INFINITY;
 
     const healthy =
@@ -97,7 +130,9 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
         );
       }
       if (daysSinceLast >= HARD_GATE_MAX_DAYS_SINCE_LAST) {
-        reasons.push(`lastPublishedAt > ${HARD_GATE_MAX_DAYS_SINCE_LAST}j`);
+        reasons.push(
+          `dernière activité (publication ou écriture) > ${HARD_GATE_MAX_DAYS_SINCE_LAST}j`,
+        );
       }
       reason = reasons.join(" + ");
     }
@@ -107,6 +142,7 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
       publicPublished,
       canonicalRatio,
       lastPublishedAt,
+      lastWrittenAt,
       reviewOverdueCount,
       reviewOverdueRatio,
       healthy,
@@ -134,6 +170,7 @@ export async function getKbHealth(): Promise<KbHealthSnapshot> {
         publicPublished: 0,
         canonicalRatio: 0,
         lastPublishedAt: null,
+        lastWrittenAt: null,
         reviewOverdueCount: 0,
         reviewOverdueRatio: 0,
         healthy: true, // accept en mode dégradé

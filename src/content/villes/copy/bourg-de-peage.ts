@@ -65,7 +65,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
     },
   ],
 };

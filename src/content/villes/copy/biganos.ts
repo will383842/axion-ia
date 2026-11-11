@@ -49,7 +49,7 @@ export const BIGANOS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biganos et au Bassin d'Arcachon ?",
-      a: "Oui, Axion-IA intervient à Biganos et dans tout le Bassin d'Arcachon (Le Teich, Mios, Audenge, Arcachon). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min).",
+      a: "Oui, Axion-IA intervient à Biganos et dans tout le Bassin d'Arcachon (Le Teich, Mios, Audenge, Arcachon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Biganos  ?",
