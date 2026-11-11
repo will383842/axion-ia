@@ -38,3 +38,26 @@ describe("SYNCHRO_CRM_V3 et _NEWSLETTER_OPTIN sont basculables (les-deux) et doc
     expect(doc).toContain("GUIDES_RESEAU_LIEN_SECRET");
   });
 });
+
+describe("CONFIRMATIONS_PAGE_GUIDE_ENABLED est basculable (site, true|false) et documenté (fiche S4-c)", () => {
+  const wf = lire(".github/workflows/coolify-drapeau.yml");
+  const doc = lire("docs/guides-reseau-interrupteurs.md");
+  it("liste fermée du workflow : la clé y est, une seule fois", () => {
+    expect(wf.match(/- "CONFIRMATIONS_PAGE_GUIDE_ENABLED"/g)).toHaveLength(1);
+  });
+  it("cible « site » seulement", () => {
+    expect(wf).toContain(
+      '[ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]',
+    );
+  });
+  it("valeurs : true|false seulement (jamais « essai », jamais une valeur libre)", () => {
+    expect(wf).not.toMatch(/\^\([^)]*CONFIRMATIONS_PAGE_GUIDE[^)]*essai/);
+  });
+  it("aucun secret dans le workflow : le drapeau n'est pas un secret et rien ne le laisse penser", () => {
+    expect(wf).not.toMatch(/GUIDES_RESEAU_(HMAC|LIEN)_SECRET/);
+  });
+  it("la documentation ne dit plus « hors workflow » pour cette clé et donne la commande", () => {
+    expect(doc).toContain("-f cle=CONFIRMATIONS_PAGE_GUIDE_ENABLED -f valeur=true -f cible=site");
+    expect(doc).not.toMatch(/CONFIRMATIONS_PAGE_GUIDE_ENABLED`[^\n]*hors workflow/);
+  });
+});

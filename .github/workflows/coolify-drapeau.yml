@@ -81,6 +81,10 @@ on:
           # Page « Recevoir le guide » (lot S2) : `/guide-reseau?j=…` (404) et sa route d'envoi (503) tant
           # que la valeur n'est pas exactement `true`. Cible : site seulement. Valeurs : true | false.
           - "PAGE_GUIDE_RESEAU_ENABLED"
+          # « Merci » de la page « Recevoir le guide » (lots S4a/S4b) : `POST /api/interne/confirmations-page-guide`
+          # et son accusé `/issue` (503 tant que la valeur n'est pas exactement `true`). Cible : site seulement.
+          # Valeurs : true | false. ÉTEINT par défaut. Aucun secret ici (docs/guides-reseau-interrupteurs.md).
+          - "CONFIRMATIONS_PAGE_GUIDE_ENABLED"
           # Synchro CRM v3 de la page « Recevoir le guide » (lot S3, PR #1919). Cible : les-deux — le
           # site émet l'événement, le rattrapage tourne dans le worker et doit lire le même format.
           # Valeurs : true | false. ÉTEINTS par défaut ; ne jamais les allumer sans l'ordre du guide
@@ -152,6 +156,9 @@ jobs:
           set -euo pipefail
           # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
           if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then

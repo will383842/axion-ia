@@ -96,7 +96,8 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
 après la validation de la page « Recevoir le guide » (`merci_statut = 'a_envoyer'`). Le merci part dès la
 validation de la page, pas au clic du lien : la fenêtre de messagerie du réseau est courte.
 
-- **Éteinte par défaut.** Vraie seulement si la valeur est exactement `true`, lue à la requête. Éteinte : `503 reception_eteinte`, rien n'est lu ni écrit.
+- **Éteinte par défaut.** Vraie seulement si la valeur est exactement `true`, lue à la requête. Éteinte : `503 reception_eteinte`, rien n'est lu ni écrit. Elle couvre aussi la route d'accusé (lot S4b).
+- Pose (cible `site` seulement, `true` ou `false` seulement, aucun secret dans le workflow) : `gh workflow run coolify-drapeau.yml -f cle=CONFIRMATIONS_PAGE_GUIDE_ENABLED -f valeur=true -f cible=site -f redeploy=true`.
 - Secret : `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT`), **aucun repli** sur celui des vidéos ; absent ou < 32 caractères → `503 reception_non_configuree`. Seau de débit propre : `internal:confirmations-page-guide`.
 - Corps (4 Ko max, champ inconnu → `400`) : `{"schemaVersion":1,"limite":50}` (`limite` facultative, 1 à 50). Ni `GET`, ni chaîne de requête.
 - Réponse : `{"ok":true,"schemaVersion":1,"confirmations":[{"ref":"<empreinte du jeton>","valideLe":"<ISO 8601>"}]}` — rien d'autre (ni adresse, ni clé d'adresse, ni référence de conversation).
@@ -109,7 +110,7 @@ Sans accusé, un merci déjà envoyé serait repris toutes les 10 min pendant 48
 
 - Corps : `{"schemaVersion":1,"issues":[{"ref":"<empreinte>","issue":"envoye"|"hors_fenetre"|"echec"}]}` — 1 à 50 issues.
 - `envoye` / `hors_fenetre` : `reserve` → statut demandé (mise à jour conditionnelle). Un accusé tardif, arrivé après une reprise (ligne revenue à `a_envoyer`), est aussi accepté : le merci est parti, il ne doit pas repartir.
-- `echec` : `reserve` → `a_envoyer` si la ligne est encore dans la fenêtre de 48 h, sinon `expire`.
+- `echec` : `reserve` → `a_envoyer` si la ligne est encore dans la fenêtre de 48 h, sinon `expire` — seulement si la réservation date de plus de 10 min (un `echec` retardé d'une ancienne réservation ne doit pas annuler une réservation récente : deux « merci » partiraient).
 - Une ligne `envoye` ne change plus jamais (le rejeu est sans effet) ; `hors_fenetre`, `expire`, `ecarte` non plus. Une `ref` inconnue est ignorée sans erreur. Aucune suppression.
 - Réponse : `{"ok":true,"schemaVersion":1,"recus":<nombre d'issues reçues>}` — rien d'autre ; le journal ne porte que ce nombre.
 
@@ -128,7 +129,7 @@ Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-d
 
 1. CRM : `ORIGINES_V3_ENABLED` et le drapeau `crm.ingest.personnes_enabled` (côté CRM).
 2. `SYNCHRO_CRM_V3`.
-3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — liste fermée du workflow `coolify-drapeau.yml` (cible `site`, `true`/`false`).
 4. `PAGE_GUIDE_RESEAU_ENABLED`.
 5. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
 
@@ -149,7 +150,7 @@ mécanisme de secrets. Distinct de `GUIDES_RESEAU_HMAC_SECRET`.
 
 1. `LIEN_PAGE_GUIDE_ENABLED` — réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow (aucune lecture sur `main` ni dans une PR ouverte au 11/11/2026).
 2. `PAGE_GUIDE_RESEAU_ENABLED`.
-3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — livrée par la PR n° 1938 (lecture du drapeau, route éteinte) ; réglée dans Coolify (portée RUN) par la session de mise en ligne, hors workflow.
+3. `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — liste fermée du workflow `coolify-drapeau.yml` (cible `site`, `true`/`false`).
 4. `SYNCHRO_CRM_V3` (et `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` s'il avait été allumé), cible `les-deux`.
 5. Côté CRM : `crm.ingest.personnes_enabled`, puis `ORIGINES_V3_ENABLED`.
 
