@@ -12,10 +12,17 @@
 import { createHash } from "node:crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
-import { eventIdDemandeGuide } from "@/server/crm-sync/event-id";
+import {
+  eventIdDemandeGuide,
+  eventIdDeterministe as eventIdDuNom,
+} from "@/server/crm-sync/event-id";
 import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import type { CrmSyncEvent } from "@/server/crm-sync/types";
-import { MAX_ORIGINES_PAR_CHARGE, type OrigineAEcrire } from "./origines";
+import { prisma } from "@/lib/prisma";
+import { estOpposee } from "@/server/email/opposition";
+import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "@/server/crm-sync/config";
+import { mettreEnFileCrm } from "@/server/crm-sync/enqueue";
+import { lireOriginesActives, MAX_ORIGINES_PAR_CHARGE, type OrigineAEcrire } from "./origines";
 
 export { MAX_ORIGINES_PAR_CHARGE };
 export const VERSION_SCHEMA_CRM_V3 = 3;
@@ -307,4 +314,116 @@ export function evenementConversationV3(
       payload: { ...e.payloadBase, ...c.charge, verifie: true },
     },
   };
+}
+
+// ── Lot guide réseau 4 (O4) : les origines SUIVANTES, après le premier clic ─────────────────────
+
+/** Interrupteur des origines suivantes (O4-O5) : exactement `"true"`, éteint par défaut, lu à l'exécution. */
+export function originesSuivantesActives(): boolean {
+  return process.env.SYNCHRO_CRM_V3_ORIGINES_SUIVANTES === "true";
+}
+
+export type IssueOriginesSuivantes =
+  "eteinte" | "exclue" | "pas_clique" | "opposee" | "rien" | "transmise" | "echec";
+
+class RienEcritOrigines extends Error {
+  constructor() {
+    super("rien écrit");
+    this.name = "RienEcritOrigines";
+  }
+}
+
+function journaliser(resultat: IssueOriginesSuivantes, n: number): void {
+  // Agrégat seulement : jamais d'adresse, d'empreinte, de post_ref ni de clé de dédoublonnage.
+  console.warn(JSON.stringify({ event: "guides_reseau_origines_crm", resultat, n }));
+}
+
+/**
+ * Transmet au CRM les origines d'une personne pour un guide, en charge CUMULATIVE (les 20 actives
+ * les plus récentes), APRÈS son premier clic seulement (D1 du lot S3). Ne lève jamais.
+ *
+ * Écriture de l'outbox et passage `crm_statut = 'transmise'` dans UNE transaction, sous le verrou
+ * consultatif de la personne, avec l'opposition relue DANS la transaction : un stop l'emporte
+ * (origines `ecartee`, jamais supprimées). `event_id` déterministe de l'origine déclenchante :
+ * rejouer = même identifiant = pas de doublon.
+ */
+export async function transmettreOriginesSuivantes(args: {
+  email: string;
+  emailKey: string;
+  guide: string;
+  /** Clé de dédoublonnage de l'origine déclenchante ; défaut : la plus récente encore en attente. */
+  declenchante?: string;
+}): Promise<IssueOriginesSuivantes> {
+  if (
+    !synchroCrmV3Active() ||
+    !originesSuivantesActives() ||
+    !isCrmSyncEnabled() ||
+    !isCrmSyncGuideEnabled()
+  ) {
+    return "eteinte";
+  }
+  try {
+    if (estExclueDuCrm(args.email)) {
+      journaliser("exclue", 0);
+      return "exclue";
+    }
+    const personKey = hashEmailForLookup(args.email);
+    if (!personKey) return "echec";
+    // La personne a-t-elle déjà cliqué ? Sinon la charge partira au premier clic (jamais avant).
+    const demande = await prisma.guideRequest.findUnique({
+      where: { emailKey_aimant: { emailKey: args.emailKey, aimant: args.guide } },
+      select: { id: true, firstClickAt: true, crmEmittedAt: true },
+    });
+    if (demande === null || demande.firstClickAt === null || demande.crmEmittedAt === null) {
+      journaliser("pas_clique", 0);
+      return "pas_clique";
+    }
+    const maintenant = new Date();
+    const issue = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + args.emailKey}))`;
+      if (await estOpposee(args.email, tx)) {
+        const r = await tx.guideReseauOrigine.updateMany({
+          where: { emailKey: args.emailKey, archiveeLe: null, crmStatut: null },
+          data: { crmStatut: "ecartee", crmTraiteeLe: maintenant },
+        });
+        return { issue: "opposee" as const, n: r.count, id: null };
+      }
+      const lues = await lireOriginesActives(tx, args.emailKey, args.guide);
+      const enAttente = lues.filter((o) => o.crmStatut === null);
+      if (enAttente.length === 0) return { issue: "rien" as const, n: 0, id: null };
+      const declenchante =
+        enAttente.find((o) => o.cleDedoublonnage === args.declenchante) ?? enAttente[0]!;
+      const c = chargeCrmV3(lues.map((o) => ({ ...o, cleIdempotence: "" })));
+      if (!c.ok) throw new RienEcritOrigines();
+      const cle = declenchante.cleDedoublonnage;
+      const event = {
+        schema_version: VERSION_SCHEMA_CRM_V3,
+        event_id: eventIdDuNom(`origine-v3:o-${cle}`),
+        event_type: "lead_magnet_requested",
+        occurred_at: maintenant.toISOString(),
+        subject_ref: `site:guide-reseau:o-${cle.slice(0, 40)}`,
+        person: { person_key: personKey, email: args.email },
+        payload: c.charge,
+      } as unknown as CrmSyncEvent;
+      const id = await enqueueCrmSyncEvent(event, { tx, mettreEnFile: false });
+      if (id === null) throw new RienEcritOrigines();
+      const r = await tx.guideReseauOrigine.updateMany({
+        where: { id: { in: lues.map((o) => o.id) }, crmStatut: null },
+        data: { crmStatut: "transmise", crmTraiteeLe: maintenant },
+      });
+      return { issue: "transmise" as const, n: r.count, id };
+    });
+    if (issue.id !== null) mettreEnFileCrm(issue.id);
+    journaliser(issue.issue, issue.n);
+    return issue.issue;
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        event: "guides_reseau_origines_crm",
+        resultat: "echec",
+        erreur: e instanceof Error ? e.name : "erreur",
+      }),
+    );
+    return "echec";
+  }
 }

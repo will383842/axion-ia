@@ -32,11 +32,12 @@ import { LIMITE_JOUR_PAR_PERSONNE, LIMITE_JOUR_PAR_POST } from "./config";
 import * as Sentry from "@sentry/nextjs";
 import {
   CleHmacManquanteError,
+  cleDedoublonnage,
   construireOrigine,
   enregistrerOrigine,
   type OrigineAEcrire,
 } from "./origines";
-import { transmettreOriginesV3 } from "./synchro-v3";
+import { transmettreOriginesSuivantes } from "./synchro-v3";
 
 export type ResultatTraitement =
   | { readonly ok: false; readonly erreur: "adresse_refusee" | "trop_de_requetes" }
@@ -149,34 +150,32 @@ export async function noterOrigineV3(
   emailKey: string,
   quand: Date,
 ): Promise<void> {
-  // Lot S3 (D1) : rien au CRM à la réception ; l'événement part au clic du lien.
-  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey, quand, false);
+  // Lot S3 (D1) : rien au CRM à la réception d'une PREMIÈRE demande ; l'événement part au clic du
+  // lien. Lot guide réseau 4 : une origine suivante d'une personne qui a déjà cliqué part tout de
+  // suite, en charge cumulative (interrupteur dédié, éteint par défaut).
+  await noterOrigineAvec(() => construireOrigine(d, quand), d.email, emailKey);
 }
 
 /**
  * Cœur de `noterOrigineV3`, partagé avec la page « Recevoir le guide » (lot S2) : écrit l'origine
- * dans `guide_reseau_origines` puis, sauf `versLeCrm: false`, la met en file vers le CRM.
- * Ne lève jamais. La construction de l'origine reste DANS le `try` (clé HMAC absente → alerte).
+ * dans `guide_reseau_origines` puis tente la transmission des origines suivantes (jamais avant un
+ * clic : `transmettreOriginesSuivantes` le vérifie). Ne lève jamais. La construction de l'origine
+ * reste DANS le `try` (clé HMAC absente → alerte).
  */
 export async function noterOrigineAvec(
   construire: () => OrigineAEcrire,
   email: string,
   emailKey: string,
-  quand: Date,
-  // Éteint par défaut (lot S3, D1) : aucun appelant n'envoie plus l'origine au CRM avant le clic.
-  versLeCrm = false,
 ): Promise<void> {
   try {
     const origine = construire();
     await enregistrerOrigine(emailKey, origine);
-    if (versLeCrm) {
-      await transmettreOriginesV3({
-        email,
-        cleIdempotence: origine.cleIdempotence,
-        origines: [origine],
-        quand,
-      });
-    }
+    await transmettreOriginesSuivantes({
+      email,
+      emailKey,
+      guide: origine.guide,
+      declenchante: cleDedoublonnage(origine),
+    });
   } catch (e) {
     // Clé HMAC absente en production : ce n'est pas un aléa, c'est une panne de configuration.
     // JOURNAL + ALERTE (Sentry, sans donnée de personne) : jamais avalée en silence.
@@ -252,7 +251,8 @@ export async function traiterDemande(
   const quand = occurredAtValide(d.occurredAt, maintenant);
   const demande = await retrouverOuCreerDemande(d, emailKey, maintenant);
 
-  if (d.schemaVersion === 3) await noterOrigineV3(d, emailKey, quand);
+  // D4 (lot guide réseau 4) : une demande v1 laisse aussi une origine minimale (mot, réseau, guide).
+  await noterOrigineV3(d, emailKey, quand);
 
   await recordConsentEvent({
     email: d.email,
