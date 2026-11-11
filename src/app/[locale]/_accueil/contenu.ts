@@ -102,7 +102,7 @@ export const CONTENU = {
       garantieDebut: GARANTIE_PHRASE.slice(0, POINT_DE_COUPURE),
       garantieEngagement: GARANTIE_PHRASE.slice(POINT_DE_COUPURE),
       condition: CONDITION_GARANTIE,
-      lienDetail: "Voir la Journée IA en détail",
+      lienDetail: "Voir le déroulé de l’audit et de la formation",
       decideDebut: "Déjà décidé ?",
       decideLien: "Fixons la date ensemble",
       mention: MENTION_DECLARATION_OF,
@@ -127,7 +127,7 @@ export const CONTENU = {
   enBref: {
     titre: "En bref",
     texte: EN_BREF_ACCUEIL,
-    lienJournee: "La Journée IA en détail",
+    lienJournee: "Audit et formation IA en une journée : la Journée IA",
     lienDiagnostic: "Réserver le diagnostic gratuit",
   },
 
