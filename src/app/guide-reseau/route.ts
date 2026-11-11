@@ -72,6 +72,7 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 <p style="display:flex;gap:.75rem;align-items:flex-start"><input id="accord" name="accord" type="checkbox" value="oui" required style="width:1.25rem;height:1.25rem;margin-top:.2rem;flex:none"><label for="accord">${echapper(T.case)}</label></p>
 <p style="font-size:.875rem;opacity:.8">${echapper(T.information)} <a href="${echapper(URL_CONFIDENTIALITE)}">${echapper(T.lienConfidentialite)}</a>.</p>
 <p><button type="submit" style="${BOUTON}">${echapper(T.envoyer)}</button></p>
-</form>`;
+</form>
+<p>${echapper(T.sansCaseDebut)} <a href="${echapper(URL_FORMULAIRE_GUIDE)}">${echapper(T.sansCaseLien)}</a>.</p>`;
   return pageStatique(T.titre, corps, 200);
 }

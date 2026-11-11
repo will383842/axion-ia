@@ -16,6 +16,10 @@ export const TEXTES_PAGE_GUIDE = {
     "Vos données servent à vous envoyer le guide et à vous écrire au nom d'Axion-IA. Comment elles sont traitées :",
   lienConfidentialite: "politique de confidentialité",
   envoyer: "Recevoir le guide",
+  // Chemin sans case (avis RGPD) : texte validé par Williams, à recopier tel quel.
+  sansCaseDebut:
+    "Vous pouvez aussi recevoir le guide sans cocher cette case : écrivez simplement votre adresse e-mail dans la conversation, ou utilisez le",
+  sansCaseLien: "formulaire du guide",
   merciTitre: "Merci, c'est noté",
   merciCorps:
     "Si l'adresse saisie peut recevoir des e-mails, le guide arrive dans quelques minutes. Pensez à regarder vos courriers indésirables.",
