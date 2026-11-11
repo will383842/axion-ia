@@ -57,7 +57,7 @@ a{color:#b23f16}
 a.bouton{color:#fff}
 a.bouton.secondaire{color:#b23f16}
 label{display:block;font-weight:600;margin:14px 0 6px}
-input[type=date],input[type=file]{font:inherit;padding:10px;border:1px solid #e8e6dc;border-radius:10px;background:#fff;max-width:100%}
+input[type=date],input[type=file]{font:inherit;padding:10px;border:1px solid #5e5d59;border-radius:10px;background:#fff;max-width:100%}
 .erreur{color:#8f3412;font-weight:600}
 form{display:inline}
 form.bloc{display:block}
