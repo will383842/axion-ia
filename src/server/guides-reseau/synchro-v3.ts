@@ -15,9 +15,9 @@ import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
 import { eventIdDemandeGuide } from "@/server/crm-sync/event-id";
 import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import type { CrmSyncEvent } from "@/server/crm-sync/types";
-import type { OrigineAEcrire } from "./origines";
+import { MAX_ORIGINES_PAR_CHARGE, type OrigineAEcrire } from "./origines";
 
-export const MAX_ORIGINES_PAR_CHARGE = 20;
+export { MAX_ORIGINES_PAR_CHARGE };
 export const VERSION_SCHEMA_CRM_V3 = 3;
 
 export function synchroCrmV3Active(): boolean {
@@ -165,6 +165,15 @@ const POST_REF_CRM = /^[A-Za-z0-9_-]{8,80}$/;
 const VERSION_TEXTE_CRM = /^[A-Za-z0-9._-]{3,64}$/;
 const PRENOM_MAX_CRM = 50;
 
+function originesAuFormatCrm(origines: readonly OrigineAEcrire[]): boolean {
+  return origines.every(
+    (o) =>
+      (o.compte === null || COMPTE_CRM.test(o.compte)) &&
+      (o.postRef === null || POST_REF_CRM.test(o.postRef)) &&
+      (o.versionTexte === null || VERSION_TEXTE_CRM.test(o.versionTexte)),
+  );
+}
+
 export interface EntreeEvenementPageGuide {
   readonly demandeId: string;
   readonly email: string;
@@ -207,15 +216,7 @@ export function evenementPageGuideV3(
   if (prenom.length === 0 || [...prenom].length > PRENOM_MAX_CRM) {
     return { ok: false, erreur: "prenom" };
   }
-  for (const o of e.origines) {
-    if (o.compte !== null && !COMPTE_CRM.test(o.compte))
-      return { ok: false, erreur: "origine_invalide" };
-    if (o.postRef !== null && !POST_REF_CRM.test(o.postRef))
-      return { ok: false, erreur: "origine_invalide" };
-    if (o.versionTexte !== null && !VERSION_TEXTE_CRM.test(o.versionTexte)) {
-      return { ok: false, erreur: "origine_invalide" };
-    }
-  }
+  if (!originesAuFormatCrm(e.origines)) return { ok: false, erreur: "origine_invalide" };
   const c = chargeCrmV3(
     e.origines.map((o) => ({ ...o, canal: o.canal ?? CANAL_PAR_DEFAUT_PAGE_GUIDE })),
   );
@@ -239,6 +240,59 @@ export function evenementPageGuideV3(
           version: e.versionConsentement,
         },
       ],
+      guides_recus: [{ guide: e.guide, date: e.clicLe.toISOString() }],
+      ...(e.consent
+        ? {
+            consent: {
+              ...(e.consent.version ? { version: e.consent.version } : {}),
+              ...(e.consent.at ? { at: e.consent.at.toISOString() } : {}),
+            },
+          }
+        : {}),
+      payload: { ...e.payloadBase, ...c.charge, verifie: true },
+    },
+  };
+}
+
+// ── Lot guide réseau 4 : la demande venue de la CONVERSATION (aucune case cochée) ───────────────
+
+export interface EntreeEvenementConversation {
+  readonly demandeId: string;
+  readonly email: string;
+  /** Instant du clic humain (`first_click_at`). */
+  readonly clicLe: Date;
+  readonly guide: string;
+  readonly origines: readonly OrigineAEcrire[];
+  readonly consent?: EntreeEvenementPageGuide["consent"];
+  readonly payloadBase?: EntreeEvenementPageGuide["payloadBase"];
+  /** Source de la demande ; défaut `guide-reseau`. Une demande née du formulaire garde la sienne. */
+  readonly sourceSlug?: string;
+}
+
+/**
+ * Événement du clic pour une demande SANS page : l'origine complète, mais NI `consentements` NI
+ * `first_name` (rien n'a été coché ni saisi : information M1 seulement). Fonction PURE.
+ * `event_id` = celui de la demande, comme `evenementPageGuideV3`.
+ */
+export function evenementConversationV3(
+  e: EntreeEvenementConversation,
+): { ok: true; evenement: EvenementPageGuideV3 } | { ok: false; erreur: ErreurEvenementPageGuide } {
+  const email = e.email.trim();
+  const personKey = email ? hashEmailForLookup(email) : null;
+  if (!email || !personKey) return { ok: false, erreur: "adresse" };
+  if (!originesAuFormatCrm(e.origines)) return { ok: false, erreur: "origine_invalide" };
+  const c = chargeCrmV3(e.origines);
+  if (!c.ok) return { ok: false, erreur: c.erreur };
+  return {
+    ok: true,
+    evenement: {
+      schema_version: VERSION_SCHEMA_CRM_V3,
+      event_id: eventIdDemandeGuide(e.demandeId),
+      event_type: "lead_magnet_requested",
+      occurred_at: e.clicLe.toISOString(),
+      source_slug: e.sourceSlug ?? SOURCE_SLUG_GUIDE_RESEAU,
+      subject_ref: `site:guide_request:${e.demandeId}`,
+      person: { person_key: personKey, email },
       guides_recus: [{ guide: e.guide, date: e.clicLe.toISOString() }],
       ...(e.consent
         ? {
