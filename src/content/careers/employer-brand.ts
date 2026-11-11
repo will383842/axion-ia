@@ -69,9 +69,9 @@ export const EMPLOYER_BRAND = {
   hqTitleFr: "Où on bosse 🏔️",
   hqTitleEn: "Where we work 🏔️",
   hqTextFr:
-    "Notre siège et nos bureaux sont à Grenoble (Isère). Postes en présentiel ici et autour (Voiron, Voreppe, Crolles) ; beaucoup en remote ou hybride, partout en France. Et nos formateurs interviennent par secteur, partout en France.",
+    "Équipe répartie, interventions partout en France, sur place ou à distance. Beaucoup de postes en remote ou hybride. Et nos formateurs interviennent par secteur, partout en France.",
   hqTextEn:
-    "Our head office and offices are in Grenoble (Isère). On-site roles here and nearby (Voiron, Voreppe, Crolles); many remote or hybrid, anywhere in France. And our trainers work by sector, across France.",
+    "A distributed team, working across France, on site or remotely. Many roles are remote or hybrid. And our trainers work by sector, across France.",
 
   /** Version condensée (encart sur chaque page offre). */
   shortAboutFr:
