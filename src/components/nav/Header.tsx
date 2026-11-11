@@ -32,7 +32,10 @@ import { AI_ACT_NAV, PRESTATIONS_NAV, type IconePrestation } from "./prestations
 // - La Journée IA, offre essentielle, est mise en avant (pastille entourée + point
 //   terracotta) : « il faudrait qu'elle soit bien visible, qu'elle ressorte ».
 // - Son prix est le SEUL montant de l'en-tête, lu dans `pricing.ts` (jamais en dur).
-// - Fond ivoire (il était terracotta plein, contraire à la palette [d1]).
+// - Barre TERRACOTTA, comme avant la refonte : Williams a demandé que l'en-tête
+//   reste orange, et surtout pas blanc (correctif du 2026-11-11, après la PR 1916). Seul
+//   le méga-menu (panneau déroulant) et le tiroir mobile restent sur fond clair.
+//   Contrastes mesurés : `scripts/check-contrast.ts`, section « en-tête terracotta ».
 // - Interaction minimale côté client : `NavLink` (onglet actif), le méga-menu
 //   (`HeaderPrestationsMenu`, bouton de divulgation) et le tiroir (`MobileNav`,
 //   Radix). Tout le contenu est rendu ici, côté serveur.
@@ -77,18 +80,38 @@ export async function Header() {
   const ecrireLabel = isFr ? "Nous écrire" : "Email us";
   const tagline = isFr ? "Partenaire IA des PME et TPE" : "AI partner for SMEs";
 
-  // Classes partagées des deux boutons.
+  // Anneau de focus de tout ce qui est posé SUR la barre terracotta : ivoire, décalé
+  // sur terracotta (`mocha-fg` sur terracotta : 5,24:1).
+  const focusBarre =
+    "focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+
+  // Boutons de la BARRE (fond terracotta).
+  // « Réserver un appel » : bleu plein, comme avant la refonte.
+  const btnBarrePrimaire = `bg-primary text-primary-fg hover:bg-primary-hover ${focusBarre} inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap shadow-subtle transition-colors`;
+  // Loupe et « Nous écrire » : pastille ivoire, texte terracotta (5,81:1).
+  const pastilleIvoire = `bg-paper text-terracotta shadow-subtle hover:shadow-card ${focusBarre} inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-shadow`;
+
+  // Boutons du TIROIR mobile (fond clair).
   const btnPrimaire =
     "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex items-center justify-center gap-2 rounded-xl font-semibold whitespace-nowrap shadow-subtle transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
   const btnSecondaire =
     "border-fg-muted text-fg hover:bg-sand focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex items-center justify-center gap-2 rounded-xl border font-semibold whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
 
   return (
-    // `data-tone="terracotta"` n'est PLUS une couleur : c'est la SENTINELLE que lisent
-    // `tests/e2e/a11y.spec.ts` (`header[data-tone]` prouve qu'on est sur une page du
-    // site et non sur une interstitielle) et `gate-a11y-cablage.spec.ts`. On la garde
-    // telle quelle pour ne pas toucher à ces deux gardes dans cette PR.
-    <header data-tone="terracotta" className="bg-bg border-border sticky top-0 z-40 border-b">
+    // `data-tone="terracotta"` dit la couleur RÉELLE de la barre. C'est aussi la
+    // sentinelle que lisent `tests/e2e/a11y.spec.ts` (`header[data-tone]` prouve qu'on
+    // est sur une page du site et non sur une interstitielle) et
+    // `gate-a11y-cablage.spec.ts` ; `entete-terracotta.spec.tsx` vérifie qu'elle
+    // concorde avec `bg-terracotta`.
+    <header
+      data-tone="terracotta"
+      className="bg-terracotta border-terracotta-deep text-mocha-fg supports-[backdrop-filter]:bg-terracotta/95 sticky top-0 z-40 border-b backdrop-blur-md"
+    >
+      {/* Filet bas, comme l'ancien en-tête. */}
+      <span
+        aria-hidden="true"
+        className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
+      />
       {/* `h-[var(--header-h)]` : la barre latérale des espaces connectés se cale sur
           ce jeton (`EspaceShell`). Une hauteur littérale ici divergerait un jour.
 
@@ -100,7 +123,7 @@ export async function Header() {
         <Link
           href={ROUTES.home}
           aria-label={isFr ? `${BRAND.name}, accueil` : `${BRAND.name}, home`}
-          className="text-fg focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex min-h-11 shrink-0 flex-col justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className={`bg-paper text-fg shadow-subtle hover:shadow-card ${focusBarre} inline-flex min-h-11 shrink-0 flex-col justify-center rounded-xl px-3 py-1.5 transition-shadow`}
         >
           <span
             className="text-2xl leading-none font-medium tracking-tight"
@@ -114,8 +137,9 @@ export async function Header() {
               IA
             </span>
           </span>
-          {/* Masquée sous `navair` (maquette : sous 1 366 px) — elle reprend la place
-              quand la barre en a. */}
+          {/* Dans le badge ivoire du logo (`fg-muted` sur `paper` : 7,96:1). Masquée
+              sous `navair` (maquette : sous 1 366 px) — elle reprend la place quand
+              la barre en a. */}
           <span className="text-fg-muted navair:block mt-1 hidden text-xs leading-none font-semibold">
             {tagline}
           </span>
@@ -201,7 +225,7 @@ export async function Header() {
             href={ROUTES.search}
             aria-label={rechercheLabel}
             data-cta="header-search"
-            className="text-fg hover:bg-sand focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex h-11 w-11 items-center justify-center rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${pastilleIvoire} h-11 w-11`}
           >
             <Search className="h-5 w-5" aria-hidden="true" />
           </Link>
@@ -210,7 +234,7 @@ export async function Header() {
             aria-label={t("cta.contactAria")}
             data-cta="header-secondary"
             data-cta-tracking="cta_header_contact_click"
-            className={`${btnSecondaire} h-11 px-4 text-base`}
+            className={`${pastilleIvoire} h-11 px-4 text-base`}
           >
             <Mail className="h-4 w-4" aria-hidden="true" />
             <span>{ecrireLabel}</span>
@@ -220,7 +244,7 @@ export async function Header() {
             aria-label={t("cta.bookCallAria")}
             data-cta="header-primary"
             data-cta-tracking="cta_header_book_call_click"
-            className={`${btnPrimaire} h-11 px-5 text-base`}
+            className={`${btnBarrePrimaire} h-11 px-5 text-base`}
           >
             <CalendarDays className="h-4 w-4" aria-hidden="true" />
             <span>{t("cta.bookCall")}</span>
@@ -237,7 +261,7 @@ export async function Header() {
             aria-label={t("cta.bookCallAria")}
             data-cta="header-primary-compact"
             data-cta-tracking="cta_header_book_call_click"
-            className={`${btnPrimaire} h-11 px-4 text-[15px]`}
+            className={`${btnBarrePrimaire} h-11 px-4 text-[15px]`}
           >
             <CalendarDays className="h-4 w-4 max-[379px]:hidden" aria-hidden="true" />
             <span className="lg:hidden">{isFr ? "Réserver" : "Book"}</span>
