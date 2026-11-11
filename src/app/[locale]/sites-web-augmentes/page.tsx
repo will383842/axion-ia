@@ -78,10 +78,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: "/sites-web-augmentes",
     title: isFr
-      ? "Sites web & SaaS augmentés par l'IA · Axion-IA"
+      ? "Chatbot et assistant IA pour votre site · Axion-IA"
       : "AI-augmented websites & SaaS platforms · Axion-IA",
     description: isFr
-      ? "Un site, tout le monde en a un. Nous, on le rend intelligent. Chatbot RAG, search sémantique, agents IA — sur votre existant ou conçu de A à Z. Hébergement UE, vos données."
+      ? "Un assistant IA sur votre site, qui répond à vos clients depuis vos contenus. Recherche intelligente, agents IA, site actuel ou neuf. Hébergement en Europe."
       : "AI-augmented websites and SaaS platforms: RAG chatbot grounded in your content, agents, semantic search, automations. Any stack, EU hosting, quote in 24-48 h.",
     alternates: { fr: "/sites-web-augmentes", en: "/sites-web-augmentes" },
   });
@@ -128,7 +128,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         name: isFr ? "Chatbot RAG intégré" : "Integrated RAG chatbot",
         url: `${SITE_URL}/${loc}/sites-web-augmentes`,
         description: isFr
-          ? "Assistant conversationnel ancré sur vos contenus, zéro hallucination, hébergé UE."
+          ? "Assistant conversationnel ancré sur vos contenus, hébergé UE."
           : "Conversational assistant grounded in your content, zero hallucination, EU-hosted.",
       },
       {

@@ -17,9 +17,11 @@ import { Cta } from "@/components/marketing/Cta";
 
 export interface AuditContactBandProps {
   readonly isFr: boolean;
+  /** Bandeau du bas de page : titre distinct de celui du milieu (pas deux h2 identiques). */
+  readonly finale?: boolean;
 }
 
-export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
+export function AuditContactBand({ isFr, finale = false }: AuditContactBandProps): ReactNode {
   return (
     <section className="bg-terracotta py-16 sm:py-20">
       <Container>
@@ -32,9 +34,13 @@ export function AuditContactBand({ isFr }: AuditContactBandProps): ReactNode {
               className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "On cadre votre audit IA," : "We scope your AI audit,"}{" "}
+              {isFr
+                ? finale
+                  ? "Un audit IA pour votre PME,"
+                  : "On cadre votre audit IA,"
+                : "We scope your AI audit,"}{" "}
               <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
-                {isFr ? "au bon niveau" : "at the right level"}
+                {isFr ? (finale ? "parlons-en" : "au bon niveau") : "at the right level"}
               </span>
             </h2>
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">

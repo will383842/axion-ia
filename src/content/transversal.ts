@@ -136,6 +136,10 @@ export const ABOUT_TEAM = [
 export interface FaqAnswerBlock {
   question: string;
   answer: string;
+  /** Titre SERP exact (≤ 60 caractères, marque comprise). Sans lui : la question, avec suffixe de marque si elle est courte. */
+  metaTitle?: string;
+  /** Description SERP (≤ `META_DESCRIPTION_MAX`). Sans elle : la réponse, coupée proprement. */
+  metaDescription?: string;
   /** Points scannables affichés sous la réponse. Idéalement 3 à 5. */
   keyPoints?: readonly string[];
   /** Chiffres-clés de la réponse (grand chiffre + libellé court). */
@@ -949,7 +953,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-11-08",
     related: ["rgpd-ia", "ia-droit-auteur-contenu", "risques-ia-entreprise"],
     fr: {
-      question: "Quelles sont les obligations légales des entreprises face à l'AI Act 2026 ?",
+      question: "AI Act : quelles obligations pour les entreprises, dont la formation (article 4) ?",
+      metaTitle: "AI Act 2026 : obligations des entreprises, article 4 et 50",
+      metaDescription:
+        "AI Act : article 4 (maîtrise de l'IA par vos équipes), article 5 (pratiques interdites), article 50 (transparence). Haut risque : de fin 2027 à 2028.",
       answer:
         "L'AI Act européen est entré en vigueur en 2024 et son application est échelonnée de 2025 à 2028. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois articles reviennent le plus souvent. L'article 4 : prendre des mesures pour la maîtrise de l'IA de ses équipes (depuis février 2025, assoupli en juillet 2026 par le règlement (UE) 2026/1744). L'article 5 : ne pas recourir aux pratiques interdites (depuis février 2025). L'article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler les hypertrucages et certains textes d'intérêt public générés (depuis le 2 août 2026). Les obligations « haut risque » (recrutement, suivi des salariés…) sont reportées au 2 décembre 2027 (annexe III). S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA peut aider à mettre en place des dispositifs techniques : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail technique, pas une prestation juridique — la qualification exacte de vos systèmes et l'analyse de vos obligations relèvent de votre conseil.",
       keyPoints: [

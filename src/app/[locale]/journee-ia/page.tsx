@@ -851,6 +851,13 @@ export default async function JourneeIaPage({ params }: Props) {
                 <span className="sr-only">{TEXTES_ANNEXES.nouvelOnglet}</span>
               </a>
             </p>
+            <Link
+              href={{ pathname: "/faq/[slug]", params: { slug: "ai-act-2026" } }}
+              className={LIEN_FLECHE}
+            >
+              {aiAct.lienAiAct.libelle}
+              <ArrowRight className="size-[18px]" strokeWidth={2} aria-hidden="true" />
+            </Link>
           </div>
         </Container>
       </section>

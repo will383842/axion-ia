@@ -54,7 +54,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `Implémentation IA à ${villeContext.name}`
       : `AI implementation in ${villeContext.name}`
     : isFr
-      ? "On implémente l'IA dans votre entreprise,"
+      ? "Agents IA et automatisations"
       : "We implement AI across your company,";
 
   const titleEm = villeContext
@@ -62,7 +62,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `& région ${villeContext.region}`
       : `& ${villeContext.region} region`
     : isFr
-      ? "quel que soit votre besoin."
+      ? "sur mesure pour votre entreprise."
       : "whatever you need.";
 
   const description = villeContext

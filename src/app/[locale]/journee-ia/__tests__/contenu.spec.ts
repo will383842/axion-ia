@@ -258,7 +258,7 @@ describe("Journée IA — contenu.ts", () => {
   it("garde la meta description sous le plafond, titre compris", () => {
     // Le cliquet `meta-description-longueur.spec.ts` ne mesure pas une valeur calculée.
     expect(remplacerJetons(DESCRIPTION_META).length).toBeLessThanOrEqual(META_DESCRIPTION_MAX);
-    expect(TITRE).toBe("La Journée IA : audit et formation IA en PME · Axion-IA");
+    expect(TITRE).toBe("Audit et formation IA en une journée pour PME · Axion-IA");
     expect(TITRE.length).toBeLessThanOrEqual(60);
   });
 
