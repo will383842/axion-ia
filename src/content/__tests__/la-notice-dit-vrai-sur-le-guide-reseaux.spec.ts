@@ -10,6 +10,7 @@
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "../legal";
+import { SUBPROCESSORS_LAST_UPDATED } from "../subprocessors";
 
 function section(locale: "fr" | "en", titre: RegExp) {
   const page = LEGAL_PAGES.find((p) => p.slug === "politique-confidentialite");
@@ -29,7 +30,6 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
       "« Recevoir le guide »",
       "consentement distinct",
       "pas obligatoire pour recevoir le guide",
-      "Zernio",
       "pas supprimées automatiquement",
       "« STOP »",
       "nous vous mettons à l'écart de tout envoi ; vos données sont conservées pour garantir que ce choix soit respecté",
@@ -45,7 +45,6 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     expect(s.anchor).toBe("guide-social-networks");
     for (const m of [
       "private message",
-      "Zernio",
       '"STOP"',
       "not deleted automatically",
       "we set you aside from any sending; your data is kept to make sure this choice is respected",
@@ -53,6 +52,17 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     ]) {
       expect(s.body, m).toContain(m);
     }
+  });
+
+  it("⛔ aucun prestataire non inscrit à /sous-processeurs n'est nommé (Zernio : faits non établis)", () => {
+    for (const loc of ["fr", "en"] as const) {
+      const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
+      expect(s.body).not.toMatch(/Zernio/i);
+    }
+  });
+
+  it("⛔ la date de la liste des sous-processeurs n'est relevée que si la liste change", () => {
+    expect(SUBPROCESSORS_LAST_UPDATED).toBe("2026-11-07");
   });
 
   it("⛔ Zernio n'est pas renvoyé à la liste des sous-processeurs (rien d'établi à y publier)", () => {
