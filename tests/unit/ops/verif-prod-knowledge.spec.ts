@@ -37,12 +37,16 @@ describe("verif-prod-knowledge : parseurs", () => {
     expect(contientGrenoble(texteVisible(fixture("page-ok.html")))).toBe(false);
   });
   it("lit les <loc> d'un sitemap", () => {
-    expect(extraireLocs("<urlset><url><loc> https://a.fr/x </loc></url></urlset>")).toEqual(["https://a.fr/x"]);
+    expect(extraireLocs("<urlset><url><loc> https://a.fr/x </loc></url></urlset>")).toEqual([
+      "https://a.fr/x",
+    ]);
   });
   it("JSON-LD ville : localité égale à la ville de la page", () => {
     const ld = extraireJsonLd(fixture("ville.html"));
     expect(addressLocalities(ld)).toEqual(["Saint-Étienne"]);
-    expect(localiteEgaleVille(ld, "https://axion-ia.com/fr/implantations/aura/saint-etienne")).toBe(true);
+    expect(localiteEgaleVille(ld, "https://axion-ia.com/fr/implantations/aura/saint-etienne")).toBe(
+      true,
+    );
     expect(localiteEgaleVille(ld, "https://axion-ia.com/fr/implantations/aura/lyon")).toBe(false);
   });
   it("échantillon déterministe", () => {

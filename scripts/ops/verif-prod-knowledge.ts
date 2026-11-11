@@ -89,7 +89,11 @@ async function main(): Promise<void> {
     fautesMontant.length === 0,
     fautesMontant.join(" ; "),
   );
-  noter("« Grenoble » absent hors mentions légales", fautesGrenoble.length === 0, fautesGrenoble.join(" ; "));
+  noter(
+    "« Grenoble » absent hors mentions légales",
+    fautesGrenoble.length === 0,
+    fautesGrenoble.join(" ; "),
+  );
   noter(
     "JSON-LD ville : addressLocality ≠ ville de la page",
     fautesLocalite.length === 0,
