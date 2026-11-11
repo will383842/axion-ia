@@ -5,9 +5,18 @@ import { describe, expect, it } from "vitest";
 // /design n'affiche que la palette définitive ; le vert sauge reste une exception documentée.
 const SOURCE = readFileSync(resolve(process.cwd(), "src/app/[locale]/design/page.tsx"), "utf8");
 const AUTORISES = new Set(
-  ["faf9f5", "e8e6dc", "141413", "b23f16", "d97757", "b0aea5", "8f3412", "5e7050", "5e5d59"].map(
-    (h) => `#${h}`,
-  ),
+  [
+    "faf9f5",
+    "e8e6dc",
+    "141413",
+    "b23f16",
+    "d97757",
+    "b0aea5",
+    "8f3412",
+    "5e7050",
+    "5e5d59",
+    "eef1eb",
+  ].map((h) => `#${h}`),
 );
 
 describe("vitrine /design", () => {

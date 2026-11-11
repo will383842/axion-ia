@@ -200,7 +200,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
     {
       key: "investment_intent",
       label: isFr ? "Investir" : "Investing",
-      color: "#8f3412", // hex-ok: palette dataviz courbes observatoire
+      color: "#5e5d59", // hex-ok: palette dataviz courbes observatoire
     },
   ];
   const heatmapLabels = { segment: isFr ? "Segment" : "Segment", sample: "n" };

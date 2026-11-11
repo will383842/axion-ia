@@ -42,23 +42,23 @@ export function echapper(s: string): string {
 
 const STYLE = `
 *{box-sizing:border-box}
-body{margin:0;background:#faf8f3;color:#2a2520;font:17px/1.6 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
-header{border-bottom:1px solid #e7e1d6;padding:18px 20px;font-weight:700;font-size:20px}
-header span{display:inline-block;width:10px;height:10px;border-radius:50%;background:#c24a1b;margin-right:10px}
+body{margin:0;background:#faf9f5;color:#141413;font:17px/1.6 Manrope,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{border-bottom:1px solid #e8e6dc;padding:18px 20px;font-weight:700;font-size:20px}
+header span{display:inline-block;width:10px;height:10px;border-radius:50%;background:#b23f16;margin-right:10px}
 main{max-width:640px;margin:0 auto;padding:28px 20px 56px}
-.carte{background:#fff;border:1px solid #e7e1d6;border-radius:18px;padding:26px}
+.carte{background:#fff;border:1px solid #e8e6dc;border-radius:18px;padding:26px}
 h1{font-family:Fraunces,Georgia,serif;font-weight:500;font-size:30px;line-height:1.2;margin:0 0 12px}
 p{margin:0 0 14px}
-.muted{color:#6b625a;font-size:15px}
+.muted{color:#5e5d59;font-size:15px}
 .bouton{display:inline-block;border:0;border-radius:999px;padding:14px 26px;font:700 17px Manrope,system-ui,sans-serif;cursor:pointer;margin:0 10px 10px 0;text-decoration:none}
-.principal{background:#c24a1b;color:#fff}
-.secondaire{background:#fff;color:#c24a1b;border:2px solid #c24a1b}
-a{color:#1a4dd9}
+.principal{background:#b23f16;color:#fff}
+.secondaire{background:#fff;color:#b23f16;border:2px solid #b23f16}
+a{color:#b23f16}
 a.bouton{color:#fff}
-a.bouton.secondaire{color:#c24a1b}
+a.bouton.secondaire{color:#b23f16}
 label{display:block;font-weight:600;margin:14px 0 6px}
-input[type=date],input[type=file]{font:inherit;padding:10px;border:1px solid #cfc6b8;border-radius:10px;background:#fff;max-width:100%}
-.erreur{color:#a12b0c;font-weight:600}
+input[type=date],input[type=file]{font:inherit;padding:10px;border:1px solid #e8e6dc;border-radius:10px;background:#fff;max-width:100%}
+.erreur{color:#8f3412;font-weight:600}
 form{display:inline}
 form.bloc{display:block}
 `;

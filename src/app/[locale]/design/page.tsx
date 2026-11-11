@@ -104,7 +104,7 @@ export default function DesignPage() {
       <Section eyebrow="Exception documentée · vert sauge (décision Williams, 08/11)">
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           <Swatch name="bg-sage" className="bg-sage text-mocha-fg" hex="#5e7050" />
-          <Swatch name="bg-sage-soft" className="bg-sage-soft text-sage" hex="#e8e6dc" />
+          <Swatch name="bg-sage-soft" className="bg-sage-soft text-sage" hex="#eef1eb" />
         </div>
       </Section>
 
