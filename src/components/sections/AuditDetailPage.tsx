@@ -53,9 +53,8 @@ interface Props {
   locale: Locale;
 }
 
-/** Ordre canonique des 4 tiers audit — pour le maillage « autres niveaux ». */
+/** Ordre canonique des 3 audits encore en ligne (audit-flash retiré, R5a) — maillage « autres niveaux ». */
 const ALL_AUDIT_TIERS: ReadonlyArray<AuditTier> = [
-  "audit-flash",
   "audit-cible",
   "audit-strategique-pme",
   "audit-strategique-eti",
@@ -71,8 +70,10 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
   // ── Prix d'entrée (SSOT pricing.ts) — priceFlat (fixe) ou priceMin (range) ──
   const tierPricing = getTierById(AUDIT_TIERS, tier);
   const entryValue = tierPricing.priceFlat ?? tierPricing.priceMin ?? null;
+  // R5a : palier masqué (`prixPublicMasque`) -> « Sur devis », sans « À partir de ».
+  const prixMasque = tierPricing.prixPublicMasque === true;
   const priceValue =
-    entryValue != null
+    entryValue != null && !prixMasque
       ? formatAmount(entryValue, isFr ? "fr" : "en")
       : isFr
         ? "Sur devis"
@@ -245,9 +246,11 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
             {/* CARTE INFOS-CLÉS */}
             <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:mt-8 lg:p-7">
               <div className="border-border border-b pb-5">
-                <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                  {isFr ? "À partir de" : "From"}
-                </p>
+                {prixMasque ? null : (
+                  <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                    {isFr ? "À partir de" : "From"}
+                  </p>
+                )}
                 <p
                   className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
                   style={{ fontFamily: "var(--font-serif)" }}

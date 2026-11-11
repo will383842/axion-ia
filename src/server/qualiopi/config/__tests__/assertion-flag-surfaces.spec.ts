@@ -221,14 +221,6 @@ const EXEMPTIONS: ReadonlyArray<{
   gardeChez?: { fichier: string; jeton: string };
 }> = [
   {
-    chemin: "app/llms.txt/route.ts",
-    raison:
-      "Route EDGE : le helper serveur n'y est pas importable (cloisonnement + runtime). " +
-      "Le bloc « Certification qualité » est bel et bien gaté, mais sur une lecture env " +
-      "BRUTE — convention documentée dans le fichier, cf. audit F13.",
-    jeton: "QUALIOPI_CERTIFICATION_OBTENUE",
-  },
-  {
     chemin: "components/formations/FormationsLesPlus.tsx",
     raison:
       "Composant purement présentationnel : sa ligne assertive porte `on: ofPublic`, " +

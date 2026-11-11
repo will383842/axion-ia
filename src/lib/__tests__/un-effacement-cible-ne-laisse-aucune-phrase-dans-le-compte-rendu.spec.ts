@@ -84,6 +84,9 @@ vi.mock("@/lib/prisma", () => {
       etat.appels.push({ table: "$", op: "executeRaw", args: { sql: sql.join("?"), valeurs } });
       return 1;
     },
+    // Lot S2 : la mise à l'écart de `contacts_guide_reseau` précède tout (non enregistrée ici : elle
+    // n'est ni une écriture du dossier client ni sous le drapeau d'effacement).
+    contactGuideReseau: { updateMany: async () => ({ count: 0 }) },
     clientContactAdresse: modele("clientContactAdresse"),
     clientContact: modele("clientContact"),
     rencontreParticipant: modele("rencontreParticipant"),

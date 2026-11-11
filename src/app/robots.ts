@@ -1,17 +1,17 @@
 import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/seo";
 
-// Doctrine AI bots 2026 (révisée Will 2026-06-22 — « bloquer training / garder citation ») :
-// - ALLOW les LLM bots de SEARCH/CITATION (visibilité AEO/GEO + citations directes)
-// - DISALLOW les LLM bots de TRAINING (le contenu éditorial n'a pas à entraîner
-//   gratuitement les modèles ; les bots de citation sont DISTINCTS des bots de
-//   training, donc bloquer le training ne coûte AUCUNE citation)
-// - DISALLOW les scrapers parasites sans valeur retour (omgili, Diffbot…)
-//
-// Pourquoi sans perte de citation : OAI-SearchBot (≠ GPTBot), Claude-Web/
-// Claude-SearchBot (≠ ClaudeBot), PerplexityBot, Bingbot crawlent pour CITER.
-// Les AI Overviews Google citent via l'index Search (Googlebot), PAS via
-// Google-Extended → bloquer Google-Extended ne retire pas des AI Overviews.
+// Doctrine AI bots — décision de Williams du 09/11/2026 : « être cité par les IA »
+// (option A « cité partout »). Remplace la doctrine du 22/06/2026 « bloquer le
+// training, garder la citation ».
+// - AUCUN robot d'IA n'est nommé : GPTBot, ClaudeBot, anthropic-ai, Google-Extended,
+//   CCBot, Applebot-Extended, OAI-SearchBot, Claude-SearchBot, PerplexityBot, etc.
+//   héritent tous du groupe `User-agent: *`. Pour un organisme de formation encore
+//   peu connu, être dans les données d'entraînement est un gain, pas une perte.
+// - Seuls les scrapers parasites sans valeur retour (Bytespider, omgili, Diffbot)
+//   restent en `Disallow: /`.
+// - Pas de groupe Bingbot ni de `crawl-delay`, pas de directive `Host:` (lue
+//   seulement par Yandex).
 const COMMON_DISALLOW = [
   "/api/",
   "/_next/",
@@ -86,7 +86,7 @@ const COMMON_DISALLOW = [
 // ressources : Googlebot rend la page pour l'évaluer, et sans feuille de style ni
 // script il la voit cassée (mise en page, contenu injecté, Core Web Vitals).
 // C'est un risque bien plus documenté et bien plus concret que la question
-// `Google-Extended` (cf. commentaire l.13-14). Longest-match : cet `Allow`
+// de l'entraînement des IA. Longest-match : cet `Allow`
 // l'emporte sur le `Disallow: /_next/`, sans rouvrir `/_next/data` ni le reste.
 // AUDIT GEO/AEO — `/api/markdown/` AJOUTÉ (verrou n°2 de l'audit du 2026-07-20,
 // resté ouvert).
@@ -102,13 +102,7 @@ const COMMON_DISALLOW = [
 // contenu qu'aucun crawler respectueux n'avait le droit de lire — les deux
 // fichiers se contredisaient, et c'est le silencieux qui gagnait.
 //
-// 🔴 CE CORRECTIF NE TOUCHE PAS À LA DOCTRINE `Google-Extended` (cf. l.4-14).
-// `COMMON_ALLOW` n'est distribué qu'aux blocs AUTORISÉS (`*`, Bingbot, bots de
-// citation). Les bots d'entraînement ont `disallow: "/"` SANS liste d'`allow`,
-// et robots.txt fait correspondre un agent à son groupe le PLUS SPÉCIFIQUE :
-// GPTBot, ClaudeBot, anthropic-ai, Google-Extended et Applebot-Extended restent
-// intégralement bloqués. Le correctif SERT la doctrine « bloquer training,
-// garder citation » au lieu de la contredire.
+// Tous les robots (IA comprises) héritent du groupe `*` : cet Allow vaut pour eux.
 //
 // Longest-match : cet `Allow` l'emporte sur `Disallow: /api/`, exactement comme
 // `/api/og` et `/api/avis/photo` ci-dessus, sans rouvrir `/api/auth`,
@@ -138,42 +132,8 @@ const COMMON_ALLOW = [
   "/_next/static",
 ];
 
-const AI_BOTS_ALLOWED = [
-  // SEARCH / CITATION uniquement (ces UA citent, ils n'entraînent pas) :
-  "OAI-SearchBot", // ChatGPT Search (≠ GPTBot training)
-  "ChatGPT-User", // ChatGPT browsing (action utilisateur)
-  "Claude-Web", // Claude.ai citations
-  "Claude-SearchBot", // Anthropic search/citation (UA distinct du ClaudeBot training)
-  "PerplexityBot", // Perplexity
-  "Perplexity-User", // Perplexity browsing
-  "Mistral-User", // Mistral chat
-  "Bingbot", // Bing + Copilot
-  "Meta-ExternalAgent", // Meta AI
-  // City Domination 2026-05-18 P1-3 (audit A6 P1-B) — visibilité YandexGPT +
-  // Yandex Neuro Europe Est. Yandex couvre ~50 M users russophones (Russie,
-  // Biélorussie, Kazakhstan, francophone Europe Est). Couverture wildcard `*`
-  // y donnait déjà accès, mais déclaration explicite cohérente avec doctrine
-  // « ALLOW search + answer engines ».
-  "YandexBot",
-  // Audit GEO/AEO 2026-05-20 — déclaration explicite Googlebot-Image pour indexation
-  // des images marketing (visibilité Google Images). Déjà couvert par la règle `*`
-  // mais explicite pour cohérence avec la doctrine AI bots.
-  "Googlebot-Image",
-];
-
-// Bots de TRAINING LLM — bloqués (doctrine 2026-06-22 : protéger le contenu
-// éditorial de l'entraînement gratuit, sans perdre les citations qui passent
-// par les UA de search ci-dessus).
-const AI_BOTS_TRAINING_DISALLOWED = [
-  "GPTBot", // OpenAI training
-  "ClaudeBot", // Anthropic training
-  "anthropic-ai", // legacy Anthropic training
-  "Google-Extended", // Google AI training (Gemini) — ≠ Googlebot (Search/AI Overviews)
-  "Applebot-Extended", // Apple Intelligence training — ≠ Applebot (Search)
-];
-
-const AI_BOTS_DISALLOWED = [
-  "CCBot", // CommonCrawl indiscriminé
+// Scrapers parasites sans valeur retour : seuls robots bloqués.
+const BOTS_BLOQUES = [
   "Bytespider", // TikTok
   "omgili", // scraper parasite
   "Diffbot", // scraper SaaS sans retour
@@ -197,26 +157,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: COMMON_ALLOW,
         disallow: dynamicDisallow,
       },
-      // P1-16 audit indexation 2026-05-15 — Bingbot Crawl-delay 1 s.
-      // Bingbot est historiquement 10× plus agressif que Googlebot. Sur ~13K
-      // routes pSEO villes + factory 100/jour, sans throttle, il peut écraser
-      // l'origin Coolify (cache MISS prolongé observé prod). Le delay 1s reste
-      // safe pour le ranking (Bing tolère jusqu'à 30s).
       {
-        userAgent: "Bingbot",
-        allow: COMMON_ALLOW,
-        disallow: dynamicDisallow,
-        crawlDelay: 1,
-      },
-      ...AI_BOTS_ALLOWED.filter((u) => u !== "Bingbot").map((userAgent) => ({
-        userAgent,
-        allow: COMMON_ALLOW,
-        disallow: dynamicDisallow,
-      })),
-      ...[...AI_BOTS_TRAINING_DISALLOWED, ...AI_BOTS_DISALLOWED].map((userAgent) => ({
-        userAgent,
+        userAgent: BOTS_BLOQUES,
         disallow: "/",
-      })),
+      },
     ],
     // /sitemap-index.xml = root sitemap-index listing all sub-sitemaps emitted
     // via `generateSitemaps()` in `app/sitemap.ts`. Next 16 reserves /sitemap.xml
@@ -225,6 +169,5 @@ export default function robots(): MetadataRoute.Robots {
     // via `app/sitemap-index.xml/route.ts`. Googlebot follows this directive
     // and discovers the ~17 500 SSG routes through the indexed sub-sitemaps.
     sitemap: `${SITE_URL}/sitemap-index.xml`,
-    host: SITE_URL,
   };
 }

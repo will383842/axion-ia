@@ -49,7 +49,7 @@ export const BONCHAMP_LES_LAVAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bonchamp-lès-Laval ?",
-      a: "Oui, Axion-IA intervient à Bonchamp-lès-Laval et dans toute l'agglomération lavalloise est (Laval, Saint-Berthevin, Changé, Louverné). Nos consultants sont basés en proximité, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Bonchamp-lès-Laval et dans toute l'agglomération lavalloise est (Laval, Saint-Berthevin, Changé, Louverné). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et agroalimentaires ?",

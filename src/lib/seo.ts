@@ -21,7 +21,20 @@ import { buildLocalBusinessSameAsFR } from "@/lib/seo/local-citations";
 import { SITE_URL } from "@/lib/site-url";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
 import { surchargeOgPour } from "@/server/seo/og-overrides";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 export { SITE_URL };
+
+/**
+ * R7 (ordre de Williams du 08/11/2026) — un montant ne sort dans les données
+ * structurées publiques que si l'interrupteur `PRIX_PUBLICS_AFFICHES` est allumé, ou si
+ * l'appelant certifie que CE palier reste affiché (`prixPublic: prixAffichable(palier)`,
+ * vrai pour la seule Journée IA). Les montants restent dans `pricing.ts` : rallumer
+ * l'interrupteur réémet les `Offer` telles qu'avant. Garde :
+ * `src/app/canaux-machine-sans-prix.spec.ts`.
+ */
+function montantJsonLdAutorise(prixPublic?: boolean): boolean {
+  return PRIX_PUBLICS_AFFICHES || prixPublic === true;
+}
 
 // Logo carré officiel Axion-IA (512×512, PNG, fond blanc) — cible de
 // `Organization.logo` pour le Knowledge Panel Google + carte éditeur (publisher).
@@ -509,6 +522,12 @@ interface ServiceJsonLdInput {
   description: string;
   /** Price in EUR HT. Omit for "on-quote" services. */
   priceEur?: number;
+  /**
+   * R7 — `priceEur` n'est émis (Offer) que si l'interrupteur des prix publics est allumé
+   * ou si ce drapeau vaut `true`. Passer `prixAffichable(palier)` : seule la Journée IA
+   * le rend vrai interrupteur coupé.
+   */
+  prixPublic?: boolean;
   serviceType?: string;
   /**
    * ISO date string — signal de fraîcheur Google AI Overviews 2026. Default :
@@ -556,6 +575,7 @@ export function buildServiceJsonLd({
   name,
   description,
   priceEur,
+  prixPublic,
   serviceType,
   dateModified,
   area,
@@ -618,7 +638,7 @@ export function buildServiceJsonLd({
           })),
         }
       : {}),
-    ...(typeof priceEur === "number"
+    ...(typeof priceEur === "number" && montantJsonLdAutorise(prixPublic)
       ? {
           offers: {
             "@type": "Offer",
@@ -949,39 +969,23 @@ interface OrganizationJsonLdInput {
 }
 
 /**
- * Adresse du siège social, recopiée du Kbis (RCS Grenoble, à jour au 30/07/2026)
- * et de l'avis de situation SIRENE du 02/08/2026, qui concordent :
+ * Adresse publique du nœud `#organization` : le PAYS SEULEMENT.
  *
- *   11 Avenue Paul Verlaine — ELITE BUREAUX - boîte 53 — 38100 Grenoble
+ * Décision de Williams Jullin du 2026-11-08 (audit harmonie, décision n°19) :
+ * aucune rue, aucun code postal, aucune localité, aucune région dans les
+ * données structurées. Axion-IA intervient partout en France ; une adresse de
+ * siège dans le JSON-LD ancrait l'entité sur une ville et contredisait ce
+ * positionnement.
  *
- * 🔴 Le complément « ELITE BUREAUX - boîte 53 » fait partie de l'adresse
- * immatriculée : l'omettre casse le rapprochement exact-match NAP que Google
- * fait entre le JSON-LD et SIRENE (audit Knowledge Panel 2026-07-06). Il était
- * absent jusqu'au 02/08/2026.
+ * L'adresse complète du siège, telle qu'au Kbis, reste dans les documents où
+ * la loi l'exige : mentions légales, CGV, devis et pied d'e-mail
+ * (`src/content/legal.ts`, `src/lib/email/legal-footer.ts`). Elle n'est PAS
+ * retirée de là, et ce n'est pas ce fichier qui la porte.
  *
- * 🔴 AUCUN override par `COMPANY_ADDRESS` ici — c'était la cause d'une entité
- * à DEUX adresses en production, constatée le 02/08/2026 :
- *
- *   - pages figées au build (`/a-propos`, `/contact`) : les env `COMPANY_*` ne
- *     sont pas des build-args du workflow GH Actions, donc absentes au SSG →
- *     le défaut du code était rendu ;
- *   - pages rendues au runtime (`/presse`) : `COMPANY_ADDRESS` était présente
- *     et valait « 11 Avenue Paul Verlaine, 38100 Grenoble », sans le complément.
- *
- * Résultat : le même nœud `#organization` déclarait deux `streetAddress`
- * différentes selon la page — pire pour le rapprochement d'entité que
- * l'omission d'origine. Une adresse de siège n'a pas à être configurable :
- * elle est publique, figée au Kbis, et ne change que lors d'un transfert de
- * siège — qui passera de toute façon par une modification de code. La rendre
- * env-dépendante garantissait la re-divergence.
- *
- * ✅ 2026-08-31 — CETTE PR-LÀ A ÉTÉ FAITE. Le paragraphe disait jusqu'ici :
- * « `COMPANY_ADDRESS` continue de servir le pied de page des emails
- * (`src/lib/email/templates/_layout.tsx`) — cette PR n'y touche pas. »
- * C'est faux depuis la refonte e-mail : le pied de page tire désormais son
- * identité légale de `src/lib/email/legal-footer.ts`, figée dans le code pour
- * exactement le même motif qu'ici, et `legal-footer.spec.ts` vérifie qu'elle
- * concorde avec les SSOT. **Plus AUCUN code ne lit `COMPANY_ADDRESS`.**
+ * ⚠️ Ne pas rajouter `streetAddress`, `addressLocality`, `postalCode` ni
+ * `addressRegion` « pour le rapprochement NAP » : cet arbitrage a été fait
+ * (l'ancienne version l'invoquait) et la décision ci-dessus l'emporte.
+ * `identite-legale-registre.spec.ts` verrouille « pays seulement ».
  *
  * FONCTION plutôt que constante de module, par cohérence avec le reste du
  * fichier : `seo.ts` est importé par des composants clients, et une constante
@@ -990,10 +994,6 @@ interface OrganizationJsonLdInput {
 function buildSiegePostalAddress() {
   return {
     "@type": "PostalAddress",
-    streetAddress: "11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53",
-    addressLocality: "Grenoble",
-    postalCode: "38100",
-    addressRegion: "Auvergne-Rhône-Alpes",
     addressCountry: "FR",
   } as const;
 }
@@ -1118,13 +1118,9 @@ export function buildOrganizationJsonLd({
       url: `${SITE_URL}/${isFr ? "fr" : "en"}/interventions`,
     },
     foundingDate: "2026",
-    // Siège social, vérifié sur pièces le 02/08/2026 (Kbis au 30/07/2026,
-    // n° de gestion 2026B01964 + avis de situation SIRENE du 02/08/2026).
-    // L'ancrage entité DOIT refléter le RCS (sinon incohérence NAP ↔ registre
-    // = risque E-E-A-T). La visibilité Paris / Île-de-France / toute la France
-    // reste portée par `areaServed` + les pages pSEO villes/régions (zone
-    // servie), pas par l'adresse du siège. Remplace la décision D7 2026-05-21
-    // (ancrage Paris), caduque depuis l'immatriculation à Grenoble.
+    // Lieu de fondation : pays seulement (décision Williams 2026-11-08, cf.
+    // `buildSiegePostalAddress`). La visibilité Paris / Île-de-France / toute la
+    // France reste portée par `areaServed` + les pages pSEO villes/régions.
     foundingLocation: {
       "@type": "Place",
       address: buildSiegePostalAddress(),
@@ -1154,8 +1150,8 @@ export function buildOrganizationJsonLd({
       availableLanguage: ["French", "English"],
       ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
-    // Adresse postale complète du siège (audit A-14 + audit Knowledge Panel
-    // 2026-07-06), désormais alignée au caractère près sur le Kbis / SIRENE.
+    // Adresse : pays seulement (décision Williams 2026-11-08). L'adresse du
+    // siège figure dans les mentions légales, pas dans les données structurées.
     address: buildSiegePostalAddress(),
     ...(vatID ? { vatID } : {}),
     ...(registrationNumber
@@ -1583,7 +1579,7 @@ interface LocalBusinessJsonLdInput {
   /** Area served — admin region or city. */
   areaServed: { type: "Place" | "AdministrativeArea" | "City"; name: string };
   /** Optional postal address (city-level pages). */
-  address?: { city: string; region?: string; country?: string; postalCode?: string };
+  address?: { city?: string; region?: string; country?: string; postalCode?: string };
   /** Optional geo coordinates. */
   geo?: { latitude: number; longitude: number };
   /** Optional price range (e.g. "€€€"). */
@@ -1594,8 +1590,8 @@ interface LocalBusinessJsonLdInput {
    * Avant : default Mo-Fr 09:00-18:00 → fake-claim de bureau ouvert dans chaque
    * ville où LB émis. Maintenant : omettre = pas d'openingHours dans le JSON-LD
    * (compatible Service Area Business pattern Google). À passer explicitement
-   * UNIQUEMENT pour les pages avec un vrai bureau physique (ex: /a-propos siège
-   * Grenoble).
+   * UNIQUEMENT pour les pages avec un vrai bureau physique (aucune aujourd'hui :
+   * Axion-IA intervient partout en France).
    * Cert C6 2026-05-08 : forme objet typée requise (Google Validator rejette les
    * arrays de strings type "Mo-Fr 09:00-18:00").
    */
@@ -1611,8 +1607,8 @@ interface LocalBusinessJsonLdInput {
 }
 
 /**
- * Default opening hours utilisables par la page /a-propos ou /contact (siège
- * Grenoble réel). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
+ * Default opening hours utilisables par la page /a-propos ou /contact (aucun bureau
+ * public aujourd'hui). Sprint Correctif P1-2 2026-05-23 : ces hours ne sont PLUS
  * appliquées automatiquement par `buildLocalBusinessJsonLd` (cf. commentaire
  * de la fonction) — à passer explicitement.
  */
@@ -1627,7 +1623,7 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // LocalBusiness JSON-LD — Service Area Business safe mode.
 //
 // Sprint Correctif P1-2 (2026-05-23 — audit E2E passe 2 runtime + décision Will
-// 2026-05-23) : Axion-IA = 1 siège FR (Grenoble) qui sert toute la France. Pour
+// 2026-05-23) : Axion-IA = entreprise qui sert toute la France. Pour
 // chaque page ville/région : on émet `ProfessionalService` (compatible LocalBusiness
 // schema.org) avec `areaServed` mais SANS les attributs qui claim un bureau
 // physique (`geo`, `openingHoursSpecification`, `priceRange`, `address.postalCode`)
@@ -1640,8 +1636,9 @@ export const DEFAULT_HEADQUARTERS_OPENING_HOURS = [
 // Maintenant : ces champs ne sont émis QUE si explicitement passés. Les pages
 // ville (`implantations/[ville]`, `audit/par-ville/[ville]`, etc.) appellent
 // sans `geo`/`openingHours`/`priceRange` → JSON-LD propre Service Area Business.
-// Une seule page peut/doit passer les vraies valeurs : `/a-propos` ou `/contact`
-// avec address Grenoble réelle (TODO Will).
+// Décision Williams 2026-11-08 : aucune adresse de siège dans les données
+// structurées publiques (pays seulement) ; l'adresse reste dans les mentions
+// légales.
 //
 // Référence Google : « Do not mark up an address that is not a real, accurate
 // physical address. » → https://developers.google.com/search/docs/appearance/structured-data/local-business
@@ -1692,12 +1689,14 @@ export function buildLocalBusinessJsonLd({
     // l'erreur que les moteurs arbitrent deja contre nous. L'ordre est :
     // corriger les fiches (R-01 a R-03), puis renseigner ici.
     ...(sameAsAnnuaires.length > 0 ? { sameAs: [...sameAsAnnuaires] } : {}),
-    ...(priceRange ? { priceRange } : {}),
+    // R7 — un `priceRange` symbolique (« €€ ») passe ; une fourchette chiffrée seulement
+    // interrupteur des prix publics allumé.
+    ...(priceRange && (!/\d/.test(priceRange) || PRIX_PUBLICS_AFFICHES) ? { priceRange } : {}),
     ...(address
       ? {
           address: {
             "@type": "PostalAddress",
-            addressLocality: address.city,
+            ...(address.city ? { addressLocality: address.city } : {}),
             ...(address.region ? { addressRegion: address.region } : {}),
             ...(address.postalCode ? { postalCode: address.postalCode } : {}),
             addressCountry: address.country ?? "FR",
@@ -1921,7 +1920,8 @@ export function buildHowToJsonLd({
     url,
     inLanguage: locale,
     ...(totalTime ? { totalTime } : {}),
-    ...(estimatedCost
+    // R7 — un coût estimé en euros est un montant public : interrupteur requis.
+    ...(estimatedCost && PRIX_PUBLICS_AFFICHES
       ? {
           estimatedCost: {
             "@type": "MonetaryAmount",
@@ -2036,17 +2036,22 @@ export function buildCourseJsonLd(input: CourseJsonLdInput) {
           }
         : {}),
     })),
+    // R7 — formations : aucun prix public interrupteur coupé (cf. `montantJsonLdAutorise`).
+    // Une formation payante garde alors une Offer SANS montant, `category: "Paid"` : c'est
+    // ce que demande l'éligibilité Google « Course info » quand le prix n'est pas publié.
     ...(typeof input.priceEurHt === "number"
-      ? {
-          offers: {
-            "@type": "Offer",
-            url,
-            price: input.priceEurHt.toString(),
-            priceCurrency: "EUR",
-            availability: "https://schema.org/InStock",
-            category: "Professional training",
-          },
-        }
+      ? montantJsonLdAutorise()
+        ? {
+            offers: {
+              "@type": "Offer",
+              url,
+              price: input.priceEurHt.toString(),
+              priceCurrency: "EUR",
+              availability: "https://schema.org/InStock",
+              category: "Professional training",
+            },
+          }
+        : { offers: { "@type": "Offer", category: "Paid" } }
       : {}),
   } as const;
 }
