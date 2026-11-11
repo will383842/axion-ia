@@ -5734,6 +5734,14 @@
   white-space: normal;
   max-width: 100%;
 }
+.lp-app .etapes-v2 {
+  flex-wrap: wrap !important;
+  justify-content: center;
+}
+.lp-app .etapes-v2 li {
+  white-space: normal !important;
+  max-width: 100%;
+}
 .lp-app .com-grille,
 .lp-app .com-g,
 .lp-app .com-pas,
