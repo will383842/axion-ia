@@ -3,9 +3,23 @@
 // pricing.ts, jamais écrit ici.
 import { JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
 
+/**
+ * Prix HT de la Journée IA, lu dans pricing.ts. Lève une erreur claire si le
+ * champ a disparu ou n'est pas un nombre fini > 0 : mieux vaut un build rouge
+ * qu'un « 0 € HT » publié (page et JSON-LD) sans aucun signal.
+ */
+export function prixJourneeIa(priceFlat: unknown): number {
+  if (typeof priceFlat !== "number" || !Number.isFinite(priceFlat) || priceFlat <= 0) {
+    throw new Error(
+      `JOURNEE_IA_TIER.priceFlat doit être un nombre fini > 0 (reçu : ${String(priceFlat)})`,
+    );
+  }
+  return priceFlat;
+}
+
 /** Titre : au plus 60 caractères (testé). */
 export function titrePage(): string {
-  return `La Journée IA · ${formatAmount(JOURNEE_IA_TIER.priceFlat ?? 0, "fr", { compact: true })} · dans votre entreprise · Axion-IA`;
+  return `La Journée IA · ${formatAmount(prixJourneeIa(JOURNEE_IA_TIER.priceFlat), "fr", { compact: true })} · dans votre entreprise · Axion-IA`;
 }
 
 /** Description : au plus 158 caractères (testé). */

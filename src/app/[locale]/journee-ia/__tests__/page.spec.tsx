@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
 import { renderToStaticMarkup } from "react-dom/server";
 import { AUDIT_TIERS, INTERVENTION_TIERS, JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
-import { DESCRIPTION, titrePage } from "../meta";
+import { FOUNDER_PERSON_ID } from "@/lib/brand";
+import { DESCRIPTION, prixJourneeIa, titrePage } from "../meta";
 
 vi.mock("next-intl/server", () => ({ setRequestLocale: vi.fn() }));
 vi.mock("next/navigation", () => ({
@@ -83,7 +84,56 @@ describe("Journée IA — page", () => {
   });
 });
 
+describe("Journée IA — FAQ", () => {
+  it("donne à chaque <summary> une cible d'au moins 48 px (min-h-12)", async () => {
+    const html = await rendu();
+    const summaries = [...html.matchAll(/<summary([^>]*)>/g)];
+    expect(summaries.length).toBeGreaterThan(0);
+    for (const s of summaries) {
+      const classe = /class="([^"]*)"/.exec(s[1]!)?.[1] ?? "";
+      expect(classe.split(/\s+/)).toContain("min-h-12");
+    }
+  });
+
+  it("crédite le fondateur, pas la persona éditoriale, dans le FAQPage", async () => {
+    const html = await rendu();
+    const blocs = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)];
+    const faq = blocs.map((b) => JSON.parse(b[1]!)).find((d) => d["@type"] === "FAQPage");
+    expect(faq.author).toEqual({ "@id": FOUNDER_PERSON_ID });
+    expect(JSON.stringify(faq.author)).not.toContain("manon");
+  });
+
+  it("cible dans speakable des sélecteurs présents dans le balisage rendu", async () => {
+    const html = await rendu();
+    const blocs = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/g)];
+    const faq = blocs.map((b) => JSON.parse(b[1]!)).find((d) => d["@type"] === "FAQPage");
+    const sel: string[] = (faq.speakable.cssSelector as string[]).flatMap((c) =>
+      c.split(",").map((x) => x.trim()),
+    );
+    expect(sel.length).toBeGreaterThan(0);
+    const nbQuestions = faq.mainEntity.length;
+    for (const s of sel) {
+      const attr = /^\[([a-z-]+)\]$/.exec(s)?.[1];
+      expect(attr, `sélecteur inattendu ${s}`).toBeDefined();
+      expect(html.match(new RegExp(`<[a-z]+ [^>]*\\b${attr}(?=[\\s=>])`, "g"))).toHaveLength(
+        nbQuestions,
+      );
+    }
+  });
+});
+
 describe("Journée IA — pricing", () => {
+  it("a un priceFlat strictement positif", () => {
+    expect(JOURNEE_IA_TIER.priceFlat).toBeGreaterThan(0);
+  });
+
+  it("la garde de prix refuse absent, nul, négatif, NaN et infini", () => {
+    for (const v of [undefined, null, 0, -1, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(() => prixJourneeIa(v as number)).toThrow(/priceFlat/);
+    }
+    expect(prixJourneeIa(JOURNEE_IA_TIER.priceFlat)).toBe(JOURNEE_IA_TIER.priceFlat);
+  });
+
   it("JOURNEE_IA_TIER est absent des tableaux existants", () => {
     expect(AUDIT_TIERS.some((t) => t.id === JOURNEE_IA_TIER.id)).toBe(false);
     expect(INTERVENTION_TIERS.some((t) => t.id === JOURNEE_IA_TIER.id)).toBe(false);

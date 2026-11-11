@@ -12,6 +12,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { JOURNEE_IA_TIER, formatAmount } from "@/content/pricing";
+import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import { routing } from "@/i18n/routing";
 import {
   SITE_URL,
@@ -22,7 +23,7 @@ import {
   buildWebPageJsonLd,
 } from "@/lib/seo";
 import { CONTENU, JETON_PRIX } from "./contenu";
-import { DESCRIPTION, titrePage } from "./meta";
+import { DESCRIPTION, prixJourneeIa, titrePage } from "./meta";
 
 export const revalidate = 3600;
 
@@ -70,7 +71,7 @@ export default async function JourneeIaPage({ params }: Props) {
 
   const { accroche, questions, deroule, livrables, intervenant, rendezVous } = CONTENU;
   const [avantPrix, apresPrix] = livrables.derniereLigne.split(JETON_PRIX);
-  const montant = JOURNEE_IA_TIER.priceFlat ?? 0;
+  const montant = prixJourneeIa(JOURNEE_IA_TIER.priceFlat);
   const lienHaut = "/appel?rdv=diagnostic&depuis=journee-ia-haut";
   const lienBas = "/appel?rdv=diagnostic&depuis=journee-ia-bas";
 
@@ -98,6 +99,8 @@ export default async function JourneeIaPage({ params }: Props) {
     serviceAvecPrix,
     buildFaqJsonLd({
       items: rendezVous.faq.map((f) => ({ question: f.question, answer: f.reponse })),
+      // Page portée par le fondateur (vraie personne), pas par la persona éditoriale.
+      authorId: FOUNDER_PERSON_ID,
     }),
     buildBreadcrumbJsonLd({
       locale,
@@ -223,11 +226,16 @@ export default async function JourneeIaPage({ params }: Props) {
           </h2>
           <div className="mt-6 max-w-2xl divide-y">
             {rendezVous.faq.map((f) => (
-              <details key={f.question} className="py-4">
-                <summary className="text-fg cursor-pointer text-lg font-semibold">
+              <details key={f.question}>
+                <summary
+                  data-faq-q
+                  className="text-fg flex min-h-12 cursor-pointer items-center text-lg font-semibold"
+                >
                   {f.question}
                 </summary>
-                <p className="text-fg mt-2">{f.reponse}</p>
+                <p data-faq-a className="text-fg pb-4">
+                  {f.reponse}
+                </p>
               </details>
             ))}
           </div>
