@@ -836,7 +836,7 @@ export function JobApplicationForm({
       <div className="space-y-2">
         {turnstileWidget}
         {turnstileBlocked ? (
-          <p className="text-sm text-amber-700">{isFr ? CAPTCHA_HELP_FR : CAPTCHA_HELP_EN}</p>
+          <p className="text-fg-muted text-sm">{isFr ? CAPTCHA_HELP_FR : CAPTCHA_HELP_EN}</p>
         ) : null}
       </div>
 

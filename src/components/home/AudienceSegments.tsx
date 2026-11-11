@@ -24,12 +24,12 @@ import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import { cn } from "@/lib/utils";
 
 /** Dégradé de bande par accent. Littéraux complets (JIT Tailwind v4). */
-const BAND_GRADIENT: Record<ServiceAccent, string> = {
-  terracotta: "bg-gradient-to-br from-terracotta-soft via-sand to-paper",
-  ochre: "bg-gradient-to-br from-ochre-soft via-sand to-paper",
-  primary: "bg-gradient-to-br from-primary-soft via-sand to-paper",
-  sage: "bg-gradient-to-br from-sage-soft via-sand to-paper",
-  plum: "bg-gradient-to-br from-plum-soft via-sand to-paper",
+const BAND_FOND: Record<ServiceAccent, string> = {
+  terracotta: "bg-sand",
+  ochre: "bg-sand",
+  primary: "bg-sand",
+  sage: "bg-sand",
+  plum: "bg-sand",
 };
 
 /** Remplissage des barres de la jauge, par accent. Littéraux complets. */
@@ -125,7 +125,7 @@ export function AudienceSegments({
                   <div
                     className={cn(
                       "relative aspect-[16/9] w-full overflow-hidden",
-                      !image && BAND_GRADIENT[v.accent],
+                      !image && BAND_FOND[v.accent],
                     )}
                   >
                     {image ? (

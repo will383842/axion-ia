@@ -30,7 +30,7 @@ export function RatingBreakdown({ agg }: { agg: AggregateRatingData }) {
               <span className="text-fg w-10 shrink-0 font-medium tabular-nums">{star} ★</span>
               <span className="bg-sand-deep relative h-3 flex-1 overflow-hidden rounded-full">
                 <span
-                  className="from-terracotta to-terracotta-deep absolute inset-y-0 left-0 rounded-full bg-gradient-to-r"
+                  className="bg-terracotta absolute inset-y-0 left-0 rounded-full"
                   style={{ width: `${pct}%` }}
                 />
               </span>

@@ -26,30 +26,13 @@ import { Check, type LucideIcon } from "lucide-react";
 import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import { cn } from "@/lib/utils";
 
-/** Dégradé de fond de la bande média, par accent. Littéraux complets (JIT v4). */
-const BAND_GRADIENT: Record<ServiceAccent, string> = {
-  terracotta: "bg-gradient-to-br from-terracotta-soft via-sand to-paper",
-  ochre: "bg-gradient-to-br from-ochre-soft via-sand to-paper",
-  primary: "bg-gradient-to-br from-primary-soft via-sand to-paper",
-  sage: "bg-gradient-to-br from-sage-soft via-sand to-paper",
-  plum: "bg-gradient-to-br from-plum-soft via-sand to-paper",
-};
-
-/**
- * Variable CSS de l'accent — sert au halo radial de la bande.
- *
- * On passe par un `radial-gradient` en style inline plutôt que par une forme
- * `rounded-full` teintée : une forme pleine, même à faible opacité, laisse un
- * BORD DUR visible en travers de la bande (constaté au premier rendu). Le
- * dégradé radial s'éteint progressivement — pas d'arête, et aucun filtre
- * `blur-*` (coûteux au paint sur 6 cartes).
- */
-const ACCENT_VAR: Record<ServiceAccent, string> = {
-  terracotta: "--color-terracotta",
-  ochre: "--color-ochre",
-  primary: "--color-primary",
-  sage: "--color-sage",
-  plum: "--color-plum",
+/** Aplat de fond de la bande média, par accent. Littéraux complets (JIT v4). */
+const BAND_FOND: Record<ServiceAccent, string> = {
+  terracotta: "bg-sand",
+  ochre: "bg-sand",
+  primary: "bg-sand",
+  sage: "bg-sand",
+  plum: "bg-sand",
 };
 
 /** Teinte du numéro géant en filigrane. Littéraux complets. */
@@ -118,10 +101,7 @@ export function FeatureMediaCard({
     >
       {/* ── Bande média 16:9 — ratio identique image / motif ⇒ CLS = 0 ── */}
       <div
-        className={cn(
-          "relative aspect-[16/9] w-full overflow-hidden",
-          !image && BAND_GRADIENT[accent],
-        )}
+        className={cn("relative aspect-[16/9] w-full overflow-hidden", !image && BAND_FOND[accent])}
       >
         {image ? (
           <Image
@@ -133,14 +113,6 @@ export function FeatureMediaCard({
           />
         ) : (
           <>
-            {/* Halo d'accent — dégradé radial, extinction douce, aucun bord dur */}
-            <span
-              aria-hidden="true"
-              className="absolute inset-0 opacity-[0.32] transition-transform duration-500 group-hover:scale-110"
-              style={{
-                backgroundImage: `radial-gradient(115% 90% at 80% 6%, var(${ACCENT_VAR[accent]}) 0%, transparent 62%)`,
-              }}
-            />
             {/* Trame de points fine — donne de la matière sans image */}
             <span
               aria-hidden="true"

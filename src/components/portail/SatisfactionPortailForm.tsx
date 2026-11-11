@@ -93,8 +93,8 @@ export function SatisfactionPortailForm({
               className={
                 "h-8 w-8 rounded text-xl transition-colors " +
                 (note !== null && v <= note
-                  ? "text-amber-500"
-                  : "text-gray-300 hover:text-amber-400")
+                  ? "text-terracotta"
+                  : "text-fg-muted hover:text-terracotta")
               }
             >
               ★
