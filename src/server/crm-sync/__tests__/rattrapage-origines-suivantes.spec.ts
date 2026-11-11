@@ -11,32 +11,39 @@ const m = vi.hoisted(() => ({
   demandes: new Map<string, Record<string, unknown>>(),
   appels: [] as Record<string, unknown>[],
   erreurColonne: false,
-  filtres: [] as Record<string, unknown>[],
+  requetes: [] as { sql: string; values: unknown[] }[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    guideReseauOrigine: {
-      findMany: async (a: { where: Record<string, unknown>; take?: number }) => {
-        if (m.erreurColonne) throw Object.assign(new Error("col"), { code: "P2022" });
-        m.filtres.push(a.where);
-        const w = a.where as {
-          createdAt: { lt: Date; gte: Date };
-          id?: { gt: string };
-        };
-        // Comme la vraie requête : curseur `id > x`, tri par `id`, `take`.
-        return m.origines
-          .filter(
-            (o) =>
-              o.crmStatut === null &&
-              o.archiveeLe === null &&
-              +(o.createdAt as Date) < +w.createdAt.lt &&
-              +(o.createdAt as Date) >= +w.createdAt.gte &&
-              (w.id === undefined || String(o.id) > w.id.gt),
-          )
-          .sort((x, y) => String(x.id).localeCompare(String(y.id)))
-          .slice(0, a.take ?? Number.MAX_SAFE_INTEGER);
-      },
+    // Lecture bornée aux personnes qui ont CLIQUÉ (`first_click_at` ET `crm_emitted_at`) : la
+    // requête est un `$queryRaw` (jointure), ses valeurs sont [lt, gte, (curseur), limite].
+    $queryRaw: async (sql: { sql: string; values: unknown[] }) => {
+      if (m.erreurColonne) {
+        throw Object.assign(new Error("col"), { code: "P2010", meta: { code: "42703" } });
+      }
+      m.requetes.push(sql);
+      const v = sql.values;
+      const avecCurseur = v.length === 4;
+      const [lt, gte] = v as [Date, Date];
+      const curseur = avecCurseur ? String(v[2]) : undefined;
+      const limite = Number(v[v.length - 1]);
+      return m.origines
+        .filter((o) => {
+          const d = m.demandes.get(`${o.emailKey}|${o.guide}`);
+          return (
+            o.crmStatut === null &&
+            o.archiveeLe === null &&
+            +(o.createdAt as Date) < +lt &&
+            +(o.createdAt as Date) >= +gte &&
+            d !== undefined &&
+            d.firstClickAt != null &&
+            d.crmEmittedAt != null &&
+            (curseur === undefined || String(o.id) > curseur)
+          );
+        })
+        .sort((x, y) => String(x.id).localeCompare(String(y.id)))
+        .slice(0, limite);
     },
     guideRequest: {
       findUnique: async (a: { where: { emailKey_aimant: { emailKey: string; aimant: string } } }) =>
@@ -79,9 +86,13 @@ beforeEach(() => {
   m.origines.length = 0;
   m.demandes.clear();
   m.appels.length = 0;
-  m.filtres.length = 0;
+  m.requetes.length = 0;
   m.erreurColonne = false;
-  m.demandes.set("cle-1|guide-ia", { email: "p@exemple.test", firstClickAt: il_y_a(500) });
+  m.demandes.set("cle-1|guide-ia", {
+    email: "p@exemple.test",
+    firstClickAt: il_y_a(500),
+    crmEmittedAt: il_y_a(499),
+  });
   vi.spyOn(console, "warn").mockImplementation(() => {});
 });
 const lancer = (sur: Record<string, unknown> = {}) =>
@@ -95,7 +106,11 @@ const lancer = (sur: Record<string, unknown> = {}) =>
 describe("rattraperOriginesSuivantes", () => {
   it("origine en attente depuis 1 h d'une personne cliquée : une transmission par (personne, guide)", async () => {
     m.origines.push(o(), o(), o({ guide: "autre" }));
-    m.demandes.set("cle-1|autre", { email: "p@exemple.test", firstClickAt: il_y_a(100) });
+    m.demandes.set("cle-1|autre", {
+      email: "p@exemple.test",
+      firstClickAt: il_y_a(100),
+      crmEmittedAt: il_y_a(99),
+    });
     const b = await lancer();
     expect(m.appels).toHaveLength(2);
     expect(b.groupes).toBe(2);
@@ -113,14 +128,15 @@ describe("rattraperOriginesSuivantes", () => {
     m.origines.push(o());
     const b = await lancer();
     expect(m.appels).toHaveLength(0);
-    expect(b.nonCliques).toBe(1);
+    // Elle n'est même pas lue : la requête ne retient que les personnes qui ont cliqué.
+    expect(b.groupes).toBe(0);
   });
 
   it("sans date de coupure (D3 en attente) : rien n'est lu ni envoyé", async () => {
     m.origines.push(o());
     const b = await rattraperOriginesSuivantes({ executer: true, maintenant: MAINTENANT });
     expect(b.refus).toBe("coupure-absente");
-    expect(m.filtres).toHaveLength(0);
+    expect(m.requetes).toHaveLength(0);
     expect(m.appels).toHaveLength(0);
   });
 
@@ -161,18 +177,28 @@ describe("rattraperOriginesSuivantes", () => {
     const b = await lancer();
     expect(m.appels).toEqual([expect.objectContaining({ emailKey: "cle-1" })]);
     expect(b.transmis).toBe(1);
-    expect(b.nonCliques).toBe(1);
+    // Les origines de la personne jamais cliquée ne prennent plus de place dans la lecture.
+    expect(b.groupes).toBe(1);
     expect(b.borneAtteinte).toBe(false);
+    expect(m.origines).toHaveLength(TAILLE_LOT + 2);
   });
 
   it("origines qui ne partiront jamais : le passage s'arrête à la borne, les lignes restent NULL et le journal le dit", async () => {
-    // Une personne distincte par ligne, jamais cliquée : plus de lots que la borne.
+    // Une personne distincte par ligne, ayant cliqué mais exclue du CRM plus loin : plus de lots
+    // que la borne.
     const total = TAILLE_LOT * MAX_LOTS_ORIGINES + 5;
-    for (let i = 0; i < total; i += 1) m.origines.push(o({ emailKey: `k${i}` }));
+    for (let i = 0; i < total; i += 1) {
+      m.origines.push(o({ emailKey: `k${i}` }));
+      m.demandes.set(`k${i}|guide-ia`, {
+        email: "x@exemple.test",
+        firstClickAt: il_y_a(500),
+        crmEmittedAt: il_y_a(499),
+      });
+    }
     const b = await lancer({ executer: false });
     expect(b.borneAtteinte).toBe(true);
     expect(b.groupes).toBe(TAILLE_LOT * MAX_LOTS_ORIGINES);
-    expect(m.filtres).toHaveLength(MAX_LOTS_ORIGINES);
+    expect(m.requetes).toHaveLength(MAX_LOTS_ORIGINES);
     // Rien n'est effacé ni marqué : tout est encore en attente.
     expect(m.origines).toHaveLength(total);
     expect(m.origines.every((x) => x.crmStatut === null)).toBe(true);

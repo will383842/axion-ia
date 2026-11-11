@@ -32,6 +32,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "../../../prisma/generated/client";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 
 import { transmettreOriginesSuivantes } from "@/server/guides-reseau/synchro-v3";
@@ -312,8 +313,9 @@ export const DELAI_RATTRAPAGE_ORIGINES_MS = 10 * 60_000;
 
 /**
  * Borne d'un passage : nombre maximal de lots de `TAILLE_LOT` lus (soit 10 000 origines).
- * Au-delà, le passage s'arrête et le journal dit combien de lots restent à lire ; les origines
- * non lues restent `NULL` en base (gardées, jamais effacées) et sont relues au passage suivant.
+ * La lecture ne porte que sur les personnes qui ont cliqué ; au-delà de la borne, le passage
+ * s'arrête et le journal le dit ; les origines non lues restent `NULL` en base (gardées, jamais
+ * effacées) et sont reprises dès que la file des origines à partir d'un clic se vide.
  */
 export const MAX_LOTS_ORIGINES = 20;
 
@@ -373,27 +375,45 @@ export async function rattraperOriginesSuivantes(
         borneAtteinte = true;
         break;
       }
+      // Seules les personnes qui ont cliqué (`first_click_at` ET `crm_emitted_at` posés) : les
+      // origines des autres ne partiront pas avant leur clic et ne prennent pas de place dans la borne.
+      const lt = new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS);
+      // Une requête COMPLÈTE par cas (pas de fragment `Prisma.sql` imbriqué : voir editorial/recherche.ts).
       const lignes: { id: string; emailKey: string; guide: string }[] =
-        await prisma.guideReseauOrigine.findMany({
-          where: {
-            crmStatut: null,
-            archiveeLe: null,
-            createdAt: {
-              lt: new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS),
-              gte: depuis,
-            },
-            ...(curseur === null ? {} : { id: { gt: curseur } }),
-          },
-          select: { id: true, emailKey: true, guide: true },
-          orderBy: { id: "asc" },
-          take: TAILLE_LOT,
-        });
+        curseur === null
+          ? await prisma.$queryRaw(Prisma.sql`
+              SELECT o.id::text AS "id", o.email_key AS "emailKey", o.guide AS "guide"
+              FROM guide_reseau_origines o
+              JOIN guide_requests g ON g.email_key = o.email_key AND g.aimant = o.guide
+              WHERE o.crm_statut IS NULL
+                AND o.archivee_le IS NULL
+                AND o.created_at < ${lt}
+                AND o.created_at >= ${depuis}
+                AND g.first_click_at IS NOT NULL
+                AND g.crm_emitted_at IS NOT NULL
+              ORDER BY o.id ASC
+              LIMIT ${TAILLE_LOT}`)
+          : await prisma.$queryRaw(Prisma.sql`
+              SELECT o.id::text AS "id", o.email_key AS "emailKey", o.guide AS "guide"
+              FROM guide_reseau_origines o
+              JOIN guide_requests g ON g.email_key = o.email_key AND g.aimant = o.guide
+              WHERE o.crm_statut IS NULL
+                AND o.archivee_le IS NULL
+                AND o.created_at < ${lt}
+                AND o.created_at >= ${depuis}
+                AND g.first_click_at IS NOT NULL
+                AND g.crm_emitted_at IS NOT NULL
+                AND o.id > ${curseur}::uuid
+              ORDER BY o.id ASC
+              LIMIT ${TAILLE_LOT}`);
       for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
       if (lignes.length < TAILLE_LOT) break;
       curseur = lignes[lignes.length - 1]!.id;
     }
   } catch (e) {
-    if ((e as { code?: unknown }).code === "P2022") {
+    // P2022 (colonne absente) ; en SQL brut, Prisma la rend en P2010 avec le code Postgres 42703.
+    const erreur = e as { code?: unknown; meta?: { code?: unknown } };
+    if (erreur.code === "P2022" || (erreur.code === "P2010" && erreur.meta?.code === "42703")) {
       console.warn(
         JSON.stringify({ event: "guides_reseau_origines_crm", resultat: "colonne_absente" }),
       );

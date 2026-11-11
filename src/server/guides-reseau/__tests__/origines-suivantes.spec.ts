@@ -15,11 +15,18 @@ const bd = vi.hoisted(() => ({
   appelsOpposee: 0,
   panneOutbox: false,
   requetesOutbox: 0,
+  ordre: [] as string[],
+  enTransaction: false,
 }));
 
 vi.mock("@/lib/prisma", () => {
   const client = {
-    guideRequest: { findUnique: async () => bd.demande },
+    guideRequest: {
+      findUnique: async () => {
+        bd.ordre.push(bd.enTransaction ? "demande:dans_transaction" : "demande:hors_transaction");
+        return bd.demande;
+      },
+    },
     guideReseauOrigine: {
       findMany: async ({
         where,
@@ -68,10 +75,14 @@ vi.mock("@/lib/prisma", () => {
         return { id: l.id as string };
       },
     },
-    $executeRaw: async () => 1,
+    $executeRaw: async () => {
+      bd.ordre.push("verrou");
+      return 1;
+    },
     $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
       const photo = bd.origines.map((l) => ({ l, c: { ...l } }));
       const n = bd.outbox.length;
+      bd.enTransaction = true;
       try {
         return await fn(client);
       } catch (e) {
@@ -81,6 +92,8 @@ vi.mock("@/lib/prisma", () => {
         });
         bd.outbox.length = n;
         throw e;
+      } finally {
+        bd.enTransaction = false;
       }
     },
   };
@@ -156,6 +169,8 @@ beforeEach(() => {
   bd.appelsOpposee = 0;
   bd.panneOutbox = false;
   bd.requetesOutbox = 0;
+  bd.ordre.length = 0;
+  bd.enTransaction = false;
   process.env.CRM_SYNC_ENABLED = "true";
   process.env.CRM_SYNC_GUIDE_ENABLED = "true";
   process.env.SYNCHRO_CRM_V3 = "true";
@@ -210,6 +225,20 @@ describe("transmettreOriginesSuivantes", () => {
     bd.origines.push(origine());
     expect(await appel()).toBe("pas_clique");
     expect(bd.requetesOutbox).toBe(0);
+    expect(bd.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("la demande est lue DANS la transaction, APRÈS la prise du verrou (course avec le clic)", async () => {
+    bd.origines.push(origine());
+    await appel();
+    expect(bd.ordre).toEqual(["verrou", "demande:dans_transaction"]);
+  });
+
+  it("personne jamais cliquée : `pas_clique` vient de la transaction, sans rien écrire ni écarter", async () => {
+    bd.demande = { id: "demande-1", firstClickAt: null, crmEmittedAt: null };
+    bd.origines.push(origine());
+    expect(await appel()).toBe("pas_clique");
+    expect(bd.ordre).toEqual(["verrou", "demande:dans_transaction"]);
     expect(bd.origines[0]?.crmStatut).toBeNull();
   });
 

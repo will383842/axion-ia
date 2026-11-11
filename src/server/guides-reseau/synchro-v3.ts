@@ -369,18 +369,19 @@ export async function transmettreOriginesSuivantes(args: {
     }
     const personKey = hashEmailForLookup(args.email);
     if (!personKey) return "echec";
-    // La personne a-t-elle déjà cliqué ? Sinon la charge partira au premier clic (jamais avant).
-    const demande = await prisma.guideRequest.findUnique({
-      where: { emailKey_aimant: { emailKey: args.emailKey, aimant: args.guide } },
-      select: { id: true, firstClickAt: true, crmEmittedAt: true },
-    });
-    if (demande === null || demande.firstClickAt === null || demande.crmEmittedAt === null) {
-      journaliser("pas_clique", 0);
-      return "pas_clique";
-    }
     const maintenant = new Date();
     const issue = await prisma.$transaction(async (tx) => {
       await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + args.emailKey}))`;
+      // La personne a-t-elle déjà cliqué ? Lu APRÈS le verrou, DANS la transaction : le clic prend
+      // le même verrou, donc on voit son état validé ou on attend sa fin. Sinon la charge partira
+      // au premier clic (jamais avant).
+      const demande = await tx.guideRequest.findUnique({
+        where: { emailKey_aimant: { emailKey: args.emailKey, aimant: args.guide } },
+        select: { id: true, firstClickAt: true, crmEmittedAt: true },
+      });
+      if (demande === null || demande.firstClickAt === null || demande.crmEmittedAt === null) {
+        return { issue: "pas_clique" as const, n: 0, id: null };
+      }
       if (await estOpposee(args.email, tx)) {
         const r = await tx.guideReseauOrigine.updateMany({
           where: { emailKey: args.emailKey, archiveeLe: null, crmStatut: null },
