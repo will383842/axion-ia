@@ -285,6 +285,14 @@ const nextConfig: NextConfig = {
       //   · le PDF « Devenir apporteur d'affaires » : commissions et prix de vente.
       // Garde : `src/content/__tests__/fichiers-publics-a-prix-masques.spec.ts`.
       // Pour rétablir : retirer ces deux entrées ET repasser l'interrupteur (décision Will).
+      // Entrées explicites (#1871, gardées par public-sans-certification-ni-opco.spec.ts) :
+      // les fichiers vivent désormais sous docs/pdf-hors-ligne-certification/ ; le motif
+      // `:path+` ci-dessous couvre le reste du dossier.
+      {
+        source: "/catalogue/index.html",
+        destination: "/fr/formations",
+        permanent: false,
+      },
       {
         source: "/catalogue/:path+",
         destination: "/fr/formations",
