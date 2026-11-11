@@ -62,6 +62,7 @@ describe("cas concrets éteints", () => {
       "src/app/[locale]/methodologie/page.tsx",
       "src/app/[locale]/confirmation/page.tsx",
       "src/components/sections/FounderProfile.tsx",
+      "src/components/sections/ProductPageTemplate.tsx",
     ]) {
       const src = lire(fichier);
       const lignes = src.split("\n");

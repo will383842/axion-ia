@@ -401,7 +401,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "les-3-modules-axion-ia",
     reviewedAt: "2026-08-12",
-    related: ["definition-axion-ia", "tarifs-publics-transparents", "comment-commencer"],
+    related: ["definition-axion-ia", "devis-detaille-et-ferme", "comment-commencer"],
     fr: {
       // « Quels sont les 3 modules ? » reformulée le 2026-08-13 (décision Will) :
       // le titre affichait « 3 » alors que la réponse explique les 5 prestations.
@@ -586,7 +586,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "facturation",
     reviewedAt: "2026-08-12",
-    related: ["tarifs-publics-transparents", "cout-projet-ia-pme", "budget-demarrer-ia"],
+    related: ["devis-detaille-et-ferme", "cout-projet-ia-pme", "budget-demarrer-ia"],
     fr: {
       question: "Comment se passe la facturation ?",
       answer:
@@ -1259,7 +1259,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "choisir-cabinet-ia",
     reviewedAt: "2026-08-12",
-    related: ["deroule-mission-axion", "tarifs-publics-transparents", "audit-ia-definition"],
+    related: ["deroule-mission-axion", "devis-detaille-et-ferme", "audit-ia-definition"],
     fr: {
       question: "Comment choisir un cabinet IA ?",
       answer:
@@ -1637,7 +1637,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "cout-projet-ia-pme",
     reviewedAt: "2026-08-12",
-    related: ["tarifs-publics-transparents", "budget-demarrer-ia", "cout-audit-ia-entreprise"],
+    related: ["devis-detaille-et-ferme", "budget-demarrer-ia", "cout-audit-ia-entreprise"],
     fr: {
       question: "Combien coûte un projet IA pour une PME ?",
       answer:
@@ -1893,7 +1893,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   // ── Batch perfection FAQ 2026-05-31 — extension couverture intentions ──────────
   {
-    id: "tarifs-publics-transparents",
+    id: "devis-detaille-et-ferme",
     reviewedAt: "2026-08-12",
     related: ["facturation", "cout-projet-ia-pme", "budget-demarrer-ia"],
     fr: {
@@ -1984,7 +1984,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "budget-demarrer-ia",
     reviewedAt: "2026-08-12",
-    related: ["cout-projet-ia-pme", "comment-commencer", "tarifs-publics-transparents"],
+    related: ["cout-projet-ia-pme", "comment-commencer", "devis-detaille-et-ferme"],
     fr: {
       question: "Quel budget prévoir pour démarrer l'IA dans mon entreprise ?",
       answer:
@@ -3902,7 +3902,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   {
     id: "cout-audit-ia-entreprise",
     reviewedAt: "2026-08-12",
-    related: ["tarifs-publics-transparents", "aides-subventions-ia", "audit-ia-definition"],
+    related: ["devis-detaille-et-ferme", "aides-subventions-ia", "audit-ia-definition"],
     fr: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
@@ -5164,7 +5164,7 @@ const FAQ_GLOBAL_CATEGORY: Readonly<Record<string, string>> = {
   // pricing
   facturation: "pricing",
   "cout-projet-ia-pme": "pricing",
-  "tarifs-publics-transparents": "pricing",
+  "devis-detaille-et-ferme": "pricing",
   "aides-subventions-ia": "pricing",
   "budget-demarrer-ia": "pricing",
   // process
