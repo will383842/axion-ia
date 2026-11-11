@@ -27,10 +27,14 @@ import { careerImage } from "@/content/careers/careers-images";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import { HUB_VILLES } from "@/content/recrutement/satellites";
+import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 
-// 40 villes affichées en badges (info, pas de pages thin) : les 40 hubs T1+T2
-// (population ≥ 100 000).
-const CAREER_CITIES: ReadonlyArray<string> = [...HUB_VILLES.map((v) => v.nameFr)];
+// Villes affichées en badges (info, pas de pages thin) : les hubs T1+T2
+// (population ≥ 100 000), hors ville du siège : elle ne figure jamais en communication
+// (règle de Williams ; seules les mentions légales la portent).
+const CAREER_CITIES: ReadonlyArray<string> = HUB_VILLES.filter(
+  (v) => v.nameFr !== IDENTITE_LEGALE.ville,
+).map((v) => v.nameFr);
 import {
   buildProductMetadata,
   buildItemListJsonLd,

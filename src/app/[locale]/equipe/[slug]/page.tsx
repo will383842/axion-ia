@@ -71,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       // `{ absolute }` et n'appose pas une seconde fois « · Axion-IA ».
       title: `${FOUNDER.fullName} — fondateur d'Axion-IA, expert IA en entreprise`,
       description:
-        "Williams Jullin, fondateur et CEO d'Axion-IA, agence IA opérationnelle partout en France : audit, formation, coaching et implémentation IA partout en France.",
+        "Williams Jullin, fondateur et CEO d'Axion-IA, agence IA opérationnelle : audit, formation, coaching et implémentation IA partout en France.",
       alternates: { fr: `/equipe/williams` },
       ogEyebrow: "Fondateur & CEO",
     });

@@ -21,6 +21,8 @@ const COMMUNICATION: ReadonlyArray<string> = [
   "src/content/guide-ia-page.ts",
   "src/app/[locale]/avis/page.tsx",
   "src/app/[locale]/recherche/page.tsx",
+  "src/components/careers/OffersEmbedPromo.tsx",
+  "src/components/sections/LocalGeoFaqSection.tsx",
 ];
 
 /** Liste blanche documentaire : ces fichiers PEUVENT nommer Grenoble (mentions légales, données). */
