@@ -16,11 +16,14 @@ export interface ImplementationContactBandProps {
   readonly isFr: boolean;
   /** Suffixe de tracking pour distinguer les multiples instances sur la page. */
   readonly trackSuffix?: string;
+  /** Bandeau du bas de page : titre distinct de celui du milieu (pas deux h2 identiques). */
+  readonly finale?: boolean;
 }
 
 export function ImplementationContactBand({
   isFr,
   trackSuffix = "",
+  finale = false,
 }: ImplementationContactBandProps): ReactNode {
   return (
     <section className="bg-terracotta py-16 sm:py-20">
@@ -34,9 +37,13 @@ export function ImplementationContactBand({
               className="text-mocha-fg text-[clamp(1.75rem,3.5vw,2.75rem)] leading-tight font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? "On cadre votre projet IA," : "We scope your AI project,"}{" "}
+              {isFr
+                ? finale
+                  ? "Un agent IA ou une automatisation,"
+                  : "On cadre votre projet IA,"
+                : "We scope your AI project,"}{" "}
               <span className="text-paper italic" style={{ fontFamily: "var(--font-serif)" }}>
-                {isFr ? "au bon niveau" : "at the right level"}
+                {isFr ? (finale ? "parlons-en" : "au bon niveau") : "at the right level"}
               </span>
             </h2>
             <p className="text-mocha-fg/90 mt-3 text-base leading-relaxed sm:text-lg">

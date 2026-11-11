@@ -42,7 +42,7 @@ const PAGES_FR = [
   // liste d'audit dans les deux sens.
   ["/fr/formations", /formation/i],
   ["/fr/audit", /audit/i],
-  ["/fr/implementation", /implémentation|implementation/i],
+  ["/fr/implementation", /implémentation|implementation|automatisation/i],
   ["/fr/blog", /blog/i],
   ["/fr/contact", /contact/i],
 ] as const;
