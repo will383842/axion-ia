@@ -82,3 +82,18 @@ pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit   # base locale un
 
 Avant tout `--commit` : rien à défaire. Après : les fiches se retrouvent par le préfixe de slug `pack-journee-ia-` ; les
 archiver depuis la console (aucune suppression physique prévue par ce chantier).
+
+## Etat au 11/11/2026
+
+- **62 fiches en brouillon** (statut `draft`, audience `team`, confidentialité `internal`) : aucune n'est publiée.
+- **Import jamais exécuté** : seul le rapport à blanc (dry-run) a tourné. Le garde-fou de production (`--commit` refusé hors base locale sans `--confirmer-prod`) reste en place.
+- **Chatbot unifié éteint** : interrupteur `CHATBOT_KB_UNIFIED` (absent ou `false`). Le chatbot lit donc toujours les seuls chunks existants.
+- **Contrôle de fidélité éteint** : interrupteur `CONTENT_FIDELITY_CHECK` (absent ou `false`).
+- Le cache sémantique du chatbot distingue les deux régimes par un décalage de version (`DECALAGE_VERSION_KB_UNIFIEE`) ; sa purge (`invalidateStaleCache`) couvre les deux plages.
+
+### Étapes pour allumer, dans l'ordre
+
+1. **Validation des fiches par Williams** (relecture une à une ; doctrine : Journée IA 1 490 € HT seul prix affiché, aucun gain garanti).
+2. **Import** des fiches validées (`pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit`, puis publication depuis la console).
+3. **Rapport d'essai du chatbot** (script livré par la PR #1910) : comparer les réponses avant/après sur les questions types.
+4. **Interrupteur** : passer `CHATBOT_KB_UNIFIED=true` (et, si souhaité, `CONTENT_FIDELITY_CHECK=true`) dans Coolify, puis redémarrer le conteneur.

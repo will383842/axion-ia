@@ -150,10 +150,17 @@ export async function writeSemanticCache(
  * Retourne le nombre de lignes supprimées.
  */
 export async function invalidateStaleCache(tenantId: string): Promise<number> {
-  const version = await currentKnowledgeVersion(tenantId);
+  // Version de knowledge NON décalée : les deux plages (clés normales et clés décalées
+  // par DECALAGE_VERSION_KB_UNIFIEE) sont purgées indépendamment de l'interrupteur.
+  const v = await currentKnowledgeVersion(tenantId);
   const deleted = await prisma.$executeRaw`
     DELETE FROM "chat_semantic_cache"
-    WHERE "tenant_id" = ${tenantId}::uuid AND "knowledge_version" < ${version}
+    WHERE "tenant_id" = ${tenantId}::uuid
+      AND (
+        "knowledge_version" < ${v}
+        OR ("knowledge_version" >= ${DECALAGE_VERSION_KB_UNIFIEE}
+            AND "knowledge_version" < ${v + DECALAGE_VERSION_KB_UNIFIEE})
+      )
   `;
   return Number(deleted);
 }

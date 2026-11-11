@@ -18,6 +18,7 @@ vi.mock("@/lib/knowledge/embeddings", () => ({
 
 import {
   DECALAGE_VERSION_KB_UNIFIEE,
+  invalidateStaleCache,
   lookupSemanticCache,
   versionDeCle,
   writeSemanticCache,
@@ -118,5 +119,28 @@ describe("writeSemanticCache", () => {
     generateEmbedding.mockRejectedValue(new Error("401"));
     await writeSemanticCache("t1", "q", { reponse: "r", sources: [] }, settings);
     expect(executeRaw).not.toHaveBeenCalled();
+  });
+});
+
+describe("invalidateStaleCache", () => {
+  it("interrupteur éteint : purge les clés < v et la plage décalée < v + décalage", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "false");
+    queryRaw.mockResolvedValueOnce([{ v: 4 }]);
+    executeRaw.mockResolvedValueOnce(3);
+    expect(await invalidateStaleCache("t1")).toBe(3);
+    const [strings, ...vals] = executeRaw.mock.calls[0] as [string[], ...unknown[]];
+    expect(strings.join("?")).toContain('"knowledge_version" <');
+    expect(vals).toEqual(["t1", 4, DECALAGE_VERSION_KB_UNIFIEE, 4 + DECALAGE_VERSION_KB_UNIFIEE]);
+    vi.unstubAllEnvs();
+  });
+
+  it("interrupteur allumé : mêmes bornes, calculées sur la version non décalée", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "true");
+    queryRaw.mockResolvedValueOnce([{ v: 7 }]);
+    executeRaw.mockResolvedValueOnce(0);
+    expect(await invalidateStaleCache("t1")).toBe(0);
+    const [, ...vals] = executeRaw.mock.calls[0] as [string[], ...unknown[]];
+    expect(vals).toEqual(["t1", 7, DECALAGE_VERSION_KB_UNIFIEE, 7 + DECALAGE_VERSION_KB_UNIFIEE]);
+    vi.unstubAllEnvs();
   });
 });
