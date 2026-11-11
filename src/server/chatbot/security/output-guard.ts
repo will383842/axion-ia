@@ -8,7 +8,12 @@
 // Si violation → l'orchestrateur corrige (re-grounding) ou escalade. Le guard
 // ne réécrit pas : il DÉTECTE et liste les violations (décision côté orchestrateur).
 
-import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
+import {
+  JOURNEE_IA_TIER,
+  PRICING_CATEGORIES,
+  UN_A_UN_RECURRING_TIER,
+  prixAffichable,
+} from "@/content/pricing";
 import { isKnownFrUrl, KNOWN_FR_PATHS } from "@/lib/offer-url";
 import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
 
@@ -39,6 +44,28 @@ export const KNOWN_PRICES: ReadonlySet<number> = (() => {
   return set;
 })();
 
+/**
+ * R7 (ordre de Williams du 08/11/2026) — les seuls montants que le chatbot peut DIRE :
+ * ceux des paliers dont le prix reste affichable au public (aujourd'hui la Journée IA,
+ * 1 490 € HT). Un montant de la grille interne (`KNOWN_PRICES`) n'est plus citable : sa
+ * présence en sortie est une violation, et l'orchestrateur oriente vers le rendez-vous.
+ */
+export const PRIX_CITABLES: ReadonlySet<number> = (() => {
+  const set = new Set<number>();
+  const paliers = [
+    ...Object.values(PRICING_CATEGORIES).flat(),
+    UN_A_UN_RECURRING_TIER,
+    JOURNEE_IA_TIER,
+  ];
+  for (const t of paliers) {
+    if (!prixAffichable(t)) continue;
+    for (const n of [t.priceFlat, t.priceFlatOnsite, t.priceMin, t.priceMax]) {
+      if (typeof n === "number") set.add(n);
+    }
+  }
+  return set;
+})();
+
 /** Premiers segments de route connus (ex. « audit », « interventions »…). */
 const KNOWN_TOP_SEGMENTS: ReadonlySet<string> = new Set(
   [...KNOWN_FR_PATHS].map((p) => p.split("/")[1]).filter((s): s is string => Boolean(s)),
@@ -56,6 +83,23 @@ export interface OutputGuardResult {
 }
 
 const PRICE_RE = /(\d[\d   ]*\d|\d)\s*(?:€|euros?\b|EUR\b)/gi;
+
+/**
+ * R7 — formes que `PRICE_RE` ne lit pas : abrégées (« 8-50 K€ », « 5k€ », « 1,2 M€ »)
+ * ou devise en tête (« €490 HT »). Toute occurrence est un montant dit au public.
+ */
+const PRIX_ABREGE_RE = /\d\s*[kKM]\s*€|€\s?\d[\d\s.,]*/g;
+
+/** Montants abrégés ou à devise en tête non citables (seule la Journée IA l'est). */
+function extractPrixAbreges(text: string): string[] {
+  return [...text.matchAll(PRIX_ABREGE_RE)]
+    .map((m) => m[0].trim())
+    .filter((brut) => {
+      if (!brut.startsWith("€")) return true; // K€ / M€ : jamais un prix citable
+      const n = parseInt(brut.replace(/[^\d]/g, ""), 10);
+      return !PRIX_CITABLES.has(n);
+    });
+}
 
 /** Normalise « 1 190 » / « 30 000 » → 1190 / 30000. */
 function toInt(raw: string): number {
@@ -104,13 +148,24 @@ export function verifyOutput(text: string, opts: VerifyOutputOptions = {}): Outp
   const allowed = new Set((opts.extraKnownUrls ?? []).map((u) => u.replace(/\/+$/, "")));
 
   for (const price of extractCitedPrices(text)) {
-    if (!KNOWN_PRICES.has(price)) {
+    if (!PRIX_CITABLES.has(price)) {
       violations.push({
         type: "price",
         value: `${price} €`,
-        reason: "prix absent de pricing.ts (SSOT) — possible hallucination",
+        reason: KNOWN_PRICES.has(price)
+          ? "montant masqué au public (R7) : « sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes »"
+          : "prix absent de pricing.ts (SSOT) — possible hallucination",
       });
     }
+  }
+
+  for (const brut of extractPrixAbreges(text)) {
+    violations.push({
+      type: "price",
+      value: brut,
+      reason:
+        "montant masqué au public (R7) : « sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes »",
+    });
   }
 
   for (const url of extractCitedUrls(text)) {

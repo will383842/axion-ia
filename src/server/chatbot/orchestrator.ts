@@ -231,11 +231,20 @@ export async function handleTurn(
         { directShortcut: direct },
       );
       const sent = flow.state.linkState === "sent";
-      const text = res.replied
-        ? "Je n'ai pas d'offre exactement dans ces critères, mais voici ce qui s'en rapproche :"
-        : sent
-          ? `Voici ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent :`
-          : `J'ai ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent. Souhaitez-vous les liens ?`;
+      // R7 (08/11/2026) : une question de budget ou de prix n'obtient aucun montant
+      // (cartes « Sur devis », sauf la Journée IA) ; on le dit et on propose le RDV.
+      const questionDePrix =
+        slots.prixMin !== undefined || slots.prixMax !== undefined || slots.tri !== undefined;
+      const text = questionDePrix
+        ? "Hormis la Journée IA, nos offres sont sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes. " +
+          (sent
+            ? "Voici celles qui peuvent vous intéresser :"
+            : `J'en ai ${cards.length} qui peu${cards.length > 1 ? "vent" : "t"} vous intéresser. Souhaitez-vous les liens ?`)
+        : res.replied
+          ? "Je n'ai pas d'offre exactement dans ces critères, mais voici ce qui s'en rapproche :"
+          : sent
+            ? `Voici ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent :`
+            : `J'ai ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent. Souhaitez-vous les liens ?`;
       return {
         ...base,
         intent,
@@ -244,7 +253,7 @@ export async function handleTurn(
         sendLinks: sent,
         linkFlow: flow.state,
         escalate: false,
-        ...(res.proposeRdv ? { rdvUrl: RDV_URL } : {}),
+        ...(res.proposeRdv || questionDePrix ? { rdvUrl: RDV_URL } : {}),
       };
     }
 
@@ -287,8 +296,15 @@ export async function handleTurn(
     default: {
       // T-26 cache sémantique : question proche déjà répondue → 0 retrieval, 0 LLM.
       const cached = await cacheLookup(tenantId, message, ctx.tenant.settings);
-      // Une entrée écrite avant le contrôle de doctrine ne doit jamais être servie.
-      if (cached && !verifyOutput(cached.reponse).violations.some((v) => v.type === "interdit")) {
+      // Une entrée écrite avant le contrôle de doctrine (#1851) ou avant le masquage des prix
+      // (R7) n'est jamais servie : on régénère. Les autres signaux (ex. URL de ressource
+      // dynamique) ne l'écartent pas.
+      if (
+        cached &&
+        !verifyOutput(cached.reponse).violations.some(
+          (v) => v.type === "interdit" || v.type === "price",
+        )
+      ) {
         return {
           intent: "explication",
           text: cached.reponse,

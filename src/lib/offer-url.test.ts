@@ -16,12 +16,14 @@ import {
   KNOWN_FR_PATHS,
   RESOLVABLE_OFFER_IDS,
 } from "@/lib/offer-url";
-import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
+import { JOURNEE_IA_TIER, PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER } from "@/content/pricing";
 
 // Tous les ids d'offre réels de la SSOT pricing.ts.
 const allPricingOfferIds = [
   ...Object.values(PRICING_CATEGORIES).flatMap((tiers) => tiers.map((t) => t.id)),
   UN_A_UN_RECURRING_TIER.id,
+  // R7 : la Journée IA (palier hors PRICING_CATEGORIES) est au catalogue du chatbot.
+  JOURNEE_IA_TIER.id,
 ];
 // dédoublonne (UN_A_UN_TIERS réexpose intervention-dirigeants).
 const uniquePricingIds = [...new Set(allPricingOfferIds)];
