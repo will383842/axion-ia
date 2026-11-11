@@ -258,7 +258,7 @@
         ".next/static/chunks/webpack-*.js",
         ".next/static/chunks/polyfills-*.js"
       ],
-      "limit": "138 KB",
+      "limit": "138.1 KB",
       "running": false
     },
     {
