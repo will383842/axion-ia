@@ -96,6 +96,9 @@ const SEGMENTS_SECRETS: ReadonlyArray<RegExp> = [
   /(\/portail\/signer\/)[^/?#]+/gi,
   // Dossier en ligne d'un formateur indépendant (lot L5) : `/formateur/dossier/<uuid>/<jeton>`.
   /(\/formateur\/dossier\/[0-9a-fA-F-]{36}\/)[^/?#]+/gi,
+  // Lien « Recevoir le guide » (`?j=<jeton signé>`) et téléchargement du guide (`?t=<jeton>`) :
+  // le jeton vit dans la QUERY, sous n'importe quel chemin (y compris les 307 / redirections).
+  /((?:^|[?&])(?:j|t)=)[^&#\s]+/g,
 ];
 
 /** Remplace le segment secret de ces routes par `[TOKEN]`, en gardant la route lisible. */
@@ -137,7 +140,7 @@ function redactString(input: unknown): unknown {
  * on SUPPRIME, sans chercher à reconnaître.
  */
 const ROUTE_A_REQUETE_SECRETE =
-  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier|guide-reseau)(?:\/|$)/i;
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier|guide-reseau|api\/guide-ia\/telecharger)(?:\/|$|\?)/i;
 
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);
