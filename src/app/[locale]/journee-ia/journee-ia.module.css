@@ -116,7 +116,7 @@
 
 /* La ligne « plus gros gain » est surlignée (et la suivante n'a pas de filet au-dessus). */
 .haut {
-  background: var(--color-terracotta-soft);
+  border-left: 3px solid var(--color-terracotta);
   border-radius: var(--radius-lg);
 }
 
@@ -348,7 +348,7 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--color-terracotta-soft);
+  background: var(--color-paper);
   color: var(--color-terracotta);
 }
 

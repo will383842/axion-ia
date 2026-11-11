@@ -660,7 +660,7 @@ export default async function JourneeIaPage({ params }: Props) {
       </section>
 
       {/* 5. COMBIEN VOUS COÛTENT CES HEURES ? */}
-      <section id="exemple" aria-labelledby="h-exemple" className={`bg-terracotta-soft ${SECTION}`}>
+      <section id="exemple" aria-labelledby="h-exemple" className={`bg-bg ${SECTION}`}>
         <Container>
           <div className={s.apparition}>
             <Surtitre n="04">{calcul.surtitre}</Surtitre>
@@ -757,7 +757,7 @@ export default async function JourneeIaPage({ params }: Props) {
 
           <div
             id="garantie"
-            className={`border-border-on-mocha border-l-terracotta-on-mocha bg-mocha-soft ${s["ombre-mocha"]} relative scroll-mt-20 overflow-hidden rounded-xl border border-l-4 p-5 sm:p-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-7 lg:self-start`}
+            className={`border-border-strong border-l-terracotta-on-mocha bg-mocha-soft ${s["ombre-mocha"]} relative scroll-mt-20 overflow-hidden rounded-xl border border-l-4 p-5 sm:p-8 lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-7 lg:self-start`}
           >
             <span aria-hidden="true" className={s.x3}>
               ×3
