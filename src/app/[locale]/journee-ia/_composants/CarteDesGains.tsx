@@ -15,7 +15,6 @@ export function CarteDesGains() {
   return (
     <figure className={s.carte} aria-labelledby="cg-titre">
       <figcaption className={s.legende}>
-        <span className={s.etiquette}>{c.etiquette}</span>
         <b id="cg-titre" className={s.titre}>
           {c.titre}
         </b>
