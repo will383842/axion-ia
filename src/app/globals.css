@@ -18,7 +18,7 @@
 /* =============================================================
  * Axion-IA · Design System tokens v3 (Editorial Premium Light)
  * Direction "Anthropic / Mistral" : ivoire chaud + sand + mocha + terracotta,
- * serif Fraunces sur titres, pas de noir pur. Validée Will 2026-05-06.
+ * Manrope seule (charte 2027), pas de noir pur. Validée Williams 2026-05-06.
  *
  * Hex codes are intentionally hardcoded HERE — this is the single token file
  * (`anti-hex` linter excludes globals.css). Application code consumes these
@@ -32,8 +32,8 @@
  appelée par src: local() (Liberation = métriques Arial/Times New Roman, Regular/Bold/Italic/Bold Italic).
  ascent/descent-override = métrique hhea / unitsPerEm / size-adjust (exprimés avant ajustement, comme next/font).
  next/font fige les faces fixes 400 et 600 (Manrope) : le 500 s'affiche donc en wght 400.
- next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
- Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
+ next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200
+ → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
  ⚠️ Jamais « étoile + barre oblique » dans ce commentaire : il le fermait, et le navigateur jetait la face Manrope 400 qui suit.
  Chrome n'accepte qu'un nom EXACT pour local() (pas de substitution fontconfig) : sans les noms Liberation, la face
  échouait en silence sur Linux (runner Lighthouse) et sur Android, et le CLS restait à 0,27 (run 40848411969).
@@ -212,7 +212,7 @@
   --text-7xl--line-height: 1;
   --text-7xl--letter-spacing: -0.04em;
 
-  /* display Fraunces italique — capped 88 px (Stripe Press ceiling, ADR 0007) */
+  /* display Manrope — capped 88 px (Stripe Press ceiling, ADR 0007) */
   --text-display: 5.5rem; /* 88 px — était 112 px ; cap 2026 hero/body 4.89× */
   --text-display--line-height: 0.98;
   --text-display--letter-spacing: -0.04em;
@@ -530,7 +530,7 @@
     }
   }
 
-  /* Display giant — Fraunces italique + tracking serré (signature Anthropic).
+  /* Display giant — Manrope + tracking serré (signature Anthropic).
      v3.2 (ADR 0007) : cap 7rem→5.5rem (112→88 px) pour ratio hero/body 4.89× (médiane 2026 = 4.4×).
      v3.3 (2026-07-19, Will) : cap 5.5rem→4rem (88→64 px) + slope 7.5vw→4.5vw + min 3rem→2.5rem.
        Motif : les H1 français (souvent longs) débordaient sur les petits écrans laptop (1280-1366 px)
@@ -695,8 +695,8 @@
  *
  * Contraintes : tokens uniquement (anti-hex exclut globals.css), 100 % CSS
  * (0 JS / 0 CLS), aligné sur le design system « Editorial Premium Light »
- * (Manrope semibold sur Hn comme les <Section>, accents terracotta, Fraunces
- * italique sur citations). Largeur de lecture pilotée par le conteneur parent.
+ * (Manrope semibold sur Hn comme les <Section>, accents terracotta,
+ * citations en italique). Largeur de lecture pilotée par le conteneur parent.
  * =============================================================*/
 @layer components {
   .prose-axionia {
@@ -818,7 +818,7 @@
     margin: 0.5rem 0 0.5rem;
   }
 
-  /* Citations — Fraunces italique, filet terracotta */
+  /* Citations — Manrope italique, filet terracotta */
   .prose-axionia blockquote {
     margin: 2.25rem 0;
     padding: 1.15rem 1.5rem;

@@ -1,5 +1,5 @@
-// Garde du CLS mobile (run 40848411969) : les faces « Manrope Fallback » et « Fraunces Fallback »
-// doivent citer une police locale que Linux et Android possèdent. Chrome n'accepte qu'un nom exact
+// Garde du CLS mobile (run 40848411969) : les faces « Manrope Fallback »
+// (seule police de la charte 2027 ; plus aucun repli Fraunces) doivent citer une police locale que Linux et Android possèdent. Chrome n'accepte qu'un nom exact
 // pour local() (pas de substitution fontconfig) : avec « Arial » ou « Times New Roman » seuls, la face
 // échoue en silence sur le runner Lighthouse et le héros reflue au chargement des vraies polices.
 import { readFileSync } from "node:fs";
@@ -21,15 +21,12 @@ describe("replis métriques des polices : noms Liberation présents", () => {
     for (const b of blocs) expect(b).toMatch(/src:[^;]*local\("Liberation Sans/);
   });
 
-  it("Fraunces Fallback : 6 faces, chacune cite une Liberation Serif", () => {
-    const blocs = blocsDeRepli("Fraunces Fallback");
-    expect(blocs).toHaveLength(6);
-    for (const b of blocs) expect(b).toMatch(/src:[^;]*local\("Liberation Serif/);
+  it("Fraunces Fallback : plus aucune face (charte 2027, Manrope seule)", () => {
+    expect(blocsDeRepli("Fraunces Fallback")).toHaveLength(0);
   });
 
-  it("chaque face garde aussi le nom PostScript d'Arial ou de Times New Roman (macOS, Windows)", () => {
-    const blocs = [...blocsDeRepli("Manrope Fallback"), ...blocsDeRepli("Fraunces Fallback")];
-    for (const b of blocs)
-      expect(b).toMatch(/local\("(ArialMT|Arial-BoldMT|TimesNewRomanPS[A-Za-z-]*)"\)/);
+  it("chaque face garde aussi le nom PostScript d'Arial (macOS, Windows)", () => {
+    const blocs = blocsDeRepli("Manrope Fallback");
+    for (const b of blocs) expect(b).toMatch(/local\("(ArialMT|Arial-BoldMT)"\)/);
   });
 });
