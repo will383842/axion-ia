@@ -21,6 +21,7 @@ import {
   pageGuideReseauActive,
 } from "@/server/guides-reseau/config";
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
+import { normaliserJetonRecu } from "@/server/guides-reseau/lien-page-guide";
 import { confirmerPageGuide } from "@/server/guides-reseau/page-confirmation";
 import { CHEMIN_PAGE_GUIDE } from "@/content/guides-reseau";
 import { publicUrl } from "@/lib/public-url";
@@ -78,7 +79,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch {
     return pageErreur(T.erreurs.email, "", 422);
   }
-  const jeton = texte(form.get("j"));
+  // Avant la vérification ET l'empreinte (usage unique) : un point final ne change ni l'une ni l'autre.
+  const jeton = normaliserJetonRecu(texte(form.get("j")));
 
   // Champ piège : faux succès, rien d'écrit.
   const leurre = form.get("website");

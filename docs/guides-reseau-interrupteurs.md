@@ -32,7 +32,7 @@ migration : l'opération est idempotente par nature.
 ## `PAGE_GUIDE_RESEAU_ENABLED` — la page « Recevoir le guide » (lot S2)
 
 Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.com/guide-reseau?j=<jeton>`
-(jeton signé créé par le Studio, valable 7 jours, **usage unique**). La personne y saisit son prénom
+(jeton signé créé par le Studio, valable **48 h** (décision du 11/11/2026), **usage unique**). La personne y saisit son prénom
 (obligatoire, 1 à 50 caractères) et son adresse, et coche l'**unique** case, au texte exact :
 « J'accepte de recevoir le guide et des informations d'Axion-IA, désinscription à tout moment »
 (`src/content/guides-reseau.ts`, version `page-guide-2026-11-08`, empreinte sha256 écrite avec la preuve).
@@ -45,6 +45,12 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
   `verifierSecretsDistincts` le contrôle. Absent, court ou égal → la page montre sa page neutre (« ce lien ne peut pas
   être utilisé » + lien vers `/fr/guide-ia`), la cause n'est jamais dite à la personne (elle part au journal, sans valeur).
   Le Studio signe avec **le même** secret : le poser des deux côtés avant d'allumer.
+- **Durée et tolérance du jeton** : 48 h exactement (`DUREE_JETON_SECONDES`) ; un jeton dont l'expiration
+  dépasse `maintenant + 48 h + 5 min` (`DERIVE_HORLOGE_SECONDES`) est refusé comme « champs » (un jeton de 7 jours
+  n'a pas été fabriqué par le Studio). Le format ne change pas. **Point final** : `normaliserJetonRecu` retire
+  `. , ; : ! ? )` collés à la fin du lien (messagerie qui avale la ponctuation) dans la page ET dans la route
+  d'envoi, avant la vérification et avant l'empreinte d'usage unique — avec ou sans point, c'est le même jeton.
+  Fixture de référence du Studio : `lien-page-guide.v2.json` (son SHA-256 est inscrit dans le test des deux dépôts).
 - À la validation : case obligatoire (422 sinon), adresse **opposée** = réponse identique à un succès (rien d'envoyé ni
   écrit), MX « non » = message d'erreur, MX inconnu = la demande passe, guide déjà parti il y a < 24 h = pas de second
   envoi. Aucune ligne `newsletter_subscribers`. L'e-mail du guide porte un lien de désinscription (porte d'opposition).

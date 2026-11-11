@@ -16,7 +16,11 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { pageGuideReseauActive } from "@/server/guides-reseau/config";
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
-import { empreinteJeton, verifierJeton } from "@/server/guides-reseau/lien-page-guide";
+import {
+  empreinteJeton,
+  normaliserJetonRecu,
+  verifierJeton,
+} from "@/server/guides-reseau/lien-page-guide";
 import { GUIDES_RESEAU_CONNUS, PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
 import { ENTETES_PAGE_GUIDE, echapper, pageStatique } from "./html-statique";
 import { TEXTES_PAGE_GUIDE as T, URL_CONFIDENTIALITE, URL_FORMULAIRE_GUIDE } from "./textes";
@@ -53,7 +57,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   if (!pageGuideReseauActive()) {
     return new NextResponse("Not found", { status: 404, headers: ENTETES_PAGE_GUIDE });
   }
-  const jeton = req.nextUrl.searchParams.get("j");
+  const brut = req.nextUrl.searchParams.get("j");
+  // Ponctuation finale avalée par un client de messagerie : retirée avant toute vérification.
+  const jeton = brut === null ? null : normaliserJetonRecu(brut);
 
   if (!(await jetonUtilisable(jeton))) {
     return pageStatique(

@@ -141,6 +141,21 @@ describe("page allumée", () => {
     expect(html).toContain("/fr/politique-confidentialite");
   });
 
+  it("un j terminé par « . » ouvre la page, avec le jeton SANS le point dans le formulaire", async () => {
+    const html = await rendre(`${JETON}.`);
+    expect(html).toContain("<form");
+    expect(html).toContain(`value="${JETON}"`);
+    expect(html).not.toContain(`value="${JETON}."`);
+  });
+
+  it("le point final ne change pas l'empreinte : un jeton déjà utilisé reste refusé avec ou sans point", async () => {
+    etat.contacts.push({ jetonEmpreinte: empreinteJeton(JETON) });
+    const sans = await rendre(JETON);
+    const avec = await rendre(`${JETON}.`);
+    expect(avec).toBe(sans);
+    expect(avec).not.toContain("<form");
+  });
+
   it("la ligne d'information ne contient ni « STOP » ni « autres informations »", async () => {
     const html = (await rendre(JETON)).toLowerCase();
     const sous = html.slice(html.indexOf("vos données servent"));
@@ -233,6 +248,28 @@ describe("route d'envoi allumée", () => {
       prenom: "Camille",
       secret: SECRET_LIEN,
     });
+  });
+
+  it("un j terminé par « . » (ou « ) ») est transmis SANS la ponctuation à la confirmation", async () => {
+    for (const fin of [".", ")", "?"]) {
+      etat.appels.length = 0;
+      const r = await POST(envoi({ ...champs, j: `${JETON}${fin}` }));
+      expect(r.status).toBe(303);
+      expect(etat.appels[0]).toMatchObject({ jeton: JETON });
+      expect(empreinteJeton(String(etat.appels[0]!["jeton"]))).toBe(empreinteJeton(JETON));
+    }
+  });
+
+  it("aucun console.* ne contient le jeton (succès, échec de confirmation, jeton refusé)", async () => {
+    const espions = (["log", "info", "warn", "error", "debug"] as const).map((m) =>
+      vi.spyOn(console, m).mockImplementation(() => undefined),
+    );
+    await POST(envoi({ ...champs, j: `${JETON}.` }));
+    etat.confirmer.retour = { ok: false, statut: 400, erreur: "lien" };
+    await POST(envoi({ ...champs, j: JETON }));
+    await rendre(`${JETON}.`);
+    const vus = espions.flatMap((e) => e.mock.calls).map((a) => JSON.stringify(a));
+    expect(vus.some((l) => l.includes(JETON))).toBe(false);
   });
 
   it("case décochée : la route transmet false → 422 d'une page statique, adresse non répétée", async () => {
