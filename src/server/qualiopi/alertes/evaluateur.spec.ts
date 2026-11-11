@@ -2179,9 +2179,9 @@ describe("vigilance sous-traitance", () => {
     id: "st-1",
     nom: "Organisme X",
     contratSigneAt: new Date("2026-01-10"),
-    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProEcheanceAt: new Date("2028-01-10"),
     rcProAttestationUrl: "https://r2/rc.pdf",
-    prochaineVerifAt: new Date("2027-01-10"),
+    prochaineVerifAt: new Date("2028-01-10"),
   };
 
   beforeEach(() => {
@@ -2250,9 +2250,9 @@ describe("vigilance sous-traitance", () => {
       nom: "Dupont",
       prenom: "Marie",
       sousTraitantContratSigneAt: new Date("2026-01-10"),
-      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProEcheanceAt: new Date("2028-01-10"),
       rcProAttestationUrl: "https://r2/rc.pdf",
-      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+      sousTraitantProchaineVerifAt: new Date("2028-01-10"),
     };
 
     it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {
