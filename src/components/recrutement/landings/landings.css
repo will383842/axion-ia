@@ -5716,13 +5716,13 @@
 }
 /* Corrections issues des tests e2e du dépôt (contrastes AA, aucun débordement à 390 px) */
 .lp-app .gestes li.paye .qui {
-  color: #3f5233;
+  color: #3f5233 !important;
 }
 .lp-app .ruban-j .aprem i {
-  color: #fff;
+  color: #fff !important;
 }
 .lp-app .indicatif {
-  color: #d9d7ce;
+  color: #d9d7ce !important;
 }
 .lp-app .prix-xl.com {
   font-size: clamp(2rem, 9.5vw, 3.75rem);
