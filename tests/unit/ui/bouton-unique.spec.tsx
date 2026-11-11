@@ -8,6 +8,15 @@ import { Button, buttonVariants } from "@/components/ui/button";
 
 const TAILLES = ["sm", "md", "lg", "xl", "icon"] as const;
 const FORMES = ["rounded", "pill"] as const;
+// Toutes les variantes sauf `link`, qui n'est pas une boîte de 52 px.
+const VARIANTES_BOITE = [
+  "primary",
+  "secondary",
+  "ghost",
+  "outline",
+  "terracotta",
+  "destructive",
+] as const;
 
 function hauteursClasses(classes: string): string[] {
   return classes.split(/\s+/).filter((c) => /^(min-)?h-/.test(c));
@@ -26,20 +35,19 @@ describe("Button — bouton unique", () => {
     }
   });
 
-  it("la cible tactile est d'au moins 48 px (hauteur réelle lue dans la classe)", () => {
-    for (const size of TAILLES) {
-      for (const shape of FORMES) {
-        const c = buttonVariants({ size, shape });
-        const m = c.match(/(?:^|\s)h-\[(\d+)px\]/);
-        expect(m, `${size}/${shape} : h-[Npx] absent`).not.toBeNull();
-        expect(Number(m![1]), `${size}/${shape}`).toBeGreaterThanOrEqual(48);
-        const hs = hauteursClasses(c);
-        const apres = hs.slice(hs.indexOf(`h-[${m![1]}px]`) + 1);
-        const plusPetit = apres.filter((h) => {
-          const n = h.match(/^(?:min-)?h-\[(\d+)px\]$/);
-          return !n || Number(n[1]) < 48;
-        });
-        expect(plusPetit, `${size}/${shape} : h-* plus petit après`).toEqual([]);
+  it("la cible tactile est d'au moins 48 px, sans autre h-* ni min-h-* dans toute la chaîne", () => {
+    for (const variant of VARIANTES_BOITE) {
+      for (const size of TAILLES) {
+        for (const shape of FORMES) {
+          const c = buttonVariants({ variant, size, shape });
+          const etiquette = `${variant}/${size}/${shape}`;
+          const hs = hauteursClasses(c);
+          // Une seule classe de hauteur, et c'est h-[52px] : rien avant, rien après.
+          expect(hs, etiquette).toEqual(["h-[52px]"]);
+          expect(Number(c.match(/(?:^|\s)h-\[(\d+)px\]/)![1]), etiquette).toBeGreaterThanOrEqual(
+            48,
+          );
+        }
       }
     }
     expect(buttonVariants({ size: "icon" })).toContain("w-[52px]");

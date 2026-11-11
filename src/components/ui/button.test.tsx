@@ -1,6 +1,8 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { vi } from "vitest";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { Button, buttonVariants } from "./button";
 import { Cta } from "@/components/marketing/Cta";
 import { StickyMobileCta } from "@/components/marketing/StickyMobileCta";
@@ -77,9 +79,10 @@ describe("<Button>", () => {
 
   it("la barre mobile collante réutilise les classes de Button, sans décalage de mise en page", () => {
     const { container } = render(<StickyMobileCta href="#x" label="Réserver" />);
-    const base = buttonVariants({}).split(" ");
+    const base = buttonVariants({}).split(/\s+/).filter(Boolean);
     for (const lien of Array.from(container.querySelectorAll("a"))) {
-      for (const c of base) expect(lien.className).toContain(c);
+      const classes = new Set(lien.className.split(/\s+/));
+      for (const c of base) expect(classes.has(c), c).toBe(true);
     }
     // Barre fixe : le conteneur du lien est hors flux et masqué par transform seul.
     const barre = container.querySelector("a")!.closest("div[aria-hidden]") as HTMLElement;
@@ -102,14 +105,48 @@ describe("<Button>", () => {
     expect(c).not.toContain("px-5");
   });
 
-  it("la barre mobile n'importe pas cn : classes concaténées, anneau terracotta, texte blanc", () => {
-    const { container } = render(
-      <StickyMobileCta href="#x" label="Réserver" couleur="terracotta" />,
+  it("la barre mobile n'importe ni Button, ni cn, ni clsx, ni tailwind-merge, ni cva", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src/components/marketing/StickyMobileCta.tsx"),
+      "utf8",
     );
-    for (const lien of Array.from(container.querySelectorAll("a"))) {
-      expect(lien.className).toContain("focus-visible:ring-terracotta");
-      expect(lien.className).toContain("text-paper");
-      expect(lien.className).not.toContain("ring-terracotta-on-mocha");
+    const imports = source.match(/^\s*import[^;]*?from\s+["'][^"']+["']/gm) ?? [];
+    expect(imports.length).toBeGreaterThan(0);
+    for (const interdit of [
+      "@/components/ui/button",
+      "@/lib/utils",
+      "clsx",
+      "tailwind-merge",
+      "class-variance-authority",
+    ]) {
+      for (const ligne of imports) {
+        expect(ligne, interdit).not.toContain(`"${interdit}"`);
+      }
+      expect(source, interdit).not.toMatch(new RegExp(`from\\s+["']${interdit}["']`));
+    }
+  });
+
+  it("la barre mobile reste alignée sur Button : chaque classe de la variante est présente (terracotta et défaut)", () => {
+    for (const [couleur, variant] of [
+      ["terracotta", "terracotta"],
+      [undefined, "primary"],
+    ] as const) {
+      const { container, unmount } = render(
+        <StickyMobileCta href="#x" label="Réserver" {...(couleur ? { couleur } : {})} />,
+      );
+      const attendu = buttonVariants({ variant }).split(/\s+/).filter(Boolean);
+      const liens = Array.from(container.querySelectorAll("a"));
+      expect(liens.length).toBe(2);
+      for (const lien of liens) {
+        const classes = new Set(lien.className.split(/\s+/));
+        for (const c of attendu) expect(classes.has(c), `${variant}: ${c}`).toBe(true);
+        if (couleur === "terracotta") {
+          expect(classes.has("focus-visible:ring-terracotta")).toBe(true);
+          expect(classes.has("focus-visible:ring-primary")).toBe(false);
+          expect(classes.has("text-paper")).toBe(true);
+        }
+      }
+      unmount();
     }
   });
 });

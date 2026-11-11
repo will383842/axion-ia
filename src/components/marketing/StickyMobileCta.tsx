@@ -14,7 +14,16 @@ import { useEffect, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { trackFunnel } from "@/lib/tracking";
-import { buttonVariants } from "@/components/ui/button";
+
+// Classes de Button (variante pleine, taille md), écrites à la main : importer
+// le module Button ferait entrer ses utilitaires de fusion de classes et Radix Slot dans le
+// graphe client. Le test de button.test.tsx garde cette liste alignée sur Button.
+const BASE_BOUTON =
+  "inline-flex items-center justify-center gap-2 rounded-lg font-semibold tracking-tight transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-[52px] px-5 text-sm cta-lift";
+const TEINTE_TERRACOTTA =
+  "focus-visible:ring-terracotta bg-terracotta text-paper hover:bg-terracotta-deep";
+const TEINTE_DEFAUT =
+  "focus-visible:ring-primary bg-primary text-primary-fg hover:bg-primary-hover";
 
 interface StickyMobileCtaProps {
   /** Cible du CTA principal (path interne i18n). */
@@ -58,8 +67,8 @@ export function StickyMobileCta({
   masquerQuandVisible,
 }: StickyMobileCtaProps) {
   const terracotta = couleur === "terracotta";
-  // Anneau de focus propre à la variante (jeton terracotta pour le tunnel), sans fusion de classes côté client.
-  const bouton = buttonVariants({ variant: terracotta ? "terracotta" : "primary" });
+  // Anneau de focus propre à la teinte (jeton terracotta pour le tunnel), sans fusion de classes côté client.
+  const bouton = `${BASE_BOUTON} ${terracotta ? TEINTE_TERRACOTTA : TEINTE_DEFAUT}`;
   const [visible, setVisible] = useState(false);
   const landingSuivi = suivi?.landing;
   const auClic = landingSuivi
