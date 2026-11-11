@@ -111,8 +111,9 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Tarifs indicatifs ────────────────────────────────────────────────────
   {
     id: "form-010",
-    text: "Formation découverte IA en entreprise (demi-journée de 4 h, groupe de 2 à 15 personnes) — prix public par groupe affiché sur la grille tarifaire, supports pédagogiques inclus.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    // R7 (08/11/2026) : plus aucun prix public hors Journée IA — sur devis.
+    text: "Formation découverte IA en entreprise (demi-journée de 4 h, groupe de 2 à 15 personnes) — sur devis, supports pédagogiques inclus.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -120,8 +121,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-011",
-    text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — prix public fixe par groupe selon la catégorie (offre générale, par métier ou par secteur d'activité), hors frais de déplacement.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — sur devis selon la catégorie (offre générale, par métier ou par secteur d'activité) ; parlons-en lors du rendez-vous gratuit de 45 minutes.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -130,7 +131,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-012",
     text: "Pour ancrer les acquis après une formation, Axion-IA propose un suivi hybride : session de formation (1 à 2 jours, présentiel ou distanciel) puis coaching 1-to-1 régulier — incluant un cadrage initial des usages IA existants.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -193,11 +194,22 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-021",
     text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (format plénière sur 1 journée, grands effectifs — séminaires, kick-off annuels) — sur devis selon le périmètre, le format (présentiel, distanciel, hybride) et les déplacements.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.92,
+  },
+  {
+    // R7 (08/11/2026) : l'offre mise en avant, seul prix public. Texte repris de la
+    // page /journee-ia (`src/app/[locale]/journee-ia/contenu.ts`), sans la garantie.
+    id: "form-081",
+    text: "La Journée IA d'Axion-IA, pour les TPE et PME : une journée dans vos locaux, partout en France. Le matin, nous regardons service par service ce qui prend du temps et nous le chiffrons avec vos heures ; l'après-midi, vos équipes apprennent sur leurs vrais dossiers ce qu'on confie à l'IA et ce qu'on garde. Vous repartez avec votre rapport complet (vos gains chiffrés et les tâches à automatiser, classées par rentabilité), un plan d'action sur 90 jours et une attestation pour chaque personne formée. {{price:journee-ia|flat}} la journée, dans vos locaux. On commence par un rendez-vous gratuit de 45 minutes, en visio ou par téléphone, sans engagement.",
+    source: "Axion-IA — La Journée IA",
+    sourceUrl: "https://axion-ia.com/fr/journee-ia",
+    verifiedAt: "2026-11-08",
+    verticales: ["interventions_formations"],
+    confidence: 0.95,
   },
   // ── Accompagnement post-formation ────────────────────────────────────────
   {

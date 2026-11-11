@@ -84,7 +84,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-008",
     text: "Chatbot RAG basique Axion-IA (jusqu'à 1 000 documents, 1 canal, 2 intégrations) — développement + maintenance/infra sur devis selon le périmètre.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -93,7 +93,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-009",
     text: "Automatisation de workflow IA Axion-IA — sur devis selon le périmètre, selon le nombre d'étapes et d'intégrations — gains opérationnels mesurables dès la mise en production (généralement sous 4 à 8 semaines), ROI complet sous quelques mois. Notre approche par défaut est le code custom (Node.js, Python, infrastructures cloud-native) pour la souveraineté des données et zéro lock-in éditeur. Plateformes no-code (Make, Zapier, n8n) disponibles uniquement sur demande client explicite.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],
@@ -102,7 +102,7 @@ export const KB_IMPLEMENTATIONS: readonly KbFact[] = [
   {
     id: "impl-010",
     text: "Projet d'implémentation IA complexe Axion-IA (système multi-agents, intégration ERP, tableau de bord IA) — sur devis selon le périmètre — avec objectifs de résultat définis contractuellement.",
-    source: "Axion-IA — Grille tarifaire implémentations 2026",
+    source: "Axion-IA — Offre implémentations 2026",
     sourceUrl: "https://axion-ia.com/implementations",
     verifiedAt: "2026-05-01",
     verticales: ["implementations"],

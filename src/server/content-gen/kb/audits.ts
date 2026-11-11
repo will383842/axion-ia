@@ -514,8 +514,9 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-054",
-    text: "Audit IA Axion-IA pour PME : {{price:audit-strategique-pme|from}}.",
-    source: "Axion-IA — Grille tarifaire audit 2026",
+    // R7 (08/11/2026) : plus aucun montant au public hors Journée IA — sur devis.
+    text: "Audit IA Axion-IA pour PME (3 cas d'usage, 5 jours) : sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes.",
+    source: "Axion-IA — Offre audit 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],

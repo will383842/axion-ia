@@ -370,17 +370,11 @@ Rapport structuré en trois niveaux de priorité :
     titleFr: "FAQ — Tarifs d'un audit IA pour TPE, PME et ETI",
     titleEn: "[EN] FAQ — AI Audit Pricing for SMEs and Mid-Market Companies",
     summaryFr:
-      "Réponses aux questions les plus fréquentes des dirigeants de TPE, PME et ETI sur les tarifs, le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
+      "Réponses aux questions les plus fréquentes des dirigeants de TPE, PME et ETI sur le coût (sur devis), le contenu et le retour sur investissement d'un audit IA réalisé par Axion-IA.",
     bodyMarkdownFr: `
-## Q : Quelle est la fourchette de prix pour un audit IA ?
+## Q : Combien coûte un audit IA ?
 
-**R :** Les tarifs varient principalement selon la taille de l'entreprise auditée et la profondeur de l'intervention :
-
-- **PME (10 à 250 salariés)** : entre **8 000 € et 20 000 € HT** pour un audit de maturité IA complet. Un audit ciblé sur un périmètre restreint (un seul département, un seul outil) peut descendre à **4 000 – 6 000 € HT**.
-- **ETI (250 à 5 000 salariés)** : entre **18 000 € et 60 000 € HT** selon le nombre de directions couvertes, la complexité des systèmes IA en place et les exigences de conformité réglementaire (AI Act, DORA pour le secteur financier).
-- **Grand compte (> 5 000 salariés, périmètre partiel)** : à partir de **50 000 € HT**, sur appel d'offres.
-
-Ces fourchettes sont exprimées en jours·consultant, généralement facturés entre **1 200 € et 2 500 € HT/jour** selon le niveau de séniorité requis et la spécialité sectorielle.
+**R :** Un audit IA Axion-IA est **sur devis** : l'effort dépend de la taille de l'entreprise auditée, du nombre de directions couvertes, de la complexité des systèmes IA en place et des exigences de conformité réglementaire (AI Act, DORA pour le secteur financier). Parlons-en lors du rendez-vous gratuit de 45 minutes : il sert précisément à cadrer ce périmètre.
 
 ---
 
@@ -429,10 +423,7 @@ Les organisations ayant réalisé un audit de maturité avant de lancer un proje
 
 **R :**
 
-**Modalités de paiement** : Axion-IA facture en deux ou trois acomptes selon le montant total :
-- Missions < 15 000 € HT : 50 % à la commande, 50 % à la remise du rapport final
-- Missions 15 000 – 50 000 € HT : 30 % à la commande, 40 % à mi-mission, 30 % à la remise du rapport
-- Missions > 50 000 € HT : modalités négociées au cas par cas
+**Modalités de paiement** : Axion-IA facture en deux ou trois acomptes selon l'ampleur de la mission (par exemple 50 % à la commande et 50 % à la remise du rapport final, ou 30 % / 40 % / 30 % pour une mission plus longue) ; l'échéancier est précisé dans le devis.
 
 **Délais** :
 - Audit PME (périmètre restreint) : **3 à 6 semaines** du kick-off à la remise du rapport

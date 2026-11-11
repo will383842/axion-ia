@@ -6,6 +6,7 @@
  * l'AFFICHAGE public change, via le drapeau `prixPublicMasque` lu par les formateurs.
  */
 import { describe, expect, it } from "vitest";
+import { resolvePriceTokens } from "../pricing-tokens";
 
 import {
   AUDIT_TIERS,
@@ -74,6 +75,20 @@ describe("audits et 1-to-1 : « Sur devis », jamais de montant", () => {
     expect(UN_A_UN_RECURRING_TIER.priceFlat).toBe(790);
     // `onQuote` reste réservé aux tiers sans montant : la réservation en dépend.
     for (const t of tiersMasques) expect(t.onQuote, t.id).toBeUndefined();
+  });
+
+  it("les jetons {{price:…}} d’un palier masqué rendent « Sur devis », quel que soit le mode", () => {
+    for (const jeton of [
+      "{{price:audit-flash|from}}",
+      "{{price:audit-cible|range}}",
+      "{{price:intervention-membre-equipe|flat}}",
+      "{{price:intervention-dirigeants|flat}}",
+    ]) {
+      const rendu = resolvePriceTokens(jeton, "fr");
+      expect(rendu, jeton).toBe("Sur devis");
+      expect(rendu).not.toMatch(/\d/);
+    }
+    expect(resolvePriceTokens("{{price:audit-flash|from}}", "en")).toBe("On request");
   });
 
   it("les formations d'un tier non masqué restent inchangées", () => {

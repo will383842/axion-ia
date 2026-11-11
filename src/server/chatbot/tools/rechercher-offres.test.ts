@@ -19,8 +19,21 @@ import { getOfferById, OFFERS } from "@/content/offers-catalog";
 const ctx = { tenantId: "axion-ia" };
 
 describe("T-35 filterOffers — fourchette de prix", () => {
+  // R7 (08/11/2026) : dans le vrai catalogue, tout prix hors Journée IA est masqué
+  // (onQuote) — le filtre prix ne renvoie plus rien. La mécanique de chevauchement est
+  // vérifiée sur un catalogue de test où ces paliers seraient affichables.
+  const affichable = (id: string) => ({ ...getOfferById(id)!, onQuote: false });
+  const catalogueAffichable = OFFERS.map((o) => affichable(o.id));
+
+  it("R7 : le vrai catalogue ne filtre plus sur des prix masqués", () => {
+    expect(filterOffers({ vertical: "formation", prixMin: 2000, prixMax: 2300 })).toEqual([]);
+  });
+
   it("retourne les formations dont la fourchette chevauche [prixMin, prixMax]", () => {
-    const res = filterOffers({ vertical: "formation", prixMin: 2000, prixMax: 2300 });
+    const res = filterOffers(
+      { vertical: "formation", prixMin: 2000, prixMax: 2300 },
+      catalogueAffichable,
+    );
     const ids = res.map((o) => o.id);
     // formation-secteur-1j (2 200 €, matrice) chevauche ; 2026-10-08 : plus aucune formule à
     // prix erroné (2 450 / 2 650 / 3 250 €) dans le catalogue.
@@ -76,8 +89,8 @@ describe("T-35 sortOffers — « le moins cher »", () => {
     const priced = res.filter((o) => !o.onQuote).map((o) => o.prixMin!);
     const sorted = [...priced].sort((a, b) => a - b);
     expect(priced).toEqual(sorted);
-    // le 1er (le moins cher) en formation = intervention-4h (1 200 €).
-    expect(res[0]?.id).toBe("intervention-4h");
+    // R7 : seule la Journée IA garde un prix public → elle seule est triée, en tête.
+    expect(res[0]?.id).toBe("journee-ia");
   });
 
   it("prix_desc classe par prix décroissant", () => {
@@ -113,8 +126,14 @@ describe("T-35 toOfferResult & handler", () => {
   });
 
   it("formate un prix flat, un range et un sur-devis", () => {
-    expect(toOfferResult(getOfferById("intervention-4h")!).prix).toMatch(/1\s?200/);
-    expect(toOfferResult(getOfferById("codage-web")!).prix).toMatch(/2\s?000.*30\s?000/);
+    // R7 : montants masqués au public dans le vrai catalogue…
+    expect(toOfferResult(getOfferById("intervention-4h")!).prix).toBe("Sur devis");
+    expect(toOfferResult(getOfferById("codage-web")!).prix).toBe("Sur devis");
+    // …le formatage reste juste pour un palier affichable.
+    const flat = { ...getOfferById("intervention-4h")!, onQuote: false };
+    const range = { ...getOfferById("codage-web")!, onQuote: false };
+    expect(toOfferResult(flat).prix).toMatch(/1\s?200/);
+    expect(toOfferResult(range).prix).toMatch(/2\s?000.*30\s?000/);
     expect(toOfferResult(getOfferById("intervention-conference")!).prix).toBe("Sur devis");
   });
 
