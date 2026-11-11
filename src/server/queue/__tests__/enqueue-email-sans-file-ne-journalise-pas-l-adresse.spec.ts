@@ -21,7 +21,8 @@ describe("enqueueEmail sans file", () => {
     const r = await enqueueEmail(
       "contact-confirmation" as never,
       "marie.durand@client.fr",
-      {} as never,
+      "fr",
+      {},
     );
     expect(r.enqueued).toBe(false);
     expect(warn).toHaveBeenCalled();
