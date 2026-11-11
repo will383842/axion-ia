@@ -83,8 +83,8 @@ export default async function SearchPage({ params, searchParams }: Props) {
               defaultValue={q}
               placeholder={
                 isFr
-                  ? "Ex : Grenoble, formation IA, audit, RAG…"
-                  : "e.g. Grenoble, AI training, audit, RAG…"
+                  ? "Ex : Lyon, formation IA, audit, RAG…"
+                  : "e.g. Lyon, AI training, audit, RAG…"
               }
               className="border-border bg-bg text-fg focus-visible:border-primary focus-visible:ring-primary/20 flex h-11 flex-1 rounded-sm border px-3 py-2 text-base focus-visible:ring-4 focus-visible:outline-none"
             />

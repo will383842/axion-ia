@@ -1562,12 +1562,12 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
       {
         src: "/illustrations/memo-isere/territoire-corridor-grenoble-lyon-valence-die-axion-ia.avif",
         origin: "unsplash",
-        nameFr: "Corridor Grenoble – Valence – Die – Lyon : 474 communes",
-        nameEn: "Grenoble – Valence – Die – Lyon corridor: 474 towns",
+        nameFr: "Corridor alpin jusqu’à Lyon : 474 communes",
+        nameEn: "Alpine corridor up to Lyon: 474 towns",
         altFr:
-          "Vallée alpine traversée par une route et un village : le corridor Grenoble – Valence – Die – Lyon, terrain de jeu du commercial Axion-IA.",
+          "Vallée alpine traversée par une route et un village : le corridor alpin jusqu’à Lyon, terrain de jeu du commercial Axion-IA.",
         altEn:
-          "An Alpine valley crossed by a road and a village: the Grenoble – Valence – Die – Lyon corridor, the Axion-IA sales rep's territory.",
+          "An Alpine valley crossed by a road and a village: the Alpine corridor up to Lyon, the Axion-IA sales rep's territory.",
         width: 1600,
         height: 900,
         slot: "banner",

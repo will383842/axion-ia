@@ -152,11 +152,11 @@ const FAQS_BY_SERVICE: Record<
       id: "implementation-coverage",
       fr: {
         q: "Quelles régions sont les plus actives en implémentation IA ?",
-        a: "Île-de-France (sièges grandes entreprises, scale-ups), Auvergne-Rhône-Alpes (industrie Lyon-Grenoble), Hauts-de-France (logistique Lille), Pays de la Loire (ETI familiales Nantes-Cholet), Occitanie (aéronautique Toulouse). Toute région métropolitaine reste éligible.",
+        a: "Île-de-France (sièges grandes entreprises, scale-ups), Auvergne-Rhône-Alpes (industrie lyonnaise et alpine), Hauts-de-France (logistique Lille), Pays de la Loire (ETI familiales Nantes-Cholet), Occitanie (aéronautique Toulouse). Toute région métropolitaine reste éligible.",
       },
       en: {
         q: "Which regions are most active in AI implementation?",
-        a: "Île-de-France (large-enterprise HQs, scale-ups), Auvergne-Rhône-Alpes (Lyon-Grenoble industry), Hauts-de-France (Lille logistics), Pays de la Loire (Nantes-Cholet family mid-caps), Occitanie (Toulouse aerospace). Every metropolitan region remains eligible.",
+        a: "Île-de-France (large-enterprise HQs, scale-ups), Auvergne-Rhône-Alpes (Lyon and Alpine industry), Hauts-de-France (Lille logistics), Pays de la Loire (Nantes-Cholet family mid-caps), Occitanie (Toulouse aerospace). Every metropolitan region remains eligible.",
       },
     },
     {

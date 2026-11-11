@@ -426,3 +426,48 @@ describe("R7 — pages et composants publics : aucun montant hors Journée IA", 
     }
   });
 });
+
+// X-6 (vérification finale du 11/11/2026, §1) — `/faq/par-thematique/[categorie]` passait les
+// réponses à `FaqBlock` SANS résoudre les jetons `{{price:…}}` : le visiteur lisait le gabarit
+// brut. Le spec ci-dessus cherche des « € », pas des jetons : il ne pouvait pas le voir.
+describe("X-6 — aucun jeton {{price:…}} non résolu sur /faq/par-thematique/*", () => {
+  const page = readFileSync(
+    path.join(SRC, "app/[locale]/faq/par-thematique/[categorie]/page.tsx"),
+    "utf8",
+  );
+
+  it("la page résout les jetons de prix avant le rendu, comme /faq", () => {
+    expect(page).toMatch(/import \{ resolvePriceTokensDeep \} from "@\/content\/pricing-tokens"/);
+    expect(page).toMatch(/resolvePriceTokensDeep\(\s*neutraliserSelonInterrupteur\(faqsBrutes\)/);
+    // Les réponses affichées viennent de `faqs` (résolu), jamais de `faqsBrutes`.
+    expect(page).not.toMatch(/visibleCategoryFaqs\(faqsBrutes\)/);
+  });
+
+  it("le corpus de FAQ, une fois résolu, ne laisse aucun jeton ; seule la Journée IA montre un montant", async () => {
+    const { FAQ_GLOBAL } = await import("@/content/transversal");
+    const { resolvePriceTokensDeep } = await import("@/content/pricing-tokens");
+    const { PRIX_PUBLICS_AFFICHES } = await import("@/content/pricing");
+    // Garde de cohérence : ce test suppose l'interrupteur éteint (état de production).
+    expect(PRIX_PUBLICS_AFFICHES).toBe(false);
+    let journeeIa = 0;
+    for (const entree of FAQ_GLOBAL) {
+      for (const loc of ["fr", "en"] as const) {
+        const brut = JSON.stringify(entree[loc]);
+        const resolu = JSON.stringify(resolvePriceTokensDeep(entree[loc], loc));
+        expect(resolu, `${entree.id} (${loc})`).not.toContain("{{price:");
+        // Un jeton autre que la Journée IA ne doit jamais devenir un montant en euros.
+        const autres = [...brut.matchAll(/\{\{price:([a-z0-9-]+)(?:\|[a-z]+)?\}\}/g)].filter(
+          (m) => m[1] !== "journee-ia",
+        );
+        if (autres.length > 0) {
+          expect(resolu, `${entree.id} (${loc})`).not.toMatch(/\d[\d\s  ]*\s?(€|EUR)/);
+        }
+        if (/\{\{price:journee-ia/.test(brut)) {
+          journeeIa += 1;
+          expect(resolu, `${entree.id} (${loc})`).toMatch(/1[\s  ]490\s?(€|EUR)/);
+        }
+      }
+    }
+    expect(journeeIa).toBeGreaterThan(0);
+  });
+});
