@@ -352,7 +352,7 @@ export default async function FormationsHub({ params }: Props) {
           visibilité sous les CTA. */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Formation IA en entreprise" : "Boost your teams' productivity"}
+        title={isFr ? "Formation IA en entreprise :" : "Boost your teams' productivity"}
         titleEm={
           isFr ? "vos équipes formées sur leurs propres tâches" : "with high-impact trainings"
         }

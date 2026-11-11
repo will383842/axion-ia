@@ -955,7 +955,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question:
         "AI Act : quelles obligations pour les entreprises, dont la formation (article 4) ?",
-      metaTitle: "AI Act 2026 : obligations des entreprises, article 4 et 50",
+      metaTitle: "AI Act 2026 : obligations, articles 4 et 50 · Axion-IA",
       metaDescription:
         "AI Act : article 4 (maîtrise de l'IA par vos équipes), article 5 (pratiques interdites), article 50 (transparence). Haut risque : de fin 2027 à 2028.",
       answer:
