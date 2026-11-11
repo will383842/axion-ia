@@ -171,7 +171,7 @@ export interface EntreeEvenementPageGuide {
   readonly prenom: string;
   /** Instant du clic humain (`first_click_at`). */
   readonly clicLe: Date;
-  /** Instant où la case a été cochée (`contacts_guide_reseau.consenti_le`). */
+  /** Instant où la case a été cochée (colonne `consenti_le` du contact de la page). */
   readonly consentiLe: Date;
   readonly versionConsentement: string;
   readonly guide: string;
