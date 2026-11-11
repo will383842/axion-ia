@@ -2253,9 +2253,9 @@ describe("vigilance sous-traitance", () => {
       nom: "Dupont",
       prenom: "Marie",
       sousTraitantContratSigneAt: new Date("2026-01-10"),
-      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProEcheanceAt: LOIN,
       rcProAttestationUrl: "https://r2/rc.pdf",
-      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+      sousTraitantProchaineVerifAt: LOIN,
     };
 
     it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {
