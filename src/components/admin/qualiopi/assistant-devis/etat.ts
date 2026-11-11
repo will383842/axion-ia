@@ -175,6 +175,13 @@ const ESPACES = /[   ]/g;
 function centsLus(s: string): number | null {
   return eurosVersCents(s.replace(ESPACES, ""));
 }
+/** Pourcentage saisi : « illisible » (format) ou « hors_borne » (hors 0 à 100), sinon null. */
+export function defautPourcentage(saisie: string): "illisible" | "hors_borne" | null {
+  const t = saisie.replace(ESPACES, "").trim().replace(",", ".");
+  if (!/^\d+(\.\d{1,2})?$/.test(t)) return "illisible";
+  return Number(t) > 100 ? "hors_borne" : null;
+}
+
 const entier = (s: string): number | null => (/^\d+$/.test(s.trim()) ? Number(s) : null);
 
 function totalPhases(p: readonly PhaseAssistant[], nom: string): string[] {
@@ -217,8 +224,16 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       if (e.clientId === "") err.push("Choisissez un client.");
       if (e.intitule.trim() === "") err.push("Donnez un intitulé au devis.");
       return [...err, ...controlerLignes(e)];
-    case "1b":
-      return totalPhases(e.achat.phases, "Phases");
+    case "1b": {
+      const hors = e.achat.phases.some((x) => {
+        const v = entier(x.pourcentage);
+        return v !== null && (v < 1 || v > 100);
+      });
+      return [
+        ...totalPhases(e.achat.phases, "Phases"),
+        ...(hors ? ["Phases : chaque versement doit être compris entre 1 et 100 %."] : []),
+      ];
+    }
     case 2:
       if (
         a &&
@@ -232,6 +247,23 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       }
       if (a && !/^\d+$/.test(e.achat.maintenance.moisOfferts.trim())) {
         err.push("Maintenance : les mois offerts doivent être un entier supérieur ou égal à 0.");
+      }
+      // Section « Services extérieurs » masquée en prix unique : ne pas bloquer sur un champ invisible.
+      if (p !== "prix_unique") {
+        e.servicesSaisies?.forEach((t, i) => {
+          if (t.trim() !== "" && centsLus(t) === null) {
+            err.push(
+              `Service extérieur ${i + 1} : estimation illisible (euros, 2 décimales au plus).`,
+            );
+          }
+        });
+        if (e.plafondSaisie !== undefined && e.plafondSaisie !== null) {
+          if (e.plafondSaisie.trim() === "")
+            err.push("Plafond : saisissez un montant ou décochez.");
+          else if (centsLus(e.plafondSaisie) === null) {
+            err.push("Plafond : montant illisible (euros, 2 décimales au plus).");
+          }
+        }
       }
       if (b && (centsLus(e.abonnement.mensuelCatalogueEur) ?? 0) <= 0) {
         err.push("Abonnement : un montant mensuel supérieur à 0 est requis.");
@@ -249,13 +281,17 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
       if (b) {
         const ab = e.abonnement;
         err.push(...totalPhases(ab.phases, "Échéancier de la formule B"));
-        if (ab.periodes.some((x) => centsLus(x.remisePct) === null))
+        if (ab.periodes.some((x) => defautPourcentage(x.remisePct) === "illisible"))
           err.push("Abonnement : remise illisible.");
+        if (ab.periodes.some((x) => defautPourcentage(x.remisePct) === "hors_borne"))
+          err.push("Abonnement : la remise doit être comprise entre 0 et 100 %.");
         if (ab.engagementMois > 0 && ab.periodes.some((x) => ab.engagementMois % x.mois !== 0)) {
           err.push("L'engagement doit être un multiple de chaque période proposée.");
         }
-        if (centsLus(ab.indemniteTauxPct) === null)
-          err.push("Indemnité de sortie : taux illisible.");
+        const di = defautPourcentage(ab.indemniteTauxPct);
+        if (di === "illisible") err.push("Indemnité de sortie : taux illisible.");
+        if (di === "hors_borne")
+          err.push("Indemnité de sortie : le taux doit être entre 0 et 100 %.");
       }
       return err;
     }

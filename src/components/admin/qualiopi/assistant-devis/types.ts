@@ -30,6 +30,8 @@ export interface LigneAssistant {
   necessite: string[];
   champsLibres: Array<{ nom: string; valeur: string }>;
   offreCode: string;
+  /** `tier_id` des offres anciennes uniquement ; absent pour le catalogue V2. */
+  offreTierId?: string;
   designationDepuisOffre: boolean;
 }
 
@@ -61,8 +63,13 @@ export interface EtatAssistant {
   proposition: Proposition;
   /** Interrupteur `qualiopi.devis_formules.actif`, reçu en props. */
   formulesActives: boolean;
-  garantie: { afficher: boolean; jours: string; phrase: string };
-  delais: { texte: string; fourchette: string };
+  /**
+   * `touche` : la phrase a déjà été initialisée ou modifiée. Une phrase VIDÉE par l'utilisateur
+   * n'est alors jamais remplacée par le texte de la bibliothèque (ni en cours de saisie, ni à la
+   * réouverture du brouillon). Absent d'un ancien brouillon = jamais touchée.
+   */
+  garantie: { afficher: boolean; jours: string; phrase: string; touche?: boolean | undefined };
+  delais: { texte: string; fourchette: string; touche?: boolean | undefined };
   achat: {
     phases: PhaseAssistant[];
     hebergement: "client" | "axion";
@@ -93,6 +100,14 @@ export interface EtatAssistant {
   avantages: { A: string[]; B: string[] };
   servicesTiers: OffreDevisV1["servicesTiers"];
   plafondAConfirmer: OffreDevisV1["plafondAConfirmer"];
+  /**
+   * Saisies brutes de l'étape 2 (E14), alignées sur `servicesTiers`. Optionnelles : un brouillon
+   * ancien n'en porte pas, l'écran repart alors des centimes. Elles servent à refuser une saisie
+   * illisible que les centimes ne peuvent pas représenter.
+   */
+  servicesSaisies?: string[];
+  /** Plafond : `null` = case décochée ; texte (même vide) = case cochée. */
+  plafondSaisie?: string | null;
   /** Automatisations d'un devis rouvert : recopiées TELLES QUELLES, jamais réécrites. */
   automatisationsHeritees: OffreDevisV1["automatisations"];
   financement: {

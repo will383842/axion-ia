@@ -137,7 +137,7 @@ function redactString(input: unknown): unknown {
  * on SUPPRIME, sans chercher à reconnaître.
  */
 const ROUTE_A_REQUETE_SECRETE =
-  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier)(?:\/|$)/i;
+  /^(?:[A-Z]+\s+)?(?:https?:\/\/[^/]+)?(?:\/(?:fr|en))?\/(?:questionnaire|document|apporteur\/dossier|portail\/signer|formateur\/dossier|guide-reseau)(?:\/|$)/i;
 
 /** En-têtes retirés en entier sur ces routes (en minuscules). */
 const ENTETES_RETIRES = new Set(["next-router-state-tree", "next-action", "referer", "cookie"]);

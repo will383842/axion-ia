@@ -39,6 +39,10 @@ import { CommercialApplicationWizard } from "@/components/forms/commercial-appli
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { memoPhoto } from "@/content/recrutement/memo-isere-photos";
 import { MEMO_ZONE_CLUSTERS, MEMO_ZONE_TOTAL } from "@/content/recrutement/memo-isere-zone";
@@ -49,7 +53,10 @@ export const revalidate = 3600;
 /** Rémunération d'un apporteur — commission de recrutement, pas un tarif client.
  *  Le montant vient de `pricing.ts` et se dit indicatif (JUR-T29, 2026-09-29) :
  *  la grille d'un contrat peut descendre sous la grille publiée. */
-const PROMESSE = `${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € par journée de formation vendue, à titre indicatif`;
+const PROMESSE = COMMISSIONS_PUBLIQUES_AFFICHEES
+  ? `${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € par journée de formation vendue, à titre indicatif`
+  : // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+    COMMISSION_QUALITATIVE.titre;
 
 /** Ce que le candidat n'aura PAS à faire — l'argument n°1 du tunnel sans CV. */
 const ATOUTS = [
@@ -104,9 +111,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       locale,
       path: "/devenir-commercial-ia/candidature",
       title,
-      description: isFr
-        ? `Candidatez en 3 minutes, sans CV : à titre indicatif, ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € pour vous par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
-        : `Apply in 3 minutes, no resume: as a guide, €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} for you per AI training day sold. The AI Act sets obligations for companies that use AI.`,
+      // R7 (08/11/2026) : aucun montant au public (`commission-publique.ts`).
+      description: !COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? isFr
+          ? `Candidatez en 3 minutes, sans CV : ${COMMISSION_QUALITATIVE.phrase}. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+          : `Apply in 3 minutes, no resume: ${COMMISSION_QUALITATIVE.phraseEn}. The AI Act sets obligations for companies that use AI.`
+        : isFr
+          ? `Candidatez en 3 minutes, sans CV : à titre indicatif, ${COMMISSION_FORMATION_PAR_JOURNEE_EUR} € pour vous par journée de formation IA vendue. L'AI Act crée des obligations pour les entreprises qui utilisent l'IA.`
+          : `Apply in 3 minutes, no resume: as a guide, €${COMMISSION_FORMATION_PAR_JOURNEE_EUR} for you per AI training day sold. The AI Act sets obligations for companies that use AI.`,
     })),
     title: { absolute: title },
     keywords: buildCommercialKeywords({ financementAffichable: isQualiopiCertificationObtenue() }),

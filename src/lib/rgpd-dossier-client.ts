@@ -85,15 +85,6 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "des dates et des statuts, sans contenu ni adresse.",
   },
   {
-    // Page « Recevoir le guide », lot S0 (2026-11-08) — table posée par migration seule : AUCUN
-    // code ne l'écrit encore (lot S2). Le lot S2 DOIT remplacer cette exception par l'export réel.
-    modele: "ContactGuideReseau",
-    motif:
-      "le contact laissé depuis un réseau pour recevoir le guide (prénom chiffré, empreinte " +
-      "d'adresse, preuve de consentement) : table encore sans écrivain, donc vide ; son export " +
-      "sera branché avec le premier code qui l'écrit.",
-  },
-  {
     modele: "CompteRendu",
     motif:
       "un compte rendu d'échange professionnel rapporte aussi les propos d'autres personnes : " +
@@ -299,6 +290,18 @@ export interface ExportDossierClient {
     readonly termineLe: Date | null;
     readonly misALecartLe: Date | null;
   }>;
+  /**
+   * Brouillons de l'assistant de devis de SA fiche (S17) : sans coordonnées de personne — id, dates,
+   * statut, contenu de travail (payload) et lien vers la fiche.
+   */
+  readonly brouillonsDevis: ReadonlyArray<{
+    readonly id: string;
+    readonly creeLe: Date;
+    readonly modifieLe: Date;
+    readonly statut: string;
+    readonly payload: unknown;
+    readonly ficheLien: string;
+  }>;
   readonly avertissements: readonly string[];
 }
 
@@ -322,6 +325,7 @@ const VIDE: ExportDossierClient = {
   questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
   rapportsAvantAudit: [],
+  brouillonsDevis: [],
   avertissements: [],
 };
 
@@ -375,6 +379,7 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
               statut: true,
               partiLe: true,
               oppositionIaLe: true,
+              clientId: true,
               client: { select: { raisonSociale: true } },
               adresses: { select: { email: true, nature: true, emailHash: true } },
             },
@@ -527,6 +532,37 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             orderBy: { echeanceLe: "asc" },
           });
 
+    // Brouillons de l'assistant de devis (S17) : rattachés à la FICHE (`client_id`), sans coordonnée.
+    // Fusion : elle déplace les PERSONNES vers la fiche absorbante mais laisse les brouillons sur la
+    // fiche ABSORBÉE. On y ajoute donc les fiches absorbées (fusion non défaite) dans une de SES
+    // fiches, transitivement (A dans B puis B dans C). Lecture seule, rien n'est modifié.
+    const clientIds = [...new Set(contacts.map((c) => c.clientId))];
+    for (let frontiere = [...clientIds]; frontiere.length > 0;) {
+      const fusions = await prisma.clientFusion.findMany({
+        where: { absorbantId: { in: frontiere }, defaiteLe: null },
+        select: { absorbeId: true },
+      });
+      frontiere = [...new Set(fusions.map((f) => f.absorbeId))].filter(
+        (id) => !clientIds.includes(id),
+      );
+      clientIds.push(...frontiere);
+    }
+    const brouillons =
+      clientIds.length === 0
+        ? []
+        : await prisma.devisAssistantBrouillon.findMany({
+            where: { clientId: { in: clientIds } },
+            select: {
+              id: true,
+              clientId: true,
+              createdAt: true,
+              updatedAt: true,
+              statut: true,
+              payload: true,
+            },
+            orderBy: { createdAt: "asc" },
+          });
+
     const siens = new Set(contactIds);
     // « Elle l'a dit » exige un locuteur VALIDÉ (plan §3.15 : « ses citations
     // (locuteur validé) ») : `contactLocuteurId` n'est posé qu'après la
@@ -634,6 +670,14 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
         statut: r.statut,
         termineLe: r.finLe,
         misALecartLe: r.ecarteLe,
+      })),
+      brouillonsDevis: brouillons.map((b) => ({
+        id: b.id,
+        creeLe: b.createdAt,
+        modifieLe: b.updatedAt,
+        statut: b.statut,
+        payload: b.payload,
+        ficheLien: `client:${b.clientId}`,
       })),
       avertissements,
     };

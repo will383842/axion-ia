@@ -109,9 +109,11 @@ chatbotTools.register<typeof RechercherOffresInputSchema._type>({
   name: "rechercher_offres",
   description:
     "Recherche déterministe dans le catalogue d'offres Axion-IA par facettes " +
-    "(prix, durée, effectif, sujet/outil, format, audience, tri). Retourne des " +
-    "offres avec prix exact (SSOT) et lien FR. Utiliser pour toute demande de " +
-    "prestation par critères (« formations entre X et Y € », « le moins cher », etc.).",
+    "(durée, effectif, sujet/outil, format, audience). Retourne des offres avec " +
+    "leur lien FR ; le prix affiché est « Sur devis », sauf pour la Journée IA. " +
+    "Utiliser pour toute demande de prestation par critères. Pour une question de " +
+    "budget ou de tarif : répondre « sur devis, parlons-en lors du rendez-vous " +
+    "gratuit de 45 minutes ».",
   schema: RechercherOffresInputSchema,
   handler: (input, ctx) => rechercherOffres(input, ctx),
 });

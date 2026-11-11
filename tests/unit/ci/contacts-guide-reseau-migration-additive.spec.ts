@@ -93,20 +93,31 @@ describe("migration contacts_guide_reseau : additive", () => {
     expect(r).not.toMatch(/\b(DELETE\s+FROM|UPDATE\s+"|TRUNCATE)\b/i);
   });
 
-  it("aucun code applicatif ne lit ni n'écrit la table avant le lot S2", async () => {
+  it("seuls les fichiers du lot S2 touchent la table (liste fermée)", async () => {
     const { readdirSync } = await import("node:fs");
     const fichiers: string[] = [];
     const marche = (dir: string): void => {
       for (const e of readdirSync(dir, { withFileTypes: true })) {
         const p = join(dir, e.name);
         if (e.isDirectory()) marche(p);
-        else if (/\.(ts|tsx)$/.test(e.name)) fichiers.push(p);
+        else if (/\.(ts|tsx)$/.test(e.name) && !/\.(spec|test)\.tsx?$/.test(e.name)) {
+          fichiers.push(p);
+        }
       }
     };
     marche(join(process.cwd(), "src"));
-    const fautifs = fichiers.filter((f) =>
-      /\.contactGuideReseau\.|contacts_guide_reseau/.test(readFileSync(f, "utf8")),
-    );
-    expect(fautifs).toEqual([]);
+    const racine = process.cwd() + "/";
+    const fautifs = fichiers
+      .filter((f) => /\.contactGuideReseau\.|contacts_guide_reseau/.test(readFileSync(f, "utf8")))
+      .map((f) => f.replace(racine, ""))
+      .sort();
+    // Écrivain : la validation de la page. Lecteurs : la page (usage unique), l'export art. 15,
+    // la mise à l'écart de l'effacement art. 17.
+    expect(fautifs).toEqual([
+      "src/app/guide-reseau/route.ts",
+      "src/lib/rgpd-erase.ts",
+      "src/lib/rgpd-guide-reseau.ts",
+      "src/server/guides-reseau/page-confirmation.ts",
+    ]);
   });
 });
