@@ -105,7 +105,9 @@ const nextConfig: NextConfig = {
   // chemin critique. Elle n'est PAS supprimée : le job `typecheck` du même workflow la refait EN
   // PARALLÈLE (`pnpm typecheck`, même tsc strict) et la mise en ligne l'attend (`deploy` a
   // `needs: [build, typecheck]`), donc une erreur de types bloque toujours la mise en ligne.
-  // Partout ailleurs (dev, Gate B, Gate C), le build garde sa vérification.
+  // 2026-11-08 (CI-LOT1) : Gate B (ci.yml, étape Build) pose aussi `SKIP_NEXT_TYPECHECK=true` ;
+  // « Gate A · per-commit », contexte EXIGÉ, y refait `pnpm typecheck` sur le même commit.
+  // Partout ailleurs (dev, Gate C), le build garde sa vérification.
   typescript: { ignoreBuildErrors: process.env.SKIP_NEXT_TYPECHECK === "true" },
   // P-508 — explicite (déjà default false en Next 16, mais clarté config).
   productionBrowserSourceMaps: false,
