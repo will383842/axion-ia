@@ -53,7 +53,7 @@ const COPY = {
       "Vous trouverez en pièces jointes le devis signé et les conditions générales de vente acceptées, au format PDF.",
     attachmentsSansCgv: "Vous trouverez en pièce jointe le devis signé, au format PDF.",
     questions: "Pour toute question, répondez simplement à cet email.",
-    close: "Bien cordialement,\nL'équipe Axion-IA",
+    close: "Bien cordialement,\nWilliams",
     preview: (num: string) => `Commande confirmée — devis ${num}.`,
   },
   en: {
@@ -71,7 +71,7 @@ const COPY = {
       "Attached are the signed quote and the accepted general terms of sale, in PDF format.",
     attachmentsSansCgv: "Attached is the signed quote, in PDF format.",
     questions: "For any question, simply reply to this email.",
-    close: "Best regards,\nThe Axion-IA team",
+    close: "Best regards,\nWilliams",
     preview: (num: string) => `Order confirmed — quote ${num}.`,
   },
 } as const;
