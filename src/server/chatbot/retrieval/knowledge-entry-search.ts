@@ -150,10 +150,14 @@ export interface RechercheChatbotDeps {
  * lecture des fiches est vide, échoue ou dépasse 1,5 s → repli : résultat de
  * `hybridSearch` seul.
  *
- * ⚠️ Le score de fusion RRF est plafonné à 1/61 (≈ 0,016) par passage : le seuil de
- * confiance 0,35 du chatbot ne protège donc presque plus rien quand l'interrupteur
- * est allumé (aucun score fusionné ne l'atteint). Ce point est à traiter avant
- * toute mise en service.
+ * ⚠️ Seuil de confiance : `assessConfidence` (retrieval/confidence.ts) divise par
+ * RRF_MAX = 2/61 ; le rerank Voyage garde les scores RRF. Score normalisé du 1er
+ * passage fusionné = (1/61) ÷ (2/61) = 0,5 > seuil 0,35 : allumé, le seuil ne
+ * déclenche l'escalade que s'il n'y a AUCUN résultat. À traiter avant mise en
+ * service.
+ *
+ * Note : avec l'interrupteur allumé, `cacheLookup` peut servir une réponse mise en
+ * cache avant l'allumage (sans risque : elle est tirée des chunks).
  */
 export function creerRechercheChatbot(deps: RechercheChatbotDeps = {}): typeof hybridSearch {
   const hybrid = deps.hybrid ?? hybridSearch;
@@ -181,8 +185,10 @@ export function creerRechercheChatbot(deps: RechercheChatbotDeps = {}): typeof h
         lecture.reason,
       );
     }
-    // Doublon : une fiche déjà présente dans les chunks (même sourceRef) est ignorée.
-    const refsConnues = new Set(chunks.map((c) => c.sourceRef));
+    // Doublon : une fiche déjà présente dans les chunks est ignorée. Les chunks
+    // découpés portent un sourceRef `slug#i` (ingestion/ingest.ts) : on retire le
+    // suffixe avant de comparer. Seules les FAQ (sourceRef = slug) peuvent coïncider.
+    const refsConnues = new Set(chunks.map((c) => c.sourceRef.replace(/#\d+$/, "")));
     fiches = fiches.filter((f) => !refsConnues.has(f.sourceRef));
     if (fiches.length === 0) return chunks;
     const topK = opts.topK ?? RETRIEVAL_TOP_K;
