@@ -38,7 +38,7 @@
   width: 0.375rem;
   height: 0.375rem;
   margin-right: 0.75rem;
-  border-radius: 9999px;
+  border-radius: 50%;
   background-color: #b23f16;
   vertical-align: middle;
 }
@@ -83,7 +83,7 @@
   margin-top: 0;
   padding: 0.75rem 1.5rem;
   border: 0;
-  border-radius: 9999px;
+  border-radius: calc(infinity * 1px); /* identique à rounded-full de Tailwind 4 */
   background-color: #1a4dd9;
   color: #fff;
   font-family: inherit;
