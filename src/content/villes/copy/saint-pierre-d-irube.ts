@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",
-      a: "Nos consultants accèdent à Saint-Pierre-d'Irube via la gare de Bayonne (TGV 4h30 Paris, 8 min voiture) ou l'aéroport Biarritz Pays Basque (15 min). Mission sur site dans vos locaux.",
+      a: "Nous intervenons à Saint-Pierre-d'Irube, à 8 min en voiture de la gare de Bayonne et 15 min de l'aéroport Biarritz Pays Basque. Mission sur site dans vos locaux.",
     },
   ],
 };

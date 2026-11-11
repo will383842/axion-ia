@@ -216,7 +216,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Sainte-Geneviève-des-Bois?",
-            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. Travel is from Paris via RER C (Le Perray station) or the RN104.",
+            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. The area is served by RER C (Le Perray station) and the RN104.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (24 km au sud de Paris). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",

@@ -238,7 +238,7 @@ export const ROCHEFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment rejoignez-vous Rochefort ?",
-      a: "Williams rejoint Rochefort en 3h30 par TGV (gare SNCF en centre-ville, directe ou via La Rochelle) ou par l'A10 (sortie Saintes/Rochefort, La Rochelle à 30 km, Bordeaux à 130 km). Les déplacements sur Marennes-Oléron (40 km) et l'Île d'Aix sont organisés en continuité de mission.",
+      a: "Rochefort est accessible par TGV (gare SNCF en centre-ville, directe ou via La Rochelle) ou par l'A10 (sortie Saintes/Rochefort, La Rochelle à 30 km, Bordeaux à 130 km). Les déplacements sur Marennes-Oléron (40 km) et l'Île d'Aix sont organisés en continuité de mission.",
     },
     {
       q: "Vos architectures IA sont-elles compatibles avec les contraintes aéronautiques de Stelia et Sabena Technics ?",

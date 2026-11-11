@@ -232,7 +232,7 @@ export const VANVES_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Vanves ?",
-      a: "Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins, étant basé à Paris). L'accès s'effectue par la ligne 13 du métro (Plateau de Vanves), la gare SNCF Vanves-Malakoff ou la sortie A86.",
+      a: "Oui, Williams se déplace sur site à Vanves sous 5 jours ouvrés (souvent moins). L'accès s'effectue par la ligne 13 du métro (Plateau de Vanves), la gare SNCF Vanves-Malakoff ou la sortie A86.",
     },
     {
       q: "Quelles communes proches de Vanves couvrez-vous ?",

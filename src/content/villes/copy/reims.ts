@@ -266,7 +266,7 @@ export const REIMS_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Reims se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel — qu'ils soient dans une maison de Champagne, une ETI agroalimentaire ou une école de management.",
         whyHere: [
-          "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nos consultants y interviennent en journée sans nuit contrainte, et couvrent aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
+          "Reims est desservie par la gare TGV Champagne-Ardenne à ~45 min de Paris — nous y intervenons en journée sans nuit contrainte, et couvrons aussi le bassin Champagne jusqu'à Épernay, Châlons et Troyes.",
           "Le tissu économique rémois est multi-sectoriel : maisons de Champagne export-intensives, industries bioéconomie, structures académiques (NEOMA, Sciences Po, URCA) — chaque session est calibrée sur votre vocabulaire métier.",
           "Le format collectif (1 journée) est calibré pour les PME et maisons familiales du Grand Reims de quelques dizaines à une centaine de collaborateurs.",
           "Le format Dirigeants est adapté aux CODIR des grandes maisons de Champagne ou des directions régionales de grands groupes (LVMH, Pernod Ricard) implantés à Reims.",
@@ -358,7 +358,7 @@ export const REIMS_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Reims come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work — whether in a Champagne house, an agri-food mid-cap or a business school.",
         whyHere: [
-          "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — our consultants intervene there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
+          "Reims is served by Champagne-Ardenne TGV station, ~45 min from Paris — we work there for day visits without overnight constraints and cover the Champagne basin to Épernay, Châlons and Troyes.",
           "Reims' economic fabric is multi-sectoral: export-intensive Champagne houses, bioeconomy industries, academic structures (NEOMA, Sciences Po, URCA) — each session is calibrated to your sector vocabulary.",
           "The one-day format is calibrated for Grand Reims SMEs and family houses from a few dozen to about a hundred staff.",
           "The Executives format suits the executive committees of major Champagne houses or regional leadership of large groups (LVMH, Pernod Ricard) based in Reims.",

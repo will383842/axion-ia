@@ -61,6 +61,22 @@ const MOTIFS: ReadonlyArray<readonly [string, RegExp]> = [
     "E · question « Comment se passe/déroule une mission/intervention … depuis »",
     /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u,
   ],
+  [
+    "F · anglais « consultants/we … from Paris/<Ville> »",
+    /(?:consultants|experts|[Ww]e|Williams)\b[^."]{0,80}\bfrom (?:Paris|[A-Z])/u,
+  ],
+  ["G · anglais « Travel (costs) from <Ville> »", /[Tt]ravel(?: costs)? (?:is )?from [A-Z]/u],
+  ["H · « basé à Paris »", /basée?s? à Paris/u],
+  ["I · « venir (directement) de <Ville> »", /venir (?:directement )?de [A-ZÉ]/u],
+  ["J · « sont à N min de »", /sont à \d+ ?min d/u],
+  [
+    "K · consultants/Williams + trajet depuis Paris",
+    /(?:consultants|Williams)[^."]{0,120}\(?(?:Paris \d|\d+ ?h ?\d* (?:de )?Paris|de Paris)/u,
+  ],
+  [
+    "D2 · « depuis l'axe / l'aéroport »",
+    /(?:Williams|[Nn]ous|consultants)[^.]{0,60}depuis l'(?:axe|aéroport)/u,
+  ],
 ];
 
 /**
@@ -68,7 +84,8 @@ const MOTIFS: ReadonlyArray<readonly [string, RegExp]> = [
  *   · « Vos équipes pilotent l'outil en autonomie depuis <Ville> » : équipes du client ;
  *   · « accès direct depuis Roissy-CDG » : accès du lieu pour le client (Villepinte).
  */
-const LISTE_BLANCHE = /autonomie depuis|accès direct depuis Roissy/u;
+const LISTE_BLANCHE =
+  /autonomie depuis|accès direct depuis Roissy|communes — from Madrillet|platforms, from RAG|experts from European|descended from Troyes|acceptance, from Parilly/u;
 
 /** Un exemple fautif par motif : un motif qui ne reconnaît plus rien est mort. */
 const EXEMPLES_FAUTIFS: ReadonlyArray<readonly [number, string]> = [
@@ -92,15 +109,30 @@ const EXEMPLES_FAUTIFS: ReadonlyArray<readonly [number, string]> = [
   [9, "Couverture complète et accès rapide depuis Nice (30 min)."],
   [10, "Comment se déroule une intervention depuis Nantes ?"],
   [10, "Comment se passe une mission en Corse depuis le continent ?"],
+  [17, "Nous nous déplaçons depuis l'axe Saint-Étienne–Lyon."],
+  [17, "Williams se déplace sur site depuis l'aéroport de Nice."],
+  [11, "Our consultants come from Paris every week."],
+  [11, "We work from Lyon with you."],
+  [12, "Travel is from Paris via RER C."],
+  [12, "Travel costs from Paris listed separately."],
+  [13, "(souvent moins, étant basé à Paris)"],
+  [14, "permet à nos consultants de venir directement de Paris en 2h40"],
+  [15, "Nos consultants sont à 5 min d'Avignon centre"],
+  [16, "nos consultants y interviennent, à ~45 min de Paris"],
+  [16, "Williams rejoint Rochefort en 3h30 de Paris"],
 ];
+
+/** La liste blanche s'applique à la portion trouvée, pas à toute la ligne. */
+function trouve(motif: RegExp, ligne: string): boolean {
+  const m = motif.exec(ligne);
+  return m !== null && !LISTE_BLANCHE.test(ligne.slice(m.index, m.index + m[0].length + 20));
+}
 
 function fautives(motif: RegExp): string[] {
   return TIERS.flatMap((nom) =>
     readFileSync(join(DOSSIER, nom), "utf8")
       .split("\n")
-      .flatMap((ligne, i) =>
-        motif.test(ligne) && !LISTE_BLANCHE.test(ligne) ? [`${nom}:${i + 1}`] : [],
-      ),
+      .flatMap((ligne, i) => (trouve(motif, ligne) ? [`${nom}:${i + 1}`] : [])),
   );
 }
 

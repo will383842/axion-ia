@@ -146,7 +146,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           {
             step: "Framing in Romainville",
             detail:
-              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. We reach you in 30 minutes from Paris via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
+              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. The site is reached via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
           },
           {
             step: "UX/UI design and AI architecture",
@@ -206,7 +206,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "How exactly do you operate in Romainville?",
-            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. From Paris, it is about 30 minutes via Métro line 11 (Romainville-Carnot station, opened June 2024) or tram T1. Kick-off and acceptance are always done in person.",
+            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. The site is served by Métro line 11 (Romainville-Carnot station, opened June 2024) and tram T1. Kick-off and acceptance are always done in person.",
           },
           {
             q: "Do you do e-commerce for Paddock Paris stores and local retail?",

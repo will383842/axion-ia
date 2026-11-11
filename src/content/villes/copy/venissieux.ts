@@ -247,7 +247,7 @@ export const VENISSIEUX_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment sur site à Vénissieux ou tout se fait à distance ?",
-      a: "Williams se déplace physiquement à Vénissieux (TGV Paris-Lyon Part-Dieu 2h + métro D direct) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
+      a: "Williams se déplace physiquement à Vénissieux (métro D direct, gare Lyon Part-Dieu) pour les phases Audit et Implémentation. Les développements code sont remote, avec démos hebdomadaires et recette sur site dans la ZI ou au Parilly.",
     },
   ],
 };

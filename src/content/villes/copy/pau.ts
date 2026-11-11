@@ -236,7 +236,7 @@ export const PAU_COPY: VilleCopy = {
     },
     {
       q: "Quels délais de déplacement pour une mission à Pau ?",
-      a: "Nos consultants se déplacent sous 5 jours ouvrés. Accès Pau via TGV Paris-Montparnasse (4 h), TGV Bordeaux Saint-Jean (2 h via A65 ou rail), aéroport Pau Pyrénées (vols quotidiens Paris-Orly, Lyon, Amsterdam). Possibilité d'audit visio sous 48 h.",
+      a: "Nous intervenons sous 5 jours ouvrés. Pau est desservie par le TGV, la gare Bordeaux Saint-Jean (2 h via A65 ou rail) et l'aéroport Pau Pyrénées. Possibilité d'audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD et AI Act pour les missions à Pau ?",

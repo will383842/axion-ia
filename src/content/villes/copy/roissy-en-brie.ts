@@ -247,7 +247,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes limitrophes de Roissy-en-Brie ?",
-      a: "Oui. Nous nous déplaçons sans surcoût à Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière, toutes accessibles en moins de 15 minutes depuis Roissy-en-Brie.",
+      a: "Oui. Nous nous déplaçons sans surcoût à Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière, toutes accessibles en moins de 15 minutes de Roissy-en-Brie.",
     },
   ],
 };

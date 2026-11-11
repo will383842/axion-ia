@@ -53,7 +53,7 @@ export const SAVENAY_COPY: VilleCopy = {
     },
     {
       q: "La gare TGV de Savenay facilite-t-elle les missions ?",
-      a: "Oui, la gare TGV de Savenay permet à nos consultants de venir directement de Paris en 2h40 sans changement (ligne TGV Paris-Le Croisic). Idéal pour les missions nécessitant une expertise nationale rapide.",
+      a: "Oui, la gare TGV de Savenay facilite l'accès à la commune pour les rendez-vous sur site. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du bocage ?",

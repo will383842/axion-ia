@@ -230,7 +230,7 @@ export const VERSAILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Versailles et dans les Yvelines ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nos consultants se déplacent sur site, à 12 minutes de Paris par le RER C, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nous intervenons sur site (Versailles est à 12 minutes de Paris par le RER C) ou en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec l'hôtellerie et le tourisme de prestige versaillais ?",
@@ -246,7 +246,7 @@ export const VERSAILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Versailles ?",
-      a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nos consultants se déplacent sur site.",
+      a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nous intervenons sur site.",
     },
   ],
 };

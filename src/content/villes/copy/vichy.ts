@@ -230,7 +230,7 @@ export const VICHY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vichy et dans l'Allier ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nos consultants se déplacent sur site ou interviennent en visio, avec Clermont-Ferrand à 35 minutes et Paris à 3 heures de train.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vichy et de son agglomération thermale. Nous intervenons sur site ou en visio, avec Clermont-Ferrand à 35 minutes.",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux et de bien-être ?",
@@ -246,7 +246,7 @@ export const VICHY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vichy ?",
-      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nos consultants se déplacent sur site.",
+      a: "Vichy est à 35 minutes de Clermont-Ferrand, 3 heures de Paris en train direct et reliée à l'A71 par l'A719. Nous intervenons sur site.",
     },
   ],
 };

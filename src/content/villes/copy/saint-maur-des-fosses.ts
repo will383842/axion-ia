@@ -130,7 +130,7 @@ export const SAINT_MAUR_DES_FOSSES_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes autour de Saint-Maur-des-Fossés ?",
-            a: "Oui, nous nous déplaçons à Joinville-le-Pont, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Maisons-Alfort, Bonneuil-sur-Marne et Sucy-en-Brie, toutes accessibles depuis la presqu'île et les quatre gares RER A de Saint-Maur.",
+            a: "Oui, nous nous déplaçons à Joinville-le-Pont, Champigny-sur-Marne, Chennevières-sur-Marne, Créteil, Maisons-Alfort, Bonneuil-sur-Marne et Sucy-en-Brie, toutes accessibles par les quatre gares RER A de Saint-Maur.",
           },
         ],
         guarantees:

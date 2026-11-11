@@ -218,11 +218,11 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "How quickly can you start a project in Ris-Orangis?",
-            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; we work anywhere in France, on site or remotely (Ris-Orangis is about 25 km from Paris via the A6 and RER D).",
+            a: "A first quote is provided from 24 to 48 hours depending on complexity, after a framing call. The kick-off happens on site in Ris-Orangis, then iterations continue remotely with regular check-ins; we work anywhere in France, on site or remotely (Ris-Orangis is about 25 km south of Paris, served by the A6 and RER D).",
           },
         ],
         guarantees:
-          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs from Paris listed separately, with full transparency.",
+          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs listed separately, with full transparency.",
       },
     },
   },

@@ -65,7 +65,7 @@ export const PORTO_VECCHIO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Porto-Vecchio ?",
-      a: "Nos consultants rejoignent Porto-Vecchio via l'aéroport Figari-Sud Corse (25 min, vols directs Paris/Lyon/Marseille en saison). Hors saison, Ajaccio (2h30) ou ferry Marseille/Toulon.",
+      a: "Porto-Vecchio est à 25 min de l'aéroport Figari-Sud Corse (vols directs en saison). Hors saison, Ajaccio (2h30) ou ferry Marseille/Toulon.",
     },
   ],
 };
