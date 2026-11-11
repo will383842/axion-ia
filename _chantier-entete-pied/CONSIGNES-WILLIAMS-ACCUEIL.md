@@ -1,0 +1,50 @@
+# Consignes de Williams pour le header et la page d'accueil (08/11/2026, soir) — DÉCISIONS, à ne pas rediscuter
+
+## Header (décidé)
+- Onglets : **Accueil** · **Nos prestations ▾** (contenu : Formations IA, Coaching IA, Audit IA, Implémentation IA, Sites web & SaaS IA) · **La Journée IA** (« il faudra qu'elle soit aussi dans le header ») · **Tarifs** (« la page tarif toujours » dans le header).
+- **Ressources** : sort du header, va dans le footer.
+- Boutons : **garder « Nous écrire » et « Réserver un appel »** (les deux).
+- L'ordre exact des onglets, les libellés fins et le menu mobile sont à concevoir par l'équipe, dans ce cadre.
+
+## Page d'accueil (décidé)
+- **Garder le h1 actuel** : « On vous parle d'IA partout. Vous ne savez plus par où commencer. Nous, si. » (« je pense que c'est le slogan »).
+- **Changer la ligne sous le h1** (actuellement « Formation, coaching, audit, automatisation : on vous simplifie l'IA, vous n'avez à vous soucier de rien ») : c'est le hook, à retravailler.
+- **Sous le hook, une section à 2 blocs** (« il faut vraiment travailler cette section », « du Hormozi à 300 % et selon les meilleures pratiques ») :
+  1. **Bloc La Journée IA** : 2 à 4 h d'audit en entreprise le matin (chercher tout ce qu'on peut automatiser) + 4 h de formation des équipes ; prix **1 490 €** ; un CTA du type « Qu'est-ce que la Journée IA ? » qui mène à une landing page dédiée (à faire plus tard).
+  2. **Bloc Réserver un appel** : visio ou téléphone, pour ceux qui ont un besoin précis ou veulent des renseignements (« comment on peut faire »).
+  - But : **simplifier l'offre au maximum** : « vous avez le choix : la Journée IA à 1 490 €, ou réserver un appel ».
+  - Le client doit se dire qu'il serait bête de ne pas prendre l'offre (Hormozi : Grand Slam Offer, équation de valeur, empilement, garantie, bonus honnêtes).
+- **Pas trop de texte** : « dès qu'on arrive, il faut qu'on comprenne, et que ça donne vraiment envie ».
+- **Garder** : « On ne promet pas l'excellence, on la livre » (rien à changer) · « 6 raisons concrètes de nous choisir » · « Des implémentations sur mesure » · « Nous accompagnons les PME, les TPE » (penser GEO/SEO) · « Axion-IA intervient dans tous les secteurs d'activité » · « Axion-IA disponible partout en France » · « Questions fréquentes ».
+- **« Un prix de départ pour chaque service »** : « pas sûr que ce soit bien », « pas à jour, ne correspond pas au Company Brain » → à trancher par l'équipe (recommandation attendue : retirer ou remplacer).
+- **Contraste et images** : « un peu de contraste à des endroits, peut-être dans les blocs de la section 2 », « il faut des images », « je veux du lourd ».
+- **Respecter** le Company Brain, le knowledge et le RAG (cohérence des textes, prix, garantie, mots interdits).
+- **Prendre en compte toutes les autres pages**, mais la page d'accueil doit être « la perfection ».
+
+## Méthode demandée
+- Équipe de 30 rôles, meilleurs experts (Hormozi, meilleurs experts de la page d'accueil), références des Skills.
+- Faire le plan, **puis vérifier que le plan est parfait** (principes respectés, compréhension immédiate, envie), puis livrer de bout en bout.
+
+## Complément de Williams (08/11, quelques minutes plus tard) — s'ajoute aux décisions ci-dessus
+- **Journée IA, le matin** : « 2 à 4 h d'audit le matin pour découvrir les 3, 4 ou 5 choses à automatiser, avec le gain » (chiffré). De l'autre côté : « réserver un diagnostic ou des renseignements ».
+- **AI Act** : « il faut tenir compte, pour cette journée, que c'est une journée où ils sont en conformité avec l'AI Act, donc ça peut être important ». La formation de l'après-midi vaut aussi mise en conformité (obligation de formation à l'IA des salariés, AI Act art. 4, applicable depuis le 2 février 2025). À formuler SANS « conforme AI Act » ni « certifié » (mots interdits par le Company Brain) : dire ce qu'on fait (une formation qui répond à l'obligation de formation, une attestation par personne), pas une garantie de conformité. **Une page dédiée sera créée pour cela et sera aussi dans le header.**
+- **Header, version précisée** : logo · **Accueil** · **La Journée IA** (« cette journée en détail ») · **Nos prestations ▾** (Formations, Coaching, Audit, Implémentation, Sites web) · **Tarifs** « peut-être, si tu penses que c'est le mieux » (devient OPTIONNEL : l'équipe recommande) · **Ressources → footer**. Respecter le knowledge et le RAG.
+
+## 08/11/2026, vers 23 h 20 (page Journée IA v1 et header)
+- Page Journée IA v1 : « LE DESIGN DE LA PAGE Journée IA est catastrophique, c’est trop textuel, ça fait des blocs de texte, il manque des boutons, de choses ; il y a vraiment beaucoup trop d’informations, ça tue l’information ; c’est pas selon les meilleures pratiques, prends en référence les meilleurs pros de la réalisation de sites internet et de landing pages ; c’est un blockhaus, personne n’a envie de lire, manque de contraste ; le texte est bien mais il y en a tellement qu’au final personne ne le voit et personne ne va lire ; il faut des contrastes, différents designs ; j’ai l’impression que cette page n’est pas mobile first ; il faut vraiment qu’on comprenne au premier coup d’œil. »
+- Header : « il faudrait que cette Journée IA soit mise en avant : c’est un onglet comme un autre, il faudrait qu’il soit bien visible, qu’il ressorte, entouré, une autre couleur, quelque chose pour que ce soit vraiment visible, parce que la Journée IA c’est notre offre essentielle, simple, claire et précise. » → appliqué : pastille noire dans le header et le tiroir.
+- Rappel 22 h 40 : « attention à bien regarder tout ce qui est centralisé pour le SEO/GEO… certaines choses sont déjà centralisées et ne sont pas à refaire ; vérifie bien tout le contexte avant de faire quoi que ce soit et rajoute tout ce qui manque. »
+
+## 09/11/2026, vers 0 h 30
+- Sur la page Journée IA v2 : « IL FAUT ENCORE AMÉLIORER CETTE PAGE ; et est-elle parfaite pour le SEO/GEO etc. comme tu as dû le faire pour la page d’accueil ou pas ? » → deux relectures Opus lancées (SEO/GEO ; design/conversion), correctifs à appliquer, puis vérification captures.
+- Rapport : « 3 jours ouvrés » → **variante B retenue** : priorités écrites le soir même, rapport complet et plan d’action sur 90 jours sous 3 jours ouvrés. Appliqué le 09/11 sur la landing (variantes A retirées du code, plus de `?variante=b`), sur l’accueil (tuile « Le soir même · vos priorités »), dans le nœud Service JSON-LD des deux pages (`jsonld-service-node.json`) et dans la FAQPage. Reste à répercuter dans le code le jour de la mise en ligne : garantie [d6], CGV, devis, chatbot, llms.txt, `en-bref.ts` (une seule constante).
+- (0 h 45) « La photo du héros de la Journée IA, la même que la page d’accueil, ce n’est pas top » → remplacée par une vraie photo de formation en entreprise du dépôt (`public/images/axion-ia-photo-formation-ia-equipe-mixte-exercices-pratiques-resultat.webp`), alt vide (image générée), `primaryImageOfPage` aligné. La photo d’équipe reste sur l’accueil.
+
+## 09/11/2026, vers 2 h
+- « Relance une vérification complète du SEO et GEO… à l’extrême perfection… une équipe en place… vérifier que les 2 pages sont parfaites… les comparer avec ce qui est déjà en ligne… quand tout est parfait, mets en ligne, déploie sur la bonne page… vérifier que la version mobile est parfaite, mobile first. » → chantier en cours (voir REPRENDRE).
+- Sur « Le matin, l’audit retient 3 à 5 tâches… » : « il faut mettre en avant qu’on cartographie leur entreprise pour voir ce qui est le plus rentable pour eux, le meilleur retour sur investissement, le plus gros gain… “3 ou 4 tâches” c’est ce que tout le monde dit » ; « plutôt qu’une photo de formation (il y en a des milliers sur internet), une photo qui représente les bénéfices pour l’entreprise… style Hormozi, le gain, la perte à ne rien faire ; il faut que le dirigeant se dise qu’il serait bête de ne pas prendre la formule » → h1 « vos plus gros gains chiffrés », visuel natif « Votre entreprise, cartographiée » (carte des gains, exemple type, plus gros gain mis en avant, 9 450 € face à 1 490 € HT, ruban de la journée) à la place de la photo ; textes « cartographie » sur les deux pages et dans le Service JSON-LD.
+- « Ça peut être la cartographie et le plus gros gain, mais aussi en fonction de leurs demandes, leurs plus grosses douleurs, où ils souhaitent faire des changements : tenir compte de ce que veut le client… parfois il ne le sait pas… cartographie de l’entreprise et on fait le point ensemble, c’est 2 à 4 h, le but c’est de leur faire gagner de l’argent concrètement » → « 2 à 4 h » rétabli partout (pas « 3 à 4 h ») ; « fait le point avec le dirigeant sur ses priorités et ses difficultés » ajouté (En bref, sous-titre, tuile accueil, Service).
+
+## 09/11, vers 10 h 25 (message de Williams, après la synthèse des audits du header)
+Mot pour mot (fautes de frappe corrigées) : « Il faut fixer ça non ? [le robots.txt qui bloque GPTBot, ClaudeBot, Google-Extended, CCBot]. Pour le reste du site on le fera petit à petit. IL FAUT un fichier COMPLET DE TOUT CE QU'IL FAUDRA FAIRE POUR TOUT REMETTRE CARRÉ. Pour le moment sur les deux pages déjà faites, je veux que tu les vérifies car il manque du contraste d'une section à l'autre, on a du mal à distinguer les différentes sections. Puis il ne faut pas mettre ça : "Nos limites. Ni label, ni statut : une action de formation, écrite et datée." car c'est contre-vendeur. Puis il faut mettre en avant que [chaque] personne formée a une attestation de fin [de formation] en conformité avec leurs obligations, non ? Puis chaque section doit être plus travaillée car ça fait bas de gamme. »
+Décisions retenues : (1) corriger le robots.txt (option A recommandée : cité partout) ; (2) un plan complet unique de remise à plat du site, exécuté petit à petit ; (3) les deux pages : contraste net entre sections, retirer « Nos limites », mettre en avant l'attestation de formation nominative (sans écrire « conforme » : formulation juriste), design plus haut de gamme section par section.
