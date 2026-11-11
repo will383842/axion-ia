@@ -16,3 +16,21 @@ export const MERCI_STATUTS_ECARTES_LUS = [MERCI_STATUT_ECARTE, MERCI_STATUT_ECAR
 export function merciEstEcarte(statut: string): boolean {
   return (MERCI_STATUTS_ECARTES_LUS as readonly string[]).includes(statut);
 }
+
+/** Validée par la personne, « merci » pas encore pris en charge (posé par `page-confirmation.ts`). */
+export const MERCI_STATUT_A_ENVOYER = "a_envoyer";
+
+/** Réservé par le Studio (lot S4a) : sorti une fois de la liste, en attente de l'accusé de réception. */
+export const MERCI_STATUT_RESERVE = "reserve";
+
+/** « Merci » envoyé (accusé de réception du Studio). */
+export const MERCI_STATUT_ENVOYE = "envoye";
+
+/** Fenêtre de messagerie du réseau refermée : pas d'envoi possible. */
+export const MERCI_STATUT_HORS_FENETRE = "hors_fenetre";
+
+/** Aucun « merci » à envoyer pour ce contact. */
+export const MERCI_STATUT_AUCUN = "aucun";
+
+/** Resté `a_envoyer` plus de `FENETRE_MERCI_H` heures : la ligne est conservée, plus jamais proposée. */
+export const MERCI_STATUT_EXPIRE = "expire";
