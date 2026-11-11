@@ -5,7 +5,9 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
 
-const { bd } = vi.hoisted(() => ({ bd: { appelsPrisma: 0, suppressions: 0, limiteRefusee: false } }));
+const { bd } = vi.hoisted(() => ({
+  bd: { appelsPrisma: 0, suppressions: 0, limiteRefusee: false },
+}));
 
 vi.mock("@/lib/prisma", () => {
   const interdit = async () => {
@@ -77,14 +79,17 @@ beforeEach(() => {
 });
 
 describe("accusé · route", () => {
-  it.each([undefined, "1", "false", "TRUE", ""])("interrupteur « %s » → 503, rien de lu", async (v) => {
-    if (v === undefined) delete process.env.CONFIRMATIONS_PAGE_GUIDE_ENABLED;
-    else process.env.CONFIRMATIONS_PAGE_GUIDE_ENABLED = v;
-    const r = await appel();
-    expect(r.status).toBe(503);
-    expect((await r.json()).erreur).toBe("reception_eteinte");
-    expect(bd.appelsPrisma).toBe(0);
-  });
+  it.each([undefined, "1", "false", "TRUE", ""])(
+    "interrupteur « %s » → 503, rien de lu",
+    async (v) => {
+      if (v === undefined) delete process.env.CONFIRMATIONS_PAGE_GUIDE_ENABLED;
+      else process.env.CONFIRMATIONS_PAGE_GUIDE_ENABLED = v;
+      const r = await appel();
+      expect(r.status).toBe(503);
+      expect((await r.json()).erreur).toBe("reception_eteinte");
+      expect(bd.appelsPrisma).toBe(0);
+    },
+  );
   it("mauvaise signature → 401", async () => {
     expect((await appel(VALIDE, { secret: "z".repeat(40) })).status).toBe(401);
     expect(bd.appelsPrisma).toBe(0);

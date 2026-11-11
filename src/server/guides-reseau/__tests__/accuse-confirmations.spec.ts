@@ -50,7 +50,13 @@ vi.mock("@/lib/prisma", () => {
     },
     $queryRaw: async (sql: { sql: string; values: unknown[] }) => {
       // Réservation (S4a) : [reserve, quand, a_envoyer, debut, limite]
-      const [statut, quand, ancien, debut, limite] = sql.values as [string, Date, string, Date, number];
+      const [statut, quand, ancien, debut, limite] = sql.values as [
+        string,
+        Date,
+        string,
+        Date,
+        number,
+      ];
       const pris = bd.contacts
         .filter((l) => l.merci_statut === ancien && l.consenti_le >= debut)
         .slice(0, limite);
@@ -73,7 +79,11 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 
-import { accuserConfirmations, SchemaAccuse, recevoirAccuseConfirmations } from "../accuse-confirmations";
+import {
+  accuserConfirmations,
+  SchemaAccuse,
+  recevoirAccuseConfirmations,
+} from "../accuse-confirmations";
 import { reserverConfirmations } from "../confirmations";
 import { FENETRE_MERCI_H } from "../config";
 
@@ -118,7 +128,10 @@ describe("accusé", () => {
     await accuserConfirmations([{ ref: l.jeton_empreinte, issue: "envoye" }], MAINTENANT);
     const t = l.updated_at;
     for (const issue of ["envoye", "echec", "hors_fenetre"] as const)
-      await accuserConfirmations([{ ref: l.jeton_empreinte, issue }], new Date(MAINTENANT.getTime() + 60_000));
+      await accuserConfirmations(
+        [{ ref: l.jeton_empreinte, issue }],
+        new Date(MAINTENANT.getTime() + 60_000),
+      );
     expect(l.merci_statut).toBe("envoye");
     expect(l.updated_at).toBe(t);
   });
@@ -179,7 +192,9 @@ describe("corps", () => {
   const ok = { ref: "a".repeat(64), issue: "envoye" };
   it("accepte 1 à 50 issues", () => {
     expect(SchemaAccuse.safeParse({ schemaVersion: 1, issues: [ok] }).success).toBe(true);
-    expect(SchemaAccuse.safeParse({ schemaVersion: 1, issues: Array(50).fill(ok) }).success).toBe(true);
+    expect(SchemaAccuse.safeParse({ schemaVersion: 1, issues: Array(50).fill(ok) }).success).toBe(
+      true,
+    );
   });
   it.each([
     { schemaVersion: 1, issues: [] },
@@ -203,7 +218,9 @@ describe("rien de personnel", () => {
     const l = ajouter();
     const r = await recevoirAccuseConfirmations({
       ok: true,
-      corps: Buffer.from(JSON.stringify({ schemaVersion: 1, issues: [{ ref: l.jeton_empreinte, issue: "envoye" }] })),
+      corps: Buffer.from(
+        JSON.stringify({ schemaVersion: 1, issues: [{ ref: l.jeton_empreinte, issue: "envoye" }] }),
+      ),
       corpsSha256: "",
       horodatage: 0,
       nonce: "",
