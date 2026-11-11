@@ -283,7 +283,7 @@ export default async function JourneeIaPage({ params }: Props) {
 
   // `rdv=diagnostic` : le Diagnostic IA gratuit de 45 minutes, seul rendez-vous.
   const lien = (depuis: string) => `/appel?rdv=diagnostic&depuis=${depuis}`;
-  // Le diagnostic est facultatif : « Déjà décidé ? » mène directement au contact, sans diagnostic ni paiement en ligne.
+  // Le diagnostic est facultatif : « Déjà décidé ? » mène directement au contact, sans diagnostic préalable.
   const lienDirect = (depuis: string) => `/contact?depuis=${depuis}`;
 
   const [serviceJsonLd, webPageJsonLd, faqJsonLd] = jsonLdJourneeIa();

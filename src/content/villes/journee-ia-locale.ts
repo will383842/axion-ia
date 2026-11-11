@@ -149,9 +149,9 @@ export function descriptionVille(v: VilleLocale): string {
   const code = codeDepartement(v);
   return premierQuiTient(
     [
-      `La Journée IA ${a} (${dep}) : un audit de 2 à 4 h selon la structuration de l’entreprise, dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `La Journée IA ${a} (${code}) : un audit de 2 à 4 h selon la structuration de l’entreprise, dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${a} (${code}) : audit de 2 à 4 h selon la structuration de l’entreprise dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${dep}) : 2 à 4 h d’audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${code}) : 2 à 4 h d’audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${a} (${code}) : audit de 2 à 4 h dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -177,8 +177,8 @@ export function descriptionRegion(r: RegionLocale): string {
   const en = enRegion(r);
   return premierQuiTient(
     [
-      `La Journée IA ${en}, dans vos locaux : un audit de 2 à 4 h selon la structuration de l’entreprise, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
-      `La Journée IA ${en}, dans vos locaux : un audit de 2 à 4 h selon la structuration de l’entreprise, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${en}, dans vos locaux : 2 à 4 h d’audit, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
+      `La Journée IA ${en}, dans vos locaux : 2 à 4 h d’audit, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
       `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous 3 jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
@@ -191,7 +191,7 @@ export const TITRE_HUB = `La Journée IA partout en France${MARQUE}`;
 /** Meta description du hub. */
 export function descriptionHub(): string {
   return remplacerJetons(
-    "La Journée IA se tient dans vos locaux, partout en France : un audit de 2 à 4 h selon la structuration de l’entreprise, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
+    "La Journée IA se tient dans vos locaux, partout en France : 2 à 4 h d’audit, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
   );
 }
 
