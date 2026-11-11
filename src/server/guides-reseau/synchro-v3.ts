@@ -192,6 +192,8 @@ export interface EntreeEvenementPageGuide {
    * version_mention…) : fusionnées, la charge v3 (origines, verifie…) l'emporte en cas de doublon.
    */
   readonly payloadBase?: Readonly<Record<string, unknown>>;
+  /** Source de la demande ; défaut `guide-reseau`. */
+  readonly sourceSlug?: string;
 }
 
 export type EvenementPageGuideV3 = Omit<CrmSyncEvent, "schema_version"> & {
@@ -228,7 +230,7 @@ export function evenementPageGuideV3(
       event_id: eventIdDemandeGuide(e.demandeId),
       event_type: "lead_magnet_requested",
       occurred_at: e.clicLe.toISOString(),
-      source_slug: SOURCE_SLUG_GUIDE_RESEAU,
+      source_slug: e.sourceSlug ?? SOURCE_SLUG_GUIDE_RESEAU,
       // Même référence que le chemin v1 : le rapprochement outbox ↔ demande (`aPuEntrer…`) la lit.
       subject_ref: `site:guide_request:${e.demandeId}`,
       person: { person_key: personKey, email, first_name: prenom },

@@ -281,6 +281,35 @@ class RienEcrit extends Error {
  * Demande DÉJÀ transmise : l'inscription à la lettre, elle, peut ne pas
  * l'être (faite après le premier clic) — elle est transmise à ce clic-ci.
  */
+/**
+ * Opposition : les origines de la personne pour ce guide passent `ecartee` (mise à l'écart, JAMAIS
+ * de suppression) pour n'être plus reproposées. Sans effet tant que `SYNCHRO_CRM_V3` est éteint
+ * (les colonnes ne sont alors jamais lues ni écrites). Hors transaction, une erreur est avalée :
+ * l'opposition, elle, est déjà actée.
+ */
+async function ecarterOriginesDeLaPersonne(
+  db: Pick<typeof prisma, "guideReseauOrigine">,
+  emailKey: string,
+  guide: string,
+  quand: Date,
+): Promise<void> {
+  if (!synchroCrmV3Active()) return;
+  const ecrire = () =>
+    db.guideReseauOrigine.updateMany({
+      where: { emailKey, guide, archiveeLe: null, crmStatut: null },
+      data: { crmStatut: "ecartee", crmTraiteeLe: quand },
+    });
+  if (db !== prisma) {
+    await ecrire();
+    return;
+  }
+  try {
+    await ecrire();
+  } catch {
+    /* mise à l'écart non écrite : le rattrapage la refera, rien ne part (opposition relue) */
+  }
+}
+
 export async function transmettreClicGuide(
   demandeId: string,
   maintenant: Date = new Date(),
@@ -320,6 +349,7 @@ export async function transmettreClicGuide(
         where: { id: demande.id, crmEmittedAt: null },
         data: { crmEmittedAt: maintenant },
       });
+      await ecarterOriginesDeLaPersonne(prisma, demande.emailKey, demande.aimant, maintenant);
       return r.count === 1 ? "opposee" : "deja-transmise";
     }
 
@@ -334,7 +364,11 @@ export async function transmettreClicGuide(
     // Lot S3 : une demande venue d'un réseau, avec `SYNCHRO_CRM_V3` allumé, porte la source
     // `guide-reseau` et, si la page a laissé un consentement, le bloc v3 (prénom, accord, guide
     // reçu, origine). Éteint : chemin v1 inchangé.
-    const viaReseau = synchroCrmV3Active() && demande.origine === "message_prive";
+    const v3 = synchroCrmV3Active();
+    const viaReseau = v3 && demande.origine === "message_prive";
+    // Lot guide réseau 4 (D5) : une demande née d'ailleurs (formulaire) garde SA source, mais les
+    // origines réseau de la personne partent quand même (v3 allumé).
+    const sourceDemande = viaReseau ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
 
     // Ce que v1 envoie : conservé tel quel dans la charge v3 (rien n'est perdu en changeant de version).
     const consentV1 =
@@ -366,34 +400,46 @@ export async function transmettreClicGuide(
         });
         if (r.count !== 1) return null;
         reservee = true;
-        if (viaReseau) {
+        if (v3) {
           // Nouveau contrôle d'opposition, DANS la transaction, juste avant d'écrire : une
           // opposition arrivée depuis la lecture du début l'emporte. La demande reste réservée
-          // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite.
+          // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite ; les origines
+          // sont MISES À L'ÉCART (`ecartee`), jamais supprimées.
           if (await estOpposee(demande.email, tx)) {
+            await ecarterOriginesDeLaPersonne(tx, demande.emailKey, demande.aimant, maintenant);
             opposeePendantLaTransaction = true;
             return null;
           }
-          const v3 = await evenementDuClicPageGuide(tx, demande, firstClickAt, {
-            ...(consentV1 ? { consent: consentV1 } : {}),
-            payloadBase: payloadV1,
-          });
-          if (v3.ok) {
-            const id = await enqueueCrmSyncEvent(v3.evenement as unknown as CrmSyncEvent, {
+          const lecture = await evenementDuClicPageGuide(
+            tx,
+            demande,
+            firstClickAt,
+            { ...(consentV1 ? { consent: consentV1 } : {}), payloadBase: payloadV1 },
+            sourceDemande,
+          );
+          if (lecture.ok) {
+            const id = await enqueueCrmSyncEvent(lecture.evenement as unknown as CrmSyncEvent, {
               tx,
               mettreEnFile: false,
             });
             if (id === null) throw new RienEcrit();
+            // Même transaction que l'événement : les origines portées sont marquées parties.
+            if (lecture.origineIds.length > 0) {
+              await tx.guideReseauOrigine.updateMany({
+                where: { id: { in: lecture.origineIds }, crmStatut: null },
+                data: { crmStatut: "transmise", crmTraiteeLe: maintenant },
+              });
+            }
             return id;
           }
-          // Sans bloc v3 (aucun consentement de la page, ou valeur hors format CRM) : l'événement
-          // v1 part tel quel, sans optin ni prénom, avec la source du réseau.
+          // Sans bloc v3 (aucune origine, prénom illisible, ou valeur hors format CRM) : l'événement
+          // v1 part tel quel, sans optin ni prénom, avec la source de la demande.
         }
         const ligne = await syncLeadMagnetRequestedToCrm({
           eventId,
           subjectRef: `site:guide_request:${demande.id}`,
           occurredAt: firstClickAt,
-          sourceSlug: viaReseau ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE,
+          sourceSlug: sourceDemande,
           person: { email: demande.email },
           // Un bloc `consent` pour un CONSENTEMENT seulement : la case cochée
           // (adresse perso inscrite). Sinon, aucun — personne n'a consenti.

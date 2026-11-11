@@ -53,7 +53,20 @@ vi.mock("@/lib/prisma", () => {
         base.contacts.find((l) => ok(l, where)) ?? null,
     },
     guideReseauOrigine: {
-      findMany: async ({ where }: { where: Ligne }) => base.origines.filter((l) => ok(l, where)),
+      findMany: async ({ where, take }: { where: Ligne; take?: number }) =>
+        base.origines
+          .filter((l) => ok(l, where))
+          .sort((x, y) => +(y.occurredAt as Date) - +(x.occurredAt as Date))
+          .slice(0, take),
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const ids = (where.id as { in: string[] } | undefined)?.in;
+        const c = base.origines.filter(
+          (l) =>
+            (ids ? ids.includes(l.id as string) : true) && ok(l, { crmStatut: where.crmStatut }),
+        );
+        c.forEach((l) => Object.assign(l, data));
+        return { count: c.length };
+      },
     },
     newsletterSubscriber: { findUnique: async () => base.abonne },
     crmSyncOutbox: {
@@ -136,7 +149,10 @@ const contact = (sur: Ligne = {}): Ligne => ({
   versionConsentement: "page-guide-2026-11-08",
   ...sur,
 });
+let compteurOrigine = 0;
 const origine = (sur: Ligne = {}): Ligne => ({
+  id: `origine-${++compteurOrigine}`,
+  crmStatut: null,
   emailKey: "cle-1",
   mot: "GUIDE",
   reseau: "instagram",
@@ -239,8 +255,8 @@ describe("le clic émet l'événement v3 de la page", () => {
     expect(base.demandes[0]?.crmEmittedAt).toBeNull();
   });
 
-  it("demande née du formulaire (pas d'un réseau) : chemin v1, source guide-ia", async () => {
-    installer({ demande: demande({ origine: "formulaire" }) });
+  it("demande née du formulaire, sans aucune origine : chemin v1, source guide-ia", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), origines: [] });
     await transmettreClicGuide("demande-1");
     expect(evenement().schema_version).toBe(1);
     expect(evenement().source_slug).toBe("guide-ia");
@@ -317,8 +333,8 @@ describe("le clic émet l'événement v3 de la page", () => {
     expect((evenement().consentements as Ligne[])[0]?.date).toBe("2026-11-01T10:00:00.000Z");
   });
 
-  it("figé : demande née du formulaire, même avec un contact lié : v1, aucun bloc v3", async () => {
-    installer({ demande: demande({ origine: "formulaire" }) });
+  it("figé : demande née du formulaire sans origine, même avec un contact lié : v1, aucun bloc v3", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), origines: [] });
     await transmettreClicGuide("demande-1");
     const e = evenement();
     expect(e.schema_version).toBe(1);
@@ -379,5 +395,128 @@ describe("la page n'envoie plus rien au CRM au POST", () => {
 
   it("l'origine est écrite dans la transaction de la page (relue plus tard par le clic)", () => {
     expect(lire("page-confirmation.ts")).toMatch(/ecrireOrigineDansTransaction\(tx,/);
+  });
+});
+
+describe("lot guide réseau 4 : l'origine complète part au premier clic, aussi depuis la conversation", () => {
+  it("conversation (aucun contact) : charge v3 avec origines, sans consentements ni prénom, origines marquées transmises", async () => {
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("transmise");
+    expect(base.outbox).toHaveLength(1);
+    const e = evenement();
+    expect(e.schema_version).toBe(3);
+    expect(e.source_slug).toBe("guide-reseau");
+    expect(e).not.toHaveProperty("consentements");
+    expect((e.person as Ligne).first_name).toBeUndefined();
+    const p = e.payload as { origines: Ligne[]; origine_contenu: Ligne; verifie: boolean };
+    expect(p.origines).toHaveLength(1);
+    expect(p.origines[0]).toMatchObject({
+      mot: "GUIDE",
+      reseau: "instagram",
+      post_ref: "post_ref_test_01",
+    });
+    expect(p.origine_contenu).toMatchObject({ reseau: "instagram" });
+    expect(base.origines[0]?.crmStatut).toBe("transmise");
+    expect(base.origines[0]?.crmTraiteeLe).toBeInstanceOf(Date);
+  });
+
+  it("page + deux origines (deux posts) : les deux voyagent, la plus récente donne origine_contenu", async () => {
+    installer({
+      origines: [
+        origine(),
+        origine({
+          postRef: "post_ref_test_02",
+          reseau: "linkedin",
+          occurredAt: new Date("2026-11-02T09:00:00.000Z"),
+        }),
+      ],
+    });
+    await transmettreClicGuide("demande-1");
+    const p = evenement().payload as { origines: Ligne[]; origine_contenu: Ligne };
+    expect(p.origines.map((o) => o.post_ref)).toEqual(["post_ref_test_01", "post_ref_test_02"]);
+    expect(p.origine_contenu.reseau).toBe("linkedin");
+    expect(base.origines.map((o) => o.crmStatut)).toEqual(["transmise", "transmise"]);
+  });
+
+  it("plus de 20 origines actives : les 20 plus récentes seulement (jamais too_many_origines)", async () => {
+    installer({
+      contact: null,
+      origines: Array.from({ length: 25 }, (_, i) =>
+        origine({
+          postRef: `post_ref_${String(i).padStart(4, "0")}`,
+          occurredAt: new Date(Date.UTC(2026, 10, 1, 0, 0, i)),
+        }),
+      ),
+    });
+    await transmettreClicGuide("demande-1");
+    const p = evenement().payload as { origines: Ligne[] };
+    expect(p.origines).toHaveLength(20);
+    expect(p.origines[0]?.post_ref).toBe("post_ref_0005");
+  });
+
+  it("rejeu : second clic = deja-transmise, aucune seconde ligne d'outbox", async () => {
+    installer({ contact: null });
+    await transmettreClicGuide("demande-1");
+    expect(await transmettreClicGuide("demande-1")).toBe("deja-transmise");
+    expect(base.outbox).toHaveLength(1);
+  });
+
+  it("concurrence : deux clics simultanés (conversation) = une seule ligne", async () => {
+    installer({ contact: null });
+    await Promise.all([transmettreClicGuide("demande-1"), transmettreClicGuide("demande-1")]);
+    expect(base.outbox).toHaveLength(1);
+  });
+
+  it("STOP posé entre la lecture et la transaction : aucune ligne, origines écartées (rien supprimé), demande traitée", async () => {
+    base.opposeeDepuis = 2;
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines).toHaveLength(1);
+    expect(base.origines[0]?.crmStatut).toBe("ecartee");
+    expect(base.demandes[0]?.crmEmittedAt).toBeInstanceOf(Date);
+  });
+
+  it("STOP déjà posé à la première lecture : aucune ligne, origines écartées", async () => {
+    base.opposeeDepuis = 1;
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines[0]?.crmStatut).toBe("ecartee");
+  });
+
+  it("adresse exclue : rien ne part, origines inchangées", async () => {
+    process.env.CRM_SYNC_EXCLUSIONS_SHA256 = createHash("sha256").update(EMAIL).digest("hex");
+    installer({ contact: null });
+    const r = await transmettreClicGuide("demande-1");
+    expect(r).toBe("exclue");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("SYNCHRO_CRM_V3 éteint : chemin v1, origines intouchées", async () => {
+    delete process.env.SYNCHRO_CRM_V3;
+    installer({ contact: null });
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect(e.schema_version).toBe(1);
+    expect(e.payload).not.toHaveProperty("origines");
+    expect(base.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("D5 : demande née du formulaire avec une origine réseau : l'origine part, la source du formulaire est gardée", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), contact: null });
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect(e.schema_version).toBe(3);
+    expect(e.source_slug).toBe("guide-ia");
+    expect((e.payload as { origines: unknown[] }).origines).toHaveLength(1);
+    expect(base.origines[0]?.crmStatut).toBe("transmise");
+  });
+
+  it("origine d'un AUTRE guide : ne voyage pas", async () => {
+    installer({ contact: null, origines: [origine({ guide: "autre-guide" })] });
+    await transmettreClicGuide("demande-1");
+    expect(evenement().schema_version).toBe(1);
   });
 });
