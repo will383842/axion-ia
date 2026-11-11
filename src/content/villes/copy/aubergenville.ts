@@ -64,7 +64,7 @@ export const AUBERGENVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Mantes ou Paris ?",
+      q: "Comment se déroule une mission à Aubergenville ?",
       a: "Mantes-la-Jolie (10 min). Poissy (15 min). Paris Saint-Lazare (45 min transilien J). A13 accès direct.",
     },
   ],

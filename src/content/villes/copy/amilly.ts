@@ -49,7 +49,7 @@ export const AMILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Amilly et dans l'agglomeration montargoise ?",
-      a: "Oui, Axion-IA intervient a Amilly et dans toute l'agglomeration montargoise (Montargis, Chalette-sur-Loing, Villemandeur, Paucourt). Nos consultants rejoignent Amilly via la gare de Montargis a 10 min ou l'A77.",
+      a: "Oui, Axion-IA intervient a Amilly et dans toute l'agglomeration montargoise (Montargis, Chalette-sur-Loing, Villemandeur, Paucourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Amilly ?",

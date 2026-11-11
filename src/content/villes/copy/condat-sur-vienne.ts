@@ -49,7 +49,7 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Condat-sur-Vienne ?",
-      a: "Oui, Axion-IA intervient à Condat-sur-Vienne et dans toute la couronne sud de Limoges (Solignac, Boisseuil, Isle, Le Vigen). Nos consultants viennent de Limoges (10 min A20).",
+      a: "Oui, Axion-IA intervient à Condat-sur-Vienne et dans toute la couronne sud de Limoges (Solignac, Boisseuil, Isle, Le Vigen). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Condat-sur-Vienne ?",
@@ -65,7 +65,7 @@ export const CONDAT_SUR_VIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment accédez-vous à Condat-sur-Vienne ?",
-      a: "Nos consultants se déplacent depuis Limoges (10 min, sortie A20 Condat). Accès direct autoroute. Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct autoroute. Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
     },
   ],
 };

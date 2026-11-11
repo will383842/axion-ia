@@ -245,8 +245,8 @@ export const BRON_COPY: VilleCopy = {
       a: "Audit sur place, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats aux TPE locales, des commerces aux prestataires de l'aviation d'affaires.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon.",
+      q: "Comment se déroule une mission à Bron ?",
+      a: "Oui, Axion-IA intervient à Bron et dans toute la Métropole de Lyon. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

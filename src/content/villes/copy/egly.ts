@@ -49,7 +49,7 @@ export const EGLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Égly et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Égly et tout le sud Essonne / Hurepoix (Arpajon, Brétigny-sur-Orge, La Norville, Ollainville, Leuville-sur-Orge). Nos consultants se déplacent depuis Paris (40 min) ou Massy (20 min).",
+      a: "Oui, Axion-IA intervient à Égly et tout le sud Essonne / Hurepoix (Arpajon, Brétigny-sur-Orge, La Norville, Ollainville, Leuville-sur-Orge). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Égly  ?",
@@ -64,8 +64,8 @@ export const EGLY_COPY: VilleCopy = {
       a: "Pour les PME du sud Essonne, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Nos consultants viennent de Paris (40 min A6/RN20) ou Massy (20 min). Accès rapide via RER C Brétigny ou route RN20.",
+      q: "Comment se déroule une mission à Égly ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Accès rapide via RER C Brétigny ou route RN20.",
     },
   ],
 };

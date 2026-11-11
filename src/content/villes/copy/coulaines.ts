@@ -64,7 +64,7 @@ export const COULAINES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA pratiques : automatisation administrative, agents conversationnels clients, génération de documents, analyse de données. Sur site à Coulaines ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Coulaines depuis Le Mans ?",
+      q: "Comment se déroule une mission IA à Coulaines ?",
       a: "Nos consultants interviennent directement dans vos locaux à Coulaines. Gare TGV Le Mans à 4 km (55 min Paris). Accès A11 et A28.",
     },
   ],

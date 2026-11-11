@@ -64,8 +64,8 @@ export const COUZEIX_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de Couzeix, audit complet, interventions sur site, implémentation IA (CRM augmenté, automatisation process, agents conversationnels, gestion documentaire) et coaching dirigeant 1-to-1. Tarifs publics adaptés.",
     },
     {
-      q: "Comment se passe une mission à Couzeix depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Couzeix est desservie par le réseau STLC. Visio également possible.",
+      q: "Comment se déroule une mission à Couzeix ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Couzeix est desservie par le réseau STLC. Visio également possible.",
     },
   ],
 };

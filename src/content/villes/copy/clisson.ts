@@ -49,7 +49,7 @@ export const CLISSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clisson et vignoble nantais ?",
-      a: "Oui, Axion-IA intervient à Clisson et tout le vignoble nantais (Vallet, Le Pallet, Gorges, Gétigné). Consultants depuis Nantes (30 min). Couverture complète du sud Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Clisson et tout le vignoble nantais (Vallet, Le Pallet, Gorges, Gétigné). Nous intervenons partout en France, sur place ou à distance. Couverture complète du sud Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les viticulteurs et domaines du Muscadet ?",

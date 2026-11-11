@@ -573,6 +573,10 @@ interface ServiceJsonLdInput {
    */
   prixPublic?: boolean;
   serviceType?: string;
+  /** Autres noms courants du service (recopié seulement s’il est fourni). */
+  alternateName?: readonly string[];
+  /** Catégorie schema.org du service (recopiée seulement si elle est fournie). */
+  category?: string;
   /**
    * ISO date string — signal de fraîcheur Google AI Overviews 2026. Default :
    * `BUILD_DATE` (cold-start du serveur Next). Passer explicitement pour
@@ -645,6 +649,8 @@ export function buildServiceJsonLd({
   priceEur,
   prixPublic,
   serviceType,
+  alternateName,
+  category,
   dateModified,
   area,
   areasServed,
@@ -728,6 +734,8 @@ export function buildServiceJsonLd({
         }
       : {}),
     ...(serviceType ? { serviceType } : {}),
+    ...(alternateName && alternateName.length > 0 ? { alternateName: [...alternateName] } : {}),
+    ...(category ? { category } : {}),
     ...(areaServedNode !== undefined ? { areaServed: areaServedNode } : {}),
     ...(availableChannels && availableChannels.length > 0
       ? {
@@ -1287,13 +1295,13 @@ export function buildOrganizationJsonLd({
       url: founderUrl(),
       sameAs: [FOUNDER.linkedin],
     },
-    areaServed: ["FR", "EU"],
-    knowsLanguage: ["fr", "en"],
+    areaServed: ["FR"],
+    knowsLanguage: ["fr"],
     contactPoint: {
       "@type": "ContactPoint",
       contactType: resolvedContactType,
       email: contactEmail,
-      availableLanguage: ["French", "English"],
+      availableLanguage: ["French"],
       ...(env.COMPANY_PHONE ? { telephone: env.COMPANY_PHONE } : {}),
     },
     // Adresse : pays seulement (décision Williams 2026-11-08). L'adresse du
@@ -1458,8 +1466,12 @@ export function buildPersonJsonLd({
       isFr ? "Automatisation processus métier" : "Business process automation",
       "Retrieval-Augmented Generation (RAG)",
       isFr ? "Modèles de langage de grande taille (LLM)" : "Large Language Models (LLM)",
+      isFr ? "Formation à l’intelligence artificielle en entreprise" : "AI training for companies",
+      isFr
+        ? "Article 4 du règlement européen sur l’IA (maîtrise de l’IA)"
+        : "Article 4 of the EU AI Act (AI literacy)",
     ],
-    knowsLanguage: ["fr", "en"],
+    knowsLanguage: ["fr"],
   } as const;
 }
 
@@ -1814,7 +1826,7 @@ export function buildLocalBusinessJsonLd({
       "@type": areaServed.type,
       name: areaServed.name,
     },
-    knowsLanguage: ["fr", "en"],
+    knowsLanguage: ["fr"],
     // 🔴 GEO-046 (audit GEO/AEO 2026-08-14) — `buildLocalBusinessSameAsFR()`
     // existait, exporte, teste... et N'AVAIT AUCUN APPELANT. Le module de
     // citations locales etait donc inerte pour DEUX raisons independantes : ses

@@ -88,3 +88,10 @@ annuaires privés. Ce sont les mêmes règles que le module Prospection, qui con
 - Aucun fait estimé n'est affiché comme un chiffre officiel. Un comptage Sirene porte son mois.
 - Les textes générés restent soumis aux règles éditoriales : aucune présence locale fictive,
   Journée IA 1 490 € HT comme seul prix affiché, aucun autre montant.
+- ⚠️ Cette dernière ligne est une **règle cible** (« la Journée IA à 1 490 € HT est le seul prix
+  affiché »), pas une description de l'état actuel. Relevé du 2026-11-11 (`git grep`, sans
+  modification) : `{{price:audit-flash|flat}}` subsiste dans 1 933 fichiers de
+  `src/content/villes/copy/` ; « 1 190 € HT » et « 1 900 - 3 900 € HT » n'apparaissent plus que
+  dans le commentaire de `src/content/villes/copy/types.ts` (ligne 77), pas dans un texte de ville
+  (les autres « 1 900 » sont des comptages d'habitants ou d'emplois). Le recalage des fichiers
+  `copy/` est l'objet des lots de l'étape 5 ci-dessus.

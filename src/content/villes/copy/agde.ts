@@ -18,9 +18,9 @@ export const AGDE_COPY: VilleCopy = {
   ecosystemEn:
     "Agde concentre une économie balnéaire dense autour du Cap d'Agde (port de plaisance de 3 000 anneaux, plage naturiste de 1,4 km — la plus grande d'Europe, hôtellerie de plein air massive) et du Grau d'Agde (pêche méditerranéenne). Les TPE et PME structurent quatre filières clés : hôtellerie-restauration saisonnière, conchyliculture et ostréiculture de l'étang de Thau (Bouzigues, Mèze à proximité), viticulture AOC Languedoc / Picpoul-de-Pinet / Côtes-de-Thau, et commerce de proximité plus BTP de rénovation résidentielle. Le patrimoine (cathédrale fortifiée Saint-Étienne, Musée Agathois) ajoute un levier tourisme culturel hors saison à valoriser via l'IA.",
   distancesFr:
-    "Agde est connectée à l'A9 (sortie 34 Agde / Pézenas), avec sa propre gare SNCF / TGV (Paris ~4 h direct). Béziers est à 25 km à l'ouest, Sète à 25 km à l'est, Montpellier à 50 km au nord-est, et l'aéroport Béziers Cap d'Agde à 12 km. Nos experts IA seniors se déplacent en intra-journée depuis l'axe Marseille — Montpellier — Toulouse.",
+    "Agde est connectée à l'A9 (sortie 34 Agde / Pézenas), avec sa propre gare SNCF / TGV (Paris ~4 h direct). Béziers est à 25 km à l'ouest, Sète à 25 km à l'est, Montpellier à 50 km au nord-est, et l'aéroport Béziers Cap d'Agde à 12 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Agde est connectée à l'A9 (sortie 34 Agde / Pézenas), avec sa propre gare SNCF / TGV (Paris ~4 h direct). Béziers est à 25 km à l'ouest, Sète à 25 km à l'est, Montpellier à 50 km au nord-est, et l'aéroport Béziers Cap d'Agde à 12 km. Nos experts IA seniors se déplacent en intra-journée depuis l'axe Marseille — Montpellier — Toulouse.",
+    "Agde est connectée à l'A9 (sortie 34 Agde / Pézenas), avec sa propre gare SNCF / TGV (Paris ~4 h direct). Béziers est à 25 km à l'ouest, Sète à 25 km à l'est, Montpellier à 50 km au nord-est, et l'aéroport Béziers Cap d'Agde à 12 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Hébergement touristique & hôtellerie de plein air (Cap d'Agde, campings)",
     "Restauration saisonnière & commerce de bouche balnéaire",
@@ -230,7 +230,7 @@ export const AGDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il au Cap d'Agde et dans la station balnéaire ?",
-      a: "Oui, nos experts IA seniors interviennent directement au Cap d'Agde, au Grau d'Agde, à la Tamarissière et dans le centre historique d'Agde. Les déplacements depuis l'axe Marseille — Montpellier — Toulouse sont organisés en intra-journée pour les hôtels, campings, restaurants et conciergeries de la station.",
+      a: "Oui, nos experts IA seniors interviennent directement au Cap d'Agde, au Grau d'Agde, à la Tamarissière et dans le centre historique d'Agde. Nous intervenons partout en France, sur place ou à distance, pour les hôtels, campings, restaurants et conciergeries de la station.",
     },
     {
       q: "Quels cas d'usage IA pour les caves AOC Languedoc et Picpoul-de-Pinet autour d'Agde ?",

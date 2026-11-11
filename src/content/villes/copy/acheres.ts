@@ -245,7 +245,7 @@ export const ACHERES_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous déployons devis automatisés, gestion de planning, relances et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou La Défense ?",
+      q: "Comment se déroule une mission à Achères ?",
       a: "Achères est à 35 minutes de Paris-centre et 25 minutes de La Défense par le RER A. Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],

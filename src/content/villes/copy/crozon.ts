@@ -49,7 +49,7 @@ export const CROZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crozon et presqu'île de Crozon ?",
-      a: "Oui, Axion-IA intervient à Crozon et toute la presqu'île (Morgat, Camaret-sur-Mer, Roscanvel, Lanvéoc, Telgruc-sur-Mer). Nos consultants viennent de Brest (50 min) ou Quimper (55 min).",
+      a: "Oui, Axion-IA intervient à Crozon et toute la presqu'île (Morgat, Camaret-sur-Mer, Roscanvel, Lanvéoc, Telgruc-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hébergeurs et acteurs du tourisme nature ?",
@@ -65,7 +65,7 @@ export const CROZON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crozon ?",
-      a: "Nos consultants viennent de Brest (50 min D791) ou Quimper (55 min). Pas de gare directe, accès voiture ou maritime. Pour les multi-jours, hébergement local possible (Morgat, Camaret).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pas de gare directe, accès voiture ou maritime. Pour les multi-jours, hébergement local possible (Morgat, Camaret).",
     },
   ],
 };

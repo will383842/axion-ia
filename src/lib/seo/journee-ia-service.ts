@@ -37,6 +37,8 @@ export function buildJourneeIaServiceJsonLd() {
     // R7 : la Journée IA est le seul palier dont le montant reste public (interrupteur coupé).
     prixPublic: prixAffichable(JOURNEE_IA_TIER),
     serviceType: "Audit et formation à l’IA en entreprise",
+    alternateName: ["Journée d’audit et de formation IA", "Audit IA et formation IA pour PME"],
+    category: "Formation et conseil en intelligence artificielle",
     areasServed: [{ type: "Country", name: "France" }],
     availableChannels: [{ name: "Dans les locaux du client, partout en France" }],
     providerId: ORGANIZATION_ID,

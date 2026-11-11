@@ -49,7 +49,7 @@ export const FABREGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fabrègues ?",
-      a: "Oui, Axion-IA intervient à Fabrègues et dans les communes limitrophes : Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Nos consultants se déplacent depuis Montpellier en 15 min.",
+      a: "Oui, Axion-IA intervient à Fabrègues et dans les communes limitrophes : Pignan, Cournonsec, Cournonterral, Gigean, Mireval, Saussan, Saint-Jean-de-Védas, Vic-la-Gardiole, Villeneuve-lès-Maguelone. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les PME de logistique ?",

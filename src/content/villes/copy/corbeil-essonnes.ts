@@ -245,7 +245,7 @@ export const CORBEIL_ESSONNES_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Corbeil-Essonnes respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils déployés.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Corbeil-Essonnes ?",
       a: "Corbeil-Essonnes est à environ 30 min de Paris-Gare de Lyon par le RER D. Nous nous déplaçons sur site.",
     },
     {

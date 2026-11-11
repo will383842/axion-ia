@@ -233,7 +233,7 @@ export const CHAUMONT_COPY: VilleCopy = {
       a: "L'Audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour 4 heures sur site à Chaumont, livré sous 5 jours ouvrés. Les forfaits Intervention démarrent à {{price:intervention-4h|flat}} et l'implémentation à {{price:impl-poc|entry}}. Tous nos tarifs sont publics.",
     },
     {
-      q: "Williams se déplace-t-il vraiment à Chaumont depuis Paris ?",
+      q: "Williams se déplace-t-il vraiment à Chaumont ?",
       a: "Oui. Chaumont est à environ 2h15 en TER depuis Paris-Est, ce qui rend le déplacement sur site régulier et réaliste. Williams intervient directement dans vos locaux du centre-ville, de Plein'Est, La Vendue ou Dame Huguenotte.",
     },
     {

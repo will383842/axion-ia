@@ -92,6 +92,10 @@ const HORS_AUDIT = [
   // /journee-ia, qui la remplace dans routes-publiques.json. Auditer une redirection mesurerait
   // la page d'arrivée, pas celle-ci.
   "/audit/tpe-1-jour",
+  // 2026-11 — doublons redirigés en 301 (next.config) vers /formations et /tarifs ; les
+  // fichiers de page restent (gardes qui les lisent) mais ne sont plus servis.
+  "/formations/entreprise",
+  "/formations/tarifs",
   "/portail/mon-espace",
   "/espace-formateur",
   "/appel/reserver",

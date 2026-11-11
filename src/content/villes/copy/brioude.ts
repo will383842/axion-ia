@@ -49,7 +49,7 @@ export const BRIOUDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brioude et vallée de l'Allier ?",
-      a: "Oui, Axion-IA intervient à Brioude et toute la vallée de l'Allier (Issoire, Langeac, Le Puy-en-Velay). Consultants depuis Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min).",
+      a: "Oui, Axion-IA intervient à Brioude et toute la vallée de l'Allier (Issoire, Langeac, Le Puy-en-Velay). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimoine ?",
@@ -64,7 +64,7 @@ export const BRIOUDE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Brioude ?",
       a: "Clermont-Ferrand (1h) ou Le Puy-en-Velay (45 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

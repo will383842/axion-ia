@@ -49,7 +49,7 @@ export const AUSSILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aussillon ?",
-      a: "Oui, Axion-IA intervient à Aussillon et dans tout le bassin Castres-Mazamet (Mazamet, Labruguière, Pont-de-l'Arn). Nos consultants couvrent l'ensemble de l'agglo depuis Castres (15 min).",
+      a: "Oui, Axion-IA intervient à Aussillon et dans tout le bassin Castres-Mazamet (Mazamet, Labruguière, Pont-de-l'Arn). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Aussillon ?",

@@ -65,7 +65,7 @@ export const BLAYE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Blaye ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux (45 min). Gare TER Blaye. Livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Gare TER Blaye. Livrables documentés.",
     },
   ],
 };

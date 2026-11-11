@@ -49,7 +49,7 @@ export const BOURBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bourbourg et en Flandre maritime ?",
-      a: "Oui, Axion-IA intervient a Bourbourg et dans toute la Flandre maritime (Dunkerque, Gravelines, Saint-Omer, Calais). Consultants depuis Lille (1h15 TER) ou Paris (TGV Calais-Frethun 1h30 + 30 min).",
+      a: "Oui, Axion-IA intervient a Bourbourg et dans toute la Flandre maritime (Dunkerque, Gravelines, Saint-Omer, Calais). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles du Dunkerquois ?",

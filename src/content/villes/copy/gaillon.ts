@@ -49,7 +49,7 @@ export const GAILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gaillon et dans Seine Normandie Agglomération ?",
-      a: "Oui, Axion-IA intervient à Gaillon et dans toute Seine Normandie Agglomération (Les Andelys, Vernon, Aubevoye, Courcelles-sur-Seine). Nos consultants se déplacent depuis Paris (1h10 train) ou Rouen (35 min).",
+      a: "Oui, Axion-IA intervient à Gaillon et dans toute Seine Normandie Agglomération (Les Andelys, Vernon, Aubevoye, Courcelles-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises industrielles et logistiques de la vallée de Seine ?",
@@ -64,8 +64,8 @@ export const GAILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Gaillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h10 train direct gare Gaillon-Aubevoye) ou Rouen (35 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Gaillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

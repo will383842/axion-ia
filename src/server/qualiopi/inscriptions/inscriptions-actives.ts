@@ -4,7 +4,7 @@
  * ## Pourquoi ce module existe
  *
  * 🔴 Le prédicat « hors abandon et exclusion » était écrit à la main **quatorze
- * fois, dans onze fichiers** — indicateurs, pilotage, présence, financement,
+ * fois, dans douze fichiers** — indicateurs, pilotage, présence, financement,
  * alertes, crons, documents, satisfaction, liens d'émargement. L'une des copies
  * l'écrivait même dans l'ordre inverse (`["exclu", "abandon"]`), preuve qu'il
  * s'agissait bien de recopies indépendantes et non d'une constante partagée.

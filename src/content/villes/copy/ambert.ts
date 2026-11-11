@@ -64,7 +64,7 @@ export const AMBERT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Ambert ?",
       a: "Clermont-Ferrand (1h15). Aéroport Clermont à 1h20.",
     },
   ],
