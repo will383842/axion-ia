@@ -50,7 +50,9 @@ describe("aucun jeton d'opposition fabriqué à la main", () => {
         // Un autre module peut avoir sa propre constante du même nom (audit-terrain) :
         // on ne regarde que les fichiers qui importent celle des e-mails.
         if (!/opposition-jeton|email\/opposition|from "\.\/opposition/.test(code)) return false;
-        return /PREFIXE_JETON_OPPOSITION(_V2)?\}?\s*\./.test(code) || /\$\{PREFIXE_JETON/.test(code);
+        return (
+          /PREFIXE_JETON_OPPOSITION(_V2)?\}?\s*\./.test(code) || /\$\{PREFIXE_JETON/.test(code)
+        );
       })
       .map(({ rel }) => rel);
     expect(fautifs).toEqual([]);

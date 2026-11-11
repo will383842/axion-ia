@@ -159,7 +159,10 @@ function avertirRepliOp1(): void {
   // Import dynamique : ce module reste PUR (importé par le registre des gabarits).
   void import("@sentry/nextjs")
     .then((Sentry) =>
-      Sentry.captureMessage("opposition_jeton_repli_op1 : OPPOSITION_JETON_SECRET absent", "warning"),
+      Sentry.captureMessage(
+        "opposition_jeton_repli_op1 : OPPOSITION_JETON_SECRET absent",
+        "warning",
+      ),
     )
     .catch(() => {});
 }

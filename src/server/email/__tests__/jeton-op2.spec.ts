@@ -7,11 +7,7 @@
 import { createCipheriv, createHash, createHmac } from "node:crypto";
 import { beforeEach, describe, expect, it } from "vitest";
 
-import {
-  estJetonOpposition,
-  jetonOppositionOp2,
-  lireJetonOpposition,
-} from "../opposition-jeton";
+import { estJetonOpposition, jetonOppositionOp2, lireJetonOpposition } from "../opposition-jeton";
 
 const SECRET = "secret-dedie-op2-suffisamment-long-0123456789";
 
@@ -69,7 +65,7 @@ describe("jeton op2 — refus", () => {
     const jeton = jetonOppositionOp2("jean@client.fr")!;
     expect(lireJetonOpposition(jeton.replace(".k1.", ".k2."))).toBeNull();
     expect(lireJetonOpposition(jeton.replace(".k1.", ".K1."))).toBeNull();
-    expect(lireJetonOpposition(jeton.replace(".k1.", "..")) ).toBeNull();
+    expect(lireJetonOpposition(jeton.replace(".k1.", ".."))).toBeNull();
   });
 
   it("🔴 un IV remplacé par celui d'une autre adresse (tag recalculé) → null", () => {
@@ -105,7 +101,15 @@ describe("jeton op2 — refus", () => {
   });
 
   it("jetons mal formés → null, sans lever", () => {
-    for (const t of ["op2", "op2.", "op2.k1", "op2.k1.", "op2.k1.!!!", "op2.k1.AAAA", "op3.k1.AAAA"]) {
+    for (const t of [
+      "op2",
+      "op2.",
+      "op2.k1",
+      "op2.k1.",
+      "op2.k1.!!!",
+      "op2.k1.AAAA",
+      "op3.k1.AAAA",
+    ]) {
       expect(lireJetonOpposition(t)).toBeNull();
     }
   });

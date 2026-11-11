@@ -103,7 +103,6 @@ validation de la page, pas au clic du lien : la fenêtre de messagerie du résea
 - Une ligne réservée passe à `reserve` et ne ressort plus. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. Une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse perdue) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
 - **Aucune suppression.** Cette route ne fait que lire-réserver ; l'accusé de réception (`envoye`) viendra dans un lot suivant.
 
-
 ## Interrupteurs du lot S3 et ordre d'allumage
 
 Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-drapeau.yml`,
@@ -169,3 +168,35 @@ une rotation). La route des oppositions n'a **aucun repli** sur `VIDEOS_STUDIO_H
 Tout autre champ → `422` (seuls les noms de champs sont rendus). Réponse : toujours
 `200 {"ok":true,"type":"opposition","recue":true}`, que l'adresse soit nouvelle, déjà écartée ou
 inconnue. Plafond du corps : 4 Ko.
+
+## Jeton de désinscription opaque `op2` (lot guide réseau 3)
+
+Le lien « Ne plus recevoir de sollicitations » portait un jeton `op1` qui contenait l'adresse en
+base64url (lisible d'un `atob`). Le nouveau jeton `op2` est **opaque** : AES-256-GCM déterministe,
+sans table, sans migration, stable (même adresse, même jeton).
+
+| Variable                  | Rôle                                            | Conteneurs        | Défaut           |
+| ------------------------- | ----------------------------------------------- | ----------------- | ---------------- |
+| `OPPOSITION_JETON_SECRET` | clé du jeton `op2` (≥ 32 caractères, scope RUN) | app **et** worker | absent (→ `op1`) |
+| `OPPOSITION_JETON_V2`     | émission d'`op2` (exactement `true`)            | app **et** worker | éteint           |
+
+- **Lecture à vie.** `op1` ET `op2` sont lus sans date de fin : un e-mail de 2026 ouvert en 2040
+  doit encore permettre de dire « stop ». Le code de lecture ne se retire **jamais**.
+- **Jamais de secret → jamais « pas de lien ».** Interrupteur allumé mais secret absent ou court :
+  repli sur `op1`, un seul avertissement `opposition_jeton_repli_op1` par processus (sans valeur).
+- **Rotation.** Elle ajoute un `kid` (`k2`…) et `OPPOSITION_JETON_SECRET_K2` ; l'ancien secret est
+  conservé **à vie** pour la lecture. `OPPOSITION_JETON_SECRET` ne se supprime jamais.
+- **Page `/desabonnement`.** Le jeton ne figure plus dans son URL : `GET /api/unsubscribe?token=…`
+  le pose dans un cookie court `__Host-axion-desinscription` (HttpOnly, Secure, SameSite=Lax,
+  15 minutes), puis il est effacé après le POST (succès ou échec). Le One-Click (RFC 8058) garde le jeton dans
+  l'URL de l'en-tête `List-Unsubscribe`.
+
+**Ordre d'allumage** (fenêtre app↔worker de ~50 min, AGENTS.md) :
+
+1. poser `OPPOSITION_JETON_SECRET` sur l'app **et** le worker ;
+2. vérifier que le code de lecture est en ligne côté **app** (`x-axion-build-sha`) ;
+3. allumer `OPPOSITION_JETON_V2` sur les deux ;
+4. vérifier un e-mail reçu : le lien du pied de page commence par `op2.` et ne contient pas l'adresse.
+
+**Retour arrière** : éteindre `OPPOSITION_JETON_V2` (app + worker) → retour à `op1`. Les `op2` déjà
+envoyés restent lisibles tant que le code de lecture reste en place.

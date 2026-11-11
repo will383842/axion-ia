@@ -20,7 +20,8 @@ vi.mock("@/lib/rate-limit", () => ({
 }));
 const enregistrerOpposition = vi.fn();
 vi.mock("@/server/email/opposition", () => ({
-  estJetonOpposition: (t: unknown) => typeof t === "string" && (t.startsWith("op1.") || t.startsWith("op2.")),
+  estJetonOpposition: (t: unknown) =>
+    typeof t === "string" && (t.startsWith("op1.") || t.startsWith("op2.")),
   enregistrerOpposition: (...a: unknown[]) => enregistrerOpposition(...a),
 }));
 
