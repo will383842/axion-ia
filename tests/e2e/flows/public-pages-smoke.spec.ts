@@ -76,6 +76,7 @@ const REDIRECTIONS_EN = [
   ["/en/audit", "/fr/audit"],
   ["/en/implementation", "/fr/implementation"],
   ["/en/blog", "/fr/blog"],
+  ["/en/case-studies", "/fr/methodologie"],
   ["/en/contact", "/fr/contact"],
 ] as const;
 

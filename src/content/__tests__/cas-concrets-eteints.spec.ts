@@ -64,11 +64,43 @@ describe("cas concrets éteints", () => {
       "src/components/sections/FounderProfile.tsx",
     ]) {
       const src = lire(fichier);
-      const lignes = src.split("\n").filter((l) => l.includes("/cas-concrets"));
-      for (const l of lignes) {
-        // une occurrence n'est tolérée que si l'interrupteur est dans le fichier
-        expect(src, `${fichier} : ${l.trim()}`).toContain("CAS_CONCRETS_AFFICHES");
-      }
+      const lignes = src.split("\n");
+      lignes.forEach((l, i) => {
+        if (!l.includes("/cas-concrets")) return;
+        // une occurrence n'est tolérée que dans le même bloc (±12 lignes) qu'un `CAS_CONCRETS_AFFICHES ?`
+        const bloc = lignes.slice(Math.max(0, i - 12), i + 13).join("\n");
+        expect(bloc, `${fichier}:${i + 1} : ${l.trim()}`).toMatch(/CAS_CONCRETS_AFFICHES\s*\?/);
+      });
+    }
+  });
+
+  it("les URLs indexées redirigent en 301 vers /fr/methodologie (pas de 404 sec)", async () => {
+    const config = (await import("../../../next.config")).default as {
+      redirects?: () => Promise<
+        { source: string; destination: string; statusCode?: number; permanent?: boolean }[]
+      >;
+    };
+    const regles = (await config.redirects?.()) ?? [];
+    for (const source of [
+      "/fr/cas-concrets",
+      "/fr/cas-concrets/:path+",
+      "/en/case-studies/:path*",
+    ]) {
+      const r = regles.find((x) => x.source === source);
+      expect(r, source).toBeDefined();
+      expect(r?.destination).toBe("/fr/methodologie");
+      expect(r?.statusCode).toBe(301);
+    }
+  });
+
+  it("la bascule EN → FR ne mène plus vers /fr/cas-concrets (chaîne finissant en 404)", async () => {
+    const { mapEnToFr } = await import("@/lib/i18n/en-to-fr-redirect");
+    for (const chemin of [
+      "/en/case-studies",
+      "/en/case-studies/x",
+      "/en/case-studies/industry/y",
+    ]) {
+      expect(mapEnToFr(chemin)).toBe("/fr/methodologie");
     }
   });
 });

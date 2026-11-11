@@ -130,21 +130,13 @@ describe("mapEnToFr", () => {
     });
   });
 
-  describe("case-studies — sous-route /industry/ vs /secteur/", () => {
-    it("/en/case-studies → /fr/cas-concrets", () => {
-      expect(mapEnToFr("/en/case-studies")).toBe("/fr/cas-concrets");
-    });
-    it("/en/case-studies/juridique → /fr/cas-concrets/juridique", () => {
-      expect(mapEnToFr("/en/case-studies/juridique")).toBe("/fr/cas-concrets/juridique");
-    });
-    // GSC 5xx 2026-05-18 — bug observé : /en/case-studies/industry/juridique
-    // matchait `/en/case-studies/` (prefix court) → /fr/cas-concrets/industry/juridique
-    // qui n'existe pas (catchall soft 404). Mapping `/en/case-studies/industry/`
-    // doit matcher AVANT `/en/case-studies/` (longest-first).
-    it("/en/case-studies/industry/juridique → /fr/cas-concrets/secteur/juridique", () => {
-      expect(mapEnToFr("/en/case-studies/industry/juridique")).toBe(
-        "/fr/cas-concrets/secteur/juridique",
-      );
+  describe("case-studies — éteints, un seul saut vers /fr/methodologie", () => {
+    it.each([
+      "/en/case-studies",
+      "/en/case-studies/juridique",
+      "/en/case-studies/industry/juridique",
+    ])("%s → /fr/methodologie", (chemin) => {
+      expect(mapEnToFr(chemin)).toBe("/fr/methodologie");
     });
   });
 
