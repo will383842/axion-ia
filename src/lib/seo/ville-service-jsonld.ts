@@ -34,6 +34,7 @@ import {
   buildHowToJsonLd,
   buildWebPageJsonLd,
   SITE_URL,
+  buildSiegePostalAddress,
 } from "@/lib/seo";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -173,7 +174,8 @@ export function buildVilleServiceJsonLdGraph(
   //   ❌ RETIRÉ `openingHoursSpecification` (9h-18h = bureau ouvert chaque ville → faux)
   //   ❌ RETIRÉ `priceRange` (varie par mission, pas par ville)
   //   ❌ RETIRÉ `address.postalCode` (CP = revendique adresse précise)
-  //   ✅ GARDÉ `address.addressLocality` (= zone de service couverte, légitime SAB)
+  //   ❌ RETIRÉ `address.addressLocality`/`addressRegion` (X-6, 2026-11-11 : une adresse par ville
+  //      se lit comme une présence locale ; adresse = pays seul, zone servie = `areaServed`)
   //   ✅ GARDÉ `parentOrganization` (essentiel : pointe vers entité unique root)
   //   ✅ GARDÉ `areaServed` (cœur du pattern Service Area Business)
   // Référence : https://developers.google.com/search/docs/appearance/structured-data/local-business
@@ -189,12 +191,10 @@ export function buildVilleServiceJsonLdGraph(
     url,
     email: "contact@axion-ia.com",
     image: `${SITE_URL}/opengraph-image`,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: ville.nameFr,
-      addressRegion: region.nameFr,
-      addressCountry: "FR",
-    },
+    // Adresse = source unique `buildSiegePostalAddress` (pays seul, décision n°19) : la ville
+    // de la page n'est PAS une adresse d'Axion-IA (zone servie
+    // = `areaServed`). Garde : tests/unit/seo/ville-jsonld-sans-adresse-locale.spec.ts.
+    address: buildSiegePostalAddress(),
     sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
     parentOrganization: {
       "@type": "Organization",
@@ -203,7 +203,11 @@ export function buildVilleServiceJsonLdGraph(
       legalName: BRAND.legalName,
       url: SITE_URL,
     },
-    areaServed: { "@type": "City", name: ville.nameFr },
+    areaServed: {
+      "@type": "City",
+      name: ville.nameFr,
+      containedInPlace: { "@type": "AdministrativeArea", name: region.nameFr },
+    },
     knowsLanguage: ["fr", "en"],
   });
 
