@@ -38,6 +38,12 @@ const HARD_GATE_MIN_CANONICAL_RATIO = 0.6;
 // sans re-seed. Le signal de revue reste à 90 j (`reviewDueAt` posé par
 // `seed-kb-facts.ts`) : l'admin voit la péremption bien avant le hard stop.
 //
+// ⚠️ À lire avec ce seuil : le blocage RETOMBE 180 jours après la dernière écriture, et
+// cette écriture vient d'un seed lancé À LA MAIN. Le signal mesure donc l'ACTIVITÉ
+// d'ingestion plus que la FRAÎCHEUR des faits : un seed qui republie des fiches périmées
+// remet le compteur à zéro sans qu'un fait ait été revérifié. La fraîcheur réelle se lit
+// dans `reviewOverdueCount` / `reviewOverdueRatio`.
+//
 // Vague 3 (11/11/2026) — « bombe » du 22/04/2027. Pour les fiches de faits,
 // `publishedAt` vaut `verifiedAt`, une date ÉCRITE DANS LE CODE : le fait le plus
 // récent porte « 2026-10-24 », donc le gate aurait coupé le content-gen le

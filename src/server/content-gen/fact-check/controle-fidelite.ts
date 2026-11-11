@@ -151,27 +151,40 @@ interface FicheIndexee {
   readonly nombres: ReadonlySet<string>;
   readonly cles: ReadonlySet<string>;
   readonly mots: ReadonlySet<string>;
+  /** Phrases de la fiche qui portent des valeurs, pour ne citer que la valeur du même propos. */
+  readonly phrases: ReadonlyArray<PhraseFiche>;
   /** Valeurs affichables par famille, pour montrer ce que la fiche affirme. */
   readonly valeurs: Readonly<Partial<Record<Famille, ReadonlyArray<string>>>>;
+}
+
+interface PhraseFiche {
+  readonly mots: ReadonlySet<string>;
+  readonly valeurs: Readonly<Partial<Record<Famille, ReadonlyArray<string>>>>;
+}
+
+function valeursDe(t: string): Readonly<Partial<Record<Famille, ReadonlyArray<string>>>> {
+  const refs = refsJuridiques(t, true);
+  const deSorte = (sorte: SorteJuridique): string[] =>
+    refs.filter((r) => r.sorte === sorte).map((r) => r.brut);
+  return {
+    pourcentage: [...t.matchAll(RE_POURCENTAGE)].map((m) => m[0].trim()),
+    montant: [...t.matchAll(new RegExp(PATTERN_AMOUNT_EUR.source, "gi"))].map((m) => m[0].trim()),
+    date: deSorte("date"),
+    article: deSorte("article"),
+    texte: deSorte("texte"),
+  };
 }
 
 function indexer(fiche: FicheConnaissance): FicheIndexee {
   const t = texteBrut(`${fiche.titre}. ${fiche.texte}`);
   const refs = refsJuridiques(t, true);
-  const deSorte = (sorte: SorteJuridique): string[] =>
-    refs.filter((r) => r.sorte === sorte).map((r) => r.brut);
   return {
     fiche,
     nombres: new Set(nombresDe(t)),
     cles: new Set(refs.map((r) => r.cle)),
     mots: motsDe(t),
-    valeurs: {
-      pourcentage: [...t.matchAll(RE_POURCENTAGE)].map((m) => m[0].trim()),
-      montant: [...t.matchAll(new RegExp(PATTERN_AMOUNT_EUR.source, "gi"))].map((m) => m[0].trim()),
-      date: deSorte("date"),
-      article: deSorte("article"),
-      texte: deSorte("texte"),
-    },
+    phrases: splitSentences(t).map((p) => ({ mots: motsDe(p), valeurs: valeursDe(p) })),
+    valeurs: valeursDe(t),
   };
 }
 
@@ -204,6 +217,9 @@ function affirmationsDe(texte: string): Affirmation[] {
   }
 
   for (const c of extractClaims(texte)) {
+    // Une « statistique datée » n'est qu'un doublon de ses pourcentages et dates, et sa regex
+    // coupe parfois une année finale (« au 2 décembre 2027 » → 202) : ignorée ici.
+    if (c.kind === "stat_year") continue;
     if (c.kind === "attribution") continue; // une source citée sans chiffre n'est pas comparée
     if (c.kind === "amount" && estPrixDeLaGrille(c.match)) continue; // étayé par pricing.ts
     const sorte: Famille =
@@ -240,7 +256,8 @@ export function controleFidelite(
 
   for (const a of affirmationsDe(texteBrut(texte))) {
     if (constats.length >= MAX_CONSTATS) break;
-    const cleVue = `${a.sorte}::${a.brut}::${a.phrase.slice(0, 60)}`;
+    // Sans `sorte` : un même chiffre vu comme « nombre » puis « pourcentage » ne ressort qu'une fois.
+    const cleVue = `${a.famille}::${(a.nombres ?? [a.cle ?? a.brut]).join("|")}::${a.phrase.slice(0, 60)}`;
     if (vus.has(cleVue)) continue;
     vus.add(cleVue);
     if (index.some((f) => estEtayee(a, f))) continue;
@@ -256,11 +273,30 @@ export function controleFidelite(
       }
     }
 
-    // Contradiction : même sujet ET la fiche affirme une valeur de la même famille.
-    // La famille « nombre » (ratios, années) est trop vague pour conclure.
-    const valeursFiche = a.sorte === "nombre" ? [] : (proche?.valeurs[a.sorte] ?? []);
-    const contradictoire = proche !== null && score >= SEUIL_MEME_SUJET && valeursFiche.length > 0;
-    const designee = contradictoire || score >= SEUIL_FICHE_PROCHE ? proche : null;
+    // Contradiction : une phrase d'une fiche, qui parle du même sujet (au moins 3 mots en commun
+    // avec la phrase de l'article), porte une valeur de la même famille. C'est CETTE valeur qui
+    // est montrée. La famille « nombre » (ratios, années) est trop vague pour conclure.
+    let contradiction: { fiche: FicheIndexee; valeur: string } | null = null;
+    if (a.sorte !== "nombre") {
+      let meilleur = 0;
+      for (const f of index) {
+        for (const p of f.phrases) {
+          const valeur = p.valeurs[a.sorte]?.[0];
+          if (!valeur) continue;
+          const s = motsCommuns(motsPhrase, p.mots);
+          if (s >= SEUIL_MEME_SUJET && s > meilleur) {
+            meilleur = s;
+            contradiction = { fiche: f, valeur };
+          }
+        }
+      }
+    }
+    const contradictoire = contradiction !== null;
+    const designee = contradiction
+      ? contradiction.fiche
+      : score >= SEUIL_FICHE_PROCHE
+        ? proche
+        : null;
 
     constats.push({
       nature: contradictoire ? "contradictoire" : "non-etaye",
@@ -269,7 +305,7 @@ export function controleFidelite(
       phrase: a.phrase,
       ficheId: designee?.fiche.id ?? null,
       ficheTitre: designee?.fiche.titre ?? null,
-      valeurFiche: contradictoire ? (valeursFiche[0] ?? null) : null,
+      valeurFiche: contradiction ? contradiction.valeur : null,
     });
   }
   return constats;
