@@ -23,7 +23,7 @@ import { describe, expect, it } from "vitest";
 const DOSSIER = join(process.cwd(), "src", "content", "villes", "copy");
 
 /** Lignes fautives restantes. Lot 1 : 1 147 → 957. */
-const PLAFOND = 957;
+const PLAFOND = 588;
 
 /** Tout fichier dont le nom est ≤ celui-ci (ordre alphabétique) est propre. */
 const DERNIER_NETTOYE = "caussade.ts";

@@ -65,7 +65,7 @@ export const GOUESNOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gouesnou ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Nos consultants interviennent directement sur les zones d'activités de Gouesnou (Kergaradec), à 10 min du centre de Brest.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Nous intervenons directement sur les zones d'activités de Gouesnou (Kergaradec).",
     },
   ],
 };

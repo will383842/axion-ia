@@ -251,8 +251,8 @@ export const MONTFERMEIL_COPY: VilleCopy = {
       a: "Code et données hébergés en Union européenne, contrats DPA signés, registre des traitements fourni, formation des équipes aux bonnes pratiques. Conformité native, pas d'option payante.",
     },
     {
-      q: "Vos consultants se déplacent-ils en T4 ou en voiture à Montfermeil ?",
-      a: "Les deux options. T4 (stations Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil) pour les sites desservis. Voiture pour transport de matériel ou sites excentrés. Visio possible pour cadrage et coaching.",
+      q: "Comment se déroule une intervention à Montfermeil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio possible pour cadrage et coaching.",
     },
   ],
 };

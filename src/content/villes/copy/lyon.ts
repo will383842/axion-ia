@@ -253,7 +253,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Villeurbanne, Vénissieux, Saint-Priest, Écully)?",
-            a: "Yes. The Métropole de Lyon is our full territory. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
+            a: "Yes. We cover the whole Métropole de Lyon. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
           },
           {
             q: "Do I need AI maturity to engage you?",

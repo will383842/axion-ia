@@ -33,8 +33,8 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
   ],
   servicesContext: {
     audit: {
-      fr: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
-      en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux (gare TGV ou A87) pour cartographier vos processus en 4 heures.",
+      fr: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux pour cartographier vos processus en 4 heures.",
+      en: "Audit sur place IA à La Roche-sur-Yon dès {{price:audit-flash|flat}} — Williams se déplace dans vos locaux pour cartographier vos processus en 4 heures.",
     },
     interventions: {
       fr: "Formation collective à La Roche-sur-Yon dès {{price:intervention-4h|flat}} — automatisation d'un processus métier (devis, relances, gestion stock) pour TPE et PME vendéennes.",
@@ -233,7 +233,7 @@ export const LA_ROCHE_SUR_YON_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il dans les entreprises de La Roche-sur-Yon ?",
-      a: "Oui, Williams se déplace directement dans vos locaux à La Roche-sur-Yon (85000) en train via la gare TGV ou en voiture via l'A87. Intervention sur site sans visioconférence imposée.",
+      a: "Oui, Williams se déplace directement dans vos locaux à La Roche-sur-Yon (85000). Intervention sur site sans visioconférence imposée.",
     },
     {
       q: "Sous quel délai Axion-IA intervient à La Roche-sur-Yon ?",

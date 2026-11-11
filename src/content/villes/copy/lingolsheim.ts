@@ -246,7 +246,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Lingolsheim ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Strasbourg permet un premier rendez-vous rapide sur site, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",

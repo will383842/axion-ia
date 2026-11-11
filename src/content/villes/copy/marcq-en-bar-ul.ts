@@ -132,7 +132,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Marcq-en-Barœul ?",
-            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet. La proximité de Lille permet un premier rendez-vous rapide sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
+            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet. Nous planifions un premier rendez-vous sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "What is the timeline for a quote on a site or SaaS in Marcq-en-Barœul?",
-            a: "A quote is issued from 24-48 h depending on project complexity. Proximity to Lille allows a quick first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
+            a: "A quote is issued from 24-48 h depending on project complexity. We schedule a first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
           },
         ],
         guarantees:
@@ -246,7 +246,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Marcq-en-Barœul ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Lille permet un premier rendez-vous rapide sur site, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",

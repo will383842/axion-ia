@@ -65,7 +65,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Martignas-sur-Jalle ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Proche aéroport Mérignac (10 min). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nous intervenons dans vos locaux ou en visio. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

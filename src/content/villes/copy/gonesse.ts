@@ -131,7 +131,7 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous nous envoyer un devis ?",
-            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet. Notre proximité avec Paris (16 km, RER D direct) facilite un cadrage rapide sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
+            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet. Nous intervenons partout en France, sur place ou à distance : cadrage sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
           },
         ],
         guarantees:
@@ -217,7 +217,7 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "How fast can you send us a quote?",
-            a: "From 24-48 h depending on complexity, after an initial discussion of your project. Our proximity to Paris (16 km, direct RER D) makes a fast on-site scoping in Gonesse easy — in your Parc des Tulipes warehouse, your shop or your offices.",
+            a: "From 24-48 h depending on complexity, after an initial discussion of your project. We work anywhere in France, on site or remotely: on-site scoping in Gonesse — in your Parc des Tulipes warehouse, your shop or your offices.",
           },
         ],
         guarantees:
@@ -233,7 +233,7 @@ export const GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gonesse ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Notre proximité Paris (RER D direct) facilite les interventions rapides à Gonesse.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Couvrez-vous les communes proches comme Roissy-en-France, Goussainville ou Villiers-le-Bel ?",

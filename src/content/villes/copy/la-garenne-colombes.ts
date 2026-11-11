@@ -246,7 +246,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à La Garenne-Colombes ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Paris permet un premier rendez-vous sur site très rapidement, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",

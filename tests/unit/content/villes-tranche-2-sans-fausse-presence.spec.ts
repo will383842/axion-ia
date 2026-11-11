@@ -61,6 +61,8 @@ interface Regle {
   motif: RegExp;
   /** Ne s'applique qu'aux lignes qui satisfont ce filtre (facultatif). */
   ligne?: RegExp;
+  /** Tolérance zéro : aucune liste blanche, une occurrence est toujours fautive. */
+  sansListeBlanche?: boolean;
   /** Lignes qui DOIVENT être reconnues (garde contre un motif mort). */
   fautives: readonly string[];
   /** Lignes voisines qui ne doivent PAS l'être. */
@@ -114,6 +116,37 @@ const REGLES: readonly Regle[] = [
     ligne: /consultants?|team|\bwe\b/iu,
     fautives: ["Our consultants are Paris-based and travel across the city."],
     saines: ["Coaching of pilot profiles at a major Gard-based group."],
+  },
+  {
+    nom: "« proximité de <Ville> permet/facilite »",
+    motif:
+      /(?:notre |la |our )?proximit[éy] (?:avec |de |du |to )[^."]{0,60}(?:facilit|permet|allow|makes)/giu,
+    sansListeBlanche: true,
+    fautives: [
+      "La proximité de Lille permet un premier rendez-vous rapide sur site.",
+      "Notre proximité avec Paris (16 km, RER D direct) facilite un cadrage rapide.",
+      "Proximity to Lille allows a quick first on-site meeting.",
+      "Our proximity to Paris makes a fast on-site scoping easy.",
+    ],
+    saines: [
+      "Nous planifions un premier rendez-vous sur site, suivi d'un audit.",
+      "Commerce de proximité & grande distribution",
+      "Gonesse bénéficie d'une position stratégique à proximité immédiate de l'aéroport.",
+    ],
+  },
+  {
+    nom: "« Williams se déplace en/via/par … » ou frais kilométriques",
+    motif: /Williams se déplace (?:en|via|par) |frais kilométriques/gu,
+    sansListeBlanche: true,
+    fautives: [
+      "Williams se déplace en métro ligne 12 ou en RER C.",
+      "Pas de frais kilométriques additionnels sur l'Île-de-France.",
+      "Williams se déplace via l'A87.",
+    ],
+    saines: [
+      "Williams se déplace sur site.",
+      "Williams se déplace dans vos locaux pour cartographier vos processus.",
+    ],
   },
   {
     nom: "« accédez-vous »",
@@ -180,7 +213,7 @@ for (const l of INVENTAIRE_LIGNES) {
 function occurrences(regle: Regle): { ou: string; texte: string; blanchie: boolean }[] {
   const trouvees: { ou: string; texte: string; blanchie: boolean }[] = [];
   for (const [nom, texte] of TEXTES) {
-    const blanche = LISTE_BLANCHE.get(nom) ?? [];
+    const blanche = regle.sansListeBlanche ? [] : (LISTE_BLANCHE.get(nom) ?? []);
     texte.split("\n").forEach((ligne, i) => {
       if (regle.ligne && !regle.ligne.test(ligne)) return;
       for (const m of ligne.matchAll(regle.motif)) {
