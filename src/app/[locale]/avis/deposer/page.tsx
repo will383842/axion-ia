@@ -22,7 +22,8 @@ import { avisPublies } from "@/server/reviews/presence";
 import { Link } from "@/i18n/navigation";
 import { ReviewSubmissionForm } from "@/components/forms/ReviewSubmissionForm";
 import { ReviewQrCta } from "@/components/reviews/ReviewQrCta";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -58,7 +59,7 @@ export default async function DeposerAvisPage({ params }: Props) {
     path: "/avis/deposer",
     name: "Déposer un avis client · Axion-IA",
     description: "Formulaire de dépôt d'un avis client Axion-IA, vérifié avant publication (RGPD).",
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/avis/deposer"),
     speakable: true,
   });
 

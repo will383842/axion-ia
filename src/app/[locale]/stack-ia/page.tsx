@@ -28,9 +28,9 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildCollectionPageJsonLd,
-  SITE_EDITORIAL_DATE,
   SITE_URL,
 } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -184,7 +184,7 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = SITE_EDITORIAL_DATE),
+  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = dateRoute(), même source que le sitemap),
   // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
   // elle-même pour l'AEO/GEO.
   const collectionPageJsonLd = buildCollectionPageJsonLd({
@@ -193,7 +193,7 @@ export default async function StackIaPage({ params }: Props) {
     name: isFr
       ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
       : "Operational AI stack 2026 · Axion-IA consultancy",
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/stack-ia"),
     isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
   });
 
@@ -853,10 +853,10 @@ export default async function StackIaPage({ params }: Props) {
         tone="dark"
       />
 
-      {/* V-04 P1 — ItemList inline (catalogue principal SEO), FAQ déféré (-100 ms TBT). */}
+      {/* JSON-LD rendu dans le HTML servi (audit SEO 2026-11-11, I1) : visible des robots sans JS. */}
       <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-hub-faq" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-stack-ia-hub-faq" />
     </>
   );
 }

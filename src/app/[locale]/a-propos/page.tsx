@@ -24,8 +24,8 @@ import {
   buildPersonJsonLd,
   buildLocalBusinessJsonLd,
   SITE_URL,
-  SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
@@ -122,7 +122,7 @@ export default async function About({ params }: Props) {
     description: isFr
       ? "Axion-IA, cabinet IA opérationnel intervenant partout en France, dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et méthode."
       : "Axion-IA, an operational AI consultancy serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and method.",
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/a-propos"),
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
     about: { "@id": `${SITE_URL}/#organization` },

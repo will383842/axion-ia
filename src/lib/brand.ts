@@ -53,6 +53,23 @@ export const BRAND = {
 export type Brand = typeof BRAND;
 
 /**
+ * Coordonnées PUBLIQUES de l'entreprise, à UN seul endroit pour les données
+ * structurées (`src/lib/seo*.ts`). Avant (audit SEO du 2026-11-11) : l'e-mail
+ * de contact et l'URL LinkedIn entreprise étaient recopiés en dur dans plusieurs
+ * fabriques JSON-LD (`seo.ts`, `seo/job-posting.ts`…) ; une correction devait
+ * être propagée à la main, fichier par fichier.
+ *
+ * - `email` : adresse de contact affichée publiquement (repli quand
+ *   `COMPANY_EMAIL` n'est pas posé côté Coolify).
+ * - `linkedinEntreprise` : page ENTREPRISE (vanity réel confirmé par Will le
+ *   2026-06-05), jamais le profil personnel du fondateur (`FOUNDER.linkedin`).
+ */
+export const CONTACT_PUBLIC = {
+  email: "contact@axion-ia.com",
+  linkedinEntreprise: "https://www.linkedin.com/company/axion-ia-france",
+} as const;
+
+/**
  * SSOT identité du fondateur (audit E-E-A-T 2026-06-22, P1).
  *
  * Avant : nom / jobTitle / LinkedIn / knowsAbout étaient dupliqués ET divergents

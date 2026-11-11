@@ -20,7 +20,8 @@ import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { PodcastRequestForm } from "@/components/forms/PodcastRequestForm";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 
 const PAGE_PATH = "/podcast";
 
@@ -54,7 +55,7 @@ export default async function PodcastPage({ params }: Props) {
     path: PAGE_PATH,
     name: t("meta.title"),
     description: t("meta.description"),
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/podcast"),
     speakable: true,
   });
 

@@ -19,6 +19,7 @@ import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/gener
 import { buildImageObjectJsonLd } from "./image-seo.service";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { BRAND } from "@/lib/brand";
+import { DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
 
 const SITE_NAME = "Axion-IA";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -85,10 +86,12 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
     },
     description:
       args.inLanguage === "fr-FR"
-        ? "Cabinet IA opérationnel B2B — audits, interventions, implémentations Claude pour TPE, PME et ETI."
-        : "Operational AI consultancy B2B — audits, interventions, AI implementations for SMEs and mid-market companies.",
+        ? DESCRIPTION_ENTITE_FR
+        : "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises.",
     sameAs,
-    foundingDate: "2024",
+    // Aligné sur le nœud `#organization` du layout (`seo.ts`) : même `@id`, donc
+    // mêmes faits (audit SEO 2026-11-11). Avant : 2024 ici, 2026 là-bas.
+    foundingDate: "2026",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
@@ -101,15 +104,15 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
       "Audit IA",
       "Claude Anthropic",
       "Operational AI consulting",
-      "Automatisation no-code",
+      "Automatisation des processus",
       "ChatGPT enterprise",
     ],
     areaServed: { "@type": "Country", name: "France" },
+    // Pays seulement (décision Williams 2026-11-08, cf. `buildSiegePostalAddress`
+    // de `seo.ts`) : la ville du siège ne figure pas dans les données structurées.
     address: {
       "@type": "PostalAddress",
       addressCountry: "FR",
-      addressRegion: "Auvergne-Rhône-Alpes",
-      addressLocality: "Grenoble",
     },
   };
 }
