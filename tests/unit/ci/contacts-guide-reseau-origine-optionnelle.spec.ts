@@ -18,10 +18,14 @@ const sansCommentaires = (t: string): string =>
 const lire = (f: string): string => readFileSync(join(DOSSIER, f), "utf8");
 
 describe("migration contacts_guide_reseau_origine_optionnelle", () => {
-  it("est horodatée APRÈS la création de la table et après toute autre migration", () => {
+  it("est horodatée APRÈS la création de la table et avant toute autre migration que la preuve d'accord", () => {
     const dossiers = readdirSync(MIGRATIONS).filter((d) => /^\d{14}_/.test(d));
     expect(dossiers).toContain("20261108140000_contacts_guide_reseau");
-    expect(dossiers.sort().at(-1)).toBe(NOM);
+    // Seule la migration suivante du même chantier (preuve d'accord, additive) peut la suivre.
+    const apres = dossiers.sort().slice(dossiers.indexOf(NOM) + 1);
+    expect(apres.every((d) => d === "20261111120000_contacts_guide_reseau_preuve_statut")).toBe(
+      true,
+    );
   });
 
   it("ne fait que relâcher NOT NULL de mot, reseau, compte_ref, version_m1 (post_ref l'est déjà)", () => {
