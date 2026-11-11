@@ -18,8 +18,14 @@
  *     par OpenAI (30 appels, coût minime) ; le rapport est écrit sur le disque local ;
  *   - l'interrupteur `CHATBOT_KB_UNIFIED` n'est ni lu ni modifié.
  *
+ * Garde-fou : le script REFUSE de démarrer si `NODE_ENV=production` ou si l'hôte de
+ * `DATABASE_URL` n'est pas dans la liste autorisée du dépôt (localhost, 127.0.0.1,
+ * hôtes se déclarant préproduction ; cf. `prisma/seeds/volumetrie/garde-cible.ts`),
+ * sauf option explicite `--autoriser-prod` (décision de Williams).
+ *
  * Usage :
  *   pnpm tsx scripts/chatbot-kb-unifier-essai.ts [--fts-seul] [--sortie <fichier.md>]
+ *     [--autoriser-prod]
  *
  * ⛔ Ne pas lancer depuis une routine automatique contre la base de production :
  * l'essai est destiné à une base de préproduction ou à un lancement décidé par Williams.
@@ -27,6 +33,7 @@
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname } from "node:path";
+import { cibleAutorisee } from "../prisma/seeds/volumetrie/garde-cible";
 
 /** Force une connexion unique : le `SET` lecture seule couvre alors toute la session. */
 export function urlLectureSeule(url: string): string {
@@ -38,7 +45,31 @@ export function urlLectureSeule(url: string): string {
   return u.toString();
 }
 
+export type DecisionDemarrage = { ok: true } | { ok: false; message: string };
+
+/**
+ * Fonction PURE : l'essai peut-il démarrer contre cette cible ? Refus par défaut
+ * en production ou sur un hôte inconnu, sauf `--autoriser-prod`.
+ */
+export function decisionDemarrage(
+  env: { DATABASE_URL?: string | undefined; NODE_ENV?: string | undefined },
+  argv: ReadonlyArray<string>,
+): DecisionDemarrage {
+  if (argv.includes("--autoriser-prod")) return { ok: true };
+  const verdict = cibleAutorisee(env);
+  if (verdict.ok) return { ok: true };
+  return {
+    ok: false,
+    message:
+      `Essai refusé : ${verdict.message} ` +
+      "L'essai est prévu pour une base locale ou de préproduction. Pour viser une autre base " +
+      "en connaissance de cause (lecture seule), relancez avec --autoriser-prod.",
+  };
+}
+
 async function main(): Promise<void> {
+  const decision = decisionDemarrage(process.env, process.argv);
+  if (!decision.ok) throw new Error(decision.message);
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error("DATABASE_URL absente : rien à comparer.");
   process.env.DATABASE_URL = urlLectureSeule(url);

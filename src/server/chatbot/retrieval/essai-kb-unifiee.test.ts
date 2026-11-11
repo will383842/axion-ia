@@ -16,6 +16,7 @@ import {
   rapportMarkdown,
 } from "@/server/chatbot/retrieval/essai-kb-unifiee";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+import { decisionDemarrage } from "../../../../scripts/chatbot-kb-unifier-essai";
 
 const CHUNKS: RetrievedChunk[] = [
   {
@@ -70,5 +71,46 @@ describe("essai à blanc", () => {
     expect(sansCommentaires).not.toMatch(/\.(create|update|upsert|delete)\w*\(|\$transaction/);
     expect(sansCommentaires).toContain("connection_limit");
     expect(sansCommentaires).not.toContain("CHATBOT_KB_UNIFIED");
+  });
+
+  it("garde-fou : refuse production et hôte inconnu, sauf --autoriser-prod", () => {
+    const src = readFileSync("scripts/chatbot-kb-unifier-essai.ts", "utf8");
+    const sansCommentaires = src.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
+    expect(sansCommentaires).toContain("decisionDemarrage(process.env, process.argv)");
+    expect(sansCommentaires).toContain("--autoriser-prod");
+    expect(sansCommentaires).toContain("cibleAutorisee");
+    // Le garde-fou précède toute lecture de DATABASE_URL et tout import de Prisma.
+    expect(sansCommentaires.indexOf("decisionDemarrage(process.env")).toBeLessThan(
+      sansCommentaires.indexOf("process.env.DATABASE_URL = "),
+    );
+  });
+
+  it("decisionDemarrage : locale/préprod acceptées, production et hôte inconnu refusés", () => {
+    const loc = "postgresql://u:p@localhost:5432/axion";
+    expect(decisionDemarrage({ DATABASE_URL: loc, NODE_ENV: "development" }, []).ok).toBe(true);
+    expect(
+      decisionDemarrage({ DATABASE_URL: "postgresql://u:p@db.preprod.example:5432/x" }, []).ok,
+    ).toBe(true);
+    const prodEnv = decisionDemarrage({ DATABASE_URL: loc, NODE_ENV: "production" }, []);
+    expect(prodEnv.ok).toBe(false);
+    if (!prodEnv.ok) expect(prodEnv.message).toContain("--autoriser-prod");
+    const inconnu = decisionDemarrage(
+      { DATABASE_URL: "postgresql://u:p@db.exemple.com:5432/x" },
+      [],
+    );
+    expect(inconnu.ok).toBe(false);
+    expect(decisionDemarrage({}, []).ok).toBe(false);
+    expect(
+      decisionDemarrage(
+        { DATABASE_URL: "postgresql://u:p@db.exemple.com:5432/x", NODE_ENV: "production" },
+        ["--autoriser-prod"],
+      ).ok,
+    ).toBe(true);
+  });
+
+  it("le rapport précise le sens de « escalade » et l'origine de « Fiches retenues »", () => {
+    const md = rapportMarkdown([], "2026-11-11");
+    expect(md).toContain("« escalade » veut dire « aucun résultat »");
+    expect(md).toContain("service externe de reclassement");
   });
 });
