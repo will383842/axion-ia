@@ -12,6 +12,7 @@
  */
 import { createHash, createHmac } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
+import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 import type { DemandeGuideReseau } from "./contrat";
 
@@ -107,50 +108,67 @@ export function cleDedoublonnage(o: OrigineAEcrire): string {
     .digest("hex");
 }
 
+/**
+ * Écriture de l'origine DANS une transaction déjà ouverte par l'appelant (page « Recevoir le
+ * guide » : origine, preuve et contact partent ensemble ou pas du tout). Contrairement à
+ * `enregistrerOrigine`, aucune transaction n'est ouverte ici et rien n'est avalé : une erreur
+ * remonte, ce qui annule toute la transaction de l'appelant. L'alerte « archive > 200 » est
+ * laissée à l'appelant, APRÈS validation (`signalerArchiveSiDepassee`).
+ */
+export async function ecrireOrigineDansTransaction(
+  tx: Prisma.TransactionClient,
+  emailKey: string,
+  o: OrigineAEcrire,
+): Promise<{ creee: boolean; archivees: number; total: number }> {
+  // Verrou consultatif de la personne : deux demandes simultanées ne dépassent jamais le plafond.
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + emailKey}))`;
+  const { cleIdempotence: _cle, ...colonnes } = o;
+  const { count } = await tx.guideReseauOrigine.createMany({
+    data: { emailKey, cleDedoublonnage: cleDedoublonnage(o), ...colonnes },
+    skipDuplicates: true,
+  });
+  const actives = await tx.guideReseauOrigine.findMany({
+    where: { emailKey, archiveeLe: null },
+    orderBy: { occurredAt: "asc" },
+    select: { id: true },
+  });
+  const trop = actives.length - PLAFOND_ORIGINES;
+  let archivees = 0;
+  if (trop > 0) {
+    const ids = actives.slice(0, trop).map((l: { id: string }) => l.id);
+    await tx.guideReseauOrigine.updateMany({
+      where: { id: { in: ids } },
+      data: { archiveeLe: new Date() },
+    });
+    archivees = ids.length;
+  }
+  const total = await tx.guideReseauOrigine.count({
+    where: { emailKey, archiveeLe: { not: null } },
+  });
+  return { creee: count > 0, archivees, total };
+}
+
+/** Alerte (journal + Sentry, sans donnée de personne) si l'archive d'une personne dépasse le seuil. */
+export function signalerArchiveSiDepassee(total: number): void {
+  if (total <= SEUIL_ALERTE_ARCHIVE) return;
+  console.warn(
+    JSON.stringify({ event: "guides_reseau_archive_depasse", seuil: SEUIL_ALERTE_ARCHIVE }),
+  );
+  try {
+    Sentry.captureMessage("guides-reseau : archive d'origines au-delà de 200 pour une personne", {
+      level: "warning",
+      tags: { area: "guides-reseau", action: "archive-origines" },
+    });
+  } catch {
+    /* l'observabilité ne casse jamais la réponse */
+  }
+}
+
 export async function enregistrerOrigine(
   emailKey: string,
   o: OrigineAEcrire,
 ): Promise<{ creee: boolean; archivees: number }> {
-  const resultat = await prisma.$transaction(async (tx) => {
-    // Verrou consultatif de la personne : deux demandes simultanées ne dépassent jamais le plafond.
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + emailKey}))`;
-    const { cleIdempotence: _cle, ...colonnes } = o;
-    const { count } = await tx.guideReseauOrigine.createMany({
-      data: { emailKey, cleDedoublonnage: cleDedoublonnage(o), ...colonnes },
-      skipDuplicates: true,
-    });
-    const actives = await tx.guideReseauOrigine.findMany({
-      where: { emailKey, archiveeLe: null },
-      orderBy: { occurredAt: "asc" },
-      select: { id: true },
-    });
-    const trop = actives.length - PLAFOND_ORIGINES;
-    let archivees = 0;
-    if (trop > 0) {
-      const ids = actives.slice(0, trop).map((l) => l.id);
-      await tx.guideReseauOrigine.updateMany({
-        where: { id: { in: ids } },
-        data: { archiveeLe: new Date() },
-      });
-      archivees = ids.length;
-    }
-    const total = await tx.guideReseauOrigine.count({
-      where: { emailKey, archiveeLe: { not: null } },
-    });
-    return { creee: count > 0, archivees, total };
-  });
-  if (resultat.total > SEUIL_ALERTE_ARCHIVE) {
-    console.warn(
-      JSON.stringify({ event: "guides_reseau_archive_depasse", seuil: SEUIL_ALERTE_ARCHIVE }),
-    );
-    try {
-      Sentry.captureMessage("guides-reseau : archive d'origines au-delà de 200 pour une personne", {
-        level: "warning",
-        tags: { area: "guides-reseau", action: "archive-origines" },
-      });
-    } catch {
-      /* l'observabilité ne casse jamais la réponse */
-    }
-  }
+  const resultat = await prisma.$transaction((tx) => ecrireOrigineDansTransaction(tx, emailKey, o));
+  signalerArchiveSiDepassee(resultat.total);
   return { creee: resultat.creee, archivees: resultat.archivees };
 }
