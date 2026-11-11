@@ -153,8 +153,11 @@ const REGLES: ReadonlyArray<{
     nom: "prix de la Journée IA",
     motif: /Journée IA.{0,80}?(\d[\d\s.,]*)\s?(?:€|EUR\b|euros?\b)/gi,
     // « 1 490,00 € » : les centimes ne comptent pas dans le montant comparé.
+    // « la commission de la Journée IA (500 € HT) » (apporteurs, #1900) n'est pas un prix.
     diverge: (m) =>
-      Number((m[1] ?? "").replace(/[,.]\d{2}\s*$/, "").replace(/\D/g, "")) !== PRIX_ATTENDU,
+      !/commission/i.test(
+        (m.input ?? "").slice(Math.max(0, (m.index ?? 0) - 40), (m.index ?? 0) + m[0].length),
+      ) && Number((m[1] ?? "").replace(/[,.]\d{2}\s*$/, "").replace(/\D/g, "")) !== PRIX_ATTENDU,
   },
   {
     nom: "durée du rendez-vous gratuit",
@@ -204,6 +207,8 @@ describe("offre.ts — aucun texte public, prompt ou e-mail ne contredit la sour
     expect(divergences("Un webinaire de 60 minutes, gratuit.")).toHaveLength(0);
     expect(divergences("La Journée IA\\u202f: 2\\u202f450\\u00a0€ HT.")).toHaveLength(1);
     expect(divergences("La Journée IA à 1 490,00 € HT.")).toHaveLength(0);
+    expect(divergences("La Journée IA (commission de 500 € HT).")).toHaveLength(0);
+    expect(divergences("Allumé : la commission de la Journée IA (500 € HT).")).toHaveLength(0);
     expect(divergences("La Journée IA pour les PME (10 à 249 salariés).")).toHaveLength(1);
     expect(divergences("La Journée IA pour les PME (5 à 249 salariés).")).toHaveLength(0);
     expect(divergences("Axion-IA aide les PME de 10 à 249 salariés.")).toHaveLength(1);
