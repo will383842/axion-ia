@@ -131,7 +131,7 @@ describe("garde R7 — les détecteurs voient ce qu'ils doivent voir (anti-test-
  * vocale, un seuil de validation dans un cas client. Tout autre montant fait rougir.
  */
 const EXEMPTIONS: Record<string, readonly string[]> = {
-  // Exemption « cas-concrets/industrie-comptabilite : 5000 € » RETIRÉE (PR #1871) : les cas concrets
+  // Exemption « cas-concrets/industrie-comptabilite : 5000 € » RETIRÉE (PR 1871) : les cas concrets
   // sont éteints (CAS_CONCRETS_AFFICHES = false, retrait juridique du 2026-11-08) ; /api/markdown
   // répond 404, donc plus aucun corps ne peut servir ce montant. Si les cas reviennent, la
   // ré-ajouter (seuil de validation des factures du client).
