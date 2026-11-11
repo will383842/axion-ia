@@ -83,7 +83,7 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
 - `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` : interrupteur **séparé, éteint**, que rien ne lit encore ;
   il ne s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
   `newsletter_subscribers` n'est écrite par ce lot.
-- Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
+- Le chemin « adresse tapée dans la conversation » n'envoie rien au CRM à la réception (D1) ; son origine v3 est écrite sur le site, et **part au premier clic** du lien du guide (voir « Origine complète » ci-dessous).
 - stop sans adresse : abandonné (décision de Williams du 11/11/2026, lien de 48 h en contrepartie).
 - Pose (cible `les-deux` obligatoire, le workflow refuse `site` ou `worker` seuls) :
   `gh workflow run coolify-drapeau.yml -f cle=SYNCHRO_CRM_V3 -f valeur=true -f cible=les-deux -f redeploy=true`.
@@ -179,3 +179,27 @@ une rotation). La route des oppositions n'a **aucun repli** sur `VIDEOS_STUDIO_H
 Tout autre champ → `422` (seuls les noms de champs sont rendus). Réponse : toujours
 `200 {"ok":true,"type":"opposition","recue":true}`, que l'adresse soit nouvelle, déjà écartée ou
 inconnue. Plafond du corps : 4 Ko.
+
+## Origine complète vers le CRM, aussi depuis la conversation (lot guide réseau 4, 11/11/2026)
+
+- **Rien à la réception, jamais avant un clic.** Que l'adresse vienne de la page « Recevoir le guide » ou de la
+  conversation, l'événement part **au clic** du lien du guide. Il porte `payload.origines` (les **20 plus récentes**
+  origines actives de la personne pour ce guide, la plus récente donnant `origine_contenu`). Une demande venue de la
+  conversation n'a coché aucune case : **ni `consentements`, ni prénom** (information M1 seulement). Une demande née du
+  formulaire `/guide-ia` garde sa source ; ses origines réseau partent quand même (D5, option recommandée).
+- **Origines suivantes.** Une origine écrite **après** la transmission part aussitôt, en charge **cumulative** (même
+  plafond de 20), si la personne a déjà cliqué ; sinon elle attend le premier clic. Identifiants déterministes
+  (`event_id` de l'origine déclenchante) : rejouer = pas de doublon. Chaque origine porte `crm_statut`
+  (`NULL` en attente · `transmise` · `ecartee`) et `crm_traitee_le`. Un **stop** relu dans la transaction l'emporte :
+  les origines passent `ecartee` (mise à l'écart, jamais supprimées).
+- Interrupteurs : `SYNCHRO_CRM_V3` (premier clic) ; `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` (`true` seulement, site **et**
+  worker, **éteint par défaut**) pour les origines suivantes et leur rattrapage. Tous deux derrière `CRM_SYNC_ENABLED`
+  et `CRM_SYNC_GUIDE_ENABLED`.
+- **Rattrapage** (`scripts/crm-sync-rattrapage-lettre-guide.ts`) : reprend les origines en attente depuis plus de
+  10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
+  décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
+  `NULL`, jamais marquées à tort.
+- **Ordre d'allumage** : 1) atterrissage de la migration `guide_reseau_origines_crm` **seule** (AGENTS.md, « DEUX
+  conteneurs » : le worker ne doit pas lire des colonnes que l'app n'a pas encore posées) ; 2) accord du CRM Pro sur la
+  charge (D2) et une charge cumulative de test acceptée en 2xx ; 3) `SYNCHRO_CRM_V3` ; 4) puis
+  `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES`. Retour arrière : éteindre ces interrupteurs (ce qui est parti reste au CRM).
