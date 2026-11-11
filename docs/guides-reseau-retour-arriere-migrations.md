@@ -7,7 +7,7 @@
 
 ## Quand s'en servir
 
-Seulement sur décision de Will, après sauvegarde de la base, **dans une transaction**, jamais
+Seulement sur décision de Williams, après sauvegarde de la base, **dans une transaction**, jamais
 depuis l'entrypoint ni la CI. Le retour arrière d'une migration ne retire pas sa ligne de
 `_prisma_migrations` : après coup, il faut aussi traiter le journal (voir « Après le retour
 arrière »). Le code qui lit ces objets doit avoir été retiré ou rendu tolérant AVANT
@@ -31,16 +31,18 @@ d'énumération : PostgreSQL ne sait pas la retirer, voir la dernière section.)
 
 ## 1. `20260902120000_email_oppositions`
 
-⚠️ **Perte de données à effets juridiques.** La table est la liste des personnes opposées à la
-prospection commerciale. La supprimer fait recommencer les envois vers elles. La sauvegarder
-(export des lignes) avant, et ne jamais la supprimer sans plan de remplacement.
+⚠️ **Données à effets juridiques.** La table est la liste des personnes opposées à la
+prospection commerciale. Un stop l'emporte toujours : la table n'est **jamais supprimée**, elle
+est seulement mise de côté sous un autre nom (les données sont conservées).
+
+**Toute suppression de données de personnes (`DROP`, `DELETE`, `TRUNCATE`) exige un ordre écrit
+de Williams. Sans cet ordre, ne rien supprimer.**
 
 ```sql
 BEGIN;
 -- Sauvegarde préalable recommandée :
 --   \copy email_oppositions TO 'email_oppositions.csv' CSV HEADER
-DROP INDEX IF EXISTS "email_oppositions_email_hash_key";
-DROP TABLE IF EXISTS "email_oppositions";
+ALTER TABLE "email_oppositions" RENAME TO "email_oppositions_archive";
 COMMIT;
 ```
 
@@ -49,8 +51,9 @@ référencer cette table ; sinon, la défaire d'abord via son propre `rollback.s
 
 ## 2. `20260924120000_guide_requests_et_lettre`
 
-⚠️ Supprime toutes les demandes de guide (`guide_requests`) et les champs de consentement de la
-lettre. À défaire APRÈS les migrations postérieures qui touchent `guide_requests` /
+⚠️ Met de côté les demandes de guide (`guide_requests`) et les champs de consentement de la
+lettre : **rien n'est supprimé**, tout est renommé en `…_archive` (données conservées). **Toute
+suppression exige un ordre écrit de Williams.** À défaire APRÈS les migrations postérieures qui touchent `guide_requests` /
 `GuideRequestOrigine` (`guide_requests_dernier_clic`, `guide_request_origine_message_prive`,
 `contacts_guide_reseau*`), dans l'ordre inverse de leur date.
 
@@ -58,15 +61,14 @@ lettre. À défaire APRÈS les migrations postérieures qui touchent `guide_requ
 BEGIN;
 -- Sauvegarde préalable recommandée :
 --   \copy guide_requests TO 'guide_requests.csv' CSV HEADER
-DROP TABLE IF EXISTS "guide_requests";            -- emporte ses 4 index
-ALTER TABLE "newsletter_subscribers"
-  DROP COLUMN IF EXISTS "consent_form_ref",
-  DROP COLUMN IF EXISTS "consent_version",
-  DROP COLUMN IF EXISTS "last_sent_at",
-  DROP COLUMN IF EXISTS "last_click_at",
-  DROP COLUMN IF EXISTS "soft_bounce_count",
-  DROP COLUMN IF EXISTS "last_soft_bounce_at";
-DROP TYPE IF EXISTS "GuideRequestOrigine";        -- échoue tant qu'une colonne l'utilise
+ALTER TABLE "guide_requests" RENAME TO "guide_requests_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "consent_form_ref" TO "consent_form_ref_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "consent_version" TO "consent_version_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "last_sent_at" TO "last_sent_at_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "last_click_at" TO "last_click_at_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "soft_bounce_count" TO "soft_bounce_count_archive";
+ALTER TABLE "newsletter_subscribers" RENAME COLUMN "last_soft_bounce_at" TO "last_soft_bounce_at_archive";
+-- Le type « GuideRequestOrigine » reste en place (il est encore utilisé par la table archivée).
 COMMIT;
 ```
 
@@ -77,15 +79,15 @@ au lot L6) ; le retour arrière n'a donc rien à restaurer de ce côté.
 
 1. Retirer la migration de l'historique pour que `prisma migrate deploy` ne la croie pas
    appliquée (sinon un futur rejouement est ignoré) :
-   `DELETE FROM "_prisma_migrations" WHERE migration_name = '<nom de la migration>';`
-   — ou `prisma migrate resolve --rolled-back <nom>` (ne fait que marquer l'échec ; à choisir
-   en connaissance de cause).
-2. Retirer du schéma Prisma les modèles et colonnes correspondants, dans une migration NOUVELLE.
-3. Vérifier par `\d` que les objets ont disparu, puis lancer `prisma migrate status`.
+   `prisma migrate resolve --rolled-back <nom de la migration>` (ne fait que marquer l'échec ;
+   à choisir en connaissance de cause). **Ne pas** effacer la ligne de `_prisma_migrations` à la
+   main : toute suppression de ligne exige un ordre écrit de Williams.
+2. Retirer du schéma Prisma les modèles et colonnes correspondants (ou les renommer), dans une migration NOUVELLE qui ne supprime aucune donnée.
+3. Vérifier par `\d` que les objets ont bien été renommés en `…_archive`, puis lancer `prisma migrate status`.
 
 ## Non réversible : valeur d'énumération `message_prive`
 
 `ALTER TYPE … ADD VALUE` (`20261101090000_guide_request_origine_message_prive`) ne s'annule pas en
 PostgreSQL. Retirer la valeur impose de recréer le type (créer un type neuf sans elle, convertir
-la colonne, supprimer l'ancien) après avoir réaffecté les lignes qui la portent. Procédure à
+la colonne, remplacer l'ancien — suppression de l'ancien type seulement sur ordre écrit de Williams) après avoir réaffecté les lignes qui la portent. Procédure à
 écrire au cas par cas ; non proposée ici.
