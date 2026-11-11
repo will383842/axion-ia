@@ -97,12 +97,21 @@ describe("une seule offre, une seule commission", () => {
 });
 
 describe("tous les boutons mènent au bon endroit", () => {
-  const liens = (html: string) => [...html.matchAll(/<a[^>]*href="([^"]+)"/g)].map((m) => m[1]!);
+  // Les adresses des liens, sans dépendre de la balise (next/link peut être doublé dans les tests) ;
+  // les href de préchargement d'image et des icônes ne sont pas des liens.
+  const liens = (html: string) =>
+    [...html.matchAll(/\bhref="([^"]+)"/g)]
+      .map((m) => m[1]!)
+      .filter(
+        (h) =>
+          h.startsWith("/fr") ||
+          h.startsWith("/apporteur") ||
+          h.startsWith("#c") ||
+          h === "#dossier",
+      );
 
   it("la page principale envoie chaque bouton vers le dossier de 3 minutes", () => {
-    const boutons = [...principale.matchAll(/<a class="btn[^"]*" href="([^"]+)"/g)].map(
-      (m) => m[1]!,
-    );
+    const boutons = liens(principale).filter((h) => h.includes("candidature"));
     expect(boutons.length).toBeGreaterThanOrEqual(3);
     for (const href of boutons)
       expect(href).toMatch(/^\/fr\/devenir-commercial-ia\/candidature\?depuis=/);
@@ -114,8 +123,11 @@ describe("tous les boutons mènent au bon endroit", () => {
     expect(annonce).not.toContain('data-test="lead"');
     expect(annonce).not.toContain('id="contact"');
     expect(annonce).toContain("Vu sur Le Bon Coin");
-    const versDossier = liens(annonce).filter((h) => h.includes("candidature"));
-    expect(versDossier, JSON.stringify(liens(annonce))).not.toHaveLength(0);
+    expect(
+      annonce,
+      annonce.slice(annonce.indexOf("Vu sur"), annonce.indexOf("Vu sur") + 1200),
+    ).toContain("candidature?depuis=annonce-haut");
+    expect(annonce).toContain("candidature?depuis=annonce");
   });
 
   it("le dossier pose le formulaire existant à la place de l'écran de la maquette", () => {
