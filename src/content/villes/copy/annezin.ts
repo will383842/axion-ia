@@ -49,7 +49,7 @@ export const ANNEZIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Annezin et dans l'agglo de Bethune ?",
-      a: "Oui, Axion-IA intervient a Annezin et dans toute l'agglomeration bethunoise (Bethune, Bruay-la-Buissiere, Noeux-les-Mines). Consultants depuis Lille (50 min TER) ou Paris (TGV 1h40 via Lens).",
+      a: "Oui, Axion-IA intervient a Annezin et dans toute l'agglomeration bethunoise (Bethune, Bruay-la-Buissiere, Noeux-les-Mines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants d'Annezin ?",

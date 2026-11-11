@@ -65,7 +65,7 @@ export const CHEVREUSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chevreuse ?",
-      a: "Nos consultants rejoignent Chevreuse via le RER B (terminus Saint-Rémy-lès-Chevreuse à 5 min, 40 min depuis Paris) ou par la N118/A10.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

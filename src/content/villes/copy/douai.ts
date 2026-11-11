@@ -230,7 +230,7 @@ export const DOUAI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Douai et dans le Douaisis ?",
-      a: "Oui, Axion-IA intervient à Douai et tout le Douaisis (Sin-le-Noble, Waziers, Cuincy, Lambres-lez-Douai). Nos consultants viennent de Lille, à 35 minutes, ou via la gare TGV de Douai.",
+      a: "Oui, Axion-IA intervient à Douai et tout le Douaisis (Sin-le-Noble, Waziers, Cuincy, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous la sous-traitance automobile et ferroviaire ?",
@@ -245,8 +245,8 @@ export const DOUAI_COPY: VilleCopy = {
       a: "Optimisation des tournées et entrepôts, suivi de livraison, prédiction de maintenance et automatisation administrative. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants se déplacent depuis Lille en 35 minutes, ou en visio.",
+      q: "Comment se déroule une mission à Douai ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

@@ -90,11 +90,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: loc === "fr" ? "/un-a-un" : "/one-to-one",
     title:
       loc === "fr"
-        ? "Coaching IA individuel 1-to-1 · dirigeant ou collaborateur"
+        ? "Coaching IA individuel pour dirigeants et cadres · Axion-IA"
         : "1-to-1 individual AI coaching · executive or team member",
     description:
       loc === "fr"
-        ? "Coaching IA 1-to-1 — une journée 100% centrée sur vous : gain de temps, baisse de pression et hausse de productivité. Rapport personnalisé sous 7 jours."
+        ? "Coaching IA individuel : une journée en tête-à-tête, dirigeant ou collaborateur, sur vos vraies tâches. Rapport personnalisé sous 7 jours. Partout en France."
         : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. Pricing on request.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
@@ -289,8 +289,8 @@ export default async function UnAUnHubPage({ params }: Props) {
       {/* HERO 2 colonnes — template aligné /interventions/collectives */}
       <ServiceHero
         eyebrow={isFr ? "Coaching individuel · 1-to-1" : "Individual coaching · 1-to-1"}
-        title={isFr ? "Un seul jour pour transformer" : "Just one day to transform"}
-        titleEm={isFr ? "votre façon de travailler" : "the way you work"}
+        title={isFr ? "Coaching IA individuel :" : "Just one day to transform"}
+        titleEm={isFr ? "une journée en tête-à-tête sur vos vraies tâches" : "the way you work"}
         description={
           isFr
             ? "Une journée complète en tête-à-tête — dirigeant ou collaborateur clé : on met votre travail à plat, on identifie ce que l'IA peut alléger, et vous repartez avec un cap clair."

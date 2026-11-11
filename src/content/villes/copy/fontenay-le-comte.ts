@@ -49,7 +49,7 @@ export const FONTENAY_LE_COMTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-le-Comte et en sud-Vendée ?",
-      a: "Oui, Axion-IA intervient à Fontenay-le-Comte et dans tout le sud-Vendée (Luçon, marais poitevin). Consultants accessibles depuis La Roche-sur-Yon (45 min) ou Niort (35 min).",
+      a: "Oui, Axion-IA intervient à Fontenay-le-Comte et dans tout le sud-Vendée (Luçon, marais poitevin). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commerces de Fontenay-le-Comte ?",

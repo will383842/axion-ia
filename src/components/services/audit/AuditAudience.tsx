@@ -35,6 +35,8 @@ interface AudienceCard {
   readonly metaEn: string;
   /** Page détail du tier — « plus d'infos sur le déroulement ». */
   readonly detailHref: string;
+  /** Texte du lien détail quand il doit décrire la page visée (défaut : « Plus d'infos sur le déroulement »). */
+  readonly detailLabelFr?: string;
 }
 
 // R5a (08/11/2026, décision n°7) : la carte TPE présente La Journée IA (prix lu dans
@@ -56,6 +58,7 @@ const CARDS: ReadonlyArray<AudienceCard> = [
     metaFr: `${TARIF_JOURNEE} HT · 1 journée dans votre entreprise`,
     metaEn: `${TARIF_JOURNEE_EN} excl. VAT · 1 day in your company`,
     detailHref: "/journee-ia",
+    detailLabelFr: "Audit + formation IA en une journée : le déroulement",
   },
   {
     segment: "PME",
@@ -122,7 +125,7 @@ function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactN
         href={card.detailHref as never}
         className="text-fg-muted hover:text-terracotta-deep mt-1 inline-flex items-center gap-1.5 text-[13px] font-medium underline-offset-2 hover:underline"
       >
-        {isFr ? "Plus d'infos sur le déroulement" : "More on how it works"}
+        {isFr ? (card.detailLabelFr ?? "Plus d'infos sur le déroulement") : "More on how it works"}
         <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
       </Link>
     </div>

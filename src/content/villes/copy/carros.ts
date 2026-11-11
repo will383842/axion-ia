@@ -49,7 +49,7 @@ export const CARROS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carros et dans la ZI Carros-Le Broc ?",
-      a: "Oui, Axion-IA intervient à Carros et dans toute la zone industrielle Carros-Le Broc (450+ entreprises). Couverture moyen-pays niçois (Castagniers, Gattières, Le Broc, La Roquette-sur-Var) et accès rapide depuis Nice (20 min) ou Sophia Antipolis (40 min).",
+      a: "Oui, Axion-IA intervient à Carros et dans toute la zone industrielle Carros-Le Broc (450+ entreprises). Couverture moyen-pays niçois (Castagniers, Gattières, Le Broc, La Roquette-sur-Var) et accès direct.",
     },
     {
       q: "Travaillez-vous avec les TPE et PME industrielles de Carros ?",
@@ -64,7 +64,7 @@ export const CARROS_COPY: VilleCopy = {
       a: "Pour les entreprises logistiques et transport de la ZI Carros-Le Broc, nous proposons : optimisation tournées IA, gestion stocks prédictive, automatisation documents transport, agents conversationnels suivi colis. Implémentation complète ou intervention ponctuelle.",
     },
     {
-      q: "Comment se déroule une mission à Carros depuis Nice ?",
+      q: "Comment se déroule une mission à Carros ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],

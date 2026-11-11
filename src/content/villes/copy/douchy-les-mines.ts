@@ -49,7 +49,7 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Douchy-les-Mines et Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Douchy-les-Mines et tout le Valenciennois (Denain limitrophe, Valenciennes, Anzin, Lourches). Consultants depuis Lille (50 min).",
+      a: "Oui, Axion-IA intervient à Douchy-les-Mines et tout le Valenciennois (Denain limitrophe, Valenciennes, Anzin, Lourches). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP douchynois ?",
@@ -64,8 +64,8 @@ export const DOUCHY_LES_MINES_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Douchy-les-Mines, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min).",
+      q: "Comment se déroule une mission à Douchy-les-Mines ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

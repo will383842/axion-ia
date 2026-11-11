@@ -49,7 +49,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubigny-sur-Nère et en Sologne ?",
-      a: "Oui, Axion-IA intervient à Aubigny-sur-Nère et toute la Sologne berrichonne (Argent-sur-Sauldre, La Chapelle-d'Angillon). Consultants depuis Bourges (45 min) ou Orléans (1h15).",
+      a: "Oui, Axion-IA intervient à Aubigny-sur-Nère et toute la Sologne berrichonne (Argent-sur-Sauldre, La Chapelle-d'Angillon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme Cité Stuart ?",
@@ -64,7 +64,7 @@ export const AUBIGNY_SUR_NERE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
-      q: "Comment se passe une mission depuis Bourges ou Orléans ?",
+      q: "Comment se déroule une mission à Aubigny-sur-Nère ?",
       a: "Bourges (45 min) ou Orléans (1h15).",
     },
   ],

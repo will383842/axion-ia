@@ -9,7 +9,7 @@
  *   0. REPRISE : une ligne `reserve` dont la réservation (`updated_at`) date de plus de
  *      `DELAI_REPRISE_RESERVATION_MIN` minutes (réponse perdue côté Studio) repasse à `a_envoyer`
  *      si elle est encore dans la fenêtre de `FENETRE_MERCI_H` heures, sinon à `expire`.
- *      Jamais de suppression ; une ligne `envoye` ne bouge jamais ;
+ *      Jamais de suppression ; une ligne `envoye` / `hors_fenetre` ne bouge jamais (accusé : `accuse-confirmations.ts`) ;
  *   1. passer à `expire` les lignes `a_envoyer` de plus de `FENETRE_MERCI_H` heures (elles restent en base) ;
  *   2. réserver atomiquement (`UPDATE … WHERE id IN (SELECT … FOR UPDATE SKIP LOCKED LIMIT n) RETURNING`) :
  *      deux appels simultanés ne reçoivent jamais la même ligne, un second appel reçoit une liste vide ;

@@ -10,14 +10,6 @@
     "email": "personne@exemple.test",
     "first_name": "Camille"
   },
-  "consentements": [
-    {
-      "nature": "optin",
-      "date": "2026-11-01T10:00:00.000Z",
-      "source": "page-guide-reseau",
-      "version": "page-guide-2026-11-08"
-    }
-  ],
   "guides_recus": [{ "guide": "guide-ia", "date": "2026-11-01T10:05:00.000Z" }],
   "payload": {
     "schema_version": 3,

@@ -64,7 +64,7 @@ export const CARRIERES_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA estimation, gestion mandats, CRM acquéreurs, vitrines augmentées.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou La Défense ?",
+      q: "Comment se déroule une mission à Carrières-sur-Seine ?",
       a: "Chatou (3 min). Nanterre (5 min). Paris La Défense (10 min). Paris Saint-Lazare (15 min transilien J/L).",
     },
   ],

@@ -49,7 +49,7 @@ export const BELLEY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Belley et Bugey sud ?",
-      a: "Oui, Axion-IA intervient à Belley et tout le Bugey sud (Virignin, Culoz, Seyssel). Consultants depuis Lyon (1h15) ou Chambéry (45 min).",
+      a: "Oui, Axion-IA intervient à Belley et tout le Bugey sud (Virignin, Culoz, Seyssel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Bugey ?",
@@ -64,7 +64,7 @@ export const BELLEY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
+      q: "Comment se déroule une mission à Belley ?",
       a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],

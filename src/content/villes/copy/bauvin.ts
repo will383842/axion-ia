@@ -64,8 +64,8 @@ export const BAUVIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants de Bauvin, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Lille-Lesquin à 15 min. Missions sur site à Bauvin ou en visio.",
+      q: "Comment se déroule une mission à Bauvin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site à Bauvin ou en visio.",
     },
   ],
 };

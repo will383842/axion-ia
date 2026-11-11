@@ -49,7 +49,7 @@ export const COUTRAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coutras et dans le Libournais ?",
-      a: "Oui, Axion-IA intervient à Coutras et dans tout le nord Libournais (Libourne, Saint-Denis-de-Pile, Izon). Nos consultants se déplacent via la gare de Coutras ou depuis Bordeaux (40 min).",
+      a: "Oui, Axion-IA intervient à Coutras et dans tout le nord Libournais (Libourne, Saint-Denis-de-Pile, Izon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Coutras  ?",

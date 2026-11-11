@@ -64,8 +64,8 @@ export const CEBAZAT_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Cébazat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants interviennent depuis Clermont-Ferrand (10 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
+      q: "Comment se déroule une mission à Cébazat ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -64,7 +64,7 @@ export const FISMES_COPY: VilleCopy = {
       a: "Oui, CRM augmenté, prise de rendez-vous IA, gestion planning, fidélisation clients, reporting intelligent pour commerces et cabinets de santé.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Reims ?",
+      q: "Comment se déroule une mission à Fismes ?",
       a: "Reims à 30 min par route. Paris à 1 h 20 via A4. Gare SNCF Fismes sur ligne Reims-Laon.",
     },
   ],

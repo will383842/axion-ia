@@ -61,11 +61,11 @@ export const COGNIN_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Cognin ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Cognin. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Cognin. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement inclus.",
     },
     {
       q: "Comment se déroule une mission IA à Cognin ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

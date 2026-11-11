@@ -49,7 +49,7 @@ export const FRESNES_SUR_ESCAUT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Fresnes-sur-Escaut et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient a Fresnes-sur-Escaut et dans tout le Valenciennois (Valenciennes, Conde-sur-l'Escaut, Vieux-Conde, Anzin). Consultants depuis Lille (45 min TER) ou Paris (TGV Valenciennes 1h50).",
+      a: "Oui, Axion-IA intervient a Fresnes-sur-Escaut et dans tout le Valenciennois (Valenciennes, Conde-sur-l'Escaut, Vieux-Conde, Anzin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles du bassin minier ?",

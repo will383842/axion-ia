@@ -144,7 +144,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
           "Bourg-en-Bresse runs on a highly distinctive fabric: the Bresse AOP poultry industry (the only poultry in the world holding both AOC and AOP, an identification ring per bird, 275 communes), the Renault Trucks / Volvo plant (117 ha, ~1,350 staff, high-range trucks over 16 t) and its subcontractors, and the nearby Plastipolis / Polymeris plastics cluster — each with specific web needs we handle.",
           "For Bresse AOP poultry farmers and processors, we build e-commerce stores with holiday order calendars, product sheets showcasing the ring and the AOP specification, and an AI assistant answering storage and cooking questions — not a generic template.",
           "For plastics workshops in the Plastics Vallée ecosystem and Renault Trucks suppliers, we develop technical portals: injected-parts catalogues, AI-qualified RFQ requests, B2B customer areas, configurators connected to your ERP.",
-          "We travel to the agglomeration's business zones (Parc Cadran, 35 ha on the A40, CENORD, Norelan, Bourg Sud) and to the tourism players around the Royal Monastery of Brou and the Ekinox / Ainterexpo events hub, or work from Lyon, 1h away via the A40/A42.",
+          "We travel to the agglomeration's business zones (Parc Cadran, 35 ha on the A40, CENORD, Norelan, Bourg Sud) and to the tourism players around the Royal Monastery of Brou and the Ekinox / Ainterexpo events hub, or work remotely.",
         ],
         methodology: [
           {

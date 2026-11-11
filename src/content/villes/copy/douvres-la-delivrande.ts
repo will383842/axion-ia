@@ -49,7 +49,7 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Douvres-la-Délivrande et Côte de Nacre ?",
-      a: "Oui, Axion-IA intervient à Douvres-la-Délivrande et toute la Côte de Nacre (Ouistreham, Courseulles-sur-Mer, Lion-sur-Mer, Langrune). Consultants depuis Caen (15 min D7).",
+      a: "Oui, Axion-IA intervient à Douvres-la-Délivrande et toute la Côte de Nacre (Ouistreham, Courseulles-sur-Mer, Lion-sur-Mer, Langrune). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme Débarquement Côte de Nacre ?",
@@ -65,7 +65,7 @@ export const DOUVRES_LA_DELIVRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Douvres-la-Délivrande ?",
-      a: "Nos consultants viennent de Caen (15 min D7). Déplacement direct sur site (site touristique, bureau, commerce, cabinet).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (site touristique, bureau, commerce, cabinet).",
     },
   ],
 };

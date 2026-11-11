@@ -64,7 +64,7 @@ export const EPINAY_SOUS_SENART_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évry ?",
+      q: "Comment se déroule une mission à Épinay-sous-Sénart ?",
       a: "RER D Épinay-sous-Sénart direct depuis Paris (30 min). Évry-Courcouronnes à 15 min. Orly à 20 min.",
     },
   ],

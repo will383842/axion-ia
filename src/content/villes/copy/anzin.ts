@@ -49,7 +49,7 @@ export const ANZIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Anzin et dans le bassin minier valenciennois ?",
-      a: "Oui, Axion-IA intervient à Anzin et dans toute l'agglomération de Valenciennes (Valenciennes, Bruay-sur-l'Escaut, Petite-Forêt, Beuvrages, Raismes, Saint-Amand-les-Eaux) ainsi que le bassin minier Nord-Pas-de-Calais UNESCO. Nos consultants couvrent l'ensemble du Valenciennois depuis Valenciennes centre (5 min).",
+      a: "Oui, Axion-IA intervient à Anzin et dans toute l'agglomération de Valenciennes (Valenciennes, Bruay-sur-l'Escaut, Petite-Forêt, Beuvrages, Raismes, Saint-Amand-les-Eaux) ainsi que le bassin minier Nord-Pas-de-Calais UNESCO. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises BTP à Anzin ?",
@@ -65,7 +65,7 @@ export const ANZIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Anzin ?",
-      a: "Nos consultants interviennent à Anzin depuis Valenciennes centre (5 min) ou Lille (50 min). Intervention sur site dans votre entreprise BTP, atelier industriel, commerce, bureau ou en visio. Pour missions multi-jours, hébergement à Valenciennes. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entreprise BTP, atelier industriel, commerce, bureau ou en visio. Pour missions multi-jours, hébergement à Valenciennes. Tarifs publics et transparents.",
     },
   ],
 };

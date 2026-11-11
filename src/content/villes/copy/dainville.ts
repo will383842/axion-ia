@@ -49,7 +49,7 @@ export const DAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Dainville et dans l'agglo d'Arras ?",
-      a: "Oui, Axion-IA intervient a Dainville et dans toute l'agglomeration arrageoise (Arras, Beaurains, Saint-Laurent-Blangy, Achicourt). Consultants depuis Lille (45 min TGV) ou Paris (50 min TGV direct).",
+      a: "Oui, Axion-IA intervient a Dainville et dans toute l'agglomeration arrageoise (Arras, Beaurains, Saint-Laurent-Blangy, Achicourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales de Dainville ?",

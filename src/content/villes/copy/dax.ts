@@ -245,7 +245,7 @@ export const DAX_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Dax respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données, notamment celles, sensibles, des curistes.",
     },
     {
-      q: "Comment se passe une mission depuis Bordeaux ou Bayonne ?",
+      q: "Comment se déroule une mission à Dax ?",
       a: "Dax est à environ 1h de Bordeaux en TGV et à 40 min de Bayonne. Nous nous déplaçons sur site.",
     },
     {

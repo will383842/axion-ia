@@ -49,7 +49,7 @@ export const CROSNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crosne et dans l'est de l'Essonne ?",
-      a: "Oui, Axion-IA intervient à Crosne et dans tout l'est de l'Essonne (Yerres, Brunoy, Montgeron, Vigneux-sur-Seine, Draveil). Nos consultants accèdent facilement à Crosne via le RER D depuis Paris (35 min).",
+      a: "Oui, Axion-IA intervient à Crosne et dans tout l'est de l'Essonne (Yerres, Brunoy, Montgeron, Vigneux-sur-Seine, Draveil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans crosnois ?",
@@ -64,8 +64,8 @@ export const CROSNE_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Crosne souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se passe une mission à Crosne depuis Paris ?",
-      a: "Nos consultants accèdent à Crosne en 35 min via le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Crosne ?",
+      a: "Crosne est desservie par le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

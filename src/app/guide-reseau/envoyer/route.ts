@@ -33,6 +33,9 @@ export const dynamic = "force-dynamic";
 
 const ENTETES = ENTETES_PAGE_GUIDE;
 
+/** Plafond du corps du POST : jeton, prénom, e-mail et case tiennent largement dans 8 Kio. */
+const CORPS_MAX_OCTETS = 8 * 1024;
+
 function vers(chemin: string): NextResponse {
   // URL PUBLIQUE du site (`publicUrl`) : derrière le proxy, `req.url` porte l'adresse d'écoute
   // INTERNE du conteneur (Location: https://0.0.0.0:3000/…). 303 : le navigateur rejoue en GET.
@@ -44,9 +47,34 @@ function pageErreur(message: string, jeton: string, statut: number): NextRespons
   const retour = jeton ? `${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}` : CHEMIN_PAGE_GUIDE;
   return pageStatique(
     T.titre,
-    `<p role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}">${echapper(T.retour)}</a></p>`,
+    `<p id="erreur" role="alert">${echapper(message)}</p><p><a href="${echapper(retour)}" aria-describedby="erreur">${echapper(T.retour)}</a></p>`,
     statut,
   );
+}
+
+/** Lit le corps en flux et s'arrête dès que le plafond est franchi (jamais tout en mémoire). */
+async function lireCorpsPlafonne(req: NextRequest): Promise<ArrayBuffer | null> {
+  if (!req.body) return new ArrayBuffer(0);
+  const lecteur = req.body.getReader();
+  const morceaux: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await lecteur.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > CORPS_MAX_OCTETS) {
+      await lecteur.cancel().catch(() => undefined);
+      return null;
+    }
+    morceaux.push(value);
+  }
+  const brut = new Uint8Array(new ArrayBuffer(total));
+  let pos = 0;
+  for (const m of morceaux) {
+    brut.set(m, pos);
+    pos += m.byteLength;
+  }
+  return brut.buffer;
 }
 
 function texte(v: FormDataEntryValue | null): string {
@@ -73,9 +101,18 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
+  // Plafond de taille du corps : au-delà, message générique (413), rien n'est lu ni confirmé.
+  const annonce = Number(req.headers.get("content-length") ?? "0");
+  if (Number.isFinite(annonce) && annonce > CORPS_MAX_OCTETS)
+    return pageErreur(T.erreurs.corps_trop_gros, "", 413);
+
   let form: FormData;
   try {
-    form = await req.formData();
+    const brut = await lireCorpsPlafonne(req);
+    if (brut === null) return pageErreur(T.erreurs.corps_trop_gros, "", 413);
+    form = await new Response(brut, {
+      headers: { "content-type": req.headers.get("content-type") ?? "" },
+    }).formData();
   } catch {
     return pageErreur(T.erreurs.email, "", 422);
   }
@@ -103,6 +140,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       prenom: texte(form.get("prenom")),
       email: texte(form.get("email")),
       caseCochee: form.get("accord") === "oui",
+      infosCochee: form.get("infos") === "oui",
       ip,
       userAgent: req.headers.get("user-agent")?.slice(0, 500) ?? null,
       secret,

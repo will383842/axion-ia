@@ -26,13 +26,13 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
   // H1 ville-aware vs canonique — wording "site web qui comprend et répond".
   const title = villeContext
     ? isFr
-      ? `Votre site web à ${villeContext.name} qui`
+      ? `Un assistant IA sur votre site web à ${villeContext.name}`
       : `Your website in ${villeContext.name} that`
     : isFr
-      ? "Votre site web qui"
+      ? "Un assistant IA sur votre site web"
       : "Your website that";
 
-  const titleEm = isFr ? "comprend et répond." : "understands and responds.";
+  const titleEm = isFr ? "qui comprend et répond." : "understands and responds.";
 
   const description = villeContext
     ? isFr

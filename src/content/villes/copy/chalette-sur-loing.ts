@@ -49,7 +49,7 @@ export const CHALETTE_SUR_LOING_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Chalette-sur-Loing ?",
-      a: "Oui, Axion-IA intervient a Chalette-sur-Loing et dans toute l'agglomeration montargoise (Montargis, Amilly, Villemandeur, Cepoy). Nos consultants rejoignent la commune via la gare de Montargis a 10 min ou l'A77.",
+      a: "Oui, Axion-IA intervient a Chalette-sur-Loing et dans toute l'agglomeration montargoise (Montargis, Amilly, Villemandeur, Cepoy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Chalette-sur-Loing ?",

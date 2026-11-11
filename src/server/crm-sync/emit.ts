@@ -11,7 +11,13 @@ import {
   nextAttemptDelayMs,
 } from "./config";
 import { ENVOI_COUPE, estEnvoiCoupe } from "./coupure-recrutement";
+import {
+  BLOQUEE_PAR_OPPOSITION,
+  adresseDeLEvenement,
+  estEvenementGuideReseau,
+} from "./opposition-avant-envoi";
 import type { CrmIngestResponse } from "./types";
+import { estOpposee } from "@/server/email/opposition";
 import { notify } from "@/server/notifications";
 
 /**
@@ -67,6 +73,21 @@ export async function emitOutboxRow(outboxId: string): Promise<EmitResult> {
       data: { status: "gave_up", nextAttemptAt: null, lastError: ENVOI_COUPE },
     });
     return { status: "skipped", error: "envoi coupé (ADR 0047)" };
+  }
+
+  // 🔴 Un « stop » l'emporte toujours (SITE-OUTBOX) : pour un événement du guide réseau,
+  // l'opposition est relue JUSTE AVANT l'envoi, par empreinte. Opposée : aucun appel réseau,
+  // la ligne est soldée avec un motif explicite, SANS tentative consommée, jamais supprimée,
+  // jamais retentée (`gave_up` est ignoré au rejeu). `skipped` : ce n'est pas un abandon.
+  if (estEvenementGuideReseau(row.eventType, row.payload)) {
+    const adresse = adresseDeLEvenement(row.payload);
+    if (adresse !== null && (await estOpposee(adresse))) {
+      await prisma.crmSyncOutbox.update({
+        where: { id: outboxId },
+        data: { status: "gave_up", nextAttemptAt: null, lastError: BLOQUEE_PAR_OPPOSITION },
+      });
+      return { status: "skipped", error: "bloquée par opposition" };
+    }
   }
 
   const url = crmSyncUrl();

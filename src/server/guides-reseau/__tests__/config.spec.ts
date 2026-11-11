@@ -6,7 +6,12 @@ import { describe, it, expect, afterEach, vi } from "vitest";
 import { createHash } from "node:crypto";
 import { pageGuideReseauActive } from "../config";
 import { lireSecretLien } from "../secret-lien";
-import { EMPREINTE_CASE_PAGE_GUIDE, TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
+import {
+  EMPREINTE_CASE_PAGE_GUIDE,
+  EMPREINTE_CASE_PAGE_GUIDE_INFOS,
+  TEXTE_CASE_PAGE_GUIDE,
+  TEXTE_CASE_PAGE_GUIDE_INFOS,
+} from "@/content/guides-reseau";
 import {
   CORPS_MAX_OPPOSITIONS,
   ORIGINE_OPPOSITION_RESEAU_STOP,
@@ -124,11 +129,13 @@ describe("lot S2 — interrupteur de la page et secret du lien", () => {
   });
 
   it("l'empreinte de la case est bien le sha256 du texte exact (texte changé = version à changer)", () => {
-    expect(TEXTE_CASE_PAGE_GUIDE).toBe(
-      "J'accepte de recevoir le guide et des informations d'Axion-IA, désinscription à tout moment",
-    );
+    expect(TEXTE_CASE_PAGE_GUIDE).toBe("J'accepte de recevoir le guide à cette adresse");
+    expect(TEXTE_CASE_PAGE_GUIDE).not.toMatch(/informations|Axion-IA/i);
     expect(createHash("sha256").update(TEXTE_CASE_PAGE_GUIDE, "utf8").digest("hex")).toBe(
       EMPREINTE_CASE_PAGE_GUIDE,
+    );
+    expect(createHash("sha256").update(TEXTE_CASE_PAGE_GUIDE_INFOS, "utf8").digest("hex")).toBe(
+      EMPREINTE_CASE_PAGE_GUIDE_INFOS,
     );
   });
 });

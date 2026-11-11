@@ -108,6 +108,18 @@ export function ServiceJourneyBand({
             })}
           </ol>
         </nav>
+        {isFr ? (
+          <p className="text-fg-soft mt-4 text-sm">
+            Vous ne savez pas par où commencer ?{" "}
+            <Link
+              href="/journee-ia"
+              className="text-terracotta font-semibold underline underline-offset-4"
+            >
+              Audit IA le matin, formation de vos équipes l’après-midi : la Journée IA
+            </Link>
+            .
+          </p>
+        ) : null}
       </Container>
     </section>
   );

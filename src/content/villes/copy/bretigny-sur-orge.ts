@@ -226,7 +226,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brétigny-sur-Orge et sud Essonne ?",
-      a: "Oui, Axion-IA intervient à Brétigny-sur-Orge et tout le sud-Essonne (Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois, Saint-Michel-sur-Orge). Couverture sud-IDF et accès rapide depuis Paris (30 min RER C).",
+      a: "Oui, Axion-IA intervient à Brétigny-sur-Orge et tout le sud-Essonne (Évry-Courcouronnes, Massy, Sainte-Geneviève-des-Bois, Saint-Michel-sur-Orge). Couverture sud-IDF, desservie par le RER C.",
     },
     {
       q: "Travaillez-vous avec les structures de santé bréthignolaises ?",
@@ -241,7 +241,7 @@ export const BRETIGNY_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME tertiaires installées dans la ZAC Clause-Bois Badeau et les zones d'activités bréthignolaises sur leurs cas IA : agents conversationnels, automatisations workflow, CRM augmentés. Tarifs publics, ROI chiffré contractuel avant mission.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
+      q: "Comment se passe une intervention à Brétigny-sur-Orge ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
   ],

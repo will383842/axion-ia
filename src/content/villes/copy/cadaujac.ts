@@ -65,7 +65,7 @@ export const CADAUJAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cadaujac ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux centre (20 min). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

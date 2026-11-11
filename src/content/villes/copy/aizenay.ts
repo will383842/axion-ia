@@ -49,7 +49,7 @@ export const AIZENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aizenay et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Aizenay et dans tout le bocage vendéen (La Roche-sur-Yon, Challans, littoral). Consultants accessibles en 20 min depuis La Roche-sur-Yon ou 50 min depuis Nantes.",
+      a: "Oui, Axion-IA intervient à Aizenay et dans tout le bocage vendéen (La Roche-sur-Yon, Challans, littoral). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les artisans BTP d'Aizenay ?",
