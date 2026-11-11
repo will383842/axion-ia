@@ -110,7 +110,7 @@ describe("titles et descriptions des villes", () => {
   it("Brest : title, description et h1 attendus", () => {
     const brest = VILLES_CORE.find((v) => v.slug === "brest")!;
     expect(titreVille(brest)).toBe("Journée IA à Brest : audit et formation IA · Axion-IA");
-    expect(descriptionVille(brest)).toMatch(/^La Journée IA à Brest \(Finistère\) : 2 à 4 h/);
+    expect(descriptionVille(brest)).toMatch(/^La Journée IA à Brest \(Finistère\) : audit dans vos locaux/);
     expect(h1Ville(brest)).toBe("La Journée IA à Brest : audit et formation IA dans vos locaux");
   });
 
@@ -129,7 +129,6 @@ describe("textes visibles d'une ville", () => {
     expect(tout).toContain("Finistère (29)");
     expect(tout).toContain("Bretagne");
     expect(tout).toContain("sciences de la mer");
-    expect(tout).toContain("2 à 4 h");
     expect(tout).toContain(RAPPORT_COMPLET);
     expect(tout).toContain(GARANTIE_PHRASE);
     expect(tout).toContain(CONDITION_GARANTIE);
