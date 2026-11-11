@@ -38,8 +38,22 @@ Copie de travail versionnée ici : `docs/knowledge/pack-journee-ia-2026-11-10/`.
 | Cas clients (GEO-033)          | « cas clients réels avec autorisation »           | Rejetée par la porte de doctrine (fausse preuve sociale) : 1 rejet                                            |
 | Tour France IA                 | —                                                 | Exclu                                                                                                         |
 
-Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant en € / euros / EUR autre que 1 490 (la mention « HT » n’est pas vérifiée par le code : à relire), le
-mot « remise », « Grenoble », « Will » (seul), « Aucun gain garanti », et toute promesse de gain ou de remboursement.
+Le script rejette en plus de la doctrine de la base (`verifierDoctrineTraduction`) : tout montant en € / euros / EUR autre que 1 490
+(espace, espace insécable ou fine acceptés, `,00` toléré) ; 1 490 sans « HT » juste après ; « TTC » ; les montants en `k€` ; un nombre sans
+devise suivi de « HT » ; « réduction », « rabais », « offert » ; le mot « remise » ; « Grenoble » ; « Will » (seul) ; « Aucun gain garanti » ;
+toute promesse de gain ou de remboursement ; « Tour France IA ».
+
+**Faux rejets possibles, sans danger** (la fiche reste simplement à relire) : « remise du rapport » (le mot « remise » est refusé quel que soit son sens) et
+« will » anglais (verbe ou nom commun). Mieux vaut un faux rejet qu'une remise ou un « Will » publiés.
+
+## À préciser avant toute publication
+
+- `GEO-006` et `GEO-016` parlent d'une prestation « sur devis » : le devis ne concerne que la **mise en place ultérieure**.
+  Le prix de la Journée IA est unique : **1 490 € HT**. À préciser dans la réponse avant publication.
+- `GEO-034` à `GEO-063` : titres à reformuler (scénarios « non constatés » à gabarit identique, titres artificiels).
+- Les fiches dont le statut contient « non constaté », « à vérifier » ou « juridique » (GEO-034 à 063, GEO-028, GEO-029 notamment) portent en tête de la note de
+  relecture : « NON VÉRIFIÉ — scénario ou point juridique à confirmer ». Leur `factual_check` (« Donnée réelle ou exemple explicite »)
+  n'est volontairement **pas** repris : il ne valait rien pour elles.
 
 ## Chiffres non sourcés à vérifier à la relecture
 
@@ -51,12 +65,17 @@ d'offre interne `INT-03` : exacts selon le pack, à confirmer avant publication.
 - `src/lib/knowledge/pack-journee-ia.ts` : tri, doctrine, mapping, anti-doublon (Jaccard sur trigrammes, seuil 0,8, signalement
   sans rejet — reprise de l'esprit de `Controle_Doublons.py`).
 - `scripts/import-knowledge-pack-journee-ia.ts` : **dry-run par défaut** (aucun accès base). `--commit` crée seulement les fiches
-  absentes (slug stable `pack-journee-ia-<id>`), ne met jamais à jour ni ne supprime. Idempotent.
-- `src/lib/knowledge/pack-journee-ia.test.ts` : contrat de tri, de doctrine et de non-publication.
+  absentes (slug stable `pack-journee-ia-<id>`), ne met jamais à jour ni ne supprime. Idempotent. La logique d'écriture est
+  `importerBrouillons(client, fiches)` (module pur, testée avec un faux client). Le rapport distingue « déjà présentes » et
+  « conflit de slug de traduction : fiche non créée » (`conflitsSlugTraduction`, lu dans `meta.target` du P2002).
+- **Garde-fou** : `--commit` est refusé si `NODE_ENV=production` ou si `DATABASE_URL` ne vise pas localhost, sauf `--confirmer-prod`.
+  L'hôte de la base (sans identifiant) est affiché avant toute écriture.
+- `src/lib/knowledge/pack-journee-ia.test.ts` : contrat de tri, de doctrine, de non-publication, d'idempotence et de garde-fou.
 
 ```bash
 pnpm tsx scripts/import-knowledge-pack-journee-ia.ts            # rapport
-pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit   # NE PAS lancer en production sans Williams
+pnpm tsx scripts/import-knowledge-pack-journee-ia.ts --commit   # base locale uniquement
+# --confirmer-prod : réservé à un accord explicite de Williams
 ```
 
 ## Retour arrière

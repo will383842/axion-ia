@@ -73,10 +73,17 @@ export interface RapportPack {
 
 export const PREFIXE_SLUG = "pack-journee-ia-";
 
-/** Seul prix affiché : Journée IA 1 490 € HT. */
-const PRIX_AUTORISE = /^1[\s  ]?490$/;
+/** Seul prix affiché : Journée IA 1 490 € HT (espaces, NBSP, espace fine, décimales ,00 tolérés). */
+const PRIX_AUTORISE = /^1[\s\u00a0\u202f]?490(?:[.,]00)?$/;
 const MONTANT =
-  /(\d(?:[\d  ]| (?=\d{3}\b)|[.,](?=\d))*)\s?(?:€|euros?|eur\b)|€\s?(\d(?:[\d  ]| (?=\d{3}\b)|[.,](?=\d))*)/gi;
+  /(\d(?:[\d\u00a0\u202f]| (?=\d{3}\b)|[.,](?=\d))*)\s?(?:€|euros?|eur\b)|€\s?(\d(?:[\d\u00a0\u202f]| (?=\d{3}\b)|[.,](?=\d))*)/gi;
+/** « HT » doit suivre immédiatement le prix (espace, NBSP ou espace fine). */
+const HT_APRES = /^\s*HT(?![\p{L}\d])/iu;
+const MONTANT_K = /\d\s?k\s?€/i;
+const NOMBRE_SANS_DEVISE_HT = /\d[\d\s\u00a0\u202f.,]*\s?HT(?![\p{L}\d])/iu;
+const REDUCTION =
+  /(?<![\p{L}])(?:réduction|reduction|rabais|offert|offerte|offerts|offertes)(?![\p{L}])/iu;
+const TOUR_FRANCE_IA = /tour\s+(?:de\s+)?france\s+ia/i;
 
 function texteDeLaFiche(l: LignePack): { titre: string; reponse: string } {
   const s = (v: unknown) => (typeof v === "string" ? v.trim() : "");
@@ -88,8 +95,18 @@ function reglesDuPack(texte: string): string[] {
   const raisons: string[] = [];
   for (const m of texte.matchAll(MONTANT)) {
     const nombre = (m[1] ?? m[2] ?? "").trim();
-    if (!PRIX_AUTORISE.test(nombre)) raisons.push(`prix non autorisé : « ${m[0]} »`);
+    if (!PRIX_AUTORISE.test(nombre)) {
+      raisons.push(`prix non autorisé : « ${m[0]} »`);
+      continue;
+    }
+    const suite = texte.slice((m.index ?? 0) + m[0].length);
+    if (!HT_APRES.test(suite)) raisons.push(`prix sans « HT » juste après : « ${m[0]} »`);
   }
+  if (/\bttc\b/i.test(texte)) raisons.push("« TTC » interdit : seul prix affiché = 1 490 € HT");
+  if (MONTANT_K.test(texte)) raisons.push("montant en k€ interdit");
+  if (NOMBRE_SANS_DEVISE_HT.test(texte)) raisons.push("nombre sans devise suivi de « HT »");
+  if (REDUCTION.test(texte)) raisons.push("réduction, rabais ou « offert » : un seul prix affiché");
+  if (TOUR_FRANCE_IA.test(texte)) raisons.push("« Tour France IA » exclu de ce pack");
   if (/\bremises?\b/i.test(texte)) raisons.push("remise : un seul prix affiché, sans remise");
   if (/\bgrenoble\b/i.test(texte)) raisons.push("« Grenoble » interdit en communication");
   if (/\bwill\b/i.test(texte)) raisons.push("écrire « Williams », jamais « Will »");
@@ -149,17 +166,34 @@ export function slugDeLaFiche(id: string): string {
     .replace(/^-+|-+$/g, "")}`;
 }
 
+const MARQUE_NON_VERIFIE = "NON VÉRIFIÉ — scénario ou point juridique à confirmer";
+
+function sansAccent(t: string): string {
+  return t
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+/** Scénario non constaté, point à vérifier ou juridique : `factual_check` ne vaut alors rien. */
+export function estNonVerifiee(l: LignePack): boolean {
+  const t = sansAccent([l.status, l.source].filter((v) => typeof v === "string").join(" "));
+  return /non constate|a verifier|juridique/.test(t);
+}
+
 export function versEntreeKnowledge(l: LignePack): EntreeKnowledgeDraft {
   const { titre, reponse } = texteDeLaFiche(l);
   const slug = slugDeLaFiche(l.id);
   const s = (v: unknown, def = "non renseigné") => (typeof v === "string" && v ? v : def);
+  const nonVerifiee = estNonVerifiee(l);
   const note = [
+    ...(nonVerifiee ? [MARQUE_NON_VERIFIE] : []),
     `[pack Journée IA 2026-11-10] ${l.id}`,
     `Source : ${s(l.source)}`,
     `Date de source : ${s(l.source_date)}`,
     `Nature : ${s(l.status)}`,
     `Garde de publication : ${s(l.publication_gate)}`,
-    `Contrôle factuel à faire : ${s(l.factual_check)}`,
+    ...(nonVerifiee ? [] : [`Contrôle factuel à faire : ${s(l.factual_check)}`]),
     `Page cible : ${s(l.page_id)} — ${s(l.canonical_url)}`,
     "Brouillon : relecture humaine requise avant toute publication. Jamais publié automatiquement.",
   ].join("\n");
@@ -296,4 +330,104 @@ export function analyserPack(lignes: readonly LignePack[]): RapportPack {
     contradictions,
     quasiDoublons,
   };
+}
+
+/** Sous-ensemble de PrismaClient dont l'import a besoin : aucune méthode d'écriture autre que `create`. */
+export interface ClientImport {
+  readonly knowledgeEntry: {
+    findUnique(a: {
+      where: { slug: string };
+      select: { id: true };
+    }): Promise<{ id: string } | null>;
+    create(a: {
+      data: EntreeKnowledgeDraft["entry"] & {
+        translations: { create: EntreeKnowledgeDraft["translation"][] };
+      };
+      select: { id: true };
+    }): Promise<unknown>;
+  };
+}
+
+export interface RapportImport {
+  crees: number;
+  /** Fiche déjà en base (détectée avant, ou créée entre-temps : P2002 sur le slug de la fiche). */
+  dejaPresents: number;
+  /** P2002 sur (locale, slug) de la traduction : la fiche n'a PAS été créée. */
+  conflitsSlugTraduction: string[];
+}
+
+/** Vrai si la contrainte violée (meta.target d'un P2002) est celle de la traduction. */
+function cibleTraduction(erreur: unknown): boolean {
+  const cible = (erreur as { meta?: { target?: unknown } }).meta?.target;
+  const texte = Array.isArray(cible) ? cible.join(",") : typeof cible === "string" ? cible : "";
+  return /locale|translation/i.test(texte);
+}
+
+/**
+ * Crée seulement les fiches absentes. Ne met jamais à jour ni ne supprime : le client n'expose
+ * que `findUnique` et `create`. Idempotent : une 2e exécution ne crée rien.
+ */
+export async function importerBrouillons(
+  client: ClientImport,
+  fiches: readonly EntreeKnowledgeDraft[],
+): Promise<RapportImport> {
+  const rapport: RapportImport = { crees: 0, dejaPresents: 0, conflitsSlugTraduction: [] };
+  for (const f of fiches) {
+    const deja = await client.knowledgeEntry.findUnique({
+      where: { slug: f.entry.slug },
+      select: { id: true },
+    });
+    if (deja) {
+      rapport.dejaPresents++;
+      continue;
+    }
+    try {
+      await client.knowledgeEntry.create({
+        data: { ...f.entry, translations: { create: [f.translation] } },
+        select: { id: true },
+      });
+      rapport.crees++;
+    } catch (e) {
+      if ((e as { code?: string }).code !== "P2002") throw e;
+      if (cibleTraduction(e)) rapport.conflitsSlugTraduction.push(f.entry.slug);
+      else rapport.dejaPresents++;
+    }
+  }
+  return rapport;
+}
+
+export interface GardeCommit {
+  readonly autorise: boolean;
+  /** Hôte de la base visée (jamais d'identifiant ni de mot de passe). */
+  readonly hote: string | null;
+  readonly raison?: string;
+}
+
+const HOTES_LOCAUX = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
+
+/** Garde-fou production : `--commit` refusé hors base locale ou en production sans `--confirmer-prod`. */
+export function evaluerGardeCommit(p: {
+  commit: boolean;
+  nodeEnv: string | undefined;
+  databaseUrl: string | undefined;
+  confirmerProd?: boolean;
+}): GardeCommit {
+  if (!p.commit) return { autorise: false, hote: null, raison: "dry-run : aucune écriture" };
+  let hote: string;
+  try {
+    hote = new URL(p.databaseUrl ?? "").hostname;
+  } catch {
+    return { autorise: false, hote: null, raison: "DATABASE_URL absente ou illisible" };
+  }
+  if (!hote) return { autorise: false, hote: null, raison: "DATABASE_URL sans hôte" };
+  const local = HOTES_LOCAUX.has(hote.toLowerCase());
+  const production = p.nodeEnv === "production";
+  if ((production || !local) && !p.confirmerProd) {
+    return {
+      autorise: false,
+      hote,
+      raison: `écriture refusée (${production ? "NODE_ENV=production" : "base non locale"}) : relancer avec --confirmer-prod après accord de Williams`,
+    };
+  }
+  return { autorise: true, hote };
 }
