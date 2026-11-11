@@ -29,6 +29,11 @@ vi.mock("@/lib/analytics/plausible-serveur", () => ({
   emettreEvenementPlausible: (...a: unknown[]) => emettreEvenementPlausible(...a),
 }));
 
+// La preuve de l'accord a ses propres tests (`__tests__/preuve-au-clic.spec.ts`).
+vi.mock("@/server/guides-reseau/preuve-page-guide", () => ({
+  confirmerPreuvesAuClic: async () => undefined,
+}));
+
 import { GET, POST } from "./route";
 import { GUIDE_IA_CHEMIN } from "@/content/guide-ia";
 
