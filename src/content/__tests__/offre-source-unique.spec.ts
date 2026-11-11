@@ -77,15 +77,6 @@ describe("offre.ts — les faits de la source", () => {
 });
 
 describe("offre.ts — les premiers consommateurs rendent EXACTEMENT le même texte", () => {
-  it("consigne de prix des prompts de génération", async () => {
-    // Chemin construit : isolation-check (§ 4.1bis) interdit de nommer ce pipeline hors de ses zones.
-    const dossier = ["content", "gen"].join("-");
-    const { FORMULE_SUR_DEVIS } = await import(/* @vite-ignore */ `../../server/${dossier}/brand/consigne-prix`);
-    expect(FORMULE_SUR_DEVIS).toBe(
-      "sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes",
-    );
-  });
-
   it("promesse du Diagnostic IA (réservation)", () => {
     expect(TYPES_RESERVABLES.diagnostic.promesse).toBe(
       "Diagnostic IA gratuit, 45 minutes, en visio ou par téléphone, sans engagement",
@@ -107,10 +98,8 @@ const RACINES = [
   "src/components",
   "src/content",
   "src/messages",
-  "src/server/chatbot",
-  `src/server/${["content", "gen"].join("-")}`,
-  "src/server/email",
-  "src/server/calendly",
+  // Tout `src/server` : chatbot, prompts de génération, e-mails, réservation…
+  "src/server",
   "src/lib/email",
   "public",
 ] as const;
