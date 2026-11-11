@@ -16,11 +16,10 @@
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
+import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   CODAGE_TIERS,
-  JOURNEE_IA_TIER,
   UN_A_UN_TIERS,
-  formatTierPrice,
   getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
@@ -84,9 +83,9 @@ export async function GET() {
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
 
-## Offre phare
+## Offre phare : La Journée IA
 
-- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${JOURNEE_IA_TIER.descriptionFr} ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. Les autres prestations sont sur devis.
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
@@ -136,7 +135,7 @@ export async function GET() {
 
 ## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui présentent la Journée IA (audit le matin, formation de l'équipe l'après-midi, dans les locaux de l'entreprise) à des dirigeants de PME et de TPE qu'ils connaissent. L'apporteur met en relation ; Axion-IA prend le rendez-vous, établit le devis, anime la journée et facture l'entreprise. Statut indépendant avec un SIREN actif ; commission indicative par Journée IA payée, selon le contrat d'apport d'affaires ; sans frais d'entrée, sans exclusivité, sans CV. Mis à jour le 9 novembre 2026.
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui présentent la Journée IA (audit le matin, formation de l'équipe l'après-midi, dans les locaux de l'entreprise) à des dirigeants de PME et de TPE qu'ils connaissent. L'apporteur met en relation ; Axion-IA prend le rendez-vous, établit le devis, anime la journée et facture l'entreprise. Statut indépendant avec un SIREN actif ; une commission par Journée IA payée, détaillée dans le contrat d'apport d'affaires ; sans frais d'entrée, sans exclusivité, sans CV. Mis à jour le 9 novembre 2026.
 - [Dossier apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia/candidature) — dossier de 3 minutes, une question par écran, sans CV ; réponse par e-mail, puis un échange de 15 min sur invitation.
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 

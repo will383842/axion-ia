@@ -42,12 +42,19 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+/** Titre et description : le montant n'y figure que si l'interrupteur R7 le publie. */
 function textesMeta() {
   const p = chiffresApporteurs();
-  return {
-    title: `Apporteur d'affaires IA · ${p.commission} HT indicatifs · Axion-IA`,
-    description: `Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA, nous faisons le reste. ${p.commission} HT indicatifs par journée payée. Sans CV, sans frais.`,
-  };
+  return p.commissionPublique
+    ? {
+        title: `Apporteur d'affaires IA · ${p.commission} HT indicatifs · Axion-IA`,
+        description: `Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA, nous faisons le reste. ${p.commission} HT indicatifs par journée payée. Sans CV, sans frais.`,
+      }
+    : {
+        title: "Apporteur d'affaires IA indépendant · Journée IA · Axion-IA",
+        description:
+          "Vous connaissez des dirigeants de PME ? Présentez-leur la Journée IA, nous faisons le reste. Une commission sur chaque journée payée. Sans CV, sans frais.",
+      };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

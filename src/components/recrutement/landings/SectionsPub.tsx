@@ -36,13 +36,33 @@ export function SectionsPub({
             </h1>
             <p className="h-sous">
               Une journée dans leur entreprise, à <b>{p.prix} HT</b>. Nous faisons le reste. Pour
-              vous&nbsp;: <b>{p.commission} HT par journée</b> réglée, à titre indicatif.
+              vous&nbsp;:{" "}
+              {p.commissionPublique ? (
+                <>
+                  <b>{p.commission} HT par journée</b> réglée, à titre indicatif.
+                </>
+              ) : (
+                <>
+                  <b>Une commission</b> sur chaque journée payée, détaillée dans votre contrat.
+                </>
+              )}
             </p>
             <ul className="chiffres" aria-label="L’essentiel en chiffres">
-              <li className="t-prix">
-                <b>{p.commission} HT</b>
-                <span>par journée réglée · indicatif</span>
-              </li>
+              {p.commissionPublique ? (
+                <>
+                  <li className="t-prix">
+                    <b>{p.commission} HT</b>
+                    <span>par journée réglée · indicatif</span>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="t-prix">
+                    <b>1 commission</b>
+                    <span>sur chaque journée payée · selon le contrat</span>
+                  </li>
+                </>
+              )}
               <li>
                 <b>{p.prix} HT</b>
                 <span>le prix, le même pour tous</span>
@@ -52,8 +72,8 @@ export function SectionsPub({
                 <span>à dire, rien à négocier</span>
               </li>
               <li>
-                <b>0 €</b>
-                <span>à avancer, jamais</span>
+                <b>Zéro</b>
+                <span>frais à avancer, jamais</span>
               </li>
             </ul>
             <ul className="confiance" aria-label="Ce que cela demande">
@@ -134,11 +154,23 @@ export function SectionsPub({
                 les locaux de l’entreprise, partout en France. {p.prix} HT, garantie écrite sous
                 condition.
               </p>
-              <p>
-                <b>Commission indicative</b>&nbsp;: {p.commission} HT par Journée IA payée, selon le
-                contrat d’apport d’affaires. Sans frais d’entrée, sans exclusivité, sans CV. Statut
-                indépendant avec un SIREN actif.
-              </p>
+              {p.commissionPublique ? (
+                <>
+                  <p>
+                    <b>Commission indicative</b>&nbsp;: {p.commission} HT par Journée IA payée,
+                    selon le contrat d’apport d’affaires. Sans frais d’entrée, sans exclusivité,
+                    sans CV. Statut indépendant avec un SIREN actif.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    <b>Commission</b>&nbsp;: une commission sur chaque Journée IA payée, détaillée
+                    dans le contrat d’apport d’affaires. Sans frais d’entrée, sans exclusivité, sans
+                    CV. Statut indépendant avec un SIREN actif.
+                  </p>
+                </>
+              )}
               <p className="maj">
                 Mis à jour le 9 novembre 2026 · <a href="/fr/journee-ia">La Journée IA en détail</a>
               </p>
@@ -187,7 +219,15 @@ export function SectionsPub({
               <div>
                 <h3>Vous êtes payé</h3>
                 <p>Quand l’entreprise a réglé, nous vous versons votre commission.</p>
-                <span className="qui">{p.commission} HT · à titre indicatif</span>
+                {p.commissionPublique ? (
+                  <>
+                    <span className="qui">{p.commission} HT · à titre indicatif</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="qui">Selon votre contrat</span>
+                  </>
+                )}
               </div>
             </li>
           </ol>
@@ -295,12 +335,23 @@ export function SectionsPub({
               Cartes sur table
             </p>
             <h2 id="h-prix">Votre commission, noir sur blanc</h2>
-            <p className="prix-xl com">
-              {p.commission} HT<small>par Journée IA payée</small>
-            </p>
-            <span className="indicatif">
-              À titre indicatif&nbsp;: la règle du contrat, pas une promesse
-            </span>
+            {p.commissionPublique ? (
+              <>
+                <p className="prix-xl com">
+                  {p.commission} HT<small>par Journée IA payée</small>
+                </p>
+                <span className="indicatif">
+                  À titre indicatif&nbsp;: la règle du contrat, pas une promesse
+                </span>
+              </>
+            ) : (
+              <>
+                <p className="prix-xl com">
+                  Une commission<small>sur chaque Journée IA payée</small>
+                </p>
+                <span className="indicatif">Détaillée dans votre contrat, pas une promesse</span>
+              </>
+            )}
             <ul className="coches-n">
               <li>
                 <span className="ok" aria-hidden="true">

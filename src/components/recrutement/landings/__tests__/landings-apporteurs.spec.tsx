@@ -28,7 +28,11 @@ import { SectionsDossier } from "../SectionsDossier";
 import { SectionsPrincipale } from "../SectionsPrincipale";
 import { SectionsPub } from "../SectionsPub";
 
-const p = chiffresApporteurs();
+const reel = chiffresApporteurs();
+// Les deux états de l'interrupteur R7 : montant publié, montant masqué.
+const avec = { ...reel, commissionPublique: true };
+const sans = { ...reel, commissionPublique: false };
+const p = avec;
 const INTERDITS =
   /qualiopi|opco|reste à charge|grenoble|freelance|sans plafond|aucun gain garanti|parrain|recrut|\bposte\b|agent commercial|salarié d'Axion/i;
 
@@ -43,15 +47,18 @@ function texte(html: string): string {
     .replace(/\s+/g, " ");
 }
 
-const principale = renderToStaticMarkup(
-  <SectionsPrincipale p={p} faq={<ListeFaq items={faqPrincipale(p)} />} />,
-);
-const pub = renderToStaticMarkup(<SectionsPub p={p} formulaire={<form data-test="lead" />} />);
-const annonce = renderToStaticMarkup(<SectionsPub p={p} annonce canal="Vu sur Le Bon Coin" />);
-const dossier = renderToStaticMarkup(
-  <SectionsDossier p={p} formulaire={<form data-test="dossier" />} />,
-);
-
+const rendu = (c: typeof avec) => ({
+  principale: renderToStaticMarkup(
+    <SectionsPrincipale p={c} faq={<ListeFaq items={faqPrincipale(c)} />} />,
+  ),
+  pub: renderToStaticMarkup(<SectionsPub p={c} formulaire={<form data-test="lead" />} />),
+  annonce: renderToStaticMarkup(<SectionsPub p={c} annonce canal="Vu sur Le Bon Coin" />),
+  dossier: renderToStaticMarkup(
+    <SectionsDossier p={c} formulaire={<form data-test="dossier" />} />,
+  ),
+});
+const { principale, pub, annonce, dossier } = rendu(avec);
+const masque = rendu(sans);
 describe("les montants viennent de pricing.ts", () => {
   it("la commission et le prix public sont ceux du barème", () => {
     expect(p.commission.replace(/\s| /g, "")).toBe(`${COMMISSION_FORMATION_PAR_JOURNEE_EUR}€`);
@@ -150,5 +157,32 @@ describe("données structurées", () => {
     const items = faqPrincipale(p);
     expect(items).toHaveLength(8);
     for (const f of items) expect(texte(principale)).toContain(f.question.replace(/\s+/g, " "));
+  });
+});
+
+describe("règle R7 : le montant de la commission ne sort que si l'interrupteur le publie", () => {
+  it("masqué : aucun montant de commission, seul le prix de la Journée IA reste", () => {
+    for (const html of Object.values(masque)) {
+      const t = texte(html);
+      const montants = [...t.matchAll(/d[d ]*(?:[.,]d+)?s*(?:€|euros?)/g)].map((m) => m[0].trim());
+      for (const m of montants)
+        expect(m.replace(/s/g, ""), m).toBe(texte(reel.prix).replace(/s/g, ""));
+      expect(t).not.toMatch(/%/);
+    }
+    expect(texte(masque.principale)).toContain("Une commission sur chaque Journée IA payée");
+  });
+
+  it("masqué : la FAQ et le JSON-LD disent la même chose, sans chiffre", () => {
+    const items = faqPrincipale(sans);
+    const gagner = items.find((f) => /gagner/.test(f.question));
+    expect(gagner?.reponse).toContain("Une commission sur chaque Journée IA payée");
+    expect(JSON.stringify(faqApporteurs(items))).not.toContain(texte(reel.commission));
+  });
+
+  it("publié : le montant est dit « à titre indicatif »", () => {
+    expect(texte(principale)).toContain(texte(reel.commission));
+    expect(faqPrincipale(avec).find((f) => /gagner/.test(f.question))?.reponse).toMatch(
+      /À titre indicatif/,
+    );
   });
 });

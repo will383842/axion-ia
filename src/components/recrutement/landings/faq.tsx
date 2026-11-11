@@ -13,7 +13,7 @@ export function faqPrincipale(p: Chiffres): QuestionReponse[] {
     },
     {
       question: `Combien puis-je gagner ?`,
-      reponse: `À titre indicatif, ${p.commission} HT par Journée IA payée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : sans exclusivité, sans frais d’entrée, à votre rythme.`,
+      reponse: `${p.commissionPublique ? `À titre indicatif, ${p.commission} HT par Journée IA payée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : sans exclusivité, sans frais d’entrée, à votre rythme.` : `Une commission sur chaque Journée IA payée, détaillée dans votre contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : sans exclusivité, sans frais d’entrée, à votre rythme.`}`,
     },
     {
       question: `Dois-je négocier ou faire un devis ?`,

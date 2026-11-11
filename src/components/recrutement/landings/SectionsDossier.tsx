@@ -119,17 +119,28 @@ export function SectionsDossier({ p, formulaire }: { p: Chiffres; formulaire?: R
               <b>{p.prix} HT</b>
               <span>la Journée IA, le même prix pour tous</span>
             </li>
-            <li className="t-prix">
-              <b>{p.commission} HT</b>
-              <span>pour vous, par journée réglée · indicatif</span>
-            </li>
+            {p.commissionPublique ? (
+              <>
+                <li className="t-prix">
+                  <b>{p.commission} HT</b>
+                  <span>pour vous, par journée réglée · indicatif</span>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="t-prix">
+                  <b>1 commission</b>
+                  <span>pour vous, sur chaque journée payée</span>
+                </li>
+              </>
+            )}
             <li className="t-un">
               <b>1 phrase</b>
               <span>à dire, rien à négocier</span>
             </li>
             <li>
-              <b>0 €</b>
-              <span>à avancer, jamais</span>
+              <b>Zéro</b>
+              <span>frais à avancer, jamais</span>
             </li>
           </ul>
           <p className="sans-ia">

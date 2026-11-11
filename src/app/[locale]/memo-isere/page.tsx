@@ -46,12 +46,19 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+/** Titre et description : le montant n'y figure que si l'interrupteur R7 le publie. */
 function textesMeta() {
   const p = chiffresApporteurs();
-  return {
-    title: `Apporteur d'affaires Isère · ${p.commission} HT indicatifs · Axion-IA`,
-    description: `Vu dans Le Mémo de l'Isère : présentez la Journée IA aux dirigeants que vous connaissez, nous faisons le reste. ${p.commission} HT indicatifs par journée payée.`,
-  };
+  return p.commissionPublique
+    ? {
+        title: `Apporteur d'affaires Isère · ${p.commission} HT indicatifs · Axion-IA`,
+        description: `Vu dans Le Mémo de l'Isère : présentez la Journée IA aux dirigeants que vous connaissez, nous faisons le reste. ${p.commission} HT indicatifs par journée payée.`,
+      }
+    : {
+        title: "Apporteur d'affaires IA en Isère · Journée IA · Axion-IA",
+        description:
+          "Vu dans Le Mémo de l'Isère : présentez la Journée IA aux dirigeants que vous connaissez, nous faisons le reste. Une commission sur chaque journée payée.",
+      };
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
