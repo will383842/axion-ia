@@ -49,7 +49,7 @@ export const BELLEGARDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bellegarde et dans les Costières ?",
-      a: "Oui, Axion-IA intervient à Bellegarde et dans toutes les Costières (Beaucaire, Saint-Gilles, Jonquières-Saint-Vincent, Manduel). Nos consultants viennent de Nîmes (20 min) ou Arles (25 min).",
+      a: "Oui, Axion-IA intervient à Bellegarde et dans toutes les Costières (Beaucaire, Saint-Gilles, Jonquières-Saint-Vincent, Manduel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Costières de Nîmes ?",

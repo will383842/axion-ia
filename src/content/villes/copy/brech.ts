@@ -49,7 +49,7 @@ export const BRECH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brech et dans le pays d'Auray ?",
-      a: "Oui, Axion-IA intervient à Brech et dans tout le pays d'Auray (Auray, Sainte-Anne-d'Auray, Pluneret, Ploemel, Carnac). Nos consultants se déplacent depuis Auray en 5 minutes.",
+      a: "Oui, Axion-IA intervient à Brech et dans tout le pays d'Auray (Auray, Sainte-Anne-d'Auray, Pluneret, Ploemel, Carnac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE et PME touristiques de Brech ?",
