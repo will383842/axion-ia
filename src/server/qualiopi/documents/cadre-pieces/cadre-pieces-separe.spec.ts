@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const RACINE = resolve(process.cwd(), "src");
@@ -140,12 +140,31 @@ describe("pièces basculées sur le cadre des pièces (G1-G3)", () => {
   it("les pièces basculées n'importent plus le cadre de base-layout ni brandColor", () => {
     for (const rel of PIECES_BASCULEES) {
       const src = sansCommentaires(readFileSync(join(QUALIOPI, rel), "utf8"));
-      expect(src, rel).not.toMatch(/documents\/base-layout["']/);
+      expect(src, rel).not.toMatch(/["'][^"']*base-layout["']/);
       expect(src, rel).not.toMatch(/\bbrandColor\b/);
       expect(src, rel).not.toMatch(/\bpdfStyles\b/);
       expect(src, rel).not.toMatch(/\bSignatureZone\b/);
       expect(src, rel).toMatch(/documents\/cadre-pieces["']/);
     }
+  });
+
+  it("liste fermée : les pièces qui importent le cadre ou appellent couleurPiece sont EXACTEMENT PIECES_BASCULEES", () => {
+    const dossiers = [TEMPLATES, join(QUALIOPI, "supports/templates")];
+    const utilisatrices = dossiers
+      .flatMap((d) => fichiers(d))
+      .filter((f) => /\.(ts|tsx)$/.test(f) && !/\.spec\.tsx?$/.test(f))
+      .filter((f) => !/[\\/](archives|__tests__)[\\/]/.test(f))
+      .filter((f) =>
+        /cadre-pieces|\bcouleurPiece\b/.test(sansCommentaires(readFileSync(f, "utf8"))),
+      )
+      .map((f) => relative(QUALIOPI, f).replace(/\\/g, "/"));
+    const attendues: string[] = [...PIECES_BASCULEES];
+    const enTrop = utilisatrices.filter((f) => !attendues.includes(f)).sort();
+    const enMoins = attendues.filter((f) => !utilisatrices.includes(f)).sort();
+    expect(
+      { enTrop, enMoins },
+      `fichiers en trop (hors liste) : ${enTrop.join(", ") || "aucun"} ; en moins : ${enMoins.join(", ") || "aucun"}`,
+    ).toEqual({ enTrop: [], enMoins: [] });
   });
 
   it("aucun signable, archivé ni pièce gardée n'importe le cadre des pièces ni ses jetons", () => {
