@@ -305,6 +305,9 @@ export async function reparerRegistrePreuves(maintenant: Date): Promise<number> 
         preuveStatut: true,
         preuveConfirmeeLe: true,
         preuveEcarteeLe: true,
+        infosStatut: true,
+        infosVersion: true,
+        infosEmpreinte: true,
         guideRequest: { select: { email: true } },
       },
     });
@@ -319,15 +322,39 @@ export async function reparerRegistrePreuves(maintenant: Date): Promise<number> 
         where: { personKey: c.emailKey, formRef: FORM_REF_PAGE_GUIDE, action, occurredAt: quand },
         select: { id: true },
       });
-      if (existante !== null) continue;
-      const ok = await recordConsentEvent({
-        email: c.guideRequest.email,
-        formRef: FORM_REF_PAGE_GUIDE,
-        consentVersion: versionDeLaLigne(c),
-        action,
-        occurredAt: quand,
-      }).catch(() => false);
-      if (ok) reparees += 1;
+      if (existante === null) {
+        const ok = await recordConsentEvent({
+          email: c.guideRequest.email,
+          formRef: FORM_REF_PAGE_GUIDE,
+          consentVersion: versionDeLaLigne(c),
+          action,
+          occurredAt: quand,
+        }).catch(() => false);
+        if (ok) reparees += 1;
+      }
+      // Case facultative « informations » : sa ligne se vérifie à part (elle peut manquer seule).
+      const versionInfos = versionInfosDeLaLigne(c);
+      if (versionInfos !== null) {
+        const infosExistante = await prisma.consentEvent.findFirst({
+          where: {
+            personKey: c.emailKey,
+            formRef: FORM_REF_PAGE_GUIDE_INFOS,
+            action,
+            occurredAt: quand,
+          },
+          select: { id: true },
+        });
+        if (infosExistante === null) {
+          const okInfos = await recordConsentEvent({
+            email: c.guideRequest.email,
+            formRef: FORM_REF_PAGE_GUIDE_INFOS,
+            consentVersion: versionInfos,
+            action,
+            occurredAt: quand,
+          }).catch(() => false);
+          if (okInfos) reparees += 1;
+        }
+      }
     }
     if (reparees > 0) journal("reparation", { lignes: reparees });
     return reparees;
