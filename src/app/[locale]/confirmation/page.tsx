@@ -131,7 +131,6 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
                 name: isFr ? "Demande reçue · Axion-IA" : "Request received · Axion-IA",
               }
         }
-        strategy="afterInteractive"
         scriptId="jsonld-confirmation"
       />
     </>

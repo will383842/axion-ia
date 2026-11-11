@@ -197,7 +197,6 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       </section>
       <JsonLd
         data={speakableJsonLd}
-        strategy="afterInteractive"
         scriptId={
           villeContext
             ? `jsonld-impl-hero-speakable-${villeContext.villeSlug}`
