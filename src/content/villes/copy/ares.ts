@@ -49,7 +49,7 @@ export const ARES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arès ?",
-      a: "Oui, Axion-IA intervient à Arès et dans tout le nord Bassin d'Arcachon (Andernos, Lanton, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (50 min) ou Paris (TGV 2h + 50 min).",
+      a: "Oui, Axion-IA intervient à Arès et dans tout le nord Bassin d'Arcachon (Andernos, Lanton, Lège-Cap-Ferret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Arès  : quel budget prévoir ?",

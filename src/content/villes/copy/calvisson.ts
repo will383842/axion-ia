@@ -49,7 +49,7 @@ export const CALVISSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Calvisson et en Vaunage ?",
-      a: "Oui, Axion-IA intervient à Calvisson et dans toute la Vaunage (Vergèze, Congénies, Clarensac, Sommières). Nos consultants viennent de Nîmes (20 min) ou Montpellier (40 min).",
+      a: "Oui, Axion-IA intervient à Calvisson et dans toute la Vaunage (Vergèze, Congénies, Clarensac, Sommières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs de la Vaunage ?",

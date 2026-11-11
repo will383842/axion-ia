@@ -49,7 +49,7 @@ export const AUCAMVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aucamville ?",
-      a: "Oui, Axion-IA intervient à Aucamville et dans tout le nord de Toulouse (Castelginest, Fenouillet, Launaguet). Nos consultants se déplacent en 12 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Aucamville et dans tout le nord de Toulouse (Castelginest, Fenouillet, Launaguet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Aucamville ?",
@@ -61,7 +61,7 @@ export const AUCAMVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Aucamville ?",
-      a: "Nos consultants se déplacent à Aucamville depuis Toulouse (12 min D4). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Aucamville ?",

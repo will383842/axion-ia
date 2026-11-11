@@ -18,9 +18,9 @@ export const BRON_COPY: VilleCopy = {
   ecosystemEn:
     "Bron, intégrée à la Métropole de Lyon, structure son économie autour de l'aéroport d'affaires Lyon-Bron, du pôle universitaire (Lyon 2) et de la proximité immédiate du grand hôpital Édouard Herriot. Le tissu local associe PME tertiaires et services, professionnels de santé, commerce de détail, petites industries et logistique de l'est lyonnais. Ces TPE et PME, prises dans une concurrence métropolitaine forte, gagnent à automatiser leurs tâches répétitives pour libérer du temps à forte valeur.",
   distancesFr:
-    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nos consultants se déplacent depuis Lyon sur tout l'est métropolitain : Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
+    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nos consultants se déplacent depuis Lyon sur tout l'est métropolitain : Villeurbanne, Vénissieux, Chassieu, Saint-Priest et Décines.",
+    "Bron est à 8 km du centre de Lyon et de la gare Part-Dieu (15 min en T2/T5), à 15 km de l'aéroport Lyon-Saint-Exupéry et dispose de son propre aéroport d'affaires, Lyon-Bron. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "PME tertiaires & services",
     "Santé humaine",
@@ -230,7 +230,7 @@ export const BRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bron et dans l'est lyonnais ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bron et de tout l'est de la Métropole (Villeurbanne, Vénissieux, Chassieu, Saint-Priest). Nos consultants viennent de Lyon, à 15 min.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bron et de tout l'est de la Métropole (Villeurbanne, Vénissieux, Chassieu, Saint-Priest). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professionnels de santé près de l'hôpital Édouard Herriot ?",

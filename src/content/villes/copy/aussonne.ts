@@ -49,7 +49,7 @@ export const AUSSONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aussonne ?",
-      a: "Oui, Axion-IA intervient à Aussonne et dans tout le nord-ouest de Toulouse (Beauzelle, Cornebarrieu, Blagnac). Nos consultants se déplacent en 18 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Aussonne et dans tout le nord-ouest de Toulouse (Beauzelle, Cornebarrieu, Blagnac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Aussonne ?",
@@ -61,7 +61,7 @@ export const AUSSONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Aussonne ?",
-      a: "Nos consultants se déplacent à Aussonne depuis Toulouse (18 min D902). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Aussonne ?",
