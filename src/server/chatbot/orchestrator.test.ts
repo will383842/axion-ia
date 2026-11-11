@@ -7,7 +7,7 @@
  * RAG groundé · output-guard bloque une sortie inventée.
  */
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
@@ -400,6 +400,9 @@ describe("V3-3 base unique : cache sémantique et interrupteur CHATBOT_KB_UNIFIE
     tokensInput: 1,
     tokensOutput: 1,
   };
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
   const tour = (cacheWrite: () => Promise<void>) =>
     handleTurn(
       "c'est quoi un audit ?",
@@ -412,7 +415,6 @@ describe("V3-3 base unique : cache sémantique et interrupteur CHATBOT_KB_UNIFIE
     const cacheWrite = vi.fn(async () => {});
     await tour(cacheWrite);
     expect(cacheWrite).toHaveBeenCalledTimes(1);
-    vi.unstubAllEnvs();
   });
 
   it("allumé : rien en cache, pour que couper la variable suffise à revenir en arrière", async () => {
@@ -421,6 +423,5 @@ describe("V3-3 base unique : cache sémantique et interrupteur CHATBOT_KB_UNIFIE
     const r = await tour(cacheWrite);
     expect(r.text).toBe("Un audit dure une journée.");
     expect(cacheWrite).not.toHaveBeenCalled();
-    vi.unstubAllEnvs();
   });
 });
