@@ -60,7 +60,6 @@ const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/implementation/par-fonction/page.tsx": 173,
   "src/app/[locale]/sites-web-augmentes/page.tsx": 172,
   "src/app/[locale]/sous-processeurs/page.tsx": 172,
-  "src/app/[locale]/tarifs/page.tsx": 171,
   "src/app/[locale]/sites-web-augmentes/magento/page.tsx": 167,
   "src/app/[locale]/sites-web-augmentes/woocommerce/page.tsx": 167,
   "src/app/[locale]/sites-web-augmentes/recommandation/page.tsx": 165,

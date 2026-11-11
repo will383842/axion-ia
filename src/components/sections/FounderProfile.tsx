@@ -410,9 +410,9 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
               </h3>
               <p className="text-fg-soft mt-4 text-base leading-relaxed">
                 Les missions se mènent partout en France, sur site — Paris et l&apos;Île-de-France
-                compris — au même tarif public qu&apos;ailleurs. Industrie, services, santé,
-                immobilier, juridique, commerce, transport, secteur public : la méthode ne change
-                pas, seuls les cas d&apos;usage changent.
+                compris — aux mêmes conditions tarifaires qu&apos;ailleurs. Industrie, services,
+                santé, immobilier, juridique, commerce, transport, secteur public : la méthode ne
+                change pas, seuls les cas d&apos;usage changent.
               </p>
               <p className="mt-5 flex flex-wrap gap-x-6 gap-y-2">
                 <Link

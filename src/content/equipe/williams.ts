@@ -22,7 +22,6 @@
  */
 
 import { FOUNDER } from "@/lib/brand";
-import { formatAmount, getTierById, AUDIT_TIERS, INTERVENTION_TIERS } from "@/content/pricing";
 
 /**
  * Date de dernière révision ÉDITORIALE de la fiche — `dateModified` du
@@ -121,19 +120,14 @@ export interface ExpertiseWilliams {
   readonly hrefSecondaireLabel?: string;
 }
 
-/** Prix plancher dérivés du SSOT tarifaire — jamais recopiés en dur. */
-const PRIX_AUDIT_TPE = formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr");
-const PRIX_FORMATION = formatAmount(
-  getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!,
-  "fr",
-);
+// R7 (ordre de Williams du 08/11/2026) : plus aucun prix plancher dans la présentation.
 
 export const WILLIAMS_EXPERTISES: ReadonlyArray<ExpertiseWilliams> = [
   {
     id: "audit",
     titre: "Audit IA",
     promesse: "Voir ce que l'IA change chez vous, en quelques jours",
-    corps: `L'audit démarre par une journée complète sur site, à partir de ${PRIX_AUDIT_TPE} : Williams remonte les processus réels service par service, repère les tâches où l'IA fait gagner du temps dès la semaine suivante, et chiffre ce qui est récupérable. La restitution est un plan d'action priorisé — quels usages, dans quel ordre, pour quel gain estimé — pas une note d'intention.`,
+    corps: `L'audit démarre par une journée complète sur site, sur devis : Williams remonte les processus réels service par service, repère les tâches où l'IA fait gagner du temps dès la semaine suivante, et chiffre ce qui est récupérable. La restitution est un plan d'action priorisé — quels usages, dans quel ordre, pour quel gain estimé — pas une note d'intention.`,
     puces: [
       "Cartographie des processus et des irritants, poste par poste",
       "Usages IA classés par gain estimé et par difficulté de mise en œuvre",
@@ -149,7 +143,7 @@ export const WILLIAMS_EXPERTISES: ReadonlyArray<ExpertiseWilliams> = [
     id: "formations",
     titre: "Formations IA en entreprise",
     promesse: "Des équipes qui utilisent l'IA sur leurs propres dossiers",
-    corps: `Les formations sont construites sur les cas d'usage de l'entreprise, pas sur des exemples de démonstration : chaque participant travaille sur ses vrais fichiers, et repart avec des méthodes qu'il applique le lendemain. Formats de quatre heures à plusieurs jours, sur site partout en France ou à distance, à partir de ${PRIX_FORMATION}.`,
+    corps: `Les formations sont construites sur les cas d'usage de l'entreprise, pas sur des exemples de démonstration : chaque participant travaille sur ses vrais fichiers, et repart avec des méthodes qu'il applique le lendemain. Formats de quatre heures à plusieurs jours, sur site partout en France ou à distance, sur devis.`,
     puces: [
       "Contenus adaptés au métier et au niveau réel des participants",
       "Ateliers sur les documents et les outils de l'entreprise",
@@ -318,7 +312,7 @@ export function buildWilliamsFaq({
       id: "zone-geographique",
       question: "Williams Jullin intervient-il dans toute la France ?",
       answer:
-        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — au même tarif public qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
+        "Oui. Les missions sont menées partout en France, sur site — Paris et l'Île-de-France compris — aux mêmes conditions tarifaires qu'ailleurs. Les formats à distance sont disponibles pour le coaching individuel et une partie des formations.",
     },
     {
       id: "equipe",

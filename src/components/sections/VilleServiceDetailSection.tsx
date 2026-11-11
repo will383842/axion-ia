@@ -21,10 +21,10 @@ import {
   AUDIT_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
-  formatAmount,
   getEntryTier,
   getTierById,
   formatTierPrice,
+  prixAffichable,
 } from "@/content/pricing";
 
 export interface VilleServiceDetailSectionProps {
@@ -49,8 +49,10 @@ export interface VilleServiceDetailSectionProps {
 // `formatTierPrice` (et non `formatAmount(amount)`) pour rendre « À partir
 // de 1 190 € » comme partout ailleurs sur les audits.
 const auditFlashTier = getTierById(AUDIT_TIERS, "audit-flash");
-const formationJourAmount = getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!;
-const unAUnAmount = getEntryTier(UN_A_UN_TIERS).priceFlat!;
+// R7 (ordre de Williams du 08/11/2026) : les CTA ne portent plus de montant — on passe
+// le PALIER à `formatTierPrice`, qui lit l'interrupteur de pricing.ts (« Sur devis »).
+const formationJourTier = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
+const unAUnTier = getEntryTier(UN_A_UN_TIERS);
 
 const SERVICE_META = {
   audit: {
@@ -60,8 +62,12 @@ const SERVICE_META = {
     labelEn: "AI audit",
     eyebrowFr: "Audit IA opérationnel",
     eyebrowEn: "Operational AI audit",
-    ctaFr: `Demander un audit Flash · ${formatTierPrice(auditFlashTier, "fr", { compact: true })}`,
-    ctaEn: `Request a Flash audit · ${formatTierPrice(auditFlashTier, "en", { compact: true })}`,
+    ctaFr: prixAffichable(auditFlashTier)
+      ? `Demander un audit Flash · ${formatTierPrice(auditFlashTier, "fr", { compact: true })}`
+      : "Demander un audit Flash",
+    ctaEn: prixAffichable(auditFlashTier)
+      ? `Request a Flash audit · ${formatTierPrice(auditFlashTier, "en", { compact: true })}`
+      : "Request a Flash audit",
   },
   interventions: {
     accent: "terracotta" as const,
@@ -70,8 +76,12 @@ const SERVICE_META = {
     labelEn: "AI sessions",
     eyebrowFr: "Interventions IA en entreprise",
     eyebrowEn: "Corporate AI sessions",
-    ctaFr: `Voir le calendrier · ${formatAmount(formationJourAmount, "fr", { compact: true })}`,
-    ctaEn: `View the calendar · ${formatAmount(formationJourAmount, "en", { compact: true })}`,
+    ctaFr: prixAffichable(formationJourTier)
+      ? `Voir le calendrier · ${formatTierPrice(formationJourTier, "fr", { compact: true })}`
+      : "Voir le calendrier",
+    ctaEn: prixAffichable(formationJourTier)
+      ? `View the calendar · ${formatTierPrice(formationJourTier, "en", { compact: true })}`
+      : "View the calendar",
   },
   implementation: {
     accent: "sage" as const,
@@ -90,8 +100,12 @@ const SERVICE_META = {
     labelEn: "1-to-1 AI coaching",
     eyebrowFr: "Coaching IA individuel",
     eyebrowEn: "Individual AI coaching",
-    ctaFr: `Démarrer mon accompagnement · ${formatAmount(unAUnAmount, "fr", { compact: true })}`,
-    ctaEn: `Start my coaching · ${formatAmount(unAUnAmount, "en", { compact: true })}`,
+    ctaFr: prixAffichable(unAUnTier)
+      ? `Démarrer mon accompagnement · ${formatTierPrice(unAUnTier, "fr", { compact: true })}`
+      : "Démarrer mon accompagnement",
+    ctaEn: prixAffichable(unAUnTier)
+      ? `Start my coaching · ${formatTierPrice(unAUnTier, "en", { compact: true })}`
+      : "Start my coaching",
   },
   // 2026-06-04 — 5e verticale sites web & SaaS augmentés IA. CTA sans montant
   // (devis sur mesure 48 h, comme implementation) pour rester agnostique du
@@ -216,15 +230,15 @@ export function VilleServiceDetailSection({
             className="text-fg mb-6 text-2xl leading-tight font-semibold tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            {isFr ? "Tarifs publics par" : "Public pricing by"}{" "}
+            {isFr ? "Tarifs par" : "Pricing by"}{" "}
             <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
               {isFr ? "taille d'entreprise" : "company size"}
             </span>
           </h2>
           <p className="text-fg-soft mb-6 text-sm leading-relaxed">
             {isFr
-              ? "Classification INSEE officielle. Tarifs publics affichés, aucun devis opaque ni surfacturation."
-              : "Official INSEE classification. Public pricing displayed, no opaque quote nor overbilling."}
+              ? "Classification INSEE officielle. Devis adapté à la taille de votre entreprise, sans surfacturation."
+              : "Official INSEE classification. Quote tailored to your company size, no overbilling."}
           </p>
           <ul className="grid grid-cols-1 gap-4 md:grid-cols-2">
             {copy.pricing.map((tier, idx) => (

@@ -675,7 +675,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Combien coûte un audit IA pour une petite entreprise ? — Tarifs transparents",
+      h1: "Combien coûte un audit IA pour une petite entreprise ? — Devis sans surprise",
       metaTitle: "Prix audit IA petite entreprise | Axion-IA FAQ",
       metaDescription:
         "Tarif de l'audit IA Axion-IA pour TPE. Forfait flash demi-journée. Livrable plan d'action priorisé. Devis gratuit en 24 h.",

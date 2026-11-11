@@ -206,7 +206,7 @@ export default async function FaqPage({ params }: Props) {
           {
             icon: ShieldCheck,
             title: "Sourcées depuis notre doctrine",
-            body: "Pas d'invention : nos réponses sont alignées sur nos offres, nos méthodes et nos tarifs publics.",
+            body: "Pas d'invention : nos réponses sont alignées sur nos offres, nos méthodes et nos conditions de devis.",
           },
           {
             icon: Mic,
@@ -228,7 +228,7 @@ export default async function FaqPage({ params }: Props) {
           {
             icon: ShieldCheck,
             title: "Sourced from our doctrine",
-            body: "No made-up claims: our answers align with our offers, methods and public pricing.",
+            body: "No made-up claims: our answers align with our offers, methods and quoting terms.",
           },
           {
             icon: Mic,

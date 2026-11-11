@@ -18,7 +18,7 @@
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { readdirSync, readFileSync } from "node:fs";
+import { readdirSync, readFileSync, type Dirent } from "node:fs";
 import path from "node:path";
 
 vi.mock("@/lib/prisma", () => ({
@@ -345,17 +345,49 @@ const HORS_JSON_LD: ReadonlySet<string> = new Set([
   "[locale]/page.tsx", // accueil : `price:` des 5 lignes de la grille visible des services
 ]);
 
+/**
+ * Parcours tolérant de l'arbre : d'autres suites (ex. `route-admin-sans-entree-de-menu`)
+ * créent puis retirent un dossier témoin sous `src/app` PENDANT que cette garde lit.
+ * Un dossier ou un fichier disparu entre la liste et la lecture est ignoré (ENOENT).
+ */
+function listerSources(racine: string, sous = ""): string[] {
+  let entrees: Dirent[];
+  try {
+    entrees = readdirSync(path.join(racine, sous), { withFileTypes: true });
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw e;
+  }
+  const out: string[] = [];
+  for (const d of entrees) {
+    const rel = sous ? path.join(sous, d.name) : d.name;
+    if (d.isDirectory()) out.push(...listerSources(racine, rel));
+    else out.push(rel);
+  }
+  return out;
+}
+
+function lireSiPresent(abs: string): string | null {
+  try {
+    return readFileSync(abs, "utf8");
+  } catch (e) {
+    if ((e as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw e;
+  }
+}
+
 describe("garde R7 — JSON-LD inline des pages", () => {
   it("toute page qui écrit un champ de prix dans un JSON-LD le conditionne à l'interrupteur", () => {
     const racines = ["src/app", "src/components"].map((r) => path.resolve(process.cwd(), r));
     const fautes: string[] = [];
     let lus = 0;
     for (const racine of racines) {
-      for (const rel of readdirSync(racine, { recursive: true, encoding: "utf8" })) {
+      for (const rel of listerSources(racine)) {
         if (!/\.tsx?$/.test(rel) || /\.(spec|test)\.tsx?$/.test(rel)) continue;
         if (rel.includes("(admin)") || rel.includes("tour-france-ia")) continue;
         if (HORS_JSON_LD.has(rel)) continue;
-        const source = readFileSync(path.join(racine, rel), "utf8");
+        const source = lireSiPresent(path.join(racine, rel));
+        if (source === null) continue;
         lus++;
         if (!source.includes('"@type"')) continue; // pas de JSON-LD dans ce fichier
         const lignes = source

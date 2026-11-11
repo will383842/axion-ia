@@ -1281,7 +1281,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Choisir un prestataire IA en France : 7 critères en 2026",
       metaTitle: "Choisir prestataire IA France 2026 | Axion-IA",
       metaDescription:
-        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité",
+        "7 critères : indépendance des outils, références vérifiables, méthode documentée, devis détaillé et ferme, accompagnement post-déploiement, conformité",
       h2Variants: [
         "Les 7 questions à poser avant de signer",
         "Red flags d'un mauvais prestataire IA",

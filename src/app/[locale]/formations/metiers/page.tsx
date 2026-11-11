@@ -16,7 +16,7 @@ import {
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
-import { formatAmount } from "@/content/pricing";
+import { PRIX_PUBLICS_AFFICHES, formatMontantPublic } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -46,7 +46,7 @@ export async function generateMetadata({
         : "Role-specific AI trainings · Axion-IA",
     description:
       locale === "fr"
-        ? `${formations.length} formations IA par métier — RH, marketing, commerciaux, finance, juridique, production, achats, relation client, IT. Intra-entreprise, prix par groupe${typeof min === "number" ? ` dès ${formatAmount(min, "fr")}` : ""}.`
+        ? `${formations.length} formations IA par métier — RH, marketing, commerciaux, finance, juridique, production, achats, relation client, IT. Intra-entreprise, prix par groupe${PRIX_PUBLICS_AFFICHES && typeof min === "number" ? ` dès ${formatMontantPublic(min, "fr")}` : ", sur devis"}.`
         : `${formations.length} role-specific AI trainings — HR, marketing, sales, finance, legal, operations, procurement, customer service, IT. In-house, priced per group.`,
   });
 }
