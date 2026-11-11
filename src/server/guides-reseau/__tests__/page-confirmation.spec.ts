@@ -368,7 +368,7 @@ describe("jeton", () => {
 });
 
 describe("M1 — suites après la réponse (after)", () => {
-  it("adresse ordinaire : origine, CRM, preuve et e-mail ne partent QU'APRÈS la réponse", async () => {
+  it("adresse ordinaire : origine, preuve et e-mail ne partent QU'APRÈS la réponse, le CRM jamais au POST", async () => {
     const r = await confirmerSansSuite(entree());
     expect(r).toEqual({ ok: true });
     expect(bd.origines).toHaveLength(0);
@@ -378,7 +378,8 @@ describe("M1 — suites après la réponse (after)", () => {
     expect(bd.apres).toHaveLength(1);
     await viderApres();
     expect(bd.origines).toHaveLength(1);
-    expect(bd.crm).toHaveLength(1);
+    // Lot S3 : l'événement CRM part AU CLIC du lien du guide, jamais au POST de la page.
+    expect(bd.crm).toHaveLength(0);
     expect(bd.preuves).toHaveLength(1);
     expect(bd.envois).toHaveLength(1);
   });
@@ -421,7 +422,7 @@ describe("adresse", () => {
     expect(bd.demandes.every((d) => d.emailKey !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.preuves.every((p) => p["email"] !== ADRESSE)).toBe(true);
     expect(bd.origines.every((o) => o["emailKey"] !== `h:${ADRESSE}`)).toBe(true);
-    expect(bd.crm).toHaveLength(1);
+    expect(bd.crm).toHaveLength(0);
   });
 
   it("M1 — opposée : le jeton est CONSOMMÉ comme pour un succès, par une marque sans donnée personnelle", async () => {
@@ -604,7 +605,7 @@ describe("journaux", () => {
   });
 });
 
-describe("B1 — l'origine va dans l'historique v3 et au CRM (guide_reseau_origines)", () => {
+describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au CRM seulement au clic", () => {
   it("enregistrerOrigine reçoit mot, réseau du registre, compte, post_ref, famille guide_reseau", async () => {
     await confirmerPageGuide(entree());
     expect(bd.origines).toHaveLength(1);
@@ -621,14 +622,10 @@ describe("B1 — l'origine va dans l'historique v3 et au CRM (guide_reseau_origi
     expect(String(bd.origines[0]!["cleIdempotence"])).toMatch(/^[A-Za-z0-9_-]{8,80}$/);
   });
 
-  it("la même origine part au CRM (transmettreOriginesV3), avec l'adresse et la clé d'idempotence", async () => {
+  it("le POST n'envoie RIEN au CRM (transmettreOriginesV3 jamais appelée) : l'origine est relue au clic", async () => {
     await confirmerPageGuide(entree());
-    expect(bd.crm).toHaveLength(1);
-    expect(bd.crm[0]).toMatchObject({ email: ADRESSE });
-    const origines = bd.crm[0]!["origines"] as Ligne[];
-    expect(origines).toHaveLength(1);
-    expect(origines[0]).toMatchObject({ mot: "GUIDE", compte: "page_principale" });
-    expect(bd.crm[0]!["cleIdempotence"]).toBe(bd.origines[0]!["cleIdempotence"]);
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.crm).toHaveLength(0);
   });
 
   it("un jeton rejoué n'écrit aucune seconde origine", async () => {
@@ -636,7 +633,7 @@ describe("B1 — l'origine va dans l'historique v3 et au CRM (guide_reseau_origi
     await confirmerPageGuide(entree({ jeton: j }));
     await confirmerPageGuide(entree({ jeton: j }));
     expect(bd.origines).toHaveLength(1);
-    expect(bd.crm).toHaveLength(1);
+    expect(bd.crm).toHaveLength(0);
   });
 
   it("l'origine n'est pas écrite quand la validation échoue (case, MX…)", async () => {
@@ -649,11 +646,10 @@ describe("B1 — l'origine va dans l'historique v3 et au CRM (guide_reseau_origi
 });
 
 describe("B3 — formats exigés par le CRM, validés avant toute écriture", () => {
-  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores, puis envoyé", async () => {
+  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores dans l'historique", async () => {
     await confirmerPageGuide(entree({ jeton: jeton({ compte: "Page-Principale" }) }));
     expect(bd.origines[0]).toMatchObject({ compte: "page_principale" });
-    expect(bd.crm).toHaveLength(1);
-    expect((bd.crm[0]!["origines"] as Ligne[])[0]).toMatchObject({ compte: "page_principale" });
+    expect(bd.crm).toHaveLength(0);
   });
 
   it("compte invalide (1 caractère) : l'origine n'est PAS envoyée au CRM, mais le guide part", async () => {
@@ -677,13 +673,12 @@ describe("B3 — formats exigés par le CRM, validés avant toute écriture", ()
     const { post_ref: _p, ...sansPost } = DONNEES;
     await confirmerPageGuide(entree({ jeton: creerJeton(sansPost, SECRET, MAINTENANT.getTime()) }));
     expect(bd.origines[0]!["postRef"]).toBeNull();
-    expect(bd.crm).toHaveLength(1);
+    expect(bd.crm).toHaveLength(0);
   });
 
   it("post_ref hors format CRM (< 8 caractères) : retiré de l'origine, le reste est envoyé", async () => {
     await confirmerPageGuide(entree({ jeton: jeton({ post_ref: "abc" }) }));
     expect(bd.origines[0]!["postRef"]).toBeNull();
-    expect((bd.crm[0]!["origines"] as Ligne[])[0]).not.toHaveProperty("post_ref");
     expect(bd.envois).toHaveLength(1);
   });
 
