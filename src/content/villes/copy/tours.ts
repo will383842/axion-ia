@@ -42,7 +42,7 @@ export const TOURS_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Tours : accompagnement individuel pour dirigeants et cadres des ETI industrielles (STMicro, SKF, Michelin, Hutchinson), des PME du pôle S2E2 et de l'écosystème Mame. Sessions sur site à Tours Métropole ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Tours: individual coaching for executives and managers at industrial mid-caps (STMicro, SKF, Michelin, Hutchinson), S2E2 pole SMEs and the Mame ecosystem. On-site sessions across Tours Métropole or remote. Entry rate from €990 excl. VAT.",
+      en: "1-to-1 AI coaching in Tours: individual coaching for executives and managers at industrial mid-caps (STMicro, SKF, Michelin, Hutchinson), S2E2 pole SMEs and the Mame ecosystem. On-site sessions across Tours Métropole or remote. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI tourangelles — site vitrine premium pour acteurs viticulture et œnotourisme Val de Loire (Vouvray AOC), portail client B2B pour fournisseurs ETI industrielles (STMicro, SKF, Michelin, Hutchinson) et pôle S2E2, dashboard métier connecté à votre CRM/ERP/GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -729,7 +729,7 @@ export const TOURS_COPY: VilleCopy = {
           "Entretien de positionnement inclus sans engagement. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Tours is for executives, managers and engineers at industrial mid-caps (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson), S2E2 Smart Electricity SMEs and the Mame and Village by CA innovation ecosystem. No group programme: each session is built around your real challenges, your sector and your executive pace. Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Tours is for executives, managers and engineers at industrial mid-caps (STMicroelectronics, SKF, Michelin Joué-lès-Tours, Hutchinson), S2E2 Smart Electricity SMEs and the Mame and Village by CA innovation ecosystem. No group programme: each session is built around your real challenges, your sector and your executive pace. Price on request.",
         whyHere: [
           "Tours concentrates top-tier industrial mid-caps (STMicro, SKF, Michelin, Hutchinson) whose technical managers and engineers need to integrate AI into their daily practice — technical documentation, quality processes, production management — without going through group training ill-suited to their level.",
           "The S2E2 Smart Electricity pole and its cluster of specialist smart grid and energy efficiency SMEs generate technical profiles and executives for whom personalised AI upskilling is strategic.",
@@ -768,7 +768,7 @@ export const TOURS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Tours freelancers, tradespeople and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases (invoicing, meeting minutes, lead qualification).",
           },
@@ -802,7 +802,7 @@ export const TOURS_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme. The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate for a short programme is quoted on request. The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Are sessions on-site in Tours or remote?",
