@@ -45,6 +45,7 @@ import { TunnelFacebookShell } from "@/components/recrutement/TunnelFacebookShel
 import { VslFormulaire } from "@/components/recrutement/VslFormulaire";
 import { VslVue } from "@/components/recrutement/VslVue";
 import { COMMISSION_FORMATION_PAR_JOURNEE_EUR } from "@/content/pricing";
+import { COMMISSIONS_PUBLIQUES_AFFICHEES } from "@/content/recrutement/commission-publique";
 import {
   VSL_ANCRE,
   VSL_ETAPES,
@@ -104,8 +105,12 @@ export default async function Page({ params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale as Locale);
 
-  const faq = faqVsl(euros(COMMISSION_FORMATION_PAR_JOURNEE_EUR));
-  const commission = commissionVsl(euros(COMMISSION_FORMATION_PAR_JOURNEE_EUR));
+  // R7 (08/11/2026) : sans chiffre tant que `COMMISSIONS_PUBLIQUES_AFFICHEES` est faux.
+  const montantPublic = COMMISSIONS_PUBLIQUES_AFFICHEES
+    ? euros(COMMISSION_FORMATION_PAR_JOURNEE_EUR)
+    : null;
+  const faq = faqVsl(montantPublic);
+  const commission = commissionVsl(montantPublic);
 
   // Le film n'apparaît QUE si ses deux fichiers existent : la page est livrable sans.
   const film = videoDisponible(VSL_VIDEO_FICHIERS);
@@ -192,9 +197,11 @@ export default async function Page({ params }: Props) {
               {commission.titre}
             </h2>
             <p className="text-mocha-fg mt-4 text-[34px] leading-[1.15] font-bold tracking-tight text-balance sm:text-[42px]">
-              <span className="text-mocha-fg-muted block text-[15px] font-semibold tracking-normal">
-                {commission.indicatif}
-              </span>
+              {commission.indicatif ? (
+                <span className="text-mocha-fg-muted block text-[15px] font-semibold tracking-normal">
+                  {commission.indicatif}
+                </span>
+              ) : null}
               <span
                 className="text-terracotta-on-mocha"
                 style={{ fontFamily: "var(--font-serif)", fontStyle: "italic" }}

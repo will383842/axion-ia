@@ -14,6 +14,7 @@ import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { parseLlmJson } from "../shared/parse-llm-json";
 import { escapeLlmInput } from "../shared/prompt-input-escape";
+import { FORMULE_SUR_DEVIS, JETON_PRIX_JOURNEE_IA } from "../brand/consigne-prix";
 
 // ---------------------------------------------------------------------------
 // Output schema (Zod)
@@ -127,7 +128,7 @@ Réponses directes, citables par les LLMs et featured snippets Google. 1-2 phras
 ${FAQ_TYPES.map((t, i) => `${i + 1}. ${t}`).join("\n")}
 
 ## Contraintes par réponse
-- Prix : utiliser EXCLUSIVEMENT les tokens {{price:<tierId>}} (résolus depuis la grille SSOT au rendu) — ex : {{price:audit-flash|flat}}, {{price:audit-cible|range}}, {{price:intervention-4h|flat}}, {{price:intervention-dirigeants|flat}}, {{price:impl-poc|entry}}. JAMAIS de montant en chiffres ni « € », JAMAIS "contactez-nous"
+- Prix : répondre « ${FORMULE_SUR_DEVIS} » ; seule la Journée IA peut être chiffrée, via le jeton ${JETON_PRIX_JOURNEE_IA} (résolu au rendu). JAMAIS de montant en chiffres ni « € », JAMAIS "contactez-nous"
 - Délai : "délai adapté à votre périmètre" ou "selon la taille de l'entreprise" — JAMAIS de chiffre fixe en jours
 - Remote/présentiel : Axion-IA se déplace à ${safeVille} ET propose également les sessions en visio
 - Lieu RDV : préciser que l'intervention se fait dans les locaux du client à ${safeVille} ou en région ${safeRegion}
