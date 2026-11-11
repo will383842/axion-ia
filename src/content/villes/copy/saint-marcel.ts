@@ -49,7 +49,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Marcel et agglomération Chalon ?",
-      a: "Oui, Axion-IA intervient à Saint-Marcel et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Saint-Rémy, Châtenoy-le-Royal). Consultants depuis Lyon (1h30) ou gare TGV Le Creusot (30 min).",
+      a: "Oui, Axion-IA intervient à Saint-Marcel et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Saint-Rémy, Châtenoy-le-Royal). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Marcel ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

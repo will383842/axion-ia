@@ -37,7 +37,7 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
       id: "duree-reservation",
       question: "Comment ça démarre ?",
       answer:
-        "Un appel de cadrage en 2 minutes. Pour l'Audit Flash, on planifie la journée ; pour un audit complet, vous recevez un devis sous 48 h ouvrées.",
+        "Par un rendez-vous de cadrage. Pour la plupart des entreprises, nous planifions La Journée IA dans vos locaux, avec un rapport complet sous 3 jours ouvrés. Pour un audit approfondi, vous recevez un devis écrit sous 48 h ouvrées.",
     },
     {
       id: "remote-onsite",
@@ -61,13 +61,13 @@ function buildFrFaqs(): ReadonlyArray<AuditFaqItem> {
       id: "eu-jurisdiction",
       question: "Axion-IA peut-elle facturer en France ?",
       answer:
-        "Oui. Société européenne en libre prestation dans toute l'UE (France incluse). Facturation HT, données hébergées en UE, conformité RGPD.",
+        "Oui. Société européenne en libre prestation dans toute l'UE (France incluse). Facturation HT, données hébergées en UE, dans le respect du RGPD.",
     },
     {
       id: "starting-point",
       question: "Et si je ne sais pas par où commencer ?",
       answer:
-        "Le rapport est priorisé : le quick-win nº 1 est lançable dès la semaine suivante. Et le module Implémentation peut prendre le relais.",
+        "Commencez par La Journée IA : l'audit du matin chiffre vos priorités, la formation de l'après-midi met vos équipes au travail, et le rapport complet arrive sous 3 jours ouvrés. Le module Implémentation peut ensuite prendre le relais.",
     },
   ];
 }

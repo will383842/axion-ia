@@ -230,7 +230,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir à Romans-sur-Isère ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en format collectif (1 journée) et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en format collectif (1 journée) et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un.",
     },
     {
       q: "Quels délais pour une intervention IA à Romans-sur-Isère après prise de contact ?",
@@ -238,7 +238,7 @@ export const ROMANS_SUR_ISERE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches de Romans-sur-Isère ?",
-      a: "Oui. Nous couvrons sans surcoût Bourg-de-Péage, Saint-Paul-lès-Romans, Mours-Saint-Eusèbe, Chatuzange-le-Goubet, Génissieux et l'ensemble de l'unité urbaine Romans–Bourg-de-Péage.",
+      a: "Oui. Nous intervenons à Bourg-de-Péage, Saint-Paul-lès-Romans, Mours-Saint-Eusèbe, Chatuzange-le-Goubet, Génissieux et dans l'ensemble de l'unité urbaine Romans–Bourg-de-Péage. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission à Romans-sur-Isère ?",

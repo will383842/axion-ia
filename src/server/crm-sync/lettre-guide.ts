@@ -394,6 +394,12 @@ export async function transmettreClicGuide(
     let opposeePendantLaTransaction = false;
     try {
       outboxId = await prisma.$transaction(async (tx) => {
+        // Même verrou consultatif que `transmettreOriginesSuivantes` (synchro-v3.ts) : une origine
+        // écrite pendant ce clic attend la validation du clic au lieu de voir `crmEmittedAt` vide
+        // et de rendre « pas_clique ». Pris AVANT la réservation du clic.
+        if (v3) {
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + demande.emailKey}))`;
+        }
         const r = await tx.guideRequest.updateMany({
           where: { id: demande.id, crmEmittedAt: null, firstClickAt: { not: null } },
           data: { crmEmittedAt: maintenant },

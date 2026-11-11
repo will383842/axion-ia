@@ -49,7 +49,7 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Verneuil d'Avre et d'Iton et dans le sud de l'Eure ?",
-      a: "Oui, Axion-IA intervient à Verneuil d'Avre et d'Iton et dans tout le sud de l'Eure (L'Aigle, Breteuil, Rugles, Conches-en-Ouche). Nos consultants se déplacent depuis Paris (1h30 train) ou Évreux (35 min).",
+      a: "Oui, Axion-IA intervient à Verneuil d'Avre et d'Iton et dans tout le sud de l'Eure (L'Aigle, Breteuil, Rugles, Conches-en-Ouche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles et éleveurs du Perche ?",
@@ -64,8 +64,8 @@ export const VERNEUIL_D_AVRE_ET_D_ITON_COPY: VilleCopy = {
       a: "Pour les TPE et commerçants à Verneuil d'Avre et d'Iton, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, chatbot accueil, automatisation facturation, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évreux ?",
-      a: "Nos consultants viennent de Paris (1h30 train direct gare Verneuil-sur-Avre) ou Évreux (35 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Verneuil d'Avre et d'Iton ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

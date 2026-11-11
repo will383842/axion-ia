@@ -64,7 +64,7 @@ export const SOISY_SOUS_MONTMORENCY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Enghien ou Paris ?",
+      q: "Comment se déroule une mission à Soisy-sous-Montmorency ?",
       a: "Enghien-les-Bains (5 min). Montmorency (5 min). Paris Gare du Nord (30 min transilien). CDG (30 min).",
     },
   ],

@@ -49,7 +49,7 @@ export const SAINT_GERMAIN_LES_CORBEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Germain-lès-Corbeil ?",
-      a: "Oui, Axion-IA intervient à Saint-Germain-lès-Corbeil et toute la vallée de Seine essonnienne (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis, Soisy-sur-Seine). Nos consultants se déplacent depuis Paris (45 min) ou Évry (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-Germain-lès-Corbeil et toute la vallée de Seine essonnienne (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis, Soisy-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Saint-Germain-lès-Corbeil  : quel budget prévoir ?",

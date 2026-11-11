@@ -49,7 +49,7 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Symphorien-d'Ozon et SE lyonnais ?",
-      a: "Oui, Axion-IA intervient à Saint-Symphorien-d'Ozon et tout le SE lyonnais (Corbas à 10 min, Mions, Chaponnay, Vienne à 20 min). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Saint-Symphorien-d'Ozon et tout le SE lyonnais (Corbas à 10 min, Mions, Chaponnay, Vienne à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",
@@ -64,8 +64,8 @@ export const SAINT_SYMPHORIEN_D_OZON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      q: "Comment se déroule une mission à Saint-Symphorien-d'Ozon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pée-sur-Nivelle ?",
-      a: "Oui, Axion-IA intervient à Saint-Pée-sur-Nivelle et dans tout le Labourd (Espelette, Cambo, Ustaritz, Saint-Jean-de-Luz). Nos consultants accèdent via l'aéroport Biarritz Pays Basque (20 min) ou la gare de Saint-Jean-de-Luz (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-Pée-sur-Nivelle et dans tout le Labourd (Espelette, Cambo, Ustaritz, Saint-Jean-de-Luz). Nous intervenons partout en France, sur place ou à distance. Saint-Pée est à 10 min de la gare de Saint-Jean-de-Luz et 20 min de l'aéroport Biarritz Pays Basque.",
     },
     {
       q: "Quels services IA pour les hébergeurs ruraux de Saint-Pée ?",
@@ -65,7 +65,7 @@ export const SAINT_PEE_SUR_NIVELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pée ?",
-      a: "Nos consultants accèdent à Saint-Pée-sur-Nivelle par la route (10 min Saint-Jean-de-Luz, 25 min Bayonne). Mission sur site dans votre exploitation, gîte ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre exploitation, gîte ou commerce à Saint-Pée-sur-Nivelle.",
     },
   ],
 };

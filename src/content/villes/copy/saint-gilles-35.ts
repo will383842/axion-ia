@@ -65,7 +65,7 @@ export const SAINT_GILLES_35_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Gilles ?",
-      a: "Nos consultants interviennent depuis Rennes (15 min) ou se déplacent directement. Sessions dans vos locaux ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions dans vos locaux ou en visio.",
     },
   ],
 };

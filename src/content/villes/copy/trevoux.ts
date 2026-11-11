@@ -49,7 +49,7 @@ export const TREVOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trévoux et val de Saône Ain ?",
-      a: "Oui, Axion-IA intervient à Trévoux et tout le val de Saône Ain (Reyrieux, Jassans-Riottier, Villefranche à 15 min). Consultants depuis Lyon (30 min).",
+      a: "Oui, Axion-IA intervient à Trévoux et tout le val de Saône Ain (Reyrieux, Jassans-Riottier, Villefranche à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimoine Dombes ?",
@@ -64,8 +64,8 @@ export const TREVOUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (30 min).",
+      q: "Comment se déroule une mission à Trévoux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -230,7 +230,7 @@ export const YERRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yerres et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Yerres, Brunoy et Montgeron. Nos consultants se déplacent sur site, à 25 minutes de Paris-Gare de Lyon par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Yerres, Brunoy et Montgeron. Nous intervenons sur site ou en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les commerces et artisans yerrois ?",
@@ -245,8 +245,8 @@ export const YERRES_COPY: VilleCopy = {
       a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre cabinet.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Yerres est à 25 minutes de Paris-Gare de Lyon par le RER D et à 15 minutes d'Orly. Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Yerres ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Yerres est desservie par le RER D, à 15 minutes d'Orly.",
     },
   ],
 };

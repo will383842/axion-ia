@@ -64,7 +64,7 @@ export const VIC_LE_COMTE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Vic-le-Comte ?",
       a: "Clermont-Ferrand (25 min). Aéroport Clermont à 30 min.",
     },
   ],

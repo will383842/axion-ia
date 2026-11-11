@@ -49,7 +49,7 @@ export const TALANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Talant et dans l'ouest dijonnais ?",
-      a: "Oui, Axion-IA intervient à Talant et dans toute la couronne ouest de Dijon (Fontaine-lès-Dijon, Plombières-lès-Dijon, Daix, Ahuy). Nos consultants se déplacent depuis Dijon centre en 10 minutes.",
+      a: "Oui, Axion-IA intervient à Talant et dans toute la couronne ouest de Dijon (Fontaine-lès-Dijon, Plombières-lès-Dijon, Daix, Ahuy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Talant  ?",

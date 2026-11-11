@@ -49,7 +49,7 @@ export const PONTARLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pontarlier et dans le Haut-Doubs ?",
-      a: "Oui, Axion-IA intervient à Pontarlier et dans tout le Haut-Doubs (Métabief, Mouthe, Les Fourgs, Jougne, Frasne). Consultants depuis Besançon (55 min). Proximité Suisse : Lausanne 45 min, Neuchâtel 40 min.",
+      a: "Oui, Axion-IA intervient à Pontarlier et dans tout le Haut-Doubs (Métabief, Mouthe, Les Fourgs, Jougne, Frasne). Nous intervenons partout en France, sur place ou à distance. Proximité Suisse : Lausanne 45 min, Neuchâtel 40 min.",
     },
     {
       q: "Travaillez-vous avec les industriels agroalimentaire et distilleries ?",
@@ -65,7 +65,7 @@ export const PONTARLIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pontarlier ?",
-      a: "Nos consultants se déplacent à Pontarlier (55 min depuis Besançon, gare SNCF TER). Interventions dans vos locaux usine, atelier ou commerce. Visio possible pour le suivi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux usine, atelier ou commerce. Visio possible pour le suivi.",
     },
   ],
 };

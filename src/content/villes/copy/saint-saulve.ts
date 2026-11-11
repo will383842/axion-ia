@@ -49,7 +49,7 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Saulve et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Saint-Saulve et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Marly, Bruay-sur-l'Escaut, Condé-sur-l'Escaut). Nos consultants accèdent via la gare TGV Valenciennes (10 min) ou les autoroutes A2 et A23.",
+      a: "Oui, Axion-IA intervient à Saint-Saulve et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Marly, Bruay-sur-l'Escaut, Condé-sur-l'Escaut). Nous intervenons partout en France, sur place ou à distance. Saint-Saulve est à 10 min de la gare TGV de Valenciennes et desservie par les autoroutes A2 et A23.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de la sous-traitance automobile ?",
@@ -65,7 +65,7 @@ export const SAINT_SAULVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saulve ?",
-      a: "Nos consultants se déplacent à Saint-Saulve via gare TGV Valenciennes (10 min) ou autoroutes A2/A23. Valenciennes centre à 5 min, Lille à 45 min. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Saulve est à 5 min de Valenciennes centre, 10 min de la gare TGV et desservie par les autoroutes A2/A23. Intervention sur site ou en visio.",
     },
   ],
 };

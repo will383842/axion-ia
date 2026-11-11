@@ -626,9 +626,7 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </svg>
             Devenir apporteur
           </Link>
-          <p className="reassur-t">
-            Sans exclusivité · Aucun frais d’entrée · Nous répondons à tous
-          </p>
+          <p className="reassur-t">Sans exclusivité · Aucun frais d’entrée</p>
         </div>
       </section>
     </>

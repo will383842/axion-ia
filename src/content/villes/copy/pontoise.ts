@@ -226,7 +226,7 @@ export const PONTOISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pontoise et Cergy-Pontoise ?",
-      a: "Oui, Axion-IA intervient à Pontoise et toute l'agglomération Cergy-Pontoise (Cergy, Osny, Jouy-le-Moutier, Vauréal, Saint-Ouen-l'Aumône). Couverture complète Val-d'Oise et accès rapide depuis Paris (40 min Transilien).",
+      a: "Oui, Axion-IA intervient à Pontoise et toute l'agglomération Cergy-Pontoise (Cergy, Osny, Jouy-le-Moutier, Vauréal, Saint-Ouen-l'Aumône). Couverture complète Val-d'Oise.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants pontoisiens ?",

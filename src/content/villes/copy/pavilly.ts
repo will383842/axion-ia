@@ -49,7 +49,7 @@ export const PAVILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Pavilly et dans le pays de Caux ?",
-      a: "Oui, Axion-IA intervient a Pavilly et dans tout le pays de Caux (Barentin, Yvetot, Duclair). Consultants depuis Rouen (20 min) ou Paris (1h35).",
+      a: "Oui, Axion-IA intervient a Pavilly et dans tout le pays de Caux (Barentin, Yvetot, Duclair). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Pavilly ?",

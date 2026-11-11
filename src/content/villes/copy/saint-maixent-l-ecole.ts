@@ -49,7 +49,7 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Maixent-l'École ?",
-      a: "Oui, Axion-IA intervient à Saint-Maixent-l'École et dans le Val de Sèvre (La Mothe-Saint-Héray, Celles-sur-Belle). Nos consultants accèdent via la gare TGV (Paris 2h15 direct) ou l'A10.",
+      a: "Oui, Axion-IA intervient à Saint-Maixent-l'École et dans le Val de Sèvre (La Mothe-Saint-Héray, Celles-sur-Belle). La commune est desservie par la gare TGV et l'A10.",
     },
     {
       q: "Quels services IA pour les PME de services à Saint-Maixent ?",
@@ -65,7 +65,7 @@ export const SAINT_MAIXENT_L_ECOLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Maixent ?",
-      a: "Nos consultants accèdent à Saint-Maixent-l'École par la gare TGV (Paris 2h15 direct) ou l'A10 (échangeur dédié). Niort à 25 min voiture. Mission sur site dans vos locaux.",
+      a: "Nous intervenons à Saint-Maixent-l'École, desservie par la gare TGV et l'A10 (échangeur dédié). Niort à 25 min voiture. Mission sur site dans vos locaux.",
     },
   ],
 };

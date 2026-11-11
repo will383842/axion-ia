@@ -49,7 +49,7 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Philbert-de-Grand-Lieu et sud nantais ?",
-      a: "Oui, Axion-IA intervient à Saint-Philbert-de-Grand-Lieu et tout le sud nantais / pays de Retz (La Chevrolière, Pont-Saint-Martin, Machecoul, Bouaye, Les Sorinières). Nos consultants viennent de Nantes (25 min D178).",
+      a: "Oui, Axion-IA intervient à Saint-Philbert-de-Grand-Lieu et tout le sud nantais / pays de Retz (La Chevrolière, Pont-Saint-Martin, Machecoul, Bouaye, Les Sorinières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les maraîchers du pays nantais ?",
@@ -64,8 +64,8 @@ export const SAINT_PHILBERT_DE_GRAND_LIEU_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Philbert-de-Grand-Lieu, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de commandes.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 25 min via la D178. Aéroport Nantes-Atlantique à 15 min seulement. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Saint-Philbert-de-Grand-Lieu ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Nantes-Atlantique à 15 min seulement. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

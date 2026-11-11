@@ -226,7 +226,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Laurent-du-Var ?",
-      a: "Oui, Axion-IA intervient à Saint-Laurent-du-Var et toute la métropole Nice-Côte d'Azur (Nice, Cagnes-sur-Mer, Antibes, Cannes, Monaco). Nos consultants se déplacent depuis Paris (1h30 vol direct) ou Lyon (3h voiture).",
+      a: "Oui, Axion-IA intervient à Saint-Laurent-du-Var et toute la métropole Nice-Côte d'Azur (Nice, Cagnes-sur-Mer, Antibes, Cannes, Monaco). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et acteurs du tourisme ?",
@@ -242,7 +242,7 @@ export const SAINT_LAURENT_DU_VAR_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une intervention sur la Côte d'Azur ?",
-      a: "Nos consultants viennent de Paris (vol direct 1h30) ou par train (TGV 6h) pour les missions sur site à Saint-Laurent. Tarifs publics, pas de devis opaque.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics, pas de devis opaque.",
     },
   ],
 };

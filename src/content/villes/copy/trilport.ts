@@ -49,7 +49,7 @@ export const TRILPORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trilport et dans le Pays de Meaux ?",
-      a: "Oui, Axion-IA intervient à Trilport et dans toute l'agglomération de Meaux (Meaux, Villenoy, Nanteuil-lès-Meaux, Crégy-lès-Meaux). Nos consultants se déplacent depuis Paris-Est en 45 min via le Transilien ligne P.",
+      a: "Oui, Axion-IA intervient à Trilport et dans toute l'agglomération de Meaux (Meaux, Villenoy, Nanteuil-lès-Meaux, Crégy-lès-Meaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Trilport ?",
@@ -61,7 +61,7 @@ export const TRILPORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Trilport ?",
-      a: "Nos consultants viennent sur site à Trilport (Transilien ligne P depuis Paris-Est, 45 min). Format journée ou demi-journée adapté à votre activité.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format journée ou demi-journée adapté à votre activité.",
     },
     {
       q: "Quels services IA pour les commerces et professions libérales à Trilport ?",

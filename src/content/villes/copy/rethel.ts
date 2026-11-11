@@ -65,7 +65,7 @@ export const RETHEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Rethel ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants se déplacent depuis Reims (40 min) ou Paris (2h en train). Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
     },
   ],
 };

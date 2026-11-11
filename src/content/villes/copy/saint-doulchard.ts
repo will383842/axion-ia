@@ -49,7 +49,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Doulchard et agglo Bourges ?",
-      a: "Oui, Axion-IA intervient à Saint-Doulchard et dans toute l'agglomération Bourges Plus (Bourges, Saint-Germain-du-Puy, La Chapelle-Saint-Ursin, Trouy). Consultants sur place en 10 min depuis Bourges centre.",
+      a: "Oui, Axion-IA intervient à Saint-Doulchard et dans toute l'agglomération Bourges Plus (Bourges, Saint-Germain-du-Puy, La Chapelle-Saint-Ursin, Trouy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",
@@ -65,7 +65,7 @@ export const SAINT_DOULCHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Doulchard ?",
-      a: "Nos consultants interviennent directement dans vos locaux zones d'activités de Saint-Doulchard (10 min de Bourges centre). Également accessible depuis Paris via A71 (2h15). Visio possible.",
+      a: "Nos consultants interviennent directement dans vos locaux des zones d'activités de Saint-Doulchard. Nous intervenons partout en France, sur place ou à distance. Visio possible.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const TREILLIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Treillières et nord Nantes ?",
-      a: "Oui, Axion-IA intervient à Treillières et toute la couronne nord de Nantes Métropole (La Chapelle-sur-Erdre, Grandchamp-des-Fontaines, Sautron, Orvault). Nos consultants sont à Nantes en 15 min via la RN137.",
+      a: "Oui, Axion-IA intervient à Treillières et toute la couronne nord de Nantes Métropole (La Chapelle-sur-Erdre, Grandchamp-des-Fontaines, Sautron, Orvault). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires de l'axe Nantes-Rennes ?",
@@ -64,8 +64,8 @@ export const TREILLIERES_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Treillières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning IA, agents IA prise de commandes.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes centre en 15 min via la RN137. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Treillières ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quesnoy-sur-Deûle ?",
-      a: "Oui, Axion-IA intervient à Quesnoy-sur-Deûle et dans tout le nord de la métropole lilloise (Wambrechies, Marquette-lez-Lille, Deûlémont, Verlinghem). Nos consultants viennent de Lille centre (15 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Quesnoy-sur-Deûle et dans tout le nord de la métropole lilloise (Wambrechies, Marquette-lez-Lille, Deûlémont, Verlinghem). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour un audit IA à Quesnoy-sur-Deûle ?",
@@ -65,7 +65,7 @@ export const QUESNOY_SUR_DEULE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Quesnoy-sur-Deûle ?",
-      a: "Nos consultants viennent de Lille centre (15 min A25/A22) ou Wambrechies (5 min). Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Lille Flandres à 15 min, gare TGV Lille Europe à 18 min.",
     },
   ],
 };

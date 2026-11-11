@@ -49,7 +49,7 @@ export const POUZAUGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pouzauges et dans le haut bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Pouzauges et dans tout le haut bocage vendéen (Les Herbiers, Chantonnay, Mortagne-sur-Sèvre, Tiffauges, La Châtaigneraie). Nos consultants se déplacent en bocage vendéen.",
+      a: "Oui, Axion-IA intervient à Pouzauges et dans tout le haut bocage vendéen (Les Herbiers, Chantonnay, Mortagne-sur-Sèvre, Tiffauges, La Châtaigneraie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bocage ?",
@@ -64,8 +64,8 @@ export const POUZAUGES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA industriels : maintenance prédictive, contrôle qualité par vision, optimisation production, automatisation tests, gestion stocks intelligents. Sur site à Pouzauges ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Pouzauges depuis Cholet ou Nantes ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Cholet à 35 km, Nantes à 90 km. Accès A87 à 25 km.",
+      q: "Comment se passe une mission IA à Pouzauges ?",
+      a: "Nos consultants interviennent directement dans vos locaux à Pouzauges. Nous intervenons partout en France, sur place ou à distance. Pouzauges est à 35 km de Cholet et 25 km de l'A87.",
     },
   ],
 };

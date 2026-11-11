@@ -49,7 +49,7 @@ export const VIROFLAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viroflay et dans l'ouest parisien ?",
-      a: "Oui, Axion-IA intervient à Viroflay et dans tout l'ouest parisien (Versailles, Vélizy-Villacoublay, Chaville, Meudon, Sèvres). Nos consultants sont à 15 min de Paris-Montparnasse via Transilien N.",
+      a: "Oui, Axion-IA intervient à Viroflay et dans tout l'ouest parisien (Versailles, Vélizy-Villacoublay, Chaville, Meudon, Sèvres). Viroflay est à 15 min de Paris-Montparnasse via Transilien N. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un cabinet à Viroflay ?",
@@ -61,7 +61,7 @@ export const VIROFLAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Viroflay ?",
-      a: "Nos consultants viennent sur site à Viroflay (gare Viroflay-Rive-Gauche, Transilien N depuis Paris-Montparnasse, 15 min). Format journée ou demi-journée adapté.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format journée ou demi-journée adapté.",
     },
     {
       q: "Quels services IA pour les PME de conseil proches de Vélizy-Saclay ?",

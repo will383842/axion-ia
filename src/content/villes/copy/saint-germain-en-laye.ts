@@ -56,7 +56,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
         whyHere: [
           "La présence du siège EXAIL et de l'écosystème iXcampus (8 500 m², ouvert en 2016) fait de Saint-Germain-en-Laye une rare ville T3 où des projets web et SaaS doivent dialoguer avec des contraintes deep-tech réelles : documentation technique navigation/photonique, portails partenaires, interfaces de visualisation de données de drones.",
           "Le quartier campus CY Tech / Sciences Po Saint-Germain / Lycée international génère une demande spécifique de plateformes éducatives, intranets étudiants, sites multilingues (sections internationales) et outils data — exactement le terrain de nos plateformes IA-native avec recherche sémantique.",
-          "La zone des Coteaux du Bel Air concentre PME et ETI tech (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) et services aux entreprises ; nous y déployons sites vitrines performants, portails clients et e-commerce B2B multi-CMS, avec un kick-off sur site et des frais de déplacement nuls en Île-de-France.",
+          "La zone des Coteaux du Bel Air concentre PME et ETI tech (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) et services aux entreprises ; nous y déployons sites vitrines performants, portails clients et e-commerce B2B multi-CMS, avec un kick-off sur site.",
           "Le pôle touristique du Château royal et du Musée d'Archéologie nationale (29 000 objets, jardins Le Nôtre) appelle des sites de réservation, des contenus multilingues et des chatbots d'accueil — autant de cas où nous ancrons l'IA dans l'expérience visiteur plutôt que dans des slides.",
         ],
         methodology: [
@@ -125,7 +125,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour obtenir un devis et démarrer à Saint-Germain-en-Laye ?",
-            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site — Coteaux du Bel Air, quartier iXcampus ou centre-ville — sans surcoût de déplacement en Île-de-France. Le périmètre et le calendrier sont cadrés dès ce premier atelier pour éviter tout dérapage.",
+            a: "Le devis est remis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site — Coteaux du Bel Air, quartier iXcampus ou centre-ville. Le périmètre et le calendrier sont cadrés dès ce premier atelier pour éviter tout dérapage.",
           },
         ],
         guarantees:
@@ -136,7 +136,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
         whyHere: [
           "The presence of EXAIL's headquarters and the iXcampus ecosystem (8,500 m², opened in 2016) makes Saint-Germain-en-Laye a rare T3 town where web and SaaS projects must deal with real deep-tech constraints: navigation/photonics technical documentation, partner portals, drone data visualization interfaces.",
           "The CY Tech / Sciences Po Saint-Germain / International School campus district drives specific demand for educational platforms, student intranets, multilingual sites (international sections) and data tools — exactly the ground for our AI-native platforms with semantic search.",
-          "The Coteaux du Bel Air business park concentrates tech SMEs and micro-businesses (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) and B2B services; we deploy high-performance showcase sites, client portals and multi-CMS B2B e-commerce there, with an on-site kick-off and no travel fees in Île-de-France.",
+          "The Coteaux du Bel Air business park concentrates tech SMEs and micro-businesses (WEBDYN, E-THEMIS, NGS IT, EUROTECH INTERNATIONAL) and B2B services; we deploy high-performance showcase sites, client portals and multi-CMS B2B e-commerce there, with an on-site kick-off.",
           "The tourism hub of the Royal Château and the National Archaeology Museum (29,000 objects, Le Nôtre gardens) calls for booking sites, multilingual content and welcome chatbots — cases where we anchor AI in the visitor experience rather than in slides.",
         ],
         methodology: [
@@ -205,11 +205,11 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
           },
           {
             q: "What are the timelines to get a quote and start in Saint-Germain-en-Laye?",
-            a: "The quote is delivered from 24-48 h depending on project complexity. The kick-off takes place on site — Coteaux du Bel Air, iXcampus district or town centre — with no travel surcharge in Île-de-France. Scope and schedule are framed at this first workshop to avoid any drift.",
+            a: "The quote is delivered from 24-48 h depending on project complexity. The kick-off takes place on site — Coteaux du Bel Air, iXcampus district or town centre. Scope and schedule are framed at this first workshop to avoid any drift.",
           },
         ],
         guarantees:
-          "EU GDPR-compliant hosting by default, DPO on request. Custom code, no vendor lock-in: the code, prompts and integrations stay entirely with you, taken over in-house or by any Île-de-France integrator. Quote delivered from 24-48 h depending on complexity, on-site kick-off in Saint-Germain-en-Laye with no travel fees in Île-de-France. Web Vitals, accessibility and compliance verified before go-live — your teams stay autonomous after delivery.",
+          "EU GDPR-compliant hosting by default, DPO on request. Custom code, no vendor lock-in: the code, prompts and integrations stay entirely with you, taken over in-house or by any Île-de-France integrator. Quote delivered from 24-48 h depending on complexity, on-site kick-off in Saint-Germain-en-Laye. Web Vitals, accessibility and compliance verified before go-live — your teams stay autonomous after delivery.",
       },
     },
   },
@@ -217,7 +217,7 @@ export const SAINT_GERMAIN_EN_LAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Saint-Germain-en-Laye pour les audits et interventions ?",
-      a: "Oui. L'équipe Axion-IA se déplace sur site à Saint-Germain-en-Laye et dans les communes limitrophes des Yvelines : Le Pecq, Le Vésinet, Chambourcy, Mareil-Marly, Saint-Nom-la-Bretèche, L'Étang-la-Ville, Poissy, Achères et Maisons-Laffitte. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
+      a: "Oui. L'équipe Axion-IA se déplace sur site à Saint-Germain-en-Laye et dans les communes limitrophes des Yvelines : Le Pecq, Le Vésinet, Chambourcy, Mareil-Marly, Saint-Nom-la-Bretèche, L'Étang-la-Ville, Poissy, Achères et Maisons-Laffitte. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs pour une intervention IA d'une PME et ETI saint-germanoise ?",

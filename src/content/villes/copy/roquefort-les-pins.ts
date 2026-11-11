@@ -49,7 +49,7 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquefort-les-Pins et arrière-pays ?",
-      a: "Oui, Axion-IA intervient à Roquefort-les-Pins et dans tout l'arrière-pays azuréen (La Colle-sur-Loup, Valbonne, Opio, Le Rouret). Couverture Sophia Antipolis (15 min) et accès rapide depuis Nice (30 min) ou Cagnes-sur-Mer (15 min).",
+      a: "Oui, Axion-IA intervient à Roquefort-les-Pins et dans tout l'arrière-pays azuréen (La Colle-sur-Loup, Valbonne, Opio, Le Rouret). Couverture Sophia Antipolis (15 min). Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP locaux ?",
@@ -64,8 +64,8 @@ export const ROQUEFORT_LES_PINS_COPY: VilleCopy = {
       a: "Pour les professions libérales de Roquefort-les-Pins (avocats, médecins, comptables, architectes), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission depuis le littoral ?",
-      a: "Nos consultants interviennent depuis Nice (30 min), Cagnes-sur-Mer (15 min) ou Sophia Antipolis (15 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Roquefort-les-Pins ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PLERIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plérin ?",
-      a: "Nos consultants rejoignent Plérin via la gare de Saint-Brieuc (TGV Paris 2 h 40) à 10 min ou par la RN12.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Plérin est à 10 min de la gare de Saint-Brieuc (TGV) et desservie par la RN12.",
     },
   ],
 };

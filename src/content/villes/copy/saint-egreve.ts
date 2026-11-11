@@ -62,7 +62,7 @@ export const SAINT_EGREVE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de l'agglomération grenobloise, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Lyon ?",
+      q: "Comment se déroule une mission à Saint-Égrève ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],

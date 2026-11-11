@@ -17,19 +17,25 @@ const m = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     guideReseauOrigine: {
-      findMany: async (a: { where: Record<string, unknown> }) => {
+      findMany: async (a: { where: Record<string, unknown>; take?: number }) => {
         if (m.erreurColonne) throw Object.assign(new Error("col"), { code: "P2022" });
         m.filtres.push(a.where);
         const w = a.where as {
           createdAt: { lt: Date; gte: Date };
+          id?: { gt: string };
         };
-        return m.origines.filter(
-          (o) =>
-            o.crmStatut === null &&
-            o.archiveeLe === null &&
-            +(o.createdAt as Date) < +w.createdAt.lt &&
-            +(o.createdAt as Date) >= +w.createdAt.gte,
-        );
+        // Comme la vraie requête : curseur `id > x`, tri par `id`, `take`.
+        return m.origines
+          .filter(
+            (o) =>
+              o.crmStatut === null &&
+              o.archiveeLe === null &&
+              +(o.createdAt as Date) < +w.createdAt.lt &&
+              +(o.createdAt as Date) >= +w.createdAt.gte &&
+              (w.id === undefined || String(o.id) > w.id.gt),
+          )
+          .sort((x, y) => String(x.id).localeCompare(String(y.id)))
+          .slice(0, a.take ?? Number.MAX_SAFE_INTEGER);
       },
     },
     guideRequest: {
@@ -50,11 +56,17 @@ vi.mock("@/server/guides-reseau/synchro-v3", async (orig) => ({
   },
 }));
 
-import { rattraperOriginesSuivantes } from "../rattrapage-lettre-guide";
+import {
+  MAX_LOTS_ORIGINES,
+  TAILLE_LOT,
+  rattraperOriginesSuivantes,
+} from "../rattrapage-lettre-guide";
 
 const MAINTENANT = new Date("2026-11-11T12:00:00.000Z");
 const il_y_a = (min: number) => new Date(MAINTENANT.getTime() - min * 60_000);
+let compteur = 0;
 const o = (sur: Ligne = {}): Ligne => ({
+  id: `id-${String((compteur += 1)).padStart(6, "0")}`,
   emailKey: "cle-1",
   guide: "guide-ia",
   crmStatut: null,
@@ -138,5 +150,32 @@ describe("rattraperOriginesSuivantes", () => {
     m.appels.length = 0;
     await lancer();
     expect(m.appels).toHaveLength(0);
+  });
+
+  it("501 origines anciennes d'une personne jamais cliquée + 1 plus récente d'une personne cliquée : celle-ci est transmise", async () => {
+    m.demandes.set("jamais|guide-ia", { email: "j@exemple.test", firstClickAt: null });
+    for (let i = 0; i < TAILLE_LOT + 1; i += 1) {
+      m.origines.push(o({ emailKey: "jamais", createdAt: il_y_a(600 + i) }));
+    }
+    m.origines.push(o({ emailKey: "cle-1", createdAt: il_y_a(30) }));
+    const b = await lancer();
+    expect(m.appels).toEqual([expect.objectContaining({ emailKey: "cle-1" })]);
+    expect(b.transmis).toBe(1);
+    expect(b.nonCliques).toBe(1);
+    expect(b.borneAtteinte).toBe(false);
+  });
+
+  it("origines qui ne partiront jamais : le passage s'arrête à la borne, les lignes restent NULL et le journal le dit", async () => {
+    // Une personne distincte par ligne, jamais cliquée : plus de lots que la borne.
+    const total = TAILLE_LOT * MAX_LOTS_ORIGINES + 5;
+    for (let i = 0; i < total; i += 1) m.origines.push(o({ emailKey: `k${i}` }));
+    const b = await lancer({ executer: false });
+    expect(b.borneAtteinte).toBe(true);
+    expect(b.groupes).toBe(TAILLE_LOT * MAX_LOTS_ORIGINES);
+    expect(m.filtres).toHaveLength(MAX_LOTS_ORIGINES);
+    // Rien n'est effacé ni marqué : tout est encore en attente.
+    expect(m.origines).toHaveLength(total);
+    expect(m.origines.every((x) => x.crmStatut === null)).toBe(true);
+    expect(console.warn).toHaveBeenCalledWith(expect.stringContaining("borne_atteinte"));
   });
 });

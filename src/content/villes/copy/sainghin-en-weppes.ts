@@ -49,7 +49,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainghin-en-Weppes et dans les Weppes ?",
-      a: "Oui, Axion-IA intervient à Sainghin-en-Weppes et dans toute la plaine des Weppes (Fournes-en-Weppes, Illies, Marquillies, La Bassée, Herlies) ainsi que l'ouest de la métropole lilloise (Haubourdin, Seclin, Wavrin). Nos consultants couvrent l'ensemble du bassin lillois ouest depuis Lille (20 min).",
+      a: "Oui, Axion-IA intervient à Sainghin-en-Weppes et dans toute la plaine des Weppes (Fournes-en-Weppes, Illies, Marquillies, La Bassée, Herlies) ainsi que l'ouest de la métropole lilloise (Haubourdin, Seclin, Wavrin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles et PME agroalimentaires ?",
@@ -65,7 +65,7 @@ export const SAINGHIN_EN_WEPPES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainghin-en-Weppes ?",
-      a: "Nos consultants interviennent à Sainghin-en-Weppes depuis Lille (20 min). Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio. Proximité de Lille pour toute logistique mission multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation agricole, atelier, cabinet, commerce ou en visio. Proximité de Lille pour toute logistique mission multi-jours.",
     },
   ],
 };

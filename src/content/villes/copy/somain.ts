@@ -49,7 +49,7 @@ export const SOMAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Somain et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient à Somain et dans tout le bassin minier du Douaisis-Valenciennois (Aniche, Marchiennes, Fenain, Pecquencourt, Sin-le-Noble). Nos consultants accèdent via la gare SNCF de Somain (TER Lille–Valenciennes) ou l'autoroute A21.",
+      a: "Oui, Axion-IA intervient à Somain et dans tout le bassin minier du Douaisis-Valenciennois (Aniche, Marchiennes, Fenain, Pecquencourt, Sin-le-Noble). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME logistique et transport à Somain ?",
@@ -65,7 +65,7 @@ export const SOMAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Somain ?",
-      a: "Nos consultants se déplacent à Somain via gare SNCF (TER Lille–Valenciennes) ou autoroute A21. Douai à 15 min, Valenciennes à 20 min. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Somain est desservie par sa gare SNCF (TER Lille–Valenciennes) et l'autoroute A21, à 15 min de Douai et 20 min de Valenciennes. Intervention sur site ou en visio.",
     },
   ],
 };

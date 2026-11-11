@@ -53,7 +53,7 @@ export const REYRIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Reyrieux et dans le val de Saône Ain ?",
-      a: "Oui, Axion-IA intervient à Reyrieux et tout le val de Saône Ain (Trévoux à 5 min, Jassans-Riottier, Villefranche à 15 min). Nos consultants viennent de Lyon, à 30 minutes.",
+      a: "Oui, Axion-IA intervient à Reyrieux et tout le val de Saône Ain (Trévoux à 5 min, Jassans-Riottier, Villefranche à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans et commerces de Reyrieux ?",
@@ -68,8 +68,8 @@ export const REYRIEUX_COPY: VilleCopy = {
       a: "Agents conversationnels B2B et patients, automatisation de workflows, classification documentaire et CRM augmentés.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon en 30 minutes.",
+      q: "Comment se déroule une mission à Reyrieux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

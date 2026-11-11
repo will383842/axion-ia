@@ -64,7 +64,7 @@ export const VIARMES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Roissy ?",
+      q: "Comment se déroule une mission à Viarmes ?",
       a: "Luzarches (5 min). Beaumont-sur-Oise (10 min). Aéroport CDG (20 min). Paris Gare du Nord (40 min via ligne H).",
     },
   ],

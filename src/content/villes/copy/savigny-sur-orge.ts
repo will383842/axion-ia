@@ -230,7 +230,7 @@ export const SAVIGNY_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Savigny-sur-Orge ?",
-      a: "Oui. Axion-IA se déplace à Savigny-sur-Orge et dans la vallée de l'Orge (Juvisy-sur-Orge, Viry-Châtillon, Athis-Mons, Morsang-sur-Orge). Nos consultants interviennent sur site ou en visio, avec un accès facile par le RER C.",
+      a: "Oui. Axion-IA se déplace à Savigny-sur-Orge et dans la vallée de l'Orge (Juvisy-sur-Orge, Viry-Châtillon, Athis-Mons, Morsang-sur-Orge). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Savigny ?",

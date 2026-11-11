@@ -34,8 +34,8 @@ export const POURRIERES_COPY: VilleCopy = {
       en: "Audit IA à Pourrières : diagnostic adapté aux TPE artisans, PME viticoles AOP Sainte-Victoire, exploitations agricoles et commerces de la vallée de l'Arc. Audit sur place {{price:audit-flash|flat}}, ROI documenté en chiffres.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
-      en: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      fr: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Pourrières : ateliers pour équipes TPE/PME, vignerons Sainte-Victoire, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Pourrières : automatisation gestion vignobles et traçabilité AOP, e-commerce caveaux, devis BTP artisans, content marketing oenotourisme, agents conversationnels réservation visites. RGPD strict.",
@@ -64,8 +64,8 @@ export const POURRIERES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Pourrières ?",
-      a: "Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Comment se passe une intervention à Pourrières ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Pourrières est à 25 min d'Aix-en-Provence et 15 min de Saint-Maximin via A8.",
     },
   ],
 };

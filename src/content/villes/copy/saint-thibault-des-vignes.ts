@@ -49,7 +49,7 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Thibault-des-Vignes ?",
-      a: "Oui, Axion-IA intervient à Saint-Thibault-des-Vignes et dans tout le secteur Lagny–Marne-la-Vallée (Lagny-sur-Marne, Champs-sur-Marne, Torcy, Bussy-Saint-Georges). Nos consultants se déplacent depuis Paris (40 min en train) ou via A104/A4.",
+      a: "Oui, Axion-IA intervient à Saint-Thibault-des-Vignes et dans tout le secteur Lagny–Marne-la-Vallée (Lagny-sur-Marne, Champs-sur-Marne, Torcy, Bussy-Saint-Georges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerces de Saint-Thibault-des-Vignes ?",
@@ -65,7 +65,7 @@ export const SAINT_THIBAULT_DES_VIGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Thibault-des-Vignes ?",
-      a: "Nos consultants se déplacent à Saint-Thibault-des-Vignes depuis Paris (40 min via Transilien P ou A4). Gare de Lagny–Thorigny à 5 min. Intervention dans vos locaux ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Lagny–Thorigny à 5 min. Intervention dans vos locaux ou en visio.",
     },
   ],
 };

@@ -76,7 +76,7 @@ export const TOULON_COPY: VilleCopy = {
       fr: {
         hero: "L'audit IA Axion-IA à Toulon cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles : TPE du centre-ville et de La Garde, PME de services aux entreprises, ETI industrielles de La Seyne-sur-Mer, jusqu'aux grands comptes de la défense maritime. Le tissu économique toulonnais est singulier en France — défense, mer, numérique embarqué — et nos audits en tiennent compte dans chaque diagnostic.",
         whyHere: [
-          "Toulon est l'un de nos pôles d'intervention en région PACA : nos consultants se déplacent dans toute l'agglomération TPM (Toulon Provence Méditerranée) et dans les communes du Var (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
+          "Nos consultants se déplacent dans toute l'agglomération TPM (Toulon Provence Méditerranée) et dans les communes du Var (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules). Nous intervenons partout en France, sur place ou à distance.",
           "Le tissu industriel toulonnais est unique en France : Naval Group, Thales Underwater Systems, CNIM, Marine nationale — nous maîtrisons les contraintes spécifiques de confidentialité, souveraineté des données et processus métier de la défense maritime.",
           "Le Pôle Mer Méditerranée (siège à Toulon) regroupe des PME et ETI d'ingénierie navale, de nautisme, d'énergies marines et de robotique sous-marine — autant de cas d'usage IA à fort potentiel d'automatisation.",
           "L'écosystème numérique toulonnais monte en puissance : French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (IA/cybersécurité), LIS-CNRS (laboratoire IA de l'UTLN) — nos audits profitent de ce vivier de compétences locales.",
@@ -168,7 +168,7 @@ export const TOULON_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI audit in Toulon maps what can be automated in your organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size: city-centre micro-businesses, professional services SMEs, industrial mid-caps from La Seyne-sur-Mer, through to large maritime-defence accounts. Toulon's economic fabric is unique in France — defence, sea, embedded digital — and our audits reflect that in every diagnosis.",
         whyHere: [
-          "Toulon is one of our key engagement hubs in the PACA region: our consultants travel across the entire TPM agglomeration (Toulon Provence Méditerranée) and the Var communes (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules).",
+          "Our consultants travel across the entire TPM agglomeration (Toulon Provence Méditerranée) and the Var communes (La Seyne-sur-Mer, La Garde, Hyères, Six-Fours-les-Plages, Ollioules). We work anywhere in France, on site or remotely.",
           "Toulon's industrial fabric is unique in France: Naval Group, Thales Underwater Systems, CNIM, Marine nationale — we understand the specific confidentiality, data sovereignty and business-process constraints of maritime defence.",
           "Pôle Mer Méditerranée (headquartered in Toulon) brings together SMEs and mid-caps in naval engineering, boating, marine energy and underwater robotics — all with high AI automation potential.",
           "Toulon's digital ecosystem is growing fast: French Tech Toulon Var, TVT Innovation, ISEN Méditerranée (AI/cybersecurity), LIS-CNRS (UTLN AI lab) — our audits tap into this local talent pool.",
@@ -995,7 +995,7 @@ export const TOULON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Toulon ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : même tarif qu'à Paris ou Marseille.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise). Aucun supplément géographique : le tarif est identique partout en France.",
     },
     {
       q: "Axion-IA peut-il intervenir auprès des entreprises de défense maritime à Toulon ?",

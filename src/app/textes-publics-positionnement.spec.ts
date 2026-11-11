@@ -27,7 +27,7 @@ import { GET as getLlms } from "./llms.txt/route";
 import { GET as getLlmsFull } from "./llms-full.txt/route";
 import { BRAND, FOUNDER } from "@/lib/brand";
 import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
-import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
+import { DESCRIPTION_SERVICE_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import { buildPersonWilliamsJsonLd } from "@/lib/seo/williams-person";
 import { WILLIAMS_LEAD, WILLIAMS_IDENTITE, WILLIAMS_PREUVES } from "@/content/equipe/williams";
 
@@ -111,8 +111,9 @@ describe("llms.txt / llms-full.txt — cible, rendez-vous, Qualiopi", () => {
     expect(corps).toContain("La Journée IA");
     expect(corps).toContain("https://axion-ia.com/fr/journee-ia");
     expect(corps).toContain(formatTierPrice(JOURNEE_IA_TIER, "fr"));
-    // Test de divergence : le « En bref » publié aux moteurs est celui du module commun.
-    expect(corps).toContain(remplacerJetons(EN_BREF_JOURNEE_IA));
+    // Test de divergence : la description publiée aux moteurs est celle du module commun
+    // (audit GEO 2026-11-11 : `DESCRIPTION_SERVICE_JOURNEE_IA`, qui porte les 2 à 4 h d'audit).
+    expect(corps).toContain(remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA));
   });
 
   it("llms.txt : la ligne du Tour France IA reste celle de main (chantier séparé)", async () => {

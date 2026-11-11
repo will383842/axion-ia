@@ -34,8 +34,8 @@ export const PERTUIS_COPY: VilleCopy = {
       en: "Audit IA à Pertuis : diagnostic adapté aux TPE artisans, PME maraîchères et arboricoles, services aux entreprises et commerces du Sud Luberon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
-      en: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      fr: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Pertuis : ateliers pour équipes TPE/PME, maraîchers, arboriculteurs, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Pertuis : automatisation gestion exploitations agricoles, prévisions récoltes, traçabilité circuits courts, devis BTP artisans, content marketing producteurs, agents conversationnels SAV, optimisation comptabilité TPE. RGPD strict.",
@@ -64,8 +64,8 @@ export const PERTUIS_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat, commerce et professions libérales sur automatisation devis, gestion planning, content marketing local, fiches Google Business, SAV conversationnel, gestion administrative.",
     },
     {
-      q: "Comment se déplace Axion-IA à Pertuis ?",
-      a: "Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51. Nos consultants se déplacent dans vos locaux ou exploitations.",
+      q: "Comment se passe une intervention à Pertuis ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou exploitations. Pertuis est à 25 min d'Aix-en-Provence et 30 min de Manosque via A51.",
     },
   ],
 };

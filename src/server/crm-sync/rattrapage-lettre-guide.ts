@@ -310,6 +310,13 @@ export function adressesDeLEntree(texte: string): string[] {
 /** Délai laissé au chemin direct avant que le rattrapage ne reprenne une origine. */
 export const DELAI_RATTRAPAGE_ORIGINES_MS = 10 * 60_000;
 
+/**
+ * Borne d'un passage : nombre maximal de lots de `TAILLE_LOT` lus (soit 10 000 origines).
+ * Au-delà, le passage s'arrête et le journal dit combien de lots restent à lire ; les origines
+ * non lues restent `NULL` en base (gardées, jamais effacées) et sont relues au passage suivant.
+ */
+export const MAX_LOTS_ORIGINES = 20;
+
 export interface OptionsRattrapageOrigines {
   readonly executer?: boolean;
   /**
@@ -329,6 +336,8 @@ export interface BilanRattrapageOrigines {
   readonly nonCliques: number;
   readonly transmis: number;
   readonly echecs: number;
+  /** `true` si la borne `MAX_LOTS_ORIGINES` a été atteinte avant la fin de la table. */
+  readonly borneAtteinte?: boolean;
 }
 
 /** Date de coupure lue dans l'environnement (ISO 8601), ou `undefined`. */
@@ -353,21 +362,36 @@ export async function rattraperOriginesSuivantes(
   const depuis = options.depuis ?? coupureOriginesSuivantes();
   if (!depuis) return { mode, refus: "coupure-absente", ...vide };
   const maintenant = options.maintenant ?? new Date();
-  let lignes: { emailKey: string; guide: string }[];
+  const groupes = new Map<string, { emailKey: string; guide: string }>();
+  // Curseur sur `id` (comme `parLots`) : les origines qui ne partiront pas (personne jamais
+  // cliquée, exclue) ne bloquent plus la lecture des suivantes. Borné par `MAX_LOTS_ORIGINES`.
+  let curseur: string | null = null;
+  let borneAtteinte = false;
   try {
-    lignes = await prisma.guideReseauOrigine.findMany({
-      where: {
-        crmStatut: null,
-        archiveeLe: null,
-        createdAt: {
-          lt: new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS),
-          gte: depuis,
-        },
-      },
-      select: { emailKey: true, guide: true },
-      orderBy: { createdAt: "asc" },
-      take: TAILLE_LOT,
-    });
+    for (let lot = 0; ; lot += 1) {
+      if (lot >= MAX_LOTS_ORIGINES) {
+        borneAtteinte = true;
+        break;
+      }
+      const lignes: { id: string; emailKey: string; guide: string }[] =
+        await prisma.guideReseauOrigine.findMany({
+          where: {
+            crmStatut: null,
+            archiveeLe: null,
+            createdAt: {
+              lt: new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS),
+              gte: depuis,
+            },
+            ...(curseur === null ? {} : { id: { gt: curseur } }),
+          },
+          select: { id: true, emailKey: true, guide: true },
+          orderBy: { id: "asc" },
+          take: TAILLE_LOT,
+        });
+      for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
+      if (lignes.length < TAILLE_LOT) break;
+      curseur = lignes[lignes.length - 1]!.id;
+    }
   } catch (e) {
     if ((e as { code?: unknown }).code === "P2022") {
       console.warn(
@@ -377,8 +401,17 @@ export async function rattraperOriginesSuivantes(
     }
     throw e;
   }
-  const groupes = new Map<string, { emailKey: string; guide: string }>();
-  for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
+  if (borneAtteinte) {
+    // Origines abandonnées pour CE passage : gardées telles quelles (NULL), jamais effacées.
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_origines_crm_rattrapage",
+        resultat: "borne_atteinte",
+        lotsLus: MAX_LOTS_ORIGINES,
+        taille_lot: TAILLE_LOT,
+      }),
+    );
+  }
   let nonCliques = 0;
   let transmis = 0;
   let echecs = 0;
@@ -408,5 +441,5 @@ export async function rattraperOriginesSuivantes(
       transmis,
     }),
   );
-  return { mode, groupes: groupes.size, nonCliques, transmis, echecs };
+  return { mode, groupes: groupes.size, nonCliques, transmis, echecs, borneAtteinte };
 }

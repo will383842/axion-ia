@@ -49,7 +49,7 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sathonay-Camp et nord lyonnais ?",
-      a: "Oui, Axion-IA intervient à Sathonay-Camp et tout le nord lyonnais (Rillieux-la-Pape limitrophe, Caluire-et-Cuire, Fontaines-sur-Saône). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Sathonay-Camp et tout le nord lyonnais (Rillieux-la-Pape limitrophe, Caluire-et-Cuire, Fontaines-sur-Saône). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales sathonards ?",
@@ -64,8 +64,8 @@ export const SATHONAY_CAMP_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Sathonay-Camp, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Sathonay-Camp ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

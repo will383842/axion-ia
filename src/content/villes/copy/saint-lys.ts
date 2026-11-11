@@ -49,7 +49,7 @@ export const SAINT_LYS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Lys ?",
-      a: "Oui, Axion-IA intervient à Saint-Lys et dans tout l'ouest de Toulouse (Fonsorbes, Léguevin, Muret). Nos consultants se déplacent en 30 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Saint-Lys et dans tout l'ouest de Toulouse (Fonsorbes, Léguevin, Muret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Lys ?",
@@ -61,7 +61,7 @@ export const SAINT_LYS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Lys ?",
-      a: "Nos consultants se déplacent à Saint-Lys depuis Toulouse (30 min RN124). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "L'IA peut-elle aider les artisans BTP de Saint-Lys ?",

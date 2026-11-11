@@ -56,7 +56,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           "Édition logicielle et SaaS B2B sont surreprésentés au Parc Ar Mor : un éditeur comme RCA y opère un SaaS comptable utilisé par près d'un million de personnes depuis 2007. Greffer un copilote IA, un search sémantique ou un agent de support sur une plateforme SaaS existante est exactement notre cœur de métier.",
           "Le tissu ESN/numérique herblinois (Sopra Steria, Alten, Extia, In Extenso) signifie que vos équipes parlent déjà API, intégration et conformité — nous livrons du code custom auditable, pas une boîte noire no-code, et la passation se fait sans friction avec vos développeurs.",
           "Le commerce de détail de la zone Atlantis et les acteurs de la ZILO (logistique, industrie fluviale, gestion des déchets type Paprec) ont des besoins web/e-commerce concrets : catalogues, portails clients, prise de commande, suivi logistique — que nous traitons en e-commerce multi-CMS augmenté par l'IA.",
-          "Tout se joue dans un rayon de quelques minutes autour du Zénith et du périphérique nantais : ateliers de conception sur site au Parc Ar Mor, à Atlantis ou en ZILO, accessibles en tramway TAN (lignes 1 et 3) et gare La Basse-Indre–Saint-Herblain — kick-off et recettes toujours en présentiel.",
+          "Les ateliers de conception se tiennent sur site au Parc Ar Mor, à Atlantis ou en ZILO, autour du Zénith et du périphérique nantais (tramway TAN lignes 1 et 3, gare La Basse-Indre–Saint-Herblain) — kick-off et recettes toujours en présentiel.",
         ],
         methodology: [
           {
@@ -142,7 +142,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
           "Software publishing and B2B SaaS are over-represented at Parc Ar Mor: a publisher like RCA runs an accounting SaaS used by nearly a million people since 2007. Grafting an AI copilot, semantic search or support agent onto an existing SaaS platform is precisely our core business.",
           "The local IT services / digital fabric (Sopra Steria, Alten, Extia, In Extenso) means your teams already speak API, integration and compliance — we deliver auditable custom code, not a no-code black box, and handover is frictionless with your developers.",
           "Atlantis-zone retail and ZILO players (logistics, river industry, waste management such as Paprec) have concrete web/e-commerce needs: catalogues, customer portals, order taking, logistics tracking — which we handle as AI-augmented multi-CMS e-commerce.",
-          "Everything happens within minutes of the Zénith and the Nantes ring road: design workshops on site at Parc Ar Mor, Atlantis or in the ZILO, reachable by TAN tramway (lines 1 and 3) and La Basse-Indre–Saint-Herblain station — kick-off and acceptance always in person.",
+          "Design workshops are held on site at Parc Ar Mor, Atlantis or in the ZILO, around the Zénith and the Nantes ring road (TAN tramway lines 1 and 3, La Basse-Indre–Saint-Herblain station) — kick-off and acceptance always in person.",
         ],
         methodology: [
           {
@@ -236,7 +236,7 @@ export const SAINT_HERBLAIN_COPY: VilleCopy = {
     },
     {
       q: "Couvrez-vous les communes voisines de Saint-Herblain ?",
-      a: "Oui : Nantes, Indre, Couëron, Sautron, Orvault et Bouguenais sont couvertes sans surcoût dans le cadre de Nantes Métropole.",
+      a: "Oui : Nantes, Indre, Couëron, Sautron, Orvault et Bouguenais sont couvertes, comme toute Nantes Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos automatisations à Saint-Herblain sont-elles conformes au RGPD ?",

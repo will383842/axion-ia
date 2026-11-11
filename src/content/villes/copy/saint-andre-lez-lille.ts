@@ -49,7 +49,7 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-lez-Lille et dans le nord-ouest lillois ?",
-      a: "Oui, Axion-IA intervient à Saint-André-lez-Lille et dans toute la première couronne nord-ouest de Lille (Lambersart, Marquette-lez-Lille, Saint-André, Wambrechies, Pérenchies) ainsi que l'ensemble de la Métropole Européenne de Lille. Nos consultants sont à 10 minutes de Lille centre.",
+      a: "Oui, Axion-IA intervient à Saint-André-lez-Lille et dans toute la première couronne nord-ouest de Lille (Lambersart, Marquette-lez-Lille, Saint-André, Wambrechies, Pérenchies) ainsi que l'ensemble de la Métropole Européenne de Lille. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les cabinets de professions libérales à Saint-André-lez-Lille ?",
@@ -65,7 +65,7 @@ export const SAINT_ANDRE_LEZ_LILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-André-lez-Lille ?",
-      a: "Nos consultants interviennent à Saint-André-lez-Lille depuis Lille centre (10 min). Intervention sur site dans votre cabinet, agence, commerce ou en visio. Proximité immédiate du centre-ville lillois : aucun hébergement nécessaire.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre cabinet, agence, commerce ou en visio. Proximité immédiate du centre-ville lillois : aucun hébergement nécessaire.",
     },
   ],
 };

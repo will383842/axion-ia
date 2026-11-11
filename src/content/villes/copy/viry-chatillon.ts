@@ -230,7 +230,7 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Viry-Châtillon et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Viry-Châtillon et du nord de l'Essonne. Nos consultants se déplacent sur site, à 30 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Viry-Châtillon et du nord de l'Essonne. Nous intervenons sur site ou en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les artisans et PME du bâtiment de Viry-Châtillon ?",
@@ -245,8 +245,8 @@ export const VIRY_CHATILLON_COPY: VilleCopy = {
       a: "Optimisation des tournées, suivi automatisé des livraisons, traitement des demandes entrantes et reporting d'activité. L'objectif est de réduire les tâches répétitives et de fiabiliser le pilotage pour des structures à taille humaine.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Orly ?",
-      a: "Viry-Châtillon est à 30 minutes de Paris par le RER D, 10 minutes d'Orly et sur l'A6. Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Viry-Châtillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Viry-Châtillon est desservie par le RER D et l'A6, à 10 minutes d'Orly.",
     },
   ],
 };

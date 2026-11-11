@@ -49,7 +49,7 @@ export const WIMEREUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Wimereux et sur la Cote d'Opale ?",
-      a: "Oui, Axion-IA intervient a Wimereux et sur toute la Cote d'Opale (Boulogne-sur-Mer, Le Portel, Hardelot). Consultants depuis Lille (1h30 TER) ou Paris (TGV via Boulogne 2h30).",
+      a: "Oui, Axion-IA intervient a Wimereux et sur toute la Cote d'Opale (Boulogne-sur-Mer, Le Portel, Hardelot). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les hoteliers de Wimereux ?",

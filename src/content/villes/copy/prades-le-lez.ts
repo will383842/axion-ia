@@ -49,7 +49,7 @@ export const PRADES_LE_LEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Prades-le-Lez ?",
-      a: "Oui, Axion-IA intervient à Prades-le-Lez et dans tout le nord Montpellier (Clapiers, Saint-Gély-du-Fesc, Jacou, Saint-Clément-de-Rivière). Nos consultants se déplacent depuis Montpellier en 12 min.",
+      a: "Oui, Axion-IA intervient à Prades-le-Lez et dans tout le nord Montpellier (Clapiers, Saint-Gély-du-Fesc, Jacou, Saint-Clément-de-Rivière). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",

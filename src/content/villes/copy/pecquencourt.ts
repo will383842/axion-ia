@@ -49,7 +49,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pecquencourt et dans l'agglomération de Douai ?",
-      a: "Oui, Axion-IA intervient à Pecquencourt et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Roost-Warendin). Nos consultants se déplacent depuis Lille en 35 min ou Douai en 10 min.",
+      a: "Oui, Axion-IA intervient à Pecquencourt et dans toute la Communauté d'Agglomération du Douaisis (Douai, Sin-le-Noble, Lallaing, Roost-Warendin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pecquencourt  ?",
@@ -65,7 +65,7 @@ export const PECQUENCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Pecquencourt ?",
-      a: "Nos consultants interviennent depuis Douai (10 min) ou Lille (35 min via A21). Pecquencourt étant intégrée à l'agglomération douaisienne, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pecquencourt est intégrée à l'agglomération douaisienne. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

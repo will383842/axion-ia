@@ -49,7 +49,7 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Portet-sur-Garonne ?",
-      a: "Oui, Axion-IA intervient à Portet-sur-Garonne et dans tout le sud de Toulouse (Muret, Roques, Villeneuve-Tolosane). Nos consultants se déplacent en 15 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Portet-sur-Garonne et dans tout le sud de Toulouse (Muret, Roques, Villeneuve-Tolosane). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Portet-sur-Garonne ?",
@@ -65,7 +65,7 @@ export const PORTET_SUR_GARONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Portet-sur-Garonne ?",
-      a: "Nos consultants se déplacent à Portet-sur-Garonne (15 min A64 depuis Toulouse). Intervention 1 journée minimum, atelier pratique. Équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique. Équipes autonomes.",
     },
   ],
 };

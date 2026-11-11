@@ -90,7 +90,7 @@ export const RENNES_COPY: VilleCopy = {
       fr: {
         hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
         whyHere: [
-          "Rennes est notre pôle d'ancrage breton : nous y intervenons régulièrement pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
+          "Nous intervenons régulièrement à Rennes pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
           "Tissu économique rennais dense et contrasté : TPE du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
           "Présence forte de l'écosystème French Tech Rennes Saint-Malo : scale-ups deep-tech et IA nées de l'IRISA et de l'Inria, souvent en phase de passage du POC à la production.",
           "Restitutions toujours en présentiel à Rennes : ateliers d'idéation dans vos locaux, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
@@ -182,7 +182,7 @@ export const RENNES_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
         whyHere: [
-          "Rennes is our Brittany anchor hub: we intervene regularly for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
+          "We work regularly in Rennes for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",
           "Strong French Tech Rennes Saint-Malo ecosystem presence: deep-tech and AI scale-ups born from IRISA and Inria, often transitioning from POC to production.",
           "Read-outs always in person in Rennes: ideation workshops at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
@@ -1012,7 +1012,7 @@ export const RENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rennes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Rennes qu'à Paris ou Lyon.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
     },
     {
       q: "Avez-vous de l'expérience dans l'écosystème numérique de Rennes Atalante ?",

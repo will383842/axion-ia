@@ -49,7 +49,7 @@ export const SAINT_ANDRE_DES_EAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-des-Eaux et bassin La Baule ?",
-      a: "Oui, Axion-IA intervient à Saint-André-des-Eaux et tout le bassin La Baule-Guérande (La Baule, Pornichet, Le Pouliguen, Saint-Nazaire). Consultants depuis Saint-Nazaire (15 min). Couverture complète presqu'île guérandaise.",
+      a: "Oui, Axion-IA intervient à Saint-André-des-Eaux et tout le bassin La Baule-Guérande (La Baule, Pornichet, Le Pouliguen, Saint-Nazaire). Nous intervenons partout en France, sur place ou à distance. Couverture complète presqu'île guérandaise.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants ?",

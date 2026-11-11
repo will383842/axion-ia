@@ -22,6 +22,8 @@ const base = vi.hoisted(() => ({
   appelsOpposee: 0,
   /** Second argument reçu par `estOpposee` à chaque appel (le client de transaction, ou rien). */
   dbOpposee: [] as unknown[],
+  /** Verrous consultatifs pris dans la transaction du clic (valeurs, et si le clic était déjà réservé). */
+  verrous: [] as { valeurs: unknown[]; demandesDejaReservees: boolean }[],
   abonne: null as Ligne | null,
   nature: "pro" as "pro" | "perso",
 }));
@@ -84,6 +86,14 @@ vi.mock("@/lib/prisma", () => {
       findUnique: async ({ where }: { where: Ligne }) =>
         base.outbox.find((l) => ok(l, where)) ?? null,
       findFirst: async () => null,
+    },
+    // Verrou consultatif de la transaction du clic : on note la clé et l'ordre (avant l'écriture).
+    $executeRaw: async (_chaines: TemplateStringsArray, ...valeurs: unknown[]) => {
+      base.verrous.push({
+        valeurs,
+        demandesDejaReservees: base.demandes.some((d) => d.crmEmittedAt),
+      });
+      return 1;
     },
     $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
       const photoD = base.demandes.map((r) => ({ r, c: { ...r } }));
@@ -195,6 +205,7 @@ beforeEach(() => {
   base.opposeeDepuis = null;
   base.appelsOpposee = 0;
   base.dbOpposee.length = 0;
+  base.verrous.length = 0;
   base.abonne = null;
   base.nature = "pro";
   process.env.CRM_SYNC_ENABLED = "true";
@@ -518,5 +529,15 @@ describe("lot guide réseau 4 : l'origine complète part au premier clic, aussi 
     installer({ contact: null, origines: [origine({ guide: "autre-guide" })] });
     await transmettreClicGuide("demande-1");
     expect(evenement().schema_version).toBe(1);
+  });
+});
+
+describe("lot guide réseau 4 : le premier clic prend le verrou des origines", () => {
+  it("verrou « origines:<clé> » pris dans la transaction du clic, AVANT la réservation du clic", async () => {
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("transmise");
+    expect(base.verrous).toHaveLength(1);
+    expect(base.verrous[0]?.valeurs[0]).toBe("origines:" + String(base.demandes[0]?.emailKey));
+    expect(base.verrous[0]?.demandesDejaReservees).toBe(false);
   });
 });

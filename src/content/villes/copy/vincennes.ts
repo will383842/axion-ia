@@ -62,7 +62,7 @@ export const VINCENNES_COPY: VilleCopy = {
           {
             step: "Cadrage à Vincennes",
             detail:
-              "Kick-off sur site à Vincennes — cabinet de l'avenue de Paris, bureau du Domaine du Bois ou des Murs du Parc, ou en visio (RER A, 3 min de Gare de Lyon). On cartographie vos objectifs (acquisition, prise de rendez-vous, vente en ligne, espace client) et vos contraintes métier : secret professionnel des libéraux, conformité services financiers, catalogue commerce.",
+              "Kick-off sur site à Vincennes — cabinet de l'avenue de Paris, bureau du Domaine du Bois ou des Murs du Parc — ou en visio. On cartographie vos objectifs (acquisition, prise de rendez-vous, vente en ligne, espace client) et vos contraintes métier : secret professionnel des libéraux, conformité services financiers, catalogue commerce.",
           },
           {
             step: "Conception UX/UI et contenu",
@@ -130,7 +130,7 @@ export const VINCENNES_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis et un démarrage à Vincennes ?",
-            a: "Devis à partir de 24-48 h selon la complexité. Kick-off sur site à Vincennes (RER A, 3 min de Gare de Lyon) ou en visio. Le calendrier précis est fixé au cadrage selon le périmètre : vitrine, e-commerce, espace client ou plateforme SaaS.",
+            a: "Devis à partir de 24-48 h selon la complexité. Kick-off sur site à Vincennes ou en visio. Le calendrier précis est fixé au cadrage selon le périmètre : vitrine, e-commerce, espace client ou plateforme SaaS.",
           },
         ],
         guarantees:
@@ -148,7 +148,7 @@ export const VINCENNES_COPY: VilleCopy = {
           {
             step: "Framing in Vincennes",
             detail:
-              "On-site kick-off in Vincennes — a practice on avenue de Paris, an office in Domaine du Bois or Murs du Parc, or remote (RER A, 3 min from Gare de Lyon). We map your goals (acquisition, booking, online sales, client area) and business constraints: professional secrecy for practices, financial-services compliance, retail catalogue.",
+              "On-site kick-off in Vincennes — a practice on avenue de Paris, an office in Domaine du Bois or Murs du Parc — or remote. We map your goals (acquisition, booking, online sales, client area) and business constraints: professional secrecy for practices, financial-services compliance, retail catalogue.",
           },
           {
             step: "UX/UI and content design",
@@ -216,7 +216,7 @@ export const VINCENNES_COPY: VilleCopy = {
           },
           {
             q: "What lead time for a quote and start in Vincennes?",
-            a: "Quote from 24-48 h depending on complexity. On-site kick-off in Vincennes (RER A, 3 min from Gare de Lyon) or remote. The precise schedule is set at framing based on scope: showcase, e-commerce, client area or SaaS platform.",
+            a: "Quote from 24-48 h depending on complexity. On-site kick-off in Vincennes or remote. The precise schedule is set at framing based on scope: showcase, e-commerce, client area or SaaS platform.",
           },
         ],
         guarantees:
@@ -236,7 +236,7 @@ export const VINCENNES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission IA à Vincennes ?",
-      a: "Williams se déplace à Vincennes sous 5 jours ouvrés (3 min en RER A depuis Gare de Lyon). Audit sur place restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
+      a: "Williams intervient à Vincennes sous 5 jours ouvrés. Audit sur place restitué sous 7 jours. Interventions selon planning convenu, généralement 2 à 4 semaines.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Vincennes ?",
