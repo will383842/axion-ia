@@ -406,12 +406,9 @@ export default async function VilleHubPage({ params }: Props) {
     url,
     email: "contact@axion-ia.com",
     image: `${SITE_URL}/opengraph-image`,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: ville.nameFr,
-      addressRegion: region.nameFr,
-      addressCountry: "FR",
-    },
+    // Pays seul : la ville de la page n'est PAS une adresse d'Axion-IA (zone servie
+    // = `areaServed`). Garde : tests/unit/seo/ville-jsonld-sans-adresse-locale.spec.ts.
+    address: { "@type": "PostalAddress", addressCountry: "FR" },
     sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
     parentOrganization: {
       "@type": "Organization",
@@ -420,7 +417,11 @@ export default async function VilleHubPage({ params }: Props) {
       legalName: BRAND.legalName,
       url: SITE_URL,
     },
-    areaServed: { "@type": "City", name: ville.nameFr },
+    areaServed: {
+      "@type": "City",
+      name: ville.nameFr,
+      containedInPlace: { "@type": "AdministrativeArea", name: region.nameFr },
+    },
     knowsLanguage: ["fr", "en"],
   } as const;
 
@@ -476,7 +477,11 @@ export default async function VilleHubPage({ params }: Props) {
     lowPrice: auditFlashPrice,
     highPrice: auditEtiHighPrice,
     offerCount: 5,
-    areaServed: { "@type": "City", name: ville.nameFr },
+    areaServed: {
+      "@type": "City",
+      name: ville.nameFr,
+      containedInPlace: { "@type": "AdministrativeArea", name: region.nameFr },
+    },
     seller: { "@type": "Organization", "@id": `${SITE_URL}/#organization`, name: "Axion-IA" },
     offers: [
       {
