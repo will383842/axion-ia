@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Request an AI session · Axion-IA",
     description:
       locale === "fr"
-        ? "Formulaire dédié pour cadrer votre intervention IA (formation équipe, coaching individuel, journée dirigeant ou conférence). Réponse personnalisée. Sans engagement."
+        ? "Formulaire dédié pour cadrer votre intervention IA : formation d'équipe, coaching individuel, journée dirigeant ou conférence. Sans engagement."
         : "Dedicated form to frame your AI session (team training, individual coaching, executive day or talk). Personalised reply. No commitment.",
     alternates: { fr: "/interventions/demande", en: "/interventions/request" },
   });
@@ -191,7 +191,7 @@ export default async function InterventionsDemande({ params, searchParams }: Pro
         tone="paper"
         eyebrow={isFr ? "Comment ça fonctionne" : "How it works"}
         title={isFr ? "Une réponse personnalisée" : "A personalised reply"}
-        titleEm={isFr ? "avec un cadrage personnalisé" : "with a personalised framing"}
+        titleEm={isFr ? "et un cadrage sur mesure" : "and a tailored framing"}
         description={
           isFr
             ? "Plus le contexte est précis, plus notre réponse sera ciblée. Nous traitons chaque demande individuellement — pas de pipeline automatique."

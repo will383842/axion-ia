@@ -1572,7 +1572,7 @@ export const KW_AUDIT_G1: KeywordSeed[] = [
       resultat: "choix éclairé du prestataire",
       chiffre: "7",
       unite: "critères",
-      delai: "réponse en 24 h",
+      delai: "réponse humaine",
     },
     urlCible: "/fr/guides/choisir-cabinet-ia-pme-france",
     canonicalParent: "/fr/audit/pme",

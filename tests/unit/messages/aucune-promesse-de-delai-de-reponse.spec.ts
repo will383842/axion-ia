@@ -24,7 +24,7 @@ describe("les messages ne promettent aucun délai de réponse", () => {
 // Fichiers de contenu et de composants nettoyés : aucune promesse de RÉPONSE à un
 // contact. Les délais de LIVRAISON (devis, rapport) ne sont pas visés.
 const PROMESSE_SOURCE =
-  /r[ée]ponse (?:humaine |presse |garantie |cadrée )?sous d|(?:reply|response) within d|on répond sous|nous répondons sous|on revient sous|revenons vers vous sous|recontacte personnellement sous/i;
+  /r[ée]ponse (?:humaine |presse |garantie |cadrée )?sous \d|(?:reply|response) within \d|on répond sous|nous répondons sous|on revient sous|revenons vers vous sous|recontacte personnellement sous/i;
 
 const FICHIERS = [
   "src/app/[locale]/a-propos/page.tsx",
@@ -73,8 +73,7 @@ describe("les fichiers nettoyés ne promettent aucun délai de réponse", () => 
   for (const fichier of FICHIERS) {
     it(fichier, () => {
       const brut = readFileSync(join(process.cwd(), ...fichier.split("/")), "utf8");
-      const fautes = brut.split("
-").filter((ligne) => PROMESSE_SOURCE.test(ligne));
+      const fautes = brut.split("\n").filter((ligne) => PROMESSE_SOURCE.test(ligne));
       expect(fautes).toEqual([]);
     });
   }

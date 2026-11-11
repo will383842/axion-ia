@@ -183,9 +183,9 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
     },
   },
   {
-    id: "press-languages",
-    fr: { label: "Langues", value: "Français et anglais" },
-    en: { label: "Languages", value: "French and English" },
+    id: "interview-formats",
+    fr: { label: "Formats d'interview", value: "Écrit, audio, vidéo, podcast" },
+    en: { label: "Interview formats", value: "Written, audio, video, podcast" },
   },
 ];
 

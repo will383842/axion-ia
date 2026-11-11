@@ -14,8 +14,8 @@ const COPY = {
   fr: {
     title: "Message bien reçu",
     // Pré-en-tête (§3.5) : il PROLONGE l'objet au lieu de le répéter. L'objet dit
-    // que le message est arrivé ; celui-ci dit sous combien de temps on répond
-    // — l'information qui décide d'ouvrir maintenant ou plus tard.
+    // que le message est arrivé ; celui-ci rappelle que la référence de la demande
+    // est dans le message. Aucun délai de réponse n'est promis (décision du 11/11/2026).
     preview: "Message bien reçu — la référence de votre demande est dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
     // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que

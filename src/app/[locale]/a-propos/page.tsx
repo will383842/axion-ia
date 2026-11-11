@@ -181,9 +181,9 @@ export default async function About({ params }: Props) {
         },
         {
           id: "delai-reponse",
-          question: "En combien de temps Axion-IA répond-il à une demande ?",
+          question: "Qui répond aux demandes envoyées à Axion-IA ?",
           answer:
-            "Toute demande de devis ou de contact reçoit une réponse humaine, sans engagement.",
+            "Chaque demande de devis ou de contact est lue et traitée par un membre de notre équipe, jamais par un robot, sans engagement.",
         },
         {
           id: "prix-formation-ia",
@@ -257,9 +257,9 @@ export default async function About({ params }: Props) {
         },
         {
           id: "delai-reponse",
-          question: "How quickly does Axion-IA reply to a request?",
+          question: "Who answers requests sent to Axion-IA?",
           answer:
-            "Every quote or contact request gets a human reply, with no commitment.",
+            "Every quote or contact request is read and handled by a member of our team, never by a bot, with no commitment.",
         },
         {
           id: "prix-formation-ia",

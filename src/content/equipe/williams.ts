@@ -81,7 +81,7 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
   },
   { terme: "Langues de travail", valeur: "Français, anglais" },
   { terme: "Hébergement des données", valeur: "Union européenne" },
-  { terme: "Réponse", valeur: "Réponse humaine" },
+  { terme: "Contact", valeur: "Formulaire du site ou appel de découverte" },
 ];
 
 /**

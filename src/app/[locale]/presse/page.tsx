@@ -660,8 +660,6 @@ export default async function PressePage({ params, searchParams }: Props) {
           cta: t("contactCta"),
           email: t("contactEmail"),
           subjectLabel: t("contactSubject"),
-          responseTimeLabel: t("contactResponseTimeLabel"),
-          responseTimeValue: t("contactResponseTimeValue"),
           languagesLabel: t("contactLanguagesLabel"),
           languagesValue: t("contactLanguagesValue"),
         }}
