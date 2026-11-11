@@ -49,7 +49,7 @@ export const BOUILLARGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bouillargues et agglo Nîmes sud ?",
-      a: "Oui, Axion-IA intervient à Bouillargues et dans toute l'agglo nîmoise sud (Milhaud, Garons, Bernis, Manduel). Nos consultants sont à 10 min de Nîmes centre et 5 min de l'aéroport.",
+      a: "Oui, Axion-IA intervient à Bouillargues et dans toute l'agglo nîmoise sud (Milhaud, Garons, Bernis, Manduel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Bouillargues  : quel budget prévoir ?",

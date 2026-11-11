@@ -20,12 +20,24 @@ const DOSSIER = resolve(
   "villes",
   "copy",
 );
-const REGLE =
-  /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
-const QUESTION = /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u;
+const REGLES = [
+  /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?:le |la |les |l['’]|son |sa |votre |vos )?[A-ZÉ]/gu,
+  /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /gu,
+  /[Nn]ous (?:intervenons|nous déplaçons) depuis /gu,
+  /(Nos consultants|[Nn]ous) (sont|sommes) à (\d+ ?min|[A-ZÉ])/gu,
+  /nos bases|notre base [A-ZÉ]/gu,
+  /[Dd]epuis [^.]{1,40}, nous (intervenons|nous déplaçons)/gu,
+  /(?:consultants|experts|[Ww]e|Williams)\b[^."]{0,80}\bfrom (?:Paris|[A-Z])/gu,
+  /[Tt]ravel(?: costs)? (?:is )?from [A-Z]/gu,
+];
+// Liste blanche explicite, appliquée à la PORTION trouvée (sujet = le client).
 const BLANCHE = [
-  /équipes pilotent l'outil en autonomie depuis /u,
-  /qu'elles pilotent l'outil en autonomie depuis /u,
+  /depuis le terrain/u,
+  /depuis la commande/u,
+  /pilotent l['’]outil[^."?]*depuis /u,
+  /vos équipes[^."?]*depuis /u,
+  /travel to all communes — from /u,
+  /\b(?:minutes?|km) from /u,
 ];
 
 const noms = readdirSync(DOSSIER)
@@ -37,8 +49,10 @@ for (const nom of noms) {
   readFileSync(join(DOSSIER, nom), "utf8")
     .split("\n")
     .forEach((l, i) => {
-      const s = BLANCHE.reduce((a, b) => a.replace(b, ""), l);
-      if (REGLE.test(s) || QUESTION.test(s)) {
+      const fautive = REGLES.some((r) =>
+        [...l.matchAll(r)].some((m) => !BLANCHE.some((b) => b.test(m[0]))),
+      );
+      if (fautive) {
         residus++;
         console.log(`${nom}:${i + 1}`);
       }

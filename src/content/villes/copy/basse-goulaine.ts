@@ -49,7 +49,7 @@ export const BASSE_GOULAINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Basse-Goulaine et sud-est nantais ?",
-      a: "Oui, Axion-IA intervient à Basse-Goulaine et toute la couronne sud-est de Nantes Métropole (Haute-Goulaine, Vertou, Saint-Sébastien-sur-Loire, Le Loroux-Bottereau). Nos consultants sont à Nantes en 10 min via le périphérique sud.",
+      a: "Oui, Axion-IA intervient à Basse-Goulaine et toute la couronne sud-est de Nantes Métropole (Haute-Goulaine, Vertou, Saint-Sébastien-sur-Loire, Le Loroux-Bottereau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Muscadet Sèvre-et-Maine ?",

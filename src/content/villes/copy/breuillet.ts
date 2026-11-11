@@ -65,7 +65,7 @@ export const BREUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Breuillet ?",
-      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
+      a: "Breuillet est desservie par le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

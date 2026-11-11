@@ -49,7 +49,7 @@ export const GARONS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Garons et zone aéroport Nîmes ?",
-      a: "Oui, Axion-IA intervient à Garons et dans toute la zone aéroport / agglo nîmoise sud (Bouillargues, Milhaud, Manduel, Bellegarde). Nos consultants sont à 10 min de Nîmes centre.",
+      a: "Oui, Axion-IA intervient à Garons et dans toute la zone aéroport / agglo nîmoise sud (Bouillargues, Milhaud, Manduel, Bellegarde). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises logistique aéroportuaire ?",

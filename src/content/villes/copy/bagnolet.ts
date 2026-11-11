@@ -58,7 +58,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           "Filière image, son et spectacle : studios de post-production, agences de communication visuelle et acteurs de l'audiovisuel formés au Campus Fonderie de l'Image et au CFPTS/CFA SVA ont besoin de portfolios performants, de plateformes de diffusion vidéo et d'outils IA de tri, de transcription et de génération de visuels — c'est notre cœur de cible bagnoletais.",
           "Pôle Gallieni en pleine recomposition tertiaire : avec la Tour Gallièni, les projets de bureaux de l'avenue Gallieni (immeuble ~50 000 m² au 108, projet Novaxia 27 000 m², projet LIVE) et le coworking Morning Gallieni, les jeunes structures et scale-ups qui s'y installent réclament des sites corporate rapides et des SaaS métiers IA-native.",
           "Commerce et hôtellerie : autour du centre commercial Bel Est, de l'hypermarché Auchan et du premier pôle hôtelier de l'est parisien, commerçants et hôteliers ont besoin de vitrines e-commerce multi-CMS, de réservation en ligne et de chatbots de support clients multilingues.",
-          "Proximité immédiate : depuis Gallieni et la porte de Bagnolet, nous intervenons sur site en quelques minutes à Montreuil, Pantin, Les Lilas et Romainville, sur le bassin d'emploi Bagnolet/Montreuil qui concentre une part importante de l'emploi de la Seine-Saint-Denis.",
+          "Bagnolet est desservie par Gallieni et la porte de Bagnolet. Nous intervenons partout en France, sur place ou à distance, y compris à Montreuil, Pantin, Les Lilas et Romainville, sur le bassin d'emploi Bagnolet/Montreuil qui concentre une part importante de l'emploi de la Seine-Saint-Denis.",
         ],
         methodology: [
           {

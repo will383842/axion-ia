@@ -65,7 +65,7 @@ export const CROSNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Crosne ?",
-      a: "Nos consultants accèdent à Crosne en 35 min via le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Crosne est desservie par le RER D (gare de Crosne). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

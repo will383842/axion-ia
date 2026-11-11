@@ -18,9 +18,9 @@ export const ALENCON_COPY: VilleCopy = {
   ecosystemEn:
     "Alençon, 26 000 habitants intra-muros et 50 000 en agglomération, est la préfecture de l'Orne et un carrefour économique entre Normandie et Pays-de-la-Loire. Le tissu local repose sur quatre piliers : sous-traitance automobile structurée autour de Faurecia (équipementier rang 1 Renault et Stellantis) et son réseau d'équipementiers ; agroalimentaire ancré dans la plaine d'Alençon avec le lait, la viande bovine normande et les céréales, en lien avec Lactalis à Laval (70 km) ; artisanat textile-patrimoine héritier de la dentelle au point d'Alençon inscrite UNESCO 2010 ; santé avec la Polyclinique de l'Orne et un maillage dense d'EHPAD lié au vieillissement départemental. S'y ajoutent un commerce de centre historique (Basilique Notre-Dame, Maison d'Ozé, Musée de la Dentelle, maison natale de Sainte Thérèse de Lisieux) et un secteur BTP rénovation du bâti normand. Quelques ETI locales (MPO, Faurecia) complètent ce paysage à dominante TPE-PME.",
   distancesFr:
-    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés depuis nos bases Île-de-France.",
+    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés depuis nos bases Île-de-France.",
+    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Sous-traitance automobile (équipementiers Faurecia, Renault, Stellantis)",
     "Agroalimentaire normand (lait, viande bovine, céréales plaine d'Alençon)",
@@ -74,7 +74,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             step: "Recette + mise en ligne",

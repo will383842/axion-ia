@@ -246,7 +246,7 @@ export const BRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bron ?",
-      a: "Bron étant dans la Métropole, nos consultants sont sur place en 15 min depuis le centre de Lyon.",
+      a: "Bron étant dans la Métropole, Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -47,12 +47,23 @@ const VERBE =
  * accéder à X depuis Paris ? ») ne contiennent aucun des mots déclencheurs.
  */
 const REGLE_GENERALE =
-  /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
+  /(?:se déplac|déplacements?|interventions?|consultants?|équipe|experts?|Williams|[Nn]ous|accès rapide|missions?)[^."?]{0,80}depuis (?:le |la |les |l['’]|son |sa |votre |vos )?[A-ZÉ]/gu;
 const REGLE_EN =
-  /(?:[Cc]onsultants?|[Tt]he team|[Mm]ission|[Ww]e (?:come|reach))[^."?]{0,60}\b(?:come|comes|reach\w*|work) from (?!the |your |a |an |our )[A-Z]/u;
+  /(?:[Cc]onsultants?|[Tt]he team|[Mm]ission|[Ww]e (?:come|reach))[^."?]{0,60}\b(?:come|comes|reach\w*|work) from (?!the |your |a |an |our )[A-Z]/gu;
+const REGLE_EN_FROM = /(?:consultants|experts|[Ww]e|Williams)\b[^."]{0,80}\bfrom (?:Paris|[A-Z])/gu;
+const REGLE_EN_TRAVEL = /[Tt]ravel(?: costs)? (?:is )?from [A-Z]/gu;
+/**
+ * Liste blanche EXPLICITE, appliquée à la PORTION trouvée par le motif (et non
+ * à la ligne) : seules les tournures où le sujet est le CLIENT (ou une
+ * énumération « from X to Y ») sont épargnées. Toute autre portion est fautive.
+ */
 const LISTE_BLANCHE: readonly RegExp[] = [
-  /équipes pilotent l'outil en autonomie depuis /u, // équipes du client
-  /qu'elles pilotent l'outil en autonomie depuis /u, // idem (« On forme vos équipes pour… »)
+  /depuis le terrain/u, // « équipes … qui consultent depuis le terrain »
+  /depuis la commande/u, // « … du devis depuis la commande »
+  /pilotent l['’]outil[^."?]*depuis /u, // équipes du client (« …qu'elles pilotent l'outil en autonomie depuis X »)
+  /vos équipes[^."?]*depuis /u, // idem (« vos équipes … depuis X »)
+  /travel to all communes — from /u, // EN : énumération « from Chalezeule to … »
+  /\b(?:minutes?|km) from /u, // EN : distance d'un lieu (« twelve minutes from La Défense »)
 ];
 
 const MOTIFS: ReadonlyArray<readonly [string, RegExp]> = [
@@ -78,17 +89,29 @@ const MOTIFS: ReadonlyArray<readonly [string, RegExp]> = [
     "C · se déplace depuis Paris en N min",
     /se déplace(?:nt)? [^."]{0,40}depuis Paris en \d+ ?min/iu,
   ],
+  ["F · Nous intervenons depuis …", /[Nn]ous (?:intervenons|nous déplaçons) depuis /gu],
+  [
+    "G · Nos consultants/Nous sommes à N min / <Ville>",
+    /(Nos consultants|[Nn]ous) (sont|sommes) à (\d+ ?min|[A-ZÉ])/gu,
+  ],
+  ["H · nos bases / notre base", /nos bases|notre base [A-ZÉ]/gu],
+  ["I · depuis <X>, nous intervenons", /[Dd]epuis [^.]{1,40}, nous (intervenons|nous déplaçons)/gu],
+  ["J · EN « consultants/we … from <City> »", REGLE_EN_FROM],
+  ["K · EN « travel (costs) from <City> »", REGLE_EN_TRAVEL],
 ];
+
+/** Vrai s'il reste une portion fautive : une portion épargnée seulement si la liste blanche la couvre. */
+function fautive(ligne: string, motif: RegExp): boolean {
+  return [...ligne.matchAll(new RegExp(motif.source, motif.flags.replace("g", "") + "g"))].some(
+    (m) => !LISTE_BLANCHE.some((b) => b.test(m[0])),
+  );
+}
 
 function trouves(motif: RegExp): string[] {
   return TRANCHE.flatMap((nom) =>
     readFileSync(join(DOSSIER, nom), "utf8")
       .split("\n")
-      .flatMap((l, i) =>
-        motif.test(LISTE_BLANCHE.reduce((acc, b) => acc.replace(b, ""), l))
-          ? [`${nom}:${i + 1}`]
-          : [],
-      ),
+      .flatMap((l, i) => (fautive(l, motif) ? [`${nom}:${i + 1}`] : [])),
   );
 }
 
@@ -107,6 +130,12 @@ const FAUTIVES: readonly string[] = [
   'a: "La gare dessert Nantes ; nos consultants rejoignent le site depuis Paris-Montparnasse."',
   'a: "Pour la mise en route — environ 10 km depuis Paris via T1."',
   'a: "Notre équipe se déplace depuis Paris en 25 minutes via le RER B."',
+  'a: "Nous intervenons depuis le bassin stéphanois."',
+  'a: "Nos consultants sont à Nantes en 10 min via le périphérique."',
+  'a: "Démos en visio depuis nos bases Île-de-France."',
+  'a: "Depuis la gare de Béziers, nous intervenons sur site."',
+  'a: "Our consultants are based near Lyon, we come from Lyon in 35 min, from Paris too."',
+  'a: "Travel costs from Paris are billed separately."',
 ];
 
 describe("villes · lot 1/3 sans fausse présence", () => {
@@ -120,21 +149,33 @@ describe("villes · lot 1/3 sans fausse présence", () => {
   it("chaque motif reconnaît sa phrase fautive (garde contre un motif mort)", () => {
     expect(FAUTIVES).toHaveLength(MOTIFS.length);
     MOTIFS.forEach(([nom, motif], i) => {
-      expect(motif.test(FAUTIVES[i]!), nom).toBe(true);
+      expect(fautive(FAUTIVES[i]!, motif), nom).toBe(true);
     });
     expect(
       MOTIFS[0]![1].test('a: "Oui, nos consultants se déplacent à Beynes depuis Paris."'),
     ).toBe(true);
+    expect(fautive("Nos consultants arrivent depuis le Centre de Lyon.", REGLE_GENERALE)).toBe(
+      true,
+    );
+    expect(fautive("Nous accompagnons des équipes depuis Lyon.", REGLE_GENERALE)).toBe(true);
     expect(
-      MOTIFS[0]![1].test('a: "Nous intervenons partout en France, sur place ou à distance."'),
+      MOTIFS.some(([, motif]) =>
+        fautive('a: "Nous intervenons partout en France, sur place ou à distance."', motif),
+      ),
     ).toBe(false);
   });
 
   it("la liste blanche épargne les équipes du client, pas la règle générale (garde)", () => {
     const saine = "Vos équipes pilotent l'outil en autonomie depuis Arcueil, sans verrou.";
-    const bonne = LISTE_BLANCHE.reduce((acc, b) => acc.replace(b, ""), saine);
-    expect(REGLE_GENERALE.test(saine)).toBe(true);
-    expect(REGLE_GENERALE.test(bonne)).toBe(false);
+    expect(new RegExp(REGLE_GENERALE.source, "u").test(saine)).toBe(true);
+    expect(fautive(saine, REGLE_GENERALE)).toBe(false);
+    expect(fautive("Nos consultants pilotent le projet depuis Arcueil.", REGLE_GENERALE)).toBe(
+      true,
+    );
+    expect(
+      fautive("Our consultants travel to all communes — from Caen to Ifs.", REGLE_EN_FROM),
+    ).toBe(false);
+    expect(fautive("Travel costs from Paris apply.", REGLE_EN_TRAVEL)).toBe(true);
   });
 
   for (const [nom, motif] of MOTIFS) {
