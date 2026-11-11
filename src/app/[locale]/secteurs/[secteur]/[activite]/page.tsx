@@ -300,13 +300,7 @@ export default async function SecteurActivite({ params }: Props) {
 
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={serviceJsonLd} />
-      {faqJsonLd ? (
-        <JsonLd
-          data={faqJsonLd}
-          strategy="afterInteractive"
-          scriptId="jsonld-secteur-activite-faq"
-        />
-      ) : null}
+      {faqJsonLd ? <JsonLd data={faqJsonLd} scriptId="jsonld-secteur-activite-faq" /> : null}
     </>
   );
 }

@@ -49,6 +49,7 @@ import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
 // cf. `editorialFor()` plus bas et `scripts/gen-content-freshness.mjs`.
 import { CONTENT_FRESHNESS } from "@/generated/content-freshness";
+import { EDITORIAL_BASELINE_ISO, dateRoute } from "@/lib/seo/fraicheur";
 // Fix sitemap 2026-07-06 — `buildPresseSitemap` lit désormais la DB (communiqués
 // publiés en console admin), la MÊME source que la page `/presse/[slug]`. Avant :
 // lecture des fixtures `PRESS_RELEASES` (3 slugs figés) alors que le fallback
@@ -493,7 +494,9 @@ function buildTimeOrNow(): Date {
  * knowledge DB) continuent d'avoir priorité via `lastModFor`.
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
-const EDITORIAL_BASELINE = new Date("2026-06-08T00:00:00.000Z");
+// Audit SEO 2026-11-11 (I2) : dérivée de la source unique (`seo/fraicheur.ts`),
+// que `SITE_EDITORIAL_DATE` (`seo.ts`) lit aussi — plus de copie à synchroniser.
+const EDITORIAL_BASELINE = new Date(EDITORIAL_BASELINE_ISO);
 
 /**
  * Date de refonte des pages villes (2026-05-26). Utilisée pour les `<lastmod>`
@@ -754,11 +757,17 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
     )
       continue;
+    // Date PAR ROUTE (audit SEO 2026-11-11, I2) : avant, les 87 URL portaient
+    // toutes `now` (date de la famille `pages`). `dateRoute` est la fonction que
+    // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
+    // elle retombe sur la famille `pages` — donc sur `now` — si la route est
+    // absente du manifeste.
+    const lastModified = new Date(dateRoute(key));
     for (const locale of effectiveLocales) {
       const url = localeUrl(key, locale);
       entries.push({
         url,
-        lastModified: now,
+        lastModified,
         changeFrequency: "weekly",
         priority: key === "/" ? 1 : (key as string).split("/").length === 2 ? 0.8 : 0.6,
         alternates: { languages: alternateLanguages(key) },

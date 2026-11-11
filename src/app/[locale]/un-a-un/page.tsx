@@ -221,20 +221,12 @@ export default async function UnAUnHubPage({ params }: Props) {
     extra: { primaryImageOfPage: buildPrimaryImageOfPage("/un-a-un") },
   });
 
-  // Service, PAS Course : les kits 16/17 sont formels — « ce n'est pas une action
-  // de formation » (conseil, non finançable). Déclarer un Course aux moteurs/LLM
-  // contredirait le document contractuel remis au client.
-  const courseJsonLdArray = COACHING_TYPES.map((c) =>
-    buildServiceJsonLd({
-      locale: loc,
-      path: isFr ? c.hrefFr : c.hrefEn,
-      name: isFr ? c.labelFr : c.labelEn,
-      description: isFr ? c.taglineFr : c.taglineEn,
-      serviceType: isFr
-        ? "Accompagnement individuel IA (intervention de conseil)"
-        : "Individual AI coaching (consulting engagement)",
-    }),
-  );
+  // UN SEUL nœud `Service` sur ce hub (audit du site réel, 2026-11-11). Il y en
+  // avait trois — celui-ci plus un par formule —, chacun avec ~2 157 villes en
+  // `areaServed` : 1,45 Mo de JSON-LD. Les deux formules ont leur propre page,
+  // qui porte son propre `Service` ; ici, l'`ItemList` les énumère.
+  // (Toujours Service, jamais Course : les kits 16/17 sont formels — « ce n'est
+  // pas une action de formation ».)
 
   const howToReserverJsonLd = buildHowToJsonLd({
     locale: loc,
@@ -1062,9 +1054,6 @@ export default async function UnAUnHubPage({ params }: Props) {
       <JsonLd data={itemListJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
       <JsonLd data={howToReserverJsonLd} />
-      {courseJsonLdArray.map((course, idx) => (
-        <JsonLd key={`course-${idx}`} data={course} />
-      ))}
     </>
   );
 }
