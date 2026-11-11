@@ -39,7 +39,7 @@ export const PARTENAIRE_LANDINGS: Readonly<Record<PartenaireSource, PartenaireLa
   leboncoin: {
     source: "leboncoin",
     canal: "Vu sur Le Bon Coin",
-    metaTitle: "Présentez la Journée IA aux dirigeants que vous connaissez · Axion-IA",
+    metaTitle: "Présentez la Journée IA à vos contacts dirigeants · Axion-IA",
     metaDescription:
       "Vous connaissez des dirigeants ? Présentez-leur la Journée IA, nous faisons le reste. Sans CV, sans frais d'entrée, sans exclusivité.",
   },
