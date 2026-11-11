@@ -308,8 +308,8 @@ export function CommercialApplicationWizard(): React.ReactNode {
               C’est envoyé 🎉
             </h2>
             <p className="text-fg mt-4 text-lg leading-relaxed">
-              Vous allez recevoir un e-mail de confirmation, puis, dans les minutes qui suivent, une
-              invitation à réserver un échange de 15 minutes en visio.
+              Vous allez recevoir un e-mail de confirmation : il contient le bouton pour réserver
+              votre échange de 15 minutes en visio.
             </p>
             <p className="text-fg-soft mt-3 leading-relaxed">
               Pensez à vérifier vos courriers indésirables.
