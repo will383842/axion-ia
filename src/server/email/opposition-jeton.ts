@@ -149,12 +149,36 @@ function lireOp2(token: string): string | null {
   return adresse;
 }
 
+let avertiRepliOp1 = false;
+
+/** Une seule fois par processus, SANS valeur : ni jeton, ni adresse, ni secret. */
+function avertirRepliOp1(): void {
+  if (avertiRepliOp1) return;
+  avertiRepliOp1 = true;
+  console.warn(JSON.stringify({ event: "opposition_jeton_repli_op1" }));
+  // Import dynamique : ce module reste PUR (importé par le registre des gabarits).
+  void import("@sentry/nextjs")
+    .then((Sentry) =>
+      Sentry.captureMessage("opposition_jeton_repli_op1 : OPPOSITION_JETON_SECRET absent", "warning"),
+    )
+    .catch(() => {});
+}
+
 /**
- * Jeton d'opposition pour une adresse. Aujourd'hui toujours `op1` : l'émission
- * `op2` arrive derrière un interrupteur, APRÈS que la lecture est en ligne
- * (fenêtre app↔worker, cf. AGENTS.md).
+ * Jeton d'opposition pour une adresse — le SEUL point d'émission du dépôt (garde :
+ * `tests/unit/email/plus-aucun-op1-emis.spec.ts`).
+ *
+ * `OPPOSITION_JETON_V2` (exactement « true », lu à l'exécution, éteint par défaut, app ET
+ * worker) émet l'`op2` opaque. Éteint, ou secret absent : `op1` — jamais « pas de lien ».
+ * ORDRE D'ALLUMAGE (fenêtre app↔worker, AGENTS.md) : la lecture `op2` doit être en ligne
+ * côté APP avant d'allumer, sinon un clic de la fenêtre échoue (un « stop » perdu).
  */
 export function jetonOpposition(email: string): string {
+  if (process.env["OPPOSITION_JETON_V2"] === "true") {
+    const op2 = jetonOppositionOp2(email);
+    if (op2 !== null) return op2;
+    avertirRepliOp1();
+  }
   return jetonOppositionOp1(email);
 }
 

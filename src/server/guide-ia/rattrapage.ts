@@ -218,8 +218,9 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
 
       // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
       // Venue de la page « Recevoir le guide » : même e-mail qu'au premier envoi, AVEC le lien de
-      // désinscription promis par la case (jeton d'opposition signé, sans adresse en clair —
-      // le même `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
+      // désinscription promis par la case (jeton d'opposition signé : `op2` opaque une fois
+      // `OPPOSITION_JETON_V2` allumé, `op1` — adresse en base64url, donc lisible — sinon ; le même
+      // `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
       const pageGuide = await vientDeLaPageGuide(c.id);
       const reseau = pageGuide || (c.origine as string) === "message_prive";
       const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
