@@ -65,7 +65,6 @@ export const CONTENU = {
       { valeur: "Garantie ×3", legende: "voir la condition →", ancre: "#garantie" },
     ],
     carteDesGains: {
-      etiquette: "Exemple type",
       titre: "Votre entreprise, cartographiée",
       sousTitre:
         "Un exemple, pas le vôtre\u202f: vos chiffres sont relevés sur place avec vous, service par service.",
@@ -110,7 +109,6 @@ export const CONTENU = {
     pasPourVous: ["Un cours technique", "Une équipe indisponible ce jour-là"],
     lienAppel: "Pas sûr\u202f? Réserver un appel",
     titreExemples: "Exemples types, par secteur",
-    etiquetteExemple: "Exemple type",
     exemples: [
       {
         secteur: "BTP et artisans",
@@ -201,7 +199,6 @@ export const CONTENU = {
   calcul: {
     surtitre: "Le calcul",
     titre: "Combien vous coûtent ces heures\u202f?",
-    etiquette: "Exemple type",
     facteurs: ["{{HEURES_EXEMPLE}} par semaine", "45 semaines", "{{TAUX_HORAIRE}} de l’heure"],
     total: "{{GAIN_EXEMPLE}}",
     totalSuite: "de temps payé chaque année.",
