@@ -5,15 +5,17 @@
  * simultanés pour tout le compte), 56 % des runs de PR sont annulés, une PR
  * coûte ~78 min-machine. Trois changements, verrouillés ici :
  *
- * 1. **Brouillon = pas de CI lourde.** Couverture ×3, Gate B ×2 et leurs
- *    verdicts (« Gate A · couverture », « Gate B · per-PR ») sautent tant que
- *    la PR est en brouillon ; `ready_for_review` les relance. Un brouillon ne
- *    peut pas être fusionné : leur `skipped` y est sans risque. Gate A (dont
- *    gitleaks, anti-SIREN, admin-gardes) et Gate D tournent TOUJOURS.
+ * 1. **Brouillon = pas de CI lourde.** Couverture ×3 et Gate B ×2 sautent tant
+ *    que la PR est en brouillon ; `ready_for_review` les relance. Les deux
+ *    VERDICTS exigés (« Gate A · couverture », « Gate B · per-PR ») ne sautent
+ *    PAS : un contexte exigé `skipped` compte comme réussi pour GitHub, d'où une
+ *    fenêtre de contournement sur le même SHA. En brouillon, leur première étape
+ *    « Refus en brouillon » les rend ROUGES. Gate A (dont gitleaks, anti-SIREN,
+ *    admin-gardes) et Gate D tournent TOUJOURS.
  * 2. **Gate B ne refait plus `tsc` dans `next build`** (`SKIP_NEXT_TYPECHECK`) :
  *    « Gate A · per-commit », exigée, lance `pnpm typecheck` sur le même commit.
- * 3. **Plus de déclencheur `push`** : 10 runs sur 13 y étaient annulés ; `main`
- *    est rejoué en entier par le passage quotidien `schedule`.
+ * 3. **`push` limité à `main`** : Gate A et Gate D tournent après chaque fusion ;
+ *    couverture, Gate B et verdicts n'y tournent pas (`!= 'push'`).
  *
  * ⛔ Ce que cette garde interdit aussi : `paths`/`paths-ignore` au niveau du
  * workflow (les contextes exigés resteraient « en attente » et bloqueraient
@@ -69,8 +71,8 @@ describe("CI-LOT1 — brouillon sans CI lourde, typecheck unique, pas de push", 
     );
   });
 
-  it("aucun déclencheur `push`", () => {
-    expect(code(yaml)).not.toMatch(/^ {2}push:/m);
+  it("`push` limité à `main` (Gate A et Gate D tournent après chaque fusion)", () => {
+    expect(code(yaml)).toMatch(/^ {2}push:\s*\n {4}branches: \[main\]\s*$/m);
   });
 
   it("aucun `paths` / `paths-ignore` sur un déclencheur (les contextes exigés resteraient en attente)", () => {
@@ -78,22 +80,41 @@ describe("CI-LOT1 — brouillon sans CI lourde, typecheck unique, pas de push", 
     expect(declencheurs).not.toMatch(/paths(-ignore)?:/);
   });
 
-  it("les 4 contextes exigés gardent leur nom exact", () => {
-    for (const nom of [
-      "Gate A · per-commit",
-      "Gate A · couverture",
-      "Gate B · per-PR",
-      "Gate D · Prisma migrate deploy (DB fresh)",
-    ]) {
-      expect(yaml).toMatch(new RegExp(`^ {4}name: ${nom.replace(/[()]/g, "\\$&")}\\s*$`, "m"));
+  it("les 4 contextes exigés gardent leur nom exact, DANS le corps du job attendu", () => {
+    const attendus: Array<[string, string]> = [
+      ["gate-a", "Gate A · per-commit"],
+      ["gate-a-couverture", "Gate A · couverture"],
+      ["gate-b-verdict", "Gate B · per-PR"],
+      ["gate-d-migration", "Gate D · Prisma migrate deploy (DB fresh)"],
+    ];
+    for (const [id, nom] of attendus) {
+      const motif = new RegExp(`^ {4}name: ${nom.replace(/[()]/g, "\\$&")}\\s*$`, "m");
+      expect(job(id), `le job « ${id} » doit porter le nom exigé « ${nom} »`).toMatch(motif);
     }
   });
 
-  for (const id of ["gate-a-couverture-morceau", "gate-a-couverture", "gate-b", "gate-b-verdict"]) {
+  for (const id of ["gate-a-couverture-morceau", "gate-b"]) {
     it(`« ${id} » saute sur une PR en brouillon`, () => {
       const cond = conditionDuJob(job(id));
       expect(cond, `« ${id} » n'a plus de condition de job`).not.toBeNull();
       expect(cond).toContain(BROUILLON);
+    });
+  }
+
+  for (const id of ["gate-a-couverture", "gate-b-verdict"]) {
+    it(`le verdict « ${id} » ne saute JAMAIS en brouillon (skipped = réussi pour GitHub) et le refuse par une étape rouge`, () => {
+      const corps = job(id);
+      const cond = conditionDuJob(corps);
+      expect(cond, `« ${id} » n'a plus de condition de job`).not.toBeNull();
+      expect(cond).not.toContain(BROUILLON);
+      const etapes = code(corps).split(/^ {6}- /m);
+      // Première étape (après `steps:`) = le refus.
+      const premiere = etapes[1] ?? "";
+      expect(premiere).toMatch(/^name: Refus en brouillon\s*$/m);
+      expect(premiere).toMatch(
+        /^ {8}if: github\.event_name == 'pull_request' && github\.event\.pull_request\.draft\s*$/m,
+      );
+      expect(premiere).toContain('echo "::error::PR en brouillon : verdict non rendu" && exit 1');
     });
   }
 

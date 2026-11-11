@@ -28,27 +28,31 @@ on:
   # 🟢 2026-11-08 (CI-LOT1) — `types` EXPLICITES, avec `ready_for_review`.
   # Les trois premiers sont les types PAR DÉFAUT de `pull_request` : rien ne
   # change pour une PR prête. `ready_for_review` est ajouté parce que les jobs
-  # LOURDS (couverture ×3, Gate B ×2) et leurs verdicts sautent désormais tant
-  # que la PR est en BROUILLON (condition `draft == false` sur ces jobs). Sans
-  # ce type, passer une PR en « prête » ne relancerait rien, et les contextes
-  # exigés garderaient la conclusion `skipped` du dernier passage en brouillon.
-  # Un brouillon ne peut pas être fusionné : un `skipped` y est sans risque.
+  # LOURDS (couverture ×3, Gate B ×2) sautent désormais tant que la PR est en
+  # BROUILLON (condition `draft == false` sur les tranches et sur gate-b SEULS).
+  # Sans ce type, passer une PR en « prête » ne relancerait rien.
+  #
+  # 🔴 Relecture Opus : les deux VERDICTS exigés (« Gate A · couverture » et
+  # « Gate B · per-PR ») ne portent PLUS cette condition. Un contexte exigé
+  # `skipped` compte comme RÉUSSI pour GitHub : en brouillon, puis
+  # `ready_for_review` sur le MÊME SHA, c'était une fenêtre où couverture et
+  # Gate B étaient contournées. Les verdicts tournent donc TOUJOURS et, en
+  # brouillon, leur première étape « Refus en brouillon » les rend ROUGES
+  # (« verdict non rendu »). Un brouillon est ainsi rouge sur ces deux
+  # contextes, jamais `skipped` ; `ready_for_review` les relance.
   # Gate A (gitleaks, anti-SIREN, admin-gardes, types, lint…) et Gate D
   # tournent TOUJOURS, brouillon ou non.
-  # ⚠️ PIÈGE : « Re-run » d'un VIEUX run lancé en brouillon rejoue son événement
-  # d'origine (`draft: true`) ; fait après le passage en « prête » sur le MÊME
-  # commit, il réécrirait « Gate A · couverture » et « Gate B · per-PR » en
-  # `skipped`. Ne relancer que le run déclenché par `ready_for_review` (ou
-  # pousser un commit).
+  # ⚠️ « Re-run » d'un VIEUX run lancé en brouillon rejoue `draft: true` : les
+  # verdicts restent rouges. Ne relancer que le run de `ready_for_review`
+  # (ou pousser un commit).
   #
-  # 🔴 2026-11-08 (CI-LOT1) — le déclencheur `push: branches: [main, staging]`
-  # est RETIRÉ. Audit du 08/11 : 10 runs sur 13 sur `main` étaient annulés par
-  # le commit suivant (concurrence par ref) — des minutes-machine pour aucun
-  # verdict, dans une file de 20 jobs simultanés pour tout le compte. Le code
-  # de `main` est déjà gardé par la PR (et la file de fusion), puis rejoué EN
-  # ENTIER par le passage quotidien `schedule` ci-dessous. `staging` n'existe
-  # plus sur `origin`. Réduire le push à Gate A seule aurait exigé de poser un
-  # `if` sur Gate D, hors périmètre du lot.
+  # 🟡 `push: branches: [main]` est REMIS (relecture Opus). Le retirer privait
+  # `main` de Gate A et Gate D après chaque fusion (rien d'autre ne les rejoue
+  # avant le `schedule` quotidien). Gate A et Gate D tournent donc sur push ;
+  # couverture, Gate B et leurs verdicts n'y tournent pas (`!= 'push'`).
+  # `staging` n'existe plus sur `origin` : il n'est pas remis.
+  push:
+    branches: [main]
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
   # File de fusion (2026-08-18). SANS ce déclencheur, une file activée attend
@@ -406,13 +410,15 @@ jobs:
     # Sans lui, un morceau rouge le ferait `skipped` — et un contexte exigé
     # sauté n'est pas un contexte rouge. La première étape transforme tout
     # résultat autre que `success` (échec, annulation, saut) en rouge.
-    # La condition « brouillon » est celle des morceaux, à l'identique : en
-    # brouillon, le verdict SAUTE avec eux (un brouillon n'est pas fusionnable),
-    # et `ready_for_review` relance l'ensemble.
-    if: always() && github.event_name != 'push' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
+    # Le verdict ne porte PAS la condition « brouillon » des morceaux (relecture Opus) :
+    # `skipped` compterait comme réussi. En brouillon, « Refus en brouillon » le rend rouge.
+    if: always() && github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Refus en brouillon
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft
+        run: 'echo "::error::PR en brouillon : verdict non rendu" && exit 1'
       - name: Les trois morceaux ont réussi
         env:
           RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}
@@ -1215,17 +1221,20 @@ jobs:
     # `always()` : ce job doit TOUJOURS rendre un verdict sous le nom exigé.
     # Sans lui, une tranche rouge le ferait `skipped` — et un contexte exigé
     # sauté n'est pas un contexte rouge. L'étape transforme tout résultat autre
-    # que `success` (échec, annulation, saut) en rouge. Les trois autres
-    # conditions sont celles de `gate-b`, à l'identique : hors de ces
+    # que `success` (échec, annulation, saut) en rouge. Hors brouillon, les trois autres
+    # conditions sont celles de `gate-b` ; le brouillon est refusé par la 1re étape. Hors de ces
     # événements, Gate B n'a jamais tourné et ne tourne toujours pas.
     if: >-
       always() && (
-      (github.event_name == 'pull_request' && github.event.pull_request.draft == false) ||
+      (github.event_name == 'pull_request') ||
       github.event_name == 'merge_group' ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.a11y_routes != ''))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Refus en brouillon
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft
+        run: 'echo "::error::PR en brouillon : verdict non rendu" && exit 1'
       - name: Les deux tranches ont réussi
         env:
           RESULTAT: ${{ needs.gate-b.result }}

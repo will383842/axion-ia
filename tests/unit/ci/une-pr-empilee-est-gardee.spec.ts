@@ -145,8 +145,10 @@ describe("une PR empilée est gardée comme les autres", () => {
         "et sans ce type, passer une PR en « prête » ne relancerait rien",
     ).toBe(true);
 
-    // Aucun déclencheur `push` : la CI ne tourne pas sur chaque poussée.
-    expect(blocDe(lignes, "push:"), "ci.yml ne doit plus se déclencher sur `push`").toBeNull();
+    // `push` limité à `main` (relecture Opus) : Gate A et Gate D tournent après fusion.
+    const surPush = blocDe(lignes, "push:");
+    expect(surPush, "ci.yml doit garder `push: branches: [main]`").not.toBeNull();
+    expect(surPush!.some((l) => l.trim() === "branches: [main]")).toBe(true);
 
     // La file de fusion reste câblée : sans elle, une file activée attend
     // indéfiniment des checks qui ne se lancent jamais.

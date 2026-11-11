@@ -144,9 +144,7 @@ describe("la suite Vitest tourne une fois, en 3 morceaux fusionnés par « Gate 
   it("la fusion attend la matrice, tourne toujours, et rougit si elle n'est pas success", () => {
     expect(couverture).not.toMatch(/continue-on-error/);
     expect(couverture).toMatch(/^ {4}needs: gate-a-couverture-morceau\s*$/m);
-    expect(couverture).toMatch(
-      /^ {4}if: always\(\) && github\.event_name != 'push' && \(github\.event_name != 'pull_request' \|\| github\.event\.pull_request\.draft == false\)\s*$/m,
-    );
+    expect(couverture).toMatch(/^ {4}if: always\(\) && github\.event_name != 'push'\s*$/m);
     expect(couverture).toContain("RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}");
     expect(couverture).toMatch(/if \[ "\$\{RESULTAT\}" != "success" \]; then[\s\S]*?exit 1/);
   });

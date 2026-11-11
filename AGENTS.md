@@ -135,10 +135,11 @@ Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
 
 ## CI : brouillon = pas de CI lourde (CI-LOT1, 2026-11-08)
 
-- Une PR **reste en brouillon pendant le travail** et passe en « prête » **une seule fois, à la fin du lot**. En brouillon, seules Gate A (types, lint, gitleaks, anti-SIREN, admin-gardes…) et Gate D tournent ; la couverture ×3, Gate B ×2 et leurs verdicts sautent, et `ready_for_review` relance tout.
-- La CI ne tourne plus sur `push` vers `main` : `main` est rejoué en entier par le passage quotidien (`schedule`).
+- Une PR **reste en brouillon pendant le travail** (règle pour tout agent : ouvrir en brouillon, ne passer en « prête » qu'une fois, à la fin du lot). En brouillon, Gate A (types, lint, gitleaks, anti-SIREN, admin-gardes…) et Gate D tournent ; la couverture ×3 et Gate B ×2 sautent ; `ready_for_review` relance tout.
+- ⛔ Les deux VERDICTS exigés (« Gate A · couverture », « Gate B · per-PR ») **ne sautent jamais** : un contexte exigé `skipped` compte comme réussi pour GitHub (fenêtre de contournement sur le même SHA après `ready_for_review`). En brouillon, leur première étape « Refus en brouillon » les rend **rouges** (« verdict non rendu »). Une PR en brouillon est donc rouge sur ces deux contextes, par construction.
+- `push: branches: [main]` est conservé : Gate A et Gate D tournent après chaque fusion ; couverture, Gate B et verdicts n'y tournent pas. Le passage quotidien (`schedule`) rejoue `main` en entier.
 - Gate B build avec `SKIP_NEXT_TYPECHECK=true` ; la vérification de types (y compris `.next/types` via `next typegen`) est faite par « Gate A · per-commit ».
-- ⚠️ Ne pas « Re-run » un vieux run lancé en brouillon après le passage en « prête » : il rejoue `draft: true` et réécrit les verdicts exigés en `skipped`.
+- ⚠️ Un « Re-run » d'un vieux run lancé en brouillon rejoue `draft: true` : les verdicts restent rouges. Ne relancer que le run de `ready_for_review`, ou pousser un commit.
 
 ## Build externalisé GitHub Actions + stubs Prisma/Redis (ADR 0026)
 
