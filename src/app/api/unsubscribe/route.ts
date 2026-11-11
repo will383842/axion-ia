@@ -29,6 +29,14 @@
 //      qui porte le bouton « Confirmer » (un POST). C'est le geste humain qui
 //      désabonne, pas l'ouverture du lien.
 //
+// 🔴 Plus de jeton dans l'URL de la page (plan « jeton op2 », J2). Les scripts de
+// mesure d'audience (Plausible sur toutes les pages ; Clarity, Meta, LinkedIn après
+// accord) voient l'URL COMPLÈTE de `/fr/desabonnement`. Le GET pose donc le jeton dans
+// un cookie court `__Host-` (HttpOnly, Secure, SameSite=Lax, 15 min) et redirige vers
+// la page SANS paramètre ; le POST formulaire lit le corps puis le cookie, et l'efface
+// après traitement (succès ou échec). Le One-Click (RFC 8058) garde le jeton dans l'URL
+// de l'en-tête `List-Unsubscribe` : le client de messagerie POSTe sur cette URL.
+//
 // Limite de débit sur les trois portes : une adresse IP n'a aucune raison
 // légitime de présenter plus d'une poignée de jetons par minute.
 
@@ -37,12 +45,16 @@ import { unsubscribeNewsletterAction } from "@/features/newsletter/actions";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { enregistrerOpposition, estJetonOpposition } from "@/server/email/opposition";
 import { ipDepuisEntetes } from "@/lib/client-ip";
+import { COOKIE_DESINSCRIPTION } from "@/lib/unsubscribe-cookie";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const VALID_LOCALES = new Set(["fr", "en"]);
 const LIMITE_PAR_MINUTE = 20;
+const DUREE_COOKIE_SECONDES = 900;
+/** Au-delà, ce n'est aucun de nos jetons (op2 ≤ ~120, newsletter ≈ 40) : pas de cookie. */
+const LONGUEUR_MAX_JETON_COOKIE = 512;
 
 function pickLocale(req: NextRequest): "fr" | "en" {
   const referer = req.headers.get("referer") || "";
@@ -54,7 +66,28 @@ function pickLocale(req: NextRequest): "fr" | "en" {
 
 function pageDesabonnement(locale: "fr" | "en", query: string): URL {
   const slug = locale === "en" ? "/en/unsubscribe" : "/fr/desabonnement";
-  return new URL(`${slug}?${query}`, process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000");
+  return new URL(
+    query === "" ? slug : `${slug}?${query}`,
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  );
+}
+
+/** Réponse qui ne doit ni être mise en cache ni fuiter l'URL en Referer. */
+function sansTrace(res: NextResponse): NextResponse {
+  res.headers.set("Referrer-Policy", "no-referrer");
+  res.headers.set("Cache-Control", "no-store");
+  return res;
+}
+
+function effacerCookie(res: NextResponse): NextResponse {
+  res.cookies.set(COOKIE_DESINSCRIPTION, "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: 0,
+  });
+  return res;
 }
 
 async function debitDepasse(req: NextRequest): Promise<boolean> {
@@ -94,15 +127,24 @@ async function desabonnerPuisRediriger(
   locale: "fr" | "en",
 ): Promise<NextResponse> {
   const result = await retirerConsentement(token);
+  // Le cookie est consommé dans tous les cas : le jeton ne reste pas dans le navigateur.
   if (result.ok) {
-    return NextResponse.redirect(
-      pageDesabonnement(locale, `status=ok&already=${result.alreadyUnsubscribed ? "1" : "0"}`),
-      { status: 303 },
+    return effacerCookie(
+      sansTrace(
+        NextResponse.redirect(
+          pageDesabonnement(locale, `status=ok&already=${result.alreadyUnsubscribed ? "1" : "0"}`),
+          { status: 303 },
+        ),
+      ),
     );
   }
-  return NextResponse.redirect(pageDesabonnement(locale, `status=fail&reason=${result.error}`), {
-    status: 303,
-  });
+  return effacerCookie(
+    sansTrace(
+      NextResponse.redirect(pageDesabonnement(locale, `status=fail&reason=${result.error}`), {
+        status: 303,
+      }),
+    ),
+  );
 }
 
 /**
@@ -137,8 +179,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     unClic = formData.get("List-Unsubscribe") === "One-Click";
   }
 
-  const token = queryToken ?? bodyToken;
-  if (unClic) return desabonnerEnUnClic(token);
+  // One-Click : jeton de la requête UNIQUEMENT (jamais le cookie d'un navigateur).
+  if (unClic) return desabonnerEnUnClic(queryToken ?? bodyToken);
+  // Formulaire : requête, corps, puis cookie posé par le GET.
+  const token = queryToken ?? bodyToken ?? req.cookies.get(COOKIE_DESINSCRIPTION)?.value ?? null;
   return desabonnerPuisRediriger(token, pickLocale(req));
 }
 
@@ -154,7 +198,21 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
       status: 303,
     });
   }
-  return NextResponse.redirect(pageDesabonnement(locale, `token=${encodeURIComponent(token)}`), {
-    status: 303,
+  // Aucune différence de réponse entre un bon et un mauvais jeton : le GET n'en juge pas.
+  if (token.length > LONGUEUR_MAX_JETON_COOKIE) {
+    return sansTrace(
+      NextResponse.redirect(pageDesabonnement(locale, "status=fail&reason=invalid_token"), {
+        status: 303,
+      }),
+    );
+  }
+  const res = sansTrace(NextResponse.redirect(pageDesabonnement(locale, ""), { status: 303 }));
+  res.cookies.set(COOKIE_DESINSCRIPTION, token, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "lax",
+    path: "/",
+    maxAge: DUREE_COOKIE_SECONDES,
   });
+  return res;
 }
