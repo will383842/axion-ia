@@ -104,6 +104,7 @@ const LIBELLES_EMPLACEMENT: Readonly<Record<string, string>> = {
   "en-tete": "En-tête",
   header: "En-tête",
   "entete-mobile": "En-tête (mobile)",
+  "entete-megamenu": "En-tête (menu Nos prestations)",
   pied: "Pied de page",
   "pied-de-page": "Pied de page",
   footer: "Pied de page",

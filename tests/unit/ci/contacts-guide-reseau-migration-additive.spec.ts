@@ -112,11 +112,13 @@ describe("migration contacts_guide_reseau : additive", () => {
       .map((f) => f.replace(racine, ""))
       .sort();
     // Écrivain : la validation de la page. Lecteurs : la page (usage unique), l'export art. 15,
-    // la mise à l'écart de l'effacement art. 17.
+    // la mise à l'écart de l'effacement art. 17, et (lot S3) le lecteur au clic du lien du guide
+    // (`clic-page-guide.ts` : un `findFirst` seulement, aucune écriture ni suppression).
     expect(fautifs).toEqual([
       "src/app/guide-reseau/route.ts",
       "src/lib/rgpd-erase.ts",
       "src/lib/rgpd-guide-reseau.ts",
+      "src/server/guides-reseau/clic-page-guide.ts",
       "src/server/guides-reseau/page-confirmation.ts",
     ]);
   });
