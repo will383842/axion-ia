@@ -106,15 +106,9 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     file: "components/nav/Footer.tsx",
     why: "mention « organisme de formation certifié Qualiopi » rendue sur ~17 600 routes",
   },
-  {
-    file: "app/[locale]/page.tsx",
-    // Ajoutée 2026-07-28 : la home avait été OUBLIÉE lors du découplage #401.
-    // Elle gatait « certifié Qualiopi » sur isQualiopiPublicDisclosureEnabled(),
-    // alors que /formations avait bien été migrée. Latent et non détecté : les
-    // deux flags sont à false en prod, donc aucune fuite observable — la
-    // régression ne serait apparue qu'au passage en Phase B.
-    why: "claim « certifié Qualiopi » dans la description SERP de la page d'accueil",
-  },
+  // `app/[locale]/page.tsx` : retirée le 2026-11-09 — l’accueil n’affirme plus rien sur la
+  // certification (refonte maquette, PR-C). Le balayage inverse ci-dessous rougit si
+  // une affirmation y revient.
   {
     file: "app/[locale]/a-propos/page.tsx",
     why: "bloc de réassurance OF sur la page institutionnelle",
