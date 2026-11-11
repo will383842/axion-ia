@@ -19,8 +19,10 @@
 import { DEPARTEMENTS } from "@/lib/commercial-application/model";
 import { VILLES_CORE } from "./core";
 import {
+  CHEMIN_JOURNEE_IA,
   CONDITION_GARANTIE,
   GARANTIE_PHRASE,
+  lienDiagnostic,
   RAPPORT_COMPLET,
   remplacerJetons,
 } from "@/content/journee-ia-commun";
@@ -30,8 +32,8 @@ export const TITRE_MAX = 60;
 /** Longueur maximale d'une meta description. */
 export const DESCRIPTION_MAX = 155;
 
-/** Chemin (sans locale) de la landing La Journée IA. */
-export const CHEMIN_JOURNEE_IA = "/journee-ia";
+/** Chemin (sans locale) de la landing La Journée IA : source unique dans journee-ia-commun. */
+export { CHEMIN_JOURNEE_IA };
 
 /** Date de la refonte « Journée IA » des pages implantations (`WebPage.dateModified`). */
 export const DATE_MAJ_IMPLANTATIONS = "2026-11-11";
@@ -352,10 +354,11 @@ export function ancresJourneeIa(slug: string): readonly [string, string] {
   return [ANCRES_JOURNEE_IA[i]!, ANCRES_JOURNEE_IA[j]!];
 }
 
-/** Lien de prise de rendez-vous (diagnostic gratuit), avec l'emplacement `depuis=`. */
-export function lienRendezVous(depuis: string): string {
-  return `/appel?rdv=diagnostic&depuis=${depuis}`;
-}
+/**
+ * Lien de prise de rendez-vous (diagnostic gratuit), avec l'emplacement `depuis=`.
+ * Source unique : `lienDiagnostic` de journee-ia-commun (paramètre encodé).
+ */
+export const lienRendezVous = lienDiagnostic;
 
 /** Emplacement `depuis=` d'un CTA de page ville (≤ 60 car., [a-z0-9-]). */
 export function depuisVille(slug: string, emplacement: "haut" | "bas" | "faq"): string {
