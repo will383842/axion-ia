@@ -475,20 +475,14 @@
  * Utilities — éditorial signature + halos
  * =============================================================*/
 @layer utilities {
-  /* Halo gradient sand → terracotta très doux (Hero, intro) */
+  /* Aplat ivoire (Hero, intro) — charte 2027 : plus de halo ni de dégradé (nom de classe conservé). */
   .bg-halo-warm {
     background-color: var(--color-bg);
-    background-image:
-      radial-gradient(at 92% 8%, rgba(194, 74, 27, 0.1) 0px, transparent 55%),
-      radial-gradient(at 8% 92%, rgba(26, 77, 217, 0.06) 0px, transparent 60%);
   }
 
-  /* Halo cool sand → ancien bleu (retiré de la palette), subtil (alternance) */
+  /* Aplat sable (alternance) — charte 2027 : plus de halo bleu ni de dégradé (nom de classe conservé). */
   .bg-halo-cool {
     background-color: var(--color-sand);
-    background-image:
-      radial-gradient(at 88% 88%, rgba(26, 77, 217, 0.08) 0px, transparent 55%),
-      radial-gradient(at 12% 12%, rgba(122, 136, 112, 0.06) 0px, transparent 50%);
   }
 
   /* Mocha section avec gradient subtil — alternative au noir */

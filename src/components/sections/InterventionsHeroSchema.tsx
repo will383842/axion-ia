@@ -2,8 +2,8 @@
 // Format CARRÉ (560×560) — harmonisé doctrine `.hero-schema` v3.3
 // (2026-05-08). Orbite quasi-circulaire (rx 170, ry 180) pour caser
 // N satellites sans collision de labels dans la boîte 1:1.
-// Reprend la grammaire du PageHeroDecoration (anneaux + halos terracotta /
-// primary / sage + particules) avec l'entreprise au centre et les
+// Reprend la grammaire du PageHeroDecoration (anneaux terracotta /
+// primary / sage + particules, sans halo) avec l'entreprise au centre et les
 // blocs en orbite, chacun affichant son bénéfice concret.
 //
 // Sprint 14.10.7 (2026-05-11) — refonte hub /interventions : passe de 5

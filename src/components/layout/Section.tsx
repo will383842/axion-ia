@@ -96,8 +96,8 @@ const emClasses: Record<SectionTone, string> = {
   mocha: "text-terracotta-soft",
 };
 
-// Décoration visuelle pour les page heros (titleAs="h1") — anneaux concentriques,
-// halos diffus et particules à droite. Donne du caractère sans illustration custom.
+// Décoration visuelle pour les page heros (titleAs="h1") — anneaux concentriques
+// et particules à droite. Donne du caractère sans illustration custom.
 function PageHeroDecoration() {
   return (
     <div
@@ -211,7 +211,7 @@ function PageHeroDecoration() {
 
 // Editorial Section v3. Default tone = canvas (ivoire) pour h2/h3 ; quand
 // `titleAs="h1"` (= page hero) et tone non spécifié, default automatique
-// `halo-warm` + décoration visuelle (anneaux, halos, particules) pour
+// aplat ivoire (`halo-warm`, sans dégradé) + décoration visuelle (anneaux, particules) pour
 // harmoniser tous les hero du site avec la home.
 // Title supports an optional italic-editorial accent via `titleEm` + `titleTail`.
 export function Section({
@@ -353,7 +353,7 @@ export function Section({
       )}
       {...rest}
     >
-      {/* Décoration visuelle sur les page hero (h1) — anneaux + halos + particules.
+      {/* Décoration visuelle sur les page hero (h1) — anneaux + particules.
           Masquée quand une photo hero est fournie (la photo prend sa place). */}
       {isPageHero && !hasHeroMedia ? <PageHeroDecoration /> : null}
 

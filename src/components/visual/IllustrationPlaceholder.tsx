@@ -8,7 +8,7 @@
 // (sand + terracotta soft + border) pour que les pages restent on-brand
 // même en mode placeholder.
 
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { ImageIcon } from "lucide-react";
 
 export interface IllustrationPlaceholderProps {
@@ -41,6 +41,8 @@ export function IllustrationPlaceholder({
   ariaLabel,
   className,
 }: IllustrationPlaceholderProps): ReactNode {
+  // id unique par instance : plusieurs placeholders par page (évite les ids SVG dupliqués).
+  const gridId = useId();
   return (
     <figure
       role="img"
@@ -61,7 +63,7 @@ export function IllustrationPlaceholder({
         xmlns="http://www.w3.org/2000/svg"
       >
         <defs>
-          <pattern id="ip-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+          <pattern id={gridId} width="24" height="24" patternUnits="userSpaceOnUse">
             <path
               d="M 24 0 L 0 0 0 24"
               fill="none"
@@ -70,7 +72,7 @@ export function IllustrationPlaceholder({
             />
           </pattern>
         </defs>
-        <rect width="100%" height="100%" fill="url(#ip-grid)" />
+        <rect width="100%" height="100%" fill={`url(#${gridId})`} />
       </svg>
 
       {/* Contenu central — slot ID + caption + filename cible */}

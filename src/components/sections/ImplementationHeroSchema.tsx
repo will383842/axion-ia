@@ -6,8 +6,8 @@
 // centre sans collision de labels.
 //
 // Refonte design v4 (2026-06-02, Will) — montée en gamme visuelle :
-//   • connecteurs COURBES (quadratic bezier) à dégradé radial qui s'estompe
-//     vers le centre → impression d'énergie qui irradie
+//   • connecteurs COURBES (quadratic bezier) en aplat de la charte
+//     (plus de dégradé radial depuis la charte 2027)
 //   • satellites en SPHÈRES (anneau + cœur + ombre douce)
 //     au lieu de dots plats
 //   • anneau de précision GRADUÉ (ticks tous les 15°, ticks longs aux nœuds)
@@ -138,7 +138,7 @@ export function ImplementationHeroSchema({
           </filter>
         </defs>
 
-        {/* Grille texturée fade vignette */}
+        {/* Grille texturée en aplat (sans vignette) */}
         <rect width={W} height={H} fill="url(#im-grid)" />
 
         {/* Anneaux gyroscopiques inclinés — profondeur d'un système en orbite */}
