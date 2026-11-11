@@ -4,11 +4,12 @@ Les routes internes signées du Studio (HMAC + horodatage + nonce) ont chacune l
 Tous sont lus **à l'exécution** (`process.env`, scope RUN, conteneur **app** seulement — jamais un
 build-arg) et valent « éteint » sauf si la valeur est exactement `true`.
 
-| Variable                     | Route                                                  | Défaut |
-| ---------------------------- | ------------------------------------------------------ | ------ |
-| `GUIDES_RESEAU_ENABLED`      | `POST /api/interne/demandes-guide-reseau`              | éteint |
-| `OPPOSITIONS_RESEAU_ENABLED` | `POST /api/interne/oppositions-reseau`                 | éteint |
-| `PAGE_GUIDE_RESEAU_ENABLED`  | `/guide-reseau` (page) et `POST /guide-reseau/envoyer` | éteint |
+| Variable                           | Route                                                  | Défaut |
+| ---------------------------------- | ------------------------------------------------------ | ------ |
+| `GUIDES_RESEAU_ENABLED`            | `POST /api/interne/demandes-guide-reseau`              | éteint |
+| `OPPOSITIONS_RESEAU_ENABLED`       | `POST /api/interne/oppositions-reseau`                 | éteint |
+| `PAGE_GUIDE_RESEAU_ENABLED`        | `/guide-reseau` (page) et `POST /guide-reseau/envoyer` | éteint |
+| `CONFIRMATIONS_PAGE_GUIDE_ENABLED` | `POST /api/interne/confirmations-page-guide`           | éteint |
 
 Éteint → `503 reception_eteinte` ; rien n'est lu ni écrit. (La page `/guide-reseau` éteinte répond
 **404**, sa route d'envoi **503** : voir plus bas.)
@@ -77,7 +78,20 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
   il ne s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
   `newsletter_subscribers` n'est écrite par ce lot.
 - Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
-- Pas encore livré : la route « stop sans adresse » (Studio → site, 4.4) et le rattrapage dédié.
+- stop sans adresse : abandonné (décision de Williams du 11/11/2026, lien de 48 h en contrepartie).
+
+## `CONFIRMATIONS_PAGE_GUIDE_ENABLED` — les « merci » à envoyer (lot S4a)
+
+`POST /api/interne/confirmations-page-guide` : le Studio y **réserve** la liste des « merci » à envoyer
+après la validation de la page « Recevoir le guide » (`merci_statut = 'a_envoyer'`). Le merci part dès la
+validation de la page, pas au clic du lien : la fenêtre de messagerie du réseau est courte.
+
+- **Éteinte par défaut.** Vraie seulement si la valeur est exactement `true`, lue à la requête. Éteinte : `503 reception_eteinte`, rien n'est lu ni écrit.
+- Secret : `GUIDES_RESEAU_HMAC_SECRET` (+ `_PRECEDENT`), **aucun repli** sur celui des vidéos ; absent ou < 32 caractères → `503 reception_non_configuree`. Seau de débit propre : `internal:confirmations-page-guide`.
+- Corps (4 Ko max, champ inconnu → `400`) : `{"schemaVersion":1,"limite":50}` (`limite` facultative, 1 à 50). Ni `GET`, ni chaîne de requête.
+- Réponse : `{"ok":true,"schemaVersion":1,"confirmations":[{"ref":"<empreinte du jeton>","valideLe":"<ISO 8601>"}]}` — rien d'autre (ni adresse, ni clé d'adresse, ni référence de conversation).
+- Une ligne réservée passe à `reserve` et ne ressort plus. Les lignes `a_envoyer` de plus de 48 h passent à `expire` (conservées). Une adresse opposée, la marque `email_key = '-'` et les statuts `ecarte`/`ecartee` ne sont jamais proposés ; leur ligne n'est jamais supprimée, jamais réservée ; elle peut passer à `expire` après 48 h. Une ligne `reserve` depuis plus de 10 min (`DELAI_REPRISE_RESERVATION_MIN`, réponse perdue) est reprise : `a_envoyer` si encore dans la fenêtre de 48 h, sinon `expire`. **Engagement du Studio (STU-Z4) : revérifier l'opposition juste avant l'envoi.**
+- **Aucune suppression.** Cette route ne fait que lire-réserver ; l'accusé de réception (`envoye`) viendra dans un lot suivant.
 
 ## Secret
 
