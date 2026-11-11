@@ -97,7 +97,7 @@ describe("une seule offre, une seule commission", () => {
 });
 
 describe("tous les boutons mènent au bon endroit", () => {
-  const liens = (html: string) => [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1]!);
+  const liens = (html: string) => [...html.matchAll(/<a[^>]*href="([^"]+)"/g)].map((m) => m[1]!);
 
   it("la page principale envoie chaque bouton vers le dossier de 3 minutes", () => {
     const boutons = [...principale.matchAll(/<a class="btn[^"]*" href="([^"]+)"/g)].map(

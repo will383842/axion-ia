@@ -1,6 +1,5 @@
 // Généré par code/generer.mjs à partir de la maquette validée « dossier » (09/11/2026).
 // Ne pas éditer à la main : modifier la maquette, puis régénérer.
-import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Chiffres } from "./chiffres";
 

@@ -1,6 +1,7 @@
 // Généré par code/generer.mjs à partir de la maquette validée « principale » (09/11/2026).
 // Ne pas éditer à la main : modifier la maquette, puis régénérer.
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Chiffres } from "./chiffres";
 
@@ -30,15 +31,18 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                 )}
               </p>
               <div className="h-actions">
-                <a className="btn btn-p" href="/fr/devenir-commercial-ia/candidature?depuis=haut">
+                <Link
+                  className="btn btn-p"
+                  href="/fr/devenir-commercial-ia/candidature?depuis=haut"
+                >
                   <svg className="ico" aria-hidden="true" focusable="false">
                     <use href="#i-main" />
                   </svg>
                   Devenir apporteur
-                </a>
-                <a className="porte" href="/apporteur/dossier/retrouver">
+                </Link>
+                <Link className="porte" href="/apporteur/dossier/retrouver">
                   Déjà apporteur&nbsp;? Retrouver mon lien personnel
-                </a>
+                </Link>
               </div>
               <p className="h-reassur">
                 3 minutes · zéro CV · sans frais d’entrée · sans exclusivité
@@ -123,7 +127,8 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
               )}
             </p>
             <p className="maj">
-              Mis à jour le 9 novembre 2026 · <a href="/fr/journee-ia">La Journée IA en détail</a>
+              Mis à jour le 9 novembre 2026 ·{" "}
+              <Link href="/fr/journee-ia">La Journée IA en détail</Link>
             </p>
           </div>
         </div>
@@ -182,12 +187,12 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </li>
           </ol>
           <div className="cta-bloc">
-            <a className="btn btn-p" href="/fr/devenir-commercial-ia/candidature?depuis=comment">
+            <Link className="btn btn-p" href="/fr/devenir-commercial-ia/candidature?depuis=comment">
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
               Devenir apporteur
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -269,12 +274,12 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
                     </svg>
                     Un prix écrit sur un devis, rien à payer en ligne
                   </span>
-                  <a className="lien-fl" href="/fr/journee-ia">
+                  <Link className="lien-fl" href="/fr/journee-ia">
                     La Journée IA en détail{" "}
                     <svg className="ico" aria-hidden="true" focusable="false">
                       <use href="#i-fleche" />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </article>
@@ -520,12 +525,15 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
             </p>
           </div>
           <div className="com-cta prix-cta">
-            <a className="btn btn-o" href="/fr/devenir-commercial-ia/candidature?depuis=commission">
+            <Link
+              className="btn btn-o"
+              href="/fr/devenir-commercial-ia/candidature?depuis=commission"
+            >
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-main" />
               </svg>
               Devenir apporteur
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -555,12 +563,12 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
               </blockquote>
               <figcaption>Williams Jullin, fondateur d’Axion-IA</figcaption>
             </figure>
-            <a className="lien-fl" href="/fr/equipe/williams">
+            <Link className="lien-fl" href="/fr/equipe/williams">
               Son parcours{" "}
               <svg className="ico" aria-hidden="true" focusable="false">
                 <use href="#i-fleche" />
               </svg>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
@@ -612,12 +620,12 @@ export function SectionsPrincipale({ p, faq }: { p: Chiffres; faq?: ReactNode })
           <p className="plusieurs">
             Vous connaissez déjà le dirigeant qu’il faut&nbsp;? Commencez par lui.
           </p>
-          <a className="btn btn-blanc" href="/fr/devenir-commercial-ia/candidature?depuis=bas">
+          <Link className="btn btn-blanc" href="/fr/devenir-commercial-ia/candidature?depuis=bas">
             <svg className="ico" aria-hidden="true" focusable="false">
               <use href="#i-main" />
             </svg>
             Devenir apporteur
-          </a>
+          </Link>
           <p className="reassur-t">
             Sans exclusivité · Aucun frais d’entrée · Nous répondons à tous
           </p>

@@ -1,6 +1,7 @@
 // Généré par code/generer.mjs à partir de la maquette validée « pub-facebook / annonce » (09/11/2026).
 // Ne pas éditer à la main : modifier la maquette, puis régénérer.
 import Image from "next/image";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import type { Chiffres } from "./chiffres";
 
@@ -123,7 +124,7 @@ export function SectionsPub({
             )}
             {annonce && (
               <div className="v-annonce annonce-cta">
-                <a
+                <Link
                   className="btn btn-p"
                   href="/fr/devenir-commercial-ia/candidature?depuis=annonce-haut"
                 >
@@ -131,7 +132,7 @@ export function SectionsPub({
                     <use href="#i-main" />
                   </svg>
                   Compléter mon dossier · 3 minutes
-                </a>
+                </Link>
                 <p className="micro">Sans CV · une question par écran · nous répondons à tous</p>
               </div>
             )}
@@ -172,7 +173,8 @@ export function SectionsPub({
                 </>
               )}
               <p className="maj">
-                Mis à jour le 9 novembre 2026 · <a href="/fr/journee-ia">La Journée IA en détail</a>
+                Mis à jour le 9 novembre 2026 ·{" "}
+                <Link href="/fr/journee-ia">La Journée IA en détail</Link>
               </p>
             </div>
           </div>
@@ -436,7 +438,7 @@ export function SectionsPub({
               </a>
             )}
             {annonce && (
-              <a
+              <Link
                 className="btn btn-o v-annonce"
                 href="/fr/devenir-commercial-ia/candidature?depuis=annonce"
               >
@@ -444,7 +446,7 @@ export function SectionsPub({
                   <use href="#i-main" />
                 </svg>
                 Compléter mon dossier · 3 minutes
-              </a>
+              </Link>
             )}
           </div>
         </div>
@@ -488,7 +490,7 @@ export function SectionsPub({
             </a>
           )}
           {annonce && (
-            <a
+            <Link
               className="btn btn-blanc v-annonce"
               href="/fr/devenir-commercial-ia/candidature?depuis=annonce"
             >
@@ -496,7 +498,7 @@ export function SectionsPub({
                 <use href="#i-main" />
               </svg>
               Compléter mon dossier · 3 minutes
-            </a>
+            </Link>
           )}
           <p className="reassur-t">
             Sans exclusivité · Aucun frais d’entrée · Nous répondons à tous
