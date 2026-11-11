@@ -44,7 +44,8 @@ export function montantsInterdits(
 }
 
 export function contient1490(texte: string): boolean {
-  return /1[\s  ]?490/.test(texte);
+  // Bornes : « 11 490 » ou « 1 4900 » ne valent pas « 1 490 ».
+  return /(?<!\d[\s\u00a0\u202f.]?)1[\s\u00a0\u202f.]?490(?!\d)/.test(texte);
 }
 
 export function contientGrenoble(texte: string): boolean {
@@ -113,4 +114,14 @@ export function echantillon<T>(liste: ReadonlyArray<T>, n: number): T[] {
   if (liste.length <= n) return [...liste];
   const pas = liste.length / n;
   return Array.from({ length: n }, (_, i) => liste[Math.floor(i * pas)] as T);
+}
+
+/**
+ * Sous-sitemaps réellement utiles aux contrôles (FAQ + villes), bornés à `max`
+ * pour ne pas marteler la prod : l'index en déclare plusieurs dizaines.
+ */
+export function sousSitemapsUtiles(locs: ReadonlyArray<string>, max = 4): string[] {
+  const faq = locs.filter((u) => /\/sitemap\/faq\.xml$/.test(u));
+  const villes = locs.filter((u) => /\/sitemap\/villes-[^/]+\.xml$/.test(u));
+  return [...faq.slice(0, 1), ...echantillon(villes, Math.max(0, max - 1))];
 }

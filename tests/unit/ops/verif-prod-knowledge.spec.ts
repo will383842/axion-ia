@@ -11,6 +11,7 @@ import {
   localiteEgaleVille,
   montantsEuros,
   montantsInterdits,
+  sousSitemapsUtiles,
   texteVisible,
 } from "../../../scripts/ops/lib/verif-prod-knowledge";
 
@@ -52,5 +53,28 @@ describe("verif-prod-knowledge : parseurs", () => {
   it("échantillon déterministe", () => {
     expect(echantillon([1, 2, 3, 4], 2)).toEqual([1, 3]);
     expect(echantillon([1, 2], 5)).toEqual([1, 2]);
+  });
+});
+
+describe("verif-prod-knowledge : garde-fous (relecture RO1)", () => {
+  it("« 1 490 » borné : 11 490 et 1 4900 ne comptent pas", () => {
+    expect(contient1490("1 490 € HT")).toBe(true);
+    expect(contient1490("1 490 €")).toBe(true);
+    expect(contient1490("1490 €")).toBe(true);
+    expect(contient1490("11 490 €")).toBe(false);
+    expect(contient1490("1 4900 €")).toBe(false);
+  });
+  it("sous-sitemaps bornés : FAQ + villes, plafond respecté", () => {
+    const b = "https://axion-ia.com/sitemap/";
+    const locs = [
+      `${b}pages.xml`,
+      `${b}faq.xml`,
+      ...Array.from({ length: 20 }, (_, i) => `${b}villes-r${i}.xml`),
+      `${b}services-villes-audit.xml`,
+    ];
+    const r = sousSitemapsUtiles(locs, 4);
+    expect(r).toHaveLength(4);
+    expect(r[0]).toBe(`${b}faq.xml`);
+    expect(r.every((u) => /\/(faq|villes-r\d+)\.xml$/.test(u))).toBe(true);
   });
 });

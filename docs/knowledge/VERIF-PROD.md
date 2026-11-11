@@ -12,6 +12,6 @@ Sortie : tableau OK/ECHEC, code de sortie 1 au moindre échec.
 
 **Liste blanche** des montants légaux : `MONTANTS_BLANCS` dans `scripts/ops/lib/verif-prod-knowledge.ts` (vide par défaut ; n'y mettre qu'un montant légal, jamais un prix).
 
-**Charge** : ne pas lancer plus de 2 fois contre la prod (environ 20 requêtes par passage).
+**Charge** : ne pas lancer plus de 2 fois contre la prod. Garde-fous dans le script : 4 sous-sitemaps lus au plus (FAQ + 3 sitemaps villes), pause de 500 ms entre deux requêtes, délai d'expiration de 15 s, plafond dur de 30 requêtes par passage (environ 25 en pratique).
 
 Tests : `pnpm exec vitest run tests/unit/ops/verif-prod-knowledge.spec.ts` (fixtures locales, aucun réseau).

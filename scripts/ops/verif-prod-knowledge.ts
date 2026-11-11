@@ -13,6 +13,7 @@ import {
   extraireLocs,
   localiteEgaleVille,
   montantsInterdits,
+  sousSitemapsUtiles,
   texteVisible,
 } from "./lib/verif-prod-knowledge";
 
@@ -24,8 +25,21 @@ const resultats: Resultat[] = [];
 const noter = (controle: string, ok: boolean, detail = "") =>
   resultats.push({ controle, ok, detail });
 
+// Garde-fous de charge : pause entre deux requêtes, délai d'expiration, plafond dur.
+const PAUSE_MS = 500;
+const DELAI_MS = 15_000;
+const MAX_REQUETES = 30;
+let requetes = 0;
+
 async function lire(url: string, manual = false) {
-  const r = await fetch(url, { headers: HEADERS, redirect: manual ? "manual" : "follow" });
+  if (++requetes > MAX_REQUETES) throw new Error(`plafond de ${MAX_REQUETES} requêtes atteint`);
+  if (requetes > 1) await new Promise((r) => setTimeout(r, PAUSE_MS));
+  const r = await fetch(url, {
+    method: "GET",
+    headers: HEADERS,
+    redirect: manual ? "manual" : "follow",
+    signal: AbortSignal.timeout(DELAI_MS),
+  });
   return { status: r.status, location: r.headers.get("location"), corps: await r.text() };
 }
 
@@ -36,7 +50,8 @@ async function locsSitemap(chemin: string): Promise<string[]> {
 
 async function main(): Promise<void> {
   // Découverte des URLs depuis le sitemap (sous-sitemaps compris).
-  const sousSitemaps = await locsSitemap("/sitemap-index.xml");
+  // Seuls la FAQ et quelques sitemaps villes sont lus (cf. sousSitemapsUtiles).
+  const sousSitemaps = sousSitemapsUtiles(await locsSitemap("/sitemap-index.xml"));
   const toutes: string[] = [];
   for (const s of sousSitemaps) {
     try {
