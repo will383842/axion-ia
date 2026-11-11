@@ -124,11 +124,13 @@ const FICHIERS: string[] = [
 // Retire les commentaires (blocs, commentaires JSX, lignes `//`) : un prix cité en
 // commentaire n'est pas affiché. Les `//` d'une URL (« https:// ») sont préservés.
 function sansCommentaires(src: string): string {
-  return src
-    .replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "))
+  // Commentaires `//` d'abord (ligne par ligne) : un « /blog/* » dans un commentaire `//`
+  // ne doit pas ouvrir un faux bloc `/* … */`. Les `//` d'une URL (« https:// ») sont préservés.
+  const sansLignes = src
     .split("\n")
     .map((l) => l.replace(/(^|[^:"'`\\])\/\/.*$/, "$1"))
     .join("\n");
+  return sansLignes.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
 }
 
 // ── R1 ──────────────────────────────────────────────────────────────────────
@@ -144,7 +146,7 @@ const INTL_DEVISE = /Intl\.NumberFormat\([^)]{0,200}?style:\s*["'`]currency/g;
 
 // ── R4 ──────────────────────────────────────────────────────────────────────
 const PROMESSE_PUBLIQUE =
-  /tarifs? publics?|prix publics?|tarifs transparents|prix de départ|public pric|public rate|transparent pricing|prices are public|pricing is public|publics et transparents/i;
+  /tarifs? publics?|prix publics?|tarifs transparents|prix de départ|public pric|public rate|transparent pricing|prices are public|pricing is public|publics et transparents|sont publics|are public/i;
 
 // ── R3 ──────────────────────────────────────────────────────────────────────
 const MONTANT_EUR = /\d[\d.,\s  ]*(?:k\s?€|M€|€|EUR\b|euros?\b)|(?:€|k€)\s*\d[\d.,]*/gi;
@@ -207,9 +209,16 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
   },
   {
     fichier: "content/transversal.ts",
-    motif: /formatAmount\(/,
+    motif:
+      /formatAmount\((auditFlashTier|auditCibleTier|auditPmeTier|auditEtiTier)\.price|Module 1 — On-site sessions \(1 day from \$\{formatAmount/,
     raison:
       "montants de la réponse « modules » : branche atteinte seulement si PRIX_PUBLICS_AFFICHES (retour anticipé sinon, l.38-40)",
+  },
+  {
+    fichier: "content/transversal.ts",
+    motif: /PRIX_PUBLICS_AFFICHES \? `(à|at) \$\{formatPrice\(maintenanceStandard/,
+    raison:
+      "contrat de maintenance : le montant n'est rendu que si l'interrupteur PRIX_PUBLICS_AFFICHES est levé (« sur devis » sinon)",
   },
   // ── R1 / R2 : accès aux montants qui ne sont PAS un rendu public ──────────
   {
@@ -298,7 +307,11 @@ describe("R7 — pages et composants publics : aucun montant hors Journée IA", 
     // Les cartes de paliers ne montrent un prix que si le palier est affichable.
     expect(tarifs).toMatch(/prixAffichable\(tier\)/);
     const accueil = lire("app/[locale]/page.tsx");
-    expect(accueil).toMatch(/formatTierPrice\(JOURNEE_IA_TIER/);
+    // Maquette v4 : l'accueil ne formate plus lui-même, il résout le jeton {{PRIX}} via
+    // `remplacerJetons`, qui lit `formatTierPrice(JOURNEE_IA_TIER)` dans journee-ia-commun.ts.
+    expect(accueil).toMatch(/remplacerJetons/);
+    expect(lire("app/[locale]/_accueil/contenu.ts")).toMatch(/\{\{PRIX\}\}/);
+    expect(lire("content/journee-ia-commun.ts")).toMatch(/formatTierPrice\(JOURNEE_IA_TIER/);
     expect(accueil).toMatch(/\/journee-ia/);
   });
 

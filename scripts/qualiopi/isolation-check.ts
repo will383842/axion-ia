@@ -344,7 +344,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/equipe/[slug]/page.tsx",
   "src/app/[locale]/financement-opco-france-travail/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
-  "src/app/[locale]/page.tsx",
   "src/app/[locale]/secteurs/[secteur]/[activite]/page.tsx",
   "src/app/api/zeptomail/webhook/route.ts",
   "src/app/sitemap-images-services.xml/route.ts",
