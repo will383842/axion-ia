@@ -10,6 +10,7 @@
  *   axionia.pilotage.alertes      admin-planning/hub
  *   axionia.qualiopi.conformite   listAlertes(), pas l'évaluateur
  *   axionia.deploiement.etat      API GitHub Actions seule (W-9, défaut)
+ *   axionia.methode.contexte      obtenirContexteMethode (ADR 0076, éteint par défaut)
  *
  * `agenda.poser` et `message.repondre` sont des EFFETS — lot 7, avec
  * l'idempotence câblée à `ctx`.
@@ -21,6 +22,7 @@ import { nomComplet, type OutilQuelconque } from "./contrat";
 import { agendaJour, agendaSemaine } from "./outils/agenda";
 import { deploiementEtat } from "./outils/deploiement-etat";
 import { inboxRecent } from "./outils/inbox-recent";
+import { methodeContexte } from "./outils/methode-contexte";
 import { pilotageAlertes } from "./outils/pilotage-alertes";
 import { qualiopiConformite } from "./outils/qualiopi-conformite";
 import { rendezVousList } from "./outils/rendezvous-list";
@@ -33,6 +35,7 @@ export const OUTILS: readonly OutilQuelconque[] = [
   pilotageAlertes,
   qualiopiConformite,
   deploiementEtat,
+  methodeContexte,
 ];
 
 export function trouverOutil(nom: string): OutilQuelconque | null {

@@ -211,6 +211,8 @@ const ARGUMENTS_PAR_OUTIL: Record<string, unknown> = {
   "pilotage.alertes": { annee: 2026, mois: 9 },
   "qualiopi.conformite": { niveau: "important" },
   "deploiement.etat": {},
+  // Interrupteur METHODE_ACTIVE éteint en test : contexte neutre, aucune base.
+  "methode.contexte": { sujet: "objection trop cher" },
 };
 
 describe("executerAppel — les six outils répondent, en sortie standard", () => {

@@ -213,6 +213,7 @@ describe("contrôle 3 — aucun appel qui contourne la couche service", () => {
       "../../../../prisma/generated/client": () => import("../../../../prisma/generated/client"),
       "@/features/admin-calendly/acces": () => import("@/features/admin-calendly/acces"),
       "@/server/deploiement/etat": () => import("@/server/deploiement/etat"),
+      "@/server/methode": () => import("@/server/methode"),
     };
     let verifies = 0;
     for (const { module, symboles } of SYMBOLES_AUTORISES) {

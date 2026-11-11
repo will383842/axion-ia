@@ -185,6 +185,19 @@ const JEUX: Record<string, () => unknown> = {
     }));
     return { items, meta: meta(items.length, { failedSources: [] }) };
   },
+  "methode.contexte": () => {
+    // Le noyau + 10 extraits (plafond), chacun à 2 000 caractères + avertissement.
+    const items = Array.from({ length: 11 }, (_, i) => ({
+      slug: `methode/fiche-${String(i).padStart(2, "0")}/section-${String(i + 1)}`,
+      noyau: i === 0,
+      titre: texte("titre", i, 160),
+      texte: texte("texte", i, 2_250),
+      collection: i % 4 === 3 ? "methode-secteur-sante" : "methode-vente",
+      chiffresExercice: i % 2 === 0,
+      etiquettes: ["methode", "livre:axion-ia", "type:regle", "chiffres-exercice"],
+    }));
+    return { items, meta: meta(items.length, { failedSources: [], hasMore: false }) };
+  },
 };
 
 let ecrits = 0;

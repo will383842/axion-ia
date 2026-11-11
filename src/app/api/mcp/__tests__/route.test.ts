@@ -191,6 +191,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
       "axionia.agenda.semaine",
       "axionia.deploiement.etat",
       "axionia.inbox.recent",
+      "axionia.methode.contexte",
       "axionia.pilotage.alertes",
       "axionia.qualiopi.conformite",
       "axionia.rendezvous.list",
@@ -211,7 +212,7 @@ describe("avec le bon secret, elle parle JSON-RPC 2.0 — et dit ce qu'elle n'a 
     };
     expect(corps.result.manifest.id).toBe("axionia");
     expect(corps.result.manifest.mode).toBe("fédéré");
-    expect(corps.result.manifest.tools).toHaveLength(7);
+    expect(corps.result.manifest.tools).toHaveLength(8);
 
     const sans = await POST(appel({ jsonrpc: "2.0", id: 11, method: "axionia/manifest" }) as never);
     expect(sans.status).toBe(401);

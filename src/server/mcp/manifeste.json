@@ -1,7 +1,7 @@
 {
   "$note": "Généré par `pnpm mcp:manifeste`. Ne pas éditer à la main : la garde compare au code. `manifestSha` couvre le texte canonique, pas ce fichier.",
-  "manifestSha": "sha256:b2fe01044f8940afdca5fb0eceb9c3cc133c94f466edad500fc7877cede543df",
-  "octetsCanoniques": 25391,
+  "manifestSha": "sha256:f3971bc91d08942eae4ea32152eda05a10c9649c85a6bb096946819651fc2a54",
+  "octetsCanoniques": 28053,
   "manifeste": {
     "manifestVersion": 1,
     "id": "axionia",
@@ -1637,6 +1637,187 @@
         "idFields": ["commit", "commitEnService"],
         "governanceFields": [],
         "bytes": 3124
+      },
+      {
+        "name": "methode.contexte",
+        "version": "1.0.0",
+        "description": "Le contexte de méthode de vente Axion-IA (équipe seulement) : le noyau toujours rendu, puis les fiches trouvées pour un sujet. Montants = exemples d'entraînement, jamais des prix. Vide si la couche est éteinte.",
+        "effect": "read",
+        "dataClass": "internal",
+        "idempotency": "n/a",
+        "pagination": "none",
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "sujet": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            "secteur": {
+              "type": "string",
+              "enum": ["sante"]
+            },
+            "max": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10
+            }
+          },
+          "required": ["sujet"],
+          "additionalProperties": false
+        },
+        "outputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "slug": {
+                    "type": "string",
+                    "pattern": "^methode\\/[a-z0-9-]+\\/[a-z0-9-]+$"
+                  },
+                  "noyau": {
+                    "type": "boolean"
+                  },
+                  "titre": {
+                    "type": "string"
+                  },
+                  "texte": {
+                    "type": "string"
+                  },
+                  "collection": {
+                    "type": "string",
+                    "enum": ["methode-vente", "methode-secteur-sante"]
+                  },
+                  "chiffresExercice": {
+                    "type": "boolean"
+                  },
+                  "etiquettes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": ["slug", "noyau", "titre", "texte", "collection", "chiffresExercice"],
+                "additionalProperties": false
+              }
+            },
+            "meta": {
+              "type": "object",
+              "properties": {
+                "returned": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "hasMore": {
+                  "type": "boolean"
+                },
+                "cursor": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "mode": {
+                  "type": "string",
+                  "enum": ["items", "aggregate"]
+                },
+                "truncated": {
+                  "type": "boolean"
+                },
+                "truncationNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "sourceIncomplete": {
+                  "type": "boolean"
+                },
+                "sourceNote": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "failedSources": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "version": {
+                  "type": "string",
+                  "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                },
+                "deprecated": {
+                  "type": "boolean"
+                },
+                "sunsetAt": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "asOf": {
+                  "type": "string",
+                  "format": "date-time",
+                  "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+                }
+              },
+              "required": [
+                "returned",
+                "hasMore",
+                "cursor",
+                "mode",
+                "truncated",
+                "truncationNote",
+                "sourceIncomplete",
+                "sourceNote",
+                "failedSources",
+                "version",
+                "deprecated",
+                "sunsetAt",
+                "asOf"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": ["items", "meta"],
+          "additionalProperties": false
+        },
+        "maxBytes": 32768,
+        "compaction": {
+          "free": ["texte", "titre"],
+          "tier2": ["etiquettes"],
+          "aggregateBy": "collection"
+        },
+        "idFields": ["slug"],
+        "governanceFields": [],
+        "bytes": 2648
       }
     ]
   }

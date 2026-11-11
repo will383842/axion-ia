@@ -69,6 +69,13 @@ export const SYMBOLES_AUTORISES: readonly AutorisationDImport[] = [
       "configuration et le jeton, jamais l'adaptateur (contrôle 2)",
   },
   {
+    module: "@/server/methode",
+    symboles: ["obtenirContexteMethode"],
+    motif:
+      "le point d'entrée unique de la couche Méthode (ADR 0076) : lecture seule, " +
+      "interrupteur METHODE_ACTIVE éteint par défaut",
+  },
+  {
     module: "@/features/admin-calendly/acces",
     symboles: ["peutVoirLesAppels"],
     motif: "le pont d'identité : la même fonction que la console (W-6)",
