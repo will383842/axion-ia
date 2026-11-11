@@ -21,6 +21,7 @@ import {
   pageGuideReseauActive,
 } from "@/server/guides-reseau/config";
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
+import { normaliserJetonRecu, TAILLE_MAX_JETON_RECU } from "@/server/guides-reseau/lien-page-guide";
 import { confirmerPageGuide } from "@/server/guides-reseau/page-confirmation";
 import { CHEMIN_PAGE_GUIDE } from "@/content/guides-reseau";
 import { publicUrl } from "@/lib/public-url";
@@ -78,7 +79,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   } catch {
     return pageErreur(T.erreurs.email, "", 422);
   }
-  const jeton = texte(form.get("j"));
+  const brut = texte(form.get("j"));
+  // Démesuré : réponse neutre habituelle (retour à la page, qui montre sa page neutre), avant
+  // toute autre opération — ni normalisation, ni piège, ni base.
+  if (brut.length > TAILLE_MAX_JETON_RECU) return vers(CHEMIN_PAGE_GUIDE);
+  // Avant la vérification ET l'empreinte (usage unique) : un point final ne change ni l'une ni l'autre.
+  const jeton = normaliserJetonRecu(brut);
 
   // Champ piège : faux succès, rien d'écrit.
   const leurre = form.get("website");

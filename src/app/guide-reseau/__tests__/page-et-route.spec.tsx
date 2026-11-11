@@ -14,13 +14,16 @@ const etat = vi.hoisted(() => ({
   debitOk: true,
   confirmer: { retour: { ok: true } as unknown },
   honeypot: 0,
+  lectures: 0,
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     contactGuideReseau: {
-      findUnique: async ({ where }: { where: Ligne }) =>
-        etat.contacts.find((c) => c["jetonEmpreinte"] === where["jetonEmpreinte"]) ?? null,
+      findUnique: async ({ where }: { where: Ligne }) => {
+        etat.lectures += 1;
+        return etat.contacts.find((c) => c["jetonEmpreinte"] === where["jetonEmpreinte"]) ?? null;
+      },
     },
   },
 }));
@@ -43,6 +46,9 @@ import { GET as MerciGET } from "../merci/route";
 import { POST, GET } from "../envoyer/route";
 import { creerJeton, empreinteJeton } from "@/server/guides-reseau/lien-page-guide";
 import { TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
+import { TEXTES_PAGE_GUIDE } from "../textes";
+
+const T_NEUTRE = TEXTES_PAGE_GUIDE.lienNeutre;
 
 const SECRET_LIEN = "L".repeat(40);
 const SECRET_APPELS = "A".repeat(40);
@@ -75,6 +81,7 @@ beforeEach(() => {
   etat.debitOk = true;
   etat.confirmer.retour = { ok: true };
   etat.honeypot = 0;
+  etat.lectures = 0;
   vi.spyOn(console, "error").mockImplementation(() => undefined);
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
 });
@@ -139,6 +146,21 @@ describe("page allumée", () => {
     expect(html).toContain('name="website"');
     expect(html).toContain(echapper(TEXTE_CASE_PAGE_GUIDE));
     expect(html).toContain("/fr/politique-confidentialite");
+  });
+
+  it("un j terminé par « . » ouvre la page, avec le jeton SANS le point dans le formulaire", async () => {
+    const html = await rendre(`${JETON}.`);
+    expect(html).toContain("<form");
+    expect(html).toContain(`value="${JETON}"`);
+    expect(html).not.toContain(`value="${JETON}."`);
+  });
+
+  it("le point final ne change pas l'empreinte : un jeton déjà utilisé reste refusé avec ou sans point", async () => {
+    etat.contacts.push({ jetonEmpreinte: empreinteJeton(JETON) });
+    const sans = await rendre(JETON);
+    const avec = await rendre(`${JETON}.`);
+    expect(avec).toBe(sans);
+    expect(avec).not.toContain("<form");
   });
 
   it("la ligne d'information ne contient ni « STOP » ni « autres informations »", async () => {
@@ -233,6 +255,28 @@ describe("route d'envoi allumée", () => {
       prenom: "Camille",
       secret: SECRET_LIEN,
     });
+  });
+
+  it("un j terminé par « . » (ou « ) ») est transmis SANS la ponctuation à la confirmation", async () => {
+    for (const fin of [".", ")", "?"]) {
+      etat.appels.length = 0;
+      const r = await POST(envoi({ ...champs, j: `${JETON}${fin}` }));
+      expect(r.status).toBe(303);
+      expect(etat.appels[0]).toMatchObject({ jeton: JETON });
+      expect(empreinteJeton(String(etat.appels[0]!["jeton"]))).toBe(empreinteJeton(JETON));
+    }
+  });
+
+  it("aucun console.* ne contient le jeton (succès, échec de confirmation, jeton refusé)", async () => {
+    const espions = (["log", "info", "warn", "error", "debug"] as const).map((m) =>
+      vi.spyOn(console, m).mockImplementation(() => undefined),
+    );
+    await POST(envoi({ ...champs, j: `${JETON}.` }));
+    etat.confirmer.retour = { ok: false, statut: 400, erreur: "lien" };
+    await POST(envoi({ ...champs, j: JETON }));
+    await rendre(`${JETON}.`);
+    const vus = espions.flatMap((e) => e.mock.calls).map((a) => JSON.stringify(a));
+    expect(vus.some((l) => l.includes(JETON))).toBe(false);
   });
 
   it("case décochée : la route transmet false → 422 d'une page statique, adresse non répétée", async () => {
@@ -359,5 +403,35 @@ describe("AUCUN JavaScript client, en-têtes, build", () => {
     expect(readFileSync(join(RACINE, "src/env.ts"), "utf8")).not.toContain(
       "GUIDES_RESEAU_LIEN_SECRET",
     );
+  });
+});
+
+describe("jeton démesuré (borne avant toute opération)", () => {
+  beforeEach(() => {
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+  });
+
+  it("GET : j de 5 000 caractères → page neutre, aucun appel à la base", async () => {
+    const html = await rendre("A".repeat(5000));
+    expect(html).toContain(echapper(T_NEUTRE));
+    expect(html).not.toContain("<form");
+    expect(etat.lectures).toBe(0);
+  });
+
+  it("POST : j de 5 000 caractères → 303 vers la page, ni base ni confirmation ni piège", async () => {
+    const r = await POST(
+      envoi({
+        j: "A".repeat(5000),
+        prenom: "Camille",
+        email: "a@example.test",
+        accord: "oui",
+        website: "x",
+      }),
+    );
+    expect(r.status).toBe(303);
+    expect(r.headers.get("location")).not.toContain("AAAA");
+    expect(etat.appels).toHaveLength(0);
+    expect(etat.lectures).toBe(0);
+    expect(etat.honeypot).toBe(0);
   });
 });

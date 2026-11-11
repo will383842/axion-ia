@@ -2,16 +2,18 @@
  * Lot S1 « page Recevoir le guide » — jeton signé du lien /guide-reseau?j=<jeton>.
  * Module pur : aucune base, aucun réseau. Valeurs 100 % fictives (example.test).
  */
-import { createHmac } from "node:crypto";
+import { createHash, createHmac } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
+  DERIVE_HORLOGE_SECONDES,
   DUREE_JETON_SECONDES,
   TAILLE_MAX_JETON,
   creerJeton,
   empreinteJeton,
+  normaliserJetonRecu,
   verifierJeton,
   verifierSecretsDistincts,
 } from "../lien-page-guide";
@@ -55,8 +57,9 @@ describe("lien-page-guide — aller-retour", () => {
     expect(r.ok).toBe(true);
   });
 
-  it("la durée est de 7 jours", () => {
-    expect(DUREE_JETON_SECONDES).toBe(7 * 24 * 3600);
+  it("la durée est de 48 heures, la dérive d'horloge tolérée de 5 minutes", () => {
+    expect(DUREE_JETON_SECONDES).toBe(48 * 3600);
+    expect(DERIVE_HORLOGE_SECONDES).toBe(300);
   });
 });
 
@@ -84,6 +87,38 @@ describe("lien-page-guide — refus", () => {
     expect(verifierJeton(jeton, SECRET, finMs - 1).ok).toBe(true);
     expect(verifierJeton(jeton, SECRET, finMs)).toEqual({ ok: false, motif: "expire" });
     expect(verifierJeton(jeton, SECRET, finMs + 1)).toEqual({ ok: false, motif: "expire" });
+  });
+
+  it("refus « expire » à maintenant + 48 h pile, accepté à 48 h moins 1 s", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    expect(verifierJeton(jeton, SECRET, T0 + 48 * 3600 * 1000 - 1000).ok).toBe(true);
+    expect(verifierJeton(jeton, SECRET, T0 + 48 * 3600 * 1000)).toEqual({
+      ok: false,
+      motif: "expire",
+    });
+  });
+
+  it("un jeton de 7 jours (signé correctement) est refusé : champs", () => {
+    const sept = signer({ ...chargeValide(), exp: Math.floor(T0 / 1000) + 7 * 24 * 3600 });
+    expect(verifierJeton(sept, SECRET, T0)).toEqual({ ok: false, motif: "champs" });
+  });
+
+  it("dérive d'horloge : exp = maintenant + 48 h + 5 min accepté, + 1 s refusé", () => {
+    const base = Math.floor(T0 / 1000) + DUREE_JETON_SECONDES + DERIVE_HORLOGE_SECONDES;
+    expect(verifierJeton(signer({ ...chargeValide(), exp: base }), SECRET, T0).ok).toBe(true);
+    expect(verifierJeton(signer({ ...chargeValide(), exp: base + 1 }), SECRET, T0)).toEqual({
+      ok: false,
+      motif: "champs",
+    });
+  });
+
+  it("un conv au format p1.<8 hex>.<64 hex> est refusé (le point n'est pas de l'alphabet)", () => {
+    const conv = `p1.${"a".repeat(8)}.${"b".repeat(64)}`;
+    expect(verifierJeton(signer({ ...chargeValide(), conv }), SECRET, T0)).toEqual({
+      ok: false,
+      motif: "champs",
+    });
+    expect(() => creerJeton({ ...DONNEES, conv }, SECRET, T0)).toThrow();
   });
 
   it("champ en trop (signé correctement) → champs", () => {
@@ -178,7 +213,7 @@ describe("lien-page-guide — empreinte et fixture", () => {
     expect(empreinteJeton(jeton)).not.toBe(empreinteJeton(`${jeton}x`));
   });
 
-  it("fixture commune : déterministe et relisible", () => {
+  it("fixture v1 (jeton de 7 jours) : toujours reproductible, mais REFUSÉE par la règle des 48 h", () => {
     const f = JSON.parse(
       readFileSync(join(__dirname, "fixtures", "lien-page-guide.v1.json"), "utf8"),
     ) as {
@@ -189,10 +224,123 @@ describe("lien-page-guide — empreinte et fixture", () => {
       empreinte: string;
     };
     expect(f.secret).toHaveLength(40);
-    expect(creerJeton(f.donnees, f.secret, f.maintenant_ms)).toBe(f.jeton);
+    // Le jeton v1 a été fabriqué avec 7 jours : on ne peut plus le refabriquer, seulement le relire.
+    const charge = JSON.parse(Buffer.from(f.jeton.split(".")[0]!, "base64url").toString()) as {
+      exp: number;
+    };
+    expect(charge.exp).toBe(Math.floor(f.maintenant_ms / 1000) + 7 * 24 * 3600);
     expect(empreinteJeton(f.jeton)).toBe(f.empreinte);
-    expect(verifierJeton(f.jeton, f.secret, f.maintenant_ms).ok).toBe(true);
+    expect(verifierJeton(f.jeton, f.secret, f.maintenant_ms)).toEqual({
+      ok: false,
+      motif: "champs",
+    });
     expect(JSON.stringify(f)).not.toContain("@");
+  });
+});
+
+// Contrat croisé : le Studio vérifie la MÊME constante sur sa copie du fichier.
+const SHA256_FIXTURE_V2 = "ac4f453e61c2cebd30768473866d968457665d4e53275d226a3d8339947611b9";
+const CHEMIN_V2 = join(__dirname, "fixtures", "lien-page-guide.v2.json");
+
+describe("lien-page-guide — fixture v2 (référence du Studio, lien de 48 h)", () => {
+  const f = JSON.parse(readFileSync(CHEMIN_V2, "utf8")) as {
+    secret: string;
+    maintenant_ms: number;
+    donnees: Parameters<typeof creerJeton>[0];
+    jeton: string;
+    lien: string;
+    longueur_lien: number;
+    empreinte: string;
+    vecteur_calcul_conv: {
+      secret_empreinte: string;
+      cle_idempotence: string;
+      conv_attendu: string;
+    };
+  };
+
+  it("le SHA-256 du fichier égale la constante partagée avec le Studio", () => {
+    const sha = createHash("sha256").update(readFileSync(CHEMIN_V2)).digest("hex");
+    expect(sha).toBe(SHA256_FIXTURE_V2);
+  });
+
+  it("jeton reproductible, accepté, conv au format c1_ + 22 caractères, durée 48 h", () => {
+    expect(f.secret.length).toBeGreaterThanOrEqual(32);
+    expect(creerJeton(f.donnees, f.secret, f.maintenant_ms)).toBe(f.jeton);
+    const r = verifierJeton(f.jeton, f.secret, f.maintenant_ms);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      expect(r.donnees.conv).toMatch(/^c1_[A-Za-z0-9_-]{22}$/);
+      expect(r.donnees.conv).toHaveLength(25);
+      expect(r.donnees.exp).toBe(Math.floor(f.maintenant_ms / 1000) + 48 * 3600);
+    }
+    expect(empreinteJeton(f.jeton)).toBe(f.empreinte);
+    expect(f.lien).toBe(`https://axion-ia.com/guide-reseau?j=${f.jeton}`);
+    expect(f.longueur_lien).toBe(f.lien.length);
+    expect(JSON.stringify(f)).not.toContain("@");
+  });
+
+  it("vecteur de calcul de conv : HMAC-SHA256 base64url tronqué à 22 caractères", () => {
+    const v = f.vecteur_calcul_conv;
+    const calcule =
+      "c1_" +
+      createHmac("sha256", v.secret_empreinte)
+        .update(`studio/lien-conv/v1\0${v.cle_idempotence}`)
+        .digest("base64url")
+        .slice(0, 22);
+    expect(calcule).toBe(v.conv_attendu);
+    expect(v.conv_attendu).toMatch(/^c1_[A-Za-z0-9_-]{22}$/);
+  });
+});
+
+describe("lien-page-guide — ponctuation finale (normaliserJetonRecu)", () => {
+  it("retire . , ; : ! ? ) collés à la fin, jamais le reste", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    for (const fin of [".", ",", ";", ":", "!", "?", ")", ").", "?!"]) {
+      expect(normaliserJetonRecu(jeton + fin)).toBe(jeton);
+    }
+    expect(normaliserJetonRecu(jeton)).toBe(jeton);
+    expect(normaliserJetonRecu("")).toBe("");
+  });
+
+  it("temps linéaire : 200 000 points + un « x » normalisés en moins de 50 ms", () => {
+    const t = performance.now();
+    normaliserJetonRecu(`${".".repeat(200_000)}x`);
+    expect(performance.now() - t).toBeLessThan(50);
+  });
+
+  it("jeton valide suivi de . , ) (et d'une suite) : inchangé après normalisation", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    for (const fin of [".", ",", ")", ".,)", "!?;:"]) {
+      expect(normaliserJetonRecu(jeton + fin)).toBe(jeton);
+    }
+  });
+
+  it("au-delà de TAILLE_MAX_JETON + 16 : tronqué à cette longueur", () => {
+    expect(normaliserJetonRecu("a".repeat(5000)).length).toBe(1024 + 16);
+  });
+
+  it("avec ou sans le point final : même verdict, même empreinte", () => {
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    const recu = normaliserJetonRecu(`${jeton}.`);
+    expect(verifierJeton(recu, SECRET, T0).ok).toBe(true);
+    expect(empreinteJeton(recu)).toBe(empreinteJeton(jeton));
+  });
+});
+
+describe("lien-page-guide — journaux", () => {
+  afterEach(() => vi.restoreAllMocks());
+  it("aucun console.* ne reçoit le jeton (création, vérification, refus)", () => {
+    const espions = (["log", "info", "warn", "error", "debug"] as const).map((m) =>
+      vi.spyOn(console, m).mockImplementation(() => undefined),
+    );
+    const jeton = creerJeton(DONNEES, SECRET, T0);
+    verifierJeton(jeton, SECRET, T0);
+    verifierJeton(`${jeton}x`, SECRET, T0);
+    verifierJeton(jeton, SECRET, T0 + DUREE_JETON_SECONDES * 1000);
+    empreinteJeton(jeton);
+    normaliserJetonRecu(`${jeton}.`);
+    const vus = espions.flatMap((e) => e.mock.calls).map((a) => JSON.stringify(a));
+    expect(vus.some((l) => l.includes(jeton))).toBe(false);
   });
 });
 

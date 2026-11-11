@@ -16,7 +16,10 @@
 import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 
 export const VERSION_JETON = 1;
-export const DUREE_JETON_SECONDES = 7 * 24 * 3600;
+/** Décision du 11/11/2026 : le lien est valable 48 h (et non plus 7 jours). Le format du jeton ne change pas. */
+export const DUREE_JETON_SECONDES = 48 * 3600;
+/** Dérive d'horloge tolérée entre le Studio (qui signe) et le site (qui vérifie) : 5 minutes. */
+export const DERIVE_HORLOGE_SECONDES = 300;
 export const TAILLE_MAX_JETON = 1024;
 export const LONGUEUR_MIN_SECRET = 32;
 export const RESEAUX = ["facebook", "instagram", "linkedin", "autre"] as const;
@@ -38,6 +41,29 @@ export type DonneesJeton = DonneesLien & { readonly v: 1; readonly exp: number }
 export type ResultatVerification =
   | { readonly ok: true; readonly donnees: DonneesJeton }
   | { readonly ok: false; readonly motif: "format" | "signature" | "expire" | "champs" };
+
+/** Ponctuation qu'un client de messagerie colle parfois à la fin d'un lien (jamais dans l'alphabet base64url). */
+const PONCTUATION_FINALE = new Set([".", ",", ";", ":", "!", "?", ")"]);
+
+/** Longueur au-delà de laquelle un `j` est refusé sans autre examen (jeton + ponctuation collée). */
+export const TAILLE_MAX_JETON_RECU = TAILLE_MAX_JETON + 16;
+
+/**
+ * Retire la ponctuation collée à la fin du jeton reçu (« …AbC. », « …AbC) »). À appeler dans les
+ * routes AVANT `verifierJeton` ET AVANT `empreinteJeton` : la vérification et l'usage unique voient
+ * ainsi le même jeton, avec ou sans le point final.
+ *
+ * Temps LINÉAIRE (une regex `[…]+$` était quadratique : 200 000 points = plusieurs secondes de
+ * serveur bloqué sur une requête non authentifiée). Une entrée démesurée est tronquée : elle sera
+ * de toute façon refusée par `verifierJeton`.
+ */
+export function normaliserJetonRecu(j: string): string {
+  if (typeof j !== "string") return j;
+  const borne = j.length > TAILLE_MAX_JETON_RECU ? j.slice(0, TAILLE_MAX_JETON_RECU) : j;
+  let fin = borne.length;
+  while (fin > 0 && PONCTUATION_FINALE.has(borne[fin - 1]!)) fin -= 1;
+  return borne.slice(0, fin);
+}
 
 const OPAQUE = /^[A-Za-z0-9_-]{1,64}$/;
 const CHAMPS: Readonly<Record<string, (x: unknown) => boolean>> = {
@@ -101,7 +127,7 @@ function estCanonique(texte: string): boolean {
   return Buffer.from(texte, "base64url").toString("base64url") === texte;
 }
 
-/** Crée un jeton valable 7 jours à partir de `maintenantMs`. Lève si les données sont invalides. */
+/** Crée un jeton valable 48 h à partir de `maintenantMs`. Lève si les données sont invalides. */
 export function creerJeton(donnees: DonneesLien, secret: string, maintenantMs: number): string {
   const s = controlerSecret(secret);
   if (!Number.isFinite(maintenantMs)) throw new Error("Horloge invalide (maintenantMs non fini).");
@@ -123,7 +149,7 @@ export function creerJeton(donnees: DonneesLien, secret: string, maintenantMs: n
   return jeton;
 }
 
-/** Vérifie format, signature (temps constant), schéma puis expiration. */
+/** Vérifie format, signature (temps constant), schéma, durée maximale puis expiration. */
 export function verifierJeton(
   jeton: string,
   secret: string,
@@ -158,6 +184,10 @@ export function verifierJeton(
     return { ok: false, motif: "champs" };
   }
   if (!chargeValide(charge)) return { ok: false, motif: "champs" };
+  // Un jeton plus long que la durée prévue (+ dérive d'horloge) n'a pas été fabriqué par le Studio : refus.
+  if (charge.exp * 1000 > maintenantMs + (DUREE_JETON_SECONDES + DERIVE_HORLOGE_SECONDES) * 1000) {
+    return { ok: false, motif: "champs" };
+  }
   if (maintenantMs >= charge.exp * 1000) return { ok: false, motif: "expire" };
   return { ok: true, donnees: charge };
 }
