@@ -34,6 +34,7 @@ import {
   buildHowToJsonLd,
   buildWebPageJsonLd,
   SITE_URL,
+  buildSiegePostalAddress,
 } from "@/lib/seo";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
@@ -190,9 +191,10 @@ export function buildVilleServiceJsonLdGraph(
     url,
     email: "contact@axion-ia.com",
     image: `${SITE_URL}/opengraph-image`,
-    // Pays seul : la ville de la page n'est PAS une adresse d'Axion-IA (zone servie
+    // Adresse = source unique `buildSiegePostalAddress` (pays seul, décision n°19) : la ville
+    // de la page n'est PAS une adresse d'Axion-IA (zone servie
     // = `areaServed`). Garde : tests/unit/seo/ville-jsonld-sans-adresse-locale.spec.ts.
-    address: { "@type": "PostalAddress", addressCountry: "FR" },
+    address: buildSiegePostalAddress(),
     sameAs: ["https://www.linkedin.com/company/axion-ia-france", cityWikiUrl, cityWikidataUrl],
     parentOrganization: {
       "@type": "Organization",

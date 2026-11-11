@@ -1124,7 +1124,7 @@ interface OrganizationJsonLdInput {
  * fichier : `seo.ts` est importé par des composants clients, et une constante
  * top-level y serait évaluée à l'import.
  */
-function buildSiegePostalAddress() {
+export function buildSiegePostalAddress() {
   return {
     "@type": "PostalAddress",
     addressCountry: "FR",

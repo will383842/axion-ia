@@ -7,6 +7,7 @@
 import { describe, it, expect } from "vitest";
 import { readFileSync } from "node:fs";
 import path from "node:path";
+import { buildSiegePostalAddress } from "@/lib/seo";
 
 const ROOT = path.resolve(__dirname, "../../..");
 const FICHIERS = [
@@ -26,11 +27,15 @@ describe("JSON-LD des pages ville : pas d'adresse locale", () => {
       expect(code).not.toMatch(/addressLocality|addressRegion|streetAddress|\bpostalCode:\s*ville/);
     });
 
-    it(`${rel} : adresse = pays seul, zone servie via areaServed`, () => {
-      expect(code).toMatch(
-        /address:\s*\{\s*"@type":\s*"PostalAddress",\s*addressCountry:\s*"FR"\s*\}/,
-      );
+    it(`${rel} : adresse = source unique buildSiegePostalAddress (pays seul), zone servie via areaServed`, () => {
+      expect(code).toMatch(/address:\s*buildSiegePostalAddress\(\)/);
       expect(code).toMatch(/areaServed:\s*\{\s*"@type":\s*"City"/);
     });
   }
+});
+
+describe("source unique de l'adresse JSON-LD", () => {
+  it("buildSiegePostalAddress reste pays seul (décision n°19)", () => {
+    expect(buildSiegePostalAddress()).toEqual({ "@type": "PostalAddress", addressCountry: "FR" });
+  });
 });
