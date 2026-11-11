@@ -53,7 +53,7 @@ export const TRESSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tresses ?",
-      a: "Oui. Axion-IA intervient à Tresses et dans tout l'est de Bordeaux Métropole (Artigues-près-Bordeaux, Fargues-Saint-Hilaire, Carignan-de-Bordeaux, Pompignac). Nos consultants se déplacent depuis Bordeaux centre en 15 min ou travaillent en visio.",
+      a: "Oui. Axion-IA intervient à Tresses et dans tout l'est de Bordeaux Métropole (Artigues-près-Bordeaux, Fargues-Saint-Hilaire, Carignan-de-Bordeaux, Pompignac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Tresses ?",
@@ -69,7 +69,7 @@ export const TRESSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tresses ?",
-      a: "Nos consultants seniors interviennent dans vos locaux ou en visio depuis Bordeaux centre (15 min). Chaque mission donne lieu à des livrables documentés et à une prise en main par vos équipes, sans dépendance technique durable.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Chaque mission donne lieu à des livrables documentés et à une prise en main par vos équipes, sans dépendance technique durable.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Maximin ?",
-      a: "Nos consultants interviennent depuis Aix-en-Provence (30 min), Marseille (45 min) ou Toulon (50 min). Déplacement sur site dans vos locaux professionnels, atelier, usine, hôtel ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, usine, hôtel ou commerce. A8 directe.",
     },
   ],
 };

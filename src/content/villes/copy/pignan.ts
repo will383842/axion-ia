@@ -50,7 +50,7 @@ export const PIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pignan ?",
-      a: "Oui, Axion-IA intervient à Pignan (34) et dans les communes proches : Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques. Nos consultants se déplacent depuis Montpellier en 15 min ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Pignan (34) et dans les communes proches : Cournonterral, Fabrègues, Lavérune, Murviel-lès-Montpellier, Saint-Georges-d'Orques. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs AOC Languedoc ?",

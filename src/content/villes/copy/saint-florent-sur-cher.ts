@@ -65,7 +65,7 @@ export const SAINT_FLORENT_SUR_CHER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Florent-sur-Cher ?",
-      a: "Nos consultants viennent de Bourges (15 min) ou de Paris via A71 (2h20). Intervention sur site dans vos locaux industriels ou en visio. Multi-jours possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels ou en visio. Multi-jours possibles.",
     },
   ],
 };

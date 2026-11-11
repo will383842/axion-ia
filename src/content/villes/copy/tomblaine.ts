@@ -65,7 +65,7 @@ export const TOMBLAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Tomblaine ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos locaux tertiaires, commerce ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux tertiaires, commerce ou cabinet.",
     },
   ],
 };

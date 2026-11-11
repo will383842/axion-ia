@@ -49,7 +49,7 @@ export const VILLEFRANCHE_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villefranche-sur-Mer ?",
-      a: "Oui, Axion-IA intervient à Villefranche-sur-Mer et sur toute la Riviera azuréenne (Nice, Beaulieu-sur-Mer, Cap-Ferrat, Èze, Monaco). Nos consultants se déplacent depuis Nice (15 min) ou directement sur site.",
+      a: "Oui, Axion-IA intervient à Villefranche-sur-Mer et sur toute la Riviera azuréenne (Nice, Beaulieu-sur-Mer, Cap-Ferrat, Èze, Monaco). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Mer  ?",

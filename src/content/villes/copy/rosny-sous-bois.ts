@@ -240,7 +240,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Rosny-sous-Bois ?",
-      a: "Oui, nos consultants se déplacent depuis Paris en 25 min via RER E (gares Rosny-sous-Bois ou Rosny-Bois-Perrier) ou métro ligne 11 (terminus Rosny-Bois-Perrier). Pour les missions courtes, visio possible. Pas de surcoût de déplacement dans la Métropole du Grand Paris.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Pour les missions courtes, visio possible. Pas de surcoût de déplacement dans la Métropole du Grand Paris.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

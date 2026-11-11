@@ -65,7 +65,7 @@ export const RIORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

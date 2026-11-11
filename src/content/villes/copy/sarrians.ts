@@ -65,7 +65,7 @@ export const SARRIANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sarrians ?",
-      a: "Nos consultants interviennent depuis Carpentras (10 min) ou Orange (20 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation ou commerce. Comtat Venaissin bien desservi via A7 et D950.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation ou commerce. Comtat Venaissin bien desservi via A7 et D950.",
     },
   ],
 };

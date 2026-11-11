@@ -65,7 +65,7 @@ export const SOULEUVRE_EN_BOCAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA en zone rurale bocage ?",
-      a: "Nos consultants viennent de Caen (1h A84) ou Vire (15 min). Déplacement sur site (exploitation, atelier, commerce). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site (exploitation, atelier, commerce). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

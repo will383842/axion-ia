@@ -65,7 +65,7 @@ export const SEVREMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sèvremont ?",
-      a: "Nos consultants interviennent depuis Les Herbiers (15 min) ou Cholet (35 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
     },
   ],
 };

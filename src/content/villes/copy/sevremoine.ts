@@ -232,7 +232,7 @@ export const SEVREMOINE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il sur site à Sèvremoine (Maine-et-Loire) ?",
-      a: "Oui, nos consultants se rendent à Sèvremoine via la gare TER de Torfou (ligne Nantes-Cholet via Clisson) ou en voiture depuis Cholet (20 km) ou Nantes (50 km).",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels délais pour démarrer un projet IA à Sèvremoine ?",

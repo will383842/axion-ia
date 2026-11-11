@@ -65,7 +65,7 @@ export const SAINT_SATURNIN_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Saturnin-lès-Avignon ?",
-      a: "Nos consultants interviennent depuis Avignon (10 min) ou via Gare TGV Avignon (15 min). Déplacement sur site dans vos locaux professionnels, atelier, cabinet ou commerce. Grand Avignon bien desservi via A7 et A9.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, cabinet ou commerce. Grand Avignon bien desservi via A7 et A9.",
     },
   ],
 };

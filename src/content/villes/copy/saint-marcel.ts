@@ -65,7 +65,7 @@ export const SAINT_MARCEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Marcel ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

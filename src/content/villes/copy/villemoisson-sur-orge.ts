@@ -49,7 +49,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villemoisson-sur-Orge ?",
-      a: "Oui, Axion-IA intervient à Villemoisson-sur-Orge et toute la vallée de l'Orge (Sainte-Geneviève-des-Bois, Épinay-sur-Orge, Morsang-sur-Orge, Juvisy-sur-Orge). Nos consultants se déplacent depuis Paris (35 min) ou Massy (15 min).",
+      a: "Oui, Axion-IA intervient à Villemoisson-sur-Orge et toute la vallée de l'Orge (Sainte-Geneviève-des-Bois, Épinay-sur-Orge, Morsang-sur-Orge, Juvisy-sur-Orge). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Villemoisson-sur-Orge  ?",
@@ -65,7 +65,7 @@ export const VILLEMOISSON_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Nos consultants viennent de Paris (35 min A6) ou Massy (15 min). Accès rapide via RER C ou A6.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Accès rapide via RER C ou A6.",
     },
   ],
 };

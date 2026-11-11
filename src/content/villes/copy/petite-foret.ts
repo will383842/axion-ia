@@ -65,7 +65,7 @@ export const PETITE_FORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min via A23). Coaching 1-to-1 possible en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coaching 1-to-1 possible en visio.",
     },
   ],
 };

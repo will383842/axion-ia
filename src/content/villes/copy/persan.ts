@@ -65,7 +65,7 @@ export const PERSAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (40 min Transilien H Gare du Nord → Persan-Beaumont ou voiture A1/N1).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

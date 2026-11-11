@@ -65,7 +65,7 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

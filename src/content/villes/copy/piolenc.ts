@@ -65,7 +65,7 @@ export const PIOLENC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Piolenc ?",
-      a: "Nos consultants interviennent depuis Orange (10 min via A7) ou Avignon (35 min). Déplacement sur site dans vos locaux professionnels, exploitation agricole, domaine viticole ou commerce. Vallée du Rhône bien desservie via A7.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation agricole, domaine viticole ou commerce. Vallée du Rhône bien desservie via A7.",
     },
   ],
 };

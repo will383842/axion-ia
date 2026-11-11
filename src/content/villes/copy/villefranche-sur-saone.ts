@@ -230,7 +230,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villefranche-sur-Saône ?",
-      a: "Oui, Axion-IA intervient à Villefranche-sur-Saône et dans tout le Beaujolais. Nos consultants se déplacent depuis Lyon (35 km, A6) pour rencontrer domaines, négociants et PME sur site.",
+      a: "Oui, Axion-IA intervient à Villefranche-sur-Saône et dans tout le Beaujolais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Saône ?",
@@ -246,7 +246,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villefranche-sur-Saône ?",
-      a: "Nos consultants interviennent dans vos locaux, au domaine ou en visio, depuis Lyon. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

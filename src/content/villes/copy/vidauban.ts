@@ -65,7 +65,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vidauban ?",
-      a: "Nos consultants interviennent depuis Brignoles (25 min), Draguignan (25 min) ou Toulon (50 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce. A8 directe.",
     },
   ],
 };

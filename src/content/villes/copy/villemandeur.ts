@@ -65,7 +65,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Villemandeur ?",
-      a: "Nos consultants se déplacent à Villemandeur depuis Paris (1h15 TER Montargis) ou Orléans (1h A19/A77). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

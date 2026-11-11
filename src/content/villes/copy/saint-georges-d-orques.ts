@@ -49,7 +49,7 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Georges-d'Orques et dans quelles communes proches ?",
-      a: "Oui, Axion-IA intervient à Saint-Georges-d'Orques et dans les communes limitrophes : Pignan, Lavérune, Juvignac, Grabels, Murviel-lès-Montpellier, Montarnaud. Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Georges-d'Orques et dans les communes limitrophes : Pignan, Lavérune, Juvignac, Grabels, Murviel-lès-Montpellier, Montarnaud. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Saint-Georges-d'Orques ?",

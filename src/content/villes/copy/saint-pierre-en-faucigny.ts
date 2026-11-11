@@ -49,7 +49,7 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-en-Faucigny ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Faucigny et dans tout le Faucigny (Bonneville, Contamine-sur-Arve, Vougy, Ayze, Marignier). Nos consultants se déplacent depuis Annecy (30 min) ou Genève (35 min).",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Faucigny et dans tout le Faucigny (Bonneville, Contamine-sur-Arve, Vougy, Ayze, Marignier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Faucigny ?",

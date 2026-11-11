@@ -226,7 +226,7 @@ export const SAUMUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saumur et Val de Loire ?",
-      a: "Oui, Axion-IA intervient à Saumur et tout le Val de Loire (Angers, Tours, Chinon, Bourgueil, Montsoreau). Nos consultants viennent de Paris (TGV Nantes/Tours puis TER) ou Nantes (1h en voiture).",
+      a: "Oui, Axion-IA intervient à Saumur et tout le Val de Loire (Angers, Tours, Chinon, Bourgueil, Montsoreau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Saumur-Champigny ?",

@@ -49,7 +49,7 @@ export const SAINT_PRIVAT_DES_VIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Privat-des-Vieux ?",
-      a: "Oui, Axion-IA intervient à Saint-Privat-des-Vieux et dans toute l'agglomération d'Alès (Alès, Saint-Christol-lez-Alès, Saint-Martin-de-Valgalgues). Nos consultants viennent de Nîmes (40 min).",
+      a: "Oui, Axion-IA intervient à Saint-Privat-des-Vieux et dans toute l'agglomération d'Alès (Alès, Saint-Christol-lez-Alès, Saint-Martin-de-Valgalgues). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Saint-Privat-des-Vieux  : quel budget prévoir ?",

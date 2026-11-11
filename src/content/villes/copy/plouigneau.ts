@@ -49,7 +49,7 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plouigneau et dans le Trégor finistérien ?",
-      a: "Oui, Axion-IA intervient à Plouigneau et dans tout le Trégor finistérien (Morlaix, Plougonven, Guerlesquin, Lanmeur, Plouégat-Moysan). Nos consultants se déplacent depuis Morlaix en 15 minutes.",
+      a: "Oui, Axion-IA intervient à Plouigneau et dans tout le Trégor finistérien (Morlaix, Plougonven, Guerlesquin, Lanmeur, Plouégat-Moysan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles du secteur de Plouigneau ?",
@@ -65,7 +65,7 @@ export const PLOUIGNEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Plouigneau ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants se déplacent depuis Morlaix (15 min) ou Brest (50 min). Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
     },
   ],
 };

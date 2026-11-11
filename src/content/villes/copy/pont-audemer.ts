@@ -49,7 +49,7 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-Audemer et dans le Pays Risle-Charentonne ?",
-      a: "Oui, Axion-IA intervient à Pont-Audemer et dans tout le Pays Risle-Charentonne (Montfort-sur-Risle, Cormeilles, Thiberville). Nos consultants se déplacent depuis Rouen (50 min) ou Le Havre (40 min).",
+      a: "Oui, Axion-IA intervient à Pont-Audemer et dans tout le Pays Risle-Charentonne (Montfort-sur-Risle, Cormeilles, Thiberville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces du centre-ville Venise normande ?",
@@ -65,7 +65,7 @@ export const PONT_AUDEMER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Rouen ou Le Havre ?",
-      a: "Nos consultants viennent de Rouen (50 min) ou Le Havre (40 min). Pour les multi-jours, hébergement local possible Venise normande.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible Venise normande.",
     },
   ],
 };

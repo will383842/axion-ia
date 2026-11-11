@@ -65,7 +65,7 @@ export const SAINT_NICOLAS_DE_PORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Nicolas-de-Port ?",
-      a: "Nos consultants interviennent depuis Nancy centre (15 min). Missions sur site dans vos bureaux, commerces, restaurants ou cabinets libéraux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos bureaux, commerces, restaurants ou cabinets libéraux.",
     },
   ],
 };

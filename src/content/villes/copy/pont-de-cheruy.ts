@@ -49,7 +49,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-de-Chéruy et aire lyonnaise est ?",
-      a: "Oui, Axion-IA intervient à Pont-de-Chéruy et toute l'unité urbaine Charvieu-Chavagneux / Pont-de-Chéruy / Tignieu-Jameyzieu. Couverture également aire lyonnaise est (Villette-d'Anthon, Janneyrias). Nos consultants viennent de Lyon (40 min A43).",
+      a: "Oui, Axion-IA intervient à Pont-de-Chéruy et toute l'unité urbaine Charvieu-Chavagneux / Pont-de-Chéruy / Tignieu-Jameyzieu. Couverture également aire lyonnaise est (Villette-d'Anthon, Janneyrias). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Nord-Isère ?",

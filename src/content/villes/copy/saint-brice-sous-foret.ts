@@ -65,7 +65,7 @@ export const SAINT_BRICE_SOUS_FORET_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (25 min Transilien H Gare du Nord → Saint-Brice ou voiture A1/A115).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

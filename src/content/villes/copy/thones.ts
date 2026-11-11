@@ -65,7 +65,7 @@ export const THONES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Thônes ?",
-      a: "Nos consultants interviennent à Thônes depuis Annecy (20 min). Intervention sur site dans votre fromagerie, hôtel, commerce ou atelier artisan. Pour missions multi-jours, hébergement local montagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre fromagerie, hôtel, commerce ou atelier artisan. Pour missions multi-jours, hébergement local montagne.",
     },
   ],
 };

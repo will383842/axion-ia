@@ -49,7 +49,7 @@ export const SARZEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sarzeau et sur la presqu'île de Rhuys ?",
-      a: "Oui, Axion-IA intervient à Sarzeau et sur toute la presqu'île de Rhuys (Saint-Gildas-de-Rhuys, Arzon, Le Tour-du-Parc, Surzur). Nos consultants se déplacent depuis Vannes en 25 minutes.",
+      a: "Oui, Axion-IA intervient à Sarzeau et sur toute la presqu'île de Rhuys (Saint-Gildas-de-Rhuys, Arzon, Le Tour-du-Parc, Surzur). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hébergeurs et restaurateurs à Sarzeau ?",

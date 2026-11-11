@@ -49,7 +49,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Loubès ?",
-      a: "Oui, Axion-IA intervient à Saint-Loubès et dans tout le nord-est bordelais (Ambarès-et-Lagrave, Izon, Saint-André-de-Cubzac). Nos consultants se déplacent depuis Bordeaux (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Saint-Loubès et dans tout le nord-est bordelais (Ambarès-et-Lagrave, Izon, Saint-André-de-Cubzac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Loubès  ?",
@@ -65,7 +65,7 @@ export const SAINT_LOUBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Loubès ?",
-      a: "Nos consultants interviennent dans vos locaux à Saint-Loubès ou en visio. Depuis Bordeaux (20 min A10). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Saint-Loubès ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont.",
     },
   ],
 };

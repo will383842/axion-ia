@@ -49,7 +49,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Templeuve-en-Pévèle et pays de Pévèle ?",
-      a: "Oui, Axion-IA intervient à Templeuve-en-Pévèle et tout le pays de Pévèle (Orchies, Cysoing, Pont-à-Marcq, Genech). Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Templeuve-en-Pévèle et tout le pays de Pévèle (Orchies, Cysoing, Pont-à-Marcq, Genech). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP et services du pays de Pévèle ?",
@@ -65,7 +65,7 @@ export const TEMPLEUVE_EN_PEVELE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (20 min A23), Douai (20 min) ou Orchies (10 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

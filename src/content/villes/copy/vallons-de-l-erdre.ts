@@ -65,7 +65,7 @@ export const VALLONS_DE_L_ERDRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",
-      a: "Nos consultants se déplacent directement dans votre exploitation, atelier ou bureau à Vallons-de-l'Erdre. Depuis Nantes ou Angers (50 min). Formats demi-journée ou journée complète. Visio possible pour le suivi.",
+      a: "Nos consultants se déplacent directement dans votre exploitation, atelier ou bureau à Vallons-de-l'Erdre. Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète. Visio possible pour le suivi.",
     },
   ],
 };

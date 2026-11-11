@@ -65,7 +65,7 @@ export const VALSERHONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (40 min). TGV Paris direct gare Bellegarde. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. TGV Paris direct gare Bellegarde. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

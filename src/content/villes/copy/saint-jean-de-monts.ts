@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_MONTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Monts ?",
-      a: "Nos consultants interviennent depuis Nantes (1h) ou La Roche-sur-Yon (50 min). Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles en pré-saison ou hors-saison.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles en pré-saison ou hors-saison.",
     },
   ],
 };

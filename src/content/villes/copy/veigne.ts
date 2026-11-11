@@ -65,7 +65,7 @@ export const VEIGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Veigné ?",
-      a: "Nos consultants viennent depuis Tours centre (20 min voiture) ou gare de Montbazon (5 min). Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
     },
   ],
 };

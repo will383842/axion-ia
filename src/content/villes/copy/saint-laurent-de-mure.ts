@@ -65,7 +65,7 @@ export const SAINT_LAURENT_DE_MURE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

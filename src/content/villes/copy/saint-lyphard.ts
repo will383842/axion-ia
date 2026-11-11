@@ -65,7 +65,7 @@ export const SAINT_LYPHARD_COPY: VilleCopy = {
     },
     {
       q: "Comment vos consultants se rendent-ils à Saint-Lyphard ?",
-      a: "Nos consultants se déplacent depuis Nantes (1h N171) ou Saint-Nazaire (15 min). Hébergement local possible pour missions multi-jours.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SOUSTONS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Soustons ?",
-      a: "Nos consultants se déplacent depuis Dax (30 min) ou Bayonne (35 min). Mission sur site dans votre établissement. Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre établissement. Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

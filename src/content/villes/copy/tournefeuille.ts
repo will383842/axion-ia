@@ -18,9 +18,9 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
   ecosystemEn:
     "Tournefeuille bénéficie de sa position dans l'aire urbaine de Toulouse, premier bassin aéronautique européen autour d'Airbus, Thales et de leur réseau de sous-traitants. La commune, résidentielle et attractive, concentre des professions libérales, des bureaux d'études et de petites PME de conseil, d'ingénierie et de services numériques, en plus d'un commerce et d'une restauration soignés. Ce tissu de TPE et PME, souvent piloté par des indépendants exigeants, constitue un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   distancesFr:
-    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nos consultants se déplacent sur site depuis Toulouse, frais indiqués séparément, ou interviennent en visio.",
+    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nos consultants se déplacent sur site depuis Toulouse, frais indiqués séparément, ou interviennent en visio.",
+    "Toulouse centre à 15 min, sites Airbus de Blagnac à 10 min. Aéroport Toulouse-Blagnac à 10 km, gare TGV Toulouse-Matabiau à 12 km. Accès direct par la rocade ouest. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil et ingénierie (écosystème aéronautique)",
     "Professions libérales et bureaux d'études",
@@ -230,7 +230,7 @@ export const TOURNEFEUILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tournefeuille et dans l'ouest toulousain ?",
-      a: "Oui. Nous couvrons Tournefeuille et l'aire urbaine de Toulouse (Blagnac, Colomiers, Plaisance-du-Touch). Nos consultants se déplacent sur site depuis Toulouse, à 15 min, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Tournefeuille et l'aire urbaine de Toulouse (Blagnac, Colomiers, Plaisance-du-Touch). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et TPE de services ?",

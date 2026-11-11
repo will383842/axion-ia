@@ -49,7 +49,7 @@ export const SAINT_JEAN_D_ILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-d'Illac ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-d'Illac et dans tout l'ouest bordelais (Martignas-sur-Jalle, Le Haillan, Cestas, Mérignac). Depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Saint-Jean-d'Illac et dans tout l'ouest bordelais (Martignas-sur-Jalle, Le Haillan, Cestas, Mérignac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Saint-Jean-d'Illac  ?",

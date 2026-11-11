@@ -242,7 +242,7 @@ export const TRAPPES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris jusqu'à Trappes ?",
-      a: "Nos consultants viennent de Paris (35 min Montparnasse) pour les missions sur site à Trappes. Pour les interventions multi-jours, repas et hébergement local possibles selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les interventions multi-jours, repas et hébergement local possibles selon vos préférences.",
     },
   ],
 };

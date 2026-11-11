@@ -65,7 +65,7 @@ export const VAISON_LA_ROMAINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vaison-la-Romaine ?",
-      a: "Nos consultants interviennent depuis Orange (30 min) ou Avignon (50 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement, restaurant ou commerce. Haut-Vaucluse accessible via A7 et D975.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, hébergement, restaurant ou commerce. Haut-Vaucluse accessible via A7 et D975.",
     },
   ],
 };

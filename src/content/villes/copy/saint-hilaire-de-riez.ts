@@ -65,7 +65,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Hilaire-de-Riez ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (45 min) ou Nantes (1h10). Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles hors-saison ou en pré-saison.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles hors-saison ou en pré-saison.",
     },
   ],
 };

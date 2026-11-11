@@ -230,7 +230,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tassin-la-Demi-Lune ?",
-      a: "Oui. Axion-IA se déplace à Tassin-la-Demi-Lune et dans tout l'ouest lyonnais (Écully, Charbonnières-les-Bains, Sainte-Foy-lès-Lyon, Francheville). Nos consultants interviennent sur site depuis Lyon centre en 15 min ou en visio.",
+      a: "Oui. Axion-IA se déplace à Tassin-la-Demi-Lune et dans tout l'ouest lyonnais (Écully, Charbonnières-les-Bains, Sainte-Foy-lès-Lyon, Francheville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Tassin ?",

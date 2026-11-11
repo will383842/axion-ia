@@ -242,7 +242,7 @@ export const VILLENEUVE_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention près de l'aéroport Orly ?",
-      a: "Nos consultants viennent de Paris (25 min RER C) pour les missions sur site à Villeneuve-le-Roi et zone aéroportuaire Orly. Pour les opérateurs Orly avec exigences sécurité, nous adaptons les protocoles (habilitations, contrôles d'accès).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les opérateurs Orly avec exigences sécurité, nous adaptons les protocoles (habilitations, contrôles d'accès).",
     },
   ],
 };

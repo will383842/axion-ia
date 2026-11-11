@@ -65,7 +65,7 @@ export const SAINT_JORIOZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Annecy ?",
-      a: "Nos consultants rejoignent Saint-Jorioz depuis Annecy en 15 min (D1508 ou voie verte). Pour les multi-jours, hébergement local bord de lac possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local bord de lac possible.",
     },
   ],
 };

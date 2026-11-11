@@ -65,7 +65,7 @@ export const TREILLIERES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes centre en 15 min via la RN137. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Treillières est en couronne nord Nantes Métropole, très accessible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

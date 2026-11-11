@@ -65,7 +65,7 @@ export const VINDRY_SUR_TURDINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

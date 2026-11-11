@@ -65,7 +65,7 @@ export const TALMONT_SAINT_HILAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Talmont-Saint-Hilaire ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (30 min) ou Les Sables-d'Olonne (10 min). Déplacement sur site dans votre exploitation, camping, hôtel ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre exploitation, camping, hôtel ou commerce.",
     },
   ],
 };

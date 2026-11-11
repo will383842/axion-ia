@@ -49,7 +49,7 @@ export const ROYAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Royan et sur la Côte de Beauté ?",
-      a: "Oui, Axion-IA intervient à Royan et sur toute la Côte de Beauté (Saint-Georges-de-Didonne, Vaux-sur-Mer, Meschers, Saint-Palais-sur-Mer). Nos consultants accèdent via la gare de Royan ou la N150 depuis Saintes.",
+      a: "Oui, Axion-IA intervient à Royan et sur toute la Côte de Beauté (Saint-Georges-de-Didonne, Vaux-sur-Mer, Meschers, Saint-Palais-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour le tourisme et l'hôtellerie à Royan ?",

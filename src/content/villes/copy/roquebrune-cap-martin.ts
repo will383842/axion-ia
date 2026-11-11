@@ -65,7 +65,7 @@ export const ROQUEBRUNE_CAP_MARTIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Nice ou Monaco ?",
-      a: "Nos consultants interviennent depuis Nice (35 min TER Cap-Martin-Roquebrune) ou Monaco (5 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Soisy-sur-Seine ?",
-      a: "Oui, Axion-IA intervient à Soisy-sur-Seine et tout le bassin Évry-Corbeil (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Saint-Germain-lès-Corbeil). Nos consultants se déplacent depuis Paris (40 min) ou Évry (10 min).",
+      a: "Oui, Axion-IA intervient à Soisy-sur-Seine et tout le bassin Évry-Corbeil (Évry-Courcouronnes, Corbeil-Essonnes, Ris-Orangis, Saint-Germain-lès-Corbeil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Soisy-sur-Seine  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const SOISY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Nos consultants viennent de Paris (40 min A6) ou Évry-Courcouronnes (10 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

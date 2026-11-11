@@ -18,9 +18,9 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
   ecosystemEn:
     "Ris-Orangis appartient à la communauté d'agglomération Grand Paris Sud, vaste bassin d'emploi du sud francilien centré sur Évry-Courcouronnes. Située sur les bords de Seine et desservie par le RER D, la ville accueille des zones d'activités tournées vers la logistique, le transport, le BTP, le commerce et les PME de services. Ces TPE et PME, souvent dirigées par des indépendants, gèrent en propre devis, plannings et relances clients. Des automatisations IA bien ciblées leur permettent de gagner un temps précieux sur ces tâches répétitives.",
   distancesFr:
-    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Ris-Orangis (RER D) en centre-ville, Évry-Courcouronnes à 5 min, Corbeil-Essonnes à 10 min. Paris-Gare de Lyon à 25 km, aéroport de Paris-Orly à 15 km. Accès par la N7 et l'A6. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Logistique et entreposage",
     "Transport routier de marchandises",
@@ -132,7 +132,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai démarrez-vous un projet à Ris-Orangis ?",
-            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nos consultants se déplacent depuis Paris, à environ 25 km par l'A6 et le RER D.",
+            a: "Un premier devis est remis à partir de 24 à 48 h selon la complexité, après un échange de cadrage. Le kick-off se fait sur site à Ris-Orangis, puis les itérations se poursuivent à distance avec des points réguliers ; nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ris-Orangis et dans Grand Paris Sud ?",
-      a: "Oui. Nous couvrons Ris-Orangis et l'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Grigny). Nos consultants se déplacent sur site depuis Paris, à 25 km, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Ris-Orangis et l'agglomération Grand Paris Sud (Évry-Courcouronnes, Corbeil-Essonnes, Grigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de commerce, BTP et services ?",

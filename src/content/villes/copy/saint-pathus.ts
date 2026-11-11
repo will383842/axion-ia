@@ -49,7 +49,7 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pathus et dans le nord 77 ?",
-      a: "Oui, Axion-IA intervient à Saint-Pathus et dans tout le nord Seine-et-Marne (Dammartin-en-Goële, Othis, Moussy-le-Neuf, Saint-Mard, Oissery). Nos consultants se déplacent depuis Paris (50 min) ou Roissy-CDG (20 min).",
+      a: "Oui, Axion-IA intervient à Saint-Pathus et dans tout le nord Seine-et-Marne (Dammartin-en-Goële, Othis, Moussy-le-Neuf, Saint-Mard, Oissery). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP à Saint-Pathus ?",
@@ -65,7 +65,7 @@ export const SAINT_PATHUS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Saint-Pathus ?",
-      a: "Nos consultants se déplacent à Saint-Pathus depuis Paris (50 min via N2) ou Roissy-CDG (20 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

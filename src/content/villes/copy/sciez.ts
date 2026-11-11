@@ -65,7 +65,7 @@ export const SCIEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Genève ou Thonon ?",
-      a: "Nos consultants rejoignent Sciez depuis Thonon (10 min) ou Genève (35 min via douane Hermance). Multi-jours : hébergement local bord de lac possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Multi-jours : hébergement local bord de lac possible.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const PLOUAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plouay et dans le centre Morbihan ?",
-      a: "Oui, Axion-IA intervient à Plouay et tout le centre Morbihan (Hennebont, Inzinzac-Lochrist, Bubry, Inguiniel, Lanvaudan). Nos consultants se déplacent depuis Lorient (25 min) ou Vannes (50 min).",
+      a: "Oui, Axion-IA intervient à Plouay et tout le centre Morbihan (Hennebont, Inzinzac-Lochrist, Bubry, Inguiniel, Lanvaudan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du cyclisme et du vélodrome de Plouay ?",
@@ -65,7 +65,7 @@ export const PLOUAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Plouay depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (25 min voiture N24). Pour les multi-jours, hébergement local possible (gîtes centre Morbihan).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes centre Morbihan).",
     },
   ],
 };

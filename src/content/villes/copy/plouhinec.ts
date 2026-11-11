@@ -49,7 +49,7 @@ export const PLOUHINEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plouhinec et sur le littoral sud Morbihan ?",
-      a: "Oui, Axion-IA intervient à Plouhinec et tout le littoral sud Morbihan (Étel, Belz, Erdeven, Riantec, Merlevenez). Nos consultants se déplacent depuis Lorient (20 min) ou Vannes (45 min).",
+      a: "Oui, Axion-IA intervient à Plouhinec et tout le littoral sud Morbihan (Étel, Belz, Erdeven, Riantec, Merlevenez). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les campings et hébergeurs touristiques littoraux ?",
@@ -65,7 +65,7 @@ export const PLOUHINEC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Plouhinec depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (20 min voiture). Pour les multi-jours, hébergement local possible (campings, gîtes littoraux Plouhinec/Étel).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (campings, gîtes littoraux Plouhinec/Étel).",
     },
   ],
 };

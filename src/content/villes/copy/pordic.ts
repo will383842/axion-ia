@@ -49,7 +49,7 @@ export const PORDIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pordic et littoral briochin ?",
-      a: "Oui, Axion-IA intervient à Pordic et tout le littoral briochin (Binic-Étables-sur-Mer, Plérin, Saint-Brieuc). Nos consultants se déplacent en 2h45 depuis Paris (TGV Saint-Brieuc) puis 15 min.",
+      a: "Oui, Axion-IA intervient à Pordic et tout le littoral briochin (Binic-Étables-sur-Mer, Plérin, Saint-Brieuc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Pordic ?",

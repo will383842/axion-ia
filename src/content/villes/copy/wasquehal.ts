@@ -230,7 +230,7 @@ export const WASQUEHAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wasquehal et dans la métropole de Lille ?",
-      a: "Oui, Axion-IA intervient à Wasquehal et dans toute la Métropole Européenne de Lille (Roubaix à 5 min, Croix, Marcq-en-Barœul). Nos consultants rejoignent Wasquehal en 15 min depuis Lille centre.",
+      a: "Oui, Axion-IA intervient à Wasquehal et dans toute la Métropole Européenne de Lille (Roubaix à 5 min, Croix, Marcq-en-Barœul). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME de distribution et e-commerce ?",

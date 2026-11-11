@@ -49,7 +49,7 @@ export const SAINT_GEORGES_DE_DIDONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Georges-de-Didonne ?",
-      a: "Oui, Axion-IA intervient à Saint-Georges-de-Didonne et sur toute la Côte de Beauté (Royan, Vaux-sur-Mer, Meschers-sur-Gironde). Nos consultants accèdent via la gare de Royan (10 min) ou la route depuis Saintes.",
+      a: "Oui, Axion-IA intervient à Saint-Georges-de-Didonne et sur toute la Côte de Beauté (Royan, Vaux-sur-Mer, Meschers-sur-Gironde). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour le tourisme à Saint-Georges-de-Didonne ?",

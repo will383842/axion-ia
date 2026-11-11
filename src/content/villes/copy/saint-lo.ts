@@ -49,7 +49,7 @@ export const SAINT_LO_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Lô et dans la Manche ?",
-      a: "Oui, Axion-IA intervient à Saint-Lô et dans toute la Manche (Coutances, Granville, Avranches, Cherbourg). Nos consultants se déplacent via l'A84 depuis Caen ou Rennes, ou en visio.",
+      a: "Oui, Axion-IA intervient à Saint-Lô et dans toute la Manche (Coutances, Granville, Avranches, Cherbourg). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME agroalimentaires de Saint-Lô ?",
@@ -65,7 +65,7 @@ export const SAINT_LO_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Lô depuis Caen ou Rennes ?",
-      a: "Nos consultants viennent de Caen (60 min A84) ou Rennes (90 min A84). Pour les missions multi-jours, hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local.",
     },
   ],
 };

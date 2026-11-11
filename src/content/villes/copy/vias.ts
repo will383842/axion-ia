@@ -49,7 +49,7 @@ export const VIAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vias ?",
-      a: "Oui, Axion-IA intervient à Vias et sur tout le littoral Agde-Béziers (Agde, Sérignan, Portiragnes, Bessan). Nos consultants viennent depuis Montpellier ou Béziers.",
+      a: "Oui, Axion-IA intervient à Vias et sur tout le littoral Agde-Béziers (Agde, Sérignan, Portiragnes, Bessan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les campings ?",

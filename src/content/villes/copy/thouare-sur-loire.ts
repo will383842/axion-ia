@@ -65,7 +65,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Nantes centre ?",
-      a: "Nos consultants viennent de Nantes centre en 15 min via le périphérique est. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
     },
   ],
 };

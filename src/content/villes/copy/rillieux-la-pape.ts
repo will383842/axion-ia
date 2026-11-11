@@ -230,7 +230,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rillieux-la-Pape et dans le nord-est lyonnais ?",
-      a: "Oui, Axion-IA intervient à Rillieux-la-Pape et tout le nord-est de la Métropole de Lyon (Caluire-et-Cuire, Sathonay, Vaulx-en-Velin). Nos consultants viennent de Lyon, à 20 minutes.",
+      a: "Oui, Axion-IA intervient à Rillieux-la-Pape et tout le nord-est de la Métropole de Lyon (Caluire-et-Cuire, Sathonay, Vaulx-en-Velin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et logistiques ?",
@@ -246,7 +246,7 @@ export const RILLIEUX_LA_PAPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon en 20 minutes.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

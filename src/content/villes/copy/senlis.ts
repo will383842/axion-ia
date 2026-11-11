@@ -65,7 +65,7 @@ export const SENLIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Roissy ?",
-      a: "Nos consultants viennent de Paris (50 min via A1) ou Roissy-CDG (30 min). Coaching 1-to-1 possible en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coaching 1-to-1 possible en visio.",
     },
   ],
 };

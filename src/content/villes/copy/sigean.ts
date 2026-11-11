@@ -49,7 +49,7 @@ export const SIGEAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sigean et sur le littoral audois ?",
-      a: "Oui, Axion-IA intervient à Sigean et sur tout le littoral audois (Port-la-Nouvelle, Leucate, Gruissan, Peyriac-de-Mer). Nos consultants se déplacent depuis Narbonne en 15 min.",
+      a: "Oui, Axion-IA intervient à Sigean et sur tout le littoral audois (Port-la-Nouvelle, Leucate, Gruissan, Peyriac-de-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme animalier à Sigean ?",

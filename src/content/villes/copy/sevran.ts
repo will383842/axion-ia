@@ -230,7 +230,7 @@ export const SEVRAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sevran ?",
-      a: "Oui, Axion-IA intervient à Sevran et dans tout l'est de la Seine-Saint-Denis (Aulnay-sous-Bois, Livry-Gargan, Villepinte). Nos consultants se déplacent depuis Paris via le RER B pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Sevran et dans tout l'est de la Seine-Saint-Denis (Aulnay-sous-Bois, Livry-Gargan, Villepinte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Sevran ?",
@@ -246,7 +246,7 @@ export const SEVRAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sevran ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Paris. Le périmètre, le planning et les tarifs sont fixés en amont, sans surprise.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans surprise.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",
