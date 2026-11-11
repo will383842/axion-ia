@@ -1,4 +1,5 @@
 "use client";
+// use-client: écouteur de clic délégué sur document (suivi des boutons), effet navigateur uniquement
 
 // Mesure des clics sur les boutons des landings apporteurs (événement « Landing CTA Clicked »).
 // Un seul écouteur délégué : les sections sont générées depuis les maquettes et ne portent pas de

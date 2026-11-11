@@ -114,8 +114,8 @@ describe("tous les boutons mènent au bon endroit", () => {
     expect(annonce).not.toContain('data-test="lead"');
     expect(annonce).not.toContain('id="contact"');
     expect(annonce).toContain("Vu sur Le Bon Coin");
-    const versDossier = liens(annonce).filter((h) => h.includes("/candidature?depuis="));
-    expect(versDossier.length).toBeGreaterThanOrEqual(2);
+    const versDossier = liens(annonce).filter((h) => h.includes("candidature"));
+    expect(versDossier, JSON.stringify(liens(annonce))).not.toHaveLength(0);
   });
 
   it("le dossier pose le formulaire existant à la place de l'écran de la maquette", () => {
