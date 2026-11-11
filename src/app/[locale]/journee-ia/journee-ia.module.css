@@ -80,7 +80,7 @@
 
 .titre {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.01em;
   color: var(--color-fg);
@@ -135,7 +135,7 @@
   min-width: 44px;
   text-align: right;
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 700;
   font-variant-numeric: tabular-nums;
 }
 
@@ -192,7 +192,7 @@
   background: var(--color-terracotta);
   color: var(--color-paper);
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -213,7 +213,7 @@
 
 .total b {
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1;
   color: var(--color-terracotta);
@@ -227,7 +227,7 @@
 }
 
 .prix b {
-  font-weight: 800;
+  font-weight: 700;
   color: var(--color-fg);
 }
 
@@ -247,7 +247,7 @@
 /* Texte du ruban : 12 px au moins (l'échelle du dessin le porte à ~15 px sur téléphone). */
 .ruban .lb {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 700;
   fill: var(--color-fg);
 }
 
@@ -439,7 +439,7 @@
   top: 10px;
   right: 12px;
   font-size: 64px;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
   color: var(--color-terracotta-on-mocha);
   opacity: 0.1;

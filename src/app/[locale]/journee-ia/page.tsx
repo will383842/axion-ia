@@ -111,7 +111,7 @@ const FILET = "border-sand-deep border-t";
 const FOND_SABLE = "bg-sand-deep";
 // h2 : 26 px sur téléphone (règle J10), 40 px dès 768 px, 48 px dès 1024 px.
 const H2_BASE =
-  "mb-4 text-[1.625rem] leading-[1.06] font-extrabold tracking-[-0.03em] text-balance md:mb-6 md:text-[2.5rem] lg:mb-8";
+  "mb-4 text-[1.625rem] leading-[1.06] font-bold tracking-[-0.03em] text-balance md:mb-6 md:text-[2.5rem] lg:mb-8";
 const H2 = `${H2_BASE} lg:text-[3rem]`;
 // Carte : fond blanc, bordure 1 px sable saturé, rayon 20 px (--radius-xl), ombre douce du module.
 const CARTE = `bg-paper border-sand-deep rounded-xl border ${s["ombre-carte"]}`;
@@ -188,7 +188,7 @@ function Surtitre({
       {n ? (
         <span
           aria-hidden="true"
-          className="inline-flex items-center gap-3 font-extrabold tracking-[0.04em] tabular-nums after:block after:h-0.5 after:w-8 after:rounded-sm after:bg-current after:opacity-55 after:content-['']"
+          className="inline-flex items-center gap-3 font-bold tracking-[0.04em] tabular-nums after:block after:h-0.5 after:w-8 after:rounded-sm after:bg-current after:opacity-55 after:content-['']"
         >
           {n}
         </span>
@@ -326,7 +326,7 @@ export default async function JourneeIaPage({ params }: Props) {
               <Surtitre className="mt-3 mb-3">{accroche.surtitre}</Surtitre>
               <h1
                 id="hero-heading"
-                className="text-[1.875rem] leading-[1.12] font-extrabold tracking-[-0.025em] text-balance sm:text-[2.75rem] lg:text-[3.25rem]"
+                className="text-[1.875rem] leading-[1.12] font-bold tracking-[-0.025em] text-balance sm:text-[2.75rem] lg:text-[3.25rem]"
               >
                 <Titre />
               </h1>
@@ -363,7 +363,7 @@ export default async function JourneeIaPage({ params }: Props) {
                   const corps = (
                     <>
                       <b
-                        className={`block text-xl leading-[1.1] font-extrabold tracking-[-0.02em] lg:text-2xl ${
+                        className={`block text-xl leading-[1.1] font-bold tracking-[-0.02em] lg:text-2xl ${
                           i === 0 || "ancre" in t
                             ? "text-terracotta"
                             : "attestation" in t
@@ -416,7 +416,7 @@ export default async function JourneeIaPage({ params }: Props) {
           >
             <h2
               id="en-bref-titre"
-              className="text-terracotta text-sm font-extrabold tracking-[0.1em] uppercase"
+              className="text-terracotta text-sm font-bold tracking-[0.1em] uppercase"
             >
               {TEXTES_ANNEXES.enBrefTitre}
             </h2>
@@ -444,7 +444,7 @@ export default async function JourneeIaPage({ params }: Props) {
             <div
               className={`bg-paper border-border-strong rounded-xl border p-6 ${s["ombre-carte"]}`}
             >
-              <p className="text-fg mb-4 text-lg font-extrabold tracking-[-0.02em]">
+              <p className="text-fg mb-4 text-lg font-bold tracking-[-0.02em]">
                 {pourQui.titreOui}
               </p>
               <ul className="grid gap-2">
@@ -465,7 +465,7 @@ export default async function JourneeIaPage({ params }: Props) {
               </ul>
             </div>
             <div className="border-border-field rounded-xl border-[1.5px] border-dashed p-6">
-              <p className="text-fg-soft mb-4 text-lg font-extrabold tracking-[-0.02em]">
+              <p className="text-fg-soft mb-4 text-lg font-bold tracking-[-0.02em]">
                 {pourQui.titreNon}
               </p>
               <ul className="grid gap-2">
@@ -495,7 +495,7 @@ export default async function JourneeIaPage({ params }: Props) {
             <ArrowRight className="size-[18px]" strokeWidth={2} aria-hidden="true" />
           </Link>
 
-          <h3 className="text-fg mt-12 mb-4 text-[1.3125rem] font-extrabold tracking-[-0.02em] lg:mt-24 lg:text-2xl">
+          <h3 className="text-fg mt-12 mb-4 text-[1.3125rem] font-bold tracking-[-0.02em] lg:mt-24 lg:text-2xl">
             {pourQui.titreExemples}
           </h3>
           <div
@@ -520,7 +520,7 @@ export default async function JourneeIaPage({ params }: Props) {
                     className="aspect-[4/3] h-auto w-full object-cover"
                   />
                   <div className="p-4 pb-6">
-                    <p className="text-fg mb-0.5 text-base font-extrabold lg:min-h-[2.6em]">
+                    <p className="text-fg mb-0.5 text-base font-bold lg:min-h-[2.6em]">
                       {e.secteur}
                     </p>
                     <p className="text-fg-soft text-[15px] leading-snug">{e.phrase}</p>
@@ -625,7 +625,7 @@ export default async function JourneeIaPage({ params }: Props) {
                       sur="plein"
                       className="col-start-1 row-span-2 self-center"
                     />
-                    <h3 className="text-fg col-start-2 row-start-1 self-end text-xl leading-tight font-extrabold md:text-2xl">
+                    <h3 className="text-fg col-start-2 row-start-1 self-end text-xl leading-tight font-bold md:text-2xl">
                       {el.titre}
                     </h3>
                     <p className="text-ink col-start-2 row-start-2 mt-1.5 max-w-[46ch] text-base md:text-[1.0625rem]">
@@ -674,7 +674,7 @@ export default async function JourneeIaPage({ params }: Props) {
                 {calcul.facteurs.map((f, i) => (
                   <span key={f} className="contents">
                     {i > 0 ? (
-                      <span aria-hidden="true" className="text-terracotta font-extrabold">
+                      <span aria-hidden="true" className="text-terracotta font-bold">
                         ×
                       </span>
                     ) : null}
@@ -684,7 +684,7 @@ export default async function JourneeIaPage({ params }: Props) {
                     </span>
                   </span>
                 ))}
-                <span className="text-terracotta mt-3.5 basis-full text-[3.25rem] leading-none font-extrabold tracking-[-0.03em] lg:text-7xl">
+                <span className="text-terracotta mt-3.5 basis-full text-[3.25rem] leading-none font-bold tracking-[-0.03em] lg:text-7xl">
                   <span aria-hidden="true" className="mr-1 align-[0.25em] text-[0.6em]">
                     =
                   </span>
@@ -697,11 +697,11 @@ export default async function JourneeIaPage({ params }: Props) {
               </p>
               <p className="text-fg-soft mt-3.5 mb-4 text-[15px]">{calcul.nuance}</p>
               <div aria-hidden="true" className="my-4 grid max-w-[520px] gap-2.5">
-                <div className="bg-terracotta text-paper flex h-11 items-center rounded-md px-3.5 font-extrabold">
+                <div className="bg-terracotta text-paper flex h-11 items-center rounded-md px-3.5 font-bold">
                   {remplacerJetons(calcul.total)}
                 </div>
                 <div className="bg-fg relative h-11 rounded-md" style={{ width: `${partDuPrix}%` }}>
-                  <span className="text-fg absolute top-1/2 left-[calc(100%+10px)] -translate-y-1/2 font-extrabold whitespace-nowrap">
+                  <span className="text-fg absolute top-1/2 left-[calc(100%+10px)] -translate-y-1/2 font-bold whitespace-nowrap">
                     {remplacerJetons(prix.montant)}
                   </span>
                 </div>
@@ -731,7 +731,7 @@ export default async function JourneeIaPage({ params }: Props) {
             <h2 id="h-prix" className={`${H2} text-mocha-fg`}>
               {prix.titre}
             </h2>
-            <p className="text-terracotta-on-mocha mt-2 text-[clamp(2.75rem,15vw,3.75rem)] leading-none font-extrabold tracking-[-0.03em] lg:text-[5rem]">
+            <p className="text-terracotta-on-mocha mt-2 text-[clamp(2.75rem,15vw,3.75rem)] leading-none font-bold tracking-[-0.03em] lg:text-[5rem]">
               {remplacerJetons(prix.montant)}
               <small className="text-mocha-fg-muted mt-2 block text-[17px] font-semibold tracking-normal">
                 {prix.unite}
@@ -763,7 +763,7 @@ export default async function JourneeIaPage({ params }: Props) {
               ×3
             </span>
             <div className="relative text-base leading-relaxed">
-              <h3 className="text-mocha-fg mb-3 flex items-start gap-2.5 pr-14 text-xl leading-snug font-extrabold sm:pr-0">
+              <h3 className="text-mocha-fg mb-3 flex items-start gap-2.5 pr-14 text-xl leading-snug font-bold sm:pr-0">
                 <ShieldCheck
                   className="text-terracotta-on-mocha mt-0.5 size-[30px] flex-none"
                   strokeWidth={1.75}
@@ -774,7 +774,7 @@ export default async function JourneeIaPage({ params }: Props) {
               <p className="mb-2">
                 {avantPromesse}
                 {promesse ? (
-                  <strong className="text-mocha-fg mt-1.5 block text-[1.1875rem] font-extrabold">
+                  <strong className="text-mocha-fg mt-1.5 block text-[1.1875rem] font-bold">
                     {promesse}
                   </strong>
                 ) : null}
@@ -953,7 +953,7 @@ export default async function JourneeIaPage({ params }: Props) {
               >
                 <span
                   aria-hidden="true"
-                  className="text-terracotta bg-paper inline-grid size-8 flex-none place-items-center rounded-full text-[15px] font-extrabold"
+                  className="text-terracotta bg-paper inline-grid size-8 flex-none place-items-center rounded-full text-[15px] font-bold"
                 >
                   {i + 1}
                 </span>
