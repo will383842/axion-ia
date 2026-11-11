@@ -6,12 +6,17 @@
  * page (pas au clic du lien) : la fenêtre de messagerie du réseau est courte.
  *
  * `reserverConfirmations` fait, en UNE transaction :
+ *   0. REPRISE : une ligne `reserve` dont la réservation (`updated_at`) date de plus de
+ *      `DELAI_REPRISE_RESERVATION_MIN` minutes (réponse perdue côté Studio) repasse à `a_envoyer`
+ *      si elle est encore dans la fenêtre de `FENETRE_MERCI_H` heures, sinon à `expire`.
+ *      Jamais de suppression ; une ligne `envoye` ne bouge jamais ;
  *   1. passer à `expire` les lignes `a_envoyer` de plus de `FENETRE_MERCI_H` heures (elles restent en base) ;
  *   2. réserver atomiquement (`UPDATE … WHERE id IN (SELECT … FOR UPDATE SKIP LOCKED LIMIT n) RETURNING`) :
  *      deux appels simultanés ne reçoivent jamais la même ligne, un second appel reçoit une liste vide ;
  *   3. ne renvoyer que `{ ref, valideLe }`.
  *
- * Exclus de la réservation (la ligne reste TELLE QUELLE, ni modifiée ni supprimée) :
+ * Exclus de la réservation (la ligne n'est jamais supprimée ni réservée ; elle peut passer à
+ *   `expire` après 48 h) :
  *   · la marque d'une adresse opposée (`email_key = '-'`) et les statuts `ecarte` / `ecartee`
  *     (seul `a_envoyer` est réservable) ;
  *   · toute adresse présente dans `email_oppositions` : `email_hash = email_key`. C'est la MÊME
@@ -22,6 +27,9 @@
  * 🔴 AUCUN DELETE. Ni adresse, ni `email_key`, ni `conv_ref`, ni prénom ne sortent : `ref` est
  * l'empreinte SHA-256 du jeton du lien (`jeton_empreinte`), `valideLe` la date de validation.
  * Un seul journal, sans donnée de personne.
+ *
+ * ENGAGEMENT DU STUDIO (STU-Z4) : l'opposition n'est contrôlée qu'à la réservation. Le Studio DOIT
+ * revérifier l'opposition juste avant l'envoi du « merci ».
  */
 import { Prisma } from "../../../prisma/generated/client";
 import * as Sentry from "@sentry/nextjs";
@@ -31,6 +39,9 @@ import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
 import { FENETRE_MERCI_H, LOT_MAX_CONFIRMATIONS } from "./config";
 import { MERCI_STATUT_A_ENVOYER, MERCI_STATUT_EXPIRE, MERCI_STATUT_RESERVE } from "./merci-statut";
+
+/** Une réservation plus vieille que ceci (réponse perdue côté Studio) est reprise. */
+export const DELAI_REPRISE_RESERVATION_MIN = 10;
 
 export interface ConfirmationReservee {
   /** Empreinte SHA-256 du jeton du lien (`jeton_empreinte`) : opaque, sans lien lisible avec la personne. */
@@ -58,7 +69,18 @@ export async function reserverConfirmations(
   const n = Math.min(Math.max(Math.trunc(limite), 1), LOT_MAX_CONFIRMATIONS);
   const debutFenetre = new Date(maintenant.getTime() - FENETRE_MERCI_H * 3_600_000);
 
+  const seuilReprise = new Date(maintenant.getTime() - DELAI_REPRISE_RESERVATION_MIN * 60_000);
+
   const lignes = await prisma.$transaction(async (tx) => {
+    // 0. Reprise des réservations perdues (jamais de DELETE ; `envoye` n'est pas visé).
+    await tx.$executeRaw(Prisma.sql`
+      UPDATE "contacts_guide_reseau"
+         SET "merci_statut" = CASE WHEN "consenti_le" >= ${debutFenetre}
+                                   THEN ${MERCI_STATUT_A_ENVOYER} ELSE ${MERCI_STATUT_EXPIRE} END,
+             "updated_at" = ${maintenant}
+       WHERE "merci_statut" = ${MERCI_STATUT_RESERVE}
+         AND "updated_at" < ${seuilReprise}
+    `);
     // 1. Hors fenêtre : la ligne passe à `expire` (jamais supprimée, jamais proposée).
     await tx.$executeRaw(Prisma.sql`
       UPDATE "contacts_guide_reseau"

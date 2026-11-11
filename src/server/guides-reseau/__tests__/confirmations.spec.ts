@@ -27,6 +27,27 @@ const { bd } = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => {
   const tx = {
     $executeRaw: async (sql: { sql: string; values: unknown[] }) => {
+      if (sql.sql.includes("CASE")) {
+        // REPRISE : [debutFenetre, aEnvoyer, expire, maintenant, reserve, seuil]
+        const [debut, relance, expire, quand, ancien, seuil] = sql.values as [
+          Date,
+          string,
+          string,
+          Date,
+          string,
+          Date,
+        ];
+        let m = 0;
+        for (const l of bd.contacts) {
+          if (l.merci_statut === ancien && (l.updated_at ?? l.consenti_le) < seuil) {
+            l.merci_statut = l.consenti_le >= debut ? relance : expire;
+            l.updated_at = quand;
+            bd.ecritures.push(l.id);
+            m++;
+          }
+        }
+        return m;
+      }
       const [statut, quand, ancien, debut] = sql.values as [string, Date, string, Date];
       let n = 0;
       for (const l of bd.contacts) {
@@ -79,6 +100,7 @@ vi.mock("@/lib/prisma", () => {
 
 import { reserverConfirmations, recevoirDemandeConfirmations } from "../confirmations";
 import { FENETRE_MERCI_H, LOT_MAX_CONFIRMATIONS } from "../config";
+import { DELAI_REPRISE_RESERVATION_MIN } from "../confirmations";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
 const MAINTENANT = new Date("2026-11-11T12:00:00.000Z");
@@ -164,7 +186,11 @@ describe("réservation", () => {
   it.each(["ecarte", "ecartee", "reserve", "envoye", "hors_fenetre", "aucun", "expire"])(
     "7 · statut %s : absent et inchangé",
     async (statut) => {
-      const l = ajouter({ merci_statut: statut });
+      // `reserve` : réservation récente (< 10 min), sinon la reprise la relâche (testée plus bas).
+      const l = ajouter({
+        merci_statut: statut,
+        updated_at: new Date(MAINTENANT.getTime() - 5 * 60_000),
+      });
       expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
       expect(l.merci_statut).toBe(statut);
     },
@@ -183,6 +209,52 @@ describe("réservation", () => {
     expect(r.map((x) => x.ref)).toEqual([limite.jeton_empreinte]);
     expect(vieille.merci_statut).toBe("expire");
     expect(bd.contacts).toContain(vieille);
+  });
+});
+
+describe("reprise des réservations perdues", () => {
+  const reserveDepuis = (min: number, p: Partial<Ligne> = {}) =>
+    ajouter({
+      merci_statut: "reserve",
+      updated_at: new Date(MAINTENANT.getTime() - min * 60_000),
+      ...p,
+    });
+
+  it("reserve depuis 11 min, dans la fenêtre : redevient a_envoyer et ressort", async () => {
+    const l = reserveDepuis(11);
+    const r = await reserverConfirmations(MAINTENANT);
+    expect(r.map((x) => x.ref)).toEqual([l.jeton_empreinte]);
+    expect(l.merci_statut).toBe("reserve"); // re-réservée
+    expect(bd.ecritures.filter((id) => id === l.id)).toHaveLength(2); // reprise + réservation
+    expect(DELAI_REPRISE_RESERVATION_MIN).toBe(10);
+  });
+
+  it("reserve depuis 5 min : inchangée, non proposée", async () => {
+    const l = reserveDepuis(5);
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
+    expect(l.merci_statut).toBe("reserve");
+    expect(bd.ecritures).not.toContain(l.id);
+  });
+
+  it("reserve hors fenêtre de 48 h : expire, absente, conservée", async () => {
+    const l = reserveDepuis(60, { consenti_le: il_y_a(FENETRE_MERCI_H + 1) });
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
+    expect(l.merci_statut).toBe("expire");
+    expect(bd.contacts).toContain(l);
+  });
+
+  it("envoye : ne bouge jamais, même ancienne", async () => {
+    const l = ajouter({ merci_statut: "envoye", updated_at: il_y_a(100) });
+    expect(await reserverConfirmations(MAINTENANT)).toEqual([]);
+    expect(l.merci_statut).toBe("envoye");
+    expect(bd.ecritures).not.toContain(l.id);
+  });
+
+  it("aucun DELETE pendant la reprise", async () => {
+    reserveDepuis(30);
+    reserveDepuis(30, { consenti_le: il_y_a(FENETRE_MERCI_H + 5) });
+    await reserverConfirmations(MAINTENANT);
+    expect(bd.suppressions).toBe(0);
   });
 });
 
