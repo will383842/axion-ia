@@ -106,7 +106,9 @@ describe("POST /api/gdpr-erase — mise à l'écart, jamais de suppression (11/1
     };
     expect(corps.ok).toBe(true);
     expect(corps.statut).toBe("demande_recue_mise_a_l_ecart");
-    expect(corps.notice.explanation).toMatch(/plus aucun message/i);
+    expect(corps.notice.explanation).toMatch(/cessé tout envoi automatique/);
+    expect(corps.notice.explanation).toMatch(/Rien n'est effacé automatiquement/);
+    expect(corps.notice.explanation).toMatch(/sous un mois/);
     expect(corps.notice.explanation).not.toMatch(/ont été effacées/);
     expect(JSON.stringify(corps)).not.toContain("nadia@exemple.fr");
   });

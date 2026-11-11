@@ -445,13 +445,15 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
     ).toEqual([]);
   });
 
-  it("les six tables traitées le sont RÉELLEMENT par la chaîne d'effacement", () => {
+  it("les six tables traitées le sont RÉELLEMENT par l'outil d'effacement à la main", () => {
     // 🔑 Sans ceci, l'inventaire serait une déclaration d'intention : on pourrait
     // écrire `traite` sur n'importe quoi. On vérifie que le code mute bien ces
     // modèles — c'est exactement ce qui manquait aux trois défauts d'origine.
+    // 🔴 11/11/2026 : ces fonctions sont l'OUTIL du geste humain. La route `gdpr-erase` ne les
+    // appelle plus (elle met à l'écart) : elle n'est donc plus lue ici, et la garde ci-dessous
+    // vérifie qu'aucun chemin automatique ne les rappelle.
     const chaine = [
       "src/lib/rgpd-erase.ts",
-      "src/app/api/gdpr-erase/route.ts",
       "src/server/careers/candidature-rgpd.ts",
       // 🔴 2026-08-24 — LE STAGIAIRE A SA PROPRE CHAÎNE, ET CE CLIQUET NE LA
       // VOYAIT PAS. Il a donc refusé un `traite` pourtant EXACT, en exigeant
@@ -483,9 +485,40 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
     });
     expect(
       nonMutes,
-      "modèle(s) déclaré(s) `traite` que la chaîne d'effacement ne mute jamais. " +
+      "modèle(s) déclaré(s) `traite` que l'outil d'effacement à la main ne mute jamais. " +
         "C'est la forme exacte du défaut : une liste qui affirme un traitement " +
         "qui n'a pas lieu.",
+    ).toEqual([]);
+  });
+
+  it("🔴 aucun chemin AUTOMATIQUE (route gdpr-erase, console Lettre) n'importe les fonctions d'effacement", () => {
+    // Décision de Williams (11/11/2026) : une demande d'effacement met à l'écart, elle ne
+    // supprime rien. Les fonctions de `rgpd-erase.ts` ne servent qu'au geste humain.
+    // Seules les mises à l'écart (`ecarter…`) et les constantes d'affichage sont permises.
+    const chemins = [
+      "src/app/api/gdpr-erase/route.ts",
+      "src/server/newsletter/effacer.ts",
+      "src/features/admin-newsletter/actions.ts",
+      "src/server/rgpd/ecarter-au-lieu-d-effacer.ts",
+    ];
+    const destructif =
+      /\b(erase\w*|effacerCible\w*|executerSousDrapeauEffacement|retirerAccordRencontre|purger\w*|viderFaitsRejetes)\b/;
+    const fautifs: string[] = [];
+    for (const f of chemins) {
+      const src = readFileSync(join(process.cwd(), f), "utf8");
+      const imports = [
+        ...src.matchAll(/import\s*(?:type\s*)?\{([^}]*)\}\s*from\s*["']@\/lib\/rgpd-erase["']/g),
+        ...src.matchAll(/import\(\s*["']@\/lib\/rgpd-erase["']\s*\)/g),
+      ];
+      for (const m of imports) {
+        // Un import dynamique n'expose pas ses noms : on le refuse d'office.
+        if (m[1] === undefined || destructif.test(m[1])) fautifs.push(f);
+      }
+    }
+    expect(
+      fautifs,
+      "chemin(s) automatique(s) qui importent une fonction d'effacement : une demande " +
+        "d'effacement doit mettre à l'écart, jamais supprimer.",
     ).toEqual([]);
   });
 

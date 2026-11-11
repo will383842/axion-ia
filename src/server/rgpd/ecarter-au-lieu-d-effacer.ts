@@ -144,6 +144,8 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
   const [lettre, contacts, rapports, crm] = await Promise.all([
     prisma.newsletterSubscriber
       .updateMany({
+        // La colonne `email` est `citext` (schema.prisma) : la comparaison ignore déjà la casse,
+        // une ligne écrite avec des majuscules est donc trouvée sans `mode: "insensitive"`.
         where: { email, status: { notIn: ["unsubscribed", "bounced"] } },
         data: { status: "unsubscribed", unsubscribedAt: quand, confirmToken: null },
       })

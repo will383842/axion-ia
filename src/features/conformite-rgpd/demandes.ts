@@ -14,7 +14,7 @@
 // Rien ici ne traite une demande : chaque ligne renvoie vers l'outil qui le fait déjà.
 
 import { prisma } from "@/lib/prisma";
-import { ACTION_DEMANDE_EFFACEMENT } from "@/server/rgpd/constantes";
+import { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT } from "@/server/rgpd/constantes";
 
 export type OrigineDemande = "stagiaire" | "libre_service";
 
@@ -51,7 +51,7 @@ async function sansPanne<T>(lire: () => Promise<T[]>): Promise<T[]> {
 
 /** Lecture stub-safe : au build (`stub.invalid`) ou sans base, la liste est vide. */
 export async function listerDemandes(): Promise<DemandeRgpd[]> {
-  const [stagiaires, libreService] = await Promise.all([
+  const [stagiaires, libreService, alertes] = await Promise.all([
     sansPanne(() =>
       prisma.rgpdDemande.findMany({
         orderBy: { demandeAt: "desc" },
@@ -71,10 +71,32 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         where: { action: { in: [...ACTIONS_LIBRE_SERVICE] } },
         orderBy: { createdAt: "desc" },
         take: 200,
-        select: { id: true, action: true, createdAt: true },
+        select: { id: true, action: true, createdAt: true, changes: true },
+      }),
+    ),
+    // L'alerte « à traiter à la main » dit où en est la demande : tant qu'elle n'est pas
+    // résolue, la demande reste à traiter ; sa résolution donne la date de traitement.
+    sansPanne(() =>
+      prisma.alerteSysteme.findMany({
+        where: { code: CODE_ALERTE_EFFACEMENT },
+        orderBy: { createdAt: "desc" },
+        take: 500,
+        select: { cibleId: true, resolue: true, resolueAt: true, metadata: true },
       }),
     ),
   ]);
+
+  const alerteDe = (journalId: string, changes: unknown) => {
+    const emailHash =
+      changes && typeof changes === "object"
+        ? (changes as Record<string, unknown>)["emailHash"]
+        : undefined;
+    return alertes.find((a) => {
+      const m = a.metadata;
+      const jid = m && typeof m === "object" ? (m as Record<string, unknown>)["journalId"] : null;
+      return jid === journalId || (typeof emailHash === "string" && a.cibleId === emailHash);
+    });
+  };
 
   const deStagiaires: DemandeRgpd[] = stagiaires.map((d) => ({
     id: d.id,
@@ -87,30 +109,34 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
     outil: "qualiopi/rgpd",
   }));
 
-  const duSite: DemandeRgpd[] = libreService.map((l) =>
-    l.action === ACTION_DEMANDE_EFFACEMENT
-      ? {
-          id: l.id,
-          origine: "libre_service",
-          type: "effacement",
-          // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
-          personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",
-          demandeLe: l.createdAt,
-          aTraiter: true,
-          faiteLe: null,
-          outil: "qualiopi/alertes",
-        }
-      : {
-          id: l.id,
-          origine: "libre_service",
-          type: l.action === "gdpr.erase.completed" ? "effacement" : "acces",
-          personne: "Visiteur du site (adresse non conservée)",
-          demandeLe: l.createdAt,
-          aTraiter: false,
-          faiteLe: l.createdAt,
-          outil: `activity-logs?action=${l.action}`,
-        },
-  );
+  const duSite: DemandeRgpd[] = libreService.map((l) => {
+    if (l.action === ACTION_DEMANDE_EFFACEMENT) {
+      const alerte = alerteDe(l.id, l.changes);
+      // Sans alerte retrouvée : on ne peut pas dire qu'elle est faite, elle reste à traiter.
+      const faite = alerte?.resolue === true;
+      return {
+        id: l.id,
+        origine: "libre_service",
+        type: "effacement",
+        // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
+        personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",
+        demandeLe: l.createdAt,
+        aTraiter: !faite,
+        faiteLe: faite ? (alerte?.resolueAt ?? null) : null,
+        outil: "qualiopi/alertes",
+      };
+    }
+    return {
+      id: l.id,
+      origine: "libre_service",
+      type: l.action === "gdpr.erase.completed" ? "effacement" : "acces",
+      personne: "Visiteur du site (adresse non conservée)",
+      demandeLe: l.createdAt,
+      aTraiter: false,
+      faiteLe: l.createdAt,
+      outil: `activity-logs?action=${l.action}`,
+    };
+  });
 
   // À traiter d'abord (la plus ancienne en tête : c'est elle qui presse), puis le reste.
   return [...deStagiaires, ...duSite].sort((a, b) =>

@@ -86,9 +86,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     recueLe: new Date().toISOString(),
     notice: {
       explanation:
-        "Votre demande d'effacement a bien été reçue. Vous ne recevrez plus aucun message de " +
-        "notre part et vos coordonnées ne seront plus utilisées. Votre demande est traitée à la " +
-        "main par notre responsable, qui vous répondra dans un délai d'un mois.",
+        "Votre demande d'effacement a bien été reçue. Nous avons cessé tout envoi automatique vers " +
+        "votre adresse. Rien n'est effacé automatiquement : notre responsable examine votre demande " +
+        "et vous répondra personnellement sous un mois.",
       contactDpo: "contact@axion-ia.com",
     },
   });
