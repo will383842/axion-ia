@@ -57,7 +57,9 @@ function ligne(over: Ligne = {}): Ligne {
     ...over,
   };
 }
-const fetchMock = vi.fn(async () => new Response(JSON.stringify({ result: { status: "created" } })));
+const fetchMock = vi.fn(
+  async () => new Response(JSON.stringify({ result: { status: "created" } })),
+);
 
 let journaux: string[];
 beforeEach(() => {

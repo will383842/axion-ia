@@ -13,7 +13,8 @@
  */
 
 /** Motif posé sur une ligne bloquée. Jamais d'adresse dedans. */
-export const BLOQUEE_PAR_OPPOSITION = "bloquée par opposition : un stop l'emporte, rien n'est envoyé";
+export const BLOQUEE_PAR_OPPOSITION =
+  "bloquée par opposition : un stop l'emporte, rien n'est envoyé";
 
 const SOURCES_GUIDE_RESEAU = new Set(["guide-reseau", "guides-reseau"]);
 
