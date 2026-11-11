@@ -180,7 +180,7 @@
 
 .haut .nom,
 .haut .valeur {
-  color: var(--color-terracotta-deep);
+  color: var(--color-terracotta);
 }
 
 .tag {

@@ -107,7 +107,7 @@ const FILET = "border-sand-deep border-t";
 // v5 (contraste) : les fonds alternent ivoire → sable saturé → blanc → sable saturé → pêche → mocha → …,
 // jamais deux fonds clairs identiques à la suite. Le sable saturé porte les cartes blanches. Le
 // terracotta de marque n'y fait que 4,26:1 : sur ce fond, textes et liens terracotta passent en
-// `terracotta-deep` (6,05:1, AA).
+// `terracotta` (4,64:1, AA).
 const FOND_SABLE = "bg-sand-deep";
 // h2 : 26 px sur téléphone (règle J10), 40 px dès 768 px, 48 px dès 1024 px.
 const H2_BASE =
@@ -124,7 +124,7 @@ const FOCUS_TERRA =
 // Bouton secondaire : fond blanc, bordure encre, survol inversé.
 const SECONDAIRE = "bg-paper! border-fg! hover:bg-fg! hover:text-paper!";
 const LIEN_FLECHE =
-  "text-terracotta-deep mt-3 inline-flex min-h-12 items-center gap-1.5 font-bold hover:underline";
+  "text-terracotta mt-3 inline-flex min-h-12 items-center gap-1.5 font-bold hover:underline";
 const PORTE =
   "text-fg decoration-terracotta hover:text-terracotta inline-flex min-h-12 items-center justify-center text-base font-semibold underline decoration-[1.5px] underline-offset-[3px]";
 
@@ -175,7 +175,7 @@ function Surtitre({
 }) {
   const couleur = {
     terracotta: "text-terracotta",
-    sable: "text-terracotta-deep",
+    sable: "text-terracotta",
     mocha: "text-terracotta-on-mocha",
     terra: "text-paper",
   }[ton];
@@ -535,7 +535,7 @@ export default async function JourneeIaPage({ params }: Props) {
               href={pourQui.insee.url}
               target="_blank"
               rel="noopener"
-              className="text-terracotta-deep inline-flex min-h-11 items-center underline underline-offset-2"
+              className="text-terracotta inline-flex min-h-11 items-center underline underline-offset-2"
             >
               {pourQui.insee.source}
               <span className="sr-only">{TEXTES_ANNEXES.nouvelOnglet}</span>
@@ -646,7 +646,7 @@ export default async function JourneeIaPage({ params }: Props) {
                         {el.titre}
                       </h3>
                       {"delai" in el ? (
-                        <p className="bg-terracotta-soft text-terracotta-deep mt-2.5 inline-block rounded-lg px-2.5 py-[3px] text-sm leading-snug font-bold">
+                        <p className="bg-terracotta-soft text-terracotta mt-2.5 inline-block rounded-lg px-2.5 py-[3px] text-sm leading-snug font-bold">
                           {el.delai}
                         </p>
                       ) : null}
