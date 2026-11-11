@@ -36,14 +36,56 @@ const hexDe = (src: string) =>
 const versHex = (r: number, g: number, b: number) =>
   "#" + [r, g, b].map((c) => Math.min(255, c).toString(16).padStart(2, "0")).join("");
 
-/** Couleurs rgb()/rgba() du source, converties en hex, avec le sélecteur qui les porte. */
-const rgbDe = (src: string) =>
-  [...src.matchAll(/rgba?\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*(?:,[^)]*)?\)/g)].map(
-    (m) => ({
-      hex: versHex(Number(m[1]), Number(m[2]), Number(m[3])),
-      selecteur: /([.\w-]+)\s*\{[^{}]*$/.exec(src.slice(0, m.index))?.[1] ?? "",
-    }),
+/** Remplace chaque commentaire CSS par des espaces (mêmes index) : leurs « ; » ou « { » ne faussent pas le sélecteur. */
+const sansCommentaires = (src: string) =>
+  src.replace(/\/\*[\s\S]*?\*\//g, (m) => " ".repeat(m.length));
+
+/** TOUS les sélecteurs de la règle qui contient l'index (liste séparée par des virgules, pas le dernier nom seul). */
+const selecteursDe = (src: string, index: number): string[] => {
+  const avant = sansCommentaires(src).slice(0, index);
+  const accolade = avant.lastIndexOf("{");
+  if (accolade < 0) return [];
+  const debut = Math.max(
+    avant.lastIndexOf("{", accolade - 1),
+    avant.lastIndexOf("}", accolade),
+    avant.lastIndexOf(";", accolade),
   );
+  return avant
+    .slice(debut + 1, accolade)
+    .split(",")
+    .map((x) => x.trim().replace(/\s+/g, " "))
+    .filter(Boolean);
+};
+
+/** hsl → RVB (s et l en %, h en degrés). */
+const hslVersRvb = (h: number, s: number, l: number): [number, number, number] => {
+  const sat = s / 100;
+  const lig = l / 100;
+  const k = (n: number) => (n + h / 30) % 12;
+  const a = sat * Math.min(lig, 1 - lig);
+  const f = (n: number) => lig - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1));
+  return [f(0), f(8), f(4)].map((x) => Math.round(x * 255)) as [number, number, number];
+};
+
+const SEP = String.raw`(?:\s*,\s*|\s+)`;
+const FIN = String.raw`\s*(?:[,/][^)]*)?\)`;
+const RGB_RE = new RegExp(String.raw`rgba?\(\s*(\d{1,3})${SEP}(\d{1,3})${SEP}(\d{1,3})${FIN}`, "g");
+const HSL_RE = new RegExp(
+  String.raw`hsla?\(\s*(-?[\d.]+)(?:deg)?${SEP}([\d.]+)%${SEP}([\d.]+)%${FIN}`,
+  "g",
+);
+
+/** Couleurs rgb()/rgba()/hsl()/hsla() (avec ou sans virgules), converties en hex, avec les sélecteurs de leur règle. */
+const rgbDe = (src: string) => [
+  ...[...src.matchAll(RGB_RE)].map((m) => ({
+    hex: versHex(Number(m[1]), Number(m[2]), Number(m[3])),
+    selecteurs: selecteursDe(src, m.index!),
+  })),
+  ...[...src.matchAll(HSL_RE)].map((m) => ({
+    hex: versHex(...hslVersRvb(((Number(m[1]) % 360) + 360) % 360, Number(m[2]), Number(m[3]))),
+    selecteurs: selecteursDe(src, m.index!),
+  })),
+];
 
 /**
  * Halos bleus restants : décision de Williams requise (lot V4 suivant).
@@ -67,7 +109,8 @@ describe("V4-02 : aucune teinte bleue (190-260°) ni jaune (40-70°)", () => {
               (c) =>
                 !(
                   c.hex === HALOS_BLEUS_RESTANTS.hex &&
-                  HALOS_BLEUS_RESTANTS.selecteurs.includes(c.selecteur)
+                  c.selecteurs.length > 0 &&
+                  c.selecteurs.every((x) => HALOS_BLEUS_RESTANTS.selecteurs.includes(x))
                 ),
             )
             .map((c) => c.hex),
@@ -80,7 +123,7 @@ describe("V4-02 : aucune teinte bleue (190-260°) ni jaune (40-70°)", () => {
   it("les halos bleus restants sont bien les trois sélecteurs nommés (rien de plus)", () => {
     const portes = rgbDe(lire("src/app/globals.css"))
       .filter((c) => c.hex === HALOS_BLEUS_RESTANTS.hex)
-      .map((c) => c.selecteur);
+      .flatMap((c) => c.selecteurs);
     expect([...new Set(portes)].sort()).toEqual([...HALOS_BLEUS_RESTANTS.selecteurs].sort());
   });
 
