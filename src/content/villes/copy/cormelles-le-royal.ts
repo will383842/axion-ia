@@ -49,7 +49,7 @@ export const CORMELLES_LE_ROYAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cormelles-le-Royal et sud agglo Caen ?",
-      a: "Oui, Axion-IA intervient à Cormelles-le-Royal et toute l'agglomération caennaise sud (Ifs, Fleury-sur-Orne, Bretteville-sur-Laize). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Cormelles-le-Royal et toute l'agglomération caennaise sud (Ifs, Fleury-sur-Orne, Bretteville-sur-Laize). Consultants sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires et prestataires informatiques ?",

@@ -228,11 +228,11 @@ export const CORMEILLES_EN_PARISIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Cormeilles-en-Parisis ?",
-      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Cormeilles-en-Parisis débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Quels sont les délais pour une intervention IA à Cormeilles-en-Parisis ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (16 minutes depuis Paris Saint-Lazare via ligne J). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Cormeilles-en-Parisis (ligne J, Paris Saint-Lazare à 16 minutes). Les délais d'implémentation varient selon la complexité du projet, généralement 2 à 6 semaines.",
     },
     {
       q: "Axion-IA se déplace-t-il dans les communes autour de Cormeilles-en-Parisis ?",

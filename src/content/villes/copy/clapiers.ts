@@ -28,8 +28,8 @@ export const CLAPIERS_COPY: VilleCopy = {
       en: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
-      en: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
+      fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement sur site.",
+      en: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement sur site.",
     },
     implementation: {
       fr: "Implémentation IA à Clapiers : automatisation prise de RDV cabinets libéraux, chatbot client PME services, classification dossiers santé, optimisation supervision R&D pour acteurs scientifiques locaux. Code custom, pas de no-code.",

@@ -61,7 +61,7 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Barberaz ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Barberaz. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement inclus.",
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",

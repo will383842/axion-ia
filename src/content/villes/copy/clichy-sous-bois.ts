@@ -231,7 +231,7 @@ export const CLICHY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Clichy-sous-Bois ?",
-      a: "Nous venons sur site en tramway T4 depuis Paris (stations Mairie de Clichy-sous-Bois, Romain Rolland) ou en voiture via Le Raincy et Livry-Gargan. La commune ne dispose pas d'autoroute ni de gare ferroviaire propre.",
+      a: "Nous venons sur site en tramway T4 (stations Mairie de Clichy-sous-Bois, Romain Rolland) ou en voiture via Le Raincy et Livry-Gargan. La commune ne dispose pas d'autoroute ni de gare ferroviaire propre.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Clichy-sous-Bois ?",

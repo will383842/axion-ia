@@ -218,7 +218,7 @@ export const BEAUVAIS_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do you cover the whole Oise?",
-            a: "Quote from 24 to 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. Our consultants reach Beauvais from Paris in 1h15 via the A16.",
+            a: "Quote from 24 to 48 hours depending on complexity. We work in Beauvais and across the southern Oise (Compiègne, Creil, Clermont), with an on-site kick-off at your premises — plant, design office, agri-food workshop or Éco-Parc de Beauvais-Tillé warehouse. We work across France, on site or remotely; Beauvais is reachable via the A16.",
           },
         ],
         guarantees:

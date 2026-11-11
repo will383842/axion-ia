@@ -233,7 +233,7 @@ export const ALLAUCH_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA intervient-il à Allauch ?",
-      a: "Nous nous déplaçons sur site à Allauch sous 5 jours ouvrés après la prise de contact, depuis Marseille ou directement depuis notre cabinet. Les déplacements vers la zone de Fontvieille ou les centres urbains sont inclus dans le périmètre Aix-Marseille.",
+      a: "Nous nous déplaçons sur site à Allauch sous 5 jours ouvrés après la prise de contact. Les déplacements vers la zone de Fontvieille ou les centres urbains sont inclus dans le périmètre Aix-Marseille.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines d'Allauch ?",

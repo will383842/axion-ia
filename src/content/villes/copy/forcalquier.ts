@@ -49,7 +49,7 @@ export const FORCALQUIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Forcalquier et Pays de Forcalquier ?",
-      a: "Oui, Axion-IA intervient à Forcalquier et dans tout le Pays de Forcalquier (Banon, Reillanne, Mane, Pierrerue). Nos consultants viennent d'Aix-en-Provence (1h15 via Manosque/A51) ou Digne-les-Bains (50 min).",
+      a: "Oui, Axion-IA intervient à Forcalquier et dans tout le Pays de Forcalquier (Banon, Reillanne, Mane, Pierrerue). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les laboratoires cosmétiques de Haute-Provence ?",

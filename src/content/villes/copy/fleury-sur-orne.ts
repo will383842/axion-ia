@@ -49,7 +49,7 @@ export const FLEURY_SUR_ORNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fleury-sur-Orne et sud agglo Caen ?",
-      a: "Oui, Axion-IA intervient à Fleury-sur-Orne et toute l'agglomération caennaise sud (Ifs, Cormelles-le-Royal, Bretteville-sur-Laize). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Fleury-sur-Orne et toute l'agglomération caennaise sud (Ifs, Cormelles-le-Royal, Bretteville-sur-Laize). Consultants sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires des zones d'activités Ifs-Fleury ?",

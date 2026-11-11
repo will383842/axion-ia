@@ -49,7 +49,7 @@ export const CAPBRETON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Capbreton et Hossegor ?",
-      a: "Oui, Axion-IA intervient à Capbreton, Soorts-Hossegor et toute la côte landaise sud (Seignosse, Labenne, Soustons, Saint-Vincent-de-Tyrosse). Couverture port, plage et bourg. Déplacement depuis Bayonne ou Dax.",
+      a: "Oui, Axion-IA intervient à Capbreton, Soorts-Hossegor et toute la côte landaise sud (Seignosse, Labenne, Soustons, Saint-Vincent-de-Tyrosse). Couverture port, plage et bourg. Déplacement sur site.",
     },
     {
       q: "Proposez-vous des audits IA pour les restaurateurs du port ?",

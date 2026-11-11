@@ -49,7 +49,7 @@ export const CONTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Contes et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à Contes et dans toute la vallée du Paillon (La Trinité, Drap, L'Escarène, Peillon, Lucéram). Couverture moyen-pays niçois et accès rapide depuis Nice centre (25 min D2204).",
+      a: "Oui, Axion-IA intervient à Contes et dans toute la vallée du Paillon (La Trinité, Drap, L'Escarène, Peillon, Lucéram). Couverture moyen-pays niçois et accès par la D2204.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Contes ?",

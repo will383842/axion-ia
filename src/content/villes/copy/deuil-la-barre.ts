@@ -125,7 +125,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. On accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -211,7 +211,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. On accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",

@@ -49,7 +49,7 @@ export const DRAP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Drap et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à Drap et dans toute la vallée du Paillon (La Trinité, Contes, Peillon, Cantaron). Couverture Métropole Nice Côte d'Azur et accès rapide depuis Nice centre (15 min D2204).",
+      a: "Oui, Axion-IA intervient à Drap et dans toute la vallée du Paillon (La Trinité, Contes, Peillon, Cantaron). Couverture Métropole Nice Côte d'Azur et accès par la D2204.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Drap ?",

@@ -49,7 +49,7 @@ export const CUERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cuers et dans le centre-Var viticole ?",
-      a: "Oui, Axion-IA intervient à Cuers et dans tout le centre-Var viticole (Pierrefeu, Puget-Ville, La Crau, Hyères). Consultants accessibles en 25 min depuis Toulon ou Hyères via A57.",
+      a: "Oui, Axion-IA intervient à Cuers et dans tout le centre-Var viticole (Pierrefeu, Puget-Ville, La Crau, Hyères). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles Côtes de Provence de Cuers ?",

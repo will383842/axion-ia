@@ -49,7 +49,7 @@ export const BEDARRIDES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bédarrides et autour de Châteauneuf-du-Pape ?",
-      a: "Oui, Axion-IA intervient à Bédarrides et dans tout le secteur Châteauneuf-du-Pape (Châteauneuf-du-Pape, Sorgues, Courthézon, Jonquières, Orange). Consultants accessibles en 20 min depuis Avignon via A7 et 15 min depuis Orange.",
+      a: "Oui, Axion-IA intervient à Bédarrides et dans tout le secteur Châteauneuf-du-Pape (Châteauneuf-du-Pape, Sorgues, Courthézon, Jonquières, Orange). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Châteauneuf-du-Pape ?",

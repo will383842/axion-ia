@@ -61,7 +61,7 @@ export const CHALLES_LES_EAUX_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour un hôtel de cure à Challes-les-Eaux ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (10 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE hôtelière à Challes-les-Eaux. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement sur site.",
     },
     {
       q: "Comment se déroule une mission IA à Challes-les-Eaux ?",

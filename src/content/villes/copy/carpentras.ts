@@ -145,7 +145,7 @@ const VILLE_COPY: VilleCopy = {
           "A structuring agrifood and plant-based sector: the Bellecour / Carpensud zone (~133 ha, ECO PARC VAUCLUSE label) and the Marché Gare with its incubators concentrate trading, processing and logistics — activities that need B2B catalogues, supplier-order portals and product-sheet automation rather than generic showcase sites.",
           "AOC wine with strong e-commerce potential: Ventoux and Côtes-du-Rhône-Villages estates (nearly a quarter of the commune's surface under vines) sell direct, at the cellar door and for export — we build online stores with vintage management, allocations and labelling compliance, paired with an AI recommendation assistant.",
           "A dense independent-retail fabric: the Friday Provençal market (~350 traders, Site remarquable du goût), the winter truffle market at the Hôtel-Dieu and the berlingot confectioners (Confiserie du Mont Ventoux) are micro-businesses that benefit from going online — mobile site, click-and-collect, integrated payment.",
-          "A real local digital anchor, La Gare Numérique: this third-place set up in the former SNCF station (coworking, fablab, green-screen studio, medialab) lets us frame, prototype and train on site, rather than working entirely remotely from Avignon.",
+          "A real local digital anchor, La Gare Numérique: this third-place set up in the former SNCF station (coworking, fablab, green-screen studio, medialab) lets us frame, prototype and train on site, rather than working entirely remotely.",
         ],
         methodology: [
           {

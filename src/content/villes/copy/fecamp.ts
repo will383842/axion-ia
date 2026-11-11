@@ -49,7 +49,7 @@ export const FECAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fécamp et Côte d'Albâtre ?",
-      a: "Oui, Axion-IA intervient à Fécamp et toute la Côte d'Albâtre (Étretat à 15 km, Yvetot, Saint-Valery-en-Caux). Nos consultants viennent du Havre (40 min) ou de Rouen (1h15).",
+      a: "Oui, Axion-IA intervient à Fécamp et toute la Côte d'Albâtre (Étretat à 15 km, Yvetot, Saint-Valery-en-Caux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de la filière pêche fécampoise ?",
@@ -65,7 +65,7 @@ export const FECAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fécamp ?",
-      a: "Nos consultants viennent du Havre (40 min) ou de Paris (2h30 voiture, ou TGV Le Havre + voiture).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

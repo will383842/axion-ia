@@ -217,8 +217,8 @@ export const DRAVEIL_COPY: VilleCopy = {
             a: "In the European Union by default, GDPR-compliant. This matters for Draveil organisations handling sensitive data — personal services, the health and geriatric sector around Joffre-Dupuytren, independent practices. You keep ownership of the code and access, with no vendor lock-in.",
           },
           {
-            q: "How does a mission work from Paris?",
-            a: "Our consultants come from Paris (about 25 minutes via RER D through Juvisy-sur-Orge) and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
+            q: "How does a mission work in Draveil?",
+            a: "We work across France, on site or remotely (Draveil is served by RER D via Juvisy-sur-Orge), and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
           },
         ],
         guarantees:

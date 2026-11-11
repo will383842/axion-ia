@@ -61,7 +61,7 @@ export const ENTRELACS_COPY: VilleCopy = {
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE touristique à Entrelacs ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Entrelacs. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry (20 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Entrelacs. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement sur site.",
     },
     {
       q: "Comment se déroule une mission IA à Entrelacs ?",

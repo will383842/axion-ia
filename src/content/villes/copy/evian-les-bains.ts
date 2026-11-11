@@ -49,7 +49,7 @@ export const EVIAN_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Évian-les-Bains et bord du lac Léman ?",
-      a: "Oui, Axion-IA intervient à Évian-les-Bains et tout le Chablais (Thonon-les-Bains à 10 min). Déplacements depuis Genève (45 min) ou Annecy (1h15).",
+      a: "Oui, Axion-IA intervient à Évian-les-Bains et tout le Chablais (Thonon-les-Bains à 10 min). Déplacement sur site.",
     },
     {
       q: "Tarifs audit IA à Évian-les-Bains  : quel budget prévoir ?",

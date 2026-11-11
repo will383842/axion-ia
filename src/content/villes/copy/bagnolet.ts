@@ -128,7 +128,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous sur place à Bagnolet et dans l'est parisien ?",
-            a: "Oui. Depuis Gallieni (ligne 3) et la porte de Bagnolet sur le périphérique, nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance.",
+            a: "Oui. Nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance.",
           },
           {
             q: "Sommes-nous dépendants d'Axion-IA après la livraison ?",
