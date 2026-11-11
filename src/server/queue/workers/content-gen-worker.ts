@@ -39,9 +39,8 @@ import {
   evaluerBarrieresRelecture,
   observerTutoiement,
 } from "@/server/content-gen/quality/barrieres-publication";
-import { controleFidelite } from "@/server/content-gen/fact-check/controle-fidelite";
 import {
-  barriereDepuisConstats,
+  decisionFidelite,
   modeControleFidelite,
 } from "@/server/content-gen/fact-check/fidelite-branchement";
 import { financementPublicCitable } from "@/server/qualiopi/config/financing";
@@ -937,31 +936,36 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // par défaut ; « dry-run » = journal seul). Actif : envoie en RELECTURE, jamais de
     // suppression ni de dépublication. Fail-open. Cf. docs/knowledge/CONTROLE-FIDELITE.md.
     const modeFidelite = modeControleFidelite();
-    if (
-      modeFidelite !== "eteint" &&
-      Array.isArray(output.kbEntryIds) &&
-      output.kbEntryIds.length > 0
-    ) {
+    if (modeFidelite !== "eteint") {
       try {
-        const fichesKb = await prisma.knowledgeTranslation.findMany({
-          where: { entryId: { in: [...output.kbEntryIds] }, locale: "fr" },
-          select: { entryId: true, title: true, body: true, bodyText: true },
+        const decision = await decisionFidelite({
+          mode: modeFidelite,
+          kbEntryIds: output.kbEntryIds,
+          bodyHtml: output.bodyHtml,
+          lireFiches: async (ids) => {
+            const fichesKb = await prisma.knowledgeTranslation.findMany({
+              where: { entryId: { in: [...ids] }, locale: "fr" },
+              select: { entryId: true, title: true, body: true, bodyText: true },
+            });
+            return fichesKb.map((t) => ({
+              id: t.entryId,
+              titre: t.title,
+              texte: t.bodyText || t.body,
+            }));
+          },
         });
-        const barriereFidelite = barriereDepuisConstats(
-          controleFidelite(
-            output.bodyHtml ?? "",
-            fichesKb.map((t) => ({ id: t.entryId, titre: t.title, texte: t.bodyText || t.body })),
-          ),
-        );
-        await logStep(
-          contentGenJobId,
-          "validation",
-          barriereFidelite
-            ? `Contrôle de fidélité (${modeFidelite === "actif" ? "actif" : "essai à blanc, sans effet"}) : ${barriereFidelite.libelle}`
-            : `Contrôle de fidélité (${modeFidelite}) : aucune affirmation à relire (${fichesKb.length} fiches)`,
-          { mode: modeFidelite, fiches: fichesKb.length, ...(barriereFidelite?.detail ?? {}) },
-        );
-        if (barriereFidelite && modeFidelite === "actif") barrieresRelecture.push(barriereFidelite);
+        if (decision.executee) {
+          const barriereFidelite = decision.barriere;
+          await logStep(
+            contentGenJobId,
+            "validation",
+            barriereFidelite
+              ? `Contrôle de fidélité (${modeFidelite === "actif" ? "actif" : "essai à blanc, sans effet"}) : ${barriereFidelite.libelle}`
+              : `Contrôle de fidélité (${modeFidelite}) : aucune affirmation à relire (${decision.fiches} fiches)`,
+            { mode: modeFidelite, fiches: decision.fiches, ...(barriereFidelite?.detail ?? {}) },
+          );
+          if (decision.aAjouter) barrieresRelecture.push(decision.aAjouter);
+        }
       } catch (err) {
         await logStep(
           contentGenJobId,
