@@ -7,7 +7,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import fixture from "./fixtures/charge-crm-v3-page.json";
 
 vi.mock("@/lib/security/email-hash", () => ({
-  hashEmailForLookup: (e: string) => `h:${e.trim().toLowerCase()}`,
+  hashEmailForLookup: () => "0000000000000000000000000000000000000000000000000000000000000000", // 64 hex, comme la vraie empreinte (SITE-429)
 }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("@/server/crm-sync/enqueue", () => ({ enqueueCrmSyncEvent: async () => null }));

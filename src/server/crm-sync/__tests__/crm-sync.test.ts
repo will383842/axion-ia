@@ -372,6 +372,7 @@ describe("émission", () => {
       vi.fn().mockResolvedValue({
         ok: false,
         status: 503,
+        headers: new Headers(),
         json: async () => ({ error: "ingest_disabled" }),
       }),
     );

@@ -147,17 +147,27 @@ export async function emitOutboxRow(outboxId: string): Promise<EmitResult> {
       return { status: "gave_up", httpStatus, error: parsed?.error };
     }
 
-    // 503 = le CRM refuse TEMPORAIREMENT (drapeau d'ingestion à OFF, ou flux
-    // candidats fermé). Ce n'est pas un échec : c'est l'état normal tant que
-    // la bascule finale n'a pas eu lieu. La tentative ne compte donc PAS dans
-    // le plafond d'abandon — sinon toutes les lignes accumulées pendant la
-    // phase inerte seraient abandonnées avant même l'ouverture.
-    const counts = httpStatus !== 503;
+    // 429 (CRM saturé, ex. post viral) et 503 (CRM éteint : drapeau d'ingestion à OFF, ou flux
+    // candidats fermé) sont des refus TEMPORAIRES, pas des échecs de l'événement : la tentative
+    // ne compte PAS dans le plafond d'abandon, sinon une rafale de 429 (ou les lignes accumulées
+    // pendant la phase inerte) mènerait des personnes à `gave_up` alors qu'il suffit d'attendre.
+    // L'événement est reporté (Retry-After respecté, sinon délai borné croissant), jamais soldé.
+    if (httpStatus === 429 || httpStatus === 503) {
+      await reporterRefusTemporaire(
+        outboxId,
+        row,
+        httpStatus,
+        response.headers.get("retry-after"),
+        truncate(parsed?.error ?? `HTTP ${httpStatus}`),
+      );
+      return { status: "failed", httpStatus, error: parsed?.error };
+    }
+
     const abandonne = await markFailed(
       outboxId,
       row.attempts,
       truncate(parsed?.error ?? `HTTP ${httpStatus}`),
-      counts,
+      true,
       httpStatus,
     );
     if (abandonne) {
@@ -288,6 +298,66 @@ async function markFailed(
   // l'identifiant ; le type d'événement et le sujet vivent chez l'appelant, et
   // une alerte qui ne dit pas DE QUI elle parle n'aide personne.
   return exhausted;
+}
+
+/** Délai de report sans `Retry-After` : plancher 1 min, ×2 à chaque refus consécutif, plafond 30 min. */
+const REPORT_MIN_MS = 60_000;
+const REPORT_MAX_MS = 30 * 60_000;
+/** Plafond d'un `Retry-After` annoncé par le CRM (même borne que le délai d'échec ordinaire). */
+const RETRY_AFTER_MAX_MS = 6 * 60 * 60_000;
+
+/** `Retry-After` en millisecondes (secondes entières ou date HTTP), plafonné ; null si absent/illisible. */
+function lireRetryAfterMs(valeur: string | null, maintenant: number): number | null {
+  const v = valeur?.trim();
+  if (!v) return null;
+  let ms: number;
+  if (/^\d+$/.test(v)) ms = Number(v) * 1000;
+  else {
+    const date = Date.parse(v);
+    if (Number.isNaN(date)) return null;
+    ms = date - maintenant;
+  }
+  return Math.min(Math.max(ms, 0), RETRY_AFTER_MAX_MS);
+}
+
+/**
+ * Reporte une ligne après un 429/503 SANS toucher `attempts` ni jamais la solder. Le délai croît
+ * à partir de l'écart précédent (lastAttemptAt → nextAttemptAt) quand le refus précédent était
+ * déjà un 429/503 : aucune colonne nouvelle, rien n'est supprimé.
+ */
+async function reporterRefusTemporaire(
+  outboxId: string,
+  row: {
+    attempts: number;
+    lastAttemptAt?: Date | null;
+    nextAttemptAt?: Date | null;
+    responseStatus?: number | null;
+  },
+  httpStatus: number,
+  retryAfter: string | null,
+  message: string,
+): Promise<void> {
+  const maintenant = Date.now();
+  let delai = lireRetryAfterMs(retryAfter, maintenant);
+  if (delai === null) {
+    const refusPrecedent = row.responseStatus === 429 || row.responseStatus === 503;
+    const ecart =
+      refusPrecedent && row.lastAttemptAt && row.nextAttemptAt
+        ? row.nextAttemptAt.getTime() - row.lastAttemptAt.getTime()
+        : 0;
+    delai = Math.min(Math.max(ecart * 2, REPORT_MIN_MS), REPORT_MAX_MS);
+  }
+  await prisma.crmSyncOutbox.update({
+    where: { id: outboxId },
+    data: {
+      status: "failed",
+      attempts: row.attempts,
+      lastAttemptAt: new Date(maintenant),
+      nextAttemptAt: new Date(maintenant + delai),
+      responseStatus: httpStatus,
+      lastError: message,
+    },
+  });
 }
 
 function truncate(message: string): string {
