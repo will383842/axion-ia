@@ -65,7 +65,7 @@ export const SAINTE_MAXIME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Maxime ?",
-      a: "Nos consultants interviennent via A8 (Le Muy à 20 min), depuis Fréjus (25 min) ou Cannes (50 min). Déplacement sur site dans vos locaux professionnels, hôtel, restaurant, port ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, hôtel, restaurant, port ou commerce.",
     },
   ],
 };

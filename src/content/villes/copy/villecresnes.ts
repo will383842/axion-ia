@@ -64,7 +64,7 @@ export const VILLECRESNES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Villecresnes ?",
       a: "Paris-Gare de Lyon (30 min RER A via Boissy-Saint-Léger). Aéroport Orly à 20 min.",
     },
   ],

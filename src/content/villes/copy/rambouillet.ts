@@ -233,7 +233,7 @@ export const RAMBOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai vous déplacez-vous à Rambouillet ?",
-      a: "Notre équipe nationale intervient à Rambouillet sous 5 jours ouvrés après validation du devis. La gare est à 28-65 min de Paris-Montparnasse via le Transilien N.",
+      a: "Notre équipe nationale intervient à Rambouillet sous 5 jours ouvrés après validation du devis. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Rambouillet ?",

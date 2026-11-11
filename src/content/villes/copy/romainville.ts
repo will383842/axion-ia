@@ -9,9 +9,9 @@ export const ROMAINVILLE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Romainville (93) — biotechs, laboratoires sous-traitants Sanofi/Servier, logistique e-commerce, BTP NPNRU et commerce de proximité — avec une expertise IA senior calibrée pour la banlieue Est parisienne, à 5 km de la Porte des Lilas et à proximité du campus pharma Pantin-Romainville.",
   directAnswerFr:
-    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
+    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nous intervenons partout en France, sur place ou à distance.",
   directAnswerEn:
-    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nos experts IA seniors se déplacent depuis Paris en 30 minutes par le métro 5 (Mairie des Lilas) ou le tram T1, pour cadrer un audit, lancer une intervention ou piloter une implémentation conforme RGPD et AI Act.",
+    "À Romainville, Axion-IA intervient sur site pour les TPE et PME locales : biotechs et laboratoires gravitant autour du siège recherche oncologie Sanofi et de l'Institut de Recherche Servier, entreprises de logistique e-commerce profitant de l'A3/A86, artisans BTP engagés sur la rénovation NPNRU (quartiers Marcel Cachin, Gagarine), commerçants et restaurateurs de la Cité de la Musique aux abords du Bois de Romainville. Nous intervenons partout en France, sur place ou à distance.",
   seoHook: "biotech Sanofi-Servier, logistique Est & BTP NPNRU",
   ecosystemFr:
     "Romainville s'inscrit dans l'Établissement Public Territorial Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) et concentre l'un des pôles biotech-pharma majeurs d'Île-de-France : siège recherche oncologie Sanofi (transféré de Vitry en 2017), Institut de Recherche Servier et campus Sanofi-Aventis sur l'axe Pantin-Romainville, à proximité immédiate du site Roche à Pantin. Le territoire combine ces fleurons R&D avec un tissu dense de TPE/PME en logistique e-commerce (A3, A86, proximité Porte des Lilas), BTP rénovation NPNRU et résidentiel Grand Paris, commerces de proximité et restauration portés par 30 000 habitants, plus un patrimoine vert exceptionnel (réserve naturelle Bois de Romainville, 158 ha) et la Cité de la Musique des Cités-Jardins.",
@@ -60,7 +60,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           {
             step: "Cadrage à Romainville",
             detail:
-              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou dans vos locaux du quartier Bas-Pays. On accède à 30 minutes de Paris par le métro 11 (station Romainville-Carnot) ou le tram T1, pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
+              "Kick-off sur site à Romainville — sur le parc Biocitech, dans une galerie de Komunuma, dans une enseigne de Paddock Paris ou dans vos locaux du quartier Bas-Pays (métro 11, station Romainville-Carnot, ou tram T1) — pour cartographier vos données réelles et le périmètre fonctionnel du site ou de la plateforme SaaS.",
           },
           {
             step: "Conception UX/UI et architecture IA",
@@ -120,7 +120,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "Comment intervenez-vous concrètement à Romainville ?",
-            a: "Nos experts seniors se déplacent sur site à Romainville — sur Biocitech, dans une galerie de Komunuma, dans une enseigne de l'outlet Paddock Paris ou dans vos locaux du quartier Bas-Pays / ZAC de l'Horloge. Depuis Paris, c'est environ 30 minutes par le métro ligne 11 (station Romainville-Carnot, ouverte en juin 2024) ou le tram T1. Le kick-off et la recette se font toujours en présentiel.",
+            a: "Nos experts seniors se déplacent sur site à Romainville — sur Biocitech, dans une galerie de Komunuma, dans une enseigne de l'outlet Paddock Paris ou dans vos locaux du quartier Bas-Pays / ZAC de l'Horloge. Le kick-off et la recette se font toujours en présentiel.",
           },
           {
             q: "Faites-vous de l'e-commerce pour les enseignes de Paddock Paris et du commerce local ?",
@@ -132,7 +132,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis à partir de 24 à 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques à Romainville, dans Est Ensemble et dans tout le Grand Paris. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville, accessibles via le métro 11 (station Romainville-Carnot) ou le tram T1.",
+          "Devis à partir de 24 à 48 h selon la complexité, sans surcoût géographique — nos tarifs sont identiques partout en France. Hébergement en Union européenne conforme RGPD par défaut, avec contraintes de souveraineté renforcées pour les données sensibles des labos Biocitech. Aucun verrou éditeur : code, données et hébergement vous appartiennent et sont réversibles vers vos équipes ou tout intégrateur local. Kick-off et recette toujours en présentiel à Romainville.",
       },
       en: {
         hero: "Romainville (93230) is no generic suburb: it is a former Roussel-Uclaf pharmaceutical brownfield turned into a rare crossover between life sciences and contemporary art. The Biocitech park (102 avenue Gaston Roussel), the only ICPE-certified technology park in the Paris region, hosts biotech and fine-chemistry firms steps away from Komunuma, one of Europe's largest art districts (Fondation Fiminco, FRAC Île-de-France, galleries Air de Paris, In Situ and Vincent Sator). With the arrival of Métro line 11 (Romainville-Carnot station, June 2024), the brand-new Paddock Paris outlet retail and a fabric of ~1,400 businesses driven by services, construction and retail, Axion-IA designs AI-augmented websites and SaaS platforms here, on site, for organisations whose business needs are very different from a classic high-street shop.",
@@ -146,7 +146,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           {
             step: "Framing in Romainville",
             detail:
-              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. We reach you in 30 minutes from Paris via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
+              "Kick-off on site in Romainville — at the Biocitech park, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays district. The site is reached via Métro line 11 (Romainville-Carnot station) or tram T1, to map your real data and the functional scope of the site or SaaS platform.",
           },
           {
             step: "UX/UI design and AI architecture",
@@ -206,7 +206,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
           {
             q: "How exactly do you operate in Romainville?",
-            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. From Paris, it is about 30 minutes via Métro line 11 (Romainville-Carnot station, opened June 2024) or tram T1. Kick-off and acceptance are always done in person.",
+            a: "Our senior experts travel on site to Romainville — at Biocitech, in a Komunuma gallery, in a Paddock Paris store or at your premises in the Bas-Pays / ZAC de l'Horloge district. The site is served by Métro line 11 (Romainville-Carnot station, opened June 2024) and tram T1. Kick-off and acceptance are always done in person.",
           },
           {
             q: "Do you do e-commerce for Paddock Paris stores and local retail?",
@@ -218,7 +218,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote from 24 to 48 hours depending on complexity, with no geographic surcharge — our rates are identical in Romainville, across Est Ensemble and throughout Greater Paris. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville, accessible via Métro line 11 (Romainville-Carnot station) or tram T1.",
+          "Quote from 24 to 48 hours depending on complexity, with no geographic surcharge — our rates are identical anywhere in France. EU hosting compliant with GDPR by default, with reinforced sovereignty constraints for the sensitive data of Biocitech labs. No vendor lock-in: code, data and hosting belong to you and are reversible to your teams or any local integrator. Kick-off and acceptance always in person in Romainville.",
       },
     },
   },
@@ -226,7 +226,7 @@ export const ROMAINVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il vraiment à Romainville et dans l'EPT Est Ensemble ?",
-      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec) depuis Paris en 30 minutes par le métro ligne 5 ou le tram T1. Nos missions sont calibrées pour les TPE et PME locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
+      a: "Oui. Nous nous déplaçons à Romainville et dans toutes les communes d'Est Ensemble (Pantin, Bagnolet, Les Lilas, Le Pré-Saint-Gervais, Bobigny, Bondy, Noisy-le-Sec). Nos missions sont calibrées pour les TPE et PME locales en priorité, avec une expertise particulière sur l'axe biotech Pantin-Romainville.",
     },
     {
       q: "Avez-vous une expérience concrète avec l'écosystème pharma/biotech autour de Sanofi et Servier ?",

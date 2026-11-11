@@ -10,9 +10,9 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Villiers-sur-Marne, commune de 33 162 habitants (2023) dans le Val-de-Marne, à environ 15 km à l'est de Paris. La ville fait partie de l'établissement public territorial Paris-Est-Marne et Bois au sein de la Métropole du Grand Paris. Le tissu économique combine commerces de détail (zones commerciales avec Ikea, Bricorama), entreprises de construction, services et logistique. Nos consultants interviennent sur site en code custom, sans plateforme no-code captive.",
   directAnswerFr:
-    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nous intervenons partout en France, sur place ou à distance. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   directAnswerEn:
-    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nos consultants se déplacent sur site depuis Paris via la gare RER E Villiers-sur-Marne — Le Plessis-Trévise (18 à 32 minutes depuis Magenta selon les arrêts) pour des audits Sur place, des interventions ciblées et des implémentations en code custom. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
+    "Axion-IA intervient à Villiers-sur-Marne auprès des TPE et PME du territoire Paris-Est-Marne et Bois, en priorité sur les automatisations métier, l'audit IA et la formation des dirigeants. Nous intervenons partout en France, sur place ou à distance. Tarifs publics : Audit sur place 4 h à {{price:audit-flash|flat}}, Formation 4 h à {{price:intervention-4h|flat}}, accompagnement un-à-un dès {{price:intervention-dirigeants|flat}}.",
   seoHook: "TPE & PME · Paris-Est-Marne et Bois · IA opérationnelle code custom",
   ecosystemFr:
     "Villiers-sur-Marne s'insère dans l'établissement public territorial Paris-Est-Marne et Bois, en lien direct avec Bry-sur-Marne, Champigny-sur-Marne, Noisy-le-Grand et Le Plessis-Trévise. La ville accueille des zones commerciales actives (Ikea, Bricorama, centres commerciaux), des PME du BTP et de la construction, des activités logistiques et des commerces de proximité dans les quartiers des Hautes-Noues, des Boutareines, des Perroquets et du Bois de Gaumont.",
@@ -56,7 +56,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Pôle Image et Son de l'Est parisien (INA, Studios de Bry, École Georges Méliès) à cheval Villiers/Bry : nous concevons des plateformes SaaS pour la gestion d'archives audiovisuelles, le catalogage assisté par IA, les médiathèques et les sites des sociétés de production et prestataires techniques du cluster.",
           "ZAC Marne Europe (EPAMARNE, 80 000 m² de bureaux, 17 000 m² de commerces, palais des congrès) sur l'ancienne emprise VDO : nous accompagnons les futures implantations tertiaires, l'événementiel et les commerces neufs avec des sites et back-offices IA-native prêts pour l'ouverture de la gare ligne 15.",
           "Zones d'activité grande distribution (IKEA, Bricorama, zones créées de 1977 à 1999) et logistique e-commerce de Marne-la-Vallée au carrefour A4/A104 : nous bâtissons des sites e-commerce multi-CMS et des plateformes de suivi logistique pour le retail, la cosmétique, le dispositif médical et l'événementiel.",
-          "Tissu de ~4 388 entreprises majoritairement TPE/PME (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals) accessibles depuis Paris en RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
+          "Tissu de ~4 388 entreprises majoritairement TPE/PME (commerce de détail, BTP, transport, conseil) : nous livrons des sites vitrines et e-commerce performants (UX/UI, mobile, Web Vitals).",
         ],
         methodology: [
           {
@@ -126,7 +126,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis à Villiers-sur-Marne ?",
-            a: "Nous envoyons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent sur site depuis Paris via le RER E (gare Villiers-sur-Marne — Le Plessis-Trévise, ~18-32 min) ou par l'A4.",
+            a: "Nous envoyons un devis à partir de 24-48 h selon la complexité du projet, après un premier échange de cadrage. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Où sont hébergées les données et le code reste-t-il chez nous ?",
@@ -142,7 +142,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           "Eastern Paris Image and Sound cluster (INA, Studios de Bry, École Georges Méliès) straddling Villiers/Bry: we design SaaS platforms for audiovisual archive management, AI-assisted cataloguing, media libraries and the websites of the cluster's production companies and technical providers.",
           "Marne Europe development zone (EPAMARNE, 80,000 m² of offices, 17,000 m² of retail, convention centre) on the former VDO right-of-way: we support upcoming tertiary tenants, events venues and new retail with AI-native sites and back-offices ready for the Line 15 station opening.",
           "Big-box retail zones (IKEA, Bricorama, zones created from 1977 to 1999) and Marne-la-Vallée e-commerce logistics at the A4/A104 junction: we build multi-CMS e-commerce sites and logistics-tracking platforms for retail, cosmetics, medical devices and events.",
-          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals) reachable from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
+          "A fabric of ~4,388 mostly micro and small businesses (retail, construction, transport, consulting): we deliver high-performance showcase and e-commerce sites (UX/UI, mobile, Web Vitals). Villiers-sur-Marne is served by the RER E (Villiers-sur-Marne — Le Plessis-Trévise station) and the A4.",
         ],
         methodology: [
           {
@@ -212,7 +212,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote in Villiers-sur-Marne?",
-            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. Our consultants travel on site from Paris via RER E (Villiers-sur-Marne — Le Plessis-Trévise station, ~18-32 min) or the A4.",
+            a: "We send a quote from 24-48 h depending on project complexity, after an initial framing exchange. We work anywhere in France, on site or remotely (Villiers-sur-Marne is reachable via RER E, Le Plessis-Trévise station, ~18-32 min, or the A4).",
           },
           {
             q: "Where is the data hosted and does the code stay with us?",
@@ -232,7 +232,7 @@ export const VILLIERS_SUR_MARNE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai un consultant Axion-IA peut-il se déplacer à Villiers-sur-Marne ?",
-      a: "Depuis Paris, nous rejoignons Villiers-sur-Marne en RER E (18-32 min depuis Magenta) ou en voiture via l'A4. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Notre délai standard d'intervention sur site est de 5 jours ouvrés après validation du devis.",
     },
     {
       q: "Intervenez-vous aussi dans les communes voisines de Villiers-sur-Marne ?",

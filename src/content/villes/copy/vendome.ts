@@ -49,11 +49,11 @@ export const VENDOME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vendôme et dans le Vendômois ?",
-      a: "Oui, Axion-IA intervient à Vendôme et tout le Vendômois (Naveil, Saint-Ouen, Thoré-la-Rochette, Montoire-sur-le-Loir). Couverture sous-préfecture et bassin complet. TGV Paris 42 min depuis Vendôme-Villiers.",
+      a: "Oui, Axion-IA intervient à Vendôme et tout le Vendômois (Naveil, Saint-Ouen, Thoré-la-Rochette, Montoire-sur-le-Loir), sous-préfecture et bassin complet. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Comment l'atout TGV Paris 42 min profite-t-il aux missions ?",
-      a: "La gare TGV Vendôme-Villiers (Paris Montparnasse 42 min) permet des missions aller-retour journée depuis Paris. Nos consultants peuvent intervenir le matin et repartir le soir, réduisant les frais d'hébergement pour votre entreprise.",
+      q: "Comment se passe une intervention à Vendôme ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, en journée sur site ou en visio selon vos besoins. Vendôme est desservie par la gare TGV Vendôme-Villiers.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du Vendômois ?",
@@ -65,7 +65,7 @@ export const VENDOME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vendôme ?",
-      a: "Nos consultants arrivent par TGV Vendôme-Villiers (42 min Paris) ou depuis Tours (45 min) et Blois (30 min). Pour les multi-jours, hébergement local bords du Loir.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local bords du Loir.",
     },
   ],
 };

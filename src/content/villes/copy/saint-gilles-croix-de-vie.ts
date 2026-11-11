@@ -49,7 +49,7 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gilles-Croix-de-Vie et sur le littoral ?",
-      a: "Oui, Axion-IA intervient à Saint-Gilles-Croix-de-Vie et sur tout le littoral vendéen (Saint-Hilaire-de-Riez, Saint-Jean-de-Monts). Consultants depuis La Roche-sur-Yon (40 min) ou Nantes (1h10).",
+      a: "Oui, Axion-IA intervient à Saint-Gilles-Croix-de-Vie et sur tout le littoral vendéen (Saint-Hilaire-de-Riez, Saint-Jean-de-Monts). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professionnels de la pêche et du mareyage ?",
@@ -65,7 +65,7 @@ export const SAINT_GILLES_CROIX_DE_VIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Gilles-Croix-de-Vie ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (40 min) ou Nantes (1h10). Déplacement sur site dans vos locaux portuaires, restaurant, commerce ou bureau.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux portuaires, restaurant, commerce ou bureau.",
     },
   ],
 };

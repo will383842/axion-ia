@@ -49,7 +49,7 @@ export const SAINT_GELY_DU_FESC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gély-du-Fesc ?",
-      a: "Oui, Axion-IA intervient à Saint-Gély-du-Fesc et dans toutes les communes nord Montpellier (Grabels, Clapiers, Jacou, Prades-le-Lez, Saint-Clément-de-Rivière). Nos consultants se déplacent depuis Montpellier en 15 min.",
+      a: "Oui, Axion-IA intervient à Saint-Gély-du-Fesc et dans toutes les communes nord Montpellier (Grabels, Clapiers, Jacou, Prades-le-Lez, Saint-Clément-de-Rivière). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les professions libérales ?",

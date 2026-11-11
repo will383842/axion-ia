@@ -81,6 +81,20 @@ export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
   "Rapport chiffré sous 3 jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.",
 ] as const;
 
+/** Le chemin de la landing (préfixé par la locale au rendu : `/fr/journee-ia`). */
+export const CHEMIN_JOURNEE_IA = "/journee-ia";
+
+/** Le déroulé de la journée : le deuxième paragraphe du « En bref » de la landing. */
+export const DEROULE_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES[1];
+
+/**
+ * Le lien vers le diagnostic, avec l'emplacement cliqué (`depuis`), recopié par
+ * `/appel` dans `utm_content`.
+ */
+export function lienDiagnostic(depuis: string): string {
+  return `/appel?rdv=diagnostic&depuis=${encodeURIComponent(depuis)}`;
+}
+
 /** Le « En bref » de la landing, d'un seul tenant (pour `llms*.txt`). */
 export const EN_BREF_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES.join(" ");
 

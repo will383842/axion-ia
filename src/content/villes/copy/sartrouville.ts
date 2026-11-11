@@ -246,7 +246,7 @@ export const SARTROUVILLE_COPY: VilleCopy = {
       a: "Toutes les solutions livrées à Sartrouville respectent le RGPD : hébergement UE, minimisation des données, journalisation des traitements, DPA contractuel. Code custom, pas de boîte noire.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Sartrouville ?",
+      q: "Quelles communes autour de Sartrouville couvrez-vous ?",
       a: "Nous intervenons aussi à Houilles, Carrières-sur-Seine, Montesson, Maisons-Laffitte, Cormeilles-en-Parisis, Bezons, Argenteuil, ainsi que dans le reste de la Boucle de Seine et l'ouest parisien.",
     },
   ],

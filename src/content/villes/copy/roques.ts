@@ -49,7 +49,7 @@ export const ROQUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roques ?",
-      a: "Oui, Axion-IA intervient à Roques et dans tout le sud de Toulouse (Portet-sur-Garonne, Muret, Villeneuve-Tolosane). Nos consultants se déplacent en 18 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Roques et dans tout le sud de Toulouse (Portet-sur-Garonne, Muret, Villeneuve-Tolosane). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Roques ?",
@@ -61,7 +61,7 @@ export const ROQUES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Roques ?",
-      a: "Nos consultants se déplacent à Roques depuis Toulouse (18 min A64). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Roques ?",

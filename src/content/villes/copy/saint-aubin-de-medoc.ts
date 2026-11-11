@@ -49,7 +49,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Aubin-de-Médoc ?",
-      a: "Oui, Axion-IA intervient à Saint-Aubin-de-Médoc et dans le nord-ouest bordelais (Le Taillan-Médoc, Le Pian-Médoc, Saint-Médard-en-Jalles). Depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Saint-Aubin-de-Médoc et dans le nord-ouest bordelais (Le Taillan-Médoc, Le Pian-Médoc, Saint-Médard-en-Jalles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Saint-Aubin-de-Médoc  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const SAINT_AUBIN_DE_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Aubin-de-Médoc ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux centre (20 min). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_BREVIN_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Brevin-les-Pins ?",
-      a: "Oui, Axion-IA intervient à Saint-Brevin-les-Pins et sur tout le littoral sud-estuaire (Pornic, La Plaine-sur-Mer, Corsept). Nos consultants se déplacent depuis Nantes (50 min) ou Saint-Nazaire (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Brevin-les-Pins et sur tout le littoral sud-estuaire (Pornic, La Plaine-sur-Mer, Corsept). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Saint-Brevin  ?",

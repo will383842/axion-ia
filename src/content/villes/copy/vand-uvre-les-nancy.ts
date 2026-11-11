@@ -238,7 +238,7 @@ export const VAND_UVRE_LES_NANCY_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous sur site à Vandœuvre-lès-Nancy ?",
-      a: "Oui. La commune est reliée au centre de Nancy par le tramway en une quinzaine de minutes et la gare de Nancy-Ville est à 5 km. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance.",
+      a: "Oui. Un expert senior se déplace dans vos locaux pour les ateliers de cadrage et les étapes clés, le reste pouvant être mené à distance. Vandœuvre-lès-Nancy est reliée au centre de Nancy par le tramway en une quinzaine de minutes.",
     },
     {
       q: "Par où commencer un projet IA à Vandœuvre-lès-Nancy ?",

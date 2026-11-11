@@ -10,9 +10,9 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Jean-de-Braye, commune de 23 147 habitants du Loiret située à environ 5 km à l'est d'Orléans. Notre cabinet intervient sur site auprès des sous-traitants des pôles de compétitivité orléanais (chimie, électronique), des commerces, des artisans et des services de proximité. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), connectées au tissu de la métropole orléanaise. Les ETI viennent en complément.",
   directAnswerFr:
-    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
+    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nous intervenons partout en France, sur place ou à distance. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
   directAnswerEn:
-    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nos consultants se déplacent sur site depuis Paris ou Orléans (accès A10 à 15 km, RN 20 à 11 km, tramway ligne B inauguré en 2012) pour auditer les processus, automatiser les tâches et implémenter des solutions en code custom. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
+    "À Saint-Jean-de-Braye (Loiret, 23 147 habitants), Axion-IA priorise les TPE et PME locales : commerces, artisans, services et sous-traitants des pôles de compétitivité orléanais (chimie et électronique). Nous intervenons partout en France, sur place ou à distance. Les ETI sont accompagnées en complément. Le bassin couvre Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux.",
   seoHook: "métropole orléanaise est",
   ecosystemFr:
     "Saint-Jean-de-Braye fait partie d'Orléans Métropole et participe aux pôles de compétitivité orléanais centrés sur la chimie et l'électronique. La commune est connectée à l'A10 (15 km), à la RN 20 (11 km) et desservie par le tramway ligne B inauguré en 2012. Le bassin économique inclut Orléans (5 km), Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. La population a progressé de 11,55 % entre 2017 et 2023, signe d'un dynamisme territorial favorable aux TPE et PME.",
@@ -71,7 +71,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Orléans, ajustements en continu.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, ajustements en continu.",
           },
           {
             step: "Recette + mise en ligne",
@@ -157,7 +157,7 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Orléans, ajustements en continu.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail de suivi de production, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, ajustements en continu.",
           },
           {
             step: "Recette + mise en ligne",
@@ -231,11 +231,11 @@ export const SAINT_JEAN_DE_BRAYE_COPY: VilleCopy = {
     },
     {
       q: "Quel est le délai pour une intervention à Saint-Jean-de-Braye ?",
-      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Accès direct par A10 (15 km), RN 20 (11 km) ou tramway ligne B depuis Orléans.",
+      a: "Déplacement sur site dans les 5 jours ouvrés après confirmation. Nous intervenons partout en France, sur place ou à distance. Saint-Jean-de-Braye est desservie par l'A10, la RN 20 et la ligne B du tramway.",
     },
     {
-      q: "Quelles communes proches sont couvertes depuis Saint-Jean-de-Braye ?",
-      a: "Nous couvrons les communes limitrophes : Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux, sans frais supplémentaires de déplacement.",
+      q: "Quelles communes autour de Saint-Jean-de-Braye sont couvertes ?",
+      a: "Nous couvrons les communes limitrophes : Orléans, Semoy, Marigny-les-Usages, Boigny-sur-Bionne, Chécy et Combleux. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Saint-Jean-de-Braye ?",

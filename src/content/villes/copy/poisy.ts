@@ -47,7 +47,7 @@ export const POISY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Poisy et ouest Annecy ?",
-      a: "Oui, Axion-IA intervient à Poisy et tout l'ouest du bassin annécien (Annecy à 10 min, Rumilly à 15 min). Déplacements depuis Genève (45 min) ou Lyon (1h40).",
+      a: "Oui, Axion-IA intervient à Poisy et tout l'ouest du bassin annécien (Annecy à 10 min, Rumilly à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Poisy  ?",

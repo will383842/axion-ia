@@ -49,7 +49,7 @@ export const VILLE_D_AVRAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ville-d'Avray et dans l'ouest parisien ?",
-      a: "Oui, Axion-IA intervient à Ville-d'Avray et dans tout le secteur ouest-parisien (Sèvres, Chaville, Marnes-la-Coquette, Versailles, Vélizy-Villacoublay). Déplacement rapide depuis Paris (20 min Transilien L) ou La Défense (15 min).",
+      a: "Oui, Axion-IA intervient à Ville-d'Avray et dans tout le secteur ouest-parisien (Sèvres, Chaville, Marnes-la-Coquette, Versailles, Vélizy-Villacoublay).",
     },
     {
       q: "Quel est le tarif d'un audit IA à Ville-d'Avray  ?",

@@ -12,9 +12,9 @@ export const SAINT_MANDE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Saint-Mandé, commune résidentielle haut de gamme du Val-de-Marne de 21 071 habitants, située en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris. Sur seulement 0,92 km² — l'une des cinq plus petites communes d'Île-de-France — Saint-Mandé concentre des sièges sociaux structurants (IGN, Météo-France, Ubisoft depuis 2021) et un tissu dense de PME de services. Notre cabinet conçoit du code IA sur mesure — pas du no-code — pour ce tissu de prestataires intellectuels, commerces de proximité et professions libérales.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé sur site, et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé en 10 minutes depuis Paris via le métro ligne 1 (stations Saint-Mandé et Bérault), et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
+    "Axion-IA intervient à Saint-Mandé pour les TPE, PME et plus rarement ETI du Val-de-Marne. Nous réalisons des audits IA sur site, des interventions ciblées d'automatisation et des implémentations sur mesure pour les sièges sociaux (IGN, Météo-France, Ubisoft), commerces de proximité et professions libérales nombreuses dans la commune. Notre équipe accède à Saint-Mandé sur site, et couvre aussi Vincennes, Montreuil ainsi que les 12e et 20e arrondissements limitrophes.",
   seoHook: "sièges sociaux, services & professions libérales",
   ecosystemFr:
     "Saint-Mandé concentre sur 0,92 km² un écosystème économique singulier dominé par des sièges sociaux nationaux (IGN — Institut national de l'information géographique et forestière, Météo-France, Ubisoft installé en 2021), un tissu dense de PME de services et de professions libérales, et un commerce de proximité haut de gamme. La commune est desservie par la ligne 1 du métro (stations Saint-Mandé et Bérault), la ligne 8 et le RER A à Vincennes, et bordée par Vincennes, Montreuil, Paris 12e, Paris 20e et le Bois de Vincennes.",
@@ -41,8 +41,8 @@ export const SAINT_MANDE_COPY: VilleCopy = {
       en: "Nos interventions à Saint-Mandé ciblent les tâches répétitives des PME de services et professions libérales : automatisation documentaire, traitement de courriels clients, ou pré-qualification de dossiers.",
     },
     implementation: {
-      fr: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
-      en: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code, avec déplacements depuis Paris en 10 minutes via la ligne 1.",
+      fr: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
+      en: "Pour les TPE et PME de Saint-Mandé, nous implémentons des solutions IA en code custom intégrées aux outils existants (ERP, CRM, comptabilité), sans dépendance no-code.",
     },
     unAUn: {
       fr: "L'accompagnement un-à-un à Saint-Mandé permet aux dirigeants de TPE/PME et professions libérales de monter en compétence IA à leur rythme, avec un référent unique sur 3 à 6 mois.",
@@ -52,7 +52,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, itérations à distance.",
         whyHere: [
           "Présence de sièges sociaux nationaux — l'IGN (Institut national de l'information géographique et forestière), Météo-France et Ubisoft installé en 2021 : on conçoit des portails métier, des outils internes et des plateformes SaaS IA-native branchés sur vos SI, on exploite vos données géographiques ou cartographiques par recherche sémantique, ou on greffe l'IA sur l'existant sans tout reconstruire ni vous enfermer dans un no-code.",
           "Densité record sur 0,92 km² et tissu de professions libérales (avocats, experts-comptables, notaires, professionnels de santé gravitant autour de l'Hôpital Bégin) : on bâtit des sites vitrines crédibles, des espaces clients sécurisés, de la prise de rendez-vous en ligne et des chatbots RAG multilingues calibrés pour le secret professionnel et les données médicales sensibles.",
@@ -73,7 +73,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos itérations près de l'avenue de Paris : espace client sécurisé, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations documentaires. Démos hebdomadaires en visio, code versionné et auditable.",
+              "Greffe IA sur l'existant ou build IA-native pour les acteurs de l'avenue de Paris : espace client sécurisé, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations documentaires. Démos hebdomadaires en visio, code versionné et auditable.",
           },
           {
             step: "Recette + mise en ligne",
@@ -131,14 +131,14 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place à Saint-Mandé, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée, pas d'abonnement imposé. Mise en ligne sans downtime quand on augmente un site déjà référencé localement. Web Vitals, accessibilité et SEO/AEO contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou ni lock-in propriétaire. L'ensemble est transférable à tout prestataire d'Île-de-France ou repris en interne par vos équipes — du commerce de l'avenue du Général-de-Gaulle au siège type IGN ou Météo-France.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, à 10 minutes de Paris par la ligne 1 (stations Saint-Mandé et Bérault), itérations à distance.",
+        hero: "Axion-IA conçoit et augmente à Saint-Mandé des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, e-commerce multi-CMS, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour une commune dense de 21 071 habitants sur seulement 0,92 km², en bordure du Bois de Vincennes et limitrophe des 12e et 20e arrondissements de Paris, où cohabitent des sièges sociaux structurants (IGN, Météo-France, Ubisoft installé en 2021), l'Hôpital d'Instruction des Armées Bégin avenue de Paris, un tissu serré de professions libérales et un commerce de proximité haut de gamme. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off en présentiel à Saint-Mandé, itérations à distance.",
         whyHere: [
           "Présence de sièges sociaux nationaux — l'IGN (Institut national de l'information géographique et forestière), Météo-France et Ubisoft installé en 2021 : on conçoit des portails métier, des outils internes et des plateformes SaaS IA-native branchés sur vos SI, on exploite vos données géographiques ou cartographiques par recherche sémantique, ou on greffe l'IA sur l'existant sans tout reconstruire ni vous enfermer dans un no-code.",
           "Densité record sur 0,92 km² et tissu de professions libérales (avocats, experts-comptables, notaires, professionnels de santé gravitant autour de l'Hôpital Bégin) : on bâtit des sites vitrines crédibles, des espaces clients sécurisés, de la prise de rendez-vous en ligne et des chatbots RAG multilingues calibrés pour le secret professionnel et les données médicales sensibles.",
@@ -159,7 +159,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos itérations près de l'avenue de Paris : espace client sécurisé, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations documentaires. Démos hebdomadaires en visio, code versionné et auditable.",
+              "Greffe IA sur l'existant ou build IA-native pour les acteurs de l'avenue de Paris : espace client sécurisé, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations documentaires. Démos hebdomadaires en visio, code versionné et auditable.",
           },
           {
             step: "Recette + mise en ligne",
@@ -217,7 +217,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur place à Saint-Mandé, accessible en 10 minutes de Paris par la ligne 1, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
+            a: "Oui. Après le cadrage sur place à Saint-Mandé, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, pas d'abonnement imposé.",
           },
         ],
         guarantees:
@@ -233,7 +233,7 @@ export const SAINT_MANDE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il se déplacer à Saint-Mandé ?",
-      a: "Notre équipe se déplace sur site à Saint-Mandé sous 5 jours ouvrés en moyenne, avec un accès direct depuis Paris en 10 minutes via la ligne 1 du métro (stations Saint-Mandé ou Bérault).",
+      a: "Notre équipe se déplace sur site à Saint-Mandé sous 5 jours ouvrés en moyenne.",
     },
     {
       q: "Couvrez-vous les communes limitrophes de Saint-Mandé ?",

@@ -49,7 +49,7 @@ export const ROYAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Royan et sur la Côte de Beauté ?",
-      a: "Oui, Axion-IA intervient à Royan et sur toute la Côte de Beauté (Saint-Georges-de-Didonne, Vaux-sur-Mer, Meschers, Saint-Palais-sur-Mer). Nos consultants accèdent via la gare de Royan ou la N150 depuis Saintes.",
+      a: "Oui, Axion-IA intervient à Royan et sur toute la Côte de Beauté (Saint-Georges-de-Didonne, Vaux-sur-Mer, Meschers, Saint-Palais-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour le tourisme et l'hôtellerie à Royan ?",
@@ -65,7 +65,7 @@ export const ROYAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Royan ?",
-      a: "Nos consultants accèdent à Royan par TER via Saintes (35 min) ou voiture (La Rochelle 1h10, Bordeaux 1h40). Mission sur site dans votre hôtel, restaurant ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre hôtel, restaurant ou commerce à Royan, desservie par le TER via Saintes.",
     },
   ],
 };

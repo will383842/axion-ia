@@ -44,9 +44,7 @@ export function SectionsDossier({ p, formulaire }: { p: Chiffres; formulaire?: R
                   Reprise à tout moment
                 </li>
               </ul>
-              <p className="h-reassur">
-                Sans exclusivité · Aucun frais d’entrée · Nous répondons à tous
-              </p>
+              <p className="h-reassur">Sans exclusivité · Aucun frais d’entrée</p>
             </div>
             <div className="h-photo" style={{ display: "block" }}>
               <div className="ecran ecran-reel" id="dossier">
