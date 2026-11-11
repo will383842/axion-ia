@@ -83,6 +83,7 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 import type { ResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics";
 import { ResultatsFormation } from "@/components/formations/ResultatsFormation";
+import { RenvoiJourneeIa } from "@/components/sections/RenvoiJourneeIa";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
 /**
@@ -369,6 +370,15 @@ export function FormationDetailPage({
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
+
+      {/* ── RENVOI LA JOURNÉE IA — sur les fiches qui la prolongent (audit
+          SEO/GEO du 11/11/2026) : le point de départ recommandé, en tête. */}
+      {f.renvoiJourneeIa ? (
+        <RenvoiJourneeIa
+          depuis={f.renvoiJourneeIa.depuis}
+          precision={f.renvoiJourneeIa.precisionFr}
+        />
+      ) : null}
 
       {/* ── HÉRO — contenu (gauche) + CARTE INFOS-CLÉS (droite) ──────────── */}
       <section className="bg-halo-warm relative overflow-hidden py-12 md:py-16 lg:py-20">
