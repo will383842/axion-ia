@@ -289,7 +289,6 @@ describe("page allumée — chemin sans case et accessibilité", () => {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },
       body: flux,
-      // @ts-expect-error — requis par undici pour un corps en flux
       duplex: "half",
     });
     const r = await POST(req);

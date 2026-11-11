@@ -53,8 +53,8 @@ function pageErreur(message: string, jeton: string, statut: number): NextRespons
 }
 
 /** Lit le corps en flux et s'arrête dès que le plafond est franchi (jamais tout en mémoire). */
-async function lireCorpsPlafonne(req: NextRequest): Promise<Uint8Array | null> {
-  if (!req.body) return new Uint8Array();
+async function lireCorpsPlafonne(req: NextRequest): Promise<ArrayBuffer | null> {
+  if (!req.body) return new ArrayBuffer(0);
   const lecteur = req.body.getReader();
   const morceaux: Uint8Array[] = [];
   let total = 0;
@@ -68,13 +68,13 @@ async function lireCorpsPlafonne(req: NextRequest): Promise<Uint8Array | null> {
     }
     morceaux.push(value);
   }
-  const brut = new Uint8Array(total);
+  const brut = new Uint8Array(new ArrayBuffer(total));
   let pos = 0;
   for (const m of morceaux) {
     brut.set(m, pos);
     pos += m.byteLength;
   }
-  return brut;
+  return brut.buffer;
 }
 
 function texte(v: FormDataEntryValue | null): string {

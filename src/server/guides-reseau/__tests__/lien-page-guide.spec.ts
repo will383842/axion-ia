@@ -123,7 +123,14 @@ describe("lien-page-guide — refus", () => {
     expect(() => creerJeton({ ...DONNEES, conv }, SECRET, T0)).toThrow();
   });
 
-  it.each(["compte_example_01", "Page_Principale", "page-principale", "autre", "x", "a".repeat(64)])(
+  it.each([
+    "compte_example_01",
+    "Page_Principale",
+    "page-principale",
+    "autre",
+    "x",
+    "a".repeat(64),
+  ])(
     "SITE-COMPTE : compte hors liste fermée du contrat (%s) → champs, et création refusée",
     (compte) => {
       expect(verifierJeton(signer({ ...chargeValide(), compte }), SECRET, T0)).toEqual({

@@ -114,7 +114,6 @@ Sans accusé, un merci déjà envoyé serait repris toutes les 10 min pendant 48
 - Une ligne `envoye` ne change plus jamais (le rejeu est sans effet) ; `hors_fenetre`, `expire`, `ecarte` non plus. Une `ref` inconnue est ignorée sans erreur. Aucune suppression.
 - Réponse : `{"ok":true,"schemaVersion":1,"recus":<nombre d'issues reçues>}` — rien d'autre ; le journal ne porte que ce nombre.
 
-
 ## Interrupteurs du lot S3 et ordre d'allumage
 
 Deux interrupteurs de plus figurent dans la liste fermée du workflow `coolify-drapeau.yml`,
