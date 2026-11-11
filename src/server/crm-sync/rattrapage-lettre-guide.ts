@@ -34,6 +34,8 @@
 import { prisma } from "@/lib/prisma";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 
+import { transmettreOriginesSuivantes } from "@/server/guides-reseau/synchro-v3";
+
 import { isCrmSyncGuideEnabled } from "./config";
 import { estExclueDuCrm } from "./exclusions";
 import {
@@ -301,4 +303,110 @@ export function adressesDeLEntree(texte: string): string[] {
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter((l) => l.length > 0 && !l.startsWith("#"));
+}
+
+// ── Lot guide réseau 4 (O5) : les origines restées en route ─────────────────────────────────────
+
+/** Délai laissé au chemin direct avant que le rattrapage ne reprenne une origine. */
+export const DELAI_RATTRAPAGE_ORIGINES_MS = 10 * 60_000;
+
+export interface OptionsRattrapageOrigines {
+  readonly executer?: boolean;
+  /**
+   * Date de coupure (D3, `ORIGINES_SUIVANTES_DEPUIS`) : seules les origines écrites à partir de
+   * cette date sont reprises ; les plus anciennes restent `NULL` (aucune fausse marque
+   * « transmise »). SANS elle, le passage ne fait rien : la décision de Williams est attendue.
+   */
+  readonly depuis?: Date;
+  readonly maintenant?: Date;
+}
+
+export interface BilanRattrapageOrigines {
+  readonly mode: "a-blanc" | "execution";
+  readonly refus?: "coupure-absente" | "colonne-absente";
+  /** Groupes (personne, guide) ayant des origines en attente. */
+  readonly groupes: number;
+  readonly nonCliques: number;
+  readonly transmis: number;
+  readonly echecs: number;
+}
+
+/** Date de coupure lue dans l'environnement (ISO 8601), ou `undefined`. */
+export function coupureOriginesSuivantes(): Date | undefined {
+  const brut = process.env.ORIGINES_SUIVANTES_DEPUIS?.trim();
+  if (!brut) return undefined;
+  const d = new Date(brut);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
+
+/**
+ * Reprend les origines `crm_statut IS NULL` d'une personne qui a cliqué : UNE transmission
+ * cumulative par (personne, guide), par `transmettreOriginesSuivantes` (qui relit l'opposition
+ * dans sa transaction). À blanc par défaut. Journal agrégé : jamais d'adresse ni d'empreinte.
+ */
+export async function rattraperOriginesSuivantes(
+  options: OptionsRattrapageOrigines = {},
+): Promise<BilanRattrapageOrigines> {
+  const executer = options.executer === true;
+  const mode = executer ? "execution" : "a-blanc";
+  const vide = { groupes: 0, nonCliques: 0, transmis: 0, echecs: 0 };
+  const depuis = options.depuis ?? coupureOriginesSuivantes();
+  if (!depuis) return { mode, refus: "coupure-absente", ...vide };
+  const maintenant = options.maintenant ?? new Date();
+  let lignes: { emailKey: string; guide: string }[];
+  try {
+    lignes = await prisma.guideReseauOrigine.findMany({
+      where: {
+        crmStatut: null,
+        archiveeLe: null,
+        createdAt: {
+          lt: new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS),
+          gte: depuis,
+        },
+      },
+      select: { emailKey: true, guide: true },
+      orderBy: { createdAt: "asc" },
+      take: TAILLE_LOT,
+    });
+  } catch (e) {
+    if ((e as { code?: unknown }).code === "P2022") {
+      console.warn(
+        JSON.stringify({ event: "guides_reseau_origines_crm", resultat: "colonne_absente" }),
+      );
+      return { mode, refus: "colonne-absente", ...vide };
+    }
+    throw e;
+  }
+  const groupes = new Map<string, { emailKey: string; guide: string }>();
+  for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
+  let nonCliques = 0;
+  let transmis = 0;
+  let echecs = 0;
+  for (const g of groupes.values()) {
+    const demande = await prisma.guideRequest.findUnique({
+      where: { emailKey_aimant: { emailKey: g.emailKey, aimant: g.guide } },
+      select: { email: true, firstClickAt: true },
+    });
+    if (demande === null || demande.firstClickAt === null) {
+      nonCliques += 1;
+      continue;
+    }
+    if (!executer) continue;
+    const r = await transmettreOriginesSuivantes({
+      email: demande.email,
+      emailKey: g.emailKey,
+      guide: g.guide,
+    });
+    if (r === "transmise") transmis += 1;
+    else if (r === "echec") echecs += 1;
+  }
+  console.warn(
+    JSON.stringify({
+      event: "guides_reseau_origines_crm_rattrapage",
+      mode,
+      groupes: groupes.size,
+      transmis,
+    }),
+  );
+  return { mode, groupes: groupes.size, nonCliques, transmis, echecs };
 }
