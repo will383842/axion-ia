@@ -5,7 +5,7 @@
 // refusé même si le tag GCM tient ; sans secret dédié, aucun jeton `op2` n'est émis.
 
 import { createCipheriv, createHash, createHmac } from "node:crypto";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { estJetonOpposition, jetonOppositionOp2, lireJetonOpposition } from "../opposition-jeton";
 
@@ -112,5 +112,24 @@ describe("jeton op2 — refus", () => {
     ]) {
       expect(lireJetonOpposition(t)).toBeNull();
     }
+  });
+});
+
+describe("jeton op2 — lecture sans secret : l'échec ne reste pas muet", () => {
+  it("🔴 un op2 bien formé lu sans secret alerte UNE fois, sans valeur, et rend null", async () => {
+    const jeton = jetonOppositionOp2("personne@example.test")!;
+    delete process.env["OPPOSITION_JETON_SECRET"];
+    vi.resetModules();
+    const m = await import("../opposition-jeton");
+    const erreur = vi.spyOn(console, "error").mockImplementation(() => {});
+    expect(m.lireJetonOpposition(jeton)).toBeNull();
+    expect(m.lireJetonOpposition(jeton)).toBeNull();
+    expect(erreur).toHaveBeenCalledTimes(1);
+    const sortie = String(erreur.mock.calls[0]![0]);
+    expect(sortie).toContain("opposition_jeton_op2_illisible_sans_secret");
+    expect(sortie).toContain("k1");
+    expect(sortie).not.toContain(jeton);
+    expect(sortie).not.toContain("personne@example.test");
+    erreur.mockRestore();
   });
 });

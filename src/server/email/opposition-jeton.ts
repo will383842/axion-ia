@@ -44,6 +44,7 @@ const SECRET_MIN = 32;
 const LONGUEUR_SIGNATURE = 32;
 
 let avertiSansSecret = false;
+let avertiOp2IllisibleSansSecret = false;
 
 function cleSignature(): Buffer {
   const secret = process.env["AUTH_SECRET"];
@@ -125,7 +126,16 @@ function lireOp2(token: string): string | null {
   const [, kid, corps] = parts as [string, string, string];
   if (!/^[a-z0-9]{1,4}$/.test(kid)) return null;
   const cles = clesOp2(kid);
-  if (cles === null) return null;
+  if (cles === null) {
+    // Un « stop » bien formé mais illisible faute de secret sur CE conteneur : la personne
+    // arriverait sur « lien expiré » sans qu'on le sache. On le dit une fois par processus,
+    // sans aucune valeur (ni jeton, ni adresse) : le `kid` au plus.
+    if (!avertiOp2IllisibleSansSecret) {
+      avertiOp2IllisibleSansSecret = true;
+      console.error(JSON.stringify({ event: "opposition_jeton_op2_illisible_sans_secret", kid }));
+    }
+    return null;
+  }
   const paquet = Buffer.from(corps, "base64url");
   if (paquet.length <= LONGUEUR_IV + LONGUEUR_TAG) return null;
   const iv = paquet.subarray(0, LONGUEUR_IV);

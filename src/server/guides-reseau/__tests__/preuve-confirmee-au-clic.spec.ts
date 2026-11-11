@@ -87,6 +87,13 @@ describe("confirmerPreuvesAuClic", () => {
     expect(bd.base.registre.filter((r) => r["action"] === "consent_confirme")).toHaveLength(1);
   });
 
+  it("🔴 rejeu au MÊME instant : deux POST avec le même clic n'écrivent qu'un consent_confirme", async () => {
+    bd.base.contacts.push(contact());
+    await confirmerPreuvesAuClic("d1", CLIC_LE);
+    await confirmerPreuvesAuClic("d1", new Date(CLIC_LE.getTime()));
+    expect(bd.base.registre.filter((r) => r["action"] === "consent_confirme")).toHaveLength(1);
+  });
+
   it("🔴 désordre : un clic ANTÉRIEUR à la case ne vérifie pas CET accord", async () => {
     bd.base.contacts.push(contact({ consentiLe: new Date("2026-11-09T09:00:00.000Z") }));
     await confirmerPreuvesAuClic("d1", CLIC_LE);
