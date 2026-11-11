@@ -11,7 +11,7 @@ Aucune ligne de code n'a été modifiée. Seul ce rapport est ajouté.
 
 | §   | Sujet                    | Verdict        |
 | --- | ------------------------ | -------------- |
-| 1   | Prix                     | __VERDICT1__ |
+| 1   | Prix                     | **A CORRIGER** |
 | 2   | Fausse présence (villes) | **RESERVE**    |
 | 3   | Grenoble                 | **A CORRIGER** |
 | 4   | Interrupteurs            | **OK**         |
@@ -20,7 +20,59 @@ Aucune ligne de code n'a été modifiée. Seul ce rapport est ajouté.
 | 7   | Tests gardes             | **OK**         |
 | 8   | Bundle                   | **RESERVE**    |
 
-__SECTION1__
+## 1. Prix — `src/app/[locale]/**` et `src/content/**`
+
+Commande (hors `__tests__`, `.spec.`, `.test.`) :
+
+```bash
+grep -rnoP '\d[\d\s  ]*€|EUR\b|\{\{price:' 'src/app/[locale]' src/content
+# → 9 420 occurrences
+```
+
+| Classe | Occurrences | Détail |
+| --- | ---: | --- |
+| Console admin (hors périmètre) | 132 | `(admin)/**` |
+| Interrupteur éteint : jetons `{{price:}}` de `villes/copy/*.ts` | 8 827 | 1 966 fichiers ; résolus au chargement (`villes/index.ts:163`, `resolve-with-copy.ts:137`) par `resolvePriceTokens` qui masque par défaut → « sur devis ». Aucun jeton `journee-ia` dans les copies villes |
+| Interrupteur éteint : autres | ≈ 20 | `PRIX_PUBLICS_AFFICHES = false` (`src/content/pricing.ts:501`), seul `journee-ia` dans `IDS_PRIX_TOUJOURS_AFFICHES` ; AggregateOffer ville (`[ville]/page.tsx:955`), `estimatedCost` HowTo (`seo.ts:2068`), `implantations/page.tsx:137`, `implantations/[region]/page.tsx:114`, `transversal.ts:439` |
+| Journée IA 1 490 € HT | — | `journee-ia/**`, `offre.ts`, `offers-catalog.ts`, jetons `{{price:journee-ia\|flat}}` (`transversal.ts:1508,1644,1902,1991`) |
+| Gabarit non rendu | ≈ 112 | `content/keywords/*` (87, lus seulement par `server/content-gen/keyword-selector.ts`), `knowledge/sector-entries/*` (20, tests seulement), `formations/modules/*` (back-office Qualiopi), commission `pricing.ts:1004-1005`, `booking-catalog.ts` (`priceFr` lu nulle part) |
+| Statistique / donnée tierce, pas un prix d'offre | ≈ 104 | revenus médians INSEE dans `villes/copy` (46), `comparaisons.ts` (41), `glossary-extension.ts` (10), `stack-ia-details.ts`, `case-studies.ts`, `automatisations.ts:333,394` |
+| Mention légale / CGV (brouillon #1861) | 5 | `legal.ts:203,207,611,615` (seuil 5 000 € HT, indemnité légale 40 €), `formations/conditions-tarifaires.ts:35` |
+| Commentaires et faux positifs | ≈ 220 | « EUR » dans FORMATEUR, EUR-Lex… ; `priceCurrency:"EUR"` à prix 0 |
+| **A CORRIGER / à arbitrer** | voir ci-dessous | |
+
+**A CORRIGER :**
+
+- `src/app/[locale]/faq/par-thematique/[categorie]/page.tsx:104-108` — les réponses passent
+  à `FaqBlock` **sans** `resolvePriceTokensDeep` (contrairement à `faq/page.tsx:95`), et
+  `listFaqsByCategory` (`src/lib/knowledge/readers.ts`) ne résout pas non plus. Effet : jetons
+  bruts `{{price:intervention-dirigeants|flat}}` affichés en clair (réponses de
+  `transversal.ts:1834,4514,4585,4704,4775,4824,4872`), et `{{price:journee-ia|flat}}` au lieu
+  de « 1 490 € HT » (`transversal.ts:1644,1902,1991`). Pas de montant divulgué, mais texte cassé.
+- `src/app/[locale]/tarifs/page.tsx:296` (FR) et `:326` (EN) — « Pour les formats > 5 000 € HT… » :
+  ordre de grandeur de prix d'Axion-IA, exempté par le spec comme « seuil de qualification ».
+  À arbitrer par Williams.
+- `src/app/[locale]/demande-devis/page.tsx:30,37,54,55` — même « > 5 000 € HT » ; page exclue du spec.
+
+**À confirmer (pas d'office)** : commission apporteur « 500 € » visible car
+`COMMISSIONS_PUBLIQUES_AFFICHEES = true` (`src/content/recrutement/commission-publique.ts:24`,
+décision de Williams du 11/11) — commission, pas prix d'offre ; flyer PDF décrit dans
+`src/content/imprimes.ts:44-58` (« 650 € 0 € ») : non vérifié s'il est servi.
+
+**Spec `src/app/__tests__/prix-pages-publiques.spec.ts`** (7 tests, verts) : balaie
+`app/[locale]/**`, `components/**` et 19 fichiers de contenu, règles R1 (pas de formateur
+brut), R2 (pas de prix interpolé), R3 (pas de montant ≥ 10 € en dur, avec exemptions),
+R4 (pas de promesse de « tarifs publics »). **Non couverts** : `villes/copy/*.ts` (couvert
+par `prix-publics-masques.spec.ts`), `/demande-devis`, `/apporteur-affaires/**`,
+`/devenir-commercial-ia`, `/memo-isere`, `legal.ts` (CGV, mentions légales),
+`glossaire` / `comparaisons` / `stack-ia` (exemptés en bloc), et surtout les **jetons non
+résolus** de `/faq/par-thematique/[categorie]` (le spec cherche des « € », pas des `{{price:`).
+
+Brouillons exclus : #1860 (devis, acompte 30 %, admin + PDF Qualiopi) et #1861 (CGV,
+garantie Journée IA : `legal.ts`, `conditions-tarifaires.ts`…).
+
+Verdict : **A CORRIGER** (jetons bruts sur `/faq/par-thematique/*`) ; aucun autre montant
+d'offre que la Journée IA n'est affiché, sous réserve de l'arbitrage « > 5 000 € HT ».
 
 ## 2. Fausse présence — `src/content/villes/copy/*.ts` (2 160 fichiers)
 
@@ -221,7 +273,14 @@ Verdict : **RESERVE** (marge < 1 kB, aucune mesure postérieure à #1920 disponi
 
 ## A corriger en PR de suivi
 
-__LISTE__
+1. `src/app/[locale]/faq/par-thematique/[categorie]/page.tsx:104-108` — résoudre les jetons (`resolvePriceTokensDeep(faqs, loc)`, comme `faq/page.tsx:95`) ; ajouter au spec prix une règle « aucun `{{price:` non résolu dans le HTML rendu ».
+2. Arbitrage Williams : « > 5 000 € HT » dans `src/app/[locale]/tarifs/page.tsx:296,326` et `src/app/[locale]/demande-devis/page.tsx:30,37,54,55`.
+3. Villes, fausse présence après les 3 lots : `src/content/villes/copy/malakoff.ts:248` (« notre base à Malakoff »), `wattrelos.ts:229`, `drancy.ts:236` (version #1922), `veigne.ts:52` et `peymeinade.ts:52` (versions #1921) ; à vérifier `paris.ts:1009`.
+4. Villes, jetons de prix en phrase : `src/content/villes/copy/villepinte.ts:13,15` (rendus « sur devis », phrase à revoir).
+5. JSON-LD : remplacer `address.addressLocality = ville` par `areaServed` seul dans `src/app/[locale]/implantations/[region]/[ville]/page.tsx:409-414` et `src/lib/seo/ville-service-jsonld.ts:190-195`.
+6. Grenoble : `src/app/[locale]/equipe/[slug]/page.tsx:74`, `src/app/[locale]/carrieres/page.tsx:270,463-464`, `src/content/careers/employer-brand.ts:72,74`, `src/content/guide-ia-page.ts:417,631`, `src/app/[locale]/avis/page.tsx:103`, `src/app/[locale]/recherche/page.tsx:86-87`.
+7. Garde villes : étendre `tests/unit/content/villes-sans-fausse-presence.spec.ts` à « notre base à », « déplacement … depuis », « couverture … accès depuis ».
+8. `CONTENT_FIDELITY_CHECK` : déclarer dans `src/env.ts` et documenter commenté dans `.env.example`.
 
 ## Rappel sécurité
 
