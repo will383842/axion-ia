@@ -276,6 +276,36 @@ describe("page allumée — chemin sans case et accessibilité", () => {
     expect(html).toContain(":focus-visible");
   });
 
+  it("corps trop gros ANNONCÉ en morceaux (sans Content-Length) : lecture arrêtée au plafond, message juste", async () => {
+    let tires = 0;
+    const flux = new ReadableStream<Uint8Array>({
+      pull(c) {
+        tires++;
+        if (tires > 5000) return c.close();
+        c.enqueue(new TextEncoder().encode("x".repeat(1024)));
+      },
+    });
+    const req = new NextRequest("http://localhost/guide-reseau/envoyer", {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded" },
+      body: flux,
+      // @ts-expect-error — requis par undici pour un corps en flux
+      duplex: "half",
+    });
+    const r = await POST(req);
+    expect(r.status).toBe(413);
+    expect(tires).toBeLessThan(50); // jamais les ~5 Mo du flux
+    expect(etat.appels).toHaveLength(0);
+    const html = await r.text();
+    expect(html).not.toContain("adresse e-mail semble invalide");
+  });
+
+  it("corps trop gros annoncé par Content-Length : même message générique, pas « adresse invalide »", async () => {
+    const r = await POST(envoi({ j: JETON, bruit: "x".repeat(20000) }));
+    expect(r.status).toBe(413);
+    expect(await r.text()).not.toContain("adresse e-mail semble invalide");
+  });
+
   it("corps du POST trop gros : réponse neutre, rien n'est confirmé", async () => {
     const r = await POST(
       envoi({
@@ -286,7 +316,7 @@ describe("page allumée — chemin sans case et accessibilité", () => {
         bruit: "x".repeat(20000),
       }),
     );
-    expect(r.status).toBe(422);
+    expect(r.status).toBe(413);
     expect(etat.appels).toHaveLength(0);
     const html = await r.text();
     expect(html).not.toContain("Camille");

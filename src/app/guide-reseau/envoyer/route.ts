@@ -52,6 +52,31 @@ function pageErreur(message: string, jeton: string, statut: number): NextRespons
   );
 }
 
+/** Lit le corps en flux et s'arrête dès que le plafond est franchi (jamais tout en mémoire). */
+async function lireCorpsPlafonne(req: NextRequest): Promise<Uint8Array | null> {
+  if (!req.body) return new Uint8Array();
+  const lecteur = req.body.getReader();
+  const morceaux: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await lecteur.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > CORPS_MAX_OCTETS) {
+      await lecteur.cancel().catch(() => undefined);
+      return null;
+    }
+    morceaux.push(value);
+  }
+  const brut = new Uint8Array(total);
+  let pos = 0;
+  for (const m of morceaux) {
+    brut.set(m, pos);
+    pos += m.byteLength;
+  }
+  return brut;
+}
+
 function texte(v: FormDataEntryValue | null): string {
   return typeof v === "string" ? v : "";
 }
@@ -76,15 +101,15 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  // Plafond de taille du corps : au-delà, réponse neutre (celle d'un corps illisible), rien n'est lu.
+  // Plafond de taille du corps : au-delà, message générique (413), rien n'est lu ni confirmé.
   const annonce = Number(req.headers.get("content-length") ?? "0");
   if (Number.isFinite(annonce) && annonce > CORPS_MAX_OCTETS)
-    return pageErreur(T.erreurs.email, "", 422);
+    return pageErreur(T.erreurs.corps_trop_gros, "", 413);
 
   let form: FormData;
   try {
-    const brut = await req.arrayBuffer();
-    if (brut.byteLength > CORPS_MAX_OCTETS) return pageErreur(T.erreurs.email, "", 422);
+    const brut = await lireCorpsPlafonne(req);
+    if (brut === null) return pageErreur(T.erreurs.corps_trop_gros, "", 413);
     form = await new Response(brut, {
       headers: { "content-type": req.headers.get("content-type") ?? "" },
     }).formData();

@@ -33,6 +33,7 @@ export const TEXTES_PAGE_GUIDE = {
     email: "Cette adresse e-mail semble invalide. Vérifiez-la, puis réessayez.",
     adresse_refusee:
       "Cette adresse ne semble pas pouvoir recevoir d'e-mails. Vérifiez-la, puis réessayez.",
+    corps_trop_gros: "Votre envoi est trop volumineux. Revenez à la page, puis réessayez.",
     trop_de_requetes: "Trop de tentatives. Réessayez dans quelques minutes.",
   },
 } as const;
