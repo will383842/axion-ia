@@ -37,7 +37,6 @@ import {
   buildProductMetadata,
   buildCollectionPageJsonLd,
   buildItemListJsonLd,
-  SITE_EDITORIAL_DATE,
   SITE_URL,
 } from "@/lib/seo";
 import {
@@ -207,7 +206,6 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
     name: "Avis clients Axion-IA",
     description:
       "Retours d'expérience clients sur les services IA d'Axion-IA (audit, formation, implémentation, accompagnement, sites web augmentés).",
-    dateModified: SITE_EDITORIAL_DATE,
   });
 
   const itemListJsonLd =
