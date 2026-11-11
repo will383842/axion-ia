@@ -115,9 +115,6 @@ const H2_BASE =
 const H2 = `${H2_BASE} lg:text-[3rem]`;
 // Carte : fond blanc, bordure 1 px sable saturé, rayon 20 px (--radius-xl), ombre douce du module.
 const CARTE = `bg-paper border-sand-deep rounded-xl border ${s["ombre-carte"]}`;
-// Étiquette « Exemple type » : pastille terracotta pâle avec son point (le fond se pose à l'appel).
-const ETIQUETTE =
-  "text-terracotta-deep inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-sm leading-snug font-bold before:size-1.5 before:rounded-full before:bg-terracotta before:content-['']";
 // Boutons : focus visible en contour de 3 px de décalage (anneau terracotta ; blanc sur fond sombre).
 const FOCUS = "focus-visible:ring-terracotta! focus-visible:ring-offset-[3px]!";
 const FOCUS_MOCHA =
@@ -523,10 +520,7 @@ export default async function JourneeIaPage({ params }: Props) {
                     className="aspect-[4/3] h-auto w-full object-cover"
                   />
                   <div className="p-4 pb-6">
-                    <span className={`${ETIQUETTE} bg-paper shadow-sm`}>
-                      {pourQui.etiquetteExemple}
-                    </span>
-                    <p className="text-fg mt-2.5 mb-0.5 text-base font-extrabold lg:min-h-[2.6em]">
+                    <p className="text-fg mb-0.5 text-base font-extrabold lg:min-h-[2.6em]">
                       {e.secteur}
                     </p>
                     <p className="text-fg-soft text-[15px] leading-snug">{e.phrase}</p>
@@ -677,8 +671,6 @@ export default async function JourneeIaPage({ params }: Props) {
               className={`bg-paper border-terracotta/20 max-w-[720px] rounded-2xl border p-6 lg:p-9 ${s["ombre-vedette"]}`}
             >
               <p className="flex flex-wrap items-center gap-2">
-                <span className={`${ETIQUETTE} bg-terracotta-soft mr-1`}>{calcul.etiquette}</span>
-                <span className="sr-only"> : </span>
                 {calcul.facteurs.map((f, i) => (
                   <span key={f} className="contents">
                     {i > 0 ? (
