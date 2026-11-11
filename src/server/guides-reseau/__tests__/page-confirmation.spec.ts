@@ -3,7 +3,7 @@
 // Lot S2 — `confirmerPageGuide` : la validation de la page « Recevoir le guide ».
 // Base EN MÉMOIRE (contraintes d'unicité rejouées), transport e-mail SIMULÉ, DNS simulé.
 // Données 100 % fictives (example.test).
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "node:crypto";
 
 type Ligne = Record<string, unknown>;
@@ -40,6 +40,9 @@ const bd = vi.hoisted(() => ({
   lecturesDansTransaction: 0,
   /** Suites inscrites dans `after()` (next/server), exécutées par `confirmerPageGuide` du test. */
   apres: [] as (() => unknown)[],
+  /** Pannes simulées DANS la transaction (après l'écriture du contact et de la demande). */
+  echecOrigine: false,
+  echecPreuve: false,
 }));
 
 vi.mock("next/server", async (orig) => ({
@@ -50,12 +53,22 @@ vi.mock("next/server", async (orig) => ({
 }));
 
 /** Lignes créées par une transaction : retirées si elle échoue (comme PostgreSQL). */
-type Trace = { contacts: Ligne[]; demandes: Ligne[] };
+type Trace = { contacts: Ligne[]; demandes: Ligne[]; origines: Ligne[]; preuves: Ligne[] };
 
 function client(trace?: Trace) {
   const dansTransaction = trace !== undefined;
   return {
     $executeRaw: async () => 0,
+    trace,
+    consentEvent: {
+      create: async ({ data }: { data: Ligne }) => {
+        if (bd.echecPreuve) throw new Error("écriture de la preuve impossible");
+        const l = { id: `p${++bd.n}`, ...data };
+        bd.preuves.push(l);
+        trace?.preuves.push(l);
+        return l;
+      },
+    },
     contactGuideReseau: {
       create: async ({ data }: { data: Ligne }) => {
         // Le temps d'un tour : deux transactions simultanées se croisent vraiment.
@@ -137,12 +150,14 @@ vi.mock("@/lib/prisma", () => {
       },
       // Comme PostgreSQL : si la transaction échoue, rien de ce qu'elle a créé ne reste.
       $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
-        const trace: Trace = { contacts: [], demandes: [] };
+        const trace: Trace = { contacts: [], demandes: [], origines: [], preuves: [] };
         try {
           return await fn(client(trace));
         } catch (e) {
           for (const l of trace.contacts) bd.contacts.splice(bd.contacts.indexOf(l), 1);
           for (const l of trace.demandes) bd.demandes.splice(bd.demandes.indexOf(l), 1);
+          for (const l of trace.origines) bd.origines.splice(bd.origines.indexOf(l), 1);
+          for (const l of trace.preuves) bd.preuves.splice(bd.preuves.indexOf(l), 1);
           throw e;
         }
       },
@@ -161,13 +176,6 @@ vi.mock("@/lib/security/email-hash", () => ({
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string) => `enc:${Buffer.from(v).toString("base64")}`,
 }));
-vi.mock("@/lib/consents", async (orig) => ({
-  ...(await orig<Record<string, unknown>>()),
-  recordConsentEvent: async (i: Ligne) => {
-    bd.preuves.push(i);
-    return true;
-  },
-}));
 vi.mock("@/server/email/opposition", () => ({
   estOpposee: async (e: string) => bd.opposees.has(e),
 }));
@@ -179,9 +187,13 @@ vi.mock("@/server/guide-ia/mx", () => ({
 }));
 vi.mock("../origines", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
-  enregistrerOrigine: async (emailKey: string, o: Ligne) => {
-    bd.origines.push({ emailKey, ...o });
-    return { creee: true, archivees: 0 };
+  // L'origine s'écrit DANS la transaction de la page (client `tx` reçu en premier argument).
+  ecrireOrigineDansTransaction: async (tx: { trace?: Trace }, emailKey: string, o: Ligne) => {
+    if (bd.echecOrigine) throw new Error("écriture de l'origine impossible");
+    const l = { emailKey, ...o };
+    bd.origines.push(l);
+    tx.trace?.origines.push(l);
+    return { creee: true, archivees: 0, total: 0 };
   },
 }));
 vi.mock("../synchro-v3", async (orig) => ({
@@ -203,6 +215,7 @@ vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
 import {
   confirmerPageGuide as confirmerSansSuite,
+  PLANCHER_REPONSE_MS,
   type EntreeConfirmation,
 } from "../page-confirmation";
 
@@ -247,6 +260,8 @@ function entree(o: Partial<EntreeConfirmation> = {}): EntreeConfirmation {
     userAgent: "agent-exemple",
     secret: SECRET,
     maintenant: MAINTENANT,
+    // Le plancher de durée a ses propres tests (horloge simulée) ; ailleurs, aucune attente.
+    plancherMs: 0,
     ...o,
   };
 }
@@ -261,6 +276,7 @@ beforeEach(() => {
   bd.origines.length = bd.crm.length = 0;
   bd.mxAppels = 0;
   bd.apres.length = 0;
+  bd.echecOrigine = bd.echecPreuve = false;
   bd.lecturesDansTransaction = 0;
   bd.enfilePanne = false;
   bd.conflitDemande.restant = 0;
@@ -368,18 +384,19 @@ describe("jeton", () => {
 });
 
 describe("M1 — suites après la réponse (after)", () => {
-  it("adresse ordinaire : origine, preuve et e-mail ne partent QU'APRÈS la réponse, le CRM jamais au POST", async () => {
+  it("adresse ordinaire : origine ET preuve sont écrites AVANT la réponse ; seul l'e-mail part après, le CRM jamais au POST", async () => {
     const r = await confirmerSansSuite(entree());
     expect(r).toEqual({ ok: true });
-    expect(bd.origines).toHaveLength(0);
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.contacts).toHaveLength(1);
     expect(bd.crm).toHaveLength(0);
-    expect(bd.preuves).toHaveLength(0);
     expect(bd.envois).toHaveLength(0);
     expect(bd.apres).toHaveLength(1);
     await viderApres();
-    expect(bd.origines).toHaveLength(1);
     // Lot S3 : l'événement CRM part AU CLIC du lien du guide, jamais au POST de la page.
     expect(bd.crm).toHaveLength(0);
+    expect(bd.origines).toHaveLength(1);
     expect(bd.preuves).toHaveLength(1);
     expect(bd.envois).toHaveLength(1);
   });
@@ -420,7 +437,7 @@ describe("adresse", () => {
     expect(r).toEqual(succes);
     expect(bd.envois).toHaveLength(1);
     expect(bd.demandes.every((d) => d.emailKey !== `h:${ADRESSE}`)).toBe(true);
-    expect(bd.preuves.every((p) => p["email"] !== ADRESSE)).toBe(true);
+    expect(bd.preuves.every((p) => p["personKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.origines.every((o) => o["emailKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.crm).toHaveLength(0);
   });
@@ -545,17 +562,17 @@ describe("ce qui est écrit", () => {
     });
   });
 
-  it("la preuve : form_ref guide-reseau-page, action consent, version + empreinte du texte", async () => {
+  it("la preuve : form_ref guide-reseau-page, action consent, version + empreinte du texte, rien en clair", async () => {
     await confirmerPageGuide(entree());
     expect(bd.preuves).toHaveLength(1);
     expect(bd.preuves[0]).toMatchObject({
       formRef: FORM_REF_PAGE_GUIDE,
       action: "consent",
-      email: ADRESSE,
+      personKey: `h:${ADRESSE}`,
       occurredAt: MAINTENANT,
-      ip: "203.0.113.7",
-      userAgent: "agent-exemple",
     });
+    expect(bd.preuves[0]!["ipHash"]).not.toBe("203.0.113.7");
+    expect(bd.preuves[0]!["userAgent"]).not.toBe("agent-exemple");
     expect(String(bd.preuves[0]!["consentVersion"])).toContain(VERSION_CONSENTEMENT_PAGE_GUIDE);
     expect(String(bd.preuves[0]!["consentVersion"])).toContain(
       EMPREINTE_CASE_PAGE_GUIDE.slice(0, 32),
@@ -733,5 +750,137 @@ describe("adresse : le validateur de /guide-ia", () => {
       erreur: "email",
     });
     expect(ecritures()).toBe(0);
+  });
+});
+
+describe("S2-ATOMIQUE — contact, origine et preuve dans UNE seule transaction", () => {
+  it("succès : la ligne contacts_guide_reseau, l'origine et la preuve sont présentes ENSEMBLE, avant toute suite", async () => {
+    expect(await confirmerSansSuite(entree())).toEqual({ ok: true });
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(1);
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+    // Aucune des trois écritures ne dépend du `after()` : si le conteneur s'arrête ici, tout est là.
+    expect(bd.envois).toHaveLength(0);
+  });
+
+  it("échec de l'ORIGINE au milieu : rollback complet, rien d'écrit, jeton non consommé", async () => {
+    bd.echecOrigine = true;
+    const j = jeton();
+    await expect(confirmerSansSuite(entree({ jeton: j }))).rejects.toThrow();
+    expect(bd.contacts).toHaveLength(0);
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.apres).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+    // La panne passée, le MÊME lien fonctionne (le jeton n'a pas été brûlé).
+    bd.echecOrigine = false;
+    expect(await confirmerPageGuide(entree({ jeton: j }))).toEqual({ ok: true });
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+  });
+
+  it("échec de la PREUVE (dernière écriture) : rollback complet, y compris contact, demande et origine", async () => {
+    bd.echecPreuve = true;
+    await expect(confirmerSansSuite(entree())).rejects.toThrow();
+    expect(bd.contacts).toHaveLength(0);
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.origines).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.apres).toHaveLength(0);
+  });
+
+  it("l'échec ne journalise ni adresse ni prénom", async () => {
+    bd.echecPreuve = true;
+    await expect(confirmerSansSuite(entree())).rejects.toThrow();
+    const tout = bd.journal.join("\n");
+    expect(tout).not.toContain("example.test");
+    expect(tout).not.toContain("Camille");
+  });
+
+  it("rejeu du même jeton : réponse identique, ni doublon de contact, d'origine ni de preuve", async () => {
+    const j = jeton();
+    const premier = await confirmerPageGuide(entree({ jeton: j }));
+    const rejeu = await confirmerPageGuide(entree({ jeton: j }));
+    expect(rejeu).toEqual(premier);
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(1);
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.envois).toHaveLength(1);
+  });
+});
+
+describe("S2-PLANCHER — le temps de réponse ne révèle pas si l'adresse existe déjà", () => {
+  beforeEach(() => {
+    vi.useFakeTimers({ toFake: ["Date", "setTimeout", "clearTimeout"] });
+    vi.setSystemTime(MAINTENANT);
+  });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  /** Durée SIMULÉE écoulée entre l'appel et la réponse. */
+  async function duree(e: EntreeConfirmation): Promise<number> {
+    const debut = Date.now();
+    let fin = -1;
+    const p = confirmerSansSuite(e).then((r) => {
+      fin = Date.now();
+      return r;
+    });
+    await vi.advanceTimersByTimeAsync(PLANCHER_REPONSE_MS * 4);
+    await p;
+    return fin - debut;
+  }
+
+  it("le plancher est nommé et vaut au moins 250 ms", () => {
+    expect(PLANCHER_REPONSE_MS).toBeGreaterThanOrEqual(250);
+  });
+
+  it("adresse NEUVE : la réponse ne part pas avant le plancher", async () => {
+    const d = await duree(entree({ plancherMs: undefined }));
+    expect(d).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
+  });
+
+  it("adresse DÉJÀ CONNUE (demande existante) : la réponse ne part pas avant le plancher", async () => {
+    bd.demandes.push({
+      id: "d-existante",
+      emailKey: `h:${ADRESSE}`,
+      aimant: "guide-ia",
+      origine: "formulaire",
+      downloadToken: "t".repeat(64),
+    });
+    const d = await duree(
+      entree({ plancherMs: undefined, jeton: jeton({ conv: "conv_exemple_0021" }) }),
+    );
+    expect(d).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
+  });
+
+  it("adresse opposée : même plancher", async () => {
+    bd.opposees.add(ADRESSE);
+    const d = await duree(entree({ plancherMs: undefined }));
+    expect(d).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
+  });
+
+  it("les durées adresse neuve / déjà connue sont indiscernables (toutes deux égales au plancher)", async () => {
+    const neuve = await duree(entree({ plancherMs: undefined }));
+    const connue = await duree(
+      entree({ plancherMs: undefined, jeton: jeton({ conv: "conv_exemple_0022" }) }),
+    );
+    expect(Math.abs(neuve - connue)).toBeLessThan(20);
+  });
+
+  it("un échec en cours de route attend aussi le plancher avant de remonter", async () => {
+    bd.echecPreuve = true;
+    const debut = Date.now();
+    let fin = -1;
+    const p = confirmerSansSuite(entree({ plancherMs: undefined })).catch(() => {
+      fin = Date.now();
+    });
+    await vi.advanceTimersByTimeAsync(PLANCHER_REPONSE_MS * 4);
+    await p;
+    expect(fin - debut).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
   });
 });
