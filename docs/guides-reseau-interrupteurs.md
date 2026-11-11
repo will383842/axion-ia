@@ -200,3 +200,50 @@ sans table, sans migration, stable (même adresse, même jeton).
 
 **Retour arrière** : éteindre `OPPOSITION_JETON_V2` (app + worker) → retour à `op1`. Les `op2` déjà
 envoyés restent lisibles tant que le code de lecture reste en place.
+
+## Preuve de l'accord de la page « Recevoir le guide » (lot guide réseau 3)
+
+Sur la page, l'accord (case unique) est écrit **« en attente »** : l'adresse n'est qu'une saisie
+que n'importe qui peut faire. Trois états, portés par chaque ligne `contacts_guide_reseau` :
+
+| État           | Quand                                                       | Ligne ajoutée à `consent_events` |
+| -------------- | ----------------------------------------------------------- | -------------------------------- |
+| `en_attente`   | POST de la page (case cochée)                               | `consent_attente`                |
+| `confirmee`    | premier POST du bouton du lien du guide, **après** l'accord | `consent_confirme`               |
+| `non_verifiee` | **14 jours** après l'accord sans clic — mise à l'écart      | `consent_ecarte`                 |
+
+`sans_objet` : MARQUE d'une adresse opposée (aucune donnée de personne). Une ligne d'avant la
+migration (`NULL`) se lit `en_attente`. Les lignes `consent` déjà écrites ne sont pas réécrites
+(registre append-only) ; elles se lisent « accord saisi, avant la distinction ».
+
+- **Rien n'est supprimé.** « À l'écart » change un état ; prénom chiffré, empreinte du texte et dates
+  restent. Pas de remerciement (lot S4) ni d'événement CRM pour une ligne non confirmée.
+  **Le lot S4 ne doit envoyer le remerciement qu'à `preuve_statut = 'confirmee'`** (à traiter dans la
+  fiche S4, pas ici).
+- **Un « stop » l'emporte.** Il ne change pas l'état de preuve (un fait passé) ; aucune transition
+  n'envoie quoi que ce soit ; le CRM reste bloqué par l'opposition.
+- **La confirmation ne dépend pas du CRM** : elle a lieu au POST du lien du guide même si
+  `CRM_SYNC_GUIDE_ENABLED` est fermé. Un GET ne confirme jamais.
+- Un clic **après** la mise à l'écart confirme à nouveau la ligne (c'est le geste de la personne).
+
+| Variable                          | Rôle                                                            | Conteneur  | Défaut |
+| --------------------------------- | --------------------------------------------------------------- | ---------- | ------ |
+| `PREUVE_PAGE_GUIDE_ECART_ENABLED` | mise à l'écart quotidienne (04:23 UTC) + réparation du registre | **worker** | éteint |
+
+**N** = `JOURS_AVANT_ECART_PREUVE` (14) dans `src/server/guides-reseau/config.ts`, toujours supérieur à
+l'horizon du rattrapage du guide (7 jours).
+
+**Ordre d'allumage** (la migration est posée par l'**app** ; le worker peut tourner du code plus
+récent pendant ~50 min — AGENTS.md « DEUX conteneurs ») :
+
+1. fusionner ; vérifier que la migration est passée (`prisma migrate status` dans le conteneur app,
+   l'entrypoint migre en best-effort) ;
+2. vérifier que la confirmation au clic est en ligne côté **app** (`x-axion-build-sha`) ;
+3. alors seulement poser `PREUVE_PAGE_GUIDE_ECART_ENABLED=true` sur le **worker**. Avant l'étape 2,
+   on écarterait des personnes qui ont cliqué pendant que le clic ne confirmait pas encore.
+
+Le worker attrape une colonne absente (Prisma `P2022`) : journal `colonne_absente`, aucun effet.
+
+**Retour arrière** : éteindre `PREUVE_PAGE_GUIDE_ECART_ENABLED`. Une mise à l'écart déjà posée ne se
+défait que sur décision de Williams, par un `UPDATE … SET preuve_statut = 'en_attente'` documenté,
+jamais un `DELETE`. Les colonnes ne se suppriment pas (elles portent des dates de preuve).
