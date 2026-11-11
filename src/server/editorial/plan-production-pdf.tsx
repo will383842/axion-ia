@@ -195,7 +195,7 @@ export const styles = StyleSheet.create({
     marginBottom: S.sm,
   },
   titre: {
-    fontFamily: F.serif,
+    fontFamily: F.sans,
     fontSize: T.xl,
     color: couleurVivante("mocha"),
     marginBottom: S.md,
@@ -244,7 +244,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: couleurVivante("sand"),
     borderBottomWidth: 1,
-    borderBottomColor: couleurVivante("border-strong"),
+    borderBottomColor: couleurVivante("fg-muted"),
     paddingVertical: S.md,
     paddingHorizontal: S.lg,
   },
@@ -270,11 +270,11 @@ export const styles = StyleSheet.create({
 
   // ── Section d'un type ───────────────────────────────────────────────────
   titreSection: {
-    fontFamily: F.serif,
+    fontFamily: F.sans,
     fontSize: T.lg,
     color: couleurVivante("mocha"),
     borderBottomWidth: 1,
-    borderBottomColor: couleurVivante("border-strong"),
+    borderBottomColor: couleurVivante("border"),
     paddingBottom: S.md,
     marginBottom: S.xl,
   },
@@ -301,7 +301,7 @@ export const styles = StyleSheet.create({
     paddingRight: S.xl,
   },
   assetEcheance: {
-    fontFamily: F.mono,
+    fontFamily: F.sans,
     fontSize: T.sm,
     color: couleurVivante("terracotta-deep"),
   },
@@ -374,7 +374,7 @@ export const styles = StyleSheet.create({
     width: 10,
     height: 10,
     borderWidth: 1,
-    borderColor: couleurVivante("border-strong"),
+    borderColor: couleurVivante("fg-muted"),
     borderRadius: 1,
     marginTop: 2,
     marginRight: S.lg,
@@ -413,7 +413,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: S.xl,
   },
   promptTexte: {
-    fontFamily: F.mono,
+    fontFamily: F.sans,
     fontSize: T.sm,
     lineHeight: T.lineTight,
     color: couleurVivante("fg"),

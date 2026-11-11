@@ -85,7 +85,7 @@ export const styles = StyleSheet.create({
   },
   entite: { fontSize: T.sm, color: couleurVivante("mocha"), lineHeight: T.lineNormal },
   titre: {
-    fontFamily: F.serif,
+    fontFamily: F.sans,
     fontSize: T.xl,
     color: couleurVivante("mocha"),
     marginTop: S.xl,
@@ -98,7 +98,7 @@ export const styles = StyleSheet.create({
     paddingTop: S.lg,
     marginBottom: S.xl,
   },
-  nom: { fontFamily: F.serif, fontSize: T.lg, color: couleurVivante("mocha"), marginBottom: S.md },
+  nom: { fontFamily: F.sans, fontSize: T.lg, color: couleurVivante("mocha"), marginBottom: S.md },
   ligne: { flexDirection: "row", marginBottom: S.sm },
   libelle: { width: 150, fontSize: T.sm, color: couleurVivante("sage"), lineHeight: T.lineNormal },
   valeur: { flex: 1, fontSize: T.sm, lineHeight: T.lineNormal },
