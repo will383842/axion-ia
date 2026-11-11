@@ -49,7 +49,7 @@ export const YZEURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yzeure et agglomération Moulins ?",
-      a: "Oui, Axion-IA intervient à Yzeure et toute l'agglomération moulinoise (Moulins à 5 min, Avermes, Toulon-sur-Allier). Consultants depuis Lyon (2h) ou Clermont (1h30).",
+      a: "Oui, Axion-IA intervient à Yzeure et toute l'agglomération moulinoise (Moulins à 5 min, Avermes, Toulon-sur-Allier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs charolais ?",
@@ -64,8 +64,8 @@ export const YZEURE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (2h).",
+      q: "Comment se déroule une mission à Yzeure ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

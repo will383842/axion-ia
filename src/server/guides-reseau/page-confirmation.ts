@@ -341,7 +341,9 @@ async function suiteApresReponse(
     email,
     emailKey,
     maintenant,
-    compte !== null,
+    // Lot S3 : JAMAIS de CRM au POST de la page. L'adresse n'est qu'une saisie ; l'événement part
+    // au CLIC du lien du guide (`transmettreClicGuide`), qui relit cette origine.
+    false,
   );
 
   // 10. La preuve du consentement (ne lève jamais).

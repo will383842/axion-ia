@@ -47,12 +47,53 @@ export const MENTION_DECLARATION_OF = `Enregistré sous le numéro ${NUMERO_DECL
 export const EN_BREF_ACCUEIL =
   "Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous 3 jours ouvrés. Premier pas possible\u202f: un diagnostic IA gratuit de 45 minutes, en visio ou par téléphone.";
 
+/**
+ * Description de l'entité Axion-IA (nœuds JSON-LD `Organization` et `WebSite`).
+ * Reprend mot pour mot les formulations déjà publiées (« partenaire IA des PME et
+ * des TPE », « partout en France », « dans les locaux de l’entreprise », « le
+ * matin, l’audit… l’après-midi, les équipes sont formées… ») : aucune nouvelle
+ * promesse. Aucun montant : le prix reste porté par le seul nœud Service de la
+ * Journée IA (`JOURNEE_IA_TIER`).
+ */
+export const DESCRIPTION_ENTITE_FR =
+  "Axion-IA, partenaire IA des PME et des TPE, intervient partout en France. Offre phare\u202f: La Journée IA, dans les locaux de l’entreprise. Le matin, l’audit chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers.";
+
+/**
+ * Pendant anglais de `DESCRIPTION_ENTITE_FR`, pour le même nœud `#organization`
+ * (layout `seo.ts` et graphe de la banque d'images). Avant (audit du
+ * 2026-11-11) : deux textes anglais différents pour la même entité.
+ */
+export const DESCRIPTION_ENTITE_EN =
+  "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises: the audit in the morning, team training in the afternoon.";
+
+/** Version courte pour le nœud `WebSite`. */
+export const DESCRIPTION_SITE_FR =
+  "Axion-IA, partenaire IA des PME et des TPE, partout en France. Offre phare\u202f: La Journée IA, l’audit le matin, la formation l’après-midi, dans vos locaux.";
+
+/** Pendant anglais de `DESCRIPTION_SITE_FR`, nœud `WebSite`. */
+export const DESCRIPTION_SITE_EN =
+  "Axion-IA, the AI partner for SMEs and small businesses across France. Flagship offer: La Journée IA, audit in the morning, training in the afternoon, at your premises.";
+
 /** Les trois paragraphes du « En bref » de la landing (le prix est un jeton). */
 export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
   "La Journée IA est une journée d’audit et de formation à l’IA, menée par Axion-IA dans les locaux d’une PME ou d’une TPE (5 à 249 salariés), partout en France.",
   "Le matin, l’audit cartographie l’entreprise, fait le point avec le dirigeant sur ses priorités et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
   "Rapport chiffré sous 3 jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.",
 ] as const;
+
+/** Le chemin de la landing (préfixé par la locale au rendu : `/fr/journee-ia`). */
+export const CHEMIN_JOURNEE_IA = "/journee-ia";
+
+/** Le déroulé de la journée : le deuxième paragraphe du « En bref » de la landing. */
+export const DEROULE_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES[1];
+
+/**
+ * Le lien vers le diagnostic, avec l'emplacement cliqué (`depuis`), recopié par
+ * `/appel` dans `utm_content`.
+ */
+export function lienDiagnostic(depuis: string): string {
+  return `/appel?rdv=diagnostic&depuis=${encodeURIComponent(depuis)}`;
+}
 
 /** Le « En bref » de la landing, d'un seul tenant (pour `llms*.txt`). */
 export const EN_BREF_JOURNEE_IA = EN_BREF_JOURNEE_IA_PARAGRAPHES.join(" ");

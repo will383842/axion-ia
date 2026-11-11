@@ -49,7 +49,7 @@ export const VAUJOURS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaujours et dans l'est du 93 ?",
-      a: "Oui, Axion-IA intervient à Vaujours et dans toute la frange est de la Seine-Saint-Denis (Livry-Gargan, Coubron, Clichy-sous-Bois, Le Raincy). Nos consultants se déplacent depuis Paris (40 min) ou via l'A104.",
+      a: "Oui, Axion-IA intervient à Vaujours et dans toute la frange est de la Seine-Saint-Denis (Livry-Gargan, Coubron, Clichy-sous-Bois, Le Raincy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de Vaujours ?",
@@ -65,7 +65,7 @@ export const VAUJOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Vaujours ?",
-      a: "Nos consultants se déplacent à Vaujours depuis Paris (40 min en transports ou 30 min via A3/A104). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
     },
   ],
 };

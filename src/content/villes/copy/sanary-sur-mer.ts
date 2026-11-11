@@ -49,7 +49,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sanary-sur-Mer et sur la côte varoise ouest ?",
-      a: "Oui, Axion-IA intervient à Sanary-sur-Mer et sur toute la côte varoise ouest (Bandol, Six-Fours, Saint-Cyr, Ollioules). Consultants accessibles en 25 min depuis Toulon et 50 min depuis Marseille.",
+      a: "Oui, Axion-IA intervient à Sanary-sur-Mer et sur toute la côte varoise ouest (Bandol, Six-Fours, Saint-Cyr, Ollioules). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les hôtels et restaurants de Sanary-sur-Mer ?",
@@ -65,7 +65,7 @@ export const SANARY_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sanary-sur-Mer ?",
-      a: "Nos consultants interviennent depuis Toulon (25 min) ou Marseille (50 min). Déplacement sur site dans vos locaux professionnels, hôtel, restaurant, commerce ou port. A50 directe, côte varoise bien desservie.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, hôtel, restaurant, commerce ou port. A50 directe, côte varoise bien desservie.",
     },
   ],
 };

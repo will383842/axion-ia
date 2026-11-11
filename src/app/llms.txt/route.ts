@@ -33,6 +33,7 @@ import {
 } from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
+import { EN_BREF_APPORTEURS } from "@/content/recrutement/en-bref-apporteurs";
 import { FOUNDER, founderUrl } from "@/lib/brand";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
@@ -135,7 +136,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui présentent la Journée IA (audit le matin, formation de l'équipe l'après-midi, dans les locaux de l'entreprise) à des dirigeants de PME et de TPE qu'ils connaissent. L'apporteur met en relation ; Axion-IA prend le rendez-vous, établit le devis, anime la journée et facture l'entreprise. Statut indépendant avec un SIREN actif ; une commission par Journée IA payée, détaillée dans le contrat d'apport d'affaires ; sans frais d'entrée, sans exclusivité, sans CV. Mis à jour le 9 novembre 2026.
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — ${EN_BREF_APPORTEURS}
 - [Dossier apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia/candidature) — dossier de 3 minutes, une question par écran, sans CV ; réponse par e-mail, puis un échange de 15 min sur invitation.
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 

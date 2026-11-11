@@ -49,7 +49,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Port-la-Nouvelle et sur le littoral audois ?",
-      a: "Oui, Axion-IA intervient à Port-la-Nouvelle et sur tout le littoral audois (Sigean, Gruissan, Leucate, La Palme). Nos consultants se déplacent depuis Narbonne en 20 min.",
+      a: "Oui, Axion-IA intervient à Port-la-Nouvelle et sur tout le littoral audois (Sigean, Gruissan, Leucate, La Palme). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises du port de commerce ?",
@@ -65,7 +65,7 @@ export const PORT_LA_NOUVELLE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Port-la-Nouvelle ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux, en visio ou à Narbonne. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Port-la-Nouvelle. Format flexible : dans vos locaux ou en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

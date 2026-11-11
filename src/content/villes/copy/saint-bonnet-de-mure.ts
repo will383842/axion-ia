@@ -49,7 +49,7 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Bonnet-de-Mure et aire Saint-Exupéry ?",
-      a: "Oui, Axion-IA intervient à Saint-Bonnet-de-Mure et toute l'aire est de Lyon (Genas, Chassieu, Mions, aéroport Saint-Exupéry à 10 min). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Saint-Bonnet-de-Mure et toute l'aire est de Lyon (Genas, Chassieu, Mions, aéroport Saint-Exupéry à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques ?",
@@ -64,8 +64,8 @@ export const SAINT_BONNET_DE_MURE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Bonnet-de-Mure, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      q: "Comment se déroule une mission à Saint-Bonnet-de-Mure ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

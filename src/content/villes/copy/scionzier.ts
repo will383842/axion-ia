@@ -49,7 +49,7 @@ export const SCIONZIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Scionzier et dans la vallée de l'Arve ?",
-      a: "Oui, Axion-IA intervient à Scionzier et dans toute la vallée de l'Arve (Cluses, Bonneville, Marnaz, Thyez, Magland). Nos consultants se déplacent depuis Annecy (45 min) ou Genève (50 min).",
+      a: "Oui, Axion-IA intervient à Scionzier et dans toute la vallée de l'Arve (Cluses, Bonneville, Marnaz, Thyez, Magland). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises de décolletage à Scionzier ?",

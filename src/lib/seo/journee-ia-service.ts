@@ -11,10 +11,10 @@
 
 import { DESCRIPTION_SERVICE_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, prixAffichable } from "@/content/pricing";
-import { SITE_URL, buildServiceJsonLd } from "@/lib/seo";
+import { JOURNEE_IA_SERVICE_ID, SITE_URL, buildServiceJsonLd } from "@/lib/seo";
 
-/** `@id` du nœud Service de La Journée IA. */
-export const JOURNEE_IA_SERVICE_ID = `${SITE_URL}/fr/journee-ia#service`;
+/** `@id` du nœud Service de La Journée IA (source : `@/lib/seo`, lu aussi par l'Organization). */
+export { JOURNEE_IA_SERVICE_ID };
 
 /** `@id` de la WebPage de la landing, que le Service désigne comme page principale. */
 export const JOURNEE_IA_WEBPAGE_ID = `${SITE_URL}/fr/journee-ia#webpage`;

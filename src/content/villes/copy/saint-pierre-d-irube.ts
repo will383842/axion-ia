@@ -34,8 +34,8 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
       en: "Audit IA à Saint-Pierre-d'Irube : diagnostic adapté aux TPE artisans, PME de services, professions libérales et commerçants de l'agglomération bayonnaise. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning. Agglo Bayonne : déplacement inclus.",
-      en: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning. Agglo Bayonne : déplacement inclus.",
+      fr: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning.",
+      en: "Interventions IA sur site à Saint-Pierre-d'Irube : déploiement outils IA dans vos bureaux, ateliers ou commerces. Automatisation processus administratifs, gestion client et planning.",
     },
     implementation: {
       fr: "Implémentation IA à Saint-Pierre-d'Irube : automatisation comptabilité PME, chatbot accueil client, classification documents, optimisation planning et gestion relation client pour entreprises de services bayonnaises.",
@@ -65,7 +65,7 @@ export const SAINT_PIERRE_D_IRUBE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Saint-Pierre-d'Irube ?",
-      a: "Nos consultants accèdent à Saint-Pierre-d'Irube via la gare de Bayonne (TGV 4h30 Paris, 8 min voiture) ou l'aéroport Biarritz Pays Basque (15 min). Mission sur site dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux à Saint-Pierre-d'Irube, commune à 8 min de la gare de Bayonne et 15 min de l'aéroport Biarritz Pays Basque.",
     },
   ],
 };

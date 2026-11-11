@@ -49,7 +49,7 @@ export const THONES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thônes et dans les Aravis ?",
-      a: "Oui, Axion-IA intervient à Thônes et dans tout le massif des Aravis (La Clusaz à 15 min, Le Grand-Bornand à 15 min, Manigod, Saint-Jean-de-Sixt). Nos consultants viennent d'Annecy (20 min) et couvrent l'ensemble du bassin montagnard.",
+      a: "Oui, Axion-IA intervient à Thônes et dans tout le massif des Aravis (La Clusaz, Le Grand-Bornand, Manigod, Saint-Jean-de-Sixt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les fromageries Reblochon AOP ?",
@@ -65,7 +65,7 @@ export const THONES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Thônes ?",
-      a: "Nos consultants interviennent à Thônes depuis Annecy (20 min). Intervention sur site dans votre fromagerie, hôtel, commerce ou atelier artisan. Pour missions multi-jours, hébergement local montagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre fromagerie, hôtel, commerce ou atelier artisan. Pour missions multi-jours, hébergement local montagne.",
     },
   ],
 };

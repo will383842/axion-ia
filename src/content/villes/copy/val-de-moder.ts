@@ -49,7 +49,7 @@ export const VAL_DE_MODER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Val-de-Moder et dans la vallée de la Moder ?",
-      a: "Oui, Axion-IA intervient à Val-de-Moder (Pfaffenhoffen) et dans toute la vallée de la Moder (Bouxwiller, Ingwiller, Niederbronn-les-Bains). Nos consultants se déplacent depuis Strasbourg en 45 min via l'A4, ou Haguenau en 20 min.",
+      a: "Oui, Axion-IA intervient à Val-de-Moder (Pfaffenhoffen) et dans toute la vallée de la Moder (Bouxwiller, Ingwiller, Niederbronn-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Val-de-Moder  ?",
@@ -65,7 +65,7 @@ export const VAL_DE_MODER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Val-de-Moder ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 45 min via l'A4, ou depuis Haguenau en 20 min. Val-de-Moder est au centre de la vallée de la Moder, déplacements quotidiens optimisés. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Val-de-Moder est au centre de la vallée de la Moder, déplacements quotidiens optimisés. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

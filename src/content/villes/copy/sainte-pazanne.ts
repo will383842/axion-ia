@@ -49,7 +49,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Pazanne et Pays de Retz ?",
-      a: "Oui, Axion-IA intervient à Sainte-Pazanne et tout le Pays de Retz (Pornic, Machecoul, Chaumes-en-Retz, Saint-Philbert-de-Grand-Lieu). Consultants depuis Nantes (30 min). Couverture complète sud-ouest Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Sainte-Pazanne et tout le Pays de Retz (Pornic, Machecoul, Chaumes-en-Retz, Saint-Philbert-de-Grand-Lieu). Nous intervenons partout en France, sur place ou à distance. Couverture complète sud-ouest Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les PME du bâtiment à Sainte-Pazanne ?",
@@ -65,7 +65,7 @@ export const SAINTE_PAZANNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Sainte-Pazanne ?",
-      a: "Nos consultants se déplacent directement dans votre bureau, cabinet, commerce ou chantier à Sainte-Pazanne. Depuis Nantes, 30 min de trajet. Formats demi-journée ou journée complète.",
+      a: "Nos consultants se déplacent directement dans votre bureau, cabinet, commerce ou chantier à Sainte-Pazanne. Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète.",
     },
   ],
 };

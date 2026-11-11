@@ -230,7 +230,7 @@ export const VIERZON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vierzon et dans le Cher ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vierzon et du nord du Cher. Nos consultants se déplacent sur site, profitant du carrefour ferroviaire (Paris-Austerlitz à 1 h 40, Bourges à 20 minutes), ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vierzon et du nord du Cher. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et mécaniques vierzonnaises ?",
@@ -245,8 +245,8 @@ export const VIERZON_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous mettons en place devis automatisés, gestion de planning, relances clients et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Bourges ?",
-      a: "Vierzon est à 1 h 40 de Paris-Austerlitz, 20 minutes de Bourges et sur l'A71. Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Vierzon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vierzon est à 20 minutes de Bourges et sur l'A71.",
     },
   ],
 };

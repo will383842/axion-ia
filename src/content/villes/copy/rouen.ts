@@ -90,7 +90,7 @@ export const ROUEN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes de la Métropole hors Rouen intra-muros ?",
-      a: "Oui. La Métropole Rouen Normandie entière est notre zone d'intervention : Saint-Étienne-du-Rouvray (Madrillet), Mont-Saint-Aignan (Vatine, NEOMA), Petit-Quevilly, Grand-Quevilly, Bois-Guillaume, Sotteville-lès-Rouen, Canteleu, Bihorel et les autres communes. Aucun supplément de zone.",
+      a: "Oui. Nous intervenons dans toute la Métropole Rouen Normandie : Saint-Étienne-du-Rouvray (Madrillet), Mont-Saint-Aignan (Vatine, NEOMA), Petit-Quevilly, Grand-Quevilly, Bois-Guillaume, Sotteville-lès-Rouen, Canteleu, Bihorel et les autres communes. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les startups rouennaises (French Tech Normandie, Seinari, NWX) ?",
@@ -187,7 +187,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous aussi dans les communes de la Métropole (Madrillet, Vatine, Petit-Quevilly, Mont-Saint-Aignan) ?",
-            a: "Oui. La Métropole Rouen Normandie est notre terrain d'intervention complet. Nos consultants se déplacent dans toutes les communes — du Madrillet (INSA, ESIGELEC) à Mont-Saint-Aignan (Vatine, NEOMA), de Petit-Quevilly (Lubrizol, Safran) à Saint-Étienne-du-Rouvray et Grand-Quevilly.",
+            a: "Oui. Nos consultants se déplacent dans toutes les communes de la Métropole Rouen Normandie — du Madrillet (INSA, ESIGELEC) à Mont-Saint-Aignan (Vatine, NEOMA), de Petit-Quevilly (Lubrizol, Safran) à Saint-Étienne-du-Rouvray et Grand-Quevilly. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -279,7 +279,7 @@ export const ROUEN_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Madrillet, Vatine, Petit-Quevilly, Mont-Saint-Aignan)?",
-            a: "Yes. The Métropole Rouen Normandie is our full territory. Our consultants travel to all communes — from Madrillet (INSA, ESIGELEC) to Mont-Saint-Aignan (Vatine, NEOMA), from Petit-Quevilly (Lubrizol, Safran) to Saint-Étienne-du-Rouvray and Grand-Quevilly.",
+            a: "Yes. Our consultants travel to all communes of the Métropole Rouen Normandie — from Madrillet (INSA, ESIGELEC) to Mont-Saint-Aignan (Vatine, NEOMA), from Petit-Quevilly (Lubrizol, Safran) to Saint-Étienne-du-Rouvray and Grand-Quevilly. We work anywhere in France, on site or remotely.",
           },
           {
             q: "Do I need AI maturity to engage you?",

@@ -64,8 +64,8 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP à Saint-Quentin-Fallavier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis chantier, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
+      q: "Comment se déroule une mission à Saint-Quentin-Fallavier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
     },
   ],
 };

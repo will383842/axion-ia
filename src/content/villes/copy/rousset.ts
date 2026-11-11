@@ -34,8 +34,8 @@ export const ROUSSET_COPY: VilleCopy = {
       en: "Audit IA à Rousset : diagnostic adapté aux PME industrielles microélectronique, sous-traitants high-tech, TPE artisans, viticulteurs Sainte-Victoire et commerces de l'est aixois. Audit sur place à {{price:audit-flash|flat}}, retour sur investissement chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
-      en: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      fr: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Rousset : ateliers pour équipes microélectronique, sous-traitants industriels, TPE et PME locales. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Rousset : maintenance prédictive salles blanches, contrôle qualité semi-conducteurs, optimisation supply chain microélectronique, automatisation devis BTP, agents conversationnels SAV industriel. RGPD strict.",
@@ -64,8 +64,8 @@ export const ROUSSET_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et viticulture sur automatisation devis, gestion planning chantiers, content marketing oenotourisme AOP Sainte-Victoire, fiches Google Business, SAV conversationnel et gestion administrative simplifiée.",
     },
     {
-      q: "Comment se déplace Axion-IA à Rousset ?",
-      a: "Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Rousset ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Rousset est à 15 min d'Aix-en-Provence et 40 min de Marseille via A8.",
     },
   ],
 };

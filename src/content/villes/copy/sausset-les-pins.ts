@@ -64,8 +64,8 @@ export const SAUSSET_LES_PINS_COPY: VilleCopy = {
       a: "Oui, nous proposons des implémentations IA pour restaurateurs : automatisation gestion stocks et commandes fournisseurs, optimisation menus saisonniers, agents IA réservation, analyse avis clients.",
     },
     {
-      q: "Comment se déplace Axion-IA à Sausset-les-Pins ?",
-      a: "Nos consultants se déplacent dans vos locaux. Sausset-les-Pins est accessible en TER (35 min depuis Marseille) ou par A55 (35 min).",
+      q: "Comment se passe une intervention à Sausset-les-Pins ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Sausset-les-Pins est desservie par le TER et l'A55.",
     },
   ],
 };

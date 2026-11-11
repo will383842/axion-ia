@@ -53,7 +53,7 @@ export const TERNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ternay et dans le sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Ternay et dans tout le sud de la métropole de Lyon, sur l'axe Vienne (Communay à 5 min, Grigny, Givors, Vienne à 15 min). Nos consultants se déplacent depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Ternay et dans tout le sud de la métropole de Lyon, sur l'axe Vienne (Communay à 5 min, Grigny, Givors, Vienne à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques et industrielles de Ternay ?",
@@ -68,8 +68,8 @@ export const TERNAY_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ?",
-      a: "Nos consultants rejoignent Ternay depuis Lyon (25 min). Sessions sur site ou en visio selon votre préférence.",
+      q: "Comment se déroule une mission à Ternay ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

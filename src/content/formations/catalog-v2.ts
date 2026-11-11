@@ -108,6 +108,12 @@ export interface FormationV2 {
   titreFr: string;
   /** Sous-titre bénéfice (le « > » des fiches commerciales). */
   accrocheFr: string;
+  /**
+   * Renvoi vers La Journée IA, posé en tête de la fiche (audit SEO/GEO du
+   * 11/11/2026) : la fiche ne se présente plus comme une offre concurrente du
+   * point de départ recommandé. `depuis` = emplacement mesuré du rendez-vous.
+   */
+  renvoiJourneeIa?: { depuis: string; precisionFr: string };
   // ---- SEO (FR) ----
   h1Fr: string;
   metaTitleFr: string;
@@ -394,12 +400,17 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   categorie: "generale",
   duree: "1j",
   titreFr: "IA pour bien commencer — journée complète",
+  renvoiJourneeIa: {
+    depuis: "formation-journee-complete-renvoi",
+    precisionFr:
+      "Cette journée complète de formation ne remplace pas La Journée IA : elle la prolonge, pour les équipes qui veulent pratiquer davantage sur leurs propres tâches. Elle est établie sur devis écrit.",
+  },
   accrocheFr:
-    "Donnez à vos équipes le temps de vraiment s'approprier l'IA — comprendre l'IA et l'utiliser dès aujourd'hui",
-  h1Fr: "Formation IA pour bien commencer — journée complète : s'approprier l'IA sur ses propres tâches",
-  metaTitleFr: "Formation IA pour bien commencer — 1 jour",
+    "Après La Journée IA, donnez à vos équipes le temps de pratiquer davantage — sur leurs propres tâches, en atelier guidé",
+  h1Fr: "IA pour bien commencer — journée complète : pratiquer davantage après La Journée IA",
+  metaTitleFr: "Formation IA d’une journée : pratiquer davantage",
   metaDescriptionFr:
-    "Formation IA d'initiation sur une journée : autant de pratique que de théorie, sur les cas réels de chaque participant. Sur devis, par groupe, sans prérequis.",
+    "Une journée de formation IA pour pratiquer davantage sur ses tâches. Point de départ recommandé : La Journée IA, audit et formation dans vos locaux.",
   termesSemantiquesFr: [
     "formation IA débutant 1 jour",
     "initiation IA entreprise",

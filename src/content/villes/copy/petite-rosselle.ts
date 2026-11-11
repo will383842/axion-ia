@@ -49,7 +49,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Petite-Rosselle et dans l'agglo de Forbach ?",
-      a: "Oui, Axion-IA intervient à Petite-Rosselle et dans toute l'agglomération de Forbach (Stiring-Wendel, Behren-lès-Forbach, Schoeneck, Cocheren). Nos consultants se déplacent depuis Metz ou Nancy via A4/A320, ou par TGV jusqu'à la gare de Forbach.",
+      a: "Oui, Axion-IA intervient à Petite-Rosselle et dans toute l'agglomération de Forbach (Stiring-Wendel, Behren-lès-Forbach, Schoeneck, Cocheren). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Petite-Rosselle  ?",
@@ -65,7 +65,7 @@ export const PETITE_ROSSELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Petite-Rosselle ?",
-      a: "Nos consultants interviennent depuis Metz, Nancy ou Strasbourg via A4. Petite-Rosselle est accessible en 50 min de Metz ou directement par TGV à Forbach (1h47 de Paris). Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Petite-Rosselle est desservie par la gare TGV de Forbach. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const PLUNERET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Pluneret ?",
-      a: "Nos consultants se déplacent dans vos locaux à Pluneret ou interviennent en visio. Auray est à 5 min, Vannes à 20 min. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance : dans vos locaux à Pluneret ou en visio. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

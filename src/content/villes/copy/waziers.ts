@@ -49,7 +49,7 @@ export const WAZIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Waziers et dans l'agglo de Douai ?",
-      a: "Oui, Axion-IA intervient a Waziers et dans tout le Douaisis (Douai, Sin-le-Noble, Flers-en-Escrebieux, Lambres-lez-Douai). Consultants depuis Lille (30 min TER) ou Paris (TGV Douai 1h10).",
+      a: "Oui, Axion-IA intervient a Waziers et dans tout le Douaisis (Douai, Sin-le-Noble, Flers-en-Escrebieux, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les logisticiens pres de Waziers ?",

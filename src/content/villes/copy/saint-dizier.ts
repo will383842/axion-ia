@@ -226,7 +226,7 @@ export const SAINT_DIZIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Dizier et Haute-Marne ?",
-      a: "Oui, Axion-IA intervient à Saint-Dizier et tout l'est de la Haute-Marne (Joinville, Bar-le-Duc à proximité, Chaumont). Nos consultants viennent de Paris (TER 2h Paris-Est) ou Reims (1h20 voiture).",
+      a: "Oui, Axion-IA intervient à Saint-Dizier et tout l'est de la Haute-Marne (Joinville, Bar-le-Duc à proximité, Chaumont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels métallurgistes et fondeurs ?",

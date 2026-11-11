@@ -44,9 +44,13 @@ const REMBOURRAGE = 80;
  * et `/fr/tarifs`, on retient la pire), réserve non comprise :
  *   - bande `nav`    : sans tagline, écart de rangée 24 px ;
  *   - bande `navair` : tagline « Partenaire IA des PME et TPE » + écart 32 px.
+ *
+ * REMESURÉ le 2026-11-11 après le retour de la barre terracotta (le logo reprend
+ * son badge ivoire, `px-3`, +24 px ; « Nous écrire » perd son contour, −2 px) :
+ * 1105 → 1127 et 1173 → 1195. Réserve vivante : 73 px à 1280, 91 px à 1366.
  */
-const ROW_NAV = 1105;
-const ROW_NAVAIR = 1173;
+const ROW_NAV = 1127;
+const ROW_NAVAIR = 1195;
 
 /** Réserve exigée par la mesure vivante (`header-tient-dans-sa-boite.spec.ts`). */
 const RESERVE = 16;

@@ -18,9 +18,9 @@ export const TORCY_COPY: VilleCopy = {
   ecosystemEn:
     "Torcy s'inscrit dans la dynamique de Marne-la-Vallée, ville nouvelle qui a fait de l'est francilien un pôle tertiaire et résidentiel majeur. L'économie locale repose sur les services aux entreprises, l'informatique et la programmation, le commerce de zone d'activités et un secteur du bâtiment soutenu par la croissance urbaine. La proximité du pôle touristique de Marne-la-Vallée - Chessy et l'excellente desserte par le RER A nourrissent un bassin d'emploi dense, où l'IA peut automatiser la gestion administrative, accélérer le développement logiciel et améliorer la relation client.",
   distancesFr:
-    "Paris-Gare de Lyon à 35 min via le RER A, Marne-la-Vallée - Chessy à 10 min, aéroport Roissy-Charles de Gaulle à 40 min et Paris-Orly à 50 min. Nos consultants se déplacent depuis Paris.",
+    "Paris-Gare de Lyon à 35 min via le RER A, Marne-la-Vallée - Chessy à 10 min, aéroport Roissy-Charles de Gaulle à 40 min et Paris-Orly à 50 min. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Paris-Gare de Lyon à 35 min via le RER A, Marne-la-Vallée - Chessy à 10 min, aéroport Roissy-Charles de Gaulle à 40 min et Paris-Orly à 50 min. Nos consultants se déplacent depuis Paris.",
+    "Paris-Gare de Lyon à 35 min via le RER A, Marne-la-Vallée - Chessy à 10 min, aéroport Roissy-Charles de Gaulle à 40 min et Paris-Orly à 50 min. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Services aux entreprises",
     "Informatique et programmation",
@@ -230,7 +230,7 @@ export const TORCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Torcy et dans Marne-la-Vallée ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Torcy, Noisiel, Lognes, Bussy-Saint-Georges et tout l'est francilien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Torcy, Noisiel, Lognes, Bussy-Saint-Georges et tout l'est francilien. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les prestataires informatiques et le tertiaire ?",

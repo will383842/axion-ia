@@ -55,7 +55,6 @@ const DETTE: Readonly<Record<string, number>> = {
   "src/app/[locale]/implementation/page.tsx": 185,
   "src/app/[locale]/interventions/demande/page.tsx": 182,
   "src/app/[locale]/interventions/dirigeants/page.tsx": 182,
-  "src/app/[locale]/audit/page.tsx": 177,
   "src/app/[locale]/implementation/par-fonction/page.tsx": 173,
   "src/app/[locale]/sites-web-augmentes/page.tsx": 172,
   "src/app/[locale]/sous-processeurs/page.tsx": 172,

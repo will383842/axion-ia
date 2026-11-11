@@ -21,9 +21,10 @@ import { CommercialApplicationWizard } from "@/components/forms/commercial-appli
 import { buildCommercialKeywords } from "@/content/recrutement/commercial-offer";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { buildProductMetadata } from "@/lib/seo";
-import { webPageApporteurs } from "@/components/recrutement/landings/jsonld";
+import { faqApporteurs, webPageApporteurs } from "@/components/recrutement/landings/jsonld";
 import { chiffresApporteurs } from "@/components/recrutement/landings/chiffres";
 import { SectionsDossier } from "@/components/recrutement/landings/SectionsDossier";
+import { SectionFaq, faqDossier } from "@/components/recrutement/landings/faq-pages";
 import { ShellLanding } from "@/components/recrutement/landings/ShellLanding";
 
 export const revalidate = 3600;
@@ -59,6 +60,9 @@ export default async function DossierApporteurPage({ params }: Props) {
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
+  const p = chiffresApporteurs();
+  const faq = faqDossier(p);
+
   return (
     <>
       <Container className="border-border border-b py-3">
@@ -71,7 +75,8 @@ export default async function DossierApporteurPage({ params }: Props) {
       </Container>
 
       <ShellLanding landing={LANDING_MESURE}>
-        <SectionsDossier p={chiffresApporteurs()} formulaire={<CommercialApplicationWizard />} />
+        <SectionsDossier p={p} formulaire={<CommercialApplicationWizard />} />
+        <SectionFaq items={faq} id="questions" />
       </ShellLanding>
 
       <JsonLd
@@ -85,6 +90,7 @@ export default async function DossierApporteurPage({ params }: Props) {
         })}
         scriptId="jsonld-dossier-webpage"
       />
+      <JsonLd data={faqApporteurs(faq)} scriptId="jsonld-dossier-faq" />
     </>
   );
 }

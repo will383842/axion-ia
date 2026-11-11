@@ -81,7 +81,9 @@ export function MobileNav({ children }: MobileNavProps) {
         <button
           type="button"
           aria-label={t("openMenu")}
-          className="border-fg-muted text-fg hover:bg-sand focus-visible:ring-terracotta inline-flex h-11 w-11 items-center justify-center rounded-lg border focus-visible:ring-2 focus-visible:outline-none"
+          // Posé sur la barre TERRACOTTA : contour et icône ivoire (`mocha-fg` sur
+          // terracotta : 5,24:1) ; le tiroir qu'il ouvre reste clair.
+          className="border-mocha-fg text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex h-11 w-11 items-center justify-center rounded-full border transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           <Menu className="h-5 w-5" aria-hidden="true" />
         </button>

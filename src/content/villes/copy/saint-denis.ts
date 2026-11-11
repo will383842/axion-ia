@@ -107,7 +107,7 @@ const AUDIT_FR: VilleServiceCopyLocale = {
     },
     {
       q: "Intervenez-vous aussi à Saint-Ouen, Aubervilliers ou Épinay-sur-Seine ?",
-      a: "Oui. Toute l'intercommunalité Plaine Commune est notre zone d'intervention : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse. Aucun supplément de zone.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen, Aubervilliers, Épinay-sur-Seine, Pierrefitte-sur-Seine, Stains, Villetaneuse. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Faut-il être déjà avancé sur l'IA pour solliciter un audit ?",
@@ -552,12 +552,12 @@ export const SAINT_DENIS_COPY: VilleCopy = {
       a: "Oui. La Plaine Saint-Denis concentre des studios de tournage, sociétés de production et agences créatives avec lesquels nous travaillons. Les cas récents couvrent : automatisation scripts et plans de tournage, gestion post-production, qualification de contrats. Filtrables par secteur dans la rubrique Cas concrets.",
     },
     {
-      q: "Comment rejoindre Saint-Denis pour une intervention depuis Paris ?",
-      a: "Saint-Denis est directement desservi par le RER D (Gare du Nord ~10 min), le RER B (La Plaine–Stade de France) et le métro ligne 13. Nos consultants gèrent leur déplacement",
+      q: "Comment se passe une intervention à Saint-Denis ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Denis est directement desservi par le RER D, le RER B (La Plaine–Stade de France) et le métro ligne 13.",
     },
     {
       q: "Intervenez-vous aussi dans les communes Plaine Commune voisines ?",
-      a: "Oui. Toute l'intercommunalité Plaine Commune est notre zone d'intervention : Saint-Ouen (3 km), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Aucun supplément de zone.",
+      a: "Oui. Nous intervenons dans toute l'intercommunalité Plaine Commune : Saint-Ouen (3 km de Saint-Denis), Aubervilliers (3 km), Épinay-sur-Seine (4 km), Pierrefitte-sur-Seine (4 km), Stains (5 km), Villetaneuse (5 km), L'Île-Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Saint-Denis ?",

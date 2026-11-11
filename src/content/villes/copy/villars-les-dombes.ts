@@ -49,7 +49,7 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villars-les-Dombes et Dombes ?",
-      a: "Oui, Axion-IA intervient à Villars-les-Dombes et toute la Dombes (Châtillon-sur-Chalaronne à 15 min, Marlieux, Saint-André-de-Corcy). Consultants depuis Lyon (40 min).",
+      a: "Oui, Axion-IA intervient à Villars-les-Dombes et toute la Dombes (Châtillon-sur-Chalaronne à 15 min, Marlieux, Saint-André-de-Corcy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du Parc des Oiseaux ?",
@@ -64,8 +64,8 @@ export const VILLARS_LES_DOMBES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min).",
+      q: "Comment se déroule une mission à Villars-les-Dombes ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Didier-au-Mont-d'Or et monts d'Or ?",
-      a: "Oui, Axion-IA intervient à Saint-Didier-au-Mont-d'Or et tous les monts d'Or lyonnais (Limonest, Collonges-au-Mont-d'Or, Saint-Cyr-au-Mont-d'Or). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Didier-au-Mont-d'Or et tous les monts d'Or lyonnais (Limonest, Collonges-au-Mont-d'Or, Saint-Cyr-au-Mont-d'Or). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales desidériens ?",
@@ -64,8 +64,8 @@ export const SAINT_DIDIER_AU_MONT_D_OR_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Didier-au-Mont-d'Or, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Saint-Didier-au-Mont-d'Or ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const SAINTE_LIVRADE_SUR_LOT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sainte-Livrade-sur-Lot ?",
-      a: "Nos consultants interviennent sur site à Sainte-Livrade-sur-Lot et dans la vallée du Lot. Déplacement direct sur votre exploitation ou entreprise. Accès via Agen (25 min D911), aéroport Agen-La Garenne à 30 min.",
+      a: "Nos consultants interviennent sur site à Sainte-Livrade-sur-Lot et dans la vallée du Lot, directement sur votre exploitation ou dans votre entreprise. Nous intervenons partout en France, sur place ou à distance. Sainte-Livrade est à 25 min d'Agen par la D911.",
     },
   ],
 };
