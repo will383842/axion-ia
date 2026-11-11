@@ -24,9 +24,9 @@ import {
 } from "@/content/journee-ia-commun";
 import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricing";
 
-/** Le littéral actuel de la garantie, recopié tel qu'il était dans `contenu.ts`. */
+/** Le littéral attendu de la garantie : rapport sous 3 jours ouvrés (comme `offre.ts`) + remboursement. */
 const GARANTIE_ACTUELLE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
+  "Sous 3 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
 
 const TEXTES_AVEC_JETONS = {
   EN_BREF_ACCUEIL,
@@ -101,8 +101,10 @@ describe("l'exemple chiffré", () => {
 });
 
 describe("la garantie", () => {
-  it("GARANTIE égale le littéral actuel, caractère pour caractère", () => {
+  it("GARANTIE égale le littéral attendu, caractère pour caractère, et ne dit plus « à la fin de la journée »", () => {
     expect(GARANTIE).toBe(GARANTIE_ACTUELLE);
+    expect(GARANTIE).not.toContain("À la fin de la journée");
+    expect(GARANTIE.startsWith(RAPPORT_COMPLET)).toBe(true);
   });
 
   it("GARANTIE finit par GARANTIE_PHRASE, qui est la phrase de remboursement", () => {

@@ -15,14 +15,6 @@ import { JOURNEE_IA_TIER, formatAmount, formatTierPrice } from "@/content/pricin
 /** Le jeton que les textes portent à la place du prix de la journée. */
 export const JETON_PRIX = "{{PRIX}}";
 
-/**
- * La garantie, mot pour mot (rapport + remboursement). Déplacée ici sans changer
- * un caractère : la landing continue de l'afficher telle quelle tant qu'elle n'est
- * pas passée à `RAPPORT_COMPLET` + `GARANTIE_PHRASE`.
- */
-export const GARANTIE =
-  "À la fin de la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours. Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
-
 /** La seule phrase de remboursement : la fin exacte de `GARANTIE`. */
 export const GARANTIE_PHRASE =
   "Si les gains identifiés ne dépassent pas 3 fois le prix de la journée, nous vous remboursons, sans discussion, sous 30 jours.";
@@ -34,6 +26,12 @@ export const CONDITION_GARANTIE =
 /** Le rapport, remis sous 3 jours ouvrés (décision de Williams). */
 export const RAPPORT_COMPLET =
   "Sous 3 jours ouvrés après la journée, vous recevez votre rapport complet : vos gains chiffrés, les tâches à automatiser classées par rentabilité, et votre plan d’action sur 90 jours.";
+
+/**
+ * La garantie : le rapport (`RAPPORT_COMPLET`, sous 3 jours ouvrés, comme `offre.ts`)
+ * puis la phrase de remboursement. Composée, donc jamais en désaccord avec l'offre.
+ */
+export const GARANTIE = `${RAPPORT_COMPLET} ${GARANTIE_PHRASE}`;
 
 /** Numéro de déclaration d'activité de l'organisme de formation. */
 // Même valeur que `NDA_NUMERO` (src/server/qualiopi/legal/legal-mentions.ts) : recopiée ici pour que
