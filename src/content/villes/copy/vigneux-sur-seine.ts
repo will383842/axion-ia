@@ -116,7 +116,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Réalisez-vous des sites web et e-commerce à Vigneux-sur-Seine et dans le Val d'Yerres Val de Seine ?",
-            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les TPE et PME de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Nous nous déplaçons sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou travaillons à distance via le RER D, à 25 minutes de Paris.",
+            a: "Oui. Axion-IA conçoit sites vitrines, boutiques e-commerce et plateformes SaaS augmentées par l'IA pour les TPE et PME de Vigneux-sur-Seine et des communes voisines de l'agglomération Val d'Yerres Val de Seine. Nous nous déplaçons sur site (atelier, boutique, entrepôt des ZA du Bac d'Ablon ou du Clos de la Régale) ou travaillons à distance ; le RER D dessert la commune.",
           },
           {
             q: "Travaillez-vous avec les artisans et les acteurs du bâtiment de Vigneux ?",
@@ -202,7 +202,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
         faq: [
           {
             q: "Do you build websites and e-commerce in Vigneux-sur-Seine and the Val d'Yerres Val de Seine?",
-            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. We travel on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or work remotely via the RER D, 25 minutes from Paris.",
+            a: "Yes. Axion-IA designs showcase sites, e-commerce stores and AI-augmented SaaS platforms for small and mid-sized businesses in Vigneux-sur-Seine and the neighbouring communes of the Val d'Yerres Val de Seine agglomeration. We travel on site (workshop, shop, warehouse in the Bac d'Ablon or Clos de la Régale zones) or work remotely; the RER D serves the town.",
           },
           {
             q: "Do you work with Vigneux building-trade craftspeople and contractors?",
@@ -230,7 +230,7 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vigneux-sur-Seine et en Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Vigneux-sur-Seine et du nord de l'Essonne. Nos consultants se déplacent sur site, à 25 minutes de Paris par le RER D, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Vigneux-sur-Seine et du nord de l'Essonne. Nous intervenons sur site ou en visio selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec les prestataires logistiques et transporteurs de Vigneux ?",
@@ -245,8 +245,8 @@ export const VIGNEUX_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour commerces et restauration, nous déployons fidélisation client automatisée, gestion des réservations, optimisation des stocks et reporting clair adaptés aux petites structures.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Orly ?",
-      a: "Vigneux-sur-Seine est à 25 minutes de Paris-Gare de Lyon par le RER D et 10 minutes d'Orly. Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Vigneux-sur-Seine ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vigneux-sur-Seine est desservie par le RER D, à 10 minutes d'Orly.",
     },
   ],
 };

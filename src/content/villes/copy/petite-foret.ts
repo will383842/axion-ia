@@ -49,7 +49,7 @@ export const PETITE_FORET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Petite-Forêt et Valenciennes Métropole ?",
-      a: "Oui, Axion-IA intervient à Petite-Forêt et toute l'agglomération valenciennoise (Valenciennes, Raismes, Anzin, Denain). Consultants depuis Lille (50 min).",
+      a: "Oui, Axion-IA intervient à Petite-Forêt et toute l'agglomération valenciennoise (Valenciennes, Raismes, Anzin, Denain). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME logistique et transport du Valenciennois ?",
@@ -64,8 +64,8 @@ export const PETITE_FORET_COPY: VilleCopy = {
       a: "Oui, interventions IA adaptées aux commerces et professions libérales péti-forestois. Agents conversationnels, automatisation RDV, fidélisation clients. Audit sur place {{price:audit-flash|flat}} pour identifier vos cas prioritaires.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (50 min via A23). Coaching 1-to-1 possible en visio.",
+      q: "Comment se déroule une mission à Petite-Forêt ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coaching 1-to-1 possible en visio.",
     },
   ],
 };

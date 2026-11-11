@@ -61,7 +61,7 @@ export const SAUTRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Sautron ?",
-      a: "Nos consultants se déplacent sur site à Sautron (15 min depuis Nantes centre). Pour les missions multi-jours, hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local.",
     },
     {
       q: "L'audit sur place {{price:audit-flash|flat}} est-il adapté aux indépendants ?",

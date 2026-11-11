@@ -49,7 +49,7 @@ export const VILLENEUVE_LES_AVIGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-lès-Avignon ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-lès-Avignon et dans tout le Grand Avignon (Les Angles, Rochefort-du-Gard, Saze). Nos consultants sont à 5 min d'Avignon centre et 15 min de la gare TGV.",
+      a: "Oui, Axion-IA intervient à Villeneuve-lès-Avignon et dans tout le Grand Avignon (Les Angles, Rochefort-du-Gard, Saze). Villeneuve-lès-Avignon est à 5 min d'Avignon centre et 15 min de la gare TGV. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Villeneuve-lès-Avignon  ?",

@@ -49,7 +49,7 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thue et Mue et nord-ouest agglo Caen ?",
-      a: "Oui, Axion-IA intervient à Thue et Mue et tout le nord-ouest de l'agglomération caennaise (Bretteville-l'Orgueilleuse, Rots, Putot-en-Bessin). Consultants sur place en 15 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Thue et Mue et tout le nord-ouest de l'agglomération caennaise (Bretteville-l'Orgueilleuse, Rots, Putot-en-Bessin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations céréalières de la plaine de Caen ?",
@@ -64,8 +64,8 @@ export const THUE_ET_MUE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Êtes-vous proches de l'aéroport Caen-Carpiquet ?",
-      a: "Oui, Thue et Mue est à 10 min de l'aéroport Caen-Carpiquet. Nos consultants sont à 15 min de Caen centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Thue et Mue est-elle proche de l'aéroport Caen-Carpiquet ?",
+      a: "Oui, Thue et Mue est à 10 min de l'aéroport Caen-Carpiquet. Caen centre est à 15 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

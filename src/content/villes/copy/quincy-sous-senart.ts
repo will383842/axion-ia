@@ -49,7 +49,7 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quincy-sous-Sénart et dans le sud-est Essonne ?",
-      a: "Oui, Axion-IA intervient à Quincy-sous-Sénart et tout le sud-est de l'Essonne (Yerres, Brunoy, Boussy-Saint-Antoine, Épinay-sous-Sénart, Combs-la-Ville). Nos consultants accèdent facilement via le RER D depuis Paris.",
+      a: "Oui, Axion-IA intervient à Quincy-sous-Sénart et tout le sud-est de l'Essonne (Yerres, Brunoy, Boussy-Saint-Antoine, Épinay-sous-Sénart, Combs-la-Ville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Quincy-sous-Sénart ?",
@@ -64,8 +64,8 @@ export const QUINCY_SOUS_SENART_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Quincy-sous-Sénart souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se passe une mission à Quincy-sous-Sénart depuis Paris ?",
-      a: "Nos consultants accèdent à Quincy-sous-Sénart via le RER D (correspondance à Brunoy ou Yerres, 40 min depuis Paris Gare de Lyon). Zone Sénart à 10 min.",
+      q: "Comment se déroule une mission à Quincy-sous-Sénart ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Zone Sénart à 10 min.",
     },
   ],
 };

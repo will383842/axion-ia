@@ -18,9 +18,9 @@ export const VALENCIENNES_COPY: VilleCopy = {
   ecosystemEn:
     "Valenciennes incarne une reconversion industrielle réussie : l'ancien bassin houiller du Hainaut a laissé place à une économie automobile dynamisée par l'usine Toyota d'Onnaing et son réseau de sous-traitants, ainsi qu'à une filière ferroviaire portée par Alstom. La Serre Numérique a fait émerger un pôle reconnu du jeu vidéo, du serious game et de l'image animée, soutenu par l'Université Polytechnique Hauts-de-France. Autour gravitent des artisans, commerces et PME de services. Sur ce tissu en mutation, l'IA peut accélérer la production, le contrôle qualité et la création numérique.",
   distancesFr:
-    "Lille et la gare de Lille-Europe à 40 min, Bruxelles à 1h, aéroport de Lille-Lesquin à 45 min et Paris à 2h en TGV. Nos consultants se déplacent depuis Lille et Paris.",
+    "Lille et la gare de Lille-Europe à 40 min, Bruxelles à 1h, aéroport de Lille-Lesquin à 45 min et Paris à 2h en TGV. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Lille et la gare de Lille-Europe à 40 min, Bruxelles à 1h, aéroport de Lille-Lesquin à 45 min et Paris à 2h en TGV. Nos consultants se déplacent depuis Lille et Paris.",
+    "Lille et la gare de Lille-Europe à 40 min, Bruxelles à 1h, aéroport de Lille-Lesquin à 45 min et Paris à 2h en TGV. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Automobile et sous-traitance (Toyota Onnaing)",
     "Ferroviaire et transport (Alstom)",
@@ -230,7 +230,7 @@ export const VALENCIENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valenciennes et dans le Valenciennois ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Valenciennes, Onnaing, Anzin, Denain et tout le Hainaut. Nos consultants se déplacent depuis Lille et Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Valenciennes, Onnaing, Anzin, Denain et tout le Hainaut. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobile et ferroviaires ?",

@@ -49,7 +49,7 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saintry-sur-Seine et vallée de Seine ?",
-      a: "Oui, Axion-IA intervient à Saintry-sur-Seine et toute la vallée de Seine essonnienne (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis, Morsang-sur-Seine). Consultants depuis Paris (40 min RER D).",
+      a: "Oui, Axion-IA intervient à Saintry-sur-Seine et toute la vallée de Seine essonnienne (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis, Morsang-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et artisans saintryens ?",
@@ -64,8 +64,8 @@ export const SAINTRY_SUR_SEINE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires Saintry et vallée de Seine : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER D via Corbeil-Essonnes (40 min Gare de Lyon) ou en voiture par A6/N7 (45 min).",
+      q: "Comment se déroule une mission à Saintry-sur-Seine ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

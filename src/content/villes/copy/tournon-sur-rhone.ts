@@ -49,7 +49,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tournon-sur-Rhône et vallée Rhône ?",
-      a: "Oui, Axion-IA intervient à Tournon-sur-Rhône et toute la vallée du Rhône septentrionale (Tain-l'Hermitage face, Saint-Jean-de-Muzols, Mauves). Consultants depuis Lyon (1h) ou Valence (20 min).",
+      a: "Oui, Axion-IA intervient à Tournon-sur-Rhône et toute la vallée du Rhône septentrionale (Tain-l'Hermitage face, Saint-Jean-de-Muzols, Mauves). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs AOC Saint-Joseph ?",
@@ -64,7 +64,7 @@ export const TOURNON_SUR_RHONE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission à Tournon-sur-Rhône ?",
       a: "Lyon (1h A7) ou Valence (20 min).",
     },
   ],

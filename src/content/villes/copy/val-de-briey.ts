@@ -49,7 +49,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Val de Briey et au Pays Haut ?",
-      a: "Oui, Axion-IA intervient à Val de Briey et tout le Pays Haut nord-meurthe-et-mosellan (Jarny, Auboué, Homécourt, Joeuf, Hayange). Consultants depuis Nancy (50 min) et Metz (35 min).",
+      a: "Oui, Axion-IA intervient à Val de Briey et tout le Pays Haut nord-meurthe-et-mosellan (Jarny, Auboué, Homécourt, Joeuf, Hayange). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrie et sous-traitants mécanique de Val de Briey ?",
@@ -65,7 +65,7 @@ export const VAL_DE_BRIEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Val de Briey ?",
-      a: "Nos consultants interviennent depuis Nancy (50 min) ou Metz (35 min). Missions sur site dans vos ateliers industriels, chantiers, commerces ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos ateliers industriels, chantiers, commerces ou bureaux.",
     },
   ],
 };

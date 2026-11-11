@@ -65,7 +65,7 @@ export const RIEDISHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Riedisheim ?",
-      a: "Nos consultants se déplacent via autoroute A36 (10 min) ou gare de Mulhouse-Ville (10 min). Position périurbaine immédiate de Mulhouse, accès Suisse-Allemagne facile.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Riedisheim, en périphérie immédiate de Mulhouse, est à 10 min de l'autoroute A36 et de la gare de Mulhouse-Ville, avec un accès facile vers la Suisse et l'Allemagne.",
     },
   ],
 };

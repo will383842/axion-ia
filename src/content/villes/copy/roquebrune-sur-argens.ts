@@ -49,7 +49,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquebrune-sur-Argens et dans le Var est ?",
-      a: "Oui, Axion-IA intervient à Roquebrune-sur-Argens et dans tout le Var est (Fréjus, Saint-Raphaël, Puget-sur-Argens, Le Muy). Consultants accessibles en 10 min depuis Fréjus et 30 min depuis Cannes via A8.",
+      a: "Oui, Axion-IA intervient à Roquebrune-sur-Argens et dans tout le Var est (Fréjus, Saint-Raphaël, Puget-sur-Argens, Le Muy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les campings et hôtels de Roquebrune-sur-Argens ?",
@@ -65,7 +65,7 @@ export const ROQUEBRUNE_SUR_ARGENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roquebrune-sur-Argens ?",
-      a: "Nos consultants interviennent depuis Fréjus (10 min), Saint-Raphaël (15 min) ou Cannes (30 min). Déplacement sur site dans vos locaux professionnels, hôtel, camping, domaine viticole ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, hôtel, camping, domaine viticole ou commerce. A8 directe.",
     },
   ],
 };

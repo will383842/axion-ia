@@ -241,8 +241,8 @@ export const TRAPPES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les sous-traitants défense de la zone (proximité Nexter Versailles-Satory) sur leurs cas IA avec exigences de confidentialité renforcées : hébergement UE garanti, code restant votre propriété, aucun lock-in éditeur, formats compatibles avec contraintes habilitation.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris jusqu'à Trappes ?",
-      a: "Nos consultants viennent de Paris (35 min Montparnasse) pour les missions sur site à Trappes. Pour les interventions multi-jours, repas et hébergement local possibles selon vos préférences.",
+      q: "Comment se déroule une mission à Trappes ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les interventions multi-jours, repas et hébergement local possibles selon vos préférences.",
     },
   ],
 };

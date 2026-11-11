@@ -49,7 +49,7 @@ export const VAUGNERAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaugneray et monts du Lyonnais ?",
-      a: "Oui, Axion-IA intervient à Vaugneray et tout l'ouest lyonnais / monts du Lyonnais (Craponne à 10 min, Brindas, Grézieu-la-Varenne, Yzeron). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Vaugneray et tout l'ouest lyonnais / monts du Lyonnais (Craponne à 10 min, Brindas, Grézieu-la-Varenne, Yzeron). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs monts du Lyonnais ?",
@@ -64,8 +64,8 @@ export const VAUGNERAY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Vaugneray, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      q: "Comment se déroule une mission à Vaugneray ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

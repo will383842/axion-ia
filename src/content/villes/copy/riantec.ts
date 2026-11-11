@@ -49,7 +49,7 @@ export const RIANTEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Riantec et sur le littoral ria d'Étel ?",
-      a: "Oui, Axion-IA intervient à Riantec et tout le littoral de la ria d'Étel (Étel, Belz, Locoal-Mendon, Nostang, Port-Louis). Nos consultants se déplacent depuis Lorient (15 min) ou Vannes (50 min).",
+      a: "Oui, Axion-IA intervient à Riantec et tout le littoral de la ria d'Étel (Étel, Belz, Locoal-Mendon, Nostang, Port-Louis). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et mytiliculteurs de la ria d'Étel ?",
@@ -64,8 +64,8 @@ export const RIANTEC_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME nautiques du bassin lorientais (construction, réparation, équipement naval) sur leurs cas IA : optimisation planification chantier, classification documents techniques, prédiction maintenance, automatisation devis complexes.",
     },
     {
-      q: "Comment se déroule une mission à Riantec depuis Lorient ?",
-      a: "Nos consultants viennent de Lorient (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel).",
+      q: "Comment se déroule une mission à Riantec ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes littoraux Riantec/Étel).",
     },
   ],
 };

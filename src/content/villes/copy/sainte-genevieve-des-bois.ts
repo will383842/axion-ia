@@ -11,9 +11,9 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   pitchEn:
     "Sainte-Geneviève-des-Bois (35 438 habitants, Essonne) est siège de Cœur d'Essonne Agglomération et abrite le parc commercial La Croix-Blanche, premier parc commercial d'Île-de-France. La ville a marqué l'histoire de la grande distribution française : c'est ici qu'a ouvert en 1963 le premier supermarché Carrefour de France. Axion-IA accompagne les TPE et PME locales (commerce de détail, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). La ville est siège de Cœur d'Essonne Agglomération.",
   directAnswerEn:
-    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER C (gare de Sainte-Geneviève-des-Bois, quartier du Perray) ou par la RN104. La ville est siège de Cœur d'Essonne Agglomération.",
+    "Axion-IA intervient à Sainte-Geneviève-des-Bois pour les TPE et PME de l'Essonne : commerces du parc La Croix-Blanche (premier parc commercial d'Île-de-France), artisans BTP, services aux entreprises et indépendants. Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). La ville est siège de Cœur d'Essonne Agglomération.",
   seoHook: "commerce de détail La Croix-Blanche & artisanat Essonne",
   ecosystemFr:
     "Sainte-Geneviève-des-Bois est siège de Cœur d'Essonne Agglomération. Le tissu économique est structuré autour du parc commercial La Croix-Blanche (premier parc commercial d'Île-de-France) où a ouvert le premier Carrefour de France en 1963. Les communes limitrophes incluent Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le territoire est urbanisé à 74,9 %, avec 10,9 % d'espace rural.",
@@ -130,7 +130,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes autour de Sainte-Geneviève-des-Bois ?",
-            a: "Oui, sur tout Cœur d'Essonne Agglomération et les communes limitrophes : Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge. Le déplacement se fait depuis Paris via le RER C (gare du Perray) ou la RN104.",
+            a: "Oui, sur tout Cœur d'Essonne Agglomération et les communes limitrophes : Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge et Longpont-sur-Orge.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
           },
           {
             q: "Do you cover the communes around Sainte-Geneviève-des-Bois?",
-            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. Travel is from Paris via RER C (Le Perray station) or the RN104.",
+            a: "Yes, across the whole Cœur d'Essonne Agglomération and neighboring communes: Villiers-sur-Orge, Épinay-sur-Orge, Morsang-sur-Orge, Fleury-Mérogis, Brétigny-sur-Orge, Saint-Michel-sur-Orge and Longpont-sur-Orge. The area is served by RER C (Le Perray station) and the RN104.",
           },
         ],
         guarantees:
@@ -228,11 +228,11 @@ export const SAINTE_GENEVIEVE_DES_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA à Sainte-Geneviève-des-Bois ?",
-      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER C inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA à Sainte-Geneviève-des-Bois débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement de Williams inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Combien de temps faut-il pour une intervention IA à Sainte-Geneviève-des-Bois ?",
-      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (24 km au sud de Paris). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
+      a: "Williams se déplace habituellement sous 5 à 10 jours ouvrés à Sainte-Geneviève-des-Bois (Essonne). Une intervention ciblée dure généralement 1 à 3 jours sur site, selon la complexité du projet.",
     },
     {
       q: "Axion-IA propose-t-il des solutions conformes au RGPD à Sainte-Geneviève-des-Bois ?",

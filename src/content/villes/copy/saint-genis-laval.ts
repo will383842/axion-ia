@@ -18,9 +18,9 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Genis-Laval, dans le sud de la métropole de Lyon, conjugue une forte présence de la santé et de la recherche — l'Observatoire de Lyon y est installé, aux côtés d'établissements de soins et de campus — et une activité industrielle structurée par la zone d'activités de Sacuny. Ce profil mêle PME scientifiques et médicales, sous-traitants industriels, commerces et artisans de proximité. Pour ces petites structures, souvent submergées par la gestion administrative et la prise de rendez-vous, l'IA bien cadrée libère un temps précieux.",
   distancesFr:
-    "Saint-Genis-Laval est reliée au centre de Lyon par le tramway T2 et le prolongement du métro B vers les Hôpitaux Sud, plaçant la Part-Dieu à une vingtaine de minutes. L'A450 et le périphérique sud desservent directement la commune. L'aéroport de Lyon-Saint-Exupéry se trouve à environ 35 km via la rocade est, et la gare de Lyon-Part-Dieu, hub TGV, à une douzaine de kilomètres. Cette accessibilité facilite nos déplacements sur site dans tout le sud lyonnais.",
+    "Saint-Genis-Laval est reliée au centre de Lyon par le tramway T2 et le prolongement du métro B vers les Hôpitaux Sud, plaçant la Part-Dieu à une vingtaine de minutes. L'A450 et le périphérique sud desservent directement la commune. L'aéroport de Lyon-Saint-Exupéry se trouve à environ 35 km via la rocade est, et la gare de Lyon-Part-Dieu, hub TGV, à une douzaine de kilomètres. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Saint-Genis-Laval est reliée au centre de Lyon par le tramway T2 et le prolongement du métro B vers les Hôpitaux Sud, plaçant la Part-Dieu à une vingtaine de minutes. L'A450 et le périphérique sud desservent directement la commune. L'aéroport de Lyon-Saint-Exupéry se trouve à environ 35 km via la rocade est, et la gare de Lyon-Part-Dieu, hub TGV, à une douzaine de kilomètres. Cette accessibilité facilite nos déplacements sur site dans tout le sud lyonnais.",
+    "Saint-Genis-Laval est reliée au centre de Lyon par le tramway T2 et le prolongement du métro B vers les Hôpitaux Sud, plaçant la Part-Dieu à une vingtaine de minutes. L'A450 et le périphérique sud desservent directement la commune. L'aéroport de Lyon-Saint-Exupéry se trouve à environ 35 km via la rocade est, et la gare de Lyon-Part-Dieu, hub TGV, à une douzaine de kilomètres. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Santé humaine et action sociale",
     "Recherche scientifique (Observatoire, campus)",
@@ -74,12 +74,12 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos échanges sur Sacuny : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations administratives. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native pour les entreprises de Sacuny : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations administratives. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée pour les données sensibles de santé et de recherche du sud lyonnais, puis mise en production sans interruption de service depuis nos points d'ancrage à l'Observatoire.",
+              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée pour les données sensibles de santé et de recherche du sud lyonnais, puis mise en production sans interruption de service.",
           },
           {
             step: "Livraison + autonomie",
@@ -160,12 +160,12 @@ export const SAINT_GENIS_LAVAL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos échanges sur Sacuny : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations administratives. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native pour les entreprises de Sacuny : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations administratives. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée pour les données sensibles de santé et de recherche du sud lyonnais, puis mise en production sans interruption de service depuis nos points d'ancrage à l'Observatoire.",
+              "Tests d'acceptation menés avec vos équipes, Web Vitals et SEO/AEO validés, conformité RGPD et AI Act vérifiée pour les données sensibles de santé et de recherche du sud lyonnais, puis mise en production sans interruption de service.",
           },
           {
             step: "Livraison + autonomie",

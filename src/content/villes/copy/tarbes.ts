@@ -18,9 +18,9 @@ export const TARBES_COPY: VilleCopy = {
   ecosystemEn:
     "Tarbes s'appuie sur un héritage industriel marqué par le site ferroviaire Alstom et l'ancien arsenal, qui ont façonné un savoir-faire mécanique durable. La filière aéronautique s'illustre par les activités de maintenance et de recyclage d'avions de Tarmac Aerosave sur l'aéroport voisin. L'agroalimentaire occupe une place de choix avec le haricot tarbais et les productions locales, tandis que la tradition équestre du haras national perdure. Un dense tissu de TPE artisanales, commerces et services complète cette économie pyrénéenne où l'IA peut soulager la gestion et fluidifier la relation client.",
   distancesFr:
-    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nos consultants se déplacent depuis Toulouse et Bordeaux.",
+    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nos consultants se déplacent depuis Toulouse et Bordeaux.",
+    "Aéroport de Tarbes-Lourdes-Pyrénées à 15 min, gare de Tarbes à 5 min, Pau à 45 min, Toulouse à 1h45 et Bordeaux à 2h30. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Construction et maintenance ferroviaire",
     "Aéronautique et recyclage d'avions",
@@ -230,7 +230,7 @@ export const TARBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tarbes et dans les Hautes-Pyrénées ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Tarbes, Lourdes, Bagnères-de-Bigorre et tout le département. Nos consultants se déplacent depuis Toulouse et Bordeaux pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Tarbes, Lourdes, Bagnères-de-Bigorre et tout le département. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants ferroviaires et aéronautiques ?",

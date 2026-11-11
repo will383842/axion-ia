@@ -49,7 +49,7 @@ export const RIORGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Riorges et Roannais Agglomération ?",
-      a: "Oui, Axion-IA intervient à Riorges et toute Roannais Agglomération (Roanne, Mably, Le Coteau, Villerest). Consultants depuis Lyon (1h30) ou Saint-Étienne (1h).",
+      a: "Oui, Axion-IA intervient à Riorges et toute Roannais Agglomération (Roanne, Mably, Le Coteau, Villerest). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME textile Roannais ?",
@@ -64,8 +64,8 @@ export const RIORGES_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Riorges, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Saint-Étienne (1h). Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Riorges ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Roanne). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

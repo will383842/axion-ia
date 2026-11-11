@@ -49,11 +49,11 @@ export const SAVENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Savenay et nord estuaire Loire ?",
-      a: "Oui, Axion-IA intervient à Savenay et tout le nord estuaire de la Loire (Campbon, Lavau-sur-Loire, Prinquiau, Pontchâteau). Nos consultants viennent de Nantes (20 min TER gare Savenay) ou Saint-Nazaire (15 min TER).",
+      a: "Oui, Axion-IA intervient à Savenay et tout le nord estuaire de la Loire (Campbon, Lavau-sur-Loire, Prinquiau, Pontchâteau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "La gare TGV de Savenay facilite-t-elle les missions ?",
-      a: "Oui, la gare TGV de Savenay permet à nos consultants de venir directement de Paris en 2h40 sans changement (ligne TGV Paris-Le Croisic). Idéal pour les missions nécessitant une expertise nationale rapide.",
+      a: "Oui, la gare TGV de Savenay facilite l'accès à la commune pour les rendez-vous sur site. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du bocage ?",

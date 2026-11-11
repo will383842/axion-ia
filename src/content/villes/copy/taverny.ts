@@ -55,7 +55,7 @@ export const TAVERNY_COPY: VilleCopy = {
         whyHere: [
           "Le cœur industriel de Taverny — Châtaigniers, Chêne Bocquet, Écouardes — est fait d'ateliers de mécanique de précision, de ressorts et de tôlerie (CGR, CIFR Industries, CFP Industries) qui vendent encore sur catalogue PDF et devis manuels : un site augmenté par l'IA qui chiffre une pièce à partir d'un plan ou d'un cahier des charges change leur cycle commercial.",
           "Ces sous-traitants travaillent en B2B avec donneurs d'ordre récurrents : nous construisons des portails clients/fournisseurs SaaS (suivi de commande, accusés de réception, PV de contrôle, relances) plutôt que de simples vitrines, car la valeur est dans le back-office, pas dans la home page.",
-          "Taverny est à 20 km de Paris (A15, A115, A86, Francilienne, RER C, ligne H) : un dirigeant de PME des Châtaigniers nous reçoit en atelier le matin et valide les maquettes l'après-midi, sans la friction d'un prestataire parisien hors-sol.",
+          "Taverny est desservie par l'A15, l'A115, l'A86, la Francilienne, le RER C et la ligne H : un dirigeant de PME des Châtaigniers nous reçoit en atelier, puis valide les maquettes au fil des itérations.",
           "Au-delà de l'industrie, la commune mêle commerce de proximité, négoce de poids lourds (IVECO « Le Poids Lourd 95 », Chêne Bocquet) et services liés au site de la base de défense Creil-Taverny : nous adaptons le SaaS à chaque modèle (e-commerce de pièces, prise de RDV atelier, espace documentaire).",
         ],
         methodology: [
@@ -141,7 +141,7 @@ export const TAVERNY_COPY: VilleCopy = {
         whyHere: [
           "Taverny's industrial core — Châtaigniers, Chêne Bocquet, Écouardes — is made of precision-engineering, spring and sheet-metal workshops (CGR, CIFR Industries, CFP Industries) still selling via PDF catalogues and manual quotes: an AI-augmented site that prices a part from a drawing or spec sheet transforms their sales cycle.",
           "These subcontractors work B2B with recurring principals: we build SaaS customer/supplier portals (order tracking, acknowledgements, quality reports, follow-ups) rather than plain showcases, because the value sits in the back-office, not the home page.",
-          "Taverny is 20 km from Paris (A15, A115, A86, Francilienne, RER C, line H): an SME owner in the Châtaigniers park welcomes us on the shop floor in the morning and signs off mock-ups in the afternoon, without the friction of a detached Paris agency.",
+          "Taverny is served by the A15, A115, A86, Francilienne, RER C and line H: an SME owner in the Châtaigniers park welcomes us on the shop floor, then signs off mock-ups as iterations progress.",
           "Beyond industry, the town mixes local retail, heavy-vehicle trade (IVECO 'Le Poids Lourd 95', Chêne Bocquet) and services tied to the Creil-Taverny defence base site: we tailor the SaaS to each model (parts e-commerce, workshop booking, document portal).",
         ],
         methodology: [
@@ -232,7 +232,7 @@ export const TAVERNY_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Taverny ?",
-      a: "Notre équipe se déplace à Taverny dans un délai de 5 jours ouvrés après validation. Taverny est accessible en 30 min depuis Paris-Nord (ligne Paris-Persan-Beaumont).",
+      a: "Notre équipe se déplace à Taverny dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Couvrez-vous les communes proches de Taverny ?",

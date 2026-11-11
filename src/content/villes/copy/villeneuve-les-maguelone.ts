@@ -49,7 +49,7 @@ export const VILLENEUVE_LES_MAGUELONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-lès-Maguelone ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-lès-Maguelone et sur tout le littoral montpelliérain (Palavas, Pérols, Lattes, Mireval). Nos consultants se déplacent depuis Montpellier en 15 min.",
+      a: "Oui, Axion-IA intervient à Villeneuve-lès-Maguelone et sur tout le littoral montpelliérain (Palavas, Pérols, Lattes, Mireval). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les domaines viticoles AOC Languedoc ?",

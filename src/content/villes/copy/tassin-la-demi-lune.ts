@@ -74,7 +74,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio pour valider chaque incrément.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio depuis Tassin pour valider chaque incrément.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous, espace client, e-commerce multi-CMS, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations de devis et relances. Démos hebdomadaires en visio pour valider chaque incrément.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const TASSIN_LA_DEMI_LUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tassin-la-Demi-Lune ?",
-      a: "Oui. Axion-IA se déplace à Tassin-la-Demi-Lune et dans tout l'ouest lyonnais (Écully, Charbonnières-les-Bains, Sainte-Foy-lès-Lyon, Francheville). Nos consultants interviennent sur site depuis Lyon centre en 15 min ou en visio.",
+      a: "Oui. Axion-IA se déplace à Tassin-la-Demi-Lune et dans tout l'ouest lyonnais (Écully, Charbonnières-les-Bains, Sainte-Foy-lès-Lyon, Francheville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales de Tassin ?",

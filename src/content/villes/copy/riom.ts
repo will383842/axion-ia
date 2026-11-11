@@ -64,7 +64,7 @@ export const RIOM_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont ?",
+      q: "Comment se déroule une mission à Riom ?",
       a: "Clermont (15 min). Aéroport Clermont à 10 min.",
     },
   ],

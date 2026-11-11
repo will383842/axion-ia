@@ -10,9 +10,9 @@ export const VILLEPARISIS_COPY: VilleCopy = {
   pitchEn:
     "Villeparisis (77270), commune de 26 946 habitants (2023) située au nord-ouest de la Seine-et-Marne, à la frontière du Val-d'Oise et de la Seine-Saint-Denis. Intégrée à la Communauté d'agglomération Roissy Pays de France, elle bénéficie d'une desserte RER B (gare Villeparisis - Mitry-le-Neuf) et d'une proximité directe avec l'aéroport Paris-Charles-de-Gaulle. Le tissu économique repose sur plusieurs parcs d'activité (ZAC de l'Ambrésis, zone Salengro) regroupant commerces, restauration, transports terrestres, construction et grandes enseignes. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Axion-IA accompagne TPE/PME et ETI locales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés (RER B direct depuis Paris, ou A104). Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés (RER B direct depuis Paris, ou A104). Conformité RGPD documentée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villeparisis (77270) et dans le bassin Roissy Pays de France. Nous accompagnons en priorité les TPE (artisans BTP, commerces, restauration, cabinets libéraux), PME logistique et transport (proximité CDG), ainsi que les ETI quand le besoin se présente. Code custom (Python, TypeScript, FastAPI), pas de no-code rigide. Audit sur place {{price:audit-flash|flat}}, Formation 4 h {{price:intervention-4h|flat}}, Implémentation et Coaching 1-to-1 dès {{price:intervention-dirigeants|flat}}. Déplacement consultant sous 5 jours ouvrés. Conformité RGPD documentée.",
   seoHook: "RER B, parcs d'activité & proximité CDG",
   ecosystemFr:
     "Villeparisis appartient à la Communauté d'agglomération Roissy Pays de France, structurée autour de l'aéroport Paris-Charles-de-Gaulle. Le tissu local concentre commerces (grandes enseignes en zones d'activité), restauration, transports terrestres (proximité plateforme CDG et A104), construction et BTP, professions libérales et PME services. Les principaux parcs d'activité — ZAC de l'Ambrésis et zone Salengro — accueillent entreprises de logistique, distribution et services. Les bus Roissy Est et Apolo 7 complètent la desserte RER B. Communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France (siège de l'aéroport CDG).",
@@ -228,7 +228,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeparisis et dans les communes limitrophes ?",
-      a: "Oui. Nous intervenons à Villeparisis (77270) et dans les communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France. Accès depuis Paris via RER B (35 min Gare du Nord) ou A104.",
+      a: "Oui. Nous intervenons à Villeparisis (77270) et dans les communes limitrophes : Mitry-Mory, Claye-Souilly, Courtry, Le Pin, Vaujours et Tremblay-en-France.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villeparisis ?",
@@ -236,7 +236,7 @@ export const VILLEPARISIS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Villeparisis ?",
-      a: "Déplacement de nos consultants sous 5 jours ouvrés. Pour les TPE/PME pressées (commerce, restaurant, logistique CDG), audit visio sous 48 h. RER B direct évite les contraintes de stationnement.",
+      a: "Déplacement de nos consultants sous 5 jours ouvrés. Pour les TPE/PME pressées (commerce, restaurant, logistique CDG), audit visio sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD pour les données traitées à Villeparisis ?",

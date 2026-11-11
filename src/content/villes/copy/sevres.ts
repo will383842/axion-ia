@@ -231,7 +231,7 @@ export const SEVRES_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Sèvres ?",
-      a: "Nous nous déplaçons à Sèvres sous 5 jours ouvrés en moyenne. Le Transilien (Montparnasse en 15 min), le tramway T2 et la ligne 9 du métro à Pont de Sèvres facilitent l'accès depuis Paris ou la province.",
+      a: "Nous nous déplaçons à Sèvres sous 5 jours ouvrés en moyenne. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi à Boulogne-Billancourt, Meudon ou Saint-Cloud ?",
