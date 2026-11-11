@@ -16,9 +16,17 @@
 //      par « dans les prochaines heures ». Cela lève, pour ce message, la règle
 //      du 2026-08-23 (« aucun délai de réponse promis ») — décision explicite de
 //      Will, qui répond lui-même.
-//   3. L'échange proposé dure 15 minutes (et non « 15 à 30 »). Le lien de
-//      réservation n'est PAS ici : Will l'envoie à qui il choisit, depuis la
-//      console (`apporteur-invitation-appel`).
+//   3. L'échange proposé dure 15 minutes (et non « 15 à 30 »).
+//
+// 🔴 2026-11-11 — décision de Williams, qui REMPLACE B5 (19/09, « pas de lien de
+// réservation distribué à tous ») pour ce message : l'invitation annoncée
+// n'arrivait pas. Le bouton de ce message EST désormais l'invitation —
+// « Réserver votre échange de 15 minutes » — et il mène à NOTRE page de
+// réservation (`/fr/appel/apporteur`), où la personne choisit son créneau
+// Calendly. Le lien vient de `lienDuSite("apporteur")`, la seule source des
+// liens de rendez-vous écrits dans un e-mail : aucune adresse en dur ici, et
+// aucune variable d'environnement n'est nécessaire à l'envoi.
+// Toujours aucun délai promis, et aucune promesse de réponse.
 //
 // Le nom de fichier et la clé `candidature-commercial-confirmee` sont conservés :
 // ils figurent dans l'historique des envois (`EmailLog.template`).
@@ -27,7 +35,10 @@ import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { BlocKitApporteur } from "./_kit-apporteur";
 import type { Locale } from "../../../../prisma/generated/client";
-import { liensKitApporteur } from "@/lib/commercial-application/kit-apporteur";
+import { lienDuSite } from "@/lib/calendly/lien-du-site";
+
+/** Emplacement du bouton, mesuré en `depuis` sur la page de réservation. */
+export const DEPUIS_CONFIRMATION_DOSSIER = "email-confirmation-apporteur";
 
 interface Payload {
   /** Prénom du candidat (seul le premier mot est dit). */
@@ -39,24 +50,24 @@ const COPY = {
   fr: {
     title: "Nous avons bien reçu votre candidature",
     preview:
-      "Votre dossier est bien arrivé. En attendant : le catalogue de ce que vous pourrez recommander.",
+      "Votre dossier est bien arrivé. Prochaine étape : réservez votre échange de 15 minutes en visio.",
     intro: (n: string) => (n ? `Bonjour ${n},` : "Bonjour,"),
     body: "Merci d'avoir pris ces quelques minutes : votre candidature pour rejoindre le réseau d'apporteurs d'affaires d'Axion-IA est bien arrivée, et elle sera lue avec attention — c'est promis, pas par un robot.",
-    // 11/11/2026, Williams : on ne promet PAS de répondre à toutes les candidatures, ni de délai.
-    next: "Si votre profil correspond, nous vous proposerons un échange de 15 minutes en visio pour faire connaissance.",
-    spam: "Pensez à vérifier vos spams si vous n'avez pas de nouvelles : nos emails s'y égarent parfois.",
-    cta: "Voir le catalogue des prestations",
+    // 11/11/2026, Williams : ni délai, ni promesse de réponse — la personne
+    // choisit elle-même son créneau, avec le bouton du message.
+    next: "Prochaine étape : un échange de 15 minutes en visio pour faire connaissance, sans engagement. Choisissez vous-même le créneau qui vous arrange avec le bouton ci-dessous.",
+    spam: "Pensez à vérifier vos spams : nos emails s'y égarent parfois.",
+    cta: "Réserver votre échange de 15 minutes",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "We received your application",
-    preview:
-      "Your file has arrived. Meanwhile: the catalogue of what you will be able to recommend.",
+    preview: "Your file has arrived. Next step: book your 15-minute video call.",
     intro: (n: string) => (n ? `Hello ${n},` : "Hello,"),
     body: "Thanks for taking a few minutes: your application to join Axion-IA's network of business introducers has arrived, and it will be read carefully — by a human, promise.",
-    next: "If your profile is a match, we will offer you a 15-minute video call to get acquainted.",
-    spam: "Check your spam folder if you do not hear from us: our emails sometimes end up there.",
-    cta: "See our catalogue of services",
+    next: "Next step: a 15-minute video call to get acquainted, with no commitment. Pick the time that suits you with the button below.",
+    spam: "Check your spam folder: our emails sometimes end up there.",
+    cta: "Book your 15-minute call",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
@@ -82,7 +93,10 @@ export function CandidatureCommercialConfirmeeEmail({
       famille="B"
       preview={t.preview}
       title={t.title}
-      cta={{ label: t.cta, href: liensKitApporteur(locale).catalogueUrl }}
+      cta={{
+        label: t.cta,
+        href: lienDuSite("apporteur", { locale, depuis: DEPUIS_CONFIRMATION_DOSSIER }),
+      }}
       locale={locale}
       sansReseauxSociaux
     >

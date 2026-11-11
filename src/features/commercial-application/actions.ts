@@ -132,8 +132,6 @@ function internalRecipient(): string {
  */
 const SEUIL_ALERTE_VOLUME_JOUR = 25;
 
-const oui = (v: boolean) => (v ? "Oui" : "Non");
-
 /** « mars 2019 → aujourd'hui » pour une expérience. */
 function periodeOf(e: CommercialApplicationInput["experiences"][number]): string {
   const fin = e.posteActuel ? "aujourd'hui" : formatMoisAnnee(e.fin);
@@ -196,7 +194,6 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
         ]
       : []),
     { label: "Disponibilité", value: formatMoisAnnee(d.disponibilite) },
-    { label: "Permis + véhicule", value: oui(d.permisVehicule) },
     ...(d.statut ? [{ label: "Statut actuel", value: optionLabel(STATUT_OPTIONS, d.statut) }] : []),
     ...(d.linkedin ? [{ label: "LinkedIn", value: d.linkedin }] : []),
     ...(d.sourceConnaissance
@@ -398,7 +395,6 @@ export async function submitCommercialApplicationAction(
             pitch: d.pitch,
             ...(d.messageLibre ? { messageLibre: d.messageLibre } : {}),
             disponibilite: d.disponibilite,
-            permisVehicule: d.permisVehicule,
             ...(d.statut ? { statut: d.statut } : {}),
             ...(d.linkedin ? { linkedin: d.linkedin } : {}),
             ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),

@@ -203,9 +203,6 @@ export function CandidatureCommercialeDetail({
               value={formatMoisAnnee(asString(c.disponibilite) as string)}
             />
           ) : null}
-          {asBool(c.permisVehicule) !== null ? (
-            <Row label="Permis + véhicule" value={asBool(c.permisVehicule) ? "Oui" : "Non"} />
-          ) : null}
           {asString(c.statut) ? (
             <Row label="Statut" value={optionLabel(STATUT_OPTIONS, asString(c.statut) as string)} />
           ) : null}
