@@ -712,10 +712,10 @@ const TXT = {
     /*
      * Registre revu le 2026-09-01. L'ancienne ligne énumérait cinq prestations
      * à plat — un menu de prestataire, pas le positionnement d'un cabinet. Face
-     * à un acheteur d'ETI ou de grand groupe, une liste de services suggère
+     * à un dirigeant de PME, une liste de services suggère
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
-    tagline: "Cabinet IA pour entreprises — TPE, PME, ETI et grands groupes",
+    tagline: "Le partenaire IA de bout en bout des PME",
     reviewsWord: "avis clients",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
@@ -746,7 +746,7 @@ const TXT = {
     signaturePositionnement:
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
     signatureServices:
-      "Audit IA · Implémentation de systèmes automatisés · Formation finançable OPCO · Coaching 1-to-1",
+      "Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -765,7 +765,7 @@ const TXT = {
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
   },
   en: {
-    tagline: "AI consultancy for mid-market and enterprise",
+    tagline: "The end-to-end AI partner for SMEs",
     reviewsWord: "client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
@@ -782,8 +782,7 @@ const TXT = {
     signatureEquipe: "The Axion-IA team",
     signaturePositionnement:
       "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
-    signatureServices:
-      "AI audit · Automated systems implementation · OPCO-fundable training · 1-to-1 coaching",
+    signatureServices: "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,

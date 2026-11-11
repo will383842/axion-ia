@@ -5,14 +5,13 @@
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { SERVICE_BY_ID } from "@/content/services";
+import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   AUDIT_TIERS,
   CODAGE_TIERS,
   IMPLEMENTATION_TIERS,
   getFormationCatalogPriceRange,
   UN_A_UN_TIERS,
-  JOURNEE_IA_TIER,
-  formatTierPrice,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
@@ -123,9 +122,9 @@ Autour de lui, Axion-IA réunit des ingénieurs et experts IA sélectionnés par
 Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
 Profil professionnel vérifiable : ${FOUNDER.linkedin}
 
-## Offre phare — La Journée IA
+## Offre phare : La Journée IA
 
-Une journée dans l'entreprise pour mettre l'IA au travail avec l'équipe : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, prix ferme. C'est le seul tarif publié ; les autres prestations sont sur devis.
+${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
 URL : ${SITE_URL}/fr/journee-ia
 
 ## 5 modules

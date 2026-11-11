@@ -81,9 +81,14 @@ import {
   POUR_QUI,
   TUNNEL_FACEBOOK_META,
 } from "@/content/recrutement/tunnel-facebook";
+import {
+  COMMISSIONS_PUBLIQUES_AFFICHEES,
+  COMMISSION_QUALITATIVE,
+} from "@/content/recrutement/commission-publique";
 import { TUNNEL_FACEBOOK_PATH } from "@/lib/commercial-application/lead-apporteur";
 import { TunnelFacebookShell } from "./TunnelFacebookShell";
 import { LeadApporteurForm } from "./LeadApporteurForm";
+import { CommissionQualitative } from "./CommissionQualitative";
 
 /**
  * Mentions AFFIRMANT la certification — servies UNIQUEMENT sous
@@ -234,7 +239,10 @@ export async function FacebookLandingPage({ params }: Props) {
     {
       id: "gains",
       question: "Combien ça rapporte ?",
-      answer: `À titre indicatif, jusqu'à ${commission(1)} par journée de formation vendue et encaissée, selon la grille en vigueur. Sur un audit, jusqu'à ${pctAudit} % de la facture. Exemples de calcul, pas une promesse : tout dépend des ventes réellement payées.`,
+      // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+      answer: COMMISSIONS_PUBLIQUES_AFFICHEES
+        ? `À titre indicatif, jusqu'à ${commission(1)} par journée de formation vendue et encaissée, selon la grille en vigueur. Sur un audit, jusqu'à ${pctAudit} % de la facture. Exemples de calcul, pas une promesse : tout dépend des ventes réellement payées.`
+        : COMMISSION_QUALITATIVE.faq,
     },
     {
       id: "ia",
@@ -313,15 +321,25 @@ export async function FacebookLandingPage({ params }: Props) {
                 « À titre indicatif » À CÔTÉ du chiffre, à deux lignes au plus.
                 Voir l'en-tête de `tunnel-facebook.ts`. */}
             <div className="bg-ink mt-6 rounded-2xl px-5 py-5 sm:px-7 sm:py-6">
-              <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-                <span className="text-mocha-fg-muted basis-full text-sm">À titre indicatif</span>
-                <span className="text-mocha-fg text-[clamp(2.75rem,11vw,4rem)] leading-none font-bold tracking-tight tabular-nums">
-                  {montantJournee}
-                </span>
-                <span className="text-terracotta-on-mocha text-lg font-semibold sm:text-xl">
-                  {HERO.montantLegende}
-                </span>
-              </p>
+              {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+                <p className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                  <span className="text-mocha-fg-muted basis-full text-sm">À titre indicatif</span>
+                  <span className="text-mocha-fg text-[clamp(2.75rem,11vw,4rem)] leading-none font-bold tracking-tight tabular-nums">
+                    {montantJournee}
+                  </span>
+                  <span className="text-terracotta-on-mocha text-lg font-semibold sm:text-xl">
+                    {HERO.montantLegende}
+                  </span>
+                </p>
+              ) : (
+                // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+                <p className="text-mocha-fg text-2xl leading-snug font-bold tracking-tight sm:text-3xl">
+                  {COMMISSION_QUALITATIVE.titre}
+                  <span className="text-terracotta-on-mocha mt-1 block text-base font-semibold sm:text-lg">
+                    détaillée dans votre contrat d&apos;apporteur
+                  </span>
+                </p>
+              )}
               <p className="text-mocha-fg-muted mt-3 text-sm sm:text-base">{HERO.montantSous}</p>
             </div>
 
@@ -441,48 +459,56 @@ export async function FacebookLandingPage({ params }: Props) {
       <Section
         tone="sand"
         eyebrow="Combien"
-        title="Des exemples de calcul,"
+        title={COMMISSIONS_PUBLIQUES_AFFICHEES ? "Des exemples de calcul," : "Une commission,"}
         titleEm="pas une promesse."
         className="py-10 sm:py-14 lg:py-16"
       >
-        <div className="mt-8 grid gap-5 sm:grid-cols-2">
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
-              jusqu&apos;à {commission(1)}
-              <span className="text-fg-muted block font-sans text-sm font-medium">
-                pour vous, à titre indicatif, par journée vendue
-              </span>
+        {COMMISSIONS_PUBLIQUES_AFFICHEES ? (
+          <>
+            <div className="mt-8 grid gap-5 sm:grid-cols-2">
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Une formation IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  jusqu&apos;à {commission(1)}
+                  <span className="text-fg-muted block font-sans text-sm font-medium">
+                    pour vous, à titre indicatif, par journée vendue
+                  </span>
+                </p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>À titre indicatif, 2 journées : jusqu&apos;à {commission(2)}</li>
+                  <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
+                  {certifie ? (
+                    <li>
+                      Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses
+                      critères
+                    </li>
+                  ) : null}
+                </ul>
+              </article>
+              <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
+                <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
+                <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
+                  jusqu&apos;à {pctAudit} %
+                </p>
+                <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
+                <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
+                  <li>
+                    Le plus petit audit démarre à {euros(auditTpe)} HT, soit jusqu&apos;à{" "}
+                    {euros(commissionAuditTpe)} pour vous
+                  </li>
+                  <li>Payé à l&apos;encaissement</li>
+                </ul>
+              </article>
+            </div>
+            <p className="text-fg-muted mt-5 text-sm">
+              Grille en vigueur, précisée dans votre contrat. Rien n&apos;est garanti : tout dépend
+              des ventes réellement payées.
             </p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>À titre indicatif, 2 journées : jusqu&apos;à {commission(2)}</li>
-              <li>De 3 journées : jusqu&apos;à {commission(3)}</li>
-              {certifie ? (
-                <li>
-                  Peut être prise en charge par l&apos;OPCO de l&apos;entreprise, selon ses critères
-                </li>
-              ) : null}
-            </ul>
-          </article>
-          <article className="bg-paper border-border rounded-2xl border p-6 sm:p-7">
-            <h3 className="text-fg font-serif text-xl font-semibold">Un audit IA</h3>
-            <p className="text-terracotta mt-3 font-serif text-3xl font-semibold">
-              jusqu&apos;à {pctAudit} %
-            </p>
-            <p className="text-fg-muted text-sm font-medium">de la facture, pour vous</p>
-            <ul className="text-fg-soft mt-4 space-y-1.5 text-sm">
-              <li>
-                Le plus petit audit démarre à {euros(auditTpe)} HT, soit jusqu&apos;à{" "}
-                {euros(commissionAuditTpe)} pour vous
-              </li>
-              <li>Payé à l&apos;encaissement</li>
-            </ul>
-          </article>
-        </div>
-        <p className="text-fg-muted mt-5 text-sm">
-          Grille en vigueur, précisée dans votre contrat. Rien n&apos;est garanti : tout dépend des
-          ventes réellement payées.
-        </p>
+          </>
+        ) : (
+          // R7 (08/11/2026) : aucun montant ni taux au public (`commission-publique.ts`).
+          <CommissionQualitative />
+        )}
         <div className="mt-7">
           <CtaFormulaire track="facebook-montants-cta" placement="montants" />
         </div>

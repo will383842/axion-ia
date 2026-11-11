@@ -5,6 +5,7 @@ import {
   isQualiopiPublicDisclosureEnabled,
   isQualiopiCertificationObtenue,
 } from "@/server/qualiopi/config/flag";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import {
   isRoutableArticleSlug,
@@ -740,7 +741,9 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       continue;
     // Catalogue : redirige vers /fr/formations tant que la certification n'est
     // pas délivrée (feuilletoir avec logo Qualiopi, 2026-10-14) → hors sitemap.
+    // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
+    if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
     // Page financement OPCO/France Travail : Phase-B only (mentions financement
     // interdites avant l'agrément OF) → hors sitemap en Phase A.
     if (
