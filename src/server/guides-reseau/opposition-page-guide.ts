@@ -54,7 +54,11 @@ export async function recevoirOppositionPage(e: EntreeSignee): Promise<Response>
   const analyse = SchemaOppositionPage.safeParse(brut);
   if (!analyse.success) {
     const inconnu = analyse.error.issues.some((i) => i.code === "unrecognized_keys");
-    return reponseJson(422, { ok: false, erreur: inconnu ? "unknown_field" : "schema_invalide", champs: champsFautifs(analyse.error) });
+    return reponseJson(422, {
+      ok: false,
+      erreur: inconnu ? "unknown_field" : "schema_invalide",
+      champs: champsFautifs(analyse.error),
+    });
   }
   const d = analyse.data;
 
@@ -69,7 +73,9 @@ export async function recevoirOppositionPage(e: EntreeSignee): Promise<Response>
     for (const c of contacts) if (c.guideRequest?.email) adresses.add(c.guideRequest.email);
     // L'opposition d'abord, pour chaque adresse : écartée ET CRM prévenu, sinon 500 (le contact reste intact).
     for (const adresse of adresses) {
-      const r = await enregistrerOppositionPourAdresse(adresse, { origine: ORIGINE_OPPOSITION_RESEAU_STOP });
+      const r = await enregistrerOppositionPourAdresse(adresse, {
+        origine: ORIGINE_OPPOSITION_RESEAU_STOP,
+      });
       if (!r.ok || !r.crmAverti) return reponseJson(500, { ok: false, erreur: "erreur_interne" });
     }
     if (contacts.length > 0) {
@@ -81,14 +87,22 @@ export async function recevoirOppositionPage(e: EntreeSignee): Promise<Response>
     }
   } catch (err) {
     try {
-      Sentry.captureException({ name: err instanceof Error ? err.name : "erreur" }, { tags: { area: "guides-reseau", action: "recevoirOppositionPage" } });
+      Sentry.captureException(
+        { name: err instanceof Error ? err.name : "erreur" },
+        { tags: { area: "guides-reseau", action: "recevoirOppositionPage" } },
+      );
     } catch {
       /* l'observabilité ne casse jamais la réponse */
     }
-    console.error("[guides-reseau] opposition (page) en échec :", err instanceof Error ? err.name : "erreur");
+    console.error(
+      "[guides-reseau] opposition (page) en échec :",
+      err instanceof Error ? err.name : "erreur",
+    );
     return reponseJson(500, { ok: false, erreur: "erreur_interne" });
   }
 
-  console.warn(JSON.stringify({ event: "guides_reseau_opposition_page", reseau: d.reseau, motif: "stop" }));
+  console.warn(
+    JSON.stringify({ event: "guides_reseau_opposition_page", reseau: d.reseau, motif: "stop" }),
+  );
   return reponseJson(200, REPONSE_OK);
 }

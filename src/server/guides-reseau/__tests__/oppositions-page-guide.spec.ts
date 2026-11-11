@@ -21,20 +21,41 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     contactGuideReseau: {
       findMany: async ({ where }: { where: { convRef: string } }) =>
-        bd.contacts.filter((c) => c.convRef === where.convRef).map((c) => ({ id: c.id, emailKey: c.emailKey, guideRequest: c.email ? { email: c.email } : null })),
-      updateMany: async ({ where, data }: { where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } }; data: Ligne }) => {
+        bd.contacts
+          .filter((c) => c.convRef === where.convRef)
+          .map((c) => ({
+            id: c.id,
+            emailKey: c.emailKey,
+            guideRequest: c.email ? { email: c.email } : null,
+          })),
+      updateMany: async ({
+        where,
+        data,
+      }: {
+        where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } };
+        data: Ligne;
+      }) => {
         const cibles = bd.contacts.filter(
-          (c) => (where.emailKey === undefined || c.emailKey === where.emailKey) && (where.convRef === undefined || c.convRef === where.convRef) && !where.merciStatut.notIn.includes(String(c.merciStatut)),
+          (c) =>
+            (where.emailKey === undefined || c.emailKey === where.emailKey) &&
+            (where.convRef === undefined || c.convRef === where.convRef) &&
+            !where.merciStatut.notIn.includes(String(c.merciStatut)),
         );
         for (const c of cibles) Object.assign(c, data);
         return { count: cibles.length };
       },
-      delete: async () => { bd.suppressions++; },
-      deleteMany: async () => { bd.suppressions++; },
+      delete: async () => {
+        bd.suppressions++;
+      },
+      deleteMany: async () => {
+        bd.suppressions++;
+      },
     },
   },
 }));
-vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: !bd.limiteRefusee }) }));
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: async () => ({ allowed: !bd.limiteRefusee }),
+}));
 vi.mock("@/server/email/opposition", () => ({
   enregistrerOppositionPourAdresse: async (email: string) => {
     if (bd.opposition.ok) bd.adressesOpposees.push(email);
@@ -52,16 +73,50 @@ const SECRET = "g".repeat(40);
 const CHEMIN = "/api/interne/oppositions-page-guide";
 const CONV = "c1_AbCdEf0123456789_-xyZQ";
 const ADRESSE = "personne.secrete@exemple.test";
-const valide = { schemaVersion: 1, cleIdempotence: "run_page_stop_0001", conv: CONV, reseau: "instagram", occurredAt: "2026-11-11T10:00:00.000Z" };
+const valide = {
+  schemaVersion: 1,
+  cleIdempotence: "run_page_stop_0001",
+  conv: CONV,
+  reseau: "instagram",
+  occurredAt: "2026-11-11T10:00:00.000Z",
+};
 
-function appel(corps: unknown = valide, opt: { secret?: string; brut?: string; chemin?: string } = {}): Promise<Response> {
+function appel(
+  corps: unknown = valide,
+  opt: { secret?: string; brut?: string; chemin?: string } = {},
+): Promise<Response> {
   const texte = opt.brut ?? JSON.stringify(corps);
   const nonce = crypto.randomBytes(16).toString("hex");
   const horodatage = String(Math.floor(Date.now() / 1000));
-  const signature = signerRequete({ secret: opt.secret ?? SECRET, horodatage, nonce, methode: "POST", chemin: opt.chemin ?? CHEMIN, corps: texte });
-  return POST(new NextRequest(`http://localhost${CHEMIN}`, { method: "POST", headers: { "content-type": "application/json", "x-axion-horodatage": horodatage, "x-axion-nonce": nonce, "x-axion-signature": signature }, body: texte }));
+  const signature = signerRequete({
+    secret: opt.secret ?? SECRET,
+    horodatage,
+    nonce,
+    methode: "POST",
+    chemin: opt.chemin ?? CHEMIN,
+    corps: texte,
+  });
+  return POST(
+    new NextRequest(`http://localhost${CHEMIN}`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-axion-horodatage": horodatage,
+        "x-axion-nonce": nonce,
+        "x-axion-signature": signature,
+      },
+      body: texte,
+    }),
+  );
 }
-const contact = (o: Ligne = {}): Ligne => ({ id: "k1", emailKey: hashEmailForLookup(ADRESSE), email: ADRESSE, convRef: hmacConversationRef(CONV), merciStatut: "a_envoyer", ...o });
+const contact = (o: Ligne = {}): Ligne => ({
+  id: "k1",
+  emailKey: hashEmailForLookup(ADRESSE),
+  email: ADRESSE,
+  convRef: hmacConversationRef(CONV),
+  merciStatut: "a_envoyer",
+  ...o,
+});
 
 const sorties: string[] = [];
 beforeEach(() => {
@@ -74,7 +129,9 @@ beforeEach(() => {
   delete process.env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT;
   delete process.env.VIDEOS_STUDIO_HMAC_SECRET;
   for (const m of ["log", "info", "warn", "error", "debug"] as const) {
-    vi.spyOn(console, m).mockImplementation((...a: unknown[]) => { sorties.push(a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" ")); });
+    vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
+      sorties.push(a.map((x) => (typeof x === "string" ? x : JSON.stringify(x))).join(" "));
+    });
   }
 });
 afterEach(() => {
@@ -114,7 +171,10 @@ describe("authentification et interrupteur", () => {
 describe("corps strict", () => {
   it.each([
     ["adresse en plus", { ...valide, email: ADRESSE }],
-    ["conv absente", { schemaVersion: 1, cleIdempotence: valide.cleIdempotence, reseau: "instagram" }],
+    [
+      "conv absente",
+      { schemaVersion: 1, cleIdempotence: valide.cleIdempotence, reseau: "instagram" },
+    ],
     ["conv mal formée", { ...valide, conv: "c1_court" }],
     ["conv sans préfixe", { ...valide, conv: "AbCdEf0123456789_-xyZQ" }],
     ["version inconnue", { ...valide, schemaVersion: 2 }],
