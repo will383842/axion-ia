@@ -61,11 +61,11 @@ export const SAINT_ALBAN_LEYSSE_COPY: VilleCopy = {
     },
     {
       q: "Tarifs audit IA à Saint-Alban-Leysse  : quel budget prévoir ?",
-      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Déplacement depuis Chambéry inclus (5 min).",
+      a: "L'audit sur place Axion-IA démarre à {{price:audit-flash|flat}} pour une TPE à Saint-Alban-Leysse. Diagnostic complet en une journée : cartographie processus automatisables, ROI chiffré, feuille de route IA priorisée. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment se déroule une mission IA à Saint-Alban-Leysse ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, le planning est convenu avec vous.",
     },
   ],
 };

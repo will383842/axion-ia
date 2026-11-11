@@ -231,7 +231,7 @@ export const SAINT_BRIEUC_COPY: VilleCopy = {
     },
     {
       q: "Comment Axion-IA se déplace-t-il à Saint-Brieuc ?",
-      a: "Nous venons par TGV (environ 2h37 depuis Paris sur la ligne Paris–Brest), par avion à l'aéroport Saint-Brieuc Armor (Trémuson, 12 km) ou en voiture via la RN 12 (E50).",
+      a: "Le site est accessible par TGV, par avion à l'aéroport Saint-Brieuc Armor (Trémuson, 12 km) ou en voiture via la RN 12 (E50).",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Saint-Brieuc ?",

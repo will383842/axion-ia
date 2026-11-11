@@ -9,9 +9,9 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   pitchEn:
     "Saint-Georges-d'Orques (34, Hérault), commune viticole et résidentielle de 5 676 habitants (2023), située à 8 km à l'ouest de Montpellier. AOC Languedoc-Saint-Georges-d'Orques, l'un des plus anciens crus du Languedoc, exporté en Europe dès le Moyen Âge et apprécié de Thomas Jefferson. Tissu de TPE commerçants, artisans BTP (23,1 % des établissements), professions libérales, et PME viticoles. Axion-IA y accompagne le tissu professionnel local.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 10 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et une intervention partout en France, sur place ou à distance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et des consultants qui se déplacent depuis Montpellier en 10 min.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Georges-d'Orques (34). Nous accompagnons en priorité les TPE commerçants de proximité, artisans BTP et professions libérales, puis les PME viticoles AOC Saint-Georges-d'Orques et acteurs de l'œnotourisme, avec des tarifs publics dès {{price:audit-flash|flat}} et une intervention partout en France, sur place ou à distance.",
   ecosystemFr:
     "Saint-Georges-d'Orques est une commune de Montpellier Méditerranée Métropole en croissance (+5,17 % depuis 2017). L'AOC Languedoc-Saint-Georges-d'Orques compte parmi les plus anciens crus du Languedoc, déjà cité au XVIIIe siècle. Le tissu économique compte 610 établissements, dominés par la construction (23,1 %, le double de la moyenne départementale), le commerce de proximité et les professions libérales. Traditions camarguaises (arènes), tambourin (six titres nationaux entre 1965 et 1973). Garrigue, cadre résidentiel prisé.",
   ecosystemEn:
@@ -49,7 +49,7 @@ export const SAINT_GEORGES_D_ORQUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Georges-d'Orques et dans quelles communes proches ?",
-      a: "Oui, Axion-IA intervient à Saint-Georges-d'Orques et dans les communes limitrophes : Pignan, Lavérune, Juvignac, Grabels, Murviel-lès-Montpellier, Montarnaud. Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient à Saint-Georges-d'Orques et dans les communes limitrophes : Pignan, Lavérune, Juvignac, Grabels, Murviel-lès-Montpellier, Montarnaud. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission IA à Saint-Georges-d'Orques ?",

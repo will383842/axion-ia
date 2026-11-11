@@ -49,7 +49,7 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trith-Saint-Léger et Valenciennes Métropole ?",
-      a: "Oui, Axion-IA intervient à Trith-Saint-Léger et toute l'agglomération valenciennoise (Valenciennes, Anzin, Denain, Onnaing). Consultants depuis Lille (45 min).",
+      a: "Oui, Axion-IA intervient à Trith-Saint-Léger et toute l'agglomération valenciennoise (Valenciennes, Anzin, Denain, Onnaing). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles métallurgie-mécanique ?",
@@ -64,8 +64,8 @@ export const TRITH_SAINT_LEGER_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Trith-Saint-Léger, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation clients.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (45 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Trith-Saint-Léger ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

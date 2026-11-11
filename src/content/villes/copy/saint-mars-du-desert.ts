@@ -49,7 +49,7 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Mars-du-Désert et nord-est Nantes ?",
-      a: "Oui, Axion-IA intervient à Saint-Mars-du-Désert et tout le nord-est nantais (Carquefou, Petit-Mars, Sucé-sur-Erdre, Ligné). Consultants depuis Nantes centre (20 min). Couverture complète nord-est Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Saint-Mars-du-Désert et tout le nord-est nantais (Carquefou, Petit-Mars, Sucé-sur-Erdre, Ligné). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord-est Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires du nord-est nantais ?",
@@ -64,8 +64,8 @@ export const SAINT_MARS_DU_DESERT_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord-est nantais.",
     },
     {
-      q: "Comment se déroule une mission depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      q: "Comment se déroule une mission à Saint-Mars-du-Désert ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

@@ -34,8 +34,8 @@ export const TOURVES_COPY: VilleCopy = {
       en: "Audit IA à Tourves : diagnostic adapté aux TPE artisans, PME viticoles, exploitations agricoles, oléiculteurs et commerces du Centre-Var. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Tourves : ateliers pour équipes TPE/PME, vignerons, agriculteurs, oléiculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
-      en: "Interventions IA sur site à Tourves : ateliers pour équipes TPE/PME, vignerons, agriculteurs, oléiculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Brignoles.",
+      fr: "Interventions IA sur site à Tourves : ateliers pour équipes TPE/PME, vignerons, agriculteurs, oléiculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Tourves : ateliers pour équipes TPE/PME, vignerons, agriculteurs, oléiculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Tourves : automatisation gestion vignobles et traçabilité AOP, e-commerce caveaux et moulins à huile, devis BTP artisans, content marketing oenotourisme, agents conversationnels SAV. RGPD strict.",
@@ -64,8 +64,8 @@ export const TOURVES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Tourves ?",
-      a: "Tourves est à 10 min de Brignoles et 15 min de Saint-Maximin via A8. Nos consultants se déplacent dans vos locaux ou domaines.",
+      q: "Comment se passe une intervention à Tourves ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux ou domaines. Tourves est à 10 min de Brignoles et 15 min de Saint-Maximin via A8.",
     },
   ],
 };

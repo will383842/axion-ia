@@ -65,7 +65,7 @@ export const SAINT_PRYVE_SAINT_MESMIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Pryvé-Saint-Mesmin ?",
-      a: "Nos consultants se déplacent facilement : Saint-Pryvé est à 10 min d'Orléans centre. Gare Orléans desservie par TER et Intercités (Paris-Austerlitz en 1h10).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Pryvé est à 10 min d'Orléans centre, dont la gare est desservie par TER et Intercités.",
     },
   ],
 };

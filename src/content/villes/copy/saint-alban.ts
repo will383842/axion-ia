@@ -49,7 +49,7 @@ export const SAINT_ALBAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Alban ?",
-      a: "Oui, Axion-IA intervient à Saint-Alban et dans tout le nord de Toulouse (Launaguet, L'Union, Aucamville). Nos consultants se déplacent en 12 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Saint-Alban et dans tout le nord de Toulouse (Launaguet, L'Union, Aucamville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Alban ?",
@@ -61,7 +61,7 @@ export const SAINT_ALBAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Alban ?",
-      a: "Nos consultants se déplacent à Saint-Alban depuis Toulouse (12 min D4). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Saint-Alban ?",

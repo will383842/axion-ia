@@ -49,7 +49,7 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Pierre-en-Faucigny ?",
-      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Faucigny et dans tout le Faucigny (Bonneville, Contamine-sur-Arve, Vougy, Ayze, Marignier). Nos consultants se déplacent depuis Annecy (30 min) ou Genève (35 min).",
+      a: "Oui, Axion-IA intervient à Saint-Pierre-en-Faucigny et dans tout le Faucigny (Bonneville, Contamine-sur-Arve, Vougy, Ayze, Marignier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Faucigny ?",
@@ -64,8 +64,8 @@ export const SAINT_PIERRE_EN_FAUCIGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP à Saint-Pierre-en-Faucigny sur des cas IA pratiques : automatisation devis chantier, agents IA prise de RDV, classification photos chantier, gestion planning équipes et suivi de chantier.",
     },
     {
-      q: "Comment se déroule une mission depuis Annecy ou Genève ?",
-      a: "Nos consultants se déplacent dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce). Annecy à 30 min, Genève à 35 min.",
+      q: "Comment se déroule une mission à Saint-Pierre-en-Faucigny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance : dans vos locaux à Saint-Pierre-en-Faucigny (atelier, chantier, commerce) ou en visio.",
     },
   ],
 };

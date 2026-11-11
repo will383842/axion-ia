@@ -49,7 +49,7 @@ export const USSEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ussel et en haute Corrèze ?",
-      a: "Oui, Axion-IA intervient à Ussel et dans toute la haute Corrèze (Égletons, Meymac, Bort-les-Orgues). Gare SNCF Ussel ou déplacement route depuis Brive ou Clermont.",
+      a: "Oui, Axion-IA intervient à Ussel et dans toute la haute Corrèze (Égletons, Meymac, Bort-les-Orgues). Gare SNCF à Ussel ; nous intervenons sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Ussel  ?",

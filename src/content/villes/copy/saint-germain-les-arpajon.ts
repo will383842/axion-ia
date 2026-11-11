@@ -64,8 +64,8 @@ export const SAINT_GERMAIN_LES_ARPAJON_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Évry ?",
-      a: "RER C Arpajon (5 min à pied) direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min.",
+      q: "Comment se déroule une mission à Saint-Germain-lès-Arpajon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

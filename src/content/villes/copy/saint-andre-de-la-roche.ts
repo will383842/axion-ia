@@ -49,7 +49,7 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-de-la-Roche ?",
-      a: "Oui, Axion-IA intervient à Saint-André-de-la-Roche et dans tout le bassin niçois est (La Trinité, Drap, Falicon, Nice est). Couverture Métropole Nice Côte d'Azur complète et accès rapide depuis Nice centre (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-André-de-la-Roche et dans tout le bassin niçois est (La Trinité, Drap, Falicon, Nice est). Couverture Métropole Nice Côte d'Azur complète. Nous intervenons sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",
@@ -64,8 +64,8 @@ export const SAINT_ANDRE_DE_LA_ROCHE_COPY: VilleCopy = {
       a: "Pour les professions libérales de Saint-André-de-la-Roche (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Saint-André-de-la-Roche ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

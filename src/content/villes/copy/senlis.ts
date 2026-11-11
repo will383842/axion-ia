@@ -49,7 +49,7 @@ export const SENLIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Senlis et dans le sud de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Senlis et tout le sud de l'Oise (Chantilly, Creil, Crépy-en-Valois, Compiègne). Consultants depuis Paris (50 min via A1) ou Roissy (30 min).",
+      a: "Oui, Axion-IA intervient à Senlis et tout le sud de l'Oise (Chantilly, Creil, Crépy-en-Valois, Compiègne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tourisme et hôtellerie de Senlis ?",
@@ -64,8 +64,8 @@ export const SENLIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME aéronautique-défense du bassin Senlis–Crépy–Compiègne sur leurs cas IA : contrôle qualité automatisé, maintenance prédictive, classification documentation technique, traçabilité production.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Roissy ?",
-      a: "Nos consultants viennent de Paris (50 min via A1) ou Roissy-CDG (30 min). Coaching 1-to-1 possible en visio.",
+      q: "Comment se déroule une mission à Senlis ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coaching 1-to-1 possible en visio.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const SAINT_LAURENT_BLANGY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Laurent-Blangy et dans l'agglo d'Arras ?",
-      a: "Oui, Axion-IA intervient a Saint-Laurent-Blangy et dans toute l'agglomeration arrageoise (Arras, Beaurains, Dainville, Achicourt). Consultants depuis Lille (45 min TGV) ou Paris (50 min TGV direct).",
+      a: "Oui, Axion-IA intervient a Saint-Laurent-Blangy et dans toute l'agglomeration arrageoise (Arras, Beaurains, Dainville, Achicourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME tertiaires de Saint-Laurent-Blangy ?",

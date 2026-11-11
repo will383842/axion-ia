@@ -49,7 +49,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thouaré-sur-Loire et est nantais ?",
-      a: "Oui, Axion-IA intervient à Thouaré-sur-Loire et tout l'est de Nantes Métropole (Sainte-Luce, Mauves-sur-Loire, Le Cellier, Carquefou). Nos consultants sont à Nantes en 15 min via le périphérique est.",
+      a: "Oui, Axion-IA intervient à Thouaré-sur-Loire et tout l'est de Nantes Métropole (Sainte-Luce, Mauves-sur-Loire, Le Cellier, Carquefou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Muscadet ?",
@@ -64,8 +64,8 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
       a: "Pour les TPE tertiaires et professions libérales à Thouaré-sur-Loire, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation administratif, agents IA prise de RDV, classification dossiers.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes centre ?",
-      a: "Nos consultants viennent de Nantes centre en 15 min via le périphérique est. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
+      q: "Comment se déroule une mission à Thouaré-sur-Loire ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
     },
   ],
 };

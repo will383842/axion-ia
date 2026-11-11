@@ -49,7 +49,7 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Maurice-l'Exil et sud-Isère ?",
-      a: "Oui, Axion-IA intervient à Saint-Maurice-l'Exil et tout le sud-Isère / axe rhodanien (Roussillon limitrophe, Le Péage-de-Roussillon, Salaise-sur-Sanne, Vienne à 25 min). Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7).",
+      a: "Oui, Axion-IA intervient à Saint-Maurice-l'Exil et tout le sud-Isère / axe rhodanien (Roussillon limitrophe, Le Péage-de-Roussillon, Salaise-sur-Sanne, Vienne à 25 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels et sous-traitants du bassin rhodanien ?",
@@ -64,8 +64,8 @@ export const SAINT_MAURICE_L_EXIL_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Maurice-l'Exil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
+      q: "Comment se déroule une mission à Saint-Maurice-l'Exil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
     },
   ],
 };

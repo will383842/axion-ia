@@ -49,7 +49,7 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plougastel-Daoulas et Brest Métropole ?",
-      a: "Oui, Axion-IA intervient à Plougastel-Daoulas et toute Brest Métropole (Brest, Guipavas, Le Relecq-Kerhuon, Gouesnou, Guilers). Nos consultants se déplacent sur la presqu'île via le pont de l'Iroise (15 min depuis Brest).",
+      a: "Oui, Axion-IA intervient à Plougastel-Daoulas et toute Brest Métropole (Brest, Guipavas, Le Relecq-Kerhuon, Gouesnou, Guilers). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les producteurs de fraises AOC de Plougastel ?",
@@ -64,8 +64,8 @@ export const PLOUGASTEL_DAOULAS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Plougastel-Daoulas, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se déroule une mission sur la presqu'île depuis Brest ?",
-      a: "Nos consultants se déplacent depuis Brest (15 min pont de l'Iroise) ou par TGV Paris-Brest (3h30). Pour les multi-jours, hébergement possible à Brest ou Daoulas. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission sur la presqu'île de Plougastel ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement possible à Brest ou Daoulas. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

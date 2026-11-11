@@ -49,7 +49,7 @@ export const SAINT_SULPICE_LA_POINTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Sulpice-la-Pointe ?",
-      a: "Oui, Axion-IA intervient à Saint-Sulpice-la-Pointe et sur tout l'axe Toulouse-Tarn (Lavaur, Rabastens, Gaillac). Nos consultants se déplacent depuis Toulouse (30 min A68) ou Albi (40 min).",
+      a: "Oui, Axion-IA intervient à Saint-Sulpice-la-Pointe et sur tout l'axe Toulouse-Tarn (Lavaur, Rabastens, Gaillac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Saint-Sulpice-la-Pointe  ?",

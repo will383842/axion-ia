@@ -49,7 +49,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pluvigner et dans le pays d'Auray ?",
-      a: "Oui, Axion-IA intervient à Pluvigner et dans tout le pays d'Auray (Auray à 20 min, Vannes à 35 min, Carnac, Belz, Baud). Nos consultants couvrent le centre Morbihan depuis Vannes, Lorient (40 min) ou Nantes (1h45).",
+      a: "Oui, Axion-IA intervient à Pluvigner et dans tout le pays d'Auray (Auray à 20 min, Vannes à 35 min, Carnac, Belz, Baud). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitations agricoles autour de Pluvigner ?",
@@ -65,7 +65,7 @@ export const PLUVIGNER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pluvigner ?",
-      a: "Nos consultants interviennent à Pluvigner depuis Vannes (35 min), Lorient (40 min) ou Nantes (1h45). Intervention sur site dans votre exploitation, atelier, locaux ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre exploitation, atelier, locaux ou cabinet.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const RIVESALTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rivesaltes ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Aéroport Perpignan-Rivesaltes à 3 min. Missions sur site dans votre cave, bureau ou commerce. Visio possible. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Perpignan-Rivesaltes à 3 min. Missions sur site dans votre cave, bureau ou commerce. Visio possible. Tarifs publics.",
     },
   ],
 };

@@ -9,9 +9,9 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne les TPE et PME de Villefranche-sur-Saône (69), capitale du Beaujolais. Entre négoce du vin, industrie agroalimentaire, commerce de gros et logistique le long de la Saône, Caladois et Beaujolais forment un bassin productif dense. Nous y déployons une IA concrète au service des petites structures rhodaniennes.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, intervention partout en France. Les ETI restent un cas marginal de notre clientèle.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, déplacement depuis Lyon. Les ETI restent un cas marginal de notre clientèle.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villefranche-sur-Saône (69), dans le Rhône. Nous accompagnons en priorité les TPE puis les PME du Beaujolais : domaines viticoles et négoce du vin, agroalimentaire, commerce de gros, artisans et commerces. Audit sur place sur site, tarifs publics, intervention partout en France. Les ETI restent un cas marginal de notre clientèle.",
   seoHook: "vin & négoce du Beaujolais",
   ecosystemFr:
     "Villefranche-sur-Saône, capitale du Beaujolais, structure un bassin viticole et productif majeur du Rhône. Domaines, maisons de négoce du vin et coopératives côtoient l'industrie agroalimentaire, le commerce de gros et la logistique facilités par la Saône et l'A6. Autour de ce socle gravite un tissu dense de TPE artisanales et de commerces, terrain idéal pour des automatisations IA pragmatiques au service des petites entreprises caladoises.",
@@ -230,7 +230,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villefranche-sur-Saône ?",
-      a: "Oui, Axion-IA intervient à Villefranche-sur-Saône et dans tout le Beaujolais. Nos consultants se déplacent depuis Lyon (35 km, A6) pour rencontrer domaines, négociants et PME sur site.",
+      a: "Oui, Axion-IA intervient à Villefranche-sur-Saône et dans tout le Beaujolais. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Villefranche-sur-Saône ?",
@@ -246,7 +246,7 @@ export const VILLEFRANCHE_SUR_SAONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Villefranche-sur-Saône ?",
-      a: "Nos consultants interviennent dans vos locaux, au domaine ou en visio, depuis Lyon. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",
