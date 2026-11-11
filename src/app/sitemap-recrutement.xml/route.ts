@@ -25,17 +25,10 @@ export async function GET(): Promise<Response> {
   const entries: Array<{ path: string; priority: string; freq: string }> = [
     { path: "/devenir-commercial-ia", priority: "0.9", freq: "weekly" },
     { path: "/devenir-commercial-ia/candidature", priority: "0.7", freq: "monthly" },
-    // Landing presse « Le Mémo de l'Isère » — recrutement Sud-Grésivaudan (2026-08-12).
+    // Landing presse « Le Mémo de l'Isère » (2026-08-12), refondue le 2026-11-09.
     { path: "/memo-isere", priority: "0.9", freq: "weekly" },
-    // Page SEO de l'annonce jemepropose.com (2026-08-23). INDEXABLE — contrairement
-    // aux landings `/partenaire/*`, elle vise un cluster de requêtes distinct
-    // (« apporteur d'affaires indépendant ») là où `/devenir-commercial-ia` vise
-    // « devenir commercial IA ». Deux intentions, deux vocabulaires.
-    {
-      path: "/apporteur-affaires-independant-formation-ia-entreprise",
-      priority: "0.8",
-      freq: "weekly",
-    },
+    // `/apporteur-affaires-independant-formation-ia-entreprise` n'y figure plus : depuis le
+    // 2026-11-09 elle affiche la même offre que la page principale, en `noindex, follow`.
   ];
 
   const urls = entries
