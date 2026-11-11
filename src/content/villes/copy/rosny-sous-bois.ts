@@ -48,7 +48,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           "Profil retail dominant : commerçants et franchises de Westfield Rosny 2 (180 boutiques, 111 600 m²) et de Domus — fiches produits, recherche sémantique, recommandation et chatbot SAV intégrés à votre site ou marketplace.",
           "Distribution et négoce technique : catalogues volumineux de pièces et SAV pour acteurs type Frisquet (chaudières, chauffage) ou Fraikin (flotte de véhicules) — search produit/référence, configurateur et assistant de devis IA.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma, mobile-first — pas seulement la brique IA, sur WooCommerce, PrestaShop, Shopify, Magento ou stack sur mesure.",
-          "Ancrage local : kick-off sur site à Rosny et dans l'Est parisien (Montreuil, Noisy-le-Sec, Bondy, Villemomble, Fontenay-sous-Bois), accès direct via le métro 11 prolongé et le RER E — hébergement UE strict, RGPD, zéro lock-in éditeur.",
+          "Sur place : kick-off sur site à Rosny et dans l'Est parisien (Montreuil, Noisy-le-Sec, Bondy, Villemomble, Fontenay-sous-Bois), accès direct via le métro 11 prolongé et le RER E — hébergement UE strict, RGPD, zéro lock-in éditeur.",
         ],
         methodology: [
           {

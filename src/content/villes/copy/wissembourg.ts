@@ -49,7 +49,7 @@ export const WISSEMBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wissembourg ?",
-      a: "Oui, Axion-IA intervient à Wissembourg et dans toute l'Outre-Forêt (Cleebourg, Soultz-sous-Forêts, Lauterbourg, Seebach). Consultants via gare SNCF Wissembourg ou autoroute A35 puis D263. Strasbourg accessible en 1h, Karlsruhe à 45 min.",
+      a: "Oui, Axion-IA intervient à Wissembourg et dans toute l'Outre-Forêt (Cleebourg, Soultz-sous-Forêts, Lauterbourg, Seebach). Wissembourg est desservie par la gare SNCF et l'autoroute A35 puis la D263. Strasbourg accessible en 1h, Karlsruhe à 45 min.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme transfrontalier ?",
