@@ -34,6 +34,15 @@ Les constats se lisent dans `GenerationLog` (étape `validation`, « Contrôle d
 `contradictoires`, `non_etayes`, `constats[]` (20 au plus : `affirmation`, `phrase`,
 `fiche_id`, `fiche_titre`, `valeur_fiche`). Pas d'écran de console dans ce lot.
 
+## ⛔ Avant d'allumer (suivi de #1912, 11/11/2026)
+
+Ne PAS passer `CONTENT_FIDELITY_CHECK` à `true` avant les corrections de fiabilité de la PR de
+suivi (faux « non étayé » sur les années finales, « contradictoire » exigeant une phrase de
+fiche du même propos, doublons). Commencer par `dry-run`, lire les constats dans
+`GenerationLog` pendant une semaine, puis seulement décider de `true` (décision de Williams).
+Limite connue : les valeurs sont comparées sans l'unité (« 12,4 % » est validé par
+« 12.4 milliards »).
+
 ## Limites assumées (contrôle lexical)
 
 Il compare des valeurs, pas le sens : une date est étayée si une fiche la contient, même pour

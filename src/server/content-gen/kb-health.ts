@@ -32,6 +32,12 @@ const HARD_GATE_MIN_CANONICAL_RATIO = 0.6;
 // (pas un flux) : à 90 j le gate coupait TOUT le content-gen chaque trimestre
 // sans re-seed. Le signal de revue reste à 90 j (`reviewDueAt` posé par
 // `seed-kb-facts.ts`) : l'admin voit la péremption bien avant le hard stop.
+//
+// ⚠️ À lire avec ce seuil : le blocage RETOMBE 180 jours après la dernière écriture
+// (`lastPublishedAt`), et cette écriture vient d'un seed lancé À LA MAIN. Le signal
+// mesure donc l'ACTIVITÉ d'ingestion plus que la FRAÎCHEUR des faits : un seed qui
+// republie des fiches périmées remet le compteur à zéro sans qu'un fait ait été revérifié.
+// La fraîcheur réelle se lit dans `reviewOverdueCount` / `reviewOverdueRatio`.
 const HARD_GATE_MAX_DAYS_SINCE_LAST = 180;
 
 export class KbNotReadyError extends Error {

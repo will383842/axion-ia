@@ -1,6 +1,10 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { controleFidelite, type FicheConnaissance } from "../controle-fidelite";
-import { barriereDepuisConstats, modeControleFidelite } from "../fidelite-branchement";
+import {
+  barriereDepuisConstats,
+  decisionFidelite,
+  modeControleFidelite,
+} from "../fidelite-branchement";
 
 const FICHE_AI_ACT: FicheConnaissance = {
   id: "fiche-ai-act",
@@ -66,7 +70,7 @@ describe("controleFidelite — affirmations chiffrées", () => {
     );
   });
 
-  it("les écritures 12,4 et 12.4, 1 490 et 1490 sont la même valeur", () => {
+  it("LIMITE CONNUE — la comparaison porte sur la valeur numérique, pas sur l'unité : « 12,4 % » est validé par « 12.4 milliards »", () => {
     const fiche: FicheConnaissance = {
       id: "marche",
       titre: "Marché",
@@ -74,6 +78,51 @@ describe("controleFidelite — affirmations chiffrées", () => {
     };
     const texte = "<p>Le marché français de l'IA pèse 12,4 % de plus en 2027.</p>";
     expect(controleFidelite(texte, [fiche]).filter((c) => /12,4/.test(c.affirmation))).toEqual([]);
+  });
+});
+
+describe("controleFidelite — correctifs de fiabilité (PR de suivi #1912)", () => {
+  it("« En 2026, … au 2 décembre 2027 » : l'année finale n'est plus coupée, aucun constat", () => {
+    const texte =
+      "<p>En 2026, les obligations de l'annexe III ont été reportées au 2 décembre 2027.</p>";
+    expect(controleFidelite(texte, FICHES)).toEqual([]);
+  });
+
+  it("la valeur affichée d'une contradiction vient de la phrase de la fiche qui parle du même propos", () => {
+    const fiche: FicheConnaissance = {
+      id: "mixte",
+      titre: "Adoption",
+      texte:
+        "Le budget formation moyen atteint 4 % de la masse salariale. Selon Bpifrance, 31 % des dirigeants de PME françaises utilisent déjà des outils d'intelligence artificielle générative.",
+    };
+    const c = controleFidelite(
+      "<p>Aujourd'hui, 62 % des dirigeants de PME françaises utilisent des outils d'intelligence artificielle générative.</p>",
+      [fiche],
+    );
+    expect(c).toHaveLength(1);
+    expect(c[0]).toMatchObject({ nature: "contradictoire", valeurFiche: "31 %" });
+  });
+
+  it("une valeur d'une phrase de la fiche sans rapport avec le propos ne rend pas « contradictoire »", () => {
+    const fiche: FicheConnaissance = {
+      id: "hors-sujet",
+      titre: "Budget",
+      texte: "Le budget formation moyen atteint 4 % de la masse salariale.",
+    };
+    const c = controleFidelite(
+      "<p>Les boulangeries artisanales réduisent leurs invendus de 18 % en hiver.</p>",
+      [fiche],
+    );
+    expect(c).toHaveLength(1);
+    expect(c[0]).toMatchObject({ nature: "non-etaye", valeurFiche: null });
+  });
+
+  it("un même chiffre ne ressort qu'une seule fois", () => {
+    const c = controleFidelite(
+      "<p>En 2025, les boulangeries artisanales ont réduit leurs invendus de 18 % en hiver.</p>",
+      FICHES,
+    );
+    expect(c.filter((x) => /18/.test(x.affirmation))).toHaveLength(1);
   });
 });
 
@@ -161,5 +210,59 @@ describe("branchement — interrupteur et barrière de relecture", () => {
         fiche_id: "fiche-adoption",
       }),
     ]);
+  });
+});
+
+describe("branchement worker — décision pure", () => {
+  const fiches: FicheConnaissance[] = [FICHE_ADOPTION];
+  const corps =
+    "<p>Aujourd'hui, 62 % des dirigeants de PME françaises utilisent des outils d'intelligence artificielle générative.</p>";
+
+  it("éteint : aucune lecture des fiches, aucune barrière", async () => {
+    const lireFiches = vi.fn(async () => fiches);
+    const d = await decisionFidelite({
+      mode: "eteint",
+      kbEntryIds: ["a"],
+      bodyHtml: corps,
+      lireFiches,
+    });
+    expect(lireFiches).not.toHaveBeenCalled();
+    expect(d).toMatchObject({ executee: false, barriere: null, aAjouter: null });
+  });
+
+  it("essai à blanc : constats calculés, aucune barrière ajoutée", async () => {
+    const lireFiches = vi.fn(async () => fiches);
+    const d = await decisionFidelite({
+      mode: "essai-a-blanc",
+      kbEntryIds: ["a"],
+      bodyHtml: corps,
+      lireFiches,
+    });
+    expect(lireFiches).toHaveBeenCalledOnce();
+    expect(d.executee).toBe(true);
+    expect(d.barriere?.code).toBe("fidelite-kb");
+    expect(d.aAjouter).toBeNull();
+  });
+
+  it("actif : la barrière fidelite-kb est à ajouter", async () => {
+    const d = await decisionFidelite({
+      mode: "actif",
+      kbEntryIds: ["a"],
+      bodyHtml: corps,
+      lireFiches: async () => fiches,
+    });
+    expect(d.aAjouter?.code).toBe("fidelite-kb");
+  });
+
+  it("actif sans fiche source : rien n'est lu", async () => {
+    const lireFiches = vi.fn(async () => fiches);
+    const d = await decisionFidelite({
+      mode: "actif",
+      kbEntryIds: [],
+      bodyHtml: corps,
+      lireFiches,
+    });
+    expect(lireFiches).not.toHaveBeenCalled();
+    expect(d.executee).toBe(false);
   });
 });
