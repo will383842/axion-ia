@@ -88,6 +88,7 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "../legal-footer";
+import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
 // Drapeau d'AFFIRMATION de la certification. Lecture `process.env` pure, aucun
 // import next/prisma : compatible avec le rendu d'e-mail hors requête (worker).
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
@@ -163,8 +164,13 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
  * ils sont proscrits en familles A et C.
  */
 const SOCIALS = {
-  linkedinCompany:
-    process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
+  /**
+   * Source unique : `COORDONNEES_PUBLIQUES.linkedinEntreprise` (module pur, pas
+   * de `@/env` dans le worker), la même que `CONTACT_PUBLIC.linkedinEntreprise`
+   * des données structurées. `COMPANY_LINKEDIN` reste une SURCHARGE d'exploitation
+   * (variable préexistante) ; absente, c'est la constante qui fait foi.
+   */
+  linkedinCompany: process.env.COMPANY_LINKEDIN || COORDONNEES_PUBLIQUES.linkedinEntreprise,
   facebookCompany: "https://www.facebook.com/axioniacom",
   /**
    * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
