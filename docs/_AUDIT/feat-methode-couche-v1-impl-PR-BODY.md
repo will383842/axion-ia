@@ -3,6 +3,9 @@
 Décision : ADR 0076 (`docs/adr/0076-couche-methode-collection-separee.md`). Mode d'emploi :
 `docs/knowledge/COUCHE-METHODE.md`.
 
+> ⚠️ La branche `feat/methode-couche-v1` (commit `2dea98f0`) porte un autre ADR 0076,
+> écrit en parallèle par une autre session : n'en fusionner qu'une.
+
 ### Ce que fait la PR
 
 - **Aucune migration, aucune table** : réutilise `KnowledgeEntry`, `KnowledgeTranslation`,
@@ -31,7 +34,7 @@ demandée `public`). Rien dans le sitemap ni les pages.
 
 ### Vérifications
 
-Voir `docs/_AUDIT/feat-methode-couche-v1-VERIFS.md` : vitest ciblé 55/55 (+ 219/219
+Voir `docs/_AUDIT/feat-methode-couche-v1-impl-VERIFS.md` : vitest ciblé 69/69 (+ 219/219
 voisins), `tsc --noEmit` vert, ESLint et Prettier verts sur les fichiers touchés, essai à
 blanc de l'import (356 fiches).
 
