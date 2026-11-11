@@ -3,7 +3,7 @@
 // Server Component, 0 JS, 0 CLS (dimensions fixes).
 
 import Image from "next/image";
-import { avatarStyle, hashSeed } from "@/lib/reviews/avatar";
+import { avatarStyle } from "@/lib/reviews/avatar";
 
 interface ReviewAvatarProps {
   /** Seed d'unicité + libellé a11y (ex. "Marie D. — Cabinet Dupont"). */
@@ -38,7 +38,6 @@ export function ReviewAvatar({
   }
 
   const st = avatarStyle(name);
-  const gradId = `avg-${hashSeed(name).toString(36)}`;
   return (
     <svg
       width={size}
@@ -48,13 +47,7 @@ export function ReviewAvatar({
       aria-label={`Avatar ${name}`}
       className={`${base} ${className ?? ""}`}
     >
-      <defs>
-        <linearGradient id={gradId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor={st.from} />
-          <stop offset="100%" stopColor={st.to} />
-        </linearGradient>
-      </defs>
-      <rect width="100" height="100" fill={`url(#${gradId})`} />
+      <rect width="100" height="100" fill={st.from} />
       <g
         transform={`rotate(${st.rotation} 50 50)`}
         fill="none"

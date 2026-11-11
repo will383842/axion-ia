@@ -31,16 +31,6 @@ export function DarkTriadPanel({ items }: { items: readonly DarkTriadItem[] }) {
   return (
     <FadeInOnView>
       <div className="bg-mocha relative overflow-hidden rounded-2xl">
-        {/* Halo terracotta — dégradé radial : extinction douce, pas de bord dur
-            (une forme pleine, même à faible opacité, laisse une arête visible). */}
-        <span
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(70% 130% at 88% 0%, var(--color-terracotta) 0%, transparent 60%)",
-          }}
-        />
         {/* Trame de points — matière discrète sur le brun */}
         <span
           aria-hidden="true"

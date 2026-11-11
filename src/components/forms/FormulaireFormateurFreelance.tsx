@@ -373,7 +373,7 @@ export function FormulaireFormateurFreelance({ offerId, invitationAuto }: Props)
 
       <div className="space-y-2">
         {turnstileWidget}
-        {turnstileBlocked ? <p className="text-sm text-amber-700">{CAPTCHA_AIDE}</p> : null}
+        {turnstileBlocked ? <p className="text-fg-muted text-sm">{CAPTCHA_AIDE}</p> : null}
       </div>
 
       {error ? (

@@ -73,8 +73,8 @@ function Etoiles({
           className={
             "h-8 w-8 rounded text-xl transition-colors " +
             (valeur !== null && v <= valeur
-              ? "text-amber-500"
-              : "text-gray-300 hover:text-amber-400")
+              ? "text-terracotta"
+              : "text-fg-muted hover:text-terracotta")
           }
         >
           ★
