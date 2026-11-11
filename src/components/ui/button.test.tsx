@@ -31,7 +31,7 @@ describe("<Button>", () => {
 
   it("respects size variant", () => {
     render(<Button size="lg">Big</Button>);
-    expect(screen.getByRole("button").className).toContain("h-12");
+    expect(screen.getByRole("button").className).toContain("h-[52px]");
   });
 
   it("renders ghost variant without bg-primary", () => {
