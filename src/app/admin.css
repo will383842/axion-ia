@@ -92,8 +92,9 @@
     /* =====================================================================
      * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
      * Réponse au retour « toujours du blanc et du terracotta » : la couleur
-     * SIGNIFIE — financier = or, planning = bleu, formateurs = violet… — la
-     * même famille porte la même teinte sur toutes les pages. Palette
+     * SIGNIFIE — à l'origine financier = or, planning = bleu, formateurs =
+     * violet… Valeur actuelle : ces jetons `--color-admin-id-*` sont tous des
+     * gris chauds (#5e5d59) ou le vert #5e7050 ; ni bleu ni jaune. Palette
      * validée par le validateur dataviz (daltonisme, chroma, contraste) :
      * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
      * Les STATUTS (succès/alerte/danger) restent une palette réservée.
@@ -219,11 +220,11 @@
      * Vercel / Linear / Stripe). Ce n'est PAS un dark mode (doctrine light
      * only respectée : seul le rail de navigation est sombre, tout le reste
      * de l'admin demeure ivoire). Tokens cloisonnés `--color-admin-rail-*`.
-     * Contrastes vérifiés WCAG AA sur fond mocha #2a2520 :
-     *   - fg #f3ede2  → 13.4:1 (AAA)
-     *   - fg-soft #cbc1b2 → 8.6:1 (AAA)
-     *   - fg-muted #968b7b → 4.6:1 (AA)
-     *   - accent #e0683a (barre active + icône) → graphique, 3:1 OK
+     * Contrastes sur le fond du rail #141413 (valeurs en place) :
+     *   - fg #ffffff  → 18,4:1 (AAA)
+     *   - fg-soft #b0aea5 → 8,3:1 (AAA)
+     *   - fg-muted #b0aea5 → 8,3:1 (AAA)
+     *   - accent #d97757 (barre active + icône) → 5,9:1
      * ===================================================================== */
     --admin-topbar-h: 49px; /* hauteur topbar — sert au calc() de hauteur du rail */
 
@@ -264,8 +265,9 @@
      * maintenant, c'est refuser qu'un gate passe au vert par manque de données.
      * ===================================================================== */
 
-    /* Éclairci pour tenir 4,5:1 SUR LA TUILE ACTIVE (#4d3528 → 4,95) et non
-       seulement sur le fond du rail (#2a2520 → 6,64). */
+    /* Orange #d97757, posé sur le noir seulement : 5,9:1 sur le fond du rail
+       (#141413). Les valeurs #4d3528 / #2a2520 citées plus haut sont celles de
+       l'ancien rail mocha, gardées pour l'histoire de l'incident. */
     --color-admin-rail-accent: #d97757;
     /* Encre sombre pour les surfaces VIVES (accent, avatar, badge ambre), où le
        blanc ne peut pas tenir : 5,9:1 sur terracotta, 8,1:1 sur ambre. */
@@ -782,7 +784,8 @@
   .admin-rail ::-webkit-scrollbar-track {
     background: transparent;
   }
-  /* Focus visible adapté au fond sombre (le ring info bleu disparaît). */
+  /* Focus visible adapté au fond sombre (l'anneau par défaut, terracotta
+     à 45 %, y serait peu lisible). */
   .admin-rail a:focus-visible,
   .admin-rail button:focus-visible,
   .admin-rail input:focus-visible,
