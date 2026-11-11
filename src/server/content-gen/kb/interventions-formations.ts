@@ -504,12 +504,13 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {
     id: "form-059",
-    text: "Selon l'AI Act (art. 4), la maîtrise de l'IA (« AI literacy ») du personnel qui utilise des systèmes d'IA est un sujet de conformité pour les entreprises, tous systèmes confondus et pas seulement ceux à haut risque. La portée exacte de cet article (obligation directe ou simple encouragement) a été modifiée par l'omnibus numérique : à vérifier sur EUR-Lex avant d'affirmer une obligation.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Art. 4 et Art. 26",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+    text: "Selon l'AI Act (art. 4), les entreprises qui utilisent des systèmes d'IA prennent des mesures pour la maîtrise de l'IA (« AI literacy ») de leur personnel, tous systèmes confondus et pas seulement ceux à haut risque. L'article s'applique depuis le 2 février 2025. Le règlement (UE) 2026/1744 (omnibus IA, en vigueur le 27 juillet 2026) l'a réécrit dans un sens plus souple : favoriser cette maîtrise, sans devoir garantir un niveau précis à chaque personne. Assoupli, il n'est ni supprimé ni reporté. Libellé exact : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689 (AI Act), art. 4, modifié par le règlement (UE) 2026/1744 (omnibus IA)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
     verifiedAt: "2026-11-08",
     verticales: ["interventions_formations"],
-    confidence: 0.75,
+    confidence: 0.8,
   },
   {
     id: "form-060",

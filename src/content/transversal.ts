@@ -946,30 +946,31 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   {
     id: "ai-act-2026",
-    reviewedAt: "2026-08-12",
+    reviewedAt: "2026-11-08",
     related: ["rgpd-ia", "ia-droit-auteur-contenu", "risques-ia-entreprise"],
     fr: {
       question: "Quelles sont les obligations légales des entreprises face à l'AI Act 2026 ?",
       answer:
-        "L'AI Act européen est entré en vigueur en 2024 et son application est progressive jusqu'à août 2026. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois obligations reviennent le plus souvent : informer les utilisateurs qu'un contenu est généré par IA (article 50), documenter les usages d'IA à risque limité, et désigner un interlocuteur chargé de la conformité IA. S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA intègre la conformité AI Act dans ses implémentations : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail de mise en place technique, pas une prestation juridique — la qualification exacte de vos systèmes et la validation de votre conformité relèvent de votre conseil.",
+        "L'AI Act européen est entré en vigueur en 2024 et son application est échelonnée de 2025 à 2028. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois articles reviennent le plus souvent. L'article 4 : prendre des mesures pour la maîtrise de l'IA de ses équipes (depuis février 2025, assoupli en juillet 2026 par le règlement (UE) 2026/1744). L'article 5 : ne pas recourir aux pratiques interdites (depuis février 2025). L'article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler les hypertrucages et certains textes d'intérêt public générés (depuis le 2 août 2026). Les obligations « haut risque » (recrutement, suivi des salariés…) sont reportées au 2 décembre 2027 (annexe III). S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA peut aider à mettre en place des dispositifs techniques : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail technique, pas une prestation juridique — la qualification exacte de vos systèmes et l'analyse de vos obligations relèvent de votre conseil.",
       keyPoints: [
-        "Entré en vigueur en 2024, application progressive jusqu'à août 2026",
+        "Entré en vigueur en 2024, application échelonnée de 2025 à 2028",
         "Les systèmes d'IA sont classés par niveau de risque",
-        "Article 50 : informer que le contenu est généré par IA",
-        "Documenter les usages à risque limité, désigner un interlocuteur conformité",
+        "Article 4 : mesures pour la maîtrise de l'IA de ses équipes (assoupli en 2026)",
+        "Article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler hypertrucages et certains textes d'intérêt public générés",
+        "Haut risque : reporté au 2 décembre 2027 (annexe III)",
         "Le RGPD continue de s'appliquer en parallèle",
       ],
       facts: [
         { figure: "2024", label: "entrée en vigueur" },
-        { figure: "août 2026", label: "plein effet du règlement" },
-        { figure: "art. 50", label: "transparence des contenus IA" },
-        { figure: "3", label: "obligations les plus courantes" },
+        { figure: "02/02/2025", label: "maîtrise de l'IA et pratiques interdites" },
+        { figure: "02/08/2026", label: "transparence (art. 50)" },
+        { figure: "02/12/2027", label: "haut risque, après report" },
       ],
       nuances: [
         {
           title: "Ce n'est pas une prestation juridique",
           detail:
-            "Axion-IA met en place les dispositifs techniques : étiquetage, traçabilité, versionnage. La qualification de vos systèmes et la validation de votre conformité relèvent de votre conseil juridique.",
+            "Axion-IA met en place les dispositifs techniques : étiquetage, traçabilité, versionnage. La qualification de vos systèmes et l'analyse de vos obligations relèvent de votre conseil juridique.",
         },
         {
           title: "Toutes les obligations ne visent pas tout le monde",
@@ -979,14 +980,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "L'échéance n'est pas unique",
           detail:
-            "L'application est échelonnée jusqu'à août 2026, obligation par obligation. Il n'y a pas une date unique à laquelle tout devient exigible d'un coup.",
+            "L'application est échelonnée de 2025 à 2028, obligation par obligation. Il n'y a pas une date unique à laquelle tout devient exigible d'un coup.",
         },
       ],
     },
     en: {
       question: "What are companies' legal obligations under the 2026 AI Act?",
       answer:
-        "The EU AI Act (phased enforcement until August 2026) requires companies using generative AI to: (1) inform users that content is AI-generated (art. 50), (2) document limited-risk AI uses, (3) appoint an AI compliance contact. Axion-IA integrates AI Act compliance into its implementations.",
+        "The EU AI Act applies in stages from 2025 to 2028. For a company that uses AI tools: article 4 asks it to take measures to foster AI literacy among its staff (since February 2025, relaxed in July 2026); article 5 bans certain practices; article 50 requires, depending on your role (provider or deployer), informing people of the interaction with an AI and flagging deepfakes and certain generated texts of public interest (since 2 August 2026). High-risk obligations are postponed to 2 December 2027 (Annex III). This is general information, not legal advice.",
     },
   },
   {
