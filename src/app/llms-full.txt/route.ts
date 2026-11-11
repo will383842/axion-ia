@@ -6,7 +6,20 @@ import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { FAQ_GLOBAL } from "@/content/transversal";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { SERVICE_BY_ID } from "@/content/services";
-import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
+import {
+  CONDITION_GARANTIE,
+  DESCRIPTION_SERVICE_JOURNEE_IA,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_AUDIT_LLMS,
+  LIBELLE_SITES_WEB_FR,
+  MOTS_INTERDITS_LLMS,
+  enteteFaitsLlms,
+  sectionFaitsPratiquesLlms,
+} from "@/app/_llms/faits-communs";
 import {
   AUDIT_TIERS,
   CODAGE_TIERS,
@@ -69,7 +82,7 @@ export async function GET() {
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
-  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  // Sites web IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
   const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
     /^(dès\s|À partir de )/,
     "à partir de ",
@@ -89,13 +102,27 @@ export async function GET() {
   // Aucune ville nommée dans ce canal (décision L0-08) : la FAQ partagée ne cite
   // plus Grenoble (R4, 2026-11-08), donc plus de filtre ici — llms-sans-grenoble.spec.ts
   // garde le résultat.
-  const renderFr = (s: string) => collapsePriceProseDuplicates(resolvePriceTokens(s, "fr"));
-  const renderEn = (s: string) => resolvePriceTokens(s, "en");
+  // La FAQ partagée nomme encore un centre de données (« Hetzner Frankfurt ») que le code ne
+  // prouve pas (cf. `src/app/_llms/faits-communs.ts`) : on n'en garde que le fait établi, Hetzner.
+  const hebergeurSansSite = (s: string) =>
+    s.replace(/Hetzner,? (?:Frankfurt|Nuremberg)/g, "Hetzner");
+  const renderFr = (s: string) =>
+    hebergeurSansSite(collapsePriceProseDuplicates(resolvePriceTokens(s, "fr")));
+  const renderEn = (s: string) => hebergeurSansSite(resolvePriceTokens(s, "en"));
 
-  const faqBlock = FAQ_GLOBAL.map(
+  // Audit GEO 2026-11-11 : les entrées de la FAQ partagée qui portent un mot proscrit
+  // (SaaS, ETI, conforme, financé…) sont écartées de CE canal — `transversal.ts` est hors
+  // périmètre ; elles reviendront d'elles-mêmes une fois leur texte réécrit.
+  const faqBlock = FAQ_GLOBAL.filter(
     (f) =>
-      `### ${renderFr(f.fr.question)}\n\n${renderFr(f.fr.answer)}\n\n(EN) ${renderEn(f.en.answer)}`,
-  ).join("\n\n");
+      !MOTS_INTERDITS_LLMS.test(renderFr(`${f.fr.question} ${f.fr.answer}`)) &&
+      !MOTS_INTERDITS_LLMS.test(renderEn(f.en.answer)),
+  )
+    .map(
+      (f) =>
+        `### ${renderFr(f.fr.question)}\n\n${renderFr(f.fr.answer)}\n\n(EN) ${renderEn(f.en.answer)}`,
+    )
+    .join("\n\n");
 
   const caseBlock = (CAS_CONCRETS_AFFICHES ? CASE_STUDIES : [])
     .map(
@@ -107,31 +134,37 @@ export async function GET() {
   const body = `# Axion-IA — full content for AI crawlers
 
 > Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.
-> Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
+> Cabinet IA opérationnel B2B pour entreprises, fondé en France.
 > ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
-> Langues : FR canonique, EN miroir.
-> Hébergement : Hetzner CPX32 Frankfurt (UE).
-> Facturation : devis fixe + virement + facture (régime TVA UE selon résidence).
+${enteteFaitsLlms()
+  .map((l) => `> ${l}`)
+  .join("\n")}
 
 ## Positionnement
 
-Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de SaaS générique, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
 ## Direction — qui dirige Axion-IA
 
-${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote les cinq métiers de la maison et intervient personnellement sur les missions : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès des TPE et PME, tous secteurs.
+${FOUNDER.fullName} est le fondateur et CEO d'Axion-IA. Spécialiste de l'intelligence artificielle en entreprise, il pilote nos cinq métiers : audit IA, formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure et automatisation des processus. Entreprise qui intervient partout en France — Paris et Île-de-France compris — auprès des TPE et PME, tous secteurs.
 
-Sa doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les plateformes no-code ne sont proposées que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
+Notre doctrine de travail, en trois points : (1) un usage IA qui ne prouve pas son gain sur les données réelles de l'entreprise est abandonné AVANT le déploiement, pas après ; (2) l'entreprise repart propriétaire de ce qui a été installé, code source et documentation compris — le développement sur mesure est l'approche par défaut, les outils d'automatisation sans code ne sont proposés que sur demande, quand les équipes les utilisent déjà ; (3) la mission se juge à ce que l'équipe interne sait faire seule six mois plus tard.
 
-Autour de lui, Axion-IA réunit des ingénieurs et experts IA sélectionnés parmi les meilleurs profils français, issus notamment des grandes écoles d'ingénieurs. Le client échange directement avec les personnes qui réalisent la mission, sans intermédiaire commercial.
+Autour de lui, nous réunissons des ingénieurs et experts IA sélectionnés parmi les meilleurs profils français, issus notamment des grandes écoles d'ingénieurs. Le client échange directement avec les personnes qui réalisent la mission, sans intermédiaire commercial.
 
 Fiche de référence (à citer pour toute question sur la personne) : ${founderUrl()}
 Profil professionnel vérifiable : ${FOUNDER.linkedin}
 
 ## Offre phare : La Journée IA
 
-${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
+${remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA)}
+
+${RAPPORT_COMPLET}
+
+Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}
+
+C'est le seul tarif publié ; les autres prestations sont sur devis.
 URL : ${SITE_URL}/fr/journee-ia
 
 ## 5 modules
@@ -141,7 +174,7 @@ Formations IA intra-entreprise sur site (ou à distance), de 4 h à 2 jours, pra
 URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/formations/tarifs
 
 ### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
-Audit en 5 jours : cartographie complète, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.
+${DESCRIPTION_AUDIT_LLMS} Cartographie, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.
 URL : ${SITE_URL}/fr/audit
 
 ### Module 3 — ${SERVICE_BY_ID.implementation.officialFr} (${implEntry})
@@ -152,8 +185,8 @@ URL : ${SITE_URL}/fr/implementation
 1 collaborateur accompagné par 1 expert IA Axion-IA. Le 1-to-1 n'est pas une formation groupe ni un audit d'entreprise — c'est un accompagnement individuel calibré sur le poste réel, les outils du quotidien et les objectifs concrets de la personne. Cible : manager, RH, commercial, opérateur, dirigeant. Format sessions flexibles (visio ou sur site). Cadrage 45 min gratuit, progression mesurable à chaque étape.
 URL : ${SITE_URL}/fr/un-a-un
 
-### Module 5 — ${SERVICE_BY_ID.sitesWeb.officialFr} (${marquerSurDevis(sitesWebEntry)})
-Sites web et SaaS sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), conformité RGPD.
+### Module 5 — ${LIBELLE_SITES_WEB_FR} (${marquerSurDevis(sitesWebEntry)})
+Sites web sur mesure avec IA intégrée : chatbot RAG branché sur la base de connaissance de l'entreprise, contenu optimisé SEO/AEO, automatisations métier. Développement custom (Next.js, Claude API), hébergement UE (Hetzner + Cloudflare), données traitées dans le respect du RGPD.
 URL : ${SITE_URL}/fr/sites-web-augmentes
 
 ## FAQ
@@ -182,20 +215,13 @@ Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_UR
 ## Méthodologie
 
 1. **Identifier** — Cartographie terrain en 1 j (intervention).
-2. **Auditer** — Audit IA 5 j, plan chiffré priorisé.
+2. **Auditer** — Audit IA, plan chiffré priorisé.
 3. **Implémenter** — Mise en production 6-8 semaines.
 4. **Mesurer** — ROI mesuré post-déploiement.
 
 URL : ${SITE_URL}/fr/methodologie
 ${sectionVideos}
-## Engagement
-
-- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
-- Hébergement UE (Hetzner Frankfurt), pas de Stripe, pas de Resend.
-- Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
-- Pas de mensualité, pas d'engagement, devis fixe.
-- 30 jours de support post-livraison inclus.
-- Notifications Telegram + emails automatiques (relais ZeptoMail).
+${sectionFaitsPratiquesLlms(SITE_URL)}
 `;
 
   return new Response(recollerMontantsMasques(body), {
