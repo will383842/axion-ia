@@ -246,7 +246,7 @@ export const BRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bron ?",
-      a: "Bron étant dans la Métropole, Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, Axion-IA intervient à Bron et dans toute la Métropole de Lyon. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

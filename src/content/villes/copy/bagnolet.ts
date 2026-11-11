@@ -230,7 +230,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnolet ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Bagnolet est desservie par la ligne 3 (Gallieni) et le périphérique. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",
