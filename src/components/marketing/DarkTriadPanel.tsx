@@ -7,8 +7,7 @@
 // À réserver aux sections « parti pris / réassurance » : son
 // effet vient de sa rareté, deux panneaux sur une même page l'annulent.
 //
-// Décor : halo terracotta en dégradé radial (extinction douce, pas de bord dur)
-// + trame de points. Aucun filtre `blur-*` — coûteux au paint.
+// Décor : aplat + trame de points (plus de halo radial). Aucun filtre `blur-*` — coûteux au paint.
 //
 // Contraste : `mocha-fg`, `mocha-fg-muted` et `terracotta-on-mocha` sur `mocha`
 // sont trois paires vérifiées WCAG AA par `pnpm contrast:check`.

@@ -4,8 +4,7 @@
 // Chaque carte porte une BANDE MÉDIA en 16:9 au-dessus du texte :
 //
 // - `image` fourni  → la vraie photo/illustration (next/image, lazy, object-cover)
-// - `image` absent  → une composition on-brand : dégradé d'accent + halo radial
-//                     + trame de points, puce d'icône, et surtout le CHIFFRE-CLÉ
+// - `image` absent  → une composition on-brand : aplat sable + trame de points, puce d'icône, et surtout le CHIFFRE-CLÉ
 //                     (`stat`) qui occupe la bande.
 //
 // Sans `stat`, la bande n'est que du décor et se lit comme un emplacement
@@ -17,7 +16,7 @@
 // donc la bascule se fait à CLS = 0.
 //
 // Perf : aucune classe `blur-*` (filtre coûteux au paint sur 6 cartes) — le
-// halo est un dégradé radial, pas une forme floutée. Composant serveur pur :
+// décor est un aplat + une trame de points, pas une forme floutée. Composant serveur pur :
 // les icônes Lucide sont rendues en HTML au build, 0 KB de JS client.
 
 import Image from "next/image";

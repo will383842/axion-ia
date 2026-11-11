@@ -23,7 +23,7 @@ import { UnsplashCreditList } from "@/components/media/UnsplashCreditList";
 import { ACCENT_CLASSES, type ServiceAccent } from "@/content/services-visual";
 import { cn } from "@/lib/utils";
 
-/** Dégradé de bande par accent. Littéraux complets (JIT Tailwind v4). */
+/** Aplat de bande (sable) ; variantes par accent identiques en attendant D5. Littéraux complets (JIT Tailwind v4). */
 const BAND_FOND: Record<ServiceAccent, string> = {
   terracotta: "bg-sand",
   ochre: "bg-sand",
