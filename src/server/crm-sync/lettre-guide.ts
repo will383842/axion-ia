@@ -44,8 +44,11 @@ import { estOpposee } from "@/server/email/opposition";
 import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { aPuAtteindreLeCrm } from "@/server/vivier/opposition";
 
+import { evenementDuClicPageGuide } from "@/server/guides-reseau/clic-page-guide";
+import { SOURCE_SLUG_GUIDE_RESEAU, synchroCrmV3Active } from "@/server/guides-reseau/synchro-v3";
+
 import { isCrmSyncGuideEnabled } from "./config";
-import { erreurSansDonnees, mettreEnFileCrm } from "./enqueue";
+import { enqueueCrmSyncEvent, erreurSansDonnees, mettreEnFileCrm } from "./enqueue";
 import { eventIdDemandeGuide } from "./event-id";
 import { estExclueDuCrm } from "./exclusions";
 import { syncLeadMagnetRequestedToCrm, syncNewsletterOptInToCrm } from "./index";
@@ -54,7 +57,7 @@ import {
   evenementInscriptionLettre,
   localeCrm,
 } from "./inscription-lettre";
-import type { CrmBaseLegaleLettre, CrmNatureEmail, CrmStatutLettre } from "./types";
+import type { CrmBaseLegaleLettre, CrmNatureEmail, CrmStatutLettre, CrmSyncEvent } from "./types";
 
 /** `source_slug` gouverné côté CRM (tag `src:guide-ia`). */
 export const SOURCE_SLUG_GUIDE = "guide-ia";
@@ -289,6 +292,8 @@ export async function transmettreClicGuide(
       select: {
         id: true,
         email: true,
+        emailKey: true,
+        origine: true,
         aimant: true,
         source: true,
         locale: true,
@@ -326,9 +331,14 @@ export async function transmettreClicGuide(
     const base = baseLegaleDeLaDemande(nature, abonne);
     const eventId = eventIdDemandeGuide(demande.id);
     const firstClickAt = demande.firstClickAt;
+    // Lot S3 : une demande venue d'un réseau, avec `SYNCHRO_CRM_V3` allumé, porte la source
+    // `guide-reseau` et, si la page a laissé un consentement, le bloc v3 (prénom, accord, guide
+    // reçu, origine). Éteint : chemin v1 inchangé.
+    const viaReseau = synchroCrmV3Active() && demande.origine === "message_prive";
 
     let outboxId: string | null = null;
     let reservee = false;
+    let opposeePendantLaTransaction = false;
     try {
       outboxId = await prisma.$transaction(async (tx) => {
         const r = await tx.guideRequest.updateMany({
@@ -337,11 +347,31 @@ export async function transmettreClicGuide(
         });
         if (r.count !== 1) return null;
         reservee = true;
+        if (viaReseau) {
+          // Nouveau contrôle d'opposition, DANS la transaction, juste avant d'écrire : une
+          // opposition arrivée depuis la lecture du début l'emporte. La demande reste réservée
+          // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite.
+          if (await estOpposee(demande.email)) {
+            opposeePendantLaTransaction = true;
+            return null;
+          }
+          const v3 = await evenementDuClicPageGuide(tx, demande, firstClickAt);
+          if (v3.ok) {
+            const id = await enqueueCrmSyncEvent(v3.evenement as unknown as CrmSyncEvent, {
+              tx,
+              mettreEnFile: false,
+            });
+            if (id === null) throw new RienEcrit();
+            return id;
+          }
+          // Sans bloc v3 (aucun consentement de la page, ou valeur hors format CRM) : l'événement
+          // v1 part tel quel, sans optin ni prénom, avec la source du réseau.
+        }
         const ligne = await syncLeadMagnetRequestedToCrm({
           eventId,
           subjectRef: `site:guide_request:${demande.id}`,
           occurredAt: firstClickAt,
-          sourceSlug: SOURCE_SLUG_GUIDE,
+          sourceSlug: viaReseau ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE,
           person: { email: demande.email },
           // Un bloc `consent` pour un CONSENTEMENT seulement : la case cochée
           // (adresse perso inscrite). Sinon, aucun — personne n'a consenti.
@@ -385,6 +415,7 @@ export async function transmettreClicGuide(
       reservee = true;
     }
 
+    if (opposeePendantLaTransaction) return "opposee";
     // Un autre passage a réservé entre notre lecture et la transaction.
     if (!reservee) {
       await inscriptionDeLAdresse(demande.email);
