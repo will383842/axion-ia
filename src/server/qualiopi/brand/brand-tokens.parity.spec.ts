@@ -26,11 +26,16 @@ describe("brand-tokens ↔ globals.css parité couleurs", () => {
 
 describe("brand-tokens polices", () => {
   const css = readGlobalsCss();
-  it.each(Object.entries(QUALIOPI_BRAND_FONTS))(
-    "la famille %s (%s) est référencée dans globals.css",
-    (_role, family) => {
-      // Fraunces/Manrope/Inconsolata apparaissent via --font-<famille> dans @theme.
-      expect(css.toLowerCase()).toContain(family.toLowerCase());
-    },
-  );
+  // Charte 2027 : Manrope seule sur le site. `QUALIOPI_BRAND_FONTS` (serif/mono des PDF Qualiopi)
+  // n'est PAS aligné ici : décision de Williams en attente (ESCALADE) — la parité ne porte que sur `sans`.
+  it("la famille sans (Manrope) est référencée dans globals.css", () => {
+    expect(css.toLowerCase()).toContain(QUALIOPI_BRAND_FONTS.sans.toLowerCase());
+  });
+
+  it("globals.css (commentaires retirés) ne déclare plus Fraunces ni Inconsolata dans une variable --font-*", () => {
+    const sansCommentaires = css.replace(/\/\*[\s\S]*?\*\//g, "");
+    const declarations = sansCommentaires.match(/--font-[a-z0-9-]+\s*:[^;]*;/gi) ?? [];
+    expect(declarations.length).toBeGreaterThan(0);
+    for (const d of declarations) expect(d).not.toMatch(/fraunces|inconsolata/i);
+  });
 });
