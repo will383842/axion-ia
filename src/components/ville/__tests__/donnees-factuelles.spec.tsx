@@ -168,13 +168,13 @@ describe("bloc VilleDonneesFactuelles (composant serveur)", () => {
       <VilleDonneesFactuelles donnees={d as Donnees} villeNameFr="Lyon" isFr />,
     );
     expect(html).toContain('data-testid="ville-donnees-factuelles"');
-    expect(html).toContain("Population légale");
+    expect(html).toContain("Population municipale");
     expect(html).toContain("Auvergne-Rhône-Alpes");
     const lignes = html.match(/<dt/g) ?? [];
     const sources = html.match(/data-source/g) ?? [];
     expect(lignes.length).toBe(3);
     expect(sources.length).toBe(lignes.length);
-    expect(html).toContain("relevé le 11 novembre 2026");
+    expect(html).toContain("relevé le 8 mai 2026");
     // Pas de ligne Sirene : la donnée n'existe pas dans l'échantillon.
     expect(html).not.toContain("Établissements actifs");
   });

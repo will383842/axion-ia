@@ -13,7 +13,7 @@ import type {
 } from "../../../src/content/villes/donnees-factuelles/schema";
 
 export const SOURCE_GEO = {
-  population: "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+  population: "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
   cog: "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
   url: "https://geo.api.gouv.fr/decoupage-administratif/communes",
 } as const;

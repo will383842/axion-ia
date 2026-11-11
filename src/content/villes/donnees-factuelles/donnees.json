@@ -9,23 +9,23 @@
       "inseeCode": "75056",
       "population": {
         "valeur": 2103778,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "75",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Île-de-France",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -34,23 +34,23 @@
       "inseeCode": "69123",
       "population": {
         "valeur": 519127,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "69",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Auvergne-Rhône-Alpes",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -59,23 +59,23 @@
       "inseeCode": "13055",
       "population": {
         "valeur": 886040,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "13",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Provence-Alpes-Côte d'Azur",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -84,23 +84,23 @@
       "inseeCode": "31555",
       "population": {
         "valeur": 514819,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "31",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Occitanie",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -109,23 +109,23 @@
       "inseeCode": "44109",
       "population": {
         "valeur": 327734,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "44",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Pays de la Loire",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -134,23 +134,23 @@
       "inseeCode": "33063",
       "population": {
         "valeur": 267991,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "33",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Nouvelle-Aquitaine",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -159,23 +159,23 @@
       "inseeCode": "59350",
       "population": {
         "valeur": 238246,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "59",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Hauts-de-France",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -184,23 +184,23 @@
       "inseeCode": "35238",
       "population": {
         "valeur": 230890,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "35",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Bretagne",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -209,23 +209,23 @@
       "inseeCode": "67482",
       "population": {
         "valeur": 293771,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "67",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Grand Est",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     },
@@ -234,23 +234,23 @@
       "inseeCode": "34172",
       "population": {
         "valeur": 310240,
-        "source": "INSEE, population légale, via l'API Découpage administratif (geo.api.gouv.fr)",
+        "source": "INSEE, population municipale, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "departement": {
         "valeur": "34",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       },
       "region": {
         "valeur": "Occitanie",
         "source": "INSEE, Code officiel géographique, via l'API Découpage administratif (geo.api.gouv.fr)",
         "url": "https://geo.api.gouv.fr/decoupage-administratif/communes",
-        "date": "2026-11-11",
+        "date": "2026-05-08",
         "natureDate": "releve"
       }
     }

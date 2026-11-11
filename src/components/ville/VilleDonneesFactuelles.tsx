@@ -81,7 +81,7 @@ function Ligne({
     <div className="border-border border-t py-4">
       <dt className="text-fg-muted text-sm">{libelle}</dt>
       <dd className="mt-1">
-        <span className="text-fg text-lg font-semibold">{children}</span>
+        <div className="text-fg text-lg font-semibold">{children}</div>
         <MentionSource fait={fait} isFr={isFr} />
       </dd>
     </div>
@@ -117,7 +117,7 @@ export function VilleDonneesFactuelles({ donnees, villeNameFr, isFr }: Props) {
         <dl className="mt-8 grid gap-x-10 sm:grid-cols-2">
           {population ? (
             <Ligne
-              libelle={isFr ? "Population légale" : "Legal population"}
+              libelle={isFr ? "Population municipale" : "Municipal population"}
               fait={population}
               isFr={isFr}
             >

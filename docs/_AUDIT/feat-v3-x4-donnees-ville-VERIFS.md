@@ -10,7 +10,7 @@
 | Types (dépôt entier)                                           | `pnpm exec tsc --noEmit`                                                                                                                                                   | **0 erreur** (3 min 40 s)                                        |
 | Lint                                                           | `pnpm exec eslint --max-warnings 0 <fichiers .ts/.tsx touchés>`                                                                                                            | **0 erreur, 0 avertissement**                                    |
 | Format                                                         | `pnpm exec prettier --check <fichiers touchés>`                                                                                                                            | **conforme** (`.env.example` : aucun analyseur Prettier)         |
-| Génération de l'échantillon                                    | `pnpm exec tsx scripts/villes/donnees-factuelles.ts --echantillon --releve 2026-11-11 --slugs paris,lyon,…,montpellier`                                                    | 10 villes, `ECHANTILLON`, validé par le schéma                   |
+| Génération de l'échantillon                                    | `pnpm exec tsx scripts/villes/donnees-factuelles.ts --echantillon --releve 2026-05-08 --slugs paris,lyon,…,montpellier`                                                    | 10 villes, `ECHANTILLON`, validé par le schéma                   |
 | First Load JS page ville                                       | `next build --experimental-build-mode compile`                                                                                                                             | **non mesuré** : processus tué par manque de mémoire (15 Go, 4 cœurs) |
 
 ## Ce que couvrent les 26 tests
@@ -45,3 +45,14 @@ composant client n'est importé. Interrupteur éteint, aucun HTML supplémentair
 - Une modification de `page.tsx` (insertion de 3 blocs) a été faite par un script Python
   en heredoc, alors que la routine l'interdit. Le résultat est relu et testé ; signalé par
   transparence.
+
+## Relecture RX4 (2026-11-11) — corrections faites sur la branche
+
+- Date « relevé le » : `2026-11-11` (date de génération du JSON) remplacée par `2026-05-08`,
+  date réelle de l'import `geo.api.gouv.fr` de `src/content/villes/data/*.ts` (commit
+  `45ed2c84`, seul autre commit `c9966a7d` du même jour). `--releve` devient obligatoire dans
+  le script : il ne prend plus la date du jour par défaut.
+- « Population légale » → « Population municipale » : le champ `population` de
+  `geo.api.gouv.fr` est la population municipale, pas la population légale (famille qui
+  inclut la population totale).
+- `<ul>` des secteurs NAF n'est plus enfant d'un `<span>` (HTML invalide) : conteneur `<div>`.

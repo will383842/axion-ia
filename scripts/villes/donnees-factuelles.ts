@@ -63,7 +63,14 @@ async function main(): Promise<void> {
   const sirene = argument("sirene");
   const millesime = argument("millesime");
   const nafLibelles = argument("naf-libelles");
-  const releve = argument("releve") ?? aujourdhui();
+  // Date à laquelle les valeurs INSEE ont été RELEVÉES (import geo.api.gouv.fr), jamais la date
+  // du jour : `src/content/villes/data/*.ts` a été importé le 2026-05-08 (commit 45ed2c84).
+  const releve = argument("releve");
+  if (!releve || !/^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.test(releve)) {
+    throw new Error(
+      "--releve AAAA-MM-JJ obligatoire : date de l'import INSEE des données du dépôt.",
+    );
+  }
 
   if (sirene && !/^\d{4}-(0[1-9]|1[0-2])$/.test(millesime ?? "")) {
     throw new Error("--sirene exige --millesime AAAA-MM (mois du fichier Stock Sirene utilisé).");

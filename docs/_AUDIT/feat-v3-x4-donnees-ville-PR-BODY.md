@@ -44,9 +44,10 @@ date**, affichés dans un bloc qui **ne s'affiche pas** quand la donnée manque.
 
 1. Télécharger le Stock Sirene établissements et lancer le script avec `--sirene` et
    `--millesime`, relire le JSON produit en PR.
-2. La date « relevé le » de la population est la date de reprise des données du dépôt :
-   `geo.api.gouv.fr` ne publie pas le millésime de la population légale dans sa réponse. À
-   remplacer par le millésime INSEE si l'on branche le fichier des populations légales.
+2. La date « relevé le » de la population (municipale) est celle de l'import
+   `geo.api.gouv.fr` des données du dépôt (2026-05-08, commit `45ed2c84`), passée
+   obligatoirement par `--releve`. L'API ne publie pas le millésime INSEE : à remplacer par
+   ce millésime si l'on branche le fichier des populations légales.
 3. Puis `VILLE_DONNEES_FACTUELLES=true` sur l'application (Coolify), sans rebuild pour les
    pages ISR (lecture de `process.env` au rendu ; les ~40 pages pré-rendues au build prennent
    la valeur à la régénération suivante).
