@@ -36,7 +36,6 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
-import { dateRoute } from "@/lib/seo/fraicheur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -208,7 +207,7 @@ export default async function TransparencePage({ params }: Props) {
 
   // Aligné sur /charte-editoriale : publisher Organization (défaut factory) +
   // dates (freshness AEO). datePublished = création du hub (ADR 0024) ;
-  // dateModified = dateRoute() (même source que le sitemap). isPartOf #website = défaut factory.
+  // dateModified calculé par la fabrique depuis `path` (même source que le sitemap). isPartOf #website = défaut factory.
   const webPageJsonLd = buildWebPageJsonLd({
     locale: locale as Locale,
     path: isFr ? "/transparence" : "/transparency",
@@ -216,7 +215,6 @@ export default async function TransparencePage({ params }: Props) {
     description: tagline,
     inLanguage: isFr ? "fr-FR" : "en-US",
     datePublished: "2026-05-18",
-    dateModified: dateRoute("/transparence"),
     about: {
       "@type": "Thing",
       name: "EU AI Act 2024/1689 transparency",

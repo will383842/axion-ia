@@ -58,9 +58,21 @@ export const EN_BREF_ACCUEIL =
 export const DESCRIPTION_ENTITE_FR =
   "Axion-IA, partenaire IA des PME et des TPE, intervient partout en France. Offre phare\u202f: La Journée IA, dans les locaux de l’entreprise. Le matin, l’audit chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers.";
 
+/**
+ * Pendant anglais de `DESCRIPTION_ENTITE_FR`, pour le même nœud `#organization`
+ * (layout `seo.ts` et graphe de la banque d'images). Avant (audit du
+ * 2026-11-11) : deux textes anglais différents pour la même entité.
+ */
+export const DESCRIPTION_ENTITE_EN =
+  "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises: the audit in the morning, team training in the afternoon.";
+
 /** Version courte pour le nœud `WebSite`. */
 export const DESCRIPTION_SITE_FR =
   "Axion-IA, partenaire IA des PME et des TPE, partout en France. Offre phare\u202f: La Journée IA, l’audit le matin, la formation l’après-midi, dans vos locaux.";
+
+/** Pendant anglais de `DESCRIPTION_SITE_FR`, nœud `WebSite`. */
+export const DESCRIPTION_SITE_EN =
+  "Axion-IA, the AI partner for SMEs and small businesses across France. Flagship offer: La Journée IA, audit in the morning, training in the afternoon, at your premises.";
 
 /** Les trois paragraphes du « En bref » de la landing (le prix est un jeton). */
 export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [

@@ -9,7 +9,6 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildProductMetadata, buildWebPageJsonLd, SITE_URL } from "@/lib/seo";
-import { dateRoute } from "@/lib/seo/fraicheur";
 import { HANDICAP_PARTENAIRES } from "@/server/qualiopi/legal/legal-mentions";
 import { getReferentHandicapPublicStrict } from "@/server/qualiopi/config/referent-handicap-public";
 import { mesuresHandicapTextes } from "@/content/accessibilite/mesures-handicap";
@@ -131,7 +130,6 @@ export default async function AccessibilityPage({ params }: Props) {
     path: canonicalPath,
     id: `${SITE_URL}/${loc}${canonicalPath}`,
     name: isFr ? "Déclaration d'accessibilité" : "Accessibility statement",
-    dateModified: dateRoute("/accessibilite"),
   });
 
   return (

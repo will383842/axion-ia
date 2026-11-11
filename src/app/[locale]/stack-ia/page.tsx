@@ -30,7 +30,6 @@ import {
   buildCollectionPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { dateRoute } from "@/lib/seo/fraicheur";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -184,7 +183,7 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = dateRoute(), même source que le sitemap),
+  // CollectionPage JSON-LD — signal de fraîcheur (dateModified calculé par la fabrique depuis `path`, même source que le sitemap),
   // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
   // elle-même pour l'AEO/GEO.
   const collectionPageJsonLd = buildCollectionPageJsonLd({
@@ -193,7 +192,6 @@ export default async function StackIaPage({ params }: Props) {
     name: isFr
       ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
       : "Operational AI stack 2026 · Axion-IA consultancy",
-    dateModified: dateRoute("/stack-ia"),
     isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
   });
 

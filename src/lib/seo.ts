@@ -4,7 +4,12 @@ import { env } from "@/env";
 import { isEnLocaleDisabled } from "@/lib/i18n/en-to-fr-redirect";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { FOUNDER, FOUNDER_PERSON_ID, founderUrl, BRAND, CONTACT_PUBLIC } from "@/lib/brand";
-import { DESCRIPTION_ENTITE_FR, DESCRIPTION_SITE_FR } from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_ENTITE_EN,
+  DESCRIPTION_ENTITE_FR,
+  DESCRIPTION_SITE_EN,
+  DESCRIPTION_SITE_FR,
+} from "@/content/journee-ia-commun";
 import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { EDITORIAL_BASELINE_ISO, dateModifiedDeChemin } from "@/lib/seo/fraicheur";
@@ -655,7 +660,9 @@ export function buildServiceJsonLd({
   const url = `${SITE_URL}/${locale}${path}`;
 
   // Audit perfection 2026-05-12 : auto-injection `areasServed` par défaut
-  // (France + 13 régions indexable + top villes) si la page n'a rien passé
+  // (France + régions indexables, métropole + DROM — AUCUNE ville depuis
+  // l'audit du 2026-11-11 : ~2 157 villes avec URL pesaient ~248 Ko par nœud)
+  // si la page n'a rien passé
   // explicitement. Élimine le boilerplate sur les ~25 pages services qui
   // utilisaient `buildServiceJsonLd` sans préciser leur couverture. Pour
   // bypass (ex. service hors France), passer explicitement `areasServed: []`.
@@ -1183,9 +1190,7 @@ export function buildOrganizationJsonLd({
     // Positionnement actuel (audit SEO 2026-11-11, B3) : partenaire IA des PME et
     // des TPE, offre phare La Journée IA. Texte repris de `journee-ia-commun.ts`
     // (mêmes phrases que l'accueil et `llms.txt`), jamais réécrit ici.
-    description: isFr
-      ? DESCRIPTION_ENTITE_FR
-      : "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises: the audit in the morning, team training in the afternoon.",
+    description: isFr ? DESCRIPTION_ENTITE_FR : DESCRIPTION_ENTITE_EN,
     // Slogan de marque (SSOT `BRAND`) — signal d'identité pour le Knowledge
     // Panel + citabilité LLM (audit Knowledge Panel 2026-07-06).
     slogan: isFr ? BRAND.sloganFr : BRAND.sloganEn,
@@ -1351,9 +1356,7 @@ export function buildWebsiteJsonLd({ locale }: WebsiteJsonLdInput) {
     name: "Axion-IA",
     url: `${SITE_URL}/${locale}`,
     inLanguage: locale,
-    description: isFr
-      ? DESCRIPTION_SITE_FR
-      : "Axion-IA, the AI partner for SMEs and small businesses across France. Flagship offer: La Journée IA, audit in the morning, training in the afternoon, at your premises.",
+    description: isFr ? DESCRIPTION_SITE_FR : DESCRIPTION_SITE_EN,
     publisher: { "@id": `${SITE_URL}/#organization` },
     potentialAction: {
       "@type": "SearchAction",

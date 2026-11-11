@@ -18,8 +18,8 @@
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 import { buildImageObjectJsonLd } from "./image-seo.service";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { BRAND } from "@/lib/brand";
-import { DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
+import { BRAND, CONTACT_PUBLIC } from "@/lib/brand";
+import { DESCRIPTION_ENTITE_EN, DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
 
 const SITE_NAME = "Axion-IA";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -63,10 +63,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
   // brand "Axion-IA" (cf. mémoire axionia_naming_brand_vs_project 2026-05-08).
   // STOP & ASK : si le handle X officiel devient `@axionia` ou `@axion_ia`,
   // mettre à jour ici + dans image-seo-enrichment.service.ts User-Agent.
-  const sameAs: string[] = [
-    "https://www.linkedin.com/company/axion-ia-france",
-    "https://x.com/AxionIA",
-  ];
+  const sameAs: string[] = [CONTACT_PUBLIC.linkedinEntreprise, "https://x.com/AxionIA"];
   if (args.wikidataQid) sameAs.push(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
 
   return {
@@ -84,10 +81,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
       width: 512,
       height: 512,
     },
-    description:
-      args.inLanguage === "fr-FR"
-        ? DESCRIPTION_ENTITE_FR
-        : "Axion-IA, the AI partner for SMEs and small businesses, works across France. Flagship offer: La Journée IA, at your premises.",
+    description: args.inLanguage === "fr-FR" ? DESCRIPTION_ENTITE_FR : DESCRIPTION_ENTITE_EN,
     sameAs,
     // Aligné sur le nœud `#organization` du layout (`seo.ts`) : même `@id`, donc
     // mêmes faits (audit SEO 2026-11-11). Avant : 2024 ici, 2026 là-bas.

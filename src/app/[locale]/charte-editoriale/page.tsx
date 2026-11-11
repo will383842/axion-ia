@@ -89,9 +89,6 @@ export default async function CharteEditorialePage({ params }: Props) {
       : "Axion-IA public editorial policy — mission, sources, AI transparency, corrections.",
     inLanguage: isFr ? "fr-FR" : "en-US",
     datePublished: "2026-05-18",
-    // dateRoute() = date réelle de la route, même source que le sitemap (I2), signal de fraîcheur AEO (re-render ISR quotidien). LAST_REVIEWED
-    // reste la date éditoriale affichée en UX (révision substantielle manuelle).
-    dateModified: dateRoute("/charte-editoriale"),
     speakable: {
       selectors: [".tldr-answer", '[data-aeo="tldr"]'],
     },

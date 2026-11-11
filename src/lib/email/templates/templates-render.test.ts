@@ -76,7 +76,8 @@ describe("footer social — selon la famille de l'e-mail", () => {
    * arbitre — trois surfaces d'entreprise et le profil PERSONNEL LinkedIn.
    */
   const LIENS_SOCIAUX = [
-    "https://www.linkedin.com/company/axion-ia-france/",
+    // Sans barre finale : valeur de `COORDONNEES_PUBLIQUES.linkedinEntreprise`.
+    "https://www.linkedin.com/company/axion-ia-france",
     "https://www.facebook.com/axioniacom",
     "https://x.com/AxionIAFrance",
     "https://www.linkedin.com/in/williamsjullin/",

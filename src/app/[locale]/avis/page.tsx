@@ -39,7 +39,6 @@ import {
   buildItemListJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { dateRoute } from "@/lib/seo/fraicheur";
 import {
   getPublishedReviews,
   getAggregateRating,
@@ -207,7 +206,6 @@ export default async function AvisHubPage({ params, searchParams }: Props) {
     name: "Avis clients Axion-IA",
     description:
       "Retours d'expérience clients sur les services IA d'Axion-IA (audit, formation, implémentation, accompagnement, sites web augmentés).",
-    dateModified: dateRoute("/avis"),
   });
 
   const itemListJsonLd =
