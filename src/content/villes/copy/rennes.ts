@@ -47,7 +47,7 @@ export const RENNES_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT.",
+      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI rennaises — site vitrine premium pour scale-ups French Tech Atalante, espace client interactif numérique/agroalimentaire, dashboard métier connecté à votre CRM/ERP ou MES industriel (La Janais, Valorial). Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -741,7 +741,7 @@ export const RENNES_COPY: VilleCopy = {
           "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur (IFS Food, ISO 27001 sur demande).",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. Price on request. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin.",
         whyHere: [
           "Rennes brings together highly specialised profiles — a developer or project manager at Atalante, a quality director at Valorial, a product manager at a French Tech scale-up — who need coaching rooted in their precise sector constraints, not a generic course.",
           "The IRISA/Inria ecosystem produces deep-tech profiles seeking to master advanced integrations (fine-tuning, RAG, agents): 1-to-1 adapts the complexity level session by session.",
@@ -780,7 +780,7 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "Entry-level 1-to-1 coaching — freelancer, developer, consultant or Rennes digital or agri-food micro-business executive.",
           },
@@ -826,7 +826,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Is there a minimum duration or session commitment?",
-            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+            a: "No. No lock-in, no subscription contract. You start with a first session, priced on request. Continuation is decided after each session based on your progress.",
           },
         ],
         guarantees:

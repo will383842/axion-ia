@@ -770,7 +770,7 @@ export const PARIS_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Paris freelancers, consultants and micro-business owners who want to gain AI efficiency on their daily tasks.",
           },
