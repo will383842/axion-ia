@@ -216,7 +216,7 @@ export const HAGUENAU_COPY: VilleCopy = {
           },
           {
             q: "How quickly do we receive a quote for a site in Haguenau?",
-            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Williams then travels on site to Haguenau (TER station 15 minutes from Strasbourg, A4 via the D1340) for scoping before any development.",
+            a: "We deliver a quote from 24 to 48 hours depending on project complexity. Williams then travels on site to Haguenau for scoping before any development.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const HAGUENAU_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Haguenau ?",
-      a: "Oui. Williams se déplace à Haguenau sous 5 jours ouvrés. L'accès s'effectue par la gare de Haguenau (TER toutes les 15 min depuis Strasbourg), l'A4 via la D1340 ou l'aéroport de Strasbourg-Entzheim à 40 km.",
+      a: "Oui. Williams se déplace à Haguenau sous 5 jours ouvrés.",
     },
     {
       q: "Quelles communes de l'agglomération haguenovienne couvrez-vous ?",

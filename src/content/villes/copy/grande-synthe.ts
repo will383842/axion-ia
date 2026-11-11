@@ -232,7 +232,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",
-      a: "Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation. Accès depuis Paris par TGV (1 h 30 jusqu'à Dunkerque) puis 6 km en voiture.",
+      a: "Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Couvrez-vous les communes proches de Grande-Synthe ?",

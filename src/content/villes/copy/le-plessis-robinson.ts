@@ -230,7 +230,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il au Plessis-Robinson ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, au Plessis-Robinson et dans les communes voisines (Clamart, Châtenay-Malabry, Sceaux, Antony). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerces robinsonnais ?",

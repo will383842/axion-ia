@@ -230,7 +230,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Mureaux et dans la vallée de Seine ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, aux Mureaux et dans les communes voisines (Verneuil-sur-Seine, Meulan-en-Yvelines, Aubergenville, Mantes-la-Jolie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants de la filière spatiale ?",

@@ -58,7 +58,7 @@ export const JACOU_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention sur site à Jacou ?",
-      a: "Déplacement de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les TPE et commerces pressés, audit visio possible sous 48 h. Accès tram T2 direct depuis Montpellier centre.",
+      a: "Déplacement de nos consultants sous 5 jours ouvrés après validation de la mission. Pour les TPE et commerces pressés, audit visio possible sous 48 h.",
     },
     {
       q: "Quelles garanties RGPD pour les données traitées à Jacou ?",

@@ -16,6 +16,8 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
+import { execFileSync } from "node:child_process";
+
 import { describe, expect, it } from "vitest";
 
 const DOSSIER = join(process.cwd(), "src", "content", "villes", "copy");
@@ -178,7 +180,7 @@ const MOTIFS: readonly Motif[] = [
  * en FR comme en EN (« travelling from », « travel costs from »).
  */
 const REGLE_GENERALE =
-  /(?:se déplac|déplacements?|interventions?|intervenons|consultants?|équipe|experts?|Williams|[Nn]ous|\bon\b|[Aa]ccès rapide|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
+  /(?:se déplac|déplacements?|interventions?|intervenons|[Ii]ntervenir|consultants?|équipe|experts?|Williams|[Nn]ous|\bon\b|[Aa]ccès|[Cc]ouverture|accédez-vous|missions?)[^."?]{0,80}depuis (?!le |la |les |l'|son |sa |votre |vos )[A-ZÉ]/u;
 const REGLE_GENERALE_EN =
   /(?:travel|travels|travelling|traveling|consultants?|experts?|Williams|we send|we travel)\b[^."?]{0,60}\b(?:from|travelling from|travels from) (?:Paris|Lille|Lyon|Bordeaux|Nantes|Versailles|Marseille|Toulouse|Strasbourg|Rennes|Nice|Montpellier|Rouen|Caen)\b/u;
 const QUESTION_MISSION = /Comment se (?:passe|déroule) une (?:mission|intervention)[^"?]* depuis /u;
@@ -186,13 +188,12 @@ const QUESTION_MISSION = /Comment se (?:passe|déroule) une (?:mission|intervent
 /**
  * Liste blanche ÉTROITE : faux positifs de la règle générale.
  *  · « …équipes pilotent l'outil en autonomie depuis <Ville> » : ce sont les
- *    équipes DU CLIENT (autonomie après la mission), pas les nôtres ;
- *  · « TER station N minutes from <Ville> » : accès au lieu pour le client.
+ *    équipes DU CLIENT (autonomie après la mission), pas les nôtres.
  */
 const LISTE_BLANCHE: readonly RegExp[] = [
-  // Indication d'accès au lieu pour le client (gare à N minutes de Strasbourg), pas une origine d'équipe.
-  /TER station \d+ minutes from /u,
   /[ée]quipes?[^."?]{0,80}autonomie depuis /u,
+  // Accès AU lieu pour le client (depuis la commune elle-même ou un axe routier), pas une origine d'équipe.
+  /[Aa]ccès[^."?]{0,40}(?:directs? )?depuis (?:Loos|A8)\b/u,
 ];
 
 function fautes(motifs: readonly RegExp[]): string[] {
@@ -252,6 +253,15 @@ describe("villes · lot 2/3 sans fausse présence locale", () => {
       ]) {
         expect(REGLE_GENERALE.test(saine), saine).toBe(false);
       }
+      for (const fautive of [
+        "Accès tram T2 direct depuis Montpellier centre.",
+        "Couverture depuis Tours (45 min voiture).",
+        "Comment accédez-vous à Lognes depuis Paris ?",
+        "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser.",
+      ]) {
+        expect(REGLE_GENERALE.test(fautive), fautive).toBe(true);
+      }
+      expect(REGLE_GENERALE.test("Métro ligne 11, Châtelet à 20 min.")).toBe(false);
       expect(REGLE_GENERALE_EN.test("Our consultants travel from Paris to your site.")).toBe(true);
       expect(REGLE_GENERALE_EN.test("Travel costs are billed separately.")).toBe(false);
       expect(QUESTION_MISSION.test("Comment se déroule une intervention depuis Nantes ?")).toBe(
@@ -266,5 +276,48 @@ describe("villes · lot 2/3 sans fausse présence locale", () => {
     it("0 occurrence de la règle générale (FR + EN + questions) hors liste blanche", () => {
       expect(fautes([REGLE_GENERALE, REGLE_GENERALE_EN, QUESTION_MISSION])).toEqual([]);
     });
+  });
+});
+
+describe("villes · lot 2/3 · une réponse « communes proches » garde sa liste", () => {
+  const QR = /q:\s*"((?:[^"\\]|\\.)*)",\s*\n\s*a:\s*"((?:[^"\\]|\\.)*)"/g;
+  const AVEC_LISTE = /\([^()]*,[^()]*\)|(?:voisines|limitrophes)[^.]*,/u;
+  const COMMUNES = /communes (?:proches|voisines)/u;
+
+  it("motif vivant", () => {
+    expect(AVEC_LISTE.test("Oui, à Meudon et dans les communes voisines (Sèvres, Clamart).")).toBe(
+      true,
+    );
+    expect(AVEC_LISTE.test("Oui. Nous intervenons partout en France.")).toBe(false);
+  });
+
+  it("aucune réponse du lot n'a perdu sa liste de communes par rapport à origin/main", () => {
+    const perdues: string[] = [];
+    for (const nom of TRANCHE) {
+      let ref: string;
+      try {
+        ref = execFileSync("git", ["show", `origin/main:src/content/villes/copy/${nom}`], {
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+          maxBuffer: 8 * 1024 * 1024,
+        });
+      } catch {
+        continue; // pas de référence (fichier neuf, ou origin/main absent)
+      }
+      const actuel = [...readFileSync(join(DOSSIER, nom), "utf8").matchAll(QR)];
+      const avant = [...ref.matchAll(QR)];
+      if (avant.length !== actuel.length) continue;
+      avant.forEach((m, i) => {
+        const a = m[2] ?? "";
+        if (
+          COMMUNES.test(`${m[1]} ${a}`) &&
+          AVEC_LISTE.test(a) &&
+          !AVEC_LISTE.test(actuel[i]?.[2] ?? "")
+        ) {
+          perdues.push(`${nom} · ${m[1]}`);
+        }
+      });
+    }
+    expect(perdues).toEqual([]);
   });
 });

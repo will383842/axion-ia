@@ -53,7 +53,7 @@ export const LAGNIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lagnieu et dans le Bugey ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, à Lagnieu et dans les communes voisines (Ambérieu-en-Bugey, Belley, Saint-Vulbas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Bugey ?",

@@ -170,6 +170,13 @@ const REGLE_GENERALE = [
   [re(",? (?:et )?accès rapide[^.]*? depuis <NOM>[^.]*(?=\\.)"), ""],
   [re(" \\(souvent moins, étant basé à Paris\\)"), ""],
   [re("(itérations à distance) depuis <NOM>(?: \\([^)]*\\))?"), "$1"],
+  // Relecture Opus 4 : « Accès / Couverture / accédez-vous / Intervenir … depuis <Ville> ».
+  [
+    re('Comment accédez-vous à ([^"?]*?) depuis [^"?]*? ?\\?'),
+    "Comment se déroule une intervention à $1 ?",
+  ],
+  [re(" (?:Accès|Couverture) depuis [A-ZÉ][^.]*\\."), ""],
+  [re("(Intervenir [^(]*?) \\([^)]*depuis [A-ZÉ][^)]*\\)"), "$1"],
   // EN
   [re("(travel costs) from [A-Z][\\p{L}-]+"), "$1"],
   [

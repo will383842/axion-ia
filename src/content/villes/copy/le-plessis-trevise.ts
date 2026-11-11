@@ -36,8 +36,8 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
       en: "Réaliser un audit IA au Plessis-Trévise pour les TPE et PME du centre urbain dense (4 887 hab/km²) — identifier les automatisations prioritaires pour commerçants, artisans et professions libérales.",
     },
     interventions: {
-      fr: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
-      en: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
+      fr: "Intervenir au Plessis-Trévise pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
+      en: "Intervenir au Plessis-Trévise pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",

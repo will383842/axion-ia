@@ -64,7 +64,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et logistiques du val de Loire sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation supply chain, agents IA service client B2B et gestion documentaire.",
     },
     {
-      q: "Comment accédez-vous à Orée d'Anjou depuis Nantes ou Angers ?",
+      q: "Comment se déroule une intervention à Orée d'Anjou ?",
       a: "Nous intervenons partout en France, sur place ou à distance. La gare TER d'Ancenis est à 5 min (pont de Loire).",
     },
   ],

@@ -230,7 +230,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcq-en-Barœul et dans la MEL ?",
-      a: "Oui. Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, à Marcq-en-Barœul et dans les communes voisines (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil et agences marcquois ?",

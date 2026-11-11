@@ -232,11 +232,11 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
-      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
+      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 dessert la commune.",
     },
     {
       q: "Quelles communes proches couvrez-vous ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Tout le sud-est parisien est accessible facilement.",
+      a: "Oui, à Ivry-sur-Seine et dans les communes voisines (Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre, Villejuif). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",

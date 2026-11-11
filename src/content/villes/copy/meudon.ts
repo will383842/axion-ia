@@ -230,7 +230,7 @@ export const MEUDON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meudon et dans l'ouest des Hauts-de-Seine ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Meudon et des communes voisines (Sèvres, Clamart, Boulogne-Billancourt, Issy-les-Moulineaux). Nous intervenons partout en France, sur place ou à distance.",
+      a: "Oui, à Meudon et dans les communes voisines (Boulogne-Billancourt, Sèvres, Clamart, Issy-les-Moulineaux, Vélizy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les bureaux d'études et structures techniques ?",

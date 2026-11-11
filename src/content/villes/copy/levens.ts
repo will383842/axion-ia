@@ -49,7 +49,7 @@ export const LEVENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Levens et moyen-pays niçois ?",
-      a: "Oui, Axion-IA intervient à Levens et dans tout le moyen-pays niçois (Tourrette-Levens, Saint-Martin-du-Var, Aspremont, Castagniers). Couverture vers la Vésubie et accès depuis Nice centre (30 min M19).",
+      a: "Oui, Axion-IA intervient à Levens et dans tout le moyen-pays niçois (Tourrette-Levens, Saint-Martin-du-Var, Aspremont, Castagniers). Couverture vers la Vésubie.",
     },
     {
       q: "Travaillez-vous avec les gîtes et acteurs du tourisme nature ?",
