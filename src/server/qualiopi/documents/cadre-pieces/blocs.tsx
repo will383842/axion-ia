@@ -78,16 +78,6 @@ export function NdaFieldRow({ label = "NDA", nda }: NdaFieldRowProps): React.Rea
   return <FieldRow label={label} value={numero} />;
 }
 
-// ---- SignatureZone ------------------------------------------
-
-/**
- * Preuve de signature RÉELLE d'une partie, telle qu'elle sera rendue.
- *
- * 🔴 Toutes les valeurs sont FIGÉES au moment de la signature, jamais relues
- * depuis l'entité vivante. Le contact peut être renommé, réaffecté ou anonymisé
- * ensuite ; ce que le PDF affiche doit rester ce qui a été signé.
- */
-
 export type BulletVariant = "default" | "check" | "objective";
 
 interface BulletListProps {
