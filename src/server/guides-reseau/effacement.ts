@@ -3,7 +3,8 @@
  *
  * 🔴 AUCUNE SUPPRESSION. Ce chemin fait deux choses, et seulement deux :
  *   1. l'adresse est mise À L'ÉCART des envois — le mécanisme d'opposition existant
- *      (`enregistrerOppositionPourAdresse` : empreinte, CRM, relances programmées retirées) ;
+ *      (`enregistrerOppositionPourAdresse` : empreinte, CRM, relances programmées retirées) —
+ *      et ses contacts de la page guide passent à `merci_statut = 'ecarte'` ;
  *   2. UNE alerte e-mail part vers l'opérateur (`destinataireAlertesInternes`), adresse MASQUÉE
  *      par `redactEmail`. L'effacement lui-même est une décision humaine.
  *
@@ -17,6 +18,7 @@ import { destinataireAlertesInternes } from "@/lib/destinataires-internes";
 import { redactEmail } from "@/lib/pii-redaction";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { enqueueEmail } from "@/server/queue/queues";
+import { mettreContactsAEcart } from "./mise-a-l-ecart";
 import { occurredAtValide, type DemandeEffacement } from "./contrat";
 
 export const ORIGINE_OPPOSITION_EFFACEMENT = "message-prive-effacement";
@@ -42,6 +44,8 @@ export async function traiterEffacement(
     origine: ORIGINE_OPPOSITION_EFFACEMENT,
   });
   if (!ecartee.ok) throw new Error("[guides-reseau] mise à l'écart impossible");
+  // Les contacts de la page guide passent à « ecarte » (jamais supprimés ; rejeu sans effet).
+  await mettreContactsAEcart(d.email);
 
   // 2. UNE alerte, adresse masquée. jobId = clé d'idempotence : doublon file impossible.
   const quand = occurredAtValide(d.occurredAt, maintenant).toISOString();
