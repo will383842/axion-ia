@@ -172,19 +172,18 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
   // R7 (08/11/2026, ordre de Williams) : plus AUCUNE somme au public — le bloc commission et la
   // FAQ disent la règle sans chiffre (`commission-publique.ts`). Ce test affirmait « exactement
   // deux sommes » ; il affirme désormais qu'il n'y en a aucune.
-  it("aucun mot interdit, aucun téléphone ; aucune somme, ni dans le bloc commission ni dans la FAQ", async () => {
+  it("aucun mot interdit, aucun téléphone ; la somme vit UNIQUEMENT dans le bloc commission et la FAQ, via pricing.ts", async () => {
     const h = await rendre();
     const t = texte(h);
     expect(t).not.toMatch(/qualiopi|parrain|vendre|commercial|recrutement|facebook/i);
     expect(t).not.toMatch(/(?:\+33|0)\s?[1-9](?:[\s.-]?\d{2}){4}/);
     expect(t).not.toMatch(/tel:/i);
-    // Aucune somme : ni le bloc commission, ni la réponse de la FAQ.
+    // Exactement deux sommes : le bloc commission et la réponse de la FAQ (Williams, 11/11/2026 :
+    // la commission s'affiche, c'est un atout).
     const montants = t.match(/\d[\d\s]*\s€/g) ?? [];
-    expect(montants).toHaveLength(0);
-    expect(t).toMatch(
-      /Une commission sur chaque mission signée et payée, détaillée dans votre contrat/,
-    );
-    expect(t).toMatch(/Sur chaque mission signée et payée, détaillée dans votre contrat/);
+    expect(montants).toHaveLength(2);
+    expect(t).toMatch(/À titre indicatif, 500 € HT par journée/);
+    expect(t).toMatch(/500 € HT par journée de formation facturée/);
 
     // PAS dans le titre <h1>, ni dans le sous-titre du héro, ni dans le badge.
     const h1 = h.match(/<h1[\s\S]*?<\/h1>/)?.[0] ?? "";
@@ -194,13 +193,12 @@ describe("la page vidéo des apporteurs : contenu servi", () => {
     const tete = t.slice(0, t.indexOf("Devenir apporteur"));
     expect(tete).not.toMatch(/€|gagn/);
 
-    // Le bloc commission est là, sans chiffre.
+    // Le montant n'apparaît que dans le bloc et dans la FAQ.
     const bloc = h.slice(
       h.indexOf('aria-labelledby="vsl-commission"'),
       h.indexOf("</section>", h.indexOf('aria-labelledby="vsl-commission"')),
     );
-    expect(texte(bloc)).toContain("Sur chaque mission signée");
-    expect(texte(bloc)).not.toMatch(/€/);
+    expect(texte(bloc)).toContain("500 € HT");
     const horsBlocEtFaq = h.replace(bloc, "").replace(/<details[\s\S]*?<\/details>/g, "");
     const reste = texte(horsBlocEtFaq).match(/\d[\d\s]*\s€/g) ?? [];
     expect(reste).toHaveLength(0);
@@ -324,9 +322,8 @@ describe("l'interrupteur du bloc commission", () => {
     );
     expect(h).not.toContain('aria-labelledby="vsl-commission"');
     expect(texte(h)).not.toContain("Votre commission");
-    // La FAQ garde la règle, sans somme (R7, 08/11/2026).
-    expect(texte(h)).toMatch(/Une commission sur chaque mission signée et payée/);
-    expect(texte(h)).not.toMatch(/\d\s*€/);
+    // La FAQ garde la somme « à titre indicatif ».
+    expect(texte(h)).toMatch(/À titre indicatif, 500 € HT par journée/);
     expect(h).toContain('id="vsl-formulaire"');
     vi.doUnmock("@/content/recrutement/vsl-apporteur");
     vi.resetModules();

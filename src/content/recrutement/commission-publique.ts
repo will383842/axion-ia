@@ -18,7 +18,10 @@
 // Témoin : `__tests__/apporteurs-sans-montant-public.spec.tsx` (rendu réel des pages).
 
 /** Interrupteur unique de l'affichage chiffré des commissions au public. */
-export const COMMISSIONS_PUBLIQUES_AFFICHEES: boolean = false;
+// 2026-11-11 — Williams : « il ne faut pas cacher les montants des commissions, au contraire c'est un
+// atout ». Allumé : la commission de la Journée IA (500 € HT, `pricing.ts`) s'affiche, toujours « à titre
+// indicatif ». Seuls les montants des audits et des formations restent masqués (ordre R7 du 08/11).
+export const COMMISSIONS_PUBLIQUES_AFFICHEES: boolean = true;
 
 /** Le discours qualitatif qui remplace les montants. Aucun chiffre, aucune promesse. */
 export const COMMISSION_QUALITATIVE = {
