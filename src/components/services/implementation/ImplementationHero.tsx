@@ -9,7 +9,7 @@
  * SpeakableSpecification ciblée hero + sous-titre (AEO 2026).
  */
 
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
@@ -25,6 +25,7 @@ export interface ImplementationHeroProps {
 }
 
 export function ImplementationHero({ isFr, villeContext }: ImplementationHeroProps): ReactNode {
+  const gridId = useId();
   // 8 nœuds satellites — 1 par fonction métier (ordre = disposition horaire SVG).
   const heroNodes = isFr
     ? [
@@ -90,7 +91,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
           xmlns="http://www.w3.org/2000/svg"
         >
           <defs>
-            <pattern id="ih-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+            <pattern id={gridId} width="40" height="40" patternUnits="userSpaceOnUse">
               <path
                 d="M 40 0 L 0 0 0 40"
                 fill="none"
@@ -99,7 +100,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
               />
             </pattern>
           </defs>
-          <rect width="100%" height="100%" fill="url(#ih-grid)" />
+          <rect width="100%" height="100%" fill={`url(#${gridId})`} />
         </svg>
 
         <Container className="relative">

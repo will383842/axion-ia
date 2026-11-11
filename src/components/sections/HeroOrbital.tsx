@@ -150,8 +150,7 @@ export function HeroOrbital({
         overflow="visible"
       >
         <defs>
-          {/* Halos atmosphériques diffus — terracotta centre, primary haut-droit,
-              sage bas-gauche. Crée un effet de lumière naturelle. */}
+          {/* Plus de halos : le fond reste en aplat (charte 2027, ni dégradé ni halo). */}
 
           {/* Ombre portée légère pour les satellites — donne profondeur sans
               être tape-à-l'œil. */}
