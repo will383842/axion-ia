@@ -123,14 +123,80 @@ const FICHIERS: string[] = [
 
 // Retire les commentaires (blocs, commentaires JSX, lignes `//`) : un prix cité en
 // commentaire n'est pas affiché. Les `//` d'une URL (« https:// ») sont préservés.
-function sansCommentaires(src: string): string {
-  // Commentaires `//` d'abord (ligne par ligne) : un « /blog/* » dans un commentaire `//`
-  // ne doit pas ouvrir un faux bloc `/* … */`. Les `//` d'une URL (« https:// ») sont préservés.
-  const sansLignes = src
-    .split("\n")
-    .map((l) => l.replace(/(^|[^:"'`\\])\/\/.*$/, "$1"))
-    .join("\n");
-  return sansLignes.replace(/\/\*[\s\S]*?\*\//g, (m) => m.replace(/[^\n]/g, " "));
+export function sansCommentaires(src: string): string {
+  // Balayage caractère par caractère : un « // » ou un « /* » à l'INTÉRIEUR d'une chaîne
+  // (' " `) n'est pas un commentaire (« https://… », « "/* … */" ») et reste scanné ; seuls
+  // les vrais commentaires sont blanchis (les sauts de ligne sont conservés, donc les numéros
+  // de ligne restent exacts). Les chaînes ' et " se ferment en fin de ligne (une apostrophe de
+  // texte JSX ne doit pas avaler la suite du fichier) : l'erreur possible va dans le sens
+  // d'un scan PLUS strict, jamais plus faible.
+  // Gabarits imbriqués : une pile suit les « `…` » et les « ${ … } » qu'ils contiennent, pour
+  // qu'un gabarit dans une expression de gabarit ne ferme pas la chaîne du dehors.
+  // Littéral d'expression régulière (« /\/\// ») : un « // » précédé d'un antislash n'ouvre
+  // pas de commentaire.
+  type Cadre = { type: "gabarit" } | { type: "expr"; accolades: number };
+  const pile: Cadre[] = [];
+  let out = "";
+  let guillemet: string | null = null;
+  for (let i = 0; i < src.length; i++) {
+    const c = src[i] as string;
+    const n = src[i + 1];
+    const haut = pile[pile.length - 1];
+    if (guillemet) {
+      out += c;
+      if (c === "\\" && n !== undefined) {
+        out += n;
+        i++;
+      } else if (c === guillemet || c === "\n") {
+        guillemet = null;
+      }
+      continue;
+    }
+    if (haut?.type === "gabarit") {
+      out += c;
+      if (c === "\\" && n !== undefined) {
+        out += n;
+        i++;
+      } else if (c === "`") {
+        pile.pop();
+      } else if (c === "$" && n === "{") {
+        out += n;
+        i++;
+        pile.push({ type: "expr", accolades: 0 });
+      }
+      continue;
+    }
+    if (haut?.type === "expr") {
+      if (c === "{") haut.accolades++;
+      else if (c === "}") {
+        if (haut.accolades === 0) {
+          pile.pop();
+          out += c;
+          continue;
+        }
+        haut.accolades--;
+      }
+    }
+    if (c === "/" && n === "/" && src[i - 1] !== "\\") {
+      while (i < src.length && src[i] !== "\n") {
+        out += " ";
+        i++;
+      }
+      if (i < src.length) out += "\n";
+      continue;
+    }
+    if (c === "/" && n === "*") {
+      const fin = src.indexOf("*/", i + 2);
+      const stop = fin === -1 ? src.length : fin + 2;
+      out += src.slice(i, stop).replace(/[^\n]/g, " ");
+      i = stop - 1;
+      continue;
+    }
+    if (c === "'" || c === '"') guillemet = c;
+    else if (c === "`") pile.push({ type: "gabarit" });
+    out += c;
+  }
+  return out;
 }
 
 // ── R1 ──────────────────────────────────────────────────────────────────────
@@ -274,6 +340,43 @@ function violations(abs: string): Violation[] {
   });
   return out;
 }
+
+describe("sansCommentaires — ne confond pas une chaîne avec un commentaire", () => {
+  it("blanchit les vrais commentaires, garde les // et /* dans les chaînes", () => {
+    const src = [
+      'const a = "https://x.fr/tarifs"; // commentaire 99 €',
+      "const b = '/* pas un commentaire 49 € */';",
+      "const c = `a // b ${1} 29 €`;",
+      "/* vrai\n commentaire 19 € */ const d = 1;",
+    ].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain('"https://x.fr/tarifs"');
+    expect(out).toContain("49 €");
+    expect(out).toContain("29 €");
+    expect(out).not.toContain("99 €");
+    expect(out).not.toContain("19 €");
+    expect(out.split("\n")).toHaveLength(src.split("\n").length);
+  });
+
+  it("n'ouvre pas de commentaire sur un « // » précédé d'un antislash (regex /\\/\\//)", () => {
+    const src = ['const r = /\\/\\//; const p = 49 + " €";', "// vrai 99 €"].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain('49 + " €"');
+    expect(out).not.toContain("99 €");
+  });
+
+  it("gère les gabarits imbriqués sans mal repérer la fin de chaîne", () => {
+    const src = [
+      'const a = `x ${ cond ? `y // 29 €` : "z" } // fin 39 € `;',
+      "const b = 1; // vrai 99 €",
+    ].join("\n");
+    const out = sansCommentaires(src);
+    expect(out).toContain("29 €");
+    expect(out).toContain("39 €");
+    expect(out).not.toContain("99 €");
+    expect(out.split("\n")).toHaveLength(2);
+  });
+});
 
 describe("R7 — pages et composants publics : aucun montant hors Journée IA", () => {
   it("le périmètre scanné est non vide et contient les pages à fort trafic", () => {
