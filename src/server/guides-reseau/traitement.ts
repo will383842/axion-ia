@@ -15,12 +15,12 @@
  * confidentialité et aucune proposition d'autres envois.
  * 🔴 Une adresse OPPOSÉE (`email_oppositions`) ne reçoit ni guide ni bouton : aucune réponse à la
  * personne, aucune ligne créée. Rien n'est supprimé.
- * 🔴 L'adresse n'est jamais journalisée en clair (`redactEmail`).
+ * 🔴 L'adresse n'est jamais journalisée, même partiellement : seul le début de l'empreinte de
+ * recherche (`empreinteCourte`, non réversible) identifie une ligne de journal.
  */
 import crypto from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { redactEmail } from "@/lib/pii-redaction";
 import { recordConsentEvent } from "@/lib/consents";
 import { estOpposee } from "@/server/email/opposition";
 import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
@@ -212,6 +212,11 @@ export interface CrochetsTraitement {
   }) => Promise<void>;
 }
 
+/** Début (8 car.) de l'empreinte de recherche : suffit à relier deux lignes, ne dit rien de l'adresse. */
+function empreinteCourte(emailKey: string): string {
+  return emailKey.slice(0, 8);
+}
+
 export async function traiterDemande(
   d: DemandeGuideReseau,
   maintenant: Date = new Date(),
@@ -229,7 +234,7 @@ export async function traiterDemande(
     console.warn(
       JSON.stringify({
         event: "guides_reseau_demande",
-        adresse: redactEmail(d.email),
+        adresse_empreinte: empreinteCourte(emailKey),
         reseau: d.reseau,
         guide: "opposee",
       }),
@@ -278,7 +283,7 @@ export async function traiterDemande(
   console.warn(
     JSON.stringify({
       event: "guides_reseau_demande",
-      adresse: redactEmail(d.email),
+      adresse_empreinte: empreinteCourte(emailKey),
       reseau: d.reseau,
       guide,
       nouvelle: demande.nouvelle,
