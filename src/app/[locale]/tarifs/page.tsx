@@ -257,7 +257,7 @@ export default async function PricingPage({ params }: Props) {
           id: "tva",
           question: "Les tarifs incluent-ils la TVA ?",
           answer:
-            "Non. Nos prix et nos devis sont établis hors taxes. La TVA au taux en vigueur s'ajoute sur les factures, sauf clients hors UE (auto-liquidation B2B intra-UE).",
+            "Non. Nos prix et nos devis sont établis hors taxes. La TVA au taux en vigueur s'ajoute sur toutes nos factures.",
         },
         {
           id: "engagement",

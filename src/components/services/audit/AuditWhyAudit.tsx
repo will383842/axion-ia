@@ -44,7 +44,7 @@ export function AuditWhyAudit({ isFr }: AuditWhyAuditProps): ReactNode {
   const proofs: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
     { icon: Cpu, label: isFr ? "100 % dédié à l'IA" : "100% AI-focused" },
     { icon: MapPin, label: isFr ? "Partout en France" : "Across France" },
-    { icon: ScrollText, label: isFr ? "Cadré AI Act 2026" : "AI Act 2026 ready" },
+    { icon: ScrollText, label: isFr ? "Repères AI Act 2026 intégrés" : "AI Act 2026 ready" },
     { icon: Workflow, label: isFr ? "Du diagnostic à l'exécution" : "From diagnosis to delivery" },
   ];
 

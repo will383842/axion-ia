@@ -278,7 +278,7 @@ export function AuditWhyChooseUs({ isFr }: AuditWhyChooseUsProps): ReactNode {
                 { icon: MapPin, label: "Présentiel partout en France" },
                 { icon: Award, label: "Ingénieurs & experts seniors" },
                 { icon: Code2, label: "Solutions sur-mesure, pas de boîte noire" },
-                { icon: ShieldCheck, label: "Cadré RGPD & AI Act 2026" },
+                { icon: ShieldCheck, label: "RGPD et AI Act 2026 pris en compte" },
               ]
             : [
                 { icon: MapPin, label: "On-site across France" },
