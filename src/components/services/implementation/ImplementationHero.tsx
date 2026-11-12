@@ -54,7 +54,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `Implémentation IA à ${villeContext.name}`
       : `AI implementation in ${villeContext.name}`
     : isFr
-      ? "On implémente l'IA dans votre entreprise,"
+      ? "Agents IA et automatisations"
       : "We implement AI across your company,";
 
   const titleEm = villeContext
@@ -62,7 +62,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `& région ${villeContext.region}`
       : `& ${villeContext.region} region`
     : isFr
-      ? "quel que soit votre besoin."
+      ? "sur mesure pour votre entreprise."
       : "whatever you need.";
 
   const description = villeContext
@@ -127,7 +127,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/contact" size="lg" track="impl-hero-primary">
-                  {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
+                  {isFr ? "Décrire mon besoin" : "Describe my need"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit" variant="outline" size="lg" track="impl-hero-audit">

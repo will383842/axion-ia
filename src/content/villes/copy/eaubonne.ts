@@ -226,7 +226,7 @@ export const EAUBONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Eaubonne et Val Parisis ?",
-      a: "Oui, Axion-IA intervient à Eaubonne et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Herblay-sur-Seine, Ermont, Sannois). Couverture nord-ouest Val-d'Oise et accès depuis Paris (25 min Saint-Lazare).",
+      a: "Oui, Axion-IA intervient à Eaubonne et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Herblay-sur-Seine, Ermont, Sannois). Couverture nord-ouest Val-d'Oise.",
     },
     {
       q: "Accompagnez-vous les artisans BTP et commerçants ?",

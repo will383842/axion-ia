@@ -49,7 +49,7 @@ export const CHATEAU_GONTIER_SUR_MAYENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Château-Gontier-sur-Mayenne et dans le sud-Mayenne ?",
-      a: "Oui, Axion-IA intervient à Château-Gontier-sur-Mayenne et dans tout le sud-Mayenne (Cossé-le-Vivien, Craon, Grez-en-Bouère). Nos consultants se déplacent depuis Laval (30 min) ou Angers (50 min).",
+      a: "Oui, Axion-IA intervient à Château-Gontier-sur-Mayenne et dans tout le sud-Mayenne (Cossé-le-Vivien, Craon, Grez-en-Bouère). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires et éleveurs du sud-Mayenne ?",

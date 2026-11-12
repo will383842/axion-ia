@@ -10,17 +10,17 @@ export const ALENCON_COPY: VilleCopy = {
     "Axion-IA accompagne les TPE et PME d'Alençon, préfecture de l'Orne et capitale historique de la dentelle au point d'Alençon (UNESCO 2010). Notre cabinet d'architectes seniors en intelligence artificielle intervient sur site auprès des sous-traitants automobiles de l'écosystème Faurecia, des PME agroalimentaires de la plaine d'Alençon (lait, viande, céréales normandes), des artisans textile-patrimoine du centre historique, des acteurs BTP rénovation, du commerce indépendant et des structures de santé (Polyclinique de l'Orne, EHPAD). Position charnière Normandie / Pays-de-la-Loire à 50 km du Mans, 100 km de Caen et 200 km de Paris via l'A28. Quelques ETI locales (Faurecia, MPO) complètent ce tissu mixte.",
   seoHook: "sous-traitance auto & agroalimentaire",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Alençon (Orne, Normandie) pour auditer, déployer et accompagner les TPE et PME dans leur intégration de l'intelligence artificielle. Nous travaillons sur le tissu local réel : sous-traitance automobile (écosystème Faurecia, équipementiers rang 1 Renault et Stellantis), PME agroalimentaires (lait, viande, céréales de la plaine d'Alençon), artisanat dentelle et textile patrimoine, BTP rénovation du bâti historique, commerce centre-ville, services aux entreprises et santé (Polyclinique de l'Orne, EHPAD du département). Williams se déplace sous 5 jours ouvrés depuis Paris via Le Mans (2h en train, puis A28). Tarifs publics consultables sur la page pricing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Alençon (Orne, Normandie) pour auditer, déployer et accompagner les TPE et PME dans leur intégration de l'intelligence artificielle. Nous travaillons sur le tissu local réel : sous-traitance automobile (écosystème Faurecia, équipementiers rang 1 Renault et Stellantis), PME agroalimentaires (lait, viande, céréales de la plaine d'Alençon), artisanat dentelle et textile patrimoine, BTP rénovation du bâti historique, commerce centre-ville, services aux entreprises et santé (Polyclinique de l'Orne, EHPAD du département). Williams se déplace sous 5 jours ouvrés, en passant par Le Mans (gare TGV, puis A28). Tarifs publics consultables sur la page pricing.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Alençon (Orne, Normandie) pour auditer, déployer et accompagner les TPE et PME dans leur intégration de l'intelligence artificielle. Nous travaillons sur le tissu local réel : sous-traitance automobile (écosystème Faurecia, équipementiers rang 1 Renault et Stellantis), PME agroalimentaires (lait, viande, céréales de la plaine d'Alençon), artisanat dentelle et textile patrimoine, BTP rénovation du bâti historique, commerce centre-ville, services aux entreprises et santé (Polyclinique de l'Orne, EHPAD du département). Williams se déplace sous 5 jours ouvrés depuis Paris via Le Mans (2h en train, puis A28). Tarifs publics consultables sur la page pricing.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui se déplace à Alençon (Orne, Normandie) pour auditer, déployer et accompagner les TPE et PME dans leur intégration de l'intelligence artificielle. Nous travaillons sur le tissu local réel : sous-traitance automobile (écosystème Faurecia, équipementiers rang 1 Renault et Stellantis), PME agroalimentaires (lait, viande, céréales de la plaine d'Alençon), artisanat dentelle et textile patrimoine, BTP rénovation du bâti historique, commerce centre-ville, services aux entreprises et santé (Polyclinique de l'Orne, EHPAD du département). Williams se déplace sous 5 jours ouvrés, en passant par Le Mans (gare TGV, puis A28). Tarifs publics consultables sur la page pricing.",
   ecosystemFr:
     "Alençon, 26 000 habitants intra-muros et 50 000 en agglomération, est la préfecture de l'Orne et un carrefour économique entre Normandie et Pays-de-la-Loire. Le tissu local repose sur quatre piliers : sous-traitance automobile structurée autour de Faurecia (équipementier rang 1 Renault et Stellantis) et son réseau d'équipementiers ; agroalimentaire ancré dans la plaine d'Alençon avec le lait, la viande bovine normande et les céréales, en lien avec Lactalis à Laval (70 km) ; artisanat textile-patrimoine héritier de la dentelle au point d'Alençon inscrite UNESCO 2010 ; santé avec la Polyclinique de l'Orne et un maillage dense d'EHPAD lié au vieillissement départemental. S'y ajoutent un commerce de centre historique (Basilique Notre-Dame, Maison d'Ozé, Musée de la Dentelle, maison natale de Sainte Thérèse de Lisieux) et un secteur BTP rénovation du bâti normand. Quelques ETI locales (MPO, Faurecia) complètent ce paysage à dominante TPE-PME.",
   ecosystemEn:
     "Alençon, 26 000 habitants intra-muros et 50 000 en agglomération, est la préfecture de l'Orne et un carrefour économique entre Normandie et Pays-de-la-Loire. Le tissu local repose sur quatre piliers : sous-traitance automobile structurée autour de Faurecia (équipementier rang 1 Renault et Stellantis) et son réseau d'équipementiers ; agroalimentaire ancré dans la plaine d'Alençon avec le lait, la viande bovine normande et les céréales, en lien avec Lactalis à Laval (70 km) ; artisanat textile-patrimoine héritier de la dentelle au point d'Alençon inscrite UNESCO 2010 ; santé avec la Polyclinique de l'Orne et un maillage dense d'EHPAD lié au vieillissement départemental. S'y ajoutent un commerce de centre historique (Basilique Notre-Dame, Maison d'Ozé, Musée de la Dentelle, maison natale de Sainte Thérèse de Lisieux) et un secteur BTP rénovation du bâti normand. Quelques ETI locales (MPO, Faurecia) complètent ce paysage à dominante TPE-PME.",
   distancesFr:
-    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés depuis nos bases Île-de-France.",
+    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés depuis nos bases Île-de-France.",
+    "Alençon est positionnée à 50 km du Mans (Sarthe) et de sa gare TGV, 100 km de Caen, 150 km de Rennes et 200 km de Paris par l'autoroute A28. La gare SNCF d'Alençon relie Paris en 2 h via Le Mans, ce qui permet un déplacement sur site sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Sous-traitance automobile (équipementiers Faurecia, Renault, Stellantis)",
     "Agroalimentaire normand (lait, viande bovine, céréales plaine d'Alençon)",
@@ -74,7 +74,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const ALENCON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio depuis nos bases Île-de-France.",
+              "Greffe IA sur l'existant (WordPress, Shopify, WooCommerce, PrestaShop, Magento) ou build IA-native : vitrine e-commerce dentelle et patrimoine, portail traçabilité agroalimentaire, outil qualité sous-traitance auto, chatbot RAG multilingue, recherche sémantique, agents. Démos hebdomadaires en visio. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             step: "Recette + mise en ligne",
@@ -229,8 +229,8 @@ export const ALENCON_COPY: VilleCopy = {
 
   faqGeolocalisee: [
     {
-      q: "Axion-IA se déplace-t-il vraiment à Alençon depuis Paris ?",
-      a: "Oui. Williams se déplace sur site à Alençon depuis Paris en train via la gare du Mans (environ 2 h), puis l'A28 ou un transfert local. Le délai standard de déplacement est de 5 jours ouvrés après validation de la prestation, avec confirmation écrite des horaires d'intervention sur site dans la préfecture de l'Orne.",
+      q: "Axion-IA se déplace-t-il vraiment à Alençon ?",
+      a: "Oui. Williams se déplace sur site à Alençon ; la gare du Mans (environ 2 h de Paris) puis l'A28 ou un transfert local desservent la ville. Le délai standard de déplacement est de 5 jours ouvrés après validation de la prestation, avec confirmation écrite des horaires d'intervention sur site dans la préfecture de l'Orne.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants automobiles de Faurecia à Alençon ?",

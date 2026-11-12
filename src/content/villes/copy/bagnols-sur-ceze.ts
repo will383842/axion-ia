@@ -49,7 +49,7 @@ export const BAGNOLS_SUR_CEZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnols-sur-Cèze et nord Gard ?",
-      a: "Oui, Axion-IA intervient à Bagnols-sur-Cèze et dans tout le nord Gard (Pont-Saint-Esprit, Laudun-l'Ardoise, Roquemaure). Nos consultants viennent d'Avignon (40 min) ou Nîmes (45 min).",
+      a: "Oui, Axion-IA intervient à Bagnols-sur-Cèze et dans tout le nord Gard (Pont-Saint-Esprit, Laudun-l'Ardoise, Roquemaure). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants nucléaire de Marcoule ?",

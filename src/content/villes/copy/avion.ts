@@ -64,7 +64,7 @@ export const AVION_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures ESS et associations du bassin minier sur leurs cas IA : automatisation rapports d'activité, agents IA accueil, classification dossiers bénéficiaires, optimisation planning intervenants, outils collaboratifs.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
+      q: "Comment se déroule une mission à Avion ?",
       a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible (hôtels Lens).",
     },
   ],

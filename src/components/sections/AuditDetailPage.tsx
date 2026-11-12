@@ -667,8 +667,8 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
         titleEm={isFr ? "sereinement" : "with confidence"}
         description={
           isFr
-            ? "Un appel où l'on prend le temps de cadrer votre projet à la perfection — pour choisir ensemble le format juste. Réponse sous 48 h ouvrées. Sans engagement."
-            : "A call where we take the time to scope your project perfectly — to choose the right format together. Reply within 48 business hours. No commitment."
+            ? "Un appel où l'on prend le temps de cadrer votre projet à la perfection — pour choisir ensemble le format juste. Sans engagement."
+            : "A call where we take the time to scope your project perfectly — to choose the right format together. No commitment."
         }
         cta={
           <>

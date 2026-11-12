@@ -18207,18 +18207,31 @@ model ContactGuideReseau {
   /// SHA-256 (hex) du texte de la case de consentement.
   consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
   consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// Case FACULTATIVE « informations d'Axion-IA » : 'aucune' (non cochée) ou 'non_transmise'
+  /// (cochée, enregistrée ici ; le CRM ne la reçoit que si l'interrupteur newsletter_optin est allumé).
+  infosStatut         String        @default("aucune") @map("infos_statut") @db.VarChar(20)
+  infosVersion        String?       @map("infos_version") @db.VarChar(64)
+  infosEmpreinte      String?       @map("infos_empreinte") @db.Char(64)
+  infosConsentiLe     DateTime?     @map("infos_consenti_le") @db.Timestamptz(3)
   /// SHA-256 (hex) du jeton du lien : unique, usage unique.
   jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
   /// Référence opaque de la conversation du réseau.
   convRef             String        @map("conv_ref") @db.VarChar(120)
   merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
   merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  /// Preuve de l'accord (migration 20261112000000) : `en_attente` | `confirmee` | `non_verifiee`
+  /// (mise à l'écart, jamais une suppression) | `sans_objet` (MARQUE d'adresse opposée). NULL se
+  /// lit `en_attente`. Distinct de `merci_statut` : ne pas le surcharger.
+  preuveStatut        String?       @map("preuve_statut") @db.VarChar(16)
+  preuveConfirmeeLe   DateTime?     @map("preuve_confirmee_le") @db.Timestamptz(3)
+  preuveEcarteeLe     DateTime?     @map("preuve_ecartee_le") @db.Timestamptz(3)
   createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
   @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
   @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@index([preuveStatut, consentiLe], map: "contacts_guide_reseau_preuve_statut_consenti_le_idx")
   @@map("contacts_guide_reseau")
 }
 

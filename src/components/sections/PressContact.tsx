@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Mail, Languages, Clock } from "lucide-react";
+import { Mail, Languages } from "lucide-react";
 import { Container } from "@/components/layout/Container";
 
 interface PressContactProps {
@@ -16,10 +16,6 @@ interface PressContactProps {
     email: string;
     /** Mailto subject prefilled. */
     subjectLabel: string;
-    /** "Délai de réponse" / "Response time" */
-    responseTimeLabel: string;
-    /** "48 h ouvrées" / "48 business hours" */
-    responseTimeValue: string;
     /** "Langues" / "Languages" */
     languagesLabel: string;
     /** "FR · EN" */
@@ -102,18 +98,6 @@ export function PressContact({ labels }: PressContactProps) {
               </dt>
               <dd className="text-mocha-fg mt-1.5 text-sm font-semibold break-all">
                 {labels.email}
-              </dd>
-            </div>
-            <div className="relative pl-9">
-              <dt className="text-mocha-fg/70 text-[11px] font-semibold tracking-[0.18em] uppercase">
-                <Clock
-                  className="text-terracotta-soft absolute top-1 left-0 h-5 w-5 shrink-0"
-                  aria-hidden="true"
-                />
-                {labels.responseTimeLabel}
-              </dt>
-              <dd className="text-mocha-fg mt-1.5 text-sm font-semibold">
-                {labels.responseTimeValue}
               </dd>
             </div>
             <div className="relative pl-9">

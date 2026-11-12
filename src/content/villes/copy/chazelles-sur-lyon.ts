@@ -49,7 +49,7 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chazelles-sur-Lyon et monts du Lyonnais ?",
-      a: "Oui, Axion-IA intervient à Chazelles-sur-Lyon et tous les monts du Lyonnais Loire (Saint-Symphorien-sur-Coise, Sainte-Foy-l'Argentière). Consultants depuis Lyon (50 min) ou Saint-Étienne (30 min).",
+      a: "Oui, Axion-IA intervient à Chazelles-sur-Lyon et tous les monts du Lyonnais Loire (Saint-Symphorien-sur-Coise, Sainte-Foy-l'Argentière). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec la filière chapellerie historique ?",
@@ -64,8 +64,8 @@ export const CHAZELLES_SUR_LYON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chazelles-sur-Lyon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Chazelles-sur-Lyon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

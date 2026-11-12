@@ -18,9 +18,9 @@ export const DOMERAT_COPY: VilleCopy = {
   ecosystemEn:
     "Domérat forme avec Montluçon, Désertines et Huriel le cœur de l'agglomération montluçonnaise, second pôle de l'Allier après Vichy. L'économie locale repose sur l'héritage métallurgique et mécanique du bassin (sous-traitance automobile, plasturgie, usinage), un artisanat BTP dense et un commerce de proximité actif autour de la zone des Hauts-de-Buffon. Les TPE et petites PME y dominent, souvent dirigées par des indépendants qui pilotent eux-mêmes devis, planning et relation client. C'est précisément ce profil que l'IA appliquée peut soulager au quotidien.",
   distancesFr:
-    "Montluçon centre à 5 min en voiture, gare de Montluçon-Ville à 10 min. Clermont-Ferrand et son aéroport à 1h15. Moulins, préfecture de l'Allier, à 1h15. Vichy à 1h. Lyon à 2h30 via l'A89. Nos consultants se déplacent depuis Clermont-Ferrand ou en visio selon le format retenu.",
+    "Montluçon centre à 5 min en voiture, gare de Montluçon-Ville à 10 min. Clermont-Ferrand et son aéroport à 1h15. Moulins, préfecture de l'Allier, à 1h15. Vichy à 1h. Lyon à 2h30 via l'A89. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Montluçon centre à 5 min en voiture, gare de Montluçon-Ville à 10 min. Clermont-Ferrand et son aéroport à 1h15. Moulins, préfecture de l'Allier, à 1h15. Vichy à 1h. Lyon à 2h30 via l'A89. Nos consultants se déplacent depuis Clermont-Ferrand ou en visio selon le format retenu.",
+    "Montluçon centre à 5 min en voiture, gare de Montluçon-Ville à 10 min. Clermont-Ferrand et son aéroport à 1h15. Moulins, préfecture de l'Allier, à 1h15. Vichy à 1h. Lyon à 2h30 via l'A89. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Sous-traitance mécanique et métallurgie (héritage Montluçon)",
     "Plasturgie et injection plastique",
@@ -53,7 +53,7 @@ export const DOMERAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Domérat et dans l'agglomération de Montluçon ?",
-      a: "Oui. Nous couvrons Domérat et toute l'agglomération montluçonnaise (Montluçon à 5 min, Désertines, Huriel, Prémilhat). Nos consultants se déplacent depuis Clermont-Ferrand, à 1h15, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Domérat et toute l'agglomération montluçonnaise (Montluçon à 5 min, Désertines, Huriel, Prémilhat). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisanales et les commerces de Domérat ?",
@@ -68,7 +68,7 @@ export const DOMERAT_COPY: VilleCopy = {
       a: "Non. Nous partons de vos outils existants et démarrons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, pas un grand chantier coûteux réservé aux grandes entreprises.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
+      q: "Comment se déroule une mission à Domérat ?",
       a: "Le diagnostic et les sessions clés se font sur site à Domérat ; le suivi peut se poursuivre en visio.",
     },
   ],

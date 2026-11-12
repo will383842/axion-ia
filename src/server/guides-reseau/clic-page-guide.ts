@@ -26,8 +26,20 @@ export interface LecteurPageGuide extends LecteurOrigines {
     findFirst(args: {
       where: { guideRequestId: string };
       orderBy: { createdAt: "asc" };
-      select: { prenom: true; consentiLe: true; versionConsentement: true };
-    }): PromiseLike<{ prenom: string; consentiLe: Date; versionConsentement: string } | null>;
+      select: {
+        prenom: true;
+        consentiLe: true;
+        versionConsentement: true;
+        infosVersion: true;
+        infosConsentiLe: true;
+      };
+    }): PromiseLike<{
+      prenom: string;
+      consentiLe: Date;
+      versionConsentement: string;
+      infosVersion: string | null;
+      infosConsentiLe: Date | null;
+    } | null>;
   };
 }
 
@@ -60,7 +72,13 @@ export async function evenementDuClicPageGuide(
   const contact = await tx.contactGuideReseau.findFirst({
     where: { guideRequestId: d.id },
     orderBy: { createdAt: "asc" },
-    select: { prenom: true, consentiLe: true, versionConsentement: true },
+    select: {
+      prenom: true,
+      consentiLe: true,
+      versionConsentement: true,
+      infosVersion: true,
+      infosConsentiLe: true,
+    },
   });
   if (contact === null) {
     // Adresse tapée dans la conversation : aucune case cochée → origine sans consentement ni prénom.
@@ -85,8 +103,10 @@ export async function evenementDuClicPageGuide(
     email: d.email,
     prenom,
     clicLe,
-    consentiLe: contact.consentiLe,
-    versionConsentement: contact.versionConsentement,
+    infos:
+      contact.infosConsentiLe && contact.infosVersion
+        ? { consentiLe: contact.infosConsentiLe, version: contact.infosVersion }
+        : null,
     guide: d.aimant,
     origines,
     ...(sourceSlug ? { sourceSlug } : {}),

@@ -64,7 +64,7 @@ export const BEAUMONT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Beaumont ?",
       a: "Clermont-Ferrand centre (10 min). Aéroport Clermont à 30 min. Tarifs publics.",
     },
   ],

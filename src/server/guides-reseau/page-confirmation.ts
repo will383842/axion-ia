@@ -5,7 +5,8 @@
  * saisi son prénom et son adresse, et coché l'UNIQUE case. Ici, côté serveur, dans l'ordre :
  *
  *   1. le jeton (signature, forme, expiration, guide connu) — sinon refus NEUTRE « lien » ;
- *   2. la case (texte exact, `content/guides-reseau.ts`) — sinon 422, AUCUNE écriture ;
+ *   2. la case du guide (texte exact, `content/guides-reseau.ts`) — sinon 422, AUCUNE écriture ;
+ *      la case des informations est FACULTATIVE, séparée, jamais déduite de la première ;
  *   3. le prénom (1 à 50 caractères) et l'adresse (validateur de /guide-ia) — sinon 422 ;
  *   4. les formats exigés par le CRM (compte, post_ref) : normalisés ou écartés AVANT toute écriture ;
  *   5. l'adresse est-elle opposée ? Le résultat ne change RIEN au déroulé qui suit (M1) ;
@@ -15,7 +16,8 @@
  *      `contacts_guide_reseau` (écrit `jeton_empreinte`, UNIQUE = usage unique), demande du guide
  *      (`retrouverOuCreerDemande`), ORIGINE (mot, réseau, compte, post, version M1 →
  *      `guide_reseau_origines`, PAS dans `contacts_guide_reseau`) et PREUVE du consentement
- *      (`consent_events`, action `consent`). Tout part ensemble ou rien ne part : si le conteneur
+ *      (`consent_events`, action `consent_attente` : accord « en attente » jusqu'au clic sur le
+ *      lien du guide, pour la case du guide comme pour la case facultative « informations »). Tout part ensemble ou rien ne part : si le conteneur
  *      s'arrête juste après la réponse, la fiche relue plus tard par le CRM (au clic) a son
  *      origine ET sa preuve. Un échec (origine, preuve, base…) annule TOUT et remonte : la route
  *      répond sa page d'erreur neutre, le jeton n'est PAS consommé, la personne peut réessayer.
@@ -55,11 +57,14 @@ import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
 import { envoisRecentsVers, mettreEnFileGuide } from "@/server/guide-ia/envoi";
 import {
   EMPREINTE_CASE_PAGE_GUIDE,
+  EMPREINTE_CASE_PAGE_GUIDE_INFOS,
   FORM_REF_PAGE_GUIDE,
+  FORM_REF_PAGE_GUIDE_INFOS,
   GUIDES_RESEAU_CONNUS,
   PRENOM_MAX,
   PRENOM_MIN,
   VERSION_CONSENTEMENT_PAGE_GUIDE,
+  VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS,
   type ReseauGuide,
 } from "@/content/guides-reseau";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
@@ -78,7 +83,10 @@ export interface EntreeConfirmation {
   readonly jeton: string;
   readonly prenom: string;
   readonly email: string;
+  /** Case OBLIGATOIRE : le guide seulement. */
   readonly caseCochee: boolean;
+  /** Case FACULTATIVE (décochée par défaut) : les informations d'Axion-IA. Absente = non cochée. */
+  readonly infosCochee?: boolean;
   readonly ip: string | null;
   readonly userAgent: string | null;
   /** Secret du lien (déjà contrôlé par `lireSecretLien`). */
@@ -147,6 +155,11 @@ function estConflitDuJeton(e: unknown): boolean {
   const cible = (e as { meta?: { target?: unknown } }).meta?.target;
   const noms = Array.isArray(cible) ? cible.map(String) : typeof cible === "string" ? [cible] : [];
   return noms.some((n) => n.includes("jeton_empreinte"));
+}
+
+/** Version de la preuve de la case des informations (même forme que `versionPreuveCase`). */
+export function versionPreuveInfos(): string {
+  return `${VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS}.${EMPREINTE_CASE_PAGE_GUIDE_INFOS.slice(0, 32)}`;
 }
 
 /** Version écrite dans le registre de preuve : version du texte + début de son empreinte (≤ 64). */
@@ -241,6 +254,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
     locale: "fr" as const,
     versionTexteM1: donnees.version_m1,
   };
+  const infos = e.infosCochee === true;
   const prenomChiffre = encryptPii(prenom);
   const empreinte = empreinteJeton(e.jeton);
   // Origine et preuve sont construites AVANT la transaction (une clé HMAC absente lève ici, sans
@@ -274,6 +288,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
               jetonEmpreinte: empreinte,
               convRef: MARQUE.convRef,
               merciStatut: MARQUE.statut,
+              // Aucune donnée de personne, donc aucune preuve d'accord à porter.
+              preuveStatut: "sans_objet",
             },
             select: { id: true },
           });
@@ -289,9 +305,22 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             versionConsentement: VERSION_CONSENTEMENT_PAGE_GUIDE,
             consentEmpreinte: EMPREINTE_CASE_PAGE_GUIDE,
             consentiLe: maintenant,
+            // Case facultative : enregistrée « non transmise » (le CRM ne la reçoit qu'au clic, et
+            // seulement si l'interrupteur newsletter_optin est allumé).
+            ...(infos
+              ? {
+                  infosStatut: "non_transmise",
+                  infosVersion: VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS,
+                  infosEmpreinte: EMPREINTE_CASE_PAGE_GUIDE_INFOS,
+                  infosConsentiLe: maintenant,
+                }
+              : {}),
             jetonEmpreinte: empreinte,
             convRef: hmacConversationRef(donnees.conv),
             merciStatut: "a_envoyer",
+            // L'adresse n'est qu'une SAISIE : l'accord est « en attente » jusqu'au clic sur le
+            // bouton du lien du guide (`preuve-page-guide.ts`).
+            preuveStatut: "en_attente",
           },
           select: { id: true },
         });
@@ -311,13 +340,27 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             personKey: emailKey,
             formRef: FORM_REF_PAGE_GUIDE,
             consentVersion: versionPreuveCase(),
-            action: "consent",
+            action: "consent_attente",
             occurredAt: maintenant,
             ipHash,
             userAgent: agentHash,
           },
           select: { id: true },
         });
+        if (infos) {
+          await tx.consentEvent.create({
+            data: {
+              personKey: emailKey,
+              formRef: FORM_REF_PAGE_GUIDE_INFOS,
+              consentVersion: versionPreuveInfos(),
+              action: "consent_attente",
+              occurredAt: maintenant,
+              ipHash,
+              userAgent: agentHash,
+            },
+            select: { id: true },
+          });
+        }
         return { id: d.id, downloadToken: d.downloadToken };
       });
       break;

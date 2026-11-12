@@ -49,7 +49,7 @@ export const BIHOREL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bihorel et dans l'agglo de Rouen ?",
-      a: "Oui, Axion-IA intervient a Bihorel et dans toute la metropole rouennaise (Rouen, Darnetal, Bonsecours, Le Mesnil-Esnard). Consultants depuis Rouen (10 min) ou Paris (1h25).",
+      a: "Oui, Axion-IA intervient a Bihorel et dans toute la metropole rouennaise (Rouen, Darnetal, Bonsecours, Le Mesnil-Esnard). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales de Bihorel ?",

@@ -49,7 +49,7 @@ export const EPERNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Épernon et dans la vallée de la Drouette ?",
-      a: "Oui, Axion-IA intervient à Épernon et toute la vallée de la Drouette (Hanches, Gas, Saint-Martin-de-Nigelles). Consultants depuis Paris (1h10) ou Chartres (25 min).",
+      a: "Oui, Axion-IA intervient à Épernon et toute la vallée de la Drouette (Hanches, Gas, Saint-Martin-de-Nigelles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et indépendants d'Épernon ?",
@@ -64,7 +64,7 @@ export const EPERNON_COPY: VilleCopy = {
       a: "Oui, nos formats sont adaptés aux TPE artisans BTP et commerçants de proximité : automatisation devis, chatbots prise de RDV, gestion stocks, agents IA plannings, présence en ligne.",
     },
     {
-      q: "Comment se passe une mission à Épernon depuis Paris ?",
+      q: "Comment se déroule une mission à Épernon ?",
       a: "Nos consultants arrivent en gare d'Épernon (TER Paris-Montparnasse 1h via Rambouillet) ou par la N10 (1h10). Chartres à 25 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],

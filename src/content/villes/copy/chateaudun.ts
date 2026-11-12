@@ -49,7 +49,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaudun et dans le Dunois ?",
-      a: "Oui, Axion-IA intervient à Châteaudun et tout le Dunois (Cloyes-les-Trois-Rivières, Bonneval). Consultants depuis Chartres (45 min) ou Orléans (50 min).",
+      a: "Oui, Axion-IA intervient à Châteaudun et tout le Dunois (Cloyes-les-Trois-Rivières, Bonneval). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE/PME industrielles de Châteaudun ?",
@@ -64,7 +64,7 @@ export const CHATEAUDUN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
-      q: "Comment se passe une mission depuis Chartres ou Orléans ?",
+      q: "Comment se déroule une mission à Châteaudun ?",
       a: "Chartres (45 min) ou Orléans (50 min).",
     },
   ],

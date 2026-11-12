@@ -59,7 +59,6 @@ export interface WizardAnswers {
   messageLibre: string;
   dispoMois: string;
   dispoAnnee: string;
-  permisVehicule: boolean | null;
   statut: string;
   linkedin: string;
   sourceConnaissance: string;
@@ -112,7 +111,6 @@ export function emptyAnswers(): WizardAnswers {
     messageLibre: "",
     dispoMois: "",
     dispoAnnee: "",
-    permisVehicule: null,
     statut: "",
     linkedin: "",
     sourceConnaissance: "",
@@ -256,7 +254,6 @@ export function validateStep(step: number, a: WizardAnswers): FieldErrors {
         if (mmYYYY(a.dispoMois.padStart(2, "0"), a.dispoAnnee) < courant)
           e.dispo = "Cette date est déjà passée — indiquez le mois courant ou un mois à venir.";
       }
-      if (a.permisVehicule === null) e.permisVehicule = "Répondez par oui ou par non.";
       if (
         a.linkedin.trim() &&
         !/^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/\S*)?$/.test(a.linkedin.trim())
@@ -320,7 +317,6 @@ export function buildSubmissionPayload(a: WizardAnswers): CommercialApplicationI
     pitch: a.pitch.trim(),
     ...(a.messageLibre.trim() ? { messageLibre: a.messageLibre.trim() } : {}),
     disponibilite: mmYYYY(a.dispoMois, a.dispoAnnee),
-    permisVehicule: a.permisVehicule === true,
     ...(a.statut ? { statut: a.statut } : {}),
     ...(a.linkedin.trim() ? { linkedin: a.linkedin.trim() } : {}),
     ...(a.sourceConnaissance ? { sourceConnaissance: a.sourceConnaissance } : {}),
@@ -366,10 +362,15 @@ export function loadDraft(): { screen: number; answers: WizardAnswers } | null {
     // brouillon vient de `JSON.parse`, donc sa vraie nature est `unknown` : on le
     // dit au lieu de mentir au compilateur avec une conversion directe, que TS
     // refuse ici (TS2352).
-    const { consentVivier: _retire, ...reponses } = parsed.answers as unknown as Record<
-      string,
-      unknown
-    >;
+    //
+    // 11/11/2026 (Williams) : la question « permis et véhicule » est retirée du
+    // formulaire. Même traitement : un brouillon antérieur qui porte encore la
+    // réponse ne la renvoie pas avec le dossier.
+    const {
+      consentVivier: _retire,
+      permisVehicule: _retireAussi,
+      ...reponses
+    } = parsed.answers as unknown as Record<string, unknown>;
     const base = emptyAnswers();
     const answers: WizardAnswers = {
       ...base,

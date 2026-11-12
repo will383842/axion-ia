@@ -10,9 +10,9 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Deuil-la-Barre, commune de 23 099 habitants du Val-d'Oise située à environ 9 km au nord de Paris. Notre cabinet intervient sur site dans la ZAC du Moutier et auprès des professions libérales, commerces de proximité et acteurs de santé locaux. Nous concevons des solutions IA sur-mesure en code custom (pas de no-code), adaptées au tissu de proximité d'Enghien-les-Bains, Montmorency et Épinay-sur-Seine. Les ETI sont également accompagnées en complément.",
   directAnswerFr:
-    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
+    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nous intervenons partout en France, sur place ou à distance, pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
   directAnswerEn:
-    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nos consultants se déplacent depuis Paris (13 minutes via la ligne H Transilien depuis Paris-Nord) pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
+    "À Deuil-la-Barre (Val-d'Oise, 23 099 habitants), Axion-IA accompagne en priorité les TPE et PME locales — commerces de la ZAC du Moutier, restaurateurs, professions libérales et les 50 professionnels de santé du territoire. Nous intervenons partout en France, sur place ou à distance, pour réaliser des audits IA, automatiser les processus métiers et déployer des outils en code custom. Les ETI viennent en complément. Aucun lien avec Cap Digital ou Station F : nous restons un cabinet indépendant centré sur le tissu francophone de proximité.",
   seoHook: "commerces de proximité & santé",
   ecosystemFr:
     "Deuil-la-Barre s'insère dans l'agglomération Plaine Vallée, à 9 km au nord de Paris. La commune compte la ZAC du Moutier (environ 20 entreprises), un marché couvert à Mortefontaines, plusieurs supermarchés, restaurants et un centre d'imagerie médicale. Les communes limitrophes — Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine — élargissent le bassin économique accessible à nos clients TPE et PME.",
@@ -125,7 +125,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. On accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -211,7 +211,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
           },
           {
             q: "Couvrez-vous les communes autour de Deuil-la-Barre dans l'agglomération Plaine Vallée ?",
-            a: "Oui. Depuis Deuil-la-Barre, on accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
+            a: "Oui. On accompagne aussi les TPE, PME et ETI de Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine. On conçoit des plateformes et sites multilingues pensés pour rayonner sur tout le bassin nord parisien, tout en gardant le kick-off en présentiel sur le territoire deuillois.",
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
@@ -235,7 +235,7 @@ export const DEUIL_LA_BARRE_COPY: VilleCopy = {
     },
     {
       q: "Quelles communes proches sont également couvertes ?",
-      a: "Nos consultants couvrent depuis Deuil-la-Barre les communes limitrophes : Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine.",
+      a: "Nous intervenons partout en France, sur place ou à distance, y compris à Montmorency, Groslay, Montmagny, Enghien-les-Bains et Épinay-sur-Seine.",
     },
     {
       q: "Comment Axion-IA assure-t-il la conformité RGPD à Deuil-la-Barre ?",

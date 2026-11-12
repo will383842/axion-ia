@@ -65,7 +65,7 @@ export const BOUGIVAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bougival ?",
-      a: "Nos consultants rejoignent Bougival via le Transilien L (30 min Paris Saint-Lazare) ou par l'A13/A86. La Défense à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

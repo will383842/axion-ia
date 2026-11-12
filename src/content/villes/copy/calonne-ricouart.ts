@@ -49,7 +49,7 @@ export const CALONNE_RICOUART_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Calonne-Ricouart et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Calonne-Ricouart et dans tout le bassin minier (Marles-les-Mines, Divion, Bethune, Bruay-la-Buissiere). Consultants depuis Lille (1h10 TER) ou Paris (TGV via Lens 1h50).",
+      a: "Oui, Axion-IA intervient a Calonne-Ricouart et dans tout le bassin minier (Marles-les-Mines, Divion, Bethune, Bruay-la-Buissiere). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les artisans de Calonne-Ricouart ?",

@@ -156,7 +156,9 @@ const contact = (sur: Ligne = {}): Ligne => ({
   emailKey: "cle-1",
   prenom: "enc:Camille",
   consentiLe: CONSENTI,
-  versionConsentement: "page-guide-2026-11-08",
+  versionConsentement: "page-guide-2026-11-11",
+  infosVersion: null,
+  infosConsentiLe: null,
   ...sur,
 });
 let compteurOrigine = 0;
@@ -335,13 +337,28 @@ describe("le clic émet l'événement v3 de la page", () => {
   });
 
   it("figé : deux visites de la page avant le clic = le PREMIER contact (prénom et case) fait foi", async () => {
-    installer({ contact: contact({ prenom: "enc:Premier" }) });
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const infos = { infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI };
+    installer({ contact: contact({ prenom: "enc:Premier", ...infos }) });
     base.contacts.push(
-      contact({ prenom: "enc:Second", consentiLe: new Date("2026-11-01T10:02:00.000Z") }),
+      contact({
+        prenom: "enc:Second",
+        consentiLe: new Date("2026-11-01T10:02:00.000Z"),
+        ...infos,
+        infosConsentiLe: new Date("2026-11-01T10:02:00.000Z"),
+      }),
     );
     await transmettreClicGuide("demande-1");
     expect((evenement().person as Ligne).first_name).toBe("Premier");
     expect((evenement().consentements as Ligne[])[0]?.date).toBe("2026-11-01T10:00:00.000Z");
+  });
+
+  it("case des informations cochée mais interrupteur newsletter_optin éteint : aucun accord transmis", async () => {
+    installer({
+      contact: contact({ infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI }),
+    });
+    await transmettreClicGuide("demande-1");
+    expect(evenement()).not.toHaveProperty("consentements");
   });
 
   it("figé : demande née du formulaire sans origine, même avec un contact lié : v1, aucun bloc v3", async () => {

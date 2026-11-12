@@ -45,7 +45,7 @@ import { echapper } from "../html-statique";
 import { GET as MerciGET } from "../merci/route";
 import { POST, GET } from "../envoyer/route";
 import { creerJeton, empreinteJeton } from "@/server/guides-reseau/lien-page-guide";
-import { TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
+import { TEXTE_CASE_PAGE_GUIDE, TEXTE_CASE_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 import { TEXTES_PAGE_GUIDE } from "../textes";
 
 const T_NEUTRE = TEXTES_PAGE_GUIDE.lienNeutre;
@@ -146,6 +146,18 @@ describe("page allumée", () => {
     expect(html).toContain('name="website"');
     expect(html).toContain(echapper(TEXTE_CASE_PAGE_GUIDE));
     expect(html).toContain("/fr/politique-confidentialite");
+  });
+
+  it("deux cases SÉPARÉES : celle du guide obligatoire, celle des informations facultative et décochée", async () => {
+    const html = await rendre(JETON);
+    const accord = html.match(/<input id="accord"[^>]*>/)?.[0] ?? "";
+    const infos = html.match(/<input id="infos"[^>]*>/)?.[0] ?? "";
+    expect(accord).toContain("required");
+    expect(infos).toContain('name="infos"');
+    expect(infos).not.toContain("required");
+    expect(infos).not.toContain("checked");
+    expect(html).toContain(echapper(TEXTE_CASE_PAGE_GUIDE_INFOS));
+    expect(echapper(TEXTE_CASE_PAGE_GUIDE)).not.toMatch(/informations/);
   });
 
   it("un j terminé par « . » ouvre la page, avec le jeton SANS le point dans le formulaire", async () => {
@@ -338,9 +350,15 @@ describe("route d'envoi allumée", () => {
     expect(etat.appels).toHaveLength(1);
     expect(etat.appels[0]).toMatchObject({
       caseCochee: true,
+      infosCochee: false,
       prenom: "Camille",
       secret: SECRET_LIEN,
     });
+  });
+
+  it("la case des informations n'est jamais déduite de celle du guide", async () => {
+    await POST(envoi({ ...champs, j: JETON, infos: "oui" }));
+    expect(etat.appels[0]).toMatchObject({ caseCochee: true, infosCochee: true });
   });
 
   it("un j terminé par « . » (ou « ) ») est transmis SANS la ponctuation à la confirmation", async () => {

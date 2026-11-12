@@ -53,7 +53,7 @@ export const ESCALQUENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Escalquens ?",
-      a: "Oui, Axion-IA intervient à Escalquens et dans tout le Sicoval (Labège, Castanet-Tolosan, Ramonville). Nos consultants se déplacent en 18 min depuis Toulouse par la D813, ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Escalquens et dans tout le Sicoval (Labège, Castanet-Tolosan, Ramonville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité à Escalquens ?",
@@ -69,7 +69,7 @@ export const ESCALQUENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Escalquens ?",
-      a: "Nos consultants se déplacent depuis Toulouse (18 min, D813). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Proposez-vous du coaching individuel à Escalquens ?",

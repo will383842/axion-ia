@@ -49,7 +49,7 @@ export const COUTANCES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coutances et dans le bocage coutançais ?",
-      a: "Oui, Axion-IA intervient à Coutances et dans tout le bocage coutançais (Granville, Agon-Coutainville, Périers, Gavray). Nos consultants se déplacent depuis Caen (1 h 15) ou Saint-Lô (30 min), ou en visio.",
+      a: "Oui, Axion-IA intervient à Coutances et dans tout le bocage coutançais (Granville, Agon-Coutainville, Périers, Gavray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du bocage ?",
@@ -65,7 +65,7 @@ export const COUTANCES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Coutances ?",
-      a: "Nos consultants viennent de Caen (1 h 15) ou Saint-Lô (30 min). Gare de Coutances (TER Caen). Multi-jours : hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Coutances (TER Caen). Multi-jours : hébergement local.",
     },
   ],
 };

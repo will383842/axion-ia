@@ -140,6 +140,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
       prenom: texte(form.get("prenom")),
       email: texte(form.get("email")),
       caseCochee: form.get("accord") === "oui",
+      infosCochee: form.get("infos") === "oui",
       ip,
       userAgent: req.headers.get("user-agent")?.slice(0, 500) ?? null,
       secret,

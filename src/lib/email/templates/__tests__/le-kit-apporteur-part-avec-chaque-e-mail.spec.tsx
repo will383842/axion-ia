@@ -2,6 +2,11 @@
  * Le kit apporteur part avec CHAQUE e-mail du réseau d'apporteurs — et le lien de réservation d'appel ne part
  * QUE dans l'invitation (décisions Will 2026-09-19).
  *
+ * 2026-11-11 (Williams) : exception voulue, la CONFIRMATION DU DOSSIER COMPLET
+ * porte désormais le bouton de réservation de l'échange de 15 minutes — vers
+ * notre page `/fr/appel/apporteur`, jamais vers l'adresse Calendly brute. Les
+ * messages du premier contact et leurs rappels, eux, ne le portent toujours pas.
+ *
  * Depuis JUR-T44 (décision de Williams du 2026-10-01), le kit est le catalogue
  * seul : le document de présentation est retiré jusqu'à sa réécriture
  * (`DOCUMENT_APPORTEUR_DIFFUSE`, `kit-apporteur-sans-pdf.spec.ts`).
@@ -15,7 +20,11 @@ import * as React from "react";
 
 import { LeadApporteurRecuEmail, leadApporteurRecuSubject } from "../lead-apporteur-recu";
 import { LeadApporteurRelanceEmail } from "../lead-apporteur-relance";
-import { CandidatureCommercialConfirmeeEmail } from "../candidature-commercial-confirmee";
+import {
+  CandidatureCommercialConfirmeeEmail,
+  DEPUIS_CONFIRMATION_DOSSIER,
+} from "../candidature-commercial-confirmee";
+import { lienDuSite } from "@/lib/calendly/lien-du-site";
 import { ApporteurInvitationAppelEmail } from "../apporteur-invitation-appel";
 import { REGIME_FAMILLE } from "../_layout";
 import {
@@ -72,10 +81,6 @@ const GABARITS_AUTOMATIQUES: Array<[string, React.ReactElement]> = [
       payload={{ dossierUrl: DOSSIER, etape: "j7" }}
     />,
   ],
-  [
-    "confirmation du dossier complet",
-    <CandidatureCommercialConfirmeeEmail key="e" locale="fr" payload={{ contactName: "Nadia" }} />,
-  ],
 ];
 
 describe("le kit part avec chaque e-mail automatique — le lien d'appel, jamais", () => {
@@ -87,8 +92,68 @@ describe("le kit part avec chaque e-mail automatique — le lien d'appel, jamais
       expect(h).toMatch(/\/fr\/catalogue"/);
       // ⛔ Distribué à tous, le lien de réservation saturerait l'agenda de Will.
       expect(h.toLowerCase()).not.toContain("calendly");
+      expect(h).not.toContain("/appel/apporteur");
     },
   );
+});
+
+describe("la confirmation du dossier complet porte le bouton de réservation (11/11/2026)", () => {
+  const confirmation = (locale: "fr" | "en" = "fr") =>
+    html(
+      <CandidatureCommercialConfirmeeEmail locale={locale} payload={{ contactName: "Nadia" }} />,
+    );
+
+  it("le bouton « Réserver votre échange de 15 minutes » mène à notre page de réservation", async () => {
+    const h = await confirmation();
+    expect(texte(h)).toContain("Réserver votre échange de 15 minutes");
+    const lien = (h.match(/href="([^"]*\/fr\/appel\/apporteur[^"]*)"/) ?? [])[1];
+    expect(lien, "aucun lien vers /fr/appel/apporteur dans le message").toBeTruthy();
+    expect(lien!.replace(/&amp;/g, "&")).toContain(`depuis=${DEPUIS_CONFIRMATION_DOSSIER}`);
+  });
+
+  it("le lien est celui de la source unique, sans adresse Calendly en dur", async () => {
+    const h = await confirmation();
+    expect(h.replace(/&amp;/g, "&")).toContain(
+      lienDuSite("apporteur", { locale: "fr", depuis: DEPUIS_CONFIRMATION_DOSSIER }),
+    );
+    expect(h.toLowerCase()).not.toContain("calendly.com");
+  });
+
+  it("il part même sans CALENDLY_APPORTEUR_URL : rien à configurer pour l'envoi", async () => {
+    const avant = process.env["CALENDLY_APPORTEUR_URL"];
+    delete process.env["CALENDLY_APPORTEUR_URL"];
+    try {
+      expect(await confirmation()).toContain("/fr/appel/apporteur");
+    } finally {
+      if (avant !== undefined) process.env["CALENDLY_APPORTEUR_URL"] = avant;
+    }
+  });
+
+  it("garde le kit (catalogue), sans le document retiré", async () => {
+    const h = await confirmation();
+    expect(h).toMatch(/\/fr\/catalogue"/);
+    expect(h).not.toContain(DOCUMENT_APPORTEUR_CHEMIN);
+  });
+
+  it("⛔ ne promet ni délai ni réponse", async () => {
+    for (const locale of ["fr", "en"] as const) {
+      // Le corps du message seulement : le pied de page (mentions légales) est
+      // celui du châssis, commun à tous les e-mails.
+      const t = texte(await confirmation(locale));
+      expect(t).not.toMatch(/\b\d+\s?(h|heures?|jours?|hours?|days?)\b/i);
+      expect(t).not.toMatch(
+        /sous peu|rapidement|prochaines? (heures|semaines)|dans les meilleurs délais/i,
+      );
+      expect(t).not.toMatch(/nous (vous )?(répondrons|recontacterons|rappellerons)/i);
+      expect(t).not.toMatch(/Qualiopi/i);
+    }
+  });
+
+  it("la version anglaise porte le même bouton, vers la même page", async () => {
+    const h = await confirmation("en");
+    expect(texte(h)).toContain("Book your 15-minute call");
+    expect(h).toContain("/en/appel/apporteur");
+  });
 });
 
 describe("l'invitation — le seul e-mail qui porte le lien de réservation", () => {

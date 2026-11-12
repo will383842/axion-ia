@@ -64,7 +64,7 @@ export const DIGOIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, automatisation gestion stock, CRM clients.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Roanne ?",
+      q: "Comment se déroule une mission à Digoin ?",
       a: "Lyon à 1h45 via A6, Roanne à 45 min. Le Creusot-TGV à 50 min.",
     },
   ],

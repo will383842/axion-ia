@@ -149,9 +149,9 @@ export function descriptionVille(v: VilleLocale): string {
   const code = codeDepartement(v);
   return premierQuiTient(
     [
-      `La Journée IA ${a} (${dep}) : 2 à 4 h d’audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `La Journée IA ${a} (${code}) : 2 à 4 h d’audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
-      `Journée IA ${a} (${code}) : audit de 2 à 4 h dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${dep}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${a} (${code}) : audit dans vos locaux, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}.`,
+      `Journée IA ${a} (${code}) : audit dans vos locaux, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
   );
@@ -177,8 +177,8 @@ export function descriptionRegion(r: RegionLocale): string {
   const en = enRegion(r);
   return premierQuiTient(
     [
-      `La Journée IA ${en}, dans vos locaux : 2 à 4 h d’audit, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
-      `La Journée IA ${en}, dans vos locaux : 2 à 4 h d’audit, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
+      `La Journée IA ${en}, dans vos locaux : audit, vos équipes formées l’après-midi, rapport chiffré sous 3 jours ouvrés. {{PRIX}}. Trouvez votre ville.`,
+      `La Journée IA ${en}, dans vos locaux : audit, formation de vos équipes, rapport sous 3 jours ouvrés. {{PRIX}}.`,
       `Journée IA ${en} : audit et formation IA dans vos locaux, rapport sous 3 jours ouvrés. {{PRIX}}.`,
     ].map(remplacerJetons),
     DESCRIPTION_MAX,
@@ -191,7 +191,7 @@ export const TITRE_HUB = `La Journée IA partout en France${MARQUE}`;
 /** Meta description du hub. */
 export function descriptionHub(): string {
   return remplacerJetons(
-    "La Journée IA se tient dans vos locaux, partout en France : 2 à 4 h d’audit, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
+    "La Journée IA se tient dans vos locaux, partout en France : audit, vos équipes formées l’après-midi, rapport sous 3 jours ouvrés. {{PRIX}}.",
   );
 }
 
@@ -261,7 +261,7 @@ export function enBrefVille(
     `Nous n’avons pas de bureau ${a} : nous venons dans votre entreprise, à la date fixée avec vous.`,
   );
   return [
-    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, 2 à 4 h d’audit cartographient votre entreprise et chiffrent vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
+    `La Journée IA est une journée d’audit et de formation à l’IA que nous menons dans les locaux de votre entreprise ${a}, comme partout en France. Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.`,
     local.join(" "),
     remplacerJetons(`${RAPPORT_COMPLET} Prix : {{PRIX}}. ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`),
   ];
@@ -281,7 +281,7 @@ export function faqVille(v: VilleLocale): ReadonlyArray<{ q: string; a: string }
     },
     {
       q: "Comment se déroule la journée ?",
-      a: "Le matin, 2 à 4 h d’audit cartographient votre entreprise et chiffrent vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
+      a: "Le matin, l’audit cartographie votre entreprise et chiffre vos plus gros gains, en heures et en euros. L’après-midi, vos équipes sont formées 4 heures sur leurs propres dossiers, avec une attestation par participant.",
     },
     {
       q: "Quand recevons-nous le rapport ?",

@@ -230,7 +230,7 @@ export const DOLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dole et dans le Jura ?",
-      a: "Oui, Axion-IA intervient à Dole et tout le bassin jurassien (Tavaux, Choisey, Authume, Foucherans). Nos consultants se déplacent depuis Lyon ou via la gare TGV Dole-Ville.",
+      a: "Oui, Axion-IA intervient à Dole et tout le bassin jurassien (Tavaux, Choisey, Authume, Foucherans). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires ?",
