@@ -173,3 +173,16 @@ export const JOURS_AVANT_ECART_PREUVE = 14;
 export function preuveEcartActif(): boolean {
   return process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED === "true";
 }
+
+/**
+ * CATALOGUE DES GUIDES + UN ENVOI PAR DEMANDE (lot LIA-F) — l'INTERRUPTEUR.
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si `GUIDES_RESEAU_CATALOGUE_ENABLED` vaut exactement
+ * `"true"`. Lu au runtime (`process.env` brut, hors `env.ts`). ÉTEINT = comportement strictement
+ * identique à avant : seule la liste figée `GUIDES_RESEAU_CONNUS` fait foi (aucune lecture de
+ * `cibles_reseau`) et un seul guide part par adresse sur 24 h. ALLUMÉ = un guide actif du
+ * catalogue est accepté, et la règle des 24 h se compte par adresse ET par guide.
+ */
+export function catalogueGuidesActif(): boolean {
+  return process.env.GUIDES_RESEAU_CATALOGUE_ENABLED === "true";
+}

@@ -29,6 +29,12 @@ export const VERSIONS_TEXTE_CONNUES = [
   "mp-m1-v5-2",
   "mp-m1-v5-3",
   "mp-m1-v5-4",
+  "mp-lien-v3-1",
+  "mp-lien-v3-2",
+  "mp-lien-v3-3",
+  "mp-deja-envoye-v1-1",
+  "mp-deja-envoye-v1-2",
+  "mp-deja-envoye-v1-3",
 ] as const;
 
 /** Campagnes connues : alignées sur les familles du dictionnaire d'origine. */

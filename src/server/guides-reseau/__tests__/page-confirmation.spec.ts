@@ -58,6 +58,14 @@ const bd = vi.hoisted(() => ({
   marquesConvTx: new Set<string>(),
   /** Code d'erreur Prisma levé par la relecture dans la transaction (ex. P2021 : table absente). */
   panneTx: null as string | null,
+  /** LIA-F : cibles du catalogue (`cibles_reseau`), lectures comptées, panne simulée. */
+  cibles: new Map<string, Ligne>(),
+  lecturesCibles: 0,
+  cibles_panne: false,
+  /** LIA-F : identifiants de demande ayant déjà un e-mail du guide < 24 h (`email_logs.entity_id`). */
+  logsParDemande: new Set<string>(),
+  /** LIA-F : lignes `oppositions_conv_ref` posées par la page (écriture dans la transaction). */
+  marquesPosees: [] as string[],
   /** Ordre des appels DANS la transaction (verrous, relecture de la marque, écritures). */
   ordreTx: [] as string[],
   /** Mises à l'écart faites par le filet (après la réponse). */
@@ -111,6 +119,11 @@ function client(trace?: Trace) {
     oppositionConvRef: {
       findUnique: async ({ where }: { where: { convRef: string } }) =>
         lireMarque(where.convRef, true),
+      upsert: async ({ where }: { where: { convRef: string } }) => {
+        bd.ordreTx.push("marque-conv");
+        if (!bd.marquesPosees.includes(where.convRef)) bd.marquesPosees.push(where.convRef);
+        return { id: "m" };
+      },
     },
     guideReseauOrigine: {
       updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
@@ -219,9 +232,22 @@ vi.mock("@/lib/prisma", () => {
           throw new Error("newsletter_subscribers ne doit JAMAIS être écrite par ce parcours");
         },
       },
+      cibleReseau: {
+        findUnique: async ({ where }: { where: { code: string } }) => {
+          bd.lecturesCibles += 1;
+          if (bd.cibles_panne) throw new Error("base illisible");
+          return bd.cibles.get(where.code) ?? null;
+        },
+      },
       emailLog: {
-        count: async (a: { where: { recipient?: string } }) =>
-          a.where.recipient ? bd.logsDestinataire : 0,
+        count: async (a: { where: { recipient?: string; entityId?: string } }) =>
+          a.where.entityId !== undefined
+            ? bd.logsParDemande.has(a.where.entityId)
+              ? 1
+              : 0
+            : a.where.recipient
+              ? bd.logsDestinataire
+              : 0,
       },
       // Comme PostgreSQL : si la transaction échoue, rien de ce qu'elle a créé ne reste.
       $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
@@ -381,6 +407,11 @@ beforeEach(() => {
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
   bd.logsDestinataire = 0;
+  bd.cibles.clear();
+  bd.lecturesCibles = 0;
+  bd.cibles_panne = false;
+  bd.logsParDemande.clear();
+  bd.marquesPosees.length = 0;
   bd.n = 0;
   for (const m of ["warn", "error", "log", "info"] as const) {
     vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
@@ -1186,5 +1217,204 @@ describe("S2-PLANCHER — le temps de réponse ne révèle pas si l'adresse exis
     await vi.advanceTimersByTimeAsync(PLANCHER_REPONSE_MS * 4);
     await p;
     expect(fin - debut).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
+  });
+});
+
+// ───────────────────────── Lot LIA-F — catalogue, un envoi par demande, opposition ─────────────────────────
+const CODE_CATALOGUE = "gde-essai0001";
+const ligneCible = (o: Ligne = {}): Ligne => ({
+  code: CODE_CATALOGUE,
+  type: "guide",
+  actif: true,
+  test: false,
+  ...o,
+});
+
+describe("LIA-F — interrupteur ÉTEINT : comportement d'avant, zéro lecture de cibles_reseau", () => {
+  it("un code du catalogue est refusé comme un code inconnu, sans aucune lecture en base", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    const r = await confirmerPageGuide(entree({ jeton: jeton({ guide: CODE_CATALOGUE }) }));
+    expect(r).toEqual({ ok: false, statut: 400, erreur: "lien" });
+    expect(bd.lecturesCibles).toBe(0);
+    expect(ecritures()).toBe(0);
+  });
+
+  it("le guide figé passe, sans lecture en base", async () => {
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("2e guide DIFFÉRENT à la même adresse sous 24 h : rien n'est mis en file (comme avant)", async () => {
+    bd.logsDestinataire = 1;
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
+  beforeEach(() => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+  const avec = (guide = CODE_CATALOGUE) => entree({ jeton: jeton({ guide }) });
+
+  it("cible `guide` active : acceptée", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.contacts).toHaveLength(1);
+  });
+
+  it.each([
+    ["inactive", { actif: false }],
+    ["de type adresse", { type: "adresse" }],
+    ["d'essai", { test: true }],
+  ])("cible %s : refusée, rien d'écrit", async (_n, ecart) => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible(ecart as Ligne));
+    expect(await confirmerPageGuide(avec())).toEqual({ ok: false, statut: 400, erreur: "lien" });
+    expect(ecritures()).toBe(0);
+  });
+
+  it("code absent du catalogue : refusé", async () => {
+    expect((await confirmerPageGuide(avec())).ok).toBe(false);
+  });
+
+  it("base illisible : liste figée seulement (le guide figé passe, le code du catalogue non)", async () => {
+    bd.cibles_panne = true;
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await confirmerPageGuide(avec())).ok).toBe(false);
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.journal.join("\n")).not.toContain("@");
+  });
+
+  it("2e guide DIFFÉRENT à la même adresse sous 24 h : l'e-mail est mis en file", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    bd.logsDestinataire = 1; // un autre guide est déjà parti à cette adresse
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("MÊME guide sous 24 h : rien n'est mis en file, réponse identique", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    const neuf = await confirmerPageGuide(avec());
+    bd.envois.length = 0;
+    bd.contacts.length = 0;
+    const demande = bd.demandes.find((d) => d.aimant === CODE_CATALOGUE)!;
+    bd.logsDestinataire = 1;
+    bd.logsParDemande.add(String(demande.id));
+    const rejoue = await confirmerPageGuide(avec());
+    expect(rejoue).toEqual(neuf); // PARTIE 4 : aucune page « déjà envoyé » distincte
+    expect(bd.envois).toHaveLength(0);
+  });
+
+  it("la limite de 3 par adresse sur 24 h reste en vigueur", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    bd.logsDestinataire = 3;
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — adresse déjà opposée : la conversation reçoit sa marque (interrupteur éteint OU allumé)", () => {
+  const OPPOSEE = "opp@example.test";
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it.each([
+    ["éteint", false],
+    ["allumé", true],
+  ])(
+    "%s : réponse indiscernable, ligne oppositions_conv_ref écrite, rejeu = une seule ligne",
+    async (_n, allume) => {
+      if (allume) vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+      const normale = await confirmerPageGuide(entree());
+      bd.opposees.add(OPPOSEE);
+      const conv = "conv_exemple_0077";
+      const r = await confirmerPageGuide(entree({ jeton: jeton({ conv }), email: OPPOSEE }));
+      expect(r).toEqual(normale);
+      expect(bd.marquesPosees).toEqual([hmacConversationRef(conv)]);
+      // Rejeu avec un autre jeton de la même conversation : toujours une seule ligne.
+      await confirmerPageGuide(
+        entree({ jeton: jeton({ conv }, MAINTENANT.getTime() + 1), email: OPPOSEE }),
+      );
+      expect(bd.marquesPosees).toHaveLength(1);
+      expect(bd.journal.join("\n")).not.toContain("@");
+    },
+  );
+
+  it("la marque est écrite sous le verrou de la conversation, dans la transaction", async () => {
+    bd.opposees.add(OPPOSEE);
+    await confirmerPageGuide(entree({ email: OPPOSEE }));
+    const i = bd.ordreTx.indexOf("marque-conv");
+    expect(i).toBeGreaterThan(bd.ordreTx.indexOf("verrou-conv"));
+  });
+
+  it("une adresse non opposée n'écrit aucune marque", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.marquesPosees).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — versions de texte nouvelles", () => {
+  it.each([
+    "mp-lien-v3-1",
+    "mp-lien-v3-2",
+    "mp-lien-v3-3",
+    "mp-deja-envoye-v1-1",
+    "mp-deja-envoye-v1-2",
+    "mp-deja-envoye-v1-3",
+  ])("%s est une version connue (contrat v3)", async (v) => {
+    const { VERSIONS_TEXTE_CONNUES } = await import("../valeurs-connues");
+    const { SchemaDemandeGuideReseauV3 } = await import("../contrat");
+    expect(VERSIONS_TEXTE_CONNUES).toContain(v);
+    const base = {
+      schemaVersion: 3,
+      cleIdempotence: "cle-exemple-0001",
+      email: ADRESSE,
+      mot: "GUIDE",
+      reseau: "instagram",
+      guide: "guide-ia",
+      versionTexteM1: "m1-v1",
+    };
+    expect(SchemaDemandeGuideReseauV3.safeParse({ ...base, version_texte: v }).success).toBe(true);
+  });
+});
+
+describe("LIA-F — contrat de la route (analyserCorpsAvecCatalogue)", () => {
+  const corps = (guide: string) =>
+    Buffer.from(
+      JSON.stringify({
+        schemaVersion: 1,
+        cleIdempotence: "cle-exemple-0001",
+        email: ADRESSE,
+        mot: "GUIDE",
+        reseau: "instagram",
+        guide,
+        versionTexteM1: "m1-v1",
+      }),
+    );
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("éteint : `gde-…` refusé, zéro lecture ; guide figé accepté", async () => {
+    const { analyserCorpsAvecCatalogue } = await import("../contrat");
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(false);
+    expect((await analyserCorpsAvecCatalogue(corps("guide-ia"))).ok).toBe(true);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("allumé : cible guide active acceptée ; adresse, inactive, essai refusées", async () => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    const { analyserCorpsAvecCatalogue } = await import("../contrat");
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(true);
+    for (const ecart of [{ type: "adresse" }, { actif: false }, { test: true }]) {
+      bd.cibles.set(CODE_CATALOGUE, ligneCible(ecart));
+      expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(false);
+    }
   });
 });
