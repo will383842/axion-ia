@@ -401,6 +401,61 @@ function modelesAvecAdresse(): string[] {
   return trouves.sort();
 }
 
+/**
+ * Garde « une demande d'effacement ne supprime rien » : retourne les fautes d'un fichier.
+ * Refuse : import de `@/lib/rgpd-erase` autre que les fonctions `ecarter…` (nommé, `* as`,
+ * par défaut, dynamique) ; import d'un module destructeur connu ; `.delete(` / `.deleteMany(` ;
+ * `$executeRaw` / `$executeRawUnsafe` portant un DELETE.
+ */
+const MODULES_DESTRUCTEURS = [
+  "candidature-rgpd",
+  "effacement-par-le-candidat",
+  "rgpd-dossier-client",
+  "rgpd-formateur-independant",
+  "rgpd-reseau-apporteur",
+  "rgpd-guide-reseau",
+  "podcast-request/rgpd",
+  "tour-de-france/rgpd",
+  "portail/rgpd-service",
+  "compte-rendu-gestes",
+  "newsletter/retention",
+  "purgerPilote",
+];
+
+function fautesDeSuppression(source: string): string[] {
+  const src = source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+  const fautes: string[] = [];
+  for (const m of src.matchAll(
+    /import\s*(?:type\s*)?(?:(\{[^}]*\})|(\*\s*as\s+\w+)|(\w+))\s*from\s*["']@\/lib\/rgpd-erase["']/g,
+  )) {
+    const noms = m[1];
+    if (noms === undefined) {
+      fautes.push("import de rgpd-erase hors imports nommés");
+      continue;
+    }
+    for (const n of noms
+      .replace(/[{}]/g, "")
+      .split(",")
+      .map((x) => x.trim())
+      .filter(Boolean)) {
+      if (!/^ecarter\w*$/.test(n)) fautes.push(`import destructif « ${n} »`);
+    }
+  }
+  if (/import\(\s*["']@\/lib\/rgpd-erase["']\s*\)/.test(src)) {
+    fautes.push("import dynamique de rgpd-erase");
+  }
+  for (const mod of MODULES_DESTRUCTEURS) {
+    if (new RegExp(`(?:from|import\\()\\s*["'][^"']*${mod}["']`).test(src)) {
+      fautes.push(`import du module destructeur « ${mod} »`);
+    }
+  }
+  if (/\.(delete|deleteMany)\s*\(/.test(src)) fautes.push("delete / deleteMany");
+  if (/\$executeRaw(?:Unsafe)?[\s\S]{0,300}?\bDELETE\b/i.test(src)) {
+    fautes.push("$executeRaw avec DELETE");
+  }
+  return fautes;
+}
+
 describe("aucune table portant une adresse n'échappe au RGPD en silence", () => {
   const reels = modelesAvecAdresse();
 
@@ -445,13 +500,15 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
     ).toEqual([]);
   });
 
-  it("les six tables traitées le sont RÉELLEMENT par la chaîne d'effacement", () => {
+  it("les six tables traitées le sont RÉELLEMENT par l'outil d'effacement à la main", () => {
     // 🔑 Sans ceci, l'inventaire serait une déclaration d'intention : on pourrait
     // écrire `traite` sur n'importe quoi. On vérifie que le code mute bien ces
     // modèles — c'est exactement ce qui manquait aux trois défauts d'origine.
+    // 🔴 11/11/2026 : ces fonctions sont l'OUTIL du geste humain. La route `gdpr-erase` ne les
+    // appelle plus (elle met à l'écart) : elle n'est donc plus lue ici, et la garde ci-dessous
+    // vérifie qu'aucun chemin automatique ne les rappelle.
     const chaine = [
       "src/lib/rgpd-erase.ts",
-      "src/app/api/gdpr-erase/route.ts",
       "src/server/careers/candidature-rgpd.ts",
       // 🔴 2026-08-24 — LE STAGIAIRE A SA PROPRE CHAÎNE, ET CE CLIQUET NE LA
       // VOYAIT PAS. Il a donc refusé un `traite` pourtant EXACT, en exigeant
@@ -483,10 +540,74 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
     });
     expect(
       nonMutes,
-      "modèle(s) déclaré(s) `traite` que la chaîne d'effacement ne mute jamais. " +
+      "modèle(s) déclaré(s) `traite` que l'outil d'effacement à la main ne mute jamais. " +
         "C'est la forme exacte du défaut : une liste qui affirme un traitement " +
         "qui n'a pas lieu.",
     ).toEqual([]);
+  });
+
+  it("🔴 aucun chemin AUTOMATIQUE (route gdpr-erase, console Lettre, module d'écart) ne supprime ni n'importe un effaceur", () => {
+    // Décision de Williams (11/11/2026) : une demande d'effacement met à l'écart, elle ne
+    // supprime rien. Les fonctions de `rgpd-erase.ts` ne servent qu'au geste humain.
+    // Seules les mises à l'écart (`ecarter…`) et les constantes d'affichage sont permises.
+    const chemins = [
+      "src/app/api/gdpr-erase/route.ts",
+      "src/server/newsletter/effacer.ts",
+      "src/features/admin-newsletter/actions.ts",
+      "src/server/rgpd/ecarter-au-lieu-d-effacer.ts",
+      // Les modules que le module d'écart appelle : une suppression ajoutée demain ici
+      // passerait sinon au vert.
+      "src/server/email/opposition.ts",
+      "src/server/guides-reseau/mise-a-l-ecart.ts",
+      // Le troisième chemin automatique (message privé d'un réseau) et le geste de console.
+      "src/server/guides-reseau/effacement.ts",
+      "src/features/conformite-rgpd/actions-ecart-adresse.ts",
+    ];
+    const fautifs = chemins.flatMap((f) =>
+      fautesDeSuppression(readFileSync(join(process.cwd(), f), "utf8")).map((x) => `${f} : ${x}`),
+    );
+    // Et le CORPS des fonctions `ecarter*` de `rgpd-erase.ts` (le reste du fichier, lui, est
+    // l'outil du geste humain et supprime légitimement).
+    const erase = readFileSync(join(process.cwd(), "src/lib/rgpd-erase.ts"), "utf8");
+    const corps = [...erase.matchAll(/export (?:async )?function ecarter\w+[\s\S]*?\n\}\n/g)];
+    expect(corps.length, "aucune fonction `ecarter*` trouvée dans rgpd-erase.ts").toBeGreaterThan(
+      0,
+    );
+    for (const c of corps) {
+      for (const x of fautesDeSuppression(c[0])) fautifs.push(`rgpd-erase.ts (ecarter*) : ${x}`);
+    }
+    expect(
+      fautifs,
+      "chemin(s) automatique(s) qui suppriment ou importent un effaceur : une demande " +
+        "d'effacement doit mettre à l'écart, jamais supprimer.",
+    ).toEqual([]);
+  });
+
+  it("🔴 la garde contre la suppression ROUGIT sur chaque contournement connu (preuve)", () => {
+    const rouge = (src: string) => fautesDeSuppression(src).length > 0;
+    // Import nommé destructif, import espace de noms, import dynamique, import par défaut.
+    expect(rouge('import { effacerCibleX } from "@/lib/rgpd-erase";')).toBe(true);
+    expect(rouge('import * as rgpd from "@/lib/rgpd-erase";')).toBe(true);
+    expect(rouge('const m = await import("@/lib/rgpd-erase");')).toBe(true);
+    expect(rouge('import rgpd from "@/lib/rgpd-erase";')).toBe(true);
+    // Modules destructeurs connus.
+    expect(rouge('import { x } from "@/server/careers/candidature-rgpd";')).toBe(true);
+    expect(rouge('import { x } from "@/server/careers/effacement-par-le-candidat";')).toBe(true);
+    expect(rouge('import { x } from "@/lib/rgpd-dossier-client";')).toBe(true);
+    // Suppression écrite directement.
+    expect(rouge("await prisma.autreModele.deleteMany({ where: {} });")).toBe(true);
+    expect(rouge("await prisma.autreModele.delete({ where: { id } });")).toBe(true);
+    expect(rouge("await prisma.$executeRaw`DELETE FROM x WHERE y = 1`;")).toBe(true);
+    expect(rouge('await prisma.$executeRawUnsafe("delete from x");')).toBe(true);
+    // Ce qui reste permis.
+    expect(rouge('import { ecarterRapportsAvantAuditPourEmail } from "@/lib/rgpd-erase";')).toBe(
+      false,
+    );
+    expect(rouge('import { prisma } from "@/lib/prisma";\nawait prisma.a.updateMany({});')).toBe(
+      false,
+    );
+    // Les commentaires ne comptent pas.
+    expect(rouge("// prisma.x.deleteMany(")).toBe(false);
   });
 
   it("l'ampleur de ce qui reste à instruire est CHIFFRÉE, pas dissimulée", () => {

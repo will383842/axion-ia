@@ -168,6 +168,9 @@ describe("le catalogue décrit le code réel", () => {
       "payment-failed",
       "payment-link",
       "payment-receipt",
+      // 11/11/2026 (décision de Williams) : la demande d'effacement met à l'écart ; le courriel
+      // « vos données ont été effacées » ne part plus (il serait faux).
+      "rgpd-effacement-confirme",
       // Lot présence 2/3 (NC6) : les deux gabarits de présence ne sont plus dormants, le
       // lot pose leur `source` (`confirmation-presence/envois.ts`).
     ]);

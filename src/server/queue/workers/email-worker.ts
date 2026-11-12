@@ -41,6 +41,7 @@ import { ENTITE_GUIDE } from "@/server/guide-ia/config";
 // tous les e-mails du site mourraient au premier départ. Gardé par
 // `__tests__/email-worker.opposition.graphe-worker.spec.ts`.
 import {
+  dateDeMiseAEcart,
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
 } from "@/server/email/verdict-envoi";
@@ -105,13 +106,17 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
     // départ sans en être une (argent, pièce) ne s'arrête que sur rebond ou
     // désabonnement. Pour tout gabarit entré ici avant CAMP-1, c'était `true`.
     sollicitation: estSollicitationSoumiseAOpposition(data.template, data.payload),
+    // Départ : une panne de lecture de la mise à l'écart fait réessayer le job (jamais d'envoi).
+    auDepart: true,
   });
   if (verdict.retenu) {
     return verdict.motif === "oppose"
       ? "la personne s'est opposée aux sollicitations"
       : verdict.motif === "rebond_dur"
         ? "adresse en rebond définitif"
-        : "désabonnement";
+        : verdict.motif === "ecarte_effacement"
+          ? "la personne a demandé l'effacement (mise à l'écart de tout envoi)"
+          : "désabonnement";
   }
   if (data.entityType === "Submission" && data.entityId) {
     if ((await ficheEffacee(data.entityId)) === true) {
@@ -236,6 +241,19 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           }
           return;
         }
+      } else if ((await dateDeMiseAEcart(to, template)) !== null) {
+        // Décision du 11/11/2026 : une personne mise à l'écart (demande d'effacement) ne reçoit
+        // plus rien, QUEL QUE SOIT le gabarit — y compris un job enfilé avant la demande, ou en
+        // attente d'un réessai. Seule la réponse à un droit (`gdpr-export-link`) passe.
+        // Les sollicitations et gabarits relus au départ passent déjà par `verdictAvantEnvoi`.
+        const trace =
+          "Retenu à l'envoi : la personne a demandé l'effacement (mise à l'écart de tout envoi)";
+        if (job.id) {
+          await marquerAnnule(job.id, trace);
+        } else {
+          console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
+        }
+        return;
       }
 
       const jobId = job.id;
@@ -512,6 +530,19 @@ async function handleSubmissionReply(payload: Record<string, unknown>): Promise<
     return;
   }
 
+  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
+  if ((await dateDeMiseAEcart(to, "submission-reply")) !== null) {
+    await prisma.submissionReply.update({
+      where: { id: reply.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
+      },
+    });
+    return;
+  }
+
   try {
     const result = await sendEmail({
       to,
@@ -591,6 +622,19 @@ async function handleCandidatureReponse(payload: Record<string, unknown>): Promi
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
+      },
+    });
+    return;
+  }
+
+  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
+  if ((await dateDeMiseAEcart(to, "candidature-reponse")) !== null) {
+    await prisma.jobApplicationReply.update({
+      where: { id: reponse.id },
+      data: {
+        deliveryStatus: "failed",
+        failedAt: new Date(),
+        errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
       },
     });
     return;

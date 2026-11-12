@@ -770,13 +770,15 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "rgpd-effacement-confirme": {
     categorie: "rgpd",
-    quand: "Effacement effectué, confirmation",
+    quand:
+      "DORMANT depuis le 11/11/2026 (décision de Williams) : une demande d'effacement met la personne à l'écart, rien n'est supprimé, et ce courriel affirmerait un effacement qui n'a pas eu lieu. Il ne peut de toute façon plus partir après une mise à l'écart : l'adresse est bloquée pour tout envoi, tous modèles confondus. Gardé pour un effacement fait à la main ; l'accusé de réception de la demande est à trancher par Williams.",
     destinataire: "la personne concernée",
-    source: "app/api/gdpr-erase/route.ts",
+    source: null,
   },
   "gdpr-export-link": {
     categorie: "rgpd",
-    quand: "Lien d'export des données personnelles",
+    quand:
+      "Lien d'export des données personnelles, en réponse à la demande d'accès de la personne elle-même. Seul modèle qui part encore vers une adresse mise à l'écart après une demande d'effacement (réponse à un droit, aucun contenu commercial) ; tous les autres restent bloqués.",
     destinataire: "la personne concernée",
     source: "app/api/gdpr-export/request/route.ts",
   },

@@ -1,68 +1,33 @@
-// API /api/gdpr-erase — RGPD self-service erase (Sprint Correctif S+1 / P0-S1-2 2026-05-16).
+// API /api/gdpr-erase — demande d'effacement RGPD en libre-service.
 //
 // POST { email, token, confirm: "ERASE_MY_DATA" }
 //
-// Flow :
-//   1. Vérifie token HMAC (même schéma que /api/gdpr-export, lib `gdpr-token`).
-//   2. Anti-replay : token email === body email.
-//   3. Confirmation littérale "ERASE_MY_DATA" (anti-clic-accidentel).
-//   4. Rate limit 1/jour/email (l'erase ne se rejoue pas).
-//   5. Pour chaque type de données :
-//      - Submission : anonymisation in-place (audit business conservé)
-//      - NewsletterSubscriber : suppression hard
-//      - KnowledgeBookmark : suppression hard
-//   6. ActivityLog `gdpr.erase.completed` (forensique) + alerte Telegram canal Will.
+// 🔴 DÉCISION DE WILLIAMS DU 11/11/2026 (fait foi) — PLUS AUCUNE SUPPRESSION.
 //
-// **Important** : pas d'undo. Le token est consommé pour 1 erase ; au prochain
-// export, l'email est anonymisé donc inacessible. Le contrat utilisateur
-// implicite est explicité dans la confirmation UI (composant `/admin/rgpd/...`).
+// Jusqu'à cette date, la route enchaînait une vingtaine d'effaceurs (`src/lib/rgpd-erase.ts`) :
+// `guide_requests`, `newsletter_subscribers`, `email_outbox`, `crm_sync_outbox`, chat, pièces
+// jointes, candidatures, podcast, dossier client… supprimés ou anonymisés, puis une alerte
+// Telegram et un e-mail « vos données ont été effacées » (audit RGPD du 11/11/2026, point E1).
 //
-// Tables NON-touchées (legal hold) :
-//   - generation_logs / cost_ledger / web_vital_samples / content_gen_jobs
-//     (logs techniques sans PII visiteur — voir politique-confidentialite).
-//   - ActivityLog : conservé (immuable, art. 30 RGPD register).
-//     🔴 `D5-5-05` (2026-08-20) — cette affirmation était FAUSSE jusqu'à cette
-//     date : `retention-purge-worker.ts` effaçait tout `activity_logs` de plus
-//     de 12 mois, SANS filtre d'action, traces `gdpr.*` comprises. Deux textes
-//     du dépôt se contredisaient, et c'est le silencieux qui gagnait. La purge
-//     exclut désormais le préfixe `gdpr.` et lui applique la durée des pièces.
+// Désormais la demande MET LA PERSONNE À L'ÉCART (`server/rgpd/ecarter-au-lieu-d-effacer.ts`) :
+// plus aucun envoi, plus aucune réinscription par un nouvel accord, données GARDÉES, preuve de
+// la demande au journal, et une alerte dans la CLOCHE de la console (pas de Telegram, pas
+// d'e-mail) pour que Williams traite la demande à la main. Les effaceurs de `rgpd-erase.ts`
+// restent l'outil de ce geste humain ; cette route ne les appelle plus.
+//
+// Contrôles gardés : jeton HMAC (même schéma que `/api/gdpr-export`), anti-rejeu (adresse du
+// jeton = adresse du corps), confirmation littérale, une demande par jour et par adresse.
+//
+// ⚠️ Plus d'e-mail de confirmation : l'ancien affirmait un effacement qui n'a plus lieu. Le
+// texte d'un accusé de réception est À TRANCHER PAR WILLIAMS (et l'adresse étant écartée,
+// le site ne peut plus rien lui envoyer : la réponse part à la main).
 
 import { NextResponse, type NextRequest } from "next/server";
-import { effacerCandidaturesPour } from "@/server/careers/candidature-rgpd";
-import {
-  candidaturesAConserverPour,
-  formateurIndependantASignalerPour,
-} from "@/lib/rgpd-formateur-independant";
-import { effacerDemandesPodcastPour } from "@/features/podcast-request/rgpd";
-import { anonymiserDemandesTour } from "@/features/tour-de-france/rgpd";
 import { z } from "zod";
-import { prisma } from "@/lib/prisma";
 import { verifyGdprToken } from "@/lib/gdpr-token";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { eraseKbDataForEmail } from "@/lib/knowledge/rgpd-export";
-import {
-  eraseChatDataForEmail,
-  eraseSignatureTokensForEmail,
-  eraseEmailTracesForEmail,
-  eraseCrmOutboxForEmail,
-  eraseNewsletterForEmail,
-  eraseSubmissionsForEmail,
-  eraseClientsForEmail,
-  eraseDocumentRecipientsForEmail,
-  eraseCoachingSignaturesForEmail,
-  eraseCalendlyEventsForEmail,
-  eraseReseauApporteurForEmail,
-  eraseReponsesEntrantesForEmail,
-  erasePiecesJointesContactForEmail,
-  effacerCibleParAdresses,
-  ecarterRapportsAvantAuditPourEmail,
-} from "@/lib/rgpd-erase";
-import { alertIncident } from "@/lib/telegram";
-import { empreinteSha256 } from "@/server/newsletter/exports";
-import { enqueueEmail } from "@/server/queue/queues";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
+import { ecarterPourDemandeEffacement } from "@/server/rgpd/ecarter-au-lieu-d-effacer";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -86,7 +51,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   const { email, token } = parsed.data;
 
-  // Rate limit 1/jour/email — l'erase est one-shot
+  const v = await verifyGdprToken(token);
+  if (!v.ok) {
+    return NextResponse.json({ ok: false, error: v.reason }, { status: 401 });
+  }
+  if (v.email !== email) {
+    return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
+  }
+
+  // Rate limit 1/jour/email — l'erase est one-shot. APRÈS le contrôle du jeton : un tiers qui
+  // envoie un faux jeton pour l'adresse d'une victime ne doit pas lui consommer son essai.
   const rl = await checkRateLimit(`gdpr:erase:${email}`, {
     limit: 1,
     windowSec: 86_400,
@@ -96,402 +70,49 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
   }
 
-  const v = await verifyGdprToken(token);
-  if (!v.ok) {
-    return NextResponse.json({ ok: false, error: v.reason }, { status: 401 });
-  }
-  if (v.email !== email) {
-    return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
-  }
-
-  // 🔴 2026-09-19 — LES ENVOIS PROGRAMMÉS, AVANT TOUT EFFACEMENT. Relances
-  // J+2 / J+7 et kit du dossier commencé dorment dans la file, retrouvables par
-  // l'empreinte de l'adresse ; une fois les fiches anonymisées, plus rien ne
-  // les relie à la personne et ils partiraient vers quelqu'un qui vient
-  // d'obtenir l'oubli. Best-effort : une file indisponible ne doit pas priver
-  // la personne de son effacement (le filet du worker retient de toute façon
-  // un envoi vers une fiche effacée). Import dynamique : le module tire les
-  // files BullMQ, dont le reste de la route n'a besoin qu'à la fin.
-  await import("@/features/commercial-application/relances-lead-apporteur")
-    .then(({ annulerRelancesLeadApporteur }) =>
-      annulerRelancesLeadApporteur(email, "Envoi annulé : effacement RGPD."),
-    )
-    .catch((err: unknown) => {
-      console.error("[gdpr-erase] annulation des envois programmés impossible :", err);
-    });
-
-  // Données chatbot (chat_*) AVANT l'anonymisation des Submissions : le
-  // rattachement conversation↔lead se fait par `contactEmail`, qui sera hashé
-  // par eraseSubmissionsForEmail.
-  const chatResult = await eraseChatDataForEmail(email);
-
-  // Pièces jointes du formulaire de contact (2026-10-15) — objets R2 ET lignes,
-  // AVANT l'anonymisation : elles se retrouvent par l'empreinte de la demande,
-  // que `eraseSubmissionsForEmail` remet à NULL. Best-effort, comme ci-dessus.
-  const piecesJointesResult = await erasePiecesJointesContactForEmail(email).catch(
-    (err: unknown) => {
-      console.error("[gdpr-erase] effacement des pièces jointes impossible :", err);
-      return { supprimees: 0 };
-    },
-  );
-
-  // Lot L16a (W5 I-11) — lu AVANT les effacements : les candidatures d'origine
-  // d'un formateur sous lien contractuel sont CONSERVÉES. Éteint
-  // (`formateurs.dossier_en_ligne` absent) = ensemble vide, comportement d'avant.
-  const candidaturesRetenues = await candidaturesAConserverPour(email);
-  // La fiche du formateur n'est PAS modifiée ici : son effacement
-  // (pseudonymisation, aucune suppression) est un geste d'administrateur, avec
-  // confirmation. La route le SIGNALE seulement au journal.
-  const formateurIndependant = await formateurIndependantASignalerPour(email);
-
-  // Rapports avant audit (2026-11-02) : MIS À L'ÉCART, jamais supprimés (règle de Will), et
-  // AVANT `eraseCalendlyEventsForEmail`, qui retire l'adresse par laquelle on les retrouve.
-  // Best-effort : la personne obtient son effacement même si cette étape échoue — l'alerte le dit.
-  const rapportsAvantAuditResult = await ecarterRapportsAvantAuditPourEmail(email).catch(
-    (err: unknown) => {
-      // Le NOM seulement : jamais un message d'erreur qui pourrait porter une donnée.
-      console.error(
-        `[gdpr-erase] mise à l'écart des rapports avant audit impossible : ${err instanceof Error ? err.name : "inconnue"}`,
-      );
-      return { ecartes: 0, annules: 0, echec: true as const };
-    },
-  );
-
-  // Exécution des effacements
-  const [
-    submissionsResult,
-    newsletterResult,
-    kbResult,
-    candidaturesResult,
-    emailTracesResult,
-    crmOutboxResult,
-    podcastResult,
-    signatureTokensResult,
-    clientsResult,
-    destinatairesResult,
-    signaturesCoachingResult,
-    appelsResult,
-    reseauApporteurResult,
-    reponsesEntrantesResult,
-    dossierClientResult,
-    demandesTourResult,
-  ] = await Promise.all([
-    eraseSubmissionsForEmail(email),
-    eraseNewsletterForEmail(email),
-    eraseKbDataForEmail(email),
-    // 🔴 `D5-5-03` (2026-08-20) — LES CANDIDATURES ÉTAIENT HORS DE PORTÉE.
-    //
-    // Ni exportées, ni effacées — alors qu'une candidature porte le **CV**, la
-    // **photo** et le **téléphone**, c'est-à-dire les données les plus
-    // sensibles que ce site détienne sur une personne. Et le courriel de
-    // confirmation ÉNUMÉRAIT ce qui avait été effacé : une liste qui se donne
-    // pour exhaustive et qui omet le CV est pire qu'une absence de liste.
-    //
-    // Le défaut était plus profond qu'un oubli de branchement : `email` est
-    // chiffré avec un IV aléatoire, donc la candidature était INTROUVABLE par
-    // son adresse. Cf. `careers/candidature-rgpd.ts`.
-    effacerCandidaturesPour(email, { conserver: candidaturesRetenues }),
-    // 🔴 `D5-5-01` (2026-08-24) — LES DEUX TABLES D'E-MAIL ÉTAIENT HORS DE PORTÉE.
-    //
-    // Exactement le défaut de `D5-5-03` ci-dessus, une table plus loin :
-    // `email_logs.recipient` et `email_outbox.recipient` portent l'adresse EN
-    // CLAIR, et `email_outbox.payload` la charge utile complète — nom, formation,
-    // dates, liens personnels. Ni effacées, ni déclarées en exception : la
-    // personne recevait « vos données identifiantes ont été effacées » pendant
-    // qu'elles survivaient.
-    //
-    // Les deux ne se traitent pas pareil, et le détail est dans `rgpd-erase.ts` :
-    // le journal est une PREUVE Qualiopi (art. 17(3)(b) et (e)) — on
-    // pseudonymise l'adresse et on garde la ligne ; la corbeille ne prouve rien
-    // — on supprime.
-    eraseEmailTracesForEmail(email),
-    // Lot L6 (relecture du 2026-09-25) — `crm_sync_outbox.payload` porte
-    // l'adresse EN CLAIR (charge déchiffrée envoyée au CRM). Supprimée, tous
-    // statuts : une ligne `pending` laissée ici ferait REPARTIR les données
-    // vers le CRM après l'effacement. Détail dans `rgpd-erase.ts`.
-    eraseCrmOutboxForEmail(email),
-    // QUATRIEME occurrence de la meme faute (`D5-5-04`, 2026-08-24).
-    //
-    // `podcast_requests` n'etait NI effacee NI declaree en exception. La
-    // personne y laisse, par un formulaire PUBLIC, son nom, son adresse, son
-    // telephone, sa ville et sa description d'activite ; la reponse ci-dessous
-    // lui affirmait que ses donnees identifiantes avaient ete effacees.
-    //
-    // Elle est la plus indefendable des quatre : les autres tables non
-    // instruites concernent des signataires, des factures, des contacts
-    // d'affaires -- des gens lies par un contrat. Ici, aucun contrat, aucune
-    // piece comptable, aucune preuve Qualiopi. Rien a opposer a la demande.
-    //
-    // Et comme `D5-5-03`, le defaut etait double : `email` est chiffre a IV
-    // aleatoire, donc la ligne etait INTROUVABLE par son adresse. Cf.
-    // `features/podcast-request/rgpd.ts`.
-    effacerDemandesPodcastPour(email),
-    // Les JETONS d'invitation a signer -- PAS les signatures, qui sont
-    // scellees dans un tuple hache et declarees en exception ci-dessous.
-    // Revocation d'abord : un lien encore valide permettrait de signer au nom
-    // d'une personne effacee, et de resceller son adresse dans une signature
-    // neuve -- ce qui annulerait l'effacement qu'on vient de faire.
-    eraseSignatureTokensForEmail(email),
-    // ── LES TROIS DERNIERES TABLES « A INSTRUIRE » (2026-08-25) ──────────────
-    //
-    // Elles etaient nommees depuis le 2026-08-24 dans
-    // `rgpd-aucune-table-n-echappe-en-silence.spec.ts`, chacune bloquee sur une
-    // decision. La cle qui les a debloquees toutes les trois : cette route est
-    // declenchee par une DEMANDE, pas par une purge periodique. Les blocages
-    // ecrits (« aucune date de fin de relation, donc les 5 ans sont
-    // incalculables ») ne s'opposaient qu'a une purge - or la purge a ete
-    // ecartee par le proprietaire en connaissance de cause.
-    //
-    // Le detail de chaque arbitrage est au-dessus de son effaceur dans
-    // `rgpd-erase.ts`. En resume : `Client` pseudonymise le CONTACT et retient
-    // les fiches facturees (art. L.123-22 + art. 17(3)(b)) ; `DocumentRecipient`
-    // pseudonymise SANS supprimer, pour ne pas emporter en cascade l'accuse de
-    // telechargement qui vaut preuve de diffusion Qualiopi ;
-    // `CoachingSeanceSignature` est pseudonymisee parce que sa chaine
-    // d'empreintes n'est plus recalculee par personne.
-    eraseClientsForEmail(email),
-    eraseDocumentRecipientsForEmail(email),
-    eraseCoachingSignaturesForEmail(email),
-    eraseCalendlyEventsForEmail(email),
-    // Réseau d'apporteurs (2026-10-05) : l'apporteur et les personnes présentées.
-    eraseReseauApporteurForEmail(email),
-    // 2026-09-27 — les réponses de la personne à son invitation d'apporteur,
-    // relevées dans la boîte Zoho : objet et extrait de SES messages.
-    eraseReponsesEntrantesForEmail(email),
-    // Chantier visio (2026-09-29) — le dossier client : ses paroles, les faits
-    // dont elle est sujet ou locutrice, son nom dans la fiche et les
-    // rencontres ; les comptes rendus qui la citent sont vidés pour être
-    // réécrits sans elle. Les preuves d'accord restent (art. 17(3)(e)).
-    effacerCibleParAdresses([email], { motif: "art17" }),
-    // Tour France IA (2026-10-27) : les demandes sont VIDÉES, jamais supprimées ; leurs clés de
-    // comptage deviennent opaques et la ligne reste comptée (le compteur d'une ville ne recule pas).
-    // Cf. `tour-de-france/rgpd.ts`.
-    anonymiserDemandesTour(email),
-  ]);
-
-  // ART. 17 BI-SYSTÈME (lot L4) — le CRM efface par `person_key` dans les deux
-  // univers et inscrit l'empreinte en liste de suppression (ce qui empêche une
-  // réinsertion par un futur import).
-  //
-  // 🔴 NON BLOQUANT, et calculé AVANT d'effacer localement l'adresse : une
-  // personne qui exerce son droit à l'effacement doit l'obtenir sur le site,
-  // que le second système réponde ou non. Lui renvoyer une erreur parce qu'un
-  // CRM inerte n'a pas répondu serait une régression de droit.
-  const crmResult = await propagateGdprToCrm({
-    action: "erase",
-    personKey: hashEmailForLookup(email) ?? "",
-    email,
-  });
-
-  // Activity log RGPD : trace forensique immuable
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: null,
-      action: "gdpr.erase.completed",
-      targetType: "self_service",
-      targetId: v.jti,
-      changes: {
-        // 🔴 `D5-5-05` (2026-08-20) — c'était `email`, EN CLAIR. Sur le journal
-        // qui trace l'effacement de cette même personne, et que la purge
-        // conserve désormais cinq ans. Conserver la preuve plus longtemps
-        // n'avait de sens qu'à condition de ne pas conserver l'identifiant
-        // avec : le hachage est déterministe, donc re-hacher l'adresse fournie
-        // suffit à retrouver la trace le jour où quelqu'un conteste.
-        emailHash: hashEmailForLookup(email),
-        // Lot L3 — le SHA-256 de l'adresse normalisée, le format des outils
-        // d'envoi et du CRM : relu par la liste de suppression de la lettre
-        // (`server/newsletter/exports.ts`), pour qu'une personne effacée ne
-        // soit jamais réimportée. Non salé, donc comparable par qui détient
-        // l'adresse : c'est son rôle, et le même choix que l'effacement console.
-        emailSha256: empreinteSha256(email),
-        submissionsAnonymized: submissionsResult.anonymized,
-        newsletterDeleted: newsletterResult.deleted,
-        guideRequestsDeleted: newsletterResult.guideDeleted,
-        crmOutboxDeleted: crmOutboxResult.supprimees,
-        kbBookmarksDeleted: kbResult.bookmarksDeleted,
-        chatConversationsDeleted: chatResult.conversationsDeleted,
-        chatEscalationsAnonymized: chatResult.escalationsAnonymized,
-        reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
-        piecesJointesContactSupprimees: piecesJointesResult.supprimees,
-        dossierClient: dossierClientResult,
-        demandesTourAnonymisees: demandesTourResult.anonymisees,
-        rapportsAvantAudit: { ...rapportsAvantAuditResult },
-        reseauApporteur: { ...reseauApporteurResult },
-        formateurIndependant,
-        candidaturesRetenues: candidaturesRetenues.size,
-        // Le compte rendu du volet CRM est TRACÉ : un effacement seulement
-        // local doit se voir dans le journal, jamais se supposer.
-        crmStatus: crmResult.status,
-      },
-      // Était `x-forwarded-for` BRUT, non découpé : en production, le relais
-      // Cloudflare. La preuve porte désormais l'IP du visiteur.
-      ipAddress: ipVisiteurOuNull(req.headers),
-    },
-  });
-
-  // ── Confirmation à la personne ───────────────────────────────────────────
-  // 🔴 Ajouté le 2026-08-13. Jusque-là, l'effacement s'exécutait sans que la
-  // personne en soit JAMAIS informée. Deux conséquences : aucune preuve de son
-  // côté, et — puisque son adresse vient d'être anonymisée ci-dessus — plus
-  // aucun moyen de la recontacter. L'omission était donc DÉFINITIVE.
-  //
-  // L'adresse ne survit plus que dans `email`, variable locale : la mettre en
-  // file la copie dans la charge utile de la tâche, seul endroit où elle
-  // persistera. C'est aussi pourquoi l'envoi est mis en file ICI et non
-  // ailleurs — le déplacer après une future étape d'effacement le casserait.
-  //
-  // Meilleur effort : l'effacement est fait et acté. Un échec d'envoi ne doit
-  // pas transformer une réussite en erreur 500 côté visiteur.
+  // Mise à l'écart : opposition (envois programmés retirés, CRM averti), marque « effacement
+  // demandé » (plus aucun envoi), lettre et contacts du guide écartés, preuve, alerte cloche.
+  // Ne lève pas sur une étape en panne : l'alerte nomme les étapes à reprendre à la main.
+  let resultat: Awaited<ReturnType<typeof ecarterPourDemandeEffacement>>;
   try {
-    await enqueueEmail("rgpd-effacement-confirme", email, "fr", {
-      effectueLe: new Date().toLocaleDateString("fr-FR", {
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-      }),
-      demandes: submissionsResult.anonymized,
-      newsletter: newsletterResult.deleted,
-      // Lot L6 — les demandes du guide étaient effacées (L2) mais tues ici.
-      demandesGuide: newsletterResult.guideDeleted,
-      conversations: chatResult.conversationsDeleted,
-      // 🔴 `D5-5-03` — la candidature ENTRE dans l'énumération. Le courriel
-      // dressait la liste de ce qui avait été effacé sans jamais mentionner le
-      // CV : la personne pouvait croire son dossier parti alors qu'il restait
-      // en base, avec sa photo et son numéro.
-      candidatures: candidaturesResult.supprimees,
-      // `D5-5-04` — meme raison que la ligne au-dessus, une table plus loin.
-      // Une liste qui se donne pour exhaustive et qui omet la demande de
-      // podcast est, selon les termes de ce depot, pire qu'une absence de liste.
-      podcast: podcastResult.supprimees,
-      // Chantier QNC, L11 — la conservation des copies de formation est DITE,
-      // jamais tue : une liste qui se donne pour exhaustive ne cache pas ce
-      // qu'elle garde. Omise (0) tant que l'interrupteur du lot est éteint.
-      copiesFormationConservees: emailTracesResult.copiesConserveesFormation ?? 0,
-      // 2026-08-25 — les trois dernieres tables de l'inventaire entrent dans
-      // l'enumeration. `clientsRetenus` est annonce SEPAREMENT et a dessein :
-      // une reponse qui dirait « tout est efface » alors qu'une fiche facturee
-      // survit serait exactement le defaut que cette famille de correctifs
-      // corrige depuis quatre occurrences. On declare la retention, on ne la
-      // tait pas.
-      fichesClient: clientsResult.anonymises,
-      fichesClientRetenues: clientsResult.retenusObligationComptable,
-      destinatairesDocuments: destinatairesResult.anonymises,
-      // 2026-08-28 — même motif que les deux blocs ci-dessus, une table plus
-      // loin. Une réservation d'appel porte le nom, l'adresse, le TÉLÉPHONE, les
-      // réponses libres du formulaire, et les liens qui permettent d'annuler le
-      // rendez-vous sans authentification. Elle n'était dans aucun des trois
-      // mécanismes RGPD, et cette énumération ne la mentionnait pas.
-      appels: appelsResult.anonymized,
-      // Chantier visio (PR 8, T24) — le dossier client entre dans
-      // l'énumération : ses paroles, les informations tirées de nos échanges et
-      // les comptes rendus qui la citent. Même motif que les tables ci-dessus :
-      // une liste qui se donne pour exhaustive ne tait pas une table.
-      dossierClient:
-        dossierClientResult.segments +
-        dossierClientResult.faits +
-        dossierClientResult.comptesRendusARegenerer +
-        dossierClientResult.comptesRendusSupprimes +
-        dossierClientResult.questions,
+    resultat = await ecarterPourDemandeEffacement({
+      email,
+      origine: "libre-service",
+      jti: v.jti,
+      // L'IP du VISITEUR, jamais le relais Cloudflare ni `x-forwarded-for` brut.
+      ip: ipVisiteurOuNull(req.headers),
     });
-  } catch (err) {
-    console.error("[gdpr-erase] confirmation impossible à mettre en file :", err);
-  }
-
-  // Rapports avant audit mis à l'écart : Will décide (aucune purge automatique). Alerte à part,
-  // sans adresse : des nombres et l'identifiant du jeton seulement.
-  if (rapportsAvantAuditResult.ecartes > 0 || "echec" in rapportsAvantAuditResult) {
-    try {
-      await alertIncident(
-        "echec" in rapportsAvantAuditResult
-          ? "⚠️ RGPD art. 17 : la mise à l'écart des rapports avant audit a ÉCHOUÉ — à vérifier à la main."
-          : `⚠️ RGPD art. 17 : ${rapportsAvantAuditResult.ecartes} rapport(s) avant audit mis à l'écart (${rapportsAvantAuditResult.annules} lancement(s) annulé(s)). Rien n'est supprimé : à toi de décider de la suite.`,
-        { userId: v.jti },
-      );
-    } catch {
-      // Telegram non bloquant ; la ligne du journal ci-dessus porte les mêmes nombres.
-    }
-  }
-
-  // Telegram alert (DPO doit savoir — art. 30 RGPD register update)
-  try {
-    await alertIncident(
-      `🗑️ RGPD art. 17 effacement effectué : ${submissionsResult.anonymized} submissions anonymisées, ${newsletterResult.deleted} newsletter, ${newsletterResult.guideDeleted} demandes du guide, ${kbResult.bookmarksDeleted} KB bookmarks, ${chatResult.conversationsDeleted} conversations chatbot supprimées, ${chatResult.escalationsAnonymized} escalades anonymisées, ${clientsResult.anonymises} fiches client pseudonymisées (${clientsResult.retenusObligationComptable} RETENUES au titre de l'obligation comptable), ${destinatairesResult.anonymises} destinataires de documents, ${signaturesCoachingResult.anonymises} signatures de coaching.`,
-      { userId: v.jti },
+  } catch (e) {
+    console.error(
+      `[gdpr-erase] mise à l'écart impossible : ${e instanceof Error ? e.name : "erreur"}`,
     );
-  } catch {
-    // Telegram alert non-bloquant
+    return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503 });
+  }
+
+  // On n'affirme l'arrêt des envois que si la marque est bien posée.
+  if (resultat.marque !== "ok") {
+    return NextResponse.json({
+      ok: true,
+      statut: "demande_recue_a_traiter_a_la_main",
+      recueLe: new Date().toISOString(),
+      notice: {
+        explanation:
+          "Votre demande d'effacement a bien été reçue. Elle sera traitée à la main par notre " +
+          "responsable, qui vous répondra personnellement sous un mois.",
+        contactDpo: "contact@axion-ia.com",
+      },
+    });
   }
 
   return NextResponse.json({
     ok: true,
-    erasedAt: new Date().toISOString(),
-    summary: {
-      submissionsAnonymized: submissionsResult.anonymized,
-      newsletterDeleted: newsletterResult.deleted,
-      guideRequestsDeleted: newsletterResult.guideDeleted,
-      kbBookmarksDeleted: kbResult.bookmarksDeleted,
-      chatConversationsDeleted: chatResult.conversationsDeleted,
-      chatEscalationsAnonymized: chatResult.escalationsAnonymized,
-      emailLogsPseudonymises: emailTracesResult.logsPseudonymises,
-      emailOutboxSupprimes: emailTracesResult.outboxSupprimes,
-      emailCopiesSupprimees: emailTracesResult.copiesSupprimees,
-      // Chantier QNC, L11 — copies d'e-mails de formation gardées, adresse masquée.
-      emailCopiesConserveesFormation: emailTracesResult.copiesConserveesFormation ?? 0,
-      reponsesEntrantesSupprimees: reponsesEntrantesResult.supprimees,
-      crmOutboxSupprimes: crmOutboxResult.supprimees,
-      podcastSupprimes: podcastResult.supprimees,
-      demandesTourAnonymisees: demandesTourResult.anonymisees,
-      jetonsSignatureRevoques: signatureTokensResult.revoques,
-      jetonsSignaturePseudonymises: signatureTokensResult.pseudonymises,
-      // Le repli dechiffrant est BORNE, ici comme pour les candidatures. S'il a
-      // mordu son plafond, des lignes anciennes peuvent subsister -- et la
-      // personne doit l'apprendre ici, pas le decouvrir plus tard. Un
-      // effacement tronque qui se presente comme complet est pire qu'un
-      // effacement refuse.
-      ...(podcastResult.tronque || candidaturesResult.tronque
-        ? {
-            avertissement:
-              "La recherche des enregistrements anciens a atteint sa limite d'examen : " +
-              "certains peuvent subsister. Ecrivez a contact@axion-ia.com pour une " +
-              "verification manuelle.",
-          }
-        : {}),
-      /** `ok` | `deferred` | `failed` — cf. `notice.retentionExceptions`. */
-      crm: crmResult.status,
-    },
+    statut: "demande_recue_mise_a_l_ecart",
+    recueLe: new Date().toISOString(),
     notice: {
       explanation:
-        "Vos données identifiantes ont été effacées ou anonymisées. Les lignes business (factures, audit comptable) sont conservées sous forme anonymisée conformément à l'art. 30 RGPD (legal hold).",
-      retentionExceptions: [
-        "Submissions : anonymisées in-place (audit business + facturation préservés sans PII).",
-        "ActivityLog : conservé (immuable, art. 30 RGPD register).",
-        "generation_logs / cost_ledger / web_vital_samples : logs techniques sans PII visiteur (purgés par retention-purge-worker).",
-        // Conservé au titre de l'art. 17(3)(e) : c'est la preuve exigée par
-        // l'art. 7(1). L'effacer reviendrait à détruire la démonstration que le
-        // traitement passé était licite — y compris celui qu'on vient d'effacer.
-        // Le registre ne contient AUCUNE adresse en clair, seulement une
-        // empreinte : il ne permet pas de retrouver la personne.
-        "consent_events : registre de preuve des consentements, conservé sous forme d'empreinte (art. 7(1) et 17(3)(e) RGPD).",
-        // ⚠️ DÉCLARÉE, et pas seulement appliquée. Une exception de rétention
-        // qu'on pratique sans la dire est indiscernable d'un oubli — et c'est
-        // précisément sous cette forme que le défaut a vécu.
-        "email_logs : l'adresse est PSEUDONYMISÉE, la ligne conservée. C'est la preuve que vous avez été informé (convocation, convention, attestation), exigée par la certification Qualiopi et couverte par l'art. 17(3)(b) et (e) RGPD. Elle ne permet plus de vous identifier.",
-        "email_log_contents : la COPIE des e-mails qui vous ont été envoyés (objet, texte) est SUPPRIMÉE. Seule la ligne pseudonymisée du journal subsiste.",
-        "email_outbox : SUPPRIMÉ intégralement — messages non envoyés, charge utile comprise. Aucune base légale ne justifie de les conserver.",
-        "podcast_requests : SUPPRIMÉ intégralement (nom, adresse, téléphone, ville, activité). Aucun contrat, aucune obligation comptable : rien ne justifiait de les conserver.",
-        "booking_options : SUPPRIMÉ intégralement. Une option de réservation non confirmée ne fonde aucune obligation.",
-        "document_signature_tokens : liens de signature RÉVOQUÉS puis adresse pseudonymisée. Le jeton est un artefact d'envoi, pas une preuve.",
-        // ⚠️ LES QUATRE EXCEPTIONS CI-DESSOUS ÉTAIENT PRATIQUÉES SANS ÊTRE DITES.
-        // Aucune n'était fausse ; aucune n'était déclarée. Or une exception de
-        // rétention qu'on applique en silence est indiscernable d'un oubli —
-        // c'est mot pour mot sous cette forme qu'ont vécu les quatre défauts
-        // `D5-5-01` à `D5-5-04`. Les écrire ici, c'est les rendre contestables
-        // par la personne, ce qui est le but de l'art. 17(3).
-        "emargement_signatures : l'adresse du signataire est CONSERVÉE. Elle entre dans le tuple scellé qui prouve l'assiduité (art. 17(3)(b) et (e) RGPD, indicateur 12 Qualiopi) : l'effacer rendrait « pièces modifiées après coup » sur des feuilles intactes. L'IMAGE du tracé, elle, est purgée.",
-        "document_signatures : idem — l'identité du signataire est scellée dans l'empreinte de la pièce (art. 1366 du code civil, art. 17(3)(e) RGPD). Seule l'image de la signature est purgeable.",
-        "factures : les pièces comptables et leurs destinataires sont conservés au titre de l'art. 17(3)(b) RGPD — obligation de conservation des documents comptables.",
-        "sous_traitants : le dossier du signataire d'un contrat de sous-traitance est conservé au titre de l'art. 17(3)(b) — pièces exigées par la certification Qualiopi (indicateur 27) — et 17(3)(e), la qualité du signataire portant l'opposabilité de son pouvoir de signer.",
-      ],
+        "Votre demande d'effacement a bien été reçue. Nous avons cessé tout envoi automatique vers " +
+        "votre adresse. Rien n'est effacé automatiquement : notre responsable examine votre demande " +
+        "et vous répondra personnellement sous un mois.",
       contactDpo: "contact@axion-ia.com",
     },
   });

@@ -601,6 +601,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
   //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
   "src/server/email/suppression.ts",
+  // ── Demande d'effacement → mise à l'écart (décision de Williams du 11/11/2026) :
+  //    l'alerte « à traiter à la main » est une alerte de la cloche, créée par
+  //    `creerOuDedup` (code `rgpd_effacement_a_traiter`, au catalogue). Import
+  //    DYNAMIQUE au point d'usage, comme `suppression.ts`. Aucun autre usage du domaine.
+  "src/server/rgpd/ecarter-au-lieu-d-effacer.ts",
   // ── Relecture au départ (chantier formateurs indépendants, CAMP-1) : le
   //    worker relit, juste avant d'envoyer un e-mail formateur, les
   //    interrupteurs du chantier (`formateurs-independants/interrupteurs*.ts`,

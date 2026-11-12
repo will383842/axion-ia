@@ -63,6 +63,7 @@ import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { VERSION_LETTRE_HISTORIQUE } from "./versions";
+import { ACTION_DEMANDE_EFFACEMENT } from "@/server/rgpd/constantes";
 import {
   ACTION_DESINSCRIT_PURGE,
   ACTION_EFFACEMENT_CONSOLE,
@@ -281,9 +282,12 @@ export async function exporterListeSuppression(): Promise<ResultatExport> {
       take: PLAFOND_EXPORT,
     }),
     // L'effacement PUBLIC (`/api/gdpr-erase`) trace, à côté de l'empreinte
-    // HMAC du site, le même SHA-256 (`emailSha256`).
+    // HMAC du site, le même SHA-256 (`emailSha256`). Depuis le 11/11/2026 (décision de
+    // Williams), la demande MET À L'ÉCART au lieu d'effacer, depuis la route comme depuis la
+    // console : sa trace (`gdpr.erase.requested`) porte le même SHA-256. Les anciennes traces
+    // (`gdpr.erase.completed`) restent lues.
     prisma.activityLog.findMany({
-      where: { action: "gdpr.erase.completed" },
+      where: { action: { in: ["gdpr.erase.completed", ACTION_DEMANDE_EFFACEMENT] } },
       select: { changes: true, createdAt: true },
       orderBy: { createdAt: "desc" },
       take: PLAFOND_EXPORT,

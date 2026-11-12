@@ -14014,6 +14014,10 @@ model EmailOpposition {
   crmEnAttenteDepuis DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
   /// Posée par l'effacement : le CRM ne doit plus jamais recevoir l'adresse.
   crmInterditLe      DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
+  /// Posée par une DEMANDE D'EFFACEMENT (décision de Williams du 11/11/2026 : on écarte, on ne
+  /// supprime pas). Une fois posée, plus AUCUN envoi ne part vers l'adresse, quel que soit le
+  /// gabarit (`verdict-envoi.ts`). Jamais retirée par le code.
+  effacementDemandeLe DateTime? @map("effacement_demande_le") @db.Timestamptz(6)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 

@@ -209,8 +209,11 @@ describe("liste de suppression", () => {
 
   it("🔴 l'effacement PUBLIC est relu par son `emailSha256` (pas par son empreinte HMAC)", async () => {
     d.subFindMany.mockResolvedValue([]);
-    d.activity.mockImplementation(async (arg: { where: { action: string } }) =>
-      arg.where.action === "gdpr.erase.completed"
+    // Le filtre lit les DEUX traces : l'ancienne (`gdpr.erase.completed`) et la demande mise à
+    // l'écart depuis le 11/11/2026 (`gdpr.erase.requested`).
+    d.activity.mockImplementation(async (arg: { where: { action: unknown } }) =>
+      JSON.stringify(arg.where.action).includes("gdpr.erase.completed") &&
+      JSON.stringify(arg.where.action).includes("gdpr.erase.requested")
         ? [
             {
               changes: {

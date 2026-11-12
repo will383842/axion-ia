@@ -1,7 +1,7 @@
 // @vitest-environment node
 //
-// Lot PV-1 bis — `type: "demande_effacement"` : alerte à l'opérateur, adresse masquée, AUCUNE
-// suppression, adresse écartée des envois. Base EN MÉMOIRE, file d'e-mails SIMULÉE, sans réseau,
+// Lot PV-1 bis — `type: "demande_effacement"` : passe par la mise à l'écart commune (marque,
+// trace `gdpr.erase.requested`, alerte dans la CLOCHE), AUCUNE suppression, AUCUN e-mail. Base EN MÉMOIRE, file d'e-mails SIMULÉE, sans réseau,
 // adresses de domaines réservés (.test).
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import crypto from "node:crypto";
@@ -17,11 +17,17 @@ const bd = vi.hoisted(() => ({
   journal: [] as Ligne[],
   ecartees: [] as string[],
   alertes: [] as unknown[][],
+  cloche: [] as Ligne[],
+  traces: [] as Ligne[],
+  marques: [] as Ligne[],
+  emails: [] as unknown[][],
   enfile: { reponse: { enqueued: true } as Record<string, unknown> },
   echecFinal: false,
   n: 0,
   contacts: [] as Ligne[],
   suppressionsContacts: 0,
+  appelsLettre: 0,
+  appelsRapports: 0,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -51,6 +57,44 @@ vi.mock("@/lib/prisma", () => ({
         throw new Error("interdit : aucune suppression");
       },
     },
+    activityLog: {
+      findFirst: async ({
+        where,
+        orderBy,
+      }: {
+        where: { action: string; AND: { changes: { path: string[]; equals: string } }[] };
+        orderBy?: { createdAt: "desc" };
+      }) => {
+        const trouvees = bd.traces.filter(
+          (t) =>
+            t.action === where.action &&
+            where.AND.every((c) => (t.changes as Ligne)[c.changes.path[0]!] === c.changes.equals),
+        );
+        // Plus récente d'abord, comme la base (les traces sont rangées dans l'ordre d'écriture).
+        return (orderBy ? [...trouvees].reverse() : trouvees)[0] ?? null;
+      },
+      create: async ({ data }: { data: Ligne }) => {
+        const l = { id: `t${bd.traces.length + 1}`, ...data };
+        bd.traces.push(l);
+        return { id: l.id };
+      },
+    },
+    emailOpposition: {
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const cibles = bd.marques.filter(
+          (m) => m.emailHash === where.emailHash && m.effacementDemandeLe == null,
+        );
+        cibles.forEach((m) => Object.assign(m, data));
+        return { count: cibles.length };
+      },
+      findUnique: async ({ where }: { where: Ligne }) =>
+        bd.marques.find((m) => m.emailHash === where.emailHash) ?? null,
+      create: async ({ data }: { data: Ligne }) => {
+        bd.marques.push({ ...data });
+        return { id: "o1" };
+      },
+    },
+    alerteSysteme: { findFirst: async () => null, update: async () => ({}) },
     guideRequest: {
       findUnique: async () => null,
       create: async () => {
@@ -64,6 +108,10 @@ vi.mock("@/lib/prisma", () => ({
       },
     },
     newsletterSubscriber: {
+      updateMany: async () => {
+        bd.appelsLettre++;
+        return { count: 0 };
+      },
       deleteMany: async () => {
         throw new Error("interdit : aucune suppression");
       },
@@ -102,14 +150,29 @@ vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: tru
 vi.mock("@/server/email/opposition", () => ({
   estOpposee: async (e: string) => bd.ecartees.includes(e),
   enregistrerOppositionPourAdresse: async (e: string) => {
+    if (!bd.enfile.reponse.enqueued) throw new Error("panne base");
     if (!bd.ecartees.includes(e)) bd.ecartees.push(e);
     return { ok: true, email: e, dejaOpposee: false };
   },
 }));
+vi.mock("@/lib/rgpd-erase", () => ({
+  ecarterRapportsAvantAuditPourEmail: async () => {
+    bd.appelsRapports++;
+    return { ecartes: 0 };
+  },
+}));
+// Alerte dans la CLOCHE : le service est simulé ; tout e-mail passerait par `enqueueEmail`.
+vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
+  creerOuDedup: async (a: Ligne) => {
+    bd.cloche.push(a);
+    bd.alertes.push([a]);
+    return { id: "al1" };
+  },
+}));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {
-    bd.alertes.push(a);
-    return bd.enfile.reponse;
+    bd.emails.push(a);
+    return { enqueued: true };
   },
 }));
 
@@ -169,11 +232,13 @@ function appel(corps: Ligne = effacement): Promise<Response> {
 beforeEach(() => {
   bd.demandes.length = bd.abonnes.length = bd.journal.length = 0;
   bd.ecartees.length = bd.alertes.length = 0;
+  bd.cloche.length = bd.traces.length = bd.marques.length = bd.emails.length = 0;
   bd.enfile.reponse = { enqueued: true };
   bd.echecFinal = false;
   bd.n = 0;
   bd.contacts.length = 0;
   bd.suppressionsContacts = 0;
+  bd.appelsLettre = bd.appelsRapports = 0;
   process.env.GUIDES_RESEAU_ENABLED = "true";
   process.env.VIDEOS_STUDIO_HMAC_SECRET = SECRET;
   process.env.DATABASE_URL = "postgresql://u:p@db.example.test:5432/x";
@@ -184,15 +249,49 @@ beforeEach(() => {
 });
 
 describe("demande d'effacement", () => {
-  it("UNE alerte part à l'adresse d'alerte du site, adresse MASQUÉE", async () => {
+  it("🔴 message privé : opposition et trace posées, marque NON posée (adresse non prouvée), alerte cloche, AUCUN e-mail", async () => {
     const r = await appel();
     expect(r.status).toBe(200);
-    expect(bd.alertes).toHaveLength(1);
-    const [gabarit, destinataire, , payload] = bd.alertes[0] as [string, string, string, Ligne];
-    expect(gabarit).toBe("qualiopi-alerte-interne");
-    expect(destinataire).toBe("contact@axion-ia.com");
-    expect(JSON.stringify(payload)).toContain("p****@exemple.test");
-    expect(JSON.stringify(bd.alertes)).not.toContain(ADRESSE);
+    // La marque « effacement demandé » (qui coupe aussi convocations et factures) n'est PAS
+    // posée : n'importe qui peut écrire l'adresse d'un tiers. Williams la pose en console.
+    const hash = hashEmailForLookup(ADRESSE)!;
+    expect(bd.marques.find((m) => m.emailHash === hash)?.effacementDemandeLe).toBeUndefined();
+    expect(bd.marques).toHaveLength(0);
+    expect((bd.traces[0]!.changes as Ligne).marque).toBe("non_posee");
+    expect(bd.ecartees).toEqual([ADRESSE]);
+    // trace de preuve, empreintes seulement
+    expect(bd.traces).toHaveLength(1);
+    expect(bd.traces[0]).toMatchObject({
+      action: "gdpr.erase.requested",
+      targetType: "message_prive",
+      targetId: null,
+    });
+    expect((bd.traces[0]!.changes as Ligne).reference).toBe("run_zernio_eff1");
+    expect(JSON.stringify(bd.traces)).not.toContain(ADRESSE);
+    expect((bd.traces[0]!.changes as Ligne).origine).toBe("message-prive");
+    // alerte cloche, niveau info
+    expect(bd.cloche).toHaveLength(1);
+    expect(bd.cloche[0]).toMatchObject({ code: "rgpd_effacement_a_traiter", niveau: "info" });
+    // aucun e-mail
+    expect(bd.emails).toHaveLength(0);
+  });
+
+  it("🔴 message privé : ni la lettre ni les rapports avant audit ne sont touchés (adresse non prouvée)", async () => {
+    expect((await appel()).status).toBe(200);
+    expect(bd.appelsLettre).toBe(0);
+    expect(bd.appelsRapports).toBe(0);
+  });
+
+  it("🔑 rejeu : premier essai en échec d'opposition, deuxième réussi, troisième sans nouvelle trace", async () => {
+    bd.enfile.reponse = { enqueued: false };
+    expect((await appel()).status).toBe(500);
+    bd.enfile.reponse = { enqueued: true };
+    expect((await appel()).status).toBe(200);
+    const apres = bd.traces.length;
+    expect((bd.traces.at(-1)!.changes as Ligne).opposition).toBe("ok");
+    bd.journal.length = 0; // clé rendue : l'appelant rejoue
+    expect((await appel()).status).toBe(200);
+    expect(bd.traces).toHaveLength(apres);
   });
 
   it("rejeu (même run) : une seule alerte, même après une exception tardive", async () => {
@@ -238,13 +337,23 @@ describe("demande d'effacement", () => {
     expect(bd.alertes).toHaveLength(1);
   });
 
-  it("file d'e-mails indisponible : 500, clé rendue, nouvel essai possible", async () => {
+  it("opposition impossible à poser : 500, clé rendue, nouvel essai possible, aucune trace en double", async () => {
     bd.enfile.reponse = { enqueued: false };
     expect((await appel()).status).toBe(500);
     expect(bd.journal).toHaveLength(0);
     bd.enfile.reponse = { enqueued: true };
     expect((await appel()).status).toBe(200);
-    expect(bd.alertes).toHaveLength(2); // 1er essai refusé par la file, 2e accepté
+    expect(bd.ecartees).toEqual([ADRESSE]);
+    expect(bd.emails).toHaveLength(0);
+  });
+
+  it("🔑 clé d'idempotence au format UUID : le rejeu ne réécrit pas de trace", async () => {
+    const uuid = "123e4567-e89b-12d3-a456-426614174000";
+    expect((await appel({ ...effacement, cleIdempotence: uuid })).status).toBe(200);
+    expect((bd.traces[0]!.changes as Ligne).reference).toBe(uuid);
+    bd.journal.length = 0; // la clé est rendue (échec tardif) : l'appelant rejoue
+    expect((await appel({ ...effacement, cleIdempotence: uuid })).status).toBe(200);
+    expect(bd.traces).toHaveLength(1);
   });
 
   it("aucune donnée de personne dans la réponse, le journal ni les sorties", async () => {
@@ -281,7 +390,7 @@ describe("demande d'effacement : contacts de la page guide mis à l'écart", () 
   }
   const statut = (id: string) => bd.contacts.find((c) => c.id === id)!.merciStatut;
 
-  it("les contacts de l'adresse passent à ecarte ; aucun deleteMany ; UNE alerte masquée", async () => {
+  it("les contacts de l'adresse passent à ecarte ; aucun deleteMany ; UNE alerte cloche, aucun e-mail", async () => {
     contacts();
     expect((await appel()).status).toBe(200);
     expect(statut("c1")).toBe("ecarte");
@@ -289,8 +398,7 @@ describe("demande d'effacement : contacts de la page guide mis à l'écart", () 
     expect(bd.suppressionsContacts).toBe(0);
     expect(bd.contacts).toHaveLength(5);
     expect(bd.alertes).toHaveLength(1);
-    expect(JSON.stringify(bd.alertes)).not.toContain(ADRESSE);
-    expect(JSON.stringify(bd.alertes)).toContain("p****@exemple.test");
+    expect(bd.emails).toHaveLength(0);
   });
 
   it("l'ancienne graphie ecartee n'est pas réécrite", async () => {
