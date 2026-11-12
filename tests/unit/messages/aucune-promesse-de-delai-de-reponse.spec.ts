@@ -66,7 +66,7 @@ const FICHIERS = [
   "src/lib/email/templates/implementation-confirmed.tsx",
   "src/lib/email/templates/quote-request-received.tsx",
   "src/lib/schemas/unified-contact-schema.ts",
-  "src/server/chatbot/orchestrator.ts"
+  "src/server/chatbot/orchestrator.ts",
 ];
 
 describe("les fichiers nettoyés ne promettent aucun délai de réponse", () => {

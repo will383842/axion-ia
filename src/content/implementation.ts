@@ -452,8 +452,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
       },
     ],
     ctaBlockTitle: "Ready to industrialize an AI use case?",
-    ctaBlockDescription:
-      "Request a quote: we send you a costed project specification.",
+    ctaBlockDescription: "Request a quote: we send you a costed project specification.",
     maturity: {
       eyebrow: "Who it works for",
       title: "Three technical maturity levels",

@@ -247,11 +247,7 @@ export default async function HelpCenter({ params }: Props) {
 
       <CtaBlock
         title={isFr ? "Question non couverte ?" : "Question not covered?"}
-        description={
-          isFr
-            ? "Contactez-nous."
-            : "Contact us."
-        }
+        description={isFr ? "Contactez-nous." : "Contact us."}
         cta={
           <Cta href="/contact" size="lg">
             Contact →

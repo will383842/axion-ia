@@ -227,8 +227,7 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
               <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                 Parlons-en
               </Link>{" "}
-              — un consultant senior Axion-IA vous recontacte personnellement,
-              sans engagement.
+              — un consultant senior Axion-IA vous recontacte personnellement, sans engagement.
             </>
           ) : (
             <>
@@ -236,8 +235,7 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
               <Link href="/contact" className="text-terracotta font-semibold hover:underline">
                 Parlons-en
               </Link>{" "}
-              — un consultant senior Axion-IA vous recontacte personnellement,
-              sans engagement.
+              — un consultant senior Axion-IA vous recontacte personnellement, sans engagement.
             </>
           )}
         </p>
