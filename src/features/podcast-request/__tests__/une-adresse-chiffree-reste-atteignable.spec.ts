@@ -86,10 +86,19 @@ describe("une demande de podcast reste atteignable par les droits RGPD", () => {
   it("les DEUX droits atteignent la table — pas seulement l'effacement", () => {
     // `D5-5-03` a manqué aux deux. Corriger l'un sans l'autre laisserait un
     // export qui se présente comme complet en omettant une table détenue.
+    //
+    // Décision de Williams du 11/11/2026 : la route d'effacement MET À L'ÉCART et ne supprime
+    // plus rien (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). L'effaceur du podcast reste
+    // l'outil du geste humain : il doit toujours exister et trouver la ligne par l'empreinte.
     expect(
       ROUTE_EFFACEMENT,
-      "la route d'effacement (art. 17) ne touche plus les demandes de podcast",
-    ).toContain("effacerDemandesPodcastPour");
+      "la route d'effacement ne doit plus supprimer les demandes de podcast (mise à l'écart)",
+    ).not.toContain("effacerDemandesPodcastPour");
+    expect(ROUTE_EFFACEMENT).toContain("ecarterPourDemandeEffacement(");
+    expect(
+      lire("src", "features", "podcast-request", "rgpd.ts"),
+      "l'effaceur du podcast, outil du geste humain, a disparu",
+    ).toMatch(/export async function effacerDemandesPodcastPour/);
 
     expect(
       ROUTE_EXPORT,
@@ -108,10 +117,7 @@ describe("une demande de podcast reste atteignable par les droits RGPD", () => {
         "sa liste complète alors que le balayage a mordu son plafond",
     ).toContain("podcastAvertissement");
 
-    expect(
-      ROUTE_EFFACEMENT,
-      "l'avertissement de troncature a disparu de l'effacement : des lignes " +
-        "anciennes peuvent subsister sans que la personne l'apprenne",
-    ).toMatch(/podcastResult\.tronque/);
+    // Plus d'avertissement côté effacement : depuis le 11/11/2026, la route ne recherche ni ne
+    // supprime plus aucune ligne (mise à l'écart). La troncature ne concerne que l'export.
   });
 });
