@@ -96,6 +96,10 @@ describe("champs v3", () => {
       "mp-m1-v2-d",
       "mp-m1-v2-e",
       "mp-m1-v3",
+      "mp-m1-v4-1",
+      "mp-m1-v4-2",
+      "mp-m1-v4-3",
+      "mp-m1-v4-4",
       "mp-m1-v5-1",
       "mp-m1-v5-2",
       "mp-m1-v5-3",
@@ -110,6 +114,8 @@ describe("champs v3", () => {
       refuse({ version_texte: "mp-m1-v9-9" });
     });
     it("aucune ancienne valeur n'a disparu", () => {
+      for (const v of [...ANCIENNES, ...STUDIO.filter((x) => !x.startsWith("mp-m1-v4-"))])
+        expect(VERSIONS_TEXTE_CONNUES as readonly string[]).toContain(v);
       for (const v of ANCIENNES) expect(VERSIONS_TEXTE_CONNUES as readonly string[]).toContain(v);
     });
     it("toutes les valeurs respectent le format version_texte du CRM", () => {
