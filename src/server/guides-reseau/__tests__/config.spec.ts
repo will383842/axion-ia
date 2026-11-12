@@ -139,3 +139,31 @@ describe("lot S2 — interrupteur de la page et secret du lien", () => {
     );
   });
 });
+
+// P4 — preuve de l'accord : l'écart ne peut pas précéder le dernier envoi possible du guide.
+describe("preuve de l'accord : N jours et interrupteur", () => {
+  it("JOURS_AVANT_ECART_PREUVE vaut 14 et dépasse l'horizon du rattrapage", async () => {
+    const { JOURS_AVANT_ECART_PREUVE } = await import("../config");
+    const { HORIZON_RATTRAPAGE_MS } = await import("@/server/guide-ia/config");
+    expect(JOURS_AVANT_ECART_PREUVE).toBe(14);
+    expect(JOURS_AVANT_ECART_PREUVE).toBeGreaterThan(HORIZON_RATTRAPAGE_MS / (24 * 3_600_000));
+  });
+
+  it("PREUVE_PAGE_GUIDE_ECART_ENABLED : éteint par défaut, exactement « true » pour allumer", async () => {
+    const { preuveEcartActif } = await import("../config");
+    const avant = process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED;
+    try {
+      delete process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED;
+      expect(preuveEcartActif()).toBe(false);
+      for (const v of ["1", "TRUE", "yes", " true"]) {
+        process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED = v;
+        expect(preuveEcartActif()).toBe(false);
+      }
+      process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED = "true";
+      expect(preuveEcartActif()).toBe(true);
+    } finally {
+      if (avant === undefined) delete process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED;
+      else process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED = avant;
+    }
+  });
+});

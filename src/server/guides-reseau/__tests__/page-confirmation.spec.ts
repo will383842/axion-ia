@@ -314,6 +314,7 @@ describe("case de consentement", () => {
     expect(c.infosStatut).toBe("non_transmise");
     expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
     expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.action)).toEqual(["consent_attente", "consent_attente"]);
     expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
       "guide-reseau-page",
       "guide-reseau-page-infos",
@@ -482,6 +483,8 @@ describe("adresse", () => {
     expect(marque).not.toContain("Camille");
     expect(marque).not.toContain(Buffer.from("Camille").toString("base64"));
     expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    // La marque ne porte aucune preuve d'accord : « sans objet ».
+    expect(bd.contacts[0]!["preuveStatut"]).toBe("sans_objet");
     expect(bd.demandes).toHaveLength(0);
     expect(bd.preuves).toHaveLength(0);
     expect(bd.envois).toHaveLength(0);
@@ -564,6 +567,8 @@ describe("ce qui est écrit", () => {
       consentiLe: MAINTENANT,
       jetonEmpreinte: empreinteJeton(j),
       merciStatut: "a_envoyer",
+      // Preuve de l'accord : posée « en attente » (l'adresse n'est qu'une saisie, non vérifiée).
+      preuveStatut: "en_attente",
     });
     expect(c["prenom"]).not.toContain("Camille");
     expect(String(c["prenom"]).startsWith("enc:")).toBe(true);
@@ -588,12 +593,13 @@ describe("ce qui est écrit", () => {
     });
   });
 
-  it("la preuve : form_ref guide-reseau-page, action consent, version + empreinte du texte, rien en clair", async () => {
+  it("la preuve : form_ref guide-reseau-page, action consent_attente (plus de « consent »), version + empreinte du texte, rien en clair", async () => {
     await confirmerPageGuide(entree());
     expect(bd.preuves).toHaveLength(1);
+    expect(bd.preuves.some((p) => p["action"] === "consent")).toBe(false);
     expect(bd.preuves[0]).toMatchObject({
       formRef: FORM_REF_PAGE_GUIDE,
-      action: "consent",
+      action: "consent_attente",
       personKey: `h:${ADRESSE}`,
       occurredAt: MAINTENANT,
     });
@@ -669,6 +675,16 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
     await confirmerPageGuide(entree());
     expect(bd.origines).toHaveLength(1);
     expect(bd.crm).toHaveLength(0);
+  });
+
+  it("un jeton rejoué n'écrit ni seconde preuve ni second contact (réponse neutre)", async () => {
+    const j = jeton();
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.preuves[0]!["action"]).toBe("consent_attente");
   });
 
   it("un jeton rejoué n'écrit aucune seconde origine", async () => {
