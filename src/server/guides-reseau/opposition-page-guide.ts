@@ -9,7 +9,9 @@
  *
  * 🔴 AUCUNE SUPPRESSION de donnée de personne. Jamais le chemin d'effacement.
  * Si l'opposition ou l'avertissement du CRM échoue : 500 et le contact N'EST PAS écarté (le Studio renverra, réessai
- * idempotent). Référence inconnue (la personne n'a jamais validé la page) : MÊME réponse 200, rien d'écrit.
+ * idempotent). Référence inconnue (la personne n'a pas encore validé la page) : MÊME réponse 200, et la MARQUE de la
+ * référence est écrite quand même (`oppositions_conv_ref`, avant tout le reste) : si la page est validée ensuite,
+ * elle suit le déroulé neutre des opposées et le guide ne part pas.
  * Accusé identique à `/oppositions-reseau`. Journal : un événement, sans adresse ni référence.
  */
 import * as Sentry from "@sentry/nextjs";
@@ -21,6 +23,7 @@ import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
 import { ORIGINE_OPPOSITION_RESEAU_STOP } from "./config";
 import { MERCI_STATUT_ECARTE, MERCI_STATUTS_ECARTES_LUS } from "./merci-statut";
+import { marquerConvRefOpposee } from "./conv-ref-opposee";
 import { hmacConversationRef } from "./origines";
 
 export const SchemaOppositionPage = z
@@ -64,6 +67,8 @@ export async function recevoirOppositionPage(e: EntreeSignee): Promise<Response>
 
   try {
     const convRef = hmacConversationRef(d.conv);
+    // La marque d'abord, TOUJOURS (référence connue ou non) : si la suite échoue, le STOP est déjà gardé.
+    await marquerConvRefOpposee(convRef);
     // La marque d'une adresse opposée porte `conv_ref = '-'` : jamais ciblée (convRef est un HMAC de 64 caractères).
     const contacts = await prisma.contactGuideReseau.findMany({
       where: { convRef },

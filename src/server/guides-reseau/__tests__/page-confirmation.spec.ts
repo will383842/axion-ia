@@ -20,6 +20,9 @@ const bd = vi.hoisted(() => ({
   contacts: [] as Ligne[],
   preuves: [] as Ligne[],
   opposees: new Set<string>(),
+  /** Références de conversation marquées par un STOP reçu avant la page (`oppositions_conv_ref`). */
+  marquesConv: new Set<string>(),
+  lectureMarquePanne: false,
   domaine: { verdict: "oui" as "oui" | "non" | "inconnu" },
   envois: [] as unknown[][],
   limites: [] as string[],
@@ -140,6 +143,12 @@ vi.mock("@/lib/prisma", () => {
   return {
     prisma: {
       ...base,
+      oppositionConvRef: {
+        findUnique: async ({ where }: { where: { convRef: string } }) => {
+          if (bd.lectureMarquePanne) throw new Error("lecture de la marque impossible");
+          return bd.marquesConv.has(where.convRef) ? { id: "m1" } : null;
+        },
+      },
       newsletterSubscriber: {
         create: async () => {
           throw new Error("newsletter_subscribers ne doit JAMAIS être écrite par ce parcours");
@@ -205,6 +214,11 @@ vi.mock("../origines", async (orig) => ({
     return { creee: true, archivees: 0, total: 0 };
   },
 }));
+// Le vrai envoi tourne (file simulée plus bas) ; on espionne seulement son appel.
+vi.mock("@/server/guide-ia/envoi", async (orig) => {
+  const m = await orig<typeof import("@/server/guide-ia/envoi")>();
+  return { ...m, mettreEnFileGuide: vi.fn(m.mettreEnFileGuide) };
+});
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {
@@ -215,6 +229,7 @@ vi.mock("@/server/queue/queues", () => ({
 }));
 vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
+import { mettreEnFileGuide } from "@/server/guide-ia/envoi";
 import {
   confirmerPageGuide as confirmerSansSuite,
   PLANCHER_REPONSE_MS,
@@ -231,6 +246,7 @@ async function confirmerPageGuide(e: EntreeConfirmation) {
   return r;
 }
 import { creerJeton, empreinteJeton, type DonneesLien } from "../lien-page-guide";
+import { hmacConversationRef } from "../origines";
 import {
   EMPREINTE_CASE_PAGE_GUIDE,
   FORM_REF_PAGE_GUIDE,
@@ -285,6 +301,9 @@ beforeEach(() => {
   bd.conflitDemande.restant = 0;
   bd.conflitDemande.gagnante = false;
   bd.opposees.clear();
+  bd.marquesConv.clear();
+  vi.mocked(mettreEnFileGuide).mockClear();
+  bd.lectureMarquePanne = false;
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
   bd.logsDestinataire = 0;
@@ -479,6 +498,35 @@ describe("adresse", () => {
     expect(bd.preuves.every((p) => p["personKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.origines.every((o) => o["emailKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.crm).toHaveLength(0);
+  });
+
+  it("MG-STOP01 — STOP reçu par la référence AVANT la page : même déroulé neutre, le guide ne part PAS", async () => {
+    bd.marquesConv.add(hmacConversationRef(DONNEES.conv));
+    const r = await confirmerPageGuide(entree());
+    expect(r).toEqual({ ok: true });
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.origines).toHaveLength(0);
+    // Marque neutre : jeton consommé, rien de la personne, et AUCUNE opposition écrite sur l'adresse saisie.
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    expect(bd.opposees.size).toBe(0);
+    expect(JSON.stringify(bd.contacts[0])).not.toContain(ADRESSE);
+  });
+
+  it("MG-STOP01 — une AUTRE conversation non marquée reçoit son guide", async () => {
+    bd.marquesConv.add(hmacConversationRef("conv_exemple_0777"));
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("MG-STOP01 — lecture de la marque en erreur : rien ne part, rien n'est écrit (fermé)", async () => {
+    bd.lectureMarquePanne = true;
+    await expect(confirmerPageGuide(entree())).rejects.toThrow();
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(ecritures()).toBe(0);
   });
 
   it("M1 — opposée : le jeton est CONSOMMÉ comme pour un succès, par une marque sans donnée personnelle", async () => {

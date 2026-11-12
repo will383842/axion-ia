@@ -67,6 +67,7 @@ import {
   VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS,
   type ReseauGuide,
 } from "@/content/guides-reseau";
+import { convRefOpposee } from "./conv-ref-opposee";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
 import { MERCI_STATUT_ECARTE } from "./merci-statut";
 import {
@@ -229,7 +230,10 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
     donnees.post_ref !== undefined && POST_REF_CRM.test(donnees.post_ref) ? donnees.post_ref : null;
 
   // 5. Adresse opposée : on le SAIT, mais le déroulé qui suit est le même (M1).
-  const opposee = await estOpposee(email);
+  //    Opposée aussi si un STOP est arrivé par la référence de la conversation AVANT cette page (MG-STOP01).
+  //    Une lecture en erreur lève : rien ne part (fermé). Aucune opposition n'est écrite sur l'adresse saisie.
+  const opposee =
+    (await estOpposee(email)) || (await convRefOpposee(hmacConversationRef(donnees.conv)));
 
   // 6. Le domaine reçoit-il des e-mails ? « inconnu » (panne DNS) laisse passer.
   if ((await domaineRecoitDesEmails(email)) === "non") {
