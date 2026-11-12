@@ -492,7 +492,11 @@ async function suiteApresReponse(
     } else {
       guide = await mettreEnFileGuide(
         { id: demande.id, email, locale: "fr", downloadToken: demande.downloadToken },
-        { reseau: true, pageGuide: { oppositionToken: jetonOpposition(email) }, maintenant },
+        {
+          reseau: true,
+          pageGuide: { oppositionToken: jetonOpposition(email), reseauOrigine: donnees.reseau },
+          maintenant,
+        },
       );
     }
   } catch (err) {
