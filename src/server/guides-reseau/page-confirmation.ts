@@ -449,6 +449,25 @@ interface ContexteSuite {
   readonly maintenant: Date;
 }
 
+/**
+ * Relit la marque « STOP » APRÈS l'enregistrement de la page (course : la lecture d'avant la transaction a
+ * pu précéder un STOP qui, lui, ne trouvait pas encore le contact). Fermé : une lecture en erreur vaut STOP.
+ * Ne journalise ni adresse ni identifiant.
+ */
+async function stopArriveEntreTemps(donnees: DonneesJeton): Promise<boolean> {
+  try {
+    return await convRefOpposee(hmacConversationRef(donnees.conv));
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        event: "guides_reseau_page_relecture_marque_echec",
+        erreur: err instanceof Error ? err.name : "erreur",
+      }),
+    );
+    return true;
+  }
+}
+
 async function suiteApresReponse(
   donnees: DonneesJeton,
   demande: { id: string; downloadToken: string },
@@ -461,6 +480,10 @@ async function suiteApresReponse(
   try {
     if ((await envoisRecentsVers(email, maintenant)) > 0) {
       guide = "deja-servi";
+    } else if (await stopArriveEntreTemps(donnees)) {
+      // Un STOP a écrit sa marque pendant que la page s'enregistrait (il n'a trouvé aucun contact) :
+      // même déroulé neutre et silencieux, rien n'est mis en file, aucune opposition écrite sur l'adresse.
+      guide = "ecarte";
     } else {
       guide = await mettreEnFileGuide(
         { id: demande.id, email, locale: "fr", downloadToken: demande.downloadToken },

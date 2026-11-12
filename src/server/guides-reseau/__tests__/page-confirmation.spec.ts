@@ -23,6 +23,10 @@ const bd = vi.hoisted(() => ({
   /** Références de conversation marquées par un STOP reçu avant la page (`oppositions_conv_ref`). */
   marquesConv: new Set<string>(),
   lectureMarquePanne: false,
+  // Course STOP/page : numéro de lecture (à partir de 1) dès lequel la marque apparaît / la lecture échoue.
+  nbLecturesMarque: 0,
+  marqueDesLecture: 0,
+  panneDesLecture: 0,
   domaine: { verdict: "oui" as "oui" | "non" | "inconnu" },
   envois: [] as unknown[][],
   limites: [] as string[],
@@ -145,7 +149,14 @@ vi.mock("@/lib/prisma", () => {
       ...base,
       oppositionConvRef: {
         findUnique: async ({ where }: { where: { convRef: string } }) => {
+          bd.nbLecturesMarque += 1;
           if (bd.lectureMarquePanne) throw new Error("lecture de la marque impossible");
+          if (bd.panneDesLecture > 0 && bd.nbLecturesMarque >= bd.panneDesLecture) {
+            throw new Error("seconde lecture de la marque impossible");
+          }
+          if (bd.marqueDesLecture > 0 && bd.nbLecturesMarque >= bd.marqueDesLecture) {
+            return { id: "m1" };
+          }
           return bd.marquesConv.has(where.convRef) ? { id: "m1" } : null;
         },
       },
@@ -304,6 +315,9 @@ beforeEach(() => {
   bd.marquesConv.clear();
   vi.mocked(mettreEnFileGuide).mockClear();
   bd.lectureMarquePanne = false;
+  bd.nbLecturesMarque = 0;
+  bd.marqueDesLecture = 0;
+  bd.panneDesLecture = 0;
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
   bd.logsDestinataire = 0;
@@ -520,6 +534,35 @@ describe("adresse", () => {
     bd.marquesConv.add(hmacConversationRef("conv_exemple_0777"));
     expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
     expect(bd.envois).toHaveLength(1);
+  });
+
+  it("MG-STOP01 — course : marque absente à la 1re lecture, présente à la 2de (après l'enregistrement de la page) : le guide ne part PAS", async () => {
+    bd.marqueDesLecture = 2;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.nbLecturesMarque).toBe(2);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.opposees.size).toBe(0);
+  });
+
+  it("MG-STOP01 — marque absente aux deux lectures : le guide est mis en file une fois", async () => {
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.nbLecturesMarque).toBe(2);
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("MG-STOP01 — 2de lecture en erreur : rien ne part (fermé), la réponse neutre ne plante pas, aucune adresse dans les journaux", async () => {
+    bd.panneDesLecture = 2;
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+      expect(mettreEnFileGuide).not.toHaveBeenCalled();
+      expect(bd.envois).toHaveLength(0);
+      expect(JSON.stringify(espion.mock.calls)).not.toContain(ADRESSE);
+    } finally {
+      espion.mockRestore();
+    }
   });
 
   it("MG-STOP01 — lecture de la marque en erreur : rien ne part, rien n'est écrit (fermé)", async () => {
