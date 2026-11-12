@@ -20,6 +20,9 @@ const base = vi.hoisted(() => ({
   entrants: [] as Ligne[],
   upsertEchoue: false,
   upserts: 0,
+  ecartEchoue: false,
+  argsDemandes: [] as Ligne[],
+  majAbonnes: [] as Ligne[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -32,8 +35,20 @@ vi.mock("@/lib/prisma", () => ({
         return data;
       },
     },
-    newsletterSubscriber: { findMany: async () => base.abonnes, update: vi.fn() },
-    guideRequest: { findMany: async () => base.demandes.map((d) => ({ email: d.email })) },
+    newsletterSubscriber: {
+      findMany: async () => base.abonnes,
+      update: async (a: Ligne) => {
+        base.majAbonnes.push(a);
+        return a;
+      },
+    },
+    guideRequest: {
+      findMany: async (a: { take?: number }) => {
+        base.argsDemandes.push(a as Ligne);
+        const toutes = base.demandes.map((d) => ({ email: d.email }));
+        return a.take === undefined ? toutes : toutes.slice(0, a.take);
+      },
+    },
     emailOpposition: {
       upsert: async ({ where, create }: { where: { emailHash: string }; create: Ligne }) => {
         if (base.upsertEchoue) throw new Error("panne simulée");
@@ -57,6 +72,7 @@ vi.mock("@/lib/prisma", () => ({
         where: { emailKey: string; merciStatut: { notIn: string[] } };
         data: Ligne;
       }) => {
+        if (base.ecartEchoue) throw new Error("panne écart simulée");
         let n = 0;
         for (const c of base.contacts) {
           if (
@@ -77,9 +93,10 @@ vi.mock("@/lib/consents", () => ({
   CONSENT_FORM_REFS: { newsletter: "n" },
   recordConsentEvent: vi.fn(async () => ({})),
 }));
-vi.mock("../alerts", () => ({ alertCrmSync: vi.fn() }));
+const alertes = vi.hoisted(() => ({ alertCrmSync: vi.fn() }));
+vi.mock("../alerts", () => alertes);
 
-const { processInboundEvent, sha256Email } = await import("../inbound");
+const { processInboundEvent, sha256Email, MAX_SCAN_SUBSCRIBERS } = await import("../inbound");
 const { verdictAvantEnvoi } = await import("@/server/email/verdict-envoi");
 const { hashEmailForLookup } = await import("@/lib/security/email-hash");
 
@@ -110,6 +127,10 @@ beforeEach(() => {
   base.entrants = [];
   base.upsertEchoue = false;
   base.upserts = 0;
+  base.ecartEchoue = false;
+  base.argsDemandes = [];
+  base.majAbonnes = [];
+  alertes.alertCrmSync.mockClear();
   vi.spyOn(console, "error").mockImplementation(() => undefined);
 });
 
@@ -134,6 +155,76 @@ describe("consent_optout reçu du CRM : arrêter tout", () => {
       expect(v).toMatchObject({ retenu: true, motif: "oppose" });
     });
   }
+
+  it("portée lettre : abonné désabonné, AUCUNE opposition, contact du guide non écarté", async () => {
+    base.abonnes = [{ id: "ab1", email: ADRESSE, consentFormRef: null, consentVersion: null }];
+    const r = await processInboundEvent(evenement({ scope: "lettre" }));
+    expect(r.outcome).toBe("applied");
+    expect(base.majAbonnes).toHaveLength(1);
+    expect(base.oppositions).toHaveLength(0);
+    expect(base.upserts).toBe(0);
+    expect(base.contacts[0]?.merciStatut).toBe("a_envoyer");
+    expect(base.argsDemandes).toHaveLength(0);
+  });
+
+  it("portée vivier : la lettre n'est PAS touchée", async () => {
+    base.abonnes = [{ id: "ab1", email: ADRESSE, consentFormRef: null, consentVersion: null }];
+    await processInboundEvent(evenement({ scope: "vivier" }));
+    expect(base.majAbonnes).toHaveLength(0);
+    expect(base.oppositions).toHaveLength(1);
+  });
+
+  it("portée business, abonné sans demande de guide : opposition posée, rien vers le CRM", async () => {
+    base.demandes = [];
+    base.abonnes = [{ id: "ab1", email: ADRESSE, consentFormRef: null, consentVersion: null }];
+    const r = await processInboundEvent(evenement({ scope: "business" }));
+    expect(r.outcome).toBe("applied");
+    expect(base.majAbonnes).toHaveLength(1);
+    expect(base.oppositions).toHaveLength(1);
+    expect(base.oppositions[0]).toMatchObject({
+      emailHash: CLE,
+      source: "crm-optout",
+      crmEnAttenteDepuis: null,
+    });
+  });
+
+  it("le balayage des demandes est borné et trié du plus récent au plus ancien", async () => {
+    await processInboundEvent(evenement());
+    const a = base.argsDemandes[0] as { take?: number; orderBy?: unknown };
+    expect(a.take).toBe(MAX_SCAN_SUBSCRIBERS);
+    expect(JSON.stringify(a.orderBy)).toContain('"createdAt":"desc"');
+  });
+
+  it("plafond atteint sans correspondance : alerte levée, sans adresse", async () => {
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    base.demandes = Array.from({ length: MAX_SCAN_SUBSCRIBERS }, (_, i) => ({
+      email: `x${i}@example.test`,
+    }));
+    const r = await processInboundEvent(evenement({ scope: "vivier" }));
+    expect(r.outcome).toBe("no_match");
+    expect(alertes.alertCrmSync).toHaveBeenCalledTimes(1);
+    const arg = alertes.alertCrmSync.mock.calls[0]?.[0] as { kind: string; detail: string };
+    expect(arg.kind).toBe("scan_capped");
+    expect(arg.detail).not.toContain("@");
+    for (const appel of warn.mock.calls) expect(JSON.stringify(appel)).not.toContain("@");
+  });
+
+  it("sous le plafond : pas d'alerte", async () => {
+    await processInboundEvent(evenement({ scope: "vivier" }));
+    expect(alertes.alertCrmSync).not.toHaveBeenCalled();
+  });
+
+  it("upsert réussi puis écart en échec : l'erreur remonte, et au rejeu tout s'applique", async () => {
+    base.ecartEchoue = true;
+    await expect(processInboundEvent(evenement())).rejects.toThrow();
+    expect(base.oppositions).toHaveLength(1);
+    expect(base.entrants).toHaveLength(0);
+    expect(base.contacts[0]?.merciStatut).toBe("a_envoyer");
+    base.ecartEchoue = false;
+    const r = await processInboundEvent(evenement());
+    expect(r.outcome).toBe("applied");
+    expect(base.contacts[0]?.merciStatut).toBe("ecarte");
+  });
 
   it("rejeu du même event_id : duplicate, aucune seconde écriture", async () => {
     await processInboundEvent(evenement());

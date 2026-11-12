@@ -254,31 +254,48 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
   // opt-in venu du CRM ne ressuscite jamais une désinscription faite ici.
   if (payload.event_type === "consent_optin") return "ignored";
 
-  // 🔴 D-STOP-2 (« Oui, arrêter tout ») : un stop vaut PARTOUT, vivier compris. Il arrête la
-  // lettre (portées business/lettre) ET le guide réseau / les messages privés (toutes portées).
-  // Si une étape lève, l'erreur remonte : le CRM retente, chaque étape est rejouable.
-  const lettre =
-    payload.scope === "business" || payload.scope === "lettre"
-      ? await desabonnerLettre(payload.email_hash)
-      : false;
+  // 🔴 D-STOP-2 : l'arrêt GLOBAL (opposition d'adresse + mise à l'écart du contact du guide réseau)
+  // ne vaut que pour les portées `business` et `vivier`. Un simple désabonnement de la LETTRE
+  // (portée `lettre`) n'est PAS un « stop » : il garde son seul effet, sur la lettre.
+  //  - lettre   : lettre seulement ;
+  //  - business : guide réseau d'abord, puis lettre (+ opposition d'adresse si l'abonné est connu) ;
+  //  - vivier   : guide réseau seulement, la lettre n'est jamais touchée.
+  // Ordre « guide puis lettre » voulu : si le guide lève, la lettre n'est pas encore touchée et le
+  // rejeu retrouve tout (journal exact, pas de `no_match` à tort). Chaque étape est rejouable.
+  const scope = payload.scope;
+  if (scope === "lettre") {
+    return (await desabonnerLettre(payload.email_hash, false)) ? "applied" : "no_match";
+  }
   const guide = await arreterGuideReseau(payload.email_hash);
+  const lettre = scope === "business" ? await desabonnerLettre(payload.email_hash, true) : false;
   return lettre || guide ? "applied" : "no_match";
 }
 
 /**
+ * Opposition d'adresse venue du CRM : écrite DIRECTEMENT, `crmEnAttenteDepuis = null` (le CRM en est
+ * la source, il ne doit jamais la recevoir en retour). Aucun `sync*ToCrm`. Faux si la clé est vide.
+ */
+async function poserOppositionCrm(adresse: string): Promise<boolean> {
+  const cle = hashEmailForLookup(adresse);
+  if (!cle) return false;
+  await prisma.emailOpposition.upsert({
+    where: { emailHash: cle },
+    create: { emailHash: cle, source: "crm-optout", crmEnAttenteDepuis: null },
+    update: {},
+  });
+  return true;
+}
+
+/**
  * Arrête le guide réseau pour l'adresse dont on reçoit le hash : balayage borné des demandes de
- * guide, puis, pour chaque adresse trouvée, une opposition locale et la mise à l'écart des
- * contacts (jamais de suppression).
- *
- * Anti-boucle : l'opposition est écrite DIRECTEMENT, avec `crmEnAttenteDepuis = null` — le CRM
- * en est la source, il ne doit jamais la recevoir en retour. Aucun `sync*ToCrm`, aucun appel à
- * `enregistrerOppositionPourAdresse`. Aucune adresse dans les journaux.
+ * guide (les plus récentes d'abord), puis, pour chaque adresse trouvée, une opposition locale et la
+ * mise à l'écart des contacts (jamais de suppression). Aucune adresse dans les journaux.
  */
 async function arreterGuideReseau(emailHash: string): Promise<boolean> {
   const demandes = await prisma.guideRequest.findMany({
     select: { email: true },
-    // Ordre STABLE : le sous-ensemble tronqué au plafond doit être déterministe.
-    orderBy: { id: "asc" },
+    // Les demandes les plus récentes d'abord ; `id` départage (ordre total, déterministe).
+    orderBy: [{ createdAt: "desc" }, { id: "asc" }],
     take: MAX_SCAN_SUBSCRIBERS,
   });
   const cible = emailHash.toLowerCase();
@@ -288,24 +305,33 @@ async function arreterGuideReseau(emailHash: string): Promise<boolean> {
   }
   let trouve = false;
   for (const adresse of adresses) {
-    const cle = hashEmailForLookup(adresse);
-    if (!cle) continue;
-    trouve = true;
     // L'opposition D'ABORD, l'écart ENSUITE : si l'écart échoue, le rejeu repasse ici.
-    await prisma.emailOpposition.upsert({
-      where: { emailHash: cle },
-      create: { emailHash: cle, source: "crm-optout", crmEnAttenteDepuis: null },
-      update: {},
-    });
+    if (!(await poserOppositionCrm(adresse))) continue;
+    trouve = true;
     await mettreContactsAEcart(adresse);
+  }
+
+  if (!trouve && demandes.length >= MAX_SCAN_SUBSCRIBERS) {
+    console.warn(
+      `[crm-sync][entrant] balayage des demandes de guide plafonné à ${MAX_SCAN_SUBSCRIBERS} — ` +
+        "la correspondance par empreinte n'est plus exhaustive.",
+    );
+    await alertCrmSync({
+      kind: "scan_capped",
+      detail: "Balayage des demandes de guide plafonné : un optout CRM peut être raté.",
+    });
   }
   return trouve;
 }
 
 /** Effet historique sur la lettre : vrai si un abonné a été désabonné. */
-async function desabonnerLettre(emailHash: string): Promise<boolean> {
+async function desabonnerLettre(emailHash: string, avecOpposition: boolean): Promise<boolean> {
   const abonne = await findSubscriberByHash(emailHash);
   if (!abonne) return false;
+
+  // Portée `business` seulement : un stop vaut partout, l'adresse (connue en clair ici) est opposée.
+  // Jamais pour la portée `lettre`. D'abord l'opposition : si la suite lève, l'abonné est encore là.
+  if (avecOpposition) await poserOppositionCrm(abonne.email);
 
   const maintenant = new Date();
 
