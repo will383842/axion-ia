@@ -46,10 +46,7 @@ import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 // Module PUR — surtout pas `desabonner.ts`, qui émet vers le CRM (anti-boucle).
 import { VERSION_LETTRE_HISTORIQUE } from "@/server/newsletter/versions";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import {
-  MERCI_STATUT_ECARTE,
-  MERCI_STATUTS_ECARTES_LUS,
-} from "@/server/guides-reseau/merci-statut";
+import { mettreContactsAEcart } from "@/server/guides-reseau/mise-a-l-ecart";
 import { alertCrmSync } from "./alerts";
 
 import { crmSyncSecret } from "./config";
@@ -300,10 +297,7 @@ async function arreterGuideReseau(emailHash: string): Promise<boolean> {
       create: { emailHash: cle, source: "crm-optout", crmEnAttenteDepuis: null },
       update: {},
     });
-    await prisma.contactGuideReseau.updateMany({
-      where: { emailKey: cle, merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] } },
-      data: { merciStatut: MERCI_STATUT_ECARTE },
-    });
+    await mettreContactsAEcart(adresse);
   }
   return trouve;
 }
