@@ -43,6 +43,14 @@
 // personne, `invitationAuto` posé après chaque tentative définitive).
 // Une ligne « suspecte » (robot) n'est jamais invitée.
 //
+// ── Ajouté le 2026-11-11 : le lien de réservation part DÈS la confirmation ──
+// Décision de Williams du 11/11 (elle remplace B5 du 19/09 pour le dossier
+// complet) : l'e-mail de confirmation du dossier porte le bouton « Réserver
+// votre échange de 15 minutes » (`candidature-commercial-confirmee`), sans
+// attendre ce passage. L'invitation à +15 min reste — c'est le second message,
+// celui qui dit « votre candidature est retenue » — mais elle ne part plus à
+// une personne qui a déjà réservé (`aDejaReserve`).
+//
 // Hors champ, volontairement :
 //   · la SAISIE MANUELLE de la console : elle a sa propre case « Envoyer
 //     l'invitation », c'est Will qui choisit ;
@@ -289,13 +297,22 @@ export async function passerInvitationsAuto(
       archivedAt: null,
       status: { in: ["new", "in_progress"] },
     },
-    select: { id: true, details: true },
+    select: { id: true, details: true, contactEmail: true, contactEmailHash: true },
     orderBy: { submittedAt: "asc" },
     take: MAX_PAR_PASSAGE * 2,
   });
   for (const f of fiches) {
     if (!ficheEligible(f.details)) continue;
     try {
+      // 11/11/2026 (Williams) : l'e-mail de confirmation du dossier porte désormais
+      // le bouton « Réserver votre échange de 15 minutes ». Une personne qui a déjà
+      // choisi son créneau ne reçoit pas, un quart d'heure plus tard, un message
+      // qui lui demande de le choisir. Même règle que le filet du tunnel vidéo ;
+      // la fiche n'est pas marquée, elle sort seule de la fenêtre.
+      if (await aDejaReserve(f)) {
+        ecartees["dossier-deja-reserve"] = (ecartees["dossier-deja-reserve"] ?? 0) + 1;
+        continue;
+      }
       const issue = await inviter(f.id, calendlyUrl);
       if (issue === null) aReessayer++;
       else compter(issue);

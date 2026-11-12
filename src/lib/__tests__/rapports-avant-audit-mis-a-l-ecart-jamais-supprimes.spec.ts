@@ -68,16 +68,17 @@ describe("rapports avant audit à l'effacement", () => {
     expect(rUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("la route appelle la mise à l'écart AVANT l'anonymisation Calendly, et alerte Will", () => {
-    const route = readFileSync(
-      join(process.cwd(), "src/app/api/gdpr-erase/route.ts"),
+  it("la demande d'effacement (11/11/2026 : mise à l'écart) écarte les rapports, sans rien anonymiser", () => {
+    // Décision de Williams du 11/11/2026 : la route passe par le module d'écart, qui écarte les
+    // rapports avant audit et n'appelle plus l'anonymisation Calendly.
+    const moduleEcart = readFileSync(
+      join(process.cwd(), "src/server/rgpd/ecarter-au-lieu-d-effacer.ts"),
       "utf8",
     ).replace(/^\s*\/\/.*$/gm, "");
-    const ecart = route.indexOf("ecarterRapportsAvantAuditPourEmail(email)");
-    const calendly = route.indexOf("eraseCalendlyEventsForEmail(email)");
-    expect(ecart).toBeGreaterThan(0);
-    expect(ecart).toBeLessThan(calendly);
-    expect(route).toMatch(/rapport\(s\) avant audit mis à l'écart/);
+    expect(moduleEcart).toContain("ecarterRapportsAvantAuditPourEmail(email, quand)");
+    expect(moduleEcart).not.toContain("eraseCalendlyEventsForEmail");
+    const route = readFileSync(join(process.cwd(), "src/app/api/gdpr-erase/route.ts"), "utf8");
+    expect(route).toContain("ecarterPourDemandeEffacement(");
   });
 
   it("effacement d'un MEMBRE : les rapports qui contiennent ses réponses sont mis à l'écart, rien n'est supprimé", async () => {

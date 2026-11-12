@@ -28,8 +28,8 @@ export const CLAPIERS_COPY: VilleCopy = {
       en: "Audit IA à Clapiers : diagnostic pour professions libérales (santé, conseil), TPE de services, PME scientifiques type Osmozis ou R2D Automation, artisans BTP. Audit sur place {{price:audit-flash|flat}}, ROI chiffré, livrable sous 5 jours ouvrés.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
-      en: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement depuis Montpellier en 12 min via tramway ligne 5 ou RD 65.",
+      fr: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement sur site.",
+      en: "Interventions IA sur site à Clapiers : ateliers pour cabinets libéraux, PME télécoms ou machinisme, commerces et artisans BTP. Équipes autonomes sur outils IA métier. Déplacement sur site.",
     },
     implementation: {
       fr: "Implémentation IA à Clapiers : automatisation prise de RDV cabinets libéraux, chatbot client PME services, classification dossiers santé, optimisation supervision R&D pour acteurs scientifiques locaux. Code custom, pas de no-code.",
@@ -43,7 +43,7 @@ export const CLAPIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Clapiers ?",
-      a: "Oui, Axion-IA intervient à Clapiers (34830) et dans les communes voisines de Montpellier Méditerranée Métropole : Castelnau-le-Lez, Jacou, Prades-le-Lez, Montferrier-sur-Lez, Assas et Teyran. Nos consultants se déplacent depuis Montpellier en 12 min via le tramway ligne 5 ou la RD 65.",
+      a: "Oui, Axion-IA intervient à Clapiers (34830) et dans les communes voisines de Montpellier Méditerranée Métropole : Castelnau-le-Lez, Jacou, Prades-le-Lez, Montferrier-sur-Lez, Assas et Teyran. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Clapiers ?",
@@ -63,7 +63,7 @@ export const CLAPIERS_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Clapiers ?",
-      a: "Oui, nos consultants se déplacent depuis Montpellier (12 min via tramway ligne 5 ou RD 65). Pour les missions courtes ou les comités de pilotage, la visio reste possible.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Pour les missions courtes ou les comités de pilotage, la visio reste possible.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

@@ -31,6 +31,7 @@ import { urlGuideIa } from "@/content/guide-ia";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { auPlus } from "@/server/crm-sync/enqueue";
 import { transmettreClicGuide } from "@/server/crm-sync/lettre-guide";
+import { confirmerPreuvesAuClic } from "@/server/guides-reseau/preuve-page-guide";
 import {
   CHEMIN_LIEN_GUIDE,
   langueDeLaRequete,
@@ -164,6 +165,13 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     userAgent: req.headers.get("user-agent"),
     ip: ipDe(req),
   }).catch(() => undefined);
+
+  // Preuve de l'accord de la page « Recevoir le guide » : le clic est la VÉRIFICATION de
+  // l'adresse (« en attente » → « confirmée »). À CHAQUE POST (un second dépôt sur la même
+  // demande se confirme au clic suivant), HORS de tout interrupteur du CRM — la preuve ne
+  // dépend pas de lui —, AVANT lui, et bornée comme lui : la personne attend son PDF. Ne
+  // lève jamais. Un GET ne confirme jamais (un antivirus n'est pas une personne).
+  await auPlus(confirmerPreuvesAuClic(demande.id, maintenant), ATTENTE_MAX_CRM_MS);
 
   // Lot L4-S — entrée au CRM AU CLIC (décision D1) : `lead_magnet_requested`,
   // et l'inscription à la lettre s'il y en a une. Derrière

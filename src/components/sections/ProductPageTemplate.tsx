@@ -354,8 +354,8 @@ function ReserveBigCta({
                 ? `À partir de ${priceEur} € HT pour une journée sur site.`
                 : `From €${priceEur} (excl. VAT) for an on-site day.`
               : isFr
-                ? "Sur devis · réponse sous 48 h ouvrées."
-                : "On quote · reply within 48 business hours."}{" "}
+                ? "Sur devis."
+                : "On quote."}{" "}
             {isFr
               ? "Confirmation immédiate, paiement 50 % à la réservation."
               : "Immediate confirmation, 50 % payment on booking."}

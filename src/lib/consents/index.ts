@@ -41,6 +41,14 @@ import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
  * personne : accord de recevoir le guide ET des informations d'Axion-IA. Distinct de `optin`
  * (double accord de la lettre) : aucune inscription à la lettre n'en découle.
  *
+ * `consent_attente` / `consent_confirme` / `consent_ecarte` (lot guide réseau 3) — les TROIS ÉTATS
+ * de la preuve de la page « Recevoir le guide » : la case est cochée mais l'adresse n'est qu'une
+ * saisie (`consent_attente`) ; le premier clic sur le bouton du lien du guide, APRÈS l'accord,
+ * la vérifie (`consent_confirme`) ; N jours sans clic, la ligne est mise à l'écart
+ * (`consent_ecarte`, rien n'est supprimé). Le registre reste append-only : les lignes `consent`
+ * déjà écrites se lisent « accord saisi, avant la distinction en attente/confirmé ». Colonne
+ * `action` : VARCHAR(16) — `consent_confirme` (16 caractères) est le plus long.
+ *
  * `fin` (lot L6, relecture du 2026-09-25) — FIN de l'inscription à la lettre
  * constatée par la purge (inactivité, rebond, désinscription arrivée à son
  * terme). Ce n'est ni un accord ni un retrait : c'est la date à partir de
@@ -49,7 +57,15 @@ import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
  * ans serait purgée le lendemain de sa sortie. `occurredAt` = la date réelle de
  * la fin (rebond, désinscription), jamais celle de la purge si elle diffère.
  */
-export type ConsentAction = "optin" | "optout" | "information" | "fin" | "consent";
+export type ConsentAction =
+  | "optin"
+  | "optout"
+  | "information"
+  | "fin"
+  | "consent"
+  | "consent_attente"
+  | "consent_confirme"
+  | "consent_ecarte";
 
 /**
  * Références FERMES des points de capture. Sans elles, deux consentements de

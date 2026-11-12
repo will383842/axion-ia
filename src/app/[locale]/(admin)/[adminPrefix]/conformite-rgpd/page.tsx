@@ -21,6 +21,7 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminEmptyState } from "@/components/admin/ui/AdminEmptyState";
 import { AdminSubmitButton } from "@/components/admin/ui/AdminSubmitButton";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { FormulaireEcartAdresse } from "@/components/admin/conformite-rgpd/FormulaireEcartAdresse";
 import {
   CarteEcart,
   GestesEcart,
@@ -442,9 +443,14 @@ export default async function ConformiteRgpdPage({ params, searchParams }: PageP
               </div>
             )}
             <p className={`mt-[var(--space-admin-3)] ${sousTexteCls}`}>
-              Délai de réponse : un mois. Les demandes reçues par e-mail n&apos;apparaissent pas
-              ici.
+              Délai de réponse : un mois. Les demandes reçues par e-mail n&apos;apparaissent pas ici
+              : pour en mettre une à l&apos;écart, utilisez le formulaire ci-dessous.
             </p>
+            {acces.role === "super_admin" ? (
+              <div className="mt-[var(--space-admin-5)]">
+                <FormulaireEcartAdresse />
+              </div>
+            ) : null}
           </>
         ) : null}
 

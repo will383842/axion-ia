@@ -474,6 +474,11 @@ export const env = createEnv({
     /// Clé des liens privés envoyés aux candidats (HMAC, L5). Indépendante
     /// d'`AUTH_SECRET` : sa rotation couperait tous les liens. 32 caractères au moins.
     PARTAGES_SECRET: z.string().min(32).optional(),
+    /// Clé des jetons d'opposition opaques `op2` (e-mails). Indépendante d'`AUTH_SECRET` :
+    /// sa rotation ne doit pas couper les liens. Ne se supprime JAMAIS (les liens n'expirent
+    /// pas) ; une rotation ajoute un `kid` et `OPPOSITION_JETON_SECRET_<KID>`. Lue à
+    /// l'exécution par `opposition-jeton.ts` (app ET worker). Facultative : absente → `op1`.
+    OPPOSITION_JETON_SECRET: z.string().min(32).optional(),
 
     HETZNER_STORAGE_ENDPOINT: z.string().optional(),
     HETZNER_STORAGE_BUCKET: z.string().optional(),
@@ -840,6 +845,7 @@ export const env = createEnv({
     R2_PARTAGES_ACCESS_KEY_ID: process.env.R2_PARTAGES_ACCESS_KEY_ID,
     R2_PARTAGES_SECRET_ACCESS_KEY: process.env.R2_PARTAGES_SECRET_ACCESS_KEY,
     PARTAGES_SECRET: process.env.PARTAGES_SECRET,
+    OPPOSITION_JETON_SECRET: process.env.OPPOSITION_JETON_SECRET,
     HETZNER_STORAGE_ENDPOINT: process.env.HETZNER_STORAGE_ENDPOINT,
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,

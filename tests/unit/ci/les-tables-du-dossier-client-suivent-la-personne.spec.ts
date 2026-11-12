@@ -184,8 +184,12 @@ describe("les tables du dossier client suivent la personne", () => {
     expect(lire(ROUTE_EXPORT)).toMatch(/exporterDossierClientPour\(email\)/);
   });
 
-  it("la route d'effacement appelle bien l'effacement du dossier client", () => {
-    expect(lire("src/app/api/gdpr-erase/route.ts")).toMatch(/effacerCibleParAdresses\(\[email\]/);
+  it("11/11/2026 — la route d'effacement n'efface plus le dossier client (mise à l'écart)", () => {
+    // Décision de Williams : une demande d'effacement écarte la personne, ne supprime rien.
+    // `effacerCibleParAdresses` reste l'outil du geste humain.
+    const route = lire("src/app/api/gdpr-erase/route.ts");
+    expect(route).not.toMatch(/effacerCibleParAdresses\(\[email\]/);
+    expect(route).toContain("ecarterPourDemandeEffacement(");
   });
 
   it("contre-témoin : sans son annotation, TranscriptionSegment est signalé", () => {

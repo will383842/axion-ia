@@ -64,7 +64,7 @@ export const ARPAJON_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Évry ?",
+      q: "Comment se déroule une mission à Arpajon ?",
       a: "RER C Arpajon direct depuis Paris (35 min). Évry-Courcouronnes à 20 min. Orly à 20 min. Massy-Palaiseau TGV à 15 min. Tarification transparente.",
     },
   ],

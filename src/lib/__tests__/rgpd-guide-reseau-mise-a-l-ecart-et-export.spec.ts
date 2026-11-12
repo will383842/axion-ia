@@ -76,6 +76,9 @@ beforeEach(() => {
       consentEmpreinte: "a".repeat(64),
       consentiLe: new Date("2026-11-08T10:00:00Z"),
       merciStatut: "a_envoyer",
+      preuveStatut: "confirmee",
+      preuveConfirmeeLe: new Date("2026-11-08T12:00:00Z"),
+      preuveEcarteeLe: null,
       jetonEmpreinte: "j".repeat(64),
       convRef: "c".repeat(64),
     },
@@ -99,6 +102,18 @@ beforeEach(() => {
 });
 
 describe("contacts_guide_reseau — export art. 15", () => {
+  it("rend l'état de la preuve de l'accord et ses deux dates ; NULL se lit « en_attente »", async () => {
+    const r = await exporterGuideReseauPour("personne@example.test");
+    expect(r.contacts[0]).toMatchObject({
+      preuve: "confirmee",
+      preuveConfirmeeLe: new Date("2026-11-08T12:00:00Z"),
+      preuveEcarteeLe: null,
+    });
+    etat.lignes = [{ ...etat.lignes[0]!, preuveStatut: null, preuveConfirmeeLe: null }];
+    const nul = await exporterGuideReseauPour("personne@example.test");
+    expect(nul.contacts[0]).toMatchObject({ preuve: "en_attente" });
+  });
+
   it("rend le prénom déchiffré et la preuve de la case, jamais l'empreinte du jeton ni la conversation", async () => {
     const r = await exporterGuideReseauPour("personne@example.test");
     expect(r.contacts).toHaveLength(1);

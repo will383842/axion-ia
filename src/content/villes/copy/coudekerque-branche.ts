@@ -18,9 +18,9 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   ecosystemEn:
     "Coudekerque-Branche fait partie de la communauté urbaine de Dunkerque, premier port industriel des Hauts-de-France et grand pôle sidérurgique et énergétique du littoral. Autour des sites majeurs gravite un dense réseau de TPE et PME de sous-traitance, maintenance industrielle, logistique, transport routier et BTP, complété par un commerce de proximité actif. Ces structures, souvent dirigées par des indépendants ou de petites équipes, jonglent avec planning, devis et conformité, autant de domaines où des automatisations IA bien ciblées font gagner un temps précieux.",
   distancesFr:
-    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, ou interviennent en visio selon le format.",
+    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nos consultants se déplacent sur site depuis Lille, ou interviennent en visio selon le format.",
+    "Dunkerque centre à 5 min, port et zones industrielles à 10 min. Gare de Dunkerque à 3 km, Lille et sa gare TGV à 1h, Calais à 45 min. Bruxelles à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Sous-traitance industrielle et maintenance (port, sidérurgie)",
     "Logistique portuaire et entreposage",
@@ -230,7 +230,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coudekerque-Branche et dans l'agglomération de Dunkerque ?",
-      a: "Oui. Nous couvrons Coudekerque-Branche et la communauté urbaine de Dunkerque (Dunkerque centre à 5 min, Saint-Pol-sur-Mer, Grande-Synthe). Nos consultants se déplacent depuis Lille, à 1h, ou interviennent en visio.",
+      a: "Oui. Nous couvrons Coudekerque-Branche et la communauté urbaine de Dunkerque (Dunkerque centre à 5 min, Saint-Pol-sur-Mer, Grande-Synthe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de transport, maintenance et commerce ?",
@@ -245,7 +245,7 @@ export const COUDEKERQUE_BRANCHE_COPY: VilleCopy = {
       a: "Non. Nous partons de vos logiciels actuels et commençons par un audit ciblé. L'objectif est un retour sur investissement rapide et mesurable, accessible à une TPE comme à une PME, pas un chantier réservé aux grands groupes.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
+      q: "Comment se déroule une mission à Coudekerque-Branche ?",
       a: "Le diagnostic et les sessions clés se déroulent sur site à Coudekerque-Branche ; le suivi se poursuit en visio.",
     },
   ],

@@ -49,7 +49,7 @@ export const CHAPONOST_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chaponost et SO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Chaponost et tout le SO lyonnais (Brignais à 5 min, Francheville, Oullins, Craponne). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Chaponost et tout le SO lyonnais (Brignais à 5 min, Francheville, Oullins, Craponne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales chaponostois ?",
@@ -64,8 +64,8 @@ export const CHAPONOST_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chaponost, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min).",
+      q: "Comment se déroule une mission à Chaponost ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

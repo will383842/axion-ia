@@ -32,7 +32,12 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const ROUTES = [
-  { nom: "gdpr-erase", chemin: join(process.cwd(), "src", "app", "api", "gdpr-erase", "route.ts") },
+  // Décision de Williams du 11/11/2026 : la demande d'effacement met à l'écart ; la trace est
+  // désormais écrite par le module d'écart (route publique ET console), plus par la route.
+  {
+    nom: "gdpr-erase (module d'écart)",
+    chemin: join(process.cwd(), "src", "server", "rgpd", "ecarter-au-lieu-d-effacer.ts"),
+  },
   {
     nom: "gdpr-export",
     chemin: join(process.cwd(), "src", "app", "api", "gdpr-export", "route.ts"),

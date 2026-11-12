@@ -64,7 +64,7 @@ export const CHANGE_53_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA : IA générative, automatisation workflows, agents conversationnels, analyse de données, intégration API IA. Sur site technopole ou visio.",
     },
     {
-      q: "Comment se passe une mission IA à Changé depuis Laval ?",
+      q: "Comment se déroule une mission IA à Changé ?",
       a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Laval à 5 km, accès A81 direct. Tarifs publics.",
     },
   ],

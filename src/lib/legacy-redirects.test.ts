@@ -10,6 +10,9 @@ describe("resolveLegacyRedirect — aplatissement des chaînes (audit indexation
     expect(resolveLegacyRedirect("/codage-developpement/web-digital")).toBe("/sites-web-augmentes");
     expect(resolveLegacyRedirect("/audit/flash")).toBe("/audit/tpe-1-jour");
     expect(resolveLegacyRedirect("/audit/process")).toBe("/audit/cible");
+    // 2026-11 : doublons redirigés en 301 vers le hub /formations et la page /tarifs.
+    expect(resolveLegacyRedirect("/formations/entreprise")).toBe("/formations");
+    expect(resolveLegacyRedirect("/formations/tarifs")).toBe("/tarifs");
     // Tunnel apporteurs renommé le 2026-09-04. C'est la forme NON préfixée
     // (`axion-ia.com/facebook`) qui a pu circuler dans les publicités Meta :
     // sans cette entrée elle ferait 2 sauts au lieu d'un.

@@ -64,7 +64,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
+      q: "Comment se déroule une mission à Châtel-Guyon ?",
       a: "Clermont-Ferrand (20 min). Aéroport Clermont à 25 min. Tarification transparente.",
     },
   ],

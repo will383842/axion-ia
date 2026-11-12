@@ -19,6 +19,7 @@ const d = vi.hoisted(() => ({
   envoyer: vi.fn(),
   creer: vi.fn(),
   consigner: vi.fn(),
+  reservation: vi.fn(),
 }));
 
 vi.mock("@sentry/nextjs", () => ({ captureException: () => undefined }));
@@ -31,6 +32,7 @@ vi.mock("@/lib/prisma", () => ({
       update: (...a: unknown[]) => d.subUpdate(...a),
       updateMany: (...a: unknown[]) => d.subUpdateMany(...a),
     },
+    calendlyEvent: { findFirst: (...a: unknown[]) => d.reservation(...a) },
   },
 }));
 vi.mock("../invitation-apporteur", () => ({
@@ -73,6 +75,7 @@ beforeEach(() => {
     "https://calendly.com/axion-ia/echange-apporteur-affaires";
   d.jobFindMany.mockResolvedValue([]);
   d.subFindMany.mockResolvedValue([]);
+  d.reservation.mockResolvedValue(null);
   d.subFindUnique.mockResolvedValue({ details: APPORTEUR });
   d.subUpdate.mockResolvedValue({});
   d.envoyer.mockResolvedValue({ ok: true });
@@ -132,6 +135,27 @@ describe("passerInvitationsAuto", () => {
     expect(r.envoyees).toBe(1);
     const data = d.subUpdate.mock.calls[0]?.[0]?.data;
     expect(data.details.invitationAuto.issue).toBe("envoyee");
+  });
+
+  // 11/11/2026 (Williams) : la confirmation du dossier porte déjà le bouton de
+  // réservation. Qui a réservé entre-temps ne reçoit pas « choisissez un créneau ».
+  it("n'invite pas une personne qui a déjà réservé son échange", async () => {
+    d.subFindMany.mockResolvedValue([{ id: "f-reserve", details: DOSSIER_COMPLET }]);
+    d.reservation.mockResolvedValue({ id: "evt-1" });
+    const r = await passerInvitationsAuto(MAINTENANT);
+    expect(d.envoyer).not.toHaveBeenCalled();
+    expect(r.envoyees).toBe(0);
+    expect(r.ecartees["dossier-deja-reserve"]).toBe(1);
+    // Rien n'est écrit sur la fiche : elle sort seule de la fenêtre.
+    expect(d.subUpdate).not.toHaveBeenCalled();
+  });
+
+  it("une base qui ne répond pas sur les réservations : on réessaie, on n'invite pas dans le doute", async () => {
+    d.subFindMany.mockResolvedValue([{ id: "f-doute", details: DOSSIER_COMPLET }]);
+    d.reservation.mockRejectedValue(new Error("base indisponible"));
+    const r = await passerInvitationsAuto(MAINTENANT);
+    expect(d.envoyer).not.toHaveBeenCalled();
+    expect(r.aReessayer).toBe(1);
   });
 
   it("ne lit en base que les dossiers complets du réseau", async () => {

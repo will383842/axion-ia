@@ -221,8 +221,8 @@ export function unifiedTypeHint(type: UnifiedContactType, locale: "fr" | "en"): 
       en: "You are an existing client and need help",
     },
     autre: {
-      fr: "Tout autre sujet — on revient sous 48 h",
-      en: "Any other topic — we reply within 48h",
+      fr: "Tout autre sujet — écrivez-nous",
+      en: "Any other topic — write to us",
     },
   };
   return hints[type][locale];

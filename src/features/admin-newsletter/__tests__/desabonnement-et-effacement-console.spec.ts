@@ -20,6 +20,7 @@ const d = vi.hoisted(() => ({
   eraseNewsletter: vi.fn(),
   eraseTraces: vi.fn(),
   eraseOutboxCrm: vi.fn(),
+  ecarter: vi.fn(),
   propagate: vi.fn(),
   revalidatePath: vi.fn(),
   envoyerGuide: vi.fn(),
@@ -56,6 +57,9 @@ vi.mock("@/lib/rgpd-erase", () => ({
 }));
 vi.mock("@/server/crm-sync/gdpr", () => ({
   propagateGdprToCrm: (...a: unknown[]) => d.propagate(...a),
+}));
+vi.mock("@/server/rgpd/ecarter-au-lieu-d-effacer", () => ({
+  ecarterPourDemandeEffacement: (...a: unknown[]) => d.ecarter(...a),
 }));
 // Tirés par le module d'actions, sans rapport avec ces deux gestes.
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
@@ -107,6 +111,15 @@ beforeEach(() => {
   d.eraseTraces.mockResolvedValue({ logsPseudonymises: 2, outboxSupprimes: 0 });
   d.eraseOutboxCrm.mockResolvedValue({ supprimees: 1 });
   d.propagate.mockResolvedValue({ status: "deferred", detail: "drapeau" });
+  d.ecarter.mockResolvedValue({
+    opposition: "ok",
+    marque: "ok",
+    abonnesEcartes: 1,
+    contactsGuideEcartes: 0,
+    rapportsEcartes: 0,
+    journalId: "log-1",
+    etapesEnEchec: [],
+  });
 });
 
 describe("désabonnement forcé depuis la console", () => {
@@ -238,32 +251,57 @@ describe("désabonnement forcé depuis la console", () => {
   });
 });
 
-describe("effacement RGPD depuis la console", () => {
+describe("demande d'effacement depuis la console → MISE À L'ÉCART (décision du 11/11/2026)", () => {
   beforeEach(() => {
     d.session = { user: { id: "super-1", role: "super_admin" } };
   });
 
-  it("passe par les fonctions de l'effacement public et par le CRM, sans l'adresse au journal", async () => {
+  it("🔴 écarte la personne, ne supprime RIEN", async () => {
     const r = await eraseSubscriberAction(
       { ok: false, error: "" },
       form({ id: ABONNE.id, reason: "demande écrite de la personne" }),
     );
     expect(r).toEqual({ ok: true });
-    expect(d.eraseNewsletter).toHaveBeenCalledWith(ABONNE.email);
-    expect(d.eraseTraces).toHaveBeenCalledWith(ABONNE.email);
-    // L6 — la file vers le CRM (charge en clair) est effacée aussi.
-    expect(d.eraseOutboxCrm).toHaveBeenCalledWith(ABONNE.email);
-    expect(d.propagate).toHaveBeenCalledWith(
-      expect.objectContaining({ action: "erase", email: ABONNE.email }),
+    expect(d.ecarter).toHaveBeenCalledWith(
+      expect.objectContaining({
+        email: ABONNE.email,
+        origine: "console-lettre",
+        adminUserId: "super-1",
+        motif: "demande écrite de la personne",
+        cible: { type: "newsletter_subscriber", id: ABONNE.id },
+      }),
     );
+    // Les anciens effaceurs ne sont plus appelés.
+    expect(d.eraseNewsletter).not.toHaveBeenCalled();
+    expect(d.eraseTraces).not.toHaveBeenCalled();
+    expect(d.eraseOutboxCrm).not.toHaveBeenCalled();
+  });
 
-    const journal = d.activityCreate.mock.calls[0]![0] as { data: Record<string, unknown> };
-    // Préfixe `gdpr.` : la trace survit à la purge des journaux à 12 mois.
-    expect(journal.data["action"]).toBe("gdpr.newsletter.erased");
-    const serialise = JSON.stringify(journal);
-    expect(serialise).not.toContain(ABONNE.email);
-    expect(serialise).not.toContain("@");
-    expect((journal.data["changes"] as { emailHash: string }).emailHash).toMatch(/^[0-9a-f]{64}$/);
+  it("🔴 marque ou opposition en échec : l'écran dit « incomplète », jamais « fait »", async () => {
+    d.ecarter.mockResolvedValue({
+      abonnesEcartes: 1,
+      contactsGuideEcartes: 0,
+      etapesEnEchec: ["marque"],
+    });
+    const r = await eraseSubscriberAction(
+      { ok: false, error: "" },
+      form({ id: ABONNE.id, reason: "demande écrite" }),
+    );
+    expect(r).toEqual({ ok: false, error: expect.stringMatching(/incompl[eè]te.*marque/i) });
+    expect(d.revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it("une étape secondaire en échec (alerte) ne fait pas échouer le geste", async () => {
+    d.ecarter.mockResolvedValue({
+      abonnesEcartes: 1,
+      contactsGuideEcartes: 0,
+      etapesEnEchec: ["alerte"],
+    });
+    const r = await eraseSubscriberAction(
+      { ok: false, error: "" },
+      form({ id: ABONNE.id, reason: "demande écrite" }),
+    );
+    expect(r).toEqual({ ok: true });
   });
 
   it("🔴 une fiche absente rend « introuvable » au lieu de lever (l'écran tombait)", async () => {
@@ -273,8 +311,7 @@ describe("effacement RGPD depuis la console", () => {
       form({ id: ABONNE.id, reason: "doublon" }),
     );
     expect(r).toEqual({ ok: false, error: expect.stringMatching(/introuvable/i) });
-    expect(d.eraseNewsletter).not.toHaveBeenCalled();
-    expect(d.propagate).not.toHaveBeenCalled();
+    expect(d.ecarter).not.toHaveBeenCalled();
   });
 
   it("réservé super_admin", async () => {
@@ -284,7 +321,7 @@ describe("effacement RGPD depuis la console", () => {
       form({ id: ABONNE.id, reason: "motif" }),
     );
     expect(r.ok).toBe(false);
-    expect(d.eraseNewsletter).not.toHaveBeenCalled();
+    expect(d.ecarter).not.toHaveBeenCalled();
   });
 });
 

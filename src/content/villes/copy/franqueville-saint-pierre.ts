@@ -49,7 +49,7 @@ export const FRANQUEVILLE_SAINT_PIERRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Franqueville-Saint-Pierre ?",
-      a: "Oui, Axion-IA intervient a Franqueville-Saint-Pierre et dans toute la metropole rouennaise (Rouen, Le Mesnil-Esnard, Bonsecours, Darnetal). Consultants depuis Rouen (15 min) ou Paris (1h25).",
+      a: "Oui, Axion-IA intervient a Franqueville-Saint-Pierre et dans toute la metropole rouennaise (Rouen, Le Mesnil-Esnard, Bonsecours, Darnetal). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions liberales de Franqueville ?",

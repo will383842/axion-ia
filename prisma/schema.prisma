@@ -14014,6 +14014,10 @@ model EmailOpposition {
   crmEnAttenteDepuis DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
   /// Posée par l'effacement : le CRM ne doit plus jamais recevoir l'adresse.
   crmInterditLe      DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
+  /// Posée par une DEMANDE D'EFFACEMENT (décision de Williams du 11/11/2026 : on écarte, on ne
+  /// supprime pas). Une fois posée, plus AUCUN envoi ne part vers l'adresse, quel que soit le
+  /// gabarit (`verdict-envoi.ts`). Jamais retirée par le code.
+  effacementDemandeLe DateTime? @map("effacement_demande_le") @db.Timestamptz(6)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -18148,7 +18152,7 @@ model GuideReseauReception {
 model GuideReseauOrigine {
   id                 String    @id @default(uuid()) @db.Uuid
   emailKey           String    @map("email_key") @db.VarChar(64)
-  /// SHA-256 de (mot, reseau, guide, post_ref, canal, date à la seconde) : `null` traité comme valeur.
+  /// SHA-256 de (mot, reseau, guide, post_ref, canal, clé d'idempotence du run) : `null` traité comme valeur. La date n'en fait plus partie.
   cleDedoublonnage   String    @map("cle_dedoublonnage") @db.Char(64)
   mot                String    @db.VarChar(30)
   reseau             String    @db.VarChar(20)
@@ -18167,6 +18171,9 @@ model GuideReseauOrigine {
   /// Posée quand l'entrée passe en archive (lecture seule) ; `null` = active.
   archiveeLe         DateTime? @map("archivee_le") @db.Timestamptz(3)
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  /// État CRM : `null` = pas encore partie, `transmise`, `ecartee` (opposition : mise à l'écart, jamais supprimée).
+  crmStatut          String?   @map("crm_statut") @db.VarChar(16)
+  crmTraiteeLe       DateTime? @map("crm_traitee_le") @db.Timestamptz(3)
 
   @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
   @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
@@ -18204,18 +18211,31 @@ model ContactGuideReseau {
   /// SHA-256 (hex) du texte de la case de consentement.
   consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
   consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// Case FACULTATIVE « informations d'Axion-IA » : 'aucune' (non cochée) ou 'non_transmise'
+  /// (cochée, enregistrée ici ; le CRM ne la reçoit que si l'interrupteur newsletter_optin est allumé).
+  infosStatut         String        @default("aucune") @map("infos_statut") @db.VarChar(20)
+  infosVersion        String?       @map("infos_version") @db.VarChar(64)
+  infosEmpreinte      String?       @map("infos_empreinte") @db.Char(64)
+  infosConsentiLe     DateTime?     @map("infos_consenti_le") @db.Timestamptz(3)
   /// SHA-256 (hex) du jeton du lien : unique, usage unique.
   jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
   /// Référence opaque de la conversation du réseau.
   convRef             String        @map("conv_ref") @db.VarChar(120)
   merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
   merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  /// Preuve de l'accord (migration 20261112000000) : `en_attente` | `confirmee` | `non_verifiee`
+  /// (mise à l'écart, jamais une suppression) | `sans_objet` (MARQUE d'adresse opposée). NULL se
+  /// lit `en_attente`. Distinct de `merci_statut` : ne pas le surcharger.
+  preuveStatut        String?       @map("preuve_statut") @db.VarChar(16)
+  preuveConfirmeeLe   DateTime?     @map("preuve_confirmee_le") @db.Timestamptz(3)
+  preuveEcarteeLe     DateTime?     @map("preuve_ecartee_le") @db.Timestamptz(3)
   createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
   @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
   @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@index([preuveStatut, consentiLe], map: "contacts_guide_reseau_preuve_statut_consenti_le_idx")
   @@map("contacts_guide_reseau")
 }
 
@@ -18419,4 +18439,58 @@ model AuditTerrainRapport {
   @@unique([sessionId, version], map: "audit_terrain_rapports_session_id_version_key")
   @@index([valideParId], map: "audit_terrain_rapports_valide_par_id_idx")
   @@map("audit_terrain_rapports")
+}
+
+/// F1a-bis (2026-11-12) — catalogue UNIQUE de cibles d'un mot : un guide (PDF) ou une adresse de page.
+/// Rien n'est figé dans le code : tout se saisit par l'écran, sans limite de nombre. Aucune ligne
+/// n'est supprimée : on désactive (`actif`). `test` = fiche factice de test. Contraintes
+/// (guide ⇒ chemin sans adresse, adresse ⇒ adresse sans chemin, formes) posées en SQL dans la migration.
+/// rgpd: technique — contenu éditorial public (titre, chemin de PDF, adresse du site) ; aucune donnée sur une personne
+model CibleReseau {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique @db.VarChar(28)
+  type      String   @db.VarChar(10)
+  titre     String   @db.VarChar(120)
+  cheminPdf String?  @map("chemin_pdf") @db.VarChar(200)
+  url       String?  @db.VarChar(300)
+  version   Int      @default(1)
+  actif     Boolean  @default(true)
+  test      Boolean  @default(false)
+  creeLe    DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  mots MotCible[]
+
+  @@map("cibles_reseau")
+}
+
+/// F1a-bis — liaison mot → cible. Un mot mène à UNE cible par réseau (`@@unique([mot, reseau])`) ;
+/// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition — règle appliquée par le code ET reposée en SQL (contrainte `mots_cibles_mot_forme`).
+/// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
+model MotCible {
+  id        String       @id @default(uuid()) @db.Uuid
+  mot       String       @db.VarChar(30)
+  reseau    String       @db.VarChar(10)
+  codeCible String       @map("code_cible") @db.VarChar(28)
+  actif     Boolean      @default(true)
+  creeLe    DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  cible     CibleReseau  @relation(fields: [codeCible], references: [code], onDelete: Restrict)
+
+  @@unique([mot, reseau], map: "mots_cibles_mot_reseau_key")
+  @@index([codeCible], map: "mots_cibles_code_cible_idx")
+  @@map("mots_cibles")
+}
+
+/// STOP reçu du Studio AVANT la validation de la page du guide : la marque porte la seule référence de
+/// conversation hachée (`conv_ref`, HMAC de 64 caractères), jamais d'adresse. Écrite à chaque STOP
+/// (idempotent), lue par la page de confirmation pour suivre le même déroulé neutre qu'une adresse opposée.
+/// AUCUNE ligne n'est supprimée par le code.
+/// rgpd: technique — référence de conversation hachée (HMAC), aucune adresse ni nom ni texte
+model OppositionConvRef {
+  id      String   @id @default(cuid())
+  convRef String   @unique @map("conv_ref") @db.VarChar(64)
+  creeLe  DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@map("oppositions_conv_ref")
 }

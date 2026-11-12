@@ -17,13 +17,17 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const findFirst = vi.fn();
 const oppositionFindUnique = vi.fn();
+const oppositionFindFirst = vi.fn();
 const abonneFindUnique = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     emailLog: { findFirst: (...a: unknown[]) => findFirst(...a) },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => abonneFindUnique(...a) },
-    emailOpposition: { findUnique: (...a: unknown[]) => oppositionFindUnique(...a) },
+    emailOpposition: {
+      findUnique: (...a: unknown[]) => oppositionFindUnique(...a),
+      findFirst: (...a: unknown[]) => oppositionFindFirst(...a),
+    },
   },
 }));
 
@@ -32,14 +36,17 @@ import { VARIANTE_VSL_ABANDON } from "@/lib/commercial-application/vsl-apporteur
 import {
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
+  dateDeMiseAEcart,
   VARIANTE_KIT_DIFFERE,
   VARIANTE_VSL_ABANDON_DIFFEREE,
   GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
+  MODELES_REPONSE_A_UN_DROIT,
 } from "./verdict-envoi";
 
 beforeEach(() => {
   findFirst.mockReset().mockResolvedValue(null);
   oppositionFindUnique.mockReset().mockResolvedValue(null);
+  oppositionFindFirst.mockReset().mockResolvedValue(null);
   abonneFindUnique.mockReset().mockResolvedValue(null);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
@@ -137,6 +144,195 @@ describe("verdictAvantEnvoi — drapeau `sollicitation` explicite", () => {
   });
 });
 
+describe("verdictAvantEnvoi — personne écartée après une demande d'effacement (11/11/2026)", () => {
+  const LE = new Date("2026-11-11T10:00:00Z");
+
+  it.each([
+    ["qualiopi-convocation", false],
+    ["guide-ia-envoi", false],
+    ["lead-apporteur-recu", false],
+    ["campagne-x", true],
+  ])(
+    "🔴 « %s » (marketing : %s) est RETENU, quel que soit le gabarit",
+    async (template, marketing) => {
+      oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+      const v = await verdictAvantEnvoi("ecartee@exemple.fr", { template, marketing });
+      expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+    },
+  );
+
+  it("🔴 `gdpr-export-link` (réponse à la demande d'accès de la personne) PASSE pour une adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "gdpr-export-link",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("un modèle commercial reste BLOQUÉ pour la même adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "campagne-x",
+      marketing: true,
+    });
+    expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+  });
+
+  it("`rgpd-effacement-confirme` (dormant) reste BLOQUÉ pour une adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "rgpd-effacement-confirme",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+  });
+
+  it("l'ensemble des réponses à un droit est fermé : `gdpr-export-link` seul", () => {
+    expect([...MODELES_REPONSE_A_UN_DROIT]).toEqual(["gdpr-export-link"]);
+  });
+
+  it("lu par empreinte, jamais par adresse", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    const lu = oppositionFindFirst.mock.calls[0]![0] as { where: Record<string, unknown> };
+    expect(lu.where).not.toHaveProperty("email");
+    expect(String(lu.where["emailHash"])).toMatch(/^[0-9a-f]{64}$/);
+  });
+
+  it("sans marque, un envoi transactionnel part (une simple opposition ne le retient pas)", async () => {
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@exemple.fr", {
+      template: "qualiopi-convocation",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("lecture en panne (colonne pas encore migrée) : repli ouvert, les autres contrôles tiennent", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("column does not exist"));
+    oppositionFindUnique.mockResolvedValue({ id: "opp-1" });
+    const v = await verdictAvantEnvoi("oppose@exemple.fr", {
+      template: "campagne-x",
+      marketing: true,
+    });
+    expect(v).toEqual({ retenu: true, motif: "oppose", depuis: null });
+  });
+});
+
+describe("🔴 D-STOP-1 — opposition non vérifiable au départ : rien ne part (job réessayé)", () => {
+  const PANNE = Object.assign(new Error("connexion perdue pour secret@exemple.fr"), {
+    code: "P1001",
+  });
+
+  it("1) guide-ia-envoi {reseau:true}, auDepart, lecture de l'opposition en panne → REJETTE", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "guide-ia-envoi",
+        marketing: false,
+        sollicitation: estSollicitationSoumiseAOpposition("guide-ia-envoi", { reseau: true }),
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("1bis) même cas sans `sollicitation` explicite (repli sur le gabarit seul) : sans `reseau`, pas de lecture", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "guide-ia-envoi",
+      marketing: false,
+      auDepart: true,
+    });
+    expect(v).toEqual({ retenu: false });
+    expect(oppositionFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("2) marketing, auDepart, lecture de la newsletter en panne → REJETTE", async () => {
+    abonneFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "campagne-x",
+        marketing: true,
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("2bis) marketing, auDepart, lecture de l'opposition en panne → REJETTE", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "campagne-x",
+        marketing: true,
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("3) même panne SANS auDepart (enfilage) → { retenu: false } (cas documenté, inchangé)", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    abonneFindUnique.mockRejectedValue(PANNE);
+    expect(
+      await verdictAvantEnvoi("a@exemple.fr", { template: "campagne-x", marketing: true }),
+    ).toEqual({ retenu: false });
+    expect(
+      await verdictAvantEnvoi("a@exemple.fr", {
+        template: "guide-ia-envoi",
+        marketing: false,
+        sollicitation: true,
+      }),
+    ).toEqual({ retenu: false });
+  });
+
+  it.each(["qualiopi-facture", "qualiopi-convocation"])(
+    "4) %s, auDepart, tables d'opposition et de newsletter en panne → tables NON lues, envoi inchangé",
+    async (template) => {
+      oppositionFindUnique.mockRejectedValue(PANNE);
+      abonneFindUnique.mockRejectedValue(PANNE);
+      const v = await verdictAvantEnvoi("a@exemple.fr", {
+        template,
+        marketing: false,
+        sollicitation: false,
+        auDepart: true,
+      });
+      expect(v).toEqual({ retenu: false });
+      expect(oppositionFindUnique).not.toHaveBeenCalled();
+      expect(abonneFindUnique).not.toHaveBeenCalled();
+    },
+  );
+
+  it("le rebond garde son repli ouvert, même au départ", async () => {
+    findFirst.mockRejectedValue(PANNE);
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "qualiopi-facture",
+      marketing: false,
+      auDepart: true,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("6) aucun journal ne contient « @ » (rebond, opposition, désabonnement)", async () => {
+    const journal = vi.spyOn(console, "error").mockImplementation(() => {});
+    findFirst.mockRejectedValue(PANNE);
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    abonneFindUnique.mockRejectedValue(PANNE);
+    await verdictAvantEnvoi("secret@exemple.fr", { template: "campagne-x", marketing: true });
+    await verdictAvantEnvoi("secret@exemple.fr", {
+      template: "guide-ia-envoi",
+      marketing: false,
+      sollicitation: true,
+    });
+    expect(journal).toHaveBeenCalled();
+    const tout = JSON.stringify(journal.mock.calls);
+    expect(tout).not.toContain("@");
+    expect(tout).not.toContain("secret");
+  });
+});
+
 describe("module pur — seuls la base et l'empreinte", () => {
   it("n'importe que `@/lib/prisma` et `@/lib/security/email-hash`", () => {
     const source = readFileSync(join(__dirname, "verdict-envoi.ts"), "utf8");
@@ -147,5 +343,37 @@ describe("module pur — seuls la base et l'empreinte", () => {
       ...sansCommentaires.matchAll(/\bimport\s*\(\s*["']([^"']+)["']\s*\)/g),
     ].map((m) => m[1]);
     expect([...new Set(specs)].sort()).toEqual(["@/lib/prisma", "@/lib/security/email-hash"]);
+  });
+});
+
+describe("dateDeMiseAEcart — repli ouvert SEULEMENT sur « colonne absente » (P2022)", () => {
+  it("P2022 (migration pas encore passée) : contrôle sauté, aucune marque n'a pu être posée", async () => {
+    oppositionFindFirst.mockRejectedValue(Object.assign(new Error("col"), { code: "P2022" }));
+    expect(await dateDeMiseAEcart("a@exemple.fr", "qualiopi-convocation")).toBeNull();
+  });
+
+  it("🔴 toute autre panne (connexion perdue, délai dépassé) est RELANCÉE", async () => {
+    oppositionFindFirst.mockRejectedValue(Object.assign(new Error("timeout"), { code: "P1008" }));
+    await expect(dateDeMiseAEcart("a@exemple.fr", "qualiopi-convocation")).rejects.toThrow();
+  });
+
+  it("🔴 au départ du worker, la panne remonte (le job sera réessayé, rien n'est envoyé)", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("connexion perdue"));
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "qualiopi-facture",
+        marketing: false,
+        auDepart: true,
+      }),
+    ).rejects.toThrow("connexion perdue");
+  });
+
+  it("à l'enfilage, la même panne ne bloque pas l'appelant (le worker relira au départ)", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("connexion perdue"));
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "qualiopi-facture",
+      marketing: false,
+    });
+    expect(v.retenu).toBe(false);
   });
 });

@@ -64,7 +64,7 @@ export const ALLONNES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes assurance aux outils IA : automatisation traitement sinistres, agents conversationnels clients, détection fraude, analyse prédictive portefeuille. Sur site ou visio.",
     },
     {
-      q: "Comment se passe une mission IA à Allonnes depuis Le Mans ?",
+      q: "Comment se déroule une mission IA à Allonnes ?",
       a: "Nos consultants interviennent directement dans vos locaux à Allonnes. Gare TGV Le Mans à 8 km (55 min Paris). Accès A11 direct.",
     },
   ],

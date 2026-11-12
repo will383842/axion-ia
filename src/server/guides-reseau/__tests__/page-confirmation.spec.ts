@@ -20,6 +20,15 @@ const bd = vi.hoisted(() => ({
   contacts: [] as Ligne[],
   preuves: [] as Ligne[],
   opposees: new Set<string>(),
+  /** Références de conversation marquées par un STOP reçu avant la page (`oppositions_conv_ref`). */
+  marquesConv: new Set<string>(),
+  lectureMarquePanne: false,
+  // Course STOP/page : numéro de lecture (à partir de 1) dès lequel la marque apparaît / la lecture échoue.
+  nbLecturesMarque: 0,
+  marqueDesLecture: 0,
+  panneDesLecture: 0,
+  /** Panne simulée de l'écriture « contact écarté » (après la course). */
+  ecartPanne: false,
   domaine: { verdict: "oui" as "oui" | "non" | "inconnu" },
   envois: [] as unknown[][],
   limites: [] as string[],
@@ -38,12 +47,46 @@ const bd = vi.hoisted(() => ({
   conflitDemande: { restant: 0, gagnante: false },
   /** Lectures `guideRequest.findUnique` faites DANS une transaction. */
   lecturesDansTransaction: 0,
+  /** Ordre des verrous DANS la transaction : écriture de la demande, puis verrou `origines:`. */
+  ordreVerrous: [] as string[],
   /** Suites inscrites dans `after()` (next/server), exécutées par `confirmerPageGuide` du test. */
   apres: [] as (() => unknown)[],
   /** Pannes simulées DANS la transaction (après l'écriture du contact et de la demande). */
   echecOrigine: false,
   echecPreuve: false,
+  /** Références visibles SEULEMENT par la relecture faite avec `tx` (la pré-lecture hors transaction ne les voit pas). */
+  marquesConvTx: new Set<string>(),
+  /** Code d'erreur Prisma levé par la relecture dans la transaction (ex. P2021 : table absente). */
+  panneTx: null as string | null,
+  /** LIA-F : cibles du catalogue (`cibles_reseau`), lectures comptées, panne simulée. */
+  cibles: new Map<string, Ligne>(),
+  lecturesCibles: 0,
+  cibles_panne: false,
+  /** LIA-F : identifiants de demande ayant déjà un e-mail du guide < 24 h (`email_logs.entity_id`). */
+  logsParDemande: new Set<string>(),
+  /** LIA-F : lignes `oppositions_conv_ref` posées par la page (écriture dans la transaction). */
+  marquesPosees: [] as string[],
+  /** Ordre des appels DANS la transaction (verrous, relecture de la marque, écritures). */
+  ordreTx: [] as string[],
+  /** Mises à l'écart faites par le filet (après la réponse). */
+  ecartsOrigines: [] as Ligne[],
 }));
+
+/** Lecture de la marque, partagée par la pré-lecture (hors transaction) et la relecture (avec `tx`). */
+function lireMarque(convRef: string, dansTx: boolean): { id: string } | null {
+  bd.nbLecturesMarque += 1;
+  if (dansTx) {
+    bd.ordreTx.push("relecture");
+    if (bd.panneTx) throw Object.assign(new Error("table absente"), { code: bd.panneTx });
+  }
+  if (bd.lectureMarquePanne) throw new Error("lecture de la marque impossible");
+  if (bd.panneDesLecture > 0 && bd.nbLecturesMarque >= bd.panneDesLecture) {
+    throw new Error("seconde lecture de la marque impossible");
+  }
+  if (bd.marqueDesLecture > 0 && bd.nbLecturesMarque >= bd.marqueDesLecture) return { id: "m1" };
+  if (dansTx && bd.marquesConvTx.has(convRef)) return { id: "m1" };
+  return bd.marquesConv.has(convRef) ? { id: "m1" } : null;
+}
 
 vi.mock("next/server", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
@@ -58,8 +101,36 @@ type Trace = { contacts: Ligne[]; demandes: Ligne[]; origines: Ligne[]; preuves:
 function client(trace?: Trace) {
   const dansTransaction = trace !== undefined;
   return {
-    $executeRaw: async () => 0,
+    $executeRaw: async (_c: TemplateStringsArray, ...v: unknown[]) => {
+      const cle = String(v[0]);
+      if (dansTransaction && cle.startsWith("origines:")) bd.ordreVerrous.push("origines");
+      if (dansTransaction) {
+        bd.ordreTx.push(
+          cle.startsWith("guide-reseau-page:")
+            ? "verrou-adresse"
+            : cle.startsWith("guide-reseau-conv:")
+              ? "verrou-conv"
+              : "verrou-autre",
+        );
+      }
+      return 0;
+    },
     trace,
+    oppositionConvRef: {
+      findUnique: async ({ where }: { where: { convRef: string } }) =>
+        lireMarque(where.convRef, true),
+      upsert: async ({ where }: { where: { convRef: string } }) => {
+        bd.ordreTx.push("marque-conv");
+        if (!bd.marquesPosees.includes(where.convRef)) bd.marquesPosees.push(where.convRef);
+        return { id: "m" };
+      },
+    },
+    guideReseauOrigine: {
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        bd.ecartsOrigines.push({ where, data });
+        return { count: 1 };
+      },
+    },
     consentEvent: {
       create: async ({ data }: { data: Ligne }) => {
         if (bd.echecPreuve) throw new Error("écriture de la preuve impossible");
@@ -76,6 +147,7 @@ function client(trace?: Trace) {
         if (bd.contacts.some((c) => c.jetonEmpreinte === data.jetonEmpreinte))
           throw p2002(["jeton_empreinte"]);
         const l = { id: `c${++bd.n}`, ...data };
+        if (dansTransaction) bd.ordreTx.push("ecriture-contact");
         bd.contacts.push(l);
         trace?.contacts.push(l);
         return l;
@@ -86,6 +158,16 @@ function client(trace?: Trace) {
         const l = bd.contacts.find((c) => egal(c, where))!;
         Object.assign(l, data);
         return l;
+      },
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (bd.ecartPanne) throw new Error("écriture de l'écart impossible");
+        const cibles = bd.contacts.filter((c) =>
+          where["jetonEmpreinte"] !== undefined
+            ? c["jetonEmpreinte"] === where["jetonEmpreinte"]
+            : c["guideRequestId"] === where["guideRequestId"],
+        );
+        for (const c of cibles) Object.assign(c, data);
+        return { count: cibles.length };
       },
     },
     guideRequest: {
@@ -114,12 +196,14 @@ function client(trace?: Trace) {
         }
         if (bd.demandes.some((d) => d.emailKey === data.emailKey && d.aimant === data.aimant))
           throw p2002(["email_key", "aimant"]);
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = { id: `d${++bd.n}`, ...data };
         bd.demandes.push(l);
         trace?.demandes.push(l);
         return l;
       },
       update: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = bd.demandes.find((d) => egal(d, where))!;
         Object.assign(l, data);
         return l;
@@ -133,6 +217,10 @@ vi.mock("@/lib/prisma", () => {
   return {
     prisma: {
       ...base,
+      oppositionConvRef: {
+        findUnique: async ({ where }: { where: { convRef: string } }) =>
+          lireMarque(where.convRef, false),
+      },
       newsletterSubscriber: {
         create: async () => {
           throw new Error("newsletter_subscribers ne doit JAMAIS être écrite par ce parcours");
@@ -144,9 +232,22 @@ vi.mock("@/lib/prisma", () => {
           throw new Error("newsletter_subscribers ne doit JAMAIS être écrite par ce parcours");
         },
       },
+      cibleReseau: {
+        findUnique: async ({ where }: { where: { code: string } }) => {
+          bd.lecturesCibles += 1;
+          if (bd.cibles_panne) throw new Error("base illisible");
+          return bd.cibles.get(where.code) ?? null;
+        },
+      },
       emailLog: {
-        count: async (a: { where: { recipient?: string } }) =>
-          a.where.recipient ? bd.logsDestinataire : 0,
+        count: async (a: { where: { recipient?: string; entityId?: string } }) =>
+          a.where.entityId !== undefined
+            ? bd.logsParDemande.has(a.where.entityId)
+              ? 1
+              : 0
+            : a.where.recipient
+              ? bd.logsDestinataire
+              : 0,
       },
       // Comme PostgreSQL : si la transaction échoue, rien de ce qu'elle a créé ne reste.
       $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
@@ -189,20 +290,21 @@ vi.mock("../origines", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
   // L'origine s'écrit DANS la transaction de la page (client `tx` reçu en premier argument).
   ecrireOrigineDansTransaction: async (tx: { trace?: Trace }, emailKey: string, o: Ligne) => {
+    // Le vrai `ecrireOrigineDansTransaction` prend le verrou `origines:<clé>` en premier.
+    bd.ordreVerrous.push("origines");
     if (bd.echecOrigine) throw new Error("écriture de l'origine impossible");
     const l = { emailKey, ...o };
+    bd.ordreTx.push("ecriture-origine");
     bd.origines.push(l);
     tx.trace?.origines.push(l);
     return { creee: true, archivees: 0, total: 0 };
   },
 }));
-vi.mock("../synchro-v3", async (orig) => ({
-  ...(await orig<Record<string, unknown>>()),
-  transmettreOriginesV3: async (a: Ligne) => {
-    bd.crm.push(a);
-    return "mise_en_file";
-  },
-}));
+// Le vrai envoi tourne (file simulée plus bas) ; on espionne seulement son appel.
+vi.mock("@/server/guide-ia/envoi", async (orig) => {
+  const m = await orig<typeof import("@/server/guide-ia/envoi")>();
+  return { ...m, mettreEnFileGuide: vi.fn(m.mettreEnFileGuide) };
+});
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {
@@ -211,8 +313,14 @@ vi.mock("@/server/queue/queues", () => ({
     return { enqueued: true };
   },
 }));
+vi.mock("../synchro-v3", async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  transmettreOriginesSuivantes: vi.fn(async () => undefined),
+}));
 vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
+import { mettreEnFileGuide } from "@/server/guide-ia/envoi";
+import { transmettreOriginesSuivantes } from "../synchro-v3";
 import {
   confirmerPageGuide as confirmerSansSuite,
   PLANCHER_REPONSE_MS,
@@ -229,6 +337,7 @@ async function confirmerPageGuide(e: EntreeConfirmation) {
   return r;
 }
 import { creerJeton, empreinteJeton, type DonneesLien } from "../lien-page-guide";
+import { hmacConversationRef } from "../origines";
 import {
   EMPREINTE_CASE_PAGE_GUIDE,
   FORM_REF_PAGE_GUIDE,
@@ -278,13 +387,31 @@ beforeEach(() => {
   bd.apres.length = 0;
   bd.echecOrigine = bd.echecPreuve = false;
   bd.lecturesDansTransaction = 0;
+  bd.ordreVerrous.length = 0;
+  bd.ordreTx.length = 0;
+  bd.ecartsOrigines.length = 0;
+  bd.marquesConvTx.clear();
+  bd.panneTx = null;
   bd.enfilePanne = false;
   bd.conflitDemande.restant = 0;
   bd.conflitDemande.gagnante = false;
   bd.opposees.clear();
+  bd.marquesConv.clear();
+  vi.mocked(mettreEnFileGuide).mockClear();
+  bd.lectureMarquePanne = false;
+  bd.nbLecturesMarque = 0;
+  bd.marqueDesLecture = 0;
+  bd.panneDesLecture = 0;
+  bd.ecartPanne = false;
+  vi.mocked(transmettreOriginesSuivantes).mockClear();
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
   bd.logsDestinataire = 0;
+  bd.cibles.clear();
+  bd.lecturesCibles = 0;
+  bd.cibles_panne = false;
+  bd.logsParDemande.clear();
+  bd.marquesPosees.length = 0;
   bd.n = 0;
   for (const m of ["warn", "error", "log", "info"] as const) {
     vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
@@ -296,6 +423,33 @@ beforeEach(() => {
 describe("case de consentement", () => {
   it("case absente → 422, AUCUNE écriture, rien d'envoyé", async () => {
     const r = await confirmerPageGuide(entree({ caseCochee: false }));
+    expect(r).toEqual({ ok: false, statut: 422, erreur: "case" });
+    expect(ecritures()).toBe(0);
+  });
+
+  it("case du guide seule : aucune trace d'accord aux informations (colonnes vides, une seule preuve)", async () => {
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBeUndefined(); // défaut de la base : 'aucune'
+    expect(c.infosConsentiLe).toBeUndefined();
+    expect(bd.preuves.map((p) => p.formRef)).toEqual(["guide-reseau-page"]);
+  });
+
+  it("case des informations cochée : enregistrée « non_transmise », avec sa propre preuve", async () => {
+    expect((await confirmerPageGuide(entree({ infosCochee: true }))).ok).toBe(true);
+    const c = bd.contacts[0]!;
+    expect(c.infosStatut).toBe("non_transmise");
+    expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
+    expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.action)).toEqual(["consent_attente", "consent_attente"]);
+    expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
+      "guide-reseau-page",
+      "guide-reseau-page-infos",
+    ]);
+  });
+
+  it("case des informations seule, sans la case du guide → 422, AUCUNE écriture", async () => {
+    const r = await confirmerPageGuide(entree({ caseCochee: false, infosCochee: true }));
     expect(r).toEqual({ ok: false, statut: 422, erreur: "case" });
     expect(ecritures()).toBe(0);
   });
@@ -427,6 +581,15 @@ describe("M1 — suites après la réponse (after)", () => {
   });
 });
 
+describe("ordre des verrous (interblocage avec le clic)", () => {
+  it("la page écrit la ligne de la demande, PUIS prend le verrou origines:<clé> (comme le clic)", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.ordreVerrous).toContain("origines");
+    expect(bd.ordreVerrous.indexOf("demande")).toBeGreaterThanOrEqual(0);
+    expect(bd.ordreVerrous.indexOf("demande")).toBeLessThan(bd.ordreVerrous.indexOf("origines"));
+  });
+});
+
 describe("adresse", () => {
   it("opposée : réponse IDENTIQUE à un succès, rien n'est envoyé ni écrit pour cette adresse", async () => {
     bd.opposees.add(ADRESSE);
@@ -440,6 +603,157 @@ describe("adresse", () => {
     expect(bd.preuves.every((p) => p["personKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.origines.every((o) => o["emailKey"] !== `h:${ADRESSE}`)).toBe(true);
     expect(bd.crm).toHaveLength(0);
+  });
+
+  it("MG-STOP01 — STOP reçu par la référence AVANT la page : même déroulé neutre, le guide ne part PAS", async () => {
+    bd.marquesConv.add(hmacConversationRef(DONNEES.conv));
+    const r = await confirmerPageGuide(entree());
+    expect(r).toEqual({ ok: true });
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.demandes).toHaveLength(0);
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.origines).toHaveLength(0);
+    // Marque neutre : jeton consommé, rien de la personne, et AUCUNE opposition écrite sur l'adresse saisie.
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    expect(bd.opposees.size).toBe(0);
+    expect(JSON.stringify(bd.contacts[0])).not.toContain(ADRESSE);
+  });
+
+  it("MG-STOP01 — une AUTRE conversation non marquée reçoit son guide", async () => {
+    bd.marquesConv.add(hmacConversationRef("conv_exemple_0777"));
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("T1 — course gagnée par le STOP : la pré-lecture ne voit pas la marque, la relecture dans la transaction la voit => RIEN de la personne n'est écrit, réponse identique à M1", async () => {
+    bd.marquesConvTx.add(hmacConversationRef(DONNEES.conv));
+    const r = await confirmerPageGuide(entree());
+    const attendu = await (async () => {
+      bd.opposees.add("autre@example.test");
+      const m1 = await confirmerPageGuide(
+        entree({ jeton: jeton({ conv: "conv_exemple_0042" }), email: "autre@example.test" }),
+      );
+      bd.opposees.clear();
+      return m1;
+    })();
+    expect(r).toEqual({ ok: true });
+    expect(r).toEqual(attendu);
+    // La page de la conversation arrêtée : aucune origine, aucune preuve (ni « guide » ni « infos »), rien en file.
+    expect(bd.origines.filter((o) => o["emailKey"] === `h:${ADRESSE}`)).toHaveLength(0);
+    expect(bd.preuves.filter((p) => p["personKey"] === `h:${ADRESSE}`)).toHaveLength(0);
+    expect(bd.demandes.filter((d) => d.emailKey === `h:${ADRESSE}`)).toHaveLength(0);
+    expect(bd.envois).toHaveLength(0);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+    const marques = bd.contacts.filter((c) => c["emailKey"] === "-");
+    expect(marques).toHaveLength(2);
+    for (const c of marques) {
+      expect(c["prenom"]).toBe("");
+      expect(c["merciStatut"]).toBe("ecarte");
+      expect(c["convRef"]).toBe("-");
+    }
+    expect(bd.opposees.size).toBe(0);
+  });
+
+  it("T1bis — même course avec la case « infos » cochée : aucun accord « infos » n'est écrit", async () => {
+    bd.marquesConvTx.add(hmacConversationRef(DONNEES.conv));
+    expect(await confirmerPageGuide(entree({ infosCochee: true }))).toEqual({ ok: true });
+    expect(bd.preuves).toHaveLength(0);
+    expect(bd.contacts.every((c) => c["infosStatut"] === undefined)).toBe(true);
+    expect(bd.origines).toHaveLength(0);
+  });
+
+  it("T2 — ordre dans la transaction : verrou de l'adresse, verrou de la conversation, relecture, PUIS les écritures", async () => {
+    await confirmerPageGuide(entree());
+    const o = bd.ordreTx;
+    const i = (k: string) => o.indexOf(k);
+    expect(i("verrou-adresse")).toBe(0);
+    expect(i("verrou-conv")).toBeGreaterThan(i("verrou-adresse"));
+    expect(i("relecture")).toBeGreaterThan(i("verrou-conv"));
+    expect(i("ecriture-contact")).toBeGreaterThan(i("relecture"));
+    expect(i("ecriture-origine")).toBeGreaterThan(i("relecture"));
+    // Ordre des verrous de la page : conversation avant la ligne de la demande et avant `origines:`.
+    expect(bd.ordreVerrous.indexOf("demande")).toBeLessThan(bd.ordreVerrous.indexOf("origines"));
+  });
+
+  it("T3 — la relecture lève une P2021 (table absente) DANS la transaction : l'erreur remonte, rien n'est écrit (fermé)", async () => {
+    bd.panneTx = "P2021";
+    await expect(confirmerPageGuide(entree())).rejects.toMatchObject({ code: "P2021" });
+    expect(ecritures()).toBe(0);
+    expect(bd.origines).toHaveLength(0);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+
+  it("MG-STOP01 — marque absente aux trois lectures : le guide est mis en file une fois, rien n'est écarté", async () => {
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(bd.nbLecturesMarque).toBe(3);
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+    expect(bd.envois).toHaveLength(1);
+    expect(bd.contacts[0]!["merciStatut"]).toBe("a_envoyer");
+    expect(bd.ecartsOrigines).toHaveLength(0);
+    expect(transmettreOriginesSuivantes).toHaveBeenCalledTimes(1);
+  });
+
+  it("T5 — filet : STOP arrivé APRÈS la transaction : l'origine page-… de CETTE page passe « ecartee », seul le contact de CE jeton est écarté", async () => {
+    // Un contact légitime plus ancien de la même demande (même adresse, autre jeton).
+    bd.demandes.push({ id: "dAncien", emailKey: `h:${ADRESSE}`, aimant: "guide-ia" });
+    bd.contacts.push({
+      id: "cAncien",
+      emailKey: `h:${ADRESSE}`,
+      guideRequestId: "dAncien",
+      jetonEmpreinte: "ancien",
+      merciStatut: "a_envoyer",
+    });
+    bd.marqueDesLecture = 3;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+    expect(bd.ecartsOrigines).toHaveLength(1);
+    const { where, data } = bd.ecartsOrigines[0]! as { where: Ligne; data: Ligne };
+    expect(where["emailKey"]).toBe(`h:${ADRESSE}`);
+    expect(where["cleDedoublonnage"]).toMatch(/^[0-9a-f]{64}$/);
+    expect(where["archiveeLe"]).toBeNull();
+    expect(where["crmStatut"]).toBeNull();
+    expect(data["crmStatut"]).toBe("ecartee");
+    const cetteFois = bd.contacts.find((c) => c["jetonEmpreinte"] !== "ancien")!;
+    expect(cetteFois["merciStatut"]).toBe("ecarte");
+    expect(bd.contacts.find((c) => c["id"] === "cAncien")!["merciStatut"]).toBe("a_envoyer");
+  });
+
+  it("T5bis — filet : écriture de l'écart en panne (ex. colonne absente P2022) : réponse neutre, rien ne part, journal sans adresse, ne lève pas", async () => {
+    bd.marqueDesLecture = 3;
+    bd.ecartPanne = true;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+    expect(bd.journal.some((j) => j.includes("guides_reseau_page_ecart_echec"))).toBe(true);
+    expect(bd.journal.join("\n")).not.toContain(ADRESSE);
+  });
+
+  it("MG-STOP01 — 3e lecture (filet) en erreur : rien ne part (fermé), la réponse neutre ne plante pas, aucune adresse dans les journaux", async () => {
+    bd.panneDesLecture = 3;
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+      expect(mettreEnFileGuide).not.toHaveBeenCalled();
+      expect(bd.envois).toHaveLength(0);
+      expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+      expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+      expect(JSON.stringify(espion.mock.calls)).not.toContain(ADRESSE);
+    } finally {
+      espion.mockRestore();
+    }
+  });
+
+  it("MG-STOP01 — lecture de la marque en erreur : rien ne part, rien n'est écrit (fermé)", async () => {
+    bd.lectureMarquePanne = true;
+    await expect(confirmerPageGuide(entree())).rejects.toThrow();
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(ecritures()).toBe(0);
   });
 
   it("M1 — opposée : le jeton est CONSOMMÉ comme pour un succès, par une marque sans donnée personnelle", async () => {
@@ -456,6 +770,8 @@ describe("adresse", () => {
     expect(marque).not.toContain("Camille");
     expect(marque).not.toContain(Buffer.from("Camille").toString("base64"));
     expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    // La marque ne porte aucune preuve d'accord : « sans objet ».
+    expect(bd.contacts[0]!["preuveStatut"]).toBe("sans_objet");
     expect(bd.demandes).toHaveLength(0);
     expect(bd.preuves).toHaveLength(0);
     expect(bd.envois).toHaveLength(0);
@@ -538,6 +854,8 @@ describe("ce qui est écrit", () => {
       consentiLe: MAINTENANT,
       jetonEmpreinte: empreinteJeton(j),
       merciStatut: "a_envoyer",
+      // Preuve de l'accord : posée « en attente » (l'adresse n'est qu'une saisie, non vérifiée).
+      preuveStatut: "en_attente",
     });
     expect(c["prenom"]).not.toContain("Camille");
     expect(String(c["prenom"]).startsWith("enc:")).toBe(true);
@@ -562,12 +880,13 @@ describe("ce qui est écrit", () => {
     });
   });
 
-  it("la preuve : form_ref guide-reseau-page, action consent, version + empreinte du texte, rien en clair", async () => {
+  it("la preuve : form_ref guide-reseau-page, action consent_attente (plus de « consent »), version + empreinte du texte, rien en clair", async () => {
     await confirmerPageGuide(entree());
     expect(bd.preuves).toHaveLength(1);
+    expect(bd.preuves.some((p) => p["action"] === "consent")).toBe(false);
     expect(bd.preuves[0]).toMatchObject({
       formRef: FORM_REF_PAGE_GUIDE,
-      action: "consent",
+      action: "consent_attente",
       personKey: `h:${ADRESSE}`,
       occurredAt: MAINTENANT,
     });
@@ -645,6 +964,16 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
     expect(bd.crm).toHaveLength(0);
   });
 
+  it("un jeton rejoué n'écrit ni seconde preuve ni second contact (réponse neutre)", async () => {
+    const j = jeton();
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.preuves[0]!["action"]).toBe("consent_attente");
+  });
+
   it("un jeton rejoué n'écrit aucune seconde origine", async () => {
     const j = jeton();
     await confirmerPageGuide(entree({ jeton: j }));
@@ -663,28 +992,34 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
 });
 
 describe("B3 — formats exigés par le CRM, validés avant toute écriture", () => {
-  it("compte avec majuscules ou tirets : normalisé en minuscules/underscores dans l'historique", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "Page-Principale" }) }));
-    expect(bd.origines[0]).toMatchObject({ compte: "page_principale" });
-    expect(bd.crm).toHaveLength(0);
-  });
-
-  it("compte invalide (1 caractère) : l'origine n'est PAS envoyée au CRM, mais le guide part", async () => {
-    expect(await confirmerPageGuide(entree({ jeton: jeton({ compte: "x" }) }))).toEqual({
-      ok: true,
-    });
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-    expect(bd.demandes).toHaveLength(1);
-    // L'historique local garde la trace, sans compte invalide.
-    expect(bd.origines[0]!["compte"]).toBeNull();
-  });
-
-  it("compte trop long pour le CRM (> 40) : même chose, pas d'envoi au CRM", async () => {
-    await confirmerPageGuide(entree({ jeton: jeton({ compte: "a".repeat(41) }) }));
-    expect(bd.crm).toHaveLength(0);
-    expect(bd.envois).toHaveLength(1);
-  });
+  // SITE-COMPTE : le compte du jeton est une liste fermée (contrat) ; un jeton signé avec un autre
+  // compte est refusé AVANT toute écriture, avec le refus neutre « lien » (la cause ne se lit jamais).
+  it.each(["Page-Principale", "x", "a".repeat(41), "compte_example_01"])(
+    "jeton signé avec un compte hors liste fermée (%s) : refus neutre « lien », rien d'écrit, rien envoyé",
+    async (compte) => {
+      const charge = {
+        v: 1,
+        conv: DONNEES.conv,
+        mot: DONNEES.mot,
+        reseau: DONNEES.reseau,
+        guide: DONNEES.guide,
+        compte,
+        post_ref: DONNEES.post_ref,
+        version_m1: DONNEES.version_m1,
+        exp: Math.floor(MAINTENANT.getTime() / 1000) + 48 * 3600,
+      };
+      const partie = Buffer.from(JSON.stringify(charge), "utf8").toString("base64url");
+      const sig = crypto.createHmac("sha256", SECRET).update(partie, "utf8").digest("base64url");
+      expect(await confirmerPageGuide(entree({ jeton: `${partie}.${sig}` }))).toEqual({
+        ok: false,
+        statut: 400,
+        erreur: "lien",
+      });
+      expect(ecritures()).toBe(0);
+      expect(bd.crm).toHaveLength(0);
+      expect(bd.envois).toHaveLength(0);
+    },
+  );
 
   it("post_ref absent : accepté, rien de plus à faire", async () => {
     const { post_ref: _p, ...sansPost } = DONNEES;
@@ -882,5 +1217,204 @@ describe("S2-PLANCHER — le temps de réponse ne révèle pas si l'adresse exis
     await vi.advanceTimersByTimeAsync(PLANCHER_REPONSE_MS * 4);
     await p;
     expect(fin - debut).toBeGreaterThanOrEqual(PLANCHER_REPONSE_MS);
+  });
+});
+
+// ───────────────────────── Lot LIA-F — catalogue, un envoi par demande, opposition ─────────────────────────
+const CODE_CATALOGUE = "gde-essai0001";
+const ligneCible = (o: Ligne = {}): Ligne => ({
+  code: CODE_CATALOGUE,
+  type: "guide",
+  actif: true,
+  test: false,
+  ...o,
+});
+
+describe("LIA-F — interrupteur ÉTEINT : comportement d'avant, zéro lecture de cibles_reseau", () => {
+  it("un code du catalogue est refusé comme un code inconnu, sans aucune lecture en base", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    const r = await confirmerPageGuide(entree({ jeton: jeton({ guide: CODE_CATALOGUE }) }));
+    expect(r).toEqual({ ok: false, statut: 400, erreur: "lien" });
+    expect(bd.lecturesCibles).toBe(0);
+    expect(ecritures()).toBe(0);
+  });
+
+  it("le guide figé passe, sans lecture en base", async () => {
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("2e guide DIFFÉRENT à la même adresse sous 24 h : rien n'est mis en file (comme avant)", async () => {
+    bd.logsDestinataire = 1;
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
+  beforeEach(() => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+  const avec = (guide = CODE_CATALOGUE) => entree({ jeton: jeton({ guide }) });
+
+  it("cible `guide` active : acceptée", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.contacts).toHaveLength(1);
+  });
+
+  it.each([
+    ["inactive", { actif: false }],
+    ["de type adresse", { type: "adresse" }],
+    ["d'essai", { test: true }],
+  ])("cible %s : refusée, rien d'écrit", async (_n, ecart) => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible(ecart as Ligne));
+    expect(await confirmerPageGuide(avec())).toEqual({ ok: false, statut: 400, erreur: "lien" });
+    expect(ecritures()).toBe(0);
+  });
+
+  it("code absent du catalogue : refusé", async () => {
+    expect((await confirmerPageGuide(avec())).ok).toBe(false);
+  });
+
+  it("base illisible : liste figée seulement (le guide figé passe, le code du catalogue non)", async () => {
+    bd.cibles_panne = true;
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await confirmerPageGuide(avec())).ok).toBe(false);
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.journal.join("\n")).not.toContain("@");
+  });
+
+  it("2e guide DIFFÉRENT à la même adresse sous 24 h : l'e-mail est mis en file", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    bd.logsDestinataire = 1; // un autre guide est déjà parti à cette adresse
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(1);
+  });
+
+  it("MÊME guide sous 24 h : rien n'est mis en file, réponse identique", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    const neuf = await confirmerPageGuide(avec());
+    bd.envois.length = 0;
+    bd.contacts.length = 0;
+    const demande = bd.demandes.find((d) => d.aimant === CODE_CATALOGUE)!;
+    bd.logsDestinataire = 1;
+    bd.logsParDemande.add(String(demande.id));
+    const rejoue = await confirmerPageGuide(avec());
+    expect(rejoue).toEqual(neuf); // PARTIE 4 : aucune page « déjà envoyé » distincte
+    expect(bd.envois).toHaveLength(0);
+  });
+
+  it("la limite de 3 par adresse sur 24 h reste en vigueur", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    bd.logsDestinataire = 3;
+    expect((await confirmerPageGuide(avec())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — adresse déjà opposée : la conversation reçoit sa marque (interrupteur éteint OU allumé)", () => {
+  const OPPOSEE = "opp@example.test";
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it.each([
+    ["éteint", false],
+    ["allumé", true],
+  ])(
+    "%s : réponse indiscernable, ligne oppositions_conv_ref écrite, rejeu = une seule ligne",
+    async (_n, allume) => {
+      if (allume) vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+      const normale = await confirmerPageGuide(entree());
+      bd.opposees.add(OPPOSEE);
+      const conv = "conv_exemple_0077";
+      const r = await confirmerPageGuide(entree({ jeton: jeton({ conv }), email: OPPOSEE }));
+      expect(r).toEqual(normale);
+      expect(bd.marquesPosees).toEqual([hmacConversationRef(conv)]);
+      // Rejeu avec un autre jeton de la même conversation : toujours une seule ligne.
+      await confirmerPageGuide(
+        entree({ jeton: jeton({ conv }, MAINTENANT.getTime() + 1), email: OPPOSEE }),
+      );
+      expect(bd.marquesPosees).toHaveLength(1);
+      expect(bd.journal.join("\n")).not.toContain("@");
+    },
+  );
+
+  it("la marque est écrite sous le verrou de la conversation, dans la transaction", async () => {
+    bd.opposees.add(OPPOSEE);
+    await confirmerPageGuide(entree({ email: OPPOSEE }));
+    const i = bd.ordreTx.indexOf("marque-conv");
+    expect(i).toBeGreaterThan(bd.ordreTx.indexOf("verrou-conv"));
+  });
+
+  it("une adresse non opposée n'écrit aucune marque", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.marquesPosees).toHaveLength(0);
+  });
+});
+
+describe("LIA-F — versions de texte nouvelles", () => {
+  it.each([
+    "mp-lien-v3-1",
+    "mp-lien-v3-2",
+    "mp-lien-v3-3",
+    "mp-deja-envoye-v1-1",
+    "mp-deja-envoye-v1-2",
+    "mp-deja-envoye-v1-3",
+  ])("%s est une version connue (contrat v3)", async (v) => {
+    const { VERSIONS_TEXTE_CONNUES } = await import("../valeurs-connues");
+    const { SchemaDemandeGuideReseauV3 } = await import("../contrat");
+    expect(VERSIONS_TEXTE_CONNUES).toContain(v);
+    const base = {
+      schemaVersion: 3,
+      cleIdempotence: "cle-exemple-0001",
+      email: ADRESSE,
+      mot: "GUIDE",
+      reseau: "instagram",
+      guide: "guide-ia",
+      versionTexteM1: "m1-v1",
+    };
+    expect(SchemaDemandeGuideReseauV3.safeParse({ ...base, version_texte: v }).success).toBe(true);
+  });
+});
+
+describe("LIA-F — contrat de la route (analyserCorpsAvecCatalogue)", () => {
+  const corps = (guide: string) =>
+    Buffer.from(
+      JSON.stringify({
+        schemaVersion: 1,
+        cleIdempotence: "cle-exemple-0001",
+        email: ADRESSE,
+        mot: "GUIDE",
+        reseau: "instagram",
+        guide,
+        versionTexteM1: "m1-v1",
+      }),
+    );
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("éteint : `gde-…` refusé, zéro lecture ; guide figé accepté", async () => {
+    const { analyserCorpsAvecCatalogue } = await import("../contrat");
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(false);
+    expect((await analyserCorpsAvecCatalogue(corps("guide-ia"))).ok).toBe(true);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("allumé : cible guide active acceptée ; adresse, inactive, essai refusées", async () => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    const { analyserCorpsAvecCatalogue } = await import("../contrat");
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(true);
+    for (const ecart of [{ type: "adresse" }, { actif: false }, { test: true }]) {
+      bd.cibles.set(CODE_CATALOGUE, ligneCible(ecart));
+      expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(false);
+    }
   });
 });

@@ -22,14 +22,16 @@ const coupeCircuitDeclenche = vi.fn();
 const verdictAvantEnvoi = vi.fn();
 const enqueueEmail = vi.fn();
 const estOpposee = vi.fn();
-const contactFindFirst = vi.fn();
+const contactFindMany = vi.fn();
+const marqueFindFirst = vi.fn();
 
 vi.mock("@/server/email/opposition-jeton", () => ({
   jetonOpposition: (email: string) => `opp.jeton-opaque.${email.length}`,
 }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    contactGuideReseau: { findFirst: (...a: unknown[]) => contactFindFirst(...a) },
+    contactGuideReseau: { findMany: (...a: unknown[]) => contactFindMany(...a) },
+    oppositionConvRef: { findFirst: (...a: unknown[]) => marqueFindFirst(...a) },
     guideRequest: {
       findMany: (...a: unknown[]) => guideFindMany(...a),
       findUnique: (...a: unknown[]) => guideFindUnique(...a),
@@ -93,7 +95,8 @@ beforeEach(() => {
   verdictAvantEnvoi.mockReset().mockResolvedValue({ retenu: false });
   enqueueEmail.mockReset().mockResolvedValue({ enqueued: true });
   estOpposee.mockReset().mockResolvedValue(false);
-  contactFindFirst.mockReset().mockResolvedValue(null);
+  contactFindMany.mockReset().mockResolvedValue([]);
+  marqueFindFirst.mockReset().mockResolvedValue(null);
 });
 
 describe("rattraperGuides — adresse opposée (toutes origines)", () => {
@@ -307,15 +310,17 @@ describe("🔴 plus de rattrapage des confirmations (relecture du 24/09)", () =>
   });
 });
 
+const LIEN_PAGE = { convRef: "r".repeat(64), merciStatut: "a_envoyer" };
+
 describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide » — lien de désinscription", () => {
   const DEMANDE_PAGE = { ...CANDIDATE, origine: "message_prive" };
 
   it("demande issue de la page : pageGuide + jeton d'opposition, comme au premier envoi", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
     const r = await rattraperGuides(MAINTENANT);
     expect(r.relancees).toBe(1);
-    expect(contactFindFirst).toHaveBeenCalledWith(
+    expect(contactFindMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { guideRequestId: CANDIDATE.id } }),
     );
     expect(mettreEnFileGuide.mock.calls[0]?.[1]).toMatchObject({
@@ -326,7 +331,7 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
 
   it("le jeton transmis ne contient jamais l'adresse", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
     await rattraperGuides(MAINTENANT);
     const options = mettreEnFileGuide.mock.calls[0]?.[1] as {
       pageGuide: { oppositionToken: string };
@@ -336,7 +341,7 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
 
   it("demande SANS page (aucune ligne liée) : comportement inchangé, pas de pageGuide", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockResolvedValue(null);
+    contactFindMany.mockResolvedValue([]);
     await rattraperGuides(MAINTENANT);
     const options = mettreEnFileGuide.mock.calls[0]?.[1] as Record<string, unknown>;
     expect(options).not.toHaveProperty("pageGuide");
@@ -353,7 +358,7 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
 
   it("table des contacts absente (P2021, fenêtre worker/app) : rattrapage inchangé", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockRejectedValue(Object.assign(new Error("absente"), { code: "P2021" }));
+    contactFindMany.mockRejectedValue(Object.assign(new Error("absente"), { code: "P2021" }));
     const r = await rattraperGuides(MAINTENANT);
     expect(r.relancees).toBe(1);
     expect(mettreEnFileGuide.mock.calls[0]?.[1]).not.toHaveProperty("pageGuide");
@@ -361,7 +366,7 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
 
   it("opposition => aucun envoi, et la ligne liée n'est même pas lue", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
     estOpposee.mockResolvedValue(true);
     await rattraperGuides(MAINTENANT);
     expect(mettreEnFileGuide).not.toHaveBeenCalled();
@@ -374,7 +379,7 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
     "résultat « %s » de la mise en file : pas de relance comptée, pageGuide transmis",
     async (_n, res) => {
       guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-      contactFindFirst.mockResolvedValue({ id: "contact-1" });
+      contactFindMany.mockResolvedValue([LIEN_PAGE]);
       mettreEnFileGuide.mockResolvedValue(res);
       const r = await rattraperGuides(MAINTENANT);
       expect(r.relancees).toBe(0);
@@ -384,10 +389,101 @@ describe("🔴 rattrapage d'une demande venue de la page « Recevoir le guide »
 
   it("corbeille de validation : rien n'est mis en file", async () => {
     guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
-    contactFindFirst.mockResolvedValue({ id: "contact-1" });
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
     outboxCount.mockResolvedValue(1);
     const r = await rattraperGuides(MAINTENANT);
     expect(r.ecartees).toBe(1);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 MG-STOP01 — un STOP gagné pendant l'enregistrement de la page n'est jamais rattrapé", () => {
+  const DEMANDE_PAGE = { ...CANDIDATE, origine: "message_prive" };
+
+  it("course gagnée par le STOP, contact écarté : rien ne part (guide ni merci)", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindMany.mockResolvedValue([{ ...LIEN_PAGE, merciStatut: "ecarte" }]);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(r.relancees).toBe(0);
+    expect(r.ecartees).toBe(1);
+    expect(verdictAvantEnvoi).not.toHaveBeenCalled();
+    expect(guideUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("ancienne graphie « ecartee » : lue comme écartée", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindMany.mockResolvedValue([{ ...LIEN_PAGE, merciStatut: "ecartee" }]);
+    await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+  });
+
+  it("2de lecture en erreur puis écriture d'écart perdue : contact resté a_envoyer MAIS conv_ref marqué => rien ne part", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
+    marqueFindFirst.mockResolvedValue({ id: "m1" });
+    const r = await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(r.ecartees).toBe(1);
+    expect(marqueFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { convRef: { in: [LIEN_PAGE.convRef] } } }),
+    );
+  });
+
+  it.each([
+    ["table illisible", new Error("base indisponible")],
+    ["table absente (P2021)", Object.assign(new Error("absente"), { code: "P2021" })],
+  ])(
+    "🔴 %s (marques) : l'envoi est BLOQUÉ (fermé), rien ne part, aucune adresse journalisée",
+    async (_n, erreur) => {
+      guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+      contactFindMany.mockResolvedValue([LIEN_PAGE]);
+      marqueFindFirst.mockRejectedValue(erreur);
+      const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
+      try {
+        const r = await rattraperGuides(MAINTENANT);
+        expect(mettreEnFileGuide).not.toHaveBeenCalled();
+        expect(r.relancees).toBe(0);
+        expect(r.ecartees).toBe(1);
+        expect(JSON.stringify(espion.mock.calls)).not.toContain(CANDIDATE.email);
+      } finally {
+        espion.mockRestore();
+      }
+    },
+  );
+
+  it("témoin : cas normal (page, pas de STOP) part toujours", async () => {
+    guideFindMany.mockResolvedValue([DEMANDE_PAGE]);
+    contactFindMany.mockResolvedValue([LIEN_PAGE]);
+    const r = await rattraperGuides(MAINTENANT);
+    expect(r.relancees).toBe(1);
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+  });
+});
+
+// STOP-T1 — quand le contrôle du départ lève 5 fois, le worker CLÔT désormais le journal en
+// « échec » (motif sans adresse) : le rattrapage reprend la demande et relit l'opposition.
+describe("rattraperGuides — job dont les 5 essais sont épuisés (contrôle illisible au départ)", () => {
+  const ANCIENNE_MISE_EN_FILE = new Date(MAINTENANT.getTime() - 3 * 3_600_000);
+
+  it("journal clos en « échec » pour cette raison : la demande EST reprise (l'opposition sera relue)", async () => {
+    guideFindMany.mockResolvedValue([
+      { ...CANDIDATE, origine: "formulaire", queuedAt: ANCIENNE_MISE_EN_FILE },
+    ]);
+    emailLogFindMany.mockResolvedValue([]); // ligne « failed » : `etatJournal` ne lit que « sent » et « pending »
+    const r = await rattraperGuides(MAINTENANT);
+    expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
+    expect(r.relancees).toBe(1);
+  });
+
+  it("journal clos en « échec » mais opposition toujours illisible : l'erreur remonte, rien n'est mis en file", async () => {
+    guideFindMany.mockResolvedValue([
+      { ...CANDIDATE, origine: "formulaire", queuedAt: ANCIENNE_MISE_EN_FILE },
+    ]);
+    emailLogFindMany.mockResolvedValue([]);
+    estOpposee.mockRejectedValue(new Error("ECONNREFUSED"));
+    await rattraperGuides(MAINTENANT).catch(() => undefined);
+    expect(estOpposee).toHaveBeenCalled();
     expect(mettreEnFileGuide).not.toHaveBeenCalled();
   });
 });

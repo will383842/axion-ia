@@ -210,8 +210,10 @@ describe("la confirmation d'effacement énumère les demandes du guide", () => {
     const en = await renderEmailTemplate("rgpd-effacement-confirme", "en", payload);
     expect(en.text).toContain("3 AI guide request(s) deleted");
 
+    // Décision de Williams du 11/11/2026 : la route ne supprime plus les demandes du guide
+    // (mise à l'écart) et n'envoie plus ce courriel.
     const route = readFileSync("src/app/api/gdpr-erase/route.ts", "utf8");
-    expect(route).toContain("demandesGuide: newsletterResult.guideDeleted");
+    expect(route).not.toContain("eraseNewsletterForEmail");
   });
 
   it("une tâche mise en file par l'ancienne route (sans le compte) OMET le segment, sans « 0 » ni « undefined »", async () => {

@@ -49,7 +49,7 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Digne-les-Bains et Alpes-de-Haute-Provence ?",
-      a: "Oui, Axion-IA intervient à Digne-les-Bains et dans toute la Haute-Provence (Sisteron, Manosque, Forcalquier, Château-Arnoux). Nos consultants viennent d'Aix-en-Provence (1h30 A51) ou Gap (1h nord).",
+      a: "Oui, Axion-IA intervient à Digne-les-Bains et dans toute la Haute-Provence (Sisteron, Manosque, Forcalquier, Château-Arnoux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les établissements thermaux de Digne ?",
@@ -65,7 +65,7 @@ export const DIGNE_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Digne-les-Bains ?",
-      a: "Nos consultants se déplacent sur site à Digne-les-Bains depuis Aix-en-Provence (1h30 A51) ou Gap (1h). Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
     },
   ],
 };

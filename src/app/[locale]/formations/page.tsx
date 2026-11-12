@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // pas la visibilité de la page. Il exige donc la certification réelle.
   const qualiopiSerp = isQualiopiCertificationObtenue()
     ? "certifié Qualiopi, finançables OPCO"
-    : "générales, par métier ou par secteur d'activité";
+    : "générales, par métier ou par secteur";
   return buildProductMetadata({
     locale,
     path: "/formations",
@@ -108,11 +108,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
-        ? "Formation IA en entreprise sur site · Axion-IA"
+        ? "Formation IA en entreprise : former vos équipes · Axion-IA"
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — prix par groupe (${EFFECTIF_PLAGE_FR}), sur devis. Vos équipes gagnent du temps dès le lendemain.`
+        ? `Formations IA pour vos équipes, sur site ou à distance : ${qualiopiSerp}. Prix par groupe (${EFFECTIF_PLAGE_FR}), sur devis.`
         : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
   });
 }
@@ -352,8 +352,10 @@ export default async function FormationsHub({ params }: Props) {
           visibilité sous les CTA. */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Explosez la productivité de vos équipes" : "Boost your teams' productivity"}
-        titleEm={isFr ? "par des formations performantes" : "with high-impact trainings"}
+        title={isFr ? "Formation IA en entreprise :" : "Boost your teams' productivity"}
+        titleEm={
+          isFr ? "vos équipes formées sur leurs propres tâches" : "with high-impact trainings"
+        }
         description={
           // ⚠️ « 100 % clients satisfaits » a été RETIRÉ des quatre variantes le
           // 2026-08-12 (décision Will). C'était une statistique invérifiable,
@@ -676,14 +678,14 @@ export default async function FormationsHub({ params }: Props) {
           ))}
         </div>
 
-        {/* Lien grille tarifaire — la page /formations/tarifs porte les 3
-            tableaux (catégorie × durée). href littéral typé (routing.ts). */}
+        {/* Lien grille tarifaire — la page /tarifs est la seule page tarifs
+            (/formations/tarifs redirige en 301 vers elle). href littéral typé (routing.ts). */}
         <p className="mt-8 text-center">
           <Link
-            href="/formations/tarifs"
+            href="/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
-            {isFr ? "Voir tous les tarifs en détail" : "See all prices in detail"}
+            {isFr ? "Voir nos tarifs et conditions" : "See our prices and terms"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>

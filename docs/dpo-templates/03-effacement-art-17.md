@@ -4,6 +4,18 @@
 **Délai légal** : 30 jours.
 **Action interne** :
 
+> 🔴 **Depuis le 11/11/2026 (décision de Williams), une demande d'effacement ne supprime rien automatiquement.**
+> La route `/api/gdpr-erase`, le bouton « Effacer (RGPD) » de la console Lettre et le message privé d'un
+> réseau mettent la personne **à l'écart** (opposition, plus aucun envoi, trace `gdpr.erase.requested`) et
+> posent une alerte dans la **cloche** (jamais d'e-mail). Pour une demande reçue par **e-mail**, par le
+> portail stagiaire, ou en **message privé** (adresse non prouvée : seule l'opposition est posée), utiliser
+> **Conformité RGPD › Demandes › « Mettre une adresse à l'écart »** (super_admin, motif obligatoire) : il
+> pose la marque « effacement demandé ». L'effacement éventuel reste un geste humain, ci-dessous.
+> **Une fois l'effacement accepté et passé**, masquer l'adresse restée en clair dans les alertes de la
+> cloche (mise à jour, aucune suppression) : `masquerAdresseDansAlertes(adresse)` de `src/lib/rgpd-erase.ts`,
+> à lancer avec les autres effaceurs. Lever une marque posée par erreur : requête documentée dans
+> `prisma/migrations/20261112110000_oppositions_effacement_demande/rollback.sql`.
+
 - Submissions / contact / audit / implementation → `eraseSubmissionAction` (Sprint 24/D1, super_admin only).
 - Newsletter → `eraseSubscriberAction` (Sprint 24/D1, super_admin only).
 - Dossier client et enregistrements des visios → `effacerCibleParAdresses` (`src/lib/rgpd-erase.ts`), appelé par `/api/gdpr-erase` : segments de sa voix, faits dont elle est sujet ou locutrice, comptes rendus vidés pour réécriture ; la preuve d'accord reste (art. 17(3)(e)).

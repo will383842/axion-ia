@@ -250,7 +250,7 @@ export const BEAUPREAU_EN_MAUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Beaupréau-en-Mauges ?",
-      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio depuis Cholet (30 min) ou Angers (45 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons sur site ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

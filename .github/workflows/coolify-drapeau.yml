@@ -81,12 +81,18 @@ on:
           # Page « Recevoir le guide » (lot S2) : `/guide-reseau?j=…` (404) et sa route d'envoi (503) tant
           # que la valeur n'est pas exactement `true`. Cible : site seulement. Valeurs : true | false.
           - "PAGE_GUIDE_RESEAU_ENABLED"
+          # « Merci » de la page « Recevoir le guide » (lots S4a/S4b) : `POST /api/interne/confirmations-page-guide`
+          # et son accusé `/issue` (503 tant que la valeur n'est pas exactement `true`). Cible : site seulement.
+          # Valeurs : true | false. ÉTEINT par défaut. Aucun secret ici (docs/guides-reseau-interrupteurs.md).
+          - "CONFIRMATIONS_PAGE_GUIDE_ENABLED"
           # Synchro CRM v3 de la page « Recevoir le guide » (lot S3, PR #1919). Cible : les-deux — le
           # site émet l'événement, le rattrapage tourne dans le worker et doit lire le même format.
           # Valeurs : true | false. ÉTEINTS par défaut ; ne jamais les allumer sans l'ordre du guide
           # (docs/guides-reseau-interrupteurs.md). NEWSLETTER_OPTIN : attend l'avis de l'auditeur RGPD.
           - "SYNCHRO_CRM_V3"
           - "SYNCHRO_CRM_V3_NEWSLETTER_OPTIN"
+          # Origines suivantes (lot guide réseau 4) : site (chemin direct) ET worker (rattrapage). `true` seulement.
+          - "SYNCHRO_CRM_V3_ORIGINES_SUIVANTES"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
@@ -154,13 +160,16 @@ jobs:
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
+          if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
           if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then
             echo "::error::Refus : éteindre OPPOSITIONS_RESEAU_ENABLED ferait refuser (503) les « stop » des personnes. À éteindre uniquement en cas d'incident, avec confirmer_extinction=true (voir docs/guides-reseau-interrupteurs.md)."; exit 1
           fi
           # Les interrupteurs du suivi du questionnaire se posent TOUJOURS sur les deux applications :
           # le worker agit, la console affiche le même état (sinon elle dirait « éteintes » à tort).
           # Synchro CRM v3 : site ET worker redéployés ensemble (le worker rattrape et lirait l'ancien format).
-          if [[ "$CLE" =~ ^SYNCHRO_CRM_V3(_NEWSLETTER_OPTIN)?$ ]] && [ "$CIBLE" != "les-deux" ]; then
+          if [[ "$CLE" =~ ^SYNCHRO_CRM_V3(_NEWSLETTER_OPTIN|_ORIGINES_SUIVANTES)?$ ]] && [ "$CIBLE" != "les-deux" ]; then
             echo "::error::$CLE se pose sur « les-deux »"; exit 1
           fi
           if [[ "$CLE" =~ ^QUESTIONNAIRE_(RELANCES|CONFIRMATIONS|TELEGRAM)_ENABLED$ ]] && [ "$CIBLE" != "les-deux" ]; then

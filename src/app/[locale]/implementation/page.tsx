@@ -66,11 +66,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/implementation",
     title:
       loc === "fr"
-        ? "Implémentation IA & agents IA sur-mesure · Axion-IA"
+        ? "Automatisation et agents IA sur mesure pour PME · Axion-IA"
         : "Custom AI implementation & AI agents · Axion-IA",
     description:
       loc === "fr"
-        ? "Architectes IA : nous concevons, déployons et automatisons sur-mesure pour votre entreprise — chatbots, agents IA et bien plus. Accompagnement de A à Z, sans jargon. Résultats concrets."
+        ? "Nous intégrons l'IA dans votre entreprise : agents IA, chatbots, automatisations, lien avec votre CRM ou ERP. Le code livré vous appartient. Sur devis."
         : "Custom AI implementation for every company: AI agents, chatbots, automations, CRM/ERP integrations. Real code, yours, no subscription.",
   });
 }
@@ -198,7 +198,7 @@ export default async function ImplementationListing({ params }: Props) {
     locale: loc,
     path: "/implementation",
     name: isFr
-      ? "Implémentation IA & agents IA sur-mesure · Axion-IA"
+      ? "Automatisation et agents IA sur mesure pour PME · Axion-IA"
       : "Custom AI implementation & AI agents · Axion-IA",
     description: isFr
       ? "Implémentation IA sur-mesure pour TPE, PME, ETI et grands groupes : agents IA, chatbots, automatisations, intégrations CRM/ERP. Du vrai code, à vous, sans abonnement."
@@ -284,7 +284,7 @@ export default async function ImplementationListing({ params }: Props) {
       {/* BANDEAU CONTACT FINAL */}
       <VisibiliteCallout isFr={isFr} />
 
-      <ImplementationContactBand isFr={isFr} trackSuffix="-final" />
+      <ImplementationContactBand isFr={isFr} trackSuffix="-final" finale />
 
       {/* CTA flottant mobile — visible < lg */}
       <StickyMobileCta

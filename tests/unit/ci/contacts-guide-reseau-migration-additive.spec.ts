@@ -114,21 +114,31 @@ describe("migration contacts_guide_reseau : additive", () => {
     // Écrivain : la validation de la page. Lecteurs : la page (usage unique), l'export art. 15,
     // la mise à l'écart de l'effacement art. 17, et (lot S3) le lecteur au clic du lien du guide
     // (`clic-page-guide.ts` : un `findFirst` seulement, aucune écriture ni suppression), et le
-    // rattrapage horaire du guide (`rattrapage.ts` : un `findFirst` pour savoir si la demande vient
-    // de la page, afin de rendre le lien de désinscription ; aucune écriture ni suppression), et
+    // lecteur partagé par le rattrapage horaire et l'envoi console (`page-guide-ecartee.ts` : un `findMany`
+    // pour savoir si la demande vient de la page et si elle est écartée ; aucune écriture ni suppression), et
+    // les « stop » reçus après la page (`opposition-page-guide.ts` : un `findMany` par référence de
+    // conversation puis un `updateMany` vers `ecarte`, jamais de suppression), et
     // la mise à l'écart par adresse (`mise-a-l-ecart.ts` : un `updateMany` vers `ecarte`, jamais
-    // de suppression ; appelé par l'effacement et l'opposition reçus en message privé), et (lot S4a)
-    // la réservation des « merci » (`confirmations.ts` : des `UPDATE` de `merci_statut`, jamais de
-    // suppression ; regroupement des PR 1937 et 1938).
+    // de suppression ; appelé par l'effacement et l'opposition reçus en message privé), la
+    // réservation des « merci » (`confirmations.ts`, lot S4a : des `UPDATE` de `merci_statut`, jamais
+    // de suppression ; regroupement des PR 1937 et 1938), l'accusé des « merci »
+    // (`accuse-confirmations.ts`, lot S4b : des `UPDATE` conditionnels de `merci_statut`, jamais de
+    // suppression ; PR 1949), et la preuve de l'accord en trois états (`preuve-page-guide.ts` :
+    // des `updateMany` d'état, jamais de suppression), et la lecture par lot des oppositions
+    // (`oppositions-par-conv.ts`, STOP-T2 : un `findMany` seulement, aucune écriture ni suppression).
     expect(fautifs).toEqual([
       "src/app/guide-reseau/route.ts",
       "src/lib/rgpd-erase.ts",
       "src/lib/rgpd-guide-reseau.ts",
-      "src/server/guide-ia/rattrapage.ts",
+      "src/server/guide-ia/page-guide-ecartee.ts",
+      "src/server/guides-reseau/accuse-confirmations.ts",
       "src/server/guides-reseau/clic-page-guide.ts",
       "src/server/guides-reseau/confirmations.ts",
       "src/server/guides-reseau/mise-a-l-ecart.ts",
+      "src/server/guides-reseau/opposition-page-guide.ts",
+      "src/server/guides-reseau/oppositions-par-conv.ts",
       "src/server/guides-reseau/page-confirmation.ts",
+      "src/server/guides-reseau/preuve-page-guide.ts",
     ]);
   });
 });

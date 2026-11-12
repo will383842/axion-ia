@@ -65,7 +65,7 @@ export const ERGUE_GABERIC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Ergué-Gabéric ?",
-      a: "Nos consultants interviennent depuis Quimper centre (10 min) ou se déplacent directement dans vos locaux. Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

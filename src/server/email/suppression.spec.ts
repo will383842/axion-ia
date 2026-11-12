@@ -76,8 +76,11 @@ describe("verdictAvantEnvoi — rebond dur", () => {
     expect(v).toEqual({ retenu: false });
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining("envoi maintenu"),
-      expect.stringContaining("ECONNREFUSED"),
+      // D-STOP-1 : le journal ne porte plus que le nom/code de l'erreur (jamais le message,
+      // qui peut citer l'adresse) et plus l'adresse elle-même.
+      "Error",
     );
+    expect(JSON.stringify(vi.mocked(console.error).mock.calls)).not.toContain("@");
   });
 });
 

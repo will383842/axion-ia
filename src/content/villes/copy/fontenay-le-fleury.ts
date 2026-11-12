@@ -64,7 +64,7 @@ export const FONTENAY_LE_FLEURY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Versailles ou Paris ?",
+      q: "Comment se déroule une mission à Fontenay-le-Fleury ?",
       a: "Versailles (5 min). Vélizy-Villacoublay (10 min). Paris La Défense (25 min). Paris Montparnasse (30 min transilien N/U). Tarification transparente.",
     },
   ],

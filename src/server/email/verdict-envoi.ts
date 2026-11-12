@@ -24,14 +24,18 @@
 // ne retient que le marketing ; une opposition retient le marketing ET les
 // sollicitations du réseau d'apporteurs.
 //
-// ⚠️ Repli assumé : si la base ne répond pas, on N'ARRÊTE PAS l'envoi, et on
-// le dit en erreur. Retenir toute la chaîne sur un hoquet Postgres serait pire
-// que le rebond qu'on cherche à éviter.
+// 🔴 Décision de Williams D-STOP-1 (« Ne pas envoyer, réessayer ») : quand l'opposition ou le
+// désabonnement ne peut pas être VÉRIFIÉ au moment du départ (`auDepart`), RIEN ne part — l'erreur
+// remonte au worker, BullMQ réessaie. Cela vaut pour le marketing et les sollicitations seulement ;
+// les envois transactionnels (facture, convocation…) ne lisent jamais ces tables et sont inchangés.
+// À l'enfilage (sans `auDepart`), on journalise et on laisse passer : le worker relira au départ.
+// Le contrôle des REBONDS, lui, garde son repli ouvert (un rebond n'est pas une opposition).
+// Aucun journal de ce module ne porte d'adresse e-mail : un code d'erreur, rien d'autre.
 
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
-export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose";
+export type MotifRetenue = "rebond_dur" | "desabonne" | "oppose" | "ecarte_effacement";
 
 export type VerdictEnvoi =
   | { readonly retenu: false }
@@ -55,6 +59,17 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
   // lui, le retient toujours : il est lu avant cette liste.
   "guide-ia-envoi",
 ]);
+
+/**
+ * 🔴 Réponses à un DROIT exercé par la personne elle-même (décision du 11/11/2026).
+ *
+ * Une personne mise à l'écart après une demande d'effacement ne reçoit plus rien — SAUF la
+ * réponse à sa propre demande d'accès : le lien d'export de ses données, sans aucun contenu
+ * commercial. Ensemble FERMÉ et nommé : tout autre modèle reste bloqué, y compris
+ * `rgpd-effacement-confirme` (dormant : il affirmerait un effacement qui n'a pas eu lieu).
+ * Ne lève que la mise à l'écart : rebond dur, désabonnement et opposition restent lus après.
+ */
+export const MODELES_REPONSE_A_UN_DROIT: ReadonlySet<string> = new Set(["gdpr-export-link"]);
 
 /**
  * 🔴 2026-09-19 — Sollicitations du réseau d'apporteurs : non marketing, mais
@@ -157,6 +172,13 @@ export function estSollicitationSoumiseAOpposition(
   return VARIANTES_DIFFEREES.has((payload as { variante?: unknown } | null | undefined)?.variante);
 }
 
+/** Code d'erreur seul (jamais le message : une erreur de base peut citer l'adresse). */
+function codeDErreur(e: unknown): string {
+  const code = (e as { code?: unknown } | null)?.code;
+  if (typeof code === "string") return code;
+  return e instanceof Error ? e.name : "erreur";
+}
+
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
 }
@@ -178,6 +200,46 @@ export interface ContexteEnvoi {
    * doit retenir quand même, pas laisser passer.
    */
   readonly sollicitation?: boolean;
+  /**
+   * Appel fait par le worker au moment du départ : une panne de lecture de la mise à l'écart, du
+   * désabonnement ou de l'opposition est RELANCÉE (BullMQ réessaie) au lieu de sauter le contrôle.
+   */
+  readonly auDepart?: boolean;
+}
+
+/**
+ * Date de mise à l'écart (demande d'effacement) d'une adresse, ou `null`.
+ *
+ * Les modèles de `MODELES_REPONSE_A_UN_DROIT` ne sont jamais retenus. Lecture SÉPARÉE
+ * (`findFirst`).
+ *
+ * Repli OUVERT sur UNE seule erreur : `P2022` (colonne absente) — le worker atterrit avant que
+ * l'application ne migre `effacement_demande_le`, aucune marque n'a pu être posée non plus, et les
+ * autres contrôles (rebond, désabonnement, opposition) tiennent. TOUTE AUTRE erreur (délai dépassé,
+ * connexion perdue, pool saturé) est RELANCÉE : sauter le contrôle enverrait une facture à une
+ * personne écartée, alors que BullMQ sait réessayer. Exportée : le worker la relit au départ.
+ */
+export async function dateDeMiseAEcart(adresse: string, template: string): Promise<Date | null> {
+  if (estStub()) return null;
+  const a = adresse.trim();
+  if (a === "" || MODELES_REPONSE_A_UN_DROIT.has(template)) return null;
+  const empreinte = hashEmailForLookup(a);
+  if (empreinte === null) return null;
+  try {
+    const ligne = await prisma.emailOpposition.findFirst({
+      where: { emailHash: empreinte, effacementDemandeLe: { not: null } },
+      select: { effacementDemandeLe: true },
+    });
+    return ligne?.effacementDemandeLe ?? null;
+  } catch (e) {
+    if ((e as { code?: unknown } | null)?.code === "P2022") {
+      console.error(
+        "[email-suppression] colonne effacement_demande_le absente (migration en cours) — contrôle sauté",
+      );
+      return null;
+    }
+    throw e;
+  }
 }
 
 export async function verdictAvantEnvoi(
@@ -187,6 +249,31 @@ export async function verdictAvantEnvoi(
   if (estStub()) return { retenu: false };
   const adresse = destinataire.trim();
   if (adresse === "") return { retenu: false };
+
+  // 🔴 Décision de Williams du 11/11/2026 — une DEMANDE D'EFFACEMENT met la personne à l'écart
+  // au lieu de supprimer ses données (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Elle ne doit
+  // plus rien recevoir, QUEL QUE SOIT le gabarit : convocation, facture et guide compris. Lu en
+  // premier, pour tous les envois.
+  //
+  // Lecture SÉPARÉE (`findFirst`, pas la `findUnique` de l'opposition plus bas) et en repli
+  // OUVERT : le worker atterrit avant que l'application ne migre la colonne
+  // `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque n'a pu
+  // être posée non plus — et les autres contrôles (rebond, désabonnement, opposition) tiennent.
+  // Panne autre que « colonne absente » : au DÉPART (`auDepart`) l'erreur remonte au worker, le
+  // job est réessayé ; à l'enfilage, le contrôle est sauté (le worker le relira au départ).
+  let ecartee: Date | null = null;
+  try {
+    ecartee = await dateDeMiseAEcart(adresse, contexte.template);
+  } catch (e) {
+    if (contexte.auDepart === true) throw e;
+    console.error(
+      "[email-suppression] lecture de la mise à l'écart impossible à l'enfilage — relue au départ :",
+      e instanceof Error ? e.name : "erreur",
+    );
+  }
+  if (ecartee !== null) {
+    return { retenu: true, motif: "ecarte_effacement", depuis: ecartee };
+  }
 
   try {
     // `recipient` est en citext : l'égalité est insensible à la casse.
@@ -200,8 +287,8 @@ export async function verdictAvantEnvoi(
     }
   } catch (e) {
     console.error(
-      `[email-suppression] lecture des rebonds impossible pour ${adresse} — envoi maintenu :`,
-      e instanceof Error ? e.message : String(e),
+      "[email-suppression] lecture des rebonds impossible — envoi maintenu :",
+      codeDErreur(e),
     );
   }
 
@@ -242,12 +329,14 @@ export async function verdictAvantEnvoi(
         return { retenu: true, motif: "oppose", depuis: null };
       }
     } catch (e) {
+      // D-STOP-1 : au départ, une opposition non vérifiable = rien ne part. Le job est réessayé.
+      if (contexte.auDepart === true) throw e;
       console.error(
         // Le `try` couvre les DEUX lectures — désabonnement newsletter et
         // opposition. Nommer la seule première laisserait chercher du côté de la
         // newsletter un incident qui peut venir de `email_opposition`.
-        `[email-suppression] lecture du désabonnement ou de l'opposition impossible pour ${adresse} — envoi maintenu :`,
-        e instanceof Error ? e.message : String(e),
+        "[email-suppression] lecture du désabonnement ou de l'opposition impossible à l'enfilage — relue au départ :",
+        codeDErreur(e),
       );
     }
   }

@@ -64,7 +64,7 @@ export const BIGUGLIA_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis le continent ?",
+      q: "Comment se déroule une mission à Biguglia ?",
       a: "Aéroport Bastia-Poretta (15 min), port de Bastia (15 min). Vols et ferries quotidiens depuis le continent. Tarification transparente.",
     },
   ],

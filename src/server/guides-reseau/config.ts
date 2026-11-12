@@ -69,6 +69,15 @@ export function oppositionsReseauActives(): boolean {
 /** Seau de débit de la route des oppositions (distinct des deux autres routes internes). */
 export const PREFIXE_DEBIT_OPPOSITIONS = "internal:oppositions-reseau";
 
+/** Seau de débit de la route des oppositions reçues après la page du guide (par référence de conversation). */
+export const PREFIXE_DEBIT_OPPOSITIONS_PAGE = "internal:oppositions-page-guide";
+
+/** Seau de débit de la route de LECTURE « ces conversations sont-elles opposées ? » (STOP-T2). */
+export const PREFIXE_DEBIT_OPPOSITIONS_PAR_CONV = "internal:oppositions-par-conv";
+
+/** Nombre maximal de conversations interrogées par appel (STOP-T2). */
+export const LOT_MAX_OPPOSITIONS_PAR_CONV = 100;
+
 /** Corps maximal accepté par la route des oppositions : 4 Ko (le corps utile tient en 300 octets). */
 export const CORPS_MAX_OPPOSITIONS = 4 * 1024;
 
@@ -142,4 +151,38 @@ export function secretsConfirmationsPageGuide(
   const courant = secretValide(env.GUIDES_RESEAU_HMAC_SECRET);
   if (!courant) return null;
   return { courant, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
+}
+
+/**
+ * PREUVE DE L'ACCORD de la page « Recevoir le guide » — nombre de jours, SANS clic sur le bouton du
+ * lien du guide, avant que l'accord « en attente » passe « non vérifiée, à l'écart » (mise à
+ * l'écart : RIEN n'est supprimé). Le guide peut partir jusqu'à J+7 (rattrapage,
+ * `HORIZON_RATTRAPAGE_MS`) : 14 laisse au moins 7 jours de lecture après le dernier envoi possible,
+ * sans garder indéfiniment un accord jamais vérifié. Garde : `config.spec.ts`.
+ */
+export const JOURS_AVANT_ECART_PREUVE = 14;
+
+/**
+ * INTERRUPTEUR de la mise à l'écart (job quotidien `guide-ia-crons` / `preuves`).
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si la variable vaut exactement `"true"`. Lu au runtime
+ * (`process.env` brut), conteneur WORKER. Éteint = le job sort sans lire la base.
+ * ⚠️ Ne s'allume qu'APRÈS l'atterrissage de la migration ET de la confirmation au clic : sinon on
+ * écarterait des personnes qui ont cliqué pendant que le clic ne confirmait pas encore.
+ */
+export function preuveEcartActif(): boolean {
+  return process.env.PREUVE_PAGE_GUIDE_ECART_ENABLED === "true";
+}
+
+/**
+ * CATALOGUE DES GUIDES + UN ENVOI PAR DEMANDE (lot LIA-F) — l'INTERRUPTEUR.
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si `GUIDES_RESEAU_CATALOGUE_ENABLED` vaut exactement
+ * `"true"`. Lu au runtime (`process.env` brut, hors `env.ts`). ÉTEINT = comportement strictement
+ * identique à avant : seule la liste figée `GUIDES_RESEAU_CONNUS` fait foi (aucune lecture de
+ * `cibles_reseau`) et un seul guide part par adresse sur 24 h. ALLUMÉ = un guide actif du
+ * catalogue est accepté, et la règle des 24 h se compte par adresse ET par guide.
+ */
+export function catalogueGuidesActif(): boolean {
+  return process.env.GUIDES_RESEAU_CATALOGUE_ENABLED === "true";
 }

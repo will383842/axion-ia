@@ -173,8 +173,8 @@ export default async function PricingPage({ params }: Props) {
         ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, ${EFFECTIF_PLAGE_FR} (séminaire : 50).`
         : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, ${EFFECTIF_PLAGE_EN} (seminar: 50).`,
       detail: isFr
-        ? `Prix par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne, établi sur devis écrit selon la formation, la durée et le format. Les conditions de paiement et d'annulation sont sur la page tarifs formations.`
-        : `Price per group (${EFFECTIF_PLAGE_EN}), never per person, on written quote according to the training, duration and format. Payment and cancellation terms are on the training pricing page.`,
+        ? `Prix par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne, établi sur devis écrit selon la formation, la durée et le format. Les conditions de paiement et d'annulation figurent dans nos conditions générales.`
+        : `Price per group (${EFFECTIF_PLAGE_EN}), never per person, on written quote according to the training, duration and format. Payment and cancellation terms are set out in our terms and conditions.`,
       ctaLabel: isFr
         ? `Voir les ${formationsCount} formations`
         : `See the ${formationsCount} trainings`,
@@ -246,7 +246,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Le prix d'une formation est établi sur devis écrit, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. Il dépend de la formation retenue (offre générale, métier ou secteur), de sa durée (4 h à 2 jours) et du format (sur site ou à distance). Les conditions de paiement et d'annulation sont sur la page tarifs formations.`,
+          answer: `Le prix d'une formation est établi sur devis écrit, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. Il dépend de la formation retenue (offre générale, métier ou secteur), de sa durée (4 h à 2 jours) et du format (sur site ou à distance). Les conditions de paiement et d'annulation figurent dans nos conditions générales.`,
         },
         {
           id: "tarifs-publics",
@@ -269,7 +269,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Puis-je avoir un devis personnalisé ?",
           answer:
-            "Oui. Décrivez votre besoin via la page Contact : nous vous répondons sous 48 h ouvrées. Pour un projet de mise en place, nous proposons aussi un cadrage gratuit de 45 minutes avant le devis détaillé.",
+            "Oui. Décrivez votre besoin via la page Contact : nous établissons un devis écrit adapté à votre situation. Pour un projet de mise en place, nous proposons aussi un cadrage gratuit de 45 minutes avant le devis détaillé.",
         },
       ]
     : [
@@ -281,7 +281,7 @@ export default async function PricingPage({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Training is quoted excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The price depends on the training (general, role or industry), its duration (4 h to 2 days) and the format (on site or remote). The payment and cancellation terms are on the training pricing page.`,
+          answer: `Training is quoted excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The price depends on the training (general, role or industry), its duration (4 h to 2 days) and the format (on site or remote). The payment and cancellation terms are set out in our terms and conditions.`,
         },
         {
           id: "tarifs-publics",
@@ -304,7 +304,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Can I get a custom quote?",
           answer:
-            "Yes — describe your need via the Contact page, personalised reply within 48 business hours. For deployment projects, we also offer a free 45-minute scoping call before the detailed quote.",
+            "Yes — describe your need via the Contact page and we prepare a written quote for your situation. For deployment projects, we also offer a free 45-minute scoping call before the detailed quote.",
         },
       ];
 

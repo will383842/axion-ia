@@ -22,18 +22,23 @@ const base = vi.hoisted(() => ({
   appelsOpposee: 0,
   /** Second argument reçu par `estOpposee` à chaque appel (le client de transaction, ou rien). */
   dbOpposee: [] as unknown[],
+  /** Verrous consultatifs pris dans la transaction du clic (valeurs, et si le clic était déjà réservé). */
+  verrous: [] as { valeurs: unknown[]; demandesDejaReservees: boolean }[],
   abonne: null as Ligne | null,
   nature: "pro" as "pro" | "perso",
 }));
 
 vi.mock("@/lib/prisma", () => {
-  const ok = (l: Ligne, w: Record<string, unknown>) =>
+  const ok = (l: Ligne, w: Record<string, unknown>): boolean =>
     Object.entries(w).every(([k, c]) => {
+      // Clause OR de Prisma (ex. origines actives : en attente OU transmise).
+      if (k === "OR") return (c as Record<string, unknown>[]).some((alt) => ok(l, alt));
       const v = l[k];
       if (c === null) return v === null || v === undefined;
       if (c instanceof Date) return v instanceof Date && v.getTime() === c.getTime();
       if (typeof c === "object") {
-        const o = c as { not?: unknown };
+        const o = c as { not?: unknown; notIn?: unknown[] };
+        if ("notIn" in o) return !(o.notIn as unknown[]).includes(v);
         return "not" in o ? !(o.not === null ? v == null : v === o.not) : true;
       }
       return v === c;
@@ -53,7 +58,23 @@ vi.mock("@/lib/prisma", () => {
         base.contacts.find((l) => ok(l, where)) ?? null,
     },
     guideReseauOrigine: {
-      findMany: async ({ where }: { where: Ligne }) => base.origines.filter((l) => ok(l, where)),
+      findMany: async ({ where, take }: { where: Ligne; take?: number }) =>
+        base.origines
+          .filter((l) => ok(l, where))
+          .sort((x, y) => +(y.occurredAt as Date) - +(x.occurredAt as Date))
+          .slice(0, take),
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        const ids = (where.id as { in: string[] } | undefined)?.in;
+        const c = base.origines.filter(
+          (l) =>
+            (ids ? ids.includes(l.id as string) : true) &&
+            (where.emailKey === undefined || l.emailKey === where.emailKey) &&
+            (where.guide === undefined || l.guide === where.guide) &&
+            ok(l, { crmStatut: where.crmStatut }),
+        );
+        c.forEach((l) => Object.assign(l, data));
+        return { count: c.length };
+      },
     },
     newsletterSubscriber: { findUnique: async () => base.abonne },
     crmSyncOutbox: {
@@ -71,6 +92,14 @@ vi.mock("@/lib/prisma", () => {
       findUnique: async ({ where }: { where: Ligne }) =>
         base.outbox.find((l) => ok(l, where)) ?? null,
       findFirst: async () => null,
+    },
+    // Verrou consultatif de la transaction du clic : on note la clé et l'ordre (avant l'écriture).
+    $executeRaw: async (_chaines: TemplateStringsArray, ...valeurs: unknown[]) => {
+      base.verrous.push({
+        valeurs,
+        demandesDejaReservees: base.demandes.some((d) => d.crmEmittedAt),
+      });
+      return 1;
     },
     $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
       const photoD = base.demandes.map((r) => ({ r, c: { ...r } }));
@@ -133,10 +162,15 @@ const contact = (sur: Ligne = {}): Ligne => ({
   emailKey: "cle-1",
   prenom: "enc:Camille",
   consentiLe: CONSENTI,
-  versionConsentement: "page-guide-2026-11-08",
+  versionConsentement: "page-guide-2026-11-11",
+  infosVersion: null,
+  infosConsentiLe: null,
   ...sur,
 });
+let compteurOrigine = 0;
 const origine = (sur: Ligne = {}): Ligne => ({
+  id: `origine-${++compteurOrigine}`,
+  crmStatut: null,
   emailKey: "cle-1",
   mot: "GUIDE",
   reseau: "instagram",
@@ -179,6 +213,7 @@ beforeEach(() => {
   base.opposeeDepuis = null;
   base.appelsOpposee = 0;
   base.dbOpposee.length = 0;
+  base.verrous.length = 0;
   base.abonne = null;
   base.nature = "pro";
   process.env.CRM_SYNC_ENABLED = "true";
@@ -239,8 +274,8 @@ describe("le clic émet l'événement v3 de la page", () => {
     expect(base.demandes[0]?.crmEmittedAt).toBeNull();
   });
 
-  it("demande née du formulaire (pas d'un réseau) : chemin v1, source guide-ia", async () => {
-    installer({ demande: demande({ origine: "formulaire" }) });
+  it("demande née du formulaire, sans aucune origine : chemin v1, source guide-ia", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), origines: [] });
     await transmettreClicGuide("demande-1");
     expect(evenement().schema_version).toBe(1);
     expect(evenement().source_slug).toBe("guide-ia");
@@ -308,23 +343,101 @@ describe("le clic émet l'événement v3 de la page", () => {
   });
 
   it("figé : deux visites de la page avant le clic = le PREMIER contact (prénom et case) fait foi", async () => {
-    installer({ contact: contact({ prenom: "enc:Premier" }) });
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const infos = { infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI };
+    installer({ contact: contact({ prenom: "enc:Premier", ...infos }) });
     base.contacts.push(
-      contact({ prenom: "enc:Second", consentiLe: new Date("2026-11-01T10:02:00.000Z") }),
+      contact({
+        prenom: "enc:Second",
+        consentiLe: new Date("2026-11-01T10:02:00.000Z"),
+        ...infos,
+        infosConsentiLe: new Date("2026-11-01T10:02:00.000Z"),
+      }),
     );
     await transmettreClicGuide("demande-1");
     expect((evenement().person as Ligne).first_name).toBe("Premier");
     expect((evenement().consentements as Ligne[])[0]?.date).toBe("2026-11-01T10:00:00.000Z");
   });
 
-  it("figé : demande née du formulaire, même avec un contact lié : v1, aucun bloc v3", async () => {
-    installer({ demande: demande({ origine: "formulaire" }) });
+  it("T8 — premier contact ÉCARTÉ (STOP) et second légitime : le prénom et l'accord « infos » sont ceux du second", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const infos = { infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI };
+    installer({ contact: contact({ prenom: "enc:Ecarte", merciStatut: "ecarte", ...infos }) });
+    base.contacts.push(
+      contact({ prenom: "enc:Legitime", consentiLe: new Date("2026-11-01T10:02:00.000Z") }),
+    );
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect((e.person as Ligne).first_name).toBe("Legitime");
+    expect(JSON.stringify(e)).not.toContain("Ecarte");
+    expect(JSON.stringify(e)).not.toContain("page-guide-infos-x");
+  });
+
+  it("T8bis — un SEUL contact, écarté (graphie ancienne ou actuelle) : ni prénom, ni accord « infos » dans l'événement", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    for (const statut of ["ecarte", "ecartee"]) {
+      base.demandes.length = base.contacts.length = base.origines.length = base.outbox.length = 0;
+      installer({
+        contact: contact({
+          prenom: "enc:Ecarte",
+          merciStatut: statut,
+          infosVersion: "page-guide-infos-x",
+          infosConsentiLe: CONSENTI,
+        }),
+      });
+      await transmettreClicGuide("demande-1");
+      const e = JSON.stringify(evenement());
+      expect(e).not.toContain("Ecarte");
+      expect(e).not.toContain("first_name");
+      expect(e).not.toContain("page-guide-infos-x");
+    }
+  });
+
+  it("case des informations cochée mais interrupteur newsletter_optin éteint : aucun accord transmis", async () => {
+    installer({
+      contact: contact({ infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI }),
+    });
+    await transmettreClicGuide("demande-1");
+    expect(evenement()).not.toHaveProperty("consentements");
+  });
+
+  it("figé : demande née du formulaire sans origine, même avec un contact lié : v1, aucun bloc v3", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), origines: [] });
     await transmettreClicGuide("demande-1");
     const e = evenement();
     expect(e.schema_version).toBe(1);
     expect(e.source_slug).toBe("guide-ia");
     expect(e).not.toHaveProperty("consentements");
     expect((e.person as Ligne).first_name).toBeUndefined();
+  });
+});
+
+describe("MG-STOP01 — course gagnée par le STOP : la page arrêtée ne voyage jamais", () => {
+  it("T7 — scénario (b) : demande antérieure non cliquée, page écartée par le filet (origine « ecartee », contact « ecarte ») : l'événement n'a ni l'origine page-…, ni le prénom, ni « infos »", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    // Origine légitime plus ancienne (conversation) : elle seule peut voyager.
+    const ancienne = origine({
+      postRef: "post_ancien_001",
+      occurredAt: new Date("2026-10-30T10:00:00.000Z"),
+    });
+    const page = origine({ postRef: "post_page_stop_01", crmStatut: "ecartee" });
+    installer({
+      contact: contact({
+        prenom: "enc:Arrete",
+        merciStatut: "ecarte",
+        infosVersion: "page-guide-infos-x",
+        infosConsentiLe: CONSENTI,
+      }),
+      origines: [ancienne, page],
+    });
+    await transmettreClicGuide("demande-1");
+    expect(base.outbox).toHaveLength(1);
+    const e = JSON.stringify(evenement());
+    expect(e).not.toContain("post_page_stop_01");
+    expect(e).not.toContain("Arrete");
+    expect(e).not.toContain("page-guide-infos-x");
+    expect(e).toContain("post_ancien_001");
+    expect(page.crmStatut).toBe("ecartee");
   });
 });
 
@@ -379,5 +492,149 @@ describe("la page n'envoie plus rien au CRM au POST", () => {
 
   it("l'origine est écrite dans la transaction de la page (relue plus tard par le clic)", () => {
     expect(lire("page-confirmation.ts")).toMatch(/ecrireOrigineDansTransaction\(tx,/);
+  });
+});
+
+describe("lot guide réseau 4 : l'origine complète part au premier clic, aussi depuis la conversation", () => {
+  it("conversation (aucun contact) : charge v3 avec origines, sans consentements ni prénom, origines marquées transmises", async () => {
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("transmise");
+    expect(base.outbox).toHaveLength(1);
+    const e = evenement();
+    expect(e.schema_version).toBe(3);
+    expect(e.source_slug).toBe("guide-reseau");
+    expect(e).not.toHaveProperty("consentements");
+    expect((e.person as Ligne).first_name).toBeUndefined();
+    const p = e.payload as { origines: Ligne[]; origine_contenu: Ligne; verifie: boolean };
+    expect(p.origines).toHaveLength(1);
+    expect(p.origines[0]).toMatchObject({
+      mot: "GUIDE",
+      reseau: "instagram",
+      post_ref: "post_ref_test_01",
+    });
+    expect(p.origine_contenu).toMatchObject({ reseau: "instagram" });
+    expect(base.origines[0]?.crmStatut).toBe("transmise");
+    expect(base.origines[0]?.crmTraiteeLe).toBeInstanceOf(Date);
+  });
+
+  it("page + deux origines (deux posts) : les deux voyagent, la plus récente donne origine_contenu", async () => {
+    installer({
+      origines: [
+        origine(),
+        origine({
+          postRef: "post_ref_test_02",
+          reseau: "linkedin",
+          occurredAt: new Date("2026-11-02T09:00:00.000Z"),
+        }),
+      ],
+    });
+    await transmettreClicGuide("demande-1");
+    const p = evenement().payload as { origines: Ligne[]; origine_contenu: Ligne };
+    expect(p.origines.map((o) => o.post_ref)).toEqual(["post_ref_test_01", "post_ref_test_02"]);
+    expect(p.origine_contenu.reseau).toBe("linkedin");
+    expect(base.origines.map((o) => o.crmStatut)).toEqual(["transmise", "transmise"]);
+  });
+
+  it("plus de 20 origines actives : les 20 plus récentes seulement (jamais too_many_origines)", async () => {
+    installer({
+      contact: null,
+      origines: Array.from({ length: 25 }, (_, i) =>
+        origine({
+          postRef: `post_ref_${String(i).padStart(4, "0")}`,
+          occurredAt: new Date(Date.UTC(2026, 10, 1, 0, 0, i)),
+        }),
+      ),
+    });
+    await transmettreClicGuide("demande-1");
+    const p = evenement().payload as { origines: Ligne[] };
+    expect(p.origines).toHaveLength(20);
+    expect(p.origines[0]?.post_ref).toBe("post_ref_0005");
+  });
+
+  it("rejeu : second clic = deja-transmise, aucune seconde ligne d'outbox", async () => {
+    installer({ contact: null });
+    await transmettreClicGuide("demande-1");
+    expect(await transmettreClicGuide("demande-1")).toBe("deja-transmise");
+    expect(base.outbox).toHaveLength(1);
+  });
+
+  it("concurrence : deux clics simultanés (conversation) = une seule ligne", async () => {
+    installer({ contact: null });
+    await Promise.all([transmettreClicGuide("demande-1"), transmettreClicGuide("demande-1")]);
+    expect(base.outbox).toHaveLength(1);
+  });
+
+  it("STOP posé entre la lecture et la transaction : aucune ligne, origines écartées (rien supprimé), demande traitée", async () => {
+    base.opposeeDepuis = 2;
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines).toHaveLength(1);
+    expect(base.origines[0]?.crmStatut).toBe("ecartee");
+    expect(base.demandes[0]?.crmEmittedAt).toBeInstanceOf(Date);
+  });
+
+  it("STOP : l'opposition porte sur l'adresse, les origines de TOUS les guides sont écartées", async () => {
+    base.opposeeDepuis = 1;
+    installer({
+      contact: null,
+      origines: [origine(), origine({ guide: "autre-guide" })],
+    });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.origines).toHaveLength(2);
+    expect(base.origines.map((o) => o.crmStatut)).toEqual(["ecartee", "ecartee"]);
+  });
+
+  it("STOP déjà posé à la première lecture : aucune ligne, origines écartées", async () => {
+    base.opposeeDepuis = 1;
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines[0]?.crmStatut).toBe("ecartee");
+  });
+
+  it("adresse exclue : rien ne part, origines inchangées", async () => {
+    process.env.CRM_SYNC_EXCLUSIONS_SHA256 = createHash("sha256").update(EMAIL).digest("hex");
+    installer({ contact: null });
+    const r = await transmettreClicGuide("demande-1");
+    expect(r).toBe("exclue");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("SYNCHRO_CRM_V3 éteint : chemin v1, origines intouchées", async () => {
+    delete process.env.SYNCHRO_CRM_V3;
+    installer({ contact: null });
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect(e.schema_version).toBe(1);
+    expect(e.payload).not.toHaveProperty("origines");
+    expect(base.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("D5 : demande née du formulaire avec une origine réseau : l'origine part, la source du formulaire est gardée", async () => {
+    installer({ demande: demande({ origine: "formulaire" }), contact: null });
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect(e.schema_version).toBe(3);
+    expect(e.source_slug).toBe("guide-ia");
+    expect((e.payload as { origines: unknown[] }).origines).toHaveLength(1);
+    expect(base.origines[0]?.crmStatut).toBe("transmise");
+  });
+
+  it("origine d'un AUTRE guide : ne voyage pas", async () => {
+    installer({ contact: null, origines: [origine({ guide: "autre-guide" })] });
+    await transmettreClicGuide("demande-1");
+    expect(evenement().schema_version).toBe(1);
+  });
+});
+
+describe("lot guide réseau 4 : le premier clic prend le verrou des origines", () => {
+  it("verrou « origines:<clé> » pris dans la transaction du clic, APRÈS la ligne de la demande (même ordre que la page : pas d'interblocage)", async () => {
+    installer({ contact: null });
+    expect(await transmettreClicGuide("demande-1")).toBe("transmise");
+    expect(base.verrous).toHaveLength(1);
+    expect(base.verrous[0]?.valeurs[0]).toBe("origines:" + String(base.demandes[0]?.emailKey));
+    expect(base.verrous[0]?.demandesDejaReservees).toBe(true);
   });
 });

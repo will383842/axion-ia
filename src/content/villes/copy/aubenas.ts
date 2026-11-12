@@ -49,7 +49,7 @@ export const AUBENAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubenas et Ardèche méridionale ?",
-      a: "Oui, Axion-IA intervient à Aubenas et toute l'Ardèche méridionale (Vals-les-Bains, Joyeuse, Les Vans, gorges de l'Ardèche). Consultants depuis Lyon (2h) ou Valence (1h).",
+      a: "Oui, Axion-IA intervient à Aubenas et toute l'Ardèche méridionale (Vals-les-Bains, Joyeuse, Les Vans, gorges de l'Ardèche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme gorges Ardèche ?",
@@ -64,7 +64,7 @@ export const AUBENAS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission à Aubenas ?",
       a: "Lyon (2h) ou Valence (1h).",
     },
   ],

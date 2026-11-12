@@ -49,7 +49,7 @@ export const CUGES_LES_PINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cuges-les-Pins et Sainte-Baume ?",
-      a: "Oui, Axion-IA intervient à Cuges-les-Pins et dans tout le piémont Sainte-Baume (Gémenos, La Bouilladisse, Roquefort-la-Bédoule, Signes). Accès rapide depuis Aubagne et Marseille.",
+      a: "Oui, Axion-IA intervient à Cuges-les-Pins et dans tout le piémont Sainte-Baume (Gémenos, La Bouilladisse, Roquefort-la-Bédoule, Signes).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cuges-les-Pins  ?",

@@ -64,7 +64,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Évry ou Paris ?",
+      q: "Comment se déroule une mission à Fleury-Mérogis ?",
       a: "Évry-Courcouronnes (10 min). Aéroport Paris-Orly (15 min). Paris centre (30 min). Tarification transparente.",
     },
   ],

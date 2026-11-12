@@ -9,7 +9,7 @@
  *   0. REPRISE : une ligne `reserve` dont la réservation (`updated_at`) date de plus de
  *      `DELAI_REPRISE_RESERVATION_MIN` minutes (réponse perdue côté Studio) repasse à `a_envoyer`
  *      si elle est encore dans la fenêtre de `FENETRE_MERCI_H` heures, sinon à `expire`.
- *      Jamais de suppression ; une ligne `envoye` ne bouge jamais ;
+ *      Jamais de suppression ; une ligne `envoye` / `hors_fenetre` ne bouge jamais (accusé : `accuse-confirmations.ts`) ;
  *   1. passer à `expire` les lignes `a_envoyer` de plus de `FENETRE_MERCI_H` heures (elles restent en base) ;
  *   2. réserver atomiquement (`UPDATE … WHERE id IN (SELECT … FOR UPDATE SKIP LOCKED LIMIT n) RETURNING`) :
  *      deux appels simultanés ne reçoivent jamais la même ligne, un second appel reçoit une liste vide ;
@@ -22,7 +22,10 @@
  *   · toute adresse présente dans `email_oppositions` : `email_hash = email_key`. C'est la MÊME
  *     fonction des deux côtés (`hashEmailForLookup`, après `trim` + minuscules) : la page écrit
  *     `email_key = hashEmailForLookup(email)`, l'opposition écrit
- *     `email_hash = hashEmailForLookup(adresse)`.
+ *     `email_hash = hashEmailForLookup(adresse)` ;
+ *   · tout contact dont le `conv_ref` figure dans `oppositions_conv_ref` (STOP reçu pour la conversation,
+ *     même si le contact est resté `a_envoyer` à la suite d'une course). Lecture en erreur = la
+ *     transaction échoue, rien n'est réservé (fermé).
  *
  * 🔴 AUCUN DELETE. Ni adresse, ni `email_key`, ni `conv_ref`, ni prénom ne sortent : `ref` est
  * l'empreinte SHA-256 du jeton du lien (`jeton_empreinte`), `valideLe` la date de validation.
@@ -101,6 +104,9 @@ export async function reserverConfirmations(
             AND c."consenti_le" >= ${debutFenetre}
             AND NOT EXISTS (
               SELECT 1 FROM "email_oppositions" o WHERE o."email_hash" = c."email_key"
+            )
+            AND NOT EXISTS (
+              SELECT 1 FROM "oppositions_conv_ref" m WHERE m."conv_ref" = c."conv_ref"
             )
           ORDER BY c."consenti_le" ASC, c."id" ASC
           LIMIT ${n}

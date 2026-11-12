@@ -68,7 +68,7 @@ export const ABLON_SUR_SEINE_COPY: VilleCopy = {
       a: "Prise de rendez-vous IA, rédaction et synthèse de documents, gestion des relances et reporting. Nous démarrons par un audit sur place qui identifie les usages les plus rentables pour votre activité.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Orly ?",
+      q: "Comment se déroule une mission à Ablon-sur-Seine ?",
       a: "Ablon-sur-Seine est à 25 minutes de Paris-Austerlitz par le RER C, avec sa gare sur place, et à 10 minutes d'Orly. Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],

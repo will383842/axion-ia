@@ -143,7 +143,7 @@ ${enteteFaitsLlms()
 
 ## Positionnement
 
-Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA qui répondent à des besoins précis de l’entreprise. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
 ## Direction — qui dirige Axion-IA
 
@@ -171,7 +171,7 @@ URL : ${SITE_URL}/fr/journee-ia
 
 ### Module 1 — ${SERVICE_BY_ID.formations.officialFr} (à partir de ${interventionsEntry})
 Formations IA intra-entreprise sur site (ou à distance), de 4 h à 2 jours, pratique sur vos vrais outils (ChatGPT, Claude, Mistral, agents IA, automatisations). Tarifs HT par groupe (pas par personne), dès ${interventionsCompact}.
-URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/formations/tarifs
+URL : ${SITE_URL}/fr/formations · Tarifs : ${SITE_URL}/fr/tarifs
 
 ### Module 2 — ${SERVICE_BY_ID.audit.officialFr} (${auditRange})
 ${DESCRIPTION_AUDIT_LLMS} Cartographie, scoring ROI/complexité par opportunité, plan d'implémentation priorisé. Livrable PDF 25-40 pages + atelier restitution.

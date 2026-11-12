@@ -64,6 +64,7 @@ import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import { AIMANT_GUIDE_IA, GABARIT_GUIDE } from "./config";
 import { mettreEnFileGuide, type ResultatEnvoiGuide } from "./envoi";
 import { lettreDansLEmail } from "./lettre";
+import { etatPageGuide } from "./page-guide-ecartee";
 import { estGareeEnValidation, etatJournal } from "./rattrapage";
 import {
   LIBELLE_REFUS_CONSOLE,
@@ -352,6 +353,11 @@ export async function envoyerGuideAAbonne(
     }
   }
 
+  // 🔴 STOP reçu sur la conversation de la page : aucun envoi à la main (fermé : lecture en erreur = refus).
+  if (creee === false && (await etatPageGuide(demande.id)).ecartee) {
+    return { resultat: "adresse-opposee", demandeId: demande.id, creee: false };
+  }
+
   if (demande.sentAt !== null) {
     return { resultat: "deja-envoye", demandeId: demande.id, creee: false };
   }
@@ -383,6 +389,9 @@ export async function renvoyerGuide(
   // l'arrête. Demande console : les mêmes contrôles qu'à l'envoi.
   const refus = await controler(demande.email, abonne?.status ?? null, demande.origine);
   if (refus !== null) return { resultat: refus, demandeId, creee: false };
+  if ((await etatPageGuide(demande.id)).ecartee) {
+    return { resultat: "adresse-opposee", demandeId, creee: false };
+  }
 
   const resultat = await reserverEtMettreEnFile(demande, "renvoyer", options, maintenant);
   if (resultat !== "deja-en-file" && resultat !== "deja-envoye") {

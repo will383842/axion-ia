@@ -65,7 +65,7 @@ export interface OptionsEnvoiGuide {
    * la politique de confidentialité, aucune lettre) AVEC un lien de désinscription — le jeton
    * d'opposition de l'adresse. N'a d'effet que combiné à `reseau: true`.
    */
-  readonly pageGuide?: { readonly oppositionToken: string };
+  readonly pageGuide?: { readonly oppositionToken: string; readonly reseauOrigine?: string };
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -84,6 +84,27 @@ export async function envoisRecentsVers(email: string, maintenant: Date): Promis
     where: {
       template: GABARIT_GUIDE,
       recipient: email,
+      createdAt: { gte: new Date(maintenant.getTime() - FENETRE_DESTINATAIRE_MS) },
+    },
+  });
+}
+
+/**
+ * Nombre d'e-mails du guide mis en file vers cette adresse POUR CETTE DEMANDE (même adresse ET même
+ * guide : la demande est unique par adresse et par guide) sur la fenêtre. Lot LIA-F — utilisé
+ * seulement quand le catalogue est allumé ; `envoisRecentsVers` reste la limite par adresse.
+ */
+export async function envoisRecentsPourDemande(
+  email: string,
+  demandeId: string,
+  maintenant: Date,
+): Promise<number> {
+  return prisma.emailLog.count({
+    where: {
+      template: GABARIT_GUIDE,
+      recipient: email,
+      entityType: ENTITE_GUIDE,
+      entityId: demandeId,
       createdAt: { gte: new Date(maintenant.getTime() - FENETRE_DESTINATAIRE_MS) },
     },
   });
@@ -117,6 +138,9 @@ export async function mettreEnFileGuide(
     if (options.pageGuide) {
       payload["pageGuide"] = true;
       payload["oppositionToken"] = options.pageGuide.oppositionToken;
+      // Réseau d'origine : sert au seul lien « Suivre la page » (aucune donnée personnelle).
+      if (options.pageGuide.reseauOrigine)
+        payload["reseauOrigine"] = options.pageGuide.reseauOrigine;
     }
   } else {
     if (options.confirmToken) payload["confirmToken"] = options.confirmToken;

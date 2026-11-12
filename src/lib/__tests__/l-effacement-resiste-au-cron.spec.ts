@@ -275,9 +275,12 @@ describe("la personne est informée de ce qui a été effacé", () => {
     expect(s).toContain("appels: number");
     expect(s).toMatch(/rendez-vous anonymisé/);
 
+    // Décision de Williams du 11/11/2026 : la route ne supprime plus et n'envoie plus ce
+    // courriel (il affirmerait un effacement qui n'a pas lieu). Le gabarit reste juste pour
+    // un effacement fait à la main.
     const route = source("src/app/api/gdpr-erase/route.ts");
-    expect(route).toContain("eraseCalendlyEventsForEmail");
-    expect(route).toContain("appels: appelsResult.anonymized");
+    expect(route).not.toContain("eraseCalendlyEventsForEmail");
+    expect(route).not.toContain('enqueueEmail("rgpd-effacement-confirme"');
   });
 
   it("l'export art. 15 rend les rendez-vous", () => {

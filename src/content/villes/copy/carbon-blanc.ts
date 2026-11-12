@@ -65,7 +65,7 @@ export const CARBON_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carbon-Blanc ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux centre (15 min). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

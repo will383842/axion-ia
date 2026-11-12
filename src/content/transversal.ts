@@ -136,6 +136,10 @@ export const ABOUT_TEAM = [
 export interface FaqAnswerBlock {
   question: string;
   answer: string;
+  /** Titre SERP exact (≤ 60 caractères, marque comprise). Sans lui : la question, avec suffixe de marque si elle est courte. */
+  metaTitle?: string;
+  /** Description SERP (≤ `META_DESCRIPTION_MAX`). Sans elle : la réponse, coupée proprement. */
+  metaDescription?: string;
   /** Points scannables affichés sous la réponse. Idéalement 3 à 5. */
   keyPoints?: readonly string[];
   /** Chiffres-clés de la réponse (grand chiffre + libellé court). */
@@ -947,13 +951,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-11-08",
     related: ["rgpd-ia", "ia-droit-auteur-contenu", "risques-ia-entreprise"],
     fr: {
-      question: "Quelles sont les obligations légales des entreprises face à l'AI Act 2026 ?",
+      question: "AI Act : quelles obligations pour les PME qui utilisent l'IA ?",
+      metaTitle: "AI Act et PME : obligations, articles 4 et 50 · Axion-IA",
+      metaDescription:
+        "AI Act pour une PME qui utilise l'IA : maîtrise de l'IA (art. 4), pratiques interdites (art. 5), transparence (art. 50). Haut risque reporté à 2027-2028.",
       answer:
-        "L'AI Act européen est entré en vigueur en 2024 et son application est échelonnée de 2025 à 2028. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois articles reviennent le plus souvent. L'article 4 : prendre des mesures pour la maîtrise de l'IA de ses équipes (depuis février 2025, assoupli en juillet 2026 par le règlement (UE) 2026/1744). L'article 5 : ne pas recourir aux pratiques interdites (depuis février 2025). L'article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler les hypertrucages et certains textes d'intérêt public générés (depuis le 2 août 2026). Les obligations « haut risque » (recrutement, suivi des salariés…) sont reportées au 2 décembre 2027 (annexe III). S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA peut aider à mettre en place des dispositifs techniques : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail technique, pas une prestation juridique — la qualification exacte de vos systèmes et l'analyse de vos obligations relèvent de votre conseil.",
+        "L'AI Act européen est entré en vigueur en 2024 et son application est échelonnée de 2025 à 2028. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois articles reviennent le plus souvent. L'article 4 porte sur la maîtrise de l'IA par les équipes (applicable depuis février 2025, réécrit en juillet 2026 par le règlement (UE) 2026/1744) : il vise des mesures adaptées au contexte, la formation étant l'une d'elles, pas une obligation de formation en soi. L'article 5 : ne pas recourir aux pratiques interdites (depuis février 2025). L'article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler les hypertrucages et certains textes d'intérêt public générés (en principe depuis le 2 août 2026). Les obligations « haut risque » (recrutement, suivi des salariés…) sont reportées au 2 décembre 2027 (annexe III). S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA peut aider à mettre en place des dispositifs techniques : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail technique, pas une prestation juridique — la qualification exacte de vos systèmes et l'analyse de vos obligations relèvent de votre conseil.",
       keyPoints: [
         "Entré en vigueur en 2024, application échelonnée de 2025 à 2028",
         "Les systèmes d'IA sont classés par niveau de risque",
-        "Article 4 : mesures pour la maîtrise de l'IA de ses équipes (assoupli en 2026)",
+        "Article 4 : maîtrise de l'IA par les équipes (réécrit en 2026)",
         "Article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler hypertrucages et certains textes d'intérêt public générés",
         "Haut risque : reporté au 2 décembre 2027 (annexe III)",
         "Le RGPD continue de s'appliquer en parallèle",

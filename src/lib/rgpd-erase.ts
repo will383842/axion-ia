@@ -436,6 +436,45 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   };
 }
 
+export interface MasquageAlertesResult {
+  /** Alertes de la cloche dont l'adresse a été masquée (mise à jour, aucune suppression). */
+  readonly alertesMasquees: number;
+}
+
+/**
+ * Geste humain, APRÈS un effacement accepté : masque l'adresse dans les alertes de la cloche
+ * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Ces alertes portent l'adresse en clair dans
+ * leur message pour permettre le traitement à la main ; sans ce passage elles la gardent sans
+ * limite de durée. MISE À JOUR seulement : l'alerte reste, son adresse devient `[adresse masquée]`.
+ *
+ * À LANCER À LA MAIN avec les autres effaceurs, une fois l'effacement passé : la procédure est
+ * écrite dans `docs/dpo-templates/03-effacement-art-17.md` (aucun automate ne l'appelle, voulu).
+ */
+export async function masquerAdresseDansAlertes(email: string): Promise<MasquageAlertesResult> {
+  const adresse = email.trim();
+  if (adresse === "") return { alertesMasquees: 0 };
+  const lignes = await prisma.alerteSysteme.findMany({
+    where: {
+      OR: [{ code: "rgpd_effacement_a_traiter" }, { code: { startsWith: "email_retenu_" } }],
+      message: { contains: adresse, mode: "insensitive" },
+    },
+    select: { id: true, message: true, titre: true },
+  });
+  let alertesMasquees = 0;
+  for (const l of lignes) {
+    await prisma.alerteSysteme.update({
+      where: { id: l.id },
+      data: {
+        message: masquerAdresseDansTexte(l.message, adresse),
+        titre: masquerAdresseDansTexte(l.titre, adresse),
+      },
+      select: { id: true },
+    });
+    alertesMasquees += 1;
+  }
+  return { alertesMasquees };
+}
+
 export interface EraseCrmOutboxResult {
   /** Lignes de `crm_sync_outbox` supprimées (tous statuts). */
   readonly supprimees: number;

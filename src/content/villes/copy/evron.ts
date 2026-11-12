@@ -49,7 +49,7 @@ export const EVRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Évron et dans le centre-Mayenne ?",
-      a: "Oui, Axion-IA intervient à Évron et dans tout le centre-Mayenne (Montsûrs, Sainte-Suzanne-et-Chammes, Jublains). Nos consultants se déplacent depuis Laval (30 min A81/D7).",
+      a: "Oui, Axion-IA intervient à Évron et dans tout le centre-Mayenne (Montsûrs, Sainte-Suzanne-et-Chammes, Jublains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME laitières et éleveurs du bassin d'Évron ?",

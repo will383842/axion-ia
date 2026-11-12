@@ -58,6 +58,7 @@ import {
 import { coupeCircuitDeclenche } from "./coupe-circuit";
 import { envoisDeLaDerniereHeure, mettreEnFileGuide } from "./envoi";
 import { lettreDansLEmail } from "./lettre";
+import { etatPageGuide } from "./page-guide-ecartee";
 
 export interface RapportRattrapage {
   readonly suspendu: boolean;
@@ -105,25 +106,6 @@ export async function etatJournal(
     envoye: envoyee ? (envoyee.sentAt ?? new Date()) : null,
     enFile: lignes.some((l) => l.status === "pending"),
   };
-}
-
-/**
- * La demande vient-elle de la page « Recevoir le guide » ? Oui si une ligne
- * `contacts_guide_reseau` lui est liée (`guide_request_id`, posé à la création
- * par `page-confirmation.ts`). Table absente (fenêtre worker/app) = « non » :
- * le rattrapage garde son comportement d'avant.
- */
-async function vientDeLaPageGuide(demandeId: string): Promise<boolean> {
-  try {
-    const ligne = await prisma.contactGuideReseau.findFirst({
-      where: { guideRequestId: demandeId },
-      select: { id: true },
-    });
-    return ligne !== null;
-  } catch (e) {
-    if (estSchemaAbsent(e)) return false;
-    throw e;
-  }
 }
 
 export async function estGareeEnValidation(demandeId: string): Promise<boolean> {
@@ -205,6 +187,13 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         ecartees++;
         continue;
       }
+      // STOP reçu sur la conversation de la page (MG-STOP01) : la demande reste sans envoi mais ne
+      // doit JAMAIS être reprise. Lecture fermée (erreur ou table absente = écartée).
+      const etatPage = await etatPageGuide(c.id);
+      if (etatPage.ecartee) {
+        ecartees++;
+        continue;
+      }
       // Même liste de suppression que l'enfilage : une adresse en rebond dur ne
       // doit pas être re-tentée toutes les heures pendant une semaine.
       const verdict = await verdictAvantEnvoi(c.email, {
@@ -218,9 +207,10 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
 
       // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
       // Venue de la page « Recevoir le guide » : même e-mail qu'au premier envoi, AVEC le lien de
-      // désinscription promis par la case (jeton d'opposition signé, sans adresse en clair —
-      // le même `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
-      const pageGuide = await vientDeLaPageGuide(c.id);
+      // désinscription promis par la case (jeton d'opposition signé : `op2` opaque une fois
+      // `OPPOSITION_JETON_V2` allumé, `op1` — adresse en base64url, donc lisible — sinon ; le même
+      // `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
+      const pageGuide = etatPage.page;
       const reseau = pageGuide || (c.origine as string) === "message_prive";
       const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
         ? {}

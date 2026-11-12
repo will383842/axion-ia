@@ -17,8 +17,6 @@ const URLS = [
   "/fr",
   "/fr/tarifs",
   "/fr/formations",
-  "/fr/formations/tarifs",
-  "/fr/formations/entreprise",
   "/fr/audit",
   "/fr/audit/cible",
   "/fr/un-a-un",
