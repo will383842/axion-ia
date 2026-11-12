@@ -18441,6 +18441,47 @@ model AuditTerrainRapport {
   @@map("audit_terrain_rapports")
 }
 
+/// F1a-bis (2026-11-12) — catalogue UNIQUE de cibles d'un mot : un guide (PDF) ou une adresse de page.
+/// Rien n'est figé dans le code : tout se saisit par l'écran, sans limite de nombre. Aucune ligne
+/// n'est supprimée : on désactive (`actif`). `test` = fiche factice de test. Contraintes
+/// (guide ⇒ chemin sans adresse, adresse ⇒ adresse sans chemin, formes) posées en SQL dans la migration.
+/// rgpd: technique — contenu éditorial public (titre, chemin de PDF, adresse du site) ; aucune donnée sur une personne
+model CibleReseau {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique @db.VarChar(28)
+  type      String   @db.VarChar(10)
+  titre     String   @db.VarChar(120)
+  cheminPdf String?  @map("chemin_pdf") @db.VarChar(200)
+  url       String?  @db.VarChar(300)
+  version   Int      @default(1)
+  actif     Boolean  @default(true)
+  test      Boolean  @default(false)
+  creeLe    DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  mots MotCible[]
+
+  @@map("cibles_reseau")
+}
+
+/// F1a-bis — liaison mot → cible. Un mot mène à UNE cible par réseau (`@@unique([mot, reseau])`) ;
+/// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition — règle appliquée par le code ET reposée en SQL (contrainte `mots_cibles_mot_forme`).
+/// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
+model MotCible {
+  id        String       @id @default(uuid()) @db.Uuid
+  mot       String       @db.VarChar(30)
+  reseau    String       @db.VarChar(10)
+  codeCible String       @map("code_cible") @db.VarChar(28)
+  actif     Boolean      @default(true)
+  creeLe    DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  cible     CibleReseau  @relation(fields: [codeCible], references: [code], onDelete: Restrict)
+
+  @@unique([mot, reseau], map: "mots_cibles_mot_reseau_key")
+  @@index([codeCible], map: "mots_cibles_code_cible_idx")
+  @@map("mots_cibles")
+}
+
 /// STOP reçu du Studio AVANT la validation de la page du guide : la marque porte la seule référence de
 /// conversation hachée (`conv_ref`, HMAC de 64 caractères), jamais d'adresse. Écrite à chaque STOP
 /// (idempotent), lue par la page de confirmation pour suivre le même déroulé neutre qu'une adresse opposée.

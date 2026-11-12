@@ -20,9 +20,10 @@ export const RESEAUX_GUIDE = [
 export type ReseauGuide = (typeof RESEAUX_GUIDE)[number];
 
 /**
- * Guides qu'un réseau peut demander (code = `guide_requests.aimant`). Liste FERMÉE :
- * un code inconnu est refusé (422), il ne crée pas d'aimant. Un second guide s'ajoute
- * ICI, avec son PDF et son gabarit.
+ * VALEUR DE DÉPART / COMPATIBILITÉ uniquement (F1a-bis, 2026-11-12). Le catalogue vit en base
+ * (table `cibles_reseau`, saisie par l'écran, sans limite) : ne pas ajouter de guide ici.
+ * Reste exporté pour les importeurs actuels (contrat.ts, page-confirmation.ts,
+ * app/guide-reseau/route.ts) qui valident encore le code de la demande avec cette liste.
  */
 export const GUIDES_RESEAU_CONNUS: readonly string[] = ["guide-ia"];
 
