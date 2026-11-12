@@ -1,13 +1,13 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #2 Claude Code (Will).
-// Vif (38, Isère) — sud Grenoble, vallée de la Gresse, péri-urbain rural.
+// Vif (38, Isère) — sud grenoblois, vallée de la Gresse, péri-urbain rural.
 
 import type { VilleCopy } from "./types";
 
 export const VIF_COPY: VilleCopy = {
   pitchFr:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
+    "Vif (38), commune du sud grenoblois dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   pitchEn:
-    "Vif (38), commune du sud-Grenoble dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
+    "Vif (38), commune du sud grenoblois dans la vallée de la Gresse, conjugue caractère résidentiel péri-urbain et tissu local de TPE/PME. Activité économique mixte : artisanat BTP, commerces, professions libérales, agriculture résiduelle, services. Axion-IA y conduit ses missions auprès des entreprises locales du sud-grenoblois rural.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Vif (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, agriculteurs et éleveurs de la vallée de la Gresse, professions libérales, indépendants, PME tertiaires et structures rurales du sud-grenoblois.",
   directAnswerEn:
@@ -18,9 +18,9 @@ export const VIF_COPY: VilleCopy = {
   ecosystemEn:
     "Vif est positionnée dans la partie haute de la vallée de la Gresse, au sud immédiat de la Métropole grenobloise. Tissu économique péri-urbain mixte : TPE artisanat BTP (BTP rural, second œuvre), commerces de proximité, professions libérales installées, activité agricole résiduelle (élevage bovin, pâtures alpines périphériques). Position géographique vers Vercors et Trièves.",
   distancesFr:
-    "Grenoble centre à 25 min voiture N75/A480. Pont-de-Claix à 10 min. Aéroport Grenoble-Alpes-Isère à 1h15. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
+    "Pont-de-Claix à 10 min. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
   distancesEn:
-    "Grenoble centre à 25 min voiture N75/A480. Pont-de-Claix à 10 min. Aéroport Grenoble-Alpes-Isère à 1h15. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
+    "Pont-de-Claix à 10 min. Axe vers Trièves (Monestier-de-Clermont 30 min) et Vercors.",
   topSectorsNaf: [
     "TPE artisanat BTP",
     "Agriculture & élevage (vallée Gresse)",
@@ -49,7 +49,7 @@ export const VIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vif et sud-grenoblois rural ?",
-      a: "Oui, Axion-IA intervient à Vif et tout le sud-Grenoble rural (Varces-Allières-et-Risset, Saint-Paul-de-Varces, Le Gua, Miribel-Lanchâtre, Monestier-de-Clermont à 30 min). Nos consultants viennent de Grenoble (25 min voiture).",
+      a: "Oui, Axion-IA intervient à Vif et tout le sud grenoblois rural (Varces-Allières-et-Risset, Saint-Paul-de-Varces, Le Gua, Miribel-Lanchâtre, Monestier-de-Clermont à 30 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les agriculteurs et éleveurs vifards ?",
@@ -64,8 +64,8 @@ export const VIF_COPY: VilleCopy = {
       a: "Pour les commerces et professions libérales à Vif, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation gestion RDV (santé, juridique), classification dossiers, transcription consultations.",
     },
     {
-      q: "Comment se passe une mission rurale depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (25 min voiture N75). Pour les missions multi-jours en zone rurale, hébergement local possible (gîtes ou hôtels Grenoble).",
+      q: "Comment se déroule une intervention rurale ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours en zone rurale, un hébergement local est possible.",
     },
   ],
 };

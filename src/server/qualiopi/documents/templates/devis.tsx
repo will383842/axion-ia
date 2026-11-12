@@ -41,6 +41,7 @@ import {
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
 import type { VueFormule, VueFormules } from "@/server/qualiopi/devis/vue-formules";
+import type { ChoixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import {
   brandColor,
   QUALIOPI_PDF_TYPE as T,
@@ -158,6 +159,36 @@ const styles = StyleSheet.create({
     color: brandColor("fg-muted"),
     marginBottom: S.lg,
   },
+  // Bloc « Formule retenue par le client » (exemplaire signé d'un devis à formules).
+  choixTitle: {
+    fontSize: T.sm,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.xs,
+  },
+  choixLine: {
+    fontSize: T.xs,
+    color: brandColor("fg"),
+    lineHeight: T.lineNormal,
+    marginBottom: 2,
+  },
+  choixSceau: {
+    fontSize: T.xs,
+    color: brandColor("fg-muted"),
+    marginTop: S.xs,
+  },
+  // Encadré du choix : MÊME cadre que `accordBox`, mais SANS `wrap={false}` — un choix long
+  // (nombreuses automatisations, lignes récurrentes) peut dépasser une page ; un bloc insécable
+  // plus haut que la page serait rogné. Le « Bon pour accord » + signatures, eux, restent insécables.
+  choixBox: {
+    marginTop: S.xxl,
+    borderWidth: 1,
+    borderColor: brandColor("border-strong"),
+    borderRadius: S.radius,
+    backgroundColor: brandColor("bg"),
+    padding: S.lg,
+  },
+  accordBoxApresChoix: { marginTop: S.lg },
   // ⚠️ `accordLine` a été retiré avec les trois lignes « Nom / Date / Signature »
   // à remplir au stylo : `SignatureZone` porte désormais les cadres, vides ou
   // renseignés. Le laisser aurait été du style mort.
@@ -241,6 +272,12 @@ export interface DevisData {
    * qu'il a lue, et non un document séparé à trois champs.
    */
   signatures?: PreuvesParPartie;
+  /**
+   * Choix SCELLÉ du client (devis à formules), injecté par `exemplaire-signe.ts` seulement
+   * quand le sceau de la ligne client est cohérent avec l'offre figée. ABSENT = rendu
+   * identique à celui d'avant (original, devis classique, sceau incohérent).
+   */
+  choixRetenu?: ChoixImprimable;
 }
 
 // ============================================================
@@ -638,7 +675,37 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
             n'affiche jamais une case « signé » sans dire de quoi elle est faite.
             Tant qu'aucune preuve n'existe, elle rend les cadres vides — le
             circuit papier reste ouvert. */}
-        <View style={styles.accordBox} wrap={false}>
+        {data.choixRetenu !== undefined && (
+          <View style={styles.choixBox}>
+            <Text style={styles.choixTitle}>Formule retenue par le client</Text>
+            <Text style={styles.choixLine}>{data.choixRetenu.formuleLibelle}</Text>
+            {data.choixRetenu.automatisations.length > 0 && (
+              <Text style={styles.choixLine}>
+                Automatisations retenues : {data.choixRetenu.automatisations.join(", ")}
+              </Text>
+            )}
+            <Text style={styles.choixLine}>
+              Total ponctuel : {data.choixRetenu.totalPonctuelHtLisible} HT —{" "}
+              {data.choixRetenu.totalPonctuelTtcLisible} TTC
+            </Text>
+            {data.choixRetenu.recurrent.map((ligne) => (
+              <Text key={ligne} style={styles.choixLine}>
+                {ligne}
+              </Text>
+            ))}
+            <Text style={styles.choixSceau}>
+              Choix scellé avec la signature du client - empreinte {data.choixRetenu.empreinteChoix}
+            </Text>
+          </View>
+        )}
+        <View
+          style={
+            data.choixRetenu !== undefined
+              ? [styles.accordBox, styles.accordBoxApresChoix]
+              : styles.accordBox
+          }
+          wrap={false}
+        >
           <Text style={styles.accordTitle}>Bon pour accord</Text>
           <Text style={styles.accordHint}>
             Le client accepte le présent devis dans son intégralité : désignations, quantités, prix

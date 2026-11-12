@@ -176,6 +176,16 @@ function homeManifestImage(slot: string, nameFr: string, nameEn: string): PageIm
   };
 }
 
+/** Les six secteurs rendus en tuiles sur l'accueil : [slug du fichier, libellé affiché]. */
+const SECTEURS_ACCUEIL: ReadonlyArray<readonly [string, string]> = [
+  ["artisanat_services", "BTP et artisans"],
+  ["industrie_logistique", "Industrie et logistique"],
+  ["commerce_retail", "Commerce"],
+  ["sante_medecine", "Santé et médico-social"],
+  ["juridique", "Cabinets comptables et juridiques"],
+  ["restauration_hotellerie", "Hôtellerie et restauration"],
+];
+
 export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
   // ===== Cas concrets (index / listing) =====
   // Images SEO-only (pas rendues en <Image> sur la page : le héro affiche des
@@ -1247,92 +1257,88 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
     ],
   },
   // ===== Accueil (home) =====
+  // Refonte 2026-11-09 (maquette validée) : on ne déclare QUE ce que la page rend,
+  // dans l'ordre où elle le rend. Retirés : `audience-03-eti`, `audience-04-grands-comptes`
+  // (plus de carte ETI ni grands comptes) et `home-bandeau-team` (bandeau supprimé).
+  // Le héros n'est plus `representativeOfPage` : l'image principale de la page est la
+  // carte d'aperçu `/api/og` (`primaryImageOfPage` du WebPage, voir `_accueil/jsonld.ts`).
   {
     path: "/",
     images: [
-      homeManifestImage(
-        "why-01-aucun-intermediaire",
-        "Travailler sans intermédiaire avec un intervenant senior Axion-IA",
-        "Working directly with a senior Axion-IA consultant",
-      ),
-      homeManifestImage(
-        "why-02-cinq-metiers",
-        "Cinq métiers IA réunis dans une seule équipe — Axion-IA",
-        "Five AI disciplines under one roof — Axion-IA",
-      ),
-      homeManifestImage(
-        "why-03-couverture",
-        "Couverture France entière — 13 régions et 5 DROM — Axion-IA",
-        "Nationwide French coverage — 13 régions and 5 DROM — Axion-IA",
-      ),
+      {
+        src: "/illustrations/home-hero-equipe.avif",
+        nameFr: "Une équipe au travail dans une PME — Axion-IA",
+        nameEn: "A team at work in a small business — Axion-IA",
+        altFr:
+          "Photo de l'équipe Axion-IA en pulls terracotta sous le logo Axion-IA.com — L'intelligence artificielle au service de l'humain.",
+        altEn:
+          "Photo of the Axion-IA team wearing terracotta sweaters under the Axion-IA.com sign — Artificial intelligence at the service of humans.",
+        width: 1536,
+        height: 1024,
+        slot: "hero",
+      },
       homeManifestImage(
         "why-04-meme-expert",
-        "Le même expert du cadrage à la livraison — Axion-IA",
-        "The same expert from scoping to delivery — Axion-IA",
+        "Un seul interlocuteur, de l'audit à la mise en place — Axion-IA",
+        "A single point of contact, from audit to implementation — Axion-IA",
       ),
       homeManifestImage(
         "why-05-votre-rythme",
-        "Un accompagnement IA au rythme de l'entreprise — Axion-IA",
-        "AI support at the company's own pace — Axion-IA",
+        "Le gain chiffré avant la mise en place — Axion-IA",
+        "The gain quantified before implementation — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-01-aucun-intermediaire",
+        "Vos équipes formées sur leurs vrais dossiers — Axion-IA",
+        "Your teams trained on their own files — Axion-IA",
       ),
       homeManifestImage(
         "why-06-meme-exigence",
-        "La même exigence pour l'artisan et le grand groupe — Axion-IA",
-        "The same standard for the craftsman and the large group — Axion-IA",
+        "Rien à installer : Axion-IA met en place pour vous",
+        "Nothing to install: Axion-IA sets it up for you",
+      ),
+      homeManifestImage(
+        "why-02-cinq-metiers",
+        "Rien ne part sans votre accord : l'IA prépare, vous validez — Axion-IA",
+        "Nothing goes out without your approval: AI prepares, you validate — Axion-IA",
+      ),
+      homeManifestImage(
+        "why-03-couverture",
+        "Un prix unique pour une TPE comme pour une PME — Axion-IA",
+        "One single price for a micro-business or an SME — Axion-IA",
       ),
       homeManifestImage(
         "audience-01-tpe",
-        "IA pour les TPE et artisans (1 à 9 salariés) — Axion-IA",
-        "AI for micro-businesses and craftsmen (1 to 9 employees) — Axion-IA",
+        "IA pour les TPE — Axion-IA",
+        "AI for micro-businesses — Axion-IA",
       ),
       homeManifestImage(
         "audience-02-pme",
-        "IA pour les PME (10 à 249 salariés) — Axion-IA",
-        "AI for small and medium businesses (10 to 249 employees) — Axion-IA",
+        "IA pour les PME — Axion-IA",
+        "AI for small and medium businesses — Axion-IA",
       ),
-      homeManifestImage(
-        "audience-03-eti",
-        "IA pour les ETI (250 à 4 999 salariés) — Axion-IA",
-        "AI for mid-cap companies (250 to 4,999 employees) — Axion-IA",
-      ),
-      homeManifestImage(
-        "audience-04-grands-comptes",
-        "IA pour les grands comptes (5 000 salariés et plus) — Axion-IA",
-        "AI for large accounts (5,000+ employees) — Axion-IA",
-      ),
-      {
-        src: "/illustrations/home-hero-equipe.avif",
-        nameFr: "L'équipe Axion-IA — cabinet IA pour entreprises",
-        nameEn: "The Axion-IA team — AI consultancy for companies",
-        altFr:
-          "Photo de l'équipe Axion-IA en pulls terracotta sous le logo Axion-IA.com — L'intelligence artificielle au service de l'humain. Cabinet IA pour TPE, PME, ETI et grandes entreprises françaises.",
-        altEn:
-          "Photo of the Axion-IA team wearing terracotta sweaters under the Axion-IA.com sign — Artificial intelligence at the service of humans. AI consultancy for French SMEs, mid-caps and large enterprises.",
-        width: 1536,
-        height: 1024,
-        representativeOfPage: true,
-      },
-      {
-        src: "/illustrations/home-bandeau-team.avif",
-        nameFr: "Bandeau équipe Axion-IA — 4 scènes coworking IA",
-        nameEn: "Axion-IA team banner — 4 AI coworking scenes",
-        altFr:
-          "Bandeau Axion-IA.com — quatre scènes de coworking de l'équipe : démo écran, échange canapé, session laptop binôme, portrait souriant. Cabinet IA opérationnel français pour TPE, PME, ETI.",
-        altEn:
-          "Axion-IA.com banner — four team coworking scenes: screen demo, sofa exchange, paired laptop session, smiling portrait. French operational AI consultancy for SMEs, mid-caps.",
-        width: 1961,
-        height: 802,
-      },
+      ...SECTEURS_ACCUEIL.map(([slug, libelle]) => ({
+        src: `/illustrations/secteurs/${slug}.avif`,
+        origin: "unsplash" as const,
+        nameFr: `${libelle} : l'IA en entreprise — Axion-IA`,
+        nameEn: `${libelle}: AI in business — Axion-IA`,
+        altFr: `Illustration du secteur « ${libelle} », l'un des secteurs d'activité accompagnés par Axion-IA.`,
+        altEn: `Illustration of the « ${libelle} » sector, one of the business sectors supported by Axion-IA.`,
+        width: 1600,
+        height: 1000,
+        slot: "grid" as const,
+      })),
       {
         src: "/illustrations/home-founder-william.avif",
-        nameFr: "Williams — Fondateur & CEO Axion-IA",
-        nameEn: "Williams — Founder & CEO Axion-IA",
+        nameFr: "Williams Jullin, fondateur d'Axion-IA",
+        nameEn: "Williams Jullin, founder of Axion-IA",
         altFr:
-          "Portrait de Williams, fondateur et CEO d'Axion-IA, formateur et consultant en IA générative. Accompagne dirigeants TPE, PME, ETI et grandes entreprises sur ChatGPT, Claude, Mistral, agents IA et automatisations métier.",
+          "Portrait de Williams Jullin, fondateur d'Axion-IA, formateur et consultant en IA générative auprès des PME et des TPE.",
         altEn:
-          "Portrait of Williams, founder and CEO of Axion-IA, generative AI trainer and consultant. Advises executives of SMEs, mid-caps and large enterprises on ChatGPT, Claude, Mistral, AI agents and business automations.",
-        width: 800,
-        height: 1000,
+          "Portrait of Williams Jullin, founder of Axion-IA, generative AI trainer and consultant for small and medium businesses.",
+        width: 2048,
+        height: 2048,
+        slot: "portrait",
       },
     ],
   },

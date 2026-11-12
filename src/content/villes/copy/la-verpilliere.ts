@@ -18,9 +18,9 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
   ecosystemEn:
     "La Verpillière appartient à la Communauté d'agglomération Porte de l'Isère (CAPI), dont le siège est à L'Isle-d'Abeau. Position géographique stratégique au cœur de l'unité urbaine Villefontaine et de l'aire d'attraction est de Lyon. Tissu logistique majeur (proximité immédiate Lyon-Saint-Exupéry à 10 min), PME industrielles, TPE artisanat BTP, commerces, services aux entreprises.",
   distancesFr:
-    "Gare La Verpillière (TER Lyon-Grenoble, 25 min Lyon). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
+    "Gare La Verpillière (TER vers Lyon, 25 min). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 10 min.",
   distancesEn:
-    "Gare La Verpillière (TER Lyon-Grenoble, 25 min Lyon). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 10 min. Grenoble centre à 1h.",
+    "Gare La Verpillière (TER vers Lyon, 25 min). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 10 min.",
   topSectorsNaf: [
     "Logistique aéroportuaire (Lyon-Saint-Exupéry)",
     "Industrie Nord-Isère & sous-traitance",
@@ -64,8 +64,8 @@ export const LA_VERPILLIERE_COPY: VilleCopy = {
       a: "Pour les PME industrielles et manufacturières de la CAPI, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (prédiction maintenance, automatisations production), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry à 10 min).",
     },
   ],
 };

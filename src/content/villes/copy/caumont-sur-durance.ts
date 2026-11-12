@@ -65,7 +65,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Caumont-sur-Durance ?",
-      a: "Nos consultants interviennent depuis Avignon (15 min) ou via Gare TGV Avignon (15 min). Déplacement sur site dans vos locaux professionnels, exploitation agricole ou commerce. Grand Avignon bien desservi via A7 et A9.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation agricole ou commerce. Grand Avignon bien desservi via A7 et A9.",
     },
   ],
 };

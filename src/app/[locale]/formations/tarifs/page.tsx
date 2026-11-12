@@ -1,11 +1,11 @@
 /**
  * Page TARIFS du catalogue formations — /formations/tarifs.
  *
- * Refonte 2026-07-19 (décision Will) : PRIX PUBLICS par groupe (de 2 à 15
- * stagiaires par session), affichés par CATÉGORIE (offres générales / par métier / par
- * secteur d'activité) — fin du « 100 % sur devis » et de la matrice
- * gamme × durée × effectif. Aucun prix en dur : tout dérive du catalogue
- * (catalog-v2.ts) et de la matrice pricing.ts. Contenu 100 % FR.
+ * R5a (audit d'harmonie 08/11/2026, A04 / décision n°8 de Williams) : la page reste en ligne
+ * (référencement) mais n'affiche AUCUN prix de formation — « sur devis », par groupe de 2 à 15
+ * stagiaires, affichée par CATÉGORIE (offres générales / par métier / par secteur d'activité).
+ * Le chiffrage se fait au rendez-vous gratuit de 45 minutes. Les montants restent dans la
+ * matrice de pricing.ts (devis, réservation) : la page n'en lit plus aucun. Contenu 100 % FR.
  *
  * 2026-10-16 (L16, NC7) : « prix fixe, sans surprise » remplacé par les
  * conditions tarifaires réelles (`conditions-tarifaires.ts`, copie des CGV).
@@ -24,16 +24,11 @@ import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { CtaBlock } from "@/components/sections/CtaBlock";
-import {
-  getFormationsV2ByCategorie,
-  getFormationV2EntryPrice,
-  getSeminairesV2,
-} from "@/content/formations/catalog-v2";
+import { getFormationsV2ByCategorie, getSeminairesV2 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, SUR_MESURE } from "@/content/formations/catalog-v2-meta";
 import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
 import { CONDITIONS_TARIFAIRES_FR } from "@/content/formations/conditions-tarifaires";
 import { EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
-import { formatAmount, getFormationCatalogPriceRange } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { QualiopiFinancingFaq } from "@/components/qualiopi/QualiopiFinancingFaq";
@@ -53,12 +48,11 @@ export async function generateMetadata({
   const qualiopiSuffix = isQualiopiCertificationObtenue()
     ? " Organisme certifié Qualiopi, formations finançables (OPCO, France Travail)."
     : "";
-  const { minEur, maxEur } = getFormationCatalogPriceRange();
   return buildProductMetadata({
     locale,
     path: "/formations/tarifs",
     title: "Tarifs des formations IA en entreprise",
-    description: `Prix publics des formations IA intra-entreprise : de ${formatAmount(minEur, "fr")} à ${formatAmount(maxEur, "fr")} par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne. Offres générales, par métier, par secteur.${qualiopiSuffix}`,
+    description: `Formations IA intra-entreprise, sur devis, pour un groupe de ${EFFECTIF_PLAGE_FR} : jamais par personne. Offres générales, par métier, par secteur. Devis après un rendez-vous gratuit de 45 minutes.${qualiopiSuffix}`,
   });
 }
 
@@ -75,15 +69,11 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
   setRequestLocale(locale);
 
   const seminaire = getSeminairesV2()[0];
-  const { minEur } = getFormationCatalogPriceRange();
 
   // Une table par catégorie — lignes dérivées du catalogue (jamais en dur).
   const tables = FORMATION_CATEGORIES_META.map((cat) => ({
     meta: cat,
-    rows: getFormationsV2ByCategorie(cat.id).map((f) => ({
-      formation: f,
-      prix: getFormationV2EntryPrice(f),
-    })),
+    rows: getFormationsV2ByCategorie(cat.id).map((f) => ({ formation: f })),
   }));
 
   return (
@@ -101,12 +91,10 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
           <div className="max-w-3xl">
             <h1 className="display-editorial text-fg">Tarifs des formations</h1>
             <p className="text-fg-soft mt-5 max-w-2xl text-lg leading-relaxed sm:text-xl">
-              Nos prix sont <strong className="text-fg">publics</strong> et tarifés{" "}
-              <strong className="text-fg">par groupe</strong> ({EFFECTIF_PLAGE_FR} — jamais par
-              personne), en intra-entreprise dans vos locaux ou à distance. Dès{" "}
-              {/* `formatAmount` non-compact porte déjà « € HT » — ne pas resuffixer. */}
-              <strong className="text-fg">{formatAmount(minEur, "fr")}</strong> pour toute votre
-              équipe.
+              Nos formations sont chiffrées <strong className="text-fg">sur devis</strong>, pour{" "}
+              <strong className="text-fg">tout un groupe</strong> ({EFFECTIF_PLAGE_FR} — jamais par
+              personne), en intra-entreprise dans vos locaux ou à distance. Le devis vient après un
+              rendez-vous gratuit de 45 minutes.
             </p>
             {/* Réassurance Qualiopi (Phase B) — rend null hors Phase B. */}
             <QualiopiBadge variant="inline" className="mt-6" />
@@ -117,10 +105,10 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       {/* GRILLES PAR CATÉGORIE — 3 tableaux dérivés du catalogue. */}
       <Section
         tone="canvas"
-        eyebrow="Prix par groupe"
-        title="La grille complète,"
+        eyebrow="Sur devis"
+        title="Le catalogue,"
         titleEm="et ses conditions"
-        description={`Un prix par formation, pour tout le groupe (${EFFECTIF_PLAGE_FR}). Les formations de 2 jours sont scindables en 2×1 jour, sans surcoût.`}
+        description={`Un devis par formation, pour tout le groupe (${EFFECTIF_PLAGE_FR}). Les formations de 2 jours sont scindables en 2×1 jour, sans surcoût.`}
       >
         <Container>
           <div className="mx-auto flex max-w-4xl flex-col gap-10">
@@ -146,11 +134,11 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
                       <tr className="border-border text-fg-muted border-b text-[12px] font-semibold tracking-wide uppercase">
                         <th className="px-5 py-3">Formation</th>
                         <th className="px-5 py-3">Durée</th>
-                        <th className="px-5 py-3 text-right">Prix groupe (HT)</th>
+                        <th className="px-5 py-3 text-right">Tarif</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {rows.map(({ formation: f, prix }) => (
+                      {rows.map(({ formation: f }) => (
                         <tr key={f.id} className="border-border/60 border-b last:border-b-0">
                           <td className="px-5 py-3.5">
                             <Link
@@ -167,10 +155,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
                           </td>
                           <td className="text-fg-soft px-5 py-3.5 text-[14px]">{dureeLabel(f)}</td>
                           <td className="text-fg px-5 py-3.5 text-right font-semibold tabular-nums">
-                            {/* compact + suffixe HT dans l'en-tête de colonne → pas de « HT HT ». */}
-                            {typeof prix === "number"
-                              ? formatAmount(prix, "fr", { compact: true })
-                              : "Sur devis"}
+                            Sur devis
                           </td>
                         </tr>
                       ))}
@@ -212,8 +197,8 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
               Pas sûr que ce soit la bonne formation ?
             </p>
             <p className="text-fg-soft mt-2 text-[15px]">
-              Réservez un appel gratuit et sans engagement : on fait le point sur vos besoins et on
-              vous oriente vers le format le plus adapté à votre équipe.
+              Prenez rendez-vous, gratuitement et sans engagement : 45 minutes pour faire le point
+              sur vos besoins et vous orienter vers le format le plus adapté à votre équipe.
             </p>
             <div className="mt-5 flex flex-wrap justify-center gap-3">
               <Cta href="/appel" size="lg">
@@ -326,7 +311,7 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       <CtaBlock
         eyebrow="Une question ?"
         title="On vous oriente vers le bon format"
-        description="Un appel de 15 minutes suffit : besoins, équipe, format le plus adapté — sans engagement."
+        description="Un rendez-vous gratuit de 45 minutes suffit : besoins, équipe, format le plus adapté — sans engagement."
         cta={
           <Cta
             href="/appel"

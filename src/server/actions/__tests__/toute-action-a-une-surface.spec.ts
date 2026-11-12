@@ -76,6 +76,8 @@ function fichiers(...segments: string[]): string[] {
 const SANS_SURFACE_CONNUS: ReadonlyArray<string> = [
   "server/actions/image-bank/publish.action.ts",
   "server/actions/image-bank/translate.action.ts",
+  // Assistant de devis : encore sans écran (réédition d'un devis classique, E19).
+  "server/actions/qualiopi/devis-classique-modifier.ts",
   "server/actions/knowledge/add-relation.ts",
   "server/actions/knowledge/assign-reviewer.ts",
   "server/actions/knowledge/rollback-version.ts",

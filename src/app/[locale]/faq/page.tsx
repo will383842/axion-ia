@@ -206,7 +206,7 @@ export default async function FaqPage({ params }: Props) {
           {
             icon: ShieldCheck,
             title: "Sourcées depuis notre doctrine",
-            body: "Pas d'invention : nos réponses sont alignées sur nos offres, nos méthodes et nos tarifs publics.",
+            body: "Pas d'invention : nos réponses sont alignées sur nos offres, nos méthodes et nos conditions de devis.",
           },
           {
             icon: Mic,
@@ -228,7 +228,7 @@ export default async function FaqPage({ params }: Props) {
           {
             icon: ShieldCheck,
             title: "Sourced from our doctrine",
-            body: "No made-up claims: our answers align with our offers, methods and public pricing.",
+            body: "No made-up claims: our answers align with our offers, methods and quoting terms.",
           },
           {
             icon: Mic,
@@ -428,8 +428,8 @@ export default async function FaqPage({ params }: Props) {
         titleEm={isFr ? "votre cas" : "your case"}
         description={
           isFr
-            ? "Écrivez-nous à contact@axion-ia.com ou réservez un appel de 20 minutes : nous répondons précisément à votre contexte, sans engagement."
-            : "Email us at contact@axion-ia.com or book a 20-minute call: we answer your exact context, no strings attached."
+            ? "Écrivez-nous à contact@axion-ia.com ou réservez un rendez-vous gratuit de 45 minutes : nous répondons précisément à votre contexte, sans engagement."
+            : "Email us at contact@axion-ia.com or book a free 45-minute meeting: we answer your exact context, no strings attached."
         }
         cta={
           <>

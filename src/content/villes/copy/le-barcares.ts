@@ -49,7 +49,7 @@ export const LE_BARCARES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Barcarès et sur le littoral nord catalan ?",
-      a: "Oui, Axion-IA intervient au Barcarès et tout le littoral nord catalan (Saint-Laurent-de-la-Salanque à 10 min, Leucate, Torreilles, Canet-en-Roussillon). Nos consultants sont basés à proximité de Perpignan (20 min).",
+      a: "Oui, Axion-IA intervient au Barcarès et tout le littoral nord catalan (Saint-Laurent-de-la-Salanque à 10 min, Leucate, Torreilles, Canet-en-Roussillon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les campings et résidences de vacances ?",

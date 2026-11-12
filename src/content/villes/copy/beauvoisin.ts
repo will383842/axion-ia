@@ -49,7 +49,7 @@ export const BEAUVOISIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauvoisin ?",
-      a: "Oui, Axion-IA intervient à Beauvoisin et entre Vaunage et Camargue (Vauvert, Aimargues, Calvisson, Vergèze). Nos consultants viennent de Nîmes (20 min) ou Montpellier (40 min).",
+      a: "Oui, Axion-IA intervient à Beauvoisin et entre Vaunage et Camargue (Vauvert, Aimargues, Calvisson, Vergèze). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs locaux ?",

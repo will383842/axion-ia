@@ -167,7 +167,6 @@ export function ImplementationFaq({
       <FaqAccordion items={allFaqs} className="mx-auto max-w-3xl" />
       <JsonLd
         data={speakableJsonLd}
-        strategy="afterInteractive"
         scriptId={
           villeContext
             ? `jsonld-impl-faq-speakable-${villeContext.villeSlug}`

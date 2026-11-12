@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -34,6 +35,7 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  if (!CAS_CONCRETS_AFFICHES) return {};
   const label = getIndustryLabel(slug, locale as Locale);
   if (!label) return {};
   return buildProductMetadata({
@@ -55,6 +57,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CaseStudiesIndustryPage({ params }: Props) {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  if (!CAS_CONCRETS_AFFICHES) notFound();
   const label = getIndustryLabel(slug, locale as Locale);
   if (!label) notFound();
   setRequestLocale(locale);

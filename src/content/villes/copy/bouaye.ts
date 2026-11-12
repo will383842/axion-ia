@@ -61,7 +61,7 @@ export const BOUAYE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe le déplacement à Bouaye ?",
-      a: "Nos consultants se déplacent sur site à Bouaye (15 min depuis Nantes, 10 min depuis l'aéroport). Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents.",
     },
     {
       q: "L'IA est-elle pertinente pour les activités autour du lac de Grand-Lieu ?",

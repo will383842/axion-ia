@@ -19,6 +19,7 @@ export const PLAFOND_ORIGINES = 50;
 export const SEUIL_ALERTE_ARCHIVE = 200;
 
 const DOMAINE_COMMENTAIRE = "guides-reseau-commentaire-ref-v1";
+const DOMAINE_CONVERSATION = "guides-reseau-conv-ref-v1";
 const CLE_DEV = "axion-ia-dev-only-do-not-use-in-prod";
 
 /** Clé HMAC absente en production : erreur typée, que l'appelant doit signaler (jamais avalée). */
@@ -34,12 +35,21 @@ export class CleHmacManquanteError extends Error {
  * la séparation de domaine est portée par le MESSAGE signé (préfixe `DOMAINE_COMMENTAIRE`).
  */
 export function hmacCommentaireRef(ref: string): string {
+  return hmacAvecDomaine(DOMAINE_COMMENTAIRE, ref);
+}
+
+/** HMAC de la référence de conversation (page « Recevoir le guide », lot S2) — même clé, autre domaine. */
+export function hmacConversationRef(ref: string): string {
+  return hmacAvecDomaine(DOMAINE_CONVERSATION, ref);
+}
+
+function hmacAvecDomaine(domaine: string, ref: string): string {
   const configuree = process.env.PII_ENCRYPTION_KEY?.trim();
   const cle = configuree && configuree.length > 0 ? configuree : CLE_DEV;
   if (cle === CLE_DEV && process.env.NODE_ENV === "production") {
     throw new CleHmacManquanteError();
   }
-  return createHmac("sha256", cle).update(`${DOMAINE_COMMENTAIRE}:${ref}`).digest("hex");
+  return createHmac("sha256", cle).update(`${domaine}:${ref}`).digest("hex");
 }
 
 export interface OrigineAEcrire {

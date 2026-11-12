@@ -23,6 +23,10 @@ import {
 } from "@/server/chatbot/catalog/link-flow";
 import { rechercherOffres, type OfferResult } from "@/server/chatbot/tools/rechercher-offres";
 import { hybridSearch, type RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+import {
+  estKbUnifieeActive,
+  rechercheChatbot,
+} from "@/server/chatbot/retrieval/knowledge-entry-search";
 import { rerankChunks } from "@/server/chatbot/retrieval/rerank";
 import { assessConfidence } from "@/server/chatbot/retrieval/confidence";
 import { verifyOutput, type OutputGuardResult } from "@/server/chatbot/security/output-guard";
@@ -125,7 +129,9 @@ export async function handleTurn(
   deps: OrchestratorDeps = {},
 ): Promise<TurnResult> {
   const llm = deps.generateAnswer ?? generateAnswer;
-  const retrieve = deps.retrieve ?? hybridSearch;
+  // V3-3 : `rechercheChatbot` = `hybridSearch` à l'identique tant que
+  // CHATBOT_KB_UNIFIED n'est pas "true" (base unique KnowledgeEntry, repli chunks).
+  const retrieve = deps.retrieve ?? rechercheChatbot;
   const rerank = deps.rerank ?? rerankChunks;
   const cacheLookup = deps.cacheLookup ?? lookupSemanticCache;
   const cacheWrite = deps.cacheWrite ?? writeSemanticCache;
@@ -166,7 +172,7 @@ export async function handleTurn(
     return {
       ...base,
       intent: "explication",
-      text: "Nous ne gérons pas de dispositif de financement (CPF, OPCO, subvention…) : nos prestations — formations, audits, implémentation — sont facturées en direct. Je peux vous présenter nos offres et leurs tarifs, ou organiser un court échange pour cadrer votre besoin :",
+      text: "Axion-IA ne propose pas de financement ; parlons-en lors du Diagnostic IA gratuit de 45 minutes, sans engagement :",
       cards: [],
       sendLinks: false,
       rdvUrl: RDV_URL,
@@ -231,11 +237,20 @@ export async function handleTurn(
         { directShortcut: direct },
       );
       const sent = flow.state.linkState === "sent";
-      const text = res.replied
-        ? "Je n'ai pas d'offre exactement dans ces critères, mais voici ce qui s'en rapproche :"
-        : sent
-          ? `Voici ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent :`
-          : `J'ai ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent. Souhaitez-vous les liens ?`;
+      // R7 (08/11/2026) : une question de budget ou de prix n'obtient aucun montant
+      // (cartes « Sur devis », sauf la Journée IA) ; on le dit et on propose le RDV.
+      const questionDePrix =
+        slots.prixMin !== undefined || slots.prixMax !== undefined || slots.tri !== undefined;
+      const text = questionDePrix
+        ? "Hormis la Journée IA, nos offres sont sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes. " +
+          (sent
+            ? "Voici celles qui peuvent vous intéresser :"
+            : `J'en ai ${cards.length} qui peu${cards.length > 1 ? "vent" : "t"} vous intéresser. Souhaitez-vous les liens ?`)
+        : res.replied
+          ? "Je n'ai pas d'offre exactement dans ces critères, mais voici ce qui s'en rapproche :"
+          : sent
+            ? `Voici ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent :`
+            : `J'ai ${cards.length} offre${cards.length > 1 ? "s" : ""} qui correspondent. Souhaitez-vous les liens ?`;
       return {
         ...base,
         intent,
@@ -244,7 +259,7 @@ export async function handleTurn(
         sendLinks: sent,
         linkFlow: flow.state,
         escalate: false,
-        ...(res.proposeRdv ? { rdvUrl: RDV_URL } : {}),
+        ...(res.proposeRdv || questionDePrix ? { rdvUrl: RDV_URL } : {}),
       };
     }
 
@@ -287,7 +302,15 @@ export async function handleTurn(
     default: {
       // T-26 cache sémantique : question proche déjà répondue → 0 retrieval, 0 LLM.
       const cached = await cacheLookup(tenantId, message, ctx.tenant.settings);
-      if (cached) {
+      // Une entrée écrite avant le contrôle de doctrine (#1851) ou avant le masquage des prix
+      // (R7) n'est jamais servie : on régénère. Les autres signaux (ex. URL de ressource
+      // dynamique) ne l'écartent pas.
+      if (
+        cached &&
+        !verifyOutput(cached.reponse).violations.some(
+          (v) => v.type === "interdit" || v.type === "price",
+        )
+      ) {
         return {
           intent: "explication",
           text: cached.reponse,
@@ -414,17 +437,25 @@ export async function handleTurn(
       // inventée (chemin de contenu dynamique hors routes statiques).
       const guard = verifyOutput(answer.text, resource ? { extraKnownUrls: [resource.url] } : {});
       if (!guard.ok) {
-        // Garde-fou : on n'émet pas une sortie qui invente prix/URL.
+        // Garde-fou : on n'émet pas une sortie qui invente prix/URL, ni qui
+        // enfreint la doctrine (rien n'est mis en cache : on sort avant cacheWrite).
+        const doctrine = guard.violations.some((v) => v.type === "interdit");
+        console.warn(
+          "[chatbot:orchestrator] sortie bloquée par l'output-guard:",
+          guard.violations.map((v) => `${v.type}:${v.value}`).join(", "),
+        );
         return {
           intent: "explication",
-          text: "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
+          text: doctrine
+            ? "Je préfère vous orienter vers un échange plutôt que d'avancer une information imprécise. Réservez votre Diagnostic IA gratuit de 45 minutes, sans engagement :"
+            : "Je préfère ne pas avancer une information incertaine. Voici un échange pour en parler précisément :",
           cards: [],
           sendLinks: false,
           rdvUrl: RDV_URL,
           slots,
           sources,
           linkFlow: INITIAL_FLOW,
-          escalate: true,
+          escalate: !doctrine, // blocage de doctrine : le lien RDV suffit
           guard,
         };
       }
@@ -437,12 +468,16 @@ export async function handleTurn(
 
       // T-26 : mémorise la réponse validée pour les questions proches futures
       // (best-effort, no-op si cache off / embedding indisponible).
-      await cacheWrite(
-        tenantId,
-        message,
-        { reponse: answer.text, sources: outSources },
-        ctx.tenant.settings,
-      );
+      // V3-3 : base unique allumée → rien en cache, pour qu'éteindre l'interrupteur
+      // ne laisse aucune réponse bâtie sur les fiches servie depuis le cache.
+      if (!estKbUnifieeActive()) {
+        await cacheWrite(
+          tenantId,
+          message,
+          { reponse: answer.text, sources: outSources },
+          ctx.tenant.settings,
+        );
+      }
 
       return {
         intent: "explication",

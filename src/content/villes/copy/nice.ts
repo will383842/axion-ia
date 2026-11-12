@@ -42,7 +42,7 @@ export const NICE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Nice et Sophia Antipolis : accompagnement individuel intensif d'un dirigeant ou d'un expert métier pour maîtriser et déployer l'IA dans son quotidien professionnel. Séances sur site ou à distance selon votre rythme. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Entry rate from €990 excl. VAT.",
+      en: "1-to-1 AI coaching in Nice and Sophia Antipolis: intensive individual support for a manager or expert to master and deploy AI in their professional practice. On-site or remote sessions at your pace. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour TPE, PME et ETI niçoises — site vitrine premium pour scale-ups Sophia Antipolis et acteurs du tourisme d'affaires Côte d'Azur, espace client interactif, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -727,7 +727,7 @@ export const NICE_COPY: VilleCopy = {
           "Tarif d'entrée fixe à {{price:intervention-dirigeants|flat}} pour la séance découverte : vous savez exactement ce que vous payez avant de réserver. Livrable utilisable remis à l'issue de chaque séance — pas de séance sans sortie concrète. Confidentialité stricte dès le démarrage, particulièrement adaptée aux dirigeants tourisme d'affaires et tech Sophia sensibles aux fuites stratégiques. À l'issue du programme, vous êtes autonome et libre d'utiliser vos compétences IA avec n'importe quel outil ou prestataire, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Nice and Sophia Antipolis is an intensive individual programme designed for executives, managers and domain experts who want to master AI in their daily professional practice — without going through group training. Each session focuses on YOUR files, YOUR data, YOUR workflows. On-site in Nice, Grand Arénas, Sophia Antipolis, or remote at your pace. Price on request.",
         whyHere: [
           "Nice and the Sophia Antipolis basin concentrate an exceptional density of executives and experts facing AI transformation: scale-up CEOs, Amadeus/IBM/SAP R&D CTOs, hospitality mid-cap directors, consulting firm partners.",
           "1-to-1 coaching adapts to highly specific profiles: an English-speaking director of an international subsidiary at Sophia, a CFO of a tourism mid-cap wanting to de-risk their P&L, a Nice SME MD wanting to act without a dedicated AI team.",
@@ -766,7 +766,7 @@ export const NICE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "Discovery session — from €990 excl. VAT",
+            price: "Discovery session — price on request",
             detail:
               "For Nice freelancers, independent professionals and micro-business owners: an intensive on-site or remote session to unblock one concrete AI use case.",
           },
@@ -796,7 +796,7 @@ export const NICE_COPY: VilleCopy = {
           },
           {
             q: "How many sessions does it take to see concrete results?",
-            a: "The discovery session at €990 excl. VAT already produces a usable deliverable by the end of the day. A multi-session programme structures skill-building over 4 to 8 weeks depending on the chosen pace. We do not quote a specific timeline: the pace is defined together at the positioning interview.",
+            a: "The discovery session already produces a usable deliverable by the end of the day. A multi-session programme structures skill-building over 4 to 8 weeks depending on the chosen pace. We do not quote a specific timeline: the pace is defined together at the positioning interview.",
           },
           {
             q: "Are sessions on-site in Nice / Sophia or remote?",
@@ -816,7 +816,7 @@ export const NICE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Fixed entry rate at €990 excl. VAT for the discovery session: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
+          "Fixed entry rate for the discovery session, quoted on request: you know exactly what you pay before booking. Usable deliverable handed over at the end of each session — no session without a concrete output. Strict confidentiality ensured from kick-off. On-site travel expenses presented separately, never bundled in the rate. No lock-in: at programme end, you are autonomous and free to use your AI skills with any tool or provider.",
       },
     },
     sitesWeb: {

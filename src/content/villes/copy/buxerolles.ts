@@ -65,7 +65,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct (1h40 gare Poitiers, puis 10 min Buxerolles). Pour les multi-jours, hébergement Poitiers centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
     },
   ],
 };

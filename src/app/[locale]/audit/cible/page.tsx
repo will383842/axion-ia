@@ -12,19 +12,13 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
-import { AUDIT_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Ciblé via template SSOT.
 // Remplace /audit/process (renommé selon doctrine pricing.ts AUDIT_TIERS).
 
 const TIER = "audit-cible" as const;
 
-// SSOT prix — dérivé de pricing.ts (audit-cible : « À partir de 1 900 € · sur
-// devis » depuis 2026-06-03 ; ex-fourchette 1 900–3 900 €, cf. décision Will).
-const CIBLE_TIER = getTierById(AUDIT_TIERS, "audit-cible");
-const CIBLE_MIN = CIBLE_TIER.priceMin ?? 0;
-const CIBLE_FROM_FR = formatAmount(CIBLE_MIN, "fr", { compact: true });
-const CIBLE_FROM_EN = formatAmount(CIBLE_MIN, "en", { compact: true });
+// Aucun montant dans les métadonnées (R5a, décision n°7) : les audits sont sur devis.
 
 export const revalidate = 3600;
 
@@ -41,8 +35,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     locale,
     path: isFr ? "/audit/cible" : "/audit/targeted",
     title: isFr
-      ? `Audit IA Ciblé · 1 département · à partir de ${CIBLE_FROM_FR} · Axion-IA`
-      : `Targeted AI audit · 1 department · from ${CIBLE_FROM_EN} · Axion-IA`,
+      ? `Audit IA Ciblé · 1 département · sur devis · Axion-IA`
+      : `Targeted AI audit · 1 department · on request · Axion-IA`,
     description: isFr ? c.promiseFr : c.promiseEn,
     alternates: { fr: "/audit/cible", en: "/audit/targeted" },
   });

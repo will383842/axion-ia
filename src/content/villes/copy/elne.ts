@@ -49,7 +49,7 @@ export const ELNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Elne et dans la plaine du Roussillon ?",
-      a: "Oui, Axion-IA intervient à Elne et toute la plaine du Roussillon (Saint-Cyprien à 10 min, Argelès-sur-Mer à 15 min, Perpignan à 15 min). Nos consultants sont basés à proximité.",
+      a: "Oui, Axion-IA intervient à Elne et toute la plaine du Roussillon (Saint-Cyprien à 10 min, Argelès-sur-Mer à 15 min, Perpignan à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs et arboriculteurs ?",

@@ -39,6 +39,7 @@ import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
 import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
 import { exporterReseauApporteurPour } from "@/lib/rgpd-reseau-apporteur";
+import { exporterGuideReseauPour } from "@/lib/rgpd-guide-reseau";
 import { exporterFormateurIndependantPour } from "@/lib/rgpd-formateur-independant";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
@@ -258,6 +259,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // ce qui ne concerne que d'autres personnes. Détail et exclusions déclarées
   // dans `src/lib/rgpd-reseau-apporteur.ts`.
   const dossierClient = await exporterDossierClientPour(email);
+
+  // Page « Recevoir le guide » (lot S2) : le contact laissé depuis un réseau, prénom déchiffré.
+  const guideReseau = await exporterGuideReseauPour(email);
+  avertissements.push(...guideReseau.avertissements);
 
   // Réseau d'apporteurs (2026-10-05) : le dossier de l'apporteur, ou qui a présenté la personne.
   const reseauApporteurs = await exporterReseauApporteurPour(email);
@@ -480,6 +485,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      * paroles, les faits vous concernant, les preuves de votre accord.
      */
     dossierClient,
+    guideReseau: { contacts: guideReseau.contacts, origines: guideReseau.origines },
     reseauApporteurs,
     ...(formateurIndependant ? { formateurIndependant } : {}),
     consentEvents,

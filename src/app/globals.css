@@ -384,30 +384,34 @@
   --breakpoint-xl: 1280px;
 
   /* ----- Seuils PROPRES au header public -----
-     🔴 Mesuré en production le 2026-08-04 : le header débordait
-     horizontalement de 1280 px à ~1658 px — donc sur la quasi-totalité des
-     portables, avec barre de défilement horizontale sur CHAQUE page. La nav
-     desktop se montrait à `xl` (1280) alors qu'elle réclame 1397 px, et
-     `2xl:gap-12` (1536) en réclamait 1643.
+     Refonte en-tête/pied du 2026-11-11 (maquette validée par Williams) : la barre
+     passe de 7 onglets à 4 — Accueil · La Journée IA · Nos prestations ▾ · Tarifs —
+     et « Nous écrire » est visible dès que la barre l'est. Le seuil intermédiaire
+     `--breakpoint-navcta` (1700 px, apparition de « Nous écrire ») n'a donc plus
+     d'objet et disparaît.
 
-     La cause n'est pas un réglage trop serré : c'est que le budget avait été
-     vérifié à 1280 « avec 6 onglets », et qu'un 7ᵉ est arrivé depuis (méga-menu
-     Ressources, 2026-07-03 — dont le commentaire disait déjà « à surveiller »).
+     Historique : le 2026-08-04, la barre de 7 onglets réclamait 1397 px et se
+     montrait dès 1280 — débordement horizontal sur la quasi-totalité des
+     portables. Le 2026-08-21, on a découvert que les seuils avaient été comparés à
+     la largeur de l'ÉCRAN en oubliant le rembourrage. La règle qui en reste :
+     comparer la rangée à sa BOÎTE DE CONTENU (écran − rembourrage `lg:px-10`, soit
+     80 px), avec une réserve.
 
-     Largeurs de rangée MESURÉES (recherche dichotomique sur la page réelle,
-     relevées sur l'accueil ET sur /tarifs — l'onglet actif est en gras, ce qui
-     élargit la rangée de ~8 px selon la page ; on retient la pire) :
-       · nav gap-8, sans « Nous écrire »  → 1397 px
-       · nav gap-8, avec « Nous écrire »  → 1547 px
-       · nav gap-12, avec « Nous écrire » → 1651 px
-     Les seuils ci-dessous gardent 26 à 36 px de marge au-dessus, barre de
-     défilement verticale (17 px) comprise.
+     Largeurs de rangée MESURÉES (Chromium, page `/fr` servie par `next dev`,
+     rangée la plus large : onglet actif compris) — voir `Header.budget.spec.ts`
+     pour les nombres et `header-tient-dans-sa-boite.spec.ts` pour la mesure
+     vivante à chaque largeur :
+       · bande nav    (1280–1365), sans tagline             → 1105 px
+         (boîte de contenu à 1280 : 1200 px → réserve 95 px)
+       · bande navair (≥ 1366), tagline + écarts aérés      → 1173 px
+         (boîte de contenu à 1366 : 1286 px → réserve 113 px)
+     Identiques sur `/fr` et `/fr/tarifs` (l'onglet actif ne change plus la
+     graisse, seulement le soulignement).
 
      ⚠️ Ces seuils sont un BUDGET, pas un goût. Ajouter un onglet ou rallonger
      un libellé les invalide — `Header.budget.spec.ts` rougit dans ce cas. */
-  --breakpoint-nav: 1440px; /* tiroir → nav horizontale */
-  --breakpoint-navcta: 1700px; /* « Nous écrire » rentre à côté de la nav */
-  --breakpoint-navair: 1800px; /* onglets aérés */
+  --breakpoint-nav: 1280px; /* tiroir → nav horizontale + « Nous écrire » */
+  --breakpoint-navair: 1366px; /* tagline sous le logo + écarts aérés */
 
   /* ----- Hauteur du header public collant -----
      🔴 Vérification en production du 2026-08-04 : la barre latérale des espaces

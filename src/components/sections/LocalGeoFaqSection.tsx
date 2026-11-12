@@ -38,22 +38,22 @@ const FAQS_BY_SERVICE: Record<
       id: "audit-paris",
       fr: {
         q: "Réalisez-vous des audits IA à Paris et en Île-de-France ?",
-        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Tarifs publics affichés sur la page Audit, sans surcoût géographique.",
+        a: "Oui. Paris et toute l'Île-de-France font partie de nos premiers pôles d'intervention. Quatre niveaux d'audit sont disponibles selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre, sur devis et sans surcoût géographique.",
       },
       en: {
         q: "Do you run AI audits in Paris and Greater Paris?",
-        a: "Yes. Paris and all of Greater Paris are among our top engagement hubs. Four audit tiers are available based on your size (micro-business, SME, mid-cap, large enterprise) and scope. Public pricing on the Audit page, with no geographic surcharge.",
+        a: "Yes. Paris and all of Greater Paris are among our top engagement hubs. Four audit tiers are available based on your size (micro-business, SME, mid-cap, large enterprise) and scope, on quote and with no geographic surcharge.",
       },
     },
     {
       id: "audit-metropoles",
       fr: {
         q: "Et dans les autres métropoles ? Lyon, Marseille, Toulouse, Bordeaux ?",
-        a: "Toutes les métropoles régionales sont couvertes au même tarif public que Paris. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local et les éventuels cas clients à proximité.",
+        a: "Toutes les métropoles régionales sont couvertes aux mêmes conditions que Paris. Sélectionnez votre région sur la page Implantations pour voir le tissu B2B local et les éventuels cas clients à proximité.",
       },
       en: {
         q: "What about other metropolitan areas? Lyon, Marseille, Toulouse, Bordeaux?",
-        a: "All regional metropolitan areas are covered at the same public pricing as Paris. Pick your region on the Locations page to see the local B2B fabric and any nearby case studies.",
+        a: "All regional metropolitan areas are covered on the same terms as Paris. Pick your region on the Locations page to see the local B2B fabric and any nearby case studies.",
       },
     },
     {

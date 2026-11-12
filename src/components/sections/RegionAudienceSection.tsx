@@ -22,14 +22,12 @@ interface RegionAudienceSectionProps {
 export async function RegionAudienceSection({ region, isFr }: RegionAudienceSectionProps) {
   const t = await getTranslations("home");
 
-  // 4 cards génériques (TPE/PME/ETI/Grande) + 1 card cas concret régional
+  // 2 cards génériques (TPE, PME) + 1 card cas concret régional
   // hand-crafted (Will 2026-05-26 perfection 2026, anti-duplicate-content).
   type Segment = { title: string; lead: string; detail: string };
   const segments: ReadonlyArray<Segment> = [
     { title: t("audience1Title"), lead: t("audience1Lead"), detail: t("audience1Detail") },
     { title: t("audience2Title"), lead: t("audience2Lead"), detail: t("audience2Detail") },
-    { title: t("audience3Title"), lead: t("audience3Lead"), detail: t("audience3Detail") },
-    { title: t("audience4Title"), lead: t("audience4Lead"), detail: t("audience4Detail") },
     ...(region.audienceCaseStudyFr
       ? [
           {
@@ -58,8 +56,8 @@ export async function RegionAudienceSection({ region, isFr }: RegionAudienceSect
               className="text-fg text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight"
             >
               {isFr
-                ? "Nous accompagnons les TPE, PME, ETI et grands groupes"
-                : "We support small businesses, SMEs, mid-caps and large groups"}{" "}
+                ? "Nous accompagnons les PME et les TPE"
+                : "We support SMEs and small businesses"}{" "}
               <span
                 className="italic-editorial text-terracotta"
                 style={{ fontFamily: "var(--font-serif)" }}
@@ -73,7 +71,7 @@ export async function RegionAudienceSection({ region, isFr }: RegionAudienceSect
             </p>
           </div>
         </FadeInOnView>
-        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {segments.map((seg, idx) => (
             <li
               key={idx}

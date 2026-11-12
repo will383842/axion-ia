@@ -304,11 +304,15 @@ export async function enregistrerOppositionPourAdresse(
 }
 
 /** Vrai si l'adresse s'est opposée à la prospection commerciale. */
-export async function estOpposee(email: string): Promise<boolean> {
+export async function estOpposee(
+  email: string,
+  /** Client de transaction : le contrôle se fait alors dans la MÊME transaction (lot S3). */
+  db: Pick<typeof prisma, "emailOpposition"> = prisma,
+): Promise<boolean> {
   if (estStub()) return false;
   const emailHash = hashEmailForLookup(normaliserAdresse(email));
   if (emailHash === null) return false;
-  const ligne = await prisma.emailOpposition.findUnique({
+  const ligne = await db.emailOpposition.findUnique({
     where: { emailHash },
     select: { id: true },
   });

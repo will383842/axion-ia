@@ -49,7 +49,7 @@ export const BELLEVIGNE_EN_LAYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bellevigne-en-Layon et dans le vignoble du Layon ?",
-      a: "Oui, Axion-IA intervient à Bellevigne-en-Layon et dans tout le vignoble du Layon (Thouarcé, Faye-d'Anjou, Rablay-sur-Layon, Champ-sur-Layon, Beaulieu-sur-Layon). Nos consultants se déplacent depuis Angers (30 min).",
+      a: "Oui, Axion-IA intervient à Bellevigne-en-Layon et dans tout le vignoble du Layon (Thouarcé, Faye-d'Anjou, Rablay-sur-Layon, Champ-sur-Layon, Beaulieu-sur-Layon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations viticoles du Layon ?",

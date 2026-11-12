@@ -1,8 +1,8 @@
 /**
  * Tests — robots.ts
  *
- * Ce fichier n'avait AUCUN test, alors qu'il porte une doctrine explicite (« bloquer
- * training, garder citation », Will 2026-06-22) et plusieurs invariants dont la
+ * Ce fichier n'avait AUCUN test, alors qu'il porte une doctrine explicite (« être cité
+ * par les IA », option A, Williams 2026-11-09) et plusieurs invariants dont la
  * rupture est SILENCIEUSE : rien ne casse, rien n'échoue, et l'on découvre des mois
  * plus tard que Google ne fetche plus les images ou qu'un canal d'ingestion publié
  * est interdit. C'est exactement ce qui est arrivé à `/api/markdown/`.
@@ -12,9 +12,9 @@
  *  1. **Les canaux publiés sont autorisés.** `/llms.txt` annonce
  *     `/api/markdown/{type}/{slug}` aux moteurs IA ; le bloquer publie une
  *     invitation qu'on interdit d'honorer.
- *  2. **Les bots d'ENTRAÎNEMENT restent bloqués.** Ajouter une permission au
- *     tronc commun ne doit JAMAIS leur en donner une. C'est le test qui rend le
- *     correctif `/api/markdown/` sûr, et non seulement plausible.
+ *  2. **Les robots d'IA ne sont PLUS bloqués** (option A « cité partout ») :
+ *     aucun groupe `Disallow: /` ne les vise ; seuls Bytespider, omgili et
+ *     Diffbot restent bloqués.
  *  3. **`/api/og` survit.** L'invariant documenté du fichier : l'oublier casse
  *     silencieusement TOUS les aperçus sociaux du site.
  *  4. **Les surfaces privées restent fermées** — admin, données personnelles.
@@ -39,6 +39,10 @@ type Regle = {
 const RESULTAT = robots();
 const REGLES = RESULTAT.rules as Regle[];
 
+function agentsNommes(): string[] {
+  return REGLES.flatMap(agentsDe);
+}
+
 /** Les permissions d'un agent, normalisées en tableau. */
 function permissions(agent: string): string[] {
   const regle = REGLES.find((r) => r.userAgent === agent);
@@ -54,23 +58,26 @@ function interdictions(agent: string): string[] {
   return d === undefined ? [] : Array.isArray(d) ? d : [d];
 }
 
-/** Agents de citation : ils doivent recevoir le tronc commun d'autorisations. */
-const AGENTS_CITATION = [
-  "OAI-SearchBot",
-  "Claude-SearchBot",
-  "PerplexityBot",
-  "Bingbot",
-  "Googlebot-Image",
-];
+/** Rassemble tous les agents visés par au moins une règle. */
+function agentsDe(regle: Regle): string[] {
+  const u = regle.userAgent;
+  return u === undefined ? [] : Array.isArray(u) ? u : [u];
+}
 
-/** Agents d'entraînement : ils ne doivent recevoir AUCUNE autorisation. */
-const AGENTS_ENTRAINEMENT = [
+/** Agents d'IA : ils héritent du groupe `*` (aucune règle propre). */
+const AGENTS_IA = [
   "GPTBot",
   "ClaudeBot",
   "anthropic-ai",
   "Google-Extended",
   "Applebot-Extended",
+  "CCBot",
+  "OAI-SearchBot",
+  "Claude-SearchBot",
+  "PerplexityBot",
 ];
+
+const AGENTS_BLOQUES = ["Bytespider", "omgili", "Diffbot"];
 
 describe("robots.txt — canaux d'ingestion publiés", () => {
   it("autorise /api/markdown/ pour le générique et pour chaque bot de citation", () => {
@@ -78,10 +85,8 @@ describe("robots.txt — canaux d'ingestion publiés", () => {
     // rend 200 text/markdown. Sans cet Allow, `Disallow: /api/` l'interdit dans
     // les 12 blocs : on invite à lire ce qu'on interdit de lire.
     expect(permissions("*")).toContain("/api/markdown/");
-    for (const agent of AGENTS_CITATION) {
-      expect(permissions(agent), `${agent} doit pouvoir lire /api/markdown/`).toContain(
-        "/api/markdown/",
-      );
+    for (const agent of AGENTS_IA) {
+      expect(agentsNommes(), `${agent} hérite du groupe *`).not.toContain(agent);
     }
   });
 
@@ -97,20 +102,35 @@ describe("robots.txt — canaux d'ingestion publiés", () => {
   });
 });
 
-describe("robots.txt — doctrine « bloquer training, garder citation »", () => {
-  it("n'accorde AUCUNE autorisation aux bots d'entraînement", () => {
-    // C'est CE test qui rend sûr tout ajout au tronc commun : une permission
-    // ajoutée pour les moteurs de citation ne doit jamais fuiter vers eux.
-    for (const agent of AGENTS_ENTRAINEMENT) {
-      expect(permissions(agent), `${agent} ne doit avoir aucune autorisation`).toEqual([]);
-      expect(interdictions(agent), `${agent} doit être bloqué à la racine`).toEqual(["/"]);
+describe("robots.txt — option A « cité partout »", () => {
+  it("ne bloque aucun robot d'IA : ils héritent tous du groupe *", () => {
+    for (const regle of REGLES) {
+      const bloque = ([] as string[]).concat(regle.disallow ?? []).includes("/");
+      if (!bloque) continue;
+      for (const agent of AGENTS_IA) {
+        expect(
+          agentsDe(regle),
+          `${agent} ne doit figurer dans aucun groupe Disallow: /`,
+        ).not.toContain(agent);
+      }
+    }
+    for (const agent of AGENTS_IA) {
+      expect(agentsNommes(), `${agent} ne doit pas avoir de groupe propre`).not.toContain(agent);
     }
   });
 
-  it("bloque les scrapers sans valeur retour", () => {
-    for (const agent of ["CCBot", "Bytespider", "omgili", "Diffbot"]) {
-      expect(interdictions(agent), `${agent} doit être bloqué à la racine`).toEqual(["/"]);
-    }
+  it("bloque uniquement les scrapers sans valeur retour", () => {
+    const groupesBloques = REGLES.filter((r) =>
+      ([] as string[]).concat(r.disallow ?? []).includes("/"),
+    );
+    const bloques = groupesBloques.flatMap(agentsDe).sort();
+    expect(bloques).toEqual([...AGENTS_BLOQUES].sort());
+  });
+
+  it("n'a ni groupe Bingbot, ni crawl-delay, ni directive Host", () => {
+    expect(agentsNommes()).not.toContain("Bingbot");
+    expect(REGLES.some((r) => "crawlDelay" in r)).toBe(false);
+    expect(RESULTAT.host).toBeUndefined();
   });
 });
 
@@ -138,8 +158,7 @@ describe("robots.txt — surfaces privées", () => {
 });
 
 describe("robots.txt — découvrabilité", () => {
-  it("déclare le sitemap-index et l'hôte", () => {
+  it("déclare le sitemap-index", () => {
     expect(RESULTAT.sitemap).toBe("https://axion-ia.com/sitemap-index.xml");
-    expect(RESULTAT.host).toBe("https://axion-ia.com");
   });
 });

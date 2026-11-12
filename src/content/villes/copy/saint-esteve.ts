@@ -49,7 +49,7 @@ export const SAINT_ESTEVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Estève et dans l'agglo Perpignan ?",
-      a: "Oui, Axion-IA intervient à Saint-Estève et toute Perpignan Méditerranée Métropole (Perpignan à 8 min, Rivesaltes à 5 min, Pia, Bompas). Nos consultants sont basés à proximité immédiate.",
+      a: "Oui, Axion-IA intervient à Saint-Estève et toute Perpignan Méditerranée Métropole (Perpignan à 8 min, Rivesaltes à 5 min, Pia, Bompas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires périurbaines ?",

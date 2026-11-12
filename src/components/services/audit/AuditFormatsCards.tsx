@@ -6,12 +6,8 @@
  * le modèle sur-devis). Calqué sur le pattern 2 cartes de `/un-a-un` et
  * `/interventions/collectives` :
  *
- *   1. Audit sur place    → 1 journée complète, prix fixe (TPE/artisans/commerçants)
- *   2. Audit complet      → PME / ETI / grande entreprise, SUR DEVIS
- *
- * Prix dérivé de la SSOT pricing.ts (audit-flash : 1190 € HT présentiel, 1
- * journée — Will 2026-05-31, suppression du 490 € distanciel). L'audit complet
- * est volontairement « sur devis » — un vrai audit dépend de la taille.
+ *   1. La Journée IA      → 1 journée dans l'entreprise, prix lu dans pricing.ts (JOURNEE_IA_TIER)
+ *   2. Audit complet      → PME, SUR DEVIS (R5a, 08/11/2026 : l'audit sur place à 1 190 € est retiré)
  *
  * Server Component pur, zéro JS. FR canonique — EN = miroir (locale 301→FR).
  */
@@ -20,7 +16,7 @@ import { ArrowRight, Zap, Building2, type LucideIcon } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { Section } from "@/components/layout/Section";
-import { AUDIT_TIERS, formatTierPrice, getTierById } from "@/content/pricing";
+import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 
 interface AuditFormatsCardsProps {
   readonly isFr: boolean;
@@ -39,26 +35,21 @@ interface FormatCard {
 export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
   void _isFr; // EN = miroir FR (toggle conservé pour parité d'API avec autres composants).
 
-  const flashTier = getTierById(AUDIT_TIERS, "audit-flash");
-  // formatTierPrice → « À partir de 1 190 € » (isFromPrice, Will 2026-07-17).
-  const onsitePrice = formatTierPrice(flashTier, "fr", { compact: true });
-
   const cards: ReadonlyArray<FormatCard> = [
     {
-      href: "/audit/tpe-1-jour",
+      href: "/journee-ia",
       icon: Zap,
-      eyebrow: "TPE, artisans & commerçants",
-      title: "Audit sur place",
+      eyebrow: "TPE et PME",
+      title: "La Journée IA",
       tagline:
-        "On audite toute votre entreprise en une journée complète sur site, pour révéler tout ce que l'IA peut y changer. Recommandations chiffrées à la clé.",
-      // Prix en tête, comme la carte « Sur devis · selon l'ampleur ».
-      meta: `${onsitePrice} · 1 journée complète · sur place`,
-      cta: "Découvrir l'audit sur place",
+        "Une journée dans votre entreprise : nous chiffrons le temps perdu avec vos équipes et nous les formons sur leurs propres dossiers.",
+      meta: `${formatTierPrice(JOURNEE_IA_TIER, "fr", { compact: true })} HT · 1 journée dans vos locaux`,
+      cta: "Découvrir La Journée IA",
     },
     {
       href: "/appel",
       icon: Building2,
-      eyebrow: "PME · ETI · Grande entreprise",
+      eyebrow: "PME",
       title: "Audit complet",
       tagline:
         "Calibré sur votre taille et vos enjeux : cartographie complète, plan d'action chiffré, gouvernance IA. De quelques jours à plusieurs semaines.",
@@ -72,7 +63,7 @@ export function AuditFormatsCards({ isFr: _isFr }: AuditFormatsCardsProps) {
       eyebrow="Deux formats"
       title="Choisissez votre"
       titleEm="audit IA"
-      description="Un diagnostic rapide à prix fixe, ou un audit complet sur mesure. Dans les deux cas : un plan d'action concret."
+      description="La Journée IA pour savoir par où commencer, ou un audit complet sur mesure sur devis. Dans les deux cas : un plan d'action concret."
     >
       <div className="grid gap-6 md:grid-cols-2 lg:gap-7">
         {cards.map((card) => {

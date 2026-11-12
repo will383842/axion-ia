@@ -49,7 +49,7 @@ export const AIGUES_MORTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aigues-Mortes et en Camargue ?",
-      a: "Oui, Axion-IA intervient à Aigues-Mortes et dans toute la Camargue gardoise (Le Grau-du-Roi, Saint-Laurent-d'Aigouze, Vauvert). Nos consultants viennent de Nîmes (40 min) ou Montpellier (35 min).",
+      a: "Oui, Axion-IA intervient à Aigues-Mortes et dans toute la Camargue gardoise (Le Grau-du-Roi, Saint-Laurent-d'Aigouze, Vauvert). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs touristiques d'Aigues-Mortes ?",

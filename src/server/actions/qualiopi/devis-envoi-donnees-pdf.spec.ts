@@ -22,7 +22,8 @@ vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction:
 
 // Interception : le bloc PDF est fail-soft, l'action poursuit puis échoue sur
 // les mocks absents — le test ne regarde que l'appel.
-vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", () => ({
+vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
   lireContextePdfDevis: vi.fn().mockResolvedValue({ contexte: true }),
   donneesPdfDevis: (...a: unknown[]) => mockDonnees(...a),
 }));

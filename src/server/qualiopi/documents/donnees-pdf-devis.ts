@@ -70,8 +70,8 @@ export interface DevisPourPdf {
   dateValidite: Date;
   /**
    * Offre à formules (Json). ABSENT ou NULL = devis classique, rendu inchangé.
-   * ⚠️ La colonne n'existe pas encore en base (migration du lot 0) : `SELECT_DEVIS_POUR_PDF`
-   * ne la lit pas, donc tous les appelants passent aujourd'hui `undefined`.
+   * Lue par `SELECT_DEVIS_POUR_PDF` (`offre: true`) : sans elle, l'aperçu imprimerait un
+   * tableau vide à 0,00 €. Elle n'est exploitée que si l'interrupteur est allumé.
    */
   offre?: unknown;
   client: {
@@ -97,6 +97,8 @@ export const SELECT_DEVIS_POUR_PDF = {
   montantOpcoEstimeCents: true,
   resteAChargeCents: true,
   dateValidite: true,
+  // Offre à formules : sans elle, l'aperçu d'un devis à formules rendrait un tableau vide à 0,00 €.
+  offre: true,
   client: {
     select: {
       type: true,

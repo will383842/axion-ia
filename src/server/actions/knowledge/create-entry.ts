@@ -10,6 +10,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { requireAdminWrite } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes, revalidatePublicKbRoutes } from "./_revalidate";
@@ -27,6 +28,7 @@ export interface CreateEntryResult {
   readonly ok: boolean;
   readonly entryId?: string;
   readonly error?: string;
+  readonly reason?: string;
   readonly fieldErrors?: Record<string, string[] | undefined>;
 }
 
@@ -39,6 +41,25 @@ export async function createEntryAction(input: CreateEntryInput): Promise<Create
     return { ok: false, error: "validation", fieldErrors: parsed.error.flatten().fieldErrors };
   }
   const data = parsed.data;
+
+  // Doctrine : une fiche créée directement « en ligne » (ou prête à l'être) doit
+  // la respecter. En brouillon / relecture, le contenu reste libre : la porte
+  // s'applique à la publication.
+  if (
+    ["approved", "scheduled", "published", "deprecated"].includes(data.status) &&
+    ficheDestineeAuPublic(data)
+  ) {
+    for (const t of data.translations) {
+      const check = verifierDoctrineTraduction(t);
+      if (!check.valid) {
+        return {
+          ok: false,
+          error: "banned_words_violation",
+          reason: `${t.locale}: ${check.reason ?? "doctrine non respectée"} — créez la fiche en brouillon.`,
+        };
+      }
+    }
+  }
 
   // Unicité slug racine
   const existing = await prisma.knowledgeEntry.findUnique({

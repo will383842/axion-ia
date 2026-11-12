@@ -37,7 +37,6 @@ const STRATEGIC_PATHS = [
   "/audit",
   "/interventions",
   "/implementation",
-  "/cas-concrets",
   "/methodologie",
   "/comparaisons",
   "/stack-ia",

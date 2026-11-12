@@ -980,7 +980,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
 
   // ─────────────────────────────────────────────────────────────────────────────
   // MODULE : AI Act + Conformité (8 seeds)
-  // URGENCE : deadline réglementaire 3 août 2026
+  // URGENCE : transparence (art. 50) applicable depuis le 2 août 2026
   // ─────────────────────────────────────────────────────────────────────────────
 
   {
@@ -992,17 +992,17 @@ export const KW_AEO_G4: KeywordSeed[] = [
     priorite: 1,
     niveau: 2,
     injection: {
-      h1: "Obligations AI Act 2026 pour les PME : ce qui entre en vigueur le 3 août",
+      h1: "Obligations AI Act 2026 pour les PME : ce qui s'applique depuis le 2 août 2026",
       metaTitle: "Obligations AI Act 2026 PME | Axion-IA",
       metaDescription:
-        "À partir du 3 août 2026 : toute PME utilisant un système IA doit informer ses utilisateurs (art.",
+        "Depuis le 2 août 2026 (art. 50), selon votre rôle : informer de l'interaction avec une IA, signaler hypertrucages et certains textes générés.",
       h2Variants: [
-        "Ce qui s'applique aux PME dès le 3 août 2026",
-        "Les 3 obligations minimum à anticiper maintenant",
+        "Ce qui s'applique aux PME depuis le 2 août 2026",
+        "Déjà applicables : art. 4, art. 5, art. 50",
         "Sanctions et contrôles AI Act : ce que risque une PME",
       ],
     },
-    variables: { delai: "deadline 3 août 2026" },
+    variables: { delai: "depuis le 2 août 2026" },
     urlCible: "/fr/faq/obligations-ai-act-2026-pme",
     canonicalParent: "/fr/audit",
     source: "manuel",
@@ -1031,7 +1031,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
     urlCible: "/fr/faq/entreprise-soumise-ai-act",
     canonicalParent: "/fr/audit",
     source: "manuel",
-    note: "QAPage schema. P0 URGENT. Gap A7 Q26. Deadline 3 août 2026.",
+    note: "QAPage schema. P0 URGENT. Gap A7 Q26. Article 50 applicable depuis le 2 août 2026.",
   },
 
   {
@@ -1172,11 +1172,11 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Calendrier AI Act 2026 : les dates clés pour les PME",
       metaTitle: "AI Act 2026 : dates clés PME | Axion-IA",
       metaDescription:
-        "Dates AI Act : 2 février 2025 (pratiques IA interdites), 2 août 2025 (gouvernance), 3 août 2026 (obligations générales dont art. 50 information + art.",
+        "Dates AI Act : 2/02/2025 (interdictions, art. 4), 2/08/2025 (IA à usage général), 2/08/2026 (art. 50), 2/12/2027 (haut risque annexe III, reporté).",
       h2Variants: [
-        "Chronologie AI Act 2024-2027",
-        "Ce qui s'applique le 3 août 2026",
-        "Actions à mener avant juillet 2026",
+        "Chronologie AI Act 2024-2028",
+        "Ce qui s'applique depuis le 2 août 2026",
+        "Actions à mener dès maintenant",
       ],
     },
     urlCible: "/fr/faq/calendrier-ai-act-pme",
@@ -1281,7 +1281,7 @@ export const KW_AEO_G4: KeywordSeed[] = [
       h1: "Choisir un prestataire IA en France : 7 critères en 2026",
       metaTitle: "Choisir prestataire IA France 2026 | Axion-IA",
       metaDescription:
-        "7 critères : indépendance des outils, références vérifiables, méthode documentée, transparence tarifaire, accompagnement post-déploiement, conformité",
+        "7 critères : indépendance des outils, références vérifiables, méthode documentée, devis détaillé et ferme, accompagnement post-déploiement, conformité",
       h2Variants: [
         "Les 7 questions à poser avant de signer",
         "Red flags d'un mauvais prestataire IA",

@@ -49,7 +49,7 @@ export const BEAUCOUZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beaucouzé et dans l'ouest d'Angers ?",
-      a: "Oui, Axion-IA intervient à Beaucouzé et dans tout l'ouest d'Angers Loire Métropole (Saint-Jean-de-Linières, Avrillé, Saint-Léger-des-Bois). Nos consultants sont basés en agglomération angevine, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Beaucouzé et dans tout l'ouest d'Angers Loire Métropole (Saint-Jean-de-Linières, Avrillé, Saint-Léger-des-Bois). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises des zones d'activités de Beaucouzé ?",

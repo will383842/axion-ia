@@ -88,6 +88,7 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "../legal-footer";
+import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
 // Drapeau d'AFFIRMATION de la certification. Lecture `process.env` pure, aucun
 // import next/prisma : compatible avec le rendu d'e-mail hors requête (worker).
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
@@ -163,8 +164,13 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
  * ils sont proscrits en familles A et C.
  */
 const SOCIALS = {
-  linkedinCompany:
-    process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
+  /**
+   * Source unique : `COORDONNEES_PUBLIQUES.linkedinEntreprise` (module pur, pas
+   * de `@/env` dans le worker), la même que `CONTACT_PUBLIC.linkedinEntreprise`
+   * des données structurées. `COMPANY_LINKEDIN` reste une SURCHARGE d'exploitation
+   * (variable préexistante) ; absente, c'est la constante qui fait foi.
+   */
+  linkedinCompany: process.env.COMPANY_LINKEDIN || COORDONNEES_PUBLIQUES.linkedinEntreprise,
   facebookCompany: "https://www.facebook.com/axioniacom",
   /**
    * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
@@ -711,10 +717,10 @@ const TXT = {
     /*
      * Registre revu le 2026-09-01. L'ancienne ligne énumérait cinq prestations
      * à plat — un menu de prestataire, pas le positionnement d'un cabinet. Face
-     * à un acheteur d'ETI ou de grand groupe, une liste de services suggère
+     * à un dirigeant de PME, une liste de services suggère
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
-    tagline: "Cabinet IA pour entreprises — TPE, PME, ETI et grands groupes",
+    tagline: "Le partenaire IA de bout en bout des PME",
     reviewsWord: "avis clients",
     qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
@@ -745,7 +751,7 @@ const TXT = {
     signaturePositionnement:
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
     signatureServices:
-      "Audit IA · Implémentation de systèmes automatisés · Formation finançable OPCO · Coaching 1-to-1",
+      "Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -764,7 +770,7 @@ const TXT = {
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
   },
   en: {
-    tagline: "AI consultancy for mid-market and enterprise",
+    tagline: "The end-to-end AI partner for SMEs",
     reviewsWord: "client reviews",
     qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
@@ -781,8 +787,7 @@ const TXT = {
     signatureEquipe: "The Axion-IA team",
     signaturePositionnement:
       "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
-    signatureServices:
-      "AI audit · Automated systems implementation · OPCO-fundable training · 1-to-1 coaching",
+    signatureServices: "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,

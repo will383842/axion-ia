@@ -10,14 +10,15 @@
 import { describe, it, expect } from "vitest";
 import { repli } from "@/server/chatbot/catalog/repli";
 import { rechercherOffres } from "@/server/chatbot/tools/rechercher-offres";
+import { OFFERS } from "@/content/offers-catalog";
 
 const ctx = { tenantId: "axion-ia" };
 
 describe("T-36 repli — jamais de « non » sec", () => {
-  it("formation à 400 € (rien sous 1 200) → propose le moins cher proche (intervention-4h 1 200)", () => {
+  it("formation à 400 € → propose l'offre chiffrée la plus proche (R7 : la Journée IA, 1 490 €)", () => {
     const r = repli({ vertical: "formation", prixMax: 400 });
     expect(r.offres.length).toBeGreaterThan(0);
-    expect(r.offres.map((o) => o.id)).toContain("intervention-4h");
+    expect(r.offres.map((o) => o.id)).toContain("journee-ia");
   });
 
   it("atelier de 3 h (0.375 j, aucune offre ≤) → propose la durée voisine (4 h)", () => {
@@ -54,7 +55,11 @@ describe("T-36 repli — tri sur sous-tiers réels (inversion ETI)", () => {
 describe("T-36 repli — élargissement ±25 %", () => {
   it("formation 2300-2400 € (rien pile dedans) → élargit et trouve la formation par secteur (2200)", () => {
     // 2300 * 0.75 = 1725 → formation-secteur-1j (2 200 €, matrice) entre.
-    const r = repli({ vertical: "formation", prixMin: 2300, prixMax: 2400 });
+    // R7 (08/11/2026) : dans le vrai catalogue, ces prix sont masqués (onQuote) et le
+    // repli n'élargit plus sur eux ; la mécanique est vérifiée sur un catalogue de test
+    // où les paliers seraient affichables.
+    const catalogueAffichable = OFFERS.map((o) => ({ ...o, onQuote: false }));
+    const r = repli({ vertical: "formation", prixMin: 2300, prixMax: 2400 }, catalogueAffichable);
     expect(r.strategy).toBe("widened-price");
     expect(r.offres.map((o) => o.id)).toContain("formation-secteur-1j");
   });
@@ -71,11 +76,18 @@ describe("T-36 — intégration handler rechercher_offres", () => {
   });
 
   it("match exact → replied=false (pas de repli)", async () => {
+    const res = await rechercherOffres({ vertical: "formation", dureeMaxJours: 0.5 }, ctx);
+    expect(res.replied).toBe(false);
+    expect(res.offres.map((o) => o.id)).toContain("intervention-4h");
+  });
+
+  it("R7 : un budget en € ne trouve plus de « match exact » sur un prix masqué", async () => {
     const res = await rechercherOffres(
       { vertical: "formation", prixMin: 1100, prixMax: 1300 },
       ctx,
     );
-    expect(res.replied).toBe(false);
-    expect(res.offres.map((o) => o.id)).toContain("intervention-4h");
+    expect(res.replied).toBe(true);
+    // Seule la Journée IA peut y figurer avec un montant (1 490 € HT).
+    expect(res.offres.every((o) => o.prix === "Sur devis" || o.id === "journee-ia")).toBe(true);
   });
 });

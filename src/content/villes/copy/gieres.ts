@@ -1,26 +1,26 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #3 Claude Code (Will).
-// Gières (38, Isère) — est Grenoble, gare Grenoble-Universités-Gières (2e gare agglomération), campus universitaire.
+// Gières (38, Isère) — est grenoblois, gare de Gières (2e gare agglomération), campus universitaire.
 
 import type { VilleCopy } from "./types";
 
 export const GIERES_COPY: VilleCopy = {
   pitchFr:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
+    "Gières (38), commune de l'est de la métropole grenobloise, abrite la seconde gare ferroviaire de l'agglomération grenobloise et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   pitchEn:
-    "Gières (38), commune à l'est de Grenoble dans la métropole Grenoble-Alpes Métropole, abrite la seconde gare ferroviaire de l'agglomération grenobloise (Grenoble-Universités-Gières) et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
+    "Gières (38), commune de l'est de la métropole grenobloise, abrite la seconde gare ferroviaire de l'agglomération grenobloise et le campus universitaire. Tissu PME services, structures universitaires, TPE artisans, commerces et professions libérales. Axion-IA opère pour toutes les structures économiques de la commune giéroises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus universitaire), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la métropole grenobloise en zone est.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus Université Grenoble Alpes), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de Grenoble-Alpes Métropole en zone est.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gières (38). Nous accompagnons tous types d'activités : structures universitaires et de recherche (campus universitaire), PME tertiaires, TPE artisans BTP, commerçants, professions libérales et services aux entreprises de la métropole grenobloise en zone est.",
   seoHook: "université recherche & tertiaires services",
   ecosystemFr:
-    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Gières est membre de la métropole grenobloise (« La Métro ») et se situe à l'est de l'agglomération. Position stratégique : seconde gare ferroviaire de l'agglomération, la gare de Gières, desservant le campus universitaire (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
   ecosystemEn:
-    "Gières est membre de Grenoble-Alpes Métropole (« La Métro »), à l'est de Grenoble. Position stratégique : seconde gare ferroviaire de l'agglomération (Grenoble-Universités-Gières) desservant le campus universitaire Université Grenoble Alpes (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
+    "Gières est membre de la métropole grenobloise (« La Métro ») et se situe à l'est de l'agglomération. Position stratégique : seconde gare ferroviaire de l'agglomération, la gare de Gières, desservant le campus universitaire (~60 000 étudiants). Tissu PME tertiaires, structures de formation, TPE artisanat BTP, commerces de proximité, professions libérales.",
   distancesFr:
-    "Gare Grenoble-Universités-Gières à 5 min. Grenoble centre à 15 min tramway B/D. Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Lyon-Saint-Exupéry à 1h15. Campus universitaire Saint-Martin-d'Hères limitrophe.",
+    "Gare de Gières à 5 min. Aéroport Lyon-Saint-Exupéry à 1h15. Campus universitaire Saint-Martin-d'Hères limitrophe.",
   distancesEn:
-    "Gare Grenoble-Universités-Gières à 5 min. Grenoble centre à 15 min tramway B/D. Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Lyon-Saint-Exupéry à 1h15. Campus universitaire Saint-Martin-d'Hères limitrophe.",
+    "Gare de Gières à 5 min. Aéroport Lyon-Saint-Exupéry à 1h15. Campus universitaire Saint-Martin-d'Hères limitrophe.",
   topSectorsNaf: [
     "Université & recherche (campus UGA)",
     "PME tertiaires & services aux entreprises",
@@ -49,7 +49,7 @@ export const GIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gières et campus universitaire ?",
-      a: "Oui, Axion-IA intervient à Gières et tout l'est grenoblois (Saint-Martin-d'Hères, Domène, Murianette, Le Versoud). Accompagnement spécialisé campus Université Grenoble Alpes (~60 000 étudiants, structures de recherche).",
+      a: "Oui, Axion-IA intervient à Gières et tout l'est grenoblois (Saint-Martin-d'Hères, Domène, Murianette, Le Versoud). Accompagnement spécialisé campus universitaire (~60 000 étudiants, structures de recherche).",
     },
     {
       q: "Travaillez-vous avec les structures universitaires et de recherche ?",
@@ -64,8 +64,8 @@ export const GIERES_COPY: VilleCopy = {
       a: "Pour les professions libérales à Gières (médecins, avocats, expert-comptables, consultants), audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels patients/clients, automatisation gestion RDV, classification dossiers.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble centre (15 min tramway B/D) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

@@ -66,7 +66,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Publics cibles ───────────────────────────────────────────────────────
   {
     id: "form-006",
-    text: "Formations Axion-IA adaptées à 5 profils : dirigeants PME/ETI (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
+    text: "Formations Axion-IA adaptées à 5 profils : dirigeants de PME (décision stratégique), managers (pilotage équipe IA), marketing (génération de contenu), commerciaux (prospection IA) et RH (recrutement + administration).",
     source: "Axion-IA — Catalogue formations 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
@@ -111,8 +111,9 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Tarifs indicatifs ────────────────────────────────────────────────────
   {
     id: "form-010",
-    text: "Formation découverte IA en entreprise (demi-journée de 4 h, groupe de 2 à 15 personnes) — prix public par groupe affiché sur la grille tarifaire, supports pédagogiques inclus.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    // R7 (08/11/2026) : plus aucun prix public hors Journée IA — sur devis.
+    text: "Formation découverte IA en entreprise (demi-journée de 4 h, groupe de 2 à 15 personnes) — sur devis, supports pédagogiques inclus.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -120,8 +121,8 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-011",
-    text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — prix public fixe par groupe selon la catégorie (offre générale, par métier ou par secteur d'activité), hors frais de déplacement.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    text: "Formation journée complète en entreprise (1 journée, groupe de 2 à 15 personnes) — sur devis selon la catégorie (offre générale, par métier ou par secteur d'activité) ; parlons-en lors du rendez-vous gratuit de 45 minutes.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -130,7 +131,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-012",
     text: "Pour ancrer les acquis après une formation, Axion-IA propose un suivi hybride : session de formation (1 à 2 jours, présentiel ou distanciel) puis coaching 1-to-1 régulier — incluant un cadrage initial des usages IA existants.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
@@ -139,7 +140,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché de la formation IA en France ─────────────────────────────────
   {
     id: "form-015",
-    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME et ETI (Numeum, ex-Syntec Numérique, 2025).",
+    text: "Le marché de la formation professionnelle IA en France est estimé à 1,2 milliard d'euros en 2025, avec une croissance annuelle de 35 % portée par la demande des PME (Numeum, ex-Syntec Numérique, 2025).",
     source: "Numeum (ex-Syntec Numérique) — Rapport formation IA 2025",
     sourceUrl: "https://numeum.fr",
     verifiedAt: "2026-08-11",
@@ -148,7 +149,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-016",
-    text: "France Num recense 47 % des TPE-PME françaises ayant engagé au moins une action de formation IA en 2024 — contre 12 % en 2022, soit une multiplication par 4 en deux ans.",
+    text: "France Num recense 47 % des PME françaises ayant engagé au moins une action de formation IA en 2024 — contre 12 % en 2022, soit une multiplication par 4 en deux ans.",
     source: "France Num — Baromètre numérique des TPE-PME 2024",
     sourceUrl: "https://www.francenum.gouv.fr",
     verifiedAt: "2026-05-01",
@@ -193,11 +194,22 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   {
     id: "form-021",
     text: "Une conférence Axion-IA sur l'IA appliquée à votre secteur (format plénière sur 1 journée, grands effectifs — séminaires, kick-off annuels) — sur devis selon le périmètre, le format (présentiel, distanciel, hybride) et les déplacements.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/interventions-formations",
     verifiedAt: "2026-05-01",
     verticales: ["interventions_formations"],
     confidence: 0.92,
+  },
+  {
+    // R7 (08/11/2026) : l'offre mise en avant, seul prix public. Texte repris de la
+    // page /journee-ia (`src/app/[locale]/journee-ia/contenu.ts`), sans la garantie.
+    id: "form-081",
+    text: "La Journée IA d'Axion-IA, pour les TPE et PME : une journée dans vos locaux, partout en France. Le matin, nous regardons service par service ce qui prend du temps et nous le chiffrons avec vos heures ; l'après-midi, vos équipes apprennent sur leurs vrais dossiers ce qu'on confie à l'IA et ce qu'on garde. Vous repartez avec votre rapport complet (vos gains chiffrés et les tâches à automatiser, classées par rentabilité), un plan d'action sur 90 jours et une attestation pour chaque personne formée. {{price:journee-ia|flat}} la journée, dans vos locaux. On commence par un rendez-vous gratuit de 45 minutes, en visio ou par téléphone, sans engagement.",
+    source: "Axion-IA — La Journée IA",
+    sourceUrl: "https://axion-ia.com/fr/journee-ia",
+    verifiedAt: "2026-11-08",
+    verticales: ["interventions_formations"],
+    confidence: 0.95,
   },
   // ── Accompagnement post-formation ────────────────────────────────────────
   {
@@ -284,10 +296,10 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   },
   {
     id: "form-030",
-    text: "Axion-IA forme également les dirigeants à la gouvernance IA : définition d'une politique d'utilisation acceptable, gestion des risques de biais et traçabilité des décisions aidées par l'IA (AI Act art. 50).",
+    text: "Axion-IA forme également les dirigeants à la gouvernance IA : définition d'une politique d'utilisation acceptable, gestion des risques de biais et traçabilité des décisions aidées par l'IA.",
     source: "Axion-IA — Programme dirigeants IA v1.3",
     sourceUrl: "https://axion-ia.com/interventions-formations",
-    verifiedAt: "2026-05-01",
+    verifiedAt: "2026-11-08",
     verticales: ["interventions_formations"],
     confidence: 0.92,
   },
@@ -492,12 +504,13 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Enjeux réglementaires formation ──────────────────────────────────────
   {
     id: "form-059",
-    text: "L'AI Act européen impose aux entreprises utilisant des systèmes IA à « haut risque » (recrutement, crédit, santé) de former leurs équipes à l'usage responsable de l'IA — créant une obligation légale de formation IA pour certaines fonctions dès 2025.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act), Art. 4 et Art. 26",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    text: "Selon l'AI Act (art. 4), les entreprises qui utilisent des systèmes d'IA prennent des mesures pour la maîtrise de l'IA (« AI literacy ») de leur personnel, tous systèmes confondus et pas seulement ceux à haut risque. L'article s'applique depuis le 2 février 2025. Le règlement (UE) 2026/1744 (omnibus IA, en vigueur le 27 juillet 2026) l'a réécrit dans un sens plus souple : favoriser cette maîtrise, sans devoir garantir un niveau précis à chaque personne. Assoupli, il n'est ni supprimé ni reporté. Libellé exact : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689 (AI Act), art. 4, modifié par le règlement (UE) 2026/1744 (omnibus IA)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["interventions_formations"],
-    confidence: 0.94,
+    confidence: 0.8,
   },
   {
     id: "form-060",
@@ -640,12 +653,12 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
   // ── Marché emploi et formation IA ─────────────────────────────────────────
   {
     id: "form-074",
-    text: "France Travail recense 28 000 offres d'emploi en France mentionnant explicitement l'IA comme compétence requise en 2024 — contre 6 500 en 2022, une multiplication par 4,3 qui signale l'urgence d'une montée en compétences nationale.",
+    text: "Selon les offres d'emploi publiées en France, le nombre d'annonces mentionnant explicitement l'IA comme compétence requise a été multiplié par plus de quatre entre 2022 et 2024, ce qui signale l'urgence d'une montée en compétences.",
     source: "France Travail — Observatoire des métiers et compétences numériques 2024",
     sourceUrl: "https://www.francetravail.fr",
     verifiedAt: "2026-05-22",
     verticales: ["interventions_formations"],
-    confidence: 0.83,
+    confidence: 0.7,
   },
   // ── Accessibilité et inclusion ────────────────────────────────────────────
   {

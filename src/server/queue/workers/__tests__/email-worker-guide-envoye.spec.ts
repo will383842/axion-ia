@@ -136,3 +136,76 @@ describe("« Votre guide » : la demande est close APRÈS l'envoi réel", () => 
     );
   });
 });
+
+describe("🔴 guide de la page « Recevoir le guide » : List-Unsubscribe par le jeton d'opposition", () => {
+  const ADRESSE = "jeanne@example.test";
+
+  async function envoyer(payload: Record<string, unknown>, famille: string | null = "B") {
+    d.render.mockResolvedValue({ subject: "Objet", html: "<p>x</p>", text: "x", famille });
+    await processeur()(
+      job({
+        template: "guide-ia-envoi",
+        to: ADRESSE,
+        locale: "fr",
+        payload,
+        entityType: "GuideRequest",
+        entityId: "demande-1",
+      }),
+    );
+    return d.sendEmail.mock.calls[0]?.[0] as { unsubscribeToken?: string };
+  }
+
+  it("oppositionToken du payload => unsubscribeToken transmis à l'envoi (donc List-Unsubscribe)", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const jeton = jetonOpposition(ADRESSE);
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      reseau: true,
+      oppositionToken: jeton,
+    });
+    expect(envoi.unsubscribeToken).toBe(jeton);
+  });
+
+  it("même si la famille du gabarit n'est pas déterminée (null)", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const jeton = jetonOpposition(ADRESSE);
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: jeton }, null);
+    expect(envoi.unsubscribeToken).toBe(jeton);
+  });
+
+  it("le jeton d'un AUTRE destinataire est refusé : jamais d'en-tête qui désinscrirait un tiers", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const autre = jetonOpposition("autre@example.test");
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: autre }, null);
+    expect(envoi.unsubscribeToken).toBeUndefined();
+  });
+
+  it("une valeur qui n'est pas un jeton d'opposition est ignorée", async () => {
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: ADRESSE }, null);
+    expect(envoi.unsubscribeToken).toBeUndefined();
+  });
+
+  it("le jeton de la lettre garde la priorité", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      unsubscribeToken: "u".repeat(64),
+      oppositionToken: jetonOpposition(ADRESSE),
+    });
+    expect(envoi.unsubscribeToken).toBe("u".repeat(64));
+  });
+
+  it("l'adresse ne figure jamais EN CLAIR dans le jeton transmis ni dans les journaux", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const logs = vi.spyOn(console, "log").mockImplementation(() => {});
+    const warns = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      oppositionToken: jetonOpposition(ADRESSE),
+    });
+    expect(envoi.unsubscribeToken).not.toContain(ADRESSE);
+    expect(JSON.stringify([...logs.mock.calls, ...warns.mock.calls])).not.toContain(
+      envoi.unsubscribeToken ?? "jamais",
+    );
+  });
+});

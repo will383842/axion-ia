@@ -27,12 +27,12 @@ describe("llms-full.txt — le canal d'ingestion sert des prix, pas des gabarits
     expect(CORPS).not.toContain("{{label:");
   });
 
-  it("sert bien des montants en euros dans le bloc FAQ", () => {
-    // Garde anti-test-vide : sans montant résolu, l'assertion ci-dessus
+  it("résout les jetons du bloc FAQ en « sur devis » (R7 : aucun montant public hors Journée IA)", () => {
+    // Garde anti-test-vide : sans jeton résolu, l'assertion ci-dessus
     // passerait aussi sur un fichier dont on aurait simplement retiré la FAQ.
     const faq = CORPS.split("## FAQ")[1] ?? "";
     expect(faq.length).toBeGreaterThan(500);
-    expect(faq).toMatch(/\d[  \s]?\d{3}\s?€/);
+    expect(faq.toLowerCase()).toContain("sur devis");
   });
 
   it("ne produit jamais « à partir de à partir de »", () => {

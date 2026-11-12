@@ -65,7 +65,7 @@ export const AIRE_SUR_LA_LYS_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Aire-sur-la-Lys ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare d'Aire-sur-la-Lys accessible. Nos consultants se déplacent depuis Lille (55 min).",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare d'Aire-sur-la-Lys accessible. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

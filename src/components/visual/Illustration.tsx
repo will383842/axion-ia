@@ -33,6 +33,12 @@ export interface IllustrationProps extends Omit<
   figcaption?: string;
   /** Charger avec priority (LCP hero only). Défaut : false. */
   priority?: boolean;
+  /**
+   * `fetchpriority` de l'`<img>` (LCP hero only). `priority` ne pose que le
+   * `<link rel="preload">` : sans ce champ, l'`<img>` elle-même part en
+   * priorité normale (Next 16, `get-img-props`). Défaut : absent.
+   */
+  fetchPriority?: "high" | "low" | "auto";
   /** Sizes Tailwind-style override. Défaut calculé selon aspectRatio. */
   sizes?: string;
   className?: string;
@@ -62,6 +68,7 @@ export function Illustration({
   alt,
   figcaption,
   priority = false,
+  fetchPriority,
   sizes,
   slot,
   aspectRatio,
@@ -94,6 +101,7 @@ export function Illustration({
         width={width}
         height={height}
         priority={priority}
+        {...(fetchPriority ? { fetchPriority } : {})}
         sizes={sizes ?? defaultSizes[aspectRatio]}
         className="h-auto w-full"
       />

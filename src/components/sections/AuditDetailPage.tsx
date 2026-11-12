@@ -43,7 +43,13 @@ import { ClientLogosMarqueeBand } from "@/components/services/audit/ClientLogosM
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
 import { AUDIT_DETAIL_CONFIGS } from "@/content/audit-detail-configs";
 import { type AuditTier, getAuditTierMeta } from "@/content/audit-taxonomy";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import {
+  AUDIT_TIERS,
+  formatTierPrice,
+  getTierById,
+  libelleSurDevis,
+  prixAffichable,
+} from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
@@ -53,9 +59,8 @@ interface Props {
   locale: Locale;
 }
 
-/** Ordre canonique des 4 tiers audit — pour le maillage « autres niveaux ». */
+/** Ordre canonique des 3 audits encore en ligne (audit-flash retiré, R5a) — maillage « autres niveaux ». */
 const ALL_AUDIT_TIERS: ReadonlyArray<AuditTier> = [
-  "audit-flash",
   "audit-cible",
   "audit-strategique-pme",
   "audit-strategique-eti",
@@ -70,13 +75,12 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
 
   // ── Prix d'entrée (SSOT pricing.ts) — priceFlat (fixe) ou priceMin (range) ──
   const tierPricing = getTierById(AUDIT_TIERS, tier);
+  // R7 (ordre de Williams du 08/11/2026) : aucun prix d'audit au public — « Sur devis »
+  // tant que l'interrupteur de pricing.ts est coupé (ou que le palier est masqué).
   const entryValue = tierPricing.priceFlat ?? tierPricing.priceMin ?? null;
-  const priceValue =
-    entryValue != null
-      ? formatAmount(entryValue, isFr ? "fr" : "en")
-      : isFr
-        ? "Sur devis"
-        : "On request";
+  // `prixAffichable` couvre `prixPublicMasque` (R5a) ET l'interrupteur R7.
+  const prixMasque = entryValue == null || !prixAffichable(tierPricing);
+  const priceValue = prixMasque ? libelleSurDevis(locale) : formatTierPrice(tierPricing, locale);
 
   // ── CTA héro : réservation calendrier (Flash) ou cadrage par formulaire ────
   const featuredSubTier = config.subTiers.find((s) => s.isFeatured) ?? config.subTiers[0]!;
@@ -245,9 +249,11 @@ export function AuditDetailPage({ tier, locale }: Props): ReactNode {
             {/* CARTE INFOS-CLÉS */}
             <aside className="border-terracotta/25 bg-canvas shadow-card rounded-3xl border-2 p-6 lg:sticky lg:top-24 lg:mt-8 lg:p-7">
               <div className="border-border border-b pb-5">
-                <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
-                  {isFr ? "À partir de" : "From"}
-                </p>
+                {prixMasque ? null : (
+                  <p className="text-fg-muted text-[12px] font-semibold tracking-wide uppercase">
+                    {isFr ? "À partir de" : "From"}
+                  </p>
+                )}
                 <p
                   className="text-terracotta mt-1 text-[2.5rem] leading-none font-medium tabular-nums"
                   style={{ fontFamily: "var(--font-serif)" }}

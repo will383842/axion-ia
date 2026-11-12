@@ -1,13 +1,13 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #3 Claude Code (Will).
-// Saint-Ismier (38, Isère) — vallée du Grésivaudan, banlieue est de Grenoble, mix résidentiel haut de gamme + tertiaire.
+// Saint-Ismier (38, Isère) — vallée du Grésivaudan, banlieue est grenobloise, mix résidentiel haut de gamme + tertiaire.
 
 import type { VilleCopy } from "./types";
 
 export const SAINT_ISMIER_COPY: VilleCopy = {
   pitchFr:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de l'agglomération grenobloise, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   pitchEn:
-    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de Grenoble, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Saint-Ismier (38), commune de la vallée du Grésivaudan en banlieue est de l'agglomération grenobloise, mêle résidentiel haut de gamme, tissu tertiaire et activités locales. Tissu PME tertiaires, TPE artisans BTP haut de gamme, professions libérales et commerces. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Ismier (38). Nous accompagnons tous types d'activités : TPE artisans BTP haut de gamme, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires saint-ismiéroises, indépendants et services aux entreprises du Grésivaudan.",
   directAnswerEn:
@@ -18,9 +18,9 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Ismier est positionnée dans la vallée du Grésivaudan, en zone résidentielle haut de gamme de l'agglomération grenobloise est. Proximité du parc technologique Inovallée (Meylan, 10 min) — accueille certaines structures innovation. Tissu PME tertiaires, TPE artisans BTP (haut de gamme, second œuvre), professions libérales installées, commerces de proximité et services péri-urbains.",
   distancesFr:
-    "Grenoble centre à 20 min voiture A41. Tramway B à proximité Meylan (10 min). Aéroport Grenoble-Alpes-Isère à 50 min. Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
+    "Tramway B à proximité Meylan (10 min). Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
   distancesEn:
-    "Grenoble centre à 20 min voiture A41. Tramway B à proximité Meylan (10 min). Aéroport Grenoble-Alpes-Isère à 50 min. Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
+    "Tramway B à proximité Meylan (10 min). Chambéry à 50 min A41. Axe vers Crolles et Pontcharra (Grésivaudan).",
   topSectorsNaf: [
     "PME tertiaires & services aux entreprises",
     "TPE artisanat BTP (haut de gamme)",
@@ -49,7 +49,7 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Ismier et Grésivaudan ?",
-      a: "Oui, Axion-IA intervient à Saint-Ismier et toute la vallée du Grésivaudan (Meylan, Montbonnot-Saint-Martin, Biviers, Crolles, Bernin). Nos consultants viennent de Grenoble (20 min A41) ou Lyon (1h15 A48).",
+      a: "Oui, Axion-IA intervient à Saint-Ismier et toute la vallée du Grésivaudan (Meylan, Montbonnot-Saint-Martin, Biviers, Crolles, Bernin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales saint-ismiéroises ?",
@@ -64,8 +64,8 @@ export const SAINT_ISMIER_COPY: VilleCopy = {
       a: "Pour les PME tertiaires à Saint-Ismier (proximité Inovallée Meylan), nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min A41). Pour les multi-jours, hébergement local possible (hôtels Grenoble).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

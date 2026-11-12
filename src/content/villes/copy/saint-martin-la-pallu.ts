@@ -49,7 +49,7 @@ export const SAINT_MARTIN_LA_PALLU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Martin-la-Pallu et nord Poitou ?",
-      a: "Oui, Axion-IA intervient à Saint-Martin-la-Pallu et tout le nord Poitou (Neuville-de-Poitou, Mirebeau, Vouillé, Jaunay-Marigny). Nos consultants sont basés à Poitiers (20 min) et couvrent tout Grand Poitiers.",
+      a: "Oui, Axion-IA intervient à Saint-Martin-la-Pallu et tout le nord Poitou (Neuville-de-Poitou, Mirebeau, Vouillé, Jaunay-Marigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Martin-la-Pallu ?",

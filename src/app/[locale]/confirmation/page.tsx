@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -90,11 +91,13 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
           </p>
 
           <ul className="space-y-2 text-base">
-            <li>
-              <a className="text-primary hover:underline" href={`/${locale}/cas-concrets`}>
-                → {isFr ? "Cas concrets" : "Case studies"}
-              </a>
-            </li>
+            {CAS_CONCRETS_AFFICHES ? (
+              <li>
+                <a className="text-primary hover:underline" href={`/${locale}/cas-concrets`}>
+                  → {isFr ? "Cas concrets" : "Case studies"}
+                </a>
+              </li>
+            ) : null}
             <li>
               <a className="text-primary hover:underline" href={`/${locale}/blog`}>
                 → Blog
@@ -128,7 +131,6 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
                 name: isFr ? "Demande reçue · Axion-IA" : "Request received · Axion-IA",
               }
         }
-        strategy="afterInteractive"
         scriptId="jsonld-confirmation"
       />
     </>

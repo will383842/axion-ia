@@ -18,9 +18,9 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
   ecosystemEn:
     "Pont-de-Chéruy est positionnée dans la partie orientale de l'aire d'attraction de Lyon, en limite frontière Isère-Rhône. Forme une unité urbaine avec Charvieu-Chavagneux et Tignieu-Jameyzieu. Tissu PME industrielles, logistique (proximité aéroport Lyon-Saint-Exupéry 20 min), TPE artisans BTP, commerces et activité agricole résiduelle.",
   distancesFr:
-    "Gare Pont-de-Chéruy sur la commune (TER). Aéroport Lyon-Saint-Exupéry à 20 min. Lyon centre à 40 min A43. Grenoble centre à 1h. Frontière Rhône à 5 min.",
+    "Gare Pont-de-Chéruy sur la commune (TER). Aéroport Lyon-Saint-Exupéry à 20 min. Lyon centre à 40 min A43. Frontière Rhône à 5 min.",
   distancesEn:
-    "Gare Pont-de-Chéruy sur la commune (TER). Aéroport Lyon-Saint-Exupéry à 20 min. Lyon centre à 40 min A43. Grenoble centre à 1h. Frontière Rhône à 5 min.",
+    "Gare Pont-de-Chéruy sur la commune (TER). Aéroport Lyon-Saint-Exupéry à 20 min. Lyon centre à 40 min A43. Frontière Rhône à 5 min.",
   topSectorsNaf: [
     "PME industrielles Nord-Isère",
     "Logistique (axe Lyon-Saint-Exupéry)",
@@ -65,7 +65,7 @@ export const PONT_DE_CHERUY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43) ou Grenoble (1h). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
     },
   ],
 };

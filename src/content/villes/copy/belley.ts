@@ -65,7 +65,7 @@ export const BELLEY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h15).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

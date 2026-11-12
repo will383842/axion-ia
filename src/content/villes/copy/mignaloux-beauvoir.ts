@@ -49,7 +49,7 @@ export const MIGNALOUX_BEAUVOIR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mignaloux-Beauvoir et agglo Poitiers ?",
-      a: "Oui, Axion-IA intervient à Mignaloux-Beauvoir et toute l'agglomération de Poitiers (Buxerolles, Saint-Benoît, Biard, Chasseneuil-du-Poitou). Nos consultants sont basés à Poitiers (10 min) et couvrent tout Grand Poitiers.",
+      a: "Oui, Axion-IA intervient à Mignaloux-Beauvoir et toute l'agglomération de Poitiers (Buxerolles, Saint-Benoît, Biard, Chasseneuil-du-Poitou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Mignaloux-Beauvoir ?",

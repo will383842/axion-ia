@@ -112,9 +112,8 @@ export default async function Contact({ params }: Props) {
               "Oui : par e-mail à contact@axion-ia.com, ou en réservant directement un créneau d'appel. Le formulaire reste le chemin le plus rapide, parce qu'il apporte déjà le contexte.",
           },
           {
-            question: "Intervenez-vous en dehors de votre région ?",
-            answer:
-              "Oui. À distance partout en France, et sur site au départ de Grenoble, en Auvergne-Rhône-Alpes.",
+            question: "Intervenez-vous partout en France ?",
+            answer: "Oui. Nous intervenons partout en France, à distance comme sur site.",
           },
         ],
       }
@@ -158,9 +157,8 @@ export default async function Contact({ params }: Props) {
               "Yes: by email at contact@axion-ia.com, or by booking a call slot directly. The form is still the fastest route, because it carries the context with it.",
           },
           {
-            question: "Do you work outside your own region?",
-            answer:
-              "Yes. Remotely across France, and on site from Grenoble, in the Auvergne-Rhône-Alpes region.",
+            question: "Do you work across France?",
+            answer: "Yes. We work across France, remotely and on site.",
           },
         ],
       };
@@ -183,8 +181,6 @@ export default async function Contact({ params }: Props) {
       url: SITE_URL,
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Grenoble",
-        addressRegion: "Auvergne-Rhône-Alpes",
         addressCountry: "FR",
       },
     },

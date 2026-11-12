@@ -21,6 +21,7 @@ import { prisma } from "@/lib/prisma";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import {
   SELECT_DEVIS_POUR_PDF,
+  OffreDevisInvalideError,
   donneesPdfDevis,
   lireContextePdfDevis,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
@@ -62,7 +63,19 @@ export async function GET(
   }
 
   const contexte = await lireContextePdfDevis();
-  const data = donneesPdfDevis(devis, contexte, new Date());
+  let data: ReturnType<typeof donneesPdfDevis>;
+  try {
+    data = donneesPdfDevis(devis, contexte, new Date());
+  } catch (err) {
+    // Offre stockée illisible : message clair, jamais un 500 ni un devis à 0 €.
+    if (err instanceof OffreDevisInvalideError) {
+      return NextResponse.json(
+        { error: `${err.message}. Corrigez l'offre du devis avant de l'afficher.` },
+        { status: 422 },
+      );
+    }
+    throw err;
+  }
   const element = avecFiligraneApercu(DevisPdf({ data }));
   const { buffer } = await renderPdfToBuffer(element);
 

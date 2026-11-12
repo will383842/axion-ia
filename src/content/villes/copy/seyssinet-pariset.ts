@@ -1,26 +1,24 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #1 Claude Code (Will).
-// Seyssinet-Pariset (38, Isère) — banlieue ouest Grenoble, massif Vercors, séparée par le Drac.
+// Seyssinet-Pariset (38, Isère) — banlieue ouest grenobloise, massif Vercors, séparée par le Drac.
 
 import type { VilleCopy } from "./types";
 
 export const SEYSSINET_PARISET_COPY: VilleCopy = {
   pitchFr:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de l'agglomération grenobloise séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
   pitchEn:
-    "Seyssinet-Pariset (38), banlieue ouest immédiate de Grenoble séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
+    "Seyssinet-Pariset (38), banlieue ouest immédiate de l'agglomération grenobloise séparée par le Drac, mêle plaine urbanisée (Seyssinet) et flanc du massif du Vercors (Pariset, vers Saint-Nizier-du-Moucherotte). Tissu PME tertiaires, TPE artisans, professions libérales et commerces. Axion-IA accompagne tout le tissu professionnel local du bassin grenoblois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de la métropole grenobloise (« La Métro »).",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de Grenoble-Alpes Métropole (« La Métro »).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssinet-Pariset (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinardes, indépendants et entreprises de la métropole grenobloise (« La Métro »).",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
-    "Seyssinet-Pariset est adhérente à Grenoble-Alpes Métropole (« La Métro »), rattachée au canton de Fontaine-Seyssinet. Le territoire mixte plaine/montagne reflète l'écosystème : tissu PME tertiaires et résidentiel dense côté Seyssinet (limitrophe Grenoble), activité touristique périphérique côté Pariset (premières pentes Vercors, route de Saint-Nizier). Commerces, artisanat BTP, professions libérales nombreuses.",
+    "Seyssinet-Pariset est adhérente à la métropole grenobloise (« La Métro »), rattachée au canton de Fontaine-Seyssinet. Le territoire mixte plaine/montagne reflète l'écosystème : tissu PME tertiaires et résidentiel dense côté Seyssinet (en bordure du Drac), activité touristique périphérique côté Pariset (premières pentes Vercors, route de Saint-Nizier). Commerces, artisanat BTP, professions libérales nombreuses.",
   ecosystemEn:
-    "Seyssinet-Pariset est adhérente à Grenoble-Alpes Métropole (« La Métro »), rattachée au canton de Fontaine-Seyssinet. Le territoire mixte plaine/montagne reflète l'écosystème : tissu PME tertiaires et résidentiel dense côté Seyssinet (limitrophe Grenoble), activité touristique périphérique côté Pariset (premières pentes Vercors, route de Saint-Nizier). Commerces, artisanat BTP, professions libérales nombreuses.",
-  distancesFr:
-    "Tramway A vers Grenoble centre (10 min). Gare Grenoble à 15 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
-  distancesEn:
-    "Tramway A vers Grenoble centre (10 min). Gare Grenoble à 15 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
+    "Seyssinet-Pariset est adhérente à la métropole grenobloise (« La Métro »), rattachée au canton de Fontaine-Seyssinet. Le territoire mixte plaine/montagne reflète l'écosystème : tissu PME tertiaires et résidentiel dense côté Seyssinet (en bordure du Drac), activité touristique périphérique côté Pariset (premières pentes Vercors, route de Saint-Nizier). Commerces, artisanat BTP, professions libérales nombreuses.",
+  distancesFr: "Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
+  distancesEn: "Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
   topSectorsNaf: [
     "TPE artisanat BTP",
     "Professions libérales (santé, juridique)",
@@ -49,7 +47,7 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seyssinet-Pariset et ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Seyssinet-Pariset et tout l'ouest grenoblois (Fontaine, Sassenage, Saint-Égrève) en adhésion à Grenoble-Alpes Métropole. Accès également Vercors périphérique (Saint-Nizier-du-Moucherotte, Lans-en-Vercors).",
+      a: "Oui, Axion-IA intervient à Seyssinet-Pariset et tout l'ouest grenoblois (Fontaine, Sassenage, Saint-Égrève) en adhésion à la métropole grenobloise. Accès également Vercors périphérique (Saint-Nizier-du-Moucherotte, Lans-en-Vercors).",
     },
     {
       q: "Accompagnez-vous les professions libérales du bassin grenoblois ?",
@@ -64,8 +62,8 @@ export const SEYSSINET_PARISET_COPY: VilleCopy = {
       a: "Pour les commerces de proximité et acteurs du tourisme Vercors à Seyssinet-Pariset, nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation réservations, classification photos produits, gestion saisonnalité.",
     },
     {
-      q: "Comment se déroule une mission depuis Grenoble ou Lyon ?",
-      a: "Nos consultants viennent de Grenoble (10 min tramway A) ou Lyon (1h15 voiture A48) pour les missions sur site à Seyssinet-Pariset. Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

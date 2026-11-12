@@ -5,7 +5,8 @@
  * Doctrine Will : `src/content/pricing.ts` est la SEULE source de vérité des
  * tarifs. Tout contenu généré (villes, blog, landing…) ne doit citer QUE :
  *   - des tokens `{{price:<tierId>}}` (résolus au rendu — pas de « € » littéral) ;
- *   - ou un montant € dont la VALEUR existe dans pricing.ts (SSOT).
+ *   - ou un montant € dont la VALEUR existe dans pricing.ts (SSOT) ET reste affichable
+ *     au public — depuis R7 (08/11/2026), la Journée IA seule.
  * Tout autre montant € (ex « 3 500 € » inventé, « 8 000 € » périmé) est bloqué :
  * le quality-gate régénère plutôt que de publier un prix qui contredit la SSOT.
  *
@@ -13,17 +14,21 @@
  * dérivée de `pricing.ts`. Branché dans `quality/doctrine-check.ts::checkDoctrine`.
  */
 import {
+  JOURNEE_IA_TIER,
   PRICING_CATEGORIES,
   UN_A_UN_TIERS,
   UN_A_UN_RECURRING_TIER,
+  prixAffichable,
   type PricingTier,
 } from "@/content/pricing";
 import { PATTERN_AMOUNT_EUR } from "../fact-check/claims-extractor";
 
 /**
- * Ensemble des montants € autorisés = toutes les valeurs numériques présentes
- * dans pricing.ts (priceFlat / priceFlatOnsite / priceMin / priceMax + sous-tiers).
- * Construit une seule fois.
+ * Ensemble des montants € autorisés dans un contenu à publier = les valeurs des
+ * paliers dont le prix reste AFFICHABLE au public (`prixAffichable`, interrupteur R7).
+ * Ordre de Williams du 08/11/2026 : seule la Journée IA (1 490 € HT) ; un montant de
+ * la grille interne (audit, formation, coaching…) est désormais bloqué comme un
+ * montant inventé. Les sous-paliers suivent leur palier parent. Construit une fois.
  */
 const SSOT_AMOUNTS: ReadonlySet<number> = (() => {
   const set = new Set<number>();
@@ -31,9 +36,11 @@ const SSOT_AMOUNTS: ReadonlySet<number> = (() => {
     ...Object.values(PRICING_CATEGORIES),
     UN_A_UN_TIERS,
     [UN_A_UN_RECURRING_TIER],
+    [JOURNEE_IA_TIER],
   ];
   for (const group of groups) {
     for (const tier of group) {
+      if (!prixAffichable(tier)) continue;
       for (const v of [tier.priceFlat, tier.priceFlatOnsite, tier.priceMin, tier.priceMax]) {
         if (typeof v === "number") set.add(v);
       }

@@ -1,26 +1,26 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #2 Claude Code (Will).
-// Claix (38, Isère) — sud-ouest Grenoble, balcons sud Vercors, banlieue résidentielle Grenoble-Alpes Métropole.
+// Claix (38, Isère) — sud-ouest grenoblois, balcons sud Vercors, banlieue résidentielle de la métropole grenobloise.
 
 import type { VilleCopy } from "./types";
 
 export const CLAIX_COPY: VilleCopy = {
   pitchFr:
-    "Claix (38), commune du sud-ouest grenoblois sur les balcons du Vercors, est intégrée à Grenoble-Alpes Métropole. Tissu résidentiel péri-urbain, TPE artisans, commerces, professions libérales et activités locales. Axion-IA y intervient pour tous types d'activités sud-ouest grenobloises.",
+    "Claix (38), commune du sud-ouest grenoblois sur les balcons du Vercors, est intégrée à la métropole grenobloise. Tissu résidentiel péri-urbain, TPE artisans, commerces, professions libérales et activités locales. Axion-IA y intervient pour tous types d'activités sud-ouest grenobloises.",
   pitchEn:
-    "Claix (38), commune du sud-ouest grenoblois sur les balcons du Vercors, est intégrée à Grenoble-Alpes Métropole. Tissu résidentiel péri-urbain, TPE artisans, commerces, professions libérales et activités locales. Axion-IA y intervient pour tous types d'activités sud-ouest grenobloises.",
+    "Claix (38), commune du sud-ouest grenoblois sur les balcons du Vercors, est intégrée à la métropole grenobloise. Tissu résidentiel péri-urbain, TPE artisans, commerces, professions libérales et activités locales. Axion-IA y intervient pour tous types d'activités sud-ouest grenobloises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Claix (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales (médecins, avocats), PME tertiaires claixoises, indépendants, agriculteurs/éleveurs sur les contreforts du Vercors et services aux entreprises.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Claix (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants de proximité, professions libérales (médecins, avocats), PME tertiaires claixoises, indépendants, agriculteurs/éleveurs sur les contreforts du Vercors et services aux entreprises.",
   seoHook: "artisanat & professions libérales",
   ecosystemFr:
-    "Claix est positionnée sur les balcons sud du massif du Vercors, en position résidentielle haut de gamme de Grenoble-Alpes Métropole. Tissu péri-urbain mixte : TPE artisanat BTP (BTP haut de gamme, second œuvre), commerces de proximité, professions libérales installées, PME services, activité agricole résiduelle (élevage, pâtures). Position vers stations Vercors (Lans-en-Vercors, Villard-de-Lans).",
+    "Claix est positionnée sur les balcons sud du massif du Vercors, en position résidentielle haut de gamme de la métropole grenobloise. Tissu péri-urbain mixte : TPE artisanat BTP (BTP haut de gamme, second œuvre), commerces de proximité, professions libérales installées, PME services, activité agricole résiduelle (élevage, pâtures). Position vers stations Vercors (Lans-en-Vercors, Villard-de-Lans).",
   ecosystemEn:
-    "Claix est positionnée sur les balcons sud du massif du Vercors, en position résidentielle haut de gamme de Grenoble-Alpes Métropole. Tissu péri-urbain mixte : TPE artisanat BTP (BTP haut de gamme, second œuvre), commerces de proximité, professions libérales installées, PME services, activité agricole résiduelle (élevage, pâtures). Position vers stations Vercors (Lans-en-Vercors, Villard-de-Lans).",
+    "Claix est positionnée sur les balcons sud du massif du Vercors, en position résidentielle haut de gamme de la métropole grenobloise. Tissu péri-urbain mixte : TPE artisanat BTP (BTP haut de gamme, second œuvre), commerces de proximité, professions libérales installées, PME services, activité agricole résiduelle (élevage, pâtures). Position vers stations Vercors (Lans-en-Vercors, Villard-de-Lans).",
   distancesFr:
-    "Grenoble centre à 15 min voiture A480/N532. Pont-de-Claix (tramway A) à 5 min. Aéroport Grenoble-Alpes-Isère à 1h. Axe N532 vers Vercors stations (40 min). Lans-en-Vercors à 30 min.",
+    "Pont-de-Claix (tramway A) à 5 min. Axe N532 vers Vercors stations (40 min). Lans-en-Vercors à 30 min.",
   distancesEn:
-    "Grenoble centre à 15 min voiture A480/N532. Pont-de-Claix (tramway A) à 5 min. Aéroport Grenoble-Alpes-Isère à 1h. Axe N532 vers Vercors stations (40 min). Lans-en-Vercors à 30 min.",
+    "Pont-de-Claix (tramway A) à 5 min. Axe N532 vers Vercors stations (40 min). Lans-en-Vercors à 30 min.",
   topSectorsNaf: [
     "TPE artisanat BTP (haut de gamme)",
     "Professions libérales (santé, juridique)",
@@ -49,7 +49,7 @@ export const CLAIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Claix et sud-ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Claix et tout le sud-ouest Grenoble-Alpes Métropole (Pont-de-Claix, Seyssins, Saint-Paul-de-Varces, Veurey-Voroize). Couverture également Vercors périphérique (Lans-en-Vercors, Villard-de-Lans 40 min N532).",
+      a: "Oui, Axion-IA intervient à Claix et tout le sud-ouest de la métropole grenobloise (Pont-de-Claix, Seyssins, Saint-Paul-de-Varces, Veurey-Voroize). Couverture également Vercors périphérique (Lans-en-Vercors, Villard-de-Lans 40 min N532).",
     },
     {
       q: "Accompagnez-vous les professions libérales claixoises ?",
@@ -64,8 +64,8 @@ export const CLAIX_COPY: VilleCopy = {
       a: "Pour les acteurs du tourisme et loisirs montagne Vercors (stations Lans-en-Vercors, Villard-de-Lans à proximité de Claix), nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (15 min A480/N532) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible (hôtels Grenoble ou Vercors).",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

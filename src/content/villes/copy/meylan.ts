@@ -1,26 +1,24 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #1 Claude Code (Will).
-// Meylan (38, Isère) — parc technologique Inovallée (cluster deep-tech Grenoble), banlieue est Grenoble.
+// Meylan (38, Isère) — parc technologique Inovallée (cluster deep-tech), banlieue est grenobloise.
 
 import type { VilleCopy } from "./types";
 
 export const MEYLAN_COPY: VilleCopy = {
   pitchFr:
-    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
+    "Meylan (38), banlieue est de l'agglomération grenobloise, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
   pitchEn:
-    "Meylan (38), banlieue est de Grenoble, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
+    "Meylan (38), banlieue est de l'agglomération grenobloise, abrite le parc technologique Inovallée (cluster deep-tech français reconnu : microélectronique, logiciel, médical). Tissu PME tech, startups deep-tech, sièges entreprises innovation, TPE services et professions libérales. Axion-IA y intervient pour scale-ups, R&D, PME et TPE meylanaises.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
   directAnswerEn:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Meylan (38). Nous accompagnons tous types d'activités : scale-ups deep-tech Inovallée, PME tech et logiciel, structures R&D microélectronique/médical, TPE artisans, commerçants, professions libérales (cabinets médicaux, juridiques) et services aux entreprises du bassin grenoblois.",
-  seoHook: "proche grenoble",
+  seoHook: "Inovallée",
   ecosystemFr:
-    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
+    "Meylan est l'un des poumons innovation de la métropole grenobloise (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
   ecosystemEn:
-    "Meylan est l'un des poumons innovation de Grenoble-Alpes Métropole (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti Grenoble), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
-  distancesFr:
-    "Tramway B vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Lyon-Saint-Exupéry à 1h15. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A41 vers Chambéry et Genève (1h45).",
-  distancesEn:
-    "Tramway B vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Lyon-Saint-Exupéry à 1h15. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A41 vers Chambéry et Genève (1h45).",
+    "Meylan est l'un des poumons innovation de la métropole grenobloise (« La Métro »). Parc technologique Inovallée concentre 300+ entreprises tech : microélectronique (héritière du CEA-Leti), édition logicielle, dispositifs médicaux, instrumentation scientifique. Tissu dense PME tech, TPE artisans haut de gamme, professions libérales et commerces résidentiels.",
+  distancesFr: "Aéroport Lyon-Saint-Exupéry à 1h15. Axe A41 vers Chambéry et Genève (1h45).",
+  distancesEn: "Aéroport Lyon-Saint-Exupéry à 1h15. Axe A41 vers Chambéry et Genève (1h45).",
   topSectorsNaf: [
     "Deep-tech & microélectronique (Inovallée)",
     "Édition logicielle & SaaS",
@@ -49,7 +47,7 @@ export const MEYLAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meylan et Inovallée ?",
-      a: "Oui, Axion-IA intervient à Meylan et toute Grenoble-Alpes Métropole (Grenoble, Saint-Martin-d'Hères, Échirolles, La Tronche). Spécialisation parc technologique Inovallée — accompagnement deep-tech, microélectronique, logiciel, médical.",
+      a: "Oui, Axion-IA intervient à Meylan et toute la métropole grenobloise (Saint-Martin-d'Hères, Échirolles, La Tronche). Spécialisation parc technologique Inovallée — accompagnement deep-tech, microélectronique, logiciel, médical.",
     },
     {
       q: "Travaillez-vous avec les scale-ups deep-tech d'Inovallée ?",

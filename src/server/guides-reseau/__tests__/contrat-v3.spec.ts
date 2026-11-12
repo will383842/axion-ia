@@ -86,6 +86,31 @@ describe("champs v3", () => {
   it.each(VERSIONS_TEXTE_CONNUES)("version_texte connue acceptée : %s", (version_texte) =>
     expect(analyserCorps(corps({ ...v3, version_texte })).ok).toBe(true),
   );
+  describe("versions de texte du Studio (liste fermée)", () => {
+    const ANCIENNES = ["m1-brouillon-v1", "m1-v1"];
+    const STUDIO = [
+      "mp-m1-v2",
+      "mp-m1-v2-a",
+      "mp-m1-v2-b",
+      "mp-m1-v2-c",
+      "mp-m1-v2-d",
+      "mp-m1-v2-e",
+      "mp-m1-v3",
+    ];
+    it.each(STUDIO)("version Studio acceptée par le contrat : %s", (version_texte) =>
+      expect(analyserCorps(corps({ ...v3, version_texte })).ok).toBe(true),
+    );
+    it("une valeur inconnue reste refusée", () => {
+      refuse({ version_texte: "jean_dupont_75" });
+      refuse({ version_texte: "mp-m1-v4" });
+    });
+    it("aucune ancienne valeur n'a disparu", () => {
+      for (const v of ANCIENNES) expect(VERSIONS_TEXTE_CONNUES as readonly string[]).toContain(v);
+    });
+    it("toutes les valeurs respectent le format version_texte du CRM", () => {
+      for (const v of VERSIONS_TEXTE_CONNUES) expect(v).toMatch(/^[A-Za-z0-9._-]{3,64}$/);
+    });
+  });
   it.each(["linkedin_page", "tiktok"])("message_prive refusé sur %s", (reseau) =>
     refuse({ reseau, canal: "message_prive" }),
   );

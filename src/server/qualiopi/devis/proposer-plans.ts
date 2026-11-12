@@ -227,6 +227,20 @@ export async function proposerPlansApresAcceptation(
   devisId: string,
   origine: "signature_complete" | "console",
 ): Promise<string | null> {
+  return (await proposerPlansApresAcceptationDetaille(devisId, origine)).echec;
+}
+
+/**
+ * Même appel, résultat explicite : `echec` (code ou `null`) ET `proposes` — vrai seulement si cet
+ * appel a CRÉÉ au moins un plan. « Déjà présents » (ou rien à proposer) donne `proposes: false`,
+ * ce qui permet à la reprise manuelle de dire « rien n'a été fait » à bon droit, et seulement
+ * à bon droit.
+ */
+export async function proposerPlansApresAcceptationDetaille(
+  devisId: string,
+  origine: "signature_complete" | "console",
+): Promise<{ echec: string | null; proposes: boolean }> {
+  let proposes = false;
   try {
     const r = await proposerPlansRecurrentsDuDevis(devisId);
     if (r.statut === "refuse") {
@@ -235,20 +249,23 @@ export async function proposerPlansApresAcceptation(
         tags: { action: "devis_plan_recurrent", code: r.code, origine },
         extra: { devisId, motif: r.motif },
       });
-      return r.code;
-    } else if (r.statut === "traite" && r.nonTraites.length > 0) {
-      Sentry.captureMessage("devis_formules: éléments d'offre sans plan", {
-        level: "info",
-        tags: { action: "devis_plan_recurrent", origine },
-        extra: { devisId, nonTraites: r.nonTraites },
-      });
+      return { echec: r.code, proposes: false };
+    } else if (r.statut === "traite") {
+      proposes = r.crees.length > 0;
+      if (r.nonTraites.length > 0) {
+        Sentry.captureMessage("devis_formules: éléments d'offre sans plan", {
+          level: "info",
+          tags: { action: "devis_plan_recurrent", origine },
+          extra: { devisId, nonTraites: r.nonTraites },
+        });
+      }
     }
   } catch (err) {
     Sentry.captureException(err, {
       tags: { action: "devis_plan_recurrent", origine },
       extra: { devisId },
     });
-    return "erreur_inattendue";
+    return { echec: "erreur_inattendue", proposes: false };
   }
-  return null;
+  return { echec: null, proposes };
 }

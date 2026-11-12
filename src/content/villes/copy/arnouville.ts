@@ -65,7 +65,7 @@ export const ARNOUVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (20 min Transilien H Gare du Nord → Arnouville ou voiture A1). Proximité Roissy-CDG (15 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Proximité Roissy-CDG (15 min).",
     },
   ],
 };

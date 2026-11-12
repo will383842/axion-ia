@@ -55,7 +55,7 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Profils bénéficiaires ─────────────────────────────────────────────────
   {
     id: "ua-005",
-    text: "Les profils qui bénéficient le plus du coaching 1-to-1 Axion-IA sont les dirigeants de PME/ETI (50-500 salariés) en phase de transformation digitale, les fondateurs de startups IA et les DG de filiales de groupes internationaux.",
+    text: "Les profils qui bénéficient le plus du coaching 1-to-1 Axion-IA sont les dirigeants de PME en phase de transformation digitale.",
     source: "Axion-IA — Retours programme Un-à-un 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-05-01",
@@ -74,8 +74,9 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   // ── Tarifs ────────────────────────────────────────────────────────────────
   {
     id: "ua-007",
-    text: "La journée 1-to-1 Axion-IA est à prix public : {{price:intervention-membre-equipe|flat}} pour un collaborateur clé, {{price:intervention-dirigeants|flat}} pour un dirigeant — 1 journée complète calibrée sur le poste réel, supports personnalisés inclus.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    // R7 (08/11/2026) : plus aucun prix public hors Journée IA — sur devis.
+    text: "La journée 1-to-1 Axion-IA, pour un collaborateur clé ou pour un dirigeant, est sur devis — 1 journée complète calibrée sur le poste réel, supports personnalisés inclus.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-08-11",
     verticales: ["un_a_un"],
@@ -83,8 +84,8 @@ export const KB_UN_A_UN: readonly KbFact[] = [
   },
   {
     id: "ua-008",
-    text: "Le coaching régulier 1-to-1 Axion-IA est facturé {{price:un-a-un-recurrent|flat}} par session (contrat 6, 12 ou 24 mois, 1 session/mois ou tous les 2 mois) — format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique dans la durée.",
-    source: "Axion-IA — Grille tarifaire 2026",
+    text: "Le coaching régulier 1-to-1 Axion-IA est sur devis (contrat 6, 12 ou 24 mois, 1 session/mois ou tous les 2 mois) — format recommandé pour une transformation profonde et l'accompagnement d'un projet IA stratégique dans la durée.",
+    source: "Axion-IA — Catalogue des offres 2026",
     sourceUrl: "https://axion-ia.com/un-a-un",
     verifiedAt: "2026-08-11",
     verticales: ["un_a_un"],
@@ -305,15 +306,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     verticales: ["un_a_un"],
     confidence: 0.83,
   },
-  {
-    id: "ua-031",
-    text: "Selon Wavestone (2024), 74 % des directeurs financiers (CFO) des ETI françaises reconnaissent que leur manque de maîtrise des outils IA de reporting retarde de 6 à 18 mois la modernisation de leur fonction finance.",
-    source: "Wavestone — Baromètre transformation finance et IA 2024",
-    sourceUrl: "https://www.wavestone.com",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.76,
-  },
   // ── Durée et structure des accompagnements ────────────────────────────────
   {
     id: "ua-032",
@@ -419,15 +411,6 @@ export const KB_UN_A_UN: readonly KbFact[] = [
     confidence: 0.73,
   },
   // ── Stats adoption IA C-level France ─────────────────────────────────────
-  {
-    id: "ua-043",
-    text: "En France, seulement 29 % des CEO d'ETI utilisent quotidiennement des outils IA dans leur travail personnel en 2024 — contre 54 % en Angleterre et 62 % aux États-Unis (Capgemini Research Institute, 2024).",
-    source: "Capgemini Research Institute — AI Adoption at the Executive Level 2024",
-    sourceUrl: "https://www.capgemini.com/research",
-    verifiedAt: "2026-05-22",
-    verticales: ["un_a_un"],
-    confidence: 0.78,
-  },
   {
     id: "ua-044",
     text: "78 % des CFO français interrogés par Wavestone (2025) déclarent que leur principal obstacle à l'adoption de l'IA n'est pas technologique mais humain — manque de temps pour se former et peur de faire des erreurs avec les nouveaux outils.",

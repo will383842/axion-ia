@@ -1821,6 +1821,8 @@ model GuideRequest {
   @@index([sentAt, queuedAt])
   @@index([createdAt])
   @@map("guide_requests")
+
+  contactsGuideReseau ContactGuideReseau[]
 }
 
 // ============================================================
@@ -5235,6 +5237,7 @@ model Client {
   emailsEnAttente  EmailOutbox[]
   reglesEmail      EmailAutomationSetting[]
   venteBrouillons  VenteBrouillon[]
+  devisAssistantBrouillons DevisAssistantBrouillon[]
   coachingSessions CoachingSession[]
 
   // ── Dossier client (chantier visio, 2026-09-29) ──
@@ -5340,6 +5343,7 @@ model Devis {
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
   venteBrouillons     VenteBrouillon[]
+  devisAssistantBrouillon DevisAssistantBrouillon?
   coachingSessions    CoachingSession[]
 
   /// Jalons de suivi après signature (colonnes posées par la migration
@@ -5439,6 +5443,44 @@ model VenteBrouillon {
   @@index([retentionUntil])
   @@index([createdByAdminId, updatedAt])
   @@map("vente_brouillons")
+}
+
+/// Brouillon de l'assistant de création de devis (chantier « assistant de devis », fiche S01).
+///
+/// Porte l'état de l'assistant entre deux visites. Aucune purge (décision de Williams) :
+/// pas de `retentionUntil`, aucune suppression — un brouillon abandonné est mis à l'écart
+/// (`statut`), jamais effacé. `adminId` et `venteBrouillonId` sont des liens logiques sans FK.
+/// `devisId` est unique : un seul brouillon d'assistant par devis (rejeu sûr).
+/// Le code qui lit ou écrit cette table arrive APRÈS la mise en ligne de cette migration.
+///
+/// rgpd: dossier-client — brouillon de devis rattaché à une fiche client par `client_id` (requalifié par la fiche S17, AVANT l'allumage de S06). Aucun contact libre dans le payload (plan assistant §5.11) ; jamais supprimé ni purgé. Déclaré dans `EXCLUSIONS_EXPORT_DOSSIER` et `EXCEPTIONS_EFFACEMENT_DOSSIER` avec son motif.
+model DevisAssistantBrouillon {
+  id                   String    @id @default(uuid()) @db.Uuid
+  /// Propriétaire (uuid AdminUser, sans FK — comme `vente_brouillons`).
+  createdByAdminId     String    @map("created_by_admin_id") @db.Uuid
+  clientId             String?   @map("client_id") @db.Uuid
+  client               Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId              String?   @unique @map("devis_id") @db.Uuid
+  devis                Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// Lien logique vers `vente_brouillons` (sans FK).
+  venteBrouillonId     String?   @map("vente_brouillon_id") @db.Uuid
+  etape                Int       @default(1) @db.SmallInt
+  /// Validé par Zod côté code (varchar, pas d'énumération Postgres).
+  statut               String    @default("en_cours") @db.VarChar(16)
+  payload              Json      @default("{}")
+  payloadVersion       Int       @default(1) @map("payload_version") @db.SmallInt
+  /// Concurrence optimiste.
+  revision             Int       @default(0)
+  /// Rejeu d'une sauvegarde déjà appliquée.
+  derniereSauvegardeId String?   @map("derniere_sauvegarde_id") @db.Uuid
+  /// Verrou de numérotation (double clic).
+  verrouDepuis         DateTime? @map("verrou_depuis") @db.Timestamptz(3)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([createdByAdminId, updatedAt])
+  @@index([clientId])
+  @@map("devis_assistant_brouillons")
 }
 
 // ============================================================
@@ -18129,6 +18171,52 @@ model GuideReseauOrigine {
   @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
   @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
   @@map("guide_reseau_origines")
+}
+
+/// Page « Recevoir le guide » (lot S0, 2026-11-08) — le contact laissé par une personne venue d'un réseau
+/// (mot en commentaire → page dédiée), avec la preuve de son consentement et l'état du message de remerciement.
+/// Table posée AVANT tout code qui la lit (S2) : l'ancien conteneur, qui l'ignore, continue de tourner.
+/// rgpd: dossier-client
+///
+/// · Rattachée à la personne par `email_key` (HMAC, la même clé que `guide_requests`) : l'adresse en clair
+///   n'y est JAMAIS écrite. `prenom` est CHIFFRÉ (`encryptPii`, IV aléatoire).
+/// · `guide_request_id` est facultatif : la demande de guide peut ne pas (encore) exister. SET NULL à sa suppression.
+/// · `jeton_empreinte` = SHA-256 du jeton du lien, UNIQUE : le lien est à usage unique ; le jeton lui-même n'est pas gardé.
+/// · `consent_empreinte` = SHA-256 du texte exact de la case cochée, `version_consentement` sa version.
+/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun | ecarte ; l'ancienne graphie « ecartee » est lue comme écartée) : aucune énumération
+///   Postgres, la migration reste additive.
+model ContactGuideReseau {
+  id                  String        @id @default(cuid())
+  emailKey            String        @map("email_key") @db.VarChar(64)
+  guideRequestId      String?       @map("guide_request_id") @db.Uuid
+  guideRequest        GuideRequest? @relation(fields: [guideRequestId], references: [id], onDelete: SetNull)
+  /// Chiffré (`encryptPii`).
+  prenom              String        @db.Text
+  /// ⚠️ mot, reseau, compteRef, postRef, versionM1 : NULLABLES depuis la migration
+  /// 20261108150000. L'ORIGINE vit dans `guide_reseau_origines` (historique v3) et au CRM Pro,
+  /// jamais recopiée ici : la page n'écrit plus ces colonnes (anciennes lignes seulement).
+  mot                 String?       @db.VarChar(30)
+  reseau              String?       @db.VarChar(20)
+  compteRef           String?       @map("compte_ref") @db.VarChar(80)
+  postRef             String?       @map("post_ref") @db.VarChar(80)
+  versionM1           String?       @map("version_m1") @db.VarChar(64)
+  versionConsentement String        @map("version_consentement") @db.VarChar(64)
+  /// SHA-256 (hex) du texte de la case de consentement.
+  consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
+  consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// SHA-256 (hex) du jeton du lien : unique, usage unique.
+  jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
+  /// Référence opaque de la conversation du réseau.
+  convRef             String        @map("conv_ref") @db.VarChar(120)
+  merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
+  merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
+  @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
+  @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@map("contacts_guide_reseau")
 }
 
 /// rgpd: dossier-client

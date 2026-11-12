@@ -49,7 +49,7 @@ export const MELESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Melesse et dans le nord rennais ?",
-      a: "Oui, Axion-IA intervient à Melesse et dans tout le nord de Rennes Métropole (Betton, Pacé, Saint-Grégoire, La Chapelle-des-Fougeretz). Nos consultants sont basés sur Rennes, déplacement en 15 min.",
+      a: "Oui, Axion-IA intervient à Melesse et dans tout le nord de Rennes Métropole (Betton, Pacé, Saint-Grégoire, La Chapelle-des-Fougeretz). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Melesse  : quel budget prévoir ?",

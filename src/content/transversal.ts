@@ -6,6 +6,7 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   MAINTENANCE_TIERS,
+  PRIX_PUBLICS_AFFICHES,
   formatAmount,
   formatPrice,
   getEntryLabel,
@@ -31,6 +32,12 @@ const maintenanceStandard = getTierById(MAINTENANCE_TIERS, "maintenance-standard
 // champs riches que le reste du corpus a reçus. L'équivalent EN ci-dessous est
 // conservé : le bloc `en` n'a pas été réécrit.
 function modulesAnswerEn(): string {
+  // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA. Cette
+  // réponse est servie telle quelle par llms-full.txt et le flux FAQ : interrupteur coupé,
+  // elle ne cite aucun montant (la version chiffrée ci-dessous revient s'il est rallumé).
+  if (!PRIX_PUBLICS_AFFICHES) {
+    return "Module 1 — On-site sessions (half-day to 2 days, on request). Module 2 — AI audit (4 tiers: Flash, Targeted, Strategic SME, Strategic Mid-cap; on request). Module 3 — AI implementation (production deployment, on request).";
+  }
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, "en", { compact: false });
   const flash = formatAmount(auditFlashTier.priceFlat!, "en", { compact: true });
   // Targeted / SME / Mid-cap are all « from €1,900 · on request » (Will
@@ -167,12 +174,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs publics sont les mêmes partout, sans surcoût géographique. Les frais de déplacement, eux, sont facturés en sus et figurent sur une ligne distincte du devis : vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
+        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique. Les frais de déplacement, eux, sont facturés en sus et figurent sur une ligne distincte du devis : vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
       keyPoints: [
         "13 régions métropolitaines, Corse comprise, et les 5 DROM",
         "Entreprises francophones à l'étranger, sur devis selon la zone",
         "Sur site ou à distance, selon ce que la mission exige vraiment",
-        "Mêmes tarifs publics partout, frais de déplacement facturés en sus",
+        "Mêmes conditions tarifaires partout, frais de déplacement facturés en sus",
         "Les 5 prestations disponibles sur l'ensemble du territoire",
       ],
       facts: [
@@ -195,7 +202,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Les frais de déplacement ne sont pas inclus",
           detail:
-            "Les tarifs publics ne varient pas d'une région à l'autre, mais les frais de déplacement s'ajoutent : ils sont chiffrés selon la zone et apparaissent séparément sur le devis.",
+            "Les tarifs ne varient pas d'une région à l'autre, mais les frais de déplacement s'ajoutent : ils sont chiffrés selon la zone et apparaissent séparément sur le devis.",
         },
       ],
     },
@@ -213,10 +220,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les tarifs publics affichés sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
-        "Tarifs publics identiques partout, sans surcoût géographique",
+        "Mêmes conditions tarifaires partout, sans surcoût géographique",
         "Frais de déplacement en sus, sur une ligne distincte du devis",
         "Formation collective, coaching 1-to-1 ou phase terrain d'audit",
         "Le format à distance reste possible quand le déplacement n'apporte rien",
@@ -236,7 +243,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le prix ne dépend pas de la ville",
           detail:
-            "Les tarifs publics sont les mêmes de Paris à Perpignan. Seuls les frais de déplacement varient selon la zone, et ils sont chiffrés à part, pas noyés dans le forfait.",
+            "Les tarifs sont les mêmes de Paris à Perpignan. Seuls les frais de déplacement varient selon la zone, et ils sont chiffrés à part, pas noyés dans le forfait.",
         },
         {
           title: "Les grandes villes ne passent pas devant",
@@ -253,7 +260,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         // surface du site a l'affirmer, et elle contredisait la doctrine tenue
         // partout ailleurs (frais de deplacement factures en sus, sur une ligne
         // distincte du devis). Ne pas le reintroduire.
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Grenoble, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
     },
   },
   {
@@ -263,11 +270,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE, PME et ETI sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les tarifs publics affichés : ils sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
-        "Artisans, commerçants, TPE, PME et ETI, partout en France",
+        "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
-        "Tarifs publics identiques quelle que soit la commune",
+        "Mêmes conditions tarifaires quelle que soit la commune",
         "Le distanciel évite les frais de déplacement, à qualité égale",
         "Sur site quand le terrain l'exige : atelier, production, équipe entière",
       ],
@@ -583,11 +590,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe la facturation ?",
       answer:
-        "Devis fixe, virement bancaire, facture : la mécanique tient en trois temps, sans abonnement ni engagement de durée. Chaque prestation est chiffrée dans un devis détaillé, valable 30 jours ; la commande devient ferme à réception de ce devis signé, accompagné le cas échéant de l'acompte convenu. Le règlement s'effectue par virement, à la commande pour les prestations courantes ; au-delà d'un certain montant, un échelonnement — acompte au démarrage, solde à la livraison — peut être convenu et figure alors au devis.\n\nTous les tarifs publiés sont hors taxes : la TVA française à 20 % s'ajoute sur la facture. Le montant validé avant démarrage est celui qui apparaît sur la facture — pas de régie, pas de facturation à l'heure passée, pas de dépassement de périmètre décidé en cours de route. Un devis personnalisé est établi sous 48 h ouvrées après l'appel de cadrage. Et si un imprévu tombe côté client, la prestation est reportable une fois sans frais, à une date convenue entre les parties.",
+        "Devis fixe, virement bancaire, facture : la mécanique tient en trois temps, sans abonnement ni engagement de durée. Chaque prestation est chiffrée dans un devis détaillé, valable 30 jours ; la commande devient ferme à réception de ce devis signé, accompagné le cas échéant de l'acompte convenu. Le règlement s'effectue par virement, à la commande pour les prestations courantes ; au-delà d'un certain montant, un échelonnement — acompte au démarrage, solde à la livraison — peut être convenu et figure alors au devis.\n\nTous nos devis sont établis hors taxes : la TVA française à 20 % s'ajoute sur la facture. Le montant validé avant démarrage est celui qui apparaît sur la facture — pas de régie, pas de facturation à l'heure passée, pas de dépassement de périmètre décidé en cours de route. Un devis personnalisé est établi sous 48 h ouvrées après l'appel de cadrage. Et si un imprévu tombe côté client, la prestation est reportable une fois sans frais, à une date convenue entre les parties.",
       keyPoints: [
         "Devis détaillé valable 30 jours : la commande est ferme à la signature",
         "Règlement par virement bancaire, aucun abonnement ni engagement de durée",
-        "Tarifs publiés hors taxes — la TVA française à 20 % s'ajoute sur la facture",
+        "Devis établis hors taxes — la TVA française à 20 % s'ajoute sur la facture",
         "Devis personnalisé sous 48 h ouvrées après l'appel de cadrage",
         "Prestation reportable une fois sans frais en cas d'imprévu",
       ],
@@ -631,9 +638,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "On ne facture pas les heures passées mais un forfait sur un périmètre écrit. Si le périmètre change, cela fait l'objet d'un avenant discuté, jamais d'une ligne supplémentaire découverte sur la facture.",
         },
         {
-          title: "Les tarifs affichés ne sont pas TTC",
+          title: "Les devis ne sont pas TTC",
           detail:
-            "Tous les montants publiés sur le site sont hors taxes. La TVA s'ajoute sur la facture selon le régime applicable au client : à budgéter dès le départ.",
+            "Tous les montants de nos devis sont hors taxes. La TVA s'ajoute sur la facture selon le régime applicable au client : à budgéter dès le départ.",
         },
       ],
     },
@@ -939,30 +946,31 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
   },
   {
     id: "ai-act-2026",
-    reviewedAt: "2026-08-12",
+    reviewedAt: "2026-11-08",
     related: ["rgpd-ia", "ia-droit-auteur-contenu", "risques-ia-entreprise"],
     fr: {
       question: "Quelles sont les obligations légales des entreprises face à l'AI Act 2026 ?",
       answer:
-        "L'AI Act européen est entré en vigueur en 2024 et son application est progressive jusqu'à août 2026. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois obligations reviennent le plus souvent : informer les utilisateurs qu'un contenu est généré par IA (article 50), documenter les usages d'IA à risque limité, et désigner un interlocuteur chargé de la conformité IA. S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA intègre la conformité AI Act dans ses implémentations : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail de mise en place technique, pas une prestation juridique — la qualification exacte de vos systèmes et la validation de votre conformité relèvent de votre conseil.",
+        "L'AI Act européen est entré en vigueur en 2024 et son application est échelonnée de 2025 à 2028. Il classe les systèmes d'IA par niveau de risque et fait porter des obligations différentes selon cette classification.\n\nPour une entreprise qui utilise de l'IA générative sans la développer, trois articles reviennent le plus souvent. L'article 4 : prendre des mesures pour la maîtrise de l'IA de ses équipes (depuis février 2025, assoupli en juillet 2026 par le règlement (UE) 2026/1744). L'article 5 : ne pas recourir aux pratiques interdites (depuis février 2025). L'article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler les hypertrucages et certains textes d'intérêt public générés (depuis le 2 août 2026). Les obligations « haut risque » (recrutement, suivi des salariés…) sont reportées au 2 décembre 2027 (annexe III). S'y ajoutent les obligations RGPD, qui continuent de s'appliquer pleinement aux données traitées.\n\nAxion-IA peut aider à mettre en place des dispositifs techniques : étiquetage des contenus générés, traçabilité des traitements, versionnage. C'est un travail technique, pas une prestation juridique — la qualification exacte de vos systèmes et l'analyse de vos obligations relèvent de votre conseil.",
       keyPoints: [
-        "Entré en vigueur en 2024, application progressive jusqu'à août 2026",
+        "Entré en vigueur en 2024, application échelonnée de 2025 à 2028",
         "Les systèmes d'IA sont classés par niveau de risque",
-        "Article 50 : informer que le contenu est généré par IA",
-        "Documenter les usages à risque limité, désigner un interlocuteur conformité",
+        "Article 4 : mesures pour la maîtrise de l'IA de ses équipes (assoupli en 2026)",
+        "Article 50 : selon votre rôle (fournisseur ou déployeur, c'est-à-dire utilisateur), informer de l'interaction avec une IA, signaler hypertrucages et certains textes d'intérêt public générés",
+        "Haut risque : reporté au 2 décembre 2027 (annexe III)",
         "Le RGPD continue de s'appliquer en parallèle",
       ],
       facts: [
         { figure: "2024", label: "entrée en vigueur" },
-        { figure: "août 2026", label: "plein effet du règlement" },
-        { figure: "art. 50", label: "transparence des contenus IA" },
-        { figure: "3", label: "obligations les plus courantes" },
+        { figure: "02/02/2025", label: "maîtrise de l'IA et pratiques interdites" },
+        { figure: "02/08/2026", label: "transparence (art. 50)" },
+        { figure: "02/12/2027", label: "haut risque, après report" },
       ],
       nuances: [
         {
           title: "Ce n'est pas une prestation juridique",
           detail:
-            "Axion-IA met en place les dispositifs techniques : étiquetage, traçabilité, versionnage. La qualification de vos systèmes et la validation de votre conformité relèvent de votre conseil juridique.",
+            "Axion-IA met en place les dispositifs techniques : étiquetage, traçabilité, versionnage. La qualification de vos systèmes et l'analyse de vos obligations relèvent de votre conseil juridique.",
         },
         {
           title: "Toutes les obligations ne visent pas tout le monde",
@@ -972,14 +980,14 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "L'échéance n'est pas unique",
           detail:
-            "L'application est échelonnée jusqu'à août 2026, obligation par obligation. Il n'y a pas une date unique à laquelle tout devient exigible d'un coup.",
+            "L'application est échelonnée de 2025 à 2028, obligation par obligation. Il n'y a pas une date unique à laquelle tout devient exigible d'un coup.",
         },
       ],
     },
     en: {
       question: "What are companies' legal obligations under the 2026 AI Act?",
       answer:
-        "The EU AI Act (phased enforcement until August 2026) requires companies using generative AI to: (1) inform users that content is AI-generated (art. 50), (2) document limited-risk AI uses, (3) appoint an AI compliance contact. Axion-IA integrates AI Act compliance into its implementations.",
+        "The EU AI Act applies in stages from 2025 to 2028. For a company that uses AI tools: article 4 asks it to take measures to foster AI literacy among its staff (since February 2025, relaxed in July 2026); article 5 bans certain practices; article 50 requires, depending on your role (provider or deployer), informing people of the interaction with an AI and flagging deepfakes and certain generated texts of public interest (since 2 August 2026). High-risk obligations are postponed to 2 December 2027 (Annex III). This is general information, not legal advice.",
     },
   },
   {
@@ -1205,54 +1213,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     },
   },
   {
-    id: "eti-grands-comptes",
-    reviewedAt: "2026-08-12",
-    related: ["audit-ia-definition", "implementation-ia-sur-mesure", "qui-pilote-ia-entreprise"],
-    fr: {
-      question: "Axion-IA travaille-t-il avec les ETI et grands comptes ?",
-      answer:
-        "Oui. Axion-IA accompagne des entreprises de toutes tailles, des TPE aux ETI et aux grands comptes. Pour ces dernières, l'offre prend une forme différente : programmes multi-sites sur devis, audits stratégiques approfondis et implémentations à large envergure avec gouvernance des données.\n\nL'Audit Stratégique ETI est conçu pour les structures de 250 à 5 000 salariés : cartographie multi-directions, 20 à 30 entretiens, restitution en COMEX et devant le conseil, plan de 60 à 80 pages exploitable en instance, puis 30 jours d'accompagnement après la remise. Le cadre AI Act et RGPD y est traité par défaut, avec mise en place d'un comité IA, d'une charte interne et des rôles associés.\n\nCôté implémentation, les missions ETI et les programmes annuels sont sur devis. Le principe reste celui des autres prestations : un intervenant senior, le même du cadrage à la livraison, et des livrables actionnables plutôt qu'un rapport de plus.",
-      keyPoints: [
-        "Toutes les tailles, des TPE aux ETI et grands comptes",
-        "Programmes multi-sites et programmes annuels sur devis",
-        "Audit Stratégique ETI : 250 à 5 000 salariés, 20 à 30 entretiens",
-        "Restitution COMEX et conseil, plan de 60 à 80 pages, 30 jours d'accompagnement",
-        "Gouvernance IA, conformité AI Act et RGPD traitées par défaut",
-      ],
-      facts: [
-        { figure: "250-5000", label: "salariés visés" },
-        { figure: "20-30", label: "entretiens menés" },
-        { figure: "60-80", label: "pages de plan" },
-        { figure: "30 j", label: "d'accompagnement post-audit" },
-      ],
-      nuances: [
-        {
-          title: "Ce n'est pas un cabinet de stratégie",
-          detail:
-            "Les livrables sont exploitables par les équipes : opportunités chiffrées, plan d'implémentation priorisé, gouvernance opérationnelle. Nous mettons ensuite en production ce qui a été retenu.",
-        },
-        {
-          title: "Nous ne remplaçons pas vos équipes internes",
-          detail:
-            "Sur les grandes structures, Axion-IA vient en complément d'une DSI ou d'une équipe data déjà en place — pas à leur place.",
-        },
-        {
-          title: "Les secteurs très régulés se traitent à plusieurs",
-          detail:
-            "Pour le nucléaire, la pharmacie ou la défense, la mission est co-pilotée avec un cabinet spécialisé partenaire.",
-        },
-      ],
-    },
-    en: {
-      question: "Does Axion-IA work with mid-caps and large companies?",
-      answer:
-        "Yes. Axion-IA works with companies of all sizes, from small businesses to mid-caps and large companies. For mid-caps and large accounts, Axion-IA offers multi-site programmes (on request), in-depth strategic audits and large-scale AI implementations with data governance.",
-    },
-  },
-  {
     id: "secteurs-ia",
     reviewedAt: "2026-08-12",
-    related: ["pme-ia", "eti-grands-comptes", "formation-ia-entreprise"],
+    related: ["pme-ia", "formation-ia-entreprise"],
     fr: {
       question: "Quels secteurs sont concernés par l'IA générative ?",
       answer:
@@ -1300,13 +1263,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment choisir un cabinet IA ?",
       answer:
-        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, prévoit-il un accompagnement après le déploiement, une fois l'effet nouveauté passé ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez les tarifs : ils sont publics, et le devis détaillé arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
+        "Quatre critères suffisent à trancher. Premièrement, le cabinet intervient-il sur site, avec vos données réelles et vos vrais dossiers, ou se contente-t-il de slides ? Deuxièmement, livre-t-il un ROI chiffré et mesurable, ou des promesses qualitatives ? Troisièmement, maîtrise-t-il plusieurs modèles — ChatGPT, Claude, Gemini, et des modèles ouverts comme Llama ou Mistral déployables chez vous — ou n'est-il que le revendeur d'un seul outil ? Quatrièmement, prévoit-il un accompagnement après le déploiement, une fois l'effet nouveauté passé ?\n\nAxion-IA répond positivement aux quatre. Trois vérifications supplémentaires font la différence à l'usage. Demandez qui interviendra réellement : chez Axion-IA les intervenants sont tous seniors, et le même expert vous suit du cadrage à la livraison. Demandez le devis : il est détaillé et arrive sous 48 heures ouvrées. Demandez enfin ce qui reste chez vous à la fin — le rapport, les prompts testés et les méthodes doivent vous appartenir. La couverture est nationale : 13 régions et 5 DROM, sur site ou à distance.",
       keyPoints: [
         "Sur site avec vos données réelles, pas une démonstration générique",
         "Un ROI chiffré et mesurable, pas des promesses qualitatives",
         "Plusieurs modèles maîtrisés — pas le revendeur d'un seul outil",
         "Un accompagnement prévu après le déploiement",
-        "Des tarifs publics et un devis détaillé sous 48 h ouvrées",
+        "Un devis détaillé sous 48 h ouvrées, sans engagement",
       ],
       facts: [
         { figure: "4", label: "critères de sélection" },
@@ -1540,9 +1503,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "On couvre l'artisan qui veut fluidifier ses devis et son suivi client comme le grand groupe. Le critère n'est pas la taille, mais l'existence d'une tâche répétitive à absorber.",
         },
         {
-          title: "Le budget d'entrée est public",
+          title: "Le budget se cadre en un échange",
           detail:
-            "Les prix sont affichés : {{price:audit-flash|from}} pour l'audit sur place, {{price:impl-poc|from}} pour le Pilote IA. Chaque mission fait ensuite l'objet d'un devis ferme en forfait fixe.",
+            "L'audit sur place comme le Pilote IA sont chiffrés sur devis, après un premier échange. Chaque mission fait l'objet d'un devis ferme en forfait fixe ; seule la Journée IA a un prix affiché ({{price:journee-ia|flat}}).",
         },
         {
           title: "Un pilote n'est pas un déploiement",
@@ -1678,9 +1641,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un projet IA pour une PME ?",
       answer:
-        "Cela dépend du format, et les prix d'entrée sont publics. Une journée de coaching 1-to-1 avec un collaborateur : {{price:intervention-membre-equipe|flat}} ; la même journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Une journée collective en intra, pour un groupe de 2 à 15 participants : {{price:formation-generale-1j|flat}} — un prix par groupe, jamais par personne. L'audit IA d'une journée sur site, calibré pour une PME : {{price:audit-flash|from}} ; les niveaux ciblé et stratégique : {{price:audit-cible|range}}.\n\nL'implémentation se chiffre au périmètre. Le pilote, concentré sur un seul cas d'usage prioritaire, est annoncé en fourchette publique : {{price:impl-poc|full}} ; les déploiements multi-cas en PME ou en ETI passent par un devis détaillé, parce que le nombre d'intégrations et de connexions à vos outils change tout. Dans tous les cas, le principe est le même : un devis fixe sous 48 h ouvrées, un périmètre écrit avant de commencer, et le montant validé qui devient celui de la facture. Une PME démarre presque toujours par une seule journée, pas par un programme.",
+        "Cela dépend du format, et chaque prestation est chiffrée sur devis, sous 48 h ouvrées. Une journée de coaching 1-to-1, avec un collaborateur ou avec le dirigeant ; une journée collective en intra, pour un groupe de 2 à 15 participants — un prix par groupe, jamais par personne ; un audit IA d'une journée sur site, calibré pour une PME, ou les niveaux ciblé et stratégique : le montant dépend de l'effectif, du périmètre et du format. Seule la Journée IA a un prix fixe : {{price:journee-ia|flat}}.\n\nL'implémentation se chiffre au périmètre. Le pilote se concentre sur un seul cas d'usage prioritaire ; les déploiements multi-cas en PME passent par un devis détaillé, parce que le nombre d'intégrations et de connexions à vos outils change tout. Dans tous les cas, le principe est le même : un devis fixe sous 48 h ouvrées, un périmètre écrit avant de commencer, et le montant validé qui devient celui de la facture. Une PME démarre presque toujours par une seule journée, pas par un programme.",
       keyPoints: [
-        "Cinq prestations, chacune avec un prix d'entrée public",
+        "Cinq prestations, chacune chiffrée sur devis ; la Journée IA à prix fixe",
         "Formats collectifs facturés par groupe de 2 à 15 participants, jamais par personne",
         "Coaching 1-to-1 et audit sur site : le ticket d'entrée d'une PME",
         "Implémentation chiffrée au périmètre, après cadrage écrit",
@@ -1713,7 +1676,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "How much does an AI project cost for an SME?",
       answer:
-        "Axion-IA pricing starts from a few hundred euros for training (half-day) and several thousand euros for a full audit or implementation. Each project has a fixed quote with no surprises. See the pricing page or request a free quote.",
+        // R7 (ordre de Williams du 08/11/2026) : aucune indication de montant hors Journée IA.
+        "Every Axion-IA project is priced on a fixed quote, set after a short scoping call, with no surprises. Request a free quote.",
     },
   },
   {
@@ -1933,25 +1897,25 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     reviewedAt: "2026-08-12",
     related: ["facturation", "cout-projet-ia-pme", "budget-demarrer-ia"],
     fr: {
-      question: "Les tarifs Axion-IA sont-ils publics et transparents ?",
+      question: "Comment sont fixés les tarifs d'Axion-IA ?",
       answer:
-        "Oui, et ils sont consultables sans formulaire à remplir. La page tarifs affiche le prix d'entrée de chaque prestation : coaching 1-to-1 avec un collaborateur ({{price:intervention-membre-equipe|flat}}) ou avec le dirigeant ({{price:intervention-dirigeants|flat}}), journée collective pour 2 à 15 participants ({{price:formation-generale-1j|flat}}), audit IA sur site ({{price:audit-flash|from}}). Seuls les formats dont le périmètre varie réellement — implémentation large, plateforme web ou SaaS sur mesure — sont annoncés sur devis, faute de fourchette honnête à publier.\n\nLa raison est pratique autant qu'éthique : la transparence accélère le bon rapprochement. Si nos tarifs ne correspondent pas à votre budget, vous le savez en trente secondes plutôt qu'après trois rendez-vous. Tous les montants publiés sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Pour une mission sur mesure, le devis détaillé arrive sous 48 h ouvrées après l'appel de cadrage : périmètre écrit, livrables, délais, prix ferme. Le montant validé avant démarrage est celui que vous réglez.",
+        "Sur devis, prestation par prestation. Coaching 1-to-1, formation collective pour 2 à 15 participants, audit IA, implémentation, plateforme web ou SaaS : le montant dépend de l'effectif, du périmètre et du format, et il est établi après un premier échange. Une seule prestation a un prix fixe affiché : la Journée IA, {{price:journee-ia|flat}}.\n\nUn devis Axion-IA n'est pas un prix opaque : il arrive sous 48 h ouvrées après l'appel de cadrage, avec le périmètre écrit, les livrables, les délais et un prix ferme. Tous les montants sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Le montant validé avant démarrage est celui que vous réglez.",
       keyPoints: [
-        "Prix d'entrée publiés pour chaque prestation, sans formulaire préalable",
-        "Formats collectifs affichés par groupe de 2 à 15 participants",
-        "« Sur devis » réservé aux périmètres réellement variables",
+        "Chaque prestation chiffrée sur devis, après un premier échange",
+        "Formats collectifs facturés par groupe de 2 à 15 participants",
+        "Seule la Journée IA a un prix fixe affiché",
         "Devis détaillé sous 48 h ouvrées après l'appel de cadrage",
         "Montants hors taxes : la TVA s'ajoute sur la facture",
       ],
       facts: [
-        { figure: "5", label: "prestations tarifées publiquement" },
+        { figure: "5", label: "prestations chiffrées sur devis" },
         { figure: "2-15", label: "participants par groupe" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "30 j", label: "de validité du devis" },
       ],
       nuances: [
         {
-          title: "Public ne veut pas dire uniforme",
+          title: "Sur devis ne veut pas dire uniforme",
           detail:
             "Le tarif dépend du profil accompagné et du format : une journée 1-to-1 avec un collaborateur et une journée avec le dirigeant n'ont ni le même contenu ni le même prix.",
         },
@@ -1961,16 +1925,16 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Un devis Axion-IA est détaillé et ferme : périmètre écrit, livrables, délais. Il vaut 30 jours et ne bouge pas en cours de mission.",
         },
         {
-          title: "Les prix affichés sont hors taxes",
+          title: "Les montants sont hors taxes",
           detail:
-            "Aucun montant publié n'inclut la TVA. Elle s'ajoute sur la facture selon le régime applicable : à intégrer au budget dès la comparaison des offres.",
+            "Aucun montant de devis n'inclut la TVA. Elle s'ajoute sur la facture selon le régime applicable : à intégrer au budget dès la comparaison des offres.",
         },
       ],
     },
     en: {
-      question: "Is Axion-IA pricing public and transparent?",
+      question: "How is Axion-IA pricing set?",
       answer:
-        "Yes. Axion-IA publishes public pricing, with no opaque quotes or hidden costs: each service (audit, session, implementation, coaching) has a clear entry price, and custom projects are quoted in detail before any commitment. You know exactly what you pay and why, with ROI estimated upfront.",
+        "Each service (audit, session, implementation, coaching) is quoted in detail before any commitment, with no hidden costs; only the AI Day has a fixed published price. You know exactly what you pay and why, with ROI estimated upfront.",
     },
   },
   {
@@ -2024,7 +1988,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel budget prévoir pour démarrer l'IA dans mon entreprise ?",
       answer:
-        "Le ticket d'entrée est celui d'une journée, pas celui d'un programme. Deux portes existent. La journée de coaching 1-to-1, sur le poste réel d'un collaborateur ({{price:intervention-membre-equipe|flat}}) ou avec le dirigeant ({{price:intervention-dirigeants|flat}}), qui allège tout de suite des tâches concrètes. Ou la journée d'audit sur site ({{price:audit-flash|from}}), qui cartographie l'entreprise et hiérarchise les opportunités avant d'investir. Pour faire monter une équipe entière, la journée collective réunit de 2 à 15 personnes : {{price:formation-generale-1j|flat}} pour le groupe.\n\nLa méthode compte plus que le montant : commencer petit sur un cas à fort impact, mesurer le temps réellement gagné, puis étendre. Un pilote d'implémentation sur un seul cas d'usage vient ensuite, en fourchette publique : {{price:impl-poc|full}}. Le déploiement multi-cas, lui, se chiffre au périmètre — et seulement une fois la valeur constatée. Prévoyez aussi le budget non financier : une journée bloquée sans réunion parallèle, un échantillon de données anonymisées, et quelqu'un en interne pour porter le sujet après notre départ.",
+        "Le ticket d'entrée est celui d'une journée, pas celui d'un programme. Plusieurs portes existent. La Journée IA, à prix fixe ({{price:journee-ia|flat}}), met l'IA au travail avec votre équipe dans vos locaux. La journée de coaching 1-to-1, sur le poste réel d'un collaborateur ou avec le dirigeant, allège tout de suite des tâches concrètes. La journée d'audit sur site cartographie l'entreprise et hiérarchise les opportunités avant d'investir. Pour faire monter une équipe entière, la journée collective réunit de 2 à 15 personnes, avec un prix par groupe. Hors Journée IA, chaque format est chiffré sur devis, sous 48 h ouvrées.\n\nLa méthode compte plus que le montant : commencer petit sur un cas à fort impact, mesurer le temps réellement gagné, puis étendre. Un pilote d'implémentation sur un seul cas d'usage vient ensuite, sur devis. Le déploiement multi-cas, lui, se chiffre au périmètre — et seulement une fois la valeur constatée. Prévoyez aussi le budget non financier : une journée bloquée sans réunion parallèle, un échantillon de données anonymisées, et quelqu'un en interne pour porter le sujet après notre départ.",
       keyPoints: [
         "Une journée suffit pour démarrer — coaching 1-to-1 ou audit sur site",
         "Journée collective facturée au groupe, de 2 à 15 participants",
@@ -2081,7 +2045,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "What budget should I plan to get started with AI?",
       answer:
-        "You can start without a big budget. A first AI audit or a targeted session is an investment of a few hundred to a few thousand euros, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
+        "You can start without a big budget. A first AI audit or a targeted session is priced on quote, with ROI often reached within weeks (hours saved, tasks automated). A custom implementation (agents, automations, domain AI) is priced by scope. The right approach: start small on a high-impact case, prove ROI, then scale.",
     },
   },
   {
@@ -3822,7 +3786,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Qui doit piloter l'IA dans l'entreprise ?",
       answer:
-        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE/PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
+        "Pas besoin d'un service informatique dédié. Le pilotage idéal associe la direction (vision et priorités), un référent métier motivé (le « champion » interne) et un accompagnement externe pour le cadrage et la montée en compétence. Dans les TPE et PME, c'est souvent le dirigeant lui-même qui impulse. L'essentiel : un sponsor clair et un premier cas d'usage concret pour embarquer les équipes.",
     },
   },
   // ── Batch FAQ #3 — par service (keyword-rich, EN = clone FR car EN désactivé).
@@ -3942,12 +3906,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
-        "Les tarifs d'audit sont publics et affichés, sans devis opaque ni prix caché. Ils s'annoncent toujours comme un plancher, le chiffrage réel se faisant au cas par cas selon le périmètre couvert. Audit sur place pour une TPE, une journée complète dans vos locaux : {{price:audit-flash}}. Audit Ciblé sur un département : {{price:audit-cible}}. Audits Stratégiques, PME comme ETI : {{price:audit-strategique-pme}}.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
+        "Les audits sont chiffrés sur devis, selon la taille et le périmètre, sans prix caché. Quatre formats existent : l'audit sur place pour une TPE, une journée complète dans vos locaux ; l'audit Ciblé sur un département ; les audits Stratégiques, PME comme ETI.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
       keyPoints: [
-        "Tarifs publics et affichés, annoncés comme un plancher",
-        "Audit sur place pour une TPE : {{price:audit-flash}}",
-        "Audit Ciblé sur un département : {{price:audit-cible}}",
-        "Audits Stratégiques PME et ETI : {{price:audit-strategique-pme}}",
+        "Les audits sont chiffrés sur devis, selon la taille et le périmètre",
+        "Audit sur place pour une TPE : une journée dans vos locaux",
+        "Audit Ciblé : un département",
+        "Audits Stratégiques PME et ETI : plusieurs services ou BU",
         "Devis détaillé et ferme sous 48 h ouvrées",
       ],
       facts: [
@@ -3976,7 +3940,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     en: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
-        "Axion-IA pratique des tarifs publics et transparents pour l'audit IA, avec un tarif d'entrée clair selon le format (audit flash sur site ou audit approfondi), et un devis détaillé pour les missions plus larges. L'investissement reste modeste face au temps gagné identifié, et certains diagnostics peuvent être partiellement co-financés (France Num, BPI, subventions régionales) selon votre profil.",
+        "Axion-IA chiffre l'audit IA sur devis, selon le format (audit flash sur site ou audit approfondi) et le périmètre, avec un devis détaillé sous 48 h ouvrées. L'investissement reste modeste face au temps gagné identifié, et certains diagnostics peuvent être partiellement co-financés (France Num, BPI, subventions régionales) selon votre profil.",
     },
   },
   {
@@ -4933,7 +4897,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif ne dépend pas du niveau hiérarchique",
           detail:
-            "Il dépend du profil accompagné et du contenu de la journée : {{price:intervention-membre-equipe|flat}} pour un cadre ou un manager sur son poste, {{price:intervention-dirigeants|flat}} pour la journée dirigeant, centrée sur les arbitrages.",
+            "Il dépend du profil accompagné et du contenu de la journée — un cadre ou un manager sur son poste, ou la journée dirigeant, centrée sur les arbitrages. Les deux sont chiffrées sur devis.",
         },
       ],
     },
@@ -5131,12 +5095,12 @@ export const HELP_ARTICLES: ReadonlyArray<HelpArticle> = [
     fr: {
       title: "Quel support après livraison ?",
       excerpt: "30 jours de maintenance corrective inclus, escalade chaude.",
-      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel à ${formatPrice(maintenanceStandard, "fr")} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
+      body: `Tout projet Axion-IA inclut 30 jours de support post-livraison : maintenance corrective sur les bugs identifiés, escalade chaude par email/téléphone (réponse sous 4 h ouvrées), 1 itération de fine-tuning si dérive de qualité observée. Au-delà, contrat de maintenance optionnel ${PRIX_PUBLICS_AFFICHES ? `à ${formatPrice(maintenanceStandard, "fr")}` : "sur devis"} (4 h/mois forfait). Aucun support n'est facturé pendant les 30 jours initiaux.`,
     },
     en: {
       title: "What post-delivery support?",
       excerpt: "30 days of corrective maintenance included, warm escalation.",
-      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract at ${formatPrice(maintenanceStandard, "en")} (4h/month flat fee). No support is billed during the initial 30 days.`,
+      body: `Every Axion-IA project includes 30 days of post-delivery support: corrective maintenance on identified bugs, warm escalation by email/phone (response within 4 business hours), 1 fine-tuning iteration if quality drift observed. Beyond that, optional maintenance contract ${PRIX_PUBLICS_AFFICHES ? `at ${formatPrice(maintenanceStandard, "en")}` : "on request"} (4h/month flat fee). No support is billed during the initial 30 days.`,
     },
   },
 ];

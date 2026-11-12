@@ -49,7 +49,7 @@ export const COUZEIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Couzeix et agglo Limoges nord ?",
-      a: "Oui, Axion-IA intervient à Couzeix et toute l'agglomération de Limoges nord-ouest (Rilhac-Rancon, Chaptelat, Verneuil-sur-Vienne, Nieul). Nos consultants sont basés à Limoges (10 min) et couvrent tout Limoges Métropole.",
+      a: "Oui, Axion-IA intervient à Couzeix et toute l'agglomération de Limoges nord-ouest (Rilhac-Rancon, Chaptelat, Verneuil-sur-Vienne, Nieul). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Couzeix ?",

@@ -49,7 +49,7 @@ export const BESSANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bessancourt et dans la vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Bessancourt et dans toute la vallée de Montmorency (Taverny, Beauchamp, Frépillon, Saint-Leu-la-Forêt). Nos consultants se déplacent depuis Paris Gare du Nord (35 min en Transilien H).",
+      a: "Oui, Axion-IA intervient à Bessancourt et dans toute la vallée de Montmorency (Taverny, Beauchamp, Frépillon, Saint-Leu-la-Forêt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Bessancourt ?",
@@ -65,7 +65,7 @@ export const BESSANCOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Bessancourt ?",
-      a: "Nos consultants se déplacent à Bessancourt depuis Paris (35 min Transilien H, gare de Bessancourt). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
     },
   ],
 };

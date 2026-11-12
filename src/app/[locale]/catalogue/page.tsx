@@ -26,6 +26,12 @@
 // Le QR imprimé mène ainsi à une page utile, et la page revient d'elle-même
 // quand l'interrupteur repasse à true. Aucune image n'est supprimée.
 //
+// ⛔ R7 (08/11/2026, ordre de Williams : plus aucun prix public hors Journée IA) : le
+// feuilletoir affiche un prix par offre (« 3 600 € HT / groupe ») et une page « Tous nos
+// tarifs ». Tant que `PRIX_PUBLICS_AFFICHES` (`pricing.ts`) est faux, la page redirige
+// elle aussi, et `next.config.ts` redirige les fichiers de `public/catalogue/` (servis
+// hors des pages). Rien n'est supprimé. Garde : `fichiers-publics-a-prix-masques.spec.ts`.
+//
 // RENDU DYNAMIQUE, et c'est voulu : `QUALIOPI_CERTIFICATION_OBTENUE` est une
 // variable d'EXÉCUTION, absente du build GitHub Actions. Une page statique (ou
 // ISR) figerait la redirection dans l'image. `force-dynamic` la lit à chaque
@@ -41,6 +47,7 @@ import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -58,7 +65,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  if (!isQualiopiCertificationObtenue()) return {};
+  if (!isQualiopiCertificationObtenue() || !PRIX_PUBLICS_AFFICHES) return {};
   const isFr = locale === "fr";
   const title = isFr ? "Catalogue des offres Axion-IA" : "Axion-IA offering catalogue";
   const description = isFr
@@ -73,7 +80,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CataloguePage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
-  if (!isQualiopiCertificationObtenue()) redirect(REDIRECTION_SANS_CERTIFICATION);
+  if (!isQualiopiCertificationObtenue() || !PRIX_PUBLICS_AFFICHES) {
+    redirect(REDIRECTION_SANS_CERTIFICATION);
+  }
   setRequestLocale(locale);
   const isFr = locale === "fr";
 

@@ -49,7 +49,7 @@ export const BOMPAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bompas et dans l'agglo Perpignan ?",
-      a: "Oui, Axion-IA intervient à Bompas et toute Perpignan Méditerranée Métropole (Perpignan à 8 min, Pia à 5 min, Canet-en-Roussillon à 10 min). Nos consultants sont basés à proximité immédiate.",
+      a: "Oui, Axion-IA intervient à Bompas et toute Perpignan Méditerranée Métropole (Perpignan à 8 min, Pia à 5 min, Canet-en-Roussillon à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",
@@ -65,7 +65,7 @@ export const BOMPAS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Bompas ?",
-      a: "Nos consultants interviennent depuis Perpignan (8 min). Missions sur site dans votre bureau, atelier ou commerce. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre bureau, atelier ou commerce. Visio possible.",
     },
   ],
 };

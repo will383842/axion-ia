@@ -65,7 +65,7 @@ export const ANN_ULLIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

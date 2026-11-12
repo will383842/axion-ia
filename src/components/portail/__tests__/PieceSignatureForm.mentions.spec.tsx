@@ -113,3 +113,36 @@ describe("cas limites", () => {
     expect(screen.getByRole("button", { name: /signer convention de formation/i })).toBeTruthy();
   });
 });
+
+describe("🔴 numéro affiché : celui du DEVIS, pas celui de la pièce générée", () => {
+  function monterDevis(numeroDevis?: string) {
+    return render(
+      <PieceSignatureForm
+        token="tok"
+        numero="AXI-DOC-2026-053"
+        {...(numeroDevis !== undefined ? { numeroDevis } : {})}
+        dateValiditeLisible={null}
+        organismeNom="Axion-IA"
+        clientRaisonSociale="Acme"
+        signataireNom="Marie Dupont"
+        signataireQualite="Gérante"
+        pieceLibelle="devis"
+        pdfUrl={null}
+        mentions={MENTIONS}
+        signerAction={vi.fn()}
+      />,
+    );
+  }
+
+  it("le titre porte AXI-DEV-…, la pièce passe en second plan", () => {
+    monterDevis("AXI-DEV-2026-001");
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Devis AXI-DEV-2026-001");
+    expect(screen.getByTestId("numero-piece").textContent).toContain("AXI-DOC-2026-053");
+  });
+
+  it("sans numéro de devis, le titre garde le numéro de pièce (autres pièces)", () => {
+    monterDevis();
+    expect(screen.getByRole("heading", { level: 1 }).textContent).toBe("Devis AXI-DOC-2026-053");
+    expect(screen.queryByTestId("numero-piece")).toBeNull();
+  });
+});

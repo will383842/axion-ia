@@ -95,10 +95,15 @@ const EMPREINTES: Readonly<
   Record<TypeGabaritSignable, { readonly sha: string; readonly version: number }>
 > = {
   devis: {
-    // v3 — 06/11/2026 : devis à formules, formules A et B côte à côte (lot 3) ; v2 archivée.
+    // v4 — 07/11/2026 : bloc « Formule retenue par le client » (choix scellé, totaux, récurrent,
+    // empreinte du choix) imprimé sur l'exemplaire signé d'un devis à formules ; texte rendu
+    // changé (branche de fond ajoutée) donc incrément ; v3 archivée.
+    // (v3 — 06/11/2026 : devis à formules, formules A et B côte à côte, lot 3 ; v2 archivée.)
     // (v2 — 16/10/2026 : mention handicap, L15, NC12 ; v1 archivée.)
-    sha: "70f99c862cad6bc0fa9b2f7473a06bc4d05b665e57b41e52d0a24f791d3815f9",
-    version: 3,
+    // Mise en page seule (08/11/2026, texte rendu INCHANGÉ → version 4 conservée) : le bloc
+    // « Formule retenue » sort du cadre insécable « Bon pour accord » (`choixBox`, sécable).
+    sha: "29aaf995b338ad278f5fe8a739737f0c13e9121cd3cbfec782b384ba5cec146b",
+    version: 4,
   },
   convention: {
     // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
@@ -308,6 +313,9 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "devis.v1.tsx": "bfd05ad0ef5d538342d23a8deeff1b69f10c8fb9acdad6f5dd88a1cb79fc1f90",
   // Copie conforme du gabarit courant du 06/11/2026 (empreinte identique à celle de la v2 courante).
   "devis.v2.tsx": "c702f29f1febb462cc3461591a8704b13c1512fa0e42b18219febccac6d4c811",
+  // 07/11/2026 : copie conforme du gabarit courant d'avant le bloc « Formule retenue » (empreinte
+  // identique à celle de l'ancienne v3 courante, 70f99c86…).
+  "devis.v3.tsx": "70f99c862cad6bc0fa9b2f7473a06bc4d05b665e57b41e52d0a24f791d3815f9",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",

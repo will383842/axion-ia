@@ -52,8 +52,8 @@ export function AiContentDisclaimer({ locale, className }: AiContentDisclaimerPr
   const isFr = locale === "fr";
   const headline = isFr ? "Contenu IA-assisté" : "AI-assisted content";
   const body = isFr
-    ? "Cet article a été rédigé par une IA générative (OpenAI GPT-4o), puis contrôlé automatiquement avant publication (vérification factuelle et contrôle éditorial). Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
-    : "This article was drafted by generative AI (OpenAI GPT-4o), then automatically checked before publication (fact-checking and editorial review). In accordance with article 50 of the EU AI Act (2024/1689).";
+    ? "Cet article a été rédigé par une IA générative (OpenAI GPT-4o), puis contrôlé automatiquement avant publication (contrôle éditorial) ; les chiffres sont vérifiés après la mise en ligne. Conformément à l'article 50 du Règlement européen sur l'IA (AI Act 2024/1689)."
+    : "This article was drafted by generative AI (OpenAI GPT-4o), then automatically checked before publication (editorial review); figures are fact-checked after it goes live. In accordance with article 50 of the EU AI Act (2024/1689).";
   const linkLabel = isFr
     ? "En savoir plus sur la transparence IA →"
     : "Learn more about AI transparency →";

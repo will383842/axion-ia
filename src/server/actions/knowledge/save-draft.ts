@@ -12,6 +12,7 @@
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { requireAdminWrite } from "./_guards";
 import { logKbActivity } from "./_audit";
 import { revalidateAdminKbRoutes } from "./_revalidate";
@@ -22,6 +23,7 @@ export interface SaveDraftResult {
   readonly translationId?: string;
   readonly savedAt?: string;
   readonly error?: string;
+  readonly reason?: string;
   readonly fieldErrors?: Record<string, string[] | undefined>;
 }
 
@@ -37,10 +39,34 @@ export async function saveDraftAction(input: SaveDraftInput): Promise<SaveDraftR
   // Vérifier entry existe et pas soft-deleted
   const entry = await prisma.knowledgeEntry.findUnique({
     where: { id: data.entryId },
-    select: { id: true, deletedAt: true, slug: true },
+    select: {
+      id: true,
+      deletedAt: true,
+      slug: true,
+      status: true,
+      audience: true,
+      confidentiality: true,
+    },
   });
   if (!entry || entry.deletedAt) {
     return { ok: false, error: "not_found" };
+  }
+
+  // Doctrine : modifier une fiche déjà en ligne (ou prête à l'être) ne contourne pas
+  // la porte de publication. Un brouillon reste libre.
+  if (
+    ["approved", "scheduled", "published", "deprecated"].includes(entry.status) &&
+    ficheDestineeAuPublic(entry)
+  ) {
+    const check = verifierDoctrineTraduction({
+      title: data.title,
+      excerpt: data.excerpt,
+      body: data.body,
+      bodyText: data.bodyText,
+    });
+    if (!check.valid) {
+      return { ok: false, error: "banned_words_violation", reason: check.reason ?? "doctrine" };
+    }
   }
 
   const headerList = await headers();

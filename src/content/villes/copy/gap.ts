@@ -18,9 +18,9 @@ export const GAP_COPY: VilleCopy = {
   ecosystemEn:
     "Gap concentre l'économie des Hautes-Alpes : tourisme 4 saisons (porte des stations de ski Orcières, Réallon, Champsaur-Valgaudemar, Devoluy à 30-60 min et lac de Serre-Ponçon à 15 km, plus grand lac artificiel de France 2 800 ha), BTP rénovation chalets et résidentiel parasismique altitude, agroalimentaire montagne (élevage agneau du Champsaur AOC, lait, fromage, bois), pôle santé départemental (CHICAS), commerce centre-ville préfecture, et cluster d'entreprises Gap-Tallard. Tissu dominé par TPE et PME, avec quelques ETI.",
   distancesFr:
-    "Gap est desservie par la gare SNCF Gap (TGV Paris ~5 h via Valence). Routes : Grenoble 100 km au nord, Marseille 150 km au sud, Briançon 90 km à l'est, frontière italienne 80 km (col de Montgenèvre). Aéroport Marseille-Provence à 180 km.",
+    "Gap est desservie par la gare SNCF Gap (TGV Paris ~5 h via Valence). Routes : Marseille 150 km au sud, Briançon 90 km à l'est, frontière italienne 80 km (col de Montgenèvre). Aéroport Marseille-Provence à 180 km.",
   distancesEn:
-    "Gap est desservie par la gare SNCF Gap (TGV Paris ~5 h via Valence). Routes : Grenoble 100 km au nord, Marseille 150 km au sud, Briançon 90 km à l'est, frontière italienne 80 km (col de Montgenèvre). Aéroport Marseille-Provence à 180 km.",
+    "Gap est desservie par la gare SNCF Gap (TGV Paris ~5 h via Valence). Routes : Marseille 150 km au sud, Briançon 90 km à l'est, frontière italienne 80 km (col de Montgenèvre). Aéroport Marseille-Provence à 180 km.",
   topSectorsNaf: [
     "Hôtellerie-hébergement touristique montagne et lac",
     "BTP rénovation chalets et résidentiel parasismique altitude",

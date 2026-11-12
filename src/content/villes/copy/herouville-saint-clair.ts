@@ -74,7 +74,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux proches de CITIS : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de back-office. Démos hebdomadaires en visio, code versionné et lisible à chaque étape.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de back-office. Démos hebdomadaires en visio, code versionné et lisible à chaque étape.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const HEROUVILLE_SAINT_CLAIR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis nos bureaux proches de CITIS : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de back-office. Démos hebdomadaires en visio, code versionné et lisible à chaque étape.",
+              "Greffe IA sur l'existant ou build IA-native, sur place ou à distance : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations de back-office. Démos hebdomadaires en visio, code versionné et lisible à chaque étape.",
           },
           {
             step: "Recette + mise en ligne",

@@ -50,6 +50,12 @@ interface Payload {
    * politique de confidentialité, AUCUN bloc de lettre, AUCUNE proposition d'autres envois.
    */
   reseau?: boolean;
+  /**
+   * Lot S2 — demande venue de la page « Recevoir le guide » : même e-mail « réseau », plus le
+   * lien de désinscription (jeton d'opposition de l'adresse). Ignoré sans `reseau`.
+   */
+  pageGuide?: boolean;
+  oppositionToken?: string;
   reprise?: boolean;
 }
 
@@ -71,6 +77,9 @@ const COPY = {
     note: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.",
     confidentialite: "Comment vos données sont traitées : politique de confidentialité",
     noteReseau: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message.",
+    pageInformations:
+      "Vous avez accepté de recevoir aussi des informations d'Axion-IA. Pour ne plus en recevoir, un clic suffit :",
+    pageDesinscription: "Me désinscrire",
     noteInscrite:
       "Vous n'avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d'autre.",
   },
@@ -90,6 +99,9 @@ const COPY = {
     note: "Didn't request this? Just ignore this message: you will receive nothing else.",
     confidentialite: "How your data is handled: privacy policy",
     noteReseau: "Didn't request this? Just ignore this message.",
+    pageInformations:
+      "You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough:",
+    pageDesinscription: "Unsubscribe me",
     noteInscrite:
       'Didn\'t request this? Click "Unsubscribe from the letter" above: you will receive nothing else.',
   },
@@ -106,6 +118,11 @@ export function urlLienGuide(baseUrl: string, downloadToken: string): string {
 /** URL de désinscription de la lettre — la page porte le bouton (un POST), comme ailleurs. */
 export function urlDesinscriptionLettre(baseUrl: string, locale: Locale, token: string): string {
   return `${baseUrl.replace(/\/+$/, "")}/${locale}/desabonnement?token=${encodeURIComponent(token)}`;
+}
+
+/** Lien de désinscription de la page « Recevoir le guide » : porte d'opposition (page + bouton). */
+export function urlDesinscriptionOpposition(baseUrl: string, oppositionToken: string): string {
+  return `${baseUrl.replace(/\/+$/, "")}/api/unsubscribe?token=${encodeURIComponent(oppositionToken)}`;
 }
 
 /** URL de confirmation de la lettre — une page avec un bouton, jamais un GET qui confirme. */
@@ -137,7 +154,16 @@ export function GuideIaEnvoiEmail({
 }) {
   const p0 = payload as unknown as Payload;
   // Demande venue d'un réseau : aucun jeton de lettre n'est lu, même s'il traînait dans la charge.
-  const p: Payload = p0.reseau === true ? { downloadToken: p0.downloadToken, reseau: true } : p0;
+  const desinscriptionPage =
+    p0.reseau === true && p0.pageGuide === true && typeof p0.oppositionToken === "string";
+  const p: Payload =
+    p0.reseau === true
+      ? {
+          downloadToken: p0.downloadToken,
+          reseau: true,
+          ...(desinscriptionPage ? { pageGuide: true, oppositionToken: p0.oppositionToken! } : {}),
+        }
+      : p0;
   const t = COPY[locale];
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
@@ -200,6 +226,19 @@ export function GuideIaEnvoiEmail({
           >
             {t.reinscriptionCta}
           </Button>
+        </Section>
+      ) : null}
+      {desinscriptionPage ? (
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.pageInformations}{" "}
+            <Link
+              href={urlDesinscriptionOpposition(baseUrl, p.oppositionToken!)}
+              style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+            >
+              {t.pageDesinscription}
+            </Link>
+          </Text>
         </Section>
       ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>

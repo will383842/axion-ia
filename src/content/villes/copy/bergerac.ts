@@ -226,7 +226,7 @@ export const BERGERAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bergerac et en Périgord ?",
-      a: "Oui, Axion-IA intervient à Bergerac et tout le Périgord pourpre (Monbazillac, Sigoulès, Lalinde) ainsi que Périgord noir (Sarlat, Le Buisson). Nos consultants viennent de Paris (TGV Bordeaux 2h + TER 1h15) ou Bordeaux centre (1h30 voiture).",
+      a: "Oui, Axion-IA intervient à Bergerac et tout le Périgord pourpre (Monbazillac, Sigoulès, Lalinde) ainsi que Périgord noir (Sarlat, Le Buisson). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et caves coopératives ?",

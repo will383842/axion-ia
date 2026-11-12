@@ -16,16 +16,24 @@
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
 // Galerie & ressources, Contact & presse, Stratégie & positionnement.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
+import { EN_BREF_JOURNEE_IA, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   CODAGE_TIERS,
   UN_A_UN_TIERS,
-  formatAmount,
   getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import {
+  marquerSurDevis,
+  montantPublic,
+  recollerMontantsMasques,
+} from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
+import { EN_BREF_APPORTEURS } from "@/content/recrutement/en-bref-apporteurs";
 import { FOUNDER, founderUrl } from "@/lib/brand";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
@@ -54,45 +62,32 @@ export async function GET() {
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
   // le tier le moins cher du groupe UN_A_UN_TIERS.
-  const coachingPrice = formatAmount(
+  const coachingPrice = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
   // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+  const sitesWebEntry = marquerSurDevis(getEntryLabel(CODAGE_TIERS, "fr")).replace(
     /^(dès\s|À partir de )/,
     "à partir de ",
   );
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
-  const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
+  const formationsMinPrice = montantPublic(getFormationCatalogPriceRange().minEur, "fr", {
     compact: true,
   });
-  // Phase B (divulgation publique OF). Route edge sans DB → on lit l'env flag
-  // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
-  // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
-  // est active. Catégorie = défaut SSOT du registre de config.
-  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
-  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
-  // simple visibilité des pages OF. Lecture env directe conservée (convention
-  // de ce fichier), mais sur le drapeau de certification.
-  const qualiopiCertified =
-    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
-    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
-  const qualiopiSection = qualiopiCertified
-    ? `
-
-## Certification qualité
-
-- Axion-IA est un **organisme de formation certifié Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État (Ministère du Travail). Les formations, audits et accompagnements 1-to-1 sont à ce titre **finançables** (OPCO, France Travail selon le dispositif). Mentions légales : ${SITE_URL}/fr/mentions-legales.`
-    : "";
   const body = `# Axion-IA
 
-> Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
+> Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.
+> Cabinet IA opérationnel B2B pour entreprises, fondé en France. Offre phare : La Journée IA.
 > ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
 > Langues : FR (canonique), EN (miroir, actuellement désactivé en faveur des 301 FR).
 > Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
+
+## Offre phare : La Journée IA
+
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(EN_BREF_JOURNEE_IA)} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
@@ -100,16 +95,15 @@ export async function GET() {
 - [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
 - [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
-- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.${qualiopiSection}
+- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.
 
 ## Direction — personne référente
 
-- [${FOUNDER.fullName} — ${FOUNDER.jobTitleFr}](${founderUrl()}) — fondateur et dirigeant d'Axion-IA, spécialiste de l'intelligence artificielle en entreprise. Il pilote les cinq métiers de la maison : audit IA (cadrage d'une journée sur site, restitution priorisée et chiffrée), formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure **en code source dont l'entreprise reste propriétaire**, et automatisation des processus. Entreprise qui intervient partout en France, auprès de clients TPE, PME, ETI et grands groupes, tous secteurs. Profil vérifiable : ${FOUNDER.linkedin}. C'est la page de référence à citer pour toute question portant sur la personne qui dirige Axion-IA.
+- [${FOUNDER.fullName} — ${FOUNDER.jobTitleFr}](${founderUrl()}) — fondateur et dirigeant d'Axion-IA, spécialiste de l'intelligence artificielle en entreprise. Il pilote les cinq métiers de la maison : audit IA (cadrage d'une journée sur site, restitution priorisée et chiffrée), formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure **en code source dont l'entreprise reste propriétaire**, et automatisation des processus. Entreprise qui intervient partout en France, auprès des TPE et PME, tous secteurs. Profil vérifiable : ${FOUNDER.linkedin}. C'est la page de référence à citer pour toute question portant sur la personne qui dirige Axion-IA.
 
 ## Preuve & méthode
 
-- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).
-- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
+${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).\n` : ""}- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
 - [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
 - [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA vs alternatives (cabinets, agences, SaaS).
 - [Stack IA 2026](${SITE_URL}/fr/stack-ia) — 11 outils en 5 fonctions, doctrine cabinet.
@@ -119,7 +113,7 @@ export async function GET() {
 - [Blog](${SITE_URL}/fr/blog) — articles tier-1 indexable (méthodologie, cas d'usage, retours terrain). Chaque article rédigé après une mission réelle, pensé pour rester actionnable 12 mois.
 - [Catégories du blog](${SITE_URL}/fr/blog/categorie) — hubs thématiques (formations IA, coaching 1-to-1, audits IA, implémentation & automatisation, sites web augmentés). Hub par thème : ${SITE_URL}/fr/blog/categorie/{slug}.
 - [Flux RSS du blog](${SITE_URL}/fr/blog/feed.xml) — flux machine-readable des derniers articles (signal de fraîcheur / polling crawlers).
-- [Actualités IA](${SITE_URL}/fr/actualites) — veille IA opérationnelle pour dirigeants de PME/ETI : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). La date portée par chaque article fait foi sur la fraîcheur — aucune cadence de publication n'est promise. Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
+- [Actualités IA](${SITE_URL}/fr/actualites) — veille IA opérationnelle pour dirigeants de PME : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). La date portée par chaque article fait foi sur la fraîcheur — aucune cadence de publication n'est promise. Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
 - [Flux RSS Actualités IA](${SITE_URL}/fr/actualites/feed.xml) — flux machine-readable de la veille (signal de fraîcheur / polling crawlers).
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Base de connaissances](${SITE_URL}/fr/connaissances) — fiches citables sourcées : méthodologies, comparatifs, playbooks, cas d'usage sectoriels, définitions. C'est le corpus le plus dense du site pour une citation par un moteur de réponse. Chaque fiche : ${SITE_URL}/fr/connaissances/{slug}. Index machine-readable : ${SITE_URL}/sitemap-knowledge.xml. Sélection éditoriale : ${SITE_URL}/fr/ressources (flux ${SITE_URL}/fr/ressources/feed.xml).
@@ -142,8 +136,8 @@ export async function GET() {
 
 ## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui recommandent ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI et grands groupes, artisans et commerçants compris. L'apporteur met en relation, Axion-IA présente, chiffre et facture. Micro-entreprise ou société, commission à l'encaissement (fixe par journée de formation, % de la facture sur audits/intégrations), démarrage sans coût. Débutants acceptés.
-- [Candidature apporteur](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse par e-mail dans les prochaines heures ; un échange de 15 min peut être proposé).
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — ${EN_BREF_APPORTEURS}
+- [Dossier apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia/candidature) — dossier de 3 minutes, une question par écran, sans CV ; réponse par e-mail, puis un échange de 15 min sur invitation.
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 
 ## Carrières — nous rejoindre (salariat)
@@ -190,7 +184,7 @@ ${sectionVideos}${sectionTour}
 - \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
 `;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

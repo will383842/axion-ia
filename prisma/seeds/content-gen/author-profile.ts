@@ -9,23 +9,27 @@
  * - `alumniOf: null`, `awards: []` (persona fictive)
  * - `isPersona: true`, `personaDisclaimer` enrichi mention IA
  *
- * Bio validée OK tel quel par Will (cf. seed `_AUDIT/seeds-templates/manon-profile.md` § 3).
+ * Audit d'harmonie du 08/11/2026 (lot R6) : Manon est une plume IA déclarée (jamais
+ * « experte » ni personne de l'équipe) ; la cible s'écrit « TPE et PME » ; la bio ne promet
+ * plus une relecture humaine systématique (contrôles automatiques bloquants avant
+ * publication, relecture humaine en cas d'alerte, corrections sur signalement).
+ * ⚠️ Ce seed ne resynchronise PAS la bio en base (voir `update` plus bas) : la bio et le
+ * disclaimer déjà enregistrés se corrigent dans la console /content-gen/author/manon.
  */
 
 import type { PrismaClient } from "../../generated/client";
 
-const MANON_BIO_MD = `**Manon** est la plume éditoriale d'Axion-IA — persona éditoriale fictive transparente sous laquelle signe notre équipe de rédaction et notre processus de production IA supervisé.
+const MANON_BIO_MD = `**Manon** est la plume IA d'Axion-IA : une assistance d'IA générative, supervisée par l'équipe Axion-IA, sous le nom de laquelle sont signés nos contenus. Ce n'est pas une personne de l'équipe.
 
-Son portrait visuel est une illustration générée par IA. Tous les contenus tier-1 sont validés par notre relecture humaine avant publication.
+Son portrait visuel est une illustration générée par IA. Nos contenus passent des contrôles automatiques bloquants avant publication ; relecture humaine en cas d'alerte ; corrections sur signalement.
 
-Manon écrit sur l'intelligence artificielle opérationnelle, l'audit IA en entreprise, la transformation digitale TPE / PME / ETI, l'implémentation IA custom, l'AEO et le SEO 2026, l'automatisation des processus métiers, la méthodologie Axion-IA, et la conduite du changement IA.
+Manon écrit sur l'intelligence artificielle opérationnelle, l'audit IA en entreprise, la transformation digitale des TPE et PME, l'implémentation IA custom, l'AEO et le SEO 2026, l'automatisation des processus métiers, la méthodologie Axion-IA, et la conduite du changement IA.
 
 Sa signature couvre quatre formats : landings villes, articles blog, comparatifs outils, guides piliers, FAQ standalone et Q/R post-process.`;
 
-const MANON_PERSONA_DISCLAIMER = `Manon est une persona éditoriale fictive d'Axion-IA. Son portrait visuel est une illustration générée par IA. Les contenus signés sous son nom sont produits par notre équipe + processus IA supervisé. Tous nos contenus tier-1 (sitemap public) sont validés par relecture humaine avant publication.`;
+const MANON_PERSONA_DISCLAIMER = `Manon est la plume IA d'Axion-IA, pas une personne de l'équipe. Son portrait visuel est une illustration générée par IA. Les contenus signés sous son nom sont rédigés avec une IA générative, supervisée par l'équipe Axion-IA. Ils sont publiés après des contrôles automatiques bloquants ; relecture humaine en cas d'alerte ; corrections sur signalement.`;
 
-const MANON_PHOTO_ALT =
-  "Manon — portrait synthétique généré par IA, plume éditoriale fictive d'Axion-IA";
+const MANON_PHOTO_ALT = "Manon — portrait synthétique généré par IA, plume IA d'Axion-IA";
 
 export async function seedAuthorProfile(
   prisma: PrismaClient,
@@ -35,7 +39,7 @@ export async function seedAuthorProfile(
     create: {
       slug: "manon",
       displayName: "Manon",
-      jobTitle: "Plume éditoriale d'Axion-IA",
+      jobTitle: "Plume IA d'Axion-IA",
       bioMd: MANON_BIO_MD,
       photoUrl80: "/auteurs/manon.png",
       photoUrl256: "/auteurs/manon.png",
@@ -49,7 +53,7 @@ export async function seedAuthorProfile(
       knowsAbout: [
         "Intelligence artificielle opérationnelle",
         "Audit IA en entreprise",
-        "Transformation digitale TPE PME ETI",
+        "Transformation digitale TPE et PME",
         "Implémentation IA custom",
         "AEO et SEO 2026",
         "Automatisation des processus métiers",
@@ -61,9 +65,10 @@ export async function seedAuthorProfile(
       isActive: true,
     },
     update: {
-      // Synchronise tout sauf bio (Will peut éditer admin /content-gen/author/manon).
+      // Synchronise tout sauf bio et disclaimer (Williams peut éditer admin /content-gen/author/manon).
+      // ⚠️ Conséquence : une fiche déjà en base garde son ancienne bio tant qu'elle n'est pas mise à jour dans la console.
       displayName: "Manon",
-      jobTitle: "Plume éditoriale d'Axion-IA",
+      jobTitle: "Plume IA d'Axion-IA",
       photoUrl80: "/auteurs/manon.png",
       photoUrl256: "/auteurs/manon.png",
       photoUrl1024: "/auteurs/manon.png",

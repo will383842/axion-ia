@@ -49,7 +49,7 @@ export const AUBY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auby et agglomération de Douai ?",
-      a: "Oui, Axion-IA intervient à Auby et tout l'agglomération de Douai (Douai, Flers-en-Escrebieux, Roost-Warendin, Lambres-lez-Douai). Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Auby et tout l'agglomération de Douai (Douai, Flers-en-Escrebieux, Roost-Warendin, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP de la Douaisis ?",
@@ -65,7 +65,7 @@ export const AUBY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (30 min A21), Douai (10 min) ou Valenciennes (30 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

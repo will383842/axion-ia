@@ -49,7 +49,7 @@ export const BAILLEUL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bailleul et en Flandre française ?",
-      a: "Oui, Axion-IA intervient à Bailleul et dans toute la Flandre française (Hazebrouck, Armentières, Estaires, Merville). Nos consultants se déplacent depuis Lille en 35 min, frontière belge à 15 min également couverte.",
+      a: "Oui, Axion-IA intervient à Bailleul et dans toute la Flandre française (Hazebrouck, Armentières, Estaires, Merville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bailleul  ?",
@@ -65,7 +65,7 @@ export const BAILLEUL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Bailleul ?",
-      a: "Nos consultants interviennent depuis Lille en 35 min. Bailleul est sous-préfecture flamande, déplacements ponctuels ou journée complète selon mission. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Bailleul est sous-préfecture flamande, déplacements ponctuels ou journée complète selon mission. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

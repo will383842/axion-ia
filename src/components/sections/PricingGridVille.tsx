@@ -2,7 +2,8 @@
 // adaptée aux pages villes (Will 2026-05-26). Reprise visuelle du patron
 // home `[locale]/page.tsx` lignes 842-1095, avec H2 régionalisé par ville
 // pour anti-duplicate-content. Pas de client interactivité — Server Component
-// pur. Prix tirés du SSOT `@/content/pricing` (zéro hardcode).
+// pur. R7 (ordre de Williams du 08/11/2026) : plus aucun prix d'offre au public —
+// chaque ligne lit `getEntryLabel` (interrupteur de pricing.ts) et dit « Sur devis ».
 
 import { ArrowRight } from "lucide-react";
 
@@ -16,8 +17,8 @@ import {
   AUDIT_TIERS,
   UN_A_UN_TIERS,
   IMPLEMENTATION_TIERS,
-  formatAmount,
-  getEntryPriceEur,
+  PRIX_PUBLICS_AFFICHES,
+  getEntryLabel,
 } from "@/content/pricing";
 
 interface PricingGridVilleProps {
@@ -29,13 +30,9 @@ interface PricingGridVilleProps {
 export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVilleProps) {
   // Formations V2 : 100 % sur devis (aucun montant affiché — cohérence fiches).
   const surDevisLabel = loc === "fr" ? "Sur devis" : "On quote";
-  const implEntryPrice = formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, loc, {
-    compact: true,
-  });
-  const auditEntryPrice = formatAmount(getEntryPriceEur(AUDIT_TIERS) ?? 0, loc, { compact: true });
-  const unAUnEntryPrice = formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, loc, {
-    compact: true,
-  });
+  const implEntryPrice = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
+  const auditEntryPrice = getEntryLabel(AUDIT_TIERS, loc, { compact: true });
+  const unAUnEntryPrice = getEntryLabel(UN_A_UN_TIERS, loc, { compact: true });
   const webEntryPrice = implEntryPrice;
 
   const services = [
@@ -114,15 +111,15 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
                 aria-hidden="true"
                 className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
               />
-              {isFr ? "Tarifs transparents" : "Tarifs transparents"}
+              {PRIX_PUBLICS_AFFICHES ? "Tarifs transparents" : "Tarifs sur devis"}
             </p>
             <h2
               id={`pricing-ville-${villeNameFr.toLowerCase().replace(/\s+/g, "-")}-heading`}
               className="text-fg text-[clamp(2rem,4vw,3.5rem)] leading-[1.04] font-semibold tracking-tight"
             >
-              {isFr
+              {PRIX_PUBLICS_AFFICHES
                 ? `Un prix de départ pour chaque service à `
-                : `Un prix de départ pour chaque service à `}
+                : `Un devis sur mesure pour chaque service à `}
               <span
                 className="italic-editorial text-terracotta"
                 style={{ fontFamily: "var(--font-serif)" }}
@@ -131,9 +128,9 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
               </span>
             </h2>
             <p className="text-fg-soft mx-auto mt-5 max-w-2xl text-base leading-relaxed sm:text-lg">
-              {isFr
+              {PRIX_PUBLICS_AFFICHES
                 ? `Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service à ${villeNameFr}. Le devis précis se construit ensemble, après diagnostic.`
-                : `Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les prix de départ par service à ${villeNameFr}. Le devis précis se construit ensemble, après diagnostic.`}
+                : `Chaque projet est unique — la complexité dépend de votre infrastructure, de vos process et de votre maturité IA. Voici les cinq services proposés à ${villeNameFr} : le devis se construit ensemble, après un premier échange, sous 48 h ouvrées.`}
             </p>
           </div>
         </FadeInOnView>
@@ -154,7 +151,7 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
                 <span>{isFr ? "Service" : "Service"}</span>
                 <span>{isFr ? "Catégorie" : "Catégorie"}</span>
                 <span>{isFr ? "Inclus" : "Inclus"}</span>
-                <span className="text-right">{isFr ? "Prix HT" : "Prix HT"}</span>
+                <span className="text-right">{PRIX_PUBLICS_AFFICHES ? "Prix HT" : "Tarif"}</span>
               </li>
 
               {services.map((s, idx) => (
@@ -207,9 +204,6 @@ export function PricingGridVille({ isFr, villeNameFr, loc }: PricingGridVillePro
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
                           {s.price}
-                        </p>
-                        <p className="text-fg-muted text-[11px] leading-snug">
-                          {isFr ? "à partir de" : "à partir de"}
                         </p>
                       </div>
                       <span

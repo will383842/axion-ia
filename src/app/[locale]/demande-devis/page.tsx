@@ -131,7 +131,6 @@ export default async function DemandeDevisPage({ params, searchParams }: Props) 
               : "Custom quote request · Axion-IA",
           },
         }}
-        strategy="afterInteractive"
         scriptId="jsonld-order-action"
       />
     </>

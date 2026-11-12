@@ -65,7 +65,7 @@ export const BRIGNOLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Brignoles ?",
-      a: "Nos consultants interviennent depuis Toulon (45 min) ou Aix-en-Provence (45 min). Déplacement sur site dans vos locaux professionnels, atelier, usine, domaine viticole ou cabinet. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, usine, domaine viticole ou cabinet. A8 directe.",
     },
   ],
 };

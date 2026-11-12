@@ -214,11 +214,7 @@ export default async function SecteursHub({ params }: Props) {
       <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={breadcrumbJsonLd} />
       {secteursImagesJsonLd ? <JsonLd data={secteursImagesJsonLd} /> : null}
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-secteurs-itemlist"
-      />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-secteurs-itemlist" />
     </>
   );
 }

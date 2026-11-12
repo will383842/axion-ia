@@ -23,7 +23,6 @@ import {
   buildCollectionPageJsonLd,
   SITE_URL,
 } from "@/lib/seo";
-import { AUDIT_TIERS, formatAmount, getTierById } from "@/content/pricing";
 
 interface Props {
   params: Promise<{ locale: string; slug: string }>;
@@ -117,9 +116,7 @@ export default async function BlogSectorPage({ params }: Props) {
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Cta>
           <Cta href="/audit" variant="outline" size="lg">
-            {isFr
-              ? `Demander un audit sur place · dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}`
-              : `Request an on-site audit · from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}`}
+            {isFr ? "Demander un audit sur place" : "Request an on-site audit"}
           </Cta>
         </div>
       </Section>

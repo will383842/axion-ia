@@ -18,7 +18,8 @@
 import type { ImageAsset, ImageAssetTranslation } from "../../../../prisma/generated/client";
 import { buildImageObjectJsonLd } from "./image-seo.service";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { BRAND } from "@/lib/brand";
+import { BRAND, CONTACT_PUBLIC } from "@/lib/brand";
+import { DESCRIPTION_ENTITE_EN, DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
 
 const SITE_NAME = "Axion-IA";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -62,10 +63,7 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
   // brand "Axion-IA" (cf. mémoire axionia_naming_brand_vs_project 2026-05-08).
   // STOP & ASK : si le handle X officiel devient `@axionia` ou `@axion_ia`,
   // mettre à jour ici + dans image-seo-enrichment.service.ts User-Agent.
-  const sameAs: string[] = [
-    "https://www.linkedin.com/company/axion-ia-france",
-    "https://x.com/AxionIA",
-  ];
+  const sameAs: string[] = [CONTACT_PUBLIC.linkedinEntreprise, "https://x.com/AxionIA"];
   if (args.wikidataQid) sameAs.push(`https://www.wikidata.org/wiki/${args.wikidataQid}`);
 
   return {
@@ -83,12 +81,11 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
       width: 512,
       height: 512,
     },
-    description:
-      args.inLanguage === "fr-FR"
-        ? "Cabinet IA opérationnel B2B — audits, interventions, implémentations Claude pour TPE, PME et ETI."
-        : "Operational AI consultancy B2B — audits, interventions, AI implementations for SMEs and mid-market companies.",
+    description: args.inLanguage === "fr-FR" ? DESCRIPTION_ENTITE_FR : DESCRIPTION_ENTITE_EN,
     sameAs,
-    foundingDate: "2024",
+    // Aligné sur le nœud `#organization` du layout (`seo.ts`) : même `@id`, donc
+    // mêmes faits (audit SEO 2026-11-11). Avant : 2024 ici, 2026 là-bas.
+    foundingDate: "2026",
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",
@@ -101,15 +98,15 @@ function buildOrganization(args: { wikidataQid?: string; inLanguage: string }): 
       "Audit IA",
       "Claude Anthropic",
       "Operational AI consulting",
-      "Automatisation no-code",
+      "Automatisation des processus",
       "ChatGPT enterprise",
     ],
     areaServed: { "@type": "Country", name: "France" },
+    // Pays seulement (décision Williams 2026-11-08, cf. `buildSiegePostalAddress`
+    // de `seo.ts`) : la ville du siège ne figure pas dans les données structurées.
     address: {
       "@type": "PostalAddress",
       addressCountry: "FR",
-      addressRegion: "Auvergne-Rhône-Alpes",
-      addressLocality: "Grenoble",
     },
   };
 }

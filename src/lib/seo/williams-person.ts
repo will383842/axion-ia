@@ -51,9 +51,9 @@ const WILLIAMS_PHOTO_HAUTEUR = 2048;
  * (le rendu de la fiche ne l'utilise plus : la page a son propre gabarit
  * éditorial). Elle reste la bio « courte » réutilisable ailleurs.
  */
-const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle dont le siège est à Grenoble et qui intervient dans toute la France.
+const WILLIAMS_BIO_MD = `**${FOUNDER.fullName}** est le fondateur et CEO d'Axion-IA, agence d'intelligence artificielle opérationnelle qui intervient partout en France.
 
-Axion-IA accompagne les PME, les ETI et les grands groupes — ainsi que les TPE à fort potentiel — sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation de solutions IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats concrets et mesurés.
+Axion-IA accompagne les PME et les TPE sur l'audit IA, la formation, le coaching individuel de dirigeants, l'implémentation de solutions IA sur mesure et l'automatisation des processus, avec une exigence constante de résultats concrets et mesurés.
 
 Profil LinkedIn : ${WILLIAMS_LINKEDIN}`;
 
@@ -170,11 +170,9 @@ export function buildPersonWilliamsJsonLd(_locale: string = "fr"): Record<string
     },
     workLocation: {
       "@type": "Place",
-      name: `${BRAND.name} — Grenoble`,
+      name: `${BRAND.name} — France`,
       address: {
         "@type": "PostalAddress",
-        addressLocality: "Grenoble",
-        addressRegion: "Auvergne-Rhône-Alpes",
         addressCountry: "FR",
       },
     },

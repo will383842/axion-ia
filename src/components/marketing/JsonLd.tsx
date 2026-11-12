@@ -15,6 +15,15 @@ interface JsonLdProps {
    *   risque de retarder l'indexation par certains crawlers.
    *
    * Requis si `strategy !== "inline"` : `scriptId` (next/script dédoublonne par id).
+   *
+   * ⛔ Audit SEO 2026-11-11 (I1) : NE PLUS utiliser `afterInteractive` ni
+   * `lazyOnload`. Un JSON-LD injecté après hydratation est ABSENT du HTML servi :
+   * les robots qui n'exécutent pas le JavaScript (GPTBot, ClaudeBot,
+   * PerplexityBot, première passe de Googlebot) ne le voient pas. Et le gain de
+   * TBT invoqué n'existe pas : le navigateur n'exécute pas un script
+   * `application/ld+json`. Les valeurs restent typées le temps que les pages
+   * villes (autre chantier) migrent ; le verrou
+   * `tests/unit/seo/jsonld-dans-le-html-servi.spec.ts` interdit tout nouvel usage.
    */
   strategy?: "inline" | "afterInteractive" | "lazyOnload";
   /**
@@ -29,9 +38,8 @@ interface JsonLdProps {
  * Inline Schema.org JSON-LD helper. Server-only (sauf strategy != inline).
  * Emits un seul <script type="application/ld+json"> tag.
  *
- * Par défaut : script SSR inline, parsing HTML séquentiel non bloqué pour
- * un schema unique <1 KB. Pour pages avec 2+ schemas ou schema lourd, opt-in
- * `strategy="afterInteractive"` pour déferer après hydratation.
+ * Par défaut (et seule valeur admise hors pages villes) : script rendu dans le
+ * HTML servi, lisible par tout robot, avec ou sans JavaScript.
  */
 export function JsonLd({ data, strategy = "inline", scriptId }: JsonLdProps) {
   // « < » échappé : un texte libre (transcription, résumé…) contenant `</script>` ne peut

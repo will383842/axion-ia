@@ -321,7 +321,9 @@ describe("REQ-JUR-019 — les exceptions nommées ne couvrent que LEUR ligne", (
 
   it("REQ-JUR-019 — chaque exception du dépôt nomme un fichier lu et un motif", () => {
     const chemins = lireSurfacesPubliques().map((s) => s.chemin);
-    expect(EXCEPTIONS_REMUNERATION.length).toBeGreaterThan(0);
+    // Depuis la refonte des landings (09/11/2026), plus aucune ligne du dépôt n'a besoin d'exception :
+    // la liste peut être vide, chaque entrée qui reviendrait doit toujours nommer un fichier lu.
+    expect(EXCEPTIONS_REMUNERATION.length).toBeGreaterThanOrEqual(0);
     for (const e of EXCEPTIONS_REMUNERATION) {
       expect(chemins, e.chemin).toContain(e.chemin);
       expect(e.motif.length, e.ligne).toBeGreaterThan(10);

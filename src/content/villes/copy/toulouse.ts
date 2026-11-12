@@ -40,7 +40,7 @@ export const TOULOUSE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Toulouse : accompagnement individuel pour dirigeants et ingénieurs de l'Aerospace Valley, cadres French Tech Toulouse et responsables des ETI toulousaines. Sessions sur site (Blagnac, Labège, Toulouse centre) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Entry rate from €990 excl. VAT.",
+      en: "1-to-1 AI coaching in Toulouse: individual coaching for Aerospace Valley executives and engineers, French Tech Toulouse managers and Toulouse mid-cap leaders. On-site sessions (Blagnac, Labège, Toulouse centre) or remote. Price on request.",
     },
     sitesWeb: {
       fr: "Sites web et plateformes SaaS IA sur mesure à Toulouse : conception de plateformes IA-native pour ETI aéronautiques sous-traitantes d'Aerospace Valley (Blagnac, Colomiers, Labège), scale-ups French Tech Toulouse, PME agro-industrielles. Chatbot RAG, search sémantique, agents conversationnels — code custom, hébergement Europe RGPD, zéro lock-in éditeur.",
@@ -727,7 +727,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           "Entretien de positionnement inclus sans engagement. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit — particulièrement strict pour les dirigeants Airbus, CNES et ONERA exposés à des contraintes ITAR ou défense. Les compétences acquises sont utilisables en autonomie totale, sans contrat récurrent ni licence à renouveler.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Toulouse is for executives, engineers and managers in aerospace (Airbus, CNES, Thales Alenia Space, ONERA), Aerospace Valley SMEs and mid-caps, French Tech Toulouse scale-up leaders and Toulouse industrial firms. No group programme: each session starts from your real files, your real decisions, your actual business reality. Price on request.",
         whyHere: [
           "Toulouse concentrates an exceptional density of aerospace engineers and technical managers (Airbus, CNES, Thales Alenia Space, ATR, ONERA) who need to integrate AI into their practice without going through group training unsuited to their level.",
           "The French Tech Toulouse and IoT Valley at Labège-Innopole ecosystem generates scale-up founders and technical leaders for whom fast, personalised AI upskilling is often more relevant than a group programme.",
@@ -766,7 +766,7 @@ export const TOULOUSE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Toulouse freelancers, engineering offices and micro-business owners. Short programme of 2-3 sessions focused on your priority use cases.",
           },
@@ -800,7 +800,7 @@ export const TOULOUSE_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme (2-3 sessions). The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate for a short programme (2-3 sessions) is quoted on request. The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Are sessions on-site in Toulouse or remote?",

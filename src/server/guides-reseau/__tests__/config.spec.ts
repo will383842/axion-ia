@@ -2,7 +2,11 @@
 //
 // Garde du report acté : GUIDES_RESEAU_ENABLED ne s'allume pas avant le lot « demande
 // d'effacement reçue en message privé ». Ce test fige le défaut sûr : éteint.
-import { describe, it, expect, afterEach } from "vitest";
+import { describe, it, expect, afterEach, vi } from "vitest";
+import { createHash } from "node:crypto";
+import { pageGuideReseauActive } from "../config";
+import { lireSecretLien } from "../secret-lien";
+import { EMPREINTE_CASE_PAGE_GUIDE, TEXTE_CASE_PAGE_GUIDE } from "@/content/guides-reseau";
 import {
   CORPS_MAX_OPPOSITIONS,
   ORIGINE_OPPOSITION_RESEAU_STOP,
@@ -83,5 +87,48 @@ describe("constantes des oppositions", () => {
     expect(CORPS_MAX_OPPOSITIONS).toBe(4096);
     expect(ORIGINE_OPPOSITION_RESEAU_STOP).toBe("reseau-stop");
     expect(ORIGINE_OPPOSITION_RESEAU_STOP.length).toBeLessThanOrEqual(40);
+  });
+});
+
+describe("lot S2 — interrupteur de la page et secret du lien", () => {
+  afterEach(() => {
+    delete process.env.PAGE_GUIDE_RESEAU_ENABLED;
+  });
+
+  it("PAGE_GUIDE_RESEAU_ENABLED : éteint par défaut, allumé seulement par « true » exact", () => {
+    delete process.env.PAGE_GUIDE_RESEAU_ENABLED;
+    expect(pageGuideReseauActive()).toBe(false);
+    for (const v of ["1", "TRUE", "yes", " true", ""]) {
+      process.env.PAGE_GUIDE_RESEAU_ENABLED = v;
+      expect(pageGuideReseauActive()).toBe(false);
+    }
+    process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
+    expect(pageGuideReseauActive()).toBe(true);
+  });
+
+  it("lireSecretLien : absent, court ou égal au secret des appels → null ; distincts → la valeur", () => {
+    const appels = "A".repeat(40);
+    const lien = "L".repeat(40);
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    expect(lireSecretLien({ GUIDES_RESEAU_HMAC_SECRET: appels })).toBeNull();
+    expect(
+      lireSecretLien({ GUIDES_RESEAU_LIEN_SECRET: "court", GUIDES_RESEAU_HMAC_SECRET: appels }),
+    ).toBeNull();
+    expect(lireSecretLien({ GUIDES_RESEAU_LIEN_SECRET: lien })).toBeNull();
+    expect(
+      lireSecretLien({ GUIDES_RESEAU_LIEN_SECRET: appels, GUIDES_RESEAU_HMAC_SECRET: appels }),
+    ).toBeNull();
+    expect(
+      lireSecretLien({ GUIDES_RESEAU_LIEN_SECRET: lien, GUIDES_RESEAU_HMAC_SECRET: appels }),
+    ).toBe(lien);
+  });
+
+  it("l'empreinte de la case est bien le sha256 du texte exact (texte changé = version à changer)", () => {
+    expect(TEXTE_CASE_PAGE_GUIDE).toBe(
+      "J'accepte de recevoir le guide et des informations d'Axion-IA, désinscription à tout moment",
+    );
+    expect(createHash("sha256").update(TEXTE_CASE_PAGE_GUIDE, "utf8").digest("hex")).toBe(
+      EMPREINTE_CASE_PAGE_GUIDE,
+    );
   });
 });

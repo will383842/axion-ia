@@ -140,19 +140,14 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     format: "A5 plié / A4 · 148 × 210 mm fini · piqûre à cheval, 12 feuillets",
     resume:
       "Le catalogue complet des prestations : 21 formations et un séminaire, accompagnement 1-to-1, audit IA, implémentation. Distribué en main propre et lisible en ligne.",
-    fichiersPublics: [
-      {
-        chemin: "catalogue/index.html",
-        nom: "Le feuilletoir",
-        role: "Le catalogue qui se tourne page par page, en doubles. C’est le lien à partager : il porte un aperçu Open Graph, donc il s’affiche avec une image dans WhatsApp ou LinkedIn.",
-      },
-      {
-        chemin: "catalogue/og-catalogue.jpg",
-        nom: "L’image de partage",
-        role: "1200 × 630. La vignette que WhatsApp, LinkedIn ou Slack affichent quand on partage le lien du feuilletoir.",
-      },
-    ],
+    fichiersPublics: [],
     fichiersHorsLigne: [
+      {
+        nom: "Le feuilletoir (index.html, og-catalogue.jpg, pages-web/p01…p48)",
+        ou: "docs/pdf-hors-ligne-certification/catalogue-feuilletoir/ (dans le dépôt)",
+        pourquoi:
+          "Retiré du site le 2026-11-08 (audit d'harmonie) : les pages p36 et p37 revendiquent une certification qualité non délivrée et une prise en charge à 100 %, et l'aperçu de partage promet une prise en charge OPCO sans avance. L'adresse /catalogue/index.html (cible d'un QR imprimé) redirige vers /fr/formations (next.config.ts). Ne pas remettre sous public/ sans décision écrite de Williams.",
+      },
       {
         nom: "catalogue-formations-ia-axion-ia.pdf (48 pages à l’unité)",
         ou: "docs/pdf-hors-ligne-certification/ (dans le dépôt)",
@@ -240,14 +235,16 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     format: "A4 paysage · 297 × 210 mm · 13 pages, lecture à l'écran",
     resume:
       "Le document de présentation du réseau d'apporteurs d'affaires : commissions, fonctionnement, prestations à recommander, profils recherchés. RETIRÉ des e-mails, de la page de remerciement et du composeur de la console depuis le 2026-10-01 (décision de Williams, JUR-T44 et JUR-T44b) : il n'est plus envoyé aux candidats jusqu'à sa réécriture (JUR-T45).",
-    fichiersPublics: [
-      {
-        chemin: DOCUMENT_APPORTEUR_CHEMIN,
-        nom: "Le PDF, 13 pages",
-        role: "Le lien que portaient les e-mails du réseau d'apporteurs et la page de remerciement du tunnel Facebook, retiré depuis le 2026-10-01 (JUR-T44). ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés.",
-      },
-    ],
+    fichiersPublics: [],
     fichiersHorsLigne: [
+      {
+        nom: "devenir-apporteur-d-affaires-axion-ia.pdf (13 pages)",
+        ou: "docs/pdf-hors-ligne-certification/apporteur/ (dans le dépôt)",
+        pourquoi:
+          "Retiré du site le 2026-11-08 (audit d'harmonie) : le PDF cite le financement par les OPCO ou France Travail, la ville de Grenoble et des ventes fictives. Son ancienne adresse (" +
+          DOCUMENT_APPORTEUR_CHEMIN +
+          ", déjà dans des e-mails envoyés) redirige vers la page /fr/apporteur-affaires (next.config.ts). Ne pas le régénérer ni le remettre sous public/ sans décision de Williams.",
+      },
       {
         nom: "devenir-apporteur-d-affaires.html",
         ou: "docs/imprimes/ (dans le dépôt)",

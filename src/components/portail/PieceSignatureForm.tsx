@@ -152,7 +152,14 @@ function sansDependants(
 
 export interface PieceSignatureFormProps {
   token: string;
+  /** N° de la PIÈCE générée (AXI-DOC-…) — celui que la signature scelle. */
   numero: string;
+  /**
+   * N° du DEVIS (AXI-DEV-…), celui que le client a reçu par e-mail et lu sur le PDF.
+   * Facultatif : il n'existe que pour un devis. Quand il est présent, c'est lui qui
+   * titre la page ; le n° de pièce passe en second plan.
+   */
+  numeroDevis?: string | null;
   /** Date de validité — un devis en a une, une convention non. */
   dateValiditeLisible: string | null;
   organismeNom: string;
@@ -243,6 +250,7 @@ export interface PieceSignatureFormProps {
 export function PieceSignatureForm({
   token,
   numero,
+  numeroDevis,
   dateValiditeLisible,
   organismeNom,
   clientRaisonSociale,
@@ -401,12 +409,17 @@ export function PieceSignatureForm({
     });
   }
 
+  // Le numéro que le client CONNAÎT : celui du devis quand il existe. Le n° de pièce reste
+  // affiché à part, car la case d'acceptation et le registre scellé s'y réfèrent.
+  const numeroAffiche = numeroDevis != null && numeroDevis.trim() !== "" ? numeroDevis : numero;
+  const numeroPieceSecondaire = numeroAffiche !== numero ? numero : null;
+
   if (signe) {
     return (
       <div className="mx-auto w-full max-w-2xl px-4 py-16">
         <h1 className="text-fg text-xl font-semibold">Votre signature est enregistrée</h1>
         <p className="text-fg-soft mt-3 text-sm">
-          {`Merci. Votre signature sur ${pieceLibelle} ${numero} a bien été enregistrée, horodatée et
+          {`Merci. Votre signature sur ${pieceLibelle} ${numeroAffiche} a bien été enregistrée, horodatée et
           rattachée au document que vous venez de lire.`}
         </p>
         {formules !== undefined && (
@@ -424,8 +437,13 @@ export function PieceSignatureForm({
   return (
     <div className="mx-auto w-full max-w-2xl px-4 py-10">
       <h1 className="text-fg text-xl font-semibold">
-        {`${pieceLibelle.charAt(0).toUpperCase()}${pieceLibelle.slice(1)} ${numero}`}
+        {`${pieceLibelle.charAt(0).toUpperCase()}${pieceLibelle.slice(1)} ${numeroAffiche}`}
       </h1>
+      {numeroPieceSecondaire !== null && (
+        <p className="text-fg-soft mt-1 text-xs" data-testid="numero-piece">
+          {`Référence de la pièce : ${numeroPieceSecondaire}`}
+        </p>
+      )}
       <p className="text-fg-soft mt-1 text-sm">
         {clientRaisonSociale !== null && clientRaisonSociale !== ""
           ? `Établie par ${organismeNom} à l'attention de ${clientRaisonSociale}.`

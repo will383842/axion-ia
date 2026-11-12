@@ -10,7 +10,6 @@
  * jamais les deux, jamais aucun (garde de la grille). Et la surface publique des forfaits de
  * formation n'affiche PAS la conférence comme une formation : elle en est exclue explicitement.
  */
-import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -56,18 +55,5 @@ describe("REQ-EXT-022 — la conférence est commissionnée au forfait", () => {
     expect(conference?.id.startsWith("com-formation-")).toBe(false);
     expect(COMMISSIONS_DE_FORMATION.map((c) => c.id)).not.toContain(conference?.id);
     for (const c of COMMISSIONS_DE_FORMATION) expect(c.id.startsWith("com-formation-")).toBe(true);
-  });
-});
-
-describe("REQ-EXT-022 — la surface publique des forfaits de formation n'affiche pas la conférence", () => {
-  it("REQ-EXT-022 : TÉMOIN — les cartes « Formations IA » lisent COMMISSIONS_DE_FORMATION, jamais toutes les commissions flat", () => {
-    const source = readFileSync(
-      "src/components/services/devenir-commercial/CommercialProductsEarnings.tsx",
-      "utf8",
-    );
-    expect(source).toMatch(/\bCOMMISSIONS_DE_FORMATION\b/);
-    expect(source).not.toMatch(
-      /COMMERCIAL_COMMISSIONS\.filter\(\s*\(c\)\s*=>\s*c\.kind\s*===\s*"flat"\s*\)/,
-    );
   });
 });

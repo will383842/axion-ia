@@ -11,7 +11,13 @@
 // en dur ailleurs) ; prixMin/prixMax tiennent compte des sous-tiers réels →
 // l'inversion ETI assumée (1 900 €, D-ETI-PRIX 🔒) est préservée, jamais masquée.
 
-import { PRICING_CATEGORIES, UN_A_UN_RECURRING_TIER, type PricingTier } from "@/content/pricing";
+import {
+  JOURNEE_IA_TIER,
+  PRICING_CATEGORIES,
+  UN_A_UN_RECURRING_TIER,
+  prixAffichable,
+  type PricingTier,
+} from "@/content/pricing";
 import { resolveOfferUrl, hasResolvableUrl } from "@/lib/offer-url";
 
 export type OfferVertical =
@@ -33,7 +39,12 @@ export interface Offer {
   readonly prixMin?: number;
   /** Prix le plus haut applicable (tier + sous-tiers). */
   readonly prixMax?: number;
-  /** true si sur devis (exclu des filtres prix). */
+  /**
+   * true si sur devis (exclu des filtres et tris prix). R7 (08/11/2026) : vrai aussi pour
+   * tout palier dont le montant est masqué au public (`prixAffichable`) — le chatbot ne
+   * montre, ne filtre ni ne trie sur un prix qu'il ne peut pas dire. Les montants restent
+   * dans prixFlat/prixMin/prixMax (données internes, jamais rendues au visiteur).
+   */
   readonly onQuote: boolean;
   /** Durée brute FR (== PricingTier.durationFr). */
   readonly dureeFr?: string;
@@ -167,14 +178,18 @@ function derivePriceRange(tier: PricingTier): {
 
 function toOffer(
   tier: PricingTier,
-  categoryKey: keyof typeof PRICING_CATEGORIES | "standalone",
+  categoryKey: keyof typeof PRICING_CATEGORIES | "standalone" | "journee-ia",
 ): Offer | null {
   // Une offre sans URL résoluble ne doit PAS entrer au catalogue (jamais de lien mort).
   if (!hasResolvableUrl(tier.id)) return null;
 
   const { min: effectifMin, max: effectifMax } = parseEffectif(tier.groupSizeFr);
   const vertical =
-    categoryKey === "standalone" ? "un-a-un" : deriveVertical(categoryKey, effectifMax);
+    categoryKey === "journee-ia"
+      ? "formation"
+      : categoryKey === "standalone"
+        ? "un-a-un"
+        : deriveVertical(categoryKey, effectifMax);
   const { jours, heures } = parseDuree(tier.durationFr);
   const { prixFlat, prixMin, prixMax } = derivePriceRange(tier);
 
@@ -185,7 +200,9 @@ function toOffer(
     id: tier.id,
     vertical,
     titre: tier.labelFr,
-    onQuote: tier.onQuote === true && prixFlat === undefined && prixMin === undefined,
+    onQuote:
+      (tier.onQuote === true && prixFlat === undefined && prixMin === undefined) ||
+      !prixAffichable(tier),
     format: deriveFormat(tier, vertical),
     urlFR: resolveOfferUrl(tier.id),
     ...(prixFlat !== undefined && { prixFlat }),
@@ -218,6 +235,10 @@ export const OFFERS: ReadonlyArray<Offer> = (() => {
   // Offre standalone (hors PRICING_CATEGORIES).
   const recurring = toOffer(UN_A_UN_RECURRING_TIER, "standalone");
   if (recurring) out.push(recurring);
+  // R7 (08/11/2026) : la Journée IA, offre mise en avant et seul prix public
+  // (1 490 € HT, lu dans JOURNEE_IA_TIER) — TPE et PME, lien /fr/journee-ia.
+  const journee = toOffer(JOURNEE_IA_TIER, "journee-ia");
+  if (journee) out.push(journee);
   return out;
 })();
 

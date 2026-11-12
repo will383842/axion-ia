@@ -6,7 +6,22 @@
  */
 
 /** Versions connues du texte du premier message privé (M1) — preuve d'information. */
-export const VERSIONS_TEXTE_CONNUES = ["m1-brouillon-v1", "m1-v1"] as const;
+/**
+ * LISTE FERMÉE : on AJOUTE, on ne retire jamais (un texte déjà envoyé peut encore la porter).
+ * Les `mp-m1-*` sont les numéros du Studio (dictionnaire-textes-mp.v2.json) ; `mp-m1-v3` est le
+ * message avec lien. Chaque valeur respecte le format CRM `^[A-Za-z0-9._-]{3,64}$`.
+ */
+export const VERSIONS_TEXTE_CONNUES = [
+  "m1-brouillon-v1",
+  "m1-v1",
+  "mp-m1-v2",
+  "mp-m1-v2-a",
+  "mp-m1-v2-b",
+  "mp-m1-v2-c",
+  "mp-m1-v2-d",
+  "mp-m1-v2-e",
+  "mp-m1-v3",
+] as const;
 
 /** Campagnes connues : alignées sur les familles du dictionnaire d'origine. */
 export const CAMPAGNES_UTM_CONNUES = [

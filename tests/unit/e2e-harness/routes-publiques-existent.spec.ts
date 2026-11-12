@@ -88,6 +88,10 @@ const APP_LOCALE = join(APP, "[locale]");
  * Elles portent `robots: { index: false }` pour la même raison.
  */
 const HORS_AUDIT = [
+  // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page redirige (308) vers
+  // /journee-ia, qui la remplace dans routes-publiques.json. Auditer une redirection mesurerait
+  // la page d'arrivée, pas celle-ci.
+  "/audit/tpe-1-jour",
   "/portail/mon-espace",
   "/espace-formateur",
   "/appel/reserver",

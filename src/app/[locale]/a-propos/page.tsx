@@ -24,12 +24,11 @@ import {
   buildPersonJsonLd,
   buildLocalBusinessJsonLd,
   SITE_URL,
-  SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // Prix formation dérivé du SSOT (jamais hardcodé) — même entrée de gamme que la
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
-import { formatAmount, getTierById, INTERVENTION_TIERS } from "@/content/pricing";
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
@@ -53,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient dans toute la France, notamment à Paris et en Île-de-France : mission, équipe, valeurs E-E-A-T, hébergement UE et réponse humaine sous 48 h. Découvrez notre méthode et nos engagements."
+        ? "Axion-IA, cabinet IA opérationnel pour les PME, partout en France : mission, équipe, valeurs, hébergement UE et réponse humaine sous 48 h."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
@@ -84,34 +83,27 @@ export default async function About({ params }: Props) {
   // LocalBusiness root — 1 SEULE émission propre sur le site, sur /a-propos
   // (Sprint Correctif P1-2 2026-05-23 — audit E2E passe 2 runtime + décision Will).
   //
-  // Axion-IA = 1 siège FR Grenoble / Auvergne-Rhône-Alpes (Service Area Business
-  // pattern). Toutes les autres pages ville-service émettent Service+areaServed
-  // (pas LocalBusiness) pour ne pas claim de bureau physique dans chaque ville
-  // (anti-spam local Google). Cette émission ici donne à Google + AI overviews
-  // une ancre locale CLAIRE et UNIQUE pour ancrer l'entité Axion-IA à Grenoble
-  // (siège réel = RCS Grenoble). La visibilité Paris / Île-de-France / France
-  // reste portée par `areaServed` + les pages pSEO villes (zone servie).
+  // Axion-IA = entreprise qui intervient partout en France (Service Area
+  // Business pattern). Décision Williams du 2026-11-08 (audit harmonie n°19) :
+  // aucune adresse de siège dans les données structurées publiques — pays
+  // seulement ; l'adresse complète reste dans les mentions légales, les CGV,
+  // le devis et le pied d'e-mail. Toutes les autres pages ville-service
+  // émettent Service+areaServed (pas LocalBusiness) pour ne pas claim de bureau
+  // physique dans chaque ville (anti-spam local Google). La visibilité Paris /
+  // Île-de-France / France est portée par `areaServed` + les pages pSEO villes.
   //
-  // ⚠️ Champs ÉMIS uniquement avec données réelles (no street/geo/horaires/CP
-  // car données précises non publiables par Will pour l'instant — à compléter
-  // dès que disponibles). Ce LB minimal reste compatible Schema.org et ne ment
-  // pas sur des coords physiques inexistantes.
+  // ⚠️ Pas de rue, de code postal, de ville ni de région : seul `addressCountry`.
   const localBusinessRootJsonLd = buildLocalBusinessJsonLd({
     locale: loc,
     path: "/a-propos",
     name: isFr
-      ? "Axion-IA — Cabinet IA opérationnel B2B (siège Grenoble, France)"
-      : "Axion-IA — Operational B2B AI consultancy (HQ Grenoble, France)",
+      ? "Axion-IA — Cabinet IA opérationnel B2B (interventions partout en France)"
+      : "Axion-IA — Operational B2B AI consultancy (serving all of France)",
     description: isFr
-      ? "Axion-IA est un cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes) et qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès de PME, ETI, grands groupes et TPE : interventions IA, audits, implémentations, coaching 1-to-1 et sites web augmentés."
-      : "Axion-IA is an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France — including Paris and the Île-de-France region — for SMBs, mid-caps and enterprises: AI sessions, audits, implementations, 1-to-1 coaching and AI-augmented websites.",
+      ? "Axion-IA est un cabinet IA opérationnel qui intervient partout en France — notamment à Paris et en Île-de-France — auprès des PME et des TPE : audits, formations, implémentations, coaching 1-to-1 et sites web augmentés."
+      : "Axion-IA is an operational AI consultancy serving the whole of France — including Paris and the Île-de-France region — for small and medium-sized businesses: audits, training, implementations, 1-to-1 coaching and AI-augmented websites.",
     areaServed: { type: "AdministrativeArea", name: "France" },
-    address: {
-      city: "Grenoble",
-      region: "Auvergne-Rhône-Alpes",
-      postalCode: "38100",
-      country: "FR",
-    },
+    address: { country: "FR" },
   });
 
   // AboutPage JSON-LD — wrapper sémantique de la page « À propos ». Relie la
@@ -128,9 +120,9 @@ export default async function About({ params }: Props) {
     inLanguage: loc,
     name: isFr ? "À propos d'Axion-IA" : "About Axion-IA",
     description: isFr
-      ? "Axion-IA, cabinet IA opérationnel dont le siège est à Grenoble (Auvergne-Rhône-Alpes), intervenant dans toute la France dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et méthode."
-      : "Axion-IA, an operational AI consultancy headquartered in Grenoble (Auvergne-Rhône-Alpes), serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and method.",
-    dateModified: SITE_EDITORIAL_DATE,
+      ? "Axion-IA, cabinet IA opérationnel intervenant partout en France, dont Paris et l'Île-de-France : mission, équipe, valeurs E-E-A-T et méthode."
+      : "Axion-IA, an operational AI consultancy serving the whole of France including Paris and Île-de-France: mission, team, E-E-A-T values and method.",
+    dateModified: dateRoute("/a-propos"),
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     mainEntity: { "@id": `${SITE_URL}/#organization` },
     about: { "@id": `${SITE_URL}/#organization` },
@@ -156,19 +148,19 @@ export default async function About({ params }: Props) {
           id: "definition",
           question: "Qu'est-ce qu'Axion-IA ?",
           answer:
-            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France (siège à Grenoble). Il accompagne les PME, ETI, grands groupes et TPE sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
+            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France. Il accompagne les PME et les TPE sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
         },
         {
           id: "siege",
-          question: "Où est le siège d'Axion-IA ?",
+          question: "Où intervient Axion-IA ?",
           answer:
-            "Le siège d'Axion-IA est à Grenoble (Auvergne-Rhône-Alpes), en France. C'est un cabinet IA opérationnel français qui intervient sur toute la France — notamment à Paris et en Île-de-France — auprès des PME, ETI, grands groupes et TPE.",
+            "Axion-IA est un cabinet IA opérationnel français qui intervient partout en France — notamment à Paris et en Île-de-France — auprès des PME et des TPE. L'adresse du siège figure dans les mentions légales.",
         },
         {
           id: "couverture-paris",
           question: "Axion-IA intervient-il à Paris et en Île-de-France ?",
           answer:
-            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, au même tarif public qu'en région. Le siège reste à Grenoble, mais les interventions sont menées partout en France.",
+            "Oui. Paris et l'Île-de-France sont le premier terrain d'intervention d'Axion-IA : audits, formations et implémentations y sont assurés dans les arrondissements parisiens et la première couronne, aux mêmes conditions tarifaires qu'en région. Les interventions sont menées partout en France.",
         },
         {
           id: "depuis-quand",
@@ -196,7 +188,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Les formations IA en entreprise démarrent à ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "fr")} HT pour un format court sur site. Le prix varie ensuite selon la durée, la gamme et le nombre de participants. Tous les tarifs sont publics sur la page Tarifs, et le devis précis se construit après un échange sur votre contexte.`,
+          answer:
+            "Les formations IA en entreprise sont établies sur devis, par groupe : le prix dépend de la durée (de 4 h à 2 jours), du format et du nombre de participants. Le devis précis se construit après un échange sur votre contexte, sous 48 h ouvrées.",
         },
         {
           id: "contact",
@@ -231,19 +224,19 @@ export default async function About({ params }: Props) {
           id: "definition",
           question: "What is Axion-IA?",
           answer:
-            "Axion-IA is an operational artificial-intelligence consultancy based in France (head office in Grenoble). It supports small businesses, SMEs, mid-caps and large accounts on AI audits, training, production AI implementation, 1-to-1 coaching and AI-augmented websites, with a focus on concrete, measurable results.",
+            "Axion-IA is an operational artificial-intelligence consultancy based in France. It supports small and medium-sized businesses on AI audits, training, production AI implementation, 1-to-1 coaching and AI-augmented websites, with a focus on concrete, measurable results.",
         },
         {
           id: "siege",
-          question: "Where is Axion-IA's head office?",
+          question: "Where does Axion-IA operate?",
           answer:
-            "Axion-IA's head office is in Grenoble (Auvergne-Rhône-Alpes), France. It is a French operational AI consultancy serving the whole of France — including Paris and the Île-de-France region — for small businesses, SMEs, mid-caps and large accounts.",
+            "Axion-IA is a French operational AI consultancy serving the whole of France — including Paris and the Île-de-France region — for small and medium-sized businesses. The registered address is given in the legal notice.",
         },
         {
           id: "couverture-paris",
           question: "Does Axion-IA operate in Paris and the Île-de-France region?",
           answer:
-            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, at the same public rate as the rest of the country. The head office remains in Grenoble, but engagements are run across France.",
+            "Yes. Paris and Greater Paris are Axion-IA's primary engagement ground: audits, training and implementations are delivered in the Paris arrondissements and inner suburbs, on the same pricing terms as the rest of the country. Engagements are run across France.",
         },
         {
           id: "depuis-quand",
@@ -271,7 +264,8 @@ export default async function About({ params }: Props) {
         {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Corporate AI training starts at ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en")} ex. VAT for a short on-site format. The price then varies with duration, track and number of participants. All rates are public on the Pricing page, and the precise quote is built after a call about your context.`,
+          answer:
+            "Corporate AI training is quoted per group: the price depends on duration (4 h to 2 days), format and number of participants. The precise quote is built after a call about your context, within 48 business hours.",
         },
         {
           id: "contact",

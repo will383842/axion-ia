@@ -88,3 +88,19 @@ export function secretsOppositionsReseau(
   if (!courant) return null;
   return { courant, precedent: secretValide(env.GUIDES_RESEAU_HMAC_SECRET_PRECEDENT) };
 }
+
+/**
+ * PAGE « RECEVOIR LE GUIDE » (lot S2) — l'INTERRUPTEUR de `/guide-reseau` et de sa route d'envoi.
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si `PAGE_GUIDE_RESEAU_ENABLED` vaut exactement `"true"`.
+ * Éteint = la page répond 404, la route d'envoi 503, rien n'est lu ni écrit. Lu au runtime
+ * (`process.env` brut, hors `env.ts`) : jamais au build.
+ */
+export function pageGuideReseauActive(): boolean {
+  return process.env.PAGE_GUIDE_RESEAU_ENABLED === "true";
+}
+
+/** Seau de débit par IP de la route d'envoi de la page. */
+export const PREFIXE_DEBIT_PAGE_GUIDE = "page-guide-reseau:ip";
+export const LIMITE_PAGE_GUIDE_PAR_IP = 5;
+export const FENETRE_PAGE_GUIDE_SEC = 600;

@@ -54,7 +54,7 @@ Le secteur IT et numérique français regroupe environ 90 000 entreprises et emp
 
 **Compétences internes vs délégation** : les DSI sont confrontées à un choix stratégique — internaliser les compétences IA (coûteux, marché tendu) ou s'appuyer sur des partenaires spécialisés pour l'évaluation et la gouvernance. Ce choix est rarement tranché, ce qui crée des angles morts.
 
-**Explicabilité et responsabilité** : les éditeurs intégrant l'IA dans leurs produits doivent se préparer à l'article 13 de l'AI Act (transparence obligatoire pour les systèmes IA à destination d'utilisateurs professionnels) dont les premières obligations entrent en vigueur en août 2026.
+**Explicabilité et responsabilité** : les éditeurs intégrant l'IA dans leurs produits doivent se préparer à l'article 13 de l'AI Act. Il prévoit, pour les systèmes à haut risque, une transparence envers le déployeur (notice d'utilisation, caractéristiques, limites) ; ce n'est pas une obligation générale pour toute IA. Selon le règlement (UE) 2026/1744, les obligations haut risque de l'annexe III s'appliquent à partir du 2 décembre 2027.
 
 ### Positionnement Axion-IA
 
@@ -64,9 +64,11 @@ Les interventions Axion-IA dans ce secteur couvrent : l'audit des usages IA shad
       "https://www.capgemini.com/fr-fr/actualites/communiques-de-presse/",
       "https://digital-markets-act.ec.europa.eu/ai-act-2024_fr",
       "https://www.cigref.fr/cigref_publications/RapportsContainer/Prise_de_conscience_IA_generative_entreprises_2024.pdf",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─── 2. Brief sectoriel Cybersécurité ─────────────────────────────────────
@@ -334,17 +336,19 @@ En contexte B2B IT, les cas typiques incluent : scoring automatique de candidats
 
 ---
 
-## Q : Quelles obligations de l'AI Act s'appliquent aux entreprises IT à partir d'août 2026 ?
+## Q : Quelles obligations de l'AI Act s'appliquent aux entreprises IT, et à quelles dates ?
 
 **R :** L'**AI Act (Règlement UE 2024/1689)** suit un calendrier d'application progressif :
 
-- **Février 2025** : interdictions des pratiques IA inacceptables (manipulation subliminale, notation sociale généralisée, exploitation de vulnérabilités)
-- **Août 2025** : application des obligations pour les modèles d'IA à usage général (GPAI), incluant documentation technique et conformité droits d'auteur
-- **Août 2026** : application des obligations pour les **systèmes IA à haut risque** (Annexe III) et des obligations de **transparence** pour certains systèmes IA (article 50)
+- **2 février 2025** : interdictions des pratiques IA inacceptables (art. 5) et maîtrise de l'IA (art. 4, réécrit par le règlement (UE) 2026/1744 : les entreprises prennent des mesures pour favoriser la maîtrise de l'IA de leurs équipes)
+- **2 août 2025** : obligations pour les modèles d'IA à usage général (GPAI), gouvernance et sanctions
+- **2 août 2026** : application générale du règlement, dont la **transparence** de l'article 50 (le marquage technique des contenus générés a un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché)
+- **2 décembre 2027** : obligations pour les **systèmes IA à haut risque** de l'annexe III, initialement prévues en août 2026, reportées par le règlement (UE) 2026/1744
+- **2 août 2028** : IA intégrée dans des produits réglementés (annexe I), selon le même règlement
 
 **Article 50 — transparence** : les systèmes IA qui génèrent du contenu textuel, audio, vidéo ou image synthétique doivent informer les utilisateurs que le contenu est généré par IA. Cette obligation est particulièrement pertinente pour les éditeurs logiciels embarquant de la génération automatique dans leurs produits.
 
-**Systèmes à haut risque (Annexe III)** : les systèmes IA utilisés pour des décisions RH (recrutement, évaluation de performance, licenciement) sont explicitement listés. Les ESN qui développent ou déploient de tels systèmes pour leurs clients sont concernées en tant que "fournisseurs" ou "déployeurs" selon leur rôle.
+**Systèmes à haut risque (Annexe III, obligations reportées au 2 décembre 2027)** : les systèmes IA utilisés pour des décisions RH (recrutement, évaluation de performance, licenciement) sont explicitement listés. Les ESN qui développent ou déploient de tels systèmes pour leurs clients sont concernées en tant que "fournisseurs" ou "déployeurs" selon leur rôle.
 
 Les obligations incluent : documentation technique, journaux de bord automatiques, transparence envers les utilisateurs, surveillance humaine, robustesse et exactitude.`,
     sources: [
@@ -353,9 +357,11 @@ Les obligations incluent : documentation technique, journaux de bord automatique
       "https://edpb.europa.eu/our-work-tools/our-documents/guidelines/guidelines-022023-technical-scope-art-65-chatgpt_fr",
       "https://www.dataprivacyframework.gov/list",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─── 5. Playbook d'implémentation IA — ESN & Intégrateurs IT ──────────────

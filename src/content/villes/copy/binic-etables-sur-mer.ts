@@ -65,7 +65,7 @@ export const BINIC_ETABLES_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Binic-Étables-sur-Mer ?",
-      a: "Nos consultants se déplacent depuis Saint-Brieuc (15 min) ou Rennes (1h15). Gare TGV de Saint-Brieuc sur la ligne Paris-Brest. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Saint-Brieuc sur la ligne Paris-Brest. Tarifs publics et transparents.",
     },
   ],
 };

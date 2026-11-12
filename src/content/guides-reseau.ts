@@ -52,3 +52,31 @@ export const TEXTE_CONFIRMATION_RESEAU = {
     note: "You did not answer “Yes”? Just ignore this message: no tips will be sent to you.",
   },
 } as const;
+
+// ── Page « Recevoir le guide » (lot S2, 2026-11-08) ─────────────────────────────────────────
+// Décisions de Williams : prénom OBLIGATOIRE ; UNE case OBLIGATOIRE, au texte exact ci-dessous
+// (elle ne parle PAS de newsletter) ; aucune ligne `newsletter_subscribers` n'est créée.
+
+/** Référence du registre de preuve (`consent_events.form_ref`) pour la case de la page. */
+export const FORM_REF_PAGE_GUIDE = "guide-reseau-page";
+
+/** Version du texte de la case. Changer le texte = changer cette version ET l'empreinte. */
+export const VERSION_CONSENTEMENT_PAGE_GUIDE = "page-guide-2026-11-08";
+
+/** TEXTE EXACT de la case à cocher (décision de Williams, ne pas reformuler). */
+export const TEXTE_CASE_PAGE_GUIDE =
+  "J'accepte de recevoir le guide et des informations d'Axion-IA, désinscription à tout moment";
+
+/**
+ * SHA-256 (hex) de `TEXTE_CASE_PAGE_GUIDE`. Écrite en dur pour que ce module reste PUR ; un test
+ * recalcule l'empreinte et refuse tout écart (texte modifié sans la version ni l'empreinte).
+ */
+export const EMPREINTE_CASE_PAGE_GUIDE =
+  "946c98db9f2fa962fefa901500fed4d3e12b72670cf3b592e20632fb81b965b5";
+
+/** Bornes du prénom (caractères, après suppression des espaces de bord). */
+export const PRENOM_MIN = 1;
+export const PRENOM_MAX = 50;
+
+/** Chemin de la page (hors `[locale]`, comme `/questionnaire`). */
+export const CHEMIN_PAGE_GUIDE = "/guide-reseau";

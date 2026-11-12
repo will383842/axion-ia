@@ -25,7 +25,11 @@ import {
 } from "@/content/formations/catalog-v2";
 import { getFormationCourseModes } from "@/content/formations/catalog-v2-facts";
 import { formationDureeIso, getCategorieMeta } from "@/content/formations/catalog-v2-meta";
-import { formatAmount, getFormationPrice, type FormationCategorie } from "@/content/pricing";
+import {
+  PRIX_PUBLICS_AFFICHES,
+  formatMontantPublic,
+  type FormationCategorie,
+} from "@/content/pricing";
 import {
   buildCollectionPageJsonLd,
   buildCourseJsonLd,
@@ -37,8 +41,8 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 
 // FAQ Speakable par catégorie — Q/R distinctes pour éviter le duplicate content
 // entre les 2 listings. FaqAccordion injecte FAQPage JSON-LD + Speakable.
-// Les réponses « prix » DÉRIVENT de la matrice pricing.ts (garde-fou
-// no-hardcoded-prices) — `formatAmount` non-compact porte déjà « € HT ».
+// R7 (ordre de Williams du 08/11/2026) : les réponses « prix » ne citent plus de montant —
+// sur devis, par groupe. La matrice reste dans pricing.ts.
 function buildFaqByCategorie(): Record<
   Extract<FormationCategorie, "metier" | "secteur">,
   ReadonlyArray<{ id: string; question: string; answer: string }>
@@ -60,7 +64,8 @@ function buildFaqByCategorie(): Record<
       {
         id: "metier-prix",
         question: "Combien coûte une formation par métier ?",
-        answer: `Le prix est fixe et public, par groupe de 2 à 15 participants : ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "fr")} la journée. Les deux formations de 2 jours (Production/Opérations et IT/Développement) sont à ${formatAmount(getFormationPrice("metier", "2j") ?? Number.NaN, "fr")}, scindables en 2×1 jour.`,
+        answer:
+          "Le prix est établi sur devis, par groupe de 2 à 15 participants — jamais par personne. Il dépend de la durée (1 jour ; 2 jours, scindables en 2×1 jour, pour Production/Opérations et IT/Développement) et du format. Le devis arrive sous 48 h ouvrées, sans engagement.",
       },
       {
         id: "metier-perso",
@@ -85,7 +90,8 @@ function buildFaqByCategorie(): Record<
       {
         id: "secteur-prix",
         question: "Combien coûte une formation par secteur d'activité ?",
-        answer: `Le prix est fixe et public, par groupe de 2 à 15 participants : ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "fr")} la journée. La formation Industrie (2 jours, scindable 2×1j) est à ${formatAmount(getFormationPrice("secteur", "2j") ?? Number.NaN, "fr")}.`,
+        answer:
+          "Le prix est établi sur devis, par groupe de 2 à 15 participants — jamais par personne. Il dépend de la durée (1 jour ; 2 jours, scindables en 2×1 jour, pour la formation Industrie) et du format. Le devis arrive sous 48 h ouvrées, sans engagement.",
       },
       {
         id: "secteur-absent",
@@ -174,9 +180,9 @@ export function FormationCategorieListing({ categorie, locale }: Props): ReactNo
         }
         titleEm={categorie === "metier" ? "par métier" : "par secteur d'activité"}
         description={`${meta.taglineFr}${
-          typeof minPrix === "number"
-            ? ` Prix par groupe (2 à 15 participants), dès ${formatAmount(minPrix, "fr")}.`
-            : ""
+          PRIX_PUBLICS_AFFICHES && typeof minPrix === "number"
+            ? ` Prix par groupe (2 à 15 participants), dès ${formatMontantPublic(minPrix, "fr")}.`
+            : " Prix par groupe (2 à 15 participants), sur devis."
         }`}
         contentClassName={TIGHT_X}
       >

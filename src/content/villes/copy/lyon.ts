@@ -769,7 +769,7 @@ export const LYON_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For freelancers, managers and micro-business leaders in Lyon (Presqu'île, Vieux Lyon, residential districts). Short programme with targeted working sessions — email, quotes, competitive watch, admin management.",
           },

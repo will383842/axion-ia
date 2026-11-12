@@ -49,7 +49,7 @@ export const CADAUJAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cadaujac ?",
-      a: "Oui, Axion-IA intervient à Cadaujac et dans les Graves (Léognan, Martillac, Villenave-d'Ornon). Nos consultants se déplacent depuis Bordeaux (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Cadaujac et dans les Graves (Léognan, Martillac, Villenave-d'Ornon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Cadaujac  ?",

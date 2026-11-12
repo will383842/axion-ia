@@ -9,7 +9,7 @@
 ## 0. Kit pour tous, appel sur invitation (décision Will, 2026-09-19)
 
 - **Toute personne dont on a l'adresse reçoit le KIT** — le document de présentation
-  « Devenir apporteur d'affaires » (`public/imprimes/devenir-apporteur-d-affaires-axion-ia.pdf`,
+  « Devenir apporteur d'affaires » (`docs/pdf-hors-ligne-certification/apporteur/devenir-apporteur-d-affaires-axion-ia.pdf` (retiré de public/ le 2026-11-08)),
   source `docs/imprimes/devenir-apporteur-d-affaires.html`) et le catalogue (`/fr/catalogue`) —,
   en liens : accusé Facebook, relances J+2/J+7, confirmation du dossier, et, pour qui quitte le
   dossier à l'écran 1, un envoi différé de 30 min (annulé si le dossier arrive).

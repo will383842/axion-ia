@@ -34,7 +34,7 @@ import {
   type InterventionDetailSlug,
 } from "@/content/intervention-detail-configs";
 import { getFamily } from "@/content/interventions-taxonomy";
-import { formatAmount } from "@/content/pricing";
+import { PRIX_PUBLICS_AFFICHES, formatMontantPublic } from "@/content/pricing";
 import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
@@ -63,8 +63,10 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
   const config = INTERVENTION_DETAIL_CONFIGS[slug];
   const casUsage = getUnAUnCasUsage(slug);
   const family = getFamily(config.familySlug);
-  const priceFr = config.priceFlatEur ? formatAmount(config.priceFlatEur, "fr") : "Sur devis";
-  const priceEn = config.priceFlatEur ? formatAmount(config.priceFlatEur, "en") : "On request";
+  // R7 : « Sur devis » tant que l'interrupteur des prix publics est coupé.
+  const priceFr = formatMontantPublic(config.priceFlatEur, "fr");
+  const priceEn = formatMontantPublic(config.priceFlatEur, "en");
+  const prixVisible = PRIX_PUBLICS_AFFICHES && config.priceFlatEur != null;
   const isBookable =
     config.priceFlatEur != null && CALENDAR_SUPPORTED_FORMAT_SLUGS.has(config.formatSlug);
   const primaryCtaHref = isBookable
@@ -331,13 +333,17 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
         description={
           isFr
             ? isBookable
-              ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
-              : config.priceFlatEur
+              ? prixVisible
+                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
+                : "Sur devis. Réservez un appel : le devis et le planning suivent sous 48 h ouvrées."
+              : prixVisible
                 ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
                 : `Sur devis selon votre contexte. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
             : isBookable
-              ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
-              : config.priceFlatEur
+              ? prixVisible
+                ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`
+                : "On request. Book a call: the quote and schedule follow within 48 business hours."
+              : prixVisible
                 ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
                 : `On request based on your context. Framing call where we take the time to scope your project perfectly, quote and schedule within 48 business hours. No commitment before signing.`
         }

@@ -49,7 +49,7 @@ export const MARQUETTE_LEZ_LILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marquette-lez-Lille et dans le nord lillois ?",
-      a: "Oui, Axion-IA intervient à Marquette-lez-Lille et dans tout le nord de la Métropole Européenne de Lille (Saint-André-lez-Lille, Lambersart, La Madeleine, Wambrechies). Nos consultants sont basés sur Lille, déplacement en 10 min.",
+      a: "Oui, Axion-IA intervient à Marquette-lez-Lille et dans tout le nord de la Métropole Européenne de Lille (Saint-André-lez-Lille, Lambersart, La Madeleine, Wambrechies). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Marquette-lez-Lille  ?",

@@ -116,7 +116,10 @@ describe("/api/markdown — tout type annoncé aux crawlers est enregistré", ()
 });
 
 describe("/api/markdown — les types adossés à un SSOT fichier servent un vrai corps", () => {
-  for (const [type, slugDe] of Object.entries(SLUGS_SANS_DB)) {
+  // cas-concrets : éteints le 2026-11-08 (CAS_CONCRETS_AFFICHES = false) → 404, voir plus bas.
+  for (const [type, slugDe] of Object.entries(SLUGS_SANS_DB).filter(
+    ([t]) => t !== "cas-concrets",
+  )) {
     it(`${type} : 200 avec un corps substantiel`, async () => {
       const slug = slugDe();
       expect(slug, `aucun slug de test pour ${type}`).toBeTruthy();
@@ -137,6 +140,13 @@ describe("/api/markdown — les types adossés à un SSOT fichier servent un vra
       const res = await fetchMarkdown(type, slugDe());
       expect(await res.text(), `${type} sert un gabarit non résolu`).not.toContain("{{price:");
     }
+  });
+});
+
+describe("/api/markdown — cas-concrets éteints", () => {
+  it("répond 404 : les cas inventés ne sont plus servis aux moteurs de réponse", async () => {
+    const res = await fetchMarkdown("cas-concrets", getAllCaseSlugs()[0] ?? "");
+    expect(res.status).toBe(404);
   });
 });
 

@@ -32,8 +32,8 @@
 // (comportement d'avant ce script, aucune régression possible).
 
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { existsSync, mkdirSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { dirname, join, relative, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -70,7 +70,10 @@ const FAMILIES = {
 
 function lastCommitIso(paths) {
   try {
-    const out = execFileSync("git", ["log", "-1", "--format=%cI", "--", ...paths], {
+    // `:(literal)` : les chemins portent des crochets (`[locale]`) et des
+    // parenthèses de groupes de routes, que git lirait sinon comme des motifs.
+    const specs = paths.map((p) => `:(literal)${p}`);
+    const out = execFileSync("git", ["log", "-1", "--format=%cI", "--", ...specs], {
       cwd: ROOT,
       encoding: "utf8",
       stdio: ["ignore", "pipe", "ignore"],
@@ -127,7 +130,133 @@ for (const [family, paths] of shallow ? [] : Object.entries(FAMILIES)) {
   console.log(`[content-freshness] ${family.padEnd(16)} ${iso ?? "(omis — pas de commit)"}`);
 }
 
+// ─── Granularité PAR ROUTE (audit SEO indépendant du 2026-11-11, I2) ─────────
+//
+// Le défaut mesuré : les 87 URL de `sitemap/pages.xml` portaient le MÊME
+// `<lastmod>`, celui de la famille `pages` (dernier commit sous `src/content` OU
+// `src/app/[locale]`). Une retouche de `/mentions-legales` « rafraîchissait »
+// `/a-propos`, `/methodologie`, `/podcast`… — le même date-gaming que la
+// granularité par famille devait éviter, à l'échelle d'une famille fourre-tout.
+//
+// Désormais, pour CHAQUE route statique de `src/app/[locale]` (sans segment
+// dynamique), la date du dernier commit qui a touché :
+//   1. les fichiers du dossier de la route (page, layout, jsonld, `_composants`…),
+//      SANS descendre dans les sous-routes (un dossier qui porte sa propre
+//      `page.tsx` est une autre URL) ni compter les tests ;
+//   2. les modules `@/content/…` que ces fichiers importent (le texte servi vit
+//      souvent là, pas dans la page).
+// Une route jamais retouchée garde la date de son commit de création.
+//
+// Ce que la date NE couvre PAS, volontairement : les composants partagés
+// (`src/components/**`) et le layout racine. Les compter ferait bouger toutes
+// les routes ensemble à chaque retouche de la nav — exactement le défaut corrigé.
+
+const LOCALE_DIR = join(ROOT, "src", "app", "[locale]");
+const FICHIER_TEST = /(\.|\/)(test|spec)\.[cm]?[jt]sx?$|\/__tests__\//;
+/** Fichiers de coquille du dossier `[locale]` lui-même : ils servent TOUTES les routes. */
+const COQUILLE_RACINE = new Set([
+  "layout.tsx",
+  "not-found.tsx",
+  "error.tsx",
+  "loading.tsx",
+  "template.tsx",
+  "global-error.tsx",
+]);
+
+function aUnePage(dossier) {
+  return readdirSync(dossier).some((n) => /^page\.[jt]sx?$/.test(n));
+}
+
+function contientUneRoute(dossier) {
+  if (aUnePage(dossier)) return true;
+  for (const n of readdirSync(dossier)) {
+    const c = join(dossier, n);
+    if (statSync(c).isDirectory() && contientUneRoute(c)) return true;
+  }
+  return false;
+}
+
+/** Fichiers source d'une route : son dossier, sans les sous-routes ni les tests. */
+function fichiersDeRoute(dossier, racine) {
+  const sortie = [];
+  for (const n of readdirSync(dossier)) {
+    const c = join(dossier, n);
+    if (statSync(c).isDirectory()) {
+      if (n === "__tests__") continue;
+      if (contientUneRoute(c)) continue;
+      sortie.push(...fichiersDeRoute(c, false));
+    } else {
+      if (racine && dossier === LOCALE_DIR && COQUILLE_RACINE.has(n)) continue;
+      const rel = relative(ROOT, c).split(sep).join("/");
+      if (FICHIER_TEST.test(rel)) continue;
+      sortie.push(rel);
+    }
+  }
+  return sortie;
+}
+
+/** Résout `@/content/x` vers le fichier ou le dossier réel, ou null. */
+function resoudreContenu(specifier) {
+  const base = join(ROOT, "src", specifier.slice(2));
+  for (const c of [base, `${base}.ts`, `${base}.tsx`, join(base, "index.ts")]) {
+    if (existsSync(c)) return relative(ROOT, c).split(sep).join("/");
+  }
+  return null;
+}
+
+function contenusImportes(fichiers) {
+  const sortie = new Set();
+  for (const f of fichiers) {
+    if (!/\.[cm]?[jt]sx?$/.test(f)) continue;
+    const source = readFileSync(join(ROOT, f), "utf8");
+    for (const m of source.matchAll(/from\s+["'](@\/content\/[^"']+)["']/g)) {
+      const r = resoudreContenu(m[1]);
+      if (r) sortie.add(r);
+    }
+  }
+  return [...sortie];
+}
+
+/** `src/app/[locale]/(groupe)/a-propos` → `/a-propos` ; null si segment dynamique. */
+function cleDeRoute(dossier) {
+  const segments = relative(LOCALE_DIR, dossier)
+    .split(sep)
+    .filter((s) => s && !/^\(.*\)$/.test(s));
+  if (segments.some((s) => s.startsWith("[") || s.startsWith("@") || s.startsWith("_"))) {
+    return null;
+  }
+  return `/${segments.join("/")}`;
+}
+
+function dossiersDeRoutes(dossier) {
+  const sortie = [];
+  if (aUnePage(dossier)) sortie.push(dossier);
+  for (const n of readdirSync(dossier)) {
+    const c = join(dossier, n);
+    if (statSync(c).isDirectory() && n !== "__tests__" && !n.startsWith("_")) {
+      sortie.push(...dossiersDeRoutes(c));
+    }
+  }
+  return sortie;
+}
+
+const routes = [];
+if (!shallow && existsSync(LOCALE_DIR)) {
+  for (const dossier of dossiersDeRoutes(LOCALE_DIR)) {
+    const cle = cleDeRoute(dossier);
+    if (!cle) continue;
+    const fichiers = fichiersDeRoute(dossier, true);
+    const iso = lastCommitIso([...fichiers, ...contenusImportes(fichiers)]);
+    if (iso) routes.push([cle, iso]);
+  }
+  routes.sort(([a], [b]) => a.localeCompare(b));
+  console.log(`[content-freshness] ${routes.length} routes datées une par une`);
+}
+
 const body = entries.map(([k, v]) => `  ${JSON.stringify(k)}: ${JSON.stringify(v)},`).join("\n");
+const bodyRoutes = routes
+  .map(([k, v]) => `  ${JSON.stringify(k)}: ${JSON.stringify(v)},`)
+  .join("\n");
 
 const file = `// ⚠️ FICHIER GÉNÉRÉ — ne pas éditer à la main.
 // Source : \`scripts/gen-content-freshness.mjs\` (exécuté en CI avant \`docker build\`).
@@ -142,8 +271,18 @@ const file = `// ⚠️ FICHIER GÉNÉRÉ — ne pas éditer à la main.
 export const CONTENT_FRESHNESS: Readonly<Record<string, string>> = {
 ${body}
 };
+
+// Date PAR ROUTE statique (clé = chemin interne de \`routing.pathnames\`) :
+// lue par \`src/lib/seo/fraicheur.ts\` pour le \`<lastmod>\` de \`pages.xml\` ET le
+// \`dateModified\` JSON-LD de la même page (audit SEO 2026-11-11, I2). Une route
+// absente d'ici retombe sur la famille \`pages\`, puis sur la date éditoriale figée.
+export const ROUTE_FRESHNESS: Readonly<Record<string, string>> = {
+${bodyRoutes}
+};
 `;
 
 mkdirSync(dirname(OUT), { recursive: true });
 writeFileSync(OUT, file, "utf8");
-console.log(`[content-freshness] écrit : ${OUT} (${entries.length} familles)`);
+console.log(
+  `[content-freshness] écrit : ${OUT} (${entries.length} familles, ${routes.length} routes)`,
+);

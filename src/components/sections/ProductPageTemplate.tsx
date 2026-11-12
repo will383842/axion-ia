@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import * as React from "react";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
@@ -173,9 +174,11 @@ export function ProductPageTemplate({
               {copy.ctaPrimary}
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href={ctaSecondaryHref} variant="outline" size="lg">
-              {copy.ctaSecondary}
-            </Cta>
+            {ctaSecondaryHref === "/cas-concrets" && !CAS_CONCRETS_AFFICHES ? null : (
+              <Cta href={ctaSecondaryHref} variant="outline" size="lg">
+                {copy.ctaSecondary}
+              </Cta>
+            )}
           </>
         }
         {...(heroSchema ? { heroSchema } : {})}

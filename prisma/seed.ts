@@ -242,9 +242,9 @@ async function seedArticles() {
         "Un audit réduit le coût total d'implémentation de 30 à 50 % et évite les paris technologiques ratés.",
       excerptEn: "An audit cuts total implementation cost by 30-50% and avoids failed tech bets.",
       bodyFr:
-        "Avant tout déploiement IA significatif, un audit cadré 5 à 10 jours permet de cartographier les flux, identifier les ROI immédiats, et qualifier les zones non-IA. Sur 30 missions menées par Axion-IA en 2025-2026, les organisations ayant fait l'audit en amont ont divisé par deux la durée moyenne d'implémentation et abandonné en moyenne 2 idées sur 5 — économie nette estimée 50 000 €+ par projet PME.",
+        "Avant tout déploiement IA significatif, un audit cadré 5 à 10 jours permet de cartographier les flux, identifier les ROI immédiats, et qualifier les zones non-IA. Sur 30 missions menées par Axion-IA en 2025-2026, les organisations ayant fait l'audit en amont ont divisé par deux la durée moyenne d'implémentation et abandonné en moyenne 2 idées sur 5 — économie nette estimée 50 000 €+ par projet PME.", // price-exempt: gain estimé côté client, pas un tarif Axion-IA
       bodyEn:
-        "Before any significant AI deployment, a 5-10 day audit maps your flows, identifies immediate ROI, and qualifies non-AI zones. Across 30 missions led by Axion-IA in 2025-2026, organizations that audited upfront halved their implementation timeline and dropped on average 2 ideas out of 5 — net savings estimated at €50K+ per SME project.",
+        "Before any significant AI deployment, a 5-10 day audit maps your flows, identifies immediate ROI, and qualifies non-AI zones. Across 30 missions led by Axion-IA in 2025-2026, organizations that audited upfront halved their implementation timeline and dropped on average 2 ideas out of 5 — net savings estimated at €50K+ per SME project.", // price-exempt: gain estimé côté client, pas un tarif Axion-IA
       categoryId: catStrat.id,
       publishedAt: new Date("2026-04-15T08:00:00Z"),
       readingTime: 7,
@@ -260,9 +260,9 @@ async function seedArticles() {
       excerptEn:
         "Invoice reading, meeting minutes, lead qualification — deployable in under a month.",
       bodyFr:
-        "En 2026, les modèles IA matures permettent trois quick-wins déployables sous 30 jours dans presque toute organisation : 1) Lecture automatisée des factures entrantes (gain 30-50 % temps comptable). 2) Génération de comptes-rendus de réunions (gain 1-2 h/jour/cadre). 3) Qualification IA des leads entrants (gain 30 % conversion). Chacun coûte moins de 5 000 € à déployer pour une PME.",
+        "En 2026, les modèles IA matures permettent trois quick-wins déployables sous 30 jours dans presque toute organisation : 1) Lecture automatisée des factures entrantes (gain 30-50 % temps comptable). 2) Génération de comptes-rendus de réunions (gain 1-2 h/jour/cadre). 3) Qualification IA des leads entrants (gain 30 % conversion). Chacun est chiffré sur devis : parlons-en lors du rendez-vous gratuit de 45 minutes.",
       bodyEn:
-        "In 2026, mature AI models enable three quick-wins deployable within 30 days in almost any organization: 1) Automated reading of incoming invoices (30-50% accounting time savings). 2) Meeting minute generation (1-2h/day/manager savings). 3) AI lead qualification (30% conversion uplift). Each costs less than €5k to deploy for an SME.",
+        "In 2026, mature AI models enable three quick-wins deployable within 30 days in almost any organization: 1) Automated reading of incoming invoices (30-50% accounting time savings). 2) Meeting minute generation (1-2h/day/manager savings). 3) AI lead qualification (30% conversion uplift). Each is quoted on request: let's discuss it during the free 45-minute call.",
       categoryId: catUse.id,
       publishedAt: new Date("2026-04-22T08:00:00Z"),
       readingTime: 8,
@@ -277,9 +277,9 @@ async function seedArticles() {
         "Trois critères discriminants pour décider entre solution prête-à-l'emploi et IA sur mesure.",
       excerptEn: "Three discriminating criteria to choose between off-the-shelf and custom AI.",
       bodyFr:
-        "L'IA custom 8 000 - 50 000 € se justifie sur trois critères seulement : 1) volumétrie données propriétaire > 10K documents/jour. 2) règle métier non couverte par les modèles SaaS. 3) confidentialité critique imposant on-premise / Hetzner UE. Hors ces trois cas, un assemblage de SaaS (ChatGPT Enterprise + n8n + Airtable) résout 80 % des besoins pour un dixième du budget.",
+        "L'IA custom se justifie sur trois critères seulement : 1) volumétrie données propriétaire > 10K documents/jour. 2) règle métier non couverte par les modèles SaaS. 3) confidentialité critique imposant on-premise / Hetzner UE. Hors ces trois cas, un assemblage de SaaS (ChatGPT Enterprise + n8n + Airtable) résout 80 % des besoins pour un dixième du budget.",
       bodyEn:
-        "Custom AI in the €8K-50K range is justified by only three criteria: 1) proprietary data volume > 10K docs/day. 2) business rule not covered by SaaS models. 3) critical confidentiality requiring on-premise / EU Hetzner hosting. Outside these three cases, a SaaS stack (ChatGPT Enterprise + n8n + Airtable) solves 80% of needs at one-tenth the budget.",
+        "Custom AI is justified by only three criteria: 1) proprietary data volume > 10K docs/day. 2) business rule not covered by SaaS models. 3) critical confidentiality requiring on-premise / EU Hetzner hosting. Outside these three cases, a SaaS stack (ChatGPT Enterprise + n8n + Airtable) solves 80% of needs at one-tenth the budget.",
       categoryId: catStrat.id,
       publishedAt: new Date("2026-04-29T08:00:00Z"),
       readingTime: 9,
@@ -293,9 +293,9 @@ async function seedArticles() {
       excerptFr: "Modèle ROI détaillé sur 1500 factures/mois — break-even atteint à 4 mois.",
       excerptEn: "Detailed ROI model on 1500 invoices/month — break-even reached at 4 months.",
       bodyFr:
-        "Sur une PME industrielle de 80 personnes traitant 1500 factures/mois, l'investissement automatisation IA (12 000 € one-shot + 290 €/mois maintenance) rapporte 3,2 ETP libérés sur les flux fournisseurs — soit 96 000 €/an d'économie. Break-even atteint à 4 mois, gain net année 1 ≈ 80 000 €. ROI 24 mois ≈ 580 %.",
+        "Sur une PME industrielle de 80 personnes traitant 1500 factures/mois, l'investissement automatisation IA rapporte 3,2 ETP libérés sur les flux fournisseurs — soit 96 000 €/an d'économie. Break-even atteint à 4 mois, gain net année 1 ≈ 80 000 €. ROI 24 mois ≈ 580 %.", // price-exempt: économie et gain côté client, pas un tarif Axion-IA
       bodyEn:
-        "For an 80-person industrial SME processing 1500 invoices/month, the AI automation investment (€12k one-time + €290/month maintenance) frees 3.2 FTEs from supplier flows — equivalent to €96K/year savings. Break-even at 4 months, net year-1 gain ≈ €80K. 24-month ROI ≈ 580%.",
+        "For an 80-person industrial SME processing 1500 invoices/month, the AI automation investment frees 3.2 FTEs from supplier flows — equivalent to €96K/year savings. Break-even at 4 months, net year-1 gain ≈ €80K. 24-month ROI ≈ 580%.", // price-exempt: économie et gain côté client, pas un tarif Axion-IA
       categoryId: catRoi.id,
       publishedAt: new Date("2026-05-01T08:00:00Z"),
       readingTime: 6,
@@ -310,9 +310,9 @@ async function seedArticles() {
         "9h-18h sur site ou en distanciel, 5 phases concrètes, 1 plan d'action signé en sortie.",
       excerptEn: "9am-6pm on-site or remote, 5 concrete phases, 1 signed action plan delivered.",
       bodyFr:
-        "Intervention Essentielle 490-1190 €. Format : 1 journée full sur site ou distanciel. Découpage : 1) immersion équipe (1h30) — observation des flux concrets. 2) cartographie pain points (1h30). 3) atelier IA opérationnelle (3h) — 5 quick-wins identifiés et budgétés. 4) plan d'action 90 jours (1h30) signé. 5) restitution dirigeant (1h). Livrable J+2 : rapport 15 pages + recommandations chiffrées.",
+        "Intervention Essentielle (sur devis). Format : 1 journée full sur site ou distanciel. Découpage : 1) immersion équipe (1h30) — observation des flux concrets. 2) cartographie pain points (1h30). 3) atelier IA opérationnelle (3h) — 5 quick-wins identifiés et budgétés. 4) plan d'action 90 jours (1h30) signé. 5) restitution dirigeant (1h). Livrable J+2 : rapport 15 pages + recommandations chiffrées.",
       bodyEn:
-        "Essentielle session €490-1190. Format: 1 full day on-site or remote. Breakdown: 1) team immersion (1h30) — observing concrete flows. 2) pain point mapping (1h30). 3) operational AI workshop (3h) — 5 quick-wins identified and budgeted. 4) signed 90-day action plan (1h30). 5) executive debrief (1h). Day+2 deliverable: 15-page report + costed recommendations.",
+        "Essentielle session (on request). Format: 1 full day on-site or remote. Breakdown: 1) team immersion (1h30) — observing concrete flows. 2) pain point mapping (1h30). 3) operational AI workshop (3h) — 5 quick-wins identified and budgeted. 4) signed 90-day action plan (1h30). 5) executive debrief (1h). Day+2 deliverable: 15-page report + costed recommendations.",
       categoryId: catUse.id,
       publishedAt: new Date("2026-05-05T08:00:00Z"),
       readingTime: 5,
@@ -392,11 +392,11 @@ async function seedCaseStudies() {
       problemFr:
         "Cabinet 18 collaborateurs, 4 ETP saturés sur saisie comptable répétitive, taux d'erreur 1,8 %.",
       solutionFr:
-        "Audit 5 jours → automatisation lecture factures + push Sage. 6 semaines déploiement. Maintenance 290 €/mois.",
+        "Audit 5 jours → automatisation lecture factures + push Sage. 6 semaines déploiement. Maintenance sur devis.",
       problemEn:
         "18-person accounting firm, 4 FTEs saturated on repetitive bookkeeping, 1.8% error rate.",
       solutionEn:
-        "5-day audit → invoice reading automation + Sage push. 6-week deployment. €290/month maintenance.",
+        "5-day audit → invoice reading automation + Sage push. 6-week deployment. Maintenance on request.",
       durationWeeks: 6,
       roiWeeks: 16,
       publishedAt: new Date("2026-04-10T08:00:00Z"),
@@ -417,11 +417,11 @@ async function seedCaseStudies() {
       problemFr:
         "PME industrielle 80 personnes, 2 sites. 4 ETP affectés au tri/validation/saisie de 1500 factures/mois.",
       solutionFr:
-        "Lecture IA factures (PDF/scan/email) + extraction structurée + push ERP. Workflow validation 2 niveaux > 5 K€.",
+        "Lecture IA factures (PDF/scan/email) + extraction structurée + push ERP. Workflow validation 2 niveaux > 5 K€.", // price-exempt: seuil de validation des factures du client
       problemEn:
         "80-person industrial SME, 2 sites. 4 FTEs handling sorting/validation/entry of 1500 invoices/month.",
       solutionEn:
-        "AI invoice reading (PDF/scan/email) + structured extraction + ERP push. 2-level validation workflow > €5K.",
+        "AI invoice reading (PDF/scan/email) + structured extraction + ERP push. 2-level validation workflow > €5K.", // price-exempt: seuil de validation des factures du client
       durationWeeks: 8,
       roiWeeks: 18,
       publishedAt: new Date("2026-04-18T08:00:00Z"),
@@ -542,8 +542,8 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Combien coûte l'intervention Essentielle ?",
       qEn: "How much does the Essentielle session cost?",
-      aFr: "490 € HT pour 1-10 participants, 790 € HT pour 11-30, 1 190 € HT au-delà. TVA en sus selon le régime applicable.",
-      aEn: "€490 excl. VAT for 1-10 participants, €790 for 11-30, €1,190 above. VAT extra depending on the applicable regime.",
+      aFr: "Sur devis : parlons-en lors du rendez-vous gratuit de 45 minutes. TVA en sus selon le régime applicable.",
+      aEn: "On request: let's discuss it during the free 45-minute call. VAT extra depending on the applicable regime.",
     },
     {
       slug: "qu-est-ce-qu-un-audit",
@@ -558,24 +558,24 @@ async function seedFAQs() {
       category: "pricing",
       qFr: "Combien coûte un audit ?",
       qEn: "How much does an audit cost?",
-      aFr: "De 290 € HT (TPE distance) à 1 990 € HT (moyenne entreprise sur site). Grandes entreprises sur devis.",
-      aEn: "From €290 excl. VAT (small business remote) to €1,990 (mid-sized on-site). Large companies on request.",
+      aFr: "Sur devis, selon la taille de l'entreprise et le format (à distance ou sur site) : parlons-en lors du rendez-vous gratuit de 45 minutes.",
+      aEn: "On request, depending on company size and format (remote or on-site): let's discuss it during the free 45-minute call.",
     },
     {
       slug: "qu-est-ce-qu-une-implementation",
       category: "implementation",
       qFr: "Qu'est-ce qu'une implémentation IA ?",
       qEn: "What is an AI implementation?",
-      aFr: "C'est le déploiement d'une solution IA chez vous : automatisation, agents, IA custom. De 990 € à 50 000 € HT selon ambition.",
-      aEn: "It's the deployment of an AI solution at your premises: automation, agents, custom AI. From €990 to €50K depending on scope.",
+      aFr: "C'est le déploiement d'une solution IA chez vous : automatisation, agents, IA custom. Sur devis selon l'ambition : parlons-en lors du rendez-vous gratuit de 45 minutes.",
+      aEn: "It's the deployment of an AI solution at your premises: automation, agents, custom AI. On request depending on scope: let's discuss it during the free 45-minute call.",
     },
     {
       slug: "qu-est-ce-que-l-ia-custom",
       category: "implementation",
       qFr: "Qu'est-ce que l'IA custom ?",
       qEn: "What is custom AI?",
-      aFr: "Une IA développée sur mesure pour votre entreprise, hébergée sur infrastructure UE (Hetzner), pour les cas où le SaaS ne couvre pas le besoin (8-50 K€).",
-      aEn: "Custom-developed AI for your company, hosted on EU infrastructure (Hetzner), for cases where SaaS doesn't fit the need (€8-50K).",
+      aFr: "Une IA développée sur mesure pour votre entreprise, hébergée sur infrastructure UE (Hetzner), pour les cas où le SaaS ne couvre pas le besoin (sur devis).",
+      aEn: "Custom-developed AI for your company, hosted on EU infrastructure (Hetzner), for cases where SaaS doesn't fit the need (on request).",
     },
     {
       slug: "delais-implementation",
@@ -654,8 +654,8 @@ async function seedFAQs() {
       category: "process",
       qFr: "Quel support après l'implémentation ?",
       qEn: "What support after implementation?",
-      aFr: "Maintenance optionnelle 290 €/mois HT (correctifs + monitoring + 2 h/mois d'évolution). Sans engagement, résiliable mensuellement.",
-      aEn: "Optional maintenance €290/month excl. VAT (fixes + monitoring + 2h/month of evolution). No commitment, monthly cancellation.",
+      aFr: "Maintenance optionnelle sur devis (correctifs + monitoring + 2 h/mois d'évolution). Sans engagement, résiliable mensuellement.",
+      aEn: "Optional maintenance on request (fixes + monitoring + 2h/month of evolution). No commitment, monthly cancellation.",
     },
   ] as const;
 
@@ -788,9 +788,9 @@ async function seedHelpArticles() {
       titleFr: "Factures d'acompte et solde",
       titleEn: "Deposit and balance invoices",
       bodyFr:
-        "Pour implémentations > 5 000 €, 30 % d'acompte à la signature, 40 % à la livraison V1, 30 % à la recette finale. Audit et interventions : facturation à 100 % à la livraison.",
+        "Pour les implémentations, 30 % d'acompte à la signature, 40 % à la livraison V1, 30 % à la recette finale. Audit et interventions : facturation à 100 % à la livraison.",
       bodyEn:
-        "For implementations > €5K, 30% deposit on signature, 40% on V1 delivery, 30% on final acceptance. Audits and sessions: 100% billing on delivery.",
+        "For implementations, 30% deposit on signature, 40% on V1 delivery, 30% on final acceptance. Audits and sessions: 100% billing on delivery.",
     },
     {
       categoryId: catDemarrage.id,

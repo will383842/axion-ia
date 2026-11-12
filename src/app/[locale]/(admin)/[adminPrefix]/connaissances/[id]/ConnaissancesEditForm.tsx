@@ -273,7 +273,10 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {metaState?.error && metaState.error !== "validation" ? (
           <p className="admin-error" role="alert">
-            {messageErreurKb(metaState.error)}
+            {messageErreurKb(
+              metaState.error,
+              "reason" in metaState ? String(metaState.reason ?? "") : null,
+            )}
           </p>
         ) : null}
       </form>
@@ -325,7 +328,10 @@ export function ConnaissancesEditForm({ adminPrefix, entry }: Props) {
         ) : null}
         {bodyState && "error" in bodyState && bodyState.error ? (
           <p className="admin-error" role="alert">
-            {messageErreurKb(String(bodyState.error))}
+            {messageErreurKb(
+              String(bodyState.error),
+              "reason" in bodyState ? bodyState.reason : null,
+            )}
           </p>
         ) : null}
       </form>

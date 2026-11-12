@@ -23,9 +23,74 @@ import { KB_VILLES_ALL } from "../../../src/server/content-gen/kb/villes-facts";
 import type { KbFact } from "../../../src/server/content-gen/kb/audits";
 import { servicesForVerticales, serviceTagSlug } from "../../../src/content/knowledge/services";
 import { resolvePriceTokens } from "../../../src/content/pricing-tokens";
+import {
+  raisonBlocage,
+  verifierDoctrineFiche,
+  type ViolationFiche,
+} from "../../../src/lib/knowledge/banned-words";
+
+/** Préfixe de la raison écrite dans `briefMarkdown` d'une fiche bloquée par le seed. */
+export const MARQUEUR_DOCTRINE = "[doctrine] ";
+
+export interface FicheExistante {
+  readonly status: string;
+  readonly deletedAt: Date | null;
+  readonly briefMarkdown: string | null;
+}
+
+export interface PlanFiche {
+  /** `published` | `draft` : statut à écrire ; `inchange` : ne rien toucher au statut. */
+  readonly statut: "published" | "draft" | "inchange";
+  /** Fiche retirée (supprimée, archivée, dépréciée) : le seed n'y touche jamais. */
+  readonly retiree: boolean;
+  /** Raison du brouillon, si la doctrine bloque. */
+  readonly raison: string | null;
+  /** Le seed peut-il écrire la raison dans `briefMarkdown` sans écraser une note de console ? */
+  readonly ecrireRaison: boolean;
+}
+
+/**
+ * Décision pure du seed pour une fiche (testable sans base).
+ *  - jamais de remise en ligne d'une fiche retirée ni d'un statut choisi en console ;
+ *  - une fiche qui viole la doctrine reste (ou repasse) en brouillon, avec sa raison ;
+ *  - une fiche propre est publiée à la création ; si elle n'était en brouillon que par
+ *    le fait du seed (marqueur), elle est publiée une fois corrigée.
+ */
+export function planifierFiche(
+  existante: FicheExistante | null,
+  violations: ReadonlyArray<ViolationFiche>,
+): PlanFiche {
+  const raison = violations.length > 0 ? raisonBlocage(violations) : null;
+  if (existante === null) {
+    return { statut: raison ? "draft" : "published", retiree: false, raison, ecrireRaison: true };
+  }
+  const retiree =
+    existante.deletedAt !== null ||
+    existante.status === "archived" ||
+    existante.status === "deprecated";
+  if (retiree) return { statut: "inchange", retiree: true, raison, ecrireRaison: false };
+  const note = existante.briefMarkdown ?? "";
+  const ecrireRaison = note === "" || note.startsWith(MARQUEUR_DOCTRINE);
+  if (raison) {
+    return {
+      statut: existante.status === "published" ? "draft" : "inchange",
+      retiree,
+      raison,
+      ecrireRaison: ecrireRaison || existante.status === "published",
+    };
+  }
+  const bloqueeParSeed =
+    existante.status === "draft" && (existante.briefMarkdown ?? "").startsWith(MARQUEUR_DOCTRINE);
+  return {
+    statut: bloqueeParSeed ? "published" : "inchange",
+    retiree,
+    raison,
+    ecrireRaison: false,
+  };
+}
 
 /** Tous les facts sectoriels à seeder. Idempotent : upsert sur slug unique. */
-const ALL_KB_FACTS: readonly KbFact[] = [
+export const ALL_KB_FACTS: readonly KbFact[] = [
   ...KB_AUDITS,
   ...KB_INTERVENTIONS_FORMATIONS,
   ...KB_UN_A_UN,
@@ -78,7 +143,7 @@ async function upsertEmbedding(
   );
 }
 
-async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
+export async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<PlanFiche> {
   const entrySlug = `kb-fact-${fact.id}`;
 
   // Audit KB 2026-08-11 — les tokens `{{price:…}}` sont résolus À L'ÉCRITURE
@@ -89,30 +154,69 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   // AVANT le hard gate kb-health (180 j) — cf. `kb-health.ts`.
   const reviewDueAt = new Date(new Date(fact.verifiedAt).getTime() + 90 * 24 * 3600 * 1000);
 
+  // Audit knowledge 08/11/2026 — doctrine À L'ENTRÉE. On contrôle le TEXTE du fait
+  // (pas l'étiquette « Source : Axion-IA … » ajoutée au corps, qui n'est pas une
+  // affirmation). Une fiche fautive reste en brouillon, avec la raison.
+  const violations = verifierDoctrineFiche({ fait: factText });
+  const existante = await prisma.knowledgeEntry.findUnique({
+    where: { slug: entrySlug },
+    select: { status: true, deletedAt: true, briefMarkdown: true },
+  });
+  const plan = planifierFiche(existante, violations);
+  if (plan.raison) {
+    console.warn(`[seed-kb-facts] ${fact.id} bloquée (brouillon) — ${plan.raison}`);
+  }
+
+  // Le seed ne fait JAMAIS : republier une fiche retirée, effacer `deletedAt`, ni
+  // changer l'audience d'une fiche existante.
+  const statutMaj =
+    plan.statut === "inchange"
+      ? {}
+      : plan.statut === "published"
+        ? {
+            status: "published" as const,
+            pipelineStage: "published" as const,
+            audience: "public" as const,
+            confidentiality: "public" as const,
+          }
+        : { status: "draft" as const, pipelineStage: "draft" as const };
+  const brief = plan.raison
+    ? plan.ecrireRaison
+      ? { briefMarkdown: `${MARQUEUR_DOCTRINE}${plan.raison}` }
+      : {}
+    : plan.statut === "published" && existante?.briefMarkdown?.startsWith(MARQUEUR_DOCTRINE)
+      ? { briefMarkdown: null }
+      : {};
+  const bloquee = plan.statut === "draft" || plan.raison !== null;
+
   const entry = await prisma.knowledgeEntry.upsert({
     where: { slug: entrySlug },
     update: {
-      status: "published",
-      pipelineStage: "published",
-      audience: "public",
-      publishedAt: new Date(fact.verifiedAt),
-      reviewDueAt,
-      // Un slug ré-listé dans les fichiers KB ressuscite une entrée soft-deleted
-      // par la réconciliation (cf. `reconcileDeletedFacts`).
-      deletedAt: null,
+      ...statutMaj,
+      ...brief,
+      ...(!bloquee &&
+      !plan.retiree &&
+      (plan.statut === "published" || existante?.status === "published")
+        ? { publishedAt: new Date(fact.verifiedAt), reviewDueAt }
+        : {}),
     },
     create: {
       slug: entrySlug,
       type: "industry_use_case",
       domain: "commercial",
-      audience: "public",
-      confidentiality: "public",
-      status: "published",
-      pipelineStage: "published",
-      publishedAt: new Date(fact.verifiedAt),
+      audience: bloquee ? "team" : "public",
+      confidentiality: bloquee ? "internal" : "public",
+      status: bloquee ? "draft" : "published",
+      pipelineStage: bloquee ? "draft" : "published",
+      publishedAt: bloquee ? null : new Date(fact.verifiedAt),
       reviewDueAt,
+      ...brief,
     },
   });
+
+  // Une fiche retirée garde son contenu : le seed n'y écrit plus rien (une fiche
+  // dépréciée reste servie, un texte fautif y repartirait en public).
+  if (plan.retiree) return plan;
 
   const translationSlug = `${entrySlug}-fr`;
   const title = factText.slice(0, 120).replace(/[.…]$/, "") + "…";
@@ -148,7 +252,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
   // (Voyage AI) : si `VOYAGE_API_KEY` est absente, generateEmbedding renvoie un
   // stub SHA-256 non sémantique qu'on n'enregistre pas (la table reste vide →
   // la retrieval reste FTS). Idempotent (ON CONFLICT translation_id).
-  if (embeddingsEnabled) {
+  if (embeddingsEnabled && !bloquee) {
     await upsertEmbedding(prisma, translation.id, {
       title,
       excerpt: factText.slice(0, 300),
@@ -193,6 +297,7 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
       },
     });
   }
+  return plan;
 }
 
 /**
@@ -202,8 +307,9 @@ async function upsertFact(prisma: PrismaClient, fact: KbFact): Promise<void> {
  * « financement » retirés en juin 2026) restait publié en base à vie — servi en
  * page publique /connaissances ET récupérable par le RAG. Cette passe
  * soft-delete (deletedAt + status archived) toute entrée `kb-fact-*` absente de
- * `ALL_KB_FACTS`. Réversible : re-lister le slug dans un fichier KB le
- * ressuscite au prochain seed (l'upsert remet `deletedAt: null`).
+ * `ALL_KB_FACTS`. Un fiche retirée reste
+ * retirée : le seed ne remet JAMAIS `deletedAt` à null ni ne la republie (audit
+ * knowledge 08/11/2026) ; la remettre en ligne est un geste de console.
  * Périmètre strict `kb-fact-` : ne touche jamais les entrées nées de la
  * factory/ingest (slugs différents).
  */
@@ -221,6 +327,8 @@ async function reconcileDeletedFacts(prisma: PrismaClient): Promise<number> {
 
 export async function seedKbFacts(prisma: PrismaClient): Promise<number> {
   let upserted = 0;
+  let bloquees = 0;
+  let retirees = 0;
 
   console.log(
     embeddingsEnabled
@@ -229,8 +337,15 @@ export async function seedKbFacts(prisma: PrismaClient): Promise<number> {
   );
 
   for (const fact of ALL_KB_FACTS) {
-    await upsertFact(prisma, fact);
+    const plan = await upsertFact(prisma, fact);
     upserted++;
+    if (plan.raison) bloquees++;
+    if (plan.retiree) retirees++;
+  }
+  if (bloquees > 0 || retirees > 0) {
+    console.log(
+      `[seed-kb-facts] ${bloquees} fiche(s) en brouillon (doctrine), ${retirees} fiche(s) retirée(s) laissée(s) telles quelles.`,
+    );
   }
 
   const reconciled = await reconcileDeletedFacts(prisma);

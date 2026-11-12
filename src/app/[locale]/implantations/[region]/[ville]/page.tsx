@@ -54,6 +54,7 @@ import {
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   IMPLEMENTATION_TIERS,
+  PRIX_PUBLICS_AFFICHES,
   getEntryPriceEur,
   getTierById,
 } from "@/content/pricing";
@@ -948,7 +949,10 @@ export default async function VilleHubPage({ params }: Props) {
           breadcrumbJsonLd,
           verticalesItemList,
           heroImageJsonLd,
-          aggregateOfferJsonLd,
+          // R7 (ordre de Williams du 08/11/2026) : l'AggregateOffer chiffrée n'est émise
+          // que si l'interrupteur des prix publics est allumé. Le bloc reste construit
+          // ci-dessus, prêt à revenir.
+          ...(PRIX_PUBLICS_AFFICHES ? [aggregateOfferJsonLd] : []),
         ]}
         strategy="afterInteractive"
         scriptId={`jsonld-ville-hub-${ville.slug}`}

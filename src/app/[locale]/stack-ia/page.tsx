@@ -28,7 +28,6 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildCollectionPageJsonLd,
-  SITE_EDITORIAL_DATE,
   SITE_URL,
 } from "@/lib/seo";
 
@@ -184,7 +183,7 @@ export default async function StackIaPage({ params }: Props) {
     })),
   } as const;
 
-  // CollectionPage JSON-LD — signal de fraîcheur (dateModified = SITE_EDITORIAL_DATE),
+  // CollectionPage JSON-LD — signal de fraîcheur (dateModified calculé par la fabrique depuis `path`, même source que le sitemap),
   // distinct de l'ItemList (catalogue) déjà émis. Décrit la page-collection
   // elle-même pour l'AEO/GEO.
   const collectionPageJsonLd = buildCollectionPageJsonLd({
@@ -193,7 +192,6 @@ export default async function StackIaPage({ params }: Props) {
     name: isFr
       ? "Stack IA opérationnelle 2026 · cabinet Axion-IA"
       : "Operational AI stack 2026 · Axion-IA consultancy",
-    dateModified: SITE_EDITORIAL_DATE,
     isPartOf: { "@type": "WebSite", url: SITE_URL, name: "Axion-IA" },
   });
 
@@ -832,13 +830,13 @@ export default async function StackIaPage({ params }: Props) {
         titleEm={isFr ? "votre entreprise ?" : "your company?"}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
-            : "30 minutes on video, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
+            ? "45 minutes en visio ou par téléphone, gratuit. On regarde ensemble ce que vous utilisez déjà, ce qui manque, ce qui peut sortir. Vous repartez avec votre stack ciblée — qu'on déploie ensuite ou non."
+            : "45 minutes by video or phone, free. Together we look at what you already use, what's missing, what can go. You leave with your targeted stack — whether or not we then deploy it."
         }
         cta={
           <>
-            <Cta href="/audit/tpe-1-jour" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+            <Cta href="/appel" size="lg">
+              {isFr ? "Réserver mon rendez-vous gratuit" : "Book my free meeting"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link
@@ -853,10 +851,10 @@ export default async function StackIaPage({ params }: Props) {
         tone="dark"
       />
 
-      {/* V-04 P1 — ItemList inline (catalogue principal SEO), FAQ déféré (-100 ms TBT). */}
+      {/* JSON-LD rendu dans le HTML servi (audit SEO 2026-11-11, I1) : visible des robots sans JS. */}
       <JsonLd data={collectionPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-hub-faq" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-stack-ia-hub-faq" />
     </>
   );
 }

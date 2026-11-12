@@ -7,6 +7,7 @@
 
 import { z } from "zod";
 import { headers } from "next/headers";
+import { ficheDestineeAuPublic, verifierDoctrineTraduction } from "@/lib/knowledge/banned-words";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { requireAdminPublish } from "./_guards";
@@ -22,6 +23,7 @@ export interface RollbackResult {
   readonly ok: boolean;
   readonly newVersionId?: string;
   readonly error?: string;
+  readonly reason?: string;
 }
 
 export async function rollbackVersionAction(input: {
@@ -55,6 +57,28 @@ export async function rollbackVersionAction(input: {
   const snapshot = targetVersion.snapshotJson as any;
   if (!snapshot || typeof snapshot !== "object" || !snapshot.entry) {
     return { ok: false, error: "snapshot_invalid" };
+  }
+
+  // Doctrine : revenir à un ancien texte ne remet pas un interdit en ligne.
+  const fiche = await prisma.knowledgeEntry.findUnique({
+    where: { id: parsed.data.entryId },
+    select: { status: true, audience: true, confidentiality: true },
+  });
+  if (
+    fiche &&
+    ["approved", "scheduled", "published", "deprecated"].includes(fiche.status) &&
+    ficheDestineeAuPublic(fiche)
+  ) {
+    for (const t of snapshot.translations ?? []) {
+      const check = verifierDoctrineTraduction(t);
+      if (!check.valid) {
+        return {
+          ok: false,
+          error: "banned_words_violation",
+          reason: check.reason ?? "doctrine",
+        };
+      }
+    }
   }
 
   try {

@@ -14,16 +14,16 @@ export const MOIRANS_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Moirans (38). Nous accompagnons tous types d'activités : PME industrielles et logistiques du Voironnais, TPE artisans BTP, commerçants, indépendants, professions libérales, agriculteurs et services aux entreprises du Sud Grésivaudan / Pays voironnais.",
   seoHook: "pays voironnais en",
   ecosystemFr:
-    "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe Lyon-Grenoble (A48) : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
+    "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe A48 : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
   ecosystemEn:
-    "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe Lyon-Grenoble (A48) : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
+    "Moirans appartient à la communauté d'agglomération du Pays voironnais et au canton de Tullins, au débouché septentrional de la basse vallée de l'Isère (Sud Grésivaudan). Position stratégique sur l'axe A48 : tissu industriel et logistique périphérique, TPE artisanat BTP, commerces, professions libérales, agriculture vallée de l'Isère.",
   distancesFr:
-    "Gare Moirans (TER Lyon-Grenoble, 20 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon (1h) et Grenoble (20 min). Voiron à 10 min.",
+    "Gare Moirans (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
   distancesEn:
-    "Gare Moirans (TER Lyon-Grenoble, 20 min Grenoble, 1h Lyon). Aéroport Lyon-Saint-Exupéry à 1h. Aéroport Grenoble-Alpes-Isère à 50 min. Axe A48 vers Lyon (1h) et Grenoble (20 min). Voiron à 10 min.",
+    "Gare Moirans (TER vers Lyon, 1h). Aéroport Lyon-Saint-Exupéry à 1h. Axe A48 vers Lyon (1h). Voiron à 10 min.",
   topSectorsNaf: [
     "PME industrielles & manufacturières",
-    "Logistique & transport (axe A48 Lyon-Grenoble)",
+    "Logistique & transport (axe A48)",
     "TPE artisanat BTP",
     "Agriculture vallée de l'Isère",
     "PME tertiaires & commerce de proximité",
@@ -38,8 +38,8 @@ export const MOIRANS_COPY: VilleCopy = {
       en: "Interventions IA sur site à Moirans : formats adaptés à l'atelier industriel, entrepôt logistique, exploitation agricole ou commerce. Vos équipes terrain et back-office repartent autonomes sur outils IA.",
     },
     implementation: {
-      fr: "Implémentation IA à Moirans : optimisation supply chain (axe A48 Lyon-Grenoble), prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Voironnais.",
-      en: "Implémentation IA à Moirans : optimisation supply chain (axe A48 Lyon-Grenoble), prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Voironnais.",
+      fr: "Implémentation IA à Moirans : optimisation supply chain (axe A48), prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Voironnais.",
+      en: "Implémentation IA à Moirans : optimisation supply chain (axe A48), prédiction maintenance industrielle, classification photos cultures/animaux, automatisation devis BTP, agents conversationnels. Voironnais.",
     },
     unAUn: {
       fr: "Coaching 1-to-1 à Moirans : sessions dans votre atelier, exploitation, commerce ou en visio. Dirigeants industriels, logistique, agriculteurs, artisans, gérants TPE/PME moirannaises souhaitant intégrer l'IA.",
@@ -49,11 +49,11 @@ export const MOIRANS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moirans et Pays voironnais ?",
-      a: "Oui, Axion-IA intervient à Moirans et tout le Pays voironnais / Sud Grésivaudan (Voiron à 10 min, Tullins, Saint-Marcellin, La Buisse, Coublevie, Voreppe). Nos consultants viennent de Lyon (1h A48) ou Grenoble (20 min A48).",
+      a: "Oui, Axion-IA intervient à Moirans et tout le Pays voironnais / Sud Grésivaudan (Voiron à 10 min, Tullins, Saint-Marcellin, La Buisse, Coublevie, Voreppe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Voironnais ?",
-      a: "Oui, nous accompagnons les PME industrielles et logistiques du Voironnais (sur l'axe Lyon-Grenoble A48) sur leurs cas IA opérationnels : prédiction maintenance équipements, contrôle qualité par vision, optimisation supply chain, classification rapports HSE. ROI chiffré contractuel.",
+      a: "Oui, nous accompagnons les PME industrielles et logistiques du Voironnais (sur l'axe A48) sur leurs cas IA opérationnels : prédiction maintenance équipements, contrôle qualité par vision, optimisation supply chain, classification rapports HSE. ROI chiffré contractuel.",
     },
     {
       q: "Accompagnez-vous les agriculteurs vallée de l'Isère ?",
@@ -64,8 +64,8 @@ export const MOIRANS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Moirans, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (20 min A48 ou TER). Pour les multi-jours, hébergement local possible (hôtels Voiron ou Grenoble).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions de plusieurs jours, un hébergement local est possible.",
     },
   ],
 };

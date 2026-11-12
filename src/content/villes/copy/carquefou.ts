@@ -79,7 +79,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, contrôle des Web Vitals, du SEO et de l'AEO, validation RGPD, puis mise en production sans downtime depuis nos bureaux ou les vôtres à Carquefou — sans interrompre la prise de commandes ni les flux logistiques en cours sur le parc d'activités.",
+              "Tests d'acceptation, contrôle des Web Vitals, du SEO et de l'AEO, validation RGPD, puis mise en production sans downtime, sur place à Carquefou ou à distance — sans interrompre la prise de commandes ni les flux logistiques en cours sur le parc d'activités.",
           },
           {
             step: "Livraison + autonomie",
@@ -165,7 +165,7 @@ export const CARQUEFOU_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, contrôle des Web Vitals, du SEO et de l'AEO, validation RGPD, puis mise en production sans downtime depuis nos bureaux ou les vôtres à Carquefou — sans interrompre la prise de commandes ni les flux logistiques en cours sur le parc d'activités.",
+              "Tests d'acceptation, contrôle des Web Vitals, du SEO et de l'AEO, validation RGPD, puis mise en production sans downtime, sur place à Carquefou ou à distance — sans interrompre la prise de commandes ni les flux logistiques en cours sur le parc d'activités.",
           },
           {
             step: "Livraison + autonomie",

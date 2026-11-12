@@ -1,7 +1,8 @@
 /**
  * Confirmation de commande au client (CGV art. 5.2 et 6.2).
  *
- * ⛔ SEULE porte d'entrée : l'action EXPLICITE de contresignature d'Axion-IA (lot 4, à brancher).
+ * ⛔ SEULE porte d'entrée : l'action EXPLICITE de contresignature d'Axion-IA, branchée dans
+ * `apres-signature.ts` (devis à formules) et dans la reprise manuelle de l'acceptation.
  * Jamais un cron, jamais un webhook : le contrat est formé à la contresignature (art. 6.2), pas à
  * la signature du client. `declencheur` est un littéral exprès : un appelant qui voudrait
  * l'invoquer d'ailleurs doit mentir dans son propre code, ce que la revue voit.
@@ -10,7 +11,19 @@
  * (aucun e-mail ne part pour un devis à formules tant que le lot est éteint). Un devis classique
  * (sans offre) n'est pas concerné par l'interrupteur.
  *
- * Pièces jointes : le devis signé (clé R2 fournie par l'appelant) et les CGV de la version
+ * 🔴 L'e-mail est TOUJOURS garé dans la corbeille « à valider » (`exigerValidation: true`) :
+ * jamais d'envoi automatique au client, quel que soit le mode du client.
+ *
+ * Le choix du client se lit sur `devis.choixRetenu` (copie vérifiée du choix scellé, écrite à
+ * l'acceptation), pas sur l'appelant. Le devis doit être accepté, et l'exemplaire signé doit
+ * exister (`documentGenere.exemplaireSigneKey`) : pas de confirmation sans pièce.
+ * Anti-rejeu : un `jobId` déjà gardé en corbeille ou déjà journalisé refuse l'envoi ; une base
+ * muette refuse aussi (`etat_inconnu`) plutôt que de risquer un doublon.
+ *
+ * Champs de payload ajoutés (`automatisationsRetenues`, `recurrent`) : FACULTATIFS, l'ancien
+ * worker rend le nouveau payload.
+ *
+ * Pièces jointes : le devis signé (clé R2 de l'exemplaire signé) et les CGV de la version
  * réellement ACCEPTÉE par le client (`cgvVersion` enregistrée à sa signature), jamais celles en
  * vigueur au moment de la contresignature. Le PDF n'est produit que pour la version en vigueur ;
  * une version antérieure n'est jointe que si son PDF existe déjà sous la clé `documents/cgv/`.
@@ -24,6 +37,7 @@ import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { prisma } from "@/lib/prisma";
 import { existsInR2, uploadToR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
+import { jobIdDejaGare } from "@/server/email/outbox-service";
 import { rendreCgvPdf } from "@/server/cgv-pdf";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
@@ -33,7 +47,8 @@ import {
 } from "@/server/qualiopi/legal/tva";
 import type { LigneFacturable, TotauxFacture } from "@/server/qualiopi/legal/tva";
 import { offreDevisV1, type Formule } from "./offre-devis";
-import { totauxFormule } from "./offre-calculs";
+import { totauxFormule, type ChoixCanonique } from "./offre-calculs";
+import { recapitulerChoix } from "./choix-affichage";
 import { formulesActives } from "./interrupteur-formules";
 
 export interface DevisConfirmation {
@@ -42,6 +57,13 @@ export interface DevisConfirmation {
   readonly documentGenereId: string | null;
   readonly lignes: unknown;
   readonly offre: unknown;
+  readonly statut: string;
+  readonly clientId: string;
+  readonly formuleRetenue: string | null;
+  /** Copie vérifiée du choix scellé, écrite à l'acceptation. */
+  readonly choixRetenu: unknown;
+  /** Clé R2 de l'exemplaire signé (`documentGenere.exemplaireSigneKey`), `null` si absent. */
+  readonly exemplaireSigneKey: string | null;
   readonly client: { readonly raisonSociale: string; readonly contactEmail: string | null };
 }
 
@@ -55,20 +77,22 @@ export interface DependancesConfirmation {
   cgvExiste(key: string): Promise<boolean>;
   pdfCgv(): Promise<Buffer>;
   deposer(key: string, buffer: Buffer): Promise<void>;
+  /** `true` : déjà gardé en corbeille ou déjà journalisé. `null` : base muette, état inconnu. */
+  dejaEnvoyee(jobId: string): Promise<boolean | null>;
   enfiler: typeof enqueueEmail;
+  /**
+   * Exécute `corps` sous un verrou exclusif propre au devis (défaut : verrou consultatif
+   * Postgres tenu pendant la transaction). Le contrôle `dejaEnvoyee` ET la mise en corbeille
+   * doivent s'y trouver ensemble : sinon deux appels simultanés (deux clics, deux onglets,
+   * contresignature concurrente) passent tous deux le contrôle avant que l'un ait posé sa ligne.
+   */
+  sousVerrou<T>(devisId: string, corps: () => Promise<T>): Promise<T>;
 }
 
 export interface DemandeConfirmationCommande {
   /** Littéral : seule l'action explicite de contresignature d'Axion-IA déclenche cet envoi. */
   readonly declencheur: "contresignature_axion_explicite";
   readonly devisId: string;
-  /** Clé R2 du PDF du devis SIGNÉ. */
-  readonly pdfDevisSigneR2Key: string;
-  /** Devis à formules : choix du client (formule + automatisations retenues). */
-  readonly choix?: {
-    readonly formule: Formule;
-    readonly automatisationsRetenues?: readonly string[];
-  };
 }
 
 export type ResultatConfirmation =
@@ -86,9 +110,14 @@ export type ResultatConfirmation =
         | "devis_introuvable"
         | "formules_eteintes"
         | "pas_d_adresse"
-        | "choix_requis"
+        | "non_accepte"
+        | "exemplaire_absent"
+        | "deja_envoyee"
+        | "etat_inconnu"
         | "file_indisponible";
     };
+
+const STATUTS_CONFIRMABLES: readonly string[] = ["accepte", "transforme_convention"];
 
 const LIBELLE_FORMULE: Record<Formule, string> = { achat: "Achat", abonnement: "Abonnement" };
 
@@ -114,8 +143,8 @@ function libelleVersionCgv(version: string): string {
 }
 
 const dependancesParDefaut: DependancesConfirmation = {
-  lireDevis: (id) =>
-    prisma.devis.findUnique({
+  lireDevis: async (id) => {
+    const d = await prisma.devis.findUnique({
       where: { id },
       select: {
         id: true,
@@ -123,9 +152,18 @@ const dependancesParDefaut: DependancesConfirmation = {
         documentGenereId: true,
         lignes: true,
         offre: true,
+        statut: true,
+        clientId: true,
+        formuleRetenue: true,
+        choixRetenu: true,
+        documentGenere: { select: { exemplaireSigneKey: true } },
         client: { select: { raisonSociale: true, contactEmail: true } },
       },
-    }),
+    });
+    if (d === null) return null;
+    const { documentGenere, ...reste } = d;
+    return { ...reste, exemplaireSigneKey: documentGenere?.exemplaireSigneKey ?? null };
+  },
   formulesActives: () => formulesActives(),
   regimeEtTaux: async () => ({
     regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
@@ -144,7 +182,28 @@ const dependancesParDefaut: DependancesConfirmation = {
   deposer: async (key, buffer) => {
     await uploadToR2(key, buffer, "application/pdf");
   },
+  dejaEnvoyee: async (jobId) => {
+    const gare = await jobIdDejaGare(jobId);
+    if (gare === null) return null;
+    if (gare) return true;
+    try {
+      return (await prisma.emailLog.findFirst({ where: { jobId }, select: { id: true } })) !== null;
+    } catch {
+      return null;
+    }
+  },
   enfiler: enqueueEmail,
+  // Sans migration : `email_outbox.job_id` n'est pas unique, le verrou consultatif tient lieu
+  // d'unicité. La ligne de corbeille est posée par une autre connexion, mais elle est validée
+  // avant que ce `corps` (donc la transaction et le verrou) ne se termine : le suivant la voit.
+  sousVerrou: (devisId, corps) =>
+    prisma.$transaction(
+      async (tx) => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`devis-commande-confirmation-${devisId}`}))`;
+        return corps();
+      },
+      { timeout: 30_000, maxWait: 10_000 },
+    ),
 };
 
 export async function envoyerConfirmationCommande(
@@ -158,20 +217,37 @@ export async function envoyerConfirmationCommande(
   if (aOffre && !(await deps.formulesActives())) {
     return { envoye: false, raison: "formules_eteintes" };
   }
+  // Un devis à formules n'est confirmé qu'une fois ACCEPTÉ, avec son choix recopié.
+  if (aOffre && !STATUTS_CONFIRMABLES.includes(devis.statut)) {
+    return { envoye: false, raison: "non_accepte" };
+  }
+  if (aOffre && (devis.choixRetenu === null || devis.choixRetenu === undefined)) {
+    return { envoye: false, raison: "non_accepte" };
+  }
+  // Pas de confirmation sans pièce : le devis signé est la pièce jointe.
+  const cleExemplaire = devis.exemplaireSigneKey?.trim() ?? "";
+  if (cleExemplaire === "") return { envoye: false, raison: "exemplaire_absent" };
   const email = devis.client.contactEmail?.trim() ?? "";
   if (email === "") return { envoye: false, raison: "pas_d_adresse" };
 
+  // Anti-rejeu : un seul envoi par devis, base muette comprise.
+  const jobId = `devis-commande-confirmation-${devis.id}`;
+  const deja = await deps.dejaEnvoyee(jobId);
+  if (deja === null) return { envoye: false, raison: "etat_inconnu" };
+  if (deja) return { envoye: false, raison: "deja_envoyee" };
+
   let totaux: TotauxFacture;
   let formuleRetenue: string | undefined;
+  let automatisationsRetenues: readonly string[] | undefined;
+  let recurrent: readonly string[] | undefined;
   if (aOffre) {
-    if (demande.choix === undefined) return { envoye: false, raison: "choix_requis" };
     const offre = offreDevisV1.parse(devis.offre);
-    totaux = totauxFormule(
-      offre,
-      demande.choix.formule,
-      demande.choix.automatisationsRetenues ?? [],
-    );
-    formuleRetenue = LIBELLE_FORMULE[demande.choix.formule];
+    const choix = devis.choixRetenu as ChoixCanonique;
+    totaux = totauxFormule(offre, choix.formule, choix.automatisationsRetenues);
+    formuleRetenue = LIBELLE_FORMULE[choix.formule];
+    const recap = recapitulerChoix(offre, choix);
+    automatisationsRetenues = recap.automatisations;
+    recurrent = recap.recurrent;
   } else {
     const { regime, taux } = await deps.regimeEtTaux();
     const lignes = (Array.isArray(devis.lignes) ? devis.lignes : []) as LigneFacturable[];
@@ -196,32 +272,54 @@ export async function envoyerConfirmationCommande(
   }
   const cgvJointes = cleCgv !== null;
 
-  const res = await deps.enfiler(
-    "devis-commande-confirmation",
-    email,
-    "fr",
-    {
-      clientNom: devis.client.raisonSociale,
-      numero: devis.numero,
-      ...(formuleRetenue !== undefined ? { formuleRetenue } : {}),
-      montantHtLabel: eur(totaux.totalHtCents),
-      montantTvaLabel: eur(totaux.totalTvaCents),
-      montantTtcLabel: eur(totaux.totalTtcCents),
-      ...(versionAcceptee !== null ? { cgvVersionLabel: libelleVersionCgv(versionAcceptee) } : {}),
-      cgvJointes,
-    },
-    {
-      jobId: `devis-commande-confirmation-${devis.id}`,
-      attachments: [
-        { filename: `${devis.numero}-signe.pdf`, r2Key: demande.pdfDevisSigneR2Key },
-        ...(cleCgv !== null && versionAcceptee !== null
-          ? [{ filename: `CGV-${versionAcceptee}.pdf`, r2Key: cleCgv }]
-          : []),
-      ],
-      entityType: "Devis",
-      entityId: devis.id,
-    },
-  );
+  const enfilerConfirmation = () =>
+    deps.enfiler(
+      "devis-commande-confirmation",
+      email,
+      "fr",
+      {
+        clientNom: devis.client.raisonSociale,
+        numero: devis.numero,
+        ...(formuleRetenue !== undefined ? { formuleRetenue } : {}),
+        ...(automatisationsRetenues !== undefined && automatisationsRetenues.length > 0
+          ? { automatisationsRetenues: [...automatisationsRetenues] }
+          : {}),
+        ...(recurrent !== undefined && recurrent.length > 0 ? { recurrent: [...recurrent] } : {}),
+        montantHtLabel: eur(totaux.totalHtCents),
+        montantTvaLabel: eur(totaux.totalTvaCents),
+        montantTtcLabel: eur(totaux.totalTtcCents),
+        ...(versionAcceptee !== null
+          ? { cgvVersionLabel: libelleVersionCgv(versionAcceptee) }
+          : {}),
+        cgvJointes,
+      },
+      {
+        jobId,
+        // 🔴 Jamais d'e-mail client automatique : toujours la corbeille « à valider ».
+        exigerValidation: true,
+        clientId: devis.clientId,
+        sujet: `Confirmation de commande — devis ${devis.numero}`,
+        attachments: [
+          { filename: `${devis.numero}-signe.pdf`, r2Key: cleExemplaire },
+          ...(cleCgv !== null && versionAcceptee !== null
+            ? [{ filename: `CGV-${versionAcceptee}.pdf`, r2Key: cleCgv }]
+            : []),
+        ],
+        entityType: "Devis",
+        entityId: devis.id,
+      },
+    );
+
+  // 🔴 Sous verrou : le contrôle est REFAIT (un appel concurrent a pu garer la confirmation
+  // depuis le contrôle rapide ci-dessus), puis la mise en corbeille suit sans fenêtre.
+  const sousVerrou = await deps.sousVerrou(devis.id, async () => {
+    const dejaSousVerrou = await deps.dejaEnvoyee(jobId);
+    if (dejaSousVerrou === null) return { refus: "etat_inconnu" as const };
+    if (dejaSousVerrou) return { refus: "deja_envoyee" as const };
+    return { res: await enfilerConfirmation() };
+  });
+  if ("refus" in sousVerrou) return { envoye: false, raison: sousVerrou.refus };
+  const res = sousVerrou.res;
   if (!res.enqueued && res.garePourValidation !== true) {
     return { envoye: false, raison: "file_indisponible" };
   }

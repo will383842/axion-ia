@@ -1,5 +1,6 @@
 // RSS 2.0 feed for case studies (per locale).
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { routing, type Locale } from "@/i18n/routing";
 import { hasLocale } from "next-intl";
@@ -16,6 +17,7 @@ export async function GET(_req: Request, { params }: RouteContext) {
   if (!hasLocale(routing.locales, locale)) {
     return new Response("Unknown locale", { status: 404 });
   }
+  if (!CAS_CONCRETS_AFFICHES) return new Response("Not found", { status: 404 });
   const loc = locale as Locale;
   const isFr = loc === "fr";
 

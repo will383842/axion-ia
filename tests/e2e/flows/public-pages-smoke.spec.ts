@@ -43,7 +43,6 @@ const PAGES_FR = [
   ["/fr/formations", /formation/i],
   ["/fr/audit", /audit/i],
   ["/fr/implementation", /implémentation|implementation/i],
-  ["/fr/cas-concrets", /cas concrets|case studies/i],
   ["/fr/blog", /blog/i],
   ["/fr/contact", /contact/i],
 ] as const;
@@ -76,8 +75,8 @@ const REDIRECTIONS_EN = [
   ["/en/interventions", "/fr/formations"],
   ["/en/audit", "/fr/audit"],
   ["/en/implementation", "/fr/implementation"],
-  ["/en/case-studies", "/fr/cas-concrets"],
   ["/en/blog", "/fr/blog"],
+  ["/en/case-studies", "/fr/methodologie"],
   ["/en/contact", "/fr/contact"],
 ] as const;
 

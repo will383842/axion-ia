@@ -246,9 +246,8 @@ export default async function PressePage({ params, searchParams }: Props) {
       url: SITE_URL,
       address: {
         "@type": "PostalAddress",
-        // Ville du siège dès qu'elle est renseignée : un `addressCountry` seul
-        // ne rapproche l'entité d'aucun registre.
-        ...(legal.addressCity ? { addressLocality: legal.addressCity } : {}),
+        // Pays seulement (décision Williams 2026-11-08, n°19) : l'adresse du siège
+        // reste dans les mentions légales, pas dans les données structurées.
         addressCountry: "FR",
       },
       contactPoint: [

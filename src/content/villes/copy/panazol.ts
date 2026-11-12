@@ -49,7 +49,7 @@ export const PANAZOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Panazol et agglo Limoges ?",
-      a: "Oui, Axion-IA intervient à Panazol et toute l'agglomération de Limoges (Feytiat, Couzeix, Isle, Condat-sur-Vienne, Le Palais-sur-Vienne). Nos consultants sont basés à Limoges (10 min) et couvrent tout Limoges Métropole.",
+      a: "Oui, Axion-IA intervient à Panazol et toute l'agglomération de Limoges (Feytiat, Couzeix, Isle, Condat-sur-Vienne, Le Palais-sur-Vienne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Panazol ?",

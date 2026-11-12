@@ -1,26 +1,24 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #2 Claude Code (Will).
-// Seyssins (38, Isère) — banlieue ouest Grenoble, aire urbaine, voisine Seyssinet-Pariset.
+// Seyssins (38, Isère) — banlieue ouest grenobloise, aire urbaine, voisine Seyssinet-Pariset.
 
 import type { VilleCopy } from "./types";
 
 export const SEYSSINS_COPY: VilleCopy = {
   pitchFr:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine grenobloise adhérente à la métropole grenobloise, jouxte Seyssinet-Pariset à l'ouest immédiat de l'agglomération. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
   pitchEn:
-    "Seyssins (38), commune de l'aire urbaine de Grenoble adhérente à Grenoble-Alpes Métropole, jouxte Seyssinet-Pariset à l'ouest immédiat de Grenoble. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
+    "Seyssins (38), commune de l'aire urbaine grenobloise adhérente à la métropole grenobloise, jouxte Seyssinet-Pariset à l'ouest immédiat de l'agglomération. Tissu mixte résidentiel et tissu local de TPE/PME : artisans BTP, commerces, professions libérales et services. Axion-IA y travaille avec les organisations du territoire seyssinoises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de la métropole grenobloise en zone ouest.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de Grenoble-Alpes Métropole en zone ouest.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Seyssins (38). Nous accompagnons tous types d'activités : TPE artisans BTP, commerçants centre-ville, professions libérales (médecins, avocats, expert-comptables), PME tertiaires seyssinoises, indépendants et entreprises de la métropole grenobloise en zone ouest.",
   seoHook: "professions libérales & tertiaires services",
   ecosystemFr:
-    "Seyssins est membre de la métropole Grenoble-Alpes Métropole (« La Métro »), à l'ouest immédiat de Grenoble dans l'aire urbaine de l'agglomération. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",
+    "Seyssins est membre de la métropole grenobloise (« La Métro »), à l'ouest immédiat de l'agglomération dans l'aire urbaine. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",
   ecosystemEn:
-    "Seyssins est membre de la métropole Grenoble-Alpes Métropole (« La Métro »), à l'ouest immédiat de Grenoble dans l'aire urbaine de l'agglomération. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",
-  distancesFr:
-    "Tramway A vers Grenoble centre (10-15 min via Seyssinet). Gare Grenoble à 15 min. Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
-  distancesEn:
-    "Tramway A vers Grenoble centre (10-15 min via Seyssinet). Gare Grenoble à 15 min. Aéroport Grenoble-Alpes-Isère à 1h. Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
+    "Seyssins est membre de la métropole grenobloise (« La Métro »), à l'ouest immédiat de l'agglomération dans l'aire urbaine. Voisine de Seyssinet-Pariset (parfois confondues localement), elle développe un tissu mixte résidentiel haut de gamme et activités locales : TPE artisanat BTP, commerces, professions libérales installées, PME services. Position vers Vercors périphérique.",
+  distancesFr: "Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
+  distancesEn: "Axe A480 vers Lyon (1h15) et N532 vers Vercors stations (45 min).",
   topSectorsNaf: [
     "TPE artisanat BTP",
     "Professions libérales (santé, juridique)",
@@ -49,7 +47,7 @@ export const SEYSSINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Seyssins et ouest grenoblois ?",
-      a: "Oui, Axion-IA intervient à Seyssins et tout l'ouest Grenoble-Alpes Métropole (Seyssinet-Pariset, Fontaine, Sassenage, Saint-Égrève). Couverture via tramway A ou A480, accès Vercors périphérique (Saint-Nizier-du-Moucherotte 30 min).",
+      a: "Oui, Axion-IA intervient à Seyssins et tout l'ouest de la métropole grenobloise (Seyssinet-Pariset, Fontaine, Sassenage, Saint-Égrève). Couverture via tramway A ou A480, accès Vercors périphérique (Saint-Nizier-du-Moucherotte 30 min).",
     },
     {
       q: "Accompagnez-vous les professions libérales seyssinoises ?",
@@ -64,8 +62,8 @@ export const SEYSSINS_COPY: VilleCopy = {
       a: "Pour les commerces et PME tertiaires à Seyssins, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations workflow, CRM augmentés), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (10-15 min tramway A via Seyssinet) ou Lyon (1h15 A48). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

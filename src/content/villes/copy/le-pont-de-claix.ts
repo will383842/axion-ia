@@ -1,26 +1,24 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #1 Claude Code (Will).
-// Le Pont-de-Claix (38, Isère) — sud Grenoble, plateforme industrielle historique vallée du Drac.
+// Le Pont-de-Claix (38, Isère) — sud grenoblois, plateforme industrielle historique vallée du Drac.
 
 import type { VilleCopy } from "./types";
 
 export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
   pitchFr:
-    "Le Pont-de-Claix (38), au sud immédiat de Grenoble, est ancré dans le bassin industriel historique de la vallée du Drac. Tissu industriel manufacturier, TPE artisans BTP, commerces, PME services aux industriels et professions libérales. Axion-IA y intervient pour tous types d'activités pontoises et du sud grenoblois.",
+    "Le Pont-de-Claix (38), au sud immédiat de l'agglomération grenobloise, est ancré dans le bassin industriel historique de la vallée du Drac. Tissu industriel manufacturier, TPE artisans BTP, commerces, PME services aux industriels et professions libérales. Axion-IA y intervient pour tous types d'activités pontoises et du sud grenoblois.",
   pitchEn:
-    "Le Pont-de-Claix (38), au sud immédiat de Grenoble, est ancré dans le bassin industriel historique de la vallée du Drac. Tissu industriel manufacturier, TPE artisans BTP, commerces, PME services aux industriels et professions libérales. Axion-IA y intervient pour tous types d'activités pontoises et du sud grenoblois.",
+    "Le Pont-de-Claix (38), au sud immédiat de l'agglomération grenobloise, est ancré dans le bassin industriel historique de la vallée du Drac. Tissu industriel manufacturier, TPE artisans BTP, commerces, PME services aux industriels et professions libérales. Axion-IA y intervient pour tous types d'activités pontoises et du sud grenoblois.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de la métropole grenobloise.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de Grenoble-Alpes Métropole.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Pont-de-Claix (38). Nous accompagnons tous types d'activités : industriels et sous-traitants de la grande plateforme industrielle historique pontoise, TPE artisans BTP, commerçants, PME services aux entreprises, professions libérales et structures du sud de la métropole grenobloise.",
   seoHook: "industrie & sous-traitance industrielle",
   ecosystemFr:
-    "Le Pont-de-Claix est un des principaux pôles industriels de Grenoble-Alpes Métropole : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",
+    "Le Pont-de-Claix est un des principaux pôles industriels de la métropole grenobloise : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",
   ecosystemEn:
-    "Le Pont-de-Claix est un des principaux pôles industriels de Grenoble-Alpes Métropole : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",
-  distancesFr:
-    "Tramway A vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 50 min. Axe A480 vers Lyon (1h15) et N85 vers Vizille / Bourg-d'Oisans.",
-  distancesEn:
-    "Tramway A vers Grenoble centre (15 min). Gare Grenoble à 20 min (TGV Paris 3h). Aéroport Grenoble-Alpes-Isère à 50 min. Axe A480 vers Lyon (1h15) et N85 vers Vizille / Bourg-d'Oisans.",
+    "Le Pont-de-Claix est un des principaux pôles industriels de la métropole grenobloise : plateforme industrielle historique de la vallée du Drac (sites industriels successifs depuis le XXe siècle), tissu dense de sous-traitants techniques, PME services aux industriels, TPE artisanat BTP, commerces de proximité. Position stratégique au sud du Y grenoblois, sur l'axe vers Vizille et la vallée de la Romanche.",
+  distancesFr: "Axe A480 vers Lyon (1h15) et N85 vers Vizille / Bourg-d'Oisans.",
+  distancesEn: "Axe A480 vers Lyon (1h15) et N85 vers Vizille / Bourg-d'Oisans.",
   topSectorsNaf: [
     "Industrie (plateforme historique vallée du Drac)",
     "Sous-traitance industrielle & services techniques",
@@ -49,7 +47,7 @@ export const LE_PONT_DE_CLAIX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pont-de-Claix et sud grenoblois ?",
-      a: "Oui, Axion-IA intervient au Pont-de-Claix et tout le sud-Y grenoblois (Échirolles, Vizille, Jarrie, Champ-sur-Drac). Couverture Grenoble-Alpes Métropole et accès via tramway A ou A480 vers Lyon (1h15).",
+      a: "Oui, Axion-IA intervient au Pont-de-Claix et tout le sud-Y grenoblois (Échirolles, Vizille, Jarrie, Champ-sur-Drac). Couverture de la métropole grenobloise et accès via tramway A ou A480 vers Lyon (1h15).",
     },
     {
       q: "Travaillez-vous avec les industriels de la plateforme pontoise ?",

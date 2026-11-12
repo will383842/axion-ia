@@ -10,7 +10,8 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import { getGlossaryTerms } from "@/lib/knowledge/readers";
 
@@ -61,7 +62,7 @@ export default async function GlossaryPage({ params }: Props) {
     inLanguage: locale,
     url: `${SITE_URL}/${locale}/glossaire`,
     // DefinedTermSet ⊂ CreativeWork → dateModified valide (signal de fraîcheur AEO/GEO).
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/glossaire"),
     speakable: buildSpeakableSpecification({
       selectors: ["[data-aeo='glossary-intro']"],
     }),
@@ -161,11 +162,7 @@ export default async function GlossaryPage({ params }: Props) {
         </Container>
       </Section>
       <JsonLd data={definedTermSetJsonLd} />
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-glossaire-itemlist"
-      />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-glossaire-itemlist" />
     </>
   );
 }
