@@ -223,6 +223,116 @@ describe("verdictAvantEnvoi — personne écartée après une demande d'effaceme
   });
 });
 
+describe("🔴 D-STOP-1 — opposition non vérifiable au départ : rien ne part (job réessayé)", () => {
+  const PANNE = Object.assign(new Error("connexion perdue pour secret@exemple.fr"), {
+    code: "P1001",
+  });
+
+  it("1) guide-ia-envoi {reseau:true}, auDepart, lecture de l'opposition en panne → REJETTE", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "guide-ia-envoi",
+        marketing: false,
+        sollicitation: estSollicitationSoumiseAOpposition("guide-ia-envoi", { reseau: true }),
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("1bis) même cas sans `sollicitation` explicite (repli sur le gabarit seul) : sans `reseau`, pas de lecture", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "guide-ia-envoi",
+      marketing: false,
+      auDepart: true,
+    });
+    expect(v).toEqual({ retenu: false });
+    expect(oppositionFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("2) marketing, auDepart, lecture de la newsletter en panne → REJETTE", async () => {
+    abonneFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "campagne-x",
+        marketing: true,
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("2bis) marketing, auDepart, lecture de l'opposition en panne → REJETTE", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "campagne-x",
+        marketing: true,
+        auDepart: true,
+      }),
+    ).rejects.toThrow();
+  });
+
+  it("3) même panne SANS auDepart (enfilage) → { retenu: false } (cas documenté, inchangé)", async () => {
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    abonneFindUnique.mockRejectedValue(PANNE);
+    expect(
+      await verdictAvantEnvoi("a@exemple.fr", { template: "campagne-x", marketing: true }),
+    ).toEqual({ retenu: false });
+    expect(
+      await verdictAvantEnvoi("a@exemple.fr", {
+        template: "guide-ia-envoi",
+        marketing: false,
+        sollicitation: true,
+      }),
+    ).toEqual({ retenu: false });
+  });
+
+  it.each(["qualiopi-facture", "qualiopi-convocation"])(
+    "4) %s, auDepart, tables d'opposition et de newsletter en panne → tables NON lues, envoi inchangé",
+    async (template) => {
+      oppositionFindUnique.mockRejectedValue(PANNE);
+      abonneFindUnique.mockRejectedValue(PANNE);
+      const v = await verdictAvantEnvoi("a@exemple.fr", {
+        template,
+        marketing: false,
+        sollicitation: false,
+        auDepart: true,
+      });
+      expect(v).toEqual({ retenu: false });
+      expect(oppositionFindUnique).not.toHaveBeenCalled();
+      expect(abonneFindUnique).not.toHaveBeenCalled();
+    },
+  );
+
+  it("le rebond garde son repli ouvert, même au départ", async () => {
+    findFirst.mockRejectedValue(PANNE);
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "qualiopi-facture",
+      marketing: false,
+      auDepart: true,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("6) aucun journal ne contient « @ » (rebond, opposition, désabonnement)", async () => {
+    const journal = vi.spyOn(console, "error").mockImplementation(() => {});
+    findFirst.mockRejectedValue(PANNE);
+    oppositionFindUnique.mockRejectedValue(PANNE);
+    abonneFindUnique.mockRejectedValue(PANNE);
+    await verdictAvantEnvoi("secret@exemple.fr", { template: "campagne-x", marketing: true });
+    await verdictAvantEnvoi("secret@exemple.fr", {
+      template: "guide-ia-envoi",
+      marketing: false,
+      sollicitation: true,
+    });
+    expect(journal).toHaveBeenCalled();
+    const tout = JSON.stringify(journal.mock.calls);
+    expect(tout).not.toContain("@");
+    expect(tout).not.toContain("secret");
+  });
+});
+
 describe("module pur — seuls la base et l'empreinte", () => {
   it("n'importe que `@/lib/prisma` et `@/lib/security/email-hash`", () => {
     const source = readFileSync(join(__dirname, "verdict-envoi.ts"), "utf8");

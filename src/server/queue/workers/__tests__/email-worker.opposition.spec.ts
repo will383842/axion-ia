@@ -28,6 +28,7 @@ const d = vi.hoisted(() => ({
   submission: vi.fn(),
   rebond: vi.fn(),
   opposition: vi.fn(),
+  ecarte: vi.fn(),
   abonne: vi.fn(),
 }));
 
@@ -63,7 +64,7 @@ vi.mock("@/lib/prisma", () => ({
     emailOpposition: {
       findUnique: (...a: unknown[]) => d.opposition(...a),
       // Mise à l'écart (effacement) relue au départ : personne n'est écarté ici.
-      findFirst: async () => null,
+      findFirst: (...a: unknown[]) => d.ecarte(...a),
     },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => d.abonne(...a) },
   },
@@ -124,6 +125,7 @@ beforeEach(() => {
   d.submission.mockResolvedValue({ deletedAt: null, contactEmail: "chiffre(nadia@exemple.fr)" });
   d.rebond.mockResolvedValue(null);
   d.opposition.mockResolvedValue(null);
+  d.ecarte.mockResolvedValue(null);
   d.abonne.mockResolvedValue(null);
   process.env["AUTH_SECRET"] = "secret-de-test-suffisamment-long-0123456789";
   vi.spyOn(console, "error").mockImplementation(() => {});
@@ -196,14 +198,114 @@ describe("job sans identifiant", () => {
   });
 });
 
-describe("⚠️ base en panne : l'envoi continue (échec ouvert assumé)", () => {
-  it("verdict et fiche illisibles → la sollicitation part, et c'est journalisé en erreur", async () => {
-    d.rebond.mockRejectedValue(new Error("ECONNREFUSED"));
+describe("🔴 D-STOP-1 — base en panne au départ : RIEN ne part, le job est réessayé", () => {
+  it("5) sollicitation : lecture de l'opposition en panne → le fournisseur n'est jamais appelé, le job échoue", async () => {
     d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
+    await expect(processeur()(job("lead-apporteur-relance", { etape: "j2" }))).rejects.toThrow();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).not.toHaveBeenCalled();
+  });
+
+  it("5bis) guide d'un réseau (reseau:true) : même panne → rien ne part, job en échec", async () => {
+    d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
+    await expect(processeur()(job("guide-ia-envoi", { reseau: true }))).rejects.toThrow();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("envoi transactionnel (convocation) : mêmes tables en panne → l'envoi part, inchangé", async () => {
+    d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
+    d.abonne.mockRejectedValue(new Error("ECONNREFUSED"));
+    await processeur()(
+      job(
+        "qualiopi-convocation",
+        {},
+        {
+          data: {
+            template: "qualiopi-convocation",
+            to: "nadia@exemple.fr",
+            locale: "fr",
+            payload: {},
+          },
+        },
+      ),
+    );
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.opposition).not.toHaveBeenCalled();
+  });
+
+  it("6) fiche illisible seule (verdict normal) : repli ouvert assumé, l'envoi part et c'est journalisé en erreur", async () => {
     d.submission.mockRejectedValue(new Error("ECONNREFUSED"));
     await processeur()(job("lead-apporteur-relance", { etape: "j2" }));
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
     expect(d.annuler).not.toHaveBeenCalled();
     expect(console.error).toHaveBeenCalled();
+  });
+
+  it("contrôle qui répond normalement : l'envoi part et le journal est clos « envoyé »", async () => {
+    await processeur()(job("lead-apporteur-relance", { etape: "j2" }));
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.cloturer).toHaveBeenCalledWith(expect.objectContaining({ status: "sent" }));
+    expect(d.noter).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 STOP-T1 — contrôle du départ qui lève : le journal n'est jamais laissé « en attente »", () => {
+  const MOTIF = "contrôle d'opposition illisible au départ : rien n'est parti";
+  const convocation = (over: Record<string, unknown> = {}) => job("qualiopi-convocation", {}, over);
+
+  const CAS: Array<[string, () => void, string, Record<string, unknown>]> = [
+    [
+      "sollicitation (verdict)",
+      () => d.opposition.mockRejectedValue(new Error("ECONNREFUSED nadia@exemple.fr")),
+      "lead-apporteur-relance",
+      { etape: "j2" },
+    ],
+    [
+      "guide réseau (verdict)",
+      () => d.opposition.mockRejectedValue(new Error("ECONNREFUSED nadia@exemple.fr")),
+      "guide-ia-envoi",
+      { reseau: true },
+    ],
+    [
+      "convocation (mise à l'écart)",
+      () => d.ecarte.mockRejectedValue(new Error("ECONNREFUSED nadia@exemple.fr")),
+      "qualiopi-convocation",
+      {},
+    ],
+  ];
+
+  it.each(CAS)(
+    "%s — essai 1/5 : tentative notée, erreur relancée, rien ne part",
+    async (_n, panne, tpl, pl) => {
+      d.ecarte.mockResolvedValue(null);
+      panne();
+      await expect(processeur()(job(tpl, pl))).rejects.toThrow();
+      expect(d.sendEmail).not.toHaveBeenCalled();
+      expect(d.noter).toHaveBeenCalledTimes(1);
+      expect(d.cloturer).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(CAS)(
+    "%s — 5e essai : journal clos en échec, motif sans « @ », rien ne part",
+    async (_n, panne, tpl, pl) => {
+      d.ecarte.mockResolvedValue(null);
+      panne();
+      await expect(processeur()(job(tpl, pl, { attemptsMade: 4 }))).rejects.toThrow();
+      expect(d.sendEmail).not.toHaveBeenCalled();
+      expect(d.cloturer).toHaveBeenCalledTimes(1);
+      const arg = d.cloturer.mock.calls[0]?.[0] as { status: string; error: string };
+      expect(arg.status).toBe("failed");
+      expect(arg.error).toBe(MOTIF);
+      expect(arg.error).not.toContain("@");
+      expect(d.noter).not.toHaveBeenCalled();
+    },
+  );
+
+  it("convocation, contrôle normal : l'envoi part, journal « envoyé »", async () => {
+    d.ecarte.mockResolvedValue(null);
+    await processeur()(convocation());
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.cloturer).toHaveBeenCalledWith(expect.objectContaining({ status: "sent" }));
   });
 });
