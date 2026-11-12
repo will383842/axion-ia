@@ -57,7 +57,7 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * 🔴 Réponses à un DROIT exercé par la personne elle-même (décision du 12/11/2026).
+ * 🔴 Réponses à un DROIT exercé par la personne elle-même (décision du 11/11/2026).
  *
  * Une personne mise à l'écart après une demande d'effacement ne reçoit plus rien — SAUF la
  * réponse à sa propre demande d'accès : le lien d'export de ses données, sans aucun contenu
@@ -191,6 +191,36 @@ export interface ContexteEnvoi {
   readonly sollicitation?: boolean;
 }
 
+/**
+ * Date de mise à l'écart (demande d'effacement) d'une adresse, ou `null`.
+ *
+ * Les modèles de `MODELES_REPONSE_A_UN_DROIT` ne sont jamais retenus. Lecture SÉPARÉE
+ * (`findFirst`) et en repli OUVERT : le worker atterrit avant que l'application ne migre la
+ * colonne `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque
+ * n'a pu être posée non plus — et les autres contrôles (rebond, désabonnement, opposition)
+ * tiennent. Exportée : le worker la relit au départ pour TOUS les gabarits.
+ */
+export async function dateDeMiseAEcart(adresse: string, template: string): Promise<Date | null> {
+  if (estStub()) return null;
+  const a = adresse.trim();
+  if (a === "" || MODELES_REPONSE_A_UN_DROIT.has(template)) return null;
+  try {
+    const empreinte = hashEmailForLookup(a);
+    if (empreinte === null) return null;
+    const ligne = await prisma.emailOpposition.findFirst({
+      where: { emailHash: empreinte, effacementDemandeLe: { not: null } },
+      select: { effacementDemandeLe: true },
+    });
+    return ligne?.effacementDemandeLe ?? null;
+  } catch (e) {
+    console.error(
+      `[email-suppression] lecture de la mise à l'écart (effacement) impossible — contrôle sauté :`,
+      e instanceof Error ? e.name : "erreur",
+    );
+    return null;
+  }
+}
+
 export async function verdictAvantEnvoi(
   destinataire: string,
   contexte: ContexteEnvoi,
@@ -208,23 +238,9 @@ export async function verdictAvantEnvoi(
   // OUVERT : le worker atterrit avant que l'application ne migre la colonne
   // `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque n'a pu
   // être posée non plus — et les autres contrôles (rebond, désabonnement, opposition) tiennent.
-  try {
-    const empreinte = hashEmailForLookup(adresse);
-    const ecartee =
-      empreinte === null || MODELES_REPONSE_A_UN_DROIT.has(contexte.template)
-        ? null
-        : await prisma.emailOpposition.findFirst({
-            where: { emailHash: empreinte, effacementDemandeLe: { not: null } },
-            select: { effacementDemandeLe: true },
-          });
-    if (ecartee?.effacementDemandeLe) {
-      return { retenu: true, motif: "ecarte_effacement", depuis: ecartee.effacementDemandeLe };
-    }
-  } catch (e) {
-    console.error(
-      `[email-suppression] lecture de la mise à l'écart (effacement) impossible — contrôle sauté :`,
-      e instanceof Error ? e.name : "erreur",
-    );
+  const ecartee = await dateDeMiseAEcart(adresse, contexte.template);
+  if (ecartee !== null) {
+    return { retenu: true, motif: "ecarte_effacement", depuis: ecartee };
   }
 
   try {

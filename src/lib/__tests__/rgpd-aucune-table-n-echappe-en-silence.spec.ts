@@ -555,10 +555,24 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       "src/server/newsletter/effacer.ts",
       "src/features/admin-newsletter/actions.ts",
       "src/server/rgpd/ecarter-au-lieu-d-effacer.ts",
+      // Les modules que le module d'écart appelle : une suppression ajoutée demain ici
+      // passerait sinon au vert.
+      "src/server/email/opposition.ts",
+      "src/server/guides-reseau/mise-a-l-ecart.ts",
     ];
     const fautifs = chemins.flatMap((f) =>
       fautesDeSuppression(readFileSync(join(process.cwd(), f), "utf8")).map((x) => `${f} : ${x}`),
     );
+    // Et le CORPS des fonctions `ecarter*` de `rgpd-erase.ts` (le reste du fichier, lui, est
+    // l'outil du geste humain et supprime légitimement).
+    const erase = readFileSync(join(process.cwd(), "src/lib/rgpd-erase.ts"), "utf8");
+    const corps = [...erase.matchAll(/export (?:async )?function ecarter\w+[\s\S]*?\n\}\n/g)];
+    expect(corps.length, "aucune fonction `ecarter*` trouvée dans rgpd-erase.ts").toBeGreaterThan(
+      0,
+    );
+    for (const c of corps) {
+      for (const x of fautesDeSuppression(c[0])) fautifs.push(`rgpd-erase.ts (ecarter*) : ${x}`);
+    }
     expect(
       fautifs,
       "chemin(s) automatique(s) qui suppriment ou importent un effaceur : une demande " +

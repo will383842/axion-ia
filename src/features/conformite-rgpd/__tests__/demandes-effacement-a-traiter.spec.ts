@@ -97,4 +97,44 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     expect(lignes.find((x) => x.id === "j1")?.origine).toBe("console_lettre");
     expect(lignes.find((x) => x.id === "j2")?.origine).toBe("libre_service");
   });
+
+  it("🔑 2e demande dédoublonnée : se ferme avec l'alerte (journalIds)", async () => {
+    // j1 a créé l'alerte ; j2 (autre clic, même jour) y a été rattachée par journalIds.
+    d.journal = [trace("j2"), trace("j1")];
+    d.alertes = [
+      {
+        cibleId: "h-1",
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: { journalId: "j1", journalIds: ["j2"] },
+      },
+    ];
+    const lignes = await listerDemandes();
+    expect(lignes.find((x) => x.id === "j1")?.aTraiter).toBe(false);
+    const j2 = lignes.find((x) => x.id === "j2");
+    expect(j2?.aTraiter).toBe(false);
+    expect(j2?.faiteLe).toEqual(RESOLUE);
+  });
+
+  it("2e demande rattachée à une alerte encore ouverte : reste à traiter, puis se ferme avec elle", async () => {
+    d.journal = [trace("j2")];
+    d.alertes = [
+      {
+        cibleId: "h-1",
+        resolue: false,
+        resolueAt: null,
+        metadata: { journalId: "j1", journalIds: ["j2"] },
+      },
+    ];
+    expect((await listerDemandes())[0]?.aTraiter).toBe(true);
+    d.alertes = [
+      {
+        cibleId: "h-1",
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: { journalId: "j1", journalIds: ["j2"] },
+      },
+    ];
+    expect((await listerDemandes())[0]?.aTraiter).toBe(false);
+  });
 });

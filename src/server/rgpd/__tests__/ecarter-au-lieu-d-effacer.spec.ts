@@ -22,6 +22,8 @@ const rapports = vi.fn();
 const crm = vi.fn();
 const alerte = vi.fn();
 const telegram = vi.fn();
+const alerteTrouvee = vi.fn();
+const alerteMiseAJour = vi.fn();
 
 const interdit = (...a: unknown[]): never => {
   suppressions(...a);
@@ -57,6 +59,10 @@ vi.mock("@/lib/prisma", () => ({
       deleteMany: (...a: unknown[]) => interdit(...a),
     },
     activityLog: { create: (...a: unknown[]) => journal(...a) },
+    alerteSysteme: {
+      findFirst: (...a: unknown[]) => alerteTrouvee(...a),
+      update: (...a: unknown[]) => alerteMiseAJour(...a),
+    },
   },
 }));
 vi.mock("@/server/email/opposition", () => ({
@@ -99,6 +105,8 @@ beforeEach(() => {
     crm,
     alerte,
     telegram,
+    alerteTrouvee,
+    alerteMiseAJour,
   ]) {
     f.mockReset();
   }
@@ -245,5 +253,43 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(journal).toHaveBeenCalled();
     expect(alerte).toHaveBeenCalled();
     expect(r.etapesEnEchec).toEqual(expect.arrayContaining(["lettre", "contacts-guide"]));
+  });
+
+  it("🔑 2e demande dédoublonnée : son journalId est ajouté à l'alerte existante (elle se ferme avec elle)", async () => {
+    alerte.mockResolvedValue(null); // creerOuDedup : alerte déjà ouverte, rien de créé
+    alerteTrouvee.mockResolvedValue({ id: "al-1", metadata: { journalId: "j0", origine: "x" } });
+    alerteMiseAJour.mockResolvedValue({});
+    journal.mockResolvedValue({ id: "j2" });
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre" });
+    const lu = alerteTrouvee.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(lu.where["code"]).toBe(CODE_ALERTE_EFFACEMENT);
+    expect(lu.where["cibleId"]).toBe(hashEmailForLookup(ADRESSE));
+    const maj = alerteMiseAJour.mock.calls[0]?.[0] as {
+      where: { id: string };
+      data: { metadata: Record<string, unknown> };
+    };
+    expect(maj.where.id).toBe("al-1");
+    expect(maj.data.metadata["journalId"]).toBe("j0");
+    expect(maj.data.metadata["journalIds"]).toEqual(["j2"]);
+  });
+
+  it("deux clics console le même jour : les deux traces finissent sur la même alerte", async () => {
+    alerte.mockResolvedValue(null);
+    alerteTrouvee.mockResolvedValue({
+      id: "al-1",
+      metadata: { journalId: "j0", journalIds: ["j2"] },
+    });
+    alerteMiseAJour.mockResolvedValue({});
+    journal.mockResolvedValue({ id: "j3" });
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre" });
+    const maj = alerteMiseAJour.mock.calls[0]?.[0] as {
+      data: { metadata: Record<string, unknown> };
+    };
+    expect(maj.data.metadata["journalIds"]).toEqual(["j2", "j3"]);
+  });
+
+  it("alerte créée normalement : aucune mise à jour", async () => {
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
+    expect(alerteMiseAJour).not.toHaveBeenCalled();
   });
 });

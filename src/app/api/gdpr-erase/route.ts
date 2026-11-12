@@ -51,7 +51,16 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   }
   const { email, token } = parsed.data;
 
-  // Rate limit 1/jour/email — l'erase est one-shot
+  const v = await verifyGdprToken(token);
+  if (!v.ok) {
+    return NextResponse.json({ ok: false, error: v.reason }, { status: 401 });
+  }
+  if (v.email !== email) {
+    return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
+  }
+
+  // Rate limit 1/jour/email — l'erase est one-shot. APRÈS le contrôle du jeton : un tiers qui
+  // envoie un faux jeton pour l'adresse d'une victime ne doit pas lui consommer son essai.
   const rl = await checkRateLimit(`gdpr:erase:${email}`, {
     limit: 1,
     windowSec: 86_400,
@@ -59,14 +68,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   });
   if (!rl.allowed) {
     return NextResponse.json({ ok: false, error: "rate_limited" }, { status: 429 });
-  }
-
-  const v = await verifyGdprToken(token);
-  if (!v.ok) {
-    return NextResponse.json({ ok: false, error: v.reason }, { status: 401 });
-  }
-  if (v.email !== email) {
-    return NextResponse.json({ ok: false, error: "email_mismatch" }, { status: 401 });
   }
 
   // Mise à l'écart : opposition (envois programmés retirés, CRM averti), marque « effacement

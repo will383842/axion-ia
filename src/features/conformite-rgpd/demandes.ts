@@ -94,11 +94,18 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         : undefined;
     const metaDe = (m: unknown) =>
       m && typeof m === "object" ? (m as Record<string, unknown>)["journalId"] : null;
+    // Traces rattachées à une alerte déjà ouverte par une demande dédoublonnée.
+    const idsDe = (m: unknown): unknown[] => {
+      const v = m && typeof m === "object" ? (m as Record<string, unknown>)["journalIds"] : null;
+      return Array.isArray(v) ? v : [];
+    };
     // D'abord CETTE demande (journalId) ; l'empreinte ne sert qu'en repli, et seulement parmi
     // les alertes qui ne portent aucun journalId : une ancienne demande ne doit pas retrouver
     // l'alerte (plus récente) d'une seconde demande de la même personne.
     return (
-      alertes.find((a) => metaDe(a.metadata) === journalId) ??
+      alertes.find(
+        (a) => metaDe(a.metadata) === journalId || idsDe(a.metadata).includes(journalId),
+      ) ??
       alertes.find(
         (a) => typeof emailHash === "string" && a.cibleId === emailHash && !metaDe(a.metadata),
       )

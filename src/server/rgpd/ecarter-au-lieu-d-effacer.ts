@@ -206,20 +206,48 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
       enEchec.length > 0
         ? ` ⚠️ Étapes en échec, à reprendre à la main : ${enEchec.join(", ")}.`
         : "";
-    await creerOuDedup({
+    const message =
+      `Adresse : ${email}. Reçue le ${quand.toISOString().slice(0, 10)} par ${LIBELLE_ORIGINE[d.origine]}` +
+      `${d.motif ? ` (motif : ${d.motif})` : ""}. ` +
+      "La personne est mise à l'écart : plus aucun envoi, plus aucune réinscription. " +
+      "Rien n'a été supprimé. À faire : décider ce qui doit être effacé (art. 17 RGPD) et " +
+      `répondre à la personne sous un mois.${pannes}`;
+    const creee = await creerOuDedup({
       code: CODE_ALERTE_EFFACEMENT,
       niveau: "info",
       titre: "Demande d'effacement RGPD à traiter à la main",
-      message:
-        `Adresse : ${email}. Reçue le ${quand.toISOString().slice(0, 10)} par ${LIBELLE_ORIGINE[d.origine]}` +
-        `${d.motif ? ` (motif : ${d.motif})` : ""}. ` +
-        "La personne est mise à l'écart : plus aucun envoi, plus aucune réinscription. " +
-        "Rien n'a été supprimé. À faire : décider ce qui doit être effacé (art. 17 RGPD) et " +
-        `répondre à la personne sous un mois.${pannes}`,
+      message,
       cibleType: "EmailOpposition",
       cibleId: empreinte,
       metadata: { journalId, origine: d.origine },
     });
+    // Demande dédoublonnée (alerte déjà ouverte, ou résolue le même jour avec le même
+    // message) : aucune alerte neuve. On inscrit cette trace sur l'alerte existante pour que
+    // la demande puisse se fermer avec elle (`metadata.journalIds`, lu par `demandes.ts`).
+    if (creee === null && journalId !== null) {
+      const existante = await prisma.alerteSysteme.findFirst({
+        where: {
+          code: CODE_ALERTE_EFFACEMENT,
+          cibleId: empreinte,
+          OR: [{ resolue: false }, { message }],
+        },
+        orderBy: { createdAt: "desc" },
+        select: { id: true, metadata: true },
+      });
+      if (existante) {
+        const meta =
+          existante.metadata && typeof existante.metadata === "object"
+            ? (existante.metadata as Record<string, unknown>)
+            : {};
+        const deja = Array.isArray(meta["journalIds"])
+          ? (meta["journalIds"] as unknown[]).filter((v): v is string => typeof v === "string")
+          : [];
+        await prisma.alerteSysteme.update({
+          where: { id: existante.id },
+          data: { metadata: { ...meta, journalIds: [...new Set([...deja, journalId])] } as never },
+        });
+      }
+    }
   } catch (e) {
     echec("alerte")(e);
   }
