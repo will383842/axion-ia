@@ -19,6 +19,7 @@ const { bd } = vi.hoisted(() => ({
   bd: {
     contacts: [] as Ligne[],
     oppositions: [] as string[],
+    marquesConv: [] as string[],
     suppressions: 0,
     ecritures: [] as string[],
   },
@@ -74,7 +75,9 @@ vi.mock("@/lib/prisma", () => {
             l.merci_statut === ancien &&
             l.email_key !== "-" &&
             l.consenti_le >= debut &&
-            !bd.oppositions.includes(l.email_key),
+            !bd.oppositions.includes(l.email_key) &&
+            // La requête réelle exclut aussi les conversations marquées STOP (`oppositions_conv_ref`).
+            !(sql.sql.includes("oppositions_conv_ref") && bd.marquesConv.includes(l.conv_ref)),
         )
         .sort((a, b) => a.consenti_le.getTime() - b.consenti_le.getTime())
         .slice(0, limite);
@@ -125,6 +128,7 @@ function ajouter(p: Partial<Ligne> & { adresse?: string }): Ligne {
 beforeEach(() => {
   bd.contacts.length = 0;
   bd.oppositions.length = 0;
+  bd.marquesConv.length = 0;
   bd.ecritures.length = 0;
   bd.suppressions = 0;
   n = 0;
@@ -169,6 +173,18 @@ describe("réservation", () => {
     const l = ajouter({ adresse });
     ajouter({});
     bd.oppositions.push(hashEmailForLookup(adresse)!); // même fonction des deux côtés
+    const r = await reserverConfirmations(MAINTENANT);
+    expect(r.map((x) => x.ref)).not.toContain(l.jeton_empreinte);
+    expect(r).toHaveLength(1);
+    expect(l.merci_statut).toBe("a_envoyer");
+    expect(bd.ecritures).not.toContain(l.id);
+    expect(bd.contacts).toContain(l);
+  });
+
+  it("MG-STOP01 · conv_ref marqué STOP : le contact resté a_envoyer n'est PAS réservé, ni supprimé", async () => {
+    const l = ajouter({ conv_ref: "conv-arretee" });
+    ajouter({});
+    bd.marquesConv.push("conv-arretee");
     const r = await reserverConfirmations(MAINTENANT);
     expect(r.map((x) => x.ref)).not.toContain(l.jeton_empreinte);
     expect(r).toHaveLength(1);

@@ -69,7 +69,7 @@ import {
 } from "@/content/guides-reseau";
 import { convRefOpposee } from "./conv-ref-opposee";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
-import { MERCI_STATUT_ECARTE } from "./merci-statut";
+import { MERCI_STATUT_ECARTE, MERCI_STATUTS_ECARTES_LUS } from "./merci-statut";
 import {
   ecrireOrigineDansTransaction,
   hmacConversationRef,
@@ -398,9 +398,12 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   // l'origine et la preuve sont déjà validées ; le rattrapage reprend la demande).
   after(async () => {
     try {
-      await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
+      const issue = await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
       // Lot guide réseau 4 : si la personne a déjà cliqué, la nouvelle origine part (jamais avant un clic).
-      await transmettreOriginesSuivantes({ email, emailKey, guide: donnees.guide });
+      // Jamais après un STOP gagné pendant l'enregistrement : pas d'origine d'une conversation arrêtée au CRM.
+      if (issue !== "ecarte") {
+        await transmettreOriginesSuivantes({ email, emailKey, guide: donnees.guide });
+      }
     } catch (err) {
       console.error(
         JSON.stringify({
@@ -472,18 +475,20 @@ async function suiteApresReponse(
   donnees: DonneesJeton,
   demande: { id: string; downloadToken: string },
   { email, maintenant }: ContexteSuite,
-): Promise<void> {
+): Promise<string> {
   // L'e-mail du guide, sauf s'il est déjà parti à cette adresse depuis moins de 24 h.
   //     Un échec de mise en file n'annule rien : la demande est écrite (et le consentement prouvé),
   //     `queued_at` reste vide et le rattrapage la reprend. La personne n'est pas renvoyée en erreur.
   let guide: string;
   try {
-    if ((await envoisRecentsVers(email, maintenant)) > 0) {
-      guide = "deja-servi";
-    } else if (await stopArriveEntreTemps(donnees)) {
+    if (await stopArriveEntreTemps(donnees)) {
       // Un STOP a écrit sa marque pendant que la page s'enregistrait (il n'a trouvé aucun contact) :
       // même déroulé neutre et silencieux, rien n'est mis en file, aucune opposition écrite sur l'adresse.
+      // Contrôlé AVANT « déjà servi » : le contact doit être écarté dans tous les cas.
       guide = "ecarte";
+      await ecarterContactDeLaDemande(demande.id);
+    } else if ((await envoisRecentsVers(email, maintenant)) > 0) {
+      guide = "deja-servi";
     } else {
       guide = await mettreEnFileGuide(
         { id: demande.id, email, locale: "fr", downloadToken: demande.downloadToken },
@@ -507,4 +512,28 @@ async function suiteApresReponse(
       guide,
     }),
   );
+  return guide;
+}
+
+/**
+ * STOP gagné pendant l'enregistrement de la page : le contact passe à `merci_statut = 'ecarte'` (comme le fait le
+ * STOP quand il trouve le contact), ce qui écarte AUSSI la demande du guide (le rattrapage et l'envoi console lisent
+ * ce lien). Mise à l'écart seulement : rien n'est supprimé. Un échec est journalisé (sans adresse) et ne change
+ * pas l'issue : la marque de la conversation (`oppositions_conv_ref`) bloque de toute façon, côté rattrapage et
+ * côté « merci ».
+ */
+async function ecarterContactDeLaDemande(demandeId: string): Promise<void> {
+  try {
+    await prisma.contactGuideReseau.updateMany({
+      where: { guideRequestId: demandeId, merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] } },
+      data: { merciStatut: MERCI_STATUT_ECARTE },
+    });
+  } catch (err) {
+    console.error(
+      JSON.stringify({
+        event: "guides_reseau_page_ecart_echec",
+        erreur: err instanceof Error ? err.name : "erreur",
+      }),
+    );
+  }
 }

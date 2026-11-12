@@ -27,6 +27,8 @@ const bd = vi.hoisted(() => ({
   nbLecturesMarque: 0,
   marqueDesLecture: 0,
   panneDesLecture: 0,
+  /** Panne simulée de l'écriture « contact écarté » (après la course). */
+  ecartPanne: false,
   domaine: { verdict: "oui" as "oui" | "non" | "inconnu" },
   envois: [] as unknown[][],
   limites: [] as string[],
@@ -98,6 +100,12 @@ function client(trace?: Trace) {
         const l = bd.contacts.find((c) => egal(c, where))!;
         Object.assign(l, data);
         return l;
+      },
+      updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (bd.ecartPanne) throw new Error("écriture de l'écart impossible");
+        const cibles = bd.contacts.filter((c) => c["guideRequestId"] === where["guideRequestId"]);
+        for (const c of cibles) Object.assign(c, data);
+        return { count: cibles.length };
       },
     },
     guideRequest: {
@@ -238,9 +246,14 @@ vi.mock("@/server/queue/queues", () => ({
     return { enqueued: true };
   },
 }));
+vi.mock("../synchro-v3", async (orig) => ({
+  ...(await orig<Record<string, unknown>>()),
+  transmettreOriginesSuivantes: vi.fn(async () => undefined),
+}));
 vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
 import { mettreEnFileGuide } from "@/server/guide-ia/envoi";
+import { transmettreOriginesSuivantes } from "../synchro-v3";
 import {
   confirmerPageGuide as confirmerSansSuite,
   PLANCHER_REPONSE_MS,
@@ -318,6 +331,8 @@ beforeEach(() => {
   bd.nbLecturesMarque = 0;
   bd.marqueDesLecture = 0;
   bd.panneDesLecture = 0;
+  bd.ecartPanne = false;
+  vi.mocked(transmettreOriginesSuivantes).mockClear();
   bd.domaine.verdict = "oui";
   bd.limiteAtteinte = false;
   bd.logsDestinataire = 0;
@@ -543,6 +558,23 @@ describe("adresse", () => {
     expect(mettreEnFileGuide).not.toHaveBeenCalled();
     expect(bd.envois).toHaveLength(0);
     expect(bd.opposees.size).toBe(0);
+    // Le contact (créé avant la course) est ÉCARTÉ : plus de « merci » ni de rattrapage, rien supprimé.
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    expect(bd.contacts[0]!["guideRequestId"]).toBe(bd.demandes[0]!["id"]);
+    // Pas d'origine d'une conversation arrêtée vers le CRM.
+    expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+  });
+
+  it("MG-STOP01 — course gagnée par le STOP et écriture de l'écart en panne : réponse neutre, rien ne part, aucune origine, journal sans adresse", async () => {
+    bd.marqueDesLecture = 2;
+    bd.ecartPanne = true;
+    expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
+    expect(bd.envois).toHaveLength(0);
+    expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
+    expect(bd.journal.some((j) => j.includes("guides_reseau_page_ecart_echec"))).toBe(true);
+    expect(bd.journal.join("\n")).not.toContain(ADRESSE);
   });
 
   it("MG-STOP01 — marque absente aux deux lectures : le guide est mis en file une fois", async () => {
@@ -550,6 +582,8 @@ describe("adresse", () => {
     expect(bd.nbLecturesMarque).toBe(2);
     expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
     expect(bd.envois).toHaveLength(1);
+    expect(bd.contacts[0]!["merciStatut"]).toBe("a_envoyer");
+    expect(transmettreOriginesSuivantes).toHaveBeenCalledTimes(1);
   });
 
   it("MG-STOP01 — 2de lecture en erreur : rien ne part (fermé), la réponse neutre ne plante pas, aucune adresse dans les journaux", async () => {
@@ -559,6 +593,8 @@ describe("adresse", () => {
       expect(await confirmerPageGuide(entree())).toEqual({ ok: true });
       expect(mettreEnFileGuide).not.toHaveBeenCalled();
       expect(bd.envois).toHaveLength(0);
+      expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+      expect(transmettreOriginesSuivantes).not.toHaveBeenCalled();
       expect(JSON.stringify(espion.mock.calls)).not.toContain(ADRESSE);
     } finally {
       espion.mockRestore();
