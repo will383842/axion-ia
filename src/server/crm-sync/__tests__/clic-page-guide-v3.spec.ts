@@ -29,13 +29,16 @@ const base = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/prisma", () => {
-  const ok = (l: Ligne, w: Record<string, unknown>) =>
+  const ok = (l: Ligne, w: Record<string, unknown>): boolean =>
     Object.entries(w).every(([k, c]) => {
+      // Clause OR de Prisma (ex. origines actives : en attente OU transmise).
+      if (k === "OR") return (c as Record<string, unknown>[]).some((alt) => ok(l, alt));
       const v = l[k];
       if (c === null) return v === null || v === undefined;
       if (c instanceof Date) return v instanceof Date && v.getTime() === c.getTime();
       if (typeof c === "object") {
-        const o = c as { not?: unknown };
+        const o = c as { not?: unknown; notIn?: unknown[] };
+        if ("notIn" in o) return !(o.notIn as unknown[]).includes(v);
         return "not" in o ? !(o.not === null ? v == null : v === o.not) : true;
       }
       return v === c;
@@ -356,6 +359,40 @@ describe("le clic émet l'événement v3 de la page", () => {
     expect((evenement().consentements as Ligne[])[0]?.date).toBe("2026-11-01T10:00:00.000Z");
   });
 
+  it("T8 — premier contact ÉCARTÉ (STOP) et second légitime : le prénom et l'accord « infos » sont ceux du second", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    const infos = { infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI };
+    installer({ contact: contact({ prenom: "enc:Ecarte", merciStatut: "ecarte", ...infos }) });
+    base.contacts.push(
+      contact({ prenom: "enc:Legitime", consentiLe: new Date("2026-11-01T10:02:00.000Z") }),
+    );
+    await transmettreClicGuide("demande-1");
+    const e = evenement();
+    expect((e.person as Ligne).first_name).toBe("Legitime");
+    expect(JSON.stringify(e)).not.toContain("Ecarte");
+    expect(JSON.stringify(e)).not.toContain("page-guide-infos-x");
+  });
+
+  it("T8bis — un SEUL contact, écarté (graphie ancienne ou actuelle) : ni prénom, ni accord « infos » dans l'événement", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    for (const statut of ["ecarte", "ecartee"]) {
+      base.demandes.length = base.contacts.length = base.origines.length = base.outbox.length = 0;
+      installer({
+        contact: contact({
+          prenom: "enc:Ecarte",
+          merciStatut: statut,
+          infosVersion: "page-guide-infos-x",
+          infosConsentiLe: CONSENTI,
+        }),
+      });
+      await transmettreClicGuide("demande-1");
+      const e = JSON.stringify(evenement());
+      expect(e).not.toContain("Ecarte");
+      expect(e).not.toContain("first_name");
+      expect(e).not.toContain("page-guide-infos-x");
+    }
+  });
+
   it("case des informations cochée mais interrupteur newsletter_optin éteint : aucun accord transmis", async () => {
     installer({
       contact: contact({ infosVersion: "page-guide-infos-x", infosConsentiLe: CONSENTI }),
@@ -372,6 +409,35 @@ describe("le clic émet l'événement v3 de la page", () => {
     expect(e.source_slug).toBe("guide-ia");
     expect(e).not.toHaveProperty("consentements");
     expect((e.person as Ligne).first_name).toBeUndefined();
+  });
+});
+
+describe("MG-STOP01 — course gagnée par le STOP : la page arrêtée ne voyage jamais", () => {
+  it("T7 — scénario (b) : demande antérieure non cliquée, page écartée par le filet (origine « ecartee », contact « ecarte ») : l'événement n'a ni l'origine page-…, ni le prénom, ni « infos »", async () => {
+    process.env.SYNCHRO_CRM_V3_NEWSLETTER_OPTIN = "true";
+    // Origine légitime plus ancienne (conversation) : elle seule peut voyager.
+    const ancienne = origine({
+      postRef: "post_ancien_001",
+      occurredAt: new Date("2026-10-30T10:00:00.000Z"),
+    });
+    const page = origine({ postRef: "post_page_stop_01", crmStatut: "ecartee" });
+    installer({
+      contact: contact({
+        prenom: "enc:Arrete",
+        merciStatut: "ecarte",
+        infosVersion: "page-guide-infos-x",
+        infosConsentiLe: CONSENTI,
+      }),
+      origines: [ancienne, page],
+    });
+    await transmettreClicGuide("demande-1");
+    expect(base.outbox).toHaveLength(1);
+    const e = JSON.stringify(evenement());
+    expect(e).not.toContain("post_page_stop_01");
+    expect(e).not.toContain("Arrete");
+    expect(e).not.toContain("page-guide-infos-x");
+    expect(e).toContain("post_ancien_001");
+    expect(page.crmStatut).toBe("ecartee");
   });
 });
 

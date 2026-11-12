@@ -29,6 +29,7 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
       "20261112000000_contacts_guide_reseau_preuve_statut",
       "20261112100000_guide_reseau_origines_crm",
       "20261112110000_oppositions_effacement_demande",
+      "20261112120000_oppositions_conv_ref",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

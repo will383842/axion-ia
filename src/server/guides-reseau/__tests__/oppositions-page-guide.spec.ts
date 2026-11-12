@@ -13,46 +13,86 @@ const { bd } = vi.hoisted(() => ({
     adressesOpposees: [] as string[],
     opposition: { ok: true, crmAverti: true } as { ok: boolean; crmAverti: boolean },
     suppressions: 0,
+    /** Lignes de `oppositions_conv_ref` (références hachées), unicité rejouée. */
+    marques: [] as string[],
+    marquePanne: false,
     limiteRefusee: false,
+    /** Ordre des appels : verrou, écriture de la marque, validation de la transaction, recherche des contacts. */
+    ordre: [] as string[],
   },
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    contactGuideReseau: {
-      findMany: async ({ where }: { where: { convRef: string } }) =>
-        bd.contacts
-          .filter((c) => c.convRef === where.convRef)
-          .map((c) => ({
-            id: c.id,
-            emailKey: c.emailKey,
-            guideRequest: c.email ? { email: c.email } : null,
-          })),
-      updateMany: async ({
-        where,
-        data,
-      }: {
-        where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } };
-        data: Ligne;
-      }) => {
-        const cibles = bd.contacts.filter(
-          (c) =>
-            (where.emailKey === undefined || c.emailKey === where.emailKey) &&
-            (where.convRef === undefined || c.convRef === where.convRef) &&
-            !where.merciStatut.notIn.includes(String(c.merciStatut)),
-        );
-        for (const c of cibles) Object.assign(c, data);
-        return { count: cibles.length };
-      },
-      delete: async () => {
-        bd.suppressions++;
-      },
-      deleteMany: async () => {
-        bd.suppressions++;
+vi.mock("@/lib/prisma", () => {
+  const oppositionConvRef = {
+    upsert: async ({ where }: { where: { convRef: string } }) => {
+      bd.ordre.push("upsert");
+      if (bd.marquePanne) throw new Error("écriture de la marque impossible");
+      if (!bd.marques.includes(where.convRef)) bd.marques.push(where.convRef);
+      return { id: "m" };
+    },
+    delete: async () => {
+      bd.suppressions++;
+    },
+    deleteMany: async () => {
+      bd.suppressions++;
+    },
+  };
+  const contactGuideReseau = {
+    findMany: async ({ where }: { where: { convRef: string } }) => {
+      bd.ordre.push("findMany");
+      return bd.contacts
+        .filter((c) => c.convRef === where.convRef)
+        .map((c) => ({
+          id: c.id,
+          emailKey: c.emailKey,
+          guideRequest: c.email ? { email: c.email } : null,
+        }));
+    },
+    updateMany: async ({
+      where,
+      data,
+    }: {
+      where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } };
+      data: Ligne;
+    }) => {
+      const cibles = bd.contacts.filter(
+        (c) =>
+          (where.emailKey === undefined || c.emailKey === where.emailKey) &&
+          (where.convRef === undefined || c.convRef === where.convRef) &&
+          !where.merciStatut.notIn.includes(String(c.merciStatut)),
+      );
+      for (const c of cibles) Object.assign(c, data);
+      return { count: cibles.length };
+    },
+    delete: async () => {
+      bd.suppressions++;
+    },
+    deleteMany: async () => {
+      bd.suppressions++;
+    },
+  };
+  return {
+    prisma: {
+      oppositionConvRef,
+      contactGuideReseau,
+      // Comme PostgreSQL : le verrou est pris dans la transaction ; « valide » = la fonction a fini sans lever.
+      $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+        const r = await fn({
+          oppositionConvRef,
+          contactGuideReseau,
+          $executeRaw: async (_c: TemplateStringsArray, ...v: unknown[]) => {
+            bd.ordre.push(
+              String(v[0]).startsWith("guide-reseau-conv:") ? "verrou" : "verrou-autre",
+            );
+            return 0;
+          },
+        });
+        bd.ordre.push("valide");
+        return r;
       },
     },
-  },
-}));
+  };
+});
 vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: async () => ({ allowed: !bd.limiteRefusee }),
 }));
@@ -123,6 +163,9 @@ beforeEach(() => {
   bd.contacts.length = bd.adressesOpposees.length = sorties.length = 0;
   bd.opposition = { ok: true, crmAverti: true };
   bd.suppressions = 0;
+  bd.marques.length = 0;
+  bd.marquePanne = false;
+  bd.ordre.length = 0;
   bd.limiteRefusee = false;
   process.env.OPPOSITIONS_RESEAU_ENABLED = "true";
   process.env.GUIDES_RESEAU_HMAC_SECRET = SECRET;
@@ -209,13 +252,52 @@ describe("effet : l'opposition l'emporte, rien n'est supprimé", () => {
     expect((await appel()).status).toBe(200);
     expect(bd.contacts).toHaveLength(1);
   });
-  it("référence inconnue : réponse identique (200), rien n'est écrit", async () => {
+  it("référence inconnue : réponse identique (200), la MARQUE de la référence est écrite, aucun contact touché", async () => {
     bd.contacts.push(contact({ convRef: "autre" }));
     const r = await appel();
     expect(r.status).toBe(200);
     expect(await r.json()).toEqual({ ok: true, type: "opposition", recue: true });
     expect(bd.adressesOpposees).toHaveLength(0);
     expect(bd.contacts[0]!.merciStatut).toBe("a_envoyer");
+    expect(bd.marques).toEqual([hmacConversationRef(CONV)]);
+  });
+  it("référence inconnue ou connue : exactement la même réponse HTTP (statut, corps)", async () => {
+    const inconnue = await appel();
+    const corpsInconnue = await inconnue.json();
+    bd.contacts.push(contact());
+    const connue = await appel();
+    expect(connue.status).toBe(inconnue.status);
+    expect(await connue.json()).toEqual(corpsInconnue);
+  });
+  it("T4 — la marque est posée sous le verrou de la conversation, dans une transaction ; la recherche des contacts vient APRÈS sa validation", async () => {
+    bd.contacts.push(contact());
+    expect((await appel()).status).toBe(200);
+    expect(bd.ordre).toEqual(["verrou", "upsert", "valide", "findMany"]);
+  });
+  it("T4bis — marque en erreur : 500, la recherche des contacts n'a pas lieu", async () => {
+    bd.marquePanne = true;
+    bd.contacts.push(contact());
+    expect((await appel()).status).toBe(500);
+    expect(bd.ordre).not.toContain("findMany");
+    expect(bd.ordre).not.toContain("valide");
+  });
+  it("deux STOP successifs : une seule ligne de marque", async () => {
+    expect((await appel()).status).toBe(200);
+    expect((await appel()).status).toBe(200);
+    expect(bd.marques).toHaveLength(1);
+  });
+  it("marque non écrite → 500 (le Studio renverra) et aucun contact n'est touché", async () => {
+    bd.marquePanne = true;
+    bd.contacts.push(contact());
+    expect((await appel()).status).toBe(500);
+    expect(bd.contacts[0]!.merciStatut).toBe("a_envoyer");
+    expect(bd.adressesOpposees).toHaveLength(0);
+  });
+  it("la marque ne contient ni la référence brute ni l'adresse", async () => {
+    bd.contacts.push(contact());
+    await appel();
+    expect(JSON.stringify(bd.marques)).not.toContain(CONV);
+    expect(JSON.stringify(bd.marques)).not.toContain(ADRESSE);
   });
   it("marque d'adresse opposée (convRef « - ») jamais ciblée", async () => {
     bd.contacts.push(contact({ convRef: "-", emailKey: "-", email: null }));
