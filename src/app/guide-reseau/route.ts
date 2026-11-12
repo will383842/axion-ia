@@ -30,22 +30,23 @@ import { TEXTES_PAGE_GUIDE as T, URL_CONFIDENTIALITE, URL_FORMULAIRE_GUIDE } fro
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-/** Le jeton est-il utilisable ? Toute cause d'échec donne la même réponse (`false`). */
-async function jetonUtilisable(jeton: string | null): Promise<boolean> {
-  if (!jeton) return false;
-  const secret = lireSecretLien();
-  if (!secret) return false;
+/** Réseau d'origine du jeton s'il est utilisable, sinon `null`. Toute cause d'échec donne la même réponse. */
+async function jetonUtilisable(
+  jeton: string | null,
+  secret: string | null,
+): Promise<string | null> {
+  if (!jeton || !secret) return null;
   try {
     const v = verifierJeton(jeton, secret, Date.now());
     // Guide inconnu = page neutre dès le GET (sinon la personne remplirait un formulaire qui échouera).
-    if (!v.ok || !GUIDES_RESEAU_CONNUS.includes(v.donnees.guide)) return false;
+    if (!v.ok || !GUIDES_RESEAU_CONNUS.includes(v.donnees.guide)) return null;
     const deja = await prisma.contactGuideReseau.findUnique({
       where: { jetonEmpreinte: empreinteJeton(jeton) },
       select: { id: true },
     });
-    return deja === null;
+    return deja === null ? v.donnees.reseau : null;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -65,7 +66,9 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
   const jeton =
     brut === null || brut.length > TAILLE_MAX_JETON_RECU ? null : normaliserJetonRecu(brut);
 
-  if (!(await jetonUtilisable(jeton))) {
+  const secret = lireSecretLien();
+  const reseau = await jetonUtilisable(jeton, secret);
+  if (reseau === null) {
     return pageStatique(
       T.titre,
       `<p>${echapper(T.lienNeutre)}</p><p><a href="${echapper(URL_FORMULAIRE_GUIDE)}">${echapper(T.lienNeutreCta)}</a></p>`,
@@ -86,7 +89,5 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 </form>
 <p>${echapper(T.sansCaseDebut)} <a href="${echapper(URL_FORMULAIRE_GUIDE)}">${echapper(T.sansCaseLien)}</a>.</p>`;
   // « Suivre la page » : simple lien, jamais une condition pour recevoir le guide (aucun bouton sans variable).
-  const verifie = verifierJeton(jeton as string, lireSecretLien() as string, Date.now());
-  const suivre = verifie.ok ? boutonSuivrePageHtml(verifie.donnees.reseau) : "";
-  return pageStatique(T.titre, corps + suivre, 200);
+  return pageStatique(T.titre, corps + boutonSuivrePageHtml(reseau), 200);
 }

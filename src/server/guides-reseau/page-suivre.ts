@@ -11,6 +11,10 @@
 //   · `tiktok`, `autre` ou réseau inconnu → aucun bouton ;
 //   · jamais une condition pour recevoir le guide ni pour envoyer le formulaire.
 
+import { verifierJeton } from "./lien-page-guide";
+
+const CHEMIN_MERCI = "/guide-reseau/merci";
+
 export const TEXTE_SUIVRE_PAGE = "Suivre la page Axion IA";
 
 const VARIABLE_PAR_RESEAU = {
@@ -63,4 +67,24 @@ export function boutonSuivrePageHtml(reseau: unknown, env: Env = process.env): s
   const href = adressePageSuivre(reseau, env);
   if (href === null) return "";
   return `<p><a href="${echapper(href)}" rel="noopener noreferrer" target="_blank" style="display:inline-block;box-sizing:border-box;min-height:2.75rem;padding:.7rem 1.2rem;font-weight:600;color:#c24a1b;border:2px solid #c24a1b;border-radius:.5rem;text-decoration:none">${echapper(TEXTE_SUIVRE_PAGE)}</a></p>`; // hex-ok: page HTML autonome, aucun jeton Tailwind (réponse de route)
+}
+
+/**
+ * Adresse de redirection vers le merci. `?r=<réseau>` n'y figure QUE si le secret existe, le jeton
+ * est valide, le réseau est suivable ET une variable d'adresse valide existe pour lui : sinon
+ * `/guide-reseau/merci` tout court. Le piège à robots et l'envoi réel appellent cette même
+ * fonction, pour que rien dans l'adresse ne dise lequel des deux a répondu.
+ */
+export function adresseMerci(
+  jeton: string,
+  secret: string | null,
+  env: Env = process.env,
+  maintenantMs: number = Date.now(),
+): string {
+  if (!secret) return CHEMIN_MERCI;
+  const v = verifierJeton(jeton, secret, maintenantMs);
+  if (!v.ok) return CHEMIN_MERCI;
+  const r = reseauSuivable(v.donnees.reseau);
+  if (r === null || adressePageSuivre(r, env) === null) return CHEMIN_MERCI;
+  return `${CHEMIN_MERCI}?r=${r}`;
 }
