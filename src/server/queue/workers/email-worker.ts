@@ -197,6 +197,33 @@ export async function resolveAttachments(
   return resolved;
 }
 
+/**
+ * STOP-T1b — le guide a-t-il DÉJÀ été servi par un autre job, parti APRÈS la mise en file de
+ * celui-ci ? C'est le cas d'un ancien job « guide » clos en échec : le rattrapage a remis la
+ * demande en file (nouveau job, guide envoyé), puis « renvoyer les échecs » relance l'ancien
+ * (`job.retry()`), et le guide partirait une seconde fois.
+ *
+ * Un renvoi VOULU n'est pas touché : la console, le formulaire et le rattrapage créent un
+ * NOUVEAU job, mis en file après le premier envoi (`sent_at` est le PREMIER envoi, donc plus
+ * ancien que ce job) — ce job-là porte une date de création postérieure à `sent_at`.
+ * Seul un envoi parti après la création du job le rend superflu.
+ *
+ * Sans date de création lisible, on ne peut pas trancher : l'envoi part (chemin d'avant).
+ * Lecture en panne : l'erreur remonte (`echecAuDepart` : rien ne part, réessai).
+ */
+async function guideDejaServiApresCeJob(
+  demandeId: string,
+  creationDuJobMs: unknown,
+): Promise<boolean> {
+  if (typeof creationDuJobMs !== "number" || !Number.isFinite(creationDuJobMs)) return false;
+  const demande = await prisma.guideRequest.findUnique({
+    where: { id: demandeId },
+    select: { sentAt: true },
+  });
+  if (!demande?.sentAt) return false;
+  return demande.sentAt.getTime() >= creationDuJobMs;
+}
+
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
     "emails",
@@ -228,7 +255,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       // du journal « en attente » à vie : essai non final → tentative notée, erreur relancée
       // (BullMQ réessaie, rien ne part) ; essai final → journal clos en échec. Motif sans adresse.
       const echecAuDepart = async (err: unknown): Promise<never> => {
-        const motifEchec = "contrôle d'opposition illisible au départ : rien n'est parti";
+        const motifEchec = "contrôle du départ illisible : rien n'est parti";
         if (attempts < (job.opts.attempts ?? 1)) {
           await noterTentativeEchouee({
             template,
@@ -267,7 +294,10 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         // aucune action.
         if (
           estSollicitationSoumiseAOpposition(template, payload) ||
-          RELECTURES_AU_DEPART.has(template)
+          RELECTURES_AU_DEPART.has(template) ||
+          // STOP-T1b — un job marketing relit lui aussi l'opposition / le désabonnement au départ
+          // (aujourd'hui aucun producteur n'en crée : filet pour le jour où il y en aura un).
+          job.data.marketing === true
         ) {
           const motif = await motifDeRetenueAuDepart(job.data);
           if (motif !== null) {
@@ -292,6 +322,20 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
           }
           retenu = true;
+        }
+        // STOP-T1b — « Votre guide » : une demande déjà servie par un autre job, parti après la
+        // mise en file de celui-ci, ne reçoit pas le guide une seconde fois. Clos en « annulé »,
+        // sans `throw` (BullMQ ne réessaie pas), comme les autres retenues du départ.
+        if (!retenu && entityType === ENTITE_GUIDE && entityId) {
+          if (await guideDejaServiApresCeJob(entityId, job.timestamp)) {
+            const trace = "Retenu à l'envoi : guide déjà envoyé pour cette demande";
+            if (job.id) {
+              await marquerAnnule(job.id, trace);
+            } else {
+              console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
+            }
+            retenu = true;
+          }
         }
       } catch (err) {
         return echecAuDepart(err);
@@ -515,9 +559,13 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     console.log(`[email-worker] sent: ${job.name} → ${redactEmailValue(String(job.data.to))}`),
   );
   worker.on("failed", (job, err) => {
+    // STOP-T1b — jamais `err.message` brut : un refus du relais y cite l'adresse. Nom et code
+    // de l'erreur seulement ; le détail reste dans Sentry (message masqué) et dans le journal.
+    const code = (err as { code?: unknown }).code;
     console.error(
       `[email-worker] failed: ${job?.name} → ` +
-        `${redactEmailValue(String(job?.data?.to ?? ""))}: ${err.message}`,
+        `${redactEmailValue(String(job?.data?.to ?? ""))}: ${err.name}` +
+        (typeof code === "string" || typeof code === "number" ? ` (${String(code)})` : ""),
     );
     // Sprint Final P1-2 (audit final 2026-05-22) — Sentry capture email-worker.
     captureWorkerError("email", "emails", job, err);
