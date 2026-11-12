@@ -96,6 +96,10 @@ describe("champs v3", () => {
       "mp-m1-v2-d",
       "mp-m1-v2-e",
       "mp-m1-v3",
+      "mp-m1-v5-1",
+      "mp-m1-v5-2",
+      "mp-m1-v5-3",
+      "mp-m1-v5-4",
     ];
     it.each(STUDIO)("version Studio acceptée par le contrat : %s", (version_texte) =>
       expect(analyserCorps(corps({ ...v3, version_texte })).ok).toBe(true),
@@ -103,6 +107,7 @@ describe("champs v3", () => {
     it("une valeur inconnue reste refusée", () => {
       refuse({ version_texte: "jean_dupont_75" });
       refuse({ version_texte: "mp-m1-v4" });
+      refuse({ version_texte: "mp-m1-v9-9" });
     });
     it("aucune ancienne valeur n'a disparu", () => {
       for (const v of ANCIENNES) expect(VERSIONS_TEXTE_CONNUES as readonly string[]).toContain(v);
