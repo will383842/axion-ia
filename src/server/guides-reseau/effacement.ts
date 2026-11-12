@@ -48,8 +48,13 @@ export async function traiterEffacement(
       action: ACTION_DEMANDE_EFFACEMENT,
       targetType: "message_prive",
       // `target_id` est un UUID : la clé d'idempotence est gardée dans `changes.reference`.
-      changes: { path: ["reference"], equals: d.cleIdempotence },
+      AND: [
+        { changes: { path: ["reference"], equals: d.cleIdempotence } },
+        // Seule une trace dont l'opposition a réussi ferme la demande.
+        { changes: { path: ["opposition"], equals: "ok" } },
+      ],
     },
+    orderBy: { createdAt: "desc" },
     select: { changes: true },
   });
   // Une trace dont l'opposition n'a pas pu être posée ne ferme pas la demande : on recommence.

@@ -56,7 +56,7 @@ async function sansPanne<T>(lire: () => Promise<T[]>): Promise<T[]> {
 
 /** Lecture stub-safe : au build (`stub.invalid`) ou sans base, la liste est vide. */
 export async function listerDemandes(): Promise<DemandeRgpd[]> {
-  const [stagiaires, libreServiceFaites, effacementsDemandes, alertes] = await Promise.all([
+  const [stagiaires, libreServiceFaites, effacementsDemandes] = await Promise.all([
     sansPanne(() =>
       prisma.rgpdDemande.findMany({
         orderBy: { demandeAt: "desc" },
@@ -89,17 +89,31 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         select: { id: true, action: true, createdAt: true, changes: true },
       }),
     ),
-    // L'alerte « à traiter à la main » dit où en est la demande : tant qu'elle n'est pas
-    // résolue, la demande reste à traiter ; sa résolution donne la date de traitement.
-    sansPanne(() =>
-      prisma.alerteSysteme.findMany({
-        where: { code: CODE_ALERTE_EFFACEMENT },
-        orderBy: { createdAt: "desc" },
-        take: 500,
-        select: { cibleId: true, resolue: true, resolueAt: true, metadata: true },
+  ]);
+
+  // L'alerte « à traiter à la main » dit où en est la demande : tant qu'elle n'est pas résolue, la
+  // demande reste à traiter. Lue SANS limite, mais seulement pour les personnes dont on a une trace.
+  const cibles = [
+    ...new Set(
+      effacementsDemandes.flatMap((t) => {
+        const h =
+          t.changes && typeof t.changes === "object"
+            ? (t.changes as Record<string, unknown>)["emailHash"]
+            : undefined;
+        return typeof h === "string" ? [cibleIdAlerteDepuisEmpreinte(h)] : [];
       }),
     ),
-  ]);
+  ];
+  const alertes =
+    cibles.length === 0
+      ? []
+      : await sansPanne(() =>
+          prisma.alerteSysteme.findMany({
+            where: { code: CODE_ALERTE_EFFACEMENT, cibleId: { in: cibles } },
+            orderBy: { createdAt: "desc" },
+            select: { cibleId: true, resolue: true, resolueAt: true, metadata: true },
+          }),
+        );
 
   const alerteDe = (journalId: string, changes: unknown) => {
     const emailHash =

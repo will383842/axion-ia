@@ -1064,7 +1064,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Droit à l'effacement (art. 17)",
-          body: "Demander la suppression de vos données, sous réserve des obligations légales (pièces comptables : dix ans, article L.123-22 du code de commerce). Votre demande est examinée à la main par le responsable : aucun effacement n'est automatique. Dès que votre demande est confirmée (lien signé envoyé à votre adresse, ou vérification par notre responsable pour une demande reçue par e-mail ou message privé), nous arrêtons tous les envois automatiques vers votre adresse (seul le lien de téléchargement de vos données, si vous le demandez, peut encore vous être envoyé). Vous recevez une réponse personnelle sous un mois. Vous pouvez aussi saisir la CNIL (www.cnil.fr).",
+          body: "Demander la suppression de vos données, sous réserve des obligations légales (pièces comptables : dix ans, article L.123-22 du code de commerce). Votre demande est examinée à la main par le responsable : aucun effacement n'est automatique. Dès que votre demande est confirmée (après vérification par notre responsable), nous arrêtons tous les envois automatiques vers votre adresse (seul le lien de téléchargement de vos données, si vous le demandez, peut encore vous être envoyé). Vous recevez une réponse personnelle sous un mois. Vous pouvez aussi saisir la CNIL (www.cnil.fr).",
         },
         {
           title: "Droit d'opposition (art. 21)",
@@ -1104,7 +1104,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         },
         {
           title: "Right to erasure (art. 17)",
-          body: "Request deletion of your data, subject to legal obligations (accounting records: ten years, article L.123-22 of the French Commercial Code). Your request is reviewed by hand by the data controller: no erasure is automatic. As soon as your request is confirmed (signed link sent to your address, or verification by the data controller for a request received by e-mail or private message), we stop all automatic messages to your address (only the link to download your data, if you ask for it, may still be sent to you). You receive a personal reply within one month. You may also lodge a complaint with the CNIL (www.cnil.fr).",
+          body: "Request deletion of your data, subject to legal obligations (accounting records: ten years, article L.123-22 of the French Commercial Code). Your request is reviewed by hand by the data controller: no erasure is automatic. As soon as your request is confirmed (after verification by our data controller), we stop all automatic messages to your address (only the link to download your data, if you ask for it, may still be sent to you). You receive a personal reply within one month. You may also lodge a complaint with the CNIL (www.cnil.fr).",
         },
         {
           title: "Right to object (art. 21)",

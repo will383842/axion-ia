@@ -173,6 +173,19 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(rapports).toHaveBeenCalledWith(ADRESSE, expect.any(Date));
   });
 
+  it("🔴 message privé (adresse non prouvée) : ni lettre ni rapports avant audit, seulement les contacts", async () => {
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "message-prive" });
+    expect(abonnes).not.toHaveBeenCalled();
+    expect(rapports).not.toHaveBeenCalled();
+    expect(contacts).toHaveBeenCalledWith(ADRESSE);
+  });
+
+  it("console (après vérification) : lettre et rapports avant audit sont mis à l'écart", async () => {
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console" });
+    expect(abonnes).toHaveBeenCalledTimes(1);
+    expect(rapports).toHaveBeenCalledWith(ADRESSE, expect.any(Date));
+  });
+
   it("le site n'envoie PAS de demande d'effacement au CRM (l'opposition le prévient)", async () => {
     await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
     expect(crm).not.toHaveBeenCalled();

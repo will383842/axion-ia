@@ -164,31 +164,39 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
   }
 
   // 3 et 4. Mises à l'écart, en parallèle : aucune ne dépend des autres.
+  // 🔴 Adresse NON prouvée (message privé) : on ne lance QUE les contacts de la page guide, comme
+  // avant. Désabonner la lettre et annuler les rapports avant audit sur la seule parole d'un tiers
+  // permettrait de nuire à une autre personne. Ces deux étapes se font à la vérification (console).
+  const prouvee = !ORIGINES_SANS_MARQUE.has(d.origine);
   const [lettre, contacts, rapports] = await Promise.all([
-    prisma.newsletterSubscriber
-      .updateMany({
-        // La colonne `email` est `citext` (schema.prisma) : la comparaison ignore déjà la casse,
-        // une ligne écrite avec des majuscules est donc trouvée sans `mode: "insensitive"`.
-        where: { email, status: { notIn: ["unsubscribed", "bounced"] } },
-        data: { status: "unsubscribed", unsubscribedAt: quand, confirmToken: null },
-      })
-      .then((r) => r.count)
-      .catch((e: unknown) => {
-        echec("lettre")(e);
-        return 0;
-      }),
+    prouvee
+      ? prisma.newsletterSubscriber
+          .updateMany({
+            // La colonne `email` est `citext` (schema.prisma) : la comparaison ignore déjà la casse,
+            // une ligne écrite avec des majuscules est donc trouvée sans `mode: "insensitive"`.
+            where: { email, status: { notIn: ["unsubscribed", "bounced"] } },
+            data: { status: "unsubscribed", unsubscribedAt: quand, confirmToken: null },
+          })
+          .then((r) => r.count)
+          .catch((e: unknown) => {
+            echec("lettre")(e);
+            return 0;
+          })
+      : Promise.resolve(0),
     mettreContactsAEcart(email)
       .then((r) => r.ecartes)
       .catch((e: unknown) => {
         echec("contacts-guide")(e);
         return 0;
       }),
-    ecarterRapportsAvantAuditPourEmail(email, quand)
-      .then((r) => r.ecartes)
-      .catch((e: unknown) => {
-        echec("rapports-avant-audit")(e);
-        return 0;
-      }),
+    prouvee
+      ? ecarterRapportsAvantAuditPourEmail(email, quand)
+          .then((r) => r.ecartes)
+          .catch((e: unknown) => {
+            echec("rapports-avant-audit")(e);
+            return 0;
+          })
+      : Promise.resolve(0),
   ]);
 
   // 6. Preuve de la demande (aucune adresse en clair).
@@ -240,8 +248,9 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
     const sansMarque =
       marque === "non_posee"
         ? " L'adresse n'est pas prouvée (message reçu d'un tiers) : elle est en liste d'opposition " +
-          "(plus de prospection), mais les envois de service (convocation, facture) continuent. " +
-          "Après vérification, la mettre à l'écart dans Conformité RGPD › « Mettre une adresse à l'écart »."
+          "(plus de prospection) et ses contacts de la page guide sont écartés. Rien d'autre n'est " +
+          "touché : ni l'abonnement à la lettre, ni les rapports avant audit, ni les envois de " +
+          "service. Après vérification, la mettre à l'écart dans Conformité RGPD › « Mettre une adresse à l'écart »."
         : " La personne est mise à l'écart : plus aucun envoi, plus aucune réinscription.";
     // Le message porte la référence de la trace (ou l'heure) : une alerte résolue ne peut donc
     // jamais être confondue avec une NOUVELLE demande du même jour, même origine, même motif.

@@ -30,7 +30,16 @@ vi.mock("@/lib/prisma", () => ({
         return a?.take ? gardees.slice(0, a.take) : gardees;
       },
     },
-    alerteSysteme: { findMany: async () => d.alertes },
+    alerteSysteme: {
+      // Honore `where.cibleId.in` et `take` comme la base : une coupe ou un filtre se voit.
+      findMany: async (a?: { where?: { cibleId?: { in: string[] } }; take?: number }) => {
+        const dans = a?.where?.cibleId?.in;
+        const gardees = (d.alertes as { cibleId: string }[]).filter(
+          (x) => dans === undefined || dans.includes(x.cibleId),
+        );
+        return a?.take ? gardees.slice(0, a.take) : gardees;
+      },
+    },
   },
 }));
 
@@ -70,7 +79,7 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
   });
 
   it("alerte résolue (retrouvée par journalId) → faite, avec la date de résolution", async () => {
-    d.journal = [trace("j1", "autre")];
+    d.journal = [trace("j1")];
     d.alertes = [
       {
         cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
@@ -92,6 +101,28 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
         resolue: true,
         resolueAt: RESOLUE,
         metadata: {},
+      },
+    ];
+    const [x] = await listerDemandes();
+    expect(x?.aTraiter).toBe(false);
+    expect(x?.faiteLe).toEqual(RESOLUE);
+  });
+
+  it("🔑 la demande la plus ancienne garde son alerte même au-delà de 500 alertes", async () => {
+    d.journal = [trace("j1", "h-1")];
+    const autres = Array.from({ length: 600 }, (_, i) => ({
+      cibleId: cibleIdAlerteDepuisEmpreinte(`autre-${i}`),
+      resolue: false,
+      resolueAt: null,
+      metadata: { journalId: `x${i}` },
+    }));
+    d.alertes = [
+      ...autres,
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: { journalId: "j1" },
       },
     ];
     const [x] = await listerDemandes();

@@ -26,6 +26,8 @@ const bd = vi.hoisted(() => ({
   n: 0,
   contacts: [] as Ligne[],
   suppressionsContacts: 0,
+  appelsLettre: 0,
+  appelsRapports: 0,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -56,11 +58,21 @@ vi.mock("@/lib/prisma", () => ({
       },
     },
     activityLog: {
-      findFirst: async ({ where }: { where: { action: string; changes: { equals: string } } }) =>
-        bd.traces.find(
+      findFirst: async ({
+        where,
+        orderBy,
+      }: {
+        where: { action: string; AND: { changes: { path: string[]; equals: string } }[] };
+        orderBy?: { createdAt: "desc" };
+      }) => {
+        const trouvees = bd.traces.filter(
           (t) =>
-            t.action === where.action && (t.changes as Ligne).reference === where.changes.equals,
-        ) ?? null,
+            t.action === where.action &&
+            where.AND.every((c) => (t.changes as Ligne)[c.changes.path[0]!] === c.changes.equals),
+        );
+        // Plus récente d'abord, comme la base (les traces sont rangées dans l'ordre d'écriture).
+        return (orderBy ? [...trouvees].reverse() : trouvees)[0] ?? null;
+      },
       create: async ({ data }: { data: Ligne }) => {
         const l = { id: `t${bd.traces.length + 1}`, ...data };
         bd.traces.push(l);
@@ -96,7 +108,10 @@ vi.mock("@/lib/prisma", () => ({
       },
     },
     newsletterSubscriber: {
-      updateMany: async () => ({ count: 0 }),
+      updateMany: async () => {
+        bd.appelsLettre++;
+        return { count: 0 };
+      },
       deleteMany: async () => {
         throw new Error("interdit : aucune suppression");
       },
@@ -141,7 +156,10 @@ vi.mock("@/server/email/opposition", () => ({
   },
 }));
 vi.mock("@/lib/rgpd-erase", () => ({
-  ecarterRapportsAvantAuditPourEmail: async () => ({ ecartes: 0 }),
+  ecarterRapportsAvantAuditPourEmail: async () => {
+    bd.appelsRapports++;
+    return { ecartes: 0 };
+  },
 }));
 // Alerte dans la CLOCHE : le service est simulé ; tout e-mail passerait par `enqueueEmail`.
 vi.mock("@/server/qualiopi/alertes/alertes-service", () => ({
@@ -220,6 +238,7 @@ beforeEach(() => {
   bd.n = 0;
   bd.contacts.length = 0;
   bd.suppressionsContacts = 0;
+  bd.appelsLettre = bd.appelsRapports = 0;
   process.env.GUIDES_RESEAU_ENABLED = "true";
   process.env.VIDEOS_STUDIO_HMAC_SECRET = SECRET;
   process.env.DATABASE_URL = "postgresql://u:p@db.example.test:5432/x";
@@ -255,6 +274,24 @@ describe("demande d'effacement", () => {
     expect(bd.cloche[0]).toMatchObject({ code: "rgpd_effacement_a_traiter", niveau: "info" });
     // aucun e-mail
     expect(bd.emails).toHaveLength(0);
+  });
+
+  it("🔴 message privé : ni la lettre ni les rapports avant audit ne sont touchés (adresse non prouvée)", async () => {
+    expect((await appel()).status).toBe(200);
+    expect(bd.appelsLettre).toBe(0);
+    expect(bd.appelsRapports).toBe(0);
+  });
+
+  it("🔑 rejeu : premier essai en échec d'opposition, deuxième réussi, troisième sans nouvelle trace", async () => {
+    bd.enfile.reponse = { enqueued: false };
+    expect((await appel()).status).toBe(500);
+    bd.enfile.reponse = { enqueued: true };
+    expect((await appel()).status).toBe(200);
+    const apres = bd.traces.length;
+    expect((bd.traces.at(-1)!.changes as Ligne).opposition).toBe("ok");
+    bd.journal.length = 0; // clé rendue : l'appelant rejoue
+    expect((await appel()).status).toBe(200);
+    expect(bd.traces).toHaveLength(apres);
   });
 
   it("rejeu (même run) : une seule alerte, même après une exception tardive", async () => {

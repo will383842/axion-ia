@@ -7,10 +7,12 @@
 --
 -- APRÈS un retour arrière puis un redéploiement, REPOSER les marques depuis le journal
 -- (`gdpr.erase.requested`, `changes.emailHash`, conservé 5 ans) :
--- ⚠️ Ne PAS reposer une marque que Williams a LEVÉE depuis (trace `gdpr.erase.leve`), ni une
+-- ⚠️ Ne PAS reposer une marque que Williams a LEVÉE depuis (trace `gdpr.erase.leve` postérieure à
+-- la DERNIÈRE demande : une nouvelle demande après la levée repose la marque), ni une
 -- demande de message privé jamais confirmée (`changes.marque` = 'non_posee') :
 --   UPDATE email_oppositions o SET effacement_demande_le = l.created_at
---     FROM (SELECT changes->>'emailHash' AS h, MIN(created_at) AS created_at
+--     FROM (SELECT changes->>'emailHash' AS h, MIN(created_at) AS created_at,
+--                  MAX(created_at) AS derniere
 --             FROM activity_logs
 --            WHERE action = 'gdpr.erase.requested'
 --              AND COALESCE(changes->>'marque', '') <> 'non_posee'
@@ -19,7 +21,7 @@
 --      AND NOT EXISTS (SELECT 1 FROM activity_logs v
 --                       WHERE v.action = 'gdpr.erase.leve'
 --                         AND v.changes->>'emailHash' = l.h
---                         AND v.created_at > l.created_at);
+--                         AND v.created_at > l.derniere);
 -- (une demande de message privé confirmée en console porte, elle, une trace d'origine `console`
 -- avec `marque` = 'ok' : elle est reposée.)
 --
