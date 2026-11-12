@@ -330,14 +330,18 @@ describe("opposition", () => {
     expect(d.sendEmail).not.toHaveBeenCalled();
     expect(d.annuler).toHaveBeenCalledWith("job-f", expect.stringMatching(/opposée/));
   });
-  it("table des oppositions muette : la sollicitation formateur est retenue", async () => {
+  // D-STOP-1 : avant, ce test figeait « panne = retenue/annulée » ; la panne fait désormais
+  // ÉCHOUER le job (BullMQ le réessaie), rien ne part — et rien n'est annulé à tort.
+  it("table des oppositions muette : rien ne part, le job échoue pour être réessayé", async () => {
     valides("formateur-invitation-relance");
     d.opposition.mockRejectedValue(new Error("base"));
-    await processeur()(
-      job("formateur-invitation-relance", { entityType: "JobApplication", entityId: TRAINER }),
-    );
+    await expect(
+      processeur()(
+        job("formateur-invitation-relance", { entityType: "JobApplication", entityId: TRAINER }),
+      ),
+    ).rejects.toThrow();
     expect(d.sendEmail).not.toHaveBeenCalled();
-    expect(d.annuler).toHaveBeenCalledTimes(1);
+    expect(d.annuler).not.toHaveBeenCalled();
   });
   it("l'argent passe malgré l'opposition", async () => {
     valides("formateur-virement-fait");

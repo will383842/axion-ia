@@ -39,7 +39,8 @@ vi.mock("@/lib/email/templates", () => ({
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: vi.fn(), isDecryptedEmailUsable: vi.fn() }));
 // La mise à l'écart (effacement) est relue au départ : la lecture doit exister (aucune écartée).
 vi.mock("@/lib/prisma", () => ({
-  prisma: { emailOpposition: { findFirst: async () => null } },
+  // `findUnique` : l'opposition est relue au départ (D-STOP-1) ; sans elle, la lecture lèverait.
+  prisma: { emailOpposition: { findFirst: async () => null, findUnique: async () => null } },
 }));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
 vi.mock("@/server/email/email-log", () => ({

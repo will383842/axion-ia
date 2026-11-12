@@ -24,9 +24,13 @@
 // ne retient que le marketing ; une opposition retient le marketing ET les
 // sollicitations du réseau d'apporteurs.
 //
-// ⚠️ Repli assumé : si la base ne répond pas, on N'ARRÊTE PAS l'envoi, et on
-// le dit en erreur. Retenir toute la chaîne sur un hoquet Postgres serait pire
-// que le rebond qu'on cherche à éviter.
+// 🔴 Décision de Williams D-STOP-1 (« Ne pas envoyer, réessayer ») : quand l'opposition ou le
+// désabonnement ne peut pas être VÉRIFIÉ au moment du départ (`auDepart`), RIEN ne part — l'erreur
+// remonte au worker, BullMQ réessaie. Cela vaut pour le marketing et les sollicitations seulement ;
+// les envois transactionnels (facture, convocation…) ne lisent jamais ces tables et sont inchangés.
+// À l'enfilage (sans `auDepart`), on journalise et on laisse passer : le worker relira au départ.
+// Le contrôle des REBONDS, lui, garde son repli ouvert (un rebond n'est pas une opposition).
+// Aucun journal de ce module ne porte d'adresse e-mail : un code d'erreur, rien d'autre.
 
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -168,6 +172,13 @@ export function estSollicitationSoumiseAOpposition(
   return VARIANTES_DIFFEREES.has((payload as { variante?: unknown } | null | undefined)?.variante);
 }
 
+/** Code d'erreur seul (jamais le message : une erreur de base peut citer l'adresse). */
+function codeDErreur(e: unknown): string {
+  const code = (e as { code?: unknown } | null)?.code;
+  if (typeof code === "string") return code;
+  return e instanceof Error ? e.name : "erreur";
+}
+
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
 }
@@ -190,8 +201,8 @@ export interface ContexteEnvoi {
    */
   readonly sollicitation?: boolean;
   /**
-   * Appel fait par le worker au moment du départ : une panne de lecture de la mise à l'écart est
-   * RELANCÉE (BullMQ réessaie) au lieu de sauter le contrôle.
+   * Appel fait par le worker au moment du départ : une panne de lecture de la mise à l'écart, du
+   * désabonnement ou de l'opposition est RELANCÉE (BullMQ réessaie) au lieu de sauter le contrôle.
    */
   readonly auDepart?: boolean;
 }
@@ -276,8 +287,8 @@ export async function verdictAvantEnvoi(
     }
   } catch (e) {
     console.error(
-      `[email-suppression] lecture des rebonds impossible pour ${adresse} — envoi maintenu :`,
-      e instanceof Error ? e.message : String(e),
+      "[email-suppression] lecture des rebonds impossible — envoi maintenu :",
+      codeDErreur(e),
     );
   }
 
@@ -318,12 +329,14 @@ export async function verdictAvantEnvoi(
         return { retenu: true, motif: "oppose", depuis: null };
       }
     } catch (e) {
+      // D-STOP-1 : au départ, une opposition non vérifiable = rien ne part. Le job est réessayé.
+      if (contexte.auDepart === true) throw e;
       console.error(
         // Le `try` couvre les DEUX lectures — désabonnement newsletter et
         // opposition. Nommer la seule première laisserait chercher du côté de la
         // newsletter un incident qui peut venir de `email_opposition`.
-        `[email-suppression] lecture du désabonnement ou de l'opposition impossible pour ${adresse} — envoi maintenu :`,
-        e instanceof Error ? e.message : String(e),
+        "[email-suppression] lecture du désabonnement ou de l'opposition impossible à l'enfilage — relue au départ :",
+        codeDErreur(e),
       );
     }
   }

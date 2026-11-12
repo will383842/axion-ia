@@ -196,14 +196,47 @@ describe("job sans identifiant", () => {
   });
 });
 
-describe("⚠️ base en panne : l'envoi continue (échec ouvert assumé)", () => {
-  it("verdict et fiche illisibles → la sollicitation part, et c'est journalisé en erreur", async () => {
-    d.rebond.mockRejectedValue(new Error("ECONNREFUSED"));
+describe("🔴 D-STOP-1 — base en panne au départ : RIEN ne part, le job est réessayé", () => {
+  it("5) sollicitation : lecture de l'opposition en panne → le fournisseur n'est jamais appelé, le job échoue", async () => {
     d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
-    d.submission.mockRejectedValue(new Error("ECONNREFUSED"));
-    await processeur()(job("lead-apporteur-relance", { etape: "j2" }));
-    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    await expect(processeur()(job("lead-apporteur-relance", { etape: "j2" }))).rejects.toThrow();
+    expect(d.sendEmail).not.toHaveBeenCalled();
     expect(d.annuler).not.toHaveBeenCalled();
-    expect(console.error).toHaveBeenCalled();
+  });
+
+  it("5bis) guide d'un réseau (reseau:true) : même panne → rien ne part, job en échec", async () => {
+    d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
+    await expect(processeur()(job("guide-ia-envoi", { reseau: true }))).rejects.toThrow();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("envoi transactionnel (convocation) : mêmes tables en panne → l'envoi part, inchangé", async () => {
+    d.opposition.mockRejectedValue(new Error("ECONNREFUSED"));
+    d.abonne.mockRejectedValue(new Error("ECONNREFUSED"));
+    await processeur()(
+      job(
+        "qualiopi-convocation",
+        {},
+        {
+          data: {
+            template: "qualiopi-convocation",
+            to: "nadia@exemple.fr",
+            locale: "fr",
+            payload: {},
+          },
+        },
+      ),
+    );
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.opposition).not.toHaveBeenCalled();
+  });
+
+  it("6) aucun journal du verdict ne contient « @ »", async () => {
+    d.opposition.mockRejectedValue(new Error("ECONNREFUSED nadia@exemple.fr"));
+    await processeur()(job("lead-apporteur-relance", { etape: "j2" })).catch(() => undefined);
+    const verdict = vi
+      .mocked(console.error)
+      .mock.calls.filter((c) => String(c[0]).includes("[email-suppression]"));
+    expect(JSON.stringify(verdict)).not.toContain("@");
   });
 });
