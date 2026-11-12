@@ -30,6 +30,15 @@ migration : l'opération est idempotente par nature.
   pour une personne qui a demandé à ne plus être contactée.
 - Éteint par défaut.
 
+### Variante « après la page » : `POST /api/interne/oppositions-page-guide`
+
+Même interrupteur (`OPPOSITIONS_RESEAU_ENABLED`), même secret, même accusé (`{ ok, type: "opposition", recue: true }`),
+seau de débit à part. Le Studio y transmet le « stop » d'une personne qui avait reçu le lien de la page : corps strict
+`{ schemaVersion: 1, cleIdempotence, conv, reseau, occurredAt? }`, **jamais d'adresse**. Le site retrouve les contacts par
+`conv_ref` (HMAC de `conv`), met leur adresse à l'écart des envois (CRM prévenu) et passe les contacts à `ecarte`.
+Aucune suppression. Référence inconnue : même réponse 200, rien d'écrit. Échec de l'opposition ou du CRM : 500, le contact
+n'est pas écarté, le Studio renvoie. Côté Studio : `OPPOSITIONS_PAR_REF_ENABLED`, à allumer après le site.
+
 ## `PAGE_GUIDE_RESEAU_ENABLED` — la page « Recevoir le guide » (lot S2)
 
 Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.com/guide-reseau?j=<jeton>`

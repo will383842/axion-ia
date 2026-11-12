@@ -69,6 +69,9 @@ export function oppositionsReseauActives(): boolean {
 /** Seau de débit de la route des oppositions (distinct des deux autres routes internes). */
 export const PREFIXE_DEBIT_OPPOSITIONS = "internal:oppositions-reseau";
 
+/** Seau de débit de la route des oppositions reçues après la page du guide (par référence de conversation). */
+export const PREFIXE_DEBIT_OPPOSITIONS_PAGE = "internal:oppositions-page-guide";
+
 /** Corps maximal accepté par la route des oppositions : 4 Ko (le corps utile tient en 300 octets). */
 export const CORPS_MAX_OPPOSITIONS = 4 * 1024;
 
