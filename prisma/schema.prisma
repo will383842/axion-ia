@@ -18152,7 +18152,7 @@ model GuideReseauReception {
 model GuideReseauOrigine {
   id                 String    @id @default(uuid()) @db.Uuid
   emailKey           String    @map("email_key") @db.VarChar(64)
-  /// SHA-256 de (mot, reseau, guide, post_ref, canal, date à la seconde) : `null` traité comme valeur.
+  /// SHA-256 de (mot, reseau, guide, post_ref, canal, clé d'idempotence du run) : `null` traité comme valeur. La date n'en fait plus partie.
   cleDedoublonnage   String    @map("cle_dedoublonnage") @db.Char(64)
   mot                String    @db.VarChar(30)
   reseau             String    @db.VarChar(20)
@@ -18171,6 +18171,9 @@ model GuideReseauOrigine {
   /// Posée quand l'entrée passe en archive (lecture seule) ; `null` = active.
   archiveeLe         DateTime? @map("archivee_le") @db.Timestamptz(3)
   createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  /// État CRM : `null` = pas encore partie, `transmise`, `ecartee` (opposition : mise à l'écart, jamais supprimée).
+  crmStatut          String?   @map("crm_statut") @db.VarChar(16)
+  crmTraiteeLe       DateTime? @map("crm_traitee_le") @db.Timestamptz(3)
 
   @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
   @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
@@ -18220,12 +18223,19 @@ model ContactGuideReseau {
   convRef             String        @map("conv_ref") @db.VarChar(120)
   merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
   merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  /// Preuve de l'accord (migration 20261112000000) : `en_attente` | `confirmee` | `non_verifiee`
+  /// (mise à l'écart, jamais une suppression) | `sans_objet` (MARQUE d'adresse opposée). NULL se
+  /// lit `en_attente`. Distinct de `merci_statut` : ne pas le surcharger.
+  preuveStatut        String?       @map("preuve_statut") @db.VarChar(16)
+  preuveConfirmeeLe   DateTime?     @map("preuve_confirmee_le") @db.Timestamptz(3)
+  preuveEcarteeLe     DateTime?     @map("preuve_ecartee_le") @db.Timestamptz(3)
   createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
   updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
 
   @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
   @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
   @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@index([preuveStatut, consentiLe], map: "contacts_guide_reseau_preuve_statut_consenti_le_idx")
   @@map("contacts_guide_reseau")
 }
 

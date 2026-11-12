@@ -7,10 +7,21 @@
 --
 -- APRÈS un retour arrière puis un redéploiement, REPOSER les marques depuis le journal
 -- (`gdpr.erase.requested`, `changes.emailHash`, conservé 5 ans) :
+-- ⚠️ Ne PAS reposer une marque que Williams a LEVÉE depuis (trace `gdpr.erase.leve`), ni une
+-- demande de message privé jamais confirmée (`changes.marque` = 'non_posee') :
 --   UPDATE email_oppositions o SET effacement_demande_le = l.created_at
 --     FROM (SELECT changes->>'emailHash' AS h, MIN(created_at) AS created_at
---             FROM activity_logs WHERE action = 'gdpr.erase.requested' GROUP BY 1) l
---    WHERE o.email_hash = l.h AND o.effacement_demande_le IS NULL;
+--             FROM activity_logs
+--            WHERE action = 'gdpr.erase.requested'
+--              AND COALESCE(changes->>'marque', '') <> 'non_posee'
+--            GROUP BY 1) l
+--    WHERE o.email_hash = l.h AND o.effacement_demande_le IS NULL
+--      AND NOT EXISTS (SELECT 1 FROM activity_logs v
+--                       WHERE v.action = 'gdpr.erase.leve'
+--                         AND v.changes->>'emailHash' = l.h
+--                         AND v.created_at > l.created_at);
+-- (une demande de message privé confirmée en console porte, elle, une trace d'origine `console`
+-- avec `marque` = 'ok' : elle est reposée.)
 --
 -- LEVER UNE MARQUE posée par erreur (mauvaise ligne cliquée en console) : aucun geste de console
 -- ne le fait. Requête manuelle, une personne à la fois, puis écrire la trace de la levée :

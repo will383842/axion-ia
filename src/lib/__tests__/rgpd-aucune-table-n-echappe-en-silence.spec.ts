@@ -559,6 +559,9 @@ describe("aucune table portant une adresse n'échappe au RGPD en silence", () =>
       // passerait sinon au vert.
       "src/server/email/opposition.ts",
       "src/server/guides-reseau/mise-a-l-ecart.ts",
+      // Le troisième chemin automatique (message privé d'un réseau) et le geste de console.
+      "src/server/guides-reseau/effacement.ts",
+      "src/features/conformite-rgpd/actions-ecart-adresse.ts",
     ];
     const fautifs = chemins.flatMap((f) =>
       fautesDeSuppression(readFileSync(join(process.cwd(), f), "utf8")).map((x) => `${f} : ${x}`),

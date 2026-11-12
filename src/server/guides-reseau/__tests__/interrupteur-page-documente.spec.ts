@@ -29,7 +29,7 @@ describe("SYNCHRO_CRM_V3 et _NEWSLETTER_OPTIN sont basculables (les-deux) et doc
   it("liste fermée du workflow, cible « les-deux » imposée", () => {
     expect(wf).toContain('- "SYNCHRO_CRM_V3"');
     expect(wf).toContain('- "SYNCHRO_CRM_V3_NEWSLETTER_OPTIN"');
-    expect(wf).toMatch(/\^SYNCHRO_CRM_V3\(_NEWSLETTER_OPTIN\)\?\$/);
+    expect(wf).toMatch(/\^SYNCHRO_CRM_V3\(_NEWSLETTER_OPTIN\|_ORIGINES_SUIVANTES\)\?\$/);
   });
   it("la documentation donne l'ordre d'allumage et le secret du lien", () => {
     const doc = lire("docs/guides-reseau-interrupteurs.md");

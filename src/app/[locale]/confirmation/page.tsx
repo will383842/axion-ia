@@ -79,8 +79,8 @@ export default async function ConfirmationPage({ params, searchParams }: Props) 
             </AlertTitle>
             <AlertDescription>
               {isFr
-                ? "Nous revenons vers vous sous 48 h ouvrées avec une réponse personnalisée."
-                : "We get back to you within 48 business hours with a personalised reply."}
+                ? "Nous revenons vers vous avec une réponse personnalisée."
+                : "We get back to you with a personalised reply."}
             </AlertDescription>
           </Alert>
 

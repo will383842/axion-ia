@@ -256,6 +256,15 @@ export async function eraseSubscriberAction(
     ip: await getClientIp(),
   });
   if (!issue.ok) return { ok: false, error: "Abonné introuvable." };
+  // Une marque ou une opposition qui n'a pas pu être posée n'est PAS « fait » : les envois
+  // continueraient pendant que l'écran confirme la mise à l'écart.
+  const manque = issue.etapesEnEchec.filter((e) => e === "marque" || e === "opposition");
+  if (manque.length > 0) {
+    return {
+      ok: false,
+      error: `Mise à l'écart incomplète : ${manque.join(", ")} en échec. Réessayez (rien n'est supprimé).`,
+    };
+  }
 
   revalidatePath(adminPath("fr", "newsletter"));
   return { ok: true };

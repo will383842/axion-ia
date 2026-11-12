@@ -182,3 +182,31 @@ describe('🔴 submission-reply et candidature-reponse (mis en file avec to = ""
     expect(d.sendEmail).toHaveBeenCalledTimes(2);
   });
 });
+
+describe("🔴 panne de lecture de la mise à l'écart : le job est réessayé, jamais envoyé", () => {
+  const panne = () =>
+    d.ecarte.mockRejectedValue(Object.assign(new Error("délai"), { code: "P1008" }));
+
+  it.each(["session-convocation", "facture-envoyee"])(
+    "%s : erreur autre que P2022 → le job échoue (BullMQ réessaie), rien n'est envoyé",
+    async (template) => {
+      panne();
+      await expect(processeur()(job(template, {}))).rejects.toThrow();
+      expect(d.sendEmail).not.toHaveBeenCalled();
+    },
+  );
+
+  it("sollicitation relue au départ : même règle", async () => {
+    panne();
+    const j = job("lead-apporteur-relance");
+    (j["data"] as Record<string, unknown>)["payload"] = { etape: "j2" };
+    await expect(processeur()(j)).rejects.toThrow();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("P2022 (colonne pas encore migrée) : le contrôle est sauté, le gabarit part", async () => {
+    d.ecarte.mockRejectedValue(Object.assign(new Error("col"), { code: "P2022" }));
+    await processeur()(job("session-convocation", {}));
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+});

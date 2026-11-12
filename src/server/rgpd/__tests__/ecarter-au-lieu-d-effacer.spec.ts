@@ -293,4 +293,64 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
     expect(alerteMiseAJour).not.toHaveBeenCalled();
   });
+
+  it("🔴 message privé : opposition, trace et alerte posées, marque NON posée (adresse non prouvée)", async () => {
+    const r = await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "message-prive" });
+    expect(opposition).toHaveBeenCalled();
+    expect(marque).not.toHaveBeenCalled();
+    expect(creerOpposition).not.toHaveBeenCalled();
+    expect(r.marque).toBe("non_posee");
+    const data = (journal.mock.calls[0]?.[0] as { data: { changes: Record<string, unknown> } })
+      .data;
+    expect(data.changes["marque"]).toBe("non_posee");
+    const a = alerte.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(String(a["message"])).toMatch(/Mettre une adresse à l'écart/);
+  });
+
+  it("console (adresse vérifiée par Williams) : la marque est posée, comme pour le site", async () => {
+    const r = await ecarterPourDemandeEffacement({
+      email: ADRESSE,
+      origine: "console",
+      motif: "demande reçue par e-mail",
+    });
+    expect(marque).toHaveBeenCalled();
+    expect(r.marque).toBe("ok");
+    expect(opposition).toHaveBeenCalledWith(ADRESSE, { origine: "effacement-console" });
+  });
+
+  it("🔑 la référence est TOUJOURS dans changes.reference, même au format UUID", async () => {
+    const uuid = "123e4567-e89b-12d3-a456-426614174000";
+    await ecarterPourDemandeEffacement({
+      email: ADRESSE,
+      origine: "message-prive",
+      cible: { type: "message_prive", id: uuid },
+    });
+    const data = (
+      journal.mock.calls[0]?.[0] as {
+        data: { targetId: string | null; changes: Record<string, unknown> };
+      }
+    ).data;
+    expect(data.changes["reference"]).toBe(uuid);
+    expect(data.targetId).toBe(uuid);
+  });
+
+  it("🔑 une alerte déjà RÉSOLUE n'absorbe jamais une nouvelle demande : la recherche ne vise que les alertes ouvertes", async () => {
+    alerte.mockResolvedValue(null);
+    alerteTrouvee.mockResolvedValue(null);
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre" });
+    const lu = alerteTrouvee.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(lu.where["resolue"]).toBe(false);
+    expect(lu.where["OR"]).toBeUndefined();
+    expect(alerteMiseAJour).not.toHaveBeenCalled();
+  });
+
+  it("le message d'alerte porte la référence de la trace : deux demandes du même jour ne sont jamais identiques", async () => {
+    journal.mockResolvedValueOnce({ id: "j-A" }).mockResolvedValueOnce({ id: "j-B" });
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre", motif: "m" });
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre", motif: "m" });
+    const [m1, m2] = alerte.mock.calls.map((c) => String((c[0] as { message: string }).message));
+    expect(m1).toContain("Réf. j-A");
+    expect(m2).toContain("Réf. j-B");
+    expect(m1).not.toBe(m2);
+  });
 });

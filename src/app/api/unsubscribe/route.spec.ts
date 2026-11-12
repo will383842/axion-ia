@@ -20,7 +20,8 @@ vi.mock("@/lib/rate-limit", () => ({
 }));
 const enregistrerOpposition = vi.fn();
 vi.mock("@/server/email/opposition", () => ({
-  estJetonOpposition: (t: unknown) => typeof t === "string" && t.startsWith("op1."),
+  estJetonOpposition: (t: unknown) =>
+    typeof t === "string" && (t.startsWith("op1.") || t.startsWith("op2.")),
   enregistrerOpposition: (...a: unknown[]) => enregistrerOpposition(...a),
 }));
 
@@ -93,12 +94,11 @@ describe("porte 2 — POST formulaire (navigateur)", () => {
 });
 
 describe("porte 3 — GET (un lien ouvert n'est pas un consentement retiré)", () => {
-  it("🔴 ne désabonne JAMAIS : il renvoie vers la page de confirmation avec le jeton", async () => {
+  it("🔴 ne désabonne JAMAIS : il renvoie vers la page de confirmation (jeton en cookie, plus dans l'URL)", async () => {
     const res = await GET(new NextRequest(`${BASE}/api/unsubscribe?token=jeton-abcdefghijklmnop`));
     expect(res.status).toBe(303);
-    expect(res.headers.get("location")).toBe(
-      `${BASE}/fr/desabonnement?token=jeton-abcdefghijklmnop`,
-    );
+    expect(res.headers.get("location")).toBe(`${BASE}/fr/desabonnement`);
+    expect(res.headers.get("set-cookie")).toContain("jeton-abcdefghijklmnop");
     expect(unsubscribeNewsletterAction).not.toHaveBeenCalled();
   });
 

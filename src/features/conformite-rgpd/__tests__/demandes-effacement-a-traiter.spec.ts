@@ -14,7 +14,22 @@ const d = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     rgpdDemande: { findMany: async () => [] },
-    activityLog: { findMany: async () => d.journal },
+    activityLog: {
+      // Honore `where.action` et `take` comme la base : la coupe doit se voir dans le test.
+      findMany: async (a?: { where?: { action?: string | { in: string[] } }; take?: number }) => {
+        const act = a?.where?.action;
+        const gardees = (d.journal as { action: string; createdAt: Date }[])
+          .filter((l) =>
+            act === undefined
+              ? true
+              : typeof act === "string"
+                ? l.action === act
+                : act.in.includes(l.action),
+          )
+          .sort((x, y) => y.createdAt.getTime() - x.createdAt.getTime());
+        return a?.take ? gardees.slice(0, a.take) : gardees;
+      },
+    },
     alerteSysteme: { findMany: async () => d.alertes },
   },
 }));
@@ -164,5 +179,27 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
       },
     ];
     expect((await listerDemandes())[0]?.aTraiter).toBe(false);
+  });
+
+  it("🔴 201 exports livrés plus récents qu'une demande d'effacement ouverte : elle reste « à traiter »", async () => {
+    const exports = Array.from({ length: 201 }, (_, i) => ({
+      id: `e${i}`,
+      action: "gdpr.export.delivered",
+      createdAt: new Date(DEMANDE.getTime() + (i + 1) * 60_000),
+      changes: {},
+    }));
+    d.journal = [trace("j1"), ...exports];
+    d.alertes = [
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: false,
+        resolueAt: null,
+        metadata: { journalId: "j1" },
+      },
+    ];
+    const toutes = await listerDemandes();
+    const demande = toutes.find((x) => x.id === "j1");
+    expect(demande?.aTraiter).toBe(true);
+    expect(toutes[0]?.id).toBe("j1"); // à traiter d'abord
   });
 });

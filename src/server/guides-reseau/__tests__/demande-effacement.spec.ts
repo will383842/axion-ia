@@ -69,7 +69,6 @@ vi.mock("@/lib/prisma", () => ({
     },
     emailOpposition: {
       updateMany: async ({ where, data }: { where: Ligne; data: Ligne }) => {
-        if (!bd.enfile.reponse.enqueued) throw new Error("panne base");
         const cibles = bd.marques.filter(
           (m) => m.emailHash === where.emailHash && m.effacementDemandeLe == null,
         );
@@ -136,6 +135,7 @@ vi.mock("@/lib/rate-limit", () => ({ checkRateLimit: async () => ({ allowed: tru
 vi.mock("@/server/email/opposition", () => ({
   estOpposee: async (e: string) => bd.ecartees.includes(e),
   enregistrerOppositionPourAdresse: async (e: string) => {
+    if (!bd.enfile.reponse.enqueued) throw new Error("panne base");
     if (!bd.ecartees.includes(e)) bd.ecartees.push(e);
     return { ok: true, email: e, dejaOpposee: false };
   },
@@ -230,12 +230,16 @@ beforeEach(() => {
 });
 
 describe("demande d'effacement", () => {
-  it("message privé : marque posée, trace écrite, alerte dans la cloche, AUCUN e-mail", async () => {
+  it("🔴 message privé : opposition et trace posées, marque NON posée (adresse non prouvée), alerte cloche, AUCUN e-mail", async () => {
     const r = await appel();
     expect(r.status).toBe(200);
-    // marque « effacement demandé » (plus aucun envoi)
+    // La marque « effacement demandé » (qui coupe aussi convocations et factures) n'est PAS
+    // posée : n'importe qui peut écrire l'adresse d'un tiers. Williams la pose en console.
     const hash = hashEmailForLookup(ADRESSE)!;
-    expect(bd.marques.find((m) => m.emailHash === hash)?.effacementDemandeLe).toBeInstanceOf(Date);
+    expect(bd.marques.find((m) => m.emailHash === hash)?.effacementDemandeLe).toBeUndefined();
+    expect(bd.marques).toHaveLength(0);
+    expect((bd.traces[0]!.changes as Ligne).marque).toBe("non_posee");
+    expect(bd.ecartees).toEqual([ADRESSE]);
     // trace de preuve, empreintes seulement
     expect(bd.traces).toHaveLength(1);
     expect(bd.traces[0]).toMatchObject({
@@ -296,14 +300,23 @@ describe("demande d'effacement", () => {
     expect(bd.alertes).toHaveLength(1);
   });
 
-  it("marque impossible à poser : 500, clé rendue, nouvel essai possible, aucune trace en double", async () => {
+  it("opposition impossible à poser : 500, clé rendue, nouvel essai possible, aucune trace en double", async () => {
     bd.enfile.reponse = { enqueued: false };
     expect((await appel()).status).toBe(500);
     expect(bd.journal).toHaveLength(0);
     bd.enfile.reponse = { enqueued: true };
     expect((await appel()).status).toBe(200);
-    expect(bd.marques).toHaveLength(1);
+    expect(bd.ecartees).toEqual([ADRESSE]);
     expect(bd.emails).toHaveLength(0);
+  });
+
+  it("🔑 clé d'idempotence au format UUID : le rejeu ne réécrit pas de trace", async () => {
+    const uuid = "123e4567-e89b-12d3-a456-426614174000";
+    expect((await appel({ ...effacement, cleIdempotence: uuid })).status).toBe(200);
+    expect((bd.traces[0]!.changes as Ligne).reference).toBe(uuid);
+    bd.journal.length = 0; // la clé est rendue (échec tardif) : l'appelant rejoue
+    expect((await appel({ ...effacement, cleIdempotence: uuid })).status).toBe(200);
+    expect(bd.traces).toHaveLength(1);
   });
 
   it("aucune donnée de personne dans la réponse, le journal ni les sorties", async () => {

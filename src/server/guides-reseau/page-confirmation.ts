@@ -16,7 +16,8 @@
  *      `contacts_guide_reseau` (écrit `jeton_empreinte`, UNIQUE = usage unique), demande du guide
  *      (`retrouverOuCreerDemande`), ORIGINE (mot, réseau, compte, post, version M1 →
  *      `guide_reseau_origines`, PAS dans `contacts_guide_reseau`) et PREUVE du consentement
- *      (`consent_events`, action `consent`). Tout part ensemble ou rien ne part : si le conteneur
+ *      (`consent_events`, action `consent_attente` : accord « en attente » jusqu'au clic sur le
+ *      lien du guide, pour la case du guide comme pour la case facultative « informations »). Tout part ensemble ou rien ne part : si le conteneur
  *      s'arrête juste après la réponse, la fiche relue plus tard par le CRM (au clic) a son
  *      origine ET sa preuve. Un échec (origine, preuve, base…) annule TOUT et remonte : la route
  *      répond sa page d'erreur neutre, le jeton n'est PAS consommé, la personne peut réessayer.
@@ -74,6 +75,7 @@ import {
   signalerArchiveSiDepassee,
   type OrigineAEcrire,
 } from "./origines";
+import { transmettreOriginesSuivantes } from "./synchro-v3";
 import { VERSIONS_TEXTE_CONNUES } from "./valeurs-connues";
 import { retrouverOuCreerDemande, sousLesLimites } from "./traitement";
 
@@ -286,6 +288,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
               jetonEmpreinte: empreinte,
               convRef: MARQUE.convRef,
               merciStatut: MARQUE.statut,
+              // Aucune donnée de personne, donc aucune preuve d'accord à porter.
+              preuveStatut: "sans_objet",
             },
             select: { id: true },
           });
@@ -314,6 +318,9 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             jetonEmpreinte: empreinte,
             convRef: hmacConversationRef(donnees.conv),
             merciStatut: "a_envoyer",
+            // L'adresse n'est qu'une SAISIE : l'accord est « en attente » jusqu'au clic sur le
+            // bouton du lien du guide (`preuve-page-guide.ts`).
+            preuveStatut: "en_attente",
           },
           select: { id: true },
         });
@@ -333,7 +340,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
             personKey: emailKey,
             formRef: FORM_REF_PAGE_GUIDE,
             consentVersion: versionPreuveCase(),
-            action: "consent",
+            action: "consent_attente",
             occurredAt: maintenant,
             ipHash,
             userAgent: agentHash,
@@ -346,7 +353,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
               personKey: emailKey,
               formRef: FORM_REF_PAGE_GUIDE_INFOS,
               consentVersion: versionPreuveInfos(),
-              action: "consent",
+              action: "consent_attente",
               occurredAt: maintenant,
               ipHash,
               userAgent: agentHash,
@@ -388,6 +395,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   after(async () => {
     try {
       await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
+      // Lot guide réseau 4 : si la personne a déjà cliqué, la nouvelle origine part (jamais avant un clic).
+      await transmettreOriginesSuivantes({ email, emailKey, guide: donnees.guide });
     } catch (err) {
       console.error(
         JSON.stringify({

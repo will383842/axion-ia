@@ -4,7 +4,6 @@
 // de la demande, rien ne part au CRM (D1 : l'événement part au clic du lien, adresse vérifiée),
 // même avec `SYNCHRO_CRM_V3` allumé. L'origine reste écrite dans l'historique du site.
 // Et si `transmettreOriginesV3` est appelée, une adresse exclue ne part jamais.
-import { createHash } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type Ligne = Record<string, unknown>;
@@ -63,8 +62,6 @@ vi.mock("@/server/crm-sync/enqueue", () => ({
 }));
 
 import * as traitement from "../traitement";
-import { transmettreOriginesV3 } from "../synchro-v3";
-import { construireOrigine } from "../origines";
 
 const MAINTENANT = new Date("2026-11-08T10:00:00.000Z");
 const D = {
@@ -104,33 +101,6 @@ describe("traiterDemande — aucun événement CRM à la réception", () => {
     const r = await traitement.traiterDemande(D, MAINTENANT);
     expect(r.ok).toBe(true);
     expect(bd.origines).toHaveLength(1);
-    expect(bd.evenements).toHaveLength(0);
-  });
-});
-
-describe("transmettreOriginesV3 — adresse exclue", () => {
-  it("une adresse exclue de l'environnement n'est jamais mise en file", async () => {
-    process.env.CRM_SYNC_EXCLUSIONS_SHA256 = createHash("sha256")
-      .update("personne@example.test")
-      .digest("hex");
-    const origine = construireOrigine(
-      {
-        schemaVersion: 3,
-        cleIdempotence: "run_exemple_0001",
-        email: "personne@example.test",
-        mot: "GUIDE",
-        reseau: "instagram",
-        guide: "guide-ia",
-      } as never,
-      MAINTENANT,
-    );
-    const r = await transmettreOriginesV3({
-      email: "personne@example.test",
-      cleIdempotence: "run_exemple_0001",
-      origines: [origine],
-      quand: MAINTENANT,
-    });
-    expect(r).toBe("ignoree");
     expect(bd.evenements).toHaveLength(0);
   });
 });

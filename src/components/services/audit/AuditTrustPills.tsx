@@ -2,7 +2,7 @@
  * AuditTrustPills — Bandeau 4 pills réassurance sous le hero (Server Component).
  *
  * Sprint A · Phase 2 (Will 2026-05-25) — extrait depuis `src/app/[locale]/audit/page.tsx`
- * (l.218-234). 4 micro-promesses (Réponse 48 h, Confidentialité, Livrables,
+ * (l.218-234). 4 micro-promesses (Réponse personnalisée, Confidentialité, Livrables,
  * audience TPE→Entreprises). Universel — pas de villeContext.
  */
 
@@ -20,13 +20,13 @@ export interface AuditTrustPillsProps {
 export function AuditTrustPills({ isFr }: AuditTrustPillsProps): ReactNode {
   const pills = isFr
     ? [
-        { icon: Clock, label: "Réponse 48 h ouvrées" },
+        { icon: Clock, label: "Réponse personnalisée" },
         { icon: ShieldCheck, label: "Confidentialité totale" },
         { icon: FileText, label: "Livrables actionnables" },
         { icon: Users, label: "PME → grands groupes" },
       ]
     : [
-        { icon: Clock, label: "Reply within 48 business hours" },
+        { icon: Clock, label: "Personalised reply" },
         { icon: ShieldCheck, label: "Total confidentiality" },
         { icon: FileText, label: "Actionable deliverables" },
         { icon: Users, label: "Small businesses → enterprise" },

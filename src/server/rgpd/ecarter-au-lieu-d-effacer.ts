@@ -41,13 +41,23 @@ import {
 
 export { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT };
 
-export type OrigineDemandeEffacement = "libre-service" | "console-lettre" | "message-prive";
+export type OrigineDemandeEffacement =
+  "libre-service" | "console-lettre" | "console" | "message-prive";
 
 const LIBELLE_ORIGINE: Readonly<Record<OrigineDemandeEffacement, string>> = {
   "libre-service": "lien signé du site (/mes-donnees)",
   "console-lettre": "console › Lettre d'information",
+  console: "console › Conformité RGPD (mise à l'écart d'une adresse)",
   "message-prive": "message privé reçu sur un réseau social",
 };
+
+/**
+ * Origines dont l'adresse n'est PAS prouvée : n'importe qui peut écrire « effacez mes données :
+ * <adresse d'un tiers> ». Pour elles, l'opposition, la trace et l'alerte sont posées, mais PAS la
+ * marque (qui coupe aussi convocations et factures). Williams la pose après vérification, par le
+ * geste « Mettre une adresse à l'écart » de la console (origine `console`).
+ */
+const ORIGINES_SANS_MARQUE: ReadonlySet<OrigineDemandeEffacement> = new Set(["message-prive"]);
 
 export interface DemandeEcart {
   readonly email: string;
@@ -74,7 +84,8 @@ export type EtapeEcart =
 
 export interface ResultatEcart {
   readonly opposition: "ok" | "echec";
-  readonly marque: "ok" | "echec";
+  /** `non_posee` : origine non prouvée (message privé), marque posée plus tard en console. */
+  readonly marque: "ok" | "echec" | "non_posee";
   readonly abonnesEcartes: number;
   readonly contactsGuideEcartes: number;
   readonly rapportsEcartes: number;
@@ -141,12 +152,16 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
   }
 
   // 2. Marque « effacement demandé » : plus AUCUN envoi.
-  let marque: "ok" | "echec" = "echec";
-  await poserMarque(empreinte, quand, origineOpposition)
-    .then(() => {
-      marque = "ok";
-    })
-    .catch(echec("marque"));
+  let marque: "ok" | "echec" | "non_posee" = "echec";
+  if (ORIGINES_SANS_MARQUE.has(d.origine)) {
+    marque = "non_posee";
+  } else {
+    await poserMarque(empreinte, quand, origineOpposition)
+      .then(() => {
+        marque = "ok";
+      })
+      .catch(echec("marque"));
+  }
 
   // 3 et 4. Mises à l'écart, en parallèle : aucune ne dépend des autres.
   const [lettre, contacts, rapports] = await Promise.all([
@@ -186,11 +201,13 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
         action: ACTION_DEMANDE_EFFACEMENT,
         targetType: d.cible?.type ?? (d.origine === "libre-service" ? "self_service" : "console"),
         // `activity_logs.target_id` est une colonne UUID : une clé d'idempotence ou un jti qui n'en
-        // est pas un ferait échouer la trace. Il va alors dans `changes.reference`.
+        // est pas un ferait échouer la trace. La référence est TOUJOURS dans `changes.reference`
+        // (même si c'est un UUID) : c'est là que la garde de rejeu (`guides-reseau/effacement.ts`)
+        // la cherche. `targetId` n'est qu'un doublon quand elle a la forme d'un UUID.
         targetId: estUuid(reference) ? reference : null,
         changes: {
           origine: d.origine,
-          ...(reference && !estUuid(reference) ? { reference } : {}),
+          ...(reference ? { reference } : {}),
           ...(d.motif ? { reason: d.motif } : {}),
           // Empreinte HMAC du site, et SHA-256 de l'adresse normalisée (relu par la liste de
           // suppression exportée, `server/newsletter/exports.ts`).
@@ -220,12 +237,20 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
       enEchec.length > 0
         ? ` ⚠️ Étapes en échec, à reprendre à la main : ${enEchec.join(", ")}.`
         : "";
+    const sansMarque =
+      marque === "non_posee"
+        ? " L'adresse n'est pas prouvée (message reçu d'un tiers) : elle est en liste d'opposition " +
+          "(plus de prospection), mais les envois de service (convocation, facture) continuent. " +
+          "Après vérification, la mettre à l'écart dans Conformité RGPD › « Mettre une adresse à l'écart »."
+        : " La personne est mise à l'écart : plus aucun envoi, plus aucune réinscription.";
+    // Le message porte la référence de la trace (ou l'heure) : une alerte résolue ne peut donc
+    // jamais être confondue avec une NOUVELLE demande du même jour, même origine, même motif.
+    const refAlerte = journalId ?? quand.toISOString();
     const message =
       `Adresse : ${email}. Reçue le ${quand.toISOString().slice(0, 10)} par ${LIBELLE_ORIGINE[d.origine]}` +
-      `${d.motif ? ` (motif : ${d.motif})` : ""}. ` +
-      "La personne est mise à l'écart : plus aucun envoi, plus aucune réinscription. " +
+      `${d.motif ? ` (motif : ${d.motif})` : ""}.${sansMarque} ` +
       "Rien n'a été supprimé. À faire : décider ce qui doit être effacé (art. 17 RGPD) et " +
-      `répondre à la personne sous un mois.${pannes}`;
+      `répondre à la personne sous un mois. Réf. ${refAlerte}.${pannes}`;
     const creee = await creerOuDedup({
       code: CODE_ALERTE_EFFACEMENT,
       niveau: "info",
@@ -235,15 +260,16 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
       cibleId: cibleIdAlerteDepuisEmpreinte(empreinte),
       metadata: { journalId, origine: d.origine },
     });
-    // Demande dédoublonnée (alerte déjà ouverte, ou résolue le même jour avec le même
-    // message) : aucune alerte neuve. On inscrit cette trace sur l'alerte existante pour que
+    // Demande dédoublonnée (alerte déjà OUVERTE pour cette personne) : aucune alerte neuve. On inscrit cette trace sur l'alerte existante pour que
     // la demande puisse se fermer avec elle (`metadata.journalIds`, lu par `demandes.ts`).
     if (creee === null && journalId !== null) {
       const existante = await prisma.alerteSysteme.findFirst({
         where: {
           code: CODE_ALERTE_EFFACEMENT,
           cibleId: cibleIdAlerteDepuisEmpreinte(empreinte),
-          OR: [{ resolue: false }, { message }],
+          // Seulement une alerte encore OUVERTE : une alerte résolue ferait afficher la nouvelle
+          // demande « faite » avec une date de traitement antérieure à la demande.
+          resolue: false,
         },
         orderBy: { createdAt: "desc" },
         select: { id: true, metadata: true },

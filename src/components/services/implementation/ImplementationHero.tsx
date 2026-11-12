@@ -127,7 +127,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/contact" size="lg" track="impl-hero-primary">
-                  {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
+                  {isFr ? "Décrire mon besoin" : "Describe my need"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit" variant="outline" size="lg" track="impl-hero-audit">

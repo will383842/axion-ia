@@ -236,8 +236,8 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
           titleEm={isFr ? "adapté à votre événement" : "tailored to your event"}
           description={
             isFr
-              ? "Pas de programme fixe : on cadre la durée, le déroulé et les démos avec vous selon votre contexte (soirée, afterwork, séminaire, salon). Réponse sous 48 h ouvrées avec proposition détaillée."
-              : "No fixed programme: we frame duration, flow, and demos with you based on your context (evening, afterwork, seminar, trade show). Response within 48 business hours with detailed proposal."
+              ? "Pas de programme fixe : on cadre la durée, le déroulé et les démos avec vous selon votre contexte (soirée, afterwork, séminaire, salon). Nous revenons vers vous avec une proposition détaillée."
+              : "No fixed programme: we frame duration, flow, and demos with you based on your context (evening, afterwork, seminar, trade show). We come back to you with a detailed proposal."
           }
           contentClassName={TIGHT_X}
         >

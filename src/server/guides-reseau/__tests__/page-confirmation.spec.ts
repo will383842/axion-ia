@@ -38,6 +38,8 @@ const bd = vi.hoisted(() => ({
   conflitDemande: { restant: 0, gagnante: false },
   /** Lectures `guideRequest.findUnique` faites DANS une transaction. */
   lecturesDansTransaction: 0,
+  /** Ordre des verrous DANS la transaction : écriture de la demande, puis verrou `origines:`. */
+  ordreVerrous: [] as string[],
   /** Suites inscrites dans `after()` (next/server), exécutées par `confirmerPageGuide` du test. */
   apres: [] as (() => unknown)[],
   /** Pannes simulées DANS la transaction (après l'écriture du contact et de la demande). */
@@ -58,7 +60,10 @@ type Trace = { contacts: Ligne[]; demandes: Ligne[]; origines: Ligne[]; preuves:
 function client(trace?: Trace) {
   const dansTransaction = trace !== undefined;
   return {
-    $executeRaw: async () => 0,
+    $executeRaw: async (_c: TemplateStringsArray, ...v: unknown[]) => {
+      if (dansTransaction && String(v[0]).startsWith("origines:")) bd.ordreVerrous.push("origines");
+      return 0;
+    },
     trace,
     consentEvent: {
       create: async ({ data }: { data: Ligne }) => {
@@ -114,12 +119,14 @@ function client(trace?: Trace) {
         }
         if (bd.demandes.some((d) => d.emailKey === data.emailKey && d.aimant === data.aimant))
           throw p2002(["email_key", "aimant"]);
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = { id: `d${++bd.n}`, ...data };
         bd.demandes.push(l);
         trace?.demandes.push(l);
         return l;
       },
       update: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = bd.demandes.find((d) => egal(d, where))!;
         Object.assign(l, data);
         return l;
@@ -189,18 +196,13 @@ vi.mock("../origines", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
   // L'origine s'écrit DANS la transaction de la page (client `tx` reçu en premier argument).
   ecrireOrigineDansTransaction: async (tx: { trace?: Trace }, emailKey: string, o: Ligne) => {
+    // Le vrai `ecrireOrigineDansTransaction` prend le verrou `origines:<clé>` en premier.
+    bd.ordreVerrous.push("origines");
     if (bd.echecOrigine) throw new Error("écriture de l'origine impossible");
     const l = { emailKey, ...o };
     bd.origines.push(l);
     tx.trace?.origines.push(l);
     return { creee: true, archivees: 0, total: 0 };
-  },
-}));
-vi.mock("../synchro-v3", async (orig) => ({
-  ...(await orig<Record<string, unknown>>()),
-  transmettreOriginesV3: async (a: Ligne) => {
-    bd.crm.push(a);
-    return "mise_en_file";
   },
 }));
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
@@ -278,6 +280,7 @@ beforeEach(() => {
   bd.apres.length = 0;
   bd.echecOrigine = bd.echecPreuve = false;
   bd.lecturesDansTransaction = 0;
+  bd.ordreVerrous.length = 0;
   bd.enfilePanne = false;
   bd.conflitDemande.restant = 0;
   bd.conflitDemande.gagnante = false;
@@ -314,6 +317,7 @@ describe("case de consentement", () => {
     expect(c.infosStatut).toBe("non_transmise");
     expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
     expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.action)).toEqual(["consent_attente", "consent_attente"]);
     expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
       "guide-reseau-page",
       "guide-reseau-page-infos",
@@ -453,6 +457,15 @@ describe("M1 — suites après la réponse (after)", () => {
   });
 });
 
+describe("ordre des verrous (interblocage avec le clic)", () => {
+  it("la page écrit la ligne de la demande, PUIS prend le verrou origines:<clé> (comme le clic)", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.ordreVerrous).toContain("origines");
+    expect(bd.ordreVerrous.indexOf("demande")).toBeGreaterThanOrEqual(0);
+    expect(bd.ordreVerrous.indexOf("demande")).toBeLessThan(bd.ordreVerrous.indexOf("origines"));
+  });
+});
+
 describe("adresse", () => {
   it("opposée : réponse IDENTIQUE à un succès, rien n'est envoyé ni écrit pour cette adresse", async () => {
     bd.opposees.add(ADRESSE);
@@ -482,6 +495,8 @@ describe("adresse", () => {
     expect(marque).not.toContain("Camille");
     expect(marque).not.toContain(Buffer.from("Camille").toString("base64"));
     expect(bd.contacts[0]!["merciStatut"]).toBe("ecarte");
+    // La marque ne porte aucune preuve d'accord : « sans objet ».
+    expect(bd.contacts[0]!["preuveStatut"]).toBe("sans_objet");
     expect(bd.demandes).toHaveLength(0);
     expect(bd.preuves).toHaveLength(0);
     expect(bd.envois).toHaveLength(0);
@@ -564,6 +579,8 @@ describe("ce qui est écrit", () => {
       consentiLe: MAINTENANT,
       jetonEmpreinte: empreinteJeton(j),
       merciStatut: "a_envoyer",
+      // Preuve de l'accord : posée « en attente » (l'adresse n'est qu'une saisie, non vérifiée).
+      preuveStatut: "en_attente",
     });
     expect(c["prenom"]).not.toContain("Camille");
     expect(String(c["prenom"]).startsWith("enc:")).toBe(true);
@@ -588,12 +605,13 @@ describe("ce qui est écrit", () => {
     });
   });
 
-  it("la preuve : form_ref guide-reseau-page, action consent, version + empreinte du texte, rien en clair", async () => {
+  it("la preuve : form_ref guide-reseau-page, action consent_attente (plus de « consent »), version + empreinte du texte, rien en clair", async () => {
     await confirmerPageGuide(entree());
     expect(bd.preuves).toHaveLength(1);
+    expect(bd.preuves.some((p) => p["action"] === "consent")).toBe(false);
     expect(bd.preuves[0]).toMatchObject({
       formRef: FORM_REF_PAGE_GUIDE,
-      action: "consent",
+      action: "consent_attente",
       personKey: `h:${ADRESSE}`,
       occurredAt: MAINTENANT,
     });
@@ -669,6 +687,16 @@ describe("B1 — l'origine va dans l'historique v3 (guide_reseau_origines), au C
     await confirmerPageGuide(entree());
     expect(bd.origines).toHaveLength(1);
     expect(bd.crm).toHaveLength(0);
+  });
+
+  it("un jeton rejoué n'écrit ni seconde preuve ni second contact (réponse neutre)", async () => {
+    const j = jeton();
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    await confirmerPageGuide(entree({ jeton: j }));
+    expect(bd.preuves).toHaveLength(1);
+    expect(bd.contacts).toHaveLength(1);
+    expect(bd.preuves[0]!["action"]).toBe("consent_attente");
   });
 
   it("un jeton rejoué n'écrit aucune seconde origine", async () => {

@@ -446,6 +446,9 @@ export interface MasquageAlertesResult {
  * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Ces alertes portent l'adresse en clair dans
  * leur message pour permettre le traitement à la main ; sans ce passage elles la gardent sans
  * limite de durée. MISE À JOUR seulement : l'alerte reste, son adresse devient `[adresse masquée]`.
+ *
+ * À LANCER À LA MAIN avec les autres effaceurs, une fois l'effacement passé : la procédure est
+ * écrite dans `docs/dpo-templates/03-effacement-art-17.md` (aucun automate ne l'appelle, voulu).
  */
 export async function masquerAdresseDansAlertes(email: string): Promise<MasquageAlertesResult> {
   const adresse = email.trim();

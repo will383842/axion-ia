@@ -3,9 +3,12 @@
  *
  * 🔴 AUCUNE SUPPRESSION. Ce chemin passe par le module commun de mise à l'écart
  * (`ecarterPourDemandeEffacement`, origine `message-prive`), comme la route `/api/gdpr-erase` et la
- * console Lettre : opposition, marque « effacement demandé » (plus aucun envoi), contacts de la
- * page guide écartés, trace `gdpr.erase.requested` (empreintes seulement) et alerte dans la CLOCHE
- * de la console. Jamais d'e-mail d'alerte, jamais de Telegram. L'effacement lui-même est une
+ * console Lettre : opposition (plus de prospection), contacts de la page guide écartés, trace
+ * `gdpr.erase.requested` (empreintes seulement) et alerte dans la CLOCHE de la console.
+ * 🔑 PAS de marque « effacement demandé » ici : l'adresse vient du texte du message, rien ne prouve
+ * qu'elle appartient à la personne qui écrit (un tiers couperait les convocations et factures
+ * d'une stagiaire). Williams pose la marque après vérification, par le geste de console
+ * « Mettre une adresse à l'écart » (origine `console`). Jamais d'e-mail d'alerte, jamais de Telegram. L'effacement lui-même est une
  * décision humaine.
  *
  * Idempotence : celle de `reception.ts` (clé d'idempotence + marque « alerte en file »), plus une
@@ -49,14 +52,16 @@ export async function traiterEffacement(
     },
     select: { changes: true },
   });
-  // Une trace dont la marque n'a pas pu être posée ne ferme pas la demande : on recommence.
-  const marqueDejaPosee =
+  // Une trace dont l'opposition n'a pas pu être posée ne ferme pas la demande : on recommence.
+  // (La marque « effacement demandé » n'est PAS posée pour un message privé : l'adresse n'est
+  // pas prouvée, Williams la pose en console après vérification.)
+  const oppositionDejaPosee =
     dejaTracee !== null &&
     typeof dejaTracee.changes === "object" &&
     dejaTracee.changes !== null &&
-    (dejaTracee.changes as Record<string, unknown>)["marque"] === "ok";
+    (dejaTracee.changes as Record<string, unknown>)["opposition"] === "ok";
 
-  if (!marqueDejaPosee) {
+  if (!oppositionDejaPosee) {
     const r = await ecarterPourDemandeEffacement({
       email: d.email,
       origine: "message-prive",
@@ -64,9 +69,9 @@ export async function traiterEffacement(
       cible: { type: "message_prive", id: d.cleIdempotence },
       maintenant: quand,
     });
-    // Ni la marque ni la trace : la personne n'est pas protégée. On lève, la clé est rendue,
-    // et le rejeu pourra recommencer.
-    if (r.marque !== "ok" || r.journalId === null) {
+    // Ni l'opposition ni la trace : la demande n'est pas enregistrée. On lève, la clé est
+    // rendue, et le rejeu pourra recommencer.
+    if (r.opposition !== "ok" || r.journalId === null) {
       throw new Error("[guides-reseau] mise à l'écart impossible");
     }
   }

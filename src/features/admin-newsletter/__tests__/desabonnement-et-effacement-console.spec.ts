@@ -277,6 +277,33 @@ describe("demande d'effacement depuis la console → MISE À L'ÉCART (décision
     expect(d.eraseOutboxCrm).not.toHaveBeenCalled();
   });
 
+  it("🔴 marque ou opposition en échec : l'écran dit « incomplète », jamais « fait »", async () => {
+    d.ecarter.mockResolvedValue({
+      abonnesEcartes: 1,
+      contactsGuideEcartes: 0,
+      etapesEnEchec: ["marque"],
+    });
+    const r = await eraseSubscriberAction(
+      { ok: false, error: "" },
+      form({ id: ABONNE.id, reason: "demande écrite" }),
+    );
+    expect(r).toEqual({ ok: false, error: expect.stringMatching(/incompl[eè]te.*marque/i) });
+    expect(d.revalidatePath).not.toHaveBeenCalled();
+  });
+
+  it("une étape secondaire en échec (alerte) ne fait pas échouer le geste", async () => {
+    d.ecarter.mockResolvedValue({
+      abonnesEcartes: 1,
+      contactsGuideEcartes: 0,
+      etapesEnEchec: ["alerte"],
+    });
+    const r = await eraseSubscriberAction(
+      { ok: false, error: "" },
+      form({ id: ABONNE.id, reason: "demande écrite" }),
+    );
+    expect(r).toEqual({ ok: true });
+  });
+
   it("🔴 une fiche absente rend « introuvable » au lieu de lever (l'écran tombait)", async () => {
     d.subFindUnique.mockResolvedValue(null);
     const r = await eraseSubscriberAction(

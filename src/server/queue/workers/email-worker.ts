@@ -106,6 +106,8 @@ async function motifDeRetenueAuDepart(data: EmailJobData): Promise<string | null
     // départ sans en être une (argent, pièce) ne s'arrête que sur rebond ou
     // désabonnement. Pour tout gabarit entré ici avant CAMP-1, c'était `true`.
     sollicitation: estSollicitationSoumiseAOpposition(data.template, data.payload),
+    // Départ : une panne de lecture de la mise à l'écart fait réessayer le job (jamais d'envoi).
+    auDepart: true,
   });
   if (verdict.retenu) {
     return verdict.motif === "oppose"

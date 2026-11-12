@@ -36,6 +36,7 @@ import { VARIANTE_VSL_ABANDON } from "@/lib/commercial-application/vsl-apporteur
 import {
   estSollicitationSoumiseAOpposition,
   verdictAvantEnvoi,
+  dateDeMiseAEcart,
   VARIANTE_KIT_DIFFERE,
   VARIANTE_VSL_ABANDON_DIFFEREE,
   GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
@@ -232,5 +233,37 @@ describe("module pur — seuls la base et l'empreinte", () => {
       ...sansCommentaires.matchAll(/\bimport\s*\(\s*["']([^"']+)["']\s*\)/g),
     ].map((m) => m[1]);
     expect([...new Set(specs)].sort()).toEqual(["@/lib/prisma", "@/lib/security/email-hash"]);
+  });
+});
+
+describe("dateDeMiseAEcart — repli ouvert SEULEMENT sur « colonne absente » (P2022)", () => {
+  it("P2022 (migration pas encore passée) : contrôle sauté, aucune marque n'a pu être posée", async () => {
+    oppositionFindFirst.mockRejectedValue(Object.assign(new Error("col"), { code: "P2022" }));
+    expect(await dateDeMiseAEcart("a@exemple.fr", "qualiopi-convocation")).toBeNull();
+  });
+
+  it("🔴 toute autre panne (connexion perdue, délai dépassé) est RELANCÉE", async () => {
+    oppositionFindFirst.mockRejectedValue(Object.assign(new Error("timeout"), { code: "P1008" }));
+    await expect(dateDeMiseAEcart("a@exemple.fr", "qualiopi-convocation")).rejects.toThrow();
+  });
+
+  it("🔴 au départ du worker, la panne remonte (le job sera réessayé, rien n'est envoyé)", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("connexion perdue"));
+    await expect(
+      verdictAvantEnvoi("a@exemple.fr", {
+        template: "qualiopi-facture",
+        marketing: false,
+        auDepart: true,
+      }),
+    ).rejects.toThrow("connexion perdue");
+  });
+
+  it("à l'enfilage, la même panne ne bloque pas l'appelant (le worker relira au départ)", async () => {
+    oppositionFindFirst.mockRejectedValue(new Error("connexion perdue"));
+    const v = await verdictAvantEnvoi("a@exemple.fr", {
+      template: "qualiopi-facture",
+      marketing: false,
+    });
+    expect(v.retenu).toBe(false);
   });
 });

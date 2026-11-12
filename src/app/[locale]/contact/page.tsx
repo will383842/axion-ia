@@ -25,14 +25,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: "/contact",
     // Le titre DOIT finir par « · Axion-IA » (sinon le template layout ré-appose
     // la marque → « … · Axion-IA · Axion-IA », bug audit 2026-07-06).
-    title:
-      locale === "fr"
-        ? "Contact · réponse sous 48 h ouvrées · Axion-IA"
-        : "Contact · 48 business-hour reply · Axion-IA",
+    title: locale === "fr" ? "Contact · Axion-IA" : "Contact · Axion-IA",
     description:
       locale === "fr"
-        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat. Réponse sous 48 h ouvrées."
-        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership. Reply within 48 business hours.",
+        ? "Contactez Axion-IA — un formulaire unique pour devis, audit, implémentation, formation, 1-à-1, partenariat."
+        : "Contact Axion-IA — a single form for quote, audit, implementation, training, 1-on-1, partnership.",
   });
 }
 
@@ -73,7 +70,7 @@ export default async function Contact({ params }: Props) {
 
   const t = isFr
     ? {
-        kicker: "Réponse sous 48 h ouvrées",
+        kicker: "Nous écrire",
         titleLead: "Parlons de ",
         titleEm: "vous",
         subtitle: "Audit, intégration, formation, coaching ou partenariat : un seul formulaire.",
@@ -94,9 +91,9 @@ export default async function Contact({ params }: Props) {
         ],
         faq: [
           {
-            question: "Sous combien de temps Axion-IA répond-il ?",
+            question: "Qui lit les messages envoyés à Axion-IA ?",
             answer:
-              "Sous 48 heures ouvrées. Chaque message est lu par un consultant senior — jamais par un robot, jamais par un standard externalisé.",
+              "Chaque message est lu par un consultant senior — jamais par un robot, jamais par un standard externalisé.",
           },
           {
             question: "Le premier échange engage-t-il à quelque chose ?",
@@ -120,7 +117,7 @@ export default async function Contact({ params }: Props) {
         ],
       }
     : {
-        kicker: "Reply within 48 business hours",
+        kicker: "Write to us",
         titleLead: "Let's talk about ",
         titleEm: "you",
         subtitle: "Audit, integration, training, coaching or partnership: one single form.",
@@ -139,9 +136,9 @@ export default async function Contact({ params }: Props) {
         ],
         faq: [
           {
-            question: "How fast does Axion-IA reply?",
+            question: "Who reads the messages sent to Axion-IA?",
             answer:
-              "Within 48 business hours. Every message is read by a senior consultant — never a bot, never an outsourced call centre.",
+              "Every message is read by a senior consultant — never a bot, never an outsourced call centre.",
           },
           {
             question: "Does a first conversation commit me to anything?",
@@ -174,8 +171,8 @@ export default async function Contact({ params }: Props) {
     isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
     name: "Contact Axion-IA",
     description: isFr
-      ? "Formulaire de contact Axion-IA — réponse sous 48 h ouvrées, sans engagement, données stockées en UE."
-      : "Axion-IA contact form — reply within 48 business hours, no commitment, data stored in the EU.",
+      ? "Formulaire de contact Axion-IA — sans engagement, données stockées en UE."
+      : "Axion-IA contact form — no commitment, data stored in the EU.",
     publisher: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,

@@ -56,6 +56,8 @@ vi.mock("@/server/email/relecture-au-depart", () => ({ RELECTURES_AU_DEPART: new
 vi.mock("@/server/guide-ia/journal", () => ({ marquerGuideEnvoye: vi.fn() }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    // Mise à l'écart (effacement) relue au départ : personne n'est écarté ici.
+    emailOpposition: { findFirst: async () => null },
     documentGenere: {
       findUnique: vi.fn().mockResolvedValue({
         type: "contrat_sous_traitance",

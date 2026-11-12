@@ -189,35 +189,45 @@ export interface ContexteEnvoi {
    * doit retenir quand même, pas laisser passer.
    */
   readonly sollicitation?: boolean;
+  /**
+   * Appel fait par le worker au moment du départ : une panne de lecture de la mise à l'écart est
+   * RELANCÉE (BullMQ réessaie) au lieu de sauter le contrôle.
+   */
+  readonly auDepart?: boolean;
 }
 
 /**
  * Date de mise à l'écart (demande d'effacement) d'une adresse, ou `null`.
  *
  * Les modèles de `MODELES_REPONSE_A_UN_DROIT` ne sont jamais retenus. Lecture SÉPARÉE
- * (`findFirst`) et en repli OUVERT : le worker atterrit avant que l'application ne migre la
- * colonne `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque
- * n'a pu être posée non plus — et les autres contrôles (rebond, désabonnement, opposition)
- * tiennent. Exportée : le worker la relit au départ pour TOUS les gabarits.
+ * (`findFirst`).
+ *
+ * Repli OUVERT sur UNE seule erreur : `P2022` (colonne absente) — le worker atterrit avant que
+ * l'application ne migre `effacement_demande_le`, aucune marque n'a pu être posée non plus, et les
+ * autres contrôles (rebond, désabonnement, opposition) tiennent. TOUTE AUTRE erreur (délai dépassé,
+ * connexion perdue, pool saturé) est RELANCÉE : sauter le contrôle enverrait une facture à une
+ * personne écartée, alors que BullMQ sait réessayer. Exportée : le worker la relit au départ.
  */
 export async function dateDeMiseAEcart(adresse: string, template: string): Promise<Date | null> {
   if (estStub()) return null;
   const a = adresse.trim();
   if (a === "" || MODELES_REPONSE_A_UN_DROIT.has(template)) return null;
+  const empreinte = hashEmailForLookup(a);
+  if (empreinte === null) return null;
   try {
-    const empreinte = hashEmailForLookup(a);
-    if (empreinte === null) return null;
     const ligne = await prisma.emailOpposition.findFirst({
       where: { emailHash: empreinte, effacementDemandeLe: { not: null } },
       select: { effacementDemandeLe: true },
     });
     return ligne?.effacementDemandeLe ?? null;
   } catch (e) {
-    console.error(
-      `[email-suppression] lecture de la mise à l'écart (effacement) impossible — contrôle sauté :`,
-      e instanceof Error ? e.name : "erreur",
-    );
-    return null;
+    if ((e as { code?: unknown } | null)?.code === "P2022") {
+      console.error(
+        "[email-suppression] colonne effacement_demande_le absente (migration en cours) — contrôle sauté",
+      );
+      return null;
+    }
+    throw e;
   }
 }
 
@@ -238,7 +248,18 @@ export async function verdictAvantEnvoi(
   // OUVERT : le worker atterrit avant que l'application ne migre la colonne
   // `effacement_demande_le`. Pendant cette fenêtre, la lecture échoue — aucune marque n'a pu
   // être posée non plus — et les autres contrôles (rebond, désabonnement, opposition) tiennent.
-  const ecartee = await dateDeMiseAEcart(adresse, contexte.template);
+  // Panne autre que « colonne absente » : au DÉPART (`auDepart`) l'erreur remonte au worker, le
+  // job est réessayé ; à l'enfilage, le contrôle est sauté (le worker le relira au départ).
+  let ecartee: Date | null = null;
+  try {
+    ecartee = await dateDeMiseAEcart(adresse, contexte.template);
+  } catch (e) {
+    if (contexte.auDepart === true) throw e;
+    console.error(
+      "[email-suppression] lecture de la mise à l'écart impossible à l'enfilage — relue au départ :",
+      e instanceof Error ? e.name : "erreur",
+    );
+  }
   if (ecartee !== null) {
     return { retenu: true, motif: "ecarte_effacement", depuis: ecartee };
   }

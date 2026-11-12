@@ -22,10 +22,9 @@
 // le dit, et la suppression ne retient que les envois marketing. C'est la seule
 // portée honnête pour un lien présent sur des e-mails de cycle client.
 //
-// Format du jeton : `op1.<adresse en base64url>.<HMAC-SHA256 tronqué>`. Le
-// préfixe permet à `/api/unsubscribe` de le distinguer d'un jeton newsletter
-// (une chaîne opaque en base). Clé HMAC dérivée d'`AUTH_SECRET` avec séparation
-// de domaine : compromettre ce jeton ne donne rien d'autre qu'une opposition.
+// Format du jeton : voir `opposition-jeton.ts` (`op1`, adresse lisible, et `op2`,
+// opaque — les deux sont lus à vie). Le préfixe permet à `/api/unsubscribe` de le
+// distinguer d'un jeton newsletter (une chaîne opaque en base).
 
 import * as Sentry from "@sentry/nextjs";
 

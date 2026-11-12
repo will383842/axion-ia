@@ -20,7 +20,8 @@ import {
   cibleIdAlerteDepuisEmpreinte,
 } from "@/server/rgpd/constantes";
 
-export type OrigineDemande = "stagiaire" | "libre_service" | "console_lettre" | "message_prive";
+export type OrigineDemande =
+  "stagiaire" | "libre_service" | "console_lettre" | "console_adresse" | "message_prive";
 
 export interface DemandeRgpd {
   id: string;
@@ -38,14 +39,12 @@ export const LIBELLE_ORIGINE: Readonly<Record<OrigineDemande, string>> = {
   stagiaire: "Portail stagiaire",
   libre_service: "Site (libre-service)",
   console_lettre: "Console › Lettre d'information",
+  console_adresse: "Console › Mise à l'écart d'une adresse",
   message_prive: "Message privé (réseau social)",
 };
 
-const ACTIONS_LIBRE_SERVICE = [
-  "gdpr.export.delivered",
-  "gdpr.erase.completed",
-  ACTION_DEMANDE_EFFACEMENT,
-] as const;
+// Traces « faites » : coupées à 200, les plus récentes d'abord (elles ne cachent rien d'important).
+const ACTIONS_LIBRE_SERVICE = ["gdpr.export.delivered", "gdpr.erase.completed"] as const;
 
 async function sansPanne<T>(lire: () => Promise<T[]>): Promise<T[]> {
   try {
@@ -57,7 +56,7 @@ async function sansPanne<T>(lire: () => Promise<T[]>): Promise<T[]> {
 
 /** Lecture stub-safe : au build (`stub.invalid`) ou sans base, la liste est vide. */
 export async function listerDemandes(): Promise<DemandeRgpd[]> {
-  const [stagiaires, libreService, alertes] = await Promise.all([
+  const [stagiaires, libreServiceFaites, effacementsDemandes, alertes] = await Promise.all([
     sansPanne(() =>
       prisma.rgpdDemande.findMany({
         orderBy: { demandeAt: "desc" },
@@ -77,6 +76,16 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         where: { action: { in: [...ACTIONS_LIBRE_SERVICE] } },
         orderBy: { createdAt: "desc" },
         take: 200,
+        select: { id: true, action: true, createdAt: true, changes: true },
+      }),
+    ),
+    // 🔴 Les demandes d'effacement peuvent être « à traiter » (délai d'un mois, art. 12.3) : lues
+    // À PART et SANS limite. Coupées à 200 avec les exports, 200 exports plus récents (un robot
+    // suffit) les feraient disparaître de la liste sans aucun signal.
+    sansPanne(() =>
+      prisma.activityLog.findMany({
+        where: { action: ACTION_DEMANDE_EFFACEMENT },
+        orderBy: { createdAt: "desc" },
         select: { id: true, action: true, createdAt: true, changes: true },
       }),
     ),
@@ -131,6 +140,7 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
     outil: "qualiopi/rgpd",
   }));
 
+  const libreService = [...effacementsDemandes, ...libreServiceFaites];
   const duSite: DemandeRgpd[] = libreService.map((l) => {
     if (l.action === ACTION_DEMANDE_EFFACEMENT) {
       const alerte = alerteDe(l.id, l.changes);
@@ -145,9 +155,11 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         origine:
           origineLue === "console-lettre"
             ? "console_lettre"
-            : origineLue === "message-prive"
-              ? "message_prive"
-              : "libre_service",
+            : origineLue === "console"
+              ? "console_adresse"
+              : origineLue === "message-prive"
+                ? "message_prive"
+                : "libre_service",
         type: "effacement",
         // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
         personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",

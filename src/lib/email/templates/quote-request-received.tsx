@@ -7,11 +7,7 @@
 // 1. Ce gabarit était écrit, déclaré… et APPELÉ NULLE PART. Les demandes de
 //    devis retombaient sur `contact-confirmed`, l'accusé générique. Il est
 //    désormais branché sur le type `devis` du contact unifié.
-// 2. Le délai annoncé était « 24 à 48 heures ouvrées », soit une promesse
-//    PLUS STRICTE que celle de l'accusé générique déjà envoyé aujourd'hui
-//    (48 heures). L'activer tel quel aurait créé un engagement nouveau, sans
-//    que personne ne l'ait décidé. Aligné sur 48 heures — la promesse
-//    existante, tenue, et suffisante.
+// 2. Aucun délai de réponse n'est promis (décision de Williams, 11/11/2026).
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
@@ -28,26 +24,26 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande de devis reçue",
-    preview: "Réponse sous 48 heures ouvrées pour un appel de cadrage.",
+    preview: "Nous revenons vers vous pour un appel de cadrage.",
     intro: (n: string) => `Bonjour ${n},`,
     // 🔴 L'entreprise est FACULTATIVE dans le formulaire. Sans ce repli, la
     // phrase devenait « votre demande de devis pour undefined ».
     body: (company: string | undefined) =>
       company
-        ? `Nous avons bien reçu votre demande de devis pour ${company}. Nous revenons vers vous sous 48 heures ouvrées pour un appel de cadrage.`
-        : `Nous avons bien reçu votre demande de devis. Nous revenons vers vous sous 48 heures ouvrées pour un appel de cadrage.`,
+        ? `Nous avons bien reçu votre demande de devis pour ${company}. Nous revenons vers vous pour un appel de cadrage.`
+        : `Nous avons bien reçu votre demande de devis. Nous revenons vers vous pour un appel de cadrage.`,
     next: "Pendant ce temps, vous pouvez consulter nos formats standards ou nos cas concrets pour préciser votre besoin.",
     cta: "Voir les formats",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Quote request received",
-    preview: "Reply within 48 working hours for a scoping call.",
+    preview: "We will get back to you for a scoping call.",
     intro: (n: string) => `Hello ${n},`,
     body: (company: string | undefined) =>
       company
-        ? `We received your quote request for ${company}. We will get back to you within 48 working hours for a scoping call.`
-        : `We received your quote request. We will get back to you within 48 working hours for a scoping call.`,
+        ? `We received your quote request for ${company}. We will get back to you for a scoping call.`
+        : `We received your quote request. We will get back to you for a scoping call.`,
     next: "In the meantime, you can browse our standard formats or case studies to refine your needs.",
     cta: "See formats",
     refRow: (id: string) => `Reference: ${id}`,

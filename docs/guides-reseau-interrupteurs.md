@@ -30,6 +30,15 @@ migration : l'opération est idempotente par nature.
   pour une personne qui a demandé à ne plus être contactée.
 - Éteint par défaut.
 
+### Variante « après la page » : `POST /api/interne/oppositions-page-guide`
+
+Même interrupteur (`OPPOSITIONS_RESEAU_ENABLED`), même secret, même accusé (`{ ok, type: "opposition", recue: true }`),
+seau de débit à part. Le Studio y transmet le « stop » d'une personne qui avait reçu le lien de la page : corps strict
+`{ schemaVersion: 1, cleIdempotence, conv, reseau, occurredAt? }`, **jamais d'adresse**. Le site retrouve les contacts par
+`conv_ref` (HMAC de `conv`), met leur adresse à l'écart des envois (CRM prévenu) et passe les contacts à `ecarte`.
+Aucune suppression. Référence inconnue : même réponse 200, rien d'écrit. Échec de l'opposition ou du CRM : 500, le contact
+n'est pas écarté, le Studio renvoie. Côté Studio : `OPPOSITIONS_PAR_REF_ENABLED`, à allumer après le site.
+
 ## `PAGE_GUIDE_RESEAU_ENABLED` — la page « Recevoir le guide » (lot S2)
 
 Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.com/guide-reseau?j=<jeton>`
@@ -83,7 +92,7 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
 - `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` : interrupteur **séparé, éteint**, que rien ne lit encore ;
   il ne s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
   `newsletter_subscribers` n'est écrite par ce lot.
-- Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
+- Le chemin « adresse tapée dans la conversation » n'envoie rien au CRM à la réception (D1) ; son origine v3 est écrite sur le site, et **part au premier clic** du lien du guide (voir « Origine complète » ci-dessous).
 - stop sans adresse : abandonné (décision de Williams du 11/11/2026, lien de 48 h en contrepartie).
 - Pose (cible `les-deux` obligatoire, le workflow refuse `site` ou `worker` seuls) :
   `gh workflow run coolify-drapeau.yml -f cle=SYNCHRO_CRM_V3 -f valeur=true -f cible=les-deux -f redeploy=true`.
@@ -179,3 +188,123 @@ une rotation). La route des oppositions n'a **aucun repli** sur `VIDEOS_STUDIO_H
 Tout autre champ → `422` (seuls les noms de champs sont rendus). Réponse : toujours
 `200 {"ok":true,"type":"opposition","recue":true}`, que l'adresse soit nouvelle, déjà écartée ou
 inconnue. Plafond du corps : 4 Ko.
+
+## Origine complète vers le CRM, aussi depuis la conversation (lot guide réseau 4, 11/11/2026)
+
+- **Rien à la réception, jamais avant un clic.** Que l'adresse vienne de la page « Recevoir le guide » ou de la
+  conversation, l'événement part **au clic** du lien du guide. Il porte `payload.origines` (les **20 plus récentes**
+  origines actives de la personne pour ce guide, la plus récente donnant `origine_contenu`). Une demande venue de la
+  conversation n'a coché aucune case : **ni `consentements`, ni prénom** (information M1 seulement). Une demande née du
+  formulaire `/guide-ia` garde sa source ; ses origines réseau partent quand même (D5, option recommandée).
+- **Origines suivantes.** Une origine écrite **après** la transmission part aussitôt, en charge **cumulative** (même
+  plafond de 20), si la personne a déjà cliqué ; sinon elle attend le premier clic. Identifiants déterministes
+  (`event_id` de l'origine déclenchante) : rejouer = pas de doublon. Chaque origine porte `crm_statut`
+  (`NULL` en attente · `transmise` · `ecartee` · `hors_charge`) et `crm_traitee_le`. Un **stop** relu dans la transaction
+  l'emporte : les origines de la personne, **de tous ses guides** (l'opposition porte sur l'adresse), passent `ecartee`
+  (mise à l'écart, jamais supprimées). `hors_charge` est un statut terminal non destructif : adresse exclue du CRM ou
+  origine hors format CRM, qui ne partira jamais (rien n'est supprimé). Les origines `ecartee` et `hors_charge` n'entrent
+  jamais dans la charge cumulative, et seules les 20 plus récentes de chaque (personne, guide) sont lues par le rattrapage.
+- **Coupure (D3) — valable pour le chemin direct ET le rattrapage.** Ne partent que les origines **écrites après la
+  coupure** (`created_at >= ORIGINES_SUIVANTES_DEPUIS`) ; **sans** coupure, seules partent celles écrites **après la
+  réservation du clic** (`crm_emitted_at`). Les plus anciennes restent `NULL`, jamais envoyées ni marquées « transmise »,
+  même quand une origine plus récente de la même personne part.
+- Interrupteurs : `SYNCHRO_CRM_V3` (premier clic) ; `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` (`true` seulement, site **et**
+  worker, **éteint par défaut**) pour les origines suivantes et leur rattrapage. Tous deux derrière `CRM_SYNC_ENABLED`
+  et `CRM_SYNC_GUIDE_ENABLED`.
+- **Rattrapage — À LANCER À LA MAIN** (`scripts/crm-sync-rattrapage-lettre-guide.ts`, déposé dans le worker avec
+  `docker cp`) : il n'y a ni cron ni file, rien ne le lance tout seul et aucune alerte ne prévient d'une origine
+  restée `NULL`. Il reprend les origines en attente depuis plus de
+  10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
+  décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
+  `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
+- **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO) se pose dans l'environnement du **worker**, là où le script est lancé
+  (`docker exec -e ORIGINES_SUIVANTES_DEPUIS=… <worker> …`), pas par `coolify-drapeau.yml`. Le site la lit aussi pour
+  le chemin direct : sans elle, il n'envoie que les origines écrites après le clic.
+- **Exclusions** : `--exclure` et `--exclure-stdin` valent aussi pour les origines (groupe sauté, origines restées
+  `NULL`, compté dans « groupes exclus »), en plus de `CRM_SYNC_EXCLUSIONS_SHA256`. Interrupteurs éteints : le passage
+  répond `interrupteurs-eteints` et ne lit rien.
+- ⚠️ **Écriture de l'origine par une demande v1** (`traitement.ts`, D4) : une demande v1 écrit désormais une origine ;
+  ce changement n'a pas d'interrupteur propre, il n'est derrière que `GUIDES_RESEAU_ENABLED`.
+- **Ordre d'allumage** : 1) atterrissage de la migration `guide_reseau_origines_crm` **seule** (AGENTS.md, « DEUX
+  conteneurs » : le worker ne doit pas lire des colonnes que l'app n'a pas encore posées) ; 2) accord du CRM Pro sur la
+  charge (D2) et une charge cumulative de test acceptée en 2xx ; 3) `SYNCHRO_CRM_V3` ; 4) puis
+  `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES`. Retour arrière : éteindre ces interrupteurs (ce qui est parti reste au CRM).
+
+## Jeton de désinscription opaque `op2` (lot guide réseau 3)
+
+Le lien « Ne plus recevoir de sollicitations » portait un jeton `op1` qui contenait l'adresse en
+base64url (lisible d'un `atob`). Le nouveau jeton `op2` est **opaque** : AES-256-GCM déterministe,
+sans table, sans migration, stable (même adresse, même jeton).
+
+| Variable                  | Rôle                                            | Conteneurs        | Défaut           |
+| ------------------------- | ----------------------------------------------- | ----------------- | ---------------- |
+| `OPPOSITION_JETON_SECRET` | clé du jeton `op2` (≥ 32 caractères, scope RUN) | app **et** worker | absent (→ `op1`) |
+| `OPPOSITION_JETON_V2`     | émission d'`op2` (exactement `true`)            | app **et** worker | éteint           |
+
+- **Lecture à vie.** `op1` ET `op2` sont lus sans date de fin : un e-mail de 2026 ouvert en 2040
+  doit encore permettre de dire « stop ». Le code de lecture ne se retire **jamais**.
+- **Jamais de secret → jamais « pas de lien ».** Interrupteur allumé mais secret absent ou court :
+  repli sur `op1`, un seul avertissement `opposition_jeton_repli_op1` par processus (sans valeur).
+- **Rotation.** Elle ajoute un `kid` (`k2`…) et `OPPOSITION_JETON_SECRET_K2` ; l'ancien secret est
+  conservé **à vie** pour la lecture. `OPPOSITION_JETON_SECRET` ne se supprime jamais.
+- **Page `/desabonnement`.** Le jeton ne figure plus dans son URL : `GET /api/unsubscribe?token=…`
+  le pose dans un cookie court `__Host-axion-desinscription` (HttpOnly, Secure, SameSite=Lax,
+  15 minutes), puis il est effacé après le POST (succès ou échec). Le One-Click (RFC 8058) garde le jeton dans
+  l'URL de l'en-tête `List-Unsubscribe`.
+
+**Ordre d'allumage** (fenêtre app↔worker de ~50 min, AGENTS.md) :
+
+1. poser `OPPOSITION_JETON_SECRET` sur l'app **et** le worker ;
+2. vérifier que le code de lecture est en ligne côté **app** (`x-axion-build-sha`) ;
+3. allumer `OPPOSITION_JETON_V2` sur les deux ;
+4. vérifier un e-mail reçu : le lien du pied de page commence par `op2.` et ne contient pas l'adresse.
+
+**Retour arrière** : éteindre `OPPOSITION_JETON_V2` (app + worker) → retour à `op1`. Les `op2` déjà
+envoyés restent lisibles tant que le code de lecture reste en place.
+
+## Preuve de l'accord de la page « Recevoir le guide » (lot guide réseau 3)
+
+Sur la page, l'accord (case unique) est écrit **« en attente »** : l'adresse n'est qu'une saisie
+que n'importe qui peut faire. Trois états, portés par chaque ligne `contacts_guide_reseau` :
+
+| État           | Quand                                                       | Ligne ajoutée à `consent_events` |
+| -------------- | ----------------------------------------------------------- | -------------------------------- |
+| `en_attente`   | POST de la page (case cochée)                               | `consent_attente`                |
+| `confirmee`    | premier POST du bouton du lien du guide, **après** l'accord | `consent_confirme`               |
+| `non_verifiee` | **14 jours** après l'accord sans clic — mise à l'écart      | `consent_ecarte`                 |
+
+`sans_objet` : MARQUE d'une adresse opposée (aucune donnée de personne). Une ligne d'avant la
+migration (`NULL`) se lit `en_attente`. Les lignes `consent` déjà écrites ne sont pas réécrites
+(registre append-only) ; elles se lisent « accord saisi, avant la distinction ».
+
+- **Rien n'est supprimé.** « À l'écart » change un état ; prénom chiffré, empreinte du texte et dates
+  restent. Pas de remerciement (lot S4) ni d'événement CRM pour une ligne non confirmée.
+  **Le lot S4 ne doit envoyer le remerciement qu'à `preuve_statut = 'confirmee'`** (à traiter dans la
+  fiche S4, pas ici).
+- **Un « stop » l'emporte.** Il ne change pas l'état de preuve (un fait passé) ; aucune transition
+  n'envoie quoi que ce soit ; le CRM reste bloqué par l'opposition.
+- **La confirmation ne dépend pas du CRM** : elle a lieu au POST du lien du guide même si
+  `CRM_SYNC_GUIDE_ENABLED` est fermé. Un GET ne confirme jamais.
+- Un clic **après** la mise à l'écart confirme à nouveau la ligne (c'est le geste de la personne).
+
+| Variable                          | Rôle                                                            | Conteneur  | Défaut |
+| --------------------------------- | --------------------------------------------------------------- | ---------- | ------ |
+| `PREUVE_PAGE_GUIDE_ECART_ENABLED` | mise à l'écart quotidienne (04:23 UTC) + réparation du registre | **worker** | éteint |
+
+**N** = `JOURS_AVANT_ECART_PREUVE` (14) dans `src/server/guides-reseau/config.ts`, toujours supérieur à
+l'horizon du rattrapage du guide (7 jours).
+
+**Ordre d'allumage** (la migration est posée par l'**app** ; le worker peut tourner du code plus
+récent pendant ~50 min — AGENTS.md « DEUX conteneurs ») :
+
+1. fusionner ; vérifier que la migration est passée (`prisma migrate status` dans le conteneur app,
+   l'entrypoint migre en best-effort) ;
+2. vérifier que la confirmation au clic est en ligne côté **app** (`x-axion-build-sha`) ;
+3. alors seulement poser `PREUVE_PAGE_GUIDE_ECART_ENABLED=true` sur le **worker**. Avant l'étape 2,
+   on écarterait des personnes qui ont cliqué pendant que le clic ne confirmait pas encore.
+
+Le worker attrape une colonne absente (Prisma `P2022`) : journal `colonne_absente`, aucun effet.
+
+**Retour arrière** : éteindre `PREUVE_PAGE_GUIDE_ECART_ENABLED`. Une mise à l'écart déjà posée ne se
+défait que sur décision de Williams, par un `UPDATE … SET preuve_statut = 'en_attente'` documenté,
+jamais un `DELETE`. Les colonnes ne se suppriment pas (elles portent des dates de preuve).
