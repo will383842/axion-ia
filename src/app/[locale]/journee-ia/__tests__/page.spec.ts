@@ -98,7 +98,9 @@ describe("page /journee-ia", () => {
     expect(page).not.toContain("rdv=projet");
     expect(page).not.toContain("rdv=journee");
     // Chaque lien a sa propre origine : le « Déjà décidé » du bloc prix n'est pas le bouton du bloc prix.
-    const origines = [...page.matchAll(/lien(?:Direct)?\("(journee-ia-[a-z-]+)"\)/g)].map((m) => m[1]);
+    const origines = [...page.matchAll(/lien(?:Direct)?\("(journee-ia-[a-z-]+)"\)/g)].map(
+      (m) => m[1],
+    );
     expect(origines).toContain("journee-ia-prix-decide");
     expect(origines.filter((o) => o === "journee-ia-prix")).toHaveLength(1);
   });
