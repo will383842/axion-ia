@@ -57,6 +57,17 @@ export const GABARITS_EXEMPTES_DU_DESABONNEMENT: ReadonlySet<string> = new Set([
 ]);
 
 /**
+ * 🔴 Réponses à un DROIT exercé par la personne elle-même (décision du 12/11/2026).
+ *
+ * Une personne mise à l'écart après une demande d'effacement ne reçoit plus rien — SAUF la
+ * réponse à sa propre demande d'accès : le lien d'export de ses données, sans aucun contenu
+ * commercial. Ensemble FERMÉ et nommé : tout autre modèle reste bloqué, y compris
+ * `rgpd-effacement-confirme` (dormant : il affirmerait un effacement qui n'a pas eu lieu).
+ * Ne lève que la mise à l'écart : rebond dur, désabonnement et opposition restent lus après.
+ */
+export const MODELES_REPONSE_A_UN_DROIT: ReadonlySet<string> = new Set(["gdpr-export-link"]);
+
+/**
  * 🔴 2026-09-19 — Sollicitations du réseau d'apporteurs : non marketing, mais
  * soumises à l'OPPOSITION.
  *
@@ -200,7 +211,7 @@ export async function verdictAvantEnvoi(
   try {
     const empreinte = hashEmailForLookup(adresse);
     const ecartee =
-      empreinte === null
+      empreinte === null || MODELES_REPONSE_A_UN_DROIT.has(contexte.template)
         ? null
         : await prisma.emailOpposition.findFirst({
             where: { emailHash: empreinte, effacementDemandeLe: { not: null } },

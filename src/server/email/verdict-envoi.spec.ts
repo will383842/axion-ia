@@ -39,6 +39,7 @@ import {
   VARIANTE_KIT_DIFFERE,
   VARIANTE_VSL_ABANDON_DIFFEREE,
   GABARITS_SOLLICITATION_SOUMIS_A_OPPOSITION,
+  MODELES_REPONSE_A_UN_DROIT,
 } from "./verdict-envoi";
 
 beforeEach(() => {
@@ -158,6 +159,37 @@ describe("verdictAvantEnvoi — personne écartée après une demande d'effaceme
       expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
     },
   );
+
+  it("🔴 `gdpr-export-link` (réponse à la demande d'accès de la personne) PASSE pour une adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "gdpr-export-link",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: false });
+  });
+
+  it("un modèle commercial reste BLOQUÉ pour la même adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "campagne-x",
+      marketing: true,
+    });
+    expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+  });
+
+  it("`rgpd-effacement-confirme` (dormant) reste BLOQUÉ pour une adresse écartée", async () => {
+    oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });
+    const v = await verdictAvantEnvoi("ecartee@exemple.fr", {
+      template: "rgpd-effacement-confirme",
+      marketing: false,
+    });
+    expect(v).toEqual({ retenu: true, motif: "ecarte_effacement", depuis: LE });
+  });
+
+  it("l'ensemble des réponses à un droit est fermé : `gdpr-export-link` seul", () => {
+    expect([...MODELES_REPONSE_A_UN_DROIT]).toEqual(["gdpr-export-link"]);
+  });
 
   it("lu par empreinte, jamais par adresse", async () => {
     oppositionFindFirst.mockResolvedValue({ effacementDemandeLe: LE });

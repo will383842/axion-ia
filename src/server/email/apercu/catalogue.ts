@@ -777,7 +777,8 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "gdpr-export-link": {
     categorie: "rgpd",
-    quand: "Lien d'export des données personnelles",
+    quand:
+      "Lien d'export des données personnelles, en réponse à la demande d'accès de la personne elle-même. Seul modèle qui part encore vers une adresse mise à l'écart après une demande d'effacement (réponse à un droit, aucun contenu commercial) ; tous les autres restent bloqués.",
     destinataire: "la personne concernée",
     source: "app/api/gdpr-export/request/route.ts",
   },
