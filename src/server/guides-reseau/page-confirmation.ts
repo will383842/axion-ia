@@ -55,19 +55,24 @@ import { demandeGuideSchema } from "@/lib/schemas/forms";
 import { estOpposee } from "@/server/email/opposition";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
-import { envoisRecentsVers, mettreEnFileGuide } from "@/server/guide-ia/envoi";
+import {
+  envoisRecentsPourDemande,
+  envoisRecentsVers,
+  mettreEnFileGuide,
+} from "@/server/guide-ia/envoi";
 import {
   EMPREINTE_CASE_PAGE_GUIDE,
   EMPREINTE_CASE_PAGE_GUIDE_INFOS,
   FORM_REF_PAGE_GUIDE,
   FORM_REF_PAGE_GUIDE_INFOS,
-  GUIDES_RESEAU_CONNUS,
   PRENOM_MAX,
   PRENOM_MIN,
   VERSION_CONSENTEMENT_PAGE_GUIDE,
   VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS,
   type ReseauGuide,
 } from "@/content/guides-reseau";
+import { cibleGuideConnue } from "./cible-connue";
+import { catalogueGuidesActif } from "./config";
 import { convRefOpposee, convRefOpposeeDans, verrouillerConvRef } from "./conv-ref-opposee";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
 import { MERCI_STATUT_ECARTE, MERCI_STATUTS_ECARTES_LUS } from "./merci-statut";
@@ -203,7 +208,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   let donnees: DonneesJeton;
   try {
     const v = verifierJeton(e.jeton, e.secret, maintenant.getTime());
-    if (!v.ok || !GUIDES_RESEAU_CONNUS.includes(v.donnees.guide)) {
+    if (!v.ok || !(await cibleGuideConnue(v.donnees.guide))) {
       return { ok: false, statut: 400, erreur: "lien" };
     }
     donnees = v.donnees;
@@ -286,6 +291,17 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
         await verrouillerConvRef(tx, convRef);
         const stopDansTransaction = await convRefOpposeeDans(tx, convRef);
         if (opposee || stopDansTransaction) {
+          // Sécurité (LIA-F) : la conversation d'une adresse DÉJÀ opposée reçoit sa marque `oppositions_conv_ref`
+          // (aucune donnée de la personne, idempotent), sous le verrou déjà tenu — sinon la lecture des
+          // oppositions la dirait « non opposée ». NE PAS appeler `marquerConvRefOpposee` ici : elle ouvre sa
+          // propre transaction et attendrait, sur une autre connexion, le verrou que celle-ci tient (blocage).
+          // Une erreur annule la transaction, comme les autres écritures de cette branche.
+          await tx.oppositionConvRef.upsert({
+            where: { convRef },
+            create: { convRef },
+            update: {},
+            select: { id: true },
+          });
           // M1 : la MÊME lecture que le chemin normal (`retrouverOuCreerDemande`), résultat écarté.
           await tx.guideRequest.findUnique({
             where: { emailKey_aimant: { emailKey, aimant: demandeEntree.guide } },
@@ -506,7 +522,13 @@ async function suiteApresReponse(
       // Contrôlé AVANT « déjà servi » : le contact doit être écarté dans tous les cas.
       guide = "ecarte";
       await ecarterPageDuStop({ emailKey, origine, empreinte, maintenant });
-    } else if ((await envoisRecentsVers(email, maintenant)) > 0) {
+    } else if (
+      catalogueGuidesActif()
+        ? // Un envoi par DEMANDE : même adresse ET même guide depuis moins de 24 h (la limite de 3 par
+          // adresse reste dans `mettreEnFileGuide`).
+          (await envoisRecentsPourDemande(email, demande.id, maintenant)) > 0
+        : (await envoisRecentsVers(email, maintenant)) > 0
+    ) {
       guide = "deja-servi";
     } else {
       guide = await mettreEnFileGuide(

@@ -89,6 +89,27 @@ export async function envoisRecentsVers(email: string, maintenant: Date): Promis
   });
 }
 
+/**
+ * Nombre d'e-mails du guide mis en file vers cette adresse POUR CETTE DEMANDE (même adresse ET même
+ * guide : la demande est unique par adresse et par guide) sur la fenêtre. Lot LIA-F — utilisé
+ * seulement quand le catalogue est allumé ; `envoisRecentsVers` reste la limite par adresse.
+ */
+export async function envoisRecentsPourDemande(
+  email: string,
+  demandeId: string,
+  maintenant: Date,
+): Promise<number> {
+  return prisma.emailLog.count({
+    where: {
+      template: GABARIT_GUIDE,
+      recipient: email,
+      entityType: ENTITE_GUIDE,
+      entityId: demandeId,
+      createdAt: { gte: new Date(maintenant.getTime() - FENETRE_DESTINATAIRE_MS) },
+    },
+  });
+}
+
 /** Nombre d'e-mails du guide mis en file, toutes adresses, sur la dernière heure. */
 export async function envoisDeLaDerniereHeure(maintenant: Date): Promise<number> {
   return prisma.emailLog.count({

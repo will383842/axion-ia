@@ -317,3 +317,12 @@ Le worker attrape une colonne absente (Prisma `P2022`) : journal `colonne_absent
 **Retour arrière** : éteindre `PREUVE_PAGE_GUIDE_ECART_ENABLED`. Une mise à l'écart déjà posée ne se
 défait que sur décision de Williams, par un `UPDATE … SET preuve_statut = 'en_attente'` documenté,
 jamais un `DELETE`. Les colonnes ne se suppriment pas (elles portent des dates de preuve).
+
+## `GUIDES_RESEAU_CATALOGUE_ENABLED` — catalogue des guides + un envoi par demande (lot LIA-F)
+
+🔴 **Éteint par défaut** (vrai seulement si la valeur est exactement `true`), lu au runtime, conteneur app.
+
+- **Éteint** : comportement strictement inchangé. Seule la liste figée `GUIDES_RESEAU_CONNUS` fait foi, aucune lecture de `cibles_reseau`, et un seul guide part par adresse sur 24 h.
+- **Allumé** : un guide est accepté s'il est dans la liste figée OU si sa ligne `cibles_reseau` est active, de type `guide` et n'est pas une cible d'essai (`test`). Une cible `adresse`, inactive ou d'essai est refusée ; base illisible = liste figée seule. La règle des 24 h de la page se compte par adresse ET par guide (`email_logs.entity_id` = identifiant de la demande) ; la limite de 3 envois par adresse sur 24 h reste. La réponse montrée reste neutre et identique.
+- ⚠️ Pas encore branchés (fichiers hors du lot) : `reception.ts` appelle encore `analyserCorps` (liste figée) — passer à `analyserCorpsAvecCatalogue` — et `src/app/guide-reseau/route.ts` (l. 42) lit encore la liste figée. Tant que ce n'est pas fait, ces deux chemins restent fermés (jamais plus larges). À câbler AVANT d'allumer.
+- Correctif de sécurité, valable éteint ou allumé : une adresse déjà opposée qui remplit la page depuis une conversation pose aussi la marque `oppositions_conv_ref` de cette conversation (dans la même transaction, sous le verrou de la conversation).
