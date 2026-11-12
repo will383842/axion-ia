@@ -17,58 +17,82 @@ const { bd } = vi.hoisted(() => ({
     marques: [] as string[],
     marquePanne: false,
     limiteRefusee: false,
+    /** Ordre des appels : verrou, écriture de la marque, validation de la transaction, recherche des contacts. */
+    ordre: [] as string[],
   },
 }));
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    oppositionConvRef: {
-      upsert: async ({ where }: { where: { convRef: string } }) => {
-        if (bd.marquePanne) throw new Error("écriture de la marque impossible");
-        if (!bd.marques.includes(where.convRef)) bd.marques.push(where.convRef);
-        return { id: "m" };
-      },
-      delete: async () => {
-        bd.suppressions++;
-      },
-      deleteMany: async () => {
-        bd.suppressions++;
+vi.mock("@/lib/prisma", () => {
+  const oppositionConvRef = {
+    upsert: async ({ where }: { where: { convRef: string } }) => {
+      bd.ordre.push("upsert");
+      if (bd.marquePanne) throw new Error("écriture de la marque impossible");
+      if (!bd.marques.includes(where.convRef)) bd.marques.push(where.convRef);
+      return { id: "m" };
+    },
+    delete: async () => {
+      bd.suppressions++;
+    },
+    deleteMany: async () => {
+      bd.suppressions++;
+    },
+  };
+  const contactGuideReseau = {
+    findMany: async ({ where }: { where: { convRef: string } }) => {
+      bd.ordre.push("findMany");
+      return bd.contacts
+        .filter((c) => c.convRef === where.convRef)
+        .map((c) => ({
+          id: c.id,
+          emailKey: c.emailKey,
+          guideRequest: c.email ? { email: c.email } : null,
+        }));
+    },
+    updateMany: async ({
+      where,
+      data,
+    }: {
+      where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } };
+      data: Ligne;
+    }) => {
+      const cibles = bd.contacts.filter(
+        (c) =>
+          (where.emailKey === undefined || c.emailKey === where.emailKey) &&
+          (where.convRef === undefined || c.convRef === where.convRef) &&
+          !where.merciStatut.notIn.includes(String(c.merciStatut)),
+      );
+      for (const c of cibles) Object.assign(c, data);
+      return { count: cibles.length };
+    },
+    delete: async () => {
+      bd.suppressions++;
+    },
+    deleteMany: async () => {
+      bd.suppressions++;
+    },
+  };
+  return {
+    prisma: {
+      oppositionConvRef,
+      contactGuideReseau,
+      // Comme PostgreSQL : le verrou est pris dans la transaction ; « valide » = la fonction a fini sans lever.
+      $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+        const r = await fn({
+          oppositionConvRef,
+          contactGuideReseau,
+          $executeRaw: async (_c: TemplateStringsArray, ...v: unknown[]) => {
+            bd.ordre.push(
+              String(v[0]).startsWith("guide-reseau-conv:") ? "verrou" : "verrou-autre",
+            );
+            return 0;
+          },
+        });
+        bd.ordre.push("valide");
+        return r;
       },
     },
-    contactGuideReseau: {
-      findMany: async ({ where }: { where: { convRef: string } }) =>
-        bd.contacts
-          .filter((c) => c.convRef === where.convRef)
-          .map((c) => ({
-            id: c.id,
-            emailKey: c.emailKey,
-            guideRequest: c.email ? { email: c.email } : null,
-          })),
-      updateMany: async ({
-        where,
-        data,
-      }: {
-        where: { emailKey?: string; convRef?: string; merciStatut: { notIn: string[] } };
-        data: Ligne;
-      }) => {
-        const cibles = bd.contacts.filter(
-          (c) =>
-            (where.emailKey === undefined || c.emailKey === where.emailKey) &&
-            (where.convRef === undefined || c.convRef === where.convRef) &&
-            !where.merciStatut.notIn.includes(String(c.merciStatut)),
-        );
-        for (const c of cibles) Object.assign(c, data);
-        return { count: cibles.length };
-      },
-      delete: async () => {
-        bd.suppressions++;
-      },
-      deleteMany: async () => {
-        bd.suppressions++;
-      },
-    },
-  },
-}));
+  };
+});
 vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: async () => ({ allowed: !bd.limiteRefusee }),
 }));
@@ -141,6 +165,7 @@ beforeEach(() => {
   bd.suppressions = 0;
   bd.marques.length = 0;
   bd.marquePanne = false;
+  bd.ordre.length = 0;
   bd.limiteRefusee = false;
   process.env.OPPOSITIONS_RESEAU_ENABLED = "true";
   process.env.GUIDES_RESEAU_HMAC_SECRET = SECRET;
@@ -243,6 +268,18 @@ describe("effet : l'opposition l'emporte, rien n'est supprimé", () => {
     const connue = await appel();
     expect(connue.status).toBe(inconnue.status);
     expect(await connue.json()).toEqual(corpsInconnue);
+  });
+  it("T4 — la marque est posée sous le verrou de la conversation, dans une transaction ; la recherche des contacts vient APRÈS sa validation", async () => {
+    bd.contacts.push(contact());
+    expect((await appel()).status).toBe(200);
+    expect(bd.ordre).toEqual(["verrou", "upsert", "valide", "findMany"]);
+  });
+  it("T4bis — marque en erreur : 500, la recherche des contacts n'a pas lieu", async () => {
+    bd.marquePanne = true;
+    bd.contacts.push(contact());
+    expect((await appel()).status).toBe(500);
+    expect(bd.ordre).not.toContain("findMany");
+    expect(bd.ordre).not.toContain("valide");
   });
   it("deux STOP successifs : une seule ligne de marque", async () => {
     expect((await appel()).status).toBe(200);

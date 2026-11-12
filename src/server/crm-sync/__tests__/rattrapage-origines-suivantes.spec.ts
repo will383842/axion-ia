@@ -246,6 +246,15 @@ describe("rattraperOriginesSuivantes", () => {
     expect(m.origines).toHaveLength(total + 1);
   });
 
+  it("T6 — scénario (a) : demande déjà cliquée et transmise, course gagnée par le STOP (origine page-… mise à l'écart par le filet) : le rattrapage ne transmet rien", async () => {
+    // État laissé par le filet de la page (`ecarterPageDuStop`) : crm_statut = 'ecartee'.
+    m.origines.push(o({ crmStatut: "ecartee", crmTraiteeLe: il_y_a(55) }));
+    const b = await lancer();
+    expect(m.appels).toHaveLength(0);
+    expect(b.groupes).toBe(0);
+    expect(m.origines.some((x) => x.crmStatut === "transmise")).toBe(false);
+  });
+
   it("à blanc : compte, n'envoie rien", async () => {
     m.origines.push(o());
     const b = await lancer({ executer: false });

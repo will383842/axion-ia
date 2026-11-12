@@ -68,6 +68,9 @@ export async function recevoirOppositionPage(e: EntreeSignee): Promise<Response>
   try {
     const convRef = hmacConversationRef(d.conv);
     // La marque d'abord, TOUJOURS (référence connue ou non) : si la suite échoue, le STOP est déjà gardé.
+    // 🔴 ORDRE À GARDER : la marque est VALIDÉE (sa transaction, qui tient le verrou de la conversation, est
+    // terminée) AVANT la recherche des contacts. Ainsi une page concurrente voit soit la marque (et n'écrit rien),
+    // soit n'a pas encore commencé ; le contact qu'elle a écrit avant est forcément retrouvé ci-dessous.
     await marquerConvRefOpposee(convRef);
     // La marque d'une adresse opposée porte `conv_ref = '-'` : jamais ciblée (convRef est un HMAC de 64 caractères).
     const contacts = await prisma.contactGuideReseau.findMany({

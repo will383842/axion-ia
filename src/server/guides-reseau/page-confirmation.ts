@@ -45,6 +45,7 @@
  * La route des confirmations (lot S4) n'est PAS dans ce lot.
  */
 import { createHash } from "node:crypto";
+import * as Sentry from "@sentry/nextjs";
 import { after } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -67,10 +68,11 @@ import {
   VERSION_CONSENTEMENT_PAGE_GUIDE_INFOS,
   type ReseauGuide,
 } from "@/content/guides-reseau";
-import { convRefOpposee } from "./conv-ref-opposee";
+import { convRefOpposee, convRefOpposeeDans, verrouillerConvRef } from "./conv-ref-opposee";
 import { empreinteJeton, verifierJeton, type DonneesJeton } from "./lien-page-guide";
 import { MERCI_STATUT_ECARTE, MERCI_STATUTS_ECARTES_LUS } from "./merci-statut";
 import {
+  cleDedoublonnage,
   ecrireOrigineDansTransaction,
   hmacConversationRef,
   signalerArchiveSiDepassee,
@@ -263,6 +265,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   const empreinte = empreinteJeton(e.jeton);
   // Origine et preuve sont construites AVANT la transaction (une clé HMAC absente lève ici, sans
   // rien avoir écrit), puis écrites DANS la transaction. Rien pour une adresse opposée.
+  // La référence de conversation (HMAC) aussi : une clé absente lève ici, avant toute écriture.
+  const convRef = hmacConversationRef(donnees.conv);
   const origine = opposee
     ? null
     : construireOrigineDePage(donnees, compte, postRef, empreinte, maintenant);
@@ -275,7 +279,13 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
       demande = await prisma.$transaction(async (tx) => {
         // Deux envois simultanés de la même adresse se suivent au lieu de se croiser.
         await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"guide-reseau-page:" + emailKey}))`;
-        if (opposee) {
+        // Puis la conversation : le STOP ne prend que ce verrou (aucun cycle). On relit la marque ICI, avec `tx`,
+        // une fois le verrou tenu : si le STOP l'a posée, RIEN de la personne (origine, prénom, accord « infos »)
+        // n'est écrit. Aucune erreur n'est attrapée : table absente (P2021) ou lecture en échec => transaction
+        // annulée, rien d'écrit, 500 (fermé).
+        await verrouillerConvRef(tx, convRef);
+        const stopDansTransaction = await convRefOpposeeDans(tx, convRef);
+        if (opposee || stopDansTransaction) {
           // M1 : la MÊME lecture que le chemin normal (`retrouverOuCreerDemande`), résultat écarté.
           await tx.guideRequest.findUnique({
             where: { emailKey_aimant: { emailKey, aimant: demandeEntree.guide } },
@@ -320,7 +330,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
                 }
               : {}),
             jetonEmpreinte: empreinte,
-            convRef: hmacConversationRef(donnees.conv),
+            convRef,
             merciStatut: "a_envoyer",
             // L'adresse n'est qu'une SAISIE : l'accord est « en attente » jusqu'au clic sur le
             // bouton du lien du guide (`preuve-page-guide.ts`).
@@ -398,7 +408,13 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   // l'origine et la preuve sont déjà validées ; le rattrapage reprend la demande).
   after(async () => {
     try {
-      const issue = await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
+      const issue = await suiteApresReponse(donnees, demandeFaite, {
+        email,
+        maintenant,
+        emailKey,
+        origine: origine!,
+        empreinte,
+      });
       // Lot guide réseau 4 : si la personne a déjà cliqué, la nouvelle origine part (jamais avant un clic).
       // Jamais après un STOP gagné pendant l'enregistrement : pas d'origine d'une conversation arrêtée au CRM.
       if (issue !== "ecarte") {
@@ -450,6 +466,9 @@ function construireOrigineDePage(
 interface ContexteSuite {
   readonly email: string;
   readonly maintenant: Date;
+  readonly emailKey: string;
+  readonly origine: OrigineAEcrire;
+  readonly empreinte: string;
 }
 
 /**
@@ -474,7 +493,7 @@ async function stopArriveEntreTemps(donnees: DonneesJeton): Promise<boolean> {
 async function suiteApresReponse(
   donnees: DonneesJeton,
   demande: { id: string; downloadToken: string },
-  { email, maintenant }: ContexteSuite,
+  { email, maintenant, emailKey, origine, empreinte }: ContexteSuite,
 ): Promise<string> {
   // L'e-mail du guide, sauf s'il est déjà parti à cette adresse depuis moins de 24 h.
   //     Un échec de mise en file n'annule rien : la demande est écrite (et le consentement prouvé),
@@ -486,7 +505,7 @@ async function suiteApresReponse(
       // même déroulé neutre et silencieux, rien n'est mis en file, aucune opposition écrite sur l'adresse.
       // Contrôlé AVANT « déjà servi » : le contact doit être écarté dans tous les cas.
       guide = "ecarte";
-      await ecarterContactDeLaDemande(demande.id);
+      await ecarterPageDuStop({ emailKey, origine, empreinte, maintenant });
     } else if ((await envoisRecentsVers(email, maintenant)) > 0) {
       guide = "deja-servi";
     } else {
@@ -520,16 +539,36 @@ async function suiteApresReponse(
 }
 
 /**
- * STOP gagné pendant l'enregistrement de la page : le contact passe à `merci_statut = 'ecarte'` (comme le fait le
- * STOP quand il trouve le contact), ce qui écarte AUSSI la demande du guide (le rattrapage et l'envoi console lisent
- * ce lien). Mise à l'écart seulement : rien n'est supprimé. Un échec est journalisé (sans adresse) et ne change
- * pas l'issue : la marque de la conversation (`oppositions_conv_ref`) bloque de toute façon, côté rattrapage et
- * côté « merci ».
+ * Filet : un STOP arrivé APRÈS la transaction de la page (la marque a été posée entre-temps). Le verrou de la
+ * conversation rend ce cas rare, mais il reste possible. On met à l'écart CE QUE CETTE PAGE a écrit, rien d'autre :
+ *   - l'origine `page-<empreinte>` passe `crm_statut = 'ecartee'` (jamais transmise par le rattrapage ni au clic) ;
+ *   - le contact de CE jeton passe `merci_statut = 'ecarte'` (un contact plus ancien de la même demande, légitime,
+ *     n'est pas touché).
+ * Mise à l'écart seulement : rien n'est supprimé. Un échec (y compris colonne `crm_statut` absente, P2022) est
+ * journalisé sans adresse ni empreinte, signalé à Sentry, et ne lève pas : la marque de la conversation
+ * (`oppositions_conv_ref`) bloque de toute façon, côté rattrapage et côté « merci ».
  */
-async function ecarterContactDeLaDemande(demandeId: string): Promise<void> {
+async function ecarterPageDuStop(c: {
+  emailKey: string;
+  origine: OrigineAEcrire;
+  empreinte: string;
+  maintenant: Date;
+}): Promise<void> {
   try {
+    await prisma.guideReseauOrigine.updateMany({
+      where: {
+        emailKey: c.emailKey,
+        cleDedoublonnage: cleDedoublonnage(c.origine),
+        archiveeLe: null,
+        crmStatut: null,
+      },
+      data: { crmStatut: "ecartee", crmTraiteeLe: c.maintenant },
+    });
     await prisma.contactGuideReseau.updateMany({
-      where: { guideRequestId: demandeId, merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] } },
+      where: {
+        jetonEmpreinte: c.empreinte,
+        merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] },
+      },
       data: { merciStatut: MERCI_STATUT_ECARTE },
     });
   } catch (err) {
@@ -539,5 +578,13 @@ async function ecarterContactDeLaDemande(demandeId: string): Promise<void> {
         erreur: err instanceof Error ? err.name : "erreur",
       }),
     );
+    try {
+      Sentry.captureException(
+        { name: err instanceof Error ? err.name : "erreur" },
+        { tags: { area: "guides-reseau", action: "ecarterPageDuStop" } },
+      );
+    } catch {
+      /* l'observabilité ne casse jamais la réponse */
+    }
   }
 }

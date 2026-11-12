@@ -11,6 +11,7 @@
  * l'événement de base, jamais une charge que le CRM refuserait.
  */
 import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
+import { MERCI_STATUTS_ECARTES_LUS } from "./merci-statut";
 import { lireOriginesActives, type LecteurOrigines } from "./origines";
 import {
   evenementConversationV3,
@@ -24,7 +25,7 @@ import {
 export interface LecteurPageGuide extends LecteurOrigines {
   contactGuideReseau: {
     findFirst(args: {
-      where: { guideRequestId: string };
+      where: { guideRequestId: string; merciStatut: { notIn: string[] } };
       orderBy: { createdAt: "asc" };
       select: {
         prenom: true;
@@ -70,7 +71,8 @@ export async function evenementDuClicPageGuide(
   const origines = lues.map((o) => ({ ...o, cleIdempotence: "" }));
   const origineIds = lues.map((o) => o.id);
   const contact = await tx.contactGuideReseau.findFirst({
-    where: { guideRequestId: d.id },
+    // Un contact écarté (STOP) ne donne jamais son prénom ni son accord « infos ».
+    where: { guideRequestId: d.id, merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] } },
     orderBy: { createdAt: "asc" },
     select: {
       prenom: true,
