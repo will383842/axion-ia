@@ -281,6 +281,14 @@ describe("transmettreOriginesSuivantes", () => {
     expect(bd.appelsOpposee).toBeGreaterThanOrEqual(1);
   });
 
+  it("origine hors format CRM : contrôlée AVANT d'émettre comme au clic ; rien d'écrit, origines gardées (NULL)", async () => {
+    bd.origines.push(origine({ compte: "Compte Invalide!" }));
+    await expect(appel()).resolves.toBe("echec");
+    expect(bd.requetesOutbox).toBe(0);
+    expect(bd.outbox).toHaveLength(0);
+    expect(bd.origines[0]?.crmStatut).toBeNull();
+  });
+
   it("panne d'outbox : transaction annulée, origines inchangées (NULL), aucune exception", async () => {
     bd.panneOutbox = true;
     bd.origines.push(origine());

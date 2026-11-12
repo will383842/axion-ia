@@ -394,12 +394,6 @@ export async function transmettreClicGuide(
     let opposeePendantLaTransaction = false;
     try {
       outboxId = await prisma.$transaction(async (tx) => {
-        // Même verrou consultatif que `transmettreOriginesSuivantes` (synchro-v3.ts) : une origine
-        // écrite pendant ce clic attend la validation du clic au lieu de voir `crmEmittedAt` vide
-        // et de rendre « pas_clique ». Pris AVANT la réservation du clic.
-        if (v3) {
-          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + demande.emailKey}))`;
-        }
         const r = await tx.guideRequest.updateMany({
           where: { id: demande.id, crmEmittedAt: null, firstClickAt: { not: null } },
           data: { crmEmittedAt: maintenant },
@@ -407,6 +401,12 @@ export async function transmettreClicGuide(
         if (r.count !== 1) return null;
         reservee = true;
         if (v3) {
+          // Même verrou consultatif que `transmettreOriginesSuivantes` (synchro-v3.ts) : une origine
+          // écrite pendant ce clic attend la validation du clic au lieu de voir `crmEmittedAt` vide.
+          // ORDRE DES VERROUS (comme page-confirmation.ts) : d'abord la ligne de la demande
+          // (l'`updateMany` ci-dessus), ENSUITE `origines:<clé>`, avant de lire les origines.
+          // L'inverse ferait un interblocage avec la page « Recevoir le guide ».
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + demande.emailKey}))`;
           // Nouveau contrôle d'opposition, DANS la transaction, juste avant d'écrire : une
           // opposition arrivée depuis la lecture du début l'emporte. La demande reste réservée
           // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite ; les origines

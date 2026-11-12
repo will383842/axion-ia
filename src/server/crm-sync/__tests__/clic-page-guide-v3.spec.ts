@@ -550,11 +550,11 @@ describe("lot guide réseau 4 : l'origine complète part au premier clic, aussi 
 });
 
 describe("lot guide réseau 4 : le premier clic prend le verrou des origines", () => {
-  it("verrou « origines:<clé> » pris dans la transaction du clic, AVANT la réservation du clic", async () => {
+  it("verrou « origines:<clé> » pris dans la transaction du clic, APRÈS la ligne de la demande (même ordre que la page : pas d'interblocage)", async () => {
     installer({ contact: null });
     expect(await transmettreClicGuide("demande-1")).toBe("transmise");
     expect(base.verrous).toHaveLength(1);
     expect(base.verrous[0]?.valeurs[0]).toBe("origines:" + String(base.demandes[0]?.emailKey));
-    expect(base.verrous[0]?.demandesDejaReservees).toBe(false);
+    expect(base.verrous[0]?.demandesDejaReservees).toBe(true);
   });
 });

@@ -401,7 +401,11 @@ export async function transmettreOriginesSuivantes(args: {
       if (enAttente.length === 0) return { issue: "rien" as const, n: 0, id: null };
       const declenchante =
         enAttente.find((o) => o.cleDedoublonnage === args.declenchante) ?? enAttente[0]!;
-      const c = chargeCrmV3(lues.map((o) => ({ ...o, cleIdempotence: "" })));
+      // Même contrôle de format que le clic : vérifié AVANT d'émettre, pas laissé au refus 422
+      // (les origines sont marquées « transmise » dès l'outbox). Annule la transaction, rien d'écrit.
+      const aEcrire = lues.map((o) => ({ ...o, cleIdempotence: "" }));
+      if (!originesAuFormatCrm(aEcrire)) throw new RienEcritOrigines();
+      const c = chargeCrmV3(aEcrire);
       if (!c.ok) throw new RienEcritOrigines();
       const cle = declenchante.cleDedoublonnage;
       const event = {

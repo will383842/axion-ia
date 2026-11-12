@@ -25,9 +25,9 @@ describe("migration contacts_guide_reseau_origine_optionnelle", () => {
     expect(dossiers).toContain("20261108140000_contacts_guide_reseau");
     // Liste fermée des migrations postérieures : toute autre doit être ajoutée ici sciemment.
     expect(dossiers.slice(dossiers.indexOf(NOM) + 1)).toEqual([
-      "20261111150000_guide_reseau_origines_crm",
       "20261111210000_contacts_guide_reseau_infos_facultatives",
       "20261112000000_contacts_guide_reseau_preuve_statut",
+      "20261112100000_guide_reseau_origines_crm",
     ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),

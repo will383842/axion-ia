@@ -11,7 +11,7 @@ const DOSSIER = join(
   process.cwd(),
   "prisma",
   "migrations",
-  "20261111150000_guide_reseau_origines_crm",
+  "20261112100000_guide_reseau_origines_crm",
 );
 const lire = (): string =>
   readFileSync(join(DOSSIER, "migration.sql"), "utf8")
