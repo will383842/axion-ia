@@ -16,7 +16,8 @@
  *      `contacts_guide_reseau` (écrit `jeton_empreinte`, UNIQUE = usage unique), demande du guide
  *      (`retrouverOuCreerDemande`), ORIGINE (mot, réseau, compte, post, version M1 →
  *      `guide_reseau_origines`, PAS dans `contacts_guide_reseau`) et PREUVE du consentement
- *      (`consent_events`, action `consent`). Tout part ensemble ou rien ne part : si le conteneur
+ *      (`consent_events`, action `consent_attente` : accord « en attente » jusqu'au clic sur le
+ *      lien du guide, pour la case du guide comme pour la case facultative « informations »). Tout part ensemble ou rien ne part : si le conteneur
  *      s'arrête juste après la réponse, la fiche relue plus tard par le CRM (au clic) a son
  *      origine ET sa preuve. Un échec (origine, preuve, base…) annule TOUT et remonte : la route
  *      répond sa page d'erreur neutre, le jeton n'est PAS consommé, la personne peut réessayer.
@@ -351,7 +352,7 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
               personKey: emailKey,
               formRef: FORM_REF_PAGE_GUIDE_INFOS,
               consentVersion: versionPreuveInfos(),
-              action: "consent",
+              action: "consent_attente",
               occurredAt: maintenant,
               ipHash,
               userAgent: agentHash,

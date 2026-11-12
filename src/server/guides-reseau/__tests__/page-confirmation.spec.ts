@@ -314,6 +314,7 @@ describe("case de consentement", () => {
     expect(c.infosStatut).toBe("non_transmise");
     expect(c.infosVersion).toBe("page-guide-infos-2026-11-11");
     expect(c.infosConsentiLe).toEqual(MAINTENANT);
+    expect(bd.preuves.map((p) => p.action)).toEqual(["consent_attente", "consent_attente"]);
     expect(bd.preuves.map((p) => p.formRef).sort()).toEqual([
       "guide-reseau-page",
       "guide-reseau-page-infos",

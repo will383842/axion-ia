@@ -1058,7 +1058,7 @@ export function FormationDetailPage({
         eyebrow="Devis express"
         title="Votre devis"
         titleEm="en 30 secondes"
-        description="Dites-nous l'essentiel : nous revenons vers vous sous 24-48 h ouvrées avec un devis personnalisé pour cette formation — sans engagement."
+        description="Dites-nous l'essentiel : nous revenons vers vous avec un devis personnalisé pour cette formation — sans engagement."
       >
         <Container className="max-w-2xl">
           <UnifiedContactForm

@@ -34,8 +34,8 @@ export function SitesWebContactBand({
           titleA: isFr ? "Un devis ferme," : "A firm quote,",
           titleB: isFr ? "sous 24-48 h" : "in 24-48 h",
           desc: isFr
-            ? "Décrivez votre site ou votre projet : on revient sous 24-48 h (selon la complexité) avec un périmètre précis, un forfait fixe et un délai garanti. Forfait fixe, pas de régie, code et données à vous."
-            : "Describe your site or project: we come back in 24-48 h (depending on complexity) with a precise scope, a fixed fee and a guaranteed timeline. Fixed fee, no time-and-materials, code and data yours.",
+            ? "Décrivez votre site ou votre projet : on revient vers vous avec un périmètre précis, un forfait fixe et un délai garanti. Forfait fixe, pas de régie, code et données à vous."
+            : "Describe your site or project: we come back to you with a precise scope, a fixed fee and a guaranteed timeline. Fixed fee, no time-and-materials, code and data yours.",
         }
       : {
           eyebrow: isFr ? "Pas sûr·e par où commencer ?" : "Not sure where to start?",

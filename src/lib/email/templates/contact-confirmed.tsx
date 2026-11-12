@@ -14,15 +14,15 @@ const COPY = {
   fr: {
     title: "Message bien reçu",
     // Pré-en-tête (§3.5) : il PROLONGE l'objet au lieu de le répéter. L'objet dit
-    // que le message est arrivé ; celui-ci dit sous combien de temps on répond
-    // — l'information qui décide d'ouvrir maintenant ou plus tard.
-    preview: "Réponse sous 48 heures ouvrées — la référence de votre demande est dans le message.",
+    // que le message est arrivé ; celui-ci rappelle que la référence de la demande
+    // est dans le message. Aucun délai de réponse n'est promis (décision du 11/11/2026).
+    preview: "Message bien reçu — la référence de votre demande est dans le message.",
     intro: (n: string) => `Bonjour ${n},`,
     // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
     // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
     // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
     // corriger la VOIX — deux choses distinctes.
-    body: "Votre message est bien arrivé. Une réponse vous parvient sous 48 heures ouvrées.",
+    body: "Votre message est bien arrivé. Nous revenons vers vous.",
     // 🔴 Corrigé le 2026-08-16. Le texte promettait « notre calendrier de
     // réservation » et le bouton disait « Voir le calendrier » — alors que le
     // site n'expose pas de calendrier public, mais une page de réservation
@@ -38,9 +38,9 @@ const COPY = {
   },
   en: {
     title: "Message received",
-    preview: "Reply within 48 working hours — your request reference is in the message.",
+    preview: "Message received — your request reference is in the message.",
     intro: (n: string) => `Hello ${n},`,
-    body: "Your message has arrived. You will have a reply within 48 working hours.",
+    body: "Your message has arrived. We will get back to you.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
     cta: "Book a call",
     pasVous:

@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "About · operational AI consultancy · Axion-IA",
     description:
       locale === "fr"
-        ? "Axion-IA, cabinet IA opérationnel pour les PME, partout en France : mission, équipe, valeurs, hébergement UE et réponse humaine sous 48 h."
+        ? "Axion-IA, cabinet IA opérationnel pour les PME, partout en France : mission, équipe, valeurs, hébergement UE et réponse humaine."
         : "Axion-IA — operational AI consultancy for companies. Mission, team, values, timeline.",
     alternates: { fr: "/a-propos", en: "/about" },
   });
@@ -181,9 +181,9 @@ export default async function About({ params }: Props) {
         },
         {
           id: "delai-reponse",
-          question: "En combien de temps Axion-IA répond-il à une demande ?",
+          question: "Qui répond aux demandes envoyées à Axion-IA ?",
           answer:
-            "Toute demande de devis ou de contact reçoit une réponse humaine sous 48 heures ouvrées, sans engagement.",
+            "Chaque demande de devis ou de contact est lue et traitée par un membre de notre équipe, jamais par un robot, sans engagement.",
         },
         {
           id: "prix-formation-ia",
@@ -195,7 +195,7 @@ export default async function About({ params }: Props) {
           id: "contact",
           question: "Comment contacter Axion-IA ?",
           answer:
-            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine sous 48 heures ouvrées. Vous pouvez aussi réserver directement un appel de découverte.",
+            "Le plus simple est de passer par la page Contact : un formulaire unique couvre les devis, audits, formations, implémentations, 1-à-1 et partenariats, avec une réponse humaine. Vous pouvez aussi réserver directement un appel de découverte.",
         },
         // Q/R Qualiopi / financement — émises UNIQUEMENT en Phase B (flag OF).
         // Doctrine financement : jamais de CPF, jamais « 100 % / gratuit »,
@@ -257,9 +257,9 @@ export default async function About({ params }: Props) {
         },
         {
           id: "delai-reponse",
-          question: "How quickly does Axion-IA reply to a request?",
+          question: "Who answers requests sent to Axion-IA?",
           answer:
-            "Every quote or contact request gets a human reply within 48 business hours, with no commitment.",
+            "Every quote or contact request is read and handled by a member of our team, never by a bot, with no commitment.",
         },
         {
           id: "prix-formation-ia",
@@ -271,7 +271,7 @@ export default async function About({ params }: Props) {
           id: "contact",
           question: "How do I contact Axion-IA?",
           answer:
-            "The simplest way is the Contact page: a single form covers quotes, audits, training, implementations, 1-to-1 and partnerships, with a human reply within 48 business hours. You can also book a discovery call directly.",
+            "The simplest way is the Contact page: a single form covers quotes, audits, training, implementations, 1-to-1 and partnerships, with a human reply. You can also book a discovery call directly.",
         },
         // Qualiopi / funding Q&A — emitted ONLY in Phase B (OF flag). Funding
         // doctrine: never CPF, never "100% / free", never a certificate number;
@@ -497,11 +497,11 @@ export default async function About({ params }: Props) {
                   : "Data hosted on Hetzner Frankfurt.",
               },
               {
-                figure: "48 h",
-                label: isFr ? "Réponse devis" : "Quote reply",
+                figure: isFr ? "100 %" : "100%",
+                label: isFr ? "Réponse humaine" : "Human reply",
                 detail: isFr
-                  ? "Sous 48 heures ouvrées, par un humain."
-                  : "Within 48 business hours, by a human.",
+                  ? "Chaque message est lu par un humain."
+                  : "Every message is read by a human.",
               },
               {
                 figure: "30 j",

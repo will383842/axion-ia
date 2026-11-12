@@ -18216,7 +18216,7 @@ model ContactGuideReseau {
   convRef             String        @map("conv_ref") @db.VarChar(120)
   merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
   merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
-  /// Preuve de l'accord (migration 20261111120000) : `en_attente` | `confirmee` | `non_verifiee`
+  /// Preuve de l'accord (migration 20261112000000) : `en_attente` | `confirmee` | `non_verifiee`
   /// (mise à l'écart, jamais une suppression) | `sans_objet` (MARQUE d'adresse opposée). NULL se
   /// lit `en_attente`. Distinct de `merci_statut` : ne pas le surcharger.
   preuveStatut        String?       @map("preuve_statut") @db.VarChar(16)

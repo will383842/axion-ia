@@ -30,7 +30,7 @@ import {
   reparerRegistrePreuves,
 } from "../preuve-page-guide";
 import { JOURS_AVANT_ECART_PREUVE } from "../config";
-import { FORM_REF_PAGE_GUIDE } from "@/content/guides-reseau";
+import { FORM_REF_PAGE_GUIDE, FORM_REF_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 
 const JOUR = 24 * 3_600_000;
 const MAINTENANT = new Date("2026-12-01T04:23:00.000Z");
@@ -52,6 +52,9 @@ function contact(o: Record<string, unknown> = {}) {
     preuveStatut: "en_attente",
     preuveConfirmeeLe: null,
     preuveEcarteeLe: null,
+    infosStatut: "aucune",
+    infosVersion: null,
+    infosEmpreinte: null,
     ...o,
   };
 }
@@ -68,6 +71,28 @@ beforeEach(() => {
 afterEach(() => {
   if (AVANT === undefined) delete process.env["PREUVE_PAGE_GUIDE_ECART_ENABLED"];
   else process.env["PREUVE_PAGE_GUIDE_ECART_ENABLED"] = AVANT;
+});
+
+describe("case « informations »", () => {
+  it("🔴 cochée : l'écart écrit aussi UN consent_ecarte pour la ligne infos ; non cochée : rien", async () => {
+    bd.base.contacts.push(
+      contact({ infosStatut: "non_transmise", infosVersion: "i1", infosEmpreinte: "b".repeat(64) }),
+      contact({ emailKey: "h:autre@example.test", guideRequestId: "d2" }),
+    );
+    bd.base.demandes.push({ id: "d2", email: "autre@example.test" });
+    await ecarterPreuvesNonVerifiees(MAINTENANT);
+    const infos = bd.base.registre.filter((r) => r["formRef"] === FORM_REF_PAGE_GUIDE_INFOS);
+    expect(infos).toEqual([
+      expect.objectContaining({
+        personKey: `h:${ADRESSE}`,
+        action: "consent_ecarte",
+        occurredAt: MAINTENANT,
+        consentVersion: `i1.${"b".repeat(32)}`,
+      }),
+    ]);
+    expect(bd.base.registre).toHaveLength(3);
+    expect(bd.base.suppressions).toEqual([]);
+  });
 });
 
 describe("N jours", () => {
@@ -262,5 +287,53 @@ describe("réparation du registre (30 derniers jours)", () => {
     await reparerRegistrePreuves(MAINTENANT);
     expect(bd.base.registre).toHaveLength(1);
     expect(bd.base.registre[0]!["action"]).toBe("consent_ecarte");
+  });
+
+  it("🔴 ligne infos manquante au registre (ligne guide déjà là) : réécrite, UNE fois ; case non cochée : rien", async () => {
+    const clic = new Date(MAINTENANT.getTime() - 5 * JOUR);
+    bd.base.contacts.push(
+      contact({
+        preuveStatut: "confirmee",
+        preuveConfirmeeLe: clic,
+        infosStatut: "non_transmise",
+        infosVersion: "i1",
+        infosEmpreinte: "b".repeat(64),
+      }),
+      contact({
+        emailKey: "h:autre@example.test",
+        guideRequestId: "d2",
+        preuveStatut: "confirmee",
+        preuveConfirmeeLe: clic,
+      }),
+    );
+    bd.base.demandes.push({ id: "d2", email: "autre@example.test" });
+    // Le registre ne contient que les lignes « guide » (la ligne infos a échoué sans bloquer).
+    bd.base.registre.push(
+      {
+        personKey: `h:${ADRESSE}`,
+        formRef: FORM_REF_PAGE_GUIDE,
+        action: "consent_confirme",
+        occurredAt: clic,
+      },
+      {
+        personKey: "h:autre@example.test",
+        formRef: FORM_REF_PAGE_GUIDE,
+        action: "consent_confirme",
+        occurredAt: clic,
+      },
+    );
+    await reparerRegistrePreuves(MAINTENANT);
+    await reparerRegistrePreuves(MAINTENANT);
+    const infos = bd.base.registre.filter((r) => r["formRef"] === FORM_REF_PAGE_GUIDE_INFOS);
+    expect(infos).toEqual([
+      expect.objectContaining({
+        personKey: `h:${ADRESSE}`,
+        action: "consent_confirme",
+        occurredAt: clic,
+        consentVersion: `i1.${"b".repeat(32)}`,
+      }),
+    ]);
+    expect(bd.base.registre).toHaveLength(3);
+    expect(bd.base.suppressions).toEqual([]);
   });
 });

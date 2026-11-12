@@ -20,7 +20,7 @@
  * Les transitions sont des `updateMany` CONDITIONNELS : seul le passage qui change réellement
  * l'état écrit au registre (rejeu, double clic et concurrence n'écrivent rien de plus).
  */
-import { FORM_REF_PAGE_GUIDE } from "@/content/guides-reseau";
+import { FORM_REF_PAGE_GUIDE, FORM_REF_PAGE_GUIDE_INFOS } from "@/content/guides-reseau";
 import { recordConsentEvent, type ConsentAction } from "@/lib/consents";
 import { prisma } from "@/lib/prisma";
 import { JOURS_AVANT_ECART_PREUVE, preuveEcartActif } from "./config";
@@ -36,6 +36,19 @@ const CLE_MARQUE = "-";
 /** Version écrite au registre : celle de la ligne elle-même (texte de la case + début de l'empreinte). */
 function versionDeLaLigne(c: { versionConsentement: string; consentEmpreinte: string }): string {
   return `${c.versionConsentement}.${c.consentEmpreinte.slice(0, 32)}`;
+}
+
+/**
+ * Version de la ligne « informations » (case facultative), ou null si la case n'était pas cochée
+ * (`infosStatut` = « aucune ») ou si sa version n'est pas lisible.
+ */
+function versionInfosDeLaLigne(c: {
+  infosStatut: string;
+  infosVersion: string | null;
+  infosEmpreinte: string | null;
+}): string | null {
+  if (c.infosStatut === "aucune" || !c.infosVersion || !c.infosEmpreinte) return null;
+  return `${c.infosVersion}.${c.infosEmpreinte.slice(0, 32)}`;
 }
 
 function journal(transition: string, champs: Record<string, number>): void {
@@ -70,7 +83,14 @@ export async function confirmerPreuvesAuClic(guideRequestId: string, clicLe: Dat
     // Les lignes réellement passées par CE clic : même demande, même instant de confirmation.
     const lignes = await prisma.contactGuideReseau.findMany({
       where: { guideRequestId, preuveStatut: PREUVE_CONFIRMEE, preuveConfirmeeLe: clicLe },
-      select: { emailKey: true, versionConsentement: true, consentEmpreinte: true },
+      select: {
+        emailKey: true,
+        versionConsentement: true,
+        consentEmpreinte: true,
+        infosStatut: true,
+        infosVersion: true,
+        infosEmpreinte: true,
+      },
     });
     // L'adresse vient de la demande, jamais d'un journal.
     const demande = await prisma.guideRequest.findUnique({
@@ -89,6 +109,18 @@ export async function confirmerPreuvesAuClic(guideRequestId: string, clicLe: Dat
           occurredAt: clicLe,
         }).catch(() => false);
         if (ok) ecrites += 1;
+        // Case facultative « informations » cochée : sa preuve passe aussi « confirmée ».
+        const versionInfos = versionInfosDeLaLigne(l);
+        if (versionInfos !== null) {
+          const okInfos = await recordConsentEvent({
+            email: demande.email,
+            formRef: FORM_REF_PAGE_GUIDE_INFOS,
+            consentVersion: versionInfos,
+            action: "consent_confirme",
+            occurredAt: clicLe,
+          }).catch(() => false);
+          if (okInfos) ecrites += 1;
+        }
       }
     }
     journal(PREUVE_CONFIRMEE, { lignes: passees.count, registre: ecrites });
@@ -147,6 +179,9 @@ export async function ecarterPreuvesNonVerifiees(maintenant: Date): Promise<Resu
         emailKey: string;
         versionConsentement: string;
         consentEmpreinte: string;
+        infosStatut: string;
+        infosVersion: string | null;
+        infosEmpreinte: string | null;
         guideRequest: { email: string } | null;
       }> = await prisma.contactGuideReseau.findMany({
         where: {
@@ -173,6 +208,9 @@ export async function ecarterPreuvesNonVerifiees(maintenant: Date): Promise<Resu
           emailKey: true,
           versionConsentement: true,
           consentEmpreinte: true,
+          infosStatut: true,
+          infosVersion: true,
+          infosEmpreinte: true,
           guideRequest: { select: { email: true } },
         },
       });
@@ -214,6 +252,16 @@ export async function ecarterPreuvesNonVerifiees(maintenant: Date): Promise<Resu
             action: "consent_ecarte",
             occurredAt: maintenant,
           }).catch(() => false);
+          const versionInfos = versionInfosDeLaLigne(l);
+          if (versionInfos !== null) {
+            await recordConsentEvent({
+              email: l.guideRequest.email,
+              formRef: FORM_REF_PAGE_GUIDE_INFOS,
+              consentVersion: versionInfos,
+              action: "consent_ecarte",
+              occurredAt: maintenant,
+            }).catch(() => false);
+          }
         }
       }
       if (lot.length < TAILLE_LOT) break;
@@ -257,6 +305,9 @@ export async function reparerRegistrePreuves(maintenant: Date): Promise<number> 
         preuveStatut: true,
         preuveConfirmeeLe: true,
         preuveEcarteeLe: true,
+        infosStatut: true,
+        infosVersion: true,
+        infosEmpreinte: true,
         guideRequest: { select: { email: true } },
       },
     });
@@ -271,15 +322,39 @@ export async function reparerRegistrePreuves(maintenant: Date): Promise<number> 
         where: { personKey: c.emailKey, formRef: FORM_REF_PAGE_GUIDE, action, occurredAt: quand },
         select: { id: true },
       });
-      if (existante !== null) continue;
-      const ok = await recordConsentEvent({
-        email: c.guideRequest.email,
-        formRef: FORM_REF_PAGE_GUIDE,
-        consentVersion: versionDeLaLigne(c),
-        action,
-        occurredAt: quand,
-      }).catch(() => false);
-      if (ok) reparees += 1;
+      if (existante === null) {
+        const ok = await recordConsentEvent({
+          email: c.guideRequest.email,
+          formRef: FORM_REF_PAGE_GUIDE,
+          consentVersion: versionDeLaLigne(c),
+          action,
+          occurredAt: quand,
+        }).catch(() => false);
+        if (ok) reparees += 1;
+      }
+      // Case facultative « informations » : sa ligne se vérifie à part (elle peut manquer seule).
+      const versionInfos = versionInfosDeLaLigne(c);
+      if (versionInfos !== null) {
+        const infosExistante = await prisma.consentEvent.findFirst({
+          where: {
+            personKey: c.emailKey,
+            formRef: FORM_REF_PAGE_GUIDE_INFOS,
+            action,
+            occurredAt: quand,
+          },
+          select: { id: true },
+        });
+        if (infosExistante === null) {
+          const okInfos = await recordConsentEvent({
+            email: c.guideRequest.email,
+            formRef: FORM_REF_PAGE_GUIDE_INFOS,
+            consentVersion: versionInfos,
+            action,
+            occurredAt: quand,
+          }).catch(() => false);
+          if (okInfos) reparees += 1;
+        }
+      }
     }
     if (reparees > 0) journal("reparation", { lignes: reparees });
     return reparees;

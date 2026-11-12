@@ -12,7 +12,7 @@ const DOSSIER = join(
   process.cwd(),
   "prisma",
   "migrations",
-  "20261111120000_contacts_guide_reseau_preuve_statut",
+  "20261112000000_contacts_guide_reseau_preuve_statut",
 );
 const sansCommentaires = (t: string): string =>
   t
