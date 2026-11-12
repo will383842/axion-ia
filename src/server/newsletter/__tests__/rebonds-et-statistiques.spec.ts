@@ -37,8 +37,6 @@ vi.mock("@/lib/prisma", () => ({
     emailOpposition: { upsert: vi.fn(async () => ({})) },
     emailOutbox: { findMany: (...a: unknown[]) => d.outboxFindMany(...a) },
     emailLog: { findMany: (...a: unknown[]) => d.logFindMany(...a) },
-    // Portée business : l'abonné connu reçoit aussi une opposition d'adresse locale.
-    emailOpposition: { upsert: async () => ({}) },
     guideRequest: {
       count: (...a: unknown[]) => d.guideCount(...a),
       findMany: (...a: unknown[]) => d.guideFindMany(...a),
