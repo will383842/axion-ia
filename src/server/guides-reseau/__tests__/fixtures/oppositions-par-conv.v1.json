@@ -1,0 +1,14 @@
+{
+  "requete": {
+    "schemaVersion": 1,
+    "convs": ["c1_AbCdEf0123456789_-xyZQ", "c1_ZyXwVu9876543210_-aBcD"]
+  },
+  "reponse": {
+    "ok": true,
+    "schemaVersion": 1,
+    "resultats": [
+      { "conv": "c1_AbCdEf0123456789_-xyZQ", "opposee": true },
+      { "conv": "c1_ZyXwVu9876543210_-aBcD", "opposee": false }
+    ]
+  }
+}

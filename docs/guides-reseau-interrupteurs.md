@@ -39,6 +39,15 @@ seau de débit à part. Le Studio y transmet le « stop » d'une personne qui av
 Aucune suppression. Référence inconnue : même réponse 200, rien d'écrit. Échec de l'opposition ou du CRM : 500, le contact
 n'est pas écarté, le Studio renvoie. Côté Studio : `OPPOSITIONS_PAR_REF_ENABLED`, à allumer après le site.
 
+### Variante « lecture » : `POST /api/interne/oppositions-par-conv`
+
+Même interrupteur (`OPPOSITIONS_RESEAU_ENABLED`, vérifié en premier : éteint = 503, aucune lecture), même secret, seau de
+débit à part. Le Studio demande par lot (1 à 100 `conv`, sans doublon) si des conversations sont opposées côté site :
+corps strict `{ schemaVersion: 1, convs: [...] }`, réponse `{ ok, schemaVersion: 1, resultats: [{ conv, opposee }] }` dans
+l'ordre de la requête. Une conv est opposée si sa marque `oppositions_conv_ref` existe, ou si un contact a un `merci_statut`
+écarté, ou si l'adresse du contact est dans `email_oppositions` (effacement compris). Le désabonnement de la lettre ne compte
+pas. **Lecture seule**, fermée : toute erreur de lecture = 500, jamais de résultat partiel ni de `false` par défaut.
+
 ## `PAGE_GUIDE_RESEAU_ENABLED` — la page « Recevoir le guide » (lot S2)
 
 Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.com/guide-reseau?j=<jeton>`
