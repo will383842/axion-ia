@@ -18465,7 +18465,7 @@ model CibleReseau {
 }
 
 /// F1a-bis — liaison mot → cible. Un mot mène à UNE cible par réseau (`@@unique([mot, reseau])`) ;
-/// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition.
+/// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition — règle appliquée par le code ET reposée en SQL (contrainte `mots_cibles_mot_forme`).
 /// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
 model MotCible {
   id        String       @id @default(uuid()) @db.Uuid

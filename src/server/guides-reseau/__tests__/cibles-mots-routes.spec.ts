@@ -5,7 +5,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
 
-const { cibles, mots } = vi.hoisted(() => ({
+const { cibles, mots, upserts } = vi.hoisted(() => ({
+  upserts: [] as string[],
   cibles: [] as Record<string, unknown>[],
   mots: [] as Record<string, unknown>[],
 }));
@@ -13,14 +14,8 @@ const { cibles, mots } = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     cibleReseau: {
-      findMany: async () =>
-        cibles.map((c) => ({
-          code: c.code,
-          type: c.type,
-          titre: c.titre,
-          actif: c.actif,
-          test: c.test,
-        })),
+      // LIGNE COMPLÈTE (url, cheminPdf, id…) : c'est la route, pas le faux, qui doit retirer les champs.
+      findMany: async () => cibles.map((c) => ({ ...c })),
       findUnique: async ({ where }: { where: { code: string } }) =>
         cibles.find((c) => c.code === where.code) ?? null,
       upsert: async ({
@@ -33,8 +28,9 @@ vi.mock("@/lib/prisma", () => ({
         update: Record<string, unknown>;
       }) => {
         const e = cibles.find((c) => c.code === where.code);
+        upserts.push(where.code);
         if (e) Object.assign(e, update);
-        else cibles.push({ test: false, version: 1, actif: true, ...create });
+        else cibles.push({ id: "uuid-x", test: false, version: 1, actif: true, ...create });
       },
     },
     motCible: {
@@ -117,15 +113,22 @@ const cible = (c: unknown, o: Opt = {}) => ecrire(POST_CIBLE, CH.cible, c, o);
 const mot = (c: unknown, o: Opt = {}) => ecrire(POST_MOT, CH.mots, c, o);
 
 const adresse = {
+  code: "adr-offre01",
   type: "adresse",
   titre: "TEST Offre de rentrée",
   url: "https://axion-ia.com/fr/offre",
 };
-const guide = { type: "guide", titre: "TEST Guide second", cheminPdf: "imprimes/second.pdf" };
+const guide = {
+  code: "gde-second1",
+  type: "guide",
+  titre: "TEST Guide second",
+  cheminPdf: "imprimes/second.pdf",
+};
 
 beforeEach(() => {
   cibles.length = 0;
   mots.length = 0;
+  upserts.length = 0;
   vi.stubEnv("GUIDES_RESEAU_ENABLED", "true");
   vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", SECRET);
   vi.stubEnv("CIBLES_ADRESSES_HOTES", "");
@@ -156,12 +159,92 @@ describe("interrupteur et signature (les quatre handlers)", () => {
   });
 });
 
+describe("secret et signature liée à la route", () => {
+  const appels = (): [string, () => Promise<Response>][] => [
+    ["GET catalogue", () => lire(GET_CATALOGUE, CH.catalogue)],
+    ["GET mots", () => lire(GET_MOTS, CH.mots)],
+    ["POST cible", () => cible(adresse)],
+    ["POST mot", () => mot({ mot: "ia", reseau: "tous", codeCible: "gde-abcdef" })],
+  ];
+  it.each([
+    ["absent", undefined],
+    ["vide", ""],
+    ["31 caractères", "s".repeat(31)],
+  ])("secret %s → 503 reception_non_configuree sur les 4 routes", async (_n, v) => {
+    vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", v as string);
+    if (v === undefined) vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", undefined);
+    for (const [nom, f] of appels()) {
+      const r = await f();
+      expect(r.status, nom).toBe(503);
+      expect(await r.json(), nom).toMatchObject({ erreur: "reception_non_configuree" });
+    }
+    expect(cibles).toHaveLength(0);
+  });
+  it("PAS de repli sur le secret des vidéos : signé avec lui, 503 ou refus, jamais écrit", async () => {
+    const SECRET_VIDEOS = "v".repeat(40);
+    vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", undefined);
+    vi.stubEnv("VIDEOS_STUDIO_HMAC_SECRET", SECRET_VIDEOS);
+    vi.stubEnv("VIDEOS_SITE_ENABLED", "true");
+    for (const [nom, f] of appels()) {
+      expect((await f()).status, nom).toBe(503);
+    }
+    // Secret des guides présent : un corps signé avec le secret des VIDÉOS est refusé.
+    vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", SECRET);
+    expect((await cible(adresse, { secret: SECRET_VIDEOS })).status).toBe(401);
+    expect(cibles).toHaveLength(0);
+  });
+  it("corps modifié après signature → 401, rien écrit", async () => {
+    const signe = JSON.stringify(adresse);
+    const falsifie = JSON.stringify({ ...adresse, titre: "TEST Titre falsifié" });
+    const r = await POST_CIBLE(
+      new NextRequest(`http://localhost${CH.cible}`, {
+        method: "POST",
+        headers: { "content-type": "application/json", ...signer("POST", CH.cible, signe) },
+        body: falsifie,
+      }),
+    );
+    expect(r.status).toBe(401);
+    expect(cibles).toHaveLength(0);
+  });
+  it("même signature rejouée sur une autre route → 401", async () => {
+    const corps = JSON.stringify(adresse);
+    const entetes = signer("POST", CH.cible, corps);
+    const r = await POST_MOT(
+      new NextRequest(`http://localhost${CH.mots}`, {
+        method: "POST",
+        headers: { "content-type": "application/json", ...entetes },
+        body: corps,
+      }),
+    );
+    expect(r.status).toBe(401);
+    expect(mots).toHaveLength(0);
+  });
+  it("même signature rejouée avec une autre méthode (GET signé utilisé en POST) → 401", async () => {
+    const entetes = signer("GET", CH.cible, "");
+    const r = await POST_CIBLE(
+      new NextRequest(`http://localhost${CH.cible}`, {
+        method: "POST",
+        headers: { "content-type": "application/json", ...entetes },
+        body: "",
+      }),
+    );
+    expect(r.status).toBe(401);
+    // Signature d'un POST sur la même adresse que le GET du catalogue.
+    const e2 = signer("POST", CH.catalogue, "");
+    const r2 = await GET_CATALOGUE(
+      new NextRequest(`http://localhost${CH.catalogue}`, { method: "GET", headers: e2 }),
+    );
+    expect(r2.status).toBe(401);
+    expect(cibles).toHaveLength(0);
+  });
+});
+
 describe("POST /cibles-reseau", () => {
   it("adresse valide : enregistrée, code adr-, listée sans son adresse", async () => {
     const r = await cible(adresse);
     expect(r.status).toBe(200);
     const { code } = (await r.json()) as { code: string };
-    expect(code).toMatch(/^adr-[a-z0-9-]{6,24}$/);
+    expect(code).toBe("adr-offre01");
     const liste = (await (await lire(GET_CATALOGUE, CH.catalogue)).json()) as unknown[];
     expect(liste).toContainEqual({
       code,
@@ -172,17 +255,37 @@ describe("POST /cibles-reseau", () => {
     });
     expect(JSON.stringify(liste)).not.toMatch(/http|axion-ia\.com|pdf/);
   });
+  it("le catalogue ne rend JAMAIS url ni cheminPdf, même si la base renvoie la ligne complète", async () => {
+    await cible(adresse);
+    await cible(guide);
+    // La ligne en base porte bien les deux champs sensibles : la route doit les retirer elle-même.
+    expect(cibles.some((c) => typeof c.url === "string")).toBe(true);
+    expect(cibles.some((c) => typeof c.cheminPdf === "string")).toBe(true);
+    const liste = (await (await lire(GET_CATALOGUE, CH.catalogue)).json()) as Record<
+      string,
+      unknown
+    >[];
+    expect(liste).toHaveLength(2);
+    for (const e of liste) {
+      expect(Object.keys(e).sort()).toEqual(["actif", "code", "test", "titre", "type"]);
+      expect(e).not.toHaveProperty("url");
+      expect(e).not.toHaveProperty("cheminPdf");
+      expect(e).not.toHaveProperty("id");
+    }
+  });
   it("guide valide : code gde-, chemin du PDF jamais rendu", async () => {
     const { code } = (await (await cible(guide)).json()) as { code: string };
-    expect(code).toMatch(/^gde-[a-z0-9-]{6,24}$/);
+    expect(code).toBe("gde-second1");
     const txt = JSON.stringify(await (await lire(GET_CATALOGUE, CH.catalogue)).json());
     expect(txt).toContain(code);
     expect(txt).not.toMatch(/pdf|imprimes/);
   });
   it("sans limite de nombre : 30 guides et 30 adresses", async () => {
     for (let i = 0; i < 30; i++) {
-      expect((await cible({ ...guide, titre: `TEST Guide numéro ${i}` })).status).toBe(200);
-      expect((await cible({ ...adresse, titre: `TEST Adresse numéro ${i}` })).status).toBe(200);
+      const g = { ...guide, code: `gde-n${i}-aaaa`, titre: `TEST Guide numéro ${i}` };
+      const a = { ...adresse, code: `adr-n${i}-aaaa`, titre: `TEST Adresse numéro ${i}` };
+      expect((await cible(g)).status).toBe(200);
+      expect((await cible(a)).status).toBe(200);
     }
     expect(cibles).toHaveLength(60);
   });
@@ -214,9 +317,54 @@ describe("POST /cibles-reseau", () => {
     ["préfixe ne correspond pas au type", { ...adresse, code: "gde-abcdef" }],
     ["titre trop court", { ...adresse, titre: "ab" }],
     ["champ inconnu", { ...adresse, extra: 1 }],
+    ["chemin avec .. au milieu", { ...guide, cheminPdf: "a/../x.pdf" }],
+    ["chemin avec .. collé à un nom", { ...guide, cheminPdf: "imprimes/x..pdf" }],
+    ["chemin avec //", { ...guide, cheminPdf: "imprimes//x.pdf" }],
+    ["adresse avec // après l'hôte", { ...adresse, url: "https://axion-ia.com//evil.tld/x" }],
+    ["adresse avec // plus loin", { ...adresse, url: "https://axion-ia.com/fr//evil.tld" }],
   ])("refuse : %s (422, rien enregistré)", async (_n, corps) => {
     expect((await cible(corps)).status).toBe(422);
     expect(cibles).toHaveLength(0);
+  });
+  it("SANS code : refusé corps_invalide, rien enregistré, aucun code inventé", async () => {
+    const { code: _c, ...sansCode } = adresse;
+    const r = await cible(sansCode);
+    expect(r.status).toBe(422);
+    expect(await r.json()).toMatchObject({ ok: false, erreur: "corps_invalide" });
+    const { code: _g, ...guideSansCode } = guide;
+    expect((await cible(guideSansCode)).status).toBe(422);
+    expect(cibles).toHaveLength(0);
+    expect(upserts).toHaveLength(0);
+  });
+  it("IDEMPOTENT : le même corps rejoué deux fois = une seule fiche, même code", async () => {
+    const a = await (await cible(adresse)).json();
+    const b = await (await cible(adresse)).json();
+    expect(a).toEqual(b);
+    expect(cibles).toHaveLength(1);
+    expect(upserts).toEqual(["adr-offre01", "adr-offre01"]);
+  });
+  it("ordre des contrôles : le code est refusé avant le titre", async () => {
+    const r = await cible({ ...adresse, code: "adr-ab", titre: "x" });
+    expect(await r.json()).toMatchObject({ erreur: "code_invalide" });
+    const r2 = await cible({ ...adresse, titre: "x", url: "http://non.test" });
+    expect(await r2.json()).toMatchObject({ erreur: "titre_invalide" });
+  });
+  it("valeurs par défaut : actif=true, test=false, version=1", async () => {
+    await cible(adresse);
+    expect(cibles[0]).toMatchObject({ actif: true, test: false, version: 1 });
+  });
+  it("fiche de test créée INACTIVE si actif n'est pas transmis", async () => {
+    await cible({ ...adresse, test: true });
+    expect(cibles[0]).toMatchObject({ test: true, actif: false });
+  });
+  it("fiche de test avec actif:true explicite : reste active", async () => {
+    await cible({ ...adresse, test: true, actif: true });
+    expect(cibles[0]).toMatchObject({ test: true, actif: true });
+  });
+  it("mise à jour d'une fiche de test sans actif : actif inchangé", async () => {
+    await cible({ ...adresse, test: true, actif: true });
+    await cible({ ...adresse, titre: "TEST Offre bis", test: true });
+    expect(cibles[0]).toMatchObject({ titre: "TEST Offre bis", actif: true });
   });
   it("hôte ajouté par CIBLES_ADRESSES_HOTES accepté", async () => {
     vi.stubEnv("CIBLES_ADRESSES_HOTES", "partenaire.test");

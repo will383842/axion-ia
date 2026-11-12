@@ -8,13 +8,12 @@
  * écrit ne s'ouvre pas avec la clé d'une autre). Même interrupteur `GUIDES_RESEAU_ENABLED`, mais
  * éteint = 404 (la route fait comme si elle n'existait pas).
  *
- * Anti-rejeu : l'écriture est un « créer ou mettre à jour » IDEMPOTENT ; rejouer une requête
- * dans la fenêtre de 300 s reproduit le même état, sans nouvel effet (même décision que
- * `oppositions-reseau`). Le nonce est contrôlé en forme, pas mémorisé.
+ * Anti-rejeu : l'écriture est un « créer ou mettre à jour » PAR CODE, et le code est OBLIGATOIRE
+ * (le Studio l'envoie toujours) : rejouer le même corps dans la fenêtre de 300 s reproduit le même
+ * état, sans nouvelle fiche (même décision que `oppositions-reseau`). Le nonce est contrôlé en forme, pas mémorisé.
  *
  * Le catalogue ne rend JAMAIS l'adresse, le chemin du PDF ni aucune donnée de personne.
  */
-import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -92,7 +91,7 @@ function lireCorps(corps: Buffer): unknown {
 
 const CorpsCible = z
   .object({
-    code: z.string().optional(),
+    code: z.string(),
     type: z.enum(TYPES_CIBLE),
     titre: z.unknown(),
     cheminPdf: z.string().nullable().optional(),
@@ -103,10 +102,6 @@ const CorpsCible = z
   })
   .strict();
 
-function nouveauCode(type: TypeCible): string {
-  return `${type === "guide" ? "gde" : "adr"}-${crypto.randomBytes(6).toString("hex")}`;
-}
-
 /** Crée ou met à jour une cible. Un guide a un chemin de PDF et pas d'adresse ; une adresse l'inverse. */
 export async function enregistrerCible(req: NextRequest): Promise<Response> {
   const entree = await entreeSignee(req, "POST", "/api/interne/cibles-reseau");
@@ -115,10 +110,8 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
   if (json === undefined) return refus(400, "corps_illisible");
   const lu = CorpsCible.safeParse(json);
   if (!lu.success) return refus(422, "corps_invalide");
-  const { type, code: codeFourni, actif, test, version } = lu.data;
-  if (codeFourni !== undefined && !codeAccordeAuType(codeFourni, type)) {
-    return refus(422, "code_invalide");
-  }
+  const { type, code, actif, test, version } = lu.data;
+  if (!codeAccordeAuType(code, type)) return refus(422, "code_invalide");
   const titre = validerTitre(lu.data.titre);
   if (titre === null) return refus(422, "titre_invalide");
 
@@ -135,7 +128,6 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
     url = verdict.url;
   }
 
-  const code = codeFourni ?? nouveauCode(type);
   const champs = {
     titre,
     cheminPdf,
@@ -144,9 +136,17 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
     ...(actif !== undefined ? { actif } : {}),
     ...(test !== undefined ? { test } : {}),
   };
+  // Fiche de test : créée INACTIVE si `actif` n'est pas transmis (jamais proposée par défaut).
+  // Une mise à jour ne touche `actif` que s'il est transmis.
+  const actifCreation = actif ?? (test === true ? false : undefined);
   await prisma.cibleReseau.upsert({
     where: { code },
-    create: { code, type, ...champs },
+    create: {
+      code,
+      type,
+      ...champs,
+      ...(actifCreation !== undefined ? { actif: actifCreation } : {}),
+    },
     update: champs,
   });
   return reponseJson(200, { ok: true, code });

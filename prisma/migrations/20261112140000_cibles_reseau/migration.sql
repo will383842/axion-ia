@@ -1,7 +1,7 @@
 -- F1a-bis : catalogue unique de cibles (guide ou adresse) et liaisons mot -> cible
 -- (décision de Williams du 12/11/2026 : rien n'est figé dans le code, tout se saisit par l'écran).
 -- ADDITIVE : deux nouvelles tables, aucune colonne existante modifiée ni supprimée, aucun UPDATE / DELETE.
--- Retour arrière : rollback.sql (DROP TABLE IF EXISTS).
+-- Retour arrière : rollback.sql (DROP TABLE IF EXISTS) — uniquement avant toute saisie par l'écran.
 CREATE TABLE "cibles_reseau" (
     "id" UUID NOT NULL,
     "code" VARCHAR(28) NOT NULL,
@@ -38,7 +38,11 @@ CREATE TABLE "mots_cibles" (
     "modifie_le" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "mots_cibles_pkey" PRIMARY KEY ("id"),
-    CONSTRAINT "mots_cibles_mot_forme" CHECK ("mot" ~ '^[a-z0-9]{2,20}$'),
+    CONSTRAINT "mots_cibles_mot_forme" CHECK (
+        "mot" ~ '^[a-z0-9]{2,20}$'
+        AND "mot" !~ '^[0-9]+$'
+        AND "mot" NOT IN ('stop','stoppez','arret','arrete','arretez','arreter','desinscrire','desinscription','desinscrivez','desabonner','desabonnez','desabonnement')
+    ),
     CONSTRAINT "mots_cibles_reseau_valeur" CHECK ("reseau" IN ('facebook', 'instagram', 'linkedin', 'tiktok', 'tous'))
 );
 

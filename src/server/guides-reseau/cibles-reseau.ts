@@ -77,6 +77,9 @@ export function validerAdresse(
   if (!hotes.includes(u.hostname.toLowerCase())) {
     return { ok: false, raison: "adresse_hote_non_autorise" };
   }
+  // `//` dans le chemin : certains relais le lisent comme un changement d'hôte
+  // (`https://axion-ia.com//evil.tld/x`). Raison existante du Studio, sans en inventer une.
+  if (u.pathname.includes("//")) return { ok: false, raison: "adresse_illisible" };
   if (u.href.length > URL_MAX) return { ok: false, raison: "adresse_trop_longue" };
   return { ok: true, url: u.href };
 }
