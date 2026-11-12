@@ -18440,3 +18440,18 @@ model AuditTerrainRapport {
   @@index([valideParId], map: "audit_terrain_rapports_valide_par_id_idx")
   @@map("audit_terrain_rapports")
 }
+
+/// F1a (2026-11-12) — adresses de page qu'un mot peut cibler (parcours « mot → guide ou adresse de page »).
+/// Hôte contrôlé par liste blanche à l'écriture (`CIBLES_ADRESSES_HOTES`). Aucune ligne n'est supprimée : on désactive (`actif`).
+/// rgpd: technique — adresse publique du site et son titre éditorial ; aucune donnée sur une personne
+model CibleAdresse {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique @db.VarChar(28)
+  titre     String   @db.VarChar(120)
+  url       String   @db.VarChar(300)
+  actif     Boolean  @default(true)
+  creeLe    DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@map("cibles_adresses")
+}
