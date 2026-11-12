@@ -172,15 +172,15 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
   it("🔒 le module et ses imports directs n'effacent rien (erase, deleteMany, DELETE)", () => {
     const racine = process.cwd();
     const lire = (f: string) => readFileSync(join(racine, f), "utf8");
-    const module = lire("src/server/rgpd/ecarter-au-lieu-d-effacer.ts");
-    const imports = [...module.matchAll(/from\s+"@\/([^"]+)"/g)]
+    const sourceModule = lire("src/server/rgpd/ecarter-au-lieu-d-effacer.ts");
+    const imports = [...sourceModule.matchAll(/from\s+"@\/([^"]+)"/g)]
       .map((m) => m[1] as string)
       .filter((c) => !c.startsWith("lib/prisma") && c !== "lib/rgpd-erase")
       .map((c) => `src/${c}.ts`)
       .filter((f) => existsSync(join(racine, f)));
     // `rgpd-erase` garde ses effaceurs (outil du geste humain) : seule la fonction d'écart passe.
-    const deRgpdErase = module.match(/import\s*\{([^}]*)\}\s*from\s*"@\/lib\/rgpd-erase"/);
-    expect(module).not.toMatch(/import\s*\*\s*as\s+\w+\s+from\s*"@\/lib\/rgpd-erase"/);
+    const deRgpdErase = sourceModule.match(/import\s*\{([^}]*)\}\s*from\s*"@\/lib\/rgpd-erase"/);
+    expect(sourceModule).not.toMatch(/import\s*\*\s*as\s+\w+\s+from\s*"@\/lib\/rgpd-erase"/);
     expect(
       (deRgpdErase?.[1] ?? "")
         .split(",")
