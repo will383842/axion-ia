@@ -3,7 +3,7 @@
  * n'a pas encore été validée. Ne porte que la référence HACHÉE (jamais d'adresse).
  * 🔴 Aucune suppression. Une lecture ou une écriture en erreur LÈVE : l'appelant ne doit pas envoyer (fermé).
  */
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "../../../prisma/generated/client";
 import { prisma } from "@/lib/prisma";
 
 /**
