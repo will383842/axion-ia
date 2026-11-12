@@ -143,7 +143,7 @@ ${enteteFaitsLlms()
 
 ## Positionnement
 
-Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA générant un ROI chiffré et mesurable. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
+Axion-IA est un cabinet IA opérationnel pour entreprises. Nous intervenons sur site (ou à distance) pour identifier, démontrer et implémenter des usages IA qui répondent à des besoins précis de l’entreprise. Pas de logiciel générique sur abonnement, pas de mensualité — une intervention ponctuelle, un audit chiffré, ou une implémentation production-ready.
 
 ## Direction — qui dirige Axion-IA
 
