@@ -3,6 +3,7 @@
  * `rgpd_effacement_a_traiter` n'est pas résolue ; la résolution donne la date « faite le ».
  */
 
+import { cibleIdAlerteDepuisEmpreinte } from "@/server/rgpd/constantes";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const d = vi.hoisted(() => ({
@@ -41,7 +42,12 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
   it("alerte non résolue → à traiter, pas de date", async () => {
     d.journal = [trace("j1")];
     d.alertes = [
-      { cibleId: "h-1", resolue: false, resolueAt: null, metadata: { journalId: "j1" } },
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: false,
+        resolueAt: null,
+        metadata: { journalId: "j1" },
+      },
     ];
     const [x] = await listerDemandes();
     expect(x?.aTraiter).toBe(true);
@@ -51,7 +57,12 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
   it("alerte résolue (retrouvée par journalId) → faite, avec la date de résolution", async () => {
     d.journal = [trace("j1", "autre")];
     d.alertes = [
-      { cibleId: "h-1", resolue: true, resolueAt: RESOLUE, metadata: { journalId: "j1" } },
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: { journalId: "j1" },
+      },
     ];
     const [x] = await listerDemandes();
     expect(x?.aTraiter).toBe(false);
@@ -60,7 +71,14 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
 
   it("alerte résolue (retrouvée par l'empreinte) → faite", async () => {
     d.journal = [trace("j2", "h-9")];
-    d.alertes = [{ cibleId: "h-9", resolue: true, resolueAt: RESOLUE, metadata: {} }];
+    d.alertes = [
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-9"),
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: {},
+      },
+    ];
     const [x] = await listerDemandes();
     expect(x?.aTraiter).toBe(false);
     expect(x?.faiteLe).toEqual(RESOLUE);
@@ -77,8 +95,18 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     d.journal = [trace("j2"), trace("j1")];
     d.alertes = [
       // la plus récente en tête, même empreinte
-      { cibleId: "h-1", resolue: false, resolueAt: null, metadata: { journalId: "j2" } },
-      { cibleId: "h-1", resolue: true, resolueAt: RESOLUE, metadata: { journalId: "j1" } },
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: false,
+        resolueAt: null,
+        metadata: { journalId: "j2" },
+      },
+      {
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
+        resolue: true,
+        resolueAt: RESOLUE,
+        metadata: { journalId: "j1" },
+      },
     ];
     const lignes = await listerDemandes();
     const j1 = lignes.find((x) => x.id === "j1");
@@ -103,7 +131,7 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     d.journal = [trace("j2"), trace("j1")];
     d.alertes = [
       {
-        cibleId: "h-1",
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
         resolue: true,
         resolueAt: RESOLUE,
         metadata: { journalId: "j1", journalIds: ["j2"] },
@@ -120,7 +148,7 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     d.journal = [trace("j2")];
     d.alertes = [
       {
-        cibleId: "h-1",
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
         resolue: false,
         resolueAt: null,
         metadata: { journalId: "j1", journalIds: ["j2"] },
@@ -129,7 +157,7 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     expect((await listerDemandes())[0]?.aTraiter).toBe(true);
     d.alertes = [
       {
-        cibleId: "h-1",
+        cibleId: cibleIdAlerteDepuisEmpreinte("h-1"),
         resolue: true,
         resolueAt: RESOLUE,
         metadata: { journalId: "j1", journalIds: ["j2"] },

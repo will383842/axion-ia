@@ -33,15 +33,20 @@ import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { mettreContactsAEcart } from "@/server/guides-reseau/mise-a-l-ecart";
 import { ecarterRapportsAvantAuditPourEmail } from "@/lib/rgpd-erase";
 
-import { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT } from "./constantes";
+import {
+  ACTION_DEMANDE_EFFACEMENT,
+  CODE_ALERTE_EFFACEMENT,
+  cibleIdAlerteDepuisEmpreinte,
+} from "./constantes";
 
 export { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT };
 
-export type OrigineDemandeEffacement = "libre-service" | "console-lettre";
+export type OrigineDemandeEffacement = "libre-service" | "console-lettre" | "message-prive";
 
 const LIBELLE_ORIGINE: Readonly<Record<OrigineDemandeEffacement, string>> = {
   "libre-service": "lien signé du site (/mes-donnees)",
   "console-lettre": "console › Lettre d'information",
+  "message-prive": "message privé reçu sur un réseau social",
 };
 
 export interface DemandeEcart {
@@ -75,6 +80,11 @@ export interface ResultatEcart {
   readonly rapportsEcartes: number;
   readonly journalId: string | null;
   readonly etapesEnEchec: readonly EtapeEcart[];
+}
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function estUuid(v: string | null): v is string {
+  return v !== null && UUID_RE.test(v);
 }
 
 function nomErreur(e: unknown): string {
@@ -167,6 +177,7 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
   ]);
 
   // 6. Preuve de la demande (aucune adresse en clair).
+  const reference = d.cible?.id ?? d.jti ?? null;
   let journalId: string | null = null;
   try {
     const ligne = await prisma.activityLog.create({
@@ -174,9 +185,12 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
         adminUserId: d.adminUserId ?? null,
         action: ACTION_DEMANDE_EFFACEMENT,
         targetType: d.cible?.type ?? (d.origine === "libre-service" ? "self_service" : "console"),
-        targetId: d.cible?.id ?? d.jti ?? null,
+        // `activity_logs.target_id` est une colonne UUID : une clé d'idempotence ou un jti qui n'en
+        // est pas un ferait échouer la trace. Il va alors dans `changes.reference`.
+        targetId: estUuid(reference) ? reference : null,
         changes: {
           origine: d.origine,
+          ...(reference && !estUuid(reference) ? { reference } : {}),
           ...(d.motif ? { reason: d.motif } : {}),
           // Empreinte HMAC du site, et SHA-256 de l'adresse normalisée (relu par la liste de
           // suppression exportée, `server/newsletter/exports.ts`).
@@ -218,7 +232,7 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
       titre: "Demande d'effacement RGPD à traiter à la main",
       message,
       cibleType: "EmailOpposition",
-      cibleId: empreinte,
+      cibleId: cibleIdAlerteDepuisEmpreinte(empreinte),
       metadata: { journalId, origine: d.origine },
     });
     // Demande dédoublonnée (alerte déjà ouverte, ou résolue le même jour avec le même
@@ -228,7 +242,7 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
       const existante = await prisma.alerteSysteme.findFirst({
         where: {
           code: CODE_ALERTE_EFFACEMENT,
-          cibleId: empreinte,
+          cibleId: cibleIdAlerteDepuisEmpreinte(empreinte),
           OR: [{ resolue: false }, { message }],
         },
         orderBy: { createdAt: "desc" },

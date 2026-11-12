@@ -39,6 +39,9 @@
 // Ce module le RÉEXPORTE à l'identique — mêmes références — et aucun appelant
 // existant ne change. Le worker, lui, importe `verdict-envoi` directement.
 
+import { redactEmail } from "@/lib/pii-redaction";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { cibleIdAlerteDepuisEmpreinte } from "@/server/rgpd/constantes";
 import type { VerdictEnvoi } from "./verdict-envoi";
 
 export {
@@ -49,6 +52,12 @@ export {
   verdictAvantEnvoi,
 } from "./verdict-envoi";
 export type { ContexteEnvoi, MotifRetenue, VerdictEnvoi } from "./verdict-envoi";
+
+/** UUID déterministe tiré de l'empreinte de l'adresse (la colonne `cible_id` est un UUID). */
+function cibleIdAlerteDepuisAdresse(adresse: string): string | undefined {
+  const empreinte = hashEmailForLookup(adresse);
+  return empreinte ? cibleIdAlerteDepuisEmpreinte(empreinte) : undefined;
+}
 
 /**
  * Trace visible d'un envoi retenu. Deux canaux, aucun des deux n'échoue
@@ -62,8 +71,11 @@ export async function signalerRetenue(
   verdict: Extract<VerdictEnvoi, { retenu: true }>,
 ): Promise<void> {
   const quand = verdict.depuis ? ` (depuis le ${verdict.depuis.toISOString().slice(0, 10)})` : "";
+  // Personne écartée pour effacement : ni adresse en clair dans les journaux du serveur (ils
+  // vivent hors de la base, donc hors de tout effacement fait à la main), ni dans la cible.
+  const ecarte = verdict.motif === "ecarte_effacement";
   console.error(
-    `[email-suppression] envoi « ${template} » RETENU vers ${destinataire} : ${verdict.motif}${quand}.`,
+    `[email-suppression] envoi « ${template} » RETENU vers ${ecarte ? redactEmail(destinataire) : destinataire} : ${verdict.motif}${quand}.`,
   );
   const titre =
     verdict.motif === "ecarte_effacement"
@@ -111,11 +123,11 @@ export async function signalerRetenue(
       titre,
       message,
       cibleType: "EmailLog",
-      cibleId: destinataire,
+      cibleId: ecarte ? (cibleIdAlerteDepuisAdresse(destinataire) ?? destinataire) : destinataire,
     });
   } catch (e) {
     console.error(
-      `[email-suppression] alerte console impossible pour ${destinataire} :`,
+      `[email-suppression] alerte console impossible pour ${ecarte ? redactEmail(destinataire) : destinataire} :`,
       e instanceof Error ? e.message : String(e),
     );
   }

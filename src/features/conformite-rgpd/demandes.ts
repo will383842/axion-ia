@@ -14,9 +14,13 @@
 // Rien ici ne traite une demande : chaque ligne renvoie vers l'outil qui le fait déjà.
 
 import { prisma } from "@/lib/prisma";
-import { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT } from "@/server/rgpd/constantes";
+import {
+  ACTION_DEMANDE_EFFACEMENT,
+  CODE_ALERTE_EFFACEMENT,
+  cibleIdAlerteDepuisEmpreinte,
+} from "@/server/rgpd/constantes";
 
-export type OrigineDemande = "stagiaire" | "libre_service" | "console_lettre";
+export type OrigineDemande = "stagiaire" | "libre_service" | "console_lettre" | "message_prive";
 
 export interface DemandeRgpd {
   id: string;
@@ -34,6 +38,7 @@ export const LIBELLE_ORIGINE: Readonly<Record<OrigineDemande, string>> = {
   stagiaire: "Portail stagiaire",
   libre_service: "Site (libre-service)",
   console_lettre: "Console › Lettre d'information",
+  message_prive: "Message privé (réseau social)",
 };
 
 const ACTIONS_LIBRE_SERVICE = [
@@ -107,7 +112,10 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
         (a) => metaDe(a.metadata) === journalId || idsDe(a.metadata).includes(journalId),
       ) ??
       alertes.find(
-        (a) => typeof emailHash === "string" && a.cibleId === emailHash && !metaDe(a.metadata),
+        (a) =>
+          typeof emailHash === "string" &&
+          a.cibleId === cibleIdAlerteDepuisEmpreinte(emailHash) &&
+          !metaDe(a.metadata),
       )
     );
   };
@@ -134,7 +142,12 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
           : undefined;
       return {
         id: l.id,
-        origine: origineLue === "console-lettre" ? "console_lettre" : "libre_service",
+        origine:
+          origineLue === "console-lettre"
+            ? "console_lettre"
+            : origineLue === "message-prive"
+              ? "message_prive"
+              : "libre_service",
         type: "effacement",
         // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
         personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",

@@ -6,6 +6,7 @@
  * accord. Ses données sont GARDÉES. Williams reçoit une alerte dans la cloche (niveau `info` :
  * jamais d'e-mail groupé, jamais de Telegram) avec la demande à traiter à la main.
  */
+import { cibleIdAlerteDepuisEmpreinte } from "@/server/rgpd/constantes";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -240,7 +241,7 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     const a = alerte.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(a["code"]).toBe(CODE_ALERTE_EFFACEMENT);
     expect(a["niveau"]).toBe("info");
-    expect(a["cibleId"]).toBe(hashEmailForLookup(ADRESSE));
+    expect(a["cibleId"]).toBe(cibleIdAlerteDepuisEmpreinte(hashEmailForLookup(ADRESSE)!));
     // L'adresse est dans l'alerte : sans elle, la demande ne peut pas être traitée à la main.
     expect(String(a["message"])).toContain(ADRESSE);
     expect(String(a["message"])).toMatch(/Rien n'a été supprimé/);
@@ -263,7 +264,7 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "console-lettre" });
     const lu = alerteTrouvee.mock.calls[0]?.[0] as { where: Record<string, unknown> };
     expect(lu.where["code"]).toBe(CODE_ALERTE_EFFACEMENT);
-    expect(lu.where["cibleId"]).toBe(hashEmailForLookup(ADRESSE));
+    expect(lu.where["cibleId"]).toBe(cibleIdAlerteDepuisEmpreinte(hashEmailForLookup(ADRESSE)!));
     const maj = alerteMiseAJour.mock.calls[0]?.[0] as {
       where: { id: string };
       data: { metadata: Record<string, unknown> };
