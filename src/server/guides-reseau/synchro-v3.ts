@@ -9,7 +9,6 @@
  * La charge ne porte ni pseudo, ni texte, ni jeton de commentaire (même en HMAC), ni adresse
  * en dehors du bloc `person` habituel. Au plus 20 entrées, sinon `too_many_origines`.
  */
-import { createHash } from "node:crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
 import {
@@ -96,49 +95,6 @@ export function chargeCrmV3(
       origines: tri.map(entree),
     },
   };
-}
-
-/** Identifiant d'événement DÉTERMINISTE (même clé d'idempotence = même événement : pas de doublon). */
-function eventIdDeterministe(cleIdempotence: string): string {
-  const h = createHash("sha256").update(`origine-v3:${cleIdempotence}`).digest("hex");
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-5${h.slice(13, 16)}-8${h.slice(17, 20)}-${h.slice(20, 32)}`;
-}
-
-/**
- * Met la charge v3 en file vers le CRM. No-op tant que l'interrupteur est éteint. Ne lève jamais :
- * la personne attend son guide, le CRM n'est qu'une copie (la reprise est celle de l'outbox).
- */
-export async function transmettreOriginesV3(args: {
-  email: string;
-  cleIdempotence: string;
-  origines: readonly OrigineAEcrire[];
-  quand: Date;
-}): Promise<"eteinte" | "mise_en_file" | "ignoree"> {
-  if (!synchroCrmV3Active()) return "eteinte";
-  // Exclusion persistante (décision D4) : une adresse de la maison n'entre jamais au CRM.
-  if (estExclueDuCrm(args.email)) return "ignoree";
-  try {
-    const personKey = hashEmailForLookup(args.email);
-    const c = chargeCrmV3(args.origines);
-    if (!personKey || !c.ok) return "ignoree";
-    // 🔴 CAST DOCUMENTÉ : `CrmSyncEvent.schema_version` est typé sur `CRM_SYNC_SCHEMA_VERSION` (1),
-    // alors que le CRM accepte [1, 2, 3] (ADR §3) et que cette charge porte 3. Élargir ce type
-    // toucherait toute la synchro (miroir exact du CRM) : on assume donc UN cast, ici, et le test
-    // « charge conforme » (fixture JSON partagée) verrouille la forme réellement émise.
-    const event = {
-      schema_version: VERSION_SCHEMA_CRM_V3,
-      event_id: eventIdDeterministe(args.cleIdempotence),
-      event_type: "lead_magnet_requested",
-      occurred_at: args.quand.toISOString(),
-      subject_ref: `site:guide-reseau:${args.cleIdempotence}`,
-      person: { person_key: personKey, email: args.email },
-      payload: c.charge,
-    } as unknown as CrmSyncEvent;
-    const id = await enqueueCrmSyncEvent(event);
-    return id === null ? "ignoree" : "mise_en_file";
-  } catch {
-    return "ignoree";
-  }
 }
 
 // ── Lot S3 (2026-11-11) : l'événement de la page « Recevoir le guide » part AU CLIC ─────────────
@@ -330,6 +286,17 @@ export function originesSuivantesActives(): boolean {
   return process.env.SYNCHRO_CRM_V3_ORIGINES_SUIVANTES === "true";
 }
 
+/** Date de coupure (D3, `ORIGINES_SUIVANTES_DEPUIS`, ISO 8601) lue dans l'environnement, ou `undefined`. */
+export function coupureOriginesSuivantes(): Date | undefined {
+  const brut = process.env.ORIGINES_SUIVANTES_DEPUIS?.trim();
+  if (!brut) return undefined;
+  const d = new Date(brut);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
+
+/** Statut terminal NON destructif : l'origine ne partira jamais (adresse exclue, hors format CRM). Rien n'est supprimé. */
+export const STATUT_HORS_CHARGE = "hors_charge";
+
 export type IssueOriginesSuivantes =
   "eteinte" | "exclue" | "pas_clique" | "opposee" | "rien" | "transmise" | "echec";
 
@@ -360,6 +327,12 @@ export async function transmettreOriginesSuivantes(args: {
   guide: string;
   /** Clé de dédoublonnage de l'origine déclenchante ; défaut : la plus récente encore en attente. */
   declenchante?: string;
+  /**
+   * Coupure (D3) : seules les origines écrites à partir de cette date peuvent partir ; les plus
+   * anciennes restent `NULL`, jamais marquées « transmise ». Défaut : `ORIGINES_SUIVANTES_DEPUIS`.
+   * SANS coupure, seules partent les origines écrites APRÈS la réservation du clic (`crm_emitted_at`).
+   */
+  depuis?: Date;
 }): Promise<IssueOriginesSuivantes> {
   if (
     !synchroCrmV3Active() ||
@@ -371,7 +344,20 @@ export async function transmettreOriginesSuivantes(args: {
   }
   try {
     if (estExclueDuCrm(args.email)) {
-      journaliser("exclue", 0);
+      // Mise à l'écart non destructive : sans cela, ces lignes resteraient `NULL` pour toujours et
+      // le rattrapage les relirait à chaque passage.
+      let n = 0;
+      try {
+        n = (
+          await prisma.guideReseauOrigine.updateMany({
+            where: { emailKey: args.emailKey, archiveeLe: null, crmStatut: null },
+            data: { crmStatut: STATUT_HORS_CHARGE, crmTraiteeLe: new Date() },
+          })
+        ).count;
+      } catch {
+        /* non écrit : rien ne part, le prochain passage la refera */
+      }
+      journaliser("exclue", n);
       return "exclue";
     }
     const personKey = hashEmailForLookup(args.email);
@@ -397,15 +383,35 @@ export async function transmettreOriginesSuivantes(args: {
         return { issue: "opposee" as const, n: r.count, id: null };
       }
       const lues = await lireOriginesActives(tx, args.emailKey, args.guide);
-      const enAttente = lues.filter((o) => o.crmStatut === null);
-      if (enAttente.length === 0) return { issue: "rien" as const, n: 0, id: null };
+      // Coupure (D3) : une origine antérieure ne part JAMAIS et n'est jamais marquée « transmise ».
+      // Avec coupure : écrite à partir d'elle. Sans coupure : écrite APRÈS la réservation du clic.
+      const coupure = args.depuis ?? coupureOriginesSuivantes();
+      const reservation = demande.crmEmittedAt;
+      const eligible = (o: (typeof lues)[number]): boolean =>
+        coupure ? +o.createdAt >= +coupure : +o.createdAt > +reservation;
+      // Charge cumulative : les déjà transmises + les en attente ÉLIGIBLES. Ni `ecartee`, ni
+      // `hors_charge`, ni les anciennes encore `NULL`.
+      const retenues = lues.filter(
+        (o) => o.crmStatut === "transmise" || (o.crmStatut === null && eligible(o)),
+      );
+      // Hors format CRM : sortie de la charge (`hors_charge`), pour ne pas bloquer les autres ni
+      // revenir à chaque passage. Rien n'est supprimé.
+      const horsFormat = retenues.filter(
+        (o) => !originesAuFormatCrm([{ ...o, cleIdempotence: "" }]),
+      );
+      if (horsFormat.length > 0) {
+        await tx.guideReseauOrigine.updateMany({
+          where: { id: { in: horsFormat.map((o) => o.id) }, crmStatut: null },
+          data: { crmStatut: STATUT_HORS_CHARGE, crmTraiteeLe: maintenant },
+        });
+      }
+      const dehors = new Set(horsFormat.map((o) => o.id));
+      const aTransmettre = retenues.filter((o) => !dehors.has(o.id));
+      const enAttente = aTransmettre.filter((o) => o.crmStatut === null);
+      if (enAttente.length === 0) return { issue: "rien" as const, n: horsFormat.length, id: null };
       const declenchante =
         enAttente.find((o) => o.cleDedoublonnage === args.declenchante) ?? enAttente[0]!;
-      // Même contrôle de format que le clic : vérifié AVANT d'émettre, pas laissé au refus 422
-      // (les origines sont marquées « transmise » dès l'outbox). Annule la transaction, rien d'écrit.
-      const aEcrire = lues.map((o) => ({ ...o, cleIdempotence: "" }));
-      if (!originesAuFormatCrm(aEcrire)) throw new RienEcritOrigines();
-      const c = chargeCrmV3(aEcrire);
+      const c = chargeCrmV3(aTransmettre.map((o) => ({ ...o, cleIdempotence: "" })));
       if (!c.ok) throw new RienEcritOrigines();
       const cle = declenchante.cleDedoublonnage;
       const event = {
@@ -413,14 +419,17 @@ export async function transmettreOriginesSuivantes(args: {
         event_id: eventIdDuNom(`origine-v3:o-${cle}`),
         event_type: "lead_magnet_requested",
         occurred_at: maintenant.toISOString(),
+        source_slug: SOURCE_SLUG_GUIDE_RESEAU,
         subject_ref: `site:guide-reseau:o-${cle.slice(0, 40)}`,
         person: { person_key: personKey, email: args.email },
+        // Le guide a été reçu au premier clic : même fait, même date que l'événement du clic.
+        guides_recus: [{ guide: args.guide, date: demande.firstClickAt.toISOString() }],
         payload: c.charge,
       } as unknown as CrmSyncEvent;
       const id = await enqueueCrmSyncEvent(event, { tx, mettreEnFile: false });
       if (id === null) throw new RienEcritOrigines();
       const r = await tx.guideReseauOrigine.updateMany({
-        where: { id: { in: lues.map((o) => o.id) }, crmStatut: null },
+        where: { id: { in: enAttente.map((o) => o.id) }, crmStatut: null },
         data: { crmStatut: "transmise", crmTraiteeLe: maintenant },
       });
       return { issue: "transmise" as const, n: r.count, id };

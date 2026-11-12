@@ -35,7 +35,13 @@ import { prisma } from "@/lib/prisma";
 import { Prisma } from "../../../prisma/generated/client";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 
-import { transmettreOriginesSuivantes } from "@/server/guides-reseau/synchro-v3";
+import {
+  coupureOriginesSuivantes,
+  MAX_ORIGINES_PAR_CHARGE,
+  transmettreOriginesSuivantes,
+} from "@/server/guides-reseau/synchro-v3";
+
+export { coupureOriginesSuivantes };
 
 import { isCrmSyncGuideEnabled } from "./config";
 import { estExclueDuCrm } from "./exclusions";
@@ -313,9 +319,12 @@ export const DELAI_RATTRAPAGE_ORIGINES_MS = 10 * 60_000;
 
 /**
  * Borne d'un passage : nombre maximal de lots de `TAILLE_LOT` lus (soit 10 000 origines).
- * La lecture ne porte que sur les personnes qui ont cliqué ; au-delà de la borne, le passage
- * s'arrête et le journal le dit ; les origines non lues restent `NULL` en base (gardées, jamais
- * effacées) et sont reprises dès que la file des origines à partir d'un clic se vide.
+ * La lecture ne porte que sur les personnes qui ont cliqué, et que sur leurs `MAX_ORIGINES_PAR_CHARGE`
+ * origines les plus récentes (les autres ne partiront jamais : elles ne sont pas relues). Les origines
+ * d'une adresse exclue ou hors format CRM passent `hors_charge` (mise à l'écart, rien de supprimé) au
+ * premier passage : elles ne reviennent plus et ne mangent donc pas la borne. Au-delà de la borne, le
+ * passage s'arrête et le journal le dit ; les origines non lues restent `NULL` et sont reprises au
+ * passage suivant (les lignes déjà traitées en sont sorties).
  */
 export const MAX_LOTS_ORIGINES = 20;
 
@@ -340,14 +349,6 @@ export interface BilanRattrapageOrigines {
   readonly echecs: number;
   /** `true` si la borne `MAX_LOTS_ORIGINES` a été atteinte avant la fin de la table. */
   readonly borneAtteinte?: boolean;
-}
-
-/** Date de coupure lue dans l'environnement (ISO 8601), ou `undefined`. */
-export function coupureOriginesSuivantes(): Date | undefined {
-  const brut = process.env.ORIGINES_SUIVANTES_DEPUIS?.trim();
-  if (!brut) return undefined;
-  const d = new Date(brut);
-  return Number.isNaN(d.getTime()) ? undefined : d;
 }
 
 /**
@@ -378,34 +379,33 @@ export async function rattraperOriginesSuivantes(
       // Seules les personnes qui ont cliqué (`first_click_at` ET `crm_emitted_at` posés) : les
       // origines des autres ne partiront pas avant leur clic et ne prennent pas de place dans la borne.
       const lt = new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS);
-      // Une requête COMPLÈTE par cas (pas de fragment `Prisma.sql` imbriqué : voir editorial/recherche.ts).
-      const lignes: { id: string; emailKey: string; guide: string }[] =
-        curseur === null
-          ? await prisma.$queryRaw(Prisma.sql`
-              SELECT o.id::text AS "id", o.email_key AS "emailKey", o.guide AS "guide"
-              FROM guide_reseau_origines o
-              JOIN guide_requests g ON g.email_key = o.email_key AND g.aimant = o.guide
-              WHERE o.crm_statut IS NULL
-                AND o.archivee_le IS NULL
-                AND o.created_at < ${lt}
-                AND o.created_at >= ${depuis}
-                AND g.first_click_at IS NOT NULL
-                AND g.crm_emitted_at IS NOT NULL
-              ORDER BY o.id ASC
-              LIMIT ${TAILLE_LOT}`)
-          : await prisma.$queryRaw(Prisma.sql`
-              SELECT o.id::text AS "id", o.email_key AS "emailKey", o.guide AS "guide"
-              FROM guide_reseau_origines o
-              JOIN guide_requests g ON g.email_key = o.email_key AND g.aimant = o.guide
-              WHERE o.crm_statut IS NULL
-                AND o.archivee_le IS NULL
-                AND o.created_at < ${lt}
-                AND o.created_at >= ${depuis}
-                AND g.first_click_at IS NOT NULL
-                AND g.crm_emitted_at IS NOT NULL
-                AND o.id > ${curseur}::uuid
-              ORDER BY o.id ASC
-              LIMIT ${TAILLE_LOT}`);
+      // Une seule requête. Rang = position parmi les origines ACTIVES encore dans la charge
+      // (`NULL` ou `transmise`, de la plus récente à la plus ancienne) : au-delà de
+      // `MAX_ORIGINES_PAR_CHARGE`, l'origine ne partira jamais et n'est pas relue.
+      const depart = curseur ?? "00000000-0000-0000-0000-000000000000";
+      const lignes: { id: string; emailKey: string; guide: string }[] = await prisma.$queryRaw(
+        Prisma.sql`
+          SELECT r.id::text AS "id", r.email_key AS "emailKey", r.guide AS "guide"
+          FROM (
+            SELECT o.id, o.email_key, o.guide, o.crm_statut, o.created_at,
+                   ROW_NUMBER() OVER (
+                     PARTITION BY o.email_key, o.guide ORDER BY o.occurred_at DESC
+                   ) AS rang
+            FROM guide_reseau_origines o
+            WHERE o.archivee_le IS NULL
+              AND (o.crm_statut IS NULL OR o.crm_statut = 'transmise')
+          ) r
+          JOIN guide_requests g ON g.email_key = r.email_key AND g.aimant = r.guide
+          WHERE r.crm_statut IS NULL
+            AND r.rang <= ${MAX_ORIGINES_PAR_CHARGE}
+            AND r.created_at < ${lt}
+            AND r.created_at >= ${depuis}
+            AND g.first_click_at IS NOT NULL
+            AND g.crm_emitted_at IS NOT NULL
+            AND r.id > ${depart}::uuid
+          ORDER BY r.id ASC
+          LIMIT ${TAILLE_LOT}`,
+      );
       for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
       if (lignes.length < TAILLE_LOT) break;
       curseur = lignes[lignes.length - 1]!.id;
@@ -449,6 +449,7 @@ export async function rattraperOriginesSuivantes(
       email: demande.email,
       emailKey: g.emailKey,
       guide: g.guide,
+      depuis,
     });
     if (r === "transmise") transmis += 1;
     else if (r === "echec") echecs += 1;

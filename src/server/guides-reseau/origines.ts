@@ -180,13 +180,20 @@ export type OrigineLueActive = Omit<OrigineAEcrire, "cleIdempotence"> & {
   readonly id: string;
   readonly cleDedoublonnage: string;
   readonly crmStatut: string | null;
+  /** Date d'écriture de la ligne en base (≠ `occurredAt`, date de l'origine) : sert à la coupure. */
+  readonly createdAt: Date;
 };
 
 /** Ce que la lecture demande au client (Prisma ou transaction) : méthode bivariante. */
 export interface LecteurOrigines {
   guideReseauOrigine: {
     findMany(args: {
-      where: { emailKey: string; guide: string; archiveeLe: null };
+      where: {
+        emailKey: string;
+        guide: string;
+        archiveeLe: null;
+        OR: ({ crmStatut: null } | { crmStatut: string })[];
+      };
       orderBy: { occurredAt: "desc" };
       take: number;
       select: { [K in keyof OrigineLueActive]: true };
@@ -197,6 +204,8 @@ export interface LecteurOrigines {
 /**
  * Les origines ACTIVES d'une personne pour un guide : les `MAX_ORIGINES_PAR_CHARGE` plus récentes,
  * la plus récente d'abord. Jamais une archivée, jamais d'un autre guide. Lecture seule.
+ * Une origine mise à l'écart (`ecartee`) ou sortie de la charge (`hors_charge`) n'y figure plus : seules
+ * les origines en attente (`NULL`) et déjà transmises composent la charge cumulative.
  */
 export async function lireOriginesActives(
   db: LecteurOrigines,
@@ -204,13 +213,19 @@ export async function lireOriginesActives(
   guide: string,
 ): Promise<OrigineLueActive[]> {
   return db.guideReseauOrigine.findMany({
-    where: { emailKey, guide, archiveeLe: null },
+    where: {
+      emailKey,
+      guide,
+      archiveeLe: null,
+      OR: [{ crmStatut: null }, { crmStatut: "transmise" }],
+    },
     orderBy: { occurredAt: "desc" },
     take: MAX_ORIGINES_PAR_CHARGE,
     select: {
       id: true,
       cleDedoublonnage: true,
       crmStatut: true,
+      createdAt: true,
       mot: true,
       reseau: true,
       guide: true,

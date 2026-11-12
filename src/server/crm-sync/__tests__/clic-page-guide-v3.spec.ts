@@ -64,7 +64,10 @@ vi.mock("@/lib/prisma", () => {
         const ids = (where.id as { in: string[] } | undefined)?.in;
         const c = base.origines.filter(
           (l) =>
-            (ids ? ids.includes(l.id as string) : true) && ok(l, { crmStatut: where.crmStatut }),
+            (ids ? ids.includes(l.id as string) : true) &&
+            (where.emailKey === undefined || l.emailKey === where.emailKey) &&
+            (where.guide === undefined || l.guide === where.guide) &&
+            ok(l, { crmStatut: where.crmStatut }),
         );
         c.forEach((l) => Object.assign(l, data));
         return { count: c.length };
@@ -503,6 +506,17 @@ describe("lot guide réseau 4 : l'origine complète part au premier clic, aussi 
     expect(base.origines).toHaveLength(1);
     expect(base.origines[0]?.crmStatut).toBe("ecartee");
     expect(base.demandes[0]?.crmEmittedAt).toBeInstanceOf(Date);
+  });
+
+  it("STOP : l'opposition porte sur l'adresse, les origines de TOUS les guides sont écartées", async () => {
+    base.opposeeDepuis = 1;
+    installer({
+      contact: null,
+      origines: [origine(), origine({ guide: "autre-guide" })],
+    });
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.origines).toHaveLength(2);
+    expect(base.origines.map((o) => o.crmStatut)).toEqual(["ecartee", "ecartee"]);
   });
 
   it("STOP déjà posé à la première lecture : aucune ligne, origines écartées", async () => {

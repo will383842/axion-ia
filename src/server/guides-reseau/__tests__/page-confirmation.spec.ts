@@ -205,13 +205,6 @@ vi.mock("../origines", async (orig) => ({
     return { creee: true, archivees: 0, total: 0 };
   },
 }));
-vi.mock("../synchro-v3", async (orig) => ({
-  ...(await orig<Record<string, unknown>>()),
-  transmettreOriginesV3: async (a: Ligne) => {
-    bd.crm.push(a);
-    return "mise_en_file";
-  },
-}));
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {

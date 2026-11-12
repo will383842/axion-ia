@@ -3,6 +3,7 @@
 // Lot guide réseau 4 (O4) — les origines SUIVANTES partent au CRM, en charge cumulative, mais
 // jamais avant le premier clic du lien du guide (D1 du lot S3), jamais si un stop existe.
 // Adresses en `.test` (dépôt public). Base simulée avec vraie annulation de transaction.
+import { createHash } from "node:crypto";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type Ligne = Record<string, unknown>;
@@ -32,13 +33,21 @@ vi.mock("@/lib/prisma", () => {
         where,
         take,
       }: {
-        where: { emailKey: string; guide: string; archiveeLe: null };
+        where: {
+          emailKey: string;
+          guide: string;
+          archiveeLe: null;
+          OR: { crmStatut: string | null }[];
+        };
         take: number;
       }) =>
         bd.origines
           .filter(
             (l) =>
-              l.emailKey === where.emailKey && l.guide === where.guide && l.archiveeLe === null,
+              l.emailKey === where.emailKey &&
+              l.guide === where.guide &&
+              l.archiveeLe === null &&
+              where.OR.some((c) => (l.crmStatut ?? null) === c.crmStatut),
           )
           .sort((a, b) => +(b.occurredAt as Date) - +(a.occurredAt as Date))
           .slice(0, take),
@@ -142,6 +151,8 @@ const origine = (sur: Ligne = {}): Ligne => ({
   utmCampagne: null,
   commentaireRefHmac: null,
   occurredAt: new Date(Date.UTC(2026, 10, 1, 0, 0, n)),
+  // Écrite APRÈS la réservation du clic (`crmEmittedAt` : 10:05:01).
+  createdAt: new Date("2026-11-01T11:00:00.000Z"),
   archiveeLe: null,
   crmStatut: null,
   crmTraiteeLe: null,
@@ -216,7 +227,6 @@ describe("transmettreOriginesSuivantes", () => {
       `site:guide-reseau:o-${(o.cleDedoublonnage as string).slice(0, 40)}`,
     );
     expect(e).not.toHaveProperty("consentements");
-    expect(e).not.toHaveProperty("guides_recus");
     expect((e.person as Ligne).first_name).toBeUndefined();
   });
 
@@ -281,12 +291,86 @@ describe("transmettreOriginesSuivantes", () => {
     expect(bd.appelsOpposee).toBeGreaterThanOrEqual(1);
   });
 
-  it("origine hors format CRM : contrôlée AVANT d'émettre comme au clic ; rien d'écrit, origines gardées (NULL)", async () => {
+  it("origine hors format CRM : sortie de la charge (hors_charge), jamais envoyée, jamais supprimée", async () => {
     bd.origines.push(origine({ compte: "Compte Invalide!" }));
-    await expect(appel()).resolves.toBe("echec");
+    await expect(appel()).resolves.toBe("rien");
     expect(bd.requetesOutbox).toBe(0);
-    expect(bd.outbox).toHaveLength(0);
-    expect(bd.origines[0]?.crmStatut).toBeNull();
+    expect(bd.origines).toHaveLength(1);
+    expect(bd.origines[0]?.crmStatut).toBe("hors_charge");
+  });
+
+  it("origine hors format + origine valide : seule la valide part, l'autre passe hors_charge", async () => {
+    bd.origines.push(origine({ compte: "Compte Invalide!" }));
+    bd.origines.push(origine());
+    await expect(appel()).resolves.toBe("transmise");
+    const e = bd.outbox[0]!.payload as { payload: { origines: unknown[] } };
+    expect(e.payload.origines).toHaveLength(1);
+    expect(bd.origines.map((o) => o.crmStatut)).toEqual(["hors_charge", "transmise"]);
+  });
+
+  it("MIXTE, sans coupure : une origine ANTÉRIEURE au clic + une nouvelle → seule la nouvelle part, l'ancienne reste NULL", async () => {
+    const ancienne = origine({ createdAt: new Date("2026-11-01T09:00:00.000Z") });
+    const nouvelle = origine({ reseau: "linkedin" });
+    bd.origines.push(ancienne, nouvelle);
+    await expect(appel(nouvelle.cleDedoublonnage as string)).resolves.toBe("transmise");
+    const e = bd.outbox[0]!.payload as { payload: { origines: { reseau: string }[] } };
+    expect(e.payload.origines).toHaveLength(1);
+    expect(e.payload.origines[0]?.reseau).toBe("linkedin");
+    expect(ancienne.crmStatut).toBeNull();
+    expect(ancienne.crmTraiteeLe).toBeNull();
+    expect(nouvelle.crmStatut).toBe("transmise");
+  });
+
+  it("MIXTE, avec coupure : l'origine antérieure à la coupure reste NULL, la postérieure part", async () => {
+    const ancienne = origine({ createdAt: new Date("2026-10-15T09:00:00.000Z") });
+    const nouvelle = origine({ createdAt: new Date("2026-11-02T09:00:00.000Z") });
+    bd.origines.push(ancienne, nouvelle);
+    await expect(
+      transmettreOriginesSuivantes({
+        email: EMAIL,
+        emailKey: "cle-1",
+        guide: "guide-ia",
+        depuis: new Date("2026-11-01T00:00:00.000Z"),
+      }),
+    ).resolves.toBe("transmise");
+    const e = bd.outbox[0]!.payload as { payload: { origines: unknown[] } };
+    expect(e.payload.origines).toHaveLength(1);
+    expect(ancienne.crmStatut).toBeNull();
+    expect(nouvelle.crmStatut).toBe("transmise");
+  });
+
+  it("seule une origine antérieure : rien ne part, elle reste NULL", async () => {
+    const ancienne = origine({ createdAt: new Date("2026-11-01T09:00:00.000Z") });
+    bd.origines.push(ancienne);
+    await expect(appel()).resolves.toBe("rien");
+    expect(bd.requetesOutbox).toBe(0);
+    expect(ancienne.crmStatut).toBeNull();
+  });
+
+  it("une origine ecartee n'entre jamais dans la charge cumulative", async () => {
+    bd.origines.push(origine({ crmStatut: "ecartee" }));
+    bd.origines.push(origine());
+    await expect(appel()).resolves.toBe("transmise");
+    const e = bd.outbox[0]!.payload as { payload: { origines: unknown[] } };
+    expect(e.payload.origines).toHaveLength(1);
+    expect(bd.origines[0]?.crmStatut).toBe("ecartee");
+  });
+
+  it("l'événement porte source_slug et guides_recus", async () => {
+    bd.origines.push(origine());
+    await appel();
+    const e = bd.outbox[0]!.payload as Ligne;
+    expect(e.source_slug).toBe("guide-reseau");
+    expect(e.guides_recus).toEqual([{ guide: "guide-ia", date: "2026-11-01T10:05:00.000Z" }]);
+  });
+
+  it("adresse exclue : ses origines passent hors_charge (rien supprimé), rien n'est envoyé", async () => {
+    process.env.CRM_SYNC_EXCLUSIONS_SHA256 = createHash("sha256").update(EMAIL).digest("hex");
+    bd.origines.push(origine(), origine());
+    await expect(appel()).resolves.toBe("exclue");
+    expect(bd.requetesOutbox).toBe(0);
+    expect(bd.origines).toHaveLength(2);
+    expect(bd.origines.map((o) => o.crmStatut)).toEqual(["hors_charge", "hors_charge"]);
   });
 
   it("panne d'outbox : transaction annulée, origines inchangées (NULL), aucune exception", async () => {

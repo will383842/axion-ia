@@ -282,21 +282,20 @@ class RienEcrit extends Error {
  * l'être (faite après le premier clic) — elle est transmise à ce clic-ci.
  */
 /**
- * Opposition : les origines de la personne pour ce guide passent `ecartee` (mise à l'écart, JAMAIS
- * de suppression) pour n'être plus reproposées. Sans effet tant que `SYNCHRO_CRM_V3` est éteint
+ * Opposition : les origines de la personne, de TOUS ses guides (l'opposition porte sur l'adresse, pas
+ * sur un guide), passent `ecartee` (mise à l'écart, JAMAIS de suppression) pour n'être plus reproposées. Sans effet tant que `SYNCHRO_CRM_V3` est éteint
  * (les colonnes ne sont alors jamais lues ni écrites). Hors transaction, une erreur est avalée :
  * l'opposition, elle, est déjà actée.
  */
 async function ecarterOriginesDeLaPersonne(
   db: Pick<typeof prisma, "guideReseauOrigine">,
   emailKey: string,
-  guide: string,
   quand: Date,
 ): Promise<void> {
   if (!synchroCrmV3Active()) return;
   const ecrire = () =>
     db.guideReseauOrigine.updateMany({
-      where: { emailKey, guide, archiveeLe: null, crmStatut: null },
+      where: { emailKey, archiveeLe: null, crmStatut: null },
       data: { crmStatut: "ecartee", crmTraiteeLe: quand },
     });
   if (db !== prisma) {
@@ -349,7 +348,7 @@ export async function transmettreClicGuide(
         where: { id: demande.id, crmEmittedAt: null },
         data: { crmEmittedAt: maintenant },
       });
-      await ecarterOriginesDeLaPersonne(prisma, demande.emailKey, demande.aimant, maintenant);
+      await ecarterOriginesDeLaPersonne(prisma, demande.emailKey, maintenant);
       return r.count === 1 ? "opposee" : "deja-transmise";
     }
 
@@ -412,7 +411,7 @@ export async function transmettreClicGuide(
           // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite ; les origines
           // sont MISES À L'ÉCART (`ecartee`), jamais supprimées.
           if (await estOpposee(demande.email, tx)) {
-            await ecarterOriginesDeLaPersonne(tx, demande.emailKey, demande.aimant, maintenant);
+            await ecarterOriginesDeLaPersonne(tx, demande.emailKey, maintenant);
             opposeePendantLaTransaction = true;
             return null;
           }

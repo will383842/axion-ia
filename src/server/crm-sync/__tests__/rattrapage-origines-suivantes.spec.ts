@@ -11,35 +11,46 @@ const m = vi.hoisted(() => ({
   demandes: new Map<string, Record<string, unknown>>(),
   appels: [] as Record<string, unknown>[],
   erreurColonne: false,
+  exclues: new Set<string>(),
   requetes: [] as { sql: string; values: unknown[] }[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    // Lecture bornée aux personnes qui ont CLIQUÉ (`first_click_at` ET `crm_emitted_at`) : la
-    // requête est un `$queryRaw` (jointure), ses valeurs sont [lt, gte, (curseur), limite].
+    // Lecture bornée aux personnes qui ont CLIQUÉ (`first_click_at` ET `crm_emitted_at`) et aux
+    // `MAX` origines les plus récentes de chaque (personne, guide) : la requête est un `$queryRaw`,
+    // ses valeurs sont [max, lt, gte, curseur, limite].
     $queryRaw: async (sql: { sql: string; values: unknown[] }) => {
       if (m.erreurColonne) {
         throw Object.assign(new Error("col"), { code: "P2010", meta: { code: "42703" } });
       }
       m.requetes.push(sql);
-      const v = sql.values;
-      const avecCurseur = v.length === 4;
-      const [lt, gte] = v as [Date, Date];
-      const curseur = avecCurseur ? String(v[2]) : undefined;
-      const limite = Number(v[v.length - 1]);
+      const [max, lt, gte, curseur, limite] = sql.values as [number, Date, Date, string, number];
+      const rang = new Map<unknown, number>();
+      const groupes = new Map<string, Record<string, unknown>[]>();
+      for (const x of m.origines) {
+        if (x.archiveeLe !== null || !(x.crmStatut === null || x.crmStatut === "transmise"))
+          continue;
+        const k = `${x.emailKey}|${x.guide}`;
+        groupes.set(k, [...(groupes.get(k) ?? []), x]);
+      }
+      for (const l of groupes.values()) {
+        l.sort((a, b) => +(b.occurredAt as Date) - +(a.occurredAt as Date));
+        l.forEach((x, i) => rang.set(x, i + 1));
+      }
       return m.origines
-        .filter((o) => {
-          const d = m.demandes.get(`${o.emailKey}|${o.guide}`);
+        .filter((x) => {
+          const d = m.demandes.get(`${x.emailKey}|${x.guide}`);
           return (
-            o.crmStatut === null &&
-            o.archiveeLe === null &&
-            +(o.createdAt as Date) < +lt &&
-            +(o.createdAt as Date) >= +gte &&
+            x.crmStatut === null &&
+            x.archiveeLe === null &&
+            (rang.get(x) ?? 999) <= max &&
+            +(x.createdAt as Date) < +lt &&
+            +(x.createdAt as Date) >= +gte &&
             d !== undefined &&
             d.firstClickAt != null &&
             d.crmEmittedAt != null &&
-            (curseur === undefined || String(o.id) > curseur)
+            String(x.id) > curseur
           );
         })
         .sort((x, y) => String(x.id).localeCompare(String(y.id)))
@@ -59,6 +70,13 @@ vi.mock("@/server/guides-reseau/synchro-v3", async (orig) => ({
   ...(await orig<typeof import("@/server/guides-reseau/synchro-v3")>()),
   transmettreOriginesSuivantes: async (a: Record<string, unknown>) => {
     m.appels.push(a);
+    // Fidèle au vrai : une adresse « exclue » voit ses origines passer `hors_charge`.
+    if (m.exclues.has(String(a.emailKey))) {
+      m.origines
+        .filter((x) => x.emailKey === a.emailKey && x.crmStatut === null)
+        .forEach((x) => (x.crmStatut = "hors_charge"));
+      return "exclue";
+    }
     return "transmise";
   },
 }));
@@ -79,6 +97,7 @@ const o = (sur: Ligne = {}): Ligne => ({
   crmStatut: null,
   archiveeLe: null,
   createdAt: il_y_a(60),
+  occurredAt: new Date(Date.UTC(2026, 10, 1, 0, 0, 0) + compteur * 1000),
   ...sur,
 });
 
@@ -88,6 +107,7 @@ beforeEach(() => {
   m.appels.length = 0;
   m.requetes.length = 0;
   m.erreurColonne = false;
+  m.exclues.clear();
   m.demandes.set("cle-1|guide-ia", {
     email: "p@exemple.test",
     firstClickAt: il_y_a(500),
@@ -144,6 +164,66 @@ describe("rattraperOriginesSuivantes", () => {
     m.origines.push(o({ createdAt: il_y_a(3 * 24 * 60) }));
     await lancer();
     expect(m.appels).toHaveLength(0);
+  });
+
+  it("le rattrapage passe la date de coupure au chemin direct (une ancienne origine ne part pas)", async () => {
+    const depuis = il_y_a(24 * 60);
+    m.origines.push(o());
+    await lancer({ depuis });
+    expect(m.appels[0]?.depuis).toEqual(depuis);
+  });
+
+  it("MIXTE : une ancienne (avant la coupure) + une nouvelle de la même personne : seule la nouvelle déclenche, avec la coupure", async () => {
+    const depuis = il_y_a(24 * 60);
+    m.origines.push(o({ createdAt: il_y_a(3 * 24 * 60) }), o({ createdAt: il_y_a(60) }));
+    const b = await lancer({ depuis });
+    // Un seul groupe, et la coupure est transmise : l'ancienne reste NULL côté chemin direct.
+    expect(b.groupes).toBe(1);
+    expect(m.appels).toHaveLength(1);
+    expect(m.appels[0]?.depuis).toEqual(depuis);
+    expect(m.origines[0]?.crmStatut).toBeNull();
+  });
+
+  it("21e origine + adresse exclue : la borne n'est pas mangée, la vraie origine en attente est lue", async () => {
+    // 21 origines pour une personne : la plus ancienne (21e) n'est jamais lue.
+    for (let i = 0; i < 21; i += 1) m.origines.push(o({ emailKey: "vingt1" }));
+    m.demandes.set("vingt1|guide-ia", {
+      email: "v@exemple.test",
+      firstClickAt: il_y_a(500),
+      crmEmittedAt: il_y_a(499),
+    });
+    const b1 = await lancer({ executer: false });
+    expect(b1.groupes).toBe(1);
+    expect(m.requetes[0]!.values[0]).toBe(20);
+
+    // Adresses exclues : plus de lots que la borne. Premier passage : elles passent hors_charge.
+    m.origines.length = 0;
+    m.requetes.length = 0;
+    const total = TAILLE_LOT * MAX_LOTS_ORIGINES + 5;
+    for (let i = 0; i < total; i += 1) {
+      m.origines.push(o({ emailKey: `x${i}` }));
+      m.exclues.add(`x${i}`);
+      m.demandes.set(`x${i}|guide-ia`, {
+        email: "x@exemple.test",
+        firstClickAt: il_y_a(500),
+        crmEmittedAt: il_y_a(499),
+      });
+    }
+    m.origines.push(o({ emailKey: "vraie", createdAt: il_y_a(30) }));
+    m.demandes.set("vraie|guide-ia", {
+      email: "v@exemple.test",
+      firstClickAt: il_y_a(500),
+      crmEmittedAt: il_y_a(499),
+    });
+    const p1 = await lancer();
+    expect(p1.borneAtteinte).toBe(true);
+    m.appels.length = 0;
+    const p2 = await lancer();
+    // Les exclues déjà sorties (hors_charge) ne reviennent plus : la vraie origine est lue.
+    expect(m.appels.some((a) => a.emailKey === "vraie")).toBe(true);
+    expect(p2.borneAtteinte).toBe(false);
+    expect(m.origines.filter((x) => x.crmStatut === "hors_charge").length).toBeGreaterThan(0);
+    expect(m.origines).toHaveLength(total + 1);
   });
 
   it("à blanc : compte, n'envoie rien", async () => {

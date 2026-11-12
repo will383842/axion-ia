@@ -190,15 +190,24 @@ inconnue. Plafond du corps : 4 Ko.
 - **Origines suivantes.** Une origine écrite **après** la transmission part aussitôt, en charge **cumulative** (même
   plafond de 20), si la personne a déjà cliqué ; sinon elle attend le premier clic. Identifiants déterministes
   (`event_id` de l'origine déclenchante) : rejouer = pas de doublon. Chaque origine porte `crm_statut`
-  (`NULL` en attente · `transmise` · `ecartee`) et `crm_traitee_le`. Un **stop** relu dans la transaction l'emporte :
-  les origines passent `ecartee` (mise à l'écart, jamais supprimées).
+  (`NULL` en attente · `transmise` · `ecartee` · `hors_charge`) et `crm_traitee_le`. Un **stop** relu dans la transaction
+  l'emporte : les origines de la personne, **de tous ses guides** (l'opposition porte sur l'adresse), passent `ecartee`
+  (mise à l'écart, jamais supprimées). `hors_charge` est un statut terminal non destructif : adresse exclue du CRM ou
+  origine hors format CRM, qui ne partira jamais (rien n'est supprimé). Les origines `ecartee` et `hors_charge` n'entrent
+  jamais dans la charge cumulative, et seules les 20 plus récentes de chaque (personne, guide) sont lues par le rattrapage.
+- **Coupure (D3) — valable pour le chemin direct ET le rattrapage.** Ne partent que les origines **écrites après la
+  coupure** (`created_at >= ORIGINES_SUIVANTES_DEPUIS`) ; **sans** coupure, seules partent celles écrites **après la
+  réservation du clic** (`crm_emitted_at`). Les plus anciennes restent `NULL`, jamais envoyées ni marquées « transmise »,
+  même quand une origine plus récente de la même personne part.
 - Interrupteurs : `SYNCHRO_CRM_V3` (premier clic) ; `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` (`true` seulement, site **et**
   worker, **éteint par défaut**) pour les origines suivantes et leur rattrapage. Tous deux derrière `CRM_SYNC_ENABLED`
   et `CRM_SYNC_GUIDE_ENABLED`.
 - **Rattrapage** (`scripts/crm-sync-rattrapage-lettre-guide.ts`) : reprend les origines en attente depuis plus de
   10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
   décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
-  `NULL`, jamais marquées à tort.
+  `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
+- ⚠️ **Écriture de l'origine par une demande v1** (`traitement.ts`, D4) : une demande v1 écrit désormais une origine ;
+  ce changement n'a pas d'interrupteur propre, il n'est derrière que `GUIDES_RESEAU_ENABLED`.
 - **Ordre d'allumage** : 1) atterrissage de la migration `guide_reseau_origines_crm` **seule** (AGENTS.md, « DEUX
   conteneurs » : le worker ne doit pas lire des colonnes que l'app n'a pas encore posées) ; 2) accord du CRM Pro sur la
   charge (D2) et une charge cumulative de test acceptée en 2xx ; 3) `SYNCHRO_CRM_V3` ; 4) puis
