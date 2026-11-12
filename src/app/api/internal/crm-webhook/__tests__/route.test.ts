@@ -16,7 +16,12 @@ const { inbound, subscriber } = vi.hoisted(() => ({
 }));
 
 vi.mock("@/lib/prisma", () => ({
-  prisma: { crmInboundEvent: inbound, newsletterSubscriber: subscriber },
+  prisma: {
+    crmInboundEvent: inbound,
+    newsletterSubscriber: subscriber,
+    // STOP-T4-SITE : l'optout balaie aussi les demandes de guide (aucune ici).
+    guideRequest: { findMany: async () => [] },
+  },
 }));
 
 import { POST } from "../route";
