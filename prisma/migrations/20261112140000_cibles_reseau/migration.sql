@@ -38,7 +38,7 @@ CREATE TABLE "mots_cibles" (
     "modifie_le" TIMESTAMPTZ(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "mots_cibles_pkey" PRIMARY KEY ("id"),
-    CONSTRAINT "mots_cibles_mot_forme" CHECK ("mot" ~ '^[a-z0-9]{2,30}$'),
+    CONSTRAINT "mots_cibles_mot_forme" CHECK ("mot" ~ '^[a-z0-9]{2,20}$'),
     CONSTRAINT "mots_cibles_reseau_valeur" CHECK ("reseau" IN ('facebook', 'instagram', 'linkedin', 'tiktok', 'tous'))
 );
 

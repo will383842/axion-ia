@@ -94,15 +94,43 @@ export function codeAccordeAuType(code: string, type: TypeCible): boolean {
   return RE_CODE_CIBLE.test(code) && code.startsWith(type === "guide" ? "gde-" : "adr-");
 }
 
-/** Mot : minuscules, sans accent, lettres et chiffres, 2 à 30. `null` si inutilisable. */
+/**
+ * Mots d'opposition : COPIE EXACTE de `MOTS_OPPOSITION` du Studio (`opposition.ts`). Un mot de
+ * déclenchement ne peut pas en être un, sinon il serait lu comme un arrêt de message.
+ */
+export const MOTS_INTERDITS: readonly string[] = [
+  "STOP",
+  "STOPPEZ",
+  "ARRET",
+  "ARRETE",
+  "ARRETEZ",
+  "ARRETER",
+  "DESINSCRIRE",
+  "DESINSCRIPTION",
+  "DESINSCRIVEZ",
+  "DESABONNER",
+  "DESABONNEZ",
+  "DESABONNEMENT",
+];
+export const MOT_MIN = 2;
+export const MOT_MAX = 20;
+const RE_MOT_STUDIO = /^[A-Z0-9]{2,20}$/;
+
+/**
+ * Mot : MÊME règle que le Studio (`normaliserMot`) — NFKC, ponctuation de bord retirée, sans accent,
+ * lettres et chiffres, 2 à 20, pas uniquement des chiffres, hors mots d'opposition. Rendu en minuscules
+ * (forme stockée). `null` si inutilisable.
+ */
 export function normaliserMot(brut: unknown): string | null {
   if (typeof brut !== "string") return null;
-  const m = brut
+  const t = brut
+    .normalize("NFKC")
     .trim()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-  return /^[a-z0-9]{2,30}$/.test(m) ? m : null;
+    .replace(/^[^\p{L}\p{N}]+/u, "")
+    .replace(/[^\p{L}\p{N}]+$/u, "");
+  const m = t.normalize("NFD").replace(/\p{M}/gu, "").toUpperCase();
+  if (!RE_MOT_STUDIO.test(m) || /^\d+$/.test(m)) return null;
+  return MOTS_INTERDITS.includes(m) ? null : m.toLowerCase();
 }
 
 /** Chemin d'un PDF sous `public/` : relatif, sans `..`, extension .pdf. */

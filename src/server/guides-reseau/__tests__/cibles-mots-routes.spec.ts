@@ -118,10 +118,10 @@ const mot = (c: unknown, o: Opt = {}) => ecrire(POST_MOT, CH.mots, c, o);
 
 const adresse = {
   type: "adresse",
-  titre: "Offre de rentrée",
+  titre: "TEST Offre de rentrée",
   url: "https://axion-ia.com/fr/offre",
 };
-const guide = { type: "guide", titre: "Guide second", cheminPdf: "imprimes/second.pdf" };
+const guide = { type: "guide", titre: "TEST Guide second", cheminPdf: "imprimes/second.pdf" };
 
 beforeEach(() => {
   cibles.length = 0;
@@ -166,7 +166,7 @@ describe("POST /cibles-reseau", () => {
     expect(liste).toContainEqual({
       code,
       type: "adresse",
-      titre: "Offre de rentrée",
+      titre: "TEST Offre de rentrée",
       actif: true,
       test: false,
     });
@@ -181,16 +181,22 @@ describe("POST /cibles-reseau", () => {
   });
   it("sans limite de nombre : 30 guides et 30 adresses", async () => {
     for (let i = 0; i < 30; i++) {
-      expect((await cible({ ...guide, titre: `Guide numéro ${i}` })).status).toBe(200);
-      expect((await cible({ ...adresse, titre: `Adresse numéro ${i}` })).status).toBe(200);
+      expect((await cible({ ...guide, titre: `TEST Guide numéro ${i}` })).status).toBe(200);
+      expect((await cible({ ...adresse, titre: `TEST Adresse numéro ${i}` })).status).toBe(200);
     }
     expect(cibles).toHaveLength(60);
   });
   it("mise à jour par code : un seul enregistrement, fiche de test marquée", async () => {
     await cible({ ...adresse, code: "adr-offre01" });
-    await cible({ ...adresse, titre: "Offre bis", code: "adr-offre01", test: true, actif: false });
+    await cible({
+      ...adresse,
+      titre: "TEST Offre bis",
+      code: "adr-offre01",
+      test: true,
+      actif: false,
+    });
     expect(cibles).toHaveLength(1);
-    expect(cibles[0]).toMatchObject({ titre: "Offre bis", test: true, actif: false });
+    expect(cibles[0]).toMatchObject({ titre: "TEST Offre bis", test: true, actif: false });
   });
   it.each([
     ["guide avec url", { ...guide, url: "https://axion-ia.com/x" }],
@@ -255,8 +261,21 @@ describe("mots → cibles", () => {
     expect((await mot({ mot: "ia", reseau: "tous", codeCible: "adr-deux02" })).status).toBe(422);
     expect(mots).toHaveLength(0);
   });
+  it("délier (actif:false) après désactivation de la cible : refusé cible_inactive, la liaison reste active (comportement figé par le test du Studio, #356)", async () => {
+    await cible({ ...adresse, code: "adr-deux02" });
+    await mot({ mot: "ia", reseau: "tous", codeCible: "adr-deux02" });
+    await cible({ ...adresse, code: "adr-deux02", actif: false });
+    const r = await mot({ mot: "ia", reseau: "tous", codeCible: "adr-deux02", actif: false });
+    expect(r.status).toBe(422);
+    expect(await r.json()).toMatchObject({ ok: false, erreur: "cible_inactive" });
+    expect(mots[0]!.actif).toBe(true);
+  });
   it.each([
     ["mot trop court", { mot: "a", reseau: "tous", codeCible: "gde-un0001" }],
+    ["mot de 21 caractères", { mot: "a".repeat(21), reseau: "tous", codeCible: "gde-un0001" }],
+    ["mot fait de chiffres", { mot: "2026", reseau: "tous", codeCible: "gde-un0001" }],
+    ["mot STOP", { mot: "STOP", reseau: "tous", codeCible: "gde-un0001" }],
+    ["mot ARRETEZ", { mot: "arrêtez", reseau: "tous", codeCible: "gde-un0001" }],
     ["mot avec espace", { mot: "deux mots", reseau: "tous", codeCible: "gde-un0001" }],
     ["réseau inconnu", { mot: "ia", reseau: "myspace", codeCible: "gde-un0001" }],
     ["champ inconnu", { mot: "ia", reseau: "tous", codeCible: "gde-un0001", x: 1 }],

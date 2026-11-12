@@ -100,12 +100,46 @@ describe("code, mot, chemin", () => {
     expect(RE_CODE_CIBLE.test("xyz-offre01")).toBe(false);
     expect(RE_CODE_CIBLE.test("adr-OFFRE01")).toBe(false);
   });
-  it("mot : minuscules, sans accent, lettres/chiffres 2 à 30", () => {
+  it("mot : règle du Studio — minuscules, sans accent, lettres/chiffres, 2 à 20", () => {
     expect(normaliserMot("  Énergie ")).toBe("energie");
+    expect(normaliserMot("ia2026")).toBe("ia2026");
+    expect(normaliserMot("a".repeat(20))).toBe("a".repeat(20));
     expect(normaliserMot("a")).toBeNull();
-    expect(normaliserMot("a".repeat(31))).toBeNull();
+    expect(normaliserMot("a".repeat(21))).toBeNull();
+    expect(normaliserMot("a".repeat(30))).toBeNull();
     expect(normaliserMot("deux mots")).toBeNull();
     expect(normaliserMot(5)).toBeNull();
+  });
+  it("mot : pas uniquement des chiffres", () => {
+    expect(normaliserMot("2026")).toBeNull();
+    expect(normaliserMot("12")).toBeNull();
+    expect(normaliserMot("a2026")).toBe("a2026");
+  });
+  it("mot : mêmes mots interdits que le Studio (opposition, dont STOP)", () => {
+    for (const m of [
+      "STOP",
+      "stop",
+      "Stop",
+      "STOPPEZ",
+      "ARRET",
+      "arrêt",
+      "ARRETE",
+      "ARRETEZ",
+      "ARRETER",
+      "DESINSCRIRE",
+      "désinscription",
+      "DESINSCRIVEZ",
+      "DESABONNER",
+      "DESABONNEZ",
+      "DESABONNEMENT",
+    ]) {
+      expect(normaliserMot(m)).toBeNull();
+    }
+    expect(normaliserMot("stopper")).toBe("stopper");
+  });
+  it("mot : ponctuation de bord retirée, comme au Studio", () => {
+    expect(normaliserMot("«Énergie!»")).toBe("energie");
+    expect(normaliserMot("stop!")).toBeNull();
   });
   it("chemin du PDF : relatif, .pdf, sans ..", () => {
     expect(validerCheminPdf("imprimes/x.pdf")).toBe("imprimes/x.pdf");
