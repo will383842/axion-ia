@@ -461,32 +461,29 @@ describe("🔴 MG-STOP01 — un STOP gagné pendant l'enregistrement de la page 
   });
 });
 
-// STOP-T1 (D-STOP-1) — test de CARACTÉRISATION, ne fige pas un souhait : il décrit ce que le code
-// fait aujourd'hui quand le job « Votre guide » a épuisé ses 5 essais parce que le verdict
-// (opposition illisible au départ) lève à chaque fois.
-describe("rattraperGuides — job dont les 5 essais sont épuisés (verdict en panne au départ)", () => {
+// STOP-T1 — quand le contrôle du départ lève 5 fois, le worker CLÔT désormais le journal en
+// « échec » (motif sans adresse) : le rattrapage reprend la demande et relit l'opposition.
+describe("rattraperGuides — job dont les 5 essais sont épuisés (contrôle illisible au départ)", () => {
   const ANCIENNE_MISE_EN_FILE = new Date(MAINTENANT.getTime() - 3 * 3_600_000);
 
-  it("ligne de journal laissée « en attente » (cas du verdict qui lève) : la demande N'EST PAS reprise", async () => {
-    // Le verdict est évalué AVANT le bloc qui clôt le journal en « échec » : quand il lève, la
-    // ligne créée à l'enfilage reste « pending ». `etatJournal` y lit « déjà en file ».
+  it("journal clos en « échec » pour cette raison : la demande EST reprise (l'opposition sera relue)", async () => {
     guideFindMany.mockResolvedValue([
       { ...CANDIDATE, origine: "formulaire", queuedAt: ANCIENNE_MISE_EN_FILE },
     ]);
-    emailLogFindMany.mockResolvedValue([{ status: "pending", sentAt: null }]);
-    const r = await rattraperGuides(MAINTENANT);
-    expect(mettreEnFileGuide).not.toHaveBeenCalled();
-    expect(r.relancees).toBe(0);
-    expect(r.ecartees).toBe(1);
-  });
-
-  it("ligne clôturée en « échec » (échec d'envoi, pas de verdict) : la demande EST reprise", async () => {
-    guideFindMany.mockResolvedValue([
-      { ...CANDIDATE, origine: "formulaire", queuedAt: ANCIENNE_MISE_EN_FILE },
-    ]);
-    emailLogFindMany.mockResolvedValue([]); // `etatJournal` ne lit que « sent » et « pending »
+    emailLogFindMany.mockResolvedValue([]); // ligne « failed » : `etatJournal` ne lit que « sent » et « pending »
     const r = await rattraperGuides(MAINTENANT);
     expect(mettreEnFileGuide).toHaveBeenCalledTimes(1);
     expect(r.relancees).toBe(1);
+  });
+
+  it("journal clos en « échec » mais opposition toujours illisible : l'erreur remonte, rien n'est mis en file", async () => {
+    guideFindMany.mockResolvedValue([
+      { ...CANDIDATE, origine: "formulaire", queuedAt: ANCIENNE_MISE_EN_FILE },
+    ]);
+    emailLogFindMany.mockResolvedValue([]);
+    estOpposee.mockRejectedValue(new Error("ECONNREFUSED"));
+    await rattraperGuides(MAINTENANT).catch(() => undefined);
+    expect(estOpposee).toHaveBeenCalled();
+    expect(mettreEnFileGuide).not.toHaveBeenCalled();
   });
 });

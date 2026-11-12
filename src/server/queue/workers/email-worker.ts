@@ -221,43 +221,82 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         return;
       }
 
-      // 🔴 2026-09-19 — sollicitation du réseau d'apporteurs : l'opposition et
-      // l'effacement se relisent AU DÉPART. Un envoi retenu se clôt en « annulé », JAMAIS en
-      // « échec » : l'alarme des échecs (SEUIL_ECHECS) compterait une opposition
-      // honorée comme une panne. Pas de `throw` — BullMQ rejouerait le job.
-      // Pas d'alerte console non plus : une opposition respectée n'appelle
-      // aucune action.
-      if (
-        estSollicitationSoumiseAOpposition(template, payload) ||
-        RELECTURES_AU_DEPART.has(template)
-      ) {
-        const motif = await motifDeRetenueAuDepart(job.data);
-        if (motif !== null) {
-          const trace = `Retenu à l'envoi : ${motif}`;
+      const jobId = job.id;
+      const attempts = job.attemptsMade + 1;
+
+      // STOP-T1 — un contrôle du DÉPART qui lève (base en panne) ne doit jamais laisser la ligne
+      // du journal « en attente » à vie : essai non final → tentative notée, erreur relancée
+      // (BullMQ réessaie, rien ne part) ; essai final → journal clos en échec. Motif sans adresse.
+      const echecAuDepart = async (err: unknown): Promise<never> => {
+        const motifEchec = "contrôle d'opposition illisible au départ : rien n'est parti";
+        if (attempts < (job.opts.attempts ?? 1)) {
+          await noterTentativeEchouee({
+            template,
+            recipient: to,
+            locale,
+            marketing: marketing === true,
+            attempts,
+            error: motifEchec,
+            ...(jobId ? { jobId } : {}),
+          });
+        } else {
+          await cloturerJournal({
+            template,
+            recipient: to,
+            locale,
+            marketing: marketing === true,
+            attempts,
+            status: EmailLogStatus.failed,
+            error: motifEchec,
+            failedAt: new Date(),
+            ...(entityType ? { entityType } : {}),
+            ...(entityId ? { entityId } : {}),
+            ...(jobId ? { jobId } : {}),
+          });
+        }
+        throw err;
+      };
+
+      let retenu = false;
+      try {
+        // 🔴 2026-09-19 — sollicitation du réseau d'apporteurs : l'opposition et
+        // l'effacement se relisent AU DÉPART. Un envoi retenu se clôt en « annulé », JAMAIS en
+        // « échec » : l'alarme des échecs (SEUIL_ECHECS) compterait une opposition
+        // honorée comme une panne. Pas de `throw` — BullMQ rejouerait le job.
+        // Pas d'alerte console non plus : une opposition respectée n'appelle
+        // aucune action.
+        if (
+          estSollicitationSoumiseAOpposition(template, payload) ||
+          RELECTURES_AU_DEPART.has(template)
+        ) {
+          const motif = await motifDeRetenueAuDepart(job.data);
+          if (motif !== null) {
+            const trace = `Retenu à l'envoi : ${motif}`;
+            if (job.id) {
+              await marquerAnnule(job.id, trace);
+            } else {
+              console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
+            }
+            retenu = true;
+          }
+        } else if ((await dateDeMiseAEcart(to, template)) !== null) {
+          // Décision du 11/11/2026 : une personne mise à l'écart (demande d'effacement) ne reçoit
+          // plus rien, QUEL QUE SOIT le gabarit — y compris un job enfilé avant la demande, ou en
+          // attente d'un réessai. Seule la réponse à un droit (`gdpr-export-link`) passe.
+          // Les sollicitations et gabarits relus au départ passent déjà par `verdictAvantEnvoi`.
+          const trace =
+            "Retenu à l'envoi : la personne a demandé l'effacement (mise à l'écart de tout envoi)";
           if (job.id) {
             await marquerAnnule(job.id, trace);
           } else {
             console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
           }
-          return;
+          retenu = true;
         }
-      } else if ((await dateDeMiseAEcart(to, template)) !== null) {
-        // Décision du 11/11/2026 : une personne mise à l'écart (demande d'effacement) ne reçoit
-        // plus rien, QUEL QUE SOIT le gabarit — y compris un job enfilé avant la demande, ou en
-        // attente d'un réessai. Seule la réponse à un droit (`gdpr-export-link`) passe.
-        // Les sollicitations et gabarits relus au départ passent déjà par `verdictAvantEnvoi`.
-        const trace =
-          "Retenu à l'envoi : la personne a demandé l'effacement (mise à l'écart de tout envoi)";
-        if (job.id) {
-          await marquerAnnule(job.id, trace);
-        } else {
-          console.warn(`[email-worker] « ${template} » ${trace} (job sans identifiant).`);
-        }
-        return;
+      } catch (err) {
+        return echecAuDepart(err);
       }
-
-      const jobId = job.id;
-      const attempts = job.attemptsMade + 1;
+      if (retenu) return;
 
       try {
         const {
