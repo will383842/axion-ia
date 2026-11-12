@@ -38,6 +38,8 @@ import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
 import {
   coupureOriginesSuivantes,
   MAX_ORIGINES_PAR_CHARGE,
+  originesSuivantesActives,
+  synchroCrmV3Active,
   transmettreOriginesSuivantes,
 } from "@/server/guides-reseau/synchro-v3";
 
@@ -336,15 +338,19 @@ export interface OptionsRattrapageOrigines {
    * « transmise »). SANS elle, le passage ne fait rien : la décision de Williams est attendue.
    */
   readonly depuis?: Date;
+  /** Adresses à écarter pour CE passage (`--exclure`, `--exclure-stdin`), comme pour les demandes. */
+  readonly exclure?: readonly string[];
   readonly maintenant?: Date;
 }
 
 export interface BilanRattrapageOrigines {
   readonly mode: "a-blanc" | "execution";
-  readonly refus?: "coupure-absente" | "colonne-absente";
+  readonly refus?: "coupure-absente" | "interrupteurs-eteints" | "colonne-absente";
   /** Groupes (personne, guide) ayant des origines en attente. */
   readonly groupes: number;
   readonly nonCliques: number;
+  /** Groupes sautés : adresse passée en argument ou présente dans `CRM_SYNC_EXCLUSIONS_SHA256`. */
+  readonly exclues?: number;
   readonly transmis: number;
   readonly echecs: number;
   /** `true` si la borne `MAX_LOTS_ORIGINES` a été atteinte avant la fin de la table. */
@@ -364,6 +370,11 @@ export async function rattraperOriginesSuivantes(
   const vide = { groupes: 0, nonCliques: 0, transmis: 0, echecs: 0 };
   const depuis = options.depuis ?? coupureOriginesSuivantes();
   if (!depuis) return { mode, refus: "coupure-absente", ...vide };
+  // Interrupteurs éteints : on le dit, au lieu de lire toute la table pour rien.
+  if (!synchroCrmV3Active() || !originesSuivantesActives()) {
+    return { mode, refus: "interrupteurs-eteints", ...vide };
+  }
+  const exclues = new Set((options.exclure ?? []).map(normaliser).filter((a) => a.length > 0));
   const maintenant = options.maintenant ?? new Date();
   const groupes = new Map<string, { emailKey: string; guide: string }>();
   // Curseur sur `id` (comme `parLots`) : les origines qui ne partiront pas (personne jamais
@@ -433,6 +444,7 @@ export async function rattraperOriginesSuivantes(
     );
   }
   let nonCliques = 0;
+  let nbExclues = 0;
   let transmis = 0;
   let echecs = 0;
   for (const g of groupes.values()) {
@@ -442,6 +454,12 @@ export async function rattraperOriginesSuivantes(
     });
     if (demande === null || demande.firstClickAt === null) {
       nonCliques += 1;
+      continue;
+    }
+    // Adresse exclue par argument ou par l'environnement : le groupe est sauté, les origines
+    // restent `NULL` (rien n'est marqué, rien n'est supprimé).
+    if (exclues.has(normaliser(demande.email)) || estExclueDuCrm(demande.email)) {
+      nbExclues += 1;
       continue;
     }
     if (!executer) continue;
@@ -462,5 +480,13 @@ export async function rattraperOriginesSuivantes(
       transmis,
     }),
   );
-  return { mode, groupes: groupes.size, nonCliques, transmis, echecs, borneAtteinte };
+  return {
+    mode,
+    groupes: groupes.size,
+    nonCliques,
+    exclues: nbExclues,
+    transmis,
+    echecs,
+    borneAtteinte,
+  };
 }

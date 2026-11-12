@@ -202,10 +202,18 @@ inconnue. Plafond du corps : 4 Ko.
 - Interrupteurs : `SYNCHRO_CRM_V3` (premier clic) ; `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` (`true` seulement, site **et**
   worker, **éteint par défaut**) pour les origines suivantes et leur rattrapage. Tous deux derrière `CRM_SYNC_ENABLED`
   et `CRM_SYNC_GUIDE_ENABLED`.
-- **Rattrapage** (`scripts/crm-sync-rattrapage-lettre-guide.ts`) : reprend les origines en attente depuis plus de
+- **Rattrapage — À LANCER À LA MAIN** (`scripts/crm-sync-rattrapage-lettre-guide.ts`, déposé dans le worker avec
+  `docker cp`) : il n'y a ni cron ni file, rien ne le lance tout seul et aucune alerte ne prévient d'une origine
+  restée `NULL`. Il reprend les origines en attente depuis plus de
   10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
   décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
   `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
+- **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO) se pose dans l'environnement du **worker**, là où le script est lancé
+  (`docker exec -e ORIGINES_SUIVANTES_DEPUIS=… <worker> …`), pas par `coolify-drapeau.yml`. Le site la lit aussi pour
+  le chemin direct : sans elle, il n'envoie que les origines écrites après le clic.
+- **Exclusions** : `--exclure` et `--exclure-stdin` valent aussi pour les origines (groupe sauté, origines restées
+  `NULL`, compté dans « groupes exclus »), en plus de `CRM_SYNC_EXCLUSIONS_SHA256`. Interrupteurs éteints : le passage
+  répond `interrupteurs-eteints` et ne lit rien.
 - ⚠️ **Écriture de l'origine par une demande v1** (`traitement.ts`, D4) : une demande v1 écrit désormais une origine ;
   ce changement n'a pas d'interrupteur propre, il n'est derrière que `GUIDES_RESEAU_ENABLED`.
 - **Ordre d'allumage** : 1) atterrissage de la migration `guide_reseau_origines_crm` **seule** (AGENTS.md, « DEUX

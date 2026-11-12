@@ -91,6 +91,8 @@ on:
           # (docs/guides-reseau-interrupteurs.md). NEWSLETTER_OPTIN : attend l'avis de l'auditeur RGPD.
           - "SYNCHRO_CRM_V3"
           - "SYNCHRO_CRM_V3_NEWSLETTER_OPTIN"
+          # Origines suivantes (lot guide réseau 4) : site (chemin direct) ET worker (rattrapage). `true` seulement.
+          - "SYNCHRO_CRM_V3_ORIGINES_SUIVANTES"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
@@ -167,7 +169,7 @@ jobs:
           # Les interrupteurs du suivi du questionnaire se posent TOUJOURS sur les deux applications :
           # le worker agit, la console affiche le même état (sinon elle dirait « éteintes » à tort).
           # Synchro CRM v3 : site ET worker redéployés ensemble (le worker rattrape et lirait l'ancien format).
-          if [[ "$CLE" =~ ^SYNCHRO_CRM_V3(_NEWSLETTER_OPTIN)?$ ]] && [ "$CIBLE" != "les-deux" ]; then
+          if [[ "$CLE" =~ ^SYNCHRO_CRM_V3(_NEWSLETTER_OPTIN|_ORIGINES_SUIVANTES)?$ ]] && [ "$CIBLE" != "les-deux" ]; then
             echo "::error::$CLE se pose sur « les-deux »"; exit 1
           fi
           if [[ "$CLE" =~ ^QUESTIONNAIRE_(RELANCES|CONFIRMATIONS|TELEGRAM)_ENABLED$ ]] && [ "$CIBLE" != "les-deux" ]; then

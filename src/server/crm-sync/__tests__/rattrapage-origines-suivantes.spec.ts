@@ -113,6 +113,8 @@ beforeEach(() => {
     firstClickAt: il_y_a(500),
     crmEmittedAt: il_y_a(499),
   });
+  vi.stubEnv("SYNCHRO_CRM_V3", "true");
+  vi.stubEnv("SYNCHRO_CRM_V3_ORIGINES_SUIVANTES", "true");
   vi.spyOn(console, "warn").mockImplementation(() => {});
 });
 const lancer = (sur: Record<string, unknown> = {}) =>
@@ -124,6 +126,24 @@ const lancer = (sur: Record<string, unknown> = {}) =>
   });
 
 describe("rattraperOriginesSuivantes", () => {
+  it("adresse exclue par argument + une origine en attente : rien envoyé, l'origine reste NULL", async () => {
+    m.origines.push(o());
+    const b = await lancer({ exclure: ["  P@Exemple.test "] });
+    expect(m.appels).toHaveLength(0);
+    expect(b.exclues).toBe(1);
+    expect(b.transmis).toBe(0);
+    expect(m.origines[0]!.crmStatut).toBeNull();
+  });
+
+  it("interrupteur des origines suivantes éteint : refus explicite, rien n'est lu", async () => {
+    vi.stubEnv("SYNCHRO_CRM_V3_ORIGINES_SUIVANTES", "false");
+    m.origines.push(o());
+    const b = await lancer();
+    expect(b.refus).toBe("interrupteurs-eteints");
+    expect(m.requetes).toHaveLength(0);
+    expect(m.appels).toHaveLength(0);
+  });
+
   it("origine en attente depuis 1 h d'une personne cliquée : une transmission par (personne, guide)", async () => {
     m.origines.push(o(), o(), o({ guide: "autre" }));
     m.demandes.set("cle-1|autre", {
