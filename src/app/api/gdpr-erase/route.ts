@@ -72,13 +72,36 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // Mise à l'écart : opposition (envois programmés retirés, CRM averti), marque « effacement
   // demandé » (plus aucun envoi), lettre et contacts du guide écartés, preuve, alerte cloche.
   // Ne lève pas sur une étape en panne : l'alerte nomme les étapes à reprendre à la main.
-  await ecarterPourDemandeEffacement({
-    email,
-    origine: "libre-service",
-    jti: v.jti,
-    // L'IP du VISITEUR, jamais le relais Cloudflare ni `x-forwarded-for` brut.
-    ip: ipVisiteurOuNull(req.headers),
-  });
+  let resultat: Awaited<ReturnType<typeof ecarterPourDemandeEffacement>>;
+  try {
+    resultat = await ecarterPourDemandeEffacement({
+      email,
+      origine: "libre-service",
+      jti: v.jti,
+      // L'IP du VISITEUR, jamais le relais Cloudflare ni `x-forwarded-for` brut.
+      ip: ipVisiteurOuNull(req.headers),
+    });
+  } catch (e) {
+    console.error(
+      `[gdpr-erase] mise à l'écart impossible : ${e instanceof Error ? e.name : "erreur"}`,
+    );
+    return NextResponse.json({ ok: false, error: "service_indisponible" }, { status: 503 });
+  }
+
+  // On n'affirme l'arrêt des envois que si la marque est bien posée.
+  if (resultat.marque !== "ok") {
+    return NextResponse.json({
+      ok: true,
+      statut: "demande_recue_a_traiter_a_la_main",
+      recueLe: new Date().toISOString(),
+      notice: {
+        explanation:
+          "Votre demande d'effacement a bien été reçue. Elle sera traitée à la main par notre " +
+          "responsable, qui vous répondra personnellement sous un mois.",
+        contactDpo: "contact@axion-ia.com",
+      },
+    });
+  }
 
   return NextResponse.json({
     ok: true,

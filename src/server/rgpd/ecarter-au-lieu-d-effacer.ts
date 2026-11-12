@@ -15,7 +15,8 @@
  *      retirée ;
  *   3. l'abonné à la lettre passe « désabonné » (mise à jour, jeton de réinscription retiré) ;
  *   4. les contacts de la page guide passent « écartés », les rapports avant audit aussi ;
- *   5. le CRM est prévenu (`propagateGdprToCrm`) : il fait lui-même une mise à l'écart ;
+ *   5. (retiré) le site n'envoie PLUS de demande `erase` au CRM : l'opposition (étape 1) le prévient
+ *      déjà, et une suppression côté CRM serait contraire à la décision « aucune suppression » ;
  *   6. la PREUVE de la demande est gardée au journal (`gdpr.*`, empreintes seulement) ;
  *   7. Williams reçoit une alerte dans la CLOCHE de la console, niveau `info` : jamais d'e-mail
  *      groupé (réservé à `important` et `critique`), jamais de Telegram.
@@ -31,7 +32,6 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
 import { mettreContactsAEcart } from "@/server/guides-reseau/mise-a-l-ecart";
 import { ecarterRapportsAvantAuditPourEmail } from "@/lib/rgpd-erase";
-import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
 
 import { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT } from "./constantes";
 
@@ -64,7 +64,6 @@ export type EtapeEcart =
   | "lettre"
   | "contacts-guide"
   | "rapports-avant-audit"
-  | "crm"
   | "journal"
   | "alerte";
 
@@ -74,7 +73,6 @@ export interface ResultatEcart {
   readonly abonnesEcartes: number;
   readonly contactsGuideEcartes: number;
   readonly rapportsEcartes: number;
-  readonly crm: "ok" | "deferred" | "failed";
   readonly journalId: string | null;
   readonly etapesEnEchec: readonly EtapeEcart[];
 }
@@ -140,8 +138,8 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
     })
     .catch(echec("marque"));
 
-  // 3 à 5. Mises à l'écart et CRM, en parallèle : aucune ne dépend des autres.
-  const [lettre, contacts, rapports, crm] = await Promise.all([
+  // 3 et 4. Mises à l'écart, en parallèle : aucune ne dépend des autres.
+  const [lettre, contacts, rapports] = await Promise.all([
     prisma.newsletterSubscriber
       .updateMany({
         // La colonne `email` est `citext` (schema.prisma) : la comparaison ignore déjà la casse,
@@ -166,14 +164,7 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
         echec("rapports-avant-audit")(e);
         return 0;
       }),
-    propagateGdprToCrm({ action: "erase", personKey: empreinte, email })
-      .then((r) => r.status)
-      .catch((e: unknown): "failed" => {
-        echec("crm")(e);
-        return "failed";
-      }),
   ]);
-  if (crm === "failed" && !enEchec.includes("crm")) enEchec.push("crm");
 
   // 6. Preuve de la demande (aucune adresse en clair).
   let journalId: string | null = null;
@@ -197,7 +188,6 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
           abonnesEcartes: lettre,
           contactsGuideEcartes: contacts,
           rapportsAvantAuditEcartes: rapports,
-          crmStatus: crm,
           etapesEnEchec: [...enEchec],
         },
         ipAddress: d.ip ?? null,
@@ -240,7 +230,6 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
     abonnesEcartes: lettre,
     contactsGuideEcartes: contacts,
     rapportsEcartes: rapports,
-    crm,
     journalId,
     etapesEnEchec: enEchec,
   };

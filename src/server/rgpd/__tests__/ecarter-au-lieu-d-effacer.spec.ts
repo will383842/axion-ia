@@ -6,6 +6,8 @@
  * accord. Ses données sont GARDÉES. Williams reçoit une alerte dans la cloche (niveau `info` :
  * jamais d'e-mail groupé, jamais de Telegram) avec la demande à traiter à la main.
  */
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const suppressions = vi.fn();
@@ -162,11 +164,44 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(rapports).toHaveBeenCalledWith(ADRESSE, expect.any(Date));
   });
 
-  it("le CRM est prévenu (il fait lui-même une mise à l'écart)", async () => {
+  it("le site n'envoie PAS de demande d'effacement au CRM (l'opposition le prévient)", async () => {
     await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
-    expect(crm).toHaveBeenCalledWith(
-      expect.objectContaining({ action: "erase", personKey: hashEmailForLookup(ADRESSE) }),
-    );
+    expect(crm).not.toHaveBeenCalled();
+  });
+
+  it("🔒 le module et ses imports directs n'effacent rien (erase, deleteMany, DELETE)", () => {
+    const racine = process.cwd();
+    const lire = (f: string) => readFileSync(join(racine, f), "utf8");
+    const module = lire("src/server/rgpd/ecarter-au-lieu-d-effacer.ts");
+    const imports = [...module.matchAll(/from\s+"@\/([^"]+)"/g)]
+      .map((m) => m[1] as string)
+      .filter((c) => !c.startsWith("lib/prisma") && c !== "lib/rgpd-erase")
+      .map((c) => `src/${c}.ts`)
+      .filter((f) => existsSync(join(racine, f)));
+    // `rgpd-erase` garde ses effaceurs (outil du geste humain) : seule la fonction d'écart passe.
+    const deRgpdErase = module.match(/import\s*\{([^}]*)\}\s*from\s*"@\/lib\/rgpd-erase"/);
+    expect(module).not.toMatch(/import\s*\*\s*as\s+\w+\s+from\s*"@\/lib\/rgpd-erase"/);
+    expect(
+      (deRgpdErase?.[1] ?? "")
+        .split(",")
+        .map((n) => n.trim())
+        .filter(Boolean),
+    ).toEqual(["ecarterRapportsAvantAuditPourEmail"]);
+    for (const f of ["src/server/rgpd/ecarter-au-lieu-d-effacer.ts", ...imports]) {
+      const code = lire(f)
+        .replace(/\/\*[\s\S]*?\*\//g, "")
+        .replace(/^\s*\/\/.*$/gm, "");
+      if (f.endsWith("ecarter-au-lieu-d-effacer.ts")) {
+        expect(code, f).not.toMatch(/action\s*:\s*["']erase["']/);
+        expect(code, f).not.toMatch(/\.(delete|deleteMany)\s*\(/);
+        expect(code, f).not.toMatch(/\$executeRaw[\s\S]{0,200}DELETE/i);
+        expect(code, f).not.toMatch(/propagateGdprToCrm/);
+      } else {
+        expect(code, f).not.toMatch(/action\s*:\s*["']erase["']/);
+        expect(code, f).not.toMatch(/\.deleteMany\s*\(/);
+        expect(code, f).not.toMatch(/\$executeRaw(Unsafe)?[\s\S]{0,200}DELETE\s+FROM/i);
+      }
+    }
   });
 
   it("🔑 la preuve de la demande est gardée, sans adresse en clair", async () => {
@@ -206,10 +241,9 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
   it("une étape en panne n'empêche ni la preuve ni l'alerte", async () => {
     contacts.mockRejectedValue(new Error("base"));
     abonnes.mockRejectedValue(new Error("base"));
-    crm.mockRejectedValue(new Error("crm"));
     const r = await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
     expect(journal).toHaveBeenCalled();
     expect(alerte).toHaveBeenCalled();
-    expect(r.etapesEnEchec).toEqual(expect.arrayContaining(["lettre", "contacts-guide", "crm"]));
+    expect(r.etapesEnEchec).toEqual(expect.arrayContaining(["lettre", "contacts-guide"]));
   });
 });

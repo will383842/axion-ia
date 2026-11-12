@@ -16,7 +16,7 @@
 import { prisma } from "@/lib/prisma";
 import { ACTION_DEMANDE_EFFACEMENT, CODE_ALERTE_EFFACEMENT } from "@/server/rgpd/constantes";
 
-export type OrigineDemande = "stagiaire" | "libre_service";
+export type OrigineDemande = "stagiaire" | "libre_service" | "console_lettre";
 
 export interface DemandeRgpd {
   id: string;
@@ -33,6 +33,7 @@ export interface DemandeRgpd {
 export const LIBELLE_ORIGINE: Readonly<Record<OrigineDemande, string>> = {
   stagiaire: "Portail stagiaire",
   libre_service: "Site (libre-service)",
+  console_lettre: "Console › Lettre d'information",
 };
 
 const ACTIONS_LIBRE_SERVICE = [
@@ -91,11 +92,17 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
       changes && typeof changes === "object"
         ? (changes as Record<string, unknown>)["emailHash"]
         : undefined;
-    return alertes.find((a) => {
-      const m = a.metadata;
-      const jid = m && typeof m === "object" ? (m as Record<string, unknown>)["journalId"] : null;
-      return jid === journalId || (typeof emailHash === "string" && a.cibleId === emailHash);
-    });
+    const metaDe = (m: unknown) =>
+      m && typeof m === "object" ? (m as Record<string, unknown>)["journalId"] : null;
+    // D'abord CETTE demande (journalId) ; l'empreinte ne sert qu'en repli, et seulement parmi
+    // les alertes qui ne portent aucun journalId : une ancienne demande ne doit pas retrouver
+    // l'alerte (plus récente) d'une seconde demande de la même personne.
+    return (
+      alertes.find((a) => metaDe(a.metadata) === journalId) ??
+      alertes.find(
+        (a) => typeof emailHash === "string" && a.cibleId === emailHash && !metaDe(a.metadata),
+      )
+    );
   };
 
   const deStagiaires: DemandeRgpd[] = stagiaires.map((d) => ({
@@ -114,9 +121,13 @@ export async function listerDemandes(): Promise<DemandeRgpd[]> {
       const alerte = alerteDe(l.id, l.changes);
       // Sans alerte retrouvée : on ne peut pas dire qu'elle est faite, elle reste à traiter.
       const faite = alerte?.resolue === true;
+      const origineLue =
+        l.changes && typeof l.changes === "object"
+          ? (l.changes as Record<string, unknown>)["origine"]
+          : undefined;
       return {
         id: l.id,
-        origine: "libre_service",
+        origine: origineLue === "console-lettre" ? "console_lettre" : "libre_service",
         type: "effacement",
         // L'adresse n'est pas au journal (empreintes seulement) : elle est dans l'alerte.
         personne: "Voir l'alerte « Demande d'effacement RGPD à traiter à la main »",

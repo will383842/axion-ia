@@ -72,4 +72,29 @@ describe("demandes d'effacement du site : état déduit de l'alerte", () => {
     expect(x?.aTraiter).toBe(true);
     expect(x?.faiteLe).toBeNull();
   });
+
+  it("🔑 une ancienne demande résolue ne redevient pas « à traiter » à cause d'une 2e demande", async () => {
+    d.journal = [trace("j2"), trace("j1")];
+    d.alertes = [
+      // la plus récente en tête, même empreinte
+      { cibleId: "h-1", resolue: false, resolueAt: null, metadata: { journalId: "j2" } },
+      { cibleId: "h-1", resolue: true, resolueAt: RESOLUE, metadata: { journalId: "j1" } },
+    ];
+    const lignes = await listerDemandes();
+    const j1 = lignes.find((x) => x.id === "j1");
+    const j2 = lignes.find((x) => x.id === "j2");
+    expect(j1?.aTraiter).toBe(false);
+    expect(j1?.faiteLe).toEqual(RESOLUE);
+    expect(j2?.aTraiter).toBe(true);
+  });
+
+  it("l'origine affichée vient de changes.origine (console Lettre ≠ site)", async () => {
+    d.journal = [
+      { ...trace("j1"), changes: { emailHash: "h-1", origine: "console-lettre" } },
+      { ...trace("j2", "h-2"), changes: { emailHash: "h-2", origine: "libre-service" } },
+    ];
+    const lignes = await listerDemandes();
+    expect(lignes.find((x) => x.id === "j1")?.origine).toBe("console_lettre");
+    expect(lignes.find((x) => x.id === "j2")?.origine).toBe("libre_service");
+  });
 });

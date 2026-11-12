@@ -117,7 +117,6 @@ beforeEach(() => {
     abonnesEcartes: 1,
     contactsGuideEcartes: 0,
     rapportsEcartes: 0,
-    crm: "deferred",
     journalId: "log-1",
     etapesEnEchec: [],
   });

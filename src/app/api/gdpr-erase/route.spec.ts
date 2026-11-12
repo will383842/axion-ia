@@ -53,7 +53,6 @@ beforeEach(() => {
     abonnesEcartes: 1,
     contactsGuideEcartes: 0,
     rapportsEcartes: 0,
-    crm: "deferred",
     journalId: "log-1",
     etapesEnEchec: [],
   });
@@ -123,5 +122,32 @@ describe("POST /api/gdpr-erase — mise à l'écart, jamais de suppression (11/1
     );
     expect(res.status).toBe(200);
     expect(ecarter).toHaveBeenCalledWith(expect.objectContaining({ ip: "198.51.100.23" }));
+  });
+
+  it("marque non posée : on n'affirme PAS l'arrêt des envois, la demande sera traitée à la main", async () => {
+    ecarter.mockResolvedValue({
+      opposition: "echec",
+      marque: "echec",
+      abonnesEcartes: 0,
+      contactsGuideEcartes: 0,
+      rapportsEcartes: 0,
+      journalId: null,
+      etapesEnEchec: ["opposition", "marque"],
+    });
+    const res = await POST(requete());
+    expect(res.status).toBe(200);
+    const corps = (await res.json()) as { ok: boolean; notice: { explanation: string } };
+    expect(corps.ok).toBe(true);
+    expect(corps.notice.explanation).toMatch(/traitée à la main/);
+    expect(corps.notice.explanation).not.toMatch(/cessé tout envoi/);
+  });
+
+  it("le module d'écart lève (clé d'empreinte absente…) : 503 propre, pas de 500 brut", async () => {
+    ecarter.mockRejectedValue(new Error("[rgpd] empreinte d'adresse indisponible"));
+    const res = await POST(requete());
+    expect(res.status).toBe(503);
+    const corps = (await res.json()) as { ok: boolean; error: string };
+    expect(corps.ok).toBe(false);
+    expect(corps.error).toBe("service_indisponible");
   });
 });

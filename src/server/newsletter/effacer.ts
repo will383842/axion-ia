@@ -28,7 +28,6 @@ export type IssueEffacement =
       readonly abonnesEcartes: number;
       readonly contactsGuideEcartes: number;
       readonly etapesEnEchec: readonly string[];
-      readonly crm: "ok" | "deferred" | "failed";
     }
   | { readonly ok: false; readonly erreur: "introuvable" };
 
@@ -58,6 +57,5 @@ export async function effacerAbonneDepuisConsole(entree: {
     abonnesEcartes: r.abonnesEcartes,
     contactsGuideEcartes: r.contactsGuideEcartes,
     etapesEnEchec: r.etapesEnEchec,
-    crm: r.crm,
   };
 }
