@@ -114,8 +114,8 @@ describe("migration contacts_guide_reseau : additive", () => {
     // Écrivain : la validation de la page. Lecteurs : la page (usage unique), l'export art. 15,
     // la mise à l'écart de l'effacement art. 17, et (lot S3) le lecteur au clic du lien du guide
     // (`clic-page-guide.ts` : un `findFirst` seulement, aucune écriture ni suppression), et le
-    // rattrapage horaire du guide (`rattrapage.ts` : un `findFirst` pour savoir si la demande vient
-    // de la page, afin de rendre le lien de désinscription ; aucune écriture ni suppression), et
+    // lecteur partagé par le rattrapage horaire et l'envoi console (`page-guide-ecartee.ts` : un `findMany`
+    // pour savoir si la demande vient de la page et si elle est écartée ; aucune écriture ni suppression), et
     // les « stop » reçus après la page (`opposition-page-guide.ts` : un `findMany` par référence de
     // conversation puis un `updateMany` vers `ecarte`, jamais de suppression), et
     // la mise à l'écart par adresse (`mise-a-l-ecart.ts` : un `updateMany` vers `ecarte`, jamais
@@ -129,7 +129,7 @@ describe("migration contacts_guide_reseau : additive", () => {
       "src/app/guide-reseau/route.ts",
       "src/lib/rgpd-erase.ts",
       "src/lib/rgpd-guide-reseau.ts",
-      "src/server/guide-ia/rattrapage.ts",
+      "src/server/guide-ia/page-guide-ecartee.ts",
       "src/server/guides-reseau/accuse-confirmations.ts",
       "src/server/guides-reseau/clic-page-guide.ts",
       "src/server/guides-reseau/confirmations.ts",

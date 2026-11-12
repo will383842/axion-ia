@@ -38,6 +38,11 @@ const d = vi.hoisted(() => ({
   journal: [] as Array<{ entityId: string; status: string; sentAt: Date | null; createdAt: Date }>,
   /** Demandes garées en corbeille de validation. */
   garees: new Set<string>(),
+  /** Contacts de la page « Recevoir le guide » liés aux demandes. */
+  contacts: [] as Array<{ guideRequestId: string; convRef: string; merciStatut: string }>,
+  /** Références de conversation marquées STOP (`oppositions_conv_ref`). */
+  marquesConv: new Set<string>(),
+  marquesPanne: false,
 }));
 
 function correspond(l: Ligne, where: Record<string, unknown>): boolean {
@@ -111,6 +116,18 @@ vi.mock("@/lib/prisma", () => ({
         return { count };
       },
     },
+    contactGuideReseau: {
+      findMany: async ({ where }: { where: { guideRequestId: string } }) =>
+        d.contacts
+          .filter((c) => c.guideRequestId === where.guideRequestId)
+          .map((c) => ({ convRef: c.convRef, merciStatut: c.merciStatut })),
+    },
+    oppositionConvRef: {
+      findFirst: async ({ where }: { where: { convRef: { in: string[] } } }) => {
+        if (d.marquesPanne) throw new Error("lecture impossible");
+        return where.convRef.in.some((r) => d.marquesConv.has(r)) ? { id: "m1" } : null;
+      },
+    },
     activityLog: { create: (...a: unknown[]) => d.activityCreate(...a) },
     emailOpposition: {
       findUnique: async ({ where }: { where: { emailHash: string } }) =>
@@ -165,6 +182,9 @@ beforeEach(() => {
   d.rebondsDurs = new Set();
   d.journal = [];
   d.garees = new Set();
+  d.contacts = [];
+  d.marquesConv = new Set();
+  d.marquesPanne = false;
   d.activityCreate.mockReset().mockResolvedValue({});
   d.lettre.mockReset().mockResolvedValue({ unsubscribeToken: "u".repeat(64) });
   // Le vrai `mettreEnFileGuide` pose `queued_at` après la mise en file.
@@ -450,6 +470,58 @@ describe("« Renvoyer le guide » depuis l'écran des demandes", () => {
     expect((d.activityCreate.mock.calls[0]![0] as { data: { action: string } }).data.action).toBe(
       "newsletter.guide.renvoyer",
     );
+  });
+});
+
+describe("🔴 MG-STOP01 — une demande dont la conversation a dit STOP n'est jamais envoyée à la main", () => {
+  async function demandeDeLaPage(): Promise<string> {
+    await envoyerGuideAAbonne(ABONNE.id, OPTIONS);
+    const l = d.lignes[0]!;
+    l.queuedAt = null;
+    l.sentAt = null;
+    d.mettreEnFile.mockClear();
+    d.contacts.push({ guideRequestId: l.id, convRef: "r".repeat(64), merciStatut: "a_envoyer" });
+    return l.id;
+  }
+  const PLUS_TARD = new Date(T0.getTime() + 3_600_000);
+
+  it("contact écarté : « Renvoyer » refuse, rien ne part", async () => {
+    const id = await demandeDeLaPage();
+    d.contacts[0]!.merciStatut = "ecarte";
+    const r = await renvoyerGuide(id, { ...OPTIONS, maintenant: PLUS_TARD });
+    expect(r.resultat).toBe("adresse-opposee");
+    expect(d.mettreEnFile).not.toHaveBeenCalled();
+  });
+
+  it("conv_ref marqué STOP : « Renvoyer » et « Envoyer » refusent", async () => {
+    const id = await demandeDeLaPage();
+    d.marquesConv.add("r".repeat(64));
+    expect((await renvoyerGuide(id, { ...OPTIONS, maintenant: PLUS_TARD })).resultat).toBe(
+      "adresse-opposee",
+    );
+    expect(
+      (await envoyerGuideAAbonne(ABONNE.id, { ...OPTIONS, maintenant: PLUS_TARD })).resultat,
+    ).toBe("adresse-opposee");
+    expect(d.mettreEnFile).not.toHaveBeenCalled();
+  });
+
+  it("table des marques illisible : refus (fermé)", async () => {
+    const id = await demandeDeLaPage();
+    d.marquesPanne = true;
+    const espion = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      const r = await renvoyerGuide(id, { ...OPTIONS, maintenant: PLUS_TARD });
+      expect(r.resultat).toBe("adresse-opposee");
+      expect(d.mettreEnFile).not.toHaveBeenCalled();
+    } finally {
+      espion.mockRestore();
+    }
+  });
+
+  it("témoin : contact sans STOP, « Renvoyer » part", async () => {
+    const id = await demandeDeLaPage();
+    const r = await renvoyerGuide(id, { ...OPTIONS, maintenant: PLUS_TARD });
+    expect(r.resultat).toBe("en-file");
   });
 });
 

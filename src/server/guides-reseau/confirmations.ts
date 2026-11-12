@@ -22,7 +22,10 @@
  *   · toute adresse présente dans `email_oppositions` : `email_hash = email_key`. C'est la MÊME
  *     fonction des deux côtés (`hashEmailForLookup`, après `trim` + minuscules) : la page écrit
  *     `email_key = hashEmailForLookup(email)`, l'opposition écrit
- *     `email_hash = hashEmailForLookup(adresse)`.
+ *     `email_hash = hashEmailForLookup(adresse)` ;
+ *   · tout contact dont le `conv_ref` figure dans `oppositions_conv_ref` (STOP reçu pour la conversation,
+ *     même si le contact est resté `a_envoyer` à la suite d'une course). Lecture en erreur = la
+ *     transaction échoue, rien n'est réservé (fermé).
  *
  * 🔴 AUCUN DELETE. Ni adresse, ni `email_key`, ni `conv_ref`, ni prénom ne sortent : `ref` est
  * l'empreinte SHA-256 du jeton du lien (`jeton_empreinte`), `valideLe` la date de validation.
@@ -101,6 +104,9 @@ export async function reserverConfirmations(
             AND c."consenti_le" >= ${debutFenetre}
             AND NOT EXISTS (
               SELECT 1 FROM "email_oppositions" o WHERE o."email_hash" = c."email_key"
+            )
+            AND NOT EXISTS (
+              SELECT 1 FROM "oppositions_conv_ref" m WHERE m."conv_ref" = c."conv_ref"
             )
           ORDER BY c."consenti_le" ASC, c."id" ASC
           LIMIT ${n}

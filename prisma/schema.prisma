@@ -18481,3 +18481,16 @@ model MotCible {
   @@index([codeCible], map: "mots_cibles_code_cible_idx")
   @@map("mots_cibles")
 }
+
+/// STOP reçu du Studio AVANT la validation de la page du guide : la marque porte la seule référence de
+/// conversation hachée (`conv_ref`, HMAC de 64 caractères), jamais d'adresse. Écrite à chaque STOP
+/// (idempotent), lue par la page de confirmation pour suivre le même déroulé neutre qu'une adresse opposée.
+/// AUCUNE ligne n'est supprimée par le code.
+/// rgpd: technique — référence de conversation hachée (HMAC), aucune adresse ni nom ni texte
+model OppositionConvRef {
+  id      String   @id @default(cuid())
+  convRef String   @unique @map("conv_ref") @db.VarChar(64)
+  creeLe  DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@map("oppositions_conv_ref")
+}
