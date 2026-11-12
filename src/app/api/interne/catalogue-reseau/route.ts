@@ -1,6 +1,6 @@
 /**
- * `GET /api/interne/catalogue-reseau` — liste des cibles d'un mot (guides du catalogue +
- * adresses actives), SANS l'adresse elle-même (F1a). Signée ; 404 tant que
+ * `GET /api/interne/catalogue-reseau` — liste des cibles (guides et
+ * adresses, lus en base), SANS adresse ni chemin de PDF (F1a-bis). Signée ; 404 tant que
  * `GUIDES_RESEAU_ENABLED` n'est pas vrai. Voir `server/guides-reseau/catalogue-cibles.ts`.
  */
 import type { NextRequest } from "next/server";

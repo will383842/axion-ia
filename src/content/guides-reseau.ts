@@ -19,40 +19,13 @@ export const RESEAUX_GUIDE = [
 ] as const;
 export type ReseauGuide = (typeof RESEAUX_GUIDE)[number];
 
-/** Un guide du catalogue (F1a, 2026-11-12). */
-export interface GuideCatalogue {
-  /** Code stable (= `guide_requests.aimant`). */
-  readonly code: string;
-  readonly titre: string;
-  /** Chemin sous `public/`, sans slash initial. */
-  readonly cheminPdf: string;
-  readonly version: string;
-  /** Faux = le guide reste connu mais n'est plus proposé. */
-  readonly actif: boolean;
-}
-
 /**
- * CATALOGUE des guides qu'un réseau peut demander. Liste FERMÉE : un second guide s'ajoute
- * ICI, avec son PDF et son gabarit. Le chemin du PDF est recopié de `content/guide-ia.ts`
- * (`GUIDE_IA_CHEMIN`) pour garder ce module PUR ; un test refuse tout écart.
+ * VALEUR DE DÉPART / COMPATIBILITÉ uniquement (F1a-bis, 2026-11-12). Le catalogue vit en base
+ * (table `cibles_reseau`, saisie par l'écran, sans limite) : ne pas ajouter de guide ici.
+ * Reste exporté pour les importeurs actuels (contrat.ts, page-confirmation.ts,
+ * app/guide-reseau/route.ts) qui valident encore le code de la demande avec cette liste.
  */
-export const CATALOGUE_GUIDES_RESEAU: readonly GuideCatalogue[] = [
-  {
-    code: "guide-ia",
-    titre: "Guide IA entreprise",
-    cheminPdf: "imprimes/guide-ia-entreprise-2026-axion-ia.pdf",
-    version: "2026",
-    actif: true,
-  },
-];
-
-/**
- * Codes de guides qu'un réseau peut demander (code = `guide_requests.aimant`). Dérivé du
- * catalogue, forme inchangée : un code inconnu est refusé (422), il ne crée pas d'aimant.
- */
-export const GUIDES_RESEAU_CONNUS: readonly string[] = CATALOGUE_GUIDES_RESEAU.map((g) => g.code);
-/** Type d'un code de guide connu (compatible avec l'ancien `string`). */
-export type CodeGuideReseau = string;
+export const GUIDES_RESEAU_CONNUS: readonly string[] = ["guide-ia"];
 
 /** Références du registre de preuve (`consent_events.form_ref`). */
 export const FORM_REF_INFORMATION_RESEAU = "guide-reseau-message-prive";

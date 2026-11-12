@@ -1,5 +1,5 @@
 /**
- * ADRESSES DE PAGE CIBLABLES PAR UN MOT (F1a, 2026-11-12) — validation PURE.
+ * CIBLES D'UN MOT (F1a-bis, 2026-11-12) — validation PURE d'un guide, d'une adresse et d'un mot.
  *
  * Décision de Williams : un mot mène soit à un guide du catalogue, soit à une adresse de page,
  * et une adresse n'est acceptée que si son hôte figure dans une LISTE BLANCHE
@@ -12,8 +12,15 @@ export const HOTES_PAR_DEFAUT = "axion-ia.com,www.axion-ia.com";
 export const URL_MAX = 300;
 export const TITRE_MIN = 3;
 export const TITRE_MAX = 120;
-/** `adr-` + 6 à 24 caractères minuscules, chiffres ou tirets. */
-export const RE_CODE_ADRESSE = /^adr-[a-z0-9-]{6,24}$/;
+/** `gde-` (guide) ou `adr-` (adresse) + 6 à 24 caractères minuscules, chiffres ou tirets. */
+export const RE_CODE_CIBLE = /^(gde|adr)-[a-z0-9-]{6,24}$/;
+/** Fiche de départ créée par la migration : son code est celui déjà écrit sur les demandes. */
+export const CODE_GUIDE_DEPART = "guide-ia";
+export const TYPES_CIBLE = ["guide", "adresse"] as const;
+export type TypeCible = (typeof TYPES_CIBLE)[number];
+export const RESEAUX_MOT = ["facebook", "instagram", "linkedin", "tiktok", "tous"] as const;
+export type ReseauMot = (typeof RESEAUX_MOT)[number];
+export const CHEMIN_PDF_MAX = 200;
 
 /** Liste blanche des hôtes, lue dans l'environnement ; vide ou absente → valeur par défaut. */
 export function hotesAutorises(
@@ -79,4 +86,32 @@ export function validerTitre(brut: unknown): string | null {
   if (typeof brut !== "string") return null;
   const t = brut.trim();
   return t.length >= TITRE_MIN && t.length <= TITRE_MAX ? t : null;
+}
+
+/** Code accepté pour une cible : forme `gde-`/`adr-` accordée au type, ou la fiche de départ. */
+export function codeAccordeAuType(code: string, type: TypeCible): boolean {
+  if (code === CODE_GUIDE_DEPART) return type === "guide";
+  return RE_CODE_CIBLE.test(code) && code.startsWith(type === "guide" ? "gde-" : "adr-");
+}
+
+/** Mot : minuscules, sans accent, lettres et chiffres, 2 à 30. `null` si inutilisable. */
+export function normaliserMot(brut: unknown): string | null {
+  if (typeof brut !== "string") return null;
+  const m = brut
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+  return /^[a-z0-9]{2,30}$/.test(m) ? m : null;
+}
+
+/** Chemin d'un PDF sous `public/` : relatif, sans `..`, extension .pdf. */
+export function validerCheminPdf(brut: unknown): string | null {
+  if (typeof brut !== "string") return null;
+  const c = brut.trim();
+  if (c.length === 0 || c.length > CHEMIN_PDF_MAX) return null;
+  if (!/^[A-Za-z0-9][A-Za-z0-9._/-]*\.pdf$/.test(c) || c.includes("..") || c.includes("//")) {
+    return null;
+  }
+  return c;
 }

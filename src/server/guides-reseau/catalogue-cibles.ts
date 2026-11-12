@@ -1,6 +1,7 @@
 /**
- * CATALOGUE UNIQUE DE CIBLES (F1a, 2026-11-12) — logique des deux routes signées
- * `GET /api/interne/catalogue-reseau` et `POST /api/interne/cibles-adresses`.
+ * CATALOGUE UNIQUE DE CIBLES (F1a-bis, 2026-11-12) — logique des routes signées
+ * `GET /api/interne/catalogue-reseau`, `POST /api/interne/cibles-reseau`,
+ * `GET|POST /api/interne/mots-cibles`. Tout vient de la base : aucun guide ni mot en code.
  *
  * Même signature que `/api/interne/demandes-guide-reseau` (HMAC + horodatage, `controlerEntree`),
  * même secret `GUIDES_RESEAU_HMAC_SECRET` — SANS repli sur le secret des vidéos (une route qui
@@ -11,26 +12,35 @@
  * dans la fenêtre de 300 s reproduit le même état, sans nouvel effet (même décision que
  * `oppositions-reseau`). Le nonce est contrôlé en forme, pas mémorisé.
  *
- * Le catalogue ne rend JAMAIS l'adresse elle-même ni aucune donnée de personne.
+ * Le catalogue ne rend JAMAIS l'adresse, le chemin du PDF ni aucune donnée de personne.
  */
 import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { z } from "zod";
-import { CATALOGUE_GUIDES_RESEAU } from "@/content/guides-reseau";
 import { prisma } from "@/lib/prisma";
 import { controlerEntree, type ResultatEntree } from "@/server/videos/entree";
 import { refus, reponseJson } from "@/server/videos/reponse";
 import { guidesReseauActifs, secretsOppositionsReseau } from "./config";
-import { RE_CODE_ADRESSE, validerAdresse, validerTitre } from "./cibles-adresses";
+import {
+  RESEAUX_MOT,
+  TYPES_CIBLE,
+  codeAccordeAuType,
+  normaliserMot,
+  validerAdresse,
+  validerCheminPdf,
+  validerTitre,
+  type TypeCible,
+} from "./cibles-reseau";
 
 export const PREFIXE_DEBIT_CIBLES = "internal:cibles-reseau";
 export const CORPS_MAX_CIBLES = 4 * 1024;
 
 export interface ElementCatalogue {
   code: string;
-  type: "guide" | "adresse";
+  type: TypeCible;
   titre: string;
   actif: boolean;
+  test: boolean;
 }
 
 /** 404 si éteint ; 401 si la signature manque, est fausse ou expirée ; sinon l'entrée signée. */
@@ -58,66 +68,133 @@ async function entreeSignee(
 export async function listerCatalogue(req: NextRequest): Promise<Response> {
   const entree = await entreeSignee(req, "GET", "/api/interne/catalogue-reseau");
   if (!entree.ok) return entree.reponse;
-  const adresses = await prisma.cibleAdresse.findMany({
-    where: { actif: true },
-    select: { code: true, titre: true, actif: true },
+  const lignes = await prisma.cibleReseau.findMany({
+    select: { code: true, type: true, titre: true, actif: true, test: true },
     orderBy: { code: "asc" },
   });
-  const elements: ElementCatalogue[] = [
-    ...CATALOGUE_GUIDES_RESEAU.map((g) => ({
-      code: g.code,
-      type: "guide" as const,
-      titre: g.titre,
-      actif: g.actif,
-    })),
-    ...adresses.map((a) => ({
-      code: a.code,
-      type: "adresse" as const,
-      titre: a.titre,
-      actif: a.actif,
-    })),
-  ];
+  const elements: ElementCatalogue[] = lignes.map((l) => ({
+    code: l.code,
+    type: l.type as TypeCible,
+    titre: l.titre,
+    actif: l.actif,
+    test: l.test,
+  }));
   return reponseJson(200, elements);
 }
 
-const CorpsAdresse = z
+function lireCorps(corps: Buffer): unknown {
+  try {
+    return JSON.parse(corps.toString("utf8"));
+  } catch {
+    return undefined;
+  }
+}
+
+const CorpsCible = z
   .object({
     code: z.string().optional(),
+    type: z.enum(TYPES_CIBLE),
     titre: z.unknown(),
-    url: z.unknown(),
+    cheminPdf: z.string().nullable().optional(),
+    url: z.string().nullable().optional(),
+    version: z.number().int().min(1).max(100000).optional(),
     actif: z.boolean().optional(),
+    test: z.boolean().optional(),
   })
   .strict();
 
-function nouveauCode(): string {
-  return `adr-${crypto.randomBytes(6).toString("hex")}`;
+function nouveauCode(type: TypeCible): string {
+  return `${type === "guide" ? "gde" : "adr"}-${crypto.randomBytes(6).toString("hex")}`;
 }
 
-export async function enregistrerAdresse(req: NextRequest): Promise<Response> {
-  const entree = await entreeSignee(req, "POST", "/api/interne/cibles-adresses");
+/** Crée ou met à jour une cible. Un guide a un chemin de PDF et pas d'adresse ; une adresse l'inverse. */
+export async function enregistrerCible(req: NextRequest): Promise<Response> {
+  const entree = await entreeSignee(req, "POST", "/api/interne/cibles-reseau");
   if (!entree.ok) return entree.reponse;
-  let json: unknown;
-  try {
-    json = JSON.parse(entree.corps.toString("utf8"));
-  } catch {
-    return refus(400, "corps_illisible");
-  }
-  const lu = CorpsAdresse.safeParse(json);
+  const json = lireCorps(entree.corps);
+  if (json === undefined) return refus(400, "corps_illisible");
+  const lu = CorpsCible.safeParse(json);
   if (!lu.success) return refus(422, "corps_invalide");
-  const { code: codeFourni, actif } = lu.data;
-  if (codeFourni !== undefined && !RE_CODE_ADRESSE.test(codeFourni)) {
+  const { type, code: codeFourni, actif, test, version } = lu.data;
+  if (codeFourni !== undefined && !codeAccordeAuType(codeFourni, type)) {
     return refus(422, "code_invalide");
   }
   const titre = validerTitre(lu.data.titre);
   if (titre === null) return refus(422, "titre_invalide");
-  const verdict = validerAdresse(lu.data.url);
-  if (!verdict.ok) return refus(422, verdict.raison);
 
-  const code = codeFourni ?? nouveauCode();
-  await prisma.cibleAdresse.upsert({
+  let cheminPdf: string | null = null;
+  let url: string | null = null;
+  if (type === "guide") {
+    if (lu.data.url != null) return refus(422, "guide_sans_adresse");
+    cheminPdf = validerCheminPdf(lu.data.cheminPdf);
+    if (cheminPdf === null) return refus(422, "chemin_pdf_invalide");
+  } else {
+    if (lu.data.cheminPdf != null) return refus(422, "adresse_sans_pdf");
+    const verdict = validerAdresse(lu.data.url);
+    if (!verdict.ok) return refus(422, verdict.raison);
+    url = verdict.url;
+  }
+
+  const code = codeFourni ?? nouveauCode(type);
+  const champs = {
+    titre,
+    cheminPdf,
+    url,
+    ...(version !== undefined ? { version } : {}),
+    ...(actif !== undefined ? { actif } : {}),
+    ...(test !== undefined ? { test } : {}),
+  };
+  await prisma.cibleReseau.upsert({
     where: { code },
-    create: { code, titre, url: verdict.url, actif: actif ?? true },
-    update: { titre, url: verdict.url, ...(actif !== undefined ? { actif } : {}) },
+    create: { code, type, ...champs },
+    update: champs,
   });
   return reponseJson(200, { ok: true, code });
+}
+
+export async function listerMots(req: NextRequest): Promise<Response> {
+  const entree = await entreeSignee(req, "GET", "/api/interne/mots-cibles");
+  if (!entree.ok) return entree.reponse;
+  const lignes = await prisma.motCible.findMany({
+    select: { mot: true, reseau: true, codeCible: true, actif: true },
+    orderBy: [{ mot: "asc" }, { reseau: "asc" }],
+  });
+  return reponseJson(
+    200,
+    lignes.map((l) => ({ mot: l.mot, reseau: l.reseau, codeCible: l.codeCible, actif: l.actif })),
+  );
+}
+
+const CorpsMot = z
+  .object({
+    mot: z.unknown(),
+    reseau: z.enum(RESEAUX_MOT),
+    codeCible: z.string().min(1).max(40),
+    actif: z.boolean().optional(),
+  })
+  .strict();
+
+/** Crée ou modifie la liaison (mot, réseau) : un mot, UNE cible par réseau. Cible inconnue ou inactive refusée. */
+export async function enregistrerMot(req: NextRequest): Promise<Response> {
+  const entree = await entreeSignee(req, "POST", "/api/interne/mots-cibles");
+  if (!entree.ok) return entree.reponse;
+  const json = lireCorps(entree.corps);
+  if (json === undefined) return refus(400, "corps_illisible");
+  const lu = CorpsMot.safeParse(json);
+  if (!lu.success) return refus(422, "corps_invalide");
+  const mot = normaliserMot(lu.data.mot);
+  if (mot === null) return refus(422, "mot_invalide");
+  const { reseau, codeCible, actif } = lu.data;
+  const cible = await prisma.cibleReseau.findUnique({
+    where: { code: codeCible },
+    select: { actif: true },
+  });
+  if (!cible) return refus(422, "cible_inconnue");
+  if (!cible.actif) return refus(422, "cible_inactive");
+  await prisma.motCible.upsert({
+    where: { mot_reseau: { mot, reseau } },
+    create: { mot, reseau, codeCible, ...(actif !== undefined ? { actif } : {}) },
+    update: { codeCible, ...(actif !== undefined ? { actif } : {}) },
+  });
+  return reponseJson(200, { ok: true, mot, reseau, codeCible });
 }

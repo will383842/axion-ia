@@ -3,14 +3,13 @@
 import { describe, it, expect } from "vitest";
 import {
   HOTES_PAR_DEFAUT,
-  RE_CODE_ADRESSE,
+  RE_CODE_CIBLE,
   hotesAutorises,
   validerAdresse,
   validerTitre,
-} from "../cibles-adresses";
-import { CATALOGUE_GUIDES_RESEAU, GUIDES_RESEAU_CONNUS } from "@/content/guides-reseau";
-import { GUIDE_IA_CHEMIN } from "@/content/guide-ia";
-import { NOM_GUIDE } from "@/content/guide-ia-page";
+  normaliserMot,
+  validerCheminPdf,
+} from "../cibles-reseau";
 
 const HOTES = ["axion-ia.com", "www.axion-ia.com"];
 const refuse = (u: unknown, raison: string, hotes = HOTES) =>
@@ -72,8 +71,8 @@ describe("liste blanche", () => {
 
 describe("code et titre", () => {
   it("code adr- de 6 à 24 caractères", () => {
-    expect(RE_CODE_ADRESSE.test("adr-abc123")).toBe(true);
-    expect(RE_CODE_ADRESSE.test("adr-" + "a".repeat(24))).toBe(true);
+    expect(RE_CODE_CIBLE.test("adr-abc123")).toBe(true);
+    expect(RE_CODE_CIBLE.test("adr-" + "a".repeat(24))).toBe(true);
     for (const mauvais of [
       "adr-abc12",
       "adr-" + "a".repeat(25),
@@ -82,7 +81,7 @@ describe("code et titre", () => {
       "abc-abc123",
       "adr-ab cde",
     ]) {
-      expect(RE_CODE_ADRESSE.test(mauvais)).toBe(false);
+      expect(RE_CODE_CIBLE.test(mauvais)).toBe(false);
     }
   });
   it("titre de 3 à 120 caractères", () => {
@@ -93,15 +92,25 @@ describe("code et titre", () => {
   });
 });
 
-describe("catalogue des guides", () => {
-  it("garde les exports historiques et un seul guide, guide-ia", () => {
-    expect(GUIDES_RESEAU_CONNUS).toEqual(["guide-ia"]);
-    expect(CATALOGUE_GUIDES_RESEAU).toHaveLength(1);
+describe("code, mot, chemin", () => {
+  it("code : gde- ou adr- + 6 à 24 caractères minuscules, chiffres, tirets", () => {
+    expect(RE_CODE_CIBLE.test("gde-ia2026")).toBe(true);
+    expect(RE_CODE_CIBLE.test("adr-offre01")).toBe(true);
+    expect(RE_CODE_CIBLE.test("adr-ab")).toBe(false);
+    expect(RE_CODE_CIBLE.test("xyz-offre01")).toBe(false);
+    expect(RE_CODE_CIBLE.test("adr-OFFRE01")).toBe(false);
   });
-  it("reprend le titre et le chemin du PDF déjà utilisés", () => {
-    const g = CATALOGUE_GUIDES_RESEAU[0]!;
-    expect(g.cheminPdf).toBe(GUIDE_IA_CHEMIN);
-    expect(g.titre).toBe(NOM_GUIDE.fr);
-    expect(g.actif).toBe(true);
+  it("mot : minuscules, sans accent, lettres/chiffres 2 à 30", () => {
+    expect(normaliserMot("  Énergie ")).toBe("energie");
+    expect(normaliserMot("a")).toBeNull();
+    expect(normaliserMot("a".repeat(31))).toBeNull();
+    expect(normaliserMot("deux mots")).toBeNull();
+    expect(normaliserMot(5)).toBeNull();
+  });
+  it("chemin du PDF : relatif, .pdf, sans ..", () => {
+    expect(validerCheminPdf("imprimes/x.pdf")).toBe("imprimes/x.pdf");
+    expect(validerCheminPdf("/etc/x.pdf")).toBeNull();
+    expect(validerCheminPdf("../x.pdf")).toBeNull();
+    expect(validerCheminPdf("imprimes/x.exe")).toBeNull();
   });
 });

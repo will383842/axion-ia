@@ -18441,17 +18441,43 @@ model AuditTerrainRapport {
   @@map("audit_terrain_rapports")
 }
 
-/// F1a (2026-11-12) — adresses de page qu'un mot peut cibler (parcours « mot → guide ou adresse de page »).
-/// Hôte contrôlé par liste blanche à l'écriture (`CIBLES_ADRESSES_HOTES`). Aucune ligne n'est supprimée : on désactive (`actif`).
-/// rgpd: technique — adresse publique du site et son titre éditorial ; aucune donnée sur une personne
-model CibleAdresse {
+/// F1a-bis (2026-11-12) — catalogue UNIQUE de cibles d'un mot : un guide (PDF) ou une adresse de page.
+/// Rien n'est figé dans le code : tout se saisit par l'écran, sans limite de nombre. Aucune ligne
+/// n'est supprimée : on désactive (`actif`). `test` = fiche factice de test. Contraintes
+/// (guide ⇒ chemin sans adresse, adresse ⇒ adresse sans chemin, formes) posées en SQL dans la migration.
+/// rgpd: technique — contenu éditorial public (titre, chemin de PDF, adresse du site) ; aucune donnée sur une personne
+model CibleReseau {
   id        String   @id @default(uuid()) @db.Uuid
   code      String   @unique @db.VarChar(28)
+  type      String   @db.VarChar(10)
   titre     String   @db.VarChar(120)
-  url       String   @db.VarChar(300)
+  cheminPdf String?  @map("chemin_pdf") @db.VarChar(200)
+  url       String?  @db.VarChar(300)
+  version   Int      @default(1)
   actif     Boolean  @default(true)
+  test      Boolean  @default(false)
   creeLe    DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
   modifieLe DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
 
-  @@map("cibles_adresses")
+  mots MotCible[]
+
+  @@map("cibles_reseau")
+}
+
+/// F1a-bis — liaison mot → cible. Un mot mène à UNE cible par réseau (`@@unique([mot, reseau])`) ;
+/// plusieurs mots peuvent mener à la même cible. Mot normalisé : minuscules, sans accent, 2 à 30.
+/// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
+model MotCible {
+  id        String       @id @default(uuid()) @db.Uuid
+  mot       String       @db.VarChar(30)
+  reseau    String       @db.VarChar(10)
+  codeCible String       @map("code_cible") @db.VarChar(28)
+  actif     Boolean      @default(true)
+  creeLe    DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  cible     CibleReseau  @relation(fields: [codeCible], references: [code], onDelete: Restrict)
+
+  @@unique([mot, reseau], map: "mots_cibles_mot_reseau_key")
+  @@index([codeCible], map: "mots_cibles_code_cible_idx")
+  @@map("mots_cibles")
 }
