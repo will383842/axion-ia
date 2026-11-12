@@ -1,6 +1,6 @@
 // Server Component — schéma visuel du hero /contact.
 // Stack de 3 mini-cards illustrant les 3 canaux d'entrée Axion-IA :
-// (1) message direct sous 48 h ouvrées (lead), (2) intervention via
+// (1) message direct (lead), (2) intervention via
 // la formation d’une journée, (3) audit cadré. Pattern hérité de BlogHeroSchema —
 // stack vertical, terracotta accent, première card en avant.
 //
@@ -31,7 +31,7 @@ export function ContactHeroSchema({
         {
           icon: Mail,
           eyebrow: "Message direct",
-          title: "Réponse sous 48 h ouvrées",
+          title: "Nous écrire",
           detail: "Devis détaillé, pas de relance commerciale.",
           lead: true,
         },
@@ -54,7 +54,7 @@ export function ContactHeroSchema({
         {
           icon: Mail,
           eyebrow: "Direct message",
-          title: "Reply within 48 business hours",
+          title: "Write to us",
           detail: "Detailed quote, no commercial chasing.",
           lead: true,
         },

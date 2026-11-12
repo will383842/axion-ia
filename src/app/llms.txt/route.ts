@@ -175,7 +175,7 @@ ${sectionVideos}${sectionTour}
 ## Contact & presse
 
 - [Page presse & dossier journalistes](${SITE_URL}/fr/presse) — kit média + contact dédié.
-- [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com (réponse < 48h).
+- [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com.
 
 ${sectionFaitsPratiquesLlms(SITE_URL)}
 
