@@ -11,9 +11,9 @@ export const GONESSE_COPY: VilleCopy = {
   pitchEn:
     "Gonesse (95, Val-d'Oise) compte 27 707 habitants (recensement 2023) à 16 km au nord-nord-est de Paris, dans la Communauté d'agglomération Roissy Pays de France. Son économie repose sur le Triangle de Gonesse (zone d'activités stratégique entre A1 et D170), la proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, la logistique, le commerce de gros et de détail, ainsi qu'un tissu dense de TPE/PME de services. Patrimoine : église Saint-Pierre-Saint-Paul (XIIe-XIIIe). Axion-IA accompagne dirigeants TPE et PME locales avec du code custom.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique, déplacement rapide depuis Paris (16 km).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gonesse (95) et dans tout l'est du Val-d'Oise. Nous accompagnons en priorité les TPE et PME (logistique aéroportuaire CDG, commerce de gros et détail, transports terrestres, services aux entreprises, artisanat BTP) avec du code custom — sans no-code — adapté à votre métier. Audit sur place dès {{price:audit-flash|flat}}, intervention sur site, conformité RGPD systématique.",
   seoHook: "logistique CDG, commerce & services val-d'oise",
   ecosystemFr:
     "Gonesse bénéficie d'une position stratégique à 16 km de Paris et à proximité immédiate de l'aéroport Paris-Charles-de-Gaulle, desservie par les autoroutes A1, A3 et A170 et le RER D (gare de Villiers-le-Bel - Gonesse - Arnouville). Le Triangle de Gonesse concentre logistique, commerce de gros et activités tertiaires. Les communes limitrophes Arnouville, Villiers-le-Bel, Bonneuil-en-France, Le Thillay, Goussainville et Roissy-en-France forment un bassin de plus de 100 000 habitants à fort potentiel TPE/PME.",
@@ -131,11 +131,11 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai pouvez-vous nous envoyer un devis ?",
-            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet. Notre proximité avec Paris (16 km, RER D direct) facilite un cadrage rapide sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
+            a: "À partir de 24-48 h selon la complexité, après un premier échange sur votre projet. Nous intervenons partout en France, sur place ou à distance : cadrage sur site à Gonesse, dans votre entrepôt du Parc des Tulipes, votre commerce ou vos bureaux.",
           },
         ],
         guarantees:
-          "Sites et plateformes SaaS développés en code custom, propriété du code et des contenus côté client, sans verrou éditeur ni dépendance contractuelle imposée. Hébergement UE conforme RGPD par défaut, registre de traitement fourni. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA. Devis transparent à partir de 24-48 h selon la complexité ; frais de déplacement depuis Paris facturés en sus de façon claire. Vos équipes gonessiennes restent autonomes après la mise en ligne.",
+          "Sites et plateformes SaaS développés en code custom, propriété du code et des contenus côté client, sans verrou éditeur ni dépendance contractuelle imposée. Hébergement UE conforme RGPD par défaut, registre de traitement fourni. Nous revendiquons l'UX/UI, le mobile-first, l'e-commerce multi-CMS et l'intégration IA. Devis transparent à partir de 24-48 h selon la complexité ; frais de déplacement facturés en sus de façon claire. Vos équipes gonessiennes restent autonomes après la mise en ligne.",
       },
       en: {
         hero: "Gonesse (95, Val-d'Oise) runs on B2B wholesale, CDG airport logistics and transport: Manutan International's head office sits in the ZAC du Parc des Tulipes, which together with Computacenter France, La Poste and a fabric of carriers concentrates nearly 80 hectares of activity (Tulipes South and North). Here Axion-IA builds AI-augmented websites and SaaS platforms for these B2B distributors, logistics providers, carriers and retailers: order portals, quote configurators, shipment tracking, RAG chatbots on catalogues and customs procedures — custom code, EU GDPR-compliant hosting, no vendor lock-in.",
@@ -217,11 +217,11 @@ export const GONESSE_COPY: VilleCopy = {
           },
           {
             q: "How fast can you send us a quote?",
-            a: "From 24-48 h depending on complexity, after an initial discussion of your project. Our proximity to Paris (16 km, direct RER D) makes a fast on-site scoping in Gonesse easy — in your Parc des Tulipes warehouse, your shop or your offices.",
+            a: "From 24-48 h depending on complexity, after an initial discussion of your project. We work anywhere in France, on site or remotely: on-site scoping in Gonesse — in your Parc des Tulipes warehouse, your shop or your offices.",
           },
         ],
         guarantees:
-          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 24-48 h depending on complexity; travel costs from Paris billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
+          "Sites and SaaS platforms built in custom code, with code and content owned by the client, no vendor lock-in or imposed contractual dependency. EU GDPR-compliant hosting by default, processing register provided. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI integration. Transparent quote from 24-48 h depending on complexity; travel costs billed separately and clearly. Your Gonesse teams stay autonomous after go-live.",
       },
     },
   },
@@ -233,7 +233,7 @@ export const GONESSE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai Axion-IA peut-il intervenir à Gonesse ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Notre proximité Paris (RER D direct) facilite les interventions rapides à Gonesse.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés après signature du devis. Visio de cadrage possible sous 48h. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Couvrez-vous les communes proches comme Roissy-en-France, Goussainville ou Villiers-le-Bel ?",

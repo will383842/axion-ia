@@ -49,7 +49,7 @@ export const GIVET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Givet et à la pointe des Ardennes ?",
-      a: "Oui, Axion-IA intervient à Givet et dans toute la pointe ardennaise (Fumay, Vireux-Wallerand, Aubrives, Chooz). Couverture Charleville-Mézières à 60 km par la N51 et Dinant (Belgique) à 22 km.",
+      a: "Oui, Axion-IA intervient à Givet et dans toute la pointe ardennaise (Fumay, Vireux-Wallerand, Aubrives, Chooz). Couverture également Charleville-Mézières et Dinant (Belgique).",
     },
     {
       q: "Accompagnez-vous les commerces et entreprises transfrontaliers franco-belges ?",
@@ -65,7 +65,7 @@ export const GIVET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Givet ?",
-      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nos consultants se déplacent depuis Charleville-Mézières (60 km) ou via Reims (1h45). Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
+      a: "Après un premier échange gratuit, nous planifions l'intervention sous 5 jours. Nous intervenons partout en France, sur place ou à distance. Intervention sur site ou en visio. Livrable actionnable et suivi post-mission de 30 jours inclus.",
     },
   ],
 };

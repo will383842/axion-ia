@@ -12,9 +12,9 @@ export const LE_CANNET_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME du Cannet dans l'automatisation de leurs opérations. Commune des Alpes-Maritimes (41 938 habitants en 2023), Le Cannet jouxte Cannes au nord et s'inscrit dans la Communauté d'agglomération Cannes Pays de Lérins. Son économie est portée par le commerce de proximité, l'hôtellerie-restauration, les services aux entreprises et l'événementiel lié à la Côte d'Azur. Nos consultants livrent du code applicatif sur mesure — pas de no-code — adapté aux contraintes saisonnières locales.",
   directAnswerFr:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises, via l'aéroport Nice Côte d'Azur ou la gare de Cannes. Nous intervenons partout en France, sur place ou à distance. Nous respectons strictement le RGPD et remettons le code applicatif au client.",
   directAnswerEn:
-    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises. Nos consultants se déplacent depuis Paris via l'aéroport Nice Côte d'Azur ou la gare de Cannes, dans le respect strict du RGPD et avec remise du code applicatif au client.",
+    "Axion-IA intervient au Cannet (Alpes-Maritimes, PACA) pour les TPE, PME et, en complément, les ETI de la Communauté d'agglomération Cannes Pays de Lérins. Nous réalisons des audits IA (dès {{price:audit-flash|flat}}), des interventions sur site (dès {{price:intervention-4h|flat}}) et des implémentations sur mesure pour le commerce de proximité, l'hôtellerie-restauration, l'événementiel et les services aux entreprises, via l'aéroport Nice Côte d'Azur ou la gare de Cannes. Nous intervenons partout en France, sur place ou à distance. Nous respectons strictement le RGPD et remettons le code applicatif au client.",
   seoHook: "commerce, hôtellerie-restauration & événementiel",
   ecosystemFr:
     "Le Cannet est situé à environ 2 km au nord de Cannes et appartient à la Communauté d'agglomération Cannes Pays de Lérins. Son tissu économique est dominé par le commerce, l'hôtellerie-restauration, les services et un secteur événementiel structuré par les grands rendez-vous cannois (Festival, MIPIM, MIPCOM). La commune accueille également le musée Bonnard, témoin de son patrimoine culturel.",
@@ -128,7 +128,7 @@ export const LE_CANNET_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà du Cannet, dans l'agglomération Cannes Pays de Lérins ?",
-            a: "Oui, sans surcoût de périmètre : Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité. Le kick-off se tient sur site, le développement se poursuit à distance avec points réguliers.",
+            a: "Oui : Cannes, Mougins, Vallauris, Mandelieu-la-Napoule, Théoule-sur-Mer et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité. Le kick-off se tient sur site, le développement se poursuit à distance avec points réguliers.",
           },
           {
             q: "Sous quel délai recevons-nous un devis pour un site ou une plateforme SaaS ?",
@@ -230,7 +230,7 @@ export const LE_CANNET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs publics d'Axion-IA pour intervenir au Cannet ?",
-      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en groupe et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement depuis Paris est inclus pour ces formats.",
+      a: "Nos tarifs publics démarrent à {{price:audit-flash|flat}} pour l'Audit sur place 4h, {{price:intervention-4h|flat}} pour une intervention en groupe et {{price:intervention-dirigeants|flat}} pour une Implémentation ou un accompagnement un-à-un. Le déplacement est inclus pour ces formats.",
     },
     {
       q: "Quels délais pour une intervention IA au Cannet après prise de contact ?",
@@ -238,7 +238,7 @@ export const LE_CANNET_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes proches du Cannet ?",
-      a: "Oui. Nous couvrons sans surcoût Cannes, Mougins, Vallauris, Mandelieu-la-Napoule et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité.",
+      a: "Oui. Nous couvrons aussi Cannes, Mougins, Vallauris, Mandelieu-la-Napoule et l'ensemble de la Communauté d'agglomération Cannes Pays de Lérins, ainsi qu'Antibes et Grasse à proximité.",
     },
     {
       q: "Comment Axion-IA garantit-elle le respect du RGPD lors d'une mission au Cannet ?",

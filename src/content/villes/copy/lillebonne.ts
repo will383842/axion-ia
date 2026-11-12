@@ -49,7 +49,7 @@ export const LILLEBONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Lillebonne et dans la vallee du Commerce ?",
-      a: "Oui, Axion-IA intervient a Lillebonne et dans toute la vallee du Commerce (Bolbec, Barentin, Port-Jerome-sur-Seine). Consultants depuis Le Havre (25 min) ou Rouen (50 min).",
+      a: "Oui, Axion-IA intervient a Lillebonne et dans toute la vallee du Commerce (Bolbec, Barentin, Port-Jerome-sur-Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Lillebonne ?",

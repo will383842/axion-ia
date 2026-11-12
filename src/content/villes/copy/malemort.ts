@@ -61,7 +61,7 @@ export const MALEMORT_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission IA à Malemort ?",
-      a: "Intervention sous 5 jours ouvrés. Brive à 5 min, aéroport à 15 min. Déplacements sur site inclus ou sessions en visio selon vos préférences.",
+      a: "Intervention sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance. Malemort est à 5 min de Brive et à 15 min de l'aéroport.",
     },
     {
       q: "Proposez-vous des formations IA pour équipes commerce à Malemort ?",

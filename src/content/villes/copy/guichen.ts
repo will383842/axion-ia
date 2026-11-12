@@ -49,7 +49,7 @@ export const GUICHEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guichen et sud de Rennes Métropole ?",
-      a: "Oui, Axion-IA intervient à Guichen et dans tout le sud de Rennes Métropole (Bourg-des-Comptes, Bruz, Pont-Péan, Laillé). Nos consultants viennent de Rennes centre (20 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Guichen et dans tout le sud de Rennes Métropole (Bourg-des-Comptes, Bruz, Pont-Péan, Laillé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services du sud de Rennes ?",
@@ -65,7 +65,7 @@ export const GUICHEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Guichen ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via N137 ou TER gare Guichen-Bourg-des-Comptes). Possibilité visio pour les sessions courtes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité visio pour les sessions courtes.",
     },
   ],
 };

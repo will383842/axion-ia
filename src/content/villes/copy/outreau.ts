@@ -49,7 +49,7 @@ export const OUTREAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Outreau et dans l'agglo boulonnaise ?",
-      a: "Oui, Axion-IA intervient à Outreau et dans toute l'agglomération boulonnaise (Boulogne-sur-Mer, Le Portel, Saint-Martin-Boulogne, Wimereux). Nos consultants viennent de Lille (1h40 TER) ou via la gare TGV Calais-Fréthun (30 min).",
+      a: "Oui, Axion-IA intervient à Outreau et dans toute l'agglomération boulonnaise (Boulogne-sur-Mer, Le Portel, Saint-Martin-Boulogne, Wimereux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants d'Outreau ?",
@@ -64,8 +64,8 @@ export const OUTREAU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme littoral (hôtels, restaurants, campings, offices de tourisme) sur agents conversationnels multilingues, automatisation réservations, classification avis, optimisation tarification saisonnière.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Calais ?",
-      a: "Nos consultants viennent de Lille (1h40 TER ou A16) ou Calais (30 min A16). Gare TGV Calais-Fréthun à 30 min. Hébergement local possible (hôtels Boulogne).",
+      q: "Comment se déroule une mission à Outreau ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 30 min. Hébergement local possible (hôtels Boulogne).",
     },
   ],
 };

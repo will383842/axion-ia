@@ -49,7 +49,7 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mehun-sur-Yèvre et Berry ?",
-      a: "Oui, Axion-IA intervient à Mehun-sur-Yèvre et tout le bassin berruyer (Bourges à 15 min, Vierzon à 20 min). Consultants depuis Bourges ou en visio.",
+      a: "Oui, Axion-IA intervient à Mehun-sur-Yèvre et tout le bassin berruyer (Bourges à 15 min, Vierzon à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans porcelaine et céramique ?",
@@ -64,8 +64,8 @@ export const MEHUN_SUR_YEVRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
-      q: "Comment se passe une mission depuis Bourges ?",
-      a: "Nos consultants viennent de Bourges (15 min).",
+      q: "Comment se déroule une mission à Mehun-sur-Yèvre ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

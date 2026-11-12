@@ -49,7 +49,7 @@ export const NAINTRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Naintré et Châtelleraudais ?",
-      a: "Oui, Axion-IA intervient à Naintré et tout le Châtelleraudais (Châtellerault centre à 5 min, Cenon-sur-Vienne, Thuré, Ingrandes-sur-Vienne). Consultants depuis Paris (TGV Châtellerault 1h50) ou Poitiers (30 min).",
+      a: "Oui, Axion-IA intervient à Naintré et tout le Châtelleraudais (Châtellerault centre à 5 min, Cenon-sur-Vienne, Thuré, Ingrandes-sur-Vienne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Châtelleraudais ?",
@@ -64,8 +64,8 @@ export const NAINTRE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Naintré, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, classification photos chantiers.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Châtellerault (1h50) puis 5 min Naintré. Pour les multi-jours, hébergement Châtellerault ou Futuroscope.",
+      q: "Comment se déroule une mission à Naintré ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Châtellerault ou Futuroscope.",
     },
   ],
 };

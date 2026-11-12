@@ -72,7 +72,7 @@ export const LANNION_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio depuis le Photonics Park.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio, y compris pour les entreprises du Photonics Park.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const LANNION_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio depuis le Photonics Park.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et connecteurs vers vos systèmes télécoms, ERP industriels, bases de mesure optique ou outils R&D. Démos hebdomadaires en visio, y compris pour les entreprises du Photonics Park.",
           },
           {
             step: "Recette + mise en ligne",

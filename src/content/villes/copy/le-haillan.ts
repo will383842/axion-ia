@@ -49,7 +49,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Haillan et ouest Bordeaux ?",
-      a: "Oui, Axion-IA intervient au Haillan et dans tout l'ouest bordelais (Mérignac, Saint-Médard-en-Jalles, Martignas-sur-Jalle). Nos consultants se déplacent depuis Bordeaux centre (15 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient au Haillan et dans tout l'ouest bordelais (Mérignac, Saint-Médard-en-Jalles, Martignas-sur-Jalle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Haillan ?",
@@ -65,7 +65,7 @@ export const LE_HAILLAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Haillan ?",
-      a: "Nos consultants interviennent dans vos locaux au Haillan ou en visio. Depuis Bordeaux centre (15 min). Proche aéroport Mérignac (10 min). Livrables documentés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Haillan est à 10 min de l'aéroport de Mérignac. Livrables documentés.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LE_PELLERIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pellerin et dans l'estuaire nantais ?",
-      a: "Oui, Axion-IA intervient au Pellerin et dans toute la zone estuaire de Nantes Métropole (Bouaye, Saint-Jean-de-Boiseau, Couëron, Indre). Nos consultants se déplacent sur site depuis Nantes centre en 20 minutes.",
+      a: "Oui, Axion-IA intervient au Pellerin et dans toute la zone estuaire de Nantes Métropole (Bouaye, Saint-Jean-de-Boiseau, Couëron, Indre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une exploitation viticole au Pellerin ?",
@@ -64,8 +64,8 @@ export const LE_PELLERIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants du Pellerin sur des cas IA concrets : automatisation devis, planification chantiers, gestion stocks, communication locale et agents IA de prise de rendez-vous.",
     },
     {
-      q: "Comment accédez-vous au Pellerin pour vos interventions ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min D723) ou via le bac de Loire depuis Couëron. L'aéroport Nantes Atlantique est à 15 min.",
+      q: "Comment se déroule une intervention au Pellerin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'aéroport Nantes Atlantique est à 15 min.",
     },
   ],
 };

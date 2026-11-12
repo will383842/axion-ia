@@ -64,7 +64,7 @@ export const ORSAY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Orsay ?",
       a: "Paris centre (30 min RER B). Massy TGV (10 min). Aéroport Orly (20 min).",
     },
   ],

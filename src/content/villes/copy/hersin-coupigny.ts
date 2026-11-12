@@ -49,7 +49,7 @@ export const HERSIN_COUPIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Hersin-Coupigny et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Hersin-Coupigny et dans tout le bassin minier (Barlin, Noeux-les-Mines, Bethune, Bruay-la-Buissiere). Consultants depuis Lille (1h TER) ou Paris (TGV via Lens 1h45).",
+      a: "Oui, Axion-IA intervient a Hersin-Coupigny et dans tout le bassin minier (Barlin, Noeux-les-Mines, Bethune, Bruay-la-Buissiere). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les petites industries de Hersin-Coupigny ?",

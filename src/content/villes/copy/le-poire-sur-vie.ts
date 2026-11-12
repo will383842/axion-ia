@@ -49,7 +49,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Poiré-sur-Vie et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient au Poiré-sur-Vie et dans tout le bocage vendéen. La Roche-sur-Yon est à 15 min. Déplacements sur site couvrent l'agglo yonnaise et alentours.",
+      a: "Oui, Axion-IA intervient au Poiré-sur-Vie et dans tout le bocage vendéen. La Roche-sur-Yon est à 15 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE et PME du Poiré-sur-Vie ?",
@@ -65,7 +65,7 @@ export const LE_POIRE_SUR_VIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Poiré-sur-Vie ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (15 min) ou Nantes (50 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation agricole.",
     },
   ],
 };

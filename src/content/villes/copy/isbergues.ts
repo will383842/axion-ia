@@ -65,7 +65,7 @@ export const ISBERGUES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Isbergues ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare d'Isbergues accessible TER. Nos consultants se déplacent depuis Lille (55 min).",
+      a: "Intervention sous 5 jours ouvrés après validation. Gare d'Isbergues accessible TER. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

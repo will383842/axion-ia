@@ -65,7 +65,7 @@ export const LA_MOTTE_SERVOLEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Motte-Servolex ?",
-      a: "Nos consultants interviennent directement dans vos locaux à La Motte-Servolex (5 min de Chambéry centre). Formats demi-journée ou journée complète. Missions multi-jours possibles, hébergement Chambéry/Aix-les-Bains à proximité.",
+      a: "Nous intervenons directement sur votre site à La Motte-Servolex. Formats demi-journée ou journée complète. Missions multi-jours possibles, hébergement Chambéry/Aix-les-Bains à proximité.",
     },
   ],
 };

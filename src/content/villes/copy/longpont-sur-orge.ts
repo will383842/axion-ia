@@ -49,7 +49,7 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longpont-sur-Orge et Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Longpont-sur-Orge et tout le Hurepoix (Brétigny-sur-Orge, Sainte-Geneviève-des-Bois, Montlhéry, Linas). Consultants depuis Paris (35 min RER C).",
+      a: "Oui, Axion-IA intervient à Longpont-sur-Orge et tout le Hurepoix (Brétigny-sur-Orge, Sainte-Geneviève-des-Bois, Montlhéry, Linas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et commerces longpontais ?",
@@ -64,8 +64,8 @@ export const LONGPONT_SUR_ORGE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour PME tertiaires du Hurepoix : CRM augmentés, classification documents, automatisations workflow. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER C (35 min Gare d'Austerlitz) ou en voiture via A6/N20 (40 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Longpont-sur-Orge ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

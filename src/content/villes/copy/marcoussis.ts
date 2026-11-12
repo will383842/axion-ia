@@ -49,7 +49,7 @@ export const MARCOUSSIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcoussis et dans le Hurepoix ?",
-      a: "Oui, Axion-IA intervient à Marcoussis et tout le Hurepoix (Linas, Montlhéry, Nozay, Les Ulis, Arpajon). Nos consultants accèdent facilement depuis Paris (30 min A10) ou Massy-Palaiseau (15 min).",
+      a: "Oui, Axion-IA intervient à Marcoussis et tout le Hurepoix (Linas, Montlhéry, Nozay, Les Ulis, Arpajon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Marcoussis ?",
@@ -64,8 +64,8 @@ export const MARCOUSSIS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME et bureaux d'études du plateau de Courtabœuf (Les Ulis) à 10 min de Marcoussis : automatisation documentaire, agents conversationnels internes, veille sectorielle augmentée, CRM IA. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission à Marcoussis depuis Paris ?",
-      a: "Nos consultants accèdent à Marcoussis en 30 min depuis Paris (A10/N20). Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Marcoussis ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare RER B Massy-Palaiseau à 15 min, gare RER C Arpajon à 10 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

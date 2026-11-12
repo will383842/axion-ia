@@ -49,7 +49,7 @@ export const GIGEAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gigean ?",
-      a: "Oui, Axion-IA intervient à Gigean et dans tout le bassin de Thau-Sète Agglopôle Méditerranée. Nous nous déplaçons aussi à Sète (14 km), Balaruc-les-Bains, Poussan (limitrophe), Frontignan et Montpellier (25 min par A9).",
+      a: "Oui, Axion-IA intervient à Gigean et dans tout le bassin de Thau-Sète Agglopôle Méditerranée. Nous intervenons aussi à Sète, Balaruc-les-Bains, Poussan, Frontignan et Montpellier.",
     },
     {
       q: "Proposez-vous des audits IA pour les PME de services et TPE commerce ?",

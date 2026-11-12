@@ -53,7 +53,7 @@ export const LE_TEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Teil et dans le sud-Ardèche ?",
-      a: "Oui, Axion-IA intervient au Teil et dans tout le sud de l'Ardèche–vallée du Rhône (Montélimar sur la rive opposée, Viviers, Alba-la-Romaine, Aubenas à 30 min). Nos consultants se déplacent depuis Lyon (1h30) ou Valence (40 min).",
+      a: "Oui, Axion-IA intervient au Teil et dans tout le sud de l'Ardèche–vallée du Rhône (Montélimar sur la rive opposée, Viviers, Alba-la-Romaine, Aubenas à 30 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Teil ?",
@@ -68,8 +68,8 @@ export const LE_TEIL_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, professions libérales. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants rejoignent Le Teil depuis Lyon (1h30) ou Valence (40 min). Sessions sur site ou en visio.",
+      q: "Comment se déroule une mission au Teil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio.",
     },
   ],
 };

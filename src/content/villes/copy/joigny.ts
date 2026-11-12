@@ -49,7 +49,7 @@ export const JOIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Joigny et dans le nord de l'Yonne ?",
-      a: "Oui, Axion-IA intervient à Joigny et dans tout le nord de l'Yonne (Auxerre, Sens, Villeneuve-sur-Yonne, Migennes). A6 à 10 min, Paris à 1h30 en TER depuis la gare Joigny-Laroche.",
+      a: "Oui, Axion-IA intervient à Joigny et dans tout le nord de l'Yonne (Auxerre, Sens, Villeneuve-sur-Yonne, Migennes). Joigny est à 10 min de l'A6 ; la gare de Joigny-Laroche met Paris à 1h30 en TER. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Joigny  ?",

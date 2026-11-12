@@ -49,7 +49,7 @@ export const OTHIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Othis et dans le nord Seine-et-Marne ?",
-      a: "Oui, Axion-IA intervient à Othis et dans tout le nord Seine-et-Marne (Dammartin-en-Goële, Moussy-le-Neuf, Saint-Mard, Villeneuve-sous-Dammartin). Nos consultants se déplacent depuis Paris (45 min) ou Roissy-CDG (15 min).",
+      a: "Oui, Axion-IA intervient à Othis et dans tout le nord Seine-et-Marne (Dammartin-en-Goële, Moussy-le-Neuf, Saint-Mard, Villeneuve-sous-Dammartin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME logistiques du bassin Roissy ?",
@@ -65,7 +65,7 @@ export const OTHIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Othis ?",
-      a: "Nos consultants se déplacent à Othis depuis Paris (45 min via A1/N2) ou directement depuis Roissy-CDG (15 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

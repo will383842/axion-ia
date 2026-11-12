@@ -65,7 +65,7 @@ export const LA_RAVOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Ravoire ?",
-      a: "Nos consultants interviennent directement dans vos locaux à La Ravoire (5 min de Chambéry centre, 5 min de Challes-les-Eaux). Formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
+      a: "Nous intervenons partout en France, sur place ou à distance. La Ravoire est à 5 min de Chambéry centre et de Challes-les-Eaux. Formats demi-journée ou journée complète. Visio possible pour les sessions coaching.",
     },
   ],
 };

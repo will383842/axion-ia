@@ -49,7 +49,7 @@ export const MOUILLERON_LE_CAPTIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouilleron-le-Captif ?",
-      a: "Oui, Axion-IA intervient à Mouilleron-le-Captif et dans toute l'agglomération de La Roche-sur-Yon (La Ferrière, Dompierre-sur-Yon, Le Poiré-sur-Vie). Nos consultants se déplacent depuis Nantes (55 min) ou directement sur site.",
+      a: "Oui, Axion-IA intervient à Mouilleron-le-Captif et dans toute l'agglomération de La Roche-sur-Yon (La Ferrière, Dompierre-sur-Yon, Le Poiré-sur-Vie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mouilleron-le-Captif  ?",

@@ -64,7 +64,7 @@ export const LONGVIC_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, automatisation reporting et conformité, gestion documentaire, suivi qualité, optimisation cycles production pour la filière aéronautique et défense liée à l'ancienne base aérienne 102.",
     },
     {
-      q: "Comment se déroule une mission depuis Dijon ou Paris ?",
+      q: "Comment se déroule une mission à Longvic ?",
       a: "Dijon centre à 15 min (tram T2). Paris-Bercy à 1h30 en TGV via Dijon. Beaune à 30 min.",
     },
   ],

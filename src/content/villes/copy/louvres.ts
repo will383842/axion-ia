@@ -49,7 +49,7 @@ export const LOUVRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Louvres et zone Roissy-CDG ?",
-      a: "Oui, Axion-IA intervient à Louvres et toute la zone Roissy-CDG (Fosses, Survilliers, Gonesse, Le Thillay, Goussainville). Consultants depuis Paris (30 min RER D) ou directement via Roissy (10 min).",
+      a: "Oui, Axion-IA intervient à Louvres et toute la zone Roissy-CDG (Fosses, Survilliers, Gonesse, Le Thillay, Goussainville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques aéroportuaires ?",
@@ -64,8 +64,8 @@ export const LOUVRES_COPY: VilleCopy = {
       a: "Pour les professions libérales à Louvres, nous proposons audit IA adapté, intervention formation 1 journée, coaching 1-to-1, implémentation agents conversationnels et automatisation. RGPD strict, secret professionnel respecté.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (30 min RER D Gare du Nord → Louvres ou voiture A1). Proximité directe Roissy-CDG (10 min).",
+      q: "Comment se déroule une mission à Louvres ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Proximité directe Roissy-CDG (10 min).",
     },
   ],
 };

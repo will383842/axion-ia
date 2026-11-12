@@ -49,7 +49,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moëlan-sur-Mer et sur la côte sud Finistère ?",
-      a: "Oui, Axion-IA intervient à Moëlan-sur-Mer et sur toute la côte sud Finistère (Riec-sur-Belon, Clohars-Carnoët, Névez, Pont-Aven). Déplacement depuis Quimperlé en 15 min, depuis Lorient en 35 min.",
+      a: "Oui, Axion-IA intervient à Moëlan-sur-Mer et sur toute la côte sud Finistère (Riec-sur-Belon, Clohars-Carnoët, Névez, Pont-Aven). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et professionnels de la mer ?",
@@ -65,7 +65,7 @@ export const MOELAN_SUR_MER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Moëlan-sur-Mer ?",
-      a: "Nos consultants se déplacent depuis Quimperlé (15 min) ou Lorient (35 min). Gare TGV de Lorient sur la ligne Paris-Quimper.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Lorient sur la ligne Paris-Quimper.",
     },
   ],
 };

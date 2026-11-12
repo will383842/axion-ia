@@ -49,7 +49,7 @@ export const ISSOUDUN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Issoudun et dans le Berry ?",
-      a: "Oui, Axion-IA intervient à Issoudun et dans tout le Berry (Châteauroux, Bourges, Vierzon, Le Blanc, La Châtre). Couverture également Tours à 1h30, Limoges à 2h et Paris à 2h30.",
+      a: "Oui, Axion-IA intervient à Issoudun et dans tout le Berry (Châteauroux, Bourges, Vierzon, Le Blanc, La Châtre). Couverture également Tours, Limoges et Paris.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et aéronautiques d'Issoudun ?",
@@ -65,7 +65,7 @@ export const ISSOUDUN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Issoudun ?",
-      a: "Nos consultants se déplacent via la gare TER d'Issoudun (ligne Vierzon-Châteauroux) ou par l'A20 depuis Paris (2h30) ou Limoges (2h).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

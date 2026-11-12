@@ -49,7 +49,7 @@ export const KERVIGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Kervignac et dans le bassin lorientais ?",
-      a: "Oui, Axion-IA intervient à Kervignac et dans toute l'agglomération de Lorient (Hennebont, Lanester, Ploemeur, Caudan, Brandérion). Nos consultants se déplacent depuis Lorient en 15 minutes.",
+      a: "Oui, Axion-IA intervient à Kervignac et dans toute l'agglomération de Lorient (Hennebont, Lanester, Ploemeur, Caudan, Brandérion). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA proposez-vous aux TPE et PME de Kervignac ?",

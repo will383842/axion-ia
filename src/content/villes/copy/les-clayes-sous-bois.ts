@@ -49,7 +49,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Clayes-sous-Bois et dans les Yvelines ouest ?",
-      a: "Oui, Axion-IA intervient aux Clayes-sous-Bois et dans tout l'ouest yvelinois (Plaisir, Villepreux, Élancourt, Trappes, Saint-Quentin-en-Yvelines). Nos consultants sont à 35 min de Paris-Montparnasse via Transilien N.",
+      a: "Oui, Axion-IA intervient aux Clayes-sous-Bois et dans tout l'ouest yvelinois (Plaisir, Villepreux, Élancourt, Trappes, Saint-Quentin-en-Yvelines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un commerce aux Clayes-sous-Bois ?",
@@ -61,7 +61,7 @@ export const LES_CLAYES_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site aux Clayes-sous-Bois ?",
-      a: "Nos consultants viennent sur site aux Clayes-sous-Bois (gare Villepreux-Les Clayes, Transilien N depuis Paris-Montparnasse, 35 min). Format journée ou demi-journée adapté.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format journée ou demi-journée adapté.",
     },
     {
       q: "Quels services IA pour les commerçants des Clayes-sous-Bois ?",

@@ -49,7 +49,7 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nuits-Saint-Georges et en Côte de Nuits ?",
-      a: "Oui, Axion-IA intervient à Nuits-Saint-Georges et sur toute la Côte de Nuits (Vosne-Romanée, Gevrey-Chambertin, Vougeot, Chambolle-Musigny). Consultants depuis Dijon (25 min) ou Beaune (15 min).",
+      a: "Oui, Axion-IA intervient à Nuits-Saint-Georges et sur toute la Côte de Nuits (Vosne-Romanée, Gevrey-Chambertin, Vougeot, Chambolle-Musigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs et domaines viticoles ?",
@@ -65,7 +65,7 @@ export const NUITS_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Nuits-Saint-Georges ?",
-      a: "Nos consultants se déplacent à Nuits-Saint-Georges (25 min depuis Dijon, 15 min depuis Beaune). Interventions dans vos locaux domaine, caveau ou bureau. Visio possible pour le suivi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux domaine, caveau ou bureau. Visio possible pour le suivi.",
     },
   ],
 };

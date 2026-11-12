@@ -49,7 +49,7 @@ export const L_AIGLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Aigle et dans le Pays d'Ouche ?",
-      a: "Oui, Axion-IA intervient à L'Aigle et tout le Pays d'Ouche (Verneuil-sur-Avre à 25 km, Mortagne-au-Perche à 40 km, Rugles). Nos consultants viennent de Paris (2h TER direct gare de L'Aigle).",
+      a: "Oui, Axion-IA intervient à L'Aigle et tout le Pays d'Ouche (Verneuil-sur-Avre à 25 km, Mortagne-au-Perche à 40 km, Rugles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME métallurgiques de L'Aigle ?",
@@ -60,8 +60,8 @@ export const L_AIGLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de L'Aigle sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TER direct Paris-Montparnasse — L'Aigle (2h).",
+      q: "Comment se déroule une mission à L'Aigle ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à L'Aigle ?",

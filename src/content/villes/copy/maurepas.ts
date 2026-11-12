@@ -245,8 +245,8 @@ export const MAUREPAS_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour déployer un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Agents conversationnels pour la relation client et fournisseurs.",
     },
     {
-      q: "Comment se passe une mission depuis Versailles ou Paris ?",
-      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous couvrons tout l'ouest des Yvelines.",
+      q: "Comment se déroule une mission à Maurepas ?",
+      a: "Maurepas est à 20 km de Versailles et à une quarantaine de minutes de Paris. Nous intervenons partout en France, sur place ou à distance. Nous couvrons notamment tout l'ouest des Yvelines.",
     },
   ],
 };

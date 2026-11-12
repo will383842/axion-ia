@@ -53,7 +53,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ludon-Médoc ?",
-      a: "Oui, Axion-IA intervient à Ludon-Médoc et dans l'entrée du Médoc (Blanquefort, Parempuyre, Le Pian-Médoc, Macau). Nos experts IA seniors se déplacent depuis Bordeaux (25 min) ou travaillent en visio.",
+      a: "Oui, Axion-IA intervient à Ludon-Médoc et dans l'entrée du Médoc (Blanquefort, Parempuyre, Le Pian-Médoc, Macau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Ludon-Médoc ?",
@@ -73,7 +73,7 @@ export const LUDON_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ludon-Médoc ?",
-      a: "Nous démarrons par un audit, puis intervenons en chai, en atelier ou en visio depuis Bordeaux centre (25 min). Livrables documentés, équipes formées, aucune dépendance technique imposée.",
+      a: "Nous démarrons par un audit, puis intervenons en chai, en atelier ou en visio. Livrables documentés, équipes formées, aucune dépendance technique imposée.",
     },
   ],
 };

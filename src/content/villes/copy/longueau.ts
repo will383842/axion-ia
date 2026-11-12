@@ -49,7 +49,7 @@ export const LONGUEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longueau et dans l'agglomération amiénoise ?",
-      a: "Oui, Axion-IA intervient à Longueau et toute l'agglomération amiénoise (Amiens, Camon, Rivery, Salouël, Dury). Nos consultants sont à 10 min du centre d'Amiens et couvrent tout le bassin d'emploi picard.",
+      a: "Oui, Axion-IA intervient à Longueau et toute l'agglomération amiénoise (Amiens, Camon, Rivery, Salouël, Dury). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les entreprises ferroviaires à Longueau ?",
@@ -65,7 +65,7 @@ export const LONGUEAU_COPY: VilleCopy = {
     },
     {
       q: "Quels avantages de la proximité d'Amiens pour une mission IA ?",
-      a: "Longueau étant limitrophe d'Amiens (10 min centre-ville), nos consultants accèdent facilement à votre site. TGV Paris-Amiens en 1h15. L'agglomération concentre l'essentiel du tissu économique picard.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Longueau est limitrophe d'Amiens (10 min du centre-ville), reliée à Paris en TGV en 1h15. L'agglomération concentre l'essentiel du tissu économique picard.",
     },
   ],
 };

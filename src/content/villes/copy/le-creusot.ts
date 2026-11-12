@@ -28,8 +28,8 @@ export const LE_CREUSOT_COPY: VilleCopy = {
       en: "Audit IA au Creusot : diagnostic pour TPE et PME sous-traitantes d'ArcelorMittal Industeel, Framatome, Alstom, Safran et General Electric. Cas d'usage typiques : maintenance prédictive, contrôle qualité visuel, optimisation OF, traçabilité documentaire ISO 9001/EN 9100. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Déplacement depuis la gare TGV Le Creusot-Montceau-Montchanin (10 km) ou via A6.",
-      en: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier. Déplacement depuis la gare TGV Le Creusot-Montceau-Montchanin (10 km) ou via A6.",
+      fr: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier.",
+      en: "Interventions IA sur site au Creusot : ateliers pour PME mécaniques, métallurgistes et bureaux d'études du Technoparc. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA au Creusot : maintenance prédictive sur lignes Framatome/Alstom, contrôle qualité visuel par vision, classification documents techniques aéronautiques Safran, agents IA réponse appels d'offres. Code custom industriel, compatible exigences nucléaires/ferroviaires.",
@@ -240,7 +240,7 @@ export const LE_CREUSOT_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site au Creusot ?",
-      a: "Oui, nos consultants se déplacent depuis Paris (1h20 en TGV) ou Lyon (40 min en TGV) jusqu'à la gare Le Creusot-Montceau-Montchanin (10 km du centre). Pour les missions récurrentes, planification mensuelle sur site et visio entre deux. Pas de surcoût dans la CUCM.",
+      a: "Oui, nous intervenons partout en France, sur place ou à distance. Pour les missions récurrentes, planification mensuelle sur site et visio entre deux. Pas de surcoût dans la CUCM.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

@@ -49,7 +49,7 @@ export const LE_BOURGET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Bourget et dans le nord de la Seine-Saint-Denis ?",
-      a: "Oui, Axion-IA intervient au Bourget et dans tout le nord du 93 (Drancy, Dugny, Blanc-Mesnil, Aulnay-sous-Bois, La Courneuve). Accès rapide par RER B depuis Paris Gare du Nord (20 min) ou A1/A3.",
+      a: "Oui, Axion-IA intervient au Bourget et dans tout le nord du 93 (Drancy, Dugny, Blanc-Mesnil, Aulnay-sous-Bois, La Courneuve). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Bourget ?",
@@ -65,7 +65,7 @@ export const LE_BOURGET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site au Bourget ?",
-      a: "Nos consultants se déplacent dans vos locaux au Bourget, accessibles en 20 min depuis Paris (RER B). Formation pratique sur vos cas métier réels, équipes autonomes en fin de journée.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formation pratique sur vos cas métier réels, équipes autonomes en fin de journée.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LAVENTIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Laventie et en Flandre artesienne ?",
-      a: "Oui, Axion-IA intervient a Laventie et dans toute la Flandre artesienne (La Bassee, Bethune, Estaires, Sailly-sur-la-Lys). Consultants depuis Lille (40 min TER) ou Paris (TGV 1h30 via Lens).",
+      a: "Oui, Axion-IA intervient a Laventie et dans toute la Flandre artesienne (La Bassee, Bethune, Estaires, Sailly-sur-la-Lys). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les agriculteurs de Laventie ?",

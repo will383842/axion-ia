@@ -49,7 +49,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guipry-Messac et dans le sud rennais ?",
-      a: "Oui, Axion-IA intervient à Guipry-Messac et dans tout le sud rennais jusqu'au Pays de Redon (Bain-de-Bretagne, Pipriac, Grand-Fougeray). Nos consultants se déplacent depuis Rennes en 40 min via la D177.",
+      a: "Oui, Axion-IA intervient à Guipry-Messac et dans tout le sud rennais jusqu'au Pays de Redon (Bain-de-Bretagne, Pipriac, Grand-Fougeray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Guipry-Messac  ?",
@@ -65,7 +65,7 @@ export const GUIPRY_MESSAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission sur un territoire rural comme Guipry-Messac ?",
-      a: "Nos consultants se déplacent depuis Rennes en 40 min. Gare TER Messac-Guipry accessible (30 min Rennes). Interventions sur site dans vos locaux, exploitation ou commerce. Visio possible pour le suivi entre sessions.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Messac-Guipry accessible (30 min Rennes). Interventions sur site dans vos locaux, exploitation ou commerce. Visio possible pour le suivi entre sessions.",
     },
   ],
 };

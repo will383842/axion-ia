@@ -18,9 +18,9 @@ export const GUJAN_MESTRAS_COPY: VilleCopy = {
   ecosystemEn:
     "Gujan-Mestras vit au rythme de l'ostréiculture du bassin d'Arcachon : ses sept ports ostréicoles, parmi les plus importants de France, structurent une filière conchylicole de TPE familiales doublée d'une forte activité touristique et de loisirs. Le commerce de détail, la restauration de produits de la mer, l'hébergement saisonnier et les activités nautiques composent un tissu de petites entreprises où l'IA fait gagner du temps sur la prise de commande, la traçabilité, la relation client et la gestion saisonnière. Axion-IA cible en priorité ces TPE, puis les PME du tourisme et de l'agroalimentaire local.",
   distancesFr:
-    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
+    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
+    "Gujan-Mestras se situe à environ 10 km d'Arcachon et à 50 km de Bordeaux. La gare de Gujan-Mestras est sur la ligne TER Bordeaux–Arcachon, la gare TGV de Bordeaux-Saint-Jean est à 55 km et l'aéroport de Bordeaux-Mérignac à 50 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conchyliculture et ostréiculture",
     "Hébergement touristique",

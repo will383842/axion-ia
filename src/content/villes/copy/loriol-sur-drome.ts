@@ -49,7 +49,7 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loriol-sur-Drôme et sud Valence ?",
-      a: "Oui, Axion-IA intervient à Loriol-sur-Drôme et tout le sud-Valence (Livron-sur-Drôme limitrophe, Crest à 25 min, La Voulte-sur-Rhône). Nos consultants viennent de Lyon (1h15) ou Valence (15 min).",
+      a: "Oui, Axion-IA intervient à Loriol-sur-Drôme et tout le sud-Valence (Livron-sur-Drôme limitrophe, Crest à 25 min, La Voulte-sur-Rhône). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs vallée Rhône ?",
@@ -64,8 +64,8 @@ export const LORIOL_SUR_DROME_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Loriol-sur-Drôme, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h15 A7) ou Valence (15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Loriol-sur-Drôme ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

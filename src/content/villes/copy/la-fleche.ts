@@ -49,7 +49,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Flèche et dans la vallée du Loir ?",
-      a: "Oui, Axion-IA intervient à La Flèche et dans toute la vallée du Loir sarthoise (Le Lude, Baugé, Durtal, Sablé-sur-Sarthe). Nos consultants se déplacent depuis Le Mans (45 min) ou Angers (50 min).",
+      a: "Oui, Axion-IA intervient à La Flèche et dans toute la vallée du Loir sarthoise (Le Lude, Baugé, Durtal, Sablé-sur-Sarthe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme à La Flèche ?",
@@ -65,7 +65,7 @@ export const LA_FLECHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à La Flèche ?",
-      a: "Nos consultants se déplacent à La Flèche (45 min Le Mans, 50 min Angers via D323). Format mixte sur site + visio pour optimiser le temps. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. La Flèche est à 45 min du Mans et à 50 min d'Angers par la D323. Format mixte sur site + visio pour optimiser le temps. Tarifs publics.",
     },
   ],
 };

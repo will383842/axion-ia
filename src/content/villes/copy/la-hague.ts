@@ -49,7 +49,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Hague et dans le Cotentin ?",
-      a: "Oui, Axion-IA intervient à La Hague et dans tout le Cotentin (Cherbourg, Valognes, Bricquebec). Nos consultants se déplacent depuis Cherbourg (20 min) ou Caen (1 h 30), ou en visio.",
+      a: "Oui, Axion-IA intervient à La Hague et dans tout le Cotentin (Cherbourg, Valognes, Bricquebec). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME sous-traitantes du secteur nucléaire ?",
@@ -65,7 +65,7 @@ export const LA_HAGUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Hague ?",
-      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 30). Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Cherbourg (TER Paris-Saint-Lazare 3 h). Multi-jours : hébergement Cherbourg.",
     },
   ],
 };

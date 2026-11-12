@@ -49,7 +49,7 @@ export const LEERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Leers et dans le bassin roubaisien ?",
-      a: "Oui, Axion-IA intervient à Leers et dans toute l'agglomération de Roubaix (Wattrelos, Tourcoing, Lys-lez-Lannoy, Hem, Croix), incluant les flux transfrontaliers vers Estaimpuis (Belgique, 3 min). Nos consultants couvrent l'ensemble du bassin roubaisien et franco-belge.",
+      a: "Oui, Axion-IA intervient à Leers et dans toute l'agglomération de Roubaix (Wattrelos, Tourcoing, Lys-lez-Lannoy, Hem, Croix), incluant les flux transfrontaliers vers Estaimpuis (Belgique, 3 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME textile-distribution du bassin roubaisien ?",
@@ -65,7 +65,7 @@ export const LEERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Leers ?",
-      a: "Nos consultants interviennent à Leers depuis Lille (20 min) ou Roubaix (5 min). Intervention sur site dans votre atelier textile, commerce, bureau ou en visio. Proximité frontière belge (Estaimpuis 3 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier textile, commerce, bureau ou en visio. Proximité frontière belge (Estaimpuis 3 min).",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LE_PECQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pecq et Saint-Germain-en-Laye ?",
-      a: "Oui, Axion-IA intervient au Pecq et tout le secteur Saint-Germain-en-Laye (Marly-le-Roi, Le Vésinet, Chatou, Croissy-sur-Seine, Fourqueux). Nos consultants arrivent en 20 min depuis La Défense via le RER A.",
+      a: "Oui, Axion-IA intervient au Pecq et tout le secteur Saint-Germain-en-Laye (Marly-le-Roi, Le Vésinet, Chatou, Croissy-sur-Seine, Fourqueux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les restaurateurs et commerçants du Pecq ?",
@@ -64,8 +64,8 @@ export const LE_PECQ_COPY: VilleCopy = {
       a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Pecq. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
-      q: "Comment se rendre au Pecq depuis Paris ?",
-      a: "Le Pecq est desservi par la gare Le Vésinet-Le Pecq (RER A, La Défense 20 min, Châtelet 35 min). Nos consultants se déplacent dans votre local pour les interventions sur site.",
+      q: "Comment se déroule une intervention au Pecq ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Pecq est desservi par la gare Le Vésinet-Le Pecq (RER A, La Défense 20 min, Châtelet 35 min).",
     },
   ],
 };

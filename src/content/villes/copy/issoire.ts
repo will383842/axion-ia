@@ -49,7 +49,7 @@ export const ISSOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Issoire et sud Puy-de-Dôme ?",
-      a: "Oui, Axion-IA intervient à Issoire et tout le sud Puy-de-Dôme (Brioude à 25 min, Parentignat, Saint-Germain-Lembron). Consultants depuis Clermont (35 min A75).",
+      a: "Oui, Axion-IA intervient à Issoire et tout le sud Puy-de-Dôme (Brioude à 25 min, Parentignat, Saint-Germain-Lembron). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME aéronautique/métallurgie ?",
@@ -64,7 +64,7 @@ export const ISSOIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont ?",
+      q: "Comment se déroule une mission à Issoire ?",
       a: "Clermont (35 min A75).",
     },
   ],

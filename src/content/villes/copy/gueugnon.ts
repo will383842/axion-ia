@@ -49,7 +49,7 @@ export const GUEUGNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gueugnon et val d'Arroux ?",
-      a: "Oui, Axion-IA intervient à Gueugnon et tout le val d'Arroux (Digoin, Bourbon-Lancy, Paray-le-Monial). Consultants depuis Lyon (2h15) ou gare TGV Le Creusot (50 min).",
+      a: "Oui, Axion-IA intervient à Gueugnon et tout le val d'Arroux (Digoin, Bourbon-Lancy, Paray-le-Monial). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de sous-traitance industrielle ?",
@@ -65,7 +65,7 @@ export const GUEUGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Gueugnon ?",
-      a: "Nos consultants se déplacent depuis Lyon (2h15) ou via gare TGV Le Creusot (50 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

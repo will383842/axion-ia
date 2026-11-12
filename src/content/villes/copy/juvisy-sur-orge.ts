@@ -64,7 +64,7 @@ export const JUVISY_SUR_ORGE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Juvisy-sur-Orge ?",
       a: "Paris-Austerlitz (20 min RER C) ou Paris-Gare de Lyon (25 min RER D), gare de Juvisy sur place. Aéroport Orly à 10 min. Tarifs publics.",
     },
   ],

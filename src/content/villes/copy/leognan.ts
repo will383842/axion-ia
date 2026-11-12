@@ -49,7 +49,7 @@ export const LEOGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Léognan et en Pessac-Léognan ?",
-      a: "Oui, Axion-IA intervient à Léognan et dans toute l'appellation Pessac-Léognan (Pessac, Cadaujac, Martillac, Villenave-d'Ornon). Nos consultants se déplacent depuis Bordeaux (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Léognan et dans toute l'appellation Pessac-Léognan (Pessac, Cadaujac, Martillac, Villenave-d'Ornon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un domaine viticole à Léognan ?",
@@ -65,7 +65,7 @@ export const LEOGNAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Léognan ?",
-      a: "Nos consultants interviennent dans votre chai ou domaine à Léognan ou en visio. Depuis Bordeaux centre (20 min). Missions adaptées aux rythmes viticoles.",
+      a: "Nos consultants interviennent dans votre chai ou domaine à Léognan ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux rythmes viticoles.",
     },
   ],
 };

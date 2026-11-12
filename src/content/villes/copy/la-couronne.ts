@@ -49,7 +49,7 @@ export const LA_COURONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Couronne et dans le sud d'Angoulême ?",
-      a: "Oui, Axion-IA intervient à La Couronne et tout le sud de l'agglomération GrandAngoulême. Nos consultants accèdent facilement via la gare TGV d'Angoulême à 12 min ou la N10.",
+      a: "Oui, Axion-IA intervient à La Couronne et tout le sud de l'agglomération GrandAngoulême. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles à La Couronne ?",
@@ -65,7 +65,7 @@ export const LA_COURONNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à La Couronne ?",
-      a: "Nos consultants accèdent à La Couronne via la gare TGV d'Angoulême (12 min, Paris 2h05 direct) ou la N10. Mission sur site dans vos locaux industriels, bureau ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux industriels, bureau ou commerce.",
     },
   ],
 };

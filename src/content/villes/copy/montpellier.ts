@@ -1021,7 +1021,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
     },
     {
       q: "Pouvez-vous intervenir sur site dans nos bureaux montpelliérains ?",
-      a: "Oui. Toutes nos interventions à Montpellier sont par défaut sur site, dans vos bureaux ou vos espaces de travail. Nos consultants couvrent la Métropole de Montpellier et les communes du bassin héraultais. Les ateliers d'idéation et les restitutions clés se tiennent toujours en présentiel.",
+      a: "Oui. Toutes nos interventions à Montpellier sont par défaut sur site, dans vos bureaux ou vos espaces de travail. Nous intervenons partout en France, sur place ou à distance. Les ateliers d'idéation et les restitutions clés se tiennent toujours en présentiel.",
     },
     {
       q: "Gérez-vous les données de recherche agronomique sensibles pour les interventions à Agropolis ?",

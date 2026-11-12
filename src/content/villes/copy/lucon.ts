@@ -49,7 +49,7 @@ export const LUCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luçon et dans le sud-Vendée ?",
-      a: "Oui, Axion-IA intervient à Luçon et dans tout le sud-Vendée (Fontenay-le-Comte, marais poitevin). Consultants depuis La Roche-sur-Yon (30 min) ou gare SNCF Luçon (TER direct).",
+      a: "Oui, Axion-IA intervient à Luçon et dans tout le sud-Vendée (Fontenay-le-Comte, marais poitevin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles de la plaine de Luçon ?",
@@ -65,7 +65,7 @@ export const LUCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Luçon ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (30 min) ou via gare SNCF Luçon (ligne TER). Déplacement sur site dans vos locaux professionnels ou exploitation. A83 à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels ou exploitation. A83 à 15 min.",
     },
   ],
 };

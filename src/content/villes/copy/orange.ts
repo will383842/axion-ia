@@ -230,7 +230,7 @@ export const ORANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orange ?",
-      a: "Oui, Axion-IA intervient à Orange et dans tout le Haut-Vaucluse (Caderousse, Sérignan-du-Comtat, Piolenc, Courthézon). Nos consultants se déplacent depuis Avignon (gare TGV à 30 km) pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Orange et dans tout le Haut-Vaucluse (Caderousse, Sérignan-du-Comtat, Piolenc, Courthézon). Nous intervenons partout en France, sur place ou à distance, pour rencontrer TPE et PME sur site.",
     },
     {
       q: "Combien coûte un audit IA à Orange ?",

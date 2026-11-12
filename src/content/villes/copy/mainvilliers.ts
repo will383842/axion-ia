@@ -49,7 +49,7 @@ export const MAINVILLIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mainvilliers et dans l'agglomération de Chartres ?",
-      a: "Oui, Axion-IA intervient à Mainvilliers et toute l'agglomération de Chartres (Lucé, Luisant, Lèves, Champhol). Consultants depuis Paris (1h20 A11) ou gare de Chartres (TER 1h10).",
+      a: "Oui, Axion-IA intervient à Mainvilliers et toute l'agglomération de Chartres (Lucé, Luisant, Lèves, Champhol). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises des zones d'activités de Mainvilliers ?",
@@ -65,7 +65,7 @@ export const MAINVILLIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mainvilliers ?",
-      a: "Nos consultants se déplacent depuis Paris (1h20 via A11) ou arrivent en gare de Chartres (TER 1h10 Paris-Montparnasse).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

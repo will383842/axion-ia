@@ -49,7 +49,7 @@ export const LENTILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lentilly et NO lyonnais ?",
-      a: "Oui, Axion-IA intervient à Lentilly et tout le NO lyonnais (L'Arbresle à 5 min, Dardilly, Écully, La Tour-de-Salvagny). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Lentilly et tout le NO lyonnais (L'Arbresle à 5 min, Dardilly, Écully, La Tour-de-Salvagny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales lentillois ?",
@@ -64,8 +64,8 @@ export const LENTILLY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Lentilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      q: "Comment se déroule une mission à Lentilly ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

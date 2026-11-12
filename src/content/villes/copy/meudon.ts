@@ -18,9 +18,9 @@ export const MEUDON_COPY: VilleCopy = {
   ecosystemEn:
     "Meudon, dans les Hauts-de-Seine, cultive une identité scientifique singulière : l'observatoire historique, l'ONERA (recherche aérospatiale) et de nombreux bureaux d'études côtoient une forêt domaniale et des quartiers résidentiels de cadres (Meudon-la-Forêt, Bellevue, Val-Fleury). Son économie locale mêle PME tertiaires et de services, petites structures techniques et d'ingénierie, professions libérales, commerces et artisans. Ces TPE et PME, exigeantes et bien formées, adoptent volontiers l'IA pour automatiser tâches répétitives et relation client.",
   distancesFr:
-    "Meudon est à 10 km du centre de Paris et de la gare Montparnasse, reliée par le Transilien N et la ligne L via Meudon-Val-Fleury (15 min). Paris-Orly est à 15 km. Nos consultants se déplacent depuis Paris sur tout l'ouest des Hauts-de-Seine : Boulogne-Billancourt, Sèvres, Clamart, Issy-les-Moulineaux et Vélizy.",
+    "Meudon est à 10 km du centre de Paris et de la gare Montparnasse, reliée par le Transilien N et la ligne L via Meudon-Val-Fleury (15 min). Paris-Orly est à 15 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Meudon est à 10 km du centre de Paris et de la gare Montparnasse, reliée par le Transilien N et la ligne L via Meudon-Val-Fleury (15 min). Paris-Orly est à 15 km. Nos consultants se déplacent depuis Paris sur tout l'ouest des Hauts-de-Seine : Boulogne-Billancourt, Sèvres, Clamart, Issy-les-Moulineaux et Vélizy.",
+    "Meudon est à 10 km du centre de Paris et de la gare Montparnasse, reliée par le Transilien N et la ligne L via Meudon-Val-Fleury (15 min). Paris-Orly est à 15 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "PME tertiaires & services",
     "Bureaux d'études & ingénierie",
@@ -132,7 +132,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis à Meudon ?",
-            a: "Nous envoyons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Nos consultants se déplacent depuis Paris (Transilien N / ligne L via Meudon-Val-Fleury, environ 15 min) sur tout l'ouest des Hauts-de-Seine.",
+            a: "Nous envoyons un devis à partir de 24 à 48 h selon la complexité du projet, après un premier échange de cadrage. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const MEUDON_COPY: VilleCopy = {
           },
           {
             q: "How fast do you send a quote in Meudon?",
-            a: "We send a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. Our consultants travel from Paris (Transilien N / line L via Meudon-Val-Fleury, about 15 min) across the western Hauts-de-Seine.",
+            a: "We send a quote from 24 to 48 hours depending on project complexity, after an initial framing exchange. We work across France, on site or remotely, including the western Hauts-de-Seine.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const MEUDON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meudon et dans l'ouest des Hauts-de-Seine ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Meudon et des communes voisines (Sèvres, Clamart, Boulogne-Billancourt, Issy-les-Moulineaux). Nos consultants viennent de Paris, à 15 min.",
+      a: "Oui, à Meudon et dans les communes voisines (Boulogne-Billancourt, Sèvres, Clamart, Issy-les-Moulineaux, Vélizy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les bureaux d'études et structures techniques ?",
@@ -245,8 +245,8 @@ export const MEUDON_COPY: VilleCopy = {
       a: "Audit sur place, journée de formation sur site et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (15 min en Transilien).",
+      q: "Comment se déroule une mission à Meudon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -64,8 +64,8 @@ export const IGNY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME ingénierie et conseil proches de Paris-Saclay sur leurs cas IA : automatisation reporting, classification données techniques, prédiction délais projets, optimisation ressources.",
     },
     {
-      q: "Comment se passe une mission à Igny depuis Paris ?",
-      a: "Nos consultants interviennent à Igny (30 min depuis Paris via RER B+C, Massy-Palaiseau à 10 min). Aéroport Orly à 20 min.",
+      q: "Comment se déroule une mission à Igny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Orly à 20 min.",
     },
   ],
 };

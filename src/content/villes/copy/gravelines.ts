@@ -49,7 +49,7 @@ export const GRAVELINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gravelines et sur le littoral dunkerquois ?",
-      a: "Oui, Axion-IA intervient à Gravelines et sur tout le littoral dunkerquois (Dunkerque, Grand-Fort-Philippe, Loon-Plage, Bourbourg). Nos consultants accèdent via la gare SNCF Gravelines ou l'autoroute A16.",
+      a: "Oui, Axion-IA intervient à Gravelines et sur tout le littoral dunkerquois (Dunkerque, Grand-Fort-Philippe, Loon-Plage, Bourbourg). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME de la sous-traitance nucléaire ?",
@@ -65,7 +65,7 @@ export const GRAVELINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gravelines ?",
-      a: "Nos consultants se déplacent à Gravelines via gare SNCF (TER Dunkerque–Calais) ou autoroute A16. Dunkerque à 15 min, Calais à 25 min. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Dunkerque à 15 min, Calais à 25 min. Intervention sur site ou en visio.",
     },
   ],
 };

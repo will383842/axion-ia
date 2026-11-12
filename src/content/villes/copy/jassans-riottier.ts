@@ -18,9 +18,9 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
   ecosystemEn:
     "Jassans-Riottier, sur la rive gauche de la Saône face à Villefranche-sur-Saône, forme avec la cité caladoise un bassin de vie continu à la limite de l'Ain et du Rhône. Son économie péri-urbaine repose sur les PME tertiaires et de services, l'artisanat du bâtiment, le commerce de proximité et les professions libérales installées au plus près des habitants. Ces TPE et petites PME, souvent sans fonction support dédiée, gagnent à automatiser devis, relances et gestion administrative pour se concentrer sur leur métier.",
   distancesFr:
-    "Jassans-Riottier fait face à Villefranche-sur-Saône (rive opposée, 5 min), reliée à Lyon (centre à 35 min, gare Part-Dieu) et à l'aéroport Lyon-Saint-Exupéry (45 min). Trévoux est à 10 min, Mâcon à 30 min. Nos consultants se déplacent depuis Lyon sur tout le val de Saône Ain : Villefranche, Reyrieux, Trévoux et la Dombes.",
+    "Jassans-Riottier fait face à Villefranche-sur-Saône (rive opposée, 5 min), reliée à Lyon (centre à 35 min, gare Part-Dieu) et à l'aéroport Lyon-Saint-Exupéry (45 min). Trévoux est à 10 min, Mâcon à 30 min. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Jassans-Riottier fait face à Villefranche-sur-Saône (rive opposée, 5 min), reliée à Lyon (centre à 35 min, gare Part-Dieu) et à l'aéroport Lyon-Saint-Exupéry (45 min). Trévoux est à 10 min, Mâcon à 30 min. Nos consultants se déplacent depuis Lyon sur tout le val de Saône Ain : Villefranche, Reyrieux, Trévoux et la Dombes.",
+    "Jassans-Riottier fait face à Villefranche-sur-Saône (rive opposée, 5 min), reliée à Lyon (centre à 35 min, gare Part-Dieu) et à l'aéroport Lyon-Saint-Exupéry (45 min). Trévoux est à 10 min, Mâcon à 30 min. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "PME industrielles et artisanales du Val de Saône",
     "BTP et construction résidentielle (bassin caladois)",
@@ -53,7 +53,7 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jassans-Riottier et dans le val de Saône ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Jassans-Riottier et de tout le val de Saône Ain (Villefranche en rive opposée, Trévoux à 10 min, Reyrieux). Nos consultants viennent de Lyon, à 35 min.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Jassans-Riottier et de tout le val de Saône Ain (Villefranche en rive opposée, Trévoux à 10 min, Reyrieux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -68,8 +68,8 @@ export const JASSANS_RIOTTIER_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants se déplacent depuis Lyon (35 min).",
+      q: "Comment se déroule une mission à Jassans-Riottier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

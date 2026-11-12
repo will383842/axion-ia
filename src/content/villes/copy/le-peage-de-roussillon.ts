@@ -49,7 +49,7 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Péage-de-Roussillon et Pays Roussillonnais ?",
-      a: "Oui, Axion-IA intervient au Péage-de-Roussillon et toute la Communauté de communes du Pays Roussillonnais (Roussillon, Saint-Maurice-l'Exil, Salaise-sur-Sanne, Sablons). Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7).",
+      a: "Oui, Axion-IA intervient au Péage-de-Roussillon et toute la Communauté de communes du Pays Roussillonnais (Roussillon, Saint-Maurice-l'Exil, Salaise-sur-Sanne, Sablons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels du bassin rhodanien ?",
@@ -64,8 +64,8 @@ export const LE_PEAGE_DE_ROUSSILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants au Péage-de-Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission au Péage-de-Roussillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

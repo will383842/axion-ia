@@ -65,7 +65,7 @@ export const LE_PUY_SAINTE_REPARADE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Puy-Sainte-Réparade ?",
-      a: "Nos consultants interviennent sur site au Puy-Sainte-Réparade sous 5 jours ouvrés. Aix à 20 min, gare TGV à 30 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sous 5 jours ouvrés. Le Puy-Sainte-Réparade est à 20 min d'Aix et à 30 min de la gare TGV.",
     },
   ],
 };

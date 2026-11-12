@@ -136,7 +136,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour organiser une session à Nanterre ?",
-            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles. Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro, à 4 km de Paris-Saint-Lazare, ce qui simplifie la logistique d'intervention sur site.",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
           },
         ],
         guarantees:
@@ -228,7 +228,7 @@ export const NANTERRE_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour organiser une session à Nanterre ?",
-            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles. Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro, à 4 km de Paris-Saint-Lazare, ce qui simplifie la logistique d'intervention sur site.",
+            a: "Une session se planifie généralement sous deux semaines après confirmation, selon les disponibilités mutuelles.",
           },
         ],
         guarantees:
@@ -426,7 +426,7 @@ export const NANTERRE_COPY: VilleCopy = {
     },
     {
       q: "Quel délai entre la prise de contact et le premier audit à Nanterre ?",
-      a: "L'Audit sur place (4h) se planifie généralement sous deux semaines après confirmation. Le calendrier dépend des disponibilités mutuelles, pas d'une file d'attente géographique — Nanterre est accessible depuis Paris en moins de 20 minutes via le RER A ou le métro.",
+      a: "L'Audit sur place (4h) se planifie généralement sous deux semaines après confirmation. Le calendrier dépend des disponibilités mutuelles, pas d'une file d'attente géographique.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD lors d'une implémentation à Nanterre ?",

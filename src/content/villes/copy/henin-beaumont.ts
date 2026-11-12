@@ -74,7 +74,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, suivi de commandes, chatbot RAG, recherche sémantique de catalogue, agents de relance et automatisations branchés sur vos WMS et ERP. Démos hebdomadaires en visio depuis les zones d'activité d'Hénin-Beaumont.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, suivi de commandes, chatbot RAG, recherche sémantique de catalogue, agents de relance et automatisations branchés sur vos WMS et ERP. Démos hebdomadaires en visio pour les zones d'activité d'Hénin-Beaumont.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const HENIN_BEAUMONT_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, suivi de commandes, chatbot RAG, recherche sémantique de catalogue, agents de relance et automatisations branchés sur vos WMS et ERP. Démos hebdomadaires en visio depuis les zones d'activité d'Hénin-Beaumont.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, suivi de commandes, chatbot RAG, recherche sémantique de catalogue, agents de relance et automatisations branchés sur vos WMS et ERP. Démos hebdomadaires en visio pour les zones d'activité d'Hénin-Beaumont.",
           },
           {
             step: "Recette + mise en ligne",

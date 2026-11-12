@@ -64,8 +64,8 @@ export const ISLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Isle, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
-      q: "Comment se passe une mission à Isle depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Isle est proche de l'aéroport Bellegarde (10 min).",
+      q: "Comment se déroule une mission à Isle ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Isle est proche de l'aéroport Bellegarde (10 min).",
     },
   ],
 };

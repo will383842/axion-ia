@@ -18,9 +18,9 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
   ecosystemEn:
     "La Courneuve connaît une profonde reconversion : ses anciennes zones industrielles laissent place à de nouveaux quartiers d'activités portés par le Grand Paris et l'arrivée de nouvelles lignes de transport. Le tissu économique mêle négoce et commerce de gros, logistique et entreposage, artisanat du bâtiment et services aux entreprises, à proximité du vaste parc Georges-Valbon. Ces TPE et PME productives gagnent à automatiser gestion des commandes, planning logistique, devis et suivi administratif. Axion-IA cible en priorité ces TPE de négoce, de logistique et d'artisanat, puis les PME de services du territoire.",
   distancesFr:
-    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche, ce qui rend nos déplacements sur site rapides dans le nord francilien et le Grand Paris.",
+    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche, ce qui rend nos déplacements sur site rapides dans le nord francilien et le Grand Paris.",
+    "La Courneuve est desservie par le RER B et le tramway, qui relient Paris en une vingtaine de minutes. La gare de Paris-Nord est à environ 8 km, l'aéroport de Roissy-Charles-de-Gaulle à 15 km et celui du Bourget tout proche. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de gros et négoce",
     "Logistique et entreposage",
@@ -58,7 +58,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           "Les ZAE Mermoz (83 ha, ~200 établissements) et Rateau (logistique et recyclage, parcs Urbaparc et Parc des Damiers) concentrent un tissu de négoce, d'entreposage et de commerce de gros qui gagne à passer de l'appel téléphonique au catalogue en ligne avec devis automatisé et suivi de commande.",
           "La présence du centre fiduciaire de la Banque de France — entièrement automatisé, traitant plus d'un milliard de billets par an — et de groupes comme Derichebourg Propreté, Paprec ou Arabelle Services fait de La Courneuve un territoire où l'automatisation des process est une réalité quotidienne, pas une abstraction : nous parlons le même langage que vos opérations.",
           "La reconversion de la friche Babcock & Wilcox en « Fabrique des cultures » (30 000 m² de halles, industries culturelles et créatives) et l'arrivée de la gare Grand Paris Express Six-Routes en 2027 attirent de nouveaux acteurs : artisans, studios créatifs, e-commerçants et PME de services qui ont besoin d'un site rapide, mobile et vendeur dès leur installation.",
-          "Nous nous déplaçons sur site — entrepôts de Mermoz, ateliers de Rateau, bureaux du centre-ville près du parc Georges-Valbon — pour cadrer le projet avec vous, et nous couvrons tout le nord francilien via le RER B, le tramway T1 et bientôt les lignes 16/17.",
+          "Nous nous déplaçons sur site — entrepôts de Mermoz, ateliers de Rateau, bureaux du centre-ville près du parc Georges-Valbon — pour cadrer le projet avec vous.",
         ],
         methodology: [
           {
@@ -124,7 +124,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Axion-IA se déplace-t-il sur site à La Courneuve ?",
-            a: "Oui. Nous venons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau, bureau du centre-ville ou près de la future gare Six-Routes — pour le cadrage et la recette finale. Nous couvrons tout le nord francilien via le RER B, le tramway T1 et, à partir de 2027, les lignes 16 et 17 du Grand Paris Express.",
+            a: "Oui. Nous venons dans vos locaux — entrepôt de la ZAE Mermoz, atelier de Rateau, bureau du centre-ville ou près de la future gare Six-Routes — pour le cadrage et la recette finale. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Combien de temps pour recevoir un devis ?",
@@ -144,7 +144,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           "The Mermoz business zone (83 ha, ~200 establishments) and Rateau (logistics and recycling, Urbaparc and Parc des Damiers parks) concentrate a fabric of trading, warehousing and wholesale that benefits from moving off the phone and onto an online catalogue with automated quoting and order tracking.",
           "The presence of the Banque de France cash centre — fully automated, handling over a billion banknotes a year — and of groups like Derichebourg Propreté, Paprec or Arabelle Services makes La Courneuve a territory where process automation is a daily reality, not an abstraction: we speak the same language as your operations.",
           "The conversion of the Babcock & Wilcox brownfield into the «Fabrique des cultures» (30,000 m² of halls, cultural and creative industries) and the arrival of the Six-Routes Grand Paris Express station in 2027 attract new players: craftspeople, creative studios, e-merchants and service SMEs who need a fast, mobile, selling website from day one.",
-          "We travel on site — Mermoz warehouses, Rateau workshops, town-centre offices near Georges-Valbon park — to frame the project with you, and we cover the whole northern Paris area via the RER B, tramway T1 and soon lines 16/17.",
+          "We travel on site — Mermoz warehouses, Rateau workshops, town-centre offices near Georges-Valbon park — to frame the project with you.",
         ],
         methodology: [
           {
@@ -210,7 +210,7 @@ export const LA_COURNEUVE_COPY: VilleCopy = {
           },
           {
             q: "Does Axion-IA travel on site in La Courneuve?",
-            a: "Yes. We come to your premises — a Mermoz warehouse, a Rateau workshop, a town-centre office or near the future Six-Routes station — for framing and final acceptance. We cover the whole northern Paris area via the RER B, tramway T1 and, from 2027, lines 16 and 17 of the Grand Paris Express.",
+            a: "Yes. We come to your premises — a Mermoz warehouse, a Rateau workshop, a town-centre office or near the future Six-Routes station — for framing and final acceptance. We work anywhere in France, on site or remotely.",
           },
           {
             q: "How long to receive a quote?",

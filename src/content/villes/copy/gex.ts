@@ -49,7 +49,7 @@ export const GEX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gex et pays de Gex ?",
-      a: "Oui, Axion-IA intervient à Gex et tout le pays de Gex (Ferney-Voltaire, Saint-Genis-Pouilly, Divonne-les-Bains, Prévessin-Moëns). Genève à 20 min. Consultants depuis Lyon (1h30) ou Genève (20 min).",
+      a: "Oui, Axion-IA intervient à Gex et tout le pays de Gex (Ferney-Voltaire, Saint-Genis-Pouilly, Divonne-les-Bains, Prévessin-Moëns). Genève à 20 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'économie frontalière Genève ?",
@@ -64,8 +64,8 @@ export const GEX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (20 min).",
+      q: "Comment se déroule une mission à Gex ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

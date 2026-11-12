@@ -49,7 +49,7 @@ export const NEGREPELISSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nègrepelisse ?",
-      a: "Oui, Axion-IA intervient à Nègrepelisse et dans tout le Quercy tarn-et-garonnais (Caussade, Bruniquel, Saint-Antonin-Noble-Val). Nos consultants se déplacent depuis Montauban (20 min) ou Toulouse (1h10).",
+      a: "Oui, Axion-IA intervient à Nègrepelisse et dans tout le Quercy tarn-et-garonnais (Caussade, Bruniquel, Saint-Antonin-Noble-Val). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Nègrepelisse  ?",

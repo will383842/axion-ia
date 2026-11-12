@@ -49,7 +49,7 @@ export const MOUGUERRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouguerre ?",
-      a: "Oui, Axion-IA intervient à Mouguerre et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Boucau). Déplacement inclus dans l'agglo bayonnaise.",
+      a: "Oui, Axion-IA intervient à Mouguerre et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Boucau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME logistique de Mouguerre ?",
@@ -65,7 +65,7 @@ export const MOUGUERRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Mouguerre ?",
-      a: "Nos consultants accèdent à Mouguerre via la gare de Bayonne (TGV 4h30 Paris, 10 min voiture) ou l'aéroport Biarritz Pays Basque (15 min). Mission sur site dans vos entrepôts ou locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos entrepôts ou locaux.",
     },
   ],
 };

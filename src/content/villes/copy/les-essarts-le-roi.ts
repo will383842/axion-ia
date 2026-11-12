@@ -49,7 +49,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Essarts-le-Roi et autour de Rambouillet ?",
-      a: "Oui, Axion-IA intervient aux Essarts-le-Roi et dans tout le sud des Yvelines (Rambouillet à 10 min, Saint-Quentin-en-Yvelines à 15 min, Le Perray-en-Yvelines, Auffargis). Nos consultants se déplacent via N10 ou Transilien N.",
+      a: "Oui, Axion-IA intervient aux Essarts-le-Roi et dans tout le sud des Yvelines (Rambouillet à 10 min, Saint-Quentin-en-Yvelines à 15 min, Le Perray-en-Yvelines, Auffargis). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les indépendants et auto-entrepreneurs du sud Yvelines ?",
@@ -65,7 +65,7 @@ export const LES_ESSARTS_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission aux Essarts-le-Roi ?",
-      a: "Nos consultants interviennent aux Essarts-le-Roi via N10 (45 min depuis Paris) ou Transilien N (gare des Essarts-le-Roi, ~45 min Paris Montparnasse).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

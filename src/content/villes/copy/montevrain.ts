@@ -65,7 +65,7 @@ export const MONTEVRAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Montévrain ?",
-      a: "Nos consultants interviennent à Montévrain (40 min depuis Paris via RER A, gare TGV Marne-la-Vallée-Chessy à 5 min). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés.",
     },
   ],
 };

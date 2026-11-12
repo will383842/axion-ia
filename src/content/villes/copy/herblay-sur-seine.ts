@@ -226,7 +226,7 @@ export const HERBLAY_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Herblay-sur-Seine ?",
-      a: "Oui, Axion-IA intervient à Herblay-sur-Seine et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Pierrelaye, Bessancourt). Couverture nord-ouest Val-d'Oise et accès depuis Paris (30 min Saint-Lazare).",
+      a: "Oui, Axion-IA intervient à Herblay-sur-Seine et toute la CA Val Parisis (Cormeilles-en-Parisis, Saint-Leu-la-Forêt, Pierrelaye, Bessancourt). Couverture nord-ouest Val-d'Oise.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans d'Herblay ?",

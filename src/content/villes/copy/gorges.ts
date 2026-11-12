@@ -49,7 +49,7 @@ export const GORGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gorges et dans le vignoble nantais ?",
-      a: "Oui, Axion-IA intervient à Gorges et dans tout le vignoble nantais (Clisson, Vallet, Mouzillon, Le Pallet, Monnières). Nos consultants se déplacent sur site depuis Nantes en 25 minutes via A83.",
+      a: "Oui, Axion-IA intervient à Gorges et dans tout le vignoble nantais (Clisson, Vallet, Mouzillon, Le Pallet, Monnières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'IA peut-elle aider un domaine viticole muscadet à Gorges ?",
@@ -64,8 +64,8 @@ export const GORGES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles de Clisson et Gorges sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation production, agents IA service client B2B et gestion supply chain.",
     },
     {
-      q: "Comment se déroule une mission depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes (25 min A83) ou Cholet (35 min). La gare TER de Clisson est à 5 min de Gorges.",
+      q: "Comment se déroule une mission à Gorges ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. La gare TER de Clisson est à 5 min de Gorges.",
     },
   ],
 };

@@ -233,7 +233,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Mont-de-Marsan ?",
-      a: "Oui, Williams se déplace à Mont-de-Marsan (130 km de Bordeaux, 700 km de Paris) pour audits, interventions et implémentations sur site, dans un délai de 5 jours ouvrés.",
+      a: "Oui, Williams se déplace à Mont-de-Marsan pour audits, interventions et implémentations sur site, dans un délai de 5 jours ouvrés.",
     },
     {
       q: "Quels secteurs montois Axion-IA accompagne-t-il ?",
@@ -241,7 +241,7 @@ export const MONT_DE_MARSAN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Mont-de-Marsan ?",
-      a: "Oui, nous intervenons à Saint-Pierre-du-Mont, Saint-Avit, Bretagne-de-Marsan, Campet-et-Lamolère, Mazerolles et Uchacq-et-Parentis, sans surcoût de déplacement depuis Mont-de-Marsan.",
+      a: "Oui, nous intervenons à Saint-Pierre-du-Mont, Saint-Avit, Bretagne-de-Marsan, Campet-et-Lamolère, Mazerolles et Uchacq-et-Parentis.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD à Mont-de-Marsan ?",

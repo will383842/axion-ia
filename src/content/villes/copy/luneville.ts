@@ -49,7 +49,7 @@ export const LUNEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lunéville et dans le Lunévillois ?",
-      a: "Oui, Axion-IA intervient à Lunéville et tout le Lunévillois (Baccarat à 20 min, Badonviller, Blâmont). Consultants depuis Nancy (30 min) ou Strasbourg (1h20).",
+      a: "Oui, Axion-IA intervient à Lunéville et tout le Lunévillois (Baccarat à 20 min, Badonviller, Blâmont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans faïenciers de Lunéville ?",
@@ -64,8 +64,8 @@ export const LUNEVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission à Lunéville depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (30 min TER direct).",
+      q: "Comment se déroule une mission à Lunéville ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

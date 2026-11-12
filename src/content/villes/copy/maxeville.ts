@@ -49,7 +49,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Maxéville et agglo Nancy nord ?",
-      a: "Oui, Axion-IA intervient à Maxéville et toute l'agglomération Nancy nord (Malzéville, Dommartemont, Champigneulles, Frouard). Consultants via gare Nancy-Ville TGV Est.",
+      a: "Oui, Axion-IA intervient à Maxéville et toute l'agglomération Nancy nord (Malzéville, Dommartemont, Champigneulles, Frouard). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces et enseignes de distribution ?",
@@ -65,7 +65,7 @@ export const MAXEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maxéville ?",
-      a: "Nos consultants se déplacent via gare Nancy-Ville TGV Est (Paris 1h30, 12 min de Maxéville). Couverture zones commerciales, pôle Zénith et commune.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Maxéville est à 12 min de la gare Nancy-Ville (TGV Est, Paris 1h30). Couverture zones commerciales, pôle Zénith et commune.",
     },
   ],
 };

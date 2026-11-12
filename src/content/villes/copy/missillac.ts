@@ -49,7 +49,7 @@ export const MISSILLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Missillac et secteur Brière-Redon ?",
-      a: "Oui, Axion-IA intervient à Missillac et tout le secteur Brière-Redon (Pontchâteau, Herbignac, Saint-Gildas-des-Bois, Redon). Consultants depuis Saint-Nazaire (30 min) ou Nantes (1h). Couverture complète nord-est Brière.",
+      a: "Oui, Axion-IA intervient à Missillac et tout le secteur Brière-Redon (Pontchâteau, Herbignac, Saint-Gildas-des-Bois, Redon). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord-est Brière.",
     },
     {
       q: "Accompagnez-vous les hôtels et établissements touristiques ?",
@@ -65,7 +65,7 @@ export const MISSILLAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en zone rurale ?",
-      a: "Nos consultants se déplacent directement dans votre hôtel, exploitation ou bureau à Missillac. Depuis Saint-Nazaire (30 min) ou Nantes (1h). Formats demi-journée ou journée complète.",
+      a: "Nos consultants se déplacent directement dans votre hôtel, exploitation ou bureau à Missillac. Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète.",
     },
   ],
 };

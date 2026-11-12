@@ -49,7 +49,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Landivisiau et dans le Pays de Léon ?",
-      a: "Oui, Axion-IA intervient à Landivisiau et tout le Pays de Léon (Saint-Pol-de-Léon, Roscoff, Plouescat, Lesneven, Landerneau). Nos consultants viennent depuis Brest (35 min N12) ou Morlaix (20 min N12).",
+      a: "Oui, Axion-IA intervient à Landivisiau et tout le Pays de Léon (Saint-Pol-de-Léon, Roscoff, Plouescat, Lesneven, Landerneau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du nord Finistère ?",
@@ -65,7 +65,7 @@ export const LANDIVISIAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Landivisiau ?",
-      a: "Nos consultants arrivent depuis Brest (35 min N12) ou par TER gare de Landivisiau. Pour les multi-jours, hébergement local possible (hôtels Landivisiau ou Morlaix).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Landivisiau ou Morlaix).",
     },
   ],
 };

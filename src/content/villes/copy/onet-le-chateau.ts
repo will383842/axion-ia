@@ -49,7 +49,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Onet-le-Château et agglo Rodez ?",
-      a: "Oui, Axion-IA intervient à Onet-le-Château et dans toute l'agglomération de Rodez (Rodez, Luc-la-Primaube, Sébazac-Concourès, Le Monastère). Nos consultants se déplacent depuis Rodez en 5 min.",
+      a: "Oui, Axion-IA intervient à Onet-le-Château et dans toute l'agglomération de Rodez (Rodez, Luc-la-Primaube, Sébazac-Concourès, Le Monastère). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Onet-le-Château ?",
@@ -61,7 +61,7 @@ export const ONET_LE_CHATEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Onet-le-Château ?",
-      a: "Nos consultants se déplacent depuis Rodez centre (5 min). Intervention 1 journée minimum, format atelier pratique dans vos locaux zone commerciale ou bureau. Vos équipes repartent autonomes avec les outils IA configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux zone commerciale ou bureau. Vos équipes repartent autonomes avec les outils IA configurés.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Onet-le-Château ?",

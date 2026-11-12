@@ -9,9 +9,9 @@ export const MERVILLE_31_COPY: VilleCopy = {
   pitchEn:
     "Merville (31, Haute-Garonne), commune périurbaine du nord-ouest de Toulouse entre Grenade et Aussonne, combine plaine céréalière et proximité immédiate du pôle aéronautique de Blagnac. Son tissu mêle TPE artisans, exploitations agricoles céréalières, PME de services et sous-traitants aéro, commerces de bourg et professions libérales. Axion-IA accompagne en priorité ces TPE puis les PME, les ETI restant marginales.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (31) et dans le nord-ouest de la Haute-Garonne. Nous accompagnons en priorité les TPE artisans et exploitants céréaliers, puis les PME de services et sous-traitants aéronautiques du bassin de Blagnac, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — planning, traçabilité, devis, relation client — avant tout déploiement, à 15 min de l'aéroport ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (31) et dans le nord-ouest de la Haute-Garonne. Nous accompagnons en priorité les TPE artisans et exploitants céréaliers, puis les PME de services et sous-traitants aéronautiques du bassin de Blagnac, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — planning, traçabilité, devis, relation client — avant tout déploiement, sur place ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (31) et dans le nord-ouest de la Haute-Garonne. Nous accompagnons en priorité les TPE artisans et exploitants céréaliers, puis les PME de services et sous-traitants aéronautiques du bassin de Blagnac, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — planning, traçabilité, devis, relation client — avant tout déploiement, à 15 min de l'aéroport ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Merville (31) et dans le nord-ouest de la Haute-Garonne. Nous accompagnons en priorité les TPE artisans et exploitants céréaliers, puis les PME de services et sous-traitants aéronautiques du bassin de Blagnac, et plus marginalement les ETI. Nous définissons un cas d'usage IA concret — planning, traçabilité, devis, relation client — avant tout déploiement, sur place ou en visio.",
   seoHook: "céréales & sous-traitance aéro",
   ecosystemFr:
     "Merville est une commune périurbaine du nord-ouest de Toulouse, dans la plaine de la Save entre Grenade et Aussonne, à proximité immédiate de l'aéroport et du pôle aéronautique de Blagnac. Économie mixte : exploitations céréalières, TPE artisans et BTP, PME de services et sous-traitants aéro, commerces de bourg, professions libérales et santé.",
@@ -53,7 +53,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Merville (31) ?",
-      a: "Oui, Axion-IA intervient à Merville et dans tout le nord-ouest de la Haute-Garonne (Grenade, Aussonne, Beauzelle). Nos consultants se déplacent en 22 min depuis Toulouse par la D2, ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Merville et dans tout le nord-ouest de la Haute-Garonne (Grenade, Aussonne, Beauzelle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité à Merville ?",
@@ -73,7 +73,7 @@ export const MERVILLE_31_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Merville ?",
-      a: "Nos consultants se déplacent depuis Toulouse (22 min, D2). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
   ],
 };

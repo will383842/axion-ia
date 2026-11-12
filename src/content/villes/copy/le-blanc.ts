@@ -49,7 +49,7 @@ export const LE_BLANC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Blanc et en Brenne ?",
-      a: "Oui, Axion-IA intervient au Blanc et dans tout le sud Berry, y compris le Parc naturel régional de la Brenne (Mézières-en-Brenne, Bélâbre, Saint-Gaultier). Couverture également Châteauroux à 1h, Poitiers à 1h et Tours à 1h45.",
+      a: "Oui, Axion-IA intervient au Blanc et dans tout le sud Berry, y compris le Parc naturel régional de la Brenne (Mézières-en-Brenne, Bélâbre, Saint-Gaultier). Couverture également Châteauroux, Poitiers et Tours.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et PME du sud Berry ?",
@@ -65,7 +65,7 @@ export const LE_BLANC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Blanc ?",
-      a: "Nos consultants se déplacent par la route depuis Châteauroux (1h), Poitiers (1h) ou Tours (1h45). La gare du Blanc offre une desserte limitée ; la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) est la connexion principale.",
+      a: "Nous intervenons partout en France, sur place ou à distance. La gare du Blanc offre une desserte limitée ; la gare de Châteauroux (Intercités Paris-Austerlitz 2h15) est la connexion principale.",
     },
   ],
 };

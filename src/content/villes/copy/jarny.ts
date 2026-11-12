@@ -49,7 +49,7 @@ export const JARNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jarny et au Pays Haut ?",
-      a: "Oui, Axion-IA intervient à Jarny et tout le Pays Haut (Val de Briey, Conflans-en-Jarnisy, Homécourt, Joeuf, Auboué). Consultants depuis Metz (30 min) et Nancy (45 min).",
+      a: "Oui, Axion-IA intervient à Jarny et tout le Pays Haut (Val de Briey, Conflans-en-Jarnisy, Homécourt, Joeuf, Auboué). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrie et plateformes logistiques de Jarny ?",
@@ -65,7 +65,7 @@ export const JARNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jarny ?",
-      a: "Nos consultants interviennent depuis Metz (30 min) ou Nancy (45 min). Missions sur site dans vos ateliers, entrepôts logistiques, chantiers ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos ateliers, entrepôts logistiques, chantiers ou commerces.",
     },
   ],
 };

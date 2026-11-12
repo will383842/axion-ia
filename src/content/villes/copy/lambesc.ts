@@ -65,7 +65,7 @@ export const LAMBESC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Lambesc ?",
-      a: "Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nos consultants se déplacent dans vos locaux.",
+      a: "Lambesc est à 20 min d'Aix et 15 min de Salon via D7n. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

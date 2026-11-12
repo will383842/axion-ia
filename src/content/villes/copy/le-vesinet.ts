@@ -49,7 +49,7 @@ export const LE_VESINET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Vésinet et ouest parisien ?",
-      a: "Oui, Axion-IA intervient au Vésinet et tout l'ouest parisien (Chatou, Croissy-sur-Seine, Le Pecq, Saint-Germain-en-Laye, Marly-le-Roi, Montesson). Nos consultants arrivent en 18 min depuis La Défense via le RER A.",
+      a: "Oui, Axion-IA intervient au Vésinet et tout l'ouest parisien (Chatou, Croissy-sur-Seine, Le Pecq, Saint-Germain-en-Laye, Marly-le-Roi, Montesson). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales haut de gamme au Vésinet ?",
@@ -64,8 +64,8 @@ export const LE_VESINET_COPY: VilleCopy = {
       a: "L'audit sur place IA démarre à {{price:audit-flash|flat}} pour les TPE/PME au Vésinet. Diagnostic complet en 1 journée : cartographie processus, opportunités IA priorisées, ROI estimé, plan d'action.",
     },
     {
-      q: "Comment se rendre au Vésinet depuis Paris ?",
-      a: "Le Vésinet est desservi par deux gares RER A (Le Vésinet-Centre et Le Vésinet-Le Pecq, La Défense 18 min, Châtelet 33 min). Nos consultants se déplacent dans votre cabinet ou local pour les interventions sur site.",
+      q: "Comment se déroule une intervention au Vésinet ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Vésinet est desservi par deux gares RER A (Le Vésinet-Centre et Le Vésinet-Le Pecq, La Défense 18 min, Châtelet 33 min).",
     },
   ],
 };

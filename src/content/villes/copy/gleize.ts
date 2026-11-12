@@ -49,7 +49,7 @@ export const GLEIZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gleizé et agglo Villefranche ?",
-      a: "Oui, Axion-IA intervient à Gleizé et toute l'agglomération Villefranche Beaujolais Saône (Villefranche limitrophe, Anse, Limas, Belleville à 15 min). Consultants depuis Lyon (35 min A6).",
+      a: "Oui, Axion-IA intervient à Gleizé et toute l'agglomération Villefranche Beaujolais Saône (Villefranche limitrophe, Anse, Limas, Belleville à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Beaujolais ?",
@@ -64,8 +64,8 @@ export const GLEIZE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Gleizé, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (35 min A6).",
+      q: "Comment se déroule une mission à Gleizé ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

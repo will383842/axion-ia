@@ -49,7 +49,7 @@ export const OYE_PLAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Oye-Plage et sur la Cote d'Opale ?",
-      a: "Oui, Axion-IA intervient a Oye-Plage et sur toute la Cote d'Opale (Calais, Gravelines, Marck). Consultants depuis Lille (1h20 TER) ou via Calais-Frethun (Eurostar 15 min).",
+      a: "Oui, Axion-IA intervient a Oye-Plage et sur toute la Cote d'Opale (Calais, Gravelines, Marck). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les campings d'Oye-Plage ?",

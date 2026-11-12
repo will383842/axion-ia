@@ -49,7 +49,7 @@ export const LAMORLAYE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lamorlaye et dans le bassin de Chantilly ?",
-      a: "Oui, Axion-IA intervient à Lamorlaye et dans tout le bassin de Chantilly (Gouvieux, Coye-la-Forêt, Chantilly, Senlis). Consultants accessibles via gare SNCF Chantilly-Gouvieux à 5 min (TER Paris-Nord en 25 min). Aéroport CDG à 25 min.",
+      a: "Oui, Axion-IA intervient à Lamorlaye et dans tout le bassin de Chantilly (Gouvieux, Coye-la-Forêt, Chantilly, Senlis). Nous intervenons partout en France, sur place ou à distance. Aéroport CDG à 25 min.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Lamorlaye  ?",

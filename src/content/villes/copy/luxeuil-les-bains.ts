@@ -49,7 +49,7 @@ export const LUXEUIL_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luxeuil-les-Bains ?",
-      a: "Oui, Axion-IA intervient à Luxeuil-les-Bains et dans tout le Pays de Luxeuil (Lure, Fougerolles, Saint-Sauveur, Faucogney). Nos consultants se déplacent depuis Belfort (40 min) ou Besançon (1h15).",
+      a: "Oui, Axion-IA intervient à Luxeuil-les-Bains et dans tout le Pays de Luxeuil (Lure, Fougerolles, Saint-Sauveur, Faucogney). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les établissements thermaux de Luxeuil ?",

@@ -49,7 +49,7 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Chambon-Feugerolles et vallée Ondaine ?",
-      a: "Oui, Axion-IA intervient au Chambon-Feugerolles et toute la vallée de l'Ondaine (Firminy limitrophe à 5 min, Unieux, Fraisses). Couverture Saint-Étienne Métropole. Consultants depuis Lyon (1h) ou Saint-Étienne (15 min).",
+      a: "Oui, Axion-IA intervient au Chambon-Feugerolles et toute la vallée de l'Ondaine (Firminy limitrophe à 5 min, Unieux, Fraisses). Couverture Saint-Étienne Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles métallurgie/mécanique ?",
@@ -64,8 +64,8 @@ export const LE_CHAMBON_FEUGEROLLES_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales au Chambon-Feugerolles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission au Chambon-Feugerolles ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

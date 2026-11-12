@@ -49,7 +49,7 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meung-sur-Loire et bords de Loire ?",
-      a: "Oui, Axion-IA intervient à Meung-sur-Loire et tout le Val de Loire orléanais (Beaugency, Cléry-Saint-André, Baule, Dry). Nos consultants se déplacent depuis Orléans (20 min) ou Paris (1h30 TER/voiture).",
+      a: "Oui, Axion-IA intervient à Meung-sur-Loire et tout le Val de Loire orléanais (Beaugency, Cléry-Saint-André, Baule, Dry). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial (château de Meung, Val de Loire) ?",
@@ -65,7 +65,7 @@ export const MEUNG_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Meung-sur-Loire ?",
-      a: "Nos consultants se déplacent depuis Orléans (20 min voiture ou TER). Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. Pour les multi-jours, hébergement local ou Orléans.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Meung-sur-Loire desservie par le TER Orléans-Blois-Tours. Pour les multi-jours, hébergement local ou Orléans.",
     },
   ],
 };

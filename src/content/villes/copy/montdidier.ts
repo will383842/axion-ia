@@ -49,7 +49,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montdidier et dans le Santerre ?",
-      a: "Oui, Axion-IA intervient à Montdidier et tout le Santerre (Roye, Péronne, Moreuil, Ailly-sur-Noye). Nos consultants viennent depuis Amiens (40 min voiture) ou Paris (1h30 A1/A16).",
+      a: "Oui, Axion-IA intervient à Montdidier et tout le Santerre (Roye, Péronne, Moreuil, Ailly-sur-Noye). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Santerre ?",
@@ -65,7 +65,7 @@ export const MONTDIDIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Montdidier ?",
-      a: "Nos consultants se déplacent à Montdidier depuis Amiens (40 min) ou Paris (1h30). Mission sur site dans vos locaux ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux ou exploitation.",
     },
   ],
 };

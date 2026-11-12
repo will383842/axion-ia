@@ -9,18 +9,18 @@ export const LAGNIEU_COPY: VilleCopy = {
   pitchEn:
     "Lagnieu (01), commune du Bugey dans l'Ain, est ancrée dans la vallée du Rhône entre Ambérieu-en-Bugey et Belley, à proximité de la plaine de l'Ain et de son tissu industriel. Verrerie historique, PME de production, exploitations agricoles de vallée, TPE artisans du BTP et commerces de proximité y cohabitent. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME lagnieusardes, l'ETI restant marginale, pour automatiser un quotidien industriel et administratif exigeant.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagnieu (01). Nous accompagnons en priorité les TPE — artisans du BTP, commerçants, exploitations agricoles, indépendants — puis les PME industrielles du Bugey et de la plaine de l'Ain, et plus marginalement les ETI. Nos consultants se déplacent depuis Lyon pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (maintenance, contrôle qualité, devis BTP, traçabilité). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagnieu (01). Nous accompagnons en priorité les TPE — artisans du BTP, commerçants, exploitations agricoles, indépendants — puis les PME industrielles du Bugey et de la plaine de l'Ain, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (maintenance, contrôle qualité, devis BTP, traçabilité). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagnieu (01). Nous accompagnons en priorité les TPE — artisans du BTP, commerçants, exploitations agricoles, indépendants — puis les PME industrielles du Bugey et de la plaine de l'Ain, et plus marginalement les ETI. Nos consultants se déplacent depuis Lyon pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (maintenance, contrôle qualité, devis BTP, traçabilité). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lagnieu (01). Nous accompagnons en priorité les TPE — artisans du BTP, commerçants, exploitations agricoles, indépendants — puis les PME industrielles du Bugey et de la plaine de l'Ain, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (maintenance, contrôle qualité, devis BTP, traçabilité). Tarifs publics, frais de déplacement transparents.",
   seoHook: "verrerie & industrie plaine de l'Ain",
   ecosystemFr:
     "Lagnieu s'inscrit dans le Bugey, vallée du Rhône, à portée de la plaine de l'Ain, l'un des grands bassins industriels de la région. La verrerie y a une histoire ancienne, complétée par des PME de production, des exploitations agricoles de vallée, des TPE artisans du BTP et des commerces de proximité. Ce tissu industriel et artisanal génère des tâches répétitives — maintenance, contrôle qualité, devis, traçabilité, gestion documentaire — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, là où l'automatisation d'un atelier ou d'un bureau d'études dégage un vrai gain opérationnel.",
   ecosystemEn:
     "Lagnieu s'inscrit dans le Bugey, vallée du Rhône, à portée de la plaine de l'Ain, l'un des grands bassins industriels de la région. La verrerie y a une histoire ancienne, complétée par des PME de production, des exploitations agricoles de vallée, des TPE artisans du BTP et des commerces de proximité. Ce tissu industriel et artisanal génère des tâches répétitives — maintenance, contrôle qualité, devis, traçabilité, gestion documentaire — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, là où l'automatisation d'un atelier ou d'un bureau d'études dégage un vrai gain opérationnel.",
   distancesFr:
-    "Ambérieu-en-Bugey à 15 min, accès TGV via la gare d'Ambérieu. Lyon centre à 1h, aéroport Lyon-Saint-Exupéry à 40 min. Belley à 30 min, Bourg-en-Bresse à 45 min. Nos consultants rejoignent Lagnieu et la plaine de l'Ain (Saint-Vulbas) depuis Lyon.",
+    "Ambérieu-en-Bugey à 15 min, accès TGV via la gare d'Ambérieu. Lyon centre à 1h, aéroport Lyon-Saint-Exupéry à 40 min. Belley à 30 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Ambérieu-en-Bugey à 15 min, accès TGV via la gare d'Ambérieu. Lyon centre à 1h, aéroport Lyon-Saint-Exupéry à 40 min. Belley à 30 min, Bourg-en-Bresse à 45 min. Nos consultants rejoignent Lagnieu et la plaine de l'Ain (Saint-Vulbas) depuis Lyon.",
+    "Ambérieu-en-Bugey à 15 min, accès TGV via la gare d'Ambérieu. Lyon centre à 1h, aéroport Lyon-Saint-Exupéry à 40 min. Belley à 30 min, Bourg-en-Bresse à 45 min. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Fabrication de verre et articles en verre",
     "PME industrielles plaine de l'Ain",
@@ -53,7 +53,7 @@ export const LAGNIEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lagnieu et dans le Bugey ?",
-      a: "Oui. Nos consultants se déplacent à Lagnieu et dans tout le Bugey (Ambérieu-en-Bugey à 15 min, Belley à 30 min, Saint-Vulbas et la plaine de l'Ain), depuis Lyon (1h).",
+      a: "Oui, à Lagnieu et dans les communes voisines (Ambérieu-en-Bugey, Belley, Saint-Vulbas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Bugey ?",
@@ -72,8 +72,8 @@ export const LAGNIEU_COPY: VilleCopy = {
       a: "Chaque déploiement intègre l'analyse RGPD (données techniques, clients, agricoles) et nous privilégions un hébergement européen. Vous restez propriétaire de vos données, sans dépendance technique.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (1h). Les coûts de déplacement sont séparés du forfait et facturés en toute transparence, avec des tarifs publics consultables sur notre site.",
+      q: "Comment se déroule une mission à Lagnieu ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Les coûts de déplacement sont séparés du forfait et facturés en toute transparence, avec des tarifs publics consultables sur notre site.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const JEUMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jeumont et vallée Sambre ?",
-      a: "Oui, Axion-IA intervient à Jeumont et toute la vallée Sambre (Maubeuge, Hautmont, Louvroil, Aulnoye-Aymeries). Consultants depuis Lille (1 h 20).",
+      a: "Oui, Axion-IA intervient à Jeumont et toute la vallée Sambre (Maubeuge, Hautmont, Louvroil, Aulnoye-Aymeries). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles métallurgie-mécanique ?",
@@ -64,8 +64,8 @@ export const JEUMONT_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales à Jeumont, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, automatisation RDV, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (1 h 20).",
+      q: "Comment se déroule une mission à Jeumont ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

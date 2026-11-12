@@ -11,9 +11,9 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   pitchEn:
     "Montfermeil (93), commune de 28 703 habitants (2023) sur 5,45 km² en Seine-Saint-Denis, à 15 km à l'est de Paris sur le flanc sud du plateau forestier de Bondy. Membre de l'Établissement public territorial Grand Paris Grand Est et de la Métropole du Grand Paris depuis 2016. Desservie par trois stations du tramway T4 (Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil), future station Clichy-Montfermeil sur la ligne 16 du Grand Paris Express. Patrimoine : pèlerinage de Notre-Dame-des-Anges, lieu emblématique des Misérables de Victor Hugo (Jean Valjean et Cosette à l'auberge des Thénardier). Tissu local : commerces de proximité, services à la personne, santé et action sociale, artisans BTP, professions libérales. Axion-IA y intervient pour TPE et PME montfermeilloises.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nous intervenons partout en France, sur place ou à distance. Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nos consultants se déplacent en T4 (trois stations à Montfermeil) ou en voiture depuis Paris (15 km). Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Montfermeil (93) et dans l'EPT Grand Paris Grand Est. Nous intervenons partout en France, sur place ou à distance. Nous accompagnons en priorité les TPE locales (commerçants centre-ville, artisans BTP, professions libérales, services à la personne) puis les PME du tissu montfermeillois (santé humaine, action sociale, construction, services aux entreprises). Code custom, pas no-code, tarifs publics.",
   seoHook: "commerce, santé & action sociale Grand Paris Est",
   ecosystemFr:
     "Montfermeil appartient à l'Établissement public territorial Grand Paris Grand Est et à la Métropole du Grand Paris (depuis 2016), succédant à l'ancienne agglomération Clichy-Montfermeil. La commune est située sur le plateau forestier de Bondy, à 15 km à l'est de Paris. Tissu économique : commerces de proximité, secteur santé humaine (Hôpital intercommunal Le Raincy-Montfermeil, stations T4 dédiées), action sociale forte, construction et artisanat BTP, services à la personne, professions libérales. Quartiers notables : Les Bosquets, Franceville. Patrimoine : Notre-Dame-des-Anges (pèlerinage annuel), héritage hugolien des Misérables. Communes limitrophes : Clichy-sous-Bois (nord-ouest), Coubron (nord), Courtry (nord-est), Gagny (sud-ouest), Chelles (sud-est).",
@@ -51,7 +51,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Les sites web et plateformes SaaS augmentés par l'IA d'Axion-IA à Montfermeil (93) sont conçus pour le tissu réel de la commune : structures de santé et médico-social autour du Groupe Hospitalier Intercommunal Le Raincy-Montfermeil et du Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), acteurs de la culture et de la création gravitant autour des Ateliers Médicis, commerces de proximité de la ZAC du centre-ville (rue Henri Barbusse, îlots Tuilerie et Barbusse) et artisans du BTP portés par la rénovation urbaine du Plateau. Nous livrons des interfaces accessibles, des sites mobile-first et des SaaS IA-native (chatbot RAG, recherche sémantique, prise de rendez-vous intelligente) — code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur. Kick-off sur place, à Montfermeil, accès T4 (trois stations) et bientôt gare Clichy-Montfermeil de la ligne 16.",
+        hero: "Les sites web et plateformes SaaS augmentés par l'IA d'Axion-IA à Montfermeil (93) sont conçus pour le tissu réel de la commune : structures de santé et médico-social autour du Groupe Hospitalier Intercommunal Le Raincy-Montfermeil et du Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), acteurs de la culture et de la création gravitant autour des Ateliers Médicis, commerces de proximité de la ZAC du centre-ville (rue Henri Barbusse, îlots Tuilerie et Barbusse) et artisans du BTP portés par la rénovation urbaine du Plateau. Nous livrons des interfaces accessibles, des sites mobile-first et des SaaS IA-native (chatbot RAG, recherche sémantique, prise de rendez-vous intelligente) — code custom, hébergement Union européenne conforme RGPD, zéro dépendance éditeur. Kick-off sur place, à Montfermeil.",
         whyHere: [
           "Premier employeur de la ville, le Groupe Hospitalier Intercommunal Le Raincy-Montfermeil (~2 000 salariés, rue du Général Leclerc) et le secteur médico-social local (Centre de Long Séjour des Ormes, EHPAD et soins de réadaptation) génèrent des besoins web et SaaS très spécifiques : portails patients, prise de rendez-vous, classification de documents, support multilingue — tous soumis à un cadre RGPD et données de santé strict que nous intégrons dès la conception.",
           "La revitalisation du centre-ville (ZAC ~6,2 ha, rue Henri Barbusse, îlots Tuilerie et Barbusse, commerces réimplantés au pied des immeubles des Bosquets) crée une vague de commerçants et artisans qui ont besoin de vitrines e-commerce, de fiches Google à jour et de réservation en ligne — pas de templates génériques mais des sites ancrés dans le commerce de proximité montfermeillois.",
@@ -130,14 +130,14 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "Quel est le délai pour obtenir un devis à Montfermeil ?",
-            a: "Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur place à Montfermeil — accès T4 (trois stations) et, à terme, gare Clichy-Montfermeil de la ligne 16 du Grand Paris Express.",
+            a: "Un devis sous 24 à 48 h selon la complexité, après un premier échange de cadrage. Le kick-off se fait sur place à Montfermeil.",
           },
         ],
         guarantees:
           "Code custom dont vous gardez la pleine propriété, transférable à tout prestataire ou repris en interne — aucun verrou éditeur, aucune dépendance Axion-IA. Hébergement en Union européenne, conformité RGPD native et exigences données de santé prises en compte pour les acteurs médico-sociaux montfermeillois (GHI Le Raincy-Montfermeil, Centre des Ormes). Devis sous 24 à 48 h selon la complexité, tarifs et périmètre cadrés avant signature. Sites mobile-first, accessibles et soignés sur les performances. Vos référents internes sont formés pour rester autonomes après la mise en ligne.",
       },
       en: {
-        hero: "Axion-IA's AI-augmented websites and SaaS platforms in Montfermeil (93) are built for the town's real fabric: healthcare and medico-social organisations around the Groupe Hospitalier Intercommunal Le Raincy-Montfermeil and the Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), culture and creation players gravitating around the Ateliers Médicis, local shops of the town-centre ZAC (rue Henri Barbusse, Tuilerie and Barbusse blocks) and BTP craftspeople driven by the Plateau urban renewal. We deliver accessible interfaces, mobile-first sites and AI-native SaaS (RAG chatbot, semantic search, smart booking) — custom code, European Union hosting, GDPR-compliant, zero vendor lock-in. Kick-off on site in Montfermeil, reachable via the T4 tram (three stations) and soon the Clichy-Montfermeil station on Line 16.",
+        hero: "Axion-IA's AI-augmented websites and SaaS platforms in Montfermeil (93) are built for the town's real fabric: healthcare and medico-social organisations around the Groupe Hospitalier Intercommunal Le Raincy-Montfermeil and the Centre de Long Séjour des Ormes (Énéal, Groupe SOS Seniors), culture and creation players gravitating around the Ateliers Médicis, local shops of the town-centre ZAC (rue Henri Barbusse, Tuilerie and Barbusse blocks) and BTP craftspeople driven by the Plateau urban renewal. We deliver accessible interfaces, mobile-first sites and AI-native SaaS (RAG chatbot, semantic search, smart booking) — custom code, European Union hosting, GDPR-compliant, zero vendor lock-in. Kick-off on site in Montfermeil.",
         whyHere: [
           "The town's leading employer, the Groupe Hospitalier Intercommunal Le Raincy-Montfermeil (~2,000 staff, rue du Général Leclerc), and the local medico-social sector (Centre de Long Séjour des Ormes, nursing home and rehabilitation care) generate very specific web and SaaS needs: patient portals, booking, document classification, multilingual support — all under a strict GDPR and health-data framework we build in from the start.",
           "The town-centre revitalisation (ZAC ~6.2 ha, rue Henri Barbusse, Tuilerie and Barbusse blocks, shops re-installed at the foot of the Bosquets buildings) creates a wave of retailers and craftspeople needing e-commerce storefronts, up-to-date Google listings and online booking — not generic templates but sites grounded in Montfermeil's local trade.",
@@ -216,7 +216,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
           },
           {
             q: "How long does it take to get a quote in Montfermeil?",
-            a: "A quote within 24 to 48 hours depending on complexity, after an initial framing exchange. The kick-off takes place on site in Montfermeil — reachable via the T4 tram (three stations) and, in time, the Clichy-Montfermeil station on Line 16 of the Grand Paris Express.",
+            a: "A quote within 24 to 48 hours depending on complexity, after an initial framing exchange. The kick-off takes place on site in Montfermeil.",
           },
         ],
         guarantees:
@@ -228,7 +228,7 @@ export const MONTFERMEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montfermeil et dans l'EPT Grand Paris Grand Est ?",
-      a: "Oui, Axion-IA intervient à Montfermeil et dans les communes voisines : Clichy-sous-Bois, Coubron, Courtry, Gagny, Chelles. Consultants depuis Paris par T4 (3 stations Montfermeil) ou voiture (15 km).",
+      a: "Oui, Axion-IA intervient à Montfermeil et dans les communes voisines : Clichy-sous-Bois, Coubron, Courtry, Gagny, Chelles. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour une mission IA à Montfermeil ?",
@@ -251,8 +251,8 @@ export const MONTFERMEIL_COPY: VilleCopy = {
       a: "Code et données hébergés en Union européenne, contrats DPA signés, registre des traitements fourni, formation des équipes aux bonnes pratiques. Conformité native, pas d'option payante.",
     },
     {
-      q: "Vos consultants se déplacent-ils en T4 ou en voiture à Montfermeil ?",
-      a: "Les deux options. T4 (stations Notre-Dame-des-Anges, Arboretum, Hôpital de Montfermeil) pour les sites desservis. Voiture pour transport de matériel ou sites excentrés. Visio possible pour cadrage et coaching.",
+      q: "Comment se déroule une intervention à Montfermeil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio possible pour cadrage et coaching.",
     },
   ],
 };

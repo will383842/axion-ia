@@ -9,9 +9,9 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   pitchEn:
     "Oullins-Pierre-Bénite (69, Rhône), commune nouvelle au sud immédiat de Lyon, conjugue tissu urbain dense, façade sur la vallée de la chimie (Rhône amont) et desserte par le terminus de la ligne B du métro. Son économie mêle TPE de services et de santé, commerces, artisans, et PME sous-traitantes de la chimie, de la logistique et de la santé. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, sur place ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, à 15 min de Lyon (métro B) ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oullins-Pierre-Bénite (69) et dans le sud de la métropole de Lyon. Nous accompagnons en priorité les TPE — services, santé, commerces, artisans — puis les PME sous-traitantes de la vallée de la chimie, de la santé et de la logistique, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — qualité, gestion documentaire, support, relation client — avant tout déploiement, sur place ou en visio.",
   seoHook: "sud Lyon, chimie & santé",
   ecosystemFr:
     "Oullins-Pierre-Bénite forme la porte sud de la métropole de Lyon, sur la rive droite du Rhône à l'entrée de la vallée de la chimie. Économie urbaine et industrielle : PME sous-traitantes de la chimie et de la pharma, logistique fluviale et routière, santé (proximité du pôle hospitalier sud), TPE de services et de proximité, commerces et artisans. Le terminus de la ligne B du métro arrime la commune à Lyon Part-Dieu.",
@@ -132,7 +132,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai puis-je obtenir un devis ?",
-            a: "Nous établissons un devis à partir de 24 à 48 h selon la complexité. Un premier échange — sur site à Oullins-Pierre-Bénite, accessible par le métro B à 15 min de Part-Dieu, ou en visio — suffit à cadrer le périmètre, le socle technique et les fonctions IA pertinentes pour votre activité.",
+            a: "Nous établissons un devis à partir de 24 à 48 h selon la complexité. Un premier échange — sur site à Oullins-Pierre-Bénite ou en visio — suffit à cadrer le périmètre, le socle technique et les fonctions IA pertinentes pour votre activité.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
           },
           {
             q: "How quickly can I get a quote?",
-            a: "We issue a quote from 24 to 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite, reachable by Metro B 15 min from Part-Dieu, or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
+            a: "We issue a quote from 24 to 48 h depending on complexity. A first exchange — on site in Oullins-Pierre-Bénite or by video call — is enough to frame the scope, the technical stack and the AI features relevant to your activity.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oullins-Pierre-Bénite et au sud de Lyon ?",
-      a: "Oui, Axion-IA intervient à Oullins-Pierre-Bénite et dans tout le sud de la métropole lyonnaise (Saint-Genis-Laval, La Mulatière, Sainte-Foy-lès-Lyon). Nos consultants se déplacent sur site (métro B, 15 min) ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Oullins-Pierre-Bénite et dans tout le sud de la métropole lyonnaise (Saint-Genis-Laval, La Mulatière, Sainte-Foy-lès-Lyon). Nos consultants se déplacent sur site ou animent les sessions en visio.",
     },
     {
       q: "Quels secteurs accompagnez-vous en priorité ici ?",
@@ -246,7 +246,7 @@ export const OULLINS_PIERRE_BENITE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Oullins-Pierre-Bénite ?",
-      a: "Nos consultants se déplacent depuis Lyon (métro B, terminus Oullins, 15 min de Part-Dieu). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions ?",

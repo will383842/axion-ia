@@ -1042,7 +1042,7 @@ export const NANTES_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans le bassin Saint-Nazaire pour l'industrie navale ?",
-      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Les sites industriels (construction navale, sous-traitance aéronautique, énergies marines) sont accessibles depuis notre base nantaise.",
+      a: "Oui. Le bassin économique Nantes–Saint-Nazaire fait partie de notre périmètre d'intervention Grand Ouest. Nous intervenons aussi sur les sites industriels (construction navale, sous-traitance aéronautique, énergies marines), sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LUDRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ludres ?",
-      a: "Oui, Axion-IA intervient à Ludres et dans les zones d'activités du sud nancéien (Houdemont, Fléville-devant-Nancy, Heillecourt). Consultants via gare SNCF Ludres ou autoroute A330.",
+      a: "Oui, Axion-IA intervient à Ludres et dans les zones d'activités du sud nancéien (Houdemont, Fléville-devant-Nancy, Heillecourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME des zones d'activités ?",
@@ -65,7 +65,7 @@ export const LUDRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Ludres ?",
-      a: "Nos consultants se déplacent via gare SNCF Ludres (ligne Nancy–Épinal) ou autoroutes A330/A33. Position stratégique au sud de Nancy (15 min centre).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Ludres est au sud de Nancy (15 min du centre).",
     },
   ],
 };

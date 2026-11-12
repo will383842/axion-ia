@@ -49,7 +49,7 @@ export const MONTOIR_DE_BRETAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montoir-de-Bretagne et bassin nazairien ?",
-      a: "Oui, Axion-IA intervient à Montoir-de-Bretagne et toute l'agglomération nazairienne (Saint-Nazaire, Donges, Trignac, Pornichet). Consultants depuis Nantes (55 min). Couverture complète du bassin industriel et portuaire.",
+      a: "Oui, Axion-IA intervient à Montoir-de-Bretagne et toute l'agglomération nazairienne (Saint-Nazaire, Donges, Trignac, Pornichet). Nous intervenons partout en France, sur place ou à distance. Couverture complète du bassin industriel et portuaire.",
     },
     {
       q: "Accompagnez-vous les PME industrielles et sous-traitants ?",

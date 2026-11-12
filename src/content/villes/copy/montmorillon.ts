@@ -49,7 +49,7 @@ export const MONTMORILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montmorillon et sud-est Vienne ?",
-      a: "Oui, Axion-IA intervient à Montmorillon et tout le Montmorillonnais / sud-est Vienne (Lussac-les-Châteaux, Saint-Savin-sur-Gartempe, Chauvigny à 40 min). Consultants depuis Poitiers (50 min) ou Paris (TGV Poitiers 1h40 + 50 min).",
+      a: "Oui, Axion-IA intervient à Montmorillon et tout le Montmorillonnais / sud-est Vienne (Lussac-les-Châteaux, Saint-Savin-sur-Gartempe, Chauvigny à 40 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans métiers du livre ?",
@@ -64,8 +64,8 @@ export const MONTMORILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montmorillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV gare Poitiers (1h40) puis 50 min route vers Montmorillon. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local.",
+      q: "Comment se déroule une mission à Montmorillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Alternative : Limoges (1h15 route). Pour les multi-jours, hébergement local.",
     },
   ],
 };

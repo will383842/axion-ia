@@ -49,7 +49,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ostricourt et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient à Ostricourt et dans tout le bassin minier entre Douai et Lens (Hénin-Beaumont, Carvin, Oignies). Nos consultants se déplacent depuis Lille en 30 min via A1 ou Douai en 15 min.",
+      a: "Oui, Axion-IA intervient à Ostricourt et dans tout le bassin minier entre Douai et Lens (Hénin-Beaumont, Carvin, Oignies). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Ostricourt  ?",
@@ -65,7 +65,7 @@ export const OSTRICOURT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Ostricourt ?",
-      a: "Nos consultants interviennent depuis Lille (30 min A1), Douai (15 min) ou Lens (15 min). Ostricourt est au carrefour du bassin minier, déplacements sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Ostricourt est au carrefour du bassin minier. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

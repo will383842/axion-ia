@@ -64,7 +64,7 @@ export const MORANGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Morangis ?",
       a: "Aéroport Paris-Orly (5 min). Massy TGV (15 min). Paris centre (25 min). Coûts de déplacement à part, tarification transparente.",
     },
   ],

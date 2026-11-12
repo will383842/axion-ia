@@ -64,8 +64,8 @@ export const PANAZOL_COPY: VilleCopy = {
       a: "Pour les professions libérales à Panazol (médecins, avocats, experts-comptables), audit sur place {{price:audit-flash|flat}}, intervention formation, coaching 1-to-1. Cas typiques : automatisation secrétariat, classification documents, synthèse dossiers, agents IA.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges centre ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Panazol est directement desservie par le réseau STLC.",
+      q: "Comment se déroule une mission à Panazol ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Panazol est directement desservie par le réseau STLC.",
     },
   ],
 };

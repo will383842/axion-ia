@@ -62,8 +62,8 @@ export const MEYLAN_COPY: VilleCopy = {
       a: "Pour les PME logiciel/SaaS d'Inovallée, nous proposons les 5 services Axion-IA : audit IA (Stratégique PME), interventions sur site (formations équipes tech), implémentation IA (agents conversationnels produit, classification base de connaissances), coaching 1-to-1 CTO, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se déroule une mission Inovallée depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Lyon 2h + tram + voiture, ~3h30 total) ou avion Lyon-Saint-Exupéry (1h vol + 1h15 voiture). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Meylan ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

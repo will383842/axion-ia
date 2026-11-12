@@ -49,7 +49,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Passage et dans l'agglomération d'Agen ?",
-      a: "Oui, Axion-IA intervient au Passage et dans toute l'agglomération d'Agen (Agen, Bon-Encontre, Boé, Foulayronnes). Consultants accessibles via la gare SNCF Agen (TGV Paris-Agen, 5 min du Passage).",
+      a: "Oui, Axion-IA intervient au Passage et dans toute l'agglomération d'Agen (Agen, Bon-Encontre, Boé, Foulayronnes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Passage ?",
@@ -65,7 +65,7 @@ export const LE_PASSAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Passage ?",
-      a: "Nos consultants interviennent sur site au Passage et dans l'agglomération d'Agen. Déplacement direct sur votre commerce, atelier ou bureau. Gare TGV Agen à 5 min, aéroport Agen-La Garenne à 10 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le Passage est à 5 min de la gare TGV d'Agen et à 10 min de l'aéroport Agen-La Garenne.",
     },
   ],
 };

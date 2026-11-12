@@ -65,7 +65,7 @@ export const OIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Oignies ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Libercourt à 5 min, Lille à 30 min A1. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance. Accès à Oignies : Gare Libercourt à 5 min, Lille à 30 min A1.",
     },
   ],
 };

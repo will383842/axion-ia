@@ -49,7 +49,7 @@ export const NOYELLES_SOUS_LENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Noyelles-sous-Lens et dans le Lensois ?",
-      a: "Oui, Axion-IA intervient a Noyelles-sous-Lens et dans toute l'agglomeration lensoise (Lens, Lievin, Henin-Beaumont). Consultants depuis Lille (45 min TER) ou Paris (TGV 1h10 via Lens).",
+      a: "Oui, Axion-IA intervient a Noyelles-sous-Lens et dans toute l'agglomeration lensoise (Lens, Lievin, Henin-Beaumont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Noyelles-sous-Lens ?",

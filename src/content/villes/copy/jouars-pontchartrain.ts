@@ -65,7 +65,7 @@ export const JOUARS_PONTCHARTRAIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jouars-Pontchartrain ?",
-      a: "Nos consultants rejoignent Jouars-Pontchartrain via la gare de Villiers — Neauphle — Pontchartrain (Transilien N, 35 min Paris-Montparnasse) à 5 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jarville-la-Malgrange et sud Nancy ?",
-      a: "Oui, Axion-IA intervient à Jarville-la-Malgrange et tout le sud de la Métropole du Grand Nancy (Vandœuvre-lès-Nancy, Laneuveville, Heillecourt, Houdemont). Consultants depuis Nancy centre (10 min).",
+      a: "Oui, Axion-IA intervient à Jarville-la-Malgrange et tout le sud de la Métropole du Grand Nancy (Vandœuvre-lès-Nancy, Laneuveville, Heillecourt, Houdemont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerçants et PME de services de Jarville ?",
@@ -65,7 +65,7 @@ export const JARVILLE_LA_MALGRANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Jarville-la-Malgrange ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos locaux commerciaux, cabinet ou bureau.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux commerciaux, cabinet ou bureau.",
     },
   ],
 };

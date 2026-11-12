@@ -49,7 +49,7 @@ export const LES_ANGLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Angles et Grand Avignon ?",
-      a: "Oui, Axion-IA intervient aux Angles et dans tout le Grand Avignon (Villeneuve-lès-Avignon, Rochefort-du-Gard, Saze). Nos consultants sont à 5 min d'Avignon centre et 15 min de la gare TGV.",
+      a: "Oui, Axion-IA intervient aux Angles et dans tout le Grand Avignon (Villeneuve-lès-Avignon, Rochefort-du-Gard, Saze). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA aux Angles ?",

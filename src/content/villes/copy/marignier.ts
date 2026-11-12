@@ -64,8 +64,8 @@ export const MARIGNIER_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
     },
     {
-      q: "Comment se passe une mission depuis Genève ou Annecy ?",
-      a: "Nos consultants rejoignent Marignier via A40 (Genève 50 min, Annecy 50 min). Gare SNCF Marignier (Léman Express). Multi-jours : hébergement local possible.",
+      q: "Comment se déroule une mission à Marignier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Marignier (Léman Express). Multi-jours : hébergement local possible.",
     },
   ],
 };

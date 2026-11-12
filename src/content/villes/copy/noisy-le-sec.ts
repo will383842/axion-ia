@@ -11,9 +11,9 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   pitchEn:
     "Noisy-le-Sec (93, Seine-Saint-Denis) compte environ 45 500 habitants, à 5 km de Paris via la N3. Ville historiquement ferroviaire (ancien grand dépôt SNCF), elle accueille un tissu dense de TPE artisans, commerces de proximité, PME services et BTP, dans une zone bien desservie (RER E, T1, métro 11 à proximité, A3 et A86). Axion-IA accompagne le tissu professionnel local de l'Est parisien.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nous intervenons partout en France, sur place ou à distance. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nos consultants se déplacent depuis Paris en 20 min (RER E ou A3). Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Noisy-le-Sec (93) auprès des TPE et PME de l'Est parisien : artisans BTP, commerçants de proximité, PME services, professions libérales et acteurs de la logistique ferroviaire et urbaine. Nous intervenons partout en France, sur place ou à distance. Audit sur place {{price:audit-flash|flat}}, code custom, conformité RGPD intégrée.",
   seoHook: "TPE & PME Est parisien",
   ecosystemFr:
     "Noisy-le-Sec, en limite Est de Paris (5 km via N3), est historiquement marquée par l'activité ferroviaire SNCF (dépôt, ateliers). Aujourd'hui le tissu local mêle TPE artisans, commerces de proximité, PME services, BTP et logistique urbaine. La ville bénéficie d'une desserte exceptionnelle (RER E, tramway T1, métro 11 prolongé, autoroutes A3 et A86) et de la proximité immédiate de Bobigny, Bondy, Rosny-sous-Bois, Montreuil et Romainville.",
@@ -228,7 +228,7 @@ export const NOISY_LE_SEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noisy-le-Sec ?",
-      a: "Oui, Axion-IA intervient à Noisy-le-Sec et dans tout l'Est parisien (Bobigny, Bondy, Rosny-sous-Bois, Montreuil, Romainville, Pantin). Nos consultants se déplacent depuis Paris en 20 min via RER E ou A3.",
+      a: "Oui, Axion-IA intervient à Noisy-le-Sec et dans tout l'Est parisien (Bobigny, Bondy, Rosny-sous-Bois, Montreuil, Romainville, Pantin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs d'un audit IA à Noisy-le-Sec ?",

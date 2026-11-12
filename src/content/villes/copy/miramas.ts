@@ -226,7 +226,7 @@ export const MIRAMAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Miramas et ouest Bouches-du-Rhône ?",
-      a: "Oui, Axion-IA intervient à Miramas et tout l'ouest provençal (Fos-sur-Mer, Istres, Salon-de-Provence, Martigues, Port-de-Bouc, Arles). Couverture complète bassin logistique-industriel Fos et accès Marseille (1h).",
+      a: "Oui, Axion-IA intervient à Miramas et tout l'ouest provençal (Fos-sur-Mer, Istres, Salon-de-Provence, Martigues, Port-de-Bouc, Arles). Couverture complète du bassin logistique-industriel de Fos, et de Marseille.",
     },
     {
       q: "Travaillez-vous avec les opérateurs logistiques Fos-Miramas ?",

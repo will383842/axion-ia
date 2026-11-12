@@ -9,18 +9,18 @@ export const LES_MUREAUX_COPY: VilleCopy = {
   pitchEn:
     "Les Mureaux (78), ville des Yvelines en bord de Seine, est un haut lieu du spatial français : ArianeGroup y assemble les étages des fusées Ariane. Autour de ce pôle aéronautique et spatial gravite un dense réseau de TPE et PME — sous-traitants mécaniques, usineurs, fournisseurs de produits métalliques, prestataires techniques et commerces. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME muriautines, l'ETI restant marginale, pour fiabiliser un quotidien industriel exigeant.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Mureaux (78). Nous accompagnons en priorité les TPE — sous-traitants mécaniques, usineurs, artisans, commerces, indépendants — puis les PME industrielles de la filière aéronautique et spatiale, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (contrôle qualité, documentation technique, devis, planification). Tarifs publics, frais de déplacement transparents.",
   seoHook: "aéronautique-spatial & sous-traitance",
   ecosystemFr:
     "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de TPE et PME : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, où l'automatisation d'un atelier change concrètement le quotidien.",
   ecosystemEn:
     "Les Mureaux structurent leur économie autour du site ArianeGroup, où s'assemblent les étages des lanceurs Ariane, faisant de la ville un point névralgique du spatial européen. Cette présence irrigue un réseau dense de TPE et PME : usinage de précision, fabrication de produits métalliques, mécanique, prestataires d'ingénierie et services techniques, complété par les commerces et l'artisanat du bord de Seine. Cet écosystème industriel génère des tâches répétitives — contrôle qualité, documentation technique, devis, suivi de production — que l'IA fiabilise. Axion-IA y privilégie les TPE et PME, où l'automatisation d'un atelier change concrètement le quotidien.",
   distancesFr:
-    "Gare des Mureaux (ligne J) à ~40 min de Paris-Saint-Lazare. Paris-Saint-Lazare à 38 km, aéroport de Paris-Charles-de-Gaulle à 55 km, Cergy à 25 km, Mantes-la-Jolie à 20 km. Nos consultants rejoignent Les Mureaux et la vallée de Seine depuis Paris.",
+    "Gare des Mureaux (ligne J) à ~40 min de Paris-Saint-Lazare. Paris-Saint-Lazare à 38 km, aéroport de Paris-Charles-de-Gaulle à 55 km, Cergy à 25 km, Mantes-la-Jolie à 20 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare des Mureaux (ligne J) à ~40 min de Paris-Saint-Lazare. Paris-Saint-Lazare à 38 km, aéroport de Paris-Charles-de-Gaulle à 55 km, Cergy à 25 km, Mantes-la-Jolie à 20 km. Nos consultants rejoignent Les Mureaux et la vallée de Seine depuis Paris.",
+    "Gare des Mureaux (ligne J) à ~40 min de Paris-Saint-Lazare. Paris-Saint-Lazare à 38 km, aéroport de Paris-Charles-de-Gaulle à 55 km, Cergy à 25 km, Mantes-la-Jolie à 20 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Construction aéronautique et spatiale",
     "Usinage et mécanique de précision",
@@ -230,7 +230,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Mureaux et dans la vallée de Seine ?",
-      a: "Oui. Nos consultants se déplacent aux Mureaux et dans les communes voisines (Verneuil-sur-Seine, Meulan-en-Yvelines, Aubergenville, Mantes-la-Jolie), depuis Paris.",
+      a: "Oui, aux Mureaux et dans les communes voisines (Verneuil-sur-Seine, Meulan-en-Yvelines, Aubergenville, Mantes-la-Jolie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants de la filière spatiale ?",
@@ -250,7 +250,7 @@ export const LES_MUREAUX_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence aux Mureaux : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence aux Mureaux : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MONTS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Monts et sud Tours ?",
-      a: "Oui, Axion-IA intervient à Monts et dans tout le sud de l'agglomération tourangelle (Artannes-sur-Indre, Sorigny, Veigné, Montbazon). Couverture Tours Métropole et accès depuis Tours (15 min) ou Paris (2h30 TGV via Tours).",
+      a: "Oui, Axion-IA intervient à Monts et dans tout le sud de l'agglomération tourangelle (Artannes-sur-Indre, Sorigny, Veigné, Montbazon). Couverture Tours Métropole.",
     },
     {
       q: "Quels services pour les TPE et artisans montois ?",
@@ -65,7 +65,7 @@ export const MONTS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Monts ?",
-      a: "Nos consultants viennent depuis Tours centre (15 min voiture) ou gare de Monts (TER). Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
     },
   ],
 };

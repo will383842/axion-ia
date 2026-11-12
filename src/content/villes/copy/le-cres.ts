@@ -49,7 +49,7 @@ export const LE_CRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Crès ?",
-      a: "Oui, Axion-IA intervient au Crès et dans toutes les communes est Montpellier (Castries, Vendargues, Baillargues, Jacou). Nos consultants se déplacent depuis Montpellier en 10 min.",
+      a: "Oui, Axion-IA intervient au Crès et dans toutes les communes est Montpellier (Castries, Vendargues, Baillargues, Jacou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les PME de services ?",

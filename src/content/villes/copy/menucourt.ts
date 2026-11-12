@@ -64,7 +64,7 @@ export const MENUCOURT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
+      q: "Comment se déroule une mission à Menucourt ?",
       a: "Cergy-Pontoise centre (5 min). Conflans-Sainte-Honorine (10 min). Paris La Défense (35 min). Aéroport CDG (50 min).",
     },
   ],

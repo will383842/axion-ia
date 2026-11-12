@@ -239,8 +239,8 @@ export const MEAUX_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI de Meaux, l'Audit sur place est planifié sous 5 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux depuis Meaux ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
+      q: "Couvrez-vous Trilport, Villenoy et Nanteuil-lès-Meaux ?",
+      a: "Oui, nous nous déplaçons aussi dans les communes limitrophes de Meaux : Chambry, Chauconin-Neufmontiers, Crégy-lès-Meaux, Fublaines, Mareuil-lès-Meaux, Nanteuil-lès-Meaux, Poincy, Trilport et Villenoy.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Meaux ?",

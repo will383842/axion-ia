@@ -49,7 +49,7 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orée d'Anjou et dans le val de Loire ?",
-      a: "Oui, Axion-IA intervient à Orée d'Anjou et dans tout le val de Loire entre Ancenis et Nantes (Mauges-sur-Loire, Montrevault-sur-Èvre, Le Loroux-Bottereau, Vallet). Nos consultants se déplacent depuis Nantes en 35 minutes.",
+      a: "Oui, Axion-IA intervient à Orée d'Anjou et dans tout le val de Loire entre Ancenis et Nantes (Mauges-sur-Loire, Montrevault-sur-Èvre, Le Loroux-Bottereau, Vallet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'IA peut-elle aider les viticulteurs des coteaux-d'ancenis ?",
@@ -64,8 +64,8 @@ export const OREE_D_ANJOU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME industrielles et logistiques du val de Loire sur tous les cas IA : prédiction maintenance, automatisation qualité, optimisation supply chain, agents IA service client B2B et gestion documentaire.",
     },
     {
-      q: "Comment accédez-vous à Orée d'Anjou depuis Nantes ou Angers ?",
-      a: "Nos consultants se déplacent depuis Nantes (35 min A11) ou Angers (50 min). La gare TER d'Ancenis est à 5 min (pont de Loire).",
+      q: "Comment se déroule une intervention à Orée d'Anjou ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. La gare TER d'Ancenis est à 5 min (pont de Loire).",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Maizières-lès-Metz ?",
-      a: "Oui, Axion-IA intervient à Maizières-lès-Metz et dans le pays messin nord (Hagondange, Talange, Semécourt). Consultants via gare SNCF Maizières-lès-Metz ou A31. Position stratégique entre Metz (15 min) et Thionville (20 min).",
+      a: "Oui, Axion-IA intervient à Maizières-lès-Metz et dans le pays messin nord (Hagondange, Talange, Semécourt). Nous intervenons partout en France, sur place ou à distance. Maizières-lès-Metz se situe entre Metz (15 min) et Thionville (20 min).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME commerce et distribution ?",
@@ -65,7 +65,7 @@ export const MAIZIERES_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Maizières-lès-Metz ?",
-      a: "Nos consultants se déplacent via gare SNCF Maizières-lès-Metz (ligne Metz–Thionville) ou autoroute A31. Position stratégique pays messin nord, Metz à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Maizières-lès-Metz est dans le pays messin nord, à 15 min de Metz.",
     },
   ],
 };

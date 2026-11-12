@@ -49,7 +49,7 @@ export const LONGUYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Longuyon ?",
-      a: "Oui, Axion-IA intervient à Longuyon et dans le Pays Haut (Longwy, Villerupt, Mont-Saint-Martin) ainsi que vers la frontière luxembourgeoise et belge. Consultants via gare SNCF Longuyon ou autoroute A30.",
+      a: "Oui, Axion-IA intervient à Longuyon et dans le Pays Haut (Longwy, Villerupt, Mont-Saint-Martin) ainsi que vers la frontière luxembourgeoise et belge. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les transporteurs et logisticiens transfrontaliers ?",
@@ -65,7 +65,7 @@ export const LONGUYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Longuyon ?",
-      a: "Nos consultants se déplacent via gare SNCF Longuyon (axe Paris–Luxembourg) ou autoroute A30 (15 min). Position stratégique aux portes du Luxembourg (45 min) et de la Belgique (25 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Longuyon est aux portes du Luxembourg (45 min) et de la Belgique (25 min).",
     },
   ],
 };

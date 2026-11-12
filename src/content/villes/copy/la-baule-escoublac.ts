@@ -49,7 +49,7 @@ export const LA_BAULE_ESCOUBLAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Baule-Escoublac ?",
-      a: "Oui, Axion-IA intervient à La Baule-Escoublac et dans toute la baie (Pornichet, Le Pouliguen, Guérande). Nos consultants se déplacent depuis Nantes (1h10) ou Saint-Nazaire (15 min).",
+      a: "Oui, Axion-IA intervient à La Baule-Escoublac et dans toute la baie (Pornichet, Le Pouliguen, Guérande). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à La Baule  ?",

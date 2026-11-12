@@ -18,9 +18,9 @@ export const LA_CHAPELLE_SUR_ERDRE_COPY: VilleCopy = {
   ecosystemEn:
     "La Chapelle-sur-Erdre est une commune résidentielle prisée de la métropole nantaise, traversée par l'Erdre et bien reliée au centre de Nantes. Son économie s'appuie sur des zones d'activités, un tissu de services aux entreprises, des commerces de proximité, de l'artisanat du bâtiment et des professions libérales. Ces TPE et PME, proches des pôles d'innovation de Nantes, profitent de l'IA pour automatiser devis, plannings, relances et reporting. Axion-IA cible en priorité ces TPE de services et commerçantes, puis les PME tertiaires du nord de l'agglomération nantaise.",
   distancesFr:
-    "La Chapelle-sur-Erdre est reliée au centre de Nantes par le tram-train et le réseau de bus en une vingtaine de minutes. La gare de Nantes est à environ 10 km, l'aéroport de Nantes-Atlantique à 22 km et l'axe routier vers Rennes tout proche, ce qui facilite nos déplacements sur site dans toute la métropole.",
+    "La Chapelle-sur-Erdre est reliée au centre de Nantes par le tram-train et le réseau de bus en une vingtaine de minutes. La gare de Nantes est à environ 10 km, l'aéroport de Nantes-Atlantique à 22 km et l'axe routier vers Rennes tout proche. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Chapelle-sur-Erdre est reliée au centre de Nantes par le tram-train et le réseau de bus en une vingtaine de minutes. La gare de Nantes est à environ 10 km, l'aéroport de Nantes-Atlantique à 22 km et l'axe routier vers Rennes tout proche, ce qui facilite nos déplacements sur site dans toute la métropole.",
+    "La Chapelle-sur-Erdre est reliée au centre de Nantes par le tram-train et le réseau de bus en une vingtaine de minutes. La gare de Nantes est à environ 10 km, l'aéroport de Nantes-Atlantique à 22 km et l'axe routier vers Rennes tout proche. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Services aux entreprises",
     "Commerce de détail de proximité",

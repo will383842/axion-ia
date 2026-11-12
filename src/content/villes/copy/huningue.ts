@@ -49,7 +49,7 @@ export const HUNINGUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Huningue et dans le bassin des trois frontières ?",
-      a: "Oui, Axion-IA intervient à Huningue et dans tout le bassin trinational (Saint-Louis, Village-Neuf, Hégenheim, Bartenheim). Bâle à 5 min à pied via la passerelle des Trois Pays. EuroAirport à 15 min. Nos consultants se déplacent depuis Paris via TGV Mulhouse.",
+      a: "Oui, Axion-IA intervient à Huningue et dans tout le bassin trinational (Saint-Louis, Village-Neuf, Hégenheim, Bartenheim). Bâle à 5 min à pied via la passerelle des Trois Pays. EuroAirport à 15 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Huningue  ?",

@@ -18,9 +18,9 @@ export const LA_GARDE_COPY: VilleCopy = {
   ecosystemEn:
     "La Garde est l'une des villes clés de la métropole toulonnaise, où se concentrent l'Université de Toulon, de grandes zones commerciales et un tissu dense de services aux entreprises et aux particuliers. Commerce de détail, restauration, artisanat du bâtiment, professions libérales et activités numériques liées au campus composent une économie de TPE et de PME tournée vers la consommation et les services. Ces structures gagnent à automatiser devis, relances, prise de rendez-vous et gestion administrative. Axion-IA cible en priorité ces TPE commerçantes et de services, puis les PME tertiaires de l'agglomération.",
   distancesFr:
-    "La Garde jouxte Toulon, dont la gare TGV est à environ 8 km et relie Paris en moins de quatre heures. L'aéroport de Toulon-Hyères est à 15 km et les communes voisines comme Le Pradet, La Valette-du-Var et Hyères sont à portée immédiate, ce qui facilite nos déplacements sur site dans toute la métropole toulonnaise.",
+    "La Garde jouxte Toulon, dont la gare TGV est à environ 8 km et relie Paris en moins de quatre heures. L'aéroport de Toulon-Hyères est à 15 km et les communes voisines comme Le Pradet, La Valette-du-Var et Hyères sont à portée immédiate. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "La Garde jouxte Toulon, dont la gare TGV est à environ 8 km et relie Paris en moins de quatre heures. L'aéroport de Toulon-Hyères est à 15 km et les communes voisines comme Le Pradet, La Valette-du-Var et Hyères sont à portée immédiate, ce qui facilite nos déplacements sur site dans toute la métropole toulonnaise.",
+    "La Garde jouxte Toulon, dont la gare TGV est à environ 8 km et relie Paris en moins de quatre heures. L'aéroport de Toulon-Hyères est à 15 km et les communes voisines comme Le Pradet, La Valette-du-Var et Hyères sont à portée immédiate. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de détail et zones commerciales",
     "Services aux entreprises et aux particuliers",
@@ -74,7 +74,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier Toulon-Est : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier Toulon-Est au reste de la commune : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const LA_GARDE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native depuis le quartier Toulon-Est : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native, du quartier Toulon-Est au reste de la commune : boutique e-commerce, devis et rendez-vous en ligne, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio pour ajuster au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

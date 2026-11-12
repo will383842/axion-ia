@@ -49,7 +49,7 @@ export const LE_GRAU_DU_ROI_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Grau-du-Roi et sur le littoral gardois ?",
-      a: "Oui, Axion-IA intervient au Grau-du-Roi et sur tout le littoral gardois (Aigues-Mortes, Port-Camargue, La Grande-Motte). Nos consultants viennent de Nîmes (45 min) ou Montpellier (35 min).",
+      a: "Oui, Axion-IA intervient au Grau-du-Roi et sur tout le littoral gardois (Aigues-Mortes, Port-Camargue, La Grande-Motte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôteliers-restaurateurs saisonniers ?",

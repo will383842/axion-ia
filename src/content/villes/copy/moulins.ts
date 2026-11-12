@@ -49,7 +49,7 @@ export const MOULINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moulins et Bourbonnais ?",
-      a: "Oui, Axion-IA intervient à Moulins et tout le Bourbonnais (Yzeure limitrophe, Avermes, Souvigny, Bourbon-l'Archambault). Consultants depuis Lyon (2h) ou Clermont-Ferrand (1h30).",
+      a: "Oui, Axion-IA intervient à Moulins et tout le Bourbonnais (Yzeure limitrophe, Avermes, Souvigny, Bourbon-l'Archambault). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs charolais ?",
@@ -64,7 +64,7 @@ export const MOULINS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Clermont ?",
+      q: "Comment se déroule une mission à Moulins ?",
       a: "Lyon (2h) ou Clermont-Ferrand (1h30). TER Paris gare Moulins 2h30.",
     },
   ],

@@ -130,7 +130,7 @@ export const LIEVIN_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous dans les communes voisines de Liévin ?",
-            a: "Oui, sans surcoût d'intervention : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras (15 km) et Lille (30 km), via l'A21, l'A26 et la gare SNCF de Liévin.",
+            a: "Oui : Lens, Avion (La Gaillette), Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Grenay, Loos-en-Gohelle, ainsi qu'Arras (15 km) et Lille (30 km), via l'A21, l'A26 et la gare SNCF de Liévin.",
           },
         ],
         guarantees:
@@ -236,7 +236,7 @@ export const LIEVIN_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes voisines de Liévin ?",
-      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes sans surcoût, ainsi qu'Arras (15 km) et Lille (30 km).",
+      a: "Oui : Lens, Avion, Angres, Bully-les-Mines, Aix-Noulette, Éleu-dit-Leauwette, Givenchy-en-Gohelle, Grenay, Loos-en-Gohelle sont couvertes, ainsi qu'Arras (15 km) et Lille (30 km).",
     },
     {
       q: "Vos automatisations à Liévin respectent-elles le RGPD ?",

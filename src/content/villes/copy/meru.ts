@@ -49,7 +49,7 @@ export const MERU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Méru ?",
-      a: "Oui, Axion-IA intervient à Méru et dans tout le Pays de Thelle (Bornel, Esches, Chambly). Consultants via TER Persan-Beaumont ou RN1. Beauvais à 20 min, Paris à 50 min.",
+      a: "Oui, Axion-IA intervient à Méru et dans tout le Pays de Thelle (Bornel, Esches, Chambly). Nous intervenons partout en France, sur place ou à distance. Beauvais à 20 min, Paris à 50 min.",
     },
     {
       q: "Quels tarifs pour un audit IA à Méru ?",
@@ -61,7 +61,7 @@ export const MERU_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Méru ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Méru. Déplacements sur site inclus pour les entreprises de toute la communauté de communes du Pays de Thelle.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Méru. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Méru ?",

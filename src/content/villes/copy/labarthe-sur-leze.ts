@@ -49,7 +49,7 @@ export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Labarthe-sur-Lèze ?",
-      a: "Oui, Axion-IA intervient à Labarthe-sur-Lèze et dans tout le sud de Toulouse (Muret, Auterive, Eaunes). Nos consultants se déplacent en 25 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Labarthe-sur-Lèze et dans tout le sud de Toulouse (Muret, Auterive, Eaunes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Labarthe-sur-Lèze ?",
@@ -61,7 +61,7 @@ export const LABARTHE_SUR_LEZE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Labarthe-sur-Lèze ?",
-      a: "Nos consultants se déplacent à Labarthe-sur-Lèze depuis Toulouse (25 min D820). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à Labarthe-sur-Lèze ?",

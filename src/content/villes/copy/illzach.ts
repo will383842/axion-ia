@@ -49,7 +49,7 @@ export const ILLZACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Illzach et dans les zones d'activités nord de Mulhouse ?",
-      a: "Oui, Axion-IA intervient à Illzach et dans toute m2A nord (Sausheim, Wittenheim, Rixheim, Île Napoléon). Nos consultants se déplacent depuis Strasbourg en 1h via l'A35, ou Mulhouse centre en 8 min.",
+      a: "Oui, Axion-IA intervient à Illzach et dans toute m2A nord (Sausheim, Wittenheim, Rixheim, Île Napoléon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Illzach  ?",
@@ -65,7 +65,7 @@ export const ILLZACH_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Illzach ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 1h via l'A35, ou depuis Mulhouse centre en 8 min. Illzach appartient à Mulhouse Alsace Agglomération, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Illzach appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Relecq-Kerhuon et Brest Métropole ?",
-      a: "Oui, Axion-IA intervient au Relecq-Kerhuon et toute Brest Métropole (Brest, Guipavas, Plougastel-Daoulas, Gouesnou, Guilers, Plouzané). Nos consultants sont à 5 min de Brest centre, 10 min de la gare TGV.",
+      a: "Oui, Axion-IA intervient au Relecq-Kerhuon et toute Brest Métropole (Brest, Guipavas, Plougastel-Daoulas, Gouesnou, Guilers, Plouzané). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants navals de la rade de Brest ?",
@@ -65,7 +65,7 @@ export const LE_RELECQ_KERHUON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA au Relecq-Kerhuon ?",
-      a: "Nos consultants se déplacent depuis Brest (5 min) ou par TGV Paris-Brest (3h30). Hébergement possible à Brest centre. Le Relecq-Kerhuon est idéalement situé pour des missions multi-jours Brest Métropole.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement possible à Brest centre. Le Relecq-Kerhuon est idéalement situé pour des missions multi-jours Brest Métropole.",
     },
   ],
 };

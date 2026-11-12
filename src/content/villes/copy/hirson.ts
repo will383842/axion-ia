@@ -49,7 +49,7 @@ export const HIRSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hirson ?",
-      a: "Oui, Axion-IA intervient à Hirson et dans toute la Thiérache axonaise (Vervins, La Capelle, Fourmies). Consultants via gare SNCF Hirson ou routes N2/D1043 vers Laon et Saint-Quentin.",
+      a: "Oui, Axion-IA intervient à Hirson et dans toute la Thiérache axonaise (Vervins, La Capelle, Fourmies). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants ?",
@@ -65,7 +65,7 @@ export const HIRSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hirson ?",
-      a: "Nos consultants se déplacent via gare SNCF Hirson (ligne Laon–Hirson) ou routes N2/D1043. Vervins à 30 min, Saint-Quentin à 1h, Charleville-Mézières à 1h.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vervins à 30 min, Saint-Quentin à 1h, Charleville-Mézières à 1h.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const HOMECOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Homécourt et dans le Pays Haut ?",
-      a: "Oui, Axion-IA intervient à Homécourt et sur tout le Pays Haut lorrain (Jœuf, Auboué, Briey, Jarny, Hagondange). Proximité Luxembourg à 50 min, Metz à 35 min via A4, Paris à 1h30 en TGV depuis la gare Lorraine.",
+      a: "Oui, Axion-IA intervient à Homécourt et sur tout le Pays Haut lorrain (Jœuf, Auboué, Briey, Jarny, Hagondange). Homécourt est à 50 min du Luxembourg et à 35 min de Metz par l'A4 ; la gare Lorraine TGV met Paris à 1h30. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Homécourt  ?",

@@ -9,9 +9,9 @@ export const OYONNAX_COPY: VilleCopy = {
   pitchEn:
     "Oyonnax (01), deuxième ville de l'Ain avec 22 480 habitants (Oyonnaxiens), située dans la vallée jurassienne et cœur historique de la Plastics Vallée. Tissu économique dominé par les TPE et PME de la plasturgie (héritage de la fabrique de peignes médiévale devenue capitale française du plastique), avec une concentration unique de sous-traitants injection, moulistes, ateliers d'usinage, négoce de matières premières et entreprises de décoration plastique. Axion-IA y accompagne les structures locales et celles de la communauté d'agglomération du Haut-Bugey.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Nous intervenons partout en France, sur place ou à distance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Déplacement depuis Lyon en 1h30 (A40+RN84) ou depuis Bourg-en-Bresse en 1h.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Oyonnax (01) auprès des TPE et PME de la Plastics Vallée. Nous accompagnons en priorité les ateliers d'injection plastique, les moulistes, les sous-traitants mécaniques, les négoces et les commerces du Haut-Bugey, ainsi que les PME industrielles en croissance. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code), conformité RGPD by design. Nous intervenons partout en France, sur place ou à distance.",
   seoHook: "plasturgie & sous-traitance industrielle",
   ecosystemFr:
     "L'écosystème d'Oyonnax est unique en France : surnommée la « ville du plastique » et historiquement « cité du peigne », elle a évolué du travail du bois et de la corne (Moyen-Âge) vers l'injection plastique au XXe siècle. La vallée concentre aujourd'hui plus de 600 entreprises de la filière, majoritairement des TPE et PME familiales (moulistes, ateliers d'injection, finition, décoration, négoce matières), structurées autour du pôle de compétitivité Plastipolis et du lycée Arbez-Carme. La ville fut aussi la première en France à recevoir un transport d'électricité à longue distance (1889), témoin d'une culture industrielle innovante. Tissu complété par le commerce de centre-ville, l'artisanat BTP et les professions de santé.",
@@ -71,12 +71,12 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime depuis le cœur du Haut-Bugey — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
           },
           {
             step: "Livraison + autonomie",
@@ -157,12 +157,12 @@ export const OYONNAX_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio depuis Oyonnax, code versionné et lisible.",
+              "Greffe IA sur l'existant ou build IA-native : configurateur produit, boutique e-commerce, portail B2B, chatbot RAG multilingue, recherche sémantique sur documents techniques, agents d'automatisation devis et SAV. Démos hebdomadaires en visio, code versionné et lisible.",
           },
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime depuis le cœur du Haut-Bugey — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, accessibilité contrôlée, mise en production sans downtime — sans interrompre votre activité commerciale, vos prises de commande ni votre référencement existant.",
           },
           {
             step: "Livraison + autonomie",
@@ -227,7 +227,7 @@ export const OYONNAX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oyonnax ?",
-      a: "Oui, Axion-IA intervient à Oyonnax et dans toute la Plastics Vallée : Arbent, Bellignat, Dortan, Géovreisset, Samognat, ainsi que la communauté d'agglomération Haut-Bugey. Déplacement en 1h30 depuis Lyon ou 1h depuis Bourg-en-Bresse.",
+      a: "Oui, Axion-IA intervient à Oyonnax et dans toute la Plastics Vallée : Arbent, Bellignat, Dortan, Géovreisset, Samognat, ainsi que la communauté d'agglomération Haut-Bugey. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont les tarifs pour un audit IA à Oyonnax ?",

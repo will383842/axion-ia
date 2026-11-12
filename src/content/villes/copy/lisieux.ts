@@ -49,7 +49,7 @@ export const LISIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lisieux et dans le Pays d'Auge ?",
-      a: "Oui, Axion-IA intervient à Lisieux et tout le Pays d'Auge (Pont-l'Évêque, Livarot, Orbec, Deauville-Trouville). Nos consultants accèdent facilement via la gare de Lisieux (Intercités Paris 1h40 direct) ou l'A13.",
+      a: "Oui, Axion-IA intervient à Lisieux et tout le Pays d'Auge (Pont-l'Évêque, Livarot, Orbec, Deauville-Trouville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les producteurs agroalimentaires normands ?",
@@ -65,7 +65,7 @@ export const LISIEUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Lisieux ?",
-      a: "Nos consultants accèdent à Lisieux par Intercités (1h40 Paris Saint-Lazare) ou voiture (A13, 35 min Caen). Mission sur site dans vos locaux, fromagerie, hôtel ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, fromagerie, hôtel ou exploitation.",
     },
   ],
 };

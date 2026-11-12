@@ -49,7 +49,7 @@ export const ORAISON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Oraison et Moyenne Durance ?",
-      a: "Oui, Axion-IA intervient à Oraison et dans toute la Moyenne Durance (Manosque, Volx, Les Mées, Château-Arnoux). Nos consultants viennent d'Aix-en-Provence (1h15 A51) ou Digne-les-Bains (30 min).",
+      a: "Oui, Axion-IA intervient à Oraison et dans toute la Moyenne Durance (Manosque, Volx, Les Mées, Château-Arnoux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs de la vallée de la Durance ?",
@@ -65,7 +65,7 @@ export const ORAISON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Oraison ?",
-      a: "Nos consultants se déplacent sur site à Oraison depuis Aix-en-Provence (1h15 A51) ou Digne-les-Bains (30 min). Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
     },
   ],
 };

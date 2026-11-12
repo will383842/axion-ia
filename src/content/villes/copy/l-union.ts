@@ -49,7 +49,7 @@ export const L_UNION_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Union ?",
-      a: "Oui, Axion-IA intervient à L'Union et dans tout le nord-est de Toulouse (Balma, Saint-Jean, Castelginest). Nos consultants se déplacent en 12 min depuis Toulouse centre.",
+      a: "Oui, Axion-IA intervient à L'Union et dans tout le nord-est de Toulouse (Balma, Saint-Jean, Castelginest). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à L'Union ?",
@@ -61,7 +61,7 @@ export const L_UNION_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à L'Union ?",
-      a: "Nos consultants se déplacent à L'Union depuis Toulouse (12 min D112). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "Proposez-vous du coaching individuel à L'Union ?",

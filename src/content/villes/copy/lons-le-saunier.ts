@@ -49,7 +49,7 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lons-le-Saunier et dans le Jura ?",
-      a: "Oui, Axion-IA intervient à Lons-le-Saunier et dans tout le département du Jura (Champagnole, Poligny, Arbois, Saint-Claude, Dole). Couverture également Besançon à 1h10, Bourg-en-Bresse à 1h et Lyon à 1h40.",
+      a: "Oui, Axion-IA intervient à Lons-le-Saunier et dans tout le département du Jura (Champagnole, Poligny, Arbois, Saint-Claude, Dole). Couverture également Besançon, Bourg-en-Bresse et Lyon.",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires et fromagères du Jura ?",
@@ -65,7 +65,7 @@ export const LONS_LE_SAUNIER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lons-le-Saunier ?",
-      a: "Nos consultants se déplacent via la gare TER de Lons-le-Saunier (ligne Bourg-en-Bresse-Besançon) ou par l'A39 depuis Lyon (1h40) ou Dijon (1h20).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

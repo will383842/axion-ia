@@ -49,7 +49,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Malzéville et au nord de Nancy ?",
-      a: "Oui, Axion-IA intervient à Malzéville et tout le nord de la Métropole du Grand Nancy (Saint-Max, Dommartemont, Maxéville, Eulmont, Lay-Saint-Christophe). Consultants depuis Nancy centre (10 min).",
+      a: "Oui, Axion-IA intervient à Malzéville et tout le nord de la Métropole du Grand Nancy (Saint-Max, Dommartemont, Maxéville, Eulmont, Lay-Saint-Christophe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services et commerçants de Malzéville ?",
@@ -65,7 +65,7 @@ export const MALZEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Malzéville ?",
-      a: "Nos consultants interviennent depuis Nancy centre (10 min). Missions sur site dans vos bureaux, commerces ou cabinets libéraux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos bureaux, commerces ou cabinets libéraux.",
     },
   ],
 };

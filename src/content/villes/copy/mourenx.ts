@@ -49,7 +49,7 @@ export const MOURENX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mourenx et dans le bassin de Lacq ?",
-      a: "Oui, Axion-IA intervient à Mourenx et dans tout le bassin de Lacq (Artix, Lagor, Os-Marsillon). Nos consultants accèdent via la gare de Pau (25 min voiture) ou l'A64 (échangeur Artix).",
+      a: "Oui, Axion-IA intervient à Mourenx et dans tout le bassin de Lacq (Artix, Lagor, Os-Marsillon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les industriels du bassin de Lacq ?",
@@ -65,7 +65,7 @@ export const MOURENX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Mourenx ?",
-      a: "Nos consultants accèdent à Mourenx via la gare de Pau (TGV 4h20 Paris, 25 min voiture) ou l'A64. Mission sur site dans vos usines, ateliers ou bureaux du bassin de Lacq.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos usines, ateliers ou bureaux du bassin de Lacq.",
     },
   ],
 };

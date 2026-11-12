@@ -49,7 +49,7 @@ export const HOUDAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Houdain et dans le bassin minier bethunois ?",
-      a: "Oui, Axion-IA intervient a Houdain et dans tout le bassin minier (Bethune, Bruay-la-Buissiere, Divion, Barlin). Consultants depuis Lille (1h TER) ou Paris (TGV via Lens 1h50).",
+      a: "Oui, Axion-IA intervient a Houdain et dans tout le bassin minier (Bethune, Bruay-la-Buissiere, Divion, Barlin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE artisanales de Houdain ?",

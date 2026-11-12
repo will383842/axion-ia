@@ -49,7 +49,7 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Isle-d'Espagnac ?",
-      a: "Oui, Axion-IA intervient à L'Isle-d'Espagnac et toute l'agglomération GrandAngoulême. Nos consultants accèdent facilement via la gare TGV d'Angoulême à 10 min (Paris 2h05 direct).",
+      a: "Oui, Axion-IA intervient à L'Isle-d'Espagnac et toute l'agglomération GrandAngoulême. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les zones commerciales de L'Isle-d'Espagnac ?",
@@ -65,7 +65,7 @@ export const L_ISLE_D_ESPAGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à L'Isle-d'Espagnac ?",
-      a: "Nos consultants accèdent à L'Isle-d'Espagnac via la gare TGV d'Angoulême (10 min, Paris 2h05 direct). Mission sur site dans vos locaux commerciaux, bureau ou entrepôt.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux commerciaux, bureau ou entrepôt.",
     },
   ],
 };

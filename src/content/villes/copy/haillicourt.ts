@@ -49,7 +49,7 @@ export const HAILLICOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Haillicourt et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient a Haillicourt et dans tout le bassin minier (Bruay-la-Buissiere, Bethune, Houdain, Divion). Consultants depuis Lille (1h TER) ou Paris (TGV via Lens 1h45).",
+      a: "Oui, Axion-IA intervient a Haillicourt et dans tout le bassin minier (Bruay-la-Buissiere, Bethune, Houdain, Divion). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les services a la personne a Haillicourt ?",

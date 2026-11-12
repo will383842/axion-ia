@@ -49,7 +49,7 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moncoutant-sur-Sèvre et Bocage bressuirais ?",
-      a: "Oui, Axion-IA intervient à Moncoutant-sur-Sèvre et tout le Bocage bressuirais (Bressuire à 20 min, Cerizay, Mauléon, Le Pin). Nos consultants viennent depuis Nantes (1h30) ou Poitiers (1h30).",
+      a: "Oui, Axion-IA intervient à Moncoutant-sur-Sèvre et tout le Bocage bressuirais (Bressuire à 20 min, Cerizay, Mauléon, Le Pin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Bocage bressuirais ?",
@@ -64,8 +64,8 @@ export const MONCOUTANT_SUR_SEVRE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Moncoutant-sur-Sèvre, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, agents IA prise de RDV, classification photos chantiers.",
     },
     {
-      q: "Comment se déroule une mission dans le Bocage depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (Nantes 2h15 puis 1h30 route, ou Poitiers 1h40 puis 1h30 route). Pour les multi-jours, hébergement local possible (Bressuire).",
+      q: "Comment se déroule une mission à Moncoutant-sur-Sèvre ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (Bressuire).",
     },
   ],
 };

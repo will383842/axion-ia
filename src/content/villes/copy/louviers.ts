@@ -49,7 +49,7 @@ export const LOUVIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Louviers et dans l'agglomération Seine-Eure ?",
-      a: "Oui, Axion-IA intervient à Louviers et dans toute l'agglomération Seine-Eure (Val-de-Reuil, Pont-de-l'Arche, Acquigny, Gaillon). Nos consultants se déplacent depuis Rouen (30 min) ou Paris (1h30 A13).",
+      a: "Oui, Axion-IA intervient à Louviers et dans toute l'agglomération Seine-Eure (Val-de-Reuil, Pont-de-l'Arche, Acquigny, Gaillon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et agroalimentaires de l'Eure ?",
@@ -64,8 +64,8 @@ export const LOUVIERS_COPY: VilleCopy = {
       a: "Pour les TPE artisans à Louviers, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, planning chantier, classification photos, gestion facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (30 min A13) ou Paris (1h30 A13). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Louviers ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

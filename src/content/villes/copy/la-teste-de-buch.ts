@@ -226,7 +226,7 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Teste-de-Buch et bassin d'Arcachon ?",
-      a: "Oui, Axion-IA intervient à La Teste-de-Buch et tout le bassin d'Arcachon (Arcachon, Gujan-Mestras, Le Teich, Andernos, Cap Ferret). Nos consultants viennent de Paris (TGV Bordeaux 2h + 35 min TER) ou Bordeaux centre.",
+      a: "Oui, Axion-IA intervient à La Teste-de-Buch et tout le bassin d'Arcachon (Arcachon, Gujan-Mestras, Le Teich, Andernos, Cap Ferret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les ostréiculteurs et coopératives maritimes ?",
@@ -241,8 +241,8 @@ export const LA_TESTE_DE_BUCH_COPY: VilleCopy = {
       a: "Pour les artisans à La Teste (BTP, services aux particuliers, métiers de bouche), nous proposons audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation IA pratique, coaching 1-to-1 pour gérants. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
-      q: "Comment se passe une mission depuis Paris jusqu'au bassin ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux + 35 min TER). Pour les missions multi-jours, hébergement local possible (hôtels bassin d'Arcachon).",
+      q: "Comment se déroule une mission à La Teste-de-Buch ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (hôtels bassin d'Arcachon).",
     },
   ],
 };

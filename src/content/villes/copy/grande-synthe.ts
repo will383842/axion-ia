@@ -72,7 +72,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native, cadré depuis le quartier de l'Albeck : extranet logistique, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique de catalogue, agents d'automatisation des relances et du reporting. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans effet tunnel.",
+              "Greffe IA sur l'existant ou build IA-native pour le quartier de l'Albeck et toute la commune : extranet logistique, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique de catalogue, agents d'automatisation des relances et du reporting. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans effet tunnel.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native, cadré depuis le quartier de l'Albeck : extranet logistique, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique de catalogue, agents d'automatisation des relances et du reporting. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans effet tunnel.",
+              "Greffe IA sur l'existant ou build IA-native pour le quartier de l'Albeck et toute la commune : extranet logistique, boutique e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique de catalogue, agents d'automatisation des relances et du reporting. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau, sans effet tunnel.",
           },
           {
             step: "Recette + mise en ligne",
@@ -232,7 +232,7 @@ export const GRANDE_SYNTHE_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai pouvez-vous intervenir à Grande-Synthe ?",
-      a: "Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation. Accès depuis Paris par TGV (1 h 30 jusqu'à Dunkerque) puis 6 km en voiture.",
+      a: "Notre équipe se déplace à Grande-Synthe dans un délai de 5 jours ouvrés après validation.",
     },
     {
       q: "Couvrez-vous les communes proches de Grande-Synthe ?",

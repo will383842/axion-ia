@@ -49,7 +49,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moulins-lès-Metz ?",
-      a: "Oui, Axion-IA intervient à Moulins-lès-Metz et dans toute l''agglomération Metz Métropole (Metz, Montigny-lès-Metz, Longeville-lès-Metz, Le Ban-Saint-Martin, Scy-Chazelles). Consultants via gare TGV Metz-Ville ou autoroutes A31/A4.",
+      a: "Oui, Axion-IA intervient à Moulins-lès-Metz et dans toute l''agglomération Metz Métropole (Metz, Montigny-lès-Metz, Longeville-lès-Metz, Le Ban-Saint-Martin, Scy-Chazelles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales et le tertiaire ?",
@@ -65,7 +65,7 @@ export const MOULINS_LES_METZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moulins-lès-Metz ?",
-      a: "Nos consultants se déplacent via gare TGV Metz-Ville (15 min), autoroute A31 ou A4. Centre Metz à 10 min, Thionville à 35 min, Luxembourg à 55 min, Nancy à 55 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Centre Metz à 10 min, Thionville à 35 min, Luxembourg à 55 min, Nancy à 55 min.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jaunay-Marigny et technopole Futuroscope ?",
-      a: "Oui, Axion-IA intervient à Jaunay-Marigny et toute la zone Futuroscope / Grand Poitiers nord (Chasseneuil-du-Poitou, Buxerolles, Poitiers). TGV Paris direct gare Futuroscope (1h30). Nos consultants couvrent tout le pôle.",
+      a: "Oui, Axion-IA intervient à Jaunay-Marigny et toute la zone Futuroscope / Grand Poitiers nord (Chasseneuil-du-Poitou, Buxerolles, Poitiers). TGV Paris direct gare Futuroscope (1h30). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tech de la technopole Futuroscope ?",
@@ -64,8 +64,8 @@ export const JAUNAY_MARIGNY_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Jaunay-Marigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, marketing digital.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Futuroscope (1h30, sortie au pied de la technopole). Pour les multi-jours, hébergement hôtels du Futuroscope.",
+      q: "Comment se déroule une mission à Jaunay-Marigny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement hôtels du Futuroscope.",
     },
   ],
 };

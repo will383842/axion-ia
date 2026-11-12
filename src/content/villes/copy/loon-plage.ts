@@ -49,7 +49,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Loon-Plage et dans le Dunkerquois ?",
-      a: "Oui, Axion-IA intervient à Loon-Plage et dans tout le Dunkerquois (Dunkerque, Grande-Synthe, Gravelines, Coudekerque-Branche). Nos consultants se déplacent depuis Lille en 1h10 ou Dunkerque en 15 min.",
+      a: "Oui, Axion-IA intervient à Loon-Plage et dans tout le Dunkerquois (Dunkerque, Grande-Synthe, Gravelines, Coudekerque-Branche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Loon-Plage  ?",
@@ -65,7 +65,7 @@ export const LOON_PLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Loon-Plage ?",
-      a: "Nos consultants interviennent depuis Dunkerque (15 min) ou Lille (1h10 via A25). Pour les missions multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

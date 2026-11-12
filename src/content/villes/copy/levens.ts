@@ -49,7 +49,7 @@ export const LEVENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Levens et moyen-pays niçois ?",
-      a: "Oui, Axion-IA intervient à Levens et dans tout le moyen-pays niçois (Tourrette-Levens, Saint-Martin-du-Var, Aspremont, Castagniers). Couverture vers la Vésubie et accès depuis Nice centre (30 min M19).",
+      a: "Oui, Axion-IA intervient à Levens et dans tout le moyen-pays niçois (Tourrette-Levens, Saint-Martin-du-Var, Aspremont, Castagniers). Couverture vers la Vésubie.",
     },
     {
       q: "Travaillez-vous avec les gîtes et acteurs du tourisme nature ?",
@@ -64,8 +64,8 @@ export const LEVENS_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales de Levens, nous proposons : agents conversationnels client, automatisation secrétariat, gestion stocks, CRM augmenté, classification documents. Coaching 1-to-1 ou audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission à Levens depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (30 min M19 via Plan-du-Var). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Levens ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const NOISY_LE_ROI_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Noisy-le-Roi ?",
-      a: "Nos consultants interviennent à Noisy-le-Roi depuis Paris ou Versailles (10-35 min). Intervention dans vos locaux ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux ou en visio.",
     },
   ],
 };

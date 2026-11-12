@@ -49,7 +49,7 @@ export const LIANCOURT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Liancourt et dans le sud de l'Oise ?",
-      a: "Oui, Axion-IA intervient à Liancourt et dans tout le sud de l'Oise (Clermont, Creil, Pont-Sainte-Maxence, Rantigny). Consultants accessibles via gare de Liancourt-Rantigny (TER Paris-Nord, 50 min).",
+      a: "Oui, Axion-IA intervient à Liancourt et dans tout le sud de l'Oise (Clermont, Creil, Pont-Sainte-Maxence, Rantigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Liancourt  ?",

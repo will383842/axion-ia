@@ -49,7 +49,7 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouans-Sartoux et bassin Grasse-Cannes ?",
-      a: "Oui, Axion-IA intervient à Mouans-Sartoux et sur tout le bassin Grasse-Cannes (Mougins, Pégomas, La Roquette-sur-Siagne, Peymeinade). Couverture arrière-pays azuréen et accès rapide depuis Nice (35 min A8) ou Cannes (15 min).",
+      a: "Oui, Axion-IA intervient à Mouans-Sartoux et sur tout le bassin Grasse-Cannes (Mougins, Pégomas, La Roquette-sur-Siagne, Peymeinade). Couverture arrière-pays azuréen.",
     },
     {
       q: "Travaillez-vous avec les TPE agriculture bio et circuits courts ?",
@@ -64,8 +64,8 @@ export const MOUANS_SARTOUX_COPY: VilleCopy = {
       a: "Pour les acteurs culturels de Mouans-Sartoux (Festival du livre, associations, éditeurs), nous proposons : agents conversationnels visiteurs, automatisation billetterie, gestion bénévoles, classification archives, promotion événementielle IA.",
     },
     {
-      q: "Comment se déroule une mission depuis Cannes ou Nice ?",
-      a: "Nos consultants interviennent depuis Cannes (15 min), Nice (35 min A8) ou Grasse (10 min). Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Mouans-Sartoux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Mouans-Sartoux sur ligne TER Cannes-Grasse. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

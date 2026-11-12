@@ -49,7 +49,7 @@ export const LABRUGUIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Labruguière ?",
-      a: "Oui, Axion-IA intervient à Labruguière et dans toute l'agglomération de Castres (Castres, Mazamet, Aussillon, Saïx). Nos consultants couvrent l'ensemble du bassin castrais sud.",
+      a: "Oui, Axion-IA intervient à Labruguière et dans toute l'agglomération de Castres (Castres, Mazamet, Aussillon, Saïx). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un artisan à Labruguière ?",

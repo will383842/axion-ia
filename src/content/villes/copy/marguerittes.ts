@@ -49,7 +49,7 @@ export const MARGUERITTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marguerittes et dans l'agglo nîmoise ?",
-      a: "Oui, Axion-IA intervient à Marguerittes et dans toute l'agglomération nîmoise (Nîmes, Milhaud, Bouillargues, Manduel, Garons). Nos consultants sont à 10 min de Nîmes centre.",
+      a: "Oui, Axion-IA intervient à Marguerittes et dans toute l'agglomération nîmoise (Nîmes, Milhaud, Bouillargues, Manduel, Garons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Marguerittes  : quel budget prévoir ?",

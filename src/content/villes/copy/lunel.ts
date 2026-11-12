@@ -11,9 +11,9 @@ export const LUNEL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne à Lunel, sous-préfecture de l'Hérault entre Montpellier et Nîmes, les TPE et PME du Pays de Lunel. Notre cabinet national se déplace pour auditer, former et déployer des outils IA sur mesure auprès des commerces, des hypermarchés, des artisans du bâtiment, des exploitants agricoles et des sociétés de transport. Les sept zones d'activité lunelloises et leurs 450 entreprises constituent notre cœur de cible. Quelques ETI font également appel à nos services en complément.",
   directAnswerFr:
-    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   directAnswerEn:
-    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site depuis notre base nationale. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
+    "Axion-IA intervient à Lunel auprès des TPE et PME du commerce (30,3 % des établissements), de la construction (18,2 %), des services spécialisés (15 %), des transports terrestres et de l'agriculture résiduelle. Nous proposons audits IA, formations, implémentations en code source propriétaire et sites web augmentés. Williams se déplace sur site. Quelques ETI lunelloises sollicitent également nos services. Tarifs publics dès {{price:intervention-4h|flat}} pour une intervention essentielle.",
   seoHook: "commerce, construction & agriculture",
   ecosystemFr:
     "Lunel concentre son économie autour du commerce-transport-hébergement (30,3 % des établissements), de la construction (18,2 %) et des services spécialisés (15 %). Sept zones d'activité commerciales et artisanales s'étendent sur 53 hectares et accueillent environ 450 entreprises. Les hypermarchés Arpel et Preal dominent la distribution locale, tandis que LRM exploite les ressources en granulats et argile. L'agriculture, en repli (582 ha en 2020), reste un employeur de niche.",
@@ -73,7 +73,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio depuis Lunel ou à distance.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio ou à distance.",
           },
           {
             step: "Recette + mise en ligne",
@@ -159,7 +159,7 @@ export const LUNEL_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio depuis Lunel ou à distance.",
+              "Greffe IA sur l'existant ou build IA-native : boutique e-commerce multi-CMS, click-and-collect, chatbot RAG multilingue, recherche sémantique, agents d'automatisation des demandes. Branchement éventuel sur CRM/ERP et outils de gestion. Démos hebdomadaires en visio ou à distance.",
           },
           {
             step: "Recette + mise en ligne",

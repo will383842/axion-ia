@@ -49,7 +49,7 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Puy-en-Velay et en Haute-Loire ?",
-      a: "Oui, Axion-IA intervient au Puy-en-Velay et dans toute la Haute-Loire (Brioude, Yssingeaux, Monistrol-sur-Loire). Consultants depuis Lyon (2h) ou Saint-Étienne (1h15).",
+      a: "Oui, Axion-IA intervient au Puy-en-Velay et dans toute la Haute-Loire (Brioude, Yssingeaux, Monistrol-sur-Loire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme pèlerin Compostelle ?",
@@ -64,7 +64,7 @@ export const LE_PUY_EN_VELAY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
+      q: "Comment se déroule une mission au Puy-en-Velay ?",
       a: "Lyon (2h) ou Saint-Étienne (1h15 TER direct).",
     },
   ],
