@@ -35,6 +35,7 @@ import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
+import { adressePageSuivre, TEXTE_SUIVRE_PAGE } from "@/server/guides-reseau/page-suivre";
 import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 interface Payload {
@@ -56,6 +57,8 @@ interface Payload {
    */
   pageGuide?: boolean;
   oppositionToken?: string;
+  /** Réseau d'origine (page guide) : choisit l'adresse du lien « Suivre la page Axion IA ». */
+  reseauOrigine?: string;
   reprise?: boolean;
 }
 
@@ -161,10 +164,18 @@ export function GuideIaEnvoiEmail({
       ? {
           downloadToken: p0.downloadToken,
           reseau: true,
-          ...(desinscriptionPage ? { pageGuide: true, oppositionToken: p0.oppositionToken! } : {}),
+          ...(desinscriptionPage
+            ? {
+                pageGuide: true,
+                oppositionToken: p0.oppositionToken!,
+                ...(p0.reseauOrigine ? { reseauOrigine: p0.reseauOrigine } : {}),
+              }
+            : {}),
         }
       : p0;
   const t = COPY[locale];
+  // Simple lien du corps (jamais une condition du guide) ; aucune variable posée → aucun bloc.
+  const adresseSuivre = desinscriptionPage ? adressePageSuivre(p.reseauOrigine) : null;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
@@ -237,6 +248,19 @@ export function GuideIaEnvoiEmail({
               style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
             >
               {t.pageDesinscription}
+            </Link>
+          </Text>
+        </Section>
+      ) : null}
+      {adresseSuivre ? (
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={emailStyles.paragraphStyle}>
+            <Link
+              href={adresseSuivre}
+              rel="noopener noreferrer"
+              style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+            >
+              {TEXTE_SUIVRE_PAGE}
             </Link>
           </Text>
         </Section>

@@ -24,6 +24,7 @@ import {
 } from "@/server/guides-reseau/lien-page-guide";
 import { GUIDES_RESEAU_CONNUS, PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
 import { ENTETES_PAGE_GUIDE, echapper, pageStatique } from "./html-statique";
+import { boutonSuivrePageHtml } from "@/server/guides-reseau/page-suivre";
 import { TEXTES_PAGE_GUIDE as T, URL_CONFIDENTIALITE, URL_FORMULAIRE_GUIDE } from "./textes";
 
 export const runtime = "nodejs";
@@ -84,5 +85,8 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 <p><button type="submit" style="${BOUTON}">${echapper(T.envoyer)}</button></p>
 </form>
 <p>${echapper(T.sansCaseDebut)} <a href="${echapper(URL_FORMULAIRE_GUIDE)}">${echapper(T.sansCaseLien)}</a>.</p>`;
-  return pageStatique(T.titre, corps, 200);
+  // « Suivre la page » : simple lien, jamais une condition pour recevoir le guide (aucun bouton sans variable).
+  const verifie = verifierJeton(jeton as string, lireSecretLien() as string, Date.now());
+  const suivre = verifie.ok ? boutonSuivrePageHtml(verifie.donnees.reseau) : "";
+  return pageStatique(T.titre, corps + suivre, 200);
 }

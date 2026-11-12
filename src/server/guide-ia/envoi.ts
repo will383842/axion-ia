@@ -65,7 +65,7 @@ export interface OptionsEnvoiGuide {
    * la politique de confidentialité, aucune lettre) AVEC un lien de désinscription — le jeton
    * d'opposition de l'adresse. N'a d'effet que combiné à `reseau: true`.
    */
-  readonly pageGuide?: { readonly oppositionToken: string };
+  readonly pageGuide?: { readonly oppositionToken: string; readonly reseauOrigine?: string };
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -117,6 +117,9 @@ export async function mettreEnFileGuide(
     if (options.pageGuide) {
       payload["pageGuide"] = true;
       payload["oppositionToken"] = options.pageGuide.oppositionToken;
+      // Réseau d'origine : sert au seul lien « Suivre la page » (aucune donnée personnelle).
+      if (options.pageGuide.reseauOrigine)
+        payload["reseauOrigine"] = options.pageGuide.reseauOrigine;
     }
   } else {
     if (options.confirmToken) payload["confirmToken"] = options.confirmToken;

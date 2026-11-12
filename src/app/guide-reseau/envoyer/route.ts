@@ -21,7 +21,12 @@ import {
   pageGuideReseauActive,
 } from "@/server/guides-reseau/config";
 import { lireSecretLien } from "@/server/guides-reseau/secret-lien";
-import { normaliserJetonRecu, TAILLE_MAX_JETON_RECU } from "@/server/guides-reseau/lien-page-guide";
+import {
+  normaliserJetonRecu,
+  TAILLE_MAX_JETON_RECU,
+  verifierJeton,
+} from "@/server/guides-reseau/lien-page-guide";
+import { reseauSuivable } from "@/server/guides-reseau/page-suivre";
 import { confirmerPageGuide } from "@/server/guides-reseau/page-confirmation";
 import { CHEMIN_PAGE_GUIDE } from "@/content/guides-reseau";
 import { publicUrl } from "@/lib/public-url";
@@ -159,7 +164,12 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     });
   }
 
-  if (resultat.ok) return vers(`${CHEMIN_PAGE_GUIDE}/merci`);
+  if (resultat.ok) {
+    // Le réseau d'origine (valeur du jeton, jamais une donnée saisie) sert au seul bouton « Suivre la page ».
+    const v = verifierJeton(jeton, secret, Date.now());
+    const r = v.ok ? reseauSuivable(v.donnees.reseau) : null;
+    return vers(r ? `${CHEMIN_PAGE_GUIDE}/merci?r=${r}` : `${CHEMIN_PAGE_GUIDE}/merci`);
+  }
   if (resultat.erreur === "lien")
     return vers(`${CHEMIN_PAGE_GUIDE}?j=${encodeURIComponent(jeton)}`);
   if (resultat.statut === 429) {
