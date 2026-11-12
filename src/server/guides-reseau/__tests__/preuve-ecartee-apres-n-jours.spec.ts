@@ -309,8 +309,18 @@ describe("réparation du registre (30 derniers jours)", () => {
     bd.base.demandes.push({ id: "d2", email: "autre@example.test" });
     // Le registre ne contient que les lignes « guide » (la ligne infos a échoué sans bloquer).
     bd.base.registre.push(
-      { personKey: `h:${ADRESSE}`, formRef: FORM_REF_PAGE_GUIDE, action: "consent_confirme", occurredAt: clic },
-      { personKey: "h:autre@example.test", formRef: FORM_REF_PAGE_GUIDE, action: "consent_confirme", occurredAt: clic },
+      {
+        personKey: `h:${ADRESSE}`,
+        formRef: FORM_REF_PAGE_GUIDE,
+        action: "consent_confirme",
+        occurredAt: clic,
+      },
+      {
+        personKey: "h:autre@example.test",
+        formRef: FORM_REF_PAGE_GUIDE,
+        action: "consent_confirme",
+        occurredAt: clic,
+      },
     );
     await reparerRegistrePreuves(MAINTENANT);
     await reparerRegistrePreuves(MAINTENANT);
