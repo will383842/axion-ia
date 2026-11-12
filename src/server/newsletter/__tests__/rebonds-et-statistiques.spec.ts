@@ -105,6 +105,11 @@ describe("rebond sur l'abonné", () => {
 });
 
 describe("opposition venue du CRM", () => {
+  // STOP-T4-SITE : l'optout balaie aussi les demandes de guide (aucune dans ces cas).
+  beforeEach(() => {
+    d.guideFindMany.mockResolvedValue([]);
+  });
+
   it("🔴 écrit l'`optout` au registre de preuve, sous la référence de l'accord", async () => {
     process.env.SITE_SYNC_HMAC_SECRET = "secret-de-test";
     process.env.CRM_SYNC_ENABLED = "true";

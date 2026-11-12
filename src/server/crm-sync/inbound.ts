@@ -45,6 +45,11 @@ import { prisma } from "@/lib/prisma";
 import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 // Module PUR — surtout pas `desabonner.ts`, qui émet vers le CRM (anti-boucle).
 import { VERSION_LETTRE_HISTORIQUE } from "@/server/newsletter/versions";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import {
+  MERCI_STATUT_ECARTE,
+  MERCI_STATUTS_ECARTES_LUS,
+} from "@/server/guides-reseau/merci-statut";
 import { alertCrmSync } from "./alerts";
 
 import { crmSyncSecret } from "./config";
@@ -252,13 +257,61 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
   // opt-in venu du CRM ne ressuscite jamais une désinscription faite ici.
   if (payload.event_type === "consent_optin") return "ignored";
 
-  // Le vivier candidats n'a pas d'équivalent « abonné » côté site : rien à
-  // répercuter aujourd'hui. L'événement est conservé pour la preuve.
-  // `lettre` (lot L4-C du CRM) désabonne comme `business`.
-  if (payload.scope !== "business" && payload.scope !== "lettre") return "ignored";
+  // 🔴 D-STOP-2 (« Oui, arrêter tout ») : un stop vaut PARTOUT, vivier compris. Il arrête la
+  // lettre (portées business/lettre) ET le guide réseau / les messages privés (toutes portées).
+  // Si une étape lève, l'erreur remonte : le CRM retente, chaque étape est rejouable.
+  const lettre =
+    payload.scope === "business" || payload.scope === "lettre"
+      ? await desabonnerLettre(payload.email_hash)
+      : false;
+  const guide = await arreterGuideReseau(payload.email_hash);
+  return lettre || guide ? "applied" : "no_match";
+}
 
-  const abonne = await findSubscriberByHash(payload.email_hash);
-  if (!abonne) return "no_match";
+/**
+ * Arrête le guide réseau pour l'adresse dont on reçoit le hash : balayage borné des demandes de
+ * guide, puis, pour chaque adresse trouvée, une opposition locale et la mise à l'écart des
+ * contacts (jamais de suppression).
+ *
+ * Anti-boucle : l'opposition est écrite DIRECTEMENT, avec `crmEnAttenteDepuis = null` — le CRM
+ * en est la source, il ne doit jamais la recevoir en retour. Aucun `sync*ToCrm`, aucun appel à
+ * `enregistrerOppositionPourAdresse`. Aucune adresse dans les journaux.
+ */
+async function arreterGuideReseau(emailHash: string): Promise<boolean> {
+  const demandes = await prisma.guideRequest.findMany({
+    select: { email: true },
+    // Ordre STABLE : le sous-ensemble tronqué au plafond doit être déterministe.
+    orderBy: { id: "asc" },
+    take: MAX_SCAN_SUBSCRIBERS,
+  });
+  const cible = emailHash.toLowerCase();
+  const adresses = new Set<string>();
+  for (const d of demandes) {
+    if (sha256Email(d.email) === cible) adresses.add(d.email);
+  }
+  let trouve = false;
+  for (const adresse of adresses) {
+    const cle = hashEmailForLookup(adresse);
+    if (!cle) continue;
+    trouve = true;
+    // L'opposition D'ABORD, l'écart ENSUITE : si l'écart échoue, le rejeu repasse ici.
+    await prisma.emailOpposition.upsert({
+      where: { emailHash: cle },
+      create: { emailHash: cle, source: "crm-optout", crmEnAttenteDepuis: null },
+      update: {},
+    });
+    await prisma.contactGuideReseau.updateMany({
+      where: { emailKey: cle, merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] } },
+      data: { merciStatut: MERCI_STATUT_ECARTE },
+    });
+  }
+  return trouve;
+}
+
+/** Effet historique sur la lettre : vrai si un abonné a été désabonné. */
+async function desabonnerLettre(emailHash: string): Promise<boolean> {
+  const abonne = await findSubscriberByHash(emailHash);
+  if (!abonne) return false;
 
   const maintenant = new Date();
 
@@ -295,7 +348,7 @@ async function applyEffect(payload: CrmInboundPayload): Promise<CrmInboundOutcom
     data: { status: "unsubscribed", unsubscribedAt: maintenant },
   });
 
-  return "applied";
+  return true;
 }
 
 /**
