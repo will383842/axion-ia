@@ -33,6 +33,8 @@ vi.mock("@/lib/prisma", () => ({
       groupBy: (...a: unknown[]) => d.subGroupBy(...a),
       count: (...a: unknown[]) => d.subCount(...a),
     },
+    // L'optout `business` pose aussi l'opposition d'adresse (écrite directement, sans CRM).
+    emailOpposition: { upsert: vi.fn(async () => ({})) },
     emailOutbox: { findMany: (...a: unknown[]) => d.outboxFindMany(...a) },
     emailLog: { findMany: (...a: unknown[]) => d.logFindMany(...a) },
     // Portée business : l'abonné connu reçoit aussi une opposition d'adresse locale.
