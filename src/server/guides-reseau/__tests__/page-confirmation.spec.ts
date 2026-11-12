@@ -38,6 +38,8 @@ const bd = vi.hoisted(() => ({
   conflitDemande: { restant: 0, gagnante: false },
   /** Lectures `guideRequest.findUnique` faites DANS une transaction. */
   lecturesDansTransaction: 0,
+  /** Ordre des verrous DANS la transaction : écriture de la demande, puis verrou `origines:`. */
+  ordreVerrous: [] as string[],
   /** Suites inscrites dans `after()` (next/server), exécutées par `confirmerPageGuide` du test. */
   apres: [] as (() => unknown)[],
   /** Pannes simulées DANS la transaction (après l'écriture du contact et de la demande). */
@@ -58,7 +60,10 @@ type Trace = { contacts: Ligne[]; demandes: Ligne[]; origines: Ligne[]; preuves:
 function client(trace?: Trace) {
   const dansTransaction = trace !== undefined;
   return {
-    $executeRaw: async () => 0,
+    $executeRaw: async (_c: TemplateStringsArray, ...v: unknown[]) => {
+      if (dansTransaction && String(v[0]).startsWith("origines:")) bd.ordreVerrous.push("origines");
+      return 0;
+    },
     trace,
     consentEvent: {
       create: async ({ data }: { data: Ligne }) => {
@@ -114,12 +119,14 @@ function client(trace?: Trace) {
         }
         if (bd.demandes.some((d) => d.emailKey === data.emailKey && d.aimant === data.aimant))
           throw p2002(["email_key", "aimant"]);
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = { id: `d${++bd.n}`, ...data };
         bd.demandes.push(l);
         trace?.demandes.push(l);
         return l;
       },
       update: async ({ where, data }: { where: Ligne; data: Ligne }) => {
+        if (dansTransaction) bd.ordreVerrous.push("demande");
         const l = bd.demandes.find((d) => egal(d, where))!;
         Object.assign(l, data);
         return l;
@@ -189,18 +196,13 @@ vi.mock("../origines", async (orig) => ({
   ...(await orig<Record<string, unknown>>()),
   // L'origine s'écrit DANS la transaction de la page (client `tx` reçu en premier argument).
   ecrireOrigineDansTransaction: async (tx: { trace?: Trace }, emailKey: string, o: Ligne) => {
+    // Le vrai `ecrireOrigineDansTransaction` prend le verrou `origines:<clé>` en premier.
+    bd.ordreVerrous.push("origines");
     if (bd.echecOrigine) throw new Error("écriture de l'origine impossible");
     const l = { emailKey, ...o };
     bd.origines.push(l);
     tx.trace?.origines.push(l);
     return { creee: true, archivees: 0, total: 0 };
-  },
-}));
-vi.mock("../synchro-v3", async (orig) => ({
-  ...(await orig<Record<string, unknown>>()),
-  transmettreOriginesV3: async (a: Ligne) => {
-    bd.crm.push(a);
-    return "mise_en_file";
   },
 }));
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
@@ -278,6 +280,7 @@ beforeEach(() => {
   bd.apres.length = 0;
   bd.echecOrigine = bd.echecPreuve = false;
   bd.lecturesDansTransaction = 0;
+  bd.ordreVerrous.length = 0;
   bd.enfilePanne = false;
   bd.conflitDemande.restant = 0;
   bd.conflitDemande.gagnante = false;
@@ -451,6 +454,15 @@ describe("M1 — suites après la réponse (after)", () => {
   it("une suite qui échoue ne remonte pas : la réponse est déjà partie", async () => {
     bd.enfilePanne = true;
     await expect(confirmerPageGuide(entree())).resolves.toEqual({ ok: true });
+  });
+});
+
+describe("ordre des verrous (interblocage avec le clic)", () => {
+  it("la page écrit la ligne de la demande, PUIS prend le verrou origines:<clé> (comme le clic)", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.ordreVerrous).toContain("origines");
+    expect(bd.ordreVerrous.indexOf("demande")).toBeGreaterThanOrEqual(0);
+    expect(bd.ordreVerrous.indexOf("demande")).toBeLessThan(bd.ordreVerrous.indexOf("origines"));
   });
 });
 

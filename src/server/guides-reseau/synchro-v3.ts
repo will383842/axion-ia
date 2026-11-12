@@ -9,15 +9,21 @@
  * La charge ne porte ni pseudo, ni texte, ni jeton de commentaire (même en HMAC), ni adresse
  * en dehors du bloc `person` habituel. Au plus 20 entrées, sinon `too_many_origines`.
  */
-import { createHash } from "node:crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { enqueueCrmSyncEvent } from "@/server/crm-sync/enqueue";
-import { eventIdDemandeGuide } from "@/server/crm-sync/event-id";
+import {
+  eventIdDemandeGuide,
+  eventIdDeterministe as eventIdDuNom,
+} from "@/server/crm-sync/event-id";
 import { estExclueDuCrm } from "@/server/crm-sync/exclusions";
 import type { CrmSyncEvent } from "@/server/crm-sync/types";
-import type { OrigineAEcrire } from "./origines";
+import { prisma } from "@/lib/prisma";
+import { estOpposee } from "@/server/email/opposition";
+import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "@/server/crm-sync/config";
+import { mettreEnFileCrm } from "@/server/crm-sync/enqueue";
+import { lireOriginesActives, MAX_ORIGINES_PAR_CHARGE, type OrigineAEcrire } from "./origines";
 
-export const MAX_ORIGINES_PAR_CHARGE = 20;
+export { MAX_ORIGINES_PAR_CHARGE };
 export const VERSION_SCHEMA_CRM_V3 = 3;
 
 export function synchroCrmV3Active(): boolean {
@@ -91,49 +97,6 @@ export function chargeCrmV3(
   };
 }
 
-/** Identifiant d'événement DÉTERMINISTE (même clé d'idempotence = même événement : pas de doublon). */
-function eventIdDeterministe(cleIdempotence: string): string {
-  const h = createHash("sha256").update(`origine-v3:${cleIdempotence}`).digest("hex");
-  return `${h.slice(0, 8)}-${h.slice(8, 12)}-5${h.slice(13, 16)}-8${h.slice(17, 20)}-${h.slice(20, 32)}`;
-}
-
-/**
- * Met la charge v3 en file vers le CRM. No-op tant que l'interrupteur est éteint. Ne lève jamais :
- * la personne attend son guide, le CRM n'est qu'une copie (la reprise est celle de l'outbox).
- */
-export async function transmettreOriginesV3(args: {
-  email: string;
-  cleIdempotence: string;
-  origines: readonly OrigineAEcrire[];
-  quand: Date;
-}): Promise<"eteinte" | "mise_en_file" | "ignoree"> {
-  if (!synchroCrmV3Active()) return "eteinte";
-  // Exclusion persistante (décision D4) : une adresse de la maison n'entre jamais au CRM.
-  if (estExclueDuCrm(args.email)) return "ignoree";
-  try {
-    const personKey = hashEmailForLookup(args.email);
-    const c = chargeCrmV3(args.origines);
-    if (!personKey || !c.ok) return "ignoree";
-    // 🔴 CAST DOCUMENTÉ : `CrmSyncEvent.schema_version` est typé sur `CRM_SYNC_SCHEMA_VERSION` (1),
-    // alors que le CRM accepte [1, 2, 3] (ADR §3) et que cette charge porte 3. Élargir ce type
-    // toucherait toute la synchro (miroir exact du CRM) : on assume donc UN cast, ici, et le test
-    // « charge conforme » (fixture JSON partagée) verrouille la forme réellement émise.
-    const event = {
-      schema_version: VERSION_SCHEMA_CRM_V3,
-      event_id: eventIdDeterministe(args.cleIdempotence),
-      event_type: "lead_magnet_requested",
-      occurred_at: args.quand.toISOString(),
-      subject_ref: `site:guide-reseau:${args.cleIdempotence}`,
-      person: { person_key: personKey, email: args.email },
-      payload: c.charge,
-    } as unknown as CrmSyncEvent;
-    const id = await enqueueCrmSyncEvent(event);
-    return id === null ? "ignoree" : "mise_en_file";
-  } catch {
-    return "ignoree";
-  }
-}
-
 // ── Lot S3 (2026-11-11) : l'événement de la page « Recevoir le guide » part AU CLIC ─────────────
 //
 // 🔴 DÉCISION (plan S3 révisé du 11/11) : `lead_magnet_requested` v3 part au CLIC (POST du bouton
@@ -165,6 +128,15 @@ const POST_REF_CRM = /^[A-Za-z0-9_-]{8,80}$/;
 const VERSION_TEXTE_CRM = /^[A-Za-z0-9._-]{3,64}$/;
 const PRENOM_MAX_CRM = 50;
 
+function originesAuFormatCrm(origines: readonly OrigineAEcrire[]): boolean {
+  return origines.every(
+    (o) =>
+      (o.compte === null || COMPTE_CRM.test(o.compte)) &&
+      (o.postRef === null || POST_REF_CRM.test(o.postRef)) &&
+      (o.versionTexte === null || VERSION_TEXTE_CRM.test(o.versionTexte)),
+  );
+}
+
 export interface EntreeEvenementPageGuide {
   readonly demandeId: string;
   readonly email: string;
@@ -186,6 +158,8 @@ export interface EntreeEvenementPageGuide {
    * version_mention…) : fusionnées, la charge v3 (origines, verifie…) l'emporte en cas de doublon.
    */
   readonly payloadBase?: Readonly<Record<string, unknown>>;
+  /** Source de la demande ; défaut `guide-reseau`. */
+  readonly sourceSlug?: string;
 }
 
 export type EvenementPageGuideV3 = Omit<CrmSyncEvent, "schema_version"> & {
@@ -210,15 +184,7 @@ export function evenementPageGuideV3(
   if (prenom.length === 0 || [...prenom].length > PRENOM_MAX_CRM) {
     return { ok: false, erreur: "prenom" };
   }
-  for (const o of e.origines) {
-    if (o.compte !== null && !COMPTE_CRM.test(o.compte))
-      return { ok: false, erreur: "origine_invalide" };
-    if (o.postRef !== null && !POST_REF_CRM.test(o.postRef))
-      return { ok: false, erreur: "origine_invalide" };
-    if (o.versionTexte !== null && !VERSION_TEXTE_CRM.test(o.versionTexte)) {
-      return { ok: false, erreur: "origine_invalide" };
-    }
-  }
+  if (!originesAuFormatCrm(e.origines)) return { ok: false, erreur: "origine_invalide" };
   const c = chargeCrmV3(
     e.origines.map((o) => ({ ...o, canal: o.canal ?? CANAL_PAR_DEFAUT_PAGE_GUIDE })),
   );
@@ -230,7 +196,7 @@ export function evenementPageGuideV3(
       event_id: eventIdDemandeGuide(e.demandeId),
       event_type: "lead_magnet_requested",
       occurred_at: e.clicLe.toISOString(),
-      source_slug: SOURCE_SLUG_GUIDE_RESEAU,
+      source_slug: e.sourceSlug ?? SOURCE_SLUG_GUIDE_RESEAU,
       // Même référence que le chemin v1 : le rapprochement outbox ↔ demande (`aPuEntrer…`) la lit.
       subject_ref: `site:guide_request:${e.demandeId}`,
       person: { person_key: personKey, email, first_name: prenom },
@@ -258,4 +224,227 @@ export function evenementPageGuideV3(
       payload: { ...e.payloadBase, ...c.charge, verifie: true },
     },
   };
+}
+
+// ── Lot guide réseau 4 : la demande venue de la CONVERSATION (aucune case cochée) ───────────────
+
+export interface EntreeEvenementConversation {
+  readonly demandeId: string;
+  readonly email: string;
+  /** Instant du clic humain (`first_click_at`). */
+  readonly clicLe: Date;
+  readonly guide: string;
+  readonly origines: readonly OrigineAEcrire[];
+  readonly consent?: EntreeEvenementPageGuide["consent"];
+  readonly payloadBase?: EntreeEvenementPageGuide["payloadBase"];
+  /** Source de la demande ; défaut `guide-reseau`. Une demande née du formulaire garde la sienne. */
+  readonly sourceSlug?: string;
+}
+
+/**
+ * Événement du clic pour une demande SANS page : l'origine complète, mais NI `consentements` NI
+ * `first_name` (rien n'a été coché ni saisi : information M1 seulement). Fonction PURE.
+ * `event_id` = celui de la demande, comme `evenementPageGuideV3`.
+ */
+export function evenementConversationV3(
+  e: EntreeEvenementConversation,
+): { ok: true; evenement: EvenementPageGuideV3 } | { ok: false; erreur: ErreurEvenementPageGuide } {
+  const email = e.email.trim();
+  const personKey = email ? hashEmailForLookup(email) : null;
+  if (!email || !personKey) return { ok: false, erreur: "adresse" };
+  if (!originesAuFormatCrm(e.origines)) return { ok: false, erreur: "origine_invalide" };
+  const c = chargeCrmV3(e.origines);
+  if (!c.ok) return { ok: false, erreur: c.erreur };
+  return {
+    ok: true,
+    evenement: {
+      schema_version: VERSION_SCHEMA_CRM_V3,
+      event_id: eventIdDemandeGuide(e.demandeId),
+      event_type: "lead_magnet_requested",
+      occurred_at: e.clicLe.toISOString(),
+      source_slug: e.sourceSlug ?? SOURCE_SLUG_GUIDE_RESEAU,
+      subject_ref: `site:guide_request:${e.demandeId}`,
+      person: { person_key: personKey, email },
+      guides_recus: [{ guide: e.guide, date: e.clicLe.toISOString() }],
+      ...(e.consent
+        ? {
+            consent: {
+              ...(e.consent.version ? { version: e.consent.version } : {}),
+              ...(e.consent.at ? { at: e.consent.at.toISOString() } : {}),
+            },
+          }
+        : {}),
+      payload: { ...e.payloadBase, ...c.charge, verifie: true },
+    },
+  };
+}
+
+// ── Lot guide réseau 4 (O4) : les origines SUIVANTES, après le premier clic ─────────────────────
+
+/** Interrupteur des origines suivantes (O4-O5) : exactement `"true"`, éteint par défaut, lu à l'exécution. */
+export function originesSuivantesActives(): boolean {
+  return process.env.SYNCHRO_CRM_V3_ORIGINES_SUIVANTES === "true";
+}
+
+/** Date de coupure (D3, `ORIGINES_SUIVANTES_DEPUIS`, ISO 8601) lue dans l'environnement, ou `undefined`. */
+export function coupureOriginesSuivantes(): Date | undefined {
+  const brut = process.env.ORIGINES_SUIVANTES_DEPUIS?.trim();
+  if (!brut) return undefined;
+  const d = new Date(brut);
+  return Number.isNaN(d.getTime()) ? undefined : d;
+}
+
+/** Statut terminal NON destructif : l'origine ne partira jamais (adresse exclue, hors format CRM). Rien n'est supprimé. */
+export const STATUT_HORS_CHARGE = "hors_charge";
+
+export type IssueOriginesSuivantes =
+  "eteinte" | "exclue" | "pas_clique" | "opposee" | "rien" | "transmise" | "echec";
+
+class RienEcritOrigines extends Error {
+  constructor() {
+    super("rien écrit");
+    this.name = "RienEcritOrigines";
+  }
+}
+
+function journaliser(resultat: IssueOriginesSuivantes, n: number): void {
+  // Agrégat seulement : jamais d'adresse, d'empreinte, de post_ref ni de clé de dédoublonnage.
+  console.warn(JSON.stringify({ event: "guides_reseau_origines_crm", resultat, n }));
+}
+
+/**
+ * Transmet au CRM les origines d'une personne pour un guide, en charge CUMULATIVE (les 20 actives
+ * les plus récentes), APRÈS son premier clic seulement (D1 du lot S3). Ne lève jamais.
+ *
+ * Écriture de l'outbox et passage `crm_statut = 'transmise'` dans UNE transaction, sous le verrou
+ * consultatif de la personne, avec l'opposition relue DANS la transaction : un stop l'emporte
+ * (origines `ecartee`, jamais supprimées). `event_id` déterministe de l'origine déclenchante :
+ * rejouer = même identifiant = pas de doublon.
+ */
+export async function transmettreOriginesSuivantes(args: {
+  email: string;
+  emailKey: string;
+  guide: string;
+  /** Clé de dédoublonnage de l'origine déclenchante ; défaut : la plus récente encore en attente. */
+  declenchante?: string;
+  /**
+   * Coupure (D3) : seules les origines écrites à partir de cette date peuvent partir ; les plus
+   * anciennes restent `NULL`, jamais marquées « transmise ». Défaut : `ORIGINES_SUIVANTES_DEPUIS`.
+   * SANS coupure, seules partent les origines écrites APRÈS la réservation du clic (`crm_emitted_at`).
+   */
+  depuis?: Date;
+}): Promise<IssueOriginesSuivantes> {
+  if (
+    !synchroCrmV3Active() ||
+    !originesSuivantesActives() ||
+    !isCrmSyncEnabled() ||
+    !isCrmSyncGuideEnabled()
+  ) {
+    return "eteinte";
+  }
+  try {
+    if (estExclueDuCrm(args.email)) {
+      // Mise à l'écart non destructive : sans cela, ces lignes resteraient `NULL` pour toujours et
+      // le rattrapage les relirait à chaque passage.
+      let n = 0;
+      try {
+        n = (
+          await prisma.guideReseauOrigine.updateMany({
+            where: { emailKey: args.emailKey, archiveeLe: null, crmStatut: null },
+            data: { crmStatut: STATUT_HORS_CHARGE, crmTraiteeLe: new Date() },
+          })
+        ).count;
+      } catch {
+        /* non écrit : rien ne part, le prochain passage la refera */
+      }
+      journaliser("exclue", n);
+      return "exclue";
+    }
+    const personKey = hashEmailForLookup(args.email);
+    if (!personKey) return "echec";
+    const maintenant = new Date();
+    const issue = await prisma.$transaction(async (tx) => {
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + args.emailKey}))`;
+      // La personne a-t-elle déjà cliqué ? Lu APRÈS le verrou, DANS la transaction : le clic prend
+      // le même verrou, donc on voit son état validé ou on attend sa fin. Sinon la charge partira
+      // au premier clic (jamais avant).
+      const demande = await tx.guideRequest.findUnique({
+        where: { emailKey_aimant: { emailKey: args.emailKey, aimant: args.guide } },
+        select: { id: true, firstClickAt: true, crmEmittedAt: true },
+      });
+      if (demande === null || demande.firstClickAt === null || demande.crmEmittedAt === null) {
+        return { issue: "pas_clique" as const, n: 0, id: null };
+      }
+      if (await estOpposee(args.email, tx)) {
+        const r = await tx.guideReseauOrigine.updateMany({
+          where: { emailKey: args.emailKey, archiveeLe: null, crmStatut: null },
+          data: { crmStatut: "ecartee", crmTraiteeLe: maintenant },
+        });
+        return { issue: "opposee" as const, n: r.count, id: null };
+      }
+      const lues = await lireOriginesActives(tx, args.emailKey, args.guide);
+      // Coupure (D3) : une origine antérieure ne part JAMAIS et n'est jamais marquée « transmise ».
+      // Avec coupure : écrite à partir d'elle. Sans coupure : écrite APRÈS la réservation du clic.
+      const coupure = args.depuis ?? coupureOriginesSuivantes();
+      const reservation = demande.crmEmittedAt;
+      const eligible = (o: (typeof lues)[number]): boolean =>
+        coupure ? +o.createdAt >= +coupure : +o.createdAt > +reservation;
+      // Charge cumulative : les déjà transmises + les en attente ÉLIGIBLES. Ni `ecartee`, ni
+      // `hors_charge`, ni les anciennes encore `NULL`.
+      const retenues = lues.filter(
+        (o) => o.crmStatut === "transmise" || (o.crmStatut === null && eligible(o)),
+      );
+      // Hors format CRM : sortie de la charge (`hors_charge`), pour ne pas bloquer les autres ni
+      // revenir à chaque passage. Rien n'est supprimé.
+      const horsFormat = retenues.filter(
+        (o) => !originesAuFormatCrm([{ ...o, cleIdempotence: "" }]),
+      );
+      if (horsFormat.length > 0) {
+        await tx.guideReseauOrigine.updateMany({
+          where: { id: { in: horsFormat.map((o) => o.id) }, crmStatut: null },
+          data: { crmStatut: STATUT_HORS_CHARGE, crmTraiteeLe: maintenant },
+        });
+      }
+      const dehors = new Set(horsFormat.map((o) => o.id));
+      const aTransmettre = retenues.filter((o) => !dehors.has(o.id));
+      const enAttente = aTransmettre.filter((o) => o.crmStatut === null);
+      if (enAttente.length === 0) return { issue: "rien" as const, n: horsFormat.length, id: null };
+      const declenchante =
+        enAttente.find((o) => o.cleDedoublonnage === args.declenchante) ?? enAttente[0]!;
+      const c = chargeCrmV3(aTransmettre.map((o) => ({ ...o, cleIdempotence: "" })));
+      if (!c.ok) throw new RienEcritOrigines();
+      const cle = declenchante.cleDedoublonnage;
+      const event = {
+        schema_version: VERSION_SCHEMA_CRM_V3,
+        event_id: eventIdDuNom(`origine-v3:o-${cle}`),
+        event_type: "lead_magnet_requested",
+        occurred_at: maintenant.toISOString(),
+        source_slug: SOURCE_SLUG_GUIDE_RESEAU,
+        subject_ref: `site:guide-reseau:o-${cle.slice(0, 40)}`,
+        person: { person_key: personKey, email: args.email },
+        // Le guide a été reçu au premier clic : même fait, même date que l'événement du clic.
+        guides_recus: [{ guide: args.guide, date: demande.firstClickAt.toISOString() }],
+        payload: c.charge,
+      } as unknown as CrmSyncEvent;
+      const id = await enqueueCrmSyncEvent(event, { tx, mettreEnFile: false });
+      if (id === null) throw new RienEcritOrigines();
+      const r = await tx.guideReseauOrigine.updateMany({
+        where: { id: { in: enAttente.map((o) => o.id) }, crmStatut: null },
+        data: { crmStatut: "transmise", crmTraiteeLe: maintenant },
+      });
+      return { issue: "transmise" as const, n: r.count, id };
+    });
+    if (issue.id !== null) mettreEnFileCrm(issue.id);
+    journaliser(issue.issue, issue.n);
+    return issue.issue;
+  } catch (e) {
+    console.error(
+      JSON.stringify({
+        event: "guides_reseau_origines_crm",
+        resultat: "echec",
+        erreur: e instanceof Error ? e.name : "erreur",
+      }),
+    );
+    return "echec";
+  }
 }

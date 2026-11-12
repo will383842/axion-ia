@@ -92,7 +92,7 @@ Page du site, **sans JavaScript client**, ouverte par le lien `https://axion-ia.
 - `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` : interrupteur **séparé, éteint**, que rien ne lit encore ;
   il ne s'allumera qu'après l'avis de l'auditeur RGPD (consentement couplé, art. 7.4). Aucune ligne
   `newsletter_subscribers` n'est écrite par ce lot.
-- Le chemin « adresse tapée dans la conversation » n'envoie plus rien au CRM à la réception (D1) ; son origine v3 reste écrite sur le site.
+- Le chemin « adresse tapée dans la conversation » n'envoie rien au CRM à la réception (D1) ; son origine v3 est écrite sur le site, et **part au premier clic** du lien du guide (voir « Origine complète » ci-dessous).
 - stop sans adresse : abandonné (décision de Williams du 11/11/2026, lien de 48 h en contrepartie).
 - Pose (cible `les-deux` obligatoire, le workflow refuse `site` ou `worker` seuls) :
   `gh workflow run coolify-drapeau.yml -f cle=SYNCHRO_CRM_V3 -f valeur=true -f cible=les-deux -f redeploy=true`.
@@ -188,6 +188,47 @@ une rotation). La route des oppositions n'a **aucun repli** sur `VIDEOS_STUDIO_H
 Tout autre champ → `422` (seuls les noms de champs sont rendus). Réponse : toujours
 `200 {"ok":true,"type":"opposition","recue":true}`, que l'adresse soit nouvelle, déjà écartée ou
 inconnue. Plafond du corps : 4 Ko.
+
+## Origine complète vers le CRM, aussi depuis la conversation (lot guide réseau 4, 11/11/2026)
+
+- **Rien à la réception, jamais avant un clic.** Que l'adresse vienne de la page « Recevoir le guide » ou de la
+  conversation, l'événement part **au clic** du lien du guide. Il porte `payload.origines` (les **20 plus récentes**
+  origines actives de la personne pour ce guide, la plus récente donnant `origine_contenu`). Une demande venue de la
+  conversation n'a coché aucune case : **ni `consentements`, ni prénom** (information M1 seulement). Une demande née du
+  formulaire `/guide-ia` garde sa source ; ses origines réseau partent quand même (D5, option recommandée).
+- **Origines suivantes.** Une origine écrite **après** la transmission part aussitôt, en charge **cumulative** (même
+  plafond de 20), si la personne a déjà cliqué ; sinon elle attend le premier clic. Identifiants déterministes
+  (`event_id` de l'origine déclenchante) : rejouer = pas de doublon. Chaque origine porte `crm_statut`
+  (`NULL` en attente · `transmise` · `ecartee` · `hors_charge`) et `crm_traitee_le`. Un **stop** relu dans la transaction
+  l'emporte : les origines de la personne, **de tous ses guides** (l'opposition porte sur l'adresse), passent `ecartee`
+  (mise à l'écart, jamais supprimées). `hors_charge` est un statut terminal non destructif : adresse exclue du CRM ou
+  origine hors format CRM, qui ne partira jamais (rien n'est supprimé). Les origines `ecartee` et `hors_charge` n'entrent
+  jamais dans la charge cumulative, et seules les 20 plus récentes de chaque (personne, guide) sont lues par le rattrapage.
+- **Coupure (D3) — valable pour le chemin direct ET le rattrapage.** Ne partent que les origines **écrites après la
+  coupure** (`created_at >= ORIGINES_SUIVANTES_DEPUIS`) ; **sans** coupure, seules partent celles écrites **après la
+  réservation du clic** (`crm_emitted_at`). Les plus anciennes restent `NULL`, jamais envoyées ni marquées « transmise »,
+  même quand une origine plus récente de la même personne part.
+- Interrupteurs : `SYNCHRO_CRM_V3` (premier clic) ; `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` (`true` seulement, site **et**
+  worker, **éteint par défaut**) pour les origines suivantes et leur rattrapage. Tous deux derrière `CRM_SYNC_ENABLED`
+  et `CRM_SYNC_GUIDE_ENABLED`.
+- **Rattrapage — À LANCER À LA MAIN** (`scripts/crm-sync-rattrapage-lettre-guide.ts`, déposé dans le worker avec
+  `docker cp`) : il n'y a ni cron ni file, rien ne le lance tout seul et aucune alerte ne prévient d'une origine
+  restée `NULL`. Il reprend les origines en attente depuis plus de
+  10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
+  décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
+  `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
+- **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO) se pose dans l'environnement du **worker**, là où le script est lancé
+  (`docker exec -e ORIGINES_SUIVANTES_DEPUIS=… <worker> …`), pas par `coolify-drapeau.yml`. Le site la lit aussi pour
+  le chemin direct : sans elle, il n'envoie que les origines écrites après le clic.
+- **Exclusions** : `--exclure` et `--exclure-stdin` valent aussi pour les origines (groupe sauté, origines restées
+  `NULL`, compté dans « groupes exclus »), en plus de `CRM_SYNC_EXCLUSIONS_SHA256`. Interrupteurs éteints : le passage
+  répond `interrupteurs-eteints` et ne lit rien.
+- ⚠️ **Écriture de l'origine par une demande v1** (`traitement.ts`, D4) : une demande v1 écrit désormais une origine ;
+  ce changement n'a pas d'interrupteur propre, il n'est derrière que `GUIDES_RESEAU_ENABLED`.
+- **Ordre d'allumage** : 1) atterrissage de la migration `guide_reseau_origines_crm` **seule** (AGENTS.md, « DEUX
+  conteneurs » : le worker ne doit pas lire des colonnes que l'app n'a pas encore posées) ; 2) accord du CRM Pro sur la
+  charge (D2) et une charge cumulative de test acceptée en 2xx ; 3) `SYNCHRO_CRM_V3` ; 4) puis
+  `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES`. Retour arrière : éteindre ces interrupteurs (ce qui est parti reste au CRM).
 
 ## Jeton de désinscription opaque `op2` (lot guide réseau 3)
 

@@ -18,11 +18,17 @@ const sansCommentaires = (t: string): string =>
 const lire = (f: string): string => readFileSync(join(DOSSIER, f), "utf8");
 
 describe("migration contacts_guide_reseau_origine_optionnelle", () => {
-  it("est horodatée APRÈS la création de la table (et avant la migration des colonnes d'informations)", () => {
+  it("est horodatée APRÈS la création de la table ; seules les migrations additives des lots guide réseau 3 et 4 la suivent", () => {
     const dossiers = readdirSync(MIGRATIONS)
       .filter((d) => /^\d{14}_/.test(d))
       .sort();
     expect(dossiers).toContain("20261108140000_contacts_guide_reseau");
+    // Liste fermée des migrations postérieures : toute autre doit être ajoutée ici sciemment.
+    expect(dossiers.slice(dossiers.indexOf(NOM) + 1)).toEqual([
+      "20261111210000_contacts_guide_reseau_infos_facultatives",
+      "20261112000000_contacts_guide_reseau_preuve_statut",
+      "20261112100000_guide_reseau_origines_crm",
+    ]);
     expect(dossiers.indexOf(NOM)).toBeGreaterThan(
       dossiers.indexOf("20261108140000_contacts_guide_reseau"),
     );

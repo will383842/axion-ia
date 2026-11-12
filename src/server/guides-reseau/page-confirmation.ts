@@ -75,6 +75,7 @@ import {
   signalerArchiveSiDepassee,
   type OrigineAEcrire,
 } from "./origines";
+import { transmettreOriginesSuivantes } from "./synchro-v3";
 import { VERSIONS_TEXTE_CONNUES } from "./valeurs-connues";
 import { retrouverOuCreerDemande, sousLesLimites } from "./traitement";
 
@@ -394,6 +395,8 @@ async function traiterConfirmation(e: EntreeConfirmation): Promise<ResultatConfi
   after(async () => {
     try {
       await suiteApresReponse(donnees, demandeFaite, { email, maintenant });
+      // Lot guide réseau 4 : si la personne a déjà cliqué, la nouvelle origine part (jamais avant un clic).
+      await transmettreOriginesSuivantes({ email, emailKey, guide: donnees.guide });
     } catch (err) {
       console.error(
         JSON.stringify({
