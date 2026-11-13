@@ -114,3 +114,21 @@ hors mentions légales, aucune formule de non-garantie des gains, aucun prix hor
 1 490 € HT. Les entreprises et montants
 des fiches sont des exemples pour s'entraîner : Axion-IA ne les présente jamais comme des
 clients ou des prix réels.
+
+## Fiches propres (axion-brand `methode/propre/`, relecture R13 du 2026-11-13)
+
+Le dossier à importer est désormais `methode/propre/` (branche `methode/propre-2026-11-11`
+d'axion-brand). Ses fiches portent un en-tête YAML (`slug`, `titre`, `secteur`) et, sous
+chaque titre de section, un marqueur `<!-- id: … ; type: … ; chiffres-exercice: oui|non -->`.
+
+- **L'id de l'auteur fait la section du slug**, tel quel : `methode/<dernier segment du slug
+d'en-tête>/<id>`. Un fichier sans aucun marqueur fait une seule fiche `…/fiche`.
+- `chiffres-exercice` = marqueur de l'auteur **OU** détection automatique (union : un montant
+  ne passe jamais sans l'avertissement).
+- Le noyau de la fiche 00 est la citation « L'ESSENTIEL EN 30 SECONDES » + « LE CHEMIN » de la
+  section 1 ; elle en est retirée et devient `methode/00-axion-ia-methode-de-vente/essentiel`.
+- `INDEX.md` et tout dossier commençant par `_` (`_controles/`) ne sont jamais importés.
+- Une entrée de même slug dont `sourceFactoryId` ≠ `methode-import` n'est jamais touchée.
+
+Essai à blanc mesuré le 2026-11-13 : **345 fiches** (vente 261, santé 84), **137 chiffres-exercice**,
+**0 doublon de slug**, 340 des 342 ids d'auteur repris (les 2 restants sont des titres sans corps).

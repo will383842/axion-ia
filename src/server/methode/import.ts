@@ -7,7 +7,9 @@
  * - idempotent sur le slug : créer si absent, mettre à jour sinon ;
  * - JAMAIS de suppression (aucune méthode de suppression dans le dépôt injecté) ;
  * - JAMAIS de publication : statut `approved`, `publishedAt` nul ; une entrée déjà
- *   `published` (qui ne devrait pas exister) est laissée intacte et signalée.
+ *   `published` (qui ne devrait pas exister) est laissée intacte et signalée ;
+ * - une entrée de même slug venue d'ailleurs (`sourceFactoryId` ≠ `methode-import`)
+ *   n'est jamais touchée : l'import n'écrit que ce qu'il a lui-même créé.
  */
 
 import { COLLECTION_SANTE, COLLECTION_VENTE, type FicheMethode } from "./decoupage";
@@ -26,9 +28,14 @@ export const COLLECTIONS_METHODE = {
   },
 } as const;
 
+/** Marque posée sur toute entrée créée par cet import (`sourceFactoryId`). */
+export const SOURCE_IMPORT = "methode-import";
+
 export interface EntreeExistante {
   readonly id: string;
   readonly status: string;
+  /** `methode-import` si l'entrée vient de cet import ; sinon elle n'est JAMAIS touchée. */
+  readonly sourceFactoryId: string | null;
 }
 
 /** Le dépôt d'écriture. Volontairement SANS méthode de suppression. */
@@ -42,7 +49,7 @@ export interface DepotMethode {
   etiqueter(entreeId: string, etiquetteId: string): Promise<void>;
 }
 
-export type ActionPrevue = "creer" | "mettre-a-jour" | "ignorer-publiee";
+export type ActionPrevue = "creer" | "mettre-a-jour" | "ignorer-publiee" | "ignorer-autre-source";
 
 export interface LignePlan {
   readonly slug: string;
@@ -99,10 +106,13 @@ export async function executerImport(
 
   for (const f of fiches) {
     const existante = await depot.trouverEntree(f.slug);
-    if (existante?.status === "published") {
+    // Une entrée de même slug qui ne vient pas de cet import (saisie à la main,
+    // autre usine) n'est ni réécrite, ni étiquetée, ni rangée dans la collection.
+    const autreSource = existante !== null && existante.sourceFactoryId !== SOURCE_IMPORT;
+    if (existante?.status === "published" || autreSource) {
       plan.push({
         slug: f.slug,
-        action: "ignorer-publiee",
+        action: autreSource ? "ignorer-autre-source" : "ignorer-publiee",
         collection: f.collection,
         etiquettes: f.etiquettes,
         caracteres: f.corps.length,

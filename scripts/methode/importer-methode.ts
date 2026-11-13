@@ -24,7 +24,7 @@ import {
   estFichierImportable,
   type FicheMethode,
 } from "../../src/server/methode/decoupage";
-import { executerImport, type DepotMethode } from "../../src/server/methode/import";
+import { executerImport, SOURCE_IMPORT, type DepotMethode } from "../../src/server/methode/import";
 import { cibleAutorisee } from "../../prisma/seeds/volumetrie/garde-cible";
 
 async function listerMarkdown(dossier: string): Promise<string[]> {
@@ -58,7 +58,7 @@ async function depotPrisma(): Promise<{ depot: DepotMethode; fermer: () => Promi
     async trouverEntree(slug) {
       return prisma.knowledgeEntry.findUnique({
         where: { slug },
-        select: { id: true, status: true },
+        select: { id: true, status: true, sourceFactoryId: true },
       });
     },
     async creerEntree(f) {
@@ -71,7 +71,7 @@ async function depotPrisma(): Promise<{ depot: DepotMethode; fermer: () => Promi
           confidentiality: "internal",
           status: "approved",
           pipelineStage: "approved",
-          sourceFactoryId: "methode-import",
+          sourceFactoryId: SOURCE_IMPORT,
           translations: {
             create: {
               locale: "fr",

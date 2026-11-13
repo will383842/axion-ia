@@ -64,7 +64,12 @@ export function estFichierImportable(cheminRelatif: string): boolean {
   if (!nom.toLowerCase().endsWith(".md")) return false;
   if (/^LISEZ-MOI\.md$/i.test(nom)) return false;
   if (/^EVALUATION-FICHES/i.test(nom)) return false;
-  if (c.split("/").includes("livres-purs")) return false;
+  // Fiches propres (axion-brand `methode/propre/`) : l'index et les rapports de
+  // contrôle (`_controles/`) décrivent les fiches, ils n'en sont pas.
+  if (/^INDEX\.md$/i.test(nom)) return false;
+  const segments = c.split("/");
+  if (segments.slice(0, -1).some((d) => d.startsWith("_"))) return false;
+  if (segments.includes("livres-purs")) return false;
   // Secteur santé : seul l'original Markdown ; l'extrait PDF est un doublon de comparaison.
   if (/extrait-pdf\.md$/i.test(nom)) return false;
   return true;
@@ -180,6 +185,8 @@ function corpsDe(lignes: readonly string[]): string {
  * (ex. `livres/00-AXION-IA-Methode-de-vente.md`, `secteurs/sante/…`).
  */
 export function decouperFichier(cheminRelatif: string, contenu: string): FicheMethode[] {
+  const fm = lireEnTete(contenu);
+  if (fm) return decouperFichePropre(cheminRelatif, fm.entete, fm.reste);
   const chemin = cheminRelatif.replace(/\\/g, "/");
   const nomFichier = (chemin.split("/").pop() ?? chemin).replace(/\.md$/i, "");
   const fichier = normaliserSlug(nomFichier, 80);
@@ -323,6 +330,197 @@ export function decouperFichier(cheminRelatif: string, contenu: string): FicheMe
     }
     // Le titre de la section fait partie de la fiche (une règle tient parfois en une ligne).
     ajouter(s.section, s.titre, corpsDe([s.titre, ...s.lignes]));
+  }
+  return fiches;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  Fiches PROPRES (axion-brand `methode/propre/**`, R13) : en-tête YAML + un
+//  marqueur `<!-- id: … ; type: … ; chiffres-exercice: oui|non -->` sous chaque
+//  titre de section. L'id écrit par l'auteur EST la section du slug : il est
+//  stable, contrôlé (aucun doublon) et indépendant de la mise en forme.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const TYPES_FICHE: readonly TypeFiche[] = ["regle", "script", "objection", "calcul", "posture"];
+const RE_MARQUEUR_ID = /^<!--\s*id:\s*([^;>]+?)\s*(?:;(.*?))?-->$/;
+const RE_TITRE = /^(#{1,6})\s+(\S.*)$/;
+
+/** En-tête YAML minimal (`clé: valeur` sur une ligne). `null` si absent. */
+export function lireEnTete(
+  contenu: string,
+): { entete: Readonly<Record<string, string>>; reste: string } | null {
+  const texte = contenu.replace(/\r\n?/g, "\n");
+  const m = /^---\n([\s\S]*?)\n---\n?/.exec(texte);
+  if (!m) return null;
+  const entete: Record<string, string> = {};
+  for (const ligne of (m[1] ?? "").split("\n")) {
+    const kv = /^([A-Za-z_][\w-]*):\s*(.*)$/.exec(ligne);
+    if (kv?.[1]) entete[kv[1]] = (kv[2] ?? "").trim().replace(/^["']|["']$/g, "");
+  }
+  return { entete, reste: texte.slice(m[0].length) };
+}
+
+function attributsMarqueur(suite: string | undefined): Record<string, string> {
+  const attrs: Record<string, string> = {};
+  for (const part of (suite ?? "").split(";")) {
+    const kv = /^\s*([\w-]+)\s*:\s*(.*?)\s*$/.exec(part);
+    if (kv?.[1]) attrs[kv[1]] = kv[2] ?? "";
+  }
+  return attrs;
+}
+
+const RE_ESSENTIEL_PROPRE = /^>?\s*\*{0,2}L['’]ESSENTIEL EN 30 SECONDES\*{0,2}\s*$/;
+const RE_FIN_CHEMIN = /^\(?Les idées clés\)?$/;
+
+/**
+ * Sort le bloc « L'ESSENTIEL EN 30 SECONDES » + « LE CHEMIN » d'une section de la
+ * fiche 00 (citation Markdown) : il devient la fiche `essentiel` (le NOYAU).
+ */
+function extraireEssentiel(lignes: readonly string[]): {
+  essentiel: string[];
+  reste: string[];
+} {
+  const debut = lignes.findIndex((l) => RE_ESSENTIEL_PROPRE.test(l.trim()));
+  if (debut < 0) return { essentiel: [], reste: [...lignes] };
+  let fin = lignes.length;
+  let vuChemin = false;
+  for (let i = debut + 1; i < lignes.length; i += 1) {
+    const t = (lignes[i] ?? "").trim();
+    if (/^\*{0,2}LE CHEMIN\*{0,2}$/.test(t)) vuChemin = true;
+    if (RE_FIN_CHEMIN.test(t) || RE_TITRE.test(t)) {
+      fin = RE_FIN_CHEMIN.test(t) ? i + 1 : i;
+      break;
+    }
+    // Sans « LE CHEMIN », la citation s'arrête à la première ligne hors citation.
+    if (!vuChemin && t && !t.startsWith(">")) {
+      fin = i;
+      break;
+    }
+  }
+  const essentiel = lignes
+    .slice(debut, fin)
+    .filter((l) => !RE_FIN_CHEMIN.test(l.trim()))
+    .map((l) => l.replace(/^>\s?/, ""));
+  return { essentiel, reste: [...lignes.slice(0, debut), ...lignes.slice(fin)] };
+}
+
+export function decouperFichePropre(
+  cheminRelatif: string,
+  entete: Readonly<Record<string, string>>,
+  corps: string,
+): FicheMethode[] {
+  const chemin = cheminRelatif.replace(/\\/g, "/");
+  const nomFichier = (chemin.split("/").pop() ?? chemin).replace(/\.md$/i, "");
+  const slugEntete = entete.slug ?? "";
+  const fichier = normaliserSlug(slugEntete.split("/").pop() || nomFichier, 80);
+  const estSante = /(^|\/)secteurs\/sante\//.test(chemin) || entete.secteur === "sante";
+  const estFiche00 = fichier.startsWith("00-");
+  const titreDoc = (entete.titre ?? nomFichier).trim();
+  const lignes = corps.split("\n").filter((l) => !/^<!--\s*page \d+\s*-->$/.test(l.trim()));
+
+  interface Bloc {
+    id: string;
+    titre: string;
+    attrs: Record<string, string>;
+    lignes: string[];
+  }
+  const blocs: Bloc[] = [];
+  let courant: Bloc = { id: "introduction", titre: "Introduction", attrs: {}, lignes: [] };
+  for (let i = 0; i < lignes.length; i += 1) {
+    const ligne = (lignes[i] ?? "").replace(/\s+$/, "");
+    const titre = RE_TITRE.exec(ligne.trim());
+    const marqueur = titre ? RE_MARQUEUR_ID.exec((lignes[i + 1] ?? "").trim()) : null;
+    if (titre && marqueur?.[1]) {
+      blocs.push(courant);
+      courant = {
+        id: marqueur[1],
+        titre: (titre[2] ?? "").trim(),
+        attrs: attributsMarqueur(marqueur[2]),
+        lignes: [ligne],
+      };
+      i += 1; // le marqueur n'est pas du contenu
+      continue;
+    }
+    // Un marqueur orphelin (sans titre au-dessus) n'est pas du contenu non plus.
+    if (RE_MARQUEUR_ID.test(ligne.trim())) continue;
+    courant.lignes.push(ligne);
+  }
+  blocs.push(courant);
+
+  // Introduction : sans la ligne de titre du document.
+  const intro = blocs[0];
+  if (intro) intro.lignes = intro.lignes.filter((l) => !/^#\s+/.test(l.trim()));
+
+  const livre = livreDepuisFichier(nomFichier);
+  const collection = estSante ? COLLECTION_SANTE : COLLECTION_VENTE;
+  const vus = new Map<string, number>();
+  const fiches: FicheMethode[] = [];
+
+  const ajouter = (
+    section: string,
+    titre: string,
+    corpsBrut: string,
+    attrs: Record<string, string>,
+  ) => {
+    if (corpsBrut.length < 40) return;
+    // L'id de l'auteur est gardé TEL QUEL s'il est déjà sûr (il peut porter « -- ») :
+    // c'est lui que l'index et les contrôles citent.
+    let cle =
+      /^[a-z0-9]+(?:-+[a-z0-9]+)*$/.test(section) && section.length <= 100
+        ? section
+        : normaliserSlug(section, 100) || "section";
+    const deja = vus.get(cle) ?? 0;
+    vus.set(cle, deja + 1);
+    if (deja > 0) cle = `${cle}-${String(deja + 1)}`;
+    const slug = `${PREFIXE_SLUG}/${fichier}/${cle}`.slice(0, 180);
+    // Union : le marqueur de l'auteur OU la détection — un montant ne passe jamais nu.
+    const chiffres =
+      /^oui$/i.test(attrs["chiffres-exercice"] ?? "") || contientChiffresExercice(corpsBrut);
+    const typeMarque = (attrs.type ?? "").toLowerCase() as TypeFiche;
+    const typeFiche =
+      section === "essentiel"
+        ? "regle"
+        : TYPES_FICHE.includes(typeMarque)
+          ? typeMarque
+          : classerTypeFiche(titre, nomFichier);
+    const etiquettes = new Set<string>([ETIQUETTE_METHODE, livre, `type:${typeFiche}`]);
+    if (chiffres) etiquettes.add(ETIQUETTE_CHIFFRES);
+    if (estSante) etiquettes.add(ETIQUETTE_SANTE);
+    fiches.push({
+      slug,
+      fichier,
+      section: cle,
+      titre: `${titreDoc} — ${titre}`.slice(0, 255),
+      corps: chiffres ? avecAvertissement(corpsBrut) : corpsBrut,
+      kbType: estFiche00 ? "doctrine" : "methodology",
+      typeFiche,
+      collection,
+      chiffresExercice: chiffres,
+      etiquettes: [...etiquettes].sort(),
+    });
+  };
+
+  // Fiche 00 : le bloc « L'essentiel » + « Le chemin » devient le noyau.
+  if (estFiche00) {
+    for (const b of blocs) {
+      const { essentiel, reste } = extraireEssentiel(b.lignes);
+      if (essentiel.length === 0) continue;
+      b.lignes = reste;
+      ajouter("essentiel", "L'essentiel en 30 secondes et le chemin", corpsDe(essentiel), {});
+      break;
+    }
+  }
+
+  const avecId = blocs.length > 1;
+  for (const b of blocs) {
+    const texte = corpsDe(b.lignes);
+    if (b.id === "introduction") {
+      // Sans aucun marqueur, le fichier entier est UNE fiche.
+      if (!avecId) ajouter("fiche", titreDoc, texte, {});
+      else if (texte.length >= 200) ajouter("introduction", b.titre, texte, {});
+      continue;
+    }
+    ajouter(b.id, b.titre, texte, b.attrs);
   }
   return fiches;
 }

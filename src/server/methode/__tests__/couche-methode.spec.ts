@@ -1,3 +1,6 @@
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it, vi } from "vitest";
 
 import { injecterMethodeDansPromptSysteme } from "@/server/content-gen/methode-commerciale";
@@ -185,7 +188,7 @@ describe("chiffres-exercice : les montants sont des EXEMPLES, jamais des prix", 
 
 function depotEspion(): DepotMethode & { appels: string[] } {
   const appels: string[] = [];
-  const entrees = new Map<string, { id: string; status: string }>();
+  const entrees = new Map<string, { id: string; status: string; sourceFactoryId: string | null }>();
   let n = 0;
   return {
     appels,
@@ -197,7 +200,7 @@ function depotEspion(): DepotMethode & { appels: string[] } {
       appels.push(`creer:${f.slug}`);
       n += 1;
       const id = `id-${String(n)}`;
-      entrees.set(f.slug, { id, status: "approved" });
+      entrees.set(f.slug, { id, status: "approved", sourceFactoryId: "methode-import" });
       return Promise.resolve(id);
     }),
     mettreAJourEntree: vi.fn((id: string) => {
@@ -238,10 +241,24 @@ describe("import : essai à blanc, idempotence, aucune suppression", () => {
 
   it("une entrée déjà publiée est laissée intacte", async () => {
     const depot = depotEspion();
-    depot.trouverEntree = vi.fn(() => Promise.resolve({ id: "x", status: "published" }));
+    depot.trouverEntree = vi.fn(() =>
+      Promise.resolve({ id: "x", status: "published", sourceFactoryId: "methode-import" }),
+    );
     const res = await executerImport(fiches, { ecrire: true, depot });
     expect(res.plan.every((l) => l.action === "ignorer-publiee")).toBe(true);
     expect(depot.mettreAJourEntree).not.toHaveBeenCalled();
+  });
+
+  it("une entrée de même slug venue d'une autre source n'est jamais touchée", async () => {
+    const depot = depotEspion();
+    depot.trouverEntree = vi.fn(() =>
+      Promise.resolve({ id: "y", status: "approved", sourceFactoryId: null }),
+    );
+    const res = await executerImport(fiches, { ecrire: true, depot });
+    expect(res.plan.every((l) => l.action === "ignorer-autre-source")).toBe(true);
+    expect(depot.mettreAJourEntree).not.toHaveBeenCalled();
+    expect(depot.rattacherACollection).not.toHaveBeenCalled();
+    expect(depot.etiqueter).not.toHaveBeenCalled();
   });
 
   it("le dépôt n'a aucune méthode de suppression", () => {
@@ -392,5 +409,121 @@ describe("obtenirContexteMethode : noyau, extraits, secteur santé à part", () 
     expect(lecteur.rechercher).not.toHaveBeenCalled();
     await obtenirContexteMethode({ sujet: "prix", max: 99 }, { env: ALLUME, lecteur });
     expect(lecteur.rechercher).toHaveBeenCalledWith("prix", [COLLECTION_VENTE], 10);
+  });
+});
+
+/** Fiche PROPRE (axion-brand `methode/propre/`) : en-tête YAML + marqueurs d'id. */
+const FICHE_00_PROPRE = [
+  "---",
+  "slug: methode/00-axion-ia-methode-de-vente",
+  "titre: La méthode de vente AXION IA",
+  "---",
+  "",
+  "# La méthode de vente AXION IA",
+  "",
+  "## 1. Dire non doit coûter plus cher que dire oui",
+  "<!-- id: dire-non-coute-plus-cher ; type: regle ; livres: Cialdini ; chiffres-exercice: oui -->",
+  "",
+  "Le client ne doit jamais voir ton offre comme une charge en plus : 290 € par mois (exemple).",
+  "",
+  "> **L'ESSENTIEL EN 30 SECONDES**",
+  ">",
+  "> - Toujours trois chiffres : ce que le client perd, ce que coûte AXION IA, ce qu'il garde.",
+  "",
+  "**LE CHEMIN**",
+  "",
+  "1. Diagnostic gratuit de 45 min en visio.",
+  "",
+  "(Les idées clés)",
+  "",
+  "## 2. Les objections et la bonne réponse",
+  "<!-- id: 00-axion-ia-methode-de-vente--objections ; type: objection ; chiffres-exercice: non -->",
+  "",
+  "« C'est trop cher » : reposer la perte chiffrée à côté du prix, puis le silence.",
+].join("\n");
+
+const SANTE_PROPRE_SANS_ID = [
+  "---",
+  "slug: methode/dossier-axion-ia-sante-privee-2026-code-source/03-le-dictionnaire-sans-jargon",
+  "secteur: sante",
+  "---",
+  "# 3. LE DICTIONNAIRE SANS JARGON",
+  "HDS, RGPD, dispositif médical : les mots expliqués simplement, sans jargon.",
+].join("\n");
+
+describe("fiches propres (axion-brand methode/propre)", () => {
+  const fiches = decouperFichier("livres/00-AXION-IA-Methode-de-vente.md", FICHE_00_PROPRE);
+  const slugs = fiches.map((f) => f.slug);
+
+  it("l'id écrit par l'auteur fait la section du slug, tel quel (« -- » compris)", () => {
+    expect(slugs).toEqual([
+      SLUG_NOYAU,
+      "methode/00-axion-ia-methode-de-vente/dire-non-coute-plus-cher",
+      "methode/00-axion-ia-methode-de-vente/00-axion-ia-methode-de-vente--objections",
+    ]);
+  });
+
+  it("le noyau (citation « L'essentiel » + « Le chemin ») est extrait et retiré de la section 1", () => {
+    const noyau = fiches.find((f) => f.slug === SLUG_NOYAU);
+    expect(noyau?.corps).toContain("L'ESSENTIEL EN 30 SECONDES");
+    expect(noyau?.corps).toContain("LE CHEMIN");
+    expect(noyau?.corps).not.toContain("> -");
+    const s1 = fiches.find((f) => f.slug.endsWith("/dire-non-coute-plus-cher"));
+    expect(s1?.corps).not.toContain("LE CHEMIN");
+    expect(s1?.corps).not.toContain("<!--");
+  });
+
+  it("le marqueur chiffres-exercice et le type de l'auteur sont respectés", () => {
+    const s1 = fiches.find((f) => f.slug.endsWith("/dire-non-coute-plus-cher"));
+    expect(s1?.etiquettes).toContain("chiffres-exercice");
+    expect(s1?.corps.startsWith(AVERTISSEMENT_CHIFFRES)).toBe(true);
+    const s2 = fiches.find((f) => f.slug.endsWith("--objections"));
+    expect(s2?.etiquettes).toContain("type:objection");
+    expect(s2?.chiffresExercice).toBe(false);
+  });
+
+  it("un fichier santé sans marqueur fait UNE fiche, dans la collection santé", () => {
+    const [seule, ...rien] = decouperFichier(
+      "secteurs/sante/03-le-dictionnaire-sans-jargon.md",
+      SANTE_PROPRE_SANS_ID,
+    );
+    expect(rien).toEqual([]);
+    expect(seule?.slug).toBe("methode/03-le-dictionnaire-sans-jargon/fiche");
+    expect(seule?.collection).toBe(COLLECTION_SANTE);
+    expect(seule?.etiquettes).toContain("secteur:sante");
+  });
+
+  it("n'importe ni l'INDEX ni les rapports de contrôle", () => {
+    expect(estFichierImportable("INDEX.md")).toBe(false);
+    expect(estFichierImportable("_controles/GLOBAL.md")).toBe(false);
+    expect(estFichierImportable("_controles/P01.md")).toBe(false);
+    expect(estFichierImportable("livres/09-voss-never-split-the-difference.md")).toBe(true);
+  });
+});
+
+describe("cloisonnement : la Méthode ne sort jamais vers le public", () => {
+  const racine = join(__dirname, "..", "..", "..", "..");
+  const lister = (dossier: string): string[] =>
+    readdirSync(dossier, { withFileTypes: true }).flatMap((e) => {
+      const p = join(dossier, e.name);
+      if (e.isDirectory()) return e.name === "node_modules" ? [] : lister(p);
+      return /\.(ts|tsx)$/.test(e.name) ? [p] : [];
+    });
+
+  it("aucun fichier du chatbot ni des pages/routes publiques n'importe @/server/methode", () => {
+    const fautifs = [
+      ...lister(join(racine, "src", "server", "chatbot")),
+      ...lister(join(racine, "src", "app")).filter((f) => !/[\\/]api[\\/]mcp[\\/]/.test(f)),
+    ].filter((f) => /from\s+["']@\/server\/methode/.test(readFileSync(f, "utf8")));
+    expect(fautifs).toEqual([]);
+  });
+
+  it("la recherche du chatbot n'interroge que des fiches publiées, publiques", () => {
+    const sql = readFileSync(
+      join(racine, "src", "server", "chatbot", "retrieval", "knowledge-entry-search.ts"),
+      "utf8",
+    );
+    expect(sql).toContain(`ke.status = 'published'::"KbStatus"`);
+    expect(sql).toContain(`ke.audience = 'public'::"KbAudience"`);
   });
 });
