@@ -123,7 +123,23 @@ describe("garde du guide : le journal d'envoi fait foi quand `sent_at` manque", 
     expect(w).toContain("demande-1");
     expect(w).toContain("sent");
     expect(w).toContain(new Date(CREATION_JOB).toISOString());
-    expect(w).toContain("job-J1");
+  });
+
+  it("timestamp absent : on ne peut pas trancher, rien ne part (retenu)", async () => {
+    const job = jobGuide();
+    delete job["timestamp"];
+    await expect(processeur()(job)).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(d.annuler).toHaveBeenCalledTimes(1);
+  });
+
+  it("ligne `sent` du même jobId, sentAt vide : la requête ne l'exclut pas (retenu)", async () => {
+    d.journal.mockResolvedValue({ id: "log-J1-meme-job" });
+    await expect(processeur()(jobGuide())).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    const arg = d.journal.mock.calls[0]?.[0] as { where: Record<string, unknown> };
+    expect(JSON.stringify(arg.where)).not.toContain("job-J1");
+    expect(JSON.stringify(arg.where)).not.toContain("jobId");
   });
 
   it("lecture du journal en panne : rien ne part, tentative notée, erreur relancée", async () => {

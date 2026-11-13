@@ -157,10 +157,10 @@ describe("1) « Votre guide » : pas de second envoi d'une demande déjà servie
     expect(d.cloturer).toHaveBeenCalledWith(expect.objectContaining({ status: "failed" }));
   });
 
-  it("sans date de création lisible, le chemin d'avant : le guide part, sans relecture", async () => {
+  it("sans date de création lisible, au moindre doute rien ne part (retenu), sans relecture", async () => {
     await processeur()(jobGuide({ timestamp: undefined }));
     expect(d.demande).not.toHaveBeenCalled();
-    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(d.sendEmail).not.toHaveBeenCalled();
   });
 
   it("un autre gabarit ne relit jamais la demande du guide", async () => {

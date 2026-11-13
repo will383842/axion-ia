@@ -209,30 +209,29 @@ export async function resolveAttachments(
  * Seul un envoi parti après la création du job le rend superflu — vu dans `sent_at` de la demande
  * OU dans le journal d'envoi (un autre job, `sent`), au cas où `sent_at` n'aurait pas été écrit.
  *
- * Sans date de création lisible, on ne peut pas trancher : l'envoi part (chemin d'avant).
+ * Sans date de création lisible, on ne peut pas trancher : au moindre doute rien ne part, le job
+ * est retenu (mieux vaut un guide non envoyé, rattrapable, qu'un second envoi).
  * Lecture en panne : l'erreur remonte (`echecAuDepart` : rien ne part, réessai).
  */
 async function guideDejaServiApresCeJob(
   demandeId: string,
   creationDuJobMs: unknown,
-  jobId: string | undefined,
 ): Promise<boolean> {
-  if (typeof creationDuJobMs !== "number" || !Number.isFinite(creationDuJobMs)) return false;
+  if (typeof creationDuJobMs !== "number" || !Number.isFinite(creationDuJobMs)) return true;
   const demande = await prisma.guideRequest.findUnique({
     where: { id: demandeId },
     select: { sentAt: true },
   });
   if (demande?.sentAt && demande.sentAt.getTime() >= creationDuJobMs) return true;
   // Le journal d'envoi fait foi quand `sent_at` n'a pas pu être écrit après un envoi réel : un
-  // autre job, `sent` après la mise en file de celui-ci. `OR` plutôt que `not` seul : en SQL,
-  // `job_id <> x` écarte les lignes à `job_id` nul.
+  // job, `sent` après la mise en file de celui-ci — y compris ce même job relancé après une chute
+  // du conteneur (ligne `sent` écrite, `sent_at` vide) : aucune exclusion sur `job_id`.
   const envoi = await prisma.emailLog.findFirst({
     where: {
       entityType: ENTITE_GUIDE,
       entityId: demandeId,
       status: EmailLogStatus.sent,
       sentAt: { gte: new Date(creationDuJobMs) },
-      ...(jobId ? { OR: [{ jobId: null }, { jobId: { not: jobId } }] } : {}),
     },
     select: { id: true },
   });
@@ -342,7 +341,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
         // mise en file de celui-ci, ne reçoit pas le guide une seconde fois. Clos en « annulé »,
         // sans `throw` (BullMQ ne réessaie pas), comme les autres retenues du départ.
         if (!retenu && entityType === ENTITE_GUIDE && entityId) {
-          if (await guideDejaServiApresCeJob(entityId, job.timestamp, job.id)) {
+          if (await guideDejaServiApresCeJob(entityId, job.timestamp)) {
             const trace = "Retenu à l'envoi : guide déjà envoyé pour cette demande";
             if (job.id) {
               await marquerAnnule(job.id, trace);
