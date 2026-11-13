@@ -205,8 +205,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Les tarifs sont les mêmes partout",
-          detail:
-            "Les tarifs ne varient pas d'une région à l'autre.",
+          detail: "Les tarifs ne varient pas d'une région à l'autre.",
         },
       ],
     },
@@ -245,8 +244,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Le prix ne dépend pas de la ville",
-          detail:
-            "Les tarifs sont les mêmes de Paris à Perpignan.",
+          detail: "Les tarifs sont les mêmes de Paris à Perpignan.",
         },
         {
           title: "Les grandes villes ne passent pas devant",

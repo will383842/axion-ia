@@ -53,7 +53,8 @@ export const CONTENU = {
       "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
-    microTexte: "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
+    microTexte:
+      "Diagnostic IA gratuit et facultatif · 45 minutes · en visio ou par téléphone · sans engagement",
     tuiles: [
       { valeur: JETON_PRIX, legende: "une fois, sans remise" },
       // Tuile mise en valeur (filet terracotta) : l’attestation remise à chaque personne formée.
@@ -165,7 +166,11 @@ export const CONTENU = {
       {
         icone: "plan",
         jalons: [
-          { moment: "17\u00a0h 30", texte: "Vos 3 à 5 priorités, écrites dans le rapport détaillé remis sous 3 jours ouvrés" },
+          {
+            moment: "17\u00a0h 30",
+            texte:
+              "Vos 3 à 5 priorités, écrites dans le rapport détaillé remis sous 3 jours ouvrés",
+          },
           { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet" },
         ],
       },
