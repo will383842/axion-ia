@@ -9,12 +9,19 @@
  * `cible` = le guide demandé (`guide` de l'origine). Un envoi / un clic est rattaché à la ligne de l'ORIGINE
  * LA PLUS RÉCENTE de la même personne pour le même guide : chaque demande est comptée une seule fois.
  *
- * `mot` : émis TEL QUEL, sans retransformation ni revalidation à la lecture. Les mots viennent du Studio,
- * déjà normalisés en `^[A-Z0-9]{2,20}$` (majuscules sans accent) ; la valeur stockée est celle qui sort.
+ * `mot` : émis TEL QUEL, sans retransformation ni revalidation à la lecture : la valeur stockée est celle
+ * qui sort. Aucune normalisation ici ; c'est le Studio qui ignore seul les lignes dont le mot est hors
+ * forme (`^[A-Z0-9]{2,20}$`), cette route ne filtre rien.
+ * Rattachement (R3) : les envois et les clics sont rattachés à l'origine la PLUS RÉCENTE de la personne
+ * pour ce guide (clé : emailKey + guide) ; les origines plus anciennes de la même personne ne reçoivent
+ * ni envoi ni clic, seulement leur formulaire.
+ * Lecture des demandes (R4) : seules les demandes des personnes présentes dans les origines sont lues,
+ * par lots de `TAILLE_LOT_CLES` clés (`emailKey IN lot`) ; les demandes hors réseau ne sont jamais lues.
  *
  * Pas de masquage des petits effectifs (décision du propriétaire : chiffres internes, affichés « au moins N »).
  * 🔴 Des nombres seulement : la clé de personne ne sert qu'à relier en mémoire, elle ne sort jamais.
- * 🔴 FERMÉ : toute erreur de lecture, ou plus de lignes que le plafond => 500, jamais de résultat partiel.
+ * 🔴 FERMÉ : toute erreur de lecture => 500 `erreur_interne` ; plus de lignes que le plafond => 500
+ * `plafond_depasse` (sans donnée de personne), jamais de résultat partiel.
  * 🔴 AUCUNE ÉCRITURE. Journal : un événement avec des nombres, sans donnée de personne.
  */
 import * as Sentry from "@sentry/nextjs";
@@ -29,6 +36,16 @@ export const PREFIXE_DEBIT_COMPTEURS = "internal:compteurs-guide-reseau";
 export const CORPS_MAX_COMPTEURS = 1024;
 /** Plafond de lignes lues par table et par appel : au-delà, échec fermé plutôt qu'un total tronqué. */
 export const LIGNES_MAX_COMPTEURS = 200_000;
+
+/** Clés de personne par requête `emailKey IN (…)` sur les demandes. */
+export const TAILLE_LOT_CLES = 1000;
+
+class PlafondDepasse extends Error {
+  constructor() {
+    super("plafond_de_lignes");
+    this.name = "PlafondDepasse";
+  }
+}
 
 const JOUR_MS = 86_400_000;
 
@@ -164,19 +181,25 @@ export async function repondreCompteurs(e: EntreeSignee): Promise<Response> {
       },
       take: LIGNES_MAX_COMPTEURS + 1,
     });
-    if (origines.length > LIGNES_MAX_COMPTEURS) throw new Error("plafond_de_lignes");
+    if (origines.length > LIGNES_MAX_COMPTEURS) throw new PlafondDepasse();
     const guides = [...new Set(origines.map((o) => o.guide))];
-    const demandes = guides.length
-      ? await prisma.guideRequest.findMany({
-          where: {
-            aimant: { in: guides },
-            OR: [{ sentAt: { not: null } }, { firstClickAt: { not: null } }],
-          },
-          select: { emailKey: true, aimant: true, sentAt: true, firstClickAt: true },
-          take: LIGNES_MAX_COMPTEURS + 1,
-        })
-      : [];
-    if (demandes.length > LIGNES_MAX_COMPTEURS) throw new Error("plafond_de_lignes");
+    const cles = [...new Set(origines.map((o) => o.emailKey))];
+    const demandes: DemandeLue[] = [];
+    for (let i = 0; i < cles.length; i += TAILLE_LOT_CLES) {
+      const lot = cles.slice(i, i + TAILLE_LOT_CLES);
+      const reste = LIGNES_MAX_COMPTEURS - demandes.length;
+      const lues = await prisma.guideRequest.findMany({
+        where: {
+          emailKey: { in: lot },
+          aimant: { in: guides },
+          OR: [{ sentAt: { not: null } }, { firstClickAt: { not: null } }],
+        },
+        select: { emailKey: true, aimant: true, sentAt: true, firstClickAt: true },
+        take: reste + 1,
+      });
+      if (lues.length > reste) throw new PlafondDepasse();
+      demandes.push(...lues);
+    }
     const lignes = agreger(origines, demandes, maintenant);
     console.warn(JSON.stringify({ event: "guides_reseau_compteurs", lignes: lignes.length }));
     return reponseJson(200, { v: 1, genereLe: maintenant.toISOString(), lignes });
@@ -193,6 +216,9 @@ export async function repondreCompteurs(e: EntreeSignee): Promise<Response> {
       "[guides-reseau] compteurs en échec :",
       err instanceof Error ? err.name : "erreur",
     );
-    return reponseJson(500, { ok: false, erreur: "erreur_interne" });
+    return reponseJson(500, {
+      ok: false,
+      erreur: err instanceof PlafondDepasse ? "plafond_depasse" : "erreur_interne",
+    });
   }
 }

@@ -21,6 +21,8 @@ const { bd } = vi.hoisted(() => ({
     origines: [] as Origine[],
     demandes: [] as Demande[],
     lectures: 0,
+    requetesDemandes: [] as Array<{ taille: number; take: number }>,
+    cleDemandesLues: [] as string[],
     ecritures: 0,
     panne: false,
   },
@@ -52,10 +54,20 @@ vi.mock("@/lib/prisma", () => {
       },
       guideRequest: {
         ...ecritures,
-        findMany: async () => {
+        // Honore le filtre `emailKey IN lot` et `take`, comme la vraie base.
+        findMany: async (arg: {
+          where: { emailKey: { in: string[] }; aimant: { in: string[] } };
+          take: number;
+        }) => {
           bd.lectures++;
           if (bd.panne) throw new Error("panne lecture");
-          return bd.demandes;
+          bd.requetesDemandes.push({ taille: arg.where.emailKey.in.length, take: arg.take });
+          const lues = bd.demandes
+            .filter((d) => arg.where.emailKey.in.includes(d.emailKey))
+            .filter((d) => arg.where.aimant.in.includes(d.aimant))
+            .slice(0, arg.take);
+          for (const d of lues) bd.cleDemandesLues.push(d.emailKey);
+          return lues;
         },
       },
       $executeRaw: async () => {
@@ -130,6 +142,8 @@ beforeEach(() => {
   bd.origines = [];
   bd.demandes = [];
   bd.lectures = 0;
+  bd.requetesDemandes = [];
+  bd.cleDemandesLues = [];
   bd.ecritures = 0;
   bd.panne = false;
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
@@ -315,5 +329,61 @@ describe("compteurs-guide-reseau v1 — corps strict, lecture seule, fermé", ()
     bd.origines = [origine({ occurredAt: il_y_a(H) })];
     expect((await appel(CORPS)).status).toBe(200);
     expect(bd.ecritures).toBe(0);
+  });
+});
+
+describe("compteurs-guide-reseau v1 — lecture filtrée des demandes (R4)", () => {
+  it("les demandes hors réseau ne comptent pas et ne sont pas lues ; chiffres identiques à l'agrégation brute", async () => {
+    const horsReseau = "f".repeat(64);
+    bd.origines = [origine({ occurredAt: il_y_a(2 * J) })];
+    bd.demandes = [
+      { emailKey: CLE_A, aimant: "guide-ia", sentAt: il_y_a(H), firstClickAt: il_y_a(H) },
+      { emailKey: horsReseau, aimant: "guide-ia", sentAt: il_y_a(H), firstClickAt: il_y_a(H) },
+      { emailKey: horsReseau, aimant: "guide-ia", sentAt: il_y_a(2 * H), firstClickAt: null },
+    ];
+    const j = await (await appel(CORPS)).json();
+    expect(j.lignes).toHaveLength(1);
+    expect(j.lignes[0].envois).toEqual({ j7: 1, j30: 1, total: 1 });
+    expect(j.lignes[0].clics).toEqual({ j7: 1, j30: 1, total: 1 });
+    // Le filtre est côté base : aucune demande hors réseau n'est même lue.
+    expect(bd.cleDemandesLues).toEqual([CLE_A]);
+    // Référence : l'agrégation pure sur TOUTES les demandes donne les mêmes lignes.
+    const { agreger } = await import("@/server/guides-reseau/compteurs");
+    const ref = agreger(bd.origines, bd.demandes, new Date(j.genereLe));
+    expect(JSON.parse(JSON.stringify(ref))).toEqual(j.lignes);
+  });
+
+  it("découpage en lots : 2 500 clés => 3 requêtes (1 000, 1 000, 500)", async () => {
+    bd.origines = Array.from({ length: 2500 }, (_, i) =>
+      origine({ occurredAt: il_y_a(H), emailKey: String(i).padStart(64, "0") }),
+    );
+    expect((await appel(CORPS)).status).toBe(200);
+    expect(bd.requetesDemandes.map((r) => r.taille)).toEqual([1000, 1000, 500]);
+  });
+
+  it("aucune origine : aucune requête sur les demandes", async () => {
+    expect((await appel(CORPS)).status).toBe(200);
+    expect(bd.requetesDemandes).toHaveLength(0);
+  });
+
+  it("plafond sur les demandes : 500 plafond_depasse, sans donnée de personne ni résultat partiel", async () => {
+    const { LIGNES_MAX_COMPTEURS } = await import("@/server/guides-reseau/compteurs");
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    bd.demandes = Array.from({ length: LIGNES_MAX_COMPTEURS + 1 }, () => ({
+      emailKey: CLE_A,
+      aimant: "guide-ia",
+      sentAt: il_y_a(H),
+      firstClickAt: null,
+    }));
+    const r = await appel(CORPS);
+    expect(r.status).toBe(500);
+    const corps = await r.json();
+    expect(corps).toEqual({ ok: false, erreur: "plafond_depasse" });
+    expect(JSON.stringify(corps)).not.toContain(CLE_A);
+    const journaux = JSON.stringify([
+      ...(console.warn as unknown as { mock: { calls: unknown[] } }).mock.calls,
+      ...(console.error as unknown as { mock: { calls: unknown[] } }).mock.calls,
+    ]);
+    expect(journaux).not.toContain(CLE_A);
   });
 });
