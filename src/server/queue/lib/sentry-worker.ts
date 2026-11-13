@@ -231,6 +231,7 @@ export function captureWorkerError(
         ? brute
         : Object.assign(Object.create(Object.getPrototypeOf(brute)) as Error, brute, {
             name: brute.name,
+            cause: brute.cause,
             message: messageMasque,
             stack: stackMasquee,
           });

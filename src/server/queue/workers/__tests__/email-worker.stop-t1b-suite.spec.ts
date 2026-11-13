@@ -116,14 +116,13 @@ describe("garde du guide : le journal d'envoi fait foi quand `sent_at` manque", 
     expect(d.annuler).toHaveBeenCalledTimes(1);
     expect(d.annuler.mock.calls[0]?.[0]).toBe("job-J1");
     expect(d.noter).not.toHaveBeenCalled();
-    // La requête borne bien : cette demande, statut sent, depuis la création du job, un AUTRE job.
+    // La requête borne bien : cette demande, statut sent, depuis la création du job, tout job.
     const arg = d.journal.mock.calls[0]?.[0] as { where: Record<string, unknown> };
     const w = JSON.stringify(arg.where);
     expect(w).toContain("GuideRequest");
     expect(w).toContain("demande-1");
     expect(w).toContain("sent");
     expect(w).toContain(new Date(CREATION_JOB).toISOString());
-    expect(w).toContain("job-J1");
   });
 
   it("lecture du journal en panne : rien ne part, tentative notée, erreur relancée", async () => {
@@ -138,5 +137,13 @@ describe("garde du guide : le journal d'envoi fait foi quand `sent_at` manque", 
     await processeur()(jobGuide());
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
     expect(d.annuler).not.toHaveBeenCalled();
+  });
+
+  it("ligne `sent` du même jobId, sentAt vide (reprise après chute) : retenu", async () => {
+    d.journal.mockResolvedValue({ id: "log-J1-lui-meme" });
+    await processeur()(jobGuide());
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    const w = JSON.stringify((d.journal.mock.calls[0]?.[0] as { where: unknown }).where);
+    expect(w).not.toContain("jobId");
   });
 });
