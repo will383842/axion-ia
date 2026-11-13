@@ -37,9 +37,10 @@ describe("contrat 2.6", () => {
   it("relecture de a1 : le rattachement manuel sous 15 jours ne fait rien perdre à l'apporteur", () => {
     expect(net).toContain("dans les **quinze jours** de l'encaissement intégral");
     expect(net).toContain("La commission qui en résulte reste due");
-    expect(net).toContain(
-      "le délai de paiement de l'article 5.3 court à compter de ce rattachement",
-    );
+    // Contrat 2.7 (point 6) : un seul régime — l'échéance court de l'émission de l'autofacture,
+    // établie le jour du rattachement (ou de l'acquisition, s'il est plus tardif).
+    expect(net).toContain("l'autofacture est alors établie le jour du rattachement");
+    expect(net).toContain("l'échéance de l'article 5.3 court de son émission");
     expect(net).toContain("apprécié établissement par établissement");
   });
 

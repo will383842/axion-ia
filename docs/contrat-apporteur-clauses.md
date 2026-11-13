@@ -4,6 +4,45 @@
 > validé par Williams le 2026-10-05 (`src/features/apporteurs-reseau/contrat-v2.ts`, articles 3, 4, 5 et
 > 12 notamment) le remplace. Les clauses ci-dessous ne doivent plus être reprises telles quelles.
 
+> 🆕 **Version en vigueur : 2.7 (09/10/2026)** — lot 1 de l'analyse juridique du 09/10 et décisions de
+> Will. Le numéro de version figure désormais dans le titre du texte signé. Ce qui change par rapport
+> à la 2.6 :
+>
+> - **Établissement partout** : aux articles 3.2 à 3.5 et 3.7, « l'entreprise déclarée » est
+>   l'établissement déclaré ; l'établissement qui commande est celui au profit duquel la prestation
+>   est commandée (puis SIRET du devis, puis fiche client) ; 3.6 (groupes) ne rattache plus une autre
+>   société du groupe d'office, seulement une commande passée au profit du personnel de
+>   l'établissement attribué ; une commande qui profite aussi à d'autres établissements est
+>   commissionnée **au prorata des participants** de l'établissement attribué (décision de Will du
+>   09/10 : 4 participants de Grenoble sur 10 → 4/10 de la commission, arrondie au centime supérieur ;
+>   nombres arrêtés par la Société d'après la liste d'inscription) ; 12.1 parle d'établissements.
+> - **Personne qui a rencontré le client** (3.2, 3.7) : nommée dans la déclaration quand ce n'est pas
+>   l'Apporteur ; son nom peut être communiqué au prospect.
+> - **Un seul régime de paiement** : jour d'acquisition = le plus tardif de l'encaissement intégral et de
+>   la réalisation (4.0) ; autofacture ce jour-là (5.1) ; échéance à 30 jours de l'émission (5.3), y
+>   compris après un rattachement manuel (3.1) ; annexe 2.1 bis alignée.
+> - **Reports de versement : liste fermée** (5.4) ; suspension du parrainage bornée à 15 jours (4.6) ;
+>   contestation du client bornée à 12 mois (4.2 bis).
+> - **Pas de reprise** en cas de faute lourde ou dolosive de la Société (4.2, 4.5) ; 12.3 : les
+>   commandes signées avant une annulation postérieure à la confirmation restent commissionnées.
+> - **Nouveaux articles** : 5.1 bis (facture électronique, plateforme agréée, copie par e-mail), 8.6
+>   (probité / anti-corruption, sanctionnée par 4.5 bis et 11.2), 13.4 al. 2 (recodification).
+> - **6.3** : annuaire de la facturation électronique ; retenue de l'article 182 B du CGI à la charge de
+>   l'Apporteur si sa résidence fiscale en France est inexacte ; changement de pays signalé sous 15 jours.
+> - **7.2** : conservation des données des personnes présentées **par critères** (exactitude, fonction,
+>   opposition), sans purge automatique, sans « échéance fixée à l'avance ».
+> - **11.1** : préavis de la Société **progressif** (30 j la 1re année, 60 j la 2e, 90 j ensuite) ;
+>   l'Apporteur garde 30 j ; durée toujours indéterminée. Aucun plafond de responsabilité de la Société.
+> - **14** : plus de « case distincte » (deux cases depuis la 2.5) ; qualité « entrepreneur individuel
+>   commerçant / non commerçant » ou société nommée avec son représentant.
+> - **Divers** : survie (21) et manquements (11.2) complétés ; 22 bis.3 (Qualiopi dans les termes exacts
+>   fournis, art. L.6352-13 C. trav. ; image des tiers) ; charte datée ; annexe 1 : une ligne « Tous les
+>   audits — 30 % », plus de « dégressivité », forfait des formations explicité. **Aucun taux ni montant
+>   ne change.**
+>
+> Les contrats signés avant la 2.7 restent régis par leur version tant qu'un avenant n'est pas signé
+> (art. 13.2).
+
 > **Statut du document.** Il n'existe aujourd'hui **aucun contrat d'apporteur** dans ce
 > dépôt : les autres documents le citent une quinzaine de fois, personne ne l'a rédigé.
 > Ce fichier commence à combler ce trou, en partant de la clause la plus urgente —
