@@ -98,6 +98,7 @@ import { chargerDossierSession } from "@/server/qualiopi/dossier-session/chargem
 import { MENTION_RESERVE_REFERENT } from "@/server/qualiopi/dossier-session/blocs";
 import type { ModeleDossierSession } from "@/server/qualiopi/dossier-session/rendu";
 import { genererDossierSessionZip } from "../dossier-session";
+import { getObjectBufferR2 } from "@/lib/r2-storage";
 
 type Fn = ReturnType<typeof vi.fn>;
 const mockSession = (prisma as unknown as { trainingSession: { findUnique: Fn } }).trainingSession
@@ -324,5 +325,34 @@ describe("🔴 modèles vierges et questionnaires remplis (dossier à 100 %)", (
     expect(chemins.some((c) => c.startsWith("questionnaires-remplis/"))).toBe(false);
     expect(produirePiecesPositionnementRempli).not.toHaveBeenCalled();
     expect(produirePiecesSatisfactionRemplie).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 « AUCUN PDF joint » compte les documents hors modèles vierges", () => {
+  it("1 vrai document introuvable + 1 vierge : le message dit 1 document, pas 2", async () => {
+    mockEtat.mockResolvedValue("actif");
+    const sess = session();
+    sess.documents = [
+      {
+        id: "d1",
+        type: "convention",
+        numero: "AXI-CONV-2026-001",
+        createdAt: CREE,
+        remplaceeParNumero: null,
+      },
+      {
+        id: "pv",
+        type: "positionnement",
+        numero: "AXI-POS-2026-001",
+        createdAt: CREE,
+        remplaceeParNumero: null,
+        metadata: {},
+      } as never,
+    ];
+    mockSession.mockResolvedValue(sess);
+    (getObjectBufferR2 as unknown as Fn).mockResolvedValueOnce(null);
+    const r = await genererDossierSessionZip("s1", { lecteur: { role: "admin" } });
+    const msg = r!.avertissements.find((a) => a.includes("AUCUN PDF joint"));
+    expect(msg).toContain("1 document en base mais AUCUN PDF joint");
   });
 });

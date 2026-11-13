@@ -28,6 +28,7 @@ import { documentPdfKey } from "@/lib/r2-storage";
 import { idsLiesALaSession } from "@/features/admin-emails/query";
 import { libelleStatutLigne } from "@/features/admin-emails/statut-libelles";
 import { documentJointAuDossierAudit } from "@/server/qualiopi/conformite/hors-dossier-audit";
+import { inscriptionSurSessionTenue } from "@/server/qualiopi/conformite/piece-admissible";
 import { colonneDeclarationDisponible } from "@/server/qualiopi/adaptation/colonne-declaration";
 import { dateHeureParis, dateParis } from "@/server/qualiopi/sessions/verrou-dossier-pur";
 
@@ -156,10 +157,8 @@ export async function chargerDossierSession(
         traineeId: true,
         exemplaireSigneKey: true,
         signatures: {
-          where: { revokedAt: null },
-          select: { signeAt: true },
+          select: { signeAt: true, revokedAt: true },
           orderBy: { signeAt: "desc" },
-          take: 1,
         },
       },
     });
@@ -203,6 +202,7 @@ export async function chargerDossierSession(
         essai: essaiInscription(inscription?.id),
         // Une pièce remplacée OU annulée ne compte dans aucun voyant.
         horsVoyants: par !== null || p.annuleeAt !== null || vierge !== null,
+        modeleVierge: vierge !== null,
         // Annulée sans remplaçant : nommée, jamais jointe (doctrine du ZIP).
         cheminPdf:
           vierge !== null || (p.annuleeAt !== null && par === null)
@@ -212,7 +212,14 @@ export async function chargerDossierSession(
       });
       // L'exemplaire SIGNÉ est versé tel quel, à côté de la pièce d'origine.
       if (p.exemplaireSigneKey && p.annuleeAt === null) {
-        const signeAt = p.signatures[0]?.signeAt ?? null;
+        const signeAt = p.signatures.find((s) => s.revokedAt == null)?.signeAt ?? null;
+        // Toutes les signatures révoquées (et il y en a eu) : l'exemplaire ne prouve plus rien.
+        const toutesRevoquees = p.signatures.length > 0 && signeAt === null;
+        const etiquettesSigne: string[] = [
+          signeAt !== null ? `Signé le ${dateParis(signeAt)}` : "date de signature non retrouvée",
+        ];
+        if (par !== null) etiquettesSigne.push(`Remplacée par ${par} — exemplaire non probant`);
+        if (toutesRevoquees) etiquettesSigne.push("Toutes les signatures révoquées — non probant");
         elements.push({
           cle: `piece-signee:${p.id}`,
           nature: "piece",
@@ -223,11 +230,9 @@ export async function chargerDossierSession(
           details: [
             ...(inscription !== undefined ? [`Stagiaire : ${nomStagiaire(inscription)}`] : []),
           ],
-          etiquettes: [
-            signeAt !== null ? `Signé le ${dateParis(signeAt)}` : "date de signature non retrouvée",
-          ],
+          etiquettes: etiquettesSigne,
           essai: essaiInscription(inscription?.id),
-          horsVoyants: false,
+          horsVoyants: par !== null || toutesRevoquees,
           cheminPdf: `documents/signes/${p.type}/${p.numero}.pdf`,
           cleStockage: p.exemplaireSigneKey,
         });
@@ -242,7 +247,7 @@ export async function chargerDossierSession(
   try {
     const remplis = await prisma.questionnaire.findMany({
       where: {
-        enrollment: { sessionId },
+        enrollment: { sessionId, ...inscriptionSurSessionTenue() },
         reponduAt: { not: null },
         type: { in: ["positionnement", "satisfaction_chaud", "satisfaction_froid"] },
       },

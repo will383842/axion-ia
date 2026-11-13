@@ -239,6 +239,21 @@ describe("🔴 l'original remplacé est gardé, étiqueté, hors voyants", () =>
     );
   });
 
+  it("un modèle vierge n'est pas une pièce « remplacée » : il n'entre pas dans ce compteur", () => {
+    const m = modele();
+    const vierge = element({
+      cle: "piece:pv",
+      titre: "AXI-POS-2026-001 (positionnement)",
+      etiquettes: ["Modèle vierge — non probant, non joint : x"],
+      horsVoyants: true,
+      modeleVierge: true,
+    });
+    const avec = rendreDossier({ ...m, elements: [...m.elements, vierge] });
+    expect(avec.chiffres).toContain("1 pièce remplacée, gardée au dossier et exclue des chiffres.");
+    const seul = rendreDossier({ ...m, elements: [vierge] });
+    expect(seul.chiffres.join(" ")).not.toContain("remplacée");
+  });
+
   it("un PDF introuvable est DÉCLARÉ absent, jamais tu", async () => {
     const zip = new JSZip();
     const ecrit = await ecrireDossierComplet(zip, modele(), async () => null);
