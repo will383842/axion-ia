@@ -25,6 +25,7 @@ vi.mock("@/server/observatoire/snapshot", () => ({
   recomputeAndPersistSnapshot: vi.fn(),
 }));
 
+import { SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
 import { generateBarometerArticle } from "../admin";
 
 // Snapshot avec un total NON nul (inclut le seed) — l'ancien code (buggé)
@@ -58,9 +59,19 @@ describe("generateBarometerArticle — garde réel-vs-seed", () => {
     expect(enqueueMock).not.toHaveBeenCalled();
   });
 
-  it("AUTORISE quand au moins une réponse réelle existe", async () => {
+  it("REFUSE sous le seuil de vraies réponses (5 réelles)", async () => {
     readSnapshotMock.mockResolvedValue(SEEDED_SNAPSHOT);
-    countRealMock.mockResolvedValue(5); // 5 vraies réponses
+    countRealMock.mockResolvedValue(5);
+
+    const res = await generateBarometerArticle();
+
+    expect(res.ok).toBe(false);
+    expect(enqueueMock).not.toHaveBeenCalled();
+  });
+
+  it("AUTORISE au seuil de vraies réponses", async () => {
+    readSnapshotMock.mockResolvedValue(SEEDED_SNAPSHOT);
+    countRealMock.mockResolvedValue(SEUIL_REPONSES_REELLES);
 
     const res = await generateBarometerArticle();
 

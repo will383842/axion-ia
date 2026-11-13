@@ -32,6 +32,24 @@ export const STUDY_LICENSE_LABEL = "CC BY 4.0";
 export const STUDY_ATTRIBUTION = "Source : Observatoire Axion-IA 2026 — axion-ia.com";
 
 /**
+ * Effectif minimal de VRAIES réponses (hors fixture de test `seed:%`) pour publier
+ * un pourcentage ou générer un article d'analyse (audit blog/RAG du 24/10/2026,
+ * lot L3). En dessous, l'observatoire reste « enquête en cours » : jamais de
+ * chiffre, jamais d'attribution « Observatoire Axion-IA ».
+ */
+export const SEUIL_REPONSES_REELLES = 100;
+
+/**
+ * Date de coupure de l'historique publié. Avant le 24/10/2026, le total
+ * `totalResponses` des points de `barometer_snapshot_history` comptait aussi les
+ * réponses de test (`visitor_id` commençant par `seed:`, environ 8 627) : ces
+ * points ne disent pas combien de vraies réponses ils contiennent. Rien n'est
+ * supprimé en base ; ces anciens points ne sont simplement plus publiés (page et
+ * export JSON).
+ */
+export const HISTORIQUE_FIABLE_DEPUIS = new Date("2026-10-24T00:00:00.000Z");
+
+/**
  * Période de terrain — collecte CONTINUE (l'observatoire ne se clôt pas).
  * `temporalCoverage` est un intervalle ISO 8601 OUVERT (`2026-01-06/..`),
  * format reconnu par schema.org pour un dataset toujours alimenté.

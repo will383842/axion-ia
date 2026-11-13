@@ -201,6 +201,10 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // synthèse « Décryptage IA ». Le marqueur vient du seul chemin d'import
   // (consommateur, pas du pipeline de génération). Même cas qu'ArticleFaq.
   /^src\/server\/observatoire\/analysis\.ts$/,
+  // Lot L3 (audit blog 24/10/2026) — le test des seuils de lecture de l'Observatoire doit
+  // neutraliser ce même routeur LLM (aucun appel payant en test) : le marqueur vient du seul
+  // chemin du `vi.mock`, comme pour `analysis.ts` ci-dessus.
+  /^src\/server\/observatoire\/__tests__\/lectures-seuil\.spec\.ts$/,
   /^src\/features\/admin-blog\/actions\.ts$/,
   // admin-job-offers/actions.ts (PR #201) — CONSOMME `enqueueGoogleIndexingForUrls`
   // depuis src/server/content-gen/indexing pour pinger l'Indexing API sur les URLs
