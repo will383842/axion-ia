@@ -27,14 +27,14 @@ const COPY = {
     title: "Demande de devis qualifiée",
     titleEm: "pour projets sur-mesure",
     description:
-      "Pour les formats IA Custom, packs annuels ou transformations multi-services : remplissez ce formulaire qualifié. Williams vous recontactera sous 24-48 h ouvrées pour un appel de cadrage personnalisé.",
+      "Pour les formats IA Custom, packs annuels ou transformations multi-services : remplissez ce formulaire qualifié. Williams vous recontactera pour un appel de cadrage personnalisé.",
     breadcrumb: "Demande de devis",
   },
   en: {
     title: "Qualified quote request",
     titleEm: "for custom projects",
     description:
-      "For custom AI, annual packs, or multi-department transformations: fill in this qualified form. Williams will get back to you within 24-48 business hours for a personalized scoping call.",
+      "For custom AI, annual packs, or multi-department transformations: fill in this qualified form. Williams will get back to you for a personalized scoping call.",
     breadcrumb: "Quote request",
   },
 } as const;
@@ -51,8 +51,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ? "Demande de devis · projets IA sur-mesure · Axion-IA"
       : "AI project quote request · Axion-IA",
     description: isFr
-      ? "Formulaire pour formats IA Custom, packs annuels. Réponse sous 24-48 h ouvrées."
-      : "Form for custom AI, annual packs. Reply within 24-48 business hours.",
+      ? "Formulaire pour formats IA Custom, packs annuels."
+      : "Form for custom AI, annual packs.",
     alternates: { fr: "/demande-devis", en: "/request-quote" },
   });
 }

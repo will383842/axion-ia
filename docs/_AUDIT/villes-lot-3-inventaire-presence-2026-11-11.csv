@@ -738,8 +738,8 @@ sable-sur-sarthe.ts;45;"à Sablé-sur-Sarthe : sessions dans vos locaux industri
 sable-sur-sarthe.ts;45;"vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, logisticiens, c";LEGITIME;locaux du client
 sable-sur-sarthe.ts;46;"à Sablé-sur-Sarthe : sessions dans vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimen";LEGITIME;locaux du client
 sable-sur-sarthe.ts;46;"vos locaux industriels, commerce, cabinet ou en visio. Dirigeants TPE/PME agroalimentaires, industriels, logisticiens, c";LEGITIME;locaux du client
-sable-sur-sarthe.ts;68;"du Mans). Intervention directe dans vos locaux. Format mixte sur site + visio. Tarifs publics, frais déplacement à part.";LEGITIME;locaux du client
-sable-sur-sarthe.ts;68;"vos locaux. Format mixte sur site + visio. Tarifs publics, frais déplacement à part."",";LEGITIME;locaux du client
+sable-sur-sarthe.ts;68;"du Mans). Intervention directe dans vos locaux. Format mixte sur site + visio.";LEGITIME;locaux du client
+sable-sur-sarthe.ts;68;"vos locaux. Format mixte sur site + visio."",";LEGITIME;locaux du client
 saint-affrique.ts;45;"-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, profe";LEGITIME;locaux du client
 saint-affrique.ts;45;"vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, professions libérales du sud Aveyron."",";LEGITIME;locaux du client
 saint-affrique.ts;46;"-1 à Saint-Affrique : sessions dans vos locaux ou en visio. Dirigeants TPE artisans, gérants PME agroalimentaires, profe";LEGITIME;locaux du client
@@ -823,7 +823,7 @@ saint-brieuc.ts;136;"groalimentaire du Zoopôle. Code source, bases et modèles 
 saint-cannat.ts;64;"o-1 sont disponibles en présentiel (vos locaux à Saint-Cannat) ou en visio. Format flexible adapté aux cadres et profess";LEGITIME;locaux du client
 saint-cannat.ts;64;"vos locaux à Saint-Cannat) ou en visio. Format flexible adapté aux cadres et professions libérales."",";LEGITIME;locaux du client
 saint-cannat.ts;68;"a: ""Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Nos consultants se déplacent dans vos locaux. C";FAUTIF;présence locale suggérée — corrigé
-saint-cannat.ts;68;"vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Coûts de déplacement à part, tarification tra";LEGITIME;après correction — locaux du client
+saint-cannat.ts;68;"vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Tarification transparente."",";LEGITIME;après correction — locaux du client
 saint-chamas.ts;52;"itre-les-Remparts). Accès rapide via A7 depuis Salon-de-Provence ou Aix-en-Provence."",";FAUTIF;présence locale suggérée — corrigé
 saint-chamas.ts;64;"""Nos consultants se déplacent dans vos locaux à Saint-Chamas. Format demi-journée ou journée complète, atelier pratique";LEGITIME;locaux du client
 saint-chamas.ts;64;"vos locaux à Saint-Chamas. Format demi-journée ou journée complète, atelier pratique mains sur clavier."",";LEGITIME;locaux du client
