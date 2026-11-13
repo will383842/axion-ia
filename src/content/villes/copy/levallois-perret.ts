@@ -144,7 +144,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           "An ultra-dense premium services fabric: management consulting, communication agencies, head-office activities and software programming dominate — precisely the trades where a website and SaaS platform that continuously qualify, brief and convert make the difference with a demanding Paris-region clientele.",
           "Proximity to large buyers (Devoteam and its group entities on rue Anatole France, L'Oréal on rue d'Alsace, Alstom on avenue André Malraux, Saft) feeding an ecosystem of subcontractors, agencies and freelancers — micro-businesses and SMEs for whom a client portal, quote space or AI-native configurator becomes a commercial argument.",
           "High business-creation density (over 2,000 new establishments in 2024, including hundreds in scientific/technical activities and information-communication): young structures needing a credible showcase or e-commerce site and SaaS tools from day one.",
-          "A town with no heavy logistics, five minutes from La Défense and served by metro line 3 and the Transilien: our UX/UI framing workshops run on site, at your offices in the Eiffel district or along the Seine front, without disproportionate travel costs.",
+          "A town with no heavy logistics, five minutes from La Défense and served by metro line 3 and the Transilien: our UX/UI framing workshops run on site, at your offices in the Eiffel district or along the Seine front.",
         ],
         methodology: [
           {
@@ -214,7 +214,7 @@ export const LEVALLOIS_PERRET_COPY: VilleCopy = {
           },
           {
             q: "Do you work on site in Levallois-Perret for the design phase?",
-            a: "Yes. Levallois's centrality — metro line 3, the Transilien minutes from Saint-Lazare, La Défense five minutes away — lets us hold UX/UI workshops and QA reviews directly at your offices, without heavy logistics or disproportionate travel costs.",
+            a: "Yes. Levallois's centrality — metro line 3, the Transilien minutes from Saint-Lazare, La Défense five minutes away — lets us hold UX/UI workshops and QA reviews directly at your offices, without heavy logistics.",
           },
           {
             q: "How do you ensure GDPR compliance for my site or platform?",

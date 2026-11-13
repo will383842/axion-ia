@@ -65,7 +65,7 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Sablé-sur-Sarthe ?",
-      a: "La gare TGV de Sablé-sur-Sarthe dessert la commune (25 min du Mans). Intervention directe dans vos locaux. Format mixte sur site + visio. Tarifs publics, frais déplacement à part.",
+      a: "La gare TGV de Sablé-sur-Sarthe dessert la commune (25 min du Mans). Intervention directe dans vos locaux. Format mixte sur site + visio.",
     },
   ],
 };

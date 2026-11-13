@@ -49,7 +49,7 @@ export const GAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gan et dans le vignoble jurançonnais ?",
-      a: "Oui, Axion-IA intervient à Gan et dans tout le vignoble AOC Jurançon (Jurançon, Monein, Lahourcade, Lacommande). Déplacement inclus dans l'agglo Pau. Gare de Pau à 10 min.",
+      a: "Oui, Axion-IA intervient à Gan et dans tout le vignoble AOC Jurançon (Jurançon, Monein, Lahourcade, Lacommande). Gare de Pau à 10 min.",
     },
     {
       q: "Quels services IA pour les vignerons de Gan ?",

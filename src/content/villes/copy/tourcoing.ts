@@ -132,7 +132,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
@@ -224,7 +224,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",

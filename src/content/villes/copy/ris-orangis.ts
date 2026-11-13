@@ -222,7 +222,7 @@ export const RIS_ORANGIS_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live. Travel costs listed separately, with full transparency.",
+          "The code and data are yours: no vendor lock-in, no contractual dependency on Axion-IA, sites transferable to any Paris-region provider or in-house. European Union GDPR hosting by default, documented backups and recovery plan. UX/UI, mobile version and accessibility included in every project. Quote from 24 to 48 hours depending on complexity; Web Vitals performance checked before go-live.",
       },
     },
   },

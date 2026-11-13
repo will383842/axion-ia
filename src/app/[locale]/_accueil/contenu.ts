@@ -74,7 +74,7 @@ export const CONTENU = {
         "En une journée, vous savez par où commencer, chiffres à l’appui, et vos équipes sont formées.",
       tuiles: [
         {
-          repere: "Le matin · 2 à 4 h d’audit",
+          repere: "Le matin · un audit de 2 à 4 h selon la structuration de l’entreprise",
           texte:
             "Votre entreprise cartographiée service par service, le point fait ensemble sur vos priorités : les 3 à 5 tâches au meilleur retour sur investissement et les plus rapides à mettre en place, découvertes le jour même et chiffrées en heures et en euros.",
         },
@@ -84,9 +84,9 @@ export const CONTENU = {
             "Vos équipes, sur leurs vrais dossiers. Une attestation de formation nominative par personne.",
         },
         {
-          repere: "Le soir même · vos priorités",
+          repere: "Sous 3 jours ouvrés · vos priorités",
           texte:
-            "Vos priorités écrites avant notre départ ; rapport complet et plan d’action sur 90 jours sous 3 jours ouvrés.",
+            "Vos priorités écrites dans le rapport détaillé remis sous 3 jours ouvrés, avec le plan d’action sur 90 jours.",
         },
       ],
       lignes: [
@@ -110,7 +110,7 @@ export const CONTENU = {
     blocAppel: {
       surtitre: "Pas encore sûr ? Une question ?",
       titre: "Diagnostic IA gratuit de 45 minutes",
-      accroche: "Diagnostic IA gratuit : 45 minutes, en visio ou par téléphone.",
+      accroche: "Diagnostic IA gratuit et facultatif : 45 minutes, en visio ou par téléphone.",
       repartezAvec: "Vous repartez avec",
       repartez: [
         { fort: "une première tâche chiffrée", fin: " ;" },

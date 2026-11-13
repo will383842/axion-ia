@@ -65,7 +65,7 @@ export const SAINT_CHERON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Chéron ?",
-      a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Dourdan (10 min). Arpajon (15 min). Évry-Courcouronnes (25 min). Paris centre (50 min RER C). Orly (30 min). Tarification transparente.",
     },
   ],
 };

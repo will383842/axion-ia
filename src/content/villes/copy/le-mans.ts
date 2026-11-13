@@ -808,10 +808,6 @@ export const LE_MANS_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can we organise several individual coachings for different managers?",
             a: "Yes. Some Sarthe mid-caps organise several individual sessions for their key managers or leads rather than a group training. Volume discount possible — to be specified at framing.",
           },

@@ -65,7 +65,7 @@ export const FLEURY_MEROGIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Fleury-Mérogis ?",
-      a: "Évry-Courcouronnes (10 min). Aéroport Paris-Orly (15 min). Paris centre (30 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Évry-Courcouronnes (10 min). Aéroport Paris-Orly (15 min). Paris centre (30 min). Tarification transparente.",
     },
   ],
 };

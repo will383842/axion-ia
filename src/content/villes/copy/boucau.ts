@@ -49,7 +49,7 @@ export const BOUCAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Boucau et dans l'agglo de Bayonne ?",
-      a: "Oui, Axion-IA intervient à Boucau et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Mouguerre). Déplacement inclus dans l'agglo bayonnaise.",
+      a: "Oui, Axion-IA intervient à Boucau et dans toute l'agglomération Pays Basque (Bayonne, Anglet, Biarritz, Saint-Pierre-d'Irube, Mouguerre).",
     },
     {
       q: "Quels services IA pour les PME industrielles de Boucau ?",

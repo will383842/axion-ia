@@ -269,7 +269,7 @@ export const NIMES_COPY: VilleCopy = {
           "Les PME du BTP nîmois bénéficient particulièrement des outils IA pour les comptes-rendus de chantier, la rédaction de CCTP et la gestion documentaire.",
           "Le format Dirigeants permet un cadrage stratégique en huis-clos pour les comités de direction des ETI gardoises.",
           "Vocabulaire ajusté à votre secteur dominant local : ingénierie, agroalimentaire, commerce, santé, BTP. Aucune session générique recyclée.",
-          "Nos consultants se déplacent à Nîmes et dans le bassin (Marguerittes, Bouillargues, Manduel, Beaucaire) — frais de déplacement et hébergement facturés séparément.",
+          "Nos consultants se déplacent à Nîmes et dans le bassin (Marguerittes, Bouillargues, Manduel, Beaucaire).",
         ],
         methodology: [
           {

@@ -49,7 +49,7 @@ export const MORDELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mordelles et dans l'ouest de Rennes Métropole ?",
-      a: "Oui, Axion-IA intervient à Mordelles et dans tout l'ouest de Rennes Métropole (Le Rheu, Chavagne, L'Hermitage, Cintré, Bréal-sous-Montfort). Nos consultants couvrent l'ensemble du bassin rennais avec déplacement inclus.",
+      a: "Oui, Axion-IA intervient à Mordelles et dans tout l'ouest de Rennes Métropole (Le Rheu, Chavagne, L'Hermitage, Cintré, Bréal-sous-Montfort).",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Mordelles  ?",

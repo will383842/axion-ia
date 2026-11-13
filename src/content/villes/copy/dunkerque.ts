@@ -133,7 +133,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation.",
           },
           {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",
@@ -225,7 +225,7 @@ export const DUNKERQUE_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation. Les modalités de prise en charge dépendent de votre situation, que nous examinons ensemble.",
+            a: "Nos interventions sont facturées en direct sur devis HT. Elles s'intègrent dans votre plan de développement des compétences : votre service RH ou comptable peut les traiter comme une prestation.",
           },
           {
             q: "Sous quel délai intervenez-vous à Dunkerque et quelles communes couvrez-vous ?",

@@ -231,7 +231,7 @@ export const COUERON_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il à Couëron pour intervenir sur site ?",
-      a: "Oui. Williams se déplace à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin — sans frais kilométriques additionnels.",
+      a: "Oui. Williams intervient à Couëron (44220) et dans tout Nantes Métropole — Indre, Saint-Herblain, Sautron, Saint-Étienne-de-Montluc, Saint-Jean-de-Boiseau, Le Pellerin.",
     },
     {
       q: "Quels délais pour démarrer une mission IA à Couëron ?",

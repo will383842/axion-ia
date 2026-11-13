@@ -65,7 +65,7 @@ export const GUILHERAND_GRANGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ?",
-      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min. Coûts de déplacement à part, tarification transparente.",
+      a: "Lyon (1h A7). TGV Paris Valence 2h15 + 10 min. Tarification transparente.",
     },
   ],
 };

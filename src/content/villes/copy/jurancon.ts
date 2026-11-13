@@ -49,7 +49,7 @@ export const JURANCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jurançon et dans le vignoble ?",
-      a: "Oui, Axion-IA intervient à Jurançon et dans tout le vignoble jurançonnais (Gan, Monein, Lahourcade, Lacommande). Déplacement inclus dans l'agglo Pau. Nos consultants accèdent via la gare de Pau (5 min voiture).",
+      a: "Oui, Axion-IA intervient à Jurançon et dans tout le vignoble jurançonnais (Gan, Monein, Lahourcade, Lacommande). Nos consultants accèdent via la gare de Pau (5 min voiture).",
     },
     {
       q: "Quels services IA pour les vignerons de Jurançon ?",

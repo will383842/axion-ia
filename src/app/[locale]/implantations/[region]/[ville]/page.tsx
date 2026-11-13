@@ -350,7 +350,7 @@ export default async function VillePage({ params }: Props) {
             {
               titre: "Le matin : l’audit",
               texte:
-                "2 à 4 h d’audit dans vos locaux : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
+                "un audit de 2 à 4 h selon la structuration de l’entreprise, dans vos locaux : nous cartographions l’entreprise service par service, faisons le point avec vous sur vos priorités et chiffrons vos plus gros gains, en heures et en euros.",
             },
             {
               titre: "L’après-midi : la formation",

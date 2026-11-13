@@ -65,7 +65,7 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarification transparente.",
     },
   ],
 };

@@ -441,7 +441,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Can you deliver in communes neighbouring Montpellier?",
-            a: "Yes. Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio and peripheral business zones (Parc Agropolis, Sète tech area) are covered. Travel costs are quoted per commune.",
+            a: "Yes. Castelnau-le-Lez, Lattes, Pérols, Saint-Jean-de-Védas, Mauguio and peripheral business zones (Parc Agropolis, Sète tech area) are covered.",
           },
           {
             q: "What happens with a cancellation?",

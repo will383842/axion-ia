@@ -91,7 +91,7 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           "L'écosystème universitaire (UCA, ISIMA, Sigma Clermont) produit chaque année des jeunes ingénieurs IA — les TPE, PME et ETI locales ont besoin d'un audit structuré pour canaliser ces ressources vers des cas d'usage à ROI démontré.",
           "Le Technopôle La Pardieu et le Biopôle Clermont-Limagne accueillent des PME et ETI dans le conseil, les services, la biotech et l'agro — exactement les secteurs où l'IA de traitement documentaire et d'automatisation de workflows génère les gains les plus rapides.",
           "Restitutions toujours en présentiel à Clermont-Ferrand, dans vos locaux : ateliers d'idéation avec votre comité de direction, livrable PDF remis en main propre, plan d'action exécutable immédiatement.",
-          "Tarifs publics affichés, pas de devis opaque. Vous savez exactement ce que vous payez avant de signer — différenciateur décisif face aux cabinets traditionnels présents à Lyon ou Paris qui facturent des frais de déplacement en sus.",
+          "Tarifs publics affichés, pas de devis opaque.",
           "Votre plan d'action post-audit est exécutable avec n'importe quel prestataire ou en interne — aucun lock-in, aucune dépendance créée envers Axion-IA.",
         ],
         methodology: [
@@ -812,10 +812,6 @@ export const CLERMONT_FERRAND_COPY: VilleCopy = {
           {
             q: "Do I need prior AI experience to book individual coaching?",
             a: "No. Coaching adapts to your level, from absolute beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
-          },
-          {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
           },
           {
             q: "Can I organise several individual sessions for different staff members?",

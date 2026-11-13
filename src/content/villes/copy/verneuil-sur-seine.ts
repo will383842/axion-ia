@@ -65,7 +65,7 @@ export const VERNEUIL_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Poissy et Les Mureaux ?",
-      a: "Oui, Axion-IA couvre tout le secteur Seine aval yvelinois : Poissy, Les Mureaux, Meulan-en-Yvelines, Triel-sur-Seine, Orgeval, Villennes-sur-Seine. Déplacement inclus dans le forfait pour les missions locales.",
+      a: "Oui, Axion-IA couvre tout le secteur Seine aval yvelinois : Poissy, Les Mureaux, Meulan-en-Yvelines, Triel-sur-Seine, Orgeval, Villennes-sur-Seine.",
     },
   ],
 };

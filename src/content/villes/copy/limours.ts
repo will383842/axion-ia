@@ -65,7 +65,7 @@ export const LIMOURS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Massy ?",
-      a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Massy TGV (20 min). Paris centre (40 min par N118 ou A10). Orly (25 min). Tarification transparente.",
     },
   ],
 };

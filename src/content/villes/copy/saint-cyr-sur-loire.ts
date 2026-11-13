@@ -65,7 +65,7 @@ export const SAINT_CYR_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment accéder à Saint-Cyr-sur-Loire ?",
-      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 20 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
+      a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 20 min. Consultants sur site Tours Métropole.",
     },
   ],
 };
