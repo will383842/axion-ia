@@ -13,6 +13,7 @@
  */
 
 import { describe, expect, it } from "vitest";
+import { gabaritArchive } from "./archives";
 import {
   GABARIT_VERSIONS,
   versionGabaritCourante,
@@ -87,7 +88,7 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     expect(versionGabaritInstantane(instantaneApres)).toBe(courante);
   });
 
-  it("le devis est en v4 (choix imprimé, 07/11) ; ses v1, v2 et v3 restent rendables par l'archive", () => {
+  it("le devis est en v5 (sans Qualiopi, 08/11) ; ses v1, v2, v3 et v4 restent rendables par l'archive", () => {
     // Avant le 16/10 le devis restait en v1 : sa garde de certification change les
     // données, pas le texte. La mention handicap, elle, est du TEXTE rendu : v2, et la
     // v1 est archivée pour que les devis déjà signés se re-rendent à l'identique.
@@ -95,6 +96,9 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     // handicap) est archivée telle quelle.
     // 07/11 : le bloc « Formule retenue par le client » passe la pièce en v4 ; la v3 (formules,
     // lot 3) est archivée telle quelle.
-    expect(versionGabaritCourante("devis")).toBe(4);
+    // 08/11 : le retrait de la mention Qualiopi (décision 22) passe la pièce en v5 ; la v4 est
+    // archivée telle quelle (empreinte identique à l'ancienne v4 courante).
+    expect(versionGabaritCourante("devis")).toBe(5);
+    for (const v of [1, 2, 3, 4]) expect(gabaritArchive("devis", v)).not.toBeNull();
   });
 });

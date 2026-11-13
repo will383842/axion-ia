@@ -15,6 +15,9 @@ import {
   type PhaseOffre,
 } from "@/server/qualiopi/devis/offre-devis";
 
+/** Acompte par défaut d'un devis, en % du total HT (décision Williams n°9, 08/11/2026). */
+const ACOMPTE_DEVIS_DEFAUT_PCT = 30;
+
 export interface LigneSaisie {
   libelle: string;
   quantite: string;
@@ -85,11 +88,17 @@ export interface TexteCopie {
 export function saisieVide(tvaStandardPct: number = TAUX_TVA_STANDARD): SaisieFormules {
   const tva = String(tvaStandardPct);
   const ligne = (): LigneSaisie => ({ libelle: "", quantite: "1", prixEur: "", tauxTvaPct: tva });
-  const phase = (): PhaseSaisie => ({
-    libelle: "Solde",
-    pourcentage: "100",
-    declencheur: "signature",
-  });
+  // Décision Williams n°9 (08/11/2026) : acompte de 30 % du total HT à la signature, solde à la
+  // livraison. Le réglage en base `taux_acompte_defaut_pct` n'est lu que par la facturation des
+  // sessions (`financements/facturation-service.ts`) : il n'est pas branché ici.
+  const phases = (): PhaseSaisie[] => [
+    { libelle: "Acompte", pourcentage: String(ACOMPTE_DEVIS_DEFAUT_PCT), declencheur: "signature" },
+    {
+      libelle: "Solde",
+      pourcentage: String(100 - ACOMPTE_DEVIS_DEFAUT_PCT),
+      declencheur: "livraison",
+    },
+  ];
   return {
     formules: { achat: false, abonnement: false },
     garantieJours: String(GARANTIE_JOURS_PAR_DEFAUT),
@@ -98,14 +107,14 @@ export function saisieVide(tvaStandardPct: number = TAUX_TVA_STANDARD): SaisieFo
     plafondAConfirmer: null,
     achat: {
       lignes: [ligne()],
-      phases: [phase()],
+      phases: phases(),
       hebergement: "client",
       hebergementMensuelEur: "",
       maintenance: { regle: "facultative", moisOfferts: "0", mensuelEur: "", periodes: [1, 12] },
     },
     abonnement: {
       lignes: [ligne()],
-      phases: [phase()],
+      phases: phases(),
       mensuelCatalogueEur: "",
       tauxTvaPct: tva,
       terme: "a_echoir",

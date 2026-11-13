@@ -3,7 +3,7 @@
  *
  * Miroir commercial de la facture (facture.tsx) :
  *   - Identité + adresse du siège de l'émetteur (en-tête + pied via QualiopiPage).
- *   - SIRET / NDA / Qualiopi (bloc émetteur, `required`).
+ *   - SIRET / NDA (bloc émetteur, `required`). Plus de mention Qualiopi depuis la v5 (décision 22).
  *   - N° de devis, date d'émission, date de validité, référence client.
  *   - Lignes avec taux de TVA par ligne (devis mixtes formation 0 % + conseil 20 %).
  *   - Totaux HT / TVA (ventilation par taux) / TTC via computeTotauxFacture.
@@ -515,7 +515,9 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
       <QualiopiPage
         docTitle="Devis"
         docNumber={`N° ${data.numero}`}
-        identite={identite}
+        // Décision 22 (v5) : pas de pied Qualiopi sur le devis. `base-layout` teste `qualiopi`
+        // en vérité : chaîne vide = ligne absente. base-layout lui-même reste intact (archives).
+        identite={{ ...identite, qualiopi: "" }}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
         {/* Informations du devis */}
@@ -537,9 +539,6 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           <FieldRow label="Adresse du siège" value={identite.adresseSiege} required />
           <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
           <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
-          {identite.qualiopi ? (
-            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
-          ) : null}
         </DocSection>
 
         {/* Client */}
