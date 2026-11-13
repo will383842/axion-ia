@@ -452,3 +452,45 @@ describe("marquerAnnule", () => {
     expect(updateManyMock).not.toHaveBeenCalled();
   });
 });
+
+describe("STOP-T1b — aucune adresse en clair quand l'écriture du journal échoue", () => {
+  const ADRESSE = BASE.recipient;
+
+  function ecritSurLaConsole(): string {
+    return JSON.stringify((console.error as ReturnType<typeof vi.fn>).mock.calls);
+  }
+
+  // Le message d'une erreur Prisma recopie les valeurs de la requête, adresse comprise.
+  const panne = (): Error => new Error(`Invalid invocation: data: { recipient: "${ADRESSE}" }`);
+
+  it("« en attente » : ni le destinataire ni le message de la base ne portent « @ » en clair", async () => {
+    transactionMock.mockImplementationOnce(() => {
+      throw panne();
+    });
+    await journaliserEnAttente({ ...BASE, jobId: "job-1", cleAppelant: true });
+    expect(ecritSurLaConsole()).not.toContain(ADRESSE);
+    expect(ecritSurLaConsole()).not.toContain("stagiaire@");
+  });
+
+  it("tentative ratée non consignée : aucune adresse", async () => {
+    updateManyMock.mockRejectedValue(panne());
+    await noterTentativeEchouee({ ...BASE, jobId: "job-1", attempts: 1, error: "x" });
+    expect(console.error).toHaveBeenCalled();
+    expect(ecritSurLaConsole()).not.toContain("stagiaire@");
+  });
+
+  it("clôture impossible : aucune adresse", async () => {
+    createMock.mockRejectedValue(panne());
+    updateManyMock.mockRejectedValue(panne());
+    await cloturerJournal({
+      ...BASE,
+      attempts: 1,
+      status: EmailLogStatus.failed,
+      error: "x",
+      failedAt: new Date(),
+      jobId: "job-1",
+    });
+    expect(console.error).toHaveBeenCalled();
+    expect(ecritSurLaConsole()).not.toContain("stagiaire@");
+  });
+});

@@ -250,7 +250,7 @@ describe("🔴 D-STOP-1 — base en panne au départ : RIEN ne part, le job est 
 });
 
 describe("🔴 STOP-T1 — contrôle du départ qui lève : le journal n'est jamais laissé « en attente »", () => {
-  const MOTIF = "contrôle d'opposition illisible au départ : rien n'est parti";
+  const MOTIF = "contrôle du départ illisible : rien n'est parti";
   const convocation = (over: Record<string, unknown> = {}) => job("qualiopi-convocation", {}, over);
 
   const CAS: Array<[string, () => void, string, Record<string, unknown>]> = [
