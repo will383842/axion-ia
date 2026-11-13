@@ -146,6 +146,6 @@ describe("aucun appel de production sans R", () => {
         );
       }
     }
-    expect(appels).toBeGreaterThanOrEqual(6);
+    expect(appels).toBeGreaterThanOrEqual(5); // console : plus de missionsAReprendre (annulées via missionsSuspensives)
   });
 });

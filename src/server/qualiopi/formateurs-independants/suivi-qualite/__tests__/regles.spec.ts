@@ -348,6 +348,15 @@ describe("suspension : décisions de Will du 17/10/2026", () => {
     expect(suspendu(f)).toBe(true);
   });
 
+  it("entretien jugé sur la pire note : 3,2 puis 4,5 -> entretien à prévoir", () => {
+    const f = faits({
+      missions: [mission({ sessionId: "s1", satisfaction: 4.5, satisfactionMin: 3.2 })],
+      observations: obs,
+    });
+    expect(missionsAReprendre(f).entretien).toHaveLength(1);
+    expect(missionsAReprendre(f).suspension).toHaveLength(0);
+  });
+
   it("mission notée 2,5 puis annulée : la suspension est maintenue", () => {
     const f = faits({
       missions: [mission({ sessionId: "s1", annulee: true, satisfaction: 2.5 })],
