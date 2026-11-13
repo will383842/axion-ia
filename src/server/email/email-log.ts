@@ -27,17 +27,9 @@
  */
 
 import { prisma } from "@/lib/prisma";
-import { redactEmailValue } from "@/server/queue/lib/sanitize-job-data";
+import { redactEmailValue, sansAdresse } from "@/server/queue/lib/sanitize-job-data";
 import { EmailLogStatus } from "../../../prisma/generated/client";
 
-/**
- * STOP-T1b — un message d'erreur de la base (Prisma) recopie les valeurs de la requête, donc
- * l'adresse du destinataire. Tout texte libre écrit sur la console passe ici : chaque adresse
- * y est remplacée par sa forme masquée (`m****@domaine`).
- */
-function sansAdresse(texte: string): string {
-  return texte.replace(/[^\s@"'<>(),;:]+@[^\s@"'<>(),;:]+/g, (a) => redactEmailValue(a));
-}
 import type { Locale } from "../../../prisma/generated/client";
 
 function estStub(): boolean {
