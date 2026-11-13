@@ -51,7 +51,14 @@ function ActionForm({
   );
 }
 
-export function OfferLifecycleActions({ id }: { id: string }) {
+export function OfferLifecycleActions({
+  id,
+  masquerSupprimer = false,
+}: {
+  id: string;
+  /** Lot P15 : l'offre porte des candidatures et l'interrupteur est actif. */
+  masquerSupprimer?: boolean;
+}) {
   return (
     <div className="admin-actions-row">
       {/* Republication = rafraîchit la date que Google for Jobs affiche.
@@ -70,12 +77,14 @@ export function OfferLifecycleActions({ id }: { id: string }) {
         label="Archiver"
         confirmMessage="Archiver cette offre ? Elle ne sera plus visible publiquement."
       />
-      <ActionForm
-        action={deleteJobOfferAction}
-        id={id}
-        label="Supprimer définitivement"
-        confirmMessage="SUPPRIMER définitivement l'offre ET toutes ses candidatures (CV inclus) ? Action irréversible."
-      />
+      {masquerSupprimer ? null : (
+        <ActionForm
+          action={deleteJobOfferAction}
+          id={id}
+          label="Supprimer définitivement"
+          confirmMessage="SUPPRIMER définitivement l'offre ? Les candidatures sont conservées, sans offre rattachée. Action irréversible."
+        />
+      )}
     </div>
   );
 }
