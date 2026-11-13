@@ -153,6 +153,11 @@ export function redactEmailValue(raw: string): string {
   return `${local[0]}****@${domain}`;
 }
 
+/** Texte libre : chaque adresse y est remplacée par sa forme masquée (`m****@domaine`). */
+export function sansAdresse(texte: string): string {
+  return texte.replace(/[^\s@"'<>(),;:]+@[^\s@"'<>(),;:]+/g, (a) => redactEmailValue(a));
+}
+
 function redactPhoneValue(raw: string): string {
   const digits = raw.replace(/[^\d+]/g, "");
   let prefix = "";

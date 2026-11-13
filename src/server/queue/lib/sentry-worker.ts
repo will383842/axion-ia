@@ -43,7 +43,7 @@ import { createRequire } from "node:module";
 import * as Sentry from "@sentry/nextjs";
 import type { Job } from "bullmq";
 
-import { sanitizeJobData } from "./sanitize-job-data";
+import { sanitizeJobData, sansAdresse } from "./sanitize-job-data";
 
 /**
  * Identifiants courts/canoniques des workers content-gen monitored.
@@ -218,7 +218,43 @@ export function captureWorkerError(
   error: Error | unknown,
 ): void {
   try {
-    const err = error instanceof Error ? error : new Error(String(error));
+    const brute = error instanceof Error ? error : new Error(String(error));
+    // Un refus du relais cite l'adresse du destinataire : masquée AVANT l'envoi à Sentry
+    // (message, fingerprint) — la pile n'est pas copiée avec l'adresse, `message` seul l'est.
+    const messageMasque = sansAdresse(brute.message ?? "unknown");
+    // La pile recopie le message ; on y remplace le message seul (un motif d'adresse appliqué à
+    // toute la pile abîmerait les chemins `@paquet@1.2.3`).
+    const stackMasquee = brute.stack?.split(brute.message).join(messageMasque) ?? brute.stack;
+    // `cause` est non énumérable : `Object.assign` la perdrait. Masquée de la même façon.
+    const causeBrute = (brute as { cause?: unknown }).cause;
+    const causeMasquee =
+      causeBrute instanceof Error
+        ? Object.assign(Object.create(Object.getPrototypeOf(causeBrute)) as Error, causeBrute, {
+            name: causeBrute.name,
+            message: sansAdresse(causeBrute.message ?? ""),
+            stack: causeBrute.stack
+              ?.split(causeBrute.message)
+              .join(sansAdresse(causeBrute.message)),
+          })
+        : typeof causeBrute === "string"
+          ? sansAdresse(causeBrute)
+          : causeBrute;
+    // Sans adresse : l'objet d'origine passe tel quel. Sinon, une copie masquée.
+    const err =
+      messageMasque === brute.message &&
+      stackMasquee === brute.stack &&
+      (causeBrute === undefined ||
+        (typeof causeBrute === "string" && causeMasquee === causeBrute) ||
+        (causeBrute instanceof Error &&
+          causeMasquee instanceof Error &&
+          causeMasquee.message === causeBrute.message))
+        ? brute
+        : Object.assign(Object.create(Object.getPrototypeOf(brute)) as Error, brute, {
+            name: brute.name,
+            message: messageMasque,
+            stack: stackMasquee,
+            ...(causeBrute !== undefined ? { cause: causeMasquee } : {}),
+          });
     const errName = err.name || "Error";
     const errMsg = (err.message ?? "unknown").slice(0, 100);
 

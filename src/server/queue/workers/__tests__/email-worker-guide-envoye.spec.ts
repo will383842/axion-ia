@@ -40,7 +40,12 @@ vi.mock("@/lib/pii-crypto", () => ({ decryptPii: vi.fn(), isDecryptedEmailUsable
 // La mise à l'écart (effacement) est relue au départ : la lecture doit exister (aucune écartée).
 vi.mock("@/lib/prisma", () => ({
   // `findUnique` : l'opposition est relue au départ (D-STOP-1) ; sans elle, la lecture lèverait.
-  prisma: { emailOpposition: { findFirst: async () => null, findUnique: async () => null } },
+  // `guideRequest` / `emailLog` : la garde du guide relit la demande et le journal (STOP-T1b) ; aucun envoi antérieur.
+  prisma: {
+    emailOpposition: { findFirst: async () => null, findUnique: async () => null },
+    guideRequest: { findUnique: async () => null },
+    emailLog: { findFirst: async () => null },
+  },
 }));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
 vi.mock("@/server/email/email-log", () => ({
@@ -61,7 +66,15 @@ function processeur(): Processeur {
 }
 
 function job(data: Record<string, unknown>): Record<string, unknown> {
-  return { id: "job-1", name: data["template"], data, attemptsMade: 0, opts: { attempts: 5 } };
+  // `timestamp` : sans date de création lisible, la garde du guide retient l'envoi (STOP-T1b, B1).
+  return {
+    id: "job-1",
+    name: data["template"],
+    timestamp: Date.parse("2026-11-10T08:00:00Z"),
+    data,
+    attemptsMade: 0,
+    opts: { attempts: 5 },
+  };
 }
 
 beforeEach(() => {

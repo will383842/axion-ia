@@ -206,22 +206,36 @@ export async function resolveAttachments(
  * Un renvoi VOULU n'est pas touché : la console, le formulaire et le rattrapage créent un
  * NOUVEAU job, mis en file après le premier envoi (`sent_at` est le PREMIER envoi, donc plus
  * ancien que ce job) — ce job-là porte une date de création postérieure à `sent_at`.
- * Seul un envoi parti après la création du job le rend superflu.
+ * Seul un envoi parti après la création du job le rend superflu — vu dans `sent_at` de la demande
+ * OU dans le journal d'envoi (un autre job, `sent`), au cas où `sent_at` n'aurait pas été écrit.
  *
- * Sans date de création lisible, on ne peut pas trancher : l'envoi part (chemin d'avant).
+ * Sans date de création lisible, on ne peut pas trancher : au moindre doute rien ne part, le job
+ * est retenu (mieux vaut un guide non envoyé, rattrapable, qu'un second envoi).
  * Lecture en panne : l'erreur remonte (`echecAuDepart` : rien ne part, réessai).
  */
 async function guideDejaServiApresCeJob(
   demandeId: string,
   creationDuJobMs: unknown,
 ): Promise<boolean> {
-  if (typeof creationDuJobMs !== "number" || !Number.isFinite(creationDuJobMs)) return false;
+  if (typeof creationDuJobMs !== "number" || !Number.isFinite(creationDuJobMs)) return true;
   const demande = await prisma.guideRequest.findUnique({
     where: { id: demandeId },
     select: { sentAt: true },
   });
-  if (!demande?.sentAt) return false;
-  return demande.sentAt.getTime() >= creationDuJobMs;
+  if (demande?.sentAt && demande.sentAt.getTime() >= creationDuJobMs) return true;
+  // Le journal d'envoi fait foi quand `sent_at` n'a pas pu être écrit après un envoi réel : un
+  // job, `sent` après la mise en file de celui-ci — y compris ce même job relancé après une chute
+  // du conteneur (ligne `sent` écrite, `sent_at` vide) : aucune exclusion sur `job_id`.
+  const envoi = await prisma.emailLog.findFirst({
+    where: {
+      entityType: ENTITE_GUIDE,
+      entityId: demandeId,
+      status: EmailLogStatus.sent,
+      sentAt: { gte: new Date(creationDuJobMs) },
+    },
+    select: { id: true },
+  });
+  return envoi !== null;
 }
 
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
