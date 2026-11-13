@@ -6,9 +6,24 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import crypto from "node:crypto";
 import { NextRequest } from "next/server";
 
-type Ligne = { mot: string; reseau: string; occurredAt: Date; emailKey?: string };
+type Origine = {
+  mot: string;
+  reseau: string;
+  postRef: string | null;
+  versionTexte: string | null;
+  guide: string;
+  emailKey: string;
+  occurredAt: Date;
+};
+type Demande = { emailKey: string; aimant: string; sentAt: Date | null; firstClickAt: Date | null };
 const { bd } = vi.hoisted(() => ({
-  bd: { lignes: [] as Ligne[], lectures: 0, ecritures: 0, panne: false },
+  bd: {
+    origines: [] as Origine[],
+    demandes: [] as Demande[],
+    lectures: 0,
+    ecritures: 0,
+    panne: false,
+  },
 }));
 
 vi.mock("@/lib/prisma", () => {
@@ -16,22 +31,31 @@ vi.mock("@/lib/prisma", () => {
     bd.ecritures++;
     return {};
   };
+  const ecritures = {
+    create: ecriture(),
+    createMany: ecriture(),
+    update: ecriture(),
+    updateMany: ecriture(),
+    upsert: ecriture(),
+    delete: ecriture(),
+    deleteMany: ecriture(),
+  };
   return {
     prisma: {
       guideReseauOrigine: {
-        create: ecriture(),
-        createMany: ecriture(),
-        update: ecriture(),
-        updateMany: ecriture(),
-        upsert: ecriture(),
-        delete: ecriture(),
-        deleteMany: ecriture(),
-        findMany: async ({ where }: { where: { occurredAt: { gte: Date; lt: Date } } }) => {
+        ...ecritures,
+        findMany: async () => {
           bd.lectures++;
           if (bd.panne) throw new Error("panne lecture");
-          const { gte, lt } = where.occurredAt;
-          // Ligne brute renvoyée telle quelle : un champ en trop (emailKey) ne doit JAMAIS sortir.
-          return bd.lignes.filter((l) => l.occurredAt >= gte && l.occurredAt < lt);
+          return bd.origines; // lignes brutes : un champ en trop ne doit JAMAIS sortir
+        },
+      },
+      guideRequest: {
+        ...ecritures,
+        findMany: async () => {
+          bd.lectures++;
+          if (bd.panne) throw new Error("panne lecture");
+          return bd.demandes;
         },
       },
       $executeRaw: async () => {
@@ -82,22 +106,29 @@ function appel(
   );
 }
 
-const PERIODE = { schemaVersion: 1, depuis: "2026-11-01", jusqua: "2026-11-03" };
-const jour = (j: string, h = 10) => new Date(`${j}T${String(h).padStart(2, "0")}:00:00.000Z`);
-function poser(n: number, mot: string, reseau: string, j: string) {
-  for (let i = 0; i < n; i++)
-    bd.lignes.push({
-      mot,
-      reseau,
-      occurredAt: jour(j, i % 24),
-      emailKey: "a".repeat(64),
-    });
+const CORPS = { v: 1 };
+const H = 3_600_000;
+const J = 24 * H;
+const il_y_a = (ms: number) => new Date(Date.now() - ms);
+const CLE_A = "a".repeat(64);
+
+function origine(o: Partial<Origine> & { occurredAt: Date }): Origine {
+  return {
+    mot: "guide",
+    reseau: "linkedin",
+    postRef: "post-1",
+    versionTexte: "v1",
+    guide: "guide-ia",
+    emailKey: CLE_A,
+    ...o,
+  };
 }
 
 beforeEach(() => {
   vi.stubEnv("GUIDES_RESEAU_ENABLED", "true");
   vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", SECRET);
-  bd.lignes = [];
+  bd.origines = [];
+  bd.demandes = [];
   bd.lectures = 0;
   bd.ecritures = 0;
   bd.panne = false;
@@ -109,122 +140,131 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-describe("compteurs-guide-reseau — critère 1 : par mot, réseau, jour ; effectif < 3 masqué", () => {
-  it("compte par (mot, réseau, jour)", async () => {
-    poser(4, "guide", "linkedin", "2026-11-01");
-    poser(5, "guide", "linkedin", "2026-11-02");
-    poser(3, "guide", "instagram", "2026-11-01");
-    poser(6, "audit", "linkedin", "2026-11-01");
-    const r = await appel(PERIODE);
+describe("compteurs-guide-reseau v1 — lignes et fenêtres", () => {
+  it("une ligne par (mot, réseau, post, version, cible) ; fenêtres glissantes, bornes incluses", async () => {
+    bd.origines = [
+      origine({ occurredAt: il_y_a(H) }),
+      origine({ occurredAt: il_y_a(7 * J - 1000), emailKey: "b".repeat(64) }), // dans j7
+      origine({ occurredAt: il_y_a(7 * J + 60_000), emailKey: "c".repeat(64) }), // j30 seulement
+      origine({ occurredAt: il_y_a(31 * J), emailKey: "d".repeat(64) }), // total seulement
+      origine({ occurredAt: il_y_a(H), reseau: "instagram", postRef: null, versionTexte: null }),
+    ];
+    const r = await appel(CORPS);
     expect(r.status).toBe(200);
     const j = await r.json();
-    expect(j.ok).toBe(true);
-    const cle = (c: { mot: string; reseau: string; jour: string; n: number }) =>
-      `${c.mot}|${c.reseau}|${c.jour}|${c.n}`;
-    expect(j.compteurs.map(cle).sort()).toEqual(
-      [
-        "audit|linkedin|2026-11-01|6",
-        "guide|instagram|2026-11-01|3",
-        "guide|linkedin|2026-11-01|4",
-        "guide|linkedin|2026-11-02|5",
-      ].sort(),
-    );
+    expect(j.v).toBe(1);
+    expect(new Date(j.genereLe).toISOString()).toBe(j.genereLe);
+    expect(j.lignes).toHaveLength(2);
+    const li = j.lignes.find((l: { reseau: string }) => l.reseau === "linkedin");
+    expect(li.formulaires).toEqual({ j7: 2, j30: 3, total: 4 });
+    expect(li.cible).toBe("guide-ia");
+    const ig = j.lignes.find((l: { reseau: string }) => l.reseau === "instagram");
+    expect(ig.postRef).toBeNull();
+    expect(ig.versionTexte).toBeNull();
+    expect(ig.formulaires).toEqual({ j7: 1, j30: 1, total: 1 });
   });
 
-  it("masque tout effectif inférieur à 3 (1 et 2 absents, 3 présent)", async () => {
-    poser(1, "guide", "linkedin", "2026-11-01");
-    poser(2, "audit", "linkedin", "2026-11-01");
-    poser(3, "guide", "instagram", "2026-11-01");
-    const j = await (await appel(PERIODE)).json();
-    expect(j.compteurs).toEqual([{ mot: "guide", reseau: "instagram", jour: "2026-11-01", n: 3 }]);
-    expect(j.masquees).toBe(2);
-    for (const c of j.compteurs) expect(c.n).toBeGreaterThanOrEqual(3);
-    expect(JSON.stringify(j)).not.toMatch(/"n":[12]\b/);
+  it("envois datés par sentAt, clics par firstClickAt, rattachés à l'origine la plus récente", async () => {
+    bd.origines = [
+      origine({ occurredAt: il_y_a(40 * J), postRef: "ancien" }),
+      origine({ occurredAt: il_y_a(2 * J), postRef: "recent" }),
+    ];
+    bd.demandes = [
+      { emailKey: CLE_A, aimant: "guide-ia", sentAt: il_y_a(2 * J), firstClickAt: il_y_a(10 * J) },
+      { emailKey: CLE_A, aimant: "autre", sentAt: il_y_a(H), firstClickAt: null }, // sans origine : ignorée
+    ];
+    const j = await (await appel(CORPS)).json();
+    const recent = j.lignes.find((l: { postRef: string }) => l.postRef === "recent");
+    const ancien = j.lignes.find((l: { postRef: string }) => l.postRef === "ancien");
+    expect(recent.envois).toEqual({ j7: 1, j30: 1, total: 1 });
+    expect(recent.clics).toEqual({ j7: 0, j30: 1, total: 1 });
+    expect(ancien.envois).toEqual({ j7: 0, j30: 0, total: 0 });
   });
 
-  it("la borne « jusqua » est incluse, le jour suivant est exclu", async () => {
-    poser(3, "guide", "linkedin", "2026-11-03");
-    poser(3, "guide", "linkedin", "2026-11-04");
-    const j = await (await appel(PERIODE)).json();
-    expect(j.compteurs.map((c: { jour: string }) => c.jour)).toEqual(["2026-11-03"]);
+  it("aucun masquage : un effectif de 1 est rendu tel quel", async () => {
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    const j = await (await appel(CORPS)).json();
+    expect(j.lignes).toHaveLength(1);
+    expect(j.lignes[0].formulaires.total).toBe(1);
+    expect(Object.keys(j)).not.toContain("masquees");
   });
 });
 
-describe("compteurs-guide-reseau — critère 2 : des nombres seulement", () => {
+describe("compteurs-guide-reseau v1 — des nombres seulement", () => {
   it("clés de la réponse : liste fermée, aucune adresse, nom ni identifiant de personne", async () => {
-    poser(4, "guide", "linkedin", "2026-11-01");
-    const r = await appel(PERIODE);
-    const j = await r.json();
-    expect(Object.keys(j).sort()).toEqual(["compteurs", "masquees", "ok", "schemaVersion"]);
-    for (const c of j.compteurs) {
-      expect(Object.keys(c).sort()).toEqual(["jour", "mot", "n", "reseau"]);
-      expect(typeof c.n).toBe("number");
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    bd.demandes = [
+      { emailKey: CLE_A, aimant: "guide-ia", sentAt: il_y_a(H), firstClickAt: il_y_a(H) },
+    ];
+    const j = await (await appel(CORPS)).json();
+    expect(Object.keys(j).sort()).toEqual(["genereLe", "lignes", "v"]);
+    for (const l of j.lignes) {
+      expect(Object.keys(l).sort()).toEqual([
+        "cible",
+        "clics",
+        "envois",
+        "formulaires",
+        "mot",
+        "postRef",
+        "reseau",
+        "versionTexte",
+      ]);
+      for (const f of [l.formulaires, l.envois, l.clics])
+        expect(Object.keys(f).sort()).toEqual(["j30", "j7", "total"]);
     }
     const brut = JSON.stringify(j);
-    expect(brut).not.toContain("a".repeat(64)); // emailKey de la base simulée
-    expect(brut).not.toMatch(/@|email|nom|prenom|personne|conv|compte_ref|id"/i);
-  });
-
-  it("la lecture ne demande que mot, reseau et occurredAt", async () => {
-    poser(3, "guide", "linkedin", "2026-11-01");
-    const { prisma } = await import("@/lib/prisma");
-    const espion = vi.spyOn(prisma.guideReseauOrigine, "findMany");
-    await appel(PERIODE);
-    const arg = espion.mock.calls[0]![0] as { select: Record<string, boolean> };
-    expect(Object.keys(arg.select).sort()).toEqual(["mot", "occurredAt", "reseau"]);
+    expect(brut).not.toContain(CLE_A);
+    expect(brut).not.toMatch(/@|email|prenom|personne|convRef|conv_ref/i);
   });
 
   it("le journal ne porte aucune donnée de personne", async () => {
-    poser(3, "guide", "linkedin", "2026-11-01");
-    await appel(PERIODE);
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    await appel(CORPS);
     const log = JSON.stringify(
       (console.warn as unknown as { mock: { calls: unknown[] } }).mock.calls,
     );
     expect(log).toContain("guides_reseau_compteurs");
-    expect(log).not.toContain("a".repeat(64));
+    expect(log).not.toContain(CLE_A);
   });
 });
 
-describe("compteurs-guide-reseau — critère 3 : 401 et 503, rien lu ni écrit", () => {
+describe("compteurs-guide-reseau v1 — 401 et 404, rien lu ni écrit", () => {
   it("sans signature : 401, rien lu", async () => {
-    poser(3, "guide", "linkedin", "2026-11-01");
-    const r = await appel(PERIODE, { signer: false });
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    const r = await appel(CORPS, { signer: false });
     expect(r.status).toBe(401);
     expect(bd.lectures).toBe(0);
     expect(bd.ecritures).toBe(0);
   });
 
   it("mauvais secret : 401, rien lu", async () => {
-    const r = await appel(PERIODE, { secret: "x".repeat(40) });
+    const r = await appel(CORPS, { secret: "x".repeat(40) });
     expect(r.status).toBe(401);
     expect(bd.lectures).toBe(0);
-    expect(bd.ecritures).toBe(0);
   });
 
-  it("interrupteur éteint : 503, rien lu ni écrit (même avec une signature valide)", async () => {
+  it("interrupteur éteint : 404, rien lu ni écrit (même avec une signature valide)", async () => {
     vi.stubEnv("GUIDES_RESEAU_ENABLED", "false");
-    const r = await appel(PERIODE);
-    expect(r.status).toBe(503);
+    const r = await appel(CORPS);
+    expect(r.status).toBe(404);
     expect(bd.lectures).toBe(0);
     expect(bd.ecritures).toBe(0);
   });
 
-  it("interrupteur éteint ET sans signature : 503 (l'interrupteur passe en premier)", async () => {
+  it("interrupteur éteint ET sans signature : 404 (l'interrupteur passe en premier)", async () => {
     vi.stubEnv("GUIDES_RESEAU_ENABLED", "");
-    const r = await appel(PERIODE, { signer: false });
-    expect(r.status).toBe(503);
+    const r = await appel(CORPS, { signer: false });
+    expect(r.status).toBe(404);
     expect(bd.lectures).toBe(0);
   });
 });
 
-describe("compteurs-guide-reseau — corps strict, lecture seule, fermé", () => {
+describe("compteurs-guide-reseau v1 — corps strict, lecture seule, fermé", () => {
   it.each([
-    ["champ inconnu", { ...PERIODE, email: "x" }],
-    ["version inconnue", { ...PERIODE, schemaVersion: 2 }],
-    ["date mal formée", { ...PERIODE, depuis: "01/11/2026" }],
-    ["jour inexistant", { ...PERIODE, depuis: "2026-02-31" }],
-    ["période inversée", { ...PERIODE, depuis: "2026-11-05" }],
-    ["période trop longue", { ...PERIODE, depuis: "2025-01-01" }],
+    ["champ inconnu", { v: 1, email: "x" }],
+    ["version inconnue", { v: 2 }],
+    ["sans version", {}],
+    ["ancienne forme", { schemaVersion: 1, depuis: "2026-11-01", jusqua: "2026-11-03" }],
   ])("%s : 422, rien lu", async (_nom, corps) => {
     const r = await appel(corps);
     expect(r.status).toBe(422);
@@ -233,21 +273,38 @@ describe("compteurs-guide-reseau — corps strict, lecture seule, fermé", () =>
 
   it("JSON invalide : 422 ; chaîne de requête : 400", async () => {
     expect((await appel(null, { brut: "{pas du json" })).status).toBe(422);
-    expect((await appel(PERIODE, { requete: "?x=1" })).status).toBe(400);
+    expect((await appel(CORPS, { requete: "?x=1" })).status).toBe(400);
+  });
+
+  it("la lecture ne sélectionne aucun champ de personne en sortie (clé de liaison interne seulement)", async () => {
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    const { prisma } = await import("@/lib/prisma");
+    const espion = vi.spyOn(prisma.guideReseauOrigine, "findMany");
+    await appel(CORPS);
+    const arg = espion.mock.calls[0]![0] as { select: Record<string, boolean> };
+    expect(Object.keys(arg.select).sort()).toEqual([
+      "emailKey",
+      "guide",
+      "mot",
+      "occurredAt",
+      "postRef",
+      "reseau",
+      "versionTexte",
+    ]);
   });
 
   it("panne de lecture : 500 fermé, sans résultat partiel", async () => {
-    poser(3, "guide", "linkedin", "2026-11-01");
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
     bd.panne = true;
-    const r = await appel(PERIODE);
+    const r = await appel(CORPS);
     expect(r.status).toBe(500);
     expect(await r.json()).toEqual({ ok: false, erreur: "erreur_interne" });
     expect(bd.ecritures).toBe(0);
   });
 
   it("aucune écriture sur un appel réussi", async () => {
-    poser(5, "guide", "linkedin", "2026-11-01");
-    expect((await appel(PERIODE)).status).toBe(200);
+    bd.origines = [origine({ occurredAt: il_y_a(H) })];
+    expect((await appel(CORPS)).status).toBe(200);
     expect(bd.ecritures).toBe(0);
   });
 });

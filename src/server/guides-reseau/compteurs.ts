@@ -1,11 +1,16 @@
 /**
- * LECTURE « combien de demandes de guide, par mot, par réseau et par jour ? » (L5-27).
+ * LECTURE « combien de formulaires, d'envois et de clics, par mot, réseau, publication, version et cible ? »
+ * (L5-27, contrat v1).
  *
- * Corps : `{ schemaVersion: 1, depuis: "AAAA-MM-JJ", jusqua: "AAAA-MM-JJ" }` (bornes incluses, jours UTC, ≤ 92 jours).
- * Réponse : `{ ok, schemaVersion, compteurs: [{ mot, reseau, jour, n }], masquees }` — DES NOMBRES : la lecture ne
- * sélectionne que `mot`, `reseau`, `occurredAt` (jamais la clé de personne), et tout effectif < 3 est ABSENT de la
- * réponse (`masquees` ne dit que combien de lignes l'ont été).
+ * Corps strict : `{ "v": 1 }` (toute autre forme : 422).
+ * Réponse 200 : `{ v: 1, genereLe, lignes: [{ mot, reseau, postRef, versionTexte, cible, formulaires, envois, clics }] }`
+ * où chaque compteur est `{ j7, j30, total }` : fenêtres glissantes de 7 × 24 h et 30 × 24 h, bornes incluses.
+ * Dates : formulaires = `occurredAt` de l'origine ; envois = `sentAt` ; clics = `firstClickAt`.
+ * `cible` = le guide demandé (`guide` de l'origine). Un envoi / un clic est rattaché à la ligne de l'ORIGINE
+ * LA PLUS RÉCENTE de la même personne pour le même guide : chaque demande est comptée une seule fois.
  *
+ * Pas de masquage des petits effectifs (décision du propriétaire : chiffres internes, affichés « au moins N »).
+ * 🔴 Des nombres seulement : la clé de personne ne sert qu'à relier en mémoire, elle ne sort jamais.
  * 🔴 FERMÉ : toute erreur de lecture, ou plus de lignes que le plafond => 500, jamais de résultat partiel.
  * 🔴 AUCUNE ÉCRITURE. Journal : un événement avec des nombres, sans donnée de personne.
  */
@@ -17,81 +22,119 @@ import { reponseJson } from "@/server/videos/reponse";
 
 /** Seau de débit PROPRE à la route des compteurs. */
 export const PREFIXE_DEBIT_COMPTEURS = "internal:compteurs-guide-reseau";
-/** Corps maximal accepté : 1 Ko (le corps utile tient en une centaine d'octets). */
+/** Corps maximal accepté : 1 Ko (le corps utile tient en une dizaine d'octets). */
 export const CORPS_MAX_COMPTEURS = 1024;
-/** Effectif en dessous duquel une ligne est masquée. */
-export const SEUIL_MASQUAGE = 3;
-/** Durée maximale de la fenêtre, en jours. */
-export const JOURS_MAX_COMPTEURS = 92;
-/** Plafond de lignes lues par appel : au-delà, échec fermé plutôt qu'un total tronqué. */
-export const LIGNES_MAX_COMPTEURS = 100_000;
+/** Plafond de lignes lues par table et par appel : au-delà, échec fermé plutôt qu'un total tronqué. */
+export const LIGNES_MAX_COMPTEURS = 200_000;
 
 const JOUR_MS = 86_400_000;
-const FORME_JOUR = /^\d{4}-\d{2}-\d{2}$/;
 
-function dateUtc(s: string): Date | null {
-  if (!FORME_JOUR.test(s)) return null;
-  const d = new Date(`${s}T00:00:00.000Z`);
-  return Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== s ? null : d;
+export const SchemaCompteurs = z.object({ v: z.literal(1) }).strict();
+
+export interface Fenetres {
+  j7: number;
+  j30: number;
+  total: number;
 }
 
-export const SchemaCompteurs = z
-  .object({
-    schemaVersion: z.literal(1),
-    depuis: z.string().refine((s) => dateUtc(s) !== null, { message: "date" }),
-    jusqua: z.string().refine((s) => dateUtc(s) !== null, { message: "date" }),
-  })
-  .strict()
-  .refine(
-    (c) => {
-      const da = dateUtc(c.depuis);
-      const db = dateUtc(c.jusqua);
-      if (!da || !db) return true; // déjà signalé par les contrôles de champ
-      const a = da.getTime();
-      const b = db.getTime();
-      return b >= a && (b - a) / JOUR_MS < JOURS_MAX_COMPTEURS;
-    },
-    { message: "periode", path: ["jusqua"] },
-  );
-
-function champsFautifs(e: z.ZodError): string[] {
-  const noms = new Set<string>();
-  for (const i of e.issues) {
-    if (i.code === "unrecognized_keys") i.keys.forEach((k) => noms.add(k));
-    else noms.add(String(i.path[0] ?? "corps"));
-  }
-  return [...noms];
-}
-
-export interface Compteur {
+export interface LigneCompteur {
   readonly mot: string;
   readonly reseau: string;
-  readonly jour: string;
-  readonly n: number;
+  readonly postRef: string | null;
+  readonly versionTexte: string | null;
+  readonly cible: string;
+  readonly formulaires: Fenetres;
+  readonly envois: Fenetres;
+  readonly clics: Fenetres;
 }
 
-/** Agrège des lignes (mot, réseau, date) et masque les effectifs < seuil. Pure : aucune E/S. */
-export function agreger(lignes: ReadonlyArray<{ mot: string; reseau: string; occurredAt: Date }>): {
-  compteurs: Compteur[];
-  masquees: number;
-} {
-  const total = new Map<string, Compteur>();
-  for (const l of lignes) {
-    const jour = l.occurredAt.toISOString().slice(0, 10);
-    const cle = JSON.stringify([l.mot, l.reseau, jour]);
-    const c = total.get(cle);
-    total.set(cle, { mot: l.mot, reseau: l.reseau, jour, n: (c?.n ?? 0) + 1 });
+export interface OrigineLue {
+  mot: string;
+  reseau: string;
+  postRef: string | null;
+  versionTexte: string | null;
+  guide: string;
+  emailKey: string;
+  occurredAt: Date;
+}
+
+export interface DemandeLue {
+  emailKey: string;
+  aimant: string;
+  sentAt: Date | null;
+  firstClickAt: Date | null;
+}
+
+function ajouter(f: Fenetres, date: Date, maintenant: number): void {
+  const t = date.getTime();
+  f.total++;
+  if (t > maintenant) return; // une date future ne tombe dans aucune fenêtre glissante
+  if (t >= maintenant - 7 * JOUR_MS) f.j7++;
+  if (t >= maintenant - 30 * JOUR_MS) f.j30++;
+}
+
+const vide = (): Fenetres => ({ j7: 0, j30: 0, total: 0 });
+
+/** Agrège origines et demandes en lignes. Pure : aucune E/S, aucune clé de personne en sortie. */
+export function agreger(
+  origines: ReadonlyArray<OrigineLue>,
+  demandes: ReadonlyArray<DemandeLue>,
+  maintenant: Date,
+): LigneCompteur[] {
+  const now = maintenant.getTime();
+  const lignes = new Map<
+    string,
+    {
+      base: Omit<LigneCompteur, "formulaires" | "envois" | "clics">;
+      f: Fenetres;
+      e: Fenetres;
+      c: Fenetres;
+    }
+  >();
+  const cleLigne = (o: OrigineLue) =>
+    JSON.stringify([o.mot, o.reseau, o.postRef, o.versionTexte, o.guide]);
+  const recente = new Map<string, OrigineLue>();
+  for (const o of origines) {
+    const k = cleLigne(o);
+    let l = lignes.get(k);
+    if (!l) {
+      l = {
+        base: {
+          mot: o.mot,
+          reseau: o.reseau,
+          postRef: o.postRef,
+          versionTexte: o.versionTexte,
+          cible: o.guide,
+        },
+        f: vide(),
+        e: vide(),
+        c: vide(),
+      };
+      lignes.set(k, l);
+    }
+    ajouter(l.f, o.occurredAt, now);
+    const kp = JSON.stringify([o.emailKey, o.guide]);
+    const p = recente.get(kp);
+    if (!p || o.occurredAt.getTime() > p.occurredAt.getTime()) recente.set(kp, o);
   }
-  const tous = [...total.values()];
-  const compteurs = tous
-    .filter((c) => c.n >= SEUIL_MASQUAGE)
+  for (const d of demandes) {
+    const o = recente.get(JSON.stringify([d.emailKey, d.aimant]));
+    if (!o) continue;
+    const l = lignes.get(cleLigne(o))!;
+    if (d.sentAt) ajouter(l.e, d.sentAt, now);
+    if (d.firstClickAt) ajouter(l.c, d.firstClickAt, now);
+  }
+  const cmp = (a: string | null, b: string | null) => (a ?? "").localeCompare(b ?? "");
+  return [...lignes.values()]
+    .map((l) => ({ ...l.base, formulaires: l.f, envois: l.e, clics: l.c }))
     .sort(
       (a, b) =>
-        a.jour.localeCompare(b.jour) ||
         a.mot.localeCompare(b.mot) ||
-        a.reseau.localeCompare(b.reseau),
+        a.reseau.localeCompare(b.reseau) ||
+        cmp(a.postRef, b.postRef) ||
+        cmp(a.versionTexte, b.versionTexte) ||
+        a.cible.localeCompare(b.cible),
     );
-  return { compteurs, masquees: tous.length - compteurs.length };
 }
 
 export async function repondreCompteurs(e: EntreeSignee): Promise<Response> {
@@ -101,34 +144,39 @@ export async function repondreCompteurs(e: EntreeSignee): Promise<Response> {
   } catch {
     return reponseJson(422, { ok: false, erreur: "json_invalide", champs: [] });
   }
-  const analyse = SchemaCompteurs.safeParse(brut);
-  if (!analyse.success) {
-    const inconnu = analyse.error.issues.some((i) => i.code === "unrecognized_keys");
-    return reponseJson(422, {
-      ok: false,
-      erreur: inconnu ? "unknown_field" : "schema_invalide",
-      champs: champsFautifs(analyse.error),
-    });
+  if (!SchemaCompteurs.safeParse(brut).success) {
+    return reponseJson(422, { ok: false, erreur: "schema_invalide", champs: [] });
   }
-  const gte = dateUtc(analyse.data.depuis)!;
-  const lt = new Date(dateUtc(analyse.data.jusqua)!.getTime() + JOUR_MS);
-
+  const maintenant = new Date();
   try {
-    const lignes = await prisma.guideReseauOrigine.findMany({
-      where: { occurredAt: { gte, lt } },
-      select: { mot: true, reseau: true, occurredAt: true },
+    const origines = await prisma.guideReseauOrigine.findMany({
+      select: {
+        mot: true,
+        reseau: true,
+        postRef: true,
+        versionTexte: true,
+        guide: true,
+        emailKey: true,
+        occurredAt: true,
+      },
       take: LIGNES_MAX_COMPTEURS + 1,
     });
-    if (lignes.length > LIGNES_MAX_COMPTEURS) throw new Error("plafond_de_lignes");
-    const { compteurs, masquees } = agreger(lignes);
-    console.warn(
-      JSON.stringify({
-        event: "guides_reseau_compteurs",
-        lignes: compteurs.length,
-        masquees,
-      }),
-    );
-    return reponseJson(200, { ok: true, schemaVersion: 1, compteurs, masquees });
+    if (origines.length > LIGNES_MAX_COMPTEURS) throw new Error("plafond_de_lignes");
+    const guides = [...new Set(origines.map((o) => o.guide))];
+    const demandes = guides.length
+      ? await prisma.guideRequest.findMany({
+          where: {
+            aimant: { in: guides },
+            OR: [{ sentAt: { not: null } }, { firstClickAt: { not: null } }],
+          },
+          select: { emailKey: true, aimant: true, sentAt: true, firstClickAt: true },
+          take: LIGNES_MAX_COMPTEURS + 1,
+        })
+      : [];
+    if (demandes.length > LIGNES_MAX_COMPTEURS) throw new Error("plafond_de_lignes");
+    const lignes = agreger(origines, demandes, maintenant);
+    console.warn(JSON.stringify({ event: "guides_reseau_compteurs", lignes: lignes.length }));
+    return reponseJson(200, { v: 1, genereLe: maintenant.toISOString(), lignes });
   } catch (err) {
     try {
       Sentry.captureException(
