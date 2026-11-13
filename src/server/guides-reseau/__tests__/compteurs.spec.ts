@@ -181,6 +181,15 @@ describe("compteurs-guide-reseau v1 — lignes et fenêtres", () => {
     expect(ancien.envois).toEqual({ j7: 0, j30: 0, total: 0 });
   });
 
+  it("le mot stocké est renvoyé à l'identique (aucune retransformation)", async () => {
+    const mots = ["ABC", "GUIDEIA2026", "A1", "Z".repeat(20)];
+    bd.origines = mots.map((mot, i) =>
+      origine({ mot, occurredAt: il_y_a(H), emailKey: String(i).repeat(64) }),
+    );
+    const j = await (await appel(CORPS)).json();
+    expect(j.lignes.map((l: { mot: string }) => l.mot).sort()).toEqual([...mots].sort());
+  });
+
   it("aucun masquage : un effectif de 1 est rendu tel quel", async () => {
     bd.origines = [origine({ occurredAt: il_y_a(H) })];
     const j = await (await appel(CORPS)).json();

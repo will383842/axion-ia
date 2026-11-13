@@ -9,6 +9,9 @@
  * `cible` = le guide demandé (`guide` de l'origine). Un envoi / un clic est rattaché à la ligne de l'ORIGINE
  * LA PLUS RÉCENTE de la même personne pour le même guide : chaque demande est comptée une seule fois.
  *
+ * `mot` : émis TEL QUEL, sans retransformation ni revalidation à la lecture. Les mots viennent du Studio,
+ * déjà normalisés en `^[A-Z0-9]{2,20}$` (majuscules sans accent) ; la valeur stockée est celle qui sort.
+ *
  * Pas de masquage des petits effectifs (décision du propriétaire : chiffres internes, affichés « au moins N »).
  * 🔴 Des nombres seulement : la clé de personne ne sert qu'à relier en mémoire, elle ne sort jamais.
  * 🔴 FERMÉ : toute erreur de lecture, ou plus de lignes que le plafond => 500, jamais de résultat partiel.
