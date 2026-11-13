@@ -14,6 +14,7 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { filtreHorsPreuve, lireAppreciationsHorsPreuve } from "../appreciations/hors-preuve";
 import type { AppreciationSource } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -203,14 +204,19 @@ export async function statsAppreciations(): Promise<StatsAppreciations> {
     };
   }
 
+  // Les essais marqués « hors preuve » ne comptent pas (même règle que l'ind. 30).
+  const filtre = filtreHorsPreuve(await lireAppreciationsHorsPreuve());
+
   // Agrégation globale
   const globalAgg = await prisma.appreciation.aggregate({
+    ...filtre,
     _count: { _all: true },
     _avg: { note: true },
   });
 
   // Agrégation par source
   const parSourceAgg = await prisma.appreciation.groupBy({
+    ...filtre,
     by: ["source"],
     _count: { _all: true },
     _avg: { note: true },

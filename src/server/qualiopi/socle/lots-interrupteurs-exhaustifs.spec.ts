@@ -10,7 +10,7 @@ import { describe, expect, it } from "vitest";
 
 import { LOTS_INTERRUPTEURS } from "./lots-interrupteurs";
 
-const RACINES = ["src/server/qualiopi", "src/server/actions/qualiopi"];
+const RACINES = ["src"];
 /** Clés de test du socle, et les chantiers qui ont leur propre écran. */
 const IGNORES = new Set(["l03"]);
 
@@ -31,9 +31,15 @@ function lotsDuCode(): Map<string, string> {
         lots.set(m[1]!, f);
       }
       for (const m of src.matchAll(/qualiopi\.([a-z0-9_]+)\.actif/g)) lots.set(m[1]!, f);
+      // Appel écrit en dur : lireInterrupteurQualiopi("moyens").
+      for (const m of src.matchAll(/lireInterrupteurQualiopi\(\s*"([a-z0-9_]+)"/g)) {
+        lots.set(m[1]!, f);
+      }
     }
   }
   for (const l of IGNORES) lots.delete(l);
+  // Interrupteurs formateurs : leur propre écran.
+  for (const l of [...lots.keys()]) if (l.startsWith("formateurs")) lots.delete(l);
   return lots;
 }
 
@@ -56,6 +62,7 @@ describe("lots d'interrupteurs : l'écran couvre le code", () => {
     expect(code.size).toBeGreaterThanOrEqual(12);
     expect(code.has("veille")).toBe(true);
     expect([...code.keys()].some((l) => l.startsWith("formateurs"))).toBe(false);
+    expect(code.has("moyens")).toBe(true);
   });
 
   it("seul le lot « essai » porte un texte de confirmation propre", () => {

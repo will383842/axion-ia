@@ -109,10 +109,11 @@ async function envoyerEtape(etape: EtapePresence, c: Contexte): Promise<boolean>
   const options = { jobId: `presence-${etape}-${e.id}`, entityType: "Enrollment", entityId: e.id };
 
   if (etape === "information_entreprise") {
-    if (payeur === null || payeur.contactEmail === null) return false;
+    const destinataire = payeur?.contactEmail?.trim() ?? "";
+    if (payeur === null || destinataire === "") return false;
     const envoi = await c.enqueueEmail(
       "qualiopi-presence-entreprise",
-      payeur.contactEmail,
+      destinataire,
       "fr",
       {
         contactNom: payeur.contactNom ?? "",
@@ -246,6 +247,8 @@ export async function envoyerConfirmationsPresence(maintenant: Date): Promise<Bi
         },
       },
     },
+    // Le plafond ne coupe pas au hasard : les sessions les plus proches d'abord.
+    orderBy: { dateDebut: "asc" },
     take: 200,
   });
 

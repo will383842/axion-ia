@@ -12,6 +12,8 @@ const ADMIN = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 
 const h = vi.hoisted(() => {
   const tx = {
+    $executeRaw: vi.fn(async () => 1),
+    activityLog: { create: vi.fn() },
     siteSetting: { findUnique: vi.fn(), upsert: vi.fn() },
     appreciation: { findUnique: vi.fn(), delete: vi.fn(), update: vi.fn(), updateMany: vi.fn() },
   };
@@ -19,6 +21,12 @@ const h = vi.hoisted(() => {
     tx,
     requireAdminWrite: vi.fn(),
     log: vi.fn(async () => undefined),
+    donnees: vi.fn(async (i: { action: string; targetId?: string }) => ({
+      adminUserId: "a",
+      action: i.action,
+      targetType: "Appreciation",
+      targetId: i.targetId ?? null,
+    })),
     prisma: {
       siteSetting: { findUnique: vi.fn() },
       appreciation: { delete: vi.fn(), update: vi.fn(), updateMany: vi.fn() },
@@ -33,6 +41,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: h.requireAdminWrite,
   requireAdminPublish: vi.fn(),
   logQualiopiActivity: h.log,
+  donneesJournalQualiopi: h.donnees,
 }));
 vi.mock("@/server/qualiopi/portail/appreciation-service", () => ({
   creerAppreciation: vi.fn(),
@@ -62,18 +71,26 @@ describe("marquerAppreciationHorsPreuveAction", () => {
     });
     expect(r).toEqual({ data: { dejaMarquee: false } });
     expect(h.tx.siteSetting.upsert).toHaveBeenCalledTimes(1);
-    expect(h.log).toHaveBeenCalledWith(
-      expect.objectContaining({
+    // Journal écrit DANS la transaction (pas après), jamais en best-effort.
+    expect(h.tx.activityLog.create).toHaveBeenCalledWith({
+      data: expect.objectContaining({
         action: "qualiopi.appreciations.marquer_hors_preuve",
-        targetType: "Appreciation",
         targetId: ID,
       }),
-    );
+    });
+    expect(h.log).not.toHaveBeenCalled();
     for (const o of [h.tx.appreciation, h.prisma.appreciation]) {
       expect(o.delete).not.toHaveBeenCalled();
       expect(o.update).not.toHaveBeenCalled();
       expect(o.updateMany).not.toHaveBeenCalled();
     }
+  });
+
+  it("journal en échec : la marque n'existe pas (transaction annulée), l'erreur remonte", async () => {
+    h.tx.activityLog.create.mockRejectedValueOnce(new Error("journal indisponible"));
+    await expect(
+      marquerAppreciationHorsPreuveAction({ appreciationId: ID, motif: "Essai confirmé par Will" }),
+    ).rejects.toThrow("journal indisponible");
   });
 
   it("deuxième marquage : sans effet, sans nouvelle écriture", async () => {
@@ -93,6 +110,7 @@ describe("marquerAppreciationHorsPreuveAction", () => {
     });
     expect(r).toEqual({ data: { dejaMarquee: true } });
     expect(h.tx.siteSetting.upsert).not.toHaveBeenCalled();
+    expect(h.tx.activityLog.create).not.toHaveBeenCalled();
   });
 
   it("motif trop court : refusé", async () => {

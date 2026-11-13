@@ -327,16 +327,54 @@ describe("ind. 30 : les autres parties prenantes (NC14, derrière l'interrupteur
     expect(v.manque).toMatch(/financement non renseigné/);
   });
 
-  it("entreprise : un avis reçu suffit sans sollicitation ; aucun formateur attendu n'exige rien", () => {
+  it("entreprise : un avis reçu suffit sans sollicitation", () => {
     const v = v30(
       {
         entreprise: { sollicitee: null, avis: D("2026-11-20T10:00:00Z") },
-        formateur: { attendus: 0, avis: null },
+        formateur: { attendus: 1, avis: D("2026-11-14T10:00:00Z") },
         financeur: { tiers: "oui", avis: D("2026-11-25T10:00:00Z") },
       },
       TARD,
     );
     expect(v.etat).toBe("vert");
+  });
+
+  it("aucun formateur en base : ce n'est pas une preuve, le manque le dit (jamais vert)", () => {
+    const v = v30({ ...TOUT, formateur: { attendus: 0, avis: null } }, TARD);
+    expect(v.etat).toBe("rouge");
+    expect(v.manque).toMatch(/aucun formateur rattaché en base/);
+    expect(v.trace ?? "").not.toMatch(/aucun formateur à interroger/);
+  });
+
+  it("l'échéance des stagiaires ne disparaît pas quand une autre partie manque aussi : rouge à fin + 10 j", () => {
+    const v = voyant(
+      30,
+      {
+        i30: L({
+          ...stagiaires,
+          chaudRepondus: 1,
+          autresParties: { ...TOUT, entreprise: { sollicitee: null, avis: null } },
+        }),
+      },
+      MILIEU,
+    );
+    expect(v.etat).toBe("rouge");
+    expect(v.manque).toMatch(/questionnaire\(s\) à chaud sans réponse/);
+    expect(v.manque).toMatch(/entreprise ni sollicitée ni répondue/);
+  });
+
+  it("session sans entreprise (particuliers) : la partie entreprise est « sans objet », tracée", () => {
+    const v = v30(
+      { ...TOUT, entreprise: { sollicitee: null, avis: null, concernee: false } },
+      TARD,
+    );
+    expect(v.etat).toBe("vert");
+    expect(v.trace).toMatch(/sans objet : aucune entreprise rattachée/);
+  });
+
+  it("entreprise concernée mais muette : toujours exigée", () => {
+    const v = v30({ ...TOUT, entreprise: { sollicitee: null, avis: null, concernee: true } }, TARD);
+    expect(v.etat).toBe("rouge");
   });
 
   it("stagiaires incomplets + autres complets : toujours pas vert", () => {

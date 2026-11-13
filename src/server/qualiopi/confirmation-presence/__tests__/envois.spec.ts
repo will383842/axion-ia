@@ -401,6 +401,39 @@ describe("B4 : l'information de l'entreprise", () => {
     expect(db.remiseRetour.create).not.toHaveBeenCalled();
   });
 
+  it("adresse de l'entreprise avec des espaces : l'e-mail part vers l'adresse rognée", async () => {
+    faits();
+    h.sessions = [
+      session({
+        client: {
+          raisonSociale: "Atelier Lumen",
+          contactNom: "A",
+          contactEmail: "  alex@lumen.fr \n",
+        },
+      }),
+    ];
+    await envoyerConfirmationsPresence(J1_12H);
+    expect(enqueueEmail).toHaveBeenCalledTimes(1);
+    expect(enqueueEmail.mock.calls[0]?.[1]).toBe("alex@lumen.fr");
+  });
+
+  it("adresse de l'entreprise faite d'espaces : ni envoi ni trace", async () => {
+    faits();
+    h.sessions = [
+      session({ client: { raisonSociale: "Atelier Lumen", contactNom: "A", contactEmail: "   " } }),
+    ];
+    await envoyerConfirmationsPresence(J1_12H);
+    expect(enqueueEmail).not.toHaveBeenCalled();
+    expect(db.relanceJournal.create).not.toHaveBeenCalled();
+  });
+
+  it("la requête des sessions est ordonnée (le plafond de 200 ne coupe pas au hasard)", async () => {
+    await envoyerConfirmationsPresence(J3_10H);
+    const arg = db.trainingSession.findMany.mock.calls[0]?.[0];
+    expect(arg.take).toBe(200);
+    expect(arg.orderBy).toEqual({ dateDebut: "asc" });
+  });
+
   it("le stagiaire est lui-même le contact : l'e-mail part quand même, et il est tracé", async () => {
     faits();
     h.sessions = [

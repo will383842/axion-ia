@@ -22,6 +22,7 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+import { gardePage } from "@/server/auth/garde-page";
 import Page, { dynamic } from "./page";
 import { LOTS_INTERRUPTEURS } from "@/server/qualiopi/socle/lots-interrupteurs";
 
@@ -39,5 +40,26 @@ describe("page Interrupteurs Qualiopi", () => {
     expect(html.match(/Éteint<\/span>|>Éteint</g)?.length ?? 0).toBeGreaterThanOrEqual(
       LOTS_INTERRUPTEURS.length,
     );
+  });
+
+  it("admin : pas de mention « Lecture seule. », les sélecteurs sont actifs", async () => {
+    const el = await Page({ params: Promise.resolve({ locale: "fr", adminPrefix: "p" }) });
+    const html = renderToStaticMarkup(el);
+    expect(html).not.toContain("Lecture seule.");
+    expect(html).not.toMatch(/<select[^>]*disabled/);
+  });
+
+  it("éditeur (consultation + écriture, mais sans le droit de piloter) : lecture seule, sélecteurs désactivés", async () => {
+    vi.mocked(gardePage).mockResolvedValue({ autorise: true, role: "editor" } as never);
+    try {
+      const el = await Page({ params: Promise.resolve({ locale: "fr", adminPrefix: "p" }) });
+      const html = renderToStaticMarkup(el);
+      expect(html).toContain("Lecture seule.");
+      const selects = html.match(/<select[^>]*>/g) ?? [];
+      expect(selects.length).toBeGreaterThanOrEqual(LOTS_INTERRUPTEURS.length);
+      for (const sel of selects) expect(sel).toContain("disabled");
+    } finally {
+      vi.mocked(gardePage).mockResolvedValue({ autorise: true, role: "admin" } as never);
+    }
   });
 });

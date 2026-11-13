@@ -1985,6 +1985,22 @@ describe("handleLiensEmargementJ0 — plus de fenêtre jour UTC aveugle", () => 
     erreurs.mockRestore();
   });
 
+  it("🔴 les rappels de demi-journée qui LÈVENT n'empêchent pas la confirmation de présence", async () => {
+    vi.mocked(etatInterrupteurPourCron).mockResolvedValueOnce("actif");
+    vi.mocked(envoyerRappelsDemiJournee).mockRejectedValueOnce(new Error("boum rappels"));
+
+    // L'erreur des rappels remonte (le job est rejoué) — mais la présence est partie.
+    await expect(lancer()).rejects.toThrow("boum rappels");
+    expect(envoyerConfirmationsPresence).toHaveBeenCalledTimes(1);
+  });
+
+  it("🔴 la lecture des sessions à servir qui LÈVE n'empêche pas la confirmation de présence", async () => {
+    mockPrisma.trainingSession.findMany.mockRejectedValueOnce(new Error("base lente"));
+
+    await expect(lancer()).rejects.toThrow("base lente");
+    expect(envoyerConfirmationsPresence).toHaveBeenCalledTimes(1);
+  });
+
   it("🔴 aucun nouveau job BullMQ : on réutilise le passage horaire liens-emargement-j0", async () => {
     const { readFileSync } = await import("node:fs");
     const { join } = await import("node:path");
