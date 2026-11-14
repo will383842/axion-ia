@@ -27,16 +27,27 @@ describe.each(WORKFLOWS)("%s", (chemin) => {
     expect(code).not.toMatch(/\$\(\s*(cat|head|tail)\b[^)]*\/tmp\/(resp|rep)/);
   });
 
-  it("n'imprime pas la variable qui porte le corps (echo/printf sans jq)", () => {
+  it("n'imprime pas la variable qui porte le corps (echo/printf sans jq filtré)", () => {
     const lignes = code.split("\n").filter((l) => /\b(echo|printf)\b/.test(l));
     for (const l of lignes) {
-      // Les variables de réponse sont `$r`, `$corps`, `$reponse` : permises seulement vers jq/fichier.
-      if (/\$\{?(r|corps|reponse)\}?(?![A-Za-z0-9_])/.test(l)) {
-        expect(l, `corps brut imprimé : ${l.trim()}`).toMatch(
-          /\|\s*jq\b|>\s*\/tmp\/|\|\s*tail\b|\|\s*sed\b/,
-        );
+      // Variables de réponse : `$r`, `$corps`, `$reponse`, `$envs`. Permis seulement vers un fichier
+      // ou vers un `jq` dont le filtre n'est PAS l'identité.
+      if (/\$\{?(r|corps|reponse|envs)\}?(?![A-Za-z0-9_])/.test(l)) {
+        const versFichier = />\s*\/tmp\//.test(l);
+        const versJqFiltre =
+          /\|\s*jq\b/.test(l) && !/\|\s*jq\s+(-[a-zA-Z]+\s+)*'?\.'?\s*($|\||\))/.test(l);
+        const extraitLeCode =
+          /\|\s*(tail\s+-n1|sed\s+'\$d')/.test(l) && /(code|corps)=\$\(/.test(l);
+        expect(
+          versFichier || versJqFiltre || extraitLeCode,
+          `corps brut imprimé : ${l.trim()}`,
+        ).toBe(true);
       }
     }
+  });
+
+  it("n'imprime pas le fichier des variables lues (/tmp/envs.json)", () => {
+    expect(code).not.toMatch(/\b(cat|head|tail)\b[^\n|]*\/tmp\/envs\.json/);
   });
 });
 

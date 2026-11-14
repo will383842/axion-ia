@@ -444,7 +444,7 @@ export interface MasquageAlertesResult {
 /**
  * Geste humain, APRÈS un effacement accepté : masque l'adresse dans les alertes de la cloche
  * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Depuis la décision du 11/11/2026, une demande
- * d'effacement MET LA PERSONNE À L'ÉCART au lieu de supprimer (`server/rgpd/ecarter-au-lieu-d-effacer.ts`)
+ * d'effacement MET LA PERSONNE À L'ÉCART au lieu de supprimer (`src/server/rgpd/ecarter-au-lieu-d-effacer.ts`)
  * et lève une alerte `critique` SANS adresse (ni motif libre) : la personne se retrouve par la
  * référence de la trace et l'empreinte de l'alerte, et la réponse est due AVANT l'échéance d'un
  * mois (art. 12.3 RGPD). Ce passage ne sert donc plus qu'aux alertes plus anciennes, qui portent
