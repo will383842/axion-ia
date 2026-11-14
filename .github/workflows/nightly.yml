@@ -190,6 +190,9 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: ZAP baseline vs prod
+        # Garde : si ZAP se bloque pour une autre raison, l'étape échoue à 20 min
+        # au lieu de laisser le job s'annuler en silence au bout de 30 min.
+        timeout-minutes: 20
         # owasp/zap2docker-stable image renamed → use zaproxy/zap-stable
         run: |
           # Le conteneur ZAP (non root) doit pouvoir écrire zap.yaml et le rapport dans
@@ -199,7 +202,7 @@ jobs:
             -v ${{ github.workspace }}:/zap/wrk \
             zaproxy/zap-stable zap-baseline.py \
             -t "${{ vars.STAGING_URL || 'https://axion-ia.com' }}" \
-            -I -m 10 -T 25 \
+            -I -m 10 -T 10 \
             -r zap-report.html || ZAP_EXIT=$?
           # ZAP exit 0=clean, 1=warnings, 2=errors. On accepte les warnings
           # mais on bloque sur les errors (vrais issues sécu).
