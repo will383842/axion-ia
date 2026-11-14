@@ -47,7 +47,26 @@ describe.each(WORKFLOWS)("%s", (chemin) => {
   });
 
   it("n'imprime pas le fichier des variables lues (/tmp/envs.json)", () => {
-    expect(code).not.toMatch(/\b(cat|head|tail)\b[^\n|]*\/tmp\/envs\.json/);
+    expect(code).not.toMatch(/\b(cat|head|tail|sed)\b[^\n|]*\/tmp\/envs\.json/);
+  });
+
+  it("ne renvoie le corps vers jq/sed/tail qu'avec une sortie filtrée à un champ", () => {
+    const lignes = code.split("\n");
+    for (const l of lignes) {
+      const portele =
+        /\$\{?(r|corps|reponse|envs)\}?(?![A-Za-z0-9_])/.test(l) ||
+        /\/tmp\/(resp|rep|envs\.json)/.test(l);
+      if (!portele || />\s*\/tmp\//.test(l)) continue;
+      // `jq .`, `jq -r .`, `jq -r '.'`, `jq -S .` : l'identité réimprime tout le corps.
+      expect(
+        /\bjq\s+(-[a-zA-Z-]+\s+)*['"]?\.['"]?(\s|$|\||\))/.test(l),
+        `jq identité sur le corps : ${l.trim()}`,
+      ).toBe(false);
+      // sed/tail/head/cat vers la sortie standard sur le corps, hors extraction du code HTTP.
+      if (/\b(sed|tail|head|cat)\b/.test(l) && !/(code|corps)=\$\(/.test(l)) {
+        expect(false, `sed/tail/head/cat sur le corps : ${l.trim()}`).toBe(true);
+      }
+    }
   });
 });
 

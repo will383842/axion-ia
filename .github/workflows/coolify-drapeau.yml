@@ -217,7 +217,7 @@ jobs:
             echo "──── $nom ────"
             curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
               "${COOLIFY_URL}/api/v1/applications/${uuid}/envs" \
-              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | "\(.key) = \(.value) (preview=\(.is_preview))"' \
+              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | (.value | tostring) as $v | "\(.key) = \(if ($v | test("^(true|false)$|^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$")) then $v else "valeur masquée (\($v | length) caractères)" end) (preview=\(.is_preview))"' \
               || echo "(lecture impossible)"
           done
 
@@ -236,9 +236,15 @@ jobs:
             key: $key, value: $value,
             is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
           }')
+          # Seuls true/false et les dates ISO s'affichent ; le reste (ex. une adresse) est masqué.
+          if [[ "$VALEUR" =~ ^(true|false)$ || "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]]; then
+            affiche="$VALEUR"
+          else
+            affiche="valeur masquée (${#VALEUR} caractères)"
+          fi
           upsert() {
             local uuid="$1" nom="$2" code
-            echo "──── $nom ($uuid) : $CLE=$VALEUR ────"
+            echo "──── $nom ($uuid) : $CLE=$affiche ────"
             code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
               -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
