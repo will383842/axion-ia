@@ -36,6 +36,9 @@ describe("coolify-lire-drapeaux.yml : lecture seule", () => {
     expect(lire).not.toMatch(/echo "\$reponse"|cat \/tmp|head -c/);
     expect(lire).not.toMatch(/\| jq -r '?\.?\[?\]?'?\s*$/m);
   });
+  it("n'affiche la date que si elle a la forme attendue", () => {
+    expect(lire).toMatch(/ORIGINES_SUIVANTES_DEPUIS" and \(\$v \| test\(/);
+  });
   it("liste fermée des drapeaux", () => {
     for (const k of [
       "CRM_SYNC_ENABLED",
@@ -64,7 +67,7 @@ describe("ORIGINES_SUIVANTES_DEPUIS : borne haute, pas de redéploiement, lectur
   });
   it("n'affiche la date en clair que si elle a la forme attendue", () => {
     expect(lire).toMatch(
-      /\$k == "ORIGINES_SUIVANTES_DEPUIS" and [^\n]*test\("\^20\[0-9\]\{2\}-\[0-9\]\{2\}-\[0-9\]\{2\}T\[0-9\]\{2\}:\[0-9\]\{2\}:\[0-9\]\{2\}Z\$"\)/,
+      /\$k == "ORIGINES_SUIVANTES_DEPUIS" and [^\n]*test\("\\\\A20\[0-9\]\{2\}-\[0-9\]\{2\}-\[0-9\]\{2\}T\[0-9\]\{2\}:\[0-9\]\{2\}:\[0-9\]\{2\}Z\\\\z"\)/,
     );
     expect(lire).not.toMatch(/elif \$k == "ORIGINES_SUIVANTES_DEPUIS" then/);
   });
