@@ -48,7 +48,7 @@ import { masquerDonneesSensibles } from "@/lib/security/masquage-donnees-sensibl
 import type { Prisma } from "../../../prisma/generated/client";
 import type { EntreeSignee } from "@/server/videos/entree";
 import { reponseJson } from "@/server/videos/reponse";
-import { analyserCorps } from "./contrat";
+import { analyserCorpsAvecCatalogue } from "./contrat";
 import { traiterDemande } from "./traitement";
 import { traiterEffacement } from "./effacement";
 
@@ -103,7 +103,7 @@ async function conflitSurLaCle(
 }
 
 export async function recevoirDemande(e: EntreeSignee): Promise<Response> {
-  const analyse = analyserCorps(e.corps);
+  const analyse = await analyserCorpsAvecCatalogue(e.corps);
   if (!analyse.ok) {
     return reponseJson(422, { ok: false, erreur: analyse.erreur, champs: analyse.champs });
   }

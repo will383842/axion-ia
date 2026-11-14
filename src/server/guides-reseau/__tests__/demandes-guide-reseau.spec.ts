@@ -23,10 +23,21 @@ const bd = vi.hoisted(() => ({
   logs: { destinataire: 0, heure: 0 },
   echecFinal: false,
   n: 0,
+  /** LIA-F : catalogue `cibles_reseau`, lectures comptées, panne simulée. */
+  cibles: new Map<string, Ligne>(),
+  lecturesCibles: 0,
+  ciblesPanne: false,
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    cibleReseau: {
+      findUnique: async ({ where }: { where: { code: string } }) => {
+        bd.lecturesCibles += 1;
+        if (bd.ciblesPanne) throw new Error("base illisible");
+        return bd.cibles.get(where.code) ?? null;
+      },
+    },
     guideRequest: {
       findUnique: async ({ where }: { where: Ligne }) => {
         const c = where["emailKey_aimant"] as Ligne | undefined;
@@ -195,6 +206,11 @@ beforeEach(() => {
   bd.enfile.reponse = { enqueued: true };
   bd.logs.destinataire = bd.logs.heure = 0;
   bd.n = 0;
+  bd.cibles.clear();
+  bd.lecturesCibles = 0;
+  bd.ciblesPanne = false;
+  delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+  delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
   process.env.GUIDES_RESEAU_ENABLED = "true";
   process.env.VIDEOS_SITE_ENABLED = "true";
   process.env.VIDEOS_STUDIO_HMAC_SECRET = SECRET;
@@ -550,5 +566,129 @@ describe("drapeau, secret et débit propres à la route (COR-INT-A)", () => {
     const r = await appel();
     expect(r.status).toBe(503);
     expect(((await r.json()) as Ligne).erreur).toBe("base_indisponible");
+  });
+});
+
+describe("catalogue de guides (LIA-F, GUIDES_RESEAU_CATALOGUE_ENABLED)", () => {
+  const CODE = "gde-abc123";
+  const ligne = (e: Ligne = {}): Ligne => ({ type: "guide", actif: true, test: false, ...e });
+  const demande = (guide: string, cle = "run_catalogue_1") => ({
+    ...corpsBase,
+    cleIdempotence: cle,
+    guide,
+  });
+
+  it("éteint : `gde-…` → 422 guide_inconnu comme avant, ZÉRO lecture du catalogue", async () => {
+    bd.cibles.set(CODE, ligne());
+    const r = await appel(demande(CODE));
+    expect(r.status).toBe(422);
+    expect(bd.lecturesCibles).toBe(0);
+    expect(bd.demandes).toHaveLength(0);
+    // guide-ia : toujours accepté, toujours sans lecture.
+    expect((await appel(demande("guide-ia", "run_catalogue_2"))).status).toBe(200);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("allumé : un guide actif du catalogue est accepté, la demande porte son code", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.cibles.set(CODE, ligne());
+    const r = await appel(demande(CODE));
+    expect(r.status).toBe(200);
+    expect(bd.demandes[0]).toMatchObject({ aimant: CODE });
+  });
+
+  it.each([
+    ["type adresse", { type: "adresse" }],
+    ["inactive", { actif: false }],
+    ["cible d'essai", { test: true }],
+  ])("allumé : cible %s refusée (422)", async (_n, ecart) => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.cibles.set(CODE, ligne(ecart as Ligne));
+    expect((await appel(demande(CODE))).status).toBe(422);
+    expect(bd.demandes).toHaveLength(0);
+  });
+
+  it("allumé : code `adr-…` (adresse) ou absent du catalogue refusé", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.cibles.set("adr-abc123", ligne({ type: "adresse" }));
+    expect((await appel(demande("adr-abc123"))).status).toBe(422);
+    expect((await appel(demande("gde-inconnu", "run_catalogue_9"))).status).toBe(422);
+  });
+
+  it("allumé, base illisible : repli sur la liste figée (guide-ia seul)", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.ciblesPanne = true;
+    expect((await appel(demande(CODE))).status).toBe(422);
+    expect((await appel(demande("guide-ia", "run_catalogue_3"))).status).toBe(200);
+  });
+
+  it("guide-ia : réponse identique allumé ou éteint, et sans lecture du catalogue", async () => {
+    const corps = async (allume: boolean) => {
+      bd.demandes.length = bd.journal.length = bd.envois.length = 0;
+      if (allume) {
+        process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+        process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+      } else {
+        delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+        delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
+      }
+      const r = await appel(demande("guide-ia", "run_identique"));
+      // `demandeId` suit un compteur de test : tout le reste de la réponse doit être identique.
+      return { statut: r.status, texte: (await r.text()).replace(/"demandeId":"[^"]*"/, "") };
+    };
+    const eteint = await corps(false);
+    const allume = await corps(true);
+    expect(allume).toEqual(eteint);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("allumé, GUIDE/guide-ia : une seule demande par adresse et par guide (emailKey_aimant)", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.cibles.set(CODE, ligne());
+    await appel(demande("guide-ia", "run_catalogue_a"));
+    await appel(demande("guide-ia", "run_catalogue_b"));
+    expect(bd.demandes.filter((d) => d.aimant === "guide-ia")).toHaveLength(1);
+    // Un autre guide, même adresse : une ligne de plus, jamais deux pour le même couple.
+    await appel(demande(CODE, "run_catalogue_c"));
+    await appel(demande(CODE, "run_catalogue_d"));
+    expect(bd.demandes.filter((d) => d.aimant === CODE)).toHaveLength(1);
+    expect(bd.demandes).toHaveLength(2);
+  });
+
+  it("catalogue allumé + livraison ÉTEINTE : `gde-…` → 422, aucune lecture en base, aucune demande", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    bd.cibles.set(CODE, ligne());
+    expect((await appel(demande(CODE))).status).toBe(422);
+    expect(bd.lecturesCibles).toBe(0);
+    expect(bd.demandes).toHaveLength(0);
+  });
+
+  it("livraison allumée + catalogue éteint : `gde-…` → 422, aucune lecture en base", async () => {
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    bd.cibles.set(CODE, ligne());
+    expect((await appel(demande(CODE))).status).toBe(422);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("guide-ia : accepté, sans lecture du catalogue, dans les 4 combinaisons", async () => {
+    let i = 0;
+    for (const [c, l] of [
+      [false, false],
+      [true, false],
+      [false, true],
+      [true, true],
+    ] as const) {
+      delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+      delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
+      if (c) process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+      if (l) process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+      expect((await appel(demande("guide-ia", `run_combi_${i++}`))).status).toBe(200);
+    }
+    expect(bd.lecturesCibles).toBe(0);
   });
 });
