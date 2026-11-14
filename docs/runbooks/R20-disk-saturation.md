@@ -72,7 +72,7 @@ Actions sûres, dans l'ordre :
 - Pics lors de mises en ligne rapprochées (image du site ≈ 8,3 Go, 2-3 images
   coexistent) et builds du Studio (cache ≈ 8 Go).
 - Couche écrite du conteneur du site (cache ISR, borné par l'élagueur).
-- `/tmp` des sessions Claude (th-*, tf-*, tg-*).
+- `/tmp` des sessions Claude (th-_, tf-_, tg-*).
 - journald (limité depuis ce lot), journaux ClickHouse (Plausible).
 
 ## Escalade

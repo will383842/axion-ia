@@ -20,7 +20,19 @@ import { describe, expect, it } from "vitest";
 
 const RACINE = path.resolve(__dirname, "../../../..");
 const DOSSIERS = [".github", "scripts", "docs"];
-const EXTENSIONS = new Set([".sh", ".yml", ".yaml", ".txt", ".md", ".conf", ".mjs", ".js", ".ts", ".json", ""]);
+const EXTENSIONS = new Set([
+  ".sh",
+  ".yml",
+  ".yaml",
+  ".txt",
+  ".md",
+  ".conf",
+  ".mjs",
+  ".js",
+  ".ts",
+  ".json",
+  "",
+]);
 const CE_FICHIER = "src/server/ops/__tests__/disque-vps-aucune-purge-dangereuse.spec.ts";
 
 function fichiers(dossier: string): string[] {
@@ -88,16 +100,16 @@ function surRunnerGithubJetable(rel: string, lignes: string[], idx: number): boo
   const cleJob = /^ {2}[A-Za-z0-9_-]+:\s*$/;
   let debutJob = -1;
   for (let i = idx; i >= 0; i--) {
-    if (cleJob.test(lignes[i])) {
+    if (cleJob.test(lignes[i] ?? "")) {
       debutJob = i;
       break;
     }
-    if (/^jobs:/.test(lignes[i])) return false;
+    if (/^jobs:/.test(lignes[i] ?? "")) return false;
   }
   if (debutJob < 0) return false;
   let finJob = lignes.length;
   for (let i = idx + 1; i < lignes.length; i++) {
-    if (cleJob.test(lignes[i])) {
+    if (cleJob.test(lignes[i] ?? "")) {
       finJob = i;
       break;
     }
@@ -105,7 +117,7 @@ function surRunnerGithubJetable(rel: string, lignes: string[], idx: number): boo
   const runsOn = lignes.slice(debutJob, finJob).find((l) => /^\s{4}runs-on:/.test(l));
   if (!runsOn || !/ubuntu-/.test(runsOn) || /self-hosted/.test(runsOn)) return false;
   let debutEtape = idx;
-  while (debutEtape > debutJob && !/^\s{6}-\s/.test(lignes[debutEtape])) debutEtape--;
+  while (debutEtape > debutJob && !/^\s{6}-\s/.test(lignes[debutEtape] ?? "")) debutEtape--;
   const etape = lignes.slice(debutEtape, idx + 1).join("\n");
   return !/\bssh\b|root@|appleboy|\bscp\b/.test(etape);
 }
@@ -129,10 +141,11 @@ function analyser(rel: string, texte: string): string[] {
   const lignes = texte.split("\n");
   const fautes: string[] = [];
   for (const idx of lignesExecutables(rel, texte)) {
-    const ligne = lignes[idx];
+    const ligne = lignes[idx] ?? "";
     for (const cmd of commandes(ligne)) {
       // Seul le MORCEAU `logger -t disk-alert …` du crontab snapshot est un message (texte), pas la ligne entière.
-      if (rel === "scripts/vps/crontab.snapshot.txt" && /^logger -t disk-alert\b/.test(cmd)) continue;
+      if (rel === "scripts/vps/crontab.snapshot.txt" && /^logger -t disk-alert\b/.test(cmd))
+        continue;
       for (const interdit of INTERDITS) {
         if (!interdit.motif.test(cmd)) continue;
         if (CACHE_BORNE.test(cmd) && !AUTRE_PRUNE.test(cmd)) continue;
@@ -172,8 +185,15 @@ describe("le verrou lui-même reconnaît les purges dangereuses", () => {
   it("l'exemption `logger -t disk-alert` ne vaut que pour son morceau, dans le crontab snapshot", () => {
     const dangereuse = "docker system prune -af --volumes; logger -t disk-alert x";
     expect(analyser("scripts/vps/crontab.snapshot.txt", dangereuse).length).toBeGreaterThan(0);
-    expect(analyser("scripts/x.sh", 'logger -t disk-alert "docker system prune requis"').length).toBeGreaterThan(0);
-    expect(analyser("scripts/vps/crontab.snapshot.txt", 'logger -t disk-alert "docker system prune requis" || true')).toEqual([]);
+    expect(
+      analyser("scripts/x.sh", 'logger -t disk-alert "docker system prune requis"').length,
+    ).toBeGreaterThan(0);
+    expect(
+      analyser(
+        "scripts/vps/crontab.snapshot.txt",
+        'logger -t disk-alert "docker system prune requis" || true',
+      ),
+    ).toEqual([]);
   });
   it("une ligne en SSH n'est jamais dispensée comme runner jetable", () => {
     const yml = [
@@ -207,27 +227,39 @@ describe("disque du VPS : aucune purge Docker large dans .github/, scripts/ et d
       if (rel === CE_FICHIER) continue;
       fautes.push(...analyser(rel, readFileSync(chemin, "utf8")));
     }
-    expect(fautes, `Purge Docker interdite (voir AGENTS.md, « Disque du VPS ») :\n${fautes.join("\n")}`).toEqual([]);
+    expect(
+      fautes,
+      `Purge Docker interdite (voir AGENTS.md, « Disque du VPS ») :\n${fautes.join("\n")}`,
+    ).toEqual([]);
   });
 
   it("les exceptions runner existent encore ET sont dans un job GitHub jetable, étape sans SSH", () => {
     for (const e of EXCEPTIONS_RUNNER) {
       const lignes = readFileSync(path.join(RACINE, e.fichier), "utf8").split("\n");
       const idx = lignes.findIndex((l) => e.ligne.test(l));
-      expect(idx, `${e.fichier} : ${e.raison} (ligne absente : retirer l'exception)`).toBeGreaterThanOrEqual(0);
-      expect(surRunnerGithubJetable(e.fichier, lignes, idx), `${e.fichier} : ${e.raison}`).toBe(true);
+      expect(
+        idx,
+        `${e.fichier} : ${e.raison} (ligne absente : retirer l'exception)`,
+      ).toBeGreaterThanOrEqual(0);
+      expect(surRunnerGithubJetable(e.fichier, lignes, idx), `${e.fichier} : ${e.raison}`).toBe(
+        true,
+      );
     }
   });
 
   it("les scripts de garde-fous ne font que mesurer, prévenir ou archiver avant de ranger /tmp", () => {
     const surveiller = readFileSync(path.join(RACINE, "scripts/vps/surveiller-disque.sh"), "utf8");
-    expect(surveiller).not.toMatch(/\brm\s+-[a-z]*r|\bdocker\s+(?:rm|rmi|stop|kill|prune|system\s+prune)\b/);
+    expect(surveiller).not.toMatch(
+      /\brm\s+-[a-z]*r|\bdocker\s+(?:rm|rmi|stop|kill|prune|system\s+prune)\b/,
+    );
     const menage = readFileSync(path.join(RACINE, "scripts/vps/menage-tmp.sh"), "utf8");
     expect(menage).not.toMatch(/\bdocker\s+(?:rm|rmi|stop|kill|[a-z]+\s+prune)\b/);
     // La suppression ne vient qu'APRÈS la vérification de l'archive (liste, puis comparaison du contenu).
     const verif = menage.indexOf('tar -dzf "$archive"');
     expect(verif).toBeGreaterThan(-1);
     expect(verif).toBeLessThan(menage.indexOf("rm -rf --one-file-system"));
-    expect(menage.indexOf('gzip -t "$archive"')).toBeLessThan(menage.indexOf("rm -rf --one-file-system"));
+    expect(menage.indexOf('gzip -t "$archive"')).toBeLessThan(
+      menage.indexOf("rm -rf --one-file-system"),
+    );
   });
 });
