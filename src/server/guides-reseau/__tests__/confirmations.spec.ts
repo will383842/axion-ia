@@ -276,6 +276,11 @@ describe("reprise des réservations perdues", () => {
 
 describe("9 · rien de personnel dans la réponse ni le journal", () => {
   it("ni '@', ni email_key, ni conv_ref", async () => {
+    // `recevoirDemandeConfirmations` lit l'horloge (`new Date()`) alors que la ligne est semée par
+    // rapport à MAINTENANT : sans horloge fixée, elle sortait de la fenêtre de FENETRE_MERCI_H le
+    // 13/11/2026 et `reservees` tombait à 0. On fixe donc `Date` sur MAINTENANT.
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(MAINTENANT);
     const sorties: string[] = [];
     for (const m of ["log", "info", "warn", "error", "debug"] as const) {
       vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
@@ -301,6 +306,7 @@ describe("9 · rien de personnel dans la réponse ni le journal", () => {
     expect(tout).not.toContain(l.conv_ref);
     expect(sorties.join("")).toContain('"event":"guides_reseau_confirmations"');
     expect(sorties.join("")).toContain('"reservees":1');
+    vi.useRealTimers();
     vi.restoreAllMocks();
   });
 });
