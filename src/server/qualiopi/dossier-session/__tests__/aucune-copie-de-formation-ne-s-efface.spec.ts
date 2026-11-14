@@ -60,11 +60,11 @@ function qui(motif: RegExp): string[] {
 }
 
 describe("🔒 aucune copie d'e-mail de formation ne s'efface", () => {
-  it("seule la purge lettre/guide supprime des lignes du journal", () => {
-    expect(qui(/\bemailLog\.delete(Many)?\s*\(/)).toEqual(["src/server/newsletter/retention.ts"]);
+  it("aucun code ne supprime de lignes du journal (la purge lettre/guide est retirée, 2026-11-14)", () => {
+    expect(qui(/\bemailLog\.delete(Many)?\s*\(/)).toEqual([]);
   });
 
-  it("…et ses gabarits ne sont pas des e-mails de formation (la cascade ne touche rien de la session)", () => {
+  it("…et les gabarits lettre/guide ne sont pas des e-mails de formation (la cascade ne touche rien de la session)", () => {
     const formation = new Set(gabaritsClasses());
     expect(GABARITS_LETTRE_GUIDE.filter((g) => formation.has(g))).toEqual([]);
     expect(GABARITS_LETTRE_GUIDE.some((g) => g.startsWith("qualiopi-"))).toBe(false);
