@@ -30,6 +30,11 @@ on:
   schedule:
     - cron: "0 6 * * *" # 06:00 UTC daily (hors creneau de mise en ligne 5 h 07 Paris ete = 03:07 UTC)
   workflow_dispatch:
+    inputs:
+      zap_only:
+        description: "Ne lancer que le scan ZAP (vérification rapide)"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -61,7 +66,7 @@ jobs:
     name: A11y axe-core WCAG 2.2 AA vs prod (15 pages, lecture seule)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ vars.NIGHTLY_A11Y_ENABLED != 'false' && vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_A11Y_ENABLED != 'false' && vars.NIGHTLY_PLAYWRIGHT_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -115,6 +120,7 @@ jobs:
     name: pnpm audit (deps CVE scan)
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    if: ${{ !inputs.zap_only }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -185,34 +191,46 @@ jobs:
   zap-baseline:
     name: OWASP ZAP baseline scan
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 20
     if: ${{ vars.NIGHTLY_ZAP_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
       - name: ZAP baseline vs prod
-        # Garde : si ZAP se bloque pour une autre raison, l'étape échoue à 20 min
-        # au lieu de laisser le job s'annuler en silence au bout de 30 min.
-        timeout-minutes: 20
-        # owasp/zap2docker-stable image renamed → use zaproxy/zap-stable
+        # Budget : exploration 3 min (-m) + attente du scan passif 5 min max (-T) + démarrage
+        # et rapport ≈ 10 min. En mode « Automation Framework », zap-baseline.py capture toute
+        # la sortie de ZAP et ne l'affiche qu'à la fin : un long silence est normal.
+        # Avant le 14/11/2026 : -m 10 -T 25 (35 min) dans un job de 30 min → annulé chaque nuit.
+        timeout-minutes: 15
         run: |
           # Le conteneur ZAP (non root) doit pouvoir écrire zap.yaml et le rapport dans
           # le dossier monté (sinon Errno 13 puis blocage jusqu'au timeout).
           chmod a+w "${{ github.workspace }}"
-          docker run --rm -t \
+          # Pages énormes hors périmètre (/fr/faq 7 Mo, /fr/implantations 8,7 Mo, des milliers
+          # de liens) et /en (301 vers le français).
+          printf '*\tOUTOFSCOPE\t.*/fr/faq.*\n*\tOUTOFSCOPE\t.*/fr/implantations.*\n*\tOUTOFSCOPE\t.*/en(/.*)?$\n' > zap-rules.tsv
+          ZAP_EXIT=0
+          timeout --signal=INT 13m docker run --rm \
             -v ${{ github.workspace }}:/zap/wrk \
             zaproxy/zap-stable zap-baseline.py \
             -t "${{ vars.STAGING_URL || 'https://axion-ia.com' }}" \
-            -I -m 10 -T 10 \
-            -r zap-report.html || ZAP_EXIT=$?
-          # ZAP exit 0=clean, 1=warnings, 2=errors. On accepte les warnings
-          # mais on bloque sur les errors (vrais issues sécu).
-          if [ "${ZAP_EXIT:-0}" -ge 2 ]; then exit 1; fi
+            -I -m 3 -T 5 -d \
+            -c zap-rules.tsv \
+            -z "-config spider.maxDepth=3 -config spider.maxChildren=20 -config spider.maxParseSizeBytes=1048576 -config connection.timeoutInSecs=30" \
+            -r zap-report.html -J zap-report.json || ZAP_EXIT=$?
+          # Codes de zap-baseline.py : 0 = propre, 1 = au moins un FAIL, 2 = WARN seulement
+          # (jamais avec -I), 3 = erreur (ZAP pas démarré, résumé absent) ; 124 = garde timeout.
+          echo "ZAP exit code: $ZAP_EXIT"
+          if [ "$ZAP_EXIT" -eq 124 ]; then echo "::error::ZAP a dépassé 13 min (budget -m/-T à revoir)"; exit 1; fi
+          if [ "$ZAP_EXIT" -ne 0 ]; then echo "::error::ZAP code $ZAP_EXIT (1 = faille FAIL à traiter, 3 = erreur)"; exit 1; fi
       - name: Upload ZAP report
         if: always()
         uses: actions/upload-artifact@v7
         with:
           name: zap-baseline-report
-          path: zap-report.html
+          path: |
+            zap-report.html
+            zap-report.json
+            zap.yaml
           if-no-files-found: error
           retention-days: 14
 
@@ -222,7 +240,7 @@ jobs:
     timeout-minutes: 10
     # OPT-IN par défaut (envoie un vrai email à mail-tester.com).
     # Active via `gh variable set NIGHTLY_MAIL_TESTER_ENABLED --body true`.
-    if: ${{ vars.NIGHTLY_MAIL_TESTER_ENABLED == 'true' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_MAIL_TESTER_ENABLED == 'true' }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -248,7 +266,7 @@ jobs:
     name: Backup restore drill (test DB)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ vars.NIGHTLY_BACKUP_DRILL_ENABLED != 'false' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_BACKUP_DRILL_ENABLED != 'false' }}
     services:
       postgres:
         image: postgres:16-alpine
@@ -290,7 +308,7 @@ jobs:
     name: Lighthouse history (5 URLs)
     runs-on: ubuntu-latest
     timeout-minutes: 25
-    if: ${{ vars.NIGHTLY_LHCI_ENABLED != 'false' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_LHCI_ENABLED != 'false' }}
     steps:
       - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v5
@@ -341,7 +359,7 @@ jobs:
     name: Chaîne Qualiopi complète (14 documents, factures, 22 indicateurs, BPF)
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    if: ${{ vars.NIGHTLY_QUALIOPI_CHAINE_ENABLED != 'false' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_QUALIOPI_CHAINE_ENABLED != 'false' }}
     env:
       SKIP_ENV_VALIDATION: "true"
       BULLMQ_DISABLED: "true"
@@ -372,7 +390,7 @@ jobs:
   # chantier, appelé tel quel : une seule définition, deux déclencheurs.
   banc-formateurs:
     name: Banc formateurs
-    if: ${{ vars.NIGHTLY_BANC_FORMATEURS_ENABLED != 'false' }}
+    if: ${{ !inputs.zap_only && vars.NIGHTLY_BANC_FORMATEURS_ENABLED != 'false' }}
     uses: ./.github/workflows/banc-formateurs.yml
 
   notify-failure:
