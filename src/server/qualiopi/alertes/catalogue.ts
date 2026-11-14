@@ -1867,8 +1867,8 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
 
   // Décision de Williams du 11/11/2026 — une demande d'effacement MET À L'ÉCART au lieu de
-  // supprimer (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Deux codes, niveau `info` : la
-  // cloche seulement, jamais l'e-mail groupé (réservé à `important` et `critique`).
+  // supprimer (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Deux codes : `email_retenu_ecarte_effacement`
+  // reste `info` (cloche seulement) ; `rgpd_effacement_a_traiter` est `critique` (voir plus bas).
   email_retenu_ecarte_effacement: {
     niveau: "info",
     titre: "Envoi retenu : la personne a demandé l'effacement de ses données",
@@ -1877,8 +1877,11 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée à l'instant de l'envoi, jamais par `evaluerAlertes`. La mise à l'écart pour effacement est définitive : l'alerte est la trace d'un envoi qui n'est pas parti, et doit survivre au balayage qui ne la voit pas.",
     guichet: "direction",
   },
+  // 🔴 `critique` (et non plus `info`) : le délai légal de réponse est d'UN MOIS (RGPD art. 12.3).
+  // Une alerte « cloche seulement » pouvait être ratée. `critique` part seul et tout de suite par
+  // l'e-mail d'alerte existant (`routage.ts` › `estImmediat`), sans nouveau canal.
   rgpd_effacement_a_traiter: {
-    niveau: "info",
+    niveau: "critique",
     titre: "Demande d'effacement RGPD à traiter à la main",
     resolutionAuto: false,
     motifSansResolutionAuto:
