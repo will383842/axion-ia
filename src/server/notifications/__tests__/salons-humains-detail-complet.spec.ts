@@ -236,6 +236,24 @@ describe("salons humains — détail complet", () => {
     }
   });
 
+  it("le détail complet part SANS aperçu de lien (Telegram ne va pas lire l'URL console)", async () => {
+    process.env.TELEGRAM_CHAT_ID_PRESSE = "-presse";
+    process.env.TELEGRAM_CHAT_ID_INVESTISSEURS = "-invest";
+    process.env.TELEGRAM_CHAT_ID_AVIS = "-avis";
+    process.env.TELEGRAM_CHAT_ID_MESSAGES = "-messages";
+    process.env.TELEGRAM_CHAT_ID_CALENDLY = "-calendly";
+    process.env.TELEGRAM_CALENDLY_BOT_TOKEN = "bot-calendly";
+    for (const e of EVENEMENTS) {
+      fetchMock.mockClear();
+      await emettre(e);
+      expect(fetchMock.mock.calls.length, e.category).toBe(1);
+      const corps = JSON.parse((fetchMock.mock.calls[0]![1] as { body: string }).body) as {
+        link_preview_options?: { is_disabled?: boolean };
+      };
+      expect(corps.link_preview_options?.is_disabled, e.category).toBe(true);
+    }
+  });
+
   it("🔴 salon dédié absent : le repli ne reçoit JAMAIS de coordonnées", async () => {
     for (const e of EVENEMENTS) {
       fetchMock.mockClear();

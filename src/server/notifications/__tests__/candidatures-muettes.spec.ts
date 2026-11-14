@@ -93,6 +93,20 @@ describe("candidatures muettes", () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it("🔴 une catégorie muette reste muette même si l'appelant force `channels`", async () => {
+    for (const category of CATEGORIES_SANS_ALERTE) {
+      const r = await notify({
+        category,
+        payload: {},
+        sync: true,
+        channels: ["telegram", "email", "sentry"],
+      } as unknown as NotifyInput);
+      expect(r, category).toEqual({ ok: true, channels: {} });
+    }
+    await flushPendingDispatches();
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
   it("retirer une catégorie de la liste rend sa route", () => {
     const c: NotificationCategory = "CANDIDAT_REPLIED";
     const mutable = CATEGORIES_SANS_ALERTE as Set<NotificationCategory>;

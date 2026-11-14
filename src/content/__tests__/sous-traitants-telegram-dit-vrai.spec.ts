@@ -114,6 +114,49 @@ describe("`D6-5-C2` — la page des sous-traitants dit vrai sur Telegram", () =>
     expect(clients, "et le message intégral").toMatch(/bloc\("Message", p\.message\)/);
   });
 
+  // Décision du fondateur 14/11/2026 : les salons dédiés (Calendly de tout type, presse,
+  // investisseurs, avis, podcast, conférences) reçoivent aussi le détail complet. La fiche doit
+  // le dire, et `format-detail.ts` doit le faire VRAIMENT — mêmes garde-fous que pour Clients.
+  it("🔴 elle déclare le détail complet des autres salons dédiés — et le code le pratique", () => {
+    expect(fiche).toMatch(/Autres exceptions : presse, investisseurs, invitations/);
+    expect(fiche).toMatch(/rendez-vous pris sur Calendly, y compris ceux des candidats apporteurs/);
+    expect(fiche).toMatch(/groupe privé réservé au fondateur/);
+    expect(fiche).toMatch(/Other exceptions: press, investors, invitations/);
+    expect(fiche).toMatch(/including those of business-introducer candidates and trainers/);
+    expect(fiche).toMatch(/private group reserved to the founder/);
+
+    const detail = lire("src", "server", "notifications", "format-detail.ts");
+    expect(detail, "le salon dédié porte l'e-mail").toMatch(/p\.contactEmail\b/);
+    expect(detail, "et le téléphone").toMatch(/p\.contactPhone\b/);
+    expect(detail, "et le message intégral").toMatch(/bloc\("Message", p\.message\)/);
+    expect(detail, "les rendez-vous Calendly passent par le détail complet").toMatch(
+      /lignesDetailClient\(event\)/,
+    );
+  });
+
+  it("🔴 elle dit que les candidatures ne sont plus signalées — et le routage les coupe", () => {
+    expect(fiche).toMatch(/plus signalées par Telegram/);
+    expect(fiche).toMatch(/no longer reported on Telegram/);
+
+    const routing = lire("src", "server", "notifications", "routing.ts");
+    const debut = routing.indexOf("CATEGORIES_SANS_ALERTE:");
+    const bloc = routing.slice(debut, routing.indexOf("]);", debut));
+    for (const c of [
+      "JOB_APPLICATION_RECEIVED",
+      "VIDEO_EDITOR_APPLICATION_RECEIVED",
+      "COMMERCIAL_APPLICATION_RECEIVED",
+      "APPORTEUR_REPLIED",
+      "TRAINER_DOSSIER_RECU",
+    ]) {
+      expect(bloc, c).toContain(`"${c}"`);
+    }
+    // Les deux alertes que la fiche déclare encore existent : elles ne sont PAS coupées.
+    expect(bloc).not.toContain('"TRAINER_CHANGEMENT_DEMANDE"');
+    expect(bloc).not.toContain('"CANDIDAT_SELF_ERASED"');
+    expect(fiche).toMatch(/compte bancaire ou adresse/);
+    expect(fiche).toMatch(/bank account or address/);
+  });
+
   it("la politique de confidentialité le dit aussi, en français et en anglais", () => {
     const legal = lire("src", "content", "legal.ts");
     expect(legal).toMatch(/Telegram de l'équipe reçoit le contenu complet de votre demande/);

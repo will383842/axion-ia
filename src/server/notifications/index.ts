@@ -36,6 +36,7 @@ import {
   shouldDispatchAsync,
   resolveTelegramTarget,
   resolveTelegramTargetPourCategorie,
+  CATEGORIES_SANS_ALERTE,
 } from "./routing";
 import { formatNotification } from "./format";
 import { formatNotificationClient, type EvenementClient } from "./format-clients";
@@ -85,6 +86,8 @@ async function envoyerEnDetail(
         text: morceau,
         brut: true,
         silent: false,
+        // Le détail complet ne doit pas pousser Telegram à aller lire l'URL de la console.
+        sansApercuLien: true,
         chatId: salon.chatId,
         botToken: salon.botToken,
       });
@@ -249,8 +252,11 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
   const routing = getRouting(input.category);
   const severity = input.severity ?? routing.severity;
   // Canaux du routing par défaut ; si l'appelant force `input.channels`, on respecte
-  // exactement sa liste (usage avancé). WhatsApp est coupé depuis le 14/11/2026.
-  const channels: NotificationChannel[] = input.channels ?? routing.channels;
+  // exactement sa liste (usage avancé), SAUF pour une catégorie muette (`CATEGORIES_SANS_ALERTE`) :
+  // elle reste muette même si l'appelant force des canaux. WhatsApp est coupé depuis le 14/11/2026.
+  const channels: NotificationChannel[] = CATEGORIES_SANS_ALERTE.has(input.category)
+    ? []
+    : (input.channels ?? routing.channels);
   const payload = input.payload as Record<string, unknown>;
 
   // 0. Aucun canal configuré → skip immédiat (catégorie volontairement muette).

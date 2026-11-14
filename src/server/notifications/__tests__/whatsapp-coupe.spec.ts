@@ -62,14 +62,27 @@ describe("WhatsApp coupé", () => {
     for (const c of ALL_NOTIFICATION_CATEGORIES) expect(shouldNotifyWhatsApp(c), c).toBe(false);
   });
 
-  it("plus aucune trace de l'API CallMeBot ni de ses variables dans src/ et .github/", () => {
+  it("plus aucune trace de l'API CallMeBot ni de ses variables dans src/server, src/env.ts, la console et .github/", () => {
     // Aiguilles recomposées pour que ce fichier ne se trouve pas lui-même.
     const aiguilles = [
       "api.call" + "mebot.com",
       "WHATSAPP_CALL" + "MEBOT",
       "WHATSAPP_NOTIFY" + "_PHONE",
     ];
-    const fichiers = execFileSync("git", ["ls-files", "src", ".github"], { encoding: "utf-8" })
+    // Périmètre resserré (la lecture de ~9 900 fichiers dépassait le délai) : le code serveur,
+    // l'env, la console et la CI. `--literal-pathspecs` : `[locale]` n'est pas un motif.
+    const fichiers = execFileSync(
+      "git",
+      [
+        "--literal-pathspecs",
+        "ls-files",
+        "src/server",
+        "src/env.ts",
+        "src/app/[locale]/(admin)",
+        ".github",
+      ],
+      { encoding: "utf-8", maxBuffer: 32 * 1024 * 1024 },
+    )
       .trim()
       .split("\n")
       .filter((f) => !f.endsWith("whatsapp-coupe.spec.ts"));
