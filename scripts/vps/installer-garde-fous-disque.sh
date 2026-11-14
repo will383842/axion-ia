@@ -10,7 +10,8 @@
 #   2. crée /var/lib/axion-disque/ et /etc/axion-disque/ (0700) — SANS écrire de secret ;
 #   3. écrit /etc/cron.d/axion-disque : surveillance toutes les 10 min, ménage de /tmp à 04:40 ;
 #   4. écrit /etc/logrotate.d/axion-disque ;
-#   5. installe la conf journald (SystemMaxUse=500M) et redémarre systemd-journald ;
+#   5. archive le journal (vérifié) dans /root/archives-journal, puis installe la conf journald
+#      (SystemMaxUse=500M) et redémarre systemd-journald ; tout fichier écrasé est copié en .avant-<date> ;
 #   6. RETIRE du crontab root la ligne cassée « disk-alert » (sauvegarde d'abord le crontab
 #      dans /root/crontab.avant-garde-fous-<date>).
 # Elle ne supprime aucun autre élément, ne touche pas à Docker, aux volumes ni aux sauvegardes.
@@ -49,9 +50,20 @@ for f in surveiller-disque.sh menage-tmp.sh journald-axion.conf; do
 done
 bash -n "$ICI/surveiller-disque.sh" && bash -n "$ICI/menage-tmp.sh" || { dire "erreur de syntaxe dans un script : arrêt"; exit 1; }
 
+# Copie « .avant-<date> » de tout fichier existant avant de l'écraser (rien n'est perdu).
+sauver_avant() {
+  local f="$1"
+  [ -e "$f" ] || return 0
+  cp -p "$f" "$f.avant-$DATE" || return 1
+  dire "copie de sécurité : $f.avant-$DATE"
+}
+installer_fichier() { # installer_fichier <mode> <source> <destination>
+  sauver_avant "$3" && install -D -m "$1" "$2" "$3"
+}
+
 # 1. Scripts
-agir "installation de $DEST/surveiller-disque.sh" install -D -m 755 "$ICI/surveiller-disque.sh" "$DEST/surveiller-disque.sh"
-agir "installation de $DEST/menage-tmp.sh" install -D -m 755 "$ICI/menage-tmp.sh" "$DEST/menage-tmp.sh"
+agir "installation de $DEST/surveiller-disque.sh" installer_fichier 755 "$ICI/surveiller-disque.sh" "$DEST/surveiller-disque.sh"
+agir "installation de $DEST/menage-tmp.sh" installer_fichier 755 "$ICI/menage-tmp.sh" "$DEST/menage-tmp.sh"
 
 # 2. Dossiers
 agir "dossier /var/lib/axion-disque (historique et états)" install -d -m 755 /var/lib/axion-disque
@@ -70,7 +82,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 40 4 * * * root /opt/axion-ia/menage-tmp.sh > /dev/null 2>> /var/log/menage-tmp.log
 FIN
 }
-ecrire_cron() { contenu_cron > "$CRON.tmp" && chmod 644 "$CRON.tmp" && mv "$CRON.tmp" "$CRON"; }
+ecrire_cron() { sauver_avant "$CRON" && contenu_cron > "$CRON.tmp" && chmod 644 "$CRON.tmp" && mv "$CRON.tmp" "$CRON"; }
 agir "écriture de $CRON" ecrire_cron
 
 # 4. Rotation des journaux
@@ -85,14 +97,27 @@ contenu_logrotate() {
 }
 FIN
 }
-ecrire_logrotate() { contenu_logrotate > "$LOGROTATE"; chmod 644 "$LOGROTATE"; }
+ecrire_logrotate() { sauver_avant "$LOGROTATE" && contenu_logrotate > "$LOGROTATE"; chmod 644 "$LOGROTATE"; }
 agir "écriture de $LOGROTATE" ecrire_logrotate
 
 # 5. journald
+archiver_journal() {
+  # Archive le journal AVANT toute limite : vérifiée (gzip -t + liste non vide), sinon on n'applique rien.
+  local a="/root/archives-journal/journal-$DATE.tar.gz"
+  [ -d /var/log/journal ] || { dire "journald : pas de /var/log/journal (journal en mémoire), rien à archiver"; return 0; }
+  install -d -m 700 /root/archives-journal || return 1
+  if ! tar -C /var/log -czf "$a" journal; then dire "journald : archive impossible, limite NON appliquée"; mv -f "$a" "$a.partiel" 2>/dev/null; return 1; fi
+  if ! gzip -t "$a" || [ "$(tar -tzf "$a" | wc -l)" -le 0 ]; then
+    dire "journald : archive invalide, limite NON appliquée"; mv -f "$a" "$a.partiel" 2>/dev/null; return 1
+  fi
+  chmod 600 "$a"; dire "journald : journal archivé et vérifié : $a"
+}
 installer_journald() {
-  install -d -m 755 /etc/systemd/journald.conf.d
+  install -d -m 755 /etc/systemd/journald.conf.d || return 1
   if ! cmp -s "$ICI/journald-axion.conf" "$JOURNALD_DEST"; then
-    install -m 644 "$ICI/journald-axion.conf" "$JOURNALD_DEST"
+    archiver_journal || return 1
+    sauver_avant "$JOURNALD_DEST" || return 1
+    install -m 644 "$ICI/journald-axion.conf" "$JOURNALD_DEST" || return 1
     systemctl restart systemd-journald
     dire "journald : limite 500M appliquée (redémarré)"
   else

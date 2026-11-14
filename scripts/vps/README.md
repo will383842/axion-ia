@@ -192,7 +192,7 @@ purge Docker : ils mesurent, préviennent, ou archivent avant de ranger `/tmp`.
 | Fichier                              | Rôle                                                                                                                                  | Cron                               |
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `surveiller-disque.sh`               | Mesure `df /`, historique horaire (`/var/lib/axion-disque/historique.csv`), alerte Telegram 75 % / 85 % / 90 %, top 5 des causes, « plein dans N jours » | `*/10 * * * *` (`/etc/cron.d/axion-disque`) |
-| `menage-tmp.sh`                      | Dossiers de `/tmp` > 7 j et > 100 Mo : archive (fichiers absents de l'historique git) dans `/root/archives-tmp/`, vérifie, puis supprime | `40 4 * * *`                       |
+| `menage-tmp.sh`                      | Dossiers de `/tmp` > 7 j et > 100 Mo : manifeste de tout le dossier + archive (node_modules compris ; fichiers absents de la branche principale) dans `/root/archives-tmp/`, vérifie (gzip, liste, `tar -d`), puis supprime | `40 4 * * *`                       |
 | `journald-axion.conf`                | `SystemMaxUse=500M` → `/etc/systemd/journald.conf.d/axion.conf`                                                                         | —                                  |
 | `installer-garde-fous-disque.sh`     | Installe le tout (idempotent), retire la ligne cassée `disk-alert` du crontab root (sauvegarde d'abord)                                  | à lancer à la main, une fois       |
 
@@ -218,7 +218,7 @@ chmod 600 /etc/axion-disque/telegram.env
 ```
 
 Les deux scripts ont un mode `--essai`. `menage-tmp.sh` ne touche jamais à `pubB`, `rep-5f*`, `reconc*`,
-`iv-out`, `frames`, `alig`, ni à ce qui commence par `garder-` ; dépôts de référence réglables
+`iv-out`, `frames`, `alig`, `b-test`, `systemd-private-*`, `snap-private-tmp`, `.X11-unix`, `.ICE-unix`, ni à ce qui commence par `garder-` ; dépôts de référence réglables
 (`DEPOTS_REF`, défaut `/opt/studio-axion-ia/source`, ou `/etc/axion-disque/menage-tmp.conf`).
-Un dossier dont l'archive ne se vérifie pas est laissé en place. `docker-nettoyage.sh` (cron :15 du
+Un dossier dont l'archive ne se vérifie pas (renommée `.partiel`), ou dont un contrôle d'usage (lsof, docker, find) échoue ou dépasse le délai, est laissé en place. `docker-nettoyage.sh` (cron :15 du
 serveur) n'est pas encore versionné ici.

@@ -347,8 +347,13 @@ du -sh /var/lib/docker/volumes/*
 ### 11.2 Cleanup
 
 ```bash
-# Images Docker orphelines
-docker image prune -af
+# Images Docker orphelines : SEULEMENT les images sans nom (dangling), jamais `-a`
+# (`docker image prune -af` efface les images de retour arrière studio-*:precedente).
+docker image prune -f
+# Cache de build, borné (aucune donnée) :
+docker builder prune -f --keep-storage 2GB
+# Jamais : docker system prune, docker container prune, docker volume prune, --volumes.
+# Voir docs/runbooks/R20-disk-saturation.md (procédure sûre, archive avant tout retrait).
 
 # Logs Docker > 100MB par container (rotation)
 truncate -s 0 $(docker inspect --format='{{.LogPath}}' axion-ia-app-prod)

@@ -44,7 +44,14 @@ Actions sûres, dans l'ordre :
 1. `/tmp` : lancer `/opt/axion-ia/menage-tmp.sh --essai`, puis sans `--essai`
    (il archive dans `/root/archives-tmp/` avant de supprimer).
 2. Cache de build seulement : `docker builder prune -f --keep-storage 2GB`.
-3. Journal : `journalctl --vacuum-size=500M`.
+3. Journal : ne jamais `journalctl --vacuum-size` (supprime sans copie). Archiver d'abord,
+   vérifier, puis seulement appliquer la limite :
+   ```bash
+   install -d -m 700 /root/archives-journal
+   A=/root/archives-journal/journal-$(date +%F-%H%M%S).tar.gz
+   tar -C /var/log -czf "$A" journal && gzip -t "$A" && [ "$(tar -tzf "$A" | wc -l)" -gt 0 ]      && install -m 644 scripts/vps/journald-axion.conf /etc/systemd/journald.conf.d/axion.conf      && systemctl restart systemd-journald
+   ```
+   (ou relancer `installer-garde-fous-disque.sh`, qui fait la même chose). Si une étape échoue : ne rien appliquer.
 4. Sessions Claude : travailler dans `/root/travaux-claude/<date>-<session>/`
    et nettoyer en partant (jamais dans `/tmp`).
 5. Le reste (clones du Studio, vidéos `cv-storage`, journaux ClickHouse) :
