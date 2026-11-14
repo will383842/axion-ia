@@ -135,7 +135,7 @@ utilise() {
   done
   if grep -qsF -- "$d/" /proc/[0-9]*/maps 2>/dev/null; then RAISON_USAGE="fichier projeté en mémoire"; return 0; fi
   # Montage à l'intérieur du dossier (point de montage = colonne 5 de mountinfo).
-  if [ -r /proc/self/mountinfo ] && awk -v p="$d/" 'index($5,p)==1' /proc/self/mountinfo | grep -q .; then
+  if [ -r /proc/self/mountinfo ] && awk -v p="$d/" '{ gsub(/\\040/, " ", $5); if (index($5,p)==1) print }' /proc/self/mountinfo | grep -q .; then
     RAISON_USAGE="point de montage à l'intérieur"; return 0
   fi
   if command -v lsof >/dev/null 2>&1; then
@@ -237,6 +237,9 @@ traiter() {
   local d="$1" nom taille_mo libre_mo
   nom="${d#"$TMP_DIR"/}"
 
+  case "$nom" in
+    .menage-supp-*) log "ANOMALIE : reste d'interruption $nom (nom d'origine : voir « mis de côté » dans le journal), à traiter à la main"; return ;;
+  esac
   if protege "$nom"; then log "PROTÉGÉ (liste blanche) : $nom"; return; fi
   # Une archive .partiel existe déjà pour ce dossier : anomalie déjà signalée, on ne réarchive pas
   # (sinon une archive pleine taille serait recréée chaque nuit jusqu'à remplir le disque).
@@ -333,6 +336,7 @@ traiter() {
   if utilise "$d"; then log "ANOMALIE : $nom est devenu utilisé ($RAISON_USAGE) pendant l'archivage : laissé en place (archive conservée : $archive)"; return; fi
   local supp="$TMP_DIR/.menage-supp-$$"
   if [ -e "$supp" ]; then log "ANOMALIE : $supp existe déjà : $nom laissé en place"; return; fi
+  log "  mis de côté : $d -> $supp (archive $archive)"
   if ! mv -T -- "$d" "$supp"; then log "ANOMALIE : renommage de $nom impossible : laissé en place"; return; fi
   local doute=""
   if recent "$supp"; then doute="a changé pendant l'archivage (ou find en échec)"

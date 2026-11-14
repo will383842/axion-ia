@@ -50,12 +50,17 @@ for f in surveiller-disque.sh menage-tmp.sh exporter-journal.sh journald-axion.c
 done
 bash -n "$ICI/surveiller-disque.sh" && bash -n "$ICI/menage-tmp.sh" && bash -n "$ICI/exporter-journal.sh" || { dire "erreur de syntaxe dans un script : arrêt"; exit 1; }
 
-# Copie « .avant-<date> » de tout fichier existant avant de l'écraser (rien n'est perdu).
+# Copie « .avant-<date> » de tout fichier existant avant de l'écraser (rien n'est perdu). Rangée dans
+# /var/lib/axion-disque/avant/ : jamais à côté du fichier (logrotate, cron et systemd lisent leurs dossiers).
+AVANT=/var/lib/axion-disque/avant
+TMP_ECRITURE=/etc/axion-disque
 sauver_avant() {
-  local f="$1"
+  local f="$1" cible
   [ -e "$f" ] || return 0
-  cp -p "$f" "$f.avant-$DATE" || return 1
-  dire "copie de sécurité : $f.avant-$DATE"
+  install -d -m 700 "$AVANT" || return 1
+  cible="$AVANT/$(printf '%s' "$f" | tr / _).avant-$DATE"
+  cp -p "$f" "$cible" || return 1
+  dire "copie de sécurité : $cible"
 }
 installer_fichier() { # installer_fichier <mode> <source> <destination>
   sauver_avant "$3" && install -D -m "$1" "$2" "$3"
@@ -85,7 +90,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 10 5 * * 0 root /opt/axion-ia/exporter-journal.sh >> /var/log/exporter-journal.log 2>&1
 FIN
 }
-ecrire_cron() { sauver_avant "$CRON" && contenu_cron > "$CRON.tmp" && chmod 644 "$CRON.tmp" && mv "$CRON.tmp" "$CRON"; }
+ecrire_cron() { install -d -m 700 "$TMP_ECRITURE" && sauver_avant "$CRON" && contenu_cron > "$TMP_ECRITURE/cron.tmp" && chmod 644 "$TMP_ECRITURE/cron.tmp" && mv "$TMP_ECRITURE/cron.tmp" "$CRON"; }
 agir "écriture de $CRON" ecrire_cron
 
 # 4. Rotation des journaux
@@ -108,7 +113,7 @@ contenu_logrotate() {
 }
 FIN
 }
-ecrire_logrotate() { sauver_avant "$LOGROTATE" && contenu_logrotate > "$LOGROTATE.tmp" && chmod 644 "$LOGROTATE.tmp" && mv "$LOGROTATE.tmp" "$LOGROTATE"; }
+ecrire_logrotate() { install -d -m 700 "$TMP_ECRITURE" && sauver_avant "$LOGROTATE" && contenu_logrotate > "$TMP_ECRITURE/logrotate.tmp" && chmod 644 "$TMP_ECRITURE/logrotate.tmp" && mv "$TMP_ECRITURE/logrotate.tmp" "$LOGROTATE"; }
 agir "écriture de $LOGROTATE" ecrire_logrotate
 
 # 5. journald
@@ -120,7 +125,11 @@ archiver_journal() {
   install -d -m 700 /root/archives-journal || return 1
   # Ferme le fichier actif (il devient un fichier archivé, qui ne bouge plus) avant la copie.
   journalctl --flush --rotate || { dire "journald : journalctl --flush --rotate en échec, limite NON appliquée"; return 1; }
-  tar -C /var/log -czf "$a" journal; rc=$?
+  # Seuls les fichiers ACTIFS (system.journal, user-*.journal) sont exclus : journald n'en supprime jamais
+  # un actif, donc rien n'est perdu ; les fichiers archivés (rotés) sont tous copiés et ne bougent plus.
+  local mid
+  mid="$(cat /etc/machine-id)" || { dire "journald : /etc/machine-id illisible, limite NON appliquée"; return 1; }
+  tar -C /var/log --exclude="journal/$mid/system.journal" --exclude="journal/$mid/user-*.journal" -czf "$a" journal; rc=$?
   if [ "$rc" -eq 1 ]; then
     dire "journald : ÉCHEC PROPRE : « file changed as we read it » (un fichier du journal a changé pendant la copie). Rien n'est appliqué ; relancer l'installeur. Archive conservée : $a.partiel"
     mv -f "$a" "$a.partiel" 2>/dev/null; return 1
