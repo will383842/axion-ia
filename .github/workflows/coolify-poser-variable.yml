@@ -128,9 +128,8 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          # ⚠️ `-f` est volontairement ABSENT : on veut LIRE le corps d'une
-          #    réponse d'erreur. Coolify se met à jour seul et change son API ;
-          #    un code HTTP seul ne dit pas ce qui a changé.
+          # ⚠️ `-f` est volontairement ABSENT pour récupérer le code HTTP, mais le corps
+          #    d'une réponse en erreur n'est JAMAIS imprimé (risque de secrets dans le journal).
           reponse=$(curl -sS -m 20 -w '\n%{http_code}' \
             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
             "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
@@ -138,8 +137,7 @@ jobs:
           corps=$(printf '%s' "$reponse" | sed '$d')
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
-            echo "::error::l'API a répondu $code — corps ci-dessous"
-            printf '%s\n' "$corps" | head -c 2000
+            echo "::error::l'API a répondu $code"
             exit 1
           fi
           # is_preview distingue les paires Production/Preview : deux lignes de
@@ -247,10 +245,9 @@ jobs:
           code=$(printf '%s' "$reponse" | tail -n1)
           corps=$(printf '%s' "$reponse" | sed '$d')
           echo "HTTP $code"
-          printf '%s\n' "$corps" | head -c 1000
           case "$code" in
             200 | 201) echo "" ; echo "Écriture acceptée." ;;
-            *) echo "::error::écriture refusée ($code) — lire le corps ci-dessus" ; exit 1 ;;
+            *) echo "::error::écriture refusée ($code)" ; exit 1 ;;
           esac
 
       - name: Vérifier que la variable est bien là (par son NOM)
@@ -326,5 +323,5 @@ jobs:
           echo "HTTP $code"
           case "$code" in
             200 | 201) echo "Écriture worker acceptée." ;;
-            *) echo "::error::écriture worker refusée ($code)"; head -c 1000 /tmp/rep.json; exit 1 ;;
+            *) echo "::error::écriture worker refusée ($code)"; exit 1 ;;
           esac

@@ -243,12 +243,12 @@ jobs:
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
               -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
             if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "PATCH ✅ ($code)"; return 0; fi
-            echo "PATCH → $code : $(head -c 200 /tmp/resp) — tentative POST"
+            echo "PATCH → $code — tentative POST"
             code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
               -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
             if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "POST ✅ ($code)"; return 0; fi
-            echo "::error::$nom : POST → $code : $(head -c 300 /tmp/resp)"
+            echo "::error::$nom : POST → $code"
             return 1
           }
           case "$CIBLE" in
@@ -278,7 +278,7 @@ jobs:
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
               --data-urlencode "uuid=${uuid}" --data-urlencode "force=true" \
               "${COOLIFY_URL}/api/v1/deploy")
-            echo "$nom : $r"
+            echo "$nom : deployment_uuid=$(printf '%s' "$r" | jq -r '.deployments[0].deployment_uuid // "inconnu"' 2>/dev/null || echo inconnu)"
           }
           case "$CIBLE" in
             site) deploy "$COOLIFY_APP_UUID" site ;;
