@@ -6,6 +6,7 @@
 // Toggle dev : si `BULLMQ_DISABLED=true`, toutes les queues sont `null` et
 // les helpers `enqueueEmail` / `bootRepeatableJobs` no-op proprement.
 
+import { poserChargeurEnfileurEmail } from "@/server/notifications/enfileur-email";
 import { randomUUID } from "node:crypto";
 import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
@@ -1182,6 +1183,10 @@ export async function enqueueEmail(
 
   return { enqueued: true };
 }
+
+// Le hub de notifications n'importe pas ce module (garde graphe-worker) : il y trouve l'enfileur
+// par ce registre. Le worker charge `queues.ts` statiquement, donc la pose a toujours lieu.
+poserChargeurEnfileurEmail(async () => enqueueEmail);
 
 /**
  * Boot des cron jobs recurrents — appele une seule fois au demarrage du

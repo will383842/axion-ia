@@ -15,6 +15,10 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { notify, flushPendingDispatches } from "../index";
+import {
+  __reinitialiserPourTests as reinitialiserEnfileur,
+  poserChargeurEnfileurEmail,
+} from "../enfileur-email";
 import { decouperPourTelegram, sendTelegramRaw, PLAFOND_TELEGRAM } from "../channels/telegram";
 import { formatNotificationClient, type EvenementClient } from "../format-clients";
 
@@ -60,6 +64,9 @@ function corpsEnvoye(appel: number): Record<string, unknown> {
 }
 
 beforeEach(() => {
+  // Jamais la vraie file : un faux chargeur d'enfileur (registre `enfileur-email.ts`).
+  reinitialiserEnfileur();
+  poserChargeurEnfileurEmail(async () => vi.fn(async () => ({ enqueued: true })) as never);
   fetchMock.mockReset();
   redisSetMock.mockReset().mockResolvedValue("OK");
   redisDelMock.mockReset().mockResolvedValue(1);
@@ -74,6 +81,7 @@ beforeEach(() => {
 });
 
 afterEach(async () => {
+  reinitialiserEnfileur();
   await flushPendingDispatches();
   globalThis.fetch = originalFetch;
   process.env = { ...saved };

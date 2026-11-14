@@ -46,6 +46,16 @@ function sentryLevel(severity: NotificationSeverity): "info" | "warning" | "erro
   }
 }
 
+/** Signale un incident au niveau « error » (jamais de donnée de personne dans `message`). */
+export async function signalerIncident(message: string): Promise<void> {
+  const sentry = await loadSentry();
+  try {
+    sentry?.captureMessage(message, { level: "error" });
+  } catch {
+    // fail-soft
+  }
+}
+
 export async function sendSentryBreadcrumb(
   category: NotificationCategory,
   severity: NotificationSeverity,

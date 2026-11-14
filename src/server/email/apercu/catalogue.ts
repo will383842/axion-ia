@@ -726,6 +726,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "la personne qui a répondu",
     source: "features/questionnaire-preaudit/suivi.ts",
   },
+  "alerte-demande-client": {
+    categorie: "rendez-vous",
+    quand:
+      "Une demande de client arrive (message, rendez-vous Calendly, annulation, report) — doublon instantané du salon Telegram « Clients », avec toutes les informations",
+    destinataire: "interne",
+    source: "server/notifications/doublon-client.ts",
+  },
   "devis-signe-a-contresigner": {
     categorie: "commerce",
     quand:

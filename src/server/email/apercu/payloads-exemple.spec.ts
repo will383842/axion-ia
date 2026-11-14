@@ -172,7 +172,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // (CGV 5.2). Quatre champs de montants/CGV ajoutés au jeu d'exemple.
     // RELEVÉ À 86 (2026-11-07) : `devis-code-signature`, code à usage unique pour signer un devis
     // (lot 4 bis). Aucun champ requis : le code et la durée viennent de `valeurs`, remplis au rendu.
-    expect(tous.length).toBe(86);
+    // RELEVÉ À 87 (2026-11-14) : `alerte-demande-client`, doublon e-mail INTERNE d'une demande de
+    // client (alertes clients, PR B). Champs tous facultatifs.
+    expect(tous.length).toBe(87);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

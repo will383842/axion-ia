@@ -37,6 +37,11 @@ describe("modeParDefaut", () => {
     expect(EMAILS_A_VALIDER_PAR_DEFAUT).not.toContain("qualiopi-relance-impayee");
   });
 
+  it("laisse partir seul le doublon e-mail d'une demande de client (interne, 14/11/2026)", () => {
+    expect(modeParDefaut("alerte-demande-client")).toBe("auto");
+    expect(EMAILS_A_VALIDER_PAR_DEFAUT).not.toContain("alerte-demande-client");
+  });
+
   // 🔴 Le cas qui compte le plus. Retenir une convocation expose un stagiaire à
   // ne jamais la recevoir, et les indicateurs 4, 9, 11, 30 et 32 en dépendent.
   it("laisse partir la chaîne Qualiopi automatiquement", () => {

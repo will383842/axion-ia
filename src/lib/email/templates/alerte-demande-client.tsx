@@ -1,0 +1,89 @@
+// E-mail INTERNE « 🔴 IMPORTANT DEMANDE CLIENT … » (14/11/2026, décision du fondateur).
+//
+// Destinataire : `destinataireAlertesClients()` (contact@axion-ia.com par défaut), jamais le client.
+// C'est le doublon instantané d'une demande de client (message, rendez-vous Calendly, annulation,
+// report) : il porte TOUTES les informations — nom, entreprise, téléphone, e-mail, message, date du
+// rendez-vous — et un bouton vers la fiche dans la console.
+//
+// Enfilé par `server/notifications/doublon-client.ts`. Gabarit NOUVEAU : le worker (qui l'interprète
+// depuis les sources) atterrit avant l'app, donc il le connaît avant qu'un job ne l'utilise.
+
+import { Text } from "@react-email/components";
+import { EmailLayout, emailStyles } from "./_layout";
+import type { Locale } from "../../../../prisma/generated/client";
+
+interface Payload {
+  canal?: string;
+  evenement?: string;
+  typeDemande?: string;
+  nom?: string;
+  recuLe?: string;
+  lignes?: unknown;
+  consoleUrl?: string;
+}
+
+const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
+
+/** « 🔴 IMPORTANT DEMANDE CLIENT MESSAGE » / « … CALENDLY » / « … CALENDLY ANNULÉ » / « … REPORTÉ ». */
+export const alerteDemandeClientSubject = (
+  _locale: Locale,
+  payload: Record<string, unknown>,
+): string => {
+  const p = payload as Payload;
+  if (texte(p.canal) !== "calendly") return "🔴 IMPORTANT DEMANDE CLIENT MESSAGE";
+  const e = texte(p.evenement);
+  if (e === "annule") return "🔴 IMPORTANT DEMANDE CLIENT CALENDLY ANNULÉ";
+  if (e === "reporte") return "🔴 IMPORTANT DEMANDE CLIENT CALENDLY REPORTÉ";
+  return "🔴 IMPORTANT DEMANDE CLIENT CALENDLY";
+};
+
+export function AlerteDemandeClientEmail({
+  locale,
+  payload,
+}: {
+  locale: Locale;
+  payload: Record<string, unknown>;
+}) {
+  const p = payload as Payload;
+  const type = texte(p.typeDemande) || "Demande de client";
+  const nom = texte(p.nom);
+  const recuLe = texte(p.recuLe);
+  const consoleUrl = texte(p.consoleUrl);
+  const lignes = (Array.isArray(p.lignes) ? p.lignes : [])
+    .filter((l): l is string => typeof l === "string")
+    // Les lignes de lien sont portées par le bouton ; on garde le reste, vides comprises.
+    .filter((l) => !/^(Fiche|Console) : /.test(l));
+
+  return (
+    <EmailLayout
+      famille="C"
+      preview={[type, nom, recuLe ? `reçu le ${recuLe}` : ""].filter(Boolean).join(" · ") + "."}
+      title={type}
+      /* L'URL mène à la console : on ne l'imprime pas en clair (préfixe secret). */
+      {...(consoleUrl ? { cta: { label: "Ouvrir la fiche", href: consoleUrl } } : {})}
+      ctaSecret
+      locale={locale}
+    >
+      {nom ? (
+        <Text style={emailStyles.paragraphStyle}>
+          <strong>{nom}</strong>
+        </Text>
+      ) : null}
+      {recuLe ? (
+        <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+          Reçu le {recuLe} (heure de Paris)
+        </Text>
+      ) : null}
+      {lignes.map((l, i) =>
+        l === "" ? null : (
+          <Text
+            key={`${i}-${l.slice(0, 20)}`}
+            style={{ ...emailStyles.paragraphStyle, whiteSpace: "pre-wrap" }}
+          >
+            {l}
+          </Text>
+        ),
+      )}
+    </EmailLayout>
+  );
+}

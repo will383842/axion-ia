@@ -5,6 +5,10 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { flushPendingDispatches, notify } from "../index";
+import {
+  __reinitialiserPourTests as reinitialiserEnfileur,
+  poserChargeurEnfileurEmail,
+} from "../enfileur-email";
 import { ALL_NOTIFICATION_CATEGORIES, shouldNotifyWhatsApp } from "../routing";
 import type { NotifyInput } from "../types";
 
@@ -27,6 +31,9 @@ describe("WhatsApp coupé", () => {
   const envOriginal = { ...process.env };
 
   beforeEach(() => {
+    // Jamais la vraie file : un faux chargeur d'enfileur (registre `enfileur-email.ts`).
+    reinitialiserEnfileur();
+    poserChargeurEnfileurEmail(async () => vi.fn(async () => ({ enqueued: true })) as never);
     fetchMock.mockReset().mockResolvedValue(new Response('{"ok":true}', { status: 200 }));
     globalThis.fetch = fetchMock as unknown as typeof fetch;
     process.env.TELEGRAM_BOT_TOKEN = "bot";
@@ -35,6 +42,7 @@ describe("WhatsApp coupé", () => {
   });
 
   afterEach(() => {
+    reinitialiserEnfileur();
     globalThis.fetch = fetchOriginal;
     process.env = { ...envOriginal };
   });

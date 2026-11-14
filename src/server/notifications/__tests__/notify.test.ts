@@ -13,6 +13,10 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 // Sûr : `vi.mock("@/lib/redis")` est hoisté (s'applique à cet import), et `notify`
 // lit `process.env` à l'APPEL (pas à l'import) → les overrides de `beforeEach` valent.
 import { notify, flushPendingDispatches } from "../index";
+import {
+  __reinitialiserPourTests as reinitialiserEnfileur,
+  poserChargeurEnfileurEmail,
+} from "../enfileur-email";
 
 const fetchMock = vi.fn();
 const redisSetMock = vi.fn();
@@ -34,6 +38,9 @@ describe("notify()", () => {
   const originalRedisUrl = process.env.REDIS_URL;
 
   beforeEach(() => {
+    // Jamais la vraie file : un faux chargeur d'enfileur (registre `enfileur-email.ts`).
+    reinitialiserEnfileur();
+    poserChargeurEnfileurEmail(async () => vi.fn(async () => ({ enqueued: true })) as never);
     fetchMock.mockReset();
     redisSetMock.mockReset();
     redisIncrMock.mockReset();
@@ -50,6 +57,7 @@ describe("notify()", () => {
   });
 
   afterEach(async () => {
+    reinitialiserEnfileur();
     // Attend la fin des dispatches fire-and-forget (severity critical/error →
     // Promise détachée) du test courant AVANT de restaurer les mocks : sinon leur
     // fetch asynchrone se résout pendant un test ultérieur et fausse son compteur

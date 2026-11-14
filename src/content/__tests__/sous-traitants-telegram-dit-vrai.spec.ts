@@ -134,6 +134,20 @@ describe("`D6-5-C2` — la page des sous-traitants dit vrai sur Telegram", () =>
     );
   });
 
+  // Décision du fondateur 14/11/2026 : chaque demande de client est doublée dans sa conversation
+  // PRIVÉE avec le robot. Un nouveau destinataire de données : la fiche doit le dire.
+  it("🔴 elle déclare le doublon dans la conversation privée — et le code le pratique", () => {
+    expect(fiche).toMatch(/conversation privée du fondateur avec le robot/);
+    expect(fiche).toMatch(/founder's private conversation with the bot/);
+
+    const doublon = lire("src", "server", "notifications", "doublon-client.ts");
+    expect(doublon, "le doublon porte l'e-mail").toMatch(/r\.email/);
+    expect(doublon, "et le téléphone").toMatch(/r\.telephone/);
+    expect(doublon, "et vise la conversation privée, sans repli").toMatch(
+      /resolveConversationPrivee\(\)/,
+    );
+  });
+
   it("🔴 elle dit que les candidatures ne sont plus signalées — et le routage les coupe", () => {
     expect(fiche).toMatch(/plus signalées par Telegram/);
     expect(fiche).toMatch(/no longer reported on Telegram/);
