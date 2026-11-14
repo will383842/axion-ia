@@ -67,6 +67,19 @@ export const AIMANT_CRM: Record<string, string> = {
   [AIMANT_GUIDE_IA]: "guide-ia-entreprise",
 };
 
+/**
+ * Code d'un guide du CATALOGUE (`gde-…`, minuscules). Le CRM refuse tout l'événement
+ * (`invalid_token`) si un champ guide sort de ce format : on ne l'envoie alors pas.
+ */
+export const FORMAT_CODE_GUIDE_CATALOGUE = /^gde-[a-z0-9-]{6,24}$/;
+
+type ClasseGuide = "guide-ia" | "catalogue" | "hors-format";
+
+function classerGuide(aimant: string): ClasseGuide {
+  if (aimant === AIMANT_GUIDE_IA) return "guide-ia";
+  return FORMAT_CODE_GUIDE_CATALOGUE.test(aimant) ? "catalogue" : "hors-format";
+}
+
 /** Colonnes de `newsletter_subscribers` lues pour transmettre une inscription. */
 export interface AbonnePourCrm {
   readonly id: string;
@@ -363,11 +376,22 @@ export async function transmettreClicGuide(
     // Lot S3 : une demande venue d'un réseau, avec `SYNCHRO_CRM_V3` allumé, porte la source
     // `guide-reseau` et, si la page a laissé un consentement, le bloc v3 (prénom, accord, guide
     // reçu, origine). Éteint : chemin v1 inchangé.
-    const v3 = synchroCrmV3Active();
+    // Lot S3-CRM : un guide du catalogue part avec la source `guide-reseau` (famille de provenance),
+    // JAMAIS son code ; le code voyage dans `guides_recus` / `origine_contenu`. Un code hors format
+    // n'envoie aucun champ guide (le CRM rejetterait tout l'événement) : pas de charge v3 non plus,
+    // ses origines portent ce code.
+    const classe = classerGuide(demande.aimant);
+    if (classe === "hors-format") {
+      console.error(
+        `[crm-sync][guide] code de guide hors format, champ guide non envoyé (demande ${demande.id})`,
+      );
+    }
+    const v3 = synchroCrmV3Active() && classe !== "hors-format";
     const viaReseau = v3 && demande.origine === "message_prive";
     // Lot guide réseau 4 (D5) : une demande née d'ailleurs (formulaire) garde SA source, mais les
     // origines réseau de la personne partent quand même (v3 allumé).
-    const sourceDemande = viaReseau ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
+    const sourceDemande =
+      viaReseau || classe === "catalogue" ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
 
     // Ce que v1 envoie : conservé tel quel dans la charge v3 (rien n'est perdu en changeant de version).
     const consentV1 =
@@ -375,7 +399,8 @@ export async function transmettreClicGuide(
         ? { version: abonne.consentVersion, at: abonne.confirmedAt }
         : null;
     const payloadV1 = {
-      aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant,
+      // Le code d'un guide du catalogue n'est PAS un aimant du CRM : il va dans `guides_recus`.
+      ...(classe === "guide-ia" ? { aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant } : {}),
       ...(demande.source ? { placement: demande.source } : {}),
       locale: localeCrm(demande.locale),
       // Le clic prouve la possession de la boîte (décision D1).
@@ -445,6 +470,9 @@ export async function transmettreClicGuide(
           subjectRef: `site:guide_request:${demande.id}`,
           occurredAt: firstClickAt,
           sourceSlug: sourceDemande,
+          ...(classe === "catalogue"
+            ? { guidesRecus: [{ guide: demande.aimant, date: firstClickAt.toISOString() }] }
+            : {}),
           person: { email: demande.email },
           // Un bloc `consent` pour un CONSENTEMENT seulement : la case cochée
           // (adresse perso inscrite). Sinon, aucun — personne n'a consenti.

@@ -94,6 +94,8 @@ interface BaseInput {
   company?: CompanyInput | null;
   consent?: ConsentInput | null;
   sourceSlug?: string | null;
+  /** Guides remis (contrat v3) : lot S3-CRM, guide du catalogue sur le chemin v1. */
+  guidesRecus?: Array<{ guide: string; date: string }>;
   tags?: string[];
   payload?: Record<string, unknown>;
   tx?: CrmOutboxWriter;
@@ -340,6 +342,9 @@ async function dispatch(
     ...(input.sourceSlug ? { source_slug: input.sourceSlug } : {}),
     ...(input.company ? { company: companySection(input.company) } : {}),
     ...(input.consent ? { consent: consentSection(input.consent) } : {}),
+    ...(input.guidesRecus && input.guidesRecus.length > 0
+      ? { guides_recus: input.guidesRecus }
+      : {}),
     ...(input.tags && input.tags.length > 0 ? { tags: input.tags } : {}),
     ...(input.payload ? { payload: input.payload } : {}),
     ...extra,
