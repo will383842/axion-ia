@@ -59,6 +59,8 @@ sauver_avant() {
   [ -e "$f" ] || return 0
   install -d -m 700 "$AVANT" || return 1
   cible="$AVANT/$(printf '%s' "$f" | tr / _).avant-$DATE"
+  # Une copie du jour existe déjà : c'est celle de l'original, ne pas l'écraser par un 2e passage.
+  if [ -e "$cible" ]; then dire "copie de sécurité déjà prise : $cible"; return 0; fi
   cp -p "$f" "$cible" || return 1
   dire "copie de sécurité : $cible"
 }
