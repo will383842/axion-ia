@@ -22,7 +22,8 @@ import {
   TAILLE_MAX_JETON_RECU,
   verifierJeton,
 } from "@/server/guides-reseau/lien-page-guide";
-import { GUIDES_RESEAU_CONNUS, PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
+import { PRENOM_MAX, PRENOM_MIN } from "@/content/guides-reseau";
+import { cibleGuideConnue } from "@/server/guides-reseau/cible-connue";
 import { ENTETES_PAGE_GUIDE, echapper, pageStatique } from "./html-statique";
 import { boutonSuivrePageHtml } from "@/server/guides-reseau/page-suivre";
 import { TEXTES_PAGE_GUIDE as T, URL_CONFIDENTIALITE, URL_FORMULAIRE_GUIDE } from "./textes";
@@ -39,7 +40,9 @@ async function jetonUtilisable(
   try {
     const v = verifierJeton(jeton, secret, Date.now());
     // Guide inconnu = page neutre dès le GET (sinon la personne remplirait un formulaire qui échouera).
-    if (!v.ok || !GUIDES_RESEAU_CONNUS.includes(v.donnees.guide)) return null;
+    // `cibleGuideConnue` : interrupteur éteint → liste figée seule, aucune lecture en base ; allumé →
+    // liste figée OU guide actif du catalogue (base illisible : liste figée seule).
+    if (!v.ok || !(await cibleGuideConnue(v.donnees.guide))) return null;
     const deja = await prisma.contactGuideReseau.findUnique({
       where: { jetonEmpreinte: empreinteJeton(jeton) },
       select: { id: true },
