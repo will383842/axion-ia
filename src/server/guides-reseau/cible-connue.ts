@@ -9,15 +9,11 @@
  */
 import { GUIDES_RESEAU_CONNUS } from "@/content/guides-reseau";
 import { prisma } from "@/lib/prisma";
-import { catalogueGuidesActif } from "./config";
+import { catalogueGuidesActif, livraisonCatalogueActive } from "./config";
 
-/**
- * Le catalogue n'est accepté que si LES DEUX interrupteurs valent exactement `"true"`.
- * À remplacer par `catalogueGuidesActif() && livraisonCatalogueActive()` une fois la PR de
- * livraison fusionnée (ordre de fusion : 1992, 1994, puis celle-ci).
- */
+/** Le catalogue n'est accepté que si LES DEUX interrupteurs valent exactement `"true"`. */
 export function catalogueAccepteActif(): boolean {
-  return catalogueGuidesActif() && process.env.GUIDES_RESEAU_LIVRAISON_ENABLED === "true";
+  return catalogueGuidesActif() && livraisonCatalogueActive();
 }
 
 /** Forme d'un code du catalogue : au-delà, aucune lecture en base. */

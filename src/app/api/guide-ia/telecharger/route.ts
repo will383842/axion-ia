@@ -224,7 +224,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     if (guide.kind !== "catalogue") return indisponible();
     const racine = path.resolve(process.cwd(), "public", RACINE_GUIDES);
     const fichier = path.resolve(process.cwd(), "public", guide.chemin);
-    if (!fichier.startsWith(racine)) return indisponible();
+    // `racine + path.sep` : sans lui, « public/guides-reseau-x/a.pdf » commence par « public/guides-reseau ».
+    if (!fichier.startsWith(racine + path.sep)) return indisponible();
     const info = await stat(fichier);
     if (!info.isFile() || info.size <= 0) return indisponible();
     return NextResponse.redirect(`${SITE_URL}/${guide.chemin}`, { status: 303 });

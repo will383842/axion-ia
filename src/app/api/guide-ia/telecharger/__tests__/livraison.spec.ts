@@ -124,6 +124,7 @@ describe("POST — guide du catalogue", () => {
     for (const cible of [
       { ...CIBLE, cheminPdf: "imprimes/dossier-intervenant-williams-jullin-axion-ia.pdf" },
       { ...CIBLE, cheminPdf: "guides-reseau/../imprimes/a.pdf" },
+      { ...CIBLE, cheminPdf: "guides-reseau-x/a.pdf" },
       { ...CIBLE, actif: false },
       null,
     ]) {
