@@ -9,11 +9,24 @@
  */
 import { GUIDES_RESEAU_CONNUS } from "@/content/guides-reseau";
 import { prisma } from "@/lib/prisma";
-import { livraisonCatalogueActive } from "./config";
+import { catalogueGuidesActif } from "./config";
+
+/**
+ * Le catalogue n'est accepté que si LES DEUX interrupteurs valent exactement `"true"`.
+ * À remplacer par `catalogueGuidesActif() && livraisonCatalogueActive()` une fois la PR de
+ * livraison fusionnée (ordre de fusion : 1992, 1994, puis celle-ci).
+ */
+export function catalogueAccepteActif(): boolean {
+  return catalogueGuidesActif() && process.env.GUIDES_RESEAU_LIVRAISON_ENABLED === "true";
+}
+
+/** Forme d'un code du catalogue : au-delà, aucune lecture en base. */
+const FORME_CODE_CATALOGUE = /^gde-[a-z0-9-]{6,24}$/;
 
 export async function cibleGuideConnue(code: string): Promise<boolean> {
   const figee = GUIDES_RESEAU_CONNUS.includes(code);
-  if (!livraisonCatalogueActive() || figee) return figee;
+  if (!FORME_CODE_CATALOGUE.test(code)) return figee;
+  if (!catalogueAccepteActif() || figee) return figee;
   try {
     const ligne = await prisma.cibleReseau.findUnique({
       where: { code },

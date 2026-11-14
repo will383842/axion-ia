@@ -1251,6 +1251,65 @@ describe("LIA-F — interrupteur ÉTEINT : comportement d'avant, zéro lecture d
   });
 });
 
+describe("LIA-F — catalogue allumé, livraison éteinte", () => {
+  beforeEach(() => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("`gde-…` refusé sans lecture en base ; le guide figé (guide-ia) est inchangé", async () => {
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    expect(await confirmerPageGuide(entree({ jeton: jeton({ guide: CODE_CATALOGUE }) }))).toEqual({
+      ok: false,
+      statut: 400,
+      erreur: "lien",
+    });
+    expect(bd.lecturesCibles).toBe(0);
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+  });
+});
+
+describe("LIA-F — garde de format : aucune lecture pour un code hors format", () => {
+  beforeEach(() => {
+    vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it.each([
+    ["trop long", "gde-" + "a".repeat(25)],
+    ["trop court", "gde-abc"],
+    ["majuscules", "gde-ESSAI0001"],
+    ["adr-xxxxxx", "adr-essai0001"],
+    ["octet NUL", "gde-essai0001\u0000"],
+  ])("%s : refusé, 0 lecture", async (_n, code) => {
+    const { cibleGuideConnue } = await import("../cible-connue");
+    bd.cibles.set(code, ligneCible({ code }));
+    expect(await cibleGuideConnue(code)).toBe(false);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
+  it("type effacement avec champ guide hors format : refusé, 0 lecture", async () => {
+    const { analyserCorpsAvecCatalogue } = await import("../contrat");
+    const corps = Buffer.from(
+      JSON.stringify({
+        schemaVersion: 1,
+        cleIdempotence: "cle-exemple-0001",
+        type: "demande_effacement",
+        email: ADRESSE,
+        guide: "GDE-" + "A".repeat(30),
+      }),
+    );
+    expect((await analyserCorpsAvecCatalogue(corps)).ok).toBe(false);
+    expect(bd.lecturesCibles).toBe(0);
+  });
+});
+
 describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
   beforeEach(() => {
     vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
@@ -1281,11 +1340,10 @@ describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
     expect((await confirmerPageGuide(avec())).ok).toBe(false);
   });
 
-  it("base illisible : liste figée seulement (le guide figé passe, le code du catalogue non)", async () => {
+  it("base illisible : liste figée seulement (le code du catalogue est refusé)", async () => {
     bd.cibles_panne = true;
     bd.cibles.set(CODE_CATALOGUE, ligneCible());
     expect((await confirmerPageGuide(avec())).ok).toBe(false);
-    expect((await confirmerPageGuide(entree())).ok).toBe(true);
     expect(bd.journal.join("\n")).not.toContain("@");
   });
 
