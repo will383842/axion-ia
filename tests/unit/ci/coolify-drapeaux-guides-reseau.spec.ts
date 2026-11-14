@@ -50,8 +50,16 @@ function fauxCurl(json: string): { bin: string; env: Record<string, string> } {
 
 function lancer(code: string, env: Record<string, string>, json = "[]") {
   const { bin } = fauxCurl(json);
+  // La valeur n'est plus dans l'env: des étapes : elle est lue dans l'événement (faux GITHUB_EVENT_PATH).
+  const { VALEUR, ...reste } = env;
+  const evenement = path.join(mkdtempSync(path.join(tmpdir(), "faux-event-")), "event.json");
+  writeFileSync(
+    evenement,
+    JSON.stringify({ inputs: VALEUR === undefined ? {} : { valeur: VALEUR } }),
+  );
   const r = spawnSync("bash", ["-c", code], {
     env: {
+      GITHUB_EVENT_PATH: evenement,
       NODE_ENV: "test",
       PATH: `${bin}:${process.env.PATH}`,
       COOLIFY_API_TOKEN: "jeton",
@@ -59,7 +67,7 @@ function lancer(code: string, env: Record<string, string>, json = "[]") {
       COOLIFY_APP_UUID: "uuid-site",
       COOLIFY_WORKER_APP_UUID: "uuid-worker",
       CONFIRMER_EXTINCTION: "false",
-      ...env,
+      ...reste,
     },
     encoding: "utf8",
   });
@@ -209,5 +217,48 @@ describe("la valeur des adresses n'est jamais imprimée", () => {
     const bloc = code.slice(debut, code.indexOf("QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI", debut));
     expect(bloc.length).toBeGreaterThan(0);
     expect(bloc).not.toMatch(/\b(echo|printf)\b[^\n]*\$\{?VALEUR\b/);
+  });
+});
+
+describe("la valeur ne passe jamais par un env: (journal public)", () => {
+  const lignes = readFileSync(POSER, "utf8").split("\n");
+  const etapes = readFileSync(POSER, "utf8")
+    .split(/^\s+- name: /m)
+    .slice(1);
+
+  it("aucune ligne du workflow n'interpole ${{ inputs.valeur }}", () => {
+    const fautives = lignes.filter((l) => /\$\{\{\s*inputs\.valeur\s*\}\}/.test(l));
+    expect(fautives).toEqual([]);
+  });
+  it("l'étape de masquage précède toute étape qui lit la valeur", () => {
+    const noms = etapes.map((e) => e.split("\n")[0]!.trim());
+    const masque = noms.indexOf("Masquer la valeur");
+    expect(masque).toBe(0);
+    etapes.forEach((e, i) => {
+      if (/GITHUB_EVENT_PATH/.test(e) && i !== masque) expect(i).toBeGreaterThan(masque);
+    });
+    expect(etapes[masque]).toMatch(/add-mask::\$VAL\b/);
+    expect(etapes[masque]).toMatch(/add-mask::\$morceau/);
+  });
+  it("le masque est posé sur la valeur entière et chaque morceau", () => {
+    const r = lancer(script(POSER, "Masquer la valeur"), { VALEUR: "a@x.com,b@x.com" });
+    const masques = r.sortie.split("\n").filter((l) => l.startsWith("::add-mask::"));
+    expect(masques).toEqual([
+      "::add-mask::a@x.com,b@x.com",
+      "::add-mask::a@x.com",
+      "::add-mask::b@x.com",
+    ]);
+  });
+  it("une valeur null lue dans Coolify s'affiche 0 adresse(s)", () => {
+    const json = JSON.stringify([
+      { key: "GUIDES_RESEAU_ESSAI_ADRESSES", value: null, is_preview: false },
+    ]);
+    const r = lancer(
+      script(POSER, "Lire l'état actuel"),
+      { CLE: "GUIDES_RESEAU_ESSAI_ADRESSES" },
+      json,
+    );
+    expect(r.sortie).toContain("0 adresse(s)");
+    expect(r.sortie).not.toContain("1 adresse(s)");
   });
 });
