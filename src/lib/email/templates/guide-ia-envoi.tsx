@@ -35,6 +35,7 @@ import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
+import { RE_CODE_GUIDE, titreGuideSur } from "@/server/guides-reseau/guide-a-livrer";
 import { adressePageSuivre, TEXTE_SUIVRE_PAGE } from "@/server/guides-reseau/page-suivre";
 import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
@@ -60,7 +61,36 @@ interface Payload {
   /** Réseau d'origine (page guide) : choisit l'adresse du lien « Suivre la page Axion IA ». */
   reseauOrigine?: string;
   reprise?: boolean;
+  /**
+   * PR-S2b — guide du CATALOGUE (jamais pour le guide-ia) : code `gde-…` et titre. La branche catalogue
+   * du gabarit ne s'ouvre que si les DEUX sont sûrs (`catalogueDePayload`) ; sinon rendu du guide-ia.
+   */
+  guideCode?: unknown;
+  guideTitre?: unknown;
 }
+
+/** Titre du guide du catalogue si (et seulement si) la charge porte un code ET un titre sûrs. */
+function catalogueDePayload(p: Record<string, unknown>): string | null {
+  const code = p["guideCode"];
+  if (typeof code !== "string" || !RE_CODE_GUIDE.test(code)) return null;
+  const titre = p["guideTitre"];
+  return typeof titre === "string" ? titreGuideSur(titre) : null;
+}
+
+const COPY_CATALOGUE = {
+  fr: {
+    subject: (titre: string) => `Votre guide : ${titre}`,
+    title: "Votre guide",
+    body: (titre: string) => `Voici le guide que vous avez demandé : « ${titre} ».`,
+    cta: "Télécharger le guide (PDF)",
+  },
+  en: {
+    subject: (titre: string) => `Your guide: ${titre}`,
+    title: "Your guide",
+    body: (titre: string) => `Here is the guide you requested: « ${titre} » (in French).`,
+    cta: "Download the guide (PDF)",
+  },
+} as const;
 
 const COPY = {
   fr: {
@@ -110,8 +140,10 @@ const COPY = {
   },
 } as const;
 
-export const guideIaEnvoiSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  COPY[locale].subject;
+export const guideIaEnvoiSubject = (locale: Locale, p: Record<string, unknown>): string => {
+  const titre = catalogueDePayload(p);
+  return titre === null ? COPY[locale].subject : COPY_CATALOGUE[locale].subject(titre);
+};
 
 /** URL du lien personnel — page du site, jamais le PDF direct. */
 export function urlLienGuide(baseUrl: string, downloadToken: string): string {
@@ -174,6 +206,8 @@ export function GuideIaEnvoiEmail({
         }
       : p0;
   const t = COPY[locale];
+  const titreCatalogue = catalogueDePayload(payload);
+  const tc = COPY_CATALOGUE[locale];
   // Simple lien du corps (jamais une condition du guide) ; aucune variable posée → aucun bloc.
   const adresseSuivre = desinscriptionPage ? adressePageSuivre(p.reseauOrigine) : null;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
@@ -182,7 +216,7 @@ export function GuideIaEnvoiEmail({
       famille="B"
       signature="equipe"
       preview={t.preview}
-      title={t.title}
+      title={titreCatalogue === null ? t.title : tc.title}
       // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
       // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
       // e-mails du réseau d'apporteurs (§5.4).
@@ -190,8 +224,14 @@ export function GuideIaEnvoiEmail({
       locale={locale}
     >
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
-      <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
+      {titreCatalogue === null ? (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
+        </>
+      ) : (
+        <Text style={emailStyles.paragraphStyle}>{tc.body(titreCatalogue)}</Text>
+      )}
       {/*
         Le bouton du guide vient JUSTE APRÈS « Commencez par la page 5 », avant
         le bloc « lettre » (décision de Will du 25/09, point 1). Le CTA du
@@ -210,7 +250,7 @@ export function GuideIaEnvoiEmail({
           style={emailStyles.ctaStyle}
           className="ax-cta"
         >
-          {t.cta} &nbsp;→
+          {titreCatalogue === null ? t.cta : tc.cta} &nbsp;→
         </Button>
       </Section>
       {p.unsubscribeToken ? (

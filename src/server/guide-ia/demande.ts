@@ -184,6 +184,7 @@ export async function enregistrerDemandeGuide(
       email: entree.email,
       locale: entree.locale,
       downloadToken: demande.downloadToken,
+      aimant: AIMANT_GUIDE_IA,
     },
     {
       confirmToken: dansLEmail.confirmToken ?? null,

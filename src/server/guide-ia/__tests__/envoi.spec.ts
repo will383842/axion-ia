@@ -37,6 +37,7 @@ const DEMANDE = {
   email: "jeanne@example.invalid",
   locale: "fr" as const,
   downloadToken: "a".repeat(64),
+  aimant: "guide-ia",
 };
 const MAINTENANT = new Date("2026-09-24T10:00:00Z");
 
