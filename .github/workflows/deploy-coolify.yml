@@ -1094,7 +1094,7 @@ jobs:
           # par `tests/unit/ci/deploy-warm-listes.spec.ts` : revalider sans
           # purger laisse la version amputée figée à l'edge pour s-maxage=3600.
           # Plafond Cloudflare Free : 30 URLs par appel de purge par liste — 14 ici.
-          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5","/fr/connaissances/page/2","/fr/connaissances/page/3","/fr/connaissances/page/4","/fr/connaissances/page/5"]'
+          PATHS='["/fr","/fr/actualites","/fr/connaissances","/fr/ressources","/fr/galerie","/fr/diagnostic","/fr/blog","/fr/memo-isere","/fr/mentions-legales","/fr/conditions-generales","/fr/politique-confidentialite","/fr/cookies","/fr/sites-web-augmentes","/fr/audit","/fr/formations","/fr/implementation","/fr/blog/page/2","/fr/blog/page/3","/fr/blog/page/4","/fr/blog/page/5","/fr/connaissances/page/2","/fr/connaissances/page/3","/fr/connaissances/page/4","/fr/connaissances/page/5"]'
           echo "POST /api/internal/revalidate paths=${PATHS}"
           code=$(curl -sS -o /tmp/reval.json -w "%{http_code}" -m 30 -X POST \
             -H "Content-Type: application/json" \
