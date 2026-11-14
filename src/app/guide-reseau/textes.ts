@@ -15,6 +15,10 @@ export const TEXTES_PAGE_GUIDE = {
   // ⛔ Cette ligne ne contient NI le mot « STOP » NI « autres informations » (décision de Williams).
   information: "Vos données servent à vous envoyer le guide. Comment elles sont traitées :",
   lienConfidentialite: "politique de confidentialité",
+  // Mention sur l'origine des demandes (texte fourni, ne pas reformuler). Paragraphe SÉPARÉ de la ligne
+  // `information` ci-dessus : celle-ci ne doit pas contenir « stop » (garde dans page-et-route.spec.tsx).
+  origine:
+    "Nous notons le mot, le réseau et la publication par lesquels vous nous avez contactés, pour savoir d'où viennent les demandes. Ces informations sont gardées aussi longtemps que votre fiche de contact. Vous pouvez vous y opposer à tout moment par le lien « stop » de nos messages.",
   envoyer: "Recevoir le guide",
   // Chemin sans case (avis RGPD) : texte à valider par Williams avant mise en ligne ; ne pas le reformuler sans lui.
   sansCaseDebut:
