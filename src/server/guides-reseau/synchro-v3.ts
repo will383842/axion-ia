@@ -21,6 +21,8 @@ import { prisma } from "@/lib/prisma";
 import { estOpposee } from "@/server/email/opposition";
 import { isCrmSyncEnabled, isCrmSyncGuideEnabled } from "@/server/crm-sync/config";
 import { mettreEnFileCrm } from "@/server/crm-sync/enqueue";
+import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
+import { RE_CODE_GUIDE_CATALOGUE } from "./format-code-guide";
 import { lireOriginesActives, MAX_ORIGINES_PAR_CHARGE, type OrigineAEcrire } from "./origines";
 
 export { MAX_ORIGINES_PAR_CHARGE };
@@ -343,6 +345,29 @@ export async function transmettreOriginesSuivantes(args: {
     return "eteinte";
   }
   try {
+    // N2 : un code de guide hors format (ni `guide-ia`, ni `gde-…` bien formé) ne part JAMAIS : le CRM
+    // rejetterait l'événement entier. Ses origines sortent de la charge (`hors_charge`), rien n'est
+    // supprimé ; ni le code, ni l'adresse ne sont journalisés.
+    if (args.guide !== AIMANT_GUIDE_IA && !RE_CODE_GUIDE_CATALOGUE.test(args.guide)) {
+      let n = 0;
+      try {
+        n = (
+          await prisma.guideReseauOrigine.updateMany({
+            where: {
+              emailKey: args.emailKey,
+              guide: args.guide,
+              archiveeLe: null,
+              crmStatut: null,
+            },
+            data: { crmStatut: STATUT_HORS_CHARGE, crmTraiteeLe: new Date() },
+          })
+        ).count;
+      } catch {
+        /* non écrit : rien ne part, le prochain passage la refera */
+      }
+      journaliser("rien", n);
+      return "rien";
+    }
     if (estExclueDuCrm(args.email)) {
       // Mise à l'écart non destructive : sans cela, ces lignes resteraient `NULL` pour toujours et
       // le rattrapage les relirait à chaque passage.

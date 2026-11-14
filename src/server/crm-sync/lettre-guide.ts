@@ -45,6 +45,7 @@ import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { aPuAtteindreLeCrm } from "@/server/vivier/opposition";
 
 import { evenementDuClicPageGuide } from "@/server/guides-reseau/clic-page-guide";
+import { RE_CODE_GUIDE_CATALOGUE } from "@/server/guides-reseau/format-code-guide";
 import { SOURCE_SLUG_GUIDE_RESEAU, synchroCrmV3Active } from "@/server/guides-reseau/synchro-v3";
 
 import { isCrmSyncGuideEnabled } from "./config";
@@ -71,7 +72,7 @@ export const AIMANT_CRM: Record<string, string> = {
  * Code d'un guide du CATALOGUE (`gde-…`, minuscules). Le CRM refuse tout l'événement
  * (`invalid_token`) si un champ guide sort de ce format : on ne l'envoie alors pas.
  */
-export const FORMAT_CODE_GUIDE_CATALOGUE = /^gde-[a-z0-9-]{6,24}$/;
+export const FORMAT_CODE_GUIDE_CATALOGUE = RE_CODE_GUIDE_CATALOGUE;
 
 type ClasseGuide = "guide-ia" | "catalogue" | "hors-format";
 
@@ -390,8 +391,10 @@ export async function transmettreClicGuide(
     const viaReseau = v3 && demande.origine === "message_prive";
     // Lot guide réseau 4 (D5) : une demande née d'ailleurs (formulaire) garde SA source, mais les
     // origines réseau de la personne partent quand même (v3 allumé).
+    // N1 : `guide-ia` est réservé à l'ancien guide ; tout autre aimant (catalogue OU code hors format)
+    // part sous la famille `guide-reseau`.
     const sourceDemande =
-      viaReseau || classe === "catalogue" ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
+      viaReseau || classe !== "guide-ia" ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
 
     // Ce que v1 envoie : conservé tel quel dans la charge v3 (rien n'est perdu en changeant de version).
     const consentV1 =

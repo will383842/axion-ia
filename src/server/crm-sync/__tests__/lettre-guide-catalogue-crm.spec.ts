@@ -324,6 +324,9 @@ describe("code de guide hors format : aucun champ guide, journal sans adresse", 
         expect(e.payload.origines).toBeUndefined();
         expect("aimant" in e.payload).toBe(false);
         expect(JSON_BRUT()).not.toContain(code);
+        // N1 : un code hors format n'est JAMAIS rangé sous `guide-ia` (réservé à l'ancien guide).
+        expect(e.source_slug).toBe("guide-reseau");
+        expect(JSON_BRUT()).not.toContain('"source_slug":"guide-ia"');
         expect(trace).toHaveBeenCalled();
         const journal = JSON.stringify(trace.mock.calls);
         expect(journal).not.toContain(EMAIL);
@@ -332,4 +335,57 @@ describe("code de guide hors format : aucun champ guide, journal sans adresse", 
       });
     }
   }
+});
+
+describe("N4 — bornes valides du format : gde- + 6 caractères, gde- + 24", () => {
+  for (const code of ["gde-abcdef", "gde-" + "a1-".repeat(8)]) {
+    for (const v3 of [true, false]) {
+      it(`${code} (${code.length - 4} car., v3 ${v3 ? "allumé" : "éteint"}) : traité comme un guide du catalogue`, async () => {
+        if (!v3) delete process.env.SYNCHRO_CRM_V3;
+        installer({
+          demande: demande({ aimant: code }),
+          origines: v3 ? [origine({ guide: code })] : [],
+        });
+        expect(await transmettreClicGuide("demande-1")).toBe("transmise");
+        const e = objet();
+        expect(e.source_slug).toBe("guide-reseau");
+        expect(e.guides_recus).toEqual([{ guide: code, date: CLIC.toISOString() }]);
+        expect("aimant" in e.payload).toBe(false);
+      });
+    }
+  }
+  it("les bornes exactes sont 6 et 24 : 5 et 25 caractères restent hors format", async () => {
+    for (const code of ["gde-abcde", "gde-" + "a".repeat(25)]) {
+      base.demandes.length = 0;
+      base.outbox.length = 0;
+      installer({ demande: demande({ aimant: code }), origines: [] });
+      const trace = vi.spyOn(console, "error").mockImplementation(() => {});
+      await transmettreClicGuide("demande-1");
+      expect(objet().guides_recus).toBeUndefined();
+      trace.mockRestore();
+    }
+  });
+});
+
+describe("N5 — opposition sur un guide du catalogue (gde-) : rien ne part, rien n'est supprimé", () => {
+  for (const v3 of [true, false]) {
+    it(`adresse opposée avant le clic (v3 ${v3 ? "allumé" : "éteint"}) : aucun événement, demande traitée, origines conservées`, async () => {
+      if (!v3) delete process.env.SYNCHRO_CRM_V3;
+      installer({ demande: catalogue(), origines: [origC()] });
+      base.opposeeDepuis = 1;
+      expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+      expect(base.outbox).toHaveLength(0);
+      expect(base.demandes[0]?.crmEmittedAt).toBeInstanceOf(Date);
+      expect(base.contacts).toHaveLength(1);
+      expect(base.origines).toHaveLength(1);
+    });
+  }
+  it("opposition arrivée ENTRE la lecture et l'écriture : contrôle refait dans la transaction", async () => {
+    installer({ demande: catalogue(), origines: [origC()] });
+    base.opposeeDepuis = 2;
+    expect(await transmettreClicGuide("demande-1")).toBe("opposee");
+    expect(base.outbox).toHaveLength(0);
+    expect(base.origines).toHaveLength(1);
+    expect(base.dbOpposee[1]).toBeDefined();
+  });
 });

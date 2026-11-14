@@ -13,12 +13,13 @@
 import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { adressesEssai } from "./config";
+import { RE_CODE_GUIDE_CATALOGUE } from "./format-code-guide";
 import { validerCheminPdf, validerTitre } from "./cibles-reseau";
 
 /** Racine unique, sous `public/`, des PDF de guides du catalogue. */
 export const RACINE_GUIDES = "guides-reseau/";
-/** Forme d'un code de guide du catalogue. */
-export const RE_CODE_GUIDE = /^gde-[a-z0-9-]{6,24}$/;
+/** Forme d'un code de guide du catalogue (définition unique : `format-code-guide.ts`). */
+export const RE_CODE_GUIDE = RE_CODE_GUIDE_CATALOGUE;
 
 export interface CibleLue {
   readonly code: string;
@@ -49,8 +50,14 @@ export function cheminGuideAutorise(brut: unknown): string | null {
   return /^[A-Za-z0-9]/.test(c.slice(RACINE_GUIDES.length)) ? c : null;
 }
 
-/** Retours à la ligne, caractères de contrôle C0/C1 et séparateurs Unicode de ligne (en-tête e-mail). */
-const CONTROLE = new RegExp("[\u0000-\u001f\u007f-\u009f\u2028\u2029]");
+/**
+ * Retours à la ligne, caractères de contrôle C0/C1, séparateurs Unicode de ligne (en-tête e-mail),
+ * ET caractères bidirectionnels / invisibles (U+200B-200F, U+202A-202E, U+2066-2069) : ils
+ * retourneraient ou masqueraient le titre dans le sujet.
+ */
+const CONTROLE = new RegExp(
+  "[\u0000-\u001f\u007f-\u009f\u2028\u2029\u200b-\u200f\u202a-\u202e\u2066-\u2069]",
+);
 
 /** Titre de guide sûr pour un sujet d'e-mail : `validerTitre` ET aucun caractère de contrôle. */
 export function titreGuideSur(brut: unknown): string | null {
@@ -71,7 +78,11 @@ async function lireCible(code: string): Promise<CibleLue | null> {
   });
 }
 
-function adresseDEssai(email: string, env: Readonly<Record<string, string | undefined>>): boolean {
+/** Cette adresse figure-t-elle dans `GUIDES_RESEAU_ESSAI_ADRESSES` ? (empreinte, casse ignorée). */
+export function adresseDEssai(
+  email: string,
+  env: Readonly<Record<string, string | undefined>>,
+): boolean {
   const cle = hashEmailForLookup(email);
   if (cle === null) return false;
   return adressesEssai(env).some((a) => hashEmailForLookup(a) === cle);
