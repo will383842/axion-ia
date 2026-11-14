@@ -163,26 +163,6 @@ jobs:
           { echo "message<<FIN_MSG"; printf '%s' "$MSG"; echo ""; echo "FIN_MSG"; } >> "$GITHUB_OUTPUT"
           echo "restants=${#RESTE[@]}" >> "$GITHUB_OUTPUT"
 
-      - name: Envoyer le rappel WhatsApp
-        env:
-          APIKEY: ${{ secrets.WHATSAPP_CALLMEBOT_APIKEY }}
-          PHONE: ${{ secrets.WHATSAPP_NOTIFY_PHONE }}
-          MSG: ${{ steps.bilan.outputs.message }}
-        run: |
-          set -uo pipefail
-          if [ -z "${APIKEY:-}" ] || [ -z "${PHONE:-}" ]; then
-            echo "::warning::WHATSAPP_CALLMEBOT_APIKEY ou WHATSAPP_NOTIFY_PHONE absent des secrets GitHub — rappel NON envoye. Le bilan reste lisible ci-dessous."
-            printf '%s\n' "$MSG"
-            exit 0
-          fi
-          TEL=$(printf '%s' "$PHONE" | tr -d ' -')
-          TXT=$(printf '%s' "$MSG" | jq -sRr @uri)
-          code=$(curl -s -o /tmp/cmb.txt -w '%{http_code}' -m 30 "https://api.callmebot.com/whatsapp.php?phone=${TEL}&text=${TXT}&apikey=${APIKEY}" || echo 000)
-          echo "CallMeBot HTTP ${code}"
-          head -c 200 /tmp/cmb.txt 2>/dev/null || true
-          # Best-effort : un rappel manque ne doit pas faire rougir le depot.
-          if [ "$code" != "200" ]; then echo "::warning::Rappel WhatsApp non confirme (HTTP ${code})."; fi
-
       - name: Recapitulatif lisible dans l'onglet Actions
         if: always()
         env:

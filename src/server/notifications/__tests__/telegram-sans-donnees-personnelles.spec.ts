@@ -7,6 +7,12 @@
  * - interdit : nom complet, e-mail, téléphone, message libre ou extrait,
  *   rémunération souhaitée, motivation, adresse, IBAN.
  *
+ * ⚠️ Depuis le 14/11/2026, les catégories `aDetailComplet` (Calendly non-client, presse,
+ * investisseurs, avis, podcast, conférences) envoient leur détail complet au salon DÉDIÉ
+ * (`format-detail.ts`, verrouillé par `salons-humains-detail-complet.spec.ts`). Ce fichier
+ * vérifie ce que reçoit un salon de REPLI : le gabarit allégé du hub reste donc testé pour
+ * elles aussi, sans exception (écart voulu au plan, qui les excluait ici).
+ *
  * Deux gardes, parce qu'il y a deux chemins vers Telegram :
  *
  * 1. le hub (`notify()` → `formatNotification`) : chaque catégorie est rendue
@@ -24,7 +30,12 @@ import { execFileSync } from "node:child_process";
 import { describe, it, expect } from "vitest";
 import { formatNotificationPlain } from "../format";
 import { formatNotificationClient, type EvenementClient } from "../format-clients";
-import { ALL_NOTIFICATION_CATEGORIES, estCategorieClient, telegramGroupFor } from "../routing";
+import {
+  aDetailComplet,
+  ALL_NOTIFICATION_CATEGORIES,
+  estCategorieClient,
+  telegramGroupFor,
+} from "../routing";
 import type { NotificationCategory, NotificationEvent } from "../types";
 
 // ─── 1. Le hub : rendu de chaque catégorie ──────────────────────────────────
@@ -371,19 +382,35 @@ describe("Telegram — le salon « Clients » est la SEULE exception, et elle es
   });
 
   it("🔴 le détail ne part QUE vers le salon dédié — le repli reçoit le gabarit allégé", () => {
-    // Le câblage, pas seulement la définition : dans `index.ts`, le gabarit
-    // complet n'est envoyé qu'au salon résolu par `resolveSalonClients()`, et
-    // le dernier essai (repli) envoie `texteAllege`.
+    // Le câblage, pas seulement la définition : dans `index.ts`, le gabarit complet n'est
+    // envoyé qu'au salon DÉDIÉ (`resolveSalonClients()` / `resolveSalonDedie()`), jamais à un
+    // repli, et le dernier essai (repli) envoie `texteAllege`.
     const source = readFileSync("src/server/notifications/index.ts", "utf-8");
-    const fonction = source.slice(
-      source.indexOf("async function envoyerAuSalonClients"),
-      source.indexOf("async function dispatchChannels"),
+    const envoi = source.slice(
+      source.indexOf("async function envoyerEnDetail"),
+      source.indexOf("interface EnvoiSalonClients"),
     );
-    expect(fonction).toMatch(/const salon = resolveSalonClients\(\)/);
-    expect(fonction).toMatch(/formatNotificationClient\(event\)/);
-    expect(fonction).toMatch(/chatId: salon\.chatId/);
-    expect(fonction).toMatch(/text: texteAllege,[\s\S]*chatId: repli\.chatId/);
+    expect(envoi).toMatch(/chatId: salon\.chatId/);
+    expect(envoi).toMatch(/text: texteAllege,[\s\S]*chatId: repli\.chatId/);
+    const dispatch = source.slice(source.indexOf("async function dispatchChannels"));
+    expect(dispatch).toMatch(/resolveSalonClients\(\) : resolveSalonDedie\(/);
+    expect(dispatch).toMatch(/resolveTelegramRepli\(/);
     expect(source.match(/formatNotificationClient\(/g)).toHaveLength(1);
+    expect(source.match(/formatNotificationDetail\(/g)).toHaveLength(1);
+  });
+
+  it("🔴 seules les catégories `aDetailComplet` ont un gabarit complet hors salon « Clients »", () => {
+    // Liste fermée : en ajouter une est une décision, qui doit passer par ce test.
+    expect(ALL_NOTIFICATION_CATEGORIES.filter(aDetailComplet).sort()).toEqual([
+      "CALENDLY_INVITEE_CANCELED",
+      "CALENDLY_INVITEE_CREATED",
+      "CALENDLY_INVITEE_RESCHEDULED",
+      "INVESTOR_INQUIRY_RECEIVED",
+      "PODCAST_REQUEST_SUBMITTED",
+      "PRESS_REQUEST_SUBMITTED",
+      "REVIEW_SUBMITTED",
+      "SPEAKER_INVITATION_RECEIVED",
+    ]);
   });
 });
 

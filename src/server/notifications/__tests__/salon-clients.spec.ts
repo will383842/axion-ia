@@ -17,7 +17,6 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { notify, flushPendingDispatches } from "../index";
 import { decouperPourTelegram, sendTelegramRaw, PLAFOND_TELEGRAM } from "../channels/telegram";
 import { formatNotificationClient, type EvenementClient } from "../format-clients";
-import { flushWhatsAppQueue, resetWhatsAppQueueForTests } from "../channels/whatsapp";
 
 const redisSetMock = vi.fn();
 const redisDelMock = vi.fn();
@@ -70,7 +69,7 @@ beforeEach(() => {
   redisDelMock.mockReset().mockResolvedValue(1);
   globalThis.fetch = fetchMock as unknown as typeof fetch;
   for (const k of Object.keys(process.env)) {
-    if (k.startsWith("TELEGRAM_") || k.startsWith("WHATSAPP_")) delete process.env[k];
+    if (k.startsWith("TELEGRAM_")) delete process.env[k];
   }
   process.env.TELEGRAM_BOT_TOKEN = "bot-principal";
   process.env.TELEGRAM_CHAT_ID_MESSAGES = "-messages";
@@ -303,24 +302,6 @@ describe("notify() → salon « Clients »", () => {
     expect(corps["chat_id"]).toBe("-messages");
     expect(corps["disable_notification"]).toBe(true);
     expect(String(corps["text"])).not.toContain("camille@exemple.fr");
-  });
-
-  it("WhatsApp : la sonnette d'un client ne porte aucune donnée personnelle", async () => {
-    process.env.TELEGRAM_CHAT_ID_CLIENTS = "-clients";
-    process.env.WHATSAPP_CALLMEBOT_APIKEY = "123456";
-    process.env.WHATSAPP_NOTIFY_PHONE = "+33639981235";
-    fetchMock.mockImplementation(async () => ok());
-    resetWhatsAppQueueForTests();
-    const r = await notify({ category: "INTERVENTION_REQUEST_SUBMITTED", payload: DEMANDE });
-    // #1554 : WhatsApp passe par une file avec relances ; l'envoi part en arrière-plan.
-    expect(r.channels.whatsapp).toBe("queued");
-    await flushWhatsAppQueue();
-    const url = decodeURIComponent(urls().find((u) => u.includes("callmebot")) ?? "");
-    expect(url).toContain("🔥 NOUVEAU CLIENT · Formation IA · ");
-    expect(url).toContain("tout le détail dans Telegram (salon Clients)");
-    for (const pii of ["Camille", "camille@", "39 98", "Grenoble", "Atelier", "former 12"]) {
-      expect(url).not.toContain(pii);
-    }
   });
 });
 

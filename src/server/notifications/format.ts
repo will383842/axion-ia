@@ -40,11 +40,7 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
  * Sur Telegram il double le nom du groupe — utile, car le bandeau de
  * notification du téléphone ne montre pas toujours dans quel groupe on écrit.
  *
- * Sur WhatsApp il porte TOUTE la distinction : CallMeBot n'écrit que dans une
- * seule conversation (une clé = un destinataire, pas de groupes), donc il n'y a
- * pas de fil séparé possible. Ces ~20 caractères sont exactement ce que l'écran
- * verrouillé affiche — c'est là, et nulle part ailleurs, que se joue le fait de
- * distinguer un rendez-vous d'une candidature sans ouvrir le téléphone.
+ * (Le canal WhatsApp, qui s'appuyait sur cet en-tête, est coupé depuis le 14/11/2026.)
  *
  * ⚠️ NE PAS déplacer en fin de message ni faire précéder d'autre chose.
  */
@@ -67,6 +63,7 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
   "questionnaire-audit": { emoji: "📝", label: "QUESTIONNAIRE AUDIT" },
   tour: { emoji: "🚌", label: "TOUR FRANCE IA" },
+  // Le salon général se nomme « 🔧 Axion-IA — Technique » dans Telegram (14/11/2026).
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -86,7 +83,7 @@ const TITLES: Record<NotificationCategory, string> = {
   // contre le plafond de 800 du message (`channels/telegram.ts`).
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature",
   // « apporteur », jamais « commercial » (2026-09-19) : la personne recommande,
-  // elle ne vend pas. Titre partagé avec WhatsApp, qui ne voit que la catégorie.
+  // elle ne vend pas.
   COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   JOB_APPLICATIONS_STALE: "Candidatures oubliées",
@@ -111,7 +108,7 @@ const TITLES: Record<NotificationCategory, string> = {
   OPTION_CONFIRMED: "Option confirmée",
   OPTION_REFUSED: "Option refusée",
   OPTION_EXPIRED: "Option expirée",
-  // Titre de REPLI : WhatsApp ne reçoit que la catégorie (aucune donnée), et
+  // Titre de REPLI : le repli ne reçoit que la catégorie (aucune donnée), et
   // Telegram l'affiche quand le type d'événement manque. Sinon Telegram précise
   // « apporteur » ou « client » — cf. `titreDe`.
   CALENDLY_INVITEE_CREATED: "Nouvelle réservation",
@@ -188,10 +185,10 @@ export function escapeMarkdownV2(text: string): string {
 // est passé par `escapeMarkdownV2`, chaque `\` présent EST un backslash d'échappement
 // → l'inversion est exacte (aucune sur-suppression). Les marqueurs de structure
 // `*label*` (gras) NE sont PAS précédés d'un `\` (ajoutés après échappement) donc
-// ils survivent — et WhatsApp rend nativement `*gras*`.
+// ils survivent.
 const MD_V2_UNESCAPE = /\\([_*[\]()~`>#+\-=|{}.!\\])/g;
 
-/** Convertit un message MarkdownV2 (Telegram) en texte plain lisible par WhatsApp. */
+/** Convertit un message MarkdownV2 (Telegram) en texte plain lisible. */
 export function markdownV2ToPlain(text: string): string {
   return text.replace(MD_V2_UNESCAPE, "$1");
 }
@@ -1085,83 +1082,10 @@ export function formatNotification(
 }
 
 /**
- * Le message WhatsApp — SANS aucune donnée personnelle.
- *
- * ## Pourquoi WhatsApp ne reçoit pas le même message que Telegram
- *
- * 🔴 `D6-5-C1` (2026-08-20). WhatsApp passe par CallMeBot, et trois faits,
- * vérifiés le 2026-08-20 sur leurs propres pages :
- *
- * 1. **Aucune entité légale n'est publiée** — ni nom, ni adresse, ni juridiction,
- *    ni dans les conditions d'utilisation ni dans la politique de
- *    confidentialité. La page publique `/sous-processeurs` ne PEUT donc pas le
- *    déclarer : il n'y a personne à nommer. Pas de contrat de sous-traitance,
- *    pas de durée de conservation annoncée, transferts hors UE reconnus sans
- *    garantie détaillée.
- * 2. **Leurs conditions INTERDISENT** l'usage du service pour « collect or track
- *    the personal information of others » — soit exactement ce que faisait
- *    l'envoi du nom et du téléphone d'un prospect.
- * 3. Le message part dans l'**URL** (requête GET), donc journalisé par chaque
- *    intermédiaire qu'il traverse, avec la clé d'API.
- *
- * ## Ce que ce message contient, et ce qu'il suffit à faire
- *
- * L'en-tête (thème + nature de l'alerte), l'heure, et la catégorie technique.
- * Rien d'autre.
- *
- * 🔑 C'est ce que l'écran verrouillé affiche de toute façon : les ~20 premiers
- * caractères. Le rôle de WhatsApp est de PRÉVENIR vite ; celui de Telegram — un
- * canal déclaré, sous clauses contractuelles types — est de porter le détail
- * qui permet de rappeler. Le canal rapide n'a jamais eu besoin de la donnée.
- *
- * ⚠️ Ne PAS y réintroduire le corps du message. Ce serait remettre nom,
- * téléphone et contenu chez un prestataire qu'on ne peut pas nommer.
- */
-export function formatNotificationWhatsApp(
-  // 🔑 La CATÉGORIE, pas l'événement. Ce message ne porte aucune donnée : lui
-  // passer le payload complet serait rouvrir la porte qu'on vient de fermer,
-  // au premier « juste une ligne de plus ».
-  category: NotificationCategory,
-  severity: NotificationSeverity,
-  /**
-   * Le TYPE de demande en clair (« Audit IA », « Diagnostic IA réservé »),
-   * calculé par `libelleTypeDemande` — une nature de demande, jamais une
-   * donnée de la personne.
-   */
-  typeDemande?: string,
-): FormattedMessage {
-  // 🔥 Décision Will 15/10 : WhatsApp est la SONNETTE des clients. Une ligne :
-  // la nature de l'événement, le type, l'heure, et où lire le détail.
-  if (estCategorieClient(category)) {
-    const type = typeDemande?.trim() || TITLES[category];
-    const heure = new Intl.DateTimeFormat("fr-FR", {
-      timeZone: "Europe/Paris",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(new Date());
-    return {
-      text: `${enteteClient(category)} · ${type} · ${heure} — tout le détail dans Telegram (salon Clients)`,
-    };
-  }
-  const emoji = SEVERITY_EMOJI[severity];
-  const title = TITLES[category];
-  const theme = THEME[telegramGroupFor(category)];
-  return {
-    text: [
-      `${theme.emoji} ${theme.label} · ${emoji} ${title}`,
-      "",
-      `🕐 ${formatParisDateTime(new Date())} · 🏷️ ${category}`,
-      "",
-      "Détail sur Telegram ou dans la console.",
-    ].join("\n"),
-  };
-}
-
-/**
  * Variante plain-text dérivée de `formatNotification` (même corps, mêmes
  * champs), « déMarkdownisée ».
  *
- * ⚠️ N'est PLUS le message WhatsApp : voir `formatNotificationWhatsApp`.
+ * ⚠️ WhatsApp est coupé (14/11/2026) : plus aucun message de ce type n'est envoyé.
  * Conservée parce qu'elle rend le message COMPLET en texte brut, ce dont
  * d'autres canaux pourraient avoir besoin.
  */

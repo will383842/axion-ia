@@ -10,7 +10,7 @@
 //   - Submission.create AVANT toute notification (`unifiedType: "recrutement"`,
 //     `subType: "candidature-commerciale"` → même file console que le dossier ;
 //     `etape: "premier-contact"` la distingue)
-//   - PUIS les notifications, toutes best-effort : Telegram+WhatsApp, e-mail
+//   - PUIS les notifications, toutes best-effort : Telegram, e-mail
 //     candidat, récap interne, relances J+2/J+7, API Conversions Meta.
 //
 // ── Ce qui diffère du dossier complet, et pourquoi ──────────────────────────
@@ -231,7 +231,7 @@ export async function submitLeadApporteurAction(
 
     const dossierUrl = `${SITE_URL}/${locale}${DOSSIER_COMPLET_PATH}`;
 
-    // 6. Telegram + WhatsApp — best-effort.
+    // 6. Telegram — best-effort.
     try {
       await notify({
         category: "COMMERCIAL_APPLICATION_RECEIVED",

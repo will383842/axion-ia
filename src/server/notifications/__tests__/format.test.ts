@@ -1,7 +1,13 @@
 // Tests format.ts — escapeMarkdownV2 + formatNotification (Sprint Notif Infra 2026-05-26).
 
 import { describe, it, expect } from "vitest";
-import { escapeMarkdownV2, formatNotification, formatParisDateTime } from "../format";
+import {
+  escapeMarkdownV2,
+  formatNotification,
+  formatNotificationPlain,
+  formatParisDateTime,
+  markdownV2ToPlain,
+} from "../format";
 import { preparerPourTelegram } from "../channels/telegram";
 import { labeledAnswers, parseScreeningQuestions } from "@/lib/careers/screening-answers";
 
@@ -175,8 +181,8 @@ describe("formatNotification", () => {
   });
 
   // Depuis la refonte 2026-08-09, le message commence par l'EN-TÊTE DE THÈME et
-  // non plus par l'emoji de gravité : c'est ce que WhatsApp affiche sur l'écran
-  // verrouillé, et c'est là que se joue la distinction entre un rendez-vous et
+  // non plus par l'emoji de gravité : c'est ce que l'écran
+  // verrouillé affiche, et c'est là que se joue la distinction entre un rendez-vous et
   // une candidature. La gravité reste présente, juste après.
   it("severity warn/error utilise le bon emoji, après le thème", () => {
     const warn = formatNotification(
@@ -416,5 +422,40 @@ describe("Tour France IA : alertes minimisées", () => {
     expect(t).toContain("VILLE OUVERTE");
     expect(t).not.toContain("(5 sur 5)");
     expect(t).toContain("5 sur 5");
+  });
+});
+
+// ── Inversion MarkdownV2 → plain (déplacé de whatsapp.test.ts, canal coupé le 14/11/2026) ──
+describe("markdownV2ToPlain", () => {
+  it("inverse exactement escapeMarkdownV2", () => {
+    const raw = "Budget: 1.900€ (HT) — a+b_c #ok!";
+    expect(markdownV2ToPlain(escapeMarkdownV2(raw))).toBe(raw);
+  });
+
+  it("conserve les marqueurs de gras *label* ", () => {
+    const plain = markdownV2ToPlain(
+      `• *${escapeMarkdownV2("Nom")}* : ${escapeMarkdownV2("Marie D.")}`,
+    );
+    expect(plain).toBe("• *Nom* : Marie D.");
+  });
+
+  it("formatNotificationPlain ne contient aucun backslash d'échappement", () => {
+    const { text } = formatNotificationPlain(
+      {
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: {
+          submissionId: "sub_1",
+          contactName: "Marie Dupont",
+          contactEmail: "marie@example.com",
+          formType: "contact",
+          ville: "Grenoble",
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    expect(text).not.toContain("\\");
+    expect(text).toContain("Marie D.");
+    expect(text).toContain("Grenoble");
   });
 });

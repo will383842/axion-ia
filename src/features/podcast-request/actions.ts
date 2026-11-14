@@ -2,7 +2,7 @@
 //
 // Calquée sur `submitReviewAction` / `submitJobApplicationAction` :
 // rate-limit IP → honeypot → Turnstile → consentement RGPD → Zod → encryptPii →
-// hashIp → prisma.create → notify() (Telegram, + WhatsApp si configuré).
+// hashIp → prisma.create → notify() (Telegram).
 //
 // ⚠️ Offre GRATUITE, sans contrepartie ni lien avec l'achat d'une formation
 // (décision Will 2026-07-21). Aucune logique commerciale ici : on enregistre un
@@ -145,9 +145,8 @@ export async function submitPodcastRequestAction(
       console.error("[podcast-request] accusé de réception impossible :", err);
     }
 
-    // 7. Notification Will — Telegram (groupe « Messages »). Le canal WhatsApp
-    // se greffe automatiquement dès que WHATSAPP_CALLMEBOT_APIKEY +
-    // WHATSAPP_NOTIFY_PHONE sont définis (cf. `notifications/routing.ts`).
+    // 7. Notification Will — Telegram (groupe « Messages », détail complet
+    // dans le salon dédié ; WhatsApp est coupé depuis le 14/11/2026).
     // Best-effort : une notif KO ne doit jamais perdre le lead déjà enregistré.
     try {
       await notify({

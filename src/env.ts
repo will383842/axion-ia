@@ -187,6 +187,7 @@ export const env = createEnv({
     ENREGISTREMENT_VISIO_PILOTE: z.enum(["true", "false"]).optional(),
     ENREGISTREMENT_VISIO_OUVERT: z.enum(["true", "false"]).optional(),
 
+    // `TELEGRAM_CHAT_ID` : salon général, nommé « 🔧 Axion-IA — Technique » dans Telegram (14/11/2026).
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
 
@@ -200,14 +201,6 @@ export const env = createEnv({
     // existants depuis 2026-07-09. Les déclarer ici obligerait à toucher deux
     // fichiers pour ajouter un groupe.
     TELEGRAM_CALENDLY_BOT_TOKEN: z.string().optional(),
-
-    // WhatsApp (CallMeBot) — notif GRATUITE des leads humains vers le numéro perso.
-    // Optionnelles : sans elles le canal WhatsApp est un no-op silencieux (le reste
-    // des notifs Telegram continue normalement). Cf. `src/server/notifications/channels/whatsapp.ts`.
-    //   - WHATSAPP_CALLMEBOT_APIKEY : la clé renvoyée par le bot CallMeBot sur WhatsApp.
-    //   - WHATSAPP_NOTIFY_PHONE     : le numéro destinataire au format international (ex. +33755512345).
-    WHATSAPP_CALLMEBOT_APIKEY: z.string().optional(),
-    WHATSAPP_NOTIFY_PHONE: z.string().optional(),
 
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
@@ -802,8 +795,6 @@ export const env = createEnv({
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
-    WHATSAPP_CALLMEBOT_APIKEY: process.env.WHATSAPP_CALLMEBOT_APIKEY,
-    WHATSAPP_NOTIFY_PHONE: process.env.WHATSAPP_NOTIFY_PHONE,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
