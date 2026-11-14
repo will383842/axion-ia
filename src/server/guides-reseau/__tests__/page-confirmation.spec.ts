@@ -918,6 +918,36 @@ describe("ce qui est écrit", () => {
     expect(payload).not.toHaveProperty("doubleAccordToken");
   });
 
+  it("S2a — guide-ia : la charge passée à enqueueEmail, clé pour clé (aucune clé en trop), et aucune lecture de cibles_reseau", async () => {
+    await confirmerPageGuide(entree());
+    expect(bd.envois).toHaveLength(1);
+    const [gabarit, , locale, payload, options] = bd.envois[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+      unknown,
+    ];
+    expect(gabarit).toBe("guide-ia-envoi");
+    expect(locale).toBe("fr");
+    expect(Object.keys(payload).sort()).toEqual([
+      "downloadToken",
+      "oppositionToken",
+      "pageGuide",
+      "reseau",
+      "reseauOrigine",
+    ]);
+    expect(payload["reseau"]).toBe(true);
+    expect(payload["pageGuide"]).toBe(true);
+    expect(payload["reseauOrigine"]).toBe("instagram");
+    expect(options).toEqual({
+      entityType: "GuideRequest",
+      entityId: String(bd.demandes[0]!["id"]),
+      priority: 10,
+    });
+    expect(bd.lecturesCibles).toBe(0);
+  });
+
   it("aucune ligne newsletter_subscribers n'est créée (le mock lèverait)", async () => {
     await expect(confirmerPageGuide(entree())).resolves.toEqual({ ok: true });
   });

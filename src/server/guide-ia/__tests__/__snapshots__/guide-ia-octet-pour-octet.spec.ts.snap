@@ -1,0 +1,1126 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`/api/guide-ia/telecharger — guide-ia > GET : la page du lien est figée (FR et EN), sans lire cibles_reseau > entetes-en 1`] = `
+{
+  "cache-control": "no-store, private",
+  "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+  "content-type": "text/html; charset=utf-8",
+  "referrer-policy": "no-referrer",
+  "x-robots-tag": "noindex, nofollow",
+}
+`;
+
+exports[`/api/guide-ia/telecharger — guide-ia > GET : la page du lien est figée (FR et EN), sans lire cibles_reseau > entetes-fr 1`] = `
+{
+  "cache-control": "no-store, private",
+  "content-security-policy": "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+  "content-type": "text/html; charset=utf-8",
+  "referrer-policy": "no-referrer",
+  "x-robots-tag": "noindex, nofollow",
+}
+`;
+
+exports[`/api/guide-ia/telecharger — guide-ia > GET : la page du lien est figée (FR et EN), sans lire cibles_reseau > page-en 1`] = `
+"<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Your enterprise AI guide · Axion-IA</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#faf7f2;color:#2b2320}
+main{max-width:34rem;margin:0 auto;padding:3rem 1.25rem}
+h1{font-size:1.6rem;line-height:1.25;margin:0 0 1rem}
+p{font-size:1.05rem;line-height:1.6;margin:0 0 1.5rem;color:#4a403b}
+button{font:inherit;font-weight:700;font-size:1.05rem;min-height:44px;padding:.85rem 1.6rem;border:0;border-radius:999px;background:#c24a1b;color:#fff;cursor:pointer}
+button:focus-visible{outline:3px solid #1f4e8c;outline-offset:3px}
+a{color:#1f4e8c}
+.pied{margin-top:2.5rem;font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Your enterprise AI guide</h1>
+<p>40 pages, in French, on concrete uses of AI, real costs, return on investment, governance and pitfalls to avoid. Start with page 5: the essentials on one page.</p>
+<form method="post" action="/api/guide-ia/telecharger">
+<input type="hidden" name="t" value="a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1">
+<button type="submit">Download the guide (PDF)</button>
+</form>
+<p class="pied"><a href="/en">Go to the Axion-IA website</a></p>
+</main>
+</body>
+</html>"
+`;
+
+exports[`/api/guide-ia/telecharger — guide-ia > GET : la page du lien est figée (FR et EN), sans lire cibles_reseau > page-fr 1`] = `
+"<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Votre guide IA entreprise · Axion-IA</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#faf7f2;color:#2b2320}
+main{max-width:34rem;margin:0 auto;padding:3rem 1.25rem}
+h1{font-size:1.6rem;line-height:1.25;margin:0 0 1rem}
+p{font-size:1.05rem;line-height:1.6;margin:0 0 1.5rem;color:#4a403b}
+button{font:inherit;font-weight:700;font-size:1.05rem;min-height:44px;padding:.85rem 1.6rem;border:0;border-radius:999px;background:#c24a1b;color:#fff;cursor:pointer}
+button:focus-visible{outline:3px solid #1f4e8c;outline-offset:3px}
+a{color:#1f4e8c}
+.pied{margin-top:2.5rem;font-size:.95rem}
+</style>
+</head>
+<body>
+<main>
+<h1>Votre guide IA entreprise</h1>
+<p>40 pages sur les usages concrets de l&#39;IA, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter. Commencez par la page 5 : l&#39;essentiel en une page.</p>
+<form method="post" action="/api/guide-ia/telecharger">
+<input type="hidden" name="t" value="a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1a1">
+<button type="submit">Télécharger le guide (PDF)</button>
+</form>
+<p class="pied"><a href="/fr">Aller sur le site d&#39;Axion-IA</a></p>
+</main>
+</body>
+</html>"
+`;
+
+exports[`/api/guide-ia/telecharger — guide-ia > POST : un jeton inconnu reste un 404 (page figée) > introuvable 1`] = `
+"<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Lien introuvable · Axion-IA</title>
+<style>
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#faf7f2;color:#2b2320}
+main{max-width:34rem;margin:0 auto;padding:3rem 1.25rem}
+p{font-size:1.05rem;line-height:1.6;margin:0 0 1.5rem;color:#4a403b}
+a{color:#1f4e8c}
+</style>
+</head>
+<body>
+<main>
+<p>Ce lien n&#39;est plus valable. Demandez à nouveau le guide sur <a href="/fr/guide-ia">axion-ia.com/fr/guide-ia</a>.</p>
+</main>
+</body>
+</html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:700;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Axion-IA&#x27;s letter</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">You had left Axion-IA&#x27;s letter. To receive it again (1 to 2 emails a month, only when there is something new and useful), confirm with one click; without it, nothing changes.</p><a href="https://axion-ia.com/en/confirmation/newsletter?token=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#ffffff;background-image:none;color:#1a4dd9;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:none;border:2px solid #1a4dd9;padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Receive the letter again</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message: you will receive nothing else.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Axion-IA's letter
+
+You had left Axion-IA's letter. To receive it again (1 to 2 emails a month, only when there is something new and useful), confirm with one click; without it, nothing changes.
+
+Receive the letter again https://axion-ia.com/en/confirmation/newsletter?token=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+Didn't request this? Just ignore this message: you will receive nothing else.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:700;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">La lettre d&#x27;Axion-IA</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous aviez quitté la lettre d&#x27;Axion-IA. Pour la recevoir à nouveau (1 à 2 e-mails par mois, à chaque nouveauté utile), confirmez d&#x27;un clic ; sans ce clic, rien ne change.</p><a href="https://axion-ia.com/fr/confirmation/newsletter?token=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#ffffff;background-image:none;color:#1a4dd9;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:none;border:2px solid #1a4dd9;padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Recevoir à nouveau la lettre</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d&#x27;autre.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > desabonne · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+La lettre d'Axion-IA
+
+Vous aviez quitté la lettre d'Axion-IA. Pour la recevoir à nouveau (1 à 2 e-mails par mois, à chaque nouveauté utile), confirmez d'un clic ; sans ce clic, rien ne change.
+
+Recevoir à nouveau la lettre https://axion-ia.com/fr/confirmation/newsletter?token=cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message: you will receive nothing else.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Didn't request this? Just ignore this message: you will receive nothing else.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d&#x27;autre.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > formulaire-simple · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:700;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Axion-IA&#x27;s letter</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">You will also receive Axion-IA&#x27;s letter. 1 to 2 emails a month, only when there is something new and useful. If you do not want it, one click is enough:<!-- --> <a href="https://axion-ia.com/en/desabonnement?token=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Unsubscribe from the letter</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Click &quot;Unsubscribe from the letter&quot; above: you will receive nothing else.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Axion-IA's letter
+
+You will also receive Axion-IA's letter. 1 to 2 emails a month, only when there is something new and useful. If you do not want it, one click is enough: Unsubscribe from the letter https://axion-ia.com/en/desabonnement?token=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+Didn't request this? Click "Unsubscribe from the letter" above: you will receive nothing else.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;font-weight:700;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">La lettre d&#x27;Axion-IA</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous recevrez aussi la lettre d&#x27;Axion-IA. 1 à 2 e-mails par mois, à chaque nouveauté utile. Pour ne pas la recevoir, un clic suffit :<!-- --> <a href="https://axion-ia.com/fr/desabonnement?token=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Se désabonner de la lettre</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d&#x27;autre.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > inscrit-lettre · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+La lettre d'Axion-IA
+
+Vous recevrez aussi la lettre d'Axion-IA. 1 à 2 e-mails par mois, à chaque nouveauté utile. Pour ne pas la recevoir, un clic suffit : Se désabonner de la lettre https://axion-ia.com/fr/desabonnement?token=uuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu
+
+Vous n'avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d'autre.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough:<!-- --> <a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Unsubscribe me</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/en/privacy-policy" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">How your data is handled: privacy policy</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough: Unsubscribe me https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>
+
+Didn't request this? Just ignore this message.
+
+How your data is handled: privacy policy https://axion-ia.com/en/privacy-policy
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous avez accepté de recevoir aussi des informations d&#x27;Axion-IA. Pour ne plus en recevoir, un clic suffit :<!-- --> <a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Me désinscrire</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/fr/politique-confidentialite" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Comment vos données sont traitées : politique de confidentialité</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-avec-reseau-origine · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Vous avez accepté de recevoir aussi des informations d'Axion-IA. Pour ne plus en recevoir, un clic suffit : Me désinscrire https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message.
+
+Comment vos données sont traitées : politique de confidentialité https://axion-ia.com/fr/politique-confidentialite
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough:<!-- --> <a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Unsubscribe me</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/en/privacy-policy" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">How your data is handled: privacy policy</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough: Unsubscribe me https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>
+
+Didn't request this? Just ignore this message.
+
+How your data is handled: privacy policy https://axion-ia.com/en/privacy-policy
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="margin:8px 0 4px 0"><tbody><tr><td><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous avez accepté de recevoir aussi des informations d&#x27;Axion-IA. Pour ne plus en recevoir, un clic suffit :<!-- --> <a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Me désinscrire</a></p></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/fr/politique-confidentialite" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Comment vos données sont traitées : politique de confidentialité</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > page-du-guide-sans-reseau-origine · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Vous avez accepté de recevoir aussi des informations d'Axion-IA. Pour ne plus en recevoir, un clic suffit : Me désinscrire https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message.
+
+Comment vos données sont traitées : politique de confidentialité https://axion-ia.com/fr/politique-confidentialite
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">You asked to receive our letter before the guide came out: here it is, as promised.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message: you will receive nothing else.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+You asked to receive our letter before the guide came out: here it is, as promised.
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Didn't request this? Just ignore this message: you will receive nothing else.
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous aviez demandé à recevoir notre lettre avant la parution du guide : le voici, comme promis.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d&#x27;autre.</p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reprise · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Vous aviez demandé à recevoir notre lettre avant la parution du guide : le voici, comme promis.
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · en > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">The download link is in this message, and it stays valid.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">The end-to-end AI partner for SMEs</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Your enterprise AI guide</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Start with page 5: the essentials on one page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Download the guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Didn&#x27;t request this? Just ignore this message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/en/privacy-policy" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">How your data is handled: privacy policy</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">A question? Just reply to this email — it reaches us directly, and a human reads it.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">The Axion-IA team</span><br/><span style="color:#6b6153;font-style:italic">Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.</span><br/><span style="color:#6b6153;font-size:13px">AI audit · Automated systems implementation · Training · 1-to-1 coaching</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Book a call</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->French company (SAS)<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>Reg. no.<!-- --> <!-- -->108018631<!-- --> · <!-- -->VAT<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->Training provider reg. no.<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact:<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->All rights reserved.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Stop receiving commercial messages from Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · en > sujet 1`] = `"Your enterprise AI guide (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · en > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+The end-to-end AI partner for SMEs
+
+
+YOUR ENTERPRISE AI GUIDE
+
+Here is the guide you requested: 40 pages, in French, on concrete uses of AI in business, real costs, return on investment, governance and pitfalls to avoid.
+
+Start with page 5: the essentials on one page.
+
+Download the guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Didn't request this? Just ignore this message.
+
+How your data is handled: privacy policy https://axion-ia.com/en/privacy-policy
+
+A question? Just reply to this email — it reaches us directly, and a human reads it.
+
+The Axion-IA team
+Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.
+AI audit · Automated systems implementation · Training · 1-to-1 coaching
+Book a call https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · French company (SAS)
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+Reg. no. 108018631 · VAT FR51108018631 · Training provider reg. no. 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact: contact@axion-ia.com
+© 2026 AXION IA SAS — All rights reserved.
+Stop receiving commercial messages from Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · fr > html 1`] = `
+"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html dir="ltr" lang="fr"><head><meta name="viewport" content="width=device-width, initial-scale=1"/><meta content="text/html; charset=UTF-8" http-equiv="Content-Type"/><meta name="x-apple-disable-message-reformatting"/><meta name="color-scheme" content="light dark"/><meta name="supported-color-schemes" content="light dark"/><style>
+  :root { color-scheme: light dark; supported-color-schemes: light dark; }
+  @media (prefers-color-scheme: dark) {
+    .ax-body { background-color: #15110c !important; }
+    .ax-card { background-color: #221b13 !important; border-color: #3a3025 !important; }
+    .ax-text { color: #f6efe3 !important; }
+    .ax-heading { color: #fdf7ec !important; }
+    .ax-muted { color: #b8ac99 !important; }
+    .ax-trust { background-color: #2c1c12 !important; border-color: #5a3620 !important; }
+    /* Lot 4 (2026-09-02) — le CORPS des gabarits. Les classes ci-dessus ne
+       vivaient que dans le châssis ; les 42 gabarits posent des styles en
+       ligne (encre #241d15) et aucune classe. En mode sombre, la carte passait
+       à #221b13 et chaque paragraphe restait presque noir : noir sur noir. On
+       cible les descendants de la carte, en !important, ce qui prime sur un
+       style en ligne — sans toucher à un seul gabarit. Le bouton, blanc sur
+       terracotta, est remis à part par sa classe. */
+    .ax-card p, .ax-card li, .ax-card td, .ax-card span, .ax-card strong, .ax-card em { color: #f6efe3 !important; }
+    .ax-card h1, .ax-card h2, .ax-card h3 { color: #fdf7ec !important; }
+    .ax-card a { color: #f0a070 !important; }
+    .ax-card a.ax-cta, .ax-card a.ax-cta span { color: #ffffff !important; }
+    .ax-card hr { border-color: #3a3025 !important; }
+  }
+  /* Lot 4 — sous 600 px : 28 px de marge de chaque côté et un titre de 26 px
+     ne laissaient qu'une colonne de 264 px sur un écran de 320. */
+  @media only screen and (max-width: 600px) {
+    .ax-card { padding: 24px 18px !important; border-radius: 14px !important; }
+    .ax-title { font-size: 22px !important; }
+  }
+</style></head><body class="ax-body" data-famille="B" style="background-color:#f6f1e8;margin:0;padding:0"><!--$--><!--html--><!--head--><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0" data-skip-in-text="true">Le lien de téléchargement est dans ce message, et il reste valable.<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><!--body--><table border="0" width="100%" cellPadding="0" cellSpacing="0" role="presentation" align="center"><tbody><tr><td style="background-color:#f6f1e8;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;color:#241d15;padding:0 0 40px;margin:0"><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="height:6px;line-height:6px;font-size:1px;background-color:#c24a1b;background-image:linear-gradient(90deg, #c24a1b 0%, #d1561f 55%, #8c3010 100%)"><tbody><tr><td> </td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:600px;margin:0 auto;width:100%"><tbody><tr style="width:100%"><td><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 0 20px;text-align:center"><tbody><tr><td><a href="https://axion-ia.com" style="color:#067df7;text-decoration-line:none" target="_blank"><img alt="Axion-IA" height="115" src="https://axion-ia.com/email/axion-ia-logo-pill.png" style="display:block;outline:none;border:0;text-decoration:none;margin:0 auto" width="210"/></a><p class="ax-muted" style="font-size:11px;line-height:24px;letter-spacing:0.18em;text-transform:uppercase;color:#6b6153;font-weight:700;margin:12px 0 0 0;margin-top:12px;margin-right:0;margin-bottom:0;margin-left:0">Le partenaire IA de bout en bout des PME</p></td></tr></tbody></table><table align="center" width="100%" class="ax-card" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="max-width:100%;background-color:#ffffff;border-radius:20px;border:1px solid #eee2d2;padding:32px 28px;box-shadow:0 12px 34px -16px rgba(234,78,27,0.20), 0 2px 6px -2px rgba(36,29,21,0.06)"><tbody><tr style="width:100%"><td><h1 class="ax-heading ax-title" style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:26px;font-weight:700;margin:0 0 18px 0;color:#1c150e;line-height:1.2">Votre guide IA entreprise</h1><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l&#x27;IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.</p><p style="font-size:16px;line-height:1.7;color:#241d15;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Commencez par la page 5 : l&#x27;essentiel en une page.</p><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="text-align:center;margin:30px 0 8px 0"><tbody><tr><td><a href="https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd" class="ax-cta" style="line-height:100%;text-decoration:none;display:inline-block;max-width:100%;mso-padding-alt:0px;background-color:#c24a1b;background-image:linear-gradient(180deg, #cf5527 0%, #c24a1b 100%);color:#ffffff;padding:16px 34px;border-radius:999px;font-size:16px;font-weight:700;font-family:-apple-system, BlinkMacSystemFont, &#x27;Segoe UI&#x27;, Roboto, Helvetica, Arial, sans-serif;box-shadow:0 10px 22px -8px rgba(194,74,27,0.5);padding-top:16px;padding-right:34px;padding-bottom:16px;padding-left:34px" target="_blank"><span><!--[if mso]><i style="mso-font-width:425%;mso-text-raise:24" hidden>&#8202;&#8202;&#8202;&#8202;</i><![endif]--></span><span style="max-width:100%;display:inline-block;line-height:120%;mso-padding-alt:0px;mso-text-raise:12px">Télécharger le guide (PDF)<!-- -->  →</span><span><!--[if mso]><i style="mso-font-width:425%" hidden>&#8202;&#8202;&#8202;&#8202;&#8203;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0">Vous n&#x27;avez pas fait cette demande ? Ignorez simplement ce message.</p><p style="font-size:16px;line-height:1.7;color:#6b6153;margin:14px 0;margin-top:14px;margin-right:0;margin-bottom:14px;margin-left:0"><a href="https://axion-ia.com/fr/politique-confidentialite" style="color:#1a4dd9;text-decoration-line:none;text-decoration:underline" target="_blank">Comment vos données sont traitées : politique de confidentialité</a></p><p class="ax-muted" style="font-size:14px;line-height:1.6;color:#6b6153;margin:22px 0 0 0;padding-top:16px;border-top:1px solid #eee2d2;margin-top:22px;margin-right:0;margin-bottom:0;margin-left:0">Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c&#x27;est un humain qui lit.</p><p class="ax-text" style="font-size:14px;line-height:1.7;color:#241d15;margin:24px 0 0 0;border-left:3px solid #c24a1b;padding-left:14px;margin-top:24px;margin-right:0;margin-bottom:0;margin-left:0"><span style="font-family:Georgia, &#x27;Times New Roman&#x27;, Times, serif;font-size:16px;font-weight:700;color:#1c150e">L&#x27;équipe Axion-IA</span><br/><span style="color:#6b6153;font-style:italic">Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.</span><br/><span style="color:#6b6153;font-size:13px">Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1</span><br/><a href="https://axion-ia.com/fr/appel?depuis=email&amp;utm_source=email&amp;utm_medium=cycle&amp;utm_content=signature" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">Prendre rendez-vous</a> · <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">LinkedIn</a></p></td></tr></tbody></table><table align="center" width="100%" border="0" cellPadding="0" cellSpacing="0" role="presentation" style="padding:26px 12px 0 12px"><tbody><tr><td><p class="ax-muted" style="font-size:13px;line-height:1.6;color:#6b6153;margin:0 0 10px 0;text-align:center;margin-top:0;margin-right:0;margin-bottom:10px;margin-left:0">Axion-IA<!-- --> —<!-- --> <a href="https://www.linkedin.com/company/axion-ia-france" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a> · <a href="https://www.facebook.com/axioniacom" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">Facebook</a> · <a href="https://x.com/AxionIAFrance" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">X</a> — <!-- -->Williams Jullin<!-- --> :<!-- --> <a href="https://www.linkedin.com/in/williamsjullin/" style="color:#8c3010;text-decoration-line:none;font-weight:700;text-decoration:none" target="_blank">LinkedIn</a></p><p class="ax-muted" style="font-size:12px;line-height:1.6;color:#6b6153;margin:0;text-align:center;margin-top:0;margin-bottom:0;margin-left:0;margin-right:0">AXION IA SAS<!-- --> · <!-- -->SAS française<br/>11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France<br/>SIREN<!-- --> <!-- -->108018631<!-- --> · <!-- -->TVA<!-- --> <!-- -->FR51108018631<!-- --> · <!-- -->NDA<!-- --> <!-- -->84381100438<br/>Cet enregistrement ne vaut pas agrément de l&#x27;État.<br/>Contact :<!-- --> <a href="mailto:contact@axion-ia.com" style="color:#8c3010;text-decoration-line:none;font-weight:600" target="_blank">contact@axion-ia.com</a><br/>© <!-- -->2026<!-- --> <!-- -->AXION IA SAS<!-- --> — <!-- -->Tous droits réservés.<br/><a href="https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>" style="color:#6b6153;text-decoration-line:none;text-decoration:underline" target="_blank">Ne plus recevoir de sollicitations commerciales d&#x27;Axion-IA</a></p></td></tr></tbody></table></td></tr></tbody></table></td></tr></tbody></table><!--/$--></body></html>"
+`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · fr > sujet 1`] = `"Votre guide IA entreprise (PDF, 40 pages)"`;
+
+exports[`l'e-mail « Votre guide » — références (sujet, HTML, texte) > reseau · fr > texte 1`] = `
+" 
+
+https://axion-ia.com
+
+Le partenaire IA de bout en bout des PME
+
+
+VOTRE GUIDE IA ENTREPRISE
+
+Voici le guide que vous avez demandé : 40 pages sur les usages concrets de l'IA en entreprise, les coûts réels, le retour sur investissement, la gouvernance et les écueils à éviter.
+
+Commencez par la page 5 : l'essentiel en une page.
+
+Télécharger le guide (PDF)  → https://axion-ia.com/api/guide-ia/telecharger?t=dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+Vous n'avez pas fait cette demande ? Ignorez simplement ce message.
+
+Comment vos données sont traitées : politique de confidentialité https://axion-ia.com/fr/politique-confidentialite
+
+Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.
+
+L'équipe Axion-IA
+Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.
+Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1
+Prendre rendez-vous https://axion-ia.com/fr/appel?depuis=email&utm_source=email&utm_medium=cycle&utm_content=signature · LinkedIn https://www.linkedin.com/company/axion-ia-france
+
+Axion-IA — LinkedIn https://www.linkedin.com/company/axion-ia-france · Facebook https://www.facebook.com/axioniacom · X https://x.com/AxionIAFrance — Williams Jullin : LinkedIn https://www.linkedin.com/in/williamsjullin/
+
+AXION IA SAS · SAS française
+11 Avenue Paul Verlaine, ELITE BUREAUX - boîte 53, 38100 Grenoble, France
+SIREN 108018631 · TVA FR51108018631 · NDA 84381100438
+Cet enregistrement ne vaut pas agrément de l'État.
+Contact : contact@axion-ia.com
+© 2026 AXION IA SAS — Tous droits réservés.
+Ne plus recevoir de sollicitations commerciales d'Axion-IA https://axion-ia.com/api/unsubscribe?token=<JETON-SIGNE>"
+`;
