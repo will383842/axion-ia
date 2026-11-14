@@ -443,9 +443,13 @@ export interface MasquageAlertesResult {
 
 /**
  * Geste humain, APRÈS un effacement accepté : masque l'adresse dans les alertes de la cloche
- * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Ces alertes portent l'adresse en clair dans
- * leur message pour permettre le traitement à la main ; sans ce passage elles la gardent sans
- * limite de durée. MISE À JOUR seulement : l'alerte reste, son adresse devient `[adresse masquée]`.
+ * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Depuis la décision du 11/11/2026, une demande
+ * d'effacement MET LA PERSONNE À L'ÉCART au lieu de supprimer (`src/server/rgpd/ecarter-au-lieu-d-effacer.ts`)
+ * et lève une alerte `critique` SANS adresse (ni motif libre) : la personne se retrouve par la
+ * référence de la trace et l'empreinte de l'alerte, et la réponse est due AVANT l'échéance d'un
+ * mois (art. 12.3 RGPD). Ce passage ne sert donc plus qu'aux alertes plus anciennes, qui portent
+ * encore l'adresse en clair ; sans lui elles la gardent sans limite de durée. MISE À JOUR
+ * seulement : l'alerte reste, son adresse devient `[adresse masquée]`.
  *
  * À LANCER À LA MAIN avec les autres effaceurs, une fois l'effacement passé : la procédure est
  * écrite dans `docs/dpo-templates/03-effacement-art-17.md` (aucun automate ne l'appelle, voulu).
