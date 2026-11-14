@@ -1,117 +1,70 @@
-# R20 — Saturation disque Hetzner CPX42
+# R20 — Saturation disque du VPS (axion-prod, 178.105.55.15)
 
-> Runbook créé suite à incident 2026-05-15 : tous les deploys Coolify ont
-> échoué avec `No space left on device` lors du `tee docker-compose.yaml`.
-> Cause root : 320 GB disque plein (build cache Docker + images zombies
-> accumulés depuis plusieurs semaines sans cleanup automatique).
+> Réécrit le 2026-11-14 (audit disque Opus). L'ancienne version recommandait
+> `docker system prune -a --volumes` et un cron quotidien de purge : c'est
+> **interdit** (efface les images de retour arrière du Studio et les volumes
+> de conteneurs arrêtés : Plausible, sonde Postgres...). Le script
+> `scripts/ops/disk-cleanup.sh` et le workflow `disk-cleanup-prod.yml` sont
+> supprimés, et un test (`disque-vps-aucune-purge-dangereuse.spec.ts`) interdit
+> leur retour.
 
-## Trigger
+## Règle de fer
 
-L'alerte Telegram tag `INCIDENT` arrive quand le cron `disk-cleanup.sh`
-détecte :
+Jamais de purge Docker large : ni `system prune`, ni `image prune -a`, ni
+`volume prune`, ni `--volumes`. On ne touche jamais aux volumes, bases,
+sauvegardes, `cv-storage`, `f0-facecam`, `medias-reels`,
+`contenu-reel-hors-depot`, `avant-reconciliation-*`, ni aux images `studio-*`
+(retours arrière).
 
-- Usage disque root > 85 % (configurable via `DISK_WARN_PCT`)
-- OU espace libre < 10 GB (configurable via `DISK_WARN_FREE_GB`)
+## Surveillance (cron hôte, `scripts/vps/`)
 
-## Mitigation rapide (5 min — débloque le deploy)
+- `surveiller-disque.sh` : toutes les 10 min ; alerte Telegram (salon « 🔧
+  Axion-IA — Technique ») à 75 % (info, 1×/jour), 85 % (alerte, 1×/6 h),
+  90 % (critique, 1×/30 min) avec les 5 premières causes, le « plein dans N
+  jours » et le pic des 7 derniers jours. Ne fait que mesurer et prévenir.
+- `menage-tmp.sh` : quotidien 04:40 ; archive puis supprime les gros vieux
+  dossiers de `/tmp` (voir le script).
+- `journald-axion.conf` : journald limité à 500 Mo.
+- Installation : `scripts/vps/installer-garde-fous-disque.sh` (voir
+  `scripts/vps/README.md`, section « Garde-fous disque »).
+
+## Quand l'alerte arrive
 
 ```bash
-# Via SSH sur le serveur, ou Coolify Dashboard → Terminal :
-
-# 1. Espace dispo
 df -h /
-
-# 2. Docker prune agressif (garde uniquement images en cours d'exécution)
-docker system prune -a -f --volumes
-docker builder prune -a -f
-
-# 3. Coolify : builds artefacts > 7 jours
-find /data/coolify/applications/*/builds -maxdepth 1 -type d -mtime +7 \
-  | tail -n +6 | xargs -r rm -rf
-
-# 4. Logs anciens
-find /var/log -type f -name "*.log.gz" -mtime +30 -delete
-find /data/coolify -type f -name "*.log" -size +500M -mtime +14 -delete
-
-# 5. Re-vérifier
-df -h /
+# Qui occupe l'espace (lecture seule)
+du -xh --max-depth=1 /tmp /root /opt /var/lib/docker /var/lib/containerd /var/log 2>/dev/null | sort -hr | head -20
+docker ps -s --format 'table {{.Names}}\t{{.Size}}'   # couche écrite des conteneurs
+docker system df                                      # lecture seule
+journalctl --disk-usage
 ```
 
-Attendu : libère 50-150 GB.
+Actions sûres, dans l'ordre :
 
-## Mitigation préventive (déjà en place)
+1. `/tmp` : lancer `/opt/axion-ia/menage-tmp.sh --essai`, puis sans `--essai`
+   (il archive dans `/root/archives-tmp/` avant de supprimer).
+2. Cache de build seulement : `docker builder prune -f --keep-storage 2GB`.
+3. Journal : `journalctl --vacuum-size=500M`.
+4. Sessions Claude : travailler dans `/root/travaux-claude/<date>-<session>/`
+   et nettoyer en partant (jamais dans `/tmp`).
+5. Le reste (clones du Studio, vidéos `cv-storage`, journaux ClickHouse) :
+   décision du fondateur ou de la session Studio, jamais de suppression
+   automatique.
 
-Le script `scripts/ops/disk-cleanup.sh` est exécuté chaque nuit à 03h00 :
+## Suspects fréquents (audit du 14/11/2026)
 
-```cron
-0 3 * * * /opt/axion-ia/scripts/ops/disk-cleanup.sh >> /var/log/axion-disk-cleanup.log 2>&1
-```
+- Pics lors de mises en ligne rapprochées (image du site ≈ 8,3 Go, 2-3 images
+  coexistent) et builds du Studio (cache ≈ 8 Go).
+- Couche écrite du conteneur du site (cache ISR, borné par l'élagueur).
+- `/tmp` des sessions Claude (th-*, tf-*, tg-*).
+- journald (limité depuis ce lot), journaux ClickHouse (Plausible).
 
-À installer sur le serveur prod via :
+## Escalade
 
-```bash
-# SSH Hetzner CPX42 (axion-ia.com — 178.105.55.15)
-sudo cp scripts/ops/disk-cleanup.sh /opt/axion-ia/scripts/ops/disk-cleanup.sh
-sudo chmod +x /opt/axion-ia/scripts/ops/disk-cleanup.sh
-# Charger env vars Telegram dans le cron
-sudo crontab -e
-# Ajouter :
-TELEGRAM_BOT_TOKEN=xxx
-TELEGRAM_CHAT_ID=xxx
-0 3 * * * /opt/axion-ia/scripts/ops/disk-cleanup.sh >> /var/log/axion-disk-cleanup.log 2>&1
-```
-
-## Investigation racine (si cleanup ne suffit pas)
-
-```bash
-# Top 20 dossiers les plus volumineux
-du -h --max-depth=2 / 2>/dev/null | sort -hr | head -20
-
-# Images Docker hors-runtime
-docker images --filter "dangling=false" --format "table {{.Repository}}\t{{.Tag}}\t{{.Size}}" | sort -k3 -hr
-
-# Volumes Docker
-docker system df -v
-```
-
-Suspects fréquents :
-
-- `/data/coolify/applications/*/builds/` — artefacts builds (peut atteindre 50+ GB)
-- `/var/lib/docker/overlay2/` — layers images (à purger via `docker system prune -a`)
-- `/data/coolify/databases/*-logs.tar.gz` — backups logs anciens
-- `/data/coolify/proxy/logs/*` — logs Caddy / Traefik
-- `/var/log/journal/` — systemd journal (limiter via `journalctl --vacuum-size=500M`)
-
-## Escalade (si saturé répété malgré cleanup)
-
-1. Augmenter disque Hetzner CPX42 (cher — préférer V2 add storage volume)
-2. Migrer build cache vers stockage objet (R2 Cloudflare via Buildkit)
-3. Réduire fréquence builds CI (limit GitHub Actions concurrent)
-
-## Permissions Claude Code sandbox (autoriser cleanup via autopilot)
-
-Par défaut, Claude Code sandbox refuse les opérations server-wide
-(protection prod). Pour autoriser le cleanup Docker via API Coolify, ajouter
-dans `~/.claude/settings.local.json` (ou `.claude/settings.local.json` du
-projet parent `Axion-IA/`) :
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Bash(curl * http://178.105.55.15:8000/api/v1/servers/l877luxxpv1mx96sss7tc6zj/cleanup *)",
-      "Bash(curl * http://178.105.55.15:8000/api/v1/applications/mqbmlz1bcwsdwi3t9fxsllqt/execute *)"
-    ]
-  }
-}
-```
-
-**Risque** : exec arbitraire sur container prod + cleanup server-wide. À
-n'activer que pour les sessions où le besoin est explicite. Préférer
-exécution manuelle via Coolify Dashboard ou SSH.
+Disque > 90 % malgré ces actions : prévenir le fondateur (agrandir le disque
+Hetzner ou déplacer des vidéos vers R2 sont des décisions à lui).
 
 ## Liens
 
+- Scripts : `scripts/vps/surveiller-disque.sh`, `scripts/vps/menage-tmp.sh`
 - Hetzner Cloud Console : <https://console.hetzner.cloud/projects>
-- Coolify Dashboard : <http://178.105.55.15:8000>
-- Script : `scripts/ops/disk-cleanup.sh`

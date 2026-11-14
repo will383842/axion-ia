@@ -1,11 +1,14 @@
 0 3 * * *  /opt/axion-ia/run-r2-backup.sh daily   >> /var/log/r2-backup.log 2>&1
 0 4 * * 0  /opt/axion-ia/run-r2-backup.sh weekly  >> /var/log/r2-backup.log 2>&1
 0 5 1 * *  /opt/axion-ia/run-r2-backup.sh monthly >> /var/log/r2-backup.log 2>&1
-# Docker cleanup — toutes les 6h (images non utilisées + build cache > 5GB)
-0 */6 * * * /usr/bin/docker image prune -af >> /var/log/docker-image-prune.log 2>&1
-0 */6 * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
-# Alerte disque si > 80% — envoie dans syslog (visible via journalctl)
-*/30 * * * * USAGE=$(df / | awk "NR==2 {print \$5}" | tr -d "%"); [ "\$USAGE" -gt 80 ] && logger -t disk-alert "DISQUE VPS \${USAGE}% utilise — docker system prune requis" || true
+# Nettoyage Docker de l'hôte (état relevé par l'audit du 14/11/2026 ; minutes d'après l'audit, à confirmer avec `crontab -l`).
+# docker-nettoyage.sh retire les images non utilisées SAUF studio-* (retours arrière) ; il n'est pas encore versionné ici.
+# Le cache de build seul est borné : jamais de purge large d images, jamais d option « volumes » (voir AGENTS.md, « Disque du VPS »).
+15 * * * * /opt/axion-ia/docker-nettoyage.sh >> /var/log/docker-nettoyage.log 2>&1
+20 * * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
+# Alerte disque : l'ancienne ligne « disk-alert » (syslog, variable $USAGE cassée, muette depuis le 25/10) est RETIRÉE
+# par scripts/vps/installer-garde-fous-disque.sh. La surveillance (toutes les 10 min) et le ménage de /tmp (04:40)
+# vivent désormais dans /etc/cron.d/axion-disque, pas dans ce crontab.
 0 2 * * *  /opt/axion-ia/run-secrets-backup.sh        >> /var/log/secrets-backup.log 2>&1
 45 2 * * * /opt/axion-ia/run-docuseal-backup.sh daily  >> /var/log/docuseal-backup.log 2>&1
 30 3 * * *   /opt/axion-ia/run-plausible-backup.sh daily >> /var/log/plausible-backup.log 2>&1
