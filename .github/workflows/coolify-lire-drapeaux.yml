@@ -4,7 +4,7 @@ name: Coolify · lire les drapeaux (site + worker, lecture seule)
 # rien n'est redéployé.
 #
 # Affichage : CLE = true | false | absent | autre. Toute valeur autre que true/false s'affiche
-# « autre » SANS la valeur, sauf ORIGINES_SUIVANTES_DEPUIS (une date, pas un secret), en clair.
+# « autre » SANS la valeur, sauf ORIGINES_SUIVANTES_DEPUIS, en clair seulement si elle a la forme AAAA-MM-JJTHH:MM:SSZ.
 # Le corps brut de la réponse Coolify n'est jamais affiché : jq filtre sur la liste fermée.
 # Le worker se trouve comme dans coolify-drapeau.yml (secret COOLIFY_WORKER_APP_UUID).
 
@@ -47,6 +47,6 @@ jobs:
               | ([$envs[] | select(.key == $k and (.is_preview | not)) | .value] | first) as $v
               | if $v == null then "\($k) = absent"
                 elif $v == "true" or $v == "false" then "\($k) = \($v)"
-                elif $k == "ORIGINES_SUIVANTES_DEPUIS" then "\($k) = \($v)"
+                elif $k == "ORIGINES_SUIVANTES_DEPUIS" and ($v | type == "string") and ($v | test("^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$")) then "\($k) = \($v)"
                 else "\($k) = autre" end'
           done

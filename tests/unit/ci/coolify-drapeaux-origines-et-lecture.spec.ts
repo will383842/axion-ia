@@ -48,3 +48,24 @@ describe("coolify-lire-drapeaux.yml : lecture seule", () => {
       expect(lire).toContain(`"${k}"`);
   });
 });
+
+describe("ORIGINES_SUIVANTES_DEPUIS : borne haute, pas de redéploiement, lecture filtrée", () => {
+  it("refuse une date au-delà de +366 jours", () => {
+    expect(poser).toMatch(/-gt "\$\(\( \$\(date -u \+%s\) \+ 366 \* 86400 \)\)"/);
+  });
+  it("n'exécute aucun deploy pour cette clé", () => {
+    const etape = poser.slice(poser.indexOf("Redéployer (POST"));
+    expect(etape).toMatch(/CLE: \$\{\{ inputs\.cle \}\}/);
+    const garde = etape.indexOf('"$CLE" = "ORIGINES_SUIVANTES_DEPUIS"');
+    expect(garde).toBeGreaterThan(-1);
+    expect(garde).toBeLessThan(etape.indexOf("deploy()"));
+    expect(etape).toContain("pris en compte au prochain redéploiement");
+    expect(etape.slice(garde, etape.indexOf("deploy()"))).toContain("exit 0");
+  });
+  it("n'affiche la date en clair que si elle a la forme attendue", () => {
+    expect(lire).toMatch(
+      /\$k == "ORIGINES_SUIVANTES_DEPUIS" and [^\n]*test\("\^20\[0-9\]\{2\}-\[0-9\]\{2\}-\[0-9\]\{2\}T\[0-9\]\{2\}:\[0-9\]\{2\}:\[0-9\]\{2\}Z\$"\)/,
+    );
+    expect(lire).not.toMatch(/elif \$k == "ORIGINES_SUIVANTES_DEPUIS" then/);
+  });
+});

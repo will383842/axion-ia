@@ -94,7 +94,8 @@ on:
           # Origines suivantes (lot guide réseau 4) : site (chemin direct) ET worker (rattrapage). `true` seulement.
           - "SYNCHRO_CRM_V3_ORIGINES_SUIVANTES"
           # Date de départ des origines suivantes (une date ISO 8601 UTC `…Z`, pas un secret). Refusée si
-          # elle est antérieure à l'heure du run : aucun historique par ce chemin. Cible : les-deux.
+          # elle est antérieure à l'heure du run (aucun historique par ce chemin) ou au-delà de +366 jours. Jamais
+          # redéployée par ce workflow (prise en compte au prochain redéploiement). Cible : les-deux.
           - "ORIGINES_SUIVANTES_DEPUIS"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon ou une adresse d'essai"
@@ -189,6 +190,9 @@ jobs:
             if [ "$depuis" -lt "$(date -u +%s)" ]; then
               echo "::error::Refus : $VALEUR est antérieure à l'heure du run (aucun historique par ce chemin)."; exit 1
             fi
+            if [ "$depuis" -gt "$(( $(date -u +%s) + 366 * 86400 ))" ]; then
+              echo "::error::Refus : $VALEUR dépasse l'heure du run de plus de 366 jours (faute de frappe probable)."; exit 1
+            fi
           elif [ "$CLE" = "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT" ]; then
             [[ "$VALEUR" =~ ^-?[0-9]+$ ]] || { echo "::error::Identifiant de salon Telegram attendu"; exit 1; }
           elif [ "$CLE" = "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI" ]; then
@@ -261,8 +265,13 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
           CIBLE: ${{ inputs.cible }}
+          CLE: ${{ inputs.cle }}
         run: |
           set -euo pipefail
+          if [ "$CLE" = "ORIGINES_SUIVANTES_DEPUIS" ]; then
+            echo "Redéploiement ignoré pour $CLE : pris en compte au prochain redéploiement."
+            exit 0
+          fi
           deploy() {
             local uuid="$1" nom="$2" r
             r=$(curl -fsSL -X POST -m 30 \

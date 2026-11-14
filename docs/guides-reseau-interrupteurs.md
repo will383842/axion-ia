@@ -228,7 +228,7 @@ inconnue. Plafond du corps : 4 Ko.
   `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
 - **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO 8601 UTC, `AAAA-MM-JJTHH:MM:SSZ`) se pose par le workflow
   `coolify-drapeau.yml` (clé de la liste fermée), sur **les-deux** (site et worker, cible imposée) : plus de
-  `docker exec -e`. Le workflow **refuse une date antérieure à l'heure du run** : aucun historique par ce chemin.
+  `docker exec -e`. Le workflow **refuse une date antérieure à l'heure du run** : aucun historique par ce chemin. Il refuse aussi une date au-delà de +366 jours et **ne redéploie jamais** pour cette clé (prise en compte au prochain redéploiement) ; la lecture ne l'affiche en clair que si elle a cette forme, sinon « autre ».
   La date n'est pas un secret. Le site la lit pour le chemin direct, le worker pour le rattrapage : sans elle, le site
   n'envoie que les origines écrites après le clic.
 - **Lire l'état des drapeaux** : `coolify-lire-drapeaux.yml` (`workflow_dispatch`, **lecture seule** : GET uniquement,
