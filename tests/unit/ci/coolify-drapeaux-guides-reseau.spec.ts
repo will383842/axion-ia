@@ -55,7 +55,12 @@ function lancer(code: string, env: Record<string, string>, json = "[]") {
   const evenement = path.join(mkdtempSync(path.join(tmpdir(), "faux-event-")), "event.json");
   writeFileSync(
     evenement,
-    JSON.stringify({ inputs: VALEUR === undefined ? {} : { valeur: VALEUR } }),
+    JSON.stringify({
+      inputs: {
+        ...(VALEUR === undefined ? {} : { valeur: VALEUR }),
+        ...(reste.CLE === undefined ? {} : { cle: reste.CLE }),
+      },
+    }),
   );
   const r = spawnSync("bash", ["-c", code], {
     env: {
@@ -226,8 +231,8 @@ describe("la valeur ne passe jamais par un env: (journal public)", () => {
     .split(/^\s+- name: /m)
     .slice(1);
 
-  it("aucune ligne du workflow n'interpole ${{ inputs.valeur }}", () => {
-    const fautives = lignes.filter((l) => /\$\{\{\s*inputs\.valeur\s*\}\}/.test(l));
+  it("aucune expression ${{ … inputs.valeur … }} (y compris github.event.inputs.valeur)", () => {
+    const fautives = lignes.filter((l) => /\$\{\{[^}]*inputs\.valeur[^}]*\}\}/.test(l));
     expect(fautives).toEqual([]);
   });
   it("l'étape de masquage précède toute étape qui lit la valeur", () => {
@@ -241,13 +246,49 @@ describe("la valeur ne passe jamais par un env: (journal public)", () => {
     expect(etapes[masque]).toMatch(/add-mask::\$morceau/);
   });
   it("le masque est posé sur la valeur entière et chaque morceau", () => {
-    const r = lancer(script(POSER, "Masquer la valeur"), { VALEUR: "a@x.com,b@x.com" });
+    const r = lancer(script(POSER, "Masquer la valeur"), {
+      CLE: "GUIDES_RESEAU_ESSAI_ADRESSES",
+      VALEUR: "a@x.com,b@x.com",
+    });
     const masques = r.sortie.split("\n").filter((l) => l.startsWith("::add-mask::"));
     expect(masques).toEqual([
       "::add-mask::a@x.com,b@x.com",
       "::add-mask::a@x.com",
       "::add-mask::b@x.com",
     ]);
+  });
+  it("la deuxième clé d'adresse est masquée aussi", () => {
+    const r = lancer(script(POSER, "Masquer la valeur"), {
+      CLE: "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI",
+      VALEUR: "a@x.com",
+    });
+    expect(r.sortie).toContain("::add-mask::a@x.com");
+  });
+  it.each(["GUIDES_RESEAU_CATALOGUE_ENABLED", "GUIDES_RESEAU_LIVRAISON_ENABLED"])(
+    "rien n'est masqué pour %s (« true » reste lisible)",
+    (cle) => {
+      const r = lancer(script(POSER, "Masquer la valeur"), { CLE: cle, VALEUR: "true" });
+      expect(r.sortie).not.toContain("::add-mask::");
+    },
+  );
+  it("sans clé valeur dans l'événement, la valeur lue est « true » ; vide explicite reste vide", () => {
+    for (const nom of ["Masquer la valeur", "Valider la valeur"]) {
+      expect(script(POSER, nom)).not.toMatch(/inputs\.valeur \/\/ ""/);
+    }
+    const lire = (inputs: object) => {
+      const f = path.join(mkdtempSync(path.join(tmpdir(), "faux-event-")), "e.json");
+      writeFileSync(f, JSON.stringify({ inputs }));
+      const e = readFileSync(POSER, "utf8").match(/jq -r '\.inputs\.valeur \/\/ "[^"]*"'/g) ?? [];
+      expect(e.length).toBe(3);
+      return e.map((j) =>
+        spawnSync("bash", ["-c", `${j} "$GITHUB_EVENT_PATH"`], {
+          env: { ...process.env, GITHUB_EVENT_PATH: f },
+          encoding: "utf8",
+        }).stdout.trim(),
+      );
+    };
+    expect(lire({ cle: "X" })).toEqual(["true", "true", "true"]);
+    expect(lire({ valeur: "" })).toEqual(["", "", ""]);
   });
   it("une valeur null lue dans Coolify s'affiche 0 adresse(s)", () => {
     const json = JSON.stringify([

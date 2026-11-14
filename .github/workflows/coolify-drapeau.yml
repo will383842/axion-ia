@@ -148,11 +148,17 @@ jobs:
         # dans l'en-tête « Run » du journal, public. La valeur est lue dans l'événement, jamais interpolée.
         run: |
           set -euo pipefail
-          VAL=$(jq -r '.inputs.valeur // ""' "$GITHUB_EVENT_PATH")
-          if [ -n "$VAL" ] && [[ "$VAL" != *$'\n'* ]]; then echo "::add-mask::$VAL"; fi
-          while IFS= read -r morceau; do
-            if [ -n "$morceau" ]; then echo "::add-mask::$morceau"; fi
-          done < <(printf '%s\n' "$VAL" | tr ',' '\n')
+          VAL=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
+          CLE_LUE=$(jq -r '.inputs.cle // ""' "$GITHUB_EVENT_PATH")
+          # Seules les clés qui portent une adresse sont masquées : masquer « true » partout noircirait le journal.
+          case "$CLE_LUE" in
+            GUIDES_RESEAU_ESSAI_ADRESSES|QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI)
+              if [ -n "$VAL" ] && [[ "$VAL" != *$'\n'* ]]; then echo "::add-mask::$VAL"; fi
+              while IFS= read -r morceau; do
+                if [ -n "$morceau" ]; then echo "::add-mask::$morceau"; fi
+              done < <(printf '%s\n' "$VAL" | tr ',' '\n')
+              ;;
+          esac
 
       - name: Valider les secrets
         env:
@@ -178,7 +184,7 @@ jobs:
         run: |
           set -euo pipefail
           export LC_ALL=C
-          VALEUR=$(jq -r '.inputs.valeur // ""' "$GITHUB_EVENT_PATH")
+          VALEUR=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
           # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
@@ -265,7 +271,7 @@ jobs:
           CIBLE: ${{ inputs.cible }}
         run: |
           set -euo pipefail
-          VALEUR=$(jq -r '.inputs.valeur // ""' "$GITHUB_EVENT_PATH")
+          VALEUR=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
           payload=$(jq -nc --arg key "$CLE" --arg value "$VALEUR" '{
             key: $key, value: $value,
             is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
