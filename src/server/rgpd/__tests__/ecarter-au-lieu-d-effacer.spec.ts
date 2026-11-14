@@ -244,7 +244,7 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(changes["rienSupprime"]).toBe(true);
   });
 
-  it("🔔 alerte dans la cloche seulement : niveau info, dédoublonnée par personne, jamais Telegram", async () => {
+  it("🔔 alerte « à traiter » : niveau critique, dédoublonnée par personne, jamais Telegram", async () => {
     await ecarterPourDemandeEffacement({
       email: ADRESSE,
       origine: "console-lettre",
@@ -253,7 +253,7 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(telegram).not.toHaveBeenCalled();
     const a = alerte.mock.calls[0]?.[0] as Record<string, unknown>;
     expect(a["code"]).toBe(CODE_ALERTE_EFFACEMENT);
-    expect(a["niveau"]).toBe("info");
+    expect(a["niveau"]).toBe("critique");
     expect(a["cibleId"]).toBe(cibleIdAlerteDepuisEmpreinte(hashEmailForLookup(ADRESSE)!));
     // L'adresse est dans l'alerte : sans elle, la demande ne peut pas être traitée à la main.
     expect(String(a["message"])).toContain(ADRESSE);
