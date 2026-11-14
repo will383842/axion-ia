@@ -47,6 +47,6 @@ jobs:
               | ([$envs[] | select(.key == $k and (.is_preview | not)) | .value] | first) as $v
               | if $v == null then "\($k) = absent"
                 elif $v == "true" or $v == "false" then "\($k) = \($v)"
-                elif $k == "ORIGINES_SUIVANTES_DEPUIS" then "\($k) = \($v)"
+                elif $k == "ORIGINES_SUIVANTES_DEPUIS" and ($v | test("\\A20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\\z")) then "\($k) = \($v)"
                 else "\($k) = autre" end'
           done

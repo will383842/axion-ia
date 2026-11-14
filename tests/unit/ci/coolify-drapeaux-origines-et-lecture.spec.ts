@@ -15,6 +15,7 @@ describe("ORIGINES_SUIVANTES_DEPUIS posable par le workflow", () => {
     expect(poser).toMatch(/CLE" = "ORIGINES_SUIVANTES_DEPUIS" \] && \[ "\$CIBLE" != "les-deux"/);
     expect(poser).toMatch(/ORIGINES_SUIVANTES_DEPUIS" \]; then\s+\[\[ "\$VALEUR" =~ [^\n]*Z\$/);
     expect(poser).toMatch(/-lt "\$\(date -u \+%s\)"/);
+    expect(poser).toMatch(/-gt "\$\(date -u -d '\+1 year' \+%s\)"/);
   });
   it("est documentée avec les deux workflows, sans docker exec", () => {
     expect(doc).toContain("coolify-drapeau.yml");
@@ -35,6 +36,9 @@ describe("coolify-lire-drapeaux.yml : lecture seule", () => {
     expect(lire).toContain("jq -r --argjson cles");
     expect(lire).not.toMatch(/echo "\$reponse"|cat \/tmp|head -c/);
     expect(lire).not.toMatch(/\| jq -r '?\.?\[?\]?'?\s*$/m);
+  });
+  it("n'affiche la date que si elle a la forme attendue", () => {
+    expect(lire).toMatch(/ORIGINES_SUIVANTES_DEPUIS" and \(\$v \| test\(/);
   });
   it("liste fermée des drapeaux", () => {
     for (const k of [
