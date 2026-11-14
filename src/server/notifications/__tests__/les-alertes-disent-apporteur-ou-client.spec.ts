@@ -9,7 +9,7 @@
 // doit se formater sans erreur — c'est le premier cas.
 
 import { describe, it, expect } from "vitest";
-import { formatNotification, formatNotificationWhatsApp } from "../format";
+import { formatNotification } from "../format";
 import { getRouting, telegramGroupFor } from "../routing";
 
 function reservation(eventName: string | undefined) {
@@ -83,18 +83,13 @@ describe("COMMERCIAL_APPLICATION_RECEIVED — nouveau candidat apporteur", () =>
     // MarkdownV2 échappe `#`, `-` et `/` n'en fait pas partie.
     expect(text).toContain("/contacts/commercial/sub\\_42\\#invitation");
   });
-
-  it("WhatsApp dit « apporteur » lui aussi — sans aucune donnée", () => {
-    const { text } = formatNotificationWhatsApp("COMMERCIAL_APPLICATION_RECEIVED", "info");
-    expect(text).toContain("Nouveau candidat apporteur");
-    expect(text).not.toContain("lea@example.com");
-  });
 });
 
 describe("B6 — mêmes canaux, même routage", () => {
   it("les deux catégories gardent exactement leurs canaux et leur salon", () => {
     expect(getRouting("CALENDLY_INVITEE_CREATED").channels).toEqual(["telegram"]);
-    expect(getRouting("COMMERCIAL_APPLICATION_RECEIVED").channels).toEqual(["telegram"]);
+    // Candidature apporteur muette depuis le 14/11/2026 (`CATEGORIES_SANS_ALERTE`).
+    expect(getRouting("COMMERCIAL_APPLICATION_RECEIVED").channels).toEqual([]);
     expect(telegramGroupFor("COMMERCIAL_APPLICATION_RECEIVED")).toBe("commercial-memo");
   });
 });

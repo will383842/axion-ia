@@ -8,7 +8,6 @@ import {
   getRouting,
   resetTelegramGroupWarnings,
   resolveTelegramTarget,
-  shouldNotifyWhatsApp,
   telegramGroupFor,
 } from "../routing";
 
@@ -26,10 +25,9 @@ describe("routage des incidents de données", () => {
     process.env = { ...saved };
   });
 
-  it("la catégorie vit dans le salon « incidents », Telegram seul, jamais WhatsApp", () => {
+  it("la catégorie vit dans le salon « incidents », Telegram seul", () => {
     expect(telegramGroupFor("DATA_INCIDENT_ALERT")).toBe("incidents");
     expect(getRouting("DATA_INCIDENT_ALERT").channels).toEqual(["telegram"]);
-    expect(shouldNotifyWhatsApp("DATA_INCIDENT_ALERT")).toBe(false);
   });
 
   it("salon dédié configuré → il est utilisé, avec le bot historique", () => {

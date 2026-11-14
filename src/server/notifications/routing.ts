@@ -151,8 +151,33 @@ const ROUTING: Record<NotificationCategory, RoutingEntry> = {
   DATA_INCIDENT_ALERT: { channels: ["telegram"], severity: "warn" },
 };
 
+/**
+ * Catégories MUETTES (décision du fondateur, 14/11/2026) : candidatures, recrutement,
+ * formateurs et apporteurs n'envoient plus aucune alerte. La table `ROUTING` reste
+ * intacte : pour rallumer une catégorie, retirer sa ligne de cette liste.
+ *
+ * Exceptions volontaires, qui gardent leur route : `TRAINER_CHANGEMENT_DEMANDE` (garde
+ * anti-fraude au changement de coordonnées) et `CANDIDAT_SELF_ERASED` (effacement demandé
+ * par la personne : le fondateur est alerté et décide).
+ */
+export const CATEGORIES_SANS_ALERTE: ReadonlySet<NotificationCategory> =
+  new Set<NotificationCategory>([
+    "JOB_APPLICATION_RECEIVED",
+    "RECRUITMENT_RECEIVED",
+    "JOB_OFFERS_STALE",
+    "JOB_APPLICATIONS_STALE",
+    "CANDIDAT_REPLIED",
+    "TRAINER_DOSSIER_RECU",
+    "TRAINER_PIECE_DEPOSEE",
+    "FORMATEUR_REPLIED",
+    "VIDEO_EDITOR_APPLICATION_RECEIVED",
+    "COMMERCIAL_APPLICATION_RECEIVED",
+    "APPORTEUR_REPLIED",
+  ]);
+
 export function getRouting(category: NotificationCategory): RoutingEntry {
-  return ROUTING[category];
+  const entry = ROUTING[category];
+  return CATEGORIES_SANS_ALERTE.has(category) ? { ...entry, channels: [] } : entry;
 }
 
 /** Décide si on dispatch sync ou async. */
@@ -252,7 +277,7 @@ const CATEGORY_GROUP: Record<NotificationCategory, TelegramGroup> = {
   // call-site (`videoEditorNotificationCategory`), pas ici.
   VIDEO_EDITOR_APPLICATION_RECEIVED: "monteur-video",
 
-  // 🧲 Commercial Mémo — les candidatures commerciales du tunnel sans CV
+  // 🧲 Commercial Mémo (alertes coupées le 14/11, décision du fondateur) — les candidatures commerciales du tunnel sans CV
   // `/devenir-commercial-ia/candidature` (annonce Mémorial de l'Isère) SEULEMENT,
   // dans leur propre salon (même logique que le monteur vidéo : une campagne de
   // recrutement = un fil, jamais mélangée aux autres candidatures).
@@ -373,6 +398,40 @@ export function groupeDeRepliClient(category: CategorieClient): Exclude<Telegram
 }
 
 /**
+ * Catégories dont le message COMPLET (nom, coordonnées, message intégral) part au salon
+ * DÉDIÉ de leur groupe — décision du fondateur, 14/11/2026. Jamais dans un salon de repli :
+ * sans salon dédié, c'est le gabarit allégé.
+ *
+ * Non concernées : `RGPD_REQUEST_SUBMITTED`, `QUESTIONNAIRE_PREAUDIT_*`, `GUIDE_REQUESTED`,
+ * `TOUR_DEMANDE_RECUE`.
+ */
+export type CategorieDetail =
+  | "CALENDLY_INVITEE_CREATED"
+  | "CALENDLY_INVITEE_CANCELED"
+  | "CALENDLY_INVITEE_RESCHEDULED"
+  | "PRESS_REQUEST_SUBMITTED"
+  | "INVESTOR_INQUIRY_RECEIVED"
+  | "REVIEW_SUBMITTED"
+  | "PODCAST_REQUEST_SUBMITTED"
+  | "SPEAKER_INVITATION_RECEIVED";
+
+const CATEGORIES_DETAIL: ReadonlySet<NotificationCategory> = new Set<CategorieDetail>([
+  "CALENDLY_INVITEE_CREATED",
+  "CALENDLY_INVITEE_CANCELED",
+  "CALENDLY_INVITEE_RESCHEDULED",
+  "PRESS_REQUEST_SUBMITTED",
+  "INVESTOR_INQUIRY_RECEIVED",
+  "REVIEW_SUBMITTED",
+  "PODCAST_REQUEST_SUBMITTED",
+  "SPEAKER_INVITATION_RECEIVED",
+]);
+
+/** Vrai si la catégorie envoie son message complet au salon dédié de son groupe. */
+export function aDetailComplet(category: NotificationCategory): category is CategorieDetail {
+  return CATEGORIES_DETAIL.has(category);
+}
+
+/**
  * Toutes les catégories, à l'exécution.
  *
  * DÉRIVÉE de `CATEGORY_GROUP`, jamais recopiée à la main : le typage rend cette
@@ -383,54 +442,14 @@ export function groupeDeRepliClient(category: CategorieClient): Exclude<Telegram
  */
 export const ALL_NOTIFICATION_CATEGORIES = Object.keys(CATEGORY_GROUP) as NotificationCategory[];
 
-// ── Canal WhatsApp (CallMeBot) — périmètre resserré le 2026-08-09 ───────────
+// ── Canal WhatsApp (CallMeBot) — COUPÉ le 14/11/2026 (décision du fondateur) ──
 //
-// ⚠️ CallMeBot n'écrit que dans UNE conversation (une clé = un destinataire, pas
-// de groupes). La séparation par thème ne peut donc PAS passer par le
-// destinataire comme sur Telegram : elle passe par l'EN-TÊTE du message, posé en
-// première ligne par `format.ts` (c'est ce que l'écran verrouillé affiche).
-//
-// Conséquence directe : ce fil unique ne se subdivise pas, donc tout ce qu'on y
-// met dilue le reste. La liste ci-dessous est celle que Will a arrêtée le
-// 2026-08-09 — « ce à quoi je dois réagir dans l'heure », et rien d'autre.
-//
-// ⚠️ Le canal reste no-op tant que WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE
-// ne sont pas définis (cf. `channels/whatsapp.ts`) — cette liste ne fait qu'AUTORISER
-// le doublon, elle ne déclenche rien seule.
-const WHATSAPP_LEAD_CATEGORIES: ReadonlySet<NotificationCategory> = new Set<NotificationCategory>([
-  // 🔥 Décision Will 15/10 : WhatsApp devient la SONNETTE des CLIENTS, et rien
-  // d'autre. Exactement les catégories du salon « Clients » — le texte ne porte
-  // aucune donnée (`formatNotificationWhatsApp`, décision D6-5-C1 maintenue) et
-  // renvoie au salon Telegram, où se lit tout le détail.
-  "CONTACT_FORM_SUBMITTED",
-  "AUDIT_REQUEST_SUBMITTED",
-  "INTERVENTION_REQUEST_SUBMITTED",
-  "IMPLEMENTATION_REQUEST_SUBMITTED",
-  "QUOTE_REQUEST_RECEIVED",
-  "CUSTOMER_SUPPORT_REQUEST",
-  "CHATBOT_LEAD_CAPTURED",
-  "CHATBOT_ESCALATION",
-  "CLIENT_CALL_BOOKED",
-  "CLIENT_CALL_CANCELED",
-  "CLIENT_CALL_RESCHEDULED",
+// Le canal, sa liste de catégories et ses variables d'environnement sont retirés.
+// Seule reste cette fonction, dépréciée, pour ne pas casser un import ancien.
 
-  // ── RETIRÉS de WhatsApp le 15/10 (décision Will) — ils restent sur Telegram ──
-  // Ne pas les remettre sans le lui redemander : `__tests__/whatsapp.test.ts`
-  // verrouille que ce fil ne sonne QUE pour un client.
-  //
-  //  · `CALENDLY_INVITEE_*` — désormais les rendez-vous des candidats apporteurs
-  //    et des formateurs seulement (ceux des clients sont `CLIENT_CALL_*`) ;
-  //  · `PRESS_REQUEST_SUBMITTED`, `INVESTOR_INQUIRY_RECEIVED`,
-  //    `SPEAKER_INVITATION_RECEIVED`, `PODCAST_REQUEST_SUBMITTED` ;
-  //  · `REVIEW_SUBMITTED` ;
-  //  · `VIDEO_EDITOR_APPLICATION_RECEIVED`, `COMMERCIAL_APPLICATION_RECEIVED`,
-  //    `JOB_APPLICATION_RECEIVED`, `RECRUITMENT_RECEIVED` ;
-  //  · tout le groupe Système (ops, newsletter, Stripe…) — jamais ajouté.
-]);
-
-/** Vrai si la catégorie doit AUSSI notifier WhatsApp (leads humains). */
-export function shouldNotifyWhatsApp(category: NotificationCategory): boolean {
-  return WHATSAPP_LEAD_CATEGORIES.has(category);
+/** @deprecated WhatsApp est coupé : renvoie toujours `false`. */
+export function shouldNotifyWhatsApp(_category: NotificationCategory): boolean {
+  return false;
 }
 
 // ── Résolution (bot, salon) ─────────────────────────────────────────────────
@@ -489,6 +508,7 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   interventions: ["TELEGRAM_CHAT_ID_MESSAGES", "TELEGRAM_CHAT_ID"],
   // L'avis tombait dans Système avant le 2026-08-09 — on y retombe.
   avis: ["TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
+  // Dernier repli : le salon général « 🔧 Axion-IA — Technique ».
   messages: ["TELEGRAM_CHAT_ID"],
   // Tant que le salon 🔗 dédié n'existe pas, ces alertes techniques retombent
   // dans 🔔 Système — là où elles seraient allées si on n'avait pas créé de
@@ -505,6 +525,7 @@ const CHAT_ID_FALLBACKS: Record<TelegramGroup, readonly string[]> = {
   ],
   // Tour France IA (2026-10-29) : même repli que le questionnaire (Clients, Système, général).
   tour: ["TELEGRAM_CHAT_ID_CLIENTS", "TELEGRAM_CHAT_ID_SYSTEM", "TELEGRAM_CHAT_ID"],
+  // Le salon général (`TELEGRAM_CHAT_ID`) se nomme « 🔧 Axion-IA — Technique » dans Telegram.
   system: ["TELEGRAM_CHAT_ID"],
 };
 
@@ -575,6 +596,26 @@ export function resetTelegramGroupWarnings(): void {
 export function resolveSalonClients(): TelegramTarget | undefined {
   const t = resolveTelegramTarget("clients");
   return t?.dedicated ? t : undefined;
+}
+
+/** Le salon DÉDIÉ d'un groupe, ou `undefined` tant qu'il n'est pas créé (jamais de repli). */
+export function resolveSalonDedie(group: TelegramGroup): TelegramTarget | undefined {
+  const t = resolveTelegramTarget(group);
+  return t?.dedicated ? t : undefined;
+}
+
+/**
+ * La route de REPLI d'un groupe, salon dédié exclu : celle que le message allégé reprend quand
+ * le détail complet n'a pas pu partir au salon dédié (ou quand il n'existe pas).
+ */
+export function resolveTelegramRepli(group: TelegramGroup): TelegramTarget | undefined {
+  const bot = envValue("TELEGRAM_BOT_TOKEN");
+  if (!bot) return undefined;
+  for (const name of CHAT_ID_FALLBACKS[group]) {
+    const chatId = envValue(name);
+    if (chatId) return { botToken: bot, chatId, dedicated: false };
+  }
+  return undefined;
 }
 
 /**

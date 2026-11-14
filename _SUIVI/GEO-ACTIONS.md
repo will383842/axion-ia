@@ -1,6 +1,6 @@
 # Suivi des 18 actions GEO hors-code
 
-> **Ce fichier est la source de vérité du rappel mensuel WhatsApp.**
+> **Ce fichier est la source de vérité du rappel mensuel.** (WhatsApp retiré le 14/11/2026 : le bilan s'affiche dans l'onglet Actions de GitHub.)
 > Cochez une case, le rappel cesse d'en parler. Quand tout est coché **et**
 > vérifié, le rappel s'arrête de lui-même.
 
@@ -12,7 +12,9 @@ Le pas-à-pas détaillé (où aller, quoi écrire au caractère près) :
 
 ---
 
-## ⚙️ Une seule fois — activer le rappel WhatsApp (2 min)
+## ⚙️ ~~Une seule fois — activer le rappel WhatsApp (2 min)~~ — RETIRÉ le 14/11/2026
+
+> **Retiré le 14/11/2026** : WhatsApp (CallMeBot) est coupé, les variables ci-dessous ne servent plus et n'ont plus à être posées. Texte conservé pour mémoire.
 
 Le workflow `rappel-geo-mensuel.yml` tourne le **1er de chaque mois**. Il vérifie
 tout seul ce qui est vérifiable et n'envoie que ce qui reste. Mais **les secrets

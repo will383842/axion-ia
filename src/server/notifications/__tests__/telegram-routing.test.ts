@@ -5,7 +5,6 @@ import {
   estCategorieClient,
   getRouting,
   groupeDeRepliClient,
-  shouldNotifyWhatsApp,
   telegramGroupFor,
   resolveTelegramTarget,
   resolveSalonClients,
@@ -162,23 +161,18 @@ describe("telegramGroupFor", () => {
 // pour les deux catégories dont le TITRE a changé : si l'on y touchait en
 // croyant « finir le travail », il rougirait.
 describe("B6 — titres changés, canaux identiques", () => {
-  it("réservation Calendly et candidat apporteur : mêmes canaux, même salon, même WhatsApp", () => {
+  it("réservation Calendly et candidat apporteur : salon inchangé ; la candidature est muette depuis le 14/11", () => {
     expect(getRouting("CALENDLY_INVITEE_CREATED")).toMatchObject({
       channels: ["telegram"],
       severity: "info",
     });
+    // Coupée le 14/11/2026 (décision du fondateur) : `CATEGORIES_SANS_ALERTE`.
     expect(getRouting("COMMERCIAL_APPLICATION_RECEIVED")).toMatchObject({
-      channels: ["telegram"],
+      channels: [],
       severity: "info",
     });
     expect(telegramGroupFor("CALENDLY_INVITEE_CREATED")).toBe("calendly");
     expect(telegramGroupFor("COMMERCIAL_APPLICATION_RECEIVED")).toBe("commercial-memo");
-    // Décision Will 15/10 : WhatsApp ne sonne plus que pour les clients. La
-    // réservation d'un client est `CLIENT_CALL_BOOKED` ; `CALENDLY_INVITEE_*`
-    // ne porte plus que les échanges apporteur et formateur.
-    expect(shouldNotifyWhatsApp("CALENDLY_INVITEE_CREATED")).toBe(false);
-    expect(shouldNotifyWhatsApp("COMMERCIAL_APPLICATION_RECEIVED")).toBe(false);
-    expect(shouldNotifyWhatsApp("CLIENT_CALL_BOOKED")).toBe(true);
   });
 });
 
