@@ -250,6 +250,25 @@ Procédure de purge automatisée : `src/server/queue/workers/retention-purge-wor
 | Destinataires, transferts, durées, droits | Comme le traitement D |
 | Mise en service | Codée éteinte ; utilisable seulement quand la notice qui l'annonce est publiée (`DICTEE_ANNONCEE`, dérivé de l'interrupteur de la notice) |
 
+## 8 quater. Origine des demandes de guide (ajout du 14/11/2026)
+
+> **À relire par le dirigeant avant fusion** (dépôt public). Aucune donnée réelle : ni compte, ni lien, ni empreinte, ni volume. Responsable : AXION IA SAS (§1).
+
+### Traitement F — Origine des demandes de guide
+
+| Rubrique | Contenu |
+| --- | --- |
+| Finalité | Savoir d'où viennent les demandes de guide : quel mot, quel réseau, quelle publication |
+| Base légale | La demande de la personne, puis l'intérêt légitime à mesurer l'origine des demandes (art. 6.1.f) |
+| Personnes | Personnes qui demandent un guide depuis un réseau social |
+| Données | Mot, réseau, guide demandé, date, publication d'origine (référence et lien), canal, compte du réseau, famille et détail, version du message reçu, campagne ; empreinte non réversible de la référence du commentaire, quand elle est fournie |
+| Sources | Le réseau social et le prestataire de messagerie des réseaux |
+| Destinataires | Axion uniquement (site et CRM internes) ; aucun tiers |
+| Hébergement | Hetzner Online GmbH, Union européenne |
+| Durée | Celle de la fiche de contact. Référence de commentaire masquée à 12 mois côté CRM ; rien n'est supprimé |
+| Droits | Opposition par le lien « stop » ou par écrit à `contact@axion-ia.com` |
+| Mesures | Empreintes non réversibles ; cloisonnement par espace côté CRM |
+
 ## 9. Mesures techniques et organisationnelles de sécurité
 
 ### Authentification & accès
