@@ -223,15 +223,15 @@ async function doublerParEmail(
     const jobId = dedupKey
       ? `alerte-client-${createHash("sha256").update(`${event.category}|${dedupKey}`).digest("hex").slice(0, 40)}`
       : undefined;
-    const enfileur = await chargerEnfileurEmail();
-    if (!enfileur) {
+    const enqueueEmail = await chargerEnfileurEmail();
+    if (!enqueueEmail) {
       // Aucun point d'entrée n'a posé de chargeur (script isolé) : l'e-mail ne partira pas.
       console.error("[notif:doublon] aucun enfileur d'e-mail posé : e-mail NON enfilé");
       await signalerIncident("Doublon e-mail d'une demande de client : aucun enfileur posé");
       if (dedupKey) await libererDedup(categorie, dedupKey);
       return "failed";
     }
-    const res = await enfileur(
+    const res = await enqueueEmail(
       "alerte-demande-client",
       destinataireAlertesClients(),
       "fr",
