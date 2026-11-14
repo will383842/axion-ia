@@ -107,6 +107,10 @@ const O = "o".repeat(40);
 const MAINTENANT = new Date("2026-11-14T10:00:00.000Z");
 
 beforeEach(() => {
+  // Horloge figée (Date seule : jamais de faux setTimeout, les promesses du rendu en dépendent). Le gabarit
+  // e-mail imprime `new Date().getFullYear()` (« © 2026 ») : sans cela la CI rougirait au 1er janvier 2027.
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(MAINTENANT);
   bd.envois.length = 0;
   bd.lecturesCibles = 0;
   for (const k of Object.keys(bd.reponses)) delete bd.reponses[k];
@@ -115,6 +119,7 @@ beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => undefined);
 });
 afterEach(() => {
+  vi.useRealTimers();
   vi.unstubAllEnvs();
   vi.restoreAllMocks();
 });
