@@ -21,12 +21,12 @@
 // avec le gabarit allégé — jamais les coordonnées dans un autre salon.
 
 import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
-import { LIBELLE_CANAL, type CanalRendezVous } from "@/server/calendly/canal";
 import { typeEffectif } from "@/server/calendly/type-effectif";
 import { estTypeRendezVous, LIBELLES_TYPE_RENDEZ_VOUS } from "@/server/calendly/type-rendez-vous";
 import { enteteClient, formatParisDateTime, humanDateOrText, titreReservation } from "./format";
 import { lienConsole } from "./personne";
 import type { CategorieClient } from "./routing";
+import { bloc, compacter, format, ligne, utm } from "./texte-brut";
 import type { NotificationEvent } from "./types";
 
 /**
@@ -46,6 +46,15 @@ type PayloadDe<C extends CategorieClient> = NotificationEvent extends infer E
 export type EvenementClient = {
   [C in CategorieClient]: { category: C; payload: PayloadDe<C> };
 }[CategorieClient];
+
+/**
+ * Les trois rendez-vous Calendly qui ne sont PAS ceux d'un client (apporteur, formateur…).
+ * Ils partagent le membre d'union de `CLIENT_CALL_*` : même payload, même corps de message.
+ */
+export type EvenementCalendlyNonClient =
+  | { category: "CALENDLY_INVITEE_CREATED"; payload: PayloadDe<"CLIENT_CALL_BOOKED"> }
+  | { category: "CALENDLY_INVITEE_CANCELED"; payload: PayloadDe<"CLIENT_CALL_CANCELED"> }
+  | { category: "CALENDLY_INVITEE_RESCHEDULED"; payload: PayloadDe<"CLIENT_CALL_RESCHEDULED"> };
 
 /** Libellés des types que le formulaire unifié ne connaît pas. */
 const TYPES_HORS_FORMULAIRE: Readonly<Record<string, string>> = {
@@ -87,7 +96,7 @@ function enClair(
 }
 
 /** Le type de RDV lisible : le nom Calendly, sinon le type classé. */
-function typeRdv(p: { eventName?: string; typeRendezVous?: string }): string | undefined {
+export function typeRdv(p: { eventName?: string; typeRendezVous?: string }): string | undefined {
   const nom = p.eventName?.trim();
   if (nom) return nom;
   return estTypeRendezVous(p.typeRendezVous)
@@ -98,7 +107,7 @@ function typeRdv(p: { eventName?: string; typeRendezVous?: string }): string | u
 /**
  * Le TYPE de demande, en clair — « Audit IA », « Formation IA »,
  * « Diagnostic IA réservé ». Une nature de demande, JAMAIS une donnée de la
- * personne : c'est aussi ce que reçoit la sonnette WhatsApp.
+ * personne : c'est le libellé sans aucune donnée personnelle.
  */
 export function libelleTypeDemande(event: EvenementClient): string {
   switch (event.category) {
@@ -128,7 +137,7 @@ export function libelleTypeDemande(event: EvenementClient): string {
 }
 
 /**
- * Le TYPE de demande pour la sonnette WhatsApp (CallMeBot, `D6-5-C1`).
+ * Le TYPE de demande, sans aucune donnée de la personne (ex-sonnette WhatsApp, coupée le 14/11/2026).
  *
  * 🔴 Relecture PR 1553 : `libelleTypeDemande` recopiait le `besoin` d'un
  * échange projet dans le titre — un texte LIBRE écrit par le client, qui peut
@@ -136,7 +145,7 @@ export function libelleTypeDemande(event: EvenementClient): string {
  * des libellés de catalogue (type classé, type de formulaire, catégorie). Le
  * nom d'un type Calendly ne sert qu'à CLASSER, jamais à être recopié.
  */
-export function libelleTypeDemandeWhatsApp(event: EvenementClient): string {
+export function libelleTypeDemandeSansDonnee(event: EvenementClient): string {
   switch (event.category) {
     case "CLIENT_CALL_BOOKED": {
       const p = event.payload;
@@ -164,44 +173,14 @@ export function libelleTypeDemandeWhatsApp(event: EvenementClient): string {
   }
 }
 
-/** « Libellé : valeur », ou rien quand la valeur manque. */
-function ligne(libelle: string, valeur: string | number | null | undefined): string | null {
-  if (valeur === null || valeur === undefined) return null;
-  const texte = String(valeur).trim();
-  // Les marqueurs « (non communiqué) » des émetteurs n'apprennent rien.
-  if (texte === "" || texte === "—" || /^\(.*\)$/.test(texte)) return null;
-  return `${libelle} : ${texte}`;
-}
-
-/** Un bloc de texte libre, en entier, sous son titre. */
-function bloc(titre: string, texte: string | undefined): string[] {
-  const t = texte?.trim();
-  return t ? ["", `${titre} :`, t] : [];
-}
-
-function utm(p: {
-  utmSource?: string;
-  utmMedium?: string;
-  utmCampaign?: string;
-  utmContent?: string;
-}): string | undefined {
-  const parties = [
-    p.utmSource ? `source ${p.utmSource}` : null,
-    p.utmMedium ? `support ${p.utmMedium}` : null,
-    p.utmCampaign ? `campagne ${p.utmCampaign}` : null,
-    p.utmContent ? `contenu ${p.utmContent}` : null,
-  ].filter((v): v is string => v !== null);
-  return parties.length > 0 ? parties.join(" · ") : undefined;
-}
-
-function format(v: string | undefined): string | undefined {
-  if (!v || v === "inconnu") return undefined;
-  return v in LIBELLE_CANAL ? LIBELLE_CANAL[v as CanalRendezVous] : v;
-}
-
-function corps(event: EvenementClient): string[] {
+/**
+ * Les lignes de détail d'une demande (nom complet, coordonnées, message intégral…), en texte
+ * brut. Réservé aux salons dédiés : jamais envoyé dans un salon de repli.
+ */
+export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNonClient): string[] {
   switch (event.category) {
-    case "CLIENT_CALL_BOOKED": {
+    case "CLIENT_CALL_BOOKED":
+    case "CALENDLY_INVITEE_CREATED": {
       const p = event.payload;
       return [
         ligne("Type de RDV", typeRdv(p)),
@@ -221,7 +200,8 @@ function corps(event: EvenementClient): string[] {
         ligne("Fiche", lienConsole(`contacts/appels/${p.eventUri}`)),
       ].filter((l): l is string => l !== null);
     }
-    case "CLIENT_CALL_CANCELED": {
+    case "CLIENT_CALL_CANCELED":
+    case "CALENDLY_INVITEE_CANCELED": {
       const p = event.payload;
       const qui =
         p.cancelerType === "host"
@@ -242,7 +222,8 @@ function corps(event: EvenementClient): string[] {
         ligne("Fiche", lienConsole(`contacts/appels/${p.eventUri}`)),
       ].filter((l): l is string => l !== null);
     }
-    case "CLIENT_CALL_RESCHEDULED": {
+    case "CLIENT_CALL_RESCHEDULED":
+    case "CALENDLY_INVITEE_RESCHEDULED": {
       const p = event.payload;
       return [
         ligne("Type de RDV", typeRdv(p)),
@@ -324,17 +305,6 @@ function corps(event: EvenementClient): string[] {
   }
 }
 
-/** Retire les lignes vides en double et en bout de message. */
-function compacter(lignes: string[]): string[] {
-  const sortie: string[] = [];
-  for (const l of lignes) {
-    if (l === "" && (sortie.length === 0 || sortie.at(-1) === "")) continue;
-    sortie.push(l);
-  }
-  while (sortie.at(-1) === "") sortie.pop();
-  return sortie;
-}
-
 /**
  * Le message COMPLET du salon « Clients », en texte brut.
  *
@@ -350,6 +320,6 @@ export function formatNotificationClient(event: EvenementClient, maintenant = ne
     `${enteteClient(event.category)} — ${libelleTypeDemande(event)}`,
     `Reçu le ${formatParisDateTime(quand)} (heure de Paris)`,
     "",
-    ...corps(event),
+    ...lignesDetailClient(event),
   ]).join("\n");
 }

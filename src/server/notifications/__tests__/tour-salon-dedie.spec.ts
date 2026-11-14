@@ -1,5 +1,5 @@
 // Tour France IA (2026-10-29) : le salon Telegram « Tour » et ses replis (Clients, puis Système,
-// puis le général). Les deux alertes sont Telegram seul : jamais WhatsApp.
+// puis le général). Les deux alertes sont Telegram seul.
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
@@ -7,7 +7,6 @@ import {
   getRouting,
   resetTelegramGroupWarnings,
   resolveTelegramTargetPourCategorie,
-  shouldNotifyWhatsApp,
   telegramGroupFor,
 } from "../routing";
 
@@ -32,7 +31,6 @@ describe("routage des alertes du Tour France IA", () => {
       expect(telegramGroupFor(c)).toBe("tour");
       expect(getRouting(c).channels).toEqual(["telegram"]);
       expect(getRouting(c).severity).toBe("warn");
-      expect(shouldNotifyWhatsApp(c)).toBe(false);
     }
     expect(getRouting("TOUR_DEMANDE_RECUE").rateLimitPerHour).toBe(20);
     expect(getRouting("TOUR_VILLE_OUVERTE").rateLimitPerHour).toBe(6);

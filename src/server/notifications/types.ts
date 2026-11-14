@@ -159,7 +159,7 @@ export type NotificationEvent =
   | {
       // `VIDEO_EDITOR_APPLICATION_RECEIVED` = même payload, mais catégorie SÉPARÉE
       // (demande Will 2026-08-12) : les candidatures à l'offre monteur vidéo
-      // freelance ont leur propre groupe Telegram + doublon WhatsApp, pour ne pas
+      // freelance ont leur propre groupe Telegram +, pour ne pas
       // être mélangées aux autres candidatures. Le choix de catégorie se fait au
       // call-site sur le slug de l'offre (cf. `videoEditorNotificationCategory`).
       category: "JOB_APPLICATION_RECEIVED" | "VIDEO_EDITOR_APPLICATION_RECEIVED";
@@ -187,7 +187,7 @@ export type NotificationEvent =
   | {
       // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
       // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
-      // autres candidatures : salon Telegram dédié 🧲 + doublon WhatsApp, comme
+      // autres candidatures : salon Telegram dédié 🧲, comme
       // le monteur vidéo. Message volontairement COURT : les 6 champs qui
       // permettent de juger depuis le téléphone, le reste vit en console.
       category: "COMMERCIAL_APPLICATION_RECEIVED";

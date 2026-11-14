@@ -35,7 +35,7 @@
 // manuel intact. Poser le token est le test décisif.
 
 // Lecture directe de `process.env` — même convention que
-// `src/server/notifications/channels/whatsapp.ts`. Le proxy `@/env` refuse
+// les canaux de `src/server/notifications/`. Le proxy `@/env` refuse
 // d'être touché hors contexte serveur strict, ce qui casserait les tests de la
 // route de capture ; la variable reste déclarée et validée dans `src/env.ts`.
 const CALENDLY_API_BASE = "https://api.calendly.com";

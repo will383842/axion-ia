@@ -1,6 +1,7 @@
 # ADR 0039 — Notifications par thème, et Calendly en quasi temps réel
 
 - **Statut** : Accepted (2026-08-09)
+- **Annotation 14/11/2026** : le canal WhatsApp (CallMeBot) est RETIRÉ sur décision du fondateur ; les passages et variables WhatsApp ci-dessous (`WHATSAPP_CALLMEBOT_APIKEY`, `WHATSAPP_NOTIFY_PHONE`) sont historiques. Les alertes passent par Telegram seul ; les salons dédiés reçoivent le détail complet.
 - **Complète** : ADR 0029 (hub de notifications), ADR 0036 (enrichissement
   Calendly), ADR 0038 (créneaux rendus côté serveur). Ne supersède rien.
 
@@ -111,7 +112,7 @@ candidatures/presse/investisseurs/interventions → Messages, avis → Système)
 Aucune notification ne peut se perdre entre le déploiement et la création des
 groupes.
 
-### WhatsApp : un seul fil, donc un en-tête
+### WhatsApp : un seul fil, donc un en-tête (retiré le 14/11/2026)
 
 CallMeBot n'écrit que dans **une conversation** — une clé = un destinataire, pas
 de groupes (vérifié le 2026-08-09 ; leur documentation renvoie vers TextMeBot ou
@@ -130,7 +131,7 @@ intégralement sur Telegram, dans leur groupe.
 - La latence d'une réservation passe de « jusqu'à 2 h 44 » à « moins de 60 s »,
   sans abonnement.
 - **Point de panne n°1** : `CALENDLY_API_TOKEN`, `WHATSAPP_CALLMEBOT_APIKEY` et
-  `WHATSAPP_NOTIFY_PHONE` étaient absents de l'application **worker** (deux
+  `WHATSAPP_NOTIFY_PHONE` (ces deux dernières retirées le 14/11/2026) étaient absents de l'application **worker** (deux
   applications Coolify distinctes). Sans elles, le sondage tourne à vide et
   WhatsApp reste muet — en silence. À poser avant tout.
 - Le compteur « à traiter » de la console peut retarder de 30 s quand la

@@ -1,6 +1,6 @@
 // Questionnaire avant audit (2026-10-26) — le salon Telegram « Questionnaire audit », ses replis
 // (Clients, puis Système, puis le général : décision du 25/10/2026) et le message (10 lignes au
-// plus, ni adresse, ni nom complet, ni contenu de réponse). Jamais WhatsApp.
+// plus, ni adresse, ni nom complet, ni contenu de réponse).
 
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -14,7 +14,6 @@ import {
   getRouting,
   resetTelegramGroupWarnings,
   resolveTelegramTargetPourCategorie,
-  shouldNotifyWhatsApp,
   telegramGroupFor,
 } from "../routing";
 
@@ -36,7 +35,6 @@ describe("routage du questionnaire avant audit", () => {
     for (const c of ["QUESTIONNAIRE_PREAUDIT_REPONSE", "QUESTIONNAIRE_PREAUDIT_SUIVI"] as const) {
       expect(telegramGroupFor(c)).toBe("questionnaire-audit");
       expect(getRouting(c).channels).toEqual(["telegram"]);
-      expect(shouldNotifyWhatsApp(c)).toBe(false);
     }
     expect(getRouting("QUESTIONNAIRE_PREAUDIT_REPONSE").severity).toBe("warn");
     expect(getRouting("QUESTIONNAIRE_PREAUDIT_SUIVI").severity).toBe("info");
