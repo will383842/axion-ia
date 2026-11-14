@@ -1,0 +1,52 @@
+name: Coolify · lire les drapeaux (site + worker, lecture seule)
+# Workflow utilitaire workflow_dispatch — AFFICHE l'état d'une liste FERMÉE de drapeaux NON secrets
+# sur le site et sur le worker. LECTURE SEULE : uniquement des GET vers Coolify, rien n'est écrit,
+# rien n'est redéployé.
+#
+# Affichage : CLE = true | false | absent | autre. Toute valeur autre que true/false s'affiche
+# « autre » SANS la valeur, sauf ORIGINES_SUIVANTES_DEPUIS, en clair seulement si elle a la forme AAAA-MM-JJTHH:MM:SSZ.
+# Le corps brut de la réponse Coolify n'est jamais affiché : jq filtre sur la liste fermée.
+# Le worker se trouve comme dans coolify-drapeau.yml (secret COOLIFY_WORKER_APP_UUID).
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Lire les drapeaux
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          for v in COOLIFY_API_TOKEN COOLIFY_URL COOLIFY_APP_UUID COOLIFY_WORKER_APP_UUID; do
+            if [ -z "${!v:-}" ]; then
+              echo "::error::Secret manquant : $v"
+              exit 1
+            fi
+          done
+          cles='["CRM_SYNC_ENABLED","CRM_SYNC_GUIDE_ENABLED","SYNCHRO_CRM_V3","SYNCHRO_CRM_V3_ORIGINES_SUIVANTES","SYNCHRO_CRM_V3_NEWSLETTER_OPTIN","ORIGINES_SUIVANTES_DEPUIS"]'
+          for pair in "site:$COOLIFY_APP_UUID" "worker:$COOLIFY_WORKER_APP_UUID"; do
+            nom="${pair%%:*}"; uuid="${pair#*:}"
+            echo "──── $nom ────"
+            if ! reponse=$(curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/applications/${uuid}/envs"); then
+              echo "(lecture impossible)"; continue
+            fi
+            printf '%s' "$reponse" | jq -r --argjson cles "$cles" '
+              . as $envs
+              | $cles[] as $k
+              | ([$envs[] | select(.key == $k and (.is_preview | not)) | .value] | first) as $v
+              | if $v == null then "\($k) = absent"
+                elif $v == "true" or $v == "false" then "\($k) = \($v)"
+                elif $k == "ORIGINES_SUIVANTES_DEPUIS" and ($v | type == "string") and ($v | test("\\A20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z\\z")) then "\($k) = \($v)"
+                else "\($k) = autre" end'
+          done
