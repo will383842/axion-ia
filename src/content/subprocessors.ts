@@ -680,14 +680,13 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // commentaires Facebook / Instagram sous les publications de la page, y répondre
     // publiquement et envoyer des messages privés (parcours « mot → guide »).
     //
-    // ⛔ ESCALADE — les faits officiels de Zernio (société, siège, serveurs, DPA, cadre de
-    // transfert) n'ont PAS pu être vérifiés : zernio.com était hors des domaines réseau autorisés
-    // de la session qui a rédigé cette entrée. Rien n'est affirmé ici au-delà de ce qui est
-    // prouvé ; les champs imposés par un type sont déclarés au plus conservateur (comme Zoom),
-    // jamais au plus flatteur. À corriger sur lecture du contrat, dans la même PR.
+    // Faits officiels lus le 2026-11-14 : exploitant ZERNIO SOFTWARE SL (Espagne), pages
+    // https://zernio.com/legal-disclosure, /privacy-policy, /dpa, /tos (section 5) et /subprocessors.
+    // Détail et points à vérifier : `_AUDIT/DPA-REGISTER.md`, fiche 7nonies.
     name: "Zernio (zernio.com)",
-    location: "À confirmer (société et siège non vérifiés)",
-    serversLocation: "À confirmer (non vérifié)",
+    location: "Espagne",
+    serversLocation:
+      "Royaume-Uni et UE (via ses sous-traitants) ; certains sous-traitants aux États-Unis",
     purposeFr:
       "Réponses aux commentaires et messages privés sur les réseaux sociaux de la page : lecture des commentaires Facebook / Instagram sous nos publications, réponse publique et envoi d'un message privé à la personne qui a commenté un mot-clé pour obtenir un guide. Zernio est l'interface de gestion des réseaux sociaux par laquelle passent ces échanges.",
     purposeEn:
@@ -698,15 +697,17 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
       "Account identifier and name of the person who comments, comment text, content of the private messages exchanged and, if the person types it in the private message, their email address.",
     // Intérêt légitime (6.1.f) : répondre à une demande faite en commentaire.
     legalBasis: "6.1.f_legitimate_interest",
-    // ⛔ ESCALADE : existence d'un DPA non vérifiée, et contrat art. 28 « DÉCISION DU FONDATEUR
-    // EN ATTENTE » au registre (ligne 25). `pending` est la seule valeur honnête du type.
-    // Entrée ACTIVE + `pending` : écart nommé dans `ACTIFS_SANS_DPA_ASSUMES` (garde de cohérence).
-    dpaStatus: "pending",
-    // Valeur imposée par le type, non prouvée : le plus conservateur (hors UE présumé).
+    // DPA de Zernio (version du 19/10/2026) intégré aux CGU : il s'applique à l'acceptation des
+    // CGU, sans signature séparée (https://zernio.com/dpa, https://zernio.com/tos section 5).
+    // `signed` = DPA en vigueur ; la copie pour le dossier reste à constituer par le fondateur.
+    dpaStatus: "signed",
+    // Le type n'a qu'une valeur couvrant les transferts hors EEE : `scc`, comme pour les autres
+    // fournisseurs mixtes. Zernio : clauses contractuelles types par défaut (DPA §11.1), et
+    // EU-US Data Privacy Framework pour les sous-traitants certifiés ; Royaume-Uni : adéquation.
     transferFramework: "scc",
     category: "communications",
     activationStatus: "active",
-    documentationUrl: "https://zernio.com",
+    documentationUrl: "https://zernio.com/dpa",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",

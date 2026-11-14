@@ -214,9 +214,6 @@ describe("cohérence des sous-processeurs", () => {
   const ACTIFS_SANS_DPA_ASSUMES: readonly string[] = [
     "Google Ireland Limited (Google Agenda)",
     "Google Ireland Limited (Google Meet)",
-    // 2026-11-14 — ESCALADE : Zernio (parcours « mot → guide »), contrat art. 28 en attente de
-    // décision du fondateur (registre, ligne 25). Sort de cette liste dès que le DPA est signé.
-    "Zernio (zernio.com)",
   ];
 
   it("🔴 aucun sous-traitant n'est ACTIF sans accord de sous-traitance", () => {
@@ -247,7 +244,7 @@ describe("cohérence des sous-processeurs", () => {
     ).toEqual([]);
   });
 
-  it("🔑 CONTRE-TÉMOIN : les écarts assumés existent encore, et ne sont que trois", () => {
+  it("🔑 CONTRE-TÉMOIN : les écarts assumés existent encore, et ne sont que deux", () => {
     // Sans ce test, retirer les deux lignes Google rendrait la garde ci-dessus
     // verte pour une mauvaise raison — et sa liste d'exemptions, invisible.
     for (const nom of ACTIFS_SANS_DPA_ASSUMES) {
