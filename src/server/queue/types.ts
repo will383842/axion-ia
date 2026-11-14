@@ -222,6 +222,10 @@ export type EmailJobName =
   // Devis signé par le client (2026-11-04) — e-mail INTERNE (numéro + lien console, aucune donnée
   // personnelle), enfilé après la signature par lien (`notification-interne-devis.ts`).
   | "devis-signe-a-contresigner"
+  // Doublon e-mail d'une demande de client (14/11/2026) — INTERNE, enfilé par
+  // `notifications/doublon-client.ts`. Nom NOUVEAU : ajouté, rien de retiré (le worker atterrit
+  // avant l'app, `axionia/AGENTS.md`).
+  | "alerte-demande-client"
   // Confirmation de commande au client (CGV 5.2, 6.2) — sur contresignature explicite uniquement.
   | "devis-commande-confirmation"
   // Code à usage unique pour SIGNER un devis (lot 4 bis) — transactionnel, déclenché par le clic

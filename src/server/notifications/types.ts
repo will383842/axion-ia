@@ -813,11 +813,19 @@ export type NotifyInput<C extends NotificationCategory = NotificationCategory> =
   sync?: boolean;
 };
 
+/** Le doublon d'une demande de client : conversation privée Telegram et e-mail instantané. */
+export interface DoublonsClient {
+  prive: "sent" | "skipped" | "failed" | "deduped";
+  email: "queued" | "skipped" | "failed" | "deduped";
+}
+
 /** Résultat de `notify()` — soft-fail, jamais de throw. */
 export interface NotifyResult {
   ok: boolean;
   deduped?: boolean;
   rateLimited?: boolean;
+  /** Présent pour une demande de client, en envoi synchrone (14/11/2026). */
+  doublons?: DoublonsClient;
   channels: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>;
 }
 

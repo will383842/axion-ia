@@ -150,6 +150,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // et lien console, aucune donnée personnelle), jamais au client. Garée, ce serait une alerte
   // perdue : le devis resterait à contresigner sans que personne le sache.
   "devis-signe-a-contresigner",
+  // Doublon e-mail d'une demande de client (14/11/2026) : notification INTERNE au fondateur. Garée,
+  // ce serait une alerte perdue — c'est tout son objet d'arriver tout de suite.
+  "alerte-demande-client",
   // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
   // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
   // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
@@ -237,6 +240,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-commande-confirmation": "Confirmation de commande (contresignature d'Axion-IA)",
   "devis-code-signature": "Code à usage unique pour signer un devis",
   "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
+  "alerte-demande-client": "Alerte : demande d'un client (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",

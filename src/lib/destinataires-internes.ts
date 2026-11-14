@@ -90,3 +90,13 @@ export function destinataireCandidatures(): string {
 export function destinataireRapportHebdo(): string {
   return premiereRenseignee(process.env["WEEKLY_REPORT_EMAIL"]) ?? ADRESSE_INTERNE_PAR_DEFAUT;
 }
+
+/**
+ * Destinataire de l'e-mail « IMPORTANT DEMANDE CLIENT » (14/11/2026) : le doublon instantané de
+ * chaque demande de client (message, rendez-vous Calendly, annulation, report).
+ *
+ * `ALERTES_CLIENTS_EMAIL` en premier, puis l'adresse de l'organisme : jamais une boîte personnelle.
+ */
+export function destinataireAlertesClients(): string {
+  return premiereRenseignee(process.env["ALERTES_CLIENTS_EMAIL"]) ?? ADRESSE_INTERNE_PAR_DEFAUT;
+}

@@ -235,6 +235,7 @@ import {
   DevisSigneAContresignerEmail,
   devisSigneAContresignerSubject,
 } from "./devis-signe-a-contresigner";
+import { AlerteDemandeClientEmail, alerteDemandeClientSubject } from "./alerte-demande-client";
 import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
@@ -715,6 +716,12 @@ const TEMPLATES: TemplateMap = {
   "devis-signe-a-contresigner": {
     subject: devisSigneAContresignerSubject,
     component: DevisSigneAContresignerEmail,
+  },
+  // Doublon e-mail d'une demande de client (14/11/2026) — INTERNE, enfilé par
+  // `server/notifications/doublon-client.ts`.
+  "alerte-demande-client": {
+    subject: alerteDemandeClientSubject,
+    component: AlerteDemandeClientEmail,
   },
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,

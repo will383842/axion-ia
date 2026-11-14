@@ -202,6 +202,14 @@ export const env = createEnv({
     // fichiers pour ajouter un groupe.
     TELEGRAM_CALENDLY_BOT_TOKEN: z.string().optional(),
 
+    // Doublon des demandes de CLIENTS (14/11/2026) : conversation PRIVÉE du fondateur avec le robot
+    // (son identifiant, obtenu via @userinfobot après un /start), SANS repli sur un salon : absent =
+    // pas de doublon Telegram, l'e-mail part quand même. À poser sur l'app ET le worker.
+    TELEGRAM_CHAT_ID_PRIVE: z.string().optional(),
+    // Destinataire de l'e-mail « IMPORTANT DEMANDE CLIENT … ». Absent = contact@axion-ia.com
+    // (`destinataireAlertesClients`, `src/lib/destinataires-internes.ts`).
+    ALERTES_CLIENTS_EMAIL: z.string().optional(),
+
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
     // Personal Access Token Calendly (API v2) — OPTIONNEL, cf. ADR 0036.
@@ -795,6 +803,8 @@ export const env = createEnv({
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
+    TELEGRAM_CHAT_ID_PRIVE: process.env.TELEGRAM_CHAT_ID_PRIVE,
+    ALERTES_CLIENTS_EMAIL: process.env.ALERTES_CLIENTS_EMAIL,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,

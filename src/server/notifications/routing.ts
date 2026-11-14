@@ -605,6 +605,20 @@ export function resolveSalonDedie(group: TelegramGroup): TelegramTarget | undefi
 }
 
 /**
+ * La conversation PRIVÉE du fondateur avec le robot (doublon des demandes de clients, 14/11/2026).
+ *
+ * Bot historique + `TELEGRAM_CHAT_ID_PRIVE`, SANS repli : si l'un des deux manque, `undefined`
+ * (jamais un salon à la place : cette conversation reçoit le détail d'une personne, aucun autre
+ * salon n'a à le recevoir).
+ */
+export function resolveConversationPrivee(): TelegramTarget | undefined {
+  const botToken = envValue("TELEGRAM_BOT_TOKEN");
+  const chatId = envValue("TELEGRAM_CHAT_ID_PRIVE");
+  if (!botToken || !chatId) return undefined;
+  return { botToken, chatId, dedicated: true };
+}
+
+/**
  * La route de REPLI d'un groupe, salon dédié exclu : celle que le message allégé reprend quand
  * le détail complet n'a pas pu partir au salon dédié (ou quand il n'existe pas).
  */

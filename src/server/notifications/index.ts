@@ -44,9 +44,16 @@ import { formatNotificationDetail, type EvenementDetail } from "./format-detail"
 import { decouperPourTelegram, sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
 import { sendEmailNotification } from "./channels/email";
+import { doublerAlerteClient } from "./doublon-client";
 import { isDuplicate, libererDedup } from "./dedup";
 import { checkCategoryRateLimit } from "./rate-limit";
-import type { NotificationChannel, NotificationEvent, NotifyInput, NotifyResult } from "./types";
+import type {
+  DoublonsClient,
+  NotificationChannel,
+  NotificationEvent,
+  NotifyInput,
+  NotifyResult,
+} from "./types";
 
 export type {
   NotificationEvent,
@@ -303,6 +310,16 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     if (!aboutie) await libererDedup(input.category, dedupKey);
   };
 
+  // Doublon d'une demande de CLIENT (14/11/2026) : conversation privée du fondateur + e-mail.
+  // Après le dédoublonnage et le plafond (jamais sur un rejeu ni un plafond atteint), seulement
+  // pour le routage par défaut (un appelant qui force ses canaux n'en veut pas), et HORS
+  // `libererSiEchec` : son échec ne doit pas rouvrir l'alerte du salon. Ne lève jamais.
+  const doubler = input.channels === undefined && estCategorieClient(input.category);
+  const lancerDoublon = (): Promise<DoublonsClient | undefined> =>
+    doubler
+      ? doublerAlerteClient(event as EvenementClient, dedupKey).catch(() => undefined)
+      : Promise.resolve(undefined);
+
   // 4. Dispatch sync ou fire-and-forget
   const forceSync = input.sync === true;
   const async = !forceSync && shouldDispatchAsync(severity);
@@ -311,9 +328,10 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     // Fire-and-forget : on lance la promise détachée, on retourne tout de suite.
     // On garde une référence attendable (tests / arrêt gracieux) sans bloquer le
     // runtime ; la référence s'auto-supprime à la résolution.
-    const dispatch = dispatchChannels(event, severity, channels, formatted.text).then(
-      libererSiEchec,
-    );
+    const dispatch = Promise.all([
+      dispatchChannels(event, severity, channels, formatted.text).then(libererSiEchec),
+      lancerDoublon(),
+    ]);
     inFlightDispatches.add(dispatch);
     void dispatch.finally(() => inFlightDispatches.delete(dispatch));
     const queued: StatutsCanaux = {};
@@ -321,9 +339,12 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     return { ok: true, channels: queued };
   }
 
-  const dispatch = await dispatchChannels(event, severity, channels, formatted.text);
+  const [dispatch, doublons] = await Promise.all([
+    dispatchChannels(event, severity, channels, formatted.text),
+    lancerDoublon(),
+  ]);
   await libererSiEchec(dispatch);
   const results = dispatch.results;
   const okOverall = Object.values(results).some((v) => v === "sent" || v === "queued");
-  return { ok: okOverall, channels: results };
+  return { ok: okOverall, channels: results, ...(doublons ? { doublons } : {}) };
 }

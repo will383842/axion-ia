@@ -5,6 +5,11 @@ import * as Sentry from "@sentry/nextjs";
 export async function register() {
   if (process.env["NEXT_RUNTIME"] === "nodejs") {
     await import("./sentry.server.config");
+    // Enfileur d'e-mails du hub de notifications (doublon des demandes de clients) : chargeur
+    // PARESSEUX, `queues.ts` n'est importé qu'au premier envoi. Dans la branche pour la même raison
+    // que ci-dessous (bundle edge).
+    const { poserChargeurEnfileurEmail } = await import("@/server/notifications/enfileur-email");
+    poserChargeurEnfileurEmail(() => import("@/server/queue/queues").then((m) => m.enqueueEmail));
     await seedQualiopiReferenceDataOnBoot();
     // L'import reste DANS cette branche : `NEXT_RUNTIME` est remplacé au build et le
     // bundle edge élimine la branche entière. Posé hors de la branche, il était compilé
