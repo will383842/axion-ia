@@ -65,8 +65,8 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     }
   });
 
-  it("⛔ la date de la liste des sous-processeurs n'est relevée que si la liste change", () => {
-    expect(SUBPROCESSORS_LAST_UPDATED).toBe("2026-11-07");
+  it("⛔ la date de la liste des sous-processeurs n'est relevée que si la liste change (relevée le 2026-11-14 : ajout de Zernio)", () => {
+    expect(SUBPROCESSORS_LAST_UPDATED).toBe("2026-11-14");
   });
 
   it("⛔ Zernio n'est pas renvoyé à la liste des sous-processeurs (rien d'établi à y publier)", () => {

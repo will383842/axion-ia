@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-11-07" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-14" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -674,6 +674,39 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // après coup.
     activationStatus: "pending_activation",
     documentationUrl: "https://www.zoom.com/en/trust/gdpr/",
+  },
+  {
+    // Ajouté le 2026-11-14. Le Studio du fondateur passe par l'API de Zernio pour lire les
+    // commentaires Facebook / Instagram sous les publications de la page, y répondre
+    // publiquement et envoyer des messages privés (parcours « mot → guide »).
+    //
+    // ⛔ ESCALADE — les faits officiels de Zernio (société, siège, serveurs, DPA, cadre de
+    // transfert) n'ont PAS pu être vérifiés : zernio.com était hors des domaines réseau autorisés
+    // de la session qui a rédigé cette entrée. Rien n'est affirmé ici au-delà de ce qui est
+    // prouvé ; les champs imposés par un type sont déclarés au plus conservateur (comme Zoom),
+    // jamais au plus flatteur. À corriger sur lecture du contrat, dans la même PR.
+    name: "Zernio (zernio.com)",
+    location: "À confirmer (société et siège non vérifiés)",
+    serversLocation: "À confirmer (non vérifié)",
+    purposeFr:
+      "Réponses aux commentaires et messages privés sur les réseaux sociaux de la page : lecture des commentaires Facebook / Instagram sous nos publications, réponse publique et envoi d'un message privé à la personne qui a commenté un mot-clé pour obtenir un guide. Zernio est l'interface de gestion des réseaux sociaux par laquelle passent ces échanges.",
+    purposeEn:
+      "Replies to comments and private messages on the page's social networks: reading Facebook / Instagram comments under our posts, replying publicly and sending a private message to the person who commented a keyword to get a guide. Zernio is the social-media management interface these exchanges go through.",
+    dataCategoriesFr:
+      "Identifiant et nom du compte de la personne qui commente, texte du commentaire, contenu des messages privés échangés et, si la personne la saisit dans le message privé, son adresse e-mail.",
+    dataCategoriesEn:
+      "Account identifier and name of the person who comments, comment text, content of the private messages exchanged and, if the person types it in the private message, their email address.",
+    // Intérêt légitime (6.1.f) : répondre à une demande faite en commentaire.
+    legalBasis: "6.1.f_legitimate_interest",
+    // ⛔ ESCALADE : existence d'un DPA non vérifiée, et contrat art. 28 « DÉCISION DU FONDATEUR
+    // EN ATTENTE » au registre (ligne 25). `pending` est la seule valeur honnête du type.
+    // Entrée ACTIVE + `pending` : écart nommé dans `ACTIFS_SANS_DPA_ASSUMES` (garde de cohérence).
+    dpaStatus: "pending",
+    // Valeur imposée par le type, non prouvée : le plus conservateur (hors UE présumé).
+    transferFramework: "scc",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://zernio.com",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",
