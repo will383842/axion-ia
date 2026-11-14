@@ -74,10 +74,9 @@ Crash possible côté container post-deploy. Diagnostic alternatif :
 
 ## Pièges fréquents
 
-1. **Zombie créé par disque saturé** : si le pre-cleanup `disk-cleanup-prod.yml`
-   (cron 03:00 UTC) a failed la veille, le disque > 90 % peut crash le
-   prochain deploy → zombie. Vérifier le run du cron + `coolify-zombie-cleanup.yml`
-   (cron 03:30 UTC) en complément.
+1. **Zombie créé par disque saturé** : un disque > 90 % peut faire échouer le
+   prochain deploy → zombie. Vérifier l'alerte `surveiller-disque.sh` (Telegram
+   « Technique ») + `coolify-zombie-cleanup.yml` (cron 03:30 UTC) en complément.
 
 2. **Concurrency lock GH Actions** : `deploy-coolify.yml` a
    `concurrency: deploy-coolify cancel-in-progress: false`. Si un run
@@ -103,7 +102,7 @@ Crash possible côté container post-deploy. Diagnostic alternatif :
 
 - Cron daily `coolify-zombie-cleanup.yml` (03:30 UTC) cancel les
   `in_progress` > 30 min automatiquement.
-- Cron daily `disk-cleanup-prod.yml` (03:00 UTC) libère le disque CPX42.
+- Surveillance du disque : `scripts/vps/surveiller-disque.sh` (cron hôte, toutes les 10 min, alerte Telegram). L'ancien `disk-cleanup-prod.yml` est supprimé (14/11/2026).
 - Workflow `deploy-coolify.yml` early-fail si queue stuck > 5 min
   (à ajouter — bonus durcissement §7.6, follow-up Sprint).
 

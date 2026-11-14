@@ -475,3 +475,13 @@ worker seulement) ; les PR 5 et 6 y ajoutent le circuit de transcription et de c
 - La fenêtre app/worker (~50 min) s'applique : le balayage n'utilise que des tables et des
   énumérations déjà posées par la migration du chantier (PR 2), et aucune forme de tâche
   BullMQ n'y porte de donnée du dossier (`{ tick }` seulement).
+
+## Disque du VPS (axion-prod) : règles depuis l'audit du 14/11/2026
+
+Le VPS (150 Go, aussi hôte du Studio) sature par PICS (mises en ligne rapprochées : images du site de 8,3 Go ; builds du Studio ; `/tmp` des sessions), pas par dérive. Détail : `_PLAN-DISQUE-VPS-2026-10-23/AUDIT-2026-11-14.md`, runbook `docs/runbooks/R20-disk-saturation.md`.
+
+- **Jamais** `docker system prune`, `docker image prune -a`, `docker volume prune`, `--volumes` (efface les retours arrière `studio-*:precedente` et les volumes de conteneurs arrêtés : Plausible, sonde Postgres). Verrouillé par `src/server/ops/__tests__/disque-vps-aucune-purge-dangereuse.spec.ts` (seules exceptions : deux étapes sur un runner GitHub jetable, et le cache de build borné par `--keep-storage`). L'ancien workflow `disk-cleanup-prod.yml` et `scripts/ops/disk-cleanup.sh` sont supprimés.
+- Ne touche jamais à : volumes, bases, sauvegardes, `cv-storage`, `f0-facecam`, `medias-reels`, `contenu-reel-hors-depot`, `avant-reconciliation-*`, images `studio-*`.
+- **Les sessions (Claude ou autres) travaillent dans `/root/travaux-claude/<date>-<session>/`, jamais dans `/tmp`, et nettoient en partant** (après avoir archivé ce qui n'est pas dans git).
+- Surveillance et ménage versionnés dans `scripts/vps/` (`surveiller-disque.sh` toutes les 10 min → Telegram « 🔧 Technique » ; `menage-tmp.sh` quotidien ; journald limité à 500 Mo) : voir `scripts/vps/README.md`, « Garde-fous disque ». Ils sont installés à la main par `installer-garde-fous-disque.sh` ; rien ne s'applique tout seul depuis le dépôt.
+- Les nettoyages Docker de Coolify (`force_docker_cleanup`) et le crontab Studio relèvent de la session Studio ; ClickHouse/Plausible (journaux, TTL) : lot à part.

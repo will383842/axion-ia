@@ -149,9 +149,8 @@ jobs:
         run: |
           ssh -o BatchMode=yes root@178.105.55.15 bash <<'ENDSSH'
             echo "=== Disk avant ===" && df -h / | tail -1
-            docker container prune -f 2>&1 | tail -2 || true
             docker image prune -f 2>&1 | tail -2 || true
-            docker builder prune -f 2>&1 | tail -2 || true
+            docker builder prune -f --keep-storage 2GB 2>&1 | tail -2 || true
             echo "=== Disk après ===" && df -h / | tail -1
           ENDSSH
 
