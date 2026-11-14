@@ -272,6 +272,8 @@ describe("demande d'effacement", () => {
     // alerte « à traiter », niveau critique, échéance J+30 dans le titre et le message
     expect(bd.cloche).toHaveLength(1);
     expect(bd.cloche[0]).toMatchObject({ code: "rgpd_effacement_a_traiter", niveau: "critique" });
+    // 🔴 `critique` part par e-mail (envoi-groupe copie `message` tel quel) : aucune adresse dedans.
+    expect(JSON.stringify(bd.cloche)).not.toContain(ADRESSE);
     expect(String(bd.cloche[0]!.titre)).toMatch(/avant le \d{4}-\d{2}-\d{2}/);
     expect(String(bd.cloche[0]!.message)).toMatch(/AVANT LE \d{4}-\d{2}-\d{2}/);
     // aucun e-mail
