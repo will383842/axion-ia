@@ -6,8 +6,9 @@ name: Coolify Zombie Deploy Cleanup
 # bloquant le dispatcher Horizon — voir _AUDIT/DEPLOY-RECOVERY-2026-05-17/
 # 02-root-cause.md cause #2).
 #
-# Programmé 03:30 UTC juste après disk-cleanup-prod.yml (03:00 UTC)
-# pour traiter dans l'ordre : disque libéré → queue libérée.
+# Programmé 03:30 UTC. (Le workflow disk-cleanup-prod.yml, qui purgeait Docker à
+# 03:00 UTC, a été supprimé le 2026-11-14 : purge trop dangereuse. Voir AGENTS.md,
+# section « Disque du VPS ».)
 
 on:
   schedule:

@@ -181,3 +181,45 @@ Correctif : `GH_REPO: ${{ github.repository }}` dans l'etape d'alerte.
 l'avoir vue verte. Verifier qu'une surveillance detecte ne dit rien sur sa
 capacite a PREVENIR : ce sont deux chaines distinctes, et il faut les eprouver
 separement.
+
+## Garde-fous disque (2026-11-14)
+
+Suite à l'audit du 14/11/2026 (`_PLAN-DISQUE-VPS-2026-10-23/AUDIT-2026-11-14.md`) : la purge
+quotidienne `docker system prune -a --volumes` (workflow `disk-cleanup-prod.yml` et
+`scripts/ops/disk-cleanup.sh`) est **supprimée** ; ces scripts la remplacent. Aucun ne fait de
+purge Docker : ils mesurent, préviennent, ou archivent avant de ranger `/tmp`.
+
+| Fichier                              | Rôle                                                                                                                                  | Cron                               |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `surveiller-disque.sh`               | Mesure `df /`, historique horaire (`/var/lib/axion-disque/historique.csv`), alerte Telegram 75 % / 85 % / 90 %, top 5 des causes, « plein dans N jours » | `*/10 * * * *` (`/etc/cron.d/axion-disque`) |
+| `menage-tmp.sh`                      | Dossiers de `/tmp` > 7 j et > 100 Mo : manifeste de tout le dossier + archive (node_modules compris ; fichiers absents de la branche principale) dans `/root/archives-tmp/`, vérifie (gzip, liste, `tar -d`), puis supprime | `40 4 * * *`                       |
+| `exporter-journal.sh`                | Export compressé des 8 derniers jours du journal (`journalctl --since "-8 days" -o export \| gzip`, vérifié `gzip -t`) → `/root/archives-journal/journal-export-<date>.gz` | `10 5 * * 0` (dimanche, `/etc/cron.d/axion-disque`) |
+| `journald-axion.conf`                | `SystemMaxUse=500M` → `/etc/systemd/journald.conf.d/axion.conf`                                                                         | —                                  |
+| `installer-garde-fous-disque.sh`     | Installe le tout (idempotent), retire la ligne cassée `disk-alert` du crontab root (sauvegarde d'abord)                                  | à lancer à la main, une fois       |
+
+Installation (sur le VPS, en root, depuis une copie à jour du dépôt) :
+
+```bash
+bash scripts/vps/installer-garde-fous-disque.sh --essai   # voir ce qui serait fait
+bash scripts/vps/installer-garde-fous-disque.sh
+```
+
+Fichier Telegram (secret : jamais dans le dépôt), à créer **une fois, à la main** :
+
+```bash
+install -d -m 700 /etc/axion-disque
+umask 077
+cat > /etc/axion-disque/telegram.env <<'FIN'
+TELEGRAM_BOT_TOKEN=<jeton du bot>
+TELEGRAM_CHAT_ID=<identifiant du salon « 🔧 Axion-IA — Technique »>
+# TELEGRAM_MESSAGE_THREAD_ID=<facultatif : sujet d'un groupe à sujets>
+FIN
+chmod 600 /etc/axion-disque/telegram.env
+/opt/axion-ia/surveiller-disque.sh --essai    # affiche le message sans l'envoyer
+```
+
+Les deux scripts ont un mode `--essai`. `menage-tmp.sh` ne touche jamais à `pubB`, `rep-5f*`, `reconc*`,
+`iv-out`, `frames`, `alig`, `b-test`, `systemd-private-*`, `snap-private-tmp`, `.X11-unix`, `.ICE-unix`, ni à ce qui commence par `garder-` ; dépôts de référence réglables
+(`DEPOTS_REF`, défaut `/opt/studio-axion-ia/source`, ou `/etc/axion-disque/menage-tmp.conf`).
+Les copies `.avant-<date>` de l'installeur sont rangées dans `/var/lib/axion-disque/avant/` (jamais à côté du fichier : logrotate et cron lisent leurs dossiers) ; l'export du journal exige 2 Go libres. Le journal `menage-tmp.log` est gardé 2 ans (logrotate `rotate 104`). Avant la limite journald, l'installeur archive le journal (`/root/archives-journal/journal-<date>.tar.gz`, vérifié) et un export hebdomadaire recouvre les 8 derniers jours. `menage-tmp.sh` refuse tout `TMP_DIR` autre que `/tmp` ou `/var/tmp`, met le dossier de côté par renommage atomique avant de le supprimer, et ne réarchive pas un dossier qui a déjà une archive `.partiel` (anomalie à traiter à la main). Un dossier dont l'archive ne se vérifie pas (renommée `.partiel`), ou dont un contrôle d'usage (lsof, docker, find) échoue ou dépasse le délai, est laissé en place. `docker-nettoyage.sh` (cron :15 du
+serveur) n'est pas encore versionné ici.
