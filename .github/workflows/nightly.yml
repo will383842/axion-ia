@@ -73,7 +73,13 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - name: Install Playwright chromium
-        run: pnpm exec playwright install --with-deps chromium
+        run: |
+          # Retry : une panne DNS du runner l'a fait échouer le 11/11.
+          for i in 1 2 3; do
+            pnpm exec playwright install --with-deps chromium && exit 0
+            echo "Tentative $i échouée, nouvel essai dans 15 s"; sleep 15
+          done
+          exit 1
       - name: axe-core vs prod — 0 violation serious/critical
         env:
           # 🔴 Audit 2026-07-26 (F18) : playwright.config.ts lit E2E_BASE_URL, pas
@@ -186,6 +192,9 @@ jobs:
       - name: ZAP baseline vs prod
         # owasp/zap2docker-stable image renamed → use zaproxy/zap-stable
         run: |
+          # Le conteneur ZAP (non root) doit pouvoir écrire zap.yaml et le rapport dans
+          # le dossier monté (sinon Errno 13 puis blocage jusqu'au timeout).
+          chmod a+w "${{ github.workspace }}"
           docker run --rm -t \
             -v ${{ github.workspace }}:/zap/wrk \
             zaproxy/zap-stable zap-baseline.py \
@@ -201,6 +210,7 @@ jobs:
         with:
           name: zap-baseline-report
           path: zap-report.html
+          if-no-files-found: error
           retention-days: 14
 
   mail-tester:
