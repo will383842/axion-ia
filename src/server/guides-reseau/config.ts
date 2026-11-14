@@ -186,3 +186,14 @@ export function preuveEcartActif(): boolean {
 export function catalogueGuidesActif(): boolean {
   return process.env.GUIDES_RESEAU_CATALOGUE_ENABLED === "true";
 }
+
+/**
+ * LIVRAISON DU CATALOGUE — un code du catalogue (`gde-…`) n'est accepté (page `/guide-reseau` ET
+ * réception des demandes) QUE si les DEUX interrupteurs valent exactement `"true"` :
+ * `GUIDES_RESEAU_CATALOGUE_ENABLED` ET `GUIDES_RESEAU_LIVRAISON_ENABLED`. But : qu'une personne ne
+ * remplisse jamais le formulaire d'un guide que le site ne sait pas encore livrer. Sinon : liste
+ * figée seule, aucune lecture en base. Lu au runtime (`process.env` brut, hors `env.ts`).
+ */
+export function livraisonCatalogueActive(): boolean {
+  return catalogueGuidesActif() && process.env.GUIDES_RESEAU_LIVRAISON_ENABLED === "true";
+}

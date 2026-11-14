@@ -569,12 +569,14 @@ describe("catalogue de guides (LIA-F) : GET /guide-reseau", () => {
   beforeEach(() => {
     process.env.PAGE_GUIDE_RESEAU_ENABLED = "true";
     delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+    delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
     etat.cibles.clear();
     etat.lecturesCibles = 0;
     etat.ciblesPanne = false;
   });
   afterEach(() => {
     delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+    delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
   });
 
   it("éteint : lien `gde-…` → page neutre, ZÉRO lecture du catalogue", async () => {
@@ -585,6 +587,7 @@ describe("catalogue de guides (LIA-F) : GET /guide-reseau", () => {
 
   it("allumé : guide actif du catalogue → formulaire", async () => {
     process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
     etat.cibles.set(CODE, ligne());
     const html = await rendre(jetonPour(CODE));
     expect(html).toContain('action="/guide-reseau/envoyer"');
@@ -597,12 +600,14 @@ describe("catalogue de guides (LIA-F) : GET /guide-reseau", () => {
     ["d'essai", CODE, { test: true }],
   ])("allumé : cible %s → page neutre", async (_n, code, ecart) => {
     process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
     etat.cibles.set(code, ligne(ecart as Ligne));
     expect(await rendre(jetonPour(code))).toContain(T_NEUTRE);
   });
 
   it("allumé, base illisible : repli sur la liste figée (guide-ia seul)", async () => {
     process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
     etat.ciblesPanne = true;
     expect(await rendre(jetonPour(CODE))).toContain(T_NEUTRE);
     expect(await rendre(JETON)).toContain('action="/guide-reseau/envoyer"');
@@ -611,7 +616,39 @@ describe("catalogue de guides (LIA-F) : GET /guide-reseau", () => {
   it("guide-ia : page identique allumé ou éteint, sans lecture du catalogue", async () => {
     const eteint = await rendre(JETON);
     process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
     expect(await rendre(JETON)).toBe(eteint);
+    expect(etat.lecturesCibles).toBe(0);
+  });
+
+  it("catalogue allumé + livraison ÉTEINTE : `gde-…` → page neutre, ZÉRO lecture du catalogue", async () => {
+    process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+    etat.cibles.set(CODE, ligne());
+    expect(await rendre(jetonPour(CODE))).toContain(T_NEUTRE);
+    expect(etat.lecturesCibles).toBe(0);
+  });
+
+  it("livraison allumée + catalogue éteint : `gde-…` → page neutre, ZÉRO lecture", async () => {
+    process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+    etat.cibles.set(CODE, ligne());
+    expect(await rendre(jetonPour(CODE))).toContain(T_NEUTRE);
+    expect(etat.lecturesCibles).toBe(0);
+  });
+
+  it("guide-ia : page identique dans les 4 combinaisons, sans lecture du catalogue", async () => {
+    const ref = await rendre(JETON);
+    for (const [c, l] of [
+      [false, false],
+      [true, false],
+      [false, true],
+      [true, true],
+    ] as const) {
+      delete process.env.GUIDES_RESEAU_CATALOGUE_ENABLED;
+      delete process.env.GUIDES_RESEAU_LIVRAISON_ENABLED;
+      if (c) process.env.GUIDES_RESEAU_CATALOGUE_ENABLED = "true";
+      if (l) process.env.GUIDES_RESEAU_LIVRAISON_ENABLED = "true";
+      expect(await rendre(JETON)).toBe(ref);
+    }
     expect(etat.lecturesCibles).toBe(0);
   });
 });

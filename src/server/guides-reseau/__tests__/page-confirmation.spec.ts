@@ -1254,6 +1254,7 @@ describe("LIA-F — interrupteur ÉTEINT : comportement d'avant, zéro lecture d
 describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
   beforeEach(() => {
     vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -1409,6 +1410,7 @@ describe("LIA-F — contrat de la route (analyserCorpsAvecCatalogue)", () => {
 
   it("allumé : cible guide active acceptée ; adresse, inactive, essai refusées", async () => {
     vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
     const { analyserCorpsAvecCatalogue } = await import("../contrat");
     bd.cibles.set(CODE_CATALOGUE, ligneCible());
     expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(true);
