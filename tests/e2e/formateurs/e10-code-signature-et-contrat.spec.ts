@@ -18,7 +18,10 @@ import path from "node:path";
 
 import { expect, test } from "@playwright/test";
 
-import { maillonDocumentDepuisLigne } from "@/server/qualiopi/documents/signature/document-signature-hash";
+import {
+  HASH_VERSION_DOCUMENT,
+  maillonDocumentDepuisLigne,
+} from "@/server/qualiopi/documents/signature/document-signature-hash";
 import { versionGabaritInstantane } from "@/server/qualiopi/documents/templates/gabarit-versions";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
 
@@ -211,8 +214,10 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
   // V1-A-7 — corrigé (lot 2). Oracle réécrit (la synthèse le signalait : il testait un
   // nom de colonne) : la preuve écrite par le PREMIER test de ce fichier — signée avec
   // un code reçu par e-mail — porte `facteurVerification = code_email`, ET ce facteur
-  // est SCELLÉ (tuple v2) : la chaîne se vérifie, et retirer le facteur après coup la
-  // casse. Les preuves antérieures ne sont pas réécrites (facteur nul, tuple v1).
+  // est SCELLÉ : la chaîne se vérifie, et retirer le facteur après coup la casse.
+  // La version d'empreinte suit la constante `HASH_VERSION_DOCUMENT` (sceau V3 depuis
+  // #1782), pas un chiffre figé. Les preuves antérieures ne sont pas réécrites
+  // (facteur nul, tuples anciens).
   test("V1-A-7 — la preuve porte le facteur `code_email`, scellé dans l'empreinte", async () => {
     expect(ficheSignee, "le premier test a signé").toBeDefined();
     const contrat = await prisma.documentGenere.findFirstOrThrow({
@@ -223,7 +228,7 @@ test.describe("@formateurs E10 — code de signature, contrat signé, F10", () =
       where: { documentGenereId: contrat.id, partie: "sous_traitant", revokedAt: null },
     });
     expect(preuve.facteurVerification).toBe("code_email");
-    expect(preuve.hashVersion).toBe(2);
+    expect(preuve.hashVersion).toBe(HASH_VERSION_DOCUMENT);
     const piece = { documentNumero: contrat.numero, documentType: contrat.type };
     expect(verifierChaine([maillonDocumentDepuisLigne(preuve, piece)]).valide).toBe(true);
     const falsifiee = { ...preuve, facteurVerification: null };
