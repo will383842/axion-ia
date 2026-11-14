@@ -87,6 +87,7 @@ import {
   ACTION_DEMANDE_EFFACEMENT,
   CODE_ALERTE_EFFACEMENT,
   ecarterPourDemandeEffacement,
+  echeanceUnMois,
 } from "../ecarter-au-lieu-d-effacer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
@@ -121,6 +122,17 @@ beforeEach(() => {
   crm.mockResolvedValue({ status: "deferred", detail: "fermé" });
   alerte.mockResolvedValue({ id: "al-1" });
   vi.spyOn(console, "error").mockImplementation(() => {});
+});
+
+describe("échéance : un mois calendaire, jour de Paris", () => {
+  it.each([
+    ["2027-02-01T10:00:00Z", "2027-03-01"],
+    ["2027-01-31T10:00:00Z", "2027-02-28"],
+    ["2026-11-14T10:00:00Z", "2026-12-14"],
+    ["2026-12-31T23:30:00Z", "2027-02-01"], // 00 h 30 le 1er janvier à Paris
+  ])("reçue %s → %s", (recu, attendu) => {
+    expect(echeanceUnMois(new Date(recu))).toBe(attendu);
+  });
 });
 
 describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
@@ -255,8 +267,10 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(a["code"]).toBe(CODE_ALERTE_EFFACEMENT);
     expect(a["niveau"]).toBe("critique");
     expect(a["cibleId"]).toBe(cibleIdAlerteDepuisEmpreinte(hashEmailForLookup(ADRESSE)!));
-    // L'adresse est dans l'alerte : sans elle, la demande ne peut pas être traitée à la main.
-    expect(String(a["message"])).toContain(ADRESSE);
+    // 🔴 `critique` part par e-mail : ni l'adresse ni le motif libre dans le texte.
+    expect(JSON.stringify(a)).not.toContain(ADRESSE);
+    expect(JSON.stringify(a)).not.toContain("tél.");
+    expect(String(a["message"])).toMatch(/AVANT LE \d{4}-\d{2}-\d{2}/);
     expect(String(a["message"])).toMatch(/Rien n'a été supprimé/);
   });
 

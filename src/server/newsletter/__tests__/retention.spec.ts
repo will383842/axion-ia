@@ -147,6 +147,8 @@ describe("verrous statiques", () => {
       expect(code, modele).not.toMatch(new RegExp(`${modele}\\s*\\.\\s*(deleteMany|delete)\\b`));
     }
     expect(code).not.toMatch(/\b(purgerLettreEtGuide|purgerDesinscrits)\b/);
+    // SQL brut : aucune suppression ni vidage de ces tables.
+    expect(code).not.toMatch(/DELETE\s+FROM|TRUNCATE/i);
     // `purgerOutboxCrm` (file CRM technique) est la SEULE suppression restante.
     expect([...code.matchAll(/\.(deleteMany|delete)\(/g)]).toHaveLength(1);
     expect(code).toContain("crmSyncOutbox.deleteMany(");

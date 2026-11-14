@@ -19,7 +19,8 @@
  *      déjà, et une suppression côté CRM serait contraire à la décision « aucune suppression » ;
  *   6. la PREUVE de la demande est gardée au journal (`gdpr.*`, empreintes seulement) ;
  *   7. Williams reçoit une alerte dans la CLOCHE de la console, niveau `critique` (« à traiter »),
- *      avec l'ÉCHÉANCE à J+30 dans le texte (RGPD art. 12.3). Le niveau `critique` déclenche le
+ *      avec l'ÉCHÉANCE à un mois calendaire dans le texte (RGPD art. 12.3), SANS l'adresse ni le
+ *      motif libre (l'alerte part par e-mail). Le niveau `critique` déclenche le
  *      mécanisme d'e-mail d'alerte existant (`alertes/envoi-groupe.ts`) : aucun canal nouveau.
  *
  * L'effacement lui-même, s'il doit avoir lieu, est un geste humain.
@@ -99,8 +100,22 @@ function estUuid(v: string | null): v is string {
   return v !== null && UUID_RE.test(v);
 }
 
-/** Délai légal de réponse : un mois (RGPD art. 12.3), compté 30 jours. */
-const DELAI_REPONSE_JOURS = 30;
+/** Date civile (AAAA-MM-JJ) à Paris : une demande reçue à 00 h 30 n'est pas datée de la veille. */
+function jourParis(d: Date): string {
+  return new Intl.DateTimeFormat("sv-SE", { timeZone: "Europe/Paris" }).format(d);
+}
+
+/**
+ * Échéance de réponse : UN MOIS CALENDAIRE (RGPD art. 12.3) après la réception, jour de Paris,
+ * ramené au dernier jour du mois d'arrivée s'il n'existe pas (31/01 → 28/02, jamais après le délai).
+ * Un « J+30 » dépasserait le délai légal quand il traverse février.
+ */
+export function echeanceUnMois(recu: Date): string {
+  const [a, m, j] = jourParis(recu).split("-").map(Number) as [number, number, number];
+  const dernierJour = new Date(Date.UTC(a, m + 1, 0)).getUTCDate(); // dernier jour du mois suivant
+  const cible = new Date(Date.UTC(a, m, Math.min(j, dernierJour)));
+  return cible.toISOString().slice(0, 10);
+}
 
 function nomErreur(e: unknown): string {
   return e instanceof Error ? e.name : "erreur";
@@ -259,12 +274,13 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
     // Le message porte la référence de la trace (ou l'heure) : une alerte résolue ne peut donc
     // jamais être confondue avec une NOUVELLE demande du même jour, même origine, même motif.
     const refAlerte = journalId ?? quand.toISOString();
-    const echeance = new Date(quand.getTime() + DELAI_REPONSE_JOURS * 86_400_000)
-      .toISOString()
-      .slice(0, 10);
+    const echeance = echeanceUnMois(quand);
+    // 🔴 Ni l'adresse ni le motif libre : une alerte `critique` part par e-mail
+    // (`alertes/envoi-groupe.ts`), et ce texte serait copié dans l'e-mail et la file d'envoi.
+    // La personne se retrouve par la référence de la trace (`journalId`) et l'empreinte de
+    // l'alerte (`cibleId`) ; l'adresse se relit dans le canal d'origine de la demande.
     const message =
-      `Adresse : ${email}. Reçue le ${quand.toISOString().slice(0, 10)} par ${LIBELLE_ORIGINE[d.origine]}` +
-      `${d.motif ? ` (motif : ${d.motif})` : ""}.${sansMarque} ` +
+      `Demande reçue le ${jourParis(quand)} par ${LIBELLE_ORIGINE[d.origine]}.${sansMarque} ` +
       "Rien n'a été supprimé. À faire : décider ce qui doit être effacé (art. 17 RGPD) et " +
       `répondre à la personne AVANT LE ${echeance} (un mois, art. 12.3 RGPD). Réf. ${refAlerte}.${pannes}`;
     const creee = await creerOuDedup({
