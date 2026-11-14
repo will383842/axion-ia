@@ -226,9 +226,16 @@ inconnue. Plafond du corps : 4 Ko.
   10 min, une charge par (personne, guide). **Sans `ORIGINES_SUIVANTES_DEPUIS` (date ISO), il ne fait rien** : la
   décision D3 (que faire des origines antérieures) revient à Williams. Les origines plus anciennes que la date restent
   `NULL`, jamais marquées à tort (la date est aussi transmise au chemin direct, qui la respecte).
-- **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO) se pose dans l'environnement du **worker**, là où le script est lancé
-  (`docker exec -e ORIGINES_SUIVANTES_DEPUIS=… <worker> …`), pas par `coolify-drapeau.yml`. Le site la lit aussi pour
-  le chemin direct : sans elle, il n'envoie que les origines écrites après le clic.
+- **`ORIGINES_SUIVANTES_DEPUIS`** (date ISO 8601 UTC, `AAAA-MM-JJTHH:MM:SSZ`) se pose par le workflow
+  `coolify-drapeau.yml` (clé de la liste fermée), sur **les-deux** (site et worker, cible imposée) : plus de
+  `docker exec -e`. Le workflow **refuse une date antérieure à l'heure du run** : aucun historique par ce chemin.
+  La date n'est pas un secret. Le site la lit pour le chemin direct, le worker pour le rattrapage : sans elle, le site
+  n'envoie que les origines écrites après le clic.
+- **Lire l'état des drapeaux** : `coolify-lire-drapeaux.yml` (`workflow_dispatch`, **lecture seule** : GET uniquement,
+  permissions `contents: read`). Pour le site et le worker, il affiche `CLE = true | false | absent | autre` pour
+  `CRM_SYNC_ENABLED`, `CRM_SYNC_GUIDE_ENABLED`, `SYNCHRO_CRM_V3`, `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES`,
+  `SYNCHRO_CRM_V3_NEWSLETTER_OPTIN` et `ORIGINES_SUIVANTES_DEPUIS` (en clair, c'est une date). Toute autre valeur
+  s'affiche « autre » sans son contenu ; aucune autre variable ni corps brut n'est affiché.
 - **Exclusions** : `--exclure` et `--exclure-stdin` valent aussi pour les origines (groupe sauté, origines restées
   `NULL`, compté dans « groupes exclus »), en plus de `CRM_SYNC_EXCLUSIONS_SHA256`. Interrupteurs éteints : le passage
   répond `interrupteurs-eteints` et ne lit rien.
