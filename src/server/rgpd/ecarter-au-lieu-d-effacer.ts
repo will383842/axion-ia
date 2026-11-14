@@ -99,8 +99,38 @@ function estUuid(v: string | null): v is string {
   return v !== null && UUID_RE.test(v);
 }
 
-/** Délai légal de réponse : un mois (RGPD art. 12.3), compté 30 jours. */
-const DELAI_REPONSE_JOURS = 30;
+/** Date `AAAA-MM-JJ` d'un instant, en heure de Paris. */
+function jourParis(d: Date): { a: number; m: number; j: number } {
+  const [a, m, j] = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  })
+    .format(d)
+    .split("-")
+    .map(Number) as [number, number, number];
+  return { a, m, j };
+}
+
+/**
+ * Échéance légale : UN MOIS calendaire (RGPD art. 12.3), en heure de Paris : même jour du mois
+ * suivant, ou le dernier jour du mois suivant si ce jour n'existe pas (31/01 → 28/02).
+ */
+export function echeanceUnMois(recu: Date): string {
+  const { a, m, j } = jourParis(recu);
+  const a2 = m === 12 ? a + 1 : a;
+  const m2 = m === 12 ? 1 : m + 1;
+  const dernier = new Date(Date.UTC(a2, m2, 0)).getUTCDate();
+  const pad = (n: number) => String(n).padStart(2, "0");
+  return `${a2}-${pad(m2)}-${pad(Math.min(j, dernier))}`;
+}
+
+/** Date `AAAA-MM-JJ` de réception, en heure de Paris. */
+function dateRecueParis(d: Date): string {
+  const { a, m, j } = jourParis(d);
+  return `${a}-${String(m).padStart(2, "0")}-${String(j).padStart(2, "0")}`;
+}
 
 function nomErreur(e: unknown): string {
   return e instanceof Error ? e.name : "erreur";
@@ -259,12 +289,13 @@ export async function ecarterPourDemandeEffacement(d: DemandeEcart): Promise<Res
     // Le message porte la référence de la trace (ou l'heure) : une alerte résolue ne peut donc
     // jamais être confondue avec une NOUVELLE demande du même jour, même origine, même motif.
     const refAlerte = journalId ?? quand.toISOString();
-    const echeance = new Date(quand.getTime() + DELAI_REPONSE_JOURS * 86_400_000)
-      .toISOString()
-      .slice(0, 10);
+    const echeance = echeanceUnMois(quand);
+    // 🔴 Ni l'adresse ni le motif libre ici : au niveau critique, ce message part par l'e-mail
+    // groupé (`envoi-groupe.ts`). L'identité se lit dans la console (Conformité RGPD › demandes),
+    // à partir de la référence de la trace et de l'empreinte (`cibleId`).
     const message =
-      `Adresse : ${email}. Reçue le ${quand.toISOString().slice(0, 10)} par ${LIBELLE_ORIGINE[d.origine]}` +
-      `${d.motif ? ` (motif : ${d.motif})` : ""}.${sansMarque} ` +
+      `Demande reçue le ${dateRecueParis(quand)} par ${LIBELLE_ORIGINE[d.origine]}. ` +
+      `Détail (personne, motif) dans la console, Conformité RGPD › demandes.${sansMarque} ` +
       "Rien n'a été supprimé. À faire : décider ce qui doit être effacé (art. 17 RGPD) et " +
       `répondre à la personne AVANT LE ${echeance} (un mois, art. 12.3 RGPD). Réf. ${refAlerte}.${pannes}`;
     const creee = await creerOuDedup({

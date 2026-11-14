@@ -9,6 +9,9 @@
 import { cibleIdAlerteDepuisEmpreinte } from "@/server/rgpd/constantes";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
+import { createElement } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { QualiopiAlerteInterneEmail } from "@/lib/email/templates/qualiopi-alerte-interne";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
 const suppressions = vi.fn();
@@ -87,6 +90,7 @@ import {
   ACTION_DEMANDE_EFFACEMENT,
   CODE_ALERTE_EFFACEMENT,
   ecarterPourDemandeEffacement,
+  echeanceUnMois,
 } from "../ecarter-au-lieu-d-effacer";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 
@@ -255,9 +259,56 @@ describe("Écarter au lieu d'effacer (décision du 11/11/2026)", () => {
     expect(a["code"]).toBe(CODE_ALERTE_EFFACEMENT);
     expect(a["niveau"]).toBe("critique");
     expect(a["cibleId"]).toBe(cibleIdAlerteDepuisEmpreinte(hashEmailForLookup(ADRESSE)!));
-    // L'adresse est dans l'alerte : sans elle, la demande ne peut pas être traitée à la main.
-    expect(String(a["message"])).toContain(ADRESSE);
+    // Ni l'adresse ni le motif : ce message part par l'e-mail groupé au niveau critique.
+    expect(String(a["message"])).not.toContain(ADRESSE);
+    expect(String(a["message"])).not.toContain("tél.");
     expect(String(a["message"])).toMatch(/Rien n'a été supprimé/);
+  });
+
+  it("🔴 le contenu de l'e-mail groupé de cette alerte ne porte ni l'adresse ni le motif", async () => {
+    await ecarterPourDemandeEffacement({
+      email: ADRESSE,
+      origine: "console-lettre",
+      motif: "motif-libre-sensible",
+    });
+    const a = alerte.mock.calls[0]?.[0] as Record<string, unknown>;
+    // Même forme que `occurrences` d'`envoi-groupe.ts`.
+    const payload = {
+      niveau: a["niveau"],
+      code: a["code"],
+      titre: a["titre"],
+      occurrences: [{ message: a["message"], cibleType: a["cibleType"], cibleId: a["cibleId"] }],
+    };
+    const html = renderToStaticMarkup(
+      createElement(QualiopiAlerteInterneEmail, { locale: "fr", payload } as never),
+    );
+    expect(html).toContain("Rien n&#x27;a été supprimé");
+    expect(html).not.toContain(ADRESSE);
+    expect(html).not.toContain("motif-libre-sensible");
+    expect(JSON.stringify(payload)).not.toContain(ADRESSE);
+  });
+
+  it("échéance : un mois calendaire en heure de Paris", async () => {
+    expect(echeanceUnMois(new Date("2027-01-31T12:00:00Z"))).toBe("2027-02-28");
+    expect(echeanceUnMois(new Date("2027-02-01T12:00:00Z"))).toBe("2027-03-01");
+    expect(echeanceUnMois(new Date("2028-01-31T12:00:00Z"))).toBe("2028-02-29");
+    expect(echeanceUnMois(new Date("2026-12-15T12:00:00Z"))).toBe("2027-01-15");
+    // 00 h 30 à Paris (hiver) = 23 h 30 UTC la veille : le jour de Paris fait foi.
+    expect(echeanceUnMois(new Date("2027-01-30T23:30:00Z"))).toBe("2027-02-28");
+    await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
+  });
+
+  it("date de réception en heure de Paris (00 h 30 Paris ≠ veille UTC)", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2027-01-30T23:30:00Z"));
+    try {
+      await ecarterPourDemandeEffacement({ email: ADRESSE, origine: "libre-service" });
+    } finally {
+      vi.useRealTimers();
+    }
+    const a = alerte.mock.calls.at(-1)?.[0] as Record<string, unknown>;
+    expect(String(a["message"])).toContain("reçue le 2027-01-31");
+    expect(String(a["titre"])).toContain("2027-02-28");
   });
 
   it("une étape en panne n'empêche ni la preuve ni l'alerte", async () => {
