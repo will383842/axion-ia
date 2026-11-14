@@ -186,3 +186,30 @@ export function preuveEcartActif(): boolean {
 export function catalogueGuidesActif(): boolean {
   return process.env.GUIDES_RESEAU_CATALOGUE_ENABLED === "true";
 }
+
+/**
+ * LIVRAISON DU BON GUIDE (PR-S2b, 2026-11-14) — l'INTERRUPTEUR.
+ *
+ * 🔴 ÉTEINT PAR DÉFAUT : vrai seulement si `GUIDES_RESEAU_LIVRAISON_ENABLED` vaut exactement
+ * `"true"`. Lu au runtime (`process.env` brut, hors `env.ts`). ÉTEINT : une demande d'un guide du
+ * catalogue n'envoie RIEN (jamais le texte du guide-ia pour un autre guide) ; le guide-ia, lui,
+ * n'est pas concerné. ⚠️ À poser dans l'app ET dans le worker (le worker rend le gabarit).
+ */
+export function livraisonCatalogueActive(): boolean {
+  return process.env.GUIDES_RESEAU_LIVRAISON_ENABLED === "true";
+}
+
+/**
+ * Adresses autorisées à recevoir une cible d'ESSAI (`test = true`) : `GUIDES_RESEAU_ESSAI_ADRESSES`,
+ * séparées par des virgules. Rendues telles quelles (espaces de bord retirés, vides écartées) ; la
+ * COMPARAISON se fait par empreinte (`hashEmailForLookup`, casse ignorée) et ces adresses ne sont
+ * JAMAIS journalisées.
+ */
+export function adressesEssai(
+  env: Readonly<Record<string, string | undefined>> = process.env,
+): readonly string[] {
+  return (env.GUIDES_RESEAU_ESSAI_ADRESSES ?? "")
+    .split(",")
+    .map((a) => a.trim())
+    .filter((a) => a.length > 0);
+}

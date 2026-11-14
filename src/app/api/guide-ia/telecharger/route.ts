@@ -23,11 +23,16 @@
 //
 // Jeton inconnu → 404, sans dire s'il a existé.
 
+import { stat } from "node:fs/promises";
+import path from "node:path";
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import { urlGuideIa } from "@/content/guide-ia";
+import { SITE_URL } from "@/lib/site-url";
+import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
+import { RACINE_GUIDES, resoudreGuide } from "@/server/guides-reseau/guide-a-livrer";
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { auPlus } from "@/server/crm-sync/enqueue";
 import { transmettreClicGuide } from "@/server/crm-sync/lettre-guide";
@@ -95,16 +100,34 @@ export async function GET(req: NextRequest): Promise<NextResponse> {
 
   const demande = await prisma.guideRequest.findUnique({
     where: { downloadToken: jeton },
-    select: { id: true, locale: true },
+    select: { id: true, locale: true, aimant: true, email: true },
   });
   if (demande === null) return introuvable(req);
+  const langue = demande.locale === "en" ? "en" : "fr";
+
+  // S2b — le guide-ia reste sur sa page, sans aucune lecture du catalogue.
+  let titreCatalogue: string | null = null;
+  if (demande.aimant !== AIMANT_GUIDE_IA) {
+    const guide = await resoudreGuide(demande.aimant, demande.email).catch(() => null);
+    if (guide === null || guide.kind !== "catalogue") {
+      return new NextResponse(pageErreurLien("indisponible", langue), {
+        status: 200,
+        headers: ENTETES_PAGE,
+      });
+    }
+    titreCatalogue = guide.titre;
+  }
 
   // « Vu », pas « ouvert » : peut être un antivirus. Premier passage seulement.
   await prisma.guideRequest
     .updateMany({ where: { id: demande.id, firstSeenAt: null }, data: { firstSeenAt: new Date() } })
     .catch(() => undefined);
 
-  return new NextResponse(pageDuLien(jeton, demande.locale === "en" ? "en" : "fr"), {
+  const page =
+    titreCatalogue === null
+      ? pageDuLien(jeton, langue)
+      : pageDuLien(jeton, langue, { titre: titreCatalogue });
+  return new NextResponse(page, {
     status: 200,
     headers: ENTETES_PAGE,
   });
@@ -128,7 +151,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
   const demande = await prisma.guideRequest.findUnique({
     where: { downloadToken: jeton },
-    select: { id: true, source: true },
+    select: { id: true, source: true, locale: true, aimant: true, email: true },
   });
   if (demande === null) return introuvable(req);
 
@@ -185,5 +208,27 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // attendre sans fin, et c'est la personne qui attend son PDF.
   await auPlus(transmettreClicGuide(demande.id, maintenant), ATTENTE_MAX_CRM_MS);
 
-  return NextResponse.redirect(urlGuideIa(), { status: 303 });
+  // Le guide-ia garde sa redirection d'origine, sans lecture du catalogue ni du disque.
+  if (demande.aimant === AIMANT_GUIDE_IA)
+    return NextResponse.redirect(urlGuideIa(), { status: 303 });
+
+  // Guide du catalogue : le fichier doit exister (non vide) sous `public/guides-reseau/`. Tout doute
+  // (cible retirée, chemin refusé, fichier absent) rend la page neutre — jamais une 500.
+  const indisponible = (): NextResponse =>
+    new NextResponse(pageErreurLien("indisponible", demande.locale === "en" ? "en" : "fr"), {
+      status: 200,
+      headers: ENTETES_PAGE,
+    });
+  try {
+    const guide = await resoudreGuide(demande.aimant, demande.email);
+    if (guide.kind !== "catalogue") return indisponible();
+    const racine = path.resolve(process.cwd(), "public", RACINE_GUIDES);
+    const fichier = path.resolve(process.cwd(), "public", guide.chemin);
+    if (!fichier.startsWith(racine)) return indisponible();
+    const info = await stat(fichier);
+    if (!info.isFile() || info.size <= 0) return indisponible();
+    return NextResponse.redirect(`${SITE_URL}/${guide.chemin}`, { status: 303 });
+  } catch {
+    return indisponible();
+  }
 }

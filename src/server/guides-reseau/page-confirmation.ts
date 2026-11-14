@@ -55,6 +55,7 @@ import { demandeGuideSchema } from "@/lib/schemas/forms";
 import { estOpposee } from "@/server/email/opposition";
 import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { domaineRecoitDesEmails } from "@/server/guide-ia/mx";
+import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import {
   envoisRecentsPourDemande,
   envoisRecentsVers,
@@ -523,7 +524,8 @@ async function suiteApresReponse(
       guide = "ecarte";
       await ecarterPageDuStop({ emailKey, origine, empreinte, maintenant });
     } else if (
-      catalogueGuidesActif()
+      // Catalogue allumé OU guide du catalogue (S2b) : un envoi par DEMANDE. Le guide-ia garde sa règle.
+      catalogueGuidesActif() || donnees.guide !== AIMANT_GUIDE_IA
         ? // Un envoi par DEMANDE : même adresse ET même guide depuis moins de 24 h (la limite de 3 par
           // adresse reste dans `mettreEnFileGuide`).
           (await envoisRecentsPourDemande(email, demande.id, maintenant)) > 0
@@ -532,7 +534,13 @@ async function suiteApresReponse(
       guide = "deja-servi";
     } else {
       guide = await mettreEnFileGuide(
-        { id: demande.id, email, locale: "fr", downloadToken: demande.downloadToken },
+        {
+          id: demande.id,
+          email,
+          locale: "fr",
+          downloadToken: demande.downloadToken,
+          aimant: donnees.guide,
+        },
         {
           reseau: true,
           pageGuide: { oppositionToken: jetonOpposition(email), reseauOrigine: donnees.reseau },

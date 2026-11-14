@@ -22,6 +22,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { livraisonCatalogueActive } from "@/server/guides-reseau/config";
+import { resoudreGuide } from "@/server/guides-reseau/guide-a-livrer";
 import { coupeCircuitDeclenche } from "./coupe-circuit";
 import {
   ENTITE_GUIDE,
@@ -37,6 +39,12 @@ export interface DemandeAEnvoyer {
   readonly email: string;
   readonly locale: "fr" | "en";
   readonly downloadToken: string;
+  /**
+   * Aimant de la demande (`guide_requests.aimant`) : `guide-ia` ou un code `gde-…` du catalogue.
+   * OBLIGATOIRE — un appelant qui l'oublierait ne compilerait pas (S2b) ; une valeur inconnue ne
+   * livre jamais le texte du guide-ia.
+   */
+  readonly aimant: string;
 }
 
 export interface OptionsEnvoiGuide {
@@ -132,6 +140,30 @@ export async function mettreEnFileGuide(
   }
   if ((await envoisDeLaDerniereHeure(maintenant)) >= PLAFOND_HORAIRE_GUIDE) return "plafond";
 
+  // S2b — QUEL guide ? Le guide-ia est résolu sans aucune lecture (charge inchangée, octet pour octet).
+  // Un guide du catalogue ne part que si la livraison est allumée ; jamais le texte du guide-ia à sa place.
+  const guide = await resoudreGuide(demande.aimant, demande.email);
+  if (guide.kind === "indisponible") {
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_guide_indisponible",
+        raison: guide.raison,
+        demande: demande.id,
+      }),
+    );
+    return "non-parti";
+  }
+  if (guide.kind === "catalogue" && !livraisonCatalogueActive()) {
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_livraison_retenue",
+        guide: guide.code,
+        demande: demande.id,
+      }),
+    );
+    return "non-parti";
+  }
+
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
   if (options.reseau === true) {
     payload["reseau"] = true;
@@ -148,6 +180,11 @@ export async function mettreEnFileGuide(
     if (options.doubleAccordToken) payload["doubleAccordToken"] = options.doubleAccordToken;
   }
   if (options.reprise === true) payload["reprise"] = true;
+  // Les deux seules clés ajoutées (facultatives, jamais pour guide-ia) : le gabarit les relit et les revalide.
+  if (guide.kind === "catalogue") {
+    payload["guideCode"] = guide.code;
+    payload["guideTitre"] = guide.titre;
+  }
 
   // ⛔ JAMAIS `marketing: true` : « Votre guide » répond à une demande
   // (transactionnel, RGPD 6.1.b), part depuis `contact@` par ZeptoMail, dont

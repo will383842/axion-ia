@@ -59,7 +59,9 @@ function champsEcrits(): string[] {
 }
 
 beforeEach(() => {
-  findUnique.mockReset().mockResolvedValue({ id: "demande-1", locale: "fr", source: "guide-ia" });
+  findUnique
+    .mockReset()
+    .mockResolvedValue({ id: "demande-1", locale: "fr", source: "guide-ia", aimant: "guide-ia" });
   updateMany.mockReset().mockResolvedValue({ count: 1 });
   checkRateLimit.mockReset().mockResolvedValue({ allowed: true });
   emettreEvenementPlausible.mockReset().mockResolvedValue(true);
@@ -96,7 +98,12 @@ describe("GET — le lien est ouvert (humain ou antivirus)", () => {
   });
 
   it("page en anglais pour une demande en anglais", async () => {
-    findUnique.mockResolvedValue({ id: "demande-1", locale: "en", source: null });
+    findUnique.mockResolvedValue({
+      id: "demande-1",
+      locale: "en",
+      source: null,
+      aimant: "guide-ia",
+    });
     const html = await (await GET(get(JETON))).text();
     expect(html).toContain('lang="en"');
     expect(html).toContain("Download the guide (PDF)");

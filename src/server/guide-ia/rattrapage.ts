@@ -142,6 +142,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         downloadToken: true,
         sendCount: true,
         origine: true,
+        aimant: true,
       },
       orderBy: { createdAt: "asc" },
       take: 200,
@@ -221,6 +222,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
           email: c.email,
           locale: c.locale === "en" ? "en" : "fr",
           downloadToken: c.downloadToken,
+          aimant: c.aimant,
         },
         {
           reseau,

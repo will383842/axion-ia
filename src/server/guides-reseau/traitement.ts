@@ -268,6 +268,7 @@ export async function traiterDemande(
       email: d.email,
       locale: d.locale,
       downloadToken: demande.downloadToken,
+      aimant: d.guide,
     },
     { reseau: true, maintenant },
   );

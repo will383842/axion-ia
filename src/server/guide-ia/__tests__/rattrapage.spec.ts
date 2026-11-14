@@ -99,6 +99,25 @@ beforeEach(() => {
   marqueFindFirst.mockReset().mockResolvedValue(null);
 });
 
+describe("rattraperGuides — l'aimant de la demande voyage jusqu'à l'envoi (S2b, scénario 14)", () => {
+  it("14. la requête lit `aimant`, et chaque demande est reprise AVEC son aimant (guide-ia ou code du catalogue)", async () => {
+    guideFindMany.mockResolvedValue([
+      { ...CANDIDATE, id: "d-ia", origine: "formulaire", aimant: "guide-ia" },
+      { ...CANDIDATE, id: "d-gde", origine: "message_prive", aimant: "gde-essai-01" },
+    ]);
+    await rattraperGuides(MAINTENANT);
+    const requete = guideFindMany.mock.calls[0]?.[0] as { select: Record<string, unknown> };
+    expect(requete.select["aimant"]).toBe(true);
+    const demandes = mettreEnFileGuide.mock.calls.map(
+      (c) => c[0] as { id: string; aimant: string },
+    );
+    expect(demandes.map((d) => [d.id, d.aimant])).toEqual([
+      ["d-ia", "guide-ia"],
+      ["d-gde", "gde-essai-01"],
+    ]);
+  });
+});
+
 describe("rattraperGuides — adresse opposée (toutes origines)", () => {
   it("🔴 origine message_prive + adresse opposée : rien n'est mis en file, rien n'est supprimé", async () => {
     guideFindMany.mockResolvedValue([{ ...CANDIDATE, origine: "message_prive" }]);
