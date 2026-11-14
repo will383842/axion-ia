@@ -97,9 +97,16 @@ on:
           # elle est antérieure à l'heure du run (aucun historique par ce chemin) ou au-delà de +366 jours. Jamais
           # redéployée par ce workflow (prise en compte au prochain redéploiement). Cible : les-deux.
           - "ORIGINES_SUIVANTES_DEPUIS"
+          # Guides réseaux : catalogue, livraison, adresses d'essai. Valeurs : true | false (sauf les adresses).
+          # CATALOGUE : cible site seulement. LIVRAISON : cible les-deux (le rattrapage du worker appelle
+          # `resoudreGuide`). ESSAI_ADRESSES : cible les-deux ; 1 à 5 adresses `…@axion-ia.com` séparées par des
+          # virgules, JAMAIS celle d'une personne réelle ; vide = retirer. La valeur n'est jamais imprimée.
+          - "GUIDES_RESEAU_CATALOGUE_ENABLED"
+          - "GUIDES_RESEAU_LIVRAISON_ENABLED"
+          - "GUIDES_RESEAU_ESSAI_ADRESSES"
       valeur:
-        description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon ou une adresse d'essai"
-        required: true
+        description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon, une adresse d'essai, ou 1 à 5 adresses @axion-ia.com (GUIDES_RESEAU_ESSAI_ADRESSES ; vide pour retirer)"
+        required: false
         default: "true"
         type: string
       cible:
@@ -160,12 +167,21 @@ jobs:
           CONFIRMER_EXTINCTION: ${{ inputs.confirmer_extinction }}
         run: |
           set -euo pipefail
+          export LC_ALL=C
           # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
           if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          # Guides réseaux : le catalogue est lu par le site seulement ; la livraison et les adresses d'essai
+          # par le site ET le worker (le rattrapage du worker appelle resoudreGuide).
+          if [ "$CLE" = "GUIDES_RESEAU_CATALOGUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [[ "$CLE" =~ ^GUIDES_RESEAU_(LIVRAISON_ENABLED|ESSAI_ADRESSES)$ ]] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
           fi
           if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then
             echo "::error::Refus : éteindre OPPOSITIONS_RESEAU_ENABLED ferait refuser (503) les « stop » des personnes. À éteindre uniquement en cas d'incident, avec confirmer_extinction=true (voir docs/guides-reseau-interrupteurs.md)."; exit 1
@@ -195,6 +211,13 @@ jobs:
             fi
           elif [ "$CLE" = "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT" ]; then
             [[ "$VALEUR" =~ ^-?[0-9]+$ ]] || { echo "::error::Identifiant de salon Telegram attendu"; exit 1; }
+          elif [ "$CLE" = "GUIDES_RESEAU_ESSAI_ADRESSES" ]; then
+            # Jamais l'adresse d'une personne réelle : seul le domaine d'Axion IA passe. Vide = retirer.
+            # La valeur n'est jamais reprise dans un message.
+            motif_essai='^[a-z0-9.+-]+@axion-ia\.com(,[a-z0-9.+-]+@axion-ia\.com){0,4}$'
+            if [ -n "$VALEUR" ] && ! [[ "$VALEUR" =~ $motif_essai ]]; then
+              echo "::error::Refus : 1 à 5 adresses @axion-ia.com séparées par des virgules (ou vide pour retirer)"; exit 1
+            fi
           elif [ "$CLE" = "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI" ]; then
             [[ "$VALEUR" =~ ^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$ ]] || { echo "::error::Adresse e-mail attendue"; exit 1; }
           elif [[ "$CLE" =~ ^(DOSSIER_FICHE_AUTO|QUESTIONNAIRE_RELANCES_ENABLED|QUESTIONNAIRE_CONFIRMATIONS_ENABLED|QUESTIONNAIRE_TELEGRAM_ENABLED)$ ]]; then
@@ -217,7 +240,7 @@ jobs:
             echo "──── $nom ────"
             curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
               "${COOLIFY_URL}/api/v1/applications/${uuid}/envs" \
-              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | (.value | tostring) as $v | "\(.key) = \(if ($v | test("^(true|false)$|^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$")) then $v else "valeur masquée (\($v | length) caractères)" end) (preview=\(.is_preview))"' \
+              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | (.value | tostring) as $v | "\(.key) = \(if .key == "GUIDES_RESEAU_ESSAI_ADRESSES" then (if $v == "" then "0 adresse(s)" else "\($v | split(",") | length) adresse(s)" end) elif ($v | test("^(true|false)$|^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$")) then $v else "valeur masquée (\($v | length) caractères)" end) (preview=\(.is_preview))"' \
               || echo "(lecture impossible)"
           done
 
@@ -237,7 +260,10 @@ jobs:
             is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
           }')
           # Seuls true/false et les dates ISO s'affichent ; le reste (ex. une adresse) est masqué.
-          if [[ "$VALEUR" =~ ^(true|false)$ || "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]]; then
+          if [ "$CLE" = "GUIDES_RESEAU_ESSAI_ADRESSES" ]; then
+            # Les adresses ne s'impriment jamais : seulement leur nombre.
+            if [ -z "$VALEUR" ]; then affiche="0 adresse(s)"; else affiche="$(( $(printf '%s' "$VALEUR" | tr -cd ',' | wc -c) + 1 )) adresse(s)"; fi
+          elif [[ "$VALEUR" =~ ^(true|false)$ || "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]]; then
             affiche="$VALEUR"
           else
             affiche="valeur masquée (${#VALEUR} caractères)"
