@@ -305,6 +305,10 @@ vi.mock("@/server/guide-ia/envoi", async (orig) => {
   const m = await orig<typeof import("@/server/guide-ia/envoi")>();
   return { ...m, mettreEnFileGuide: vi.fn(m.mettreEnFileGuide) };
 });
+vi.mock("../cible-connue", async (orig) => {
+  const m = await orig<typeof import("../cible-connue")>();
+  return { ...m, cibleGuideConnue: vi.fn(m.cibleGuideConnue) };
+});
 vi.mock("@/server/guide-ia/coupe-circuit", () => ({ coupeCircuitDeclenche: async () => false }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: async (...a: unknown[]) => {
@@ -321,6 +325,7 @@ vi.mock("@/server/notifications", () => ({ notify: async () => undefined }));
 
 import { mettreEnFileGuide } from "@/server/guide-ia/envoi";
 import { transmettreOriginesSuivantes } from "../synchro-v3";
+import { cibleGuideConnue } from "../cible-connue";
 import {
   confirmerPageGuide as confirmerSansSuite,
   PLANCHER_REPONSE_MS,
@@ -1255,6 +1260,8 @@ const CODE_CATALOGUE = "gde-essai0001";
 const ligneCible = (o: Ligne = {}): Ligne => ({
   code: CODE_CATALOGUE,
   type: "guide",
+  titre: "Le plan en 90 jours",
+  cheminPdf: "guides-reseau/plan-90-jours.pdf",
   actif: true,
   test: false,
   ...o,
@@ -1284,6 +1291,7 @@ describe("LIA-F — interrupteur ÉTEINT : comportement d'avant, zéro lecture d
 describe("LIA-F — interrupteur ALLUMÉ : le catalogue", () => {
   beforeEach(() => {
     vi.stubEnv("GUIDES_RESEAU_CATALOGUE_ENABLED", "true");
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
   });
   afterEach(() => {
     vi.unstubAllEnvs();
@@ -1446,5 +1454,33 @@ describe("LIA-F — contrat de la route (analyserCorpsAvecCatalogue)", () => {
       bd.cibles.set(CODE_CATALOGUE, ligneCible(ecart));
       expect((await analyserCorpsAvecCatalogue(corps(CODE_CATALOGUE))).ok).toBe(false);
     }
+  });
+});
+
+describe("S2b — dédoublonnage d'envoi selon l'AIMANT, même catalogue éteint (scénarios 12 et 13)", () => {
+  beforeEach(() => {
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
+  });
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+  const avec = (guide: string) => entree({ jeton: jeton({ guide }) });
+
+  it("12. catalogue ÉTEINT, guide du catalogue, guide-ia envoyé il y a 2 h à la même adresse : l'e-mail PART (le dédoublonnage se compte par demande)", async () => {
+    vi.mocked(cibleGuideConnue).mockResolvedValueOnce(true);
+    bd.cibles.set(CODE_CATALOGUE, ligneCible());
+    bd.logsDestinataire = 1; // le guide-ia est déjà parti à cette adresse ; aucune ligne pour CETTE demande
+    expect((await confirmerPageGuide(avec(CODE_CATALOGUE))).ok).toBe(true);
+    expect(bd.envois).toHaveLength(1);
+    const payload = bd.envois[0]![3] as Record<string, unknown>;
+    expect(payload["guideCode"]).toBe(CODE_CATALOGUE);
+    expect(payload["guideTitre"]).toBe("Le plan en 90 jours");
+  });
+
+  it("13. catalogue ÉTEINT, guide-ia déjà servi sous 24 h : « déjà servi », rien en file, aucune lecture des cibles", async () => {
+    bd.logsDestinataire = 1;
+    expect((await confirmerPageGuide(entree())).ok).toBe(true);
+    expect(bd.envois).toHaveLength(0);
+    expect(bd.lecturesCibles).toBe(0);
   });
 });

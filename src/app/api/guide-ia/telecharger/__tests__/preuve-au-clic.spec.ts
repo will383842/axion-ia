@@ -16,7 +16,12 @@ const bd = vi.hoisted(() => ({
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     guideRequest: {
-      findUnique: async () => ({ id: "demande-1", locale: "fr", source: "guide-ia" }),
+      findUnique: async () => ({
+        id: "demande-1",
+        locale: "fr",
+        source: "guide-ia",
+        aimant: "guide-ia",
+      }),
       updateMany: async () => ({ count: 1 }),
     },
   },

@@ -149,6 +149,7 @@ interface DemandeReservable {
   readonly locale: "fr" | "en";
   readonly downloadToken: string;
   readonly origine: "formulaire" | "admin" | "message_prive";
+  readonly aimant: string;
   readonly queuedAt: Date | null;
   readonly sentAt: Date | null;
 }
@@ -159,6 +160,7 @@ const SELECTION = {
   locale: true,
   downloadToken: true,
   origine: true,
+  aimant: true,
   queuedAt: true,
   sentAt: true,
 } as const;
@@ -265,6 +267,7 @@ async function reserverEtMettreEnFile(
         email: demande.email,
         locale: demande.locale,
         downloadToken: demande.downloadToken,
+        aimant: demande.aimant,
       },
       {
         confirmToken: lettre.confirmToken ?? null,
