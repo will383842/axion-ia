@@ -89,6 +89,9 @@ on:
           # (`GET /api/partners/evenements`). Distinct du précédent : un secret
           # par sens. Web seulement. ≥ 32 caractères, sinon la route reste 404.
           - PARTNERS_RELECTURE_SECRET
+          # Secret du lien signé de la page guide (`/guide-reseau?j=…`), même valeur
+          # que côté Studio, lu au démarrage du conteneur. Web seulement.
+          - GUIDES_RESEAU_LIEN_SECRET
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -176,6 +179,8 @@ jobs:
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           PARTNERS_SYNC_SECRET: ${{ secrets.PARTNERS_SYNC_SECRET }}
           PARTNERS_RELECTURE_SECRET: ${{ secrets.PARTNERS_RELECTURE_SECRET }}
+          # Secret du lien signé de la page guide, même valeur que côté Studio.
+          GUIDES_RESEAU_LIEN_SECRET: ${{ secrets.GUIDES_RESEAU_LIEN_SECRET }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
