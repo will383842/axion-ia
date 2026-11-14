@@ -196,10 +196,10 @@ jobs:
           #     placer EN TETE. Mesure du 2026-09-02 : 94 caracteres lus apres le trim
           #     des fins de ligne -> le parasite n'etait pas a la fin.
           valeur="${valeur#$'\xEF\xBB\xBF'}"
-          premier="${valeur:0:1}"; dernier="${valeur: -1}"
-          for c in "$premier" "$dernier"; do
-            if [[ "$c" =~ ^[A-Za-z0-9_]$ ]]; then echo "borne : alphanumerique"; else printf 'borne : code %d (non alphanumerique)\n' "'$c"; fi
-          done
+          # Aucune information sur la valeur n'est journalisée (ni caractère, ni code).
+          if [[ ! "${valeur:0:1}" =~ ^[A-Za-z0-9_]$ || ! "${valeur: -1}" =~ ^[A-Za-z0-9_]$ ]]; then
+            echo "bornes non alphanumériques"
+          fi
           if [ -z "$valeur" ]; then
             echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
             exit 1
