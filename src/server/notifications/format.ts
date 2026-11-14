@@ -13,7 +13,6 @@ import type {
   QuestionnairePreauditTelegram,
 } from "./types";
 import {
-  estCategorieClient,
   telegramGroupFor,
   type CategorieClient,
   type TelegramGroup,

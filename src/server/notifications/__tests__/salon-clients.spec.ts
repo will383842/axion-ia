@@ -59,10 +59,6 @@ function corpsEnvoye(appel: number): Record<string, unknown> {
   return JSON.parse(init.body) as Record<string, unknown>;
 }
 
-function urls(): string[] {
-  return fetchMock.mock.calls.map((c) => String(c[0]));
-}
-
 beforeEach(() => {
   fetchMock.mockReset();
   redisSetMock.mockReset().mockResolvedValue("OK");
