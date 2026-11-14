@@ -130,9 +130,9 @@ function analyser(rel: string, texte: string): string[] {
   const fautes: string[] = [];
   for (const idx of lignesExecutables(rel, texte)) {
     const ligne = lignes[idx];
-    // Message syslog de l'ancienne alerte « disk-alert » (texte seulement, retirée par l'installeur).
-    if (/logger -t disk-alert/.test(ligne)) continue;
     for (const cmd of commandes(ligne)) {
+      // Seul le MORCEAU `logger -t disk-alert …` du crontab snapshot est un message (texte), pas la ligne entière.
+      if (rel === "scripts/vps/crontab.snapshot.txt" && /^logger -t disk-alert\b/.test(cmd)) continue;
       for (const interdit of INTERDITS) {
         if (!interdit.motif.test(cmd)) continue;
         if (CACHE_BORNE.test(cmd) && !AUTRE_PRUNE.test(cmd)) continue;
@@ -168,6 +168,12 @@ describe("le verrou lui-même reconnaît les purges dangereuses", () => {
     "/usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/x.log 2>&1",
   ])("accepte : %s", (cmd) => {
     expect(verifier(cmd)).toEqual([]);
+  });
+  it("l'exemption `logger -t disk-alert` ne vaut que pour son morceau, dans le crontab snapshot", () => {
+    const dangereuse = "docker system prune -af --volumes; logger -t disk-alert x";
+    expect(analyser("scripts/vps/crontab.snapshot.txt", dangereuse).length).toBeGreaterThan(0);
+    expect(analyser("scripts/x.sh", 'logger -t disk-alert "docker system prune requis"').length).toBeGreaterThan(0);
+    expect(analyser("scripts/vps/crontab.snapshot.txt", 'logger -t disk-alert "docker system prune requis" || true')).toEqual([]);
   });
   it("une ligne en SSH n'est jamais dispensée comme runner jetable", () => {
     const yml = [

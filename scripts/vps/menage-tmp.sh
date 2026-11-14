@@ -43,6 +43,14 @@ AGE_JOURS="${AGE_JOURS:-7}"
 TAILLE_MIN_MO="${TAILLE_MIN_MO:-100}"
 DEPOTS_REF="${DEPOTS_REF:-/opt/studio-axion-ia/source}"
 LOG="${LOG:-/var/log/menage-tmp.log}"
+# Garde-fous de configuration : seul /tmp ou /var/tmp peut être rangé ; les archives ne vont jamais dedans.
+case "$TMP_DIR" in
+  /tmp|/var/tmp) ;;
+  *) echo "[menage-tmp] REFUS : TMP_DIR=$TMP_DIR n'est ni /tmp ni /var/tmp" >&2; exit 1 ;;
+esac
+case "$ARCHIVES/" in
+  "$TMP_DIR"/*) echo "[menage-tmp] REFUS : ARCHIVES=$ARCHIVES est sous $TMP_DIR (les archives seraient rangées avec le reste)" >&2; exit 1 ;;
+esac
 ESSAI=0
 [ "${1:-}" = "--essai" ] && ESSAI=1
 
@@ -66,6 +74,7 @@ protege() {
   case "$1" in
     pubB|rep-5f*|reconc*|iv-out|frames|alig|garder-*) return 0 ;;
     systemd-private-*|snap-private-tmp|.X11-unix|.ICE-unix|b-test) return 0 ;;
+    .menage-supp-*) return 0 ;; # dossier mis de côté par ce script (reste d'une interruption) : jamais retraité
   esac
   return 1
 }
@@ -88,8 +97,13 @@ for d in "${candidats[@]}"; do
     if git -C "$d" rev-parse --verify --quiet "$r^{commit}" >/dev/null 2>&1; then ref="$r"; break; fi
   done
   if [ -z "$ref" ]; then log "dépôt $d : ni origin/HEAD, ni origin/master, ni origin/main (ignoré)"; continue; fi
-  if git -C "$d" rev-list --objects "$ref" 2>"$TRAVAIL/revlist.err" | awk '{print $1}' >> "$CONNUS"; then
-    NB_DEPOTS=$((NB_DEPOTS + 1)); log "dépôt de référence : $d ($ref)"
+  # Dépôt superficiel ou « promisor » : des objets atteignables peuvent manquer, ce n'est pas une référence fiable.
+  if [ "$(git -C "$d" rev-parse --is-shallow-repository 2>/dev/null)" = "true" ] || [ "$(git -C "$d" config --get remote.origin.promisor 2>/dev/null)" = "true" ]; then
+    log "dépôt $d : superficiel ou partiel (promisor) : ignoré, ses fichiers seront archivés"; continue
+  fi
+  # rev-list écrit dans un fichier temporaire, ajouté à l'ensemble seulement si tout a réussi.
+  if git -C "$d" rev-list --objects "$ref" 2>"$TRAVAIL/revlist.err" | awk '{print $1}' > "$TRAVAIL/revlist.tmp"; then
+    cat "$TRAVAIL/revlist.tmp" >> "$CONNUS" && { NB_DEPOTS=$((NB_DEPOTS + 1)); log "dépôt de référence : $d ($ref)"; }
   else
     log "dépôt $d : rev-list en échec ($(head -c 150 "$TRAVAIL/revlist.err" 2>/dev/null)) : ignoré, ses fichiers seront archivés"
   fi
@@ -100,8 +114,12 @@ sort -u -o "$CONNUS" "$CONNUS"
 # Vrai (0) si le dossier est « récent » : un fichier modifié (mtime) OU changé (ctime) depuis N
 # jours. Une erreur de find compte comme « récent » (dans le doute, on garde).
 recent() {
+  # Le dossier racine lui-même n'est jugé que sur mtime : son ctime change quand on le RENOMME
+  # (mise de côté avant suppression), ce qui n'est pas une activité du contenu.
   local sortie
-  sortie="$(find "$1" \( -mtime "-$AGE_JOURS" -o -ctime "-$AGE_JOURS" \) -print -quit 2>"$TRAVAIL/find.err")" || return 0
+  sortie="$(find "$1" -mindepth 1 \( -mtime "-$AGE_JOURS" -o -ctime "-$AGE_JOURS" \) -print -quit 2>"$TRAVAIL/find.err")" || return 0
+  [ -n "$sortie" ] && return 0
+  sortie="$(find "$1" -maxdepth 0 -mtime "-$AGE_JOURS" -print -quit 2>"$TRAVAIL/find.err")" || return 0
   [ -n "$sortie" ]
 }
 
@@ -116,6 +134,10 @@ utilise() {
     case "$t" in "$d"|"$d"/*) RAISON_USAGE="processus ($l)"; return 0 ;; esac
   done
   if grep -qsF -- "$d/" /proc/[0-9]*/maps 2>/dev/null; then RAISON_USAGE="fichier projeté en mémoire"; return 0; fi
+  # Montage à l'intérieur du dossier (point de montage = colonne 5 de mountinfo).
+  if [ -r /proc/self/mountinfo ] && awk -v p="$d/" 'index($5,p)==1' /proc/self/mountinfo | grep -q .; then
+    RAISON_USAGE="point de montage à l'intérieur"; return 0
+  fi
   if command -v lsof >/dev/null 2>&1; then
     sortie="$(timeout 60 lsof +D "$d" 2>/dev/null | head -n 1; exit "${PIPESTATUS[0]}")"; rc=$?
     if [ "$rc" -eq 124 ]; then RAISON_USAGE="lsof : délai dépassé"; return 0; fi
@@ -155,16 +177,18 @@ fabriquer_manifeste() {
   printf 'type\tempreinte_git\tmode\ttaille\tdate\tchemin_relatif\n' > "$out" || return 1
   # Fichiers réguliers : métadonnées, puis empreintes (git hash-object, sans filtre).
   ( cd "$d" && find . -type f -printf '%m\037%s\037%TY-%Tm-%TdT%TH:%TM:%TS\037%P\0' ) > "$recs" 2>"$TRAVAIL/find.err" || { log "find (manifeste) en échec sur $d"; return 1; }
-  sed -z 's/^[^\x1f]*\x1f[^\x1f]*\x1f[^\x1f]*\x1f//' < "$recs" > "$TRAVAIL/reg.paths0"
+  # Chaque écriture intermédiaire est contrôlée (disque plein) : tout écart = manifeste incomplet.
+  sed -z 's/^[^\x1f]*\x1f[^\x1f]*\x1f[^\x1f]*\x1f//' < "$recs" > "$TRAVAIL/reg.paths0" || { log "écriture des chemins en échec (disque plein ?) sur $d"; return 1; }
   n_reg="$(tr -cd '\0' < "$recs" | wc -c)"
+  [ "$(tr -cd '\0' < "$TRAVAIL/reg.paths0" | wc -c)" -eq "$n_reg" ] || { log "liste des chemins incomplète sur $d (disque plein ?)"; return 1; }
   if [ "$n_reg" -gt 0 ]; then
     if ( cd "$d" && xargs -0 git hash-object --no-filters -- < "$TRAVAIL/reg.paths0" ) > "$TRAVAIL/reg.hashes" 2>"$TRAVAIL/hash.err" \
        && n_h="$(wc -l < "$TRAVAIL/reg.hashes")" && [ "$n_h" -eq "$n_reg" ]; then
       echo 1 > "$TRAVAIL/hash_ok"
-      echapper0 < "$recs" | tr '\0\037' '\n\t' | paste -d'\t' "$TRAVAIL/reg.hashes" - | sed 's/^/f\t/' >> "$out"
+      echapper0 < "$recs" | tr '\0\037' '\n\t' | paste -d'\t' "$TRAVAIL/reg.hashes" - | sed 's/^/f\t/' >> "$out" || { log "écriture du manifeste en échec sur $d"; return 1; }
     else
       log "doute sur les empreintes de $d ($(head -c 150 "$TRAVAIL/hash.err" 2>/dev/null)) : tout sera archivé"
-      echapper0 < "$recs" | tr '\0\037' '\n\t' | sed 's/^/f\t?\t/' >> "$out"
+      echapper0 < "$recs" | tr '\0\037' '\n\t' | sed 's/^/f\t?\t/' >> "$out" || { log "écriture du manifeste en échec sur $d"; return 1; }
     fi
   else
     : > "$TRAVAIL/reg.hashes"; echo 1 > "$TRAVAIL/hash_ok"
@@ -172,8 +196,41 @@ fabriquer_manifeste() {
   # Liens, dossiers et autres entrées : type, -, mode, taille, date, chemin (lien -> cible).
   ( cd "$d" && find . -mindepth 1 ! -type f -printf '%y\037-\037%m\037%s\037%TY-%Tm-%TdT%TH:%TM:%TS\037%P\036%l\0' ) > "$TRAVAIL/autres.recs0" 2>>"$TRAVAIL/find.err" \
     || { log "find (liens/dossiers) en échec sur $d"; return 1; }
-  sed -z 's/\x1e$//; s/\x1e/ -> /' < "$TRAVAIL/autres.recs0" | echapper0 | tr '\0\037' '\n\t' >> "$out"
+  sed -z 's/\x1e$//; s/\x1e/ -> /' < "$TRAVAIL/autres.recs0" | echapper0 | tr '\0\037' '\n\t' >> "$out" || { log "écriture du manifeste en échec sur $d"; return 1; }
+  # Contrôle final : 1 ligne d'en-tête + 1 par fichier + 1 par autre entrée.
+  local n_autres n_lignes
+  n_autres="$(tr -cd '\0' < "$TRAVAIL/autres.recs0" | wc -c)"
+  n_lignes="$(wc -l < "$out")"
+  if [ "$n_lignes" -ne $((1 + n_reg + n_autres)) ]; then
+    log "manifeste de $d incomplet : ${n_lignes} lignes au lieu de $((1 + n_reg + n_autres)) (disque plein ?)"; return 1
+  fi
   return 0
+}
+
+# Contrôle INDÉPENDANT juste avant suppression de $1 (dossier courant, peut être renommé) dont les
+# chemins d'origine sont sous $2, archive $3 : chaque fichier régulier doit avoir son empreinte dans
+# l'ensemble connu OU figurer dans l'archive. Recalcule tout, sans réutiliser les listes du passage.
+verifier_independant() {
+  local cur="$1" orig="$2" archive="$3" w="$TRAVAIL/ind" n n_h
+  mkdir -p "$w" || return 1
+  ( cd "$cur" && find . -type f -print0 ) > "$w/noms0" 2>/dev/null || return 1
+  n="$(tr -cd '\0' < "$w/noms0" | wc -c)"
+  [ "$n" -eq 0 ] && return 0
+  sed -z 's#^\./##' < "$w/noms0" > "$w/rel0" || return 1
+  [ "$(tr -cd '\0' < "$w/rel0" | wc -c)" -eq "$n" ] || return 1
+  ( cd "$cur" && xargs -0 git hash-object --no-filters -- < "$w/rel0" ) > "$w/h" 2>/dev/null || return 1
+  n_h="$(wc -l < "$w/h")"; [ "$n_h" -eq "$n" ] || return 1
+  awk '{printf "%s\t%d\n", $1, NR}' "$w/h" | sort -t $'\t' -k1,1 > "$w/idx" || return 1
+  # Numéros des fichiers dont l'empreinte n'est PAS connue.
+  join -t $'\t' -v 2 -1 1 -2 1 "$CONNUS" "$w/idx" | cut -f2 > "$w/inconnus.n" || return 1
+  [ -s "$w/inconnus.n" ] || return 0
+  # Noms (chemin d'origine, sans « / » initial) de ces fichiers, comparés à la liste de l'archive.
+  awk -v RS='\0' -v ORS='\n' -v pre="${orig#/}/" 'NR==FNR { sel[$1]=1; next } (FNR in sel) { print pre $0 }' \
+    <(tr '\n' '\0' < "$w/inconnus.n") "$w/rel0" > "$w/attendus" || return 1
+  tar --quoting-style=literal -tzf "$archive" > "$w/dans-archive" 2>/dev/null || return 1
+  sort -u "$w/dans-archive" > "$w/dans-archive.s" && sort -u "$w/attendus" > "$w/attendus.s" || return 1
+  # Tout nom attendu doit être dans l'archive (un nom à saut de ligne ne se retrouve pas : échec prudent).
+  [ -z "$(comm -23 "$w/attendus.s" "$w/dans-archive.s" | head -n 1)" ]
 }
 
 traiter() {
@@ -181,6 +238,12 @@ traiter() {
   nom="${d#"$TMP_DIR"/}"
 
   if protege "$nom"; then log "PROTÉGÉ (liste blanche) : $nom"; return; fi
+  # Une archive .partiel existe déjà pour ce dossier : anomalie déjà signalée, on ne réarchive pas
+  # (sinon une archive pleine taille serait recréée chaque nuit jusqu'à remplir le disque).
+  local p
+  for p in "$ARCHIVES"/*-"$nom".tar.gz.partiel "$ARCHIVES"/*-"$nom"-[0-9][0-9][0-9][0-9][0-9][0-9].tar.gz.partiel; do
+    if [ -e "$p" ]; then log "ANOMALIE déjà signalée ($p) : $nom laissé en place, pas de nouvelle archive (traiter à la main)"; return; fi
+  done
   if [ -L "$d" ] || mountpoint -q "$d" 2>/dev/null; then log "ignoré (lien ou point de montage) : $nom"; return; fi
   if ! taille_mo="$(du -sxm "$d" 2>/dev/null | cut -f1)" || [ -z "$taille_mo" ]; then
     log "ANOMALIE : du en échec sur $nom : laissé en place"; return
@@ -226,6 +289,9 @@ traiter() {
   nb_liens="$(tr -cd '\0' < "$TRAVAIL/liens0" | wc -c)"
   # Le manifeste lui-même est dans l'archive.
   local nb_attendu=$((nb_reg_inconnus + nb_liens + 1))
+  if [ "$(tr -cd '\0' < "$a0" | wc -c)" -ne $((nb_reg_inconnus + nb_liens)) ]; then
+    log "ANOMALIE : liste à archiver incomplète pour $nom (disque plein ?) : laissé en place"; return
+  fi
 
   log "candidat : $nom (${taille_mo} Mo) ; ${nb_total} entrées au manifeste, $((nb_reg_inconnus + nb_liens)) à archiver (absentes de la branche principale, ou liens)"
 
@@ -250,7 +316,7 @@ traiter() {
   else
     nb_dans="$(tar --quoting-style=escape -tzf "$archive" 2>/dev/null | wc -l)"
     if [ "$nb_dans" -ne "$nb_attendu" ]; then echec="${nb_dans} entrées au lieu de ${nb_attendu}"
-    elif ! tar --quoting-style=escape -tzf "$archive" 2>/dev/null | grep -qxF -- "${manifeste#/}"; then echec="manifeste absent de l'archive"
+    elif ! tar -xOzf "$archive" "${manifeste#/}" 2>/dev/null | cmp -s - "$manifeste"; then echec="manifeste absent de l'archive ou différent"
     elif ! tar -dzf "$archive" -C / >"$TRAVAIL/tar-d.out" 2>&1; then echec="comparaison du contenu en échec ($(head -c 200 "$TRAVAIL/tar-d.out"))"
     fi
   fi
@@ -261,13 +327,28 @@ traiter() {
   chmod 600 "$archive"
   log "  archive vérifiée (gzip -t, liste, comparaison tar -d) : $archive (${nb_attendu} entrées dont le manifeste ${manifeste})"
 
-  # Dernière garde avant suppression : le dossier n'a pas été repris ni modifié entre-temps.
-  if recent "$d"; then log "ANOMALIE : $nom a changé pendant l'archivage (ou find en échec) : laissé en place"; return; fi
-  if utilise "$d"; then log "ANOMALIE : $nom est devenu utilisé ($RAISON_USAGE) pendant l'archivage : laissé en place"; return; fi
-  if rm -rf --one-file-system -- "$d"; then
+  # Dernière garde avant suppression. Ordre : usage, puis mise de côté ATOMIQUE (renommage), puis
+  # nouveaux contrôles sur le dossier renommé (un processus qui l'aurait ouvert se retrouve sous le
+  # nouveau nom), puis contrôle indépendant, puis seulement rm. Au moindre doute on remet le nom d'origine.
+  if utilise "$d"; then log "ANOMALIE : $nom est devenu utilisé ($RAISON_USAGE) pendant l'archivage : laissé en place (archive conservée : $archive)"; return; fi
+  local supp="$TMP_DIR/.menage-supp-$$"
+  if [ -e "$supp" ]; then log "ANOMALIE : $supp existe déjà : $nom laissé en place"; return; fi
+  if ! mv -T -- "$d" "$supp"; then log "ANOMALIE : renommage de $nom impossible : laissé en place"; return; fi
+  local doute=""
+  if recent "$supp"; then doute="a changé pendant l'archivage (ou find en échec)"
+  elif utilise "$supp"; then doute="utilisé ($RAISON_USAGE)"
+  elif ! verifier_independant "$supp" "$d" "$archive"; then doute="contrôle indépendant (empreinte connue ou présent dans l'archive) en échec"
+  fi
+  if [ -n "$doute" ]; then
+    if mv -T -- "$supp" "$d"; then log "ANOMALIE : $nom $doute : nom d'origine rétabli, laissé en place"
+    else log "ANOMALIE GRAVE : $nom $doute ET retour au nom d'origine impossible : dossier à $supp, ne rien supprimer"; fi
+    case "$doute" in contrôle*) [ -e "$archive" ] && mv -f "$archive" "$archive.partiel" ;; esac
+    return
+  fi
+  if rm -rf --one-file-system -- "$supp"; then
     log "  supprimé : $d (${taille_mo} Mo libérés)"
   else
-    log "ANOMALIE : suppression incomplète de $d"
+    log "ANOMALIE : suppression incomplète de $supp (reste à terminer à la main, l'archive $archive est vérifiée)"
   fi
 }
 

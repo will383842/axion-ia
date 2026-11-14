@@ -193,6 +193,7 @@ purge Docker : ils mesurent, préviennent, ou archivent avant de ranger `/tmp`.
 | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | `surveiller-disque.sh`               | Mesure `df /`, historique horaire (`/var/lib/axion-disque/historique.csv`), alerte Telegram 75 % / 85 % / 90 %, top 5 des causes, « plein dans N jours » | `*/10 * * * *` (`/etc/cron.d/axion-disque`) |
 | `menage-tmp.sh`                      | Dossiers de `/tmp` > 7 j et > 100 Mo : manifeste de tout le dossier + archive (node_modules compris ; fichiers absents de la branche principale) dans `/root/archives-tmp/`, vérifie (gzip, liste, `tar -d`), puis supprime | `40 4 * * *`                       |
+| `exporter-journal.sh`                | Export compressé des 8 derniers jours du journal (`journalctl --since "-8 days" -o export \| gzip`, vérifié `gzip -t`) → `/root/archives-journal/journal-export-<date>.gz` | `10 5 * * 0` (dimanche, `/etc/cron.d/axion-disque`) |
 | `journald-axion.conf`                | `SystemMaxUse=500M` → `/etc/systemd/journald.conf.d/axion.conf`                                                                         | —                                  |
 | `installer-garde-fous-disque.sh`     | Installe le tout (idempotent), retire la ligne cassée `disk-alert` du crontab root (sauvegarde d'abord)                                  | à lancer à la main, une fois       |
 
@@ -220,5 +221,5 @@ chmod 600 /etc/axion-disque/telegram.env
 Les deux scripts ont un mode `--essai`. `menage-tmp.sh` ne touche jamais à `pubB`, `rep-5f*`, `reconc*`,
 `iv-out`, `frames`, `alig`, `b-test`, `systemd-private-*`, `snap-private-tmp`, `.X11-unix`, `.ICE-unix`, ni à ce qui commence par `garder-` ; dépôts de référence réglables
 (`DEPOTS_REF`, défaut `/opt/studio-axion-ia/source`, ou `/etc/axion-disque/menage-tmp.conf`).
-Un dossier dont l'archive ne se vérifie pas (renommée `.partiel`), ou dont un contrôle d'usage (lsof, docker, find) échoue ou dépasse le délai, est laissé en place. `docker-nettoyage.sh` (cron :15 du
+Le journal `menage-tmp.log` est gardé 2 ans (logrotate `rotate 104`). Avant la limite journald, l'installeur archive le journal (`/root/archives-journal/journal-<date>.tar.gz`, vérifié) et un export hebdomadaire recouvre les 8 derniers jours. `menage-tmp.sh` refuse tout `TMP_DIR` autre que `/tmp` ou `/var/tmp`, met le dossier de côté par renommage atomique avant de le supprimer, et ne réarchive pas un dossier qui a déjà une archive `.partiel` (anomalie à traiter à la main). Un dossier dont l'archive ne se vérifie pas (renommée `.partiel`), ou dont un contrôle d'usage (lsof, docker, find) échoue ou dépasse le délai, est laissé en place. `docker-nettoyage.sh` (cron :15 du
 serveur) n'est pas encore versionné ici.

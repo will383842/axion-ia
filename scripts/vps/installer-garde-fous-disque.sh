@@ -45,10 +45,10 @@ agir() { # agir <description> <commande...>
 }
 
 if [ "$ESSAI" = 0 ] && [ "$(id -u)" -ne 0 ]; then dire "à lancer en root (ou avec --essai)"; exit 1; fi
-for f in surveiller-disque.sh menage-tmp.sh journald-axion.conf; do
+for f in surveiller-disque.sh menage-tmp.sh exporter-journal.sh journald-axion.conf; do
   [ -f "$ICI/$f" ] || { dire "fichier manquant : $ICI/$f"; exit 1; }
 done
-bash -n "$ICI/surveiller-disque.sh" && bash -n "$ICI/menage-tmp.sh" || { dire "erreur de syntaxe dans un script : arrêt"; exit 1; }
+bash -n "$ICI/surveiller-disque.sh" && bash -n "$ICI/menage-tmp.sh" && bash -n "$ICI/exporter-journal.sh" || { dire "erreur de syntaxe dans un script : arrêt"; exit 1; }
 
 # Copie « .avant-<date> » de tout fichier existant avant de l'écraser (rien n'est perdu).
 sauver_avant() {
@@ -64,6 +64,7 @@ installer_fichier() { # installer_fichier <mode> <source> <destination>
 # 1. Scripts
 agir "installation de $DEST/surveiller-disque.sh" installer_fichier 755 "$ICI/surveiller-disque.sh" "$DEST/surveiller-disque.sh"
 agir "installation de $DEST/menage-tmp.sh" installer_fichier 755 "$ICI/menage-tmp.sh" "$DEST/menage-tmp.sh"
+agir "installation de $DEST/exporter-journal.sh" installer_fichier 755 "$ICI/exporter-journal.sh" "$DEST/exporter-journal.sh"
 
 # 2. Dossiers
 agir "dossier /var/lib/axion-disque (historique et états)" install -d -m 755 /var/lib/axion-disque
@@ -80,6 +81,8 @@ SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 */10 * * * * root /opt/axion-ia/surveiller-disque.sh >> /var/log/surveiller-disque.log 2>&1
 40 4 * * * root /opt/axion-ia/menage-tmp.sh > /dev/null 2>> /var/log/menage-tmp.log
+# Export compressé des 8 derniers jours du journal (recouvrement d'un jour : aucun trou, journald étant borné).
+10 5 * * 0 root /opt/axion-ia/exporter-journal.sh >> /var/log/exporter-journal.log 2>&1
 FIN
 }
 ecrire_cron() { sauver_avant "$CRON" && contenu_cron > "$CRON.tmp" && chmod 644 "$CRON.tmp" && mv "$CRON.tmp" "$CRON"; }
@@ -88,27 +91,45 @@ agir "écriture de $CRON" ecrire_cron
 # 4. Rotation des journaux
 contenu_logrotate() {
   cat <<'FIN'
-/var/log/surveiller-disque.log /var/log/menage-tmp.log {
+/var/log/surveiller-disque.log /var/log/exporter-journal.log {
     weekly
     rotate 8
     compress
     missingok
     notifempty
 }
+# Journal du ménage de /tmp : il dit ce qui a été archivé puis supprimé, on le garde 2 ans.
+/var/log/menage-tmp.log {
+    weekly
+    rotate 104
+    compress
+    missingok
+    notifempty
+}
 FIN
 }
-ecrire_logrotate() { sauver_avant "$LOGROTATE" && contenu_logrotate > "$LOGROTATE"; chmod 644 "$LOGROTATE"; }
+ecrire_logrotate() { sauver_avant "$LOGROTATE" && contenu_logrotate > "$LOGROTATE.tmp" && chmod 644 "$LOGROTATE.tmp" && mv "$LOGROTATE.tmp" "$LOGROTATE"; }
 agir "écriture de $LOGROTATE" ecrire_logrotate
 
 # 5. journald
 archiver_journal() {
-  # Archive le journal AVANT toute limite : vérifiée (gzip -t + liste non vide), sinon on n'applique rien.
-  local a="/root/archives-journal/journal-$DATE.tar.gz"
+  # Archive le journal AVANT toute limite. Vérifié (gzip -t, liste non vide, tar -d) ; au moindre
+  # défaut, message clair et RIEN n'est appliqué. Jamais en silence.
+  local a="/root/archives-journal/journal-$DATE.tar.gz" rc
   [ -d /var/log/journal ] || { dire "journald : pas de /var/log/journal (journal en mémoire), rien à archiver"; return 0; }
   install -d -m 700 /root/archives-journal || return 1
-  if ! tar -C /var/log -czf "$a" journal; then dire "journald : archive impossible, limite NON appliquée"; mv -f "$a" "$a.partiel" 2>/dev/null; return 1; fi
-  if ! gzip -t "$a" || [ "$(tar -tzf "$a" | wc -l)" -le 0 ]; then
-    dire "journald : archive invalide, limite NON appliquée"; mv -f "$a" "$a.partiel" 2>/dev/null; return 1
+  # Ferme le fichier actif (il devient un fichier archivé, qui ne bouge plus) avant la copie.
+  journalctl --flush --rotate || { dire "journald : journalctl --flush --rotate en échec, limite NON appliquée"; return 1; }
+  tar -C /var/log -czf "$a" journal; rc=$?
+  if [ "$rc" -eq 1 ]; then
+    dire "journald : ÉCHEC PROPRE : « file changed as we read it » (un fichier du journal a changé pendant la copie). Rien n'est appliqué ; relancer l'installeur. Archive conservée : $a.partiel"
+    mv -f "$a" "$a.partiel" 2>/dev/null; return 1
+  elif [ "$rc" -ne 0 ]; then
+    dire "journald : tar a échoué (code $rc), limite NON appliquée (archive : $a.partiel)"; mv -f "$a" "$a.partiel" 2>/dev/null; return 1
+  fi
+  if ! gzip -t "$a" || [ "$(tar -tzf "$a" | wc -l)" -le 0 ] || ! tar -dzf "$a" -C /var/log >/dev/null 2>&1; then
+    dire "journald : archive invalide ou différente du journal (gzip -t / liste / tar -d), limite NON appliquée (archive : $a.partiel)"
+    mv -f "$a" "$a.partiel" 2>/dev/null; return 1
   fi
   chmod 600 "$a"; dire "journald : journal archivé et vérifié : $a"
 }
@@ -118,7 +139,7 @@ installer_journald() {
     archiver_journal || return 1
     sauver_avant "$JOURNALD_DEST" || return 1
     install -m 644 "$ICI/journald-axion.conf" "$JOURNALD_DEST" || return 1
-    systemctl restart systemd-journald
+    systemctl restart systemd-journald || { dire "journald : redémarrage en échec"; return 1; }
     dire "journald : limite 500M appliquée (redémarré)"
   else
     dire "journald : déjà à jour"

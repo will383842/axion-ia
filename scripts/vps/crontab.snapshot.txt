@@ -27,3 +27,5 @@
 50 3 * * * /opt/usine-axion-ia/sauvegarder-hors-serveur.sh >> /var/log/usine-backup.log 2>&1
 */5 * * * * /opt/usine-axion-ia/surveiller.sh >/dev/null 2>&1
 30 6 * * * /opt/studio-axion-ia/controle-jetons-zernio.sh  # contrôle jetons Zernio (Studio)
+# --- Lignes AJOUTÉES par installer-garde-fous-disque.sh, dans /etc/cron.d/axion-disque (PAS dans ce crontab ; en commentaire ici, hors « crontab -l » réel) ---
+# 10 5 * * 0 root /opt/axion-ia/exporter-journal.sh >> /var/log/exporter-journal.log 2>&1

@@ -49,9 +49,18 @@ Actions sûres, dans l'ordre :
    ```bash
    install -d -m 700 /root/archives-journal
    A=/root/archives-journal/journal-$(date +%F-%H%M%S).tar.gz
-   tar -C /var/log -czf "$A" journal && gzip -t "$A" && [ "$(tar -tzf "$A" | wc -l)" -gt 0 ]      && install -m 644 scripts/vps/journald-axion.conf /etc/systemd/journald.conf.d/axion.conf      && systemctl restart systemd-journald
+   journalctl --flush --rotate   # ferme le fichier actif avant la copie
+   tar -C /var/log -czf "$A" journal && gzip -t "$A" && [ "$(tar -tzf "$A" | wc -l)" -gt 0 ] \
+     && tar -dzf "$A" -C /var/log \
+     && install -m 644 scripts/vps/journald-axion.conf /etc/systemd/journald.conf.d/axion.conf \
+     && systemctl restart systemd-journald
    ```
-   (ou relancer `installer-garde-fous-disque.sh`, qui fait la même chose). Si une étape échoue : ne rien appliquer.
+   (ou relancer `installer-garde-fous-disque.sh`, qui fait la même chose). Si une étape échoue, y compris
+   « file changed as we read it » : ne rien appliquer, relancer.
+   Chaque dimanche à 05:10, `/opt/axion-ia/exporter-journal.sh` écrit en plus un export compressé des
+   8 derniers jours (`journalctl --since "-8 days" -o export | gzip`, vérifié par `gzip -t`) dans
+   `/root/archives-journal/journal-export-<date>.gz` : le journal reste borné à 500 Mo sans rien perdre
+   (recouvrement d'un jour entre deux exports). Ne jamais supprimer ces fichiers sans décision du fondateur.
 4. Sessions Claude : travailler dans `/root/travaux-claude/<date>-<session>/`
    et nettoyer en partant (jamais dans `/tmp`).
 5. Le reste (clones du Studio, vidéos `cv-storage`, journaux ClickHouse) :
