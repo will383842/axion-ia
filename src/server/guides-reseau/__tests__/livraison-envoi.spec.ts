@@ -10,6 +10,7 @@ const bd = vi.hoisted(() => ({
   lecturesCibles: 0,
   cible: null as Ligne | null,
   circuit: false,
+  lectureEchec: null as Error | null,
   journal: [] as string[],
 }));
 
@@ -18,6 +19,7 @@ vi.mock("@/lib/prisma", () => ({
     cibleReseau: {
       findUnique: async () => {
         bd.lecturesCibles += 1;
+        if (bd.lectureEchec) throw bd.lectureEchec;
         return bd.cible;
       },
     },
@@ -63,6 +65,7 @@ beforeEach(() => {
   bd.lecturesCibles = 0;
   bd.cible = { ...CIBLE };
   bd.circuit = false;
+  bd.lectureEchec = null;
   for (const m of ["warn", "error", "log"] as const) {
     vi.spyOn(console, m).mockImplementation((...a: unknown[]) => {
       bd.journal.push(a.map(String).join(" "));
@@ -140,5 +143,25 @@ describe("mettreEnFileGuide — livrer le bon guide", () => {
     bd.lecturesCibles = 0;
     expect(await mettreEnFileGuide(demande("gde-essai-01"), { reseau: true })).toBe("suspendu");
     expect(bd.lecturesCibles).toBe(0);
+  });
+  it("S2 réserve — essai hors liste ou lecture en échec : non-parti, journal sans adresse ni message d'erreur", async () => {
+    vi.stubEnv("GUIDES_RESEAU_LIVRAISON_ENABLED", "true");
+    bd.cible = { ...CIBLE, test: true };
+    bd.journal.length = 0;
+    expect(await mettreEnFileGuide(demande("gde-essai-01"), { reseau: true })).toBe("non-parti");
+    let j = bd.journal.join("\n");
+    expect(j).toContain("essai_hors_liste");
+    expect(j).not.toContain("personne@example.test");
+    expect(j).not.toContain("personne");
+    expect(j).not.toContain("@");
+    // Lecture en échec dont le message contiendrait l'adresse : ni le message, ni l'adresse ne sortent.
+    bd.lectureEchec = new Error("échec pour personne@example.test");
+    bd.journal.length = 0;
+    expect(await mettreEnFileGuide(demande("gde-essai-01"), { reseau: true })).toBe("non-parti");
+    j = bd.journal.join("\n");
+    expect(j).toContain("lecture_echec");
+    expect(j).not.toContain("personne");
+    expect(j).not.toContain("@");
+    expect(bd.envois).toHaveLength(0);
   });
 });

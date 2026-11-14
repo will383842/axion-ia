@@ -175,12 +175,18 @@ export function analyserCorps(corps: Buffer): AnalyseDemande {
  */
 export async function analyserCorpsAvecCatalogue(corps: Buffer): Promise<AnalyseDemande> {
   let guide: unknown;
+  let email: unknown;
   try {
-    guide = (JSON.parse(corps.toString("utf8")) as Record<string, unknown> | null)?.["guide"];
+    const brut = JSON.parse(corps.toString("utf8")) as Record<string, unknown> | null;
+    guide = brut?.["guide"];
+    email = brut?.["email"];
   } catch {
     return analyserCorps(corps);
   }
-  const connu = typeof guide === "string" && (await cibleGuideConnue(guide));
+  // S2c : l'adresse du corps ne sert qu'à reconnaître une cible d'ESSAI pour une adresse d'essai.
+  const connu =
+    typeof guide === "string" &&
+    (await cibleGuideConnue(guide, typeof email === "string" ? email.trim() : undefined));
   return analyser(corps, (g) => g === guide && connu);
 }
 

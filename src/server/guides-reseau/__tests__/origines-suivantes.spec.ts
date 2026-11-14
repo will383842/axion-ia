@@ -409,4 +409,38 @@ describe("transmettreOriginesSuivantes", () => {
     const tout = logs.join("\n");
     expect(tout).not.toMatch(/@|cle-1|post_ref_|cle\d+0{10}/);
   });
+  describe("N2 — origines d'un code de guide hors format : jamais transmises", () => {
+    const appelPour = (guide: string) =>
+      transmettreOriginesSuivantes({ email: EMAIL, emailKey: "cle-1", guide });
+    for (const code of [
+      "gde-ABCDEFG",
+      "gde-abcde",
+      "gde-" + "a".repeat(25),
+      "gde-abc_def",
+      "adr-abcdefg",
+    ]) {
+      it(`${code} : hors_charge, aucune ligne d'outbox, rien supprimé, aucune demande lue`, async () => {
+        bd.demande = { ...cliquee(), guide: code };
+        bd.origines.push(origine({ guide: code }), origine({ guide: code }));
+        await expect(appelPour(code)).resolves.toBe("rien");
+        expect(bd.requetesOutbox).toBe(0);
+        expect(bd.outbox).toHaveLength(0);
+        expect(bd.origines).toHaveLength(2);
+        expect(bd.origines.map((o) => o.crmStatut)).toEqual(["hors_charge", "hors_charge"]);
+        expect(logs.join("\n")).not.toContain(code);
+        expect(logs.join("\n")).not.toContain(EMAIL);
+      });
+    }
+    for (const code of ["gde-abcdef", "gde-" + "a1-".repeat(8)]) {
+      it(`${code} (borne valide ${code.length - 4}) : transmise normalement`, async () => {
+        bd.origines.push(origine({ guide: code }));
+        await expect(appelPour(code)).resolves.toBe("transmise");
+        expect(bd.outbox).toHaveLength(1);
+      });
+    }
+    it("guide-ia : inchangé", async () => {
+      bd.origines.push(origine());
+      await expect(appelPour("guide-ia")).resolves.toBe("transmise");
+    });
+  });
 });

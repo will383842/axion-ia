@@ -139,3 +139,36 @@ describe("resoudreGuide", () => {
     });
   });
 });
+
+describe("S2 réserve — caractères bidi et invisibles refusés dans le titre", () => {
+  it.each([
+    ["U+202A", "\u202A"],
+    ["U+202B", "\u202B"],
+    ["U+202C", "\u202C"],
+    ["U+202D", "\u202D"],
+    ["U+202E", "\u202E"],
+    ["U+2066", "\u2066"],
+    ["U+2067", "\u2067"],
+    ["U+2068", "\u2068"],
+    ["U+2069", "\u2069"],
+    ["U+200B", "\u200B"],
+    ["U+200C", "\u200C"],
+    ["U+200D", "\u200D"],
+    ["U+200E", "\u200E"],
+    ["U+200F", "\u200F"],
+  ])("%s au milieu du titre : refusé (titre indisponible)", async (_n, c) => {
+    expect(titreGuideSur(`Le plan ${c}en 90 jours`)).toBeNull();
+    await expect(
+      resoudreGuide(CODE, "a@example.test", {
+        lire: lecteur({ ...CIBLE, titre: `Le plan ${c}90` }),
+        env: ENV,
+      }),
+    ).resolves.toEqual({ kind: "indisponible", raison: "titre" });
+  });
+
+  it("un titre accentué ordinaire reste accepté (aucun faux positif)", () => {
+    expect(titreGuideSur("Le plan d'été : 90 jours — édition 2026")).toBe(
+      "Le plan d'été : 90 jours — édition 2026",
+    );
+  });
+});
