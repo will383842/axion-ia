@@ -174,6 +174,27 @@ export function libelleTypeDemandeSansDonnee(event: EvenementClient): string {
 }
 
 /**
+ * Le lien de la fiche, construit UNIQUEMENT à partir des identifiants de l'événement (jamais lu
+ * dans un texte libre du visiteur). Source unique : la ligne « Fiche » du salon, le doublon
+ * Telegram privé et le bouton de l'e-mail.
+ */
+export function lienFicheClient(event: EvenementClient | EvenementCalendlyNonClient): string {
+  switch (event.category) {
+    case "CLIENT_CALL_BOOKED":
+    case "CLIENT_CALL_CANCELED":
+    case "CLIENT_CALL_RESCHEDULED":
+    case "CALENDLY_INVITEE_CREATED":
+    case "CALENDLY_INVITEE_CANCELED":
+    case "CALENDLY_INVITEE_RESCHEDULED":
+      return lienConsole(`contacts/appels/${event.payload.eventUri}`);
+    case "CHATBOT_ESCALATION":
+      return lienConsole("chatbot/escalades");
+    default:
+      return lienConsole(`contacts/messages/${event.payload.submissionId}`);
+  }
+}
+
+/**
  * Les lignes de détail d'une demande (nom complet, coordonnées, message intégral…), en texte
  * brut. Réservé aux salons dédiés : jamais envoyé dans un salon de repli.
  */
@@ -197,7 +218,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         ligne("Page", p.pageUrl),
         ligne("UTM", utm(p)),
         ligne("Annuler / déplacer", p.cancelUrl),
-        ligne("Fiche", lienConsole(`contacts/appels/${p.eventUri}`)),
+        ligne("Fiche", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
     case "CLIENT_CALL_CANCELED":
@@ -219,7 +240,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         "Motif :",
         p.reason?.trim() || "(aucun motif écrit)",
         "",
-        ligne("Fiche", lienConsole(`contacts/appels/${p.eventUri}`)),
+        ligne("Fiche", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
     case "CLIENT_CALL_RESCHEDULED":
@@ -236,7 +257,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         ligne("E-mail", p.inviteeEmail),
         ligne("Téléphone", p.inviteePhone),
         ligne("Annuler / déplacer", p.cancelUrl),
-        ligne("Fiche", lienConsole(`contacts/appels/${p.eventUri}`)),
+        ligne("Fiche", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
     case "CHATBOT_LEAD_CAPTURED": {
@@ -249,7 +270,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         ligne("Source", "chatbot du site"),
         ...bloc("Besoin", p.message),
         "",
-        ligne("Fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
+        ligne("Fiche", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
     case "CHATBOT_ESCALATION": {
@@ -260,7 +281,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         ...bloc("Question", p.question),
         ...bloc("Contexte de la conversation", p.contexte),
         "",
-        ligne("Console", lienConsole("chatbot/escalades")),
+        ligne("Console", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
     default: {
@@ -299,7 +320,7 @@ export function lignesDetailClient(event: EvenementClient | EvenementCalendlyNon
         ligne("Ville d'origine", p.referrerCity),
         ...bloc("Message", p.message),
         "",
-        ligne("Fiche", lienConsole(`contacts/messages/${p.submissionId}`)),
+        ligne("Fiche", lienFicheClient(event)),
       ].filter((l): l is string => l !== null);
     }
   }

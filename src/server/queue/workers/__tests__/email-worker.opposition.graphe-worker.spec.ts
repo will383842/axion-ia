@@ -150,7 +150,6 @@ describe("🔴 le worker d'e-mails tourne hors de Next", () => {
     expect(nomsReleve).toContain("src/server/zoho-mail/client.ts");
     expect(nomsReleve).toContain("src/server/notifications/index.ts");
     expect(nomsReleve).not.toContain("src/server/queue/queues.ts");
-    expect(nomsReleve).not.toContain("src/server/queue/queues.ts");
     const fautifs = [...releve.entries()]
       .filter(
         ([f, specs]) =>
@@ -169,19 +168,6 @@ describe("🔴 le worker d'e-mails tourne hors de Next", () => {
         specs.some(PAQUETS_INTERDITS) || DIRECTIVE_USE_SERVER.test(readFileSync(f, "utf8")),
     );
     expect(interdits.length).toBeGreaterThan(0);
-  });
-
-  it("TÉMOIN− : la marche SAIT voir un import de `queues.ts`, dynamique ou `import { type … }`", () => {
-    expect(specificateurs('const m = await import("@/server/queue/queues");')).toContain(
-      "@/server/queue/queues",
-    );
-    expect(specificateurs('import { type X } from "@/server/queue/queues";')).toContain(
-      "@/server/queue/queues",
-    );
-    // …et ne compte PAS la forme effacée à la compilation, la seule que la feuille utilise.
-    expect(specificateurs('import type { X } from "@/server/queue/queues";')).not.toContain(
-      "@/server/queue/queues",
-    );
   });
 
   it("TÉMOIN− : la marche SAIT voir un import de `queues.ts`, dynamique ou `import { type … }`", () => {

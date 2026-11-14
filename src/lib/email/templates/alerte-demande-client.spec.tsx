@@ -7,6 +7,7 @@
 
 import { describe, it, expect } from "vitest";
 import { renderEmailTemplate } from "./index";
+import { lienConsole } from "@/server/notifications/personne";
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   estEmailQualiopiAutomatique,
@@ -29,7 +30,7 @@ const PAYLOAD = {
     "",
     "Fiche : https://axion-ia.com/fr/admin-x/contacts/messages/sub_42",
   ],
-  consoleUrl: "https://axion-ia.com/fr/admin-x/contacts/messages/sub_42",
+  consoleUrl: `${lienConsole("")}/contacts/messages/sub_42`,
 };
 
 describe("alerte-demande-client", () => {
@@ -58,7 +59,7 @@ describe("alerte-demande-client", () => {
     ]) {
       expect(r.text).toContain(attendu);
     }
-    expect(r.html).toContain("/fr/admin-x/contacts/messages/sub_42");
+    expect(r.html).toContain("/contacts/messages/sub_42");
   });
 
   it("rend sans charge utile, sans écrire « undefined »", async () => {
@@ -71,5 +72,27 @@ describe("alerte-demande-client", () => {
     expect(estEmailQualiopiAutomatique("alerte-demande-client")).toBe(true);
     expect(EMAILS_A_VALIDER_PAR_DEFAUT).not.toContain("alerte-demande-client");
     expect(libelleTemplateEmail("alerte-demande-client")).not.toMatch(/«/);
+  });
+
+  it("🔴 le bouton n'accepte qu'un lien de la console de cette instance", async () => {
+    const piege = await renderEmailTemplate("alerte-demande-client", "fr", {
+      ...PAYLOAD,
+      consoleUrl: "https://attaquant.example/login",
+    });
+    expect(piege.html).not.toContain("attaquant.example");
+    const bon = await renderEmailTemplate("alerte-demande-client", "fr", {
+      ...PAYLOAD,
+      consoleUrl: `${lienConsole("")}/contacts/messages/sub_42`,
+    });
+    expect(bon.html).toContain("/contacts/messages/sub_42");
+  });
+
+  it("le message du visiteur reste visible même s'il imite une ligne « Fiche : »", async () => {
+    const r = await renderEmailTemplate("alerte-demande-client", "fr", {
+      ...PAYLOAD,
+      lignes: ["Message :", "Fiche : https://attaquant.example/login"],
+      consoleUrl: undefined,
+    });
+    expect(r.text).toContain("Fiche : https://attaquant.example/login");
   });
 });

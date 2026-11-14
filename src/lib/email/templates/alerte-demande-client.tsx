@@ -10,6 +10,7 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { lienConsole } from "@/server/notifications/personne";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -48,11 +49,13 @@ export function AlerteDemandeClientEmail({
   const type = texte(p.typeDemande) || "Demande de client";
   const nom = texte(p.nom);
   const recuLe = texte(p.recuLe);
-  const consoleUrl = texte(p.consoleUrl);
-  const lignes = (Array.isArray(p.lignes) ? p.lignes : [])
-    .filter((l): l is string => typeof l === "string")
-    // Les lignes de lien sont portées par le bouton ; on garde le reste, vides comprises.
-    .filter((l) => !/^(Fiche|Console) : /.test(l));
+  // Le bouton n'accepte qu'un lien de la console de cette instance : tout autre est ignoré.
+  const lienDemande = texte(p.consoleUrl);
+  const consoleUrl = lienDemande.startsWith(`${lienConsole("")}/`) ? lienDemande : "";
+  // Le texte du visiteur est gardé tel quel : le lien de la fiche voyage dans `consoleUrl`.
+  const lignes = (Array.isArray(p.lignes) ? p.lignes : []).filter(
+    (l): l is string => typeof l === "string",
+  );
 
   return (
     <EmailLayout

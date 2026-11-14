@@ -8,9 +8,10 @@
 //      lien vers la fiche.
 //
 // Garanties : `doublerAlerteClient` ne lève JAMAIS ; chaque envoi a sa propre clé anti-doublon,
-// libérée si l'envoi échoue (un rejeu peut alors réessayer) ; les deux départs sont indépendants.
-// Le doublon ne passe jamais par `libererSiEchec` de `notify()` : l'échec d'un doublon ne doit
-// pas rouvrir l'alerte du salon (elle serait renvoyée en double).
+// libérée si l'envoi échoue ; les deux départs sont indépendants. Le doublon ne passe jamais par
+// `libererSiEchec` de `notify()` : l'échec d'un doublon ne doit pas rouvrir l'alerte du salon (elle
+// serait renvoyée en double). Conséquence : quand le salon est parti, PAS de rejeu pour réparer un
+// doublon raté ; le filet est le récap de 7 h 30 (PR C). Chaque échec est tracé (journal + Sentry).
 //
 // ⚠️ Pas d'import de `queues.ts` ici, même dynamique : ce module est dans la fermeture d'imports du
 // worker d'e-mails, que la garde `email-worker.opposition.graphe-worker.spec.ts` tient hors de
@@ -24,7 +25,12 @@
 import { createHash } from "node:crypto";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
 import { formatParisDateTime, humanDateOrText } from "./format";
-import { lignesDetailClient, libelleTypeDemande, type EvenementClient } from "./format-clients";
+import {
+  lienFicheClient,
+  lignesDetailClient,
+  libelleTypeDemande,
+  type EvenementClient,
+} from "./format-clients";
 import { isDuplicate, libererDedup } from "./dedup";
 import { resolveConversationPrivee } from "./routing";
 import { sendTelegramRaw } from "./channels/telegram";
@@ -71,9 +77,9 @@ interface ChampsPersonne {
 
 /** Résume l'événement : qui, quoi, quand, et le lien de la fiche. */
 export function resumerDemande(event: EvenementClient): ResumeDemande {
-  // Le lien de la fiche est déjà construit, une seule fois, par `lignesDetailClient`.
-  const lienLigne = lignesDetailClient(event).find((l) => /^(Fiche|Console) : /.test(l));
-  const fiche = lienLigne?.replace(/^(Fiche|Console) : /, "");
+  // Lien construit à partir des identifiants : jamais lu dans le texte libre du visiteur
+  // (hameçonnage : un message commençant par « Fiche : https://… »).
+  const fiche = lienFicheClient(event);
 
   const resume = (
     canal: CanalDoublon,
@@ -173,6 +179,22 @@ export function objetAlerteClient(canal: CanalDoublon, evenement: EvenementDoubl
   return `🔴 IMPORTANT DEMANDE CLIENT ${SUITE_OBJET[canal][evenement]}`;
 }
 
+/** Le jour (AAAA-MM-JJ) à Paris : borne la mémoire du jobId à la durée des jobs terminés. */
+function jourParis(d = new Date()): string {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(d);
+}
+
+/** Journal + Sentry, motif SEUL (jamais de donnée de personne). Ne lève jamais. */
+async function tracerEchec(message: string): Promise<void> {
+  console.error(`[notif:doublon] ${message}`);
+  await signalerIncident(`Doublon d'une demande de client : ${message}`).catch(() => {});
+}
+
 async function doublerSurTelegram(
   event: EvenementClient,
   dedupKey: string | undefined,
@@ -182,6 +204,7 @@ async function doublerSurTelegram(
   const categorie = `prive:${event.category}`;
   if (dedupKey && (await isDuplicate(categorie, dedupKey, TTL_DOUBLON_SEC))) return "deduped";
   let ok = false;
+  let motif = "envoi refusé par Telegram";
   try {
     ok = await sendTelegramRaw({
       text: formatDoublonPrive(event),
@@ -194,8 +217,12 @@ async function doublerSurTelegram(
     });
   } catch {
     ok = false;
+    motif = "exception à l'envoi Telegram";
   }
-  if (!ok && dedupKey) await libererDedup(categorie, dedupKey);
+  if (!ok) {
+    await tracerEchec(`conversation privée non prévenue (${motif})`);
+    if (dedupKey) await libererDedup(categorie, dedupKey);
+  }
   return ok ? "sent" : "failed";
 }
 
@@ -205,30 +232,38 @@ async function doublerParEmail(
 ): Promise<DoublonsClient["email"]> {
   const categorie = `email:${event.category}`;
   if (dedupKey && (await isDuplicate(categorie, dedupKey, TTL_DOUBLON_SEC))) return "deduped";
+  const liberer = async (): Promise<void> => {
+    if (dedupKey) await libererDedup(categorie, dedupKey);
+  };
   try {
     const r = resumerDemande(event);
     const quand =
       "submittedAt" in event.payload && event.payload.submittedAt
         ? event.payload.submittedAt
         : new Date();
+    // Le lien voyage HORS de `lignes` (il devient le bouton) : on retire seulement la ligne
+    // exacte que `lignesDetailClient` a construite, jamais une ligne du texte du visiteur.
+    const ligneFiche = (l: string): boolean =>
+      l === `Fiche : ${r.fiche}` || l === `Console : ${r.fiche}`;
     const payload: Record<string, unknown> = {
       canal: r.canal,
       evenement: r.evenement,
       typeDemande: r.typeDemande,
       nom: r.nom ?? r.entreprise ?? "",
       recuLe: formatParisDateTime(quand),
-      lignes: lignesDetailClient(event),
+      lignes: lignesDetailClient(event).filter((l) => !ligneFiche(l)),
       ...(r.fiche ? { consoleUrl: r.fiche } : {}),
     };
+    // Le jour dans le jobId : BullMQ garde les jobs terminés 7 jours, l'anti-doublon 24 h. Sans
+    // le jour, un rejeu entre les deux renverrait « enqueued » sans e-mail.
     const jobId = dedupKey
-      ? `alerte-client-${createHash("sha256").update(`${event.category}|${dedupKey}`).digest("hex").slice(0, 40)}`
+      ? `alerte-client-${createHash("sha256").update(`${event.category}|${dedupKey}|${jourParis()}`).digest("hex").slice(0, 40)}`
       : undefined;
     const enqueueEmail = await chargerEnfileurEmail();
     if (!enqueueEmail) {
       // Aucun point d'entrée n'a posé de chargeur (script isolé) : l'e-mail ne partira pas.
-      console.error("[notif:doublon] aucun enfileur d'e-mail posé : e-mail NON enfilé");
-      await signalerIncident("Doublon e-mail d'une demande de client : aucun enfileur posé");
-      if (dedupKey) await libererDedup(categorie, dedupKey);
+      await tracerEchec("aucun enfileur d'e-mail posé : e-mail non enfilé");
+      await liberer();
       return "failed";
     }
     const res = await enqueueEmail(
@@ -255,12 +290,12 @@ async function doublerParEmail(
           : res.garePourValidation
             ? "garé au lieu de partir"
             : "non enfilé";
-    console.error(`[notif:doublon] e-mail non parti (${motif})`);
-    await signalerIncident(`Doublon e-mail d'une demande de client non parti (${motif})`);
-    if (dedupKey) await libererDedup(categorie, dedupKey);
+    await tracerEchec(`e-mail non parti (${motif})`);
+    await liberer();
     return "failed";
   } catch {
-    if (dedupKey) await libererDedup(categorie, dedupKey);
+    await tracerEchec("exception à l'enfilage de l'e-mail");
+    await liberer();
     return "failed";
   }
 }

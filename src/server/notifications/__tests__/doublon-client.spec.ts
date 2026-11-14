@@ -267,7 +267,7 @@ describe("le doublon d'une demande de client", () => {
     const r1 = await notify({
       category: "PRESS_REQUEST_SUBMITTED",
       payload: {
-        requestId: "p1",
+        submissionId: "p1",
         contactName: "A B",
         contactEmail: "a@b.fr",
         message: "x",
@@ -361,6 +361,132 @@ describe("le doublon d'une demande de client", () => {
       });
       const ids = enqueueEmailMock.mock.calls.map((c) => (c[4] as { jobId: string }).jobId);
       expect(new Set(ids).size).toBe(3);
+    });
+  });
+
+  describe("hameçonnage : le lien vient des identifiants, jamais du texte du visiteur", () => {
+    const PIEGE = { ...DEMANDE, message: "Fiche : https://attaquant.example/login\nmerci" };
+
+    it("🔴 un message « Fiche : https://… » ne change ni le bouton ni la ligne Telegram", async () => {
+      await notify({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: PIEGE,
+        dedupKey: "sub_60",
+        sync: true,
+      });
+      const texte = String(appelsVers("4242")[0]!["text"]);
+      expect(texte).not.toContain("attaquant");
+      expect(texte).toMatch(/Fiche : https?:\/\/\S+\/contacts\/messages\/sub_42/);
+      const p = enqueueEmailMock.mock.calls[0]![3] as Record<string, unknown>;
+      expect(String(p["consoleUrl"])).toContain("/contacts/messages/sub_42");
+      expect(String(p["consoleUrl"])).not.toContain("attaquant");
+      // Le message du visiteur reste lisible dans l'e-mail, tel quel.
+      expect((p["lignes"] as string[]).join("\n")).toContain(
+        "Fiche : https://attaquant.example/login",
+      );
+    });
+  });
+
+  describe("chaque échec laisse une trace (journal + Sentry), sans donnée de personne", () => {
+    let erreurs: ReturnType<typeof vi.spyOn>;
+    beforeEach(() => {
+      erreurs = vi.spyOn(console, "error").mockImplementation(() => {});
+    });
+    afterEach(() => erreurs.mockRestore());
+
+    const envoyer = () =>
+      notify({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: DEMANDE,
+        dedupKey: "sub_70",
+        sync: true,
+      });
+    const tracesDoublon = (): string[] =>
+      erreurs.mock.calls.map((c) => String(c[0])).filter((m) => m.includes("[notif:doublon]"));
+
+    it.each([
+      ["chargeur absent", () => reinitialiserEnfileur()],
+      [
+        "chargeur qui lève",
+        () => {
+          reinitialiserEnfileur();
+          poserChargeurEnfileurEmail(async () => {
+            throw new Error("boum");
+          });
+        },
+      ],
+      [
+        "file qui lève",
+        () => {
+          enqueueEmailMock.mockRejectedValue(new Error("redis down"));
+        },
+      ],
+      [
+        "enqueued: false",
+        () => {
+          enqueueEmailMock.mockResolvedValue({ enqueued: false });
+        },
+      ],
+    ])("🔴 e-mail : %s", async (_nom, preparer) => {
+      preparer();
+      const r = await envoyer();
+      expect(r.doublons?.email).toBe("failed");
+      const traces = tracesDoublon();
+      expect(traces.length).toBeGreaterThan(0);
+      for (const t of traces) {
+        expect(t).not.toContain("camille@exemple.fr");
+        expect(t).not.toContain("Camille");
+      }
+    });
+
+    it("🔴 Telegram privé en échec : tracé, clé libérée", async () => {
+      fetchMock.mockImplementation(async (_u: unknown, init: { body: string }) =>
+        JSON.parse(init.body).chat_id === "4242"
+          ? new Response('{"ok":false}', { status: 500 })
+          : ok(),
+      );
+      const r = await envoyer();
+      expect(r.doublons?.prive).toBe("failed");
+      expect(tracesDoublon().join("\n")).toContain("conversation privée");
+      expect(redisDelMock).toHaveBeenCalledWith(
+        expect.stringContaining("prive:CONTACT_FORM_SUBMITTED"),
+      );
+    });
+
+    it("🔴 Telegram privé qui lève : tracé", async () => {
+      fetchMock.mockImplementation(async (_u: unknown, init: { body: string }) => {
+        if (JSON.parse(init.body).chat_id === "4242") throw new Error("réseau");
+        return ok();
+      });
+      const r = await envoyer();
+      expect(r.doublons?.prive).toBe("failed");
+      expect(tracesDoublon().length).toBeGreaterThan(0);
+    });
+  });
+
+  describe("le jobId change chaque jour (Paris)", () => {
+    afterEach(() => vi.useRealTimers());
+
+    it("même fait le même jour : même jobId ; le lendemain : un autre", async () => {
+      vi.useFakeTimers({ toFake: ["Date"] });
+      const jobId = async (iso: string): Promise<string> => {
+        vi.setSystemTime(new Date(iso));
+        enqueueEmailMock.mockClear();
+        await notify({
+          category: "CONTACT_FORM_SUBMITTED",
+          payload: DEMANDE,
+          dedupKey: "sub_80",
+          sync: true,
+        });
+        return (enqueueEmailMock.mock.calls[0]![4] as { jobId: string }).jobId;
+      };
+      const a = await jobId("2026-11-14T10:00:00Z");
+      const memeJour = await jobId("2026-11-14T15:00:00Z");
+      const lendemain = await jobId("2026-11-15T10:00:00Z");
+      expect(memeJour).toBe(a);
+      expect(lendemain).not.toBe(a);
+      // 23 h UTC = minuit passé à Paris : déjà le lendemain.
+      expect(await jobId("2026-11-14T23:30:00Z")).toBe(lendemain);
     });
   });
 });
