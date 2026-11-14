@@ -12,11 +12,7 @@ import type {
   PalierAlerteIncident,
   QuestionnairePreauditTelegram,
 } from "./types";
-import {
-  telegramGroupFor,
-  type CategorieClient,
-  type TelegramGroup,
-} from "./routing";
+import { telegramGroupFor, type CategorieClient, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
