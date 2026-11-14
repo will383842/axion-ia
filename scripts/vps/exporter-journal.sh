@@ -22,8 +22,7 @@ if ! journalctl --since "-8 days" -o export 2>"$ERR" | gzip > "$SORTIE" 2>>"$ERR
     # Faute de place : le fichier partiel n'est qu'un doublon du journal, on le supprime pour rendre la place.
     rm -f "$SORTIE"; echo "[exporter-journal] ÉCHEC faute de place : fichier partiel supprimé (doublon du journal)"; exit 1
   fi
-  echo "[exporter-journal] ÉCHEC de l'export : $SORTIE.partiel ; cause : $(head -c 300 "$ERR" | tr '
-' ' ')"; mv -f "$SORTIE" "$SORTIE.partiel"; exit 1
+  echo "[exporter-journal] ÉCHEC de l'export : $SORTIE.partiel ; cause : $(head -c 300 "$ERR" | tr '\n' ' ')"; mv -f "$SORTIE" "$SORTIE.partiel"; exit 1
 fi
 if ! gzip -t "$SORTIE" || [ ! -s "$SORTIE" ]; then
   echo "[exporter-journal] archive invalide : $SORTIE.partiel"; mv -f "$SORTIE" "$SORTIE.partiel"; exit 1
