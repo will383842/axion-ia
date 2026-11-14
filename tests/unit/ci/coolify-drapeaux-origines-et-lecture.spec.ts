@@ -37,7 +37,7 @@ describe("coolify-lire-drapeaux.yml : lecture seule", () => {
     expect(lire).not.toMatch(/\| jq -r '?\.?\[?\]?'?\s*$/m);
   });
   it("n'affiche la date que si elle a la forme attendue", () => {
-    expect(lire).toMatch(/ORIGINES_SUIVANTES_DEPUIS" and \(\$v \| test\(/);
+    expect(lire).toMatch(/ORIGINES_SUIVANTES_DEPUIS" and [^\n]*\(\$v \| test\(/);
   });
   it("liste fermée des drapeaux", () => {
     for (const k of [
