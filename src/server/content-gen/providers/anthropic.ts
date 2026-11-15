@@ -40,13 +40,31 @@ const DEFAULT_TIMEOUT_MS = 60_000; // 60s — long-form Claude
  */
 const PRICING: Record<
   string,
-  {
-    input: number;
-    output: number;
-    cacheRead: number;
-    cacheWrite: number;
-  }
+  | {
+      input: number;
+      output: number;
+      cacheRead: number;
+      cacheWrite: number;
+    }
+  // `null` = prix INCONNU : computeCost échoue plutôt que d'inventer un chiffre.
+  | null
 > = {
+  // Famille 5.5. Tarifs de cache propres à chaque modèle (source : dépôt
+  // studio-axion-ia-public, src/fournisseurs/claude/tarifs.ts lignes 31-32).
+  "claude-opus-5-5": {
+    input: 4.0 / 1_000_000,
+    output: 20.0 / 1_000_000,
+    cacheRead: 0.2 / 1_000_000,
+    cacheWrite: 5.0 / 1_000_000,
+  },
+  "claude-sonnet-5-5": {
+    input: 2.0 / 1_000_000,
+    output: 10.0 / 1_000_000,
+    cacheRead: 0.2 / 1_000_000,
+    cacheWrite: 2.5 / 1_000_000,
+  },
+  // Haiku 5.5 : prix NON connu à ce jour -> volontairement `null`.
+  "claude-haiku-5-5": null,
   "claude-sonnet-4-6": {
     input: 3.0 / 1_000_000,
     output: 15.0 / 1_000_000,
@@ -78,13 +96,22 @@ const PRICING: Record<
   },
 };
 
-function computeCost(
+/** Exporté pour les tests. Lève si le prix du modèle est explicitement inconnu. */
+/** Prix inconnu : entrée `null` OU toute variante (datée) de Haiku 5.5. */
+function hasUnknownPrice(model: string): boolean {
+  return PRICING[model] === null || model.startsWith("claude-haiku-5-5");
+}
+
+export function computeCost(
   model: string,
   tokensInput: number,
   tokensOutput: number,
   cacheRead: number,
   cacheWrite: number,
 ): number {
+  if (hasUnknownPrice(model)) {
+    throw new Error(`Anthropic : prix inconnu pour le modèle ${model} — calcul de coût refusé`);
+  }
   const rates = PRICING[model] ?? PRICING["claude-sonnet-4-6"];
   if (!rates) return 0;
   return (
@@ -207,6 +234,18 @@ export const anthropicProvider: IProvider = {
     }
     const model = req.model ?? config.model;
 
+    // Prix explicitement inconnu (Haiku 5.5) : on refuse AVANT le plafond de coût
+    // et AVANT l'appel payant — sinon on dépenserait sans pouvoir comptabiliser.
+    // Non retryable : réessayer ou basculer de fournisseur n'y change rien.
+    if (hasUnknownPrice(model)) {
+      throw new ProviderError(
+        `Anthropic : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
+        "invalid_response",
+        "anthropic",
+        false,
+      );
+    }
+
     await assertCostCapAvailable("anthropic", 0.15);
 
     const client = getClient();
@@ -226,6 +265,8 @@ export const anthropicProvider: IProvider = {
       "claude-opus-4-8",
       "claude-opus-4-7",
       "claude-sonnet-5",
+      "claude-sonnet-5-5",
+      "claude-opus-5-5",
       "claude-fable-5",
       "claude-mythos-5",
     ]);
