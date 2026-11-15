@@ -36,6 +36,7 @@ import { RACINE_GUIDES, resoudreGuide } from "@/server/guides-reseau/guide-a-liv
 import { emettreEvenementPlausible } from "@/lib/analytics/plausible-serveur";
 import { auPlus } from "@/server/crm-sync/enqueue";
 import { transmettreClicGuide } from "@/server/crm-sync/lettre-guide";
+import { lireCheminVersionne, urlDeLaVersion } from "@/server/guides-reseau/telechargement-version";
 import { confirmerPreuvesAuClic } from "@/server/guides-reseau/preuve-page-guide";
 import {
   CHEMIN_LIEN_GUIDE,
@@ -222,6 +223,17 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const guide = await resoudreGuide(demande.aimant, demande.email);
     if (guide.kind !== "catalogue") return indisponible();
+    // G4 — chemin VERSIONNÉ (`guides-reseau/gde-…/v<n>.pdf`, code = celui du guide) : lecture par version,
+    // jamais depuis `public/`. Interrupteur éteint ou doute = « indisponible ». Autre chemin : code ci-dessous, inchangé.
+    const version = lireCheminVersionne(guide.chemin, guide.code);
+    if (version !== null) {
+      const adresse = await urlDeLaVersion(version.code, version.version);
+      if (adresse === null) return indisponible();
+      const r = NextResponse.redirect(adresse, { status: 303 });
+      r.headers.set("cache-control", "no-store, private");
+      r.headers.set("referrer-policy", "no-referrer");
+      return r;
+    }
     const racine = path.resolve(process.cwd(), "public", RACINE_GUIDES);
     const fichier = path.resolve(process.cwd(), "public", guide.chemin);
     // `racine + path.sep` : sans lui, « public/guides-reseau-x/a.pdf » commence par « public/guides-reseau ».

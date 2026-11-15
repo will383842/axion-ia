@@ -18482,6 +18482,30 @@ model MotCible {
   @@map("mots_cibles")
 }
 
+/// G3 (2026-11-15) — versions de PDF de guides FABRIQUÉES par le site (`POST /api/interne/guides-reseau/contenu`).
+/// Une ligne par (code, version) ; `cle_objet` est dérivée du code et de la version, jamais du corps de la requête.
+/// Ne dépend d'aucune autre table (aucune clé étrangère) ; le worker ne l'interroge jamais. Contraintes en SQL (migration).
+/// rgpd: technique — contenu éditorial public (empreintes, titre, taille) ; aucune donnée sur une personne
+model GuideReseauVersion {
+  id           String   @id @default(uuid()) @db.Uuid
+  code         String   @db.VarChar(28)
+  version      Int
+  sha256Texte  String   @map("sha256_texte") @db.Char(64)
+  sha256Pdf    String?  @map("sha256_pdf") @db.Char(64)
+  titre        String   @db.VarChar(120)
+  pages        Int?
+  tailleOctets Int?     @map("taille_octets")
+  stockage     String   @db.VarChar(10)
+  cleObjet     String   @map("cle_objet") @db.VarChar(80)
+  statut       String   @db.VarChar(10)
+  creeLe       DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe    DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@unique([code, version], map: "guides_reseau_versions_code_version_key")
+  @@index([code, version(sort: Desc)], map: "guides_reseau_versions_code_version_desc_idx")
+  @@map("guides_reseau_versions")
+}
+
 /// STOP reçu du Studio AVANT la validation de la page du guide : la marque porte la seule référence de
 /// conversation hachée (`conv_ref`, HMAC de 64 caractères), jamais d'adresse. Écrite à chaque STOP
 /// (idempotent), lue par la page de confirmation pour suivre le même déroulé neutre qu'une adresse opposée.

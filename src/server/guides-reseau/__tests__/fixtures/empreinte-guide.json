@@ -1,0 +1,11 @@
+{
+  "commentaire": "Vecteur partagé avec le Studio (G1). Voir la définition du JSON canonique dans fabrique-pdf.ts.",
+  "contenu": {
+    "code": "gde-essai-01",
+    "version": 2,
+    "titre": "Le plan en 3 étapes",
+    "sections": [
+      { "titre": "Pourquoi", "paragraphes": ["Un paragraphe é."], "puces": ["Une puce"] }
+    ]
+  }
+}

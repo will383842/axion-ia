@@ -128,6 +128,17 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
     url = verdict.url;
   }
 
+  // G4 — une version qui DESCEND est refusée : l'ancienne reste en service (le même numéro se réécrit, idempotent).
+  if (version !== undefined) {
+    const existante = await prisma.cibleReseau.findUnique({
+      where: { code },
+      select: { version: true },
+    });
+    if (existante !== null && version < existante.version) {
+      return refus(409, "version_perimee", { versionMax: existante.version });
+    }
+  }
+
   const champs = {
     titre,
     cheminPdf,

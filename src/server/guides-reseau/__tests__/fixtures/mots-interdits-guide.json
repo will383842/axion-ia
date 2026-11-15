@@ -1,0 +1,27 @@
+{
+  "commentaire": "Liste partagée avec le Studio : chaque texte doit être refusé par la règle indiquée (accents compris).",
+  "refuses": [
+    { "regle": "abonne", "texte": "Pensez à vous abonner" },
+    { "regle": "abonne", "texte": "Votre ABONNÉ fidèle" },
+    { "regle": "grenoble", "texte": "Notre équipe à Grenoble" },
+    { "regle": "garanti", "texte": "Aucun gain garanti" },
+    { "regle": "garanti", "texte": "Résultat garanti" },
+    { "regle": "certification", "texte": "Une formation certifiée" },
+    { "regle": "certification", "texte": "Organisme Qualiopi" },
+    { "regle": "tutoiement", "texte": "Tu peux commencer" },
+    { "regle": "tutoiement", "texte": "Ton compte est prêt" },
+    { "regle": "tutoiement", "texte": "Je t'explique" },
+    { "regle": "promesse_chiffree", "texte": "Gagnez 30 % de temps" },
+    { "regle": "promesse_chiffree", "texte": "Pour 500 €" },
+    { "regle": "promesse_chiffree", "texte": "Deux fois plus vite" },
+    { "regle": "promesse_chiffree", "texte": "Résultat x3" },
+    { "regle": "promesse_chiffree", "texte": "Vous allez doubler vos ventes" },
+    { "regle": "promesse_chiffree", "texte": "Un triplement" }
+  ],
+  "acceptes": [
+    "Suivre le compte pour ne rien manquer",
+    "Vous organisez votre semaine, une fois par semaine",
+    "Un guide pratique pour structurer vos messages",
+    "Le vote a eu lieu parfois"
+  ]
+}

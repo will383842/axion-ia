@@ -333,3 +333,12 @@ jamais un `DELETE`. Les colonnes ne se suppriment pas (elles portent des dates d
 - **Allumé** : un guide est accepté s'il est dans la liste figée OU si sa ligne `cibles_reseau` est active, de type `guide` et n'est pas une cible d'essai (`test`). Une cible `adresse`, inactive ou d'essai est refusée ; base illisible = liste figée seule. La règle des 24 h de la page se compte par adresse ET par guide (`email_logs.entity_id` = identifiant de la demande) ; la limite de 3 envois par adresse sur 24 h reste. La réponse montrée reste neutre et identique.
 - ⚠️ Pas encore branchés (fichiers hors du lot) : `reception.ts` appelle encore `analyserCorps` (liste figée) — passer à `analyserCorpsAvecCatalogue` — et `src/app/guide-reseau/route.ts` (l. 42) lit encore la liste figée. Tant que ce n'est pas fait, ces deux chemins restent fermés (jamais plus larges). À câbler AVANT d'allumer.
 - Correctif de sécurité, valable éteint ou allumé : une adresse déjà opposée qui remplit la page depuis une conversation pose aussi la marque `oppositions_conv_ref` de cette conversation (dans la même transaction, sous le verrou de la conversation).
+
+## `GUIDES_RESEAU_FABRIQUE_ENABLED` — guides PDF fabriqués par le site (lots G3 + G4)
+
+🔴 **Éteint par défaut** (vrai seulement si la valeur est exactement `true`), lu au runtime, conteneur **app** seulement (le worker n'interroge jamais la table `guides_reseau_versions`).
+
+- **Éteint** : `POST /api/interne/guides-reseau/contenu` et `GET /api/interne/guides-reseau/versions` répondent 404 ; un chemin versionné `guides-reseau/gde-…/v<n>.pdf` donne la page « indisponible » (200) ; `GET /api/guides-reseau/fichier` répond 404. Le guide-ia et les chemins de `public/` ne changent pas.
+- **Variables** (à poser dans Coolify, scope RUN, app) : `GUIDES_RESEAU_STOCKAGE` (`r2` ou `volume`, choix explicite), pour `r2` : `R2_ACCOUNT_ID`, `R2_GUIDES_BUCKET_NAME` (compartiment DÉDIÉ — celui des sauvegardes est refusé), `R2_GUIDES_ACCESS_KEY_ID`, `R2_GUIDES_SECRET_ACCESS_KEY` ; pour `volume` : `GUIDES_RESEAU_VOLUME` (défaut `/var/data/guides-reseau`) et `GUIDES_RESEAU_FICHIER_SECRET` (≥ 32 caractères, distinct de `GUIDES_RESEAU_HMAC_SECRET`). Signature de dépôt : `GUIDES_RESEAU_HMAC_SECRET`, sans repli.
+- **Ordre de mise en ligne** : G3, puis G4 ; le Studio ne rattache un chemin versionné qu'APRÈS G4.
+- **Retour arrière** : éteindre l'interrupteur. La migration est additive (`rollback.sql` = `DROP TABLE IF EXISTS`), les objets PDF rangés ne sont pas touchés.
