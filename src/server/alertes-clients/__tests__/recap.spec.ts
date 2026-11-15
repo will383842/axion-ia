@@ -67,7 +67,7 @@ function rdv(sur: Record<string, unknown> = {}) {
     startTime: new Date("2026-11-20T09:00:00Z"),
     inviteeName: "Alex Exemple",
     inviteeEmail: "alex@exemple.fr",
-    inviteePhone: "+33 6 11 22 33 44",
+    inviteePhone: "+33 6 39 98 00 01",
     location: null,
     cancelUrl: null,
     pageUrl: null,
@@ -155,6 +155,48 @@ describe("collecterDemandesVeille", () => {
     expect(r.demandes).toHaveLength(1);
     expect(r.illisibles).toBe(1);
     expect(r.total).toBe(2); // la demande illisible compte : elle n'est pas perdue en silence
+  });
+
+  it("le simulateur de gains (simulateur_roi) est une demande de client : il apparaît", async () => {
+    d.submissions.mockResolvedValue([
+      submission({ id: "sub_roi", details: { unifiedType: "simulateur_roi", message: "Simulation" } }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(1);
+    expect(r.demandes[0]!.type).toBe("Simulateur de gains");
+  });
+
+  it("un type de formulaire inconnu est traité comme une demande de client", async () => {
+    d.submissions.mockResolvedValue([
+      submission({ id: "sub_inconnu", details: { unifiedType: "type_futur", message: "Salut" } }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(1);
+    expect(r.total).toBe(1);
+  });
+
+  it("un prospect du chatbot garde son besoin (message) et son libellé", async () => {
+    d.submissions.mockResolvedValue([
+      submission({
+        id: "sub_bot",
+        details: { besoin: "Automatiser mes devis pour mon cabinet", canal: "chatbot" },
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(1);
+    expect(r.demandes[0]!.type).toBe("Lead chatbot");
+    expect(r.demandes[0]!.lignes.join("
+")).toContain("Automatiser mes devis pour mon cabinet");
+  });
+
+  it("un rendez-vous dont l'invité a été effacé (RGPD) n'apparaît pas, sans rien supprimer", async () => {
+    d.rdvs.mockResolvedValue([
+      rdv({ id: "cal_efface", inviteeName: "[erased-rgpd-art17]", status: "canceled" }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.rendezVous).toHaveLength(0);
+    expect(r.autresRendezVous).toHaveLength(0);
+    expect(r.total).toBe(0);
   });
 
   it("annulation Calendly : date approximative, comptée avec les rendez-vous de clients", async () => {

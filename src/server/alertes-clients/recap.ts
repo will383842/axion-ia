@@ -24,6 +24,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
+import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
 import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { estCategorieClient } from "@/server/notifications/routing";
@@ -121,10 +122,23 @@ function lireDetails(details: unknown): Record<string, unknown> {
 
 const chaine = (v: unknown): string | undefined => (typeof v === "string" ? net(v) : undefined);
 
-/** Une demande de client ? Absence de type de formulaire = demande client (chatbot, ancienne demande). */
+/**
+ * Une demande de client ? Absence de type de formulaire = demande client (chatbot, ancienne demande).
+ * `simulateur_roi` part en temps réel comme `CONTACT_FORM_SUBMITTED` (`roi-report/actions.ts`). Un type
+ * INCONNU retombe sur `categorieDemandeSansType` (donc traité comme client) : on n'écarte que les
+ * catégories CONNUES hors clients (presse, recrutement, investisseur…).
+ */
 export function categorieSubmission(details: Record<string, unknown>): NotificationCategory {
   const type = chaine(details["unifiedType"]);
-  return type ? notifCategoryFor(type as UnifiedContactType) : categorieDemandeSansType;
+  if (!type) return categorieDemandeSansType;
+  if (type === "simulateur_roi") return "CONTACT_FORM_SUBMITTED";
+  // La table n'a pas de cas par défaut : un type inconnu donne `undefined` à l'exécution.
+  return notifCategoryFor(type as UnifiedContactType) ?? categorieDemandeSansType;
+}
+
+/** Un prospect du chatbot (`capturer-lead.ts` écrit `details: { besoin, canal: "chatbot" }`). */
+function estLeadChatbot(details: Record<string, unknown>): boolean {
+  return chaine(details["canal"]) === "chatbot" || chaine(details["source"]) === "chatbot";
 }
 
 /** Lit la veille. Lecture seule ; ne lève que si la base est injoignable (l'appelant le trace). */
@@ -151,7 +165,12 @@ export async function collecterPourBornes(bornes: BornesVeille): Promise<Demande
   const demandesClient: Array<{ q: Date; e: ElementRecap }> = [];
   for (const s of submissions) {
     const details = lireDetails(s.details);
-    const category = categorieSubmission(details);
+    const chatbot = estLeadChatbot(details);
+    // Même événement que l'alerte en temps réel du chatbot : il porte le besoin du prospect.
+    const category: NotificationCategory = chatbot
+      ? "CHATBOT_LEAD_CAPTURED"
+      : categorieSubmission(details);
+    const message = chaine(details["message"]) ?? chaine(details["besoin"]);
     if (!estCategorieClient(category)) continue; // presse, recrutement, investisseur… : pas un client
     let nom: string | undefined;
     let entreprise: string | undefined;
@@ -178,7 +197,7 @@ export async function collecterPourBornes(bornes: BornesVeille): Promise<Demande
         ...(entreprise && entreprise !== "—" ? { companyName: entreprise } : {}),
         ...(chaine(details["ville"]) ? { ville: chaine(details["ville"])! } : {}),
         ...(chaine(details["subType"]) ? { subType: chaine(details["subType"])! } : {}),
-        ...(chaine(details["message"]) ? { message: chaine(details["message"])! } : {}),
+        ...(message ? { message } : {}),
         ...(chaine(details["budgetIndicative"])
           ? { budgetIndicative: chaine(details["budgetIndicative"])! }
           : {}),
@@ -242,6 +261,8 @@ export async function collecterPourBornes(bornes: BornesVeille): Promise<Demande
   });
   const lignesRdv: Array<{ q: number; client: boolean; e: ElementRecap }> = [];
   for (const r of rdvs) {
+    // Effacement RGPD (art. 17) : la ligne reste en base, mais n'a plus rien à dire au récap.
+    if (r.inviteeName === ERASED_PLACEHOLDER) continue;
     const classement = { typeRendezVous: r.typeRendezVous, eventTypeName: r.eventTypeName };
     const base = {
       eventUri: r.id,
