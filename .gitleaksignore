@@ -39,8 +39,3 @@ dbdfd2dec2a5386019804ca8b7c6229e22e8178d:src/server/qualiopi/devis/confirmation-
 # oppositions-reseau.spec.ts (aucune clé réelle). Remplacée par "t".repeat(48) au commit suivant ;
 # le commit d'origine porte toujours la chaîne et l'historique ne se réécrit pas.
 55b0e21a4b8ba5cb3f61de68e0a2f316e09b1598:src/server/guides-reseau/__tests__/oppositions-reseau.spec.ts:generic-api-key:495
-
-# PR #2012 (texte du blog via Claude) : FAUX POSITIF, valeur de test inventée pour ANTHROPIC_API_KEY
-# dans anthropic-rotation.spec.ts (aucune clé réelle). Remplacée par "t".repeat(24) au commit suivant ;
-# le commit d'origine porte toujours la chaîne et l'historique ne se réécrit pas.
-b14c3855110439ac2efc18f408eb5d04da762e6b:src/server/content-gen/providers/__tests__/anthropic-rotation.spec.ts:generic-api-key:335
