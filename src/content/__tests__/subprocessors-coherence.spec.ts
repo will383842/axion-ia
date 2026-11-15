@@ -190,7 +190,7 @@ describe("cohérence des sous-processeurs", () => {
   });
 
   /**
-   * Les seuls sous-traitants actifs portant `dpaStatus: "pending"`, au
+   * Les deux seuls sous-traitants actifs portant `dpaStatus: "pending"`, au
    * 2026-09-20.
    *
    * ⚠️ Ce n'est PAS la liste des sous-traitants actifs sans DPA accepté :

@@ -699,7 +699,7 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     legalBasis: "6.1.f_legitimate_interest",
     // DPA de Zernio (version du 19/10/2026) intégré aux CGU : il s'applique à l'acceptation des
     // CGU, sans signature séparée (https://zernio.com/dpa, https://zernio.com/tos section 5).
-    // `signed` = DPA en vigueur ; la copie pour le dossier reste à constituer par le fondateur.
+    // `signed` = DPA en vigueur ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi).
     dpaStatus: "signed",
     // Le type n'a qu'une valeur couvrant les transferts hors EEE : `scc`, comme pour les autres
     // fournisseurs mixtes. Zernio : clauses contractuelles types par défaut (DPA §11.1), et
