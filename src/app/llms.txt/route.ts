@@ -63,7 +63,10 @@ export const revalidate = 3600;
 
 export async function GET() {
   const [videos, avisEnLigne] = await Promise.all([videosPubliees(), avisPublies()]);
-  const sectionVideos = sectionVideosLlms(videos, SITE_URL);
+  // Le plan du site vidéo n'est annoncé que s'il y a des vidéos publiées (sinon il est vide).
+  const sectionVideos =
+    sectionVideosLlms(videos, SITE_URL) &&
+    `${sectionVideosLlms(videos, SITE_URL)}- [Plan du site vidéo](${SITE_URL}/sitemap-videos.xml) — index machine-readable des vidéos publiées.\n`;
   // Avis clients : même règle que les pages /avis (404 tant qu'aucun avis n'est publié).
   // Annoncer /fr/avis et son flux sans avis publié, c'était envoyer les moteurs sur des 404.
   const ligneAvis = avisEnLigne
