@@ -189,6 +189,17 @@ function jourParis(d = new Date()): string {
   }).format(d);
 }
 
+/**
+ * Identifiant d'entité de l'e-mail d'alerte (`EmailLog.entityId`, `extra.jobData` chez Sentry si
+ * l'envoi échoue). JAMAIS la clé brute : pour une alerte Calendly elle contient l'URI de l'invité,
+ * qui peut servir à annuler ou déplacer son rendez-vous. Empreinte non réversible, stable pour une
+ * même clé (idempotence), préfixée par la catégorie ; sans clé, la catégorie seule.
+ */
+export function entiteDeLAlerte(categorie: string, dedupKey: string | undefined): string {
+  if (!dedupKey) return categorie;
+  return `${categorie}:${createHash("sha256").update(dedupKey).digest("hex").slice(0, 16)}`;
+}
+
 /** Journal + Sentry, motif SEUL (jamais de donnée de personne). Ne lève jamais. */
 export async function tracerEchec(
   message: string,
@@ -280,7 +291,7 @@ async function doublerParEmail(
       {
         ...(jobId ? { jobId } : {}),
         entityType: "NotificationClient",
-        entityId: dedupKey ?? event.category,
+        entityId: entiteDeLAlerte(event.category, dedupKey),
         clientId: null,
       },
     );
