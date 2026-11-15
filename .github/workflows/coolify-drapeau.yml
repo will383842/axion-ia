@@ -104,6 +104,10 @@ on:
           - "GUIDES_RESEAU_CATALOGUE_ENABLED"
           - "GUIDES_RESEAU_LIVRAISON_ENABLED"
           - "GUIDES_RESEAU_ESSAI_ADRESSES"
+          # Guides fabriqués par le site (G3/G4) : true | false, cible site seulement (le worker n'interroge jamais
+          # la table des versions). Éteint = 404 / « indisponible ». Les variables R2 et le mode de stockage se
+          # posent dans Coolify et se LISENT (présence seulement) par coolify-lire-drapeaux.yml.
+          - "GUIDES_RESEAU_FABRIQUE_ENABLED"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon, une adresse d'essai, ou 1 à 5 adresses @axion-ia.com (GUIDES_RESEAU_ESSAI_ADRESSES ; vide pour retirer)"
         required: false
@@ -187,6 +191,9 @@ jobs:
           VALEUR=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
           # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
           if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "GUIDES_RESEAU_FABRIQUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
           if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
