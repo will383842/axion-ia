@@ -24,7 +24,7 @@ export const CREDIT_ALERT_TEXT =
   "Ce que ça bloque : la recherche sémantique du chatbot (il se rabat sur une recherche " +
   "par mots-clés) et son cache de réponses, l'ajout de nouveaux contenus à sa base, " +
   "la détection de doublons sémantiques des nouveaux articles et le calcul des " +
-  "vecteurs des articles. Le texte des articles passe, lui, par Claude.";
+  "vecteurs des articles. L'écriture des textes n'est pas concernée par cette alerte.";
 
 let dernierEnvoiMs = 0;
 
