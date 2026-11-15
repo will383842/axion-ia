@@ -229,8 +229,11 @@ describe("envoyerRecapVeille", () => {
     poserChargeurEnfileurEmail(async () => enqueue as never);
     await envoyerRecapVeille(MAINTENANT);
     await envoyerRecapVeille(new Date("2026-11-14T09:00:00Z")); // rattrapage dans la matinée
-    const ids = enqueue.mock.calls.map((c) => (c as unknown as unknown[][])[4]);
-    expect(new Set(ids.map((o) => (o as { jobId: string }).jobId)).size).toBe(1);
+    const ids = (enqueue.mock.calls as unknown as unknown[][]).map(
+      (c) => (c[4] as { jobId: string }).jobId,
+    );
+    expect(ids).toHaveLength(2);
+    expect(new Set(ids).size).toBe(1);
   });
 
   it("e-mail non parti : « failed », tracé, sans lever ni citer de donnée de personne", async () => {
