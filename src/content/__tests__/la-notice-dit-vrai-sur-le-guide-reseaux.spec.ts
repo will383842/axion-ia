@@ -58,18 +58,18 @@ describe("la politique dit la demande de guide par les réseaux sociaux", () => 
     }
   });
 
-  it("⛔ aucun prestataire non inscrit à /sous-processeurs n'est nommé (Zernio : faits non établis)", () => {
+  it("⛔ aucun prestataire non inscrit à /sous-processeurs n'est nommé (Zernio est nommé seulement dans /sous-processeurs, la source unique)", () => {
     for (const loc of ["fr", "en"] as const) {
       const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
       expect(s.body).not.toMatch(/Zernio/i);
     }
   });
 
-  it("⛔ la date de la liste des sous-processeurs n'est relevée que si la liste change", () => {
-    expect(SUBPROCESSORS_LAST_UPDATED).toBe("2026-11-07");
+  it("⛔ la date de la liste des sous-processeurs n'est relevée que si la liste change (relevée le 2026-11-14 : ajout de Zernio)", () => {
+    expect(SUBPROCESSORS_LAST_UPDATED).toBe("2026-11-14");
   });
 
-  it("⛔ Zernio n'est pas renvoyé à la liste des sous-processeurs (rien d'établi à y publier)", () => {
+  it("⛔ Zernio n'est pas renvoyé à la liste des sous-processeurs (la rubrique renvoie à « Hébergement et transferts », pas à la liste)", () => {
     for (const loc of ["fr", "en"] as const) {
       const s = section(loc, loc === "fr" ? /^Demande d'un guide/ : /^Requesting a guide/);
       expect(s.body).not.toMatch(/liste des sous-processeurs|sub-processor list/i);

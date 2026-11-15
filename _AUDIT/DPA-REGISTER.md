@@ -41,6 +41,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 22  | Zoom Communications, Inc. | **Sessions de formation à distance** en visioconférence + rapport des participants (relevé de connexion) | États-Unis (régions paramétrables) | ❌ aucun (pas encore de compte) | SCC | ⚪ non activé — abonnement Pro à souscrire avant la 1re session |
 | 23  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/apporteur-affaires*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
 | 24  | OpenAI, LLC (comptes rendus de rendez-vous) | **Transcription** du son des visioconférences enregistrées **avec l'accord** des participants, puis **compte rendu** et extraction des faits du dossier client | États-Unis | online (même DPA que la ligne 7) | SCC + EU-US DPF | ⚪ **non activé** — ouverture après le préavis de 30 j aux clients actifs, la signature du DPA et la publication de la notice (voir fiche 5 bis) |
+| 25  | Zernio (zernio.com) | Réponses aux commentaires et messages privés sur les réseaux sociaux de la page (parcours « mot → guide ») : ID et nom du compte, texte du commentaire, messages privés, e-mail si saisi | Espagne (ZERNIO SOFTWARE SL) ; serveurs Royaume-Uni et UE, certains sous-traitants aux États-Unis | DPA intégré aux CGU (version du 19/10/2026) | SCC par défaut (DPA §11.1) + EU-US DPF pour les sous-traitants certifiés ; Royaume-Uni : adéquation | DPA de Zernio intégré aux CGU (accepté à l'inscription) ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi) (voir fiche 7nonies) |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -542,6 +543,25 @@ le volume le justifie.
 | **Si l'autorité est désignée / change** | Corriger CETTE section et l'entrée de `src/content/subprocessors.ts` (nom, localisation, `active`) dans la même PR |
 | **Statut**           | ✅ **SANS OBJET** (pas de données personnelles) — à reconfirmer si l'on transmet autre chose qu'une empreinte |
 
+## 7nonies. Zernio (zernio.com) — parcours « mot → guide », 2026-11-14
+
+| Champ                    | Valeur |
+| ------------------------ | ------ |
+| **Nom légal**            | ZERNIO SOFTWARE SL, TVA ESB88719281 (https://zernio.com/legal-disclosure, https://zernio.com/privacy-policy) |
+| **Siège / pays**         | Carrer Mallorca 2A, 17230 Palamós, Girona, Espagne (UE) |
+| **Finalité**             | Le Studio du fondateur utilise l'API de gestion des réseaux sociaux de Zernio pour lire les commentaires Facebook / Instagram sous les publications de la page, y répondre publiquement et envoyer des messages privés (parcours « mot → guide ») |
+| **Données traitées**     | Identifiant et nom du compte de la personne qui commente, texte du commentaire, messages privés, adresse e-mail si la personne la saisit dans le message privé |
+| **Base légale**          | Intérêt légitime (art. 6.1.f) : répondre à une demande faite en commentaire |
+| **Localisation serveurs** | Pas de région unique ; via ses sous-traitants : Vercel (Londres, UK), PlanetScale (Londres, AWS eu-west-2), Cloudflare (stockage média Europe de l'Ouest, réseau mondial), Sentry (Allemagne), Tinybird (Londres), Axiom (États-Unis, Virginie). Source : https://zernio.com/subprocessors (25 sous-traitants, mise à jour du 09/10/2026, préavis de 14 jours) |
+| **DPA**                  | Existe, intégré aux CGU : s'applique automatiquement à l'acceptation des CGU, sans signature séparée ; Zernio se déclare sous-traitant au sens de l'art. 28 ; version du 19/10/2026. Sources : https://zernio.com/dpa, https://zernio.com/tos (section 5) |
+| **Cadre de transfert**   | DPA §11.1 : accord écrit du client, clauses contractuelles types par défaut. Liste des sous-traitants : EU-US Data Privacy Framework pour les certifiés, sinon clauses contractuelles types (module 3). Données aussi traitées au Royaume-Uni (décision d'adéquation) et aux États-Unis. La SSOT publique déclare `scc` (seule valeur du type couvrant ces transferts, comme Meta / OpenAI) |
+| **Sous-traitants ultérieurs** | 25, liste publique https://zernio.com/subprocessors (mise à jour du 09/10/2026, préavis de 14 jours) |
+| **Durée de conservation** | Suppression sous 10 jours ouvrés après la fin des services (DPA §9.1) ; sauvegardes 30 jours, journaux 90 jours (§9.3). La politique de confidentialité dit 30 jours après suppression du compte |
+| **Exercice des droits**  | Formulaire de la politique de confidentialité (section 10) : https://zernio.com/privacy-policy |
+| **Statut contrat art. 28** | DPA de Zernio intégré aux CGU (accepté à l'inscription) ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi) |
+| **Points à vérifier**    | (1) l'annexe 2 vaut autorisation écrite des transferts prévus au §11.1 ; le DPF n'est cité que dans la liste des sous-traitants, pas dans le DPA ; (2) délais de conservation 10 jours ouvrés (DPA) contre 30 jours (politique de confidentialité) : noter l'écart et retenir le plus long dans la notice tant qu'il n'est pas levé |
+| **Vérification**         | Pages officielles lues le 2026-11-14 par la session principale (URL ci-dessus) |
+
 ## 8. Action correctif Backblaze (clarification legal.ts)
 
 `src/content/legal.ts` Sprint 24/A1 mentionne Backblaze comme sous-processeur.
@@ -596,6 +616,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
 | 2026-09-29 | Entité corrigée le 29/09/2026 : reste de la bascule de juin. Responsable AXION IA SAS, droit français, CNIL compétente.                                   |
 | 2026-09-29 | Chantier visio (PR 8) : ligne 24 et fiche 5 bis « OpenAI, LLC (comptes rendus de rendez-vous) », non activée ; doublon « 21 » renuméroté (Meta → 23) ; Notetaker « remplacé par l'extension interne » ; son chiffré des visios ajouté à la ligne 2 ; note datée du retour sur la décision du 2026-09-01. |
+| 2026-11-14 | Ajout de Zernio (ligne 25, fiche 7nonies) : parcours « mot → guide ». Faits officiels vérifiés, DPA intégré aux CGU ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi). |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
 | 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |
