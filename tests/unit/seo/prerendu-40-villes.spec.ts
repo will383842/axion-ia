@@ -4,7 +4,7 @@
  */
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { SEUIL_PRERENDU_HUB_VILLE } from "@/content/villes/prerendu";
+import { SEUIL_PRERENDU_HUB_VILLE, villesPrerenduesAuBuild } from "@/content/villes/prerendu";
 import { getVille, isVilleIndexable } from "@/content/villes";
 import { buildStaticParams } from "@/components/sections/VilleServicePageTemplate";
 
@@ -34,6 +34,13 @@ describe("buildStaticParams — prérendu des 40 grandes villes", () => {
       expect(v!.population).toBeGreaterThanOrEqual(100_000);
       expect(isVilleIndexable(ville), ville).toBe(true);
     }
+    // Liste complète : aucune grande ville indexable ne doit manquer.
+    expect(params.map((p) => p.ville).sort()).toEqual(
+      villesPrerenduesAuBuild()
+        .filter((v) => isVilleIndexable(v.slug))
+        .map((v) => v.slug)
+        .sort(),
+    );
   });
 
   it("garde la branche non indexable (dev) : toutes les villes", () => {
