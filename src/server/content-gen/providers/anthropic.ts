@@ -264,7 +264,16 @@ export const anthropicProvider: IProvider = {
   supportedRoles: ["text"],
 
   async generate(req: GenerationRequest): Promise<GenerationResponse> {
+    // Sorties AVANT tout appel réseau : avec une réservation déjà posée par la porte du
+    // blog, rien n'a pu être facturé, on la solde à zéro (sinon elle resterait au max).
+    const soldeZeroAvantAppel = async (): Promise<void> => {
+      if (!req.reservationId) return;
+      const { solderReservation } = await import("./blog-claude-ledger");
+      await solderReservation(req.reservationId, 0, { input: 0, output: 0 });
+    };
+
     if (req.role !== "text") {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         `Anthropic supports text only (got '${req.role}')`,
         "unknown",
@@ -273,8 +282,15 @@ export const anthropicProvider: IProvider = {
       );
     }
 
-    const config = await readProviderConfig("anthropic");
+    let config: Awaited<ReturnType<typeof readProviderConfig>>;
+    try {
+      config = await readProviderConfig("anthropic");
+    } catch (err) {
+      await soldeZeroAvantAppel();
+      throw err;
+    }
     if (!config.enabled) {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         "Anthropic provider disabled in DB",
         "auth_failed",
@@ -288,6 +304,7 @@ export const anthropicProvider: IProvider = {
     // et AVANT l'appel payant — sinon on dépenserait sans pouvoir comptabiliser.
     // Non retryable : réessayer ou basculer de fournisseur n'y change rien.
     if (hasUnknownPrice(model)) {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         `Anthropic : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
         "invalid_response",
@@ -317,6 +334,9 @@ export const anthropicProvider: IProvider = {
     // refusé la requête AVANT tout flux (donc rien de facturé) ?
     let usageFinalRecu = false;
     let refuseAvantFlux = false;
+    // Vrai dès qu'UNE requête a été envoyée à l'API (toutes clés confondues). Faux =
+    // rien n'a pu être facturé (clé absente, toutes les clés déjà épuisées…).
+    let requeteEnvoyee = false;
 
     // Les modèles Claude 4.7+ (Opus 4.7/4.8, Sonnet 5, Fable 5, Mythos 5) REFUSENT
     // les paramètres d'échantillonnage : envoyer `temperature` déclenche un
@@ -350,9 +370,13 @@ export const anthropicProvider: IProvider = {
       cacheCreationInputTokens = 0;
       stopReason = null;
       usageFinalRecu = false;
+      // Le refus « avant flux » est PAR TENTATIVE : un refus de crédit sur la clé 1 ne
+      // doit pas faire croire que la clé 2 (flux coupé, donc facturé) n'a rien coûté.
+      refuseAvantFlux = false;
       let enFlux = false;
       try {
         const client = getClient(cle);
+        requeteEnvoyee = true;
         const stream = await client.messages.create({
           model,
           max_tokens: req.maxTokens ?? 4096,
@@ -510,8 +534,9 @@ export const anthropicProvider: IProvider = {
             input: tokensInput + cacheReadInputTokens + cacheCreationInputTokens,
             output: tokensOutput,
           });
-        } else if (refuseAvantFlux) {
-          // Refus HTTP avant tout flux : rien n'a été facturé.
+        } else if (refuseAvantFlux || !requeteEnvoyee) {
+          // Refus HTTP avant tout flux, ou aucune requête envoyée (clé absente, toutes
+          // les clés déjà marquées épuisées) : rien n'a été facturé.
           await solderReservation(reservationId, 0, { input: 0, output: 0 });
         } else {
           // Coupure en cours de flux / délai : usage final inconnu. On GARDE la

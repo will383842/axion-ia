@@ -339,18 +339,19 @@ describe("réservation et flux coupé", () => {
     expect(err).toBeInstanceOf(UnrecoverableError);
     expect(reg.redis.get("blog-claude:refus-credit")).toBe(1);
   });
-  it("texte vide facturé : la ligne est soldée au coût réel fourni", async () => {
+  it("la porte ne solde PAS elle-même : c'est le fournisseur qui solde (la ligne reste au maximum ici)", async () => {
+    // Le fournisseur est simulé : il ne solde rien. Un second solde dans la porte
+    // ramenait la ligne SOUS le maximum quand le flux finissait sans `message_delta`.
     sdk.mockResolvedValue({ ...REPONSE, output: "", costUsd: 0.0007 });
     await genererTexteBlogClaude(REQ, "ecriture");
     expect(reg.lignes).toHaveLength(1);
-    expect(reg.lignes[0]!.costUsd).toBeCloseTo(0.0007);
-    expect(reg.compteur).toBeCloseTo(1.01);
+    expect(reg.lignes[0]!.costUsd).toBeGreaterThan(0.0007);
   });
-  it("succès : une seule ligne soldée au coût réel", async () => {
+  it("succès : une seule ligne, non retouchée par la porte", async () => {
     sdk.mockResolvedValue(REPONSE);
     await genererTexteBlogClaude(REQ, "ecriture");
     expect(reg.lignes).toHaveLength(1);
-    expect(reg.lignes[0]!.costUsd).toBeCloseTo(0.001);
+    expect(reg.lignes[0]!.costUsd).toBeGreaterThan(0.001);
   });
   it("refus d'écriture de la réservation (base) = aucun appel SDK", async () => {
     reg.totaux = [];

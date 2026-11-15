@@ -231,3 +231,51 @@ describe("variable absente", () => {
     expect(reg.lignes).toHaveLength(0);
   });
 });
+
+describe("rotation de clés et coupure de flux (B1 / S-I1)", () => {
+  async function erreurApi(status: number, message: string) {
+    const Anthropic = (await import("@anthropic-ai/sdk")).default;
+    const APIError = Anthropic.APIError as unknown as new (s: number, m: string) => Error;
+    return new APIError(status, message);
+  }
+
+  it("clé 1 : crédit refusé (400), clé 2 : flux coupé = réservation maximale conservée", async () => {
+    process.env["ANTHROPIC_API_KEY_2"] = "cle-fictive-test-2";
+    try {
+      const refus = await erreurApi(400, "Your credit balance is too low to access the API");
+      let n = 0;
+      create.mockImplementation(async () => {
+        n += 1;
+        if (n === 1) throw refus;
+        return (async function* () {
+          yield { type: "message_start", message: { usage: { input_tokens: 100 } } };
+          throw new Error("connexion coupée");
+        })();
+      });
+      const avant = reg.compteur;
+      await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toBeDefined();
+      expect(create).toHaveBeenCalledTimes(2);
+      expect(reg.lignes).toHaveLength(1);
+      // Pas soldée à zéro : Anthropic a pu facturer le début du flux de la clé 2.
+      expect(reg.lignes[0]!.costUsd).toBeGreaterThan(0);
+      expect(reg.compteur).toBeGreaterThan(avant);
+    } finally {
+      delete process.env["ANTHROPIC_API_KEY_2"];
+    }
+  });
+
+  it("flux terminé SANS message_delta : réservation maximale conservée (pas sous le max)", async () => {
+    create.mockImplementation(async () =>
+      (async function* () {
+        yield { type: "message_start", message: { usage: { input_tokens: 100 } } };
+        yield { type: "content_block_delta", delta: { type: "text_delta", text: "article" } };
+      })(),
+    );
+    const r = await genererTexteBlogClaude(REQ, "ecriture");
+    expect(r.output).toBe("article");
+    expect(reg.lignes).toHaveLength(1);
+    // Réservation = entrée estimée + max_tokens (1000) en sortie : bien au-dessus du coût d'entrée seul.
+    expect(reg.lignes[0]!.costUsd).toBeGreaterThan(r.costUsd);
+    expect(trackCostSpy).not.toHaveBeenCalled();
+  });
+});

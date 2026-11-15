@@ -24,7 +24,6 @@ import {
   BlogClaudeRefusError,
   jourParis,
   reserverCout,
-  solderReservation,
   type Reservation,
 } from "./blog-claude-ledger";
 
@@ -256,8 +255,8 @@ export async function assertPlafondsClaude(
 }
 
 /** Compte un refus de crédit (Redis, 24 h) ; au seuil, pose le drapeau de suspension. */
-async function enregistrerRefusCredit(): Promise<void> {
-  await alerterBlogClaude("credit_refuse");
+async function enregistrerRefusCredit(alerteCredit = true): Promise<void> {
+  if (alerteCredit) await alerterBlogClaude("credit_refuse");
   try {
     const cle = "blog-claude:refus-credit";
     const n = await redis.incr(cle);
@@ -308,15 +307,10 @@ export async function genererTexteBlogClaude(
   };
 
   try {
+    // Le fournisseur SOLDE la réservation dans son `finally` (coût réel, zéro avant flux,
+    // ou maximum conservé si l'usage final est inconnu) : aucun second solde ici, il
+    // pourrait ramener la ligne SOUS le maximum quand le flux finit sans `message_delta`.
     const reponse = await anthropicProvider.generate(requete);
-    // Idempotent : si le fournisseur a déjà soldé la ligne au même coût, rien ne change.
-    await solderReservation(reservation.id, reponse.costUsd, {
-      input:
-        reponse.tokensInput +
-        (reponse.cacheReadInputTokens ?? 0) +
-        (reponse.cacheCreationInputTokens ?? 0),
-      output: reponse.tokensOutput,
-    });
     return reponse;
   } catch (err) {
     // Échec : la réservation reste au maximum (ou soldée par le fournisseur).
@@ -324,6 +318,11 @@ export async function genererTexteBlogClaude(
       if (err.code === "quota_exhausted") {
         await enregistrerRefusCredit();
         throw refuser(err.message, "credit_refuse");
+      }
+      // 401/403 répétés (clé révoquée, mauvaise organisation) : même compteur, même
+      // suspension — sinon les jobs échoueraient sans fin tant que la clé est mauvaise.
+      if (err.code === "auth_failed") {
+        await enregistrerRefusCredit(false);
       }
     }
     throw err;
