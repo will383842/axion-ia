@@ -110,8 +110,8 @@ regexes = [
   '''axionia-candidature-commercial-v\d+''',
   # Noms des variables d'environnement des clés Anthropic (PAS des secrets).
   #
-  # Ajouté 2026-11-15 : le commentaire d'en-tête de
-  # `src/server/content-gen/providers/anthropic-keys.ts` liste
+  # Ajouté 2026-11-15 : le commentaire d'en-tête du module
+  # de rotation des clés Anthropic (`anthropic-keys.ts`) liste
   # « ANTHROPIC_API_KEY, ANTHROPIC_API_KEY_2, ANTHROPIC_API_KEY_3 » ; la règle
   # `generic-api-key` le prend pour une clé. Volontairement ÉTROIT : seule la
   # chaîne littérale du NOM de variable est ignorée, jamais une valeur `sk-ant-…`.
