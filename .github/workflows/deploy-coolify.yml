@@ -476,6 +476,45 @@ jobs:
     if: github.event_name != 'workflow_dispatch' || inputs.skip_deploy != true
     runs-on: ubuntu-latest
     steps:
+      # D8 (2026-11-15) — « Coolify au repos » AVANT tout POST. Deux déploiements Coolify
+      # (site + worker) ne doivent pas se chevaucher : on attend qu'aucun déploiement
+      # `in_progress` ou `queued` n'existe pour l'une des deux applications. LECTURE SEULE côté
+      # Coolify (un GET). API muette ou illisible = occupé (on ne devine pas « libre »).
+      # Toujours occupé après 20 min : échec AVANT tout POST. Le groupe de concurrence
+      # `deploy-coolify` (cancel-in-progress: false) et `force=true` ne changent pas.
+      - name: Coolify au repos (attente avant POST)
+        timeout-minutes: 25
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ] || [ -z "${COOLIFY_APP_UUID:-}" ]; then
+            echo "::error::Secrets Coolify manquants (COOLIFY_API_TOKEN, COOLIFY_URL, COOLIFY_APP_UUID)."
+            exit 1
+          fi
+          DEADLINE=$((SECONDS + 1200))  # 20 min
+          while :; do
+            occupes=""
+            reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/deployments" 2>/dev/null || true)
+            occupes=$(printf '%s' "${reponse}" | jq -r --arg a "${COOLIFY_APP_UUID}" --arg w "${COOLIFY_WORKER_APP_UUID:-}" \
+              '[.[] | select((.application_uuid == $a or .application_uuid == $w) and (.status=="in_progress" or .status=="queued"))] | length' 2>/dev/null || true)
+            if [ "${occupes}" = "0" ]; then
+              echo "Coolify au repos ✓ (aucun déploiement en cours ni en file pour le site ou le worker)."
+              exit 0
+            fi
+            echo "[$(date +%H:%M:%S)] Coolify occupé ou API muette (déploiements actifs : '${occupes:-?}') — nouvel essai dans 30 s"
+            if [ $SECONDS -ge $DEADLINE ]; then
+              echo "::error::Coolify toujours occupé après 20 min : AUCUN POST envoyé."
+              echo "::error::Action recommandée : gh workflow run coolify-diagnose.yml -f action=cancel-stuck"
+              exit 1
+            fi
+            sleep 30
+          done
+
       - name: POST /api/v1/deploy
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
@@ -675,6 +714,41 @@ jobs:
             exit 1
           }
           echo "Cloudflare cache purged ✓"
+
+      # D8 (2026-11-15) — retrait des ANCIENNES images du site, une fois la nouvelle servie et
+      # saine. Ne tourne que si l'attente du déploiement a vu `finished` (success()) ; best-effort :
+      # un échec ne rougit jamais la mise en ligne. Le script (scripts/vps/) garde toute image
+      # utilisée par un conteneur, l'image `latest`, et abandonne sur la liste noire.
+      - name: Checkout (scripts/vps seulement)
+        if: success() && steps.deploy.outputs.deployment_uuid != ''
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: scripts/vps
+          persist-credentials: false
+
+      - name: Retirer l'ancienne image du site
+        if: success() && steps.deploy.outputs.deployment_uuid != ''
+        continue-on-error: true
+        timeout-minutes: 12
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::warning::HETZNER_SSH_KEY absent — retrait des anciennes images ignoré."
+            exit 0
+          fi
+          if ! [[ "${COOLIFY_APP_UUID:-}" =~ ^[a-z0-9]{20,40}$ ]]; then
+            echo "::warning::COOLIFY_APP_UUID absent ou de forme inattendue — retrait ignoré."
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 5 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=8 root@178.105.55.15 \
+            "bash -s -- --appliquer ${COOLIFY_APP_UUID}" < scripts/vps/retirer-anciennes-images-site.sh
 
       # Cache warming (edge) — Audit indexation 2026-06-20, ÉTENDU 2026-06-23.
       # Déplacé dans le job dédié `warm` (voir fin de fichier) et passé de ~40 URLs
