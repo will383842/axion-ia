@@ -23,6 +23,7 @@ import OpenAI from "openai";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
+import { alerterSiCreditOpenAiEpuise } from "@/server/content-gen/shared/openai-credit-alert";
 import {
   buildEmbeddingInput,
   EMBEDDING_DIMENSION,
@@ -344,6 +345,16 @@ async function runBackfillArticles(_job: Job): Promise<RunStats> {
     } catch (err) {
       // Si une erreur OpenAI se produit sur le batch → on log + continue (partial success).
       errors += validBatch.length;
+      // Crédit épuisé / facturation refusée : prévient le fondateur (anti-doublon 6 h).
+      if (err instanceof Error) {
+        const e = err as Error & { status?: number; type?: string; code?: string };
+        await alerterSiCreditOpenAiEpuise({
+          status: e.status,
+          type: e.type,
+          code: e.code,
+          message: e.message,
+        });
+      }
       console.error(
         `[embeddings-backfill] Erreur OpenAI batch ${i + 1}-${Math.min(i + BATCH_SIZE, articles.length)}:`,
         err instanceof Error ? err.message : String(err),
