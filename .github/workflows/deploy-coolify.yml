@@ -489,7 +489,6 @@ jobs:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
-          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
         run: |
           set -euo pipefail
           if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ] || [ -z "${COOLIFY_APP_UUID:-}" ]; then
@@ -735,7 +734,7 @@ jobs:
       - name: Retirer l'ancienne image du site
         if: success() && steps.deploy.outputs.deployment_uuid != '' && hashFiles('scripts/vps/retirer-anciennes-images-site.sh') != ''
         continue-on-error: true
-        timeout-minutes: 12
+        timeout-minutes: 25
         env:
           HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
@@ -752,16 +751,27 @@ jobs:
             exit 0
           fi
           # Même contrôle « aucun déploiement actif » qu'avant le POST, refait juste avant le
-          # retrait : tout déploiement in_progress/queued, réponse illisible ou secrets absents
-          # = occupé => rien n'est retiré (sortie 0).
-          reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN:-}" \
-            "${COOLIFY_URL:-}/api/v1/deployments" 2>/dev/null || true)
-          occupes=$(printf '%s' "${reponse}" | jq -r \
-            'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
-          if [ "${occupes}" != "0" ]; then
-            echo "::warning::Coolify occupé ou API illisible (actifs : '${occupes:-?}') — retrait des anciennes images ignoré."
-            exit 0
-          fi
+          # retrait, mais en BOUCLE BORNÉE : le POST du worker part juste après celui du site et
+          # « Wait for Coolify » n'attend que le site, donc le worker est souvent encore
+          # queued/in_progress ici. Relevé toutes les 30 s pendant 10 min au plus ; tout
+          # in_progress/queued, réponse muette ou illisible = occupé ; seul un tableau JSON dont le
+          # compte vaut 0 autorise. Délai dépassé => rien n'est retiré (sortie 0).
+          DEADLINE_RETRAIT=$((SECONDS + 600))  # 10 min
+          while :; do
+            reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN:-}" \
+              "${COOLIFY_URL:-}/api/v1/deployments" 2>/dev/null || true)
+            occupes=$(printf '%s' "${reponse}" | jq -r \
+              'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
+            if [ "${occupes}" = "0" ]; then
+              break
+            fi
+            if [ $SECONDS -ge $DEADLINE_RETRAIT ]; then
+              echo "::warning::retrait des anciennes images ignoré (Coolify occupé)"
+              exit 0
+            fi
+            echo "[$(date +%H:%M:%S)] Coolify occupé ou API muette (actifs : '${occupes:-?}') — nouvel essai dans 30 s"
+            sleep 30
+          done
           mkdir -p ~/.ssh
           echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa

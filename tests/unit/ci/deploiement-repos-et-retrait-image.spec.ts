@@ -6,7 +6,7 @@
  *   · l'étape « Coolify au repos » PRÉCÈDE le POST du site, lit /api/v1/deployments (GET), filtre
  *     site + worker sur in_progress/queued, renvoie à coolify-diagnose, et ne fait aucun POST ;
  *   · le retrait SUIT l'attente « Wait for Coolify », est best-effort (continue-on-error: true,
- *     12 min), n'agit que si l'attente a réussi, et appelle le script avec --appliquer ;
+ *     25 min, dont une boucle bornée à 10 min), n'agit que si l'attente a réussi, et appelle le script avec --appliquer ;
  *   · le script ne contient aucune commande forcée ni large, et contient liste noire et verrou.
  *
  * Mutations qui rougissent : passer cancel-in-progress à true ; déplacer « Coolify au repos »
@@ -69,6 +69,7 @@ describe("D8 · « Coolify au repos » précède le POST", () => {
     expect(e).toContain("${COOLIFY_URL}/api/v1/deployments");
     expect(e).toContain('.status=="in_progress" or .status=="queued"');
     expect(e).not.toContain("application_uuid");
+    expect(e).not.toContain("COOLIFY_WORKER_APP_UUID");
     expect(e).toContain("coolify-diagnose.yml -f action=cancel-stuck");
     expect(e).toContain("sleep 30");
     expect(e).toContain("SECONDS + 1200");
@@ -100,7 +101,7 @@ describe("D8 · retrait de l'ancienne image", () => {
     const e = etape("Retirer l'ancienne image du site");
     expect(e).toContain("if: success() && steps.deploy.outputs.deployment_uuid != ''");
     expect(e).toMatch(/continue-on-error: true/);
-    expect(e).toMatch(/timeout-minutes: 12/);
+    expect(e).toMatch(/timeout-minutes: 25/);
     expect(e).toContain("HETZNER_SSH_KEY");
     expect(e).toContain("::warning::");
     expect(e).toContain("--appliquer");
@@ -116,9 +117,33 @@ describe("D8 · retrait de l'ancienne image", () => {
     const e = etape("Retirer l'ancienne image du site");
     expect(e).toContain("/api/v1/deployments");
     expect(e).toContain('.status=="in_progress" or .status=="queued"');
-    expect(e).toMatch(/if \[ "\$\{occupes\}" != "0" \]/);
-    expect(e.indexOf('!= "0"')).toBeLessThan(e.indexOf("ssh -o BatchMode"));
+    expect(e).toContain("hashFiles");
     expect(e).toContain("hashFiles('scripts/vps/retirer-anciennes-images-site.sh') != ''");
+  });
+
+  it("le contrôle d'inactivité du retrait est une boucle bornée, ferme-en-cas-de-doute, sortie 0 sans retrait", () => {
+    const e = etape("Retirer l'ancienne image du site");
+    // borne de durée : 10 min, relevé toutes les 30 s
+    expect(e).toContain("DEADLINE_RETRAIT=$((SECONDS + 600))");
+    expect(e).toMatch(/while :; do/);
+    expect(e).toContain("sleep 30");
+    expect(e).toContain("[ $SECONDS -ge $DEADLINE_RETRAIT ]");
+    // exigence = "0", jamais de repli permissif
+    expect(e).not.toMatch(/\|\|\s*echo\s+0/);
+    expect(e).toContain('if type=="array"');
+    expect(e).toContain('else "illisible" end');
+    expect(e.match(/if \[ "\$\{occupes\}" = "0" \]; then/g)).toHaveLength(1);
+    expect(e).not.toMatch(/!= "0"/);
+    // délai dépassé : avertissement + sortie 0 AVANT le SSH
+    const iWarn = e.indexOf("::warning::retrait des anciennes images ignoré (Coolify occupé)");
+    expect(iWarn).toBeGreaterThan(0);
+    expect(e.slice(iWarn, iWarn + 120)).toContain("exit 0");
+    expect(iWarn).toBeLessThan(e.indexOf("ssh -o BatchMode"));
+    // le SEUL `break` est celui du compte 0 : sinon la boucle sortirait vers le SSH en étant occupé
+    expect(e.match(/\bbreak\b/g)).toHaveLength(1);
+    expect(e).toMatch(/if \[ "\$\{occupes\}" = "0" \]; then\n\s+break\n\s+fi/);
+    // la sortie de boucle (autorisation) précède aussi le SSH
+    expect(e.indexOf("break")).toBeLessThan(e.indexOf("ssh -o BatchMode"));
   });
 
   it("le checkout est réduit à scripts/vps, best-effort, borné, placé entre la purge et le retrait", () => {
