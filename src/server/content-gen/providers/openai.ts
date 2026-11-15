@@ -26,6 +26,7 @@ import {
 import { withRetry } from "../lib/retry";
 import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
 import { readProviderConfig } from "../lib/config-reader";
+import { isOpenAiQuotaError } from "@/server/notifications/openai-quota-error";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 
@@ -98,14 +99,7 @@ export function mapOpenAiError(err: unknown): ProviderError {
       // recours. Les motifs de message restent DÉLIBÉRÉMENT étroits : élargir
       // ferait basculer de vrais rate-limits transitoires en non-retryable, et
       // tuerait des jobs qui auraient abouti.
-      const isQuota =
-        err.type === "insufficient_quota" ||
-        err.code === "insufficient_quota" ||
-        err.code === "credit_balance_exhausted" ||
-        err.code === "billing_hard_limit_reached" ||
-        /insufficient[_-]quota|exceeded your current quota|check your plan and billing|no credits remaining|credit[_\s-]balance/i.test(
-          err.message,
-        );
+      const isQuota = isOpenAiQuotaError(err);
       if (isQuota) {
         return new ProviderError(
           `OpenAI quota épuisé (compte à recharger) : ${err.message}`,

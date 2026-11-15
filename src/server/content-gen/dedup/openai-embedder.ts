@@ -24,6 +24,11 @@
  *   requis pour OpenAI sur ce usage (consent implicite Will + scope public).
  */
 
+import {
+  alerterSiCreditOpenAiEpuise,
+  parseOpenAiErrorBody,
+} from "@/server/notifications/openai-credit-alert";
+
 const OPENAI_API_URL = "https://api.openai.com/v1/embeddings";
 const EMBEDDING_MODEL = "text-embedding-3-large";
 // 1536 dims via API param : pgvector limite HNSW+IVFFlat a 2000 dims max.
@@ -113,6 +118,9 @@ export async function embed(text: string): Promise<EmbedResult | null> {
           error: err.slice(0, 200),
         }),
       );
+      // Crédit épuisé / facturation refusée : prévient le fondateur (anti-doublon 6 h).
+      // Non bloquant (la fonction ne lève jamais).
+      void alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(response.status, err));
       return null;
     }
 
