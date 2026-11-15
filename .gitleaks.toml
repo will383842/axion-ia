@@ -108,4 +108,15 @@ regexes = [
   # suffirait pas, le commit d'origine (b97e7ffe) porte toujours la chaîne.
   # L'allowlist est le seul moyen sans réécrire l'historique.
   '''axionia-candidature-commercial-v\d+''',
+  # Noms des variables d'environnement des clés Anthropic (PAS des secrets).
+  #
+  # Ajouté 2026-11-15 : le commentaire d'en-tête de
+  # `src/server/content-gen/providers/anthropic-keys.ts` liste
+  # « ANTHROPIC_API_KEY, ANTHROPIC_API_KEY_2, ANTHROPIC_API_KEY_3 » ; la règle
+  # `generic-api-key` le prend pour une clé. Volontairement ÉTROIT : seule la
+  # chaîne littérale du NOM de variable est ignorée, jamais une valeur `sk-ant-…`.
+  #
+  # ⚠️ gitleaks scanne l'HISTORIQUE : le commit c2a69967 porte la chaîne, d'où
+  # l'allowlist plutôt qu'une simple reformulation du commentaire.
+  '''ANTHROPIC_API_KEY(_\d)?''',
 ]
