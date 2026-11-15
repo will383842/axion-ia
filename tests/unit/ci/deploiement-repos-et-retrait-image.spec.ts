@@ -64,16 +64,29 @@ describe("D8 · « Coolify au repos » précède le POST", () => {
     expect(iPost).toBeGreaterThan(iRepos);
   });
 
-  it("lit les déploiements (GET), filtre site + worker, renvoie à cancel-stuck, ne POST pas", () => {
+  it("lit les déploiements (GET), compte TOUT in_progress/queued, renvoie à cancel-stuck, ne POST pas", () => {
     const e = etape("Coolify au repos");
     expect(e).toContain("${COOLIFY_URL}/api/v1/deployments");
-    expect(e).toContain(
-      '(.application_uuid == $a or .application_uuid == $w) and (.status=="in_progress" or .status=="queued")',
-    );
+    expect(e).toContain('.status=="in_progress" or .status=="queued"');
+    expect(e).not.toContain("application_uuid");
     expect(e).toContain("coolify-diagnose.yml -f action=cancel-stuck");
     expect(e).toContain("sleep 30");
     expect(e).toContain("SECONDS + 1200");
     expect(e).not.toMatch(/-X POST|--data/);
+  });
+
+  it("ferme en cas de doute : seule la sortie `occupes = 0` mène à 0, aucun `|| echo 0`", () => {
+    const e = etape("Coolify au repos");
+    expect(e).not.toMatch(/\|\|\s*echo\s+0/);
+    expect(e).toContain('if type=="array"');
+    expect(e).toContain('else "illisible" end');
+    expect(e.match(/if \[ "\$\{occupes\}" = "0" \]; then/g)).toHaveLength(1);
+    expect(e.match(/exit 0/g)).toHaveLength(1);
+    const iSortie = e.indexOf("exit 0");
+    const iTest = e.indexOf('if [ "${occupes}" = "0" ]; then');
+    expect(iTest).toBeGreaterThan(0);
+    expect(iSortie).toBeGreaterThan(iTest);
+    expect(e.slice(iTest, iSortie)).not.toMatch(/^\s*fi\s*$/m);
   });
 });
 
@@ -94,16 +107,40 @@ describe("D8 · retrait de l'ancienne image", () => {
     expect(e).toContain("scripts/vps/retirer-anciennes-images-site.sh");
   });
 
-  it("le checkout est réduit à scripts/vps", () => {
+  it("le retrait est APRÈS « Purge Cloudflare cache », refait le contrôle « aucun déploiement actif »", () => {
+    const d = job("deploy");
+    const iPurge = d.indexOf("- name: Purge Cloudflare cache");
+    const iRetrait = d.indexOf("- name: Retirer l'ancienne image du site");
+    expect(iPurge).toBeGreaterThan(0);
+    expect(iRetrait).toBeGreaterThan(iPurge);
+    const e = etape("Retirer l'ancienne image du site");
+    expect(e).toContain("/api/v1/deployments");
+    expect(e).toContain('.status=="in_progress" or .status=="queued"');
+    expect(e).toMatch(/if \[ "\$\{occupes\}" != "0" \]/);
+    expect(e.indexOf('!= "0"')).toBeLessThan(e.indexOf("ssh -o BatchMode"));
+    expect(e).toContain("hashFiles('scripts/vps/retirer-anciennes-images-site.sh') != ''");
+  });
+
+  it("le checkout est réduit à scripts/vps, best-effort, borné, placé entre la purge et le retrait", () => {
+    const d = job("deploy");
     const e = etape("Checkout (scripts/vps seulement)");
     expect(e).toContain("actions/checkout@v6");
     expect(e).toContain("sparse-checkout: scripts/vps");
+    expect(e).toContain("if: success() && steps.deploy.outputs.deployment_uuid != ''");
+    expect(e).toMatch(/continue-on-error: true/);
+    expect(e).toMatch(/timeout-minutes: \d+/);
+    const iCo = d.indexOf("- name: Checkout (scripts/vps seulement)");
+    expect(iCo).toBeGreaterThan(d.indexOf("- name: Purge Cloudflare cache"));
+    expect(iCo).toBeLessThan(d.indexOf("- name: Retirer l'ancienne image du site"));
   });
 });
 
 describe("D8 · le script de retrait", () => {
   it("n'a aucune commande forcée ou large", () => {
     expect(SCRIPT).not.toMatch(/rmi\s+-[a-z]*f/);
+    expect(SCRIPT).not.toMatch(/\b(rmi|image\s+rm)\b[^\n]*\s-[a-z]*f\b/);
+    expect(WORKFLOW).not.toMatch(/\b(rmi|image\s+rm)\b[^\n]*\s-[a-z]*f\b/);
+    expect(SCRIPT).not.toContain("--force=true");
     expect(SCRIPT).not.toContain("--force");
     expect(SCRIPT).not.toMatch(/prune/);
     expect(SCRIPT).not.toMatch(/volume/i);
@@ -118,6 +155,13 @@ describe("D8 · le script de retrait", () => {
     expect(SCRIPT).toContain("^[a-z0-9]{20,40}$");
     expect(SCRIPT).toContain('MODE="essai"');
     expect(SCRIPT).toContain("healthy");
+  });
+
+  it("garde l'image saine, une précédente, vérifie après retrait par référence", () => {
+    expect(SCRIPT).toContain("CREE_SAINE");
+    expect(SCRIPT).toContain("retour arrière");
+    expect(SCRIPT).toContain("étiquette retirée, image gardée");
+    expect(SCRIPT).toMatch(/docker image inspect "\$id"/);
   });
 
   it("a la liste noire complète", () => {

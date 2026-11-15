@@ -18,13 +18,19 @@
 #   3. attente (10 min max, relevé toutes les 20 s) que plus aucun conteneur APP_UUID* en cours
 #      n'utilise une autre image que celle du conteneur sain ; sinon sortie 0, rien retiré ;
 #   4. GARDÉES : toute image utilisée par N'IMPORTE QUEL conteneur (même arrêté) + l'image
-#      ghcr.io/will383842/axion-ia:latest ;
+#      ghcr.io/will383842/axion-ia:latest ; en plus, une candidate n'est retirable que si son
+#      .Created est ANTÉRIEUR à celui de l'image du conteneur sain (une image en cours de
+#      déploiement n'est jamais candidate), et la plus récente des images APP_UUID:* non
+#      servies est gardée (retour arrière Coolify, N=1) ;
 #   5. CANDIDATES : étiquette APP_UUID:* ou ghcr.io/will383842/axion-ia:*, ou condensat
 #      ghcr.io/will383842/axion-ia@* ;
 #   6. liste noire : si une étiquette ou un condensat d'une candidate contient l'un des mots
 #      studio, cv-storage, backup, sauvegarde, f0-facecam, medias-reels, contenu-reel,
 #      avant-reconciliation, coolify, postgres : ABANDON TOTAL, sortie 0, rien retiré ;
-#   7. retrait par `docker rmi` SIMPLE (jamais forcé) ; un échec est journalisé, sans arrêt.
+#   7. retrait par `docker rmi` SIMPLE (jamais forcé) ; un échec est journalisé, sans arrêt ;
+#      retrait par référence : si l'image existe encore après coup (`docker image inspect`),
+#      « étiquette retirée, image gardée » et elle n'est pas comptée comme retirée.
+# (Le contrôle « aucun déploiement Coolify actif » est fait par le workflow avant l'appel.)
 # Ne touche jamais aux conteneurs, aux données Docker, à /root ni à /tmp.
 # Journal : /var/log/axion-retrait-images.log (df -h / avant et après, gardées / retirées).
 
@@ -78,6 +84,7 @@ while :; do
   sains="$(printf '%s\n' "$etat" | awk -F'\t' '$3=="healthy"' | grep -c . || true)"
   images="$(printf '%s\n' "$etat" | awk -F'\t' 'NF>=2 {print $2}' | sort -u | grep -c . || true)"
   if [ "${sains:-0}" -ge 1 ] && [ "${images:-0}" -eq 1 ]; then
+    IMAGE_SAINE="$(printf '%s\n' "$etat" | awk -F'\t' '$3=="healthy" {print $2; exit}')"
     pret=1
     break
   fi
@@ -107,6 +114,19 @@ docker image inspect --format '{{.Id}}' "${DEPOT_GHCR}:latest" >>"$gardees" 2>/d
 sort -u -o "$gardees" "$gardees"
 
 # --- 5 et 6 : candidates et liste noire -----------------------------------------------------
+# Horodatage de création en nanosecondes (comparaison numérique, formats RFC3339 variables).
+cree_ns() { # $1 = id d'image ; imprime des ns depuis l'époque, ou rien si illisible
+  local c
+  c="$(docker image inspect --format '{{.Created}}' "$1" 2>/dev/null || true)"
+  [ -n "$c" ] || return 0
+  date -u -d "$c" +%s%N 2>/dev/null || true
+}
+CREE_SAINE="$(cree_ns "$IMAGE_SAINE")"
+if ! [[ "$CREE_SAINE" =~ ^[0-9]+$ ]]; then
+  journal "date de création de l'image saine illisible : sortie sans rien retirer"
+  exit 0
+fi
+
 ids="$(docker image ls -q --no-trunc | sort -u || true)"
 retirables=()
 for id in $ids; do
@@ -128,8 +148,36 @@ for id in $ids; do
     journal "gardée : ${refs}"
     continue
   fi
-  retirables+=("${id}|${refs}")
+  cree="$(cree_ns "$id")"
+  if ! [[ "$cree" =~ ^[0-9]+$ ]] || [ "$cree" -ge "$CREE_SAINE" ]; then
+    journal "gardée (pas antérieure à l'image saine, ou date illisible) : ${refs}"
+    continue
+  fi
+  retirables+=("${cree}|${id}|${refs}")
 done
+
+# Retour arrière Coolify (N=1) : on garde la plus récente des images APP_UUID:* non servies.
+recente=""
+recente_ns=0
+for entree in "${retirables[@]:-}"; do
+  [ -n "$entree" ] || continue
+  ns="${entree%%|*}"
+  reste="${entree#*|}"
+  case "${reste#*|}" in
+    "${APP_UUID}:"* | *" ${APP_UUID}:"*)
+      if [ "$ns" -gt "$recente_ns" ]; then recente_ns="$ns"; recente="$entree"; fi
+      ;;
+  esac
+done
+if [ -n "$recente" ]; then
+  journal "gardée (retour arrière, la plus récente non servie) : ${recente#*|*|}"
+  filtre=()
+  for entree in "${retirables[@]}"; do
+    [ "$entree" = "$recente" ] || filtre+=("$entree")
+  done
+  retirables=()
+  if [ "${#filtre[@]}" -gt 0 ]; then retirables=("${filtre[@]}"); fi
+fi
 
 journal "gardées : $(grep -c . "$gardees" || true) identifiants ; à retirer : ${#retirables[@]}"
 
@@ -137,6 +185,7 @@ journal "gardées : $(grep -c . "$gardees" || true) identifiants ; à retirer : 
 retirees=0
 for entree in "${retirables[@]:-}"; do
   [ -n "$entree" ] || continue
+  entree="${entree#*|}"
   id="${entree%%|*}"
   refs="${entree#*|}"
   if [ "$MODE" != "appliquer" ]; then
@@ -156,7 +205,9 @@ for entree in "${retirables[@]:-}"; do
           ;;
       esac
     done
-    if [ "$ok" -eq 1 ]; then
+    if [ "$ok" -eq 1 ] && docker image inspect "$id" >/dev/null 2>&1; then
+      journal "étiquette retirée, image gardée : ${refs}"
+    elif [ "$ok" -eq 1 ]; then
       journal "retirée (par référence) : ${refs}"
       retirees=$((retirees + 1))
     else

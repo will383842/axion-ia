@@ -478,8 +478,9 @@ jobs:
     steps:
       # D8 (2026-11-15) — « Coolify au repos » AVANT tout POST. Deux déploiements Coolify
       # (site + worker) ne doivent pas se chevaucher : on attend qu'aucun déploiement
-      # `in_progress` ou `queued` n'existe pour l'une des deux applications. LECTURE SEULE côté
-      # Coolify (un GET). API muette ou illisible = occupé (on ne devine pas « libre »).
+      # `in_progress` ou `queued` n'existe, TOUTES applications confondues (le serveur porte aussi le
+      # Studio). LECTURE SEULE côté Coolify (un GET). API muette, vide, non-tableau ou illisible
+      # = occupé : on ne sort 0 que sur un tableau JSON dont le compte vaut 0.
       # Toujours occupé après 20 min : échec AVANT tout POST. Le groupe de concurrence
       # `deploy-coolify` (cancel-in-progress: false) et `force=true` ne changent pas.
       - name: Coolify au repos (attente avant POST)
@@ -500,10 +501,13 @@ jobs:
             occupes=""
             reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
               "${COOLIFY_URL}/api/v1/deployments" 2>/dev/null || true)
-            occupes=$(printf '%s' "${reponse}" | jq -r --arg a "${COOLIFY_APP_UUID}" --arg w "${COOLIFY_WORKER_APP_UUID:-}" \
-              '[.[] | select((.application_uuid == $a or .application_uuid == $w) and (.status=="in_progress" or .status=="queued"))] | length' 2>/dev/null || true)
+            # Ferme-en-cas-de-doute : TOUT déploiement in_progress/queued compte (toutes
+            # applications : le serveur porte aussi le Studio). Réponse muette, vide, non-tableau
+            # ou illisible => `occupes` n'est pas « 0 » => occupé.
+            occupes=$(printf '%s' "${reponse}" | jq -r \
+              'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
             if [ "${occupes}" = "0" ]; then
-              echo "Coolify au repos ✓ (aucun déploiement en cours ni en file pour le site ou le worker)."
+              echo "Coolify au repos ✓ (aucun déploiement en cours ni en file, toutes applications)."
               exit 0
             fi
             echo "[$(date +%H:%M:%S)] Coolify occupé ou API muette (déploiements actifs : '${occupes:-?}') — nouvel essai dans 30 s"
@@ -721,18 +725,22 @@ jobs:
       # utilisée par un conteneur, l'image `latest`, et abandonne sur la liste noire.
       - name: Checkout (scripts/vps seulement)
         if: success() && steps.deploy.outputs.deployment_uuid != ''
+        continue-on-error: true
+        timeout-minutes: 3
         uses: actions/checkout@v6
         with:
           sparse-checkout: scripts/vps
           persist-credentials: false
 
       - name: Retirer l'ancienne image du site
-        if: success() && steps.deploy.outputs.deployment_uuid != ''
+        if: success() && steps.deploy.outputs.deployment_uuid != '' && hashFiles('scripts/vps/retirer-anciennes-images-site.sh') != ''
         continue-on-error: true
         timeout-minutes: 12
         env:
           HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
         run: |
           set -euo pipefail
           if [ -z "${HETZNER_SSH_KEY:-}" ]; then
@@ -741,6 +749,17 @@ jobs:
           fi
           if ! [[ "${COOLIFY_APP_UUID:-}" =~ ^[a-z0-9]{20,40}$ ]]; then
             echo "::warning::COOLIFY_APP_UUID absent ou de forme inattendue — retrait ignoré."
+            exit 0
+          fi
+          # Même contrôle « aucun déploiement actif » qu'avant le POST, refait juste avant le
+          # retrait : tout déploiement in_progress/queued, réponse illisible ou secrets absents
+          # = occupé => rien n'est retiré (sortie 0).
+          reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN:-}" \
+            "${COOLIFY_URL:-}/api/v1/deployments" 2>/dev/null || true)
+          occupes=$(printf '%s' "${reponse}" | jq -r \
+            'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
+          if [ "${occupes}" != "0" ]; then
+            echo "::warning::Coolify occupé ou API illisible (actifs : '${occupes:-?}') — retrait des anciennes images ignoré."
             exit 0
           fi
           mkdir -p ~/.ssh
