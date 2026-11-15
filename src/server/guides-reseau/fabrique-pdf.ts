@@ -8,9 +8,9 @@
  *
  * Imports lourds (prisma, polices, @react-pdf, SDK R2) chargés À L'APPEL : l'import ne touche rien.
  *
- * Empreinte du texte — JSON CANONIQUE : objet `{code, sections:[{paragraphes, puces, titre}], titre, version}`,
- * clés triées par ordre lexicographique à tous les niveaux, chaînes en NFC, `JSON.stringify` sans espace,
- * SHA-256 hexadécimal de l'UTF-8. Même vecteur de test que le Studio (`fixtures/empreinte-guide.json`).
+ * Empreinte du texte — JSON CANONIQUE du Studio : objet compact `{titre, sections:[{titre, paragraphes, puces}]}`
+ * dans cet ordre fixe, chaînes en NFC, SHA-256 hexadécimal de l'UTF-8. Ni `code` ni `version` n'y figurent,
+ * aucun tri de clés. Même vecteur de test que le Studio (`fixtures/empreinte-guide.json`).
  *
  * Écrit `guides_reseau_versions` et un objet PDF — JAMAIS `cibles_reseau` (« Rattacher » est fait par le Studio
  * via la route existante). Jamais de chemin, de clé d'objet ni de lien dans une réponse. Jamais de 500.
@@ -21,7 +21,6 @@ import { z } from "zod";
 import { controlerEntree, type ResultatEntree } from "@/server/videos/entree";
 import { refus, reponseJson } from "@/server/videos/reponse";
 import { RE_CODE_GUIDE_CATALOGUE } from "./format-code-guide";
-import { titreGuideSur } from "./guide-a-livrer";
 import { cleObjet, fabriqueActive, secretsFabrique } from "./fabrique-config";
 import { motInterditDans } from "./mots-interdits-guide";
 import { ouvrirStockage, type StockageGuides } from "./stockage-guides";
@@ -34,14 +33,39 @@ export const TOTAL_CARACTERES_MAX = 40_000;
 export const PAGES_MAX = 30;
 export const PDF_OCTETS_MAX = 5 * 1024 * 1024;
 export const DELAI_EN_COURS_MS = 5 * 60 * 1000;
+export const DELAI_RENDU_MS = 60 * 1000;
 
-const CONTROLE = new RegExp("[\u0000-\u0008\u000b-\u001f\u007f-\u009f  ​-‏‪-‮⁦-⁩﻿]");
+/**
+ * Caractères refusés partout : COPIE MOT POUR MOT de `INTERDITS_CARACTERES` du Studio (guide-contenu.ts, référence).
+ * Écrits en \uXXXX : jamais le caractère lui-même dans le code. Un test garde l'égalité avec la source du Studio.
+ */
+export const INTERDITS_CARACTERES =
+  /[\u0000-\u001F\u007F-\u009F\u00AD\u061C\u115F\u1160\u17B4\u17B5\u180B-\u180F\u200B-\u200F\u2028-\u202E\u2060-\u206F\u3164\uFE00-\uFE0F\uFEFF\uFFA0\u{E0000}-\u{E0FFF}]|\p{Default_Ignorable_Code_Point}/u;
+
+export function contientCaractereInterdit(s: string): boolean {
+  return INTERDITS_CARACTERES.test(s);
+}
+
+/** Texte du schéma du Studio : 1 à `max` caractères, SANS trim, sans caractère interdit, sans demi-caractère isolé. */
+const texte = (max: number) =>
+  z
+    .string()
+    .min(1)
+    .max(max)
+    .refine((s) => !contientCaractereInterdit(s), "caractère interdit")
+    .refine((s) => s.isWellFormed(), "demi-caractère Unicode isolé");
+
+/** Titre du guide fabriqué : schéma du Studio (1 à 120, sans trim). `null` si refusé. Propre à la fabrique. */
+export function titreGuideFabrique(brut: unknown): string | null {
+  const lu = texte(120).safeParse(brut);
+  return lu.success ? lu.data : null;
+}
 
 const Section = z
   .object({
-    titre: z.string().min(1).max(120),
-    paragraphes: z.array(z.string().min(1).max(1500)).min(1).max(15),
-    puces: z.array(z.string().min(1).max(300)).max(10),
+    titre: texte(120),
+    paragraphes: z.array(texte(1500)).min(1).max(15),
+    puces: z.array(texte(300)).max(10),
   })
   .strict();
 
@@ -107,7 +131,7 @@ export function validerContenu(json: unknown): Verdict {
     return non(422, "code_invalide");
   const lu = Corps.safeParse(json);
   if (!lu.success) return non(422, "corps_invalide");
-  const titre = titreGuideSur(lu.data.titre);
+  const titre = titreGuideFabrique(lu.data.titre);
   if (titre === null) return non(422, "titre_invalide");
   const sections: SectionGuide[] = lu.data.sections.map((s) => ({
     titre: s.titre,
@@ -115,7 +139,6 @@ export function validerContenu(json: unknown): Verdict {
     puces: s.puces,
   }));
   const textes = [titre, ...sections.flatMap((s) => [s.titre, ...s.paragraphes, ...s.puces])];
-  if (textes.some((t) => CONTROLE.test(t))) return non(422, "corps_invalide");
   if (textes.reduce((n, t) => n + t.length, 0) > TOTAL_CARACTERES_MAX)
     return non(422, "corps_invalide");
   const contenu: ContenuGuide = { code: lu.data.code, version: lu.data.version, titre, sections };
@@ -130,15 +153,33 @@ export function pagesDuPdf(pdf: Buffer): number {
   return (pdf.toString("latin1").match(/\/Type\s*\/Page(?![A-Za-z])/g) ?? []).length;
 }
 
-let rendu = false;
-/** Un rendu à la fois dans le processus ; sinon `null` (→ 429 rendu_occupe). */
-async function seulRendu<T>(travail: () => Promise<T>): Promise<T | null> {
-  if (rendu) return null;
-  rendu = true;
+let rendu: object | null = null;
+/**
+ * Un rendu à la fois dans le processus ; sinon `null` (→ 429 rendu_occupe). Au-delà de `delaiMs` le rendu est
+ * abandonné : verrou libéré, `"delai"` rendu (→ 503 echec), rien n'est livré (`abandonne()` vaut vrai).
+ */
+async function seulRendu<T>(
+  travail: (abandonne: () => boolean) => Promise<T>,
+  delaiMs: number,
+): Promise<T | null | "delai"> {
+  if (rendu !== null) return null;
+  const jeton = {};
+  rendu = jeton;
+  let abandon = false;
+  let minuteur: ReturnType<typeof setTimeout> | undefined;
   try {
-    return await travail();
+    return await Promise.race([
+      travail(() => abandon),
+      new Promise<"delai">((resolve) => {
+        minuteur = setTimeout(() => {
+          abandon = true;
+          resolve("delai");
+        }, delaiMs);
+      }),
+    ]);
   } finally {
-    rendu = false;
+    clearTimeout(minuteur);
+    if (rendu === jeton) rendu = null;
   }
 }
 
@@ -181,6 +222,8 @@ export interface DepsFabrique {
   stockage?: StockageGuides | null;
   rendre?: (c: ContenuGuide) => Promise<{ pdf: Buffer; pages?: number }>;
   maintenant?: () => Date;
+  /** Délai maximum du rendu (défaut `DELAI_RENDU_MS`). */
+  delaiRenduMs?: number;
 }
 
 async function rendreParDefaut(c: ContenuGuide): Promise<{ pdf: Buffer; pages?: number }> {
@@ -290,8 +333,9 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
       .catch(() => undefined);
   };
 
-  const fait = await seulRendu(async () => {
+  const fait = await seulRendu(async (abandonne) => {
     const { pdf, pages: pagesDonnees } = await (deps.rendre ?? rendreParDefaut)(contenu);
+    if (abandonne()) return { refus: refus(503, "echec") };
     const pages = pagesDonnees ?? pagesDuPdf(pdf);
     if (pages > PAGES_MAX || pdf.length > PDF_OCTETS_MAX)
       return { refus: refus(422, "trop_de_pages") };
@@ -302,11 +346,15 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
       return { refus: refus(503, "stockage_echec") };
     }
     return { pdf, pages };
-  }).catch(() => ({ refus: refus(503, "stockage_echec") }));
+  }, deps.delaiRenduMs ?? DELAI_RENDU_MS).catch(() => ({ refus: refus(503, "stockage_echec") }));
 
   if (fait === null) {
     await echec();
     return refus(429, "rendu_occupe");
+  }
+  if (fait === "delai") {
+    await echec();
+    return refus(503, "echec");
   }
   if ("refus" in fait) {
     await echec();
