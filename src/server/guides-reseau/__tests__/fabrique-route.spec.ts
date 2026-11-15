@@ -303,6 +303,27 @@ describe("idempotence et ordre", () => {
     lacher();
     expect((await a).status).toBe(201);
   });
+  it("rendu qui dépasse 60 s : abandonné, 503 echec, ligne « echec », verrou libéré, rien déposé", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      let lacher!: () => void;
+      etat.retardRendu = new Promise<void>((r) => (lacher = r));
+      const a = envoyer(corps(contenu({ version: 1 })));
+      await vi.advanceTimersByTimeAsync(61_000);
+      const r = await a;
+      expect(r.status).toBe(503);
+      expect((await json(r)).erreur).toBe("echec");
+      expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("echec");
+      lacher();
+      await vi.advanceTimersByTimeAsync(10);
+      expect(etat.depots).toHaveLength(0);
+      etat.retardRendu = null;
+      const b = await envoyer(corps(contenu({ version: 1 })));
+      expect(b.status).toBe(201);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
   it("panne du stockage = 503 stockage_echec, ligne « echec », ancienne version intacte, relance OK", async () => {
     await envoyer(corps(contenu({ version: 1 })));
     etat.panneStockage = true;
