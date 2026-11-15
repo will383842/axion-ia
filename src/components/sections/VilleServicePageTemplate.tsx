@@ -29,6 +29,7 @@ import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
 
 import { getRegion } from "@/content/regions";
 import { VILLES, getIndexableVilles, getVille, isVilleIndexable } from "@/content/villes";
+import { SEUIL_PRERENDU_HUB_VILLE } from "@/content/villes/prerendu";
 import { getNearbyVilles, haversineKm } from "@/lib/geo";
 import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
 import {
@@ -183,21 +184,25 @@ interface PageProps {
 /**
  * `generateStaticParams` partagé par les 4 services par-ville.
  *
- * 2026-05-27 (sprint audit Will villes T4) — depuis que les 2157 villes ont
- * toutes un `copy` éditorial (sprint VilleCopy T4 100%), `getIndexableVilles()`
- * retourne 2157 villes → 4 services × 2157 = 8628 routes SSG, ce qui sature
- * le disk GH Actions runner (« No space left on device » sur 3 derniers
- * deploys consécutifs). On limite désormais le SSG aux villes pop ≥ 20 000
- * (T1+T2 ~430 villes → 1720 routes), les T3+T4 sont rendues en ISR on-demand
- * (`dynamicParams=true` + `revalidate=86400`). Trade-off : 1er hit T3/T4 =
- * ~500ms latence, mais build passe ; sitemap continue à inclure toutes les
- * villes indexables, donc Google les crawle = ISR génère = cachée.
+ * 2026-11-15 (D7, option C) — seules les villes de `SEUIL_PRERENDU_HUB_VILLE`
+ * habitants et plus (100 000, soit 40 villes × 5 routes par-ville) sont
+ * prérendues au build. Mesuré sur le serveur le 15/11 : ces 5 dossiers
+ * pèsent 4,29 Go sur 8,6 Go de `.next` (50 %), pour 11 pages vues sur 28 jours
+ * contre 10 403 sur le reste de /fr (0,1 %). Toutes les autres villes
+ * indexables sont rendues à la demande (ISR : `dynamicParams=true`,
+ * `revalidate=86400`) : le premier passage coûte un rendu, puis la page est
+ * en cache ; le sitemap continue de les déclarer. Le seuil vient de
+ * `@/content/villes/prerendu`, source unique partagée avec le job `warm` du
+ * déploiement : ne jamais le recopier ici.
+ *
+ * Historique : 2026-05-27, le SSG de toutes les villes indexables saturait le
+ * disque du runner GitHub ; le seuil était alors de 20 000 habitants.
  */
 export function buildStaticParams(): Array<{ ville: string }> {
   const indexableOnly = process.env.BUILD_SSG_VILLES_INDEXABLE_ONLY === "true";
   if (indexableOnly) {
     return getIndexableVilles()
-      .filter((v) => v.population >= 20_000)
+      .filter((v) => v.population >= SEUIL_PRERENDU_HUB_VILLE)
       .map((v) => ({ ville: v.slug }));
   }
   return VILLES.map((v) => ({ ville: v.slug }));
