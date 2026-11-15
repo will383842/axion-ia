@@ -17,9 +17,7 @@ vi.mock("next-intl/server", () => ({
   setRequestLocale: () => {},
 }));
 vi.mock("next/navigation", () => ({ notFound: () => {}, redirect: () => {} }));
-vi.mock("@/server/content-gen/blog/get-articles-by-ville", () => ({
-  getBlogArticlesByVille: async () => [],
-}));
+vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 
 describe("buildStaticParams — prérendu des 40 grandes villes", () => {
   afterEach(() => vi.unstubAllEnvs());
