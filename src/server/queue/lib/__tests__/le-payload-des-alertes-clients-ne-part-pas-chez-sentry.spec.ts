@@ -29,20 +29,23 @@ const INTERDITS = [
   "calendly.com",
 ];
 
-describe.each(["alerte-demande-client", "recap-demandes-clients"])("sanitizeJobData · %s", (gabarit) => {
-  it("remplace tout le payload par [REDACTED]", () => {
-    const res = sanitizeJobData({
-      template: gabarit,
-      to: "contact@exemple.fr",
-      locale: "fr",
-      payload: PAYLOAD,
+describe.each(["alerte-demande-client", "recap-demandes-clients"])(
+  "sanitizeJobData · %s",
+  (gabarit) => {
+    it("remplace tout le payload par [REDACTED]", () => {
+      const res = sanitizeJobData({
+        template: gabarit,
+        to: "contact@exemple.fr",
+        locale: "fr",
+        payload: PAYLOAD,
+      });
+      expect(res?.["payload"]).toBe("[REDACTED]");
+      expect(res?.["template"]).toBe(gabarit);
+      const texte = JSON.stringify(res);
+      for (const interdit of INTERDITS) expect(texte).not.toContain(interdit);
     });
-    expect(res?.["payload"]).toBe("[REDACTED]");
-    expect(res?.["template"]).toBe(gabarit);
-    const texte = JSON.stringify(res);
-    for (const interdit of INTERDITS) expect(texte).not.toContain(interdit);
-  });
-});
+  },
+);
 
 describe("sanitizeJobData · autre gabarit", () => {
   it("ne masque pas en bloc le payload d'un autre gabarit", () => {
