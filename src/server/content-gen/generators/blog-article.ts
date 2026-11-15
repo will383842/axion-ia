@@ -220,6 +220,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         jobId: input.jobId,
         contentType: "blog_article",
         role: "text",
+        blogClaudeRole: "ecriture",
         responseFormatJson: true,
         systemPrompt: planSystem,
         userPrompt:
@@ -295,6 +296,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       const expandResult = await expandOutlineChunked({
         jobId: input.jobId,
         contentType: "blog_article",
+        blogClaudeRole: "ecriture",
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,

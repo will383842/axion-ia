@@ -223,6 +223,7 @@ ${sectionChiffresVerifies()}
         jobId: input.jobId,
         contentType: "blog_from_rss",
         role: "text",
+        blogClaudeRole: "ecriture",
         systemPrompt: effectiveSystem + getIntentPromptAddendum(input.targetSearchIntent),
         userPrompt,
         maxTokens: input.templateOverride?.maxTokens ?? 3072,

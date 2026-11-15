@@ -23,6 +23,8 @@ import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
+import { BLOG_TYPES, interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { ProviderError } from "@/server/content-gen/providers/IProvider";
 import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup, titleOfPayload } from "@/server/content-gen/quality/dedup-guard";
@@ -1508,6 +1510,18 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
       }
     } catch {
       // best-effort
+    }
+    // Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou une
+    // erreur Anthropic n'est jamais rejoué par BullMQ (attempts > 1) : échec définitif.
+    // Le comportement OpenAI (autres fournisseurs, interrupteur éteint) ne change pas.
+    if (
+      interrupteurBlogClaude() &&
+      BLOG_TYPES.has(contentType) &&
+      !(err instanceof UnrecoverableError) &&
+      err instanceof ProviderError &&
+      err.provider === "anthropic"
+    ) {
+      throw new UnrecoverableError(errMsg);
     }
     throw err;
   }
