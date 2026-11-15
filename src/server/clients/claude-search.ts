@@ -20,7 +20,13 @@ const DEFAULT_TIMEOUT_MS = 60_000;
 export interface ClaudeSearchOptions {
   readonly query: string;
   readonly systemPrompt?: string;
-  readonly model?: "claude-sonnet-4-6" | "claude-haiku-4-5-20251001" | "claude-opus-4-7";
+  readonly model?:
+    | "claude-sonnet-4-6"
+    | "claude-haiku-4-5-20251001"
+    | "claude-opus-4-7"
+    | "claude-sonnet-5-5"
+    | "claude-opus-5-5"
+    | "claude-haiku-5-5";
   readonly maxTokens?: number;
   readonly temperature?: number;
   readonly timeoutMs?: number;
@@ -185,11 +191,18 @@ export function computeClaudeCost(
   tokensInput: number,
   tokensOutput: number,
 ): number {
-  const pricing: Record<string, { input: number; output: number }> = {
+  // `null` = prix inconnu (Haiku 5.5) : on échoue plutôt que d'inventer un chiffre.
+  const pricing: Record<string, { input: number; output: number } | null> = {
+    "claude-opus-5-5": { input: 4 / 1_000_000, output: 20 / 1_000_000 },
+    "claude-sonnet-5-5": { input: 2 / 1_000_000, output: 10 / 1_000_000 },
+    "claude-haiku-5-5": null,
     "claude-opus-4-7": { input: 15 / 1_000_000, output: 75 / 1_000_000 },
     "claude-sonnet-4-6": { input: 3 / 1_000_000, output: 15 / 1_000_000 },
     "claude-haiku-4-5-20251001": { input: 1 / 1_000_000, output: 5 / 1_000_000 },
   };
+  if (pricing[model] === null) {
+    throw new Error(`Claude : prix inconnu pour le modèle ${model} — calcul de coût refusé`);
+  }
   const rates = pricing[model] ?? pricing["claude-sonnet-4-6"];
   return tokensInput * rates!.input + tokensOutput * rates!.output;
 }

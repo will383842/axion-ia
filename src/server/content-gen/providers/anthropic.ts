@@ -40,13 +40,32 @@ const DEFAULT_TIMEOUT_MS = 60_000; // 60s — long-form Claude
  */
 const PRICING: Record<
   string,
-  {
-    input: number;
-    output: number;
-    cacheRead: number;
-    cacheWrite: number;
-  }
+  | {
+      input: number;
+      output: number;
+      cacheRead: number;
+      cacheWrite: number;
+    }
+  // `null` = prix INCONNU : computeCost échoue plutôt que d'inventer un chiffre.
+  | null
 > = {
+  // Famille 5.5. Entrée/sortie fournies ; les tarifs de cache suivent le barème
+  // Anthropic habituel (lecture = 0,1 × entrée, écriture = 1,25 × entrée) et
+  // sont à confirmer sur la grille officielle.
+  "claude-opus-5-5": {
+    input: 4.0 / 1_000_000,
+    output: 20.0 / 1_000_000,
+    cacheRead: 0.4 / 1_000_000,
+    cacheWrite: 5.0 / 1_000_000,
+  },
+  "claude-sonnet-5-5": {
+    input: 2.0 / 1_000_000,
+    output: 10.0 / 1_000_000,
+    cacheRead: 0.2 / 1_000_000,
+    cacheWrite: 2.5 / 1_000_000,
+  },
+  // Haiku 5.5 : prix NON connu à ce jour -> volontairement `null`.
+  "claude-haiku-5-5": null,
   "claude-sonnet-4-6": {
     input: 3.0 / 1_000_000,
     output: 15.0 / 1_000_000,
@@ -78,13 +97,17 @@ const PRICING: Record<
   },
 };
 
-function computeCost(
+/** Exporté pour les tests. Lève si le prix du modèle est explicitement inconnu. */
+export function computeCost(
   model: string,
   tokensInput: number,
   tokensOutput: number,
   cacheRead: number,
   cacheWrite: number,
 ): number {
+  if (PRICING[model] === null) {
+    throw new Error(`Anthropic : prix inconnu pour le modèle ${model} — calcul de coût refusé`);
+  }
   const rates = PRICING[model] ?? PRICING["claude-sonnet-4-6"];
   if (!rates) return 0;
   return (
