@@ -236,6 +236,7 @@ import {
   devisSigneAContresignerSubject,
 } from "./devis-signe-a-contresigner";
 import { AlerteDemandeClientEmail, alerteDemandeClientSubject } from "./alerte-demande-client";
+import { RecapDemandesClientsEmail, recapDemandesClientsSubject } from "./recap-demandes-clients";
 import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
@@ -722,6 +723,11 @@ const TEMPLATES: TemplateMap = {
   "alerte-demande-client": {
     subject: alerteDemandeClientSubject,
     component: AlerteDemandeClientEmail,
+  },
+  // Récap quotidien des demandes de clients (PR C) — INTERNE, enfilé par `alertes-clients/recap.ts`.
+  "recap-demandes-clients": {
+    subject: recapDemandesClientsSubject,
+    component: RecapDemandesClientsEmail,
   },
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,

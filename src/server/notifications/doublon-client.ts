@@ -190,7 +190,7 @@ function jourParis(d = new Date()): string {
 }
 
 /** Journal + Sentry, motif SEUL (jamais de donnée de personne). Ne lève jamais. */
-async function tracerEchec(message: string): Promise<void> {
+export async function tracerEchec(message: string): Promise<void> {
   console.error(`[notif:doublon] ${message}`);
   await signalerIncident(`Doublon d'une demande de client : ${message}`).catch(() => {});
 }
