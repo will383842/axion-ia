@@ -52,6 +52,15 @@ export async function rattraperRecapSiManque(
   }
 }
 
+/**
+ * Sentry n'est prévenu qu'au DERNIER essai : sinon un même échec remonte une fois par essai (3 essais
+ * × le message déjà tracé par le récap). Portée limitée à cette file.
+ */
+export function estDernierEssai(job: Pick<Job, "attemptsMade" | "opts"> | undefined): boolean {
+  if (!job) return true;
+  return job.attemptsMade >= (job.opts?.attempts ?? 1);
+}
+
 let workerInstance: Worker<AlertesClientsCronJobData> | null = null;
 
 export function startAlertesClientsCronsWorker(): Worker<AlertesClientsCronJobData> {
@@ -73,6 +82,7 @@ export function startAlertesClientsCronsWorker(): Worker<AlertesClientsCronJobDa
 
   workerInstance.on("failed", (job, err) => {
     console.error(`[alertes-clients-crons-worker] job ${job?.id} failed:`, err);
+    if (!estDernierEssai(job)) return;
     captureWorkerError("alertes-clients-crons", ALERTES_CLIENTS_CRONS_QUEUE_NAME, job, err);
   });
 

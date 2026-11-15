@@ -207,6 +207,24 @@ describe("collecterDemandesVeille", () => {
     expect(r.total).toBe(0);
   });
 
+  it("un prospect du chatbot avec seulement details.source = chatbot : demande ordinaire, besoin gardé", async () => {
+    d.submissions.mockResolvedValue([
+      submission({ id: "sub_src", details: { besoin: "X", source: "chatbot" } }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(1);
+    expect(r.demandes[0]!.lignes.join("\n")).toContain("X");
+    expect(r.demandes[0]!.type).not.toBe("Lead chatbot");
+  });
+
+  it("une demande presse avec details.canal = chatbot reste exclue", async () => {
+    d.submissions.mockResolvedValue([
+      submission({ id: "sub_presse_canal", details: { unifiedType: "presse", canal: "chatbot" } }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(0);
+  });
+
   it("un rendez-vous dont l'invité a été effacé (RGPD) n'apparaît pas, sans rien supprimer", async () => {
     d.rdvs.mockResolvedValue([
       rdv({ id: "cal_efface", inviteeName: "[erased-rgpd-art17]", status: "canceled" }),

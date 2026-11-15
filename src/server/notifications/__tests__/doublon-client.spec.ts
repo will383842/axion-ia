@@ -26,7 +26,7 @@ import {
   __reinitialiserPourTests as reinitialiserEnfileur,
   poserChargeurEnfileurEmail,
 } from "../enfileur-email";
-import { formatDoublonPrive, objetAlerteClient } from "../doublon-client";
+import { entiteDeLAlerte, formatDoublonPrive, objetAlerteClient } from "../doublon-client";
 import { resolveConversationPrivee } from "../routing";
 import type { EvenementClient } from "../format-clients";
 
@@ -114,6 +114,29 @@ describe("le doublon d'une demande de client", () => {
       expect(texte).toContain(attendu);
     }
     expect(texte).toMatch(/Fiche : https?:\/\/\S+\/contacts\/messages\/sub_42/);
+  });
+
+  it("🔴 l'entityId de l'e-mail ne contient jamais la clé brute (URI d'invité Calendly)", async () => {
+    const uri = "https://api.calendly.com/scheduled_events/AAAA1111/invitees/BBBB2222";
+    const entityIdDe = async (dedupKey: string): Promise<string> => {
+      enqueueEmailMock.mockClear();
+      await notify({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: DEMANDE,
+        dedupKey,
+        sync: true,
+      });
+      return (enqueueEmailMock.mock.calls[0]![4] as { entityId: string }).entityId;
+    };
+    const a1 = await entityIdDe(`cal-created:${uri}`);
+    expect(a1).not.toContain("BBBB2222");
+    expect(a1).not.toContain("AAAA1111");
+    expect(a1).not.toContain("calendly");
+    expect(a1).toMatch(/^CONTACT_FORM_SUBMITTED:[0-9a-f]{16}$/);
+    // Même clé : même identifiant (idempotence) ; clé différente : identifiant différent.
+    expect(entiteDeLAlerte("CONTACT_FORM_SUBMITTED", `cal-created:${uri}`)).toBe(a1);
+    expect(entiteDeLAlerte("CONTACT_FORM_SUBMITTED", `cal-created:${uri}2`)).not.toBe(a1);
+    expect(entiteDeLAlerte("CONTACT_FORM_SUBMITTED", undefined)).toBe("CONTACT_FORM_SUBMITTED");
   });
 
   it("l'e-mail part à contact@axion-ia.com avec toutes les informations et un jobId stable", async () => {
