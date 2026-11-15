@@ -829,7 +829,7 @@ jobs:
           # ENOSPC fix 2026-06-22 : aligné sur deploy-coolify.yml + Gate C. Le build de
           # TOUTES les villes par-service en FR ET EN dépassait /mnt à la copie
           # .next/standalone (« ENOSPC » sur /en/sites-web-augmentes/par-ville/...). On
-          # build en indexable-only (~1 776 villes), comme l'artefact réellement déployé.
+          # build en indexable-only (villes < SEUIL_PRERENDU_HUB_VILLE (100 000), rendues à la demande), comme l'artefact réellement déployé.
           # Le flag ne gate QUE VilleServicePageTemplate (pages service×ville) : les URLs
           # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
           BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"

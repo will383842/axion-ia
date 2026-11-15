@@ -18,7 +18,7 @@ interface Props {
 export const generateStaticParams = buildStaticParams;
 
 // ISR aligné sur les 4 autres verticales par-ville : regénération 24h sans full
-// rebuild ; `dynamicParams` sert les villes T3/T4 (pop < 20k) en on-demand SSG.
+// rebuild ; `dynamicParams` sert les villes < SEUIL_PRERENDU_HUB_VILLE (100 000), rendues à la demande.
 export const revalidate = 86400;
 export const dynamicParams = true;
 
