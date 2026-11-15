@@ -1,11 +1,20 @@
 {
-  "commentaire": "Vecteur partagé avec le Studio (G1). Voir la définition du JSON canonique dans fabrique-pdf.ts.",
+  "commentaire": "Vecteur FIXE recopié du Studio (tests/guide-contenu.test.ts, G1) : mêmes entrées, même JSON canonique, même empreinte SHA-256. Ne jamais recalculer côté site pour « faire passer » le test : c'est le Studio qui fait référence.",
   "contenu": {
-    "code": "gde-essai-01",
-    "version": 2,
-    "titre": "Le plan en 3 étapes",
+    "titre": "Guide de l’essai",
     "sections": [
-      { "titre": "Pourquoi", "paragraphes": ["Un paragraphe é."], "puces": ["Une puce"] }
+      {
+        "titre": "Étape un",
+        "paragraphes": ["Premier paragraphe, à relire.", "Second « paragraphe »."],
+        "puces": ["Une puce", "Autre puce"]
+      },
+      {
+        "titre": "Étape deux",
+        "paragraphes": ["Texte seul."],
+        "puces": []
+      }
     ]
-  }
+  },
+  "jsonCanonique": "{\"titre\":\"Guide de l’essai\",\"sections\":[{\"titre\":\"Étape un\",\"paragraphes\":[\"Premier paragraphe, à relire.\",\"Second « paragraphe ».\"],\"puces\":[\"Une puce\",\"Autre puce\"]},{\"titre\":\"Étape deux\",\"paragraphes\":[\"Texte seul.\"],\"puces\":[]}]}",
+  "empreinte": "9c545807feb53583e1e672a2ad7efc0df971e9338955ddb9f8d4a5407c33b67c"
 }

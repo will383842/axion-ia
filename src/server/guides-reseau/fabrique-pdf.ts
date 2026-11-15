@@ -67,26 +67,26 @@ export interface ContenuGuide {
   sections: SectionGuide[];
 }
 
-function canonique(v: unknown): unknown {
-  if (typeof v === "string") return v.normalize("NFC");
-  if (Array.isArray(v)) return v.map(canonique);
-  if (v !== null && typeof v === "object") {
-    const o = v as Record<string, unknown>;
-    return Object.fromEntries(
-      Object.keys(o)
-        .sort()
-        .map((k) => [k, canonique(o[k])]),
-    );
-  }
-  return v;
+/**
+ * JSON canonique, IDENTIQUE à celui du Studio (référence : `jsonCanoniqueGuide`, guide-contenu.ts) : NFC, compact,
+ * clés dans l'ordre fixe {titre, sections:[{titre, paragraphes, puces}]}. Ni `code` ni `version` : ils ne sont pas
+ * dans l'empreinte du Studio. Ordre des tableaux conservé, aucun tri de clés.
+ */
+export function jsonCanoniqueGuide(c: Pick<ContenuGuide, "titre" | "sections">): string {
+  const nfc = (s: string) => s.normalize("NFC");
+  return JSON.stringify({
+    titre: nfc(c.titre),
+    sections: c.sections.map((s) => ({
+      titre: nfc(s.titre),
+      paragraphes: s.paragraphes.map(nfc),
+      puces: s.puces.map(nfc),
+    })),
+  });
 }
 
-/** SHA-256 (hex) du JSON canonique du contenu. */
-export function empreinteTexte(c: ContenuGuide): string {
-  const json = JSON.stringify(
-    canonique({ code: c.code, sections: c.sections, titre: c.titre, version: c.version }),
-  );
-  return createHash("sha256").update(json, "utf8").digest("hex");
+/** Empreinte SHA-256 (hex minuscule, 64 caractères) du JSON canonique, encodé en UTF-8 (identique au Studio). */
+export function empreinteTexte(c: Pick<ContenuGuide, "titre" | "sections">): string {
+  return createHash("sha256").update(jsonCanoniqueGuide(c), "utf8").digest("hex");
 }
 
 export type Verdict =
@@ -120,7 +120,7 @@ export function validerContenu(json: unknown): Verdict {
     return non(422, "corps_invalide");
   const contenu: ContenuGuide = { code: lu.data.code, version: lu.data.version, titre, sections };
   if (empreinteTexte(contenu) !== lu.data.sha256Texte) return non(422, "empreinte_differente");
-  const regle = motInterditDans(textes.join("\n"));
+  const regle = motInterditDans(textes);
   if (regle !== null) return non(422, "texte_refuse", { regle });
   return { ok: true, contenu, sha256Texte: lu.data.sha256Texte };
 }

@@ -1,8 +1,14 @@
 // @vitest-environment node
 // G3 — validation PURE du contenu d'un guide fabriqué : bornes, empreinte, mots interdits.
 import { describe, it, expect } from "vitest";
-import { validerContenu, empreinteTexte, pagesDuPdf, type ContenuGuide } from "../fabrique-pdf";
-import { motInterditDans } from "../mots-interdits-guide";
+import {
+  validerContenu,
+  empreinteTexte,
+  jsonCanoniqueGuide,
+  pagesDuPdf,
+  type ContenuGuide,
+} from "../fabrique-pdf";
+import { motInterditDans, REGLES_MOTS_INTERDITS } from "../mots-interdits-guide";
 import vecteur from "./fixtures/empreinte-guide.json";
 import mots from "./fixtures/mots-interdits-guide.json";
 
@@ -27,24 +33,43 @@ function corps(sur: Partial<ContenuGuide> & Record<string, unknown> = {}) {
 }
 const erreur = (v: ReturnType<typeof validerContenu>) => (v.ok ? null : v.erreur);
 
-describe("empreinte du texte (JSON canonique)", () => {
-  it("vecteur de test partagé avec le Studio", () => {
-    // Calculé à part, sur la chaîne canonique littérale (clés triées, sans espace, NFC) :
-    // {"code":"gde-essai-01","sections":[{"paragraphes":["Un paragraphe é."],"puces":["Une puce"],"titre":"Pourquoi"}],"titre":"Le plan en 3 étapes","version":2}
-    expect(empreinteTexte(vecteur.contenu as ContenuGuide)).toBe(
-      "5cfe5d16f4d2603a68652753b477b812b0f09d8fa27e184acc4a61892583e6ef",
+describe("empreinte du texte (identique au Studio)", () => {
+  const contenu = vecteur.contenu as Pick<ContenuGuide, "titre" | "sections">;
+  it("vecteur fixe du Studio : JSON canonique identique", () => {
+    expect(jsonCanoniqueGuide(contenu)).toBe(vecteur.jsonCanonique);
+  });
+  it("vecteur fixe du Studio : même empreinte SHA-256 (64 hex minuscules)", () => {
+    expect(empreinteTexte(contenu)).toBe(vecteur.empreinte);
+    expect(vecteur.empreinte).toMatch(/^[0-9a-f]{64}$/);
+  });
+  it("l'ordre des clés d'entrée ne change rien", () => {
+    const melange = {
+      sections: contenu.sections.map((s) => ({
+        puces: s.puces,
+        paragraphes: s.paragraphes,
+        titre: s.titre,
+      })),
+      titre: contenu.titre,
+    };
+    expect(empreinteTexte(melange)).toBe(vecteur.empreinte);
+  });
+  it("NFC et NFD donnent la même empreinte", () => {
+    const nfd = JSON.parse(JSON.stringify(contenu).normalize("NFD")) as typeof contenu;
+    expect(empreinteTexte(nfd)).toBe(vecteur.empreinte);
+  });
+  it("code et version ne font pas partie de l'empreinte (comme au Studio)", () => {
+    expect(empreinteTexte({ code: "gde-essai-01", version: 7, ...contenu } as ContenuGuide)).toBe(
+      vecteur.empreinte,
     );
   });
-  it("indépendante de l'ordre des clés et de NFC/NFD", () => {
-    const a = empreinteTexte(vecteur.contenu as ContenuGuide);
-    const nfd = JSON.parse(JSON.stringify(vecteur.contenu).normalize("NFD")) as ContenuGuide;
-    const reordonne = {
-      sections: nfd.sections,
-      version: nfd.version,
-      titre: nfd.titre,
-      code: nfd.code,
-    } as ContenuGuide;
-    expect(empreinteTexte(reordonne)).toBe(a);
+  it("l'ordre des paragraphes, lui, compte", () => {
+    const inverse = {
+      ...contenu,
+      sections: contenu.sections.map((s, i) =>
+        i === 0 ? { ...s, paragraphes: [...s.paragraphes].reverse() } : s,
+      ),
+    };
+    expect(empreinteTexte(inverse)).not.toBe(vecteur.empreinte);
   });
 });
 
@@ -108,20 +133,57 @@ describe("bornes du corps", () => {
   });
 });
 
-describe("mots interdits (3e contrôle)", () => {
-  for (const { regle, texte } of mots.refuses) {
-    it(`refuse « ${texte} » (${regle})`, () => {
-      expect(motInterditDans(texte)).toBe(regle);
-      const v = validerContenu(corps({ sections: [{ ...section(), paragraphes: [texte] }] }));
-      expect(v.ok).toBe(false);
-      if (!v.ok) {
-        expect(v.erreur).toBe("texte_refuse");
-        expect(v.plus).toEqual({ regle }); // la règle, jamais l'extrait
-      }
-    });
+describe("mots interdits (3e contrôle) : liste identique à celle du Studio", () => {
+  it("fixture = liste du code (ids, motifs, exemples, ordre)", () => {
+    expect(mots.version).toBe(3);
+    expect(REGLES_MOTS_INTERDITS).toEqual(mots.regles);
+  });
+  it("règles non vides, ids uniques", () => {
+    const ids = mots.regles.map((r) => r.id);
+    expect(ids.length).toBeGreaterThan(10);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+  for (const r of mots.regles) {
+    for (const ex of r.exemples) {
+      it(`refuse « ${ex} » (${r.id})`, () => {
+        // un exemple peut enfreindre une règle placée AVANT la sienne : on exige un refus, et la sienne seule si elle est première
+        expect(motInterditDans(ex)).not.toBeNull();
+        const v = validerContenu(corps({ sections: [{ ...section(), paragraphes: [ex] }] }));
+        expect(v.ok).toBe(false);
+        if (!v.ok) {
+          expect(v.erreur).toBe("texte_refuse");
+          expect(Object.keys(v.plus ?? {})).toEqual(["regle"]); // la règle, jamais l'extrait
+        }
+      });
+    }
   }
-  for (const texte of mots.acceptes)
-    it(`accepte « ${texte} »`, () => expect(motInterditDans(texte)).toBeNull());
+  it("chaque règle est atteinte par ses exemples, dans l'ordre de la liste", () => {
+    for (const r of mots.regles) {
+      const premiere = motInterditDans(r.exemples);
+      expect(mots.regles.map((x) => x.id).indexOf(premiere as string)).toBeLessThanOrEqual(
+        mots.regles.findIndex((x) => x.id === r.id),
+      );
+    }
+  });
+  it("acceptations du Studio : « 1080 x 1920 », « x64 », « Max 3 », texte ordinaire", () => {
+    for (const t of [
+      "Format 1080 x 1920",
+      "Version x64",
+      "Max 3 posts",
+      "Un guide simple, à suivre pas à pas.",
+    ])
+      expect(motInterditDans(t)).toBeNull();
+  });
+  it("chaque texte est contrôlé séparément (rien ne s'enjambe)", () => {
+    expect(motInterditDans(["Aucun gain", "garanti"])).toBe("garanti");
+    expect(motInterditDans(["Aucun gain", "garantie"])).not.toBe("aucun-gain-garanti");
+    expect(motInterditDans(["Un", "abonn"])).toBe("abonne");
+  });
+  it("normalisation : majuscules, accents, apostrophe typographique", () => {
+    expect(motInterditDans("GRENOBLE")).toBe("grenoble");
+    expect(motInterditDans("Je t\u2019explique")).toBe("tutoiement");
+    expect(motInterditDans("R\u00E9abonnement")).toBe("abonne");
+  });
   it("le titre et les puces sont contrôlés aussi", () => {
     expect(erreur(validerContenu(corps({ titre: "Guide Grenoble" })))).toBe("texte_refuse");
     expect(
