@@ -284,6 +284,28 @@ async function resolveTemplateById(
   }
 }
 
+/**
+ * Chemin Claude (interrupteur allumé + type blog) : une erreur du fournisseur Anthropic
+ * devient `UnrecoverableError` (BullMQ ne la rejoue pas : chaque essai serait facturé).
+ * Rend `null` pour tout le reste (OpenAI, interrupteur éteint, autre type) : l'erreur
+ * d'origine est alors relancée telle quelle. Exporté pour les tests.
+ */
+export function erreurNonRelancableCheminClaude(
+  err: unknown,
+  contentType: string,
+): UnrecoverableError | null {
+  if (
+    interrupteurBlogClaude() &&
+    BLOG_TYPES.has(contentType) &&
+    !(err instanceof UnrecoverableError) &&
+    err instanceof ProviderError &&
+    err.provider === "anthropic"
+  ) {
+    return new UnrecoverableError(err.message);
+  }
+  return null;
+}
+
 async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
   const { contentGenJobId, contentType, inputPayload } = job.data;
   // Intent EFFECTIF du job — réassignable. Le garde-fou (plus bas, après la
@@ -1514,15 +1536,8 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     // Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou une
     // erreur Anthropic n'est jamais rejoué par BullMQ (attempts > 1) : échec définitif.
     // Le comportement OpenAI (autres fournisseurs, interrupteur éteint) ne change pas.
-    if (
-      interrupteurBlogClaude() &&
-      BLOG_TYPES.has(contentType) &&
-      !(err instanceof UnrecoverableError) &&
-      err instanceof ProviderError &&
-      err.provider === "anthropic"
-    ) {
-      throw new UnrecoverableError(errMsg);
-    }
+    const convertie = erreurNonRelancableCheminClaude(err, contentType);
+    if (convertie) throw convertie;
     throw err;
   }
 }

@@ -411,3 +411,16 @@ describe("coût réel à 0,03004 (cas 1)", () => {
     expect(reg.compteur - avant).toBeCloseTo(0.04, 6);
   });
 });
+
+describe("compteur global (cas 8)", () => {
+  it("succès : le compteur global ne bouge qu'une fois, du coût réel, sans trackCost", async () => {
+    create.mockImplementation(async () => fluxComplet());
+    const avant = reg.compteur;
+    const r = await genererTexteBlogClaude(REQ, "ecriture");
+    expect(trackCostSpy).not.toHaveBeenCalled();
+    expect(reg.lignes).toHaveLength(1);
+    // Réservation puis solde : le net vaut le coût réel (à l'arrondi du centime supérieur près).
+    expect(reg.compteur - avant).toBeGreaterThanOrEqual(r.costUsd - 1e-9);
+    expect(reg.compteur - avant).toBeLessThan(r.costUsd + 0.011);
+  });
+});

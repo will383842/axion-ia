@@ -165,11 +165,24 @@ async function principal(): Promise<void> {
       const apres = fusionnerExtraConfig(ligne.extraConfig, plan.extraConfig);
       console.log("extraConfig (clés blog posées) :", JSON.stringify(plan.extraConfig));
       if (options.reel) {
+        // Course connue : `handleCostCapHit` (cost-tracker) réécrit aussi extraConfig quand
+        // il pose ses propres clés. Fenêtre de quelques ms ; c'est pourquoi on RELIT
+        // juste après l'écriture et on échoue bruyamment si une clé a disparu.
         await prisma.providerConfig.update({
           where: { provider: "anthropic" },
           data: { extraConfig: apres as never },
         });
-        console.log("→ plafonds écrits.");
+        const relu = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
+        const extra = (relu?.extraConfig ?? {}) as Record<string, unknown>;
+        const manquantes = Object.entries(plan.extraConfig)
+          .filter(([cle, valeur]) => extra[cle] !== valeur)
+          .map(([cle]) => cle);
+        if (manquantes.length > 0) {
+          throw new ErreurUsage(
+            `relecture après écriture : clés absentes ou différentes (${manquantes.join(", ")}) : relancer`,
+          );
+        }
+        console.log("→ plafonds écrits et relus.");
       }
     }
     if (plan.leverSuspension) {
@@ -195,7 +208,12 @@ async function principal(): Promise<void> {
 
 if (process.argv[1] && /poser-plafonds-blog-claude\.[cm]?[tj]s$/.test(process.argv[1])) {
   principal().catch((err: unknown) => {
-    console.error(err instanceof ErreurUsage ? `Refus : ${err.message}` : err);
+    // Jamais l'objet brut (une erreur de connexion contient l'hôte et l'URL de la base).
+    console.error(
+      err instanceof ErreurUsage
+        ? `Refus : ${err.message}`
+        : `Échec : ${err instanceof Error ? err.message.replace(/\b\w+:\/\/\S+/g, "[url masquée]") : "erreur inconnue"}`,
+    );
     process.exit(1);
   });
 }

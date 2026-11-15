@@ -52,7 +52,7 @@ vi.mock("../blog-claude-ledger", () => ({
 }));
 
 import Anthropic from "@anthropic-ai/sdk";
-import { anthropicProvider, extraireJsonTolerant } from "../anthropic";
+import { anthropicProvider, extraireJsonTolerant, mapAnthropicError } from "../anthropic";
 import { ProviderError } from "../IProvider";
 
 const APIError = Anthropic.APIError as unknown as new (s: number, m: string) => Error;
@@ -257,5 +257,94 @@ describe("consigne JSON et analyseur tolérant", () => {
     expect(extraireJsonTolerant("pas de json")).toBeNull();
     expect(extraireJsonTolerant("[1,2]")).toBe("[1,2]");
     expect(extraireJsonTolerant('{"a":')).toBeNull();
+  });
+});
+
+describe("réservation : cas limites (constats G2)", () => {
+  const reqBlog = { ...base, blogClaudeRole: "ecriture", reservationId: "res-9" } as never;
+
+  it("B1 : clé 1 crédit refusé puis clé 2 flux coupé = réservation maximale conservée", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
+    create
+      .mockRejectedValueOnce(new APIError(400, "Your credit balance is too low"))
+      .mockImplementationOnce(async () =>
+        (async function* () {
+          yield { type: "message_start", message: { usage: { input_tokens: 10 } } };
+          throw new Error("coupé");
+        })(),
+      );
+    await expect(anthropicProvider.generate(reqBlog)).rejects.toBeInstanceOf(ProviderError);
+    expect(create).toHaveBeenCalledTimes(2);
+    expect(solderReservation).not.toHaveBeenCalled();
+  });
+
+  it("M3 : toutes les clés déjà épuisées = aucun appel HTTP, soldée à zéro", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY_2", K2);
+    create.mockRejectedValue(new APIError(400, "Your credit balance is too low"));
+    await expect(anthropicProvider.generate(reqBlog)).rejects.toMatchObject({
+      code: "quota_exhausted",
+    });
+    create.mockClear();
+    solderReservation.mockClear();
+    await expect(anthropicProvider.generate(reqBlog)).rejects.toMatchObject({
+      code: "quota_exhausted",
+    });
+    expect(create).not.toHaveBeenCalled();
+    expect(solderReservation).toHaveBeenCalledTimes(1);
+    expect(solderReservation.mock.calls[0]![1]).toBe(0);
+  });
+
+  it("A-M2 : clé absente = aucune requête, soldée à zéro", async () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "");
+    await expect(anthropicProvider.generate(reqBlog)).rejects.toBeInstanceOf(ProviderError);
+    expect(create).not.toHaveBeenCalled();
+    expect(solderReservation).toHaveBeenCalledTimes(1);
+    expect(solderReservation.mock.calls[0]![1]).toBe(0);
+  });
+
+  it("A-M2 : modèle au prix inconnu = refus avant l'appel, soldée à zéro", async () => {
+    await expect(
+      anthropicProvider.generate({
+        ...base,
+        model: "claude-haiku-5-5",
+        blogClaudeRole: "ecriture",
+        reservationId: "res-9",
+      } as never),
+    ).rejects.toBeInstanceOf(ProviderError);
+    expect(create).not.toHaveBeenCalled();
+    expect(solderReservation).toHaveBeenCalledTimes(1);
+    expect(solderReservation.mock.calls[0]![1]).toBe(0);
+  });
+
+  it("M4 : JSON tronqué par max_tokens = erreur reconnaissable par les boucles de plan", async () => {
+    const { estSortieJsonTronquee } = await import("../IProvider");
+    create.mockImplementation(async () => flux('{"a":', "max_tokens"));
+    const err = await anthropicProvider
+      .generate({ ...(reqBlog as object), responseFormatJson: true } as never)
+      .catch((e: unknown) => e);
+    expect(estSortieJsonTronquee(err)).toBe(true);
+    expect(
+      estSortieJsonTronquee(new ProviderError("autre", "invalid_response", "anthropic", false)),
+    ).toBe(false);
+    expect(estSortieJsonTronquee(new Error("sortie JSON tronquée"))).toBe(false);
+  });
+});
+
+describe("S-M1 : aucune clé dans les messages d'erreur, même avec une seule clé", () => {
+  it("masque sk-ant-… et la valeur de la clé d'environnement", () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "valeur-secrete-fictive-123");
+    const e = new APIError(
+      401,
+      "invalid x-api-key valeur-secrete-fictive-123 / sk-ant-api03-ABCdef_12",
+    );
+    const m = mapAnthropicError(e);
+    expect(m.message).not.toContain("valeur-secrete-fictive-123");
+    expect(m.message).not.toMatch(/sk-ant-/);
+    expect(m.message).toContain("invalid x-api-key");
+  });
+  it("erreur inconnue : même masquage", () => {
+    const m = mapAnthropicError(new Error("boom sk-ant-oat01-XYZ"));
+    expect(m.message).not.toMatch(/sk-ant-/);
+    expect(m.message).toContain("boom");
   });
 });

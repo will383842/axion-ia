@@ -27,6 +27,7 @@ import {
   type GenerationRequest,
   type GenerationResponse,
   type IProvider,
+  MARQUE_JSON_TRONQUE,
 } from "./IProvider";
 import { withRetry } from "../lib/retry";
 import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
@@ -123,6 +124,18 @@ export function computeCost(
   );
 }
 
+const MOTIF_CLE_ANTHROPIC = /sk-ant-[A-Za-z0-9_-]+/g;
+
+/** Masque `sk-ant-…` et la valeur de chaque clé d'environnement Anthropic. */
+function masquerCles(texte: string): string {
+  let sortie = texte.replace(MOTIF_CLE_ANTHROPIC, "[clé masquée]");
+  for (const nom of ["ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY_2", "ANTHROPIC_API_KEY_3"] as const) {
+    const cle = process.env[nom]?.trim();
+    if (cle) sortie = sortie.split(cle).join("[clé masquée]");
+  }
+  return sortie;
+}
+
 /**
  * Exporté pour les tests — cf. `mapOpenAiError` dans `openai.ts`.
  * Recopie le statut HTTP d'origine (`status`) sur l'erreur rendue : la rotation de
@@ -130,6 +143,8 @@ export function computeCost(
  */
 export function mapAnthropicError(err: unknown): ProviderError {
   const mappee = mapAnthropicErrorBrut(err);
+  // Même avec UNE seule clé : aucune clé ne doit survivre dans le message (journaux, BDD).
+  mappee.message = masquerCles(mappee.message);
   if (err instanceof Anthropic.APIError && typeof err.status === "number") {
     (mappee as { status?: number }).status = err.status;
   }
@@ -489,7 +504,7 @@ export const anthropicProvider: IProvider = {
         if (stopReason === "max_tokens" && json === null) {
           // JSON coupé par la limite de jetons : inexploitable, et déjà facturé.
           throw new ProviderError(
-            `Anthropic : sortie JSON tronquée (max_tokens=${req.maxTokens ?? 4096}) — inexploitable`,
+            `Anthropic : ${MARQUE_JSON_TRONQUE} (max_tokens=${req.maxTokens ?? 4096}) — inexploitable`,
             "invalid_response",
             "anthropic",
             false,

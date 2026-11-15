@@ -19,6 +19,7 @@
 
 import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
+import { estSortieJsonTronquee } from "../providers/IProvider";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -195,20 +196,27 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
 
     let plan: PlanParsed | null = null;
     for (let planAttempt = 0; planAttempt < 2 && !plan; planAttempt++) {
-      const planResult = await routerGenerate({
-        jobId: input.jobId,
-        contentType: "blog_from_title",
-        role: "text",
-        blogClaudeRole: "ecriture",
-        responseFormatJson: true,
-        systemPrompt: planSystem,
-        userPrompt:
-          planAttempt === 0
-            ? planUserPrompt
-            : `${planUserPrompt}\n\n## Correction\nLe "metaTitle" DOIT couvrir le mot-clé du titre "${safeTitle}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
-        maxTokens: 2600,
-        temperature: 0.6,
-      });
+      let planResult: Awaited<ReturnType<typeof routerGenerate>>;
+      try {
+        planResult = await routerGenerate({
+          jobId: input.jobId,
+          contentType: "blog_from_title",
+          role: "text",
+          blogClaudeRole: "ecriture",
+          responseFormatJson: true,
+          systemPrompt: planSystem,
+          userPrompt:
+            planAttempt === 0
+              ? planUserPrompt
+              : `${planUserPrompt}\n\n## Correction\nLe "metaTitle" DOIT couvrir le mot-clé du titre "${safeTitle}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
+          maxTokens: 2600,
+          temperature: 0.6,
+        });
+      } catch (err) {
+        // Chemin Claude : JSON coupé par max_tokens = échec de plan (2e essai), comme OpenAI.
+        if (estSortieJsonTronquee(err)) continue;
+        throw err;
+      }
       accumulatedCostUsd += planResult.costUsd;
       lastTokensInput += planResult.tokensInput;
       lastTokensOutput += planResult.tokensOutput;

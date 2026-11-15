@@ -46,10 +46,10 @@ describe("poser-plafonds-blog-claude", () => {
     [["--jour", "21", "--mois", "100", "--reserve", "1", "--juge-max", "1"]],
     [["--jour", "5", "--mois", "301", "--reserve", "1", "--juge-max", "1"]],
     [["--jour", "0", "--mois", "100", "--reserve", "1", "--juge-max", "1"]],
-    [["--jour", "50", "--mois", "40", "--reserve", "1", "--juge-max", "1"]],
-    [["--jour", "5", "--mois", "4", "--reserve", "1", "--juge-max", "1"]],
-    [["--jour", "5", "--mois", "40", "--reserve", "1", "--juge-max", "0"]],
-    [["--jour", "5", "--mois", "40", "--reserve", "1", "--juge-max", "2.5"]],
+    [["--jour", "50", "--mois", "90", "--reserve", "1", "--juge-max", "1"]],
+    [["--jour", "7", "--mois", "4", "--reserve", "1", "--juge-max", "1"]],
+    [["--jour", "5", "--mois", "90", "--reserve", "1", "--juge-max", "0"]],
+    [["--jour", "5", "--mois", "90", "--reserve", "1", "--juge-max", "3.5"]],
   ])("refuse hors bornes : %j", (args) => {
     expect(() => construirePlan(lireArguments(args))).toThrow(ErreurUsage);
   });

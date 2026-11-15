@@ -139,24 +139,32 @@ Interrupteur : variable `CONTENT_GEN_BLOG_CLAUDE`. Éteint = absente ou vide ; s
 
 ### Allumer (liste Jour J)
 
-1. **Plafonds posés** avec le script (à sec, relire, puis réel). Les valeurs se passent en argument et ne sont jamais écrites dans le dépôt ; le script refuse au-delà des bornes de garde 20 $/jour et 300 $/mois (ce sont des bornes de garde, pas les plafonds réels) :
-   `pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>` puis la même commande avec `--reel`. Jamais de SQL à la main en production.
+1. **Plafonds posés** avec le script (à sec, relire, puis réel). Les valeurs se passent en argument et ne sont jamais écrites dans le dépôt ; le script refuse au-delà des bornes de garde 20 $/jour et 300 $/mois (ce sont des bornes de garde, pas les plafonds réels). ⚠️ L'image du worker **ne contient pas** `scripts/content-gen/` (seuls `node_modules`, `src`, `prisma`, `package.json` et `tsconfig.json` y sont copiés) : copier d'abord le script dans le conteneur, puis le lancer depuis `/app` (l'import `../../prisma/generated/client` s'y résout) :
+   ```
+   docker exec <conteneur-worker> mkdir -p /app/scripts/content-gen
+   docker cp scripts/content-gen/poser-plafonds-blog-claude.ts <conteneur-worker>:/app/scripts/content-gen/
+   docker exec -w /app <conteneur-worker> node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>
+   ```
+   Relire la sortie (à sec), puis relancer la même commande avec `--reel` : le script relit la base après écriture et échoue si une clé manque. Jamais de SQL à la main en production. Retirer ensuite le script copié du conteneur.
 2. **Clé et solde** : vérifier la clé Anthropic du serveur (pas une clé personnelle à échéance), son organisation, son solde, et qu'un appel d'essai répond avec les deux modèles (comparer les jetons de sortie à la longueur du texte).
 3. **Avant l'allumage** : kill switch actif, files en pause, aucun job de blog répétable, arriéré de jobs en attente compté, solde OpenAI (embeddings, dédoublonnage) vérifié, registre RGPD à jour (Anthropic pour « contenu du blog »).
 4. **Quand** : juste après un créneau de mise en ligne où la prod sert bien la tête de `main` (contrôler l'en-tête `x-axion-build-sha` et le contenu du worker, pas seulement l'étiquette d'image).
 5. **Où** : application **WORKER** seulement, jamais l'application web. Variable en **exécution** seulement : case « Build Variable » **décochée**. Valeur `true`, puis redémarrer le worker.
 6. **Constater** : `docker exec <conteneur-worker> printenv CONTENT_GEN_BLOG_CLAUDE` rend `true`, et le marqueur de la version attendue est présent dans le code du worker (grep dans `/app/src`).
-7. **Essai** : plafond du jour bas, UN seul job lancé à la main, relecture des articles, puis arrêt avant tout volume. Observer 24 h (dépense, alertes) et refaire le point 3.
+7. **Lever le kill switch et reprendre les files** (section « Étapes » ci-dessus) : c'est ce qui laisse le job d'essai partir. Sans cette étape, rien ne s'exécute.
+8. **Essai** : plafond du jour bas, UN seul job lancé à la main, relecture des articles, puis arrêt avant tout volume. Observer 24 h (dépense, alertes) et refaire le point 3.
 
 ### Si le blog est suspendu
 
-Après plusieurs refus de crédit le drapeau de suspension se pose seul et une alerte part. Seul le fondateur le lève, après avoir rechargé ou corrigé la cause : `pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension` (à sec), puis avec `--reel`.
+Après plusieurs refus de crédit le drapeau de suspension se pose seul et une alerte part. Seul le fondateur le lève, après avoir rechargé ou corrigé la cause : `pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension` (à sec), puis avec `--reel`. Le compteur de refus de crédit (clé Redis `blog-claude:refus-credit`, fenêtre de 24 h) n'est **pas** remis à zéro par le script : le supprimer à la main dans Redis après la levée, sinon un seul refus de plus peut re-suspendre aussitôt.
+
+**Après une recharge de crédit : redémarrer le worker.** Une clé refusée pour crédit est marquée « épuisée » 24 h, en mémoire du processus (état propre à chaque conteneur, et partagé avec la génération Qualiopi et le chatbot qui passent par le même fournisseur) : sans redémarrage, le worker continue d'ignorer une clé pourtant rechargée. La rotation de clés (`ANTHROPIC_API_KEY_2`, `_3`) s'applique donc aussi à Qualiopi et au chatbot, dès la mise en ligne.
 
 ### Retour arrière (à tester une fois, hors production sensible)
 
 1. Retirer la variable `CONTENT_GEN_BLOG_CLAUDE` de l'application worker (ou la vider), redémarrer le worker.
 2. Constater que `printenv CONTENT_GEN_BLOG_CLAUDE` ne rend rien.
-3. Jobs en cours : ils se terminent ou échouent ; un job en échec n'est **pas** rejoué sur OpenAI automatiquement. Relire la liste des jobs en échec et trancher à la main.
+3. Jobs en cours : ils se terminent ou échouent. Un job en échec définitif n'est pas rejoué automatiquement ; en revanche **un job en attente d'un nouvel essai BullMQ sera rejoué, sur OpenAI, une fois la variable retirée**. Relire la liste des jobs en attente et en échec et trancher à la main.
 4. En cas de doute sur la dépense : engager le kill switch (section « Étapes » ci-dessus). Le plafond mensuel global se remet à zéro à l'heure du serveur, pas à l'heure de Paris : à garder en tête autour du changement de mois.
 
 ## Escalation

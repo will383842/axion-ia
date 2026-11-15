@@ -235,6 +235,33 @@ export async function ensurePendingReviewRow(contentGenJobId: string): Promise<v
   }
 }
 
+/**
+ * Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou une erreur
+ * Anthropic devient `UnrecoverableError`. Rend `null` sinon (interrupteur éteint,
+ * erreur OpenAI, autre type) : l'erreur d'origine est alors traitée comme avant.
+ * Les imports restent différés par prudence de chargement ; `llm-judge` importe
+ * déjà `blog-claude` statiquement, donc ce module est de toute façon chargé.
+ * Exporté pour les tests.
+ */
+export async function erreurJugeNonRelancableCheminClaude(
+  err: unknown,
+  contentType: string,
+): Promise<Error | null> {
+  if (process.env["CONTENT_GEN_BLOG_CLAUDE"] !== "true") return null;
+  const { BLOG_TYPES, BlogClaudeRefusError } =
+    await import("@/server/content-gen/providers/blog-claude");
+  const { ProviderError } = await import("@/server/content-gen/providers/IProvider");
+  const { UnrecoverableError } = await import("bullmq");
+  if (
+    BLOG_TYPES.has(contentType) &&
+    (err instanceof BlogClaudeRefusError ||
+      (err instanceof ProviderError && err.provider === "anthropic"))
+  ) {
+    return err instanceof UnrecoverableError ? err : new UnrecoverableError((err as Error).message);
+  }
+  return null;
+}
+
 async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
   const { contentGenJobId, previousScore } = job.data;
 
@@ -376,22 +403,8 @@ async function processJob(job: Job<QualityImproveJobPayload>): Promise<void> {
       // Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou
       // une erreur Anthropic ne doit ni être avalée (le juge « absent » relancerait
       // une régénération) ni être rejouée par BullMQ : échec définitif.
-      // Imports différés : interrupteur éteint (cas normal), rien n'est chargé ici.
-      if (process.env["CONTENT_GEN_BLOG_CLAUDE"] === "true") {
-        const { BLOG_TYPES, BlogClaudeRefusError } =
-          await import("@/server/content-gen/providers/blog-claude");
-        const { ProviderError } = await import("@/server/content-gen/providers/IProvider");
-        const { UnrecoverableError } = await import("bullmq");
-        if (
-          BLOG_TYPES.has(dbJob.contentType) &&
-          (err instanceof BlogClaudeRefusError ||
-            (err instanceof ProviderError && err.provider === "anthropic"))
-        ) {
-          throw err instanceof UnrecoverableError
-            ? err
-            : new UnrecoverableError((err as Error).message);
-        }
-      }
+      const convertie = await erreurJugeNonRelancableCheminClaude(err, dbJob.contentType);
+      if (convertie) throw convertie;
       await logGeneration({
         jobId: contentGenJobId,
         level: "error",
