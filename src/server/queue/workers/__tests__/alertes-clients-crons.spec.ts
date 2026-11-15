@@ -76,7 +76,7 @@ import {
   PATTERN_RECAP_CLIENTS,
   FUSEAU_RECAP_CLIENTS,
 } from "@/server/queue/queues";
-import { rattraperRecapSiManque } from "../alertes-clients-crons-worker";
+import { estDernierEssai, rattraperRecapSiManque } from "../alertes-clients-crons-worker";
 
 beforeEach(() => {
   d.ajouts.length = 0;
@@ -105,6 +105,20 @@ describe("reprise des passages ratés", () => {
     const opts = d.options["alertes-clients-crons"]!;
     expect(opts["attempts"]).toBe(3);
     expect(opts["backoff"]).toEqual({ type: "fixed", delay: 5 * 60_000 });
+  });
+});
+
+describe("bruit Sentry : seul le dernier essai remonte", () => {
+  const job = (attemptsMade: number, attempts?: number) =>
+    ({ attemptsMade, opts: attempts === undefined ? {} : { attempts } }) as never;
+  it("1er et 2e essais sur 3 : silence ; 3e : on remonte", () => {
+    expect(estDernierEssai(job(1, 3))).toBe(false);
+    expect(estDernierEssai(job(2, 3))).toBe(false);
+    expect(estDernierEssai(job(3, 3))).toBe(true);
+  });
+  it("sans option d'essais : un seul essai, donc dernier ; sans job : on remonte", () => {
+    expect(estDernierEssai(job(1))).toBe(true);
+    expect(estDernierEssai(undefined)).toBe(true);
   });
 });
 
