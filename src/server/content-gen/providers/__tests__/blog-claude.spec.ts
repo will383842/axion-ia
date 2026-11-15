@@ -1,0 +1,369 @@
+/**
+ * Porte « texte du blog via Claude » : interrupteur, plafonds, modèles exacts,
+ * réservation, suspension, alertes. Chiffres FICTIFS.
+ */
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { UnrecoverableError } from "bullmq";
+
+const { sdk, notifyMock, reg } = vi.hoisted(() => ({
+  sdk: vi.fn(),
+  notifyMock: vi.fn(),
+  reg: {
+    config: null as null | Record<string, unknown>,
+    configErreur: false,
+    suspendu: null as unknown,
+    lignes: [] as Array<{ id: string; costUsd: number }>,
+    compteur: 0,
+    totaux: [] as number[],
+    upserts: [] as unknown[],
+    redis: new Map<string, number>(),
+    redisSet: new Set<string>(),
+  },
+}));
+
+vi.mock("@/server/notifications", () => ({ notify: (...a: unknown[]) => notifyMock(...a) }));
+vi.mock("@/lib/redis", () => ({
+  redis: {
+    incr: vi.fn(async (k: string) => {
+      reg.redis.set(k, (reg.redis.get(k) ?? 0) + 1);
+      return reg.redis.get(k)!;
+    }),
+    decr: vi.fn(async (k: string) => {
+      reg.redis.set(k, (reg.redis.get(k) ?? 0) - 1);
+      return reg.redis.get(k)!;
+    }),
+    expire: vi.fn(async () => 1),
+    set: vi.fn(async (k: string) => {
+      if (reg.redisSet.has(k)) return null;
+      reg.redisSet.add(k);
+      return "OK";
+    }),
+  },
+}));
+vi.mock("../anthropic", async (orig) => {
+  const real = await orig<typeof import("../anthropic")>();
+  return {
+    ...real,
+    anthropicProvider: { key: "anthropic", supportedRoles: ["text"], generate: sdk },
+  };
+});
+vi.mock("@/lib/prisma", () => {
+  const tx = {
+    $executeRaw: vi.fn(async () => 1),
+    $queryRaw: vi.fn(async () => [{ total: reg.totaux.shift() ?? 0 }]),
+    costLedger: {
+      create: vi.fn(async ({ data }: { data: { costUsd: number } }) => {
+        const id = `L${reg.lignes.length + 1}`;
+        reg.lignes.push({ id, costUsd: data.costUsd });
+        return { id };
+      }),
+      findUnique: vi.fn(async ({ where }: { where: { id: string } }) => {
+        const l = reg.lignes.find((x) => x.id === where.id);
+        return l ? { costUsd: l.costUsd } : null;
+      }),
+      update: vi.fn(
+        async ({ where, data }: { where: { id: string }; data: { costUsd: number } }) => {
+          reg.lignes.find((x) => x.id === where.id)!.costUsd = data.costUsd;
+        },
+      ),
+    },
+    providerConfig: {
+      findUnique: vi.fn(async () => ({ currentMonthSpentUsd: reg.compteur })),
+      update: vi.fn(async ({ data }: { data: { currentMonthSpentUsd: { increment: number } } }) => {
+        reg.compteur += data.currentMonthSpentUsd.increment;
+      }),
+    },
+  };
+  return {
+    prisma: {
+      $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => {
+        const copie = JSON.stringify({ l: reg.lignes, c: reg.compteur });
+        try {
+          return await fn(tx);
+        } catch (e) {
+          const o = JSON.parse(copie) as { l: typeof reg.lignes; c: number };
+          reg.lignes = o.l;
+          reg.compteur = o.c;
+          throw e;
+        }
+      }),
+      providerConfig: {
+        findUnique: vi.fn(async () => {
+          if (reg.configErreur) throw new Error("base KO");
+          return reg.config;
+        }),
+      },
+      contentGenConfig: {
+        findUnique: vi.fn(async () => (reg.suspendu === null ? null : { value: reg.suspendu })),
+        upsert: vi.fn(async (a: unknown) => {
+          reg.upserts.push(a);
+        }),
+      },
+    },
+  };
+});
+
+import { ProviderError, type GenerationRequest } from "../IProvider";
+import {
+  BlogClaudeRefusError,
+  MODELES,
+  assertPlafondsClaude,
+  genererTexteBlogClaude,
+  interrupteurBlogClaude,
+} from "../blog-claude";
+import { __resetAlerteBlogClaudeMemoire } from "../anthropic-credit-alert";
+
+const REQ: GenerationRequest = {
+  jobId: "job1",
+  contentType: "blog_article",
+  role: "text",
+  systemPrompt: "système",
+  userPrompt: "texte utilisateur",
+  maxTokens: 1000,
+  temperature: 0.7,
+  preferredProvider: "openai",
+};
+
+function configOk(extra: Record<string, unknown> = {}): Record<string, unknown> {
+  return {
+    enabled: true,
+    monthlyCapUsd: 100,
+    extraConfig: {
+      blog_claude_daily_cap_usd: 2,
+      blog_claude_monthly_cap_usd: 10,
+      blog_claude_reserve_qualiopi_usd: 5,
+      blog_claude_juge_max_jour: 3,
+      ...extra,
+    },
+  };
+}
+
+const REPONSE = {
+  provider: "anthropic",
+  model: "claude-sonnet-5-5",
+  output: "texte",
+  tokensInput: 100,
+  tokensOutput: 50,
+  costUsd: 0.001,
+  durationMs: 1,
+};
+
+beforeEach(() => {
+  sdk.mockReset();
+  notifyMock.mockReset();
+  notifyMock.mockResolvedValue({ ok: true, channels: {} });
+  reg.config = configOk();
+  reg.configErreur = false;
+  reg.suspendu = null;
+  reg.lignes = [];
+  reg.compteur = 1;
+  reg.totaux = [];
+  reg.upserts = [];
+  reg.redis.clear();
+  reg.redisSet.clear();
+  __resetAlerteBlogClaudeMemoire();
+  process.env["CONTENT_GEN_BLOG_CLAUDE"] = "true";
+  vi.spyOn(console, "warn").mockImplementation(() => undefined);
+});
+afterEach(() => {
+  delete process.env["CONTENT_GEN_BLOG_CLAUDE"];
+  vi.restoreAllMocks();
+});
+
+describe("interrupteur", () => {
+  it.each([undefined, "TRUE", "1", "yes", "", "true "])(
+    "%j = éteint, SDK jamais appelé",
+    async (v) => {
+      if (v === undefined) delete process.env["CONTENT_GEN_BLOG_CLAUDE"];
+      else process.env["CONTENT_GEN_BLOG_CLAUDE"] = v;
+      expect(interrupteurBlogClaude()).toBe(false);
+      const err = await genererTexteBlogClaude(REQ, "ecriture").catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(UnrecoverableError);
+      expect((err as BlogClaudeRefusError).code).toBe("eteint");
+      expect(sdk).not.toHaveBeenCalled();
+      expect(reg.lignes).toHaveLength(0);
+    },
+  );
+  it('"true" exactement = allumé, relu à chaque appel', async () => {
+    expect(interrupteurBlogClaude()).toBe(true);
+    process.env["CONTENT_GEN_BLOG_CLAUDE"] = "false";
+    expect(interrupteurBlogClaude()).toBe(false);
+  });
+});
+
+describe("plafonds invalides = refus avant tout appel", () => {
+  it.each([
+    ['chaîne "5"', "5"],
+    ['"abc"', "abc"],
+    ["null", null],
+    ["Infinity", Infinity],
+    ["-1", -1],
+    ["0", 0],
+    ["absent", undefined],
+    ["au-dessus de la borne dure (21)", 21],
+  ])("plafond du jour %s", async (_n, v) => {
+    reg.config = configOk({ blog_claude_daily_cap_usd: v });
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+    expect(reg.lignes).toHaveLength(0);
+  });
+  it.each(["5", "abc", null, Infinity, -1, 0, 301])("plafond du mois blog %j", async (v) => {
+    reg.config = configOk({ blog_claude_monthly_cap_usd: v });
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it("ligne absente, fournisseur désactivé, plafond global ≤ 0", async () => {
+    reg.config = null;
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    reg.config = { ...configOk(), enabled: false };
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    reg.config = { ...configOk(), monthlyCapUsd: 0 };
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it("base en erreur = refus", async () => {
+    reg.configErreur = true;
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "base_indisponible",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it("limite de relectures absente = refus (relecture seulement)", async () => {
+    reg.config = configOk({ blog_claude_juge_max_jour: undefined });
+    await expect(genererTexteBlogClaude(REQ, "relecture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    sdk.mockResolvedValue(REPONSE);
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).resolves.toBeDefined();
+  });
+});
+
+describe("modèles exacts, jamais de temperature", () => {
+  it("écriture = sonnet 5.5, relecture = opus 5.5", () => {
+    expect(MODELES).toEqual({ ecriture: "claude-sonnet-5-5", relecture: "claude-opus-5-5" });
+  });
+  it("transmet le modèle du rôle, sans temperature ni preferredProvider, avec réservation", async () => {
+    sdk.mockResolvedValue(REPONSE);
+    await genererTexteBlogClaude(REQ, "relecture");
+    const arg = sdk.mock.calls[0]![0] as GenerationRequest;
+    expect(arg.model).toBe("claude-opus-5-5");
+    expect(arg).not.toHaveProperty("temperature");
+    expect(arg).not.toHaveProperty("preferredProvider");
+    expect(arg.blogClaudeRole).toBe("relecture");
+    expect(arg.reservationId).toBe("L1");
+  });
+  it.each(["claude-haiku-5-5", "claude-sonnet-4-6", "gpt-4o", "claude-opus-5-5"])(
+    "modèle imposé %s ≠ celui du rôle écriture = refus",
+    async (m) => {
+      await expect(assertPlafondsClaude({ ...REQ, model: m }, "ecriture")).rejects.toMatchObject({
+        code: "modele_interdit",
+      });
+      expect(reg.lignes).toHaveLength(0);
+    },
+  );
+});
+
+describe("réservation et flux coupé", () => {
+  it("flux coupé après le début : UNE ligne, le cumul avance, rien n'est rejoué", async () => {
+    sdk.mockRejectedValue(new ProviderError("coupé", "down", "anthropic", true));
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toBeInstanceOf(ProviderError);
+    expect(sdk).toHaveBeenCalledTimes(1);
+    expect(reg.lignes).toHaveLength(1);
+    expect(reg.lignes[0]!.costUsd).toBeGreaterThan(0);
+    expect(reg.compteur).toBeGreaterThan(1);
+  });
+  it("texte vide facturé : la ligne est soldée au coût réel fourni", async () => {
+    sdk.mockResolvedValue({ ...REPONSE, output: "", costUsd: 0.0007 });
+    await genererTexteBlogClaude(REQ, "ecriture");
+    expect(reg.lignes).toHaveLength(1);
+    expect(reg.lignes[0]!.costUsd).toBeCloseTo(0.0007);
+    expect(reg.compteur).toBeCloseTo(1.0007);
+  });
+  it("succès : une seule ligne soldée au coût réel", async () => {
+    sdk.mockResolvedValue(REPONSE);
+    await genererTexteBlogClaude(REQ, "ecriture");
+    expect(reg.lignes).toHaveLength(1);
+    expect(reg.lignes[0]!.costUsd).toBeCloseTo(0.001);
+  });
+  it("refus d'écriture de la réservation (base) = aucun appel SDK", async () => {
+    reg.totaux = [];
+    const { prisma } = await import("@/lib/prisma");
+    vi.mocked(prisma.$transaction).mockRejectedValueOnce(new Error("base KO"));
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "base_indisponible",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+});
+
+describe("seuils 80 % / 100 %", () => {
+  it("100 % du jour : refus + alerte, rien dépensé", async () => {
+    reg.totaux = [2.5, 3];
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "plafond_jour",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+    expect(reg.lignes).toHaveLength(0);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+    expect(notifyMock.mock.calls[0]![0]).toMatchObject({
+      category: "MONITORING_ALERT",
+      dedupTtlSec: 6 * 3600,
+    });
+  });
+  it("80 % du jour : appel autorisé + alerte", async () => {
+    reg.totaux = [1.7, 3];
+    sdk.mockResolvedValue(REPONSE);
+    await genererTexteBlogClaude(REQ, "ecriture");
+    expect(sdk).toHaveBeenCalledTimes(1);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+  });
+  it("anti-doublon : deux dépassements = une seule alerte", async () => {
+    reg.totaux = [2.5, 3, 2.5, 3];
+    await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("suspension et limite de relectures", () => {
+  it("drapeau posé = refus sans SDK ; illisible = refus", async () => {
+    reg.suspendu = { active: true };
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "suspendu",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it("3 refus de crédit : alerte puis drapeau de suspension posé", async () => {
+    sdk.mockRejectedValue(new ProviderError("crédit", "quota_exhausted", "anthropic", false));
+    for (let i = 0; i < 3; i++) {
+      await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    }
+    expect(reg.upserts).toHaveLength(1);
+    expect(JSON.stringify(reg.upserts[0])).toContain("blog_claude_suspendu");
+  });
+  it("429 / panne ne comptent pas comme refus de crédit", async () => {
+    sdk.mockRejectedValue(new ProviderError("limite", "rate_limited", "anthropic", true));
+    for (let i = 0; i < 4; i++) {
+      await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
+    }
+    expect(reg.upserts).toHaveLength(0);
+  });
+  it("relecture : au-delà de la limite du jour = refus", async () => {
+    sdk.mockResolvedValue(REPONSE);
+    for (let i = 0; i < 3; i++) await genererTexteBlogClaude(REQ, "relecture");
+    await expect(genererTexteBlogClaude(REQ, "relecture")).rejects.toMatchObject({
+      code: "juge_limite",
+    });
+    expect(sdk).toHaveBeenCalledTimes(3);
+  });
+});
