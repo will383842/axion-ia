@@ -47,7 +47,8 @@ async function embedWithOpenAi(text: string, apiKey: string): Promise<EmbeddingR
   if (!res.ok) {
     const detail = await res.text().catch(() => "");
     // Crédit épuisé / facturation refusée : prévient le fondateur (anti-doublon 6 h).
-    await alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(res.status, detail));
+    // Non bloquant : le chemin visiteur n'attend jamais Telegram (la fonction ne lève jamais).
+    void alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(res.status, detail));
     throw new Error(
       `[chatbot:embeddings] OpenAI HTTP ${res.status} ${res.statusText} ${detail}`.trim(),
     );

@@ -23,6 +23,7 @@ export function isOpenAiQuotaError(err: OpenAiErrorFields): boolean {
     err.code === "insufficient_quota" ||
     err.code === "credit_balance_exhausted" ||
     err.code === "billing_hard_limit_reached" ||
+    err.code === "billing_not_active" ||
     QUOTA_MESSAGE_RE.test(err.message ?? "")
   );
 }

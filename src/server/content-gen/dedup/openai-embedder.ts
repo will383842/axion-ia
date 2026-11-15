@@ -116,7 +116,8 @@ export async function embed(text: string): Promise<EmbedResult | null> {
         }),
       );
       // Crédit épuisé / facturation refusée : prévient le fondateur (anti-doublon 6 h).
-      await alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(response.status, err));
+      // Non bloquant (la fonction ne lève jamais).
+      void alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(response.status, err));
       return null;
     }
 

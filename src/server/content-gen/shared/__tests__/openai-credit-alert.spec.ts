@@ -99,6 +99,33 @@ describe("alerterSiCreditOpenAiEpuise", () => {
     expect(await alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(429, QUOTA_BODY))).toBe(false);
   });
 
+  it("billing_not_active → reconnu comme crédit épuisé", async () => {
+    expect(
+      await alerterSiCreditOpenAiEpuise({ status: 400, code: "billing_not_active", message: "x" }),
+    ).toBe(true);
+  });
+
+  it("après un échec d'envoi, un 2e appel immédiat n'appelle pas notify (réessai différé)", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-11-15T10:00:00Z"));
+    notifyMock.mockResolvedValue({ ok: false, channels: {} });
+    const e = parseOpenAiErrorBody(429, QUOTA_BODY);
+    expect(await alerterSiCreditOpenAiEpuise(e)).toBe(false);
+    expect(await alerterSiCreditOpenAiEpuise(e)).toBe(false);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+    vi.setSystemTime(new Date(Date.now() + 6 * 60 * 1000));
+    expect(await alerterSiCreditOpenAiEpuise(e)).toBe(false);
+    expect(notifyMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("échec par exception : 2e appel immédiat n'appelle pas notify", async () => {
+    notifyMock.mockRejectedValue(new Error("telegram down"));
+    const e = parseOpenAiErrorBody(429, QUOTA_BODY);
+    await alerterSiCreditOpenAiEpuise(e);
+    await alerterSiCreditOpenAiEpuise(e);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+  });
+
   it("ne lève jamais si l'envoi échoue", async () => {
     notifyMock.mockRejectedValue(new Error("telegram down"));
     await expect(alerterSiCreditOpenAiEpuise(parseOpenAiErrorBody(429, QUOTA_BODY))).resolves.toBe(
@@ -108,6 +135,19 @@ describe("alerterSiCreditOpenAiEpuise", () => {
 });
 
 describe("branchement dans les appels d'embeddings", () => {
+  it("chatbot : notify qui ne répond jamais ne bloque pas la requête visiteur", async () => {
+    notifyMock.mockReturnValue(new Promise(() => {}));
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(QUOTA_BODY, { status: 429 }));
+    await expect(embedChatbotText("question")).rejects.toThrow(/OpenAI HTTP 429/);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("embedder dédup : notify qui ne répond jamais ne bloque pas (retourne null)", async () => {
+    notifyMock.mockReturnValue(new Promise(() => {}));
+    vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(QUOTA_BODY, { status: 429 }));
+    expect(await embed("texte")).toBeNull();
+  });
+
   it("embedder dédup : 429 quota → null + alerte ; 500 → null sans alerte", async () => {
     const f = vi.spyOn(globalThis, "fetch");
     f.mockResolvedValueOnce(new Response(QUOTA_BODY, { status: 429 }));

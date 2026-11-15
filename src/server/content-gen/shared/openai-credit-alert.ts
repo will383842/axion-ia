@@ -7,7 +7,8 @@
  * « Technique » (catégorie MONITORING_ALERT → groupe system → TELEGRAM_CHAT_ID).
  *
  * Anti-doublon : au plus UNE alerte par 6 h, par Redis (clé de dédup du hub) ET
- * par mémoire de processus (si Redis est absent, le hub laisse passer).
+ * par mémoire de processus (si Redis est absent, le hub laisse passer) :
+ * au plus une alerte par 6 h, par processus si Redis est absent.
  * Fail-open : ne lève jamais, ne contient aucune clé ni donnée personnelle.
  */
 
@@ -26,6 +27,11 @@ export const CREDIT_ALERT_TEXT =
   "vecteurs des articles. Le texte des articles passe, lui, par Claude.";
 
 let dernierEnvoiMs = 0;
+
+/** Échec d'envoi : prochain essai dans 5 min au plus tôt (et non à chaque requête). */
+function reporterRessai(): void {
+  dernierEnvoiMs = Date.now() - CREDIT_ALERT_TTL_SEC * 1000 + 5 * 60 * 1000;
+}
 
 /** Test uniquement. */
 export function __resetCreditAlertMemory(): void {
@@ -75,10 +81,10 @@ export async function alerterSiCreditOpenAiEpuise(err: OpenAiHttpError): Promise
       sync: true,
       force: true,
     } as Parameters<typeof notify>[0]);
-    if (!res.ok) dernierEnvoiMs = 0; // échec d'envoi : on réessaiera
+    if (!res.ok) reporterRessai(); // échec d'envoi : réessai différé (pas à chaque requête)
     return res.ok && res.deduped !== true;
   } catch {
-    dernierEnvoiMs = 0;
+    reporterRessai();
     return false;
   }
 }
