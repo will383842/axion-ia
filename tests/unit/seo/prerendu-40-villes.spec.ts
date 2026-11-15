@@ -12,9 +12,14 @@ import { buildStaticParams } from "@/components/sections/VilleServicePageTemplat
 // `buildStaticParams` (pure) est exercée ici.
 vi.mock("@/i18n/navigation", () => ({ Link: () => null }));
 vi.mock("@/i18n/routing", () => ({ routing: { locales: ["fr", "en"] } }));
-vi.mock("next-intl/server", () => ({ getTranslations: async () => (k: string) => k, setRequestLocale: () => {} }));
+vi.mock("next-intl/server", () => ({
+  getTranslations: async () => (k: string) => k,
+  setRequestLocale: () => {},
+}));
 vi.mock("next/navigation", () => ({ notFound: () => {}, redirect: () => {} }));
-vi.mock("@/server/content-gen/blog/get-articles-by-ville", () => ({ getBlogArticlesByVille: async () => [] }));
+vi.mock("@/server/content-gen/blog/get-articles-by-ville", () => ({
+  getBlogArticlesByVille: async () => [],
+}));
 
 describe("buildStaticParams — prérendu des 40 grandes villes", () => {
   afterEach(() => vi.unstubAllEnvs());
