@@ -159,7 +159,10 @@ describe("collecterDemandesVeille", () => {
 
   it("le simulateur de gains (simulateur_roi) est une demande de client : il apparaît", async () => {
     d.submissions.mockResolvedValue([
-      submission({ id: "sub_roi", details: { unifiedType: "simulateur_roi", message: "Simulation" } }),
+      submission({
+        id: "sub_roi",
+        details: { unifiedType: "simulateur_roi", message: "Simulation" },
+      }),
     ]);
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.demandes).toHaveLength(1);
@@ -185,8 +188,7 @@ describe("collecterDemandesVeille", () => {
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.demandes).toHaveLength(1);
     expect(r.demandes[0]!.type).toBe("Lead chatbot");
-    expect(r.demandes[0]!.lignes.join("
-")).toContain("Automatiser mes devis pour mon cabinet");
+    expect(r.demandes[0]!.lignes.join("\n")).toContain("Automatiser mes devis pour mon cabinet");
   });
 
   it("un rendez-vous dont l'invité a été effacé (RGPD) n'apparaît pas, sans rien supprimer", async () => {
