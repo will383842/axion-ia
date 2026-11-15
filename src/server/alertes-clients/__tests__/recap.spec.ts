@@ -242,7 +242,8 @@ describe("envoyerRecapVeille", () => {
     const r = await envoyerRecapVeille(MAINTENANT);
     expect(r).toBe("failed");
     const messages = d.incident.mock.calls.map((c) => String((c as unknown[])[0])).join("\n");
-    expect(messages).toContain("récap quotidien");
+    expect(messages).toContain("Récap quotidien des demandes de clients :");
+    expect(messages).not.toContain("Doublon");
     expect(messages).not.toContain("camille");
   });
 

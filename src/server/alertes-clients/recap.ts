@@ -27,7 +27,7 @@ import { decryptPii } from "@/lib/pii-crypto";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
 import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { estCategorieClient } from "@/server/notifications/routing";
-import { tracerEchec } from "@/server/notifications/doublon-client";
+import { tracerEchec as tracerEchecAvecPrefixe } from "@/server/notifications/doublon-client";
 import { chargerEnfileurEmail } from "@/server/notifications/enfileur-email";
 import { formatParisDateTime } from "@/server/notifications/format";
 import {
@@ -44,6 +44,13 @@ import {
 } from "@/features/unified-contact/categorie-notification";
 import type { UnifiedContactType } from "@/lib/schemas/unified-contact-schema";
 import { bornesVeilleParis, type BornesVeille } from "./bornes-paris";
+
+/** Trace un échec du récap (messages fixes, sans donnée personnelle) avec son propre préfixe. */
+const tracerEchec = (message: string): Promise<void> =>
+  tracerEchecAvecPrefixe(message, {
+    journal: "[notif:recap]",
+    incident: "Récap quotidien des demandes de clients :",
+  });
 
 /** Plafond par source : au-delà, le récap le dit (« N autres non listées ») au lieu de grossir sans fin. */
 export const PLAFOND_PAR_SOURCE = 200;
