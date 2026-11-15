@@ -133,6 +133,32 @@ curl -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
   -d "text=🟢 [INCIDENT] Kill switch content-gen RELEASED ($(date +%H:%M)) — fix : <résumé>"
 ```
 
+## Allumer / éteindre le texte du blog via Claude
+
+Interrupteur : variable `CONTENT_GEN_BLOG_CLAUDE`. Éteint = absente ou vide ; seule la valeur exacte `true` allume (lue à chaque appel). Éteint, aucun chemin du blog n'atteint Anthropic. **Geste du fondateur uniquement** : aucune automatisation ni session ne l'allume.
+
+### Allumer (liste Jour J)
+
+1. **Plafonds posés** avec le script (à sec, relire, puis réel). Les valeurs se passent en argument et ne sont jamais écrites dans le dépôt ; le script refuse au-delà des bornes de garde 20 $/jour et 300 $/mois (ce sont des bornes de garde, pas les plafonds réels) :
+   `pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>` puis la même commande avec `--reel`. Jamais de SQL à la main en production.
+2. **Clé et solde** : vérifier la clé Anthropic du serveur (pas une clé personnelle à échéance), son organisation, son solde, et qu'un appel d'essai répond avec les deux modèles (comparer les jetons de sortie à la longueur du texte).
+3. **Avant l'allumage** : kill switch actif, files en pause, aucun job de blog répétable, arriéré de jobs en attente compté, solde OpenAI (embeddings, dédoublonnage) vérifié, registre RGPD à jour (Anthropic pour « contenu du blog »).
+4. **Quand** : juste après un créneau de mise en ligne où la prod sert bien la tête de `main` (contrôler l'en-tête `x-axion-build-sha` et le contenu du worker, pas seulement l'étiquette d'image).
+5. **Où** : application **WORKER** seulement, jamais l'application web. Variable en **exécution** seulement : case « Build Variable » **décochée**. Valeur `true`, puis redémarrer le worker.
+6. **Constater** : `docker exec <conteneur-worker> printenv CONTENT_GEN_BLOG_CLAUDE` rend `true`, et le marqueur de la version attendue est présent dans le code du worker (grep dans `/app/src`).
+7. **Essai** : plafond du jour bas, UN seul job lancé à la main, relecture des articles, puis arrêt avant tout volume. Observer 24 h (dépense, alertes) et refaire le point 3.
+
+### Si le blog est suspendu
+
+Après plusieurs refus de crédit le drapeau de suspension se pose seul et une alerte part. Seul le fondateur le lève, après avoir rechargé ou corrigé la cause : `pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension` (à sec), puis avec `--reel`.
+
+### Retour arrière (à tester une fois, hors production sensible)
+
+1. Retirer la variable `CONTENT_GEN_BLOG_CLAUDE` de l'application worker (ou la vider), redémarrer le worker.
+2. Constater que `printenv CONTENT_GEN_BLOG_CLAUDE` ne rend rien.
+3. Jobs en cours : ils se terminent ou échouent ; un job en échec n'est **pas** rejoué sur OpenAI automatiquement. Relire la liste des jobs en échec et trancher à la main.
+4. En cas de doute sur la dépense : engager le kill switch (section « Étapes » ci-dessus). Le plafond mensuel global se remet à zéro à l'heure du serveur, pas à l'heure de Paris : à garder en tête autour du changement de mois.
+
 ## Escalation
 
 | Niveau    | Contact                               | Quand                                                                                         |

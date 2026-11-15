@@ -169,5 +169,6 @@ export async function runMultiJudge(
   return composeMultiJudge([internalJudge, llmJudge], llmJudge);
 }
 
-// Will 2026-07-09 : le juge LLM (reviewArticle) tourne désormais sur gpt-4o.
-const JUDGE_MODEL_LABEL = "gpt-4o" as const;
+// Étiquette NEUTRE : le fournisseur du juge LLM (reviewArticle) dépend de la
+// configuration (OpenAI ou Claude) ; ne pas y figer un nom de modèle.
+const JUDGE_MODEL_LABEL = "ia" as const;
