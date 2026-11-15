@@ -18,6 +18,7 @@ const { sdk, notifyMock, reg } = vi.hoisted(() => ({
     upserts: [] as unknown[],
     redis: new Map<string, number>(),
     redisSet: new Set<string>(),
+    suspenduErreur: false,
   },
 }));
 
@@ -33,6 +34,10 @@ vi.mock("@/lib/redis", () => ({
       return reg.redis.get(k)!;
     }),
     expire: vi.fn(async () => 1),
+    del: vi.fn(async (k: string) => {
+      reg.redisSet.delete(k);
+      return 1;
+    }),
     set: vi.fn(async (k: string) => {
       if (reg.redisSet.has(k)) return null;
       reg.redisSet.add(k);
@@ -50,7 +55,11 @@ vi.mock("../anthropic", async (orig) => {
 vi.mock("@/lib/prisma", () => {
   const tx = {
     $executeRaw: vi.fn(async () => 1),
-    $queryRaw: vi.fn(async () => [{ total: reg.totaux.shift() ?? 0 }]),
+    $queryRaw: vi.fn(async (q: { sql: string }) =>
+      q.sql.includes("SELECT 1 FROM content_gen_jobs")
+        ? [{ "?column?": 1 }]
+        : [{ total: reg.totaux.shift() ?? 0 }],
+    ),
     costLedger: {
       create: vi.fn(async ({ data }: { data: { costUsd: number } }) => {
         const id = `L${reg.lignes.length + 1}`;
@@ -94,7 +103,10 @@ vi.mock("@/lib/prisma", () => {
         }),
       },
       contentGenConfig: {
-        findUnique: vi.fn(async () => (reg.suspendu === null ? null : { value: reg.suspendu })),
+        findUnique: vi.fn(async () => {
+          if (reg.suspenduErreur) throw new Error("base KO");
+          return reg.suspendu === null ? null : { value: reg.suspendu };
+        }),
         upsert: vi.fn(async (a: unknown) => {
           reg.upserts.push(a);
         }),
@@ -155,6 +167,7 @@ beforeEach(() => {
   reg.config = configOk();
   reg.configErreur = false;
   reg.suspendu = null;
+  reg.suspenduErreur = false;
   reg.lignes = [];
   reg.compteur = 1;
   reg.totaux = [];
@@ -231,6 +244,42 @@ describe("plafonds invalides = refus avant tout appel", () => {
     });
     expect(sdk).not.toHaveBeenCalled();
   });
+  it("réserve Qualiopi invalide = refus", async () => {
+    for (const v of [-1, "5", null, undefined, Infinity]) {
+      reg.config = configOk({ blog_claude_reserve_qualiopi_usd: v });
+      await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+        code: "config_invalide",
+      });
+    }
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it.each([2.5, "3", 0, -1, null])("blog_claude_juge_max_jour %j non entier = refus", async (v) => {
+    reg.config = configOk({ blog_claude_juge_max_jour: v });
+    await expect(genererTexteBlogClaude(REQ, "relecture")).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it.each([0, -5, 1.5, NaN, Infinity])("maxTokens %j = refus avant écriture", async (v) => {
+    await expect(
+      genererTexteBlogClaude({ ...REQ, maxTokens: v }, "ecriture"),
+    ).rejects.toMatchObject({
+      code: "config_invalide",
+    });
+    expect(reg.lignes).toHaveLength(0);
+    expect(sdk).not.toHaveBeenCalled();
+  });
+  it("assertPlafondsClaude : interrupteur éteint = refus avant toute écriture", async () => {
+    delete process.env["CONTENT_GEN_BLOG_CLAUDE"];
+    await expect(assertPlafondsClaude(REQ, "ecriture")).rejects.toMatchObject({ code: "eteint" });
+    expect(reg.lignes).toHaveLength(0);
+  });
+  it("alerte non envoyée : la clé Redis est libérée pour un nouvel essai", async () => {
+    notifyMock.mockResolvedValue({ ok: false });
+    const { alerterBlogClaude } = await import("../anthropic-credit-alert");
+    await alerterBlogClaude("credit_refuse");
+    expect(reg.redisSet.has("blog-claude:alerte:credit_refuse")).toBe(false);
+  });
   it("base en erreur = refus", async () => {
     reg.configErreur = true;
     await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
@@ -274,7 +323,7 @@ describe("modèles exacts, jamais de temperature", () => {
 });
 
 describe("réservation et flux coupé", () => {
-  it("flux coupé après le début : UNE ligne, le cumul avance, rien n'est rejoué", async () => {
+  it("erreur Anthropic autre que le crédit : relancée telle quelle, la réservation maximale reste (une ligne)", async () => {
     sdk.mockRejectedValue(new ProviderError("coupé", "down", "anthropic", true));
     await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toBeInstanceOf(ProviderError);
     expect(sdk).toHaveBeenCalledTimes(1);
@@ -282,12 +331,20 @@ describe("réservation et flux coupé", () => {
     expect(reg.lignes[0]!.costUsd).toBeGreaterThan(0);
     expect(reg.compteur).toBeGreaterThan(1);
   });
+  it("quota_exhausted : refus non relançable après comptage du refus de crédit", async () => {
+    sdk.mockRejectedValue(new ProviderError("crédit", "quota_exhausted", "anthropic", false));
+    const err = await genererTexteBlogClaude(REQ, "ecriture").catch((e: unknown) => e);
+    expect(err).toBeInstanceOf(BlogClaudeRefusError);
+    expect((err as BlogClaudeRefusError).code).toBe("credit_refuse");
+    expect(err).toBeInstanceOf(UnrecoverableError);
+    expect(reg.redis.get("blog-claude:refus-credit")).toBe(1);
+  });
   it("texte vide facturé : la ligne est soldée au coût réel fourni", async () => {
     sdk.mockResolvedValue({ ...REPONSE, output: "", costUsd: 0.0007 });
     await genererTexteBlogClaude(REQ, "ecriture");
     expect(reg.lignes).toHaveLength(1);
     expect(reg.lignes[0]!.costUsd).toBeCloseTo(0.0007);
-    expect(reg.compteur).toBeCloseTo(1.0007);
+    expect(reg.compteur).toBeCloseTo(1.01);
   });
   it("succès : une seule ligne soldée au coût réel", async () => {
     sdk.mockResolvedValue(REPONSE);
@@ -342,6 +399,29 @@ describe("suspension et limite de relectures", () => {
       code: "suspendu",
     });
     expect(sdk).not.toHaveBeenCalled();
+  });
+  it("drapeau de suspension illisible = refus, aucune écriture", async () => {
+    reg.suspenduErreur = true;
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+      code: "base_indisponible",
+    });
+    expect(sdk).not.toHaveBeenCalled();
+    expect(reg.lignes).toHaveLength(0);
+  });
+  it.each(["", "oui", 1, 0, "false", {}, { active: "false" }, []])(
+    "valeur %j = suspendu",
+    async (v) => {
+      reg.suspendu = v;
+      await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
+        code: "suspendu",
+      });
+      expect(sdk).not.toHaveBeenCalled();
+    },
+  );
+  it.each([false, { active: false }])("valeur %j = levé", async (v) => {
+    reg.suspendu = v;
+    sdk.mockResolvedValue(REPONSE);
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).resolves.toBeDefined();
   });
   it("3 refus de crédit : alerte puis drapeau de suspension posé", async () => {
     sdk.mockRejectedValue(new ProviderError("crédit", "quota_exhausted", "anthropic", false));

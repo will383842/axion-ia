@@ -10,8 +10,22 @@ interface Etat {
   verrous: number;
   totaux: number[];
   echecBase: boolean;
+  jobExiste: boolean;
+  ordre: string[];
+  sqls: string[];
+  options: unknown[];
 }
-const etat: Etat = { lignes: [], compteur: 0, verrous: 0, totaux: [], echecBase: false };
+const etat: Etat = {
+  lignes: [],
+  compteur: 0,
+  verrous: 0,
+  totaux: [],
+  echecBase: false,
+  jobExiste: true,
+  ordre: [],
+  sqls: [],
+  options: [],
+};
 
 vi.mock("@/lib/prisma", () => {
   const tx = {
@@ -19,9 +33,18 @@ vi.mock("@/lib/prisma", () => {
       etat.verrous += 1;
       return 1;
     }),
-    $queryRaw: vi.fn(async () => [{ total: etat.totaux.shift() ?? 0 }]),
+    $queryRaw: vi.fn(async (q: { sql: string }) => {
+      etat.sqls.push(q.sql);
+      if (q.sql.includes("SELECT 1 FROM content_gen_jobs")) {
+        etat.ordre.push("job");
+        return etat.jobExiste ? [{ "?column?": 1 }] : [];
+      }
+      etat.ordre.push("cumul");
+      return [{ total: etat.totaux.shift() ?? 0 }];
+    }),
     costLedger: {
       create: vi.fn(async ({ data }: { data: { costUsd: number } }) => {
+        etat.ordre.push("insertion");
         const id = `L${etat.lignes.length + 1}`;
         etat.lignes.push({ id, costUsd: data.costUsd, tokensInput: 0, tokensOutput: 0 });
         return { id };
@@ -46,7 +69,8 @@ vi.mock("@/lib/prisma", () => {
   };
   return {
     prisma: {
-      $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>) => {
+      $transaction: vi.fn(async (fn: (t: typeof tx) => Promise<unknown>, opts?: unknown) => {
+        etat.options.push(opts);
         if (etat.echecBase) throw new Error("base KO");
         const copie = JSON.stringify({ l: etat.lignes, c: etat.compteur });
         try {
@@ -69,6 +93,9 @@ import {
   minuitParis,
   reserverCout,
   solderReservation,
+  auCentimeSuperieur,
+  TRANSACTION_MAX_WAIT_MS,
+  TRANSACTION_TIMEOUT_MS,
 } from "../blog-claude-ledger";
 
 const base = {
@@ -88,6 +115,10 @@ beforeEach(() => {
   etat.verrous = 0;
   etat.totaux = [];
   etat.echecBase = false;
+  etat.jobExiste = true;
+  etat.ordre = [];
+  etat.sqls = [];
+  etat.options = [];
 });
 
 describe("minuit de Paris", () => {
@@ -139,6 +170,41 @@ describe("reserverCout", () => {
     await expect(reserverCout(base)).rejects.toMatchObject({ code: "reserve_qualiopi" });
     expect(etat.lignes).toHaveLength(0);
   });
+  it("job inconnu ou d'un autre type = refus, aucune ligne écrite", async () => {
+    etat.jobExiste = false;
+    await expect(reserverCout(base)).rejects.toMatchObject({ code: "config_invalide" });
+    expect(etat.lignes).toHaveLength(0);
+    expect(etat.compteur).toBe(10);
+    expect(etat.sqls[0]).toContain("content_gen_jobs");
+    expect(etat.sqls[0]).toContain('"contentType"');
+  });
+  it("SQL des cumuls : fournisseur anthropic et filtre sur les types du blog ; ordre insertion → cumuls", async () => {
+    etat.totaux = [0.5, 3];
+    await reserverCout(base);
+    const cumuls = etat.sqls.filter((q) => q.includes("SUM("));
+    expect(cumuls).toHaveLength(2);
+    for (const q of cumuls) {
+      expect(q).toContain("provider::text = 'anthropic'");
+      expect(q).toContain('"contentType"::text IN');
+    }
+    expect(etat.ordre).toEqual(["job", "insertion", "cumul", "cumul"]);
+  });
+  it("la réservation est arrondie au centime supérieur", async () => {
+    expect(auCentimeSuperieur(0.0412)).toBe(0.05);
+    expect(auCentimeSuperieur(0.05)).toBe(0.05);
+    etat.totaux = [0.1, 0.1];
+    await reserverCout({ ...base, coutMaxUsd: 0.0412 });
+    expect(etat.lignes[0]!.costUsd).toBe(0.05);
+    expect(etat.compteur).toBeCloseTo(10.05);
+  });
+  it("transaction aux délais explicites", async () => {
+    etat.totaux = [0.1, 0.1];
+    await reserverCout(base);
+    expect(etat.options[0]).toEqual({
+      maxWait: TRANSACTION_MAX_WAIT_MS,
+      timeout: TRANSACTION_TIMEOUT_MS,
+    });
+  });
   it("base en erreur = refus (UnrecoverableError)", async () => {
     etat.echecBase = true;
     const err = await reserverCout(base).catch((e: unknown) => e);
@@ -158,6 +224,20 @@ describe("solderReservation", () => {
     expect(etat.compteur).toBeCloseTo(10.02);
     await solderReservation(r.id, 0.02); // idempotent
     expect(etat.compteur).toBeCloseTo(10.02);
+  });
+  it("l'écart du compteur se calcule sur des valeurs arrondies au centime", async () => {
+    etat.totaux = [0.1, 0.1];
+    const r = await reserverCout({ ...base, coutMaxUsd: 0.2 }); // 0,20
+    await solderReservation(r.id, 0.0412); // → 0,05 : écart −0,15
+    expect(etat.compteur).toBeCloseTo(10.05);
+    await solderReservation(r.id, 0.0412);
+    expect(etat.compteur).toBeCloseTo(10.05);
+  });
+  it("ligne absente : journalisé, rien ne bouge", async () => {
+    const w = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    await solderReservation("inconnue", 0.01);
+    expect(w).toHaveBeenCalled();
+    expect(etat.compteur).toBe(10);
   });
   it("base en erreur au solde : ne lève pas, la réservation maximale reste", async () => {
     etat.totaux = [0.1, 0.1];

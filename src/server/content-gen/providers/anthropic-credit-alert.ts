@@ -83,7 +83,9 @@ export async function alerterBlogClaude(
       force: true,
     } as Parameters<typeof notify>[0]);
     if (!res.ok) {
-      // Échec d'envoi : nouvel essai dans 5 min au plus tôt.
+      // Échec d'envoi : on libère la clé Redis pour permettre le nouvel essai.
+      await redis.del(`blog-claude:alerte:${type}`).catch(() => undefined);
+      // Nouvel essai dans 5 min au plus tôt.
       memoire.set(type, now - ALERTE_BLOG_CLAUDE_TTL_SEC * 1000 + 5 * 60 * 1000);
     }
     return res.ok && res.deduped !== true;

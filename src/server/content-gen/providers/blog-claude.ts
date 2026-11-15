@@ -40,7 +40,12 @@ export const MODELES: Readonly<Record<RoleBlogClaude, string>> = {
 
 /** Clé `ContentGenConfig` du drapeau de suspension (levée par le fondateur seulement). */
 export const CLE_SUSPENSION = "blog_claude_suspendu";
-/** Refus de crédit consécutifs (sur 24 h) avant suspension automatique. */
+/** Clés `extraConfig` de la ligne `anthropic` (lues ici, importées par le script de plafonds). */
+export const CLE_PLAFOND_JOUR = "blog_claude_daily_cap_usd";
+export const CLE_PLAFOND_MOIS = "blog_claude_monthly_cap_usd";
+export const CLE_RESERVE_QUALIOPI = "blog_claude_reserve_qualiopi_usd";
+export const CLE_JUGE_MAX_JOUR = "blog_claude_juge_max_jour";
+/** Refus de crédit (compteur à fenêtre fixe de 24 h, pas « consécutifs ») avant suspension automatique. */
 export const SEUIL_REFUS_CREDIT = 3;
 
 const DEFAULT_MAX_TOKENS = 4096;
@@ -97,10 +102,10 @@ async function lirePlafonds(role: RoleBlogClaude): Promise<PlafondsValides> {
       ? (ligne.extraConfig as Record<string, unknown>)
       : {};
   const moisGlobalUsd = enNombre(ligne.monthlyCapUsd);
-  const jourUsd = extra["blog_claude_daily_cap_usd"];
-  const moisBlogUsd = extra["blog_claude_monthly_cap_usd"];
-  const reserve = extra["blog_claude_reserve_qualiopi_usd"];
-  const jugeMax = extra["blog_claude_juge_max_jour"];
+  const jourUsd = extra[CLE_PLAFOND_JOUR];
+  const moisBlogUsd = extra[CLE_PLAFOND_MOIS];
+  const reserve = extra[CLE_RESERVE_QUALIOPI];
+  const jugeMax = extra[CLE_JUGE_MAX_JOUR];
 
   if (!nombrePositif(moisGlobalUsd)) {
     throw refuser("Plafond mensuel global invalide", "config_invalide");
@@ -132,10 +137,15 @@ async function estSuspendu(): Promise<boolean> {
     });
     if (!row) return false;
     const v = row.value as unknown;
-    return (
-      v === true ||
-      (typeof v === "object" && v !== null && (v as { active?: unknown }).active === true)
-    );
+    // Ligne présente : seul `false` ou `{ active: false }` explicite lève la suspension.
+    // Toute autre valeur (true, null, texte, objet sans `active: false`) = suspendu.
+    const leve =
+      v === false ||
+      (typeof v === "object" &&
+        v !== null &&
+        !Array.isArray(v) &&
+        (v as { active?: unknown }).active === false);
+    return !leve;
   } catch {
     // Doute = refus : on ne dépense pas sans pouvoir lire le drapeau.
     throw refuser("Drapeau de suspension illisible (base en erreur)", "base_indisponible");
@@ -174,7 +184,16 @@ export async function assertPlafondsClaude(
   role: RoleBlogClaude,
   maintenant: Date = new Date(),
 ): Promise<AccordBlogClaude> {
+  if (!interrupteurBlogClaude()) {
+    throw refuser("Texte du blog via Claude : interrupteur éteint", "eteint");
+  }
   const model = MODELES[role];
+  if (
+    req.maxTokens !== undefined &&
+    !(typeof req.maxTokens === "number" && Number.isInteger(req.maxTokens) && req.maxTokens > 0)
+  ) {
+    throw refuser("maxTokens doit être un entier strictement positif", "config_invalide");
+  }
   if (req.model !== undefined && req.model !== model) {
     throw refuser(`Modèle « ${req.model} » refusé sur ce chemin`, "modele_interdit");
   }
@@ -302,7 +321,10 @@ export async function genererTexteBlogClaude(
   } catch (err) {
     // Échec : la réservation reste au maximum (ou soldée par le fournisseur).
     if (err instanceof ProviderError && err.provider === "anthropic") {
-      if (err.code === "quota_exhausted") await enregistrerRefusCredit();
+      if (err.code === "quota_exhausted") {
+        await enregistrerRefusCredit();
+        throw refuser(err.message, "credit_refuse");
+      }
     }
     throw err;
   }

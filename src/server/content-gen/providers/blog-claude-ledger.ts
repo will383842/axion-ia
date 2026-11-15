@@ -144,6 +144,20 @@ function filtreBlogSql(): Prisma.Sql {
   return Prisma.sql`"jobId" IN (SELECT id FROM content_gen_jobs WHERE "contentType"::text IN (${Prisma.join([...BLOG_TYPES])}))`;
 }
 
+/** Arrondi au centime SUPÉRIEUR (le compteur mensuel est un Decimal(10,2) : on compte large). */
+export function auCentimeSuperieur(v: number): number {
+  return Math.ceil(Math.round(v * 1e6) / 1e4) / 100;
+}
+
+/**
+ * La transaction de réservation garde des délais EXPLICITES (les défauts de Prisma
+ * sont 2 s d'attente / 5 s d'exécution) : l'attente du verrou consultatif compte
+ * dedans. Un dépassement est un refus sûr `base_indisponible` (rien n'est écrit,
+ * le job est perdu, jamais rejoué) : on préfère perdre un job que dépenser à l'aveugle.
+ */
+export const TRANSACTION_MAX_WAIT_MS = 10_000;
+export const TRANSACTION_TIMEOUT_MS = 15_000;
+
 async function cumulBlog(tx: Prisma.TransactionClient, depuis: Date): Promise<number> {
   const rows = await tx.$queryRaw<Array<{ total: number | string | null }>>(
     Prisma.sql`SELECT COALESCE(SUM("costUsd"), 0)::float8 AS total
@@ -164,57 +178,72 @@ async function cumulBlog(tx: Prisma.TransactionClient, depuis: Date): Promise<nu
  */
 export async function reserverCout(p: ParamsReservation): Promise<Reservation> {
   const maintenant = p.maintenant ?? new Date();
+  const coutMaxUsd = auCentimeSuperieur(p.coutMaxUsd);
   try {
-    return await prisma.$transaction(async (tx) => {
-      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('blog_claude_cap'))`;
+    return await prisma.$transaction(
+      async (tx) => {
+        await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext('blog_claude_cap'))`;
 
-      const ligne = await tx.costLedger.create({
-        data: {
-          jobId: p.jobId,
-          provider: "anthropic",
-          model: p.model,
-          tokensInput: Math.max(0, Math.round(p.tokensInputEstimes)),
-          tokensOutput: 0,
-          costUsd: p.coutMaxUsd,
-        },
-        select: { id: true },
-      });
-
-      // Cumuls recalculés EN INCLUANT la ligne qui vient d'être posée.
-      const cumulJourUsd = await cumulBlog(tx, minuitParis(maintenant));
-      const cumulMoisBlogUsd = await cumulBlog(tx, debutMoisParis(maintenant));
-      if (cumulJourUsd > p.plafondJourUsd) {
-        throw new BlogClaudeRefusError("Plafond du jour du blog atteint", "plafond_jour");
-      }
-      if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
-        throw new BlogClaudeRefusError("Plafond du mois du blog atteint", "plafond_mois");
-      }
-
-      // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
-      const cfg = await tx.providerConfig.findUnique({
-        where: { provider: "anthropic" },
-        select: { currentMonthSpentUsd: true },
-      });
-      const depenseGlobale = enNombre(cfg?.currentMonthSpentUsd);
-      if (!Number.isFinite(depenseGlobale)) {
-        throw new BlogClaudeRefusError("Compteur global illisible", "base_indisponible");
-      }
-      if (
-        depenseGlobale + p.coutMaxUsd + MARGE_ESTIMATION_USD >
-        p.plafondMoisGlobalUsd - p.reserveQualiopiUsd
-      ) {
-        throw new BlogClaudeRefusError(
-          "Réserve Qualiopi entamée : appel du blog refusé",
-          "reserve_qualiopi",
+        // Le job doit exister ET être un job de blog : sinon la ligne échapperait au cumul.
+        const job = await tx.$queryRaw<Array<unknown>>(
+          Prisma.sql`SELECT 1 FROM content_gen_jobs WHERE id = ${p.jobId} AND "contentType"::text IN (${Prisma.join([...BLOG_TYPES])})`,
         );
-      }
+        if (!Array.isArray(job) || job.length === 0) {
+          throw new BlogClaudeRefusError(
+            "Job inconnu ou hors blog : appel refusé",
+            "config_invalide",
+          );
+        }
 
-      await tx.providerConfig.update({
-        where: { provider: "anthropic" },
-        data: { currentMonthSpentUsd: { increment: p.coutMaxUsd } },
-      });
-      return { id: ligne.id, cumulJourUsd, cumulMoisBlogUsd };
-    });
+        const ligne = await tx.costLedger.create({
+          data: {
+            jobId: p.jobId,
+            provider: "anthropic",
+            model: p.model,
+            tokensInput: Math.max(0, Math.round(p.tokensInputEstimes)),
+            tokensOutput: 0,
+            costUsd: coutMaxUsd,
+          },
+          select: { id: true },
+        });
+
+        // Cumuls recalculés EN INCLUANT la ligne qui vient d'être posée.
+        const cumulJourUsd = await cumulBlog(tx, minuitParis(maintenant));
+        const cumulMoisBlogUsd = await cumulBlog(tx, debutMoisParis(maintenant));
+        if (cumulJourUsd > p.plafondJourUsd) {
+          throw new BlogClaudeRefusError("Plafond du jour du blog atteint", "plafond_jour");
+        }
+        if (cumulMoisBlogUsd > p.plafondMoisBlogUsd) {
+          throw new BlogClaudeRefusError("Plafond du mois du blog atteint", "plafond_mois");
+        }
+
+        // Le blog ne doit jamais couper Qualiopi (même ligne `anthropic`).
+        const cfg = await tx.providerConfig.findUnique({
+          where: { provider: "anthropic" },
+          select: { currentMonthSpentUsd: true },
+        });
+        const depenseGlobale = enNombre(cfg?.currentMonthSpentUsd);
+        if (!Number.isFinite(depenseGlobale)) {
+          throw new BlogClaudeRefusError("Compteur global illisible", "base_indisponible");
+        }
+        if (
+          depenseGlobale + coutMaxUsd + MARGE_ESTIMATION_USD >
+          p.plafondMoisGlobalUsd - p.reserveQualiopiUsd
+        ) {
+          throw new BlogClaudeRefusError(
+            "Réserve Qualiopi entamée : appel du blog refusé",
+            "reserve_qualiopi",
+          );
+        }
+
+        await tx.providerConfig.update({
+          where: { provider: "anthropic" },
+          data: { currentMonthSpentUsd: { increment: coutMaxUsd } },
+        });
+        return { id: ligne.id, cumulJourUsd, cumulMoisBlogUsd };
+      },
+      { maxWait: TRANSACTION_MAX_WAIT_MS, timeout: TRANSACTION_TIMEOUT_MS },
+    );
   } catch (err) {
     if (err instanceof BlogClaudeRefusError) throw err;
     throw new BlogClaudeRefusError(
@@ -243,10 +272,19 @@ export async function solderReservation(
         where: { id },
         select: { costUsd: true },
       });
-      if (!ligne) return;
+      if (!ligne) {
+        // Ligne introuvable : rien à corriger, mais on le dit (jamais de clé ni de montant).
+        // Cas voisin : après la remise à zéro mensuelle du compteur, le solde d'une
+        // réservation du mois précédent applique un écart négatif sur un compteur déjà
+        // remis à 0 — il peut donc le rendre transitoirement inférieur au vrai cumul.
+        console.warn("[blog-claude] solde de réservation : ligne introuvable", id);
+        return;
+      }
       const actuel = enNombre(ligne.costUsd);
       if (!Number.isFinite(actuel)) return;
-      const ecart = coutReelUsd - actuel;
+      // Écart calculé sur des valeurs arrondies au centime supérieur (compteur Decimal(10,2)).
+      const ecart =
+        Math.round((auCentimeSuperieur(coutReelUsd) - auCentimeSuperieur(actuel)) * 100) / 100;
       await tx.costLedger.update({
         where: { id },
         data: {
