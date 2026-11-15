@@ -23,7 +23,7 @@ import OpenAI from "openai";
 import { prisma } from "@/lib/prisma";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
 import { readKillSwitchFailSafe } from "@/server/content-gen/config-store";
-import { alerterSiCreditOpenAiEpuise } from "@/server/content-gen/shared/openai-credit-alert";
+import { alerterSiCreditOpenAiEpuise } from "@/server/notifications/openai-credit-alert";
 import {
   buildEmbeddingInput,
   EMBEDDING_DIMENSION,

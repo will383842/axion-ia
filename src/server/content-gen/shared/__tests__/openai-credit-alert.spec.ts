@@ -19,7 +19,7 @@ import {
   CREDIT_ALERT_TEXT,
   CREDIT_ALERT_TTL_SEC,
   parseOpenAiErrorBody,
-} from "../openai-credit-alert";
+} from "@/server/notifications/openai-credit-alert";
 import { embed } from "../../dedup/openai-embedder";
 import { embedChatbotText } from "../../../chatbot/embeddings";
 

@@ -74,7 +74,7 @@ import {
   startEmbeddingsBackfillWorker,
   EMBEDDINGS_BACKFILL_QUEUE,
 } from "../embeddings-backfill-worker";
-import { __resetCreditAlertMemory } from "@/server/content-gen/shared/openai-credit-alert";
+import { __resetCreditAlertMemory } from "@/server/notifications/openai-credit-alert";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 

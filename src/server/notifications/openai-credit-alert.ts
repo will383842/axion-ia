@@ -13,7 +13,7 @@
  */
 
 import { notify } from "@/server/notifications";
-import { isOpenAiQuotaError, type OpenAiErrorFields } from "../providers/openai-quota-error";
+import { isOpenAiQuotaError, type OpenAiErrorFields } from "./openai-quota-error";
 
 export const CREDIT_ALERT_TTL_SEC = 6 * 60 * 60;
 export const CREDIT_ALERT_DEDUP_KEY = "openai-credit-epuise-embeddings";

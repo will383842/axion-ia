@@ -24,7 +24,7 @@
  *   requis pour OpenAI sur ce usage (consent implicite Will + scope public).
  */
 
-import { alerterSiCreditOpenAiEpuise, parseOpenAiErrorBody } from "../shared/openai-credit-alert";
+import { alerterSiCreditOpenAiEpuise, parseOpenAiErrorBody } from "@/server/notifications/openai-credit-alert";
 
 const OPENAI_API_URL = "https://api.openai.com/v1/embeddings";
 const EMBEDDING_MODEL = "text-embedding-3-large";

@@ -24,7 +24,7 @@ import {
 import {
   alerterSiCreditOpenAiEpuise,
   parseOpenAiErrorBody,
-} from "@/server/content-gen/shared/openai-credit-alert";
+} from "@/server/notifications/openai-credit-alert";
 import { isExternalApiAllowed } from "@/content/knowledge/confidentialities";
 import type { KbConfidentiality } from "../../../prisma/generated/client";
 

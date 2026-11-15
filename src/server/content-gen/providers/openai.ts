@@ -26,7 +26,7 @@ import {
 import { withRetry } from "../lib/retry";
 import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
 import { readProviderConfig } from "../lib/config-reader";
-import { isOpenAiQuotaError } from "./openai-quota-error";
+import { isOpenAiQuotaError } from "@/server/notifications/openai-quota-error";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
 
