@@ -30,6 +30,13 @@ describe("computeCost (anthropic.ts)", () => {
     expect(computeCost("claude-sonnet-5-5", 0, M, 0, 0)).toBeCloseTo(10, 10);
   });
 
+  it("prix de cache 5.5 (tarif propre au modèle, source Studio tarifs.ts:31-32)", () => {
+    expect(computeCost("claude-opus-5-5", 0, 0, M, 0)).toBeCloseTo(0.2, 10);
+    expect(computeCost("claude-opus-5-5", 0, 0, 0, M)).toBeCloseTo(5.0, 10);
+    expect(computeCost("claude-sonnet-5-5", 0, 0, M, 0)).toBeCloseTo(0.2, 10);
+    expect(computeCost("claude-sonnet-5-5", 0, 0, 0, M)).toBeCloseTo(2.5, 10);
+  });
+
   it("claude-haiku-5-5 : prix inconnu, le calcul échoue proprement", () => {
     expect(() => computeCost("claude-haiku-5-5", 1000, 1000, 0, 0)).toThrow(/prix inconnu/i);
   });
@@ -63,16 +70,24 @@ describe("modèle par défaut du fournisseur anthropic", () => {
 
   it("seed : la ligne anthropic crée claude-sonnet-5-5 ; openai reste gpt-4o", async () => {
     const creates: Array<{ provider: string; role: string; model: string }> = [];
+    const updates: Array<Record<string, unknown>> = [];
     const fake = {
       providerConfig: {
         upsert: vi.fn(
-          async (args: { create: { provider: string; role: string; model: string } }) => {
+          async (args: {
+            create: { provider: string; role: string; model: string };
+            update: Record<string, unknown>;
+          }) => {
             creates.push(args.create);
+            updates.push(args.update);
           },
         ),
       },
     };
     await seedProviderConfig(fake as never);
+    // Garantie « ne pas écraser la base » : l'update ne touche jamais au modèle.
+    expect(updates.length).toBeGreaterThan(0);
+    for (const u of updates) expect(u).not.toHaveProperty("model");
     expect(creates.find((r) => r.provider === "anthropic")?.model).toBe("claude-sonnet-5-5");
     expect(creates.find((r) => r.provider === "openai" && r.role === "text")?.model).toBe("gpt-4o");
   });

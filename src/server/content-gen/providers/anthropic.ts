@@ -49,13 +49,12 @@ const PRICING: Record<
   // `null` = prix INCONNU : computeCost échoue plutôt que d'inventer un chiffre.
   | null
 > = {
-  // Famille 5.5. Entrée/sortie fournies ; les tarifs de cache suivent le barème
-  // Anthropic habituel (lecture = 0,1 × entrée, écriture = 1,25 × entrée) et
-  // sont à confirmer sur la grille officielle.
+  // Famille 5.5. Tarifs de cache propres à chaque modèle (source : dépôt
+  // studio-axion-ia-public, src/fournisseurs/claude/tarifs.ts lignes 31-32).
   "claude-opus-5-5": {
     input: 4.0 / 1_000_000,
     output: 20.0 / 1_000_000,
-    cacheRead: 0.4 / 1_000_000,
+    cacheRead: 0.2 / 1_000_000,
     cacheWrite: 5.0 / 1_000_000,
   },
   "claude-sonnet-5-5": {
@@ -230,6 +229,18 @@ export const anthropicProvider: IProvider = {
     }
     const model = req.model ?? config.model;
 
+    // Prix explicitement inconnu (Haiku 5.5) : on refuse AVANT le plafond de coût
+    // et AVANT l'appel payant — sinon on dépenserait sans pouvoir comptabiliser.
+    // Non retryable : réessayer ou basculer de fournisseur n'y change rien.
+    if (PRICING[model] === null) {
+      throw new ProviderError(
+        `Anthropic : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
+        "invalid_response",
+        "anthropic",
+        false,
+      );
+    }
+
     await assertCostCapAvailable("anthropic", 0.15);
 
     const client = getClient();
@@ -249,6 +260,8 @@ export const anthropicProvider: IProvider = {
       "claude-opus-4-8",
       "claude-opus-4-7",
       "claude-sonnet-5",
+      "claude-sonnet-5-5",
+      "claude-opus-5-5",
       "claude-fable-5",
       "claude-mythos-5",
     ]);

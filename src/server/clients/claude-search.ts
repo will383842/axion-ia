@@ -116,13 +116,24 @@ export async function claudeSearch(opts: ClaudeSearchOptions): Promise<ClaudeSea
   }
 
   const model = opts.model ?? "claude-sonnet-4-6";
+  // Prix inconnu (Haiku 5.5) : échec AVANT l'appel payant, pas au calcul du coût.
+  if (!hasKnownPrice(model)) {
+    throw new ClaudeSearchError(
+      `Claude : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
+      400,
+      false,
+    );
+  }
   const body: Record<string, unknown> = {
     model,
     max_tokens: opts.maxTokens ?? 2000,
     system: opts.systemPrompt ?? ANTI_HALLUCINATION_SYSTEM_PROMPT,
     messages: [{ role: "user", content: opts.query }],
   };
-  if (opts.temperature !== undefined) body.temperature = opts.temperature;
+  // Les modèles 5.5 REFUSENT `temperature` (400 invalid_request_error).
+  if (opts.temperature !== undefined && !SAMPLING_PARAM_REJECTING_MODELS.has(model)) {
+    body.temperature = opts.temperature;
+  }
 
   // Tool web_search natif Anthropic (server-side, 2025-03-05 version).
   // Coût supplémentaire : $10 / 1000 utilisations du tool.
@@ -183,8 +194,16 @@ export async function claudeSearch(opts: ClaudeSearchOptions): Promise<ClaudeSea
   }
 }
 
+/** Modèles qui rejettent `temperature` (400). */
+const SAMPLING_PARAM_REJECTING_MODELS = new Set<string>(["claude-sonnet-5-5", "claude-opus-5-5"]);
+
+/** Prix explicitement inconnu (Haiku 5.5) -> false. */
+function hasKnownPrice(model: string): boolean {
+  return model !== "claude-haiku-5-5";
+}
+
 /**
- * Coût USD d'une query Claude (Sonnet 4.6 / Haiku 4.5).
+ * Coût USD d'une query Claude (Sonnet 4.6 / Haiku 4.5 / famille 5.5).
  */
 export function computeClaudeCost(
   model: string,
