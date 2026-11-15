@@ -38,10 +38,12 @@ async function processJob(_job: Job<AlertesClientsCronJobData>): Promise<void> {
 export async function rattraperRecapSiManque(
   maintenant: Date = new Date(),
 ): Promise<"trop-tot" | "tente" | "echec"> {
-  const { heureMinuteParis } = await import("@/server/alertes-clients/bornes-paris");
-  const { heure, minute } = heureMinuteParis(maintenant);
-  if (heure < 7 || (heure === 7 && minute < 30)) return "trop-tot";
+  // TOUT le corps est dans le `try` : appelée par `void` au démarrage du worker, elle ne doit
+  // jamais laisser un rejet non géré (import, calcul de l'heure, passage).
   try {
+    const { heureMinuteParis } = await import("@/server/alertes-clients/bornes-paris");
+    const { heure, minute } = heureMinuteParis(maintenant);
+    if (heure < 7 || (heure === 7 && minute < 30)) return "trop-tot";
     await passerRecap(maintenant);
     return "tente";
   } catch (e) {
