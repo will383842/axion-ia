@@ -366,7 +366,7 @@ describe("réservation et flux coupé", () => {
 
 describe("seuils 80 % / 100 %", () => {
   it("100 % du jour : refus + alerte, rien dépensé", async () => {
-    reg.totaux = [2.5, 3];
+    reg.totaux = [2.7, 3];
     await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toMatchObject({
       code: "plafond_jour",
     });
@@ -386,7 +386,7 @@ describe("seuils 80 % / 100 %", () => {
     expect(notifyMock).toHaveBeenCalledTimes(1);
   });
   it("anti-doublon : deux dépassements = une seule alerte", async () => {
-    reg.totaux = [2.5, 3, 2.5, 3];
+    reg.totaux = [2.7, 3, 2.7, 3];
     await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
     await genererTexteBlogClaude(REQ, "ecriture").catch(() => undefined);
     expect(notifyMock).toHaveBeenCalledTimes(1);

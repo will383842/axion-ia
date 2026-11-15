@@ -255,7 +255,10 @@ export async function assertPlafondsClaude(
 }
 
 /** Compte un refus de crédit (Redis, 24 h) ; au seuil, pose le drapeau de suspension. */
-async function enregistrerRefusCredit(alerteCredit = true): Promise<void> {
+async function enregistrerRefusCredit(
+  alerteCredit = true,
+  raison: "refus_credit_repetes" | "auth_refusee_repetee" = "refus_credit_repetes",
+): Promise<void> {
   if (alerteCredit) await alerterBlogClaude("credit_refuse");
   try {
     const cle = "blog-claude:refus-credit";
@@ -264,7 +267,7 @@ async function enregistrerRefusCredit(alerteCredit = true): Promise<void> {
     if (n >= SEUIL_REFUS_CREDIT) {
       const valeur = {
         active: true,
-        raison: "refus_credit_repetes",
+        raison,
         pose_le: new Date().toISOString(),
       } as never;
       await prisma.contentGenConfig.upsert({
@@ -321,8 +324,12 @@ export async function genererTexteBlogClaude(
       }
       // 401/403 répétés (clé révoquée, mauvaise organisation) : même compteur, même
       // suspension — sinon les jobs échoueraient sans fin tant que la clé est mauvaise.
-      if (err.code === "auth_failed") {
-        await enregistrerRefusCredit(false);
+      // Seuls les VRAIS refus HTTP comptent (statut 401/403 copié par mapAnthropicError) :
+      // « fournisseur désactivé » ou « clé absente » sont aussi `auth_failed` sans statut,
+      // et ne doivent pas suspendre le blog.
+      const statut = (err as { status?: unknown }).status;
+      if (err.code === "auth_failed" && (statut === 401 || statut === 403)) {
+        await enregistrerRefusCredit(false, "auth_refusee_repetee");
       }
     }
     throw err;

@@ -7,11 +7,14 @@
  * bornes de GARDE ci-dessous (20 $/jour, 300 $/mois) y figurent ; ce ne sont pas
  * les plafonds réels, juste le maximum que ce script accepte de poser.
  *
- * Usage (en production : DANS le conteneur worker) :
- *   pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts \
- *     --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>            # À SEC
- *   … mêmes arguments + --reel                                            # écrit
- *   pnpm tsx scripts/content-gen/poser-plafonds-blog-claude.ts --lever-suspension [--reel]
+ * Usage en production : DANS le conteneur worker, dont l'image ne contient PAS `scripts/` :
+ *   1. `docker cp` du script vers <conteneur-worker>:/app/scripts/content-gen/ ;
+ *   2. depuis /app : node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts \
+ *        --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>          # À SEC
+ *      … mêmes arguments + --reel                                          # écrit
+ *      node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts \
+ *        --lever-suspension [--reel]
+ *   (En développement : `pnpm tsx scripts/content-gen/…`.)
  *
  * Par défaut : à sec (lecture seule, affiche ce qui serait écrit). N'écrit QUE dans
  * extraConfig de la ligne `anthropic` (clés blog_claude_*, les autres clés sont
