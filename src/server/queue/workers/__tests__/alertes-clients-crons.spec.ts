@@ -15,11 +15,18 @@ const d = vi.hoisted(() => ({
   retraits: [] as Array<{ file: string; cle: string }>,
   anciens: [{ key: "ancienne-cle", name: "recap-quotidien", pattern: "30 6 * * *" }],
   envoyer: vi.fn(),
+  options: {} as Record<string, Record<string, unknown>>,
+  bornesLeve: false,
 }));
 
 vi.mock("bullmq", () => {
   class Queue {
-    constructor(private readonly nom: string) {}
+    constructor(
+      private readonly nom: string,
+      opts?: { defaultJobOptions?: Record<string, unknown> },
+    ) {
+      d.options[nom] = opts?.defaultJobOptions ?? {};
+    }
     async add(nom: string, data: unknown, opts: Record<string, unknown>) {
       d.ajouts.push({ file: this.nom, nom, data, opts });
     }
@@ -50,6 +57,16 @@ vi.mock("@/server/queue/connection", () => ({
   isBullmqDisabled: () => false,
 }));
 vi.mock("@/server/queue/lib/sentry-worker", () => ({ captureWorkerError: vi.fn() }));
+vi.mock("@/server/alertes-clients/bornes-paris", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("@/server/alertes-clients/bornes-paris")>();
+  return {
+    ...reel,
+    heureMinuteParis: (...a: Parameters<typeof reel.heureMinuteParis>) => {
+      if (d.bornesLeve) throw new Error("bornes-paris indisponible");
+      return reel.heureMinuteParis(...a);
+    },
+  };
+});
 vi.mock("@/server/alertes-clients/recap", () => ({
   envoyerRecapVeille: (...a: unknown[]) => d.envoyer(...a),
 }));
@@ -65,6 +82,7 @@ beforeEach(() => {
   d.ajouts.length = 0;
   d.retraits.length = 0;
   d.envoyer.mockReset();
+  d.bornesLeve = false;
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 
@@ -82,7 +100,21 @@ describe("programmation du récap", () => {
   });
 });
 
+describe("reprise des passages ratés", () => {
+  it("3 essais, espacés de 5 minutes (le jobId du jour rend le rejeu sans danger)", () => {
+    const opts = d.options["alertes-clients-crons"]!;
+    expect(opts["attempts"]).toBe(3);
+    expect(opts["backoff"]).toEqual({ type: "fixed", delay: 5 * 60_000 });
+  });
+});
+
 describe("rattrapage au démarrage du worker", () => {
+  it("module des bornes en panne : « echec », sans rejet non géré", async () => {
+    d.bornesLeve = true;
+    await expect(rattraperRecapSiManque(new Date("2026-11-14T08:00:00Z"))).resolves.toBe("echec");
+    expect(d.envoyer).not.toHaveBeenCalled();
+  });
+
   it("avant 7 h 30 (Paris) : ne fait rien", async () => {
     // 07:10 à Paris (hiver) = 06:10 UTC.
     expect(await rattraperRecapSiManque(new Date("2026-11-14T06:10:00Z"))).toBe("trop-tot");
