@@ -3,7 +3,7 @@
  * doit échouer AVANT tout appel payant.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const create = vi.fn();
 const assertCostCapAvailable = vi.fn();
@@ -63,6 +63,11 @@ beforeEach(() => {
   vi.stubEnv("ANTHROPIC_API_KEY", "cle-de-test-factice");
 });
 
+afterEach(() => {
+  vi.unstubAllEnvs();
+  vi.unstubAllGlobals();
+});
+
 describe("anthropicProvider.generate : température", () => {
   it.each(["claude-sonnet-5-5", "claude-opus-5-5"])("%s : temperature NON envoyée", async (m) => {
     configModel = m;
@@ -79,15 +84,18 @@ describe("anthropicProvider.generate : température", () => {
 });
 
 describe("anthropicProvider.generate : Haiku 5.5 sans prix", () => {
-  it("ProviderError non retryable AVANT plafond de coût et appel réseau", async () => {
-    configModel = "claude-haiku-5-5";
-    const err = await anthropicProvider.generate(req).catch((e: unknown) => e);
-    expect(err).toBeInstanceOf(ProviderError);
-    expect((err as ProviderError).retryable).toBe(false);
-    expect((err as ProviderError).message).toMatch(/prix inconnu/i);
-    expect(assertCostCapAvailable).not.toHaveBeenCalled();
-    expect(create).not.toHaveBeenCalled();
-  });
+  it.each(["claude-haiku-5-5", "claude-haiku-5-5-20261115"])(
+    "%s : ProviderError non retryable AVANT plafond de coût et appel réseau",
+    async (m) => {
+      configModel = m;
+      const err = await anthropicProvider.generate(req).catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(ProviderError);
+      expect((err as ProviderError).retryable).toBe(false);
+      expect((err as ProviderError).message).toMatch(/prix inconnu/i);
+      expect(assertCostCapAvailable).not.toHaveBeenCalled();
+      expect(create).not.toHaveBeenCalled();
+    },
+  );
 });
 
 describe("claudeSearch (claude-search.ts)", () => {
@@ -119,12 +127,15 @@ describe("claudeSearch (claude-search.ts)", () => {
     expect(body.temperature).toBe(0.2);
   });
 
-  it("claude-haiku-5-5 : échec AVANT tout appel réseau", async () => {
-    const f = vi.fn();
-    vi.stubGlobal("fetch", f);
-    await expect(
-      claudeSearch({ query: "q", model: "claude-haiku-5-5", temperature: 0.2 }),
-    ).rejects.toThrow(/prix inconnu/i);
-    expect(f).not.toHaveBeenCalled();
-  });
+  it.each(["claude-haiku-5-5", "claude-haiku-5-5-20261115"])(
+    "%s : échec AVANT tout appel réseau",
+    async (model) => {
+      const f = vi.fn();
+      vi.stubGlobal("fetch", f);
+      await expect(
+        claudeSearch({ query: "q", model: model as never, temperature: 0.2 }),
+      ).rejects.toThrow(/prix inconnu/i);
+      expect(f).not.toHaveBeenCalled();
+    },
+  );
 });

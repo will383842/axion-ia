@@ -97,6 +97,11 @@ const PRICING: Record<
 };
 
 /** Exporté pour les tests. Lève si le prix du modèle est explicitement inconnu. */
+/** Prix inconnu : entrée `null` OU toute variante (datée) de Haiku 5.5. */
+function hasUnknownPrice(model: string): boolean {
+  return PRICING[model] === null || model.startsWith("claude-haiku-5-5");
+}
+
 export function computeCost(
   model: string,
   tokensInput: number,
@@ -104,7 +109,7 @@ export function computeCost(
   cacheRead: number,
   cacheWrite: number,
 ): number {
-  if (PRICING[model] === null) {
+  if (hasUnknownPrice(model)) {
     throw new Error(`Anthropic : prix inconnu pour le modèle ${model} — calcul de coût refusé`);
   }
   const rates = PRICING[model] ?? PRICING["claude-sonnet-4-6"];
@@ -232,7 +237,7 @@ export const anthropicProvider: IProvider = {
     // Prix explicitement inconnu (Haiku 5.5) : on refuse AVANT le plafond de coût
     // et AVANT l'appel payant — sinon on dépenserait sans pouvoir comptabiliser.
     // Non retryable : réessayer ou basculer de fournisseur n'y change rien.
-    if (PRICING[model] === null) {
+    if (hasUnknownPrice(model)) {
       throw new ProviderError(
         `Anthropic : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
         "invalid_response",

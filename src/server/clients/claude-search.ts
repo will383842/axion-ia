@@ -199,7 +199,7 @@ const SAMPLING_PARAM_REJECTING_MODELS = new Set<string>(["claude-sonnet-5-5", "c
 
 /** Prix explicitement inconnu (Haiku 5.5) -> false. */
 function hasKnownPrice(model: string): boolean {
-  return model !== "claude-haiku-5-5";
+  return !model.startsWith("claude-haiku-5-5");
 }
 
 /**
@@ -219,7 +219,7 @@ export function computeClaudeCost(
     "claude-sonnet-4-6": { input: 3 / 1_000_000, output: 15 / 1_000_000 },
     "claude-haiku-4-5-20251001": { input: 1 / 1_000_000, output: 5 / 1_000_000 },
   };
-  if (pricing[model] === null) {
+  if (!hasKnownPrice(model)) {
     throw new Error(`Claude : prix inconnu pour le modèle ${model} — calcul de coût refusé`);
   }
   const rates = pricing[model] ?? pricing["claude-sonnet-4-6"];
