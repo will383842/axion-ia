@@ -254,23 +254,17 @@ export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
 export const PATTERN_RESEAU_FACTURATION = "10 * * * *";
 
 /**
- * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
- * (`server/visio/balayage.ts`) : rencontres des rendez-vous Calendly, rappel
- * « rendez-vous tenu sans compte rendu », battement. Passe par `connection`
- * (nulle si `BULLMQ_DISABLED`) comme toutes les files ; `attempts: 1` : un
- * passage raté est repris 5 minutes plus tard, l'état vit en base.
- */
-/**
  * 2026-11-15 — récap quotidien des demandes de clients (`alertes-clients/recap.ts`).
- * `attempts: 1` : le jobId de l'e-mail rend un rejeu sans danger, et le rattrapage au démarrage du
- * worker (`rattraperRecapSiManque`) reprend un passage manqué.
+ * `attempts: 3` (reprise fixe de 5 minutes) : le jobId du jour de l'e-mail rend un rejeu sans danger,
+ * et le rattrapage au démarrage du worker (`rattraperRecapSiManque`) reprend un passage manqué.
  */
 export const alertesClientsCronsQueue: Queue<AlertesClientsCronJobData> | null = connection
   ? new Queue<AlertesClientsCronJobData>("alertes-clients-crons", {
       connection,
       defaultJobOptions: {
         ...defaultJobOptions,
-        attempts: 1,
+        attempts: 3,
+        backoff: { type: "fixed", delay: 5 * 60_000 },
         removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
         removeOnFail: { age: 30 * 24 * 3600, count: 100 },
       },
@@ -281,6 +275,13 @@ export const alertesClientsCronsQueue: Queue<AlertesClientsCronJobData> | null =
 export const PATTERN_RECAP_CLIENTS = "30 7 * * *";
 export const FUSEAU_RECAP_CLIENTS = "Europe/Paris";
 
+/**
+ * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
+ * (`server/visio/balayage.ts`) : rencontres des rendez-vous Calendly, rappel
+ * « rendez-vous tenu sans compte rendu », battement. Passe par `connection`
+ * (nulle si `BULLMQ_DISABLED`) comme toutes les files ; `attempts: 1` : un
+ * passage raté est repris 5 minutes plus tard, l'état vit en base.
+ */
 export const visioBalayageQueue: Queue<VisioBalayageJobData> | null = connection
   ? new Queue<VisioBalayageJobData>("visio-balayage", {
       connection,
