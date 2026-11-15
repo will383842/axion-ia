@@ -145,6 +145,8 @@ export function mapAnthropicError(err: unknown): ProviderError {
   const mappee = mapAnthropicErrorBrut(err);
   // Même avec UNE seule clé : aucune clé ne doit survivre dans le message (journaux, BDD).
   mappee.message = masquerCles(mappee.message);
+  // `stack` recopie l'ancien message (et BullMQ la conserve) : même masquage.
+  if (typeof mappee.stack === "string") mappee.stack = masquerCles(mappee.stack);
   if (err instanceof Anthropic.APIError && typeof err.status === "number") {
     (mappee as { status?: number }).status = err.status;
   }
@@ -503,12 +505,15 @@ export const anthropicProvider: IProvider = {
         const json = extraireJsonTolerant(fullText);
         if (stopReason === "max_tokens" && json === null) {
           // JSON coupé par la limite de jetons : inexploitable, et déjà facturé.
-          throw new ProviderError(
+          const erreurTronquee = new ProviderError(
             `Anthropic : ${MARQUE_JSON_TRONQUE} (max_tokens=${req.maxTokens ?? 4096}) — inexploitable`,
             "invalid_response",
             "anthropic",
             false,
           );
+          // Déjà facturé : le générateur l'ajoute à son cumul de job (BUDGET_CAP_USD).
+          erreurTronquee.costUsd = coutReel();
+          throw erreurTronquee;
         }
         if (json !== null) sortie = json;
         else console.warn("[anthropic] sortie JSON demandée mais non analysable (texte conservé)");

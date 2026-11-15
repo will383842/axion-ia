@@ -17,7 +17,8 @@
 
 import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
-import { estSortieJsonTronquee } from "../providers/IProvider";
+import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
+import { UnrecoverableError } from "bullmq";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -198,6 +199,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
+    let dernierPlanTronque = false;
     for (let planAttempt = 0; planAttempt < 2 && !plan; planAttempt++) {
       let planResult: Awaited<ReturnType<typeof routerGenerate>>;
       try {
@@ -217,9 +219,15 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         });
       } catch (err) {
         // Chemin Claude : JSON coupé par max_tokens = échec de plan (2e essai), comme OpenAI.
-        if (estSortieJsonTronquee(err)) continue;
+        if (estSortieJsonTronquee(err)) {
+          // Le plan tronqué est facturé : il compte dans le cumul du job.
+          accumulatedCostUsd += coutErreurTronquee(err);
+          dernierPlanTronque = true;
+          continue;
+        }
         throw err;
       }
+      dernierPlanTronque = false;
       accumulatedCostUsd += planResult.costUsd;
       lastTokensInput += planResult.tokensInput;
       lastTokensOutput += planResult.tokensOutput;
@@ -245,6 +253,12 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       if ((titleOk && mtOk) || planAttempt === 1) plan = candidate;
     }
     if (!plan) {
+      // Chemin Claude : deux plans tronqués payés — un rejeu BullMQ en repayerait deux de plus.
+      if (dernierPlanTronque) {
+        throw new UnrecoverableError(
+          "blog-from-keywords: plan tronqué (max_tokens) après 2 tentatives",
+        );
+      }
       throw new Error("blog-from-keywords: plan invalide après 2 tentatives");
     }
     await logStep(

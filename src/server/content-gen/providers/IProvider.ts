@@ -109,6 +109,10 @@ export class ProviderError extends Error {
     super(message);
     this.name = "ProviderError";
   }
+
+  /// Coût réel (USD) déjà facturé par le fournisseur quand l'appel a échoué APRÈS
+  /// facturation (ex. sortie JSON coupée par max_tokens). Optionnel : absent = inconnu/0.
+  costUsd?: number;
 }
 
 /**
@@ -154,4 +158,10 @@ export function estSortieJsonTronquee(err: unknown): boolean {
     err.code === "invalid_response" &&
     err.message.includes(MARQUE_JSON_TRONQUE)
   );
+}
+
+/** Coût déjà facturé porté par une erreur « JSON tronqué » (0 si absent ou invalide). */
+export function coutErreurTronquee(err: unknown): number {
+  const c = err instanceof ProviderError ? err.costUsd : undefined;
+  return typeof c === "number" && Number.isFinite(c) && c > 0 ? c : 0;
 }

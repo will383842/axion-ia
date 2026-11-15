@@ -207,5 +207,7 @@ describe("auth_failed et suspension (S-M4)", () => {
     }
     invalidateProviderConfigCache("anthropic");
     expect(vi.mocked(prisma.contentGenConfig.upsert)).not.toHaveBeenCalled();
+    // Aucun refus de crédit compté non plus : la raison de suspension reste distincte.
+    expect(reg.redis.get("blog-claude:refus-credit") ?? 0).toBe(0);
   });
 });

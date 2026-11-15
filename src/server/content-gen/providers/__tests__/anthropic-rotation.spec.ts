@@ -339,6 +339,13 @@ describe("S-M1 : aucune clé dans les messages d'erreur, même avec une seule cl
     expect(m.message).not.toMatch(/sk-ant-/);
     expect(m.message).toContain("invalid x-api-key");
   });
+  it("M-stack : la pile ne recopie pas non plus la clé", () => {
+    vi.stubEnv("ANTHROPIC_API_KEY", "t".repeat(24));
+    const e = new APIError(401, `invalid x-api-key ${"t".repeat(24)} / sk-ant-api03-ABCdef_12`);
+    const m = mapAnthropicError(e);
+    expect(m.stack ?? "").not.toContain("t".repeat(24));
+    expect(m.stack ?? "").not.toMatch(/sk-ant-/);
+  });
   it("erreur inconnue : même masquage", () => {
     const m = mapAnthropicError(new Error("boom sk-ant-oat01-XYZ"));
     expect(m.message).not.toMatch(/sk-ant-/);
