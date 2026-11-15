@@ -733,6 +733,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "interne",
     source: "server/notifications/doublon-client.ts",
   },
+  "recap-demandes-clients": {
+    categorie: "rendez-vous",
+    quand:
+      "Chaque jour à 7 h 30 (heure de Paris), même sans demande : tout ce que les clients ont envoyé la veille (messages, rendez-vous, annulations), avec toutes les informations",
+    destinataire: "interne",
+    source: "server/alertes-clients/recap.ts",
+  },
   "devis-signe-a-contresigner": {
     categorie: "commerce",
     quand:

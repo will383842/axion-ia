@@ -226,6 +226,9 @@ export type EmailJobName =
   // `notifications/doublon-client.ts`. Nom NOUVEAU : ajouté, rien de retiré (le worker atterrit
   // avant l'app, `axionia/AGENTS.md`).
   | "alerte-demande-client"
+  // Récap quotidien des demandes de clients (7 h 30, heure de Paris) — INTERNE, enfilé par
+  // `alertes-clients/recap.ts` depuis le worker. Nom NOUVEAU : ajouté, rien de retiré.
+  | "recap-demandes-clients"
   // Confirmation de commande au client (CGV 5.2, 6.2) — sur contresignature explicite uniquement.
   | "devis-commande-confirmation"
   // Code à usage unique pour SIGNER un devis (lot 4 bis) — transactionnel, déclenché par le clic
@@ -297,6 +300,14 @@ export type ApporteurCronJobType =
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * 2026-11-15 — récap quotidien des demandes de clients (7 h 30, Paris). La charge ne porte RIEN
+ * d'une demande : un horodatage. Le contenu est lu en base au passage.
+ */
+export interface AlertesClientsCronJobData {
   readonly tick?: string;
 }
 

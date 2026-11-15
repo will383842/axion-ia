@@ -24,6 +24,12 @@
 
 const REDACTED = "[REDACTED]";
 
+/** Gabarits d'e-mail dont le payload est masqué en bloc (données de clients). */
+const GABARITS_PAYLOAD_MASQUE: ReadonlySet<string> = new Set([
+  "alerte-demande-client",
+  "recap-demandes-clients",
+]);
+
 /** Patterns regex pour détecter et masquer des secrets dans un string libre. */
 const SECRET_PATTERNS: ReadonlyArray<RegExp> = [
   // API keys génériques (sk-..., pk-..., gh*_, etc.)
@@ -250,5 +256,13 @@ export function sanitizeJobData(raw: unknown): Record<string, unknown> | null {
   if (raw === null || raw === undefined) return null;
   if (typeof raw !== "object") return null;
   if (Array.isArray(raw)) return null;
-  return sanitizeObject(raw as Record<string, unknown>, 1);
+  const obj = raw as Record<string, unknown>;
+  const out = sanitizeObject(obj, 1);
+  // Gabarits dont le `payload` ne contient que des données de clients (noms, téléphones, messages,
+  // liens d'annulation) : on le retire ENTIÈREMENT, quelle que soit la clé (le filtre par clé ne
+  // les couvre pas). Couvre tout chemin Sentry/journal qui passe par ce filtre.
+  if (typeof obj["template"] === "string" && GABARITS_PAYLOAD_MASQUE.has(obj["template"])) {
+    out["payload"] = REDACTED;
+  }
+  return out;
 }

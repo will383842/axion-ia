@@ -21,6 +21,10 @@ import { programmerRelaisPartners, startPartnersSyncWorker } from "./workers/par
 import { startVivierCronsWorker } from "./workers/vivier-crons-worker";
 import { startGuideIaCronsWorker } from "./workers/guide-ia-crons-worker";
 import { startApporteurCronsWorker } from "./workers/apporteur-crons-worker";
+import {
+  startAlertesClientsCronsWorker,
+  rattraperRecapSiManque,
+} from "./workers/alertes-clients-crons-worker";
 import { startContentGenWorker } from "./workers/content-gen-worker";
 import { startOrchestratorWorker } from "./workers/content-orchestrator-worker";
 import { startQualityImproverWorker } from "./workers/content-quality-improver-worker";
@@ -125,6 +129,9 @@ async function main() {
     // l'échange, passage quotidien 08:00 UTC. Sans `CALENDLY_APPORTEUR_URL`
     // dans l'environnement du worker, le passage ne pose rien et le dit.
     startApporteurCronsWorker(),
+    // Alertes clients (2026-11-15) — récap quotidien des demandes de clients, 7 h 30 Paris, même
+    // sans demande (signal de vie). Toujours démarré : sans demande, il envoie « aucune demande ».
+    startAlertesClientsCronsWorker(),
     // Content Generator V1 — 14 workers (§ 13 master prompt v1.7 + Pass B P0-7
     // + Sprints 9-12.5 V2 + Audit final P0-3 + Sprint S6.3 doc-sync P3-15)
     startContentGenWorker(),
@@ -207,6 +214,9 @@ async function main() {
   ];
 
   await bootRepeatableJobs();
+  // Alertes clients — conteneur arrêté à 7 h 30 : on envoie le récap du jour maintenant (le jobId
+  // de l'e-mail interdit tout doublon). En arrière-plan : ne retarde ni ne fait échouer le boot.
+  void rattraperRecapSiManque();
   // INT-T02 — même verrou : drapeau fermé, aucune file `partners-sync` n'est créée.
   if (canalPartnersOuvert()) await programmerRelaisPartners();
 

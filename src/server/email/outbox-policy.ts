@@ -153,6 +153,9 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // Doublon e-mail d'une demande de client (14/11/2026) : notification INTERNE au fondateur. Garée,
   // ce serait une alerte perdue — c'est tout son objet d'arriver tout de suite.
   "alerte-demande-client",
+  // Récap quotidien des demandes de clients (7 h 30) : notification INTERNE au fondateur, même
+  // raisonnement. Garé « à valider », il n'arriverait jamais à l'heure et le signal de vie serait mort.
+  "recap-demandes-clients",
   // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
   // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
   // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
@@ -241,6 +244,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "devis-code-signature": "Code à usage unique pour signer un devis",
   "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
   "alerte-demande-client": "Alerte : demande d'un client (interne)",
+  "recap-demandes-clients": "Récap quotidien des demandes de clients (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
   "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
   "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",

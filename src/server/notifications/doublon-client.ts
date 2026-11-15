@@ -190,9 +190,15 @@ function jourParis(d = new Date()): string {
 }
 
 /** Journal + Sentry, motif SEUL (jamais de donnée de personne). Ne lève jamais. */
-async function tracerEchec(message: string): Promise<void> {
-  console.error(`[notif:doublon] ${message}`);
-  await signalerIncident(`Doublon d'une demande de client : ${message}`).catch(() => {});
+export async function tracerEchec(
+  message: string,
+  prefixe: { journal: string; incident: string } = {
+    journal: "[notif:doublon]",
+    incident: "Doublon d'une demande de client :",
+  },
+): Promise<void> {
+  console.error(`${prefixe.journal} ${message}`);
+  await signalerIncident(`${prefixe.incident} ${message}`).catch(() => {});
 }
 
 async function doublerSurTelegram(

@@ -30,6 +30,7 @@ import type {
   GuideIaCronJobType,
   ApporteurCronJobData,
   ApporteurCronJobType,
+  AlertesClientsCronJobData,
   VisioBalayageJobData,
   OpcoSiroImportJobData,
   VisioJobData,
@@ -251,6 +252,28 @@ export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
  * le quotidien garde tout le reste.
  */
 export const PATTERN_RESEAU_FACTURATION = "10 * * * *";
+
+/**
+ * 2026-11-15 — récap quotidien des demandes de clients (`alertes-clients/recap.ts`).
+ * `attempts: 3` (reprise fixe de 5 minutes) : le jobId du jour de l'e-mail rend un rejeu sans danger,
+ * et le rattrapage au démarrage du worker (`rattraperRecapSiManque`) reprend un passage manqué.
+ */
+export const alertesClientsCronsQueue: Queue<AlertesClientsCronJobData> | null = connection
+  ? new Queue<AlertesClientsCronJobData>("alertes-clients-crons", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 3,
+        backoff: { type: "fixed", delay: 5 * 60_000 },
+        removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+        removeOnFail: { age: 30 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
+
+/** 7 h 30 à PARIS : `tz` fait suivre l'heure d'été et d'hiver (jamais un décalage UTC écrit en dur). */
+export const PATTERN_RECAP_CLIENTS = "30 7 * * *";
+export const FUSEAU_RECAP_CLIENTS = "Europe/Paris";
 
 /**
  * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
@@ -1491,6 +1514,23 @@ export async function bootRepeatableJobs(): Promise<void> {
       {
         repeat: { pattern: PATTERN_IMPORT_SIRO, tz: FUSEAU_IMPORT_SIRO },
         jobId: "opco-siro-import-cron",
+      },
+    );
+  }
+
+  // ── 2026-11-15 — récap quotidien des demandes de clients, 7 h 30 Paris ──
+  // Purge EXHAUSTIVE d'abord (un seul répétable, cadence à jour : une ancienne entrée UTC
+  // enverrait deux récaps par jour), puis ajout.
+  if (alertesClientsCronsQueue) {
+    for (const existing of await alertesClientsCronsQueue.getRepeatableJobs()) {
+      await alertesClientsCronsQueue.removeRepeatableByKey(existing.key);
+    }
+    await alertesClientsCronsQueue.add(
+      "recap-quotidien",
+      { tick: new Date().toISOString() },
+      {
+        repeat: { pattern: PATTERN_RECAP_CLIENTS, tz: FUSEAU_RECAP_CLIENTS },
+        jobId: "alertes-clients-recap-cron",
       },
     );
   }

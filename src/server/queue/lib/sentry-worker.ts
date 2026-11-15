@@ -117,6 +117,8 @@ export type WorkerName =
   | "guide-ia-crons"
   // 2026-09-27 — rappels J+3 / J+7 de l'invitation à l'échange apporteur
   | "apporteur-crons"
+  // 2026-11-15 — récap quotidien des demandes de clients (7 h 30, Paris)
+  | "alertes-clients-crons"
   // Qualiopi S5 2026-08-26 — production documentaire au jalon (queue horaire
   // `documents-auto`). Nom distinct de `formation-crons` : le rendu react-pdf
   // et l'upload R2 echouent pour d'autres raisons que les crons d'e-mail, et

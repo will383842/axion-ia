@@ -36,7 +36,8 @@ import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
 import { hashIp } from "@/lib/security/ip-hash";
-import type { NotificationCategory, NotifyInput } from "@/server/notifications";
+import type { NotifyInput } from "@/server/notifications";
+import { notifCategoryFor } from "./categorie-notification";
 import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
@@ -110,34 +111,6 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
     case "support_client":
     case "autre":
       return SubmissionType.contact;
-  }
-}
-
-function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
-  switch (type) {
-    case "audit":
-      return "AUDIT_REQUEST_SUBMITTED";
-    case "implementation":
-      return "IMPLEMENTATION_REQUEST_SUBMITTED";
-    case "formation":
-    case "un_a_un":
-      return "INTERVENTION_REQUEST_SUBMITTED";
-    case "devis":
-      return "QUOTE_REQUEST_RECEIVED";
-    // Form v2 — catégories dédiées pour routage Telegram fin
-    case "presse":
-      return "PRESS_REQUEST_SUBMITTED";
-    case "recrutement":
-      return "RECRUITMENT_RECEIVED";
-    case "speaker":
-      return "SPEAKER_INVITATION_RECEIVED";
-    case "investisseur":
-      return "INVESTOR_INQUIRY_RECEIVED";
-    case "support_client":
-      return "CUSTOMER_SUPPORT_REQUEST";
-    case "partenariat":
-    case "autre":
-      return "CONTACT_FORM_SUBMITTED";
   }
 }
 

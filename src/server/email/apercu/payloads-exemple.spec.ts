@@ -174,7 +174,9 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // (lot 4 bis). Aucun champ requis : le code et la durée viennent de `valeurs`, remplis au rendu.
     // RELEVÉ À 87 (2026-11-14) : `alerte-demande-client`, doublon e-mail INTERNE d'une demande de
     // client (alertes clients, PR B). Champs tous facultatifs.
-    expect(tous.length).toBe(87);
+    // RELEVÉ À 88 (2026-11-15) : `recap-demandes-clients`, récap quotidien INTERNE des demandes de
+    // clients (alertes clients, PR C). Champs tous facultatifs.
+    expect(tous.length).toBe(88);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {
