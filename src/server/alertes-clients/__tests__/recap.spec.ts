@@ -191,6 +191,22 @@ describe("collecterDemandesVeille", () => {
     expect(r.demandes[0]!.lignes.join("\n")).toContain("Automatiser mes devis pour mon cabinet");
   });
 
+  it("🔴 details.source = « chatbot » (champ libre) ne fait pas entrer une demande presse dans le récap", async () => {
+    d.submissions.mockResolvedValue([
+      submission({
+        id: "sub_presse_source",
+        details: { unifiedType: "presse", source: "chatbot", message: "Interview ?" },
+      }),
+      submission({
+        id: "sub_recrut_source",
+        details: { unifiedType: "recrutement", source: "chatbot", message: "CV" },
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(0);
+    expect(r.total).toBe(0);
+  });
+
   it("un rendez-vous dont l'invité a été effacé (RGPD) n'apparaît pas, sans rien supprimer", async () => {
     d.rdvs.mockResolvedValue([
       rdv({ id: "cal_efface", inviteeName: "[erased-rgpd-art17]", status: "canceled" }),

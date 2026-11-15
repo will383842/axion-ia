@@ -136,9 +136,13 @@ export function categorieSubmission(details: Record<string, unknown>): Notificat
   return notifCategoryFor(type as UnifiedContactType) ?? categorieDemandeSansType;
 }
 
-/** Un prospect du chatbot (`capturer-lead.ts` écrit `details: { besoin, canal: "chatbot" }`). */
+/**
+ * Un prospect du chatbot (`capturer-lead.ts` écrit `details: { besoin, canal: "chatbot" }`). Seul
+ * `canal` compte : `details.source` est un champ caché LIBRE du formulaire public. Et seulement sans
+ * type de formulaire : une demande « presse » ou « recrutement » ne devient jamais un lead.
+ */
 function estLeadChatbot(details: Record<string, unknown>): boolean {
-  return chaine(details["canal"]) === "chatbot" || chaine(details["source"]) === "chatbot";
+  return chaine(details["canal"]) === "chatbot" && !chaine(details["unifiedType"]);
 }
 
 /** Lit la veille. Lecture seule ; ne lève que si la base est injoignable (l'appelant le trace). */
@@ -373,7 +377,7 @@ export async function envoyerRecapVeille(maintenant: Date = new Date()): Promise
   try {
     const enqueueEmail = await chargerEnfileurEmail();
     if (!enqueueEmail) {
-      await tracerEchec("récap quotidien : aucun enfileur d'e-mail posé");
+      await tracerEchec("aucun enfileur d'e-mail posé");
       return "failed";
     }
     const donnees = await collecterPourBornes(bornes);
@@ -391,7 +395,7 @@ export async function envoyerRecapVeille(maintenant: Date = new Date()): Promise
     );
     if (res.enqueued) return "queued";
     await tracerEchec(
-      `récap quotidien non parti (${
+      `non parti (${
         res.retenu
           ? "retenu"
           : res.corbeilleIndisponible
@@ -405,7 +409,7 @@ export async function envoyerRecapVeille(maintenant: Date = new Date()): Promise
     );
     return "failed";
   } catch {
-    await tracerEchec("récap quotidien : exception à la lecture ou à l'enfilage");
+    await tracerEchec("exception à la lecture ou à l'enfilage");
     return "failed";
   }
 }
