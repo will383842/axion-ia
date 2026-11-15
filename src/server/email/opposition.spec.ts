@@ -54,6 +54,7 @@ import {
   estJetonOpposition,
   urlOpposition,
   enregistrerOpposition,
+  enregistrerOppositionPourAdresse,
   estOpposee,
 } from "./opposition";
 
@@ -334,5 +335,38 @@ describe("🔴 RGPD — le CRM ne reçoit jamais une adresse déjà en base sans
       id: "opp-1",
       crmInterditLe: null,
     });
+  });
+});
+
+describe("RC-19 — une adresse opposée l'est sous UNE seule forme, partout", () => {
+  it("🔴 l'adresse saisie avec majuscules et espaces annule les envois sous sa forme normalisée", async () => {
+    const r = await enregistrerOppositionPourAdresse("  Jean.Dupont@Client.FR ", {
+      origine: "reseau-stop",
+    });
+    expect(r).toMatchObject({ ok: true, email: "jean.dupont@client.fr" });
+    expect(annulerRelances).toHaveBeenCalledWith("jean.dupont@client.fr", expect.any(String));
+    expect(syncOptOut).toHaveBeenCalledWith(
+      expect.objectContaining({ person: { email: "jean.dupont@client.fr" } }),
+    );
+  });
+
+  it("🔴 un second appel (déjà opposée) rattrape aussi sous la forme normalisée", async () => {
+    findUnique.mockResolvedValue({ id: "opp-1" });
+    await enregistrerOppositionPourAdresse("JEAN@client.fr");
+    expect(annulerRelances).toHaveBeenCalledWith("jean@client.fr", expect.any(String));
+  });
+
+  it("l'opposition posée en majuscules est vue par la lecture en minuscules (même empreinte)", async () => {
+    await enregistrerOppositionPourAdresse("JEAN@CLIENT.FR");
+    expect(create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({ emailHash: hashEmailForLookup("jean@client.fr") }),
+      }),
+    );
+  });
+
+  it("aucune suppression de ligne", async () => {
+    await enregistrerOppositionPourAdresse("jean@client.fr");
+    expect(suppressions).not.toHaveBeenCalled();
   });
 });
