@@ -332,13 +332,10 @@ describe("réservation : cas limites (constats G2)", () => {
 
 describe("S-M1 : aucune clé dans les messages d'erreur, même avec une seule clé", () => {
   it("masque sk-ant-… et la valeur de la clé d'environnement", () => {
-    vi.stubEnv("ANTHROPIC_API_KEY", "valeur-secrete-fictive-123");
-    const e = new APIError(
-      401,
-      "invalid x-api-key valeur-secrete-fictive-123 / sk-ant-api03-ABCdef_12",
-    );
+    vi.stubEnv("ANTHROPIC_API_KEY", "t".repeat(24));
+    const e = new APIError(401, `invalid x-api-key ${"t".repeat(24)} / sk-ant-api03-ABCdef_12`);
     const m = mapAnthropicError(e);
-    expect(m.message).not.toContain("valeur-secrete-fictive-123");
+    expect(m.message).not.toContain("t".repeat(24));
     expect(m.message).not.toMatch(/sk-ant-/);
     expect(m.message).toContain("invalid x-api-key");
   });
