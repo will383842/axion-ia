@@ -89,11 +89,14 @@ export function buildSoftwareApplicationJsonLd(input: SoftwareApplicationInput) 
 export interface VideoObjectInput {
   readonly name: string;
   readonly description: string;
-  readonly thumbnailUrl: string;
+  /** Une miniature, ou plusieurs (16:9, 4:3, 1:1 recommandées par Google). */
+  readonly thumbnailUrl: string | ReadonlyArray<string>;
   readonly contentUrl?: string;
   readonly embedUrl?: string;
   readonly uploadDate: string; // ISO 8601
   readonly duration?: string; // ISO 8601 duration ("PT5M30S")
+  readonly inLanguage?: string; // BCP 47 ("fr-FR")
+  readonly publisherName?: string;
 }
 
 export function buildVideoObjectJsonLd(input: VideoObjectInput) {
@@ -107,6 +110,10 @@ export function buildVideoObjectJsonLd(input: VideoObjectInput) {
     ...(input.contentUrl ? { contentUrl: input.contentUrl } : {}),
     ...(input.embedUrl ? { embedUrl: input.embedUrl } : {}),
     ...(input.duration ? { duration: input.duration } : {}),
+    ...(input.inLanguage ? { inLanguage: input.inLanguage } : {}),
+    ...(input.publisherName
+      ? { publisher: { "@type": "Organization", name: input.publisherName } }
+      : {}),
   } as const;
 }
 
