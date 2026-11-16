@@ -20,6 +20,8 @@ name: Build & Deploy · GHCR + Coolify (axion-ia.com)
 #       ↓
 #   GH Actions job `purge` : Cloudflare cache purge
 #       ↓
+#   GH Actions job `deploy_worker` (needs deploy, seulement si le site a fini) : POST Coolify du worker
+#       ↓
 #   GH Actions job `lhci` : Lighthouse CI gate post-deploy
 #
 # Action humaine OneTime requise :
@@ -475,6 +477,8 @@ jobs:
     # reconfiguration Coolify en mode "Docker Image").
     if: github.event_name != 'workflow_dispatch' || inputs.skip_deploy != true
     runs-on: ubuntu-latest
+    outputs:
+      site_fini: ${{ steps.attente_site.outputs.site_fini }}
     steps:
       # D8 (2026-11-15) — « Coolify au repos » AVANT tout POST. Deux déploiements Coolify
       # (site + worker) ne doivent pas se chevaucher : on attend qu'aucun déploiement
@@ -554,46 +558,8 @@ jobs:
           fi
         id: deploy
 
-      - name: POST /api/v1/deploy (worker BullMQ — axion-ia-worker)
-        # P0 2026-06-13 : le worker BullMQ est une 2e app Coolify (Dockerfile.worker)
-        # qui consomme TOUTES les files BullMQ de génération de contenu (génération, publication,
-        # indexation, lifecycle…). Sans ce trigger, un push main ne redéploie QUE
-        # l'app web → le code du worker reste figé en prod (les fixes worker ne
-        # parviennent jamais en production). Coolify rebuild l'app worker depuis la
-        # source (Dockerfile.worker) à ce POST.
-        # No-op si COOLIFY_WORKER_APP_UUID absent → activation par Will :
-        #   gh secret set COOLIFY_WORKER_APP_UUID --body "<uuid-app-worker>"
-        env:
-          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
-          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
-          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
-        run: |
-          set -euo pipefail
-          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
-            echo "::warning::COOLIFY_WORKER_APP_UUID non défini — redéploiement du worker IGNORÉ. Le code worker NE sera PAS mis à jour en prod. Ajoute le secret pour activer."
-            exit 0
-          fi
-          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ]; then
-            echo "::error::Missing COOLIFY_API_TOKEN / COOLIFY_URL."
-            exit 1
-          fi
-          echo "Triggering deploy on Coolify for WORKER app ${COOLIFY_WORKER_APP_UUID}…"
-          # 2026-08-28 : Coolify a mis a jour son API — /api/v1/deploy est passe
-          # de GET a POST. Le point d entree repond desormais 405 avec
-          # {"message":"This endpoint has changed to a POST request."} sur un GET.
-          # `-G` transformait --data-urlencode en parametres de requete GET ; sans lui,
-          # curl envoie un POST avec les memes donnees en corps de formulaire.
-          response=$(curl -fsSL -X POST \
-            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
-            -H "Accept: application/json" \
-            --data-urlencode "uuid=${COOLIFY_WORKER_APP_UUID}" \
-            --data-urlencode "force=true" \
-            --max-time 30 \
-            "${COOLIFY_URL}/api/v1/deploy")
-          echo "Coolify worker response: ${response}"
-        id: deploy_worker
-
       - name: Wait for Coolify deployment to finish (max 25 min + early-fail)
+        id: attente_site
         if: steps.deploy.outputs.deployment_uuid != ''
         timeout-minutes: 30
         env:
@@ -662,6 +628,7 @@ jobs:
             case "${STATUS}" in
               finished)
                 echo "Deployment succeeded ✓ (durée totale: ${SECONDS}s)"
+                echo "site_fini=true" >> "$GITHUB_OUTPUT"
                 exit 0
                 ;;
               failed|cancelled-by-user|cancelled)
@@ -751,9 +718,9 @@ jobs:
             exit 0
           fi
           # Même contrôle « aucun déploiement actif » qu'avant le POST, refait juste avant le
-          # retrait, mais en BOUCLE BORNÉE : le POST du worker part juste après celui du site et
-          # « Wait for Coolify » n'attend que le site, donc le worker est souvent encore
-          # queued/in_progress ici. Relevé toutes les 30 s pendant 10 min au plus ; tout
+          # retrait, mais en BOUCLE BORNÉE. Le worker n'est plus lancé qu'après ce job (job
+          # deploy_worker, D8b) ; la boucle reste une garde contre tout autre déploiement actif
+          # (Studio, workflows manuels). Relevé toutes les 30 s pendant 10 min au plus ; tout
           # in_progress/queued, réponse muette ou illisible = occupé ; seul un tableau JSON dont le
           # compte vaut 0 autorise. Délai dépassé => rien n'est retiré (sortie 0).
           DEADLINE_RETRAIT=$((SECONDS + 600))  # 10 min
@@ -787,6 +754,156 @@ jobs:
       # `deploy-coolify` (cf. doctrine P0-01 en tête de fichier). Le job `warm`
       # (`needs: deploy`) tourne donc APRÈS le deploy (et après la purge CF ci-dessus),
       # sur son propre runner, best-effort.
+
+  # ───────────────────────────────────────────────────────────────────────
+  # D8b (2026-11-16) — le worker n'est redéployé QU'APRÈS le site.
+  # Avant : le POST du worker partait dans le job `deploy`, juste après celui du site, et
+  # les deux déploiements Coolify se chevauchaient. Désormais ce job ne tourne que si le
+  # job `deploy` a vu le site `finished` (sortie `site_fini`), même si une étape ultérieure
+  # de `deploy` (purge, retrait d'image) a rougi. `!cancelled()` et non success()/always() :
+  # success() exclurait un `deploy` rouge APRÈS un site fini ; always() ignorerait l'annulation.
+  # Groupe de concurrence propre, jamais annulé en cours (comme `deploy`).
+  # Échec ici = site en ligne, worker non redéployé : `gh run rerun <run_id> --failed`.
+  # ───────────────────────────────────────────────────────────────────────
+  deploy_worker:
+    name: Mise en ligne du worker (après le site)
+    needs: deploy
+    if: ${{ !cancelled() && needs.deploy.outputs.site_fini == 'true' }}
+    concurrency:
+      group: deploy-coolify-worker
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Coolify au repos (avant le worker)
+        id: repos_worker
+        timeout-minutes: 25
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::warning::COOLIFY_WORKER_APP_UUID non défini — redéploiement du worker IGNORÉ. Le code worker NE sera PAS mis à jour en prod. Ajoute le secret pour activer."
+            echo "actif=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -z "${COOLIFY_API_TOKEN:-}" ] || [ -z "${COOLIFY_URL:-}" ]; then
+            echo "::error::Missing COOLIFY_API_TOKEN / COOLIFY_URL."
+            exit 1
+          fi
+          DEADLINE=$((SECONDS + 1200))  # 20 min
+          while :; do
+            occupes=""
+            reponse=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/deployments" 2>/dev/null || true)
+            # Ferme-en-cas-de-doute (même contrôle que le job `deploy`) : réponse muette, vide,
+            # non-tableau ou illisible => `occupes` n'est pas « 0 » => occupé.
+            occupes=$(printf '%s' "${reponse}" | jq -r \
+              'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
+            if [ "${occupes}" = "0" ]; then
+              echo "Coolify au repos ✓ (aucun déploiement en cours ni en file, toutes applications)."
+              echo "actif=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            echo "[$(date +%H:%M:%S)] Coolify occupé ou API muette (déploiements actifs : '${occupes:-?}') — nouvel essai dans 30 s"
+            if [ $SECONDS -ge $DEADLINE ]; then
+              echo "::error::Coolify toujours occupé après 20 min : worker NON redéployé (le site, lui, est en ligne)."
+              echo "::error::Action recommandée : gh workflow run coolify-diagnose.yml -f action=cancel-stuck"
+              exit 1
+            fi
+            sleep 30
+          done
+
+      - name: POST /api/v1/deploy (worker BullMQ — axion-ia-worker)
+        if: steps.repos_worker.outputs.actif == 'true'
+        # P0 2026-06-13 : le worker BullMQ est une 2e app Coolify (Dockerfile.worker)
+        # qui consomme les files BullMQ (génération, publication, indexation, lifecycle…).
+        # Coolify rebuild l'app worker depuis la source à ce POST. Déplacé ici le 2026-11-16 (D8b).
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          echo "Triggering deploy on Coolify for WORKER app ${COOLIFY_WORKER_APP_UUID}…"
+          # 2026-08-28 : /api/v1/deploy est un POST (un GET répond 405).
+          response=$(curl -fsSL -X POST \
+            -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+            -H "Accept: application/json" \
+            --data-urlencode "uuid=${COOLIFY_WORKER_APP_UUID}" \
+            --data-urlencode "force=true" \
+            --max-time 30 \
+            "${COOLIFY_URL}/api/v1/deploy")
+          echo "Coolify worker response: ${response}"
+          deployment_uuid=$(echo "${response}" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+          if [ -n "${deployment_uuid}" ]; then
+            echo "Worker deployment queued: ${deployment_uuid}"
+            echo "deployment_uuid=${deployment_uuid}" >> "$GITHUB_OUTPUT"
+          else
+            echo "::warning::Could not extract deployment_uuid from worker response."
+          fi
+        id: deploy_worker
+
+      - name: Attendre la fin du déploiement du worker (max 25 min)
+        if: steps.deploy_worker.outputs.deployment_uuid != ''
+        timeout-minutes: 30
+        env:
+          COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
+          COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          DEPLOYMENT_UUID: ${{ steps.deploy_worker.outputs.deployment_uuid }}
+        run: |
+          set -euo pipefail
+          # Pas de dump de journal ni de SSH ici : le journal Coolify recopie des secrets
+          # (cf. étape du site). On n'affiche que status / created_at / finished_at.
+          DEADLINE=$((SECONDS + 1500))  # 25 min
+          POLL_INTERVAL=30
+          QUEUED_STREAK=0
+          QUEUED_MAX=10  # 10 relevés × 30 s = 5 min en file = gelé
+          while [ $SECONDS -lt $DEADLINE ]; do
+            RESPONSE=$(curl -fsSL -m 15 \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              "${COOLIFY_URL}/api/v1/deployments/${DEPLOYMENT_UUID}" 2>/dev/null || true)
+            STATUS=$(echo "${RESPONSE}" | jq -r '.status // empty' 2>/dev/null || true)
+            CREATED=$(echo "${RESPONSE}" | jq -r '.created_at // empty' 2>/dev/null || true)
+            FINISHED=$(echo "${RESPONSE}" | jq -r '.finished_at // empty' 2>/dev/null || true)
+            echo "[$(date +%H:%M:%S)] worker status=${STATUS} created=${CREATED} finished=${FINISHED}"
+            case "${STATUS}" in
+              finished)
+                echo "Worker deployment succeeded ✓"
+                exit 0
+                ;;
+              failed|cancelled-by-user|cancelled)
+                echo "::error::Déploiement du worker ${STATUS} (le site, lui, est en ligne)."
+                echo "::error::Diagnostic : gh workflow run coolify-diagnose.yml -f action=dump-state"
+                exit 1
+                ;;
+              queued)
+                QUEUED_STREAK=$((QUEUED_STREAK + 1))
+                if [ $QUEUED_STREAK -ge $QUEUED_MAX ]; then
+                  echo "::error::Déploiement du worker en file ${QUEUED_STREAK} relevés consécutifs (~5 min) — file Coolify gelée probable."
+                  echo "::error::Action recommandée : gh workflow run coolify-diagnose.yml -f action=cancel-stuck"
+                  exit 1
+                fi
+                sleep $POLL_INTERVAL
+                ;;
+              in_progress)
+                QUEUED_STREAK=0
+                sleep $POLL_INTERVAL
+                ;;
+              "")
+                echo "::warning::Empty status from API (retrying)"
+                sleep $POLL_INTERVAL
+                ;;
+              *)
+                echo "::warning::Unknown status '${STATUS}' (retrying)"
+                sleep $POLL_INTERVAL
+                ;;
+            esac
+          done
+          echo "::error::Délai dépassé (25 min) : déploiement du worker non terminé."
+          exit 1
 
   # ───────────────────────────────────────────────────────────────────────
   # Lighthouse CI hard fail post-deploy — Audit E2E 2026-05-11 P0-CONF-17.
@@ -1428,7 +1545,7 @@ jobs:
     # `typecheck` (2026-10-08) : s'il échoue, `deploy` est « skipped » ; sans lui ici, ce skipped
     # passait pour un succès et l'annonce disait « déploiement réussi » alors que rien n'était en
     # ligne. Son résultat compte donc comme celui du build.
-    needs: [build, typecheck, deploy]
+    needs: [build, typecheck, deploy, deploy_worker]
     # Un créneau sans rien de nouveau saute le build : ce n'est pas un échec,
     # aucune notification (sinon une fausse alarme jusqu'à 3 fois par jour).
     if: always() && needs.build.result != 'skipped'
@@ -1444,6 +1561,7 @@ jobs:
           BUILD_RESULT: ${{ needs.build.result }}
           TYPECHECK_RESULT: ${{ needs.typecheck.result }}
           DEPLOY_RESULT: ${{ needs.deploy.result }}
+          WORKER_RESULT: ${{ needs.deploy_worker.result }}
         run: |
           set -u
           if [ -z "${REVALIDATE_SECRET:-}" ]; then
@@ -1456,7 +1574,7 @@ jobs:
           # déploiera à sa place. Mesuré : Sentry AXION-IA-R, 31 « Échec
           # déploiement » en 14 jours, tous des runs annulés — zéro vrai échec.
           # Une alarme qui sonne à chaque fusion rapprochée finit ignorée.
-          if [ "${BUILD_RESULT}" = "cancelled" ] || [ "${TYPECHECK_RESULT}" = "cancelled" ] || [ "${DEPLOY_RESULT}" = "cancelled" ]; then
+          if [ "${BUILD_RESULT}" = "cancelled" ] || [ "${TYPECHECK_RESULT}" = "cancelled" ] || [ "${DEPLOY_RESULT}" = "cancelled" ] || [ "${WORKER_RESULT}" = "cancelled" ]; then
             echo "::notice::Run annulé (remplacé par un run plus récent) — aucune notification."
             exit 0
           fi
@@ -1464,7 +1582,7 @@ jobs:
           # Succès = build ET deploy OK. `skipped` (workflow_dispatch avec
           # skip_deploy) n'est pas un échec et ne doit pas déclencher d'alarme.
           # `typecheck` doit réussir : en échec, `deploy` est « skipped » et rien n'est en ligne.
-          if [ "${BUILD_RESULT}" = "success" ] && [ "${TYPECHECK_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; }; then
+          if [ "${BUILD_RESULT}" = "success" ] && [ "${TYPECHECK_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; } && { [ "${WORKER_RESULT}" = "success" ] || [ "${WORKER_RESULT}" = "skipped" ]; }; then
             success=true
           else
             success=false
@@ -1475,6 +1593,10 @@ jobs:
           deployLabel="${DEPLOY_RESULT}"
           if [ "${TYPECHECK_RESULT}" != "success" ]; then
             deployLabel="${DEPLOY_RESULT} (types : ${TYPECHECK_RESULT})"
+          fi
+          # D8b : le worker est redéployé par un job à part ; son échec (site en ligne) doit se lire.
+          if [ "${TYPECHECK_RESULT}" = "success" ] && [ "${WORKER_RESULT}" != "success" ]; then
+            deployLabel="${DEPLOY_RESULT} (worker : ${WORKER_RESULT})"
           fi
 
           subject=$(git log -1 --pretty=%s 2>/dev/null || echo "")
