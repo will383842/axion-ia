@@ -21,7 +21,7 @@ name: Build & Deploy · GHCR + Coolify (axion-ia.com)
 #   GH Actions job `purge` : Cloudflare cache purge
 #       ↓
 #   GH Actions job `deploy_worker` (needs deploy, seulement si le site a fini) : POST Coolify du worker
-#       ↓
+#       (tourne EN PARALLÈLE de `lhci`, `warm` et `indexnow`, qui ne dépendent que de `deploy`)
 #   GH Actions job `lhci` : Lighthouse CI gate post-deploy
 #
 # Action humaine OneTime requise :
@@ -768,6 +768,8 @@ jobs:
   deploy_worker:
     name: Mise en ligne du worker (après le site)
     needs: deploy
+    # Aucun droit GitHub requis : le job n'utilise que des secrets Coolify passés dans `env`.
+    permissions: {}
     if: ${{ !cancelled() && needs.deploy.outputs.site_fini == 'true' }}
     concurrency:
       group: deploy-coolify-worker
@@ -836,17 +838,20 @@ jobs:
             --data-urlencode "force=true" \
             --max-time 30 \
             "${COOLIFY_URL}/api/v1/deploy")
-          echo "Coolify worker response: ${response}"
+          # Ne jamais afficher la réponse entière de Coolify : seul deployment_uuid est sûr.
           deployment_uuid=$(echo "${response}" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
           if [ -n "${deployment_uuid}" ]; then
             echo "Worker deployment queued: ${deployment_uuid}"
             echo "deployment_uuid=${deployment_uuid}" >> "$GITHUB_OUTPUT"
           else
-            echo "::warning::Could not extract deployment_uuid from worker response."
+            echo "::warning::Could not extract deployment_uuid from worker response (contenu non affiché)."
           fi
         id: deploy_worker
 
       - name: Attendre la fin du déploiement du worker (max 25 min)
+        # La durée réelle du build du worker n'est PAS mesurée ; la limite de 25 min est une
+        # borne prudente, pas une mesure. Pour la mesurer :
+        #   gh workflow run coolify-diagnose.yml -f action=dump-state
         if: steps.deploy_worker.outputs.deployment_uuid != ''
         timeout-minutes: 30
         env:
@@ -1582,7 +1587,7 @@ jobs:
           # Succès = build ET deploy OK. `skipped` (workflow_dispatch avec
           # skip_deploy) n'est pas un échec et ne doit pas déclencher d'alarme.
           # `typecheck` doit réussir : en échec, `deploy` est « skipped » et rien n'est en ligne.
-          if [ "${BUILD_RESULT}" = "success" ] && [ "${TYPECHECK_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; } && { [ "${WORKER_RESULT}" = "success" ] || [ "${WORKER_RESULT}" = "skipped" ]; }; then
+          if [ "${BUILD_RESULT}" = "success" ] && [ "${TYPECHECK_RESULT}" = "success" ] && { [ "${DEPLOY_RESULT}" = "success" ] || [ "${DEPLOY_RESULT}" = "skipped" ]; } && { [ "${DEPLOY_RESULT}" != "success" ] || [ "${WORKER_RESULT}" = "success" ]; } && { [ "${WORKER_RESULT}" = "success" ] || [ "${WORKER_RESULT}" = "skipped" ]; }; then
             success=true
           else
             success=false
@@ -1595,7 +1600,10 @@ jobs:
             deployLabel="${DEPLOY_RESULT} (types : ${TYPECHECK_RESULT})"
           fi
           # D8b : le worker est redéployé par un job à part ; son échec (site en ligne) doit se lire.
-          if [ "${TYPECHECK_RESULT}" = "success" ] && [ "${WORKER_RESULT}" != "success" ]; then
+          # Site déployé (deploy=success) mais worker « skipped » = worker pas redéployé (ex. réponse
+          # du POST du site sans deployment_uuid) : compte comme NON réussi. Avec skip_deploy, deploy
+          # est « skipped » : worker « skipped » reste normal. Libellé seulement si deploy=success.
+          if [ "${DEPLOY_RESULT}" = "success" ] && [ "${WORKER_RESULT}" != "success" ]; then
             deployLabel="${DEPLOY_RESULT} (worker : ${WORKER_RESULT})"
           fi
 

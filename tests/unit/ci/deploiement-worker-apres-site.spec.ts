@@ -71,8 +71,14 @@ describe("D8b · job deploy_worker : déclenchement et concurrence", () => {
   it("dépend de deploy, avec la condition exacte, sans always()", () => {
     expect(w).toContain("needs: deploy\n");
     expect(w).toContain("if: ${{ !cancelled() && needs.deploy.outputs.site_fini == 'true' }}");
-    expect(w).not.toContain("always()");
-    expect(w).not.toContain("success()");
+    const ligneIf = w.split("\n").find((l) => l.startsWith("    if:")) ?? "";
+    expect(ligneIf).not.toBe("");
+    expect(ligneIf).not.toContain("always()");
+    expect(ligneIf).not.toContain("success()");
+  });
+
+  it("n'a aucun droit GitHub (permissions: {})", () => {
+    expect(w).toContain("\n    permissions: {}\n");
   });
 
   it("a son groupe, jamais annulé, et un délai", () => {
@@ -122,6 +128,13 @@ describe("D8b · étape POST du worker", () => {
     expect(e).toContain("deployment_uuid=");
   });
 
+  it("n'affiche jamais la réponse entière de Coolify", () => {
+    // Un echo de ${response} n'est permis que s'il est redirigé dans un tube (extraction du uuid).
+    const echos = e.split("\n").filter((l) => /\becho\b[^\n]*\$\{?response\}?/.test(l));
+    for (const l of echos) expect(l).toContain("|");
+    expect(e).not.toContain("Coolify worker response");
+  });
+
   it("n'apparaît qu'une fois dans tout le workflow", () => {
     expect(WORKFLOW.split("uuid=${COOLIFY_WORKER_APP_UUID}").length - 1).toBe(1);
   });
@@ -144,6 +157,10 @@ describe("D8b · notify et jobs aval", () => {
     const n = job("notify");
     expect(n).toMatch(/needs: \[[^\]]*deploy_worker[^\]]*\]/);
     expect(n).toContain("WORKER_RESULT");
+  });
+
+  it("l'attente du worker renvoie au diagnostic pour mesurer la durée réelle", () => {
+    expect(job("deploy_worker")).toContain("coolify-diagnose.yml -f action=dump-state");
   });
 
   it("warm, lhci et indexnow ne dépendent pas de deploy_worker", () => {

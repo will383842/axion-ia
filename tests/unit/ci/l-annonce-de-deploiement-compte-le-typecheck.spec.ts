@@ -60,7 +60,27 @@ describe("l'annonce de déploiement compte la vérification des types", () => {
     const d = decider("success", "success", "success", "failure");
     expect(d.success).toBe("false");
     expect(d.label).toBe("success (worker : failure)");
-    expect(decider("success", "success", "success", "skipped").success).toBe("true");
+    // Site déployé mais worker « skipped » : worker pas redéployé, donc NON réussi.
+    const s = decider("success", "success", "success", "skipped");
+    expect(s.success).toBe("false");
+    expect(s.label).toBe("success (worker : skipped)");
+    // skip_deploy : deploy « skipped », worker « skipped » reste un succès.
+    expect(decider("success", "success", "skipped", "skipped").success).toBe("true");
+  });
+
+  it("D8b : worker annulé -> sortie silencieuse (le script sort avant la décision)", () => {
+    const debut = NOTIFY.indexOf('if [ "${BUILD_RESULT}" = "cancelled" ]');
+    const ligne = NOTIFY.slice(debut, NOTIFY.indexOf("\n", debut));
+    expect(ligne).toContain('"${WORKER_RESULT}" = "cancelled"');
+  });
+
+  it("D8b : deploy en échec -> pas de libellé worker", () => {
+    for (const w of ["skipped", "failure", "success"])
+      expect(decider("success", "success", "failure", w).label).toBe("failure");
+  });
+
+  it("D8b : deploy réussi + worker réussi -> pas de libellé worker", () => {
+    expect(decider("success", "success", "success", "success").label).toBe("success");
   });
 
   it("le libellé tient dans les 40 caractères qu'accepte le service", () => {

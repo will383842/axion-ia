@@ -377,6 +377,12 @@ les deux sens.
 ne le relance seul. Réparer par `gh run rerun <run_id> --failed` (relance seulement `deploy_worker`)
 ou par « Redeploy » du worker dans Coolify.
 
+⚠️ `gh run rerun --failed` relance **TOUS** les jobs en échec : si `deploy` est rouge (purge ou
+retrait d'image), le rerun relance aussi `deploy`, donc un **nouveau POST du site hors créneau**.
+Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est reconstruit depuis la
+**tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
+du moment.
+
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
 `scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la
