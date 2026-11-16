@@ -4,13 +4,13 @@
  * dans le HTML dès le départ.
  *
  * Ordre (plan §6.5, « une page jamais pauvre ») : titre → lecteur → résumé → « À retenir »
- * → questions-réponses VISIBLES (sans balisage FAQPage : Google le réserve aux sites
- * gouvernementaux et de santé) → lien vers le service ou la formation → vidéos liées
+ * → questions-réponses VISIBLES (la route en émet un FAQPage, champ 25 de la fiche, y compris
+ * sur les vidéos sans fiche : repli sur `video.questions`) → lien vers le service ou la formation → vidéos liées
  * → transcription repliée (portée par le lecteur).
  *
  * SEO-05 : quand la fiche de page existe, elle fournit le H1, le résumé citable, le gain,
  * les limites, les questions, le carrousel, l'infographie, l'auteur et la date de mise à jour.
- * Sans fiche, la page est celle d'avant. Les questions restent sans balisage dans ce composant :
+ * Sans fiche, la page est celle d'avant. Ce composant n'écrit aucun balisage :
  * le `FAQPage` est porté par le JSON-LD de la route.
  */
 import Image from "next/image";

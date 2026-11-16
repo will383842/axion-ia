@@ -145,7 +145,7 @@ const imageAvecAlt = z
       .regex(/^\/medias\/videos\/[a-z0-9/._-]+$/)
       .refine((c) => !c.includes("..")),
     // Champ 20 : décrit ce qu'on voit, 80 à 125 caractères.
-    alt: texte(10, 125),
+    alt: texte(80, 125),
     largeur: z.number().int().positive(),
     hauteur: z.number().int().positive(),
   })

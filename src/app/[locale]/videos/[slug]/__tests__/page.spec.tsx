@@ -216,7 +216,8 @@ describe("SEO-05 — la fiche de page pilote la page", () => {
     const meta = await generateMetadata({ params: params("automatiser-ses-relances") });
     const mention = mentionIa({ iaVoixGeneree: true, iaDoubleNumerique: false });
     expect(mention).toBeTruthy();
-    expect(meta.description).toBe(`${FICHE_BRUTE.metaDescription} ${mention}`);
+    expect(meta.description).toContain("Automatisez vos relances clients par étapes");
+    expect(String(meta.description).endsWith(` ${mention}`)).toBe(true);
   });
 
   it("sans fiche : la description de la vidéo reste utilisée (aucune régression)", async () => {

@@ -16,7 +16,12 @@ import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { PageVideo } from "@/components/videos/PageVideo";
 import { routing } from "@/i18n/routing";
-import { buildProductMetadata, SITE_URL } from "@/lib/seo";
+import {
+  buildProductMetadata,
+  META_DESCRIPTION_MAX,
+  SITE_URL,
+  truncateMetaDescription,
+} from "@/lib/seo";
 import { buildVideoPageJsonLd } from "@/lib/seo/video-jsonld";
 import { videoParSlug, videosPubliees } from "@/server/videos/lecture";
 import { videosLiees } from "@/server/videos/liees";
@@ -45,11 +50,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     path: `/videos/${video.slug}`,
     // Fiche de page (SEO-05) d'abord ; sinon les champs de la vidéo, comme avant.
     title: video.fichePage?.titre ?? video.titre,
-    description: video.fichePage?.metaDescription
-      ? video.fichePage.metaDescription
-      : mention
-        ? `${video.description} ${mention}`
-        : video.description,
+    // La mention IA (AI Act art. 50, D11) reste en suffixe, avec ou sans fiche.
+    description: (() => {
+      const base = video.fichePage?.metaDescription || video.description;
+      if (!mention) return base;
+      // La mention ne doit jamais être coupée par le plafond de la méta : on raccourcit le corps.
+      const corps =
+        base.length + 1 + mention.length > META_DESCRIPTION_MAX
+          ? truncateMetaDescription(base, META_DESCRIPTION_MAX - mention.length - 1)
+          : base;
+      return `${corps} ${mention}`;
+    })(),
     alternates: { fr: `/videos/${video.slug}`, en: `/videos/${video.slug}` },
     ogImage: `${SITE_URL}${affiche.chemin}`,
     ...(affiche.largeur && affiche.hauteur
