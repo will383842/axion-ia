@@ -288,6 +288,7 @@ quand un code atterrit : au prochain créneau, + la durée du build + celle du j
    - `docker pull` layers manquantes
    - Container restart + entrypoint `prisma migrate deploy` + healthcheck
 4. **Job `purge`** : Cloudflare `purge_everything`
+   - puis job `deploy_worker` : POST du worker seulement après `finished` du site et le retrait (D8b)
 5. **Job `lhci`** : Lighthouse CI gate 5 URLs prod live
 
 ### 🔴 DEUX conteneurs, DEUX vitesses — le worker atterrit ~50 min AVANT l'app
@@ -354,6 +355,33 @@ ssh root@178.105.55.15 'docker exec <worker> grep -rl "<marqueur de la PR>" /app
 - L'écart de **90 s** entre les deux bascules, mesuré le matin du 2026-09-04 et repris
   tel quel par trois sessions, était l'écart entre deux **redémarrages de conteneurs**
   — **pas** entre deux versions de code. Mesure juste, conclusion fausse.
+
+### 🔄 D8b (2026-11-16) : par le workflow, le worker atterrit désormais APRÈS l'app
+
+Le POST Coolify du worker n'est plus dans le job `deploy` : il part dans le job `deploy_worker`
+(`needs: deploy`, seulement si le site a fini), après `finished` du site et après le retrait de
+l'ancienne image. Par le workflow, le worker atterrit donc **après** l'app (de quelques minutes à
+~35 min) : la fenêtre est **inversée**, nouvelle app + ancien worker. Si l'auto-déploiement Coolify
+du worker est actif, une fusion le met encore à jour **avant** l'app (cf. section précédente) : les
+deux sens restent possibles.
+
+**RÈGLE SYMÉTRIQUE** : une PR qui change un contrat app↔worker doit tolérer les deux versions dans
+les deux sens.
+
+- le worker doit savoir lire une nouvelle tâche ou valeur d'énumération **avant** que l'app ne
+  l'émette (PR séparée ou créneau précédent) ;
+- toute nouvelle colonne est nullable ou porte une valeur par défaut ;
+- ne jamais retirer une valeur dans la même PR que son dernier usage.
+
+**Échec du worker après un site réussi** : `precheck` saute le créneau suivant (même SHA), donc rien
+ne le relance seul. Réparer par `gh run rerun <run_id> --failed` (relance seulement `deploy_worker`)
+ou par « Redeploy » du worker dans Coolify.
+
+⚠️ `gh run rerun --failed` relance **TOUS** les jobs en échec : si `deploy` est rouge (purge ou
+retrait d'image), le rerun relance aussi `deploy`, donc un **nouveau POST du site hors créneau**.
+Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est reconstruit depuis la
+**tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
+du moment.
 
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
@@ -484,5 +512,5 @@ Le VPS (150 Go, aussi hôte du Studio) sature par PICS (mises en ligne rapproch�
 - Ne touche jamais à : volumes, bases, sauvegardes, `cv-storage`, `f0-facecam`, `medias-reels`, `contenu-reel-hors-depot`, `avant-reconciliation-*`, images `studio-*`.
 - **Les sessions (Claude ou autres) travaillent dans `/root/travaux-claude/<date>-<session>/`, jamais dans `/tmp`, et nettoient en partant** (après avoir archivé ce qui n'est pas dans git).
 - Surveillance et ménage versionnés dans `scripts/vps/` (`surveiller-disque.sh` toutes les 10 min → Telegram « 🔧 Technique » ; `menage-tmp.sh` quotidien ; journald limité à 500 Mo) : voir `scripts/vps/README.md`, « Garde-fous disque ». Ils sont installés à la main par `installer-garde-fous-disque.sh` ; rien ne s'applique tout seul depuis le dépôt.
-- **Anciennes images du site (D8)** : le job `deploy` attend d'abord que Coolify soit au repos : **tout** déploiement `in_progress` ou `queued` (toutes applications, le serveur porte aussi le Studio) compte comme occupé ; réponse API muette, vide, non-tableau ou illisible = occupé ; sortie 0 seulement si l'API a répondu un tableau JSON dont le compte vaut 0 (20 min max, échec avant tout POST). Après un déploiement `finished` et la purge Cloudflare, l'étape de retrait (best-effort, checkout `scripts/vps` lui aussi best-effort ; ignorée si le script est absent) refait ce même contrôle juste avant la connexion SSH, en boucle (relevé toutes les 30 s, jusqu'à 10 min : le worker est souvent encore en déploiement après le site ; si plus aucun déploiement n'est actif dans ce délai le retrait a lieu, sinon il est ignoré avec un avertissement, sans rien retirer), puis lance `scripts/vps/retirer-anciennes-images-site.sh --appliquer`. Le script ne retire que les images `<APP_UUID>:*` dont la création est **antérieure** à celle de l'image du conteneur sain (une image en cours de déploiement n'est jamais candidate), garde l'image servie **+ la plus récente des précédentes non servies** (retour arrière Coolify, N=1), jamais `latest` ni l'image d'un conteneur, `rmi` sans `-f`, liste noire, verrou ; un retrait par référence dont l'image existe encore est journalisé « étiquette retirée, image gardée » et non compté. Verrouillé par `tests/unit/ci/deploiement-repos-et-retrait-image.spec.ts`. Essai à blanc serveur (`--essai`) obligatoire avant la première fusion.
+- **Anciennes images du site (D8)** : le job `deploy` attend d'abord que Coolify soit au repos : **tout** déploiement `in_progress` ou `queued` (toutes applications, le serveur porte aussi le Studio) compte comme occupé ; réponse API muette, vide, non-tableau ou illisible = occupé ; sortie 0 seulement si l'API a répondu un tableau JSON dont le compte vaut 0 (20 min max, échec avant tout POST). Après un déploiement `finished` et la purge Cloudflare, l'étape de retrait (best-effort, checkout `scripts/vps` lui aussi best-effort ; ignorée si le script est absent) refait ce même contrôle juste avant la connexion SSH, en boucle (relevé toutes les 30 s, jusqu'à 10 min : le worker n'est lancé qu'après ce job (D8b) ; la boucle protège des autres déploiements (Studio, workflows manuels) ; si plus aucun déploiement n'est actif dans ce délai le retrait a lieu, sinon il est ignoré avec un avertissement, sans rien retirer), puis lance `scripts/vps/retirer-anciennes-images-site.sh --appliquer`. Le script ne retire que les images `<APP_UUID>:*` dont la création est **antérieure** à celle de l'image du conteneur sain (une image en cours de déploiement n'est jamais candidate), garde l'image servie **+ la plus récente des précédentes non servies** (retour arrière Coolify, N=1), jamais `latest` ni l'image d'un conteneur, `rmi` sans `-f`, liste noire, verrou ; un retrait par référence dont l'image existe encore est journalisé « étiquette retirée, image gardée » et non compté. Verrouillé par `tests/unit/ci/deploiement-repos-et-retrait-image.spec.ts`. Essai à blanc serveur (`--essai`) obligatoire avant la première fusion.
 - Les nettoyages Docker de Coolify (`force_docker_cleanup`) et le crontab Studio relèvent de la session Studio ; ClickHouse/Plausible (journaux, TTL) : lot à part.
