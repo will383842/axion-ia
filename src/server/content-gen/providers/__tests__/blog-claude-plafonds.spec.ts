@@ -1,7 +1,5 @@
 /** Module commun des plafonds du blog. Chiffres FICTIFS ; seules les bornes de garde sont réelles. */
-import { describe, it, expect, vi } from "vitest";
-
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+import { describe, it, expect } from "vitest";
 
 import {
   BORNE_JOUR_USD,

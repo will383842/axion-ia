@@ -24,6 +24,7 @@ import {
   validerPlafondsBlog,
 } from "@/server/content-gen/providers/blog-claude-plafonds";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
 // Sprint Final P1-3 — Zod runtime validation des inputs Server Actions.
@@ -252,12 +253,11 @@ const MESSAGE_ANTHROPIC_ABSENTE =
 export async function updatePlafondsBlogClaude(
   input: UpdatePlafondsBlogInput,
 ): Promise<{ ok: true } | { ok: false; message: string }> {
+  // 1. Session d'abord : aucune donnée ne fuit sans authentification.
+  const session = await requireAdmin();
+  // 2. Rôle editor refusé par un retour (une erreur levée serait masquée par Next).
+  if (session.role === "editor") return { ok: false, message: "Réservé aux administrateurs." };
   const parsed = UpdatePlafondsBlogInputSchema.parse(input);
-  const session = await requireAdminWriteRateLimited("updatePlafondsBlogClaude", {
-    limit: 10,
-    windowSec: 3600,
-  });
-  if (session.role === "editor") throw new Error("forbidden");
 
   let cles: Record<string, number>;
   try {
@@ -275,6 +275,15 @@ export async function updatePlafondsBlogClaude(
     throw e;
   }
 
+  // 3. Contrôle de débit seulement après validation : une saisie refusée ne consomme rien.
+  const debit = await checkRateLimit(`admin:write:${session.userId}:updatePlafondsBlogClaude`, {
+    limit: 10,
+    windowSec: 3600,
+  });
+  if (!debit.allowed) {
+    return { ok: false, message: "Trop de tentatives : réessayez dans une heure." };
+  }
+
   try {
     const ligne = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
     if (!ligne) return { ok: false, message: MESSAGE_ANTHROPIC_ABSENTE };
@@ -283,6 +292,28 @@ export async function updatePlafondsBlogClaude(
     const touchees =
       await prisma.$executeRaw`UPDATE provider_config SET "extraConfig" = (CASE WHEN jsonb_typeof("extraConfig") = 'object' THEN "extraConfig" ELSE '{}'::jsonb END) || ${JSON.stringify(cles)}::jsonb, "updatedAt" = now() WHERE provider::text = 'anthropic'`;
     if (touchees === 0) return { ok: false, message: MESSAGE_ANTHROPIC_ABSENTE };
+
+    const avant = lirePlafondsBlogExistants(ligne.extraConfig);
+    const oldValue = {
+      [CLES_PLAFONDS_BLOG.jour]: avant.jour,
+      [CLES_PLAFONDS_BLOG.mois]: avant.mois,
+      [CLES_PLAFONDS_BLOG.reserve]: avant.reserve,
+      [CLES_PLAFONDS_BLOG.juge]: avant.jugeMax,
+    };
+    const ecrireAudit = async () => {
+      try {
+        await writeAuditLog({
+          action: "updatePlafondsBlogClaude",
+          settingKey: "provider:anthropic:blog_claude",
+          oldValue,
+          newValue: cles,
+          actorUserId: session.userId,
+          actorEmail: session.email,
+        });
+      } catch {
+        // Best-effort (cf. updateProvider).
+      }
+    };
 
     const relu = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
     const extra = (relu?.extraConfig ?? {}) as Record<string, unknown>;
@@ -296,28 +327,12 @@ export async function updatePlafondsBlogClaude(
       Sentry.captureException(err, {
         tags: { area: "content-gen", action: "updatePlafondsBlogClaude" },
       });
+      // L'UPDATE a peut-être été appliqué : on garde la trace.
+      await ecrireAudit();
       return { ok: false, message: err.message };
     }
 
-    const avant = lirePlafondsBlogExistants(ligne.extraConfig);
-    const oldValue = {
-      [CLES_PLAFONDS_BLOG.jour]: avant.jour,
-      [CLES_PLAFONDS_BLOG.mois]: avant.mois,
-      [CLES_PLAFONDS_BLOG.reserve]: avant.reserve,
-      [CLES_PLAFONDS_BLOG.juge]: avant.jugeMax,
-    };
-    try {
-      await writeAuditLog({
-        action: "updatePlafondsBlogClaude",
-        settingKey: "provider:anthropic:blog_claude",
-        oldValue,
-        newValue: cles,
-        actorUserId: session.userId,
-        actorEmail: session.email,
-      });
-    } catch {
-      // Best-effort (cf. updateProvider).
-    }
+    await ecrireAudit();
 
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
     return { ok: true };

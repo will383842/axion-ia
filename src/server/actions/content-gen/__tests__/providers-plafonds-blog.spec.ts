@@ -77,17 +77,31 @@ describe("updatePlafondsBlogClaude", () => {
     await expect(updatePlafondsBlogClaude(ENTREE)).rejects.toThrow("unauthorized");
     expect(m.exec).not.toHaveBeenCalled();
   });
-  it("limite de débit → rate_limited, aucune écriture", async () => {
+  it("quota atteint → ok:false clair, aucune écriture", async () => {
     m.rate.mockResolvedValue({ allowed: false, count: 11, remaining: 0, resetAt: Date.now() + 1 });
-    await expect(updatePlafondsBlogClaude(ENTREE)).rejects.toThrow(
-      /^rate_limited:updatePlafondsBlogClaude:/,
-    );
+    const r = await updatePlafondsBlogClaude(ENTREE);
+    expect(r).toEqual({ ok: false, message: "Trop de tentatives : réessayez dans une heure." });
+    expect(m.exec).not.toHaveBeenCalled();
+    expect(m.findUnique).not.toHaveBeenCalled();
+  });
+  it("rôle editor → ok:false clair, quota non entamé", async () => {
+    session("editor");
+    const r = await updatePlafondsBlogClaude(ENTREE);
+    expect(r).toEqual({ ok: false, message: "Réservé aux administrateurs." });
+    expect(m.rate).not.toHaveBeenCalled();
     expect(m.exec).not.toHaveBeenCalled();
   });
-  it("rôle editor → forbidden", async () => {
-    session("editor");
-    await expect(updatePlafondsBlogClaude(ENTREE)).rejects.toThrow("forbidden");
-    expect(m.exec).not.toHaveBeenCalled();
+  it("10 saisies invalides n'appellent pas le contrôle de débit", async () => {
+    for (let i = 0; i < 10; i++) {
+      const r = await updatePlafondsBlogClaude({ ...ENTREE, jour: "21" });
+      expect(r.ok).toBe(false);
+    }
+    expect(m.rate).not.toHaveBeenCalled();
+  });
+  it("sans session → le quota n'est pas touché", async () => {
+    m.auth.mockResolvedValue(null);
+    await expect(updatePlafondsBlogClaude(ENTREE)).rejects.toThrow("unauthorized");
+    expect(m.rate).not.toHaveBeenCalled();
   });
   it("entrées invalides → ok:false identique au module, rien d'écrit", async () => {
     const r = await updatePlafondsBlogClaude({ ...ENTREE, jour: "21" });
@@ -142,6 +156,7 @@ describe("updatePlafondsBlogClaude", () => {
     const r = await updatePlafondsBlogClaude(ENTREE);
     expect(r.ok).toBe(false);
     expect(m.sentry).toHaveBeenCalled();
+    expect(m.audit).toHaveBeenCalledTimes(1);
   });
   it("audit en panne → ok:true", async () => {
     m.audit.mockRejectedValue(new Error("down"));

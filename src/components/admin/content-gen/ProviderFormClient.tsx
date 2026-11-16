@@ -78,6 +78,7 @@ export function ProviderFormClient({
   const [saveError, setSaveError] = useState<string | null>(null);
   const [resetError, setResetError] = useState<string | null>(null);
   const [blogError, setBlogError] = useState<string | null>(null);
+  const [blogOk, setBlogOk] = useState(false);
   const [isBlogPending, startBlogTransition] = useTransition();
   const [isSavePending, startSaveTransition] = useTransition();
   const [isResetPending, startResetTransition] = useTransition();
@@ -120,10 +121,12 @@ export function ProviderFormClient({
     if (!saveBlogAction) return;
     const fd = new FormData(e.currentTarget);
     setBlogError(null);
+    setBlogOk(false);
     startBlogTransition(async () => {
       try {
         const r = await saveBlogAction(fd);
         if (!r.ok) setBlogError(r.message);
+        else setBlogOk(true);
       } catch (err: unknown) {
         setBlogError(err instanceof Error ? err.message : "Erreur lors de l'enregistrement.");
       }
@@ -310,6 +313,11 @@ export function ProviderFormClient({
             <div className="mt-[var(--space-admin-3)]">
               <AdminFormError message={blogError} onDismiss={() => setBlogError(null)} />
             </div>
+          )}
+          {blogOk && (
+            <p role="status" className="admin-meta-small mt-[var(--space-admin-3)]">
+              Plafonds du blog enregistrés.
+            </p>
           )}
           <div className="admin-filters-actions">
             <button
