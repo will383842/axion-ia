@@ -70,9 +70,7 @@ describe("D8b · job deploy_worker : déclenchement et concurrence", () => {
 
   it("dépend de deploy, avec la condition exacte, sans always()", () => {
     expect(w).toContain("needs: deploy\n");
-    expect(w).toContain(
-      "if: ${{ !cancelled() && needs.deploy.outputs.site_fini == 'true' }}",
-    );
+    expect(w).toContain("if: ${{ !cancelled() && needs.deploy.outputs.site_fini == 'true' }}");
     expect(w).not.toContain("always()");
     expect(w).not.toContain("success()");
   });
