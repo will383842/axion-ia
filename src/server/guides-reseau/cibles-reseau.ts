@@ -84,19 +84,27 @@ export function validerAdresse(
   return { ok: true, url: u.href };
 }
 
-/** Titre : espaces de bord retirés, 3 à 120 caractères. */
+/** Titre : espaces de bord retirés, 3 à 120 caractères. U+FE0F REFUSÉ (jamais réécrit : cf. `contientSelecteurVariante`). */
 export function validerTitre(brut: unknown): string | null {
   if (typeof brut !== "string") return null;
-  const t = retirerSelecteurVariante(brut).trim();
+  if (contientSelecteurVariante(brut)) return null;
+  const t = brut.trim();
   return t.length >= TITRE_MIN && t.length <= TITRE_MAX ? t : null;
 }
 
 /**
- * U+FE0F (sélecteur de variante-16, invisible, collé par certains claviers/copier-coller) retiré À L'ENTRÉE d'un
- * titre ou d'un code : il ne change rien à l'affichage mais fausse comparaisons et longueurs. Rien d'autre n'est touché.
+ * U+FE0F (sélecteur de variante-16, invisible, collé par certains claviers/copier-coller).
+ * - Pour un CODE (identifiant technique `gde-…`/`adr-…`) : le retirer est correct, il n'a aucun sens visible.
+ * - Pour un TITRE : le retirer CHANGERAIT l'affichage d'emoji légitimes (❤️, 1️⃣, drapeaux) ; on le REFUSE donc
+ *   (voir `contientSelecteurVariante`, 422 côté catalogue, comme la fabrique) au lieu de réécrire le texte.
  */
 export function retirerSelecteurVariante(s: string): string {
   return s.replace(/\uFE0F/g, "");
+}
+
+/** Vrai si le texte contient U+FE0F (refusé dans un titre : jamais réécrit en silence). */
+export function contientSelecteurVariante(s: string): boolean {
+  return s.includes("\uFE0F");
 }
 
 /** Code accepté pour une cible : forme `gde-`/`adr-` accordée au type, ou la fiche de départ. */

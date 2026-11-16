@@ -25,6 +25,7 @@ import {
   TYPES_CIBLE,
   codeAccordeAuType,
   normaliserMot,
+  contientSelecteurVariante,
   retirerSelecteurVariante,
   validerAdresse,
   validerCheminPdf,
@@ -114,6 +115,9 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
   const { type, actif, test, version } = lu.data;
   const code = retirerSelecteurVariante(lu.data.code);
   if (!codeAccordeAuType(code, type)) return refus(422, "code_invalide");
+  // Titre : U+FE0F REFUSÉ (422 clair, comme la fabrique), jamais retiré : ce serait changer ❤️, 1️⃣, drapeaux.
+  if (typeof lu.data.titre === "string" && contientSelecteurVariante(lu.data.titre))
+    return refus(422, "titre_caractere_interdit");
   const titre = validerTitre(lu.data.titre);
   if (titre === null) return refus(422, "titre_invalide");
 

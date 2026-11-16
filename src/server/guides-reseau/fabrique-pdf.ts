@@ -154,27 +154,34 @@ export function pagesDuPdf(pdf: Buffer): number {
 }
 
 let rendu: object | null = null;
-/** Codes de guide dont un dépôt est en cours dans ce processus : un seul dépôt à la fois PAR guide. */
+/**
+ * Codes de guide dont un travail est en cours dans ce processus : un seul dépôt à la fois PAR guide.
+ * Le code n'est relâché que quand la promesse du TRAVAIL est réellement terminée (jamais à la réponse HTTP) :
+ * sinon une relance du même (code, version) partirait pendant qu'un ancien envoi R2 peut encore écraser
+ * le nouveau PDF sous la même clé. ⚠️ Ce verrou ne vaut que DANS UN PROCESSUS : avec plusieurs instances,
+ * seule l'unicité (code, version) en base protège.
+ */
 const codesEnCours = new Set<string>();
 /**
- * Un rendu à la fois dans le processus ; sinon `null` (→ 429 rendu_occupe). Au-delà de `delaiMs` le rendu est
- * abandonné : verrou libéré, `"delai"` rendu (→ 503 echec), rien n'est livré (`abandonne()` vaut vrai).
+ * Un rendu à la fois dans le processus ; sinon `null` (→ 429 rendu_occupe). Au-delà de `delaiMs` la réponse
+ * est `"delai"` (→ 503 echec), `abandonne()` vaut vrai et le signal est déclenché (annule l'envoi R2 en vol).
+ * Le travail, lui, n'est pas tué : l'appelant libère ses verrous dans son propre `finally`.
  */
 async function seulRendu<T>(
-  travail: (abandonne: () => boolean) => Promise<T>,
+  travail: (abandonne: () => boolean, signal: AbortSignal) => Promise<T>,
   delaiMs: number,
 ): Promise<T | null | "delai"> {
   if (rendu !== null) return null;
   const jeton = {};
   rendu = jeton;
-  let abandon = false;
+  const controleur = new AbortController();
   let minuteur: ReturnType<typeof setTimeout> | undefined;
   try {
     return await Promise.race([
-      travail(() => abandon),
+      travail(() => controleur.signal.aborted, controleur.signal),
       new Promise<"delai">((resolve) => {
         minuteur = setTimeout(() => {
-          abandon = true;
+          controleur.abort();
           resolve("delai");
         }, delaiMs);
       }),
@@ -256,12 +263,19 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
   const { code } = contenu;
 
   // Deux dépôts du MÊME guide en parallèle (versions différentes) : refus propre, avant toute écriture en base.
+  // ⚠️ Ce 409 passe AVANT la lecture de la ligne : le rejeu d'une version déjà « pret » peut donc recevoir
+  // 409 en_cours si un autre dépôt du même code tourne (ou finit de tourner après un délai) : le Studio doit le
+  // traiter comme « réessayer plus tard », pas comme un refus définitif.
   if (codesEnCours.has(code)) return refus(409, "en_cours");
   codesEnCours.add(code);
+  const verrou = { travailLance: false };
   try {
-    return await deposerSousVerrou(contenu, sha256Texte, deps);
+    return await deposerSousVerrou(contenu, sha256Texte, deps, verrou, () =>
+      codesEnCours.delete(code),
+    );
   } finally {
-    codesEnCours.delete(code);
+    // Sans travail lancé (refus, erreur avant le rendu) : relâché ici. Sinon, c'est le travail qui le relâche.
+    if (!verrou.travailLance) codesEnCours.delete(code);
   }
 }
 
@@ -269,6 +283,8 @@ async function deposerSousVerrou(
   contenu: ContenuGuide,
   sha256Texte: string,
   deps: DepsFabrique,
+  verrou: { travailLance: boolean },
+  liberer: () => void,
 ): Promise<Response> {
   const { code, version, titre } = contenu;
   const stockage = deps.stockage !== undefined ? deps.stockage : ouvrirStockage();
@@ -351,20 +367,26 @@ async function deposerSousVerrou(
       .catch(() => undefined);
   };
 
-  const fait = await seulRendu(async (abandonne) => {
-    const { pdf, pages: pagesDonnees } = await (deps.rendre ?? rendreParDefaut)(contenu);
-    if (abandonne()) return { refus: refus(503, "echec") };
-    const pages = pagesDonnees ?? pagesDuPdf(pdf);
-    if (pages > PAGES_MAX || pdf.length > PDF_OCTETS_MAX)
-      return { refus: refus(422, "trop_de_pages") };
+  const fait = await seulRendu(async (abandonne, signal) => {
+    verrou.travailLance = true;
+    // Le code reste verrouillé jusqu'à la fin RÉELLE du travail, même si la réponse est partie au délai.
     try {
-      await stockage.deposer(cle, pdf, abandonne);
+      const { pdf, pages: pagesDonnees } = await (deps.rendre ?? rendreParDefaut)(contenu);
       if (abandonne()) return { refus: refus(503, "echec") };
-      if ((await stockage.taille(cle)) !== pdf.length) throw new Error("taille_differente");
-    } catch {
-      return { refus: refus(503, "depot_pdf_echec") };
+      const pages = pagesDonnees ?? pagesDuPdf(pdf);
+      if (pages > PAGES_MAX || pdf.length > PDF_OCTETS_MAX)
+        return { refus: refus(422, "trop_de_pages") };
+      try {
+        await stockage.deposer(cle, pdf, abandonne, signal);
+        if (abandonne()) return { refus: refus(503, "echec") };
+        if ((await stockage.taille(cle)) !== pdf.length) throw new Error("taille_differente");
+      } catch {
+        return { refus: refus(503, "depot_pdf_echec") };
+      }
+      return { pdf, pages };
+    } finally {
+      liberer();
     }
-    return { pdf, pages };
   }, deps.delaiRenduMs ?? DELAI_RENDU_MS).catch(() => ({ refus: refus(503, "rendu_pdf_echec") }));
 
   if (fait === null) {
