@@ -8,6 +8,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { uneVideo } from "../../__tests__/fixture";
 import type { VideoPubliee } from "@/server/videos/lecture";
 import { analyserFichePage } from "@/server/videos/contrat";
+import { mentionIa } from "@/server/videos/mention-ia";
 
 const h = vi.hoisted(() => ({ videos: [] as unknown[] }));
 
@@ -180,6 +181,14 @@ describe("SEO-05 — la fiche de page pilote la page", () => {
     expect(analyserFichePage(FICHE_BRUTE).ok).toBe(true);
     expect(analyserFichePage({ ...FICHE_BRUTE, h1: "trop court" }).ok).toBe(false);
     expect(analyserFichePage({ ...FICHE_BRUTE, prix: 1 }).ok).toBe(false);
+    // Champ 20 : l'alt décrit ce qu'on voit, 80 à 125 caractères (refus à 79 et à 126).
+    const avecAlt = (alt: string) => ({
+      ...FICHE_BRUTE,
+      infographie: { ...FICHE_BRUTE.infographie, alt },
+    });
+    expect(analyserFichePage(avecAlt("a".repeat(79))).ok).toBe(false);
+    expect(analyserFichePage(avecAlt("a".repeat(80))).ok).toBe(true);
+    expect(analyserFichePage(avecAlt("a".repeat(126))).ok).toBe(false);
   });
 
   it("UN SEUL h1, celui de la fiche ; sinon le titre de la vidéo", async () => {
@@ -200,6 +209,14 @@ describe("SEO-05 — la fiche de page pilote la page", () => {
     expect(JSON.stringify(meta.title)).toContain(FICHE_BRUTE.titre);
     expect(meta.alternates?.canonical).toBe("/fr/videos/automatiser-ses-relances");
     expect(String(meta.openGraph?.url)).toMatch(/\/fr\/videos\/automatiser-ses-relances$/);
+  });
+
+  it("fiche + iaVoixGeneree → la description contient la méta de la fiche ET la mention IA", async () => {
+    h.videos = [uneVideo({ fichePage: uneFiche(), iaVoixGeneree: true })];
+    const meta = await generateMetadata({ params: params("automatiser-ses-relances") });
+    const mention = mentionIa({ iaVoixGeneree: true, iaDoubleNumerique: false });
+    expect(mention).toBeTruthy();
+    expect(meta.description).toBe(`${FICHE_BRUTE.metaDescription} ${mention}`);
   });
 
   it("sans fiche : la description de la vidéo reste utilisée (aucune régression)", async () => {
