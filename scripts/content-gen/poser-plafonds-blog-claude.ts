@@ -25,18 +25,20 @@
 
 import { existsSync, readFileSync } from "node:fs";
 
-/** Bornes de GARDE (pas les plafonds réels). */
-export const BORNE_JOUR_USD = 20;
-export const BORNE_MOIS_USD = 300;
-/** Borne de garde du nombre de relectures par jour. */
-export const BORNE_JUGE_MAX_JOUR = 500;
+import {
+  BORNE_JOUR_USD,
+  BORNE_MOIS_USD,
+  BORNE_JUGE_MAX_JOUR,
+  CLES_PLAFONDS_BLOG,
+  ErreurPlafondsBlog,
+  LIBELLES_SCRIPT,
+  fusionnerExtraConfig,
+  lireNombreStrict,
+  validerPlafondsBlog,
+} from "../../src/server/content-gen/providers/blog-claude-plafonds";
 
-export const CLES = {
-  jour: "blog_claude_daily_cap_usd",
-  mois: "blog_claude_monthly_cap_usd",
-  reserve: "blog_claude_reserve_qualiopi_usd",
-  juge: "blog_claude_juge_max_jour",
-} as const;
+export { BORNE_JOUR_USD, BORNE_MOIS_USD, BORNE_JUGE_MAX_JOUR, fusionnerExtraConfig };
+export const CLES = CLES_PLAFONDS_BLOG;
 export const CLE_SUSPENSION = "blog_claude_suspendu";
 
 export interface Options {
@@ -48,19 +50,10 @@ export interface Options {
   reel: boolean;
 }
 
-export class ErreurUsage extends Error {}
+export const ErreurUsage = ErreurPlafondsBlog;
+export type ErreurUsage = ErreurPlafondsBlog;
 
-function nombreStrict(brut: string | undefined, nom: string): number {
-  if (brut === undefined || brut.trim() === "" || brut.startsWith("--")) {
-    throw new ErreurUsage(`${nom} : valeur manquante`);
-  }
-  if (!/^\d+(\.\d{1,2})?$/.test(brut.trim())) {
-    throw new ErreurUsage(`${nom} : nombre décimal positif attendu (2 décimales max)`);
-  }
-  const n = Number(brut);
-  if (!Number.isFinite(n)) throw new ErreurUsage(`${nom} : nombre invalide`);
-  return n;
-}
+const nombreStrict = lireNombreStrict;
 
 export function lireArguments(argv: readonly string[]): Options {
   const o: Options = { leverSuspension: false, reel: false };
@@ -110,38 +103,10 @@ export function construirePlan(o: Options): PlanEcriture {
   const { jour, mois, reserve, jugeMax } = o as Required<
     Pick<Options, "jour" | "mois" | "reserve" | "jugeMax">
   >;
-  if (!(jour > 0 && jour <= BORNE_JOUR_USD)) {
-    throw new ErreurUsage(`--jour hors bornes de garde (0 < jour ≤ ${BORNE_JOUR_USD})`);
-  }
-  if (!(mois > 0 && mois <= BORNE_MOIS_USD)) {
-    throw new ErreurUsage(`--mois hors bornes de garde (0 < mois ≤ ${BORNE_MOIS_USD})`);
-  }
-  if (jour > mois) throw new ErreurUsage("--jour ne peut pas dépasser --mois");
-  if (!(reserve >= 0)) throw new ErreurUsage("--reserve doit être ≥ 0");
-  if (!Number.isInteger(jugeMax) || jugeMax < 1 || jugeMax > BORNE_JUGE_MAX_JOUR) {
-    throw new ErreurUsage(`--juge-max : entier entre 1 et ${BORNE_JUGE_MAX_JOUR}`);
-  }
   return {
-    extraConfig: {
-      [CLES.jour]: jour,
-      [CLES.mois]: mois,
-      [CLES.reserve]: reserve,
-      [CLES.juge]: jugeMax,
-    },
+    extraConfig: validerPlafondsBlog({ jour, mois, reserve, jugeMax }, LIBELLES_SCRIPT),
     leverSuspension: o.leverSuspension,
   };
-}
-
-/** Fusionne sans perdre les autres clés d'extraConfig. */
-export function fusionnerExtraConfig(
-  existant: unknown,
-  ajout: Record<string, number>,
-): Record<string, unknown> {
-  const base =
-    existant && typeof existant === "object" && !Array.isArray(existant)
-      ? (existant as Record<string, unknown>)
-      : {};
-  return { ...base, ...ajout };
 }
 
 async function principal(): Promise<void> {
