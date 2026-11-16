@@ -10,7 +10,11 @@ import { cibleGuidesR2, modeStockage, racineVolume, type ModeStockage } from "./
 
 export interface StockageGuides {
   readonly mode: ModeStockage;
-  deposer(cle: string, contenu: Buffer): Promise<void>;
+  /**
+   * `abandonne` (facultatif) : une fois vrai (délai du rendu dépassé), le dépôt N'ÉCRIT PLUS RIEN —
+   * il est relu juste avant chaque écriture visible (renommage du volume, envoi R2) et rend sans erreur.
+   */
+  deposer(cle: string, contenu: Buffer, abandonne?: () => boolean): Promise<void>;
   /** Taille de l'objet rangé, ou `null` s'il n'existe pas. */
   taille(cle: string): Promise<number | null>;
 }
@@ -54,8 +58,9 @@ export async function cheminLisibleVolume(
 function stockageVolume(env: Env): StockageGuides {
   return {
     mode: "volume",
-    async deposer(cle, contenu) {
-      const { mkdir, rename, writeFile } = await import("node:fs/promises");
+    async deposer(cle, contenu, abandonne) {
+      if (abandonne?.()) return;
+      const { mkdir, rename, rm, writeFile } = await import("node:fs/promises");
       const base = path.resolve(racineVolume(env));
       const fichier = cheminSousRacine(base, cle);
       if (fichier === null) throw new Error("cle_hors_racine");
@@ -63,6 +68,10 @@ function stockageVolume(env: Env): StockageGuides {
       if (!(await sansLienSymbolique(base, fichier))) throw new Error("lien_symbolique");
       const temporaire = `${fichier}.tmp-${process.pid}`;
       await writeFile(temporaire, contenu, { mode: 0o640 });
+      if (abandonne?.()) {
+        await rm(temporaire, { force: true });
+        return;
+      }
       await rename(temporaire, fichier);
     },
     async taille(cle) {
@@ -85,9 +94,11 @@ function stockageR2(env: Env): StockageGuides | null {
   if (cible === null) return null;
   return {
     mode: "r2",
-    async deposer(cle, contenu) {
+    async deposer(cle, contenu, abandonne) {
+      if (abandonne?.()) return;
       const { PutObjectCommand } = await import("@aws-sdk/client-s3");
       const { clientR2Cible } = await import("@/lib/r2-storage");
+      if (abandonne?.()) return;
       await clientR2Cible(cible).send(
         new PutObjectCommand({
           Bucket: cible.bucket,

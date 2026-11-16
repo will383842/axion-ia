@@ -87,8 +87,16 @@ export function validerAdresse(
 /** Titre : espaces de bord retirés, 3 à 120 caractères. */
 export function validerTitre(brut: unknown): string | null {
   if (typeof brut !== "string") return null;
-  const t = brut.trim();
+  const t = retirerSelecteurVariante(brut).trim();
   return t.length >= TITRE_MIN && t.length <= TITRE_MAX ? t : null;
+}
+
+/**
+ * U+FE0F (sélecteur de variante-16, invisible, collé par certains claviers/copier-coller) retiré À L'ENTRÉE d'un
+ * titre ou d'un code : il ne change rien à l'affichage mais fausse comparaisons et longueurs. Rien d'autre n'est touché.
+ */
+export function retirerSelecteurVariante(s: string): string {
+  return s.replace(/\uFE0F/g, "");
 }
 
 /** Code accepté pour une cible : forme `gde-`/`adr-` accordée au type, ou la fiche de départ. */

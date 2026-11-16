@@ -25,6 +25,7 @@ import {
   TYPES_CIBLE,
   codeAccordeAuType,
   normaliserMot,
+  retirerSelecteurVariante,
   validerAdresse,
   validerCheminPdf,
   validerTitre,
@@ -110,7 +111,8 @@ export async function enregistrerCible(req: NextRequest): Promise<Response> {
   if (json === undefined) return refus(400, "corps_illisible");
   const lu = CorpsCible.safeParse(json);
   if (!lu.success) return refus(422, "corps_invalide");
-  const { type, code, actif, test, version } = lu.data;
+  const { type, actif, test, version } = lu.data;
+  const code = retirerSelecteurVariante(lu.data.code);
   if (!codeAccordeAuType(code, type)) return refus(422, "code_invalide");
   const titre = validerTitre(lu.data.titre);
   if (titre === null) return refus(422, "titre_invalide");

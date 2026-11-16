@@ -154,6 +154,8 @@ export function pagesDuPdf(pdf: Buffer): number {
 }
 
 let rendu: object | null = null;
+/** Codes de guide dont un dépôt est en cours dans ce processus : un seul dépôt à la fois PAR guide. */
+const codesEnCours = new Set<string>();
 /**
  * Un rendu à la fois dans le processus ; sinon `null` (→ 429 rendu_occupe). Au-delà de `delaiMs` le rendu est
  * abandonné : verrou libéré, `"delai"` rendu (→ 503 echec), rien n'est livré (`abandonne()` vaut vrai).
@@ -253,6 +255,22 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
   const { contenu, sha256Texte } = verdict;
   const { code, version, titre } = contenu;
 
+  // Deux dépôts du MÊME guide en parallèle (versions différentes) : refus propre, avant toute écriture en base.
+  if (codesEnCours.has(code)) return refus(409, "en_cours");
+  codesEnCours.add(code);
+  try {
+    return await deposerSousVerrou(contenu, sha256Texte, deps);
+  } finally {
+    codesEnCours.delete(code);
+  }
+}
+
+async function deposerSousVerrou(
+  contenu: ContenuGuide,
+  sha256Texte: string,
+  deps: DepsFabrique,
+): Promise<Response> {
+  const { code, version, titre } = contenu;
   const stockage = deps.stockage !== undefined ? deps.stockage : ouvrirStockage();
   if (stockage === null) return refus(503, "stockage_indisponible");
   const maintenant = deps.maintenant ?? (() => new Date());
@@ -340,13 +358,14 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
     if (pages > PAGES_MAX || pdf.length > PDF_OCTETS_MAX)
       return { refus: refus(422, "trop_de_pages") };
     try {
-      await stockage.deposer(cle, pdf);
+      await stockage.deposer(cle, pdf, abandonne);
+      if (abandonne()) return { refus: refus(503, "echec") };
       if ((await stockage.taille(cle)) !== pdf.length) throw new Error("taille_differente");
     } catch {
-      return { refus: refus(503, "stockage_echec") };
+      return { refus: refus(503, "depot_pdf_echec") };
     }
     return { pdf, pages };
-  }, deps.delaiRenduMs ?? DELAI_RENDU_MS).catch(() => ({ refus: refus(503, "stockage_echec") }));
+  }, deps.delaiRenduMs ?? DELAI_RENDU_MS).catch(() => ({ refus: refus(503, "rendu_pdf_echec") }));
 
   if (fait === null) {
     await echec();
