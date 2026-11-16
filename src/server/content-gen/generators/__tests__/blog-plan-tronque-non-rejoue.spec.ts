@@ -3,7 +3,7 @@
  * UnrecoverableError (BullMQ ne rejoue pas : chaque essai est facturé) ; un plan tronqué
  * puis un plan valide réussit au 2e essai ; le coût du plan tronqué compte dans le cumul.
  */
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { UnrecoverableError } from "bullmq";
 
 const { routerGenerate } = vi.hoisted(() => ({ routerGenerate: vi.fn() }));
@@ -53,15 +53,40 @@ describe.each(CAS)("%s : plan tronqué", (_nom, generateur, contentType) => {
     expect(routerGenerate).toHaveBeenCalledTimes(2);
   });
 
-  it("un seul tronqué puis plan valide => l'appel suivant est bien tenté (2e essai du plan)", async () => {
-    routerGenerate.mockRejectedValueOnce(tronque(0.01)).mockResolvedValueOnce({
-      output: "pas du json",
-      costUsd: 0,
-      tokensInput: 1,
-      tokensOutput: 1,
+  const illisible = {
+    output: "pas du json",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+
+  describe("chemin Claude actif", () => {
+    beforeEach(() => {
+      process.env["CONTENT_GEN_BLOG_CLAUDE"] = "true";
     });
+    afterEach(() => {
+      delete process.env["CONTENT_GEN_BLOG_CLAUDE"];
+    });
+
+    it("tronqué puis illisible => UnrecoverableError", async () => {
+      routerGenerate.mockRejectedValueOnce(tronque(0.01)).mockResolvedValueOnce(illisible);
+      const err = await generateur.generate(input).catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(UnrecoverableError);
+      expect(routerGenerate).toHaveBeenCalledTimes(2);
+    });
+
+    it("illisible puis illisible => UnrecoverableError", async () => {
+      routerGenerate.mockResolvedValue(illisible);
+      const err = await generateur.generate(input).catch((e: unknown) => e);
+      expect(err).toBeInstanceOf(UnrecoverableError);
+      expect(routerGenerate).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  it("hors chemin Claude : plans illisibles => erreur ordinaire (non-régression)", async () => {
+    routerGenerate.mockResolvedValue(illisible);
     const err = await generateur.generate(input).catch((e: unknown) => e);
-    // 2e essai atteint, illisible : échec de plan ordinaire, PAS non relançable.
+    expect(err).toBeInstanceOf(Error);
     expect(err).not.toBeInstanceOf(UnrecoverableError);
     expect(routerGenerate).toHaveBeenCalledTimes(2);
   });

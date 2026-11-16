@@ -261,7 +261,9 @@ async function enregistrerRefusCredit(
 ): Promise<void> {
   if (alerteCredit) await alerterBlogClaude("credit_refuse");
   try {
-    const cle = "blog-claude:refus-credit";
+    // Compteurs distincts : crédit et authentification ne se cumulent jamais.
+    const cle =
+      raison === "auth_refusee_repetee" ? "blog-claude:refus-auth" : "blog-claude:refus-credit";
     const n = await redis.incr(cle);
     if (n === 1) await redis.expire(cle, 24 * 3600);
     if (n >= SEUIL_REFUS_CREDIT) {

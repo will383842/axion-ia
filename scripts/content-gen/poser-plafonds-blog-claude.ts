@@ -8,7 +8,7 @@
  * les plafonds réels, juste le maximum que ce script accepte de poser.
  *
  * Usage en production : DANS le conteneur worker, dont l'image ne contient PAS `scripts/` :
- *   1. `docker cp` du script vers <conteneur-worker>:/app/scripts/content-gen/ ;
+ *   1. `docker exec <worker> mkdir -p /app/scripts/content-gen` PUIS `docker cp` du script vers <conteneur-worker>:/app/scripts/content-gen/ ;
  *   2. depuis /app : node_modules/.bin/tsx scripts/content-gen/poser-plafonds-blog-claude.ts \
  *        --jour <usd> --mois <usd> --reserve <usd> --juge-max <n>          # À SEC
  *      … mêmes arguments + --reel                                          # écrit

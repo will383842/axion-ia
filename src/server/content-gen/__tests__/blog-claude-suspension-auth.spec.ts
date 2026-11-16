@@ -180,6 +180,19 @@ describe("auth_failed et suspension (S-M4)", () => {
     const appels = vi.mocked(prisma.contentGenConfig.upsert).mock.calls;
     expect(appels).toHaveLength(1);
     expect(JSON.stringify(appels[0]![0])).toContain("auth_refusee_repetee");
+    // Compteurs séparés : les 401 ne touchent pas la clé des refus de crédit.
+    expect(reg.redis.get("blog-claude:refus-auth")).toBe(3);
+    expect(reg.redis.get("blog-claude:refus-credit") ?? 0).toBe(0);
+  });
+
+  it("deux refus de crédit puis un 401 : pas de suspension pour auth_refusee_repetee", async () => {
+    vi.mocked(prisma.contentGenConfig.upsert).mockClear();
+    reg.redis.set("blog-claude:refus-credit", 2);
+    create.mockRejectedValue(await erreurApi(401, "invalid x-api-key"));
+    await expect(genererTexteBlogClaude(REQ, "ecriture")).rejects.toBeDefined();
+    expect(vi.mocked(prisma.contentGenConfig.upsert)).not.toHaveBeenCalled();
+    expect(reg.redis.get("blog-claude:refus-credit")).toBe(2);
+    expect(reg.redis.get("blog-claude:refus-auth")).toBe(1);
   });
 
   it("clé absente (auth_failed sans statut) : jamais de suspension", async () => {

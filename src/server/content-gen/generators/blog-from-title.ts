@@ -21,6 +21,7 @@ import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
 import { UnrecoverableError } from "bullmq";
+import { interrupteurBlogClaude } from "../providers/blog-claude";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -250,6 +251,10 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
         throw new UnrecoverableError(
           "blog-from-title: plan tronqué (max_tokens) après 2 tentatives",
         );
+      }
+      // Chemin Claude : tout échec final de plan (illisible ou tronqué) est non relançable.
+      if (interrupteurBlogClaude()) {
+        throw new UnrecoverableError("blog-from-title: plan invalide après 2 tentatives");
       }
       throw new Error("blog-from-title: plan invalide après 2 tentatives");
     }
