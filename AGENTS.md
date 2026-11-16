@@ -374,7 +374,7 @@ les deux sens.
 - ne jamais retirer une valeur dans la même PR que son dernier usage.
 
 **Échec du worker après un site réussi** : `precheck` saute le créneau suivant (même SHA), donc rien
-ne le relance seul. Réparer par `gh run rerun <run_id> --failed` (relance seulement `deploy_worker`)
+ne le relance seul. Réparer par `gh run rerun <run_id> --failed` (relance les jobs en échec ; si `deploy` est vert, il relance `deploy_worker` puis `notify` ; si `deploy` est rouge, il relance aussi `deploy` (nouveau POST du site hors créneau) et ses suites lhci, warm, indexnow et deploy_worker)
 ou par « Redeploy » du worker dans Coolify.
 
 ⚠️ `gh run rerun --failed` relance **TOUS** les jobs en échec : si `deploy` est rouge (purge ou
