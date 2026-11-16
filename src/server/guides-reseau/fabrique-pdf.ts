@@ -253,7 +253,7 @@ async function deposerContenuInterne(req: NextRequest, deps: DepsFabrique): Prom
   const verdict = validerContenu(json);
   if (!verdict.ok) return refus(verdict.statut, verdict.erreur, verdict.plus);
   const { contenu, sha256Texte } = verdict;
-  const { code, version, titre } = contenu;
+  const { code } = contenu;
 
   // Deux dépôts du MÊME guide en parallèle (versions différentes) : refus propre, avant toute écriture en base.
   if (codesEnCours.has(code)) return refus(409, "en_cours");
