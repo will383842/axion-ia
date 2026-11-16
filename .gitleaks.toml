@@ -119,4 +119,14 @@ regexes = [
   # ⚠️ gitleaks scanne l'HISTORIQUE : le commit c2a69967 porte la chaîne, d'où
   # l'allowlist plutôt qu'une simple reformulation du commentaire.
   '''ANTHROPIC_API_KEY(_\d)?''',
+  # Valeur de test inventée (PAS un secret).
+  #
+  # Ajouté 2026-11-15 : un test de masquage des clés dans les messages d'erreur
+  # Anthropic utilisait la chaîne factice « valeur-secrete-fictive-123 » comme valeur
+  # de ANTHROPIC_API_KEY ; `generic-api-key` la relève sur son entropie. Volontairement
+  # ÉTROIT : seule cette chaîne inventée est ignorée. Remplacée par "t".repeat(24) au
+  # commit suivant ; gitleaks scanne l'HISTORIQUE, qui ne se réécrit pas. (Une entrée
+  # `.gitleaksignore` est impossible : son empreinte porte le chemin du test, et
+  # l'isolation-check refuse ce marqueur hors zones dédiées.)
+  '''valeur-secrete-fictive-\d+''',
 ]

@@ -27,10 +27,12 @@ import {
   type GenerationRequest,
   type GenerationResponse,
   type IProvider,
+  MARQUE_JSON_TRONQUE,
 } from "./IProvider";
 import { withRetry } from "../lib/retry";
 import { assertCostCapAvailable, trackCost } from "../lib/cost-tracker";
 import { readProviderConfig } from "../lib/config-reader";
+import { appelerAvecRotationCles, creerEtatCles, listerCles, type EnvCles } from "./anthropic-keys";
 
 const DEFAULT_TIMEOUT_MS = 60_000; // 60s — long-form Claude
 
@@ -122,8 +124,36 @@ export function computeCost(
   );
 }
 
-/** Exporté pour les tests — cf. `mapOpenAiError` dans `openai.ts`. */
+const MOTIF_CLE_ANTHROPIC = /sk-ant-[A-Za-z0-9_-]+/g;
+
+/** Masque `sk-ant-…` et la valeur de chaque clé d'environnement Anthropic. */
+function masquerCles(texte: string): string {
+  let sortie = texte.replace(MOTIF_CLE_ANTHROPIC, "[clé masquée]");
+  for (const nom of ["ANTHROPIC_API_KEY", "ANTHROPIC_API_KEY_2", "ANTHROPIC_API_KEY_3"] as const) {
+    const cle = process.env[nom]?.trim();
+    if (cle) sortie = sortie.split(cle).join("[clé masquée]");
+  }
+  return sortie;
+}
+
+/**
+ * Exporté pour les tests — cf. `mapOpenAiError` dans `openai.ts`.
+ * Recopie le statut HTTP d'origine (`status`) sur l'erreur rendue : la rotation de
+ * clés en a besoin pour ne jamais prendre un 429 pour un crédit épuisé.
+ */
 export function mapAnthropicError(err: unknown): ProviderError {
+  const mappee = mapAnthropicErrorBrut(err);
+  // Même avec UNE seule clé : aucune clé ne doit survivre dans le message (journaux, BDD).
+  mappee.message = masquerCles(mappee.message);
+  // `stack` recopie l'ancien message (et BullMQ la conserve) : même masquage.
+  if (typeof mappee.stack === "string") mappee.stack = masquerCles(mappee.stack);
+  if (err instanceof Anthropic.APIError && typeof err.status === "number") {
+    (mappee as { status?: number }).status = err.status;
+  }
+  return mappee;
+}
+
+function mapAnthropicErrorBrut(err: unknown): ProviderError {
   if (err instanceof Anthropic.APIError) {
     const status = err.status;
     if (status === 401 || status === 403) {
@@ -201,8 +231,45 @@ export function mapAnthropicError(err: unknown): ProviderError {
   );
 }
 
-function getClient(): Anthropic {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+/**
+ * État de rotation des clés : UN SEUL par processus (module), pour que les marques
+ * « épuisée » survivent d'un appel à l'autre. Propre à chaque conteneur.
+ */
+const etatCles = creerEtatCles();
+
+/** Consigne ajoutée au prompt système, UNIQUEMENT sur le chemin blog Claude + JSON. */
+export const CONSIGNE_JSON_BLOG = "Réponds uniquement par un objet JSON valide, sans texte autour.";
+
+/**
+ * Analyseur JSON tolérant : accepte un objet JSON nu, entouré de ```json … ```, ou
+ * précédé/suivi de texte. Rend le JSON propre (re-sérialisé) ou `null` s'il est
+ * inexploitable. Exporté pour les tests.
+ */
+export function extraireJsonTolerant(texte: string): string | null {
+  const essayer = (candidat: string): string | null => {
+    try {
+      const v: unknown = JSON.parse(candidat);
+      return typeof v === "object" && v !== null ? JSON.stringify(v) : null;
+    } catch {
+      return null;
+    }
+  };
+  const brut = texte.trim();
+  const direct = essayer(brut);
+  if (direct) return direct;
+  const cloture = /```(?:json)?\s*([\s\S]*?)```/i.exec(brut);
+  if (cloture?.[1]) {
+    const r = essayer(cloture[1].trim());
+    if (r) return r;
+  }
+  const debut = brut.indexOf("{");
+  const fin = brut.lastIndexOf("}");
+  if (debut !== -1 && fin > debut) return essayer(brut.slice(debut, fin + 1));
+  return null;
+}
+
+function getClient(cleExplicite?: string): Anthropic {
+  const apiKey = cleExplicite ?? process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     throw new ProviderError("ANTHROPIC_API_KEY not set", "auth_failed", "anthropic", false);
   }
@@ -214,7 +281,16 @@ export const anthropicProvider: IProvider = {
   supportedRoles: ["text"],
 
   async generate(req: GenerationRequest): Promise<GenerationResponse> {
+    // Sorties AVANT tout appel réseau : avec une réservation déjà posée par la porte du
+    // blog, rien n'a pu être facturé, on la solde à zéro (sinon elle resterait au max).
+    const soldeZeroAvantAppel = async (): Promise<void> => {
+      if (!req.reservationId) return;
+      const { solderReservation } = await import("./blog-claude-ledger");
+      await solderReservation(req.reservationId, 0, { input: 0, output: 0 });
+    };
+
     if (req.role !== "text") {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         `Anthropic supports text only (got '${req.role}')`,
         "unknown",
@@ -223,8 +299,15 @@ export const anthropicProvider: IProvider = {
       );
     }
 
-    const config = await readProviderConfig("anthropic");
+    let config: Awaited<ReturnType<typeof readProviderConfig>>;
+    try {
+      config = await readProviderConfig("anthropic");
+    } catch (err) {
+      await soldeZeroAvantAppel();
+      throw err;
+    }
     if (!config.enabled) {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         "Anthropic provider disabled in DB",
         "auth_failed",
@@ -238,6 +321,7 @@ export const anthropicProvider: IProvider = {
     // et AVANT l'appel payant — sinon on dépenserait sans pouvoir comptabiliser.
     // Non retryable : réessayer ou basculer de fournisseur n'y change rien.
     if (hasUnknownPrice(model)) {
+      await soldeZeroAvantAppel();
       throw new ProviderError(
         `Anthropic : prix inconnu pour le modèle ${model} — appel refusé avant dépense`,
         "invalid_response",
@@ -246,9 +330,16 @@ export const anthropicProvider: IProvider = {
       );
     }
 
-    await assertCostCapAvailable("anthropic", 0.15);
+    // Chemin blog Claude : porte `blog-claude.ts` (rôle présent) ou ligne réservée.
+    const cheminBlog = req.blogClaudeRole !== undefined || req.reservationId !== undefined;
+    const reservationId = req.reservationId;
 
-    const client = getClient();
+    // Avec réservation, le plafond a déjà été vérifié ET débité par `reserverCout` :
+    // ne pas le revérifier ici (ce serait compter deux fois la marge d'estimation).
+    if (!reservationId) {
+      await assertCostCapAvailable("anthropic", 0.15);
+    }
+
     const startedAt = Date.now();
     let tokensInput = 0;
     let tokensOutput = 0;
@@ -256,6 +347,13 @@ export const anthropicProvider: IProvider = {
     let cacheCreationInputTokens = 0;
     let fullText = "";
     let stopReason: string | null = null;
+    // Pour le solde de la réservation : l'usage final est-il connu ? l'API a-t-elle
+    // refusé la requête AVANT tout flux (donc rien de facturé) ?
+    let usageFinalRecu = false;
+    let refuseAvantFlux = false;
+    // Vrai dès qu'UNE requête a été envoyée à l'API (toutes clés confondues). Faux =
+    // rien n'a pu être facturé (clé absente, toutes les clés déjà épuisées…).
+    let requeteEnvoyee = false;
 
     // Les modèles Claude 4.7+ (Opus 4.7/4.8, Sonnet 5, Fable 5, Mythos 5) REFUSENT
     // les paramètres d'échantillonnage : envoyer `temperature` déclenche un
@@ -273,110 +371,202 @@ export const anthropicProvider: IProvider = {
     const sendTemperature =
       req.temperature !== undefined && !SAMPLING_PARAM_REJECTING_MODELS.has(model);
 
-    const executeCall = async () => {
-      const stream = await client.messages.create({
-        model,
-        max_tokens: req.maxTokens ?? 4096,
-        ...(sendTemperature ? { temperature: req.temperature } : {}),
-        // System avec prompt caching (cache 5 min TTL côté Anthropic)
-        system: [
-          {
-            type: "text",
-            text: req.systemPrompt,
-            cache_control: { type: "ephemeral" },
-          },
-        ],
-        messages: [{ role: "user", content: req.userPrompt }],
-        stream: true,
-      });
+    // Consigne JSON : UNIQUEMENT sur le chemin blog Claude (jamais pour les appelants
+    // `preferredProvider` : Qualiopi, chatbot, baromètre…).
+    const demandeJson = req.blogClaudeRole !== undefined && req.responseFormatJson === true;
+    const textePrompt = demandeJson
+      ? `${req.systemPrompt}\n\n${CONSIGNE_JSON_BLOG}`
+      : req.systemPrompt;
 
-      for await (const event of stream) {
-        if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-          const delta = event.delta.text;
-          fullText += delta;
-          if (req.onStreamChunk) req.onStreamChunk(delta);
-        }
-        if (event.type === "message_start" && event.message.usage) {
-          tokensInput = event.message.usage.input_tokens;
-          cacheReadInputTokens = event.message.usage.cache_read_input_tokens ?? 0;
-          cacheCreationInputTokens = event.message.usage.cache_creation_input_tokens ?? 0;
-        }
-        if (event.type === "message_delta" && event.usage) {
-          tokensOutput = event.usage.output_tokens;
-          if (event.delta?.stop_reason) {
-            stopReason = event.delta.stop_reason;
+    const executeCall = async (cle?: string) => {
+      // Remise à zéro : un nouvel essai (autre clé ou retry) ne doit rien cumuler.
+      fullText = "";
+      tokensInput = 0;
+      tokensOutput = 0;
+      cacheReadInputTokens = 0;
+      cacheCreationInputTokens = 0;
+      stopReason = null;
+      usageFinalRecu = false;
+      // Le refus « avant flux » est PAR TENTATIVE : un refus de crédit sur la clé 1 ne
+      // doit pas faire croire que la clé 2 (flux coupé, donc facturé) n'a rien coûté.
+      refuseAvantFlux = false;
+      let enFlux = false;
+      try {
+        const client = getClient(cle);
+        requeteEnvoyee = true;
+        const stream = await client.messages.create({
+          model,
+          max_tokens: req.maxTokens ?? 4096,
+          ...(sendTemperature ? { temperature: req.temperature } : {}),
+          // System avec prompt caching (cache 5 min TTL côté Anthropic)
+          system: [
+            {
+              type: "text",
+              text: textePrompt,
+              cache_control: { type: "ephemeral" },
+            },
+          ],
+          messages: [{ role: "user", content: req.userPrompt }],
+          stream: true,
+        });
+
+        for await (const event of stream) {
+          // Dès le premier événement la réponse est (en partie) facturée : plus de rejeu.
+          enFlux = true;
+          if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
+            const delta = event.delta.text;
+            fullText += delta;
+            if (req.onStreamChunk) req.onStreamChunk(delta);
+          }
+          if (event.type === "message_start" && event.message.usage) {
+            tokensInput = event.message.usage.input_tokens;
+            cacheReadInputTokens = event.message.usage.cache_read_input_tokens ?? 0;
+            cacheCreationInputTokens = event.message.usage.cache_creation_input_tokens ?? 0;
+          }
+          if (event.type === "message_delta" && event.usage) {
+            tokensOutput = event.usage.output_tokens;
+            usageFinalRecu = true;
+            if (event.delta?.stop_reason) {
+              stopReason = event.delta.stop_reason;
+            }
           }
         }
+      } catch (err) {
+        const mappee = err instanceof ProviderError ? err : mapAnthropicError(err);
+        if (enFlux) (mappee as { enFlux?: boolean }).enFlux = true;
+        else if (err instanceof Anthropic.APIError && typeof err.status === "number") {
+          refuseAvantFlux = true;
+        }
+        throw mappee;
       }
     };
 
+    // Rotation : seulement s'il existe PLUSIEURS clés. Clé unique = comportement
+    // strictement identique à l'ancien (pas de marque « épuisée » de 24 h).
+    const env = process.env as EnvCles;
+    const rotation = listerCles(env, "content_gen").length > 1;
+    const appel = rotation
+      ? () =>
+          appelerAvecRotationCles((cle) => executeCall(cle), {
+            env,
+            usage: "content_gen",
+            etat: etatCles,
+          })
+      : () => executeCall();
+
+    const coutReel = (): number =>
+      computeCost(model, tokensInput, tokensOutput, cacheReadInputTokens, cacheCreationInputTokens);
+
     try {
-      await withRetry(async () => {
-        try {
-          await executeCall();
-        } catch (err) {
-          throw mapAnthropicError(err);
+      try {
+        // Chemin blog : UN seul essai (chaque essai HTTP serait facturé).
+        await withRetry(
+          async () => {
+            try {
+              await appel();
+            } catch (err) {
+              throw err instanceof ProviderError ? err : mapAnthropicError(err);
+            }
+          },
+          cheminBlog ? { maxAttempts: 1 } : {},
+        );
+      } catch (err) {
+        throw err instanceof ProviderError ? err : mapAnthropicError(err);
+      }
+
+      if (stopReason === "max_tokens") {
+        // Troncature LLM (audit 2026-06-25) : la sortie a atteint max_tokens = coupée.
+        // On NE throw PAS (les gates word-count en aval gèrent) mais on rend la
+        // troncature OBSERVABLE au lieu de la persister en silence (avant : « OK »).
+        console.warn(
+          `[anthropic] ⚠️ sortie TRONQUÉE (stop_reason="max_tokens", model=${model}, ` +
+            `maxTokens=${req.maxTokens ?? 4096}, ${tokensOutput} tokens) — ` +
+            `contenu potentiellement incomplet ; gates word-count en aval appliquées.`,
+        );
+      } else if (stopReason === "stop_sequence" || stopReason === "end_turn") {
+        // OK
+      } else if (stopReason === "tool_use" || stopReason === "pause_turn") {
+        // OK pour V1 (tool_use pas utilisé V1)
+      } else if (stopReason) {
+        // refusal / autre — log warning
+        console.warn(`[anthropic] unexpected stop_reason: ${stopReason}`);
+      }
+      if (!fullText) {
+        throw new ProviderError(
+          "Anthropic returned empty content",
+          "invalid_response",
+          "anthropic",
+          false,
+        );
+      }
+
+      let sortie = fullText;
+      if (demandeJson) {
+        const json = extraireJsonTolerant(fullText);
+        if (stopReason === "max_tokens" && json === null) {
+          // JSON coupé par la limite de jetons : inexploitable, et déjà facturé.
+          const erreurTronquee = new ProviderError(
+            `Anthropic : ${MARQUE_JSON_TRONQUE} (max_tokens=${req.maxTokens ?? 4096}) — inexploitable`,
+            "invalid_response",
+            "anthropic",
+            false,
+          );
+          // Déjà facturé : le générateur l'ajoute à son cumul de job (BUDGET_CAP_USD).
+          erreurTronquee.costUsd = coutReel();
+          throw erreurTronquee;
         }
-      });
-    } catch (err) {
-      throw err instanceof ProviderError ? err : mapAnthropicError(err);
+        if (json !== null) sortie = json;
+        else console.warn("[anthropic] sortie JSON demandée mais non analysable (texte conservé)");
+      }
+
+      const costUsd = coutReel();
+      const durationMs = Date.now() - startedAt;
+
+      if (!reservationId) {
+        await trackCost({
+          ...(req.jobId ? { jobId: req.jobId } : {}),
+          provider: "anthropic",
+          model,
+          tokensInput: tokensInput + cacheReadInputTokens + cacheCreationInputTokens,
+          tokensOutput,
+          costUsd,
+        });
+      }
+
+      return {
+        provider: "anthropic",
+        model,
+        output: sortie,
+        tokensInput,
+        tokensOutput,
+        costUsd,
+        durationMs,
+        cacheReadInputTokens,
+        cacheCreationInputTokens,
+      };
+    } finally {
+      // UNE seule ligne par appel (réservée avant l'appel) : on la SOLDE ici, y compris
+      // sur erreur et sur texte vide, jamais via `trackCost` (triple comptage sinon).
+      if (reservationId) {
+        const { solderReservation } = await import("./blog-claude-ledger");
+        if (usageFinalRecu) {
+          await solderReservation(reservationId, coutReel(), {
+            input: tokensInput + cacheReadInputTokens + cacheCreationInputTokens,
+            output: tokensOutput,
+          });
+        } else if (refuseAvantFlux || !requeteEnvoyee) {
+          // Refus HTTP avant tout flux, ou aucune requête envoyée (clé absente, toutes
+          // les clés déjà marquées épuisées) : rien n'a été facturé.
+          await solderReservation(reservationId, 0, { input: 0, output: 0 });
+        } else {
+          // Coupure en cours de flux / délai : usage final inconnu. On GARDE la
+          // réservation au coût maximal (on compte trop, jamais trop peu).
+          console.warn(
+            "[anthropic] usage final inconnu (flux interrompu) : réservation maximale conservée",
+          );
+        }
+      }
     }
-
-    if (stopReason === "max_tokens") {
-      // Troncature LLM (audit 2026-06-25) : la sortie a atteint max_tokens = coupée.
-      // On NE throw PAS (les gates word-count en aval gèrent) mais on rend la
-      // troncature OBSERVABLE au lieu de la persister en silence (avant : « OK »).
-      console.warn(
-        `[anthropic] ⚠️ sortie TRONQUÉE (stop_reason="max_tokens", model=${model}, ` +
-          `maxTokens=${req.maxTokens ?? 4096}, ${tokensOutput} tokens) — ` +
-          `contenu potentiellement incomplet ; gates word-count en aval appliquées.`,
-      );
-    } else if (stopReason === "stop_sequence" || stopReason === "end_turn") {
-      // OK
-    } else if (stopReason === "tool_use" || stopReason === "pause_turn") {
-      // OK pour V1 (tool_use pas utilisé V1)
-    } else if (stopReason) {
-      // refusal / autre — log warning
-      console.warn(`[anthropic] unexpected stop_reason: ${stopReason}`);
-    }
-    if (!fullText) {
-      throw new ProviderError(
-        "Anthropic returned empty content",
-        "invalid_response",
-        "anthropic",
-        false,
-      );
-    }
-
-    const costUsd = computeCost(
-      model,
-      tokensInput,
-      tokensOutput,
-      cacheReadInputTokens,
-      cacheCreationInputTokens,
-    );
-    const durationMs = Date.now() - startedAt;
-
-    await trackCost({
-      ...(req.jobId ? { jobId: req.jobId } : {}),
-      provider: "anthropic",
-      model,
-      tokensInput: tokensInput + cacheReadInputTokens + cacheCreationInputTokens,
-      tokensOutput,
-      costUsd,
-    });
-
-    return {
-      provider: "anthropic",
-      model,
-      output: fullText,
-      tokensInput,
-      tokensOutput,
-      costUsd,
-      durationMs,
-      cacheReadInputTokens,
-      cacheCreationInputTokens,
-    };
   },
 
   async healthCheck(): Promise<boolean> {

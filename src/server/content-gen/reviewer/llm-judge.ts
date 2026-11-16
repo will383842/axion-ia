@@ -26,6 +26,11 @@
 // (hardcodé, sans fallback) → poste majeur de consommation Anthropic invisible.
 import { openaiProvider } from "@/server/content-gen/providers/openai";
 import {
+  BLOG_TYPES,
+  genererTexteBlogClaude,
+  interrupteurBlogClaude,
+} from "@/server/content-gen/providers/blog-claude";
+import {
   analyzeDiversity,
   type DiversityScore,
 } from "@/server/content-gen/linguistic/diversity-checker";
@@ -399,18 +404,38 @@ export function parseJudgeResponse(
 export async function reviewArticle(
   article: ArticleForReview,
   thresholds: JudgeThresholds = JUDGE_THRESHOLDS,
+  /**
+   * `typeBlog` ne sert QU'AU calcul de `viaClaude` : il n'entre jamais dans la
+   * requête OpenAI (qui garde `contentType` de l'article, ou « editorial_review »).
+   */
+  options: { readonly typeBlog?: string } = {},
 ): Promise<JudgeResult> {
   const userPrompt = buildUserPrompt(article);
-  const response = await openaiProvider.generate({
-    jobId: article.jobId,
-    contentType: article.contentType ?? "editorial_review",
-    role: "text",
-    model: JUDGE_MODEL,
-    systemPrompt: JUDGE_SYSTEM_PROMPT,
-    userPrompt,
-    maxTokens: 2048,
-    temperature: 0.2,
-  });
+  // Relecture par Claude (Opus) : interrupteur allumé ET contenu de blog seulement.
+  const viaClaude =
+    interrupteurBlogClaude() && BLOG_TYPES.has(options.typeBlog ?? article.contentType ?? "");
+  const response = viaClaude
+    ? await genererTexteBlogClaude(
+        {
+          jobId: article.jobId,
+          contentType: options.typeBlog ?? article.contentType ?? "editorial_review",
+          role: "text",
+          systemPrompt: JUDGE_SYSTEM_PROMPT,
+          userPrompt,
+          maxTokens: 2048,
+        },
+        "relecture",
+      )
+    : await openaiProvider.generate({
+        jobId: article.jobId,
+        contentType: article.contentType ?? "editorial_review",
+        role: "text",
+        model: JUDGE_MODEL,
+        systemPrompt: JUDGE_SYSTEM_PROMPT,
+        userPrompt,
+        maxTokens: 2048,
+        temperature: 0.2,
+      });
 
   const baseResult = parseJudgeResponse(response.output, thresholds);
 

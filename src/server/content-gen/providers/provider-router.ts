@@ -21,6 +21,7 @@ import {
 import { clearProviderFailureStreak, recordPermanentProviderFailure } from "./quota-guard";
 import { openaiProvider } from "./openai";
 import { anthropicProvider } from "./anthropic";
+import { genererTexteBlogClaude, interrupteurBlogClaude } from "./blog-claude";
 import { perplexityProvider } from "./perplexity";
 import { unsplashProvider } from "./unsplash";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
@@ -132,7 +133,20 @@ const ROLE_TO_PROVIDERS = {
  * - Retry exponentiel 10s/30s/60s sur RateLimited.
  * - Telegram alert si fallback déclenché 5+ fois en 30s.
  */
-export async function generate(req: GenerationRequest): Promise<GenerationResponse> {
+export async function generate(requete: GenerationRequest): Promise<GenerationResponse> {
+  // Porte « texte du blog via Claude » : inerte tant que CONTENT_GEN_BLOG_CLAUDE ≠ "true".
+  // Ni try/catch ni suite vers OpenAI : un refus ou un échec de Claude fait échouer l'appel.
+  if (requete.blogClaudeRole === "ecriture" && interrupteurBlogClaude()) {
+    return genererTexteBlogClaude(requete, "ecriture");
+  }
+  // Interrupteur éteint : la requête transmise aux fournisseurs est celle d'avant
+  // (le champ `blogClaudeRole` ne doit jamais atteindre OpenAI).
+  let req: GenerationRequest = requete;
+  if (requete.blogClaudeRole !== undefined) {
+    const { blogClaudeRole: _role, ...sansRole } = requete;
+    void _role;
+    req = sansRole;
+  }
   const baseCandidates = ROLE_TO_PROVIDERS[req.role] as ReadonlyArray<IProvider>;
   // Sprint Quality 2026 — `preferredProvider` réordonne les candidates sans
   // casser le fallback. Si le préféré est dans les candidates → en premier.

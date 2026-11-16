@@ -44,6 +44,8 @@ export interface ExpandOutlineChunkedOpts {
   }) => string;
   readonly maxTokens?: number;
   readonly temperature?: number;
+  /** Texte du blog via Claude (porte inerte tant que l'interrupteur est éteint). */
+  readonly blogClaudeRole?: "ecriture";
 }
 
 export interface ExpandOutlineChunkedResult {
@@ -102,6 +104,7 @@ export async function expandOutlineChunked(
         userPrompt,
         maxTokens: opts.maxTokens ?? 5000,
         temperature: opts.temperature ?? 0.7,
+        ...(opts.blogClaudeRole ? { blogClaudeRole: opts.blogClaudeRole } : {}),
       });
       calls++;
       costUsd += res.costUsd;

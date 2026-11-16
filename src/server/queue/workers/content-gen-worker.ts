@@ -23,6 +23,8 @@ import { Queue, Worker, type Job, UnrecoverableError } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { getGenerator } from "@/server/content-gen/generators";
 import { generate as routerGenerate } from "@/server/content-gen/providers/provider-router";
+import { BLOG_TYPES, interrupteurBlogClaude } from "@/server/content-gen/providers/blog-claude";
+import { ProviderError } from "@/server/content-gen/providers/IProvider";
 import { ensureDirectAnswer } from "@/server/content-gen/shared/ensure-direct-answer";
 import { assertKbReady, KbNotReadyError } from "@/server/content-gen/kb-health";
 import { checkDedup, titleOfPayload } from "@/server/content-gen/quality/dedup-guard";
@@ -280,6 +282,28 @@ async function resolveTemplateById(
   } catch {
     return null;
   }
+}
+
+/**
+ * Chemin Claude (interrupteur allumé + type blog) : une erreur du fournisseur Anthropic
+ * devient `UnrecoverableError` (BullMQ ne la rejoue pas : chaque essai serait facturé).
+ * Rend `null` pour tout le reste (OpenAI, interrupteur éteint, autre type) : l'erreur
+ * d'origine est alors relancée telle quelle. Exporté pour les tests.
+ */
+export function erreurNonRelancableCheminClaude(
+  err: unknown,
+  contentType: string,
+): UnrecoverableError | null {
+  if (
+    interrupteurBlogClaude() &&
+    BLOG_TYPES.has(contentType) &&
+    !(err instanceof UnrecoverableError) &&
+    err instanceof ProviderError &&
+    err.provider === "anthropic"
+  ) {
+    return new UnrecoverableError(err.message);
+  }
+  return null;
 }
 
 async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
@@ -1509,6 +1533,11 @@ async function processJob(job: Job<ContentGenJobPayload>): Promise<void> {
     } catch {
       // best-effort
     }
+    // Chemin Claude (interrupteur allumé + type blog) : un refus de la porte ou une
+    // erreur Anthropic n'est jamais rejoué par BullMQ (attempts > 1) : échec définitif.
+    // Le comportement OpenAI (autres fournisseurs, interrupteur éteint) ne change pas.
+    const convertie = erreurNonRelancableCheminClaude(err, contentType);
+    if (convertie) throw convertie;
     throw err;
   }
 }
