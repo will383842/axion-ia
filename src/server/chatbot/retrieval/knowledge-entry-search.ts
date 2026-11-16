@@ -100,7 +100,7 @@ const scoreDeRang = (rang: number): number => 1 / (60 + rang + 1);
 /** Cherche dans les fiches KnowledgeEntry publiées. Lecture seule. */
 export async function chercherDansKnowledgeEntry(
   question: string,
-  opts: { topK?: number; query?: KnowledgeEntryQuery } = {},
+  opts: { topK?: number; query?: KnowledgeEntryQuery; conserverHorsGrille?: boolean } = {},
 ): Promise<RetrievedChunk[]> {
   const topK = opts.topK ?? RETRIEVAL_TOP_K;
   const query = opts.query ?? requeteKnowledgeEntry;
@@ -117,9 +117,26 @@ export async function chercherDansKnowledgeEntry(
         contexte: `Fiche de la base de connaissances — ${r.title}`,
         score: scoreDeRang(rang),
       }))
-      // Une fiche qui cite un autre montant que 1 490 € n'entre pas au prompt.
-      .filter((c) => c.contenu.length > 0 && montantsHorsJourneeIa(c.contenu).length === 0)
+      // Une fiche qui cite un autre montant que 1 490 € n'entre pas au prompt (sauf
+      // `conserverHorsGrille`, réservé à l'essai à blanc qui doit les SIGNALER).
+      .filter(
+        (c) =>
+          c.contenu.length > 0 &&
+          (opts.conserverHorsGrille === true || montantsHorsJourneeIa(c.contenu).length === 0),
+      )
   );
+}
+
+/**
+ * Doublon : une fiche déjà présente dans les chunks est ignorée. Les chunks découpés
+ * portent un sourceRef `slug#i` (ingestion/ingest.ts) : on retire le suffixe.
+ */
+export function sansDoublons(
+  fiches: ReadonlyArray<RetrievedChunk>,
+  chunks: ReadonlyArray<RetrievedChunk>,
+): RetrievedChunk[] {
+  const refsConnues = new Set(chunks.map((c) => c.sourceRef.replace(/#\d+$/, "")));
+  return fiches.filter((f) => !refsConnues.has(f.sourceRef));
 }
 
 /** Borne de lecture des fiches : au-delà, on se replie sur la recherche actuelle. */
@@ -186,11 +203,7 @@ export function creerRechercheChatbot(deps: RechercheChatbotDeps = {}): typeof h
         lecture.reason,
       );
     }
-    // Doublon : une fiche déjà présente dans les chunks est ignorée. Les chunks
-    // découpés portent un sourceRef `slug#i` (ingestion/ingest.ts) : on retire le
-    // suffixe avant de comparer. Seules les FAQ (sourceRef = slug) peuvent coïncider.
-    const refsConnues = new Set(chunks.map((c) => c.sourceRef.replace(/#\d+$/, "")));
-    fiches = fiches.filter((f) => !refsConnues.has(f.sourceRef));
+    fiches = sansDoublons(fiches, chunks);
     if (fiches.length === 0) return chunks;
     const topK = opts.topK ?? RETRIEVAL_TOP_K;
     return reciprocalRankFusion<RetrievedChunk>([fiches, chunks], { topK }).map(
