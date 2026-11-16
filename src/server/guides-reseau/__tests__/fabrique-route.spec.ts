@@ -17,6 +17,8 @@ const etat = vi.hoisted(() => ({
   cibleEcrite: 0,
   retardRendu: null as Promise<void> | null,
   tailleFausse: false,
+  retardDepot: null as Promise<void> | null,
+  panneRendu: false,
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -78,8 +80,10 @@ vi.mock("../stockage-guides", () => ({
     process.env.GUIDES_RESEAU_STOCKAGE === "volume" || process.env.GUIDES_RESEAU_STOCKAGE === "r2"
       ? {
           mode: process.env.GUIDES_RESEAU_STOCKAGE,
-          deposer: async (cle: string, c: Buffer) => {
+          deposer: async (cle: string, c: Buffer, abandonne?: () => boolean) => {
             if (etat.panneStockage) throw new Error("r2_en_panne");
+            if (etat.retardDepot) await etat.retardDepot;
+            if (abandonne?.()) return; // contrat : rien n'est écrit une fois le rendu abandonné
             etat.depots.push({ cle, octets: c.length });
             etat.objets.set(cle, c.length);
           },
@@ -90,6 +94,7 @@ vi.mock("../stockage-guides", () => ({
 vi.mock("../guide-pdf", () => ({
   rendreGuidePdf: async () => {
     etat.rendus++;
+    if (etat.panneRendu) throw new Error("rendu_en_panne");
     if (etat.retardRendu) await etat.retardRendu;
     const pages = Array.from({ length: etat.pdfPages }, () => "/Type /Page\n").join("");
     return Buffer.from(
@@ -163,6 +168,8 @@ beforeEach(() => {
     cibleEcrite: 0,
     retardRendu: null,
     tailleFausse: false,
+    retardDepot: null,
+    panneRendu: false,
   });
   vi.stubEnv("GUIDES_RESEAU_FABRIQUE_ENABLED", "true");
   vi.stubEnv("GUIDES_RESEAU_HMAC_SECRET", SECRET);
@@ -324,19 +331,65 @@ describe("idempotence et ordre", () => {
       vi.useRealTimers();
     }
   });
-  it("panne du stockage = 503 stockage_echec, ligne « echec », ancienne version intacte, relance OK", async () => {
+  it("(a) dépôt qui traîne au-delà de 60 s : le dépôt tardif n'écrit RIEN après l'abandon", async () => {
+    vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+    try {
+      let lacher!: () => void;
+      etat.retardDepot = new Promise<void>((r) => (lacher = r));
+      const a = envoyer(corps(contenu({ version: 1 })));
+      await vi.advanceTimersByTimeAsync(61_000);
+      const r = await a;
+      expect(r.status).toBe(503);
+      expect((await json(r)).erreur).toBe("echec");
+      lacher();
+      await vi.advanceTimersByTimeAsync(10);
+      expect(etat.depots).toHaveLength(0);
+      expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("echec");
+    } finally {
+      etat.retardDepot = null;
+      vi.useRealTimers();
+    }
+  });
+  it("(b) deux versions du MÊME guide en parallèle : refus propre 409 en_cours, aucune ligne réservée pour la seconde", async () => {
+    let lacher!: () => void;
+    etat.retardRendu = new Promise<void>((r) => (lacher = r));
+    const a = envoyer(corps(contenu({ version: 1 })));
+    await new Promise((r) => setTimeout(r, 30));
+    const b = await envoyer(corps(contenu({ version: 2 })));
+    expect(b.status).toBe(409);
+    expect((await json(b)).erreur).toBe("en_cours");
+    expect(etat.lignes.find((l) => l.version === 2)).toBeUndefined();
+    lacher();
+    expect((await a).status).toBe(201);
+    // verrou libéré : la version 2 passe ensuite
+    etat.retardRendu = null;
+    expect((await envoyer(corps(contenu({ version: 2 })))).status).toBe(201);
+  });
+  it("(c) panne du stockage = 503 depot_pdf_echec ; panne du rendu = 503 rendu_pdf_echec (deux causes, deux libellés)", async () => {
+    etat.panneStockage = true;
+    const s = await envoyer(corps(contenu({ version: 1 })));
+    expect(s.status).toBe(503);
+    expect((await json(s)).erreur).toBe("depot_pdf_echec");
+    etat.panneStockage = false;
+    etat.panneRendu = true;
+    const r = await envoyer(corps(contenu({ version: 1 })));
+    expect(r.status).toBe(503);
+    expect((await json(r)).erreur).toBe("rendu_pdf_echec");
+    expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("echec");
+  });
+  it("panne du stockage = 503 depot_pdf_echec, ligne « echec », ancienne version intacte, relance OK", async () => {
     await envoyer(corps(contenu({ version: 1 })));
     etat.panneStockage = true;
     const r = await envoyer(corps(contenu({ version: 2 })));
     expect(r.status).toBe(503);
-    expect((await json(r)).erreur).toBe("stockage_echec");
+    expect((await json(r)).erreur).toBe("depot_pdf_echec");
     expect(etat.lignes.find((l) => l.version === 2)?.statut).toBe("echec");
     expect(etat.lignes.find((l) => l.version === 1)?.statut).toBe("pret");
     expect(etat.cibleEcrite).toBe(0);
     etat.panneStockage = false;
     expect((await envoyer(corps(contenu({ version: 2 })))).status).toBe(201);
   });
-  it("taille relue différente = stockage_echec (pas « pret »)", async () => {
+  it("taille relue différente = depot_pdf_echec (pas « pret »)", async () => {
     etat.tailleFausse = true;
     const r = await envoyer(corps(contenu()));
     expect(r.status).toBe(503);

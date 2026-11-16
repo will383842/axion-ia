@@ -7,6 +7,7 @@ import {
   hotesAutorises,
   validerAdresse,
   validerTitre,
+  retirerSelecteurVariante,
   normaliserMot,
   validerCheminPdf,
 } from "../cibles-reseau";
@@ -89,6 +90,16 @@ describe("code et titre", () => {
     expect(validerTitre("ab")).toBeNull();
     expect(validerTitre("a".repeat(121))).toBeNull();
     expect(validerTitre(7)).toBeNull();
+  });
+  it("(d) le sélecteur de variante U+FE0F est retiré à l'entrée du titre", () => {
+    expect(validerTitre("Offre\uFE0F pro")).toBe("Offre pro");
+    expect(validerTitre("\uFE0F\uFE0FOffre\uFE0F")).toBe("Offre");
+    // un titre qui ne tient que par ce caractère invisible est trop court
+    expect(validerTitre("ab\uFE0F")).toBeNull();
+  });
+  it("(d) retirerSelecteurVariante ne touche à rien d'autre", () => {
+    expect(retirerSelecteurVariante("gde-ia\uFE0F2026")).toBe("gde-ia2026");
+    expect(retirerSelecteurVariante("é – ok")).toBe("é – ok");
   });
 });
 
