@@ -170,3 +170,101 @@ describe("aides", () => {
     expect(dateIsoParis(new Date("2026-12-01T10:00:00Z"))).toBe("2026-12-01T11:00:00+01:00");
   });
 });
+
+// ── SEO-05 : ImageObject et FAQPage dans le @graph ─────────────────────────────────────
+type Noeud = Record<string, unknown> & { "@type": string };
+const graphe = (v: VideoPubliee): Noeud[] =>
+  buildVideoPageJsonLd(v, { siteUrl: SITE })["@graph"] as unknown as Noeud[];
+
+const BASE = "/medias/videos/ma-video/v3";
+const fichePage = {
+  titre: "Gagnez du temps : automatisez vos relances clients",
+  metaDescription: "m".repeat(150),
+  h1: "Gagnez du temps en automatisant vos relances clients",
+  resumeCitable: "r".repeat(250),
+  gain: "g".repeat(100),
+  limites: ["L’automatisation des relances ne remplace pas un appel."],
+  questions: [1, 2, 3].map((n) => ({
+    question: `Question ${n} ?`,
+    reponse: `Réponse ${n} complète.`,
+  })),
+  auteur: "Équipe Axion-IA",
+  carrousel: [
+    {
+      chemin: `${BASE}/carrousel-1.avif`,
+      alt: "Première image du carrousel",
+      largeur: 1080,
+      hauteur: 1350,
+    },
+  ],
+  infographie: {
+    chemin: `${BASE}/infographie.avif`,
+    alt: "Frise des étapes d’une relance",
+    largeur: 1080,
+    hauteur: 1920,
+  },
+};
+
+describe("FAQPage", () => {
+  it("présent avec les questions de la fiche, mot pour mot", () => {
+    const faq = graphe(video({ fichePage })).find((n) => n["@type"] === "FAQPage") as unknown as {
+      "@id": string;
+      mainEntity: Array<{
+        "@type": string;
+        name: string;
+        acceptedAnswer: { "@type": string; text: string };
+      }>;
+    };
+    expect(faq["@id"]).toBe(`${SITE}/fr/videos/ma-video#faq`);
+    expect(faq.mainEntity).toHaveLength(3);
+    expect(faq.mainEntity[0]).toEqual({
+      "@type": "Question",
+      name: "Question 1 ?",
+      acceptedAnswer: { "@type": "Answer", text: "Réponse 1 complète." },
+    });
+  });
+
+  it("sans fiche : repli sur les questions de la vidéo ; aucune question → aucun FAQPage", () => {
+    const avec = graphe(video({ questions: [{ question: "Q ?", reponse: "R." }] }));
+    expect(avec.some((n) => n["@type"] === "FAQPage")).toBe(true);
+    expect(graphe(video()).some((n) => n["@type"] === "FAQPage")).toBe(false);
+  });
+});
+
+describe("ImageObject", () => {
+  it("un par image du carrousel + l'infographie, URL absolues, légende = texte alternatif", () => {
+    const images = graphe(video({ fichePage })).filter((n) => n["@type"] === "ImageObject");
+    expect(images).toHaveLength(2);
+    expect(images[0]).toMatchObject({
+      contentUrl: `${SITE}${BASE}/carrousel-1.avif`,
+      caption: "Première image du carrousel",
+      width: 1080,
+      height: 1350,
+    });
+    expect(images[1]).toMatchObject({ contentUrl: `${SITE}${BASE}/infographie.avif` });
+    for (const i of images)
+      expect(i["@id"]).toMatch(new RegExp(`^${SITE}/fr/videos/ma-video#image-`));
+  });
+
+  it("sans fiche ou sans images : aucun ImageObject", () => {
+    expect(graphe(video()).some((n) => n["@type"] === "ImageObject")).toBe(false);
+    expect(
+      graphe(
+        video({ fichePage: { ...fichePage, carrousel: undefined, infographie: undefined } }),
+      ).some((n) => n["@type"] === "ImageObject"),
+    ).toBe(false);
+  });
+});
+
+describe("graphe complet", () => {
+  it("VideoObject, ImageObject, FAQPage et BreadcrumbList ; JSON sérialisable, identifiants uniques", () => {
+    const g = graphe(video({ fichePage }));
+    expect(new Set(g.map((n) => n["@type"]))).toEqual(
+      new Set(["VideoObject", "ImageObject", "FAQPage", "BreadcrumbList"]),
+    );
+    const ids = g.map((n) => n["@id"]);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect(() => JSON.parse(JSON.stringify(g))).not.toThrow();
+    expect(JSON.stringify(g)).not.toContain("embedUrl");
+  });
+});

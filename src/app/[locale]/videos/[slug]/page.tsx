@@ -43,8 +43,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const meta = await buildProductMetadata({
     locale,
     path: `/videos/${video.slug}`,
-    title: video.titre,
-    description: mention ? `${video.description} ${mention}` : video.description,
+    // Fiche de page (SEO-05) d'abord ; sinon les champs de la vidéo, comme avant.
+    title: video.fichePage?.titre ?? video.titre,
+    description: video.fichePage?.metaDescription
+      ? video.fichePage.metaDescription
+      : mention
+        ? `${video.description} ${mention}`
+        : video.description,
     alternates: { fr: `/videos/${video.slug}`, en: `/videos/${video.slug}` },
     ogImage: `${SITE_URL}${affiche.chemin}`,
     ...(affiche.largeur && affiche.hauteur
