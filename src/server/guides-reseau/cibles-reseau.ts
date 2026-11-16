@@ -1,7 +1,7 @@
 /**
  * CIBLES D'UN MOT (F1a-bis, 2026-11-12) — validation PURE d'un guide, d'une adresse et d'un mot.
  *
- * Décision de Williams : un mot mène soit à un guide du catalogue, soit à une adresse de page,
+ * Décision du fondateur : un mot mène soit à un guide du catalogue, soit à une adresse de page,
  * et une adresse n'est acceptée que si son hôte figure dans une LISTE BLANCHE
  * (`CIBLES_ADRESSES_HOTES`, séparée par des virgules ; défaut dans le code).
  *
