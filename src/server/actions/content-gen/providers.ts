@@ -257,7 +257,11 @@ export async function updatePlafondsBlogClaude(
   const session = await requireAdmin();
   // 2. Rôle editor refusé par un retour (une erreur levée serait masquée par Next).
   if (session.role === "editor") return { ok: false, message: "Réservé aux administrateurs." };
-  const parsed = UpdatePlafondsBlogInputSchema.parse(input);
+  const analyse = UpdatePlafondsBlogInputSchema.safeParse(input);
+  if (!analyse.success) {
+    return { ok: false, message: "Valeurs invalides : vérifiez les quatre champs." };
+  }
+  const parsed = analyse.data;
 
   let cles: Record<string, number>;
   try {
@@ -315,6 +319,9 @@ export async function updatePlafondsBlogClaude(
       }
     };
 
+    // Un seul appel d'audit, dès que l'UPDATE a touché la ligne (avant la relecture).
+    await ecrireAudit();
+
     const relu = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
     const extra = (relu?.extraConfig ?? {}) as Record<string, unknown>;
     const manquantes = Object.entries(cles)
@@ -327,12 +334,12 @@ export async function updatePlafondsBlogClaude(
       Sentry.captureException(err, {
         tags: { area: "content-gen", action: "updatePlafondsBlogClaude" },
       });
-      // L'UPDATE a peut-être été appliqué : on garde la trace.
-      await ecrireAudit();
+      // L'écran doit afficher les valeurs réelles.
+      revalidatePath(
+        `/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`,
+      );
       return { ok: false, message: err.message };
     }
-
-    await ecrireAudit();
 
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
     return { ok: true };

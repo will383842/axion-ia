@@ -121,7 +121,9 @@ describe("updatePlafondsBlogClaude", () => {
   it.each([{ monthlyCapUsd: 5 }, { provider: "openai" }, { id: "x" }])(
     "zod strict rejette %j",
     async (extra) => {
-      await expect(updatePlafondsBlogClaude({ ...ENTREE, ...extra } as never)).rejects.toThrow();
+      const r = await updatePlafondsBlogClaude({ ...ENTREE, ...extra } as never);
+      expect(r.ok).toBe(false);
+      expect(m.rate).not.toHaveBeenCalled();
       expect(m.exec).not.toHaveBeenCalled();
     },
   );
@@ -149,6 +151,36 @@ describe("updatePlafondsBlogClaude", () => {
     expect(texte).toContain('"blog_claude_daily_cap_usd":1');
     expect(texte).not.toContain("autre");
     expect(m.revalidate).toHaveBeenCalled();
+    expect(m.rate).toHaveBeenCalledTimes(1);
+    expect(m.rate).toHaveBeenCalledWith("admin:write:u1:updatePlafondsBlogClaude", {
+      limit: 10,
+      windowSec: 3600,
+    });
+  });
+  it("champ de plus de 16 caractères → ok:false, quota non consommé, aucune écriture", async () => {
+    const r = await updatePlafondsBlogClaude({ ...ENTREE, jour: "1".repeat(17) });
+    expect(r).toEqual({ ok: false, message: "Valeurs invalides : vérifiez les quatre champs." });
+    expect(m.rate).not.toHaveBeenCalled();
+    expect(m.exec).not.toHaveBeenCalled();
+    expect(m.audit).not.toHaveBeenCalled();
+  });
+  it("relecture qui lève → audit écrit une fois, erreur propagée", async () => {
+    let n = 0;
+    m.findUnique.mockImplementation(async () => {
+      n += 1;
+      if (n === 1) return { extraConfig: { ...AVANT } };
+      throw new Error("coupure");
+    });
+    await expect(updatePlafondsBlogClaude(ENTREE)).rejects.toThrow("coupure");
+    expect(m.audit).toHaveBeenCalledTimes(1);
+    expect(m.sentry).toHaveBeenCalled();
+  });
+  it("relecture divergente → revalidatePath appelé", async () => {
+    m.findUnique.mockReset();
+    m.findUnique.mockResolvedValue({ extraConfig: { ...AVANT } });
+    const r = await updatePlafondsBlogClaude(ENTREE);
+    expect(r.ok).toBe(false);
+    expect(m.revalidate).toHaveBeenCalledTimes(1);
   });
   it("relecture divergente → ok:false + Sentry", async () => {
     m.findUnique.mockReset();
