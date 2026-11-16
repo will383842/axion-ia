@@ -35,6 +35,7 @@ export default async function ProvidersSettingsPage({ params }: PageProps) {
         monthlyCapUsd: Number(r.monthlyCapUsd),
         rateLimitRpm: r.rateLimitRpm,
         currentMonthSpentUsd: Number(r.currentMonthSpentUsd),
+        blogClaude: r.blogClaude,
       }))}
     />
   );

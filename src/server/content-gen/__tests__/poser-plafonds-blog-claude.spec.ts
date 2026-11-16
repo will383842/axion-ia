@@ -81,4 +81,24 @@ describe("poser-plafonds-blog-claude", () => {
     expect(fusionnerExtraConfig(null, { a: 1 })).toEqual({ a: 1 });
     expect(fusionnerExtraConfig([1], { a: 1 })).toEqual({ a: 1 });
   });
+
+  it("messages d'erreur au format --option", () => {
+    const msg = (extra: string[]) => {
+      try {
+        construirePlan(lireArguments(extra));
+      } catch (e) {
+        return (e as Error).message;
+      }
+      return "";
+    };
+    expect(msg(["--jour", "21", "--mois", "10", "--reserve", "2", "--juge-max", "3"])).toBe(
+      "--jour hors bornes de garde (0 < jour ≤ 20)",
+    );
+    expect(msg(["--jour", "9", "--mois", "7", "--reserve", "2", "--juge-max", "3"])).toBe(
+      "--jour ne peut pas dépasser --mois",
+    );
+    expect(msg(["--jour", "1", "--mois", "10", "--reserve", "2", "--juge-max", "0"])).toBe(
+      "--juge-max : entier entre 1 et 500",
+    );
+  });
 });

@@ -5,7 +5,11 @@
 // Sprint correctif SP-01 : error UI via ProviderFormClient.
 
 import { AdminPageShell, AdminPageHeader, AdminCard } from "@/components/admin/ui";
-import { resetProviderSpend, updateProvider } from "@/server/actions/content-gen/providers";
+import {
+  resetProviderSpend,
+  updatePlafondsBlogClaude,
+  updateProvider,
+} from "@/server/actions/content-gen/providers";
 import { ProviderFormClient } from "@/components/admin/content-gen/ProviderFormClient";
 
 interface ProviderRow {
@@ -18,6 +22,12 @@ interface ProviderRow {
   monthlyCapUsd: number;
   rateLimitRpm: number | null;
   currentMonthSpentUsd: number;
+  blogClaude: {
+    jour: number | null;
+    mois: number | null;
+    reserve: number | null;
+    jugeMax: number | null;
+  } | null;
 }
 
 interface Props {
@@ -36,6 +46,16 @@ export function ProvidersV2({ rows }: Props): React.ReactElement {
       model: String(formData.get("model")),
       monthlyCapUsd: Number(formData.get("monthlyCapUsd") ?? 0),
       ...(rateLimitRpm !== undefined ? { rateLimitRpm } : {}),
+    });
+  }
+
+  async function saveBlog(formData: FormData) {
+    "use server";
+    return updatePlafondsBlogClaude({
+      jour: String(formData.get("jour") ?? ""),
+      mois: String(formData.get("mois") ?? ""),
+      reserve: String(formData.get("reserve") ?? ""),
+      jugeMax: String(formData.get("jugeMax") ?? ""),
     });
   }
 
@@ -69,7 +89,12 @@ export function ProvidersV2({ rows }: Props): React.ReactElement {
       ) : (
         rows.map((r) => (
           <AdminCard key={r.id} className="mb-[var(--space-admin-5)]">
-            <ProviderFormClient row={r} saveAction={save} resetSpendAction={resetSpend} />
+            <ProviderFormClient
+              row={r}
+              saveAction={save}
+              resetSpendAction={resetSpend}
+              saveBlogAction={saveBlog}
+            />
           </AdminCard>
         ))
       )}

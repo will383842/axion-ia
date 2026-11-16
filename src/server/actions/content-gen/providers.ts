@@ -15,6 +15,14 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { writeAuditLog } from "@/server/content-gen/audit-log";
+import {
+  CLES_PLAFONDS_BLOG,
+  ErreurPlafondsBlog,
+  LIBELLES_ECRAN,
+  lireNombreStrict,
+  lirePlafondsBlogExistants,
+  validerPlafondsBlog,
+} from "@/server/content-gen/providers/blog-claude-plafonds";
 import type { ProviderKey, ProviderRole } from "../../../../prisma/generated/client";
 import { requireAdmin, requireAdminWriteRateLimited } from "./_auth";
 
@@ -30,6 +38,22 @@ const UpdateProviderInputSchema = z
   })
   .strict();
 
+const UpdatePlafondsBlogInputSchema = z
+  .object({
+    jour: z.string().max(16),
+    mois: z.string().max(16),
+    reserve: z.string().max(16),
+    jugeMax: z.string().max(16),
+  })
+  .strict();
+
+export interface UpdatePlafondsBlogInput {
+  readonly jour: string;
+  readonly mois: string;
+  readonly reserve: string;
+  readonly jugeMax: string;
+}
+
 export interface ProviderRow {
   readonly id: string;
   readonly provider: ProviderKey;
@@ -44,6 +68,12 @@ export interface ProviderRow {
   readonly rateLimitTpm: number | null;
   readonly apiKeyEnvVar: string;
   readonly updatedAt: Date;
+  readonly blogClaude: {
+    jour: number | null;
+    mois: number | null;
+    reserve: number | null;
+    jugeMax: number | null;
+  } | null;
 }
 
 export async function listProviders(): Promise<ReadonlyArray<ProviderRow>> {
@@ -67,6 +97,7 @@ export async function listProviders(): Promise<ReadonlyArray<ProviderRow>> {
     rateLimitTpm: r.rateLimitTpm,
     apiKeyEnvVar: r.apiKeyEnvVar,
     updatedAt: r.updatedAt,
+    blogClaude: r.provider === "anthropic" ? lirePlafondsBlogExistants(r.extraConfig) : null,
   }));
 }
 
@@ -205,6 +236,95 @@ export async function resetProviderSpend(id: string): Promise<void> {
     revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
   } catch (e) {
     Sentry.captureException(e, { tags: { area: "content-gen", action: "resetProviderSpend" } });
+    throw e;
+  }
+}
+
+const MESSAGE_ANTHROPIC_ABSENTE =
+  "ligne provider_config « anthropic » absente : rien posé (non créée ici)";
+
+/**
+ * Règle les 4 plafonds du blog Claude (clés blog_claude_* de extraConfig, ligne
+ * `anthropic` uniquement). N'écrit jamais monthlyCapUsd, enabled, model ni les
+ * compteurs. Les refus de validation sont RENVOYÉS (Next masque le texte des
+ * erreurs levées par une action serveur).
+ */
+export async function updatePlafondsBlogClaude(
+  input: UpdatePlafondsBlogInput,
+): Promise<{ ok: true } | { ok: false; message: string }> {
+  const parsed = UpdatePlafondsBlogInputSchema.parse(input);
+  const session = await requireAdminWriteRateLimited("updatePlafondsBlogClaude", {
+    limit: 10,
+    windowSec: 3600,
+  });
+  if (session.role === "editor") throw new Error("forbidden");
+
+  let cles: Record<string, number>;
+  try {
+    cles = validerPlafondsBlog(
+      {
+        jour: lireNombreStrict(parsed.jour, LIBELLES_ECRAN.jour),
+        mois: lireNombreStrict(parsed.mois, LIBELLES_ECRAN.mois),
+        reserve: lireNombreStrict(parsed.reserve, LIBELLES_ECRAN.reserve),
+        jugeMax: lireNombreStrict(parsed.jugeMax, LIBELLES_ECRAN.jugeMax),
+      },
+      LIBELLES_ECRAN,
+    );
+  } catch (e) {
+    if (e instanceof ErreurPlafondsBlog) return { ok: false, message: e.message };
+    throw e;
+  }
+
+  try {
+    const ligne = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
+    if (!ligne) return { ok: false, message: MESSAGE_ANTHROPIC_ABSENTE };
+
+    // Une seule requête : fusion jsonb côté base, les autres clés sont conservées.
+    const touchees =
+      await prisma.$executeRaw`UPDATE provider_config SET "extraConfig" = (CASE WHEN jsonb_typeof("extraConfig") = 'object' THEN "extraConfig" ELSE '{}'::jsonb END) || ${JSON.stringify(cles)}::jsonb, "updatedAt" = now() WHERE provider::text = 'anthropic'`;
+    if (touchees === 0) return { ok: false, message: MESSAGE_ANTHROPIC_ABSENTE };
+
+    const relu = await prisma.providerConfig.findUnique({ where: { provider: "anthropic" } });
+    const extra = (relu?.extraConfig ?? {}) as Record<string, unknown>;
+    const manquantes = Object.entries(cles)
+      .filter(([cle, valeur]) => extra[cle] !== valeur)
+      .map(([cle]) => cle);
+    if (manquantes.length > 0) {
+      const err = new Error(
+        `relecture après écriture : clés absentes ou différentes (${manquantes.join(", ")}) : relancer`,
+      );
+      Sentry.captureException(err, {
+        tags: { area: "content-gen", action: "updatePlafondsBlogClaude" },
+      });
+      return { ok: false, message: err.message };
+    }
+
+    const avant = lirePlafondsBlogExistants(ligne.extraConfig);
+    const oldValue = {
+      [CLES_PLAFONDS_BLOG.jour]: avant.jour,
+      [CLES_PLAFONDS_BLOG.mois]: avant.mois,
+      [CLES_PLAFONDS_BLOG.reserve]: avant.reserve,
+      [CLES_PLAFONDS_BLOG.juge]: avant.jugeMax,
+    };
+    try {
+      await writeAuditLog({
+        action: "updatePlafondsBlogClaude",
+        settingKey: "provider:anthropic:blog_claude",
+        oldValue,
+        newValue: cles,
+        actorUserId: session.userId,
+        actorEmail: session.email,
+      });
+    } catch {
+      // Best-effort (cf. updateProvider).
+    }
+
+    revalidatePath(`/fr/${process.env.ADMIN_URL_PREFIX ?? "admin"}/content-gen/settings/providers`);
+    return { ok: true };
+  } catch (e) {
+    Sentry.captureException(e, {
+      tags: { area: "content-gen", action: "updatePlafondsBlogClaude" },
+    });
     throw e;
   }
 }
