@@ -977,8 +977,24 @@ export function EmailLayout({
   const soupapeVisible =
     regime.soupapeReponse && destinataire !== "interne" && nature !== "securite";
   const pasVousVisible = !interne && (mentionPasVous ?? nature === "accuse");
+  // Audit de sécurité S2 (constat 2) : la famille D (campagne) et la nature « marketing » gardent
+  // TOUJOURS le lien d'opposition, quelle que soit la déclaration de `destinataire` et de `nature`.
+  // Une erreur de déclaration ne doit pas retirer le moyen de s'opposer.
+  const natureSansOpposition = nature !== undefined && NATURES_SANS_OPPOSITION.includes(nature);
   const oppositionPermise =
-    !interne && !(nature !== undefined && NATURES_SANS_OPPOSITION.includes(nature));
+    famille === "D" || nature === "marketing" || (!interne && !natureSansOpposition);
+  if (famille === "D" && process.env.NODE_ENV !== "production") {
+    if (natureSansOpposition) {
+      console.error(
+        `[email/D] nature « ${nature} » déclarée sur une campagne : le lien d'opposition est conservé.`,
+      );
+    }
+    if (interne) {
+      console.error(
+        "[email/D] destinataire « interne » déclaré sur une campagne : le lien d'opposition est conservé.",
+      );
+    }
+  }
   const piedNature: string | null =
     nature === "securite"
       ? t.piedSecurite

@@ -80,6 +80,9 @@ describe("signature — les gabarits non migrés gardent leur dessin, moins le r
 
   it("un reçu (famille A) ne porte aucune signature", async () => {
     const html = await rendre("payment-receipt");
+    // Migré, un gabarit de famille A porte une signature sobre (plan §2.2-5) : voir le test par
+    // destinataire plus bas. Ce test ne vaut que tant que le reçu n'est pas migré.
+    if (estampille(html, "destinataire") !== null) return;
     expect(html).not.toContain(ROLE_FONDATEUR);
     expect(html).not.toContain(EQUIPE);
   });

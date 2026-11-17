@@ -208,3 +208,80 @@ describe("noms piégés → « Bonjour, »", () => {
     },
   );
 });
+
+// Audit de sécurité S2, constat 1 : chaque ligne du tableau de l'audit.
+describe("salutation : liste blanche des noms (audit S2, constat 1)", () => {
+  it.each([
+    ["paypal。com", "point idéographique U+3002"],
+    ["paypal．com", "point pleine chasse U+FF0E"],
+    ["paypal｡com", "point demi-chasse U+FF61"],
+    ["paypal․com", "point de conduite U+2024"],
+    ["paypal͏.xyz", "CGJ invisible puis domaine"],
+    ["bit.l͏y", "domaine coupé par une marque invisible"],
+    ["paypal-.xyz", "domaine avec trait d'union"],
+    ["jean＠gmail", "arobase pleine chasse"],
+    ["ｗｗｗ paypal", "www pleine chasse"],
+    ["Rappelez ０６１２３４５６７８", "chiffres pleine chasse"],
+    ["Appelez ٠٦١٢٣٤٥٦٧٨", "chiffres arabo-indiens"],
+    ["Compteㅤbloquéㅤrépondezㅤàㅤceㅤmail", "remplissage hangûl"],
+    ["Compte⠀bloqué⠀répondez⠀à⠀ce⠀mail", "blanc braille"],
+    ["Compte bloqué, répondez vite", "virgule"],
+    ["URGENT !!! Gagné ?", "points d'exclamation et d'interrogation"],
+    ["Gagnez mille €", "symbole monétaire"],
+    ['"Service" Paypal', "guillemets"],
+    ["🎁 Cadeau", "emoji"],
+    ["<Promo>", "chevrons"],
+    ["J" + "́".repeat(9) + "an", "texte zalgo"],
+    ["Jean‮moc.lapyap", "caractère bidirectionnel puis domaine"],
+    ["Mary.Jane", "point collé entre deux noms (faux positif connu)"],
+  ])("refuse %j (%s) → « Bonjour, »", (piege) => {
+    expect(nettoyerNomPropre(piege)).toBeNull();
+    expect(salutation({ prenom: piege }, "fr")).toBe("Bonjour,");
+    expect(salutation({ civilite: "monsieur", nomFamille: piege }, "fr")).toBe("Bonjour,");
+  });
+
+  it("les caractères de contrôle séparent les mots au lieu de les coller", () => {
+    expect(salutation({ prenom: "Jean\nCliquez ici" }, "fr")).toBe("Bonjour Jean Cliquez ici,");
+    expect(salutation({ prenom: "Jean\tPierre" }, "fr")).toBe("Bonjour Jean Pierre,");
+  });
+
+  it("les invisibles de format (largeur nulle, bidi) restent supprimés", () => {
+    expect(salutation({ prenom: "Je​an" }, "fr")).toBe("Bonjour Jean,");
+    expect(salutation({ prenom: "‮elif" }, "fr")).toBe("Bonjour Elif,");
+  });
+
+  it("un A cyrillique passe (rien de plus que « Apple » en latin)", () => {
+    expect(salutation({ prenom: "Аpple" }, "fr")).toBe("Bonjour Аpple,");
+  });
+
+  it("quatre mots sans ponctuation restent acceptés (« de la Tour d'Auvergne »)", () => {
+    expect(
+      salutation({ civilite: "monsieur", nomFamille: "Compte bloqué répondez vite" }, "fr"),
+    ).toBe("Bonjour Monsieur Compte bloqué répondez vite,");
+  });
+
+  it.each([
+    "O'Brien",
+    "D’Arcy",
+    "N'Diaye",
+    "Jean-Pierre",
+    "Marie-Ève",
+    "de La Fontaine",
+    "de Saint-Exupéry",
+    "Ana María",
+    "Zoë",
+    "Ångström",
+    "Łukasz",
+    "Nguyễn",
+    "Lê Văn Thành",
+    "王小明",
+    "محمد",
+    "สมชาย",
+    "Νίκος",
+    "St. Clair",
+  ])("le vrai nom « %s » reste accepté, sortie exacte", (nom) => {
+    expect(nettoyerNomPropre(nom)).toBe(nom);
+    expect(salutation({ prenom: nom }, "fr")).toBe(`Bonjour ${nom},`);
+    expect(salutation({ prenom: nom }, "en")).toBe(`Hello ${nom},`);
+  });
+});

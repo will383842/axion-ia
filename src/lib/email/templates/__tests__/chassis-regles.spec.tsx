@@ -14,6 +14,7 @@
  */
 
 import { Text } from "@react-email/components";
+import type { ReactNode } from "react";
 import { render } from "@react-email/render";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { EMAIL_SIGNATURE } from "../../legal-footer";
@@ -362,8 +363,10 @@ describe("tests du test — le cliquet rougit dans les deux sens", () => {
 //
 // Aucun gabarit réel n'est migré par S2 : les gardes dures du plan §2.4 se prouvent donc sur un
 // gabarit témoin, construit ici, pour CHAQUE destinataire et CHAQUE nature, dans les quatre
-// familles et les deux langues. Quand un gabarit réel sera migré (S4 et suivants), les mêmes
-// fonctions s'appliqueront à lui.
+// familles et les deux langues. Les mêmes gardes (fonction `fautesChassis`, plus bas) s'appliquent
+// ensuite, automatiquement, à CHAQUE gabarit réel rendu qui porte `data-destinataire` : S4 et les
+// fiches suivantes n'ont pas à toucher ce fichier. Aucun gabarit réel n'est migré aujourd'hui ;
+// la preuve que la garde rougit est un test du test (rendu factice migré sans ouverture).
 
 const DESTINATAIRES: readonly DestinataireEmail[] = [
   "client",
@@ -398,6 +401,8 @@ interface Option {
   readonly famille: FamilleEmail;
   readonly locale: "fr" | "en";
   readonly surcharge?: Partial<EmailLayoutProps>;
+  readonly corps?: ReactNode;
+  readonly sansOuverture?: boolean;
 }
 
 async function rendreTemoin(o: Option): Promise<Rendu> {
@@ -409,12 +414,12 @@ async function rendreTemoin(o: Option): Promise<Rendu> {
       locale={o.locale}
       destinataire={o.destinataire}
       nature={o.nature}
-      {...(o.destinataire === "interne"
+      {...(o.destinataire === "interne" || o.sansOuverture === true
         ? {}
         : { ouverture: { identite: IDENTITE, information: INFORMATION } })}
       {...o.surcharge}
     >
-      <Text>Le corps du témoin.</Text>
+      {o.corps ?? <Text>Le corps du témoin.</Text>}
     </EmailLayout>
   );
   return avecDonneesRendu({ oppositionHref: LIEN_OPPOSITION, lienEspace: null }, async () => ({
@@ -434,7 +439,14 @@ const COMBINAISONS: Option[] = DESTINATAIRES.flatMap((destinataire) =>
 const temoins = new Map<string, Rendu>();
 const cle = (o: Option): string => `${o.destinataire}|${o.nature}|${o.famille}|${o.locale}`;
 beforeAll(async () => {
-  for (const o of COMBINAISONS) temoins.set(cle(o), await rendreTemoin(o));
+  // Les combinaisons famille D + « interne » ou nature sans opposition crient hors production
+  // (voulu, audit S2 constat 2) : on ne pollue pas la sortie de la suite.
+  const bruit = vi.spyOn(console, "error").mockImplementation(() => {});
+  try {
+    for (const o of COMBINAISONS) temoins.set(cle(o), await rendreTemoin(o));
+  } finally {
+    bruit.mockRestore();
+  }
 }, 120_000);
 
 /** Bloc `data-bloc="signature"` : du repère à la fin de son paragraphe. */
@@ -466,10 +478,13 @@ const soupapeAttendue = (o: Option): boolean =>
   REGIME_FAMILLE[o.famille].soupapeReponse &&
   o.destinataire !== "interne" &&
   o.nature !== "securite";
+// Audit S2, constat 2 : la famille D et la nature « marketing » gardent TOUJOURS le lien.
 const oppositionAttendue = (o: Option): boolean =>
   o.famille !== "A" &&
-  o.destinataire !== "interne" &&
-  !["droits", "reclamation", "recouvrement", "alerte-interne"].includes(o.nature);
+  (o.famille === "D" ||
+    o.nature === "marketing" ||
+    (o.destinataire !== "interne" &&
+      !["droits", "reclamation", "recouvrement", "alerte-interne"].includes(o.nature)));
 
 describe("S2 — gardes dures sur le gabarit témoin (6 destinataires × 11 natures × 4 familles × 2 langues)", () => {
   it("G-ouverture : première phrase lue, salutation ≤ 40 caractères, information sur la même ligne", () => {
@@ -500,7 +515,8 @@ describe("S2 — gardes dures sur le gabarit témoin (6 destinataires × 11 natu
       for (const bloc of ["ouverture", "politesse", "signature", "soupape", "pas-vous"]) {
         expect(compter(html, bloc), `${cle(o)} : ${bloc}`).toBe(0);
       }
-      expect(lienOpposition(html), cle(o)).toBe(false);
+      // Le lien reste présent pour la famille D et la nature « marketing » (audit S2, constat 2).
+      expect(lienOpposition(html), cle(o)).toBe(oppositionAttendue(o));
       expect(html, cle(o)).toContain('data-bloc="titre"');
     }
   });
@@ -783,6 +799,201 @@ describe("S2 — gardes dures sur le gabarit témoin (6 destinataires × 11 natu
     expect(a).not.toContain("op1.bbb");
     expect(b).toContain("Bonjour Bruno,");
     expect(b).toContain("op1.bbb");
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Gardes dures appliquées à CHAQUE gabarit réel migré (relecture S2, constat 1)
+// ─────────────────────────────────────────────────────────────────────────────
+
+const estampilleHtml = (html: string, attribut: string): string | null =>
+  new RegExp(`data-${attribut}="([^"]*)"`).exec(html)?.[1] ?? null;
+
+/**
+ * Applique à UN rendu les gardes dures du plan §2.4, déduites des estampilles `data-destinataire`,
+ * `data-nature` et `data-famille` posées par le châssis. Rend la liste des fautes (vide = conforme).
+ * Un rendu sans `data-destinataire` n'est pas migré : aucune faute à lui reprocher ici.
+ */
+function fautesChassis(r: Rendu, locale: "fr" | "en"): string[] {
+  const { html, text } = r;
+  const destinataire = estampilleHtml(html, "destinataire") as DestinataireEmail | null;
+  if (destinataire === null) return [];
+  const nature = estampilleHtml(html, "nature") as NatureEmail | null;
+  const famille = estampilleHtml(html, "famille") as FamilleEmail | null;
+  const fautes: string[] = [];
+  if (nature === null) fautes.push("data-nature absente");
+  if (famille === null) fautes.push("data-famille absente");
+  if (nature === null || famille === null) return fautes;
+  const o: Option = { destinataire, nature, famille, locale };
+
+  if (fautePreEnTete(html) !== null) fautes.push("pré-en-tête fautif");
+  if (fauteOrdre(html) !== null) fautes.push("blocs hors d'ordre");
+  if (lignesSalutationIsolee(paragraphes(html)).length > 0)
+    fautes.push("« Bonjour » isolé hors de l'ouverture");
+
+  const interne = destinataire === "interne";
+  if (interne) {
+    for (const bloc of ["ouverture", "politesse", "signature", "soupape", "pas-vous"]) {
+      if (compter(html, bloc) !== 0) fautes.push(`interne : bloc « ${bloc} » présent`);
+    }
+    if (!html.includes('data-bloc="titre"')) fautes.push("interne : grand titre absent");
+  } else {
+    // Ouverture : une ligne, salutation ≤ 40 caractères, information d'au moins 30 caractères.
+    const m = /<p[^>]*data-bloc="ouverture"[^>]*>([\s\S]*?)<\/p>/.exec(html);
+    if (m === null) {
+      fautes.push("ouverture absente");
+    } else {
+      const ouverture = texteDe(m[1] as string);
+      const motif = /^(Bonjour|Hello)( [^,]{1,40})?, /;
+      if (!motif.test(ouverture)) {
+        fautes.push("ouverture : salutation mal formée");
+      } else {
+        const info = ouverture.replace(motif, "");
+        if (info.length < 30) fautes.push("ouverture : information de moins de 30 caractères");
+        if (!/^\p{Ll}/u.test(info)) fautes.push("ouverture : information sans minuscule initiale");
+        const ligne = text.split("\n").find((l) => /^(Bonjour|Hello)\b/.test(l.trim()));
+        if (ligne === undefined || !ligne.includes(info.slice(0, 30)))
+          fautes.push("ouverture : pas sur une seule ligne dans le texte brut");
+      }
+      if ((ouverture.match(/\b(Bonjour|Hello)\b/g) ?? []).length !== 1)
+        fautes.push("ouverture : salutation répétée");
+    }
+    if (html.includes('data-bloc="titre"')) fautes.push("grand titre gardé malgré l'ouverture");
+    // Politesse.
+    const pol = /<p[^>]*data-bloc="politesse"[^>]*>([\s\S]*?)<\/p>/.exec(html);
+    const attenduePolitesse =
+      destinataire === "apporteur"
+        ? locale === "fr"
+          ? "À bientôt,"
+          : "Speak soon,"
+        : locale === "fr"
+          ? "Bien cordialement,"
+          : "Kind regards,";
+    if (pol === null || texteDe(pol[1] as string) !== attenduePolitesse)
+      fautes.push("politesse absente ou fausse");
+    // Signature.
+    const attendue = signatureAttendue(destinataire, famille);
+    const bloc = blocSignature(html);
+    if (attendue !== null) {
+      if (bloc === null) {
+        fautes.push("signature absente");
+      } else {
+        const t = texteDe(bloc);
+        if (!t.includes(EMAIL_SIGNATURE.fullName)) fautes.push("signature sans le nom");
+        if (!t.includes(locale === "fr" ? EMAIL_SIGNATURE.roleFr : EMAIL_SIGNATURE.roleEn))
+          fautes.push("signature sans le rôle");
+        if (bloc.includes("<a ") !== attendue.linkedin) fautes.push("signature : lien LinkedIn");
+        if (bloc.includes("/appel")) fautes.push("signature : lien de rendez-vous");
+        if (/L'équipe Axion|Axion-IA team/.test(t)) fautes.push("signature « L'équipe »");
+      }
+    }
+    // Mention « pas vous » : pour un accusé, et seulement lui.
+    if (compter(html, "pas-vous") !== (nature === "accuse" ? 1 : 0))
+      fautes.push("mention « pas vous » : présence incorrecte");
+  }
+
+  // Soupape selon la famille, nature et destinataire.
+  if (compter(html, "soupape") !== (soupapeAttendue(o) ? 1 : 0))
+    fautes.push("soupape : présence incorrecte");
+  // Opposition (audit S2, constat 2).
+  if (lienOpposition(html) !== oppositionAttendue(o))
+    fautes.push("lien d'opposition : présence incorrecte");
+  // Pied selon la nature.
+  const p = texteDe(pied(html));
+  const PIEDS = {
+    fr: {
+      securite: "fait suite à une demande faite avec votre adresse",
+      document: "Ce document vous est adressé dans le cadre de votre dossier avec Axion-IA",
+      droits: "répond à votre demande concernant vos données personnelles",
+    },
+    en: {
+      securite: "follows a request made with your address",
+      document: "This document is sent to you as part of your file with Axion-IA",
+      droits: "answers your request about your personal data",
+    },
+  } as const;
+  const piedAttendu =
+    nature === "securite"
+      ? "securite"
+      : nature === "piece" || nature === "recouvrement"
+        ? "document"
+        : nature === "droits"
+          ? "droits"
+          : null;
+  for (const k of ["securite", "document", "droits"] as const) {
+    if (p.includes(PIEDS[locale][k]) !== (piedAttendu === k))
+      fautes.push(`pied « ${k} » incorrect`);
+  }
+  if (piedAttendu === null && !p.includes(locale === "fr" ? "Contact :" : "Contact:"))
+    fautes.push("pied : ligne de contact absente");
+  if (/action sur votre compte|action on your account/.test(html + text))
+    fautes.push("pied : « action sur votre compte »");
+  return fautes;
+}
+
+describe("S2 — gardes dures appliquées à chaque gabarit réel migré", () => {
+  it("chaque gabarit rendu portant `data-destinataire` respecte toutes les gardes", () => {
+    const migres: string[] = [];
+    for (const nom of EMAIL_TEMPLATE_NAMES) {
+      for (const locale of ["fr", "en"] as const) {
+        const r = rendus.get(nom)![locale];
+        if (estampilleHtml(r.html, "destinataire") === null) continue;
+        migres.push(`${nom}/${locale}`);
+        expect(fautesChassis(r, locale), `${nom} (${locale})`).toEqual([]);
+      }
+    }
+    // Aujourd'hui aucun gabarit réel n'est migré : la liste est vide. Elle grossit avec S4 et suivants.
+    expect(migres.length % 2).toBe(0);
+  });
+
+  it("les gardes laissent passer tous les gabarits témoins conformes (6 × 11 × 4 × 2)", () => {
+    for (const o of COMBINAISONS) {
+      expect(fautesChassis(temoins.get(cle(o))!, o.locale), cle(o)).toEqual([]);
+    }
+  });
+
+  it("test du test : un rendu factice migré SANS ouverture rougit", async () => {
+    const r = await rendreTemoin({
+      destinataire: "client",
+      nature: "relation",
+      famille: "B",
+      locale: "fr",
+      sansOuverture: true,
+    });
+    const fautes = fautesChassis(r, "fr");
+    expect(fautes).toContain("ouverture absente");
+    expect(fautes).toContain("grand titre gardé malgré l'ouverture");
+  });
+
+  it("test du test : un « Bonjour » isolé dans le corps d'un rendu migré rougit", async () => {
+    const r = await rendreTemoin({
+      destinataire: "client",
+      nature: "relation",
+      famille: "B",
+      locale: "fr",
+      corps: <Text>Bonjour,</Text>,
+    });
+    expect(fautesChassis(r, "fr")).toContain("« Bonjour » isolé hors de l'ouverture");
+  });
+
+  it("test du test : accusé sans mention « pas vous » et soupape retirée rougissent", async () => {
+    const r = await rendreTemoin({
+      destinataire: "client",
+      nature: "accuse",
+      famille: "B",
+      locale: "fr",
+      surcharge: { mentionPasVous: false },
+    });
+    expect(fautesChassis(r, "fr")).toContain("mention « pas vous » : présence incorrecte");
+    const sans = {
+      ...r,
+      html: r.html.replace(/data-bloc="soupape"/g, 'data-x="soupape"'),
+    };
+    expect(fautesChassis(sans, "fr")).toContain("soupape : présence incorrecte");
+  });
+
+  it("test du test : un rendu non migré n'est pas jugé", async () => {
+    expect(fautesChassis({ html: "<p>x</p>", text: "x" }, "fr")).toEqual([]);
   });
 });
 

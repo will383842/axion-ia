@@ -79,6 +79,25 @@ function ressembleAUnNom(s: string): boolean {
 }
 
 /**
+ * Liste blanche (audit de sécurité S2, constat 1) : lettres de toute écriture, marques, apostrophes
+ * (droite et courbe), trait d'union, point et espace. Tout le reste (ponctuation, emoji, symboles,
+ * blanc braille) est refusé. Pas de `\s?` autour du point : « St. Clair » doit passer.
+ */
+const AUTORISES = /^[\p{L}\p{M}' ’\-.]+$/u;
+const INVISIBLES =
+  /[\u115F\u1160\u3164\uFFA0\u034F\u17B4\u17B5\u180B-\u180F\uFE00-\uFE0F\u{E0100}-\u{E01EF}]/u;
+
+function sondeOk(s: string): boolean {
+  if (!AUTORISES.test(s) || INVISIBLES.test(s) || /\p{M}{3,}/u.test(s)) return false;
+  const sonde = s
+    .normalize("NFKC")
+    .replace(/\p{M}/gu, "")
+    .replace(/[\u3002\uFF61\u2024\uFE52]/g, ".");
+  if (/[\p{N}@]/u.test(sonde)) return false;
+  return !/(?:^|[\s.])www(?:[\s.]|$)|[\p{L}\-']\.\p{L}{2,}|https?/iu.test(sonde);
+}
+
+/**
  * Nettoie un prénom ou un nom saisi. Rend `null` si rien de présentable.
  * Ne touche à la casse que si la saisie est TOUT en majuscules ou TOUT en
  * minuscules : une casse mixte (McDonald, DiCaprio) est rendue telle quelle.
@@ -87,7 +106,7 @@ export function nettoyerNomPropre(v: unknown, opts?: { particules?: boolean }): 
   if (typeof v !== "string") return null;
   let s = v
     .normalize("NFC")
-    .replace(/\p{Cc}/gu, "")
+    .replace(/\p{Cc}/gu, " ")
     .replace(/\p{Cf}/gu, "")
     .replace(/\s+/g, " ")
     .trim()
@@ -97,6 +116,7 @@ export function nettoyerNomPropre(v: unknown, opts?: { particules?: boolean }): 
   if (!/\p{L}/u.test(s)) return null;
   if (s.length > 80) return null;
   if (!ressembleAUnNom(s)) return null;
+  if (!sondeOk(s)) return null;
   const bas = s.toLowerCase();
   if (bas.startsWith("enc:v") || bas.includes("[encrypted")) return null;
 
