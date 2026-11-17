@@ -5,7 +5,7 @@
 //    + email enqueued via worker dédié
 //  - archiver / désarchiver (single + bulk)
 //  - marquer needsAttention=true/false (toggle inbox)
-//  - retry une reply failed/bounced
+//  - retry une reply failed (jamais bounced)
 //
 // Pattern hérité de `admin-submissions/actions.ts` :
 //  - requireAdminWriteSession() (RBAC strict)
@@ -550,12 +550,16 @@ export async function retryFailedReplyAction(
   });
   if (!reply) return { ok: false, error: "not_found" };
 
-  if (reply.deliveryStatus !== "failed" && reply.deliveryStatus !== "bounced") {
+  // Seule une réponse `failed` se rejoue : un rebond (`bounced`) est une adresse
+  // refusée par le serveur du destinataire, sans type (définitif ou temporaire).
+  if (reply.deliveryStatus !== "failed") {
     return { ok: false, error: "not_retryable" };
   }
 
-  await prisma.submissionReply.update({
-    where: { id: reply.id },
+  // Prise atomique : un seul appel passe de `failed` à `pending`. Un second clic
+  // simultané (ou un nouvel essai automatique déjà en cours) trouve 0 ligne.
+  const prise = await prisma.submissionReply.updateMany({
+    where: { id: reply.id, deliveryStatus: "failed" },
     data: {
       deliveryStatus: "pending",
       retryCount: { increment: 1 },
@@ -563,6 +567,7 @@ export async function retryFailedReplyAction(
       errorMsg: null,
     },
   });
+  if (prise.count === 0) return { ok: false, error: "not_retryable" };
 
   let enqueued = false;
   try {
@@ -578,8 +583,8 @@ export async function retryFailedReplyAction(
   }
   if (!enqueued) {
     await prisma.submissionReply
-      .update({
-        where: { id: reply.id },
+      .updateMany({
+        where: { id: reply.id, deliveryStatus: "pending" },
         data: {
           deliveryStatus: "failed",
           failedAt: new Date(),

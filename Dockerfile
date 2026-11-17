@@ -330,6 +330,10 @@ COPY --chown=nextjs:nodejs scripts/docker-entrypoint.sh ./docker-entrypoint.sh
 RUN chmod +x ./docker-entrypoint.sh
 
 # Sharp preinstalled dans builder, copié via standalone deps
+# Dossier des PDF de guides (stockage « volume »). L'utilisateur 1001 ne peut pas
+# créer /var/data ; un volume nommé neuf reprend le propriétaire du dossier de l'image.
+RUN mkdir -p /var/data/guides-reseau && chown nextjs:nodejs /var/data/guides-reseau
+
 USER nextjs
 
 EXPOSE 3000
