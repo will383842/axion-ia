@@ -52,7 +52,7 @@ export function QualiopiEnqueteEntrepriseEmail({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
-        Il y a un mois, <strong>{p.raisonSociale}</strong> nous confiait la formation{" "}
+        <strong>{p.raisonSociale}</strong> nous a confié la formation{" "}
         <strong>{p.titreFormation}</strong> (achevée le {p.dateFinFormation}).
       </Text>
       <Text style={emailStyles.paragraphStyle}>

@@ -175,8 +175,9 @@ function versClassique(e: EtatAssistant): ResultatConversion {
       if (f.modaliteOpco !== "") classique.modaliteOpco = f.modaliteOpco;
       if (f.enveloppeRestante.trim() !== "") {
         const c = eurosEnCents(f.enveloppeRestante);
-        if (c === null) erreurs.push("Enveloppe restante : montant illisible.");
-        else classique.opcoEnveloppeRestanteCents = c;
+        // Champ plus affiché : un montant illisible d'un ancien brouillon est abandonné,
+        // il ne bloque pas (l'utilisateur ne pourrait plus le corriger).
+        if (c !== null) classique.opcoEnveloppeRestanteCents = c;
       }
     }
     if (f.dateDebutSession !== "") classique.dateDebutSessionPrevue = f.dateDebutSession;

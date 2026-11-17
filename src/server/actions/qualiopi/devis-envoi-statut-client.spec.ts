@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => ({
   findUnique: vi.fn(),
   devisUpdate: vi.fn(),
+  devisUpdateMany: vi.fn(),
   clientUpdate: vi.fn(),
   clientUpdateMany: vi.fn(),
   emettre: vi.fn(),
@@ -14,10 +15,15 @@ const h = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    devis: { findUnique: (...a: unknown[]) => h.findUnique(...a) },
     $transaction: async (f: (t: unknown) => unknown) =>
       f({
-        devis: { update: h.devisUpdate },
+        $queryRaw: async () => [{ locked: true }],
+        emailOutbox: { findFirst: async () => null },
+        devis: {
+          findUnique: (...a: unknown[]) => h.findUnique(...a),
+          update: h.devisUpdate,
+          updateMany: h.devisUpdateMany,
+        },
         client: { update: h.clientUpdate, updateMany: h.clientUpdateMany },
         documentSignatureToken: { updateMany: vi.fn() },
       }),
@@ -32,10 +38,19 @@ vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction:
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
   lireContextePdfDevis: vi.fn().mockResolvedValue({}),
-  // Le rendu du PDF est fail-soft : on le fait échouer, l'envoi se poursuit sans pièce.
-  donneesPdfDevis: vi.fn(() => {
-    throw new Error("interception du test");
-  }),
+  // B1 : un devis ne passe « envoye » que si PDF, lien et courriel ont réussi : tout est simulé.
+  donneesPdfDevis: vi.fn(() => ({ identite: {}, formules: undefined })),
+}));
+vi.mock("@/server/qualiopi/documents/documents-service", () => ({
+  generateDocument: vi.fn(async () => ({ id: "doc-1", numero: "AXI-DEV-2026-001" })),
+}));
+vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
+  creerTokenDocument: vi.fn(async () => ({ token: "tok" })),
+  revoquerTokensDocument: vi.fn(),
+  TokenDocumentError: class extends Error {},
+}));
+vi.mock("@/server/queue/queues", () => ({
+  enqueueEmail: vi.fn(async () => ({ enqueued: true })),
 }));
 vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   emettreDevisEmis: (...a: unknown[]) => h.emettre(...a),
@@ -62,9 +77,10 @@ beforeEach(() => {
     replacesDevisId: null,
     replacesDevis: null,
     dateValidite: new Date("2026-12-31T00:00:00Z"),
-    client: { type: "entreprise", raisonSociale: "Client SA", contactEmail: null },
+    client: { type: "entreprise", raisonSociale: "Client SA", contactEmail: "client@example.test" },
   });
   h.clientUpdateMany.mockResolvedValue({ count: 1 });
+  h.devisUpdateMany.mockResolvedValue({ count: 1 });
 });
 
 describe("sendDevisAction — statut du client", () => {
@@ -77,8 +93,8 @@ describe("sendDevisAction — statut du client", () => {
       where: { id: "c1", statut: { in: ["prospect", "perdu"] } },
       data: { statut: "devis_envoye" },
     });
-    // Même transaction que le passage du devis à « envoye ».
-    expect(h.devisUpdate).toHaveBeenCalledOnce();
+    // Même transaction que le passage du devis à « envoye » (écriture gardée sur le brouillon).
+    expect(h.devisUpdateMany).toHaveBeenCalledOnce();
     expect(h.emettre).toHaveBeenCalledOnce();
   });
 
@@ -86,7 +102,7 @@ describe("sendDevisAction — statut du client", () => {
     h.clientUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(false);
-    expect(h.devisUpdate).toHaveBeenCalledOnce();
+    expect(h.devisUpdateMany).toHaveBeenCalledOnce();
     expect(h.emettre).toHaveBeenCalledOnce();
     const note = "data" in r ? (r.data.note ?? "") : "";
     expect(note).not.toMatch(/statut|rétrograd|client actif/i);

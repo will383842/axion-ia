@@ -42,6 +42,7 @@ const PERIMETRE = [
   "src/features/admin-job-offers",
   "src/features/job-application",
   "src/server/careers",
+  "src/server/email-manuel",
 ];
 
 /**

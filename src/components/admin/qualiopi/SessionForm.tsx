@@ -669,7 +669,8 @@ export function SessionForm({
                 : "Montant saisi à la main — il ne sera plus remplacé par le tarif catalogue."}
           </p>
           <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-            TVA appliquée selon le régime configuré (Qualiopi → Configuration → Régime de TVA).
+            TVA appliquée selon le régime configuré (Formations & prestations → Réglages formations
+            → Régime de TVA (facturation)).
           </p>
         </div>
       </div>

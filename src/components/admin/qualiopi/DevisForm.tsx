@@ -9,7 +9,6 @@
  * - Choisir une offre renseigne l'intitulé ET le PU HT depuis pricing.ts (SSOT),
  *   sauf quand aucun prix FERME n'est dérivable (offre « sur devis », fourchette,
  *   prix « à partir de », paliers d'effectif) : on ne pré-remplit RIEN, jamais 0.
- * - Financement suggéré + options OPCO si sélectionné.
  * - Mention TVA affichée en lecture seule, dérivée de `qualiopi.regime_tva`.
  * - Date de validité auto (+30 j) — affiché en informatif.
  * - Appelle `createDevisAction` puis redirige vers `/[basePath]/[id]`.
@@ -112,25 +111,6 @@ interface Ligne {
   designationDepuisOffre: boolean;
 }
 
-type FinancementSuggere = "direct" | "opco" | "cpf" | "france_travail" | "";
-type ModaliteOpco = "intra" | "inter_presentiel" | "inter_distanciel" | "";
-
-const FINANCEMENT_OPTIONS: Array<{ value: FinancementSuggere; label: string }> = [
-  { value: "", label: "— Aucun —" },
-  { value: "direct", label: "Direct (entreprise)" },
-  { value: "opco", label: "OPCO" },
-  // CPF retiré (2026-07-04) — Axion-IA non habilité CPF (sélection interdite).
-  // Enum + labels BPF conservés ailleurs pour l'intégrité des données existantes.
-  { value: "france_travail", label: "France Travail" },
-];
-
-const MODALITE_OPCO_OPTIONS: Array<{ value: ModaliteOpco; label: string }> = [
-  { value: "", label: "— Choisir —" },
-  { value: "intra", label: "Intra" },
-  { value: "inter_presentiel", label: "Inter présentiel" },
-  { value: "inter_distanciel", label: "Inter distanciel" },
-];
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
@@ -216,7 +196,6 @@ export function DevisForm({
   }, [clientId]);
   const bandeauAffiche = bandeau !== null && bandeau.clientId === clientId ? bandeau.texte : null;
   const [lignes, setLignes] = useState<Ligne[]>([emptyLigne()]);
-  const [financementSuggere, setFinancementSuggere] = useState<FinancementSuggere>("");
   // 🔴 L'ACTIVITÉ n'était pas demandée, et son absence cassait TROIS choses :
   //   · `genererFactureDepuisDevisAction` REFUSE un devis sans activité — la
   //     chaîne devis → facture était rompue à son maillon central ;
@@ -226,12 +205,6 @@ export function DevisForm({
   //   · le PDF n'affichait pas `activiteLabel`.
   // L'action l'acceptait depuis toujours ; seul le formulaire ne la posait pas.
   const [activite, setActivite] = useState<ActiviteFacturation | "">("");
-  const [nbParticipants, setNbParticipants] = useState<string>("");
-  const [dureeHeures, setDureeHeures] = useState<string>("");
-  const [modaliteOpco, setModaliteOpco] = useState<ModaliteOpco>("");
-  const [enveloppeRestante, setEnveloppeRestante] = useState<string>("");
-  // Lot OPCO A7d : choisit le barème et l'année civile de l'enveloppe.
-  const [dateDebutSession, setDateDebutSession] = useState<string>("");
 
   // Mode formules (interrupteur allumé seulement) : activité implémentation ou site web.
   const [modeFormules, setModeFormules] = useState(false);
@@ -239,7 +212,6 @@ export function DevisForm({
     saisieVide(formules?.tvaStandardPct),
   );
 
-  const showOpco = financementSuggere === "opco" && !modeFormules;
   const total = totalHtCents(lignes);
 
   // ── Lignes helpers ──
@@ -380,18 +352,6 @@ export function DevisForm({
         // (même garde que VenteWizard ; l'action le revérifie côté serveur).
         ...(projetId !== undefined && clientId === defaultClientId ? { projetId } : {}),
         ...(activite !== "" ? { activite } : {}),
-        ...(financementSuggere !== "" ? { financementSuggere } : {}),
-        ...(showOpco && nbParticipants !== ""
-          ? { nbParticipants: parseInt(nbParticipants, 10) }
-          : {}),
-        ...(showOpco && dureeHeures !== "" ? { dureeHeures: parseFloat(dureeHeures) } : {}),
-        ...(showOpco && modaliteOpco !== "" ? { modaliteOpco } : {}),
-        ...(showOpco && enveloppeRestante !== ""
-          ? { opcoEnveloppeRestanteCents: Math.round(parseFloat(enveloppeRestante) * 100) }
-          : {}),
-        ...(showOpco && dateDebutSession !== ""
-          ? { dateDebutSessionPrevue: dateDebutSession }
-          : {}),
       });
 
       if ("error" in result) {
@@ -625,11 +585,11 @@ export function DevisForm({
         </section>
       ) : null}
 
-      {/* ── Financement ── */}
+      {/* ── Activité ── */}
       {!modeFormules ? (
         <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
           <h2 className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-            Financement
+            Activité
           </h2>
 
           <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
@@ -656,114 +616,6 @@ export function DevisForm({
                 elle, le devis ne pourra pas être facturé.
               </p>
             </div>
-
-            <div className={fieldCls}>
-              <label className={labelCls} htmlFor="devis-financement">
-                Financement suggéré
-              </label>
-              <select
-                id="devis-financement"
-                value={financementSuggere}
-                onChange={(e) => setFinancementSuggere(e.target.value as FinancementSuggere)}
-                disabled={isPending}
-                className={selectCls}
-              >
-                {FINANCEMENT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}>
-                    {opt.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            {/* OPCO — champs complémentaires */}
-            {showOpco && (
-              <>
-                <div className={fieldCls}>
-                  <label className={labelCls} htmlFor="devis-opco-modalite">
-                    Modalité OPCO
-                  </label>
-                  <select
-                    id="devis-opco-modalite"
-                    value={modaliteOpco}
-                    onChange={(e) => setModaliteOpco(e.target.value as ModaliteOpco)}
-                    disabled={isPending}
-                    className={selectCls}
-                  >
-                    {MODALITE_OPCO_OPTIONS.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className={fieldCls}>
-                  <label className={labelCls} htmlFor="devis-opco-participants">
-                    Nb. stagiaires
-                  </label>
-                  <input
-                    id="devis-opco-participants"
-                    type="number"
-                    value={nbParticipants}
-                    onChange={(e) => setNbParticipants(e.target.value)}
-                    disabled={isPending}
-                    min="1"
-                    step="1"
-                    placeholder="Ex. 8"
-                    className={inputCls}
-                  />
-                </div>
-
-                <div className={fieldCls}>
-                  <label className={labelCls} htmlFor="devis-opco-duree">
-                    Durée (heures)
-                  </label>
-                  <input
-                    id="devis-opco-duree"
-                    type="number"
-                    value={dureeHeures}
-                    onChange={(e) => setDureeHeures(e.target.value)}
-                    disabled={isPending}
-                    min="0.5"
-                    step="0.5"
-                    placeholder="Ex. 14"
-                    className={inputCls}
-                  />
-                </div>
-
-                <div className={fieldCls}>
-                  <label className={labelCls} htmlFor="devis-opco-enveloppe">
-                    Enveloppe OPCO restante (€, optionnel)
-                  </label>
-                  <input
-                    id="devis-opco-enveloppe"
-                    type="number"
-                    value={enveloppeRestante}
-                    onChange={(e) => setEnveloppeRestante(e.target.value)}
-                    disabled={isPending}
-                    min="0"
-                    step="0.01"
-                    placeholder="Défaut : plafond annuel moins ce que l'OPCO a déjà pris en charge"
-                    className={inputCls}
-                  />
-                </div>
-
-                <div className={fieldCls}>
-                  <label className={labelCls} htmlFor="devis-opco-debut-session">
-                    Début prévu de la session (optionnel)
-                  </label>
-                  <input
-                    id="devis-opco-debut-session"
-                    type="date"
-                    value={dateDebutSession}
-                    onChange={(e) => setDateDebutSession(e.target.value)}
-                    disabled={isPending}
-                    className={inputCls}
-                  />
-                </div>
-              </>
-            )}
           </div>
         </section>
       ) : null}
@@ -772,9 +624,9 @@ export function DevisForm({
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           <span className="font-semibold tracking-wide uppercase">Mention TVA</span> — appliquée
-          selon le régime configuré (Qualiopi → Configuration → Régime de TVA) ; le devis porte la
-          mention correspondante. La date de validité sera fixée automatiquement à 30 jours à
-          compter de la création du devis.
+          selon le régime configuré (Formations & prestations → Réglages formations → Régime de TVA
+          (facturation)) ; le devis porte la mention correspondante. La date de validité sera fixée
+          automatiquement à 30 jours à compter de la création du devis.
         </p>
       </section>
 

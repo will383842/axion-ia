@@ -33,7 +33,7 @@ export const MODELES_ACTIVITE: readonly ModeleActivite[] = [
   {
     activite: "formation",
     libelle: "Formation",
-    detail: "Session, durée, participants, financement OPCO.",
+    detail: "Session, durée, participants.",
     lignes: [ligne("formation", "")],
   },
   {

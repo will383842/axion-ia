@@ -54,9 +54,15 @@ import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/estimation-certification";
 import { getClient } from "@/server/qualiopi/crm/clients";
+import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
+import {
+  formatDateParis,
+  validiteBrouillonModifiable,
+} from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -68,10 +74,15 @@ const ORIGINE_ESTIMATION_LABELS = {
   reglage_par_defaut: "réglages par défaut (aucun barème)",
   hors_fonds_legaux: "hors fonds légaux (50 salariés ou plus)",
 } as const;
-export const metadata: Metadata = {
-  title: "Qualiopi — Devis | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// B6b-1 : avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: isQualiopiCertificationObtenue()
+      ? "Qualiopi — Devis | Axion-IA Admin"
+      : "Devis | Axion-IA Admin",
+    robots: { index: false, follow: false },
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers & libellés
@@ -95,13 +106,6 @@ const STATUT_LABELS: Record<string, string> = {
   transforme_convention: "Transformé en convention",
 };
 
-const FINANCEMENT_LABELS: Record<string, string> = {
-  direct: "Direct (entreprise)",
-  opco: "OPCO",
-  cpf: "CPF / EDOF",
-  france_travail: "France Travail",
-};
-
 function maintenanceFacultativeDe(offre: unknown): boolean {
   const o = offreDevisV1.safeParse(offre);
   return o.success && o.data.achat?.maintenance.regle === "facultative";
@@ -115,13 +119,7 @@ function formatEur(cents: number): string {
   }).format(cents / 100);
 }
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
+const formatDate = formatDateParis;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types des lignes JSON
@@ -178,17 +176,18 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const devis = await getDevis(id);
   if (!devis) notFound();
 
+  // B6b-1 : lu une fois, côté serveur ; sans certification, aucun mot de tiers payeur.
+  const certifie = isQualiopiCertificationObtenue();
+
   const client = await getClient(devis.clientId);
   // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
-  const bandeauFonds = client ? bandeauEtatFonds(await etatFondsDuClient(client)) : null;
+  const bandeauFonds =
+    certifie && client ? bandeauEtatFonds(await etatFondsDuClient(client)) : null;
 
   // Sous-lot 8G — même règle que celle appliquée au PDF, lue au même endroit :
   // deux calculs du même régime finiraient par diverger, et l'écran affirmerait
   // le contraire de la pièce.
-  const avertissementEstimation = avertissementEstimationAdmin(
-    devis.financementSuggere,
-    isQualiopiCertificationObtenue(),
-  );
+  const avertissementEstimation = avertissementEstimationAdmin(devis.financementSuggere, certifie);
 
   // Factures déjà émises sur ce devis (hors avoirs/annulées) — alimente le
   // bloc « Facturer ce devis » (acompte / solde avec déduction).
@@ -350,7 +349,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         }
       />
 
-      <BandeauEtatFonds bandeau={bandeauFonds} />
+      {certifie ? <BandeauEtatFonds bandeau={bandeauFonds} /> : null}
 
       {/* Contrat d'apporteur 2.6 : l'établissement qui commande (attribution par SIRET). */}
       <section className="mb-[var(--space-admin-6)]">
@@ -396,10 +395,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
           {/* Financement */}
           <div>
-            <p className={infoLabelCls}>Financement suggéré</p>
+            <p className={infoLabelCls}>{certifie ? "Financement suggéré" : "Mode de règlement"}</p>
             <p className={infoValueCls}>
               {devis.financementSuggere ? (
-                (FINANCEMENT_LABELS[devis.financementSuggere] ?? devis.financementSuggere)
+                libelleReglementDevis(devis.financementSuggere, certifie, "fiche")
               ) : (
                 <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
               )}
@@ -421,12 +420,26 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 </span>
               )}
             </p>
+            {validiteBrouillonModifiable(devis) ? (
+              <div className="mt-[var(--space-admin-3)]">
+                <ValiditeBrouillon
+                  devisId={devis.id}
+                  statut={devis.statut}
+                  dateValidite={devis.dateValidite.toISOString()}
+                  majLe={devis.updatedAt.toISOString()}
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* OPCO estimé */}
           {devis.montantOpcoEstimeCents != null && (
             <div>
-              <p className={infoLabelCls}>Prise en charge OPCO estimée</p>
+              <p className={infoLabelCls}>
+                {certifie
+                  ? "Prise en charge OPCO estimée"
+                  : "Montant estimé réglé par un tiers (interne, non imprimé)"}
+              </p>
               <p className={infoValueCls}>
                 <span className="tabular-nums">{formatEur(devis.montantOpcoEstimeCents)}</span>
               </p>
@@ -439,18 +452,27 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                   une promesse orale, ce qui est pire. */}
               {avertissementEstimation !== null && (
                 <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  {avertissementEstimation}
+                  {certifie
+                    ? avertissementEstimation
+                    : "Estimation enregistrée, non imprimée sur le devis (interne)."}
                 </p>
               )}
               {/* Lot A4 — d'où vient le chiffre (barème relevé ou non). */}
               {devis.opcoEstimationOrigine != null && (
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  Origine : {ORIGINE_ESTIMATION_LABELS[devis.opcoEstimationOrigine]}
+                  Origine :{" "}
+                  {certifie
+                    ? ORIGINE_ESTIMATION_LABELS[devis.opcoEstimationOrigine]
+                    : devis.opcoEstimationOrigine === "bareme"
+                      ? "barème relevé"
+                      : "estimation indicative"}
                 </p>
               )}
               {devis.opcoEstimationAvertissement && (
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  {devis.opcoEstimationAvertissement}
+                  {certifie
+                    ? devis.opcoEstimationAvertissement
+                    : "Note d'estimation enregistrée (non affichée avant certification)"}
                 </p>
               )}
             </div>
@@ -459,7 +481,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           {/* Reste à charge */}
           {devis.resteAChargeCents != null && (
             <div>
-              <p className={infoLabelCls}>Reste à charge</p>
+              <p className={infoLabelCls}>
+                {certifie
+                  ? "Reste à charge"
+                  : "Part estimée restant au client (interne, non imprimée)"}
+              </p>
               <p className={infoValueCls}>
                 <span className="tabular-nums">{formatEur(devis.resteAChargeCents)}</span>
               </p>
@@ -679,8 +705,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
         {clientASigne && organismeASigne && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-            Devis intégralement signé. La chaîne de preuve est vérifiable dans Qualiopi › Mode
-            auditeur › Signatures.
+            Devis intégralement signé. La chaîne de preuve est vérifiable dans{" "}
+            {certifie ? "Qualiopi › " : ""}Mode auditeur › Signatures.
           </p>
         )}
 
@@ -724,7 +750,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
-        <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
+        <DevisLifecycleButtons
+          devisId={devis.id}
+          statut={devis.statut}
+          estClassique={devis.offre === null && devis.offreSha256 === null}
+          numero={devis.numero}
+        />
         <DevisSuiviLivraison
           devisId={devis.id}
           peutDemarrer={peutDemarrerLivraison(devis)}
@@ -732,8 +763,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         />
         {devis.livraisonDebutAt && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-            Livraison démarrée le {devis.livraisonDebutAt.toLocaleDateString("fr-FR")}
-            {devis.livreAt ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR")}` : ""}.
+            Livraison démarrée le{" "}
+            {devis.livraisonDebutAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}
+            {devis.livreAt
+              ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`
+              : ""}
+            .
           </p>
         )}
       </section>

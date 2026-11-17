@@ -40,6 +40,7 @@ const CODES_ATTENDUS: string[] = [
   "catalogue_certifiant_incoherent",
   "cloture_trace_presence_incomplete",
   "email_rebond_dur",
+  "email_plainte_spam",
   "report_accord_financement_a_refaire",
   // Ajoutés 2026-08-19 (audit E2E, `D5-4-01`). Ces quatre codes étaient ÉMIS par
   // le balayage depuis leur écriture et ABSENTS de ce catalogue — donc sans
@@ -116,6 +117,7 @@ const CODES_ATTENDUS: string[] = [
   // Lot 8B — fin de session : certificat de réalisation et avis du financeur manquants.
   "certificat_realisation_manquant",
   "avis_financeur_manquant",
+  "convention_non_validee_avant_session",
   "satisfaction_sous_seuil",
   "reclamation_sans_reponse_j15",
   "reclamation_accuse_en_retard",

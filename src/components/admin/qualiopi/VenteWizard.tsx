@@ -141,6 +141,8 @@ export interface VenteWizardProps {
   sessionInitiale?: VenteSessionEtat;
   /** État checklist assemblé serveur (brouillon repris avec session existante). */
   checklistInitiale?: ChecklistVenteInput;
+  /** Lu CÔTÉ SERVEUR par la page (le drapeau d'environnement n'existe pas dans le navigateur). */
+  certificationObtenue?: boolean;
 }
 
 type Etape = 1 | 2 | 3 | 4;
@@ -194,6 +196,7 @@ export function VenteWizard({
   devisInitial,
   sessionInitiale,
   checklistInitiale,
+  certificationObtenue = false,
 }: VenteWizardProps): React.ReactElement {
   const router = useRouter();
   const base = `/fr/${adminPrefix}`;
@@ -254,8 +257,10 @@ export function VenteWizard({
   const [nbParticipants, setNbParticipants] = useState(chaine(p, "nbParticipants") || "1");
   const [dureeHeures, setDureeHeures] = useState(chaine(p, "dureeHeures"));
   const [montantEur, setMontantEur] = useState(chaine(p, "montantEur"));
-  const [financement, setFinancement] = useState<VenteFinancement>(
-    (chaine(p, "financement") as VenteFinancement) || "direct",
+  // Plus de choix de financement dans l'interface : la valeur du brouillon est CONSERVÉE (un
+  // ancien brouillon « opco » ne la perd pas en changeant d'étape), jamais proposée ni affichée.
+  const [financement] = useState<VenteFinancement>(
+    () => (chaine(p, "financement") as VenteFinancement) || "direct",
   );
   const [devis, setDevis] = useState<VenteDevisEtat | null>(devisInitial ?? null);
   const [dateDebut, setDateDebut] = useState(chaine(p, "dateDebut"));
@@ -308,10 +313,10 @@ export function VenteWizard({
       nbParticipants,
       dureeHeures,
       montantEur,
-      financement,
       dateDebut,
       dateFin,
       modalite,
+      financement,
     };
   }
 
@@ -438,7 +443,6 @@ export function VenteWizard({
             ...(offreChoisie.tierId !== null ? { offreTierId: offreChoisie.tierId } : {}),
           },
         ],
-        financementSuggere: financement,
         ...(Number.isFinite(nb) && nb >= 1 ? { nbParticipants: nb } : {}),
         ...(Number.isFinite(duree) && duree > 0 ? { dureeHeures: duree } : {}),
       });
@@ -549,7 +553,7 @@ export function VenteWizard({
     // Brouillon repris avec session existante : l'état complet (documents,
     // inscriptions, alertes) a été assemblé côté serveur.
     if (checklistInitiale !== undefined && sessionCreee?.id === sessionInitiale?.id) {
-      return construireChecklistVente(checklistInitiale);
+      return construireChecklistVente({ ...checklistInitiale, certificationObtenue });
     }
     // Session fraîchement créée : aucun document ni inscription encore.
     const input: ChecklistVenteInput = {
@@ -572,9 +576,10 @@ export function VenteWizard({
       documentsGeneres: [],
       enrollmentsActifs: 0,
       alertesOuvertes: [],
+      certificationObtenue,
     };
     return construireChecklistVente(input);
-  }, [checklistInitiale, sessionCreee, sessionInitiale, devis, financement]);
+  }, [checklistInitiale, sessionCreee, sessionInitiale, devis, financement, certificationObtenue]);
 
   // ── Gates de navigation ─────────────────────────────────────────────────────
 
@@ -1081,21 +1086,6 @@ export function VenteWizard({
                     }}
                     className="admin-input"
                   />
-                </label>
-                <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-                  Financement envisagé
-                  <select
-                    value={financement}
-                    onChange={(e) => {
-                      setFinancement(e.target.value as VenteFinancement);
-                      setSale(true);
-                    }}
-                    className="admin-input"
-                  >
-                    <option value="direct">Direct (entreprise)</option>
-                    <option value="opco">OPCO</option>
-                    <option value="france_travail">France Travail</option>
-                  </select>
                 </label>
               </div>
               {offreChoisie !== null && offreChoisie.prixHtCents !== null && montantEur === "" ? (
