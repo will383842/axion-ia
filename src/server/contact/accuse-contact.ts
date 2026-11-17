@@ -22,6 +22,7 @@
 import { prisma } from "@/lib/prisma";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { ENTITE_MESSAGE, GABARITS_ACCUSE_MESSAGE } from "@/lib/contact/accuse-attendu";
+import { lireIdentiteDetails } from "@/server/contact/identite-contact";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
@@ -37,12 +38,21 @@ export interface DonneesAccuseContact {
   readonly size?: string | null | undefined;
   readonly industry?: string | null | undefined;
   readonly piecesJointesRecues?: number | undefined;
+  /** Salutation : facultatifs (ancienne demande, ancien formulaire). */
+  readonly civilite?: string | null | undefined;
+  readonly prenom?: string | null | undefined;
+  readonly nomFamille?: string | null | undefined;
 }
 
 /** La charge utile de l'accusé — UNE forme, pour l'envoi immédiat et le différé. */
 export function payloadAccuseContact(d: DonneesAccuseContact): Record<string, unknown> {
   return {
+    // Reste dans la charge : l'ancien worker (déployé avant l'app) en a besoin.
+    // Les gabarits ne s'en servent plus pour saluer.
     contactName: d.nom,
+    ...(d.civilite ? { civilite: d.civilite } : {}),
+    ...(d.prenom ? { prenom: d.prenom } : {}),
+    ...(d.nomFamille ? { nomFamille: d.nomFamille } : {}),
     submissionId: d.submissionId,
     // `quote-request-received` s'en sert dans sa phrase d'accroche. Sans
     // lui, le gabarit affichait « votre demande de devis pour undefined ».
@@ -99,6 +109,7 @@ export async function envoyerAccuseDiffere(submissionId: string): Promise<boolea
     where: { submissionId, statut: { in: ["recue", "quarantaine"] } },
   });
   const type = texte(details["unifiedType"]) ?? "autre";
+  const identite = lireIdentiteDetails(details);
   const res = await enqueueEmail(
     gabarit as EmailJobName,
     email,
@@ -112,6 +123,9 @@ export async function envoyerAccuseDiffere(submissionId: string): Promise<boolea
       size: sub.employeesCount,
       industry: sub.sector,
       piecesJointesRecues: recues,
+      civilite: identite.civilite,
+      prenom: identite.prenom,
+      nomFamille: identite.nomFamille,
     }),
     {
       entityType: ENTITE_MESSAGE,
