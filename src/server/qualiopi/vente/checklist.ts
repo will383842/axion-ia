@@ -47,6 +47,12 @@ export interface ChecklistVenteInput {
   enrollmentsActifs: number;
   /** Alertes NON résolues ciblant la session (codes de l'évaluateur). */
   alertesOuvertes: ReadonlyArray<{ code: string }>;
+  /**
+   * Certification obtenue ? Valeur lue CÔTÉ SERVEUR (le drapeau d'environnement n'existe pas
+   * dans le navigateur). Absent ou `false` : libellés neutres, sans mention de tiers payeur
+   * ni de certification — les pièces dues, elles, ne changent pas.
+   */
+  certificationObtenue?: boolean;
 }
 
 export type ChecklistEtat = "a_faire" | "fait" | "bloque" | "sans_objet";
@@ -117,6 +123,12 @@ const ALERTES_PAR_PIECE: Partial<Record<PieceKey, ReadonlyArray<string>>> = {
   convention_tripartite: ["convention_formation_manquante", "convention_tripartite_manquante"],
   emargement: ["emargement_manquant"],
   kit_opco: ["opco_sans_accord", "opco_formation_demarree_sans_accord"],
+};
+
+/** Libellés employés tant que la certification n'est pas obtenue (identifiants inchangés). */
+const LIBELLES_NEUTRES: Partial<Record<PieceKey, string>> = {
+  convention_tripartite: "Convention tripartite",
+  kit_opco: "Dossier administratif complémentaire",
 };
 
 const SESSION_STATUT_LABELS: Record<ChecklistSessionInput["statut"], string> = {
@@ -217,6 +229,10 @@ function itemDevis(devis: ChecklistDevisInput | null): ChecklistVenteItem {
 
 export function construireChecklistVente(input: ChecklistVenteInput): ChecklistVenteItem[] {
   const { devis, session } = input;
+  const neutre = input.certificationObtenue !== true;
+  const libelles: Record<PieceKey, string> = neutre
+    ? { ...LIBELLES, ...LIBELLES_NEUTRES }
+    : LIBELLES;
   const devisAccepte = devis?.statut === "accepte" || devis?.statut === "transforme_convention";
   const sessionInactive = session?.statut === "annulee" || session?.statut === "reportee";
   const typesPresents = new Set(input.documentsGeneres.map((d) => d.type));
@@ -267,7 +283,7 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
     }
 
     // ── Pièces aval : exigent une session ────────────────────────────────────
-    const libelle = LIBELLES[piece];
+    const libelle = libelles[piece];
 
     if (typesPresents.has(piece)) {
       items.push({ key: piece, libelle, etat: "fait", detail: "Pièce générée." });
@@ -302,9 +318,13 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
         detail = "À générer et faire signer avant le démarrage (L.6353-1).";
         break;
       case "convention_tripartite":
-        detail = typesPresents.has("convention")
-          ? "Une convention simple existe, mais la subrogation OPCO exige une convention TRIPARTITE (l'OPCO est partie)."
-          : "Subrogation OPCO : générez la convention tripartite avant le démarrage.";
+        detail = neutre
+          ? typesPresents.has("convention")
+            ? "Une convention simple existe, mais cette session exige une convention TRIPARTITE (un tiers est partie)."
+            : "Générez la convention tripartite avant le démarrage."
+          : typesPresents.has("convention")
+            ? "Une convention simple existe, mais la subrogation OPCO exige une convention TRIPARTITE (l'OPCO est partie)."
+            : "Subrogation OPCO : générez la convention tripartite avant le démarrage.";
         break;
       case "convocation":
         detail =
@@ -325,13 +345,17 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
         detail = "S'émet à l'issue de la session (ou selon l'échéancier convenu).";
         break;
       case "kit_opco":
-        detail = "Dossier de prise en charge OPCO (demande, accord, justificatifs).";
+        detail = neutre
+          ? "Pièces administratives complémentaires (demande, accord, justificatifs)."
+          : "Dossier de prise en charge OPCO (demande, accord, justificatifs).";
         break;
       case "kit_cpf":
         detail = "Dossier CPF/EDOF (inscription, conditions, reste à charge).";
         break;
       case "kit_france_travail":
-        detail = "Dossier France Travail (AIF/POEI : prescription, accord de financement).";
+        detail = neutre
+          ? "Dossier France Travail (AIF/POEI : prescription, accord)."
+          : "Dossier France Travail (AIF/POEI : prescription, accord de financement).";
         break;
     }
 

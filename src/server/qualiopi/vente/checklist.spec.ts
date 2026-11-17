@@ -291,3 +291,55 @@ describe("PIECES_PAR_FINANCEMENT — table déclarative", () => {
     expect(items.some((i) => i.key === "kit_opco")).toBe(true);
   });
 });
+
+describe("🔴 B6b-2 — libellés neutres avant certification", () => {
+  const INTERDITS = /OPCO|prise en charge|financ|Qualiopi/i;
+  const complet = (certificationObtenue?: boolean): ChecklistVenteInput =>
+    baseInput({
+      session: { statut: "planifiee", financementType: "opco", opcoSubrogation: true },
+      alertesOuvertes: [],
+      ...(certificationObtenue !== undefined ? { certificationObtenue } : {}),
+    });
+
+  it.each([undefined, false])("sans certification (%s) : kit présent, libellés neutres", (c) => {
+    const items = construireChecklistVente(complet(c));
+    const kit = items.find((i) => i.key === "kit_opco");
+    expect(kit).toBeDefined();
+    expect(kit?.libelle).toBe("Dossier administratif complémentaire");
+    expect(kit?.detail).toBe(
+      "Pièces administratives complémentaires (demande, accord, justificatifs).",
+    );
+    const texte = items.map((i) => `${i.libelle} ${i.detail}`).join("\n");
+    expect(texte).not.toMatch(INTERDITS);
+    expect(items.find((i) => i.key === "convention_tripartite")?.libelle).toBe(
+      "Convention tripartite",
+    );
+  });
+
+  it("la table des pièces dues ne change pas", () => {
+    expect(PIECES_PAR_FINANCEMENT.opco).toContain("kit_opco");
+  });
+
+  it("avec certification : libellés actuels inchangés", () => {
+    const items = construireChecklistVente(complet(true));
+    expect(items.find((i) => i.key === "kit_opco")?.libelle).toBe("Kit OPCO");
+    expect(items.find((i) => i.key === "kit_opco")?.detail).toBe(
+      "Dossier de prise en charge OPCO (demande, accord, justificatifs).",
+    );
+    expect(items.find((i) => i.key === "convention_tripartite")?.libelle).toBe(
+      "Convention tripartite (OPCO)",
+    );
+  });
+
+  it("détails de la tripartite neutres sans certification", () => {
+    const a = construireChecklistVente(complet(false)).find(
+      (i) => i.key === "convention_tripartite",
+    );
+    expect(a?.detail).not.toMatch(INTERDITS);
+    const b = construireChecklistVente({
+      ...complet(false),
+      documentsGeneres: [{ type: "convention" }],
+    }).find((i) => i.key === "convention_tripartite");
+    expect(b?.detail).not.toMatch(INTERDITS);
+  });
+});
