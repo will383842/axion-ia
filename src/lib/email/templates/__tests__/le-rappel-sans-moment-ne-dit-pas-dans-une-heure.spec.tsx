@@ -94,6 +94,12 @@ describe("rappel sans moment : seul ce qui est connu est dit", () => {
       en: "your meeting is at 11:30 (Paris time)",
     },
     {
+      nom: "date seule",
+      payload: { prenom: "Camille", date: "vendredi 25 septembre" },
+      fr: "votre rendez-vous a lieu le vendredi 25 septembre.",
+      en: "your meeting is on vendredi 25 septembre.",
+    },
+    {
       nom: "date et heure",
       payload: { prenom: "Camille", date: "vendredi 25 septembre", heure: "11:30" },
       fr: "votre rendez-vous a lieu le vendredi 25 septembre à 11:30 (heure de Paris)",
@@ -112,6 +118,9 @@ describe("rappel sans moment : seul ce qui est connu est dit", () => {
         const corps = await texte(locale, c.payload);
         expect(corps).toContain(c[locale]);
         expect(corps).not.toMatch(/undefined|le 11:30|on 11:30|dans une heure|in one hour/);
+        if (c.nom === "date seule") {
+          expect(corps).not.toMatch(/heure de Paris|Paris time|undefined/);
+        }
       });
     }
   }
