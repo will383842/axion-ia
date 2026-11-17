@@ -270,6 +270,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
     devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+  // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
+  const estClassique = devis.offre === null && devis.offreSha256 === null;
+  const peutCorrigerClassique = devis.statut === "brouillon" && estClassique;
   const lignes = parseLignes(devis.lignes);
   // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
   // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
@@ -342,6 +345,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             ) : null}
             {peutModifierFormules ? (
               <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+            {peutCorrigerClassique ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/corriger`}>
                 Modifier le brouillon
               </AdminButton>
             ) : null}
@@ -753,8 +761,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         <DevisLifecycleButtons
           devisId={devis.id}
           statut={devis.statut}
-          estClassique={devis.offre === null && devis.offreSha256 === null}
+          estClassique={estClassique}
           numero={devis.numero}
+          montantHtLabel={formatEur(devis.montantTotalHtCents)}
+          destinataire={client?.contactEmail ?? null}
+          clientASigne={clientASigne}
         />
         <DevisSuiviLivraison
           devisId={devis.id}

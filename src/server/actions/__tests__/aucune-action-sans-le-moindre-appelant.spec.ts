@@ -69,7 +69,6 @@ const DOSSIER_ACTIONS = join(SRC, "server", "actions");
  *   L'émargement et l'import de relevé ont leur écran ; la correction ponctuelle
  *   n'en a pas (indicateur 12, suivi de l'assiduité).
  * - `updateEnrollmentPresenceAction` — taux de présence d'une inscription.
- * - `reviseDevisAction` — créer une nouvelle version d'un devis.
  * - `verifierSousTraitantAction` — horodatage de la vérification data.gouv.fr
  *   d'un sous-traitant (indicateur 27).
  */
@@ -87,7 +86,6 @@ const SANS_AUCUN_APPELANT: ReadonlyArray<string> = [
   // Assistant de devis : encore sans écran (liste des brouillons et mise à l'écart, E-lots suivants).
   "server/actions/qualiopi/devis-assistant-brouillon.ts::listerMesBrouillonsAssistantAction",
   "server/actions/qualiopi/devis-assistant-brouillon.ts::mettreAEcartBrouillonAssistantAction",
-  "server/actions/qualiopi/devis.ts::reviseDevisAction",
   "server/actions/qualiopi/engine.ts::getGenerationStatusAction",
   "server/actions/qualiopi/enrollments.ts::updateEnrollmentPresenceAction",
   "server/actions/qualiopi/financements.ts::verifierSousTraitantAction",

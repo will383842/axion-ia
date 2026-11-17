@@ -10,6 +10,7 @@ const h = vi.hoisted(() => ({
   txDevisFindUnique: vi.fn(),
   txDevisUpdateMany: vi.fn(),
   txDevisUpdate: vi.fn(),
+  txDevisCount: vi.fn(),
   txClientUpdateMany: vi.fn(),
   txTokenUpdateMany: vi.fn(),
   txOutboxFindFirst: vi.fn(),
@@ -31,6 +32,7 @@ vi.mock("@/lib/prisma", () => ({
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
           update: (...a: unknown[]) => h.txDevisUpdate(...a),
+          count: (...a: unknown[]) => h.txDevisCount(...a),
         },
         client: { updateMany: (...a: unknown[]) => h.txClientUpdateMany(...a) },
         documentSignatureToken: { updateMany: (...a: unknown[]) => h.txTokenUpdateMany(...a) },
@@ -127,6 +129,7 @@ beforeEach(() => {
   h.queryRaw.mockResolvedValue([{ locked: true }]);
   h.txDevisFindUnique.mockResolvedValue(devis());
   h.txDevisUpdateMany.mockResolvedValue({ count: 1 });
+  h.txDevisCount.mockResolvedValue(1);
   h.txClientUpdateMany.mockResolvedValue({ count: 1 });
   h.txOutboxFindFirst.mockResolvedValue(null);
   h.generateDocument.mockResolvedValue({ id: "doc-1", numero: "AXI-DEV-2026-001" });
@@ -227,11 +230,14 @@ describe("marquerRemisEnMainPropreAction", () => {
 
   it("révision : version remplacée « expire », ses jetons sont révoqués", async () => {
     h.txDevisFindUnique.mockResolvedValue(
-      devis({ replacesDevisId: "ancien", replacesDevis: { documentGenereId: "doc-0" } }),
+      devis({
+        replacesDevisId: "ancien",
+        replacesDevis: { statut: "envoye", documentGenereId: "doc-0" },
+      }),
     );
     await appel();
-    expect(h.txDevisUpdate).toHaveBeenCalledWith({
-      where: { id: "ancien" },
+    expect(h.txDevisUpdateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: "ancien", statut: "envoye" }),
       data: { statut: "expire" },
     });
     expect(h.txTokenUpdateMany).toHaveBeenCalledWith({
@@ -244,5 +250,65 @@ describe("marquerRemisEnMainPropreAction", () => {
     h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     await expect(appel()).rejects.toThrow();
     expect(h.txClientUpdateMany).not.toHaveBeenCalled();
+  });
+});
+
+const ANCIEN = { replacesDevisId: "ancien" };
+const avecAncien = (statut: string) =>
+  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+
+describe("marquerRemisEnMainPropreAction — version remplacée signée ou acceptée", () => {
+  it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(0);
+    const r = await appel();
+    expect(erreur(r)).toBe(
+      "La version précédente de ce devis a été acceptée ou signée : cette correction ne peut pas être envoyée.",
+    );
+    expect(h.generateDocument).not.toHaveBeenCalled();
+    expect(h.creerToken).not.toHaveBeenCalled();
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+    expect(h.txDevisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it.each(["accepte", "transforme_convention"])(
+    "version remplacée « %s » : refus avant le PDF",
+    async (statut) => {
+      h.txDevisFindUnique.mockResolvedValue(avecAncien(statut));
+      const r = await appel();
+      expect(erreur(r)).toContain("acceptée ou signée");
+      expect(h.generateDocument).not.toHaveBeenCalled();
+      expect(h.txDevisUpdateMany).not.toHaveBeenCalled();
+    },
+  );
+
+  it("version remplacée « refuse » : laissée telle quelle, jetons révoqués comme avant", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("refuse"));
+    h.txDevisCount.mockResolvedValue(1);
+    await appel();
+    const cibles = h.txDevisUpdateMany.mock.calls.map(
+      (c) => (c[0] as { where: { id: string } }).where.id,
+    );
+    expect(cibles).not.toContain("ancien");
+    expect(h.txTokenUpdateMany).toHaveBeenCalled();
+  });
+
+  it("version remplacée « envoye » non signée : expirée par une écriture gardée", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(1);
+    await appel();
+    expect(h.txDevisUpdateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: "ancien", statut: "envoye", OR: expect.any(Array) }),
+      data: { statut: "expire" },
+    });
+  });
+
+  it("signature arrivée entre la relecture et l'écriture (0 ligne) : exception", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(1);
+    h.txDevisUpdateMany.mockImplementation(async (a: { where: { id: string } }) => ({
+      count: a.where.id === "ancien" ? 0 : 1,
+    }));
+    await expect(appel()).rejects.toThrow();
   });
 });

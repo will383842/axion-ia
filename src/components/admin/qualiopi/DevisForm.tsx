@@ -26,6 +26,7 @@ import {
 } from "@/components/admin/qualiopi/devis-formules/saisie";
 import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
+import type { LigneFormulaire } from "./devis-edition-lignes";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -79,6 +80,20 @@ export interface DevisFormProps {
    * `qualiopi.devis_formules.actif` est allumé. Absent = formulaire inchangé.
    */
   formules?: { textes: TexteCopie[]; tvaStandardPct: number };
+  /**
+   * Mode ÉDITION d'un brouillon classique (écran `/corriger`). Absent = écran de création,
+   * inchangé. Présent : client verrouillé, mode formules masqué, l'enregistrement appelle
+   * `modifierDevisClassiqueBrouillonAction` (jamais `createDevisAction`).
+   */
+  edition?: {
+    devisId: string;
+    /** `updatedAt` (ISO) lu au chargement : la version que l'on croit modifier. */
+    attenduMajLe: string;
+    lignes: LigneFormulaire[];
+    activite: ActiviteFacturation | null;
+    /** Référence client : non éditable ici, transmise à l'identique. */
+    refClient: string | null;
+  };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,6 +185,7 @@ export function DevisForm({
   defaultClientId,
   projetId,
   formules,
+  edition,
 }: DevisFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -195,7 +211,9 @@ export function DevisForm({
     };
   }, [clientId]);
   const bandeauAffiche = bandeau !== null && bandeau.clientId === clientId ? bandeau.texte : null;
-  const [lignes, setLignes] = useState<Ligne[]>([emptyLigne()]);
+  const [lignes, setLignes] = useState<Ligne[]>(
+    edition !== undefined ? edition.lignes : [emptyLigne()],
+  );
   // 🔴 L'ACTIVITÉ n'était pas demandée, et son absence cassait TROIS choses :
   //   · `genererFactureDepuisDevisAction` REFUSE un devis sans activité — la
   //     chaîne devis → facture était rompue à son maillon central ;
@@ -204,7 +222,7 @@ export function DevisForm({
   //     opposée aux lignes d'un audit ou d'un site web ;
   //   · le PDF n'affichait pas `activiteLabel`.
   // L'action l'acceptait depuis toujours ; seul le formulaire ne la posait pas.
-  const [activite, setActivite] = useState<ActiviteFacturation | "">("");
+  const [activite, setActivite] = useState<ActiviteFacturation | "">(edition?.activite ?? "");
 
   // Mode formules (interrupteur allumé seulement) : activité implémentation ou site web.
   const [modeFormules, setModeFormules] = useState(false);
@@ -344,6 +362,31 @@ export function DevisForm({
       return;
     }
 
+    if (edition !== undefined) {
+      startTransition(async () => {
+        // Import à l'appel : l'écran de création (sans `edition`) ne charge rien de plus.
+        const { modifierDevisClassiqueBrouillonAction } =
+          await import("@/server/actions/qualiopi/devis-classique-modifier");
+        const result = await modifierDevisClassiqueBrouillonAction({
+          id: edition.devisId,
+          attenduMajLe: edition.attenduMajLe,
+          input: {
+            clientId,
+            lignes: parsedLignes,
+            ...(activite !== "" ? { activite } : {}),
+            // Non éditable ici : transmis à l'identique (sinon l'action le remettrait à null).
+            ...(edition.refClient !== null ? { refClient: edition.refClient } : {}),
+          },
+        });
+        if ("error" in result) {
+          setError(result.error);
+        } else {
+          router.push(`${basePath}/${edition.devisId}`);
+        }
+      });
+      return;
+    }
+
     startTransition(async () => {
       const result = await createDevisAction({
         clientId,
@@ -383,7 +426,20 @@ export function DevisForm({
           <label className={labelCls} htmlFor="devis-client">
             Client <span className="text-[color:var(--color-admin-error)]">*</span>
           </label>
-          {clients.length === 0 ? (
+          {edition !== undefined ? (
+            <p
+              data-testid="client-verrouille"
+              className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+            >
+              {(() => {
+                const c = clients.find((x) => x.id === clientId);
+                return c !== undefined ? `${c.numero} — ${c.raisonSociale}` : clientId;
+              })()}{" "}
+              <span className="text-[color:var(--color-admin-fg-muted)]">
+                (le client d&apos;un devis ne se change pas)
+              </span>
+            </p>
+          ) : clients.length === 0 ? (
             <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-warning)]">
               Aucun client dans le CRM. Créez un client avant de créer un devis.
             </p>
@@ -408,7 +464,7 @@ export function DevisForm({
         </div>
       </section>
 
-      {formules !== undefined ? (
+      {formules !== undefined && edition === undefined ? (
         <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
           <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
             <input
@@ -642,7 +698,13 @@ export function DevisForm({
 
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
         <button type="submit" disabled={isPending || clients.length === 0} className="admin-button">
-          {isPending ? "Création…" : "Créer le devis"}
+          {edition !== undefined
+            ? isPending
+              ? "Enregistrement…"
+              : "Enregistrer le brouillon"
+            : isPending
+              ? "Création…"
+              : "Créer le devis"}
         </button>
       </div>
     </form>

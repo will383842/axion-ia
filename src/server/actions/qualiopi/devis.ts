@@ -49,7 +49,12 @@ import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/de
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
-import { cloreVersionRemplacee } from "@/server/qualiopi/devis/version-remplacee";
+import {
+  cloreVersionRemplacee,
+  MSG_VERSION_REMPLACEE_ACCEPTEE,
+  versionRemplaceeBloqueEmission,
+} from "@/server/qualiopi/devis/version-remplacee";
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import {
   nomPourSalutationDevis,
@@ -346,7 +351,7 @@ export async function sendDevisAction(id: string): Promise<
             offreSha256: true,
             // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
             // elle (voir l'écriture plus bas).
-            replacesDevis: { select: { documentGenereId: true } },
+            replacesDevis: { select: { statut: true, documentGenereId: true } },
             financementSuggere: true,
             montantTotalHtCents: true,
             montantOpcoEstimeCents: true,
@@ -384,6 +389,16 @@ export async function sendDevisAction(id: string): Promise<
             `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
             "statut_non_brouillon",
           );
+        }
+        // (a bis) Révision : la version remplacée ne doit être ni signée par le client, ni
+        // acceptée, ni transformée — relu ICI, avant tout effet externe (PDF, jeton, courriel).
+        if (
+          await versionRemplaceeBloqueEmission(tx, {
+            replacesDevisId: devis.replacesDevisId,
+            statutRemplace: devis.replacesDevis?.statut,
+          })
+        ) {
+          throw new EnvoiRefuse(MSG_VERSION_REMPLACEE_ACCEPTEE, "version_remplacee_signee");
         }
         // (b) Devis à formules : l'interrupteur `qualiopi.devis_formules.actif` doit être allumé.
         // Éteint, le PDF ignorerait l'offre et le client recevrait un devis classique vide.
@@ -587,6 +602,7 @@ export async function sendDevisAction(id: string): Promise<
           replacesDevisId: devis.replacesDevisId,
           documentGenereIdRemplace: devis.replacesDevis?.documentGenereId,
           numero: devis.numero,
+          statutRemplace: devis.replacesDevis?.statut,
         });
         await emettreDevisEmis(tx, devisId);
 
@@ -920,6 +936,9 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
   return { data: { id: idParsed.data } };
 }
 
+const MSG_REVISION_SIGNEE =
+  "Le client a déjà signé ce devis : contresignez-le ou refusez-le, il ne peut pas être corrigé.";
+
 /** Statuts depuis lesquels une révision est autorisée (jamais un brouillon). */
 const STATUTS_REVISABLES = ["envoye", "accepte", "refuse", "expire"] as const;
 
@@ -983,6 +1002,21 @@ export async function reviseDevisAction(
   // version n'est pas touchée ici (elle passe `expire` à l'envoi).
   const created = await withNumberRetry(() =>
     prisma.$transaction(async (tx) => {
+      // Verrou consultatif BLOQUANT (libéré en fin de transaction) : deux clics simultanés
+      // s'alignent l'un derrière l'autre, le second retrouve la révision du premier.
+      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      // Opération répétable : un brouillon de révision existe déjà → son identifiant, sans
+      // nouveau numéro.
+      const existante = await tx.devis.findFirst({
+        where: { replacesDevisId: origine.id, statut: "brouillon" },
+        select: { id: true, numero: true },
+      });
+      if (existante) return { ...existante, dejaExistante: true as const };
+      // Le client a déjà signé : plus de correction (contresigner ou refuser).
+      const nonSigne = await tx.devis.count({
+        where: { id: origine.id, ...pasSigneParLeClient },
+      });
+      if (nonSigne === 0) return { refus: MSG_REVISION_SIGNEE };
       // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
       // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
       // 🔴 V20 — même série que la création : même mécanique obligatoirement.
@@ -1033,9 +1067,12 @@ export async function reviseDevisAction(
         nouveauDevisId: devis.id,
         lieParId: session.userId,
       });
-      return devis;
+      return { ...devis, dejaExistante: false as const };
     }),
   );
+  if ("refus" in created) return { error: created.refus };
+  // Répétition d'un appel déjà traité : rien de neuf à journaliser.
+  if (created.dejaExistante) return { data: { id: created.id, numero: created.numero } };
 
   await logQualiopiActivity({
     action: "qualiopi.devis.revise",
