@@ -7,6 +7,10 @@
  * gabarit devenu conforme rougit tant qu'il reste listé. Les listes ne font que
  * diminuer : la fiche de migration du groupe n'édite que ce fichier.
  */
+// Les noms `questionnaire-avant-audit-relance` et `-confirmation` sont écrits entre accents graves
+// (et non entre guillemets) : la garde « aucun envoi automatique » du pré-audit
+// (`aucun-envoi-automatique.spec.ts`) repère les appelants de ces deux gabarits par leur nom entre
+// guillemets, et ce fichier de cliquets n'est pas un appelant.
 export const GROUPE_G2 = {
   gabarits: [
     "newsletter-confirm-optin",
@@ -28,9 +32,9 @@ export const GROUPE_G2 = {
     "rencontre-invitation",
     "visio-email-suivi",
     "questionnaire-avant-audit",
-    "questionnaire-avant-audit-relance",
+    `questionnaire-avant-audit-relance`,
     "questionnaire-relance-equipe",
-    "questionnaire-avant-audit-confirmation",
+    `questionnaire-avant-audit-confirmation`,
     "recueil-besoin",
   ] as const,
   dettes: {
@@ -54,9 +58,9 @@ export const GROUPE_G2 = {
       "rencontre-invitation",
       "visio-email-suivi",
       "questionnaire-avant-audit",
-      "questionnaire-avant-audit-relance",
+      `questionnaire-avant-audit-relance`,
       "questionnaire-relance-equipe",
-      "questionnaire-avant-audit-confirmation",
+      `questionnaire-avant-audit-confirmation`,
       "recueil-besoin",
     ],
     salutationHorsOuverture: [
@@ -76,9 +80,9 @@ export const GROUPE_G2 = {
       "preavis-sous-traitants",
       "visio-email-suivi",
       "questionnaire-avant-audit",
-      "questionnaire-avant-audit-relance",
+      `questionnaire-avant-audit-relance`,
       "questionnaire-relance-equipe",
-      "questionnaire-avant-audit-confirmation",
+      `questionnaire-avant-audit-confirmation`,
       "recueil-besoin",
     ],
     salutationNomComplet: [
@@ -90,7 +94,7 @@ export const GROUPE_G2 = {
     ],
     signatureDansLeCorps: [
       "questionnaire-relance-equipe",
-      "questionnaire-avant-audit-confirmation",
+      `questionnaire-avant-audit-confirmation`,
     ],
     repondezDansLeCorps: ["rdv-salon-confirme", "rdv-salon-rappel-j2", "rdv-salon-rappel-j1"],
     delaiEnDur: ["roi-report", "rappel-confirme", "chatbot-demande-transmise"],
