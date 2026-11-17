@@ -10,10 +10,19 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
+  /** Hérité : sans la clé `salutation`, rendu « Bonjour <clientNom>, » comme avant. */
   clientNom: string;
+  /**
+   * FACULTATIF. Identité structurée du destinataire. Présente (même vide) : le
+   * bonjour suit `salutation()` (« Bonjour Monsieur Dupont, » / prénom seul /
+   * « Bonjour, »), jamais le nom complet. Absente : ancien comportement
+   * (« Bonjour <clientNom>, »).
+   */
+  salutation?: IdentiteSalutation;
   /** N° du devis. Ex. « AXI-DEV-2026-014 ». */
   numero: string;
   /** Montant formaté. Ex. « 2 450,00 € HT ». Optionnel. */
@@ -104,6 +113,19 @@ export function DevisEnvoiEmail({
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
     : "";
 
+  // Clé présente (valeur autre que undefined) : jamais clientNom. Valeur non
+  // objet (null, chaîne, tableau…) → « Bonjour, ». Clé absente : ancien rendu.
+  const sal = p.salutation as unknown;
+  const bonjour =
+    Object.prototype.hasOwnProperty.call(payload, "salutation") && sal !== undefined
+      ? salutation(
+          typeof sal === "object" && sal !== null && !Array.isArray(sal)
+            ? (sal as IdentiteSalutation)
+            : {},
+          locale,
+        )
+      : t.intro(field(p, "clientNom", ""));
+
   return (
     <EmailLayout
       famille="B"
@@ -114,7 +136,7 @@ export function DevisEnvoiEmail({
       preview={t.preview(field(p, "montantLabel", ""), field(p, "dateValiditeLabel", ""))}
       {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{bonjour}</Text>
       {message !== "" &&
         message.split("\n").map((line, i) => (
           <Text key={i} style={emailStyles.paragraphStyle}>

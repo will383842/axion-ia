@@ -83,3 +83,24 @@ describe("robustesse d'entrée", () => {
     expect(regimeEstimationMutualisee("France_Travail", false).presentable).toBe(false);
   });
 });
+
+describe("🔴 B6b-2 — l'avertissement admin dit la vérité sur le PDF (sans certification)", () => {
+  const INTERDITS = [/porte à la place/i, /Qualiopi/i, /OPCO/i, /prise en charge/i, /financ/i];
+
+  it.each(["direct", "mixte", "opco", "cpf", "france_travail", null])(
+    "texte non nul pour le mode %s, sans mot interdit",
+    (financement) => {
+      const a = avertissementEstimationAdmin(financement, false);
+      expect(a).not.toBeNull();
+      for (const re of INTERDITS) expect(a ?? "").not.toMatch(re);
+      expect(a).toContain("NON imprimée");
+      expect(a).toContain("enregistrée");
+    },
+  );
+
+  it("certification obtenue → null pour tout mode", () => {
+    for (const f of ["direct", "mixte", "opco", null]) {
+      expect(avertissementEstimationAdmin(f, true)).toBeNull();
+    }
+  });
+});

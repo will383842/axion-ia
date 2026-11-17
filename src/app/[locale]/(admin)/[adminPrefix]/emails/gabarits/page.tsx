@@ -50,6 +50,11 @@ import {
   TEXTES_FORMATEURS_A_VALIDER,
 } from "@/server/email/textes-formateurs-a-valider";
 import { lireEtatsTextes } from "@/server/email/textes-valides-lecture";
+import {
+  COMPTEURS_VIDES,
+  FENETRE_COMPTEURS_JOURS,
+  lireCompteursGabarits,
+} from "@/server/email/compteurs-gabarits";
 
 import { ValiderTousTextesFormateurs } from "./ValiderTousTextesFormateurs";
 
@@ -91,6 +96,9 @@ export default async function GabaritsEmailPage({
   const nbARevalider = textesFormateurs.filter((t) => t.aRevalider).length;
   const nbValides = textesFormateurs.filter((t) => t.valide).length;
   const peutValider = estSuperAdmin((session.user as { role?: string }).role);
+
+  // L6b — UNE requête pour tous les gabarits ; `null` = lecture impossible (« — »).
+  const compteurs = await lireCompteursGabarits();
 
   const noms = Object.keys(CATALOGUE) as EmailJobName[];
   const groupes = ORDRE.map((cat) => ({
@@ -240,6 +248,15 @@ export default async function GabaritsEmailPage({
 
                     <p className="text-fg-soft mt-2.5 flex-1 text-[13px] leading-relaxed">
                       {fiche.quand}
+                    </p>
+
+                    <p className="text-fg-muted mt-2 text-xs tabular-nums">
+                      {compteurs === null
+                        ? `${FENETRE_COMPTEURS_JOURS} j : —`
+                        : (() => {
+                            const c = compteurs.get(nom) ?? COMPTEURS_VIDES;
+                            return `${FENETRE_COMPTEURS_JOURS} j : ${c.envoyes} envoyé${c.envoyes > 1 ? "s" : ""} · ${c.echecs} échec${c.echecs > 1 ? "s" : ""} · ${c.rebonds} rebond${c.rebonds > 1 ? "s" : ""}`;
+                          })()}
                     </p>
 
                     <p className="border-border text-fg-muted mt-3 border-t pt-2.5 text-xs">

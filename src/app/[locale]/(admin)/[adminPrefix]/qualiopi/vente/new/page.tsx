@@ -17,6 +17,8 @@ import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { filtreJetonClientVivant } from "@/server/qualiopi/vente/jeton-client-vivant";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -203,7 +205,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
           const signatureMaison =
             d.documentGenereId !== null &&
             (await prisma.documentSignatureToken
-              .count({ where: { documentGenereId: d.documentGenereId } })
+              .count({ where: filtreJetonClientVivant(d.documentGenereId, new Date()) })
               .catch(() => 0)) > 0;
           devisInitial = {
             id: d.id,
@@ -297,6 +299,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
   return (
     <VenteWizard
       adminPrefix={adminPrefix}
+      certificationObtenue={isQualiopiCertificationObtenue()}
       role={role}
       clients={clients}
       offres={offres}

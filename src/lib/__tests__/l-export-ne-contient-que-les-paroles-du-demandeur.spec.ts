@@ -87,6 +87,8 @@ vi.mock("@/lib/prisma", () => ({
     emailSuivi: { findMany: async () => [] },
     devisAssistantBrouillon: { findMany: async () => [] },
     clientFusion: { findMany: async () => [] },
+    emailManuel: { findMany: async () => [] },
+    emailManuelPieceJointe: { findMany: async () => [] },
   },
 }));
 

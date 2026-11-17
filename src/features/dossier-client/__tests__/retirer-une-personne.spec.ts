@@ -4,7 +4,7 @@
  * garder, trace sans contenu. Base SIMULÉE : rien n'est supprimé pour de vrai.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 import {
   bilanRetraitPersonne,
@@ -45,7 +45,8 @@ interface Etat {
       | "envois"
       | "enAttente"
       | "courriers"
-      | "signatures",
+      | "signatures"
+      | "emailsManuels",
       number
     >
   >;
@@ -114,6 +115,7 @@ function fabriquer() {
     questionnaireAvantAuditCourrier: { count: n("courriers") },
     documentSignature: { count: n("signatures") },
     documentSignatureToken: { count: vi.fn(async () => 0) },
+    emailManuel: { count: n("emailsManuels") },
     activityLog: {
       create: vi.fn(async (a: { data: Record<string, unknown> }) => {
         e.trace = a.data;
@@ -317,6 +319,53 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
   ] as const)("lien sans clé étrangère : %s", async (cle, libelle) => {
     e.comptes[cle] = 1;
     await refuse(libelle);
+  });
+
+  it("fiche F1b — e-mail écrit à la main : compté par l'EMPREINTE de ses adresses, refus lisible", async () => {
+    e.comptes.emailsManuels = 3;
+    await refuse(
+      "3 e-mail(s) écrit(s) à la main vers une de ses adresses, sans lien avec sa fiche personne : à traiter par le fondateur",
+    );
+    // Sans les lignes déjà vues par la clé `contact_id` (pas de double bloquant).
+    expect(tx.emailManuel.count).toHaveBeenCalledWith({
+      where: {
+        destinataireHash: { in: ["h1"] },
+        OR: [{ contactId: null }, { contactId: { not: PID } }],
+      },
+    });
+  });
+
+  it("fiche F1b — e-mail écrit à la main rattaché à la personne par `contact_id` : refus par le catalogue", async () => {
+    // Le catalogue lit la clé étrangère `emails_manuels.contact_id` : aucun comptage ad hoc.
+    e.fks = [{ table: "emails_manuels", colonne: "contact_id", n: 2 }];
+    await refuse("2 e-mail(s) écrit(s) à la main lié(e)s");
+  });
+
+  it("fiche F1b — une ligne rattachée par clé ET par empreinte ne donne qu'UN seul bloquant", async () => {
+    e.fks = [{ table: "emails_manuels", colonne: "contact_id", n: 1 }];
+    // La ligne existe aussi par empreinte : elle n'est comptée que si le filtre ne l'exclut pas.
+    (tx.emailManuel.count as unknown as Mock).mockImplementation(
+      async (a: { where: Record<string, unknown> }) => (a.where["OR"] === undefined ? 1 : 0),
+    );
+    await refuse("1 e-mail(s) écrit(s) à la main lié(e)s");
+    const r = await preparerRetraitPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(!r.ok && r.motif).not.toContain("sans lien avec sa fiche personne");
+  });
+
+  it("fiche F1b — un e-mail écrit à la main apparu APRÈS la 1re étape bloque la 2e : rien supprimé", async () => {
+    const jeton = await premiere();
+    e.comptes.emailsManuels = 1;
+    const r = await retirerPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, jeton, code: CODE },
+      base,
+    );
+    expect(r.ok).toBe(false);
+    expect(e.journal).not.toContain("supprime:personne");
+    expect(e.journal).not.toContain("supprime:adresses");
+    expect(e.trace).toBeNull();
   });
 
   it("une adresse liée APRÈS la 1re étape bloque aussi la 2e : rien supprimé", async () => {

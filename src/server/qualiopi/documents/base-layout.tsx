@@ -483,7 +483,7 @@ export function QualiopiPage({
           <Text style={pdfStyles.specimenBannerTitle}>SPÉCIMEN — sans valeur juridique</Text>
           <Text style={pdfStyles.specimenBannerText}>
             {specimenMotif ??
-              "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client, un financeur ou un auditeur."}
+              "Identité de l'organisme incomplète : ce document ne peut pas être remis à un client ou un auditeur."}
           </Text>
         </View>
       )}
@@ -493,7 +493,7 @@ export function QualiopiPage({
           <Text style={pdfStyles.specimenBannerTitle}>ESSAI — pièce sans valeur</Text>
           <Text style={pdfStyles.specimenBannerText}>
             Pièce d&apos;une session d&apos;essai interne : numéro hors suite légale, jamais remise
-            à un client, un financeur ou un auditeur comme pièce réelle.
+            à un client ou un auditeur comme pièce réelle.
           </Text>
         </View>
       )}

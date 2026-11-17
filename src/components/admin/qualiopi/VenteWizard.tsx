@@ -141,6 +141,8 @@ export interface VenteWizardProps {
   sessionInitiale?: VenteSessionEtat;
   /** État checklist assemblé serveur (brouillon repris avec session existante). */
   checklistInitiale?: ChecklistVenteInput;
+  /** Lu CÔTÉ SERVEUR par la page (le drapeau d'environnement n'existe pas dans le navigateur). */
+  certificationObtenue?: boolean;
 }
 
 type Etape = 1 | 2 | 3 | 4;
@@ -194,6 +196,7 @@ export function VenteWizard({
   devisInitial,
   sessionInitiale,
   checklistInitiale,
+  certificationObtenue = false,
 }: VenteWizardProps): React.ReactElement {
   const router = useRouter();
   const base = `/fr/${adminPrefix}`;
@@ -550,7 +553,7 @@ export function VenteWizard({
     // Brouillon repris avec session existante : l'état complet (documents,
     // inscriptions, alertes) a été assemblé côté serveur.
     if (checklistInitiale !== undefined && sessionCreee?.id === sessionInitiale?.id) {
-      return construireChecklistVente(checklistInitiale);
+      return construireChecklistVente({ ...checklistInitiale, certificationObtenue });
     }
     // Session fraîchement créée : aucun document ni inscription encore.
     const input: ChecklistVenteInput = {
@@ -573,9 +576,10 @@ export function VenteWizard({
       documentsGeneres: [],
       enrollmentsActifs: 0,
       alertesOuvertes: [],
+      certificationObtenue,
     };
     return construireChecklistVente(input);
-  }, [checklistInitiale, sessionCreee, sessionInitiale, devis, financement]);
+  }, [checklistInitiale, sessionCreee, sessionInitiale, devis, financement, certificationObtenue]);
 
   // ── Gates de navigation ─────────────────────────────────────────────────────
 
