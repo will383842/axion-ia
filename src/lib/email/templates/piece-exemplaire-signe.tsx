@@ -73,7 +73,9 @@ function designationPiece(p: Partial<Payload>): string {
     .replace(/\s*\([^)]*\)/g, "")
     .replace(/^(la|le|l'|les|un|une)\s+/i, "")
     .trim();
-  return [libelle, numeroAffiche(p)].filter((x) => x !== "").join(" ");
+  // « la pièce » / « le document » (producteur par défaut) n'est pas un libellé : absent.
+  const generique = /^(pièce|piece|document)$/i.test(libelle);
+  return [generique ? "" : libelle, numeroAffiche(p)].filter((x) => x !== "").join(" ");
 }
 
 function listeSignataires(p: Partial<Payload>): string {
@@ -114,8 +116,8 @@ const COPY = {
   en: {
     title: "Your signed copy",
     intro: "Hello,",
-    body: (pieceDesignee: string) =>
-      `The document ${pieceDesignee} has now been signed by all parties. Please find the complete signed copy attached.`,
+    body: (numero: string) =>
+      `The document ${numero} has now been signed by all parties. Please find the complete signed copy attached.`,
     preview: "All parties have signed — your copy is attached.",
     conserver: "This document evidences the agreement between us: please keep it.",
     qui: (noms: string) => `Signatories: ${noms}.`,
@@ -123,8 +125,8 @@ const COPY = {
     pieceRef: (n: string) => `Document file reference: ${n}`,
     empreinte: (e: string) => `SHA-256 fingerprint of the signed document: ${e}`,
     titlePartielle: "Copy of your signature",
-    bodyPartielle: (pieceDesignee: string) =>
-      `Your signature on the document ${pieceDesignee} has been recorded. Please find attached a copy of the document bearing your signature.`,
+    bodyPartielle: (numero: string) =>
+      `Your signature on the document ${numero} has been recorded. Please find attached a copy of the document bearing your signature.`,
     previewPartielle: "Your signature is recorded — the complete copy will follow.",
     conserverPartielle:
       "Other parties still have to sign: this copy is not the final document. It will be sent to you once all signatures are collected.",
@@ -162,7 +164,8 @@ export function PieceExemplaireSigneEmail({
   const t = COPY[locale];
   const noms = listeSignataires(p);
   const partielle = p.partielle === true;
-  const pieceDesignee = designationPiece(p);
+  // Le libellé est français : l'anglais ne dit que le numéro.
+  const pieceDesignee = locale === "fr" ? designationPiece(p) : numeroAffiche(p);
   const empreinte = typeof p.empreinte === "string" ? p.empreinte.trim() : "";
 
   return (

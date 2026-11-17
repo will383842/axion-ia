@@ -17,12 +17,13 @@ const LIBELLES = [
   ...readFileSync(
     join(process.cwd(), "src/server/qualiopi/documents/signature/parties-requises.ts"),
     "utf8",
-  ).matchAll(/^\s*libelle:\s*"([^"]+)"/gm),
+  ).matchAll(/\blibelle:\s*"([^"]+)"/g),
 ].map((m) => m[1] as string);
 
 describe("piece-exemplaire-signe — rien sur le financement, pour chaque pièce", () => {
-  it("couvre au moins un libellé", () => {
-    expect(LIBELLES.length).toBeGreaterThan(5);
+  it("couvre tous les libellés, dont « devis » (déclaré sur une seule ligne)", () => {
+    expect(LIBELLES).toContain("devis");
+    expect(LIBELLES.length).toBeGreaterThanOrEqual(10);
   });
 
   for (const locale of ["fr", "en"] as const) {
@@ -57,6 +58,41 @@ describe("piece-exemplaire-signe — rien sur le financement, pour chaque pièce
     });
     expect(r.text).toContain("La pièce devis AXI-DEV-2026-001 est désormais signée");
   });
+
+  for (const partielle of [false, true]) {
+    it(`libellé générique « la pièce » : jamais « pièce pièce » (${partielle ? "partielle" : "complète"})`, async () => {
+      const r = await renderEmailTemplate("piece-exemplaire-signe", "fr", {
+        numero: "AXI-DOC-1",
+        libellePiece: "la pièce",
+        ...(partielle ? { partielle: true } : {}),
+      });
+      expect(r.text).not.toMatch(/pièce\s+pièce/i);
+      expect(r.text).toContain(
+        partielle ? "sur la pièce AXI-DOC-1 est bien" : "La pièce AXI-DOC-1 est désormais signée",
+      );
+    });
+  }
+
+  for (const libelle of LIBELLES) {
+    for (const partielle of [false, true]) {
+      it(`anglais · ${libelle} · ${partielle ? "partielle" : "complète"} : aucun libellé français`, async () => {
+        const r = await renderEmailTemplate("piece-exemplaire-signe", "en", {
+          numero: "AXI-DOC-1",
+          libellePiece: libelle,
+          ...(partielle ? { partielle: true } : {}),
+        });
+        expect(r.text).toContain(`document AXI-DOC-1 `);
+        expect(r.text).not.toContain(libelle);
+        // Le gabarit d'enveloppe peut porter des accents : on lit le corps du message.
+        const corps = r.text
+          .split("\n")
+          .filter((l) => l.includes("AXI-DOC-1"))
+          .join("\n");
+        expect(corps).toMatch(/document AXI-DOC-1/);
+        expect(corps).not.toMatch(/[àâçéèêëîïôûùü]/i);
+      });
+    }
+  }
 
   it("ancien payload sans libellé : la phrase tient encore", async () => {
     const r = await renderEmailTemplate("piece-exemplaire-signe", "fr", { numero: "AXI-DOC-1" });
