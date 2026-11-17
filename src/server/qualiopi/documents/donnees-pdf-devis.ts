@@ -170,7 +170,12 @@ export function donneesPdfDevis(
   contexte: ContextePdfDevis,
   maintenant: Date,
 ): DevisData {
-  const { identite, regimeTva, tauxStandard } = contexte;
+  const { regimeTva, tauxStandard } = contexte;
+  // Fiche A1 — tant que la certification n'est pas obtenue, AUCUNE mention de
+  // certification ni de financement sur la pièce. Le PDF signé est rendu depuis
+  // la photo de ces données : on corrige donc les DONNÉES, pas le gabarit.
+  const certifie = contexte.certificationObtenue === true;
+  const identite = certifie ? contexte.identite : { ...contexte.identite, qualiopi: "" };
 
   const lignesBrutes = (Array.isArray(devis.lignes)
     ? devis.lignes
@@ -219,21 +224,23 @@ export function donneesPdfDevis(
     tauxTvaStandardPercent: tauxStandard,
     ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
     ...(devis.activite !== null ? { activiteLabel: ACTIVITE_LABELS[devis.activite] } : {}),
-    ...(financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
+    ...(certifie && financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
     // 🔴 Sous-lot 8G — les montants d'estimation ne partent au PDF que si le
     // financement mutualisé est réellement accessible. Sinon la pièce porte
     // la mention à leur place : l'accès aux fonds OPCO/CPF/France Travail est
     // subordonné à la certification (L.6316-1), et un devis est l'offre que
     // le client accepte, pas une note de travail.
-    ...(regimeEstimation.presentable
-      ? {
-          ...(devis.montantOpcoEstimeCents !== null
-            ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
-            : {}),
-          ...(devis.resteAChargeCents !== null
-            ? { resteAChargeCents: devis.resteAChargeCents }
-            : {}),
-        }
-      : { mentionEstimationIndisponible: regimeEstimation.mention ?? "" }),
+    ...(!certifie
+      ? {}
+      : regimeEstimation.presentable
+        ? {
+            ...(devis.montantOpcoEstimeCents !== null
+              ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
+              : {}),
+            ...(devis.resteAChargeCents !== null
+              ? { resteAChargeCents: devis.resteAChargeCents }
+              : {}),
+          }
+        : { mentionEstimationIndisponible: regimeEstimation.mention ?? "" }),
   };
 }
