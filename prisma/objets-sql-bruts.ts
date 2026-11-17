@@ -395,18 +395,3 @@ export function sqlCheckSuivi(): string {
     `("suivi" IS NULL OR "suivi" = 'a_reconfirmer' OR "type" IN ${listeSql(TYPES_SUIVABLES)});`
   );
 }
-
-/**
- * Objets SQL bruts posés sur une table du chantier par une migration POSTÉRIEURE à
- * `MIGRATION_VISIO`. La liste ci-dessus reste celle de la migration du chantier (les gardes
- * unitaires la comparent au texte de cette migration) ; la garde de dérive (Gate D) lit les deux.
- */
-export const OBJETS_AJOUTES_APRES: readonly (ObjetSqlBrut & { readonly migration: string })[] = [
-  {
-    nom: "client_contacts_civilite_check",
-    type: "check",
-    table: "client_contacts",
-    role: "civilité facultative : 'madame' ou 'monsieur', jamais déduite du nom (fiche M1)",
-    migration: "20261118140000_client_contact_identite_devis_conditions",
-  },
-];

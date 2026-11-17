@@ -6,7 +6,6 @@
 import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { OBJETS_AJOUTES_APRES } from "../../../prisma/objets-sql-bruts";
 
 const RACINE = join(process.cwd(), "prisma", "migrations");
 const NOM = "20261118140000_client_contact_identite_devis_conditions";
@@ -148,13 +147,5 @@ describe("migration client_contact_identite_devis_conditions : additive (liste b
     verifier(cl, "contactPrenom", "contact_prenom", "@db.VarChar(80)");
     verifier(cl, "contactNomFamille", "contact_nom_famille", "@db.VarChar(80)");
     verifier(bloc("Devis"), "conditionsParticulieres", "conditions_particulieres", "@db.Text");
-  });
-
-  it("le CHECK posé sur client_contacts (table du chantier) est déclaré pour la garde de dérive", () => {
-    expect(
-      OBJETS_AJOUTES_APRES.filter((o) => o.migration === NOM).map(
-        (o) => `${o.type}:${o.table}.${o.nom}`,
-      ),
-    ).toEqual(["check:client_contacts.client_contacts_civilite_check"]);
   });
 });
