@@ -564,8 +564,15 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
       const r2 = await contresigne();
       expect(r2.activationRefusee?.message).toBe(
-        "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.",
+        "La confirmation de commande n'a pas pu être préparée : l'exemplaire signé du devis est absent. Relancez depuis la fiche du devis ; si le problème persiste, prévenez le support technique.",
       );
+      for (const raison of ["etat_inconnu", "file_indisponible"]) {
+        h.confirmer.mockResolvedValueOnce({ envoye: false, raison });
+        const r3 = await contresigne();
+        expect(r3.activationRefusee?.message).toBe(
+          "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.",
+        );
+      }
       log.mockRestore();
     });
 
@@ -852,7 +859,44 @@ describe("reprise de la confirmation d'un devis CLASSIQUE (M1)", () => {
     h.confirmer.mockRejectedValueOnce(new Error("redis"));
     const r = await reprendreConfirmationDevisClassiques(DOC);
     expect(r.confirmationsEchec).toEqual(["a", "b"]);
-    expect(r.raisonsEchec).toEqual({ a: "pas_d_adresse", b: "exception" });
+    expect(r.echecs).toEqual([
+      { devisId: "a", raison: "pas_d_adresse" },
+      { devisId: "b", raison: "exception" },
+    ]);
+  });
+
+  it("M2 : chaque échec est journalisé avec l'identifiant du devis et le CODE seulement", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique("a"), classique("b")]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+    h.confirmer.mockRejectedValueOnce(new Error("client@exemple.test injoignable"));
+    await reprendreConfirmationDevisClassiques(DOC);
+    const journal = log.mock.calls.map((c) => c.join(" ")).join("\n");
+    expect(journal).toContain("a");
+    expect(journal).toContain("exemplaire_absent");
+    expect(journal).toContain("exception");
+    expect(journal).not.toContain("client@exemple.test");
+    log.mockRestore();
+  });
+
+  it("M1 : le where exclut une pièce annulée (défense en profondeur)", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    await reprendreConfirmationDevisClassiques(DOC);
+    const where = (h.p.devis.findMany.mock.calls as unknown as [{ where: unknown }][])[0]![0].where;
+    expect(where).toMatchObject({ documentGenere: { annuleeAt: null } });
+  });
+
+  it("m2 : une ligne portant une offre est EXCLUE, la ligne classique voisine est confirmée", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([
+      classique("dv-ok"),
+      { id: "dv-offre", offre: { x: 1 }, offreSha256: null },
+    ]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.ids).toEqual(["dv-ok"]);
+    expect(h.confirmer).toHaveBeenCalledTimes(1);
   });
 
   it("devis non contresigné (pas de signature d'Axion-IA) : AUCUNE confirmation", async () => {

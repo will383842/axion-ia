@@ -304,8 +304,8 @@ export async function reprendreConfirmationDevisClassiques(documentGenereId: str
   confirmationsPreparees: string[];
   confirmationsDejaFaites: string[];
   confirmationsEchec: string[];
-  /** Devis → code de raison (« exception » si la préparation a levé). Aucune donnée personnelle. */
-  raisonsEchec: Record<string, string>;
+  /** Un élément par échec : devis et CODE de raison (« exception » si la préparation a levé). Aucune donnée personnelle. */
+  echecs: EchecConfirmation[];
 }> {
   const vide = {
     traite: false,
@@ -313,7 +313,7 @@ export async function reprendreConfirmationDevisClassiques(documentGenereId: str
     confirmationsPreparees: [] as string[],
     confirmationsDejaFaites: [] as string[],
     confirmationsEchec: [] as string[],
-    raisonsEchec: {} as Record<string, string>,
+    echecs: [] as EchecConfirmation[],
   };
   const signatures = await prisma.documentSignature.findMany({
     where: { documentGenereId, revokedAt: null },
@@ -323,7 +323,14 @@ export async function reprendreConfirmationDevisClassiques(documentGenereId: str
   if (!parties.has("client") || !parties.has("axionia")) return vide;
 
   const lus = await prisma.devis.findMany({
-    where: { documentGenereId, statut: { in: ["accepte", "transforme_convention"] } },
+    where: {
+      documentGenereId,
+      // Annuler une pièce ne révoque pas ses signatures : une pièce annulée n'est jamais reprise.
+      documentGenere: { annuleeAt: null },
+      // `accepte` ET `transforme_convention` gardés à dessein : la confirmation reste garée en
+      // corbeille pour validation humaine, même une fois le devis transformé en convention.
+      statut: { in: ["accepte", "transforme_convention"] },
+    },
     select: { id: true, offre: true, offreSha256: true },
   });
   const ids = lus.filter((d) => d.offre == null && d.offreSha256 == null).map((d) => d.id);
@@ -340,12 +347,12 @@ export async function reprendreConfirmationDevisClassiques(documentGenereId: str
       else if (r.raison === "deja_envoyee") res.confirmationsDejaFaites.push(id);
       else {
         res.confirmationsEchec.push(id);
-        res.raisonsEchec[id] = r.raison;
+        res.echecs.push({ devisId: id, raison: r.raison });
         journaliserConfirmationNonPreparee(id, r.raison);
       }
     } catch (err) {
       res.confirmationsEchec.push(id);
-      res.raisonsEchec[id] = "exception";
+      res.echecs.push({ devisId: id, raison: "exception" });
       journaliserConfirmationNonPreparee(id, "exception");
       Sentry.captureException(err, {
         tags: { action: "confirmation_commande_non_preparee" },
@@ -355,6 +362,9 @@ export async function reprendreConfirmationDevisClassiques(documentGenereId: str
   }
   return res;
 }
+
+/** Échec de préparation d'une confirmation : devis et code de raison, rien de personnel. */
+export type EchecConfirmation = { devisId: string; raison: string };
 
 /** Raison d'un échec de préparation : identifiant du devis et code seulement, aucune donnée personnelle. */
 function journaliserConfirmationNonPreparee(devisId: string, raison: string): void {
@@ -372,9 +382,18 @@ export const PREFIXE_CONFIRMATION_NON_PREPAREE =
 const MESSAGE_CONFIRMATION_NON_PREPAREE =
   "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.";
 
-/** Cause « fiche client sans adresse e-mail » : dite telle quelle (chemin CLASSIQUE seulement). */
-const MESSAGE_CONFIRMATION_PAS_D_ADRESSE =
+/** Causes dites telles quelles (chemin CLASSIQUE seulement). */
+export const MESSAGE_CONFIRMATION_PAS_D_ADRESSE =
   "La confirmation de commande n'a pas pu être préparée : la fiche du client n'a pas d'adresse e-mail. Ajoutez-la, puis relancez depuis la fiche du devis.";
+export const MESSAGE_CONFIRMATION_EXEMPLAIRE_ABSENT =
+  "La confirmation de commande n'a pas pu être préparée : l'exemplaire signé du devis est absent. Relancez depuis la fiche du devis ; si le problème persiste, prévenez le support technique.";
+
+/** Message selon la première cause connue ; `null` = aucune cause dédiée (message générique). */
+export function messageConfirmationSelonRaisons(raisons: string[]): string | null {
+  if (raisons.includes("pas_d_adresse")) return MESSAGE_CONFIRMATION_PAS_D_ADRESSE;
+  if (raisons.includes("exemplaire_absent")) return MESSAGE_CONFIRMATION_EXEMPLAIRE_ABSENT;
+  return null;
+}
 
 async function accepterDevis(
   documentGenereId: string,
@@ -439,7 +458,7 @@ async function accepterDevis(
   // Après le COMMIT, hors transaction, comme pour les formules. Toujours garée en corbeille « à
   // valider ». L'anti-rejeu (`deja_envoyee`) interdit tout doublon ; ce n'est pas un échec.
   const confirmationsEchec: string[] = [];
-  let sansAdresse = false;
+  const raisons: string[] = [];
   if (options.confirmer) {
     for (const id of visesEtClassiques.classiques) {
       try {
@@ -449,11 +468,12 @@ async function accepterDevis(
         });
         if (!r.envoye && r.raison !== "deja_envoyee") {
           confirmationsEchec.push(id);
-          if (r.raison === "pas_d_adresse") sansAdresse = true;
+          raisons.push(r.raison);
           journaliserConfirmationNonPreparee(id, r.raison);
         }
       } catch (err) {
         confirmationsEchec.push(id);
+        raisons.push("exception");
         journaliserConfirmationNonPreparee(id, "exception");
         Sentry.captureException(err, {
           tags: { action: "confirmation_commande_non_preparee" },
@@ -469,7 +489,7 @@ async function accepterDevis(
   if (confirmationsEchec.length > 0) {
     return {
       code: "confirmation_commande_non_preparee",
-      message: sansAdresse ? MESSAGE_CONFIRMATION_PAS_D_ADRESSE : MESSAGE_CONFIRMATION_NON_PREPAREE,
+      message: messageConfirmationSelonRaisons(raisons) ?? MESSAGE_CONFIRMATION_NON_PREPAREE,
       manques: [],
       prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
     };
