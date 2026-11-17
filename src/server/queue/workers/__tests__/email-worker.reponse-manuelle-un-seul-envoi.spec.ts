@@ -157,6 +157,16 @@ function table(nom: string) {
         if (c === null && l["sentAt"] !== null) return { count: 0 };
         if (c !== null && typeof c === "object" && l["sentAt"] === null) return { count: 0 };
       }
+      if (Array.isArray(where["OR"])) {
+        const em = l["errorMsg"] as string | null;
+        const ok = (where["OR"] as Record<string, unknown>[]).some((c) => {
+          if ("errorMsg" in c && c["errorMsg"] === null) return em === null;
+          const n = c["NOT"] as { errorMsg: { startsWith: string } } | undefined;
+          if (n) return !(em !== null && em.startsWith(n.errorMsg.startsWith));
+          throw new Error("clause OR non évaluée par la doublure");
+        });
+        if (!ok) return { count: 0 };
+      }
       const st = where["deliveryStatus"] as { in: string[] } | undefined;
       if (st && !st.in.includes(l["deliveryStatus"] as string)) return { count: 0 };
       for (const [k, v] of Object.entries(data)) {
@@ -722,6 +732,51 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     expect(d.redisMap.get(cleVerrou(g))?.v).toBe("voleur");
     expect(d.capture).toHaveBeenCalledTimes(1);
     expect(l.deliveryStatus).toBe("pending");
+  });
+
+  it("W43 : ligne failed « issue inconnue », lecture du marqueur en erreur → rien n'est envoyé, ligne strictement inchangée", async () => {
+    const l = poser(g, { deliveryStatus: "failed", errorMsg: MOTIF });
+    d.redisGetErreur.filtre = (k) => k.startsWith("envoye:");
+    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg).toBe(MOTIF);
+    d.redisGetErreur.filtre = null;
+    await expect(
+      processeur()(job(g, { attemptsMade: 1, attemptsStarted: 2 })),
+    ).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg).toBe(MOTIF);
+  });
+
+  it("W44 : la ligne devient « issue inconnue » pendant le passage, puis Redis tombe → la ligne garde son préfixe", async () => {
+    const l = poser(g);
+    vi.mocked(dateDeMiseAEcart).mockImplementationOnce(async () => {
+      l.deliveryStatus = "failed";
+      l.errorMsg = MOTIF;
+      d.redisGetErreur.filtre = () => true;
+      return null;
+    });
+    await expect(processeur()(job(g))).rejects.toThrow("redis lecture");
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg).toBe(MOTIF);
+  });
+
+  it("W45 : verrou disparu à la contre-vérification → erreur relevée et nouvel essai, puis un seul envoi", async () => {
+    const l = poser(g);
+    vi.mocked(dateDeMiseAEcart).mockImplementationOnce(async () => {
+      d.redisMap.delete(cleVerrou(g));
+      return null;
+    });
+    await expect(processeur()(job(g))).rejects.toThrow("verrou d'envoi disparu");
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("pending");
+    expect(d.capture).toHaveBeenCalledTimes(1);
+    await processeur()(job(g, { attemptsMade: 1, attemptsStarted: 2 }));
+    expect(livres).toBe(1);
+    expect(l.deliveryStatus).toBe("sent");
   });
 
   it("W32 : échec final (finishedOn), ligne pending, ni verrou ni marqueur → failed avec le motif « rien n'est parti »", async () => {

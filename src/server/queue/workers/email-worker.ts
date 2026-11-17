@@ -750,6 +750,8 @@ interface AdaptateurReponse<L extends LigneReponse> {
   lire(replyId: string): Promise<L | null>;
   /** Pose un état sur la ligne, jamais si `sentAt` est rempli. */
   ecrireSiNonEnvoye(id: string, data: Record<string, unknown>): Promise<unknown>;
+  /** Comme `ecrireSiNonEnvoye`, mais jamais sur une ligne dont `errorMsg` porte le préfixe « issue inconnue ». */
+  ecrireSiNiEnvoyeNiIssueInconnue(id: string, data: Record<string, unknown>): Promise<unknown>;
   /** Repasse `sent` une ligne `pending`/`failed` dont `sentAt` est rempli. */
   reparerEnvoye(id: string): Promise<unknown>;
   /** Écrit l'envoi réussi (et ce qui va avec). */
@@ -868,9 +870,22 @@ async function dejaParti<L extends LigneReponse>(
     return true;
   }
   if (l.deliveryStatus !== "pending" && l.deliveryStatus !== "failed") return true;
-  const marqueur = await redisAvantEnvoi(a, l.id, ctx, () =>
-    redis.get(cleMarqueur(a.gabarit, replyId)),
-  );
+  const issueInconnue =
+    l.deliveryStatus === "failed" && (l.errorMsg ?? "").startsWith(PREFIXE_ISSUE_INCONNUE);
+  let marqueur: string | null;
+  if (issueInconnue) {
+    // Ligne « issue inconnue » : aucune écriture automatique ne doit retirer le préfixe.
+    try {
+      marqueur = await redis.get(cleMarqueur(a.gabarit, replyId));
+    } catch (e) {
+      captureWorkerError("email", "emails", ctx.job as Job, e);
+      return true; // ni envoi, ni écriture, ni erreur relevée
+    }
+  } else {
+    marqueur = await redisAvantEnvoi(a, l.id, ctx, () =>
+      redis.get(cleMarqueur(a.gabarit, replyId)),
+    );
+  }
   if (marqueur) {
     const echec = await ecrireEnvoyeRetente(a, l, marqueur, new Date());
     if (echec !== null) {
@@ -880,7 +895,7 @@ async function dejaParti<L extends LigneReponse>(
     return true;
   }
   // Issue inconnue : seul un humain la débloque (« Réessayer » remet `errorMsg: null`).
-  return l.deliveryStatus === "failed" && (l.errorMsg ?? "").startsWith(PREFIXE_ISSUE_INCONNUE);
+  return issueInconnue;
 }
 
 async function libererVerrou(cle: string, valeur: string): Promise<boolean> {
@@ -964,7 +979,7 @@ async function noterVerrouIndisponible<L extends LigneReponse>(
 ): Promise<void> {
   const dernier = ctx.essai >= ctx.essaisMax;
   try {
-    await a.ecrireSiNonEnvoye(
+    await a.ecrireSiNiEnvoyeNiIssueInconnue(
       id,
       dernier
         ? {
@@ -1061,6 +1076,14 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
     // Contre-vérification : le verrou est-il encore le nôtre ? Sinon un autre passage a pris la
     // main (verrou perdu) : rien ne part. Le `finally` ne libère rien (le script compare la valeur).
     const verrouActuel = await redisAvantEnvoi(a, ligne.id, ctx, () => redis.get(cle));
+    if (verrouActuel === null) {
+      // Verrou disparu (expiré, purgé) : rien n'est parti, on réessaie ; `dejaParti` rejouera les gardes.
+      const disparu = new Error(
+        `verrou d'envoi disparu avant l'envoi (${a.gabarit}, réponse ${replyId}) : rien n'est parti, nouvel essai`,
+      );
+      captureWorkerError("email", "emails", ctx.job as Job, disparu);
+      throw disparu;
+    }
     if (verrouActuel !== jeton) {
       captureWorkerError(
         "email",
@@ -1225,6 +1248,15 @@ function adaptateurSubmissionReply(): AdaptateurReponse<LigneSubmissionReply> {
     lire: lireSubmissionReply,
     ecrireSiNonEnvoye: (id: string, data: Record<string, unknown>) =>
       prisma.submissionReply.updateMany({ where: { id, sentAt: null }, data }),
+    ecrireSiNiEnvoyeNiIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.submissionReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
     reparerEnvoye: (id: string) =>
       prisma.submissionReply.updateMany({
         where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },
@@ -1274,6 +1306,15 @@ function adaptateurCandidature(): AdaptateurReponse<LigneCandidature> {
     lire: lireCandidature,
     ecrireSiNonEnvoye: (id: string, data: Record<string, unknown>) =>
       prisma.jobApplicationReply.updateMany({ where: { id, sentAt: null }, data }),
+    ecrireSiNiEnvoyeNiIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.jobApplicationReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
     reparerEnvoye: (id: string) =>
       prisma.jobApplicationReply.updateMany({
         where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },

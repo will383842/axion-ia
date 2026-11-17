@@ -391,8 +391,8 @@ Depuis #2057, le worker envoie les réponses écrites à la main (`submission-re
 
 **Si un retour arrière est forcé malgré tout**, dans cet ordre, AVANT de démarrer l'ancien worker (et sans répondre à une demande ni cliquer « Réessayer » pendant l'opération) :
 
-1. Mettre la file `emails` en pause (`new Queue("emails", { connection }).pause()`, depuis le conteneur worker en place), arrêter ce worker, attendre 2 minutes (expiration des verrous BullMQ).
-2. Lister les jobs `active`, `wait`, `delayed` et `prioritized` nommés `submission-reply` ou `candidature-reponse` (`queue.getJobs([...])`).
+1. Mettre la file `emails` en pause (`new Queue("emails", { connection: getBullConnectionOrThrow() }).pause()`, fonction de `src/server/queue/connection.ts`, depuis le conteneur worker en place), arrêter ce worker, attendre 3 minutes (expiration des verrous BullMQ).
+2. Lister les jobs `active`, `waiting`, `paused`, `delayed` et `prioritized` nommés `submission-reply` ou `candidature-reponse` (`queue.getJobs(["active","waiting","paused","delayed","prioritized"])`). Une file en pause range ses jobs en attente dans `paused` : sans ce nom, ils n'apparaissent pas.
 3. Pour chacun : lire `payload.replyId`, la ligne (`submission_replies` ou `job_application_replies`) et, dans Redis, `envoye:envoi-reponse:<gabarit>:<replyId>` et `verrou:envoi-reponse:<gabarit>:<replyId>`.
 4. Retirer de la file (`job.remove()`) tout job dont la ligne n'est ni `pending` ni `failed`, ou a `sent_at` rempli, ou a un `error_msg` qui commence par `[issue-inconnue]`, ou pour lequel l'une des deux clés existe. Noter ces `replyId` : un humain tranche chacun dans ZeptoMail (page « E-mails envoyés », bouton « ZeptoMail », onglet « Processed emails ») et renvoie à la main ce qui n'est pas parti.
 5. Démarrer l'ancien worker, puis reprendre la file (`resume()`).
