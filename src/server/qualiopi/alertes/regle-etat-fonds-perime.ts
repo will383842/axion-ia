@@ -34,7 +34,7 @@ import { sessionsOpcoAVenir } from "./sessions-opco-a-venir";
 /** Une session à venir dans l'année suffit à exiger un relevé pour son OPCO. */
 export const HORIZON_VEILLE_JOURS = 365;
 
-const TITRE = "État des fonds OPCO à relever (veille mensuelle)";
+const TITRE = "État des fonds des organismes tiers à relever (veille mensuelle)";
 
 /** Décision PURE. */
 export function candidatsEtatFondsPerime(
@@ -48,7 +48,7 @@ export function candidatsEtatFondsPerime(
       code: "etat_fonds_perime",
       niveau: "important" as AlerteNiveau,
       titre: TITRE,
-      message: `Le dernier relevé de l'état des fonds OPCO date du ${formatJourDate(dernier.releveLe)} (plus de ${VEILLE_ETAT_FONDS_JOURS} jours). Consultez les sites des OPCO (suspensions, dates limites de dépôt) et ajoutez un relevé, même inchangé.`,
+      message: `Le dernier relevé de l'état des fonds des organismes tiers date du ${formatJourDate(dernier.releveLe)} (plus de ${VEILLE_ETAT_FONDS_JOURS} jours). Consultez les sites des organismes tiers (suspensions, dates limites de dépôt) et ajoutez un relevé, même inchangé.`,
       cibleType: "EtatFondsOpco",
       cibleId: dernier.id,
     });
@@ -63,7 +63,7 @@ export function candidatsEtatFondsPerime(
       code: "etat_fonds_perime",
       niveau: "important" as AlerteNiveau,
       titre: TITRE,
-      message: `Aucun relevé de l'état des fonds n'existe pour ${pluriel ? "les OPCO" : "l'OPCO"} ${noms}, alors qu'au moins une session à venir en dépend. Consultez ${pluriel ? "leurs sites" : "son site"} (suspensions, dates limites de dépôt) et ajoutez un premier relevé sur la page État des fonds OPCO, même « ouvert ».`,
+      message: `Aucun relevé de l'état des fonds n'existe pour ${pluriel ? "les organismes tiers" : "l'organisme tiers"} ${noms}, alors qu'au moins une session à venir en dépend. Consultez ${pluriel ? "leurs sites" : "son site"} (suspensions, dates limites de dépôt) et ajoutez un premier relevé sur la page État des fonds, même « ouvert ».`,
     });
   }
   return alertes;

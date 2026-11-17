@@ -53,17 +53,17 @@ describe("candidatsDonneesOpcoIncompletes", () => {
     expect(a?.cibleId).toBe("c-1");
     expect(a?.message).toContain("IDCC");
     expect(a?.message).toContain("effectif");
-    expect(a?.message).not.toContain("OPCO reconnu");
+    expect(a?.message).not.toContain("organisme tiers reconnu");
     expect(a?.message).toContain("S-1");
   });
 
-  it("OPCO absent ou texte libre non reconnu : « OPCO reconnu » manque", () => {
+  it("OPCO absent ou texte libre non reconnu : « organisme tiers reconnu » manque", () => {
     const [absent] = candidatsDonneesOpcoIncompletes([session("S-1", { opco: null })]);
-    expect(absent?.message).toContain("OPCO reconnu");
+    expect(absent?.message).toContain("organisme tiers reconnu");
     const [libre] = candidatsDonneesOpcoIncompletes([
       session("S-2", { opco: null, opcoIdentifie: "OPCO du coin" }),
     ]);
-    expect(libre?.message).toContain("OPCO reconnu");
+    expect(libre?.message).toContain("organisme tiers reconnu");
     expect(libre?.message).toContain("« OPCO du coin »");
   });
 
