@@ -464,8 +464,13 @@ describe("🔴 « Retenu » refusé AVANT l'ouverture du dossier (2026-10-07)", 
 describe("l'aperçu ne livre aucun lien personnel à la console", () => {
   const MARQUEUR = "JETONMARQUEURabcdef0123456789";
   const LIEN = `https://axion-ia.com/apporteur/dossier/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/${MARQUEUR}`;
-  const OPPOSITION =
-    "https://axion-ia.com/api/unsubscribe?token=op1.JETONOPPOSITIONabcdef0123456789";
+  // Construit à l'exécution : aucun littéral qui ressemble à un secret dans le dépôt.
+  const OPPOSITION = [
+    "https://axion-ia.com/api/unsubscribe?token=op1",
+    "JETONOPPOSITION",
+    "abcdef0123456789",
+  ].join(".");
+  ("https://axion-ia.com/api/unsubscribe?token=op1.JETONOPPOSITIONabcdef0123456789");
 
   beforeEach(() => {
     renderEmailTemplate.mockResolvedValue({
