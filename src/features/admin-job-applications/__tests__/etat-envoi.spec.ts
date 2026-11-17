@@ -1,24 +1,21 @@
 import { describe, it, expect } from "vitest";
-import {
-  LIBELLE_ENVOYE_EN_ATTENTE,
-  LIBELLE_REMISE_CONFIRMEE,
-  phaseApresSondage,
-} from "../etat-envoi";
+import { LIBELLE_ENVOYE, LIBELLE_TRAITEMENT_LONG, phaseApresSondage } from "../etat-envoi";
 
 describe("phaseApresSondage", () => {
-  it("🔴 `sent` n'est pas une remise confirmée", () => {
+  it("🔴 `sent` donne « envoyé », jamais une remise", () => {
     expect(phaseApresSondage("sent")).toBe("envoye");
-  });
-  it("seule une remise réelle donne « remise »", () => {
-    expect(phaseApresSondage("delivered")).toBe("remise");
+    expect(LIBELLE_ENVOYE).not.toMatch(/remise|remis|délivr/i);
   });
   it("échecs et attente", () => {
     expect(phaseApresSondage("failed")).toBe("echec");
     expect(phaseApresSondage("bounced")).toBe("echec");
     expect(phaseApresSondage("pending")).toBeNull();
   });
+  it("un statut inconnu ne tranche rien", () => {
+    expect(phaseApresSondage("delivered")).toBeNull();
+  });
   it("libellés", () => {
-    expect(LIBELLE_ENVOYE_EN_ATTENTE).toBe("Envoyé, en attente de confirmation.");
-    expect(LIBELLE_REMISE_CONFIRMEE).toBe("Remise confirmée.");
+    expect(LIBELLE_ENVOYE).toMatch(/^Envoyé/);
+    expect(LIBELLE_TRAITEMENT_LONG).toMatch(/vérifiez la frise avant de renvoyer/);
   });
 });

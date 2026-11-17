@@ -79,3 +79,27 @@ describe("ReplyComposer — brouillon", () => {
     expect(screen.queryByRole("dialog")).toBeNull();
   });
 });
+
+describe("ReplyComposer — la fermeture vide vraiment le brouillon", () => {
+  const corps = () => document.getElementById("reply-body") as HTMLTextAreaElement;
+  const note = () => document.getElementById("reply-note") as HTMLTextAreaElement;
+
+  it("🔴 après une fermeture confirmée, le corps et la note interne sont vides à la réouverture", () => {
+    vi.spyOn(window, "confirm").mockReturnValue(true);
+    ouvrir();
+    fireEvent.change(corps(), { target: { value: "Bonjour" } });
+    fireEvent.change(note(), { target: { value: "À rappeler" } });
+    fireEvent.click(screen.getByRole("button", { name: "Fermer" }));
+    fireEvent.click(screen.getByRole("button", { name: "Répondre" }));
+    expect(corps().value).toBe("");
+    expect(note().value).toBe("");
+  });
+
+  it("🔴 un refus de la confirmation garde le brouillon", () => {
+    vi.spyOn(window, "confirm").mockReturnValue(false);
+    ouvrir();
+    fireEvent.change(corps(), { target: { value: "Bonjour" } });
+    fireEvent.click(screen.getByRole("button", { name: "Annuler" }));
+    expect(corps().value).toBe("Bonjour");
+  });
+});

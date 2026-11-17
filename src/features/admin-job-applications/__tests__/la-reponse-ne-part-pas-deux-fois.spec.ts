@@ -1,7 +1,7 @@
 /**
- * Garde serveur contre le double envoi d'une réponse à un candidat : une
- * réponse identique (auteur, candidature, objet, corps) créée dans la minute et
- * encore en file ou envoyée n'en crée pas une seconde.
+ * Garde serveur contre le double envoi d'une réponse à un candidat : l'action
+ * demande la garde, qui vit dans la transaction d'écriture
+ * (`envoyer-reponse.verrou-doublon.spec.ts` prouve verrou → recherche → écriture).
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
@@ -58,25 +58,22 @@ beforeEach(() => {
 });
 
 describe("repondreAuCandidatAction — double envoi", () => {
-  it("🔴 une réponse identique déjà en file rend la MÊME réponse, sans en écrire une seconde", async () => {
-    replyFindMany.mockResolvedValue([{ id: "deja" }]);
-    eventFindFirst.mockResolvedValue({ replyId: "deja" });
+  it("🔴 la garde est confiée à la transaction d'écriture : aucune recherche hors transaction", async () => {
+    await repondreAuCandidatAction(entree);
+    expect(replyFindMany).not.toHaveBeenCalled();
+    expect(eventFindFirst).not.toHaveBeenCalled();
+    expect(ecrire.mock.calls[0]?.[3]).toEqual({ garderContreDoublon: true });
+  });
+
+  it("🔴 un doublon trouvé dans la transaction rend la MÊME réponse (idempotent)", async () => {
+    ecrire.mockResolvedValue({ ecrit: false, error: "doublon", replyId: "deja" });
     const r = await repondreAuCandidatAction(entree);
     expect(r).toEqual({ ok: true, replyId: "deja" });
-    expect(ecrire).not.toHaveBeenCalled();
   });
 
   it("écrit normalement quand aucune réponse identique n'existe", async () => {
-    replyFindMany.mockResolvedValue([]);
     const r = await repondreAuCandidatAction(entree);
     expect(r).toEqual({ ok: true, replyId: "neuve" });
-    expect(ecrire).toHaveBeenCalledTimes(1);
-  });
-
-  it("écrit quand le même objet porte un AUTRE corps", async () => {
-    replyFindMany.mockResolvedValue([{ id: "autre" }]);
-    eventFindFirst.mockResolvedValue(null);
-    await repondreAuCandidatAction(entree);
     expect(ecrire).toHaveBeenCalledTimes(1);
   });
 });

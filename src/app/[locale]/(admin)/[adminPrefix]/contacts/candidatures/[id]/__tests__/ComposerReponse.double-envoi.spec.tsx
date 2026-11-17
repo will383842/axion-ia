@@ -69,7 +69,7 @@ describe("ComposerReponse — double envoi", () => {
   });
 });
 
-describe("ComposerReponse — libellé de remise", () => {
+describe("ComposerReponse — libellé d'envoi", () => {
   async function jusquAuSondage(statut: string): Promise<void> {
     repondre.mockResolvedValue({ ok: true, replyId: "r1" });
     etat.mockResolvedValue({ statut, erreur: null });
@@ -83,14 +83,98 @@ describe("ComposerReponse — libellé de remise", () => {
     });
   }
 
-  it("🔴 `sent` (accepté par le relais) n'affiche PAS « Remise confirmée »", async () => {
+  it("🔴 `sent` affiche « Envoyé » et jamais « Remise confirmée »", async () => {
     await jusquAuSondage("sent");
     expect(screen.queryByText(/Remise confirmée/)).toBeNull();
-    expect(screen.getByText(/Envoyé, en attente de confirmation/)).toBeTruthy();
+    expect(screen.getByText(/Envoyé/)).toBeTruthy();
+  });
+});
+
+describe("ComposerReponse — worker lent et rouverture", () => {
+  async function envoyerPuisAttendre(ms: number): Promise<void> {
+    repondre.mockResolvedValue({ ok: true, replyId: "r1" });
+    etat.mockResolvedValue({ statut: "pending", erreur: null });
+    ouvrirEtRemplir();
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
+    await act(async () => {
+      await Promise.resolve();
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(ms);
+    });
+  }
+
+  it("🔴 après 30 s sans réponse du worker, « Envoyer » se déverrouille avec un avis clair", async () => {
+    await envoyerPuisAttendre(30_500);
+    expect(screen.getByText(/vérifiez la frise avant de renvoyer/)).toBeTruthy();
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      false,
+    );
   });
 
-  it("affiche « Remise confirmée » quand la remise est réellement confirmée", async () => {
-    await jusquAuSondage("delivered");
-    expect(screen.getByText(/Remise confirmée/)).toBeTruthy();
+  it("avant 30 s, « Envoyer » reste verrouillé", async () => {
+    await envoyerPuisAttendre(10_000);
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+  });
+
+  async function envoyerEtConfirmerSent(): Promise<void> {
+    repondre.mockResolvedValue({ ok: true, replyId: "r1" });
+    etat.mockResolvedValue({ statut: "sent", erreur: null });
+    ouvrirEtRemplir();
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
+    await act(async () => {
+      await Promise.resolve();
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_100);
+    });
+  }
+
+  it("🔴 choisir un modèle après « envoyé » rouvre l'envoi", async () => {
+    await envoyerEtConfirmerSent();
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+    const select = screen.getByLabelText("Modèle de départ") as HTMLSelectElement;
+    const autre = Array.from(select.options).find((o) => o.value !== select.value);
+    fireEvent.change(select, { target: { value: autre?.value } });
+    await act(async () => {
+      await Promise.resolve();
+    });
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      false,
+    );
+  });
+
+  it("🔴 insérer un lien après « envoyé » rouvre l'envoi", async () => {
+    repondre.mockResolvedValue({ ok: true, replyId: "r1" });
+    etat.mockResolvedValue({ statut: "sent", erreur: null });
+    render(
+      <ComposerReponse
+        applicationId="11111111-1111-1111-1111-111111111111"
+        prenom="Amina"
+        poste="Monteur"
+        liensInsertion={[{ id: "l1", label: "Mon lien", url: "https://exemple.test/a" }]}
+      />,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Répondre au candidat" }));
+    fireEvent.change(screen.getByLabelText("Objet"), { target: { value: "Votre candidature" } });
+    fireEvent.change(screen.getByLabelText("Message"), { target: { value: "Bonjour" } });
+    fireEvent.click(screen.getByRole("button", { name: "Envoyer" }));
+    await act(async () => {
+      await Promise.resolve();
+    });
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_100);
+    });
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+    fireEvent.click(screen.getByRole("button", { name: "Mon lien" }));
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      false,
+    );
   });
 });

@@ -234,6 +234,13 @@ export function ReplyComposer({
   }
 
   function onClose() {
+    // 🔴 Fermer VIDE le brouillon : la confirmation dit « le message sera
+    // perdu », et un message envoyé ne doit pas réapparaître prérempli (il
+    // partirait une seconde fois). Les seuls appels à `onClose` sont la
+    // fermeture confirmée et la fermeture après envoi.
+    setBody("");
+    setInternalNote("");
+    setTemplate("default");
     setState({ phase: "idle" });
     setOpen(false);
     router.refresh();

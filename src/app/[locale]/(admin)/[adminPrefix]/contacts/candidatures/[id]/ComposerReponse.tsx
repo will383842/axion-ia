@@ -17,7 +17,8 @@
  * écran qui afficherait « Envoyé » mentirait pendant les secondes — ou les
  * heures, si la chaîne d'envoi est en panne — qui séparent la mise en file de la
  * remise. On affiche donc « en file », puis on sonde l'état réel, puis on dit
- * « remise » ou « échec, réessayer ». C'est le défaut `D5-1-C1` de ce dépôt,
+ * « envoyé » (accepté par le relais, sans promettre la remise) ou « échec,
+ * réessayer ». C'est le défaut `D5-1-C1` de ce dépôt,
  * pris à l'endroit où il se produit.
  */
 
@@ -41,8 +42,8 @@ import {
 import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
 import { OBJET_MAX } from "@/lib/email/objet-email";
 import {
-  LIBELLE_ENVOYE_EN_ATTENTE,
-  LIBELLE_REMISE_CONFIRMEE,
+  LIBELLE_ENVOYE,
+  LIBELLE_TRAITEMENT_LONG,
   phaseApresSondage,
 } from "@/features/admin-job-applications/etat-envoi";
 
@@ -52,7 +53,6 @@ type Phase =
   | { readonly nom: "en_file"; readonly replyId: string }
   /** Accepté par le relais d'envoi (`sent`), remise non confirmée. */
   | { readonly nom: "envoye" }
-  | { readonly nom: "remise" }
   | { readonly nom: "echec"; readonly message: string; readonly replyId?: string };
 
 /**
@@ -123,6 +123,8 @@ export function ComposerReponse({
   const [corps, setCorps] = useState("");
   const [note, setNote] = useState("");
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
+  // Message affiché quand le sondage s'arrête sans avoir tranché (worker lent).
+  const [avisSondage, setAvisSondage] = useState<string | null>(null);
   const [, demarrer] = useTransition();
   const corpsRef = useRef<HTMLTextAreaElement>(null);
   // 🔴 Verrou synchrone : deux clics rapprochés partent avant que le rendu ne
@@ -131,7 +133,7 @@ export function ComposerReponse({
 
   /** Une modification après un envoi réussi rouvre la possibilité d'envoyer. */
   function rouvrirSiEnvoye(): void {
-    if (phase.nom === "envoye" || phase.nom === "remise") setPhase({ nom: "repos" });
+    if (phase.nom === "envoye") setPhase({ nom: "repos" });
   }
 
   /**
@@ -143,6 +145,7 @@ export function ComposerReponse({
    * sélection faite), on ajoute en fin de message plutôt que d'échouer.
    */
   function insererLien(lien: LienInsertionComposeur): void {
+    rouvrirSiEnvoye();
     const fragment = `[${lien.label}](${lien.url})`;
     const el = corpsRef.current;
     if (!el) {
@@ -163,6 +166,7 @@ export function ComposerReponse({
   }
 
   function choisirModele(id: ModeleComposeurId): void {
+    rouvrirSiEnvoye();
     setModele(id);
     const m = modeles.find((x) => x.id === id);
     if (!m) return;
@@ -175,7 +179,7 @@ export function ComposerReponse({
   }
 
   // Le verrou ne se relâche que lorsque l'envoi est tranché côté écran : retour
-  // au repos ou échec. Pendant « en file », « envoyé » et « remise », il reste.
+  // au repos ou échec. Pendant « en file » et « envoyé », il reste.
   useEffect(() => {
     if (phase.nom === "repos" || phase.nom === "echec") envoiVerrouille.current = false;
   }, [phase]);
@@ -189,8 +193,8 @@ export function ComposerReponse({
       void etatLivraisonReponseAction(replyId).then((etat) => {
         if (!vivant || !etat) return;
         const suite = phaseApresSondage(etat.statut);
-        if (suite === "envoye" || suite === "remise") {
-          setPhase({ nom: suite });
+        if (suite === "envoye") {
+          setPhase({ nom: "envoye" });
           router.refresh();
         } else if (suite === "echec") {
           setPhase({
@@ -203,10 +207,14 @@ export function ComposerReponse({
     }, 3_000);
     // Au bout de 30 s on cesse de sonder : la frise porte l'état, et un écran
     // qui interroge indéfiniment le serveur pour un message déjà en file coûte
-    // plus qu'il n'apprend.
+    // plus qu'il n'apprend. On repasse en `repos` (sinon « Envoyer » resterait
+    // verrouillé jusqu'au rechargement) avec un avis clair ; la garde serveur
+    // contre le doublon couvre un renvoi identique.
     const arret = setTimeout(() => {
       vivant = false;
       clearInterval(minuteur);
+      setAvisSondage(LIBELLE_TRAITEMENT_LONG);
+      setPhase({ nom: "repos" });
       router.refresh();
     }, 30_000);
     return () => {
@@ -219,6 +227,7 @@ export function ComposerReponse({
   function envoyer(): void {
     if (envoiVerrouille.current) return;
     envoiVerrouille.current = true;
+    setAvisSondage(null);
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void repondreAuCandidatAction({
@@ -245,6 +254,7 @@ export function ComposerReponse({
   function rejouer(replyId: string): void {
     if (envoiVerrouille.current) return;
     envoiVerrouille.current = true;
+    setAvisSondage(null);
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void rejouerReponseEchoueeAction(replyId).then((r) => {
@@ -402,13 +412,13 @@ export function ComposerReponse({
         {phase.nom === "envoye" ? (
           <span role="status" className="admin-alert admin-alert-warning">
             {" "}
-            {LIBELLE_ENVOYE_EN_ATTENTE}
+            {LIBELLE_ENVOYE}
           </span>
         ) : null}
-        {phase.nom === "remise" ? (
-          <span role="status" className="admin-alert admin-alert-success">
+        {phase.nom === "repos" && avisSondage ? (
+          <span role="status" className="admin-alert admin-alert-warning">
             {" "}
-            {LIBELLE_REMISE_CONFIRMEE}
+            {avisSondage}
           </span>
         ) : null}
         {phase.nom === "echec" ? (
