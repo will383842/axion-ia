@@ -16,7 +16,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
 const envoyer = vi.fn();
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   envoyer: (...a: unknown[]) => envoyer(...a),
-  apercu: vi.fn(),
+  apercuLecteurFormateur: vi.fn(),
 }));
 const creerFiche = vi.fn();
 vi.mock("@/features/admin-job-applications/fiche-formateur-actions", () => ({
