@@ -196,4 +196,35 @@ describe("L5a — section « En attente de votre réponse »", () => {
     });
     expect(html).not.toMatch(/Qualiopi|OPCO|prise en charge|financeur/i);
   });
+
+  it("clés facultatives : une ligne chacune ; absentes, rien", async () => {
+    const vide = await renderEmailTemplate("recap-demandes-clients", "fr", PAYLOAD);
+    for (const t of [
+      "et 3 autres",
+      "illisible(s) : à voir",
+      "mise à l",
+      "incomplète",
+      "pas pu être calculée",
+    ]) {
+      expect(vide.html).not.toContain(t);
+    }
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttenteNonListees: 3,
+      enAttenteIllisibles: 2,
+      enAttenteEcartees: 1,
+      enAttenteIncomplete: true,
+      enAttenteIndisponible: true,
+    });
+    expect(html).toContain("et 3 autres");
+    expect(html).toContain("2 demande(s) en attente illisible(s) : à voir dans la console");
+    expect(html).toContain(
+      "1 demande(s) d&#x27;une personne mise à l&#x27;écart : aucun envoi possible",
+    );
+    expect(html).toContain("peut-être incomplète");
+    expect(html).toContain(
+      "La liste des demandes en attente n&#x27;a pas pu être calculée ce matin",
+    );
+    expect(html).not.toMatch(/Qualiopi|OPCO|prise en charge|financeur/i);
+  });
 });

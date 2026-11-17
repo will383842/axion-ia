@@ -15,6 +15,7 @@ const d = vi.hoisted(() => ({
   escalades: vi.fn(),
   rdvs: vi.fn(),
   incident: vi.fn(async () => {}),
+  ecartee: vi.fn(async (_a: string, _t: string): Promise<Date | null> => null),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -23,6 +24,9 @@ vi.mock("@/lib/prisma", () => ({
     chatEscalation: { findMany: (...a: unknown[]) => d.escalades(...a) },
     calendlyEvent: { findMany: (...a: unknown[]) => d.rdvs(...a) },
   },
+}));
+vi.mock("@/server/email/verdict-envoi", () => ({
+  dateDeMiseAEcart: (a: string, t: string) => d.ecartee(a, t),
 }));
 vi.mock("@/server/notifications/channels/sentry", () => ({
   signalerIncident: (...a: unknown[]) => d.incident(...(a as [])),
@@ -34,7 +38,12 @@ import {
   __reinitialiserPourTests as reinitialiserEnfileur,
   poserChargeurEnfileurEmail,
 } from "@/server/notifications/enfileur-email";
-import { collecterDemandesVeille, envoyerRecapVeille, joursOuvresEcoules } from "../recap";
+import {
+  collecterDemandesVeille,
+  envoyerRecapVeille,
+  joursOuvresEcoules,
+  payloadRecap,
+} from "../recap";
 
 const CLE_DE_TEST = "ab".repeat(32);
 // 14/11/2026, 7 h 30 à Paris (hiver, UTC+1) : la veille est le 13/11.
@@ -86,6 +95,8 @@ beforeEach(() => {
   d.escalades.mockResolvedValue([]);
   d.rdvs.mockResolvedValue([]);
   d.incident.mockClear();
+  d.ecartee.mockReset();
+  d.ecartee.mockResolvedValue(null);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 afterEach(() => {
@@ -357,15 +368,86 @@ describe("🔴 le lien d'annulation du client ne part pas par e-mail (L2b)", () 
 
 // ── L5a : « En attente de votre réponse » ─────────────────────────────────────
 // MAINTENANT = samedi 14/11/2026. Reçue lundi 09/11 : mar, mer, jeu, ven = 4 jours ouvrés.
+type Ligne = ReturnType<typeof submission>;
+type Reponse = { deliveryStatus: "pending" | "sent" | "failed" };
+type LigneBase = Ligne & {
+  status?: string;
+  needsAttention?: boolean;
+  archivedAt?: Date | null;
+  deletedAt?: Date | null;
+  replies?: Reponse[];
+};
+
+/** Évalue un `where` Prisma (le sous-ensemble utilisé par le récap) sur une ligne. */
+function evalue(l: Record<string, unknown>, where: Record<string, unknown>): boolean {
+  return Object.entries(where).every(([cle, v]) => {
+    if (cle === "AND") return (v as Record<string, unknown>[]).every((w) => evalue(l, w));
+    if (cle === "OR") return (v as Record<string, unknown>[]).some((w) => evalue(l, w));
+    if (cle === "replies") {
+      const rs = (l["replies"] ?? []) as Reponse[];
+      const c = v as { some?: Reponse; none?: Reponse };
+      const ok = (r: Reponse, f: Reponse) => r.deliveryStatus === f.deliveryStatus;
+      return (
+        (!c.some || rs.some((r) => ok(r, c.some!))) && (!c.none || !rs.some((r) => ok(r, c.none!)))
+      );
+    }
+    const x = l[cle] === undefined ? null : l[cle];
+    if (v instanceof Date) return (x as Date).getTime() === v.getTime();
+    if (v !== null && typeof v === "object") {
+      const o = v as Record<string, unknown>;
+      const cmp = (a: unknown, b: unknown) =>
+        a instanceof Date && b instanceof Date
+          ? a.getTime() - b.getTime()
+          : (a as string) < (b as string)
+            ? -1
+            : (a as string) > (b as string)
+              ? 1
+              : 0;
+      if ("in" in o) return (o["in"] as unknown[]).includes(x);
+      if ("gte" in o && cmp(x, o["gte"]) < 0) return false;
+      if ("lte" in o && cmp(x, o["lte"]) > 0) return false;
+      if ("gt" in o && cmp(x, o["gt"]) <= 0) return false;
+      if ("lt" in o && cmp(x, o["lt"]) >= 0) return false;
+      return true;
+    }
+    return x === v;
+  });
+}
+
 describe("L5a — demandes en attente de réponse", () => {
   const LUNDI = new Date("2026-11-09T10:00:00Z");
   const JEUDI_APRES_MIDI = new Date("2026-11-12T14:00:00Z");
   const VENDREDI = new Date("2026-11-13T10:15:00Z");
-  /** La requête « en attente » est celle qui filtre sur le statut ; la requête de la veille ne le fait pas. */
-  const enAttenteDe = (liste: unknown[]) =>
-    d.submissions.mockImplementation(async (arg: { where: Record<string, unknown> }) =>
-      arg.where["status"] === "new" ? liste : [],
+  const attente = (sur: Record<string, unknown> = {}): LigneBase =>
+    submission({
+      submittedAt: LUNDI,
+      status: "new",
+      needsAttention: true,
+      archivedAt: null,
+      deletedAt: null,
+      replies: [],
+      ...sur,
+    }) as LigneBase;
+  /** Doublure qui ÉVALUE le `where`, l'ordre et `take` pour la requête « en attente » ; la veille ne rend rien. */
+  const table = (lignes: LigneBase[]) =>
+    d.submissions.mockImplementation(
+      async (arg: {
+        where: Record<string, unknown>;
+        orderBy?: Array<Record<string, "asc">> | Record<string, "asc">;
+        take?: number;
+      }) => {
+        if (arg.where["submittedAt"] && "lt" in (arg.where["submittedAt"] as object)) return [];
+        const ok = lignes.filter((l) => evalue(l as unknown as Record<string, unknown>, arg.where));
+        ok.sort(
+          (a, b) =>
+            a.submittedAt.getTime() - b.submittedAt.getTime() ||
+            (a.id < b.id ? -1 : a.id > b.id ? 1 : 0),
+        );
+        return ok.slice(0, arg.take ?? ok.length);
+      },
     );
+  const ids = (r: { enAttente?: Array<{ consoleUrl?: string }> }) =>
+    r.enAttente?.map((e) => e.consoleUrl?.split("/").pop());
 
   it("compte les jours ouvrés (lundi à vendredi, fériés non exclus)", () => {
     expect(joursOuvresEcoules("2026-11-09", "2026-11-14")).toBe(4);
@@ -374,11 +456,11 @@ describe("L5a — demandes en attente de réponse", () => {
     expect(joursOuvresEcoules("2026-11-13", "2026-11-17")).toBe(2);
   });
 
-  it("une demande de 3 jours ouvrés est listée, celle d'un jour non", async () => {
-    // Ven 13 reçue / lun 16, mar 17, mer 18 : 3 jours ouvrés à la date du 18/11.
-    enAttenteDe([
-      submission({ id: "sub_vieille", submittedAt: LUNDI }),
-      submission({ id: "sub_jeune", submittedAt: JEUDI_APRES_MIDI }),
+  it("une demande de 4 jours ouvrés est listée, celle d'un jour non", async () => {
+    // Vu du samedi 14 : reçue lundi 09 = 4 jours ouvrés ; reçue jeudi 12 après-midi = 1.
+    table([
+      attente({ id: "sub_vieille" }),
+      attente({ id: "sub_jeune", submittedAt: JEUDI_APRES_MIDI }),
     ]);
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.enAttente?.map((e) => e.consoleUrl)).toEqual([
@@ -389,47 +471,127 @@ describe("L5a — demandes en attente de réponse", () => {
 
   it("exactement 2 jours ouvrés : pas encore listée ; 3 : listée", async () => {
     // Reçue jeudi 12, vu de lundi 16 : ven, lun = 2 (non) ; vu de mardi 17 : 3 (oui).
-    enAttenteDe([submission({ id: "sub_j", submittedAt: JEUDI_APRES_MIDI })]);
+    table([attente({ id: "sub_j", submittedAt: JEUDI_APRES_MIDI })]);
     const lundi = await collecterDemandesVeille(new Date("2026-11-16T06:30:00Z"));
     expect(lundi.enAttente).toBeUndefined();
     const mardi = await collecterDemandesVeille(new Date("2026-11-17T06:30:00Z"));
     expect(mardi.enAttente).toHaveLength(1);
   });
 
-  it("la requête : statut « new », hors corbeille, entre 2 et 30 jours, bornée, lecture seule", async () => {
+  it("la requête : hors corbeille, non archivée, entre 2 et 30 jours, par pages, ordre stable", async () => {
     await collecterDemandesVeille(MAINTENANT);
     const arg = d.submissions.mock.calls
-      .map((c) => c[0] as { where: Record<string, unknown>; take?: number })
-      .find((a) => a.where["status"] === "new")!;
+      .map((c) => c[0] as { where: Record<string, unknown>; take?: number; orderBy?: unknown })
+      .find((a) => a.where["archivedAt"] === null)!;
     expect(arg.where["deletedAt"]).toBeNull();
     expect(arg.where["submittedAt"]).toEqual({
       gte: new Date("2026-10-15T06:30:00Z"),
       lte: new Date("2026-11-12T06:30:00Z"),
     });
     expect(arg.take).toBe(50);
+    expect(arg.orderBy).toEqual([{ submittedAt: "asc" }, { id: "asc" }]);
   });
 
-  it("plafond de 10, du plus ancien au plus récent", async () => {
-    enAttenteDe(
-      Array.from({ length: 14 }, (_, i) => submission({ id: `sub_${i}`, submittedAt: LUNDI })),
+  it("🔴 « répondu ailleurs » (needsAttention faux, statut new) : plus listée", async () => {
+    table([
+      attente({ id: "sub_ailleurs", needsAttention: false }),
+      attente({ id: "sub_ouverte", submittedAt: new Date(LUNDI.getTime() + 1000) }),
+    ]);
+    expect(ids(await collecterDemandesVeille(MAINTENANT))).toEqual(["sub_ouverte"]);
+  });
+
+  it("une demande archivée ou traitée n'est pas listée", async () => {
+    table([
+      attente({ id: "sub_archivee", archivedAt: new Date(0) }),
+      attente({ id: "sub_traitee", status: "processed", needsAttention: false }),
+    ]);
+    expect((await collecterDemandesVeille(MAINTENANT)).enAttente).toBeUndefined();
+  });
+
+  it("réponse `sent` : exclue ; `failed` seule : listée ; `pending` seule : pas listée", async () => {
+    table([
+      attente({
+        id: "sub_sent",
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed" }, { deliveryStatus: "sent" }],
+      }),
+      attente({
+        id: "sub_failed",
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed" }],
+      }),
+      attente({
+        id: "sub_pending",
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "pending" }],
+      }),
+    ]);
+    expect(ids(await collecterDemandesVeille(MAINTENANT))).toEqual(["sub_failed"]);
+  });
+
+  it("plafond de 10, du plus ancien au plus récent (dates distinctes)", async () => {
+    // 14 lignes données dans le désordre : la 1re est la plus récente.
+    const lignes = Array.from({ length: 14 }, (_, i) =>
+      attente({
+        id: `sub_${String(i).padStart(2, "0")}`,
+        submittedAt: new Date(LUNDI.getTime() - i * 3_600_000),
+      }),
     );
+    table(lignes);
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.enAttente).toHaveLength(10);
+    // Le plus ancien = indice 13, jusqu'à l'indice 4.
+    expect(ids(r)).toEqual(
+      [13, 12, 11, 10, 9, 8, 7, 6, 5, 4].map((i) => `sub_${String(i).padStart(2, "0")}`),
+    );
+    expect(r.enAttenteNonListees).toBe(4);
   });
 
-  it("une demande presse n'est pas listée ; une demande traitée ne revient pas de la base", async () => {
-    enAttenteDe([
-      submission({ id: "sub_presse", submittedAt: LUNDI, details: { unifiedType: "presse" } }),
-    ]);
+  it("une demande presse n'est pas listée", async () => {
+    table([attente({ id: "sub_presse", details: { unifiedType: "presse" } })]);
+    expect((await collecterDemandesVeille(MAINTENANT)).enAttente).toBeUndefined();
+  });
+
+  it("50 lignes hors clients (presse) puis une demande de client : la demande est listée", async () => {
+    const presse = Array.from({ length: 50 }, (_, i) =>
+      attente({
+        id: `sub_p${String(i).padStart(2, "0")}`,
+        submittedAt: new Date(LUNDI.getTime() - (100 - i) * 60_000),
+        details: { unifiedType: "presse" },
+      }),
+    );
+    table([...presse, attente({ id: "sub_client" })]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(ids(r)).toEqual(["sub_client"]);
+    expect(r.enAttenteIncomplete).toBeUndefined();
+  });
+
+  it("plafond de 200 lignes lues atteint sans 10 demandes : liste signalée incomplète", async () => {
+    const presse = Array.from({ length: 230 }, (_, i) =>
+      attente({
+        id: `sub_p${String(i).padStart(3, "0")}`,
+        submittedAt: new Date(LUNDI.getTime() - (300 - i) * 60_000),
+        details: { unifiedType: "presse" },
+      }),
+    );
+    table([...presse, attente({ id: "sub_client" })]);
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.enAttente).toBeUndefined();
-    // La base ne rend que le statut « new » : la requête le demande explicitement (test ci-dessus).
+    expect(r.enAttenteIncomplete).toBe(true);
+    const lues = d.submissions.mock.calls.filter(
+      (c) =>
+        (c[0] as { where: Record<string, unknown> }).where["archivedAt"] === null ||
+        "AND" in (c[0] as { where: Record<string, unknown> }).where,
+    );
+    expect(lues).toHaveLength(4);
   });
 
   it("🔴 aucun texte du visiteur dans la section : ni message, ni e-mail, ni téléphone", async () => {
-    enAttenteDe([
-      submission({
-        submittedAt: LUNDI,
+    table([
+      attente({
         details: { unifiedType: "audit", message: "SECRET-MESSAGE", ville: "SECRET-VILLE" },
       }),
     ]);
@@ -441,29 +603,75 @@ describe("L5a — demandes en attente de réponse", () => {
     expect(r.enAttente?.[0]?.nom).toBe("Camille Exemple");
   });
 
+  it("nom illisible : comptée dans enAttenteIllisibles, jamais le chiffré", async () => {
+    table([attente({ id: "sub_x", contactName: "enc:v1:falsifie" })]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIllisibles).toBe(1);
+    expect(JSON.stringify(r)).not.toContain("enc:");
+  });
+
+  it("ancienne ligne effacée (marqueur RGPD) : ni listée ni comptée", async () => {
+    table([attente({ id: "sub_e", contactName: "[erased-rgpd-art17]" })]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIllisibles).toBeUndefined();
+    expect(r.enAttenteEcartees).toBeUndefined();
+  });
+
+  it("🔴 personne mise à l'écart : pas listée par son nom, comptée, adresse jamais sortie", async () => {
+    d.ecartee.mockImplementation(async (a) => (a === "camille@exemple.fr" ? new Date() : null));
+    table([
+      attente({ id: "sub_ecartee" }),
+      attente({
+        id: "sub_autre",
+        submittedAt: new Date(LUNDI.getTime() + 1000),
+        contactName: encryptPii("Dominique Exemple"),
+        contactEmail: encryptPii("dominique@exemple.fr"),
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(ids(r)).toEqual(["sub_autre"]);
+    expect(r.enAttenteEcartees).toBe(1);
+    const sortie = JSON.stringify(payloadRecap(r)) + console.error.toString();
+    expect(sortie).not.toContain("Camille");
+    expect(sortie).not.toContain("camille@exemple.fr");
+    expect(sortie).not.toContain("dominique@exemple.fr");
+    // Une seule lecture de mise à l'écart par ligne retenue.
+    expect(d.ecartee).toHaveBeenCalledTimes(2);
+  });
+
   it("aucune demande en attente : la clé est absente, le récap est celui d'avant", async () => {
     const r = await collecterDemandesVeille(MAINTENANT);
-    expect("enAttente" in r).toBe(false);
+    expect(Object.keys(r).filter((k) => k.startsWith("enAttente"))).toEqual([]);
     expect(r.total).toBe(0);
   });
 
   it("la section ne change ni le total annoncé ni l'objet", async () => {
-    enAttenteDe([submission({ submittedAt: LUNDI })]);
+    table([attente()]);
     expect((await collecterDemandesVeille(MAINTENANT)).total).toBe(0);
   });
 
-  it("une panne de la requête « en attente » ne fait pas perdre le récap de la veille", async () => {
+  it("une panne de la requête « en attente » : récap gardé, signalement fixe, drapeau", async () => {
     d.submissions.mockImplementation(async (arg: { where: Record<string, unknown> }) => {
-      if (arg.where["status"] === "new") throw new Error("boom");
+      if (arg.where["archivedAt"] === null) throw new Error("boom-SECRET");
       return [submission({ submittedAt: VENDREDI })];
     });
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(r.demandes).toHaveLength(1);
     expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIndisponible).toBe(true);
+    expect(d.incident).toHaveBeenCalledTimes(1);
+    const tout = JSON.stringify([
+      d.incident.mock.calls,
+      (console.error as ReturnType<typeof vi.fn>).mock.calls,
+    ]);
+    expect(tout).toContain("section « en attente » non calculée");
+    expect(tout).not.toContain("boom-SECRET");
   });
 
   it("zéro envoi externe : seul l'enfileur interne est appelé, vers le destinataire interne", async () => {
-    enAttenteDe([submission({ submittedAt: LUNDI })]);
+    table([attente()]);
     const enqueue = vi.fn(async () => ({ enqueued: true }));
     poserChargeurEnfileurEmail(async () => enqueue as never);
     await envoyerRecapVeille(MAINTENANT);

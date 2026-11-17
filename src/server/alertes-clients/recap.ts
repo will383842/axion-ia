@@ -23,9 +23,11 @@
 // le worker, qui l'interprète depuis les sources : rien à tolérer côté app.
 
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "../../../prisma/generated/client";
 import { decryptPii } from "@/lib/pii-crypto";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
+import { dateDeMiseAEcart } from "@/server/email/verdict-envoi";
 import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { estCategorieClient } from "@/server/notifications/routing";
 import { tracerEchec as tracerEchecAvecPrefixe } from "@/server/notifications/doublon-client";
@@ -92,6 +94,16 @@ export interface DemandesVeille {
    * worker qui ne connaît pas la clé l'ignore : le récap reste celui d'avant. Absente quand il n'y a rien.
    */
   enAttente?: ElementRecap[];
+  /** L5a — FACULTATIVE : la section n'a pas pu être calculée ce matin (panne de lecture). */
+  enAttenteIndisponible?: true;
+  /** L5a — FACULTATIVE : demandes en attente dont le nom ne se déchiffre pas (comptées, jamais perdues). */
+  enAttenteIllisibles?: number;
+  /** L5a — FACULTATIVE : demandes en attente (au-delà des 10 listées) lues mais non listées. */
+  enAttenteNonListees?: number;
+  /** L5a — FACULTATIVE : le plafond de lecture est atteint sans avoir 10 demandes : liste peut-être incomplète. */
+  enAttenteIncomplete?: true;
+  /** L5a — FACULTATIVE : demandes d'une personne mise à l'écart (demande d'effacement) : aucun envoi possible. */
+  enAttenteEcartees?: number;
   /** Total annoncé dans l'objet : messages + rendez-vous de clients (hors « Autres »). */
   total: number;
 }
@@ -164,6 +176,9 @@ function estLeadChatbot(details: Record<string, unknown>): boolean {
 
 /** Plafond de la section « En attente de votre réponse ». */
 export const PLAFOND_EN_ATTENTE = 10;
+/** Lignes lues au plus (par pages) pour trouver ces demandes. */
+export const PLAFOND_LECTURE_EN_ATTENTE = 200;
+const TAILLE_PAGE_EN_ATTENTE = 50;
 /** Ancienneté minimale (jours ouvrés, STRICTEMENT plus de) et maximale (jours calendaires). */
 export const JOURS_OUVRES_MINIMUM = 2;
 export const JOURS_MAXIMUM = 30;
@@ -184,60 +199,120 @@ export function joursOuvresEcoules(recu: string, aujourdhui: string): number {
   return n;
 }
 
+interface EnAttente {
+  elements: ElementRecap[];
+  illisibles: number;
+  nonListees: number;
+  ecartees: number;
+  incomplete: boolean;
+}
+
 /**
- * Demandes de formulaire encore « nouvelles », plus de 2 jours ouvrés après leur arrivée.
- * Lecture seule, UNE requête : `submissions` filtrée par `submittedAt` (index
- * `@@index([submittedAt])`), triée du plus ancien au plus récent, bornée à 50 lignes ; les lignes
- * de catégorie non client sont écartées ensuite. Aucun texte du visiteur n'en sort : seulement le
- * nom, le libellé du type de demande, l'ancienneté et le lien de la fiche.
+ * Demandes de formulaire « en attente », plus de 2 jours ouvrés après leur arrivée.
+ *
+ * « En attente » = non archivée, hors corbeille, ET
+ *   · statut « new » avec `needsAttention` (une demande traitée, ou « répondu ailleurs », sort) ;
+ *   · OU aucune réponse `sent` et au moins une réponse `failed` (le client n'a rien reçu). Ce second
+ *     cas ne peut pas exiger `needsAttention` : créer une réponse le passe à `false` et un échec
+ *     d'envoi ne le rétablit pas. Une réponse seulement `pending` ne remet rien dans la liste.
+ *
+ * Lecture seule, par pages de 50 (curseur `submittedAt` puis `id`, du plus ancien au plus récent),
+ * jusqu'à 10 demandes retenues ou 200 lignes lues. Les filtres faits ensuite dans le code (catégorie
+ * client, jours ouvrés exacts, effacement, mise à l'écart) peuvent écarter des lignes : d'où les pages.
+ * Une ligne retenue coûte UNE lecture de plus (`dateDeMiseAEcart`, `findFirst`). Aucun texte du
+ * visiteur n'en sort ; l'adresse déchiffrée pour ce contrôle ne quitte jamais la boucle.
  */
-async function collecterEnAttente(
-  maintenant: Date,
-): Promise<{ elements: ElementRecap[]; illisibles: number }> {
+async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
   const aujourdhui = jourParis(maintenant);
   const trenteJours = new Date(maintenant.getTime() - JOURS_MAXIMUM * 86_400_000);
   // Pré-filtre de calendrier (2 jours ouvrés = au moins 2 jours) ; le compte exact est fait en JS.
   const deuxJours = new Date(maintenant.getTime() - JOURS_OUVRES_MINIMUM * 86_400_000);
-  const lignes = await prisma.submission.findMany({
-    where: {
-      deletedAt: null,
-      status: "new",
-      submittedAt: { gte: trenteJours, lte: deuxJours },
-    },
-    orderBy: { submittedAt: "asc" },
-    take: 50,
-  });
+  const base: Prisma.SubmissionWhereInput = {
+    deletedAt: null,
+    archivedAt: null,
+    submittedAt: { gte: trenteJours, lte: deuxJours },
+    OR: [
+      { status: "new", needsAttention: true },
+      {
+        status: { in: ["new", "in_progress"] },
+        replies: { some: { deliveryStatus: "failed" }, none: { deliveryStatus: "sent" } },
+      },
+    ],
+  };
   const elements: ElementRecap[] = [];
   let illisibles = 0;
-  for (const s of lignes) {
-    if (elements.length >= PLAFOND_EN_ATTENTE) break;
-    const ouvres = joursOuvresEcoules(jourParis(s.submittedAt), aujourdhui);
-    if (ouvres <= JOURS_OUVRES_MINIMUM) continue;
-    const details = lireDetails(s.details);
-    const category: NotificationCategory = estLeadChatbot(details)
-      ? "CHATBOT_LEAD_CAPTURED"
-      : categorieSubmission(details);
-    if (!estCategorieClient(category)) continue;
-    let nom: string | undefined;
-    try {
-      nom = net(decryptPii(s.contactName));
-    } catch {
-      illisibles += 1;
-      continue;
-    }
-    const event = {
-      category,
-      payload: { submissionId: s.id, formType: chaine(details["unifiedType"]) ?? "" },
-    } as EvenementClient;
-    elements.push({
-      type: libelleTypeDemande(event),
-      nom: nom ?? "",
-      quand: formatParisDateTime(s.submittedAt),
-      lignes: [`En attente depuis ${ouvres} jours ouvrés`],
-      consoleUrl: lienFicheClient(event),
+  let nonListees = 0;
+  let ecartees = 0;
+  let lues = 0;
+  let curseur: { submittedAt: Date; id: string } | null = null as {
+    submittedAt: Date;
+    id: string;
+  } | null;
+  let incomplete = false;
+  for (;;) {
+    const apres: Prisma.SubmissionWhereInput | null = curseur
+      ? {
+          OR: [
+            { submittedAt: { gt: curseur.submittedAt } },
+            { submittedAt: curseur.submittedAt, id: { gt: curseur.id } },
+          ],
+        }
+      : null;
+    const lignes = await prisma.submission.findMany({
+      where: apres ? { AND: [base, apres] } : base,
+      orderBy: [{ submittedAt: "asc" }, { id: "asc" }],
+      take: Math.min(TAILLE_PAGE_EN_ATTENTE, PLAFOND_LECTURE_EN_ATTENTE - lues),
     });
+    lues += lignes.length;
+    for (const s of lignes) {
+      curseur = { submittedAt: s.submittedAt, id: s.id };
+      // Effacement RGPD ancien (art. 17) : la ligne reste mais n'a plus rien à dire.
+      if (s.contactName === ERASED_PLACEHOLDER) continue;
+      const ouvres = joursOuvresEcoules(jourParis(s.submittedAt), aujourdhui);
+      if (ouvres <= JOURS_OUVRES_MINIMUM) continue;
+      const details = lireDetails(s.details);
+      const category: NotificationCategory = estLeadChatbot(details)
+        ? "CHATBOT_LEAD_CAPTURED"
+        : categorieSubmission(details);
+      if (!estCategorieClient(category)) continue;
+      if (elements.length >= PLAFOND_EN_ATTENTE) {
+        nonListees += 1;
+        continue;
+      }
+      let nom: string | undefined;
+      let adresse: string | undefined;
+      try {
+        nom = net(decryptPii(s.contactName));
+        adresse = net(decryptPii(s.contactEmail));
+      } catch {
+        illisibles += 1;
+        continue;
+      }
+      // Personne mise à l'écart après une demande d'effacement : jamais listée par son nom.
+      if (adresse && (await dateDeMiseAEcart(adresse, "recap-demandes-clients")) !== null) {
+        ecartees += 1;
+        continue;
+      }
+      const event = {
+        category,
+        payload: { submissionId: s.id, formType: chaine(details["unifiedType"]) ?? "" },
+      } as EvenementClient;
+      elements.push({
+        type: libelleTypeDemande(event),
+        nom: nom ?? "",
+        quand: formatParisDateTime(s.submittedAt),
+        lignes: [`En attente depuis ${ouvres} jours ouvrés`],
+        consoleUrl: lienFicheClient(event),
+      });
+    }
+    if (elements.length >= PLAFOND_EN_ATTENTE) break;
+    if (lignes.length < TAILLE_PAGE_EN_ATTENTE) break; // plus rien à lire
+    if (lues >= PLAFOND_LECTURE_EN_ATTENTE) {
+      incomplete = true;
+      break;
+    }
   }
-  return { elements, illisibles };
+  return { elements, illisibles, nonListees, ecartees, incomplete };
 }
 
 /** Lit la veille. Lecture seule ; ne lève que si la base est injoignable (l'appelant le trace). */
@@ -437,12 +512,15 @@ export async function collecterPourBornes(
   }
 
   // L5a : section facultative. Un échec ici ne doit JAMAIS faire perdre le récap de la veille.
-  let enAttente: ElementRecap[] = [];
+  let enAttente: EnAttente | null = null;
+  let enAttenteIndisponible = false;
   if (maintenant) {
     try {
-      enAttente = (await collecterEnAttente(maintenant)).elements;
+      enAttente = await collecterEnAttente(maintenant);
     } catch {
-      enAttente = [];
+      // Message fixe : aucune donnée de personne, pas l'erreur de la base.
+      enAttenteIndisponible = true;
+      await tracerEchec("section « en attente » non calculée");
     }
   }
 
@@ -455,7 +533,12 @@ export async function collecterPourBornes(
     autresRendezVous,
     nonListees,
     illisibles,
-    ...(enAttente.length > 0 ? { enAttente } : {}),
+    ...(enAttente && enAttente.elements.length > 0 ? { enAttente: enAttente.elements } : {}),
+    ...(enAttenteIndisponible ? { enAttenteIndisponible: true as const } : {}),
+    ...(enAttente && enAttente.illisibles > 0 ? { enAttenteIllisibles: enAttente.illisibles } : {}),
+    ...(enAttente && enAttente.nonListees > 0 ? { enAttenteNonListees: enAttente.nonListees } : {}),
+    ...(enAttente?.incomplete ? { enAttenteIncomplete: true as const } : {}),
+    ...(enAttente && enAttente.ecartees > 0 ? { enAttenteEcartees: enAttente.ecartees } : {}),
     total:
       demandes.length +
       rendezVous.length +

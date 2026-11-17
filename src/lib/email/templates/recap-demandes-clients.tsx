@@ -32,6 +32,11 @@ interface Payload {
   autresRendezVous?: unknown;
   /** L5a — facultative : un ancien payload ne l'a pas, le rendu reste celui d'avant. */
   enAttente?: unknown;
+  enAttenteIndisponible?: unknown;
+  enAttenteIllisibles?: unknown;
+  enAttenteNonListees?: unknown;
+  enAttenteIncomplete?: unknown;
+  enAttenteEcartees?: unknown;
   nonListees?: { demandes?: unknown; rendezVous?: unknown; autresRendezVous?: unknown };
   illisibles?: unknown;
 }
@@ -165,6 +170,12 @@ export function RecapDemandesClientsEmail({
   const nl = p.nonListees ?? {};
   const nonListees = entier(nl.demandes) + entier(nl.rendezVous) + entier(nl.autresRendezVous);
   const illisibles = entier(p.illisibles);
+  // L5a : toutes ces clés sont facultatives ; absentes, le rendu est celui d'avant.
+  const attIndispo = p.enAttenteIndisponible === true;
+  const attIllisibles = entier(p.enAttenteIllisibles);
+  const attNonListees = entier(p.enAttenteNonListees);
+  const attIncomplete = p.enAttenteIncomplete === true;
+  const attEcartees = entier(p.enAttenteEcartees);
   const titre = recapDemandesClientsSubject(locale, payload).replace(/^🔴\s*/, "");
 
   return (
@@ -197,6 +208,30 @@ export function RecapDemandesClientsEmail({
             <FicheEnAttente key={i} el={el} />
           ))}
         </>
+      ) : null}
+      {attNonListees > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>{`et ${attNonListees} autres`}</Text>
+      ) : null}
+      {attIllisibles > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {`${attIllisibles} demande(s) en attente illisible(s) : à voir dans la console`}
+        </Text>
+      ) : null}
+      {attEcartees > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {`${attEcartees} demande(s) d'une personne mise à l'écart : aucun envoi possible`}
+        </Text>
+      ) : null}
+      {attIncomplete ? (
+        <Text style={emailStyles.paragraphStyle}>
+          La liste des demandes en attente est peut-être incomplète : à voir dans la console.
+        </Text>
+      ) : null}
+      {attIndispo ? (
+        <Text style={emailStyles.paragraphStyle}>
+          La liste des demandes en attente n&apos;a pas pu être calculée ce matin : à voir dans la
+          console.
+        </Text>
       ) : null}
       {nonListees > 0 ? (
         <Text style={emailStyles.paragraphStyle}>
