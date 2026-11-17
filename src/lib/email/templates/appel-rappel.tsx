@@ -545,10 +545,14 @@ const COPY = {
       preview: (d: string | null) =>
         d ? `${d}, rien à préparer de votre côté.` : `Rien à préparer de votre côté.`,
       title: "Rappel de votre rendez-vous",
-      quand: (q: string | null) =>
-        q
-          ? `Petit rappel : votre rendez-vous a lieu le ${q} (heure de Paris).`
-          : "Petit rappel de votre rendez-vous.",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `Petit rappel : votre rendez-vous a lieu le ${date} à ${heure} (heure de Paris).`
+          : heure
+            ? `Petit rappel : votre rendez-vous a lieu à ${heure} (heure de Paris).`
+            : date
+              ? `Petit rappel : votre rendez-vous a lieu le ${date}.`
+              : "Petit rappel de votre rendez-vous.",
       signature: "À bientôt,\nWilliams",
     },
     h1: {
@@ -584,10 +588,14 @@ const COPY = {
       preview: (d: string | null) =>
         d ? `${d}, nothing to prepare on your side.` : `Nothing to prepare on your side.`,
       title: "Reminder of your meeting",
-      quand: (q: string | null) =>
-        q
-          ? `A quick reminder: your meeting is on ${q} (Paris time).`
-          : "A quick reminder of your meeting.",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `A quick reminder: your meeting is on ${date} at ${heure} (Paris time).`
+          : heure
+            ? `A quick reminder: your meeting is at ${heure} (Paris time).`
+            : date
+              ? `A quick reminder: your meeting is on ${date}.`
+              : "A quick reminder of your meeting.",
       signature: "Talk soon,\nWilliams",
     },
     h1: {
@@ -1090,7 +1098,9 @@ export function AppelRappelEmail({
     const tn = COPY[locale].sansMoment;
     return (
       <EmailLayout famille="C" preview={tn.preview(duree)} title={tn.title} locale={locale}>
-        <Text style={emailStyles.paragraphStyle}>{tn.quand(quandTexte(locale, p))}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {tn.quand(texteOuNull(p.date), texteOuNull(p.heure))}
+        </Text>
         <LigneLieu lieu={p.lieu} format={format} c={c} />
         <Text style={emailStyles.paragraphStyle}>
           {c.intro(p.prenom)}
