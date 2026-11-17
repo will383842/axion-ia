@@ -178,6 +178,33 @@ async function toujoursBloquee(p: Promise<unknown>, ms: number): Promise<boolean
   return !regle;
 }
 
+/**
+ * Preuve « bloqué sur le verrou » : une session de la base attend un verrou (`wait_event_type = 'Lock'`
+ * dans `pg_stat_activity`, instruction `FOR UPDATE`), au terme d'une petite boucle d'attente BORNÉE
+ * (5 s). Faux si la promesse se règle avant (rien n'a attendu). REPLI : si la vue n'est pas lisible
+ * (droits, erreur), retour au délai fixe de `toujoursBloquee` (preuve plus faible, test pas faux).
+ */
+async function bloqueeSurVerrou(p: Promise<unknown>): Promise<boolean> {
+  let regle = false;
+  void p.then(
+    () => (regle = true),
+    () => (regle = true),
+  );
+  const fin = Date.now() + 5_000;
+  while (!regle && Date.now() < fin) {
+    try {
+      const l = await db.$queryRaw<Array<{ n: bigint }>>`
+        SELECT count(*)::bigint AS n FROM pg_stat_activity
+        WHERE wait_event_type = 'Lock' AND pid <> pg_backend_pid() AND query ILIKE '%FOR UPDATE%'`;
+      if (Number(l[0]?.n ?? 0) > 0) return true;
+    } catch {
+      return toujoursBloquee(p, 300);
+    }
+    await attendre(50);
+  }
+  return false;
+}
+
 describe("garde de l'environnement", () => {
   it("DATABASE_URL existe et vise une base locale", () => {
     const url = process.env.DATABASE_URL;
@@ -360,19 +387,23 @@ describe("pièces jointes d'e-mails, Postgres réel", () => {
   it("I8 — effacement en cours (verrou + journal non validé) : ouvrir attend le verrou, puis rend « neutralise »", async () => {
     const id = await brouillon(A, "Trainee");
     const eff = effacementEnCours(id);
-    await eff.pose;
-    const ouverture = ouvrirEnvoisPiecesJointesEmail({
-      acteur: A,
-      emailManuelId: id,
-      pieces: annonces(1, 1000),
-    });
-    // Seule dépendance à un délai : on laisse 300 ms à `ouvrir` pour démarrer son instruction et se
-    // bloquer sur le verrou. Si la machine est lente, le test ne devient pas faux (l'ouverture est
-    // de toute façon libérée par la porte) : il perd seulement de sa force de preuve.
-    expect(await toujoursBloquee(ouverture, 300)).toBe(true);
-    eff.ouvrir();
-    await eff.fini;
-    const r = await ouverture;
+    let r: Awaited<ReturnType<typeof ouvrirEnvoisPiecesJointesEmail>>;
+    try {
+      await eff.pose;
+      const ouverture = ouvrirEnvoisPiecesJointesEmail({
+        acteur: A,
+        emailManuelId: id,
+        pieces: annonces(1, 1000),
+      });
+      // Preuve lue dans `pg_stat_activity` (session en attente de verrou), pas par un délai fixe.
+      expect(await bloqueeSurVerrou(ouverture)).toBe(true);
+      eff.ouvrir();
+      await eff.fini;
+      r = await ouverture;
+    } finally {
+      eff.ouvrir();
+      await eff.fini.catch(() => {});
+    }
     expect(r).toMatchObject({ ok: false, refus: "neutralise" });
     expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
   });
@@ -388,21 +419,33 @@ describe("pièces jointes d'e-mails, Postgres réel", () => {
       await eff.pose;
       copieAtteinte();
     };
-    let finalisation: ReturnType<typeof finaliserPiecesJointesEmail>;
+    let finalisation: ReturnType<typeof finaliserPiecesJointesEmail> | undefined;
     try {
       finalisation = finaliserPiecesJointesEmail(
         { acteur: A, emailManuelId: id, jeton: r.jeton },
         { antivirus: sain },
       );
-      await atteinte;
+      // Course : si la finalisation se termine avant la copie, on ne pend jamais 60 s.
+      await Promise.race([
+        atteinte,
+        finalisation.then(
+          () => undefined,
+          () => undefined,
+        ),
+      ]);
+      h.pendantCopie = null;
+      // La copie se termine, le Temps 3 démarre et se bloque sur le verrou (lu dans pg_stat_activity).
+      expect(eff, "la copie n'a pas été atteinte").toBeDefined();
+      expect(await bloqueeSurVerrou(finalisation)).toBe(true);
+      eff!.ouvrir();
+      await eff!.fini;
+      await finalisation;
     } finally {
       h.pendantCopie = null;
+      eff?.ouvrir();
+      await eff?.fini.catch(() => {});
+      await finalisation?.catch(() => {});
     }
-    // La copie se termine, le Temps 3 démarre et se bloque sur le verrou ; 300 ms de marge pour cela.
-    expect(await toujoursBloquee(finalisation, 300)).toBe(true);
-    eff!.ouvrir();
-    await eff!.fini;
-    await finalisation;
     const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
     expect(lignes).toHaveLength(1);
     expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });

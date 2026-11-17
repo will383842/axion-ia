@@ -1338,6 +1338,12 @@ describe("garde de source : jamais de suppression", () => {
     }
   });
 
+  it("C1b. OPTIONS_TRANSACTION porte l'isolation ReadCommitted (photo neuve pour la seconde instruction)", () => {
+    const src = readFileSync(path.join(racine, fichiers[0]!), "utf8");
+    const bloc = /const OPTIONS_TRANSACTION = \{([^}]*)\}/.exec(src)?.[1] ?? "";
+    expect(bloc).toMatch(/isolationLevel:\s*Prisma\.TransactionIsolationLevel\.ReadCommitted/);
+  });
+
   it("25. F7 ne crée ni ne modifie l'e-mail lui-même, n'est pas une action serveur", () => {
     const src = readFileSync(path.join(racine, fichiers[0]!), "utf8");
     expect(src).not.toMatch(

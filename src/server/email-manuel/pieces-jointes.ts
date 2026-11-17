@@ -55,7 +55,7 @@ import {
 import { peutEngager } from "@/server/auth/habilitations";
 import { verifierObjetTemporaire, type Antivirus } from "@/server/contact/pieces-jointes";
 import { analyserFlux } from "@/server/careers/clamav";
-import type { Prisma } from "../../../prisma/generated/client";
+import { Prisma } from "../../../prisma/generated/client";
 
 type Tx = Prisma.TransactionClient;
 
@@ -68,7 +68,13 @@ export const TTL_URL_ENVOI_EMAIL_S = 30 * 60;
 /** 30 ouvertures d'envois par heure et par administrateur. */
 export const LIMITE_OUVERTURES_PAR_HEURE = 30;
 
-const OPTIONS_TRANSACTION = { timeout: 10_000, maxWait: 5_000 } as const;
+// READ COMMITTED explicite (et non le défaut de la base) : chaque instruction prend une photo neuve,
+// ce dont `lireNeutralise` dépend (journal lu APRÈS l'obtention du verrou de ligne).
+const OPTIONS_TRANSACTION = {
+  timeout: 10_000,
+  maxWait: 5_000,
+  isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
+} as const;
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const JETON = /^[A-Za-z0-9_-]{43}$/;
 
@@ -158,10 +164,11 @@ export function brouillonNeutralise(l: { neutralise: boolean | null }): boolean 
  * effacement en cours est invisible. Verrou d'abord, journal ensuite : ne JAMAIS refusionner les deux
  * requêtes en une seule (garde de source dans le test du module).
  */
+// Isolation READ COMMITTED requise (OPTIONS_TRANSACTION) : cette seconde instruction doit prendre une photo neuve.
 async function lireNeutralise(client: Pick<Tx, "$queryRaw">, id: string): Promise<boolean> {
   const idMin = id.toLowerCase();
   const lignes = await client.$queryRaw<Array<{ neutralise: boolean | null }>>`
-    SELECT EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible"::text = 'emails_manuels' AND j."ligne_id" IN (${idMin}::text, ${idMin}::text || ':contenu')) AS neutralise`;
+    SELECT EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible" = 'emails_manuels' AND j."ligne_id" IN (${idMin}::text, ${idMin}::text || ':contenu')) AS neutralise`;
   return lignes[0]?.neutralise === true;
 }
 
@@ -771,7 +778,10 @@ export interface PieceListee {
   readonly statut: string;
   readonly motifRefus: string | null;
   readonly antivirus: string | null;
-  /** Vrai seulement si `acceptee` ET antivirus « sain » : la seule condition pour joindre. */
+  /**
+   * Vrai seulement si `acceptee` ET antivirus « sain » : condition NÉCESSAIRE, pas suffisante. L'envoi
+   * (fiche F6b) relit, sous verrou, le journal des effacements avant de joindre. Texte seulement.
+   */
   readonly joignable: boolean;
 }
 
