@@ -2,8 +2,11 @@
 
 Le chatbot dispose de deux sources : sa copie `chat_kb_chunks` (lue par `hybridSearch`) et les
 fiches publiées `knowledge_entries` (lues par `chercherDansKnowledgeEntry`). Il ne lit les fiches
-que si `CHATBOT_KB_UNIFIED` vaut exactement `"true"` (éteint par défaut ; « 1 », « TRUE », « oui »
-ou l'absence de la variable ne l'allument pas).
+que si `CHATBOT_KB_UNIFIED` vaut exactement `true`, en minuscules (allumé). Seules les valeurs
+`true` et `false`, ou l'absence de la variable (éteint), sont acceptées par `src/env.ts`.
+
+⚠️ Toute autre valeur (`1`, `TRUE`, `oui`, `0`, `non`, `off`…) ne laisse pas l'interrupteur
+éteint : elle est refusée par la validation de l'environnement et **empêche le site de démarrer**.
 
 **Aucun code, aucun déploiement ni aucune routine ne pose cette variable : l'allumage est un geste
 du fondateur.**
@@ -45,8 +48,10 @@ DATABASE_URL=<base de préproduction> pnpm tsx scripts/chatbot-kb-unifier-essai.
 ## Allumer et éteindre (fondateur)
 
 1. Lire le rapport, corriger les fiches signalées.
-2. Poser `CHATBOT_KB_UNIFIED=true` dans l'environnement de l'application, puis redémarrer.
-3. Retour arrière : retirer la variable (ou la mettre à autre chose que `true`) et redémarrer.
+2. Poser `CHATBOT_KB_UNIFIED=true` (exactement `true`, en minuscules) dans l'environnement de l'application, puis redémarrer.
+3. Retour arrière : retirer la variable **ou** la mettre exactement à `false`, puis redémarrer.
+   ⚠️ Ne tapez aucune autre valeur (`0`, `1`, `TRUE`, `oui`, `non`, `off`…) : `src/env.ts` la refuse
+   et l'application ne démarre plus.
    Le cache sémantique est clé sur l'interrupteur : aucune réponse « fiches » ne reste servie.
 
 `chat_kb_chunks` n'est ni supprimée ni modifiée ; sa suppression est une décision séparée.

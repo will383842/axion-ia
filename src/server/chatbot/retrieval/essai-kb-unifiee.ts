@@ -124,10 +124,11 @@ export async function executerEssaiKbUnifiee(deps: EssaiDeps): Promise<ResultatQ
     // Les fiches au montant étranger, que le chatbot écarte, sont demandées ici pour
     // être SIGNALÉES ; elles ne comptent ni dans les passages ni dans la confiance.
     const fiches = await deps.knowledgeEntry(question, { conserverHorsGrille: true }).then((r) => {
-      const [gardees, ecartees] = [
-        r.filter((c) => montantsHorsJourneeIa(c.contenu).length === 0),
-        r.filter((c) => montantsHorsJourneeIa(c.contenu).length > 0),
-      ];
+      const gardees: RetrievedChunk[] = [];
+      const ecartees: RetrievedChunk[] = [];
+      for (const c of r) {
+        (montantsHorsJourneeIa(c.contenu).length === 0 ? gardees : ecartees).push(c);
+      }
       brutsFiches = gardees;
       return resumer(gardees, seuil, ecartees);
     }, enErreur);
