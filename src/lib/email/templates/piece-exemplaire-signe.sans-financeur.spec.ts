@@ -8,13 +8,17 @@
  */
 import { describe, expect, it } from "vitest";
 import { renderEmailTemplate } from "./index";
-import {
-  TYPES_SIGNABLES,
-  circuitPour,
-} from "@/server/qualiopi/documents/signature/parties-requises";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 
 const INTERDIT = /financeur|funding|opco|qualiopi|prise en charge|funding body/i;
-const LIBELLES = TYPES_SIGNABLES.map((t) => circuitPour(t)?.libelle ?? "");
+// Lu dans la source (pas importé : le cloisonnement interdit d'importer le domaine ici).
+const LIBELLES = [
+  ...readFileSync(
+    join(process.cwd(), "src/server/qualiopi/documents/signature/parties-requises.ts"),
+    "utf8",
+  ).matchAll(/^\s*libelle:\s*"([^"]+)"/gm),
+].map((m) => m[1] as string);
 
 describe("piece-exemplaire-signe — rien sur le financement, pour chaque pièce", () => {
   it("couvre au moins un libellé", () => {
