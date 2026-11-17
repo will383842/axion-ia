@@ -50,7 +50,7 @@ export const qualiopiPositionnementSubject = (
   if (locale === "fr") {
     const prefixe =
       typeof p.rang === "number" && p.rang >= 2
-        ? "Petit rappel : questionnaire avant votre formation"
+        ? "Rappel : questionnaire avant votre formation"
         : "Questionnaire avant votre formation";
     return objetCompose(prefixe, p.titreFormation ?? "");
   }

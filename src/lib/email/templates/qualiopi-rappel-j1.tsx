@@ -113,8 +113,7 @@ export function QualiopiRappelJ1Email({
         </Text>
       ) : (
         <Text style={emailStyles.paragraphStyle}>
-          Présentez-vous quelques minutes avant l&apos;heure de démarrage : le lieu figure dans
-          votre convocation.
+          Présentez-vous quelques minutes avant l&apos;heure de démarrage.
         </Text>
       )}
       {p.lienEmargement ? (

@@ -6,6 +6,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { OBJET_MAX } from "@/lib/email/objet-email";
 import { renderEmailTemplate } from "./index";
 
 // Payloads minimaux par template
@@ -202,6 +203,14 @@ describe("L4c — lieu inconnu : plus de « Voir convocation »", () => {
     });
   }
 
+  it("qualiopi-rappel-j1 : lieu inconnu, sans visio → ni lieu ni convocation comme source du lieu", async () => {
+    const r = await renderEmailTemplate("qualiopi-rappel-j1", "fr", { ...BASE_STAGIAIRE });
+    const txt = r.html + r.text;
+    expect(txt).not.toMatch(/convocation/i);
+    expect(txt).not.toMatch(/le lieu/i);
+    expect(txt).toContain("Présentez-vous quelques minutes avant l");
+  });
+
   it("qualiopi-convocation : un vrai lieu est toujours rendu", async () => {
     const r = await renderEmailTemplate("qualiopi-convocation", "fr", {
       ...BASE_STAGIAIRE,
@@ -274,10 +283,23 @@ describe("L4c — positionnement : relances distinctes du premier envoi", () => 
     }
   });
 
-  it("rang 2 : objet et corps commencent par « Petit rappel : »", async () => {
+  it("rang 2 : l'objet fait au plus OBJET_MAX caractères, en fr et en", async () => {
+    for (const locale of ["fr", "en"] as const) {
+      for (const titreFormation of ["", POS.titreFormation]) {
+        const r = await renderEmailTemplate("qualiopi-positionnement", locale, {
+          ...POS,
+          titreFormation,
+          rang: 2,
+        });
+        expect(r.subject.length).toBeLessThanOrEqual(OBJET_MAX);
+      }
+    }
+  });
+
+  it("rang 2 : objet « Rappel : » et corps commencent par « Petit rappel : »", async () => {
     const r1 = await renderEmailTemplate("qualiopi-positionnement", "fr", { ...POS, rang: 1 });
     const r2 = await renderEmailTemplate("qualiopi-positionnement", "fr", { ...POS, rang: 2 });
-    expect(r2.subject).toContain("Petit rappel :");
+    expect(r2.subject).toContain("Rappel :");
     expect(r2.text).toContain("Petit rappel :");
     expect(r2.subject).not.toBe(r1.subject);
     expect(r2.text).not.toBe(r1.text);
