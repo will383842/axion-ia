@@ -83,6 +83,13 @@ export const env = createEnv({
     // (`visio-balayage-worker.ts`). Passé à "true" après la reprise réelle de
     // l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
+    // E-mails écrits à la main depuis la console (lot I4). ABSENT = ÉTEINT : actif
+    // SEULEMENT si "true". Rien ne lit encore ces trois variables (fiche F5).
+    // Le nom d'expéditeur réel se pose dans la configuration du serveur, jamais
+    // dans le dépôt.
+    EMAIL_MANUEL_ACTIF: z.enum(["true", "false"]).optional(),
+    EMAIL_MANUEL_NOM_EXPEDITEUR: z.string().min(1).max(100).default("Axion-IA"),
+    EMAIL_MANUEL_SIGNATURE: z.string().min(1).max(200).default("L'équipe Axion-IA"),
     // Dégel des 4 générateurs annexes de pages ville (écosystème, secteurs, FAQ
     // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
     // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
@@ -770,6 +777,9 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
+    EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
+    EMAIL_MANUEL_SIGNATURE: process.env.EMAIL_MANUEL_SIGNATURE,
     CHATBOT_KB_UNIFIED: process.env.CHATBOT_KB_UNIFIED,
     VILLES_GENERATEURS_ANNEXES_ACTIFS: process.env.VILLES_GENERATEURS_ANNEXES_ACTIFS,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
