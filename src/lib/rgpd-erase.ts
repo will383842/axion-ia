@@ -1986,6 +1986,22 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
       "à la main, sous le drapeau d'effacement.",
   },
+  {
+    // Lot I4, fiche F1 (2026-11-18) : table créée par migration seule. Exception provisoire
+    // « sans écrivain » : la fiche F1b la remplace par le traitement réel AVANT tout code qui
+    // écrit dans la table (garde `les-tables-du-dossier-client-suivent-la-personne`).
+    modele: "EmailManuel",
+    motif:
+      "e-mails écrits à la main depuis la console : table sans écrivain (fonction pas encore " +
+      "en service, aucune ligne) ; jamais supprimés (clés RESTRICT) ; leur traitement à " +
+      "l'effacement est livré avant la mise en service.",
+  },
+  {
+    modele: "EmailManuelPieceJointe",
+    motif:
+      "pièces jointes des e-mails écrits à la main : table sans écrivain (fonction pas encore " +
+      "en service, aucune ligne) ; jamais supprimées ; même règle que leur e-mail.",
+  },
 ];
 
 // ═════════════════════════════════════════════════════════════════════════════
