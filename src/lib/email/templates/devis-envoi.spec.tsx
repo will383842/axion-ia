@@ -34,3 +34,50 @@ describe("devis-envoi : le texte de signature dit le vrai parcours (CGV 6.2)", (
     }
   });
 });
+
+describe("devis-envoi : salutation (L12)", () => {
+  const nu = { numero: "N" };
+  const premiereLigne = async (locale: "fr" | "en", payload: Record<string, unknown>) => {
+    const r = await renderEmailTemplate("devis-envoi", locale, payload);
+    return r.text;
+  };
+  it("civilité + nom : « Bonjour Monsieur Dupont, »", async () => {
+    const t = await premiereLigne("fr", {
+      ...nu,
+      clientNom: "",
+      salutation: { civilite: "monsieur", prenom: "Michel", nomFamille: "Dupont" },
+    });
+    expect(t).toContain("Bonjour Monsieur Dupont,");
+    expect(t).not.toContain("Michel");
+  });
+  it("prénom seul : « Bonjour Michel, »", async () => {
+    const t = await premiereLigne("fr", { ...nu, salutation: { prenom: "Michel" } });
+    expect(t).toContain("Bonjour Michel,");
+  });
+  it("clé vide : « Bonjour, » et jamais clientNom", async () => {
+    const t = await premiereLigne("fr", { ...nu, clientNom: "Acme SAS", salutation: {} });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Acme");
+  });
+  it("ancien payload sans clé : clientNom vide → « Bonjour, »", async () => {
+    expect(await premiereLigne("fr", { ...nu, clientNom: "" })).toContain("Bonjour,");
+  });
+  it("ancien payload sans clé : clientNom rempli → rendu d'avant", async () => {
+    expect(await premiereLigne("fr", { ...nu, clientNom: "Acme" })).toContain("Bonjour Acme,");
+  });
+  it("anglais : civilité + nom, prénom seul, ancien payload", async () => {
+    expect(await premiereLigne("en", { ...nu, salutation: { civilite: "madame" } })).toContain(
+      "Hello,",
+    );
+    expect(
+      await premiereLigne("en", {
+        ...nu,
+        salutation: { civilite: "madame", prenom: "Lea", nomFamille: "Dupont" },
+      }),
+    ).toContain("Hello Ms Dupont,");
+    expect(await premiereLigne("en", { ...nu, salutation: { prenom: "Lea" } })).toContain(
+      "Hello Lea,",
+    );
+    expect(await premiereLigne("en", { ...nu, clientNom: "Acme" })).toContain("Hello Acme,");
+  });
+});

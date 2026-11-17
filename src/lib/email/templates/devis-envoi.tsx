@@ -10,10 +10,18 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
+  /** Hérité : sans la clé `salutation`, rendu « Bonjour <clientNom>, » comme avant. */
   clientNom: string;
+  /**
+   * Identité du contact, facultative (civilité, prénom, nom : tous facultatifs).
+   * Si la clé est présente, la salutation suit la règle commune `salutation()` et
+   * `clientNom` n'est plus lu pour saluer. Clé absente : ancien rendu inchangé.
+   */
+  salutation?: { civilite?: unknown; prenom?: unknown; nomFamille?: unknown };
   /** N° du devis. Ex. « AXI-DEV-2026-014 ». */
   numero: string;
   /** Montant formaté. Ex. « 2 450,00 € HT ». Optionnel. */
@@ -104,6 +112,12 @@ export function DevisEnvoiEmail({
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
     : "";
 
+  const sal = p.salutation;
+  const bonjour =
+    typeof sal === "object" && sal !== null && !Array.isArray(sal)
+      ? salutation(sal, locale)
+      : t.intro(field(p, "clientNom", ""));
+
   return (
     <EmailLayout
       famille="B"
@@ -114,7 +128,7 @@ export function DevisEnvoiEmail({
       preview={t.preview(field(p, "montantLabel", ""), field(p, "dateValiditeLabel", ""))}
       {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{bonjour}</Text>
       {message !== "" &&
         message.split("\n").map((line, i) => (
           <Text key={i} style={emailStyles.paragraphStyle}>
