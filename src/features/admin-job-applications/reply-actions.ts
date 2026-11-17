@@ -21,7 +21,8 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
-import { lienComplement } from "@/features/job-application/complement";
+import { CHEMIN_COMPLEMENT, lienComplement } from "@/features/job-application/complement";
+import { DUREE_JETON_COMPLEMENT_MS } from "@/server/recrutement/jeton-complement";
 import {
   MODELES_COMPOSEUR_IDS,
   MODELES_REPONSE_FORMATEUR_IDS,
@@ -163,6 +164,8 @@ export async function repondreAuCandidatAction(
     {
       subject: data.subject,
       bodyMarkdown: corps,
+      // Le texte saisi, avant remplacement du lien : la garde compare dessus.
+      texteSaisi: data.bodyMarkdown,
       modele: data.modele,
       internalNote: data.internalNote,
     },
@@ -193,16 +196,46 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
 
   const reponse = await prisma.jobApplicationReply.findUnique({
     where: { id: replyId },
-    select: { id: true, applicationId: true, subject: true, deliveryStatus: true },
+    select: {
+      id: true,
+      applicationId: true,
+      subject: true,
+      deliveryStatus: true,
+      bodyText: true,
+      repliedAt: true,
+    },
   });
   if (!reponse) return { ok: false, error: "candidature_introuvable" };
+  // 🔴 Seule une réponse `failed` se rejoue. `pending` (déjà en file ou en cours
+  // d'envoi : un rejeu ferait partir deux fois le même message), `sent`,
+  // `bounced` (adresse refusée : on ne sait pas distinguer un refus définitif
+  // d'un refus temporaire) et tout autre statut sont refusés, sans mise en file.
   if (reponse.deliveryStatus === "sent") return { ok: false, error: "deja_envoyee" };
+  if (reponse.deliveryStatus !== "failed") return { ok: false, error: "not_retryable" };
 
   const candidature = await prisma.jobApplication.findUnique({
     where: { id: reponse.applicationId },
     select: { locale: true },
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // Le lien de complément porte un jeton de 60 jours : on ne rejoue pas un message
+  // dont le lien expirerait avant d'être lu (marge de 2 jours pour l'attente en file).
+  if (
+    reponse.bodyText.includes(CHEMIN_COMPLEMENT) &&
+    Date.now() - reponse.repliedAt.getTime() > DUREE_JETON_COMPLEMENT_MS - 2 * 24 * 3600 * 1000
+  ) {
+    return { ok: false, error: "lien_complement_expire" };
+  }
+
+  // Prise de la ligne AVANT la mise en file, de façon atomique : deux rejeux
+  // simultanés ne passent pas tous les deux (le second ne trouve plus `failed`),
+  // et le worker ne peut plus marquer `sent` puis se faire écraser par `pending`.
+  const prise = await prisma.jobApplicationReply.updateMany({
+    where: { id: reponse.id, deliveryStatus: "failed" },
+    data: { deliveryStatus: "pending", errorMsg: null },
+  });
+  if (prise.count === 0) return { ok: false, error: "not_retryable" };
 
   let misEnFile = false;
   try {
@@ -215,12 +248,17 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
   } catch (e) {
     Sentry.captureException(e);
   }
-  if (!misEnFile) return { ok: false, error: "enqueue_failed", replyId: reponse.id };
+  if (!misEnFile) {
+    // La file a refusé : la ligne redevient rejouable.
+    await prisma.jobApplicationReply
+      .updateMany({
+        where: { id: reponse.id, deliveryStatus: "pending" },
+        data: { deliveryStatus: "failed", errorMsg: "enqueue_failed (file d'envoi indisponible)" },
+      })
+      .catch((e) => Sentry.captureException(e));
+    return { ok: false, error: "enqueue_failed", replyId: reponse.id };
+  }
 
-  await prisma.jobApplicationReply.update({
-    where: { id: reponse.id },
-    data: { deliveryStatus: "pending", errorMsg: null },
-  });
   revalidatePath(adminPath("fr", `contacts/candidatures/${reponse.applicationId}`));
   return { ok: true, replyId: reponse.id };
 }
