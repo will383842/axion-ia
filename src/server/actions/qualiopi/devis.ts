@@ -18,6 +18,8 @@
 
 import { proposerPlansApresAcceptation } from "@/server/qualiopi/devis/proposer-plans";
 import * as Sentry from "@sentry/nextjs";
+import type { Prisma } from "../../../../prisma/generated/client";
+import { masquerLienSignaturePayload } from "@/server/email/masquer-lien-signature-payload";
 import React from "react";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
@@ -664,12 +666,29 @@ export async function sendDevisAction(id: string): Promise<
       }
       if (courriel.etat === "gare" && courriel.outboxId !== undefined) {
         try {
-          await prisma.emailOutbox.update({
-            where: { id: courriel.outboxId },
+          // B2a — le lien de signature ne reste pas en clair dans la ligne refusée : on masque
+          // dans la MÊME écriture que le refus. Si le masquage échoue, le refus passe quand même.
+          let payloadMasque: Prisma.InputJsonValue | undefined;
+          try {
+            const ligne = await prisma.emailOutbox.findUnique({
+              where: { id: courriel.outboxId },
+              select: { template: true, payload: true },
+            });
+            if (ligne) {
+              const masque = masquerLienSignaturePayload(ligne.template, ligne.payload);
+              if (masque.modifie) payloadMasque = masque.payload as Prisma.InputJsonValue;
+            }
+          } catch (e) {
+            console.warn("[sendDevisAction] masquage du lien de la corbeille échoué", e);
+            Sentry.captureException(e, { tags: { action: "sendDevisAction.masquage_corbeille" } });
+          }
+          await prisma.emailOutbox.updateMany({
+            where: { id: courriel.outboxId, statut: "a_valider" },
             data: {
               statut: "refuse",
               refuseAt: new Date(),
               refuseMotif: "Devis non marqué envoyé (erreur base)",
+              ...(payloadMasque !== undefined ? { payload: payloadMasque } : {}),
             },
           });
         } catch (e) {
