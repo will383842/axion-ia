@@ -192,6 +192,18 @@ describe("détection (test du test)", () => {
     ["JSX", "<p>Bonjour {p.stagiairePrenomNom} — voici</p>"],
     ["JSX conditionnel", 'Bonjour{p.x ? ` ${p.destinataireNom}` : ""}, la formation'],
     ["concaténation", 'const i = "Bonjour " + p.contactName + ",";'],
+    [
+      "concaténation à deux variables sur une ligne",
+      'const i = "Bonjour " + p.prenom + " " + p.nom + ",";',
+    ],
+    [
+      "concaténation sur deux lignes, + en fin de ligne",
+      'const i = "Bonjour " + p.prenom +\n  " " + p.nom + ",";',
+    ],
+    [
+      "concaténation sur deux lignes, + en début de ligne",
+      'const i = "Bonjour " + p.prenom\n  + " " + p.nom + ",";',
+    ],
     ["marque simple", '"Hello {name},"'],
     ["marque double", "Cher {{nom}},"],
     ["Chère (accent)", "Chère ${nomComplet}"],
@@ -212,6 +224,10 @@ describe("détection (test du test)", () => {
     ["suffixe Prenom", "`Hello ${p.contactPrenom}`"],
     ["concaténation de prénom", '"Bonjour " + texteOuNull(p.prenom) + ","'],
     ["marque prénom", '"Bonjour {prenom},"'],
+    [
+      "prénom seul puis texte sur la ligne suivante",
+      'const i = "Bonjour " + p.prenom + ","\nconst suite = "Texte " + x;',
+    ],
     ["appel salutation()", "`${salutation(p, locale)}`"],
     ["deux prénoms", "`Bonjour ${p.prenom} ${p.autrePrenom},`"],
     ["prénom puis texte", "<p>Bonjour {p.prenom}, {p.nom} est inscrit</p>"],

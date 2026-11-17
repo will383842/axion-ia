@@ -62,13 +62,23 @@ function lireEntreAccolades(source: string, debut: number): string {
   return source.slice(debut, profondeur === 0 ? i - 1 : i);
 }
 
-/** Lit une expression de concaténation : jusqu'à `;`, `,` hors parenthèses, `)` non ouvrante ou fin de ligne. */
+/**
+ * Lit une expression de concaténation : jusqu'à `;`, `,` hors parenthèses, `)` non ouvrante
+ * ou fin de ligne. La lecture continue après un saut de ligne quand la ligne se termine par
+ * `+` ou que la ligne suivante commence par `+` (format de Prettier sur une ligne longue).
+ */
 function lireConcatenation(source: string, debut: number): string {
   let profondeur = 0;
   let i = debut;
   for (; i < source.length; i += 1) {
     const c = source[i];
-    if (c === "\n" || c === ";") break;
+    if (c === ";") break;
+    if (c === "\n") {
+      const avant = source.slice(debut, i).trimEnd();
+      const apres = source.slice(i).trimStart();
+      if (avant.endsWith("+") || apres.startsWith("+")) continue;
+      break;
+    }
     if (c === "(") profondeur += 1;
     else if (c === ")") {
       if (profondeur === 0) break;
