@@ -281,9 +281,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(h.sentry).toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
     expect(h.revoquer).toHaveBeenCalledOnce();
-    expect(h.revoquer).toHaveBeenCalledWith(
-      expect.objectContaining({ documentGenereId: "doc-1" }),
-    );
+    expect(h.revoquer).toHaveBeenCalledWith(expect.objectContaining({ documentGenereId: "doc-1" }));
   });
 
   it("(13c) courriel garé SANS outboxId puis échec d'écriture : alerte, aucune exception", async () => {
