@@ -2,10 +2,15 @@
 //
 // Affiche toutes les SubmissionReply liees a une Submission, triees par
 // repliedAt desc. Statut delivery visuel + bouton retry pour les replies
-// failed/bounced.
+// failed. Un rebond (adresse refusée) n'est jamais rejouable. Le HTML enregistré
+// est toujours MASQUÉ à l'affichage : il peut porter le lien d'opposition du
+// destinataire (jeton), qu'aucun écran de la console ne doit montrer.
 
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { prisma } from "@/lib/prisma";
+import { enveloppeExpedition } from "@/lib/email/enveloppe";
+import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
+import { LIBELLE_REBOND } from "@/features/admin-job-applications/etat-envoi";
 import { RetryFailedReplyButton } from "./RetryFailedReplyButton";
 
 interface Props {
@@ -52,6 +57,8 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
     },
   });
 
+  const enveloppe = enveloppeExpedition();
+
   if (replies.length === 0) {
     return (
       <div className="admin-card admin-card-wide">
@@ -69,7 +76,14 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
       <ul className="mt-4 space-y-3">
         {replies.map((r) => {
           const status = STATUS_LABEL[r.deliveryStatus] ?? STATUS_LABEL.pending;
-          const isRetryable = r.deliveryStatus === "failed" || r.deliveryStatus === "bounced";
+          // Seul un échec d'envoi se rejoue ; un rebond demande d'écrire de nouveau.
+          const isRetryable = r.deliveryStatus === "failed";
+          const isBounced = r.deliveryStatus === "bounced";
+          const masque = masquerSecretsEmail({
+            subject: r.subject,
+            html: r.bodyHtml,
+            text: r.bodyText,
+          });
           return (
             <li
               key={r.id}
@@ -98,26 +112,33 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
                 </p>
               )}
 
-              <details className="mt-3">
+              {isBounced && (
+                <p
+                  role="status"
+                  className="mt-2 rounded bg-[color:var(--color-admin-warning-bg)] p-2 text-xs text-[color:var(--color-admin-warning-fg)]"
+                >
+                  {LIBELLE_REBOND}
+                </p>
+              )}
+
+              {/* Le texte est visible d'emblée ; seule la mise en forme se déplie. */}
+              <div className="mt-3 rounded bg-[color:var(--color-admin-bg-subtle)] p-3 text-sm whitespace-pre-wrap">
+                {masque.text}
+              </div>
+              <details className="mt-2">
                 <summary className="cursor-pointer text-sm text-[color:var(--color-admin-fg-muted)]">
-                  Voir le contenu
+                  Voir la mise en forme envoyée
                 </summary>
-                <div className="mt-2 rounded bg-[color:var(--color-admin-bg-subtle)] p-3 text-sm whitespace-pre-wrap">
-                  {r.bodyText}
+                <div className="mt-2">
+                  <LecteurEmail
+                    html={masque.html}
+                    texte={masque.text}
+                    de={enveloppe.from}
+                    repondreA={enveloppe.replyTo}
+                    objet={masque.subject}
+                    titre={`Réponse envoyée : ${masque.subject}`}
+                  />
                 </div>
-                <details className="mt-2">
-                  <summary className="cursor-pointer text-sm text-[color:var(--color-admin-fg-muted)]">
-                    Voir la mise en forme envoyée
-                  </summary>
-                  <div className="mt-2">
-                    <LecteurEmail
-                      html={r.bodyHtml}
-                      texte={r.bodyText}
-                      objet={r.subject}
-                      titre={`Réponse envoyée : ${r.subject}`}
-                    />
-                  </div>
-                </details>
               </details>
 
               {isRetryable && <RetryFailedReplyButton replyId={r.id} />}

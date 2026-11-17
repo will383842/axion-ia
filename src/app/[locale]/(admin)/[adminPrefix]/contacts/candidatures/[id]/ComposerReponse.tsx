@@ -43,6 +43,7 @@ import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
 import { OBJET_MAX } from "@/lib/email/objet-email";
 import {
   LIBELLE_ENVOYE,
+  LIBELLE_REBOND,
   LIBELLE_TRAITEMENT_LONG,
   phaseApresSondage,
 } from "@/features/admin-job-applications/etat-envoi";
@@ -53,7 +54,9 @@ type Phase =
   | { readonly nom: "en_file"; readonly replyId: string }
   /** Accepté par le relais d'envoi (`sent`), remise non confirmée. */
   | { readonly nom: "envoye" }
-  | { readonly nom: "echec"; readonly message: string; readonly replyId?: string };
+  | { readonly nom: "echec"; readonly message: string; readonly replyId?: string }
+  /** Adresse refusée par le serveur du destinataire : jamais rejouable. */
+  | { readonly nom: "rebond"; readonly message: string };
 
 /**
  * Un lien à insérer d'un clic — imprimé, ou rendez-vous Calendly.
@@ -181,7 +184,8 @@ export function ComposerReponse({
   // Le verrou ne se relâche que lorsque l'envoi est tranché côté écran : retour
   // au repos ou échec. Pendant « en file » et « envoyé », il reste.
   useEffect(() => {
-    if (phase.nom === "repos" || phase.nom === "echec") envoiVerrouille.current = false;
+    if (phase.nom === "repos" || phase.nom === "echec" || phase.nom === "rebond")
+      envoiVerrouille.current = false;
   }, [phase]);
 
   // Sondage de l'état réel après mise en file. S'arrête dès qu'il est tranché.
@@ -196,6 +200,8 @@ export function ComposerReponse({
         if (suite === "envoye") {
           setPhase({ nom: "envoye" });
           router.refresh();
+        } else if (suite === "rebond") {
+          setPhase({ nom: "rebond", message: LIBELLE_REBOND });
         } else if (suite === "echec") {
           setPhase({
             nom: "echec",
@@ -258,11 +264,27 @@ export function ComposerReponse({
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void rejouerReponseEchoueeAction(replyId).then((r) => {
-        setPhase(
-          r.ok
-            ? { nom: "en_file", replyId: r.replyId }
-            : { nom: "echec", message: LIBELLES_ERREUR_REPONSE[r.error] ?? r.error, replyId },
-        );
+        if (r.ok) {
+          setPhase({ nom: "en_file", replyId: r.replyId });
+          return;
+        }
+        if (r.error === "deja_envoyee") {
+          setPhase({ nom: "envoye" });
+          router.refresh();
+          return;
+        }
+        if (r.error === "not_retryable") {
+          // Un autre onglet, un essai automatique ou le worker a déjà pris la ligne :
+          // on relit l'état réel par le sondage (« Envoyer » reste verrouillé).
+          setPhase({ nom: "en_file", replyId });
+          return;
+        }
+        setPhase({
+          nom: "echec",
+          // Le lien de complément expiré n'est jamais rejouable : pas de « Réessayer ».
+          ...(r.error === "lien_complement_expire" ? {} : { replyId }),
+          message: LIBELLES_ERREUR_REPONSE[r.error] ?? r.error,
+        });
       });
     });
   }
@@ -281,7 +303,7 @@ export function ComposerReponse({
   const envoiPossible =
     objet.trim().length >= 2 &&
     corps.trim().length > 0 &&
-    (phase.nom === "repos" || phase.nom === "echec");
+    (phase.nom === "repos" || phase.nom === "echec" || phase.nom === "rebond");
 
   return (
     <div className="admin-form">
@@ -419,6 +441,12 @@ export function ComposerReponse({
           <span role="status" className="admin-alert admin-alert-warning">
             {" "}
             {avisSondage}
+          </span>
+        ) : null}
+        {phase.nom === "rebond" ? (
+          <span role="alert" className="admin-alert admin-alert-error">
+            {" "}
+            {phase.message}
           </span>
         ) : null}
         {phase.nom === "echec" ? (
