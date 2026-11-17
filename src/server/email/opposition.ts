@@ -222,10 +222,14 @@ export async function enregistrerOpposition(
  * que la personne clique sur un lien qu'elle ne veut plus recevoir.
  */
 export async function enregistrerOppositionPourAdresse(
-  email: string,
+  adresse: string,
   source: { template?: string | null; origine?: string } = {},
 ): Promise<ResultatOpposition> {
   if (estStub()) return { ok: false, error: "internal" };
+  // RC-19 : UNE seule forme de l'adresse pour l'empreinte, le CRM et l'annulation des envois
+  // programmés — la même que celle relue par `estOpposee`. Une adresse saisie « Jean@X.FR » doit
+  // retirer les relances posées sous « jean@x.fr » : sinon un « stop » ne vaut pas partout.
+  const email = normaliserAdresse(adresse);
   const origine = source.origine ?? "console-admin";
   try {
     // La table ne porte QUE l'empreinte : voir le modèle Prisma pour le
