@@ -2115,16 +2115,15 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    const { faits, preuvesAccord, documentIds, personnesGardees } = await supprimerDonneesPilote(
-      tx,
-      {
-        clientIds,
-        rencontreIds,
-        projetIds: projets.map((p) => p.id),
-        contactIds: personnes.map((p) => p.id),
-        documentIds: [],
-      },
-    );
+    const perimetre: PerimetrePilote = {
+      clientIds,
+      rencontreIds,
+      projetIds: projets.map((p) => p.id),
+      contactIds: personnes.map((p) => p.id),
+      documentIds: [],
+    };
+    const supprime = await supprimerDonneesPilote(tx, perimetre);
+    const { faits, preuvesAccord, documentIds, personnesGardees } = supprime;
 
     await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
     // ADR 0063 — journalisés pour que le rejeu après restauration les resupprime.
