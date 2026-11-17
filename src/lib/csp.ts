@@ -17,6 +17,7 @@
 //    automatiquement (Next.js opt-in via headers()).
 
 import { headers } from "next/headers";
+import { cspCorpsEmail } from "./email/apercu-lecteur";
 
 const STATIC_ASSETS_RE = /\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2?|js|css|map)$/;
 
@@ -95,6 +96,14 @@ export interface BuildCspOptions {
    * le schéma retirerait silencieusement la directive EN PRODUCTION.
    */
   origineBouclage?: boolean;
+  /**
+   * Route de lecture plein écran d'un e-mail enregistré (lot I0b-3). Rend la
+   * politique du document-corps d'e-mail : `sandbox` SANS aucun `allow-`,
+   * `default-src 'none'` (donc aucun script), images limitées à `data:` et aux
+   * origines de `cspCorpsEmail()`. La route et le proxy appellent CETTE fonction :
+   * la politique est identique des deux côtés, quel que soit celui qui l'emporte.
+   */
+  lectureEmail?: boolean;
 }
 
 /**
@@ -134,7 +143,19 @@ export function buildCspHeader({
   strict,
   embed = false,
   origineBouclage = false,
+  lectureEmail = false,
 }: BuildCspOptions): string {
+  if (lectureEmail) {
+    return [
+      "sandbox",
+      "default-src 'none'",
+      `img-src data: ${cspCorpsEmail()}`,
+      "style-src 'unsafe-inline'",
+      "base-uri 'none'",
+      "form-action 'none'",
+      "frame-ancestors 'none'",
+    ].join("; ");
+  }
   // Microsoft Clarity (NEXT_PUBLIC_CLARITY_PROJECT_ID + consent CMP gated).
   // Domaines : www.clarity.ms (tag loader) + *.clarity.ms (collecteurs régionaux,
   // c.clarity.ms ingest, b.clarity.ms beacon). Sans whitelist explicite, le script
@@ -321,4 +342,14 @@ const CREDENTIALED_EMBEDDER_PATH_RE = /^\/(?:fr|en)\/(?:appel|book-a-call)(?:\/|
  */
 export function isCredentialedEmbedderPath(pathname: string): boolean {
   return CREDENTIALED_EMBEDDER_PATH_RE.test(pathname);
+}
+
+/**
+ * `true` si le chemin est la lecture plein écran d'un e-mail enregistré :
+ * `/<locale>/<prefixe>/emails/lecture/<source>/<id>`. Le préfixe de console est
+ * comparé à la lettre. Edge-runtime safe (regex pure).
+ */
+export function isLectureEmailPath(pathname: string, prefixe: string): boolean {
+  const echappe = prefixe.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`^/(?:fr|en)/${echappe}/emails/lecture/[^/]+/[^/]+/?$`).test(pathname);
 }

@@ -24,6 +24,7 @@ import {
   generateNonce,
   isStrictCspPath,
   isEmbedPath,
+  isLectureEmailPath,
 } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
@@ -67,9 +68,16 @@ function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: str
   const origineBouclage = estHoteDeBouclage(
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
   );
+  // Lecture plein écran d'un e-mail enregistré (I0b-3) : la route pose la même CSP
+  // (`buildCspHeader({ lectureEmail })`) ; on la rend ici à l'identique, pour que le
+  // résultat soit juste quel que soit l'ordre d'application route / proxy.
+  const lectureEmail = isLectureEmailPath(
+    req.nextUrl.pathname,
+    process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9",
+  );
   response.headers.set(
     "Content-Security-Policy",
-    buildCspHeader({ nonce, strict, embed, origineBouclage }),
+    buildCspHeader({ nonce, strict, embed, origineBouclage, lectureEmail }),
   );
   // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
   //
