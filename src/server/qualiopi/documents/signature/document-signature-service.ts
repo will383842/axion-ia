@@ -298,7 +298,7 @@ function estStub(): boolean {
 const MESSAGES: Record<RefusSignatureDocument, string> = {
   piece_introuvable: REFUS_PIECE_INTROUVABLE.message,
   piece_specimen:
-    "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, régénérez la pièce, puis faites-la signer.",
+    "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans la configuration de l'organisme, régénérez la pièce, puis faites-la signer.",
   piece_non_scellee:
     "Cette pièce n'a pas d'empreinte : rien ne permettrait de prouver plus tard quel document a été signé.",
   piece_annulee:

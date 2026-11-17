@@ -358,7 +358,7 @@ export async function emettreLienSignature(
   if (estSpecimen) {
     return {
       error:
-        "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, régénérez la pièce, puis émettez le lien.",
+        "Cette pièce est un SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans la configuration de l'organisme, régénérez la pièce, puis émettez le lien.",
     };
   }
   if (nettoyer(piece.hashSha256) === null) {
