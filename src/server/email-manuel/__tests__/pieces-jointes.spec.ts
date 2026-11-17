@@ -9,6 +9,7 @@
  * effet ; objets refusés déplacés et jamais supprimés ; aucun appel de suppression dans le module.
  */
 
+import { randomBytes, randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -36,8 +37,9 @@ interface Ligne {
 }
 interface Email {
   id: string;
-  cleIdempotence: string;
   statut: string;
+  ecritParId: string | null;
+  objet: string;
   [k: string]: unknown;
 }
 
@@ -50,10 +52,18 @@ const h = vi.hoisted(() => {
     suppressions: [] as string[],
     urls: [] as Array<{ cle: string; taille: number; type: string; ttl: number }>,
     debit: { allowed: true, cles: [] as string[], configs: [] as unknown[] },
+    env: { EMAIL_MANUEL_ACTIF: "true" as string },
+    /** Les requêtes SQL brutes, dans l'ordre. */
+    sql: [] as string[],
+    /** Ordre des événements : « sql » (verrou) et « findMany » (lecture des pièces). */
+    ordre: [] as string[],
+    updateMany: { appels: 0 },
+    copie: { echecs: 0, pendant: null as null | (() => void) },
     ObjetR2Modifie,
   };
 });
 
+vi.mock("@/env", () => ({ env: h.env }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
 vi.mock("@/lib/rate-limit", () => ({
   checkRateLimit: async (cle: string, config: unknown) => {
@@ -65,47 +75,101 @@ vi.mock("@/lib/rate-limit", () => ({
 
 function correspond(l: object, where: Record<string, unknown>): boolean {
   return Object.entries(where).every(([k, v]) => {
+    if (k === "emailManuel") {
+      const w = v as { ecritParId: string };
+      const e = h.emails.find((x) => x.id === (l as Ligne).emailManuelId);
+      return e?.ecritParId === w.ecritParId;
+    }
     const val = (l as Record<string, unknown>)[k];
-    if (v && typeof v === "object" && "in" in v) return (v as { in: unknown[] }).in.includes(val);
+    if (v instanceof Date) return val instanceof Date && val.getTime() === v.getTime();
+    if (v && typeof v === "object") {
+      const c = v as { in?: unknown[]; lt?: Date; gte?: Date };
+      if (c.in) return c.in.includes(val);
+      if (c.lt) return (val as Date).getTime() < c.lt.getTime();
+      if (c.gte) return (val as Date).getTime() >= c.gte.getTime();
+    }
     return val === v;
   });
 }
 
-vi.mock("@/lib/prisma", () => ({
-  prisma: {
-    emailManuel: {
-      findUnique: async ({ where }: { where: { id?: string; cleIdempotence?: string } }) =>
-        h.emails.find((e) =>
-          where.id ? e.id === where.id : e.cleIdempotence === where.cleIdempotence,
-        ) ?? null,
-      create: async ({ data }: { data: Record<string, unknown> }) => {
-        const e = { id: `email-${h.emails.length + 1}`, statut: "brouillon", ...data } as Email;
-        h.emails.push(e);
-        return e;
-      },
+const verrous = new Map<string, Promise<void>>();
+interface Contexte {
+  liberer: Array<() => void>;
+}
+async function queryRaw(ctx: Contexte, s: TemplateStringsArray, v: unknown[]) {
+  const sql = s.join("?");
+  h.sql.push(sql);
+  if (/FOR UPDATE/.test(sql)) {
+    const id = String(v[0]);
+    while (verrous.has(id)) await verrous.get(id);
+    let lib!: () => void;
+    verrous.set(id, new Promise<void>((r) => (lib = r)));
+    ctx.liberer.push(() => {
+      verrous.delete(id);
+      lib();
+    });
+  }
+  h.ordre.push("sql");
+  const e = h.emails.find((x) => x.id === v[0]);
+  return e
+    ? [{ id: e.id, statut: e.statut, ecrit_par_id: e.ecritParId ?? null, objet: e.objet }]
+    : [];
+}
+
+const prismaMock = {
+  emailManuel: {
+    findFirst: async ({ where }: { where: Record<string, unknown> }) =>
+      h.emails.find((e) => correspond(e, where)) ?? null,
+  },
+  emailManuelPieceJointe: {
+    createMany: async ({ data }: { data: Ligne[] }) => {
+      h.lignes.push(
+        ...data.map((d) => ({ ...d, motifRefus: null, sha256: null, antivirus: null })),
+      );
+      return { count: data.length };
     },
-    emailManuelPieceJointe: {
-      createMany: async ({ data }: { data: Ligne[] }) => {
-        h.lignes.push(
-          ...data.map((d) => ({ ...d, motifRefus: null, sha256: null, antivirus: null })),
-        );
-        return { count: data.length };
+    findMany: async ({ where }: { where: Record<string, unknown> }) => {
+      h.ordre.push("findMany");
+      return h.lignes.filter((l) => correspond(l, where)).map((l) => ({ ...l }));
+    },
+    aggregate: async ({ where }: { where: Record<string, unknown> }) => ({
+      _sum: {
+        tailleOctets: h.lignes
+          .filter((l) => correspond(l, where))
+          .reduce((t, l) => t + l.tailleOctets, 0),
       },
-      findMany: async ({ where }: { where: Record<string, unknown> }) =>
-        h.lignes.filter((l) => correspond(l, where)).map((l) => ({ ...l })),
-      updateMany: async ({ where, data }: { where: Record<string, unknown>; data: object }) => {
-        const vis = h.lignes.filter((l) => correspond(l, where));
-        vis.forEach((l) => Object.assign(l, data));
-        return { count: vis.length };
-      },
-      update: async ({ where, data }: { where: { id: string }; data: object }) => {
-        const l = h.lignes.find((x) => x.id === where.id);
-        if (!l) throw new Error("introuvable");
-        return Object.assign(l, data);
-      },
+    }),
+    updateMany: async ({ where, data }: { where: Record<string, unknown>; data: object }) => {
+      h.updateMany.appels += 1;
+      const vis = h.lignes.filter((l) => correspond(l, where));
+      vis.forEach((l) => Object.assign(l, data));
+      return { count: vis.length };
     },
   },
+};
+
+// Accès paresseux : la fabrique est hissée, `prismaMock` n'existe qu'à l'exécution des appels.
+vi.mock("@/lib/prisma", () => ({
+  get prisma() {
+    return prismaComplet();
+  },
 }));
+
+const prismaComplet = () => ({
+  ...prismaMock,
+  $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+    const ctx: Contexte = { liberer: [] };
+    const tx = {
+      ...prismaMock,
+      $queryRaw: (s: TemplateStringsArray, ...v: unknown[]) => queryRaw(ctx, s, v),
+    };
+    try {
+      return await fn(tx);
+    } finally {
+      ctx.liberer.forEach((f) => f());
+    }
+  },
+});
 
 function plage(o: Uint8Array, spec: string): Uint8Array {
   const m = /^bytes=(\d*)-(\d*)$/.exec(spec)!;
@@ -135,6 +199,11 @@ vi.mock("@/lib/r2-storage", () => ({
   },
   copierObjetR2: async (source: string, dest: string, etag: string, type: string) => {
     const o = verifierEtag(source, etag);
+    if (h.copie.echecs > 0) {
+      h.copie.echecs -= 1;
+      throw new Error("panne de copie");
+    }
+    h.copie.pendant?.();
     h.seau.set(dest, { ...o, type });
   },
   deleteFromR2: async (cle: string) => {
@@ -155,24 +224,34 @@ import {
   finaliserPiecesJointesEmail,
   listerPiecesJointesEmail,
   ouvrirEnvoisPiecesJointesEmail,
-  type BrouillonACreer,
+  empreinteJetonEmail,
 } from "../pieces-jointes";
+import {
+  MESSAGES_PIECES_EMAIL,
+  PLAFOND_OCTETS_24H_PAR_ADMIN,
+  prefixesStockageEmail,
+} from "@/lib/email-manuel/pieces-jointes";
+import { OBJET_EMAIL_MANUEL_EFFACE } from "@/lib/rgpd-erase";
 import type { Antivirus } from "@/server/contact/pieces-jointes";
 
 const DIRECTION = { id: "11111111-1111-4111-8111-111111111111", role: "admin" };
+const AUTRE_ADMIN = { id: "55555555-5555-4555-8555-555555555555", role: "admin" };
 const FONDATEUR = { id: "22222222-2222-4222-8222-222222222222", role: "super_admin" };
 const SECRETAIRE = { id: "33333333-3333-4333-8333-333333333333", role: "secretaire" };
 const MO = 1024 * 1024;
 
-const BROUILLON: BrouillonACreer = {
-  cleIdempotence: "cle-idempotence-0001",
-  entiteType: "Client",
-  entiteId: "44444444-4444-4444-8444-444444444444",
-  destinataireChiffre: "chiffre",
-  destinataireHash: "a".repeat(64),
-  expediteurNom: "Axion-IA",
-  ecritParNom: "Direction",
-};
+/** Pousse un e-mail `brouillon` écrit par `acteur`. */
+function brouillonDe(acteur: { id: string } | null, extra: Partial<Email> = {}): Email {
+  const e: Email = {
+    id: randomUUID(),
+    statut: "brouillon",
+    ecritParId: acteur ? acteur.id : null,
+    objet: "",
+    ...extra,
+  };
+  h.emails.push(e);
+  return e;
+}
 
 const antivirusSain: Antivirus = async (flux) => {
   for await (const _ of flux) {
@@ -201,11 +280,36 @@ function deposer(cle: string, octets: Uint8Array): void {
 
 async function ouvrir(
   pieces: Array<{ nom: string; taille: number }>,
-  acteur = DIRECTION,
-  quoi: { emailManuelId: string } | { brouillon: BrouillonACreer } = { brouillon: BROUILLON },
+  acteur: { id: string; role: string } = DIRECTION,
+  quoi?: { emailManuelId: string },
+  maintenant?: Date,
 ) {
-  return ouvrirEnvoisPiecesJointesEmail({ acteur, ...quoi, pieces });
+  const emailManuelId = quoi?.emailManuelId ?? brouillonDe(acteur).id;
+  return ouvrirEnvoisPiecesJointesEmail({ acteur, emailManuelId, pieces }, maintenant);
 }
+
+/** Une ligne semée à la main, avec un jeton connu. */
+function semer(e: Email, jeton: string, extra: Partial<Ligne> = {}): Ligne {
+  const l: Ligne = {
+    id: randomUUID(),
+    emailManuelId: e.id,
+    nomFichier: "a.pdf",
+    format: "pdf",
+    tailleOctets: 1000,
+    cleStockage: `emails-manuels/temporaire/${e.id}/${randomUUID()}`,
+    statut: "attendue",
+    motifRefus: null,
+    sha256: null,
+    antivirus: null,
+    jetonHash: empreinteJetonEmail(jeton),
+    creeLe: new Date(),
+    ...extra,
+  };
+  h.lignes.push(l);
+  return l;
+}
+const nouveauJeton = () => randomBytes(32).toString("base64url");
+const MIN = 60_000;
 
 beforeEach(() => {
   h.seau.clear();
@@ -216,11 +320,18 @@ beforeEach(() => {
   h.debit.allowed = true;
   h.debit.cles.length = 0;
   h.debit.configs.length = 0;
+  h.env.EMAIL_MANUEL_ACTIF = "true";
+  h.sql.length = 0;
+  h.ordre.length = 0;
+  h.updateMany.appels = 0;
+  h.copie.echecs = 0;
+  h.copie.pendant = null;
+  verrous.clear();
   n = 0;
 });
 
 describe("ouvrir les envois", () => {
-  it("crée la ligne brouillon si besoin, une ligne attendue et une URL signée par fichier", async () => {
+  it("une ligne attendue et une URL signée par fichier, sur un brouillon existant", async () => {
     const r = await ouvrir([
       { nom: "Devis.pdf", taille: 120_000 },
       { nom: "photo.JPG", taille: 2 * MO },
@@ -228,7 +339,6 @@ describe("ouvrir les envois", () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(h.emails).toHaveLength(1);
-    expect(h.emails[0]!.statut).toBe("brouillon");
     expect(r.emailManuelId).toBe(h.emails[0]!.id);
     expect(r.envois).toHaveLength(2);
     expect(h.lignes.map((l) => l.statut)).toEqual(["attendue", "attendue"]);
@@ -249,7 +359,7 @@ describe("ouvrir les envois", () => {
     await ouvrir([{ nom: "../../secret/evil.pdf", taille: 100 }]);
     const cle = h.lignes[0]!.cleStockage;
     expect(cle).toMatch(
-      new RegExp(`^${PREFIXE_TEMPORAIRE_EMAIL}\\d{4}-\\d{2}-\\d{2}/[0-9a-f-]{36}$`),
+      new RegExp(`^${PREFIXE_TEMPORAIRE_EMAIL}${h.emails[0]!.id}/[0-9a-f-]{36}$`),
     );
     expect(cle).not.toMatch(/secret|evil|\.\./);
     expect(h.lignes[0]!.nomFichier).toBe("evil.pdf");
@@ -266,6 +376,8 @@ describe("ouvrir les envois", () => {
     "ancien.doc",
     "tableau.xls",
     "deck.ppt",
+    "rapport.odt",
+    "x.pdf.exe",
     "virus.exe",
     "macro.docm",
     "sans-extension",
@@ -276,20 +388,12 @@ describe("ouvrir les envois", () => {
     expect(h.urls).toHaveLength(0);
   });
 
-  it.each([
-    "a.pdf",
-    "a.docx",
-    "a.xlsx",
-    "a.pptx",
-    "a.odt",
-    "a.txt",
-    "a.csv",
-    "a.png",
-    "a.jpg",
-    "a.jpeg",
-  ])("format permis « %s »", async (nom) => {
-    expect((await ouvrir([{ nom, taille: 1000 }])).ok).toBe(true);
-  });
+  it.each(["a.pdf", "a.docx", "a.xlsx", "a.pptx", "a.txt", "a.csv", "a.png", "a.jpg", "a.jpeg"])(
+    "format permis « %s »",
+    async (nom) => {
+      expect((await ouvrir([{ nom, taille: 1000 }])).ok).toBe(true);
+    },
+  );
 
   it("plus de 5 fichiers : refus", async () => {
     const six = Array.from({ length: 6 }, (_, i) => ({ nom: `f${i}.pdf`, taille: 1000 }));
@@ -336,25 +440,6 @@ describe("ouvrir les envois", () => {
     expect(h.lignes).toHaveLength(0);
   });
 
-  it("le même brouillon (même clé d'idempotence) n'est créé qu'une fois", async () => {
-    await ouvrir([{ nom: "a.pdf", taille: 10 }]);
-    await ouvrir([{ nom: "b.pdf", taille: 10 }]);
-    expect(h.emails).toHaveLength(1);
-    expect(h.lignes).toHaveLength(2);
-  });
-
-  it("brouillon mal formé (empreinte, type d'entité) : refus avant toute écriture", async () => {
-    const mauvais = [
-      { ...BROUILLON, destinataireHash: "xyz" },
-      { ...BROUILLON, entiteType: "Inconnu" },
-    ];
-    for (const b of mauvais) {
-      const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], DIRECTION, { brouillon: b });
-      expect(r.ok).toBe(false);
-    }
-    expect(h.emails).toHaveLength(0);
-  });
-
   it("e-mail déjà parti : plus de pièce ajoutée", async () => {
     const a = await ouvrir([{ nom: "a.pdf", taille: 10 }]);
     if (!a.ok) throw new Error("attendu ok");
@@ -366,7 +451,9 @@ describe("ouvrir les envois", () => {
   });
 
   it("e-mail inconnu : refus", async () => {
-    const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], DIRECTION, { emailManuelId: "nope" });
+    const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], DIRECTION, {
+      emailManuelId: randomUUID(),
+    });
     expect(r).toMatchObject({ ok: false, refus: "inconnu" });
   });
 
@@ -381,7 +468,6 @@ describe("ouvrir les envois", () => {
     const r = await ouvrir([{ nom: "a.pdf", taille: 10 }]);
     expect(r).toMatchObject({ ok: false, refus: "debit" });
     expect(h.lignes).toHaveLength(0);
-    expect(h.emails).toHaveLength(0);
     expect(h.urls).toHaveLength(0);
   });
 });
@@ -390,7 +476,6 @@ describe("l'acte ecrire_email_manuel est vérifié dans chaque fonction exposée
   it("ouvrir : refus sans l'acte, rien d'écrit, compteur non touché", async () => {
     const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], SECRETAIRE);
     expect(r).toMatchObject({ ok: false, refus: "acte" });
-    expect(h.emails).toHaveLength(0);
     expect(h.lignes).toHaveLength(0);
     expect(h.debit.cles).toHaveLength(0);
   });
@@ -408,13 +493,19 @@ describe("l'acte ecrire_email_manuel est vérifié dans chaque fonction exposée
   });
 
   it("lister : refus sans l'acte", async () => {
-    const r = await listerPiecesJointesEmail({ acteur: SECRETAIRE, emailManuelId: "x" });
+    const r = await listerPiecesJointesEmail({
+      acteur: SECRETAIRE,
+      emailManuelId: randomUUID(),
+    });
     expect(r).toMatchObject({ ok: false, refus: "acte" });
   });
 
   it("rôle absent ou vide : refus", async () => {
     for (const role of [null, undefined, ""]) {
-      const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], { id: "x", role: role as string });
+      const r = await ouvrir([{ nom: "a.pdf", taille: 10 }], {
+        id: DIRECTION.id,
+        role: role as string,
+      });
       expect(r).toMatchObject({ ok: false, refus: "acte" });
     }
   });
@@ -570,6 +661,402 @@ describe("finaliser : contrôle, copie définitive, refus conservés", () => {
   });
 });
 
+const fonction = {
+  ouvrir: (acteur: { id: string; role: string }, id: string) =>
+    ouvrirEnvoisPiecesJointesEmail({
+      acteur,
+      emailManuelId: id,
+      pieces: [{ nom: "a.pdf", taille: 1000 }],
+    }),
+  finaliser: (acteur: { id: string; role: string }, id: string, jeton: string, av: Antivirus) =>
+    finaliserPiecesJointesEmail({ acteur, emailManuelId: id, jeton }, { antivirus: av }),
+  lister: (acteur: { id: string; role: string }, id: string) =>
+    listerPiecesJointesEmail({ acteur, emailManuelId: id }),
+};
+
+describe("cloisonnement par auteur", () => {
+  it("1. ouvrir : le brouillon de A, appelé par B → inconnu, rien d'écrit", async () => {
+    const e = brouillonDe(DIRECTION);
+    const r = await fonction.ouvrir(AUTRE_ADMIN, e.id);
+    expect(r).toMatchObject({ ok: false, refus: "inconnu" });
+    expect(h.lignes).toHaveLength(0);
+    expect(h.urls).toHaveLength(0);
+  });
+
+  it("2. finaliser : B présente l'id et le vrai jeton de A → inconnu, antivirus jamais appelé", async () => {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: DIRECTION,
+      emailManuelId: e.id,
+      pieces: [{ nom: "a.pdf", taille: PDF.length }],
+    });
+    if (!a.ok) throw new Error("attendu ok");
+    deposer(h.lignes[0]!.cleStockage, PDF);
+    const av = vi.fn(antivirusSain);
+    const r = await fonction.finaliser(AUTRE_ADMIN, e.id, a.jeton, av);
+    expect(r).toMatchObject({ ok: false, refus: "inconnu" });
+    expect(h.lignes.map((l) => l.statut)).toEqual(["attendue"]);
+    expect(av).not.toHaveBeenCalled();
+  });
+
+  it("3. lister : B → inconnu, aucun nom de fichier", async () => {
+    const e = brouillonDe(DIRECTION);
+    semer(e, nouveauJeton(), { nomFichier: "secret.pdf" });
+    const r = await fonction.lister(AUTRE_ADMIN, e.id);
+    expect(r).toMatchObject({ ok: false, refus: "inconnu" });
+    expect(JSON.stringify(r)).not.toContain("secret.pdf");
+  });
+
+  it("4. pas d'exception pour le fondateur ; l'auteur passe", async () => {
+    const e = brouillonDe(DIRECTION);
+    const jeton = nouveauJeton();
+    semer(e, jeton);
+    expect(await fonction.ouvrir(FONDATEUR, e.id)).toMatchObject({ refus: "inconnu" });
+    expect(await fonction.finaliser(FONDATEUR, e.id, jeton, antivirusSain)).toMatchObject({
+      refus: "inconnu",
+    });
+    expect(await fonction.lister(FONDATEUR, e.id)).toMatchObject({ refus: "inconnu" });
+    expect((await fonction.ouvrir(DIRECTION, e.id)).ok).toBe(true);
+    expect((await fonction.lister(DIRECTION, e.id)).ok).toBe(true);
+  });
+
+  it("5. auteur supprimé (ecritParId NULL) → inconnu", async () => {
+    const e = brouillonDe(null);
+    expect(await fonction.ouvrir(DIRECTION, e.id)).toMatchObject({ refus: "inconnu" });
+    expect(await fonction.lister(DIRECTION, e.id)).toMatchObject({ refus: "inconnu" });
+  });
+});
+
+describe("concurrence : limites lues sous verrou", () => {
+  it("6. deux ouvertures de 5 × 1 Mo : une seule passe", async () => {
+    const e = brouillonDe(DIRECTION);
+    const cinq = Array.from({ length: 5 }, (_, i) => ({ nom: `f${i}.pdf`, taille: MO }));
+    const [a, b] = await Promise.all([
+      ouvrir(cinq, DIRECTION, { emailManuelId: e.id }),
+      ouvrir(cinq, DIRECTION, { emailManuelId: e.id }),
+    ]);
+    const ok = [a, b].filter((r) => r.ok);
+    const ko = [a, b].filter((r) => !r.ok);
+    expect(ok).toHaveLength(1);
+    expect(ko[0]).toMatchObject({ refus: "annonce", message: MESSAGES_PIECES_EMAIL.nombre });
+    expect(h.lignes).toHaveLength(5);
+    // Témoin : le verrou est la PREMIÈRE requête, avant toute lecture des pièces.
+    expect(h.sql[0]).toMatch(/FOR UPDATE/);
+    expect(h.sql[0]).toMatch(/::uuid/);
+    expect(h.ordre[0]).toBe("sql");
+    expect(h.ordre.indexOf("sql")).toBeLessThan(h.ordre.indexOf("findMany"));
+  });
+
+  it("7. deux ouvertures 6 Mo + 3 Mo : une seule passe, somme ≤ 10 Mo", async () => {
+    const e = brouillonDe(DIRECTION);
+    const duo = [
+      { nom: "a.pdf", taille: 6 * MO },
+      { nom: "b.pdf", taille: 3 * MO },
+    ];
+    const rs = await Promise.all([
+      ouvrir(duo, DIRECTION, { emailManuelId: e.id }),
+      ouvrir(duo, DIRECTION, { emailManuelId: e.id }),
+    ]);
+    expect(rs.filter((r) => r.ok)).toHaveLength(1);
+    expect(h.lignes.reduce((t, l) => t + l.tailleOctets, 0)).toBeLessThanOrEqual(10 * MO);
+  });
+
+  it("8. plus de 10 Mo en un seul appel : message « total », aucune ligne", async () => {
+    const r = await ouvrir([
+      { nom: "a.pdf", taille: 6 * MO },
+      { nom: "b.pdf", taille: 5 * MO },
+    ]);
+    expect(r).toMatchObject({ ok: false, message: MESSAGES_PIECES_EMAIL.total });
+    expect(h.lignes).toHaveLength(0);
+  });
+});
+
+describe("finaliser : l'e-mail part pendant le contrôle", () => {
+  async function pret() {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: DIRECTION,
+      emailManuelId: e.id,
+      pieces: [{ nom: "a.pdf", taille: PDF.length }],
+    });
+    if (!a.ok) throw new Error("attendu ok");
+    deposer(h.lignes[0]!.cleStockage, PDF);
+    return { e, a };
+  }
+  const parti =
+    (e: Email): Antivirus =>
+    async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      e.statut = "en_file";
+      return { issue: "sain" };
+    };
+
+  it("9. statut en_file pendant l'antivirus : refusée « envoi_parti », jamais acceptée", async () => {
+    const { e, a } = await pret();
+    const r = await fonction.finaliser(DIRECTION, e.id, a.jeton, parti(e));
+    expect(h.lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "envoi_parti" });
+    expect(h.lignes.some((l) => l.statut === "acceptee")).toBe(false);
+    expect(r.ok && r.pieces[0]!.message).toBe(MESSAGES_PIECES_EMAIL.envoiParti("a.pdf"));
+    // Le brouillon est devenu « en_file » : lister est cloisonné par auteur, pas par statut.
+    const l = await fonction.lister(DIRECTION, e.id);
+    expect(l.ok && l.pieces[0]!.joignable).toBe(false);
+  });
+
+  it("9b. statut en_file pendant la COPIE (après la lecture simple) : Temps 3, jamais acceptée", async () => {
+    const { e, a } = await pret();
+    h.copie.pendant = () => {
+      e.statut = "en_file";
+    };
+    await fonction.finaliser(DIRECTION, e.id, a.jeton, antivirusSain);
+    expect(h.lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "envoi_parti" });
+    expect(h.lignes[0]!.cleStockage.startsWith("emails-manuels/temporaire/")).toBe(true);
+  });
+
+  it("10. e-mail déjà parti dès le départ : deja_parti, lignes inchangées, antivirus muet", async () => {
+    const { e, a } = await pret();
+    e.statut = "en_file";
+    const av = vi.fn(antivirusSain);
+    const r = await fonction.finaliser(DIRECTION, e.id, a.jeton, av);
+    expect(r).toMatchObject({ ok: false, refus: "deja_parti" });
+    expect(h.lignes[0]!.statut).toBe("attendue");
+    expect(av).not.toHaveBeenCalled();
+  });
+});
+
+describe("expiration sans suppression", () => {
+  const MAINTENANT = new Date("2026-11-17T12:00:00Z");
+  const il_y_a = (min: number) => new Date(MAINTENANT.getTime() - min * MIN);
+
+  it("11. attendue de 61 min : non_recue, rien de supprimé", async () => {
+    const e = brouillonDe(DIRECTION);
+    for (let i = 0; i < 5; i += 1) semer(e, nouveauJeton(), { creeLe: il_y_a(61) });
+    const r = await ouvrir(
+      [{ nom: "n.pdf", taille: 1000 }],
+      DIRECTION,
+      { emailManuelId: e.id },
+      MAINTENANT,
+    );
+    expect(r.ok).toBe(true);
+    expect(h.lignes.slice(0, 5).map((l) => l.statut)).toEqual(Array(5).fill("non_recue"));
+    expect(h.lignes).toHaveLength(6);
+  });
+
+  it("12. attendue de 59 min : compte encore → refus « nombre »", async () => {
+    const e = brouillonDe(DIRECTION);
+    for (let i = 0; i < 5; i += 1) semer(e, nouveauJeton(), { creeLe: il_y_a(59) });
+    const r = await ouvrir(
+      [{ nom: "n.pdf", taille: 1000 }],
+      DIRECTION,
+      { emailManuelId: e.id },
+      MAINTENANT,
+    );
+    expect(r).toMatchObject({ ok: false, message: MESSAGES_PIECES_EMAIL.nombre });
+  });
+
+  it("13. controle bloquée : 76 min → non_recue ; 74 min → reste controle et compte", async () => {
+    const e = brouillonDe(DIRECTION);
+    const vieille = semer(e, nouveauJeton(), { statut: "controle", creeLe: il_y_a(76) });
+    expect(
+      (await ouvrir([{ nom: "n.pdf", taille: 10 }], DIRECTION, { emailManuelId: e.id }, MAINTENANT))
+        .ok,
+    ).toBe(true);
+    expect(vieille.statut).toBe("non_recue");
+
+    const f = brouillonDe(DIRECTION);
+    const recente = semer(f, nouveauJeton(), { statut: "controle", creeLe: il_y_a(74) });
+    for (let i = 0; i < 4; i += 1) semer(f, nouveauJeton(), { creeLe: il_y_a(5) });
+    const r = await ouvrir(
+      [{ nom: "n.pdf", taille: 10 }],
+      DIRECTION,
+      { emailManuelId: f.id },
+      MAINTENANT,
+    );
+    expect(r).toMatchObject({ ok: false, message: MESSAGES_PIECES_EMAIL.nombre });
+    expect(recente.statut).toBe("controle");
+  });
+
+  it("14. jeton présenté sur une ligne de plus de 60 min : non_recue, antivirus muet", async () => {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail(
+      { acteur: DIRECTION, emailManuelId: e.id, pieces: [{ nom: "a.pdf", taille: PDF.length }] },
+      il_y_a(61),
+    );
+    if (!a.ok) throw new Error("attendu ok");
+    deposer(h.lignes[0]!.cleStockage, PDF);
+    const av = vi.fn(antivirusSain);
+    const r = await finaliserPiecesJointesEmail(
+      { acteur: DIRECTION, emailManuelId: e.id, jeton: a.jeton },
+      { antivirus: av },
+      MAINTENANT,
+    );
+    expect(r.ok && r.pieces[0]!.statut).toBe("non_recue");
+    expect(h.lignes[0]!.statut).toBe("non_recue");
+    expect(av).not.toHaveBeenCalled();
+  });
+
+  it("15. ligne expirée pendant le contrôle : reste non_recue, jamais acceptée", async () => {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: DIRECTION,
+      emailManuelId: e.id,
+      pieces: [{ nom: "a.pdf", taille: PDF.length }],
+    });
+    if (!a.ok) throw new Error("attendu ok");
+    deposer(h.lignes[0]!.cleStockage, PDF);
+    const expire: Antivirus = async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      h.lignes[0]!.statut = "non_recue";
+      return { issue: "sain" };
+    };
+    await fonction.finaliser(DIRECTION, e.id, a.jeton, expire);
+    expect(h.lignes[0]!.statut).toBe("non_recue");
+  });
+});
+
+describe("rangement protégé", () => {
+  it("16. exception de copie sur une des deux lignes : finaliser répond ok, la ligne revient attendue", async () => {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: DIRECTION,
+      emailManuelId: e.id,
+      pieces: [
+        { nom: "a.pdf", taille: PDF.length },
+        { nom: "b.pdf", taille: PDF.length },
+      ],
+    });
+    if (!a.ok) throw new Error("attendu ok");
+    for (const l of h.lignes) deposer(l.cleStockage, PDF);
+    h.copie.echecs = 1;
+    const r = await fonction.finaliser(DIRECTION, e.id, a.jeton, antivirusSain);
+    expect(r.ok).toBe(true);
+    expect(h.lignes.map((l) => l.statut).sort()).toEqual(["acceptee", "attendue"]);
+  });
+
+  it("17. format recontrôlé : un zip semé à la main finit refusé « format », jamais accepté", async () => {
+    const e = brouillonDe(DIRECTION);
+    const jeton = nouveauJeton();
+    const zip = fabriquerZip([CT, ["a.txt", "x"]]);
+    const l = semer(e, jeton, { nomFichier: "a.zip", format: "zip", tailleOctets: zip.length });
+    deposer(l.cleStockage, zip);
+    await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(l.statut).toBe("refusee");
+    expect(l.motifRefus).toBe("format");
+  });
+
+  it("18. ODT refusé à l'ouverture, message sans « ODT »", async () => {
+    const r = await ouvrir([{ nom: "rapport.odt", taille: 1000 }]);
+    expect(r).toMatchObject({ ok: false, refus: "annonce" });
+    expect(!r.ok && r.message).not.toMatch(/ODT/);
+    expect(MESSAGES_PIECES_EMAIL.format("x")).not.toMatch(/ODT/);
+  });
+
+  it("19. clés traçables : chaque clé commence par un des 3 dossiers de son e-mail", async () => {
+    const e = brouillonDe(DIRECTION);
+    const a = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: DIRECTION,
+      emailManuelId: e.id,
+      pieces: [
+        { nom: "bon.pdf", taille: PDF.length },
+        { nom: "faux.pdf", taille: EXE.length },
+      ],
+    });
+    if (!a.ok) throw new Error("attendu ok");
+    expect(h.lignes[0]!.cleStockage).toMatch(
+      new RegExp(`^emails-manuels/temporaire/${e.id}/[0-9a-f-]{36}$`),
+    );
+    deposer(h.lignes[0]!.cleStockage, PDF);
+    deposer(h.lignes[1]!.cleStockage, EXE);
+    await fonction.finaliser(DIRECTION, e.id, a.jeton, antivirusSain);
+    const prefixes = prefixesStockageEmail(e.id);
+    const cles = [...h.seau.keys(), ...h.lignes.map((l) => l.cleStockage)];
+    expect(cles.length).toBeGreaterThan(3);
+    for (const c of cles) expect(prefixes.some((p) => c.startsWith(p))).toBe(true);
+  });
+});
+
+describe("neutralisation, plafond, validation, interrupteur, noms", () => {
+  it("20. brouillon neutralisé : neutralise, aucune ligne, aucune URL", async () => {
+    const e = brouillonDe(DIRECTION, { objet: OBJET_EMAIL_MANUEL_EFFACE });
+    const r = await fonction.ouvrir(DIRECTION, e.id);
+    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
+    expect(h.lignes).toHaveLength(0);
+    expect(h.urls).toHaveLength(0);
+  });
+
+  it("21. plafond de 24 h : 195 Mo + 6 Mo refusé ; à 25 h accepté ; pièces de B non comptées", async () => {
+    expect(PLAFOND_OCTETS_24H_PAR_ADMIN).toBe(200 * MO);
+    const autre = brouillonDe(DIRECTION);
+    const gros = semer(autre, nouveauJeton(), { tailleOctets: 195 * MO, statut: "acceptee" });
+    const e = brouillonDe(DIRECTION);
+    const six = [{ nom: "a.pdf", taille: 6 * MO }];
+    expect(await ouvrir(six, DIRECTION, { emailManuelId: e.id })).toMatchObject({
+      refus: "plafond",
+    });
+    gros.creeLe = new Date(Date.now() - 25 * 60 * MIN);
+    expect((await ouvrir(six, DIRECTION, { emailManuelId: e.id })).ok).toBe(true);
+
+    h.lignes.length = 0;
+    const deB = brouillonDe(AUTRE_ADMIN);
+    semer(deB, nouveauJeton(), { tailleOctets: 195 * MO, statut: "acceptee" });
+    expect((await ouvrir(six, DIRECTION, { emailManuelId: e.id })).ok).toBe(true);
+  });
+
+  it("22. validation : aucune entrée invalide ne touche la base", async () => {
+    const e = brouillonDe(DIRECTION);
+    const ok = [{ nom: "a.pdf", taille: 10 }];
+    const base = { acteur: DIRECTION, emailManuelId: e.id, pieces: ok };
+    expect(
+      await ouvrirEnvoisPiecesJointesEmail({ ...base, emailManuelId: "pas-un-uuid" }),
+    ).toMatchObject({ refus: "inconnu" });
+    expect(h.sql).toHaveLength(0);
+    expect(
+      await ouvrirEnvoisPiecesJointesEmail({ ...base, pieces: undefined as never }),
+    ).toMatchObject({ refus: "annonce" });
+    const six = Array.from({ length: 6 }, (_, i) => ({ nom: `f${i}.pdf`, taille: 1 }));
+    expect(await ouvrirEnvoisPiecesJointesEmail({ ...base, pieces: six })).toMatchObject({
+      refus: "annonce",
+      message: MESSAGES_PIECES_EMAIL.nombre,
+    });
+    expect(
+      await ouvrirEnvoisPiecesJointesEmail({ ...base, pieces: [{ nom: 42 as never, taille: 1 }] }),
+    ).toMatchObject({ refus: "annonce" });
+    expect(h.sql).toHaveLength(0);
+    expect(h.debit.cles).toHaveLength(0);
+    const r = await finaliserPiecesJointesEmail(
+      { acteur: DIRECTION, emailManuelId: e.id, jeton: "court" },
+      { antivirus: antivirusSain },
+    );
+    expect(r).toMatchObject({ refus: "inconnu" });
+    expect(h.updateMany.appels).toBe(0);
+  });
+
+  it("23. interrupteur éteint : ouvrir et finaliser refusent sans écrire ni débiter ; lister reste ok", async () => {
+    const e = brouillonDe(DIRECTION);
+    h.env.EMAIL_MANUEL_ACTIF = "false";
+    expect(await fonction.ouvrir(DIRECTION, e.id)).toMatchObject({ refus: "eteint" });
+    expect(await fonction.finaliser(DIRECTION, e.id, nouveauJeton(), antivirusSain)).toMatchObject({
+      refus: "eteint",
+    });
+    expect(h.lignes).toHaveLength(0);
+    expect(h.debit.cles).toHaveLength(0);
+    expect(h.sql).toHaveLength(0);
+    expect((await fonction.lister(DIRECTION, e.id)).ok).toBe(true);
+  });
+
+  it("24. noms : double extension refusée, retours à la ligne et barres retirés", async () => {
+    expect(await ouvrir([{ nom: "x.pdf.exe", taille: 10 }])).toMatchObject({ refus: "annonce" });
+    await ouvrir([{ nom: "a\r\nb.pdf", taille: 10 }]);
+    await ouvrir([{ nom: "../../etc/x.pdf", taille: 10 }]);
+    expect(h.lignes).toHaveLength(2);
+    expect(h.lignes[0]!.nomFichier).not.toMatch(/[\r\n]/);
+    expect(h.lignes[1]!.nomFichier).not.toContain("/");
+  });
+});
+
 describe("garde de source : jamais de suppression", () => {
   const racine = process.cwd();
   const fichiers = [
@@ -583,6 +1070,15 @@ describe("garde de source : jamais de suppression", () => {
     expect(src).not.toMatch(/DeleteObject/);
     expect(src).not.toMatch(/\.delete(Many)?\(/);
     expect(src).not.toMatch(/supprimerObjet|supprimerSansBruit/);
+  });
+
+  it("25. F7 ne crée ni ne modifie l'e-mail lui-même, n'est pas une action serveur", () => {
+    const src = readFileSync(path.join(racine, fichiers[0]!), "utf8");
+    expect(src).not.toMatch(
+      /\.emailManuel\.(create|createMany|upsert|update|updateMany|delete|deleteMany)\b/,
+    );
+    expect(src).not.toMatch(/["']use server["']/);
+    expect(src).not.toMatch(/deleteFromR2/);
   });
 
   it("le module n'importe pas le module du formulaire de contact autrement que pour le contrôle", () => {

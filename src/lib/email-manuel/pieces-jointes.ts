@@ -20,9 +20,25 @@ export const NOMBRE_MAX_PIECES_EMAIL = 5;
 /** 10 Mo par fichier ET au total : au-delà, le relais d'envoi rejette le message. */
 export const TAILLE_MAX_PIECE_EMAIL_OCTETS = 10 * 1024 * 1024;
 export const TAILLE_MAX_TOTALE_EMAIL_OCTETS = 10 * 1024 * 1024;
+/** Une ligne `attendue` plus vieille passe `non_recue` : URL de 30 min + 30 min de marge. */
+export const EXPIRATION_ATTENDUE_MS = 60 * 60_000;
+/** Une ligne `controle` plus vieille passe `non_recue` : un contrôle légitime dure moins de 2 min. */
+export const EXPIRATION_CONTROLE_MS = 75 * 60_000;
+/** Plafond de stockage : pièces créées depuis 24 h sur les e-mails d'un même auteur. */
+export const PLAFOND_OCTETS_24H_PAR_ADMIN = 200 * 1024 * 1024;
+
+/** Les trois dossiers de stockage d'un e-mail : définitif, temporaire, refusées. */
+export function prefixesStockageEmail(emailManuelId: string): readonly [string, string, string] {
+  return [
+    `emails-manuels/${emailManuelId}/`,
+    `emails-manuels/temporaire/${emailManuelId}/`,
+    `emails-manuels/refusees/${emailManuelId}/`,
+  ];
+}
 
 /**
- * Formats sortants. Le `zip` et les formats Office anciens (`doc`, `xls`, `ppt`) sont exclus : souvent
+ * Formats sortants. L'`odt` est exclu jusqu'à la fiche F7-S2 (macros cachées dans un sous-document).
+ * Le `zip` et les formats Office anciens (`doc`, `xls`, `ppt`) sont exclus : souvent
  * bloqués chez le destinataire, porteurs possibles de macros.
  */
 export const FORMATS_SORTANTS = [
@@ -30,7 +46,6 @@ export const FORMATS_SORTANTS = [
   "docx",
   "xlsx",
   "pptx",
-  "odt",
   "txt",
   "csv",
   "png",
@@ -58,7 +73,7 @@ export const MESSAGES_PIECES_EMAIL = {
     `« ${nom} » dépasse 10 Mo. Pour un fichier plus lourd, mettez un lien de partage dans le message.`,
   total: "Les pièces jointes dépassent 10 Mo au total. Pour plus lourd, mettez un lien de partage.",
   format: (nom: string) =>
-    `« ${nom} » : format non accepté. Formats acceptés : PDF, DOCX, XLSX, PPTX, ODT, TXT, CSV, PNG, JPG.`,
+    `« ${nom} » : format non accepté. Formats acceptés : PDF, DOCX, XLSX, PPTX, TXT, CSV, PNG, JPG.`,
   macros: (nom: string) =>
     `« ${nom} » peut contenir des macros : enregistrez-le sans macros (.docx, .xlsx, .pptx) puis réessayez.`,
   contenu: (nom: string) =>
@@ -66,6 +81,11 @@ export const MESSAGES_PIECES_EMAIL = {
   infecte: (nom: string) => `« ${nom} » a été refusé par l'antivirus.`,
   antivirusIndisponible: (nom: string) => `« ${nom} » : antivirus indisponible, réessayez.`,
   nonRecue: (nom: string) => `« ${nom} » : fichier non reçu, réessayez de l'envoyer.`,
+  envoiParti: (nom: string) => `« ${nom} » n'a pas été joint : l'e-mail était déjà parti.`,
+  neutralise:
+    "Cet e-mail a été neutralisé après une demande d'effacement : on ne peut plus lui ajouter de fichier.",
+  plafond: "Trop de fichiers envoyés en 24 heures : réessayez demain ou mettez un lien de partage.",
+  eteint: "L'écriture d'e-mails depuis la console n'est pas encore en service.",
 } as const;
 
 export interface FichierAnnonceEmail {
