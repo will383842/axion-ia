@@ -390,3 +390,31 @@ export async function revoquerTokensDocument(input: {
   });
   return res.count;
 }
+
+/**
+ * Révoque UN jeton précis, et lui seul — s'il est encore vivant (ni révoqué, ni expiré).
+ *
+ * Usage : un e-mail de la corbeille refusé n'est jamais parti ; le lien qu'il portait n'a été
+ * reçu par personne. Contrairement à `revoquerTokensDocument`, rien d'autre n'est touché : ni
+ * un jeton plus récent de la même pièce, ni un jeton d'une autre partie, ni les codes de
+ * signature (ils sont rattachés à la pièce et à la partie, pas au jeton : un lien neuf vivant
+ * de la même partie s'en sert). Rend 0 ou 1.
+ */
+export async function revoquerJetonPrecis(input: {
+  tokenId: string;
+  motif: string;
+  parAdminId?: string | null;
+  maintenant?: Date;
+}): Promise<number> {
+  if (estStub()) return 0;
+  const maintenant = input.maintenant ?? new Date();
+  const res = await prisma.documentSignatureToken.updateMany({
+    where: { id: input.tokenId, revokedAt: null, expiresAt: { gt: maintenant } },
+    data: {
+      revokedAt: maintenant,
+      revokedMotif: input.motif.slice(0, 500),
+      revokedById: input.parAdminId ?? null,
+    },
+  });
+  return res.count;
+}

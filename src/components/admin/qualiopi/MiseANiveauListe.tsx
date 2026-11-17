@@ -8,6 +8,7 @@
  * fait qu'appeler. Les messages affichés viennent de l'action, jamais de l'URL.
  */
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 
@@ -242,16 +243,10 @@ export function MiseANiveauListe({
           )}
           {apercu ? (
             <div className="mt-[var(--space-admin-3)]">
-              <p className="admin-meta">Objet : {apercu.sujet}</p>
               {apercu.note ? (
                 <p className="admin-alert admin-alert-warning">{apercu.note}</p>
               ) : null}
-              <iframe
-                title="Aperçu de l'e-mail"
-                sandbox=""
-                srcDoc={apercu.html}
-                className="h-96 w-full border"
-              />
+              <LecteurEmail html={apercu.html} objet={apercu.sujet} />
             </div>
           ) : null}
           {nouvelleVersion.peutAgir && choisis.size > 0 ? (

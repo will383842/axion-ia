@@ -34,11 +34,13 @@
  */
 
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
+import * as Sentry from "@sentry/nextjs";
 import { prisma } from "@/lib/prisma";
 import { existsInR2, uploadToR2 } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
 import { jobIdDejaGare } from "@/server/email/outbox-service";
 import { rendreCgvPdf } from "@/server/cgv-pdf";
+import { lirePhotoDevis, totauxDepuisPhoto } from "../documents/signature/photo-devis";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   computeTotauxFacture,
@@ -71,6 +73,8 @@ export interface DependancesConfirmation {
   lireDevis(devisId: string): Promise<DevisConfirmation | null>;
   formulesActives(): Promise<boolean>;
   regimeEtTaux(): Promise<{ regime: ReturnType<typeof regimeTvaDepuisConfig>; taux: number }>;
+  /** `DocumentGenere.metadata` de la pièce (porte la PHOTO des montants), `null` si introuvable. */
+  lireMetadataPiece(documentGenereId: string): Promise<unknown>;
   /** `cgvVersion` enregistrée à la signature du client (ligne non révoquée), ou `null`. */
   versionCgvAcceptee(documentGenereId: string): Promise<string | null>;
   /** Le PDF des CGV de cette version existe-t-il déjà dans R2 ? */
@@ -169,6 +173,13 @@ const dependancesParDefaut: DependancesConfirmation = {
     regime: regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
     taux: (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD,
   }),
+  lireMetadataPiece: async (documentGenereId) =>
+    (
+      await prisma.documentGenere.findUnique({
+        where: { id: documentGenereId },
+        select: { metadata: true },
+      })
+    )?.metadata ?? null,
   versionCgvAcceptee: async (documentGenereId) => {
     const ligne = await prisma.documentSignature.findFirst({
       where: { documentGenereId, partie: "client", revokedAt: null, cgvVersion: { not: null } },
@@ -249,9 +260,32 @@ export async function envoyerConfirmationCommande(
     automatisationsRetenues = recap.automatisations;
     recurrent = recap.recurrent;
   } else {
-    const { regime, taux } = await deps.regimeEtTaux();
-    const lignes = (Array.isArray(devis.lignes) ? devis.lignes : []) as LigneFacturable[];
-    totaux = computeTotauxFacture(lignes, regime, taux);
+    // 🔴 Montants de la PHOTO de la pièce signée (même chemin que la page de signature), pas de la
+    // configuration du jour. Repli (anciennes pièces) : configuration actuelle + signal Sentry ;
+    // aucune exception ne doit empêcher la confirmation.
+    let snap: ReturnType<typeof lirePhotoDevis> = null;
+    try {
+      if (devis.documentGenereId !== null) {
+        snap = lirePhotoDevis(await deps.lireMetadataPiece(devis.documentGenereId));
+      }
+    } catch {
+      snap = null;
+    }
+    if (snap !== null) {
+      totaux = totauxDepuisPhoto(snap);
+    } else {
+      // Sans donnée de personne ni montant : seulement le module.
+      Sentry.captureMessage(
+        "confirmation-commande: photo absente ou illisible, repli sur la configuration",
+        {
+          level: "warning",
+          tags: { module: "confirmation-commande" },
+        },
+      );
+      const { regime, taux } = await deps.regimeEtTaux();
+      const lignes = (Array.isArray(devis.lignes) ? devis.lignes : []) as LigneFacturable[];
+      totaux = computeTotauxFacture(lignes, regime, taux);
+    }
   }
 
   // CGV de la version ACCEPTÉE par le client. Introuvable → on n'en cite ni n'en joint aucune.

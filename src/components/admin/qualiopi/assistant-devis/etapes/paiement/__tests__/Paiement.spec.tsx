@@ -9,7 +9,6 @@ import type { EtatAssistant } from "../../../types";
 import { versSaisie } from "../../../vers-offre";
 import { indemniteSortieAffichee } from "../../../../devis-formules/saisie";
 import { ApercuClientVerra } from "../ApercuClientVerra";
-import { BlocFinancement } from "../BlocFinancement";
 import { EtapePaiement } from "../EtapePaiement";
 import { PaiementA } from "../PaiementA";
 import { PaiementB } from "../PaiementB";
@@ -23,7 +22,7 @@ function Hote({
   montants,
 }: {
   initial: EtatAssistant;
-  vue?: "etape" | "a" | "b" | "financement" | "verra";
+  vue?: "etape" | "a" | "b" | "verra";
   montants?: { A?: Array<number | null>; B?: Array<number | null> };
 }) {
   const [e, dispatch] = useReducer(reducteur, initial);
@@ -33,8 +32,6 @@ function Hote({
         <PaiementA etat={e} dispatch={dispatch} montants={montants?.A} />
       ) : vue === "b" ? (
         <PaiementB etat={e} dispatch={dispatch} montants={montants?.B} />
-      ) : vue === "financement" ? (
-        <BlocFinancement etat={e} dispatch={dispatch} />
       ) : vue === "verra" ? (
         <ApercuClientVerra etat={e} tvaStandardPct={TVA} />
       ) : (
@@ -69,10 +66,10 @@ describe("EtapePaiement : onglets par formule", () => {
     expect(screen.getByRole("tabpanel", { name: /Formule B/ })).toBeTruthy();
   });
 
-  it("prix unique : rappel de l'échéancier puis financement, sans onglet de formule", () => {
+  it("prix unique : rappel de l'échéancier, sans onglet de formule", () => {
     render(<Hote initial={etatT4()} />);
     expect(screen.queryByRole("tab", { name: /Formule/ })).toBeNull();
-    expect(screen.getByLabelText(/Financement suggéré/)).toBeTruthy();
+    expect(screen.queryByLabelText(/Financement suggéré/)).toBeNull();
   });
 });
 
@@ -179,41 +176,11 @@ describe("PaiementB", () => {
   });
 });
 
-describe("BlocFinancement", () => {
-  it("propose direct, OPCO et France Travail, jamais le CPF", () => {
-    render(<Hote initial={etatT4()} vue="financement" />);
-    const options = within(screen.getByLabelText(/Financement suggéré/)).getAllByRole("option");
-    expect(options.map((o) => o.getAttribute("value"))).toEqual([
-      "",
-      "direct",
-      "opco",
-      "france_travail",
-    ]);
-  });
-
-  it("les champs OPCO n'apparaissent que si le financement est OPCO", () => {
-    render(<Hote initial={etatT4()} vue="financement" />);
-    expect(screen.queryByLabelText(/Modalité OPCO/)).toBeNull();
-    fireEvent.change(screen.getByLabelText(/Financement suggéré/), { target: { value: "opco" } });
-    expect(etat().financement.mode).toBe("opco");
-    fireEvent.change(screen.getByLabelText(/Modalité OPCO/), { target: { value: "intra" } });
-    fireEvent.change(screen.getByLabelText(/Nb\. stagiaires/), { target: { value: "8" } });
-    fireEvent.change(screen.getByLabelText(/Durée \(heures\)/), { target: { value: "14" } });
-    fireEvent.change(screen.getByLabelText(/Enveloppe OPCO restante/), {
-      target: { value: "1000" },
-    });
-    fireEvent.change(screen.getByLabelText(/Début prévu de la session/), {
-      target: { value: "2026-12-01" },
-    });
-    expect(etat().financement).toMatchObject({
-      modaliteOpco: "intra",
-      nbParticipants: "8",
-      dureeHeures: "14",
-      enveloppeRestante: "1000",
-      dateDebutSession: "2026-12-01",
-    });
-    fireEvent.change(screen.getByLabelText(/Financement suggéré/), { target: { value: "direct" } });
-    expect(screen.queryByLabelText(/Modalité OPCO/)).toBeNull();
+describe("EtapePaiement : aucun financement proposé", () => {
+  it("prix unique : ni OPCO, ni France Travail, ni « Financement suggéré »", () => {
+    render(<Hote initial={etatT4()} />);
+    const t = document.body.textContent!;
+    expect(t).not.toMatch(/OPCO|France Travail|Financement suggéré/);
   });
 });
 

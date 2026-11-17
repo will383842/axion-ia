@@ -189,10 +189,6 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     file: "components/qualiopi/QualiopiContentBadge.tsx",
     why: "badge de clôture rendu sur CHAQUE article de blog — son unique appelant (blog/[slug]/page.tsx) l'invoque sans condition, le composant devait donc se garder lui-même",
   },
-  {
-    file: "lib/email/templates/_layout.tsx",
-    why: "lockup Qualiopi du bandeau de confiance de TOUS les e-mails — la garde `trust` est un booléen de MISE EN PAGE, pas un drapeau de certification : 6 gabarits le passent en attribut JSX nu",
-  },
 ];
 
 /**

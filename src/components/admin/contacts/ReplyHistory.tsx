@@ -4,6 +4,7 @@
 // repliedAt desc. Statut delivery visuel + bouton retry pour les replies
 // failed/bounced.
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { prisma } from "@/lib/prisma";
 import { RetryFailedReplyButton } from "./RetryFailedReplyButton";
 
@@ -104,6 +105,19 @@ export async function ReplyHistory({ submissionId }: Props): Promise<React.React
                 <div className="mt-2 rounded bg-[color:var(--color-admin-bg-subtle)] p-3 text-sm whitespace-pre-wrap">
                   {r.bodyText}
                 </div>
+                <details className="mt-2">
+                  <summary className="cursor-pointer text-sm text-[color:var(--color-admin-fg-muted)]">
+                    Voir la mise en forme envoyée
+                  </summary>
+                  <div className="mt-2">
+                    <LecteurEmail
+                      html={r.bodyHtml}
+                      texte={r.bodyText}
+                      objet={r.subject}
+                      titre={`Réponse envoyée : ${r.subject}`}
+                    />
+                  </div>
+                </details>
               </details>
 
               {isRetryable && <RetryFailedReplyButton replyId={r.id} />}

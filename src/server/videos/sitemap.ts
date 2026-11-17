@@ -5,10 +5,11 @@
  * Par vidéo : `<loc>`, `<lastmod>` = `modifiee_le`, puis les balises `video:` (miniature
  * 16:9, titre, description, fichier, durée, date de publication avec fuseau, tout public).
  * Aucun `player_loc` (pas de page d'intégration) et aucune adresse `?t=`. Y figurent aussi la
- * galerie, les pages de thème et de série qui EXISTENT (≥ 3 vidéos), sans balise vidéo.
+ * galerie, les pages de thème, de besoin et de série qui EXISTENT (≥ 3 vidéos), sans balise vidéo.
  */
 import { dateIsoParis } from "@/lib/seo/video-jsonld";
 import { groupesParSerie, groupesParTheme } from "./groupes";
+import { groupesParBesoin } from "./liees";
 import type { VideoPubliee } from "./lecture";
 
 export function echapperXml(s: string): string {
@@ -55,6 +56,13 @@ export function construireSitemapVideos(
     if (g.aPage) {
       urls.push(
         noeud(`${site}/fr/videos/theme/${g.theme.slug}`, derniereModification(g.videos), "0.6"),
+      );
+    }
+  }
+  for (const g of groupesParBesoin(videos)) {
+    if (g.aPage) {
+      urls.push(
+        noeud(`${site}/fr/videos/besoin/${g.besoin.slug}`, derniereModification(g.videos), "0.6"),
       );
     }
   }

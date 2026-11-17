@@ -567,7 +567,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    relances : ce sont des documents commerciaux d'un organisme de
   //    formation. Les recopier hors du domaine créerait la seconde vérité que
   //    ce contrôle existe pour empêcher.
-  "src/lib/email/templates/_layout.tsx",
   "src/lib/email/legal-footer.ts",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,
@@ -717,6 +716,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Envoi simultané d'un devis sur Postgres réel (B1, 2026-11-17). Le test appelle
+  //    `sendDevisAction` TELLE QUELLE (verrou consultatif + écriture gardée) : copier la logique
+  //    dans un double ne prouverait rien. Il vit sous `tests/integration/`, seul dossier que lit
+  //    `vitest.integration.config.ts`. Tout ce qui sort de la base est simulé.
+  "tests/integration/devis/envoi-concurrent-un-seul-envoye.spec.ts",
   // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
   //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
   //    paiement des formateurs (passage par mission, autofacture, virements,

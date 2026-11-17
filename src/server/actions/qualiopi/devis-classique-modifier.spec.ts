@@ -360,6 +360,26 @@ describe("fixerValiditeDevisBrouillonAction (S10)", () => {
       expect(data.resteAChargeCents).toBe(60000);
     });
 
+    it("sans certification : le refus n'emploie aucun mot de tiers payeur (même sens)", async () => {
+      vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "false");
+      m.devisFindUnique.mockResolvedValueOnce(OPCO);
+      const r = await appel("2027-01-15");
+      const t = "error" in r ? r.error : "";
+      expect(t).toMatch(/^La date change l'estimation du règlement par un tiers/);
+      expect(t).not.toMatch(
+        /opco|cpf|france travail|financ|prise en charge|qualiopi|certification/i,
+      );
+      vi.unstubAllEnvs();
+    });
+
+    it("avec certification : le refus garde son texte « estimation OPCO »", async () => {
+      vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
+      m.devisFindUnique.mockResolvedValueOnce(OPCO);
+      const r = await appel("2027-01-15");
+      expect("error" in r && r.error).toMatch(/^La date change l'estimation OPCO/);
+      vi.unstubAllEnvs();
+    });
+
     it("sans saisie et estimation non nulle : REFUS, rien n'est écrit", async () => {
       m.devisFindUnique.mockResolvedValueOnce(OPCO);
       const r = await appel("2027-01-15");

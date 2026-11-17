@@ -3360,4 +3360,98 @@ a.admin-card-inline {
       height: 560px;
     }
   }
+  /* Lecteur d'e-mail commun (lot I0) : grande hauteur, trois bascules en CSS seul. */
+  .admin-lecteur-email-barre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 24px;
+    padding: 8px 16px;
+    border-bottom: 1px solid var(--color-admin-border);
+  }
+  .admin-lecteur-email-bascule {
+    display: flex;
+    gap: 8px;
+  }
+  .admin-lecteur-email-choix {
+    position: relative;
+    display: inline-flex;
+  }
+  .admin-lecteur-email-choix input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .admin-lecteur-email-choix label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 16px;
+    border: 1px solid var(--color-admin-control-border);
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .admin-lecteur-email-choix input:checked + label {
+    background-color: var(--color-admin-mocha);
+    color: #fff;
+  }
+  .admin-lecteur-email-choix input:focus-visible + label {
+    outline: 3px solid var(--color-admin-ring);
+    outline-offset: 2px;
+  }
+  .admin-lecteur-email-notes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-top: 1px solid var(--color-admin-border-strong);
+  }
+  .admin-lecteur-email-note {
+    margin: 0;
+  }
+  .admin-lecteur-email-plein-ecran {
+    margin-left: auto;
+    text-decoration: underline;
+  }
+  .admin-lecteur-email-scene {
+    padding: 16px;
+    background-color: var(--color-admin-surface-sunken);
+  }
+  .admin-lecteur-email-cadre {
+    display: block;
+    width: 100%;
+    max-width: 680px;
+    height: max(720px, calc(100dvh - 16rem));
+    margin: 0 auto;
+    border: 0;
+    background-color: #fff;
+  }
+  .admin-lecteur-email-texte {
+    display: none;
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: var(--color-admin-paper);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .admin-lecteur-email:has(input[value="telephone"]:checked) .admin-lecteur-email-cadre,
+  .admin-lecteur-email:has(input[value="telephone"]:checked) .admin-lecteur-email-texte {
+    max-width: 390px;
+  }
+  .admin-lecteur-email:has(input[value="sombre"]:checked) .admin-lecteur-email-cadre {
+    color-scheme: dark;
+    background-color: transparent;
+  }
+  .admin-lecteur-email:has(input[value="texte"]:checked) .admin-lecteur-email-cadre {
+    display: none;
+  }
+  .admin-lecteur-email:has(input[value="texte"]:checked) .admin-lecteur-email-texte {
+    display: block;
+  }
 }

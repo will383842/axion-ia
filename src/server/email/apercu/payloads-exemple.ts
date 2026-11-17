@@ -194,7 +194,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   subject: "Votre demande",
   submissionId: "demo-0000",
   // Alerte interne : sans ces trois champs, l'apercu affichait
-  // « [INFO] Alerte Qualiopi — undefined ».
+  // « [INFO] Alerte formation — undefined ».
   niveau: "critique",
   code: "FACTURE_IMPAYEE",
   titre: "Facture arrivée à échéance sans règlement",

@@ -67,16 +67,39 @@ function appliquer(
   return sortie;
 }
 
+/** Schémas d'adresse acceptés dans un lien — liste blanche, tout le reste est refusé. */
+const SCHEMAS_AUTORISES: ReadonlySet<string> = new Set(["https:", "http:", "mailto:", "tel:"]);
+
+/**
+ * Un lien n'est gardé que si son schéma est sur la liste blanche.
+ *
+ * 🔑 Les espaces et caractères de contrôle sont retirés AVANT la lecture du
+ * schéma, comme le font les navigateurs (`java\tscript:` vaut `javascript:`).
+ * Un lien relatif, sans schéma, est refusé : il ne mène nulle part dans un e-mail.
+ */
+export function hrefEstSur(href: string): boolean {
+  const nettoye = href.replace(
+    /[\u0000-\u0020\u007f-\u009f\u00a0\u1680\u2000-\u200f\u2028\u2029\u202f\u205f\u3000\ufeff]/g,
+    "",
+  );
+  const m = /^([a-zA-Z][a-zA-Z0-9+.-]*:)/.exec(nettoye);
+  if (!m) return false;
+  return SCHEMAS_AUTORISES.has((m[1] ?? "").toLowerCase());
+}
+
 /** Découpe un paragraphe en fragments typés. Fonction PURE, testable seule. */
 export function fragmenter(paragraphe: string): FragmentMarkdown[] {
   let fragments: FragmentMarkdown[] = [{ type: "texte", valeur: paragraphe }];
   // L'ORDRE compte : les liens d'abord, sinon un libellé en gras à l'intérieur
   // d'un lien serait découpé avant que le lien ne soit reconnu.
-  fragments = appliquer(fragments, /\[([^\]]+)\]\(([^)]+)\)/g, (m) => ({
-    type: "lien",
-    valeur: m[1] ?? "",
-    href: m[2] ?? "",
-  }));
+  // Un lien dont l'adresse n'est pas sûre est rendu en simple texte : le libellé
+  // reste lisible, l'adresse disparaît.
+  fragments = appliquer(fragments, /\[([^\]]+)\]\(([^)]+)\)/g, (m): FragmentMarkdown => {
+    const href = (m[2] ?? "").trim();
+    return hrefEstSur(href)
+      ? { type: "lien", valeur: m[1] ?? "", href }
+      : { type: "texte", valeur: m[1] ?? "" };
+  });
   fragments = appliquer(fragments, /\*\*([^*]+)\*\*/g, (m) => ({
     type: "gras",
     valeur: m[1] ?? "",

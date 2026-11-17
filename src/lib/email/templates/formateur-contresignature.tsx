@@ -77,9 +77,9 @@ export function FormateurContresignatureEmail({
         </Text>
       ))}
       <Text style={{ ...emailStyles.paragraphStyle, marginTop: 12 }}>
-        Elle atteste que vous avez bien animé ces demi-journées : c&apos;est la signature que les
-        financeurs demandent en plus de celle des stagiaires. Personne ne peut la signer à votre
-        place — ouvrez la formation, bloc Émargement, et contresignez chaque demi-journée.
+        Elle atteste que vous avez bien animé ces demi-journées : votre contresignature est demandée
+        en plus de celle des stagiaires. Personne ne peut la signer à votre place — ouvrez la
+        formation, bloc Émargement, et contresignez chaque demi-journée.
       </Text>
       {p.dernierRappel === true ? (
         <Text style={emailStyles.paragraphStyle}>

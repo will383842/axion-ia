@@ -1,0 +1,5 @@
+-- Retour arrière de 20261118140000_client_contact_identite_devis_conditions : AUCUNE instruction SQL.
+-- Les colonnes restent en base, vides et sans effet tant que rien ne les écrit.
+-- Revenir en arrière = retirer le code qui les utilise (B4 et suivants).
+-- Ne JAMAIS lancer `prisma migrate resolve --rolled-back`.
+-- Ne JAMAIS retirer les lignes correspondantes de schema.prisma.

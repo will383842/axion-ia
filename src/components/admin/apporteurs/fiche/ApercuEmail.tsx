@@ -5,6 +5,7 @@
 // Will peut RÉÉCRIRE le texte principal (« Modifier le texte ») : l'aperçu se rafraîchit
 // avec le rendu exact, et l'envoi utilise ce texte.
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, type ReactNode } from "react";
 
 /** Même borne que le serveur (`TEXTE_LIBRE_MAX`, `lib/email/templates/texte-libre-reseau`). */
@@ -142,20 +143,7 @@ export function ApercuEmail({
       aria-label="Aperçu de l'e-mail"
       className="flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
     >
-      <p className="text-[length:var(--text-admin-sm)]">
-        <span className="text-[color:var(--color-admin-fg-muted)]">À : </span>
-        {email.destinataire}
-        <br />
-        <span className="text-[color:var(--color-admin-fg-muted)]">Objet : </span>
-        <strong>{email.sujet}</strong>
-      </p>
-      <iframe
-        title="Aperçu de l'e-mail"
-        srcDoc={email.html}
-        sandbox=""
-        referrerPolicy="no-referrer"
-        className="h-[60vh] w-full max-w-[680px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-white"
-      />
+      <LecteurEmail html={email.html} a={email.destinataire} objet={email.sujet} />
       {onActualiserTexte && email.texteDefaut !== undefined ? (
         <EditeurTexte
           texteDefaut={email.texteDefaut}

@@ -13,7 +13,15 @@ vi.mock("@/lib/prisma", () => ({
       findMany: vi.fn(async () => []),
     },
     $transaction: async (f: (t: unknown) => unknown) =>
-      f({ devis: { create: (...a: unknown[]) => create(...a), findMany: vi.fn(async () => []) } }),
+      f({
+        // B1 : `sendDevisAction` relit le devis dans la transaction, après le verrou.
+        $queryRaw: async () => [{ locked: true }],
+        devis: {
+          create: (...a: unknown[]) => create(...a),
+          findMany: vi.fn(async () => []),
+          findUnique: (...a: unknown[]) => findUnique(...a),
+        },
+      }),
   },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({

@@ -14,7 +14,6 @@
 import { getOrganismeIdentite, type OrganismeIdentite } from "./organisme";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
-import { regimeEstimationMutualisee } from "@/server/qualiopi/financements/estimation-certification";
 import {
   ACTIVITE_LABELS,
   normaliserLignesPourActivite,
@@ -170,7 +169,12 @@ export function donneesPdfDevis(
   contexte: ContextePdfDevis,
   maintenant: Date,
 ): DevisData {
-  const { identite, regimeTva, tauxStandard } = contexte;
+  const { regimeTva, tauxStandard } = contexte;
+  // Fiche A1 — tant que la certification n'est pas obtenue, AUCUNE mention de
+  // certification ni de financement sur la pièce. Le PDF signé est rendu depuis
+  // la photo de ces données : on corrige donc les DONNÉES, pas le gabarit.
+  const certifie = contexte.certificationObtenue === true;
+  const identite = certifie ? contexte.identite : { ...contexte.identite, qualiopi: "" };
 
   const lignesBrutes = (Array.isArray(devis.lignes)
     ? devis.lignes
@@ -186,15 +190,6 @@ export function donneesPdfDevis(
     devis.financementSuggere !== null
       ? (FINANCEMENT_LABELS[devis.financementSuggere as Financement] ?? devis.financementSuggere)
       : undefined;
-
-  // Sous-lot 8G — décidé UNE fois, ici, avec l'état réel du drapeau, puis
-  // transmis au gabarit. Le gabarit ne lit pas la configuration : un PDF qui
-  // consulterait l'environnement rendrait deux pièces différentes pour le
-  // même devis selon l'endroit d'où on le regénère.
-  const regimeEstimation = regimeEstimationMutualisee(
-    devis.financementSuggere,
-    contexte.certificationObtenue,
-  );
 
   const formules = formulesDuDevis(devis.offre, contexte.formulesActives, regimeTva);
 
@@ -219,21 +214,17 @@ export function donneesPdfDevis(
     tauxTvaStandardPercent: tauxStandard,
     ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
     ...(devis.activite !== null ? { activiteLabel: ACTIVITE_LABELS[devis.activite] } : {}),
-    ...(financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
-    // 🔴 Sous-lot 8G — les montants d'estimation ne partent au PDF que si le
-    // financement mutualisé est réellement accessible. Sinon la pièce porte
-    // la mention à leur place : l'accès aux fonds OPCO/CPF/France Travail est
-    // subordonné à la certification (L.6316-1), et un devis est l'offre que
-    // le client accepte, pas une note de travail.
-    ...(regimeEstimation.presentable
-      ? {
-          ...(devis.montantOpcoEstimeCents !== null
-            ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
-            : {}),
-          ...(devis.resteAChargeCents !== null
-            ? { resteAChargeCents: devis.resteAChargeCents }
-            : {}),
-        }
-      : { mentionEstimationIndisponible: regimeEstimation.mention ?? "" }),
+    ...(certifie && financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
+    // Sous-lot 8G — les montants d'estimation ne partent au PDF que si la
+    // certification est obtenue (L.6316-1) : alors le financement mutualisé est
+    // toujours présentable (regimeEstimationMutualisee). Sinon la pièce ne porte
+    // AUCUNE mention de financement (fiche A1) : ni montant, ni mention de
+    // remplacement.
+    ...(certifie && devis.montantOpcoEstimeCents !== null
+      ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
+      : {}),
+    ...(certifie && devis.resteAChargeCents !== null
+      ? { resteAChargeCents: devis.resteAChargeCents }
+      : {}),
   };
 }

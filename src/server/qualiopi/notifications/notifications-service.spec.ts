@@ -387,11 +387,13 @@ describe("envoyerConvocation", () => {
     expect(lieu).toContain("Grenoble");
   });
 
-  it("retombe sur « Voir convocation » quand aucun lieu n'est renseigné", async () => {
+  it("omet la clé `lieu` quand aucun lieu n'est renseigné (plus de « Voir convocation »)", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
     await envoyerConvocation(ENROLLMENT_ID);
     const call = mockEnqueueEmail.mock.calls[0] as unknown[];
-    expect((call[3] as Record<string, unknown>)["lieu"]).toBe("Voir convocation");
+    const payload = call[3] as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("lieu");
+    expect(JSON.stringify(payload)).not.toContain("Voir convocation");
   });
 });
 
@@ -708,6 +710,14 @@ describe("envoyerSuiviJ30", () => {
     expect(lienPortail).not.toContain("/espace-stagiaire");
   });
 
+  it("porte la clé facultative lienQuestionnaire (même accès que lienPortail)", async () => {
+    mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
+    await envoyerSuiviJ30(ENROLLMENT_ID);
+    const payload = (mockEnqueueEmail.mock.calls[0] as unknown[])[3] as Record<string, unknown>;
+    expect(payload["lienQuestionnaire"]).toBe(payload["lienPortail"]);
+    expect(String(payload["lienQuestionnaire"])).toContain("/portail/acces/");
+  });
+
   it("garantit le questionnaire satisfaction_froid AVANT l'email", async () => {
     mockPrisma.enrollment.findUnique.mockResolvedValue(fakeEnrollmentBase);
     await envoyerSuiviJ30(ENROLLMENT_ID);
@@ -1005,6 +1015,38 @@ describe("envoyerRelanceQuestionnaire", () => {
         data: expect.objectContaining({ relanceCount: 1, derniereRelanceAt: expect.any(Date) }),
       }),
     );
+  });
+
+  it("positionnement → relance de rang 2 (clé `rang`), même gabarit et même jobId horodaté", async () => {
+    mockPrisma.questionnaire.findUnique.mockResolvedValue(
+      fakeQuestionnaire({
+        type: "positionnement",
+        relanceCount: 0,
+        enrollment: {
+          trainee: { id: TRAINEE_ID, email: "jean@example.com", nom: "Dupont", prenom: "Jean" },
+          session: {
+            numero: "AXI-SESS-2026-001",
+            titreSession: "Formation IA",
+            dateDebut: new Date("2026-09-10T08:00:00Z"),
+            dateFin: new Date("2026-09-11T17:00:00Z"),
+            client: { contactNom: null, contactEmail: null, raisonSociale: "X" },
+          },
+        },
+      }),
+    );
+
+    await envoyerRelanceQuestionnaire(QUESTIONNAIRE_ID);
+
+    const [template, , , payload, opts] = mockEnqueueEmail.mock.calls[0] as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+      { jobId: string },
+    ];
+    expect(template).toBe("qualiopi-positionnement");
+    expect(payload["rang"]).toBe(2);
+    expect(opts.jobId).toContain(`qualiopi-positionnement-${QUESTIONNAIRE_ID}-`);
   });
 
   it("entreprise → email au CONTACT CLIENT avec le lien de l'enquête publique", async () => {

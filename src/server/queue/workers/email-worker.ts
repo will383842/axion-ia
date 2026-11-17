@@ -14,9 +14,10 @@
 // posent, et il faut REDEPLOY (pas Restart) pour qu'elles soient relues.
 
 import { DelayedError, UnrecoverableError, Worker } from "bullmq";
+import type { Job } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
-import { redactEmailValue } from "../lib/sanitize-job-data";
+import { redactEmailValue, sansAdresse } from "../lib/sanitize-job-data";
 import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
@@ -29,6 +30,7 @@ import {
   normaliserAdresse,
 } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
@@ -264,13 +266,22 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       let { template } = job.data;
       // Lot S3 — rempli seulement quand l'envoi part par le gabarit de repli (trace au journal).
       let noteRepli: string | undefined;
+      // Contexte d'essai des réponses manuelles : même règle que `echecAuDepart` plus bas.
+      const contexteEssai: ContexteEssai = {
+        job,
+        token,
+        jobId: job.id,
+        essai: job.attemptsMade + 1,
+        essaisMax: job.opts.attempts ?? 1,
+        demarrage: job.attemptsStarted,
+      };
 
       // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
       // submission-reply : on synchronise SubmissionReply.deliveryStatus
       // + Submission.firstRepliedAt/lastRepliedAt après envoi MTA. Suivi propre
       // via SubmissionReply → pas de double journalisation dans EmailLog.
       if (template === "submission-reply") {
-        await handleSubmissionReply(payload);
+        await handleSubmissionReply(payload, contexteEssai);
         return;
       }
 
@@ -279,7 +290,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       // l'adresse est relue puis déchiffrée au seul moment de l'envoi. Aucune
       // donnée personnelle ne transite par la file.
       if (template === "candidature-reponse") {
-        await handleCandidatureReponse(payload);
+        await handleCandidatureReponse(payload, contexteEssai);
         return;
       }
 
@@ -646,191 +657,775 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     );
     // Sprint Final P1-2 (audit final 2026-05-22) — Sentry capture email-worker.
     captureWorkerError("email", "emails", job, err);
+    // Échec FINAL d'une réponse (plus aucun essai) ou job tué deux fois : BullMQ ne rappelle pas
+    // le processeur, la ligne resterait `pending`. `finishedOn` n'est posé que si le job ne sera
+    // plus réessayé (bullmq `job.js` moveToFailed) ; le texte de BullMQ reste un second signal.
+    if (
+      job &&
+      (typeof job.finishedOn === "number" || err.message === MESSAGE_BLOCAGE_BULLMQ) &&
+      (job.data?.template === "submission-reply" || job.data?.template === "candidature-reponse")
+    ) {
+      cloreEchecFinal({
+        id: job.id,
+        data: { template: job.data.template, payload: job.data.payload },
+        moveToDelayed: (ts, tk) => job.moveToDelayed(ts, tk),
+      }).catch((e) => captureWorkerError("email", "emails", job, e));
+    }
   });
 
   return worker;
 }
 
 // ============================================================
-// submission-reply : delivery status sync (Sprint Notif Infra 2026-05-26)
+// Réponses manuelles (submission-reply, candidature-reponse) : UN SEUL ENVOI
 // ============================================================
 //
-// Le payload `submission-reply` ne contient PAS le HTML — il référence le
-// `SubmissionReply.id`. On lit le bodyHtml/bodyText pré-rendu depuis la DB
-// (figé au moment du replyToSubmissionAction), on envoie, puis on update
-// le `deliveryStatus` + `sentAt`/`failedAt` + `Submission.firstRepliedAt`/
-// `lastRepliedAt`. Throw en cas d'échec SMTP → BullMQ retry avec backoff.
+// 🔴 Correctif « un seul envoi » (PR-W). Avant, ces deux handlers posaient `failed`
+// dès le PREMIER échec puis relevaient l'erreur, sans relire l'état de la ligne
+// avant d'envoyer. Or BullMQ réessaie (`attempts: 5`, délai exponentiel dès 5 s)
+// et la `concurrency` vaut 2 : deux jobs de la même réponse pouvaient tourner en
+// même temps, et le bouton « Réessayer » (visible sur `failed`) en ajoutait un
+// troisième. De plus l'écriture `sent` se trouvait dans le même `try` que l'envoi :
+// envoi réussi + base en échec = `failed` + erreur relevée = e-mail renvoyé.
+//
+// Garanties, identiques pour les deux gabarits (`envoyerReponseUnSeulEnvoi`) :
+//  1. rien ne part si l'e-mail est déjà parti (`sentAt`, `providerMessageId`, marqueur
+//     `envoye:…`, statut `sent` ou `bounced`) ; seuls `pending` et `failed` peuvent partir
+//     (`failed` reste accepté : l'ancienne application met en file AVANT de repasser
+//     `pending`), sauf une ligne `failed` « issue inconnue » (garantie 6) ;
+//  2. un seul envoi à la fois par réponse : verrou Redis `verrou:envoi-reponse:…`
+//     (SET NX EX 24 h, jeton unique PAR DÉMARRAGE). Le verrou est aussi la TRACE « un
+//     envoi a commencé et son issue n'est pas écrite » : il n'est libéré qu'une fois
+//     l'issue connue (échec SMTP levé, `sent` écrit, sortie sans envoi, issue inconnue
+//     écrite). On le juge d'après son âge, jamais d'après son existence seule ;
+//  3. `failed` seulement au DERNIER essai, sauf erreur d'envoi ambiguë : issue inconnue tout
+//     de suite, jamais de nouvel essai ; avant : la ligne reste `pending` ;
+//  4. l'écriture `sent` est séparée de l'envoi, retentée 3 fois, précédée d'un marqueur
+//     Redis `envoye:…` (30 j). Si elle échoue encore : verrou GARDÉ, report de 60 s
+//     (`DelayedError`, aucun essai consommé) ; au retour le marqueur répare en `sent` ;
+//  5. les contrôles d'adresse (illisible, mise à l'écart) se font sous le verrou ;
+//  6. issue inconnue (détenteur du verrou mort ou job tué deux fois) → `failed` avec le
+//     préfixe `[issue-inconnue]`, JAMAIS de renvoi automatique : seul un humain tranche.
+//     Sonde de vie `bull:emails:<jobId>:lock`, contre-vérification du verrou juste avant
+//     l'envoi, clôture à l'échec final des seules lignes `pending` (`cloreEchecFinal`).
+// Toute écriture d'état passe par un `updateMany` conditionné à `sentAt: null` :
+// elle n'écrase jamais `sent`. Aucune écriture automatique ne retire le préfixe, sauf
+// l'écriture `sent` quand le marqueur prouve le départ.
+//
+// Le corps est LU en base (figé à la rédaction), jamais re-rendu ; l'adresse est
+// déchiffrée au dernier moment ; aucun changement de forme de job, de nom de
+// gabarit ou de `jobId`. 🔑 Ce worker ne doit RIEN importer de `next/*`,
+// `server-only`, `next-auth` (garde : `email-worker.opposition.graphe-worker.spec.ts`).
+//
+// ⛔ Ordre de mise en ligne : ce commit en ligne SEUL, contenu du conteneur worker
+// vérifié (marqueur `verrou:envoi-reponse`), AVANT toute PR qui rend « Réessayer »
+// atomique côté application. Interdit de ramener le worker sous ce commit ; procédure : `AGENTS.md`,
+// section « Worker d'e-mails : jamais de retour arrière ».
 
-async function handleSubmissionReply(payload: Record<string, unknown>): Promise<void> {
-  const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
-  if (!replyId) throw new Error("[email-worker] submission-reply: missing replyId");
+/** Ce que le handler utilise du job BullMQ (le vrai `Job` y satisfait). */
+interface JobReponse {
+  id?: string | undefined;
+  moveToDelayed(timestamp: number, token?: string): Promise<void>;
+}
 
-  const reply = await prisma.submissionReply.findUnique({
-    where: { id: replyId },
-    include: { submission: { select: { id: true, firstRepliedAt: true } } },
-  });
-  if (!reply) throw new Error(`[email-worker] SubmissionReply ${replyId} not found`);
+/** Contexte d'essai calculé par le processeur (même règle que `echecAuDepart`). */
+interface ContexteEssai {
+  job: JobReponse;
+  token: string | undefined;
+  jobId: string | undefined;
+  essai: number;
+  essaisMax: number;
+  /** `job.attemptsStarted` : +1 à CHAQUE mise en `active` (relance après blocage comprise). */
+  demarrage: number;
+}
 
-  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+/**
+ * Le verrou est aussi la trace d'un envoi commencé dont l'issue n'est pas écrite : il vit
+ * 24 h et se juge d'après son âge (`TTL × 1000 − PTTL`), pas d'après son TTL. Il ne peut
+ * donc plus expirer pendant un envoi vivant. `SEUIL_ORPHELIN_MS` (30 min) dépasse le pire
+ * envoi avec les délais nodemailer par défaut (~13 min) : au-delà, le détenteur est
+ * considéré comme mort. `client.ts` n'est pas touché (délais SMTP : PR à part).
+ * Voir `emails-site/PLAN-W1-ADDENDUM.md` et « Addendum 2 W1 ».
+ *
+ * Ne jamais changer cette valeur sans période de transition : l'âge se calcule par
+ * `TTL × 1000 − PTTL` ; pendant le chevauchement de deux workers, une hausse ferait paraître
+ * mort un détenteur vivant.
+ */
+const TTL_VERROU_ENVOI_SEC = 86_400;
+const SEUIL_ORPHELIN_MS = 1_800_000;
+const REPORT_MAX_MS = 300_000;
+const REPORT_PLAFOND_MS = 1_800_000;
+const REPORT_PAS_DE_VERROU_MS = 5_000;
+const REPORT_MARGE_MS = 15_000;
+const REPORT_ECRITURE_MS = 60_000;
+const TTL_MARQUEUR_ENVOYE_SEC = 2_592_000;
+const ESSAIS_ECRITURE_ENVOYE = 3;
+const ATTENTES_ECRITURE_MS = [200, 1_000];
+const MESSAGE_BLOCAGE_BULLMQ = "job stalled more than allowable limit";
+export const PREFIXE_ISSUE_INCONNUE = "[issue-inconnue] ";
+const CONSIGNE_VERIFIER_ZEPTOMAIL =
+  "Avant de réessayer, cherchez le destinataire dans ZeptoMail (page E-mails envoyés, bouton ZeptoMail, onglet Processed emails), pas dans la boîte Zoho. S'il y figure, ne réessayez pas.";
+export const MOTIF_ISSUE_INCONNUE =
+  PREFIXE_ISSUE_INCONNUE +
+  "Envoi interrompu, on ne sait pas si l'e-mail est parti. " +
+  CONSIGNE_VERIFIER_ZEPTOMAIL;
+export const MOTIF_REDIS_INDISPONIBLE =
+  PREFIXE_ISSUE_INCONNUE +
+  "Envoi non tenté : Redis indisponible, et un essai précédent a pu partir. " +
+  CONSIGNE_VERIFIER_ZEPTOMAIL;
+export const MOTIF_ECHEC_SANS_ENVOI =
+  "Envoi non abouti après plusieurs essais, rien n'est parti (erreur technique avant l'envoi). Vous pouvez réessayer.";
+// Jeton de verrou = `${jobId}-${essai}-${demarrage}` ; le jobId peut contenir des tirets (email-<uuid>).
+const RE_JETON = /^(.+)-(\d+)-(\d+)$/;
+// Clé du verrou BullMQ du job : préfixe `bull` par défaut (`bullmq/dist/cjs/classes/queue-base.js:30`),
+// aucun `prefix` dans `connection.ts` ni `queues.ts`, file `emails`, suffixe `:lock`
+// (`bullmq/dist/cjs/classes/scripts.js:436`). Elle n'existe que tant que le job est `active`.
+const cleVerrouBullmq = (jobId: string) => `bull:emails:${jobId}:lock`;
+const CODES_AVANT_TRANSMISSION = new Set([
+  "EDNS",
+  "EAUTH",
+  "ENOAUTH",
+  "ETLS",
+  "EREQUIRETLS",
+  "EENVELOPE",
+  "EMESSAGE",
+  "ECONFIG",
+]);
+const DEBUT_ERREUR_CONFIG_SMTP = "[email] configuration SMTP incomplète"; // client.ts:109
+const SCRIPT_LIBERER =
+  "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
 
-  // `toEmail` est stocké CHIFFRÉ au repos (enc:v1, PII contact). On déchiffre au
-  // seul moment de l'envoi. decryptPii = no-op sur une valeur déjà en clair.
-  const to = decryptPii(reply.toEmail);
+/** Ligne de réponse, vue minimale commune aux deux tables. */
+interface LigneReponse {
+  id: string;
+  toEmail: string;
+  subject: string;
+  bodyHtml: string;
+  bodyText: string;
+  deliveryStatus: string;
+  sentAt: Date | null;
+  providerMessageId: string | null;
+  errorMsg?: string | null;
+}
 
-  // Garde : si l'adresse est illisible — clé `PII_ENCRYPTION_KEY` absente ou
-  // désalignée sur le WORKER → decryptPii renvoie le placeholder — inutile de
-  // consommer les 5 retries BullMQ sur un problème de CONFIG. On marque `failed`
-  // avec un errorMsg distinctif (rejouable après alignement de la clé) et on NE
-  // throw PAS. C'est la cause racine #1 du « Échec envoi » (cf. plan §0).
-  if (!isDecryptedEmailUsable(to)) {
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
-      },
-    });
-    return;
+interface AdaptateurReponse<L extends LigneReponse> {
+  gabarit: "submission-reply" | "candidature-reponse";
+  /** Relit la ligne (null si absente). */
+  lire(replyId: string): Promise<L | null>;
+  /** Pose un état sur la ligne, jamais si `sentAt` est rempli. */
+  ecrireSiNonEnvoye(id: string, data: Record<string, unknown>): Promise<unknown>;
+  /** Comme `ecrireSiNonEnvoye`, mais jamais sur une ligne dont `errorMsg` porte le préfixe « issue inconnue ». */
+  ecrireSiNiEnvoyeNiIssueInconnue(id: string, data: Record<string, unknown>): Promise<unknown>;
+  /** Comme `ecrireSiNiEnvoyeNiIssueInconnue`, et seulement si la ligne est encore `pending`. */
+  ecrireSiEncorePendingSansIssueInconnue(
+    id: string,
+    data: Record<string, unknown>,
+  ): Promise<unknown>;
+  /** Repasse `sent` une ligne `pending`/`failed` dont `sentAt` est rempli. */
+  reparerEnvoye(id: string): Promise<unknown>;
+  /** Écrit l'envoi réussi (et ce qui va avec). */
+  marquerEnvoye(ligne: L, messageId: string, maintenant: Date): Promise<unknown>;
+}
+
+const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+const cleVerrou = (gabarit: string, replyId: string) =>
+  `verrou:envoi-reponse:${gabarit}:${replyId}`;
+const cleMarqueur = (gabarit: string, replyId: string) =>
+  `envoye:envoi-reponse:${gabarit}:${replyId}`;
+
+export type IssueEchecEnvoi = "rien_parti" | "ambigu";
+
+/**
+ * Un nouvel essai automatique n'est permis que si l'erreur PROUVE que le relais n'a pas pris le
+ * message ; tout le reste est ambigu (champs d'erreur de nodemailer 9.0.5 : `code`, `responseCode`,
+ * `syscall`). Si un texte de nodemailer change, l'erreur tombe en « ambigu » : jamais de doublon.
+ */
+export function classerEchecEnvoi(e: unknown): IssueEchecEnvoi {
+  if (!(e instanceof Error)) return "ambigu";
+  const x = e as Error & { code?: unknown; responseCode?: unknown; syscall?: unknown };
+  // 1. Le relais a répondu un refus 4xx/5xx : il n'a pas pris le message (RFC 5321).
+  if (typeof x.responseCode === "number" && x.responseCode >= 400 && x.responseCode <= 599) {
+    return "rien_parti";
   }
-
-  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
-  if ((await dateDeMiseAEcart(to, "submission-reply")) !== null) {
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
-      },
-    });
-    return;
+  // 2. Codes qui ne naissent qu'avant la transmission.
+  if (typeof x.code === "string" && CODES_AVANT_TRANSMISSION.has(x.code)) return "rien_parti";
+  // 3. Connexion TCP jamais établie.
+  if (x.syscall === "connect" || x.syscall === "getaddrinfo") return "rien_parti";
+  // 4. Délais de la phase de connexion.
+  if (
+    x.code === "ETIMEDOUT" &&
+    (x.message.startsWith("Connection timeout") || x.message.startsWith("Greeting never received"))
+  ) {
+    return "rien_parti";
   }
+  // 5. Garde de configuration de client.ts : levée avant tout transport.
+  if (x.message.startsWith(DEBUT_ERREUR_CONFIG_SMTP)) return "rien_parti";
+  return "ambigu";
+}
 
+/** Report croissant (2^k, k ≤ 5) plafonné : borne le nombre d'activations d'un job qui ne peut pas écrire. */
+function delaiReportCroissant(ctx: ContexteEssai, baseMs: number): number {
+  const k = Math.min(Math.max(0, ctx.demarrage - ctx.essai), 5);
+  return Math.min(baseMs * 2 ** k, REPORT_PLAFOND_MS);
+}
+
+/** Lecture Redis d'avant l'envoi : si elle échoue, la ligne le dit, rien ne part, BullMQ réessaie. */
+async function redisAvantEnvoi<L extends LigneReponse, T>(
+  a: AdaptateurReponse<L>,
+  id: string,
+  ctx: ContexteEssai,
+  op: () => Promise<T>,
+): Promise<T> {
   try {
-    const result = await sendEmail({
-      to,
-      subject: reply.subject,
-      html: reply.bodyHtml,
-      text: reply.bodyText,
-      replyTo,
-    });
-    const now = new Date();
-    await prisma.$transaction([
-      prisma.submissionReply.update({
-        where: { id: reply.id },
-        data: {
-          deliveryStatus: "sent",
-          sentAt: now,
-          providerMessageId: result.messageId,
-        },
-      }),
-      prisma.submission.update({
-        where: { id: reply.submissionId },
-        data: {
-          firstRepliedAt: reply.submission.firstRepliedAt ?? now,
-          lastRepliedAt: now,
-        },
-      }),
-    ]);
+    return await op();
   } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: msg.slice(0, 2000),
-        retryCount: { increment: 1 },
-      },
-    });
-    throw e; // BullMQ retry avec backoff exponentiel
+    await noterVerrouIndisponible(a, id, ctx);
+    throw e;
   }
 }
 
-// ============================================================
-// candidature-reponse : livraison + synchronisation (lot 1 recrutement)
-// ============================================================
-//
-// Jumeau de `handleSubmissionReply`, sur `JobApplicationReply`. Les trois mêmes
-// règles s'appliquent, pour les trois mêmes raisons :
-//
-//  · le corps est LU en base (figé au moment de la rédaction), jamais re-rendu
-//    ici — sinon deux envois du même message pourraient différer ;
-//  · l'adresse est déchiffrée au dernier moment ;
-//  · une adresse illisible ne consomme PAS les tentatives BullMQ : c'est un
-//    problème de configuration de clé, pas de réseau, et le réessayer cinq fois
-//    ne le résoudra pas. On marque `failed` avec un message distinctif, et on ne
-//    lève pas.
-//
-// 🔑 Ce handler n'écrit RIEN au journal de la candidature. La trace « réponse
-// envoyée » est posée par l'action, dans la même transaction que la réponse :
-// le journal dit ce qu'un humain a FAIT, l'état de livraison dit ce que la
-// chaîne d'envoi en a fait. Les confondre produirait deux lignes pour un geste,
-// et une frise qui se répète.
+/** Le détenteur du verrou d'envoi est-il encore un passage BullMQ vivant ? */
+async function sondeDetenteur(
+  valeurVerrou: string,
+  tokenCourant: string | undefined,
+): Promise<"vivant" | "mort"> {
+  const m = RE_JETON.exec(valeurVerrou);
+  if (!m || m[1] === "sans-id") return "mort"; // illisible : règle de l'âge seule
+  const tokenBull = await redis.get(cleVerrouBullmq(m[1] as string));
+  if (tokenBull === null) return "mort"; // job non actif : aucun passage vivant ne le traite
+  if (tokenCourant !== undefined && tokenBull === tokenCourant) return "mort"; // NOTRE passage (relance après blocage)
+  return "vivant";
+}
 
-async function handleCandidatureReponse(payload: Record<string, unknown>): Promise<void> {
+/** Reporte le job SANS consommer d'essai (`skipAttempt`) ni émettre `failed`. */
+async function reporter(ctx: ContexteEssai, delaiMs: number): Promise<never> {
+  await ctx.job.moveToDelayed(Date.now() + delaiMs, ctx.token);
+  throw new DelayedError();
+}
+
+/** Écrit `sent` (et efface un éventuel « issue inconnue »), 3 essais, 200 ms puis 1 s d'attente. */
+async function ecrireEnvoyeRetente<L extends LigneReponse>(
+  a: AdaptateurReponse<L>,
+  ligne: L,
+  messageId: string,
+  maintenant: Date,
+): Promise<unknown> {
+  let derniere: unknown = null;
+  for (let i = 0; i < ESSAIS_ECRITURE_ENVOYE; i++) {
+    try {
+      await a.marquerEnvoye(ligne, messageId, maintenant);
+      return null;
+    } catch (err) {
+      derniere = err;
+      const pause = ATTENTES_ECRITURE_MS[i];
+      if (pause !== undefined) await attendre(pause);
+    }
+  }
+  return derniere;
+}
+
+/**
+ * Vrai si rien ne doit partir. Répare au passage : `sentAt` rempli → `sent` ; marqueur
+ * `envoye:…` présent (l'e-mail est parti, l'écriture a échoué) → `sent` avec son messageId.
+ */
+async function dejaParti<L extends LigneReponse>(
+  a: AdaptateurReponse<L>,
+  l: L,
+  replyId: string,
+  ctx: ContexteEssai,
+): Promise<boolean> {
+  if (l.sentAt !== null || l.providerMessageId !== null) {
+    if (l.sentAt !== null && l.deliveryStatus !== "sent") await a.reparerEnvoye(l.id);
+    return true;
+  }
+  if (l.deliveryStatus !== "pending" && l.deliveryStatus !== "failed") return true;
+  const issueInconnue =
+    l.deliveryStatus === "failed" && (l.errorMsg ?? "").startsWith(PREFIXE_ISSUE_INCONNUE);
+  let marqueur: string | null;
+  if (issueInconnue) {
+    // Ligne « issue inconnue » : aucune écriture automatique ne doit retirer le préfixe.
+    try {
+      marqueur = await redis.get(cleMarqueur(a.gabarit, replyId));
+    } catch (e) {
+      captureWorkerError("email", "emails", ctx.job as Job, e);
+      return true; // ni envoi, ni écriture, ni erreur relevée
+    }
+  } else {
+    marqueur = await redisAvantEnvoi(a, l.id, ctx, () =>
+      redis.get(cleMarqueur(a.gabarit, replyId)),
+    );
+  }
+  if (marqueur) {
+    const echec = await ecrireEnvoyeRetente(a, l, marqueur, new Date());
+    if (echec !== null) {
+      captureWorkerError("email", "emails", ctx.job as Job, echec);
+      await reporter(ctx, delaiReportCroissant(ctx, REPORT_ECRITURE_MS));
+    }
+    return true;
+  }
+  // Issue inconnue : seul un humain la débloque (« Réessayer » remet `errorMsg: null`).
+  return issueInconnue;
+}
+
+async function libererVerrou(cle: string, valeur: string): Promise<boolean> {
+  try {
+    await redis.eval(SCRIPT_LIBERER, 1, cle, valeur);
+    return true;
+  } catch {
+    // Le TTL finira le travail ; une libération ratée ne doit pas masquer le résultat.
+    return false;
+  }
+}
+
+/**
+ * Détenteur du verrou mort (âge ≥ seuil) ou job tué deux fois : on ne sait pas si l'e-mail
+ * est parti. Marqueur présent → `sent`. Sinon → `failed` + `MOTIF_ISSUE_INCONNUE`, écrit AVANT
+ * la suppression du verrou. Ne lève jamais d'erreur d'envoi (un nouvel essai pourrait renvoyer).
+ * `ctx` absent (job tué deux fois : hors processeur) → pas de report possible, on trace.
+ */
+async function cloreIssueInconnue<L extends LigneReponse>(
+  a: AdaptateurReponse<L>,
+  replyId: string,
+  job: JobReponse | undefined,
+  ctx: ContexteEssai | undefined,
+  verrouLu: string | null,
+  peutSupprimer: (valeur: string) => boolean,
+): Promise<void> {
+  const cle = cleVerrou(a.gabarit, replyId);
+  const echecEcriture = async (err: unknown): Promise<void> => {
+    captureWorkerError("email", "emails", job as Job | undefined, err);
+    if (ctx) await reporter(ctx, delaiReportCroissant(ctx, REPORT_ECRITURE_MS)); // verrou gardé, on retentera plus tard
+  };
+  const ligne = await a.lire(replyId);
+  if (ligne) {
+    const maintenant = new Date();
+    const marqueur = await redis.get(cleMarqueur(a.gabarit, replyId));
+    const dejaClos = ligne.sentAt !== null || ligne.providerMessageId !== null;
+    if (marqueur && !dejaClos) {
+      const echec = await ecrireEnvoyeRetente(a, ligne, marqueur, maintenant);
+      if (echec !== null) return echecEcriture(echec);
+    } else if (dejaClos) {
+      if (ligne.deliveryStatus !== "sent") await a.reparerEnvoye(ligne.id);
+    } else if (ligne.deliveryStatus === "pending" || ligne.deliveryStatus === "failed") {
+      try {
+        await a.ecrireSiNonEnvoye(ligne.id, {
+          deliveryStatus: "failed",
+          failedAt: maintenant,
+          errorMsg: MOTIF_ISSUE_INCONNUE,
+        });
+      } catch (err) {
+        return echecEcriture(err);
+      }
+      captureWorkerError(
+        "email",
+        "emails",
+        job as Job | undefined,
+        new Error(`envoi interrompu, issue inconnue (${a.gabarit}, réponse ${replyId})`),
+      );
+    }
+  }
+  if (verrouLu !== null && peutSupprimer(verrouLu)) {
+    // Pas de report si la suppression échoue : la ligne est déjà `failed` avec le motif, et un
+    // report ne retenterait pas (`dejaParti` sort avant). Le prochain « Réessayer » rejuge le verrou.
+    if (!(await libererVerrou(cle, verrouLu))) {
+      captureWorkerError(
+        "email",
+        "emails",
+        job as Job | undefined,
+        new Error(
+          `verrou d'envoi non supprimé (${a.gabarit}, réponse ${replyId}) : il expirera sous 24 h`,
+        ),
+      );
+    }
+  }
+}
+
+/** D4 : Redis indisponible à la prise du verrou : rien n'est envoyé, la ligne le dit. */
+async function noterVerrouIndisponible<L extends LigneReponse>(
+  a: AdaptateurReponse<L>,
+  id: string,
+  ctx: ContexteEssai,
+): Promise<void> {
+  const dernier = ctx.essai >= ctx.essaisMax;
+  try {
+    await a.ecrireSiNiEnvoyeNiIssueInconnue(
+      id,
+      dernier
+        ? {
+            deliveryStatus: "failed",
+            failedAt: new Date(),
+            errorMsg: MOTIF_REDIS_INDISPONIBLE,
+          }
+        : {
+            deliveryStatus: "pending",
+            errorMsg: `Essai ${ctx.essai}/${ctx.essaisMax} : verrou d'envoi indisponible, nouvel essai automatique`,
+          },
+    );
+  } catch (ecriture) {
+    captureWorkerError("email", "emails", ctx.job as Job, ecriture);
+  }
+}
+
+async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+  a: AdaptateurReponse<L>,
+): Promise<void> {
   const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
-  if (!replyId) throw new Error("[email-worker] candidature-reponse: replyId manquant");
+  if (!replyId) throw new Error(`[email-worker] ${a.gabarit}: replyId manquant`);
 
-  const reponse = await prisma.jobApplicationReply.findUnique({ where: { id: replyId } });
-  if (!reponse) throw new Error(`[email-worker] JobApplicationReply ${replyId} introuvable`);
+  // Garantie 1, avant le verrou : si c'est déjà parti, sortir sans rien envoyer.
+  const initiale = await a.lire(replyId);
+  if (!initiale) throw new Error(`[email-worker] réponse ${replyId} introuvable (${a.gabarit})`);
+  if (await dejaParti(a, initiale, replyId, ctx)) return;
 
-  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
-  const to = decryptPii(reponse.toEmail);
+  // Garantie 2 : un seul envoi à la fois. Jeton unique PAR DÉMARRAGE (relance après blocage comprise).
+  const cle = cleVerrou(a.gabarit, replyId);
+  const jeton = `${ctx.jobId ?? "sans-id"}-${ctx.essai}-${ctx.demarrage}`;
+  let pris: string | null;
+  try {
+    pris = await redis.set(cle, jeton, "EX", TTL_VERROU_ENVOI_SEC, "NX");
+  } catch (e) {
+    await noterVerrouIndisponible(a, initiale.id, ctx);
+    throw e; // rien n'a été envoyé : BullMQ réessaie
+  }
+  if (pris !== "OK") {
+    // Le verrou est tenu : on lit l'âge, jamais le jeton.
+    const valeur = await redisAvantEnvoi(a, initiale.id, ctx, () => redis.get(cle));
+    const pttl = await redisAvantEnvoi(a, initiale.id, ctx, () => redis.pttl(cle));
+    if (valeur === null || pttl === -2) return reporter(ctx, REPORT_PAS_DE_VERROU_MS);
+    const age = pttl === -1 ? Number.POSITIVE_INFINITY : TTL_VERROU_ENVOI_SEC * 1000 - pttl;
+    if (age < SEUIL_ORPHELIN_MS) {
+      // Le détenteur est peut-être vivant : ni envoi, ni écriture, aucun essai consommé.
+      await reporter(ctx, Math.min(SEUIL_ORPHELIN_MS - age + REPORT_MARGE_MS, REPORT_MAX_MS));
+    }
+    // Âge dépassé : le détenteur est-il pourtant vivant (verrou BullMQ d'un AUTRE passage) ?
+    const detenteur = await redisAvantEnvoi(a, initiale.id, ctx, () =>
+      sondeDetenteur(valeur, ctx.token),
+    );
+    if (detenteur === "vivant") await reporter(ctx, delaiReportCroissant(ctx, REPORT_MAX_MS));
+    await cloreIssueInconnue(a, replyId, ctx.job, ctx, valeur, () => true);
+    return;
+  }
 
-  if (!isDecryptedEmailUsable(to)) {
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
+  // Le verrou n'est libéré que si l'issue est connue : un envoi tenté dont l'issue n'est pas
+  // écrite le garde. Une sortie AVANT l'envoi (erreur de lecture, etc.) le libère.
+  let envoiTente = false;
+  let issueConnue = false;
+  try {
+    // Sous le verrou : relire, puis refaire le contrôle 1.
+    const ligne = await a.lire(replyId);
+    if (!ligne) throw new Error(`[email-worker] réponse ${replyId} introuvable (${a.gabarit})`);
+    if (await dejaParti(a, ligne, replyId, ctx)) return;
+
+    const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+    // `toEmail` est chiffré au repos (enc:v1) : déchiffré au seul moment de l'envoi.
+    const to = decryptPii(ligne.toEmail);
+
+    // Garantie 5 : contrôles d'adresse sous le verrou. Adresse illisible = problème de
+    // CONFIG (clé PII du worker) : on ne consomme pas les essais, on marque `failed`.
+    if (!isDecryptedEmailUsable(to)) {
+      await a.ecrireSiNiEnvoyeNiIssueInconnue(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
-      },
-    });
-    return;
-  }
-
-  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
-  if ((await dateDeMiseAEcart(to, "candidature-reponse")) !== null) {
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
+      });
+      return;
+    }
+    // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
+    if ((await dateDeMiseAEcart(to, a.gabarit)) !== null) {
+      await a.ecrireSiNiEnvoyeNiIssueInconnue(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
-      },
+      });
+      return;
+    }
+
+    // Contre-vérification : le verrou est-il encore le nôtre ? Sinon un autre passage a pris la
+    // main (verrou perdu) : rien ne part. Le `finally` ne libère rien (le script compare la valeur).
+    const verrouActuel = await redisAvantEnvoi(a, ligne.id, ctx, () => redis.get(cle));
+    if (verrouActuel === null) {
+      // Verrou disparu (expiré, purgé) : rien n'est parti, on réessaie ; `dejaParti` rejouera les gardes.
+      const disparu = new Error(
+        `verrou d'envoi disparu avant l'envoi (${a.gabarit}, réponse ${replyId}) : rien n'est parti, nouvel essai`,
+      );
+      captureWorkerError("email", "emails", ctx.job as Job, disparu);
+      throw disparu;
+    }
+    if (verrouActuel !== jeton) {
+      captureWorkerError(
+        "email",
+        "emails",
+        ctx.job as Job,
+        new Error(
+          `verrou perdu avant l'envoi (${a.gabarit}, réponse ${replyId}) : rien n'est parti`,
+        ),
+      );
+      return;
+    }
+
+    let messageId: string;
+    envoiTente = true;
+    try {
+      const resultat = await sendEmail({
+        to,
+        subject: ligne.subject,
+        html: ligne.bodyHtml,
+        text: ligne.bodyText,
+        replyTo,
+      });
+      messageId = resultat.messageId;
+    } catch (e) {
+      if (classerEchecEnvoi(e) === "ambigu") {
+        // Le relais a pu prendre le message : issue inconnue tout de suite, aucun nouvel essai,
+        // aucune erreur relevée (`retryCount` inchangé). Si l'écriture échoue, `cloreIssueInconnue`
+        // reporte (DelayedError) : `issueConnue` reste faux, le verrou reste la trace.
+        captureWorkerError("email", "emails", ctx.job as Job, e);
+        await cloreIssueInconnue(a, replyId, ctx.job, ctx, jeton, (v) => v === jeton);
+        issueConnue = true;
+        return;
+      }
+      issueConnue = true; // le relais n'a pas pris le message : rien n'est parti
+      const msg = sansAdresse(e instanceof Error ? e.message : String(e));
+      // Garantie 3 : `failed` seulement au dernier essai ; avant, `pending` (D5) : plus de
+      // « Réessayer » pendant les essais automatiques.
+      const dernier = ctx.essai >= ctx.essaisMax;
+      try {
+        await a.ecrireSiNiEnvoyeNiIssueInconnue(
+          ligne.id,
+          dernier
+            ? {
+                deliveryStatus: "failed",
+                failedAt: new Date(),
+                errorMsg: msg.slice(0, 2000),
+                retryCount: { increment: 1 },
+              }
+            : {
+                deliveryStatus: "pending",
+                errorMsg:
+                  `Essai ${ctx.essai}/${ctx.essaisMax} échoué, nouvel essai automatique : ${msg}`.slice(
+                    0,
+                    2000,
+                  ),
+                retryCount: { increment: 1 },
+              },
+        );
+      } catch (ecriture) {
+        captureWorkerError("email", "emails", ctx.job as Job, ecriture);
+      }
+      throw e; // BullMQ réessaie avec un délai exponentiel
+    }
+
+    // Garantie 4 : marqueur « l'e-mail est parti » AVANT l'écriture en base (3 essais, jamais levé).
+    for (let i = 0; i < ESSAIS_ECRITURE_ENVOYE; i++) {
+      try {
+        await redis.set(cleMarqueur(a.gabarit, replyId), messageId, "EX", TTL_MARQUEUR_ENVOYE_SEC);
+        break;
+      } catch (err) {
+        if (i === ESSAIS_ECRITURE_ENVOYE - 1) {
+          captureWorkerError("email", "emails", ctx.job as Job, err);
+        }
+      }
+    }
+    const echec = await ecrireEnvoyeRetente(a, ligne, messageId, new Date());
+    if (echec !== null) {
+      // L'e-mail est parti, la base ne le dit pas : verrou GARDÉ, report sans essai consommé.
+      captureWorkerError("email", "emails", ctx.job as Job, echec);
+      await reporter(ctx, delaiReportCroissant(ctx, REPORT_ECRITURE_MS));
+    }
+    issueConnue = true;
+  } finally {
+    // Sortie sans envoi tenté (contrôle, erreur de lecture) = issue connue.
+    if (issueConnue || !envoiTente) await libererVerrou(cle, jeton);
+  }
+}
+
+/**
+ * Échec FINAL d'un job de réponse (plus aucun essai, ou job tué deux fois : le processeur n'est
+ * PAS rappelé). On n'agit que sur une ligne `pending` : un `failed` portant le vrai message SMTP
+ * n'est jamais écrasé. Verrou ou marqueur présent → issue inconnue (le verrou n'est supprimé que
+ * s'il porte le jeton de CE job ET qu'il est vieux) ; sinon rien n'est parti.
+ */
+async function cloreEchecFinal(job: {
+  id?: string | undefined;
+  data: { template: string; payload: Record<string, unknown> };
+  moveToDelayed(timestamp: number, token?: string): Promise<void>;
+}): Promise<void> {
+  const replyId = job.data.payload["replyId"];
+  if (typeof replyId !== "string") return;
+  const a: AdaptateurReponse<LigneSubmissionReply> | AdaptateurReponse<LigneCandidature> | null =
+    job.data.template === "submission-reply"
+      ? adaptateurSubmissionReply()
+      : job.data.template === "candidature-reponse"
+        ? adaptateurCandidature()
+        : null;
+  if (!a) return;
+  const ar = a as AdaptateurReponse<LigneReponse>;
+  const ligne = await ar.lire(replyId);
+  if (!ligne || ligne.deliveryStatus !== "pending") return;
+  if (ligne.sentAt !== null || ligne.providerMessageId !== null) return;
+
+  let marqueur: string | null;
+  let valeur: string | null;
+  let pttl: number;
+  try {
+    marqueur = await redis.get(cleMarqueur(ar.gabarit, replyId));
+    valeur = await redis.get(cleVerrou(ar.gabarit, replyId));
+    pttl = valeur === null ? -2 : await redis.pttl(cleVerrou(ar.gabarit, replyId));
+  } catch (e) {
+    captureWorkerError("email", "emails", job as Job, e);
+    await ar.ecrireSiNonEnvoye(ligne.id, {
+      deliveryStatus: "failed",
+      failedAt: new Date(),
+      errorMsg: MOTIF_ISSUE_INCONNUE,
     });
     return;
   }
-
-  try {
-    const resultat = await sendEmail({
-      to,
-      subject: reponse.subject,
-      html: reponse.bodyHtml,
-      text: reponse.bodyText,
-      replyTo,
-    });
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
-        deliveryStatus: "sent",
-        sentAt: new Date(),
-        providerMessageId: resultat.messageId,
-      },
-    });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: msg.slice(0, 2000),
-        retryCount: { increment: 1 },
-      },
-    });
-    throw e; // BullMQ réessaie avec un délai exponentiel
+  if (marqueur !== null || valeur !== null) {
+    const age = pttl === -1 ? Number.POSITIVE_INFINITY : TTL_VERROU_ENVOI_SEC * 1000 - pttl;
+    await cloreIssueInconnue(
+      ar,
+      replyId,
+      job,
+      undefined,
+      valeur,
+      (v) => v.startsWith(`${job.id ?? "sans-id"}-`) && age >= SEUIL_ORPHELIN_MS,
+    );
+    return;
   }
+  await ar.ecrireSiEncorePendingSansIssueInconnue(ligne.id, {
+    deliveryStatus: "failed",
+    failedAt: new Date(),
+    errorMsg: MOTIF_ECHEC_SANS_ENVOI,
+  });
+}
+
+// submission-reply : le payload ne contient PAS le HTML — il référence le
+// `SubmissionReply.id`. On envoie le bodyHtml/bodyText figé en base, puis on
+// synchronise `deliveryStatus` + `sentAt` + `Submission.firstRepliedAt/lastRepliedAt`.
+const lireSubmissionReply = (id: string) =>
+  prisma.submissionReply.findUnique({
+    where: { id },
+    include: { submission: { select: { id: true, firstRepliedAt: true } } },
+  });
+type LigneSubmissionReply = NonNullable<Awaited<ReturnType<typeof lireSubmissionReply>>>;
+
+function adaptateurSubmissionReply(): AdaptateurReponse<LigneSubmissionReply> {
+  return {
+    gabarit: "submission-reply" as const,
+    lire: lireSubmissionReply,
+    ecrireSiNonEnvoye: (id: string, data: Record<string, unknown>) =>
+      prisma.submissionReply.updateMany({ where: { id, sentAt: null }, data }),
+    ecrireSiNiEnvoyeNiIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.submissionReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    ecrireSiEncorePendingSansIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.submissionReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          deliveryStatus: "pending",
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    reparerEnvoye: (id: string) =>
+      prisma.submissionReply.updateMany({
+        where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },
+        data: { deliveryStatus: "sent" },
+      }),
+    // `failedAt`/`errorMsg` remis à null : un `sent` tardif efface un « issue inconnue ».
+    marquerEnvoye: (ligne, messageId, now) =>
+      prisma.$transaction([
+        prisma.submissionReply.updateMany({
+          where: { id: ligne.id },
+          data: {
+            deliveryStatus: "sent",
+            sentAt: now,
+            providerMessageId: messageId,
+            failedAt: null,
+            errorMsg: null,
+          },
+        }),
+        prisma.submission.update({
+          where: { id: ligne.submissionId },
+          data: {
+            firstRepliedAt: ligne.submission.firstRepliedAt ?? now,
+            lastRepliedAt: now,
+          },
+        }),
+      ]),
+  };
+}
+
+async function handleSubmissionReply(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+): Promise<void> {
+  await envoyerReponseUnSeulEnvoi(payload, ctx, adaptateurSubmissionReply());
+}
+
+// candidature-reponse : jumeau de `handleSubmissionReply`, sur `JobApplicationReply`.
+// 🔑 N'écrit RIEN au journal de la candidature : la trace « réponse envoyée » est
+// posée par l'action, dans la même transaction que la réponse ; le journal dit ce
+// qu'un humain a FAIT, l'état de livraison ce que la chaîne d'envoi en a fait.
+const lireCandidature = (id: string) => prisma.jobApplicationReply.findUnique({ where: { id } });
+type LigneCandidature = NonNullable<Awaited<ReturnType<typeof lireCandidature>>>;
+
+function adaptateurCandidature(): AdaptateurReponse<LigneCandidature> {
+  return {
+    gabarit: "candidature-reponse" as const,
+    lire: lireCandidature,
+    ecrireSiNonEnvoye: (id: string, data: Record<string, unknown>) =>
+      prisma.jobApplicationReply.updateMany({ where: { id, sentAt: null }, data }),
+    ecrireSiNiEnvoyeNiIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.jobApplicationReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    ecrireSiEncorePendingSansIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.jobApplicationReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          deliveryStatus: "pending",
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    reparerEnvoye: (id: string) =>
+      prisma.jobApplicationReply.updateMany({
+        where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },
+        data: { deliveryStatus: "sent" },
+      }),
+    marquerEnvoye: (ligne, messageId, now) =>
+      prisma.jobApplicationReply.updateMany({
+        where: { id: ligne.id },
+        data: {
+          deliveryStatus: "sent",
+          sentAt: now,
+          providerMessageId: messageId,
+          failedAt: null,
+          errorMsg: null,
+        },
+      }),
+  };
+}
+
+async function handleCandidatureReponse(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+): Promise<void> {
+  await envoyerReponseUnSeulEnvoi(payload, ctx, adaptateurCandidature());
 }

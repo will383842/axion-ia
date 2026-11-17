@@ -326,6 +326,6 @@ export function evaluerIdentite(
     motif:
       `Identité de l'organisme incomplète — ${manquants.join(", ")}. ` +
       `Document émis en SPÉCIMEN, sans valeur juridique. ` +
-      `Renseignez ces valeurs dans Qualiopi › Configuration pour émettre un document officiel.`,
+      `Renseignez ces valeurs dans la configuration de l'organisme pour émettre un document officiel.`,
   };
 }

@@ -42,7 +42,8 @@ import {
 } from "@/features/questionnaire-preaudit/portee-rgpd";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
+import { decryptPii, encryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { deleteFromR2 } from "@/lib/r2-storage";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
@@ -1156,6 +1157,289 @@ async function pseudonymiserPersonnes(
   return personnes.count;
 }
 
+/** Ce que `neutraliserEmailsManuelsPour` a fait, pour le compte rendu du fondateur. */
+export interface NeutralisationEmailsManuels {
+  readonly emailsNeutralises: number;
+  readonly piecesJointesNeutralisees: number;
+  /**
+   * Clés R2 des pièces jointes de ces e-mails. Aucun objet n'est supprimé ici : le fondateur
+   * décide, avec cette liste, de ce qui part du stockage.
+   */
+  readonly clesStockage: readonly string[];
+  /**
+   * E-mails écrits depuis la fiche de la personne mais envoyés à UNE AUTRE adresse (assistante,
+   * collègue). Listés, jamais touchés sauf option `aussiRattachesAutreAdresse` (le fondateur décide).
+   */
+  readonly rattachesAutreAdresse: readonly string[];
+}
+
+export const OBJET_EMAIL_MANUEL_EFFACE = "[contenu effacé]";
+export const NOM_PIECE_JOINTE_EFFACE = "[nom effacé]";
+/** Motif posé sur un e-mail écrit à la main dont l'envoi est arrêté par une neutralisation. */
+export const MOTIF_EMAIL_MANUEL_NEUTRALISE = "envoi arrêté : effacement demandé";
+
+interface LigneEmailManuelANeutraliser {
+  readonly id: string;
+  readonly entiteType: string;
+  readonly destinataireChiffre: string;
+  readonly destinataireHash: string;
+  readonly objet: string;
+  readonly corpsSource: string;
+  readonly corpsTexte: string | null;
+  readonly statut: string;
+  readonly motif: string | null;
+  readonly inReplyTo: string | null;
+  readonly referencesEntete: string | null;
+  readonly idRelais: string | null;
+  readonly corpsHtml: string | null;
+}
+
+const SELECTION_EMAIL_MANUEL = {
+  id: true,
+  entiteType: true,
+  destinataireChiffre: true,
+  destinataireHash: true,
+  objet: true,
+  corpsSource: true,
+  corpsHtml: true,
+  corpsTexte: true,
+  statut: true,
+  motif: true,
+  inReplyTo: true,
+  referencesEntete: true,
+  idRelais: true,
+} as const;
+
+/** Adresse en clair d'une ligne (null si illisible : la ligne n'est alors pas touchée). */
+function adresseDeLaLigne(l: { readonly destinataireChiffre: string }): string | null {
+  try {
+    const a = decryptPii(l.destinataireChiffre);
+    return typeof a === "string" && a !== "" && a !== PII_DECRYPT_PLACEHOLDER ? a : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Contenu déjà vidé (ligne non stagiaire, ou mode « contenu »). */
+function contenuDejaVide(l: LigneEmailManuelANeutraliser): boolean {
+  return l.objet === OBJET_EMAIL_MANUEL_EFFACE && l.corpsSource === "" && l.corpsTexte === null;
+}
+
+/**
+ * Déjà neutralisée ? Mode « contenu » : le contenu est vide. Mode « destinataire » : l'adresse est
+ * déjà le pseudonyme ET (hors stagiaire) le contenu est vide.
+ */
+function emailManuelDejaNeutralise(
+  l: LigneEmailManuelANeutraliser,
+  mode: "destinataire" | "contenu",
+): boolean {
+  if (mode === "contenu") return contenuDejaVide(l);
+  const adresseEffacee = adresseDeLaLigne(l)?.startsWith("erased:") === true;
+  // Mode « destinataire » : un contenu déjà vidé (par le mode « contenu », pour une autre personne)
+  // ne suffit pas, l'adresse et le nom du destinataire restent à neutraliser.
+  if (l.entiteType !== "Trainee") return contenuDejaVide(l) && adresseEffacee;
+  return adresseEffacee;
+}
+
+/**
+ * Neutralise des lignes d'`emails_manuels` EN PLACE (rien n'est supprimé : clés RESTRICT). Commune à
+ * `neutraliserEmailsManuelsPour` et au rejeu après restauration, pour qu'ils fassent la même chose.
+ *   · `destinataire` : l'adresse devient `erased:<empreinte>@erased.local` (empreinte gardée) et le
+ *     contenu est vidé (stagiaire : seulement masqué, règle formation) ;
+ *   · `contenu` : lignes rattachées à la fiche mais envoyées à une autre adresse ; l'adresse et le nom
+ *     du destinataire (un tiers) sont GARDÉS, seul le contenu est vidé.
+ * Un e-mail `en_file` ou `echec` passe `retenu` (il ne doit plus partir) ; un brouillon reste brouillon
+ * (le CHECK `rendu_si_parti` interdit `retenu` sans rendu). Les lignes déjà neutralisées sont sautées.
+ * `adressesDe` rend les adresses à masquer ; `null` = illisible, la ligne n'est pas touchée.
+ */
+async function neutraliserLignesEmailsManuels(
+  tx: Prisma.TransactionClient,
+  lignes: readonly LigneEmailManuelANeutraliser[],
+  mode: "destinataire" | "contenu",
+  adressesDe: (l: LigneEmailManuelANeutraliser) => readonly string[] | null,
+): Promise<{ readonly modifies: string[]; readonly illisibles: number }> {
+  const modifies: string[] = [];
+  let illisibles = 0;
+  for (const brute of lignes) {
+    // Les colonnes facultatives non lues valent `null` (jamais `undefined`).
+    const l: LigneEmailManuelANeutraliser = {
+      ...brute,
+      corpsHtml: brute.corpsHtml ?? null,
+      corpsTexte: brute.corpsTexte ?? null,
+      motif: brute.motif ?? null,
+      inReplyTo: brute.inReplyTo ?? null,
+      referencesEntete: brute.referencesEntete ?? null,
+      idRelais: brute.idRelais ?? null,
+    };
+    if (emailManuelDejaNeutralise(l, mode)) continue;
+    const stagiaire = mode === "destinataire" && l.entiteType === "Trainee";
+    const adresses = mode === "destinataire" ? adressesDe(l) : [];
+    if (adresses === null) {
+      illisibles += 1;
+      continue;
+    }
+    const masquer = (t: string): string =>
+      adresses.reduce((acc, a) => masquerAdresseDansTexte(acc, a), t);
+    const bascule = l.statut === "en_file" || l.statut === "echec";
+    const destinataire =
+      mode === "destinataire"
+        ? { destinataireChiffre: encryptPii(`erased:${l.destinataireHash}@erased.local`) }
+        : {};
+    const statut = bascule ? { statut: "retenu" } : {};
+    await tx.emailManuel.updateMany({
+      where: { id: l.id },
+      data: stagiaire
+        ? {
+            ...destinataire,
+            ...statut,
+            objet: masquer(l.objet).slice(0, 500),
+            corpsSource: masquer(l.corpsSource),
+            corpsHtml: l.corpsHtml === null ? null : masquer(l.corpsHtml),
+            corpsTexte: l.corpsTexte === null ? null : masquer(l.corpsTexte),
+            motif: bascule
+              ? MOTIF_EMAIL_MANUEL_NEUTRALISE
+              : l.motif === null
+                ? null
+                : masquer(l.motif),
+            inReplyTo: l.inReplyTo === null ? null : masquer(l.inReplyTo).slice(0, 300),
+            referencesEntete: l.referencesEntete === null ? null : masquer(l.referencesEntete),
+            idRelais: l.idRelais === null ? null : masquer(l.idRelais).slice(0, 500),
+            modifieLe: new Date(),
+          }
+        : {
+            ...destinataire,
+            ...statut,
+            ...(mode === "destinataire" ? { destinataireNom: null } : {}),
+            objet: OBJET_EMAIL_MANUEL_EFFACE,
+            corpsSource: "",
+            corpsHtml: "",
+            corpsTexte: null,
+            motif: bascule ? MOTIF_EMAIL_MANUEL_NEUTRALISE : null,
+            inReplyTo: null,
+            referencesEntete: null,
+            // Gardé (masqué) : le webhook du relais retrouve la ligne par cet identifiant.
+            idRelais: l.idRelais === null ? null : masquer(l.idRelais).slice(0, 500),
+            modifieLe: new Date(),
+          },
+    });
+    modifies.push(l.id);
+  }
+  return { modifies, illisibles };
+}
+
+/**
+ * GESTE MANUEL du fondateur (art. 17), jamais appelé par `/api/gdpr-erase` ni par un automate :
+ * neutralise les e-mails écrits à la main dont le destinataire a cette adresse (`destinataire_hash`).
+ * Les lignes et les pièces jointes sont GARDÉES et mises à jour en place — rien n'est supprimé
+ * (clés RESTRICT) ; voir `neutraliserLignesEmailsManuels` pour le détail champ par champ.
+ *   · pièces jointes : lignes gardées, `nom_fichier` neutralisé. Les objets R2 ne sont JAMAIS
+ *     supprimés ici : leurs clés sont rendues au fondateur.
+ *   · chaque ligne modifiée est journalisée (`emails_manuels`, art17) pour que le rejeu après
+ *     restauration la refasse (procédure R33).
+ * Les lignes verrouillées d'abord (`FOR UPDATE`) : un envoi en cours ne passe pas entre la lecture et
+ * l'écriture. Idempotente : une seconde passe ne modifie ni n'écrit rien. À appeler AVANT tout geste
+ * qui retire les adresses de la fiche personne : l'option se fonde sur elles.
+ *
+ * Les e-mails écrits depuis la fiche de la personne mais envoyés à une AUTRE adresse sont LISTÉS
+ * (`rattachesAutreAdresse`) et laissés intacts ; avec `aussiRattachesAutreAdresse: true`, leur contenu
+ * est vidé (l'adresse du tiers est gardée) et le journal reçoit `<id>:contenu`.
+ */
+export async function neutraliserEmailsManuelsPour(
+  email: string,
+  options: { readonly aussiRattachesAutreAdresse?: boolean } = {},
+): Promise<NeutralisationEmailsManuels> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) {
+    return {
+      emailsNeutralises: 0,
+      piecesJointesNeutralisees: 0,
+      clesStockage: [],
+      rattachesAutreAdresse: [],
+    };
+  }
+  const adresses = [...new Set([email.trim(), normalizeEmail(email)])].filter((a) => a !== "");
+
+  return prisma.$transaction(
+    async (tx) => {
+      await tx.$queryRaw`SELECT id FROM "emails_manuels" WHERE "destinataire_hash" = ${empreinte} FOR UPDATE`;
+      const lignes = await tx.emailManuel.findMany({
+        where: { destinataireHash: empreinte },
+        select: SELECTION_EMAIL_MANUEL,
+      });
+      const { modifies } = await neutraliserLignesEmailsManuels(
+        tx,
+        lignes,
+        "destinataire",
+        () => adresses,
+      );
+      await journaliserEffacements(tx, "emails_manuels", modifies, "art17");
+
+      const ids = lignes.map((l) => l.id);
+      const pieces =
+        ids.length === 0
+          ? []
+          : await tx.emailManuelPieceJointe.findMany({
+              where: { emailManuelId: { in: ids } },
+              select: { cleStockage: true },
+            });
+      if (ids.length > 0) {
+        await tx.emailManuelPieceJointe.updateMany({
+          where: { emailManuelId: { in: ids } },
+          data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+        });
+      }
+
+      // Défaut 7 : écrits depuis SA fiche, envoyés à une autre adresse.
+      const fiches = await tx.clientContactAdresse.findMany({
+        where: { emailHash: empreinte },
+        select: { contactId: true },
+      });
+      const ficheIds = [...new Set(fiches.map((f) => f.contactId))];
+      const autres =
+        ficheIds.length === 0
+          ? []
+          : await tx.emailManuel.findMany({
+              where: { contactId: { in: ficheIds }, destinataireHash: { not: empreinte } },
+              select: SELECTION_EMAIL_MANUEL,
+            });
+      let piecesContenu: { cleStockage: string }[] = [];
+      if (options.aussiRattachesAutreAdresse === true && autres.length > 0) {
+        const { modifies: contenus } = await neutraliserLignesEmailsManuels(
+          tx,
+          autres,
+          "contenu",
+          () => [],
+        );
+        await journaliserEffacements(
+          tx,
+          "emails_manuels",
+          contenus.map((i) => `${i}:contenu`),
+          "art17",
+        );
+        // Pièces jointes : même traitement que le mode « destinataire » (nom neutralisé, clés rendues).
+        if (contenus.length > 0) {
+          piecesContenu = await tx.emailManuelPieceJointe.findMany({
+            where: { emailManuelId: { in: contenus } },
+            select: { cleStockage: true },
+          });
+          await tx.emailManuelPieceJointe.updateMany({
+            where: { emailManuelId: { in: contenus } },
+            data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+          });
+        }
+      }
+      const toutesPieces = [...pieces, ...piecesContenu];
+      return {
+        emailsNeutralises: modifies.length,
+        piecesJointesNeutralisees: toutesPieces.length,
+        clesStockage: toutesPieces.map((x) => x.cleStockage),
+        rattachesAutreAdresse: autres.map((l) => l.id),
+      };
+    },
+    { timeout: 30_000 },
+  );
+}
+
 /** Périmètre d'une suppression du pilote. */
 interface PerimetrePilote {
   /** Fiches inscrites dans `clients_test_interne`. */
@@ -1165,6 +1449,22 @@ interface PerimetrePilote {
   readonly contactIds: readonly string[];
   /** ADR 0063 — documents de projet journalisés `pilote` (rejeu) ; ceux des projets ci-dessus partent aussi. */
   readonly documentIds: readonly string[];
+}
+
+/**
+ * Personnes d'essai visées par au moins un e-mail écrit à la main (`contact_id`, RESTRICT) : elles ne
+ * sont pas supprimées par la purge du pilote.
+ */
+async function personnesPiloteAvecEmailManuel(
+  db: Pick<Prisma.TransactionClient, "emailManuel">,
+  contactIds: readonly string[],
+): Promise<Set<string>> {
+  if (contactIds.length === 0) return new Set();
+  const lignes = await db.emailManuel.findMany({
+    where: { contactId: { in: [...contactIds] } },
+    select: { contactId: true },
+  });
+  return new Set(lignes.flatMap((l) => (l.contactId === null ? [] : [l.contactId])));
 }
 
 /**
@@ -1183,7 +1483,14 @@ async function supprimerDonneesPilote(
   readonly faits: number;
   readonly preuvesAccord: number;
   readonly documentIds: readonly string[];
+  readonly personnesGardees: readonly string[];
 }> {
+  // Fiche F1b : seule la clé `contact_id` (RESTRICT) d'un e-mail écrit à la main compte ici ; aucune
+  // fiche n'est supprimée, donc `client_id` ne bloque rien. Une personne d'essai visée par au moins un
+  // e-mail écrit à la main est GARDÉE, mise à l'écart de la suppression et signalée au fondateur :
+  // la purge et le rejeu ne lèvent jamais à cause d'elle.
+  const gardees = await personnesPiloteAvecEmailManuel(tx, p.contactIds);
+  const contactsASupprimer = p.contactIds.filter((id) => !gardees.has(id));
   const faits = await tx.fait.deleteMany({
     where: {
       OR: [{ clientId: { in: [...p.clientIds] } }, { rencontreId: { in: [...p.rencontreIds] } }],
@@ -1209,8 +1516,13 @@ async function supprimerDonneesPilote(
   // Suivi de prestation (type, étape, montant) : données de test, purgées sur ordre.
   await tx.projetSuivi.deleteMany({ where: { projetId: { in: [...p.projetIds] } } });
   await tx.projet.deleteMany({ where: { id: { in: [...p.projetIds] } } });
-  await tx.clientContact.deleteMany({ where: { id: { in: [...p.contactIds] } } });
-  return { faits: faits.count, preuvesAccord: preuves.count, documentIds };
+  await tx.clientContact.deleteMany({ where: { id: { in: contactsASupprimer } } });
+  return {
+    faits: faits.count,
+    preuvesAccord: preuves.count,
+    documentIds,
+    personnesGardees: [...gardees],
+  };
 }
 
 async function journaliserEffacements(
@@ -1771,6 +2083,8 @@ export interface PurgePiloteResultat {
   readonly projets: number;
   readonly personnes: number;
   readonly preuvesAccord: number;
+  /** Personnes d'essai gardées (visées par un e-mail écrit à la main) : à traiter par le fondateur. */
+  readonly personnesGardees: number;
 }
 
 /**
@@ -1801,13 +2115,15 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    const { faits, preuvesAccord, documentIds } = await supprimerDonneesPilote(tx, {
+    const perimetre: PerimetrePilote = {
       clientIds,
       rencontreIds,
       projetIds: projets.map((p) => p.id),
       contactIds: personnes.map((p) => p.id),
       documentIds: [],
-    });
+    };
+    const supprime = await supprimerDonneesPilote(tx, perimetre);
+    const { faits, preuvesAccord, documentIds, personnesGardees } = supprime;
 
     await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
     // ADR 0063 — journalisés pour que le rejeu après restauration les resupprime.
@@ -1818,10 +2134,13 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       projets.map((p) => p.id),
       "pilote",
     );
+    // Seules les personnes réellement supprimées sont journalisées (le rejeu ne doit pas viser les gardées).
+    const gardees = new Set(personnesGardees);
+    const supprimees = personnes.filter((p) => !gardees.has(p.id));
     await journaliserEffacements(
       tx,
       "client_contacts",
-      personnes.map((p) => p.id),
+      supprimees.map((p) => p.id),
       "pilote",
     );
 
@@ -1829,8 +2148,9 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       rencontres: rencontreIds.length,
       faits,
       projets: projets.length,
-      personnes: personnes.length,
+      personnes: supprimees.length,
       preuvesAccord,
+      personnesGardees: gardees.size,
     };
   });
 }
@@ -2334,6 +2654,10 @@ export interface RejeuResultat {
   readonly lues: number;
   /** Cibles encore présentes (restaurées) : ré-effacées, ou à ré-effacer à blanc. */
   readonly reappliquees: number;
+  /** E-mails écrits à la main dont l'adresse est indéchiffrable : non touchés, à traiter à la main. */
+  readonly emailsManuelsIllisibles: number;
+  /** Personnes d'essai gardées par le rejeu (visées par un e-mail écrit à la main). */
+  readonly personnesPiloteGardees: number;
 }
 
 /** Motifs pour lesquels l'effacement d'un compte rendu a TOUJOURS été une suppression. */
@@ -2436,6 +2760,12 @@ export async function rejouerEffacements(
   const documentsPilote = ids("documents_projet").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));
+  // Fiche F1b : e-mails écrits à la main neutralisés (`<id>` = adresse, `<id>:contenu` = contenu seul).
+  const emailsManuelsJournalises = ids("emails_manuels");
+  const emailsManuelsDestinataire = emailsManuelsJournalises.filter((i) => !i.endsWith(":contenu"));
+  const emailsManuelsContenu = emailsManuelsJournalises
+    .filter((i) => i.endsWith(":contenu"))
+    .map((i) => i.slice(0, -":contenu".length));
   const unePurgePiloteAEuLieu =
     rencontresPilote.length + projetsPilote.length + contactsPilote.length > 0;
 
@@ -2456,7 +2786,40 @@ export async function rejouerEffacements(
     | "projetContact"
     | "clientTache"
     | "enregistrementConsentement"
+    | "emailManuel"
+    | "emailManuelPieceJointe"
   >;
+
+  /** Lignes d'e-mails écrits à la main du journal, encore à neutraliser (même prédicat que l'écriture). */
+  const emailsManuelsANeutraliser = async (
+    db: Lecteur,
+  ): Promise<{
+    readonly destinataire: LigneEmailManuelANeutraliser[];
+    readonly contenu: LigneEmailManuelANeutraliser[];
+    /** Adresse indéchiffrable : ligne intacte, comptée à part (jamais « à réappliquer »). */
+    readonly illisibles: number;
+  }> => {
+    const lire = async (idsLus: string[]): Promise<LigneEmailManuelANeutraliser[]> =>
+      idsLus.length === 0
+        ? []
+        : db.emailManuel.findMany({
+            where: { id: { in: idsLus } },
+            select: SELECTION_EMAIL_MANUEL,
+          });
+    const aTraiter = (await lire(emailsManuelsDestinataire)).filter(
+      (l) => !emailManuelDejaNeutralise(l, "destinataire"),
+    );
+    const destinataire = aTraiter.filter((l) => adresseDeLaLigne(l) !== null);
+    const illisibles = aTraiter.length - destinataire.length;
+    const contenu = (await lire(emailsManuelsContenu)).filter(
+      (l) => !emailManuelDejaNeutralise(l, "contenu"),
+    );
+    return { destinataire, contenu, illisibles };
+  };
+
+  /** Personnes d'essai gardées : visées par un e-mail écrit à la main (jamais une levée). */
+  const personnesGardees = async (db: Lecteur): Promise<Set<string>> =>
+    personnesPiloteAvecEmailManuel(db, contactsPilote);
 
   /** Périmètre du pilote : celui de `purgerPilote`, rencontres/projets/personnes lus au journal. */
   const perimetrePilote = async (db: Lecteur): Promise<PerimetrePilote> => ({
@@ -2502,6 +2865,8 @@ export async function rejouerEffacements(
   const compter = async (db: Lecteur): Promise<number> => {
     const cr = await trierComptesRendus(db);
     const p = await perimetrePilote(db);
+    const gardees = await personnesGardees(db);
+    const emails = await emailsManuelsANeutraliser(db);
     const questionnaires = (
       await db.questionnaireCadrage.findMany({
         where: { contactDestinataireId: { in: contactsEffaces } },
@@ -2557,13 +2922,23 @@ export async function rejouerEffacements(
         },
       }),
       db.projet.count({ where: { id: { in: [...p.projetIds] } } }),
-      db.clientContact.count({ where: { id: { in: [...p.contactIds] } } }),
+      db.clientContact.count({
+        where: { id: { in: p.contactIds.filter((id) => !gardees.has(id)) } },
+      }),
       db.rencontre.count({ where: { id: { in: rencontresEchues } } }),
     ]);
-    return nombres.reduce((a, b) => a + b, 0);
+    return nombres.reduce((a, b) => a + b, 0) + emails.destinataire.length + emails.contenu.length;
   };
 
-  if (!options.appliquer) return { lues: lignes.length, reappliquees: await compter(prisma) };
+  if (!options.appliquer) {
+    const emails = await emailsManuelsANeutraliser(prisma);
+    return {
+      lues: lignes.length,
+      reappliquees: await compter(prisma),
+      emailsManuelsIllisibles: emails.illisibles,
+      personnesPiloteGardees: (await personnesGardees(prisma)).size,
+    };
+  }
 
   return executerSousDrapeauEffacement(prisma, async (tx) => {
     const reappliquees = await compter(tx);
@@ -2595,7 +2970,39 @@ export async function rejouerEffacements(
     await effacerCeQuiSuitLesPersonnes(tx, contactsEffaces);
     await pseudonymiserPersonnes(tx, participantIds, contactsEffaces);
     await tx.clientContactAdresse.deleteMany({ where: { contactId: { in: contactsEffaces } } });
-    return { lues: lignes.length, reappliquees };
+    // E-mails écrits à la main (fiche F1b) : adresse reprise par déchiffrement ; illisible = intacte.
+    const emails = await emailsManuelsANeutraliser(tx);
+    const resultatDestinataire = await neutraliserLignesEmailsManuels(
+      tx,
+      emails.destinataire,
+      "destinataire",
+      (l) => {
+        const a = adresseDeLaLigne(l);
+        return a === null
+          ? null
+          : [...new Set([a.trim(), normalizeEmail(a)])].filter((x) => x !== "");
+      },
+    );
+    const resultatContenu = await neutraliserLignesEmailsManuels(
+      tx,
+      emails.contenu,
+      "contenu",
+      () => [],
+    );
+    // Pièces jointes : même traitement dans les deux modes (nom neutralisé).
+    const piecesIds = [...resultatDestinataire.modifies, ...resultatContenu.modifies];
+    if (piecesIds.length > 0) {
+      await tx.emailManuelPieceJointe.updateMany({
+        where: { emailManuelId: { in: piecesIds } },
+        data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+      });
+    }
+    return {
+      lues: lignes.length,
+      reappliquees,
+      emailsManuelsIllisibles: emails.illisibles,
+      personnesPiloteGardees: (await personnesGardees(tx)).size,
+    };
   });
 }
 

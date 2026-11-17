@@ -268,7 +268,7 @@ describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
   it("l'aperçu est grand et isolé (cadre de l'aperçu d'e-mail, sandbox vide, hauteur fixe)", async () => {
     const { container } = await rendre(true);
     const cadre = container.querySelector('iframe[title^="Aperçu exact"]')!;
-    expect(cadre.className).toContain("admin-apercu-email-cadre");
+    expect(cadre.className).toContain("admin-lecteur-email-cadre");
     expect(cadre.getAttribute("sandbox")).toBe("");
     expect(cadre.className).not.toContain("h-[420px]");
   });
@@ -346,7 +346,7 @@ describe("l'e-mail se lit en grand, se modifie, et sa copie se relit", () => {
     const { container } = await rendre(false);
     const bloc = container.querySelector('[data-bloc="copies-envoyees"]')!;
     expect(bloc.textContent).toContain("Audit du 6 novembre : votre questionnaire");
-    expect(bloc.querySelector("iframe")?.getAttribute("srcdoc")).toBe("<p>Texte parti</p>");
+    expect(bloc.querySelector("iframe")?.getAttribute("srcdoc")).toContain("<p>Texte parti</p>");
     expect(bloc.querySelector("iframe")?.getAttribute("sandbox")).toBe("");
     expect(bloc.textContent).toContain("n'a pas été conservée");
     expect(bloc.querySelector("a")?.getAttribute("href")).toContain(

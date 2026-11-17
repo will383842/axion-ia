@@ -954,23 +954,34 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  /**
+   * L5h — l'e-mail d'envoi de la convention est garé « à valider » alors que la
+   * session commence dans 7 jours ou moins. Se referme seule dès qu'il n'est
+   * plus en attente.
+   */
+  convention_non_validee_avant_session: {
+    niveau: "important",
+    titre: "Convention non validée à l'approche de la session",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Qualiopi expiration ────────────────────────────────────────────────────
   qualiopi_expire_j90: {
     niveau: "important",
-    titre: "Certification Qualiopi expire dans 90 jours",
+    titre: "Certification qualité : expire dans 90 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   qualiopi_expire_j30: {
     niveau: "critique",
-    titre: "Certification Qualiopi expire dans 30 jours",
+    titre: "Certification qualité : expire dans 30 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   qualiopi_expire: {
     niveau: "critique",
-    titre: "Certification Qualiopi expirée",
+    titre: "Certification qualité expirée",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non », là où _j90 et _j30 portent « Oui si renouvelée ». Les paliers d avertissement se referment seuls ; celui-ci constate que la certification EST expirée, et l acquittement est la trace que la direction l a vu.",
@@ -1242,13 +1253,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── Sous-traitants ────────────────────────────────────────────────────────
   sous_traitant_qualiopi_expire_j60: {
     niveau: "important",
-    titre: "Qualiopi sous-traitant expire dans 60 jours",
+    titre: "Certification qualité du sous-traitant : expire dans 60 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   sous_traitant_qualiopi_expire: {
     niveau: "critique",
-    titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
+    titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non », là où _j60 porte « Oui si renouvelée ». Des sessions futures sont déjà positionnées sur un sous-traitant non certifié : la situation s acquitte, elle ne s efface pas.",

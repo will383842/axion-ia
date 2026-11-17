@@ -90,6 +90,12 @@ async function main(): Promise<void> {
         `supprimés : ${r.rencontres} rencontre(s), ${r.faits} fait(s), ${r.projets} projet(s), ` +
           `${r.personnes} personne(s), ${r.preuvesAccord} preuve(s) d'accord`,
       );
+      if (r.personnesGardees > 0) {
+        console.log(
+          `gardées, mises à l'écart, à signaler au fondateur : ${r.personnesGardees} personne(s) d'essai ` +
+            `visée(s) par un e-mail écrit à la main`,
+        );
+      }
     } else {
       console.log("(essai à blanc : --appliquer pour purger)");
     }
