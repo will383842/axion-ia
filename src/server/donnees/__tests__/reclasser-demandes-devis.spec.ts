@@ -6,7 +6,9 @@ import type { Prisma } from "../../../../prisma/generated/client";
 import {
   LOT,
   ReclassementRefuse,
+  DELAI_TRANSACTION_MS,
   appliquer,
+  cibleBase,
   classer,
   lire,
   lireArguments,
@@ -49,6 +51,8 @@ function brute(l: LigneDevis) {
   };
 }
 
+const options_transaction: ({ timeout?: number } | undefined)[] = [];
+
 function fausseBase(lignes: LigneDevis[], modifiees?: number) {
   const exec = vi.fn(async (_q: Prisma.Sql) => modifiees ?? lignes.length);
   const queries: string[] = [];
@@ -58,7 +62,10 @@ function fausseBase(lignes: LigneDevis[], modifiees?: number) {
       return lignes.map(brute);
     }) as BaseReclassement["$queryRaw"],
     $executeRaw: exec,
-    $transaction: async (fn) => fn(db),
+    $transaction: async (fn, options) => {
+      options_transaction.push(options);
+      return fn(db);
+    },
   };
   return { db, exec, queries };
 }
@@ -138,7 +145,7 @@ describe("appliquer", () => {
   });
   it("écrit une fois, avec les bonnes conditions, sans toucher updated_at ni status", async () => {
     const { db, exec } = fausseBase([ligne()]);
-    expect(await appliquer(db, { avant: T, attendu: 1 })).toEqual({ modifiees: 1 });
+    expect((await appliquer(db, { avant: T, attendu: 1 })).modifiees).toBe(1);
     expect(exec).toHaveBeenCalledTimes(1);
     const q = exec.mock.calls[0]![0];
     expect(q.sql).toContain(`'quote_request'::"SubmissionType"`);
@@ -162,8 +169,27 @@ describe("revenir", () => {
 });
 
 describe("lireArguments", () => {
-  it("--lire est le défaut", () => {
-    expect(lireArguments([]).mode).toBe("lire");
+  it("--lire est le défaut, mais exige --avant", () => {
+    expect(lireArguments(["--avant=2026-11-17T12:00:00Z"]).mode).toBe("lire");
+    expect(() => lireArguments([])).toThrow(/--lire exige --avant/);
+    expect(() => lireArguments(["--lire"])).toThrow(ReclassementRefuse);
+  });
+  it("--avant exige un fuseau (Z ou décalage)", () => {
+    expect(() => lireArguments(["--lire", "--avant=2026-11-17T12:00:00"])).toThrow(/fuseau/);
+    expect(() => lireArguments(["--lire", "--avant=2026-11-17T12:00:00.000"])).toThrow(/fuseau/);
+    expect(lireArguments(["--lire", "--avant=2026-11-17T12:00:00+01:00"]).mode).toBe("lire");
+    expect(lireArguments(["--lire", "--avant=2026-11-17T12:00:00.000Z"]).mode).toBe("lire");
+  });
+  it("--revenir accepte --attendu facultatif, refuse une valeur illisible", () => {
+    expect(lireArguments(["--revenir", "--lot=L"])).toEqual({ mode: "revenir", lot: "L" });
+    expect(lireArguments(["--revenir", "--lot=L", "--attendu=2"])).toEqual({
+      mode: "revenir",
+      lot: "L",
+      attendu: 2,
+    });
+    expect(() => lireArguments(["--revenir", "--lot=L", "--attendu=x"])).toThrow(
+      ReclassementRefuse,
+    );
   });
   it("--appliquer sans --avant ou sans --attendu : refus", () => {
     expect(() => lireArguments(["--appliquer", "--attendu=3"])).toThrow(ReclassementRefuse);
@@ -176,6 +202,116 @@ describe("lireArguments", () => {
       "appliquer",
     );
     expect(() => lireArguments(["--lire", "--appliquer"])).toThrow(ReclassementRefuse);
+  });
+});
+
+describe("fragments SQL (lecture ET écriture)", () => {
+  const fragments = [
+    /\(s?\.?details->'reclassement'\) IS NULL|\(details->'reclassement'\) IS NULL/,
+    /details->>'source' = /,
+    /details->>'unifiedType' = 'audit'/,
+  ];
+  it("la requête de lecture porte les quatre filtres, l'absence de reclassement comprise", () => {
+    const sql = requeteLecture().sql;
+    expect(sql).toMatch(/\(s\.details->'reclassement'\) IS NULL\s*\n?\s*ORDER/);
+    for (const f of fragments.slice(1)) expect(sql).toMatch(f);
+    expect(sql).toMatch(/s\.type = 'audit'::"SubmissionType"/);
+  });
+  it("l'UPDATE relit reclassement IS NULL, source, unifiedType et NOT EXISTS audit_missions", async () => {
+    const { db, exec } = fausseBase([ligne()]);
+    await appliquer(db, { avant: T, attendu: 1 });
+    const sql = exec.mock.calls[0]![0].sql;
+    for (const f of fragments) expect(sql).toMatch(f);
+    expect(sql).toMatch(/NOT EXISTS \(SELECT 1 FROM audit_missions/);
+    expect(sql).toMatch(/type = 'audit'::"SubmissionType"/);
+  });
+});
+
+describe("idempotence de bout en bout", () => {
+  it("un second appliquer sur des lignes déjà reclassées n'écrit rien", async () => {
+    const etat = [ligne({ id: "a" }), ligne({ id: "b" })];
+    const reclassees = new Set<string>();
+    const ecritures: string[] = [];
+    const db: BaseReclassement = {
+      // Le faux client interprète le filtre SQL : si le fragment disparaît, les lignes reviennent.
+      $queryRaw: (async (q: Prisma.Sql) => {
+        const filtre = /details->'reclassement'\) IS NULL/.test(q.sql);
+        return etat.filter((l) => !filtre || !reclassees.has(l.id)).map(brute);
+      }) as BaseReclassement["$queryRaw"],
+      $executeRaw: async (q: Prisma.Sql) => {
+        ecritures.push(q.sql);
+        const ids = q.values.find((v) => Array.isArray(v)) as string[];
+        ids.forEach((i) => reclassees.add(i));
+        return ids.length;
+      },
+      $transaction: async (fn) => fn(db),
+    };
+    const premier = await appliquer(db, { avant: T, attendu: 2 });
+    expect(premier.modifiees).toBe(2);
+    const second = await appliquer(db, { avant: T, attendu: 0 });
+    expect(second.modifiees).toBe(0);
+    expect(ecritures).toHaveLength(1);
+  });
+});
+
+describe("appliquer : journal et transaction", () => {
+  it("rend les identifiants et l'horodatage", async () => {
+    const { db } = fausseBase([ligne({ id: "a" }), ligne({ id: "b" })]);
+    const r = await appliquer(db, { avant: T, attendu: 2, maintenant: T });
+    expect(r).toEqual({ modifiees: 2, identifiants: ["a", "b"], le: T.toISOString() });
+  });
+  it("transaction avec délai de 30 s (appliquer et revenir)", async () => {
+    options_transaction.length = 0;
+    const { db } = fausseBase([ligne()]);
+    await appliquer(db, { avant: T, attendu: 1 });
+    await revenir(db, LOT);
+    expect(options_transaction).toEqual([
+      { timeout: DELAI_TRANSACTION_MS },
+      { timeout: DELAI_TRANSACTION_MS },
+    ]);
+    expect(DELAI_TRANSACTION_MS).toBe(30000);
+  });
+});
+
+describe("revenir : garde-fous", () => {
+  it("ne touche qu'une ligne encore quote_request + devis (pas de retypage écrasé)", async () => {
+    const { db, exec } = fausseBase([]);
+    await revenir(db, LOT);
+    const sql = exec.mock.calls[0]![0].sql;
+    expect(sql).toMatch(/type = 'quote_request'::"SubmissionType"/);
+    expect(sql).toMatch(/details->>'unifiedType' = 'devis'/);
+    expect(sql).toMatch(/details->'reclassement'->>'lot' = /);
+  });
+  it("conserve l'historique : tableau reclassementsAnnules, jamais d'écrasement", async () => {
+    const { db, exec } = fausseBase([]);
+    await revenir(db, LOT);
+    const sql = exec.mock.calls[0]![0].sql;
+    expect(sql).toContain("reclassementsAnnules");
+    expect(sql).toMatch(/COALESCE\(details->'reclassementsAnnules'/);
+    expect(sql).toContain("jsonb_build_array(details->'reclassement')");
+    expect(sql).not.toMatch(/'reclassementAnnule',/);
+  });
+  it("--attendu faux : retour arrière (la transaction lève)", async () => {
+    const { db } = fausseBase([], 3);
+    await expect(revenir(db, LOT, 2)).rejects.toThrow(/retour arrière/);
+  });
+  it("--attendu juste ou absent : passe", async () => {
+    expect(await revenir(fausseBase([], 3).db, LOT, 3)).toEqual({ restituees: 3 });
+    expect(await revenir(fausseBase([], 3).db, LOT)).toEqual({ restituees: 3 });
+  });
+});
+
+describe("cibleBase", () => {
+  it("refuse l'absence d'URL, la base factice et une URL illisible", () => {
+    expect(() => cibleBase(undefined)).toThrow(ReclassementRefuse);
+    expect(() => cibleBase("")).toThrow(ReclassementRefuse);
+    expect(() => cibleBase("postgresql://stub:stub@stub.invalid:5432/stub")).toThrow(/stub/);
+    expect(() => cibleBase("pas une url")).toThrow(/illisible/);
+  });
+  it("rend hôte et nom, jamais utilisateur ni mot de passe", () => {
+    const c = cibleBase("postgresql://monutilisateur:secretXYZ@db.exemple.test:5432/axion?x=1");
+    expect(c).toEqual({ hote: "db.exemple.test:5432", base: "axion" });
+    expect(JSON.stringify(c)).not.toMatch(/monutilisateur|secretXYZ/);
   });
 });
 

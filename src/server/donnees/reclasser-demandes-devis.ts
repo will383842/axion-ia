@@ -38,7 +38,30 @@ export type LigneDevis = {
 export interface BaseReclassement {
   $queryRaw<T = unknown>(query: Prisma.Sql): Promise<T>;
   $executeRaw(query: Prisma.Sql): Promise<number>;
-  $transaction<T>(fn: (tx: BaseReclassement) => Promise<T>): Promise<T>;
+  $transaction<T>(
+    fn: (tx: BaseReclassement) => Promise<T>,
+    options?: { timeout?: number },
+  ): Promise<T>;
+}
+
+export const DELAI_TRANSACTION_MS = 30_000;
+
+/**
+ * Cible de la base, SANS identifiant ni mot de passe : hôte (et port) + nom de la base.
+ * Refuse une URL absente, illisible ou factice (`stub.invalid`, contrat de build ADR 0026).
+ */
+export function cibleBase(url: string | undefined): { hote: string; base: string } {
+  if (!url) throw new ReclassementRefuse("DATABASE_URL absent : aucune base visée, refus.");
+  if (url.includes("stub.invalid")) {
+    throw new ReclassementRefuse("DATABASE_URL pointe la base factice (stub.invalid) : refus.");
+  }
+  let u: URL;
+  try {
+    u = new URL(url);
+  } catch {
+    throw new ReclassementRefuse("DATABASE_URL illisible : refus.");
+  }
+  return { hote: u.host, base: decodeURIComponent(u.pathname.replace(/^\//, "")) };
 }
 
 export class ReclassementRefuse extends Error {}
@@ -163,7 +186,7 @@ export type OptionsAppliquer = { avant: Date; attendu: number; maintenant?: Date
 export async function appliquer(
   db: BaseReclassement,
   options: OptionsAppliquer,
-): Promise<{ modifiees: number }> {
+): Promise<{ modifiees: number; identifiants: string[]; le: string }> {
   const { avant, attendu } = options;
   if (!(avant instanceof Date) || Number.isNaN(avant.getTime())) {
     throw new ReclassementRefuse("--avant=<ISO> obligatoire et valide.");
@@ -179,18 +202,19 @@ export async function appliquer(
     ancienUnifiedType: "audit",
     motif: MOTIF,
   });
-  return db.$transaction(async (tx) => {
-    const { retenues } = classer(await lireLignes(tx), avant);
-    if (retenues.length !== attendu) {
-      throw new ReclassementRefuse(
-        `Comptage ${retenues.length} différent de --attendu=${attendu} : retour arrière, rien écrit.`,
-      );
-    }
-    if (retenues.length === 0) return { modifiees: 0 };
-    const ids = retenues.map((l) => l.id);
-    // Conditions 1, 2, 3 et 5 RELUES dans l'UPDATE, plus l'absence de mission.
-    // `updated_at` n'est pas touché : pas d'effet sur les tris de la console.
-    const modifiees = await tx.$executeRaw(Prisma.sql`
+  return db.$transaction(
+    async (tx) => {
+      const { retenues } = classer(await lireLignes(tx), avant);
+      if (retenues.length !== attendu) {
+        throw new ReclassementRefuse(
+          `Comptage ${retenues.length} différent de --attendu=${attendu} : retour arrière, rien écrit.`,
+        );
+      }
+      if (retenues.length === 0) return { modifiees: 0, identifiants: [], le };
+      const ids = retenues.map((l) => l.id);
+      // Conditions 1, 2, 3 et 5 RELUES dans l'UPDATE, plus l'absence de mission.
+      // `updated_at` n'est pas touché : pas d'effet sur les tris de la console.
+      const modifiees = await tx.$executeRaw(Prisma.sql`
       UPDATE submissions
       SET type = 'quote_request'::"SubmissionType",
           details = jsonb_set(details, '{unifiedType}', '"devis"'::jsonb)
@@ -201,38 +225,71 @@ export async function appliquer(
         AND details->>'source' = ${SOURCE_DEVIS}
         AND (details->'reclassement') IS NULL
         AND NOT EXISTS (SELECT 1 FROM audit_missions m WHERE m.submission_id = submissions.id)`);
-    if (modifiees !== attendu) {
-      throw new ReclassementRefuse(
-        `${modifiees} ligne(s) modifiée(s) pour ${attendu} attendue(s) : retour arrière.`,
-      );
-    }
-    return { modifiees };
-  });
+      if (modifiees !== attendu) {
+        throw new ReclassementRefuse(
+          `${modifiees} ligne(s) modifiée(s) pour ${attendu} attendue(s) : retour arrière.`,
+        );
+      }
+      return { modifiees, identifiants: ids, le };
+    },
+    { timeout: DELAI_TRANSACTION_MS },
+  );
 }
 
-/** Mode `--revenir` : restitue d'après `details.reclassement`, garde la trace sous `reclassementAnnule`. */
-export async function revenir(db: BaseReclassement, lot: string): Promise<{ restituees: number }> {
+/**
+ * Mode `--revenir` : restitue d'après `details.reclassement`. Ne touche qu'une ligne
+ * ENCORE telle que le reclassement l'a laissée (`quote_request` + `devis`) : une ligne
+ * retypée depuis par un administrateur n'est pas écrasée. L'historique des
+ * annulations est conservé dans le tableau `reclassementsAnnules`. `attendu`
+ * (facultatif) : si le nombre de lignes touchées diffère, retour arrière.
+ */
+export async function revenir(
+  db: BaseReclassement,
+  lot: string,
+  attendu?: number,
+): Promise<{ restituees: number }> {
   if (!lot) throw new ReclassementRefuse("--lot=<id> obligatoire.");
-  const restituees = await db.$executeRaw(Prisma.sql`
-    UPDATE submissions
-    SET type = (details->'reclassement'->>'ancienType')::"SubmissionType",
-        details = (
-          jsonb_set(
-            details,
-            '{unifiedType}',
-            to_jsonb(details->'reclassement'->>'ancienUnifiedType')
-          ) - 'reclassement'
-        ) || jsonb_build_object('reclassementAnnule', details->'reclassement')
-    WHERE details->'reclassement'->>'lot' = ${lot}`);
-  return { restituees };
+  if (attendu !== undefined && (!Number.isInteger(attendu) || attendu < 0)) {
+    throw new ReclassementRefuse("--attendu=<N> doit être un entier positif ou nul.");
+  }
+  return db.$transaction(
+    async (tx) => {
+      const restituees = await tx.$executeRaw(Prisma.sql`
+      UPDATE submissions
+      SET type = (details->'reclassement'->>'ancienType')::"SubmissionType",
+          details = (
+            jsonb_set(
+              details,
+              '{unifiedType}',
+              to_jsonb(details->'reclassement'->>'ancienUnifiedType')
+            ) - 'reclassement' - 'reclassementAnnule'
+          ) || jsonb_build_object(
+            'reclassementsAnnules',
+            COALESCE(details->'reclassementsAnnules', '[]'::jsonb)
+              || CASE WHEN details->'reclassementAnnule' IS NULL THEN '[]'::jsonb
+                      ELSE jsonb_build_array(details->'reclassementAnnule') END
+              || jsonb_build_array(details->'reclassement')
+          )
+      WHERE details->'reclassement'->>'lot' = ${lot}
+        AND type = 'quote_request'::"SubmissionType"
+        AND details->>'unifiedType' = 'devis'`);
+      if (attendu !== undefined && restituees !== attendu) {
+        throw new ReclassementRefuse(
+          `${restituees} ligne(s) à restituer pour ${attendu} attendue(s) : retour arrière, rien écrit.`,
+        );
+      }
+      return { restituees };
+    },
+    { timeout: DELAI_TRANSACTION_MS },
+  );
 }
 
 export type Commande =
-  | { mode: "lire"; avant: Date | null }
+  | { mode: "lire"; avant: Date }
   | { mode: "appliquer"; avant: Date; attendu: number }
-  | { mode: "revenir"; lot: string };
+  | { mode: "revenir"; lot: string; attendu?: number };
 
-/** Lit les arguments. `--lire` par défaut ; aucun défaut pour `--avant` ni `--attendu`. */
+/** Lit les arguments. `--lire` par défaut, mais `--avant` est exigé (aucun défaut) ; `--attendu` aussi pour appliquer. */
 export function lireArguments(argv: string[]): Commande {
   const valeur = (nom: string): string | undefined => {
     const a = argv.find((x) => x.startsWith(`${nom}=`));
@@ -244,19 +301,31 @@ export function lireArguments(argv: string[]): Commande {
   const avantBrut = valeur("--avant");
   let avant: Date | null = null;
   if (avantBrut !== undefined) {
-    if (!/^\d{4}-\d{2}-\d{2}T/.test(avantBrut)) {
-      throw new ReclassementRefuse("--avant doit être une date ISO complète.");
+    if (!/^\d{4}-\d{2}-\d{2}T/.test(avantBrut) || !/(Z|[+-]\d{2}:\d{2})$/.test(avantBrut)) {
+      throw new ReclassementRefuse(
+        "--avant doit être une date ISO complète avec fuseau (Z ou ±HH:MM).",
+      );
     }
     avant = new Date(avantBrut);
     if (Number.isNaN(avant.getTime())) throw new ReclassementRefuse("--avant illisible.");
   }
-  if (mode === "--lire") return { mode: "lire", avant };
+  const attenduBrut = valeur("--attendu");
+  if (mode === "--lire") {
+    if (!avant) throw new ReclassementRefuse("--lire exige --avant=<ISO avec fuseau>.");
+    return { mode: "lire", avant };
+  }
   if (mode === "--revenir") {
     const lot = valeur("--lot");
     if (!lot) throw new ReclassementRefuse("--revenir exige --lot=<id>.");
-    return { mode: "revenir", lot };
+    if (attenduBrut !== undefined && !/^\d+$/.test(attenduBrut)) {
+      throw new ReclassementRefuse("--attendu doit être un entier positif ou nul.");
+    }
+    return {
+      mode: "revenir",
+      lot,
+      ...(attenduBrut !== undefined ? { attendu: Number(attenduBrut) } : {}),
+    };
   }
-  const attenduBrut = valeur("--attendu");
   if (!avant) throw new ReclassementRefuse("--appliquer exige --avant=<ISO>.");
   if (attenduBrut === undefined || !/^\d+$/.test(attenduBrut)) {
     throw new ReclassementRefuse("--appliquer exige --attendu=<N>.");

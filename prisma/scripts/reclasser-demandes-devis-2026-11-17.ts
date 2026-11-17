@@ -5,17 +5,18 @@
  *
  * Lancé par la session de pilotage SEULE, dans le conteneur worker, après audit :
  *
- *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --lire --avant=<ISO>
+ *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --lire --avant=<ISO en UTC>
  *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --appliquer --avant=<ISO> --attendu=<N>
- *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --revenir --lot=E0-D-2026-11-17
+ *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --revenir --lot=E0-D-2026-11-17 [--attendu=<N>]
  *
- * `--lire` est le défaut et n'écrit jamais. Aucune donnée de personne n'est affichée.
+ * `--lire` n'écrit jamais ; `--avant` (avec fuseau Z ou ±HH:MM) est exigé. Aucune donnée de personne n'est affichée.
  */
 
 import { PrismaClient } from "../generated/client";
 import {
   ReclassementRefuse,
   appliquer,
+  cibleBase,
   lire,
   lireArguments,
   revenir,
@@ -27,18 +28,23 @@ const base = prisma as unknown as BaseReclassement;
 
 async function main(): Promise<void> {
   const cmd = lireArguments(process.argv.slice(2));
+  // Garde contre une mauvaise base : avant tout accès, et affichée en tête de chaque mode.
+  const cible = cibleBase(process.env.DATABASE_URL);
+  console.log(`[E0-D] mode=${cmd.mode} base visée : hôte=${cible.hote} nom=${cible.base}`);
   if (cmd.mode === "lire") {
-    // Sans --avant, aucune exclusion de fenêtre n'est calculable : on le dit.
-    if (!cmd.avant) console.warn("[E0-D] pas de --avant : fenêtre « à revoir » non calculée.");
-    const rapport = await lire(base, cmd.avant ?? new Date(8.64e15));
-    console.log(JSON.stringify(rapport, null, 2));
+    console.log(JSON.stringify(await lire(base, cmd.avant), null, 2));
     return;
   }
   if (cmd.mode === "appliquer") {
-    console.log(JSON.stringify(await appliquer(base, cmd)));
+    // Journal de retour arrière : à conserver (identifiants + horodatage).
+    const r = await appliquer(base, cmd);
+    console.log(JSON.stringify(r, null, 2));
+    console.log(
+      `[E0-D] ${r.modifiees} ligne(s) reclassée(s) le ${r.le} : ${r.identifiants.join(", ")}`,
+    );
     return;
   }
-  console.log(JSON.stringify(await revenir(base, cmd.lot)));
+  console.log(JSON.stringify(await revenir(base, cmd.lot, cmd.attendu)));
 }
 
 main()
