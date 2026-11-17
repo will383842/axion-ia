@@ -15,7 +15,7 @@ const d = vi.hoisted(() => ({
   escalades: vi.fn(),
   rdvs: vi.fn(),
   incident: vi.fn(async () => {}),
-  ecartee: vi.fn(async (_a: string, _t: string): Promise<Date | null> => null),
+  oppositions: vi.fn(async (_arg: unknown): Promise<Array<{ emailHash: string }>> => []),
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -23,16 +23,16 @@ vi.mock("@/lib/prisma", () => ({
     submission: { findMany: (...a: unknown[]) => d.submissions(...a) },
     chatEscalation: { findMany: (...a: unknown[]) => d.escalades(...a) },
     calendlyEvent: { findMany: (...a: unknown[]) => d.rdvs(...a) },
+    emailOpposition: { findMany: (a: unknown) => d.oppositions(a) },
   },
-}));
-vi.mock("@/server/email/verdict-envoi", () => ({
-  dateDeMiseAEcart: (a: string, t: string) => d.ecartee(a, t),
 }));
 vi.mock("@/server/notifications/channels/sentry", () => ({
   signalerIncident: (...a: unknown[]) => d.incident(...(a as [])),
 }));
 
 import { encryptPii } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { PREFIXE_ISSUE_INCONNUE } from "@/server/queue/workers/email-worker";
 import { lienConsole } from "@/server/notifications/personne";
 import {
   __reinitialiserPourTests as reinitialiserEnfileur,
@@ -42,6 +42,7 @@ import {
   collecterDemandesVeille,
   envoyerRecapVeille,
   joursOuvresEcoules,
+  MENTION_ISSUE_INCONNUE,
   payloadRecap,
 } from "../recap";
 
@@ -95,8 +96,8 @@ beforeEach(() => {
   d.escalades.mockResolvedValue([]);
   d.rdvs.mockResolvedValue([]);
   d.incident.mockClear();
-  d.ecartee.mockReset();
-  d.ecartee.mockResolvedValue(null);
+  d.oppositions.mockReset();
+  d.oppositions.mockResolvedValue([]);
   vi.spyOn(console, "error").mockImplementation(() => {});
 });
 afterEach(() => {
@@ -369,13 +370,14 @@ describe("🔴 le lien d'annulation du client ne part pas par e-mail (L2b)", () 
 // ── L5a : « En attente de votre réponse » ─────────────────────────────────────
 // MAINTENANT = samedi 14/11/2026. Reçue lundi 09/11 : mar, mer, jeu, ven = 4 jours ouvrés.
 type Ligne = ReturnType<typeof submission>;
-type Reponse = { deliveryStatus: "pending" | "sent" | "failed" };
+type Reponse = { deliveryStatus: "pending" | "sent" | "failed"; errorMsg?: string | null };
 type LigneBase = Ligne & {
   status?: string;
   needsAttention?: boolean;
   archivedAt?: Date | null;
   deletedAt?: Date | null;
   replies?: Reponse[];
+  contactEmailHash?: string | null;
 };
 
 /** Évalue un `where` Prisma (le sous-ensemble utilisé par le récap) sur une ligne. */
@@ -619,26 +621,157 @@ describe("L5a — demandes en attente de réponse", () => {
     expect(r.enAttenteEcartees).toBeUndefined();
   });
 
-  it("🔴 personne mise à l'écart : pas listée par son nom, comptée, adresse jamais sortie", async () => {
-    d.ecartee.mockImplementation(async (a) => (a === "camille@exemple.fr" ? new Date() : null));
-    table([
-      attente({ id: "sub_ecartee" }),
-      attente({
-        id: "sub_autre",
-        submittedAt: new Date(LUNDI.getTime() + 1000),
-        contactName: encryptPii("Dominique Exemple"),
-        contactEmail: encryptPii("dominique@exemple.fr"),
-      }),
-    ]);
+  const journaux = () => JSON.stringify(vi.mocked(console.error).mock.calls);
+  const hashDe = (a: string) => hashEmailForLookup(a)!;
+  const opposes = (...adresses: string[]) =>
+    d.oppositions.mockImplementation(async (arg: unknown) => {
+      const dans = (arg as { where: { emailHash: { in: string[] } } }).where.emailHash.in;
+      return adresses
+        .map(hashDe)
+        .filter((h) => dans.includes(h))
+        .map((emailHash) => ({ emailHash }));
+    });
+  const autre = (sur: Record<string, unknown> = {}) =>
+    attente({
+      id: "sub_autre",
+      submittedAt: new Date(LUNDI.getTime() + 1000),
+      contactName: encryptPii("Dominique Exemple"),
+      contactEmail: encryptPii("dominique@exemple.fr"),
+      ...sur,
+    });
+
+  it("🔴 opposition (avec ou sans date d'effacement) : comptée, jamais nommée, adresse jamais sortie", async () => {
+    // La doublure rend la ligne d'opposition telle quelle : le récap ne lit pas la date d'effacement.
+    opposes("camille@exemple.fr");
+    table([attente({ id: "sub_opposee" }), autre()]);
     const r = await collecterDemandesVeille(MAINTENANT);
     expect(ids(r)).toEqual(["sub_autre"]);
     expect(r.enAttenteEcartees).toBe(1);
-    const sortie = JSON.stringify(payloadRecap(r)) + console.error.toString();
+    const sortie = JSON.stringify(payloadRecap(r)) + journaux();
     expect(sortie).not.toContain("Camille");
     expect(sortie).not.toContain("camille@exemple.fr");
     expect(sortie).not.toContain("dominique@exemple.fr");
-    // Une seule lecture de mise à l'écart par ligne retenue.
-    expect(d.ecartee).toHaveBeenCalledTimes(2);
+  });
+
+  it("une seule lecture groupée des oppositions par page, sur les empreintes", async () => {
+    opposes("camille@exemple.fr");
+    table([attente({ id: "sub_a" }), autre()]);
+    await collecterDemandesVeille(MAINTENANT);
+    expect(d.oppositions).toHaveBeenCalledTimes(1);
+    const arg = d.oppositions.mock.calls[0]![0] as { where: { emailHash: { in: string[] } } };
+    expect([...arg.where.emailHash.in].sort()).toEqual(
+      [hashDe("camille@exemple.fr"), hashDe("dominique@exemple.fr")].sort(),
+    );
+  });
+
+  it("l'empreinte déjà stockée sur la demande sert : l'adresse n'est pas déchiffrée", async () => {
+    const h = hashDe("stockee@exemple.fr");
+    opposes("stockee@exemple.fr");
+    table([attente({ id: "sub_h", contactEmail: "enc:v1:illisible", contactEmailHash: h })]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteEcartees).toBe(1);
+    expect(r.enAttenteIllisibles).toBeUndefined();
+  });
+
+  it("une panne de la lecture des oppositions : section indisponible, jamais un repli ouvert", async () => {
+    d.oppositions.mockRejectedValue(new Error("boom-SECRET"));
+    table([attente()]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIndisponible).toBe(true);
+  });
+
+  it("🔴 `in_progress` avec needsAttention vrai (rouverte après une réponse envoyée) : listée", async () => {
+    table([
+      attente({
+        id: "sub_rouverte",
+        status: "in_progress",
+        needsAttention: true,
+        replies: [{ deliveryStatus: "sent" }],
+      }),
+    ]);
+    expect(ids(await collecterDemandesVeille(MAINTENANT))).toEqual(["sub_rouverte"]);
+  });
+
+  it("🔴 réponse en échec puis « répondu ailleurs » : plus listée", async () => {
+    table([
+      attente({
+        id: "sub_ailleurs2",
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed" }],
+        details: { unifiedType: "audit", reponduHorsCircuitAt: "2026-11-11T08:00:00Z" },
+      }),
+      attente({
+        id: "sub_echec",
+        submittedAt: new Date(LUNDI.getTime() + 1000),
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed" }],
+      }),
+    ]);
+    expect(ids(await collecterDemandesVeille(MAINTENANT))).toEqual(["sub_echec"]);
+  });
+
+  it("🔴 25 demandes sur une page pleine : « au moins » (drapeau posé), pas un compte exact", async () => {
+    table(
+      Array.from({ length: 60 }, (_, i) =>
+        attente({
+          id: `sub_${String(i).padStart(2, "0")}`,
+          submittedAt: new Date(LUNDI.getTime() - i * 3_600_000),
+        }),
+      ),
+    );
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toHaveLength(10);
+    expect(r.enAttenteNonListees).toBe(40);
+    expect(r.enAttenteIncomplete).toBe(true);
+  });
+
+  it("moins d'une page : décompte exact, pas de drapeau", async () => {
+    table(
+      Array.from({ length: 14 }, (_, i) =>
+        attente({
+          id: `sub_${String(i).padStart(2, "0")}`,
+          submittedAt: new Date(LUNDI.getTime() - i * 3_600_000),
+        }),
+      ),
+    );
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttenteNonListees).toBe(4);
+    expect(r.enAttenteIncomplete).toBeUndefined();
+  });
+
+  it("🔴 réponse à l'issue inconnue : la ligne porte la mention ZeptoMail", async () => {
+    table([
+      attente({
+        id: "sub_inconnue",
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed", errorMsg: `${PREFIXE_ISSUE_INCONNUE}délai dépassé` }],
+      }),
+      attente({
+        id: "sub_simple",
+        submittedAt: new Date(LUNDI.getTime() + 1000),
+        status: "in_progress",
+        needsAttention: false,
+        replies: [{ deliveryStatus: "failed", errorMsg: "refusé" }],
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente?.[0]?.lignes).toContain(MENTION_ISSUE_INCONNUE);
+    expect(r.enAttente?.[1]?.lignes).not.toContain(MENTION_ISSUE_INCONNUE);
+    expect(MENTION_ISSUE_INCONNUE).toContain("ZeptoMail");
+  });
+
+  it("🔴 clé de chiffrement absente : comptée illisible, jamais affichée sous ce nom", async () => {
+    table([attente({ id: "sub_cle" })]);
+    vi.stubEnv("PII_ENCRYPTION_KEY", "");
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    expect(r.enAttenteIllisibles).toBe(1);
+    expect(JSON.stringify(r)).not.toContain("key missing");
   });
 
   it("aucune demande en attente : la clé est absente, le récap est celui d'avant", async () => {

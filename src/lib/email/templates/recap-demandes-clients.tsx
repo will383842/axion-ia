@@ -115,6 +115,9 @@ function FicheEnAttente({ el }: { el: Element }) {
   const anciennete = (Array.isArray(el.lignes) ? el.lignes : []).find(
     (l): l is string => typeof l === "string" && l.startsWith("En attente depuis "),
   );
+  const mention = (Array.isArray(el.lignes) ? el.lignes : []).find(
+    (l): l is string => typeof l === "string" && l.startsWith("Une réponse est peut-être"),
+  );
   return (
     <>
       <Text
@@ -132,6 +135,7 @@ function FicheEnAttente({ el }: { el: Element }) {
           .filter(Boolean)
           .join(" · ")}
       </Text>
+      {mention ? <Text style={emailStyles.paragraphStyle}>{mention}</Text> : null}
       {href ? (
         <Button href={href} style={emailStyles.ctaStyle} className="ax-cta">
           Ouvrir la fiche &nbsp;→
@@ -210,7 +214,9 @@ export function RecapDemandesClientsEmail({
         </>
       ) : null}
       {attNonListees > 0 ? (
-        <Text style={emailStyles.paragraphStyle}>{`et ${attNonListees} autres`}</Text>
+        <Text style={emailStyles.paragraphStyle}>
+          {`et ${attIncomplete ? "au moins " : ""}${attNonListees} autres demandes en attente, à voir dans la console`}
+        </Text>
       ) : null}
       {attIllisibles > 0 ? (
         <Text style={emailStyles.paragraphStyle}>
@@ -219,7 +225,7 @@ export function RecapDemandesClientsEmail({
       ) : null}
       {attEcartees > 0 ? (
         <Text style={emailStyles.paragraphStyle}>
-          {`${attEcartees} demande(s) d'une personne mise à l'écart : aucun envoi possible`}
+          {`${attEcartees} demande(s) de personnes qui ne souhaitent plus être contactées : non listées`}
         </Text>
       ) : null}
       {attIncomplete ? (

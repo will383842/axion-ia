@@ -24,10 +24,11 @@
 
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../prisma/generated/client";
-import { decryptPii } from "@/lib/pii-crypto";
+import { decryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
+import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { PREFIXE_ISSUE_INCONNUE } from "@/server/queue/workers/email-worker";
 import { ERASED_PLACEHOLDER } from "@/lib/rgpd-erase";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
-import { dateDeMiseAEcart } from "@/server/email/verdict-envoi";
 import { categorieAlerteCalendly } from "@/server/calendly/categorie-alerte";
 import { estCategorieClient } from "@/server/notifications/routing";
 import { tracerEchec as tracerEchecAvecPrefixe } from "@/server/notifications/doublon-client";
@@ -207,20 +208,28 @@ interface EnAttente {
   incomplete: boolean;
 }
 
+/** B4 : mention portée par la ligne d'une demande dont une réponse a une issue inconnue. */
+export const MENTION_ISSUE_INCONNUE =
+  "Une réponse est peut-être déjà partie : vérifier dans ZeptoMail avant de répondre de nouveau";
+
+type ReponseLue = { deliveryStatus: string; errorMsg: string | null };
+
 /**
  * Demandes de formulaire « en attente », plus de 2 jours ouvrés après leur arrivée.
  *
  * « En attente » = non archivée, hors corbeille, ET
- *   · statut « new » avec `needsAttention` (une demande traitée, ou « répondu ailleurs », sort) ;
- *   · OU aucune réponse `sent` et au moins une réponse `failed` (le client n'a rien reçu). Ce second
- *     cas ne peut pas exiger `needsAttention` : créer une réponse le passe à `false` et un échec
- *     d'envoi ne le rétablit pas. Une réponse seulement `pending` ne remet rien dans la liste.
+ *   · `needsAttention` (sans condition de statut : une demande rouverte après une réponse envoyée
+ *     est listée) ;
+ *   · OU aucune réponse `sent` et au moins une réponse `failed` (le client n'a rien reçu), sauf si
+ *     la fiche est marquée « répondu ailleurs » (`details.reponduHorsCircuitAt`, écartée dans le code).
+ *     Une réponse seulement `pending` ne remet rien dans la liste.
  *
  * Lecture seule, par pages de 50 (curseur `submittedAt` puis `id`, du plus ancien au plus récent),
- * jusqu'à 10 demandes retenues ou 200 lignes lues. Les filtres faits ensuite dans le code (catégorie
- * client, jours ouvrés exacts, effacement, mise à l'écart) peuvent écarter des lignes : d'où les pages.
- * Une ligne retenue coûte UNE lecture de plus (`dateDeMiseAEcart`, `findFirst`). Aucun texte du
- * visiteur n'en sort ; l'adresse déchiffrée pour ce contrôle ne quitte jamais la boucle.
+ * jusqu'à 10 demandes retenues ou 200 lignes lues. Par page : UNE lecture groupée des oppositions
+ * (`emailOpposition`, par empreinte : celle déjà stockée sur la demande, sinon calculée depuis
+ * l'adresse déchiffrée). Une personne qui a une ligne d'opposition, avec ou sans date d'effacement,
+ * n'est JAMAIS listée par son nom : elle est seulement comptée. Aucun texte du visiteur ne sort ;
+ * l'adresse déchiffrée ne quitte jamais la boucle.
  */
 async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
   const aujourdhui = jourParis(maintenant);
@@ -232,7 +241,7 @@ async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
     archivedAt: null,
     submittedAt: { gte: trenteJours, lte: deuxJours },
     OR: [
-      { status: "new", needsAttention: true },
+      { needsAttention: true },
       {
         status: { in: ["new", "in_progress"] },
         replies: { some: { deliveryStatus: "failed" }, none: { deliveryStatus: "sent" } },
@@ -262,8 +271,16 @@ async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
       where: apres ? { AND: [base, apres] } : base,
       orderBy: [{ submittedAt: "asc" }, { id: "asc" }],
       take: Math.min(TAILLE_PAGE_EN_ATTENTE, PLAFOND_LECTURE_EN_ATTENTE - lues),
+      include: { replies: { select: { deliveryStatus: true, errorMsg: true } } },
     });
     lues += lignes.length;
+    // 1re passe : filtres sans déchiffrement.
+    const candidats: Array<{
+      s: (typeof lignes)[number];
+      category: NotificationCategory;
+      details: Record<string, unknown>;
+      ouvres: number;
+    }> = [];
     for (const s of lignes) {
       curseur = { submittedAt: s.submittedAt, id: s.id };
       // Effacement RGPD ancien (art. 17) : la ligne reste mais n'a plus rien à dire.
@@ -271,43 +288,91 @@ async function collecterEnAttente(maintenant: Date): Promise<EnAttente> {
       const ouvres = joursOuvresEcoules(jourParis(s.submittedAt), aujourdhui);
       if (ouvres <= JOURS_OUVRES_MINIMUM) continue;
       const details = lireDetails(s.details);
+      // « Répondu ailleurs » ne remet pas dans la liste une demande listée pour une réponse en échec.
+      if (!s.needsAttention && details["reponduHorsCircuitAt"]) continue;
       const category: NotificationCategory = estLeadChatbot(details)
         ? "CHATBOT_LEAD_CAPTURED"
         : categorieSubmission(details);
       if (!estCategorieClient(category)) continue;
-      if (elements.length >= PLAFOND_EN_ATTENTE) {
-        nonListees += 1;
+      candidats.push({ s, category, details, ouvres });
+    }
+    // Au-delà de la place restante : comptées, jamais déchiffrées.
+    const place = Math.max(0, PLAFOND_EN_ATTENTE - elements.length);
+    nonListees += Math.max(0, candidats.length - place);
+    const retenus = candidats.slice(0, place);
+    // 2e passe : empreintes (stockée, sinon calculée), puis UNE lecture groupée des oppositions.
+    const empreintes = new Map<string, string>();
+    const illisible = new Set<string>();
+    for (const { s } of retenus) {
+      if (s.contactEmailHash) {
+        empreintes.set(s.id, s.contactEmailHash);
         continue;
       }
-      let nom: string | undefined;
-      let adresse: string | undefined;
       try {
-        nom = net(decryptPii(s.contactName));
-        adresse = net(decryptPii(s.contactEmail));
+        const adresse = net(decryptPii(s.contactEmail));
+        if (adresse === PII_DECRYPT_PLACEHOLDER) {
+          illisible.add(s.id);
+          continue;
+        }
+        const h = adresse ? hashEmailForLookup(adresse) : null;
+        if (h) empreintes.set(s.id, h);
       } catch {
+        illisible.add(s.id);
+      }
+    }
+    const aEcarter = new Set<string>();
+    const toutes = [...new Set(empreintes.values())];
+    if (toutes.length > 0) {
+      // Une panne ici fait échouer la section (signalée « indisponible ») : jamais un repli ouvert.
+      const oppositions = await prisma.emailOpposition.findMany({
+        where: { emailHash: { in: toutes } },
+        select: { emailHash: true },
+      });
+      for (const o of oppositions) aEcarter.add(o.emailHash);
+    }
+    for (const { s, category, details, ouvres } of retenus) {
+      if (illisible.has(s.id)) {
         illisibles += 1;
         continue;
       }
-      // Personne mise à l'écart après une demande d'effacement : jamais listée par son nom.
-      if (adresse && (await dateDeMiseAEcart(adresse, "recap-demandes-clients")) !== null) {
+      const h = empreintes.get(s.id);
+      if (h && aEcarter.has(h)) {
         ecartees += 1;
+        continue;
+      }
+      let nom: string | undefined;
+      try {
+        const brut = decryptPii(s.contactName);
+        if (brut === PII_DECRYPT_PLACEHOLDER) throw new Error("clé absente");
+        nom = net(brut);
+      } catch {
+        illisibles += 1;
         continue;
       }
       const event = {
         category,
         payload: { submissionId: s.id, formType: chaine(details["unifiedType"]) ?? "" },
       } as EvenementClient;
+      const reponses: ReponseLue[] = s.replies ?? [];
+      const issueInconnue =
+        !reponses.some((r) => r.deliveryStatus === "sent") &&
+        reponses.some(
+          (r) => r.deliveryStatus === "failed" && r.errorMsg?.startsWith(PREFIXE_ISSUE_INCONNUE),
+        );
       elements.push({
         type: libelleTypeDemande(event),
         nom: nom ?? "",
         quand: formatParisDateTime(s.submittedAt),
-        lignes: [`En attente depuis ${ouvres} jours ouvrés`],
+        lignes: [
+          `En attente depuis ${ouvres} jours ouvrés`,
+          ...(issueInconnue ? [MENTION_ISSUE_INCONNUE] : []),
+        ],
         consoleUrl: lienFicheClient(event),
       });
     }
-    if (elements.length >= PLAFOND_EN_ATTENTE) break;
-    if (lignes.length < TAILLE_PAGE_EN_ATTENTE) break; // plus rien à lire
-    if (lues >= PLAFOND_LECTURE_EN_ATTENTE) {
+    if (lignes.length < TAILLE_PAGE_EN_ATTENTE) break; // plus rien à lire : décompte exact
+    // Page pleine : s'il reste des lignes non lues, le décompte est un minimum.
+    if (elements.length >= PLAFOND_EN_ATTENTE || lues >= PLAFOND_LECTURE_EN_ATTENTE) {
       incomplete = true;
       break;
     }
