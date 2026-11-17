@@ -1,0 +1,454 @@
+/**
+ * F7 — pièces jointes des e-mails écrits à la main : concurrence sur un VRAI Postgres (Gate D, étape
+ * « E-mails écrits à la main : pièces jointes concurrentes » de `.github/workflows/ci.yml`,
+ * `pnpm test:integration tests/integration/emails-manuels`).
+ *
+ * Ce qui est éprouvé sur la vraie base : le verrou `SELECT … FOR UPDATE` de la ligne de l'e-mail
+ * (limites lues sous verrou, finalisation qui relit le statut au rangement, cloisonnement par auteur).
+ * Tout ce qui sort de la base est simulé : compartiment R2 (en mémoire), débit, antivirus, Sentry.
+ *
+ * AUCUNE suppression : identifiants aléatoires, base jetable de Gate D. Le fichier refuse de tourner
+ * hors d'une base locale (il écrit des lignes de test). Sans `DATABASE_URL`, il ÉCHOUE, il ne se saute pas.
+ */
+import { randomBytes, randomUUID } from "node:crypto";
+import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+
+import { PrismaClient } from "../../../prisma/generated/client";
+
+interface Objet {
+  octets: Uint8Array;
+  etag: string;
+}
+const h = vi.hoisted(() => {
+  class ObjetR2Modifie extends Error {}
+  return {
+    seau: new Map<string, Objet>(),
+    ObjetR2Modifie,
+    n: 0,
+    /** Appelé pendant `copierObjetR2` (entre la lecture simple et le Temps 3). */
+    pendantCopie: null as null | (() => Promise<void>),
+  };
+});
+
+vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
+vi.mock("@/env", () => ({ env: { EMAIL_MANUEL_ACTIF: "true" } }));
+vi.mock("@/lib/rate-limit", () => ({
+  checkRateLimit: async () => ({ allowed: true, count: 0, remaining: 0, resetAt: 0, panne: false }),
+}));
+vi.mock("@/server/careers/clamav", () => ({ analyserFlux: vi.fn() }));
+vi.mock("@/lib/r2-storage", () => {
+  const lire = (cle: string, etag: string): Objet => {
+    const o = h.seau.get(cle);
+    if (!o || o.etag !== etag) throw new h.ObjetR2Modifie(cle);
+    return o;
+  };
+  return {
+    ObjetR2Modifie: h.ObjetR2Modifie,
+    isR2Configured: () => true,
+    enteteObjetR2: async (cle: string) => {
+      const o = h.seau.get(cle);
+      return o ? { taille: o.octets.length, etag: o.etag } : null;
+    },
+    lirePlageObjetR2: async (cle: string, spec: string, etag: string) => {
+      const o = lire(cle, etag).octets;
+      const m = /^bytes=(\d*)-(\d*)$/.exec(spec)!;
+      if (m[1] === "") return o.subarray(Math.max(0, o.length - Number(m[2])));
+      return o.subarray(Number(m[1]), m[2] === "" ? o.length : Number(m[2]) + 1);
+    },
+    fluxObjetGeneralR2: async (cle: string, etag: string) => {
+      const o = lire(cle, etag);
+      return (async function* () {
+        yield o.octets;
+      })();
+    },
+    copierObjetR2: async (source: string, dest: string, etag: string) => {
+      await h.pendantCopie?.();
+      h.seau.set(dest, { ...lire(source, etag) });
+    },
+    signerEnvoiDirectR2: async (cle: string) => `https://r2.example/${cle}?sig=x`,
+  };
+});
+
+import {
+  finaliserPiecesJointesEmail,
+  ouvrirEnvoisPiecesJointesEmail,
+} from "../../../src/server/email-manuel/pieces-jointes";
+import type { Antivirus } from "../../../src/server/contact/pieces-jointes";
+
+const db = new PrismaClient();
+const MO = 1024 * 1024;
+const PDF = new Uint8Array(Buffer.from("%PDF-1.7\n" + "x".repeat(50_000)));
+let A: { id: string; role: string };
+let B: { id: string; role: string };
+
+async function adminDeTest(): Promise<{ id: string; role: string }> {
+  const u = await db.adminUser.create({
+    data: {
+      name: "Test F7",
+      email: `f7-${randomUUID()}@example.invalid`,
+      passwordHash: "inutilisable",
+      role: "admin",
+      status: "suspended",
+    },
+  });
+  return { id: u.id, role: "admin" };
+}
+
+async function brouillon(
+  auteur: { id: string },
+  entiteType: "Client" | "Trainee" = "Client",
+): Promise<string> {
+  const e = await db.emailManuel.create({
+    data: {
+      cleIdempotence: randomUUID(),
+      entiteType,
+      entiteId: randomUUID(),
+      destinataireHash: "a".repeat(64),
+      destinataireChiffre: "x",
+      expediteurNom: "Axion-IA",
+      objet: "",
+      corpsSource: "",
+      statut: "brouillon",
+      ecritParId: auteur.id,
+      ecritParNom: "Direction",
+    },
+  });
+  return e.id;
+}
+
+const annonces = (n: number, taille: number) =>
+  Array.from({ length: n }, (_, i) => ({ nom: `f${i}.pdf`, taille }));
+
+const sain: Antivirus = async (flux) => {
+  for await (const _ of flux) {
+    // lu
+  }
+  return { issue: "sain" };
+};
+
+/** Ouvre 1 fichier PDF et dépose ses octets sous la clé temporaire tirée par le serveur. */
+async function pret(auteur: { id: string; role: string }, id: string) {
+  const r = await ouvrirEnvoisPiecesJointesEmail({
+    acteur: auteur,
+    emailManuelId: id,
+    pieces: [{ nom: "a.pdf", taille: PDF.length }],
+  });
+  if (!r.ok) throw new Error(`ouverture refusée : ${r.message}`);
+  const l = await db.emailManuelPieceJointe.findFirstOrThrow({ where: { emailManuelId: id } });
+  h.n += 1;
+  h.seau.set(l.cleStockage, { octets: PDF, etag: `"e${h.n}"` });
+  return r;
+}
+
+/** Un instant d'attente (voir I8 et I8b : seule la preuve « toujours bloqué » dépend d'un délai). */
+const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+/**
+ * Un effacement en cours, ORDONNÉ PAR UNE PORTE (promesse), pas par des délais : une transaction
+ * verrouille la ligne de l'e-mail, écrit le journal d'effacement, signale « pose », puis attend
+ * `ouvrir()` avant de valider. Aucune ligne n'est supprimée.
+ */
+function effacementEnCours(id: string) {
+  let ouvrir!: () => void;
+  const porte = new Promise<void>((r) => (ouvrir = r));
+  let signaler!: () => void;
+  const pose = new Promise<void>((r) => (signaler = r));
+  const fini = db.$transaction(
+    async (tx) => {
+      await tx.$queryRaw`SELECT id FROM "emails_manuels" WHERE id = ${id}::uuid FOR UPDATE`;
+      await tx.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+      signaler();
+      await porte;
+    },
+    { timeout: 60_000, maxWait: 30_000 },
+  );
+  return { pose, ouvrir, fini };
+}
+
+/** Vrai si la promesse n'est pas réglée au bout de `ms` (preuve que l'appel attend le verrou). */
+async function toujoursBloquee(p: Promise<unknown>, ms: number): Promise<boolean> {
+  let regle = false;
+  void p.then(
+    () => (regle = true),
+    () => (regle = true),
+  );
+  await attendre(ms);
+  return !regle;
+}
+
+/**
+ * Preuve « bloqué sur le verrou » : une session de la base attend un verrou (`wait_event_type = 'Lock'`
+ * dans `pg_stat_activity`, instruction `FOR UPDATE`), au terme d'une petite boucle d'attente BORNÉE
+ * (5 s). Faux si la promesse se règle avant (rien n'a attendu). REPLI : si la vue n'est pas lisible
+ * (droits, erreur), retour au délai fixe de `toujoursBloquee` (preuve plus faible, test pas faux).
+ */
+async function bloqueeSurVerrou(p: Promise<unknown>): Promise<boolean> {
+  let regle = false;
+  void p.then(
+    () => (regle = true),
+    () => (regle = true),
+  );
+  const fin = Date.now() + 5_000;
+  while (!regle && Date.now() < fin) {
+    try {
+      const l = await db.$queryRaw<Array<{ n: bigint }>>`
+        SELECT count(*)::bigint AS n FROM pg_stat_activity
+        WHERE wait_event_type = 'Lock' AND pid <> pg_backend_pid() AND query ILIKE '%FOR UPDATE%'`;
+      if (Number(l[0]?.n ?? 0) > 0) return true;
+    } catch {
+      return toujoursBloquee(p, 300);
+    }
+    await attendre(50);
+  }
+  return false;
+}
+
+describe("garde de l'environnement", () => {
+  it("DATABASE_URL existe et vise une base locale", () => {
+    const url = process.env.DATABASE_URL;
+    expect(url, "DATABASE_URL absent : ce test ne se saute pas").toBeTruthy();
+    expect(new URL(url!).hostname).toMatch(/^(localhost|127\.0\.0\.1)$/);
+  });
+});
+
+describe("pièces jointes d'e-mails, Postgres réel", () => {
+  beforeAll(async () => {
+    const hote = new URL(process.env.DATABASE_URL ?? "postgresql://x@invalide/x").hostname;
+    if (!/^(localhost|127\.0\.0\.1)$/.test(hote)) throw new Error("base non locale : refus");
+    A = await adminDeTest();
+    B = await adminDeTest();
+  });
+  afterAll(async () => {
+    await db.$disconnect();
+  });
+
+  it("I1 — deux ouvertures de 5 × 1 Mo : une seule passe, 5 lignes", async () => {
+    const id = await brouillon(A);
+    const ouvrir = () =>
+      ouvrirEnvoisPiecesJointesEmail({ acteur: A, emailManuelId: id, pieces: annonces(5, MO) });
+    const rs = await Promise.all([ouvrir(), ouvrir()]);
+    expect(rs.filter((r) => r.ok)).toHaveLength(1);
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(5);
+  });
+
+  it("I2 — cinq ouvertures de 2 × 2 Mo : exactement 2 passent, somme ≤ 10 Mo", async () => {
+    const id = await brouillon(A);
+    const rs = await Promise.all(
+      Array.from({ length: 5 }, () =>
+        ouvrirEnvoisPiecesJointesEmail({
+          acteur: A,
+          emailManuelId: id,
+          pieces: annonces(2, 2 * MO),
+        }),
+      ),
+    );
+    expect(rs.filter((r) => r.ok)).toHaveLength(2);
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes.length).toBeLessThanOrEqual(4);
+    expect(lignes.reduce((t, l) => t + l.tailleOctets, 0)).toBeLessThanOrEqual(10 * MO);
+  });
+
+  it("I3 — l'e-mail part pendant le contrôle : la pièce est refusée « envoi_parti », jamais acceptée", async () => {
+    const id = await brouillon(A);
+    const r = await pret(A, id);
+    const parti: Antivirus = async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      await db.emailManuel.update({
+        where: { id },
+        data: { statut: "en_file", corpsHtml: "<p>x</p>" },
+      });
+      return { issue: "sain" };
+    };
+    await finaliserPiecesJointesEmail(
+      { acteur: A, emailManuelId: id, jeton: r.jeton },
+      { antivirus: parti },
+    );
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "envoi_parti" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I3b — l'e-mail part pendant la COPIE : refusée « envoi_parti », jamais acceptée", async () => {
+    const id = await brouillon(A);
+    const r = await pret(A, id);
+    h.pendantCopie = async () => {
+      await db.emailManuel.update({
+        where: { id },
+        data: { statut: "en_file", corpsHtml: "<p>x</p>" },
+      });
+    };
+    try {
+      await finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+    } finally {
+      h.pendantCopie = null;
+    }
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "envoi_parti" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I4 — deux finalisations avec le même jeton : un seul contrôle", async () => {
+    const id = await brouillon(A);
+    const r = await pret(A, id);
+    const av = vi.fn(sain);
+    const fin = () =>
+      finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: av },
+      );
+    const rs = await Promise.all([fin(), fin()]);
+    const controlees = rs.map((x) => x.ok && x.controlees).sort();
+    expect(controlees).toEqual([false, true]);
+    expect(av).toHaveBeenCalledTimes(1);
+    const definitives = [...h.seau.keys()].filter((k) => k.startsWith(`emails-manuels/${id}/`));
+    expect(definitives).toHaveLength(1);
+    // Jeton invalide pour mémoire : jamais de contrôle sans lui.
+    expect(randomBytes(32).toString("base64url")).toHaveLength(43);
+  });
+
+  it("I5 — B ouvre sur le brouillon de A : inconnu, aucune ligne", async () => {
+    const id = await brouillon(A);
+    const r = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: B,
+      emailManuelId: id,
+      pieces: annonces(1, 1000),
+    });
+    expect(r).toMatchObject({ ok: false, refus: "inconnu" });
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I6 — brouillon neutralisé (journal d'effacement) : « neutralise », aucune ligne", async () => {
+    const id = await brouillon(A, "Trainee");
+    await db.effacementJournal.create({
+      data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+    });
+    const r = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: A,
+      emailManuelId: id,
+      pieces: annonces(1, 1000),
+    });
+    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I7 — effacement pendant l'antivirus : la pièce finit « refusee » / « neutralise », jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    const efface: Antivirus = async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      await db.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+      return { issue: "sain" };
+    };
+    await finaliserPiecesJointesEmail(
+      { acteur: A, emailManuelId: id, jeton: r.jeton },
+      { antivirus: efface },
+    );
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I7b — journal validé pendant la COPIE : refusée « neutralise » par le Temps 3, jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    h.pendantCopie = async () => {
+      await db.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+    };
+    try {
+      await finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+    } finally {
+      h.pendantCopie = null;
+    }
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I8 — effacement en cours (verrou + journal non validé) : ouvrir attend le verrou, puis rend « neutralise »", async () => {
+    const id = await brouillon(A, "Trainee");
+    const eff = effacementEnCours(id);
+    let r: Awaited<ReturnType<typeof ouvrirEnvoisPiecesJointesEmail>>;
+    try {
+      await eff.pose;
+      const ouverture = ouvrirEnvoisPiecesJointesEmail({
+        acteur: A,
+        emailManuelId: id,
+        pieces: annonces(1, 1000),
+      });
+      // Preuve lue dans `pg_stat_activity` (session en attente de verrou), pas par un délai fixe.
+      expect(await bloqueeSurVerrou(ouverture)).toBe(true);
+      eff.ouvrir();
+      await eff.fini;
+      r = await ouverture;
+    } finally {
+      eff.ouvrir();
+      await eff.fini.catch(() => {});
+    }
+    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I8b — effacement qui verrouille pendant la COPIE, validé après l'attente du Temps 3 : refusée, jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    let eff: ReturnType<typeof effacementEnCours> | undefined;
+    let copieAtteinte!: () => void;
+    const atteinte = new Promise<void>((res) => (copieAtteinte = res));
+    h.pendantCopie = async () => {
+      eff = effacementEnCours(id);
+      await eff.pose;
+      copieAtteinte();
+    };
+    let finalisation: ReturnType<typeof finaliserPiecesJointesEmail> | undefined;
+    try {
+      finalisation = finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+      // Course : si la finalisation se termine avant la copie, on ne pend jamais 60 s.
+      await Promise.race([
+        atteinte,
+        finalisation.then(
+          () => undefined,
+          () => undefined,
+        ),
+      ]);
+      h.pendantCopie = null;
+      // La copie se termine, le Temps 3 démarre et se bloque sur le verrou (lu dans pg_stat_activity).
+      expect(eff, "la copie n'a pas été atteinte").toBeDefined();
+      expect(await bloqueeSurVerrou(finalisation)).toBe(true);
+      eff!.ouvrir();
+      await eff!.fini;
+      await finalisation;
+    } finally {
+      h.pendantCopie = null;
+      eff?.ouvrir();
+      await eff?.fini.catch(() => {});
+      await finalisation?.catch(() => {});
+    }
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+});

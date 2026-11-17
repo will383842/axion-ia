@@ -1062,7 +1062,7 @@ export async function reviseDevisAction(
     prisma.$transaction(async (tx) => {
       // Verrou consultatif BLOQUANT (libéré en fin de transaction) : deux clics simultanés
       // s'alignent l'un derrière l'autre, le second retrouve la révision du premier.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
       // Le client a déjà signé : plus de correction (contresigner ou refuser). AVANT le brouillon
       // existant : un brouillon créé avant la signature ne doit pas être rendu après.
       const nonSigne = await tx.devis.count({
