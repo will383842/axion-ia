@@ -1172,7 +1172,7 @@ export function ApporteurDossierAVerifierEmail({ locale, payload }: Props) {
       preview={t.preview}
       title={t.title}
       locale={locale === "fr" ? "fr" : "en"}
-      {...(url ? { cta: { label: t.cta, href: url } } : {})}
+      {...(url ? { cta: { label: t.cta, href: url }, ctaSecret: true } : {})}
     >
       <Text style={emailStyles.paragraphStyle}>{t.texte(texteOuNull(p.contactName) ?? "")}</Text>
     </EmailLayout>
