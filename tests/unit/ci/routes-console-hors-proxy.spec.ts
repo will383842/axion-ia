@@ -63,10 +63,92 @@ function methodes(src: string): { nom: string; corps: string }[] {
   return res;
 }
 
-/** Première instruction du corps (commentaires ignorés). */
-function premiereInstruction(corps: string): string {
-  const sansCommentaires = corps.replace(/^(?:\s+|\/\/[^\n]*|\/\*[\s\S]*?\*\/)+/, "");
-  return sansCommentaires.slice(0, 120);
+/** Corps sans les commentaires et espaces de tête. */
+function sansTete(corps: string): string {
+  return corps.replace(/^(?:\s+|\/\/[^\n]*|\/\*[\s\S]*?\*\/)+/, "");
+}
+
+const METHODES_RE = METHODES.join("|");
+
+/** Formes d'export de méthode qu'on ne sait pas analyser : refusées dans les fichiers de console. */
+function exportsNonAnalysables(src: string): boolean {
+  return (
+    new RegExp(`export\\s+(?:const|let|var)\\s+(?:${METHODES_RE})\\b`).test(src) ||
+    new RegExp(`export\\s*(?:type\\s*)?\\{[^}]*\\b(?:${METHODES_RE})\\b`).test(src) ||
+    /export\s*\*/.test(src)
+  );
+}
+
+/**
+ * Route de la console : problèmes trouvés dans la source. Chaque méthode exportée DOIT commencer
+ * par le COUPLE `const x = await refuserSiHorsConsole(params);` puis `if (x) return x;`
+ * (même variable, argument exactement `params`, rien entre les deux).
+ */
+function problemesConsole(src: string): string[] {
+  if (exportsNonAnalysables(src)) return ["méthode exportée sous une forme non analysable"];
+  const ms = methodes(src);
+  if (ms.length === 0) return ["aucune méthode exportée trouvée"];
+  return ms
+    .filter(
+      ({ corps }) =>
+        !/^const\s+(\w+)\s*=\s*await\s+refuserSiHorsConsole\(params\);\s*if\s*\(\1\)\s*return\s+\1;/.test(
+          sansTete(corps),
+        ),
+    )
+    .map(
+      ({ nom }) =>
+        `${nom} : couple « const x = await refuserSiHorsConsole(params); if (x) return x; » absent en tête`,
+    );
+}
+
+/** Les `n` premières instructions du corps (fin à `;` ou à l'accolade fermante de profondeur 0). */
+function premieresInstructions(corps: string, n: number): string[] {
+  const res: string[] = [];
+  const texte = sansTete(corps);
+  let debut = 0;
+  let d = 0;
+  let quote: string | null = null;
+  for (let i = 0; i < texte.length && res.length < n; i++) {
+    const c = texte[i] as string;
+    if (quote) {
+      if (c === "\\") i++;
+      else if (c === quote) quote = null;
+      continue;
+    }
+    if (c === '"' || c === "'" || c === "`") quote = c;
+    else if (c === "/" && texte[i + 1] === "/") i = texte.indexOf("\n", i) - 1;
+    else if (c === "/" && texte[i + 1] === "*") i = texte.indexOf("*/", i) + 1;
+    else if (c === "(" || c === "[" || c === "{") d++;
+    else if (c === ")" || c === "]") d--;
+    else if (c === "}") {
+      d--;
+      if (d < 0) break; // fin du corps
+      const declaration = /^\s*(?:const|let|var|return)\b/.test(texte.slice(debut, i));
+      if (d === 0 && !declaration && !/^\s*else\b/.test(texte.slice(i + 1, i + 12))) {
+        res.push(texte.slice(debut, i + 1));
+        debut = i + 1;
+      }
+    } else if (c === ";" && d === 0) {
+      res.push(texte.slice(debut, i + 1));
+      debut = i + 1;
+    }
+  }
+  return res;
+}
+
+/** Route publique : le contrôle de locale est dans les 3 premières instructions de CHAQUE méthode. */
+function problemesPublique(src: string): string[] {
+  if (exportsNonAnalysables(src)) return ["méthode exportée sous une forme non analysable"];
+  const ms = methodes(src);
+  if (ms.length === 0) return ["aucune méthode exportée trouvée"];
+  return ms
+    .filter(
+      ({ corps }) =>
+        !premieresInstructions(corps, 3).some((i) =>
+          /hasLocale\(|refuserSiLocaleInconnue\(/.test(i),
+        ),
+    )
+    .map(({ nom }) => `${nom} : contrôle de locale absent des 3 premières instructions`);
 }
 
 describe("routes de la console hors proxy (SEC-1b)", () => {
@@ -75,35 +157,106 @@ describe("routes de la console hors proxy (SEC-1b)", () => {
     expect(publiques.length).toBeGreaterThan(0);
   });
 
-  it("chaque méthode de chaque route de la console appelle la garde EN PREMIER", () => {
-    const fautifs: string[] = [];
-    for (const f of console_) {
-      const src = readFileSync(f, "utf8");
-      if (/export\s+(?:const|let|var)\s+(?:GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\b/.test(src)) {
-        fautifs.push(`${rel(f)} : méthode exportée sous une forme non analysable`);
-        continue;
-      }
-      const ms = methodes(src);
-      if (ms.length === 0) fautifs.push(`${rel(f)} : aucune méthode exportée trouvée`);
-      for (const { nom, corps } of ms) {
-        if (!/^const\s+\w+\s*=\s*await\s+refuserSiHorsConsole\(/.test(premiereInstruction(corps))) {
-          fautifs.push(`${rel(f)} : ${nom}`);
-        }
-      }
-    }
+  it("chaque méthode de chaque route de la console appelle la garde EN PREMIER, et rend son refus", () => {
+    const fautifs = console_.flatMap((f) =>
+      problemesConsole(readFileSync(f, "utf8")).map((p) => `${rel(f)} : ${p}`),
+    );
     expect(fautifs).toEqual([]);
   });
 
-  it("chaque route publique sous [locale] contrôle la locale, ou a une exception justifiée", () => {
+  it("chaque route publique sous [locale] contrôle la locale tôt dans chaque méthode, ou a une exception justifiée", () => {
     const fautifs = publiques
-      .filter((f) => !/hasLocale\(|refuserSiLocaleInconnue\(/.test(readFileSync(f, "utf8")))
-      .map(rel)
-      .filter((f) => !(f in EXCEPTIONS_PUBLIQUES));
+      .filter((f) => !(rel(f) in EXCEPTIONS_PUBLIQUES))
+      .flatMap((f) => problemesPublique(readFileSync(f, "utf8")).map((p) => `${rel(f)} : ${p}`));
     expect(fautifs).toEqual([]);
   });
 
   it("les exceptions pointent des fichiers qui existent encore", () => {
     const presentes = new Set(publiques.map(rel));
     expect(Object.keys(EXCEPTIONS_PUBLIQUES).filter((f) => !presentes.has(f))).toEqual([]);
+  });
+
+  describe("test du test : des sources fautives rougissent", () => {
+    const bonne = (corps: string): string =>
+      `export async function GET(req: Request, { params }: { params: P }) {\n${corps}\n}`;
+    const GARDE =
+      "const horsConsole = await refuserSiHorsConsole(params);\n  if (horsConsole) return horsConsole;";
+
+    it("la forme correcte passe", () => {
+      expect(problemesConsole(bonne(`  ${GARDE}\n  const s = await auth();`))).toEqual([]);
+    });
+    it("sans le `return` du refus", () => {
+      const src = bonne(
+        "  const horsConsole = await refuserSiHorsConsole(params);\n  const s = await auth();",
+      );
+      expect(problemesConsole(src)).not.toEqual([]);
+    });
+    it("`if` portant sur une autre variable", () => {
+      const src = bonne("  const a = await refuserSiHorsConsole(params);\n  if (b) return b;");
+      expect(problemesConsole(src)).not.toEqual([]);
+    });
+    it("avec un autre argument que `params`", () => {
+      const src = bonne(
+        '  const a = await refuserSiHorsConsole(Promise.resolve({ locale: "fr", adminPrefix: "x" }));\n  if (a) return a;',
+      );
+      expect(problemesConsole(src)).not.toEqual([]);
+    });
+    it("garde placée après auth()", () => {
+      const src = bonne(`  const s = await auth();\n  ${GARDE}`);
+      expect(problemesConsole(src)).not.toEqual([]);
+    });
+    it("instruction glissée entre l'appel et le `if`", () => {
+      const src = bonne(
+        "  const a = await refuserSiHorsConsole(params);\n  await auth();\n  if (a) return a;",
+      );
+      expect(problemesConsole(src)).not.toEqual([]);
+    });
+    it("une seule méthode gardée sur deux", () => {
+      const src = `${bonne(`  ${GARDE}`)}\nexport async function POST(req: Request, { params }: { params: P }) {\n  await auth();\n}`;
+      expect(problemesConsole(src)).toHaveLength(1);
+    });
+    it.each([
+      "export { GET as POST };",
+      "export { POST } from './x';",
+      "export { handler as DELETE };",
+      "export const GET = async () => new Response();",
+      "export * from './x';",
+    ])("ré-export ou forme non analysable : %s", (ligne) => {
+      expect(problemesConsole(`${bonne(`  ${GARDE}`)}\n${ligne}`)).not.toEqual([]);
+    });
+  });
+
+  describe("test du test : contrôle de locale des routes publiques", () => {
+    const m = (nom: string, corps: string): string =>
+      `export async function ${nom}(req: Request, { params }: { params: P }) {\n${corps}\n}`;
+    const OK =
+      "  const { token, locale } = await params;\n  const l = refuserSiLocaleInconnue(locale);\n  if (l) return l;";
+    const APRES =
+      "  const { token, locale } = await params;\n  await consommer(token);\n  await limiter();\n  const l = refuserSiLocaleInconnue(locale);\n  if (l) return l;";
+
+    it("contrôle dans les 3 premières instructions : passe", () => {
+      expect(problemesPublique(m("GET", OK))).toEqual([]);
+    });
+    it("forme `if (!hasLocale(…)) { … }` : passe", () => {
+      const src = m(
+        "GET",
+        "  const { locale } = await params;\n  if (!hasLocale(routing.locales, locale)) {\n    return new Response('x', { status: 404 });\n  }",
+      );
+      expect(problemesPublique(src)).toEqual([]);
+    });
+    it("contrôle après la consommation du jeton : rougit", () => {
+      expect(problemesPublique(m("GET", APRES))).not.toEqual([]);
+    });
+    it("une méthode gardée, l'autre non : rougit", () => {
+      const src = `${m("GET", OK)}\n${m("POST", APRES)}`;
+      expect(problemesPublique(src)).toHaveLength(1);
+    });
+    it("le contrôle ailleurs dans le fichier ne suffit pas", () => {
+      const src = `${m("GET", APRES)}\nfunction autre() { hasLocale(a, b); }`;
+      expect(problemesPublique(src)).not.toEqual([]);
+    });
+    it("ré-export de méthode : rougit", () => {
+      expect(problemesPublique(`${m("GET", OK)}\nexport { GET as POST };`)).not.toEqual([]);
+    });
   });
 });

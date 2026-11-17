@@ -1,8 +1,9 @@
 /**
  * Téléchargement d'un document de projet depuis la console (ADR 0063, D7).
  *
- * 🔴 Première instruction : `exigerAccesEchanges()` (décision A2), avant toute
- * lecture — sans session 401, rôle hors de la liste 403.
+ * 🔴 Première instruction : la garde de console `refuserSiHorsConsole(params)` (404 neutre
+ * hors `/<locale>/<préfixe>/…`, SEC-1b). Puis `exigerAccesEchanges()` (décision A2), avant
+ * toute lecture — sans session 401, rôle hors de la liste 403.
  * Puis le TRIPLET (documentId, projetId, clientId) de l'URL : hors triplet,
  * 404 — jamais 403, qui confirmerait qu'un document existe chez un autre client.
  *

@@ -1,10 +1,10 @@
 /**
  * SEC-1b : test de route sur trois gestionnaires représentatifs (export d'argent,
- * fichier de personne, agenda). Hors proxy (`locale` = `videos` ou `sitemap`) :
+ * fichier de personne, agenda). Hors proxy (`locale` = `videos`, `sitemap`, `api` ou `questionnaire`) :
  * 404, `auth()` jamais appelé, aucune lecture en base. Adresse normale : comportement d'avant.
  * Le préfixe d'administration est une valeur factice posée ici.
  */
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const PREFIXE = "prefixe-factice-test";
 
@@ -37,14 +37,21 @@ import { GET as ics } from "@/app/[locale]/(admin)/[adminPrefix]/planning/ics/ro
 
 const req = (url: string): never => new Request(url) as never;
 
-const CAS: { nom: string; appel: (locale: string, prefixe: string) => Promise<Response> }[] = [
+const CAS: {
+  nom: string;
+  /** Statut exact sans session (adresse normale). */
+  nominal: number;
+  appel: (locale: string, prefixe: string) => Promise<Response>;
+}[] = [
   {
     nom: "export d'argent (DAS2)",
+    nominal: 401,
     appel: (locale, adminPrefix) =>
       das2(req("http://x/e?annee=2026"), { params: Promise.resolve({ locale, adminPrefix }) }),
   },
   {
     nom: "fichier de personne (CV)",
+    nominal: 401,
     appel: (locale, adminPrefix) =>
       cv(req("http://x/e") as Request, {
         params: Promise.resolve({ locale, adminPrefix, id: "1" }),
@@ -52,26 +59,41 @@ const CAS: { nom: string; appel: (locale: string, prefixe: string) => Promise<Re
   },
   {
     nom: "agenda (planning/ics)",
+    nominal: 307,
     appel: (locale, adminPrefix) =>
       ics(req("http://x/e?trainerId=t"), { params: Promise.resolve({ locale, adminPrefix }) }),
   },
 ];
 
 describe("routes de la console : gestionnaires représentatifs", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
   beforeEach(() => {
     vi.stubEnv("ADMIN_URL_PREFIX", PREFIXE);
     authMock.mockReset();
     authMock.mockResolvedValue(null);
   });
 
-  for (const { nom, appel } of CAS) {
+  const ENTETES = ["Cache-Control", "Content-Type", "X-Robots-Tag"];
+  const empreinte = async (r: Response): Promise<unknown> => ({
+    statut: r.status,
+    corps: await r.text(),
+    entetes: Object.fromEntries(ENTETES.map((h) => [h, r.headers.get(h)])),
+  });
+
+  for (const { nom, nominal, appel } of CAS) {
     describe(nom, () => {
-      it.each(["videos", "sitemap"])("locale %s → 404, auth jamais appelé", async (locale) => {
-        const r = await appel(locale, PREFIXE);
-        expect(r.status).toBe(404);
-        expect(r.headers.get("Cache-Control")).toBe("private, no-store");
-        expect(authMock).not.toHaveBeenCalled();
-      });
+      it.each(["videos", "sitemap", "api", "questionnaire"])(
+        "locale %s → 404, auth jamais appelé",
+        async (locale) => {
+          const r = await appel(locale, PREFIXE);
+          expect(r.status).toBe(404);
+          expect(r.headers.get("Cache-Control")).toBe("private, no-store");
+          expect(authMock).not.toHaveBeenCalled();
+        },
+      );
 
       it("mauvais préfixe → 404, auth jamais appelé", async () => {
         const r = await appel("fr", "autre");
@@ -79,11 +101,31 @@ describe("routes de la console : gestionnaires représentatifs", () => {
         expect(authMock).not.toHaveBeenCalled();
       });
 
-      it("adresse normale : la suite d'avant s'exécute (auth appelé)", async () => {
+      it("les trois refus sont IDENTIQUES (statut, corps, en-têtes)", async () => {
+        const locale = await empreinte(await appel("questionnaire", PREFIXE));
+        const mauvais = await empreinte(await appel("fr", "autre"));
+        // Préfixe attendu absent en production : tout est refusé, même le « bon » segment.
+        vi.stubEnv("NODE_ENV", "production");
+        vi.stubEnv("ADMIN_URL_PREFIX", "");
+        const absent = await empreinte(await appel("fr", PREFIXE));
+        expect(locale).toEqual({
+          statut: 404,
+          corps: "not found",
+          entetes: {
+            "Cache-Control": "private, no-store",
+            "Content-Type": "text/plain; charset=utf-8",
+            "X-Robots-Tag": "noindex",
+          },
+        });
+        expect(mauvais).toEqual(locale);
+        expect(absent).toEqual(locale);
+        expect(authMock).not.toHaveBeenCalled();
+      });
+
+      it(`adresse normale : la suite d'avant s'exécute (auth appelé), statut ${nominal}`, async () => {
         const r = await appel("fr", PREFIXE);
         expect(authMock).toHaveBeenCalledTimes(1);
-        // Sans session : 401 pour les deux téléchargements, redirection vers la connexion pour l'agenda.
-        expect([302, 307, 401]).toContain(r.status);
+        expect(r.status).toBe(nominal);
       });
     });
   }
