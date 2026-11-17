@@ -28,6 +28,7 @@ import {
   normaliserAdresse,
 } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
+import { redis } from "@/lib/redis";
 import { isR2Configured, getObjectBufferR2 } from "@/lib/r2-storage";
 import { cloturerJournal, marquerAnnule, noterTentativeEchouee } from "@/server/email/email-log";
 import { enregistrerCopieEnvoi } from "@/server/email/copie-envoi";
@@ -243,13 +244,19 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     "emails",
     async (job) => {
       const { template, to, locale, payload, marketing, entityType, entityId } = job.data;
+      // Contexte d'essai des réponses manuelles : même règle que `echecAuDepart` plus bas.
+      const contexteEssai: ContexteEssai = {
+        jobId: job.id,
+        essai: job.attemptsMade + 1,
+        essaisMax: job.opts.attempts ?? 1,
+      };
 
       // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
       // submission-reply : on synchronise SubmissionReply.deliveryStatus
       // + Submission.firstRepliedAt/lastRepliedAt après envoi MTA. Suivi propre
       // via SubmissionReply → pas de double journalisation dans EmailLog.
       if (template === "submission-reply") {
-        await handleSubmissionReply(payload);
+        await handleSubmissionReply(payload, contexteEssai);
         return;
       }
 
@@ -258,7 +265,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       // l'adresse est relue puis déchiffrée au seul moment de l'envoi. Aucune
       // donnée personnelle ne transite par la file.
       if (template === "candidature-reponse") {
-        await handleCandidatureReponse(payload);
+        await handleCandidatureReponse(payload, contexteEssai);
         return;
       }
 
@@ -589,185 +596,274 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
 }
 
 // ============================================================
-// submission-reply : delivery status sync (Sprint Notif Infra 2026-05-26)
+// Réponses manuelles (submission-reply, candidature-reponse) : UN SEUL ENVOI
 // ============================================================
 //
-// Le payload `submission-reply` ne contient PAS le HTML — il référence le
-// `SubmissionReply.id`. On lit le bodyHtml/bodyText pré-rendu depuis la DB
-// (figé au moment du replyToSubmissionAction), on envoie, puis on update
-// le `deliveryStatus` + `sentAt`/`failedAt` + `Submission.firstRepliedAt`/
-// `lastRepliedAt`. Throw en cas d'échec SMTP → BullMQ retry avec backoff.
+// 🔴 Correctif « un seul envoi » (PR-W). Avant, ces deux handlers posaient `failed`
+// dès le PREMIER échec puis relevaient l'erreur, sans relire l'état de la ligne
+// avant d'envoyer. Or BullMQ réessaie (`attempts: 5`, délai exponentiel dès 5 s)
+// et la `concurrency` vaut 2 : deux jobs de la même réponse pouvaient tourner en
+// même temps, et le bouton « Réessayer » (visible sur `failed`) en ajoutait un
+// troisième. De plus l'écriture `sent` se trouvait dans le même `try` que l'envoi :
+// envoi réussi + base en échec = `failed` + erreur relevée = e-mail renvoyé.
+//
+// Garanties, identiques pour les deux gabarits (`envoyerReponseUnSeulEnvoi`) :
+//  1. rien ne part si l'e-mail est déjà parti (`sentAt`, `providerMessageId`, statut
+//     `sent` ou `bounced`) ; seuls `pending` et `failed` peuvent partir (`failed`
+//     reste accepté : l'ancienne application met en file AVANT de repasser `pending`) ;
+//  2. un seul envoi à la fois par réponse : verrou Redis `verrou:envoi-reponse:…`
+//     (SET NX EX, jeton propre, libéré seulement si le jeton est le nôtre) ;
+//  3. `failed` seulement au DERNIER essai ; avant : la ligne reste `pending` ;
+//  4. l'écriture `sent` est séparée de l'envoi, retentée 3 fois ; si elle échoue
+//     encore, on trace (Sentry) et on NE relève PAS : rien n'est renvoyé ;
+//  5. les contrôles d'adresse (illisible, mise à l'écart) se font sous le verrou.
+// Toute écriture d'état passe par un `updateMany` conditionné à `sentAt: null` :
+// elle n'écrase jamais `sent`.
+//
+// Le corps est LU en base (figé à la rédaction), jamais re-rendu ; l'adresse est
+// déchiffrée au dernier moment ; aucun changement de forme de job, de nom de
+// gabarit ou de `jobId`. 🔑 Ce worker ne doit RIEN importer de `next/*`,
+// `server-only`, `next-auth` (garde : `email-worker.opposition.graphe-worker.spec.ts`).
+//
+// ⛔ Ordre de mise en ligne : ce commit en ligne SEUL, contenu du conteneur worker
+// vérifié (marqueur `verrou:envoi-reponse`), AVANT toute PR qui rend « Réessayer »
+// atomique côté application. Interdit de ramener le worker sous ce commit.
 
-async function handleSubmissionReply(payload: Record<string, unknown>): Promise<void> {
-  const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
-  if (!replyId) throw new Error("[email-worker] submission-reply: missing replyId");
+/** Contexte d'essai calculé par le processeur (même règle que `echecAuDepart`). */
+interface ContexteEssai {
+  jobId: string | undefined;
+  essai: number;
+  essaisMax: number;
+}
 
-  const reply = await prisma.submissionReply.findUnique({
-    where: { id: replyId },
-    include: { submission: { select: { id: true, firstRepliedAt: true } } },
-  });
-  if (!reply) throw new Error(`[email-worker] SubmissionReply ${replyId} not found`);
+/**
+ * TTL du verrou. `src/lib/email/client.ts` ne déclare AUCUN délai d'expiration
+ * explicite (nodemailer garde ses défauts, ~2 min de connexion + réponses) : repli
+ * sur 600 s, soit ≥ 300 s et ≥ 2 × ce défaut.
+ */
+const TTL_VERROU_ENVOI_SEC = 600;
+const ESSAIS_ECRITURE_ENVOYE = 3;
 
-  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+/** Ligne de réponse, vue minimale commune aux deux tables. */
+interface LigneReponse {
+  id: string;
+  toEmail: string;
+  subject: string;
+  bodyHtml: string;
+  bodyText: string;
+  deliveryStatus: string;
+  sentAt: Date | null;
+  providerMessageId: string | null;
+}
 
-  // `toEmail` est stocké CHIFFRÉ au repos (enc:v1, PII contact). On déchiffre au
-  // seul moment de l'envoi. decryptPii = no-op sur une valeur déjà en clair.
-  const to = decryptPii(reply.toEmail);
+interface AdaptateurReponse<L extends LigneReponse> {
+  gabarit: "submission-reply" | "candidature-reponse";
+  /** Relit la ligne (null si absente). */
+  lire(replyId: string): Promise<L | null>;
+  /** Pose un état sur la ligne, jamais si `sentAt` est rempli. */
+  ecrireSiNonEnvoye(id: string, data: Record<string, unknown>): Promise<unknown>;
+  /** Repasse `sent` une ligne `pending`/`failed` dont `sentAt` est rempli. */
+  reparerEnvoye(id: string): Promise<unknown>;
+  /** Écrit l'envoi réussi (et ce qui va avec). */
+  marquerEnvoye(ligne: L, messageId: string, maintenant: Date): Promise<unknown>;
+}
 
-  // Garde : si l'adresse est illisible — clé `PII_ENCRYPTION_KEY` absente ou
-  // désalignée sur le WORKER → decryptPii renvoie le placeholder — inutile de
-  // consommer les 5 retries BullMQ sur un problème de CONFIG. On marque `failed`
-  // avec un errorMsg distinctif (rejouable après alignement de la clé) et on NE
-  // throw PAS. C'est la cause racine #1 du « Échec envoi » (cf. plan §0).
-  if (!isDecryptedEmailUsable(to)) {
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
-      },
-    });
-    return;
-  }
+function dejaParti(l: LigneReponse): boolean {
+  return (
+    l.sentAt !== null ||
+    l.providerMessageId !== null ||
+    (l.deliveryStatus !== "pending" && l.deliveryStatus !== "failed")
+  );
+}
 
-  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
-  if ((await dateDeMiseAEcart(to, "submission-reply")) !== null) {
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
-      },
-    });
-    return;
-  }
-
+async function libererVerrou(cle: string, jeton: string): Promise<void> {
   try {
-    const result = await sendEmail({
-      to,
-      subject: reply.subject,
-      html: reply.bodyHtml,
-      text: reply.bodyText,
-      replyTo,
-    });
-    const now = new Date();
-    await prisma.$transaction([
-      prisma.submissionReply.update({
-        where: { id: reply.id },
-        data: {
-          deliveryStatus: "sent",
-          sentAt: now,
-          providerMessageId: result.messageId,
-        },
-      }),
-      prisma.submission.update({
-        where: { id: reply.submissionId },
-        data: {
-          firstRepliedAt: reply.submission.firstRepliedAt ?? now,
-          lastRepliedAt: now,
-        },
-      }),
-    ]);
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    await prisma.submissionReply.update({
-      where: { id: reply.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: msg.slice(0, 2000),
-        retryCount: { increment: 1 },
-      },
-    });
-    throw e; // BullMQ retry avec backoff exponentiel
+    if ((await redis.get(cle)) === jeton) await redis.del(cle);
+  } catch {
+    // Le TTL finira le travail ; une libération ratée ne doit pas masquer le résultat.
   }
 }
 
-// ============================================================
-// candidature-reponse : livraison + synchronisation (lot 1 recrutement)
-// ============================================================
-//
-// Jumeau de `handleSubmissionReply`, sur `JobApplicationReply`. Les trois mêmes
-// règles s'appliquent, pour les trois mêmes raisons :
-//
-//  · le corps est LU en base (figé au moment de la rédaction), jamais re-rendu
-//    ici — sinon deux envois du même message pourraient différer ;
-//  · l'adresse est déchiffrée au dernier moment ;
-//  · une adresse illisible ne consomme PAS les tentatives BullMQ : c'est un
-//    problème de configuration de clé, pas de réseau, et le réessayer cinq fois
-//    ne le résoudra pas. On marque `failed` avec un message distinctif, et on ne
-//    lève pas.
-//
-// 🔑 Ce handler n'écrit RIEN au journal de la candidature. La trace « réponse
-// envoyée » est posée par l'action, dans la même transaction que la réponse :
-// le journal dit ce qu'un humain a FAIT, l'état de livraison dit ce que la
-// chaîne d'envoi en a fait. Les confondre produirait deux lignes pour un geste,
-// et une frise qui se répète.
-
-async function handleCandidatureReponse(payload: Record<string, unknown>): Promise<void> {
+async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+  a: AdaptateurReponse<L>,
+): Promise<void> {
   const replyId = typeof payload["replyId"] === "string" ? (payload["replyId"] as string) : null;
-  if (!replyId) throw new Error("[email-worker] candidature-reponse: replyId manquant");
+  if (!replyId) throw new Error(`[email-worker] ${a.gabarit}: replyId manquant`);
 
-  const reponse = await prisma.jobApplicationReply.findUnique({ where: { id: replyId } });
-  if (!reponse) throw new Error(`[email-worker] JobApplicationReply ${replyId} introuvable`);
+  // Garantie 1, avant le verrou : si c'est déjà parti, sortir sans rien envoyer.
+  const initiale = await a.lire(replyId);
+  if (!initiale) throw new Error(`[email-worker] réponse ${replyId} introuvable (${a.gabarit})`);
+  if (dejaParti(initiale)) {
+    if (initiale.sentAt !== null && initiale.deliveryStatus !== "sent") {
+      await a.reparerEnvoye(initiale.id);
+    }
+    return;
+  }
 
-  const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
-  const to = decryptPii(reponse.toEmail);
+  // Garantie 2 : un seul envoi à la fois. Une erreur Redis est relevée : on n'envoie pas.
+  const cle = `verrou:envoi-reponse:${a.gabarit}:${replyId}`;
+  const jeton = `${ctx.jobId ?? "sans-id"}-${ctx.essai}`;
+  const pris = await redis.set(cle, jeton, "EX", TTL_VERROU_ENVOI_SEC, "NX");
+  if (pris !== "OK") return; // le détenteur finira l'envoi ; la ligne n'est pas touchée
 
-  if (!isDecryptedEmailUsable(to)) {
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
+  try {
+    // Sous le verrou : relire, puis refaire le contrôle 1.
+    const ligne = await a.lire(replyId);
+    if (!ligne) throw new Error(`[email-worker] réponse ${replyId} introuvable (${a.gabarit})`);
+    if (dejaParti(ligne)) {
+      if (ligne.sentAt !== null && ligne.deliveryStatus !== "sent") {
+        await a.reparerEnvoye(ligne.id);
+      }
+      return;
+    }
+
+    const replyTo = process.env.ADMIN_REPLY_FROM ?? "contact@axion-ia.com";
+    // `toEmail` est chiffré au repos (enc:v1) : déchiffré au seul moment de l'envoi.
+    const to = decryptPii(ligne.toEmail);
+
+    // Garantie 5 : contrôles d'adresse sous le verrou. Adresse illisible = problème de
+    // CONFIG (clé PII du worker) : on ne consomme pas les essais, on marque `failed`.
+    if (!isDecryptedEmailUsable(to)) {
+      await a.ecrireSiNonEnvoye(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
-      },
-    });
-    return;
-  }
-
-  // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
-  if ((await dateDeMiseAEcart(to, "candidature-reponse")) !== null) {
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
+      });
+      return;
+    }
+    // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
+    if ((await dateDeMiseAEcart(to, a.gabarit)) !== null) {
+      await a.ecrireSiNonEnvoye(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
-      },
-    });
-    return;
-  }
+      });
+      return;
+    }
 
-  try {
-    const resultat = await sendEmail({
-      to,
-      subject: reponse.subject,
-      html: reponse.bodyHtml,
-      text: reponse.bodyText,
-      replyTo,
-    });
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
-        deliveryStatus: "sent",
-        sentAt: new Date(),
-        providerMessageId: resultat.messageId,
-      },
-    });
-  } catch (e) {
-    const msg = e instanceof Error ? e.message : String(e);
-    await prisma.jobApplicationReply.update({
-      where: { id: reponse.id },
-      data: {
-        deliveryStatus: "failed",
-        failedAt: new Date(),
-        errorMsg: msg.slice(0, 2000),
-        retryCount: { increment: 1 },
-      },
-    });
-    throw e; // BullMQ réessaie avec un délai exponentiel
+    let messageId: string;
+    try {
+      const resultat = await sendEmail({
+        to,
+        subject: ligne.subject,
+        html: ligne.bodyHtml,
+        text: ligne.bodyText,
+        replyTo,
+      });
+      messageId = resultat.messageId;
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      // Garantie 3 : `failed` seulement au dernier essai.
+      const dernier = ctx.essai >= ctx.essaisMax;
+      try {
+        await a.ecrireSiNonEnvoye(
+          ligne.id,
+          dernier
+            ? {
+                deliveryStatus: "failed",
+                failedAt: new Date(),
+                errorMsg: msg.slice(0, 2000),
+                retryCount: { increment: 1 },
+              }
+            : {
+                errorMsg:
+                  `Essai ${ctx.essai}/${ctx.essaisMax} échoué, nouvel essai automatique : ${msg}`.slice(
+                    0,
+                    2000,
+                  ),
+                retryCount: { increment: 1 },
+              },
+        );
+      } catch (ecriture) {
+        captureWorkerError("email", "emails", undefined, ecriture);
+      }
+      throw e; // BullMQ réessaie avec un délai exponentiel
+    }
+
+    // Garantie 4 : l'écriture `sent` est séparée de l'envoi, retentée, jamais relevée.
+    const maintenant = new Date();
+    let derniereErreur: unknown = null;
+    for (let i = 0; i < ESSAIS_ECRITURE_ENVOYE; i++) {
+      try {
+        await a.marquerEnvoye(ligne, messageId, maintenant);
+        derniereErreur = null;
+        break;
+      } catch (err) {
+        derniereErreur = err;
+      }
+    }
+    if (derniereErreur !== null) {
+      // Ne PAS relever : l'e-mail est parti, un nouvel essai le renverrait. La ligne
+      // reste `pending` (aucune voie de rejeu ne l'accepte) et c'est visible dans Sentry.
+      captureWorkerError("email", "emails", undefined, derniereErreur);
+    }
+  } finally {
+    await libererVerrou(cle, jeton);
   }
+}
+
+// submission-reply : le payload ne contient PAS le HTML — il référence le
+// `SubmissionReply.id`. On envoie le bodyHtml/bodyText figé en base, puis on
+// synchronise `deliveryStatus` + `sentAt` + `Submission.firstRepliedAt/lastRepliedAt`.
+async function handleSubmissionReply(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+): Promise<void> {
+  await envoyerReponseUnSeulEnvoi(payload, ctx, {
+    gabarit: "submission-reply",
+    lire: (id) =>
+      prisma.submissionReply.findUnique({
+        where: { id },
+        include: { submission: { select: { id: true, firstRepliedAt: true } } },
+      }),
+    ecrireSiNonEnvoye: (id, data) =>
+      prisma.submissionReply.updateMany({ where: { id, sentAt: null }, data }),
+    reparerEnvoye: (id) =>
+      prisma.submissionReply.updateMany({
+        where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },
+        data: { deliveryStatus: "sent" },
+      }),
+    marquerEnvoye: (ligne, messageId, now) =>
+      prisma.$transaction([
+        prisma.submissionReply.updateMany({
+          where: { id: ligne.id },
+          data: { deliveryStatus: "sent", sentAt: now, providerMessageId: messageId },
+        }),
+        prisma.submission.update({
+          where: { id: ligne.submissionId },
+          data: {
+            firstRepliedAt: ligne.submission.firstRepliedAt ?? now,
+            lastRepliedAt: now,
+          },
+        }),
+      ]),
+  });
+}
+
+// candidature-reponse : jumeau de `handleSubmissionReply`, sur `JobApplicationReply`.
+// 🔑 N'écrit RIEN au journal de la candidature : la trace « réponse envoyée » est
+// posée par l'action, dans la même transaction que la réponse ; le journal dit ce
+// qu'un humain a FAIT, l'état de livraison ce que la chaîne d'envoi en a fait.
+async function handleCandidatureReponse(
+  payload: Record<string, unknown>,
+  ctx: ContexteEssai,
+): Promise<void> {
+  await envoyerReponseUnSeulEnvoi(payload, ctx, {
+    gabarit: "candidature-reponse",
+    lire: (id) => prisma.jobApplicationReply.findUnique({ where: { id } }),
+    ecrireSiNonEnvoye: (id, data) =>
+      prisma.jobApplicationReply.updateMany({ where: { id, sentAt: null }, data }),
+    reparerEnvoye: (id) =>
+      prisma.jobApplicationReply.updateMany({
+        where: { id, deliveryStatus: { in: ["pending", "failed"] }, sentAt: { not: null } },
+        data: { deliveryStatus: "sent" },
+      }),
+    marquerEnvoye: (ligne, messageId, now) =>
+      prisma.jobApplicationReply.updateMany({
+        where: { id: ligne.id },
+        data: { deliveryStatus: "sent", sentAt: now, providerMessageId: messageId },
+      }),
+  });
 }
