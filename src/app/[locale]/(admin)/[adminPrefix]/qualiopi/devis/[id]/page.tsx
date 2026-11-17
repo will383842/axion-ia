@@ -58,6 +58,10 @@ import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
+import {
+  formatDateParis,
+  validiteBrouillonModifiable,
+} from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -116,13 +120,7 @@ function formatEur(cents: number): string {
   }).format(cents / 100);
 }
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
+const formatDate = formatDateParis;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types des lignes JSON
@@ -422,7 +420,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 </span>
               )}
             </p>
-            {devis.statut === "brouillon" ? (
+            {validiteBrouillonModifiable(devis) ? (
               <div className="mt-[var(--space-admin-3)]">
                 <ValiditeBrouillon
                   devisId={devis.id}
@@ -743,8 +741,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         />
         {devis.livraisonDebutAt && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-            Livraison démarrée le {devis.livraisonDebutAt.toLocaleDateString("fr-FR")}
-            {devis.livreAt ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR")}` : ""}.
+            Livraison démarrée le{" "}
+            {devis.livraisonDebutAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}
+            {devis.livreAt
+              ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`
+              : ""}
+            .
           </p>
         )}
       </section>
