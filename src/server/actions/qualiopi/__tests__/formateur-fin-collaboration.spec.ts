@@ -30,7 +30,7 @@ vi.mock("@/server/qualiopi/formateurs-independants/interrupteur-allume", () => (
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   envoyer: (...a: unknown[]) => d.envoyer(...a),
-  apercu: (...a: unknown[]) => d.apercu(...a),
+  apercuLecteurFormateur: (...a: unknown[]) => d.apercu(...a),
   texteValide: async () => false,
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/fin-collaboration-service", () => ({

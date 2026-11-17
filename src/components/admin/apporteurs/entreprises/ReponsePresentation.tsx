@@ -174,12 +174,7 @@ export function ReponsePresentation({
               key={e.destinataire + e.sujet}
               className="flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
             >
-              <LecteurEmail
-                html={e.html}
-                a={e.destinataire}
-                objet={e.sujet}
-                titre={`Aperçu : ${e.sujet}`}
-              />
+              <LecteurEmail apercu={e.apercu} titre={`Aperçu : ${e.sujet}`} liensInertes />
               {e.gabarit && e.texteDefaut !== undefined ? (
                 <EditeurTexte
                   key={e.gabarit}

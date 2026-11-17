@@ -5,6 +5,7 @@
 // Will peut RÉÉCRIRE le texte principal (« Modifier le texte ») : l'aperçu se rafraîchit
 // avec le rendu exact, et l'envoi utilise ce texte.
 
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, type ReactNode } from "react";
 
@@ -16,6 +17,8 @@ export interface EmailApercu {
   sujet: string;
   html: string;
   destinataire: string;
+  /** L'e-mail tel que la console le montre (en-tête complet, texte) : masqué et inerte côté serveur. */
+  apercu: ApercuLecteur;
   /** Texte principal par défaut (texte brut) ; absent = non modifiable. */
   texteDefaut?: string;
 }
@@ -143,7 +146,7 @@ export function ApercuEmail({
       aria-label="Aperçu de l'e-mail"
       className="flex flex-col gap-[var(--space-admin-3)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
     >
-      <LecteurEmail html={email.html} a={email.destinataire} objet={email.sujet} />
+      <LecteurEmail apercu={email.apercu} titre={`Aperçu : ${email.sujet}`} liensInertes />
       {onActualiserTexte && email.texteDefaut !== undefined ? (
         <EditeurTexte
           texteDefaut={email.texteDefaut}
