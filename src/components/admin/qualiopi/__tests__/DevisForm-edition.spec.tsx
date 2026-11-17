@@ -91,6 +91,7 @@ describe("DevisForm — édition", () => {
         ],
         activite: "formation",
         refClient: "BC-12",
+        conditionsParticulieres: null,
       },
     });
     expect(creer).not.toHaveBeenCalled();
