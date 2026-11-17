@@ -74,6 +74,9 @@ vi.mock("@/lib/redis", () => {
       set: async (k: string, v: string) => (m.has(k) ? null : (m.set(k, v), "OK")),
       get: async (k: string) => m.get(k) ?? null,
       del: async (k: string) => (m.delete(k) ? 1 : 0),
+      pttl: async (k: string) => (m.has(k) ? 86_400_000 : -2),
+      eval: async (_s: string, _n: number, k: string, arg: string) =>
+        m.get(k) === arg ? (m.delete(k), 1) : 0,
     },
   };
 });

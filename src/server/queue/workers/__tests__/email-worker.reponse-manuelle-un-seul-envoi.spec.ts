@@ -13,7 +13,8 @@
 //   W9  Redis en erreur              → aucun envoi, erreur relevée
 //   W10 verrou libéré seulement si le jeton est le nôtre
 //   W11 ancien payload accepté tel quel
-import { describe, it, expect, vi, beforeEach } from "vitest";
+//   W12-W22 addendum W1 : verrou orphelin, marqueur, issue inconnue, DelayedError, defa
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 type Ligne = {
   id: string;
@@ -35,8 +36,10 @@ const d = vi.hoisted(() => ({
   capture: vi.fn(),
   lignes: {} as Record<string, Record<string, unknown>>,
   echecsEcritureSent: { n: 0 },
-  redisMap: new Map<string, string>(),
+  redisMap: new Map<string, { v: string; expireAt: number | null }>(),
   redisSetErreur: { v: null as Error | null },
+  redisSetErreurMarqueur: { n: 0 },
+  handlers: {} as Record<string, (...a: unknown[]) => unknown>,
   submissionUpdate: vi.fn(),
 }));
 
@@ -45,8 +48,15 @@ vi.mock("bullmq", () => ({
     constructor(...args: unknown[]) {
       d.ctor(...args);
     }
-    on(): this {
+    on(evt: string, fn: (...a: unknown[]) => unknown): this {
+      d.handlers[evt] = fn;
       return this;
+    }
+  },
+  DelayedError: class DelayedError extends Error {
+    constructor() {
+      super("DelayedError");
+      this.name = "DelayedError";
     }
   },
 }));
@@ -54,7 +64,10 @@ vi.mock("../../connection", () => ({ getBullConnectionOrThrow: () => ({ host: "d
 vi.mock("../../lib/sentry-worker", () => ({
   captureWorkerError: (...a: unknown[]) => d.capture(...a),
 }));
-vi.mock("../../lib/sanitize-job-data", () => ({ redactEmailValue: (v: string) => v }));
+vi.mock("../../lib/sanitize-job-data", async (orig) => ({
+  ...(await orig<typeof import("../../lib/sanitize-job-data")>()),
+  redactEmailValue: (v: string) => v,
+}));
 vi.mock("@/lib/email/client", () => ({
   sendEmail: (...a: unknown[]) => d.sendEmail(...a),
   verifyTransport: vi.fn().mockResolvedValue({ ok: true }),
@@ -69,16 +82,36 @@ vi.mock("@/server/email/verdict-envoi", () => ({
   estSollicitationSoumiseAOpposition: vi.fn().mockReturnValue(false),
   verdictAvantEnvoi: vi.fn(),
 }));
+/** Doublure Redis : expiration paresseuse selon `Date.now()` (les tests utilisent `vi.setSystemTime`). */
+function vivante(k: string): { v: string; expireAt: number | null } | undefined {
+  const e = d.redisMap.get(k);
+  if (e && e.expireAt !== null && e.expireAt <= Date.now()) {
+    d.redisMap.delete(k);
+    return undefined;
+  }
+  return e;
+}
 vi.mock("@/lib/redis", () => ({
   redis: {
-    set: async (k: string, v: string, _ex: string, _ttl: number, nx: string) => {
+    set: async (k: string, v: string, _ex: string, ttl: number, nx?: string) => {
       if (d.redisSetErreur.v) throw d.redisSetErreur.v;
-      if (nx === "NX" && d.redisMap.has(k)) return null;
-      d.redisMap.set(k, v);
+      if (k.startsWith("envoye:") && d.redisSetErreurMarqueur.n > 0) {
+        d.redisSetErreurMarqueur.n--;
+        throw new Error("redis marqueur indisponible");
+      }
+      if (nx === "NX" && vivante(k)) return null;
+      d.redisMap.set(k, { v, expireAt: Date.now() + ttl * 1000 });
       return "OK";
     },
-    get: async (k: string) => d.redisMap.get(k) ?? null,
+    get: async (k: string) => vivante(k)?.v ?? null,
     del: async (k: string) => (d.redisMap.delete(k) ? 1 : 0),
+    pttl: async (k: string) => {
+      const e = vivante(k);
+      if (!e) return -2;
+      return e.expireAt === null ? -1 : e.expireAt - Date.now();
+    },
+    eval: async (_script: string, _n: number, k: string, arg: string) =>
+      vivante(k)?.v === arg ? (d.redisMap.delete(k), 1) : 0,
   },
 }));
 
@@ -137,7 +170,7 @@ vi.mock("@/server/email/email-log", () => ({
 
 import { startEmailWorker } from "../email-worker";
 
-type Processeur = (job: Record<string, unknown>) => Promise<void>;
+type Processeur = (job: Record<string, unknown>, token?: string) => Promise<void>;
 function processeur(): Processeur {
   startEmailWorker();
   return d.ctor.mock.calls.at(-1)?.[1] as Processeur;
@@ -154,6 +187,8 @@ function job(g: (typeof GABARITS)[number], over: Record<string, unknown> = {}) {
     name: g.template,
     data: { template: g.template, to: "", locale: "fr", payload: g.payload },
     attemptsMade: 0,
+    attemptsStarted: 1,
+    moveToDelayed: vi.fn().mockResolvedValue(undefined),
     opts: { attempts: 5 },
     ...over,
   };
@@ -177,13 +212,33 @@ function poser(g: (typeof GABARITS)[number], over: Partial<Ligne> = {}) {
   return d.lignes[g.nom] as Ligne;
 }
 
+const MAINTENANT = new Date("2026-11-17T10:00:00Z");
+const MIN = 60_000;
+const cleVerrou = (g: (typeof GABARITS)[number]) => `verrou:envoi-reponse:${g.template}:r-1`;
+const cleMarqueur = (g: (typeof GABARITS)[number]) => `envoye:envoi-reponse:${g.template}:r-1`;
+const MOTIF =
+  "Envoi interrompu, issue inconnue : vérifier dans la boîte d'envoi avant de réessayer.";
+/** Pose un verrou tenu par un autre démarrage, âgé de `ageMs` (TTL 24 h, comme le worker). */
+function poserVerrou(g: (typeof GABARITS)[number], jeton: string, ageMs: number) {
+  d.redisMap.set(cleVerrou(g), { v: jeton, expireAt: Date.now() + 86_400_000 - ageMs });
+}
+const erreurDe = async (p: Promise<unknown>) =>
+  p.then(
+    () => null,
+    (e: unknown) => e as Error,
+  );
+
 let livres = 0;
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.useFakeTimers({ toFake: ["Date"] });
+  vi.setSystemTime(MAINTENANT);
   d.lignes = {};
   d.echecsEcritureSent.n = 0;
   d.redisMap.clear();
   d.redisSetErreur.v = null;
+  d.redisSetErreurMarqueur.n = 0;
+  d.handlers = {};
   d.submissionUpdate.mockResolvedValue({});
   livres = 0;
   d.sendEmail.mockImplementation(
@@ -199,6 +254,9 @@ beforeEach(() => {
   vi.spyOn(console, "error").mockImplementation(() => {});
   vi.spyOn(console, "warn").mockImplementation(() => {});
 });
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe.each(GABARITS)("$template : un seul envoi", (g) => {
   it("W1 : erreur au 1er essai → reste pending, « nouvel essai automatique », erreur relevée", async () => {
@@ -210,7 +268,8 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     expect(l.errorMsg).toContain("nouvel essai automatique");
     expect(l.errorMsg).toContain("Essai 1/5");
     expect(l.retryCount).toBe(1);
-    expect(d.redisMap.size).toBe(0);
+    expect(l.errorMsg).not.toContain("nadia@exemple.fr");
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
   });
 
   it("W2 : erreur au dernier essai → failed + failedAt, erreur relevée", async () => {
@@ -220,6 +279,7 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     expect(l.deliveryStatus).toBe("failed");
     expect(l.failedAt).toBeInstanceOf(Date);
     expect(l.errorMsg).toBe("smtp 550");
+    expect(l.errorMsg).not.toContain("@");
   });
 
   it.each([
@@ -235,20 +295,33 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     if (_nom === "bounced") expect(l.deliveryStatus).toBe("bounced");
   });
 
-  it("W4 : verrou déjà pris → aucun envoi, ligne intacte, rien levé", async () => {
+  it("W4 : verrou de 1 min tenu par un autre → aucun envoi, ligne intacte, report sans essai", async () => {
     const l = poser(g);
-    d.redisMap.set(`verrou:envoi-reponse:${g.template}:r-1`, "autre-jeton");
+    poserVerrou(g, "autre-jeton", 1 * MIN);
     const avant = { ...l };
-    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    const j = job(g);
+    const e = await erreurDe(processeur()(j, "tok"));
+    expect(e?.name).toBe("DelayedError");
     expect(d.sendEmail).not.toHaveBeenCalled();
     expect(l).toEqual(avant);
-    expect(d.redisMap.get(`verrou:envoi-reponse:${g.template}:r-1`)).toBe("autre-jeton");
+    const mv = j.moveToDelayed as ReturnType<typeof vi.fn>;
+    expect(mv).toHaveBeenCalledTimes(1);
+    const [ts, token] = mv.mock.calls[0] as [number, string];
+    expect(ts).toBeGreaterThanOrEqual(Date.now() + 15_000);
+    expect(ts).toBeLessThanOrEqual(Date.now() + 300_000);
+    expect(token).toBe("tok");
+    expect(d.redisMap.get(cleVerrou(g))?.v).toBe("autre-jeton");
+    expect(d.capture).not.toHaveBeenCalled();
   });
 
-  it("W5 : deux jobs ensemble → sendEmail exactement une fois, ligne sent", async () => {
+  it("W5 : deux jobs ensemble → le second est reporté, relancé il ne renvoie rien, un seul sendEmail", async () => {
     const l = poser(g);
     const p = processeur();
-    await Promise.all([p(job(g, { id: "job-1" })), p(job(g, { id: "job-2" }))]);
+    const j2 = job(g, { id: "job-2" });
+    const [r1, r2] = await Promise.all([erreurDe(p(job(g, { id: "job-1" }))), erreurDe(p(j2))]);
+    expect(r1).toBeNull();
+    expect(r2?.name).toBe("DelayedError");
+    await p(j2); // le second job est relancé
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
     expect(livres).toBe(1);
     expect(l.deliveryStatus).toBe("sent");
@@ -282,7 +355,14 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
       const l = poser(g, { deliveryStatus: "failed", failedAt: new Date() });
       l.deliveryStatus = "pending";
       const p = processeur();
-      await Promise.all([p(job(g, { id: "job-1", attemptsMade: 1 })), p(job(g, { id: "job-2" }))]);
+      const j2 = job(g, { id: "job-2" });
+      const [r1, r2] = await Promise.all([
+        erreurDe(p(job(g, { id: "job-1", attemptsMade: 1 }))),
+        erreurDe(p(j2)),
+      ]);
+      expect(r1).toBeNull();
+      expect(r2?.name).toBe("DelayedError");
+      await p(j2);
       expect(livres).toBe(1);
       expect(l.deliveryStatus).toBe("sent");
     });
@@ -294,14 +374,18 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     });
   });
 
-  it("W8 : écriture sent en échec ×3 → un seul envoi, rien levé, Sentry, verrou libéré", async () => {
+  it("W8 : écriture sent en échec ×3 → un seul envoi, verrou GARDÉ, report, Sentry avec le job", async () => {
     const l = poser(g);
     d.echecsEcritureSent.n = 3;
-    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    const j = job(g);
+    const e = await erreurDe(processeur()(j));
+    expect(e?.name).toBe("DelayedError");
     expect(d.sendEmail).toHaveBeenCalledTimes(1);
+    expect(j.moveToDelayed).toHaveBeenCalledTimes(1);
     expect(d.capture).toHaveBeenCalledTimes(1);
+    expect(d.capture.mock.calls[0]?.[2]).toBe(j);
     expect(l.deliveryStatus).toBe("pending");
-    expect(d.redisMap.size).toBe(0);
+    expect(d.redisMap.has(cleVerrou(g))).toBe(true);
   });
 
   it("W8bis : l'écriture sent réussit au 2e essai → ligne sent, pas de Sentry", async () => {
@@ -310,6 +394,7 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     await processeur()(job(g));
     expect(l.deliveryStatus).toBe("sent");
     expect(d.capture).not.toHaveBeenCalled();
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
   });
 
   it("W9 : Redis en erreur à la prise du verrou → aucun envoi, erreur relevée", async () => {
@@ -323,18 +408,18 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     poser(g);
     const cle = `verrou:envoi-reponse:${g.template}:r-1`;
     d.sendEmail.mockImplementationOnce(async () => {
-      expect(d.redisMap.get(cle)).toBe("job-1-1"); // jeton = <job.id>-<essai>
-      d.redisMap.set(cle, "jeton-d-un-autre"); // le TTL a expiré, un autre a repris le verrou
+      expect(d.redisMap.get(cle)?.v).toBe("job-1-1-1"); // jeton = <job.id>-<essai>-<démarrage>
+      d.redisMap.set(cle, { v: "jeton-d-un-autre", expireAt: null }); // le TTL a expiré, un autre a repris le verrou
       return { messageId: "<m>" };
     });
     await processeur()(job(g));
-    expect(d.redisMap.get(cle)).toBe("jeton-d-un-autre");
+    expect(d.redisMap.get(cle)?.v).toBe("jeton-d-un-autre");
   });
 
   it("W10bis : le verrou est libéré quand le jeton est le nôtre", async () => {
     poser(g);
     await processeur()(job(g));
-    expect(d.redisMap.size).toBe(0);
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
   });
 
   it("W11 : l'ancien payload { replyId, subject, submissionId | applicationId } est accepté", async () => {
@@ -349,5 +434,154 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     });
     expect(livres).toBe(1);
     expect(l.deliveryStatus).toBe("sent");
+  });
+
+  it("W12 : verrou orphelin (31 min), pas de marqueur → failed + motif, verrou supprimé, Sentry, rien levé", async () => {
+    const l = poser(g);
+    poserVerrou(g, "job-0-1-1", 31 * MIN);
+    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg?.startsWith(MOTIF)).toBe(true);
+    expect(l.failedAt).toBeInstanceOf(Date);
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
+    expect(d.capture).toHaveBeenCalledTimes(1);
+  });
+
+  it("W13 : verrou orphelin et marqueur présent → sent avec le messageId du marqueur, rien levé", async () => {
+    const l = poser(g);
+    poserVerrou(g, "job-0-1-1", 31 * MIN);
+    d.redisMap.set(cleMarqueur(g), { v: "<du-marqueur>", expireAt: null });
+    await expect(processeur()(job(g))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("sent");
+    expect(l.providerMessageId).toBe("<du-marqueur>");
+  });
+
+  it("W14 : failed « issue inconnue » sans verrou → aucun envoi ; après « Réessayer » → un seul envoi", async () => {
+    const l = poser(g, { deliveryStatus: "failed", failedAt: new Date(), errorMsg: MOTIF });
+    const p = processeur();
+    await expect(p(job(g))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    l.deliveryStatus = "pending"; // « Réessayer » simulé
+    l.errorMsg = null;
+    await p(job(g, { id: "job-2" }));
+    expect(livres).toBe(1);
+    expect(l.deliveryStatus).toBe("sent");
+  });
+
+  it("W15 : relance après blocage → report ; 31 min plus tard issue inconnue, un seul sendEmail", async () => {
+    const l = poser(g);
+    const p = processeur();
+    // 1er démarrage : envoi lancé, le conteneur meurt (verrou laissé, jeton ...-1) → on le simule.
+    poserVerrou(g, "job-1-1-1", 2 * MIN);
+    d.sendEmail.mockClear();
+    livres = 1; // le 1er démarrage a bien appelé sendEmail une fois
+    const j2 = job(g, { attemptsStarted: 2 });
+    const e = await erreurDe(p(j2));
+    expect(e?.name).toBe("DelayedError");
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(l.deliveryStatus).toBe("pending");
+    vi.setSystemTime(new Date(MAINTENANT.getTime() + 31 * MIN));
+    await expect(p(job(g, { attemptsStarted: 3 }))).resolves.toBeUndefined();
+    expect(d.sendEmail).not.toHaveBeenCalled();
+    expect(livres).toBe(1);
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg?.startsWith(MOTIF)).toBe(true);
+  });
+
+  it("W16 : envoi réussi, écriture sent en échec ×3, marqueur posé → report, verrou gardé ; relance → sent par le marqueur", async () => {
+    const l = poser(g);
+    d.echecsEcritureSent.n = 3;
+    const p = processeur();
+    const e = await erreurDe(p(job(g)));
+    expect(e?.name).toBe("DelayedError");
+    expect(d.redisMap.has(cleVerrou(g))).toBe(true);
+    expect(d.redisMap.get(cleMarqueur(g))?.v).toBe("<m1>");
+    expect(l.deliveryStatus).toBe("pending");
+    await p(job(g, { attemptsStarted: 2 }));
+    expect(l.deliveryStatus).toBe("sent");
+    expect(l.providerMessageId).toBe("<m1>");
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("W17 : comme W16 mais le marqueur échoue aussi → relance à 31 min : failed + motif, un seul envoi", async () => {
+    const l = poser(g);
+    d.echecsEcritureSent.n = 3;
+    d.redisSetErreurMarqueur.n = 3;
+    const p = processeur();
+    const e = await erreurDe(p(job(g)));
+    expect(e?.name).toBe("DelayedError");
+    expect(d.redisMap.has(cleMarqueur(g))).toBe(false);
+    vi.setSystemTime(new Date(MAINTENANT.getTime() + 31 * MIN));
+    await expect(p(job(g, { attemptsStarted: 2 }))).resolves.toBeUndefined();
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg?.startsWith(MOTIF)).toBe(true);
+    expect(d.sendEmail).toHaveBeenCalledTimes(1);
+  });
+
+  it("W18 : Redis en erreur à la prise du verrou (D4) → dernier essai failed, sinon pending, aucun envoi", async () => {
+    const l = poser(g);
+    d.redisSetErreur.v = new Error("redis down");
+    await expect(processeur()(job(g, { attemptsMade: 4 }))).rejects.toThrow("redis down");
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.failedAt).toBeInstanceOf(Date);
+    expect(l.errorMsg).toBe(
+      "Envoi non tenté : verrou d'envoi indisponible (Redis). Vérifier l'historique avant de réessayer.",
+    );
+    const l2 = poser(g);
+    await expect(processeur()(job(g, { attemptsMade: 0 }))).rejects.toThrow("redis down");
+    expect(l2.deliveryStatus).toBe("pending");
+    expect(l2.errorMsg).toBe("Essai 1/5 : verrou d'envoi indisponible, nouvel essai automatique");
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("W19 : ligne failed (sans motif), erreur au 1er essai → la ligne passe pending (D5)", async () => {
+    const l = poser(g, { deliveryStatus: "failed", failedAt: new Date(), errorMsg: "ancien" });
+    d.sendEmail.mockRejectedValueOnce(new Error("smtp 421"));
+    await expect(processeur()(job(g))).rejects.toThrow("smtp 421");
+    expect(l.deliveryStatus).toBe("pending");
+  });
+
+  it("W20 : erreur SMTP citant une adresse → errorMsg sans l'adresse (D7), au 1er et au dernier essai", async () => {
+    const l = poser(g);
+    d.sendEmail.mockRejectedValueOnce(new Error("550 refus pour x@y.fr"));
+    await expect(processeur()(job(g))).rejects.toThrow();
+    expect(l.errorMsg).not.toContain("x@y.fr");
+    const l2 = poser(g);
+    d.sendEmail.mockRejectedValueOnce(new Error("550 refus pour x@y.fr"));
+    await expect(processeur()(job(g, { attemptsMade: 4 }))).rejects.toThrow();
+    expect(l2.errorMsg).not.toContain("x@y.fr");
+  });
+
+  it("W21 : job tué deux fois (defa) → failed + motif, verrou job-1-… supprimé, verrou d'un autre laissé", async () => {
+    const l = poser(g);
+    processeur();
+    const surEchec = d.handlers["failed"] as (j: unknown, e: Error) => void;
+    const defa = new Error("job stalled more than allowable limit");
+    const j = job(g);
+    // verrou d'un autre job : laissé
+    poserVerrou(g, "job-9-1-1", 40 * MIN);
+    surEchec(j, defa);
+    await vi.waitFor(() => expect(l.deliveryStatus).toBe("failed"));
+    expect(l.errorMsg?.startsWith(MOTIF)).toBe(true);
+    expect(d.redisMap.get(cleVerrou(g))?.v).toBe("job-9-1-1");
+    // verrou de CE job : supprimé
+    poser(g);
+    poserVerrou(g, "job-1-1-1", 40 * MIN);
+    surEchec(j, defa);
+    await vi.waitFor(() => expect(d.redisMap.has(cleVerrou(g))).toBe(false));
+    expect(d.sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("W22 : un sent tardif après « issue inconnue » efface errorMsg et failedAt", async () => {
+    const l = poser(g, { deliveryStatus: "failed", failedAt: new Date(), errorMsg: MOTIF });
+    d.redisMap.set(cleMarqueur(g), { v: "<tardif>", expireAt: null }); // l'envoi vivait encore
+    await processeur()(job(g));
+    expect(l.deliveryStatus).toBe("sent");
+    expect(l.providerMessageId).toBe("<tardif>");
+    expect(l.errorMsg).toBeNull();
+    expect(l.failedAt).toBeNull();
+    expect(d.sendEmail).not.toHaveBeenCalled();
   });
 });
