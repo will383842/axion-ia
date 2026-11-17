@@ -833,6 +833,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/calendly/annonces-echange-formateur.ts",
   //  · la page neutre du dossier mène à « Retrouver mon espace » quand le dossier est ouvert.
   "src/app/formateur/dossier/[id]/[jeton]/not-found.tsx",
+  // E-mails en sommeil déjà en file (L9b, 17/11/2026) — le worker d'e-mails lit la seule fonction
+  // `gabaritEnSommeil` (et le message associé) pour ne jamais envoyer un e-mail en sommeil déjà en file ;
+  // il n'importe que ce module du domaine, rien d'autre. Son test fait de même. Nommés seuls.
+  "src/server/queue/workers/email-worker.ts",
+  "src/server/queue/workers/__tests__/email-worker.sommeil.spec.ts",
 ]);
 
 /**
