@@ -76,6 +76,7 @@
 
 import nodemailer from "nodemailer";
 import type { Transporter } from "nodemailer";
+import type SMTPPool from "nodemailer/lib/smtp-pool";
 import { enveloppeExpedition } from "./enveloppe";
 
 // « De » et « Répondre à » : source unique dans `./enveloppe` (I0b-2). Ce
@@ -122,7 +123,7 @@ function getTransport(): Transporter {
 
   assertTransportUtilisable(hasAuth, host, port);
 
-  _transport = nodemailer.createTransport({
+  const options: SMTPPool.Options & { maxRequeues: number } = {
     host,
     port,
     // Deux modes selon la présence d'identifiants :
@@ -160,7 +161,20 @@ function getTransport(): Transporter {
     // `sendEmail()` sans passer par la file (contournement connu du 13/08).
     rateDelta: 1000,
     rateLimit: 2,
-  });
+
+    // Un message coupé en cours d'envoi n'est plus renvoyé en silence par le pool
+    // (`maxRequeues` absent des types : d'où la constante typée). Pour les réponses écrites à la
+    // main, l'échec devient « issue inconnue » ; pour les autres e-mails, BullMQ réessaie (même
+    // risque qu'avant, mais visible). Ne jamais passer `pool` à `false` sans revoir
+    // `classerEchecEnvoi` (règle `Unexpected socket close`, vraie seulement avec le pool).
+    maxRequeues: 0,
+    // Délais explicites (défauts nodemailer : 2 min, 30 s, 10 min, 30 s).
+    connectionTimeout: 30_000,
+    greetingTimeout: 30_000,
+    socketTimeout: 120_000,
+    dnsTimeout: 30_000,
+  };
+  _transport = nodemailer.createTransport(options);
   return _transport;
 }
 
