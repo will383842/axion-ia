@@ -16,6 +16,8 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { idsPiecesDevisAContresigner } from "@/server/qualiopi/documents/signature/pieces-en-attente";
@@ -28,10 +30,15 @@ import {
 } from "@/server/qualiopi/devis/a-contresigner";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Qualiopi — Devis | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// B6b-1 : avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: isQualiopiCertificationObtenue()
+      ? "Qualiopi — Devis | Axion-IA Admin"
+      : "Devis | Axion-IA Admin",
+    robots: { index: false, follow: false },
+  };
+}
 
 const STATUT_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -49,13 +56,6 @@ const STATUT_TONES: Record<string, "neutral" | "info" | "success" | "warning"> =
   refuse: "neutral",
   expire: "neutral",
   transforme_convention: "info",
-};
-
-const FINANCEMENT_LABELS: Record<string, string> = {
-  direct: "Direct",
-  opco: "OPCO",
-  cpf: "CPF",
-  france_travail: "France Travail",
 };
 
 /** Formate un montant en centimes vers "1 234,56 €" (FR). */
@@ -89,6 +89,9 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
 
+  // B6b-1 : lu une fois, côté serveur ; sans certification, aucun mot de tiers payeur.
+  const certifie = isQualiopiCertificationObtenue();
+
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const [devisList, clients, piecesAContresigner] = await Promise.all([
     listDevis(),
@@ -114,7 +117,11 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
     <AdminPageShell width="wide">
       <AdminPageHeader
         title="Devis"
-        description="Devis commerciaux formation — montants HT, financement OPCO estimé, statut."
+        description={
+          certifie
+            ? "Devis commerciaux formation — montants HT, financement OPCO estimé, statut."
+            : "Devis commerciaux formation — montants HT, statut et validité."
+        }
         actions={<AdminButton href={`${devisBase}/new`}>Nouveau devis</AdminButton>}
       />
 
@@ -165,7 +172,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                 <th className={headCls}>Numéro</th>
                 <th className={headCls}>Client</th>
                 <th className={headCls}>Montant HT</th>
-                <th className={headCls}>Financement</th>
+                <th className={headCls}>{certifie ? "Financement" : "Règlement"}</th>
                 <th className={headCls}>Statut</th>
                 <th className={headCls}>Validité</th>
                 <th className={headCls}>Action</th>
@@ -200,14 +207,19 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                       {devis.montantOpcoEstimeCents !== null &&
                         devis.montantOpcoEstimeCents !== undefined && (
                           <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                            OPCO : {formatEur(devis.montantOpcoEstimeCents)}
+                            {certifie ? "OPCO" : "Tiers"} :{" "}
+                            {formatEur(devis.montantOpcoEstimeCents)}
                             {/* Lot A4 — chiffre non adossé à un barème relevé. */}
                             {devis.opcoEstimationAvertissement && (
                               <span
                                 className="ml-[var(--space-admin-1)] text-[color:var(--color-admin-warning)]"
-                                title={devis.opcoEstimationAvertissement}
+                                title={
+                                  certifie
+                                    ? devis.opcoEstimationAvertissement
+                                    : "Note d'estimation enregistrée (non affichée avant certification)"
+                                }
                               >
-                                {devis.opcoEstimationOrigine === "hors_fonds_legaux"
+                                {certifie && devis.opcoEstimationOrigine === "hors_fonds_legaux"
                                   ? "(hors fonds légaux)"
                                   : "(indicatif)"}
                               </span>
@@ -217,7 +229,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                     </td>
                     <td className={cellCls}>
                       {devis.financementSuggere ? (
-                        (FINANCEMENT_LABELS[devis.financementSuggere] ?? devis.financementSuggere)
+                        libelleReglementDevis(devis.financementSuggere, certifie, "liste")
                       ) : (
                         <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
                       )}
