@@ -34,6 +34,8 @@
  * du code serveur.
  */
 
+import { createHash } from "node:crypto";
+
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
@@ -72,6 +74,18 @@ export interface ContenuDeLaReponse {
   bodyMarkdown: string;
   modele: ModeleComposeurId;
   internalNote?: string | undefined;
+  /**
+   * Le texte TEL QUE SAISI, avant remplacement de `{lien_complement}` (dont le
+   * jeton change à chaque milliseconde). Jamais enregistré en clair : seule son
+   * empreinte SHA-256 l'est (`meta.empreinte_saisie` de l'événement du journal),
+   * pour que la garde contre le doublon reconnaisse deux envois du même texte.
+   */
+  texteSaisi?: string | undefined;
+}
+
+/** Empreinte SHA-256 hexadécimale du texte saisi. */
+export function empreinteDuTexteSaisi(texte: string): string {
+  return createHash("sha256").update(texte, "utf8").digest("hex");
 }
 
 /**
@@ -141,11 +155,23 @@ async function trouverDoublon(
   if (recentes.length === 0) return null;
   // Le corps stocké sur la réponse est le HTML rendu ; le texte écrit par
   // l'auteur est celui du journal, écrit dans la même transaction.
+  // Avec une empreinte, on compare le texte SAISI (le corps rempli contient un
+  // lien au jeton unique et ne se recompare jamais). Les anciennes lignes n'ont
+  // pas l'empreinte : elles se comparent sur le corps, comme avant.
+  const empreinte =
+    contenu.texteSaisi === undefined ? null : empreinteDuTexteSaisi(contenu.texteSaisi);
   const evenement = await tx.jobApplicationEvent.findFirst({
     where: {
       applicationId: candidatureId,
       type: "email_envoye",
-      body: contenu.bodyMarkdown,
+      ...(empreinte === null
+        ? { body: contenu.bodyMarkdown }
+        : {
+            OR: [
+              { meta: { path: ["empreinte_saisie"], equals: empreinte } },
+              { body: contenu.bodyMarkdown },
+            ],
+          }),
       replyId: { in: recentes.map((r) => r.id) },
     },
     select: { replyId: true },
@@ -239,7 +265,12 @@ export async function ecrireEtEnfilerReponse(
           summary: `Réponse envoyée — ${contenu.subject}`,
           body: contenu.bodyMarkdown,
           replyId: reponse.id,
-          meta: { modele: contenu.modele },
+          meta: {
+            modele: contenu.modele,
+            ...(contenu.texteSaisi === undefined
+              ? {}
+              : { empreinte_saisie: empreinteDuTexteSaisi(contenu.texteSaisi) }),
+          },
         },
         tx,
       );

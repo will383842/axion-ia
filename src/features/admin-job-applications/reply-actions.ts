@@ -164,6 +164,8 @@ export async function repondreAuCandidatAction(
     {
       subject: data.subject,
       bodyMarkdown: corps,
+      // Le texte saisi, avant remplacement du lien : la garde compare dessus.
+      texteSaisi: data.bodyMarkdown,
       modele: data.modele,
       internalNote: data.internalNote,
     },

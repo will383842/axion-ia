@@ -10,6 +10,8 @@ const ordre: string[] = [];
 const replyFindMany = vi.fn();
 const eventFindFirst = vi.fn();
 const enqueue = vi.fn();
+const creations = vi.fn();
+const evenements: Array<{ replyId: string; body: string; meta?: Record<string, unknown> }> = [];
 let verrouArgs: unknown[] = [];
 
 const tx = {
@@ -24,6 +26,7 @@ const tx = {
       return replyFindMany(...a);
     },
     create: () => {
+      creations();
       ordre.push("ecriture");
       return Promise.resolve({ id: "neuve" });
     },
@@ -50,7 +53,12 @@ vi.mock("@/server/careers/lien-suppression-candidature", () => ({
   lienSuppressionCandidature: async () => null,
 }));
 vi.mock("../journal", () => ({
-  consignerEvenement: async () => {
+  consignerEvenement: async (e: {
+    replyId: string;
+    body: string;
+    meta?: Record<string, unknown>;
+  }) => {
+    evenements.push(e);
     ordre.push("journal");
   },
 }));
@@ -70,6 +78,8 @@ const contenu = { subject: "Votre candidature", bodyMarkdown: "Bonjour", modele:
 
 beforeEach(() => {
   ordre.length = 0;
+  creations.mockReset();
+  evenements.length = 0;
   verrouArgs = [];
   replyFindMany.mockReset().mockResolvedValue([]);
   eventFindFirst.mockReset().mockResolvedValue(null);
@@ -170,5 +180,67 @@ describe("ecrireEtEnfilerReponse — garde contre le doublon", () => {
     expect(ordre).not.toContain("verrou");
     expect(ordre).not.toContain("recherche");
     expect(ordre).toContain("ecriture");
+  });
+});
+
+describe("garde contre le doublon — texte saisi avec {lien_complement}", () => {
+  type Cond = { body?: string; meta?: { path: string[]; equals: string }; OR?: Cond[] };
+  const correspond = (ev: (typeof evenements)[number], c: Cond): boolean => {
+    if (c.OR) return c.OR.some((x) => correspond(ev, x));
+    if (c.body !== undefined && ev.body !== c.body) return false;
+    if (c.meta && ev.meta?.[c.meta.path[0] as string] !== c.meta.equals) return false;
+    return true;
+  };
+  /** Un journal en mémoire : la recherche du doublon relit ce qui a été écrit. */
+  function brancherJournal(): void {
+    replyFindMany.mockResolvedValue([{ id: "neuve" }]);
+    eventFindFirst.mockImplementation(async (arg: { where: Cond }) => {
+      const trouve = evenements.find((ev) => correspond(ev, arg.where));
+      return trouve ? { replyId: trouve.replyId } : null;
+    });
+  }
+  const saisi = "Bonjour, complétez : {lien_complement}";
+  const envoi = (texte: string, corps: string) =>
+    ecrireEtEnfilerReponse(
+      candidature,
+      acteur,
+      { ...contenu, bodyMarkdown: corps, texteSaisi: texte },
+      { garderContreDoublon: true },
+    );
+
+  it("🔴 (a) même texte saisi, liens aux jetons différents, le premier `pending` : doublon", async () => {
+    brancherJournal();
+    const premier = await envoi(saisi, "Bonjour, complétez : https://x/complement?jeton=AAA");
+    expect(premier).toMatchObject({ ecrit: true });
+    const second = await envoi(saisi, "Bonjour, complétez : https://x/complement?jeton=BBB");
+    expect(second).toEqual({ ecrit: false, error: "doublon", replyId: "neuve" });
+    expect(creations).toHaveBeenCalledTimes(1);
+    expect(enqueue).toHaveBeenCalledTimes(1);
+  });
+
+  it("l'empreinte est enregistrée, le texte saisi n'y figure pas en clair", async () => {
+    await envoi(saisi, "corps rempli");
+    const meta = evenements[0]?.meta ?? {};
+    expect(meta.empreinte_saisie).toMatch(/^[0-9a-f]{64}$/);
+    expect(JSON.stringify(meta)).not.toContain("complétez");
+  });
+
+  it("(b) deux textes différents contenant le lien : pas un doublon", async () => {
+    brancherJournal();
+    await envoi(saisi, "Bonjour, complétez : https://x/complement?jeton=AAA");
+    const autre = await envoi(
+      "Salut, voici le lien : {lien_complement}",
+      "Salut, voici le lien : https://x/complement?jeton=BBB",
+    );
+    expect(autre).toMatchObject({ ecrit: true });
+    expect(creations).toHaveBeenCalledTimes(2);
+  });
+
+  it("(c) ancienne ligne sans empreinte : comparaison sur le corps, comme avant", async () => {
+    brancherJournal();
+    evenements.push({ replyId: "ancienne", body: "Bonjour", meta: { modele: "libre" } });
+    const r = await envoi("Bonjour", "Bonjour");
+    expect(r).toEqual({ ecrit: false, error: "doublon", replyId: "ancienne" });
+    expect(creations).not.toHaveBeenCalled();
   });
 });
