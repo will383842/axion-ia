@@ -18,6 +18,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
+import { lieuRenseigne } from "./qualiopi-convocation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -25,7 +26,7 @@ interface Payload {
   titreFormation: string;
   dateDebut: string;
   dateFin: string;
-  lieu: string;
+  lieu?: string;
   modalite: string;
   numeroSession: string;
   lienPortail?: string;
@@ -75,6 +76,7 @@ export function QualiopiRappelJ1Email({
   // veille d'une séance, l'espace ne porte plus rien qui n'ait déjà été lu, et
   // le lien de connexion est la seule chose que ce message existe pour dire.
   // Le lien reparaît naturellement dès qu'il n'y a pas de visio.
+  const lieu = lieuRenseigne(p.lieu);
   const ctaHref = p.lienVisio ?? p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   const ctaLabel = p.lienVisio ? "Rejoindre la formation" : "Accéder à mon espace";
 
@@ -87,8 +89,8 @@ export function QualiopiRappelJ1Email({
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>
-        <strong>{p.titreFormation}</strong> démarre le <strong>{p.dateDebut}</strong> — {p.modalite}{" "}
-        — {p.lieu}.
+        <strong>{p.titreFormation}</strong> démarre le <strong>{p.dateDebut}</strong> — {p.modalite}
+        {lieu ? ` — ${lieu}` : ""}.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Bonjour {p.stagiairePrenomNom} — voici tout ce dont vous avez besoin pour demain, sans avoir
@@ -104,10 +106,14 @@ export function QualiopiRappelJ1Email({
             moment où l&apos;on découvre qu&apos;une mise à jour est en attente.
           </Text>
         </>
+      ) : lieu ? (
+        <Text style={emailStyles.paragraphStyle}>
+          <strong>Sur place :</strong> {lieu}. Présentez-vous quelques minutes avant l&apos;heure de
+          démarrage.
+        </Text>
       ) : (
         <Text style={emailStyles.paragraphStyle}>
-          <strong>Sur place :</strong> {p.lieu}. Présentez-vous quelques minutes avant l&apos;heure
-          de démarrage.
+          Présentez-vous quelques minutes avant l&apos;heure de démarrage.
         </Text>
       )}
       {p.lienEmargement ? (

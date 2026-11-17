@@ -15,6 +15,7 @@ import type { TexteCopie } from "../devis-formules/saisie";
 import type { PayloadAssistantV1 } from "@/server/qualiopi/devis/assistant/payload";
 import { deserialiser, etatInitial, propositionEffective, serialiser } from "./etat";
 import type { Etape, EtatAssistant, EtatSerialise } from "./types";
+import { eurosEnCents, quantiteLue } from "./calculs";
 import { versSaisie } from "./vers-offre";
 
 export interface ContexteVersPayload {
@@ -72,10 +73,17 @@ export function etatVersPayload(
   if (classique && f.mode !== "") {
     opco.financementSuggere = f.mode;
     if (f.mode === "opco") {
-      if (f.nbParticipants.trim() !== "") opco.nbParticipants = f.nbParticipants.trim();
-      if (f.dureeHeures.trim() !== "") opco.dureeHeures = f.dureeHeures.trim();
+      // Champs d'un ancien brouillon : plus aucun écran ne les affiche (PR 2050), donc une
+      // valeur illisible n'est pas envoyée (le serveur la refuserait sur un champ que
+      // l'utilisateur ne peut plus corriger) — même règle que `vers-offre.ts`. Une valeur
+      // lisible est envoyée telle quelle : aucune donnée n'est perdue.
+      const nb = f.nbParticipants.trim();
+      if (/^\d+$/.test(nb) && Number(nb) > 0) opco.nbParticipants = nb;
+      const heures = f.dureeHeures.trim();
+      if (quantiteLue(heures) !== null) opco.dureeHeures = heures;
       if (f.modaliteOpco !== "") opco.modaliteOpco = f.modaliteOpco;
-      if (f.enveloppeRestante.trim() !== "") opco.enveloppeRestanteEur = f.enveloppeRestante;
+      if (f.enveloppeRestante.trim() !== "" && eurosEnCents(f.enveloppeRestante) !== null)
+        opco.enveloppeRestanteEur = f.enveloppeRestante;
     }
     if (f.dateDebutSession !== "") opco.dateDebutSessionPrevue = f.dateDebutSession;
   }

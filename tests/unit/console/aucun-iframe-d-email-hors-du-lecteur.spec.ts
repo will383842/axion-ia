@@ -67,14 +67,12 @@ function fichiers(dossier: string): string[] {
 }
 
 /**
- * Exceptions NOMMÉES : en majorité des écrans qui ne montrent pas un e-mail (cadre
- * d'analytics, aperçu d'article assaini, feuille de style du gabarit de la console…).
- * ⚠️ `AdminApercuEmail.tsx` fait exception à cette description : il AFFICHE un e-mail
- * dans son propre cadre, sans la règle qui bloque les images distantes. Cet écran
- * sera migré vers `LecteurEmail` dans la seconde partie du lot I0 (à retirer alors).
+ * Exceptions NOMMÉES : des écrans qui ne montrent pas un e-mail (cadre d'analytics,
+ * aperçu d'article assaini, feuille de style du gabarit de la console…). Un écran
+ * qui montre un e-mail n'a PAS sa place ici : il utilise `LecteurEmail`, et la garde
+ * « importeurs » ci-dessous le vérifie toute seule, sans liste à éditer.
  */
 const EXCEPTIONS = new Set<string>([
-  "src/components/admin/ui/AdminApercuEmail.tsx",
   "src/components/admin/ui/LecteurEmail.tsx",
   "src/components/admin/visio/CompteRenduVisio.tsx",
   `${A}/analytics/_v2/AnalyticsV2.tsx`,
@@ -83,11 +81,17 @@ const EXCEPTIONS = new Set<string>([
   // des zones refuse le nom entier hors de ses zones dédiées.
   `${A}/content-${"gen"}/review-queue/[id]/_v2/ReviewDetailV2.tsx`,
   `${A}/layout.tsx`,
-  // À RETIRER de cette liste quand la seconde partie du lot I0 les aura migrées :
-  "src/components/admin/contacts/ReplyComposer.tsx",
-  `${A}/contacts/candidatures/[id]/ComposerReponse.tsx`,
-  "src/components/admin/qualiopi/EmailOutboxItem.tsx",
 ]);
+
+/** Importe le lecteur ou son enveloppe (import nommé, hors commentaires). */
+export function importeLeLecteur(source: string): boolean {
+  return /\bimport\b[^;]*\b(?:LecteurEmail|AdminApercuEmail)\b[^;]*\bfrom\b/.test(code(source));
+}
+
+/** Un `<iframe` écrit à la main, ou une injection directe de HTML. */
+export function ecritUnCadre(source: string): boolean {
+  return code(source).includes("<iframe");
+}
 
 describe("aucun <iframe d'e-mail hors du lecteur commun", () => {
   for (const f of MIGRES) {
@@ -102,6 +106,34 @@ describe("aucun <iframe d'e-mail hors du lecteur commun", () => {
     const src = 'const g = "a/*"; <iframe src="x" />; const h = "*/";';
     expect(code(src)).toContain("<iframe");
     expect(code("// <iframe\n/* <iframe */ ok")).not.toContain("<iframe");
+  });
+
+  it("tout fichier qui importe LecteurEmail ou AdminApercuEmail est sans <iframe", () => {
+    const importeurs = RACINES.flatMap((r) => fichiers(r)).filter((f) => importeLeLecteur(lire(f)));
+    // Garde contre une garde vide : le lecteur a bien des appelants.
+    expect(importeurs.length).toBeGreaterThan(5);
+    expect(importeurs.filter((f) => ecritUnCadre(lire(f)))).toEqual([]);
+  });
+
+  it("les exceptions ne contiennent ni AdminApercuEmail ni les trois anciennes réservations", () => {
+    for (const interdit of [
+      "src/components/admin/ui/AdminApercuEmail.tsx",
+      "src/components/admin/contacts/ReplyComposer.tsx",
+      `${A}/contacts/candidatures/[id]/ComposerReponse.tsx`,
+      "src/components/admin/qualiopi/EmailOutboxItem.tsx",
+    ]) {
+      expect(EXCEPTIONS.has(interdit), interdit).toBe(false);
+    }
+  });
+
+  it("témoin synthétique : un importeur du lecteur qui écrit un <iframe est détecté", () => {
+    const fautif =
+      'import { LecteurEmail } from "@/x";\nexport const X = () => <iframe src="y" />;';
+    const sain =
+      'import { AdminApercuEmail } from "@/x";\n// <iframe\nexport const X = () => null;';
+    expect(importeLeLecteur(fautif) && ecritUnCadre(fautif)).toBe(true);
+    expect(importeLeLecteur(sain) && ecritUnCadre(sain)).toBe(false);
+    expect(importeLeLecteur("const a = 1;")).toBe(false);
   });
 
   it("aucun <iframe ni dangerouslySetInnerHTML dans la console, hors exceptions nommées", () => {

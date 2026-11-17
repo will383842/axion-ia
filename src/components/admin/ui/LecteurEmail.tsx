@@ -28,9 +28,15 @@
 
 import { useId } from "react";
 
+import {
+  compterImagesBloquees,
+  cspCorpsEmail,
+  type ApercuLecteur,
+} from "@/lib/email/apercu-lecteur";
+
 export interface LecteurEmailProps {
-  /** Corps HTML complet de l'e-mail. */
-  html: string;
+  /** Corps HTML complet de l'e-mail (ou `apercu.html`). */
+  html?: string;
   /** Version texte brut ; absente = pas de bascule HTML / texte. */
   texte?: string | null | undefined;
   /** Expéditeur (nom et adresse). */
@@ -45,32 +51,26 @@ export interface LecteurEmailProps {
   piecesJointes?: readonly string[] | null | undefined;
   /** Titre accessible du cadre. */
   titre?: string;
+  /** Lien « Ouvrir en plein écran » (nouvel onglet) ; absent = aucun lien. */
+  pleinEcranHref?: string | undefined;
+  /** Version affichée au départ (défaut : HTML). « texte » exige `texte`. */
+  formatInitial?: "html" | "texte";
+  /** Neutralise les clics sur les liens du corps (aperçu avant envoi). */
+  liensInertes?: boolean;
+  /** Raccourci : étale les champs d'un `ApercuLecteur` ; les propriétés explicites l'emportent. */
+  apercu?: ApercuLecteur;
 }
 
-const ORIGINE_SITE = "https://axion-ia.com";
-
-/** Origines d'images autorisées : le site, et l'origine configurée du châssis. */
-function originesImages(): string[] {
-  const liste = [ORIGINE_SITE];
-  try {
-    const configuree = process.env.NEXT_PUBLIC_SITE_URL;
-    if (configuree) {
-      const o = new URL(configuree).origin;
-      if (o !== "null" && !liste.includes(o)) liste.push(o);
-    }
-  } catch {
-    // URL invalide : on garde le seul domaine du site.
-  }
-  return liste;
-}
+const STYLE_LIENS_INERTES = "<style>a,area{pointer-events:none;cursor:default}</style>";
 
 /** Balises posées en tête du document (après un éventuel doctype, pour ne pas
  *  basculer l'e-mail en mode quirks). */
-export function preparerSrcDoc(html: string): string {
-  const csp = `default-src 'none'; img-src data: ${originesImages().join(" ")}; style-src 'unsafe-inline'`;
+export function preparerSrcDoc(html: string, options: { liensInertes?: boolean } = {}): string {
+  const csp = `default-src 'none'; img-src data: ${cspCorpsEmail()}; style-src 'unsafe-inline'`;
   const balises =
     `<meta http-equiv="Content-Security-Policy" content="${csp}">` +
-    `<meta name="color-scheme" content="light dark">`;
+    `<meta name="color-scheme" content="light dark">` +
+    (options.liensInertes === true ? STYLE_LIENS_INERTES : "");
   const doctype = /^\s*<!doctype[^>]*>/i.exec(html);
   if (doctype) return doctype[0] + balises + html.slice(doctype[0].length);
   return balises + html;
@@ -115,18 +115,18 @@ function Bascule({
 
 const present = (v: string | null | undefined): v is string => typeof v === "string" && v !== "";
 
-export function LecteurEmail({
-  html,
-  texte = null,
-  de,
-  a,
-  repondreA,
-  objet,
-  preEntete,
-  piecesJointes,
-  titre,
-}: LecteurEmailProps): React.ReactElement {
+export function LecteurEmail(props: LecteurEmailProps): React.ReactElement {
+  const { apercu, titre, pleinEcranHref, formatInitial = "html", liensInertes = false } = props;
+  const html = props.html ?? apercu?.html ?? "";
+  const texte = props.texte ?? apercu?.texte ?? null;
+  const de = props.de ?? apercu?.de;
+  const a = props.a ?? apercu?.a;
+  const repondreA = props.repondreA ?? apercu?.repondreA;
+  const objet = props.objet ?? apercu?.objet;
+  const preEntete = props.preEntete ?? apercu?.preEntete;
+  const piecesJointes = props.piecesJointes ?? apercu?.piecesJointes;
   const id = useId();
+  const imagesBloquees = compterImagesBloquees(html);
   const titreCadre = titre ?? (present(objet) ? `Aperçu : ${objet}` : "Aperçu de l'e-mail");
   const pieces = (piecesJointes ?? []).filter((p) => p !== "");
   const aTexte = present(texte);
@@ -175,19 +175,40 @@ export function LecteurEmail({
             nom={`${id}-format`}
             etiquette="Version affichée"
             options={[
-              { valeur: "html", libelle: "HTML", defaut: true },
-              { valeur: "texte", libelle: "Texte brut" },
+              { valeur: "html", libelle: "HTML", defaut: formatInitial !== "texte" },
+              { valeur: "texte", libelle: "Texte brut", defaut: formatInitial === "texte" },
             ]}
           />
         ) : null}
       </div>
+      {imagesBloquees > 0 || pleinEcranHref ? (
+        <div className="admin-lecteur-email-notes">
+          {imagesBloquees > 0 ? (
+            <p className="admin-lecteur-email-note" role="note">
+              {imagesBloquees === 1
+                ? "1 image hébergée ailleurs n'est pas affichée dans l'aperçu ; elle le sera chez le destinataire."
+                : `${imagesBloquees} images hébergées ailleurs ne sont pas affichées dans l'aperçu ; elles le seront chez le destinataire.`}
+            </p>
+          ) : null}
+          {pleinEcranHref ? (
+            <a
+              className="admin-lecteur-email-plein-ecran"
+              href={pleinEcranHref}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ouvrir en plein écran
+            </a>
+          ) : null}
+        </div>
+      ) : null}
       <div className="admin-lecteur-email-scene">
         <iframe
           className="admin-lecteur-email-cadre"
           title={titreCadre}
           sandbox=""
           referrerPolicy="no-referrer"
-          srcDoc={preparerSrcDoc(html)}
+          srcDoc={preparerSrcDoc(html, { liensInertes })}
         />
         {aTexte ? <pre className="admin-lecteur-email-texte">{texte}</pre> : null}
       </div>

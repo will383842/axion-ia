@@ -1,7 +1,7 @@
 /**
  * A4 — l'expiration des devis épargne UNIQUEMENT le devis dont la pièce est
  * signée par le client (signature non révoquée) ET non annulée, contre un VRAI
- * Postgres (Gate D : étape « Expiration des devis signés client — filtre positif » de
+ * Postgres (Gate D : étape « Devis : tests d'intégration (expiration, envoi concurrent) » de
  * `.github/workflows/ci.yml`, `pnpm test:integration tests/integration/devis`).
  *
  * Quatre devis échus (« envoye », date de validité dépassée) :

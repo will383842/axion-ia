@@ -16,6 +16,16 @@ function rendre() {
 }
 
 describe("AdminApercuEmail", () => {
+  it("délègue au lecteur commun : bloc lecteur, srcdoc qui commence par la balise CSP", () => {
+    const { container } = rendre();
+    expect(container.querySelector("[data-bloc='lecteur-email']")).not.toBeNull();
+    expect(container.querySelector("[data-bloc='apercu-email']")).toBeNull();
+    expect(container.querySelectorAll("iframe")).toHaveLength(1);
+    const srcdoc = container.querySelector("iframe")?.getAttribute("srcdoc") ?? "";
+    expect(srcdoc.startsWith('<meta http-equiv="Content-Security-Policy"')).toBe(true);
+    expect(srcdoc).not.toBe(HTML);
+  });
+
   it("isole le corps de l'e-mail : sandbox vide, titre, srcDoc", () => {
     const { container } = rendre();
     const cadre = container.querySelector("iframe");
@@ -23,7 +33,7 @@ describe("AdminApercuEmail", () => {
     // sandbox="" = aucune permission (ni script, ni formulaire, ni navigation).
     expect(cadre?.getAttribute("sandbox")).toBe("");
     expect(cadre?.getAttribute("title")).toBe("Aperçu de l'e-mail");
-    expect(cadre?.getAttribute("srcdoc")).toBe(HTML);
+    expect(cadre?.getAttribute("srcdoc")).toContain(HTML);
   });
 
   it("n'injecte jamais le HTML de l'e-mail dans la page", () => {
@@ -41,10 +51,10 @@ describe("AdminApercuEmail", () => {
     expect(screen.getByText("Votre questionnaire")).toBeDefined();
   });
 
-  it("bascule Ordinateur / Téléphone en CSS seul : deux radios, Ordinateur coché", () => {
+  it("bascule Ordinateur / Téléphone en CSS seul : radios du lecteur, Ordinateur coché", () => {
     const { container } = rendre();
     const radios = container.querySelectorAll<HTMLInputElement>("input[type='radio']");
-    expect(radios).toHaveLength(2);
+    expect(radios).toHaveLength(4);
     expect(radios[0]?.checked).toBe(true);
     expect(radios[0]?.name).toBe(radios[1]?.name);
     expect(screen.getByLabelText("Téléphone")).toBeDefined();

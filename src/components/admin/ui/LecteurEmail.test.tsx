@@ -123,4 +123,59 @@ describe("LecteurEmail", () => {
     const form = container.querySelector("form") as HTMLFormElement;
     expect([...new FormData(form).keys()]).toEqual([]);
   });
+
+  it("liensInertes : le srcdoc contient pointer-events:none, absent sans la propriété", () => {
+    const avec = render(<LecteurEmail html={HTML} liensInertes />);
+    expect(avec.container.querySelector("iframe")?.getAttribute("srcdoc")).toContain(
+      "pointer-events:none",
+    );
+    avec.unmount();
+    const sans = render(<LecteurEmail html={HTML} />);
+    expect(sans.container.querySelector("iframe")?.getAttribute("srcdoc")).not.toContain(
+      "pointer-events:none",
+    );
+  });
+
+  it("note des images : une image d'ailleurs l'affiche, une image du site non", () => {
+    const ailleurs = render(
+      <LecteurEmail html={'<img src="https://ailleurs.example/a.png" alt="">'} />,
+    );
+    expect(ailleurs.container.textContent).toContain("1 image hébergée ailleurs");
+    ailleurs.unmount();
+    const site = render(
+      <LecteurEmail
+        html={
+          '<img src="https://axion-ia.com/logo.png" alt=""><img src="data:image/png;base64,AA" alt="">'
+        }
+      />,
+    );
+    expect(site.container.textContent).not.toContain("hébergée");
+    expect(site.container.querySelector(".admin-lecteur-email-notes")).toBeNull();
+  });
+
+  it("pleinEcranHref : lien _blank avec noopener et noreferrer ; absent, aucun lien", () => {
+    const avec = render(
+      <LecteurEmail html={HTML} pleinEcranHref="/fr/x/emails/lecture/envoye/1" />,
+    );
+    const lien = avec.container.querySelector("a");
+    expect(lien?.getAttribute("href")).toBe("/fr/x/emails/lecture/envoye/1");
+    expect(lien?.getAttribute("target")).toBe("_blank");
+    expect(lien?.getAttribute("rel")).toContain("noopener");
+    expect(lien?.getAttribute("rel")).toContain("noreferrer");
+    avec.unmount();
+    const sans = render(<LecteurEmail html={HTML} />);
+    expect(sans.container.querySelector("a")).toBeNull();
+  });
+
+  it('formatInitial="texte" coche la radio « Texte brut »', () => {
+    render(<LecteurEmail html={HTML} texte="t" formatInitial="texte" />);
+    expect((screen.getByLabelText("Texte brut") as HTMLInputElement).checked).toBe(true);
+    expect((screen.getByLabelText("HTML") as HTMLInputElement).checked).toBe(false);
+  });
+
+  it("apercu étale les champs d'un ApercuLecteur", () => {
+    render(<LecteurEmail apercu={{ html: HTML, objet: "Objet X", de: "d@example.com" }} />);
+    expect(screen.getByText("Objet X")).toBeDefined();
+    expect(screen.getByText("d@example.com")).toBeDefined();
+  });
 });

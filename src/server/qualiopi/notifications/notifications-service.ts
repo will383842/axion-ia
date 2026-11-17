@@ -180,6 +180,16 @@ async function marquerLienRemis(tokenId: string, contexte: string): Promise<void
   }
 }
 
+/**
+ * Le lieu, en clé FACULTATIVE : omise quand il est inconnu. L'ancienne valeur de
+ * repli « Voir convocation » est retirée : dans une convocation, elle renvoyait
+ * à elle-même.
+ */
+function lieuSiConnu(session: Parameters<typeof formatLieu>[0]): { lieu?: string } {
+  const lieu = formatLieu(session);
+  return lieu ? { lieu } : {};
+}
+
 async function getOrCreatePortailLien(traineeId: string, baseUrl: string): Promise<string> {
   return (await getOrCreatePortailAcces(traineeId, baseUrl)).lien;
 }
@@ -371,7 +381,7 @@ export async function envoyerConvocation(enrollmentId: string): Promise<boolean>
       titreFormation: session.titreSession,
       dateDebut: fmtDate(session.dateDebut),
       dateFin: fmtDate(session.dateFin),
-      lieu: formatLieu(session) ?? "Voir convocation",
+      ...lieuSiConnu(session),
       modalite: libelleModaliteMinuscule(session.modalite),
       numeroSession: session.numero,
       lienPortail,
@@ -578,7 +588,7 @@ async function envoyerCopieEntreprise(input: {
         titreFormation: input.session.titreSession,
         dateDebut: fmtDate(input.session.dateDebut),
         dateFin: fmtDate(input.session.dateFin),
-        lieu: formatLieu(input.session) ?? "Voir convocation",
+        ...lieuSiConnu(input.session),
         modalite: libelleModaliteMinuscule(input.session.modalite as never),
         numeroSession: input.session.numero,
         piecesJointes: jointes.map((p) => libellePiece(p.type)),
@@ -720,7 +730,7 @@ export async function envoyerRappelJ7(sessionId: string): Promise<boolean> {
           titreFormation: session.titreSession,
           dateDebut: fmtDate(session.dateDebut),
           dateFin: fmtDate(session.dateFin),
-          lieu: formatLieu(session) ?? "Voir convocation",
+          ...lieuSiConnu(session),
           modalite: libelleModaliteMinuscule(session.modalite),
           numeroSession: session.numero,
           lienPortail,
@@ -934,7 +944,7 @@ export async function envoyerRappelJ1(sessionId: string): Promise<boolean> {
           titreFormation: session.titreSession,
           dateDebut: fmtDate(session.dateDebut),
           dateFin: fmtDate(session.dateFin),
-          lieu: formatLieu(session) ?? "Voir convocation",
+          ...lieuSiConnu(session),
           modalite: libelleModaliteMinuscule(session.modalite),
           numeroSession: session.numero,
           lienPortail,
@@ -1106,6 +1116,9 @@ export async function envoyerSuiviJ30(enrollmentId: string): Promise<boolean> {
       titreFormation: session.titreSession,
       dateFinFormation: fmtDate(session.dateFin),
       lienPortail,
+      // Le questionnaire à froid est créé plus haut ; le stagiaire l'y trouve,
+      // comme le questionnaire à chaud de J+1 (même accès, pas d'accès de plus).
+      lienQuestionnaire: lienPortail,
       numeroSession: session.numero,
     },
     {
@@ -1280,7 +1293,10 @@ const LIBELLE_QUESTIONNAIRE: Record<string, string> = {
  * légitime (le stagiaire a perdu le mail, l'adresse a changé). La garde qui
  * compte — « déjà répondu » — est posée en amont dans `envoyerQuestionnaireAction`.
  */
-export async function envoyerPositionnement(questionnaireId: string): Promise<boolean> {
+export async function envoyerPositionnement(
+  questionnaireId: string,
+  rang?: number,
+): Promise<boolean> {
   if (isStub()) return false;
 
   const q = await prisma.questionnaire.findUnique({
@@ -1317,6 +1333,8 @@ export async function envoyerPositionnement(questionnaireId: string): Promise<bo
       dateDebutFormation: fmtDate(session.dateDebut),
       lienQuestionnaire,
       numeroSession: session.numero,
+      // Clé facultative : absente au premier envoi, ≥ 2 pour une relance.
+      ...(rang !== undefined && rang >= 2 ? { rang } : {}),
     },
     // 🔴 `jobId` horodaté, PAS `qualiopi-positionnement-${q.id}` : la
     // déduplication BullMQ rendrait tout renvoi silencieusement inopérant, et
@@ -1447,7 +1465,7 @@ export async function envoyerRelanceQuestionnaire(questionnaireId: string): Prom
     // booléen : c'est la signature d'un prédicat recopié. Le cliquet
     // `__tests__/appelant-ne-jette-pas-le-booleen-denvoi.spec.ts` refuse
     // désormais la forme, pas le cas.
-    if (!(await envoyerPositionnement(q.id))) {
+    if (!(await envoyerPositionnement(q.id, numeroRelance + 1))) {
       console.error(
         `[relance-questionnaire] NON ENVOYÉ — questionnaire ${questionnaireId} ` +
           "laissé candidat au rattrapage (positionnement : message garé en " +

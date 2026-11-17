@@ -197,6 +197,9 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/features/dossier-client/actions-facture-hors-console.ts (factureHorsConsoleAction › travail de prisma.$transaction())",
         // 04/11/2026 : « un prospect passe en client lorsqu'un devis est signé » ne pose que le statut commercial.
         "src/features/dossier-client/devis-signe-fait-client.ts (faireMonterLesFichesDesDevisSignes › travail de db.$transaction())",
+        // 17/11/2026 (B1) : « Remis en main propre » pose le MÊME statut commercial que sendDevisAction
+        // (prospect/perdu → devis_envoye, jamais de rétrogradation), hors charge Partners.
+        "src/server/actions/qualiopi/devis-remis-main-propre.ts (marquerRemisEnMainPropreAction › travail de prisma.$transaction())",
         "src/server/actions/qualiopi/devis.ts (sendDevisAction › travail de prisma.$transaction())",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",

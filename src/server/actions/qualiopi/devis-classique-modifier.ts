@@ -20,6 +20,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import {
   entreeDevisClassiqueSchema,
@@ -243,8 +244,9 @@ export async function fixerValiditeDevisBrouillonAction(
       };
     } else if (actuel.montantOpcoEstimeCents != null) {
       return {
-        error:
-          "La date change l'estimation OPCO : fournissez les paramètres pour la recalculer (saisie « estimation »).",
+        error: isQualiopiCertificationObtenue()
+          ? "La date change l'estimation OPCO : fournissez les paramètres pour la recalculer (saisie « estimation »)."
+          : "La date change l'estimation du règlement par un tiers : fournissez les paramètres pour la recalculer (saisie « estimation »).",
       };
     }
   }
