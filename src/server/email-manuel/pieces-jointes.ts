@@ -151,21 +151,43 @@ export function brouillonNeutralise(l: { neutralise: boolean | null }): boolean 
   return l.neutralise === true;
 }
 
-/** Verrou de la ligne de l'e-mail (même requête que l'effacement RGPD : e-mail, puis pièces). */
-async function lireEmailVerrouille(tx: Tx, id: string): Promise<LigneEmail | undefined> {
-  const lignes = await tx.$queryRaw<LigneEmail[]>`
-    SELECT e.id, e.statut, e.ecrit_par_id, EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible" = 'emails_manuels' AND j."ligne_id" IN (e.id::text, e.id::text || ':contenu')) AS neutralise FROM "emails_manuels" e WHERE e.id = ${id}::uuid FOR UPDATE OF e`;
-  return lignes[0];
+/**
+ * Le journal d'effacement, lu dans une instruction À PART. En READ COMMITTED, une instruction prend sa
+ * photo des données à son DÉBUT : si elle attend ensuite un verrou de ligne, elle relit la ligne
+ * verrouillée à jour, mais les AUTRES tables (ici le journal) restent vues avec l'ancienne photo, et un
+ * effacement en cours est invisible. Verrou d'abord, journal ensuite : ne JAMAIS refusionner les deux
+ * requêtes en une seule (garde de source dans le test du module).
+ */
+async function lireNeutralise(client: Pick<Tx, "$queryRaw">, id: string): Promise<boolean> {
+  const idMin = id.toLowerCase();
+  const lignes = await client.$queryRaw<Array<{ neutralise: boolean | null }>>`
+    SELECT EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible"::text = 'emails_manuels' AND j."ligne_id" IN (${idMin}::text, ${idMin}::text || ':contenu')) AS neutralise`;
+  return lignes[0]?.neutralise === true;
 }
 
-/** Lecture simple (sans verrou) : évite une copie inutile, ne garantit rien. */
+/**
+ * Verrou de la ligne de l'e-mail (même verrou que l'effacement RGPD : e-mail, puis pièces), PUIS lecture
+ * du journal dans une seconde instruction (nouvelle photo, prise après l'obtention du verrou) : voir
+ * `lireNeutralise`. Une requête unique verrait un effacement concurrent avec l'ancienne photo.
+ */
+async function lireEmailVerrouille(tx: Tx, id: string): Promise<LigneEmail | undefined> {
+  const lignes = await tx.$queryRaw<Array<Omit<LigneEmail, "neutralise">>>`
+    SELECT e.id, e.statut, e.ecrit_par_id FROM "emails_manuels" e WHERE e.id = ${id.toLowerCase()}::uuid FOR UPDATE`;
+  const e = lignes[0];
+  if (!e) return undefined;
+  return { ...e, neutralise: await lireNeutralise(tx, id) };
+}
+
+/** Lecture simple (sans verrou) : évite une copie inutile, ne garantit rien. Deux instructions aussi. */
 async function lireEmail(
   client: Pick<Tx, "$queryRaw">,
   id: string,
 ): Promise<LigneEmail | undefined> {
-  const lignes = await client.$queryRaw<LigneEmail[]>`
-    SELECT e.id, e.statut, e.ecrit_par_id, EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible" = 'emails_manuels' AND j."ligne_id" IN (e.id::text, e.id::text || ':contenu')) AS neutralise FROM "emails_manuels" e WHERE e.id = ${id}::uuid`;
-  return lignes[0];
+  const lignes = await client.$queryRaw<Array<Omit<LigneEmail, "neutralise">>>`
+    SELECT e.id, e.statut, e.ecrit_par_id FROM "emails_manuels" e WHERE e.id = ${id.toLowerCase()}::uuid`;
+  const e = lignes[0];
+  if (!e) return undefined;
+  return { ...e, neutralise: await lireNeutralise(client, id) };
 }
 
 export function empreinteJetonEmail(jeton: string): string {
@@ -508,51 +530,64 @@ async function controlerEtRanger(
     await remettreAttendue();
     return "antivirus_indisponible";
   }
-  // La copie existe : si la ligne ne devient pas « acceptee », on le signale (rien n'est supprimé).
+  // La copie existe : si la ligne ne devient pas « acceptee », on le signale UNE fois, après la
+  // validation de la transaction (jamais à l'intérieur : elle peut être rejouée ou annulée).
   const signaler = (message: string): void => {
     Sentry.captureMessage(message, {
       extra: { emailManuelId, pieceId: ligne.id, cle: definitive },
     });
   };
   // Temps 3 : rangement sous le verrou de l'e-mail, qui relit statut ET journal. Un e-mail neutralisé
-  // ou parti entre-temps n'accepte plus rien : la ligne est refusée, jamais acceptée.
+  // ou parti entre-temps n'accepte plus rien : la ligne est refusée, jamais acceptée. La transaction
+  // REND son issue et le signalement éventuel.
+  let issue: { statut: StatutPiece; signal: string | null };
   try {
-    return await prisma.$transaction(async (tx): Promise<StatutPiece> => {
-      const e = await lireEmailVerrouille(tx, emailManuelId);
-      if (!e || brouillonNeutralise(e)) {
-        // Pointer vers la copie la rend retrouvable (une seconde passe d'effacement liste les clés).
+    issue = await prisma.$transaction(
+      async (tx): Promise<{ statut: StatutPiece; signal: string | null }> => {
+        const e = await lireEmailVerrouille(tx, emailManuelId);
+        if (!e || brouillonNeutralise(e)) {
+          // Pointer vers la copie la rend retrouvable (une seconde passe d'effacement liste les clés).
+          const r = await tx.emailManuelPieceJointe.updateMany({
+            where: { id: ligne.id, statut: "controle" },
+            data: { statut: "refusee", motifRefus: "neutralise", cleStockage: definitive },
+          });
+          return {
+            statut: r.count ? "refusee" : "non_recue",
+            signal: "email-manuel: piece copiee apres effacement",
+          };
+        }
+        if (e.statut !== "brouillon") {
+          const r = await tx.emailManuelPieceJointe.updateMany({
+            where: { id: ligne.id, statut: "controle" },
+            data: { statut: "refusee", motifRefus: "envoi_parti" },
+          });
+          return {
+            statut: r.count ? "refusee" : "non_recue",
+            signal: "email-manuel: piece copiee non acceptee",
+          };
+        }
         const r = await tx.emailManuelPieceJointe.updateMany({
           where: { id: ligne.id, statut: "controle" },
-          data: { statut: "refusee", motifRefus: "neutralise", cleStockage: definitive },
+          data: {
+            statut: "acceptee",
+            cleStockage: definitive,
+            format: verdict.format,
+            sha256: verdict.sha256,
+            antivirus: "sain",
+          },
         });
-        signaler("email-manuel: piece copiee apres effacement");
-        return r.count ? "refusee" : "non_recue";
-      }
-      if (e.statut !== "brouillon") {
-        const r = await tx.emailManuelPieceJointe.updateMany({
-          where: { id: ligne.id, statut: "controle" },
-          data: { statut: "refusee", motifRefus: "envoi_parti" },
-        });
-        signaler("email-manuel: piece copiee non acceptee");
-        return r.count ? "refusee" : "non_recue";
-      }
-      const r = await tx.emailManuelPieceJointe.updateMany({
-        where: { id: ligne.id, statut: "controle" },
-        data: {
-          statut: "acceptee",
-          cleStockage: definitive,
-          format: verdict.format,
-          sha256: verdict.sha256,
-          antivirus: "sain",
-        },
-      });
-      if (!r.count) signaler("email-manuel: piece copiee non acceptee");
-      return r.count ? "acceptee" : "non_recue";
-    }, OPTIONS_TRANSACTION);
+        return r.count
+          ? { statut: "acceptee", signal: null }
+          : { statut: "non_recue", signal: "email-manuel: piece copiee non acceptee" };
+      },
+      OPTIONS_TRANSACTION,
+    );
   } catch (err) {
     signaler("email-manuel: piece copiee non acceptee");
     throw err;
   }
+  if (issue.signal) signaler(issue.signal);
+  return issue.statut;
 }
 
 async function rangerRefus(
@@ -659,9 +694,25 @@ export async function finaliserPiecesJointesEmail(
     // autre appel, même jeton, a prises entre-temps), chacune protégée.
     const muettes = new Set<string>();
     if (ids.length > 0) {
-      const lignes = await prisma.emailManuelPieceJointe.findMany({
-        where: { id: { in: ids }, statut: "controle" },
-      });
+      let lignes: Awaited<ReturnType<typeof prisma.emailManuelPieceJointe.findMany>>;
+      try {
+        lignes = await prisma.emailManuelPieceJointe.findMany({
+          where: { id: { in: ids }, statut: "controle" },
+        });
+      } catch (err) {
+        // Relecture impossible : les lignes prises ne doivent pas rester « controle » (elles
+        // n'expireraient qu'à 75 min). On les remet « attendue » pour qu'on puisse réessayer.
+        Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "relecture" } });
+        try {
+          await prisma.emailManuelPieceJointe.updateMany({
+            where: { id: { in: ids }, statut: "controle" },
+            data: { statut: "attendue" },
+          });
+        } catch (err2) {
+          Sentry.captureException(err2, { tags: { step: "email-manuel-pj", motif: "remise" } });
+        }
+        return echec("indisponible", MESSAGE_INDISPONIBLE);
+      }
       const issues = await Promise.allSettled(
         lignes.map((l) => controlerEtRanger(emailManuelId, l, antivirus)),
       );
@@ -729,6 +780,7 @@ export async function listerPiecesJointesEmail(entree: {
   readonly acteur: ActeurEmailManuel;
   readonly emailManuelId: string;
 }): Promise<{ readonly ok: true; readonly pieces: ReadonlyArray<PieceListee> } | Echec> {
+  if (!entree || typeof entree !== "object") return echec("inconnu", MESSAGE_INCONNU);
   if (!idValide(entree.acteur?.id) || !idValide(entree.emailManuelId)) {
     return echec("inconnu", MESSAGE_INCONNU);
   }

@@ -65,6 +65,8 @@ const h = vi.hoisted(() => {
     journal: [] as Array<{ tableCible: string; ligneId: string }>,
     /** `echec` : la PROCHAINE transaction rejette. */
     tx: { echec: false },
+    /** `echec` : la PROCHAINE relecture du temps 2 (statut « controle », par identifiants) lève. */
+    relecture: { echec: false },
     ObjetR2Modifie,
   };
 });
@@ -105,6 +107,19 @@ interface Contexte {
 async function queryRaw(ctx: Contexte, s: TemplateStringsArray, v: unknown[]) {
   const sql = s.join("?");
   h.sql.push(sql);
+  // Seconde instruction : le journal d'effacement, lu APRÈS l'obtention du verrou (photo neuve).
+  if (/effacements_journal/.test(sql)) {
+    const id = String(v[0]);
+    return [
+      {
+        neutralise: h.journal.some(
+          (j) =>
+            j.tableCible === "emails_manuels" &&
+            (j.ligneId === id || j.ligneId === `${id}:contenu`),
+        ),
+      },
+    ];
+  }
   if (/FOR UPDATE/.test(sql)) {
     const id = String(v[0]);
     while (verrous.has(id)) await verrous.get(id);
@@ -117,20 +132,7 @@ async function queryRaw(ctx: Contexte, s: TemplateStringsArray, v: unknown[]) {
   }
   h.ordre.push("sql");
   const e = h.emails.find((x) => x.id === v[0]);
-  return e
-    ? [
-        {
-          id: e.id,
-          statut: e.statut,
-          ecrit_par_id: e.ecritParId ?? null,
-          neutralise: h.journal.some(
-            (j) =>
-              j.tableCible === "emails_manuels" &&
-              (j.ligneId === e.id || j.ligneId === `${e.id}:contenu`),
-          ),
-        },
-      ]
-    : [];
+  return e ? [{ id: e.id, statut: e.statut, ecrit_par_id: e.ecritParId ?? null }] : [];
 }
 
 const prismaMock = {
@@ -147,6 +149,11 @@ const prismaMock = {
     },
     findMany: async ({ where }: { where: Record<string, unknown> }) => {
       h.ordre.push("findMany");
+      const st = (where as { statut?: unknown }).statut;
+      if (h.relecture.echec && st === "controle") {
+        h.relecture.echec = false;
+        throw new Error("relecture indisponible");
+      }
       return h.lignes.filter((l) => correspond(l, where)).map((l) => ({ ...l }));
     },
     aggregate: async ({ where }: { where: Record<string, unknown> }) => ({
@@ -353,6 +360,7 @@ beforeEach(() => {
   h.copies.length = 0;
   h.journal.length = 0;
   h.tx.echec = false;
+  h.relecture.echec = false;
   vi.mocked(Sentry.captureMessage).mockClear();
   vi.mocked(Sentry.captureException).mockClear();
   verrous.clear();
@@ -770,9 +778,10 @@ describe("cas limites", () => {
   });
 
   it("entrée non objet (null, undefined) : inconnu, sans aucune entrée-sortie", async () => {
-    for (const x of [null, undefined]) {
+    for (const x of [null, undefined, "texte", 3]) {
       expect(await ouvrirEnvoisPiecesJointesEmail(x as never)).toMatchObject({ refus: "inconnu" });
       expect(await finaliserPiecesJointesEmail(x as never)).toMatchObject({ refus: "inconnu" });
+      expect(await listerPiecesJointesEmail(x as never)).toMatchObject({ refus: "inconnu" });
     }
     expect(h.sql).toHaveLength(0);
     expect(h.debit.cles).toHaveLength(0);
@@ -1237,6 +1246,21 @@ describe("brouillon neutralisé : le critère est le journal d'effacement", () =
     expect(r.ok && r.pieces[0]!.statut).toBe("non_recue");
   });
 
+  it("C5. la relecture du temps 2 lève : lignes prises remises « attendue », « indisponible »", async () => {
+    const { e, jeton, l } = await pret();
+    h.relecture.echec = true;
+    const av = vi.fn(antivirusSain);
+    const r = await fonction.finaliser(DIRECTION, e.id, jeton, av);
+    expect(r).toMatchObject({ ok: false, refus: "indisponible" });
+    expect(l.statut).toBe("attendue");
+    expect(av).not.toHaveBeenCalled();
+    expect(h.copies).toHaveLength(0);
+    // Réessayer fonctionne : la ligne n'est pas restée bloquée « controle ».
+    const r2 = await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(r2.ok && r2.controlees).toBe(true);
+    expect(l.statut).toBe("acceptee");
+  });
+
   it("D2. deux appels, même jeton : le second ne reprend pas la ligne que le premier contrôle encore", async () => {
     const e = brouillonDe(DIRECTION);
     const jeton = nouveauJeton();
@@ -1301,6 +1325,17 @@ describe("garde de source : jamais de suppression", () => {
     expect(src).toContain("effacements_journal");
     expect(src).toContain("':contenu'");
     expect(src).not.toContain("OBJET_EMAIL_MANUEL_EFFACE");
+  });
+
+  it("C1. aucune instruction SQL ne mêle le verrou FOR UPDATE et le journal d'effacement", () => {
+    const src = readFileSync(path.join(racine, fichiers[0]!), "utf8");
+    const instructions = [...src.matchAll(/\$queryRaw[^`]*`([^`]*)`/g)].map((m) => m[1]!);
+    expect(instructions.length).toBeGreaterThanOrEqual(3);
+    expect(instructions.some((q) => /FOR UPDATE/.test(q))).toBe(true);
+    expect(instructions.some((q) => /effacements_journal/.test(q))).toBe(true);
+    for (const q of instructions) {
+      expect(/FOR UPDATE/.test(q) && /effacements_journal/.test(q)).toBe(false);
+    }
   });
 
   it("25. F7 ne crée ni ne modifie l'e-mail lui-même, n'est pas une action serveur", () => {

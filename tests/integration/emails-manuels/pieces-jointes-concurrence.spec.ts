@@ -140,6 +140,44 @@ async function pret(auteur: { id: string; role: string }, id: string) {
   return r;
 }
 
+/** Un instant d'attente (voir I8 et I8b : seule la preuve « toujours bloqué » dépend d'un délai). */
+const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+/**
+ * Un effacement en cours, ORDONNÉ PAR UNE PORTE (promesse), pas par des délais : une transaction
+ * verrouille la ligne de l'e-mail, écrit le journal d'effacement, signale « pose », puis attend
+ * `ouvrir()` avant de valider. Aucune ligne n'est supprimée.
+ */
+function effacementEnCours(id: string) {
+  let ouvrir!: () => void;
+  const porte = new Promise<void>((r) => (ouvrir = r));
+  let signaler!: () => void;
+  const pose = new Promise<void>((r) => (signaler = r));
+  const fini = db.$transaction(
+    async (tx) => {
+      await tx.$queryRaw`SELECT id FROM "emails_manuels" WHERE id = ${id}::uuid FOR UPDATE`;
+      await tx.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+      signaler();
+      await porte;
+    },
+    { timeout: 60_000, maxWait: 30_000 },
+  );
+  return { pose, ouvrir, fini };
+}
+
+/** Vrai si la promesse n'est pas réglée au bout de `ms` (preuve que l'appel attend le verrou). */
+async function toujoursBloquee(p: Promise<unknown>, ms: number): Promise<boolean> {
+  let regle = false;
+  void p.then(
+    () => (regle = true),
+    () => (regle = true),
+  );
+  await attendre(ms);
+  return !regle;
+}
+
 describe("garde de l'environnement", () => {
   it("DATABASE_URL existe et vise une base locale", () => {
     const url = process.env.DATABASE_URL;
@@ -291,6 +329,80 @@ describe("pièces jointes d'e-mails, Postgres réel", () => {
       { acteur: A, emailManuelId: id, jeton: r.jeton },
       { antivirus: efface },
     );
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I7b — journal validé pendant la COPIE : refusée « neutralise » par le Temps 3, jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    h.pendantCopie = async () => {
+      await db.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+    };
+    try {
+      await finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+    } finally {
+      h.pendantCopie = null;
+    }
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
+  it("I8 — effacement en cours (verrou + journal non validé) : ouvrir attend le verrou, puis rend « neutralise »", async () => {
+    const id = await brouillon(A, "Trainee");
+    const eff = effacementEnCours(id);
+    await eff.pose;
+    const ouverture = ouvrirEnvoisPiecesJointesEmail({
+      acteur: A,
+      emailManuelId: id,
+      pieces: annonces(1, 1000),
+    });
+    // Seule dépendance à un délai : on laisse 300 ms à `ouvrir` pour démarrer son instruction et se
+    // bloquer sur le verrou. Si la machine est lente, le test ne devient pas faux (l'ouverture est
+    // de toute façon libérée par la porte) : il perd seulement de sa force de preuve.
+    expect(await toujoursBloquee(ouverture, 300)).toBe(true);
+    eff.ouvrir();
+    await eff.fini;
+    const r = await ouverture;
+    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I8b — effacement qui verrouille pendant la COPIE, validé après l'attente du Temps 3 : refusée, jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    let eff: ReturnType<typeof effacementEnCours> | undefined;
+    let copieAtteinte!: () => void;
+    const atteinte = new Promise<void>((res) => (copieAtteinte = res));
+    h.pendantCopie = async () => {
+      eff = effacementEnCours(id);
+      await eff.pose;
+      copieAtteinte();
+    };
+    let finalisation: ReturnType<typeof finaliserPiecesJointesEmail>;
+    try {
+      finalisation = finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+      await atteinte;
+    } finally {
+      h.pendantCopie = null;
+    }
+    // La copie se termine, le Temps 3 démarre et se bloque sur le verrou ; 300 ms de marge pour cela.
+    expect(await toujoursBloquee(finalisation, 300)).toBe(true);
+    eff!.ouvrir();
+    await eff!.fini;
+    await finalisation;
     const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
     expect(lignes).toHaveLength(1);
     expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
