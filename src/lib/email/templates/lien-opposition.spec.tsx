@@ -8,7 +8,10 @@
 //     destinataire, et il tient dans le budget de liens du régime ;
 //   - la famille est estampillée dans le HTML (`data-famille`), c'est ce que
 //     le worker lit pour décider de l'en-tête RFC 8058 ;
-//   - sans destinataire (aperçus, tests), aucun lien, aucun jeton fantôme.
+//   - sans destinataire (aperçus, tests), aucun lien, aucun jeton fantôme ;
+//   - (lot S2) l'attente se DÉDUIT de `data-nature` et `data-destinataire`, estampillés par le
+//     châssis : pas de lien sous les droits, les réclamations, le recouvrement, les alertes
+//     internes, ni pour un destinataire « interne ». Un gabarit migré n'a plus à toucher ce test.
 
 import { describe, it, expect, beforeAll } from "vitest";
 
@@ -21,6 +24,21 @@ const DESTINATAIRE = "jean.dupont@client-test.fr";
 
 function liensDistincts(html: string): Set<string> {
   return new Set((html.match(/href="([^"]+)"/g) ?? []).map((h) => h.slice(6, -1)));
+}
+
+/** Valeur d'un attribut `data-*` estampillé sur le <body> par le châssis, ou null. */
+function estampille(html: string, attribut: string): string | null {
+  const m = new RegExp(`data-${attribut}="([^"]*)"`).exec(html);
+  return m ? (m[1] as string) : null;
+}
+
+/** Plan §2.2-8 : natures et destinataire qui n'ont jamais le lien. */
+const NATURES_SANS_LIEN = new Set(["droits", "reclamation", "recouvrement", "alerte-interne"]);
+function lienAttendu(html: string, famille: string | null): boolean {
+  if (famille === "A") return false;
+  if (estampille(html, "destinataire") === "interne") return false;
+  const nature = estampille(html, "nature");
+  return !(nature !== null && NATURES_SANS_LIEN.has(nature));
 }
 
 function lienOpposition(html: string): string | null {
@@ -43,8 +61,12 @@ describe("lien d'opposition — 44 gabarits rendus avec un destinataire", () => 
       expect(familleDuHtml(html)).toBe(famille);
 
       const lien = lienOpposition(html);
-      if (famille === "A") {
-        expect(lien, `${name} (A) ne doit porter aucun lien d'opposition`).toBeNull();
+      if (!lienAttendu(html, famille)) {
+        expect(
+          lien,
+          `${name} (${famille}, ${estampille(html, "nature") ?? "nature non déclarée"}) ne doit ` +
+            `porter aucun lien d'opposition`,
+        ).toBeNull();
         return;
       }
       expect(lien, `${name} (${famille}) doit porter le lien d'opposition`).not.toBeNull();

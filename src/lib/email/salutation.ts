@@ -59,6 +59,26 @@ function capitaliserSegments(mot: string): string {
 }
 
 /**
+ * Durcissement (lot S2) : l'adresse saisie dans un formulaire peut être celle d'un TIERS, et le
+ * « nom » qui l'accompagne finit en tête d'un e-mail parti de notre domaine. Un texte comme
+ * « Gagnez un iPhone bit.ly/x » ferait de l'accusé un relais d'hameçonnage. Un nom présentable
+ * n'a ni chiffre, ni `@`, ni `/`, ni `:`, ni `www`, ni adresse de site, ni balisage ; il tient en
+ * 4 mots et 40 caractères. Sinon : refus, et la salutation retombe sur « Bonjour, ».
+ */
+const CARACTERES_REFUSES = /[\d@/\\:{}[\]=#$%*+~|_]/u;
+const ADRESSE_DE_SITE =
+  /(?:^|[\s.])www(?:[\s.]|$)|\p{L}\.\p{L}{2,}|https?|\.(?:com|fr|net|org|io|ly|me|co)\b/iu;
+const MOTS_MAX = 4;
+const LONGUEUR_MAX = 40;
+
+function ressembleAUnNom(s: string): boolean {
+  if (s.length > LONGUEUR_MAX) return false;
+  if (CARACTERES_REFUSES.test(s)) return false;
+  if (ADRESSE_DE_SITE.test(s)) return false;
+  return s.split(" ").length <= MOTS_MAX;
+}
+
+/**
  * Nettoie un prénom ou un nom saisi. Rend `null` si rien de présentable.
  * Ne touche à la casse que si la saisie est TOUT en majuscules ou TOUT en
  * minuscules : une casse mixte (McDonald, DiCaprio) est rendue telle quelle.
@@ -76,6 +96,7 @@ export function nettoyerNomPropre(v: unknown, opts?: { particules?: boolean }): 
   if (s === "") return null;
   if (!/\p{L}/u.test(s)) return null;
   if (s.length > 80) return null;
+  if (!ressembleAUnNom(s)) return null;
   const bas = s.toLowerCase();
   if (bas.startsWith("enc:v") || bas.includes("[encrypted")) return null;
 

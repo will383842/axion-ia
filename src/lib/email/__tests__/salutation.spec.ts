@@ -159,8 +159,52 @@ describe("nettoyerNomPropre", () => {
     expect(nettoyerNomPropre("-")).toBeNull();
     expect(nettoyerNomPropre("12 34")).toBeNull();
     expect(nettoyerNomPropre("a".repeat(81))).toBeNull();
-    expect(nettoyerNomPropre("a".repeat(80))).not.toBeNull();
+    expect(nettoyerNomPropre("a".repeat(41))).toBeNull();
+    expect(nettoyerNomPropre("a".repeat(40))).not.toBeNull();
     expect(nettoyerNomPropre("enc:v1:xx")).toBeNull();
     expect(nettoyerNomPropre("[encrypted — key missing]")).toBeNull();
   });
+});
+
+// Lot S2 — noms durcis : l'adresse saisie peut être celle d'un tiers ; un « nom » piégé ne doit
+// jamais ouvrir un e-mail parti de notre domaine (relais d'hameçonnage).
+describe("noms piégés → « Bonjour, »", () => {
+  it.each([
+    "Gagnez un iPhone bit.ly/x",
+    "bit.ly/x",
+    "www.promo-gratuite",
+    "promo.example.com",
+    "https:",
+    "Jean2",
+    "0612345678",
+    "jean@exemple.fr",
+    "Jean : cliquez ici",
+    "Un deux trois quatre cinq",
+    "<b>Jean</b>",
+    "Jean{{lien}}",
+    "Jean=Pierre",
+    "Jean Pierre Paul Jacques Luc Marc Matthieu Jude",
+    "Dupont-Dupont-Dupont-Dupont-Dupont-Dupont",
+  ])("« %s »", (piege) => {
+    expect(nettoyerNomPropre(piege)).toBeNull();
+    expect(salutation({ prenom: piege }, "fr")).toBe("Bonjour,");
+    expect(salutation({ prenom: piege }, "en")).toBe("Hello,");
+    expect(salutation({ civilite: "monsieur", nomFamille: piege }, "fr")).toBe("Bonjour,");
+    expect(salutation({ civilite: "monsieur", nomFamille: piege, prenom: piege }, "fr")).toBe(
+      "Bonjour,",
+    );
+  });
+
+  it("un nom piégé n'empêche pas un prénom sain de passer", () => {
+    expect(
+      salutation({ civilite: "monsieur", nomFamille: "bit.ly/x", prenom: "Michel" }, "fr"),
+    ).toBe("Bonjour Michel,");
+  });
+
+  it.each(["Jean-Pierre", "O'Brien", "Anne Marie", "de La Fontaine", "Élodie", "Müller", "Zoë"])(
+    "un nom légitime « %s » passe toujours",
+    (nom) => {
+      expect(nettoyerNomPropre(nom, { particules: true })).not.toBeNull();
+    },
+  );
 });
