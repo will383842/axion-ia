@@ -80,4 +80,43 @@ describe("devis-envoi : salutation (L12)", () => {
     );
     expect(await premiereLigne("en", { ...nu, clientNom: "Acme" })).toContain("Hello Acme,");
   });
+  it("salutation null : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await premiereLigne("fr", { ...nu, clientNom: "Michel Dupont", salutation: null });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("salutation chaîne : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await premiereLigne("fr", { ...nu, clientNom: "Michel Dupont", salutation: "x" });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("salutation tableau : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await premiereLigne("fr", { ...nu, clientNom: "Michel Dupont", salutation: [] });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("valeurs non-chaînes dans la salutation : « Bonjour, »", async () => {
+    const t = await premiereLigne("fr", {
+      ...nu,
+      clientNom: "Michel Dupont",
+      salutation: { civilite: 1, nomFamille: ["x"] },
+    });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("le HTML porte « Bonjour Monsieur Dupont, »", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", {
+      ...nu,
+      salutation: { civilite: "monsieur", nomFamille: "Dupont" },
+    });
+    expect(r.html).toContain("Bonjour Monsieur Dupont,");
+  });
+  it("le nom de famille est échappé dans le HTML", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", {
+      ...nu,
+      salutation: { civilite: "monsieur", nomFamille: "<b>&" },
+    });
+    expect(r.html).toContain("&lt;b&gt;&amp;");
+    expect(r.html).not.toContain("<b>&");
+  });
 });

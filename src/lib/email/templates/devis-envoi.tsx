@@ -112,10 +112,15 @@ export function DevisEnvoiEmail({
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
     : "";
 
-  const sal = p.salutation;
+  // Clé présente (valeur autre que undefined) : jamais clientNom. Valeur non
+  // objet (null, chaîne, tableau…) → « Bonjour, ». Clé absente : ancien rendu.
+  const sal = p.salutation as unknown;
   const bonjour =
-    typeof sal === "object" && sal !== null && !Array.isArray(sal)
-      ? salutation(sal, locale)
+    Object.prototype.hasOwnProperty.call(payload, "salutation") && sal !== undefined
+      ? salutation(
+          typeof sal === "object" && sal !== null && !Array.isArray(sal) ? sal : {},
+          locale,
+        )
       : t.intro(field(p, "clientNom", ""));
 
   return (
