@@ -27,7 +27,11 @@ const DEVIS: DevisPourPdf = {
   },
 };
 
-const identite = { raisonSociale: "Axion", site: "https://axion-ia.com" } as never;
+const identite = {
+  raisonSociale: "Axion",
+  site: "https://axion-ia.com",
+  qualiopi: "FR-2024-001",
+} as never;
 const maintenant = new Date("2026-11-04T10:00:00Z");
 
 describe("donneesPdfDevis", () => {
@@ -56,13 +60,25 @@ describe("donneesPdfDevis", () => {
     expect(d.montantOpcoEstimeCents).toBe(100000);
   });
 
-  it("sans certification : pas de montants d'estimation, une mention à la place", () => {
+  it("sans certification : ni mention, ni montants, ni financement, ni numéro de certification", () => {
     const d = donneesPdfDevis(
       DEVIS,
       { identite, regimeTva: "assujetti", tauxStandard: 20, certificationObtenue: false },
       maintenant,
     );
     expect(d.montantOpcoEstimeCents).toBeUndefined();
-    expect(d.mentionEstimationIndisponible).toBeTruthy();
+    expect(d.resteAChargeCents).toBeUndefined();
+    expect(d.financementSuggere).toBeUndefined();
+    expect(d.mentionEstimationIndisponible).toBeUndefined();
+    expect(d.identite.qualiopi).toBe("");
+  });
+
+  it("avec certification : identité inchangée (numéro conservé)", () => {
+    const d = donneesPdfDevis(
+      DEVIS,
+      { identite, regimeTva: "assujetti", tauxStandard: 20, certificationObtenue: true },
+      maintenant,
+    );
+    expect(d.identite.qualiopi).toBe("FR-2024-001");
   });
 });

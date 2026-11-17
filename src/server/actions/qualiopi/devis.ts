@@ -346,7 +346,6 @@ export async function sendDevisAction(
   try {
     // Données du PDF : même fonction pure que l'aperçu du brouillon.
     const contexte = await lireContextePdfDevis();
-    const identite = contexte.identite;
     const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
     formulesEnvoyees = data.formules;
 
@@ -377,7 +376,7 @@ export async function sendDevisAction(
       type: "devis",
       // Élément PRÉ-CONSTRUIT : le PDF affiche le numéro du Devis CRM.
       element: React.createElement(DevisPdf, { data }),
-      identite,
+      identite: data.identite,
       refs: { clientId: devis.clientId },
     });
     // Clé R2 stable (l'URL signée retournée expire en 900 s — on stocke la clé).
