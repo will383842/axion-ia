@@ -51,6 +51,7 @@ import {
   apresSignature,
   PREFIXE_ACTIVATION_REFUSEE,
   reprendreAcceptationDevisFormules,
+  reprendreConfirmationDevisClassiques,
 } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
@@ -1082,7 +1083,9 @@ export async function contresignerPieceAction(input: {
  */
 export async function relancerAcceptationDevisAction(input: {
   documentGenereId: string;
-}): Promise<{ ok: true; devisAcceptes: number } | { ok: false; message: string }> {
+}): Promise<
+  { ok: true; devisAcceptes: number; message?: string } | { ok: false; message: string }
+> {
   const session = await requireAdminWrite();
   if (!peutSignerPourOrganisme(session.role)) {
     return { ok: false, message: REFUS_ROLE_ORGANISME.message };
@@ -1112,9 +1115,43 @@ export async function relancerAcceptationDevisAction(input: {
   try {
     const res = await reprendreAcceptationDevisFormules(id.data, { confirmer: true });
     if (!res.traite) {
+      // Devis CLASSIQUE : la reprise des formules ne le voit pas. Même garde (pièce signée des deux
+      // parties, vérifiée plus haut ; la reprise relit la contresignature elle-même).
+      const classique = await reprendreConfirmationDevisClassiques(id.data);
+      if (!classique.traite) {
+        return {
+          ok: false,
+          message: "Aucun devis en attente d'acceptation ou de confirmation pour cette pièce.",
+        };
+      }
+      await logQualiopiActivity({
+        action: "qualiopi.devis.relance_acceptation",
+        targetType: "DocumentGenere",
+        targetId: id.data,
+        changes: {
+          numero: piece.numero,
+          devis: classique.ids,
+          confirmationsEchec: classique.confirmationsEchec,
+          raisonsEchec: classique.raisonsEchec,
+        },
+        session,
+      });
+      if (classique.confirmationsEchec.length > 0) {
+        const sansAdresse = Object.values(classique.raisonsEchec).includes("pas_d_adresse");
+        return {
+          ok: false,
+          message: sansAdresse
+            ? "La confirmation de commande n'a pas pu être préparée : la fiche du client n'a pas d'adresse e-mail. Ajoutez-la, puis relancez depuis la fiche du devis."
+            : "La confirmation de commande n'a pas pu être préparée (code consigné). Relancez depuis la fiche du devis.",
+        };
+      }
+      const preparee = classique.confirmationsPreparees.length > 0;
       return {
-        ok: false,
-        message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
+        ok: true,
+        devisAcceptes: 0,
+        message: preparee
+          ? "Confirmation de commande préparée : elle attend votre validation dans les e-mails à valider."
+          : "La confirmation de commande existe déjà.",
       };
     }
     if (res.ids.length === 0) {

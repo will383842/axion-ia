@@ -288,6 +288,79 @@ async function devisAcceptesAFormules(documentGenereId: string): Promise<string[
   return lignes.map((d) => d.id);
 }
 
+/**
+ * REPRISE de la confirmation de commande d'un devis CLASSIQUE (ni offre ni empreinte d'offre)
+ * déjà accepté : la préparation avait échoué (adresse absente, exemplaire absent…) alors que
+ * l'acceptation était acquise. Même forme de retour que la reprise des formules.
+ *
+ * ⛔ Jamais pour un devis non contresigné : la pièce doit porter une signature du client ET une
+ * signature d'Axion-IA non révoquée (le contrat est formé à la contresignature, CGV 6.2), et le
+ * devis doit être déjà `accepte` / `transforme_convention`. `deja_envoyee` = rien à faire : ni
+ * préparée ni en échec. Aucun devis à formules n'est touché (c'est l'autre reprise).
+ */
+export async function reprendreConfirmationDevisClassiques(documentGenereId: string): Promise<{
+  traite: boolean;
+  ids: string[];
+  confirmationsPreparees: string[];
+  confirmationsDejaFaites: string[];
+  confirmationsEchec: string[];
+  /** Devis → code de raison (« exception » si la préparation a levé). Aucune donnée personnelle. */
+  raisonsEchec: Record<string, string>;
+}> {
+  const vide = {
+    traite: false,
+    ids: [] as string[],
+    confirmationsPreparees: [] as string[],
+    confirmationsDejaFaites: [] as string[],
+    confirmationsEchec: [] as string[],
+    raisonsEchec: {} as Record<string, string>,
+  };
+  const signatures = await prisma.documentSignature.findMany({
+    where: { documentGenereId, revokedAt: null },
+    select: { partie: true },
+  });
+  const parties = new Set(signatures.map((x) => x.partie));
+  if (!parties.has("client") || !parties.has("axionia")) return vide;
+
+  const lus = await prisma.devis.findMany({
+    where: { documentGenereId, statut: { in: ["accepte", "transforme_convention"] } },
+    select: { id: true, offre: true, offreSha256: true },
+  });
+  const ids = lus.filter((d) => d.offre == null && d.offreSha256 == null).map((d) => d.id);
+  if (ids.length === 0) return vide;
+
+  const res = { ...vide, traite: true, ids };
+  for (const id of ids) {
+    try {
+      const r = await envoyerConfirmationCommande({
+        declencheur: "contresignature_axion_explicite",
+        devisId: id,
+      });
+      if (r.envoye) res.confirmationsPreparees.push(id);
+      else if (r.raison === "deja_envoyee") res.confirmationsDejaFaites.push(id);
+      else {
+        res.confirmationsEchec.push(id);
+        res.raisonsEchec[id] = r.raison;
+        journaliserConfirmationNonPreparee(id, r.raison);
+      }
+    } catch (err) {
+      res.confirmationsEchec.push(id);
+      res.raisonsEchec[id] = "exception";
+      journaliserConfirmationNonPreparee(id, "exception");
+      Sentry.captureException(err, {
+        tags: { action: "confirmation_commande_non_preparee" },
+        extra: { devisId: id },
+      });
+    }
+  }
+  return res;
+}
+
+/** Raison d'un échec de préparation : identifiant du devis et code seulement, aucune donnée personnelle. */
+function journaliserConfirmationNonPreparee(devisId: string, raison: string): void {
+  console.error(`[confirmationCommande] NON PRÉPARÉE — devis ${devisId}, raison ${raison}`);
+}
+
 /** Plans récurrents non proposés après une acceptation réussie : la signature reste acquise. */
 export const PREFIXE_PLANS_NON_PROPOSES =
   "Devis accepté, mais les plans récurrents n'ont pas pu être proposés.";
@@ -298,6 +371,10 @@ export const PREFIXE_CONFIRMATION_NON_PREPAREE =
 
 const MESSAGE_CONFIRMATION_NON_PREPAREE =
   "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.";
+
+/** Cause « fiche client sans adresse e-mail » : dite telle quelle (chemin CLASSIQUE seulement). */
+const MESSAGE_CONFIRMATION_PAS_D_ADRESSE =
+  "La confirmation de commande n'a pas pu être préparée : la fiche du client n'a pas d'adresse e-mail. Ajoutez-la, puis relancez depuis la fiche du devis.";
 
 async function accepterDevis(
   documentGenereId: string,
@@ -362,6 +439,7 @@ async function accepterDevis(
   // Après le COMMIT, hors transaction, comme pour les formules. Toujours garée en corbeille « à
   // valider ». L'anti-rejeu (`deja_envoyee`) interdit tout doublon ; ce n'est pas un échec.
   const confirmationsEchec: string[] = [];
+  let sansAdresse = false;
   if (options.confirmer) {
     for (const id of visesEtClassiques.classiques) {
       try {
@@ -369,9 +447,14 @@ async function accepterDevis(
           declencheur: "contresignature_axion_explicite",
           devisId: id,
         });
-        if (!r.envoye && r.raison !== "deja_envoyee") confirmationsEchec.push(id);
+        if (!r.envoye && r.raison !== "deja_envoyee") {
+          confirmationsEchec.push(id);
+          if (r.raison === "pas_d_adresse") sansAdresse = true;
+          journaliserConfirmationNonPreparee(id, r.raison);
+        }
       } catch (err) {
         confirmationsEchec.push(id);
+        journaliserConfirmationNonPreparee(id, "exception");
         Sentry.captureException(err, {
           tags: { action: "confirmation_commande_non_preparee" },
           extra: { devisId: id },
@@ -386,7 +469,7 @@ async function accepterDevis(
   if (confirmationsEchec.length > 0) {
     return {
       code: "confirmation_commande_non_preparee",
-      message: MESSAGE_CONFIRMATION_NON_PREPAREE,
+      message: sansAdresse ? MESSAGE_CONFIRMATION_PAS_D_ADRESSE : MESSAGE_CONFIRMATION_NON_PREPAREE,
       manques: [],
       prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
     };

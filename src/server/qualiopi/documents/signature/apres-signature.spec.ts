@@ -92,6 +92,7 @@ import {
   PREFIXE_CONFIRMATION_NON_PREPAREE,
   PREFIXE_PLANS_NON_PROPOSES,
   reprendreAcceptationDevisFormules,
+  reprendreConfirmationDevisClassiques,
   type ContexteApresSignature,
 } from "./apres-signature";
 
@@ -515,6 +516,11 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       });
       expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.confirmer));
       expect(ordre(h.monter)).toBeLessThan(ordre(h.confirmer));
+      // m4 : la remise de l'exemplaire précède la confirmation, qui précède la proposition des plans.
+      expect(ordre(h.transmettre)).toBeLessThan(ordre(h.confirmer));
+      expect(ordre(h.confirmer)).toBeLessThan(
+        ordre(proposerPlansApresAcceptation as unknown as ReturnType<typeof vi.fn>),
+      );
       expect(r.activationRefusee ?? null).toBeNull();
     });
 
@@ -522,6 +528,45 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
       await contresigne({ partie: "client", statutSignature: "partielle" });
       expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("m1 : devis classique, signature du CLIENT intégrale (signee) par un administrateur → aucune confirmation", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      await contresigne({ partie: "client", statutSignature: "signee" });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("m2 : devis classique, client sans adresse e-mail → message qui dit la cause ; autre raison → message inchangé", async () => {
+      const Sentry = await import("@sentry/nextjs");
+      const log = vi.spyOn(console, "error").mockImplementation(() => undefined);
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "pas_d_adresse" });
+      const r1 = await contresigne();
+      expect(r1.activationRefusee).toMatchObject({
+        code: "confirmation_commande_non_preparee",
+        prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
+        message:
+          "La confirmation de commande n'a pas pu être préparée : la fiche du client n'a pas d'adresse e-mail. Ajoutez-la, puis relancez depuis la fiche du devis.",
+      });
+      // La raison est journalisée : identifiant du devis et code seulement.
+      const journal = [
+        ...log.mock.calls.map((c) => c.join(" ")),
+        ...(Sentry.captureMessage as unknown as ReturnType<typeof vi.fn>).mock.calls.map((c) =>
+          String(c[0]),
+        ),
+      ].join("\n");
+      expect(journal).toContain("dv-classique");
+      expect(journal).toContain("pas_d_adresse");
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+      const r2 = await contresigne();
+      expect(r2.activationRefusee?.message).toBe(
+        "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.",
+      );
+      log.mockRestore();
     });
 
     it("devis classique : acteur signataire (pas administrateur) → aucune confirmation", async () => {
@@ -760,5 +805,72 @@ describe("devis intégralement signé : le prospect passe en client", () => {
   it("une autre pièce que le devis : rien ne monte", async () => {
     await apresSignature(ctx({ type: "lettre_mission" }));
     expect(h.monter).not.toHaveBeenCalled();
+  });
+});
+
+describe("reprise de la confirmation d'un devis CLASSIQUE (M1)", () => {
+  const deuxParties = () =>
+    h.p.documentSignature.findMany.mockResolvedValue([{ partie: "client" }, { partie: "axionia" }]);
+  const classique = (id = "dv-classique") => ({ id, offre: null, offreSha256: null });
+
+  it("devis classique accepté et contresigné : la confirmation est appelée, déclencheur explicite", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(h.confirmer).toHaveBeenCalledWith({
+      declencheur: "contresignature_axion_explicite",
+      devisId: "dv-classique",
+    });
+    expect(r).toMatchObject({
+      traite: true,
+      ids: ["dv-classique"],
+      confirmationsPreparees: ["dv-classique"],
+      confirmationsEchec: [],
+    });
+    const where = (h.p.devis.findMany.mock.calls as unknown as [{ where: unknown }][])[0]![0].where;
+    expect(where).toMatchObject({
+      documentGenereId: DOC,
+      statut: { in: ["accepte", "transforme_convention"] },
+    });
+  });
+
+  it("`deja_envoyee` = rien à faire : succès, ni préparée ni en échec", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(true);
+    expect(r.confirmationsEchec).toEqual([]);
+    expect(r.confirmationsPreparees).toEqual([]);
+    expect(r.confirmationsDejaFaites).toEqual(["dv-classique"]);
+  });
+
+  it("autre refus ou exception : échec, avec la raison", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique("a"), classique("b")]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "pas_d_adresse" });
+    h.confirmer.mockRejectedValueOnce(new Error("redis"));
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.confirmationsEchec).toEqual(["a", "b"]);
+    expect(r.raisonsEchec).toEqual({ a: "pas_d_adresse", b: "exception" });
+  });
+
+  it("devis non contresigné (pas de signature d'Axion-IA) : AUCUNE confirmation", async () => {
+    h.p.documentSignature.findMany.mockResolvedValue([{ partie: "client" }]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(false);
+    expect(h.p.devis.findMany).not.toHaveBeenCalled();
+    expect(h.confirmer).not.toHaveBeenCalled();
+  });
+
+  it("devis à formules (offre ou empreinte) : jamais confirmé par cette reprise", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([
+      { id: "dv-f", offre: { x: 1 }, offreSha256: "abc" },
+      { id: "dv-g", offre: null, offreSha256: "abc" },
+    ]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(false);
+    expect(h.confirmer).not.toHaveBeenCalled();
   });
 });
