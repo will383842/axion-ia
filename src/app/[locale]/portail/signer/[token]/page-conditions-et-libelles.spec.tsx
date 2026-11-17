@@ -127,6 +127,9 @@ describe("page de signature — devis classique", () => {
     await rendu();
     expect(m.formulaire.mock.calls[0]?.[0]).toMatchObject({
       conditionsParticulieres: "Acompte de 30 %.",
+      phrasePrimauteConditionsParticulieres: expect.stringContaining(
+        "dérogent aux Conditions générales de vente",
+      ),
       pieceLibelleDefini: "le devis",
     });
   });

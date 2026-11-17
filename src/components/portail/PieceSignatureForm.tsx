@@ -31,7 +31,6 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { SignaturePad } from "@/components/portail/SignaturePad";
-import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
 
 export interface LigneAffichee {
   designation: string;
@@ -198,6 +197,11 @@ export interface PieceSignatureFormProps {
    * pièce. Texte brut, imprimé après les totaux et avant les conditions générales.
    */
   conditionsParticulieres?: string | null;
+  /**
+   * Phrase de primauté imprimée sous les conditions particulières : constante UNIQUE du domaine,
+   * transmise par la page serveur (le composant client n'importe pas le domaine Qualiopi).
+   */
+  phrasePrimauteConditionsParticulieres?: string;
   /** Lien vers le PDF exact qui sera scellé. */
   pdfUrl: string | null;
   /**
@@ -274,6 +278,7 @@ export function PieceSignatureForm({
   pieceLibelle,
   pieceLibelleDefini,
   conditionsParticulieres,
+  phrasePrimauteConditionsParticulieres,
   pdfUrl,
   mentions,
   cgv,
@@ -534,7 +539,7 @@ export function PieceSignatureForm({
             <h3 className="text-fg text-sm font-semibold">Conditions particulières</h3>
             <p className="text-fg mt-2 text-sm whitespace-pre-line">{conditionsParticulieres}</p>
             <p className="text-fg-soft mt-3 text-xs italic">
-              {PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES}
+              {phrasePrimauteConditionsParticulieres}
             </p>
           </div>
         )}

@@ -18,6 +18,7 @@
  * Server Component. FR en dur, comme le reste du portail.
  */
 
+import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
@@ -344,6 +345,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
             totalTtcLisible: devis.totalTtcLisible,
             mentionTva: devis.mentionTva,
             conditionsParticulieres: devis.conditionsParticulieres,
+            phrasePrimauteConditionsParticulieres: PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES,
           }
         : {})}
       pdfUrl={pdfUrl}

@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 
 import { PieceSignatureForm } from "./PieceSignatureForm";
-import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
+const PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES = "Phrase de primauté transmise par la page.";
 
 afterEach(cleanup);
 
@@ -47,6 +47,7 @@ describe("conditions particulières sur la page de signature", () => {
   it("titre, texte brut et phrase de primauté, AVANT le bloc des conditions générales", () => {
     const { container } = rendre({
       conditionsParticulieres: "Acompte de 30 %.\n\nSolde à 30 jours.",
+      phrasePrimauteConditionsParticulieres: PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES,
     });
     expect(screen.getByText("Conditions particulières")).toBeTruthy();
     expect(screen.getByText(/Acompte de 30 %\./)).toBeTruthy();
