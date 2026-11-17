@@ -44,7 +44,7 @@ export type CategorieEmail =
 
 export const LIBELLE_CATEGORIE: Readonly<Record<CategorieEmail, string>> = {
   "rendez-vous": "Rendez-vous & Calendly",
-  formation: "Formation (Qualiopi)",
+  formation: "Formation",
   commerce: "Commerce & facturation",
   recrutement: "Recrutement",
   rgpd: "RGPD",
@@ -219,7 +219,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     source: null,
   },
 
-  // ── Formation (Qualiopi) ──────────────────────────────────────────────────
+  // ── Formation ──────────────────────────────────────────────────
   "qualiopi-convocation": {
     categorie: "formation",
     quand: "Convocation à une session, cron quotidien (J-5)",
@@ -361,7 +361,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "qualiopi-alerte-interne": {
     categorie: "formation",
-    quand: "Anomalie détectée sur la chaîne Qualiopi",
+    quand: "Anomalie détectée sur la chaîne de formation",
     destinataire: "interne",
     source: "server/qualiopi/alertes/envoi-groupe.ts",
   },
