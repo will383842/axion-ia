@@ -73,6 +73,11 @@ export interface DevisPourPdf {
    * tableau vide à 0,00 €. Elle n'est exploitée que si l'interrupteur est allumé.
    */
   offre?: unknown;
+  /**
+   * Conditions particulières (texte simple, devis CLASSIQUE seulement). OBLIGATOIRE : chaque
+   * `select` écrit à la main doit le lire, sinon le texte saisi disparaîtrait du PDF en silence.
+   */
+  conditionsParticulieres: string | null;
   client: {
     type: string;
     raisonSociale: string;
@@ -98,6 +103,7 @@ export const SELECT_DEVIS_POUR_PDF = {
   dateValidite: true,
   // Offre à formules : sans elle, l'aperçu d'un devis à formules rendrait un tableau vide à 0,00 €.
   offre: true,
+  conditionsParticulieres: true,
   client: {
     select: {
       type: true,
@@ -192,6 +198,11 @@ export function donneesPdfDevis(
       : undefined;
 
   const formules = formulesDuDevis(devis.offre, contexte.formulesActives, regimeTva);
+  // Conditions particulières : devis CLASSIQUE seulement (une offre, même éteinte, les exclut).
+  const conditionsParticulieres =
+    devis.offre == null && devis.conditionsParticulieres?.trim()
+      ? devis.conditionsParticulieres
+      : undefined;
 
   return {
     numero: devis.numero,
@@ -210,6 +221,7 @@ export function donneesPdfDevis(
     },
     lignes,
     ...(formules !== undefined ? { formules } : {}),
+    ...(conditionsParticulieres !== undefined ? { conditionsParticulieres } : {}),
     regimeTva,
     tauxTvaStandardPercent: tauxStandard,
     ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),

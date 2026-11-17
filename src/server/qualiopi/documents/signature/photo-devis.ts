@@ -32,6 +32,8 @@ export const photoDevis = z.object({
   regimeTva: z.custom<"assujetti" | "exoneration_261" | "franchise_293b">(isRegimeTva),
   tauxTvaStandardPercent: z.number().optional(),
   client: z.object({ raisonSociale: z.string() }).optional(),
+  /** Conditions particulières figées avec la pièce (devis classique). Absent = aucune. */
+  conditionsParticulieres: z.string().max(4000).optional(),
 });
 
 export type PhotoDevis = z.infer<typeof photoDevis>;

@@ -168,4 +168,68 @@ describe("lireDevisASigner — la page affiche la PHOTO de la pièce signée", (
     findFirst.mockResolvedValue(null);
     expect(await lireDevisASigner("doc1")).toBeNull();
   });
+
+  describe("conditions particulières — lues dans la PHOTO, jamais dans la colonne", () => {
+    it("la photo porte le texte : la page le reçoit", async () => {
+      findFirst.mockResolvedValue(
+        devisAvec(
+          photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "Acompte de 30 %.",
+          }),
+        ),
+      );
+      const r = await lireDevisASigner("doc1");
+      expect(r?.conditionsParticulieres).toBe("Acompte de 30 %.");
+    });
+
+    it("colonne modifiée APRÈS l'envoi : la page ignore la colonne", async () => {
+      findFirst.mockResolvedValue(
+        devisAvec({
+          conditionsParticulieres: "TEXTE MODIFIÉ APRÈS L'ENVOI",
+          ...photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "Texte envoyé.",
+          }),
+        }),
+      );
+      const r = await lireDevisASigner("doc1");
+      expect(r?.conditionsParticulieres).toBe("Texte envoyé.");
+    });
+
+    it("photo sans le champ mais colonne remplie : null (la colonne n'est jamais lue)", async () => {
+      findFirst.mockResolvedValue(
+        devisAvec({
+          conditionsParticulieres: "Colonne seule",
+          ...photo({ lignes: [LIGNE], regimeTva: "assujetti" }),
+        }),
+      );
+      const r = await lireDevisASigner("doc1");
+      expect(r?.conditionsParticulieres).toBeNull();
+      const select = findFirst.mock.calls.at(-1)?.[0].select as Record<string, unknown>;
+      expect("conditionsParticulieres" in select).toBe(false);
+    });
+
+    it("photo absente : null", async () => {
+      findFirst.mockResolvedValue(devisAvec({ documentGenere: { metadata: null } }));
+      const r = await lireDevisASigner("doc1");
+      expect(r?.conditionsParticulieres).toBeNull();
+    });
+
+    it("champ de plus de 4000 caractères dans la photo : photo illisible (jamais tronqué en silence)", async () => {
+      findFirst.mockResolvedValue(
+        devisAvec(
+          photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "x".repeat(4001),
+          }),
+        ),
+      );
+      const r = await lireDevisASigner("doc1");
+      expect(r?.chiffrageIndisponible).toBe(true);
+    });
+  });
 });

@@ -62,6 +62,11 @@ const MESSAGE_DEVIS_FERME = {
   detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
 };
 
+/** « le devis » → « Le devis » (début de phrase). */
+function majusculeInitiale(texte: string): string {
+  return `${texte.charAt(0).toUpperCase()}${texte.slice(1)}`;
+}
+
 function Message({ titre, detail }: { titre: string; detail: string }) {
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
@@ -159,7 +164,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Cette pièce a été annulée"
-        detail={`${circuit.libelle} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
+        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
       />
     );
   }
@@ -174,7 +179,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Vous avez déjà signé cette pièce"
-        detail={`Votre signature sur ${circuit.libelle} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
+        detail={`Votre signature sur ${circuit.libelleDefini} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
     );
   }
@@ -311,7 +316,9 @@ export default async function SignerDevisPage({ params }: PageProps) {
     verif.partie,
     {
       pieceLibelle: circuit.libelle,
-      pieceNumero: piece.numero,
+      // Un devis se désigne par SON numéro (AXI-DEV), celui que le client connaît ; le n° de
+      // pièce (AXI-DOC) reste affiché à part par le formulaire.
+      pieceNumero: devis?.numero ?? piece.numero,
       organisme: identite.raisonSociale,
     },
     circuit.canal === "maison",
@@ -324,6 +331,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       numero={piece.numero}
       {...(devis !== null ? { numeroDevis: devis.numero } : {})}
       pieceLibelle={circuit.libelle}
+      pieceLibelleDefini={circuit.libelleDefini}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
       clientRaisonSociale={destinataire}
@@ -335,6 +343,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
             totalHtLisible: devis.totalHtLisible,
             totalTtcLisible: devis.totalTtcLisible,
             mentionTva: devis.mentionTva,
+            conditionsParticulieres: devis.conditionsParticulieres,
           }
         : {})}
       pdfUrl={pdfUrl}

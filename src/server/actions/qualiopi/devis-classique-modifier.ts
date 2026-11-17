@@ -15,7 +15,8 @@
  *   - n'écrit JAMAIS `statut` (cliquet des écrivains) ; aucun delete ; aucun e-mail ;
  *   - le lien au projet (`projetId`) n'est posé qu'à la création : il est ignoré ici.
  *
- * Montants en centimes. Le champ retiré de la saisie (OPCO, activité, référence) est remis à null.
+ * Montants en centimes. Activité et référence retirées de la saisie sont remises à null ; le financement
+ * (et son estimation) et les conditions particulières ne sont écrits que si la clé est présente.
  */
 
 import { z } from "zod";
@@ -91,11 +92,22 @@ export async function modifierDevisClassiqueBrouillonAction(
       mentionTva,
       activite: v.activite ?? null,
       refClient: v.refClient ?? null,
-      financementSuggere: v.financementSuggere ?? null,
-      montantOpcoEstimeCents: opco.montantOpcoEstimeCents ?? null,
-      opcoEstimationOrigine: opco.opcoEstimationOrigine ?? null,
-      opcoEstimationAvertissement: opco.opcoEstimationAvertissement ?? null,
-      resteAChargeCents: opco.resteAChargeCents ?? null,
+      // Financement : clé ABSENTE = champs intacts (le formulaire d'édition et l'assistant
+      // n'envoient pas la clé : un `?? null` effacerait en silence un règlement existant).
+      // Clé PRÉSENTE = comportement historique (valeur + estimation recalculée).
+      ...(v.financementSuggere !== undefined
+        ? {
+            financementSuggere: v.financementSuggere,
+            montantOpcoEstimeCents: opco.montantOpcoEstimeCents ?? null,
+            opcoEstimationOrigine: opco.opcoEstimationOrigine ?? null,
+            opcoEstimationAvertissement: opco.opcoEstimationAvertissement ?? null,
+            resteAChargeCents: opco.resteAChargeCents ?? null,
+          }
+        : {}),
+      // Conditions particulières : même règle. `null` (ou texte vide, normalisé en `null`) efface.
+      ...(v.conditionsParticulieres !== undefined
+        ? { conditionsParticulieres: v.conditionsParticulieres }
+        : {}),
     },
   });
   if (count === 0) return { error: MSG_PERIME };

@@ -15,6 +15,7 @@ const DEVIS: DevisPourPdf = {
   montantOpcoEstimeCents: 100000,
   resteAChargeCents: 50000,
   dateValidite: new Date("2026-12-31T12:00:00Z"),
+  conditionsParticulieres: null,
   client: {
     type: "particulier",
     raisonSociale: "Jeanne Martin",
@@ -80,5 +81,48 @@ describe("donneesPdfDevis", () => {
       maintenant,
     );
     expect(d.identite.qualiopi).toBe("FR-2024-001");
+  });
+
+  describe("conditions particulières", () => {
+    const ctx = {
+      identite,
+      regimeTva: "assujetti" as const,
+      tauxStandard: 20,
+      certificationObtenue: true,
+    };
+
+    it("devis classique avec texte : le champ part au PDF", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect(d.conditionsParticulieres).toBe("Acompte de 30 %.");
+    });
+
+    it("devis à formules (offre non nulle) : le champ est absent même si la colonne est remplie", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: { formules: [] }, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect("conditionsParticulieres" in d).toBe(false);
+    });
+
+    it("texte absent ou blanc : aucune clé", () => {
+      for (const c of [null, "", "  \n "]) {
+        const d = donneesPdfDevis({ ...DEVIS, conditionsParticulieres: c }, ctx, maintenant);
+        expect("conditionsParticulieres" in d, JSON.stringify(c)).toBe(false);
+      }
+    });
+
+    it("le champ part même sans certification (texte du client, pas une mention de l'organisme)", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, conditionsParticulieres: "Texte." },
+        { ...ctx, certificationObtenue: false },
+        maintenant,
+      );
+      expect(d.conditionsParticulieres).toBe("Texte.");
+    });
   });
 });
