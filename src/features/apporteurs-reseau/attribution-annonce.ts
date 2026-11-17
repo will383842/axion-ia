@@ -134,6 +134,8 @@ export async function alerterDeclarationsSansReponse(maintenant: Date): Promise<
           cibleType: "PresentationEntreprise",
           cibleId: p.id,
           cibleLibelle: `Entreprise présentée : ${p.denomination}`,
+          rubrique: "apporteurs",
+          chemin: "apporteurs/entreprises",
           createdAt: p.recueAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" }),
         },
         { jobId, entityType: "PresentationEntreprise", entityId: p.id },
