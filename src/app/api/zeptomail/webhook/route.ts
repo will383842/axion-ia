@@ -27,7 +27,14 @@ import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { notify } from "@/server/notifications";
 import { creerOuDedup } from "@/server/qualiopi/alertes/alertes-service";
 import { verifierSignatureZeptomail } from "@/server/email/zeptomail-webhook-signature";
-import { lireRebond, FENETRE_RATTACHEMENT_HEURES } from "@/server/email/bounce-service";
+import {
+  lireRebond,
+  lirePlainte,
+  nomEvenementPourJournal,
+  FENETRE_RATTACHEMENT_HEURES,
+} from "@/server/email/bounce-service";
+import { enregistrerOppositionPourAdresse } from "@/server/email/opposition";
+import { redactEmail } from "@/lib/pii-redaction";
 import { noterRebondSurAbonne } from "@/server/newsletter/rebonds";
 import { noterAppelRecu, noterAppelWebhook } from "@/server/email/webhook-battement";
 import { ipDepuisEntetes } from "@/lib/client-ip";
@@ -183,7 +190,15 @@ export async function POST(req: NextRequest): Promise<Response> {
   const rebond = lireRebond(payload);
   // Pas un rebond (l'agent peut être abonné à d'autres événements) : on accuse
   // réception. Répondre en erreur ferait retenter puis désabonner.
-  if (rebond === null) return Response.json({ ok: true, ignored: "not_a_bounce" });
+  if (rebond === null) {
+    // Plainte pour spam : l'adresse sort des sollicitations (opposition), sans e-mail au plaignant.
+    // L'opposition ne vise que les sollicitations : factures et pièces partent toujours.
+    const plainte = lirePlainte(payload);
+    if (plainte !== null) return traiterPlainte(plainte.destinataire);
+    // Événement inconnu : on garde le seul NOM (borné), pour découvrir le vrai nom de l'événement.
+    console.warn(`[zeptomail-webhook] événement ignoré : ${nomEvenementPourJournal(payload)}`);
+    return Response.json({ ok: true, ignored: "not_a_bounce" });
+  }
 
   const survenuLe = rebond.survenuLe ?? new Date();
   let rattache = false;
@@ -316,6 +331,36 @@ export async function POST(req: NextRequest): Promise<Response> {
   }
 
   return Response.json({ ok: true, type: rebond.type, rattache });
+}
+
+/**
+ * Une plainte pour spam, signature déjà vérifiée. Adresse absente : 200, rien. Jamais d'erreur
+ * rendue à ZeptoMail (il retenterait, puis désabonnerait).
+ */
+async function traiterPlainte(destinataire: string | null): Promise<Response> {
+  if (destinataire === null) return Response.json({ ok: true, ignored: "not_a_bounce" });
+  let opposee = false;
+  try {
+    const r = await enregistrerOppositionPourAdresse(destinataire, { origine: "plainte-spam" });
+    opposee = r.ok;
+  } catch {
+    // Même doctrine que le reste de la route.
+  }
+  // Une alerte par ADRESSE (dédoublonnée) ; l'adresse y est masquée.
+  void creerOuDedup({
+    code: "email_plainte_spam",
+    niveau: "important",
+    titre: "Une plainte pour spam a été reçue",
+    message:
+      `L'adresse « ${redactEmail(destinataire)} » a signalé un e-mail comme indésirable. ` +
+      (opposee
+        ? "Elle est désormais écartée des sollicitations ; les factures et pièces continuent de partir."
+        : "L'enregistrement de l'opposition a échoué : à faire à la main depuis la console."),
+    cibleType: "EmailOpposition",
+    // Empreinte, pas l'adresse : aucune adresse lisible dans l'alerte.
+    cibleId: hashEmailForLookup(destinataire) ?? "inconnu",
+  }).catch(() => {});
+  return Response.json({ ok: true, type: "plainte", opposee });
 }
 
 /** Début de la fenêtre de rattachement — même calcul que le bloc principal. */
