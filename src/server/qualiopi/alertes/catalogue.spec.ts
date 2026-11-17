@@ -116,6 +116,7 @@ const CODES_ATTENDUS: string[] = [
   // Lot 8B — fin de session : certificat de réalisation et avis du financeur manquants.
   "certificat_realisation_manquant",
   "avis_financeur_manquant",
+  "convention_non_validee_avant_session",
   "satisfaction_sous_seuil",
   "reclamation_sans_reponse_j15",
   "reclamation_accuse_en_retard",
