@@ -75,7 +75,8 @@ export const qualiopiAlerteInterneSubject = (
   // interne ne veut pas dire illisible, et c'est la boîte de réception de Will
   // qui le reçoit. Le PRÉFIXE (niveau + compte + guichet) est ce qui trie — il
   // n'est jamais rogné ; c'est le titre qui s'abrège.
-  return objetCompose(`${prefix} Alerte Qualiopi${compte} —`, `${p.titre ?? p.code}${pour}`);
+  const nature = /apporteur/i.test(`${p.code} ${p.guichet ?? ""}`) ? "apporteur" : "formation";
+  return objetCompose(`${prefix} Alerte ${nature}${compte} —`, `${p.titre ?? p.code}${pour}`);
 };
 
 export function QualiopiAlerteInterneEmail({
@@ -101,15 +102,12 @@ export function QualiopiAlerteInterneEmail({
   return (
     <EmailLayout
       famille="C"
-      /* Le pré-en-tête recopiait le titre mot pour mot. Il porte désormais ce
-         que le titre ne dit pas : le GUICHET concerné et le code technique —
-         c'est-à-dire de qui c'est le sujet, et quoi chercher dans la console.
-         Sur une alerte interne, c'est ce qui décide de la traiter tout de
-         suite ou de la laisser à l'astreinte. */
+      /* Le pré-en-tête porte ce que le titre ne dit pas : le GUICHET concerné et
+         le nombre d'occurrences. Le code technique n'y figure plus (certains
+         codes portent le mot de la certification) ; la console le garde. */
       preview={
         [
           p.guichet != null && p.guichet !== "" ? `Pour : ${p.guichet}` : "",
-          `code ${p.code}`,
           occurrences.length > 1 ? `${occurrences.length} occurrences` : "1 occurrence",
         ]
           .filter(Boolean)
@@ -120,10 +118,11 @@ export function QualiopiAlerteInterneEmail({
       ctaSecret
       locale={locale}
     >
-      <Text style={emailStyles.paragraphStyle}>
-        <strong>Code :</strong> {p.code}
-        {p.guichet != null && p.guichet !== "" ? ` — pour : ${p.guichet}` : ""}
-      </Text>
+      {/* Le code technique n'est plus écrit : certains codes portent le mot de
+          la certification. Le bouton mène à la console, qui le garde. */}
+      {p.guichet != null && p.guichet !== "" && (
+        <Text style={emailStyles.paragraphStyle}>Pour : {p.guichet}</Text>
+      )}
 
       {p.repli != null && p.repli !== "" && (
         <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>

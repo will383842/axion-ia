@@ -3,7 +3,7 @@
 
 /**
  * Étape 3 assemblée (fiche E15) : un onglet par formule proposée, ou, pour un prix unique,
- * le rappel de l'échéancier puis le financement. Les montants par phase arrivent du serveur
+ * le rappel de l'échéancier (aucun financement n'est proposé). Les montants par phase arrivent du serveur
  * (`montantsPhases`, aperçu S07) ; rien n'est calculé ici.
  */
 import { useId, useState, type Dispatch, type KeyboardEvent } from "react";
@@ -11,7 +11,6 @@ import { useId, useState, type Dispatch, type KeyboardEvent } from "react";
 import { propositionEffective, type ActionAssistant } from "../../etat";
 import type { Etape, EtatAssistant } from "../../types";
 import { ApercuClientVerra } from "./ApercuClientVerra";
-import { BlocFinancement } from "./BlocFinancement";
 import { PaiementA } from "./PaiementA";
 import { PaiementB } from "./PaiementB";
 import { RappelPhases } from "./RappelPhases";
@@ -70,7 +69,6 @@ export function EtapePaiement({
               phases={etat.achat.phases}
               montants={montantsPhases?.A}
             />
-            <BlocFinancement etat={etat} dispatch={dispatch} />
           </>
         ) : (
           <>

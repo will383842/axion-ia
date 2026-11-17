@@ -49,7 +49,10 @@ import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
-import { payloadDevisEnvoi } from "@/server/qualiopi/devis/email-devis-envoi";
+import {
+  nomPourSalutationDevis,
+  payloadDevisEnvoi,
+} from "@/server/qualiopi/devis/email-devis-envoi";
 import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
@@ -343,7 +346,6 @@ export async function sendDevisAction(
   try {
     // Données du PDF : même fonction pure que l'aperçu du brouillon.
     const contexte = await lireContextePdfDevis();
-    const identite = contexte.identite;
     const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
     formulesEnvoyees = data.formules;
 
@@ -374,7 +376,7 @@ export async function sendDevisAction(
       type: "devis",
       // Élément PRÉ-CONSTRUIT : le PDF affiche le numéro du Devis CRM.
       element: React.createElement(DevisPdf, { data }),
-      identite,
+      identite: data.identite,
       refs: { clientId: devis.clientId },
     });
     // Clé R2 stable (l'URL signée retournée expire en 900 s — on stocke la clé).
@@ -553,7 +555,7 @@ export async function sendDevisAction(
       contactEmail,
       "fr",
       payloadDevisEnvoi({
-        clientNom: devis.client.raisonSociale,
+        clientNom: nomPourSalutationDevis(devis.client),
         numero: devis.numero,
         montantTotalHtCents: devis.montantTotalHtCents,
         montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
