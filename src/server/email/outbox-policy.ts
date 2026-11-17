@@ -241,7 +241,7 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "recueil-besoin": "Recueil du besoin : questionnaire envoyé à l'entreprise (et relances)",
   "facture-envoi": "Envoi d'une facture",
   "facture-pieces-remboursement-opco":
-    "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
+    "Pièces de remboursement (facture acquittée, certificat de réalisation)",
   "autofacture-transmission": "Transmission d'une facture d'honoraires (autofacturation)",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
