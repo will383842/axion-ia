@@ -14,6 +14,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import { videosSiteActives } from "./config";
+import { analyserFichePage, type FichePage } from "./contrat";
 
 export interface Chapitre {
   readonly titre: string;
@@ -52,6 +53,8 @@ export interface VideoPubliee {
   readonly iaVoixGeneree: boolean;
   readonly iaDoubleNumerique: boolean;
   readonly williamsALImage: boolean;
+  /** Fiche de page (SEO-05) ; absente tant que le Studio n'en a pas envoyé. */
+  readonly fichePage?: FichePage | null;
   readonly publieeLe: Date;
   readonly modifieeLe: Date;
 }
@@ -68,6 +71,18 @@ export function viderCacheVideos(): void {
 }
 
 type Ligne = Awaited<ReturnType<typeof prisma.siteVideo.findMany>>[number];
+
+/**
+ * La fiche de page, si la ligne en porte une ET qu'elle respecte le contrat. Une fiche
+ * invalide est ignorée (la page retombe sur les champs de la vidéo), jamais une panne.
+ * Aucune colonne ne la porte encore : la lecture est prête pour la migration à venir.
+ */
+function fichePageDe(l: Ligne): FichePage | null {
+  const brute = (l as { fichePage?: unknown }).fichePage;
+  if (brute === undefined || brute === null) return null;
+  const r = analyserFichePage(brute);
+  return r.ok ? r.donnees : null;
+}
 
 function enVideo(l: Ligne): VideoPubliee {
   return {
@@ -91,6 +106,7 @@ function enVideo(l: Ligne): VideoPubliee {
     iaVoixGeneree: l.iaVoixGeneree,
     iaDoubleNumerique: l.iaDoubleNumerique,
     williamsALImage: l.williamsALImage,
+    fichePage: fichePageDe(l),
     publieeLe: l.publieeLe,
     modifieeLe: l.modifieeLe,
   };
