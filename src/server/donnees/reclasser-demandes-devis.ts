@@ -66,6 +66,61 @@ export function cibleBase(url: string | undefined): { hote: string; base: string
 
 export class ReclassementRefuse extends Error {}
 
+/**
+ * Lit une date ISO avec fuseau et REFUSE une date impossible : `2026-02-30T00:00:00Z`
+ * serait devenue le 2 mars. La date et l'heure écrites doivent se retrouver à l'identique
+ * après conversion (calcul en UTC sur les champs écrits, décalage mis de côté).
+ */
+export function lireDateAvant(brut: string): Date {
+  const m =
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.\d+)?)?(Z|[+-]\d{2}:\d{2})$/.exec(
+      brut,
+    );
+  if (!m) {
+    throw new ReclassementRefuse(
+      "--avant doit être une date ISO complète avec fuseau (Z ou ±HH:MM).",
+    );
+  }
+  const [, a, mo, j, h, mi, s = "0", fuseau = "Z"] = m;
+  const [A, MO, J, H, MI, S] = [a, mo, j, h, mi, s].map(Number) as [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+  ];
+  const ecrite = new Date(Date.UTC(A, MO - 1, J, H, MI, S));
+  const retrouvee =
+    ecrite.getUTCFullYear() === A &&
+    ecrite.getUTCMonth() === MO - 1 &&
+    ecrite.getUTCDate() === J &&
+    ecrite.getUTCHours() === H &&
+    ecrite.getUTCMinutes() === MI &&
+    ecrite.getUTCSeconds() === S;
+  let decalageValide = true;
+  if (fuseau !== "Z") {
+    decalageValide = Number(fuseau.slice(1, 3)) <= 23 && Number(fuseau.slice(4, 6)) <= 59;
+  }
+  const date = new Date(brut);
+  if (!retrouvee || !decalageValide || Number.isNaN(date.getTime())) {
+    throw new ReclassementRefuse(`--avant=${brut} est une date impossible : refus.`);
+  }
+  return date;
+}
+
+/**
+ * Garde contre une mauvaise base : `--base=<nom>` doit être le nom lu dans l'adresse
+ * de connexion. Exigé pour `--appliquer` et `--revenir`.
+ */
+export function verifierBase(demandee: string, cible: { base: string }): void {
+  if (demandee !== cible.base) {
+    throw new ReclassementRefuse(
+      `--base=${demandee} ne correspond pas à la base visée (nom lu dans DATABASE_URL : ${cible.base}) : refus, rien écrit.`,
+    );
+  }
+}
+
 export type Classement = {
   retenues: LigneDevis[];
   aRevoirFenetre: LigneDevis[];
@@ -241,16 +296,17 @@ export async function appliquer(
  * ENCORE telle que le reclassement l'a laissée (`quote_request` + `devis`) : une ligne
  * retypée depuis par un administrateur n'est pas écrasée. L'historique des
  * annulations est conservé dans le tableau `reclassementsAnnules`. `attendu`
- * (facultatif) : si le nombre de lignes touchées diffère, retour arrière.
+ * (obligatoire, comme pour `appliquer`) : si le nombre de lignes touchées diffère,
+ * retour arrière.
  */
 export async function revenir(
   db: BaseReclassement,
   lot: string,
-  attendu?: number,
+  attendu: number,
 ): Promise<{ restituees: number }> {
   if (!lot) throw new ReclassementRefuse("--lot=<id> obligatoire.");
-  if (attendu !== undefined && (!Number.isInteger(attendu) || attendu < 0)) {
-    throw new ReclassementRefuse("--attendu=<N> doit être un entier positif ou nul.");
+  if (!Number.isInteger(attendu) || attendu < 0) {
+    throw new ReclassementRefuse("--attendu=<N> obligatoire (entier positif ou nul).");
   }
   return db.$transaction(
     async (tx) => {
@@ -273,7 +329,7 @@ export async function revenir(
       WHERE details->'reclassement'->>'lot' = ${lot}
         AND type = 'quote_request'::"SubmissionType"
         AND details->>'unifiedType' = 'devis'`);
-      if (attendu !== undefined && restituees !== attendu) {
+      if (restituees !== attendu) {
         throw new ReclassementRefuse(
           `${restituees} ligne(s) à restituer pour ${attendu} attendue(s) : retour arrière, rien écrit.`,
         );
@@ -286,10 +342,10 @@ export async function revenir(
 
 export type Commande =
   | { mode: "lire"; avant: Date }
-  | { mode: "appliquer"; avant: Date; attendu: number }
-  | { mode: "revenir"; lot: string; attendu?: number };
+  | { mode: "appliquer"; avant: Date; attendu: number; base: string }
+  | { mode: "revenir"; lot: string; attendu: number; base: string };
 
-/** Lit les arguments. `--lire` par défaut, mais `--avant` est exigé (aucun défaut) ; `--attendu` aussi pour appliquer. */
+/** Lit les arguments. `--lire` par défaut, mais `--avant` est exigé (aucun défaut) ; `--attendu` et `--base` aussi pour appliquer et revenir. */
 export function lireArguments(argv: string[]): Commande {
   const valeur = (nom: string): string | undefined => {
     const a = argv.find((x) => x.startsWith(`${nom}=`));
@@ -301,15 +357,18 @@ export function lireArguments(argv: string[]): Commande {
   const avantBrut = valeur("--avant");
   let avant: Date | null = null;
   if (avantBrut !== undefined) {
-    if (!/^\d{4}-\d{2}-\d{2}T/.test(avantBrut) || !/(Z|[+-]\d{2}:\d{2})$/.test(avantBrut)) {
-      throw new ReclassementRefuse(
-        "--avant doit être une date ISO complète avec fuseau (Z ou ±HH:MM).",
-      );
-    }
-    avant = new Date(avantBrut);
-    if (Number.isNaN(avant.getTime())) throw new ReclassementRefuse("--avant illisible.");
+    avant = lireDateAvant(avantBrut);
   }
   const attenduBrut = valeur("--attendu");
+  const exigerBase = (): string => {
+    const b = valeur("--base");
+    if (!b) {
+      throw new ReclassementRefuse(
+        `${mode} exige --base=<nom de la base> (le nom s'affiche avec --lire).`,
+      );
+    }
+    return b;
+  };
   if (mode === "--lire") {
     if (!avant) throw new ReclassementRefuse("--lire exige --avant=<ISO avec fuseau>.");
     return { mode: "lire", avant };
@@ -317,18 +376,14 @@ export function lireArguments(argv: string[]): Commande {
   if (mode === "--revenir") {
     const lot = valeur("--lot");
     if (!lot) throw new ReclassementRefuse("--revenir exige --lot=<id>.");
-    if (attenduBrut !== undefined && !/^\d+$/.test(attenduBrut)) {
-      throw new ReclassementRefuse("--attendu doit être un entier positif ou nul.");
+    if (attenduBrut === undefined || !/^\d+$/.test(attenduBrut)) {
+      throw new ReclassementRefuse("--revenir exige --attendu=<N> (entier positif ou nul).");
     }
-    return {
-      mode: "revenir",
-      lot,
-      ...(attenduBrut !== undefined ? { attendu: Number(attenduBrut) } : {}),
-    };
+    return { mode: "revenir", lot, attendu: Number(attenduBrut), base: exigerBase() };
   }
   if (!avant) throw new ReclassementRefuse("--appliquer exige --avant=<ISO>.");
   if (attenduBrut === undefined || !/^\d+$/.test(attenduBrut)) {
     throw new ReclassementRefuse("--appliquer exige --attendu=<N>.");
   }
-  return { mode: "appliquer", avant, attendu: Number(attenduBrut) };
+  return { mode: "appliquer", avant, attendu: Number(attenduBrut), base: exigerBase() };
 }

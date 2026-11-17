@@ -12,8 +12,10 @@ import {
   classer,
   lire,
   lireArguments,
+  lireDateAvant,
   requeteLecture,
   revenir,
+  verifierBase,
   type BaseReclassement,
   type LigneDevis,
 } from "../reclasser-demandes-devis";
@@ -91,6 +93,31 @@ describe("classer", () => {
     expect(c.retenues).toHaveLength(0);
     expect(c.aRevoirFenetre.map((l) => l.id)).toEqual(["a"]);
   });
+  it("borne stricte : T pile est à revoir (jamais retenue), T - 1 ms est retenue", () => {
+    const c = classer(
+      [
+        ligne({ id: "moins1ms", submittedAt: new Date(T.getTime() - 1) }),
+        ligne({ id: "pile", submittedAt: new Date(T.getTime()) }),
+      ],
+      T,
+    );
+    expect(c.retenues.map((l) => l.id)).toEqual(["moins1ms"]);
+    expect(c.aRevoirFenetre.map((l) => l.id)).toEqual(["pile"]);
+  });
+  it("fenêtre : T + 24 h - 1 ms est à revoir, T + 24 h pile et T + 24 h + 1 ms ne sont nulle part", () => {
+    const fin = T.getTime() + 24 * 3600_000;
+    const c = classer(
+      [
+        ligne({ id: "juste-avant", submittedAt: new Date(fin - 1) }),
+        ligne({ id: "limite", submittedAt: new Date(fin) }),
+        ligne({ id: "juste-apres", submittedAt: new Date(fin + 1) }),
+      ],
+      T,
+    );
+    expect(c.aRevoirFenetre.map((l) => l.id)).toEqual(["juste-avant"]);
+    expect(c.retenues).toHaveLength(0);
+    expect(c.aRevoirMission).toHaveLength(0);
+  });
   it("exclut une ligne déjà reclassée", () => {
     expect(classer([ligne({ dejaReclassee: true })], T).retenues).toHaveLength(0);
   });
@@ -159,7 +186,7 @@ describe("appliquer", () => {
 describe("revenir", () => {
   it("restitue d'après details.reclassement et garde la trace", async () => {
     const { db, exec } = fausseBase([]);
-    await revenir(db, LOT);
+    await revenir(db, LOT, 0);
     const sql = exec.mock.calls[0]![0].sql;
     expect(sql).toContain("ancienType");
     expect(sql).toContain("ancienUnifiedType");
@@ -180,16 +207,58 @@ describe("lireArguments", () => {
     expect(lireArguments(["--lire", "--avant=2026-11-17T12:00:00+01:00"]).mode).toBe("lire");
     expect(lireArguments(["--lire", "--avant=2026-11-17T12:00:00.000Z"]).mode).toBe("lire");
   });
-  it("--revenir accepte --attendu facultatif, refuse une valeur illisible", () => {
-    expect(lireArguments(["--revenir", "--lot=L"])).toEqual({ mode: "revenir", lot: "L" });
-    expect(lireArguments(["--revenir", "--lot=L", "--attendu=2"])).toEqual({
+  it("--revenir exige --attendu, refuse une valeur illisible", () => {
+    expect(lireArguments(["--revenir", "--lot=L", "--attendu=2", "--base=axion"])).toEqual({
       mode: "revenir",
       lot: "L",
       attendu: 2,
+      base: "axion",
     });
-    expect(() => lireArguments(["--revenir", "--lot=L", "--attendu=x"])).toThrow(
+    expect(() => lireArguments(["--revenir", "--lot=L", "--attendu=x", "--base=axion"])).toThrow(
       ReclassementRefuse,
     );
+  });
+  it("--revenir sans --attendu : refus lisible", () => {
+    expect(() => lireArguments(["--revenir", "--lot=L", "--base=axion"])).toThrow(
+      /--revenir exige --attendu/,
+    );
+  });
+  it("--appliquer et --revenir exigent --base", () => {
+    expect(() =>
+      lireArguments(["--appliquer", "--avant=2026-11-17T12:00:00Z", "--attendu=3"]),
+    ).toThrow(/--appliquer exige --base/);
+    expect(() => lireArguments(["--revenir", "--lot=L", "--attendu=2"])).toThrow(
+      /--revenir exige --base/,
+    );
+    expect(() =>
+      lireArguments(["--appliquer", "--avant=2026-11-17T12:00:00Z", "--attendu=3", "--base="]),
+    ).toThrow(ReclassementRefuse);
+  });
+  it("--lire n'exige pas --base", () => {
+    expect(lireArguments(["--lire", "--avant=2026-11-17T12:00:00Z"]).mode).toBe("lire");
+  });
+  it("--avant : une date impossible est refusée, pas décalée", () => {
+    for (const d of [
+      "2026-02-30T00:00:00Z",
+      "2026-13-01T00:00:00Z",
+      "2026-04-31T10:00:00+01:00",
+      "2026-11-17T24:00:00Z",
+      "2026-11-17T12:60:00Z",
+      "2026-11-17T12:00:60Z",
+      "2026-11-17T12:00:00+25:00",
+      "2026-11-17T12:00:00+01:75",
+    ]) {
+      expect(() => lireArguments(["--lire", `--avant=${d}`]), d).toThrow(ReclassementRefuse);
+    }
+    expect(() => lireArguments(["--lire", "--avant=2026-02-30T00:00:00Z"])).toThrow(/impossible/);
+  });
+  it("--avant : les dates réelles passent (29 février bissextile, décalage, millisecondes)", () => {
+    expect(lireDateAvant("2028-02-29T23:59:59Z").toISOString()).toBe("2028-02-29T23:59:59.000Z");
+    expect(lireDateAvant("2026-11-17T12:00:00+01:00").toISOString()).toBe(
+      "2026-11-17T11:00:00.000Z",
+    );
+    expect(lireDateAvant("2026-11-17T12:00:00.500Z").getTime()).toBe(T.getTime() + 500);
+    expect(() => lireDateAvant("2026-02-29T00:00:00Z")).toThrow(/impossible/);
   });
   it("--appliquer sans --avant ou sans --attendu : refus", () => {
     expect(() => lireArguments(["--appliquer", "--attendu=3"])).toThrow(ReclassementRefuse);
@@ -198,9 +267,10 @@ describe("lireArguments", () => {
     );
   });
   it("--appliquer complet est accepté ; deux modes sont refusés", () => {
-    expect(lireArguments(["--appliquer", "--avant=2026-11-17T12:00:00Z", "--attendu=3"]).mode).toBe(
-      "appliquer",
-    );
+    expect(
+      lireArguments(["--appliquer", "--avant=2026-11-17T12:00:00Z", "--attendu=3", "--base=axion"])
+        .mode,
+    ).toBe("appliquer");
     expect(() => lireArguments(["--lire", "--appliquer"])).toThrow(ReclassementRefuse);
   });
 });
@@ -264,7 +334,7 @@ describe("appliquer : journal et transaction", () => {
     options_transaction.length = 0;
     const { db } = fausseBase([ligne()]);
     await appliquer(db, { avant: T, attendu: 1 });
-    await revenir(db, LOT);
+    await revenir(db, LOT, 1);
     expect(options_transaction).toEqual([
       { timeout: DELAI_TRANSACTION_MS },
       { timeout: DELAI_TRANSACTION_MS },
@@ -276,7 +346,7 @@ describe("appliquer : journal et transaction", () => {
 describe("revenir : garde-fous", () => {
   it("ne touche qu'une ligne encore quote_request + devis (pas de retypage écrasé)", async () => {
     const { db, exec } = fausseBase([]);
-    await revenir(db, LOT);
+    await revenir(db, LOT, 0);
     const sql = exec.mock.calls[0]![0].sql;
     expect(sql).toMatch(/type = 'quote_request'::"SubmissionType"/);
     expect(sql).toMatch(/details->>'unifiedType' = 'devis'/);
@@ -284,7 +354,7 @@ describe("revenir : garde-fous", () => {
   });
   it("conserve l'historique : tableau reclassementsAnnules, jamais d'écrasement", async () => {
     const { db, exec } = fausseBase([]);
-    await revenir(db, LOT);
+    await revenir(db, LOT, 0);
     const sql = exec.mock.calls[0]![0].sql;
     expect(sql).toContain("reclassementsAnnules");
     expect(sql).toMatch(/COALESCE\(details->'reclassementsAnnules'/);
@@ -295,9 +365,16 @@ describe("revenir : garde-fous", () => {
     const { db } = fausseBase([], 3);
     await expect(revenir(db, LOT, 2)).rejects.toThrow(/retour arrière/);
   });
-  it("--attendu juste ou absent : passe", async () => {
+  it("--attendu juste : passe", async () => {
     expect(await revenir(fausseBase([], 3).db, LOT, 3)).toEqual({ restituees: 3 });
-    expect(await revenir(fausseBase([], 3).db, LOT)).toEqual({ restituees: 3 });
+  });
+  it("--attendu absent ou invalide : refus, zéro écriture", async () => {
+    const { db, exec } = fausseBase([], 3);
+    await expect(revenir(db, LOT, undefined as unknown as number)).rejects.toBeInstanceOf(
+      ReclassementRefuse,
+    );
+    await expect(revenir(db, LOT, -1)).rejects.toBeInstanceOf(ReclassementRefuse);
+    expect(exec).not.toHaveBeenCalled();
   });
 });
 
@@ -315,6 +392,16 @@ describe("cibleBase", () => {
   });
 });
 
+describe("verifierBase", () => {
+  it("accepte le nom exact, refuse tout autre nom avec un message lisible", () => {
+    expect(() => verifierBase("axion", { base: "axion" })).not.toThrow();
+    expect(() => verifierBase("axion_test", { base: "axion" })).toThrow(
+      /ne correspond pas.*lu dans DATABASE_URL : axion\)/,
+    );
+    expect(() => verifierBase("Axion", { base: "axion" })).toThrow(ReclassementRefuse);
+  });
+});
+
 describe("garde de source", () => {
   const racine = path.resolve(__dirname, "../../../..");
   const fichiers = [
@@ -324,6 +411,14 @@ describe("garde de source", () => {
   const code = fichiers
     .map((f) => f.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, ""))
     .join("\n");
+  it("le script exige --base avant toute écriture et affiche le nom à recopier", () => {
+    const script = fichiers[1]!;
+    expect(script).toMatch(/verifierBase\(cmd\.base, cible\)/);
+    expect(script).toMatch(/--base=\$\{cible\.base\}/);
+    expect(script.indexOf("verifierBase(cmd.base")).toBeLessThan(script.indexOf("appliquer(base"));
+    expect(script).toMatch(/node_modules\/\.bin\/tsx/);
+    expect(script).not.toMatch(/pnpm tsx/);
+  });
   it("aucune suppression", () => {
     expect(code).not.toMatch(/\.delete\(|deleteMany|\bDELETE\b|\bTRUNCATE\b/i);
   });

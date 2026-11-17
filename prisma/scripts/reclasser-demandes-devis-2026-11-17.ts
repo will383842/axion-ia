@@ -5,11 +5,11 @@
  *
  * Lancé par la session de pilotage SEULE, dans le conteneur worker, après audit :
  *
- *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --lire --avant=<ISO en UTC>
- *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --appliquer --avant=<ISO> --attendu=<N>
- *   pnpm tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --revenir --lot=E0-D-2026-11-17 [--attendu=<N>]
+ *   node_modules/.bin/tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --lire --avant=<ISO en UTC>
+ *   node_modules/.bin/tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --appliquer --avant=<ISO> --attendu=<N> --base=<nom>
+ *   node_modules/.bin/tsx prisma/scripts/reclasser-demandes-devis-2026-11-17.ts --revenir --lot=E0-D-2026-11-17 --attendu=<N> --base=<nom>
  *
- * `--lire` n'écrit jamais ; `--avant` (avec fuseau Z ou ±HH:MM) est exigé. Aucune donnée de personne n'est affichée.
+ * `--lire` n'écrit jamais, affiche le nom de la base à recopier dans `--base` ; `--avant` (avec fuseau Z ou ±HH:MM, date réelle) est exigé. `--appliquer` et `--revenir` exigent `--attendu` et `--base`, comparé au nom lu dans DATABASE_URL. Aucune donnée de personne n'est affichée.
  */
 
 import { PrismaClient } from "../generated/client";
@@ -20,6 +20,7 @@ import {
   lire,
   lireArguments,
   revenir,
+  verifierBase,
   type BaseReclassement,
 } from "../../src/server/donnees/reclasser-demandes-devis";
 
@@ -31,7 +32,9 @@ async function main(): Promise<void> {
   // Garde contre une mauvaise base : avant tout accès, et affichée en tête de chaque mode.
   const cible = cibleBase(process.env.DATABASE_URL);
   console.log(`[E0-D] mode=${cmd.mode} base visée : hôte=${cible.hote} nom=${cible.base}`);
+  if (cmd.mode !== "lire") verifierBase(cmd.base, cible);
   if (cmd.mode === "lire") {
+    console.log(`[E0-D] pour appliquer ou revenir : --base=${cible.base}`);
     console.log(JSON.stringify(await lire(base, cmd.avant), null, 2));
     return;
   }
