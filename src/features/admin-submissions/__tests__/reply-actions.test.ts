@@ -30,6 +30,7 @@ const submissionFindUnique = vi.fn();
 const submissionReplyCreate = vi.fn();
 const submissionReplyFindUnique = vi.fn();
 const submissionReplyUpdate = vi.fn();
+const submissionReplyUpdateMany = vi.fn().mockResolvedValue({ count: 1 });
 const submissionUpdate = vi.fn();
 const submissionUpdateMany = vi.fn();
 const submissionFindMany = vi.fn();
@@ -47,6 +48,7 @@ vi.mock("@/lib/prisma", () => ({
       create: (...args: unknown[]) => submissionReplyCreate(...args),
       findUnique: (...args: unknown[]) => submissionReplyFindUnique(...args),
       update: (...args: unknown[]) => submissionReplyUpdate(...args),
+      updateMany: (...args: unknown[]) => submissionReplyUpdateMany(...args),
     },
     $transaction: (fn: (tx: unknown) => Promise<unknown>) => transactionMock(fn),
   },
@@ -75,6 +77,7 @@ const REPLY_ID = "ckxxxxxx";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  submissionReplyUpdateMany.mockResolvedValue({ count: 1 });
   authMock.mockResolvedValue({
     user: { id: "admin-1", role: "admin", name: "Will" },
   });
@@ -324,7 +327,6 @@ describe("retryFailedReplyAction", () => {
       deliveryStatus: "failed",
       submission: { id: VALID_UUID, locale: "fr" },
     });
-    submissionReplyUpdate.mockResolvedValueOnce({});
     const { retryFailedReplyAction } = await import("../reply-actions");
     const result = await retryFailedReplyAction(REPLY_ID);
     expect(result).toEqual({ ok: true });

@@ -556,8 +556,10 @@ export async function retryFailedReplyAction(
     return { ok: false, error: "not_retryable" };
   }
 
-  await prisma.submissionReply.update({
-    where: { id: reply.id },
+  // Prise atomique : un seul appel passe de `failed` à `pending`. Un second clic
+  // simultané (ou un nouvel essai automatique déjà en cours) trouve 0 ligne.
+  const prise = await prisma.submissionReply.updateMany({
+    where: { id: reply.id, deliveryStatus: "failed" },
     data: {
       deliveryStatus: "pending",
       retryCount: { increment: 1 },
@@ -565,6 +567,7 @@ export async function retryFailedReplyAction(
       errorMsg: null,
     },
   });
+  if (prise.count === 0) return { ok: false, error: "not_retryable" };
 
   let enqueued = false;
   try {
@@ -580,8 +583,8 @@ export async function retryFailedReplyAction(
   }
   if (!enqueued) {
     await prisma.submissionReply
-      .update({
-        where: { id: reply.id },
+      .updateMany({
+        where: { id: reply.id, deliveryStatus: "pending" },
         data: {
           deliveryStatus: "failed",
           failedAt: new Date(),

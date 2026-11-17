@@ -264,16 +264,27 @@ export function ComposerReponse({
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void rejouerReponseEchoueeAction(replyId).then((r) => {
-        setPhase(
-          r.ok
-            ? { nom: "en_file", replyId: r.replyId }
-            : r.error === "not_retryable"
-              ? {
-                  nom: "echec",
-                  message: "Cette réponse n'est plus rejouable : consultez la frise.",
-                }
-              : { nom: "echec", message: LIBELLES_ERREUR_REPONSE[r.error] ?? r.error, replyId },
-        );
+        if (r.ok) {
+          setPhase({ nom: "en_file", replyId: r.replyId });
+          return;
+        }
+        if (r.error === "deja_envoyee") {
+          setPhase({ nom: "envoye" });
+          router.refresh();
+          return;
+        }
+        if (r.error === "not_retryable") {
+          // Un autre onglet, un essai automatique ou le worker a déjà pris la ligne :
+          // on relit l'état réel par le sondage (« Envoyer » reste verrouillé).
+          setPhase({ nom: "en_file", replyId });
+          return;
+        }
+        setPhase({
+          nom: "echec",
+          // Le lien de complément expiré n'est jamais rejouable : pas de « Réessayer ».
+          ...(r.error === "lien_complement_expire" ? {} : { replyId }),
+          message: LIBELLES_ERREUR_REPONSE[r.error] ?? r.error,
+        });
       });
     });
   }

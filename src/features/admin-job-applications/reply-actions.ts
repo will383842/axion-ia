@@ -21,7 +21,8 @@ import { INBOX_COUNTS_TAG } from "@/features/admin-inbox/cache-tags";
 
 import { ecrireEtEnfilerReponse } from "./envoyer-reponse";
 import { remplirModele } from "@/content/recrutement/modeles-reponse";
-import { lienComplement } from "@/features/job-application/complement";
+import { CHEMIN_COMPLEMENT, lienComplement } from "@/features/job-application/complement";
+import { DUREE_JETON_COMPLEMENT_MS } from "@/server/recrutement/jeton-complement";
 import {
   MODELES_COMPOSEUR_IDS,
   MODELES_REPONSE_FORMATEUR_IDS,
@@ -193,7 +194,14 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
 
   const reponse = await prisma.jobApplicationReply.findUnique({
     where: { id: replyId },
-    select: { id: true, applicationId: true, subject: true, deliveryStatus: true },
+    select: {
+      id: true,
+      applicationId: true,
+      subject: true,
+      deliveryStatus: true,
+      bodyText: true,
+      repliedAt: true,
+    },
   });
   if (!reponse) return { ok: false, error: "candidature_introuvable" };
   // 🔴 Seule une réponse `failed` se rejoue. `pending` (déjà en file ou en cours
@@ -208,6 +216,15 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
     select: { locale: true },
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // Le lien de complément porte un jeton de 60 jours : on ne rejoue pas un message
+  // dont le lien expirerait avant d'être lu (marge de 2 jours pour l'attente en file).
+  if (
+    reponse.bodyText.includes(CHEMIN_COMPLEMENT) &&
+    Date.now() - reponse.repliedAt.getTime() > DUREE_JETON_COMPLEMENT_MS - 2 * 24 * 3600 * 1000
+  ) {
+    return { ok: false, error: "lien_complement_expire" };
+  }
 
   // Prise de la ligne AVANT la mise en file, de façon atomique : deux rejeux
   // simultanés ne passent pas tous les deux (le second ne trouve plus `failed`),

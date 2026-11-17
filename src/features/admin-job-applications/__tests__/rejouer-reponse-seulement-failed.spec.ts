@@ -31,7 +31,10 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn(), updateTag: vi.fn() }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 vi.mock("@/features/admin-inbox/cache-tags", () => ({ INBOX_COUNTS_TAG: "t" }));
 vi.mock("../envoyer-reponse", () => ({ ecrireEtEnfilerReponse: vi.fn() }));
-vi.mock("@/features/job-application/complement", () => ({ lienComplement: vi.fn() }));
+vi.mock("@/features/job-application/complement", () => ({
+  lienComplement: vi.fn(),
+  CHEMIN_COMPLEMENT: "/completer-ma-candidature",
+}));
 vi.mock("@/lib/careers/formateur-freelance", () => ({ estCandidatureFormateurFreelance: vi.fn() }));
 vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
   lireEtatsEntree: vi.fn(),
@@ -39,8 +42,16 @@ vi.mock("@/server/qualiopi/formateurs-independants/etats-entree", () => ({
 
 import { rejouerReponseEchoueeAction } from "../reply-actions";
 
-function ligne(statut: string) {
-  return { id: "r1", applicationId: "a1", subject: "S", deliveryStatus: statut };
+const JOUR = 24 * 3600 * 1000;
+function ligne(statut: string, extra: { bodyText?: string; ageJours?: number } = {}) {
+  return {
+    id: "r1",
+    applicationId: "a1",
+    subject: "S",
+    deliveryStatus: statut,
+    bodyText: extra.bodyText ?? "Bonjour",
+    repliedAt: new Date(Date.now() - (extra.ageJours ?? 0) * JOUR),
+  };
 }
 
 beforeEach(() => {
@@ -108,5 +119,31 @@ describe("rejouerReponseEchoueeAction", () => {
     expect(await rejouerReponseEchoueeAction("r1")).toEqual({ ok: false, error: "forbidden" });
     expect(replyFind).not.toHaveBeenCalled();
     expect(enqueue).not.toHaveBeenCalled();
+  });
+});
+
+describe("rejouerReponseEchoueeAction — lien de complément", () => {
+  const AVEC_LIEN = "Bonjour https://axion-ia.com/fr/completer-ma-candidature?jeton=x";
+
+  it("🔴 A4 : lien présent et 59 jours : refusé, ni prise ni mise en file", async () => {
+    replyFind.mockResolvedValue(ligne("failed", { bodyText: AVEC_LIEN, ageJours: 59 }));
+    expect(await rejouerReponseEchoueeAction("r1")).toEqual({
+      ok: false,
+      error: "lien_complement_expire",
+    });
+    expect(replyUpdateMany).not.toHaveBeenCalled();
+    expect(enqueue).not.toHaveBeenCalled();
+  });
+
+  it("A4 : lien présent et 10 jours : la ligne est mise en file", async () => {
+    replyFind.mockResolvedValue(ligne("failed", { bodyText: AVEC_LIEN, ageJours: 10 }));
+    expect(await rejouerReponseEchoueeAction("r1")).toEqual({ ok: true, replyId: "r1" });
+    expect(enqueue).toHaveBeenCalledTimes(1);
+  });
+
+  it("A4 : pas de lien et 90 jours : la ligne est mise en file", async () => {
+    replyFind.mockResolvedValue(ligne("failed", { ageJours: 90 }));
+    expect(await rejouerReponseEchoueeAction("r1")).toEqual({ ok: true, replyId: "r1" });
+    expect(enqueue).toHaveBeenCalledTimes(1);
   });
 });

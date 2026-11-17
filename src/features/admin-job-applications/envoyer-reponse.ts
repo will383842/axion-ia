@@ -97,7 +97,7 @@ export const FENETRE_DOUBLON_REPONSE_MS = 60_000;
 export interface OptionsEcriture {
   /**
    * Refuse d'écrire si une réponse identique (même auteur, même objet, même
-   * corps, moins de 60 s, ni `failed` ni `bounced`) existe déjà. La recherche
+   * corps, `pending` à tout âge ou `sent` depuis moins de 60 s) existe déjà. La recherche
    * se fait DANS la transaction, sous verrou consultatif : deux requêtes
    * simultanées se sérialisent, la seconde voit la première.
    */
@@ -123,8 +123,16 @@ async function trouverDoublon(
       applicationId: candidatureId,
       repliedByUserId: userId,
       subject: contenu.subject,
-      repliedAt: { gte: new Date(Date.now() - FENETRE_DOUBLON_REPONSE_MS) },
-      deliveryStatus: { in: ["pending", "sent"] },
+      // Une réponse encore `pending` est un doublon quel que soit son âge (elle peut
+      // être en essais automatiques depuis plus d'une minute) ; une `sent` ne l'est
+      // que dans la fenêtre.
+      OR: [
+        { deliveryStatus: "pending" },
+        {
+          deliveryStatus: "sent",
+          repliedAt: { gte: new Date(Date.now() - FENETRE_DOUBLON_REPONSE_MS) },
+        },
+      ],
     },
     select: { id: true },
     orderBy: { repliedAt: "desc" },

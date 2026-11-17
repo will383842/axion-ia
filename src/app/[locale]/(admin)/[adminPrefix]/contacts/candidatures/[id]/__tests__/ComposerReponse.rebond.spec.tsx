@@ -9,9 +9,10 @@ import { render, cleanup, fireEvent, screen, act } from "@testing-library/react"
 
 const repondre = vi.fn();
 const etat = vi.fn();
+const rejouerMock = vi.fn();
 vi.mock("@/features/admin-job-applications/reply-actions", () => ({
   repondreAuCandidatAction: (...a: unknown[]) => repondre(...a),
-  rejouerReponseEchoueeAction: vi.fn(),
+  rejouerReponseEchoueeAction: (...a: unknown[]) => rejouerMock(...a),
   etatLivraisonReponseAction: (...a: unknown[]) => etat(...a),
 }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ refresh: vi.fn() }) }));
@@ -22,6 +23,7 @@ beforeEach(() => {
   vi.useFakeTimers();
   repondre.mockReset();
   etat.mockReset();
+  rejouerMock.mockReset();
 });
 afterEach(() => {
   cleanup();
@@ -78,5 +80,43 @@ describe("ComposerReponse — après un envoi réussi", () => {
     expect(screen.queryByRole("button", { name: /confirmer|valider/i })).toBeNull();
     expect(repondre).toHaveBeenCalledTimes(1);
     expect(screen.getByText(/Envoyé/)).toBeTruthy();
+  });
+});
+
+describe("ComposerReponse — rejeu refusé par le serveur", () => {
+  async function rejouerApres(erreurRejeu: string, etatSuivant: string): Promise<void> {
+    await envoyerPuisSonder("failed", "délai dépassé");
+    rejouerMock.mockResolvedValue({ ok: false, error: erreurRejeu });
+    etat.mockResolvedValue({ statut: etatSuivant, erreur: null });
+    etat.mockClear();
+    fireEvent.click(screen.getByRole("button", { name: "Réessayer" }));
+    await act(async () => {
+      await Promise.resolve();
+    });
+  }
+
+  it("🔴 A5 : `not_retryable` : « Envoyer » reste désactivé et le sondage relit l'état réel", async () => {
+    await rejouerApres("not_retryable", "sent");
+    expect((screen.getByRole("button", { name: "Envoyer" }) as HTMLButtonElement).disabled).toBe(
+      true,
+    );
+    expect(screen.queryByText(/n'est plus rejouable/)).toBeNull();
+    await act(async () => {
+      await vi.advanceTimersByTimeAsync(3_100);
+    });
+    expect(etat).toHaveBeenCalled();
+    expect(screen.getByText(/Envoyé/)).toBeTruthy();
+  });
+
+  it("🔴 A6 : `deja_envoyee` : « Envoyé », sans « Réessayer »", async () => {
+    await rejouerApres("deja_envoyee", "sent");
+    expect(screen.getByText(/Envoyé/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Réessayer" })).toBeNull();
+  });
+
+  it("le lien de complément expiré s'affiche sans « Réessayer »", async () => {
+    await rejouerApres("lien_complement_expire", "failed");
+    expect(screen.getByText(/Le lien pour compléter la candidature a expiré/)).toBeTruthy();
+    expect(screen.queryByRole("button", { name: "Réessayer" })).toBeNull();
   });
 });
