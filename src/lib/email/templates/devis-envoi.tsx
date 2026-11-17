@@ -10,18 +10,19 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
-import { salutation } from "../salutation";
+import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
   /** Hérité : sans la clé `salutation`, rendu « Bonjour <clientNom>, » comme avant. */
   clientNom: string;
   /**
-   * Identité du contact, facultative (civilité, prénom, nom : tous facultatifs).
-   * Si la clé est présente, la salutation suit la règle commune `salutation()` et
-   * `clientNom` n'est plus lu pour saluer. Clé absente : ancien rendu inchangé.
+   * FACULTATIF. Identité structurée du destinataire. Présente (même vide) : le
+   * bonjour suit `salutation()` (« Bonjour Monsieur Dupont, » / prénom seul /
+   * « Bonjour, »), jamais le nom complet. Absente : ancien comportement
+   * (« Bonjour <clientNom>, »).
    */
-  salutation?: { civilite?: unknown; prenom?: unknown; nomFamille?: unknown };
+  salutation?: IdentiteSalutation;
   /** N° du devis. Ex. « AXI-DEV-2026-014 ». */
   numero: string;
   /** Montant formaté. Ex. « 2 450,00 € HT ». Optionnel. */
@@ -118,7 +119,9 @@ export function DevisEnvoiEmail({
   const bonjour =
     Object.prototype.hasOwnProperty.call(payload, "salutation") && sal !== undefined
       ? salutation(
-          typeof sal === "object" && sal !== null && !Array.isArray(sal) ? sal : {},
+          typeof sal === "object" && sal !== null && !Array.isArray(sal)
+            ? (sal as IdentiteSalutation)
+            : {},
           locale,
         )
       : t.intro(field(p, "clientNom", ""));
