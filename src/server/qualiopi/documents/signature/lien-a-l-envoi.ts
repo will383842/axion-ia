@@ -206,9 +206,10 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
   // État visible depuis le `catch` : ce qui est déjà produit, donc ce qu'il faut défaire.
   const etat: {
     tokenId: string | null;
+    url: string | null;
     verdict: R | null;
     numero: string;
-  } = { tokenId: null, verdict: null, numero: "" };
+  } = { tokenId: null, url: null, verdict: null, numero: "" };
 
   try {
     return await prisma
@@ -285,6 +286,7 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
             });
             token = cree.token;
             etat.tokenId = cree.tokenId;
+            etat.url = `${base}${token}`;
           } catch (err) {
             if (err instanceof TokenDocumentError) return refus(err.message);
             signaler("lienALEnvoi.jeton", err);
@@ -299,7 +301,8 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
             throw new EnvoiNonParti(err);
           }
           if (!estEnfile(verdict)) {
-            await revoquerLeJeton(etat.tokenId);
+            // Le jeton neuf a pu révoquer un lien vivant plus ancien : on le rend.
+            await annulerLeJeton(etat.tokenId, etat.url);
             return { type: "envoi", res: verdict };
           }
           etat.verdict = verdict;
@@ -337,10 +340,17 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
     }
     if (err instanceof EnvoiOccupe) throw err;
     // Exception AVANT ou PENDANT l'enfilage : rien n'est parti.
-    if (etat.tokenId !== null) await revoquerLeJeton(etat.tokenId);
+    await annulerLeJeton(etat.tokenId, etat.url);
     // Jamais l'erreur brute : elle peut avoir vu le payload (jeton, adresse).
     throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);
   }
+}
+
+/** Rien n'est parti : rend l'ancien lien (mode « revoquer ») ou, à défaut, révoque le jeton neuf. */
+async function annulerLeJeton(tokenId: string | null, url: string | null): Promise<void> {
+  if (tokenId === null) return;
+  if (url === null) return revoquerLeJeton(tokenId);
+  await rendreAncienLien(url, tokenId);
 }
 
 async function revoquerLeJeton(tokenId: string | null): Promise<void> {
@@ -488,7 +498,11 @@ async function renvoi<R extends VerdictEnfilage>(a: {
 async function rendreAncienLien(url: string, tokenId: string): Promise<void> {
   try {
     const rendu = await rendreLienPrecedent(url, "revoquer");
-    if (rendu === false) await revoquerLeJeton(tokenId);
+    if (rendu === false) {
+      // Le client peut n'avoir plus aucun lien valable : l'équipe doit le savoir.
+      signaler("lienALEnvoi.ancien_lien_non_rendu", undefined);
+      await revoquerLeJeton(tokenId);
+    }
   } catch (err) {
     signaler("lienALEnvoi.rendre_lien", err);
     await revoquerLeJeton(tokenId);

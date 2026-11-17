@@ -208,6 +208,35 @@ describe("REQ-INT-007 — fonctions sur le tx de l'appelant : liste NOMMÉE (fic
     expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 2]]);
   });
 
+  it("REQ-INT-007 : un import RENOMMÉ puis un appel avec `prisma` rougit (E4)", () => {
+    const b = un(
+      [
+        'import { marquerDevisEnvoye as m } from "./devis/marquer-devis-envoye";',
+        "export async function envoyer(e: E) {",
+        "  await m(prisma, e);",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 1]]);
+  });
+
+  it("REQ-INT-007 : un réexport RENOMMÉ rougit (E4)", () => {
+    const b = un('export { marquerDevisEnvoye as x } from "./devis/marquer-devis-envoye";');
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 1]]);
+  });
+
+  it('REQ-INT-007 : un accès par crochets `M["…"](…)` rougit (E4)', () => {
+    const b = un(
+      [
+        'import * as M from "./devis/marquer-devis-envoye";',
+        "export async function envoyer(e: E) {",
+        '  await M["marquerDevisEnvoye"](prisma, e);',
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 3]]);
+  });
+
   it("REQ-INT-007 : le MÊME nom de fonction dans un AUTRE fichier ne passe pas (E3)", () => {
     const b = un(CORPS_MARQUER("tx"), "src/server/qualiopi/devis/autre-fichier.ts");
     expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E3", 2]]);

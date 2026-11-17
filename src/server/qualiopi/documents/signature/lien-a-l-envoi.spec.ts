@@ -465,6 +465,7 @@ describe("devis-premier-envoi", () => {
   });
 
   it("enfiler lève : jeton précis révoqué, erreur NEUTRE relancée (m1), rien d'écrit", async () => {
+    h.rendrePrecedent.mockResolvedValue(false); // aucun ancien lien à rendre
     const erreur = new Error(`boom ${TOKEN} ${ADRESSE}`);
     const levee = await lancer(
       vi.fn(async () => {
@@ -489,10 +490,60 @@ describe("devis-premier-envoi", () => {
     ["corbeille indisponible", { enqueued: false, corbeilleIndisponible: true }],
     ["garé pour validation (m2)", { enqueued: false, garePourValidation: true, outboxId: "o-2" }],
   ])("%s : jeton révoqué, verdict rendu tel quel, rien d'écrit", async (_n, verdict) => {
+    h.rendrePrecedent.mockResolvedValue(false); // aucun ancien lien à rendre
     const r = await lancer(vi.fn(async () => verdict) as never);
     expect(r).toEqual({ type: "envoi", res: verdict });
     expect(h.revoquerPrecis).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
     expect(h.marquer).not.toHaveBeenCalled();
+  });
+
+  it("point 3 : enfilage non parti → l'ancien lien est rendu (revoquer, URL du jeton neuf), pas de révocation en plus", async () => {
+    const v = { enqueued: false, retenu: "oppose" };
+    const r = await lancer(vi.fn(async () => v) as never);
+    expect(r).toEqual({ type: "envoi", res: v });
+    expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+    expect(h.rendrePrecedent.mock.calls[0]?.[0]).toBe(
+      `https://exemple.test/fr/portail/signer/${TOKEN}`,
+    );
+    expect(h.rendrePrecedent.mock.calls[0]?.[1]).toBe("revoquer");
+    expect(h.revoquerPrecis).not.toHaveBeenCalled();
+  });
+
+  it("point 3 : enfiler lève → l'ancien lien est rendu, erreur neutre relancée", async () => {
+    const levee = await lancer(
+      vi.fn(async () => {
+        throw new Error(`boom ${TOKEN}`);
+      }) as never,
+    ).catch((e: unknown) => e);
+    expect(levee).toBeInstanceOf(EnvoiNonParti);
+    expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+    expect(h.rendrePrecedent.mock.calls[0]?.[1]).toBe("revoquer");
+    expect(h.revoquerPrecis).not.toHaveBeenCalled();
+  });
+
+  it("point 3 : rien à rendre (false) → jeton neuf révoqué par son identifiant, et signalement", async () => {
+    h.rendrePrecedent.mockResolvedValue(false);
+    const v = { enqueued: false };
+    await expect(lancer(vi.fn(async () => v) as never)).resolves.toEqual({
+      type: "envoi",
+      res: v,
+    });
+    expect(h.revoquerPrecis).toHaveBeenCalledWith({
+      tokenId: "t-1",
+      motif: "Envoi annulé : rien n'est parti",
+    });
+    expect(h.sentryExc).toHaveBeenCalledTimes(1);
+  });
+
+  it("point 3 : le rendu lève ET la révocation échoue → rien ne remonte au verdict", async () => {
+    h.rendrePrecedent.mockRejectedValue(new Error(`${TOKEN} ${ADRESSE}`));
+    h.revoquerPrecis.mockRejectedValue(new Error("b"));
+    const v = { enqueued: false, garePourValidation: true };
+    await expect(lancer(vi.fn(async () => v) as never)).resolves.toEqual({
+      type: "envoi",
+      res: v,
+    });
+    expect(toutSerialise()).not.toContain(TOKEN);
   });
 
   it("m4 : écritures en échec après enfilage → trace send_refuse/apres_courriel, sans fuite", async () => {
@@ -666,6 +717,22 @@ describe("devis-renvoi", () => {
       });
     },
   );
+
+  it("point 2 : rendrePrecedent rend false → signalement à nom fixe, sans donnée", async () => {
+    h.rendrePrecedent.mockResolvedValue(false);
+    await lancer(vi.fn(async () => ({ enqueued: false, retenu: "oppose" })) as never);
+    expect(h.sentryExc).toHaveBeenCalledTimes(1);
+    const [err, opts] = h.sentryExc.mock.calls[0] as [Error, { tags: Record<string, string> }];
+    expect(err.message).toBe("lien-a-l-envoi : lienALEnvoi.ancien_lien_non_rendu");
+    expect(opts.tags.action).toBe("lienALEnvoi.ancien_lien_non_rendu");
+    expect(toutSerialise()).not.toContain(TOKEN);
+    expect(toutSerialise()).not.toContain(ADRESSE);
+  });
+
+  it("point 2 : rendrePrecedent rend true → aucun signalement", async () => {
+    await lancer(vi.fn(async () => ({ enqueued: false, retenu: "oppose" })) as never);
+    expect(h.sentryExc).not.toHaveBeenCalled();
+  });
 
   it("M1 : rendrePrecedent lève → jeton neuf révoqué, aucune erreur ne remonte, alerte", async () => {
     h.rendrePrecedent.mockRejectedValue(new Error(`${TOKEN} ${ADRESSE}`));

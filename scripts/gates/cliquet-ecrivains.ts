@@ -704,6 +704,20 @@ function confronterAppels(fichier: string, texte: string, regle: RegleEcrivain, 
       }
       return;
     }
+    // Accès par crochets (`M["marquerDevisEnvoye"](…)`) : le nom listé n'est plus un identifiant.
+    if (
+      ts.isElementAccessExpression(n) &&
+      (ts.isStringLiteral(n.argumentExpression) ||
+        ts.isNoSubstitutionTemplateLiteral(n.argumentExpression)) &&
+      noms.includes(n.argumentExpression.text)
+    ) {
+      faute(
+        n,
+        n.argumentExpression.text,
+        "est atteinte par un accès à crochets : le contrôle de ses appelants est contourné",
+      );
+      return;
+    }
     // Une référence qui n'est pas un appel (alias, callback) échappe au contrôle ci-dessus.
     if (!ts.isIdentifier(n) || !noms.includes(n.text)) return;
     const p = n.parent;
@@ -715,8 +729,7 @@ function confronterAppels(fichier: string, texte: string, regle: RegleEcrivain, 
       p.parent.expression === p;
     const declaration =
       (ts.isFunctionDeclaration(p) && p.name === n) ||
-      ts.isImportSpecifier(p) ||
-      ts.isExportSpecifier(p);
+      ((ts.isImportSpecifier(p) || ts.isExportSpecifier(p)) && p.propertyName !== n);
     if (!callee && !nomPropAppelee && !declaration) {
       faute(
         n,
