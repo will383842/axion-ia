@@ -1,6 +1,6 @@
 /**
  * Fiche M1 : la migration `client_contact_identite_devis_conditions` est ADDITIVE. Liste blanche EXACTE
- * des 9 instructions (lignes de commentaire retirées, texte découpé sur `;`, normalisé), mots interdits,
+ * des 8 instructions (lignes de commentaire retirées, texte découpé sur `;`, normalisé), mots interdits,
  * retour arrière sans instruction, et concordance avec les blocs model de schema.prisma.
  */
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -49,7 +49,6 @@ const ATTENDUES: readonly string[] = [
   'ALTER TABLE "client_contacts" ADD COLUMN "civilite" VARCHAR(10)',
   'ALTER TABLE "client_contacts" ADD COLUMN "prenom" VARCHAR(80)',
   'ALTER TABLE "client_contacts" ADD COLUMN "nom_famille" VARCHAR(80)',
-  CHECK("client_contacts", "civilite", "client_contacts_civilite_check"),
   'ALTER TABLE "clients" ADD COLUMN "contact_civilite" VARCHAR(10)',
   'ALTER TABLE "clients" ADD COLUMN "contact_prenom" VARCHAR(80)',
   'ALTER TABLE "clients" ADD COLUMN "contact_nom_famille" VARCHAR(80)',
@@ -90,7 +89,7 @@ describe("migration client_contact_identite_devis_conditions : additive (liste b
     ).toEqual([NOM]);
   });
 
-  it("les instructions sont EXACTEMENT les 9 attendues, dans l'ordre", () => {
+  it("les instructions sont EXACTEMENT les 8 attendues, dans l'ordre", () => {
     expect(instructions(lireSql("migration.sql"))).toEqual([...ATTENDUES]);
     expect(fautesMigration(lireSql("migration.sql"))).toEqual([]);
   });
@@ -99,7 +98,25 @@ describe("migration client_contact_identite_devis_conditions : additive (liste b
     const sql = lireSql("migration.sql");
     expect(sql).toContain("ADDITIVE");
     expect(sql).toContain("ORDRE DE LIVRAISON");
-    expect(sql).toMatch(/aucun code ne lit ni n'écrit ces colonnes avant B4/i);
+    expect(sql).toMatch(/aucun code n'écrit ces colonnes avant B4/i);
+    expect(sql).toMatch(/migration doit être appliquée en production avant que ce code serve/i);
+    expect(sql).toMatch(/civilité de client_contacts est validée par le code applicatif/i);
+  });
+
+  it("aucune contrainte (ADD CONSTRAINT) sur client_contacts dans cette migration", () => {
+    // Pourquoi : client_contacts est dans TABLES_DU_CHANTIER ; la garde de dérive du SQL brut
+    // (Gate D) refuse tout CHECK non déclaré sur elle. Déclarer le CHECK aurait obligé à
+    // modifier les deux fichiers de garde : la civilité est donc validée par zod (fiche B4).
+    for (const i of instructions(lireSql("migration.sql"))) {
+      if (i.startsWith('ALTER TABLE "client_contacts"')) {
+        expect(i, i).not.toMatch(/\bADD CONSTRAINT\b|\bCHECK\b/);
+      }
+    }
+  });
+
+  it("le nom de la contrainte de client_contacts n'apparaît pas dans objets-sql-bruts.ts", () => {
+    const bruts = readFileSync(join(process.cwd(), "prisma", "objets-sql-bruts.ts"), "utf8");
+    expect(bruts).not.toContain("client_contacts_civilite_check");
   });
 
   it("le retour arrière ne contient aucune instruction", () => {
