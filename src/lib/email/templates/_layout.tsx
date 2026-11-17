@@ -912,13 +912,21 @@ export function EmailLayout({
 
           {/* Carte de contenu */}
           <Container style={card} className="ax-card">
-            {eyebrow && <Text style={eyebrowStyle}>{eyebrow}</Text>}
-            <Heading style={headingStyle} className="ax-heading ax-title">
+            {eyebrow && (
+              <Text style={eyebrowStyle} data-bloc="surtitre">
+                {eyebrow}
+              </Text>
+            )}
+            <Heading style={headingStyle} className="ax-heading ax-title" data-bloc="titre">
               {title}
             </Heading>
+            {/* Marqueurs de mesure (lot S1) : vides et sautés du rendu texte. Les gardes
+                de `__tests__/` lisent la tranche du corps entre ces deux repères. */}
+            <span data-bloc="debut-corps" data-skip-in-text="true" />
             {children}
+            <span data-bloc="fin-corps" data-skip-in-text="true" />
             {cta && (
-              <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }}>
+              <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }} data-bloc="action">
                 <Button href={cta.href} style={ctaStyle} className="ax-cta">
                   {cta.label} &nbsp;→
                 </Button>
@@ -950,7 +958,10 @@ export function EmailLayout({
             )}
             {apresCta}
             {lienEspace && cta?.href !== lienEspace && (
-              <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
+              <Section
+                style={{ textAlign: "center", margin: "22px 0 4px 0" }}
+                data-bloc="lienEspace"
+              >
                 <Link
                   href={lienEspace}
                   style={{
@@ -971,7 +982,7 @@ export function EmailLayout({
               </Section>
             )}
             {bandeau && (afficherLockupQualiopi || showReviews) && (
-              <Section style={trustBand} className="ax-trust">
+              <Section style={trustBand} className="ax-trust" data-bloc="bandeau">
                 {afficherLockupQualiopi && (
                   <Img
                     src={QUALIOPI_LOCKUP}
@@ -985,7 +996,7 @@ export function EmailLayout({
               </Section>
             )}
             {partage && (snowball === "review" || snowball === "both") && (
-              <Section style={snowballCard}>
+              <Section style={snowballCard} data-bloc="partage">
                 <Text style={snowballTitle} className="ax-heading">
                   {t.reviewTitle}
                 </Text>
@@ -1001,7 +1012,7 @@ export function EmailLayout({
               </Section>
             )}
             {partage && (snowball === "referral" || snowball === "both") && (
-              <Section style={snowballCard}>
+              <Section style={snowballCard} data-bloc="partage">
                 <Text style={snowballTitle} className="ax-heading">
                   {t.referralTitle}
                 </Text>
@@ -1025,12 +1036,12 @@ export function EmailLayout({
               méfier autrement (formation anti-hameçonnage).
             */}
             {regime.soupapeReponse && (
-              <Text style={soupapeStyle} className="ax-muted">
+              <Text style={soupapeStyle} className="ax-muted" data-bloc="soupape">
                 {t.soupape}
               </Text>
             )}
             {signatureVisible && (
-              <Text style={signatureStyle} className="ax-text">
+              <Text style={signatureStyle} className="ax-text" data-bloc="signature">
                 <span style={signatureNameStyle}>
                   {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
                 </span>
@@ -1079,7 +1090,7 @@ export function EmailLayout({
 
               Familles B, C, D → forme COMPLÈTE du §6.2.
              ─────────────────────────────────────────────────────────────── */}
-          <Section style={{ padding: "26px 12px 0 12px" }}>
+          <Section style={{ padding: "26px 12px 0 12px" }} data-bloc="pied">
             {regime.reseauxSociaux === "complet" && sansReseauxSociaux !== true && (
               <Text style={socialRowStyle} className="ax-muted">
                 {t.followBrand} —{" "}
