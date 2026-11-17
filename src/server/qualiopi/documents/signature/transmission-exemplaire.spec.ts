@@ -64,6 +64,7 @@ vi.mock("@/server/queue/queues", () => ({
 
 import {
   transmettreExemplaireSigne,
+  transmettreCopiePartielle,
   destinatairesExemplaire,
   exemplaireSignePdfKey,
 } from "./transmission-exemplaire";
@@ -420,5 +421,44 @@ describe("🔴 numéro du DEVIS sur l'exemplaire d'un devis signé", () => {
       Record<string, unknown>,
     ];
     expect(payload).not.toHaveProperty("numeroDevis");
+  });
+});
+
+describe("🔴 l'objet de l'exemplaire signé sans la parenthèse du libellé (L11)", () => {
+  type Options = { sujet: string };
+  const sujetEnfile = (): string =>
+    (enqueueMock.mock.calls[0] as [unknown, unknown, unknown, unknown, Options])[4].sujet;
+  const MOTS_INTERDITS = /OPCO|prise en charge|financeur|Qualiopi|\(|\)/i;
+
+  it("un mandat : l'objet de l'exemplaire signé ne porte ni parenthèse ni mot interne", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "mandat_opco" }));
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — procuration spéciale AXI-DOC-2026-039");
+    expect(sujetEnfile()).not.toMatch(MOTS_INTERDITS);
+  });
+
+  it("un mandat : l'objet de la copie partielle ne porte ni parenthèse ni mot interne", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(
+      pieceSignee({ type: "mandat_opco", statutSignature: "partielle" }),
+    );
+    await transmettreCopiePartielle("doc-039", "client");
+    expect(sujetEnfile()).toBe("Copie de votre signature — procuration spéciale AXI-DOC-2026-039");
+    expect(sujetEnfile()).not.toMatch(MOTS_INTERDITS);
+  });
+
+  it("une convention : l'objet d'avant, au caractère près", async () => {
+    cheminNominal();
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — convention de formation AXI-DOC-2026-039");
+  });
+
+  it("un devis : l'objet d'avant, au caractère près", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "devis" }));
+    devisFindFirstMock.mockResolvedValue({ numero: "AXI-DEV-2026-001" });
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — devis AXI-DEV-2026-001");
   });
 });
