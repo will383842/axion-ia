@@ -1625,6 +1625,8 @@ jobs:
       # DEFAULT de seuil. Chaque cas est ANNULÉ : aucune ligne ne reste.
       - name: Condition suspensive OPCO — CHECK (Postgres réel)
         run: pnpm test:integration tests/integration/condition-suspensive
+      - name: Expiration des devis signés client — filtre positif (Postgres réel)
+        run: pnpm test:integration tests/integration/devis
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy

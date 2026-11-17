@@ -1,7 +1,8 @@
 /**
  * A4 — l'expiration des devis épargne UNIQUEMENT le devis dont la pièce est
  * signée par le client (signature non révoquée) ET non annulée, contre un VRAI
- * Postgres (Gate D, `pnpm test:integration tests/integration/devis`).
+ * Postgres (Gate D : étape « Expiration des devis signés client — filtre positif » de
+ * `.github/workflows/ci.yml`, `pnpm test:integration tests/integration/devis`).
  *
  * Quatre devis échus (« envoye », date de validité dépassée) :
  *   1. sans pièce générée                       → « expire »
@@ -43,6 +44,8 @@ describe("expiration des devis contre un vrai Postgres (Gate D)", () => {
                 hashSha256: HASH,
                 suppressionPrevueAt: dansUnAn,
                 annuleeAt: annulee ? new Date() : null,
+                // CHECK documents_generes_annulation_motif_check : motif ≥ 10 caractères.
+                annuleeMotif: annulee ? "Annulation de test A4" : null,
               },
             });
           const signerClient = async (documentGenereId: string) =>
@@ -53,6 +56,8 @@ describe("expiration des devis contre un vrai Postgres (Gate D)", () => {
                 partie: "client",
                 signataireNom: "Client test",
                 methode: "trace",
+                // CHECK ck_document_signature_image_par_methode : empreinte d'image obligatoire hors confirmation_accessible.
+                signatureSha256: HASH,
                 documentHashSha256: HASH,
                 selfHash: HASH,
                 hashVersion: 1,
