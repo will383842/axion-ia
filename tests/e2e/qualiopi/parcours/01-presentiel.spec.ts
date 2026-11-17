@@ -712,7 +712,14 @@ test.describe("@parcours-qualiopi 1 — présentiel, du devis à la facture", ()
         "`financementSuggere: opco` (demo.ts:415), rendu par `FINANCEMENT_LABELS` " +
         "(devis/page.tsx:160-161), et c'est ce qui justifie la subrogation vérifiée en fin " +
         "de parcours",
-    ).toHaveText("OPCO", { timeout: 30_000 });
+    ).toHaveText(
+      // B6b-1 : avant la certification, la console ne nomme plus le tiers payeur ; la donnée
+      // (`financementSuggere: opco`) est inchangée, seul le libellé de la cellule change.
+      process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true"
+        ? "OPCO"
+        : "Règlement par un tiers (ancien devis)",
+      { timeout: 30_000 },
+    );
     await expect(
       cellulesDevis.nth(4),
       `le devis ${DEVIS_DEMO} n'est pas au statut « Accepté ». Le seed l'écrit ` +
