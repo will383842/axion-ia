@@ -470,7 +470,6 @@ describe("l'aperçu ne livre aucun lien personnel à la console", () => {
     "JETONOPPOSITION",
     "abcdef0123456789",
   ].join(".");
-  ("https://axion-ia.com/api/unsubscribe?token=op1.JETONOPPOSITIONabcdef0123456789");
 
   beforeEach(() => {
     renderEmailTemplate.mockResolvedValue({
