@@ -954,6 +954,17 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: true,
     guichet: "qualite",
   },
+  /**
+   * L5h — l'e-mail d'envoi de la convention est garé « à valider » alors que la
+   * session commence dans 7 jours ou moins. Se referme seule dès qu'il n'est
+   * plus en attente.
+   */
+  convention_non_validee_avant_session: {
+    niveau: "important",
+    titre: "Convention non validée à l'approche de la session",
+    resolutionAuto: true,
+    guichet: "administratif",
+  },
 
   // ── Qualiopi expiration ────────────────────────────────────────────────────
   qualiopi_expire_j90: {
