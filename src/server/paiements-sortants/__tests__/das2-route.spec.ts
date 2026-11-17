@@ -15,6 +15,8 @@ const m = vi.hoisted(() => ({
   journaliser: vi.fn(),
 }));
 
+vi.stubEnv("ADMIN_URL_PREFIX", "prefixe-factice-test");
+const CONSOLE = { params: Promise.resolve({ locale: "fr", adminPrefix: "prefixe-factice-test" }) };
 vi.mock("@/auth", () => ({ auth: m.auth }));
 vi.mock("@/lib/prisma", () => ({ prisma: {} }));
 vi.mock("@/server/journal/journaliser", () => ({ journaliser: m.journaliser }));
@@ -38,7 +40,7 @@ beforeEach(() => {
 describe("GET /paiements-sortants/das2/export", () => {
   it("interrupteur absent : 404, rien n'est calculé ni journalisé", async () => {
     m.interrupteurAllume.mockResolvedValue(false);
-    const r = await GET(req("?annee=2027"));
+    const r = await GET(req("?annee=2027"), CONSOLE);
     expect(r.status).toBe(404);
     expect(m.interrupteurAllume).toHaveBeenCalledWith("das2_commun");
     expect(m.exportDas2Commune).not.toHaveBeenCalled();
@@ -47,21 +49,21 @@ describe("GET /paiements-sortants/das2/export", () => {
 
   it("sans session : 401 ; rôle de lecture ou d'édition : 403", async () => {
     m.auth.mockResolvedValueOnce(null);
-    expect((await GET(req("?annee=2027"))).status).toBe(401);
+    expect((await GET(req("?annee=2027"), CONSOLE)).status).toBe(401);
     for (const role of ["reader", "editor"]) {
       m.auth.mockResolvedValueOnce({ user: { id: "u1", role } });
-      expect((await GET(req("?annee=2027"))).status).toBe(403);
+      expect((await GET(req("?annee=2027"), CONSOLE)).status).toBe(403);
     }
     expect(m.exportDas2Commune).not.toHaveBeenCalled();
   });
 
   it("année absente ou hors bornes : 400", async () => {
-    expect((await GET(req(""))).status).toBe(400);
-    expect((await GET(req("?annee=1999"))).status).toBe(400);
+    expect((await GET(req(""), CONSOLE)).status).toBe(400);
+    expect((await GET(req("?annee=1999"), CONSOLE)).status).toBe(400);
   });
 
   it("par défaut les seuls bénéficiaires à déclarer ; `tous=1` liste tout le monde ; journal sans cible", async () => {
-    const r = await GET(req("?annee=2027"));
+    const r = await GET(req("?annee=2027"), CONSOLE);
     expect(r.status).toBe(200);
     expect(r.headers.get("content-disposition")).toBe('attachment; filename="das2-2027.csv"');
     expect(m.exportDas2Commune).toHaveBeenLastCalledWith(2027, { seulementADeclarer: true });
@@ -70,7 +72,7 @@ describe("GET /paiements-sortants/das2/export", () => {
       targetId: null,
       session: { userId: "u1" },
     });
-    await GET(req("?annee=2027&tous=1"));
+    await GET(req("?annee=2027&tous=1"), CONSOLE);
     expect(m.exportDas2Commune).toHaveBeenLastCalledWith(2027, { seulementADeclarer: false });
   });
 });
