@@ -527,6 +527,9 @@ describe("sendDevisAction — version remplacée signée ou acceptée", () => {
     expect(h.revoquer).not.toHaveBeenCalled();
     const alerte = h.sentryMessage.mock.calls[0]?.[0] as string;
     expect(alerte).toContain("version précédente signée entre-temps");
+    // Le client a signé l'ancienne version : l'écran dit « ne le renvoyez pas », l'alerte aussi.
+    expect(alerte).toContain("ouvrir la version signée pour la contresigner");
+    expect(alerte).not.toContain("renvoyer le devis");
     expect(alerte).not.toContain("http");
     expect(alerte).not.toContain("@");
     // Aucune écriture ne ramène l'ancienne version à autre chose que ce qu'elle était : seule la

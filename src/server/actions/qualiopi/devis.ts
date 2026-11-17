@@ -666,6 +666,10 @@ export async function sendDevisAction(id: string): Promise<
             ? "apres_courriel"
             : "erreur_technique";
     const causeAlerte = signeeEntreTemps ? " Cause : version précédente signée entre-temps." : "";
+    // Version remplacée signée entre-temps : la renvoyer redemanderait au client de signer.
+    const consigneAlerte = signeeEntreTemps
+      ? "ouvrir la version signée pour la contresigner"
+      : "renvoyer le devis depuis sa fiche";
 
     // Rien n'est parti : le lien de signature de la pièce neuve est révoqué. S'il est enfilé,
     // le courriel (donc le lien) est déjà chez le client : on ne le révoque pas.
@@ -690,7 +694,7 @@ export async function sendDevisAction(id: string): Promise<
       if (courriel.etat === "enfile") {
         // Message sans adresse, sans lien, sans jeton.
         Sentry.captureMessage(
-          `Devis ${etat.numeroDevis} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
+          `Devis ${etat.numeroDevis} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : ${consigneAlerte}.${causeAlerte}`,
           { level: "error", tags: { action: "sendDevisAction.apres_courriel_enfile" } },
         );
       }
@@ -737,7 +741,7 @@ export async function sendDevisAction(id: string): Promise<
         // Aucune adresse ni lien dans l'alerte : Telegram est un canal tiers.
         sendTelegram({
           tag: "AUTO",
-          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
+          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : ${consigneAlerte}.${causeAlerte}`,
         }).catch(() => {});
       }
     }
@@ -826,10 +830,30 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       if (signatures.clientASigne && !signatures.organismeASigne) {
         throw new AcceptationSigneeEnLigne();
       }
-      await tx.devis.update({
-        where: { id: devisId },
+      // Écriture CONDITIONNELLE : si le client signe entre la lecture ci-dessus et cette écriture,
+      // le devis ne doit pas passer « accepté » sans contresignature. Mêmes conditions que la garde.
+      const { count } = await tx.devis.updateMany({
+        where: {
+          id: devisId,
+          statut: { in: ["envoye", "expire"] },
+          OR: [
+            ...pasSigneParLeClient.OR,
+            { documentGenere: { signatures: { some: { partie: "axionia", revokedAt: null } } } },
+          ],
+        },
         data: { statut: "accepte", acceptedAt: new Date() },
       });
+      if (count === 0) {
+        // Relire le statut pour rendre le bon message.
+        const relu = await tx.devis.findUnique({
+          where: { id: devisId },
+          select: { statut: true },
+        });
+        if (relu === null || (relu.statut !== "envoye" && relu.statut !== "expire")) {
+          throw new AcceptationStatutRefuse();
+        }
+        throw new AcceptationSigneeEnLigne();
+      }
       await emettreDevisSigne(tx, devisId);
     });
   } catch (err) {

@@ -38,6 +38,8 @@ import { envoyerDevisEmailAction } from "./facturation-emails";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 const MSG = "Ce devis est déjà signé par le client : le renvoyer lui redemanderait de signer.";
+const MSG_ACCEPTE =
+  "Ce devis est déjà accepté : il ne se renvoie plus. Pour en transmettre une copie, ouvrez l'exemplaire signé (PDF) depuis la fiche.";
 
 function devis(over: Record<string, unknown> = {}) {
   return {
@@ -81,8 +83,18 @@ describe("envoyerDevisEmailAction — devis signé ou accepté", () => {
 
   it.each(["accepte", "transforme_convention"])("statut « %s » : refus", async (statut) => {
     d.findUnique.mockResolvedValue(devis({ statut }));
-    expect(await envoyerDevisEmailAction({ devisId: ID })).toEqual({ error: MSG });
+    expect(await envoyerDevisEmailAction({ devisId: ID })).toEqual({ error: MSG_ACCEPTE });
     expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("accepté ET signé par le client : c'est le message « accepté » qui prime", async () => {
+    d.findUnique.mockResolvedValue(
+      devis({
+        statut: "accepte",
+        documentGenere: { annuleeAt: null, signatures: [{ partie: "client" }] },
+      }),
+    );
+    expect(await envoyerDevisEmailAction({ devisId: ID })).toEqual({ error: MSG_ACCEPTE });
   });
 
   it("contre-témoins : envoyé non signé, pièce annulée signée, contresignature seule → renvoi possible", async () => {

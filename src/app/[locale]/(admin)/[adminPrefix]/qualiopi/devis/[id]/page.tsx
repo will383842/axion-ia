@@ -32,6 +32,7 @@ import {
   contresignerPieceAction,
   relancerAcceptationDevisAction,
 } from "@/server/actions/qualiopi/piece-signature";
+import { signatureClientDuDevis } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
 import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
@@ -256,6 +257,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             hashVersion: true,
             choixOffre: true,
             choixOffreSha256: true,
+            // Pièce annulée : ses signatures ne comptent pas (même règle que les gardes serveur).
+            documentGenere: { select: { annuleeAt: true } },
           },
           // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
           // `signeAt` afficherait un ordre qui peut différer de celui du
@@ -263,20 +266,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         })
       : [];
-  const clientASigne = signatures.some((s) => s.partie === "client");
-  const organismeASigne = signatures.some((s) => s.partie === "axionia");
-  // Signature du client NON annulée ni révoquée sur la pièce (une pièce annulée ne compte pas) :
-  // il ne reste qu'à contresigner. Pilote la mention de statut et les boutons de cycle de vie.
-  const signeParClient =
-    devis.documentGenereId !== null &&
-    (await prisma.documentSignature.count({
-      where: {
-        documentGenereId: devis.documentGenereId,
-        partie: "client",
-        revokedAt: null,
-        documentGenere: { annuleeAt: null },
-      },
-    })) > 0;
+  // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
+  // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
+  const { clientASigne, organismeASigne } = signatureClientDuDevis({
+    documentGenere: {
+      annuleeAt: signatures[0]?.documentGenere.annuleeAt ?? null,
+      signatures,
+    },
+  });
+  const signeParClient = clientASigne && !organismeASigne;
+  const signeDesDeuxParties = clientASigne && organismeASigne && devis.statut === "envoye";
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
@@ -400,12 +399,20 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             >
               {STATUT_LABELS[devis.statut] ?? devis.statut}
             </p>
-            {devis.statut === "envoye" && signeParClient && (
+            {(devis.statut === "envoye" || devis.statut === "expire") && signeParClient && (
               <p
                 data-testid="mention-signe-par-client"
                 className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
               >
                 Signé par le client, à contresigner
+              </p>
+            )}
+            {signeDesDeuxParties && (
+              <p
+                data-testid="mention-signe-des-deux-parties"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé des deux parties, acceptation à finir
               </p>
             )}
           </div>
@@ -788,6 +795,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           destinataire={client?.contactEmail ?? null}
           clientASigne={clientASigne}
           signeParClient={signeParClient}
+          signeDesDeuxParties={signeDesDeuxParties}
         />
         <DevisSuiviLivraison
           devisId={devis.id}

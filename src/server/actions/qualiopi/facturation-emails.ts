@@ -85,13 +85,16 @@ export async function envoyerDevisEmailAction(
     },
   });
   if (!devis) return { error: "Devis introuvable." };
-  // Renvoyer un devis déjà signé (ou accepté) émettrait un nouveau lien et redemanderait au client
-  // de signer : refusé, quel que soit l'écran.
-  if (
-    signatureClientDuDevis(devis).clientASigne ||
-    devis.statut === "accepte" ||
-    devis.statut === "transforme_convention"
-  ) {
+  // Un devis accepté (même sur papier) ou signé par le client ne se renvoie pas : l'e-mail le
+  // présente comme « à signer » (PDF + bouton de signature). Aucun lien n'est émis hors « envoye »,
+  // mais le message serait faux. Deux refus distincts selon la situation.
+  if (devis.statut === "accepte" || devis.statut === "transforme_convention") {
+    return {
+      error:
+        "Ce devis est déjà accepté : il ne se renvoie plus. Pour en transmettre une copie, ouvrez l'exemplaire signé (PDF) depuis la fiche.",
+    };
+  }
+  if (signatureClientDuDevis(devis).clientASigne) {
     return {
       error: "Ce devis est déjà signé par le client : le renvoyer lui redemanderait de signer.",
     };

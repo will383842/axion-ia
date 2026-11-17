@@ -63,4 +63,16 @@ describe("DevisLifecycleButtons — signé par le client", () => {
     expect(label).toContain("aucune pièce numérotée créée, rien n'est envoyé");
     expect(label).not.toContain("aucun numéro attribué");
   });
+
+  it("envoyé, signé des deux côtés : « Marquer accepté » reste, refuser et renvoyer masqués, note dédiée", () => {
+    render(<DevisLifecycleButtons devisId="d" statut="envoye" signeDesDeuxParties clientASigne />);
+    expect(screen.getByRole("button", ACCEPTER)).toBeTruthy();
+    expect(screen.queryByRole("button", REFUSER)).toBeNull();
+    expect(screen.queryByRole("button", RENVOYER)).toBeNull();
+    expect(screen.queryByTestId("avertissement-renvoi-lien")).toBeNull();
+    expect(screen.queryByTestId("note-signe-par-client")).toBeNull();
+    expect(screen.getByTestId("note-signe-des-deux-parties").textContent).toContain(
+      "Ce devis est signé des deux parties, mais son acceptation n'a pas été enregistrée. Cliquez sur « Marquer accepté » pour la finir.",
+    );
+  });
 });

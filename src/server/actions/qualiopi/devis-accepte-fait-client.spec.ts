@@ -11,7 +11,7 @@ vi.mock("@sentry/nextjs", () => sentry);
 const DEVIS = "11111111-1111-4111-8111-111111111111";
 
 const h = vi.hoisted(() => ({
-  tx: { devis: { update: vi.fn(), findUnique: vi.fn(), findFirst: vi.fn() } },
+  tx: { devis: { updateMany: vi.fn(), findUnique: vi.fn(), findFirst: vi.fn() } },
   p: {},
   monter: vi.fn(),
   proposer: vi.fn(),
@@ -84,12 +84,14 @@ vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 
 import { acceptDevisAction } from "./devis";
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 
 beforeEach(() => {
   vi.clearAllMocks();
   h.habilitation.mockResolvedValue({ userId: "adm-1", role: "admin" });
   // Devis classique : aucune offre (le devis à formules a son test plus bas).
   h.tx.devis.findFirst.mockResolvedValue(null);
+  h.tx.devis.updateMany.mockResolvedValue({ count: 1 });
   h.tx.devis.findUnique.mockResolvedValue({
     statut: "envoye",
     offreSha256: null,
@@ -106,7 +108,7 @@ describe("acceptDevisAction", () => {
       origine: "console",
       adminUserId: "adm-1",
     });
-    expect(h.tx.devis.update.mock.invocationCallOrder[0]!).toBeLessThan(
+    expect(h.tx.devis.updateMany.mock.invocationCallOrder[0]!).toBeLessThan(
       h.emettre.mock.invocationCallOrder[0]!,
     );
     expect(h.emettre.mock.invocationCallOrder[0]!).toBeLessThan(
@@ -138,7 +140,7 @@ describe("acceptDevisAction", () => {
     h.monter.mockRejectedValueOnce(new Error("montée"));
     const r = await acceptDevisAction(DEVIS);
     expect(r).toEqual({ data: { id: DEVIS } });
-    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+    expect(h.tx.devis.updateMany).toHaveBeenCalledOnce();
     expect(h.emettre).toHaveBeenCalledOnce();
     expect(h.log).toHaveBeenCalledOnce();
     expect(sentry.captureException).toHaveBeenCalledOnce();
@@ -150,7 +152,7 @@ describe("acceptDevisAction", () => {
       h.tx.devis.findUnique.mockResolvedValue({ statut, offreSha256: null, formuleRetenue: null });
       const r = await acceptDevisAction(DEVIS);
       expect(r).toMatchObject({ error: expect.stringContaining("envoyé") });
-      expect(h.tx.devis.update).not.toHaveBeenCalled();
+      expect(h.tx.devis.updateMany).not.toHaveBeenCalled();
       expect(h.emettre).not.toHaveBeenCalled();
       expect(h.monter).not.toHaveBeenCalled();
       expect(h.proposer).not.toHaveBeenCalled();
@@ -175,7 +177,7 @@ describe("acceptDevisAction", () => {
     });
     const r = await acceptDevisAction(DEVIS);
     expect(r).toMatchObject({ error: expect.stringContaining("formules") });
-    expect(h.tx.devis.update).not.toHaveBeenCalled();
+    expect(h.tx.devis.updateMany).not.toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
     expect(h.monter).not.toHaveBeenCalled();
     expect(h.log).not.toHaveBeenCalled();
@@ -188,12 +190,12 @@ describe("acceptDevisAction", () => {
       formuleRetenue: "abonnement",
     });
     expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
-    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+    expect(h.tx.devis.updateMany).toHaveBeenCalledOnce();
   });
 
   it("identifiant invalide : rien n'est écrit, rien ne monte", async () => {
     expect(await acceptDevisAction("pas-un-uuid")).toEqual({ error: "Identifiant invalide" });
-    expect(h.tx.devis.update).not.toHaveBeenCalled();
+    expect(h.tx.devis.updateMany).not.toHaveBeenCalled();
     expect(h.monter).not.toHaveBeenCalled();
   });
 });
@@ -216,7 +218,7 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
       where: { replacesDevisId: DEVIS, statut: { not: "brouillon" } },
       select: { id: true },
     });
-    expect(h.tx.devis.update).not.toHaveBeenCalled();
+    expect(h.tx.devis.updateMany).not.toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
     expect(h.monter).not.toHaveBeenCalled();
   });
@@ -230,7 +232,7 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
     h.tx.devis.findFirst.mockResolvedValue(null);
     const r = await acceptDevisAction(DEVIS);
     expect(r).toEqual({ data: { id: DEVIS } });
-    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+    expect(h.tx.devis.updateMany).toHaveBeenCalledOnce();
   });
 
   it("devis à formules sans formule retenue : toujours le refus propre aux formules", async () => {
@@ -257,7 +259,7 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
       expect(r).toEqual({
         error: "Le client a signé ce devis en ligne : contresignez-le pour le conclure.",
       });
-      expect(h.tx.devis.update).not.toHaveBeenCalled();
+      expect(h.tx.devis.updateMany).not.toHaveBeenCalled();
       expect(h.emettre).not.toHaveBeenCalled();
       expect(h.monter).not.toHaveBeenCalled();
       expect(h.log).not.toHaveBeenCalled();
@@ -269,5 +271,46 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
       h.tx.devis.findUnique.mockResolvedValue(signe([]));
       expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
     });
+  });
+});
+
+describe("acceptDevisAction — écriture CONDITIONNELLE (signature entre la lecture et l'écriture)", () => {
+  it("🔴 l'écriture porte le statut admis et la condition « pas signé par le client OU contresigné »", async () => {
+    await acceptDevisAction(DEVIS);
+    expect(h.tx.devis.updateMany).toHaveBeenCalledWith({
+      where: {
+        id: DEVIS,
+        statut: { in: ["envoye", "expire"] },
+        OR: [
+          ...pasSigneParLeClient.OR,
+          { documentGenere: { signatures: { some: { partie: "axionia", revokedAt: null } } } },
+        ],
+      },
+      data: { statut: "accepte", acceptedAt: expect.any(Date) },
+    });
+  });
+
+  it("🔴 le client signe entre la lecture et l'écriture (0 ligne) : message « contresignez-le », aucun effet", async () => {
+    h.tx.devis.updateMany.mockResolvedValue({ count: 0 });
+    // 1re lecture : envoyé ; relecture après l'échec : toujours envoyé.
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({
+      error: "Le client a signé ce devis en ligne : contresignez-le pour le conclure.",
+    });
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.monter).not.toHaveBeenCalled();
+    expect(h.proposer).not.toHaveBeenCalled();
+    expect(h.log).not.toHaveBeenCalled();
+  });
+
+  it("0 ligne parce que le statut a changé entre-temps : message de statut, pas de contresignature", async () => {
+    h.tx.devis.updateMany.mockResolvedValue({ count: 0 });
+    h.tx.devis.findUnique
+      .mockResolvedValueOnce({ statut: "envoye", offreSha256: null, formuleRetenue: null })
+      .mockResolvedValueOnce({ statut: "accepte" });
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toMatchObject({ error: expect.stringContaining("envoyé") });
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.monter).not.toHaveBeenCalled();
   });
 });
