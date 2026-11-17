@@ -9,7 +9,9 @@
 
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
-import { prefixeAdminAttendu } from "@/lib/csp";
+import { hasLocale } from "next-intl";
+import { isLectureEmailPath, prefixeAdminAttendu } from "@/lib/csp";
+import { routing } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
 import { enTetesLecturePleinEcran, sourceLecture } from "@/server/email/lecture-plein-ecran";
@@ -19,13 +21,29 @@ export const dynamic = "force-dynamic";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ adminPrefix: string; source: string; id: string }> },
+  {
+    params,
+  }: { params: Promise<{ locale: string; adminPrefix: string; source: string; id: string }> },
 ): Promise<NextResponse> {
   // 🔴 AVANT `auth()` et toute lecture (audit I0b-3, constat 1) : un layout n'enveloppe pas
   // un route handler, donc `[adminPrefix]` accepte n'importe quelle valeur. Sur un mauvais
   // préfixe le proxy ne voit pas une page de console ; on ne sert rien.
-  const { adminPrefix, source, id } = await params;
-  if (adminPrefix !== prefixeAdminAttendu()) return new NextResponse(null, { status: 404 });
+  //
+  // 🔴 Second tour d'audit (constat A) : le segment de LOCALE n'est pas validé non plus, et le
+  // `matcher` du proxy exclut les chemins qui commencent par `questionnaire`, `document`,
+  // `videos`, `api`, `sitemap`… Sur `/questionnaire/<prefixe>/emails/lecture/…` la route répond
+  // avec `[locale]=questionnaire`, SANS proxy donc SANS la CSP `sandbox` (celle de la route est
+  // écrasée par les en-têtes de `next.config`, Next 16.3.1). On refuse donc : locale inconnue,
+  // mauvais préfixe, ou chemin que le proxy ne couvre pas. `req.url` garde le chemin d'origine
+  // (une réécriture next-intl ne touche que `parsedUrl`, pas `req.url`).
+  const { locale, adminPrefix, source, id } = await params;
+  if (
+    !hasLocale(routing.locales, locale) ||
+    adminPrefix !== prefixeAdminAttendu() ||
+    !isLectureEmailPath(new URL(req.url).pathname)
+  ) {
+    return new NextResponse(null, { status: 404 });
+  }
 
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });

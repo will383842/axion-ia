@@ -69,8 +69,8 @@ export function poserEnTetesDeSecurite(req: NextRequest, response: Response, non
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
   );
   // Lecture plein écran d'un e-mail enregistré (I0b-3) : la route pose la même CSP
-  // (`buildCspHeader({ lectureEmail })`) ; on la rend ici à l'identique, pour que le
-  // résultat soit juste quel que soit l'ordre d'application route / proxy.
+  // (`buildCspHeader({ lectureEmail })`) ; on la rend ici à l'identique, (dans Next 16.3.1 les en-têtes du
+  // proxy et de `next.config` l'emportent sur ceux de la route).
   // 🔴 Next 16.3.1 : un en-tête posé ICI l'emporte sur celui de la route
   // (`router-server.js` pose `resHeaders` avant le handler ; `send-response.js` n'ajoute
   // un en-tête de la route que s'il est absent). C'est donc ce bloc qui protège le corps.

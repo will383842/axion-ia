@@ -28,10 +28,13 @@ import { cspCorpsEmail } from "@/lib/email/apercu-lecteur";
 const ID = "11111111-1111-4111-8111-111111111111";
 const JETON = "Zq7rT9xWm2LpV4nB8cD6fH1jK3sA5gYe0uIoPlMkNb";
 const PREFIXE = "pfx-test";
-const appel = (source: string, id: string, query = "", adminPrefix = PREFIXE) =>
-  GET(new Request(`https://exemple.invalid/x${query}`), {
-    params: Promise.resolve({ adminPrefix, source, id }),
-  });
+const appel = (source: string, id: string, query = "", adminPrefix = PREFIXE, locale = "fr") =>
+  GET(
+    new Request(
+      `https://exemple.invalid/${locale}/${adminPrefix}/emails/lecture/${source}/${id}${query}`,
+    ),
+    { params: Promise.resolve({ locale, adminPrefix, source, id }) },
+  );
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -55,6 +58,35 @@ describe("préfixe d'administration", () => {
     expect(h.auth).not.toHaveBeenCalled();
     expect(h.findUnique).not.toHaveBeenCalled();
     expect(h.logCreate).not.toHaveBeenCalled();
+  });
+});
+
+describe("locale (second tour d'audit, constat A)", () => {
+  it("locales exclues du matcher du proxy : 404, auth jamais appelé, aucune lecture", async () => {
+    for (const l of ["questionnaire", "document", "videos", "api", "sitemap", "widget", "zz"]) {
+      const r = await appel("envoye", ID, "", PREFIXE, l);
+      expect(r.status).toBe(404);
+      expect(await r.text()).toBe("");
+    }
+    expect(h.auth).not.toHaveBeenCalled();
+    expect(h.findUnique).not.toHaveBeenCalled();
+    expect(h.logCreate).not.toHaveBeenCalled();
+  });
+
+  it("fr et en avec le bon préfixe : servi comme avant", async () => {
+    for (const l of ["fr", "en"])
+      expect((await appel("envoye", ID, "", PREFIXE, l)).status).toBe(200);
+  });
+
+  it("chemin non couvert par le proxy (même avec une locale valide dans params) : 404 avant auth", async () => {
+    const r = await GET(
+      new Request(`https://exemple.invalid/questionnaire/${PREFIXE}/emails/lecture/envoye/${ID}`),
+      {
+        params: Promise.resolve({ locale: "fr", adminPrefix: PREFIXE, source: "envoye", id: ID }),
+      },
+    );
+    expect(r.status).toBe(404);
+    expect(h.auth).not.toHaveBeenCalled();
   });
 });
 

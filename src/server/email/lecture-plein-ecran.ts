@@ -12,8 +12,8 @@
 // ni formulaire. (`sandbox` n'empêche pas un clic de naviguer l'onglet : d'où les liens inertes.)
 //
 // ⛔ Les en-têtes de `enTetesLecturePleinEcran` sont posés par la route EN DÉFENSE EN
-// PROFONDEUR : sous Next 16.3.1 ceux du proxy l'emportent (`router-server.js` /
-// `send-response.js`). Ce qui protège réellement le corps est la branche `lectureEmail`
+// PROFONDEUR : dans Next 16.3.1 les en-têtes du proxy et de `next.config` l'emportent sur ceux de la
+// route (`router-server.js` / `send-response.js`). Ce qui protège réellement le corps est la branche `lectureEmail`
 // de `poserEnTetesDeSecurite` (`src/proxy.ts`).
 
 import { prisma } from "@/lib/prisma";
@@ -36,13 +36,39 @@ function echapperHtml(t: string): string {
     .replaceAll('"', "&quot;");
 }
 
-/** Corps servi : masqué, liens inertes. Copie sans HTML : le texte échappé dans un `<pre>`, sinon `null`. */
+// Attributs qui peuvent encore faire naviguer ou envoyer : s'il en reste un APRÈS
+// `rendreLiensInertes`, le HTML n'est pas servi (échec fermé, audit I0b-3 constats B et C).
+const ATTRIBUT_ACTIF = /[\s"'/](href|xlink:href|action|formaction|ping|srcdoc|http-equiv)\s*=/i;
+
+const FEUILLE_INERTE =
+  "<style>a,area{pointer-events:none!important;cursor:default!important}</style>";
+
+// react-email pose `<meta http-equiv="Content-Type">` dans CHAQUE gabarit : inoffensif (le
+// charset vient de l'en-tête de la réponse), retiré avant le contrôle pour ne pas faire
+// tomber tout le catalogue en `<pre>`. Tout autre `http-equiv` (refresh…) reste refusé.
+const META_CONTENT_TYPE =
+  /<meta\b[^>"']*(?:"[^"]*"|'[^']*'|[^>"'])*?\bhttp-equiv\s*=\s*(?:"content-type"|'content-type'|content-type)(?:"[^"]*"|'[^']*'|[^>"'])*>/gi;
+
+function pageTexte(texte: string): string {
+  return `<!doctype html><html lang="fr"><head><meta charset="utf-8"></head><body><pre style="white-space:pre-wrap;font:14px/1.5 monospace;margin:16px">${echapperHtml(texte)}</pre></body></html>`;
+}
+
+/**
+ * Corps servi : masqué, liens inertes. Si un attribut actif survit, ou sans HTML : le texte
+ * (sinon le HTML source) échappé dans un `<pre>`. `null` si la copie est vide.
+ */
 export function corpsServi(copie: { subject: string; html: string; text: string }): string | null {
   const m = masquerSecretsEmail(copie);
-  if (m.html.trim() !== "") return rendreLiensInertes(m.html);
-  if (m.text.trim() !== "") {
-    return `<!doctype html><html lang="fr"><head><meta charset="utf-8"></head><body><pre style="white-space:pre-wrap;font:14px/1.5 monospace;margin:16px">${echapperHtml(m.text)}</pre></body></html>`;
+  if (m.html.trim() !== "") {
+    const inerte = rendreLiensInertes(m.html).replace(META_CONTENT_TYPE, "");
+    if (!ATTRIBUT_ACTIF.test(inerte)) {
+      return inerte.includes("</head>")
+        ? inerte.replace("</head>", `${FEUILLE_INERTE}</head>`)
+        : `${FEUILLE_INERTE}${inerte}`;
+    }
+    return pageTexte(m.text.trim() !== "" ? m.text : m.html);
   }
+  if (m.text.trim() !== "") return pageTexte(m.text);
   return null;
 }
 
@@ -99,7 +125,10 @@ const gabarit: SourceLecture = {
         : {};
     try {
       const r = await renderEmailTemplate(id, "fr", { ...PAYLOAD_EXEMPLE, ...choisie });
-      return { ok: true, html: rendreLiensInertes(masquerSecretsEmail(r).html) };
+      const html = corpsServi(r);
+      return html === null
+        ? { ok: false, phrase: "Ce gabarit ne se rend pas avec le jeu d'exemple." }
+        : { ok: true, html };
     } catch {
       return { ok: false, phrase: "Ce gabarit ne se rend pas avec le jeu d'exemple." };
     }

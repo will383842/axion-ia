@@ -1,5 +1,5 @@
 // Lot I0b-3 — la CSP de la route de lecture plein écran, posée À L'IDENTIQUE par la
-// route et par le proxy (la documentation Next ne dit pas qui l'emporte).
+// route et par le proxy (dans Next 16.3.1 les en-têtes du proxy et de `next.config` l'emportent sur ceux de la route).
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";

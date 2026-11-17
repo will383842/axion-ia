@@ -1,6 +1,10 @@
 // @vitest-environment node
 // Registre des sources de la lecture plein écran (lot I0b-3) : un registre, pas des `if`.
 import { describe, expect, it } from "vitest";
+import { renderEmailTemplate } from "@/lib/email/templates";
+import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
+import type { EmailJobName } from "@/server/queue/types";
+import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { SOURCES_LECTURE, corpsServi, enTetesLecturePleinEcran } from "../lecture-plein-ecran";
 
 describe("registre des sources", () => {
@@ -72,3 +76,53 @@ describe("corpsServi", () => {
     expect(corpsServi({ subject: "s", html: "", text: " " })).toBeNull();
   });
 });
+
+describe("échec fermé : un lien ou une redirection survit (audit I0b-3, B et C)", () => {
+  const actif = /<(a\b|area\b|form\b|meta\s+http-equiv)/i;
+
+  it('<a x=a"b href=…> : servi en <pre> échappé, aucune balise active', () => {
+    const c = corpsServi({
+      subject: "s",
+      html: '<a x=a"b href=https://evil.example/>clic</a>',
+      text: "",
+    })!;
+    expect(c).toContain("<pre");
+    expect(c).not.toMatch(actif);
+    expect(c).toContain("&lt;a ");
+  });
+
+  it('<meta http-equiv="refresh"> : servi en <pre> échappé', () => {
+    const c = corpsServi({
+      subject: "s",
+      html: '<meta http-equiv="refresh" content="0;url=https://evil.example"><p>x</p>',
+      text: "",
+    })!;
+    expect(c).toContain("<pre");
+    expect(c).not.toMatch(actif);
+  });
+
+  it("un e-mail normal : HTML servi, feuille d'inertie ajoutée", () => {
+    const c = corpsServi({ subject: "s", html: "<p>Bonjour</p>", text: "" })!;
+    expect(c).not.toContain("<pre");
+    expect(c).toContain("pointer-events:none");
+  });
+
+  it("aucun gabarit du catalogue ne tombe en <pre>", async () => {
+    const r = await gabaritCharger();
+    expect(r.length).toBeGreaterThan(0);
+    for (const [nom, html] of r) expect([nom, html.includes("<pre")]).toEqual([nom, false]);
+  });
+});
+
+async function gabaritCharger(): Promise<[string, string][]> {
+  const g = SOURCES_LECTURE["gabarit"]!;
+  const sortie: [string, string][] = [];
+  for (const nom of Object.keys(CATALOGUE) as EmailJobName[]) {
+    // Un gabarit qui rend SANS HTML (texte seul) est servi en <pre> depuis toujours : hors sujet ici.
+    const brut = await renderEmailTemplate(nom, "fr", { ...PAYLOAD_EXEMPLE }).catch(() => null);
+    if (!brut || brut.html.trim() === "") continue;
+    const r = await g.charger(nom, {});
+    if (r.ok) sortie.push([nom, r.html]);
+  }
+  return sortie;
+}

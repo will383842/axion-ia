@@ -101,7 +101,8 @@ export interface BuildCspOptions {
    * politique du document-corps d'e-mail : `sandbox` SANS aucun `allow-`,
    * `default-src 'none'` (donc aucun script), images limitées à `data:` et aux
    * origines de `cspCorpsEmail()`. La route et le proxy appellent CETTE fonction :
-   * la politique est identique des deux côtés, quel que soit celui qui l'emporte.
+   * la politique est identique des deux côtés ; dans Next 16.3.1 les en-têtes du proxy et de
+   * `next.config` l'emportent sur ceux de la route.
    */
   lectureEmail?: boolean;
 }
