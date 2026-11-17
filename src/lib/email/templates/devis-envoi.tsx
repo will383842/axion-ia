@@ -14,6 +14,7 @@ import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
+  /** Hérité : sans la clé `salutation`, rendu « Bonjour <clientNom>, » comme avant. */
   clientNom: string;
   /**
    * FACULTATIF. Identité structurée du destinataire. Présente (même vide) : le
@@ -116,6 +117,12 @@ export function DevisEnvoiEmail({
   const libellesFormules = Array.isArray(p.libellesFormules)
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
     : "";
+
+  const sal = p.salutation;
+  const bonjour =
+    typeof sal === "object" && sal !== null && !Array.isArray(sal)
+      ? salutation(sal, locale)
+      : t.intro(field(p, "clientNom", ""));
 
   return (
     <EmailLayout
