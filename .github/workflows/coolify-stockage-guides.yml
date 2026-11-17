@@ -25,6 +25,11 @@ on:
 permissions:
   contents: read
 
+# Deux lancements en même temps créeraient deux volumes sur le même chemin.
+concurrency:
+  group: coolify-stockage-guides
+  cancel-in-progress: false
+
 jobs:
   creer:
     runs-on: ubuntu-latest
@@ -73,7 +78,11 @@ jobs:
             echo "::error::lecture des stockages refusée ($code) : cette version de Coolify ne les expose peut-être pas par l'API"
             exit 1
           fi
-          existe=$(printf '%s' "$corps" | compter)
+          # Échec fermé : si la réponse n'a pas exactement la forme attendue, on n'écrit rien
+          # (l'API ne refuse pas un second stockage sur le même chemin).
+          printf '%s' "$corps" | jq -e 'type=="object" and (.persistent_storages|type=="array") and (.file_storages|type=="array") and all(.persistent_storages[]; has("mount_path")) and all(.file_storages[]; has("mount_path"))' >/dev/null \
+            || { echo "::error::forme de réponse inattendue : aucune écriture"; exit 1; }
+          existe=$(printf '%s' "$corps" | compter) || { echo "::error::réponse illisible"; exit 1; }
           [[ "$existe" =~ ^[0-9]+$ ]] || { echo "::error::réponse illisible"; exit 1; }
           echo "Chemins déjà montés :"
           printf '%s' "$corps" | jq -r '(.persistent_storages // [])[] | "  " + (.mount_path // "?")'
@@ -107,7 +116,7 @@ jobs:
           code=$(printf '%s' "$reponse" | tail -n1)
           corps=$(printf '%s' "$reponse" | sed '$d')
           [ "$code" = "200" ] || { echo "::error::relecture refusée ($code)"; exit 1; }
-          trouve=$(printf '%s' "$corps" | compter)
+          trouve=$(printf '%s' "$corps" | compter) || { echo "::error::relecture illisible"; exit 1; }
           if ! [[ "$trouve" =~ ^[0-9]+$ ]] || [ "$trouve" -ne 1 ]; then
             echo "::error::stockage absent ou en double APRÈS création"
             exit 1
