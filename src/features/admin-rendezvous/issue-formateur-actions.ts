@@ -19,12 +19,13 @@ import { revalidatePath, updateTag } from "next/cache";
 import * as Sentry from "@sentry/nextjs";
 
 import { auth } from "@/auth";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { creerFicheFormateurDepuisCandidatureAction } from "@/features/admin-job-applications/fiche-formateur-actions";
 import { peutEngager } from "@/server/auth/habilitations";
-import { apercu, envoyer } from "@/server/qualiopi/formateurs-independants/envois";
+import { apercuLecteurFormateur, envoyer } from "@/server/qualiopi/formateurs-independants/envois";
 import { lireEtatsEntree } from "@/server/qualiopi/formateurs-independants/etats-entree";
 import { ouvrirDossierRetenu } from "@/server/qualiopi/formateurs-independants/ouverture-dossier";
 
@@ -46,7 +47,8 @@ export type ApercuIssueFormateur =
   | {
       etat: "apercu";
       issue: IssueEchange;
-      email: { sujet: string; html: string; destinataire: string } | null;
+      /** Aperçu MASQUÉ et inerte (lot I2-4b) : aucun jeton, aucun lien cliquable. */
+      email: ApercuLecteur | null;
       sansEmail: string | null;
     };
 
@@ -95,13 +97,8 @@ export async function apercuIssueFormateurAction(input: {
     const prep = await preparerIssueFormateur({ calendlyEventId: input.calendlyEventId, issue });
     if (!prep.ok) return { etat: "erreur", message: prep.message };
     if (!prep.envoi) return { etat: "apercu", issue, email: null, sansEmail: prep.sansEmail };
-    const rendu = await apercu(prep.envoi);
-    return {
-      etat: "apercu",
-      issue,
-      email: { sujet: rendu.sujet, html: rendu.html, destinataire: rendu.destinataire },
-      sansEmail: null,
-    };
+    const email = await apercuLecteurFormateur(prep.envoi);
+    return { etat: "apercu", issue, email, sansEmail: null };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "issue-formateur", step: "apercu" } });
     return { etat: "erreur", message: "L'aperçu a échoué. Réessayez dans un instant." };
