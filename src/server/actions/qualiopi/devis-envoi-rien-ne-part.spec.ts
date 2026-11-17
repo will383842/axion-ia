@@ -24,6 +24,7 @@ const h = vi.hoisted(() => ({
   logActivity: vi.fn(),
   sentry: vi.fn(),
   sentryMessage: vi.fn(),
+  formules: vi.fn(),
   telegram: vi.fn(),
 }));
 
@@ -57,7 +58,7 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
 }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
-  formulesActives: async () => false,
+  formulesActives: async () => h.formules(),
 }));
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
@@ -103,6 +104,7 @@ function devis(over: Record<string, unknown> = {}, clientOver: Record<string, un
     refClient: null,
     replacesDevisId: null,
     offre: null,
+    offreSha256: null,
     replacesDevis: null,
     financementSuggere: null,
     montantTotalHtCents: 150000,
@@ -135,6 +137,7 @@ const aucuneEcritureEnvoye = () => expect(h.txDevisUpdateMany).not.toHaveBeenCal
 beforeEach(() => {
   vi.clearAllMocks();
   vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  h.formules.mockReturnValue(false);
   h.queryRaw.mockResolvedValue([{ locked: true }]);
   h.txDevisFindUnique.mockResolvedValue(devis());
   h.txDevisUpdateMany.mockResolvedValue({ count: 1 });
@@ -153,8 +156,24 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     h.txDevisFindUnique.mockResolvedValue(devis({}, { contactEmail: null }));
     const r = await sendDevisAction(ID);
     expect(erreur(r)).toContain("n'a pas d'adresse e-mail de contact");
+    expect(erreur(r)).toContain("« Remis en main propre »");
     expect(h.generateDocument).not.toHaveBeenCalled();
     aucuneEcritureEnvoye();
+  });
+
+  it("(1b) client sans e-mail, devis à formules : pas de « Remis en main propre »", async () => {
+    h.formules.mockReturnValue(true);
+    h.txDevisFindUnique.mockResolvedValue(
+      devis({ offre: { x: 1 }, offreSha256: "a".repeat(64) }, { contactEmail: null }),
+    );
+    const r = await sendDevisAction(ID);
+    expect(erreur(r)).toContain("n'a pas d'adresse e-mail de contact");
+    expect(erreur(r)).not.toContain("Remis en main propre");
+  });
+
+  it("(3b) adresse bloquée : « Remis en main propre » cité (classique seulement)", async () => {
+    h.enqueueEmail.mockResolvedValue({ enqueued: false, retenu: "oppose" });
+    expect(erreur(await sendDevisAction(ID))).toContain("« Remis en main propre »");
   });
 
   it("(2) generateDocument lève : refus, ni jeton ni courriel", async () => {

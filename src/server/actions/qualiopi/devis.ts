@@ -49,6 +49,7 @@ import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/de
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
+import { cloreVersionRemplacee } from "@/server/qualiopi/devis/version-remplacee";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import {
   nomPourSalutationDevis,
@@ -231,6 +232,9 @@ const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
 
 const MSG_RIEN_NE_PART = "Rien n'est parti ; le devis reste en brouillon.";
 const MSG_PAS_EMAIL = `Ce client n'a pas d'adresse e-mail de contact. Ajoutez-la sur sa fiche, puis renvoyez le devis. ${MSG_RIEN_NE_PART}`;
+/** Ajoutée aux refus d'un devis CLASSIQUE seulement : un devis à formules se signe en ligne. */
+const MSG_MAIN_PROPRE =
+  " Si vous remettez le devis en main propre, utilisez « Remis en main propre » sur la fiche du devis.";
 const MSG_PDF_RATE = `Le PDF du devis n'a pas pu être créé. ${MSG_RIEN_NE_PART} Réessayez dans un instant.`;
 const MSG_VERROU =
   "Cet envoi est déjà en cours. Patientez quelques secondes, puis rechargez la page.";
@@ -338,6 +342,8 @@ export async function sendDevisAction(id: string): Promise<
             replacesDevisId: true,
             // Devis à formules : l'envoi est refusé tant que la signature des formules n'existe pas.
             offre: true,
+            // Avec `offre` : un devis CLASSIQUE n'a ni offre ni empreinte (message de refus).
+            offreSha256: true,
             // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
             // elle (voir l'écriture plus bas).
             replacesDevis: { select: { documentGenereId: true } },
@@ -399,7 +405,13 @@ export async function sendDevisAction(id: string): Promise<
         }
         // (d) TOUS les devis : sans e-mail de contact, ni courriel ni lien de signature.
         const contactEmail = devis.client.contactEmail;
-        if (!contactEmail) throw new EnvoiRefuse(MSG_PAS_EMAIL, "pas_email");
+        const classique = devis.offre === null && devis.offreSha256 === null;
+        if (!contactEmail) {
+          throw new EnvoiRefuse(
+            classique ? MSG_PAS_EMAIL + MSG_MAIN_PROPRE : MSG_PAS_EMAIL,
+            "pas_email",
+          );
+        }
         // (e) Un courriel de ce devis attend déjà dans la corbeille : pas de doublon.
         const dejaGare = await tx.emailOutbox.findFirst({
           where: {
@@ -532,7 +544,8 @@ export async function sendDevisAction(id: string): Promise<
           etat.courriel = { etat: "enfile" };
         } else if (verdict.retenu !== undefined) {
           throw new EnvoiNonParti(
-            `L'adresse du client est bloquée (${MOTIFS_RETENUE[verdict.retenu]}). ${MSG_RIEN_NE_PART} Corrigez l'adresse sur la fiche client.`,
+            `L'adresse du client est bloquée (${MOTIFS_RETENUE[verdict.retenu]}). ${MSG_RIEN_NE_PART} Corrigez l'adresse sur la fiche client.` +
+              (classique ? MSG_MAIN_PROPRE : ""),
             "retenu",
           );
         } else if (verdict.corbeilleIndisponible === true) {
@@ -568,25 +581,13 @@ export async function sendDevisAction(id: string): Promise<
           where: { id: devis.clientId, statut: { in: ["prospect", "perdu"] } },
           data: { statut: "devis_envoye" },
         });
-        // Révision : l'ancienne version passe `expire` — jamais d'écrasement.
-        if (devis.replacesDevisId !== null) {
-          await tx.devis.update({
-            where: { id: devis.replacesDevisId },
-            data: { statut: "expire" as const },
-          });
-        }
-        // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction : sinon le client
-        // détiendrait deux liens vivants et pourrait signer la version périmée. La révocation
-        // ne touche AUCUNE signature déjà apposée : elle ferme le lien, elle n'efface pas une preuve.
-        if (devis.replacesDevis?.documentGenereId != null) {
-          await tx.documentSignatureToken.updateMany({
-            where: { documentGenereId: devis.replacesDevis.documentGenereId, revokedAt: null },
-            data: {
-              revokedAt: new Date(),
-              revokedMotif: `Devis révisé — remplacé par ${devis.numero}`,
-            },
-          });
-        }
+        // Révision : l'ancienne version passe `expire` et son lien de signature est révoqué,
+        // dans la MÊME transaction (code partagé avec la remise en main propre).
+        await cloreVersionRemplacee(tx, {
+          replacesDevisId: devis.replacesDevisId,
+          documentGenereIdRemplace: devis.replacesDevis?.documentGenereId,
+          numero: devis.numero,
+        });
         await emettreDevisEmis(tx, devisId);
 
         return {

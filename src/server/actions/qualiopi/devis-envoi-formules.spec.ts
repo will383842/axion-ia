@@ -14,10 +14,13 @@ const creerToken = vi.fn();
 const enqueueEmail = vi.fn();
 const formulesActives = vi.fn();
 const logActivity = vi.fn();
+const outboxUpdate = vi.fn();
+const MAJ = new Date("2026-11-01T10:00:00Z");
 
 // B1 : verrou + relecture du devis + écriture « envoye » gardée, tous DANS la transaction.
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    emailOutbox: { update: (...a: unknown[]) => outboxUpdate(...a) },
     $transaction: (fn: (tx: unknown) => Promise<unknown>) =>
       fn({
         $queryRaw: async () => [{ locked: true }],
@@ -81,11 +84,14 @@ function devis(over: Record<string, unknown> = {}) {
     numero: "AXI-DEV-2026-001",
     clientId: "c1",
     statut: "brouillon",
+    // Version lue : l'écriture « envoye » est gardée dessus.
+    updatedAt: MAJ,
     lignes: [],
     activite: null,
     refClient: null,
     replacesDevisId: null,
     offre: offreFictive(),
+    offreSha256: "a".repeat(64),
     replacesDevis: null,
     financementSuggere: null,
     montantTotalHtCents: 0,
@@ -148,7 +154,7 @@ describe("sendDevisAction — devis à formules", () => {
     expect("data" in r).toBe(true);
     expect(txDevisUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { id: ID, statut: "brouillon" },
+        where: { id: ID, statut: "brouillon", updatedAt: MAJ },
         data: expect.objectContaining({ statut: "envoye", documentGenereId: "doc-1" }),
       }),
     );
@@ -272,6 +278,41 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     findUnique.mockResolvedValue(devis({ offre: offreAboSeul([{ mois: 12, remiseBps: 0 }]) }));
     const r = await sendDevisAction(ID);
     expect("data" in r).toBe(true);
+  });
+});
+
+describe("sendDevisAction — devis à formules : le courriel ne part pas", () => {
+  it("adresse retenue : refus sans « Remis en main propre », aucune écriture, lien révoqué", async () => {
+    enqueueEmail.mockResolvedValue({ enqueued: false, retenu: "desabonne" });
+    const r = await sendDevisAction(ID);
+    if (!("error" in r)) throw new Error("refus attendu");
+    expect(r.error).toContain("L'adresse du client est bloquée (désabonnement)");
+    expect(r.error).not.toContain("Remis en main propre");
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("corbeille indisponible : refus, aucune écriture « envoye »", async () => {
+    enqueueEmail.mockResolvedValue({ enqueued: false, corbeilleIndisponible: true });
+    const r = await sendDevisAction(ID);
+    if (!("error" in r)) throw new Error("refus attendu");
+    expect(r.error).toContain("corbeille « E-mails à valider » est indisponible");
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("courriel garé puis erreur d'écriture : la ligne de corbeille passe à « refuse »", async () => {
+    enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    const r = await sendDevisAction(ID);
+    if (!("error" in r)) throw new Error("refus attendu");
+    expect(r.error).toContain("Ne le renvoyez pas");
+    expect(outboxUpdate).toHaveBeenCalledWith({
+      where: { id: "ob-1" },
+      data: expect.objectContaining({ statut: "refuse" }),
+    });
   });
 });
 
