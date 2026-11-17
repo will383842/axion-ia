@@ -8,7 +8,7 @@
  * n'efface pas une preuve.
  */
 
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "../../../../prisma/generated/client";
 
 export async function cloreVersionRemplacee(
   tx: Prisma.TransactionClient,
