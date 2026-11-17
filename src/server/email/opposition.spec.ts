@@ -167,6 +167,20 @@ describe("estOpposee", () => {
       expect.objectContaining({ where: { emailHash: hashEmailForLookup("jean@client.fr") } }),
     );
   });
+
+  // Fermé par défaut : une lecture impossible ne doit JAMAIS se lire « pas opposée »,
+  // sinon l'envoi partirait sans que l'on sache si la personne s'est opposée.
+  it("une erreur de lecture fait échouer estOpposee (aucun envoi, pas de faux « non opposée »)", async () => {
+    findUnique.mockRejectedValue(new Error("db morte"));
+    await expect(estOpposee("jean@client.fr")).rejects.toThrow("db morte");
+  });
+
+  it("idem avec le client de transaction : l'erreur de lecture remonte", async () => {
+    const dbTransaction = {
+      emailOpposition: { findUnique: vi.fn().mockRejectedValue(new Error("transaction morte")) },
+    } as unknown as Parameters<typeof estOpposee>[1];
+    await expect(estOpposee("jean@client.fr", dbTransaction)).rejects.toThrow("transaction morte");
+  });
 });
 
 describe("2026-09-19 — l'opposition annule les envois déjà programmés", () => {
@@ -339,7 +353,7 @@ describe("🔴 RGPD — le CRM ne reçoit jamais une adresse déjà en base sans
 });
 
 describe("RC-19 — une adresse opposée l'est sous UNE seule forme, partout", () => {
-  it("🔴 l'adresse saisie avec majuscules et espaces annule les envois sous sa forme normalisée", async () => {
+  it("l'adresse saisie avec majuscules et espaces est transmise sous sa forme normalisée (contrat d'appel, défense en profondeur)", async () => {
     const r = await enregistrerOppositionPourAdresse("  Jean.Dupont@Client.FR ", {
       origine: "reseau-stop",
     });
@@ -350,7 +364,7 @@ describe("RC-19 — une adresse opposée l'est sous UNE seule forme, partout", (
     );
   });
 
-  it("🔴 un second appel (déjà opposée) rattrape aussi sous la forme normalisée", async () => {
+  it("un second appel (déjà opposée) transmet aussi la forme normalisée (contrat d'appel, défense en profondeur)", async () => {
     findUnique.mockResolvedValue({ id: "opp-1" });
     await enregistrerOppositionPourAdresse("JEAN@client.fr");
     expect(annulerRelances).toHaveBeenCalledWith("jean@client.fr", expect.any(String));
