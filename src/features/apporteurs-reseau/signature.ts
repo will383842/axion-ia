@@ -141,6 +141,11 @@ export async function signerContrat(e: {
   const maintenant = e.maintenant ?? new Date();
   const valeurs = valeursDuContrat(dossier, maintenant);
   const texte = texteDuContrat(valeurs);
+  // Défense en profondeur (L2d) : jamais de contrat signé avec une case « à compléter »,
+  // même si une règle en amont laissait passer un dossier incomplet. Avant le PDF, R2 et la base.
+  if (texte.includes("[à compléter]")) {
+    return { ok: false, raison: "refus", message: LIBELLE_REFUS_SIGNATURE.incomplet };
+  }
   const sha256 = empreinte(texte);
   const navigateur = resumerNavigateur(e.userAgent);
 
