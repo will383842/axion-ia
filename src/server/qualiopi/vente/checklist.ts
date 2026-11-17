@@ -129,7 +129,25 @@ const ALERTES_PAR_PIECE: Partial<Record<PieceKey, ReadonlyArray<string>>> = {
 const LIBELLES_NEUTRES: Partial<Record<PieceKey, string>> = {
   convention_tripartite: "Convention tripartite",
   kit_opco: "Dossier administratif complémentaire",
+  kit_cpf: "Dossier administratif complémentaire",
+  kit_france_travail: "Dossier administratif complémentaire",
 };
+
+const DETAIL_KIT_NEUTRE =
+  "Pièces administratives complémentaires (demande, accord, justificatifs).";
+
+/**
+ * Textes neutres des alertes ouvertes (sans certification) : le code brut de l'évaluateur
+ * (« opco_sans_accord »…) ne s'affiche jamais. Code absent de la table : « à vérifier ».
+ */
+const ALERTES_NEUTRES: Readonly<Record<string, string>> = {
+  convention_formation_manquante: "convention de formation manquante",
+  convention_tripartite_manquante: "convention tripartite manquante",
+  emargement_manquant: "émargement manquant",
+  opco_sans_accord: "accord du tiers en attente",
+  opco_formation_demarree_sans_accord: "formation démarrée sans accord du tiers",
+};
+const ALERTE_NEUTRE_INCONNUE = "à vérifier";
 
 const SESSION_STATUT_LABELS: Record<ChecklistSessionInput["statut"], string> = {
   planifiee: "planifiée",
@@ -269,7 +287,9 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
           key: "session",
           libelle: LIBELLES.session,
           etat: "a_faire",
-          detail: "Devis accepté : créez la session (dates, participants, financement).",
+          detail: neutre
+            ? "Devis accepté : créez la session (dates, participants, mode de règlement)."
+            : "Devis accepté : créez la session (dates, participants, financement).",
         });
       } else {
         items.push({
@@ -346,15 +366,17 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
         break;
       case "kit_opco":
         detail = neutre
-          ? "Pièces administratives complémentaires (demande, accord, justificatifs)."
+          ? DETAIL_KIT_NEUTRE
           : "Dossier de prise en charge OPCO (demande, accord, justificatifs).";
         break;
       case "kit_cpf":
-        detail = "Dossier CPF/EDOF (inscription, conditions, reste à charge).";
+        detail = neutre
+          ? DETAIL_KIT_NEUTRE
+          : "Dossier CPF/EDOF (inscription, conditions, reste à charge).";
         break;
       case "kit_france_travail":
         detail = neutre
-          ? "Dossier France Travail (AIF/POEI : prescription, accord)."
+          ? DETAIL_KIT_NEUTRE
           : "Dossier France Travail (AIF/POEI : prescription, accord de financement).";
         break;
     }
@@ -363,7 +385,10 @@ export function construireChecklistVente(input: ChecklistVenteInput): ChecklistV
     const codesLies = ALERTES_PAR_PIECE[piece] ?? [];
     const alerteOuverte = codesLies.find((c) => codesOuverts.has(c));
     if (alerteOuverte !== undefined) {
-      detail = `${detail} Alerte ouverte : ${alerteOuverte}.`;
+      const texteAlerte = neutre
+        ? (ALERTES_NEUTRES[alerteOuverte] ?? ALERTE_NEUTRE_INCONNUE)
+        : alerteOuverte;
+      detail = `${detail} Alerte ouverte : ${texteAlerte}.`;
     }
 
     items.push({ key: piece, libelle, etat: "a_faire", detail });

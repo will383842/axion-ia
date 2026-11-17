@@ -69,7 +69,10 @@ describe("construireChecklistVente — cas nominal financement direct", () => {
 
   it("relaie une alerte ouverte de l'évaluateur sans la recalculer", () => {
     const avecAlerte = construireChecklistVente(
-      baseInput({ alertesOuvertes: [{ code: "emargement_manquant" }] }),
+      baseInput({
+        alertesOuvertes: [{ code: "emargement_manquant" }],
+        certificationObtenue: true,
+      }),
     );
     const emargement = avecAlerte.find((i) => i.key === "emargement");
     expect(emargement?.etat).toBe("a_faire");
@@ -341,5 +344,107 @@ describe("🔴 B6b-2 — libellés neutres avant certification", () => {
       documentsGeneres: [{ type: "convention" }],
     }).find((i) => i.key === "convention_tripartite");
     expect(b?.detail).not.toMatch(INTERDITS);
+  });
+});
+
+describe("🔴 B6b-2 (correctif) — aucune mention interdite sans certification", () => {
+  const MOTS_INTERDITS = [
+    "opco",
+    "cpf",
+    "edof",
+    "france travail",
+    "france_travail",
+    "financ",
+    "prise en charge",
+    "qualiopi",
+  ];
+  const CODES_ALERTE = [
+    "convention_formation_manquante",
+    "convention_tripartite_manquante",
+    "emargement_manquant",
+    "opco_sans_accord",
+    "opco_formation_demarree_sans_accord",
+    "depot_opco_a_faire",
+    "qualiopi_expire",
+    "code_inconnu_xyz",
+  ];
+  const MODES = ["direct", "opco", "mixte", "cpf", "france_travail"] as const;
+
+  const entree = (
+    mode: (typeof MODES)[number],
+    alertes: boolean,
+    certificationObtenue?: boolean,
+  ): ChecklistVenteInput =>
+    baseInput({
+      session: { statut: "planifiee", financementType: mode, opcoSubrogation: mode === "opco" },
+      alertesOuvertes: alertes ? CODES_ALERTE.map((code) => ({ code })) : [],
+      ...(certificationObtenue !== undefined ? { certificationObtenue } : {}),
+    });
+
+  describe.each(MODES)("mode %s", (mode) => {
+    it.each([false, true])("alertes ouvertes : %s — aucun mot interdit", (alertes) => {
+      for (const c of [undefined, false]) {
+        const texte = JSON.stringify(
+          construireChecklistVente(entree(mode, alertes, c)).map((i) => [
+            i.libelle,
+            i.etat,
+            i.detail,
+          ]),
+        ).toLowerCase();
+        for (const mot of MOTS_INTERDITS) expect(texte, `« ${mot} »`).not.toContain(mot);
+      }
+    });
+
+    it("même nombre d'éléments et mêmes identifiants avec et sans certification", () => {
+      const sans = construireChecklistVente(entree(mode, true, false));
+      const avec = construireChecklistVente(entree(mode, true, true));
+      expect(sans.map((i) => i.key)).toEqual(avec.map((i) => i.key));
+    });
+  });
+
+  it("devis accepté sans session : aucun mot interdit", () => {
+    const texte = JSON.stringify(
+      construireChecklistVente(baseInput({ session: null })).map((i) => [
+        i.libelle,
+        i.etat,
+        i.detail,
+      ]),
+    ).toLowerCase();
+    for (const mot of MOTS_INTERDITS) expect(texte, `« ${mot} »`).not.toContain(mot);
+  });
+
+  it("texte d'alerte neutre : code connu → table, code inconnu → « à vérifier »", () => {
+    const items = construireChecklistVente(entree("opco", true, false));
+    expect(items.find((i) => i.key === "kit_opco")?.detail).toContain(
+      "Alerte ouverte : accord du tiers en attente.",
+    );
+    const inconnu = construireChecklistVente({
+      ...entree("opco", false, false),
+      alertesOuvertes: [{ code: "emargement_manquant" }],
+    });
+    expect(inconnu.find((i) => i.key === "emargement")?.detail).toMatch(/Alerte ouverte : .+\./);
+  });
+
+  it("avec certification : quelques textes figés inchangés", () => {
+    const opco = construireChecklistVente(entree("opco", true, true));
+    expect(opco.find((i) => i.key === "kit_opco")?.detail).toBe(
+      "Dossier de prise en charge OPCO (demande, accord, justificatifs). Alerte ouverte : opco_sans_accord.",
+    );
+    const cpf = construireChecklistVente(entree("cpf", false, true));
+    expect(cpf.find((i) => i.key === "kit_cpf")?.libelle).toBe("Kit CPF");
+    expect(cpf.find((i) => i.key === "kit_cpf")?.detail).toBe(
+      "Dossier CPF/EDOF (inscription, conditions, reste à charge).",
+    );
+    const ft = construireChecklistVente(entree("france_travail", false, true));
+    expect(ft.find((i) => i.key === "kit_france_travail")?.libelle).toBe("Kit France Travail");
+    expect(ft.find((i) => i.key === "kit_france_travail")?.detail).toBe(
+      "Dossier France Travail (AIF/POEI : prescription, accord de financement).",
+    );
+    const sansSession = construireChecklistVente(
+      baseInput({ session: null, certificationObtenue: true }),
+    );
+    expect(sansSession.find((i) => i.key === "session")?.detail).toBe(
+      "Devis accepté : créez la session (dates, participants, financement).",
+    );
   });
 });
