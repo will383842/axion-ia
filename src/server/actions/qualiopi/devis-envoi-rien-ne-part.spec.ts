@@ -15,7 +15,8 @@ const h = vi.hoisted(() => ({
   txClientUpdateMany: vi.fn(),
   txTokenUpdateMany: vi.fn(),
   txOutboxFindFirst: vi.fn(),
-  outboxUpdate: vi.fn(),
+  outboxUpdateMany: vi.fn(),
+  outboxFindUnique: vi.fn(),
   generateDocument: vi.fn(),
   creerToken: vi.fn(),
   revoquer: vi.fn(),
@@ -30,7 +31,10 @@ const h = vi.hoisted(() => ({
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    emailOutbox: { update: (...a: unknown[]) => h.outboxUpdate(...a) },
+    emailOutbox: {
+      updateMany: (...a: unknown[]) => h.outboxUpdateMany(...a),
+      findUnique: (...a: unknown[]) => h.outboxFindUnique(...a),
+    },
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
       return f({
@@ -147,7 +151,11 @@ beforeEach(() => {
   h.creerToken.mockResolvedValue({ token: "tok" });
   h.revoquer.mockResolvedValue(1);
   h.enqueueEmail.mockResolvedValue({ enqueued: true });
-  h.outboxUpdate.mockResolvedValue({});
+  h.outboxUpdateMany.mockResolvedValue({ count: 1 });
+  h.outboxFindUnique.mockResolvedValue({
+    template: "devis-envoi",
+    payload: { signatureUrl: "https://axion-ia.com/portail/signer/JETON-SECRET-123" },
+  });
   h.telegram.mockResolvedValue(undefined);
 });
 
@@ -290,17 +298,37 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
     expect(erreur(r)).toContain("Ne le renvoyez pas");
-    expect(h.outboxUpdate).toHaveBeenCalledWith({
-      where: { id: "ob-1" },
+    expect(h.outboxUpdateMany).toHaveBeenCalledWith({
+      where: { id: "ob-1", statut: "a_valider" },
       data: expect.objectContaining({
         statut: "refuse",
         refuseMotif: "Devis non marqué envoyé (erreur base)",
       }),
     });
+    // Le lien de signature ne reste pas en clair dans la ligne refusée (même écriture).
+    const ecrit = JSON.stringify(h.outboxUpdateMany.mock.calls[0]?.[0].data);
+    expect(ecrit).not.toContain("JETON-SECRET");
+    expect(ecrit).not.toContain("/portail/signer/JETON");
+    expect(ecrit).toContain("[masqué]");
     expect(h.sentry).toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
     expect(h.revoquer).toHaveBeenCalledOnce();
     expect(h.revoquer).toHaveBeenCalledWith(expect.objectContaining({ documentGenereId: "doc-1" }));
+  });
+
+  it("(13e) relecture de la ligne en échec : le refus est écrit quand même", async () => {
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    h.outboxFindUnique.mockRejectedValue(new Error("base indisponible"));
+    await sendDevisAction(ID);
+    expect(h.outboxUpdateMany).toHaveBeenCalledWith({
+      where: { id: "ob-1", statut: "a_valider" },
+      data: expect.objectContaining({ statut: "refuse" }),
+    });
   });
 
   it("(13c) courriel garé SANS outboxId puis échec d'écriture : alerte, aucune exception", async () => {
@@ -308,7 +336,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
     expect(erreur(r)).toContain("Ne le renvoyez pas");
-    expect(h.outboxUpdate).not.toHaveBeenCalled();
+    expect(h.outboxUpdateMany).not.toHaveBeenCalled();
     expect(h.sentry).toHaveBeenCalled();
     expect(h.telegram).toHaveBeenCalledOnce();
     expect(JSON.stringify(h.telegram.mock.calls)).not.toContain("example.test");
@@ -331,9 +359,9 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     );
     expect(h.txClientUpdateMany).not.toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
-    expect(h.outboxUpdate).toHaveBeenCalledWith(
+    expect(h.outboxUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
-        where: { id: "ob-9" },
+        where: { id: "ob-9", statut: "a_valider" },
         data: expect.objectContaining({ statut: "refuse" }),
       }),
     );
@@ -351,7 +379,7 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(JSON.stringify(h.telegram.mock.calls)).not.toContain("tok");
     expect(h.sentryMessage).toHaveBeenCalledOnce();
     expect(String(h.sentryMessage.mock.calls[0]?.[0])).toContain("ne retrouvera pas le devis");
-    expect(h.outboxUpdate).not.toHaveBeenCalled();
+    expect(h.outboxUpdateMany).not.toHaveBeenCalled();
     expect(h.revoquer).not.toHaveBeenCalled();
   });
 

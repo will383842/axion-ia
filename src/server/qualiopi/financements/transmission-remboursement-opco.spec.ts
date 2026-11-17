@@ -87,6 +87,7 @@ function facture(over: Record<string, unknown> = {}, session: Record<string, unk
 }
 
 beforeEach(() => {
+  vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
   vi.clearAllMocks();
   m.outboxCount = 0;
   m.logCount = 0;

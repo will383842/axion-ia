@@ -15,6 +15,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { opcoDuClient } from "../opco-referentiel";
+import { emailsFinancementTiersActifs } from "../sommeil";
 import { suiviEntrepriseActif } from "./drapeau";
 import { envoyerDossierEntreprise, envoyerRelance } from "./envoi";
 import { SELECT_DOSSIER_SUIVI, contexteSuivi } from "./lecture";
@@ -32,6 +33,8 @@ export interface BilanPassageSuivi {
   ecartes: Record<string, number>;
   echecs: number;
   plafondAtteint: boolean;
+  /** Mise en sommeil (L9) : le passage a sauté sans rien lire ni écrire. */
+  enSommeil?: boolean;
 }
 
 /** 08:xx à Paris, du lundi au vendredi — l'horaire porte deux déclencheurs UTC (heure d'été / d'hiver). */
@@ -55,6 +58,10 @@ export async function passerSuiviEntreprise(now: Date = new Date()): Promise<Bil
     plafondAtteint: false,
   };
   if (!bilan.actif) return bilan;
+  // Mise en sommeil (L9) : saut sans erreur, avant toute lecture ou écriture.
+  // Les relances dues ne sont pas perdues : rien n'est modifié, elles
+  // reprendraient au rallumage.
+  if (!emailsFinancementTiersActifs()) return { ...bilan, enSommeil: true };
   if (!(await tablesSuiviDisponibles())) return { ...bilan, abstenu: true };
   if (estWeekEnd(jourParis(now))) return bilan;
 

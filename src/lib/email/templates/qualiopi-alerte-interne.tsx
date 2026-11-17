@@ -43,6 +43,23 @@ interface Payload extends Occurrence {
    * global, et personne ne saurait que l'alerte n'est pas arrivée où il fallait.
    */
   repli?: string;
+  /**
+   * L4f — la rubrique de la console dont l'alerte relève. Seule valeur connue :
+   * « apporteurs ». ⚠️ FACULTATIF : un ancien conteneur worker ignore la clé, un
+   * job posé avant ce lot ne la porte pas, et le rendu reste alors celui d'avant.
+   */
+  rubrique?: string;
+  /** L4f — page de la console à ouvrir ; ignorée si elle ne commence pas par `apporteurs`. */
+  chemin?: string;
+}
+
+/** Un chemin d'apporteurs sûr : `apporteurs`, `apporteurs/<id>`, `apporteurs/entreprises`… */
+const CHEMIN_APPORTEURS = /^apporteurs(\/[A-Za-z0-9_-]+){0,3}$/;
+
+function cheminApporteurs(p: Payload): string | null {
+  if (p.rubrique !== "apporteurs") return null;
+  const c = typeof p.chemin === "string" ? p.chemin.replace(/^\/+/, "") : "";
+  return CHEMIN_APPORTEURS.test(c) ? c : "apporteurs";
 }
 
 /** Les occurrences, quelle que soit la forme du payload (une ou N). */
@@ -75,7 +92,10 @@ export const qualiopiAlerteInterneSubject = (
   // interne ne veut pas dire illisible, et c'est la boîte de réception de Will
   // qui le reçoit. Le PRÉFIXE (niveau + compte + guichet) est ce qui trie — il
   // n'est jamais rogné ; c'est le titre qui s'abrège.
-  const nature = /apporteur/i.test(`${p.code} ${p.guichet ?? ""}`) ? "apporteur" : "formation";
+  const nature =
+    p.rubrique === "apporteurs" || /apporteur/i.test(`${p.code} ${p.guichet ?? ""}`)
+      ? "apporteur"
+      : "formation";
   return objetCompose(`${prefix} Alerte ${nature}${compte} —`, `${p.titre ?? p.code}${pour}`);
 };
 
@@ -94,7 +114,8 @@ export function QualiopiAlerteInterneEmail({
   // comme pour la console elle-même (`auth.config.ts`). La valeur codée en dur
   // était celle, PUBLIQUE, du dépôt : en production le bouton menait à un 404.
   const prefixeAdmin = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
-  const alertesHref = `${baseUrl}/fr/${prefixeAdmin}/qualiopi/alertes`;
+  const cheminAppo = cheminApporteurs(p);
+  const alertesHref = `${baseUrl}/fr/${prefixeAdmin}/${cheminAppo ?? "qualiopi/alertes"}`;
   const occurrences = occurrencesDe(p);
   const titre = p.titre ?? p.code;
   const entete = occurrences.length > 1 ? `${titre} — ${occurrences.length} cas` : titre;
@@ -114,7 +135,10 @@ export function QualiopiAlerteInterneEmail({
           .join(" · ") + "."
       }
       title={`Alerte ${niveauLabel} — ${entete}`}
-      cta={{ label: "Voir les alertes", href: alertesHref }}
+      cta={{
+        label: cheminAppo !== null ? "Ouvrir les apporteurs" : "Voir les alertes",
+        href: alertesHref,
+      }}
       ctaSecret
       locale={locale}
     >
