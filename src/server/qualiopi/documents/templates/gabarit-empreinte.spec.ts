@@ -96,7 +96,8 @@ const EMPREINTES: Readonly<
 > = {
   devis: {
     // v5 — 17/11/2026 : bloc « Conditions particulières » (devis classique), phrase de primauté
-    // sur les CGV, mention dans le « Bon pour accord » ; v4 archivée.
+    // lue dans la photo (`data.phrasePrimaute`, nulle tant que le fondateur ne l'a pas validée,
+    // sans changement de version à l'allumage), mention dans le « Bon pour accord » ; v4 archivée.
     // (v4 — 07/11/2026 : bloc « Formule retenue par le client » (choix scellé, totaux, récurrent,
     // empreinte du choix) imprimé sur l'exemplaire signé d'un devis à formules ; texte rendu
     // changé (branche de fond ajoutée) donc incrément ; v3 archivée.
@@ -104,7 +105,7 @@ const EMPREINTES: Readonly<
     // (v2 — 16/10/2026 : mention handicap, L15, NC12 ; v1 archivée.)
     // Mise en page seule (08/11/2026, texte rendu INCHANGÉ → version 4 conservée) : le bloc
     // « Formule retenue » sort du cadre insécable « Bon pour accord » (`choixBox`, sécable).
-    sha: "d71627db4692851d90dfe019e650097af83ccbb3c081168e7a270787b05de76b",
+    sha: "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
     version: 5,
   },
   convention: {

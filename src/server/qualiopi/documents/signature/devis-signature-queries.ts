@@ -44,6 +44,11 @@ export interface DevisASigner {
    */
   conditionsParticulieres: string | null;
   /**
+   * Phrase de primauté figée avec la pièce, lue UNIQUEMENT dans la photo ; `null` = aucune
+   * (drapeau de validation faux au moment de l'envoi, ou photo antérieure).
+   */
+  phrasePrimaute: string | null;
+  /**
    * `true` quand la photo de la pièce est absente ou illisible. Aucun recalcul
    * de repli : les lignes sont vides et les totaux sont des chaînes vides.
    */
@@ -154,6 +159,7 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
     conditionsParticulieres: snap?.conditionsParticulieres?.trim()
       ? snap.conditionsParticulieres
       : null,
+    phrasePrimaute: snap?.phrasePrimaute?.trim() ? snap.phrasePrimaute : null,
     chiffrageIndisponible: snap === null,
     statutBloquant,
   };

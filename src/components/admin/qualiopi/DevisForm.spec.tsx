@@ -122,6 +122,36 @@ describe("création", () => {
     await waitFor(() => expect(m.creer).toHaveBeenCalled());
   });
 
+  it("plus de 80 lignes : message affiché, rien n'est envoyé", async () => {
+    render(<DevisForm {...props()} />);
+    await remplirLigneCreation();
+    const lignes = (n: number) => Array.from({ length: n }, (_, i) => `l${i}`).join("\n");
+    fireEvent.change(champ(), { target: { value: lignes(81) } });
+    await userEvent.click(screen.getByRole("button", { name: "Créer le devis" }));
+    expect(
+      await screen.findByText("Les conditions particulières ne peuvent pas dépasser 80 lignes."),
+    ).toBeTruthy();
+    expect(m.creer).not.toHaveBeenCalled();
+  });
+
+  it("80 lignes : accepté", async () => {
+    render(<DevisForm {...props()} />);
+    await remplirLigneCreation();
+    const lignes = Array.from({ length: 80 }, (_, i) => `l${i}`).join("\n");
+    fireEvent.change(champ(), { target: { value: lignes } });
+    await userEvent.click(screen.getByRole("button", { name: "Créer le devis" }));
+    await waitFor(() => expect(m.creer).toHaveBeenCalled());
+  });
+
+  it("le contrôle porte sur le texte normalisé (CRLF et sauts multiples)", async () => {
+    render(<DevisForm {...props()} />);
+    await remplirLigneCreation();
+    const brut = Array.from({ length: 30 }, () => "x").join("\r\n\r\n\r\n\r\n\r\n");
+    fireEvent.change(champ(), { target: { value: brut } });
+    await userEvent.click(screen.getByRole("button", { name: "Créer le devis" }));
+    await waitFor(() => expect(m.creer).toHaveBeenCalled());
+  });
+
   it("texte neutre : aucun avertissement", () => {
     render(<DevisForm {...props()} />);
     fireEvent.change(champ(), { target: { value: "Paiement à 30 jours." } });

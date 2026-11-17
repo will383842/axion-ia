@@ -46,6 +46,14 @@ import { CIRCUITS_SIGNATURE_LISTE } from "./parties-requises";
  */
 export const MENTION_VERSION_DOCUMENT = "doc-v2" as const;
 
+/**
+ * Numéro de la pièce que chaque version de mention affiche POUR UN DEVIS (`pieceNumero`) :
+ * - « doc-v1 » : le numéro de la PIÈCE (AXI-DOC-…), celui du registre scellé ;
+ * - « doc-v2 » : le numéro du DEVIS (AXI-DEV-…), celui que le client connaît.
+ * Ce choix est fait par l'appelant (la page de signature) ; il ne change pas le texte des
+ * autres pièces, qui gardent le numéro de pièce dans les deux versions.
+ */
+
 /** Version précédente du texte affiché. Ne s'écrit plus ; reste rendable. */
 export const MENTION_VERSION_DOCUMENT_V1 = "doc-v1" as const;
 

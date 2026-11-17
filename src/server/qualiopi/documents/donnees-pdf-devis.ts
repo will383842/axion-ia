@@ -23,6 +23,7 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import { phrasePrimauteAImprimer } from "@/server/qualiopi/devis/conditions-particulieres";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { vueFormules, type VueFormules } from "@/server/qualiopi/devis/vue-formules";
@@ -221,7 +222,10 @@ export function donneesPdfDevis(
     },
     lignes,
     ...(formules !== undefined ? { formules } : {}),
-    ...(conditionsParticulieres !== undefined ? { conditionsParticulieres } : {}),
+    // La phrase de primauté est une DONNÉE figée avec la photo ; `null` tant qu'elle n'est pas validée.
+    ...(conditionsParticulieres !== undefined
+      ? { conditionsParticulieres, phrasePrimaute: phrasePrimauteAImprimer() }
+      : {}),
     regimeTva,
     tauxTvaStandardPercent: tauxStandard,
     ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),

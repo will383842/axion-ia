@@ -28,8 +28,12 @@ import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { LigneFormulaire } from "./devis-edition-lignes";
 import {
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
   CONDITIONS_PARTICULIERES_MAX,
+  MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
   motsSensiblesTrouves,
+  nombreDeLignes,
+  normaliserConditionsParticulieres,
 } from "@/server/qualiopi/devis/conditions-particulieres";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
@@ -370,6 +374,16 @@ export function DevisForm({
         // Le total calculé du devis en cours de saisie, pas un tarif.
         "Devis à 0,00 € HT : chiffrez au moins une ligne (une offre sans prix ferme ne pré-remplit aucun montant).", // price-exempt
       );
+      return;
+    }
+
+    // Même contrôle que le serveur, sur le texte NORMALISÉ (le serveur le refuserait de toute façon).
+    const texteNormalise = normaliserConditionsParticulieres(conditionsParticulieres);
+    if (
+      texteNormalise !== null &&
+      nombreDeLignes(texteNormalise) > CONDITIONS_PARTICULIERES_LIGNES_MAX
+    ) {
+      setError(MESSAGE_CONDITIONS_PARTICULIERES_LIGNES);
       return;
     }
 

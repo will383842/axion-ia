@@ -38,6 +38,7 @@ vi.mock("@/server/qualiopi/documents/signature/devis-signature-queries", () => (
   lireDevisASigner: (...a: unknown[]) => m.lire(...a),
 }));
 vi.mock("@/server/qualiopi/documents/signature/mentions-document", () => ({
+  MENTION_VERSION_DOCUMENT: "doc-v2",
   mentionCompleteDocument: (...a: unknown[]) => {
     m.mentions(...a);
     return [];
@@ -131,6 +132,24 @@ describe("page de signature — devis classique", () => {
     });
   });
 
+  it("transmet la phrase de primauté LUE DANS LA PHOTO, à l'identique", async () => {
+    m.lire.mockResolvedValue({ ...DEVIS, phrasePrimaute: "Phrase figée dans la photo." });
+    await rendu();
+    expect(m.formulaire.mock.calls[0]?.[0]).toMatchObject({
+      phrasePrimaute: "Phrase figée dans la photo.",
+    });
+  });
+
+  it("photo sans phrase : aucune phrase transmise (jamais la constante)", async () => {
+    await rendu();
+    expect(m.formulaire.mock.calls[0]?.[0].phrasePrimaute ?? null).toBeNull();
+  });
+
+  it("transmet au formulaire la version de mention qu'il affiche", async () => {
+    await rendu();
+    expect(m.formulaire.mock.calls[0]?.[0]).toMatchObject({ mentionVersion: "doc-v2" });
+  });
+
   it("sans conditions : la prop est absente ou nulle", async () => {
     m.lire.mockResolvedValue({ ...DEVIS, conditionsParticulieres: null });
     await rendu();
@@ -158,6 +177,24 @@ describe("page de signature — articles des messages", () => {
     const html = await rendu();
     expect(html).toContain("Le devis AXI-DOC-2026-077 ne fait plus foi");
     expect(html).not.toContain("Le Le");
+  });
+
+  it("pièce annulée, circuit masculin : « signé … le remplace »", async () => {
+    m.piece.mockResolvedValue(piece({ annuleeAt: new Date() }));
+    const html = await rendu();
+    expect(html).toContain("ne fait plus foi et ne peut plus être signé.");
+    expect(html).toContain("la version qui le remplace");
+    expect(html).not.toContain("signée");
+  });
+
+  it("pièce annulée, circuit féminin : « signée … la remplace »", async () => {
+    m.piece.mockResolvedValue(
+      piece({ type: "convention", numero: "AXI-DOC-2026-039", annuleeAt: new Date() }),
+    );
+    const html = await rendu();
+    expect(html).toContain("La convention de formation AXI-DOC-2026-039 ne fait plus foi");
+    expect(html).toContain("ne peut plus être signée.");
+    expect(html).toContain("la version qui la remplace");
   });
 
   it("déjà signée : « Votre signature sur le devis … »", async () => {

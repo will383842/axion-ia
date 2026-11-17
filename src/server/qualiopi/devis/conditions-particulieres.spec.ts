@@ -7,8 +7,13 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi
 import {
   CONDITIONS_PARTICULIERES_MAX,
   MOTS_SENSIBLES,
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
+  MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
   PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES,
+  PHRASE_PRIMAUTE_VALIDEE,
   motsSensiblesTrouves,
+  nombreDeLignes,
+  phrasePrimauteAImprimer,
   normaliserConditionsParticulieres,
 } from "./conditions-particulieres";
 import { entreeDevisClassiqueSchema } from "./champs-classiques";
@@ -25,8 +30,29 @@ describe("conditions particulières — normalisation", () => {
   it("convertit CRLF en LF", () => {
     expect(normaliserConditionsParticulieres("a\r\nb")).toBe("a\nb");
   });
-  it("retire les caractères de contrôle sauf \\n et \\t", () => {
-    expect(normaliserConditionsParticulieres("a\u0000b\u0007c\td\ne")).toBe("abc\td\ne");
+  it("retire les caractères de contrôle sauf \\n ; la tabulation devient une espace", () => {
+    expect(normaliserConditionsParticulieres("a\u0000b\u0007c\td\ne")).toBe("abc d\ne");
+  });
+  it("retire les caractères invisibles (U+200B-200F, 202A-202E, 2060-2069, FEFF)", () => {
+    const invisibles = [
+      ...Array.from({ length: 5 }, (_, i) => 0x200b + i),
+      ...Array.from({ length: 5 }, (_, i) => 0x202a + i),
+      ...Array.from({ length: 10 }, (_, i) => 0x2060 + i),
+      0xfeff,
+    ];
+    for (const cp of invisibles) {
+      const c = String.fromCodePoint(cp);
+      expect(normaliserConditionsParticulieres(`a${c}b`), cp.toString(16)).toBe("ab");
+    }
+  });
+  it("un texte fait seulement d'invisibles donne null", () => {
+    expect(normaliserConditionsParticulieres("\u200B\u202E\u2060\uFEFF")).toBeNull();
+  });
+  it("U+2028 et U+2029 deviennent un saut de ligne", () => {
+    expect(normaliserConditionsParticulieres("a\u2028b\u2029c")).toBe("a\nb\nc");
+  });
+  it("chaque tabulation devient une espace", () => {
+    expect(normaliserConditionsParticulieres("a\t\tb")).toBe("a  b");
   });
   it("ramène trois sauts de ligne ou plus à deux", () => {
     expect(normaliserConditionsParticulieres("a\n\n\n\n\nb")).toBe("a\n\nb");
@@ -98,5 +124,49 @@ describe("phrase de primauté", () => {
     expect(PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES).toBe(
       "Les présentes conditions particulières, acceptées par la signature du présent devis, dérogent aux Conditions générales de vente ; en cas de contradiction, elles prévalent.",
     );
+  });
+});
+
+describe("conditions particulières — nombre de lignes", () => {
+  const lignes = (n: number) => Array.from({ length: n }, (_, i) => `l${i}`).join("\n");
+  it("la limite est de 80 lignes et le message est celui convenu", () => {
+    expect(CONDITIONS_PARTICULIERES_LIGNES_MAX).toBe(80);
+    expect(MESSAGE_CONDITIONS_PARTICULIERES_LIGNES).toBe(
+      "Les conditions particulières ne peuvent pas dépasser 80 lignes.",
+    );
+  });
+  it("nombreDeLignes compte les lignes du texte normalisé", () => {
+    expect(nombreDeLignes("a")).toBe(1);
+    expect(nombreDeLignes("a\n\nb")).toBe(3);
+  });
+  it("le serveur accepte 80 lignes et refuse 81, avec le message", () => {
+    expect(
+      entreeDevisClassiqueSchema.safeParse({ ...base, conditionsParticulieres: lignes(80) })
+        .success,
+    ).toBe(true);
+    const r = entreeDevisClassiqueSchema.safeParse({
+      ...base,
+      conditionsParticulieres: lignes(81),
+    });
+    expect(r.success).toBe(false);
+    expect(JSON.stringify(r.error?.issues)).toContain(MESSAGE_CONDITIONS_PARTICULIERES_LIGNES);
+  });
+  it("le contrôle porte sur le texte NORMALISÉ (sauts de ligne multiples ramenés à deux)", () => {
+    const brut = Array.from({ length: 50 }, () => "x").join("\n\n\n\n\n");
+    // 50 lignes + 49 vides = 99 lignes ; les 5 sauts deviennent 2 : 99 > 80 reste refusé.
+    expect(
+      entreeDevisClassiqueSchema.safeParse({ ...base, conditionsParticulieres: brut }).success,
+    ).toBe(false);
+    const court = Array.from({ length: 30 }, () => "x").join("\n\n\n\n\n");
+    expect(
+      entreeDevisClassiqueSchema.safeParse({ ...base, conditionsParticulieres: court }).success,
+    ).toBe(true);
+  });
+});
+
+describe("phrase de primauté — drapeau de validation", () => {
+  it("n'est pas validée pour l'instant : rien à imprimer", () => {
+    expect(PHRASE_PRIMAUTE_VALIDEE).toBe(false);
+    expect(phrasePrimauteAImprimer()).toBeNull();
   });
 });

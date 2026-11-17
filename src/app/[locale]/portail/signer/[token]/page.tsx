@@ -29,7 +29,10 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  MENTION_VERSION_DOCUMENT,
+  mentionCompleteDocument,
+} from "@/server/qualiopi/documents/signature/mentions-document";
 import {
   apercuChoixAction,
   demanderCodeDevisAction,
@@ -164,7 +167,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Cette pièce a été annulée"
-        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
+        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
       />
     );
   }
@@ -323,6 +326,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     },
     circuit.canal === "maison",
     avecCode || renforcee,
+    MENTION_VERSION_DOCUMENT,
   );
 
   return (
@@ -344,6 +348,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
             totalTtcLisible: devis.totalTtcLisible,
             mentionTva: devis.mentionTva,
             conditionsParticulieres: devis.conditionsParticulieres,
+            // Lue dans la PHOTO de la pièce, jamais une constante.
+            phrasePrimaute: devis.phrasePrimaute,
           }
         : {})}
       pdfUrl={pdfUrl}
@@ -353,6 +359,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // Le formulaire reçoit désormais le tableau et le rend structuré ; aucun
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
+      // Version de la mention AFFICHÉE : le formulaire la poste, le serveur refuse si elle a changé.
+      mentionVersion={MENTION_VERSION_DOCUMENT}
       // CGV à lire et accepter avant de signer un DEVIS (case séparée, version scellée).
       {...(piece.type === "devis"
         ? {

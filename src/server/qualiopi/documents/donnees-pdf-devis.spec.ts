@@ -100,6 +100,39 @@ describe("donneesPdfDevis", () => {
       expect(d.conditionsParticulieres).toBe("Acompte de 30 %.");
     });
 
+    it("drapeau faux : la phrase de primauté part en NULL (rien à imprimer)", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect(d.phrasePrimaute).toBeNull();
+    });
+
+    it("sans conditions particulières : la phrase est nulle ou absente", () => {
+      const d = donneesPdfDevis({ ...DEVIS, conditionsParticulieres: null }, ctx, maintenant);
+      expect(d.phrasePrimaute ?? null).toBeNull();
+    });
+
+    it("drapeau levé : la phrase validée part au PDF, avec les conditions seulement", async () => {
+      vi.resetModules();
+      vi.doMock("@/server/qualiopi/devis/conditions-particulieres", async (orig) => ({
+        ...(await orig<typeof import("@/server/qualiopi/devis/conditions-particulieres")>()),
+        phrasePrimauteAImprimer: () => "Phrase validée.",
+      }));
+      const { donneesPdfDevis: avecPhrase } = await import("./donnees-pdf-devis");
+      const avec = avecPhrase(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte." },
+        ctx,
+        maintenant,
+      );
+      expect(avec.phrasePrimaute).toBe("Phrase validée.");
+      const sans = avecPhrase({ ...DEVIS, conditionsParticulieres: null }, ctx, maintenant);
+      expect(sans.phrasePrimaute ?? null).toBeNull();
+      vi.doUnmock("@/server/qualiopi/devis/conditions-particulieres");
+      vi.resetModules();
+    });
+
     it("devis à formules (offre non nulle) : le champ est absent même si la colonne est remplie", () => {
       const d = donneesPdfDevis(
         { ...DEVIS, offre: { formules: [] }, conditionsParticulieres: "Acompte de 30 %." },

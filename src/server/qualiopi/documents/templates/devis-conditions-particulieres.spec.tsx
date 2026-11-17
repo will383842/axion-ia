@@ -15,7 +15,6 @@ import { DevisPdf, type DevisData } from "./devis";
 import { renderPdfToBuffer } from "@/server/qualiopi/documents/render";
 import { registerPdfTestFontsFallback } from "@/server/qualiopi/documents/register-pdf-test-fonts";
 import { collectPdfTextNormalized } from "../collect-pdf-text";
-import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
 import type { OrganismeIdentite } from "../organisme";
 
 beforeAll(() => {
@@ -47,12 +46,21 @@ function devis(extra: Partial<DevisData> = {}): DevisData {
   };
 }
 
+/** Phrase de test : le gabarit l'imprime depuis la DONNÉE, jamais depuis une constante. */
+const PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES =
+  "Phrase de primauté de test, figée dans la photo de la pièce.";
+
 const texte = (d: DevisData) =>
   collectPdfTextNormalized(React.createElement(DevisPdf, { data: d }));
 
 describe("DevisPdf — conditions particulières", () => {
   const CP = "Acompte de 30 % à la commande.\n\nSolde à 30 jours fin de mois.";
-  const t = texte(devis({ conditionsParticulieres: CP }));
+  const t = texte(
+    devis({
+      conditionsParticulieres: CP,
+      phrasePrimaute: PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES,
+    }),
+  );
 
   it("imprime le titre, chaque paragraphe puis la phrase de primauté", () => {
     expect(t).toContain("Conditions particulières");
@@ -78,6 +86,29 @@ describe("DevisPdf — conditions particulières", () => {
     expect(t).toContain(
       "taux de TVA et totaux ci-dessus, les conditions particulières ainsi que les Conditions générales de vente",
     );
+  });
+
+  it("phrase absente, nulle ou blanche : le bloc est imprimé SANS phrase de primauté", () => {
+    for (const phrasePrimaute of [undefined, null, "  "]) {
+      const sans = texte(devis({ conditionsParticulieres: CP, phrasePrimaute }));
+      expect(sans, String(phrasePrimaute)).toContain("Conditions particulières");
+      expect(sans).toContain("Acompte de 30 % à la commande.");
+      expect(sans).not.toContain("primauté");
+      expect(sans).not.toContain("dérogent");
+    }
+  });
+
+  it("la phrase n'est jamais imprimée sans conditions particulières", () => {
+    const sans = texte(devis({ phrasePrimaute: PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES }));
+    expect(sans).not.toContain(PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES);
+  });
+
+  it("le gabarit n'importe plus la constante de la phrase", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src/server/qualiopi/documents/templates/devis.tsx"),
+      "utf8",
+    );
+    expect(source).not.toContain("PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES");
   });
 
   it("sans le champ : aucun bloc, texte du « Bon pour accord » inchangé", () => {
@@ -117,7 +148,10 @@ describe("DevisPdf — conditions particulières", () => {
     );
     const long = paragraphes.join("\n\n").padEnd(4000, " fin").slice(0, 4000);
     expect(long.length).toBe(4000);
-    const d = devis({ conditionsParticulieres: long });
+    const d = devis({
+      conditionsParticulieres: long,
+      phrasePrimaute: PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES,
+    });
     const { buffer } = await renderPdfToBuffer(React.createElement(DevisPdf, { data: d }));
     const { getDocumentProxy, extractText } = await import("unpdf");
     const pdf = await getDocumentProxy(new Uint8Array(buffer));

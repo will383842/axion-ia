@@ -42,7 +42,6 @@ import {
 } from "@/server/qualiopi/legal/tva";
 import type { VueFormule, VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import type { ChoixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
-import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
 import {
   brandColor,
   QUALIOPI_PDF_TYPE as T,
@@ -314,6 +313,12 @@ export interface DevisData {
    * avant les conditions du devis. Posé par `donneesPdfDevis` ; absent ou vide = aucun bloc.
    */
   conditionsParticulieres?: string;
+  /**
+   * Phrase de primauté des conditions particulières, FIGÉE dans la photo de la pièce par
+   * `donneesPdfDevis`. Nulle, absente ou blanche = non imprimée (texte non encore validé, ou
+   * photo antérieure). Le gabarit n'en connaît aucune constante.
+   */
+  phrasePrimaute?: string | null | undefined;
 }
 
 // ============================================================
@@ -516,6 +521,10 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
     data.conditionsParticulieres !== undefined && data.conditionsParticulieres.trim() !== ""
       ? data.conditionsParticulieres.trim()
       : null;
+  const phrasePrimaute =
+    data.phrasePrimaute != null && data.phrasePrimaute.trim() !== ""
+      ? data.phrasePrimaute.trim()
+      : null;
   // Renvoi aux CGV. `identite.site` peut être vide (config Qualiopi non
   // renseignée) : dans ce cas on énonce quand même l'opposabilité et le canal
   // de communication, plutôt que de rendre une URL tronquée du type « /conditions-generales ».
@@ -682,7 +691,9 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
                 {paragraphe}
               </Text>
             ))}
-            <Text style={styles.cpPrimaute}>{PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES}</Text>
+            {phrasePrimaute !== null ? (
+              <Text style={styles.cpPrimaute}>{phrasePrimaute}</Text>
+            ) : null}
           </View>
         ) : null}
 

@@ -31,7 +31,6 @@
 
 import { useEffect, useMemo, useState, useTransition } from "react";
 import { SignaturePad } from "@/components/portail/SignaturePad";
-import { PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES } from "@/server/qualiopi/devis/conditions-particulieres";
 
 export interface LigneAffichee {
   designation: string;
@@ -198,6 +197,13 @@ export interface PieceSignatureFormProps {
    * pièce. Texte brut, imprimé après les totaux et avant les conditions générales.
    */
   conditionsParticulieres?: string | null;
+  /** Phrase de primauté LUE DANS LA PHOTO de la pièce ; nulle ou absente = non affichée. */
+  phrasePrimaute?: string | null;
+  /**
+   * Version de la mention affichée à la lecture de la page. Postée avec la signature : le serveur
+   * refuse si elle n'est plus la version courante (page rendue avant une mise en ligne).
+   */
+  mentionVersion?: string;
   /** Lien vers le PDF exact qui sera scellé. */
   pdfUrl: string | null;
   /**
@@ -244,6 +250,7 @@ export interface PieceSignatureFormProps {
     code?: string;
     cgvAcceptees?: true;
     cgvVersionAffichee?: string;
+    mentionVersionAffichee?: string;
     choix?: ChoixFormules;
     declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   }) => Promise<
@@ -274,6 +281,8 @@ export function PieceSignatureForm({
   pieceLibelle,
   pieceLibelleDefini,
   conditionsParticulieres,
+  phrasePrimaute,
+  mentionVersion,
   pdfUrl,
   mentions,
   cgv,
@@ -412,6 +421,7 @@ export function PieceSignatureForm({
               },
             }
           : {}),
+        ...(mentionVersion !== undefined ? { mentionVersionAffichee: mentionVersion } : {}),
         ...(cgv !== undefined
           ? { cgvAcceptees: true as const, cgvVersionAffichee: cgv.version }
           : {}),
@@ -533,9 +543,9 @@ export function PieceSignatureForm({
           >
             <h3 className="text-fg text-sm font-semibold">Conditions particulières</h3>
             <p className="text-fg mt-2 text-sm whitespace-pre-line">{conditionsParticulieres}</p>
-            <p className="text-fg-soft mt-3 text-xs italic">
-              {PHRASE_PRIMAUTE_CONDITIONS_PARTICULIERES}
-            </p>
+            {phrasePrimaute != null && phrasePrimaute.trim() !== "" && (
+              <p className="text-fg-soft mt-3 text-xs italic">{phrasePrimaute}</p>
+            )}
           </div>
         )}
 

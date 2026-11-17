@@ -212,6 +212,41 @@ describe("lireDevisASigner — la page affiche la PHOTO de la pièce signée", (
       expect("conditionsParticulieres" in select).toBe(false);
     });
 
+    it("la phrase de primauté est lue dans la PHOTO, à l'identique ; absente = null", async () => {
+      findFirst.mockResolvedValue(
+        devisAvec(
+          photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "Acompte de 30 %.",
+            phrasePrimaute: "Phrase figée dans la photo.",
+          }),
+        ),
+      );
+      expect((await lireDevisASigner("doc1"))?.phrasePrimaute).toBe("Phrase figée dans la photo.");
+      findFirst.mockResolvedValue(
+        devisAvec(
+          photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "Acompte de 30 %.",
+          }),
+        ),
+      );
+      expect((await lireDevisASigner("doc1"))?.phrasePrimaute).toBeNull();
+      findFirst.mockResolvedValue(
+        devisAvec(
+          photo({
+            lignes: [LIGNE],
+            regimeTva: "assujetti",
+            conditionsParticulieres: "Acompte.",
+            phrasePrimaute: null,
+          }),
+        ),
+      );
+      expect((await lireDevisASigner("doc1"))?.phrasePrimaute).toBeNull();
+    });
+
     it("photo absente : null", async () => {
       findFirst.mockResolvedValue(devisAvec({ documentGenere: { metadata: null } }));
       const r = await lireDevisASigner("doc1");

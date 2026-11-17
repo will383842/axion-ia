@@ -9,7 +9,10 @@
 
 import { z } from "zod";
 import {
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
   CONDITIONS_PARTICULIERES_MAX,
+  MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+  nombreDeLignes,
   normaliserConditionsParticulieres,
 } from "@/server/qualiopi/devis/conditions-particulieres";
 import { prisma } from "@/lib/prisma";
@@ -122,6 +125,10 @@ export const entreeDevisClassiqueSchema = z.object({
     .string()
     .max(CONDITIONS_PARTICULIERES_MAX)
     .transform(normaliserConditionsParticulieres)
+    // Contrôle APRÈS normalisation : ce sont les lignes réellement imprimées qui comptent.
+    .refine((v) => v === null || nombreDeLignes(v) <= CONDITIONS_PARTICULIERES_LIGNES_MAX, {
+      message: MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+    })
     .nullable()
     .optional(),
 });

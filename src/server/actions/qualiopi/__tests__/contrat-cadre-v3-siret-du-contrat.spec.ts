@@ -152,7 +152,12 @@ const INTERDITS =
 
 const demander = () => demanderCodeSignatureAction({ token: "jeton" });
 const signer = () =>
-  signerPieceParJetonAction({ token: "jeton", methode: "confirmation_accessible", code: "123456" });
+  signerPieceParJetonAction({
+    token: "jeton",
+    methode: "confirmation_accessible",
+    mentionVersionAffichee: "doc-v2",
+    code: "123456",
+  });
 const contresigner = () =>
   contresignerPieceAction({ documentGenereId: DOC, methode: "confirmation_accessible" });
 
