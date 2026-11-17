@@ -646,7 +646,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
 //     Sonde de vie `bull:emails:<jobId>:lock`, contre-vérification du verrou juste avant
 //     l'envoi, clôture à l'échec final des seules lignes `pending` (`cloreEchecFinal`).
 // Toute écriture d'état passe par un `updateMany` conditionné à `sentAt: null` :
-// elle n'écrase jamais `sent`.
+// elle n'écrase jamais `sent`. Aucune écriture automatique ne retire le préfixe, sauf
+// l'écriture `sent` quand le marqueur prouve le départ.
 //
 // Le corps est LU en base (figé à la rédaction), jamais re-rendu ; l'adresse est
 // déchiffrée au dernier moment ; aucun changement de forme de job, de nom de
@@ -752,6 +753,11 @@ interface AdaptateurReponse<L extends LigneReponse> {
   ecrireSiNonEnvoye(id: string, data: Record<string, unknown>): Promise<unknown>;
   /** Comme `ecrireSiNonEnvoye`, mais jamais sur une ligne dont `errorMsg` porte le préfixe « issue inconnue ». */
   ecrireSiNiEnvoyeNiIssueInconnue(id: string, data: Record<string, unknown>): Promise<unknown>;
+  /** Comme `ecrireSiNiEnvoyeNiIssueInconnue`, et seulement si la ligne est encore `pending`. */
+  ecrireSiEncorePendingSansIssueInconnue(
+    id: string,
+    data: Record<string, unknown>,
+  ): Promise<unknown>;
   /** Repasse `sent` une ligne `pending`/`failed` dont `sentAt` est rempli. */
   reparerEnvoye(id: string): Promise<unknown>;
   /** Écrit l'envoi réussi (et ce qui va avec). */
@@ -1056,7 +1062,7 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
     // Garantie 5 : contrôles d'adresse sous le verrou. Adresse illisible = problème de
     // CONFIG (clé PII du worker) : on ne consomme pas les essais, on marque `failed`.
     if (!isDecryptedEmailUsable(to)) {
-      await a.ecrireSiNonEnvoye(ligne.id, {
+      await a.ecrireSiNiEnvoyeNiIssueInconnue(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "recipient: adresse illisible (PII_ENCRYPTION_KEY worker absente/désalignée ?)",
@@ -1065,7 +1071,7 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
     }
     // Mis en file avec `to = ""` : la mise à l'écart se relit ICI, sur l'adresse déchiffrée.
     if ((await dateDeMiseAEcart(to, a.gabarit)) !== null) {
-      await a.ecrireSiNonEnvoye(ligne.id, {
+      await a.ecrireSiNiEnvoyeNiIssueInconnue(ligne.id, {
         deliveryStatus: "failed",
         failedAt: new Date(),
         errorMsg: "retenu : la personne a demandé l'effacement (mise à l'écart de tout envoi)",
@@ -1123,7 +1129,7 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
       // « Réessayer » pendant les essais automatiques.
       const dernier = ctx.essai >= ctx.essaisMax;
       try {
-        await a.ecrireSiNonEnvoye(
+        await a.ecrireSiNiEnvoyeNiIssueInconnue(
           ligne.id,
           dernier
             ? {
@@ -1225,7 +1231,7 @@ async function cloreEchecFinal(job: {
     );
     return;
   }
-  await ar.ecrireSiNonEnvoye(ligne.id, {
+  await ar.ecrireSiEncorePendingSansIssueInconnue(ligne.id, {
     deliveryStatus: "failed",
     failedAt: new Date(),
     errorMsg: MOTIF_ECHEC_SANS_ENVOI,
@@ -1253,6 +1259,16 @@ function adaptateurSubmissionReply(): AdaptateurReponse<LigneSubmissionReply> {
         where: {
           id,
           sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    ecrireSiEncorePendingSansIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.submissionReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          deliveryStatus: "pending",
           OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
         },
         data,
@@ -1311,6 +1327,16 @@ function adaptateurCandidature(): AdaptateurReponse<LigneCandidature> {
         where: {
           id,
           sentAt: null,
+          OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
+        },
+        data,
+      }),
+    ecrireSiEncorePendingSansIssueInconnue: (id: string, data: Record<string, unknown>) =>
+      prisma.jobApplicationReply.updateMany({
+        where: {
+          id,
+          sentAt: null,
+          deliveryStatus: "pending",
           OR: [{ errorMsg: null }, { NOT: { errorMsg: { startsWith: PREFIXE_ISSUE_INCONNUE } } }],
         },
         data,

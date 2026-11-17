@@ -162,13 +162,16 @@ function table(nom: string) {
         const ok = (where["OR"] as Record<string, unknown>[]).some((c) => {
           if ("errorMsg" in c && c["errorMsg"] === null) return em === null;
           const n = c["NOT"] as { errorMsg: { startsWith: string } } | undefined;
-          if (n) return !(em !== null && em.startsWith(n.errorMsg.startsWith));
+          // Comme PostgreSQL : `NOT (NULL LIKE …)` vaut NULL, donc faux.
+          if (n) return em !== null && !em.startsWith(n.errorMsg.startsWith);
           throw new Error("clause OR non évaluée par la doublure");
         });
         if (!ok) return { count: 0 };
       }
-      const st = where["deliveryStatus"] as { in: string[] } | undefined;
-      if (st && !st.in.includes(l["deliveryStatus"] as string)) return { count: 0 };
+      const st = where["deliveryStatus"] as string | { in: string[] } | undefined;
+      if (typeof st === "string" && l["deliveryStatus"] !== st) return { count: 0 };
+      if (st && typeof st === "object" && !st.in.includes(l["deliveryStatus"] as string))
+        return { count: 0 };
       for (const [k, v] of Object.entries(data)) {
         l[k] =
           v && typeof v === "object" && "increment" in (v as object)
@@ -846,6 +849,41 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
       new Error("lecture"),
     );
     await vi.waitFor(() => expect(l.deliveryStatus).toBe("failed"));
+    expect(l.errorMsg).toBe(MOTIF);
+  });
+
+  it("W46 : échec final, un autre passage pose « issue inconnue » entre notre lecture et notre écriture → la ligne garde son préfixe", async () => {
+    const l = poser(g);
+    let fait = false;
+    d.redisGetErreur.filtre = (k) => {
+      if (k === cleVerrou(g) && !fait) {
+        fait = true;
+        l.deliveryStatus = "failed";
+        l.errorMsg = MOTIF;
+      }
+      return false;
+    };
+    processeur();
+    (d.handlers["failed"] as (j: unknown, e: Error) => void)(
+      job(g, { finishedOn: Date.now(), attemptsMade: 5 }),
+      new Error("lecture"),
+    );
+    await vi.waitFor(() => expect(fait).toBe(true));
+    await new Promise((r) => setTimeout(r, 30));
+    expect(l.deliveryStatus).toBe("failed");
+    expect(l.errorMsg).toBe(MOTIF);
+    expect(l.errorMsg).not.toBe(MOTIF_ECHEC_SANS_ENVOI);
+  });
+
+  it("W47 : refus SMTP pendant que la ligne passe « issue inconnue » → erreur relevée, la ligne garde son préfixe", async () => {
+    const l = poser(g);
+    d.sendEmail.mockImplementationOnce(async () => {
+      l.deliveryStatus = "failed";
+      l.errorMsg = MOTIF;
+      throw refusSmtp("smtp 421", 421);
+    });
+    await expect(processeur()(job(g))).rejects.toThrow("smtp 421");
+    expect(l.deliveryStatus).toBe("failed");
     expect(l.errorMsg).toBe(MOTIF);
   });
 
