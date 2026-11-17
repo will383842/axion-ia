@@ -12,7 +12,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   process.env["SMTP_HOST"] = "smtppro.zoho.eu";
   process.env["SMTP_PORT"] = "465";
-  process.env["SMTP_USER"] = "contact@axion-ia.com";
+  process.env["SMTP_USER"] = "contact@exemple.fr";
   process.env["SMTP_PASS"] = "secret-de-test";
 });
 afterEach(() => {

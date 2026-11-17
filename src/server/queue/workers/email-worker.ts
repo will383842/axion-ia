@@ -812,7 +812,7 @@ interface LigneReponse {
 }
 
 interface AdaptateurReponse<L extends LigneReponse> {
-  gabarit: "submission-reply" | "candidature-reponse";
+  gabarit: GabaritReponse;
   /** Relit la ligne (null si absente). */
   lire(replyId: string): Promise<L | null>;
   /** Pose un état sur la ligne, jamais si `sentAt` est rempli. */
@@ -833,10 +833,10 @@ interface AdaptateurReponse<L extends LigneReponse> {
 const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
 // Clés Redis `verrou:envoi-reponse:<gabarit>:<replyId>` et `envoye:envoi-reponse:…` : construites
 // par le module pur (AGENTS.md s'appuie sur ce littéral comme marqueur de contenu du conteneur).
-const cleVerrou = (gabarit: string, replyId: string) =>
-  cleVerrouEnvoiReponse(gabarit as GabaritReponse, replyId);
-const cleMarqueur = (gabarit: string, replyId: string) =>
-  cleMarqueurEnvoiReponse(gabarit as GabaritReponse, replyId);
+const cleVerrou = (gabarit: GabaritReponse, replyId: string) =>
+  cleVerrouEnvoiReponse(gabarit, replyId);
+const cleMarqueur = (gabarit: GabaritReponse, replyId: string) =>
+  cleMarqueurEnvoiReponse(gabarit, replyId);
 
 export type IssueEchecEnvoi = "rien_parti" | "ambigu";
 
@@ -873,10 +873,8 @@ export function classerEchecEnvoi(e: unknown): IssueEchecEnvoi {
   ) {
     return "rien_parti";
   }
-  // 7. Fermeture pendant la CONNEXION du pool (pool-resource.js, garde `returned`) : avant tout
-  //    message. Vrai seulement avec `pool: true` (client.ts) ; épinglé par la spec C8.
-  if (x.code === undefined && x.message === "Unexpected socket close") return "rien_parti";
-  // Restent « ambigu » volontairement : `ECONNECTION` « Connection closed unexpectedly »,
+  // Restent « ambigu » volontairement : « Unexpected socket close » (sans pool, elle peut survenir
+  // après l'acceptation du message), `ECONNECTION` « Connection closed unexpectedly »,
   // `ETIMEDOUT` « Timeout », `ESOCKET` sans `syscall: "connect"` (certificats TLS compris),
   // « Reached maximum number of retries after connection was closed ».
   return "ambigu";

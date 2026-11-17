@@ -166,7 +166,7 @@ function getTransport(): Transporter {
     // (`maxRequeues` absent des types : d'où la constante typée). Pour les réponses écrites à la
     // main, l'échec devient « issue inconnue » ; pour les autres e-mails, BullMQ réessaie (même
     // risque qu'avant, mais visible). Ne jamais passer `pool` à `false` sans revoir
-    // `classerEchecEnvoi` (règle `Unexpected socket close`, vraie seulement avec le pool).
+    // `classerEchecEnvoi`.
     maxRequeues: 0,
     // Délais explicites (défauts nodemailer : 2 min, 30 s, 10 min, 30 s).
     connectionTimeout: 30_000,

@@ -32,10 +32,8 @@ describe("classerEchecEnvoi : nouvelles règles W1-S4", () => {
     expect(classerEchecEnvoi(e)).toBe("rien_parti");
   });
 
-  it("C2 : « Unexpected socket close » sans code → rien_parti", () => {
-    expect(classerEchecEnvoi(Object.assign(new Error("Unexpected socket close"), {}))).toBe(
-      "rien_parti",
-    );
+  it("C2 : « Unexpected socket close » sans code → ambigu", () => {
+    expect(classerEchecEnvoi(new Error("Unexpected socket close"))).toBe("ambigu");
   });
 
   it.each([
@@ -48,14 +46,15 @@ describe("classerEchecEnvoi : nouvelles règles W1-S4", () => {
     expect(classerEchecEnvoi(e)).toBe("ambigu");
   });
 
-  it("« Unexpected socket close » avec un code (STARTTLS) reste ambigu", () => {
+  it("« Unexpected socket close » avec un code autre que ETLS (ex. ESOCKET) reste ambigu", () => {
     expect(classerEchecEnvoi(err({ code: "ESOCKET" }, "Unexpected socket close"))).toBe("ambigu");
   });
 
+  it("« Unexpected socket close » avec le code ETLS (STARTTLS) → rien_parti (règle 2)", () => {
+    expect(classerEchecEnvoi(err({ code: "ETLS" }, "Unexpected socket close"))).toBe("rien_parti");
+  });
+
   it("C8 : épingles sur nodemailer 9.0.5 et client.ts", () => {
-    expect(lire("node_modules/nodemailer/lib/smtp-pool/pool-resource.js")).toContain(
-      "'Unexpected socket close'",
-    );
     expect(lire("node_modules/nodemailer/lib/smtp-connection/index.js")).toContain(
       "_isDestroyedMessage('send message')",
     );
