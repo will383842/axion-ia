@@ -84,6 +84,15 @@ function declare(source: string, modele: string): boolean {
   return new RegExp(`modele:\\s*"${modele}"`).test(source);
 }
 
+/** Ce qui écrit dans une table « sans écrivain » : appel Prisma ou INSERT en SQL brut. */
+function regexEcrivain(liste: readonly { modele: string; table: string }[]): RegExp {
+  if (liste.length === 0) return /(?!)/;
+  const accesseurs = liste.map((t) => t.modele.charAt(0).toLowerCase() + t.modele.slice(1));
+  return new RegExp(
+    String.raw`\.(${accesseurs.join("|")})\.(create|createMany|upsert|update|updateMany)\b|INSERT INTO "(${liste.map((t) => t.table).join("|")})"`,
+  );
+}
+
 function fautes(
   modeles: readonly ModeleLu[],
   creations: Map<string, string>,
@@ -146,20 +155,16 @@ describe("les tables du dossier client suivent la personne", () => {
     // Paires { modele, table } : `table` = nom `@@map` du modèle (pour détecter aussi le SQL brut).
     // Lot S2 (2026-11-08) : `contacts_guide_reseau` a maintenant un écrivain (la page « Recevoir le
     // guide ») ; son export (`rgpd-guide-reseau.ts`) et sa mise à l'écart (`rgpd-erase.ts`) sont réels.
-    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [];
+    // Lot I4, fiche F1 (2026-11-18) : les deux tables des e-mails écrits à la main, créées par
+    // migration seule. La fiche F1b retire ces deux lignes en branchant l'export et l'effacement réels.
+    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [
+      { modele: "EmailManuel", table: "emails_manuels" },
+      { modele: "EmailManuelPieceJointe", table: "emails_manuels_pieces_jointes" },
+    ];
     expect(sansEcrivain.map((m) => m[1]).sort()).toEqual(
       TABLES_SANS_ECRIVAIN.map((t) => t.modele).sort(),
     );
-    const accesseurs = TABLES_SANS_ECRIVAIN.map(
-      (t) => t.modele.charAt(0).toLowerCase() + t.modele.slice(1),
-    );
-    const tables = TABLES_SANS_ECRIVAIN.map((t) => t.table);
-    const ecrivain =
-      accesseurs.length === 0
-        ? /(?!)/
-        : new RegExp(
-            `\.(${accesseurs.join("|")})\.(create|createMany|upsert|update|updateMany)\b|INSERT INTO "(${tables.join("|")})"`,
-          );
+    const ecrivain = regexEcrivain(TABLES_SANS_ECRIVAIN);
     const fichiers: string[] = [];
     const marche = (dir: string): void => {
       for (const e of readdirSync(dir, { withFileTypes: true })) {
@@ -177,6 +182,14 @@ describe("les tables du dossier client suivent la personne", () => {
       fautifs,
       "du code écrit dans une table déclarée « sans écrivain » : brancher l'export et l'effacement réels, puis retirer l'exception",
     ).toEqual([]);
+  });
+
+  it("contre-témoin : la détection d'écrivain voit un appel Prisma, pas une lecture", () => {
+    const re = regexEcrivain([{ modele: "EmailManuel", table: "emails_manuels" }]);
+    expect(re.test("await tx.emailManuel.create({ data })")).toBe(true);
+    expect(re.test("await prisma.emailManuel.updateMany({")).toBe(true);
+    expect(re.test('INSERT INTO "emails_manuels" ("id")')).toBe(true);
+    expect(re.test("await prisma.emailManuel.findMany({")).toBe(false);
   });
 
   it("la route d'export appelle bien le module du dossier client", () => {
