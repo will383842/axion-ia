@@ -195,6 +195,12 @@ describe("détection (test du test)", () => {
     ["marque simple", '"Hello {name},"'],
     ["marque double", "Cher {{nom}},"],
     ["Chère (accent)", "Chère ${nomComplet}"],
+    ["prénom + nom en deux variables (gabarit)", "`Bonjour ${p.prenom} ${p.nom},`"],
+    ["prénom + nom en deux variables (JSX)", "<p>Bonjour {p.prenom} {p.nom},</p>"],
+    ["prénom + nom séparés par &nbsp;", "<p>Bonjour {p.prenom}&nbsp;{p.nom},</p>"],
+    ['prénom + nom séparés par {" "}', '<p>Bonjour {p.prenom}{" "}{p.nom},</p>'],
+    ["prénom + nom sur deux lignes", "<p>Bonjour {p.prenom}\n  {p.nom},</p>"],
+    ["civilité + nom de famille écrits à la main", "`Bonjour ${civ} ${p.nomFamille}`"],
   ])("détecte la forme %s", (_forme, source) => {
     expect(fautive(source)).toBe(1);
   });
@@ -207,6 +213,8 @@ describe("détection (test du test)", () => {
     ["concaténation de prénom", '"Bonjour " + texteOuNull(p.prenom) + ","'],
     ["marque prénom", '"Bonjour {prenom},"'],
     ["appel salutation()", "`${salutation(p, locale)}`"],
+    ["deux prénoms", "`Bonjour ${p.prenom} ${p.autrePrenom},`"],
+    ["prénom puis texte", "<p>Bonjour {p.prenom}, {p.nom} est inscrit</p>"],
     ["texte sans variable", "Bonjour, nous revenons vers vous. Hier, Chercher {x}"],
   ])("ne détecte pas : %s", (_cas, source) => {
     expect(fautive(source)).toBe(0);
@@ -316,6 +324,14 @@ describe("volet B — rendu", () => {
     expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé Sentinelle,</p>")).toBe(true);
     expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Monsieur Zoé Sentinelle,</p>")).toBe(true);
     expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé,</p>")).toBe(false);
+  });
+
+  it("le motif de rendu voit &nbsp; et l'ordre inversé", () => {
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé&nbsp;Sentinelle,</p>")).toBe(true);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé&#160;Sentinelle,</p>")).toBe(true);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Sentinelle Zoé,</p>")).toBe(true);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Monsieur Sentinelle&nbsp;Zoé,</p>")).toBe(true);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Monsieur Sentinelle, Zoé</p>")).toBe(false);
   });
 
   it("les formes décidées par le fondateur ne rougissent pas", () => {

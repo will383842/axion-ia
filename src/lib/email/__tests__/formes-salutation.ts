@@ -17,7 +17,14 @@
  *
  * Variable tolérée : le dernier identifiant de l'expression est `prenom`,
  * `firstName`, `givenName`, ou se termine par `Prenom` (sans `PrenomNom`) ; ou
- * l'expression appelle `salutation(`.
+ * l'expression appelle `salutation(`. Les expressions qui SUIVENT, séparées par des
+ * blancs seulement (`${p.prenom} ${p.nom}`, `{p.prenom}&nbsp;{p.nom}`), sont lues
+ * aussi : une seule non tolérée rend la salutation fautive.
+ *
+ * ⛔ Volontairement SIGNALÉE : la forme voulue écrite à la main
+ * (`` `Bonjour ${civ} ${p.nomFamille}` ``). La civilité et le nom de famille ne sont
+ * pas des prénoms pour cette garde : cela impose de passer par `salutation()`, seule
+ * source de la règle du fondateur (civilité + nom, sinon prénom, sinon « Bonjour, »).
  */
 
 export interface SalutationTrouvee {
@@ -89,6 +96,19 @@ function estPrenom(id: string): boolean {
   return /Prenom$/.test(id) && !/PrenomNom/.test(id);
 }
 
+/**
+ * Après une première expression, les expressions suivantes séparées SEULEMENT par
+ * des blancs (`&nbsp;`, `{" "}` compris) : « prénom + nom » écrit en deux variables.
+ */
+const BLANCS_SUIVANTS = new RegExp(`^(?:\\s|&nbsp;|&#160;|&#xa0;|${ESPACE_JSX})*`, "i");
+const OUVERTURE_SUIVANTE = /^(\$\{|\{)/;
+
+function expressionToleree(expression: string): boolean {
+  const ids = identifiants(expression);
+  const variable = ids[ids.length - 1] ?? "";
+  return /\bsalutation\s*\(/.test(expression) || (variable !== "" && estPrenom(variable));
+}
+
 /** Toutes les salutations qui insèrent une variable, tolérées ou non. */
 export function trouverSalutations(source: string): SalutationTrouvee[] {
   const trouvees: SalutationTrouvee[] = [];
@@ -96,15 +116,30 @@ export function trouverSalutations(source: string): SalutationTrouvee[] {
     const debut = m.index ?? 0;
     const ouverture = m[1] ?? "";
     const apres = debut + m[0].length;
-    const expression =
-      ouverture.startsWith("$") || ouverture.startsWith("{")
-        ? lireEntreAccolades(source, apres)
-        : lireConcatenation(source, apres);
+    const accolade = ouverture.startsWith("$") || ouverture.startsWith("{");
+    const expression = accolade
+      ? lireEntreAccolades(source, apres)
+      : lireConcatenation(source, apres);
     const ids = identifiants(expression);
-    const variable = ids[ids.length - 1] ?? "";
-    const toleree =
-      /\bsalutation\s*\(/.test(expression) || (variable !== "" && estPrenom(variable));
-    trouvees.push({ extrait: source.slice(debut, apres) + expression, variable, toleree });
+    let variable = ids[ids.length - 1] ?? "";
+    let toleree = expressionToleree(expression);
+    let fin = apres + expression.length + (accolade ? 1 : 0);
+    let extrait = source.slice(debut, apres) + expression;
+    // Variables suivantes (prénom + nom en deux variables) : une seule non tolérée suffit.
+    while (accolade && toleree) {
+      const reste = source.slice(fin);
+      const blancs = BLANCS_SUIVANTS.exec(reste)?.[0] ?? "";
+      const ouv = OUVERTURE_SUIVANTE.exec(reste.slice(blancs.length))?.[1];
+      if (!ouv) break;
+      const debutExpr = fin + blancs.length + ouv.length;
+      const suivante = lireEntreAccolades(source, debutExpr);
+      const idsSuivants = identifiants(suivante);
+      extrait += ` ${ouv}${suivante}}`;
+      variable = idsSuivants[idsSuivants.length - 1] ?? variable;
+      toleree = expressionToleree(suivante);
+      fin = debutExpr + suivante.length + 1;
+    }
+    trouvees.push({ extrait, variable, toleree });
   }
   return trouvees;
 }
@@ -120,8 +155,12 @@ export function trouverSalutationsFautives(source: string): SalutationTrouvee[] 
  * famille) est CORRECT, comme « Bonjour Zoé, » ; seul le nom complet est fautif,
  * avec ou sans civilité devant.
  */
-export const MOTIF_RENDU_FAUTIF =
-  /(?:Bonjour|Bonsoir|Hello|Hi|Dear|Cher|Chère)(?![\p{L}])[^.!?\n]{0,30}?Zoé[\s\u00a0]+Sentinelle/u;
+const BLANC_RENDU = "(?:[\\s\\u00a0]|&nbsp;|&#160;|&#xa0;)+";
+export const MOTIF_RENDU_FAUTIF = new RegExp(
+  `(?:Bonjour|Bonsoir|Hello|Hi|Dear|Cher|Chère)(?![\\p{L}])[^.!?\\n]{0,30}?` +
+    `(?:Zoé${BLANC_RENDU}Sentinelle|Sentinelle${BLANC_RENDU}Zoé)`,
+  "u",
+);
 
 export const NOM_COMPLET_SENTINELLE = "Zoé Sentinelle";
 export const PRENOM_SENTINELLE = "Zoé";
