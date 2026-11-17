@@ -53,7 +53,7 @@ const ORIGINE_SITE = "https://axion-ia.com";
 function originesImages(): string[] {
   const liste = [ORIGINE_SITE];
   try {
-    const configuree = process.env["NEXT_PUBLIC_SITE_URL"];
+    const configuree = process.env.NEXT_PUBLIC_SITE_URL;
     if (configuree) {
       const o = new URL(configuree).origin;
       if (o !== "null" && !liste.includes(o)) liste.push(o);

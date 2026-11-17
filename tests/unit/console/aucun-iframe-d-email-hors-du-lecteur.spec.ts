@@ -60,15 +60,18 @@ const EST_TEST = /(\.(test|spec)\.|__tests__)/;
 
 function fichiers(dossier: string): string[] {
   return readdirSync(dossier, { withFileTypes: true }).flatMap((e) => {
-    const p = join(dossier, e.name);
+    const p = join(dossier, e.name).replaceAll("\\", "/");
     if (e.isDirectory()) return e.name === "__tests__" ? [] : fichiers(p);
     return EXTENSIONS.test(e.name) && !EST_TEST.test(e.name) ? [p] : [];
   });
 }
 
 /**
- * Exceptions NOMMÉES : des écrans qui ne montrent pas un e-mail (cadre d'analytics,
- * aperçu d'article assaini, feuille de style du gabarit de la console…).
+ * Exceptions NOMMÉES : en majorité des écrans qui ne montrent pas un e-mail (cadre
+ * d'analytics, aperçu d'article assaini, feuille de style du gabarit de la console…).
+ * ⚠️ `AdminApercuEmail.tsx` fait exception à cette description : il AFFICHE un e-mail
+ * dans son propre cadre, sans la règle qui bloque les images distantes. Cet écran
+ * sera migré vers `LecteurEmail` dans la seconde partie du lot I0 (à retirer alors).
  */
 const EXCEPTIONS = new Set<string>([
   "src/components/admin/ui/AdminApercuEmail.tsx",

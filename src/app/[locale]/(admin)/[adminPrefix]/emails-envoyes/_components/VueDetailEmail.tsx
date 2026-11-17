@@ -280,8 +280,8 @@ export function VueDetailEmail({
             ) : null}
             {email.copie && email.copie.attachmentNames.length > 0 ? (
               <Ligne label="Pièces jointes">
-                {email.copie.attachmentNames.length} fichier(s), noms dans l&apos;en-tête de
-                l&apos;aperçu
+                {email.copie.attachmentNames.length} fichier(s) :{" "}
+                {email.copie.attachmentNames.join(", ")}
                 <span className="admin-meta-small"> (non conservées dans la copie)</span>
               </Ligne>
             ) : null}
