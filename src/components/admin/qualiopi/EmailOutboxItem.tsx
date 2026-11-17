@@ -32,6 +32,8 @@ export interface EmailOutboxItemProps {
   /** Résumé lisible de la charge utile, rendu côté serveur. */
   apercu: readonly { label: string; valeur: string }[];
   nbPiecesJointes: number;
+  /** Vrai si le gabarit lit le message personnalisé (liste : `outbox-policy.ts`). */
+  accepteMessagePersonnalise: boolean;
   approuverAction: (input: {
     id: string;
     sujet?: string;
@@ -49,6 +51,7 @@ export function EmailOutboxItem({
   creeLe,
   apercu,
   nbPiecesJointes,
+  accepteMessagePersonnalise,
   approuverAction,
   refuserAction,
 }: EmailOutboxItemProps): React.ReactElement {
@@ -72,7 +75,9 @@ export function EmailOutboxItem({
       const r = await approuverAction({
         id,
         ...(sujet.trim() !== sujetInitial ? { sujet: sujet.trim() } : {}),
-        ...(message.trim() !== "" ? { messagePersonnalise: message.trim() } : {}),
+        ...(accepteMessagePersonnalise && message.trim() !== ""
+          ? { messagePersonnalise: message.trim() }
+          : {}),
       });
       if ("error" in r) {
         setErreur(r.error);
@@ -151,20 +156,22 @@ export function EmailOutboxItem({
         </dl>
       )}
 
-      <label className="mb-[var(--space-admin-3)] block">
-        <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]">
-          Message personnalisé (facultatif) — inséré dans le corps de l&apos;email
-        </span>
-        <textarea
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          disabled={isPending}
-          rows={3}
-          maxLength={4000}
-          placeholder="Ex. : « Comme convenu par téléphone, un règlement au 15 du mois nous convient. »"
-          className={champ}
-        />
-      </label>
+      {accepteMessagePersonnalise && (
+        <label className="mb-[var(--space-admin-3)] block">
+          <span className="mb-[var(--space-admin-1)] block text-[length:var(--text-admin-xs)] font-medium text-[color:var(--color-admin-fg-muted)]">
+            Message personnalisé (facultatif) — inséré dans le corps de l&apos;email
+          </span>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            disabled={isPending}
+            rows={3}
+            maxLength={4000}
+            placeholder="Ex. : « Comme convenu par téléphone, un règlement au 15 du mois nous convient. »"
+            className={champ}
+          />
+        </label>
+      )}
 
       {erreur && (
         <p
