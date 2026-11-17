@@ -254,8 +254,10 @@ export function VenteWizard({
   const [nbParticipants, setNbParticipants] = useState(chaine(p, "nbParticipants") || "1");
   const [dureeHeures, setDureeHeures] = useState(chaine(p, "dureeHeures"));
   const [montantEur, setMontantEur] = useState(chaine(p, "montantEur"));
-  const [financement, setFinancement] = useState<VenteFinancement>(
-    (chaine(p, "financement") as VenteFinancement) || "direct",
+  // Plus de choix de financement dans l'interface : la valeur du brouillon est CONSERVÉE (un
+  // ancien brouillon « opco » ne la perd pas en changeant d'étape), jamais proposée ni affichée.
+  const [financement] = useState<VenteFinancement>(
+    () => (chaine(p, "financement") as VenteFinancement) || "direct",
   );
   const [devis, setDevis] = useState<VenteDevisEtat | null>(devisInitial ?? null);
   const [dateDebut, setDateDebut] = useState(chaine(p, "dateDebut"));
@@ -308,10 +310,10 @@ export function VenteWizard({
       nbParticipants,
       dureeHeures,
       montantEur,
-      financement,
       dateDebut,
       dateFin,
       modalite,
+      financement,
     };
   }
 
@@ -438,7 +440,6 @@ export function VenteWizard({
             ...(offreChoisie.tierId !== null ? { offreTierId: offreChoisie.tierId } : {}),
           },
         ],
-        financementSuggere: financement,
         ...(Number.isFinite(nb) && nb >= 1 ? { nbParticipants: nb } : {}),
         ...(Number.isFinite(duree) && duree > 0 ? { dureeHeures: duree } : {}),
       });
@@ -1081,21 +1082,6 @@ export function VenteWizard({
                     }}
                     className="admin-input"
                   />
-                </label>
-                <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-                  Financement envisagé
-                  <select
-                    value={financement}
-                    onChange={(e) => {
-                      setFinancement(e.target.value as VenteFinancement);
-                      setSale(true);
-                    }}
-                    className="admin-input"
-                  >
-                    <option value="direct">Direct (entreprise)</option>
-                    <option value="opco">OPCO</option>
-                    <option value="france_travail">France Travail</option>
-                  </select>
                 </label>
               </div>
               {offreChoisie !== null && offreChoisie.prixHtCents !== null && montantEur === "" ? (
