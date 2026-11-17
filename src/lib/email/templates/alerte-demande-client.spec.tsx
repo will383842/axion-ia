@@ -48,6 +48,25 @@ describe("alerte-demande-client", () => {
     }
   });
 
+  it("L6c : le type vient après le préfixe exact ; sans la clé, objet d'avant", async () => {
+    const objet = async (p: Record<string, unknown>) =>
+      (await renderEmailTemplate("alerte-demande-client", "fr", { ...PAYLOAD, ...p })).subject;
+    expect(await objet({ libelleType: "Formation IA" })).toBe(
+      "🔴 IMPORTANT DEMANDE CLIENT MESSAGE · FORMATION IA",
+    );
+    expect(await objet({})).toBe("🔴 IMPORTANT DEMANDE CLIENT MESSAGE");
+    expect(await objet({ libelleType: "  " })).toBe("🔴 IMPORTANT DEMANDE CLIENT MESSAGE");
+    // Calendly : jamais de type.
+    expect(await objet({ canal: "calendly", libelleType: "Formation IA" })).toBe(
+      "🔴 IMPORTANT DEMANDE CLIENT CALENDLY",
+    );
+    for (const mot of ["Qualiopi", "Prise en charge OPCO", "Financeur", "opco"]) {
+      expect(await objet({ libelleType: `Dossier ${mot}` })).toBe(
+        "🔴 IMPORTANT DEMANDE CLIENT MESSAGE · FORMATION",
+      );
+    }
+  });
+
   it("porte toutes les informations et un bouton vers la fiche", async () => {
     const r = await renderEmailTemplate("alerte-demande-client", "fr", PAYLOAD);
     for (const attendu of [

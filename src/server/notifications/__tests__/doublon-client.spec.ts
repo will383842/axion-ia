@@ -26,7 +26,13 @@ import {
   __reinitialiserPourTests as reinitialiserEnfileur,
   poserChargeurEnfileurEmail,
 } from "../enfileur-email";
-import { entiteDeLAlerte, formatDoublonPrive, objetAlerteClient } from "../doublon-client";
+import {
+  entiteDeLAlerte,
+  formatDoublonPrive,
+  objetAlerteClient,
+  resumerDemande,
+  suffixeTypeObjet,
+} from "../doublon-client";
 import { resolveConversationPrivee } from "../routing";
 import { lignesDetailClient, type EvenementClient } from "../format-clients";
 
@@ -105,7 +111,7 @@ describe("le doublon d'une demande de client", () => {
     expect(prive[0]!["disable_notification"]).toBe(false);
     expect(prive[0]!["parse_mode"]).toBeUndefined();
     const texte = String(prive[0]!["text"]);
-    expect(texte.split("\n")[0]).toBe("🚨 IMPORTANT — DEMANDE CLIENT · MESSAGE");
+    expect(texte.split("\n")[0]).toBe("🚨 IMPORTANT — DEMANDE CLIENT · MESSAGE · FORMATION IA");
     for (const attendu of [
       "Camille Exemple — Atelier Fictif SARL",
       "📞 +33 6 39 98 12 35",
@@ -235,6 +241,36 @@ describe("le doublon d'une demande de client", () => {
     expect(objetAlerteClient("calendly", "reporte")).toBe(
       "🔴 IMPORTANT DEMANDE CLIENT CALENDLY REPORTÉ",
     );
+  });
+
+  it("L6c : le type de demande suit le préfixe, dans l'objet et dans Telegram", () => {
+    const ev = (formType: string | undefined, subType?: string) =>
+      ({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: { ...DEMANDE, formType, subType },
+      }) as unknown as EvenementClient;
+    const r = resumerDemande(ev("formation"));
+    expect(r.libelleType).toBe("Formation IA");
+    expect(objetAlerteClient("message", "nouveau", r.libelleType)).toBe(
+      "🔴 IMPORTANT DEMANDE CLIENT MESSAGE · FORMATION IA",
+    );
+    expect(formatDoublonPrive(ev("formation")).split("\n")[0]).toBe(
+      "🚨 IMPORTANT — DEMANDE CLIENT · MESSAGE · FORMATION IA",
+    );
+    // Sans la clé : objet identique à avant.
+    expect(objetAlerteClient("message", "nouveau")).toBe("🔴 IMPORTANT DEMANDE CLIENT MESSAGE");
+    // Un subType piégé n'apparaît jamais ; un formType inconnu retombe sur le type de la base.
+    const piege = ev("formation", "Qualiopi OPCO 0612345678");
+    expect(JSON.stringify(resumerDemande(piege))).not.toContain("0612345678");
+    expect(formatDoublonPrive(piege)).not.toMatch(/OPCO 0612/);
+    expect(resumerDemande(ev("inconnu-xyz")).libelleType).toBe("Contact");
+    // Rendez-vous : pas de type dans l'objet.
+    expect(
+      resumerDemande({ category: "CLIENT_CALL_BOOKED", payload: RDV } as EvenementClient)
+        .libelleType,
+    ).toBeUndefined();
+    expect(suffixeTypeObjet("Financeur OPCO")).toBe("FORMATION");
+    expect(suffixeTypeObjet(undefined)).toBeUndefined();
   });
 
   it("🔴 un rejeu du même fait ne redouble pas (anti-doublon propre, 24 h)", async () => {
