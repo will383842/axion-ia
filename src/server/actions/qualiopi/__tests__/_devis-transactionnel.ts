@@ -80,7 +80,8 @@ export function fausseBaseDevis(options: { collisionsAuCreate: number }) {
     projet: {
       findUnique: async () => ({ clientId: CLIENT, fusionneDansId: null }),
     },
-    $queryRaw: async () => [],
+    // Verrou bloquant de révision : `pg_advisory_xact_lock` renvoie `void`, donc `$executeRaw` (jamais `$queryRaw`, absent ici exprès : le remettre rougit les tests).
+    $executeRaw: async () => 1,
     client: { findUnique: async () => ({ opcoIdentifie: null }) },
   });
 

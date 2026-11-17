@@ -958,7 +958,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    */
   avis_financeur_manquant: {
     niveau: "important",
-    titre: "Avis du financeur non recueilli",
+    titre: "Avis de l'organisme tiers non recueilli",
     resolutionAuto: true,
     guichet: "qualite",
   },
@@ -1328,13 +1328,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── OPCO / financement ────────────────────────────────────────────────────
   opco_sans_accord: {
     niveau: "important",
-    titre: "Session dans 7 jours sans accord OPCO",
+    titre: "Session dans 7 jours sans accord de paiement par un tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   opco_formation_demarree_sans_accord: {
     niveau: "critique",
-    titre: "Formation démarrée sans accord OPCO",
+    titre: "Formation démarrée sans accord de paiement par un tiers",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non ». FAIT ACCOMPLI : la formation a démarré sans accord, le risque financier est déjà pris. Un accord obtenu après coup ferait disparaître l alerte comme si de rien n était, alors que c est précisément l écart qu il faut avoir vu.",
@@ -1342,7 +1342,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   convention_tripartite_manquante: {
     niveau: "critique",
-    titre: "Convention tripartite manquante (subrogation OPCO)",
+    titre: "Convention tripartite manquante (subrogation)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1350,7 +1350,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // relevé portail périmé (> config `bareme_opco_validite_mois`, défaut 12 mois).
   bareme_opco_perime: {
     niveau: "important",
-    titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
+    titre: "Barème de l'organisme tiers à rafraîchir (relevé trop ancien)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1359,7 +1359,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // dès que la facture est émise.
   delai_facturation_opco: {
     niveau: "important",
-    titre: "Facture OPCO à émettre avant la date limite",
+    titre: "Facture à l'organisme tiers à émettre avant la date limite",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1368,7 +1368,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // Se referme dès que « Dépôt fait le » est saisi sur le dossier.
   depot_opco_a_faire: {
     niveau: "important",
-    titre: "Dépôt de la demande OPCO à faire par l'entreprise",
+    titre: "Dépôt de la demande de paiement par un tiers à faire par l'entreprise",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1378,7 +1378,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // referme dès que l'état est constaté (`active` ou `caduque`).
   condition_suspensive_opco: {
     niveau: "important",
-    titre: "Condition suspensive OPCO à suivre",
+    titre: "Condition suspensive (accord de l'organisme tiers) à suivre",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1387,7 +1387,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // le lot A7c, quand un OPCO qui a une session à venir n'a AUCUN relevé.
   etat_fonds_perime: {
     niveau: "important",
-    titre: "État des fonds OPCO à relever (veille mensuelle)",
+    titre: "État des fonds des organismes tiers à relever (veille mensuelle)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1396,7 +1396,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).
   aucun_bareme_opco: {
     niveau: "important",
-    titre: "Aucun barème OPCO applicable (estimation indicative)",
+    titre: "Aucun barème d'organisme tiers applicable (estimation indicative)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1406,7 +1406,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // subrogation est retirée, l'accord coché, la fiche corrigée ou la facture émise.
   subrogation_incompatible_regime: {
     niveau: "critique",
-    titre: "Subrogation OPCO incompatible avec le régime de paiement",
+    titre: "Subrogation incompatible avec le régime de paiement",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1415,7 +1415,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // saisi à temps. Se referme quand un relevé rouvre les fonds ou que le dépôt est saisi.
   fonds_opco_suspendus_session: {
     niveau: "critique",
-    titre: "Session planifiée sur des fonds OPCO suspendus",
+    titre: "Session planifiée sur des fonds suspendus de l'organisme tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1424,7 +1424,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // quand la fiche est complète.
   donnees_opco_incompletes: {
     niveau: "important",
-    titre: "Données OPCO du client incomplètes",
+    titre: "Données de l'organisme tiers du client incomplètes",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1434,19 +1434,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // arrêtées en console, dossier clos ou renvoyé.
   entreprise_a_appeler_depot: {
     niveau: "important",
-    titre: "Entreprise à appeler : dépôt de la demande OPCO",
+    titre: "Entreprise à appeler : dépôt de la demande de paiement par un tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   entreprise_a_appeler_reponse_opco: {
     niveau: "important",
-    titre: "Entreprise à appeler : réponse de l'OPCO",
+    titre: "Entreprise à appeler : réponse de l'organisme tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   opco_refus_a_traiter: {
     niveau: "critique",
-    titre: "Refus de l'OPCO à traiter",
+    titre: "Refus de l'organisme tiers à traiter",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1762,7 +1762,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   financeur_paiement_en_retard: {
     niveau: "critique",
-    titre: "Paiement du financeur en retard (échéance dépassée)",
+    titre: "Paiement de l'organisme tiers en retard (échéance dépassée)",
     resolutionAuto: true,
     guichet: "direction",
   },

@@ -1133,7 +1133,13 @@ export async function reviseDevisAction(
     prisma.$transaction(async (tx) => {
       // Verrou consultatif BLOQUANT (libéré en fin de transaction) : deux clics simultanés
       // s'alignent l'un derrière l'autre, le second retrouve la révision du premier.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      // Le client a déjà signé : plus de correction (contresigner ou refuser). AVANT le brouillon
+      // existant : un brouillon créé avant la signature ne doit pas être rendu après.
+      const nonSigne = await tx.devis.count({
+        where: { id: origine.id, ...pasSigneParLeClient },
+      });
+      if (nonSigne === 0) return { refus: MSG_REVISION_SIGNEE };
       // Statut RELU ici, après le verrou (celui lu hors transaction peut être périmé) : un devis
       // accepté ne se corrige plus (refus avant tout numéro consommé).
       const statutActuel = await tx.devis.findUnique({
@@ -1144,12 +1150,6 @@ export async function reviseDevisAction(
       if (statutActuel.statut === "accepte" || statutActuel.statut === "transforme_convention") {
         return { refus: MSG_REVISION_ACCEPTE };
       }
-      // Le client a déjà signé : plus de correction (contresigner ou refuser). AVANT le brouillon
-      // existant : un brouillon créé avant la signature ne doit pas être rendu après.
-      const nonSigne = await tx.devis.count({
-        where: { id: origine.id, ...pasSigneParLeClient },
-      });
-      if (nonSigne === 0) return { refus: MSG_REVISION_SIGNEE };
       // Une version plus récente déjà ÉMISE : c'est elle qu'on corrige.
       const successeurEmis = await tx.devis.findFirst({
         where: { replacesDevisId: origine.id, statut: { not: "brouillon" } },

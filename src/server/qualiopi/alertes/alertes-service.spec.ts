@@ -60,7 +60,11 @@ vi.mock("./catalogue", () => ({
       titre: "Satisfaction manquante",
       resolutionAuto: false,
     },
-    opco_sans_accord: { niveau: "important", titre: "OPCO sans accord", resolutionAuto: true },
+    opco_sans_accord: {
+      niveau: "important",
+      titre: "Sans accord de paiement par un tiers",
+      resolutionAuto: true,
+    },
   },
 }));
 
