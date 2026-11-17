@@ -11,7 +11,7 @@ vi.mock("@sentry/nextjs", () => sentry);
 const DEVIS = "11111111-1111-4111-8111-111111111111";
 
 const h = vi.hoisted(() => ({
-  tx: { devis: { update: vi.fn(), findUnique: vi.fn() } },
+  tx: { devis: { update: vi.fn(), findUnique: vi.fn(), findFirst: vi.fn() } },
   p: {},
   monter: vi.fn(),
   proposer: vi.fn(),
@@ -89,6 +89,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.habilitation.mockResolvedValue({ userId: "adm-1", role: "admin" });
   // Devis classique : aucune offre (le devis à formules a son test plus bas).
+  h.tx.devis.findFirst.mockResolvedValue(null);
   h.tx.devis.findUnique.mockResolvedValue({
     statut: "envoye",
     offreSha256: null,
@@ -194,5 +195,51 @@ describe("acceptDevisAction", () => {
     expect(await acceptDevisAction("pas-un-uuid")).toEqual({ error: "Identifiant invalide" });
     expect(h.tx.devis.update).not.toHaveBeenCalled();
     expect(h.monter).not.toHaveBeenCalled();
+  });
+});
+
+describe("acceptDevisAction — version remplacée par une version émise", () => {
+  const MSG =
+    "Ce devis a été remplacé par une version plus récente : acceptez la version en cours.";
+
+  it("expiré parce qu'une version émise l'a remplacé : refus, rien d'écrit, rien d'émis", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({
+      statut: "expire",
+      offreSha256: null,
+      formuleRetenue: null,
+    });
+    h.tx.devis.findFirst.mockResolvedValue({ id: "successeur" });
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({ error: MSG });
+    // Le successeur cherché : un devis qui remplace celui-ci et n'est pas un brouillon.
+    expect(h.tx.devis.findFirst).toHaveBeenCalledWith({
+      where: { replacesDevisId: DEVIS, statut: { not: "brouillon" } },
+      select: { id: true },
+    });
+    expect(h.tx.devis.update).not.toHaveBeenCalled();
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.monter).not.toHaveBeenCalled();
+  });
+
+  it("expiré par simple dépassement de date (aucun successeur émis) : reste acceptable", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({
+      statut: "expire",
+      offreSha256: null,
+      formuleRetenue: null,
+    });
+    h.tx.devis.findFirst.mockResolvedValue(null);
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toEqual({ data: { id: DEVIS } });
+    expect(h.tx.devis.update).toHaveBeenCalledOnce();
+  });
+
+  it("devis à formules sans formule retenue : toujours le refus propre aux formules", async () => {
+    h.tx.devis.findUnique.mockResolvedValue({
+      statut: "envoye",
+      offreSha256: "a".repeat(64),
+      formuleRetenue: null,
+    });
+    const r = await acceptDevisAction(DEVIS);
+    expect(r).toMatchObject({ error: expect.stringContaining("propose des formules") });
   });
 });
