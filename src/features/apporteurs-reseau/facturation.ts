@@ -606,6 +606,8 @@ async function signalerSoldeNegatif(
         cibleType: "ApporteurReseau",
         cibleId: apporteurId,
         createdAt: maintenant.toLocaleDateString("fr-FR"),
+        rubrique: "apporteurs",
+        chemin: `apporteurs/${apporteurId}`,
       },
       { jobId, entityType: "ApporteurReseau", entityId: apporteurId },
     );
@@ -686,6 +688,8 @@ async function alerterAttente(e: {
       cibleType: "ApporteurReseau",
       cibleId: e.apporteurId,
       createdAt: e.maintenant.toLocaleDateString("fr-FR"),
+      rubrique: "apporteurs",
+      chemin: `apporteurs/${e.apporteurId}`,
     },
     { jobId, entityType: "ApporteurReseau", entityId: e.apporteurId },
   );
@@ -716,6 +720,8 @@ export async function alerterAVirer(e: {
       cibleType: "ApporteurReseau",
       cibleId: e.apporteurId,
       createdAt: e.emission.toLocaleDateString("fr-FR"),
+      rubrique: "apporteurs",
+      chemin: `apporteurs/${e.apporteurId}`,
     },
     { jobId, entityType: "ApporteurReseau", entityId: e.apporteurId },
   );
