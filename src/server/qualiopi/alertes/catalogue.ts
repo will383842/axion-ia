@@ -172,6 +172,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — l'alerte naît d'un ÉVÉNEMENT reçu du relais (webhook), pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse corrigée.",
     guichet: "administratif",
   },
+  email_plainte_spam: {
+    niveau: "important",
+    titre: "Une plainte pour spam a été reçue",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — événement ponctuel du webhook, aucun balayage ne le réémet. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse vérifiée dans la console.",
+    guichet: "administratif",
+  },
   cloture_trace_presence_incomplete: {
     niveau: "important",
     titre: "Session clôturée sans trace de présence pour tous les inscrits",
