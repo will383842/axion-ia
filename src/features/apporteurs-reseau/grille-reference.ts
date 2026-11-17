@@ -77,12 +77,6 @@ function prixDEntree(t: PricingTier): number {
   return p;
 }
 
-function prixSousPalier(t: PricingTier, i: number): number {
-  const s = t.subTiers?.[i];
-  if (!s) throw new Error(`[grille-reference] sous-palier ${i} introuvable : ${t.id}`);
-  return s.priceFlat;
-}
-
 const aPartirDe = (n: number) => `à partir de ${euros(n)}`;
 
 export function grilleDeReference(): readonly TableauGrille[] {
@@ -122,25 +116,17 @@ export function grilleDeReference(): readonly TableauGrille[] {
   });
 
   const audit = pourcent(TAUX_BPS.audit);
-  const flash = palier("audit-flash", AUDIT_TIERS);
-  const cible = palier("audit-cible", AUDIT_TIERS);
-  const pme = palier("audit-strategique-pme", AUDIT_TIERS);
-  const eti = palier("audit-strategique-eti", AUDIT_TIERS);
-  const audits: LigneGrille[] = (
-    [
-      ["Audit sur place", prixDEntree(flash)],
-      ["Audit sur place — sur site", prixSousPalier(flash, 0)],
-      ["Audit ciblé", prixDEntree(cible)],
-      ["Audit ciblé — solo", prixSousPalier(cible, 0)],
-      ["Audit ciblé — standard", prixSousPalier(cible, 1)],
-      ["Audit ciblé — avancé", prixSousPalier(cible, 2)],
-      ["Audit stratégique PME", prixDEntree(pme)],
-      ["Audit stratégique PME — 20 à 50 salariés", prixSousPalier(pme, 0)],
-      ["Audit stratégique PME — 50 à 250 salariés", prixSousPalier(pme, 1)],
-      ["Audit stratégique ETI", prixDEntree(eti)],
-      ["Audit stratégique ETI — base", prixSousPalier(eti, 0)],
-    ] as const
-  ).map(([nom, prix]) => ({ cellules: [nom, aPartirDe(prix), audit] }));
+  // Contrat 2.7 (analyse du 09/10, point 10) : une seule ligne « Tous les audits », au même taux,
+  // au lieu de onze paliers dont plusieurs se répétaient. Aucun taux ni montant ne change.
+  const prixAudits = [
+    "audit-flash",
+    "audit-cible",
+    "audit-strategique-pme",
+    "audit-strategique-eti",
+  ].map((id) => prixDEntree(palier(id, AUDIT_TIERS)));
+  const audits: LigneGrille[] = [
+    { cellules: ["Tous les audits", aPartirDe(Math.min(...prixAudits)), audit] },
+  ];
 
   const impl = pourcent(TAUX_BPS.implementation);
   const prixImpl = (t: PricingTier) =>
