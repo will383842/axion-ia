@@ -281,9 +281,9 @@ export function IssueEchangeApporteurForm({
                 </p>
               ) : null}
               <LecteurEmail
-                html={apercuPret.email.html}
-                a={apercuPret.email.destinataire}
-                objet={apercuPret.email.sujet}
+                apercu={apercuPret.email.apercu}
+                titre={`Aperçu : ${apercuPret.email.sujet}`}
+                liensInertes
               />
               <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
                 <button

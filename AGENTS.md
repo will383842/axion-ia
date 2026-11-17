@@ -383,6 +383,18 @@ Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est 
 **tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
 du moment.
 
+**`gabaritRepli` (lot S3, chantier e-mails)** : tout **nouveau nom de gabarit** émis par l'application
+porte dans sa charge `gabaritRepli`, le nom d'un gabarit **ancien et sûr** (ex. `"contact-confirmed"`).
+Un worker S3 qui reçoit un nom qu'il ne connaît pas (`estGabaritConnu`) reporte le job de 10 min,
+jusqu'à 9 fois (90 min, au-delà de la fenêtre de ~35 min), sans tentative comptée et journal « en
+attente » ; au-delà, il rend le `gabaritRepli` s'il le connaît, sinon échoue franchement
+(`UnrecoverableError`, motif « gabarit inconnu de ce worker » au journal). Un worker antérieur à S3
+n'a pas ce repli : S3 doit être en ligne **avant** le premier émetteur d'un nouveau nom.
+La charge d'un nouveau nom de gabarit doit aussi satisfaire le gabarit de repli : aucune validation
+n'est faite, et un repli qui reçoit une charge incompatible rend des champs vides ou échoue après
+5 tentatives. Un job reporté apparaît « bloqué en file » dans l'alarme de santé des e-mails pendant
+la fenêtre de mise en ligne : c'est attendu.
+
 ### ⛔ Worker d'e-mails : jamais de retour arrière sous la PR #2057 (réponses écrites à la main)
 
 Depuis #2057, le worker envoie les réponses écrites à la main (`submission-reply`, `candidature-reponse`) sous un verrou Redis `verrou:envoi-reponse:<gabarit>:<replyId>` et pose un marqueur `envoye:envoi-reponse:<gabarit>:<replyId>` dès que le relais a accepté. Un worker plus ancien ne lit ni l'un ni l'autre et ne relit pas l'état de la ligne : il renvoie tout job qu'il reprend. Exemple : réponse partie, écriture `sent` en échec, job reporté de 60 s ; l'ancien worker le reprend et la personne reçoit l'e-mail deux fois.

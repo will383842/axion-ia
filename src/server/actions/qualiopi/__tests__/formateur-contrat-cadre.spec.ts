@@ -51,7 +51,7 @@ vi.mock("@/server/qualiopi/documents/templates/versions-arretees", () => ({
 }));
 vi.mock("@/server/qualiopi/formateurs-independants/envois", () => ({
   envoyer: (...a: unknown[]) => d.envoyer(...a),
-  apercu: (...a: unknown[]) => d.apercu(...a),
+  apercuLecteurFormateur: (...a: unknown[]) => d.apercu(...a),
   texteValide: (...a: unknown[]) => d.texteValide(...a),
   valeursManquantes: () => false,
 }));

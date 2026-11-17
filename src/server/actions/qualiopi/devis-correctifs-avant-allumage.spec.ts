@@ -20,6 +20,9 @@ vi.mock("@/lib/prisma", () => ({
           create: (...a: unknown[]) => create(...a),
           findMany: vi.fn(async () => []),
           findUnique: (...a: unknown[]) => findUnique(...a),
+          // Révision : verrou, recherche d'une révision existante, garde « client a signé ».
+          findFirst: async () => null,
+          count: async () => 1,
         },
       }),
   },
