@@ -35,7 +35,7 @@ const photoDevis = z.object({
       designation: z.string(),
       quantite: z.number(),
       prixUnitaireHtCents: z.number(),
-      tauxTvaPercent: z.number().optional(),
+      tauxTvaPercent: z.number().nullish(),
     }),
   ),
   regimeTva: z.custom<"assujetti" | "exoneration_261" | "franchise_293b">(isRegimeTva),
@@ -97,6 +97,7 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
       id: true,
       numero: true,
       statut: true,
+      offre: true,
       dateValidite: true,
       montantTotalHtCents: true,
       client: { select: { raisonSociale: true } },
@@ -121,7 +122,7 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
       designation: l.designation,
       quantite: l.quantite,
       prixUnitaireHtCents: l.prixUnitaireHtCents,
-      ...(l.tauxTvaPercent !== undefined ? { tauxTvaPercent: l.tauxTvaPercent } : {}),
+      ...(typeof l.tauxTvaPercent === "number" ? { tauxTvaPercent: l.tauxTvaPercent } : {}),
     }));
     const totaux = computeTotauxFacture(
       lignesFacturables,
@@ -139,7 +140,14 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
     mention = mentionTva(snap.regimeTva);
     clientRaisonSociale = snap.client?.raisonSociale ?? clientRaisonSociale;
     // Contrôle de cohérence : on affiche la photo quoi qu'il arrive, on signale l'écart.
-    if (totaux.totalHtCents !== devis.montantTotalHtCents) {
+    // Seulement pour un devis CLASSIQUE (`offre` nul) encore `envoye` : un devis à
+    // formules a un `montantTotalHtCents` posé à l'acceptation sur le choix du client,
+    // et un devis déjà accepté a pu être mis à jour depuis — l'écart y est normal.
+    if (
+      devis.offre === null &&
+      devis.statut === "envoye" &&
+      totaux.totalHtCents !== devis.montantTotalHtCents
+    ) {
       Sentry.captureMessage("devis-signature: HT de la photo ≠ Devis.montantTotalHtCents", {
         level: "warning",
         tags: { module: "devis-signature" },

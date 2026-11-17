@@ -15,6 +15,7 @@ function devisAvec(over: Record<string, unknown> = {}) {
     id: "d1",
     numero: "AXI-DEV-2026-001",
     statut: "envoye",
+    offre: null,
     lignes: [LIGNE],
     dateValidite: new Date("2026-12-31T00:00:00Z"),
     mentionTva: null,
@@ -90,6 +91,63 @@ describe("lireDevisASigner — la page affiche la PHOTO de la pièce signée", (
     expect(captureMessage).toHaveBeenCalledTimes(1);
     expect(JSON.stringify(captureMessage.mock.calls)).not.toMatch(/Client|AXI-DEV/);
     expect(r?.totalHtLisible.replace(/\s/g, " ")).toContain("1 000,00");
+  });
+
+  it("(c ter) devis à formules accepté : écart de HT, aucune alerte Sentry", async () => {
+    findFirst.mockResolvedValue(
+      devisAvec({ montantTotalHtCents: 123, statut: "accepte", offre: { formules: [] } }),
+    );
+    const r = await lireDevisASigner("doc1");
+    expect(captureMessage).not.toHaveBeenCalled();
+    expect(r?.statutBloquant).toBe("deja_accepte");
+  });
+
+  it("(c quater) devis à formules encore envoyé : aucune alerte non plus", async () => {
+    findFirst.mockResolvedValue(devisAvec({ montantTotalHtCents: 123, offre: { formules: [] } }));
+    await lireDevisASigner("doc1");
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it("(c quinquies) devis classique déjà accepté : aucune alerte", async () => {
+    findFirst.mockResolvedValue(devisAvec({ montantTotalHtCents: 123, statut: "accepte" }));
+    await lireDevisASigner("doc1");
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it("(f) taux de TVA PAR LIGNE : 0 % sur A, taux standard sur B → 1 600,00 € TTC", async () => {
+    findFirst.mockResolvedValue(
+      devisAvec({
+        montantTotalHtCents: 150000,
+        ...photo({
+          lignes: [
+            { designation: "A", quantite: 1, prixUnitaireHtCents: 100000, tauxTvaPercent: 0 },
+            { designation: "B", quantite: 1, prixUnitaireHtCents: 50000 },
+          ],
+          regimeTva: "assujetti",
+          client: { raisonSociale: "C" },
+        }),
+      }),
+    );
+    const r = await lireDevisASigner("doc1");
+    // 1 000 € à 0 % + 500 € à 20 % (100 €) = 1 600 €
+    expect(r?.totalHtLisible.replace(/\s/g, " ")).toContain("1 500,00");
+    expect(r?.totalTtcLisible.replace(/\s/g, " ")).toContain("1 600,00");
+    expect(captureMessage).not.toHaveBeenCalled();
+  });
+
+  it("(g) tauxTvaPercent: null : traité comme absent (taux standard)", async () => {
+    findFirst.mockResolvedValue(
+      devisAvec(
+        photo({
+          lignes: [{ ...LIGNE, tauxTvaPercent: null }],
+          regimeTva: "assujetti",
+          client: { raisonSociale: "C" },
+        }),
+      ),
+    );
+    const r = await lireDevisASigner("doc1");
+    expect(r?.chiffrageIndisponible).toBe(false);
+    expect(r?.totalTtcLisible.replace(/\s/g, " ")).toContain("1 200,00");
   });
 
   it("(d) photo absente : chiffrageIndisponible, aucun recalcul", async () => {
