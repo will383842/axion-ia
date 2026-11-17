@@ -8,6 +8,9 @@
  * Volet B — le RENDU : chaque gabarit du registre, en fr et en en, avec une
  *   charge où les noms valent « Zoé Sentinelle » et les prénoms « Zoé ».
  *
+ * Règle du fondateur : « Bonjour Monsieur Dupont, » (civilité + nom de famille)
+ * est CORRECT ; sinon le prénom ; sinon « Bonjour, » ; jamais le nom complet.
+ *
  * Listes figées À SENS UNIQUE : un nouveau fichier, une hausse du compte ou un
  * nouveau gabarit fautif fait rougir ; une baisse est tolérée (S4 à S11 tournent
  * en parallèle et ne doivent pas se disputer une liste). S12 doit les vider.
@@ -138,6 +141,44 @@ const RENDUS_FAUTIFS: ReadonlySet<string> = new Set<string>([
   "recueil-besoin@en",
   "opco-suivi-entreprise@fr",
   "opco-suivi-entreprise@en",
+  // Ajoutés à la correction : le champ `*PrenomNom` porte le NOM COMPLET ; la charge
+  // d'essai le traitait à tort en prénom, ce qui masquait ces gabarits.
+  "qualiopi-convocation@fr",
+  "qualiopi-convocation@en",
+  "qualiopi-rappel-j7@fr",
+  "qualiopi-rappel-j7@en",
+  "qualiopi-rappel-j1@fr",
+  "qualiopi-rappel-j1@en",
+  "qualiopi-satisfaction-j1@fr",
+  "qualiopi-satisfaction-j1@en",
+  "qualiopi-suivi-j30@fr",
+  "qualiopi-suivi-j30@en",
+  "qualiopi-positionnement@fr",
+  "qualiopi-positionnement@en",
+  "qualiopi-questionnaire-relance@fr",
+  "qualiopi-questionnaire-relance@en",
+  "qualiopi-adaptation-stagiaire@fr",
+  "qualiopi-adaptation-stagiaire@en",
+  "qualiopi-adaptation-formateur@fr",
+  "qualiopi-adaptation-formateur@en",
+  "qualiopi-attestation-disponible@fr",
+  "qualiopi-attestation-disponible@en",
+  "qualiopi-portail-acces@fr",
+  "qualiopi-portail-acces@en",
+  "qualiopi-emargement-lien@fr",
+  "qualiopi-emargement-lien@en",
+  "qualiopi-presence-confirmation@fr",
+  "qualiopi-presence-confirmation@en",
+  "formateur-mission-proposee@fr",
+  "formateur-mission-proposee@en",
+  "formateur-convocation-j7@fr",
+  "formateur-convocation-j7@en",
+  "formateur-rappel-j1@fr",
+  "formateur-rappel-j1@en",
+  "formateur-contresignature@fr",
+  "formateur-contresignature@en",
+  "formateur-contrat-travail@fr",
+  "formateur-contrat-travail@en",
 ]);
 
 /** Gabarits qui lèvent une erreur avec la charge sentinelle (nom@locale). */
@@ -168,6 +209,22 @@ describe("détection (test du test)", () => {
     ["appel salutation()", "`${salutation(p, locale)}`"],
     ["texte sans variable", "Bonjour, nous revenons vers vous. Hier, Chercher {x}"],
   ])("ne détecte pas : %s", (_cas, source) => {
+    expect(fautive(source)).toBe(0);
+  });
+
+  it.each([
+    ["saut de ligne, variable fautive", "<p>\n  Bonjour\n  {p.nom},\n</p>"],
+    ['{" "} puis variable fautive', '<p>Bonjour{" "}{p.nom},</p>'],
+    ['{" "} + saut de ligne, fautive', '<p>Bonjour{" "}\n  {p.stagiairePrenomNom},</p>'],
+  ])("franchit les blancs : %s", (_cas, source) => {
+    expect(fautive(source)).toBe(1);
+  });
+
+  it.each([
+    ["saut de ligne, prénom", "<p>\n  Bonjour\n  {p.prenom},\n</p>"],
+    ['{" "} puis prénom', '<p>Bonjour{" "}{p.prenom},</p>'],
+    ['{" "} sans variable', '<p>Bonjour{" "}</p>'],
+  ])("ne compte pas à tort : %s", (_cas, source) => {
     expect(fautive(source)).toBe(0);
   });
 
@@ -221,8 +278,12 @@ describe("volet A — sources", () => {
     expect(hausses).toEqual([]);
   });
 
-  it("témoin : la mesure voit bien la liste figée (sinon le volet ne teste rien)", () => {
-    expect(mesure.size).toBeGreaterThanOrEqual(Object.keys(SOURCES_FAUTIVES).length - 10);
+  it("témoin : la mesure voit la liste figée, à au plus deux écarts près", () => {
+    // Égalité attendue. Tolérance de DEUX fichiers au plus : les lots S4 à S11
+    // corrigent des gabarits en parallèle et peuvent vider une entrée avant que
+    // cette liste ne soit mise à jour (la liste est à sens unique, S12 la vide).
+    const disparus = Object.keys(SOURCES_FAUTIVES).filter((f) => !mesure.has(f));
+    expect(disparus.length).toBeLessThanOrEqual(2);
   });
 });
 
@@ -251,9 +312,31 @@ describe("volet B — rendu", () => {
     expect(impossibles.filter((c) => !RENDUS_IMPOSSIBLES.has(c))).toEqual([]);
   }, 120_000);
 
-  it("le motif de rendu fait rougir « Bonjour Zoé Sentinelle, » et épargne « Bonjour Zoé, »", () => {
+  it("le motif de rendu fait rougir le nom complet, avec ou sans civilité", () => {
     expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé Sentinelle,</p>")).toBe(true);
-    expect(MOTIF_RENDU_FAUTIF.test("<p>Hello Mr Sentinelle,</p>")).toBe(true);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Monsieur Zoé Sentinelle,</p>")).toBe(true);
     expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Zoé,</p>")).toBe(false);
+  });
+
+  it("les formes décidées par le fondateur ne rougissent pas", () => {
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Bonjour Monsieur Sentinelle,</p>")).toBe(false);
+    expect(MOTIF_RENDU_FAUTIF.test("<p>Hello Mr Sentinelle,</p>")).toBe(false);
+  });
+
+  it("la charge d'essai : nom de famille seul → « Sentinelle », noms complets → « Zoé Sentinelle »", () => {
+    const c = surchargerNoms({
+      nomFamille: "x",
+      prenom: "x",
+      nom: "x",
+      name: "x",
+      nomComplet: "x",
+      stagiairePrenomNom: "x",
+      contactNom: "x",
+    });
+    expect(c["nomFamille"]).toBe("Sentinelle");
+    expect(c["prenom"]).toBe("Zoé");
+    for (const k of ["nom", "name", "nomComplet", "stagiairePrenomNom", "contactNom"]) {
+      expect(c[k]).toBe("Zoé Sentinelle");
+    }
   });
 });

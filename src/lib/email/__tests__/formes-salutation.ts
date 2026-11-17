@@ -6,7 +6,8 @@
  * d'abord lui-même (« test du test »).
  *
  * Formes reconnues après un mot de salutation (Bonjour, Bonsoir, Hello, Hi,
- * Dear, Cher, Chère), séparé d'au plus 3 caractères :
+ * Dear, Cher, Chère), séparé par des blancs (sauts de ligne et `{" "}` compris) et au plus 3
+ * caractères visibles :
  *   1. gabarit de chaîne       Bonjour ${p.nom}
  *   2. JSX                     Bonjour {p.nom}
  *   3. JSX conditionnel        Bonjour{p.nom ? ` ${p.nom}` : ""}
@@ -29,9 +30,15 @@ export interface SalutationTrouvee {
 }
 
 const MOT = "(?<![\\p{L}])(?:Bonjour|Bonsoir|Hello|Hi|Dear|Cher|Chère)(?![\\p{L}])";
-/** Au plus 3 caractères (hors saut de ligne) entre le mot et la variable. */
-const ENTRE = ".{0,3}?";
-const DEBUT_VARIABLE = "(\\$\\{|\\{\\{|\\{|[\"']\\s*\\+\\s*)";
+/** Un `{" "}` JSX (espace explicite) : transparent, ce n'est pas une variable. */
+const ESPACE_JSX = "\\{\\s*(?:\" \"|' '|` `)\\s*\\}";
+/**
+ * Entre le mot et la variable : des blancs (sauts de ligne compris) et des `{" "}`
+ * en nombre quelconque, avec au plus 3 caractères visibles (une virgule, `&nbsp;`…).
+ */
+const ENTRE = `(?:\\s|${ESPACE_JSX})*[^\\s{}$"'\`]{0,3}?(?:\\s|${ESPACE_JSX})*`;
+/** Début de variable ; une accolade qui n'enferme qu'un espace JSX n'en est pas une. */
+const DEBUT_VARIABLE = `(\\$\\{|\\{\\{|\\{(?!\\s*(?:" "|' '|\` \`)\\s*\\})|["']\\s*\\+\\s*)`;
 
 const MOTIF = new RegExp(`${MOT}${ENTRE}${DEBUT_VARIABLE}`, "gu");
 
@@ -107,19 +114,34 @@ export function trouverSalutationsFautives(source: string): SalutationTrouvee[] 
   return trouverSalutations(source).filter((s) => !s.toleree);
 }
 
-/** Motif du volet B : une salutation suivie du nom de famille sentinelle. */
+/**
+ * Motif du volet B : une salutation suivie du NOM COMPLET sentinelle (prénom puis
+ * nom). Règle du fondateur : « Bonjour Monsieur Sentinelle, » (civilité + nom de
+ * famille) est CORRECT, comme « Bonjour Zoé, » ; seul le nom complet est fautif,
+ * avec ou sans civilité devant.
+ */
 export const MOTIF_RENDU_FAUTIF =
-  /(?:Bonjour|Bonsoir|Hello|Hi|Dear|Cher|Chère)(?![\p{L}])[^.!?\n]{0,30}Sentinelle/u;
+  /(?:Bonjour|Bonsoir|Hello|Hi|Dear|Cher|Chère)(?![\p{L}])[^.!?\n]{0,30}?Zoé[\s\u00a0]+Sentinelle/u;
 
 export const NOM_COMPLET_SENTINELLE = "Zoé Sentinelle";
 export const PRENOM_SENTINELLE = "Zoé";
+export const NOM_FAMILLE_SENTINELLE = "Sentinelle";
 
-/** Charge d'essai : toute clé « nom » sans « prénom » vaut le nom complet sentinelle. */
+/** Clés qui désignent SEULEMENT le nom de famille (`nomFamille`, `lastName`…). */
+const CLE_NOM_FAMILLE =
+  /^(nomFamille|nomDeFamille|familyName|lastName|surname)$|(NomFamille|LastName)$/;
+
+/**
+ * Charge d'essai : prénom → « Zoé » ; nom de famille seul → « Sentinelle » ;
+ * toute autre clé « nom » (`nom`, `name`, `nomComplet`, `*PrenomNom`…) → nom complet.
+ */
 export function surchargerNoms(base: Readonly<Record<string, unknown>>): Record<string, unknown> {
   const sortie: Record<string, unknown> = { ...base };
   for (const [cle, valeur] of Object.entries(base)) {
     if (typeof valeur !== "string") continue;
-    if (/prenom|first/i.test(cle)) sortie[cle] = PRENOM_SENTINELLE;
+    if (CLE_NOM_FAMILLE.test(cle)) sortie[cle] = NOM_FAMILLE_SENTINELLE;
+    else if (/PrenomNom|nomComplet|fullName/i.test(cle)) sortie[cle] = NOM_COMPLET_SENTINELLE;
+    else if (/prenom|first/i.test(cle)) sortie[cle] = PRENOM_SENTINELLE;
     else if (/nom|name/i.test(cle)) sortie[cle] = NOM_COMPLET_SENTINELLE;
   }
   return sortie;
