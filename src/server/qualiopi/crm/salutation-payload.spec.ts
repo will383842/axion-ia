@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 
+import { libelleSalutationEmails } from "./libelle-salutation";
 import { salutationPourPayload } from "./salutation-payload";
 
 describe("salutationPourPayload", () => {
@@ -58,4 +59,22 @@ describe("salutationPourPayload", () => {
       }),
     ).toBeUndefined();
   });
+});
+
+describe("la fiche et l'e-mail rendent la même salutation sur une saisie non normalisée", () => {
+  const saisies = [
+    { contactCivilite: " Madame ", contactPrenom: "jean-pierre", contactNomFamille: "DUPONT" },
+    { contactCivilite: "MONSIEUR", contactPrenom: "jean-pierre", contactNomFamille: "dupont" },
+    { contactCivilite: null, contactPrenom: "jean-pierre", contactNomFamille: "DUPONT" },
+    { contactCivilite: "madame", contactPrenom: "JEAN-PIERRE", contactNomFamille: null },
+  ];
+  for (const saisie of saisies) {
+    it(`${JSON.stringify(saisie)}`, async () => {
+      const { salutation } = await import("@/lib/email/salutation");
+      const payload = salutationPourPayload({ clientNom: "Fictive SA", ...saisie });
+      expect(payload).toBeDefined();
+      const cote_email = salutation(payload ?? {}, "fr");
+      expect(libelleSalutationEmails(saisie)).toBe(cote_email);
+    });
+  }
 });

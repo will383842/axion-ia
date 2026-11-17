@@ -9,6 +9,7 @@ const m = vi.hoisted(() => ({
   update: vi.fn(),
   findUnique: vi.fn(),
   definir: vi.fn(),
+  log: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => {
@@ -24,7 +25,7 @@ vi.mock("@/lib/prisma", () => {
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: () => m.requireAdminWrite(),
   requireHabilitation: vi.fn(),
-  logQualiopiActivity: vi.fn(),
+  logQualiopiActivity: (...a: unknown[]) => m.log(...a),
 }));
 vi.mock("@/server/partners-sync/producteurs/client", () => ({
   chargeClientAvant: async () => null,
@@ -86,5 +87,22 @@ describe("updateClientAction — identité de salutation du contact", () => {
   it("refuse un nom de famille de plus de 80 caractères", async () => {
     const r = await updateClientAction({ id: ID, contactNomFamille: "x".repeat(81) });
     expect("error" in r).toBe(true);
+  });
+
+  it("🔴 le journal d'activité ne porte jamais civilité, prénom ni nom de famille en clair (m1)", async () => {
+    await updateClientAction({
+      id: ID,
+      contactCivilite: "madame",
+      contactPrenom: "Léa",
+      contactNomFamille: "Dupont",
+      notes: "une note",
+    });
+    const changes = (m.log.mock.calls[0]?.[0] as { changes: Record<string, unknown> }).changes;
+    expect(changes["contactCivilite"]).toEqual({ modifie: true });
+    expect(changes["contactPrenom"]).toEqual({ modifie: true });
+    expect(changes["contactNomFamille"]).toEqual({ modifie: true });
+    expect(JSON.stringify(changes)).not.toMatch(/Léa|Dupont|madame/);
+    // Les autres clés ne changent pas.
+    expect(changes["notes"]).toBe("une note");
   });
 });

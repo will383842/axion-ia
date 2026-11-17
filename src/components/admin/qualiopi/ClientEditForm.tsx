@@ -569,8 +569,8 @@ export function ClientEditForm({
                 marche mais part sans lien de signature, et l'admin ne l'apprend
                 que dans une note de retour. */}
             <p className={aideCls}>
-              Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre » et
-              faites-le signer sur papier.
+              Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre »
+              (devis classique) et faites-le signer sur papier.
             </p>
           </div>
 

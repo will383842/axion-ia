@@ -177,7 +177,14 @@ export async function definirContactFacturation(
   const nom = texteOuNull(entree.nom);
   const telephone = texteOuNull(entree.telephone);
   const fonction = texteOuNull(entree.fonction);
-  const civilite = texteOuNull(entree.civilite);
+  // Seules « madame » et « monsieur » sont admises : toute autre valeur est écrite null.
+  const civiliteBrute = texteOuNull(entree.civilite);
+  const civilite =
+    civiliteBrute === undefined
+      ? undefined
+      : civiliteBrute === "madame" || civiliteBrute === "monsieur"
+        ? civiliteBrute
+        : null;
   const prenom = texteOuNull(entree.prenom);
   const nomFamille = texteOuNull(entree.nomFamille);
   const identite = {
@@ -196,6 +203,9 @@ export async function definirContactFacturation(
       contactEmail: true,
       contactTelephone: true,
       contactFonction: true,
+      contactCivilite: true,
+      contactPrenom: true,
+      contactNomFamille: true,
     },
   });
   if (fiche === null) throw new Error("contact de facturation : fiche client introuvable");
@@ -266,12 +276,26 @@ export async function definirContactFacturation(
       estContactFacturation: true,
       creeParId: entree.parAdminId ?? null,
     }));
-    // La personne créée (ou retrouvée) par le chemin unique : on y pose l'identité
-    // de salutation transmise — elle n'hérite jamais de celle de l'ancienne.
-    if (Object.keys(identite).length > 0) {
+    // La personne créée par le chemin unique : on y pose l'identité de salutation.
+    // Première personne de la fiche : pour chaque champ non transmis, elle reprend
+    // celui de la fiche (comme `fonction` et `telephone`). Une personne qui en
+    // REMPLACE une autre n'hérite jamais de l'identité de l'ancienne.
+    const reprise = actuel === null;
+    const identiteCreation = {
+      civilite:
+        civilite !== undefined ? civilite : reprise ? (fiche.contactCivilite ?? null) : null,
+      prenom: prenom !== undefined ? prenom : reprise ? (fiche.contactPrenom ?? null) : null,
+      nomFamille:
+        nomFamille !== undefined ? nomFamille : reprise ? (fiche.contactNomFamille ?? null) : null,
+    };
+    if (
+      identiteCreation.civilite !== null ||
+      identiteCreation.prenom !== null ||
+      identiteCreation.nomFamille !== null
+    ) {
       cible = await tx.clientContact.update({
         where: { id: cible.id },
-        data: identite,
+        data: identiteCreation,
         select: PERSONNE_CHOISIE,
       });
     }

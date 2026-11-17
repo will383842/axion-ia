@@ -796,6 +796,10 @@ export async function updateClientAction(
     // null. Une écriture non tracée est un angle mort pour l'auditeur.
     changes: {
       ...fields,
+      // Identité de salutation : une donnée personnelle, jamais écrite en clair au journal.
+      ...(fields.contactCivilite !== undefined ? { contactCivilite: { modifie: true } } : {}),
+      ...(fields.contactPrenom !== undefined ? { contactPrenom: { modifie: true } } : {}),
+      ...(fields.contactNomFamille !== undefined ? { contactNomFamille: { modifie: true } } : {}),
       ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
       ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
       ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),

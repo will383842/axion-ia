@@ -203,7 +203,7 @@ describe("ClientEditForm — salutation des e-mails (B4)", () => {
   it("l'aide sous l'e-mail dit la vérité sur l'envoi sans adresse", () => {
     const html = rendre();
     expect(html).toContain(
-      "Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre » et faites-le signer sur papier.",
+      "Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre » (devis classique) et faites-le signer sur papier.",
     );
     expect(html).not.toContain("part sans lien de signature");
   });
