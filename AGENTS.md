@@ -383,6 +383,22 @@ Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est 
 **tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
 du moment.
 
+### ⛔ Worker d'e-mails : jamais de retour arrière sous la PR #2057 (réponses écrites à la main)
+
+Depuis #2057, le worker envoie les réponses écrites à la main (`submission-reply`, `candidature-reponse`) sous un verrou Redis `verrou:envoi-reponse:<gabarit>:<replyId>` et pose un marqueur `envoye:envoi-reponse:<gabarit>:<replyId>` dès que le relais a accepté. Un worker plus ancien ne lit ni l'un ni l'autre et ne relit pas l'état de la ligne : il renvoie tout job qu'il reprend. Exemple : réponse partie, écriture `sent` en échec, job reporté de 60 s ; l'ancien worker le reprend et la personne reçoit l'e-mail deux fois.
+
+**Interdit** : ramener le conteneur worker sur un commit antérieur à #2057, par quelque moyen que ce soit (retour arrière ou ancienne image dans Coolify, `git revert` de #2057 ou d'une fusion qui la contient, puis mise en ligne). Un incident du worker se corrige vers l'avant.
+
+**Si un retour arrière est forcé malgré tout**, dans cet ordre, AVANT de démarrer l'ancien worker (et sans répondre à une demande ni cliquer « Réessayer » pendant l'opération) :
+
+1. Mettre la file `emails` en pause (`new Queue("emails", { connection: getBullConnectionOrThrow() }).pause()`, fonction de `src/server/queue/connection.ts`, depuis le conteneur worker en place), arrêter le PROCESSUS du worker sans supprimer le conteneur, ou lancer un conteneur ponctuel de la même image pour les étapes 2 à 5 (elles demandent Node, Redis et la base : `node_modules/.bin/tsx -e '…'`), attendre 3 minutes (expiration des verrous BullMQ).
+2. Lister les jobs `active`, `waiting`, `paused`, `delayed` et `prioritized` nommés `submission-reply` ou `candidature-reponse` (`queue.getJobs(["active","waiting","paused","delayed","prioritized"])`). Une file en pause range ses jobs en attente dans `paused` : sans ce nom, ils n'apparaissent pas.
+3. Pour chacun : lire `payload.replyId`, la ligne (`submission_replies` ou `job_application_replies`) et, dans Redis, `envoye:envoi-reponse:<gabarit>:<replyId>` et `verrou:envoi-reponse:<gabarit>:<replyId>`.
+4. Retirer de la file (`job.remove()`) tout job dont la ligne n'est ni `pending` ni `failed`, ou a `sent_at` rempli, ou a un `error_msg` qui commence par `[issue-inconnue]`, ou pour lequel l'une des deux clés existe. Noter ces `replyId` : un humain tranche chacun dans ZeptoMail (page « E-mails envoyés », bouton « ZeptoMail », onglet « Processed emails ») et renvoie à la main ce qui n'est pas parti.
+5. Démarrer l'ancien worker, puis reprendre la file (`resume()`).
+
+Au retour vers l'avant, rien à faire : le nouveau worker relit l'état de chaque ligne avant d'envoyer.
+
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
 `scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la

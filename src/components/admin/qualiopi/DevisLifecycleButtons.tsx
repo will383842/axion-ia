@@ -298,7 +298,7 @@ export function DevisLifecycleButtons({
               onClick={handleRemisMainPropre}
               disabled={isPending}
               className="admin-button-secondary"
-              aria-label="Remettre le devis en main propre, sans e-mail ni lien de signature"
+              aria-label="Remis en main propre : remettre le devis sans e-mail ni lien de signature"
             >
               {isPending ? "…" : "Remis en main propre…"}
             </button>

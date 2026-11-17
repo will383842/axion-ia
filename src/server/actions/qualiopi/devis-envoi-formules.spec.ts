@@ -14,13 +14,20 @@ const creerToken = vi.fn();
 const enqueueEmail = vi.fn();
 const formulesActives = vi.fn();
 const logActivity = vi.fn();
-const outboxUpdate = vi.fn();
+const outboxUpdateMany = vi.fn();
+const LIGNE_CORBEILLE = {
+  template: "devis-envoi",
+  payload: { signatureUrl: "https://axion-ia.com/portail/signer/JETON-SECRET-123", numero: "X" },
+};
 const MAJ = new Date("2026-11-01T10:00:00Z");
 
 // B1 : verrou + relecture du devis + écriture « envoye » gardée, tous DANS la transaction.
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    emailOutbox: { update: (...a: unknown[]) => outboxUpdate(...a) },
+    emailOutbox: {
+      updateMany: (...a: unknown[]) => outboxUpdateMany(...a),
+      findUnique: async () => LIGNE_CORBEILLE,
+    },
     $transaction: (fn: (tx: unknown) => Promise<unknown>) =>
       fn({
         $queryRaw: async () => [{ locked: true }],
@@ -309,10 +316,13 @@ describe("sendDevisAction — devis à formules : le courriel ne part pas", () =
     const r = await sendDevisAction(ID);
     if (!("error" in r)) throw new Error("refus attendu");
     expect(r.error).toContain("Ne le renvoyez pas");
-    expect(outboxUpdate).toHaveBeenCalledWith({
-      where: { id: "ob-1" },
+    expect(outboxUpdateMany).toHaveBeenCalledWith({
+      where: { id: "ob-1", statut: "a_valider" },
       data: expect.objectContaining({ statut: "refuse" }),
     });
+    const ecrit = JSON.stringify(outboxUpdateMany.mock.calls[0]?.[0].data);
+    expect(ecrit).not.toContain("JETON-SECRET");
+    expect(ecrit).toContain("[masqué]");
   });
 });
 

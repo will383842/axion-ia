@@ -182,6 +182,17 @@ describe("marquerRemisEnMainPropreAction", () => {
     expect(actions()).toContain("qualiopi.devis.remis_main_propre_refuse");
   });
 
+  it.each([
+    ["offre renseignée, empreinte absente", { offre: { x: 1 }, offreSha256: null }],
+    ["offre absente, empreinte renseignée", { offre: null, offreSha256: "a".repeat(64) }],
+  ])("devis à formules (%s) : refus, rien produit", async (_nom, over) => {
+    h.txDevisFindUnique.mockResolvedValue(devis(over));
+    expect(erreur(await appel())).toBe("Un devis à formules se signe uniquement en ligne.");
+    expect(h.generateDocument).not.toHaveBeenCalled();
+    rienProduit();
+    expect(actions()).toContain("qualiopi.devis.remis_main_propre_refuse");
+  });
+
   it("devis déjà « envoye » : refus, rien produit", async () => {
     h.txDevisFindUnique.mockResolvedValue(devis({ statut: "envoye" }));
     expect(erreur(await appel())).toContain("Seul un devis en brouillon");
@@ -246,10 +257,18 @@ describe("marquerRemisEnMainPropreAction", () => {
     });
   });
 
-  it("garde d'écriture refusée (count 0) : exception, aucun client touché", async () => {
-    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
-    await expect(appel()).rejects.toThrow();
-    expect(h.txClientUpdateMany).not.toHaveBeenCalled();
+  it("la relecture demande updatedAt et l'écriture gardée l'utilise dans son where", async () => {
+    await appel();
+    expect(h.txDevisFindUnique).toHaveBeenCalledWith(
+      expect.objectContaining({
+        select: expect.objectContaining({ updatedAt: true }),
+      }),
+    );
+    expect(h.txDevisUpdateMany).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: ID, statut: "brouillon", updatedAt: MAJ },
+      }),
+    );
   });
 });
 
