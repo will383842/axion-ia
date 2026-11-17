@@ -101,6 +101,8 @@ function renderMarkdownPreview(text: string): React.ReactNode {
   });
 }
 
+const MESSAGE_PERTE_BROUILLON = "Fermer sans envoyer ? Le message en cours sera perdu.";
+
 interface Props {
   readonly submissionId: string;
   readonly contactName: string;
@@ -222,6 +224,15 @@ export function ReplyComposer({
     });
   }
 
+  /** Fermeture demandée par l'utilisateur : confirme avant de perdre un brouillon. */
+  function demanderFermeture() {
+    const brouillonEnCours =
+      (state.phase === "idle" || state.phase === "failed") &&
+      (body.trim() !== "" || internalNote.trim() !== "");
+    if (brouillonEnCours && !window.confirm(MESSAGE_PERTE_BROUILLON)) return;
+    onClose();
+  }
+
   function onClose() {
     setState({ phase: "idle" });
     setOpen(false);
@@ -243,10 +254,10 @@ export function ReplyComposer({
       aria-labelledby="reply-composer-title"
       className="fixed inset-0 z-50 flex items-start justify-center bg-black/40 p-4 pt-12 sm:items-center sm:pt-4"
     >
-      <div className="bg-paper relative w-full max-w-4xl rounded-lg border border-[color:var(--color-admin-border-default)] p-6 shadow-2xl">
+      <div className="bg-paper relative max-h-[calc(100dvh-4rem)] w-full max-w-4xl overflow-y-auto rounded-lg border border-[color:var(--color-admin-border-default)] p-6 shadow-2xl">
         <button
           type="button"
-          onClick={onClose}
+          onClick={demanderFermeture}
           disabled={state.phase === "sending"}
           aria-label="Fermer"
           className="absolute top-3 right-3 text-2xl leading-none text-[color:var(--color-admin-fg-muted)] hover:text-[color:var(--color-admin-fg-default)] disabled:opacity-40"
@@ -359,14 +370,15 @@ export function ReplyComposer({
             </p>
           )}
 
-          <div className="flex justify-end gap-2">
+          {/* Pied collant : sur un écran peu haut, « Envoyer » reste toujours visible. */}
+          <div className="bg-paper sticky bottom-0 -mx-6 flex justify-end gap-2 border-t border-[color:var(--color-admin-border-default)] px-6 py-3">
             {state.phase === "queued" || state.phase === "sent" ? (
               <button type="button" onClick={onClose} className="admin-button">
                 Fermer
               </button>
             ) : state.phase === "failed" ? (
               <>
-                <button type="button" onClick={onClose} className="admin-button-ghost">
+                <button type="button" onClick={demanderFermeture} className="admin-button-ghost">
                   Fermer
                 </button>
                 {state.replyId ? (
@@ -387,7 +399,7 @@ export function ReplyComposer({
               <>
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={demanderFermeture}
                   className="admin-button-ghost"
                   disabled={state.phase === "sending"}
                 >

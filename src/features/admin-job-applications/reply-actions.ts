@@ -60,6 +60,9 @@ async function requireEcritureCandidature(): Promise<{
   return { userId: session.user.id, nom };
 }
 
+/** Fenêtre dans laquelle deux envois identiques sont un seul envoi (double clic). */
+const FENETRE_DOUBLON_REPONSE_MS = 60_000;
+
 const schemaReponse = z.object({
   applicationId: z.string().uuid(),
   /**
@@ -144,6 +147,40 @@ export async function repondreAuCandidatAction(
     if (!lien) return { ok: false, error: "lien_complement_indisponible" };
     corps = remplirModele(corps, { lien_complement: lien });
   }
+
+  // 🔴 GARDE CONTRE LE DOUBLE ENVOI, CÔTÉ SERVEUR. Le verrou du bouton ne
+  // protège pas d'un second onglet, d'un rejeu réseau ou d'un double clic plus
+  // rapide que le rendu. Une réponse du même auteur, au même candidat, avec le
+  // même objet et le même corps, créée dans la minute et encore `pending` ou
+  // `sent`, est LA MÊME demande : on rend son identifiant au lieu d'en créer une
+  // seconde (idempotent — l'écran affiche « en file » comme pour le premier clic).
+  const recentes = await prisma.jobApplicationReply.findMany({
+    where: {
+      applicationId: candidature.id,
+      repliedByUserId: acteur.userId,
+      subject: data.subject,
+      repliedAt: { gte: new Date(Date.now() - FENETRE_DOUBLON_REPONSE_MS) },
+      deliveryStatus: { in: ["pending", "sent"] },
+    },
+    select: { id: true },
+    orderBy: { repliedAt: "desc" },
+    take: 5,
+  });
+  // Le corps stocké sur la réponse est le HTML rendu ; le texte écrit par
+  // l'auteur est celui du journal, écrit dans la même transaction.
+  const doublon =
+    recentes.length === 0
+      ? null
+      : await prisma.jobApplicationEvent.findFirst({
+          where: {
+            applicationId: candidature.id,
+            type: "email_envoye",
+            body: corps,
+            replyId: { in: recentes.map((r) => r.id) },
+          },
+          select: { replyId: true },
+        });
+  if (doublon?.replyId) return { ok: true, replyId: doublon.replyId };
 
   // 🔑 L'ÉCRITURE PASSE PAR `ecrireEtEnfilerReponse`, ET C'EST LE MÊME CHEMIN
   // QUE L'ENVOI GROUPÉ. Ces cent lignes vivaient ici ; les recopier dans le

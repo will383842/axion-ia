@@ -40,11 +40,18 @@ import {
 } from "@/content/recrutement/modeles-reponse";
 import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
 import { OBJET_MAX } from "@/lib/email/objet-email";
+import {
+  LIBELLE_ENVOYE_EN_ATTENTE,
+  LIBELLE_REMISE_CONFIRMEE,
+  phaseApresSondage,
+} from "@/features/admin-job-applications/etat-envoi";
 
 type Phase =
   | { readonly nom: "repos" }
   | { readonly nom: "envoi" }
   | { readonly nom: "en_file"; readonly replyId: string }
+  /** Accepté par le relais d'envoi (`sent`), remise non confirmée. */
+  | { readonly nom: "envoye" }
   | { readonly nom: "remise" }
   | { readonly nom: "echec"; readonly message: string; readonly replyId?: string };
 
@@ -118,6 +125,14 @@ export function ComposerReponse({
   const [phase, setPhase] = useState<Phase>({ nom: "repos" });
   const [, demarrer] = useTransition();
   const corpsRef = useRef<HTMLTextAreaElement>(null);
+  // 🔴 Verrou synchrone : deux clics rapprochés partent avant que le rendu ne
+  // désactive le bouton. Le verrou d'état ne suffit donc pas.
+  const envoiVerrouille = useRef(false);
+
+  /** Une modification après un envoi réussi rouvre la possibilité d'envoyer. */
+  function rouvrirSiEnvoye(): void {
+    if (phase.nom === "envoye" || phase.nom === "remise") setPhase({ nom: "repos" });
+  }
 
   /**
    * Insère `[libellé](url)` AU CURSEUR — pas en fin de texte. Le composeur
@@ -159,6 +174,12 @@ export function ComposerReponse({
     setCorps(remplirModele(m.corps, valeurs));
   }
 
+  // Le verrou ne se relâche que lorsque l'envoi est tranché côté écran : retour
+  // au repos ou échec. Pendant « en file », « envoyé » et « remise », il reste.
+  useEffect(() => {
+    if (phase.nom === "repos" || phase.nom === "echec") envoiVerrouille.current = false;
+  }, [phase]);
+
   // Sondage de l'état réel après mise en file. S'arrête dès qu'il est tranché.
   useEffect(() => {
     if (phase.nom !== "en_file") return;
@@ -167,10 +188,11 @@ export function ComposerReponse({
     const minuteur = setInterval(() => {
       void etatLivraisonReponseAction(replyId).then((etat) => {
         if (!vivant || !etat) return;
-        if (etat.statut === "sent") {
-          setPhase({ nom: "remise" });
+        const suite = phaseApresSondage(etat.statut);
+        if (suite === "envoye" || suite === "remise") {
+          setPhase({ nom: suite });
           router.refresh();
-        } else if (etat.statut === "failed" || etat.statut === "bounced") {
+        } else if (suite === "echec") {
           setPhase({
             nom: "echec",
             message: etat.erreur ?? "L'envoi a échoué.",
@@ -195,6 +217,8 @@ export function ComposerReponse({
   }, [phase, router]);
 
   function envoyer(): void {
+    if (envoiVerrouille.current) return;
+    envoiVerrouille.current = true;
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void repondreAuCandidatAction({
@@ -219,6 +243,8 @@ export function ComposerReponse({
   }
 
   function rejouer(replyId: string): void {
+    if (envoiVerrouille.current) return;
+    envoiVerrouille.current = true;
     setPhase({ nom: "envoi" });
     demarrer(() => {
       void rejouerReponseEchoueeAction(replyId).then((r) => {
@@ -240,8 +266,12 @@ export function ComposerReponse({
   }
 
   const objetTropLong = objet.length > OBJET_MAX;
+  // Verrouillé pendant l'envoi ET tant que le message est en file ou déjà parti :
+  // un second clic créerait un second e-mail au candidat.
   const envoiPossible =
-    objet.trim().length >= 2 && corps.trim().length > 0 && phase.nom !== "envoi";
+    objet.trim().length >= 2 &&
+    corps.trim().length > 0 &&
+    (phase.nom === "repos" || phase.nom === "echec");
 
   return (
     <div className="admin-form">
@@ -273,7 +303,10 @@ export function ComposerReponse({
           className="admin-input"
           value={objet}
           maxLength={120}
-          onChange={(e) => setObjet(e.target.value)}
+          onChange={(e) => {
+            rouvrirSiEnvoye();
+            setObjet(e.target.value);
+          }}
         />
         {/* 🔑 On AVERTIT, on ne bloque pas. Au-delà de 45 caractères les
             messageries coupent l'objet — c'est une information utile, pas une
@@ -321,7 +354,10 @@ export function ComposerReponse({
             className="admin-input admin-textarea"
             rows={14}
             value={corps}
-            onChange={(e) => setCorps(e.target.value)}
+            onChange={(e) => {
+              rouvrirSiEnvoye();
+              setCorps(e.target.value);
+            }}
           />
           <p className="admin-meta-small">
             Mise en forme : **gras**, *italique*, [libellé](adresse). Une ligne vide sépare deux
@@ -363,10 +399,16 @@ export function ComposerReponse({
             Mise en file — le message n’est pas encore remis.
           </span>
         ) : null}
+        {phase.nom === "envoye" ? (
+          <span role="status" className="admin-alert admin-alert-warning">
+            {" "}
+            {LIBELLE_ENVOYE_EN_ATTENTE}
+          </span>
+        ) : null}
         {phase.nom === "remise" ? (
           <span role="status" className="admin-alert admin-alert-success">
             {" "}
-            Remise confirmée.
+            {LIBELLE_REMISE_CONFIRMEE}
           </span>
         ) : null}
         {phase.nom === "echec" ? (

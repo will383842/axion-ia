@@ -28,6 +28,7 @@ import {
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
+  gabaritLitLeMessage,
   libelleTemplateEmail,
   reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
@@ -207,6 +208,7 @@ export default async function EmailsAValiderPage({
                   ...construireApercu(e.payload),
                 ]}
                 nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
+                accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
                 approuverAction={approuverEmailAction}
                 refuserAction={refuserEmailAction}
               />
