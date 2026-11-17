@@ -325,6 +325,34 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(h.revoquer).toHaveBeenCalledWith(expect.objectContaining({ documentGenereId: "doc-1" }));
   });
 
+  it("(13f) refus de la ligne de corbeille : 0 ligne touchée → alerte Sentry sans lien ni adresse", async () => {
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    h.outboxUpdateMany.mockResolvedValue({ count: 0 });
+    await sendDevisAction(ID);
+    const alertes = h.sentryMessage.mock.calls.map((c) => String(c[0]));
+    const alerte = alertes.find((m) => m.includes("corbeille"));
+    expect(alerte).toBeDefined();
+    expect(alerte).not.toContain("http");
+    expect(alerte).not.toContain("@");
+  });
+
+  it("(13g) contre-témoin : ligne de corbeille refusée (count 1) → aucune alerte « corbeille »", async () => {
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    await sendDevisAction(ID);
+    const alertes = h.sentryMessage.mock.calls.map((c) => String(c[0]));
+    expect(alertes.some((m) => m.includes("corbeille"))).toBe(false);
+  });
+
   it("(13e) relecture de la ligne en échec : le refus est écrit quand même", async () => {
     h.enqueueEmail.mockResolvedValue({
       enqueued: false,
@@ -480,7 +508,14 @@ describe("sendDevisAction — version remplacée signée ou acceptée", () => {
     );
     const r = await sendDevisAction(ID);
     expect(erreur(r)).toBe(
-      "Le client vient de signer la version précédente de ce devis : cette correction n'a pas été émise. Ouvrez la version signée pour la contresigner.",
+      "Le client vient de signer la version précédente de ce devis : cette correction n'a pas été émise. Ouvrez la version signée pour la contresigner. L'e-mail est déjà parti : ne le renvoyez pas.",
+    );
+    // Le journal garde le motif « apres_courriel » (le courriel est parti).
+    expect(h.logActivity).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "qualiopi.devis.send_refuse",
+        changes: { motif: "apres_courriel" },
+      }),
     );
     // Documenté : le courriel avait déjà été enfilé avant la clôture de l'ancienne version.
     expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
@@ -492,6 +527,9 @@ describe("sendDevisAction — version remplacée signée ou acceptée", () => {
     expect(h.revoquer).not.toHaveBeenCalled();
     const alerte = h.sentryMessage.mock.calls[0]?.[0] as string;
     expect(alerte).toContain("version précédente signée entre-temps");
+    // Le client a signé l'ancienne version : l'écran dit « ne le renvoyez pas », l'alerte aussi.
+    expect(alerte).toContain("ouvrir la version signée pour la contresigner");
+    expect(alerte).not.toContain("renvoyer le devis");
     expect(alerte).not.toContain("http");
     expect(alerte).not.toContain("@");
     // Aucune écriture ne ramène l'ancienne version à autre chose que ce qu'elle était : seule la

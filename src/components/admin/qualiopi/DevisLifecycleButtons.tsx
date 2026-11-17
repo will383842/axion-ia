@@ -9,7 +9,9 @@
  *                 montant). Devis classique sans e-mail de contact : une note remplace le bouton ;
  *                 « Remis en main propre… » (devis classique seulement) →
  *                 marquerRemisEnMainPropreAction, après confirmation (dialogue `useConfirmation`, pas de boîte native).
- *   - envoye    : « Marquer accepté » → acceptDevisAction
+ *   - envoye    : (client signé, organisme pas encore : une note renvoie à la contresignature ;
+ *                 signé des deux parties : seul « Marquer accepté » reste, pour finir l'acceptation)
+ *                 « Marquer accepté » → acceptDevisAction
  *                 « Marquer refusé »  → declineDevisAction
  *                 « Corriger et renvoyer » (classique, non signé par le client) →
  *                 reviseDevisAction après confirmation, puis écran /corriger.
@@ -53,6 +55,16 @@ export interface DevisLifecycleButtonsProps {
   destinataire?: string | null;
   /** Le client a déjà signé : « Corriger et renvoyer » n'est plus proposé. */
   clientASigne?: boolean;
+  /** Le client a signé (non révoquée, pièce non annulée) et l'organisme pas encore : il ne reste qu'à contresigner. */
+  signeParClient?: boolean;
+  /** Les deux parties ont signé mais le statut est encore « envoyé » : l'acceptation est à finir. */
+  signeDesDeuxParties?: boolean;
+  /**
+   * Devis À FORMULES signé des deux parties, resté « envoyé » : la reprise se fait par le bloc
+   * « relancer l'acceptation » de la fiche. Aucune action de cycle de vie n'est proposée ici
+   * (`acceptDevisAction` refuserait de toute façon).
+   */
+  repriseParRelance?: boolean;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -75,6 +87,9 @@ export function DevisLifecycleButtons({
   montantHtLabel,
   destinataire = null,
   clientASigne = false,
+  signeParClient = false,
+  signeDesDeuxParties = false,
+  repriseParRelance = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -311,7 +326,7 @@ export function DevisLifecycleButtons({
             target="_blank"
             rel="noopener noreferrer"
             className="admin-button"
-            aria-label="Ouvrir l'aperçu PDF du brouillon (aucun numéro attribué, rien n'est envoyé)"
+            aria-label="Ouvrir l'aperçu PDF du brouillon (aucune pièce numérotée créée, rien n'est envoyé)"
           >
             Aperçu
           </a>
@@ -328,7 +343,25 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Corriger et renvoyer"}
           </button>
         )}
-        {statut === "envoye" && (
+        {statut === "envoye" && signeParClient && (
+          <p
+            data-testid="note-signe-par-client"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Le client a signé ce devis. Contresignez-le dans le bloc « Signature électronique »
+            ci-dessus pour le conclure.
+          </p>
+        )}
+        {statut === "envoye" && signeDesDeuxParties && (
+          <p
+            data-testid="note-signe-des-deux-parties"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été enregistrée.
+            Cliquez sur « Marquer accepté » pour la finir.
+          </p>
+        )}
+        {statut === "envoye" && !signeParClient && !repriseParRelance && (
           <>
             <button
               type="button"
@@ -339,19 +372,21 @@ export function DevisLifecycleButtons({
             >
               {isPending ? "…" : "Marquer accepté"}
             </button>
-            <button
-              type="button"
-              onClick={handleDecline}
-              disabled={isPending}
-              className="admin-button-danger"
-              aria-label="Marquer le devis comme refusé"
-            >
-              {isPending ? "…" : "Marquer refusé"}
-            </button>
+            {!signeDesDeuxParties && (
+              <button
+                type="button"
+                onClick={handleDecline}
+                disabled={isPending}
+                className="admin-button-danger"
+                aria-label="Marquer le devis comme refusé"
+              >
+                {isPending ? "…" : "Marquer refusé"}
+              </button>
+            )}
           </>
         )}
 
-        {(statut === "envoye" || statut === "accepte") && (
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
           <button
             type="button"
             onClick={handleResend}
@@ -362,7 +397,7 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Renvoyer par email"}
           </button>
         )}
-        {statut === "envoye" && (
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
           <p
             data-testid="avertissement-renvoi-lien"
             className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
