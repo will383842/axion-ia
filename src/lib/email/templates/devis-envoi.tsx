@@ -10,10 +10,18 @@
 
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
+import { salutation, type IdentiteSalutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
   clientNom: string;
+  /**
+   * FACULTATIF. Identité structurée du destinataire. Présente (même vide) : le
+   * bonjour suit `salutation()` (« Bonjour Monsieur Dupont, » / prénom seul /
+   * « Bonjour, »), jamais le nom complet. Absente : ancien comportement
+   * (« Bonjour <clientNom>, »).
+   */
+  salutation?: IdentiteSalutation;
   /** N° du devis. Ex. « AXI-DEV-2026-014 ». */
   numero: string;
   /** Montant formaté. Ex. « 2 450,00 € HT ». Optionnel. */
@@ -97,6 +105,11 @@ export function DevisEnvoiEmail({
 }) {
   const p = payload as Partial<Payload>;
   const t = COPY[locale];
+  const identite =
+    typeof p.salutation === "object" && p.salutation !== null && !Array.isArray(p.salutation)
+      ? p.salutation
+      : null;
+  const bonjour = identite ? salutation(identite, locale) : t.intro(field(p, "clientNom", ""));
   const message = field(p, "messagePersonnalise", "");
   const signatureUrl = field(p, "signatureUrl", "");
   const nbFormules = typeof p.nbFormules === "number" && p.nbFormules >= 2 ? p.nbFormules : 0;
@@ -114,7 +127,7 @@ export function DevisEnvoiEmail({
       preview={t.preview(field(p, "montantLabel", ""), field(p, "dateValiditeLabel", ""))}
       {...(signatureUrl !== "" ? { cta: { label: t.signCta, href: signatureUrl } } : {})}
     >
-      <Text style={emailStyles.paragraphStyle}>{t.intro(field(p, "clientNom", ""))}</Text>
+      <Text style={emailStyles.paragraphStyle}>{bonjour}</Text>
       {message !== "" &&
         message.split("\n").map((line, i) => (
           <Text key={i} style={emailStyles.paragraphStyle}>

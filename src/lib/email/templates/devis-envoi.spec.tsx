@@ -34,3 +34,48 @@ describe("devis-envoi : le texte de signature dit le vrai parcours (CGV 6.2)", (
     }
   });
 });
+
+describe("devis-envoi : clé facultative `salutation`", () => {
+  const rendre = async (locale: "fr" | "en", extra: Record<string, unknown>) =>
+    (await renderEmailTemplate("devis-envoi", locale, { numero: "N1", ...extra })).text;
+
+  it("civilité + nom → « Bonjour Monsieur Dupont, », jamais le nom complet", async () => {
+    const t = await rendre("fr", {
+      clientNom: "Michel Dupont",
+      salutation: { civilite: "monsieur", prenom: "Michel", nomFamille: "Dupont" },
+    });
+    expect(t).toContain("Bonjour Monsieur Dupont,");
+    expect(t).not.toContain("Michel Dupont");
+  });
+  it("prénom seul → « Bonjour Michel, »", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: { prenom: "Michel" } });
+    expect(t).toContain("Bonjour Michel,");
+    expect(t).not.toContain("Michel Dupont");
+  });
+  it("clé vide → « Bonjour, » même si clientNom est rempli", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: {} });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Michel");
+  });
+  it("civilité sans nom → prénom, ou « Bonjour, » sans prénom", async () => {
+    expect(await rendre("fr", { salutation: { civilite: "madame", prenom: "Camille" } })).toContain(
+      "Bonjour Camille,",
+    );
+    const t = await rendre("fr", { salutation: { civilite: "madame" } });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Madame");
+  });
+  it("ancien payload : sans clé, rendu identique (clientNom vide puis rempli)", async () => {
+    expect(await rendre("fr", { clientNom: "" })).toContain("Bonjour,");
+    expect(await rendre("fr", {})).toContain("Bonjour,");
+    expect(await rendre("fr", { clientNom: "Acme SAS" })).toContain("Bonjour Acme SAS,");
+    expect(await rendre("en", { clientNom: "Acme" })).toContain("Hello Acme,");
+  });
+  it("version anglaise", async () => {
+    expect(
+      await rendre("en", { salutation: { civilite: "monsieur", nomFamille: "Dupont" } }),
+    ).toContain("Hello Mr Dupont,");
+    expect(await rendre("en", { salutation: { prenom: "Michel" } })).toContain("Hello Michel,");
+    expect(await rendre("en", { salutation: {} })).toContain("Hello,");
+  });
+});
