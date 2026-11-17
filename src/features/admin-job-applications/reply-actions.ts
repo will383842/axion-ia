@@ -196,13 +196,27 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
     select: { id: true, applicationId: true, subject: true, deliveryStatus: true },
   });
   if (!reponse) return { ok: false, error: "candidature_introuvable" };
+  // 🔴 Seule une réponse `failed` se rejoue. `pending` (déjà en file ou en cours
+  // d'envoi : un rejeu ferait partir deux fois le même message), `sent`,
+  // `bounced` (adresse refusée : on ne sait pas distinguer un refus définitif
+  // d'un refus temporaire) et tout autre statut sont refusés, sans mise en file.
   if (reponse.deliveryStatus === "sent") return { ok: false, error: "deja_envoyee" };
+  if (reponse.deliveryStatus !== "failed") return { ok: false, error: "not_retryable" };
 
   const candidature = await prisma.jobApplication.findUnique({
     where: { id: reponse.applicationId },
     select: { locale: true },
   });
   if (!candidature) return { ok: false, error: "candidature_introuvable" };
+
+  // Prise de la ligne AVANT la mise en file, de façon atomique : deux rejeux
+  // simultanés ne passent pas tous les deux (le second ne trouve plus `failed`),
+  // et le worker ne peut plus marquer `sent` puis se faire écraser par `pending`.
+  const prise = await prisma.jobApplicationReply.updateMany({
+    where: { id: reponse.id, deliveryStatus: "failed" },
+    data: { deliveryStatus: "pending", errorMsg: null },
+  });
+  if (prise.count === 0) return { ok: false, error: "not_retryable" };
 
   let misEnFile = false;
   try {
@@ -215,12 +229,17 @@ export async function rejouerReponseEchoueeAction(replyId: string): Promise<Etat
   } catch (e) {
     Sentry.captureException(e);
   }
-  if (!misEnFile) return { ok: false, error: "enqueue_failed", replyId: reponse.id };
+  if (!misEnFile) {
+    // La file a refusé : la ligne redevient rejouable.
+    await prisma.jobApplicationReply
+      .updateMany({
+        where: { id: reponse.id, deliveryStatus: "pending" },
+        data: { deliveryStatus: "failed", errorMsg: "enqueue_failed (file d'envoi indisponible)" },
+      })
+      .catch((e) => Sentry.captureException(e));
+    return { ok: false, error: "enqueue_failed", replyId: reponse.id };
+  }
 
-  await prisma.jobApplicationReply.update({
-    where: { id: reponse.id },
-    data: { deliveryStatus: "pending", errorMsg: null },
-  });
   revalidatePath(adminPath("fr", `contacts/candidatures/${reponse.applicationId}`));
   return { ok: true, replyId: reponse.id };
 }

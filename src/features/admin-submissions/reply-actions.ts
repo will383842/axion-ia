@@ -5,7 +5,7 @@
 //    + email enqueued via worker dédié
 //  - archiver / désarchiver (single + bulk)
 //  - marquer needsAttention=true/false (toggle inbox)
-//  - retry une reply failed/bounced
+//  - retry une reply failed (jamais bounced)
 //
 // Pattern hérité de `admin-submissions/actions.ts` :
 //  - requireAdminWriteSession() (RBAC strict)
@@ -550,7 +550,9 @@ export async function retryFailedReplyAction(
   });
   if (!reply) return { ok: false, error: "not_found" };
 
-  if (reply.deliveryStatus !== "failed" && reply.deliveryStatus !== "bounced") {
+  // Seule une réponse `failed` se rejoue : un rebond (`bounced`) est une adresse
+  // refusée par le serveur du destinataire, sans type (définitif ou temporaire).
+  if (reply.deliveryStatus !== "failed") {
     return { ok: false, error: "not_retryable" };
   }
 

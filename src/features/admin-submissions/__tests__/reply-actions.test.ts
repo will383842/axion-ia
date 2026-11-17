@@ -331,6 +331,22 @@ describe("retryFailedReplyAction", () => {
     expect(enqueueEmailMock).toHaveBeenCalledOnce();
   });
 
+  it.each(["bounced", "pending"])(
+    "🔴 reply %s → not_retryable, ni mise à jour ni mise en file",
+    async (statut) => {
+      submissionReplyFindUnique.mockResolvedValueOnce({
+        id: REPLY_ID,
+        deliveryStatus: statut,
+        submission: { id: VALID_UUID, locale: "fr" },
+      });
+      const { retryFailedReplyAction } = await import("../reply-actions");
+      const result = await retryFailedReplyAction(REPLY_ID);
+      expect(result).toEqual({ ok: false, error: "not_retryable" });
+      expect(submissionReplyUpdate).not.toHaveBeenCalled();
+      expect(enqueueEmailMock).not.toHaveBeenCalled();
+    },
+  );
+
   it("reply déjà sent → not_retryable", async () => {
     submissionReplyFindUnique.mockResolvedValueOnce({
       id: REPLY_ID,
