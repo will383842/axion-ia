@@ -10,6 +10,7 @@ vi.mock("./organisme", () => ({ getOrganismeIdentite: vi.fn() }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi.fn() }));
 vi.mock("@/server/qualiopi/config/flag", () => ({ isQualiopiCertificationObtenue: vi.fn() }));
 
+import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 import { donneesPdfDevis, type DevisPourPdf } from "./donnees-pdf-devis";
 import { DevisPdf } from "./templates/devis";
 import { collectPdfTextNormalized } from "./collect-pdf-text";
@@ -55,10 +56,25 @@ const DEVIS: DevisPourPdf = {
 
 const maintenant = new Date("2026-11-04T10:00:00Z");
 
-function texte(certificationObtenue: boolean): string {
+const MOTS_INTERDITS = [
+  "qualiopi",
+  "opco",
+  "financ",
+  "prise en charge",
+  "reste à charge",
+  "france travail",
+];
+
+function texte(certificationObtenue: boolean, aFormules = false): string {
   const data = donneesPdfDevis(
-    DEVIS,
-    { identite: IDENTITE, regimeTva: "assujetti", tauxStandard: 20, certificationObtenue },
+    aFormules ? { ...DEVIS, offre: offreFictive() } : DEVIS,
+    {
+      identite: IDENTITE,
+      regimeTva: "assujetti",
+      tauxStandard: 20,
+      certificationObtenue,
+      ...(aFormules ? { formulesActives: true } : {}),
+    },
     maintenant,
   );
   return collectPdfTextNormalized(React.createElement(DevisPdf, { data }));
@@ -75,6 +91,25 @@ describe("devis sans mot interdit (A1)", () => {
       "reste à charge",
       "france travail",
     ]) {
+      expect(t, mot).not.toContain(mot);
+    }
+  });
+
+  it("devis à formules, certification non obtenue : aucun mot interdit", () => {
+    const data = donneesPdfDevis(
+      { ...DEVIS, offre: offreFictive() },
+      {
+        identite: IDENTITE,
+        regimeTva: "assujetti",
+        tauxStandard: 20,
+        certificationObtenue: false,
+        formulesActives: true,
+      },
+      maintenant,
+    );
+    expect(data.formules?.formules.length ?? 0).toBeGreaterThan(0);
+    const t = texte(false, true).toLowerCase();
+    for (const mot of MOTS_INTERDITS) {
       expect(t, mot).not.toContain(mot);
     }
   });
