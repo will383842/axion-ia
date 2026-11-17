@@ -251,9 +251,18 @@ export async function submitReviewAction(
     // venait simplement de laisser un avis — un avis n'est pas une demande, et
     // promettre un rappel donnait l'impression que le message n'avait pas été
     // lu. Le nouveau gabarit remercie et explique la modération.
-    await enqueueEmail("avis-recu", d.email, locale, {
-      contactName: `${d.firstName} ${lastInitial}`.trim(),
-    });
+    // L5i : l'avis est DÉJÀ enregistré à ce stade. Un échec d'envoi ne doit
+    // jamais remonter au visiteur comme « une erreur est survenue » : il
+    // réessaierait et créerait un doublon. On trace (Sentry) et on répond ok.
+    try {
+      await enqueueEmail("avis-recu", d.email, locale, {
+        contactName: `${d.firstName} ${lastInitial}`.trim(),
+      });
+    } catch (emailErr) {
+      Sentry.captureException(emailErr, {
+        tags: { action: "submitReviewAction", step: "avis-recu-enqueue", locale },
+      });
+    }
 
     revalidatePath(adminPath("fr", "avis"));
     return { ok: true, reviewId: review.id };
