@@ -82,6 +82,28 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
     ]);
   });
 
+  // Données de test du châssis e-mail (liste de noms de gabarits pour les cliquets) : aucun envoi.
+  const estDonneesTestChassis = (rel: string) =>
+    rel.startsWith("src/lib/email/templates/__tests__/cliquets/");
+  const nommeRelanceOuConfirmation = (f: { rel: string; src: string }) =>
+    /["']questionnaire-avant-audit-(relance|confirmation)["']/.test(f.src) &&
+    !f.rel.startsWith("src/lib/email/templates/questionnaire-avant-audit") &&
+    !estDonneesTestChassis(f.rel);
+
+  it("la garde mord toujours : un fichier de code hors du dossier des cliquets est listé", () => {
+    const src = 'const g = "questionnaire-avant-audit-relance";';
+    expect(nommeRelanceOuConfirmation({ rel: "src/server/x.ts", src })).toBe(true);
+    expect(
+      nommeRelanceOuConfirmation({ rel: "src/lib/email/templates/__tests__/autre.ts", src }),
+    ).toBe(true);
+    expect(
+      nommeRelanceOuConfirmation({
+        rel: "src/lib/email/templates/__tests__/cliquets/g2.ts",
+        src,
+      }),
+    ).toBe(false);
+  });
+
   it("relances et confirmations : seul le suivi les nomme (hors gabarits et registres)", () => {
     const REGISTRES = [
       "src/lib/email/templates/index.tsx",
@@ -91,10 +113,7 @@ describe("le questionnaire de pré-audit ne part que par un clic de Will", () =>
       "src/server/queue/types.ts",
     ];
     const appelants = FICHIERS.filter(
-      (f) =>
-        /["']questionnaire-avant-audit-(relance|confirmation)["']/.test(f.src) &&
-        !REGISTRES.includes(f.rel) &&
-        !f.rel.startsWith("src/lib/email/templates/questionnaire-avant-audit"),
+      (f) => nommeRelanceOuConfirmation(f) && !REGISTRES.includes(f.rel),
     ).map((f) => f.rel);
     expect(appelants).toEqual(["src/features/questionnaire-preaudit/suivi.ts"]);
   });
