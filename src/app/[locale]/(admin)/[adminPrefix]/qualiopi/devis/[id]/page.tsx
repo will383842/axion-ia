@@ -17,6 +17,7 @@ import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { peutCorrigerBrouillonClassique } from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
 import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
@@ -270,6 +271,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
     devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+  // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
+  const estClassique = devis.offre === null && devis.offreSha256 === null;
+  const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
   const lignes = parseLignes(devis.lignes);
   // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
   // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
@@ -342,6 +346,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             ) : null}
             {peutModifierFormules ? (
               <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+            {peutCorrigerClassique ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/corriger`}>
                 Modifier le brouillon
               </AdminButton>
             ) : null}
@@ -753,8 +762,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         <DevisLifecycleButtons
           devisId={devis.id}
           statut={devis.statut}
-          estClassique={devis.offre === null && devis.offreSha256 === null}
+          estClassique={estClassique}
           numero={devis.numero}
+          montantHtLabel={formatEur(devis.montantTotalHtCents)}
+          destinataire={client?.contactEmail ?? null}
+          clientASigne={clientASigne}
         />
         <DevisSuiviLivraison
           devisId={devis.id}

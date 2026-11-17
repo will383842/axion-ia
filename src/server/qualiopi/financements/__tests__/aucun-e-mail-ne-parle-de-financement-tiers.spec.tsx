@@ -241,6 +241,9 @@ describe("(b) le rendu des gabarits ne parle pas de financement par un tiers", (
  * être ajouté ici en connaissance de cause.
  */
 const CONNUS: ReadonlySet<string> = new Set([
+  // Données de test (noms de gabarits dans des listes), aucun envoi ni mise en file.
+  "src/lib/email/__tests__/salutation-jamais-par-nom-complet-toutes-formes.spec.tsx",
+  "src/lib/email/templates/__tests__/cliquets/g4.ts",
   "src/lib/email/templates/__tests__/e-mails-prospects-sans-montant.spec.ts",
   "src/lib/email/templates/__tests__/l-accuse-ne-salue-jamais-par-le-nom-complet.spec.tsx",
   "src/lib/email/templates/__tests__/opco-suivi-entreprise.spec.tsx",

@@ -25,7 +25,13 @@ import {
   lireContextePdfDevis,
   OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
-import { cloreVersionRemplacee } from "@/server/qualiopi/devis/version-remplacee";
+import {
+  cloreVersionRemplacee,
+  MSG_VERSION_REMPLACEE_ACCEPTEE,
+  MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS,
+  versionRemplaceeBloqueEmission,
+  VersionRemplaceeSigneeEntreTempsError,
+} from "@/server/qualiopi/devis/version-remplacee";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -93,7 +99,7 @@ export async function marquerRemisEnMainPropreAction(input: {
             replacesDevisId: true,
             offre: true,
             offreSha256: true,
-            replacesDevis: { select: { documentGenereId: true } },
+            replacesDevis: { select: { statut: true, documentGenereId: true } },
             financementSuggere: true,
             montantTotalHtCents: true,
             montantOpcoEstimeCents: true,
@@ -122,6 +128,15 @@ export async function marquerRemisEnMainPropreAction(input: {
             `Seul un devis en brouillon peut être remis en main propre (statut actuel : ${devis.statut}).`,
             "statut_non_brouillon",
           );
+        }
+        // Révision : version remplacée signée, acceptée ou transformée = refus, avant le PDF.
+        if (
+          await versionRemplaceeBloqueEmission(tx, {
+            replacesDevisId: devis.replacesDevisId,
+            statutRemplace: devis.replacesDevis?.statut,
+          })
+        ) {
+          throw new RemiseRefusee(MSG_VERSION_REMPLACEE_ACCEPTEE, "version_remplacee_signee");
         }
         if (devis.offre !== null || devis.offreSha256 !== null) {
           throw new RemiseRefusee(
@@ -210,6 +225,7 @@ export async function marquerRemisEnMainPropreAction(input: {
           replacesDevisId: devis.replacesDevisId,
           documentGenereIdRemplace: devis.replacesDevis?.documentGenereId,
           numero: devis.numero,
+          statutRemplace: devis.replacesDevis?.statut,
         });
         // (h) Événement « devis émis » dans la MÊME transaction (règle devis.emis du cliquet).
         await emettreDevisEmis(tx, devisId);
@@ -233,6 +249,21 @@ export async function marquerRemisEnMainPropreAction(input: {
         }
       }
       return { error: err.message };
+    }
+    if (err instanceof VersionRemplaceeSigneeEntreTempsError) {
+      // Transaction annulée : le brouillon reste brouillon, l'ancienne version reste « envoye ».
+      try {
+        await logQualiopiActivity({
+          action: "qualiopi.devis.remis_main_propre_refuse",
+          targetType: "Devis",
+          targetId: devisId,
+          changes: { motif: "version_remplacee_signee_entre_temps" },
+          session,
+        });
+      } catch (e) {
+        console.warn("[marquerRemisEnMainPropreAction] journal du refus échoué", e);
+      }
+      return { error: MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS };
     }
     throw err;
   }
