@@ -1875,8 +1875,18 @@ async function handleDevisExpiration(): Promise<void> {
   }
   const now = new Date();
 
+  // A4 — un devis DÉJÀ signé par le client (signature non révoquée) n'attend plus
+  // que la contresignature de l'organisme : il ne doit ni expirer ni être relancé.
+  // Le filtre est posé DANS chaque requête (jamais via une liste d'ids calculée
+  // avant) : une signature peut arriver entre deux requêtes.
+  // Limite connue : si le client signe à l'instant exact du passage, la
+  // contresignature peut encore refuser un devis « expire » (acceptée).
+  const dejaSigneParLeClient = {
+    documentGenere: { signatures: { some: { partie: "client", revokedAt: null } } },
+  } as const;
+
   const res = await prisma.devis.updateMany({
-    where: { statut: "envoye", dateValidite: { lt: now } },
+    where: { statut: "envoye", dateValidite: { lt: now }, NOT: dejaSigneParLeClient },
     data: { statut: "expire" },
   });
 
@@ -1884,6 +1894,7 @@ async function handleDevisExpiration(): Promise<void> {
     where: {
       statut: "envoye",
       sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) },
+      NOT: dejaSigneParLeClient,
     },
     select: {
       id: true,

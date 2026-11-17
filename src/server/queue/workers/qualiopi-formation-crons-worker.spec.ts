@@ -1605,6 +1605,111 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
     await lancer();
     expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
   });
+
+  // ── A4 : un devis déjà signé par le client n'expire plus avant la contresignature ──
+  //
+  // Le filtre est posé DANS la requête (jamais une liste d'ids calculée avant) :
+  // une signature peut arriver entre deux requêtes. Le mock Prisma ne sait pas
+  // évaluer un filtre de relation ; ces tests évaluent donc le `where` reçu sur
+  // un petit jeu de devis, pour vérifier le COMPORTEMENT et pas la forme.
+  type SigFixture = { partie: string; revokedAt: Date | null };
+  type DevisFixture = {
+    id: string;
+    statut: string;
+    dateValidite: Date;
+    sentAt: Date;
+    signatures: SigFixture[];
+  };
+  type WhereDevis = {
+    statut?: string;
+    dateValidite?: { lt: Date };
+    NOT?: {
+      documentGenere?: {
+        signatures?: { some?: { partie?: string; revokedAt?: null } };
+      };
+    };
+  };
+
+  const correspond = (d: DevisFixture, where: WhereDevis): boolean => {
+    if (where.statut !== undefined && d.statut !== where.statut) return false;
+    if (where.dateValidite !== undefined && !(d.dateValidite < where.dateValidite.lt)) return false;
+    const some = where.NOT?.documentGenere?.signatures?.some;
+    if (some !== undefined) {
+      const signe = d.signatures.some(
+        (s) =>
+          (some.partie === undefined || s.partie === some.partie) &&
+          (some.revokedAt === undefined || s.revokedAt === null),
+      );
+      if (signe) return false;
+    }
+    return true;
+  };
+
+  const brancherBase = (base: DevisFixture[]) => {
+    mockPrisma.devis.updateMany.mockImplementation(
+      async (a: { where: WhereDevis; data: { statut: string } }) => {
+        let n = 0;
+        for (const d of base) {
+          if (correspond(d, a.where)) {
+            d.statut = a.data.statut;
+            n++;
+          }
+        }
+        return { count: n };
+      },
+    );
+    mockPrisma.devis.findMany.mockImplementation(async (a: { where: WhereDevis }) =>
+      base.filter((d) => correspond(d, a.where)).map((d) => ({ ...devisDormant(4), id: d.id })),
+    );
+  };
+
+  const echu = (signatures: SigFixture[]): DevisFixture => ({
+    id: "dev-a4",
+    statut: "envoye",
+    dateValidite: new Date(Date.now() - JOUR_MS),
+    sentAt: new Date(Date.now() - 10 * JOUR_MS),
+    signatures,
+  });
+
+  it("A4 — devis signé par le client puis échu : reste « envoye » et n'est pas relancé", async () => {
+    const d = echu([{ partie: "client", revokedAt: null }]);
+    brancherBase([d]);
+
+    await lancer();
+
+    expect(d.statut).toBe("envoye");
+    expect(mockPrisma.relanceProposee.create).not.toHaveBeenCalled();
+  });
+
+  it("A4 — devis non signé puis échu : passe « expire »", async () => {
+    const d = echu([]);
+    brancherBase([d]);
+
+    await lancer();
+
+    expect(d.statut).toBe("expire");
+  });
+
+  it("A4 — signature du client annulée puis échu : passe « expire »", async () => {
+    const d = echu([{ partie: "client", revokedAt: new Date() }]);
+    brancherBase([d]);
+
+    await lancer();
+
+    expect(d.statut).toBe("expire");
+  });
+
+  it("A4 — le filtre est dans la requête d'expiration ET dans la sélection J+3", async () => {
+    await lancer();
+
+    const attendu = {
+      documentGenere: { signatures: { some: { partie: "client", revokedAt: null } } },
+    };
+    const upd = mockPrisma.devis.updateMany.mock.calls[0]![0] as { where: WhereDevis };
+    const sel = mockPrisma.devis.findMany.mock.calls[0]![0] as { where: WhereDevis };
+    expect(upd.where.NOT).toEqual(attendu);
+    expect(sel.where.NOT).toEqual(attendu);
+  });
 });
 
 // ─────────────────────────────────────────────────────────────────────────────
