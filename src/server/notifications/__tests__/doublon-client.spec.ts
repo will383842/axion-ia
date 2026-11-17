@@ -28,7 +28,7 @@ import {
 } from "../enfileur-email";
 import { entiteDeLAlerte, formatDoublonPrive, objetAlerteClient } from "../doublon-client";
 import { resolveConversationPrivee } from "../routing";
-import type { EvenementClient } from "../format-clients";
+import { lignesDetailClient, type EvenementClient } from "../format-clients";
 
 const fetchMock = vi.fn();
 const originalFetch = globalThis.fetch;
@@ -407,6 +407,46 @@ describe("le doublon d'une demande de client", () => {
       expect((p["lignes"] as string[]).join("\n")).toContain(
         "Fiche : https://attaquant.example/login",
       );
+    });
+  });
+
+  describe("🔴 le lien d'annulation du client ne part pas par e-mail (L2b)", () => {
+    const TEMOIN = "https://calendly.com/cancellations/TEMOIN";
+    const lignesEmail = (): string[] =>
+      (enqueueEmailMock.mock.calls[0]![3] as { lignes: string[] }).lignes;
+
+    it.each([
+      ["création", "CLIENT_CALL_BOOKED", {}],
+      [
+        "report",
+        "CLIENT_CALL_RESCHEDULED",
+        { oldStart: RDV.eventStartTime, newStart: "2026-10-21T08:00:00.000Z" },
+      ],
+    ])("%s : absent de l'e-mail, lignes Telegram inchangées", async (_n, category, extra) => {
+      await notify({
+        category: category as never,
+        payload: { ...RDV, ...extra, cancelUrl: TEMOIN } as never,
+        dedupKey: `evt_annul_${category}`,
+        sync: true,
+      });
+      const p = enqueueEmailMock.mock.calls[0]![3] as Record<string, unknown>;
+      expect(JSON.stringify(p)).not.toContain("TEMOIN");
+      expect(lignesEmail().join("\n")).not.toContain("Annuler");
+      // Les lignes Telegram (format-clients) sont inchangées : le lien y reste.
+      expect(
+        lignesDetailClient({ category, payload: { ...RDV, ...extra, cancelUrl: TEMOIN } } as never),
+      ).toContain(`Annuler / déplacer : ${TEMOIN}`);
+    });
+
+    it("une ligne du visiteur qui contient le même texte n'est pas retirée", async () => {
+      const ligneVisiteur = `Annuler / déplacer : ${TEMOIN}`;
+      await notify({
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: { ...DEMANDE, message: ligneVisiteur },
+        dedupKey: "sub_annul",
+        sync: true,
+      });
+      expect(lignesEmail().join("\n")).toContain(ligneVisiteur);
     });
   });
 

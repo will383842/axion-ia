@@ -31,6 +31,7 @@ import { estCategorieClient } from "@/server/notifications/routing";
 import { tracerEchec as tracerEchecAvecPrefixe } from "@/server/notifications/doublon-client";
 import { chargerEnfileurEmail } from "@/server/notifications/enfileur-email";
 import { formatParisDateTime } from "@/server/notifications/format";
+import { ligne } from "@/server/notifications/texte-brut";
 import {
   libelleTypeDemande,
   lienFicheClient,
@@ -95,8 +96,12 @@ const net = (v: string | null | undefined): string | undefined => {
 };
 
 /** Retire UNIQUEMENT la ligne exacte que `lignesDetailClient` a construite (le lien devient le bouton). */
-function sansLigneFiche(lignes: string[], fiche: string): string[] {
-  return lignes.filter((l) => l !== `Fiche : ${fiche}` && l !== `Console : ${fiche}`);
+function sansLigneFiche(lignes: string[], fiche: string, cancelUrl?: string): string[] {
+  // Le lien d'annulation du client reste dans Telegram privé : jamais dans un e-mail à contact@.
+  const annulation = cancelUrl ? ligne("Annuler / déplacer", cancelUrl) : null;
+  return lignes.filter(
+    (l) => l !== `Fiche : ${fiche}` && l !== `Console : ${fiche}` && l !== annulation,
+  );
 }
 
 function elementDe(
@@ -109,7 +114,13 @@ function elementDe(
     nom: c.nom,
     quand: formatParisDateTime(c.quand),
     ...(c.approximatif ? { approximatif: true } : {}),
-    lignes: sansLigneFiche(lignesDetailClient(event), fiche),
+    lignes: sansLigneFiche(
+      lignesDetailClient(event),
+      fiche,
+      "cancelUrl" in event.payload && typeof event.payload.cancelUrl === "string"
+        ? event.payload.cancelUrl
+        : undefined,
+    ),
     consoleUrl: fiche,
   };
 }

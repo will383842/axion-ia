@@ -335,3 +335,22 @@ describe("envoyerRecapVeille", () => {
     await expect(envoyerRecapVeille(MAINTENANT)).resolves.toBe("failed");
   });
 });
+
+describe("🔴 le lien d'annulation du client ne part pas par e-mail (L2b)", () => {
+  const TEMOIN = "https://calendly.com/cancellations/TEMOIN";
+
+  it("réservation : absent de `lignes` et de tout le récap ; le visiteur qui l'écrit reste lu", async () => {
+    d.rdvs.mockResolvedValue([rdv({ cancelUrl: TEMOIN })]);
+    d.submissions.mockResolvedValue([
+      submission({
+        details: { unifiedType: "audit", message: `Annuler / déplacer : ${TEMOIN}` },
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.rendezVous).toHaveLength(1);
+    expect(r.rendezVous[0]!.lignes.join("\n")).not.toContain("TEMOIN");
+    // La ligne du visiteur, qui contient le même texte, n'est pas retirée.
+    expect(r.demandes[0]!.lignes.join("\n")).toContain(`Annuler / déplacer : ${TEMOIN}`);
+    expect(JSON.stringify(r.rendezVous)).not.toContain("TEMOIN");
+  });
+});
