@@ -205,6 +205,18 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
       "occultés (contact@axion-ia.com).",
   },
+  {
+    // Lot I4, fiche F1 : table sans écrivain. La fiche F1b la fait lire ici avant toute mise en service.
+    modele: "EmailManuel",
+    motif:
+      "les e-mails écrits à la main depuis notre console : la fonction n'est pas encore en " +
+      "service et aucun ne vous a été envoyé ; dès sa mise en service, ils vous seront rendus " +
+      "dans cet export.",
+  },
+  {
+    modele: "EmailManuelPieceJointe",
+    motif: "les pièces jointes de ces e-mails : même règle (fonction pas encore en service).",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */

@@ -11,6 +11,7 @@
  * terminée affiche ses dates et la conservation de ses pièces : aucun bouton.
  */
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, useTransition } from "react";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -54,13 +55,7 @@ export interface FinTerminee {
 function Apercu({ sujet, html }: { sujet: string; html: string }) {
   return (
     <div className="mt-[var(--space-admin-3)]">
-      <p className="admin-meta">Aperçu — objet : {sujet}</p>
-      <iframe
-        title="Aperçu de l'e-mail"
-        sandbox=""
-        srcDoc={html}
-        className="admin-card mt-[var(--space-admin-2)] h-80 w-full"
-      />
+      <LecteurEmail html={html} objet={sujet} />
     </div>
   );
 }
