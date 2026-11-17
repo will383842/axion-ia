@@ -22,7 +22,11 @@
  *     (type, date, version du texte annoncé) ;
  *   · les questions qu'on lui a adressées et ses réponses ;
  *   · les e-mails de suivi qui lui ont été préparés (le message lui-même est
- *     rendu avec `email_outbox` / `email_logs`).
+ *     rendu avec `email_outbox` / `email_logs`) ;
+ *   · les e-mails écrits à la main qui lui sont adressés (fiche F1b) : dates, statut, objet, texte
+ *     (ou texte source d'un brouillon), nom, format et taille des pièces jointes — retrouvés par
+ *     l'empreinte de l'une de ses adresses OU par une de ses fiches personne ; jamais l'adresse
+ *     d'un tiers.
  *
  * Tout texte issu d'une conversation est déchiffré par `chiffrer-parole`, qui
  * LÈVE plutôt que de rendre du chiffré ou un texte de remplacement. Une
@@ -205,18 +209,6 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
       "occultés (contact@axion-ia.com).",
   },
-  {
-    // Lot I4, fiche F1 : table sans écrivain. La fiche F1b la fait lire ici avant toute mise en service.
-    modele: "EmailManuel",
-    motif:
-      "les e-mails écrits à la main depuis notre console : la fonction n'est pas encore en " +
-      "service et aucun ne vous a été envoyé ; dès sa mise en service, ils vous seront rendus " +
-      "dans cet export.",
-  },
-  {
-    modele: "EmailManuelPieceJointe",
-    motif: "les pièces jointes de ces e-mails : même règle (fonction pas encore en service).",
-  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */
@@ -272,6 +264,20 @@ export interface ExportDossierClient {
     readonly questions: ReadonlyArray<{ readonly texte: string; readonly reponse: string | null }>;
   }>;
   readonly emailsSuiviPrepares: ReadonlyArray<{ readonly preparesLe: Date }>;
+  /** E-mails écrits à la main à cette personne (fiche F1b) : jamais l'adresse du destinataire. */
+  readonly emailsEcritsALaMain: ReadonlyArray<{
+    readonly creeLe: Date;
+    readonly envoyeLe: Date | null;
+    readonly statut: string;
+    readonly objet: string;
+    /** `corps_source` pour un brouillon, `corps_texte` sinon ; `null` si le contenu a été effacé. */
+    readonly corps: string | null;
+    readonly piecesJointes: ReadonlyArray<{
+      readonly nomFichier: string;
+      readonly format: string;
+      readonly tailleOctets: number;
+    }>;
+  }>;
   /** Tâches de suivi de la fiche liées à cette personne (`client_taches.contact_id`). */
   readonly tachesVousConcernant: ReadonlyArray<{
     readonly intitule: string;
@@ -333,6 +339,7 @@ const VIDE: ExportDossierClient = {
   preuvesAccord: [],
   questionnairesRecus: [],
   emailsSuiviPrepares: [],
+  emailsEcritsALaMain: [],
   tachesVousConcernant: [],
   questionnairesPreauditEnvoyes: [],
   questionnairesPreaudit: [],
@@ -533,6 +540,33 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             select: { creeLe: true },
           });
 
+    // E-mails écrits à la main (fiche F1b) : par l'empreinte de l'une de SES adresses (une ligne sans
+    // `contact_id`, ex. entité `CalendlyEvent`, n'est retrouvable que par là) OU par une de SES
+    // fiches personne. Jamais par la fiche entreprise : les e-mails d'un collègue ne sont pas les siens.
+    const emailsManuels = await prisma.emailManuel.findMany({
+      where: {
+        OR: [{ destinataireHash: { in: toutesEmpreintes } }, { contactId: { in: contactIds } }],
+      },
+      select: {
+        id: true,
+        creeLe: true,
+        envoyeLe: true,
+        statut: true,
+        objet: true,
+        corpsSource: true,
+        corpsTexte: true,
+      },
+      orderBy: { creeLe: "asc" },
+    });
+    const piecesManuelles =
+      emailsManuels.length === 0
+        ? []
+        : await prisma.emailManuelPieceJointe.findMany({
+            where: { emailManuelId: { in: emailsManuels.map((e) => e.id) } },
+            select: { emailManuelId: true, nomFichier: true, format: true, tailleOctets: true },
+            orderBy: { creeLe: "asc" },
+          });
+
     // Les tâches de la fiche liées à SES fiches personne seulement (jamais celles d'une autre
     // personne ni d'une autre fiche) : `responsableLabel` est un libellé interne, pas rendu.
     const taches =
@@ -659,6 +693,20 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
+      emailsEcritsALaMain: emailsManuels.map((e) => ({
+        creeLe: e.creeLe,
+        envoyeLe: e.envoyeLe,
+        statut: e.statut,
+        objet: e.objet,
+        corps: e.statut === "brouillon" ? e.corpsSource : e.corpsTexte,
+        piecesJointes: piecesManuelles
+          .filter((x) => x.emailManuelId === e.id)
+          .map((x) => ({
+            nomFichier: x.nomFichier,
+            format: x.format,
+            tailleOctets: x.tailleOctets,
+          })),
+      })),
       tachesVousConcernant: taches.map((t) => ({
         intitule: t.intitule,
         echeanceLe: t.echeanceLe,

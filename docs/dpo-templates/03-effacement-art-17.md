@@ -19,6 +19,7 @@
 - Submissions / contact / audit / implementation → `eraseSubmissionAction` (Sprint 24/D1, super_admin only).
 - Newsletter → `eraseSubscriberAction` (Sprint 24/D1, super_admin only).
 - Dossier client et enregistrements des visios → `effacerCibleParAdresses` (`src/lib/rgpd-erase.ts`), appelé par `/api/gdpr-erase` : segments de sa voix, faits dont elle est sujet ou locutrice, comptes rendus vidés pour réécriture ; la preuve d'accord reste (art. 17(3)(e)).
+- E-mails écrits à la main depuis une fiche → **étape manuelle du fondateur**, jamais lancée par `/api/gdpr-erase` ni par un automate : `neutraliserEmailsManuelsPour(adresse)` de `src/lib/rgpd-erase.ts`, **une fois par adresse de la personne**. Elle met les lignes à jour en place et ne supprime rien : adresse remplacée par un pseudonyme chiffré (empreinte gardée), nom, objet et corps vidés (pour un stagiaire : seule l'adresse est masquée, le contenu reste), pièces jointes gardées avec un nom neutralisé. **Les fichiers des pièces jointes restent dans le stockage R2** : la fonction rend la liste de leurs clés (`clesStockage`) ; le fondateur décide, à la main, de ce qui y est supprimé. Tant qu'un e-mail écrit à la main existe, la suppression d'une fiche ou d'une personne depuis la console et la purge du pilote **refusent** en clair.
 - Bookings ferme → conservé 10 ans (obligation comptable française) → expliqué dans la réponse.
 
 **Limitations légales à signaler** : factures + bookings = obligation de conservation

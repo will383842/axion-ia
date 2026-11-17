@@ -42,7 +42,8 @@ import {
 } from "@/features/questionnaire-preaudit/portee-rgpd";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
+import { encryptPii } from "@/lib/pii-crypto";
 import { deleteFromR2 } from "@/lib/r2-storage";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
@@ -1156,6 +1157,105 @@ async function pseudonymiserPersonnes(
   return personnes.count;
 }
 
+/** Ce que `neutraliserEmailsManuelsPour` a fait, pour le compte rendu du fondateur. */
+export interface NeutralisationEmailsManuels {
+  readonly emailsNeutralises: number;
+  readonly piecesJointesNeutralisees: number;
+  /**
+   * Clés R2 des pièces jointes de ces e-mails. Aucun objet n'est supprimé ici : le fondateur
+   * décide, avec cette liste, de ce qui part du stockage.
+   */
+  readonly clesStockage: readonly string[];
+}
+
+export const OBJET_EMAIL_MANUEL_EFFACE = "[contenu effacé]";
+export const NOM_PIECE_JOINTE_EFFACE = "[nom effacé]";
+
+/**
+ * GESTE MANUEL du fondateur (art. 17), jamais appelé par `/api/gdpr-erase` ni par un automate :
+ * neutralise les e-mails écrits à la main dont le destinataire a cette adresse (`destinataire_hash`).
+ * Les lignes et les pièces jointes sont GARDÉES et mises à jour en place — rien n'est supprimé
+ * (clés RESTRICT) :
+ *   · `destinataire_chiffre` := `encryptPii("erased:<empreinte>@erased.local")`, empreinte gardée ;
+ *   · `destinataire_nom` := null, `objet` := « [contenu effacé] », `corps_source` et `corps_html`
+ *     := « » (le CHECK `rendu_si_parti` exige un rendu non NULL hors brouillon), `corps_texte` := null ;
+ *   · exception `entite_type = 'Trainee'` (règle formation, `copiesDeFormationAGarder`) : le contenu
+ *     est gardé, seule l'ADRESSE est masquée dans l'objet et le corps ;
+ *   · pièces jointes : lignes gardées, `nom_fichier` neutralisé. Les objets R2 ne sont JAMAIS
+ *     supprimés ici : leurs clés sont rendues au fondateur.
+ * Idempotente : une seconde passe retrouve les mêmes lignes (empreinte gardée) et les laisse dans le
+ * même état. Pour une personne à plusieurs adresses, appeler une fois par adresse.
+ */
+export async function neutraliserEmailsManuelsPour(
+  email: string,
+): Promise<NeutralisationEmailsManuels> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) return { emailsNeutralises: 0, piecesJointesNeutralisees: 0, clesStockage: [] };
+  const pseudonyme = `erased:${empreinte}@erased.local`;
+  const adresses = [...new Set([email.trim(), normalizeEmail(email)])].filter((a) => a !== "");
+  const masquer = (t: string): string =>
+    adresses.reduce((acc, a) => masquerAdresseDansTexte(acc, a), t);
+
+  return prisma.$transaction(
+    async (tx) => {
+      const lignes = await tx.emailManuel.findMany({
+        where: { destinataireHash: empreinte },
+        select: {
+          id: true,
+          entiteType: true,
+          objet: true,
+          corpsSource: true,
+          corpsHtml: true,
+          corpsTexte: true,
+        },
+      });
+      for (const l of lignes) {
+        const destinataire = { destinataireChiffre: encryptPii(pseudonyme) };
+        await tx.emailManuel.updateMany({
+          where: { id: l.id },
+          data:
+            l.entiteType === "Trainee"
+              ? {
+                  ...destinataire,
+                  objet: masquer(l.objet).slice(0, 500),
+                  corpsSource: masquer(l.corpsSource),
+                  corpsHtml: l.corpsHtml === null ? null : masquer(l.corpsHtml),
+                  corpsTexte: l.corpsTexte === null ? null : masquer(l.corpsTexte),
+                }
+              : {
+                  ...destinataire,
+                  destinataireNom: null,
+                  objet: OBJET_EMAIL_MANUEL_EFFACE,
+                  corpsSource: "",
+                  corpsHtml: "",
+                  corpsTexte: null,
+                },
+        });
+      }
+      const ids = lignes.map((l) => l.id);
+      const pieces =
+        ids.length === 0
+          ? []
+          : await tx.emailManuelPieceJointe.findMany({
+              where: { emailManuelId: { in: ids } },
+              select: { cleStockage: true },
+            });
+      if (ids.length > 0) {
+        await tx.emailManuelPieceJointe.updateMany({
+          where: { emailManuelId: { in: ids } },
+          data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+        });
+      }
+      return {
+        emailsNeutralises: lignes.length,
+        piecesJointesNeutralisees: pieces.length,
+        clesStockage: pieces.map((x) => x.cleStockage),
+      };
+    },
+    { timeout: 30_000 },
+  );
+}
+
 /** Périmètre d'une suppression du pilote. */
 interface PerimetrePilote {
   /** Fiches inscrites dans `clients_test_interne`. */
@@ -1184,6 +1284,20 @@ async function supprimerDonneesPilote(
   readonly preuvesAccord: number;
   readonly documentIds: readonly string[];
 }> {
+  // Fiche F1b : un e-mail écrit à la main vers un contact ou une fiche du périmètre n'est JAMAIS
+  // supprimé ni détaché (clés RESTRICT). On refuse AVANT toute suppression, en clair : la levée
+  // annule la transaction entière. Le fondateur traite ces e-mails à la main
+  // (`neutraliserEmailsManuelsPour`, docs/dpo-templates/03-effacement-art-17.md).
+  const emailsManuels = await tx.emailManuel.count({
+    where: {
+      OR: [{ clientId: { in: [...p.clientIds] } }, { contactId: { in: [...p.contactIds] } }],
+    },
+  });
+  if (emailsManuels > 0) {
+    throw new Error(
+      `purge refusée : ${emailsManuels} e-mail(s) écrit(s) à la main, à traiter par le fondateur`,
+    );
+  }
   const faits = await tx.fait.deleteMany({
     where: {
       OR: [{ clientId: { in: [...p.clientIds] } }, { rencontreId: { in: [...p.rencontreIds] } }],
@@ -1985,22 +2099,6 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
       "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
       "à la main, sous le drapeau d'effacement.",
-  },
-  {
-    // Lot I4, fiche F1 (2026-11-18) : table créée par migration seule. Exception provisoire
-    // « sans écrivain » : la fiche F1b la remplace par le traitement réel AVANT tout code qui
-    // écrit dans la table (garde `les-tables-du-dossier-client-suivent-la-personne`).
-    modele: "EmailManuel",
-    motif:
-      "e-mails écrits à la main depuis la console : table sans écrivain (fonction pas encore " +
-      "en service, aucune ligne) ; jamais supprimés (clés RESTRICT) ; leur traitement à " +
-      "l'effacement est livré avant la mise en service.",
-  },
-  {
-    modele: "EmailManuelPieceJointe",
-    motif:
-      "pièces jointes des e-mails écrits à la main : table sans écrivain (fonction pas encore " +
-      "en service, aucune ligne) ; jamais supprimées ; même règle que leur e-mail.",
   },
 ];
 

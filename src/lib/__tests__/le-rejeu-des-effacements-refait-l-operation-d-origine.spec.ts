@@ -93,6 +93,8 @@ vi.mock("@/lib/prisma", () => {
     "clientTache",
     "preRemplissage",
     "enregistrementConsentement",
+    // Fiche F1b : la purge du pilote refuse si un e-mail écrit à la main vise une fiche ou un contact.
+    "emailManuel",
   ];
   const tx: Record<string, unknown> = Object.fromEntries(noms.map((n) => [n, modele(n)]));
   tx["$executeRawUnsafe"] = async () => 0;

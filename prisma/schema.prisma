@@ -5270,7 +5270,6 @@ model Client {
   emailsManuels            EmailManuel[]            @relation("EmailManuelClient")
 
   @@index([statut])
-
   @@index([nafCode])
   @@index([opcoIdentifie])
   // Recherche par SIREN (chantier visio) : l'anti-doublon à la création et

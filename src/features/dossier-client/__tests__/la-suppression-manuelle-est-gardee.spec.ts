@@ -59,6 +59,8 @@ interface Etat {
   /** Lignes d'`email_outbox` REFUSÉES de la fiche, et adresses de ses contacts. */
   refuses: number;
   adresses: number;
+  /** E-mails écrits à la main dont l'empreinte est celle d'une adresse des contacts de la fiche. */
+  emailsManuels: number;
 }
 
 let e: Etat;
@@ -98,7 +100,9 @@ function fabriquer() {
       findMany: vi.fn(async () => Array.from({ length: e.refuses }, (_, i) => ({ id: `o${i}` }))),
       deleteMany: supprime("outbox"),
     },
+    emailManuel: { count: vi.fn(async (_a: { where: Ligne }) => e.emailsManuels) },
     clientContactAdresse: {
+      findMany: vi.fn(async () => [{ emailHash: "h1" }, { emailHash: "h2" }, { emailHash: "h1" }]),
       count: vi.fn(async () => e.adresses),
       deleteMany: supprime("adresses"),
     },
@@ -198,6 +202,7 @@ beforeEach(() => {
     supprimeN: 1,
     refuses: 0,
     adresses: 2,
+    emailsManuels: 0,
   };
 });
 
@@ -398,6 +403,32 @@ describe("suppression manuelle depuis la console", () => {
     expect(
       appels.some((w) => JSON.stringify(w["entityId"]) === JSON.stringify({ in: [CID, "c1"] })),
     ).toBe(true);
+  });
+
+  it("fiche F1b — un e-mail écrit à la main vers une adresse d'un contact bloque, par l'EMPREINTE", async () => {
+    e.emailsManuels = 2;
+    const { tx, base } = fabriquer();
+    const b = await bilanSuppression("client", CID, base);
+    expect(b?.bloquants).toEqual(["2 e-mail(s) écrit(s) à la main lié(e)s"]);
+    // Les empreintes de TOUTES les adresses des contacts de la fiche, sans doublon.
+    expect(tx.emailManuel.count).toHaveBeenCalledWith({
+      where: { destinataireHash: { in: ["h1", "h2"] } },
+    });
+    // Rien n'est supprimé : un bilan seul, puis un refus à la 2e étape.
+    expect(e.appels).toEqual([]);
+  });
+
+  it("fiche F1b — la clé étrangère vers la fiche ou le contact est lue par le catalogue et nommée en clair", async () => {
+    e.fks["clients"]?.push({ table: "emails_manuels", colonne: "client_id" });
+    e.fks["client_contacts"]?.push({ table: "emails_manuels", colonne: "contact_id" });
+    e.comptes = { emails_manuels: 4 };
+    const b = await bilanSuppression("client", CID, fabriquer().base);
+    expect(b?.bloquants).toEqual(["4 e-mail(s) écrit(s) à la main lié(e)s"]);
+  });
+
+  it("fiche F1b — sans e-mail écrit à la main, le bilan est inchangé", async () => {
+    const b = await bilanSuppression("client", CID, fabriquer().base);
+    expect(b?.bloquants).toEqual([]);
   });
 
   it("une clé composée dont la 1re colonne visée est id est COMPTÉE par cette colonne", async () => {
