@@ -11,6 +11,7 @@ import { prisma } from "@/lib/prisma";
 import { isUuid } from "@/lib/is-uuid";
 import { chargerAideDuProjet, type AideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import type { TexteCopie } from "@/components/admin/qualiopi/devis-formules/saisie";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
@@ -150,7 +151,11 @@ export async function chargerAssistantDevis(
       // Un brouillon déjà lié au devis porte SON contenu (récit, textes, champs hors moteur) :
       // on le relit au lieu de réhydrater depuis le devis, sous peine de le perdre.
       const lu = lie ? lirePayload(lie.payload) : null;
-      const ouverture = devisVersPayload(devis as unknown as DevisPourAssistant, tauxStandard);
+      const ouverture = devisVersPayload(
+        devis as unknown as DevisPourAssistant,
+        tauxStandard,
+        isQualiopiCertificationObtenue(),
+      );
       if ("refus" in ouverture) {
         // Un devis créé par l'assistant (brouillon lié lisible) se rouvre même s'il est
         // « classique OPCO » — et SEULEMENT pour ce motif : une offre illisible ou une ligne à

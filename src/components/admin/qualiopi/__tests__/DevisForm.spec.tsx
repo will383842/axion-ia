@@ -6,6 +6,8 @@
  * l'identifiant de l'offre, laissant le PU HT à 0. Les cas ci-dessous décrivent
  * ce que voit l'admin, jamais l'implémentation.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
@@ -207,4 +209,34 @@ describe("DevisForm — ce qui part au serveur", () => {
     expect(screen.getByRole("alert").textContent).toContain("0,00");
     expect(createDevisActionMock).not.toHaveBeenCalled();
   });
+});
+
+const CHEMIN_TVA = "Formations & prestations → Réglages formations → Régime de TVA (facturation)";
+const MOTS_INTERDITS = /opco|cpf|france travail|financ|prise en charge|qualiopi|certification/i;
+
+describe("DevisForm — aide de la mention TVA", () => {
+  it("donne le vrai chemin de menu, sans mot de financement ni de certification", () => {
+    const { container } = render(
+      <DevisForm
+        clients={CLIENTS}
+        offres={OFFRES}
+        activites={[{ value: "formation", label: "Formation" }]}
+        basePath="/fr/adm/qualiopi/devis"
+      />,
+    );
+    expect(container.textContent).toContain(`(${CHEMIN_TVA})`);
+    expect(container.textContent).not.toMatch(MOTS_INTERDITS);
+  });
+});
+
+describe("aide TVA — SessionForm et GenererFactureButton", () => {
+  it.each(["SessionForm.tsx", "GenererFactureButton.tsx"])(
+    "%s porte le même chemin, sans l'ancien « Configuration → Régime de TVA »",
+    (fichier) => {
+      const src = readFileSync(join(__dirname, "..", fichier), "utf8").replace(/\s+/g, " ");
+      expect(src).toContain(`(${CHEMIN_TVA})`);
+      expect(src).not.toContain("Configuration → Régime de TVA");
+      expect(CHEMIN_TVA).not.toMatch(MOTS_INTERDITS);
+    },
+  );
 });
