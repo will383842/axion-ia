@@ -38,6 +38,8 @@ interface Payload {
   dateDebutFormation: string;
   lienQuestionnaire: string;
   numeroSession: string;
+  /** Facultatif : rang de l'envoi (1 = premier, 2 et + = relances). Absent : 1. */
+  rang?: number;
 }
 
 export const qualiopiPositionnementSubject = (
@@ -46,7 +48,11 @@ export const qualiopiPositionnementSubject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return objetCompose("Questionnaire avant votre formation", p.titreFormation ?? "");
+    const prefixe =
+      typeof p.rang === "number" && p.rang >= 2
+        ? "Petit rappel : questionnaire avant votre formation"
+        : "Questionnaire avant votre formation";
+    return objetCompose(prefixe, p.titreFormation ?? "");
   }
   return objetCompose("Questionnaire before your training", p.titreFormation ?? "");
 };
@@ -59,6 +65,7 @@ export function QualiopiPositionnementEmail({
   payload: Record<string, unknown>;
 }) {
   const p = payload as unknown as Payload;
+  const relance = typeof p.rang === "number" && p.rang >= 2;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const ctaHref = p.lienQuestionnaire ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
@@ -75,6 +82,12 @@ export function QualiopiPositionnementEmail({
           première stagiaire réelle — se trompe une fois sur deux dès le
           deuxième dossier. Aucun accord de participe passé au vous dans ce
           fichier : le contexte ne porte pas le genre du destinataire. */}
+      {relance ? (
+        <Text style={emailStyles.paragraphStyle}>
+          <strong>Petit rappel :</strong> votre questionnaire de positionnement n&apos;a pas encore
+          été rempli.
+        </Text>
+      ) : null}
       <Text style={emailStyles.paragraphStyle}>
         Votre inscription à la formation <strong>{p.titreFormation}</strong> est enregistrée. Elle
         débute le <strong>{p.dateDebutFormation}</strong>.
@@ -87,7 +100,8 @@ export function QualiopiPositionnementEmail({
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Merci de le remplir <strong>avant le début de la formation</strong>. Vos réponses servent
-        directement à ajuster le contenu de la journée : sans elles, nous animons à l&apos;aveugle.
+        directement à ajuster le contenu de la formation : sans elles, nous animons à
+        l&apos;aveugle.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Si vous n&apos;avez pas eu le temps, ce n&apos;est pas bloquant : nous le remplirons
