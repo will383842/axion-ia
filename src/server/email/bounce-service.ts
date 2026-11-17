@@ -117,6 +117,62 @@ export function lireRebond(payload: unknown): RebondZeptomail | null {
   };
 }
 
+/** Une plainte pour spam (« feedback loop ») : le destinataire a signalé le message comme indésirable. */
+export interface PlainteZeptomail {
+  /** Destinataire en minuscules, ou `null` si le payload ne le porte pas. */
+  readonly destinataire: string | null;
+  readonly requestId: string | null;
+}
+
+/**
+ * Noms d'événement tenus pour une plainte. Liste COURTE à dessein : la documentation publique de
+ * ZeptoMail ne confirme pas le nom exact de l'événement « Feedback loop ». Un nom trop large
+ * produirait de faux positifs (une adresse écartée à tort) ; un nom absent laisse la fonction
+ * inerte, ce qui est sans danger. Comparés sans tenir compte de la casse.
+ */
+const NOMS_PLAINTE: ReadonlySet<string> = new Set([
+  "feedback_loop",
+  "feedbackloop",
+  "fbl",
+  "spam_complaint",
+  "complaint",
+]);
+
+/** Le nom de l'événement, qu'il soit une chaîne ou un tableau de chaînes (en minuscules). */
+function nomsEvenement(payload: unknown): string[] {
+  const brut = objet(payload)?.["event_name"];
+  const liste = Array.isArray(brut) ? brut : [brut];
+  return liste.flatMap((n) => {
+    const t = texte(n);
+    return t === null ? [] : [t.toLowerCase()];
+  });
+}
+
+/**
+ * Le nom d'un événement ignoré, pour le journal : rien d'autre que ce nom, 40 caractères au plus,
+ * réduit à des caractères sûrs (un endpoint public ne journalise pas du texte libre).
+ */
+export function nomEvenementPourJournal(payload: unknown): string {
+  const nom = nomsEvenement(payload).join(",");
+  return nom.replace(/[^a-z0-9_,.-]/g, "?").slice(0, 40);
+}
+
+/**
+ * Lit une plainte pour spam. Rend `null` si l'événement n'en est pas une (dont les rebonds : leur
+ * chemin ne change pas). Ne lève jamais.
+ */
+export function lirePlainte(payload: unknown): PlainteZeptomail | null {
+  const racine = objet(payload);
+  if (racine === null) return null;
+  if (!nomsEvenement(payload).some((n) => NOMS_PLAINTE.has(n))) return null;
+  const message = objet(racine["event_message"]) ?? {};
+  const emailInfo = objet(message["email_info"]) ?? {};
+  return {
+    destinataire: extraireDestinataire(emailInfo),
+    requestId: texte(message["request_id"]),
+  };
+}
+
 /**
  * Fenêtre de rattachement, en heures.
  *
