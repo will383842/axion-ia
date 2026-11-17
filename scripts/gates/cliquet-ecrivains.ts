@@ -86,6 +86,13 @@ export type RegleEcrivain = {
   readonly emission: string;
   /** Les appels dont le travail (la fonction passée en argument) est transactionnel. */
   readonly transactions: readonly string[];
+  /**
+   * Fonctions NOMMÉES qui écrivent sur le `tx` que leur appelant leur passe en premier paramètre
+   * (`marquerDevisEnvoye(tx, …)`) : elles ne sont pas elles-mêmes l'argument d'un `$transaction`,
+   * leur appelant l'est. E3 les accepte à deux conditions : le premier paramètre s'appelle `tx`,
+   * et E2 (l'émission reçoit ce même `tx`) reste exigée. Une liste NOMMÉE, jamais un motif.
+   */
+  readonly fonctionsSurTxDeLAppelant?: readonly string[];
   /** Le marqueur littéral d'une écriture qui n'est pas un fait du contrat, et pourquoi. */
   readonly horsFait?: {
     readonly champ: string;
@@ -136,6 +143,11 @@ export const REGLES: readonly RegleEcrivain[] = [
     valeurs: ["envoye"],
     emission: "emettreDevisEmis",
     transactions: ["$transaction"],
+    // Lot B2 : `marquerDevisEnvoye(tx, …)` (src/server/qualiopi/devis/marquer-devis-envoye.ts) est
+    // la même étape « écritures » que celle de `sendDevisAction`, appelée DANS le `$transaction`
+    // de `envoyerAvecLienALEnvoi`. Elle reçoit le `tx` de son appelant : E2 vérifie qu'elle
+    // émet sur ce même `tx`.
+    fonctionsSurTxDeLAppelant: ["marquerDevisEnvoye"],
   },
   // INT-T05. Une pièce posée `emise` est une facture OU un avoir : c'est la ligne (`avoirDeId`)
   // qui décide, dans `emettreFaitFacture`. Une seule règle garde donc les deux faits.
@@ -460,6 +472,14 @@ function appelsDans(f: FonctionLike, nom: string): ts.CallExpression[] {
 }
 
 function estTravailDeTransaction(f: FonctionLike, regle: RegleEcrivain): boolean {
+  if (
+    ts.isFunctionDeclaration(f) &&
+    f.name !== undefined &&
+    regle.fonctionsSurTxDeLAppelant?.includes(f.name.text) === true &&
+    f.parameters[0]?.name.getText() === "tx"
+  ) {
+    return true;
+  }
   const parent = f.parent;
   if (!ts.isCallExpression(parent) || !parent.arguments.some((a) => a === f)) return false;
   const cible = parent.expression;
