@@ -31,6 +31,7 @@ import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import { auth } from "@/auth";
 import { AdminPageShell, AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { CATALOGUE, LIBELLE_CATEGORIE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import { renderEmailTemplate } from "@/lib/email/templates";
@@ -84,14 +85,14 @@ export default async function ApercuGabaritPage({
   // Le rendu peut échouer — un gabarit dont un champ requis manquerait lèverait.
   // On le montre au lieu de rendre une page blanche : un aperçu cassé est une
   // information, une page vide n'en est pas une.
-  let rendu: { subject: string; html: string } | null = null;
+  let rendu: { subject: string; html: string; text: string } | null = null;
   let erreur: string | null = null;
   try {
     const r = await renderEmailTemplate(nom, "fr", {
       ...PAYLOAD_EXEMPLE,
       ...(variante !== null ? variantes[variante] : {}),
     });
-    rendu = { subject: r.subject, html: r.html };
+    rendu = { subject: r.subject, html: r.html, text: r.text };
   } catch (e) {
     erreur = e instanceof Error ? e.message : String(e);
   }
@@ -168,14 +169,11 @@ export default async function ApercuGabaritPage({
                 une boîte mail rend un e-mail. L'afficher pleine page donnerait
                 une idée fausse de ce que reçoit le destinataire.
               */}
-              <div className="border-border bg-sand/40 rounded-lg border p-3 sm:p-6">
-                <iframe
-                  title={`Aperçu de ${nom}`}
-                  srcDoc={rendu?.html ?? ""}
-                  sandbox=""
-                  className="border-border bg-paper mx-auto h-[68vh] w-full max-w-[680px] rounded-lg border shadow-sm"
-                />
-              </div>
+              <LecteurEmail
+                html={rendu?.html ?? ""}
+                texte={rendu?.text ?? null}
+                titre={`Aperçu de ${nom}`}
+              />
             </>
           )}
         </AdminCard>

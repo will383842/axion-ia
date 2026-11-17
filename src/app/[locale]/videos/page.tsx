@@ -8,11 +8,18 @@ import { hasLocale } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { EnteteListe, SectionSeries, SectionsTheme } from "@/components/videos/ListesVideos";
+import {
+  EnteteListe,
+  EntreesClassement,
+  FilAriane,
+  SectionSeries,
+  SectionsTheme,
+} from "@/components/videos/ListesVideos";
 import { routing } from "@/i18n/routing";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildListeVideosJsonLd } from "@/lib/seo/video-jsonld";
 import { groupesParSerie, groupesParTheme } from "@/server/videos/groupes";
+import { groupesParBesoin } from "@/server/videos/liees";
 import { videosPubliees } from "@/server/videos/lecture";
 
 interface Props {
@@ -58,7 +65,9 @@ export default async function GalerieVideos({ params }: Props) {
         })}
       />
       <div className="mx-auto w-full max-w-5xl px-4 py-8 md:py-12">
+        <FilAriane etapes={[{ libelle: "Vidéos" }]} />
         <EnteteListe titre={TITRE} intro={DESCRIPTION} />
+        <EntreesClassement themes={groupesParTheme(videos)} besoins={groupesParBesoin(videos)} />
         <SectionsTheme groupes={groupesParTheme(videos)} />
         <SectionSeries groupes={groupesParSerie(videos)} />
       </div>

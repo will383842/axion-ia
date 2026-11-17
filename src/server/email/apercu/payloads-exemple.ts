@@ -144,6 +144,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   cgvVersionLabel: "4 octobre 2026",
   newsletter: 120,
   nom: "Dupont",
+  nomFamille: "Dupont",
   notes: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   numero: "F-2026-0142",
   numeroFacture: "F-2026-0142",

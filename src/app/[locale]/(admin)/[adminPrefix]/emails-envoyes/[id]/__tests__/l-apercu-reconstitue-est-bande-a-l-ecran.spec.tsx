@@ -117,4 +117,30 @@ describe("🔴 l'écran bande l'aperçu reconstitué", () => {
     expect(html).not.toContain("<iframe");
     expect(html).toContain("<pre");
   });
+
+  it("vue texte : les noms des pièces jointes restent lisibles dans le panneau", () => {
+    const html = renderToStaticMarkup(
+      <VueDetailEmail
+        email={{
+          ...EMAIL,
+          copie: {
+            subject: "Convention",
+            html: "<p>x</p>",
+            text: "x",
+            attachmentNames: ["convention.pdf", "programme.pdf"],
+            secretsMasques: 0,
+            createdAt: new Date(),
+          },
+        }}
+        vue="texte"
+        raison={null}
+        apercu={null}
+        base="/fr/p/emails-envoyes"
+        adminPrefix="p"
+      />,
+    );
+    expect(html).not.toContain("<iframe");
+    expect(html).toContain("convention.pdf, programme.pdf");
+    expect(html).toContain("non conservées dans la copie");
+  });
 });
