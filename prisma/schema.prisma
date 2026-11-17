@@ -1656,6 +1656,7 @@ model AdminUser {
   edMembre                    EdMembre?
   auditTerrainSessionsCreees  AuditTerrainSession[] @relation("AuditTerrainSessionCreePar")
   auditTerrainRapportsValides AuditTerrainRapport[] @relation("AuditTerrainRapportValidePar")
+  emailsManuelsEcrits         EmailManuel[]         @relation("EmailManuelEcritPar")
 
   @@index([role])
   @@index([status])
@@ -5265,8 +5266,11 @@ model Client {
   tourDemandes             TourDemande[]             @relation("TourDemandeClient")
   /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
   rapportsAvantAudit       RapportAvantAudit[]
+  /// E-mails écrits à la main vers cette fiche (relation seule ; RESTRICT).
+  emailsManuels            EmailManuel[]            @relation("EmailManuelClient")
 
   @@index([statut])
+
   @@index([nafCode])
   @@index([opcoIdentifie])
   // Recherche par SIREN (chantier visio) : l'anti-doublon à la création et
@@ -14080,6 +14084,8 @@ model ClientContact {
   adresses     ClientContactAdresse[]
   /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
   clientTaches ClientTache[]
+  /// E-mails écrits à la main vers cette personne (relation seule ; RESTRICT).
+  emailsManuels EmailManuel[] @relation("EmailManuelContact")
 
   @@unique([id, clientId])
   @@index([clientId])
@@ -18517,4 +18523,99 @@ model OppositionConvRef {
   creeLe  DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
 
   @@map("oppositions_conv_ref")
+}
+
+// ============================================================
+// E-mails écrits à la main depuis une fiche (chantier e-mails, lot I4, F1)
+// ============================================================
+//
+// Deux tables NEUVES, ajoutées sans toucher à l'existant. Rien ne les lit
+// encore : le worker ne les ouvre qu'à réception d'un job « email-manuel »,
+// que seule l'application à jour émet. Aucune suppression : clés étrangères
+// RESTRICT, jamais de cascade. Texte et non énumération Postgres pour
+// `entiteType` et `statut` (aucune valeur ne pourra être retirée ; l'application
+// et le worker ne partagent pas ce contrat) : les CHECK vivent dans la migration.
+/// rgpd: dossier-client
+model EmailManuel {
+  id                  String    @id @default(uuid()) @db.Uuid
+  /// Tirée par le composeur à l'ouverture : un double clic retrouve la même ligne.
+  cleIdempotence      String    @unique @map("cle_idempotence") @db.VarChar(64)
+  /// `Client` | `ClientContact` | `CalendlyEvent` | `ApporteurReseau` | `Trainer` | `Trainee` (CHECK en base).
+  entiteType          String    @map("entite_type") @db.VarChar(30)
+  /// Texte : `CalendlyEvent.id` est un cuid. Polymorphe, donc sans clé étrangère.
+  entiteId            String    @map("entite_id") @db.VarChar(64)
+  clientId            String?   @map("client_id") @db.Uuid
+  contactId           String?   @map("contact_id") @db.Uuid
+  /// `encryptPii(adresse)`, toujours.
+  destinataireChiffre String    @map("destinataire_chiffre")
+  /// SHA-256 hexadécimal en minuscules (CHECK en base).
+  destinataireHash    String    @map("destinataire_hash") @db.VarChar(64)
+  destinataireNom     String?   @map("destinataire_nom") @db.VarChar(200)
+  expediteurNom       String    @map("expediteur_nom") @db.VarChar(80)
+  objet               String    @db.VarChar(500)
+  /// Markdown léger saisi, salutation comprise.
+  corpsSource         String    @map("corps_source")
+  /// Rendu figé ; NULL tant que la ligne est un brouillon.
+  corpsHtml           String?   @map("corps_html")
+  corpsTexte          String?   @map("corps_texte")
+  tutoiement          Boolean   @default(false)
+  premierContact      Boolean   @default(false) @map("premier_contact")
+  /// `brouillon` | `en_file` | `envoye` | `echec` | `retenu` | `rebondi` (CHECK en base).
+  statut              String    @default("brouillon") @db.VarChar(20)
+  /// Erreur du relais ou motif de retenue, sans adresse.
+  motif               String?
+  tentatives          Int       @default(0)
+  /// Notre `Message-ID`, tiré par l'application.
+  messageId           String?   @unique @map("message_id") @db.VarChar(300)
+  idRelais            String?   @map("id_relais") @db.VarChar(500)
+  inReplyTo           String?   @map("in_reply_to") @db.VarChar(300)
+  referencesEntete    String?   @map("references_entete")
+  ecritParId          String?   @map("ecrit_par_id") @db.Uuid
+  ecritParNom         String    @map("ecrit_par_nom") @db.VarChar(255)
+  creeLe              DateTime  @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe           DateTime  @default(now()) @map("modifie_le") @db.Timestamptz(3)
+  misEnFileLe         DateTime? @map("mis_en_file_le") @db.Timestamptz(3)
+  envoyeLe            DateTime? @map("envoye_le") @db.Timestamptz(3)
+  echecLe             DateTime? @map("echec_le") @db.Timestamptz(3)
+  rebondiLe           DateTime? @map("rebondi_le") @db.Timestamptz(3)
+  /// `hard` | `soft` (CHECK en base).
+  rebondType          String?   @map("rebond_type") @db.VarChar(10)
+
+  client        Client?                  @relation("EmailManuelClient", fields: [clientId], references: [id], onDelete: Restrict)
+  contact       ClientContact?           @relation("EmailManuelContact", fields: [contactId], references: [id], onDelete: Restrict)
+  ecritPar      AdminUser?               @relation("EmailManuelEcritPar", fields: [ecritParId], references: [id], onDelete: SetNull)
+  piecesJointes EmailManuelPieceJointe[]
+
+  @@index([entiteType, entiteId, creeLe(sort: Desc)], map: "emails_manuels_entite_idx")
+  @@index([clientId, creeLe(sort: Desc)], map: "emails_manuels_client_idx")
+  @@index([destinataireHash], map: "emails_manuels_destinataire_hash_idx")
+  @@index([statut], map: "emails_manuels_statut_idx")
+  @@map("emails_manuels")
+}
+
+/// rgpd: dossier-client
+model EmailManuelPieceJointe {
+  id            String   @id @default(uuid()) @db.Uuid
+  /// Jamais de cascade : rien ne disparaît avec une ligne.
+  emailManuelId String   @map("email_manuel_id") @db.Uuid
+  /// Nom ASSAINI (`assainirNomPieceJointe`).
+  nomFichier    String   @map("nom_fichier") @db.VarChar(160)
+  format        String   @db.VarChar(10)
+  /// CHECK en base : > 0 et <= 10485760.
+  tailleOctets  Int      @map("taille_octets")
+  /// Clé R2 tirée par le serveur.
+  cleStockage   String   @unique @map("cle_stockage") @db.VarChar(300)
+  /// `attendue` | `controle` | `acceptee` | `refusee` | `non_recue` (CHECK en base).
+  statut        String   @default("attendue") @db.VarChar(20)
+  motifRefus    String?  @map("motif_refus") @db.VarChar(20)
+  sha256        String?  @db.Char(64)
+  antivirus     String?  @db.VarChar(20)
+  /// Empreinte du jeton d'envoi (jamais le jeton).
+  jetonHash     String?  @map("jeton_hash") @db.Char(64)
+  creeLe        DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  emailManuel EmailManuel @relation(fields: [emailManuelId], references: [id], onDelete: Restrict)
+
+  @@index([emailManuelId], map: "emails_manuels_pieces_jointes_email_idx")
+  @@map("emails_manuels_pieces_jointes")
 }
