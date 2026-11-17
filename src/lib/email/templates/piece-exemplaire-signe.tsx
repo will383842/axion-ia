@@ -71,12 +71,45 @@ function listeSignataires(p: Partial<Payload>): string {
   return `${noms.slice(0, -1).join(", ")} et ${noms[noms.length - 1]}`;
 }
 
+/**
+ * Genre des pièces que les circuits de signature nomment (`parties-requises.ts`).
+ * Les libellés y sont NUS (« devis », « convention de formation ») : il faut donc
+ * poser l'article et accorder le participe. Un libellé inconnu reçoit une phrase
+ * neutre plutôt qu'un accord deviné.
+ */
+const GENRE_PIECE: Readonly<Record<string, "m" | "f">> = {
+  devis: "m",
+  relevé: "m",
+  contrat: "m",
+  document: "m",
+  lettre: "f",
+  convention: "f",
+  autorisation: "f",
+  procuration: "f",
+  pièce: "f",
+};
+
+const PHRASE_NEUTRE_FR = "Le document est désormais signé par toutes les parties.";
+
+/** « devis » ou « la convention de formation » → phrase accordée ; inconnu → phrase neutre. */
+function phraseSigneeFr(libelle: string): string {
+  const nu = libelle
+    .trim()
+    .replace(/^(?:le|la|l['’]|un|une)\s*/i, "")
+    .trim()
+    .toLowerCase();
+  const genre = GENRE_PIECE[nu.split(/\s+/)[0] ?? ""];
+  if (genre === undefined) return PHRASE_NEUTRE_FR;
+  const article = genre === "f" ? "La" : "Le";
+  return `${article} ${nu} est désormais signé${genre === "f" ? "e" : ""} par l'ensemble des parties.`;
+}
+
 const COPY = {
   fr: {
     title: "Votre exemplaire signé",
     intro: "Bonjour,",
     body: (libelle: string) =>
-      `${libelle.charAt(0).toUpperCase()}${libelle.slice(1)} est désormais signée par l'ensemble des parties. Vous en trouverez l'exemplaire complet en pièce jointe.`,
+      `${phraseSigneeFr(libelle)} Vous en trouverez l'exemplaire complet en pièce jointe.`,
     preview: "Toutes les parties ont signé — votre exemplaire est en pièce jointe.",
     // Ce que le destinataire doit RETENIR, et qui n'est écrit nulle part
     // ailleurs : ce PDF est sa copie à lui, pas un accusé de réception.
