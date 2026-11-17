@@ -7,6 +7,7 @@
 // l'e-mail exact, rien ne part avant « Envoyer ». Les règles (une fois par personne,
 // deuxième absence, texte validé, dossier en ligne) sont côté serveur.
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useActionState, useState, useTransition } from "react";
 
 import {
@@ -190,19 +191,10 @@ export function IssueEchangeFormateurForm({
         >
           {apercuPret.email ? (
             <>
-              <p className="text-[length:var(--text-admin-sm)]">
-                <span className="text-[color:var(--color-admin-fg-muted)]">À : </span>
-                {apercuPret.email.destinataire}
-                <br />
-                <span className="text-[color:var(--color-admin-fg-muted)]">Objet : </span>
-                <strong>{apercuPret.email.sujet}</strong>
-              </p>
-              <iframe
-                title="Aperçu de l'e-mail"
-                srcDoc={apercuPret.email.html}
-                sandbox=""
-                referrerPolicy="no-referrer"
-                className="h-[60vh] w-full max-w-[680px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-white"
+              <LecteurEmail
+                html={apercuPret.email.html}
+                a={apercuPret.email.destinataire}
+                objet={apercuPret.email.sujet}
               />
             </>
           ) : (

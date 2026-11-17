@@ -16,6 +16,7 @@
 
 import Link from "next/link";
 import { AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { libelleStatutLigne, TON_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 import type { DetailEmail, RaisonSansCopie } from "@/features/admin-emails/detail";
 import type { ApercuReconstitue } from "@/features/admin-emails/reconstitution-invitation";
@@ -54,6 +55,8 @@ function Rendu({
   vue,
   hrefHtml,
   hrefTexte,
+  a,
+  piecesJointes,
 }: {
   titre: string;
   subject: string;
@@ -62,6 +65,8 @@ function Rendu({
   vue: "html" | "texte";
   hrefHtml: string;
   hrefTexte: string;
+  a?: string;
+  piecesJointes?: readonly string[];
 }): React.ReactElement {
   return (
     <>
@@ -81,30 +86,35 @@ function Rendu({
           Version texte
         </Link>
       </nav>
-      <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] px-4 py-3">
-        <p className="text-[11px] font-medium tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-          Objet
-        </p>
-        <p className="mt-1 text-sm leading-snug font-semibold text-[color:var(--color-admin-fg)]">
-          {subject}
-        </p>
-      </div>
-      <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] p-3 sm:p-6">
-        {vue === "html" ? (
-          // Cadré à 680 px : la largeur à laquelle une boîte mail rend un e-mail.
-          <iframe
-            title={titre}
-            srcDoc={html}
-            sandbox=""
-            referrerPolicy="no-referrer"
-            className="bg-paper mx-auto block h-[70vh] w-full max-w-[680px] rounded-lg border border-[color:var(--color-admin-border)]"
+      {vue === "html" ? (
+        // Lecteur commun : l'objet, le destinataire et les pièces jointes sont dans
+        // son en-tête, et il porte son propre cadre (pas de seconde enveloppe).
+        <div className="mt-[var(--space-admin-3)]">
+          <LecteurEmail
+            html={html}
+            titre={titre}
+            a={a}
+            objet={subject}
+            piecesJointes={piecesJointes}
           />
-        ) : (
-          <pre className="max-h-[70vh] overflow-auto text-xs leading-relaxed whitespace-pre-wrap text-[color:var(--color-admin-fg)]">
-            {text}
-          </pre>
-        )}
-      </div>
+        </div>
+      ) : (
+        <>
+          <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] px-4 py-3">
+            <p className="text-[11px] font-medium tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
+              Objet
+            </p>
+            <p className="mt-1 text-sm leading-snug font-semibold text-[color:var(--color-admin-fg)]">
+              {subject}
+            </p>
+          </div>
+          <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] p-3 sm:p-6">
+            <pre className="text-xs leading-relaxed whitespace-pre-wrap text-[color:var(--color-admin-fg)]">
+              {text}
+            </pre>
+          </div>
+        </>
+      )}
     </>
   );
 }
@@ -169,6 +179,8 @@ export function VueDetailEmail({
                 vue={vue}
                 hrefHtml={hrefHtml}
                 hrefTexte={hrefTexte}
+                a={email.recipient}
+                piecesJointes={email.copie.attachmentNames}
               />
             </>
           ) : (
@@ -217,6 +229,7 @@ export function VueDetailEmail({
                         vue={vue}
                         hrefHtml={hrefHtml}
                         hrefTexte={hrefTexte}
+                        a={email.recipient}
                       />
                     </div>
                   </div>
@@ -267,7 +280,8 @@ export function VueDetailEmail({
             ) : null}
             {email.copie && email.copie.attachmentNames.length > 0 ? (
               <Ligne label="Pièces jointes">
-                {email.copie.attachmentNames.join(", ")}
+                {email.copie.attachmentNames.length} fichier(s), noms dans l&apos;en-tête de
+                l&apos;aperçu
                 <span className="admin-meta-small"> (non conservées dans la copie)</span>
               </Ligne>
             ) : null}
