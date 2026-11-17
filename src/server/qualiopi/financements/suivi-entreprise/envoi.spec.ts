@@ -101,6 +101,7 @@ function pret(conventionPresente = true) {
 
 beforeEach(() => {
   vi.stubEnv("OPCO_SUIVI_ENTREPRISE_ENABLED", "true");
+  vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
   vi.stubEnv("DATABASE_URL", "postgresql://test:test@localhost:5432/test");
   for (const groupe of Object.values(db)) for (const fn of Object.values(groupe)) fn.mockReset();
   for (const fn of Object.values(m)) fn.mockReset();

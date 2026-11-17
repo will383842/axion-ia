@@ -737,7 +737,7 @@ export const TEXTES_FORMATEUR = {
     code: "F30",
     titre: "Mission retirée",
     quand:
-      "la mission ne lui est plus confiée (changement de formateur, financement non accordé, retrait). Motif choisi dans une liste fermée.",
+      "la mission ne lui est plus confiée (changement de formateur, retrait). Motif choisi dans une liste fermée.",
     famille: "B",
     interne: false,
     sollicitation: false,
@@ -748,7 +748,7 @@ export const TEXTES_FORMATEUR = {
         objetPropose: "La mission [intitulé] ne vous est plus confiée",
         paragraphes: [
           "La mission [intitulé] du [date] ne vous est plus confiée.",
-          "La raison : [motif : changement d'organisation du client / financement non accordé / autre choix d'Axion].",
+          "La raison : [motif : changement d'organisation du client / autre choix d'Axion].",
           "Comme le prévoit votre lettre de mission, la moitié des honoraires des journées annulées vous sera réglée, hors forfait de déplacement.",
           "Cela ne remet pas en cause notre collaboration : d'autres missions pourront vous être proposées.",
         ],
