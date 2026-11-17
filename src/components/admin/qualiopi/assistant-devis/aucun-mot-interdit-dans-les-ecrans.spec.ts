@@ -19,6 +19,30 @@ import ts from "typescript";
 
 const RACINE = join(process.cwd(), "src/components/admin/qualiopi/assistant-devis");
 const INTERDIT = /opco|cpf|france travail|financ|prise en charge|qualiopi|certification/i;
+/** Propriétés d'objet dont la valeur est un texte affiché, même d'un seul mot. */
+const PROPRIETES_TEXTE = new Set([
+  "label",
+  "libelle",
+  "titre",
+  "texte",
+  "aide",
+  "message",
+  "placeholder",
+]);
+
+/** Chaîne d'un seul mot retenue : enfant direct d'une expression JSX, ou valeur d'une propriété-texte. */
+function estTexteUnMot(n: ts.Node): boolean {
+  const p = n.parent;
+  if (!p) return false;
+  if (ts.isJsxExpression(p) && !ts.isJsxAttribute(p.parent)) return true;
+  return (
+    ts.isPropertyAssignment(p) &&
+    p.initializer === n &&
+    (ts.isIdentifier(p.name) || ts.isStringLiteral(p.name)) &&
+    PROPRIETES_TEXTE.has(p.name.text)
+  );
+}
+
 const ATTRIBUTS_TEXTE = new Set(["aria-label", "title", "placeholder", "alt", "label"]);
 
 function fichiers(dir: string): string[] {
@@ -65,7 +89,7 @@ export function textesVisibles(
       !dansTypeOuImport(n) &&
       !ts.isJsxAttribute(n.parent) &&
       !(ts.isPropertyAssignment(n.parent) && n.parent.name === n) &&
-      /\s/.test(n.text.trim())
+      (/\s/.test(n.text.trim()) || (n.text.trim() !== "" && estTexteUnMot(n)))
     ) {
       noter(n, n.text);
     } else if (
@@ -96,12 +120,18 @@ describe("assistant de devis — aucun mot interdit dans un texte visible", () =
       'const id = "opco"; // France Travail en commentaire\n' +
       'import x from "@/server/qualiopi/a b";\n' +
       'type T = { a: "financement possible" };\n' +
-      'const o = { "clé avec espace financement": 1, libelle: "Qualiopi pour tous" };\n';
+      'const o = { "clé avec espace financement": 1, libelle: "Qualiopi pour tous" };\n' +
+      'const opts = [{ value: "cpf", label: "CPF" }, { cle: "opco", aide: "OPCO" }];\n' +
+      'const J = () => <option>{"OPCO"}</option>;\n' +
+      'const ok = f.mode === "opco" ? { value: "cpf", type: "opco" } : null;\n';
     const hits = textesVisibles("x.tsx", src).filter((t) => INTERDIT.test(t.texte));
     expect(hits.map((h) => h.texte)).toEqual([
       "Prise en charge OPCO",
       "Le financement est prêt",
       "Qualiopi pour tous",
+      "CPF",
+      "OPCO",
+      "OPCO",
     ]);
   });
 
