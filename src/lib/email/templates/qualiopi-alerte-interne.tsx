@@ -75,7 +75,8 @@ export const qualiopiAlerteInterneSubject = (
   // interne ne veut pas dire illisible, et c'est la boîte de réception de Will
   // qui le reçoit. Le PRÉFIXE (niveau + compte + guichet) est ce qui trie — il
   // n'est jamais rogné ; c'est le titre qui s'abrège.
-  return objetCompose(`${prefix} Alerte Qualiopi${compte} —`, `${p.titre ?? p.code}${pour}`);
+  const nature = /apporteur/i.test(`${p.code} ${p.guichet ?? ""}`) ? "apporteur" : "formation";
+  return objetCompose(`${prefix} Alerte ${nature}${compte} —`, `${p.titre ?? p.code}${pour}`);
 };
 
 export function QualiopiAlerteInterneEmail({
