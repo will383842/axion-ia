@@ -9,6 +9,9 @@
  * gabarit, retirée avant l'enfilage : `v`, `nature`, `documentGenereId`, `partie`, `devisId`,
  * et (premier envoi seulement) `devisUpdatedAt` (ISO) et `pdfCle`.
  *
+ * L'enveloppe est faite pour un envoi qui PART VRAIMENT : un verdict « garé pour validation » est
+ * traité comme « non parti » (jeton révoqué, ancien lien rendu, devis non marqué envoyé).
+ *
  * ⛔ Aucune URL, aucun jeton, aucune adresse dans les journaux, Sentry, Telegram ni messages
  * d'erreur. Aucune erreur brute d'un appel qui a vu le payload n'est journalisée. Aucune erreur
  * postérieure à l'enfilage ne remonte (l'e-mail est parti : on alerte, on ne relance pas).
@@ -27,6 +30,7 @@ import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-cl
 import {
   MSG_VERSION_REMPLACEE_ACCEPTEE,
   versionRemplaceeBloqueEmission,
+  VersionRemplaceeSigneeEntreTempsError,
 } from "@/server/qualiopi/devis/version-remplacee";
 import { rendreLienPrecedent } from "./lien-precedent";
 import { creerTokenDocument, revoquerJetonPrecis, TokenDocumentError } from "./token-document";
@@ -49,6 +53,16 @@ const MSG_PIECE =
 const MSG_PIECE_DIFFERENTE =
   "La pièce du devis a changé : refusez cet e-mail et renvoyez depuis le devis.";
 const MSG_SIGNE = "Le client a déjà signé ce devis : refusez cet e-mail.";
+/** Clé R2 d'un PDF de devis : `documents/<année à 4 chiffres>/devis/<numéro de la pièce>.pdf`
+ *  (même construction que `generateDocument` et `sendDevisAction`). */
+const FORME_CLE_PDF = /^documents\/\d{4}\/devis\/([^/]+)\.pdf$/;
+const cleDevisValide = (cle: string, numeroPiece: unknown): boolean => {
+  const m = FORME_CLE_PDF.exec(cle);
+  return (
+    m !== null && typeof numeroPiece === "string" && numeroPiece !== "" && m[1] === numeroPiece
+  );
+};
+
 const MSG_JETON = "Le lien de signature n'a pas pu être créé : refusez cet e-mail et réessayez.";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -129,8 +143,22 @@ export class EnvoiOccupe extends Error {
 }
 
 const refus = (motif: string): ResultatEnvoi<never> => ({ type: "refus", motif });
-const estEnfile = (v: VerdictEnfilage): boolean =>
-  v.enqueued === true || v.garePourValidation === true;
+/** « Garé pour validation » n'est PAS parti : l'enveloppe ne sert qu'un envoi réel. */
+const estEnfile = (v: VerdictEnfilage): boolean => v.enqueued === true;
+
+/**
+ * Remplace l'erreur brute de `enfiler` (qui peut porter le jeton ou l'adresse) : message fixe,
+ * et `cause` ne porte QUE le nom de la classe d'origine, jamais son message.
+ */
+export class EnvoiNonParti extends Error {
+  constructor(origine: unknown) {
+    super("envoi non parti");
+    this.name = "EnvoiNonParti";
+    this.cause = origine instanceof Error ? origine.name : "inconnue";
+  }
+}
+
+type Enfiler<R> = (payload: Record<string, unknown>, recipient: string) => Promise<R>;
 
 /** Jamais l'erreur brute : seule sa classe, sous un message fixe. */
 function signaler(action: string, cause: unknown): void {
@@ -143,17 +171,18 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
   ligne: LigneALEnvoi;
   payload: Record<string, unknown>;
   acteur: { session: AdminSession };
-  enfiler: (payload: Record<string, unknown>) => Promise<R>;
+  enfiler: Enfiler<R>;
 }): Promise<ResultatEnvoi<R>> {
   const { ligne, payload, acteur, enfiler } = input;
   const marqueur = lireMarqueur(payload);
 
   // Lignes anciennes et autres gabarits : INCHANGÉ.
-  if (marqueur === null) return { type: "envoi", res: await enfiler(payload) };
+  if (marqueur === null) return { type: "envoi", res: await enfiler(payload, ligne.recipient) };
 
   if (
     "invalide" in marqueur ||
     ligne.template !== GABARIT_DEVIS_ENVOI ||
+    ligne.entityType !== "Devis" ||
     ligne.entityId !== marqueur.devisId
   ) {
     return refus(MSG_INCOHERENT);
@@ -170,7 +199,7 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
   ligne: LigneALEnvoi;
   payload: Record<string, unknown>;
   acteur: { session: AdminSession };
-  enfiler: (payload: Record<string, unknown>) => Promise<R>;
+  enfiler: Enfiler<R>;
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-premier-envoi" }>;
 }): Promise<ResultatEnvoi<R>> {
   const { ligne, payload, acteur, enfiler, marqueur } = a;
@@ -226,10 +255,19 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           }
           const piece = await tx.documentGenere.findUnique({
             where: { id: marqueur.documentGenereId },
-            select: { id: true, clientId: true, type: true },
+            select: { id: true, clientId: true, type: true, numero: true },
           });
           if (piece === null || piece.clientId !== devis.clientId || piece.type !== "devis") {
             return refus(MSG_PIECE);
+          }
+          // Défense en profondeur contre un marqueur forgé : la pièce n'est désignée par aucun
+          // AUTRE devis, et la clé PDF est celle de CETTE pièce.
+          const autreDevis = await tx.devis.findFirst({
+            where: { documentGenereId: piece.id, NOT: { id: devis.id } },
+            select: { id: true },
+          });
+          if (autreDevis !== null || !cleDevisValide(marqueur.pdfCle, piece.numero)) {
+            return refus(MSG_INCOHERENT);
           }
 
           // (c) URL de base AVANT le jeton (si elle lève, aucun jeton n'existe).
@@ -254,7 +292,12 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           }
 
           // (d) Enfilage : dernier effet externe, AVANT toute écriture.
-          const verdict = await enfiler(payloadPourEnvoi(payload, `${base}${token}`));
+          let verdict: R;
+          try {
+            verdict = await enfiler(payloadPourEnvoi(payload, `${base}${token}`), ligne.recipient);
+          } catch (err) {
+            throw new EnvoiNonParti(err);
+          }
           if (!estEnfile(verdict)) {
             await revoquerLeJeton(etat.tokenId);
             return { type: "envoi", res: verdict };
@@ -282,15 +325,21 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
       });
   } catch (err) {
     if (etat.verdict !== null) {
-      // L'e-mail est parti (ou attend sa validation) : on ne relance JAMAIS (l'approbation
+      // L'e-mail est parti : on ne relance JAMAIS (l'approbation
       // remettrait la ligne en attente et l'e-mail repartirait). Le jeton reste valable.
-      alerterApresEnfilage(etat.numero, err);
+      await traiterEchecApresEnfilage({
+        acteur,
+        devisId: marqueur.devisId,
+        numero: etat.numero,
+        cause: err,
+      });
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;
     // Exception AVANT ou PENDANT l'enfilage : rien n'est parti.
     if (etat.tokenId !== null) await revoquerLeJeton(etat.tokenId);
-    throw err;
+    // Jamais l'erreur brute : elle peut avoir vu le payload (jeton, adresse).
+    throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);
   }
 }
 
@@ -325,20 +374,45 @@ async function journaliserEnvoi(
   }
 }
 
-/** Texte repris de `sendDevisAction` ; ni adresse, ni lien. Ne lève jamais. */
-function alerterApresEnfilage(numero: string, cause: unknown): void {
+/**
+ * Les écritures ont échoué APRÈS l'enfilage : alerte (texte repris de `sendDevisAction`, ni
+ * adresse ni lien) et trace de journal `qualiopi.devis.send_refuse` / `apres_courriel`. Ne lève
+ * jamais : l'e-mail est parti.
+ */
+async function traiterEchecApresEnfilage(a: {
+  acteur: { session: AdminSession };
+  devisId: string;
+  numero: string;
+  cause: unknown;
+}): Promise<void> {
+  const causeAlerte =
+    a.cause instanceof VersionRemplaceeSigneeEntreTempsError
+      ? " Cause : version précédente signée entre-temps."
+      : "";
   try {
-    signaler("lienALEnvoi.apres_enfilage", cause);
+    signaler("lienALEnvoi.apres_enfilage", a.cause);
     Sentry.captureMessage(
-      `Devis ${numero} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
+      `Devis ${a.numero} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
       { level: "error", tags: { action: "lienALEnvoi.apres_enfilage_message" } },
     );
     sendTelegram({
       tag: "AUTO",
-      body: `🔴 Devis ${numero} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
+      body: `🔴 Devis ${a.numero} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
     }).catch(() => {});
   } catch {
     // Une alerte qui échoue ne remonte pas : l'e-mail est parti.
+  }
+  try {
+    await logQualiopiActivity({
+      action: "qualiopi.devis.send_refuse",
+      targetType: "Devis",
+      targetId: a.devisId,
+      // Le MOTIF seulement : ni adresse, ni lien, ni jeton.
+      changes: { motif: "apres_courriel" },
+      session: a.acteur.session,
+    });
+  } catch (err) {
+    signaler("lienALEnvoi.journal_refus", err);
   }
 }
 
@@ -347,7 +421,7 @@ function alerterApresEnfilage(numero: string, cause: unknown): void {
 async function renvoi<R extends VerdictEnfilage>(a: {
   ligne: LigneALEnvoi;
   payload: Record<string, unknown>;
-  enfiler: (payload: Record<string, unknown>) => Promise<R>;
+  enfiler: Enfiler<R>;
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-renvoi" }>;
 }): Promise<ResultatEnvoi<R>> {
   const { ligne, payload, enfiler, marqueur } = a;
@@ -377,8 +451,9 @@ async function renvoi<R extends VerdictEnfilage>(a: {
   // URL de base AVANT le jeton : créer le jeton révoque l'ancien lien.
   const base = publicUrl("/fr/portail/signer/").toString();
   let url: string;
+  let tokenId: string;
   try {
-    const { token } = await creerTokenDocument({
+    const cree = await creerTokenDocument({
       documentGenereId: marqueur.documentGenereId,
       partie: "client",
       signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
@@ -386,7 +461,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       signataireQualite: devis.client.contactFonction,
       borneMetier: devis.dateValidite,
     });
-    url = `${base}${token}`;
+    url = `${base}${cree.token}`;
+    tokenId = cree.tokenId;
   } catch (err) {
     if (err instanceof TokenDocumentError) return refus(err.message);
     signaler("lienALEnvoi.jeton_renvoi", err);
@@ -395,20 +471,26 @@ async function renvoi<R extends VerdictEnfilage>(a: {
 
   let verdict: R;
   try {
-    verdict = await enfiler(payloadPourEnvoi(payload, url));
+    verdict = await enfiler(payloadPourEnvoi(payload, url), ligne.recipient);
   } catch (err) {
-    await rendreAncienLien(url);
-    throw err;
+    await rendreAncienLien(url, tokenId);
+    throw new EnvoiNonParti(err);
   }
-  if (!estEnfile(verdict)) await rendreAncienLien(url);
+  if (!estEnfile(verdict)) await rendreAncienLien(url, tokenId);
   return { type: "envoi", res: verdict };
 }
 
-/** L'ancien lien redevient vivant ; JAMAIS le mode « supprimer ». Ne lève jamais. */
-async function rendreAncienLien(url: string): Promise<void> {
+/**
+ * L'ancien lien redevient vivant ; JAMAIS le mode « supprimer ». Si rien n'a pu être rendu
+ * (`false`, ou exception), le jeton NEUF ne doit pas rester vivant alors que rien n'est parti :
+ * il est révoqué par son identifiant. Ne lève jamais.
+ */
+async function rendreAncienLien(url: string, tokenId: string): Promise<void> {
   try {
-    await rendreLienPrecedent(url, "revoquer");
+    const rendu = await rendreLienPrecedent(url, "revoquer");
+    if (rendu === false) await revoquerLeJeton(tokenId);
   } catch (err) {
     signaler("lienALEnvoi.rendre_lien", err);
+    await revoquerLeJeton(tokenId);
   }
 }

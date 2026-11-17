@@ -11,7 +11,13 @@
  * Tout passe par le `tx` reçu : si l'appelant annule sa transaction, rien n'est écrit.
  *
  * ⚠️ Volontairement écrit À CÔTÉ de `src/server/actions/qualiopi/devis.ts` (modifié en parallèle
- * par d'autres lots) : le branchement et la suppression du doublon viendront dans une PR suivante.
+ * par d'autres lots) : aujourd'hui il y a DEUX copies de cette étape. `sendDevisAction` sera
+ * branchée sur cette fonction dans la PR suivante, qui supprimera le doublon ; la clé du verrou
+ * `devis.envoi:` (aujourd'hui répétée dans `sendDevisAction`, la remise en main propre et
+ * `lien-a-l-envoi.ts`) sera alors extraite en UNE seule fonction.
+ *
+ * Cliquet : cette fonction figure, par fichier ET par nom, dans `fonctionsSurTxDeLAppelant` de
+ * `scripts/gates/cliquet-ecrivains.ts` ; tout appel doit recevoir le `tx` de sa transaction.
  */
 
 import type { Prisma } from "../../../../prisma/generated/client";

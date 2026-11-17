@@ -8,6 +8,8 @@ const h = vi.hoisted(() => ({
   queryRaw: vi.fn(),
   txDevisFindUnique: vi.fn(),
   txDocFindUnique: vi.fn(),
+  txDevisFindFirst: vi.fn(),
+  commitEchec: { v: false },
   devisFindUnique: vi.fn(),
   devisCount: vi.fn(),
   txOptions: vi.fn(),
@@ -33,13 +35,18 @@ vi.mock("@/lib/prisma", () => ({
     },
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
-      return f(tx);
+      const r = await f(tx);
+      if (h.commitEchec.v) throw new Error(`commit échoué ${ADRESSE} /portail/signer/${TOKEN}`);
+      return r;
     },
   },
 }));
 const tx = {
   $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
-  devis: { findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a) },
+  devis: {
+    findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
+    findFirst: (...a: unknown[]) => h.txDevisFindFirst(...a),
+  },
   documentGenere: { findUnique: (...a: unknown[]) => h.txDocFindUnique(...a) },
 };
 
@@ -75,8 +82,10 @@ vi.mock("@/lib/public-url", () => ({
   publicUrl: (p: string) => new URL(p, "https://exemple.test"),
 }));
 
+import { VersionRemplaceeSigneeEntreTempsError } from "@/server/qualiopi/devis/version-remplacee";
 import {
   envoyerAvecLienALEnvoi,
+  EnvoiNonParti,
   EnvoiOccupe,
   lireMarqueur,
   payloadPourEnvoi,
@@ -84,6 +93,7 @@ import {
 
 const TOKEN = "JETON-SECRET-XYZ";
 const DEVIS_ID = "11111111-1111-4111-8111-111111111111";
+const NUMERO_PIECE = "AXI-DOC-001";
 const PIECE_ID = "22222222-2222-4222-8222-222222222222";
 const UPDATED = new Date("2026-11-01T10:00:00.000Z");
 const ADRESSE = "dest@client.test";
@@ -104,7 +114,7 @@ const marqueurPremier = (over: Record<string, unknown> = {}) => ({
   partie: "client",
   devisId: DEVIS_ID,
   devisUpdatedAt: UPDATED.toISOString(),
-  pdfCle: "documents/2026/devis/X.pdf",
+  pdfCle: "documents/2026/devis/AXI-DOC-001.pdf",
   ...over,
 });
 const marqueurRenvoi = (over: Record<string, unknown> = {}) => ({
@@ -134,6 +144,10 @@ function devisRelu(over: Record<string, unknown> = {}) {
   };
 }
 
+function pieceLue(over: Record<string, unknown> = {}) {
+  return { id: PIECE_ID, clientId: "c-1", type: "devis", numero: NUMERO_PIECE, ...over };
+}
+
 const enfileOk = async () => ({ enqueued: true });
 
 const toutSerialise = () =>
@@ -149,13 +163,30 @@ let consoleEspions: ReturnType<typeof vi.spyOn>[] = [];
 beforeEach(() => {
   vi.clearAllMocks();
   h.ordre.length = 0;
-  h.queryRaw.mockResolvedValue([{ locked: true }]);
-  h.txDevisFindUnique.mockResolvedValue(devisRelu());
-  h.txDocFindUnique.mockResolvedValue({ id: PIECE_ID, clientId: "c-1", type: "devis" });
+  h.commitEchec.v = false;
+  h.queryRaw.mockImplementation(async () => {
+    h.ordre.push("verrou");
+    return [{ locked: true }];
+  });
+  h.txDevisFindUnique.mockImplementation(async () => {
+    h.ordre.push("relu");
+    return devisRelu();
+  });
+  h.txDocFindUnique.mockImplementation(async () => {
+    h.ordre.push("piece");
+    return pieceLue();
+  });
+  h.txDevisFindFirst.mockImplementation(async () => {
+    h.ordre.push("unicite");
+    return null;
+  });
   h.devisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye" }));
   h.devisCount.mockResolvedValue(1);
   h.formules.mockResolvedValue(true);
-  h.bloque.mockResolvedValue(false);
+  h.bloque.mockImplementation(async () => {
+    h.ordre.push("gardes");
+    return false;
+  });
   h.creerToken.mockImplementation(async () => {
     h.ordre.push("jeton");
     return { token: TOKEN, tokenId: "t-1", expiresAt: new Date() };
@@ -203,7 +234,7 @@ describe("sans marqueur / marqueur invalide / incohérence", () => {
     const payload = { numero: "AXI-1", signatureUrl: "https://ancien" };
     const r = await envoyerAvecLienALEnvoi({ ligne: LIGNE, payload, acteur: ACTEUR, enfiler });
     expect(r).toEqual({ type: "envoi", res: { enqueued: true } });
-    expect(enfiler).toHaveBeenCalledWith(payload);
+    expect(enfiler).toHaveBeenCalledWith(payload, ADRESSE);
     expect(h.creerToken).not.toHaveBeenCalled();
     expect(h.txOptions).not.toHaveBeenCalled();
   });
@@ -216,6 +247,16 @@ describe("sans marqueur / marqueur invalide / incohérence", () => {
       payloadAvec(marqueurPremier()),
     ],
     ["entityId différent", { ...LIGNE, entityId: "autre" }, payloadAvec(marqueurPremier())],
+    [
+      "entityType autre que Devis (premier envoi)",
+      { ...LIGNE, entityType: "Facture" },
+      payloadAvec(marqueurPremier()),
+    ],
+    [
+      "entityType autre que Devis (renvoi)",
+      { ...LIGNE, entityType: "Facture" },
+      payloadAvec(marqueurRenvoi()),
+    ],
   ])("%s : refus, enfiler jamais appelé", async (_n, ligne, payload) => {
     const enfiler = vi.fn(enfileOk);
     const r = await envoyerAvecLienALEnvoi({ ligne, payload, acteur: ACTEUR, enfiler });
@@ -244,7 +285,19 @@ describe("devis-premier-envoi", () => {
     });
     const r = await lancer(enfiler as never);
     expect(r).toEqual({ type: "envoi", res: { enqueued: true } });
-    expect(h.ordre).toEqual(["jeton", "enfiler", "marquer"]);
+    // Verrou → relecture → gardes → pièce → unicité de la pièce → jeton → enfilage → écritures.
+    expect(h.ordre).toEqual([
+      "verrou",
+      "relu",
+      "gardes",
+      "piece",
+      "unicite",
+      "jeton",
+      "enfiler",
+      "marquer",
+    ]);
+    // m3 : l'adresse de la ligne lue en base est passée à `enfiler`.
+    expect((enfiler.mock.calls[0] as unknown[])[1]).toBe(ADRESSE);
     const payload = (enfiler.mock.calls[0] as unknown[])[0] as Record<string, unknown>;
     expect(payload["signatureUrl"]).toBe(`https://exemple.test/fr/portail/signer/${TOKEN}`);
     expect(payload).not.toHaveProperty("lienSignatureALEnvoi");
@@ -314,23 +367,83 @@ describe("devis-premier-envoi", () => {
     ["pièce absente", () => h.txDocFindUnique.mockResolvedValue(null), /pièce/i],
     [
       "pièce d'un autre client",
-      () => h.txDocFindUnique.mockResolvedValue({ id: PIECE_ID, clientId: "c-2", type: "devis" }),
+      () => h.txDocFindUnique.mockResolvedValue(pieceLue({ clientId: "c-2" })),
       /pièce/i,
     ],
     [
       "pièce d'un autre type",
-      () => h.txDocFindUnique.mockResolvedValue({ id: PIECE_ID, clientId: "c-1", type: "facture" }),
+      () => h.txDocFindUnique.mockResolvedValue(pieceLue({ type: "facture" })),
       /pièce/i,
     ],
-  ])("%s : refus, AUCUN jeton, enfiler jamais appelé", async (_n, preparer, motif) => {
-    preparer();
-    const enfiler = vi.fn(enfileOk);
-    const r = await lancer(enfiler as never);
-    expect(r.type).toBe("refus");
-    expect((r as { motif: string }).motif).toMatch(motif);
-    expect(h.creerToken).not.toHaveBeenCalled();
-    expect(enfiler).not.toHaveBeenCalled();
-    expect(h.marquer).not.toHaveBeenCalled();
+    [
+      "un AUTRE devis désigne déjà la pièce",
+      () => h.txDevisFindFirst.mockResolvedValue({ id: "autre-devis" }),
+      /incohérent/i,
+    ],
+    ["clé PDF d'une autre pièce", () => undefined, /incohérent/i, "documents/2026/devis/AUTRE.pdf"],
+    [
+      "clé PDF d'un autre type",
+      () => undefined,
+      /incohérent/i,
+      "documents/2026/facture/AXI-DOC-001.pdf",
+    ],
+    [
+      "clé PDF à année courte",
+      () => undefined,
+      /incohérent/i,
+      "documents/26/devis/AXI-DOC-001.pdf",
+    ],
+    [
+      "clé PDF hors dossier documents",
+      () => undefined,
+      /incohérent/i,
+      "x/documents/2026/devis/AXI-DOC-001.pdf",
+    ],
+    [
+      "clé PDF avec suffixe",
+      () => undefined,
+      /incohérent/i,
+      "documents/2026/devis/AXI-DOC-001.pdf?x=1",
+    ],
+    [
+      "clé PDF : URL signée",
+      () => undefined,
+      /incohérent/i,
+      "https://r2.test/documents/2026/devis/AXI-DOC-001.pdf",
+    ],
+    [
+      "clé PDF avec remontée de dossier",
+      () => undefined,
+      /incohérent/i,
+      "documents/2026/devis/../devis/AXI-DOC-001.pdf",
+    ],
+  ] as [string, () => unknown, RegExp, string?][])(
+    "%s : refus, AUCUN jeton, enfiler jamais appelé",
+    async (_n, preparer, motif, pdfCle) => {
+      preparer();
+      const enfiler = vi.fn(enfileOk);
+      const r = await (pdfCle === undefined
+        ? lancer(enfiler as never)
+        : envoyerAvecLienALEnvoi({
+            ligne: LIGNE,
+            payload: payloadAvec(marqueurPremier({ pdfCle })),
+            acteur: ACTEUR,
+            enfiler: enfiler as never,
+          }));
+      expect(r.type).toBe("refus");
+      expect((r as { motif: string }).motif).toMatch(motif);
+      expect(h.creerToken).not.toHaveBeenCalled();
+      expect(enfiler).not.toHaveBeenCalled();
+      expect(h.marquer).not.toHaveBeenCalled();
+    },
+  );
+
+  it("M2(a) : l'unicité de la pièce se lit dans le tx, hors ce devis", async () => {
+    await lancer(vi.fn(enfileOk) as never);
+    expect(h.txDevisFindFirst).toHaveBeenCalledWith({
+      where: { documentGenereId: PIECE_ID, NOT: { id: DEVIS_ID } },
+      select: { id: true },
+    });
   });
 
   it("TokenDocumentError : refus avec son message, enfiler jamais appelé", async () => {
@@ -351,15 +464,19 @@ describe("devis-premier-envoi", () => {
     expect(h.creerToken).not.toHaveBeenCalled();
   });
 
-  it("enfiler lève : jeton précis révoqué, erreur relancée, rien d'écrit", async () => {
-    const erreur = new Error("boom");
-    await expect(
-      lancer(
-        vi.fn(async () => {
-          throw erreur;
-        }) as never,
-      ),
-    ).rejects.toBe(erreur);
+  it("enfiler lève : jeton précis révoqué, erreur NEUTRE relancée (m1), rien d'écrit", async () => {
+    const erreur = new Error(`boom ${TOKEN} ${ADRESSE}`);
+    const levee = await lancer(
+      vi.fn(async () => {
+        throw erreur;
+      }) as never,
+    ).catch((e: unknown) => e);
+    expect(levee).toBeInstanceOf(EnvoiNonParti);
+    expect(levee).not.toBe(erreur);
+    expect((levee as Error).message).toBe("envoi non parti");
+    expect((levee as Error).cause).toBe("Error");
+    expect(JSON.stringify(levee)).not.toContain(TOKEN);
+    expect(String((levee as Error).stack)).not.toContain(TOKEN);
     expect(h.revoquerPrecis).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
     expect(h.marquer).not.toHaveBeenCalled();
     expect(toutSerialise()).not.toContain(TOKEN);
@@ -370,11 +487,51 @@ describe("devis-premier-envoi", () => {
     ["essai bloqué", { enqueued: false, essaiBloque: true }],
     ["file absente", { enqueued: false }],
     ["corbeille indisponible", { enqueued: false, corbeilleIndisponible: true }],
+    ["garé pour validation (m2)", { enqueued: false, garePourValidation: true, outboxId: "o-2" }],
   ])("%s : jeton révoqué, verdict rendu tel quel, rien d'écrit", async (_n, verdict) => {
     const r = await lancer(vi.fn(async () => verdict) as never);
     expect(r).toEqual({ type: "envoi", res: verdict });
     expect(h.revoquerPrecis).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
     expect(h.marquer).not.toHaveBeenCalled();
+  });
+
+  it("m4 : écritures en échec après enfilage → trace send_refuse/apres_courriel, sans fuite", async () => {
+    h.marquer.mockRejectedValue(new Error(`${ADRESSE} /portail/signer/${TOKEN}`));
+    await lancer(vi.fn(enfileOk) as never);
+    expect(h.log).toHaveBeenCalledTimes(1);
+    expect(h.log).toHaveBeenCalledWith({
+      action: "qualiopi.devis.send_refuse",
+      targetType: "Devis",
+      targetId: DEVIS_ID,
+      changes: { motif: "apres_courriel" },
+      session: (ACTEUR as { session: unknown }).session,
+    });
+    expect(toutSerialise()).not.toContain(TOKEN);
+    expect(toutSerialise()).not.toContain(ADRESSE);
+    expect(toutSerialise()).not.toContain("/portail/signer/");
+  });
+
+  it("m4 : la trace de journal qui échoue ne fait jamais remonter d'erreur", async () => {
+    h.marquer.mockRejectedValue(new Error("x"));
+    h.log.mockRejectedValue(new Error(`${ADRESSE} ${TOKEN}`));
+    const r = await lancer(vi.fn(enfileOk) as never);
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true } });
+    expect(toutSerialise()).not.toContain(TOKEN);
+    expect(toutSerialise()).not.toContain(ADRESSE);
+  });
+
+  it("m4 : version précédente signée entre-temps → « Cause » ajoutée aux deux alertes", async () => {
+    h.marquer.mockRejectedValue(new VersionRemplaceeSigneeEntreTempsError());
+    await lancer(vi.fn(enfileOk) as never);
+    const cause = "Cause : version précédente signée entre-temps.";
+    expect(String(h.sentryMsg.mock.calls[0]?.[0])).toContain(cause);
+    expect(JSON.stringify(h.telegram.mock.calls[0])).toContain(cause);
+  });
+
+  it("m4 : sans cette erreur, pas de « Cause » dans l'alerte", async () => {
+    h.marquer.mockRejectedValue(new Error("autre"));
+    await lancer(vi.fn(enfileOk) as never);
+    expect(String(h.sentryMsg.mock.calls[0]?.[0])).not.toContain("Cause :");
   });
 
   it("écritures en échec APRÈS enfilage : aucune exception, alerte, aucune révocation", async () => {
@@ -444,16 +601,19 @@ describe("devis-renvoi", () => {
     expect(enfiler).not.toHaveBeenCalled();
   });
 
-  it("enfilage en échec (exception) : lien précédent rendu en mode « revoquer », erreur relancée", async () => {
-    const erreur = new Error("boom");
-    await expect(
-      lancer(
-        vi.fn(async () => {
-          throw erreur;
-        }) as never,
-      ),
-    ).rejects.toBe(erreur);
+  it("enfilage en échec (exception) : lien précédent rendu en mode « revoquer », erreur neutre relancée", async () => {
+    const erreur = new Error(`boom ${TOKEN} ${ADRESSE}`);
+    const levee = await lancer(
+      vi.fn(async () => {
+        throw erreur;
+      }) as never,
+    ).catch((e: unknown) => e);
+    expect(levee).toBeInstanceOf(EnvoiNonParti);
+    expect((levee as Error).cause).toBe("Error");
+    expect(JSON.stringify(levee)).not.toContain(TOKEN);
     expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+    // M1 : l'ancien lien est rendu (true) : le jeton neuf n'est PAS révoqué en plus.
+    expect(h.revoquerPrecis).not.toHaveBeenCalled();
     expect(h.rendrePrecedent.mock.calls[0]?.[1]).toBe("revoquer");
     expect(h.rendrePrecedent.mock.calls.every((c) => c[1] !== "supprimer")).toBe(true);
   });
@@ -463,6 +623,71 @@ describe("devis-renvoi", () => {
     const r = await lancer(vi.fn(async () => v) as never);
     expect(r).toEqual({ type: "envoi", res: v });
     expect(h.rendrePrecedent.mock.calls[0]?.[1]).toBe("revoquer");
+    expect(h.revoquerPrecis).not.toHaveBeenCalled();
+  });
+
+  it("garé pour validation (m2) : traité comme non parti, ancien lien rendu", async () => {
+    const v = { enqueued: false, garePourValidation: true, outboxId: "o-2" };
+    const r = await lancer(vi.fn(async () => v) as never);
+    expect(r).toEqual({ type: "envoi", res: v });
+    expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+  });
+
+  it("m3 : enfiler reçoit l'adresse de la ligne", async () => {
+    const enfiler = vi.fn(enfileOk);
+    await lancer(enfiler as never);
+    expect((enfiler.mock.calls[0] as unknown[])[1]).toBe(ADRESSE);
+  });
+
+  it("M1 : rendrePrecedent reçoit l'URL du jeton NEUF", async () => {
+    await lancer(vi.fn(async () => ({ enqueued: false, retenu: "oppose" })) as never);
+    expect(h.rendrePrecedent.mock.calls[0]?.[0]).toBe(
+      `https://exemple.test/fr/portail/signer/${TOKEN}`,
+    );
+  });
+
+  it.each([
+    [
+      "enfilage qui lève",
+      async () => {
+        throw new Error("x");
+      },
+    ],
+    ["enfilage retenu", async () => ({ enqueued: false, retenu: "oppose" })],
+  ])(
+    "M1 : %s et rien à rendre (false) → jeton neuf révoqué par son tokenId",
+    async (_n, enfiler) => {
+      h.rendrePrecedent.mockResolvedValue(false);
+      await lancer(enfiler as never).catch(() => undefined);
+      expect(h.revoquerPrecis).toHaveBeenCalledTimes(1);
+      expect(h.revoquerPrecis).toHaveBeenCalledWith({
+        tokenId: "t-1",
+        motif: "Envoi annulé : rien n'est parti",
+      });
+    },
+  );
+
+  it("M1 : rendrePrecedent lève → jeton neuf révoqué, aucune erreur ne remonte, alerte", async () => {
+    h.rendrePrecedent.mockRejectedValue(new Error(`${TOKEN} ${ADRESSE}`));
+    const v = { enqueued: false, retenu: "oppose" };
+    const r = await lancer(vi.fn(async () => v) as never);
+    expect(r).toEqual({ type: "envoi", res: v });
+    expect(h.revoquerPrecis).toHaveBeenCalledWith({
+      tokenId: "t-1",
+      motif: "Envoi annulé : rien n'est parti",
+    });
+    expect(h.sentryExc).toHaveBeenCalled();
+    expect(toutSerialise()).not.toContain(TOKEN);
+  });
+
+  it("M1 : rendrePrecedent lève ET la révocation échoue → rien ne remonte", async () => {
+    h.rendrePrecedent.mockRejectedValue(new Error("a"));
+    h.revoquerPrecis.mockRejectedValue(new Error("b"));
+    const v = { enqueued: false };
+    await expect(lancer(vi.fn(async () => v) as never)).resolves.toEqual({
+      type: "envoi",
+      res: v,
+    });
   });
 });
 
@@ -497,5 +722,42 @@ describe("aucune fuite, dans tous les cas", () => {
     expect(s).not.toContain(TOKEN);
     expect(s).not.toContain("/portail/signer/");
     expect(s).not.toContain(ADRESSE);
+  });
+
+  it("m1 : exception à l'enfilage au RENVOI, erreur de jeton non typée, échec du commit", async () => {
+    const secret = `${TOKEN} ${ADRESSE} https://exemple.test/fr/portail/signer/${TOKEN}`;
+    const lancerCas = (m: unknown, enfiler: unknown) =>
+      envoyerAvecLienALEnvoi({
+        ligne: LIGNE,
+        payload: payloadAvec(m),
+        acteur: ACTEUR,
+        enfiler: enfiler as never,
+      }).catch((e: unknown) => e);
+    const erreurs: unknown[] = [];
+    // renvoi : exception à l'enfilage
+    erreurs.push(
+      await lancerCas(marqueurRenvoi(), async () => {
+        throw new Error(secret);
+      }),
+    );
+    // jeton : erreur non typée, aux deux natures
+    h.creerToken.mockRejectedValue(new Error(secret));
+    erreurs.push(await lancerCas(marqueurPremier(), enfileOk));
+    erreurs.push(await lancerCas(marqueurRenvoi(), enfileOk));
+    h.creerToken.mockImplementation(async () => ({
+      token: TOKEN,
+      tokenId: "t-1",
+      expiresAt: new Date(),
+    }));
+    // commit échoué après un travail réussi (enfilé : alerte ; non enfilé : erreur neutre)
+    h.commitEchec.v = true;
+    erreurs.push(await lancerCas(marqueurPremier(), enfileOk));
+    erreurs.push(await lancerCas(marqueurPremier(), async () => ({ enqueued: false })));
+    const s =
+      toutSerialise() + JSON.stringify(erreurs.map((e) => [String(e), (e as Error)?.cause]));
+    expect(s).not.toContain(TOKEN);
+    expect(s).not.toContain("/portail/signer/");
+    expect(s).not.toContain(ADRESSE);
+    expect(erreurs[0]).toBeInstanceOf(EnvoiNonParti);
   });
 });

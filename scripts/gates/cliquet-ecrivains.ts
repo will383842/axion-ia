@@ -26,7 +26,8 @@
  * Une entrée de plus dans `REGLES` : le modèle (accesseur Prisma), le champ, la ou les valeurs de
  * l'état, la fonction d'émission, les enveloppes de transaction admises. Rien d'autre à écrire.
  *
- * Deux champs FACULTATIFS (INT-T05), chacun une règle écrite, jamais une liste d'exceptions :
+ * Deux champs FACULTATIFS (INT-T05), chacun une règle écrite — pas une liste d'exceptions
+ * (la seule liste NOMMÉE, `fonctionsSurTxDeLAppelant`, est décrite plus bas, avec sa règle E4) :
  *   · `horsFait` — une écriture dont les données posent, EN LITTÉRAL, un marqueur qui dit
  *     « ceci n'est pas un fait du contrat » (`estImportee: true` : une facture reprise
  *     d'historique, émise hors du système). Elle est IMPRIMÉE comme classée, jamais tue.
@@ -58,6 +59,20 @@
  * basculer d'elle-même parmi les écrivains. Et `tableSql` : une écriture SQL brute (`INSERT
  * INTO` / `UPDATE`) sur la table est indécidable (E0) — le cliquet ne lit pas le SQL.
  *
+ * Une liste NOMMÉE, et pourquoi elle est tolérable (lot B2) : `fonctionsSurTxDeLAppelant` liste des
+ * fonctions qui écrivent sur le `tx` que leur appelant leur passe — elles ne sont donc pas
+ * elles-mêmes l'argument d'un `$transaction`, et E3 seule les refuserait. Une liste d'exceptions
+ * est dangereuse quand elle dispense d'une règle sans rien exiger en retour. Celle-ci exige, des
+ * DEUX côtés :
+ *   · côté fonction : chaque entrée est un COUPLE `{ fichier, fonction }` (le même nom ailleurs
+ *     ne passe pas), son premier paramètre s'appelle `tx`, et E1-E2 restent exigées (l'émission
+ *     reçoit ce même `tx`) ;
+ *   · côté appelants (E4) : tout appel à une fonction listée, partout dans `src/`, doit se trouver
+ *     DIRECTEMENT dans une fonction qui est le travail d'une transaction (E3), avec en premier
+ *     argument le premier paramètre de ce travail. Un appel avec `prisma`, hors transaction, depuis
+ *     une fonction imbriquée, ou une référence qui n'est pas un appel (alias) rougit. Sans E4, la
+ *     liste garantirait le dedans mais plus le dehors : un appelant pourrait passer `prisma`.
+ *
  * Lancement : `pnpm partners:cliquet-ecrivains`. Témoin à deux faces :
  * `tests/unit/ci/cliquet-ecrivains-devis.spec.ts`.
  */
@@ -67,6 +82,8 @@ import path from "node:path";
 import ts from "typescript";
 
 export type Sources = ReadonlyMap<string, string>;
+
+export type FonctionSurTx = { readonly fichier: string; readonly fonction: string };
 
 export type RegleEcrivain = {
   /** Le type d'événement du contrat. */
@@ -89,10 +106,11 @@ export type RegleEcrivain = {
   /**
    * Fonctions NOMMÉES qui écrivent sur le `tx` que leur appelant leur passe en premier paramètre
    * (`marquerDevisEnvoye(tx, …)`) : elles ne sont pas elles-mêmes l'argument d'un `$transaction`,
-   * leur appelant l'est. E3 les accepte à deux conditions : le premier paramètre s'appelle `tx`,
-   * et E2 (l'émission reçoit ce même `tx`) reste exigée. Une liste NOMMÉE, jamais un motif.
+   * leur appelant l'est. E3 les accepte à trois conditions : l'entrée nomme le FICHIER et la
+   * fonction, le premier paramètre s'appelle `tx`, et E2 (l'émission reçoit ce même `tx`) reste
+   * exigée. E4 contrôle leurs appelants. Une liste NOMMÉE, jamais un motif.
    */
-  readonly fonctionsSurTxDeLAppelant?: readonly string[];
+  readonly fonctionsSurTxDeLAppelant?: readonly FonctionSurTx[];
   /** Le marqueur littéral d'une écriture qui n'est pas un fait du contrat, et pourquoi. */
   readonly horsFait?: {
     readonly champ: string;
@@ -147,7 +165,12 @@ export const REGLES: readonly RegleEcrivain[] = [
     // la même étape « écritures » que celle de `sendDevisAction`, appelée DANS le `$transaction`
     // de `envoyerAvecLienALEnvoi`. Elle reçoit le `tx` de son appelant : E2 vérifie qu'elle
     // émet sur ce même `tx`.
-    fonctionsSurTxDeLAppelant: ["marquerDevisEnvoye"],
+    fonctionsSurTxDeLAppelant: [
+      {
+        fichier: "src/server/qualiopi/devis/marquer-devis-envoye.ts",
+        fonction: "marquerDevisEnvoye",
+      },
+    ],
   },
   // INT-T05. Une pièce posée `emise` est une facture OU un avoir : c'est la ligne (`avoirDeId`)
   // qui décide, dans `emettreFaitFacture`. Une seule règle garde donc les deux faits.
@@ -270,7 +293,7 @@ export type Ecrivain = {
 };
 
 export type Faute = Ecrivain & {
-  readonly regle: "E0" | "E1" | "E2" | "E3";
+  readonly regle: "E0" | "E1" | "E2" | "E3" | "E4";
   readonly detail: string;
 };
 
@@ -471,11 +494,13 @@ function appelsDans(f: FonctionLike, nom: string): ts.CallExpression[] {
   return trouves;
 }
 
-function estTravailDeTransaction(f: FonctionLike, regle: RegleEcrivain): boolean {
+function estTravailDeTransaction(f: FonctionLike, regle: RegleEcrivain, fichier: string): boolean {
   if (
     ts.isFunctionDeclaration(f) &&
     f.name !== undefined &&
-    regle.fonctionsSurTxDeLAppelant?.includes(f.name.text) === true &&
+    regle.fonctionsSurTxDeLAppelant?.some(
+      (e) => e.fichier === fichier && e.fonction === f.name?.text,
+    ) === true &&
     f.parameters[0]?.name.getText() === "tx"
   ) {
     return true;
@@ -621,12 +646,83 @@ function confronterFichier(
       });
       return;
     }
-    if (!estTravailDeTransaction(f, regle)) {
+    if (!estTravailDeTransaction(f, regle, fichier)) {
       fautes.push({
         ...ecrivain,
         regle: "E3",
         detail: `la fonction englobante n'est pas le travail d'une transaction (${regle.transactions.join(", ")})`,
       });
+    }
+  };
+  visiter(sf);
+}
+
+/**
+ * E4 — les APPELANTS d'une fonction de `fonctionsSurTxDeLAppelant` (voir l'en-tête) : chaque appel,
+ * dans `src/`, est dans le travail d'une transaction et reçoit le `tx` de CE travail.
+ */
+function confronterAppels(fichier: string, texte: string, regle: RegleEcrivain, fautes: Faute[]) {
+  const noms = (regle.fonctionsSurTxDeLAppelant ?? []).map((e) => e.fonction);
+  if (!fichier.startsWith("src/") || !noms.some((n) => texte.includes(n))) return;
+  const sf = ts.createSourceFile(fichier, texte, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+  const faute = (n: ts.Node, nom: string, detail: string): void => {
+    fautes.push({
+      evenement: regle.evenement,
+      fichier,
+      ligne: sf.getLineAndCharacterOfPosition(n.getStart()).line + 1,
+      fonction: fonctionNommee(n),
+      regle: "E4",
+      detail: `${nom}() ${detail}`,
+    });
+  };
+  const visiter = (n: ts.Node): void => {
+    ts.forEachChild(n, visiter);
+    if (ts.isCallExpression(n)) {
+      const cible = n.expression;
+      const nom = ts.isIdentifier(cible)
+        ? cible.text
+        : ts.isPropertyAccessExpression(cible)
+          ? cible.name.text
+          : null;
+      if (nom === null || !noms.includes(nom)) return;
+      const f = fonctionEnglobante(n);
+      if (f === null || !estTravailDeTransaction(f, regle, fichier)) {
+        faute(
+          n,
+          nom,
+          `est appelée hors du travail d'une transaction (${regle.transactions.join(", ")})`,
+        );
+        return;
+      }
+      const attendu = f.parameters[0]?.name.getText();
+      if (attendu === undefined || n.arguments[0]?.getText() !== attendu) {
+        faute(
+          n,
+          nom,
+          `ne reçoit pas le client (\`${attendu ?? "?"}\`) du travail de sa transaction`,
+        );
+      }
+      return;
+    }
+    // Une référence qui n'est pas un appel (alias, callback) échappe au contrôle ci-dessus.
+    if (!ts.isIdentifier(n) || !noms.includes(n.text)) return;
+    const p = n.parent;
+    const callee = ts.isCallExpression(p) && p.expression === n;
+    const nomPropAppelee =
+      ts.isPropertyAccessExpression(p) &&
+      p.name === n &&
+      ts.isCallExpression(p.parent) &&
+      p.parent.expression === p;
+    const declaration =
+      (ts.isFunctionDeclaration(p) && p.name === n) ||
+      ts.isImportSpecifier(p) ||
+      ts.isExportSpecifier(p);
+    if (!callee && !nomPropAppelee && !declaration) {
+      faute(
+        n,
+        n.text,
+        "est référencée sans être appelée (alias) : le contrôle de ses appelants est contourné",
+      );
     }
   };
   visiter(sf);
@@ -797,7 +893,7 @@ function confronterMarqueJson(
       });
       return;
     }
-    if (!estTravailDeTransaction(f, regle)) {
+    if (!estTravailDeTransaction(f, regle, fichier)) {
       fautes.push({
         ...ecrivain,
         regle: "E3",
@@ -822,6 +918,8 @@ export function confronterEcrivains(
     const avant = ecrivains.length;
     for (const [fichier, texte] of sources) {
       if (estTest(fichier)) continue;
+      if (regle.fonctionsSurTxDeLAppelant !== undefined)
+        confronterAppels(fichier, texte, regle, fautes);
       if (regle.cleJson !== undefined) {
         confronterMarqueJson(fichier, texte, regle, regle.cleJson, ecrivains, fautes);
         continue;
