@@ -40,6 +40,7 @@ const CODES_ATTENDUS: string[] = [
   "catalogue_certifiant_incoherent",
   "cloture_trace_presence_incomplete",
   "email_rebond_dur",
+  "email_plainte_spam",
   "report_accord_financement_a_refaire",
   // Ajoutés 2026-08-19 (audit E2E, `D5-4-01`). Ces quatre codes étaient ÉMIS par
   // le balayage depuis leur écriture et ABSENTS de ce catalogue — donc sans
