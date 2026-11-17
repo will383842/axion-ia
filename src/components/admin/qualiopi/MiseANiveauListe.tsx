@@ -8,6 +8,7 @@
  * fait qu'appeler. Les messages affichés viennent de l'action, jamais de l'URL.
  */
 
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
@@ -60,7 +61,7 @@ export function MiseANiveauListe({
   const [enCours, demarrer] = useTransition();
   const [message, setMessage] = useState<{ ok: boolean; texte: string } | null>(null);
   const [choisis, setChoisis] = useState<ReadonlySet<string>>(new Set());
-  const [apercu, setApercu] = useState<{ sujet: string; html: string; note: string } | null>(null);
+  const [apercu, setApercu] = useState<{ lecteur: ApercuLecteur; note: string } | null>(null);
   const libelle = (cle: string) => elements.find((e) => e.cle === cle)?.libelle ?? cle;
   const nonFigees = miseANiveau?.lignes.filter((l) => l.listeeLe === null).length ?? 0;
 
@@ -100,7 +101,7 @@ export function MiseANiveauListe({
         r.data.texteValide ? null : "Le texte de cet e-mail n'est pas encore validé.",
         r.data.resumeEcrit ? null : "Le résumé des changements n'est pas écrit au registre.",
       ].filter((n): n is string => n !== null);
-      setApercu({ sujet: r.data.sujet, html: r.data.html, note: notes.join(" ") });
+      setApercu({ lecteur: r.data.apercu, note: notes.join(" ") });
     });
 
   const envoyerVersion = () =>
@@ -246,7 +247,7 @@ export function MiseANiveauListe({
               {apercu.note ? (
                 <p className="admin-alert admin-alert-warning">{apercu.note}</p>
               ) : null}
-              <LecteurEmail html={apercu.html} objet={apercu.sujet} />
+              <LecteurEmail apercu={apercu.lecteur} liensInertes />
             </div>
           ) : null}
           {nouvelleVersion.peutAgir && choisis.size > 0 ? (
