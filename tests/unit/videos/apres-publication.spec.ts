@@ -69,6 +69,15 @@ describe("urlsAImpacter", () => {
       expect(u).toContain(hote);
     }
   });
+  it("pages besoin : celles dont la liste couvre le thème de la vidéo (comme la page thème)", () => {
+    const u = urlsAImpacter({ ...effet, theme: "automatisation" });
+    expect(u).toContain("/fr/videos/besoin/gagner-du-temps");
+    expect(u).toContain("/fr/videos/besoin/ne-rien-oublier");
+    expect(u).not.toContain("/fr/videos/besoin/repondre-plus-vite");
+    expect(
+      urlsAImpacter({ ...effet, theme: "theme-inconnu" }).some((x) => x.includes("/besoin/")),
+    ).toBe(false);
+  });
   it("sans série : pas d'adresse de série", () => {
     expect(urlsAImpacter({ ...effet, serieSlug: null }).some((u) => u.includes("/serie/"))).toBe(
       false,
