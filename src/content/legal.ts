@@ -712,7 +712,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Données collectées",
           body:
-            "Email, nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel." +
+            "Email, civilité (facultative), prénom et nom, raison sociale, contenu des messages, métadonnées techniques (user-agent, langue), pages visitées (Plausible self-hosted, anonymisé). Aucun cookie publicitaire, aucun tracker cross-site. Deux services tiers peuvent déposer des cookies, chacun uniquement après une action explicite de votre part : Microsoft Clarity (bandeau cookies) et le calendrier de réservation Calendly sur la page /appel." +
             CN_FR.donnees,
         },
         {
@@ -858,7 +858,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
         {
           title: "Data collected",
           body:
-            "Email, name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page." +
+            "Email, title (optional), first and last name, company name, message content, technical metadata (user-agent, language), pages visited (self-hosted Plausible, anonymized). No advertising cookies, no cross-site trackers. Two third-party services may set cookies, each only after an explicit action on your part: Microsoft Clarity (cookie banner) and the Calendly booking calendar on the /appel page." +
             CN_EN.donnees,
         },
         {

@@ -26,6 +26,11 @@ import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { encryptPii, decryptPiiObject } from "@/lib/pii-crypto";
+import {
+  CLE_IDENTITE,
+  identitePourDetails,
+  lireIdentiteDetails,
+} from "@/server/contact/identite-contact";
 
 /** 32 octets en hexadécimal — le format qu'exige `getKey`. */
 const CLE = "a".repeat(64);
@@ -71,6 +76,40 @@ describe("🔴 D5-5-02 — l'export art. 15 doit être LISIBLE", () => {
     const r = decryptPiiObject(o);
     expect(r.id).toBe("s-3");
     expect(r.companyName).toBe("ACME");
+  });
+
+  it("rend `details.identite` en clair (prénom, nom de famille), civilité en clair", () => {
+    const details = {
+      ville: "Lyon",
+      [CLE_IDENTITE]: identitePourDetails({
+        civilite: "madame",
+        prenom: "Camille",
+        nomFamille: "Exemple",
+      }),
+    };
+    expect(JSON.stringify(details)).toMatch(/enc:v1:/);
+    expect(lireIdentiteDetails(details)).toEqual({
+      civilite: "madame",
+      prenom: "Camille",
+      nomFamille: "Exemple",
+    });
+  });
+
+  it("la ROUTE remplace `details.identite` par sa lecture déchiffrée", () => {
+    const source = readFileSync(
+      join(process.cwd(), "src", "app", "api", "gdpr-export", "route.ts"),
+      "utf8",
+    );
+    // Commentaires dépouillés, comme plus bas : la route en parle en prose.
+    const code = source
+      .replace(/\/\*[\s\S]*?\*\//g, (b) => b.replace(/[^\n]/g, ""))
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    // Le RÉSULTAT doit être utilisé dans l'export : un appel dont la valeur est
+    // jetée, ou un import mort, ne doit pas passer.
+    expect(code, "la lecture déchiffrée n'est plus écrite dans details.identite").toMatch(
+      /\[CLE_IDENTITE\]\s*:\s*lireIdentiteDetails\s*\(\s*details\s*\)/,
+    );
+    expect(code).toMatch(/details:\s*\{\s*\.\.\.details\s*,/);
   });
 
   it("🔴 la ROUTE déchiffre avant de répondre", () => {

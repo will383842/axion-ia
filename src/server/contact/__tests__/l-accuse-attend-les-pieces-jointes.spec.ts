@@ -23,6 +23,8 @@ vi.mock("@/lib/prisma", () => ({
 }));
 vi.mock("@/lib/pii-crypto", () => ({
   decryptPii: (v: string | null) => (v ? v.replace(/^enc:/, "") : v),
+  encryptPii: (v: string | null) => v,
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
   isDecryptedEmailUsable: (v: string | null) => Boolean(v && v.includes("@")),
 }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: h.enqueueEmail }));
@@ -77,6 +79,32 @@ describe("accusé différé", () => {
     h.findUnique.mockResolvedValue(demande({ accuseDiffere: "contact-confirmed" }));
     await envoyerAccuseDiffere(SUB);
     expect(h.enqueueEmail.mock.calls[0]![3]).not.toHaveProperty("piecesJointesRecues");
+  });
+
+  it("avec details.identite : la charge porte civilité, prénom et nom, et garde contactName", async () => {
+    h.findUnique.mockResolvedValue(
+      demande({
+        accuseDiffere: "quote-request-received",
+        identite: { civilite: "madame", prenom: "enc:Camille", nomFamille: "enc:Exemple" },
+      }),
+    );
+    await envoyerAccuseDiffere(SUB);
+    expect(h.enqueueEmail.mock.calls[0]![3]).toMatchObject({
+      contactName: "Camille Exemple",
+      civilite: "madame",
+      prenom: "Camille",
+      nomFamille: "Exemple",
+    });
+  });
+
+  it("sans details.identite (ancienne demande) : clés absentes, contactName présent", async () => {
+    h.findUnique.mockResolvedValue(demande({ accuseDiffere: "quote-request-received" }));
+    await envoyerAccuseDiffere(SUB);
+    const payload = h.enqueueEmail.mock.calls[0]![3];
+    expect(payload).toMatchObject({ contactName: "Camille Exemple" });
+    expect(payload).not.toHaveProperty("civilite");
+    expect(payload).not.toHaveProperty("prenom");
+    expect(payload).not.toHaveProperty("nomFamille");
   });
 
   it("rien si l'action ne l'a pas mis en attente, ou un gabarit inconnu", async () => {

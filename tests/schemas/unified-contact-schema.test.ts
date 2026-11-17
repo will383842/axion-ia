@@ -7,7 +7,8 @@ import {
 
 const validBase = {
   type: "autre" as const,
-  nom: "Jane Doe",
+  prenom: "Jane",
+  nomFamille: "Doe",
   email: "jane@example.com",
   telephone: "+33 6 12 34 56 78",
   ville: "Paris",
@@ -69,8 +70,8 @@ describe("unifiedContactSchema", () => {
     expect(unifiedContactSchema.safeParse({ ...validBase, message: long }).success).toBe(false);
   });
 
-  it("rejects nom < 2 caractères", () => {
-    expect(unifiedContactSchema.safeParse({ ...validBase, nom: "A" }).success).toBe(false);
+  it("rejects an empty prénom", () => {
+    expect(unifiedContactSchema.safeParse({ ...validBase, prenom: "" }).success).toBe(false);
   });
 
   it("rejects ville < 2 caractères", () => {
@@ -132,17 +133,19 @@ describe("unifiedContactSchema", () => {
     }
   });
 
-  it("trim whitespace on nom/email/ville/message", () => {
+  it("trim whitespace on prénom/nom/email/ville/message", () => {
     const r = unifiedContactSchema.safeParse({
       ...validBase,
-      nom: "  Jane Doe  ",
+      prenom: "  Jane  ",
+      nomFamille: "  Doe  ",
       email: "  jane@example.com  ",
       ville: "  Paris  ",
       message: "  Bonjour, je souhaite un échange à propos de votre offre IA.  ",
     });
     expect(r.success).toBe(true);
     if (r.success) {
-      expect(r.data.nom).toBe("Jane Doe");
+      expect(r.data.prenom).toBe("Jane");
+      expect(r.data.nomFamille).toBe("Doe");
       expect(r.data.ville).toBe("Paris");
     }
   });

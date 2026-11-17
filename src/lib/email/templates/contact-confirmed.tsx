@@ -3,10 +3,15 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  contactName: string;
+  /** Hérité, jamais utilisé pour saluer (voir `salutation`). */
+  contactName?: string;
+  civilite?: string;
+  prenom?: string;
+  nomFamille?: string;
   submissionId: string;
 }
 
@@ -17,7 +22,6 @@ const COPY = {
     // que le message est arrivé ; celui-ci rappelle que la référence de la demande
     // est dans le message. Aucun délai de réponse n'est promis (décision du 11/11/2026).
     preview: "Message bien reçu — la référence de votre demande est dans le message.",
-    intro: (n: string) => `Bonjour ${n},`,
     // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
     // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
     // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
@@ -39,7 +43,6 @@ const COPY = {
   en: {
     title: "Message received",
     preview: "Message received — your request reference is in the message.",
-    intro: (n: string) => `Hello ${n},`,
     body: "Your message has arrived. We will get back to you.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
     cta: "Book a call",
@@ -85,7 +88,7 @@ export function ContactConfirmedEmail({
         {t.refRow(p.submissionId)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.intro(p.contactName)}
+        {salutation(p, locale)}
         <br />
         {t.next}
       </Text>

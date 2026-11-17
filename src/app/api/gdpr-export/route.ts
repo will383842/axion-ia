@@ -29,6 +29,7 @@ import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
 import { exporterDemandesTour } from "@/features/tour-de-france/rgpd";
 import { decryptPii, decryptPiiObject } from "@/lib/pii-crypto";
+import { CLE_IDENTITE, lireIdentiteDetails } from "@/server/contact/identite-contact";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { extractAnswersText } from "@/server/calendly/api";
@@ -372,7 +373,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // rendue telle quelle. Les enregistrements antérieurs au chiffrement passent
   // donc sans dommage — c'est ce qui permet de brancher la fonction sans
   // migration de données.
-  const submissionsLisibles = submissions.map((s) => decryptPiiObject(s));
+  //
+  // `details.identite` (civilité, prénom, nom de famille) porte des valeurs
+  // chiffrées imbriquées, que `decryptPiiObject` ne parcourt pas : on la
+  // remplace par sa lecture déchiffrée (`lireIdentiteDetails`, tolérante).
+  const submissionsLisibles = submissions.map((s) => {
+    const lisible = decryptPiiObject(s);
+    const details = s.details;
+    if (
+      details &&
+      typeof details === "object" &&
+      !Array.isArray(details) &&
+      CLE_IDENTITE in details
+    ) {
+      return {
+        ...lisible,
+        details: { ...details, [CLE_IDENTITE]: lireIdentiteDetails(details) },
+      };
+    }
+    return lisible;
+  });
 
   // `inviteeEmail` est en `@db.Citext` et indexé : la recherche est directe et
   // insensible à la casse, contrairement aux candidatures dont l'adresse est

@@ -12,10 +12,15 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  contactName: string;
+  /** Hérité, jamais utilisé pour saluer (voir `salutation`). */
+  contactName?: string;
+  civilite?: string;
+  prenom?: string;
+  nomFamille?: string;
   /** Facultative : le formulaire ne l'exige pas. */
   companyName?: string;
   submissionId: string;
@@ -25,7 +30,6 @@ const COPY = {
   fr: {
     title: "Demande de devis reçue",
     preview: "Nous revenons vers vous pour un appel de cadrage.",
-    intro: (n: string) => `Bonjour ${n},`,
     // 🔴 L'entreprise est FACULTATIVE dans le formulaire. Sans ce repli, la
     // phrase devenait « votre demande de devis pour undefined ».
     body: (company: string | undefined) =>
@@ -39,7 +43,6 @@ const COPY = {
   en: {
     title: "Quote request received",
     preview: "We will get back to you for a scoping call.",
-    intro: (n: string) => `Hello ${n},`,
     body: (company: string | undefined) =>
       company
         ? `We received your quote request for ${company}. We will get back to you for a scoping call.`
@@ -74,7 +77,7 @@ export function QuoteRequestReceivedEmail({
     >
       <Text style={emailStyles.paragraphStyle}>{t.body(p.companyName)}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.intro(p.contactName)}
+        {salutation(p, locale)}
         <br />
         {t.next}
       </Text>
