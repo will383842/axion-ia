@@ -23,6 +23,7 @@
 //   Décision T6 : aucun stub ni mock — les handlers email seront réels à T15.
 
 import { Worker } from "bullmq";
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { inscriptionsActives } from "@/server/qualiopi/inscriptions/inscriptions-actives";
 import {
   relancerEtExpirerMissions,
@@ -1881,12 +1882,10 @@ async function handleDevisExpiration(): Promise<void> {
   // avant) : une signature peut arriver entre deux requêtes.
   // Limite connue : si le client signe à l'instant exact du passage, la
   // contresignature peut encore refuser un devis « expire » (acceptée).
-  const dejaSigneParLeClient = {
-    documentGenere: { signatures: { some: { partie: "client", revokedAt: null } } },
-  } as const;
+  // Forme POSITIVE (OR) : voir `pas-signe-par-le-client.ts`.
 
   const res = await prisma.devis.updateMany({
-    where: { statut: "envoye", dateValidite: { lt: now }, NOT: dejaSigneParLeClient },
+    where: { statut: "envoye", dateValidite: { lt: now }, ...pasSigneParLeClient },
     data: { statut: "expire" },
   });
 
@@ -1894,7 +1893,7 @@ async function handleDevisExpiration(): Promise<void> {
     where: {
       statut: "envoye",
       sentAt: { not: null, lte: new Date(now.getTime() - 3 * 86_400_000) },
-      NOT: dejaSigneParLeClient,
+      ...pasSigneParLeClient,
     },
     select: {
       id: true,

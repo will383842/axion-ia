@@ -1613,35 +1613,47 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
   // évaluer un filtre de relation ; ces tests évaluent donc le `where` reçu sur
   // un petit jeu de devis, pour vérifier le COMPORTEMENT et pas la forme.
   type SigFixture = { partie: string; revokedAt: Date | null };
+  type PieceFixture = { annuleeAt: Date | null; signatures: SigFixture[] };
   type DevisFixture = {
     id: string;
     statut: string;
     dateValidite: Date;
     sentAt: Date;
-    signatures: SigFixture[];
+    documentGenere: PieceFixture | null;
   };
+  type Condition =
+    | { documentGenereId: null }
+    | { documentGenere: { annuleeAt: { not: null } } }
+    | {
+        documentGenere: {
+          signatures: { none: { partie?: string; revokedAt?: null } };
+        };
+      };
   type WhereDevis = {
     statut?: string;
     dateValidite?: { lt: Date };
-    NOT?: {
-      documentGenere?: {
-        signatures?: { some?: { partie?: string; revokedAt?: null } };
-      };
-    };
+    OR?: Condition[];
+  };
+
+  const correspondCondition = (d: DevisFixture, c: Condition): boolean => {
+    if ("documentGenereId" in c) return d.documentGenere === null;
+    const f = c.documentGenere;
+    // Une relation optionnelle absente ne satisfait JAMAIS un filtre de relation
+    // (comme en SQL) : seul `documentGenereId: null` couvre le devis sans pièce.
+    if (d.documentGenere === null) return false;
+    if ("annuleeAt" in f) return d.documentGenere.annuleeAt !== null;
+    const none = f.signatures.none;
+    return !d.documentGenere.signatures.some(
+      (s) =>
+        (none.partie === undefined || s.partie === none.partie) &&
+        (none.revokedAt === undefined || s.revokedAt === null),
+    );
   };
 
   const correspond = (d: DevisFixture, where: WhereDevis): boolean => {
     if (where.statut !== undefined && d.statut !== where.statut) return false;
     if (where.dateValidite !== undefined && !(d.dateValidite < where.dateValidite.lt)) return false;
-    const some = where.NOT?.documentGenere?.signatures?.some;
-    if (some !== undefined) {
-      const signe = d.signatures.some(
-        (s) =>
-          (some.partie === undefined || s.partie === some.partie) &&
-          (some.revokedAt === undefined || s.revokedAt === null),
-      );
-      if (signe) return false;
-    }
+    if (where.OR !== undefined && !where.OR.some((c) => correspondCondition(d, c))) return false;
     return true;
   };
 
@@ -1663,16 +1675,16 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
     );
   };
 
-  const echu = (signatures: SigFixture[]): DevisFixture => ({
+  const echu = (documentGenere: PieceFixture | null): DevisFixture => ({
     id: "dev-a4",
     statut: "envoye",
     dateValidite: new Date(Date.now() - JOUR_MS),
     sentAt: new Date(Date.now() - 10 * JOUR_MS),
-    signatures,
+    documentGenere,
   });
 
   it("A4 — devis signé par le client puis échu : reste « envoye » et n'est pas relancé", async () => {
-    const d = echu([{ partie: "client", revokedAt: null }]);
+    const d = echu({ annuleeAt: null, signatures: [{ partie: "client", revokedAt: null }] });
     brancherBase([d]);
 
     await lancer();
@@ -1682,7 +1694,7 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
   });
 
   it("A4 — devis non signé puis échu : passe « expire »", async () => {
-    const d = echu([]);
+    const d = echu({ annuleeAt: null, signatures: [] });
     brancherBase([d]);
 
     await lancer();
@@ -1691,7 +1703,7 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
   });
 
   it("A4 — signature du client annulée puis échu : passe « expire »", async () => {
-    const d = echu([{ partie: "client", revokedAt: new Date() }]);
+    const d = echu({ annuleeAt: null, signatures: [{ partie: "client", revokedAt: new Date() }] });
     brancherBase([d]);
 
     await lancer();
@@ -1699,16 +1711,39 @@ describe("handleDevisExpiration — expiration + relance J+3 (via formationCrons
     expect(d.statut).toBe("expire");
   });
 
-  it("A4 — le filtre est dans la requête d'expiration ET dans la sélection J+3", async () => {
+  it("A4 — devis SANS pièce générée, échu : passe « expire »", async () => {
+    const d = echu(null);
+    brancherBase([d]);
+
     await lancer();
 
-    const attendu = {
-      documentGenere: { signatures: { some: { partie: "client", revokedAt: null } } },
-    };
+    expect(d.statut).toBe("expire");
+  });
+
+  it("A4 — pièce ANNULÉE portant une signature client, échu : passe « expire »", async () => {
+    const d = echu({ annuleeAt: new Date(), signatures: [{ partie: "client", revokedAt: null }] });
+    brancherBase([d]);
+
+    await lancer();
+
+    expect(d.statut).toBe("expire");
+  });
+
+  it("A4 — le filtre positif est dans la requête d'expiration ET dans la sélection J+3", async () => {
+    await lancer();
+
+    const attendu = [
+      { documentGenereId: null },
+      { documentGenere: { annuleeAt: { not: null } } },
+      { documentGenere: { signatures: { none: { partie: "client", revokedAt: null } } } },
+    ];
     const upd = mockPrisma.devis.updateMany.mock.calls[0]![0] as { where: WhereDevis };
     const sel = mockPrisma.devis.findMany.mock.calls[0]![0] as { where: WhereDevis };
-    expect(upd.where.NOT).toEqual(attendu);
-    expect(sel.where.NOT).toEqual(attendu);
+    expect(upd.where.OR).toEqual(attendu);
+    expect(sel.where.OR).toEqual(attendu);
+    // Jamais de NOT : la traduction SQL d'un NOT sur relation optionnelle est ambiguë.
+    expect(upd.where).not.toHaveProperty("NOT");
+    expect(sel.where).not.toHaveProperty("NOT");
   });
 });
 
