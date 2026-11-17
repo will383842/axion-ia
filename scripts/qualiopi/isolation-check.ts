@@ -682,6 +682,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   // `MENTION_NON_AGREMENT` et `NDA_NUMERO`. C'est le test qui empêche la
   // recopie : il ne peut pas vérifier la dérivation sans lire la source.
   "src/lib/email/legal-footer.spec.ts",
+  // Garde « aucun e-mail ne nomme la certification » : elle rend l'e-mail d'alerte
+  // interne pour chaque entrée RÉELLE du catalogue des alertes du domaine, et lit
+  // les sources de l'évaluateur. Elle ne peut pas recopier ce catalogue sans créer
+  // la seconde vérité que ce contrôle existe pour empêcher.
+  "src/lib/email/templates/__tests__/aucun-e-mail-ne-nomme-la-certification.spec.tsx",
   // ── Gardes CI qui empruntent `sansCommentaires` au domaine.
   //
   //    Ce n'est PAS une dependance metier : `revues/sans-commentaires` est un
