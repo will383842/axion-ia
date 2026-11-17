@@ -145,19 +145,31 @@ export async function repondreAuCandidatAction(
     corps = remplirModele(corps, { lien_complement: lien });
   }
 
+  // 🔴 GARDE CONTRE LE DOUBLE ENVOI, CÔTÉ SERVEUR — dans la transaction
+  // d'écriture (`garderContreDoublon`), sous verrou consultatif : une recherche
+  // faite ici, hors transaction, ne tenait pas face à deux requêtes simultanées.
+  // Une réponse identique (même auteur, objet, corps, moins de 60 s, ni
+  // `failed` ni `bounced`) est LA MÊME demande : on rend son identifiant.
+
   // 🔑 L'ÉCRITURE PASSE PAR `ecrireEtEnfilerReponse`, ET C'EST LE MÊME CHEMIN
   // QUE L'ENVOI GROUPÉ. Ces cent lignes vivaient ici ; les recopier dans le
   // geste groupé les aurait fait dériver, et ce qui se perd dans une copie, ce
   // sont exactement les gestes qui ne se voient pas à l'écran : la transaction
   // qui tient ensemble la réponse et sa trace, le `new` qui passe à
   // `reviewing`, et le `failed` posé quand la file d'envoi refuse.
-  const issue = await ecrireEtEnfilerReponse(candidature, acteur, {
-    subject: data.subject,
-    bodyMarkdown: corps,
-    modele: data.modele,
-    internalNote: data.internalNote,
-  });
+  const issue = await ecrireEtEnfilerReponse(
+    candidature,
+    acteur,
+    {
+      subject: data.subject,
+      bodyMarkdown: corps,
+      modele: data.modele,
+      internalNote: data.internalNote,
+    },
+    { garderContreDoublon: true },
+  );
 
+  if (!issue.ecrit && issue.error === "doublon") return { ok: true, replyId: issue.replyId };
   if (!issue.ecrit) return { ok: false, error: issue.error };
 
   revalidatePath(adminPath("fr", "contacts/candidatures"));
