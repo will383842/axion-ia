@@ -60,11 +60,11 @@ export function candidatsDepotOpcoAFaire(sessions: SessionLue[], now: Date): Ale
       code: "depot_opco_a_faire",
       niveau: depassee ? "critique" : "important",
       titre: depassee
-        ? "Date limite de dépôt OPCO dépassée"
-        : "Dépôt de la demande OPCO à faire par l'entreprise",
+        ? "Date limite de dépôt de la demande de paiement par un tiers dépassée"
+        : "Dépôt de la demande de paiement par un tiers à faire par l'entreprise",
       message: depassee
-        ? `La session ${s.numero} est financée par ${opcoLabel(opco)} et aucun dépôt de la demande de prise en charge n'est saisi au ${date} : vérifiez auprès de l'entreprise, puis saisissez la date de dépôt sur le dossier de financement.`
-        : `La session ${s.numero} est financée par ${opcoLabel(opco)} : l'entreprise doit déposer sa demande de prise en charge au plus tard le ${date}. Remettez-lui le dossier prêt à déposer, puis saisissez la date de dépôt.`,
+        ? `La session ${s.numero} est financée par ${opcoLabel(opco)} et aucun dépôt de la demande de paiement par un tiers n'est saisi au ${date} : vérifiez auprès de l'entreprise, puis saisissez la date de dépôt sur le dossier de financement.`
+        : `La session ${s.numero} est financée par ${opcoLabel(opco)} : l'entreprise doit déposer sa demande de paiement par un tiers au plus tard le ${date}. Remettez-lui le dossier prêt à déposer, puis saisissez la date de dépôt.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });

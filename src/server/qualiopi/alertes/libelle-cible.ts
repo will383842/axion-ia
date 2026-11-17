@@ -56,8 +56,8 @@ export const NOM_TYPE_CIBLE: Readonly<Record<string, string>> = {
   OffreSite: "Offre d'emploi",
   Formation: "Formation",
   EmailOutbox: "E-mail",
-  BaremeOpco: "Barème OPCO",
-  EtatFondsOpco: "État des fonds OPCO",
+  BaremeOpco: "Barème de l'organisme tiers",
+  EtatFondsOpco: "État des fonds des organismes tiers",
   // Lot OPCO A7c : `donnees_opco_incompletes`.
   Client: "Fiche client",
   // Chantier visio (PR 6) : les alertes du circuit du compte rendu.

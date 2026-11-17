@@ -93,8 +93,8 @@ export function candidatsFondsOpcoSuspendusSession(
       alertes.push({
         code: "fonds_opco_suspendus_session",
         niveau: "critique",
-        titre: "Session planifiée sur des fonds OPCO suspendus",
-        message: `La session ${s.numero} (début le ${jjmmaaaa(debut)}) est financée par ${opcoLabel(opco)}, dont le financement est suspendu pour la branche ou la taille de l'entreprise (relevé du ${formatJourDate(etat.releveLe)}). Prévenez l'entreprise, vérifiez sur le site de l'OPCO, puis reportez la session ou changez son financement.`,
+        titre: "Session planifiée sur des fonds suspendus de l'organisme tiers",
+        message: `La session ${s.numero} (début le ${jjmmaaaa(debut)}) est financée par ${opcoLabel(opco)}, dont le financement est suspendu pour la branche ou la taille de l'entreprise (relevé du ${formatJourDate(etat.releveLe)}). Prévenez l'entreprise, vérifiez sur le site de l'organisme tiers, puis reportez la session ou changez son financement.`,
         cibleType: "TrainingSession",
         cibleId: s.id,
       });
@@ -112,8 +112,8 @@ export function candidatsFondsOpcoSuspendusSession(
     alertes.push({
       code: "fonds_opco_suspendus_session",
       niveau: "important",
-      titre: "Session après la date limite d'engagement de l'OPCO",
-      message: `La session ${s.numero} commence le ${jjmmaaaa(debut)}, après la date limite d'engagement de ${opcoLabel(opco)} pour l'exercice (${jjmmaaaa(limite)}), et aucun dépôt n'est saisi avant cette date : l'OPCO peut refuser la prise en charge. Vérifiez auprès de l'entreprise et de l'OPCO, puis saisissez la date de dépôt sur le dossier de financement.`,
+      titre: "Session après la date limite d'engagement de l'organisme tiers",
+      message: `La session ${s.numero} commence le ${jjmmaaaa(debut)}, après la date limite d'engagement de ${opcoLabel(opco)} pour l'exercice (${jjmmaaaa(limite)}), et aucun dépôt n'est saisi avant cette date : l'organisme tiers peut refuser de payer. Vérifiez auprès de l'entreprise et de l'organisme tiers, puis saisissez la date de dépôt sur le dossier de financement.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });

@@ -361,8 +361,8 @@ export function alertesSuivi(d: DossierPourRelance, s: SuiviLu, now: Date): Deci
       code: "entreprise_a_appeler_reponse_opco",
       motif:
         relances >= SEUIL_RELANCES_SANS_REPONSE
-          ? `${relances} relances sans réponse de l'OPCO`
-          : `session le ${jourFr(debut)} sans accord de l'OPCO`,
+          ? `${relances} relances sans réponse de l'organisme tiers`
+          : `session le ${jourFr(debut)} sans accord de l'organisme tiers`,
     });
   }
   return out;
