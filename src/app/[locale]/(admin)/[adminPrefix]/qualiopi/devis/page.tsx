@@ -16,7 +16,7 @@ import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
-import { libellesReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
+import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -91,7 +91,6 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
 
   // B6b-1 : lu une fois, côté serveur ; sans certification, aucun mot de tiers payeur.
   const certifie = isQualiopiCertificationObtenue();
-  const FINANCEMENT_LABELS = libellesReglementDevis(certifie);
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const [devisList, clients, piecesAContresigner] = await Promise.all([
@@ -230,7 +229,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                     </td>
                     <td className={cellCls}>
                       {devis.financementSuggere ? (
-                        (FINANCEMENT_LABELS[devis.financementSuggere] ?? devis.financementSuggere)
+                        libelleReglementDevis(devis.financementSuggere, certifie, "liste")
                       ) : (
                         <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
                       )}

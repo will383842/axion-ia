@@ -54,7 +54,7 @@ import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/estimation-certification";
 import { getClient } from "@/server/qualiopi/crm/clients";
-import { libellesReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
+import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -178,7 +178,6 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
   // B6b-1 : lu une fois, côté serveur ; sans certification, aucun mot de tiers payeur.
   const certifie = isQualiopiCertificationObtenue();
-  const FINANCEMENT_LABELS = libellesReglementDevis(certifie);
 
   const client = await getClient(devis.clientId);
   // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
@@ -399,7 +398,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             <p className={infoLabelCls}>{certifie ? "Financement suggéré" : "Mode de règlement"}</p>
             <p className={infoValueCls}>
               {devis.financementSuggere ? (
-                (FINANCEMENT_LABELS[devis.financementSuggere] ?? devis.financementSuggere)
+                libelleReglementDevis(devis.financementSuggere, certifie, "fiche")
               ) : (
                 <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
               )}
