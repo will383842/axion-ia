@@ -28,6 +28,9 @@ const INITIAL: ClientEditValues = {
   contactEmail: "",
   contactTelephone: "",
   contactFonction: "",
+  contactCivilite: "",
+  contactPrenom: "",
+  contactNomFamille: "",
   delaiPaiementJours: "",
   tauxAcomptePct: "",
   modeFacturation: "",
@@ -107,7 +110,10 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
       "Mode de facturation",
       "Acompte puis solde",
       "Solde unique",
-      "Modifier dans Branche et OPCO",
+      "Civilité",
+      "Prénom",
+      "Nom de famille",
+      "Modifier dans Branche professionnelle",
     ]) {
       expect(html, libelle).toContain(libelle);
     }
@@ -182,5 +188,41 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
       target: { value: "solde_unique" },
     });
     expect(screen.getByText(/l'acompte n'est pas appliqué/)).toBeTruthy();
+  });
+});
+
+describe("ClientEditForm — salutation des e-mails (B4)", () => {
+  it("la civilité est une liste « — », Madame, Monsieur ; l'aide dit à quoi elle sert", () => {
+    const html = rendre();
+    expect(html).toMatch(/<select[^>]*id="edit-contactCivilite"/);
+    for (const o of ["—", "Madame", "Monsieur"]) expect(html).toContain(`>${o}</option>`);
+    expect(html).toContain("Sert à écrire « Bonjour Madame Dupont, » en tête des e-mails.");
+    expect(html).toContain("Laissez vide si vous n&#x27;êtes pas sûr.");
+  });
+
+  it("l'aide sous l'e-mail dit la vérité sur l'envoi sans adresse", () => {
+    const html = rendre();
+    expect(html).toContain(
+      "Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre » et faites-le signer sur papier.",
+    );
+    expect(html).not.toContain("part sans lien de signature");
+  });
+
+  it("le lien vers la branche n'emploie aucun mot réservé avant la certification", () => {
+    const lien = /<a[^>]*>(Modifier dans [^<]*)<\/a>/.exec(rendre())?.[1] ?? "";
+    expect(lien).toBe("Modifier dans Branche professionnelle");
+    expect(lien).not.toMatch(/OPCO|Qualiopi|certification|financ|prise en charge/i);
+  });
+
+  it("transmet les trois champs modifiés, vides compris", async () => {
+    monter({ contactCivilite: "madame", contactPrenom: "Léa", contactNomFamille: "Dupont" });
+    fireEvent.change(screen.getByLabelText("Civilité"), { target: { value: "" } });
+    fireEvent.change(screen.getByLabelText("Nom de famille"), { target: { value: " Martin " } });
+    fireEvent.click(screen.getByRole("button", { name: /Enregistrer/ }));
+    await waitFor(() => expect(actionSimulee).toHaveBeenCalled());
+    const envoye = actionSimulee.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(envoye).toMatchObject({ contactCivilite: "", contactNomFamille: "Martin" });
+    expect(envoye).not.toHaveProperty("contactPrenom");
+    expect(envoye).not.toHaveProperty("contactNom");
   });
 });

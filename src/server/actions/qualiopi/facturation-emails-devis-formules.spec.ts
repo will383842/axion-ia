@@ -141,3 +141,32 @@ describe("envoyerDevisEmailAction — devis à formules", () => {
     expect(payload).toHaveProperty("montantLabel");
   });
 });
+
+describe("envoyerDevisEmailAction — la salutation de l'e-mail (B4)", () => {
+  function payloadEnvoye(): Record<string, unknown> {
+    return d.enqueueEmail.mock.calls[0]?.[3] as Record<string, unknown>;
+  }
+  function avecClient(extra: Record<string, unknown>) {
+    const d0 = devis();
+    d.findUnique.mockResolvedValue({ ...d0, client: { ...d0.client, ...extra } });
+  }
+
+  it("civilité + nom de famille : { civilite, nomFamille }", async () => {
+    avecClient({ contactCivilite: "monsieur", contactNomFamille: "Dupont" });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(payloadEnvoye()["salutation"]).toEqual({ civilite: "monsieur", nomFamille: "Dupont" });
+    expect(payloadEnvoye()["clientNom"]).toBe("Monsieur Dupont");
+  });
+
+  it("prénom seul : { prenom }", async () => {
+    avecClient({ contactPrenom: "Léa" });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(payloadEnvoye()["salutation"]).toEqual({ prenom: "Léa" });
+  });
+
+  it("aucune identité fiable : jamais le nom complet de contactNom", async () => {
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(payloadEnvoye()["clientNom"]).toBe("");
+    expect(JSON.stringify(payloadEnvoye())).not.toContain("Camille");
+  });
+});

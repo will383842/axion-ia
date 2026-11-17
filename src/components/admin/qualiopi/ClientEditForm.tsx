@@ -68,6 +68,10 @@ export interface ClientEditValues {
   contactEmail: string;
   contactTelephone: string;
   contactFonction: string;
+  /** « madame » | « monsieur » | « » (non renseignée). Jamais déduite du nom. */
+  contactCivilite: string;
+  contactPrenom: string;
+  contactNomFamille: string;
   /** Nombre de jours, en chaîne (« » = non défini). */
   delaiPaiementJours: string;
   /** Pourcentage entier, en chaîne (« » = non défini). */
@@ -97,6 +101,8 @@ export interface ClientEditLecture {
   adresseHistorique: string | null;
   /** Lien vers la fiche, onglet Résumé (bloc « Branche et OPCO »). */
   brancheHref: string;
+  /** Titre du bloc de la branche (le libellé change avec la certification). */
+  brancheLibelle?: string;
 }
 
 export interface ClientEditFormProps {
@@ -221,6 +227,11 @@ export function ClientEditForm({
         ...(change("contactEmail") ? { contactEmail: texteOuNull("contactEmail") } : {}),
         ...(change("contactTelephone") ? { contactTelephone: v.contactTelephone.trim() } : {}),
         ...(change("contactFonction") ? { contactFonction: v.contactFonction.trim() } : {}),
+        ...(change("contactCivilite")
+          ? { contactCivilite: v.contactCivilite as "" | "madame" | "monsieur" }
+          : {}),
+        ...(change("contactPrenom") ? { contactPrenom: v.contactPrenom.trim() } : {}),
+        ...(change("contactNomFamille") ? { contactNomFamille: v.contactNomFamille.trim() } : {}),
         // Champs entreprise uniquement — jamais transmis pour un particulier,
         // où ils n'ont pas de sens et où les masquer sans les exclure de l'envoi
         // les écraserait à vide.
@@ -376,7 +387,7 @@ export function ClientEditForm({
                   href={lecture.brancheHref}
                   className="inline-flex min-h-11 items-center text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline underline-offset-2"
                 >
-                  Modifier dans Branche et OPCO
+                  Modifier dans {lecture.brancheLibelle ?? "Branche professionnelle"}
                 </Link>
               </div>
 
@@ -477,6 +488,55 @@ export function ClientEditForm({
           </div>
 
           <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactCivilite">
+              Civilité
+            </label>
+            <select
+              id="edit-contactCivilite"
+              value={v.contactCivilite}
+              onChange={(e) => set("contactCivilite", e.target.value)}
+              disabled={isPending}
+              className={inputCls}
+            >
+              <option value="">—</option>
+              <option value="madame">Madame</option>
+              <option value="monsieur">Monsieur</option>
+            </select>
+          </div>
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactPrenom">
+              Prénom
+            </label>
+            <input
+              id="edit-contactPrenom"
+              value={v.contactPrenom}
+              onChange={(e) => set("contactPrenom", e.target.value)}
+              disabled={isPending}
+              maxLength={80}
+              className={inputCls}
+            />
+          </div>
+
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="edit-contactNomFamille">
+              Nom de famille
+            </label>
+            <input
+              id="edit-contactNomFamille"
+              value={v.contactNomFamille}
+              onChange={(e) => set("contactNomFamille", e.target.value)}
+              disabled={isPending}
+              maxLength={80}
+              className={inputCls}
+            />
+            <p className={aideCls}>
+              Sert à écrire « Bonjour Madame Dupont, » en tête des e-mails. Laissez vide si vous
+              n&apos;êtes pas sûr.
+            </p>
+          </div>
+
+          <div className={fieldCls}>
             <label className={labelCls} htmlFor="edit-contactFonction">
               Fonction
             </label>
@@ -509,8 +569,8 @@ export function ClientEditForm({
                 marche mais part sans lien de signature, et l'admin ne l'apprend
                 que dans une note de retour. */}
             <p className={aideCls}>
-              Sans adresse, le devis part sans lien de signature — le client ne peut pas signer en
-              ligne.
+              Sans adresse, le devis ne peut pas être envoyé : utilisez « Remis en main propre » et
+              faites-le signer sur papier.
             </p>
           </div>
 

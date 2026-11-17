@@ -51,6 +51,10 @@ export interface ContactFacturationEntree {
   readonly email?: string | null;
   readonly telephone?: string | null;
   readonly fonction?: string | null;
+  /** « madame » | « monsieur » (validée par l'appelant) ; jamais déduite du nom. */
+  readonly civilite?: string | null;
+  readonly prenom?: string | null;
+  readonly nomFamille?: string | null;
   /** Origine d'une personne CRÉÉE par cet appel. Défaut : `saisie`. */
   readonly origine?: ContactOrigine;
   readonly parAdminId?: string | null;
@@ -83,13 +87,24 @@ function memeNom(a: string, b: string): boolean {
 // « Nom à compléter », quel que soit le bouton.
 // ─────────────────────────────────────────────────────────────────────────────
 
-const PERSONNE_CHOISIE = { id: true, nom: true, telephone: true, fonction: true } as const;
+const PERSONNE_CHOISIE = {
+  id: true,
+  nom: true,
+  telephone: true,
+  fonction: true,
+  civilite: true,
+  prenom: true,
+  nomFamille: true,
+} as const;
 
 export interface PersonneTrouvee {
   readonly id: string;
   readonly nom: string;
   readonly telephone: string | null;
   readonly fonction: string | null;
+  readonly civilite?: string | null;
+  readonly prenom?: string | null;
+  readonly nomFamille?: string | null;
 }
 
 export interface PersonneACreer {
@@ -162,6 +177,14 @@ export async function definirContactFacturation(
   const nom = texteOuNull(entree.nom);
   const telephone = texteOuNull(entree.telephone);
   const fonction = texteOuNull(entree.fonction);
+  const civilite = texteOuNull(entree.civilite);
+  const prenom = texteOuNull(entree.prenom);
+  const nomFamille = texteOuNull(entree.nomFamille);
+  const identite = {
+    ...(civilite !== undefined ? { civilite } : {}),
+    ...(prenom !== undefined ? { prenom } : {}),
+    ...(nomFamille !== undefined ? { nomFamille } : {}),
+  };
   const emailBrut = texteOuNull(entree.email);
   const email = typeof emailBrut === "string" ? normalizeEmail(emailBrut) : emailBrut;
   const emailHash = typeof email === "string" ? hashEmailForLookup(email) : null;
@@ -206,6 +229,9 @@ export async function definirContactFacturation(
       ...(nom === null ? { contactNom: null } : {}),
       ...(telephone !== undefined ? { contactTelephone: telephone } : {}),
       ...(fonction !== undefined ? { contactFonction: fonction } : {}),
+      ...(civilite !== undefined ? { contactCivilite: civilite } : {}),
+      ...(prenom !== undefined ? { contactPrenom: prenom } : {}),
+      ...(nomFamille !== undefined ? { contactNomFamille: nomFamille } : {}),
     };
     if (Object.keys(copie).length > 0) {
       await tx.client.update({ where: { id: entree.clientId }, data: copie });
@@ -240,6 +266,15 @@ export async function definirContactFacturation(
       estContactFacturation: true,
       creeParId: entree.parAdminId ?? null,
     }));
+    // La personne créée (ou retrouvée) par le chemin unique : on y pose l'identité
+    // de salutation transmise — elle n'hérite jamais de celle de l'ancienne.
+    if (Object.keys(identite).length > 0) {
+      cible = await tx.clientContact.update({
+        where: { id: cible.id },
+        data: identite,
+        select: PERSONNE_CHOISIE,
+      });
+    }
   } else {
     cible = await tx.clientContact.update({
       where: { id: cible.id },
@@ -248,11 +283,11 @@ export async function definirContactFacturation(
         ...(typeof nom === "string" && nom !== cible.nom ? { nom } : {}),
         ...(telephone !== undefined ? { telephone } : {}),
         ...(fonction !== undefined ? { fonction } : {}),
+        ...identite,
       },
-      select: { id: true, nom: true, telephone: true, fonction: true },
+      select: PERSONNE_CHOISIE,
     });
   }
-
   // L'adresse : ajoutée si elle manque, retirée si on l'efface.
   if (typeof email === "string" && emailHash !== null) {
     const connue = await tx.clientContactAdresse.findFirst({
@@ -280,6 +315,9 @@ export async function definirContactFacturation(
       contactNom: cible.nom === NOM_A_COMPLETER ? null : cible.nom,
       contactTelephone: cible.telephone,
       contactFonction: cible.fonction,
+      contactCivilite: cible.civilite ?? null,
+      contactPrenom: cible.prenom ?? null,
+      contactNomFamille: cible.nomFamille ?? null,
       ...(email !== undefined ? { contactEmail: email } : {}),
     },
   });

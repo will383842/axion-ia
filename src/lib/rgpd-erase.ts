@@ -703,6 +703,10 @@ export async function eraseClientsForEmail(email: string): Promise<EraseClientsR
         data: {
           contactEmail: hashedEmail,
           contactNom: null,
+          // Identité de salutation (B4) : elle suit le contact dans l'effacement.
+          contactCivilite: null,
+          contactPrenom: null,
+          contactNomFamille: null,
           contactTelephone: null,
           contactFonction: null,
           // Champs de saisie libre : ils portent régulièrement le nom et le

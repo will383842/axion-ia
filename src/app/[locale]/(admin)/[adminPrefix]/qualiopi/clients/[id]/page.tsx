@@ -105,6 +105,8 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { titreOngletClient } from "@/server/qualiopi/crm/libelles-fiche-client";
+import { libelleSalutationEmails } from "@/server/qualiopi/crm/libelle-salutation";
 import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import { siteAuditDuClient } from "@/features/site-audit/config";
@@ -150,10 +152,13 @@ async function abri<T, R>(
     );
   }
 }
-export const metadata: Metadata = {
-  title: "Qualiopi — Fiche client | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// Avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: titreOngletClient("Fiche client"),
+    robots: { index: false, follow: false },
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Libellés + tonalités FR (convention console : maps locales par page)
@@ -878,6 +883,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
                 <div>
                   <p className={infoLabelCls}>Nom</p>
                   <p className={infoValueCls}>{client.contactNom || "—"}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Salutation des e-mails</p>
+                  <p className={infoValueCls}>{libelleSalutationEmails(client)}</p>
                 </div>
                 <div>
                   <p className={infoLabelCls}>Rôle</p>

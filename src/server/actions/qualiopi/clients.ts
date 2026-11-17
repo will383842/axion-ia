@@ -180,6 +180,16 @@ const createClientSchema = z
       });
   });
 
+/** Prénom / nom de famille du contact : 80 caractères au plus, vide → `null`. */
+function texteSalutation() {
+  return z
+    .string()
+    .max(80)
+    .transform((v) => (v.trim() === "" ? null : v.trim()))
+    .nullable()
+    .optional();
+}
+
 const updateClientSchema = z
   .object({
     id: z.string().uuid(),
@@ -258,6 +268,16 @@ const updateClientSchema = z
     contactEmail: z.string().email().nullable().optional(),
     contactTelephone: z.string().max(40).optional(),
     contactFonction: z.string().max(150).optional(),
+    /**
+     * Salutation des e-mails (B4) : « Bonjour Madame Dupont, ». Saisis à part,
+     * JAMAIS déduits de `contactNom`. Vide → `null` (efface) ; civilité inconnue refusée.
+     */
+    contactCivilite: z
+      .union([z.enum(["madame", "monsieur"]), z.literal("")])
+      .transform((v) => (v === "" ? null : v))
+      .optional(),
+    contactPrenom: texteSalutation(),
+    contactNomFamille: texteSalutation(),
     /**
      * Voir createClientSchema pour `.min(1)`.
      *
@@ -679,7 +699,10 @@ export async function updateClientAction(
     fields.contactNom !== undefined ||
     fields.contactEmail !== undefined ||
     fields.contactTelephone !== undefined ||
-    fields.contactFonction !== undefined;
+    fields.contactFonction !== undefined ||
+    fields.contactCivilite !== undefined ||
+    fields.contactPrenom !== undefined ||
+    fields.contactNomFamille !== undefined;
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -747,6 +770,11 @@ export async function updateClientAction(
           ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
           ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
           ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),
+          ...(fields.contactCivilite !== undefined ? { civilite: fields.contactCivilite } : {}),
+          ...(fields.contactPrenom !== undefined ? { prenom: fields.contactPrenom } : {}),
+          ...(fields.contactNomFamille !== undefined
+            ? { nomFamille: fields.contactNomFamille }
+            : {}),
           parAdminId: session.userId,
         });
       }
