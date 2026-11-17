@@ -502,11 +502,73 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       expect(h.confirmer).not.toHaveBeenCalled();
     });
 
-    it("devis classique (sans offre) : aucune confirmation, chemin inchangé", async () => {
+    it("🔴 devis CLASSIQUE contresigné par un administrateur : UNE confirmation, après la montée de la fiche, devis accepté quand même", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      const r = await contresigne();
+      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      expect(h.confirmer).toHaveBeenCalledWith({
+        declencheur: "contresignature_axion_explicite",
+        devisId: "dv-classique",
+      });
+      expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.confirmer));
+      expect(ordre(h.monter)).toBeLessThan(ordre(h.confirmer));
+      expect(r.activationRefusee ?? null).toBeNull();
+    });
+
+    it("devis classique : signature du CLIENT seule → aucune confirmation", async () => {
       h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      await contresigne({ partie: "client", statutSignature: "partielle" });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("devis classique : acteur signataire (pas administrateur) → aucune confirmation", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      await contresigne({ acteur: { type: "signataire" } });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("devis classique : rejeu (déjà accepté, plus rien à accepter) → pas de seconde confirmation ; `deja_envoyee` n'est pas un échec", async () => {
+      h.txDevis.devis.findMany.mockResolvedValueOnce([{ id: "dv-classique" }]);
+      await contresigne();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      // Second passage : la garde (envoye/expire) ne trouve plus rien.
+      h.txDevis.devis.findMany.mockResolvedValue([]);
+      await contresigne();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      // Et si le mécanisme d'anti-rejeu répond `deja_envoyee` : ni alerte ni échec.
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+      const r = await contresigne();
+      expect(r.activationRefusee ?? null).toBeNull();
+    });
+
+    it("devis classique : la préparation échoue (refus typé ou exception) → alerte, acceptation et plans acquis", async () => {
+      const Sentry = await import("@sentry/nextjs");
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+      const r1 = await contresigne();
+      expect(r1.activationRefusee).toMatchObject({
+        code: "confirmation_commande_non_preparee",
+        prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
+      });
+      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
+      h.confirmer.mockRejectedValueOnce(new Error("redis"));
+      const r2 = await contresigne();
+      expect(Sentry.captureException).toHaveBeenCalled();
+      expect(r2.activationRefusee?.code).toBe("confirmation_commande_non_preparee");
+      expect(proposerPlansApresAcceptation).toHaveBeenCalledWith(
+        "dv-classique",
+        "signature_complete",
+      );
+    });
+
+    it("devis classique : un devis portant une offre n'est pas confirmé par le chemin classique", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-offre", offre: {}, offreSha256: "x" }]);
       await contresigne();
       expect(h.confirmer).not.toHaveBeenCalled();
-      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
     });
 
     it("l'envoi lève : signature et acceptation acquises, alerte confirmation_commande_non_preparee", async () => {
