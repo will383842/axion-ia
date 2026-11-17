@@ -62,6 +62,20 @@ function numeroAffiche(p: Partial<Payload>): string {
   return d !== "" ? d : field(p, "numero", "");
 }
 
+/**
+ * « <libellé> <numéro> », sans article (la phrase qui l'emploie porte « la pièce »).
+ * Le libellé vient de `parties-requises.ts` ; une précision entre parenthèses
+ * (ex. « (mandat OPCO) ») est une note interne, pas un mot à dire au client.
+ * Un libellé absent (job de l'ancien code) ne laisse que le numéro.
+ */
+function designationPiece(p: Partial<Payload>): string {
+  const libelle = field(p, "libellePiece", "")
+    .replace(/\s*\([^)]*\)/g, "")
+    .replace(/^(la|le|l'|les|un|une)\s+/i, "")
+    .trim();
+  return [libelle, numeroAffiche(p)].filter((x) => x !== "").join(" ");
+}
+
 function listeSignataires(p: Partial<Payload>): string {
   const s = p.signataires;
   if (!Array.isArray(s)) return "";
@@ -75,20 +89,21 @@ const COPY = {
   fr: {
     title: "Votre exemplaire signé",
     intro: "Bonjour,",
-    body: (libelle: string) =>
-      `${libelle.charAt(0).toUpperCase()}${libelle.slice(1)} est désormais signée par l'ensemble des parties. Vous en trouverez l'exemplaire complet en pièce jointe.`,
+    // Phrase neutre : le libellé vient de `parties-requises.ts` (« devis », « convention… »)
+    // et n'a ni le même genre ni d'article. « La pièce <libellé> <n°> » s'accorde toujours.
+    body: (pieceDesignee: string) =>
+      `La pièce ${pieceDesignee} est désormais signée par l'ensemble des parties. Vous en trouverez l'exemplaire complet en pièce jointe.`,
     preview: "Toutes les parties ont signé — votre exemplaire est en pièce jointe.",
     // Ce que le destinataire doit RETENIR, et qui n'est écrit nulle part
     // ailleurs : ce PDF est sa copie à lui, pas un accusé de réception.
-    conserver:
-      "Ce document fait foi de l'accord conclu entre nous : conservez-le, il vous sera demandé en cas de contrôle de votre financeur.",
+    conserver: "Ce document fait foi de l'accord conclu entre nous : conservez-le.",
     qui: (noms: string) => `Signataires : ${noms}.`,
     ref: (n: string) => `Référence du document : ${n}`,
     pieceRef: (n: string) => `Référence de la pièce : ${n}`,
     empreinte: (e: string) => `Empreinte SHA-256 du document signé : ${e}`,
     titlePartielle: "Copie de votre signature",
-    bodyPartielle: (libelle: string) =>
-      `Votre signature sur ${libelle} est bien enregistrée. Vous trouverez en pièce jointe une copie du document portant votre signature.`,
+    bodyPartielle: (pieceDesignee: string) =>
+      `Votre signature sur la pièce ${pieceDesignee} est bien enregistrée. Vous trouverez en pièce jointe une copie du document portant votre signature.`,
     previewPartielle: "Votre signature est enregistrée — l'exemplaire complet suivra.",
     conserverPartielle:
       "D'autres parties doivent encore signer : cette copie n'est pas l'exemplaire final. Celui-ci vous sera adressé dès que toutes les signatures seront réunies.",
@@ -99,18 +114,17 @@ const COPY = {
   en: {
     title: "Your signed copy",
     intro: "Hello,",
-    body: (libelle: string) =>
-      `${libelle.charAt(0).toUpperCase()}${libelle.slice(1)} has now been signed by all parties. Please find the complete signed copy attached.`,
+    body: (pieceDesignee: string) =>
+      `The document ${pieceDesignee} has now been signed by all parties. Please find the complete signed copy attached.`,
     preview: "All parties have signed — your copy is attached.",
-    conserver:
-      "This document evidences the agreement between us: please keep it, your funding body may ask for it.",
+    conserver: "This document evidences the agreement between us: please keep it.",
     qui: (noms: string) => `Signatories: ${noms}.`,
     ref: (n: string) => `Document reference: ${n}`,
     pieceRef: (n: string) => `Document file reference: ${n}`,
     empreinte: (e: string) => `SHA-256 fingerprint of the signed document: ${e}`,
     titlePartielle: "Copy of your signature",
-    bodyPartielle: (libelle: string) =>
-      `Your signature on ${libelle} has been recorded. Please find attached a copy of the document bearing your signature.`,
+    bodyPartielle: (pieceDesignee: string) =>
+      `Your signature on the document ${pieceDesignee} has been recorded. Please find attached a copy of the document bearing your signature.`,
     previewPartielle: "Your signature is recorded — the complete copy will follow.",
     conserverPartielle:
       "Other parties still have to sign: this copy is not the final document. It will be sent to you once all signatures are collected.",
@@ -148,7 +162,7 @@ export function PieceExemplaireSigneEmail({
   const t = COPY[locale];
   const noms = listeSignataires(p);
   const partielle = p.partielle === true;
-  const libelle = field(p, "libellePiece", locale === "fr" ? "la pièce" : "the document");
+  const pieceDesignee = designationPiece(p);
   const empreinte = typeof p.empreinte === "string" ? p.empreinte.trim() : "";
 
   return (
@@ -160,7 +174,7 @@ export function PieceExemplaireSigneEmail({
     >
       <Text style={emailStyles.paragraphStyle}>{t.intro}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {partielle ? t.bodyPartielle(libelle) : t.body(libelle)}
+        {partielle ? t.bodyPartielle(pieceDesignee) : t.body(pieceDesignee)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         {partielle ? t.conserverPartielle : t.conserver}
