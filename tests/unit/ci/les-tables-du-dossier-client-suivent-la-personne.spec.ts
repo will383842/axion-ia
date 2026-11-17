@@ -84,13 +84,37 @@ function declare(source: string, modele: string): boolean {
   return new RegExp(`modele:\\s*"${modele}"`).test(source);
 }
 
-/** Ce qui écrit dans une table « sans écrivain » : appel Prisma ou INSERT en SQL brut. */
-function regexEcrivain(liste: readonly { modele: string; table: string }[]): RegExp {
+/** Une table « sans écrivain » : modèle Prisma, nom SQL et relations qui y mènent (écriture imbriquée). */
+interface TableSansEcrivain {
+  readonly modele: string;
+  readonly table: string;
+  /** Champs de relation des AUTRES modèles vers celui-ci (`emailsManuels`, `piecesJointes`…). */
+  readonly relations?: readonly string[];
+}
+
+/**
+ * Ce qui écrit dans une table « sans écrivain », sous toutes ses formes :
+ *   · appel Prisma, avec blanc ou saut de ligne avant les points (`prisma\n  .emailManuel\n  .create(`),
+ *     `create`, `createMany`, `createManyAndReturn`, `upsert`, `update`, `updateMany` ;
+ *   · création imbriquée par une relation (`emailsManuels: { create`, `connectOrCreate`…) ;
+ *   · SQL brut `INSERT INTO` / `UPDATE`, en minuscules, avec ou sans guillemets, schéma optionnel.
+ * ⚠️ `String.raw` : sans lui `\b` devient un retour arrière et `\.` un simple point (défaut de la
+ * version précédente : un appel Prisma n'était jamais détecté).
+ */
+function regexEcrivain(liste: readonly TableSansEcrivain[]): RegExp {
   if (liste.length === 0) return /(?!)/;
   const accesseurs = liste.map((t) => t.modele.charAt(0).toLowerCase() + t.modele.slice(1));
-  return new RegExp(
-    String.raw`\.(${accesseurs.join("|")})\.(create|createMany|upsert|update|updateMany)\b|INSERT INTO "(${liste.map((t) => t.table).join("|")})"`,
-  );
+  const relations = liste.flatMap((t) => t.relations ?? []);
+  const formes = [
+    String.raw`\.\s*(?:${accesseurs.join("|")})\s*\.\s*(?:createManyAndReturn|createMany|create|upsert|updateMany|update)\b`,
+    String.raw`(?:insert\s+into|update)\s+(?:"?public"?\s*\.\s*)?"?(?:${liste.map((t) => t.table).join("|")})\b`,
+  ];
+  if (relations.length > 0) {
+    formes.push(
+      String.raw`\b(?:${relations.join("|")})\s*:\s*\{\s*(?:createMany|create|connectOrCreate|upsert)\b`,
+    );
+  }
+  return new RegExp(formes.join("|"), "i");
 }
 
 function fautes(
@@ -155,12 +179,10 @@ describe("les tables du dossier client suivent la personne", () => {
     // Paires { modele, table } : `table` = nom `@@map` du modèle (pour détecter aussi le SQL brut).
     // Lot S2 (2026-11-08) : `contacts_guide_reseau` a maintenant un écrivain (la page « Recevoir le
     // guide ») ; son export (`rgpd-guide-reseau.ts`) et sa mise à l'écart (`rgpd-erase.ts`) sont réels.
-    // Lot I4, fiche F1 (2026-11-18) : les deux tables des e-mails écrits à la main, créées par
-    // migration seule. La fiche F1b retire ces deux lignes en branchant l'export et l'effacement réels.
-    const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [
-      { modele: "EmailManuel", table: "emails_manuels" },
-      { modele: "EmailManuelPieceJointe", table: "emails_manuels_pieces_jointes" },
-    ];
+    // Lot I4, fiche F1b : les deux tables des e-mails écrits à la main ont leur export (art. 15) et
+    // leur traitement d'effacement réels ; la liste est donc vide. Une future table créée par
+    // migration seule s'ajoute ICI (avec ses relations) ET à une exception « sans écrivain ».
+    const TABLES_SANS_ECRIVAIN: readonly TableSansEcrivain[] = [];
     expect(sansEcrivain.map((m) => m[1]).sort()).toEqual(
       TABLES_SANS_ECRIVAIN.map((t) => t.modele).sort(),
     );
@@ -184,17 +206,68 @@ describe("les tables du dossier client suivent la personne", () => {
     ).toEqual([]);
   });
 
-  it("contre-témoin : la détection d'écrivain voit un appel Prisma, pas une lecture", () => {
-    const re = regexEcrivain([{ modele: "EmailManuel", table: "emails_manuels" }]);
-    expect(re.test("await tx.emailManuel.create({ data })")).toBe(true);
-    expect(re.test("await prisma.emailManuel.updateMany({")).toBe(true);
-    expect(re.test('INSERT INTO "emails_manuels" ("id")')).toBe(true);
-    expect(re.test("await prisma.emailManuel.findMany({")).toBe(false);
+  describe("contre-témoins : la détection d'écrivain voit chaque forme d'écriture, jamais une lecture", () => {
+    const re = regexEcrivain([
+      {
+        modele: "EmailManuel",
+        table: "emails_manuels",
+        relations: ["emailsManuels"],
+      },
+      {
+        modele: "EmailManuelPieceJointe",
+        table: "emails_manuels_pieces_jointes",
+        relations: ["piecesJointes"],
+      },
+    ]);
+    const ECRITURES: ReadonlyArray<readonly [string, string]> = [
+      ["create", "await tx.emailManuel.create({ data })"],
+      ["updateMany", "await prisma.emailManuel.updateMany({"],
+      ["createMany", "await tx.emailManuelPieceJointe.createMany({ data })"],
+      ["createManyAndReturn", "await tx.emailManuel.createManyAndReturn({ data })"],
+      ["upsert", "await tx.emailManuel.upsert({"],
+      ["blanc avant le point", "await prisma.emailManuel .create({ data })"],
+      ["saut de ligne avant le point", "await prisma\n  .emailManuel\n  .create({ data })"],
+      ["saut de ligne après le point", "await prisma.\n  emailManuel.\n  create({ data })"],
+      [
+        "création imbriquée (e-mail)",
+        "client.update({ data: { emailsManuels: { create: { a } } } })",
+      ],
+      [
+        "création imbriquée (pièce)",
+        "emailManuel: {\n piecesJointes:\n {\n createMany: { data } } }",
+      ],
+      ["SQL brut guillemets", 'INSERT INTO "emails_manuels" ("id")'],
+      ["SQL brut minuscules sans guillemets", "insert into emails_manuels (id) values (1)"],
+      ["SQL brut avec schéma", 'insert  into "public"."emails_manuels_pieces_jointes" (id)'],
+      ["SQL brut update", "update emails_manuels set objet = 'x'"],
+    ];
+    for (const [forme, code] of ECRITURES) {
+      it(`voit : ${forme}`, () => expect(re.test(code), code).toBe(true));
+    }
+    const LECTURES: ReadonlyArray<string> = [
+      "await prisma.emailManuel.findMany({",
+      "await prisma.emailManuelPieceJointe.count({",
+      "include: { emailsManuels: { select: { id: true } } }",
+      'SELECT * FROM "emails_manuels"',
+    ];
+    for (const code of LECTURES) {
+      it(`ne voit pas : ${code}`, () => expect(re.test(code), code).toBe(false));
+    }
+    it("une liste vide ne détecte rien", () => {
+      expect(regexEcrivain([]).test("await tx.emailManuel.create({})")).toBe(false);
+    });
   });
 
   it("la route d'export appelle bien le module du dossier client", () => {
     expect(lire(ROUTE_EXPORT)).toContain("@/lib/rgpd-dossier-client");
     expect(lire(ROUTE_EXPORT)).toMatch(/exporterDossierClientPour\(email\)/);
+  });
+
+  it("fiche F1b — la route d'effacement n'appelle pas le traitement manuel des e-mails écrits à la main", () => {
+    // Geste du fondateur seulement : `neutraliserEmailsManuelsPour` n'est appelée par aucune route.
+    const route = lire("src/app/api/gdpr-erase/route.ts");
+    expect(route).not.toContain("neutraliserEmailsManuelsPour");
+    expect(lire(MODULE_EFFACEMENT)).toMatch(/export async function neutraliserEmailsManuelsPour\b/);
   });
 
   it("11/11/2026 — la route d'effacement n'efface plus le dossier client (mise à l'écart)", () => {

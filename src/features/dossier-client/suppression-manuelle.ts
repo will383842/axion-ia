@@ -100,6 +100,8 @@ const NOMS_TABLES: Readonly<Record<string, string>> = {
   audit_terrain_sessions: "session(s) d'audit sur place",
   audit_terrain_evenements: "relevé(s) d'audit sur place",
   audit_terrain_rapports: "rapport(s) d'audit sur place",
+  emails_manuels: "e-mail(s) écrit(s) à la main",
+  emails_manuels_pieces_jointes: "pièce(s) jointe(s) d'e-mail(s) écrit(s) à la main",
 };
 
 const nomTable = (t: string) => NOMS_TABLES[t.replace(/"/g, "")] ?? `table ${t}`;
@@ -182,6 +184,38 @@ export async function liensHorsPerimetre(
     if (n > 0) sortie.push(`${n} ${nomTable(fk.table)} lié(e)s`);
   }
   return sortie;
+}
+
+/**
+ * Les e-mails écrits à la main dont l'empreinte du destinataire est celle d'une adresse de ces
+ * contacts. Même empreinte que `ClientContactAdresse.emailHash` (`hashEmailForLookup`).
+ * Ne compte QUE les lignes que le scan des clés étrangères (`liensHorsPerimetre`) ne voit pas : celles
+ * rattachées à la fiche (`exclure.clientId`) ou à ces contacts (`exclure.contactIds`) sont déjà un
+ * bloquant, sans doublon. `OR null` explicite : un `NOT` de Prisma exclut les NULL.
+ */
+export async function emailsManuelsParEmpreinte(
+  tx: Tx,
+  contactIds: readonly string[],
+  exclure: { readonly clientId?: string; readonly contactIds: readonly string[] },
+): Promise<number> {
+  if (contactIds.length === 0) return 0;
+  const adresses = await tx.clientContactAdresse.findMany({
+    where: { contactId: { in: [...contactIds] } },
+    select: { emailHash: true },
+  });
+  const hashes = [...new Set(adresses.map((a) => a.emailHash))];
+  if (hashes.length === 0) return 0;
+  return tx.emailManuel.count({
+    where: {
+      destinataireHash: { in: hashes },
+      AND: [
+        exclure.clientId === undefined
+          ? {}
+          : { OR: [{ clientId: null }, { clientId: { not: exclure.clientId } }] },
+        { OR: [{ contactId: null }, { contactId: { notIn: [...exclure.contactIds] } }] },
+      ],
+    },
+  });
 }
 
 /**
@@ -384,6 +418,18 @@ async function partiesClient(tx: Tx, cid: string, p: Parties): Promise<void> {
   // Les e-mails rattachés à la fiche ET à chacun de ses contacts.
   const reels = await envoisReels(tx, [cid, ...p.contactIds]);
   if (reels > 0) p.bloquants.push(`${reels} e-mail(s) parti(s) à un prospect réel`);
+  // E-mails écrits à la main vers l'une des ADRESSES des contacts de la fiche, rattachés ou non à la
+  // fiche (une ligne `CalendlyEvent` n'a ni `client_id` ni `contact_id`) : la clé étrangère ne les
+  // voit pas, l'empreinte oui (fiche F1b). Rien n'est supprimé : le fondateur les traite à la main.
+  const manuels = await emailsManuelsParEmpreinte(tx, p.contactIds, {
+    clientId: cid,
+    contactIds: p.contactIds,
+  });
+  if (manuels > 0) {
+    p.bloquants.push(
+      `${manuels} e-mail(s) écrit(s) à la main vers une adresse de ces contacts, sans lien avec la fiche`,
+    );
+  }
 }
 
 async function entete(

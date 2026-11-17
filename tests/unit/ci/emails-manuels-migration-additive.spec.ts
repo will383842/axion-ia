@@ -66,6 +66,7 @@ const INTERDITS: ReadonlyArray<readonly [RegExp, string]> = [
   [/--|\/\*/, "commentaire en fin de ligne ou en bloc"],
   [/\b(?:DROP|TRUNCATE|INSERT|RENAME|GRANT|REVOKE|COPY|OWNER)\b/, "mot interdit"],
   [/\b(?:ADD|ALTER) COLUMN\b|\bSET SCHEMA\b/, "colonne ou schéma modifié"],
+  [/\b(?:INHERITS|PARTITION)\b/, "héritage ou partitionnement de table"],
 ];
 
 function fautesMigration(sql: string): string[] {
@@ -131,6 +132,35 @@ describe("migration emails_manuels : additive (liste blanche)", () => {
       "CREATE FUNCTION f() RETURNS trigger AS $f$ BEGIN RETURN NULL; END $f$ LANGUAGE plpgsql",
     ];
     for (const e of ECARTS) expect(fautesMigration(`${mig}\n${e};\n`), e).not.toEqual([]);
+  });
+
+  it("contre-témoin : INHERITS et PARTITION, y compris dans une instruction d'origine, sont signalés", () => {
+    const mig = lireSql("migration.sql");
+    // Ajoutés en instruction à part : refusés (forme non permise ET mot interdit).
+    for (const e of [
+      'CREATE TABLE "emails_manuels_bis" () INHERITS ("clients")',
+      'create table "emails_manuels_bis" (id int) partition by range (id)',
+    ]) {
+      expect(fautesMigration(`${mig}\n${e};\n`), e).not.toEqual([]);
+    }
+    // Greffés SUR une instruction d'origine, dont la forme reste permise : seul le mot interdit
+    // les attrape. On remplace l'instruction d'origine, on ne se contente pas d'en ajouter une.
+    const origine = 'CREATE TABLE "emails_manuels" (';
+    const debut = mig.indexOf(origine);
+    const fin = mig.indexOf(";", debut);
+    expect(debut).toBeGreaterThan(-1);
+    for (const queue of [
+      ' INHERITS ("clients")',
+      " PARTITION BY HASH (id)",
+      " inherits (clients)",
+    ]) {
+      const remplacee = `${mig.slice(0, fin)}${queue}${mig.slice(fin)}`;
+      const fautes = fautesMigration(remplacee);
+      expect(
+        fautes.some((f) => f.startsWith("héritage ou partitionnement")),
+        queue,
+      ).toBe(true);
+    }
   });
 
   it("clés : RESTRICT vers clients et client_contacts, SET NULL pour l'auteur, RESTRICT vers l'e-mail", () => {

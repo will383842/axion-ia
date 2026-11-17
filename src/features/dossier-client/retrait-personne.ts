@@ -19,7 +19,8 @@
  *   · les liens SANS clé étrangère, par son adresse ou son nom : participant d'un rendez-vous
  *     rapproché par l'adresse, questionnaire adressé à cette personne (et ses réponses), facture à son
  *     nom, inscription ou contact sur place d'une session de formation, séance de coaching, e-mail
- *     parti ou en attente vers elle (hors contact@axion-ia.com).
+ *     parti ou en attente vers elle (hors contact@axion-ia.com), e-mail écrit à la main vers l'une
+ *     de ses adresses (par l'empreinte).
  *
  * Le bilan est RECALCULÉ dans la transaction, après verrou de la fiche (une personne ajoutée en même
  * temps attend notre fin), de la personne et de ses adresses ; s'il a changé depuis la 1re étape,
@@ -138,6 +139,7 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
     enAttente,
     courriers,
     signatures,
+    emailsManuels,
   ] = await Promise.all([
     hashes.length === 0
       ? 0
@@ -188,6 +190,17 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
           tx.documentSignature.count({ where: { OR: parSignataire } }),
           tx.documentSignatureToken.count({ where: { OR: parSignataire } }),
         ]).then(([a, b]) => a + b),
+    // E-mails écrits à la main vers l'une de ses adresses (par l'empreinte : une ligne sans
+    // `contact_id`, ex. entité `CalendlyEvent`, échappe à la clé étrangère). Fiche F1b.
+    // Sans ceux que le scan des clés étrangères voit déjà (même `contact_id`) : pas de doublon.
+    hashes.length === 0
+      ? 0
+      : tx.emailManuel.count({
+          where: {
+            destinataireHash: { in: hashes },
+            OR: [{ contactId: null }, { contactId: { not: contactId } }],
+          },
+        }),
   ]);
   if (participations > 0) {
     bloquants.push(`${participations} participation(s) à un rendez-vous (par son adresse)`);
@@ -208,6 +221,11 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
   if (surPlace > 0) bloquants.push(`contact sur place de ${surPlace} session(s) de formation`);
   if (coachings > 0) bloquants.push(`${coachings} séance(s) de formation individuelle`);
   if (envois > 0) bloquants.push(`${envois} e-mail(s) parti(s) ou en cours vers cette personne`);
+  if (emailsManuels > 0) {
+    bloquants.push(
+      `${emailsManuels} e-mail(s) écrit(s) à la main vers une de ses adresses, sans lien avec sa fiche personne : à traiter par le fondateur`,
+    );
+  }
   if (enAttente > 0) {
     bloquants.push(`${enAttente} e-mail(s) non refusé(s) de « E-mails à valider » vers elle`);
   }
