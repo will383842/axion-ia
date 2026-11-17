@@ -59,6 +59,12 @@ const h = vi.hoisted(() => {
     ordre: [] as string[],
     updateMany: { appels: 0 },
     copie: { echecs: 0, pendant: null as null | (() => void) },
+    /** Copies faites dans le compartiment (source → destination). */
+    copies: [] as Array<{ source: string; dest: string }>,
+    /** Le journal d'effacement (en ajout seul dans la vraie base). */
+    journal: [] as Array<{ tableCible: string; ligneId: string }>,
+    /** `echec` : la PROCHAINE transaction rejette. */
+    tx: { echec: false },
     ObjetR2Modifie,
   };
 });
@@ -112,7 +118,18 @@ async function queryRaw(ctx: Contexte, s: TemplateStringsArray, v: unknown[]) {
   h.ordre.push("sql");
   const e = h.emails.find((x) => x.id === v[0]);
   return e
-    ? [{ id: e.id, statut: e.statut, ecrit_par_id: e.ecritParId ?? null, objet: e.objet }]
+    ? [
+        {
+          id: e.id,
+          statut: e.statut,
+          ecrit_par_id: e.ecritParId ?? null,
+          neutralise: h.journal.some(
+            (j) =>
+              j.tableCible === "emails_manuels" &&
+              (j.ligneId === e.id || j.ligneId === `${e.id}:contenu`),
+          ),
+        },
+      ]
     : [];
 }
 
@@ -157,7 +174,12 @@ vi.mock("@/lib/prisma", () => ({
 
 const prismaComplet = () => ({
   ...prismaMock,
+  $queryRaw: (s: TemplateStringsArray, ...v: unknown[]) => queryRaw({ liberer: [] }, s, v),
   $transaction: async (fn: (tx: unknown) => Promise<unknown>) => {
+    if (h.tx.echec) {
+      h.tx.echec = false;
+      throw new Error("P2028 transaction indisponible");
+    }
     const ctx: Contexte = { liberer: [] };
     const tx = {
       ...prismaMock,
@@ -204,6 +226,7 @@ vi.mock("@/lib/r2-storage", () => ({
       throw new Error("panne de copie");
     }
     h.copie.pendant?.();
+    h.copies.push({ source, dest });
     h.seau.set(dest, { ...o, type });
   },
   deleteFromR2: async (cle: string) => {
@@ -218,6 +241,7 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("@/server/careers/clamav", () => ({ analyserFlux: vi.fn() }));
 
 import {
+  brouillonNeutralise,
   PREFIXE_REFUSEES_EMAIL,
   PREFIXE_TEMPORAIRE_EMAIL,
   TTL_URL_ENVOI_EMAIL_S,
@@ -231,7 +255,7 @@ import {
   PLAFOND_OCTETS_24H_PAR_ADMIN,
   prefixesStockageEmail,
 } from "@/lib/email-manuel/pieces-jointes";
-import { OBJET_EMAIL_MANUEL_EFFACE } from "@/lib/rgpd-erase";
+import * as Sentry from "@sentry/nextjs";
 import type { Antivirus } from "@/server/contact/pieces-jointes";
 
 const DIRECTION = { id: "11111111-1111-4111-8111-111111111111", role: "admin" };
@@ -326,6 +350,11 @@ beforeEach(() => {
   h.updateMany.appels = 0;
   h.copie.echecs = 0;
   h.copie.pendant = null;
+  h.copies.length = 0;
+  h.journal.length = 0;
+  h.tx.echec = false;
+  vi.mocked(Sentry.captureMessage).mockClear();
+  vi.mocked(Sentry.captureException).mockClear();
   verrous.clear();
   n = 0;
 });
@@ -727,6 +756,49 @@ describe("cloisonnement par auteur", () => {
   });
 });
 
+describe("cas limites", () => {
+  it("5 bis. finaliser sur un auteur supprimé (ecritParId NULL) → inconnu, antivirus muet", async () => {
+    const e = brouillonDe(null);
+    const jeton = nouveauJeton();
+    semer(e, jeton);
+    const av = vi.fn(antivirusSain);
+    expect(await fonction.finaliser(DIRECTION, e.id, jeton, av)).toMatchObject({
+      refus: "inconnu",
+    });
+    expect(av).not.toHaveBeenCalled();
+    expect(h.lignes[0]!.statut).toBe("attendue");
+  });
+
+  it("entrée non objet (null, undefined) : inconnu, sans aucune entrée-sortie", async () => {
+    for (const x of [null, undefined]) {
+      expect(await ouvrirEnvoisPiecesJointesEmail(x as never)).toMatchObject({ refus: "inconnu" });
+      expect(await finaliserPiecesJointesEmail(x as never)).toMatchObject({ refus: "inconnu" });
+    }
+    expect(h.sql).toHaveLength(0);
+    expect(h.debit.cles).toHaveLength(0);
+  });
+
+  it("erreur de transaction à l'ouverture : « indisponible », Sentry, aucune ligne", async () => {
+    const e = brouillonDe(DIRECTION);
+    h.tx.echec = true;
+    const r = await fonction.ouvrir(DIRECTION, e.id);
+    expect(r).toMatchObject({ ok: false, refus: "indisponible" });
+    expect(h.lignes).toHaveLength(0);
+    expect(vi.mocked(Sentry.captureException)).toHaveBeenCalledTimes(1);
+  });
+
+  it("erreur de transaction au temps 1 de finaliser : « indisponible », Sentry, lignes inchangées", async () => {
+    const e = brouillonDe(DIRECTION);
+    const jeton = nouveauJeton();
+    semer(e, jeton);
+    h.tx.echec = true;
+    const r = await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(r).toMatchObject({ ok: false, refus: "indisponible" });
+    expect(h.lignes[0]!.statut).toBe("attendue");
+    expect(vi.mocked(Sentry.captureException)).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe("concurrence : limites lues sous verrou", () => {
   it("6. deux ouvertures de 5 × 1 Mo : une seule passe", async () => {
     const e = brouillonDe(DIRECTION);
@@ -979,12 +1051,10 @@ describe("rangement protégé", () => {
 });
 
 describe("neutralisation, plafond, validation, interrupteur, noms", () => {
-  it("20. brouillon neutralisé : neutralise, aucune ligne, aucune URL", async () => {
-    const e = brouillonDe(DIRECTION, { objet: OBJET_EMAIL_MANUEL_EFFACE });
-    const r = await fonction.ouvrir(DIRECTION, e.id);
-    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
-    expect(h.lignes).toHaveLength(0);
-    expect(h.urls).toHaveLength(0);
+  it("brouillonNeutralise : seul « true » compte (fonction pure)", () => {
+    expect(brouillonNeutralise({ neutralise: true })).toBe(true);
+    expect(brouillonNeutralise({ neutralise: false })).toBe(false);
+    expect(brouillonNeutralise({ neutralise: null })).toBe(false);
   });
 
   it("21. plafond de 24 h : 195 Mo + 6 Mo refusé ; à 25 h accepté ; pièces de B non comptées", async () => {
@@ -1057,6 +1127,160 @@ describe("neutralisation, plafond, validation, interrupteur, noms", () => {
   });
 });
 
+describe("brouillon neutralisé : le critère est le journal d'effacement", () => {
+  const journaliser = (ligneId: string) =>
+    h.journal.push({ tableCible: "emails_manuels", ligneId });
+
+  async function pret(extra: Partial<Email> = {}) {
+    const e = brouillonDe(DIRECTION, extra);
+    const jeton = nouveauJeton();
+    const l = semer(e, jeton, { tailleOctets: PDF.length });
+    deposer(l.cleStockage, PDF);
+    return { e, jeton, l };
+  }
+
+  it("N1. destinataire : ouvrir et finaliser refusent « neutralise », rien n'est écrit ni appelé", async () => {
+    const { e, jeton, l } = await pret();
+    journaliser(e.id);
+    expect(await fonction.ouvrir(DIRECTION, e.id)).toMatchObject({
+      ok: false,
+      refus: "neutralise",
+    });
+    expect(h.lignes).toHaveLength(1);
+    expect(h.urls).toHaveLength(0);
+    const av = vi.fn(antivirusSain);
+    expect(await fonction.finaliser(DIRECTION, e.id, jeton, av)).toMatchObject({
+      ok: false,
+      refus: "neutralise",
+    });
+    expect(l.statut).toBe("attendue");
+    expect(av).not.toHaveBeenCalled();
+    expect(h.copies).toHaveLength(0);
+  });
+
+  it("N2. stagiaire (objet masqué, pas la constante) + journal → neutralise ; sans journal → ok", async () => {
+    const e = brouillonDe(DIRECTION, { entiteType: "Trainee", objet: "objet masqué" });
+    expect((await fonction.ouvrir(DIRECTION, e.id)).ok).toBe(true);
+    journaliser(e.id);
+    expect(await fonction.ouvrir(DIRECTION, e.id)).toMatchObject({
+      ok: false,
+      refus: "neutralise",
+    });
+  });
+
+  it("N3. contenu : « <id>:contenu » → neutralise ; autre id ou simple objet-constante → ok", async () => {
+    const e = brouillonDe(DIRECTION);
+    journaliser(randomUUID());
+    journaliser(`${randomUUID()}:contenu`);
+    expect((await fonction.ouvrir(DIRECTION, e.id)).ok).toBe(true);
+    const f = brouillonDe(DIRECTION, { objet: "[contenu effacé]" });
+    expect((await fonction.ouvrir(DIRECTION, f.id)).ok).toBe(true);
+    journaliser(`${e.id}:contenu`);
+    expect(await fonction.ouvrir(DIRECTION, e.id)).toMatchObject({ refus: "neutralise" });
+  });
+
+  it("N4. effacement pendant l'antivirus : refusée « neutralise », clé temporaire gardée, aucune copie", async () => {
+    const { e, jeton, l } = await pret();
+    const cleTemporaire = l.cleStockage;
+    const cles = h.seau.size;
+    const efface: Antivirus = async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      journaliser(e.id);
+      return { issue: "sain" };
+    };
+    const r = await fonction.finaliser(DIRECTION, e.id, jeton, efface);
+    expect(l).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(l.cleStockage).toBe(cleTemporaire);
+    expect(h.copies).toHaveLength(0);
+    expect(h.seau.size).toBe(cles);
+    expect(r.ok && r.pieces[0]!.message).toBe(MESSAGES_PIECES_EMAIL.neutralise);
+  });
+
+  it("N5. effacement pendant la COPIE : refusée « neutralise », pointe la copie, jamais acceptée, Sentry une fois", async () => {
+    const { e, jeton, l } = await pret();
+    h.copie.pendant = () => journaliser(e.id);
+    await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(l).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(l.cleStockage).toMatch(new RegExp(`^emails-manuels/${e.id}/[0-9a-f-]{36}\\.pdf$`));
+    expect(h.seau.has(l.cleStockage)).toBe(true);
+    expect(h.lignes.some((x) => x.statut === "acceptee")).toBe(false);
+    const sentry = vi.mocked(Sentry.captureMessage);
+    expect(sentry).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(sentry.mock.calls)).not.toMatch(/nomFichier|a\.pdf/);
+  });
+
+  it("16 bis. le Temps 3 rejette : la ligne revient « attendue », Sentry signale la copie", async () => {
+    const { e, jeton, l } = await pret();
+    h.copie.pendant = () => {
+      h.tx.echec = true;
+    };
+    const r = await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(r.ok && r.pieces[0]!.statut).toBe("antivirus_indisponible");
+    expect(l.statut).toBe("attendue");
+    const sentry = vi.mocked(Sentry.captureMessage);
+    expect(sentry).toHaveBeenCalledTimes(1);
+    expect(sentry.mock.calls[0]![1]).toMatchObject({
+      extra: { emailManuelId: e.id, pieceId: l.id, cle: h.copies[0]!.dest },
+    });
+  });
+
+  it("Temps 3 rejeté ET ligne déjà changée (count 0) : l'état réel est rendu, pas « indisponible »", async () => {
+    const { e, jeton, l } = await pret();
+    h.copie.pendant = () => {
+      h.tx.echec = true;
+      l.statut = "non_recue";
+    };
+    const r = await fonction.finaliser(DIRECTION, e.id, jeton, antivirusSain);
+    expect(l.statut).toBe("non_recue");
+    expect(r.ok && r.pieces[0]!.statut).toBe("non_recue");
+  });
+
+  it("D2. deux appels, même jeton : le second ne reprend pas la ligne que le premier contrôle encore", async () => {
+    const e = brouillonDe(DIRECTION);
+    const jeton = nouveauJeton();
+    const PDF_Y = new Uint8Array(Buffer.from("%PDF-1.7\n" + "y".repeat(40_000)));
+    const x = semer(e, jeton, { nomFichier: "x.pdf", tailleOctets: PDF.length });
+    const y = semer(e, jeton, { nomFichier: "y.pdf", tailleOctets: PDF_Y.length });
+    deposer(x.cleStockage, PDF);
+    deposer(y.cleStockage, PDF_Y);
+    const cleY = y.cleStockage;
+    let appelsX = 0;
+    let appelsY = 0;
+    let liberer!: () => void;
+    const porte = new Promise<void>((r) => (liberer = r));
+    const av: Antivirus = async (flux) => {
+      let total = 0;
+      for await (const morceau of flux) total += morceau.length;
+      if (total === PDF.length) {
+        appelsX += 1;
+        return appelsX === 1 ? { issue: "indisponible", raison: "test" } : { issue: "sain" };
+      }
+      appelsY += 1;
+      await porte;
+      return { issue: "sain" };
+    };
+    const premier = fonction.finaliser(DIRECTION, e.id, jeton, av);
+    await vi.waitFor(() => {
+      expect(appelsX).toBe(1);
+      expect(x.statut).toBe("attendue");
+    });
+    expect(y.statut).toBe("controle");
+    const second = await fonction.finaliser(DIRECTION, e.id, jeton, av);
+    expect(second.ok && second.controlees).toBe(true);
+    liberer();
+    await premier;
+    expect(appelsY).toBe(1);
+    expect(h.copies.filter((c) => c.source === cleY)).toHaveLength(1);
+    expect(x.statut).toBe("acceptee");
+    expect(y.statut).toBe("acceptee");
+    const definitives = [...h.seau.keys()].filter((k) => k.startsWith(`emails-manuels/${e.id}/`));
+    expect(definitives).toHaveLength(2);
+    expect([...h.seau.keys()].some((k) => k.startsWith(PREFIXE_REFUSEES_EMAIL))).toBe(false);
+  });
+});
+
 describe("garde de source : jamais de suppression", () => {
   const racine = process.cwd();
   const fichiers = [
@@ -1070,6 +1294,13 @@ describe("garde de source : jamais de suppression", () => {
     expect(src).not.toMatch(/DeleteObject/);
     expect(src).not.toMatch(/\.delete(Many)?\(/);
     expect(src).not.toMatch(/supprimerObjet|supprimerSansBruit/);
+  });
+
+  it("le critère « neutralisé » est le journal d'effacement, pas l'objet", () => {
+    const src = readFileSync(path.join(racine, fichiers[0]!), "utf8");
+    expect(src).toContain("effacements_journal");
+    expect(src).toContain("':contenu'");
+    expect(src).not.toContain("OBJET_EMAIL_MANUEL_EFFACE");
   });
 
   it("25. F7 ne crée ni ne modifie l'e-mail lui-même, n'est pas une action serveur", () => {

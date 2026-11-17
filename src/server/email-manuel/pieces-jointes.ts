@@ -32,7 +32,6 @@ import { z } from "zod";
 import { env } from "@/env";
 import { prisma } from "@/lib/prisma";
 import { checkRateLimit } from "@/lib/rate-limit";
-import { OBJET_EMAIL_MANUEL_EFFACE } from "@/lib/rgpd-erase";
 import {
   ObjetR2Modifie,
   copierObjetR2,
@@ -97,6 +96,7 @@ export interface Echec {
 
 const MESSAGE_ACTE = "Vous n'avez pas le droit d'écrire des e-mails depuis la console.";
 const MESSAGE_INCONNU = "E-mail introuvable.";
+const MESSAGE_INDISPONIBLE = "Envoi de fichiers indisponible, réessayez.";
 const MESSAGE_DEJA_PARTI = "Cet e-mail est déjà parti : on ne peut plus lui ajouter de fichier.";
 
 function echec(refus: Refus, message: string): Echec {
@@ -133,18 +133,38 @@ function validerAnnonce(
   return { ok: true, pieces };
 }
 
-/** Ce que le verrou rend de la ligne de l'e-mail. */
+/**
+ * Ce que la lecture rend de la ligne de l'e-mail. `neutralise` vient du JOURNAL d'effacement
+ * (`effacements_journal`, en ajout seul, écrit par l'effacement RGPD dans la transaction qui verrouille
+ * la ligne : `<id>` en mode destinataire, `<id>:contenu` en mode contenu), jamais d'une colonne de
+ * l'e-mail : aucune colonne ne distingue sans faux positif un brouillon neutralisé d'un brouillon normal.
+ */
 interface LigneEmail {
   readonly id: string;
   readonly statut: string;
   readonly ecrit_par_id: string | null;
-  readonly objet: string;
+  readonly neutralise: boolean | null;
+}
+
+/** Le brouillon a-t-il été neutralisé par un effacement ? Fonction pure. */
+export function brouillonNeutralise(l: { neutralise: boolean | null }): boolean {
+  return l.neutralise === true;
 }
 
 /** Verrou de la ligne de l'e-mail (même requête que l'effacement RGPD : e-mail, puis pièces). */
-async function verrouillerEmail(tx: Tx, id: string): Promise<LigneEmail | undefined> {
+async function lireEmailVerrouille(tx: Tx, id: string): Promise<LigneEmail | undefined> {
   const lignes = await tx.$queryRaw<LigneEmail[]>`
-    SELECT id, statut, ecrit_par_id, objet FROM "emails_manuels" WHERE id = ${id}::uuid FOR UPDATE`;
+    SELECT e.id, e.statut, e.ecrit_par_id, EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible" = 'emails_manuels' AND j."ligne_id" IN (e.id::text, e.id::text || ':contenu')) AS neutralise FROM "emails_manuels" e WHERE e.id = ${id}::uuid FOR UPDATE OF e`;
+  return lignes[0];
+}
+
+/** Lecture simple (sans verrou) : évite une copie inutile, ne garantit rien. */
+async function lireEmail(
+  client: Pick<Tx, "$queryRaw">,
+  id: string,
+): Promise<LigneEmail | undefined> {
+  const lignes = await client.$queryRaw<LigneEmail[]>`
+    SELECT e.id, e.statut, e.ecrit_par_id, EXISTS (SELECT 1 FROM "effacements_journal" j WHERE j."table_cible" = 'emails_manuels' AND j."ligne_id" IN (e.id::text, e.id::text || ':contenu')) AS neutralise FROM "emails_manuels" e WHERE e.id = ${id}::uuid`;
   return lignes[0];
 }
 
@@ -234,8 +254,9 @@ export async function ouvrirEnvoisPiecesJointesEmail(
   },
   maintenant: Date = new Date(),
 ): Promise<ResultatOuverture> {
-  const { acteur } = entree;
   // Validation d'abord : une entrée invalide ne fait aucun appel Prisma, R2 ou de débit.
+  if (!entree || typeof entree !== "object") return echec("inconnu", MESSAGE_INCONNU);
+  const { acteur } = entree;
   if (!idValide(acteur?.id) || !idValide(entree.emailManuelId)) {
     return echec("inconnu", MESSAGE_INCONNU);
   }
@@ -261,83 +282,86 @@ export async function ouvrirEnvoisPiecesJointesEmail(
   if (refusRapide) return echec("annonce", refusRapide);
   const formats: FormatSortant[] = pieces.map((p) => formatSortantDepuisNom(p.nom)!);
 
-  return prisma.$transaction(async (tx): Promise<ResultatOuverture> => {
-    const e = await verrouillerEmail(tx, emailManuelId);
-    if (!e || e.ecrit_par_id !== acteur.id) return echec("inconnu", MESSAGE_INCONNU);
-    if (e.statut !== "brouillon") return echec("deja_parti", MESSAGE_DEJA_PARTI);
-    if (e.objet === OBJET_EMAIL_MANUEL_EFFACE) {
-      return echec("neutralise", MESSAGES_PIECES_EMAIL.neutralise);
-    }
-    await expirerPiecesAbandonnees(tx, emailManuelId, maintenant);
+  try {
+    return await prisma.$transaction(async (tx): Promise<ResultatOuverture> => {
+      const e = await lireEmailVerrouille(tx, emailManuelId);
+      if (!e || e.ecrit_par_id !== acteur.id) return echec("inconnu", MESSAGE_INCONNU);
+      if (brouillonNeutralise(e)) return echec("neutralise", MESSAGES_PIECES_EMAIL.neutralise);
+      if (e.statut !== "brouillon") return echec("deja_parti", MESSAGE_DEJA_PARTI);
+      await expirerPiecesAbandonnees(tx, emailManuelId, maintenant);
 
-    // Limites cumulées : les pièces déjà annoncées sur cet e-mail comptent.
-    const existantes = await tx.emailManuelPieceJointe.findMany({
-      where: { emailManuelId, statut: { in: STATUTS_QUI_COMPTENT } },
-      select: { tailleOctets: true },
-    });
-    const refus = controlerAnnonceEmail(pieces, {
-      nombre: existantes.length,
-      octets: existantes.reduce((t, l) => t + l.tailleOctets, 0),
-    });
-    if (refus) return echec("annonce", refus);
+      // Limites cumulées : les pièces déjà annoncées sur cet e-mail comptent.
+      const existantes = await tx.emailManuelPieceJointe.findMany({
+        where: { emailManuelId, statut: { in: STATUTS_QUI_COMPTENT } },
+        select: { tailleOctets: true },
+      });
+      const refus = controlerAnnonceEmail(pieces, {
+        nombre: existantes.length,
+        octets: existantes.reduce((t, l) => t + l.tailleOctets, 0),
+      });
+      if (refus) return echec("annonce", refus);
 
-    // Plafond de stockage : tout ce que l'auteur a créé depuis 24 h, quel que soit le statut.
-    const jour = await tx.emailManuelPieceJointe.aggregate({
-      _sum: { tailleOctets: true },
-      where: {
-        creeLe: { gte: new Date(maintenant.getTime() - 86_400_000) },
-        emailManuel: { ecritParId: acteur.id },
-      },
-    });
-    const annonces = pieces.reduce((t, p) => t + p.taille, 0);
-    if ((jour._sum.tailleOctets ?? 0) + annonces > PLAFOND_OCTETS_24H_PAR_ADMIN) {
-      return echec("plafond", MESSAGES_PIECES_EMAIL.plafond);
-    }
+      // Plafond de stockage : tout ce que l'auteur a créé depuis 24 h, quel que soit le statut.
+      const jour = await tx.emailManuelPieceJointe.aggregate({
+        _sum: { tailleOctets: true },
+        where: {
+          creeLe: { gte: new Date(maintenant.getTime() - 86_400_000) },
+          emailManuel: { ecritParId: acteur.id },
+        },
+      });
+      const annonces = pieces.reduce((t, p) => t + p.taille, 0);
+      if ((jour._sum.tailleOctets ?? 0) + annonces > PLAFOND_OCTETS_24H_PAR_ADMIN) {
+        return echec("plafond", MESSAGES_PIECES_EMAIL.plafond);
+      }
 
-    const jeton = randomBytes(32).toString("base64url");
-    const jetonHash = empreinteJetonEmail(jeton);
-    const lignes = pieces.map((p, i) => ({
-      id: randomUUID(),
-      emailManuelId,
-      nomFichier: p.nom,
-      format: formats[i]!,
-      tailleOctets: p.taille,
-      cleStockage: cleTemporaireEmail(emailManuelId),
-      statut: "attendue",
-      jetonHash,
-      creeLe: maintenant,
-    }));
-    // Signer après tous les contrôles (calcul hors ligne) : aucune URL pour un refus, aucune ligne
-    // écrite pour une URL impossible.
-    let urls: string[];
-    try {
-      urls = await Promise.all(
-        lignes.map((l) =>
-          signerEnvoiDirectR2(
-            l.cleStockage,
-            l.tailleOctets,
-            TYPE_ENVOI_PIECE_JOINTE,
-            TTL_URL_ENVOI_EMAIL_S,
+      const jeton = randomBytes(32).toString("base64url");
+      const jetonHash = empreinteJetonEmail(jeton);
+      const lignes = pieces.map((p, i) => ({
+        id: randomUUID(),
+        emailManuelId,
+        nomFichier: p.nom,
+        format: formats[i]!,
+        tailleOctets: p.taille,
+        cleStockage: cleTemporaireEmail(emailManuelId),
+        statut: "attendue",
+        jetonHash,
+        creeLe: maintenant,
+      }));
+      // Signer après tous les contrôles (calcul hors ligne) : aucune URL pour un refus, aucune ligne
+      // écrite pour une URL impossible.
+      let urls: string[];
+      try {
+        urls = await Promise.all(
+          lignes.map((l) =>
+            signerEnvoiDirectR2(
+              l.cleStockage,
+              l.tailleOctets,
+              TYPE_ENVOI_PIECE_JOINTE,
+              TTL_URL_ENVOI_EMAIL_S,
+            ),
           ),
-        ),
-      );
-    } catch (err) {
-      Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "signature" } });
-      return echec("indisponible", "Envoi de fichiers indisponible, réessayez.");
-    }
-    await tx.emailManuelPieceJointe.createMany({ data: lignes });
-    return {
-      ok: true,
-      emailManuelId,
-      jeton,
-      envois: lignes.map((l, i) => ({
-        id: l.id,
-        nomFichier: l.nomFichier,
-        url: urls[i]!,
-        taille: l.tailleOctets,
-      })),
-    };
-  }, OPTIONS_TRANSACTION);
+        );
+      } catch (err) {
+        Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "signature" } });
+        return echec("indisponible", MESSAGE_INDISPONIBLE);
+      }
+      await tx.emailManuelPieceJointe.createMany({ data: lignes });
+      return {
+        ok: true,
+        emailManuelId,
+        jeton,
+        envois: lignes.map((l, i) => ({
+          id: l.id,
+          nomFichier: l.nomFichier,
+          url: urls[i]!,
+          taille: l.tailleOctets,
+        })),
+      };
+    }, OPTIONS_TRANSACTION);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "ouverture" } });
+    return echec("indisponible", MESSAGE_INDISPONIBLE);
+  }
 }
 
 // ---- 2. Finaliser -----------------------------------------------------------
@@ -382,6 +406,8 @@ function messageDeRefus(nom: string, motif: string | null): string {
       return MESSAGES_PIECES_EMAIL.taille(nom);
     case "envoi_parti":
       return MESSAGES_PIECES_EMAIL.envoiParti(nom);
+    case "neutralise":
+      return MESSAGES_PIECES_EMAIL.neutralise;
     default:
       return MESSAGES_PIECES_EMAIL.nonRecue(nom);
   }
@@ -462,12 +488,13 @@ async function controlerEtRanger(
     return "refusee";
   }
   // Lecture simple : évite une copie inutile. Ce n'est PAS la garantie (c'est le Temps 3).
-  const avant = await prisma.emailManuel.findFirst({
-    where: { id: emailManuelId },
-    select: { statut: true },
-  });
+  const avant = await lireEmail(prisma, emailManuelId);
+  if (avant && brouillonNeutralise(avant)) {
+    // Effacement déjà passé : aucune copie. La clé temporaire est gardée (déjà rendue au fondateur).
+    return rangerRefus(ligne, "neutralise");
+  }
   if (!avant || avant.statut !== "brouillon") {
-    return rangerEnvoiParti(ligne);
+    return rangerRefus(ligne, "envoi_parti");
   }
   const definitive = cleDefinitiveEmail(emailManuelId, verdict.format);
   try {
@@ -481,36 +508,60 @@ async function controlerEtRanger(
     await remettreAttendue();
     return "antivirus_indisponible";
   }
-  // Temps 3 : rangement sous le verrou de l'e-mail, qui relit le statut. Un e-mail parti entre-temps
-  // n'accepte plus rien : la ligne est refusée (clé temporaire gardée, traçable), jamais acceptée.
-  return prisma.$transaction(async (tx): Promise<StatutPiece> => {
-    const [e] = await tx.$queryRaw<{ statut: string }[]>`
-      SELECT statut FROM "emails_manuels" WHERE id = ${emailManuelId}::uuid FOR UPDATE`;
-    if (!e || e.statut !== "brouillon") {
+  // La copie existe : si la ligne ne devient pas « acceptee », on le signale (rien n'est supprimé).
+  const signaler = (message: string): void => {
+    Sentry.captureMessage(message, {
+      extra: { emailManuelId, pieceId: ligne.id, cle: definitive },
+    });
+  };
+  // Temps 3 : rangement sous le verrou de l'e-mail, qui relit statut ET journal. Un e-mail neutralisé
+  // ou parti entre-temps n'accepte plus rien : la ligne est refusée, jamais acceptée.
+  try {
+    return await prisma.$transaction(async (tx): Promise<StatutPiece> => {
+      const e = await lireEmailVerrouille(tx, emailManuelId);
+      if (!e || brouillonNeutralise(e)) {
+        // Pointer vers la copie la rend retrouvable (une seconde passe d'effacement liste les clés).
+        const r = await tx.emailManuelPieceJointe.updateMany({
+          where: { id: ligne.id, statut: "controle" },
+          data: { statut: "refusee", motifRefus: "neutralise", cleStockage: definitive },
+        });
+        signaler("email-manuel: piece copiee apres effacement");
+        return r.count ? "refusee" : "non_recue";
+      }
+      if (e.statut !== "brouillon") {
+        const r = await tx.emailManuelPieceJointe.updateMany({
+          where: { id: ligne.id, statut: "controle" },
+          data: { statut: "refusee", motifRefus: "envoi_parti" },
+        });
+        signaler("email-manuel: piece copiee non acceptee");
+        return r.count ? "refusee" : "non_recue";
+      }
       const r = await tx.emailManuelPieceJointe.updateMany({
         where: { id: ligne.id, statut: "controle" },
-        data: { statut: "refusee", motifRefus: "envoi_parti" },
+        data: {
+          statut: "acceptee",
+          cleStockage: definitive,
+          format: verdict.format,
+          sha256: verdict.sha256,
+          antivirus: "sain",
+        },
       });
-      return r.count ? "refusee" : "non_recue";
-    }
-    const r = await tx.emailManuelPieceJointe.updateMany({
-      where: { id: ligne.id, statut: "controle" },
-      data: {
-        statut: "acceptee",
-        cleStockage: definitive,
-        format: verdict.format,
-        sha256: verdict.sha256,
-        antivirus: "sain",
-      },
-    });
-    return r.count ? "acceptee" : "non_recue";
-  }, OPTIONS_TRANSACTION);
+      if (!r.count) signaler("email-manuel: piece copiee non acceptee");
+      return r.count ? "acceptee" : "non_recue";
+    }, OPTIONS_TRANSACTION);
+  } catch (err) {
+    signaler("email-manuel: piece copiee non acceptee");
+    throw err;
+  }
 }
 
-async function rangerEnvoiParti(ligne: LigneControlee): Promise<StatutPiece> {
+async function rangerRefus(
+  ligne: LigneControlee,
+  motif: "envoi_parti" | "neutralise",
+): Promise<StatutPiece> {
   const r = await prisma.emailManuelPieceJointe.updateMany({
     where: { id: ligne.id, statut: "controle" },
-    data: { statut: "refusee", motifRefus: "envoi_parti" },
+    data: { statut: "refusee", motifRefus: motif },
   });
   return r.count ? "refusee" : "non_recue";
 }
@@ -543,9 +594,10 @@ function issueDeLigne(l: {
 
 /**
  * Fin d'envoi, sur présentation du jeton, en trois temps : (1) transaction courte sous verrou
- * (auteur, brouillon, expiration, prise `attendue` → `controle`) ; (2) contrôle hors transaction ;
- * (3) rangement de chaque ligne sous verrou, qui relit le statut. Un jeton rejoué (ou un second
- * appel simultané) ne prend rien et rend l'issue déjà rangée.
+ * (auteur, brouillon non neutralisé, expiration, prise `attendue` → `controle` de lignes NOMMÉES) ;
+ * (2) contrôle hors transaction, limité aux lignes prises par CET appel ; (3) rangement de chaque
+ * ligne sous verrou, qui relit statut et journal d'effacement. Un jeton rejoué (ou un second appel
+ * simultané) ne prend rien et rend l'issue déjà rangée.
  */
 export async function finaliserPiecesJointesEmail(
   entree: {
@@ -556,6 +608,7 @@ export async function finaliserPiecesJointesEmail(
   deps: { readonly antivirus?: Antivirus } = {},
   maintenant: Date = new Date(),
 ): Promise<ResultatFinalisation> {
+  if (!entree || typeof entree !== "object") return echec("inconnu", MESSAGE_INCONNU);
   const { acteur, emailManuelId } = entree;
   if (!idValide(acteur?.id) || !idValide(emailManuelId)) {
     return echec("inconnu", MESSAGE_INCONNU);
@@ -568,71 +621,93 @@ export async function finaliserPiecesJointesEmail(
   const antivirus = deps.antivirus ?? analyserFlux;
   const jetonHash = empreinteJetonEmail(entree.jeton);
 
-  // Temps 1 : court, sous verrou.
-  const pris = await prisma.$transaction(async (tx): Promise<Echec | { count: number }> => {
-    const e = await verrouillerEmail(tx, emailManuelId);
-    if (!e || e.ecrit_par_id !== acteur.id) return echec("inconnu", MESSAGE_INCONNU);
-    if (e.statut !== "brouillon") return echec("deja_parti", MESSAGE_DEJA_PARTI);
-    await expirerPiecesAbandonnees(tx, emailManuelId, maintenant);
-    return tx.emailManuelPieceJointe.updateMany({
-      where: {
-        emailManuelId,
-        jetonHash,
-        statut: "attendue",
-        creeLe: { gte: new Date(maintenant.getTime() - EXPIRATION_ATTENDUE_MS) },
-      },
-      data: { statut: "controle" },
-    });
-  }, OPTIONS_TRANSACTION);
-  if ("ok" in pris) return pris;
-
-  // Temps 2 : hors transaction, chaque ligne protégée.
-  const muettes = new Set<string>();
-  if (pris.count > 0) {
-    const lignes = await prisma.emailManuelPieceJointe.findMany({
-      where: { emailManuelId, jetonHash, statut: "controle" },
-    });
-    const issues = await Promise.allSettled(
-      lignes.map((l) => controlerEtRanger(emailManuelId, l, antivirus)),
-    );
-    for (const [i, issue] of issues.entries()) {
-      const l = lignes[i]!;
-      if (issue.status === "fulfilled") {
-        if (issue.value === "antivirus_indisponible") muettes.add(l.id);
-        continue;
-      }
-      // Exception pendant le rangement : la ligne revient « attendue », on peut réessayer.
-      Sentry.captureException(issue.reason, {
-        tags: { step: "email-manuel-pj", motif: "rangement-exception" },
+  // Temps 1 : court, sous verrou. Il PREND des identifiants précis : le temps 2 ne touche qu'eux.
+  let pris: Echec | { ids: string[] };
+  try {
+    pris = await prisma.$transaction(async (tx): Promise<Echec | { ids: string[] }> => {
+      const e = await lireEmailVerrouille(tx, emailManuelId);
+      if (!e || e.ecrit_par_id !== acteur.id) return echec("inconnu", MESSAGE_INCONNU);
+      if (brouillonNeutralise(e)) return echec("neutralise", MESSAGES_PIECES_EMAIL.neutralise);
+      if (e.statut !== "brouillon") return echec("deja_parti", MESSAGE_DEJA_PARTI);
+      await expirerPiecesAbandonnees(tx, emailManuelId, maintenant);
+      const ids = (
+        await tx.emailManuelPieceJointe.findMany({
+          where: {
+            emailManuelId,
+            jetonHash,
+            statut: "attendue",
+            creeLe: { gte: new Date(maintenant.getTime() - EXPIRATION_ATTENDUE_MS) },
+          },
+          select: { id: true },
+        })
+      ).map((x) => x.id);
+      await tx.emailManuelPieceJointe.updateMany({
+        where: { id: { in: ids }, statut: "attendue" },
+        data: { statut: "controle" },
       });
-      muettes.add(l.id);
-      try {
-        await prisma.emailManuelPieceJointe.updateMany({
-          where: { id: l.id, statut: "controle" },
-          data: { statut: "attendue" },
+      return { ids };
+    }, OPTIONS_TRANSACTION);
+  } catch (err) {
+    Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "prise" } });
+    return echec("indisponible", MESSAGE_INDISPONIBLE);
+  }
+  if ("ok" in pris) return pris;
+  const { ids } = pris;
+
+  try {
+    // Temps 2 : hors transaction, uniquement les lignes PRISES par cet appel (jamais celles qu'un
+    // autre appel, même jeton, a prises entre-temps), chacune protégée.
+    const muettes = new Set<string>();
+    if (ids.length > 0) {
+      const lignes = await prisma.emailManuelPieceJointe.findMany({
+        where: { id: { in: ids }, statut: "controle" },
+      });
+      const issues = await Promise.allSettled(
+        lignes.map((l) => controlerEtRanger(emailManuelId, l, antivirus)),
+      );
+      for (const [i, issue] of issues.entries()) {
+        const l = lignes[i]!;
+        if (issue.status === "fulfilled") {
+          if (issue.value === "antivirus_indisponible") muettes.add(l.id);
+          continue;
+        }
+        // Exception pendant le rangement : la ligne revient « attendue », on peut réessayer.
+        Sentry.captureException(issue.reason, {
+          tags: { step: "email-manuel-pj", motif: "rangement-exception" },
         });
-      } catch (err) {
-        Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "remise" } });
+        try {
+          const r = await prisma.emailManuelPieceJointe.updateMany({
+            where: { id: l.id, statut: "controle" },
+            data: { statut: "attendue" },
+          });
+          // Count 0 : la ligne a changé d'état entre-temps, la relecture finale le rend tel quel.
+          if (r.count === 1) muettes.add(l.id);
+        } catch (err) {
+          Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "remise" } });
+        }
       }
     }
+    const toutes = await prisma.emailManuelPieceJointe.findMany({
+      where: { emailManuelId, jetonHash },
+    });
+    return {
+      ok: true,
+      controlees: ids.length > 0,
+      pieces: toutes.map((l) =>
+        muettes.has(l.id)
+          ? {
+              id: l.id,
+              nomFichier: l.nomFichier,
+              statut: "antivirus_indisponible" as const,
+              message: MESSAGES_PIECES_EMAIL.antivirusIndisponible(l.nomFichier),
+            }
+          : issueDeLigne(l),
+      ),
+    };
+  } catch (err) {
+    Sentry.captureException(err, { tags: { step: "email-manuel-pj", motif: "lecture-finale" } });
+    return echec("indisponible", MESSAGE_INDISPONIBLE);
   }
-  const toutes = await prisma.emailManuelPieceJointe.findMany({
-    where: { emailManuelId, jetonHash },
-  });
-  return {
-    ok: true,
-    controlees: pris.count > 0,
-    pieces: toutes.map((l) =>
-      muettes.has(l.id)
-        ? {
-            id: l.id,
-            nomFichier: l.nomFichier,
-            statut: "antivirus_indisponible" as const,
-            message: MESSAGES_PIECES_EMAIL.antivirusIndisponible(l.nomFichier),
-          }
-        : issueDeLigne(l),
-    ),
-  };
 }
 
 // ---- 3. Lister --------------------------------------------------------------

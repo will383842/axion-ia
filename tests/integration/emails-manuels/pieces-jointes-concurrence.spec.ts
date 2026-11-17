@@ -21,7 +21,13 @@ interface Objet {
 }
 const h = vi.hoisted(() => {
   class ObjetR2Modifie extends Error {}
-  return { seau: new Map<string, Objet>(), ObjetR2Modifie, n: 0 };
+  return {
+    seau: new Map<string, Objet>(),
+    ObjetR2Modifie,
+    n: 0,
+    /** Appelé pendant `copierObjetR2` (entre la lecture simple et le Temps 3). */
+    pendantCopie: null as null | (() => Promise<void>),
+  };
 });
 
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn(), captureMessage: vi.fn() }));
@@ -56,6 +62,7 @@ vi.mock("@/lib/r2-storage", () => {
       })();
     },
     copierObjetR2: async (source: string, dest: string, etag: string) => {
+      await h.pendantCopie?.();
       h.seau.set(dest, { ...lire(source, etag) });
     },
     signerEnvoiDirectR2: async (cle: string) => `https://r2.example/${cle}?sig=x`,
@@ -87,11 +94,14 @@ async function adminDeTest(): Promise<{ id: string; role: string }> {
   return { id: u.id, role: "admin" };
 }
 
-async function brouillon(auteur: { id: string }): Promise<string> {
+async function brouillon(
+  auteur: { id: string },
+  entiteType: "Client" | "Trainee" = "Client",
+): Promise<string> {
   const e = await db.emailManuel.create({
     data: {
       cleIdempotence: randomUUID(),
-      entiteType: "Client",
+      entiteType,
       entiteId: randomUUID(),
       destinataireHash: "a".repeat(64),
       destinataireChiffre: "x",
@@ -198,6 +208,29 @@ describe("pièces jointes d'e-mails, Postgres réel", () => {
     expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
   });
 
+  it("I3b — l'e-mail part pendant la COPIE : refusée « envoi_parti », jamais acceptée", async () => {
+    const id = await brouillon(A);
+    const r = await pret(A, id);
+    h.pendantCopie = async () => {
+      await db.emailManuel.update({
+        where: { id },
+        data: { statut: "en_file", corpsHtml: "<p>x</p>" },
+      });
+    };
+    try {
+      await finaliserPiecesJointesEmail(
+        { acteur: A, emailManuelId: id, jeton: r.jeton },
+        { antivirus: sain },
+      );
+    } finally {
+      h.pendantCopie = null;
+    }
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "envoi_parti" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
+  });
+
   it("I4 — deux finalisations avec le même jeton : un seul contrôle", async () => {
     const id = await brouillon(A);
     const r = await pret(A, id);
@@ -226,5 +259,41 @@ describe("pièces jointes d'e-mails, Postgres réel", () => {
     });
     expect(r).toMatchObject({ ok: false, refus: "inconnu" });
     expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I6 — brouillon neutralisé (journal d'effacement) : « neutralise », aucune ligne", async () => {
+    const id = await brouillon(A, "Trainee");
+    await db.effacementJournal.create({
+      data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+    });
+    const r = await ouvrirEnvoisPiecesJointesEmail({
+      acteur: A,
+      emailManuelId: id,
+      pieces: annonces(1, 1000),
+    });
+    expect(r).toMatchObject({ ok: false, refus: "neutralise" });
+    expect(await db.emailManuelPieceJointe.count({ where: { emailManuelId: id } })).toBe(0);
+  });
+
+  it("I7 — effacement pendant l'antivirus : la pièce finit « refusee » / « neutralise », jamais acceptée", async () => {
+    const id = await brouillon(A, "Trainee");
+    const r = await pret(A, id);
+    const efface: Antivirus = async (flux) => {
+      for await (const _ of flux) {
+        // lu
+      }
+      await db.effacementJournal.create({
+        data: { tableCible: "emails_manuels", ligneId: id, motif: "art17" },
+      });
+      return { issue: "sain" };
+    };
+    await finaliserPiecesJointesEmail(
+      { acteur: A, emailManuelId: id, jeton: r.jeton },
+      { antivirus: efface },
+    );
+    const lignes = await db.emailManuelPieceJointe.findMany({ where: { emailManuelId: id } });
+    expect(lignes).toHaveLength(1);
+    expect(lignes[0]).toMatchObject({ statut: "refusee", motifRefus: "neutralise" });
+    expect(lignes.some((l) => l.statut === "acceptee")).toBe(false);
   });
 });
