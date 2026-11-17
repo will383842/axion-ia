@@ -57,6 +57,7 @@ import { getClient } from "@/server/qualiopi/crm/clients";
 import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -421,6 +422,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 </span>
               )}
             </p>
+            {devis.statut === "brouillon" ? (
+              <div className="mt-[var(--space-admin-3)]">
+                <ValiditeBrouillon
+                  devisId={devis.id}
+                  statut={devis.statut}
+                  dateValidite={devis.dateValidite.toISOString()}
+                  majLe={devis.updatedAt.toISOString()}
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* OPCO estimé */}
