@@ -51,6 +51,7 @@ import {
   apresSignature,
   PREFIXE_ACTIVATION_REFUSEE,
   reprendreAcceptationDevisFormules,
+  reprendreConfirmationDevisClassiques,
 } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
@@ -1112,10 +1113,42 @@ export async function relancerAcceptationDevisAction(input: {
   try {
     const res = await reprendreAcceptationDevisFormules(id.data, { confirmer: true });
     if (!res.traite) {
-      return {
-        ok: false,
-        message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
-      };
+      // Devis CLASSIQUE : l'acceptation est acquise ; seule la confirmation de commande se reprend.
+      const classique = await reprendreConfirmationDevisClassiques(id.data);
+      if (classique.ids.length === 0) {
+        return {
+          ok: false,
+          message: "Aucun devis en attente d'acceptation ou de confirmation pour cette pièce.",
+        };
+      }
+      await logQualiopiActivity({
+        action: "qualiopi.devis.relance_acceptation",
+        targetType: "DocumentGenere",
+        targetId: id.data,
+        changes: {
+          numero: piece.numero,
+          devis: classique.ids,
+          confirmationsEchec: classique.confirmationsEchec,
+        },
+        session,
+      });
+      if (classique.confirmationsEchec.length > 0) {
+        return {
+          ok: false,
+          message:
+            "L'acceptation est enregistrée, mais la confirmation de commande n'a pas été mise en corbeille (code consigné). " +
+            "Relancez l'acceptation depuis la fiche du devis.",
+        };
+      }
+      if (classique.confirmationsPreparees.length === 0) {
+        return {
+          ok: false,
+          message:
+            "Rien n'a été fait : le devis est déjà accepté et sa confirmation de commande est déjà " +
+            "en corbeille ou déjà envoyée.",
+        };
+      }
+      return { ok: true, devisAcceptes: classique.ids.length };
     }
     if (res.ids.length === 0) {
       return {

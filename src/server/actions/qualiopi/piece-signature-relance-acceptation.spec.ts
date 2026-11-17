@@ -15,10 +15,12 @@ vi.mock("@/server/qualiopi/documents/signature/document-signature-service", () =
   signerDocument: vi.fn(),
 }));
 const reprise = vi.hoisted(() => vi.fn());
+const repriseClassique = vi.hoisted(() => vi.fn());
 vi.mock("@/server/qualiopi/documents/signature/apres-signature", () => ({
   apresSignature: vi.fn(),
   PREFIXE_ACTIVATION_REFUSEE: "x",
   reprendreAcceptationDevisFormules: reprise,
+  reprendreConfirmationDevisClassiques: repriseClassique,
 }));
 vi.mock("@/server/qualiopi/documents/signature/contexte-requete", () => ({
   contexteRequete: vi.fn(async () => ({})),
@@ -48,6 +50,11 @@ beforeEach(() => {
     numero: "AXI-DEV-2026-001",
   });
   sigs("client", "axionia");
+  repriseClassique.mockResolvedValue({
+    ids: [],
+    confirmationsPreparees: [],
+    confirmationsEchec: [],
+  });
   reprise.mockResolvedValue({
     traite: true,
     ids: ["dv-1"],
@@ -131,6 +138,53 @@ describe("relancerAcceptationDevisAction", () => {
     });
     const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
     expect(r.ok).toBe(false);
+  });
+
+  describe("devis CLASSIQUE (aucun devis à formules)", () => {
+    const sansFormules = () =>
+      reprise.mockResolvedValue({
+        traite: false,
+        ids: [],
+        acceptes: [],
+        plansEchec: [],
+        confirmationsEchec: [],
+        confirmationsPreparees: [],
+        plansProposes: [],
+      });
+
+    it("🔴 confirmation préparée par la reprise : succès", async () => {
+      sansFormules();
+      repriseClassique.mockResolvedValue({
+        ids: ["dv-c"],
+        confirmationsPreparees: ["dv-c"],
+        confirmationsEchec: [],
+      });
+      const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+      expect(repriseClassique).toHaveBeenCalledWith(DOC);
+      expect(r).toEqual({ ok: true, devisAcceptes: 1 });
+    });
+
+    it("🔴 confirmation encore en échec : échec visible", async () => {
+      sansFormules();
+      repriseClassique.mockResolvedValue({
+        ids: ["dv-c"],
+        confirmationsPreparees: [],
+        confirmationsEchec: ["dv-c"],
+      });
+      const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+      expect(r.ok).toBe(false);
+    });
+
+    it("confirmation déjà garée ou envoyée : jamais ok:true (rien n'a été fait)", async () => {
+      sansFormules();
+      repriseClassique.mockResolvedValue({
+        ids: ["dv-c"],
+        confirmationsPreparees: [],
+        confirmationsEchec: [],
+      });
+      const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+      expect(r.ok).toBe(false);
+    });
   });
 
   it("🔴 traite:true mais aucun devis réellement accepté : dit clairement que rien n'a été fait", async () => {

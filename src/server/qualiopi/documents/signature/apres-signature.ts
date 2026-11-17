@@ -274,6 +274,49 @@ export async function reprendreAcceptationDevisFormules(
   };
 }
 
+/**
+ * REPRISE manuelle de la confirmation de commande d'un devis CLASSIQUE déjà accepté (la
+ * confirmation avait pu échouer alors que l'acceptation, elle, était acquise). Cibles : devis de la
+ * pièce sans offre ni empreinte d'offre, acceptés. Même traitement que le chemin des formules :
+ * `deja_envoyee` n'est ni une préparation ni un échec ; exception → Sentry sans donnée personnelle.
+ * Toujours garée en corbeille « à valider », jamais envoyée seule. N'accepte rien, ne touche à rien.
+ */
+export async function reprendreConfirmationDevisClassiques(documentGenereId: string): Promise<{
+  ids: string[];
+  confirmationsPreparees: string[];
+  confirmationsEchec: string[];
+}> {
+  const lignes = await prisma.devis.findMany({
+    where: {
+      documentGenereId,
+      offreSha256: null,
+      statut: { in: ["accepte", "transforme_convention"] },
+    },
+    select: { id: true, offre: true },
+  });
+  // `offre` est un champ JSON : sa nullité se lit ici, comme sur le chemin d'acceptation.
+  const ids = lignes.filter((d) => d.offre == null).map((d) => d.id);
+  const confirmationsPreparees: string[] = [];
+  const confirmationsEchec: string[] = [];
+  for (const id of ids) {
+    try {
+      const r = await envoyerConfirmationCommande({
+        declencheur: "contresignature_axion_explicite",
+        devisId: id,
+      });
+      if (r.envoye) confirmationsPreparees.push(id);
+      else if (r.raison !== "deja_envoyee") confirmationsEchec.push(id);
+    } catch (err) {
+      confirmationsEchec.push(id);
+      Sentry.captureException(err, {
+        tags: { action: "confirmation_commande_non_preparee" },
+        extra: { devisId: id },
+      });
+    }
+  }
+  return { ids, confirmationsPreparees, confirmationsEchec };
+}
+
 /** Devis à formules déjà acceptés de la pièce (formule retenue) : candidats à la reproposition. */
 async function devisAcceptesAFormules(documentGenereId: string): Promise<string[]> {
   const lignes = await prisma.devis.findMany({

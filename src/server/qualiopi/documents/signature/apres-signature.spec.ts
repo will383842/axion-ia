@@ -92,6 +92,7 @@ import {
   PREFIXE_CONFIRMATION_NON_PREPAREE,
   PREFIXE_PLANS_NON_PROPOSES,
   reprendreAcceptationDevisFormules,
+  reprendreConfirmationDevisClassiques,
   type ContexteApresSignature,
 } from "./apres-signature";
 
@@ -515,7 +516,62 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       });
       expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.confirmer));
       expect(ordre(h.monter)).toBeLessThan(ordre(h.confirmer));
+      // Comme pour les formules : la confirmation passe AVANT la proposition des plans.
+      expect(ordre(h.confirmer)).toBeLessThan(
+        ordre(proposerPlansApresAcceptation as unknown as ReturnType<typeof vi.fn>),
+      );
       expect(r.activationRefusee ?? null).toBeNull();
+    });
+
+    describe("reprise manuelle de la confirmation d'un devis CLASSIQUE déjà accepté", () => {
+      const classiquesAcceptes = (ids: string[]) =>
+        h.p.devis.findMany.mockResolvedValueOnce(ids.map((id) => ({ id })));
+
+      it("cible les devis classiques acceptés de la pièce (ni offre ni empreinte) et prépare leur confirmation", async () => {
+        classiquesAcceptes(["dv-classique"]);
+        const r = await reprendreConfirmationDevisClassiques(DOC);
+        expect(h.p.devis.findMany).toHaveBeenCalledWith(
+          expect.objectContaining({
+            where: expect.objectContaining({
+              documentGenereId: DOC,
+              offreSha256: null,
+              statut: { in: ["accepte", "transforme_convention"] },
+            }),
+          }),
+        );
+        expect(h.confirmer).toHaveBeenCalledWith({
+          declencheur: "contresignature_axion_explicite",
+          devisId: "dv-classique",
+        });
+        expect(r).toEqual({
+          ids: ["dv-classique"],
+          confirmationsPreparees: ["dv-classique"],
+          confirmationsEchec: [],
+        });
+      });
+
+      it("déjà envoyée / déjà garée : ni préparée ni échec (pas de doublon)", async () => {
+        classiquesAcceptes(["dv-classique"]);
+        h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+        const r = await reprendreConfirmationDevisClassiques(DOC);
+        expect(r.confirmationsPreparees).toEqual([]);
+        expect(r.confirmationsEchec).toEqual([]);
+      });
+
+      it("échec (refus typé ou exception) : signalé, jamais muet", async () => {
+        classiquesAcceptes(["dv-a", "dv-b"]);
+        h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+        h.confirmer.mockRejectedValueOnce(new Error("redis"));
+        const r = await reprendreConfirmationDevisClassiques(DOC);
+        expect(r.confirmationsEchec).toEqual(["dv-a", "dv-b"]);
+      });
+
+      it("aucun devis classique accepté : rien à reprendre, aucun appel", async () => {
+        classiquesAcceptes([]);
+        const r = await reprendreConfirmationDevisClassiques(DOC);
+        expect(r.ids).toEqual([]);
+        expect(h.confirmer).not.toHaveBeenCalled();
+      });
     });
 
     it("devis classique : signature du CLIENT seule → aucune confirmation", async () => {
