@@ -573,7 +573,9 @@ export function DevisForm({
                     onChange={(e) => updateLigne(idx, "quantite", e.target.value)}
                     disabled={isPending}
                     min="0.01"
-                    step="0.01"
+                    // Édition : une quantité stockée à plus de deux décimales ne doit pas bloquer
+                    // l'enregistrement côté navigateur. Création : strictement inchangé.
+                    step={edition !== undefined ? "any" : "0.01"}
                     required
                     className={inputCls}
                   />

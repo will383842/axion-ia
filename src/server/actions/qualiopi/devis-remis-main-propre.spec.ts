@@ -11,6 +11,8 @@ const h = vi.hoisted(() => ({
   txDevisUpdateMany: vi.fn(),
   txDevisUpdate: vi.fn(),
   txDevisCount: vi.fn(),
+  statuts: {} as Record<string, string>,
+  enAttente: {} as Record<string, string>,
   txClientUpdateMany: vi.fn(),
   txTokenUpdateMany: vi.fn(),
   txOutboxFindFirst: vi.fn(),
@@ -26,6 +28,7 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
+      h.enAttente = {};
       h.tx = {
         $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
         devis: {
@@ -38,7 +41,10 @@ vi.mock("@/lib/prisma", () => ({
         documentSignatureToken: { updateMany: (...a: unknown[]) => h.txTokenUpdateMany(...a) },
         emailOutbox: { findFirst: (...a: unknown[]) => h.txOutboxFindFirst(...a) },
       };
-      return f(h.tx);
+      const resultat = await f(h.tx);
+      // Validation : les statuts écrits n'existent qu'après un COMMIT (une exception les annule).
+      Object.assign(h.statuts, h.enAttente);
+      return resultat;
     },
   },
 }));
@@ -322,12 +328,27 @@ describe("marquerRemisEnMainPropreAction — version remplacée signée ou accep
     });
   });
 
-  it("signature arrivée entre la relecture et l'écriture (0 ligne) : exception", async () => {
+  it("signature arrivée entre la relecture et l'écriture (0 ligne) : message lisible, rien d'émis", async () => {
     h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
     h.txDevisCount.mockResolvedValue(1);
-    h.txDevisUpdateMany.mockImplementation(async (a: { where: { id: string } }) => ({
-      count: a.where.id === "ancien" ? 0 : 1,
-    }));
-    await expect(appel()).rejects.toThrow();
+    h.statuts = { ancien: "envoye", [ID]: "brouillon" };
+    h.txDevisUpdateMany.mockImplementation(
+      async (a: { where: { id: string }; data: { statut?: string } }) => {
+        const touche = a.where.id !== "ancien"; // la signature client a gagné la course sur l'ancienne
+        if (touche && a.data.statut !== undefined) h.enAttente[a.where.id] = a.data.statut;
+        return { count: touche ? 1 : 0 };
+      },
+    );
+    const r = await appel();
+    // Message lisible, pas d'exception brute ; la transaction est annulée (rien n'est émis).
+    expect(erreur(r)).toBe(
+      "Le client vient de signer la version précédente de ce devis : cette correction n'a pas été émise. Ouvrez la version signée pour la contresigner.",
+    );
+    expect(h.emettre).not.toHaveBeenCalled();
+    // Rien n'est validé : le nouveau devis reste brouillon, l'ancien reste « envoye ».
+    expect(h.statuts).toEqual({ ancien: "envoye", [ID]: "brouillon" });
+    expect(h.logActivity).not.toHaveBeenCalledWith(
+      expect.objectContaining({ action: "qualiopi.devis.remis_main_propre" }),
+    );
   });
 });

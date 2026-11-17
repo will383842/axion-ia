@@ -28,7 +28,9 @@ import {
 import {
   cloreVersionRemplacee,
   MSG_VERSION_REMPLACEE_ACCEPTEE,
+  MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS,
   versionRemplaceeBloqueEmission,
+  VersionRemplaceeSigneeEntreTempsError,
 } from "@/server/qualiopi/devis/version-remplacee";
 
 type ActionResult<T> = { data: T } | { error: string };
@@ -247,6 +249,21 @@ export async function marquerRemisEnMainPropreAction(input: {
         }
       }
       return { error: err.message };
+    }
+    if (err instanceof VersionRemplaceeSigneeEntreTempsError) {
+      // Transaction annulée : le brouillon reste brouillon, l'ancienne version reste « envoye ».
+      try {
+        await logQualiopiActivity({
+          action: "qualiopi.devis.remis_main_propre_refuse",
+          targetType: "Devis",
+          targetId: devisId,
+          changes: { motif: "version_remplacee_signee_entre_temps" },
+          session,
+        });
+      } catch (e) {
+        console.warn("[marquerRemisEnMainPropreAction] journal du refus échoué", e);
+      }
+      return { error: MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS };
     }
     throw err;
   }

@@ -54,7 +54,9 @@ import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/
 import {
   cloreVersionRemplacee,
   MSG_VERSION_REMPLACEE_ACCEPTEE,
+  MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS,
   versionRemplaceeBloqueEmission,
+  VersionRemplaceeSigneeEntreTempsError,
 } from "@/server/qualiopi/devis/version-remplacee";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
@@ -650,8 +652,16 @@ export async function sendDevisAction(id: string): Promise<
     };
   } catch (err) {
     const refus = err instanceof EnvoiRefuse ? err : null;
+    const signeeEntreTemps = err instanceof VersionRemplaceeSigneeEntreTempsError;
     const motif =
-      refus !== null ? refus.motif : etat.courriel !== null ? "apres_courriel" : "erreur_technique";
+      refus !== null
+        ? refus.motif
+        : signeeEntreTemps
+          ? "version_remplacee_signee_entre_temps"
+          : etat.courriel !== null
+            ? "apres_courriel"
+            : "erreur_technique";
+    const causeAlerte = signeeEntreTemps ? " Cause : version précédente signée entre-temps." : "";
 
     // Rien n'est parti : le lien de signature de la pièce neuve est révoqué. S'il est enfilé,
     // le courriel (donc le lien) est déjà chez le client : on ne le révoque pas.
@@ -676,7 +686,7 @@ export async function sendDevisAction(id: string): Promise<
       if (courriel.etat === "enfile") {
         // Message sans adresse, sans lien, sans jeton.
         Sentry.captureMessage(
-          `Devis ${etat.numeroDevis} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
+          `Devis ${etat.numeroDevis} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
           { level: "error", tags: { action: "sendDevisAction.apres_courriel_enfile" } },
         );
       }
@@ -715,7 +725,7 @@ export async function sendDevisAction(id: string): Promise<
         // Aucune adresse ni lien dans l'alerte : Telegram est un canal tiers.
         sendTelegram({
           tag: "AUTO",
-          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
+          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.${causeAlerte}`,
         }).catch(() => {});
       }
     }
@@ -736,6 +746,7 @@ export async function sendDevisAction(id: string): Promise<
     }
 
     if (refus !== null) return { error: refus.message };
+    if (signeeEntreTemps) return { error: MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS };
     if (courriel !== null) return { error: MSG_APRES_COURRIEL };
     throw err;
   }
@@ -743,6 +754,7 @@ export async function sendDevisAction(id: string): Promise<
 
 class AcceptationManuelleRefusee extends Error {}
 class AcceptationStatutRefuse extends Error {}
+class AcceptationVersionRemplacee extends Error {}
 
 /**
  * Marque le devis comme accepté (statut → accepte, acceptedAt = now).
@@ -770,6 +782,12 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       if (formules === null || (formules.statut !== "envoye" && formules.statut !== "expire")) {
         throw new AcceptationStatutRefuse();
       }
+      // Version REMPLACÉE par une version émise : sa péremption n'est pas une simple échéance.
+      const successeurEmis = await tx.devis.findFirst({
+        where: { replacesDevisId: devisId, statut: { not: "brouillon" } },
+        select: { id: true },
+      });
+      if (successeurEmis) throw new AcceptationVersionRemplacee();
       if (formules.offreSha256 != null && formules.formuleRetenue == null) {
         throw new AcceptationManuelleRefusee();
       }
@@ -784,6 +802,9 @@ export async function acceptDevisAction(id: string): Promise<ActionResult<{ id: 
       return {
         error: "Seul un devis envoyé (ou expiré) peut être accepté. Rechargez la page.",
       };
+    }
+    if (err instanceof AcceptationVersionRemplacee) {
+      return { error: MSG_ACCEPTATION_REMPLACE };
     }
     if (err instanceof AcceptationManuelleRefusee) {
       return {
@@ -958,6 +979,13 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
 const MSG_REVISION_SIGNEE =
   "Le client a déjà signé ce devis : contresignez-le ou refusez-le, il ne peut pas être corrigé.";
 
+const MSG_REVISION_ACCEPTE =
+  "Ce devis a été accepté : il ne peut plus être corrigé. Une modification après acceptation passe par un nouveau devis.";
+const MSG_REVISION_SUCCESSEUR_EMIS =
+  "Une version plus récente de ce devis a déjà été envoyée : corrigez celle-ci.";
+const MSG_ACCEPTATION_REMPLACE =
+  "Ce devis a été remplacé par une version plus récente : acceptez la version en cours.";
+
 /** Statuts depuis lesquels une révision est autorisée (jamais un brouillon). */
 const STATUTS_REVISABLES = ["envoye", "accepte", "refuse", "expire"] as const;
 
@@ -1024,6 +1052,28 @@ export async function reviseDevisAction(
       // Verrou consultatif BLOQUANT (libéré en fin de transaction) : deux clics simultanés
       // s'alignent l'un derrière l'autre, le second retrouve la révision du premier.
       await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      // Le client a déjà signé : plus de correction (contresigner ou refuser). AVANT le brouillon
+      // existant : un brouillon créé avant la signature ne doit pas être rendu après.
+      const nonSigne = await tx.devis.count({
+        where: { id: origine.id, ...pasSigneParLeClient },
+      });
+      if (nonSigne === 0) return { refus: MSG_REVISION_SIGNEE };
+      // Statut RELU ici, après le verrou (celui lu hors transaction peut être périmé) : un devis
+      // accepté ne se corrige plus (refus avant tout numéro consommé).
+      const statutActuel = await tx.devis.findUnique({
+        where: { id: origine.id },
+        select: { statut: true },
+      });
+      if (statutActuel === null) return { refus: "Devis introuvable" };
+      if (statutActuel.statut === "accepte" || statutActuel.statut === "transforme_convention") {
+        return { refus: MSG_REVISION_ACCEPTE };
+      }
+      // Une version plus récente déjà ÉMISE : c'est elle qu'on corrige.
+      const successeurEmis = await tx.devis.findFirst({
+        where: { replacesDevisId: origine.id, statut: { not: "brouillon" } },
+        select: { id: true },
+      });
+      if (successeurEmis) return { refus: MSG_REVISION_SUCCESSEUR_EMIS };
       // Opération répétable : un brouillon de révision existe déjà → son identifiant, sans
       // nouveau numéro.
       const existante = await tx.devis.findFirst({
@@ -1031,11 +1081,6 @@ export async function reviseDevisAction(
         select: { id: true, numero: true },
       });
       if (existante) return { ...existante, dejaExistante: true as const };
-      // Le client a déjà signé : plus de correction (contresigner ou refuser).
-      const nonSigne = await tx.devis.count({
-        where: { id: origine.id, ...pasSigneParLeClient },
-      });
-      if (nonSigne === 0) return { refus: MSG_REVISION_SIGNEE };
       // F63 — le comptage ignorait l'année alors que le numéro l'estampille :
       // le 1er janvier, la séquence aurait repris au rang global au lieu de 001.
       // 🔴 V20 — même série que la création : même mécanique obligatoirement.

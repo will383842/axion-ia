@@ -19,6 +19,10 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { DevisForm } from "@/components/admin/qualiopi/DevisForm";
 import { lignesVersFormulaire } from "@/components/admin/qualiopi/devis-edition-lignes";
+import {
+  MSG_BROUILLON_REGLEMENT_TIERS,
+  porteUnReglementParUnTiers,
+} from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { gardePage } from "@/server/auth/garde-page";
 import { prisma } from "@/lib/prisma";
 import { isUuid } from "@/lib/is-uuid";
@@ -52,6 +56,8 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
       statut: true,
       offre: true,
       offreSha256: true,
+      financementSuggere: true,
+      montantOpcoEstimeCents: true,
       lignes: true,
       activite: true,
       refClient: true,
@@ -71,6 +77,9 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
   const basePath = `/${locale}/${adminPrefix}/qualiopi/devis`;
   const retourHref = `${basePath}/${devis.id}`;
   const lignes = lignesVersFormulaire(devis.lignes);
+  // Règlement par un tiers + estimation : le formulaire ne les porte pas, l'enregistrement les
+  // effacerait. Le formulaire n'est pas ouvert.
+  const reglementTiers = porteUnReglementParUnTiers(devis);
 
   const entete = (
     <>
@@ -88,6 +97,20 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
       />
     </>
   );
+
+  if (reglementTiers) {
+    return (
+      <AdminPageShell width="narrow">
+        {entete}
+        <p
+          role="alert"
+          className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]"
+        >
+          {MSG_BROUILLON_REGLEMENT_TIERS}
+        </p>
+      </AdminPageShell>
+    );
+  }
 
   if (lignes === null) {
     return (

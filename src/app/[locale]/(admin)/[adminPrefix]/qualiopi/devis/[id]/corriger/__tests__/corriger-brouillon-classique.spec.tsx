@@ -37,6 +37,8 @@ const devis = (over: Record<string, unknown> = {}) => ({
   statut: "brouillon",
   offre: null,
   offreSha256: null,
+  financementSuggere: null,
+  montantOpcoEstimeCents: null,
   lignes: [{ designation: "Atelier", quantite: 2, prixUnitaireHtCents: 100000 }],
   activite: "formation",
   refClient: "BC-12",
@@ -75,9 +77,26 @@ describe("/corriger", () => {
     });
   });
 
-  it("devis à formules : 404", async () => {
-    m.devis.mockResolvedValue(devis({ offre: { v: 1 }, offreSha256: "a".repeat(64) }));
+  it("devis à formules, `offre` seul posé : 404", async () => {
+    m.devis.mockResolvedValue(devis({ offre: { v: 1 }, offreSha256: null }));
     await expect(Page(params())).rejects.toBeInstanceOf(Introuvable);
+  });
+
+  it("devis à formules, `offreSha256` seul posé : 404", async () => {
+    m.devis.mockResolvedValue(devis({ offre: null, offreSha256: "a".repeat(64) }));
+    await expect(Page(params())).rejects.toBeInstanceOf(Introuvable);
+  });
+
+  it.each([
+    ["financementSuggere seul", { financementSuggere: "opco" }],
+    ["montantOpcoEstimeCents seul", { montantOpcoEstimeCents: 50000 }],
+  ])("règlement par un tiers (%s) : message, formulaire NON ouvert", async (_nom, champs) => {
+    m.devis.mockResolvedValue(devis(champs));
+    render(await Page(params()));
+    expect(screen.queryByTestId("formulaire-devis")).toBeNull();
+    expect(screen.getByRole("alert").textContent).toContain(
+      "Ce brouillon porte un règlement par un tiers et son estimation : il ne peut pas être modifié dans cet écran, car ces informations seraient effacées.",
+    );
   });
 
   it.each(["envoye", "accepte", "refuse", "expire", "transforme_convention"])(

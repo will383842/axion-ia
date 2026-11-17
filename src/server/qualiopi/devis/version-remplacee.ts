@@ -11,6 +11,22 @@
 import type { Prisma } from "../../../../prisma/generated/client";
 import { pasSigneParLeClient } from "./pas-signe-par-le-client";
 
+/** Message lisible : le client a signé l'ancienne version pendant l'émission de la nouvelle. */
+export const MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS =
+  "Le client vient de signer la version précédente de ce devis : cette correction n'a pas été émise. Ouvrez la version signée pour la contresigner.";
+
+/**
+ * Course perdue : la version remplacée passait pour « envoye » à la relecture, mais le client l'a
+ * signée (ou son état a changé) avant l'écriture. La transaction est annulée ; l'appelant
+ * reconnaît cette classe pour rendre un message lisible.
+ */
+export class VersionRemplaceeSigneeEntreTempsError extends Error {
+  constructor() {
+    super("version remplacée non expirée : elle a été signée ou a changé d'état");
+    this.name = "VersionRemplaceeSigneeEntreTempsError";
+  }
+}
+
 /** Refus d'émettre une correction dont la version précédente est acceptée ou signée. */
 export const MSG_VERSION_REMPLACEE_ACCEPTEE =
   "La version précédente de ce devis a été acceptée ou signée : cette correction ne peut pas être envoyée.";
@@ -38,8 +54,8 @@ export async function cloreVersionRemplacee(
     replacesDevisId: string | null;
     documentGenereIdRemplace: string | null | undefined;
     numero: string;
-    /** Statut de la version remplacée vu à la relecture (même transaction). */
-    statutRemplace?: string | null | undefined;
+    /** Statut de la version remplacée vu à la relecture (même transaction). Obligatoire. */
+    statutRemplace: string | null | undefined;
   },
 ): Promise<void> {
   const { replacesDevisId, documentGenereIdRemplace, numero, statutRemplace } = params;
@@ -52,7 +68,7 @@ export async function cloreVersionRemplacee(
     });
     // La relecture la voyait « envoye » : 0 ligne = une signature est arrivée entre-temps.
     if (maj.count === 0) {
-      throw new Error("version remplacée non expirée : elle a été signée ou a changé d'état");
+      throw new VersionRemplaceeSigneeEntreTempsError();
     }
   }
   // 🔴 …et son lien de signature est RÉVOQUÉ, dans la MÊME transaction : sinon le client

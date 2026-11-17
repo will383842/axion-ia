@@ -31,6 +31,8 @@ vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction:
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn() }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
 
+import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
+
 import { reviseDevisAction } from "../devis";
 
 const ORIGINE = "66666666-6666-4666-8666-666666666666";
@@ -67,11 +69,55 @@ describe("reviseDevisAction — garde de signature et répétabilité", () => {
     expect(etat.devis).toHaveLength(1);
   });
 
-  it("signature annulée ou révoquée (le filtre « pas signé » la compte non signée) : autorisé", async () => {
+  it("signature annulée ou révoquée : le filtre posé est `pasSigneParLeClient` (annulée / révoquée = non signée)", async () => {
     const etat = semer();
-    // signesParLeClient vide = aucune signature client active (annulée / révoquée / absente)
+    // Aucune signature client active dans la fausse base : la révision est autorisée…
     const r = await reviseDevisAction(ORIGINE);
     expect("data" in r).toBe(true);
+    expect(etat.devis).toHaveLength(2);
+    // …parce que la garde interroge la base avec le filtre qui compte une pièce annulée
+    // (`annuleeAt`) ou une signature révoquée (`revokedAt`) comme NON signée.
+    expect(etat.filtresCount).toEqual([{ id: ORIGINE, ...pasSigneParLeClient }]);
+    expect(JSON.stringify(etat.filtresCount[0])).toContain("annuleeAt");
+    expect(JSON.stringify(etat.filtresCount[0])).toContain("revokedAt");
+  });
+
+  it("ordre des gardes : un brouillon existe puis le client signe → refus, brouillon non rendu", async () => {
+    const etat = semer();
+    const a = await reviseDevisAction(ORIGINE);
+    expect("data" in a).toBe(true);
+    expect(etat.devis).toHaveLength(2);
+    etat.signesParLeClient.push(ORIGINE);
+    const b = await reviseDevisAction(ORIGINE);
+    expect(b).toEqual({
+      error:
+        "Le client a déjà signé ce devis : contresignez-le ou refusez-le, il ne peut pas être corrigé.",
+    });
+  });
+
+  it.each(["envoye", "expire"])(
+    "version déjà remplacée par une version ÉMISE (successeur « %s ») : refus, aucun numéro",
+    async (statutSuccesseur) => {
+      const etat = semer("expire");
+      etat.devis.push({
+        id: "77777777-7777-4777-8777-777777777777",
+        numero: "AXI-DEV-2026-002",
+        statut: statutSuccesseur,
+        replacesDevisId: ORIGINE,
+      });
+      const r = await reviseDevisAction(ORIGINE);
+      expect(r).toEqual({
+        error: "Une version plus récente de ce devis a déjà été envoyée : corrigez celle-ci.",
+      });
+      expect(etat.devis).toHaveLength(2);
+    },
+  );
+
+  it("un successeur encore BROUILLON n'empêche pas la reprise (répétabilité)", async () => {
+    const etat = semer();
+    const a = await reviseDevisAction(ORIGINE);
+    const b = await reviseDevisAction(ORIGINE);
+    expect("data" in a && "data" in b).toBe(true);
     expect(etat.devis).toHaveLength(2);
   });
 
