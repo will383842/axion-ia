@@ -28,6 +28,7 @@ const h = vi.hoisted(() => ({
   enqueueEmail: vi.fn(),
   checkRateLimit: vi.fn(),
   verifyTurnstile: vi.fn(),
+  syncCrm: vi.fn(),
 }));
 
 vi.mock("next/headers", () => ({
@@ -52,7 +53,7 @@ vi.mock("@/lib/r2-storage", () => ({
 vi.mock("@/server/careers/clamav", () => ({ analyserFlux: vi.fn() }));
 vi.mock("@/server/notifications", () => ({ notify: h.notify }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: h.enqueueEmail }));
-vi.mock("@/server/crm-sync", () => ({ syncFormSubmissionToCrm: vi.fn() }));
+vi.mock("@/server/crm-sync", () => ({ syncFormSubmissionToCrm: h.syncCrm }));
 vi.mock("@/lib/consents", () => ({
   CONSENT_FORM_REFS: { unifiedContact: "unified-contact" },
   recordConsentEvent: vi.fn(),
@@ -62,6 +63,7 @@ vi.mock("@/lib/turnstile", () => ({ verifyTurnstile: h.verifyTurnstile }));
 vi.mock("@/lib/pii-crypto", () => ({
   encryptPii: (v: string) => `enc:${v}`,
   decryptPii: (v: string) => v,
+  PII_DECRYPT_PLACEHOLDER: "[encrypted — key missing]",
   isDecryptedEmailUsable: () => true,
 }));
 vi.mock("@/lib/security/ip-hash", () => ({ hashIp: () => "iphash" }));
@@ -74,7 +76,9 @@ import { submitUnifiedContactAction } from "../actions";
 function formulaire(annonce?: unknown): FormData {
   const fd = new FormData();
   fd.set("type", "formation");
-  fd.set("nom", "Camille Exemple");
+  fd.set("civilite", "madame");
+  fd.set("prenom", "Camille");
+  fd.set("nomFamille", "Exemple");
   fd.set("email", "camille@example.invalid");
   fd.set("telephone", "+33 6 39 98 12 34");
   fd.set("ville", "Lyon");
@@ -120,6 +124,9 @@ describe("sans pièce jointe, rien ne change", () => {
     expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
     expect(h.enqueueEmail.mock.calls[0]![3]).toEqual({
       contactName: "Camille Exemple",
+      civilite: "madame",
+      prenom: "Camille",
+      nomFamille: "Exemple",
       submissionId: "sub-1",
       type: "formation",
       subType: undefined,
@@ -137,6 +144,80 @@ describe("sans pièce jointe, rien ne change", () => {
     const r = await submitUnifiedContactAction(ETAT, formulaire([]));
     expect(r).toEqual({ ok: true, submissionId: "sub-1" });
     expect(h.signerEnvoiDirectR2).not.toHaveBeenCalled();
+  });
+});
+
+describe("identité : civilité facultative, prénom, nom de famille", () => {
+  it("nouveau formulaire : contactName « Prénom Nom », identité chiffrée dans details, CRM prénom/nom", async () => {
+    const r = await submitUnifiedContactAction(ETAT, formulaire());
+    expect(r.ok).toBe(true);
+    const data = h.submissionCreate.mock.calls[0]![0].data;
+    expect(data.contactName).toBe("enc:Camille Exemple");
+    expect(data.details.identite).toEqual({
+      civilite: "madame",
+      prenom: "enc:Camille",
+      nomFamille: "enc:Exemple",
+    });
+    expect(h.syncCrm.mock.calls[0]![0].person).toMatchObject({
+      fullName: "Camille Exemple",
+      firstName: "Camille",
+      lastName: "Exemple",
+    });
+    expect(h.notify.mock.calls[0]![0].payload.contactName).toBe("Camille Exemple");
+  });
+
+  it("civilité absente : aucune civilité rangée, demande acceptée", async () => {
+    const fd = formulaire();
+    fd.delete("civilite");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r.ok).toBe(true);
+    const data = h.submissionCreate.mock.calls[0]![0].data;
+    expect(data.details.identite).not.toHaveProperty("civilite");
+    expect(h.enqueueEmail.mock.calls[0]![3]).not.toHaveProperty("civilite");
+  });
+
+  it("civilité vide (« Non précisée ») : acceptée, non rangée", async () => {
+    const fd = formulaire();
+    fd.set("civilite", "");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r.ok).toBe(true);
+    expect(h.submissionCreate.mock.calls[0]![0].data.details.identite).not.toHaveProperty(
+      "civilite",
+    );
+  });
+
+  it("civilité inconnue : refusée", async () => {
+    const fd = formulaire();
+    fd.set("civilite", "docteur");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r.ok).toBe(false);
+    expect(h.submissionCreate).not.toHaveBeenCalled();
+  });
+
+  it("ANCIEN formulaire (page ouverte avant la mise en ligne) : `nom` seul accepté, ni prénom ni identite", async () => {
+    const fd = formulaire();
+    fd.delete("civilite");
+    fd.delete("prenom");
+    fd.delete("nomFamille");
+    fd.set("nom", "Camille Exemple");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r).toEqual({ ok: true, submissionId: "sub-1" });
+    const data = h.submissionCreate.mock.calls[0]![0].data;
+    expect(data.contactName).toBe("enc:Camille Exemple");
+    expect(data.details).not.toHaveProperty("identite");
+    const charge = h.enqueueEmail.mock.calls[0]![3];
+    expect(charge.contactName).toBe("Camille Exemple");
+    expect(charge).not.toHaveProperty("prenom");
+    expect(charge).not.toHaveProperty("nomFamille");
+    expect(h.syncCrm.mock.calls[0]![0].person).not.toHaveProperty("firstName");
+  });
+
+  it("prénom sans lettre : refusé", async () => {
+    const fd = formulaire();
+    fd.set("prenom", "-");
+    const r = await submitUnifiedContactAction(ETAT, fd);
+    expect(r.ok).toBe(false);
+    expect(h.submissionCreate).not.toHaveBeenCalled();
   });
 });
 
