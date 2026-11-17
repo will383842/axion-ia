@@ -5,9 +5,10 @@
  *    questionnaire ;
  *  - « Il y a un mois, X nous confiait… » (faux : l'enquête part à la fin de la formation).
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { render } from "@react-email/render";
 import { describe, expect, it } from "vitest";
-import { FENETRE_APRES_FIN_MS } from "@/server/qualiopi/emargement/token-service";
 import { HEURES_VALIDITE_LIEN, QualiopiEmargementLienEmail } from "../qualiopi-emargement-lien";
 import { QualiopiEnqueteEntrepriseEmail } from "../qualiopi-enquete-entreprise";
 import { QualiopiQuestionnaireRelanceEmail } from "../qualiopi-questionnaire-relance";
@@ -59,7 +60,15 @@ describe("textes des stagiaires et de l'entreprise", () => {
   });
 
   it("la durée du gabarit suit la fenêtre réelle du jeton", () => {
-    expect(HEURES_VALIDITE_LIEN * 3_600_000).toBe(FENETRE_APRES_FIN_MS);
+    // Lecture du SOURCE (et non import) : la garde d'isolation interdit à ce dossier
+    // d'importer le domaine. La fenêtre est écrite `48 * 60 * 60 * 1000`.
+    const src = readFileSync(
+      join(process.cwd(), "src/server/qualiopi/emargement/token-service.ts"),
+      "utf8",
+    );
+    const m = /FENETRE_APRES_FIN_MS\s*=\s*(\d+)\s*\*\s*60\s*\*\s*60\s*\*\s*1000/.exec(src);
+    expect(m).not.toBeNull();
+    expect(Number(m?.[1])).toBe(HEURES_VALIDITE_LIEN);
   });
 
   it("relance du questionnaire : plus d'obligation interne", async () => {
