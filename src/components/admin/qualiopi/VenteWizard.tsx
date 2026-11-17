@@ -254,9 +254,11 @@ export function VenteWizard({
   const [nbParticipants, setNbParticipants] = useState(chaine(p, "nbParticipants") || "1");
   const [dureeHeures, setDureeHeures] = useState(chaine(p, "dureeHeures"));
   const [montantEur, setMontantEur] = useState(chaine(p, "montantEur"));
-  // Plus de choix de financement dans l'interface : la session garde la valeur technique
-  // « direct » que le serveur exige, sans la proposer ni l'afficher.
-  const financement: VenteFinancement = "direct";
+  // Plus de choix de financement dans l'interface : la valeur du brouillon est CONSERVÉE (un
+  // ancien brouillon « opco » ne la perd pas en changeant d'étape), jamais proposée ni affichée.
+  const [financement] = useState<VenteFinancement>(
+    () => (chaine(p, "financement") as VenteFinancement) || "direct",
+  );
   const [devis, setDevis] = useState<VenteDevisEtat | null>(devisInitial ?? null);
   const [dateDebut, setDateDebut] = useState(chaine(p, "dateDebut"));
   const [dateFin, setDateFin] = useState(chaine(p, "dateFin"));
@@ -311,6 +313,7 @@ export function VenteWizard({
       dateDebut,
       dateFin,
       modalite,
+      financement,
     };
   }
 
