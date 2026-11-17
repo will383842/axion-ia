@@ -28,6 +28,10 @@ vi.mock("@/server/seo/og-overrides", () => ({ surchargeOgPour: async () => null 
 import Galerie, { generateMetadata as metaGalerie } from "../page";
 import PageTheme, { generateMetadata as metaTheme } from "../theme/[theme]/page";
 import PageSerie, { generateMetadata as metaSerie } from "../serie/[serie]/page";
+import PageBesoin, { generateMetadata as metaBesoin } from "../besoin/[besoin]/page";
+import { BESOINS, besoinParSlug } from "@/content/videos/besoins";
+import { THEMES } from "@/content/videos/themes";
+import { besoinAPage, groupesParBesoin, listesProches } from "@/server/videos/liees";
 
 const fr = <T extends Record<string, string>>(extra: T = {} as T) =>
   Promise.resolve({ locale: "fr", ...extra });
@@ -130,8 +134,191 @@ describe("page de série", () => {
   });
 });
 
+const hrefs = (html: string) => [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1]!);
+const compte = (html: string, re: RegExp) => (html.match(re) ?? []).length;
+
+describe("liste fermée des besoins (SEO-06)", () => {
+  it("quatre besoins, slugs uniques en minuscules et tirets, thèmes existants", () => {
+    expect(BESOINS).toHaveLength(4);
+    expect(new Set(BESOINS.map((b) => b.slug)).size).toBe(4);
+    const themes = THEMES.map((t) => t.slug);
+    for (const b of BESOINS) {
+      expect(b.slug).toMatch(/^[a-z0-9]+(-[a-z0-9]+)*$/);
+      expect(b.themes.length).toBeGreaterThan(0);
+      for (const t of b.themes) expect(themes).toContain(t);
+      expect(b.intro.trim().split(/\s+/).length).toBeGreaterThanOrEqual(120);
+      const txt = `${b.libelle} ${b.description} ${b.intro}`;
+      expect(txt).not.toMatch(/certifi|qualiopi|grenoble|aucun\s+gain\s+garanti|€|euros?\b/i);
+    }
+    expect(besoinParSlug("inconnu")).toBeNull();
+  });
+
+  it("chaque thème est dans 1 ou 2 besoins ; aucun besoin ne reprend la liste d'un thème", () => {
+    for (const t of THEMES) {
+      const nb = BESOINS.filter((b) => b.themes.includes(t.slug)).length;
+      expect(nb, t.slug).toBeGreaterThanOrEqual(1);
+      expect(nb, t.slug).toBeLessThanOrEqual(2);
+    }
+    const cles = BESOINS.map((b) => [...b.themes].sort().join("|"));
+    expect(new Set(cles).size).toBe(BESOINS.length);
+    for (const b of BESOINS) expect(b.themes.length, b.slug).toBeGreaterThanOrEqual(2);
+  });
+
+  it("pas de page jumelle : un besoin dont la liste égale celle d'un thème n'a pas de page", () => {
+    const b = besoinParSlug("gagner-du-temps")!;
+    const seulTheme = [1, 2, 3].map((k) => n(k, "automatisation"));
+    expect(besoinAPage(b, seulTheme)).toBe(false);
+    expect(besoinAPage(b, [...seulTheme, n(4, "coaching-ia")])).toBe(true);
+  });
+});
+
+describe("hub : classement par type et par besoin", () => {
+  it("un seul H1, deux entrées, fil d'Ariane visible, JSON-LD de liste", async () => {
+    h.videos = [n(1, "automatisation")];
+    const html = await rendre(Galerie({ params: fr() }));
+    expect(compte(html, /<h1[ >]/g)).toBe(1);
+    expect(html).toContain("Par thème");
+    expect(html).toContain("Par besoin d&#x27;entreprise");
+    expect(html).toContain('aria-label="Fil d&#x27;Ariane"');
+    expect(html).toContain("CollectionPage");
+    expect(html).toContain("BreadcrumbList");
+  });
+
+  it("zéro vidéo : liste vide propre, 404, aucune entrée fantôme", async () => {
+    await expect(Galerie({ params: fr() })).rejects.toThrow(/404/);
+  });
+
+  it("sous le seuil : le besoin est affiché sans lien (pas de page fantôme)", async () => {
+    h.videos = [n(1, "automatisation"), n(2, "automatisation")];
+    const html = await rendre(Galerie({ params: fr() }));
+    expect(html).toContain("Gagner du temps");
+    expect(html).not.toContain("/fr/videos/besoin/");
+  });
+
+  it("au seuil : le besoin a son lien, l'entrée par type aussi", async () => {
+    h.videos = [
+      ...[1, 2, 3].map((k) => n(k, "automatisation")),
+      n(1, "coaching-ia"),
+      n(1, "audit-ia"),
+    ];
+    const l = hrefs(await rendre(Galerie({ params: fr() })));
+    expect(l).toContain("/fr/videos/besoin/gagner-du-temps");
+    expect(l).toContain("/fr/videos/theme/automatisation");
+  });
+
+  it("chaque page vidéo est atteignable en deux clics au plus depuis le hub", async () => {
+    h.videos = [
+      ...[...[1, 2, 3].map((k) => n(k, "automatisation")), n(1, "coaching-ia"), n(1, "audit-ia")],
+      ...[1, 2].map((k) => n(k, "sites-web-ia")),
+    ];
+    const toutes = (h.videos as Array<{ slug: string }>).map((v) => `/fr/videos/${v.slug}`);
+    const hub = hrefs(await rendre(Galerie({ params: fr() })));
+    const niveau1 = new Set(hub);
+    const niveau2 = new Set<string>();
+    for (const l of hub) {
+      const m = /^\/fr\/videos\/(theme|besoin)\/([^/]+)$/.exec(l);
+      if (!m) continue;
+      const page =
+        m[1] === "theme"
+          ? PageTheme({ params: fr({ theme: m[2]! }) })
+          : PageBesoin({ params: fr({ besoin: m[2]! }) });
+      for (const x of hrefs(await rendre(page))) niveau2.add(x);
+    }
+    for (const v of toutes) expect(niveau1.has(v) || niveau2.has(v), v).toBe(true);
+  });
+});
+
+describe("page de besoin", () => {
+  it("sous 3 vidéos : 404 et métadonnées vides (non indexable)", async () => {
+    h.videos = [n(1, "automatisation"), n(2, "automatisation")];
+    await expect(PageBesoin({ params: fr({ besoin: "gagner-du-temps" }) })).rejects.toThrow(/404/);
+    expect(await metaBesoin({ params: fr({ besoin: "gagner-du-temps" }) })).toEqual({});
+  });
+
+  it("liste identique à celle d'un thème → 404 (pas de page jumelle)", async () => {
+    h.videos = [1, 2, 3].map((k) => n(k, "automatisation"));
+    await expect(PageBesoin({ params: fr({ besoin: "gagner-du-temps" }) })).rejects.toThrow(/404/);
+    expect(await metaBesoin({ params: fr({ besoin: "gagner-du-temps" }) })).toEqual({});
+    expect(hrefs(await rendre(Galerie({ params: fr() }))).join(" ")).not.toContain("/besoin/");
+  });
+
+  it("besoin inconnu → 404 ; locale autre que fr → 404", async () => {
+    h.videos = [
+      ...[1, 2, 3].map((k) => n(k, "automatisation")),
+      n(1, "coaching-ia"),
+      n(1, "audit-ia"),
+    ];
+    await expect(PageBesoin({ params: fr({ besoin: "x" }) })).rejects.toThrow(/404/);
+    await expect(
+      PageBesoin({ params: Promise.resolve({ locale: "en", besoin: "gagner-du-temps" }) }),
+    ).rejects.toThrow(/404/);
+  });
+
+  it("3 vidéos → 200 : H1 unique, cartes, fil d'Ariane, pages proches, canonique", async () => {
+    h.videos = [
+      ...[1, 2, 3].map((k) => n(k, "automatisation")),
+      n(1, "coaching-ia"),
+      n(1, "audit-ia"),
+    ];
+    const html = await rendre(PageBesoin({ params: fr({ besoin: "gagner-du-temps" }) }));
+    expect(compte(html, /<h1[ >]/g)).toBe(1);
+    expect(html).toContain("Titre automatisation 3");
+    expect(html).toContain('aria-label="Fil d&#x27;Ariane"');
+    expect(html).toContain('href="/fr/videos/theme/automatisation"');
+    expect(html).toContain("BreadcrumbList");
+    expect(
+      (await metaBesoin({ params: fr({ besoin: "gagner-du-temps" }) })).alternates?.canonical,
+    ).toBe("/fr/videos/besoin/gagner-du-temps");
+  });
+
+  it("ne contient que les vidéos de ses thèmes", async () => {
+    h.videos = [
+      ...[...[1, 2, 3].map((k) => n(k, "automatisation")), n(1, "coaching-ia"), n(1, "audit-ia")],
+      n(9, "sites-web-ia"),
+    ];
+    const html = await rendre(PageBesoin({ params: fr({ besoin: "gagner-du-temps" }) }));
+    expect(html).not.toContain("Titre sites-web-ia 9");
+  });
+});
+
+describe("groupes par besoin et pages proches", () => {
+  it("une vidéo peut compter dans plusieurs besoins ; vide = aucun groupe", () => {
+    expect(groupesParBesoin([])).toEqual([]);
+    const g = groupesParBesoin(h.videos as never);
+    expect(g).toEqual([]);
+    const v = [
+      ...[1, 2, 3].map((k) => n(k, "automatisation")),
+      n(1, "coaching-ia"),
+      n(1, "audit-ia"),
+    ];
+    const g2 = groupesParBesoin(v);
+    expect(g2.map((x) => x.besoin.slug)).toEqual(
+      expect.arrayContaining(["gagner-du-temps", "ne-rien-oublier"]),
+    );
+    for (const slug of ["gagner-du-temps", "ne-rien-oublier"]) {
+      expect(g2.find((x) => x.besoin.slug === slug)?.aPage, slug).toBe(true);
+    }
+  });
+
+  it("listesProches : uniquement des pages qui existent, jamais la page courante", () => {
+    const v = [
+      ...[1, 2, 3].map((k) => n(k, "automatisation")),
+      n(1, "coaching-ia"),
+      n(1, "audit-ia"),
+    ];
+    const p = listesProches({ type: "theme", slug: "automatisation" }, v);
+    expect(p.length).toBeGreaterThan(0);
+    for (const x of p) {
+      expect(x.href).toMatch(/^\/fr\/videos\/(theme|besoin)\//);
+      expect(x.href).not.toBe("/fr/videos/theme/automatisation");
+    }
+    expect(listesProches({ type: "theme", slug: "automatisation" }, [])).toEqual([]);
+  });
+});
+
 describe("aucun JS client dans les listes", () => {
   const fichiers = [
+    "src/app/[locale]/videos/besoin/[besoin]/page.tsx",
     "src/app/[locale]/videos/page.tsx",
     "src/app/[locale]/videos/theme/[theme]/page.tsx",
     "src/app/[locale]/videos/serie/[serie]/page.tsx",
