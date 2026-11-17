@@ -226,7 +226,7 @@ async function regleReferentHandicap(now: Date): Promise<AlerteCandidate[]> {
       message:
         "Aucun e-mail de référent handicap renseigné dans la configuration. " +
         "L'auditeur attend un référent NOMMÉ ET JOIGNABLE : un nom sans moyen " +
-        "de contact ne prouve pas la désignation. Obligatoire Qualiopi (ind.26⭐).",
+        "de contact ne prouve pas la désignation. Obligatoire pour la certification qualité (ind.26⭐).",
     },
   ];
 }
@@ -290,9 +290,9 @@ async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> 
       niveau: "important",
       titre: "Catégorie d'actions certifiées non renseignée",
       message:
-        "La page publique affiche la mention obligatoire de la marque Qualiopi avec une " +
+        "La page publique affiche la mention obligatoire de la marque de certification qualité avec une " +
         "catégorie de repli, qu'aucun certificat n'a confirmée. Ouvrez le certificat et " +
-        "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
+        "saisissez la ou les catégories exactes dans la configuration de la certification qualité " +
         "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
         "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
     },
@@ -1676,22 +1676,22 @@ async function regleQualiopiExpiration(now: Date): Promise<AlerteCandidate[]> {
     alertes.push({
       code: "qualiopi_expire",
       niveau: "critique",
-      titre: "Certification Qualiopi expirée",
-      message: `La certification Qualiopi a expiré le ${validite.toLocaleDateString("fr-FR")}. Renouvellement urgent.`,
+      titre: "Certification qualité expirée",
+      message: `La certification qualité a expiré le ${validite.toLocaleDateString("fr-FR")}. Renouvellement urgent.`,
     });
   } else if (validite <= daysFromNow(30, now)) {
     alertes.push({
       code: "qualiopi_expire_j30",
       niveau: "critique",
-      titre: "Certification Qualiopi expire dans 30 jours",
-      message: `La certification Qualiopi expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤30 jours).`,
+      titre: "Certification qualité : expire dans 30 jours",
+      message: `La certification qualité expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤30 jours).`,
     });
   } else if (validite <= daysFromNow(90, now)) {
     alertes.push({
       code: "qualiopi_expire_j90",
       niveau: "important",
-      titre: "Certification Qualiopi expire dans 90 jours",
-      message: `La certification Qualiopi expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤90 jours).`,
+      titre: "Certification qualité : expire dans 90 jours",
+      message: `La certification qualité expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤90 jours).`,
     });
   }
 
@@ -1811,7 +1811,7 @@ async function regleVeilleInactive(now: Date): Promise<AlerteCandidate[]> {
         code: "veille_inactive_j45",
         niveau: "important",
         titre: "Aucune entrée de veille depuis 45 jours",
-        message: `La veille réglementaire/pédagogique n'a pas été mise à jour depuis plus de 45 jours. ${msgDate} Obligation Qualiopi (ind.23/24/25).`,
+        message: `La veille réglementaire/pédagogique n'a pas été mise à jour depuis plus de 45 jours. ${msgDate} Obligation de la certification qualité (ind.23/24/25).`,
       },
     ];
   }
@@ -1890,7 +1890,7 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire",
         niveau: "critique",
-        titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
+        titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
         message: `Le formateur sous-traitant ${t.prenom} ${t.nom} n'a jamais été vérifié (aucune date de vérification).`,
         cibleType: "Trainer",
         cibleId: t.id,
@@ -1899,8 +1899,8 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire",
         niveau: "critique",
-        titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
-        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} date du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")} : elle a plus de ${VALIDITE_MOIS} mois.`,
+        titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
+        message: `La vérification de la certification qualité du formateur sous-traitant ${t.prenom} ${t.nom} date du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")} : elle a plus de ${VALIDITE_MOIS} mois.`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -1911,8 +1911,8 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire_j60",
         niveau: "important",
-        titre: "Qualiopi sous-traitant expire dans 60 jours",
-        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} (du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")}) atteint ${VALIDITE_MOIS} mois dans ${joursRestants} jours.`,
+        titre: "Certification qualité du sous-traitant : expire dans 60 jours",
+        message: `La vérification de la certification qualité du formateur sous-traitant ${t.prenom} ${t.nom} (du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")}) atteint ${VALIDITE_MOIS} mois dans ${joursRestants} jours.`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
