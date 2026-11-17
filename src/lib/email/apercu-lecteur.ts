@@ -45,8 +45,8 @@ export function cspCorpsEmail(): string {
 
 // Une balise ouvrante : les valeurs entre guillemets peuvent contenir `>`.
 const BALISE = /<([a-zA-Z][a-zA-Z0-9]*)((?:"[^"]*"|'[^']*'|[^>"'])*)>/g;
-const ATTRIBUT_LIEN = /\s(?:xlink:)?href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>"']+))/gi;
-const ATTRIBUT_ACTION = /\s(?:form)?action\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>"']+)/gi;
+const ATTRIBUT_LIEN = /(?<=[\s"'/])(?:xlink:)?href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>"']+))/gi;
+const ATTRIBUT_ACTION = /(?<=[\s"'/])(?:form)?action\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>"']+)/gi;
 
 function echapperAttribut(v: string): string {
   return v.replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;");

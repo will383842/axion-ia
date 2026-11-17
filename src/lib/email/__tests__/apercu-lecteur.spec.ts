@@ -37,6 +37,39 @@ describe("rendreLiensInertes", () => {
     expect(sortie).not.toContain(JETON);
     expect(sortie).toContain("<button");
   });
+
+  it.each([
+    ["<a/href=…>", `<a/href="https://x.example/p?t=${JETON}">Lien</a>`],
+    ["<a title=…href=…> sans blanc", `<a title="x"href="https://x.example/p?t=${JETON}">Lien</a>`],
+    [
+      "<a title=…href=…> guillemets simples",
+      `<a title='x'href='https://x.example/p?t=${JETON}'>Lien</a>`,
+    ],
+    ["<area/href=…>", `<area/href="https://x.example/p?t=${JETON}">`],
+  ])("href sans blanc de tête : %s", (_nom, html) => {
+    expect(html).toContain(JETON);
+    const sortie = rendreLiensInertes(html);
+    expect(sortie).not.toContain(JETON);
+    expect(sortie).not.toMatch(/href\s*=/i);
+  });
+
+  it.each([
+    ["<form/action=…>", `<form/action="https://x.example/f?t=${JETON}"></form>`],
+    [
+      "<form method=…action=…>",
+      `<form method="post"action="https://x.example/f?t=${JETON}"></form>`,
+    ],
+    ["<button/formaction=…>", `<button/formaction="https://x.example/g?t=${JETON}">ok</button>`],
+    [
+      "<button type=…formaction=…>",
+      `<button type="submit"formaction="https://x.example/g?t=${JETON}">ok</button>`,
+    ],
+  ])("action / formaction sans blanc de tête : %s", (_nom, html) => {
+    expect(html).toContain(JETON);
+    const sortie = rendreLiensInertes(html);
+    expect(sortie).not.toContain(JETON);
+    expect(sortie).not.toMatch(/action\s*=/i);
+  });
 });
 
 describe("extrairePreEntete", () => {
