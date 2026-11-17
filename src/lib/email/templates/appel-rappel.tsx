@@ -293,7 +293,15 @@ function besoinDe(p: { besoin?: unknown }): string | null {
   return b.length > 80 ? `${b.slice(0, 79)}…` : b;
 }
 
-const momentDe = (p: { moment?: MomentAppel }): MomentAppel => p.moment ?? "h1";
+/**
+ * Le moment du message, ou `"sans_moment"` quand la charge n'en porte pas (anciens jobs
+ * posés avant que les émetteurs le fournissent). Ce cas ne doit JAMAIS annoncer « dans
+ * une heure » : sans moment, on ne sait pas quand le rendez-vous a lieu par rapport à
+ * l'envoi. Rendu neutre : « Rappel de votre rendez-vous », avec date et heure si présentes.
+ */
+type MomentRendu = MomentAppel | "sans_moment";
+const momentDe = (p: { moment?: unknown }): MomentRendu =>
+  p.moment === "confirmation" || p.moment === "j1" || p.moment === "h1" ? p.moment : "sans_moment";
 
 /** Une chaîne non vide, ou `null`. Aucune branche ne doit rendre « undefined ». */
 const texteOuNull = (v: unknown): string | null => {
@@ -326,6 +334,15 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const p = payload as unknown as PayloadAppel;
   const m = momentDe(p);
   const quand = quandTexte(locale, p);
+  if (m === "sans_moment") {
+    return locale === "fr"
+      ? quand
+        ? objetCompose("Rappel de votre rendez-vous :", quand)
+        : "Rappel de votre rendez-vous"
+      : quand
+        ? objetCompose("Reminder of your meeting:", quand)
+        : "Reminder of your meeting";
+  }
   const v = varianteDe(locale, p);
   if (v) {
     const heure = texteOuNull(p.heure);
@@ -524,6 +541,20 @@ const COPY = {
         `Petit rappel : nous nous retrouvons demain à ${h} (heure de Paris)${d ? `, pour ${d}` : ""}.`,
       signature: "À demain,\nWilliams",
     },
+    sansMoment: {
+      preview: (d: string | null) =>
+        d ? `${d}, rien à préparer de votre côté.` : `Rien à préparer de votre côté.`,
+      title: "Rappel de votre rendez-vous",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `Petit rappel : votre rendez-vous a lieu le ${date} à ${heure} (heure de Paris).`
+          : heure
+            ? `Petit rappel : votre rendez-vous a lieu à ${heure} (heure de Paris).`
+            : date
+              ? `Petit rappel : votre rendez-vous a lieu le ${date}.`
+              : "Petit rappel de votre rendez-vous.",
+      signature: "À bientôt,\nWilliams",
+    },
     h1: {
       preview: (d: string | null) =>
         d ? `${d}, rien à préparer de votre côté.` : `Rien à préparer de votre côté.`,
@@ -552,6 +583,20 @@ const COPY = {
       quand: (h: string, d: string | null) =>
         `A quick reminder: we meet tomorrow at ${h} (Paris time)${d ? `, for ${d}` : ""}.`,
       signature: "Talk tomorrow,\nWilliams",
+    },
+    sansMoment: {
+      preview: (d: string | null) =>
+        d ? `${d}, nothing to prepare on your side.` : `Nothing to prepare on your side.`,
+      title: "Reminder of your meeting",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `A quick reminder: your meeting is on ${date} at ${heure} (Paris time).`
+          : heure
+            ? `A quick reminder: your meeting is at ${heure} (Paris time).`
+            : date
+              ? `A quick reminder: your meeting is on ${date}.`
+              : "A quick reminder of your meeting.",
+      signature: "Talk soon,\nWilliams",
     },
     h1: {
       preview: (d: string | null) =>
@@ -1049,6 +1094,24 @@ export function AppelRappelEmail({
   // 20 à 30 % », mais seulement s'il se lit en deux secondes : le récapitulatif
   // et le bloc « ce qui se passe maintenant » y coûteraient de la surface pour
   // une information déjà lue à la confirmation. Ne pas les propager ici.
+  if (m === "sans_moment") {
+    const tn = COPY[locale].sansMoment;
+    return (
+      <EmailLayout famille="C" preview={tn.preview(duree)} title={tn.title} locale={locale}>
+        <Text style={emailStyles.paragraphStyle}>
+          {tn.quand(texteOuNull(p.date), texteOuNull(p.heure))}
+        </Text>
+        <LigneLieu lieu={p.lieu} format={format} c={c} />
+        <Text style={emailStyles.paragraphStyle}>
+          {c.intro(p.prenom)}
+          <br />
+          {v ? v.attendu(besoin) : c.attendu}
+        </Text>
+        <ActionsSecondaires p={p} c={c} encadre={false} />
+        <Text style={emailStyles.paragraphStyle}>{tn.signature}</Text>
+      </EmailLayout>
+    );
+  }
   const t = COPY[locale][m === "j1" ? "j1" : "h1"];
   const heure = texteOuNull(p.heure) ?? (locale === "fr" ? "l'heure prévue" : "the agreed time");
   return (
