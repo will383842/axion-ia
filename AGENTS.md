@@ -390,6 +390,10 @@ jusqu'à 9 fois (90 min, au-delà de la fenêtre de ~35 min), sans tentative com
 attente » ; au-delà, il rend le `gabaritRepli` s'il le connaît, sinon échoue franchement
 (`UnrecoverableError`, motif « gabarit inconnu de ce worker » au journal). Un worker antérieur à S3
 n'a pas ce repli : S3 doit être en ligne **avant** le premier émetteur d'un nouveau nom.
+La charge d'un nouveau nom de gabarit doit aussi satisfaire le gabarit de repli : aucune validation
+n'est faite, et un repli qui reçoit une charge incompatible rend des champs vides ou échoue après
+5 tentatives. Un job reporté apparaît « bloqué en file » dans l'alarme de santé des e-mails pendant
+la fenêtre de mise en ligne : c'est attendu.
 
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 

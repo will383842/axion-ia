@@ -262,6 +262,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
     async (job, token) => {
       const { to, locale, payload, marketing, entityType, entityId } = job.data;
       let { template } = job.data;
+      // Lot S3 — rempli seulement quand l'envoi part par le gabarit de repli (trace au journal).
+      let noteRepli: string | undefined;
 
       // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
       // submission-reply : on synchronise SubmissionReply.deliveryStatus
@@ -302,6 +304,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
             `[email-worker] rendu par repli : ${repli} (gabarit « ${template} » inconnu)`,
           );
           template = repli as EmailJobName;
+          noteRepli = `rendu par le gabarit de repli ${repli}`;
         } else {
           const motif = `gabarit inconnu de ce worker : « ${template} » (aucun gabarit de repli connu)`;
           await cloturerJournal({
@@ -370,7 +373,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           // (aujourd'hui aucun producteur n'en crée : filet pour le jour où il y en aura un).
           job.data.marketing === true
         ) {
-          const motif = await motifDeRetenueAuDepart(job.data);
+          // Gabarit de repli : le contrôle relit le gabarit RÉELLEMENT rendu, pas le nom inconnu.
+          const motif = await motifDeRetenueAuDepart({ ...job.data, template });
           if (motif !== null) {
             const trace = `Retenu à l'envoi : ${motif}`;
             if (job.id) {
@@ -479,6 +483,8 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           status: EmailLogStatus.sent,
           providerMessageId: result.messageId,
           sentAt: new Date(),
+          // Seul champ de trace écrit à la clôture : on y note le repli (sinon rien, inchangé).
+          ...(noteRepli ? { error: noteRepli } : {}),
           ...(entityType ? { entityType } : {}),
           ...(entityId ? { entityId } : {}),
           ...(jobId ? { jobId } : {}),
