@@ -16,14 +16,19 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { cheminVideo } from "@/server/careers/videos-candidat";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string; videoId: string }> },
+  {
+    params,
+  }: { params: Promise<{ locale: string; adminPrefix: string; id: string; videoId: string }> },
 ): Promise<Response> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   if (!peutOuvrirDossierCandidat((session.user as { role?: string }).role)) {

@@ -14,14 +14,17 @@ import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { readConsoleDoc } from "@/server/console-documents/storage";
 import { getSocieteDocForDownload } from "@/server/societe-documents/queries";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
   req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ locale: string; adminPrefix: string; id: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   const role = (session?.user as { id?: string; role?: string } | undefined)?.role;
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });

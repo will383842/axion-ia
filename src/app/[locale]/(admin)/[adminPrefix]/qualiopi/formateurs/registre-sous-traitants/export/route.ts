@@ -22,10 +22,16 @@ import {
   exportRegistreCsv,
   nomFichierCsv,
 } from "@/server/qualiopi/formateurs-independants/registre-sous-traitants/export";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
+export async function GET(
+  req: NextRequest,
+  { params }: { params: Promise<{ locale: string; adminPrefix: string }> },
+): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Non connecté.", { status: 401 });
   const role = (session.user as { role?: string }).role;

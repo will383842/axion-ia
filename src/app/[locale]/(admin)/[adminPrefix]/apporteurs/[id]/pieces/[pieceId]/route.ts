@@ -15,6 +15,7 @@ import { auth } from "@/auth";
 import { entetesPiece } from "@/features/apporteurs-reseau/entetes-piece";
 import { lireOctetsPiece } from "@/features/apporteurs-reseau/requetes-console";
 import { analyserOctets } from "@/server/careers/clamav";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,8 +35,12 @@ function refus(statut: number, texte: string): NextResponse {
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string; pieceId: string }> },
+  {
+    params,
+  }: { params: Promise<{ locale: string; adminPrefix: string; id: string; pieceId: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) return refus(401, "Session expirée : reconnectez-vous.");
   const role = (session.user as { role?: string }).role ?? "";

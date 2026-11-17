@@ -22,6 +22,7 @@ import {
 } from "@/features/dossier-client/documents/telecharger";
 import { prisma } from "@/lib/prisma";
 import { analyserOctets } from "@/server/careers/clamav";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -56,6 +57,8 @@ export async function GET(
     }>;
   },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const acces = await exigerAccesEchanges().catch((e: unknown) => e);
   if (acces instanceof AccesRefuse) {
     // `exigerAccesEchanges` dit « Session expirée » quand personne n'est connecté.

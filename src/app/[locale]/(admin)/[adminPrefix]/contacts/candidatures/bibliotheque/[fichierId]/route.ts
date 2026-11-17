@@ -13,6 +13,7 @@ import { NextResponse } from "next/server";
 
 import { gardeBibliotheque, tracerGeste } from "@/features/bibliotheque-fichiers/garde";
 import { adresseTelechargement } from "@/server/partages/depot";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -31,8 +32,10 @@ function refus(statut: number, texte: string): NextResponse {
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ fichierId: string }> },
+  { params }: { params: Promise<{ locale: string; adminPrefix: string; fichierId: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const g = await gardeBibliotheque();
   if (!g.ok) return refus(g.erreur.startsWith("Session") ? 401 : 403, g.erreur);
   const { fichierId } = await params;
