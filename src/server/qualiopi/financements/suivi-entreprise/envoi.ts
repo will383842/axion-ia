@@ -33,6 +33,7 @@ import type {
 } from "@/lib/email/templates/opco-suivi-entreprise";
 import { chargerDossierPretADeposer } from "../dossier-pret-a-deposer-lecture";
 import { construireZipPretADeposer } from "../dossier-pret-a-deposer-zip";
+import { emailsFinancementTiersActifs, REFUS_EN_SOMMEIL } from "../sommeil";
 import { suiviEntrepriseActif } from "./drapeau";
 import { nouveauJeton } from "./jeton";
 import { lireContexteSuivi, type ContexteSuivi } from "./lecture";
@@ -49,7 +50,7 @@ import {
 
 export type ResultatEnvoi =
   | { ok: true; messageId: string; garePourValidation: boolean }
-  | { ok: false; motif: string; message: string };
+  | { ok: false; motif: string; message: string; raison?: "en_sommeil" };
 
 const JOUR_MS = 24 * 60 * 60 * 1000;
 
@@ -230,6 +231,8 @@ export async function envoyerDossierEntreprise(input: {
   now?: Date;
 }): Promise<ResultatEnvoi> {
   const now = input.now ?? new Date();
+  // Mise en sommeil (L9) : AVANT toute lecture ou écriture (kit, ZIP, suivi, message).
+  if (!emailsFinancementTiersActifs()) return { ...REFUS_EN_SOMMEIL };
   if (!suiviEntrepriseActif()) {
     return { ok: false, motif: "drapeau", message: "Le suivi des entreprises OPCO est coupé." };
   }
@@ -346,7 +349,9 @@ export async function envoyerRelance(
   c: ContexteSuivi,
   relance: RelancePrevue,
   now: Date,
-): Promise<"envoyee" | "deja" | "file_indisponible" | "sans_contact"> {
+): Promise<"envoyee" | "deja" | "file_indisponible" | "sans_contact" | "en_sommeil"> {
+  // Mise en sommeil (L9) : avant toute écriture (message, journal, date de relance).
+  if (!emailsFinancementTiersActifs()) return "en_sommeil";
   if (!c.suivi) return "deja";
   if (!suiviEntrepriseActif()) return "deja";
   const email = c.entreprise?.contactEmail?.trim();
