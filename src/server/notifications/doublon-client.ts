@@ -31,7 +31,10 @@ import {
   libelleTypeDemande,
   type EvenementClient,
 } from "./format-clients";
-import { resolveSubmissionLabel } from "@/features/admin-submissions/type-labels";
+import {
+  UNIFIED_TYPE_LABELS,
+  resolveSubmissionLabel,
+} from "@/features/admin-submissions/type-labels";
 import { isDuplicate, libererDedup } from "./dedup";
 import { resolveConversationPrivee } from "./routing";
 import { sendTelegramRaw } from "./channels/telegram";
@@ -97,10 +100,19 @@ const MOTS_INTERDITS_OBJET = /qualiopi|opco|prise en charge|financeur/i;
  * interdit devient « FORMATION ». (Le gabarit d'e-mail refait la même garde : ancien payload.)
  */
 export function suffixeTypeObjet(libelle: string | undefined): string | undefined {
-  const t = libelle?.trim();
+  // Retours à la ligne et caractères de contrôle : jamais dans un objet d'e-mail.
+  const t = libelle
+
+    ?.replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (!t) return undefined;
-  return MOTS_INTERDITS_OBJET.test(t) ? "FORMATION" : t.toLocaleUpperCase("fr-FR");
+  if (MOTS_INTERDITS_OBJET.test(t)) return "FORMATION";
+  return Array.from(t.toLocaleUpperCase("fr-FR")).slice(0, LONGUEUR_MAX_TYPE_OBJET).join("").trim();
 }
+
+/** Borne du type dans l'objet : préfixe (35) + « · » (3) + 40 = 78 caractères au plus. */
+export const LONGUEUR_MAX_TYPE_OBJET = 40;
 
 /** Le libellé de type d'un formulaire (jamais d'un rendez-vous ni du chatbot), ou `undefined`. */
 function libelleTypeFormulaire(event: EvenementClient): string | undefined {
@@ -110,7 +122,11 @@ function libelleTypeFormulaire(event: EvenementClient): string | undefined {
     "formType" in event.payload && typeof event.payload.formType === "string"
       ? event.payload.formType
       : undefined;
-  return resolveSubmissionLabel(base, formType);
+  // Type connu du catalogue des formulaires : son libellé. Sinon (type hors formulaire comme
+  // « simulateur_roi_rappel », ou pas de type) : la même source que la ligne de type du corps et
+  // de Telegram, qui ne lit aucun champ libre.
+  if (formType && UNIFIED_TYPE_LABELS[formType]) return resolveSubmissionLabel(base, formType);
+  return libelleTypeDemande(event);
 }
 
 /** Résume l'événement : qui, quoi, quand, et le lien de la fiche. */

@@ -22,6 +22,7 @@ vi.mock("@/lib/redis", () => ({
 
 const enqueueEmailMock = vi.fn();
 import { notify, flushPendingDispatches } from "../index";
+import { UNIFIED_TYPE_LABELS } from "@/features/admin-submissions/type-labels";
 import {
   __reinitialiserPourTests as reinitialiserEnfileur,
   poserChargeurEnfileurEmail,
@@ -259,11 +260,11 @@ describe("le doublon d'une demande de client", () => {
     );
     // Sans la clé : objet identique à avant.
     expect(objetAlerteClient("message", "nouveau")).toBe("🔴 IMPORTANT DEMANDE CLIENT MESSAGE");
-    // Un subType piégé n'apparaît jamais ; un formType inconnu retombe sur le type de la base.
+    // Un subType piégé n'apparaît jamais ; un formType inconnu retombe sur le type du corps.
     const piege = ev("formation", "Qualiopi OPCO 0612345678");
     expect(JSON.stringify(resumerDemande(piege))).not.toContain("0612345678");
     expect(formatDoublonPrive(piege)).not.toMatch(/OPCO 0612/);
-    expect(resumerDemande(ev("inconnu-xyz")).libelleType).toBe("Contact");
+    expect(resumerDemande(ev("inconnu-xyz")).libelleType).toBe("Message de contact");
     // Rendez-vous : pas de type dans l'objet.
     expect(
       resumerDemande({ category: "CLIENT_CALL_BOOKED", payload: RDV } as EvenementClient)
@@ -271,6 +272,55 @@ describe("le doublon d'une demande de client", () => {
     ).toBeUndefined();
     expect(suffixeTypeObjet("Financeur OPCO")).toBe("FORMATION");
     expect(suffixeTypeObjet(undefined)).toBeUndefined();
+  });
+
+  it("L6c : rappel du simulateur — l'objet et la ligne de type du corps disent la même chose", () => {
+    const ev = {
+      category: "CONTACT_FORM_SUBMITTED",
+      payload: { ...DEMANDE, formType: "simulateur_roi_rappel" },
+    } as unknown as EvenementClient;
+    const r = resumerDemande(ev);
+    expect(r.libelleType).toBe(r.typeDemande);
+    expect(r.typeDemande).toBe("Simulateur de gains — rappel demandé");
+    expect(objetAlerteClient("message", "nouveau", r.libelleType)).toBe(
+      "🔴 IMPORTANT DEMANDE CLIENT MESSAGE · SIMULATEUR DE GAINS — RAPPEL DEMANDÉ",
+    );
+    // Sans formType : même source que le corps (plus de repli « CONTACT »).
+    const sans = resumerDemande({
+      category: "AUDIT_REQUEST_SUBMITTED",
+      payload: { ...DEMANDE, formType: undefined },
+    } as unknown as EvenementClient);
+    expect(sans.libelleType).toBe(sans.typeDemande);
+    expect(sans.typeDemande).toBe("Audit IA");
+  });
+
+  it("L6c : chaque libellé connu donne un objet au préfixe exact, de 78 caractères au plus", () => {
+    const prefixe = "🔴 IMPORTANT DEMANDE CLIENT MESSAGE";
+    const libelles = [
+      ...Object.values(UNIFIED_TYPE_LABELS),
+      "Simulateur de gains — rappel demandé",
+      "Message de contact",
+      "Audit IA",
+      "Intervention",
+      "Intégration sur-mesure",
+      "Devis sur projet",
+      "Support client",
+    ];
+    for (const l of libelles) {
+      const o = objetAlerteClient("message", "nouveau", l);
+      expect(o.startsWith(prefixe)).toBe(true);
+      expect(o.length).toBeLessThanOrEqual(78);
+    }
+  });
+
+  it("L6c : un libellé trop long ou à retour à la ligne est borné et nettoyé", () => {
+    const long = objetAlerteClient("message", "nouveau", "x".repeat(200));
+    expect(long).toBe(`🔴 IMPORTANT DEMANDE CLIENT MESSAGE · ${"X".repeat(40)}`);
+    expect(long.length).toBeLessThanOrEqual(78);
+    const retour = objetAlerteClient("message", "nouveau", "Audit\r\nBcc: a@b.c\u0000\tIA");
+    expect(retour).toBe("🔴 IMPORTANT DEMANDE CLIENT MESSAGE · AUDIT BCC: A@B.C IA");
+    expect(retour).not.toMatch(/[\u0000-\u001f]/);
+    expect(suffixeTypeObjet("Qualiopi " + "y".repeat(100))).toBe("FORMATION");
   });
 
   it("🔴 un rejeu du même fait ne redouble pas (anti-doublon propre, 24 h)", async () => {

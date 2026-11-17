@@ -31,9 +31,13 @@ const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 const MOTS_INTERDITS_OBJET = /qualiopi|opco|prise en charge|financeur/i;
 
 const suffixeType = (v: unknown): string => {
-  const t = texte(v);
+  const t = texte(v)
+    .replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
   if (!t) return "";
-  return ` · ${MOTS_INTERDITS_OBJET.test(t) ? "FORMATION" : t.toLocaleUpperCase("fr-FR")}`;
+  if (MOTS_INTERDITS_OBJET.test(t)) return " · FORMATION";
+  return ` · ${Array.from(t.toLocaleUpperCase("fr-FR")).slice(0, 40).join("").trim()}`;
 };
 
 /** « 🔴 IMPORTANT DEMANDE CLIENT MESSAGE [· FORMATION IA] » / « … CALENDLY » / « … CALENDLY ANNULÉ » / « … REPORTÉ ». */
