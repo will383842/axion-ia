@@ -475,8 +475,8 @@ describe("textes d'IA par formule (liste blanche, préfixe « Formule A/B : »)"
 });
 
 describe("devisVersPayload — refus d'ouverture", () => {
-  const motif = (d: DevisPourAssistant) => {
-    const r = devisVersPayloadBrut(d, 20);
+  const motif = (d: DevisPourAssistant, certifie = true) => {
+    const r = devisVersPayloadBrut(d, 20, certifie);
     return "refus" in r ? r.refus : null;
   };
   const classique = (extra: Partial<DevisPourAssistant> = {}): DevisPourAssistant => ({
@@ -491,6 +491,29 @@ describe("devisVersPayload — refus d'ouverture", () => {
     expect(
       motif(classique({ financementSuggere: "direct", montantOpcoEstimeCents: null })),
     ).toBeNull();
+  });
+  it("sans certification : le refus ne nomme aucun tiers payeur et ne promet aucune édition", () => {
+    for (const d of [
+      classique({ financementSuggere: "opco" }),
+      classique({ montantOpcoEstimeCents: 12000 }),
+    ]) {
+      const t = motif(d, false);
+      expect(t).toBe(
+        "Ce devis ne peut pas être rouvert dans l'assistant : il porte un règlement par un tiers.",
+      );
+      expect(t).not.toMatch(
+        /opco|financ|qualiopi|certification|cpf|france travail|prise en charge/i,
+      );
+      expect(t).not.toMatch(/Modifiez-le/);
+    }
+    // par défaut (certifie omis) : neutre aussi
+    const r = devisVersPayloadBrut(classique({ financementSuggere: "opco" }), 20);
+    expect("refus" in r && r.refus).not.toMatch(/opco/i);
+  });
+  it("avec certification : texte OPCO conservé, sans la fausse promesse « Modifiez-le »", () => {
+    expect(motif(classique({ financementSuggere: "opco" }))).toBe(
+      "Ce devis ne peut pas être rouvert dans l'assistant : il porte un financement ou une estimation OPCO.",
+    );
   });
   it("classique OPCO ET ligne à 10 % : le motif TVA l'emporte sur le motif OPCO", () => {
     const d = classique({

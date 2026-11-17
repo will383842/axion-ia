@@ -3399,6 +3399,23 @@ a.admin-card-inline {
     outline: 3px solid var(--color-admin-ring);
     outline-offset: 2px;
   }
+  .admin-lecteur-email-notes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 16px;
+    padding: 8px 16px;
+    font-size: 13px;
+    border-top: 1px solid var(--color-admin-border-strong);
+  }
+  .admin-lecteur-email-note {
+    margin: 0;
+  }
+  .admin-lecteur-email-plein-ecran {
+    margin-left: auto;
+    text-decoration: underline;
+  }
   .admin-lecteur-email-scene {
     padding: 16px;
     background-color: var(--color-admin-surface-sunken);

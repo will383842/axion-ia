@@ -5,7 +5,9 @@
  * DevisLifecycleButtons — Boutons du cycle de vie d&apos;un devis commercial.
  *
  * Affichage conditionnel selon le statut :
- *   - brouillon : « Envoyer au client » → sendDevisAction.
+ *   - brouillon : « Envoyer au client » → sendDevisAction ;
+ *                 « Remis en main propre… » (devis classique seulement) →
+ *                 marquerRemisEnMainPropreAction, après confirmation (dialogue `useConfirmation`, pas de boîte native).
  *   - envoye    : « Marquer accepté » → acceptDevisAction
  *                 « Marquer refusé »  → declineDevisAction.
  *   - autres    : aucun bouton (terminal).
@@ -23,6 +25,8 @@ import {
   declineDevisAction,
   transformDevisToConventionAction,
 } from "@/server/actions/qualiopi/devis";
+import { marquerRemisEnMainPropreAction } from "@/server/actions/qualiopi/devis-remis-main-propre";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-emails";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -35,7 +39,19 @@ type DevisStatut =
 export interface DevisLifecycleButtonsProps {
   devisId: string;
   statut: DevisStatut;
+  /** Devis classique (ni offre ni empreinte) : seul à pouvoir être remis en main propre. */
+  estClassique?: boolean;
+  /** Numéro du devis, affiché dans la confirmation. */
+  numero?: string;
 }
+
+type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
+
+const MOTIFS_REMISE: ReadonlyArray<{ valeur: MotifRemise; libelle: string }> = [
+  { valeur: "sans_email", libelle: "Le client n'a pas d'adresse e-mail" },
+  { valeur: "adresse_bloquee", libelle: "L'adresse e-mail est bloquée" },
+  { valeur: "remis_en_rendez_vous", libelle: "Remis lors d'un rendez-vous" },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Composant
@@ -44,6 +60,8 @@ export interface DevisLifecycleButtonsProps {
 export function DevisLifecycleButtons({
   devisId,
   statut,
+  estClassique = false,
+  numero,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -58,6 +76,11 @@ export function DevisLifecycleButtons({
   // (pas d'email de contact, PDF absent, file d'attente indisponible). À NE PAS
   // afficher en vert « succès » — sinon l'admin croit le devis reçu par le client.
   const [warningMsg, setWarningMsg] = useState<string | null>(null);
+
+  const { demander, dialogue } = useConfirmation();
+  // `useConfirmation` ne propose pas de choix DANS le dialogue : le motif se choisit ici,
+  // à côté du bouton, puis la confirmation est simple.
+  const [motifRemise, setMotifRemise] = useState<MotifRemise>("sans_email");
 
   function resetMessages() {
     setError(null);
@@ -94,6 +117,32 @@ export function DevisLifecycleButtons({
         router.refresh();
       }
     });
+  }
+
+  function handleRemisMainPropre() {
+    const motif = motifRemise;
+    const libelle = MOTIFS_REMISE.find((m) => m.valeur === motif)?.libelle ?? "";
+    demander(
+      {
+        titre: `Remettre le devis${numero ? ` ${numero}` : ""} en main propre ?`,
+        description: `Motif : ${libelle}. Le PDF numéroté est créé et le devis passe « envoyé » sans aucun e-mail ni lien de signature. Faites signer le devis papier, puis « Marquer accepté ».`,
+        libelleConfirmer: "Confirmer",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await marquerRemisEnMainPropreAction({ id: devisId, motif });
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg(
+              "Devis marqué remis en main propre. Faites-le signer sur papier, puis « Marquer accepté ».",
+            );
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleResend() {
@@ -165,6 +214,7 @@ export function DevisLifecycleButtons({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-3)]">
+      {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
         {statut === "brouillon" && (
           <button
@@ -176,6 +226,35 @@ export function DevisLifecycleButtons({
           >
             {isPending ? "…" : "Envoyer au client"}
           </button>
+        )}
+
+        {statut === "brouillon" && estClassique && (
+          <>
+            <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+              <span>Motif</span>
+              <select
+                value={motifRemise}
+                onChange={(e) => setMotifRemise(e.target.value as MotifRemise)}
+                disabled={isPending}
+                className="admin-input"
+              >
+                {MOTIFS_REMISE.map((m) => (
+                  <option key={m.valeur} value={m.valeur}>
+                    {m.libelle}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={handleRemisMainPropre}
+              disabled={isPending}
+              className="admin-button-secondary"
+              aria-label="Remettre le devis en main propre, sans e-mail ni lien de signature"
+            >
+              {isPending ? "…" : "Remis en main propre…"}
+            </button>
+          </>
         )}
 
         {statut === "brouillon" && (

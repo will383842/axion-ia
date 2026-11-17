@@ -285,7 +285,9 @@ export type ResultatOuverture =
 export type MotifRefus = "opco" | "offre_illisible" | "tva_non_standard";
 
 const refus = (texte: string, motif: MotifRefus): { refus: string; motif: MotifRefus } => ({
-  refus: `Ce devis ne peut pas être rouvert dans l'assistant : ${texte} Modifiez-le depuis sa fiche.`,
+  // Aucun écran ne permet de modifier depuis sa fiche un devis refusé ici : le message s'arrête
+  // donc au constat (l'ancienne fin « Modifiez-le depuis sa fiche. » promettait une action absente).
+  refus: `Ce devis ne peut pas être rouvert dans l'assistant : ${texte}`,
   motif,
 });
 
@@ -328,7 +330,12 @@ const bpsNonStandard = (bps: number, tvaStandardPct: number): boolean =>
  *  - un devis classique avec financement ou estimation OPCO (l'assistant ne les relit pas) ;
  *  - une ligne existante à TVA non standard (le payload ne porte pas de taux par ligne).
  */
-export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number): ResultatOuverture {
+export function devisVersPayload(
+  d: DevisPourAssistant,
+  tvaStandardPct: number,
+  /** `isQualiopiCertificationObtenue()`, lu par l'appelant. Faux (défaut) : aucun mot de tiers payeur. */
+  certifie = false,
+): ResultatOuverture {
   const p = payloadVide(tvaStandardPct);
   p.clientId = d.clientId;
   p.activite = d.activite;
@@ -389,7 +396,12 @@ export function devisVersPayload(d: DevisPourAssistant, tvaStandardPct: number):
       (d.financementSuggere != null && d.financementSuggere !== "direct") ||
       (d.montantOpcoEstimeCents ?? null) !== null
     )
-      return refus("il porte un financement ou une estimation OPCO.", "opco");
+      return refus(
+        certifie
+          ? "il porte un financement ou une estimation OPCO."
+          : "il porte un règlement par un tiers.",
+        "opco",
+      );
     p.typeDevis = "classique";
     const l = lignesClassiquesDe(d.lignes);
     if (l.length > 0) p.lignesClassiques = l;
