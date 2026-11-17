@@ -346,8 +346,8 @@ jamais un `DELETE`. Les colonnes ne se suppriment pas (elles portent des dates d
 ### Ordre d'allumage (stockage volume)
 
 1. Mettre en ligne une image qui contient le dossier `/var/data/guides-reseau` (Dockerfile, étape runner).
-2. Ajouter dans Coolify, sur l'application site, un stockage persistant de destination `/var/data/guides-reseau`.
+2. Ajouter dans Coolify, sur l'application site, un stockage persistant de type **Volume** (volume Docker nommé, pas « Directory Mount » : un dossier de l'hôte appartient à root et le site ne pourrait pas y écrire), de destination `/var/data/guides-reseau`.
 3. Poser le secret `GUIDES_RESEAU_FICHIER_SECRET` avec le workflow `coolify-secret-fichier-guides.yml` (valeur générée sur le runner, jamais affichée, posée seulement si absente).
-4. Poser `GUIDES_RESEAU_STOCKAGE=volume` avec `coolify-drapeau.yml` (cible site).
-5. Poser `GUIDES_RESEAU_FABRIQUE_ENABLED=true` avec `coolify-drapeau.yml` (cible site), puis attendre la mise en ligne suivante.
+4. Poser `GUIDES_RESEAU_STOCKAGE=volume` avec `coolify-drapeau.yml` (cible site, `redeploy=false` : inutile de redéployer pour ce seul réglage).
+5. Poser `GUIDES_RESEAU_FABRIQUE_ENABLED=true` avec `coolify-drapeau.yml` (cible site, `redeploy=true` : le site redémarre tout de suite et prend les trois réglages).
 6. Vérifier : un `POST` non signé sur `/api/interne/guides-reseau/contenu` répond 404 tant que c'est éteint, 401 une fois allumé.
