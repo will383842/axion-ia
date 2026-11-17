@@ -147,6 +147,7 @@ import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-ses
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 import { regleCertificatRealisationManquant } from "./regle-certificat-realisation-manquant";
 import { regleAvisFinanceurManquant } from "./regle-avis-financeur-manquant";
+import { regleConventionNonValideeAvantSession } from "./regle-convention-non-validee-avant-session";
 import { regleSuiviQualiteFormateurs } from "./regle-suivi-qualite-formateurs";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -5273,6 +5274,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // du financeur (saisi à la main), quand ils manquent.
   { nom: "certificat_realisation_manquant", fn: regleCertificatRealisationManquant },
   { nom: "avis_financeur_manquant", fn: regleAvisFinanceurManquant },
+  // L5h — convention garée « à valider » alors que la session commence sous 7 jours.
+  { nom: "convention_non_validee_avant_session", fn: regleConventionNonValideeAvantSession },
   { nom: "satisfaction_sous_seuil", fn: regleSatisfactionSousSeuil },
   { nom: "qualiopi_expiration", fn: regleQualiopiExpiration },
   { nom: "bpf", fn: regleBpf },
