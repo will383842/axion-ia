@@ -750,7 +750,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
-        <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
+        <DevisLifecycleButtons
+          devisId={devis.id}
+          statut={devis.statut}
+          estClassique={devis.offre === null && devis.offreSha256 === null}
+          numero={devis.numero}
+        />
         <DevisSuiviLivraison
           devisId={devis.id}
           peutDemarrer={peutDemarrerLivraison(devis)}
