@@ -65,7 +65,7 @@ export const LE_ROVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA au Rove ?",
-      a: "Le Rove est à 20 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      a: "Le Rove est à 20 min de Marseille via A55 et accessible par le TER Côte Bleue. Nos consultants se déplacent dans vos locaux. Tarification transparente.",
     },
   ],
 };

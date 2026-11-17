@@ -237,7 +237,7 @@ const FAQS_BY_SERVICE: Record<
       },
       en: {
         q: "Is 1-to-1 coaching available in regional areas?",
-        a: "Yes, across mainland France. Regular sessions are conducted remotely; intensive on-site sessions are available in all regions, quoted with travel costs included.",
+        a: "Yes, across mainland France. Sessions run on site or remotely.",
       },
     },
     {

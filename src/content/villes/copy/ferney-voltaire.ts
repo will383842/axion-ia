@@ -65,7 +65,7 @@ export const FERNEY_VOLTAIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Ferney-Voltaire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarification transparente.",
     },
   ],
 };

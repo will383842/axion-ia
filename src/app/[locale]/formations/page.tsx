@@ -1554,7 +1554,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "coverage-international",
                       question: "Do you intervene internationally or only in France?",
                       answer:
-                        "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum — to make travel cost-effective and guarantee a complete autonomy transfer to your team. Custom quote including travel and accommodation costs.",
+                        "Metropolitan France systematically. Internationally, we intervene in French-speaking organisations (Belgium, Switzerland, Luxembourg, Quebec, French-speaking Maghreb, etc.) on missions of one week minimum. Custom quote including travel and accommodation costs.",
                     },
                     {
                       // Miroir EN de la correction du 2026-08-12 — voir le commentaire

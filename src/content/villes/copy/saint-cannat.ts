@@ -65,7 +65,7 @@ export const SAINT_CANNAT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Saint-Cannat ?",
-      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Saint-Cannat est à 15 min d'Aix et 20 min de Salon via D7n/A7. Tarification transparente.",
     },
   ],
 };

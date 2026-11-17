@@ -811,10 +811,6 @@ export const LE_HAVRE_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — from beginner to advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can we organise several coachings for different managers at the same Le Havre mid-cap?",
             a: "Yes. Some ZIP mid-caps organise several individual sessions for their key directors or managers. Volume discount possible — to be specified at framing.",
           },

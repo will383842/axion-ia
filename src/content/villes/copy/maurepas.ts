@@ -124,7 +124,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",
@@ -210,7 +210,7 @@ export const MAUREPAS_COPY: VilleCopy = {
           },
           {
             q: "Le devis est-il ferme et le tarif fixe ?",
-            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple. Pas de régie, pas de dérive horaire cachée, et la grille de frais de mission sur l'ouest des Yvelines reste publique.",
+            a: "Oui. Après le cadrage sur site à Maurepas, on remet un devis ferme en forfait fixe. Le délai dépend de la complexité — à partir de 24-48 h pour un projet simple.",
           },
           {
             q: "Pouvez-vous automatiser nos échanges de sous-traitance auto ?",

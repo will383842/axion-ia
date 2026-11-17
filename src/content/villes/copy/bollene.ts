@@ -65,7 +65,7 @@ export const BOLLENE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Bollène ?",
-      a: "Bollène est à 10 min de Pierrelatte et 25 min d'Orange via A7. Nos consultants se déplacent dans vos locaux ou domaines. Coûts de déplacement à part, tarification transparente.",
+      a: "Bollène est à 10 min de Pierrelatte et 25 min d'Orange via A7. Nos consultants se déplacent dans vos locaux ou domaines. Tarification transparente.",
     },
   ],
 };

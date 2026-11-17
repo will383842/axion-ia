@@ -143,7 +143,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans les communes voisines de Créteil ?",
-            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Aucun surcoût de déplacement n'est appliqué en Île-de-France, et les sessions peuvent aussi se tenir en format hybride selon vos contraintes d'organisation.",
+            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi.",
           },
           {
             q: "Ces formations sont-elles éligibles à un financement ?",
@@ -151,7 +151,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée.",
       },
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Créteil se tiennent sur site, dans vos locaux de la préfecture du Val-de-Marne. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel, prêts à servir dès le lendemain matin. Les formats vont de la session de 4 heures à l'accompagnement approfondi sur deux journées, calibrés selon la taille de l'équipe et le secteur dominant — santé humaine et action sociale autour du CHU Henri-Mondor, administration publique, enseignement lié à l'UPEC, activités juridiques ou commerce de détail. Chaque session est ancrée dans votre activité, sans contenu générique recyclé, et le déplacement sur l'ensemble du Val-de-Marne est compris dans la prestation.",
@@ -245,7 +245,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
           {
             q: "Vous déplacez-vous dans les communes voisines de Créteil ?",
-            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Aucun surcoût de déplacement n'est appliqué en Île-de-France, et les sessions peuvent aussi se tenir en format hybride selon vos contraintes d'organisation.",
+            a: "Oui. Nous intervenons à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi.",
           },
           {
             q: "Ces formations sont-elles éligibles à un financement ?",
@@ -253,7 +253,7 @@ export const CRETEIL_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée. Aucun surcoût de déplacement en Île-de-France.",
+          "Créneau garanti dès la confirmation de réservation dans vos locaux à Créteil ou en format hybride selon vos contraintes. En cas de problème technique de notre fait, la session est reportée et compensée. Outils opérationnels le soir même. Vocabulaire et démonstrations ajustés à votre secteur cristolien, sans session générique recyclée.",
       },
     },
     sitesWeb: {
@@ -435,7 +435,7 @@ export const CRETEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il physiquement à Créteil pour les audits et interventions ?",
-      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes. Aucun surcoût de déplacement n'est appliqué en Île-de-France.",
+      a: "Oui. Williams et l'équipe Axion-IA se déplacent sur site à Créteil et dans les communes limitrophes du Val-de-Marne : Maisons-Alfort, Alfortville, Saint-Maur-des-Fossés, Bonneuil-sur-Marne, Limeil-Brévannes, Valenton et Choisy-le-Roi. Les sessions peuvent aussi se tenir en format hybride selon vos contraintes.",
     },
     {
       q: "Quels sont les tarifs pour un audit ou une intervention IA d'une TPE/PME cristolienne ?",

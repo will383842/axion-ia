@@ -814,10 +814,6 @@ export const LILLE_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner wishing to go further. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included?",
-            a: "No. These costs are communicated on a prior quote before confirmation.",
-          },
-          {
             q: "Can we organise several individual coachings for different managers at the same Lille group?",
             a: "Yes. Some Lille HQs organise several individual sessions for their directors or BU managers rather than a group training. Volume discount possible — to be specified at framing.",
           },
@@ -1025,7 +1021,7 @@ export const LILLE_COPY: VilleCopy = {
     },
     {
       q: "Lille est-elle bien desservie pour accueillir des consultants Axion-IA ?",
-      a: "Excellemment. Lille-Europe est la seule gare française directement connectée à Londres (Eurostar 82 min), Bruxelles (Thalys 38 min) et Paris (TGV 62 min). Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes. Aucun surcoût de déplacement dans la métropole.",
+      a: "Excellemment. Lille-Europe est la seule gare française directement connectée à Londres (Eurostar 82 min), Bruxelles (Thalys 38 min) et Paris (TGV 62 min). Le métro Ilévia permet de rejoindre Villeneuve-d'Ascq et Roubaix en moins de 20 minutes.",
     },
   ],
 };

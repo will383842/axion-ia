@@ -46,7 +46,7 @@ const tout = toutLeTexte.join("\n");
 /** Mots visibles de CONTENU hors FAQ, re-mesurés le 09/11/2026 après la nouvelle carte des gains (était 872). */
 const MOTS_MESURES = 948;
 /** Mots du premier écran (l'accroche, sans le titre mis en couleur), mesurés de même. */
-const MOTS_PREMIER_ECRAN = 204; // re-mesuré le 09/11/2026 (nouvelle carte des gains ; était 183)
+const MOTS_PREMIER_ECRAN = 205; // re-mesuré le 13/11/2026 après fusion de main (était 204 le 09/11, 183 avant la nouvelle carte des gains)
 
 describe("Journée IA — contenu.ts", () => {
   it("tient dans une fourchette de mots (plancher −10 %, plafond +5 % : pas de « blockhaus »)", () => {
@@ -55,7 +55,7 @@ describe("Journée IA — contenu.ts", () => {
     expect(n).toBeLessThanOrEqual(Math.ceil(MOTS_MESURES * 1.05));
   });
 
-  it("porte 194 à 214 mots au premier écran (accroche sans le titre accentué)", () => {
+  it("porte 195 à 215 mots au premier écran (accroche sans le titre accentué)", () => {
     const n = compte(textes(CONTENU.accroche));
     expect(n).toBeGreaterThanOrEqual(MOTS_PREMIER_ECRAN - 10);
     expect(n).toBeLessThanOrEqual(MOTS_PREMIER_ECRAN + 10);

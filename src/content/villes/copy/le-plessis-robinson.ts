@@ -9,9 +9,9 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
   pitchEn:
     "Le Plessis-Robinson (92), commune résidentielle rénovée du sud des Hauts-de-Seine, marie un centre-ville reconstruit attractif et un pôle d'activités tourné vers l'aéronautique et la haute technologie (présence Thales). Son tissu local mêle TPE de services et commerces, professions libérales, indépendants et PME sous-traitantes ou prestataires des grands donneurs d'ordre voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME robinsonnaises, l'ETI restant marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient au Plessis-Robinson (92). Nous accompagnons en priorité les TPE — commerces, professions libérales, indépendants, prestataires de services — puis les PME tech et sous-traitantes de l'aéronautique, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, support, reporting, traitement documentaire). Tarifs publics.",
   seoHook: "aéronautique, tech & services",
   ecosystemFr:
     "Le Plessis-Robinson combine un centre-ville rénové très commerçant et un pôle d'activités à dominante aéronautique et haute technologie, marqué par la présence de Thales. Autour de ces grands acteurs gravite un tissu de TPE et PME — prestataires techniques, bureaux d'études, services aux entreprises, commerces et professions libérales. Ce contexte tertiaire et industriel léger produit beaucoup de tâches répétitives : propositions commerciales, documentation technique, support, reporting. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le cœur de métier.",
@@ -222,7 +222,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24-48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency. Transparent travel costs, separate from the package, calculated case by case.",
+          "Quote provided from 24-48 h depending on complexity. EU hosting by default and GDPR compliance built in from design. We claim UX/UI, mobile-first, multi-CMS e-commerce and AI building blocks (RAG chatbot, semantic search, automated quotes). You keep full ownership of code, content and models: no vendor lock-in, no imposed technical dependency.",
       },
     },
   },
@@ -250,7 +250,7 @@ export const LE_PLESSIS_ROBINSON_COPY: VilleCopy = {
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence au Plessis-Robinson : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence au Plessis-Robinson : nos experts IA se déplacent depuis Paris, partout en France métropolitaine et en Corse.",
     },
   ],
 };

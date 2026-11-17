@@ -65,7 +65,7 @@ export const CREGY_LES_MEAUX_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Meaux et Trilport ?",
-      a: "Oui, nous couvrons Crégy-lès-Meaux, Meaux, Trilport, Quincy-Voisins et tout le bassin meldois. Coûts de déplacement à part, tarification transparente.",
+      a: "Oui, nous couvrons Crégy-lès-Meaux, Meaux, Trilport, Quincy-Voisins et tout le bassin meldois. Tarification transparente.",
     },
   ],
 };

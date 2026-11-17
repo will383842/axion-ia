@@ -65,7 +65,7 @@ export const COURNON_D_AUVERGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cournon-d'Auvergne ?",
-      a: "Lyon (1h45). Coûts de déplacement à part, tarification transparente.",
+      a: "Lyon (1h45). Tarification transparente.",
     },
   ],
 };

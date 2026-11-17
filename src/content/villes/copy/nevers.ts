@@ -18,9 +18,9 @@ export const NEVERS_COPY: VilleCopy = {
   ecosystemEn:
     "Nevers, préfecture de la Nièvre sur les bords de Loire, conjugue patrimoine, artisanat d'art et industrie. Sa faïence d'art reconnue, son sanctuaire Sainte-Bernadette et son centre historique en font une destination touristique, tandis que la proximité du circuit de Magny-Cours nourrit un pôle mécanique et de sous-traitance automobile. Autour gravitent des PME industrielles, des artisans d'art, des commerces, des acteurs de santé et de services. Ce tissu de TPE et PME, souvent piloté par des indépendants, est idéal pour des automatisations IA ciblées libérant du temps sur l'administratif et la production.",
   distancesFr:
-    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, ou interviennent en visio.",
   distancesEn:
-    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, frais indiqués séparément, ou interviennent en visio.",
+    "Gare de Nevers en centre-ville (ligne Paris-Clermont, Paris à 2h). Circuit de Magny-Cours à 15 min, Bourges à 1h, Clermont-Ferrand à 1h30, Dijon à 2h, Lyon à 2h30 via l'A77 et l'A6. Nos consultants se déplacent sur site depuis Clermont-Ferrand ou Lyon, ou interviennent en visio.",
   topSectorsNaf: [
     "Mécanique et sous-traitance automobile (pôle Magny-Cours)",
     "Artisanat d'art et faïence de Nevers",

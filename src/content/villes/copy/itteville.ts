@@ -65,7 +65,7 @@ export const ITTEVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ou Évry ?",
-      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6). Coûts de déplacement à part, tarification transparente.",
+      a: "Évry-Courcouronnes (20 min). Corbeil-Essonnes (15 min). Paris centre (45 min par N104/A6). Tarification transparente.",
     },
   ],
 };

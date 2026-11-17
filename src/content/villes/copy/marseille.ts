@@ -6,7 +6,7 @@
 // Marseille Luminy (biotech / KEDGE), GPMM (1er port français), French Tech Aix-Marseille.
 //
 // Doctrine (même que paris.ts) :
-//   - Aucun délai chiffré, aucun « frais de déplacement intégrés ».
+//   - Aucun délai chiffré.
 //   - Durée minimale = 1 journée.
 //   - Tailles INSEE : TPE / PME / ETI / Grande entreprise.
 //   - Aucun prix hardcodé (source : src/content/pricing.ts).

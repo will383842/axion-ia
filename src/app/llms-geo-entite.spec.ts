@@ -81,7 +81,7 @@ describe("2. La Journée IA : description, garantie et rapport, mot pour mot", (
     expect(corps).toContain(GARANTIE_PHRASE);
     expect(corps).toContain(CONDITION_GARANTIE);
     expect(corps).toContain(RAPPORT_COMPLET);
-    expect(corps).toContain("2 à 4 h d’audit");
+    expect(corps).toContain("2 à 4 h selon la structuration de l’entreprise");
     expect(corps).not.toContain("{{");
   });
 });

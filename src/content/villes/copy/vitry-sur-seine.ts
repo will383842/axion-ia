@@ -142,7 +142,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée.",
       },
       en: {
         hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
@@ -236,7 +236,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée. Aucun surcoût de déplacement à Vitry-sur-Seine, hébergement des données en UE et prise en compte du RGPD intégrés à chaque recommandation.",
+          "Créneau garanti dès la confirmation de réservation. En cas de problème technique de notre fait, la session est reportée et compensée. L'objectif est l'autonomie : si vos collaborateurs ne sont pas à l'aise le lendemain matin sur les outils installés, une séance de remédiation est prévue. Vocabulaire et démos ajustés à votre secteur vitriot — industrie chimique, R&D, construction, commerce ou santé — sans session générique recyclée.",
       },
     },
     sitesWeb: {

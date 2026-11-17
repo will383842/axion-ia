@@ -65,7 +65,7 @@ export const FUVEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Fuveau ?",
-      a: "Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      a: "Fuveau est à 20 min d'Aix et 35 min de Marseille via A52. Nos consultants se déplacent dans vos locaux. Tarification transparente.",
     },
   ],
 };

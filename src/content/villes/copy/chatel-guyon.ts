@@ -65,7 +65,7 @@ export const CHATEL_GUYON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Châtel-Guyon ?",
-      a: "Clermont-Ferrand (20 min). Aéroport Clermont à 25 min. Coûts de déplacement à part, tarification transparente.",
+      a: "Clermont-Ferrand (20 min). Aéroport Clermont à 25 min. Tarification transparente.",
     },
   ],
 };

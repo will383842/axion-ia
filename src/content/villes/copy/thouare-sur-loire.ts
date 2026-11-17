@@ -65,7 +65,7 @@ export const THOUARE_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Thouaré-sur-Loire ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Thouaré est en première couronne, aucun frais de déplacement excessif. Tarifs publics, frais facturés à part du forfait.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

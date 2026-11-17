@@ -222,7 +222,7 @@ export const FRANCONVILLE_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote provided from 24 to 48 hours depending on complexity. Sites and platforms hosted in the European Union, GDPR-compliant, with documented processing and customer-data minimisation. You keep ownership of code and access, transferable to any Île-de-France vendor or brought in-house — no imposed Axion-IA dependency. Travel costs across Franconville and Val Parisis are assessed case by case depending on the zone.",
+          "Quote provided from 24 to 48 hours depending on complexity. Sites and platforms hosted in the European Union, GDPR-compliant, with documented processing and customer-data minimisation. You keep ownership of code and access, transferable to any Île-de-France vendor or brought in-house — no imposed Axion-IA dependency.",
       },
     },
   },

@@ -65,7 +65,7 @@ export const MAGNY_EN_VEXIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Cergy ou Paris ?",
-      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Cergy-Pontoise (25 min). Mantes-la-Jolie (20 min). Paris centre (55 min via A15). Aéroport CDG (60 min). Tarification transparente.",
     },
   ],
 };

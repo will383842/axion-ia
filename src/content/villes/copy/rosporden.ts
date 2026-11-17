@@ -65,7 +65,7 @@ export const ROSPORDEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Rosporden ?",
-      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Rosporden accessible (ligne Quimper-Lorient). Pour les multi-jours, hébergement local possible. Tarification transparente.",
     },
   ],
 };

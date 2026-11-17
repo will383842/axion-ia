@@ -65,7 +65,7 @@ export const LUZARCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Chantilly ou Paris ?",
-      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Chantilly (10 min). Sarcelles (20 min). Paris Gare du Nord (45 min). CDG (20 min). Tarification transparente.",
     },
   ],
 };

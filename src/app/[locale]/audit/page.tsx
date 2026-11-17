@@ -93,7 +93,7 @@ export default async function AuditHub({ params }: Props) {
     path: "/audit",
     name: isFr ? "Audit IA en entreprise · Axion-IA" : "Enterprise AI audit · Axion-IA",
     description: isFr
-      ? "Audit IA en entreprise, partout en France. Point de départ recommandé : La Journée IA, dans vos locaux (audit de 2 à 4 h le matin, 4 h de formation l'après-midi, rapport complet sous 3 jours ouvrés). Au-delà, l'audit approfondi est un autre cadrage, sur devis écrit : cartographie détaillée, gains chiffrés, feuille de route."
+      ? "Audit IA en entreprise, partout en France. Point de départ recommandé : La Journée IA, dans vos locaux (audit de 2 à 4 h selon la structuration de l’entreprise, le matin, 4 h de formation l'après-midi, rapport complet sous 3 jours ouvrés). Au-delà, l'audit approfondi est un autre cadrage, sur devis écrit : cartographie détaillée, gains chiffrés, feuille de route."
       : "The rigorous, complete and meticulous enterprise AI audit — the French benchmark. 4 levels by company size (small business, SME, mid-cap, large enterprise). Detailed mapping, quantified ROI, actionable roadmap. Across France.",
     serviceType: "AI audit",
   });

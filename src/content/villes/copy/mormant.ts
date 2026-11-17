@@ -65,7 +65,7 @@ export const MORMANT_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous aussi à Melun et Provins ?",
-      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise. Coûts de déplacement à part, tarification transparente.",
+      a: "Oui, nous couvrons Mormant, Melun, Provins, Nangis et toute la Brie seine-et-marnaise. Tarification transparente.",
     },
   ],
 };

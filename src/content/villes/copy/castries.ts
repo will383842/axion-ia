@@ -71,7 +71,7 @@ export const CASTRIES_COPY: VilleCopy = {
     },
     {
       q: "Acceptez-vous de vous déplacer dans les hameaux et zones rurales autour de Castries ?",
-      a: "Oui. Déplacement inclus dans toute la Métropole de Montpellier sans surcoût (Vendargues, Teyran, Sussargues, Saint-Drézéry, Baillargues). Au-delà (Lunel, Sommières, Nîmes ouest), frais kilométriques facturés au barème URSSAF.",
+      a: "Oui. Nous intervenons dans toute la Métropole de Montpellier (Vendargues, Teyran, Sussargues, Saint-Drézéry, Baillargues) et au-delà (Lunel, Sommières, Nîmes ouest).",
     },
   ],
 };

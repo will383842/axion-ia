@@ -815,10 +815,6 @@ export const DIJON_COPY: VilleCopy = {
             a: "No. Coaching adapts to your level — beginner or advanced practitioner. The initial framing brief allows adjusting the programme before the session.",
           },
           {
-            q: "Are travel costs included in the {{price:intervention-dirigeants|compact}} excl. VAT price?",
-            a: "No. These costs are detailed on a prior quote before confirmation.",
-          },
-          {
             q: "Can I organise several individual coachings for different managers?",
             a: "Yes. Some Dijon mid-caps organise several individual sessions for their key directors or managers rather than a group session. Volume discount possible — to be specified at framing.",
           },

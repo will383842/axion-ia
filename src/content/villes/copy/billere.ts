@@ -34,8 +34,8 @@ export const BILLERE_COPY: VilleCopy = {
       en: "Audit IA à Billère : diagnostic adapté aux TPE artisans, PME de services et professions libérales de l'agglomération paloise. Identification des gains d'efficacité IA métier. Audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
-      en: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes. Déplacement inclus dans l'agglo Pau.",
+      fr: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes.",
+      en: "Interventions IA sur site à Billère : formation et déploiement outils IA dans vos locaux, cabinet ou commerce. Vos équipes repartent autonomes.",
     },
     implementation: {
       fr: "Implémentation IA à Billère : automatisation processus gestion cabinet libéral, chatbot accueil patients/clients, classification documents, optimisation planning et facturation PME paloise.",
@@ -65,7 +65,7 @@ export const BILLERE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Billère ?",
-      a: "Nos consultants accèdent à Billère via la gare de Pau (TGV 4h20 Paris direct) ou l'aéroport Pau-Pyrénées (15 min). Mission sur site dans vos locaux, cabinet ou commerce. Agglo Pau : déplacement inclus.",
+      a: "Nos consultants accèdent à Billère via la gare de Pau (TGV 4h20 Paris direct) ou l'aéroport Pau-Pyrénées (15 min). Mission sur site dans vos locaux, cabinet ou commerce.",
     },
   ],
 };

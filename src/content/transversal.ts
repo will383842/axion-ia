@@ -178,12 +178,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Couvrez-vous toute la France et l'international ?",
       answer:
-        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique. Les frais de déplacement, eux, sont facturés en sus et figurent sur une ligne distincte du devis : vous savez ce que vous payez avant de signer.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
+        "Oui, toute la France. Nous intervenons sur site dans les 13 régions de France métropolitaine, Corse comprise, et dans les 5 DROM — Guadeloupe, Martinique, Guyane, La Réunion, Mayotte. Nous accompagnons également les entreprises francophones à l'étranger : Belgique, Suisse, Luxembourg, Monaco, Maghreb, Afrique francophone, Québec — sur devis selon la zone et la mission.\n\nAxion-IA ne fonctionne pas en réseau d'agences : ce sont les intervenants qui se déplacent, ou la mission se tient à distance quand c'est plus efficace. Conséquence directe, les tarifs sont les mêmes partout, sans surcoût géographique.\n\nLes 5 prestations sont accessibles sur tout le territoire — audit IA, formations collectives, coaching 1-to-1, implémentation, sites web & SaaS IA. Le même expert senior vous suit du cadrage à la livraison, quelle que soit votre région, et le devis arrive sous 48 h ouvrées.",
       keyPoints: [
         "13 régions métropolitaines, Corse comprise, et les 5 DROM",
         "Entreprises francophones à l'étranger, sur devis selon la zone",
         "Sur site ou à distance, selon ce que la mission exige vraiment",
-        "Mêmes conditions tarifaires partout, frais de déplacement facturés en sus",
+        "Mêmes conditions tarifaires partout",
         "Les 5 prestations disponibles sur l'ensemble du territoire",
       ],
       facts: [
@@ -204,9 +204,8 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
             "Beaucoup de missions se tiennent très bien à distance, et c'est souvent plus rentable pour une petite structure. Le format se décide au cadrage, pas d'après la géographie.",
         },
         {
-          title: "Les frais de déplacement ne sont pas inclus",
-          detail:
-            "Les tarifs ne varient pas d'une région à l'autre, mais les frais de déplacement s'ajoutent : ils sont chiffrés selon la zone et apparaissent séparément sur le devis.",
+          title: "Les tarifs sont les mêmes partout",
+          detail: "Les tarifs ne varient pas d'une région à l'autre.",
         },
       ],
     },
@@ -224,11 +223,10 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       question:
         "Intervenez-vous dans les métropoles régionales (Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes…) ?",
       answer:
-        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique. Ce qui change d'un déplacement à l'autre, ce sont les frais de trajet, facturés en sus et détaillés sur une ligne distincte du devis. Vous connaissez donc le montant total avant de vous engager.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
+        "Oui, dans toutes. Nos intervenants se déplacent à Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — et plus généralement dans toute ville française, métropole ou non.\n\nAucune ville n'est traitée comme une périphérie : les conditions tarifaires sont identiques partout, sans surcoût géographique.\n\nSur place, l'intervention prend la forme qui sert votre besoin : formation collective en intra, de 4 h à 2 journées, pour un groupe de 2 à 15 participants ; journée de coaching 1-to-1 de 7 à 8 heures sur le poste réel d'une seule personne ; ou phase de terrain d'un audit IA. Le même expert senior mène le cadrage et la livraison. Et si le déplacement n'apporte rien à votre cas, la mission se tient à distance.",
       keyPoints: [
         "Toutes les capitales régionales, et plus largement toute ville française",
         "Mêmes conditions tarifaires partout, sans surcoût géographique",
-        "Frais de déplacement en sus, sur une ligne distincte du devis",
         "Formation collective, coaching 1-to-1 ou phase terrain d'audit",
         "Le format à distance reste possible quand le déplacement n'apporte rien",
       ],
@@ -246,8 +244,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         },
         {
           title: "Le prix ne dépend pas de la ville",
-          detail:
-            "Les tarifs sont les mêmes de Paris à Perpignan. Seuls les frais de déplacement varient selon la zone, et ils sont chiffrés à part, pas noyés dans le forfait.",
+          detail: "Les tarifs sont les mêmes de Paris à Perpignan.",
         },
         {
           title: "Les grandes villes ne passent pas devant",
@@ -264,7 +261,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         // surface du site a l'affirmer, et elle contredisait la doctrine tenue
         // partout ailleurs (frais de deplacement factures en sus, sur une ligne
         // distincte du devis). Ne pas le reintroduire.
-        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere; travel costs are billed separately.",
+        "Yes. Our consultants travel to every regional capital: Lyon, Marseille, Toulouse, Bordeaux, Lille, Nantes, Strasbourg, Montpellier, Rennes, Nice, Reims, Saint-Étienne, Le Havre, Dijon, Angers — and more broadly any French city. Rates are the same everywhere.",
     },
   },
   {
@@ -274,12 +271,11 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Et pour les TPE, PME et artisans en zone rurale ou petites villes ?",
       answer:
-        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure, le format à distance est souvent le plus rentable : aucun frais de déplacement à supporter, aucune journée perdue en trajets, et la même qualité d'accompagnement — même intervenant senior, mêmes livrables, mêmes méthodes. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
+        "Oui, sans réserve. Artisans, commerçants, TPE et PME sont accompagnés partout en France, y compris en zone rurale et dans les petites villes. La taille de votre commune ne change ni l'accès aux prestations, ni les conditions tarifaires : elles sont identiques d'un bout à l'autre du territoire.\n\nPour une petite structure. Quand le terrain est indispensable, parce qu'il faut voir un atelier, un poste de production ou réunir toute l'équipe, l'intervention sur site reste évidemment possible.\n\nConcrètement, un artisan ou un commerçant ne démarre pas par un chantier lourd. Une journée de coaching 1-to-1 de 7 à 8 heures sur son propre poste, ou une formation courte à partir de 4 h pour deux ou trois personnes, suffit à débloquer les usages du quotidien : devis, relances, réponses clients, comptes rendus.",
       keyPoints: [
         "Artisans, commerçants, TPE et PME, partout en France",
         "Zones rurales et petites villes incluses, sans condition de taille",
         "Mêmes conditions tarifaires quelle que soit la commune",
-        "Le distanciel évite les frais de déplacement, à qualité égale",
         "Sur site quand le terrain l'exige : atelier, production, équipe entière",
       ],
       facts: [

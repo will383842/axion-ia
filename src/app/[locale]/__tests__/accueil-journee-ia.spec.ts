@@ -285,6 +285,6 @@ describe("accueil : le vocabulaire proscrit", () => {
   });
 
   it("annonce « 2 à 4 h » d'audit le matin", () => {
-    expect(TEXTE_RESOLU).toMatch(/2 à 4 h d’audit/);
+    expect(TEXTE_RESOLU).toMatch(/2 à 4\s?h selon la structuration de l’entreprise/);
   });
 });

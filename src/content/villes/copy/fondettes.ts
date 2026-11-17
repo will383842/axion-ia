@@ -65,7 +65,7 @@ export const FONDETTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Fondettes ?",
-      a: "Nos consultants interviennent sur site à Fondettes (Tours centre à 10 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Nos consultants interviennent sur site à Fondettes (Tours centre à 10 min). Tarification transparente.",
     },
   ],
 };

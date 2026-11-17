@@ -65,7 +65,7 @@ export const OLLAINVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Arpajon ou Évry ?",
-      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min). Coûts de déplacement à part, tarification transparente.",
+      a: "Arpajon (5 min). Brétigny-sur-Orge (10 min). Évry-Courcouronnes (20 min). Paris centre (45 min). Orly (25 min). Tarification transparente.",
     },
   ],
 };

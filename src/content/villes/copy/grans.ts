@@ -65,7 +65,7 @@ export const GRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Grans ?",
-      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux. Tarification transparente.",
     },
   ],
 };
