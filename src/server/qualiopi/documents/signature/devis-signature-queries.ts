@@ -14,34 +14,12 @@
  */
 
 import * as Sentry from "@sentry/nextjs";
-import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import { instantane } from "@/server/qualiopi/documents/signature/instantane";
 import {
-  computeTotauxFacture,
-  isRegimeTva,
-  mentionTva,
-  TAUX_TVA_STANDARD,
-} from "@/server/qualiopi/legal/tva";
-
-/**
- * La PHOTO du devis : ce qui a servi à rendre le PDF que le client signe
- * (`DocumentGenere.metadata.renderData.data`), telle que le gabarit `DevisPdf`
- * la consomme.
- */
-const photoDevis = z.object({
-  lignes: z.array(
-    z.object({
-      designation: z.string(),
-      quantite: z.number(),
-      prixUnitaireHtCents: z.number(),
-      tauxTvaPercent: z.number().nullish(),
-    }),
-  ),
-  regimeTva: z.custom<"assujetti" | "exoneration_261" | "franchise_293b">(isRegimeTva),
-  tauxTvaStandardPercent: z.number().optional(),
-  client: z.object({ raisonSociale: z.string() }).optional(),
-});
+  lirePhotoDevis,
+  totauxDepuisPhoto,
+} from "@/server/qualiopi/documents/signature/photo-devis";
+import { mentionTva } from "@/server/qualiopi/legal/tva";
 
 export interface LigneDevisAffichee {
   designation: string;
@@ -106,9 +84,7 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
   });
   if (devis === null) return null;
 
-  const brut = instantane(devis.documentGenere?.metadata)?.data;
-  const lu = brut === undefined ? null : photoDevis.safeParse(brut);
-  const snap = lu !== null && lu.success ? lu.data : null;
+  const snap = lirePhotoDevis(devis.documentGenere?.metadata);
 
   let lignes: LigneDevisAffichee[] = [];
   let totalHtLisible = "";
@@ -117,18 +93,7 @@ export async function lireDevisASigner(documentGenereId: string): Promise<DevisA
   let clientRaisonSociale = devis.client.raisonSociale;
 
   if (snap !== null) {
-    // `exactOptionalPropertyTypes` : on retire explicitement un taux absent.
-    const lignesFacturables = snap.lignes.map((l) => ({
-      designation: l.designation,
-      quantite: l.quantite,
-      prixUnitaireHtCents: l.prixUnitaireHtCents,
-      ...(typeof l.tauxTvaPercent === "number" ? { tauxTvaPercent: l.tauxTvaPercent } : {}),
-    }));
-    const totaux = computeTotauxFacture(
-      lignesFacturables,
-      snap.regimeTva,
-      snap.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
-    );
+    const totaux = totauxDepuisPhoto(snap);
     lignes = snap.lignes.map((l) => ({
       designation: l.designation,
       quantite: l.quantite,
