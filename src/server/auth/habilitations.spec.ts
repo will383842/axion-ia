@@ -107,6 +107,7 @@ describe("matrice d'habilitation — invariants de structure", () => {
       "conclure_devis",
       "contresigner",
       "deposer_demande_financeur",
+      "ecrire_email_manuel",
       "facturer",
       "habiliter_formateur",
       "piloter_interrupteurs",
