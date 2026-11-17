@@ -5158,6 +5158,10 @@ model Client {
   contactEmail               String?         @map("contact_email") @db.Citext
   contactTelephone           String?         @map("contact_telephone") @db.VarChar(40)
   contactFonction            String?         @map("contact_fonction") @db.VarChar(150)
+  /// Copie du contact de facturation (source : ClientContact) ; contactNom n'est jamais découpé.
+  contactCivilite            String?         @map("contact_civilite") @db.VarChar(10)
+  contactPrenom              String?         @map("contact_prenom") @db.VarChar(80)
+  contactNomFamille          String?         @map("contact_nom_famille") @db.VarChar(80)
   /// OPCO inféré depuis le code NAF (ou saisi manuellement).
   opcoIdentifie              String?         @map("opco_identifie") @db.VarChar(60)
   opcoNumeroAdherent         String?         @map("opco_numero_adherent") @db.VarChar(80)
@@ -5355,6 +5359,8 @@ model Devis {
   /// livraison » / « Marquer livré » ; l'étape est DÉDUITE (aucune énumération).
   livraisonDebutAt DateTime? @map("livraison_debut_at")
   livreAt          DateTime? @map("livre_at")
+  /// NULL pour toute pièce antérieure, jamais rétro-remplie.
+  conditionsParticulieres String? @map("conditions_particulieres") @db.Text
 
   /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
   /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
@@ -14065,6 +14071,11 @@ model ClientContact {
   clientId              String         @map("client_id") @db.Uuid
   client                Client         @relation(fields: [clientId], references: [id], onDelete: Restrict)
   nom                   String         @db.VarChar(200)
+  /// 'madame' | 'monsieur' ; validée par le code (zod), pas de contrainte en base ; jamais déduite du nom
+  civilite              String?        @db.VarChar(10)
+  prenom                String?        @db.VarChar(80)
+  /// Le champ `nom` n'est jamais découpé : prenom / nomFamille sont saisis à part.
+  nomFamille            String?        @map("nom_famille") @db.VarChar(80)
   fonction              String?        @db.VarChar(150)
   telephone             String?        @db.VarChar(40)
   statut                ContactStatut  @default(actif)

@@ -13,14 +13,35 @@
  * Node runtime (Prisma). Stub-aware pour le build SSG.
  */
 
+import * as Sentry from "@sentry/nextjs";
+import { z } from "zod";
 import { prisma } from "@/lib/prisma";
-import type { LigneFacture } from "@/server/qualiopi/documents/templates/facture";
+import { instantane } from "@/server/qualiopi/documents/signature/instantane";
 import {
   computeTotauxFacture,
+  isRegimeTva,
   mentionTva,
   TAUX_TVA_STANDARD,
-  type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+
+/**
+ * La PHOTO du devis : ce qui a servi à rendre le PDF que le client signe
+ * (`DocumentGenere.metadata.renderData.data`), telle que le gabarit `DevisPdf`
+ * la consomme.
+ */
+const photoDevis = z.object({
+  lignes: z.array(
+    z.object({
+      designation: z.string(),
+      quantite: z.number(),
+      prixUnitaireHtCents: z.number(),
+      tauxTvaPercent: z.number().nullish(),
+    }),
+  ),
+  regimeTva: z.custom<"assujetti" | "exoneration_261" | "franchise_293b">(isRegimeTva),
+  tauxTvaStandardPercent: z.number().optional(),
+  client: z.object({ raisonSociale: z.string() }).optional(),
+});
 
 export interface LigneDevisAffichee {
   designation: string;
@@ -38,6 +59,11 @@ export interface DevisASigner {
   totalHtLisible: string;
   totalTtcLisible: string;
   mentionTva: string | null;
+  /**
+   * `true` quand la photo de la pièce est absente ou illisible. Aucun recalcul
+   * de repli : les lignes sont vides et les totaux sont des chaînes vides.
+   */
+  chiffrageIndisponible: boolean;
   /** `true` si le devis n'est plus dans un état où une signature a du sens. */
   statutBloquant: "deja_accepte" | "expire" | "brouillon" | null;
 }
@@ -56,17 +82,13 @@ function eur(cents: number): string {
  * `null` si aucun devis ne porte cette pièce — cas anormal qui doit se traduire
  * par un 404, jamais par un écran de signature vide.
  *
- * ⚠️ Le régime de TVA est relu de la MENTION SNAPSHOTÉE sur le devis, pas de la
- * configuration courante : `Devis.mentionTva` a été figée à la création
- * précisément pour qu'un changement de régime ne réécrive pas rétroactivement
- * une pièce déjà émise. Les totaux, eux, se recalculent depuis les lignes, qui
- * portent leur propre `tauxTvaPercent`.
+ * 🔴 Lignes, régime et taux de TVA, totaux, mention et raison sociale viennent
+ * de la PHOTO de la pièce (`DocumentGenere.metadata.renderData.data`), jamais de
+ * la configuration courante ni de `Devis.lignes` : le client signe le PDF rendu
+ * depuis cette photo, la page doit montrer les mêmes montants. Photo absente ou
+ * illisible : `chiffrageIndisponible`, sans AUCUN recalcul de repli.
  */
-export async function lireDevisASigner(
-  documentGenereId: string,
-  regimeTva: RegimeTva,
-  tauxStandard: number = TAUX_TVA_STANDARD,
-): Promise<DevisASigner | null> {
+export async function lireDevisASigner(documentGenereId: string): Promise<DevisASigner | null> {
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) return null;
 
   const devis = await prisma.devis.findFirst({
@@ -75,29 +97,63 @@ export async function lireDevisASigner(
       id: true,
       numero: true,
       statut: true,
-      lignes: true,
+      offre: true,
       dateValidite: true,
-      mentionTva: true,
+      montantTotalHtCents: true,
       client: { select: { raisonSociale: true } },
+      documentGenere: { select: { metadata: true } },
     },
   });
   if (devis === null) return null;
 
-  const lignesBrutes = (Array.isArray(devis.lignes)
-    ? devis.lignes
-    : []) as unknown as LigneFacture[];
-  const totaux = computeTotauxFacture(lignesBrutes, regimeTva, tauxStandard);
+  const brut = instantane(devis.documentGenere?.metadata)?.data;
+  const lu = brut === undefined ? null : photoDevis.safeParse(brut);
+  const snap = lu !== null && lu.success ? lu.data : null;
 
-  const lignes: LigneDevisAffichee[] = lignesBrutes.map((l) => {
-    const qte = typeof l.quantite === "number" ? l.quantite : 0;
-    const pu = typeof l.prixUnitaireHtCents === "number" ? l.prixUnitaireHtCents : 0;
-    return {
+  let lignes: LigneDevisAffichee[] = [];
+  let totalHtLisible = "";
+  let totalTtcLisible = "";
+  let mention: string | null = null;
+  let clientRaisonSociale = devis.client.raisonSociale;
+
+  if (snap !== null) {
+    // `exactOptionalPropertyTypes` : on retire explicitement un taux absent.
+    const lignesFacturables = snap.lignes.map((l) => ({
       designation: l.designation,
-      quantite: qte,
-      prixUnitaireHtLisible: eur(pu),
-      totalHtLisible: eur(Math.round(qte * pu)),
-    };
-  });
+      quantite: l.quantite,
+      prixUnitaireHtCents: l.prixUnitaireHtCents,
+      ...(typeof l.tauxTvaPercent === "number" ? { tauxTvaPercent: l.tauxTvaPercent } : {}),
+    }));
+    const totaux = computeTotauxFacture(
+      lignesFacturables,
+      snap.regimeTva,
+      snap.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD,
+    );
+    lignes = snap.lignes.map((l) => ({
+      designation: l.designation,
+      quantite: l.quantite,
+      prixUnitaireHtLisible: eur(l.prixUnitaireHtCents),
+      totalHtLisible: eur(Math.round(l.quantite * l.prixUnitaireHtCents)),
+    }));
+    totalHtLisible = eur(totaux.totalHtCents);
+    totalTtcLisible = eur(totaux.totalTtcCents);
+    mention = mentionTva(snap.regimeTva);
+    clientRaisonSociale = snap.client?.raisonSociale ?? clientRaisonSociale;
+    // Contrôle de cohérence : on affiche la photo quoi qu'il arrive, on signale l'écart.
+    // Seulement pour un devis CLASSIQUE (`offre` nul) encore `envoye` : un devis à
+    // formules a un `montantTotalHtCents` posé à l'acceptation sur le choix du client,
+    // et un devis déjà accepté a pu être mis à jour depuis — l'écart y est normal.
+    if (
+      devis.offre === null &&
+      devis.statut === "envoye" &&
+      totaux.totalHtCents !== devis.montantTotalHtCents
+    ) {
+      Sentry.captureMessage("devis-signature: HT de la photo ≠ Devis.montantTotalHtCents", {
+        level: "warning",
+        tags: { module: "devis-signature" },
+      });
+    }
+  }
 
   // 🔴 Un devis qui n'est pas `envoye` ne doit pas se signer, et le dire est
   // plus utile que de laisser `signerDocument` refuser plus loin sur un motif
@@ -119,11 +175,12 @@ export async function lireDevisASigner(
     devisId: devis.id,
     numero: devis.numero,
     dateValiditeLisible: devis.dateValidite.toLocaleDateString("fr-FR"),
-    clientRaisonSociale: devis.client.raisonSociale,
+    clientRaisonSociale,
     lignes,
-    totalHtLisible: eur(totaux.totalHtCents),
-    totalTtcLisible: eur(totaux.totalTtcCents),
-    mentionTva: mentionTva(regimeTva) ?? devis.mentionTva ?? null,
+    totalHtLisible,
+    totalTtcLisible,
+    mentionTva: mention,
+    chiffrageIndisponible: snap === null,
     statutBloquant,
   };
 }

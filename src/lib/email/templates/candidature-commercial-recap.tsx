@@ -106,7 +106,7 @@ export function CandidatureCommercialRecapEmail({
       }
       title={`Candidature commerciale — ${qui}`}
       {...(p.consoleUrl
-        ? { cta: { label: "Ouvrir la fiche en console", href: p.consoleUrl } }
+        ? { cta: { label: "Ouvrir la fiche en console", href: p.consoleUrl }, ctaSecret: true }
         : {})}
       locale={locale}
     >
