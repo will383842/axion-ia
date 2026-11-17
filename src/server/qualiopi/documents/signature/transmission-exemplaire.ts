@@ -90,6 +90,16 @@ export type ResultatTransmission =
   | { readonly ok: true; readonly destinataires: readonly string[]; readonly r2Key: string }
   | { readonly ok: false; readonly motif: MotifNonTransmission; readonly detail?: string };
 
+/**
+ * Le libellé tel qu'il se lit dans l'OBJET d'un e-mail client : sans la note
+ * entre parenthèses (« (mandat OPCO) » est une note interne). Même expression
+ * que `designationPiece` de `piece-exemplaire-signe.tsx`, qui fait déjà ce
+ * retrait dans le corps. Un libellé sans parenthèse reste identique.
+ */
+function libelleObjet(libelle: string): string {
+  return libelle.replace(/\s*\([^)]*\)/g, "");
+}
+
 /** Clé d'archive de l'exemplaire signé — voisine du PDF vierge, jamais la même. */
 export function exemplaireSignePdfKey(doc: {
   type: string;
@@ -286,7 +296,7 @@ export async function transmettreExemplaireSigne(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Votre exemplaire signé — ${libellePiece} ${numeroConnu}`,
+        sujet: `Votre exemplaire signé — ${libelleObjet(libellePiece)} ${numeroConnu}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (res.enqueued) aumoinsUnEnfile = true;
@@ -495,7 +505,7 @@ export async function transmettreCopiePartielle(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Copie de votre signature — ${libellePiece} ${devisNum.numeroDevis ?? piece.numero}`,
+        sujet: `Copie de votre signature — ${libelleObjet(libellePiece)} ${devisNum.numeroDevis ?? piece.numero}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (!res.enqueued) return { ok: false, motif: "file_indisponible" };
