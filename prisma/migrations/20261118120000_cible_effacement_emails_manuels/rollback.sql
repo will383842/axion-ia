@@ -1,0 +1,6 @@
+-- Retour arrière de 20261118120000_cible_effacement_emails_manuels : AUCUNE instruction SQL.
+-- Retirer une valeur d'énumération imposerait de recréer le type (interdit : DROP/RENAME).
+-- La valeur reste en base, inerte tant que rien ne l'écrit. Revenir en arrière = retirer le code
+-- de F1b (écrivain et rejeu) ; ne PAS lancer `prisma migrate resolve --rolled-back`.
+-- Une ligne de journal ne se supprime jamais (journal en ajout seul) : si F1b a déjà journalisé,
+-- la valeur doit rester. Contrôle : SELECT count(*) FROM effacements_journal WHERE table_cible::text = 'emails_manuels';

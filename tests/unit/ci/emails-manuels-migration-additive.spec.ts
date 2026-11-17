@@ -94,7 +94,7 @@ describe("migration emails_manuels : additive (liste blanche)", () => {
   it("migration.sql et rollback.sql existent ; le nom est unique", () => {
     expect(existsSync(join(DOSSIER, "migration.sql"))).toBe(true);
     expect(existsSync(join(DOSSIER, "rollback.sql"))).toBe(true);
-    expect(readdirSync(RACINE).filter((d) => d.endsWith("_emails_manuels"))).toEqual([NOM]);
+    expect(readdirSync(RACINE).filter((d) => /^\d{14}_emails_manuels$/.test(d))).toEqual([NOM]);
   });
 
   it("chaque instruction est une forme permise, sans mot interdit", () => {
