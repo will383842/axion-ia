@@ -25,8 +25,32 @@ import type { MotifRetenue } from "@/server/email/suppression";
 import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { refusGabaritFormateur } from "@/server/email/outbox-policy";
+import {
+  GABARITS_AVEC_LIEN_SIGNATURE,
+  masquerLienSignaturePayload,
+} from "@/server/email/masquer-lien-signature-payload";
+import { revoquerTokensDocument } from "@/server/qualiopi/documents/signature/token-document";
+import type { Prisma } from "../../../../prisma/generated/client";
 
 type ActionResult<T> = { data: T } | { error: string };
+
+/**
+ * B2a — remplace, dans la ligne de corbeille, le lien de signature par sa forme masquée.
+ * Ne lève jamais : à ce stade l'e-mail est déjà parti (ou refusé), un échec ici ne doit
+ * rien défaire. Ne journalise jamais le lien.
+ */
+async function masquerPayloadStocke(id: string, template: string, payload: unknown): Promise<void> {
+  const { payload: masque, modifie } = masquerLienSignaturePayload(template, payload);
+  if (!modifie) return;
+  try {
+    await prisma.emailOutbox.update({
+      where: { id },
+      data: { payload: masque as Prisma.InputJsonValue },
+    });
+  } catch {
+    console.warn(`[email-outbox] masquage du lien de signature impossible (ligne ${id})`);
+  }
+}
 
 function estStub(): boolean {
   return process.env["DATABASE_URL"]?.includes("stub.invalid") === true;
@@ -156,6 +180,9 @@ export async function approuverEmailAction(
       where: { id: v.id },
       data: { statut: "envoye", envoyeAt: new Date() },
     });
+    // B2a — le payload ENVOYÉ en file garde son lien (le worker en a besoin) ; celui
+    // qui reste en base, lui, est masqué. Seulement après une mise en file réussie.
+    await masquerPayloadStocke(v.id, email.template, email.payload);
   } else if (res.retenu !== undefined) {
     // 🔴 2026-09-02 — liste de suppression. L'adresse a rebondi dur (ou la
     // personne s'est désabonnée d'un envoi marketing) : renvoyer l'email en
@@ -199,6 +226,37 @@ export async function approuverEmailAction(
   return { data: { id: v.id, envoye: res.enqueued } };
 }
 
+/** Retrouve la pièce (Devis → sa pièce signable ; DocumentGenere → elle-même) et révoque son jeton. */
+async function revoquerJetonPieceRefusee(
+  id: string,
+  ligne: { entityType: string | null; entityId: string | null },
+  parAdminId: string,
+): Promise<void> {
+  try {
+    let documentGenereId: string | null = null;
+    if (ligne.entityType === "DocumentGenere" && ligne.entityId) {
+      documentGenereId = ligne.entityId;
+    } else if (ligne.entityType === "Devis" && ligne.entityId) {
+      const devis = await prisma.devis.findUnique({
+        where: { id: ligne.entityId },
+        select: { documentGenereId: true },
+      });
+      documentGenereId = devis?.documentGenereId ?? null;
+    }
+    if (!documentGenereId) {
+      console.warn(`[email-outbox] refus ${id} : pièce introuvable, jeton non révoqué`);
+      return;
+    }
+    await revoquerTokensDocument({
+      documentGenereId,
+      motif: "E-mail refusé en corbeille — lien jamais envoyé",
+      parAdminId,
+    });
+  } catch {
+    console.warn(`[email-outbox] refus ${id} : révocation du jeton impossible`);
+  }
+}
+
 const refuserSchema = z.object({
   id: z.string().uuid(),
   motif: z.string().trim().min(1).max(1000),
@@ -222,11 +280,23 @@ export async function refuserEmailAction(
   }
   const v = parsed.data;
 
+  const ligne = await prisma.emailOutbox.findUnique({
+    where: { id: v.id },
+    select: { template: true, payload: true, entityType: true, entityId: true },
+  });
+
   const res = await prisma.emailOutbox.updateMany({
     where: { id: v.id, statut: "a_valider" },
     data: { statut: "refuse", refuseAt: new Date(), refuseMotif: v.motif },
   });
   if (res.count === 0) return { error: "Cet email a déjà été traité." };
+
+  // B2a — un e-mail refusé ne part jamais : son lien de signature est un lien vivant que
+  // personne n'a reçu. On le masque en base ET on révoque le jeton de la pièce.
+  if (ligne && GABARITS_AVEC_LIEN_SIGNATURE.includes(ligne.template)) {
+    await masquerPayloadStocke(v.id, ligne.template, ligne.payload);
+    await revoquerJetonPieceRefusee(v.id, ligne, session.userId);
+  }
 
   await logQualiopiActivity({
     action: "email.outbox.refuser",
