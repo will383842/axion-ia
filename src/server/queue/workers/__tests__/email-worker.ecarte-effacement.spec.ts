@@ -57,15 +57,29 @@ vi.mock("@/lib/prisma", () => ({
     newsletterSubscriber: { findUnique: (...a: unknown[]) => d.abonne(...a) },
     submissionReply: {
       findUnique: (...a: unknown[]) => d.replyFind(...a),
-      update: (...a: unknown[]) => d.replyUpdate(...a),
+      updateMany: (...a: unknown[]) => d.replyUpdate(...a),
     },
     jobApplicationReply: {
       findUnique: (...a: unknown[]) => d.candFind(...a),
-      update: (...a: unknown[]) => d.candUpdate(...a),
+      updateMany: (...a: unknown[]) => d.candUpdate(...a),
     },
     $transaction: vi.fn().mockResolvedValue([]),
   },
 }));
+// Verrou d'envoi des réponses manuelles (PR-W) : Redis en mémoire minimale.
+vi.mock("@/lib/redis", () => {
+  const m = new Map<string, string>();
+  return {
+    redis: {
+      set: async (k: string, v: string) => (m.has(k) ? null : (m.set(k, v), "OK")),
+      get: async (k: string) => m.get(k) ?? null,
+      del: async (k: string) => (m.delete(k) ? 1 : 0),
+      pttl: async (k: string) => (m.has(k) ? 86_400_000 : -2),
+      eval: async (_s: string, _n: number, k: string, arg: string) =>
+        m.get(k) === arg ? (m.delete(k), 1) : 0,
+    },
+  };
+});
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
 vi.mock("@/server/email/email-log", () => ({
   cloturerJournal: vi.fn().mockResolvedValue(undefined),
@@ -111,6 +125,9 @@ beforeEach(() => {
     subject: "Re",
     bodyHtml: "<p>x</p>",
     bodyText: "x",
+    deliveryStatus: "pending",
+    sentAt: null,
+    providerMessageId: null,
     submission: { id: "s-1", firstRepliedAt: null },
   });
   d.candFind.mockResolvedValue({
@@ -119,6 +136,9 @@ beforeEach(() => {
     subject: "Re",
     bodyHtml: "<p>x</p>",
     bodyText: "x",
+    deliveryStatus: "pending",
+    sentAt: null,
+    providerMessageId: null,
   });
   d.replyUpdate.mockResolvedValue({});
   d.candUpdate.mockResolvedValue({});
