@@ -773,6 +773,14 @@ const TEMPLATES: TemplateMap = {
   ...ENTREES_FORMATEUR_INDEPENDANT,
 };
 
+/**
+ * Ce worker connaît-il ce nom de gabarit ? Faux pour un nom émis par une application plus récente
+ * que le worker (fenêtre de déploiement, lot S3) : le worker le reporte au lieu de planter.
+ */
+export function estGabaritConnu(name: string): name is EmailJobName {
+  return Object.prototype.hasOwnProperty.call(TEMPLATES, name);
+}
+
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */
 export const EMAIL_TEMPLATE_NAMES = Object.keys(TEMPLATES) as EmailJobName[];
 

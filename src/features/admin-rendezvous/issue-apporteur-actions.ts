@@ -22,7 +22,8 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { adminPath } from "@/lib/admin-path";
-import { renderEmailTemplate } from "@/lib/email/templates";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
+import { apercuMasque } from "@/features/apporteurs-reseau/apercu-masque";
 import { peutVoirLesAppels } from "@/features/admin-calendly/acces";
 import { peutEngager } from "@/server/auth/habilitations";
 import { appliquerTransition } from "@/features/admin-submissions/transitions";
@@ -55,7 +56,7 @@ export type ApercuIssueApporteur =
       etat: "apercu";
       issue: IssueApporteur;
       /** Présents seulement si un e-mail partira. */
-      email: { sujet: string; html: string; destinataire: string } | null;
+      email: { sujet: string; html: string; destinataire: string; apercu: ApercuLecteur } | null;
       /** Pourquoi aucun e-mail ne partira (deuxième absence, déjà envoyé…). */
       sansEmail: string | null;
       /** L'e-mail partira SANS lien de dossier (dossier résilié) : dit AVANT l'envoi. */
@@ -119,16 +120,23 @@ export async function apercuIssueApporteurAction(input: {
         ...(prep.proposerDossier ? { proposerDossier: true as const } : {}),
       };
     }
-    const rendu = await renderEmailTemplate(
+    // Même rendu que le worker (gabarit, langue, charge mise en file, vrai destinataire) ;
+    // ce qui sort vers la console est masqué et inerte (aucun jeton, aucun lien cliquable).
+    const rendu = await apercuMasque(
       prep.envoi.gabarit,
       prep.envoi.locale,
       prep.envoi.payload,
-      { destinataire: prep.envoi.destinataire },
+      prep.envoi.destinataire,
     );
     return {
       etat: "apercu",
       issue,
-      email: { sujet: rendu.subject, html: rendu.html, destinataire: prep.envoi.destinataire },
+      email: {
+        sujet: rendu.sujet,
+        html: rendu.html,
+        destinataire: rendu.destinataire,
+        apercu: rendu.apercu,
+      },
       sansEmail: null,
       ...(prep.alerteLien ? { alerte: prep.alerteLien } : {}),
     };

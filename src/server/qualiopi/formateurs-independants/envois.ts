@@ -25,6 +25,14 @@ import {
   GABARITS_ARGENT_FORMATEUR,
   TEXTES_FORMATEUR,
 } from "@/lib/email/templates/formateur-independant-textes";
+import {
+  extrairePreEntete,
+  rendreLiensInertes,
+  type ApercuLecteur,
+} from "@/lib/email/apercu-lecteur";
+import { enveloppeExpedition } from "@/lib/email/enveloppe";
+import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
+import { renderEmailTemplate } from "@/lib/email/templates";
 import { assemblerParagraphes } from "@/lib/email/texte-par-defaut";
 import { prisma } from "@/lib/prisma";
 import {
@@ -40,6 +48,7 @@ import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-va
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import { enqueueEmail } from "@/server/queue/queues";
+import type { EmailJobName } from "@/server/queue/types";
 
 import { lireDrapeauEnvoi } from "./interrupteurs";
 import { lireEtatsInterrupteurs } from "./interrupteurs-etat";
@@ -160,6 +169,34 @@ export function apercu(
   e: Pick<EnvoiFormateur, "gabarit" | "destinataire" | "payload">,
 ): Promise<ApercuRendu<GabaritFormateur>> {
   return apercuGabarit(e, texteParDefautFormateur);
+}
+
+/**
+ * L'aperçu destiné au NAVIGATEUR de la console (lot I2-4b) : le même rendu que le
+ * worker (`renderEmailTemplate(gabarit, "fr", payload, { destinataire })`, avec le vrai
+ * destinataire), puis `masquerSecretsEmail` et `rendreLiensInertes`. Le lien de
+ * connexion, le lien d'opposition et tout jeton n'en sortent JAMAIS en clair.
+ *
+ * ⚠️ Ni journal, ni cache : le HTML rendu porte des liens personnels avant masquage.
+ */
+export async function apercuLecteurFormateur(
+  e: Pick<EnvoiFormateur, "gabarit" | "destinataire" | "payload">,
+): Promise<ApercuLecteur> {
+  const r = await renderEmailTemplate(e.gabarit as unknown as EmailJobName, "fr", e.payload, {
+    destinataire: e.destinataire,
+  });
+  const masque = masquerSecretsEmail({ subject: r.subject, html: r.html, text: r.text });
+  const enveloppe = enveloppeExpedition();
+  return {
+    html: rendreLiensInertes(masque.html),
+    texte: masque.text,
+    objet: masque.subject,
+    de: enveloppe.from,
+    a: e.destinataire,
+    repondreA: enveloppe.replyTo,
+    preEntete: extrairePreEntete(masque.html),
+    piecesJointes: [],
+  };
 }
 
 /** Le texte de ce gabarit peut-il partir ? Lecture en échec : non. */
