@@ -568,6 +568,10 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    formation. Les recopier hors du domaine créerait la seconde vérité que
   //    ce contrôle existe pour empêcher.
   "src/lib/email/legal-footer.ts",
+  // ── Garde « aucun e-mail ne nomme la certification » : elle rend l'alerte
+  //    interne pour CHAQUE entrée de `ALERTE_CATALOGUE` (lecture seule, test
+  //    uniquement) afin de prouver qu'aucun titre réel ne porte le mot.
+  "src/lib/email/templates/__tests__/aucun-e-mail-ne-nomme-la-certification.spec.tsx",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,
   //    extraction du texte pour les tests. Aucune lecture métier Qualiopi :
