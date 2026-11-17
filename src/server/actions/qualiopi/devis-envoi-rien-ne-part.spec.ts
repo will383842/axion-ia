@@ -23,6 +23,7 @@ const h = vi.hoisted(() => ({
   emettre: vi.fn(),
   logActivity: vi.fn(),
   sentry: vi.fn(),
+  sentryMessage: vi.fn(),
   telegram: vi.fn(),
 }));
 
@@ -45,7 +46,10 @@ vi.mock("@/lib/prisma", () => ({
     },
   },
 }));
-vi.mock("@sentry/nextjs", () => ({ captureException: (...a: unknown[]) => h.sentry(...a) }));
+vi.mock("@sentry/nextjs", () => ({
+  captureException: (...a: unknown[]) => h.sentry(...a),
+  captureMessage: (...a: unknown[]) => h.sentryMessage(...a),
+}));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
   requireAdminWrite: vi.fn(async () => ({ userId: "adm-1", role: "super_admin" })),
   requireHabilitation: vi.fn(async () => ({ userId: "adm-1", role: "super_admin" })),
@@ -276,6 +280,47 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     });
     expect(h.sentry).toHaveBeenCalled();
     expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.revoquer).toHaveBeenCalledOnce();
+    expect(h.revoquer).toHaveBeenCalledWith(
+      expect.objectContaining({ documentGenereId: "doc-1" }),
+    );
+  });
+
+  it("(13c) courriel garé SANS outboxId puis échec d'écriture : alerte, aucune exception", async () => {
+    h.enqueueEmail.mockResolvedValue({ enqueued: false, garePourValidation: true });
+    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    const r = await sendDevisAction(ID);
+    expect(erreur(r)).toContain("Ne le renvoyez pas");
+    expect(h.outboxUpdate).not.toHaveBeenCalled();
+    expect(h.sentry).toHaveBeenCalled();
+    expect(h.telegram).toHaveBeenCalledOnce();
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toContain("example.test");
+  });
+
+  it("(13d) devis modifié pendant le PDF : écriture gardée sur updatedAt, count 0, échec traité", async () => {
+    const maj = new Date("2026-11-01T10:00:00Z");
+    h.txDevisFindUnique.mockResolvedValue(devis({ updatedAt: maj }));
+    h.txDevisUpdateMany.mockResolvedValue({ count: 0 });
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-9",
+    });
+    const r = await sendDevisAction(ID);
+    expect(erreur(r)).toContain("Ne le renvoyez pas");
+    expect(h.txDevisUpdateMany).toHaveBeenCalledOnce();
+    expect(h.txDevisUpdateMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: ID, statut: "brouillon", updatedAt: maj } }),
+    );
+    expect(h.txClientUpdateMany).not.toHaveBeenCalled();
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.outboxUpdate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: "ob-9" },
+        data: expect.objectContaining({ statut: "refuse" }),
+      }),
+    );
+    expect(h.revoquer).toHaveBeenCalledOnce();
   });
 
   it("(13b) erreur après un courriel ENFILÉ : Sentry + alerte, lien NON révoqué", async () => {
@@ -285,6 +330,10 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(h.sentry).toHaveBeenCalled();
     expect(h.telegram).toHaveBeenCalledOnce();
     expect(JSON.stringify(h.telegram.mock.calls)).not.toContain("example.test");
+    expect(JSON.stringify(h.telegram.mock.calls)).toContain("renvoyer le devis depuis sa fiche");
+    expect(JSON.stringify(h.telegram.mock.calls)).not.toContain("tok");
+    expect(h.sentryMessage).toHaveBeenCalledOnce();
+    expect(String(h.sentryMessage.mock.calls[0]?.[0])).toContain("ne retrouvera pas le devis");
     expect(h.outboxUpdate).not.toHaveBeenCalled();
     expect(h.revoquer).not.toHaveBeenCalled();
   });

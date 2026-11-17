@@ -66,7 +66,6 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import { sendTelegram } from "@/lib/telegram";
 import { enqueueEmail } from "@/server/queue/queues";
-import { evaluerIdentite } from "@/server/qualiopi/documents/conformite";
 import type { MotifRetenue } from "@/server/email/verdict-envoi";
 import { genererConventionAction } from "@/server/actions/qualiopi/documents";
 
@@ -248,7 +247,6 @@ const MSG_FILE =
 const MSG_JETON = `Le lien de signature n'a pas pu être créé. ${MSG_RIEN_NE_PART} Réessayez dans un instant.`;
 const MSG_APRES_COURRIEL =
   "L'e-mail est parti (ou attend validation), mais le devis n'a pas pu être marqué envoyé. Ne le renvoyez pas : prévenez le support technique.";
-const MSG_IDENTITE = `L'identité de l'organisme est incomplète : le devis serait émis en spécimen. ${MSG_RIEN_NE_PART} Complétez-la dans la configuration, puis renvoyez.`;
 
 const MOTIFS_RETENUE: Record<MotifRetenue, string> = {
   rebond_dur: "adresse injoignable (rebond)",
@@ -265,7 +263,7 @@ const MOTIFS_RETENUE: Record<MotifRetenue, string> = {
  * pour validation. Ordre, dans UNE transaction interactive :
  *   1. verrou consultatif non bloquant (deux clics simultanés : le second est refusé) ;
  *   2. relecture du devis DANS la transaction + gardes (déjà envoyé, formules, total,
- *      e-mail du client, courriel déjà garé, identité de l'organisme) ;
+ *      e-mail du client, courriel déjà garé) ;
  *   3. PDF (generateDocument) — un échec refuse l'envoi, pour TOUS les devis ;
  *   4. lien de signature « bon pour accord » — un échec refuse aussi l'envoi ;
  *   5. enqueueEmail, DERNIER effet externe, AVANT toute écriture : retenu, corbeille ou
@@ -332,6 +330,8 @@ export async function sendDevisAction(id: string): Promise<
             numero: true,
             clientId: true,
             statut: true,
+            // Version lue : l'écriture finale exige qu'elle n'ait pas bougé pendant le PDF.
+            updatedAt: true,
             lignes: true,
             activite: true,
             refClient: true,
@@ -448,10 +448,6 @@ export async function sendDevisAction(id: string): Promise<
             );
           }
         }
-        // (f) Identité de l'organisme non conforme : on émettrait un SPÉCIMEN non signable.
-        if (!evaluerIdentite(data.identite, "devis").conforme) {
-          throw new EnvoiRefuse(MSG_IDENTITE, "identite_incomplete");
-        }
 
         // ── 3. PDF — un échec refuse l'envoi (tous les devis). La pièce numérotée déjà
         // produite reste telle quelle : rien n'est effacé.
@@ -551,7 +547,9 @@ export async function sendDevisAction(id: string): Promise<
         // version remplacée. « Devis émis » vers Axion Partners dans la MÊME transaction
         // (INT-T46-A ; canal fermé : rien n'est lu, écritures atomiques à l'identique).
         const marque = await tx.devis.updateMany({
-          where: { id: devisId, statut: "brouillon" },
+          // `updatedAt` : un enregistrement du brouillon survenu pendant le PDF fait tomber
+          // l'écriture à `count: 0` (le client aurait reçu un PDF et un montant périmés).
+          where: { id: devisId, statut: "brouillon", updatedAt: devis.updatedAt },
           data: {
             statut: "envoye",
             sentAt: new Date(),
@@ -656,6 +654,13 @@ export async function sendDevisAction(id: string): Promise<
     const courriel = etat.courriel;
     if (courriel !== null) {
       Sentry.captureException(err, { tags: { action: "sendDevisAction.apres_courriel" } });
+      if (courriel.etat === "enfile") {
+        // Message sans adresse, sans lien, sans jeton.
+        Sentry.captureMessage(
+          `Devis ${etat.numeroDevis} : courriel enfilé mais devis non marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
+          { level: "error", tags: { action: "sendDevisAction.apres_courriel_enfile" } },
+        );
+      }
       if (courriel.etat === "gare" && courriel.outboxId !== undefined) {
         try {
           await prisma.emailOutbox.update({
@@ -674,7 +679,7 @@ export async function sendDevisAction(id: string): Promise<
         // Aucune adresse ni lien dans l'alerte : Telegram est un canal tiers.
         sendTelegram({
           tag: "AUTO",
-          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti (ou attend validation) mais le devis n'a PAS été marqué envoyé. Ne pas renvoyer.`,
+          body: `🔴 Devis ${etat.numeroDevis} : le courriel est parti mais le devis n'a PAS été marqué envoyé. Le lien de signature reçu par le client ne retrouvera pas le devis : renvoyer le devis depuis sa fiche.`,
         }).catch(() => {});
       }
     }

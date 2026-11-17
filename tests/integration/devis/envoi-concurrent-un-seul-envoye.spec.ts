@@ -1,6 +1,6 @@
 /**
  * B1 — deux envois SIMULTANÉS du même brouillon : un seul passe « envoye » (Gate D, Postgres réel :
- * étape « Expiration des devis signés client » de `.github/workflows/ci.yml`,
+ * étape « Devis : tests d'intégration (expiration, envoi concurrent) » de `.github/workflows/ci.yml`,
  * `pnpm test:integration tests/integration/devis`).
  *
  * C'est le verrou consultatif `pg_try_advisory_xact_lock` + l'écriture gardée
@@ -133,5 +133,56 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
     expect(apres.statut).toBe("envoye");
     expect(apres.sentAt).not.toBeNull();
     expect(apres.documentGenereId).toBe(piece.id);
+  });
+
+  it("brouillon enregistré pendant le PDF : l'envoi échoue, le devis reste brouillon", async () => {
+    h.generateDocument.mockReset();
+    h.enqueueEmail.mockReset();
+    const client = await db.client.create({
+      data: {
+        numero: "TEST-CLI-B1B",
+        raisonSociale: "Client test B1b",
+        contactEmail: "client-b1b@example.test",
+      },
+    });
+    creees.clients.push(client.id);
+    const piece = await db.documentGenere.create({
+      data: {
+        type: "devis",
+        numero: "TEST-DOC-B1B",
+        hashSha256: HASH,
+        suppressionPrevueAt: dansUnAn,
+      },
+    });
+    creees.pieces.push(piece.id);
+    const devis = await db.devis.create({
+      data: {
+        numero: "TEST-DEV-B1B",
+        clientId: client.id,
+        lignes: [],
+        montantTotalHtCents: 100000,
+        mentionTva: "TVA 20 %",
+        statut: "brouillon",
+        dateValidite: dansUnAn,
+      },
+    });
+    creees.devis.push(devis.id);
+
+    // Pendant la génération du PDF, l'écran de modification enregistre le brouillon.
+    h.generateDocument.mockImplementation(async () => {
+      await db.devis.update({ where: { id: devis.id }, data: { montantTotalHtCents: 200000 } });
+      return { id: piece.id, numero: piece.numero };
+    });
+    h.enqueueEmail.mockResolvedValue({ enqueued: true });
+
+    const r = await sendDevisAction(devis.id);
+    expect("error" in r).toBe(true);
+
+    const apres = await db.devis.findUniqueOrThrow({
+      where: { id: devis.id },
+      select: { statut: true, sentAt: true },
+    });
+    expect(apres.statut).toBe("brouillon");
+    expect(apres.sentAt).toBeNull();
   });
 });
