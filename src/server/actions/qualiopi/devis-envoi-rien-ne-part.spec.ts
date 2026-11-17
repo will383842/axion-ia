@@ -12,6 +12,9 @@ const h = vi.hoisted(() => ({
   txDevisFindUnique: vi.fn(),
   txDevisUpdateMany: vi.fn(),
   txDevisUpdate: vi.fn(),
+  txDevisCount: vi.fn(),
+  statuts: {} as Record<string, string>,
+  enAttente: {} as Record<string, string>,
   txClientUpdateMany: vi.fn(),
   txTokenUpdateMany: vi.fn(),
   txOutboxFindFirst: vi.fn(),
@@ -37,17 +40,22 @@ vi.mock("@/lib/prisma", () => ({
     },
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
-      return f({
+      h.enAttente = {};
+      const resultat = await f({
         $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
         devis: {
           findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
           updateMany: (...a: unknown[]) => h.txDevisUpdateMany(...a),
           update: (...a: unknown[]) => h.txDevisUpdate(...a),
+          count: (...a: unknown[]) => h.txDevisCount(...a),
         },
         client: { updateMany: (...a: unknown[]) => h.txClientUpdateMany(...a) },
         documentSignatureToken: { updateMany: (...a: unknown[]) => h.txTokenUpdateMany(...a) },
         emailOutbox: { findFirst: (...a: unknown[]) => h.txOutboxFindFirst(...a) },
       });
+      // Validation : les statuts écrits n'existent qu'après un COMMIT (une exception les annule).
+      Object.assign(h.statuts, h.enAttente);
+      return resultat;
     },
   },
 }));
@@ -145,6 +153,7 @@ beforeEach(() => {
   h.queryRaw.mockResolvedValue([{ locked: true }]);
   h.txDevisFindUnique.mockResolvedValue(devis());
   h.txDevisUpdateMany.mockResolvedValue({ count: 1 });
+  h.txDevisCount.mockResolvedValue(1);
   h.txClientUpdateMany.mockResolvedValue({ count: 1 });
   h.txOutboxFindFirst.mockResolvedValue(null);
   h.generateDocument.mockResolvedValue({ id: "doc-1", numero: "AXI-DEV-2026-001" });
@@ -405,5 +414,91 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
   it("la transaction est ouverte avec maxWait 5 s et timeout 60 s", async () => {
     await sendDevisAction(ID);
     expect(h.txOptions).toHaveBeenCalledWith({ maxWait: 5_000, timeout: 60_000 });
+  });
+});
+
+const ANCIEN = { replacesDevisId: "ancien" };
+const avecAncien = (statut: string) =>
+  devis({ ...ANCIEN, replacesDevis: { statut, documentGenereId: "doc-0" } });
+
+describe("sendDevisAction — version remplacée signée ou acceptée", () => {
+  it("version remplacée signée par le client : refus AVANT le PDF, rien d'écrit", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(0);
+    const r = await sendDevisAction(ID);
+    expect(erreur(r)).toBe(
+      "La version précédente de ce devis a été acceptée ou signée : cette correction ne peut pas être envoyée.",
+    );
+    expect(h.generateDocument).not.toHaveBeenCalled();
+    expect(h.creerToken).not.toHaveBeenCalled();
+    expect(h.enqueueEmail).not.toHaveBeenCalled();
+    expect(h.txDevisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it.each(["accepte", "transforme_convention"])(
+    "version remplacée « %s » : refus avant le PDF",
+    async (statut) => {
+      h.txDevisFindUnique.mockResolvedValue(avecAncien(statut));
+      const r = await sendDevisAction(ID);
+      expect(erreur(r)).toContain("acceptée ou signée");
+      expect(h.generateDocument).not.toHaveBeenCalled();
+      expect(h.txDevisUpdateMany).not.toHaveBeenCalled();
+    },
+  );
+
+  it("version remplacée « refuse » : laissée telle quelle, jetons révoqués comme avant", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("refuse"));
+    h.txDevisCount.mockResolvedValue(1);
+    await sendDevisAction(ID);
+    const cibles = h.txDevisUpdateMany.mock.calls.map(
+      (c) => (c[0] as { where: { id: string } }).where.id,
+    );
+    expect(cibles).not.toContain("ancien");
+    expect(h.txTokenUpdateMany).toHaveBeenCalled();
+  });
+
+  it("version remplacée « envoye » non signée : expirée par une écriture gardée", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(1);
+    await sendDevisAction(ID);
+    expect(h.txDevisUpdateMany).toHaveBeenCalledWith({
+      where: expect.objectContaining({ id: "ancien", statut: "envoye", OR: expect.any(Array) }),
+      data: { statut: "expire" },
+    });
+  });
+
+  it("signature arrivée entre la relecture et l'écriture (0 ligne) : message lisible, courriel déjà enfilé", async () => {
+    h.txDevisFindUnique.mockResolvedValue(avecAncien("envoye"));
+    h.txDevisCount.mockResolvedValue(1);
+    h.statuts = { ancien: "envoye", [ID]: "brouillon" };
+    h.txDevisUpdateMany.mockImplementation(
+      async (a: { where: { id: string }; data: { statut?: string } }) => {
+        const touche = a.where.id !== "ancien"; // la signature client a gagné la course sur l'ancienne
+        if (touche && a.data.statut !== undefined) h.enAttente[a.where.id] = a.data.statut;
+        return { count: touche ? 1 : 0 };
+      },
+    );
+    const r = await sendDevisAction(ID);
+    expect(erreur(r)).toBe(
+      "Le client vient de signer la version précédente de ce devis : cette correction n'a pas été émise. Ouvrez la version signée pour la contresigner.",
+    );
+    // Documenté : le courriel avait déjà été enfilé avant la clôture de l'ancienne version.
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
+    // Rien n'est validé : le nouveau devis reste brouillon, l'ancien reste « envoye ».
+    expect(h.statuts).toEqual({ ancien: "envoye", [ID]: "brouillon" });
+    // La transaction est annulée : aucun événement « devis émis », le lien n'est pas révoqué
+    // (le courriel est parti), et l'alerte nomme la cause sans lien ni adresse.
+    expect(h.emettre).not.toHaveBeenCalled();
+    expect(h.revoquer).not.toHaveBeenCalled();
+    const alerte = h.sentryMessage.mock.calls[0]?.[0] as string;
+    expect(alerte).toContain("version précédente signée entre-temps");
+    expect(alerte).not.toContain("http");
+    expect(alerte).not.toContain("@");
+    // Aucune écriture ne ramène l'ancienne version à autre chose que ce qu'elle était : seule la
+    // tentative gardée d'expiration (0 ligne) l'a visée.
+    const cibles = h.txDevisUpdateMany.mock.calls.filter(
+      (c) => (c[0] as { where: { id: string } }).where.id === "ancien",
+    );
+    expect(cibles).toHaveLength(1);
   });
 });

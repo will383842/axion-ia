@@ -39,3 +39,9 @@ dbdfd2dec2a5386019804ca8b7c6229e22e8178d:src/server/qualiopi/devis/confirmation-
 # oppositions-reseau.spec.ts (aucune clé réelle). Remplacée par "t".repeat(48) au commit suivant ;
 # le commit d'origine porte toujours la chaîne et l'historique ne se réécrit pas.
 55b0e21a4b8ba5cb3f61de68e0a2f316e09b1598:src/server/guides-reseau/__tests__/oppositions-reseau.spec.ts:generic-api-key:495
+
+# PR #2071 (aperçus apporteurs) : FAUX POSITIF, URL d'opposition factice d'un test (jeton inventé, aucune clé réelle).
+# Remplacée par une construction à l'exécution au commit suivant ; les deux commits d'origine portent
+# toujours le littéral et l'historique ne se réécrit pas.
+78b097ff6db51ad7f963b881ed955caaac1fdac7:src/features/admin-rendezvous/__tests__/l-issue-apporteur-s-enregistre-et-n-envoie-qu-une-fois.spec.ts:generic-api-key:468
+53f86baba5c6910a32f40cba3d428368709ff8e0:src/features/admin-rendezvous/__tests__/l-issue-apporteur-s-enregistre-et-n-envoie-qu-une-fois.spec.ts:generic-api-key:473
