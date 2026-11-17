@@ -39,7 +39,10 @@ export interface EmailOutboxItemProps {
     sujet?: string;
     messagePersonnalise?: string;
   }) => Promise<ActionResult<{ id: string; envoye: boolean }>>;
-  refuserAction: (input: { id: string; motif: string }) => Promise<ActionResult<{ id: string }>>;
+  refuserAction: (input: {
+    id: string;
+    motif: string;
+  }) => Promise<ActionResult<{ id: string; jetonsRevoques?: number }>>;
 }
 
 export function EmailOutboxItem({
