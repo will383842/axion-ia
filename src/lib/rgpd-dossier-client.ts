@@ -693,20 +693,25 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
-      emailsEcritsALaMain: emailsManuels.map((e) => ({
-        creeLe: e.creeLe,
-        envoyeLe: e.envoyeLe,
-        statut: e.statut,
-        objet: e.objet,
-        corps: e.statut === "brouillon" ? e.corpsSource : e.corpsTexte,
-        piecesJointes: piecesManuelles
-          .filter((x) => x.emailManuelId === e.id)
-          .map((x) => ({
-            nomFichier: x.nomFichier,
-            format: x.format,
-            tailleOctets: x.tailleOctets,
-          })),
-      })),
+      emailsEcritsALaMain: emailsManuels.map((e) => {
+        // Le texte écrit par le fondateur (`corpsSource`, NOT NULL) quand il n'y a pas de rendu texte ;
+        // une ligne neutralisée (vide) rend `null`.
+        const brut = e.statut === "brouillon" ? e.corpsSource : (e.corpsTexte ?? e.corpsSource);
+        return {
+          creeLe: e.creeLe,
+          envoyeLe: e.envoyeLe,
+          statut: e.statut,
+          objet: e.objet,
+          corps: brut === "" ? null : brut,
+          piecesJointes: piecesManuelles
+            .filter((x) => x.emailManuelId === e.id)
+            .map((x) => ({
+              nomFichier: x.nomFichier,
+              format: x.format,
+              tailleOctets: x.tailleOctets,
+            })),
+        };
+      }),
       tachesVousConcernant: taches.map((t) => ({
         intitule: t.intitule,
         echeanceLe: t.echeanceLe,

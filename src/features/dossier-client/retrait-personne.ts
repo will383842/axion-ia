@@ -192,7 +192,15 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
         ]).then(([a, b]) => a + b),
     // E-mails écrits à la main vers l'une de ses adresses (par l'empreinte : une ligne sans
     // `contact_id`, ex. entité `CalendlyEvent`, échappe à la clé étrangère). Fiche F1b.
-    hashes.length === 0 ? 0 : tx.emailManuel.count({ where: { destinataireHash: { in: hashes } } }),
+    // Sans ceux que le scan des clés étrangères voit déjà (même `contact_id`) : pas de doublon.
+    hashes.length === 0
+      ? 0
+      : tx.emailManuel.count({
+          where: {
+            destinataireHash: { in: hashes },
+            OR: [{ contactId: null }, { contactId: { not: contactId } }],
+          },
+        }),
   ]);
   if (participations > 0) {
     bloquants.push(`${participations} participation(s) à un rendez-vous (par son adresse)`);
@@ -215,7 +223,7 @@ async function calculer(tx: Tx, contactId: string): Promise<BilanRetraitPersonne
   if (envois > 0) bloquants.push(`${envois} e-mail(s) parti(s) ou en cours vers cette personne`);
   if (emailsManuels > 0) {
     bloquants.push(
-      `${emailsManuels} e-mail(s) écrit(s) à la main vers cette personne : à traiter par le fondateur`,
+      `${emailsManuels} e-mail(s) écrit(s) à la main vers une de ses adresses, sans lien avec sa fiche personne : à traiter par le fondateur`,
     );
   }
   if (enAttente > 0) {

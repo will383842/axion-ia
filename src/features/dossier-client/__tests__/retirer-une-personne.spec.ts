@@ -323,9 +323,15 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
 
   it("fiche F1b — e-mail écrit à la main : compté par l'EMPREINTE de ses adresses, refus lisible", async () => {
     e.comptes.emailsManuels = 3;
-    await refuse("3 e-mail(s) écrit(s) à la main vers cette personne : à traiter par le fondateur");
+    await refuse(
+      "3 e-mail(s) écrit(s) à la main vers une de ses adresses, sans lien avec sa fiche personne : à traiter par le fondateur",
+    );
+    // Sans les lignes déjà vues par la clé `contact_id` (pas de double bloquant).
     expect(tx.emailManuel.count).toHaveBeenCalledWith({
-      where: { destinataireHash: { in: ["h1"] } },
+      where: {
+        destinataireHash: { in: ["h1"] },
+        OR: [{ contactId: null }, { contactId: { not: PID } }],
+      },
     });
   });
 

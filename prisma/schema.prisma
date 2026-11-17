@@ -15819,6 +15819,8 @@ enum CibleEffacement {
   /// ADR 0063 — document d'un projet du pilote supprimé avec son contenu
   /// (`documents_projet.id`), sous le drapeau d'effacement.
   documents_projet
+  /// Lot I4, F1b — e-mail écrit à la main neutralisé (`emails_manuels.id`, ou `<id>:contenu`).
+  emails_manuels
 
   @@map("cible_effacement")
 }

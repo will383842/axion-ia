@@ -29,6 +29,8 @@ async function main(): Promise<void> {
   console.log(`Mode                         : ${appliquer ? "RÉ-EFFACEMENT" : "À BLANC"}`);
   console.log(`Lignes du journal lues       : ${r.lues}`);
   console.log(`Cibles revenues (restaurées) : ${r.reappliquees}`);
+  console.log(`E-mails manuels illisibles   : ${r.emailsManuelsIllisibles}`);
+  console.log(`Personnes d'essai gardées    : ${r.personnesPiloteGardees}`);
   if (!appliquer && r.reappliquees > 0) {
     console.log("\nÀ blanc : rien n'a été écrit. Relancer avec --appliquer pour ré-effacer.");
   }

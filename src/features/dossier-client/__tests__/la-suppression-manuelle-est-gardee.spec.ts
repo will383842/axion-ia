@@ -409,10 +409,19 @@ describe("suppression manuelle depuis la console", () => {
     e.emailsManuels = 2;
     const { tx, base } = fabriquer();
     const b = await bilanSuppression("client", CID, base);
-    expect(b?.bloquants).toEqual(["2 e-mail(s) écrit(s) à la main lié(e)s"]);
-    // Les empreintes de TOUTES les adresses des contacts de la fiche, sans doublon.
+    expect(b?.bloquants).toEqual([
+      "2 e-mail(s) écrit(s) à la main vers une adresse de ces contacts, sans lien avec la fiche",
+    ]);
+    // Les empreintes de TOUTES les adresses des contacts de la fiche, sans doublon, SANS les lignes
+    // que le scan des clés étrangères voit déjà (même fiche, mêmes contacts) : pas de double bloquant.
     expect(tx.emailManuel.count).toHaveBeenCalledWith({
-      where: { destinataireHash: { in: ["h1", "h2"] } },
+      where: {
+        destinataireHash: { in: ["h1", "h2"] },
+        AND: [
+          { OR: [{ clientId: null }, { clientId: { not: CID } }] },
+          { OR: [{ contactId: null }, { contactId: { notIn: ["c1"] } }] },
+        ],
+      },
     });
     // Rien n'est supprimé : un bilan seul, puis un refus à la 2e étape.
     expect(e.appels).toEqual([]);

@@ -14,12 +14,13 @@
  *      remplacée par un pseudonyme chiffré, empreinte gardée, contenu vidé ; stagiaire : adresse
  *      masquée seulement ; `deleteFromR2` jamais appelé ; une autre personne n'est pas touchée ;
  *      idempotente ;
- *   3. PURGE DU PILOTE : refus lisible et AUCUNE ligne supprimée quand un e-mail manuel vise une
- *      fiche ou un contact du périmètre.
+ *   3. PURGE DU PILOTE : une personne d'essai visée par un e-mail manuel est GARDÉE et signalée,
+ *      la purge ne lève jamais ; un e-mail rattaché à la seule fiche ne change rien.
  *
  * Mutations qui font rougir : relire l'export sans la branche `destinataireHash` ou sans la branche
  * `contactId` ; remplacer `updateMany` par `deleteMany` dans la neutralisation ; appeler
- * `deleteFromR2` ; retirer le bloc de refus de `supprimerDonneesPilote`.
+ * `deleteFromR2` ; remettre le refus dans `supprimerDonneesPilote` ; ne plus basculer `en_file`/`echec` en `retenu` ;
+ * ne plus journaliser ; vider `rattachesAutreAdresse` sans l'option.
  */
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -41,6 +42,7 @@ import { decryptPii, encryptPii } from "../pii-crypto";
 import { exporterDossierClientPour } from "../rgpd-dossier-client";
 import {
   neutraliserEmailsManuelsPour,
+  MOTIF_EMAIL_MANUEL_NEUTRALISE,
   NOM_PIECE_JOINTE_EFFACE,
   OBJET_EMAIL_MANUEL_EFFACE,
   purgerPilote,
@@ -249,12 +251,19 @@ describe("export art. 15 des e-mails écrits à la main", () => {
     expect(r.emailsEcritsALaMain).toEqual([]);
   });
 
+  it("corpsTexte nul avec un rendu HTML présent : l'export rend le texte source ; jamais le HTML", async () => {
+    courriels.alice1["corpsTexte"] = null;
+    const r = await exporterDossierClientPour(ALICE);
+    const l = r.emailsEcritsALaMain.find((e) => e.objet === "Compte rendu");
+    expect(l?.corps).toBe("Bonjour Alice, voici le texte source.");
+  });
+
   it("un e-mail neutralisé est rendu sans contenu (objet effacé, corps nul)", async () => {
     await neutraliserEmailsManuelsPour(ALICE);
     const r = await exporterDossierClientPour(ALICE);
     const effaces = r.emailsEcritsALaMain.filter((e) => e.objet === OBJET_EMAIL_MANUEL_EFFACE);
     expect(effaces.length).toBeGreaterThan(0);
-    expect(effaces.every((e) => e.corps === null || e.corps === "")).toBe(true);
+    expect(effaces.every((e) => e.corps === null)).toBe(true);
   });
 });
 
@@ -351,19 +360,105 @@ describe("neutralisation (geste manuel du fondateur)", () => {
     ).toEqual(pjBrunoAvant);
   });
 
-  it("idempotente : même nombre, même pseudonyme, même état", async () => {
+  it("idempotente : une seconde passe ne modifie ni ne journalise rien", async () => {
     const r1 = await neutraliserEmailsManuelsPour(ALICE);
-    const apres1 = lignes().map((l) => ({
-      ...l,
-      destinataireChiffre: decryptPii(l["destinataireChiffre"] as string),
-    }));
+    expect(r1.emailsNeutralises).toBe(3);
+    const apres1 = structuredClone(lignes());
+    const journal1 = (base.tables["effacementJournal"] ?? []).length;
     const r2 = await neutraliserEmailsManuelsPour(ALICE);
-    const apres2 = lignes().map((l) => ({
-      ...l,
-      destinataireChiffre: decryptPii(l["destinataireChiffre"] as string),
-    }));
-    expect(r2).toEqual(r1);
-    expect(apres2).toEqual(apres1);
+    expect(r2.emailsNeutralises).toBe(0);
+    expect(r2.clesStockage).toEqual(r1.clesStockage);
+    expect(lignes()).toEqual(apres1);
+    expect((base.tables["effacementJournal"] ?? []).length).toBe(journal1);
+    expect(d.supprimerR2).not.toHaveBeenCalled();
+  });
+
+  it("(a) ligne non stagiaire : motif, in_reply_to, references vidés, id_relais masqué ; stagiaire : masqués, non vidés", async () => {
+    const commun = {
+      motif: `retenu pour ${ALICE}`,
+      inReplyTo: `<fil-${ALICE}@x>`,
+      referencesEntete: `<a-${ALICE}@x>`,
+      idRelais: `relais-${ALICE}`,
+    };
+    const simple = email({ ...commun, statut: "envoye" });
+    const stagiaire = email({ ...commun, entiteType: "Trainee", entiteId: "s1", statut: "envoye" });
+    base.tables["emailManuel"]?.push(simple, stagiaire);
+    await neutraliserEmailsManuelsPour(ALICE);
+    expect(parObjetOuId(simple["id"])).toMatchObject({
+      motif: null,
+      inReplyTo: null,
+      referencesEntete: null,
+      idRelais: "relais-[adresse masquée]",
+    });
+    const t = parObjetOuId(stagiaire["id"]);
+    expect(t["motif"]).toBe("retenu pour [adresse masquée]");
+    expect(t["inReplyTo"]).toBe("<fil-[adresse masquée]@x>");
+    expect(t["referencesEntete"]).toBe("<a-[adresse masquée]@x>");
+    expect(t["idRelais"]).toBe("relais-[adresse masquée]");
+  });
+
+  it("(b) `en_file` et `echec` passent `retenu` avec le motif ; un brouillon reste brouillon ; le rendu reste non NULL", async () => {
+    const enFile = email({ statut: "en_file", envoyeLe: null });
+    const echec = email({ statut: "echec", envoyeLe: null });
+    base.tables["emailManuel"]?.push(enFile, echec);
+    await neutraliserEmailsManuelsPour(ALICE);
+    for (const l of [enFile, echec]) {
+      expect(parObjetOuId(l["id"])).toMatchObject({
+        statut: "retenu",
+        motif: MOTIF_EMAIL_MANUEL_NEUTRALISE,
+        corpsHtml: "",
+      });
+    }
+    expect(parObjetOuId(courriels.brouillon["id"])["statut"]).toBe("brouillon");
+    expect(parObjetOuId(courriels.alice1["id"])["statut"]).toBe("envoye");
+  });
+
+  it("(c) une ligne de journal `emails_manuels` / art17 par ligne modifiée", async () => {
+    await neutraliserEmailsManuelsPour(ALICE);
+    const journal = base.tables["effacementJournal"] ?? [];
+    expect(
+      journal.every((j) => j["tableCible"] === "emails_manuels" && j["motif"] === "art17"),
+    ).toBe(true);
+    expect(journal.map((j) => j["ligneId"]).sort()).toEqual(
+      [courriels.alice1, courriels.alice2, courriels.brouillon]
+        .map((l) => l["id"] as string)
+        .sort(),
+    );
+  });
+
+  it("(d) un e-mail rattaché à la fiche mais envoyé à une autre adresse est listé et laissé intact", async () => {
+    const avant = structuredClone(parObjetOuId(courriels.alice3["id"]));
+    const r = await neutraliserEmailsManuelsPour(ALICE);
+    expect(r.rattachesAutreAdresse).toEqual([courriels.alice3["id"]]);
+    expect(parObjetOuId(courriels.alice3["id"])).toEqual(avant);
+  });
+
+  it("(d) avec l'option : contenu vidé, adresse du tiers gardée, journal `<id>:contenu`", async () => {
+    const tiers = email({
+      contactId: CONTACT_ALICE,
+      destinataireChiffre: encryptPii("assistante@exemple-fictif.fr"),
+      destinataireHash: h("assistante@exemple-fictif.fr"),
+      destinataireNom: "L'assistante",
+      statut: "en_file",
+      envoyeLe: null,
+      objet: "Pour Alice via son assistante",
+    });
+    base.tables["emailManuel"]?.push(tiers);
+    const r = await neutraliserEmailsManuelsPour(ALICE, { aussiRattachesAutreAdresse: true });
+    expect(r.rattachesAutreAdresse).toEqual(expect.arrayContaining([tiers["id"]]));
+    const l = parObjetOuId(tiers["id"]);
+    expect(l).toMatchObject({
+      objet: OBJET_EMAIL_MANUEL_EFFACE,
+      corpsSource: "",
+      corpsTexte: null,
+      destinataireNom: "L'assistante",
+      statut: "retenu",
+      motif: MOTIF_EMAIL_MANUEL_NEUTRALISE,
+    });
+    expect(decryptPii(l["destinataireChiffre"] as string)).toBe("assistante@exemple-fictif.fr");
+    expect((base.tables["effacementJournal"] ?? []).map((j) => j["ligneId"])).toContain(
+      `${tiers["id"] as string}:contenu`,
+    );
     expect(d.supprimerR2).not.toHaveBeenCalled();
   });
 
@@ -380,6 +475,7 @@ describe("neutralisation (geste manuel du fondateur)", () => {
       emailsNeutralises: 0,
       piecesJointesNeutralisees: 0,
       clesStockage: [],
+      rattachesAutreAdresse: [],
     });
     expect(
       (await neutraliserEmailsManuelsPour("personne@exemple-fictif.fr")).emailsNeutralises,
@@ -388,14 +484,18 @@ describe("neutralisation (geste manuel du fondateur)", () => {
   });
 });
 
-describe("purge du pilote : refus lisible quand un e-mail manuel existe", () => {
+describe("purge du pilote : une personne d'essai visée par un e-mail manuel est gardée", () => {
   function pilote(manuels: Ligne[]) {
     const fictif = fiche({ raisonSociale: "Atelier Test Fictif" });
     const contact = id(7);
+    const autre = id(6);
     const b = dossierEnMemoire({
       client: [fictif],
       clientTestInterne: [{ clientId: fictif["id"] }],
-      clientContact: [{ id: contact, clientId: fictif["id"], nom: "Testeur" }],
+      clientContact: [
+        { id: contact, clientId: fictif["id"], nom: "Testeur" },
+        { id: autre, clientId: fictif["id"], nom: "Autre testeur" },
+      ],
       projet: [{ id: id(8), clientId: fictif["id"], numero: "AXI-PRJ-2026-901", titre: "p" }],
       emailManuel: manuels.map((m) => ({
         ...m,
@@ -404,29 +504,36 @@ describe("purge du pilote : refus lisible quand un e-mail manuel existe", () => 
       })),
     });
     d.client = b.client;
-    return b;
+    return { b, contact, autre };
   }
-  const comptes = (b: ReturnType<typeof dossierEnMemoire>) =>
-    Object.fromEntries(Object.entries(b.tables).map(([k, v]) => [k, v.length]));
 
-  it.each([
-    ["rattaché à la fiche", { clientId: "FICHE" }],
-    ["rattaché à une personne de la fiche", { contactId: "CONTACT" }],
-  ])("un e-mail manuel %s : erreur lisible, tout est annulé", async (_quoi, rattache) => {
-    const b = pilote([email(rattache)]);
-    const avant = comptes(b);
-    await expect(purgerPilote()).rejects.toThrow(
-      "purge refusée : 1 e-mail(s) écrit(s) à la main, à traiter par le fondateur",
+  it("un e-mail manuel vers une personne d'essai : la purge réussit, la personne est gardée et absente du journal, les autres partent", async () => {
+    const { b, contact, autre } = pilote([email({ contactId: "CONTACT" })]);
+    const r = await purgerPilote();
+    expect(r).toMatchObject({ personnes: 1, personnesGardees: 1, projets: 1 });
+    const restantes = (b.tables["clientContact"] ?? []).map((c) => c["id"]);
+    expect(restantes).toEqual([contact]);
+    const journalContacts = (b.tables["effacementJournal"] ?? []).filter(
+      (j) => j["tableCible"] === "client_contacts",
     );
-    expect(comptes(b)).toEqual(avant);
+    expect(journalContacts.map((j) => j["ligneId"])).toEqual([autre]);
+    // La ligne e-mail est inchangée et toujours rattachée.
     expect(b.tables["emailManuel"]).toHaveLength(1);
-    expect(b.tables["effacementJournal"] ?? []).toHaveLength(0);
+    expect(b.tables["emailManuel"]?.[0]?.["contactId"]).toBe(contact);
+  });
+
+  it("un e-mail rattaché seulement par `client_id` à une fiche d'essai : la purge se déroule comme avant", async () => {
+    const { b } = pilote([email({ clientId: "FICHE" })]);
+    const r = await purgerPilote();
+    expect(r).toMatchObject({ personnes: 2, personnesGardees: 0, projets: 1 });
+    expect(b.tables["clientContact"] ?? []).toHaveLength(0);
+    expect(b.tables["emailManuel"]).toHaveLength(1);
   });
 
   it("un e-mail manuel d'une VRAIE fiche ne bloque pas : la purge se comporte comme avant", async () => {
-    const b = pilote([email({ clientId: CLIENT, contactId: CONTACT_ALICE })]);
+    const { b } = pilote([email({ clientId: CLIENT, contactId: CONTACT_ALICE })]);
     const r = await purgerPilote();
-    expect(r).toMatchObject({ personnes: 1, projets: 1 });
+    expect(r).toMatchObject({ personnes: 2, projets: 1, personnesGardees: 0 });
     expect(b.tables["emailManuel"]).toHaveLength(1);
   });
 });
