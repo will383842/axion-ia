@@ -275,7 +275,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     },
   });
   const signeParClient = clientASigne && !organismeASigne;
-  const signeDesDeuxParties = clientASigne && organismeASigne && devis.statut === "envoye";
+  // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
+  // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
+  const signeDesDeuxParties =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+  const repriseParRelance =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
@@ -796,6 +801,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           clientASigne={clientASigne}
           signeParClient={signeParClient}
           signeDesDeuxParties={signeDesDeuxParties}
+          repriseParRelance={repriseParRelance}
         />
         <DevisSuiviLivraison
           devisId={devis.id}

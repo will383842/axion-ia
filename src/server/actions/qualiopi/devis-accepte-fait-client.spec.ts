@@ -183,7 +183,7 @@ describe("acceptDevisAction", () => {
     expect(h.log).not.toHaveBeenCalled();
   });
 
-  it("devis à formules AVEC formule retenue : l'acceptation reste possible", async () => {
+  it("devis à formules dont la formule est retenue, sans pièce signée en ligne : l'acceptation reste possible", async () => {
     h.tx.devis.findUnique.mockResolvedValue({
       statut: "envoye",
       offreSha256: "a".repeat(64),
@@ -263,6 +263,12 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
       expect(h.emettre).not.toHaveBeenCalled();
       expect(h.monter).not.toHaveBeenCalled();
       expect(h.log).not.toHaveBeenCalled();
+    });
+
+    it("🔴 devis classique envoyé, signé par le client ET contresigné (non révoquées) : l'acceptation aboutit", async () => {
+      h.tx.devis.findUnique.mockResolvedValue(signe([{ partie: "client" }, { partie: "axionia" }]));
+      expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
+      expect(h.tx.devis.updateMany).toHaveBeenCalledOnce();
     });
 
     it("contre-témoins : pièce annulée, ou aucune signature client → l'acceptation à la main reste possible", async () => {

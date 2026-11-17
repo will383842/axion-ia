@@ -59,6 +59,12 @@ export interface DevisLifecycleButtonsProps {
   signeParClient?: boolean;
   /** Les deux parties ont signé mais le statut est encore « envoyé » : l'acceptation est à finir. */
   signeDesDeuxParties?: boolean;
+  /**
+   * Devis À FORMULES signé des deux parties, resté « envoyé » : la reprise se fait par le bloc
+   * « relancer l'acceptation » de la fiche. Aucune action de cycle de vie n'est proposée ici
+   * (`acceptDevisAction` refuserait de toute façon).
+   */
+  repriseParRelance?: boolean;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -83,6 +89,7 @@ export function DevisLifecycleButtons({
   clientASigne = false,
   signeParClient = false,
   signeDesDeuxParties = false,
+  repriseParRelance = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -354,7 +361,7 @@ export function DevisLifecycleButtons({
             Cliquez sur « Marquer accepté » pour la finir.
           </p>
         )}
-        {statut === "envoye" && !signeParClient && (
+        {statut === "envoye" && !signeParClient && !repriseParRelance && (
           <>
             <button
               type="button"
@@ -379,7 +386,7 @@ export function DevisLifecycleButtons({
           </>
         )}
 
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && (
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
           <button
             type="button"
             onClick={handleResend}
@@ -390,7 +397,7 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Renvoyer par email"}
           </button>
         )}
-        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && (
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
           <p
             data-testid="avertissement-renvoi-lien"
             className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"

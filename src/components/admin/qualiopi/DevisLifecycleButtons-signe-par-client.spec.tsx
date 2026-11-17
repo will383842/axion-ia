@@ -50,6 +50,19 @@ describe("DevisLifecycleButtons — signé par le client", () => {
     expect(screen.queryByTestId("note-signe-par-client")).toBeNull();
   });
 
+  it("🔴 envoyé À FORMULES signé des deux parties (reprise par relance) : ni note, ni accepter, ni refuser, ni renvoyer, ni corriger", () => {
+    render(<DevisLifecycleButtons devisId="d" statut="envoye" clientASigne repriseParRelance />);
+    expect(screen.queryByRole("button", ACCEPTER)).toBeNull();
+    expect(screen.queryByRole("button", REFUSER)).toBeNull();
+    expect(screen.queryByRole("button", RENVOYER)).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: /Corriger et renvoyer|nouvelle version/ }),
+    ).toBeNull();
+    expect(screen.queryByTestId("avertissement-renvoi-lien")).toBeNull();
+    expect(screen.queryByTestId("note-signe-des-deux-parties")).toBeNull();
+    expect(screen.queryByTestId("note-signe-par-client")).toBeNull();
+  });
+
   it("accepté : plus de « Renvoyer par email », « Transformer en convention » reste", () => {
     render(<DevisLifecycleButtons devisId="d" statut="accepte" />);
     expect(screen.queryByRole("button", RENVOYER)).toBeNull();
