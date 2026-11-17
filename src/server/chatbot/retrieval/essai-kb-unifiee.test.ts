@@ -61,6 +61,52 @@ describe("essai à blanc", () => {
     expect(montantsHorsJourneeIa("Audit à 2 900 € et 1490 euros")).toEqual(["2 900 €"]);
   });
 
+  it("fiche piégée (montant étranger) : signalée dans le rapport, hors confiance, aucune écriture", async () => {
+    const piegee: RetrievedChunk = {
+      ...CHUNKS[0]!,
+      id: "ke:audit",
+      sourceType: "knowledge_entry",
+      sourceRef: "audit",
+      contenu: "Audit à 2 900 € HT.",
+    };
+    const bonne: RetrievedChunk = {
+      ...piegee,
+      id: "ke:ok",
+      sourceRef: "ok",
+      contenu: "1 490 € HT.",
+    };
+    const ke = vi.fn().mockResolvedValue([piegee, bonne]);
+    const hybrid = vi.fn().mockResolvedValue(CHUNKS);
+    const [r] = await executerEssaiKbUnifiee({
+      tenantId: "t",
+      hybrid,
+      knowledgeEntry: ke,
+      questions: ["prix"],
+    });
+    expect(ke).toHaveBeenCalledWith("prix", { conserverHorsGrille: true });
+    expect(r!.fiches.nb).toBe(1);
+    expect(r!.fiches.refs).toEqual(["knowledge_entry:ok"]);
+    expect(r!.fiches.montantsHorsGrille).toEqual(["2 900 €"]);
+    const md = rapportMarkdown([r!], "2026-11-16");
+    expect(md).toContain("Montants hors Journée IA dans les fiches : 2 900 €");
+    expect(md).toContain("autre que 1 490 € : 1");
+  });
+
+  it("fusion de l'essai : une fiche déjà présente en chunk n'est pas comptée retenue", async () => {
+    const fiche: RetrievedChunk = {
+      ...CHUNKS[0]!,
+      id: "ke:prix-journee-ia",
+      sourceType: "knowledge_entry",
+    };
+    const [r] = await executerEssaiKbUnifiee({
+      tenantId: "t",
+      hybrid: vi.fn().mockResolvedValue(CHUNKS),
+      knowledgeEntry: vi.fn().mockResolvedValue([fiche]),
+      questions: ["q"],
+    });
+    expect(r!.fichesRetenues).toBe(0);
+  });
+
   it("le script d'essai n'émet aucune écriture (seul le SET lecture seule)", () => {
     const src = readFileSync("scripts/chatbot-kb-unifier-essai.ts", "utf8");
     const sansCommentaires = src.replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
@@ -114,6 +160,6 @@ describe("essai à blanc", () => {
     expect(md).toContain("service externe de reclassement");
     expect(md).toContain("confiance normalisée de 0,5 (> 0,35)");
     expect(md).toContain("30 appels d'embedding OpenAI");
-    expect(md).toContain("sans le filtre des doublons");
+    expect(md).toContain("filtre des doublons de la recherche réelle");
   });
 });

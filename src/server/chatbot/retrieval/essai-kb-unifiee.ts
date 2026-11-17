@@ -18,6 +18,7 @@ import {
 } from "@/server/chatbot/retrieval/hybrid-search";
 import {
   montantsHorsJourneeIa,
+  sansDoublons,
   type chercherDansKnowledgeEntry,
 } from "@/server/chatbot/retrieval/knowledge-entry-search";
 import { DEFAULT_TENANT_SETTINGS, RERANK_TOP_N } from "@/server/chatbot/constants";
@@ -75,14 +76,20 @@ export interface ResultatQuestion {
   readonly fichesRetenues: number;
 }
 
-function resumer(chunks: ReadonlyArray<RetrievedChunk>, seuil: number): ResultatSource {
+function resumer(
+  chunks: ReadonlyArray<RetrievedChunk>,
+  seuil: number,
+  ecartees: ReadonlyArray<RetrievedChunk> = [],
+): ResultatSource {
   const conf = assessConfidence(chunks, seuil);
   return {
     nb: chunks.length,
     confiance: Math.round(conf.score * 100) / 100,
     escalade: !conf.confident,
     refs: chunks.map((c) => `${c.sourceType}:${c.sourceRef}`),
-    montantsHorsGrille: [...new Set(chunks.flatMap((c) => montantsHorsJourneeIa(c.contenu)))],
+    montantsHorsGrille: [
+      ...new Set([...chunks, ...ecartees].flatMap((c) => montantsHorsJourneeIa(c.contenu))),
+    ],
   };
 }
 
@@ -114,13 +121,23 @@ export async function executerEssaiKbUnifiee(deps: EssaiDeps): Promise<ResultatQ
       brutsChunks = r;
       return resumer(r, seuil);
     }, enErreur);
-    const fiches = await deps.knowledgeEntry(question).then((r) => {
-      brutsFiches = r;
-      return resumer(r, seuil);
+    // Les fiches au montant étranger, que le chatbot écarte, sont demandées ici pour
+    // être SIGNALÉES ; elles ne comptent ni dans les passages ni dans la confiance.
+    const fiches = await deps.knowledgeEntry(question, { conserverHorsGrille: true }).then((r) => {
+      const gardees: RetrievedChunk[] = [];
+      const ecartees: RetrievedChunk[] = [];
+      for (const c of r) {
+        (montantsHorsJourneeIa(c.contenu).length === 0 ? gardees : ecartees).push(c);
+      }
+      brutsFiches = gardees;
+      return resumer(gardees, seuil, ecartees);
     }, enErreur);
-    const fusion = reciprocalRankFusion<RetrievedChunk>([brutsFiches, brutsChunks], {
-      topK: RERANK_TOP_N,
-    });
+    const fusion = reciprocalRankFusion<RetrievedChunk>(
+      [sansDoublons(brutsFiches, brutsChunks), brutsChunks],
+      {
+        topK: RERANK_TOP_N,
+      },
+    );
     out.push({
       question,
       chunks,
@@ -151,7 +168,7 @@ export function rapportMarkdown(resultats: ReadonlyArray<ResultatQuestion>, date
     "À lire avant les chiffres :",
     "- Le premier passage d'une seule liste a une confiance normalisée de 0,5 (> 0,35) : « escalade » veut dire « aucun résultat », pas « résultat peu fiable ».",
     "- Sans `--fts-seul`, l'essai fait jusqu'à 30 appels d'embedding OpenAI.",
-    "- Le compte « Fiches retenues » est fait sans le filtre des doublons de la PR #1908.",
+    "- Le compte « Fiches retenues » applique le filtre des doublons de la recherche réelle (fiche déjà couverte par un chunk).",
     "- Le compte « Fiches retenues » vient d'un classement interne (fusion RRF). En production, un service externe de reclassement choisit les 5 passages : le compte réel peut différer.",
     "",
     `Interrupteur \`CHATBOT_KB_UNIFIED\` : non modifié par l'essai.`,
