@@ -462,6 +462,49 @@ describe("neutralisation (geste manuel du fondateur)", () => {
     expect(d.supprimerR2).not.toHaveBeenCalled();
   });
 
+  it("🔴 écrit depuis la fiche de A, envoyé à B : A puis B neutralise aussi l'adresse et le nom de B ; seconde passe sur B sans écriture ni journal", async () => {
+    const TIERS = "assistante@exemple-fictif.fr";
+    const tiers = email({
+      id: id(7),
+      contactId: CONTACT_ALICE,
+      destinataireChiffre: encryptPii(TIERS),
+      destinataireHash: h(TIERS),
+      destinataireNom: "L'assistante",
+      statut: "en_file",
+      envoyeLe: null,
+      objet: "Pour Alice via son assistante",
+    });
+    base.tables["emailManuel"]?.push(tiers);
+    base.tables["emailManuelPieceJointe"]?.push(
+      piece(tiers["id"], "r2/pj/tiers", "devis-alice-pour-assistante.pdf"),
+    );
+    // 1. Effacement de A avec l'option : contenu vidé, adresse et nom de B gardés ; pièces : nom neutralisé.
+    const rA = await neutraliserEmailsManuelsPour(ALICE, { aussiRattachesAutreAdresse: true });
+    expect(rA.clesStockage).toContain("r2/pj/tiers");
+    expect(
+      (base.tables["emailManuelPieceJointe"] ?? []).find((x) => x["cleStockage"] === "r2/pj/tiers"),
+    ).toMatchObject({ nomFichier: NOM_PIECE_JOINTE_EFFACE });
+    expect(parObjetOuId(tiers["id"])).toMatchObject({
+      objet: OBJET_EMAIL_MANUEL_EFFACE,
+      destinataireNom: "L'assistante",
+    });
+    // 2. Plus tard, B demande l'effacement : la ligne n'est PAS sautée.
+    const rB = await neutraliserEmailsManuelsPour(TIERS);
+    expect(rB.emailsNeutralises).toBe(1);
+    const l = parObjetOuId(tiers["id"]);
+    expect(l["destinataireNom"]).toBeNull();
+    expect(decryptPii(l["destinataireChiffre"] as string)).toBe(`erased:${h(TIERS)}@erased.local`);
+    expect(
+      (base.tables["effacementJournal"] ?? []).filter((j) => j["ligneId"] === tiers["id"]),
+    ).toHaveLength(1);
+    // 3. Seconde passe sur B : ni écriture ni journal.
+    const avant = structuredClone(lignes());
+    const journal1 = (base.tables["effacementJournal"] ?? []).length;
+    expect((await neutraliserEmailsManuelsPour(TIERS)).emailsNeutralises).toBe(0);
+    expect(lignes()).toEqual(avant);
+    expect((base.tables["effacementJournal"] ?? []).length).toBe(journal1);
+  });
+
   it("par la 2e adresse de la personne : ses lignes de cette empreinte seulement", async () => {
     const r = await neutraliserEmailsManuelsPour("adresse.inconnue@exemple-fictif.fr");
     expect(r.emailsNeutralises).toBe(1);

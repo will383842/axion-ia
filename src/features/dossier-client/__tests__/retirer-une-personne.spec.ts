@@ -4,7 +4,7 @@
  * garder, trace sans contenu. Base SIMULÉE : rien n'est supprimé pour de vrai.
  */
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 
 import {
   bilanRetraitPersonne,
@@ -339,6 +339,20 @@ describe("refus : la personne est liée à ce qu'on ne doit pas perdre", () => {
     // Le catalogue lit la clé étrangère `emails_manuels.contact_id` : aucun comptage ad hoc.
     e.fks = [{ table: "emails_manuels", colonne: "contact_id", n: 2 }];
     await refuse("2 e-mail(s) écrit(s) à la main lié(e)s");
+  });
+
+  it("fiche F1b — une ligne rattachée par clé ET par empreinte ne donne qu'UN seul bloquant", async () => {
+    e.fks = [{ table: "emails_manuels", colonne: "contact_id", n: 1 }];
+    // La ligne existe aussi par empreinte : elle n'est comptée que si le filtre ne l'exclut pas.
+    (tx.emailManuel.count as unknown as Mock).mockImplementation(
+      async (a: { where: Record<string, unknown> }) => (a.where["OR"] === undefined ? 1 : 0),
+    );
+    await refuse("1 e-mail(s) écrit(s) à la main lié(e)s");
+    const r = await preparerRetraitPersonne(
+      { contactId: PID, clientId: CID, acteurId: ADMIN, confirmation: "EFFACER" },
+      base,
+    );
+    expect(!r.ok && r.motif).not.toContain("sans lien avec sa fiche personne");
   });
 
   it("fiche F1b — un e-mail écrit à la main apparu APRÈS la 1re étape bloque la 2e : rien supprimé", async () => {

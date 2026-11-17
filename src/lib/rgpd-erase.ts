@@ -1226,15 +1226,19 @@ function contenuDejaVide(l: LigneEmailManuelANeutraliser): boolean {
 }
 
 /**
- * Déjà neutralisée ? Non stagiaire (ou mode « contenu ») : le contenu est vide. Stagiaire en mode
- * « destinataire » : l'adresse est déjà le pseudonyme.
+ * Déjà neutralisée ? Mode « contenu » : le contenu est vide. Mode « destinataire » : l'adresse est
+ * déjà le pseudonyme ET (hors stagiaire) le contenu est vide.
  */
 function emailManuelDejaNeutralise(
   l: LigneEmailManuelANeutraliser,
   mode: "destinataire" | "contenu",
 ): boolean {
-  if (mode === "contenu" || l.entiteType !== "Trainee") return contenuDejaVide(l);
-  return adresseDeLaLigne(l)?.startsWith("erased:") === true;
+  if (mode === "contenu") return contenuDejaVide(l);
+  const adresseEffacee = adresseDeLaLigne(l)?.startsWith("erased:") === true;
+  // Mode « destinataire » : un contenu déjà vidé (par le mode « contenu », pour une autre personne)
+  // ne suffit pas, l'adresse et le nom du destinataire restent à neutraliser.
+  if (l.entiteType !== "Trainee") return contenuDejaVide(l) && adresseEffacee;
+  return adresseEffacee;
 }
 
 /**
@@ -1398,6 +1402,7 @@ export async function neutraliserEmailsManuelsPour(
               where: { contactId: { in: ficheIds }, destinataireHash: { not: empreinte } },
               select: SELECTION_EMAIL_MANUEL,
             });
+      let piecesContenu: { cleStockage: string }[] = [];
       if (options.aussiRattachesAutreAdresse === true && autres.length > 0) {
         const { modifies: contenus } = await neutraliserLignesEmailsManuels(
           tx,
@@ -1411,11 +1416,23 @@ export async function neutraliserEmailsManuelsPour(
           contenus.map((i) => `${i}:contenu`),
           "art17",
         );
+        // Pièces jointes : même traitement que le mode « destinataire » (nom neutralisé, clés rendues).
+        if (contenus.length > 0) {
+          piecesContenu = await tx.emailManuelPieceJointe.findMany({
+            where: { emailManuelId: { in: contenus } },
+            select: { cleStockage: true },
+          });
+          await tx.emailManuelPieceJointe.updateMany({
+            where: { emailManuelId: { in: contenus } },
+            data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+          });
+        }
       }
+      const toutesPieces = [...pieces, ...piecesContenu];
       return {
         emailsNeutralises: modifies.length,
-        piecesJointesNeutralisees: pieces.length,
-        clesStockage: pieces.map((x) => x.cleStockage),
+        piecesJointesNeutralisees: toutesPieces.length,
+        clesStockage: toutesPieces.map((x) => x.cleStockage),
         rattachesAutreAdresse: autres.map((l) => l.id),
       };
     },
@@ -2780,6 +2797,8 @@ export async function rejouerEffacements(
   ): Promise<{
     readonly destinataire: LigneEmailManuelANeutraliser[];
     readonly contenu: LigneEmailManuelANeutraliser[];
+    /** Adresse indéchiffrable : ligne intacte, comptée à part (jamais « à réappliquer »). */
+    readonly illisibles: number;
   }> => {
     const lire = async (idsLus: string[]): Promise<LigneEmailManuelANeutraliser[]> =>
       idsLus.length === 0
@@ -2788,13 +2807,15 @@ export async function rejouerEffacements(
             where: { id: { in: idsLus } },
             select: SELECTION_EMAIL_MANUEL,
           });
-    const destinataire = (await lire(emailsManuelsDestinataire)).filter(
+    const aTraiter = (await lire(emailsManuelsDestinataire)).filter(
       (l) => !emailManuelDejaNeutralise(l, "destinataire"),
     );
+    const destinataire = aTraiter.filter((l) => adresseDeLaLigne(l) !== null);
+    const illisibles = aTraiter.length - destinataire.length;
     const contenu = (await lire(emailsManuelsContenu)).filter(
       (l) => !emailManuelDejaNeutralise(l, "contenu"),
     );
-    return { destinataire, contenu };
+    return { destinataire, contenu, illisibles };
   };
 
   /** Personnes d'essai gardées : visées par un e-mail écrit à la main (jamais une levée). */
@@ -2915,8 +2936,7 @@ export async function rejouerEffacements(
     return {
       lues: lignes.length,
       reappliquees: await compter(prisma),
-      emailsManuelsIllisibles: emails.destinataire.filter((l) => adresseDeLaLigne(l) === null)
-        .length,
+      emailsManuelsIllisibles: emails.illisibles,
       personnesPiloteGardees: (await personnesGardees(prisma)).size,
     };
   }
@@ -2964,8 +2984,14 @@ export async function rejouerEffacements(
           : [...new Set([a.trim(), normalizeEmail(a)])].filter((x) => x !== "");
       },
     );
-    await neutraliserLignesEmailsManuels(tx, emails.contenu, "contenu", () => []);
-    const piecesIds = resultatDestinataire.modifies;
+    const resultatContenu = await neutraliserLignesEmailsManuels(
+      tx,
+      emails.contenu,
+      "contenu",
+      () => [],
+    );
+    // Pièces jointes : même traitement dans les deux modes (nom neutralisé).
+    const piecesIds = [...resultatDestinataire.modifies, ...resultatContenu.modifies];
     if (piecesIds.length > 0) {
       await tx.emailManuelPieceJointe.updateMany({
         where: { emailManuelId: { in: piecesIds } },
@@ -2975,7 +3001,7 @@ export async function rejouerEffacements(
     return {
       lues: lignes.length,
       reappliquees,
-      emailsManuelsIllisibles: resultatDestinataire.illisibles,
+      emailsManuelsIllisibles: emails.illisibles,
       personnesPiloteGardees: (await personnesGardees(tx)).size,
     };
   });

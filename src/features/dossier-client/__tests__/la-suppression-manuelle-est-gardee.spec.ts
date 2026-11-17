@@ -435,6 +435,18 @@ describe("suppression manuelle depuis la console", () => {
     expect(b?.bloquants).toEqual(["4 e-mail(s) écrit(s) à la main lié(e)s"]);
   });
 
+  it("fiche F1b — une ligne rattachée par clé ET par empreinte ne donne qu'UN seul bloquant", async () => {
+    e.fks["clients"]?.push({ table: "emails_manuels", colonne: "client_id" });
+    e.comptes = { emails_manuels: 1 };
+    const { tx, base } = fabriquer();
+    // La ligne existe aussi par empreinte : elle n'est comptée que si le filtre ne l'exclut pas.
+    tx.emailManuel.count.mockImplementation(async (a: { where: Ligne }) =>
+      a.where["AND"] === undefined ? 1 : 0,
+    );
+    const b = await bilanSuppression("client", CID, base);
+    expect(b?.bloquants).toEqual(["1 e-mail(s) écrit(s) à la main lié(e)s"]);
+  });
+
   it("fiche F1b — sans e-mail écrit à la main, le bilan est inchangé", async () => {
     const b = await bilanSuppression("client", CID, fabriquer().base);
     expect(b?.bloquants).toEqual([]);
