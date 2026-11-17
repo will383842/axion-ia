@@ -5,6 +5,9 @@
 -- Le worker ne lit ces tables qu'à réception d'un job « email-manuel », que seule
 -- l'application à jour émet, derrière EMAIL_MANUEL_ACTIF.
 -- Retour arrière : rollback.sql (mise de côté dans le schéma "retrait", AUCUN DROP).
+-- RESTRICT (et non SET NULL) vers clients et client_contacts : aucune suppression de fiche ou de
+-- personne ne peut détacher en silence un e-mail écrit à la main. Les suppressions de la console
+-- lisent toutes les clés du catalogue et refusent ; la purge du pilote refuse aussi (fiche F1b).
 CREATE TABLE "emails_manuels" (
     "id" UUID NOT NULL,
     "cle_idempotence" VARCHAR(64) NOT NULL,

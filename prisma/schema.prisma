@@ -5266,9 +5266,10 @@ model Client {
   tourDemandes             TourDemande[]             @relation("TourDemandeClient")
   /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
   rapportsAvantAudit       RapportAvantAudit[]
+  /// E-mails écrits à la main vers cette fiche (relation seule ; RESTRICT).
+  emailsManuels            EmailManuel[]            @relation("EmailManuelClient")
 
   @@index([statut])
-  emailsManuels EmailManuel[] @relation("EmailManuelClient")
 
   @@index([nafCode])
   @@index([opcoIdentifie])
