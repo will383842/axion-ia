@@ -188,7 +188,7 @@ export async function approuverEmailAction(
     // B2a — l'e-mail n'est jamais parti : même traitement qu'un refus manuel (lien masqué
     // dans la MÊME écriture, puis révocation du seul jeton du lien).
     const masque = masquerLienSignaturePayload(email.template, email.payload);
-    await prisma.emailOutbox.updateMany({
+    const refus = await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },
       data: {
         statut: "refuse",
@@ -197,7 +197,12 @@ export async function approuverEmailAction(
         ...(masque.modifie ? { payload: masque.payload as Prisma.InputJsonValue } : {}),
       },
     });
-    const rev = await revoquerLienNonEnvoye(email.template, email.payload, session.userId);
+    // Garde : on ne révoque que si CETTE écriture a bien refusé la ligne. Si elle rend 0
+    // (ligne déjà repartie ailleurs), le lien a pu être reçu : aucune révocation.
+    const rev =
+      refus.count === 1
+        ? await revoquerLienNonEnvoye(email.template, email.payload, session.userId)
+        : { revoques: 0, echec: false };
     await logQualiopiActivity({
       action: "email.outbox.retenu",
       targetType: "EmailOutbox",

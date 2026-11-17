@@ -232,6 +232,22 @@ describe("refus automatique « retenu » (liste de suppression)", () => {
     expect(h.revoquer).toHaveBeenCalledTimes(1);
     expect(h.revoquer).toHaveBeenCalledWith(expect.objectContaining({ tokenId: TOKEN }));
   });
+
+  it("(a) refus rendant count 0 (ligne déjà repartie ailleurs) : AUCUNE révocation, jetonsRevoques 0", async () => {
+    h.enqueue.mockResolvedValue({ enqueued: false, retenu: "rebond_dur" });
+    h.findUnique.mockResolvedValue(ligne("devis-envoi", { signatureUrl: LIEN }));
+    // Verrou a_valider → approuve : count 1 ; refus conditionnel sur « approuve » : count 0.
+    h.updateMany.mockResolvedValueOnce({ count: 1 }).mockResolvedValueOnce({ count: 0 });
+    const r = await approuverEmailAction({ id: ID });
+    expect("error" in r).toBe(true);
+    expect(h.ligne).not.toHaveBeenCalled();
+    expect(h.revoquer).not.toHaveBeenCalled();
+    const entree = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "email.outbox.retenu",
+    );
+    expect((entree?.[0] as { changes: Record<string, unknown> }).changes["jetonsRevoques"]).toBe(0);
+    expect(JSON.stringify(h.log.mock.calls)).not.toContain(FAUX);
+  });
 });
 
 describe("robustesse", () => {
