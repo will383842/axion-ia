@@ -118,12 +118,6 @@ export function DevisEnvoiEmail({
     ? p.libellesFormules.filter((x): x is string => typeof x === "string").join(" / ")
     : "";
 
-  const sal = p.salutation;
-  const bonjour =
-    typeof sal === "object" && sal !== null && !Array.isArray(sal)
-      ? salutation(sal, locale)
-      : t.intro(field(p, "clientNom", ""));
-
   return (
     <EmailLayout
       famille="B"
