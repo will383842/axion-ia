@@ -13,13 +13,14 @@
 // de l'app web et dotée de son PROPRE environnement. Les variables SMTP s'y
 // posent, et il faut REDEPLOY (pas Restart) pour qu'elles soient relues.
 
-import { Worker } from "bullmq";
+import { DelayedError, UnrecoverableError, Worker } from "bullmq";
 import { getBullConnectionOrThrow } from "../connection";
 import { captureWorkerError } from "../lib/sentry-worker";
 import { redactEmailValue } from "../lib/sanitize-job-data";
 import { sendEmail, verifyTransport } from "@/lib/email/client";
 import type { SendEmailParams } from "@/lib/email/client";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
+import * as gabarits from "@/lib/email/templates";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import {
   estJetonOpposition,
@@ -238,11 +239,29 @@ async function guideDejaServiApresCeJob(
   return envoi !== null;
 }
 
+/** Reports d'un job au gabarit inconnu : 9 × 10 min = 90 min, au-delà de la fenêtre app/worker (D8b). */
+export const REPORTS_GABARIT_INCONNU_MAX = 9;
+export const DELAI_REPORT_GABARIT_INCONNU_MS = 10 * 60_000;
+
+/**
+ * Lot S3 — ce worker connaît-il ce gabarit ? Tolérant : si le contrôle lui-même est indisponible
+ * (export absent), on rend « connu » et le chemin historique s'applique inchangé.
+ */
+function gabaritConnu(nom: string): boolean {
+  try {
+    const f = gabarits.estGabaritConnu;
+    return typeof f === "function" ? f(nom) : true;
+  } catch {
+    return true;
+  }
+}
+
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
     "emails",
-    async (job) => {
-      const { template, to, locale, payload, marketing, entityType, entityId } = job.data;
+    async (job, token) => {
+      const { to, locale, payload, marketing, entityType, entityId } = job.data;
+      let { template } = job.data;
 
       // Sprint Notif Infra 2026-05-26 / Chantier 5 — branche dédiée
       // submission-reply : on synchronise SubmissionReply.deliveryStatus
@@ -264,6 +283,44 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
 
       const jobId = job.id;
       const attempts = job.attemptsMade + 1;
+
+      // Lot S3 (D8b) — gabarit inconnu de CE worker (application mise en ligne avant lui) :
+      // report (sans tentative comptée, journal « en attente »), puis repli `gabaritRepli`
+      // s'il est connu, sinon échec franc. Jamais de rendu d'un nom inconnu, jamais de boucle.
+      if (!gabaritConnu(template)) {
+        // `types.ts` est hors périmètre S3 : le compteur se lit sans élargir `EmailJobData`.
+        const donnees = job.data as EmailJobData & { reportsGabaritInconnu?: number };
+        const reports = donnees.reportsGabaritInconnu ?? 0;
+        if (reports < REPORTS_GABARIT_INCONNU_MAX) {
+          await job.updateData({ ...donnees, reportsGabaritInconnu: reports + 1 } as EmailJobData);
+          await job.moveToDelayed(Date.now() + DELAI_REPORT_GABARIT_INCONNU_MS, token);
+          throw new DelayedError();
+        }
+        const repli = (payload as { gabaritRepli?: unknown } | null | undefined)?.gabaritRepli;
+        if (typeof repli === "string" && gabaritConnu(repli)) {
+          console.warn(
+            `[email-worker] rendu par repli : ${repli} (gabarit « ${template} » inconnu)`,
+          );
+          template = repli as EmailJobName;
+        } else {
+          const motif = `gabarit inconnu de ce worker : « ${template} » (aucun gabarit de repli connu)`;
+          await cloturerJournal({
+            template,
+            recipient: to,
+            locale,
+            marketing: marketing === true,
+            attempts,
+            status: EmailLogStatus.failed,
+            error: motif,
+            failedAt: new Date(),
+            ...(entityType ? { entityType } : {}),
+            ...(entityId ? { entityId } : {}),
+            ...(jobId ? { jobId } : {}),
+          });
+          // Le gestionnaire `failed` du worker (plus bas) capture déjà dans Sentry.
+          throw new UnrecoverableError(motif);
+        }
+      }
 
       // STOP-T1 — un contrôle du DÉPART qui lève (base en panne) ne doit jamais laisser la ligne
       // du journal « en attente » à vie : essai non final → tentative notée, erreur relancée

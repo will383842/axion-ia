@@ -383,6 +383,14 @@ Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est 
 **tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
 du moment.
 
+**`gabaritRepli` (lot S3, chantier e-mails)** : tout **nouveau nom de gabarit** émis par l'application
+porte dans sa charge `gabaritRepli`, le nom d'un gabarit **ancien et sûr** (ex. `"contact-confirmed"`).
+Un worker S3 qui reçoit un nom qu'il ne connaît pas (`estGabaritConnu`) reporte le job de 10 min,
+jusqu'à 9 fois (90 min, au-delà de la fenêtre de ~35 min), sans tentative comptée et journal « en
+attente » ; au-delà, il rend le `gabaritRepli` s'il le connaît, sinon échoue franchement
+(`UnrecoverableError`, motif « gabarit inconnu de ce worker » au journal). Un worker antérieur à S3
+n'a pas ce repli : S3 doit être en ligne **avant** le premier émetteur d'un nouveau nom.
+
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
 `scripts/docker-entrypoint.sh` lance `prisma migrate deploy` **en best-effort** : la
