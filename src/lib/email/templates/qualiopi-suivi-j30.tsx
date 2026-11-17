@@ -12,6 +12,8 @@ interface Payload {
   titreFormation: string;
   dateFinFormation: string;
   lienPortail?: string;
+  /** Facultatif : lien vers le questionnaire de suivi à froid ; à défaut, le portail. */
+  lienQuestionnaire?: string;
   numeroSession: string;
 }
 
@@ -35,13 +37,16 @@ export function QualiopiSuiviJ30Email({
 }) {
   const p = payload as unknown as Payload;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
-  const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
+  const ctaHref = p.lienQuestionnaire ?? p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
+  const ctaLabel = p.lienQuestionnaire
+    ? "Répondre au questionnaire de suivi"
+    : "Accéder à mon espace";
   return (
     <EmailLayout
       famille="B"
       preview="Un mois après votre formation — comment allez-vous ?"
       title="Suivi post-formation — 30 jours déjà"
-      cta={{ label: "Accéder à mon espace", href: ctaHref }}
+      cta={{ label: ctaLabel, href: ctaHref }}
       locale={locale}
       trust
       /* §6.1 — le bloc signature existait dans le gabarit commun depuis la
