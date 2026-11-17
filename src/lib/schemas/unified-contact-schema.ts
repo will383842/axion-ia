@@ -78,20 +78,23 @@ function emptyToUndefined<T extends z.ZodTypeAny>(schema: T) {
 /**
  * Schema unifié.
  *
- * - Champs base (6) : type, nom, email, telephone, ville, message — tous requis.
+ * - Identité (depuis le 2026-11-17) : `civilite` FACULTATIVE (madame | monsieur,
+ *   jamais présélectionnée ni devinée), `prenom` et `nomFamille` requis. Le
+ *   champ unique `nom` est remplacé ; `unifiedContactSchemaHerite` l'accepte
+ *   encore (serveur seulement) pour une page ouverte avant la mise en ligne.
+ * - Champs base : type, email, telephone, ville, message — tous requis.
  * - Champs avancés (5) : companyName, companySize, companySector,
  *   budgetIndicative, timingWeeks — tous optionnels.
  * - Métadonnées hidden : locale, source, subType, consentVersion.
  * - Consentement obligatoire.
  */
-export const unifiedContactSchema = z.object({
+const base = z.object({
   // -- Discriminant
   type: z.enum(UNIFIED_CONTACT_TYPES, {
     errorMap: () => ({ message: "Type de demande requis." }),
   }),
 
   // -- Base (6 champs visibles)
-  nom: z.string().trim().min(2, "Nom requis (2 caractères minimum).").max(80, "Nom trop long."),
   email: z
     .string()
     .trim()
@@ -152,6 +155,27 @@ export const unifiedContactSchema = z.object({
   consent: z.literal(true, {
     errorMap: () => ({ message: "Consentement requis." }),
   }),
+});
+
+/** Civilité facultative : valeurs fermées, aucune n'est présélectionnée. */
+export const CIVILITES = ["madame", "monsieur"] as const;
+export type Civilite = (typeof CIVILITES)[number];
+
+const nomPropre = (max: number, requis: string, trop: string) =>
+  z.string().trim().min(1, requis).max(max, trop).regex(/\p{L}/u, requis);
+
+export const unifiedContactSchema = base.extend({
+  civilite: emptyToUndefined(z.enum(CIVILITES)),
+  prenom: nomPropre(50, "Prénom requis.", "Prénom trop long."),
+  nomFamille: nomPropre(80, "Nom requis.", "Nom trop long."),
+});
+
+/**
+ * Forme HÉRITÉE (champ unique `nom`) : SERVEUR SEULEMENT, pour une page ouverte
+ * avant la mise en ligne qui envoie encore `nom` — zéro demande perdue.
+ */
+export const unifiedContactSchemaHerite = base.extend({
+  nom: z.string().trim().min(2, "Nom requis (2 caractères minimum).").max(80, "Nom trop long."),
 });
 
 export type UnifiedContactInput = z.infer<typeof unifiedContactSchema>;

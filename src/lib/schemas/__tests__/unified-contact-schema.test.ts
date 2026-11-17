@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { unifiedContactSchema } from "../unified-contact-schema";
+import { unifiedContactSchema, unifiedContactSchemaHerite } from "../unified-contact-schema";
 
 /**
  * Le formulaire de contact refusait de partir SANS RIEN DIRE.
@@ -22,7 +22,8 @@ import { unifiedContactSchema } from "../unified-contact-schema";
 
 const baseValide = {
   type: "audit",
-  nom: "ZZ TEST",
+  prenom: "Camille",
+  nomFamille: "Exemple",
   email: "zz-test@example.invalid",
   telephone: "+33600000001",
   ville: "Grenoble",
@@ -74,5 +75,76 @@ describe("unifiedContactSchema — champs optionnels du bloc « Aller plus loin 
     });
 
     expect(r.success).toBe(true);
+  });
+});
+
+describe("unifiedContactSchema — identité (civilité facultative, prénom, nom)", () => {
+  it("accepte « Madame » et « Monsieur »", () => {
+    for (const civilite of ["madame", "monsieur"]) {
+      const r = unifiedContactSchema.safeParse({ ...baseValide, civilite });
+      expect(r.success).toBe(true);
+    }
+  });
+
+  it("la civilité vide (« Non précisée ») vaut undefined, et son absence est acceptée", () => {
+    const vide = unifiedContactSchema.safeParse({ ...baseValide, civilite: "" });
+    expect(vide.success).toBe(true);
+    if (vide.success) expect(vide.data.civilite).toBeUndefined();
+    expect(unifiedContactSchema.safeParse(baseValide).success).toBe(true);
+  });
+
+  it("refuse une civilité hors liste", () => {
+    expect(unifiedContactSchema.safeParse({ ...baseValide, civilite: "docteur" }).success).toBe(
+      false,
+    );
+  });
+
+  it("refuse un prénom ou un nom vide, d'espaces ou sans lettre", () => {
+    for (const v of ["", "   ", "-", "123"]) {
+      expect(unifiedContactSchema.safeParse({ ...baseValide, prenom: v }).success).toBe(false);
+      expect(unifiedContactSchema.safeParse({ ...baseValide, nomFamille: v }).success).toBe(false);
+    }
+  });
+
+  it("refuse un prénom de plus de 50 caractères et un nom de plus de 80", () => {
+    expect(unifiedContactSchema.safeParse({ ...baseValide, prenom: "a".repeat(51) }).success).toBe(
+      false,
+    );
+    expect(
+      unifiedContactSchema.safeParse({ ...baseValide, nomFamille: "a".repeat(81) }).success,
+    ).toBe(false);
+  });
+
+  it("accepte les noms composés et accentués", () => {
+    const r = unifiedContactSchema.safeParse({
+      ...baseValide,
+      prenom: "Anne-Sophie",
+      nomFamille: "d'Éxemple",
+    });
+    expect(r.success).toBe(true);
+  });
+
+  it("le nouveau schéma n'accepte plus `nom` seul", () => {
+    const { prenom: _p, nomFamille: _n, ...sansIdentite } = baseValide;
+    expect(
+      unifiedContactSchema.safeParse({ ...sansIdentite, nom: "Camille Exemple" }).success,
+    ).toBe(false);
+  });
+});
+
+describe("unifiedContactSchemaHerite — page ouverte avant la mise en ligne", () => {
+  const { prenom: _p, nomFamille: _n, ...sansIdentite } = baseValide;
+
+  it("accepte `nom` (ancienne règle)", () => {
+    expect(
+      unifiedContactSchemaHerite.safeParse({ ...sansIdentite, nom: "Camille Exemple" }).success,
+    ).toBe(true);
+  });
+
+  it("garde l'ancienne règle : 2 caractères minimum, 80 maximum", () => {
+    expect(unifiedContactSchemaHerite.safeParse({ ...sansIdentite, nom: "A" }).success).toBe(false);
+    expect(
+      unifiedContactSchemaHerite.safeParse({ ...sansIdentite, nom: "a".repeat(81) }).success,
+    ).toBe(false);
   });
 });
