@@ -10,6 +10,7 @@
  * `ROLES_DOSSIER_ECHANGES` seulement (décision A2).
  */
 
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import type { Metadata } from "next";
 import Link from "next/link";
 
@@ -115,6 +116,7 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
         label: ACTIVITE_LABELS[value],
       }))}
       basePath={basePath}
+      certifie={isQualiopiCertificationObtenue()}
       {...(formulesOn
         ? {
             formules: {

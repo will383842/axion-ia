@@ -79,6 +79,11 @@ export interface DevisFormProps {
    * `qualiopi.devis_formules.actif` est allumé. Absent = formulaire inchangé.
    */
   formules?: { textes: TexteCopie[]; tvaStandardPct: number };
+  /**
+   * `isQualiopiCertificationObtenue()`, lu par la page serveur (aucune lecture côté client).
+   * Faux (défaut) : l'aide ne nomme pas la certification.
+   */
+  certifie?: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -170,6 +175,7 @@ export function DevisForm({
   defaultClientId,
   projetId,
   formules,
+  certifie = false,
 }: DevisFormProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -624,9 +630,9 @@ export function DevisForm({
       <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] p-[var(--space-admin-4)]">
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
           <span className="font-semibold tracking-wide uppercase">Mention TVA</span> — appliquée
-          selon le régime configuré (Qualiopi → Configuration → Régime de TVA) ; le devis porte la
-          mention correspondante. La date de validité sera fixée automatiquement à 30 jours à
-          compter de la création du devis.
+          selon le régime configuré ({certifie ? "Qualiopi → " : ""}Configuration → Régime de TVA) ;
+          le devis porte la mention correspondante. La date de validité sera fixée automatiquement à
+          30 jours à compter de la création du devis.
         </p>
       </section>
 

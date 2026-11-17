@@ -208,3 +208,25 @@ describe("DevisForm — ce qui part au serveur", () => {
     expect(createDevisActionMock).not.toHaveBeenCalled();
   });
 });
+
+describe("DevisForm — aide de la mention TVA selon la certification", () => {
+  const rendre = (certifie?: boolean) =>
+    render(
+      <DevisForm
+        clients={CLIENTS}
+        offres={OFFRES}
+        activites={[{ value: "formation", label: "Formation" }]}
+        basePath="/fr/adm/qualiopi/devis"
+        {...(certifie === undefined ? {} : { certifie })}
+      />,
+    );
+  it("sans certification (défaut) : aucun mot « Qualiopi » dans l'aide", () => {
+    const { container } = rendre();
+    expect(container.textContent).toContain("Configuration → Régime de TVA");
+    expect(container.textContent).not.toMatch(/qualiopi/i);
+  });
+  it("avec certification : texte actuel inchangé", () => {
+    const { container } = rendre(true);
+    expect(container.textContent).toContain("(Qualiopi → Configuration → Régime de TVA)");
+  });
+});
