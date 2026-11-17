@@ -5,6 +5,8 @@
  * confie à `enqueueEmail`, qui reste garé « À valider » (outbox-policy). Le lot 3 n'ajoute
  * aucun point d'envoi.
  */
+import { salutation } from "@/lib/email/salutation";
+
 import type { VueFormules } from "./vue-formules";
 
 export interface EntreePayloadDevisEnvoi {
@@ -58,4 +60,33 @@ export function formulesDepuisMetadata(metadata: unknown): VueFormules | undefin
     return undefined;
   }
   return f as VueFormules;
+}
+
+/** Ce que `nomPourSalutationDevis` sait lire d'un client. Les champs fiables n'existent pas encore. */
+export interface ClientPourSalutationDevis {
+  readonly raisonSociale?: string | null | undefined;
+  /** Nom complet en un seul champ : volontairement IGNORÉ (on ne le découpe jamais). */
+  readonly contactNom?: string | null | undefined;
+  /** Futurs champs : optionnels, non exigés. */
+  readonly contactCivilite?: unknown;
+  readonly contactPrenom?: unknown;
+  readonly contactNomFamille?: unknown;
+}
+
+/**
+ * Ce que le gabarit `devis-envoi` écrit après « Bonjour » : « Monsieur Dupont », « Léa » ou "".
+ * Le gabarit rend « Bonjour <clientNom>, » si non vide, sinon « Bonjour, ».
+ * ⛔ Jamais la raison sociale, jamais le nom complet, jamais `contactNom` découpé, jamais de civilité devinée.
+ */
+export function nomPourSalutationDevis(client: ClientPourSalutationDevis): string {
+  const s = salutation(
+    {
+      civilite: client.contactCivilite,
+      prenom: client.contactPrenom,
+      nomFamille: client.contactNomFamille,
+    },
+    "fr",
+  );
+  const m = /^Bonjour (.+),$/.exec(s);
+  return m?.[1] ?? "";
 }

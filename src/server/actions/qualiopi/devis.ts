@@ -49,7 +49,10 @@ import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
-import { payloadDevisEnvoi } from "@/server/qualiopi/devis/email-devis-envoi";
+import {
+  nomPourSalutationDevis,
+  payloadDevisEnvoi,
+} from "@/server/qualiopi/devis/email-devis-envoi";
 import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
@@ -553,7 +556,7 @@ export async function sendDevisAction(
       contactEmail,
       "fr",
       payloadDevisEnvoi({
-        clientNom: devis.client.raisonSociale,
+        clientNom: nomPourSalutationDevis(devis.client),
         numero: devis.numero,
         montantTotalHtCents: devis.montantTotalHtCents,
         montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
