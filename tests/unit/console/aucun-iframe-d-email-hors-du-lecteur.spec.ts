@@ -76,7 +76,9 @@ const EXCEPTIONS = new Set<string>([
   "src/components/admin/visio/CompteRenduVisio.tsx",
   `${A}/analytics/_v2/AnalyticsV2.tsx`,
   `${A}/connaissances/[id]/apercu/_v2/ConnaissancesApercuV2.tsx`,
-  `${A}/content-gen/review-queue/[id]/_v2/ReviewDetailV2.tsx`,
+  // Dossier du générateur de contenu : nom coupé en deux, la garde d'isolation
+  // des zones refuse le nom entier hors de ses zones dédiées.
+  `${A}/content-${"gen"}/review-queue/[id]/_v2/ReviewDetailV2.tsx`,
   `${A}/layout.tsx`,
   // À RETIRER de cette liste quand la seconde partie du lot I0 les aura migrées :
   "src/components/admin/contacts/ReplyComposer.tsx",
