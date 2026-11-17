@@ -165,6 +165,8 @@ const MOTS_INTERDITS: ReadonlyArray<readonly [string, RegExp]> = [
   ["OPCO", /opco/i],
   ["prise en charge", /pris(?:e|es)?\s+en\s+charge/i],
   ["funding agreement", /funding\s+agreement/i],
+  ["financeur", /financeur/i],
+  ["funding body", /funding\s+body/i],
 ];
 
 /**
@@ -187,6 +189,8 @@ describe("(b) le rendu des gabarits ne parle pas de financement par un tiers", (
       "prise en charge",
     ]);
     expect(motsInterditsDans("x", "the funding agreement")).toEqual(["funding agreement"]);
+    expect(motsInterditsDans("x", "Le Financeur a répondu")).toEqual(["financeur"]);
+    expect(motsInterditsDans("x", "the Funding Body")).toEqual(["funding body"]);
     expect(motsInterditsDans("x", "Rien à signaler")).toEqual([]);
   });
 

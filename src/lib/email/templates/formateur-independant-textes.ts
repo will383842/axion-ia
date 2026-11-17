@@ -626,7 +626,7 @@ export const TEXTES_FORMATEUR = {
     code: "F25",
     titre: "Accord enregistré, la lettre suit",
     quand:
-      "le formateur accepte, mais la lettre ne peut pas partir tout de suite (le client n'a pas encore signé, ou le financeur n'a pas répondu).",
+      "le formateur accepte, mais la lettre ne peut pas partir tout de suite (le client n'a pas encore signé, ou une réponse attendue d'un tiers n'est pas encore arrivée).",
     famille: "B",
     interne: false,
     sollicitation: false,

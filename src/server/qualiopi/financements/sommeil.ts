@@ -15,6 +15,11 @@
  * retirant ce garde. Le test `aucun-e-mail-ne-parle-de-financement-tiers.spec.tsx`
  * empêche de rebrancher un point d'émission sans lui.
  *
+ * Rattrapage : les pièces et les e-mails qui n'ont PAS pu partir pendant le
+ * sommeil ne sont PAS rattrapés au rallumage (aucune ligne n'est écrite, rien
+ * n'est mis en file). Les renvoyer ou non reste à décider par le fondateur le
+ * jour du rallumage.
+ *
  * Fonction PURE (lit seulement `process.env`) : atteinte par le worker, sans
  * import Next.
  */
