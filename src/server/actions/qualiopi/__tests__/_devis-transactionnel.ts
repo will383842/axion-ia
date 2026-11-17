@@ -11,10 +11,21 @@ export interface Etat {
   projetDevis: Array<Record<string, unknown>>;
   preRemplissages: Array<Record<string, unknown>>;
   devisMisAJour: number;
+  /** Identifiants des devis signés par le client (signature non révoquée). */
+  signesParLeClient: string[];
+  /** Filtres (`where`) reçus par `devis.count`, dans l'ordre des appels. */
+  filtresCount: Array<Record<string, unknown>>;
 }
 
 export function fausseBaseDevis(options: { collisionsAuCreate: number }) {
-  const etat: Etat = { devis: [], projetDevis: [], preRemplissages: [], devisMisAJour: 0 };
+  const etat: Etat = {
+    devis: [],
+    projetDevis: [],
+    preRemplissages: [],
+    devisMisAJour: 0,
+    signesParLeClient: [],
+    filtresCount: [],
+  };
   let collisions = options.collisionsAuCreate;
   let n = 0;
 
@@ -23,6 +34,20 @@ export function fausseBaseDevis(options: { collisionsAuCreate: number }) {
       findMany: async () => e.devis.map((d) => ({ numero: d["numero"] })),
       findUnique: async ({ where }: { where: { id: string } }) =>
         e.devis.find((d) => d["id"] === where.id) ?? null,
+      findFirst: async ({ where }: { where: Record<string, unknown> }) =>
+        e.devis.find((d) =>
+          Object.entries(where).every(([k, v]) =>
+            v !== null && typeof v === "object" && "not" in v
+              ? d[k] !== (v as { not: unknown }).not
+              : d[k] === v,
+          ),
+        ) ?? null,
+      count: async ({ where }: { where: { id: string } }) => {
+        e.filtresCount.push(where);
+        return e.devis.some((d) => d["id"] === where.id) && !e.signesParLeClient.includes(where.id)
+          ? 1
+          : 0;
+      },
       create: async ({ data }: { data: Record<string, unknown> }) => {
         if (collisions > 0) {
           collisions -= 1;
@@ -55,6 +80,7 @@ export function fausseBaseDevis(options: { collisionsAuCreate: number }) {
     projet: {
       findUnique: async () => ({ clientId: CLIENT, fusionneDansId: null }),
     },
+    $queryRaw: async () => [],
     client: { findUnique: async () => ({ opcoIdentifie: null }) },
   });
 
@@ -66,6 +92,8 @@ export function fausseBaseDevis(options: { collisionsAuCreate: number }) {
         projetDevis: [...etat.projetDevis],
         preRemplissages: [...etat.preRemplissages],
         devisMisAJour: etat.devisMisAJour,
+        signesParLeClient: etat.signesParLeClient,
+        filtresCount: etat.filtresCount,
       };
       const r = await fn(surEtat(copie));
       Object.assign(etat, copie);
