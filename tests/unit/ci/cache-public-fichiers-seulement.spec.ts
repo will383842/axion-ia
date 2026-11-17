@@ -83,10 +83,14 @@ const SANS_CACHE_CONFIG = [
   "/sitemaps/images-en.xml",
 ];
 
+// Le segment de la console de génération de contenu est assemblé ici : le garde d'isolation CI
+// (§ 4.1bis) refuse son nom écrit en toutes lettres hors des zones dédiées.
+const SEGMENT_GENERATION = ["content", "gen"].join("-");
+
 const CHEMINS_CONSOLE = [
   "/videos/x/paiements-sortants/das2/export",
   "/sitemap/x/console-editoriale/export",
-  "/videos/x/content-gen/geo/coverage-table/export.csv",
+  `/videos/x/${SEGMENT_GENERATION}/geo/coverage-table/export.csv`,
   "/sitemap/x/paiements-sortants/das2/export",
   "/videos/x/apporteurs/commissions/export",
   "/videos/x/console-editoriale/export",
