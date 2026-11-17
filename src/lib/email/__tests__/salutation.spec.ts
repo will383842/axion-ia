@@ -35,12 +35,16 @@ describe("salutation (fr)", () => {
     expect(salutation({ nomFamille: "Dupont" }, "fr")).toBe("Bonjour,");
   });
 
-  it.each([{}, { prenom: "" }, { prenom: "   " }, { prenom: null }, { prenom: 42 }, { prenom: {} }])(
-    "identité vide ou invalide %j → « Bonjour, »",
-    (id) => {
-      expect(salutation(id, "fr")).toBe("Bonjour,");
-    },
-  );
+  it.each([
+    {},
+    { prenom: "" },
+    { prenom: "   " },
+    { prenom: null },
+    { prenom: 42 },
+    { prenom: {} },
+  ])("identité vide ou invalide %j → « Bonjour, »", (id) => {
+    expect(salutation(id, "fr")).toBe("Bonjour,");
+  });
 
   it("civilité inconnue (« docteur ») : on retombe sur le prénom", () => {
     expect(salutation({ civilite: "docteur", nomFamille: "Dupont", prenom: "Michel" }, "fr")).toBe(
@@ -54,14 +58,24 @@ describe("salutation (fr)", () => {
     ["M.", "Monsieur"],
     ["M", "Monsieur"],
   ])("civilité « %s » acceptée", (civilite, attendu) => {
-    expect(salutation({ civilite, nomFamille: "Dupont" }, "fr")).toBe(
-      `Bonjour ${attendu} Dupont,`,
-    );
+    expect(salutation({ civilite, nomFamille: "Dupont" }, "fr")).toBe(`Bonjour ${attendu} Dupont,`);
   });
 
   it("nettoie espaces multiples et caractères de largeur nulle", () => {
     expect(salutation({ prenom: "  Michel\u200B   Ange " }, "fr")).toBe("Bonjour Michel Ange,");
     expect(salutation({ prenom: "Jean   Pierre" }, "fr")).toBe("Bonjour Jean Pierre,");
+  });
+
+  it.each([
+    ["U+202E (inversion du sens d'écriture)", "\u202E"],
+    ["U+2060", "\u2060"],
+    ["U+00AD", "\u00AD"],
+    ["U+2066", "\u2066"],
+  ])("retire le caractère invisible de formatage %s", (_nom, c) => {
+    expect(salutation({ civilite: "monsieur", nomFamille: `Dupont${c}` }, "fr")).toBe(
+      "Bonjour Monsieur Dupont,",
+    );
+    expect(salutation({ prenom: `Mi${c}chel${c}` }, "fr")).toBe("Bonjour Michel,");
   });
 
   it("retire la ponctuation finale : « Dupont, » → « Dupont »", () => {
@@ -95,9 +109,7 @@ describe("salutation (en)", () => {
     expect(salutation({ civilite: "monsieur", nomFamille: "Dupont" }, "en")).toBe(
       "Hello Mr Dupont,",
     );
-    expect(salutation({ civilite: "madame", nomFamille: "Dupont" }, "en")).toBe(
-      "Hello Ms Dupont,",
-    );
+    expect(salutation({ civilite: "madame", nomFamille: "Dupont" }, "en")).toBe("Hello Ms Dupont,");
     expect(salutation({ prenom: "Michel" }, "en")).toBe("Hello Michel,");
     expect(salutation({}, "en")).toBe("Hello,");
   });

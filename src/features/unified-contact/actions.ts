@@ -30,9 +30,9 @@ import { CONSENT_FORM_REFS, recordConsentEvent } from "@/lib/consents";
 import { SubmissionType } from "../../../prisma/generated/client";
 import {
   unifiedContactSchema,
-  unifiedContactSchemaHerite,
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
+import { unifiedContactSchemaHerite } from "./schema-herite";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";

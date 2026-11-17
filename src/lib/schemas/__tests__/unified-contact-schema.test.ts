@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { unifiedContactSchema, unifiedContactSchemaHerite } from "../unified-contact-schema";
+import { unifiedContactSchema } from "../unified-contact-schema";
+import { unifiedContactSchemaHerite } from "@/features/unified-contact/schema-herite";
 
 /**
  * Le formulaire de contact refusait de partir SANS RIEN DIRE.

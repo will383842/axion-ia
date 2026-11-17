@@ -113,5 +113,7 @@ describe("garde de source", () => {
       .filter((f) => motif.test(readFileSync(join(DOSSIER, f), "utf8")));
     const nouveaux = trouves.filter((f) => !ENCORE_PAR_LE_NOM.has(f));
     expect(nouveaux).toEqual([]);
+    // Cliquet : la liste figée doit diminuer dès qu'un gabarit est corrigé.
+    expect([...ENCORE_PAR_LE_NOM].filter((f) => !trouves.includes(f))).toEqual([]);
   });
 });

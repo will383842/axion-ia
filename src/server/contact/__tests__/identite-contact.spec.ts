@@ -23,7 +23,11 @@ const VIDE = { civilite: null, prenom: null, nomFamille: null };
 
 describe("identite-contact", () => {
   it("aller-retour : chiffré dans details, clair à la lecture", () => {
-    const rangee = identitePourDetails({ civilite: "madame", prenom: "Camille", nomFamille: "Dupont" });
+    const rangee = identitePourDetails({
+      civilite: "madame",
+      prenom: "Camille",
+      nomFamille: "Dupont",
+    });
     expect(rangee["prenom"]).toMatch(/^enc:v/);
     expect(rangee["nomFamille"]).toMatch(/^enc:v/);
     expect(rangee["civilite"]).toBe("madame");
@@ -41,7 +45,11 @@ describe("identite-contact", () => {
   });
 
   it("clé de chiffrement absente à la lecture : le marqueur devient null", () => {
-    const rangee = identitePourDetails({ civilite: "monsieur", prenom: "Camille", nomFamille: "Dupont" });
+    const rangee = identitePourDetails({
+      civilite: "monsieur",
+      prenom: "Camille",
+      nomFamille: "Dupont",
+    });
     vi.stubEnv("PII_ENCRYPTION_KEY", "");
     const lu = lireIdentiteDetails({ identite: rangee });
     expect(lu).toEqual({ civilite: "monsieur", prenom: null, nomFamille: null });
@@ -54,12 +62,19 @@ describe("identite-contact", () => {
     ).toEqual(VIDE);
   });
 
-  it.each([undefined, null, 42, "x", [], {}, { identite: null }, { identite: "x" }, { identite: [] }])(
-    "details mal formé %j → tout null",
-    (details) => {
-      expect(lireIdentiteDetails(details)).toEqual(VIDE);
-    },
-  );
+  it.each([
+    undefined,
+    null,
+    42,
+    "x",
+    [],
+    {},
+    { identite: null },
+    { identite: "x" },
+    { identite: [] },
+  ])("details mal formé %j → tout null", (details) => {
+    expect(lireIdentiteDetails(details)).toEqual(VIDE);
+  });
 
   it("civilité inconnue ou valeurs non textuelles → null", () => {
     expect(

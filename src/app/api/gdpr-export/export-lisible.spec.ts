@@ -100,7 +100,16 @@ describe("🔴 D5-5-02 — l'export art. 15 doit être LISIBLE", () => {
       join(process.cwd(), "src", "app", "api", "gdpr-export", "route.ts"),
       "utf8",
     );
-    expect(source).toMatch(/lireIdentiteDetails\s*\(/);
+    // Commentaires dépouillés, comme plus bas : la route en parle en prose.
+    const code = source
+      .replace(/\/\*[\s\S]*?\*\//g, (b) => b.replace(/[^\n]/g, ""))
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+    // Le RÉSULTAT doit être utilisé dans l'export : un appel dont la valeur est
+    // jetée, ou un import mort, ne doit pas passer.
+    expect(code, "la lecture déchiffrée n'est plus écrite dans details.identite").toMatch(
+      /\[CLE_IDENTITE\]\s*:\s*lireIdentiteDetails\s*\(\s*details\s*\)/,
+    );
+    expect(code).toMatch(/details:\s*\{\s*\.\.\.details\s*,/);
   });
 
   it("🔴 la ROUTE déchiffre avant de répondre", () => {

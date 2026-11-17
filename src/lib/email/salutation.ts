@@ -68,7 +68,7 @@ export function nettoyerNomPropre(v: unknown, opts?: { particules?: boolean }): 
   let s = v
     .normalize("NFC")
     .replace(/\p{Cc}/gu, "")
-    .replace(/[\u200B-\u200D\uFEFF]/g, "")
+    .replace(/\p{Cf}/gu, "")
     .replace(/\s+/g, " ")
     .trim()
     .replace(/[,;:.]+$/, "")
