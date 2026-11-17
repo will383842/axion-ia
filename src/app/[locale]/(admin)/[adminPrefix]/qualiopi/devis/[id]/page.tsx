@@ -32,6 +32,7 @@ import {
   contresignerPieceAction,
   relancerAcceptationDevisAction,
 } from "@/server/actions/qualiopi/piece-signature";
+import { confirmationCommandeDejaGaree } from "@/server/qualiopi/devis/confirmation-commande";
 import { signatureClientDuDevis } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
@@ -281,6 +282,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
+  // X3 — devis CLASSIQUE signé des deux parties, accepté, dont la confirmation de commande n'a
+  // jamais été préparée (ni gardée en corbeille ni envoyée) : la reprise existe côté serveur.
+  // `null` (état inconnu) laisse le bouton visible : la reprise est idempotente.
+  const confirmationClassiqueAPreparer =
+    devis.documentGenereId !== null &&
+    devis.offreSha256 === null &&
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
+    (await confirmationCommandeDejaGaree(devis.id)) !== true;
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
@@ -732,6 +743,14 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               relancerAction={relancerAcceptationDevisAction}
             />
           ) : null)}
+
+        {confirmationClassiqueAPreparer && devis.documentGenereId !== null && (
+          <RelancerAcceptationDevis
+            cas="confirmation-classique"
+            documentGenereId={devis.documentGenereId}
+            relancerAction={relancerAcceptationDevisAction}
+          />
+        )}
 
         {plansImpossibles && (
           <p

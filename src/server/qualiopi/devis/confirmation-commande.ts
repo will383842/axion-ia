@@ -218,6 +218,15 @@ const dependancesParDefaut: DependancesConfirmation = {
     ),
 };
 
+/**
+ * Une confirmation de commande existe-t-elle déjà pour ce devis (gardée en corbeille ou déjà
+ * journalisée) ? Même contrôle, même `jobId` que l'anti-rejeu de l'envoi : lecture seule.
+ * `null` : état inconnu (base muette).
+ */
+export async function confirmationCommandeDejaGaree(devisId: string): Promise<boolean | null> {
+  return dependancesParDefaut.dejaEnvoyee(`devis-commande-confirmation-${devisId}`);
+}
+
 export async function envoyerConfirmationCommande(
   demande: DemandeConfirmationCommande,
   deps: DependancesConfirmation = dependancesParDefaut,
