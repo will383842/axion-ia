@@ -49,7 +49,7 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Livarot-Pays-d'Auge et dans le Pays d'Auge ?",
-      a: "Oui, Axion-IA intervient à Livarot-Pays-d'Auge et tout le Pays d'Auge (Saint-Pierre-en-Auge, Mézidon, Orbec, Lisieux). Consultants depuis Caen (50 min) ou gare SNCF Lisieux (25 min).",
+      a: "Oui, Axion-IA intervient à Livarot-Pays-d'Auge et tout le Pays d'Auge (Saint-Pierre-en-Auge, Mézidon, Orbec, Lisieux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les fromageries Livarot AOP ?",
@@ -65,7 +65,7 @@ export const LIVAROT_PAYS_D_AUGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA dans le Pays d'Auge ?",
-      a: "Nos consultants viennent de Caen (50 min) ou par train (gare SNCF Lisieux à 25 min). Déplacement sur site (fromagerie, laiterie, cidrerie, exploitation).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site (fromagerie, laiterie, cidrerie, exploitation).",
     },
   ],
 };

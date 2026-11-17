@@ -49,7 +49,7 @@ export const NOYANT_VILLAGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noyant-Villages et dans le Baugeois ?",
-      a: "Oui, Axion-IA intervient à Noyant-Villages et dans tout le Baugeois (Baugé-en-Anjou, Longué-Jumelles, Vernantes). Nos consultants se déplacent depuis Angers (50 min) ou Saumur (30 min).",
+      a: "Oui, Axion-IA intervient à Noyant-Villages et dans tout le Baugeois (Baugé-en-Anjou, Longué-Jumelles, Vernantes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du Baugeois ?",

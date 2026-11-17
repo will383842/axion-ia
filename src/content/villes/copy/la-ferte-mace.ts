@@ -49,7 +49,7 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ferté-Macé et bocage ornais ?",
-      a: "Oui, Axion-IA intervient à La Ferté-Macé et tout le bocage ornais (Flers à 20 km, Bagnoles-de-l'Orne à 8 km, Domfront, Argentan à 35 km). Nos consultants se déplacent depuis Caen ou Paris.",
+      a: "Oui, Axion-IA intervient à La Ferté-Macé et tout le bocage ornais (Flers à 20 km, Bagnoles-de-l'Orne à 8 km, Domfront, Argentan à 35 km). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme vert ferthois ?",
@@ -60,8 +60,8 @@ export const LA_FERTE_MACE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP et commerçants de La Ferté-Macé sur des cas IA pratiques : automatisation devis, agents IA prise de RDV, gestion administrative simplifiée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (1h15 voiture via Flers) ou Paris (TGV Caen 2h + voiture).",
+      q: "Comment se déroule une mission à La Ferté Macé ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel budget prévoir pour un audit IA à La Ferté-Macé ?",

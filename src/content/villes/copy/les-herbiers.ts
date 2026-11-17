@@ -49,7 +49,7 @@ export const LES_HERBIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Herbiers et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient aux Herbiers et dans tout le bocage vendéen (Pouzauges, Mortagne-sur-Sèvre, Cholet). Consultants accessibles depuis Nantes (1h) ou La Roche-sur-Yon (40 min).",
+      a: "Oui, Axion-IA intervient aux Herbiers et dans tout le bocage vendéen (Pouzauges, Mortagne-sur-Sèvre, Cholet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles des Herbiers ?",
@@ -65,7 +65,7 @@ export const LES_HERBIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA aux Herbiers ?",
-      a: "Nos consultants interviennent depuis Nantes (1h) ou La Roche-sur-Yon (40 min). Déplacement sur site dans vos locaux industriels, ateliers ou commerces. Autoroute A87 accessible en 20 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux industriels, ateliers ou commerces. Autoroute A87 accessible en 20 min.",
     },
   ],
 };

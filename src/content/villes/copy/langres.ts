@@ -49,7 +49,7 @@ export const LANGRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Langres et Haute-Marne ?",
-      a: "Oui, Axion-IA intervient à Langres et tout le Sud-Haute-Marne (Chaumont à 35 min, Saint-Dizier, Bourbonne-les-Bains). Consultants depuis Dijon (1h10) ou Paris (3h TGV via Chaumont).",
+      a: "Oui, Axion-IA intervient à Langres et tout le Sud-Haute-Marne (Chaumont à 35 min, Saint-Dizier, Bourbonne-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans couteliers de Langres ?",
@@ -64,8 +64,8 @@ export const LANGRES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission à Langres depuis Dijon ou Paris ?",
-      a: "Nos consultants viennent de Dijon (1h10) ou Paris (3h TGV via Chaumont).",
+      q: "Comment se déroule une mission à Langres ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

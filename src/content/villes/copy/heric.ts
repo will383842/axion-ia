@@ -49,7 +49,7 @@ export const HERIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Héric et nord Nantes ?",
-      a: "Oui, Axion-IA intervient à Héric et tout le nord nantais (Grandchamp-des-Fontaines, Nort-sur-Erdre, Blain, Treillières). Consultants depuis Nantes centre (25 min). Couverture complète nord Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à Héric et tout le nord nantais (Grandchamp-des-Fontaines, Nort-sur-Erdre, Blain, Treillières). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les PME du bâtiment à Héric ?",
@@ -64,8 +64,8 @@ export const HERIC_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du nord nantais.",
     },
     {
-      q: "Comment se déroule une intervention depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (25 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      q: "Comment se déroule une intervention à Héric ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

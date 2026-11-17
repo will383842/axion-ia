@@ -49,7 +49,7 @@ export const MOUVAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mouvaux et dans la Métropole européenne de Lille ?",
-      a: "Oui, Axion-IA intervient à Mouvaux et sur toute la Métropole européenne de Lille (Tourcoing, Roubaix, Croix, Wasquehal, Marcq-en-Barœul, Lille). Lille centre à 15 min, Paris à 1h en TGV depuis Lille-Europe, Bruxelles à 35 min.",
+      a: "Oui, Axion-IA intervient à Mouvaux et sur toute la Métropole européenne de Lille (Tourcoing, Roubaix, Croix, Wasquehal, Marcq-en-Barœul, Lille). Mouvaux est à 15 min du centre de Lille et à 35 min de Bruxelles ; Lille-Europe met Paris à 1h en TGV. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d''un audit IA à Mouvaux ?",

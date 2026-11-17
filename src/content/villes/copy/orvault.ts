@@ -241,8 +241,8 @@ export const ORVAULT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les cabinets professionnels à Orvault (santé, conseil, expertise) sur leurs cas IA respectant la confidentialité : agents conversationnels patients/clients, automatisation gestion documentaire, classification dossiers. RGPD strict, hébergement UE.",
     },
     {
-      q: "Comment se passe une intervention depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Nantes) pour les missions sur site à Orvault. Tarifs publics et transparents, pas de devis opaque.",
+      q: "Comment se déroule une intervention à Orvault ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics et transparents, pas de devis opaque.",
     },
   ],
 };

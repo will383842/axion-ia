@@ -49,7 +49,7 @@ export const MILHAUD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Milhaud et agglo Nîmes sud ?",
-      a: "Oui, Axion-IA intervient à Milhaud et dans toute l'agglo nîmoise sud (Bouillargues, Garons, Bernis, Langlade). Nos consultants sont à 10 min de Nîmes centre.",
+      a: "Oui, Axion-IA intervient à Milhaud et dans toute l'agglo nîmoise sud (Bouillargues, Garons, Bernis, Langlade). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Milhaud  ?",

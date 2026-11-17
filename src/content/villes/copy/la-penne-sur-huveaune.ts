@@ -49,7 +49,7 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Penne-sur-Huveaune ?",
-      a: "Oui, Axion-IA intervient à La Penne-sur-Huveaune et dans toute la vallée de l'Huveaune (Aubagne, Roquevaire, Gémenos, est Marseille). Accès rapide A50 depuis Marseille centre.",
+      a: "Oui, Axion-IA intervient à La Penne-sur-Huveaune et dans toute la vallée de l'Huveaune (Aubagne, Roquevaire, Gémenos, est Marseille). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à La Penne-sur-Huveaune  ?",
@@ -60,12 +60,12 @@ export const LA_PENNE_SUR_HUVEAUNE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les commerces et enseignes de la zone La Valentine et alentours sur des cas IA : automatisation gestion stocks, agents IA service client, personnalisation marketing, optimisation planning équipes.",
     },
     {
-      q: "Proposez-vous des sessions en visio depuis La Penne ?",
+      q: "Proposez-vous des sessions en visio à La Penne ?",
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux) ou en visio. Format flexible adapté aux cadres et indépendants de la vallée de l'Huveaune.",
     },
     {
       q: "Comment se déplace Axion-IA à La Penne-sur-Huveaune ?",
-      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nos consultants se déplacent dans vos locaux.",
+      a: "La Penne est à 20 min de Marseille par A50 et 10 min d'Aubagne. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

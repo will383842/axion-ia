@@ -49,7 +49,7 @@ export const LA_GAUDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Gaude et moyen-pays niçois ?",
-      a: "Oui, Axion-IA intervient à La Gaude et dans tout le moyen-pays niçois (Saint-Jeannet, Gattières, Carros, Saint-Laurent-du-Var). Couverture Métropole Nice et accès rapide depuis Nice centre (15 min) ou Cagnes-sur-Mer (10 min).",
+      a: "Oui, Axion-IA intervient à La Gaude et dans tout le moyen-pays niçois (Saint-Jeannet, Gattières, Carros, Saint-Laurent-du-Var). Couverture Métropole Nice.",
     },
     {
       q: "Travaillez-vous avec les professions libérales de La Gaude ?",
@@ -65,7 +65,7 @@ export const LA_GAUDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à La Gaude ?",
-      a: "Nos consultants interviennent depuis Nice (15 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

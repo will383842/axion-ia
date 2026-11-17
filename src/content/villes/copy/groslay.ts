@@ -49,7 +49,7 @@ export const GROSLAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Groslay et dans la vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Groslay et dans toute la vallée de Montmorency (Montmorency, Sarcelles, Enghien-les-Bains, Deuil-la-Barre). Nos consultants se déplacent depuis Paris Gare du Nord (25 min en Transilien H).",
+      a: "Oui, Axion-IA intervient à Groslay et dans toute la vallée de Montmorency (Montmorency, Sarcelles, Enghien-les-Bains, Deuil-la-Barre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Groslay ?",
@@ -65,7 +65,7 @@ export const GROSLAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Groslay ?",
-      a: "Nos consultants se déplacent à Groslay depuis Paris (25 min Transilien H, gare de Groslay). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
     },
   ],
 };

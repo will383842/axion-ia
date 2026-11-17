@@ -49,7 +49,7 @@ export const IRIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Irigny et sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Irigny et tout le sud lyonnais (Pierre-Bénite à 5 min, Oullins, Brignais, Vernaison). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Irigny et tout le sud lyonnais (Pierre-Bénite à 5 min, Oullins, Brignais, Vernaison). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales irignois ?",
@@ -64,8 +64,8 @@ export const IRIGNY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Irigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Irigny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

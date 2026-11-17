@@ -65,7 +65,7 @@ export const HETTANGE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hettange-Grande ?",
-      a: "Nos consultants arrivent via gare SNCF Hettange-Grande ou autoroute A31/D653. Thionville à 10 min, Luxembourg à 25 min, Metz à 40 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Thionville à 10 min, Luxembourg à 25 min, Metz à 40 min.",
     },
   ],
 };

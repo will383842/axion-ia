@@ -49,7 +49,7 @@ export const ORGEVAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Orgeval et dans l'ouest Yvelines ?",
-      a: "Oui, Axion-IA intervient à Orgeval et dans tout l'ouest des Yvelines (Poissy à 10 min, Saint-Germain-en-Laye à 15 min, Villennes-sur-Seine, Maule). Nos consultants accèdent directement via l'échangeur A13 Orgeval.",
+      a: "Oui, Axion-IA intervient à Orgeval et dans tout l'ouest des Yvelines (Poissy à 10 min, Saint-Germain-en-Laye à 15 min, Villennes-sur-Seine, Maule). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les freelances et auto-entrepreneurs à Orgeval ?",
@@ -65,7 +65,7 @@ export const ORGEVAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Orgeval ?",
-      a: "Nos consultants interviennent à Orgeval via A13 (30 min depuis La Défense, échangeur direct). Gare de Villennes-sur-Seine (Transilien J) à 8 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Villennes-sur-Seine (Transilien J) à 8 min.",
     },
   ],
 };

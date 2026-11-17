@@ -49,7 +49,7 @@ export const MONTBRISON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montbrison et plaine du Forez ?",
-      a: "Oui, Axion-IA intervient à Montbrison et toute la plaine du Forez (Feurs à 15 min, Saint-Just-Saint-Rambert, Boën-sur-Lignon). Couverture Loire Forez Agglo. Consultants depuis Lyon (1h15) ou Saint-Étienne (30 min).",
+      a: "Oui, Axion-IA intervient à Montbrison et toute la plaine du Forez (Feurs à 15 min, Saint-Just-Saint-Rambert, Boën-sur-Lignon). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les producteurs AOP Fourme de Montbrison ?",
@@ -64,8 +64,8 @@ export const MONTBRISON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Montbrison, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Saint-Étienne (30 min). Pour les multi-jours, hébergement local possible (hôtels Forez). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Montbrison ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Forez). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

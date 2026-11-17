@@ -65,7 +65,7 @@ export const MORIERES_LES_AVIGNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Morières-lès-Avignon ?",
-      a: "Morières-lès-Avignon est à 10 min d'Avignon centre et 15 min de la gare TGV via D900 et A7. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      a: "Morières-lès-Avignon est à 10 min d'Avignon centre et 15 min de la gare TGV via D900 et A7. Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

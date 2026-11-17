@@ -49,7 +49,7 @@ export const KEMBS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Kembs dans le Haut-Rhin ?",
-      a: "Oui, Axion-IA intervient à Kembs et dans tout le Sud-Alsace tri-frontalier (Mulhouse, Saint-Louis, Huningue, Rixheim, Bartenheim). Nos consultants se déplacent sur site ou en visio, A36 et axe rhénan directs vers Bâle.",
+      a: "Oui, Axion-IA intervient à Kembs et dans tout le Sud-Alsace tri-frontalier (Mulhouse, Saint-Louis, Huningue, Rixheim, Bartenheim). Nos consultants se déplacent sur site ou interviennent en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Kembs ?",

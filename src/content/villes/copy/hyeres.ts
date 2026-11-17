@@ -18,9 +18,9 @@ export const HYERES_COPY: VilleCopy = {
   ecosystemEn:
     "Hyères concentre une économie de saison : tourisme balnéaire et insulaire vers Porquerolles, Port-Cros et le Levant, hébergement hôtelier et de plein air, horticulture historique du palmier, viticulture des Côtes de Provence et activités nautiques. Ce tissu de TPE et de PME, soumis à de fortes variations saisonnières, gagne à automatiser réservations, relations client multilingues, devis et gestion des stocks. La présence de l'aéroport de Toulon-Hyères renforce l'accessibilité. Axion-IA cible en priorité ces TPE touristiques et agricoles, puis les PME viticoles et hôtelières.",
   distancesFr:
-    "L'aéroport de Toulon-Hyères est à environ 4 km du centre, la gare de Hyères est reliée à Toulon en une vingtaine de minutes et la gare TGV de Toulon à 20 km. Les communes voisines comme La Garde, Carqueiranne et La Crau sont à portée immédiate, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
+    "L'aéroport de Toulon-Hyères est à environ 4 km du centre, la gare de Hyères est reliée à Toulon en une vingtaine de minutes et la gare TGV de Toulon à 20 km. Les communes voisines comme La Garde, Carqueiranne et La Crau sont à portée immédiate. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "L'aéroport de Toulon-Hyères est à environ 4 km du centre, la gare de Hyères est reliée à Toulon en une vingtaine de minutes et la gare TGV de Toulon à 20 km. Les communes voisines comme La Garde, Carqueiranne et La Crau sont à portée immédiate, ce qui facilite nos déplacements sur site dans toute la presqu'île.",
+    "L'aéroport de Toulon-Hyères est à environ 4 km du centre, la gare de Hyères est reliée à Toulon en une vingtaine de minutes et la gare TGV de Toulon à 20 km. Les communes voisines comme La Garde, Carqueiranne et La Crau sont à portée immédiate. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Hébergement touristique",
     "Horticulture et culture du palmier",

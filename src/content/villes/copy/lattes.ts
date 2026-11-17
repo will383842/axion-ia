@@ -49,7 +49,7 @@ export const LATTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lattes près de Montpellier ?",
-      a: "Oui, Axion-IA intervient à Lattes et dans toute l'agglomération de Montpellier. Consultants accessibles via la gare TGV Montpellier-Saint-Roch (15 min) et l'aéroport Montpellier-Méditerranée (10 min). Tramway T3 direct.",
+      a: "Oui, Axion-IA intervient à Lattes et dans toute l'agglomération de Montpellier. Nous intervenons partout en France, sur place ou à distance. Tramway T3 direct.",
     },
     {
       q: "Tarifs audit IA à Lattes  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const LATTES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lattes ?",
-      a: "Nos consultants interviennent sur site à Lattes et dans l'agglo Montpellier. Déplacement direct dans votre entreprise. Tramway T3 direct, gare TGV Montpellier à 15 min, aéroport Montpellier-Méditerranée à 10 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Lattes est desservie par le tramway T3, à 15 min de la gare TGV de Montpellier et à 10 min de l'aéroport Montpellier-Méditerranée.",
     },
   ],
 };

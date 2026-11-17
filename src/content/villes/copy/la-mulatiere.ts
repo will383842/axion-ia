@@ -49,7 +49,7 @@ export const LA_MULATIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Mulatière et sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à La Mulatière et tout le sud lyonnais (Oullins limitrophe, Sainte-Foy-lès-Lyon, Pierre-Bénite). Consultants depuis Lyon (10 min).",
+      a: "Oui, Axion-IA intervient à La Mulatière et tout le sud lyonnais (Oullins limitrophe, Sainte-Foy-lès-Lyon, Pierre-Bénite). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales mulatins ?",
@@ -64,8 +64,8 @@ export const LA_MULATIERE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à La Mulatière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (10 min).",
+      q: "Comment se déroule une mission à La Mulatière ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -9,18 +9,18 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   pitchEn:
     "Marcq-en-Barœul (59), commune résidentielle prisée de la Métropole Européenne de Lille, est un pôle tertiaire reconnu, accueillant sièges sociaux, cabinets de conseil et services aux entreprises, à proximité immédiate des grands groupes nordistes (univers Auchan, Décathlon). Son tissu mêle TPE de services et commerces, professions libérales, indépendants et PME tertiaires. Connue pour son hippodrome, la ville offre un environnement d'affaires dense. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME marcquoises, l'ETI restant marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Lille pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Marcq-en-Barœul (59). Nous accompagnons en priorité les TPE — cabinets de conseil, professions libérales, agences, commerces, indépendants — puis les PME tertiaires et de services aux entreprises, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (propositions commerciales, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire, conseil & sièges Lille",
   ecosystemFr:
     "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   ecosystemEn:
     "Marcq-en-Barœul s'affirme comme l'un des pôles tertiaires les plus dynamiques de la Métropole Européenne de Lille : sièges sociaux, cabinets de conseil, agences de communication et services aux entreprises y sont nombreux, en lien avec l'écosystème des grands groupes nordistes (distribution, retail). Le tissu local mêle ces structures à un dense réseau de TPE — professions libérales, commerces, indépendants. Ce profil d'affaires génère un volume élevé de tâches répétitives : propositions commerciales, reporting, suivi client, veille. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux libère un temps directement réinvesti dans le conseil et la croissance.",
   distancesFr:
-    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nos consultants rejoignent Marcq-en-Barœul depuis Lille.",
+    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nos consultants rejoignent Marcq-en-Barœul depuis Lille.",
+    "Métro et tramway de la MEL relient Marcq-en-Barœul au centre de Lille en ~15 min. Gare de Lille-Europe (TGV, Eurostar) à 6 km, aéroport de Lille-Lesquin à 15 km. Roubaix à 8 km, Tourcoing à 10 km, frontière belge à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil de gestion et stratégie",
     "Agences de communication et marketing",
@@ -132,11 +132,11 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "Quel délai pour un devis sur un site ou un SaaS à Marcq-en-Barœul ?",
-            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet. La proximité de Lille permet un premier rendez-vous rapide sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
+            a: "Un devis est établi à partir de 24-48 h selon la complexité du projet. Nous planifions un premier rendez-vous sur site — au siège, dans un bureau du Parc Europe ou en commerce — pour cadrer le périmètre, le CMS ou la stack SaaS, et le niveau d'IA avant chiffrage.",
           },
         ],
         guarantees:
-          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 24-48 h selon la complexité ; frais de déplacement depuis Lille transparents et distincts du forfait.",
+          "Code sur mesure et propriété intégrale : vos sources, vos contenus, vos modèles IA et votre design system restent chez vous, repris par n'importe quel intégrateur de la Métropole Européenne de Lille — aucun lock-in éditeur ni dépendance contractuelle à Axion-IA. Hébergement Europe RGPD par défaut, point cadré dès la conception compte tenu de la proximité immédiate de la frontière belge pour les boutiques e-commerce multi-pays. UX/UI, mobile, e-commerce multi-CMS et IA livrés par une seule équipe. Devis établi à partir de 24-48 h selon la complexité ; frais de déplacement transparents et distincts du forfait.",
       },
       en: {
         hero: "In Marcq-en-Barœul, home town to the headquarters of Promod (women's ready-to-wear, ~394 stores across 7 countries, founded in 1975 by Francis-Charles Pollet) and a base for Keolis Lille Métropole at Parc Europe, the need is not yet another brochure site: it is e-commerce and business software that hold up under multi-country load and mobility demands. Axion-IA designs sites and AI-augmented SaaS platforms here — UX/UI, mobile, multi-CMS e-commerce and intelligent agents — for fashion and retail brands, shared-mobility players, the tertiary HQs of Parc Europe and Parc Europe Jean Monnet, and the dense fabric of Marcq micro-businesses and SMEs. Custom code, EU GDPR hosting, no vendor lock-in.",
@@ -218,11 +218,11 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
           },
           {
             q: "What is the timeline for a quote on a site or SaaS in Marcq-en-Barœul?",
-            a: "A quote is issued from 24-48 h depending on project complexity. Proximity to Lille allows a quick first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
+            a: "A quote is issued from 24-48 h depending on project complexity. We schedule a first on-site meeting — at the HQ, in a Parc Europe office or at a shop — to frame scope, CMS or SaaS stack, and the AI level before costing.",
           },
         ],
         guarantees:
-          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 24-48 h depending on complexity; travel costs from Lille transparent and separate from the package.",
+          "Custom code and full ownership: your sources, content, AI models and design system stay with you, resumable by any integrator of the European Metropolis of Lille — no vendor lock-in or contractual dependency on Axion-IA. EU GDPR hosting by default, framed from the design stage given the immediate proximity of the Belgian border for multi-country e-commerce stores. UX/UI, mobile, multi-CMS e-commerce and AI delivered by a single team. Quote issued from 24-48 h depending on complexity; travel costs transparent and separate from the package.",
       },
     },
   },
@@ -230,7 +230,7 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Marcq-en-Barœul et dans la MEL ?",
-      a: "Oui. Nos consultants se déplacent à Marcq-en-Barœul et dans la Métropole Européenne de Lille (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq), depuis Lille.",
+      a: "Oui, à Marcq-en-Barœul et dans les communes voisines (Lille, Roubaix, Tourcoing, Villeneuve-d'Ascq). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les cabinets de conseil et agences marcquois ?",
@@ -246,11 +246,11 @@ export const MARCQ_EN_BAR_UL_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Marcq-en-Barœul ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Lille permet un premier rendez-vous rapide sur site, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à Marcq-en-Barœul : nos experts IA se déplacent depuis Lille, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence à Marcq-en-Barœul : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

@@ -64,7 +64,7 @@ export const OSNY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Cergy ou Paris ?",
+      q: "Comment se déroule une mission à Osny ?",
       a: "Cergy-Pontoise (5 min). Paris La Défense (35 min). Paris Saint-Lazare (40 min transilien J). CDG (45 min).",
     },
   ],

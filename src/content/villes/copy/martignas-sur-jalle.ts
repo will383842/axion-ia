@@ -49,7 +49,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Martignas-sur-Jalle ?",
-      a: "Oui, Axion-IA intervient à Martignas-sur-Jalle et dans tout l'ouest bordelais (Saint-Médard-en-Jalles, Le Haillan, Saint-Jean-d'Illac). Depuis Bordeaux centre (20 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Martignas-sur-Jalle et dans tout l'ouest bordelais (Saint-Médard-en-Jalles, Le Haillan, Saint-Jean-d'Illac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Martignas-sur-Jalle  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const MARTIGNAS_SUR_JALLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Martignas-sur-Jalle ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Proche aéroport Mérignac (10 min). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nous intervenons dans vos locaux ou en visio. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

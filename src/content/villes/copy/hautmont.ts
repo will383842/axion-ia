@@ -49,7 +49,7 @@ export const HAUTMONT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hautmont et dans l'agglomération de Maubeuge ?",
-      a: "Oui, Axion-IA intervient à Hautmont et dans toute l'agglomération de Maubeuge (Maubeuge, Louvroil, Jeumont, Feignies, Aulnoye-Aymeries). Nos consultants couvrent l'ensemble du Sambre-Avesnois depuis Lille (1h15) ou Valenciennes (35 min).",
+      a: "Oui, Axion-IA intervient à Hautmont et dans toute l'agglomération de Maubeuge (Maubeuge, Louvroil, Jeumont, Feignies, Aulnoye-Aymeries). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Hautmont  ?",
@@ -61,7 +61,7 @@ export const HAUTMONT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Hautmont ?",
-      a: "Nos consultants interviennent à Hautmont depuis Maubeuge (5 min) ou Valenciennes (35 min). Intervention sur site dans votre atelier, usine ou bureau. Pour missions multi-jours, hébergement à Maubeuge.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre atelier, usine ou bureau. Pour missions multi-jours, hébergement à Maubeuge.",
     },
     {
       q: "Proposez-vous des solutions IA pour la transition industrielle du Sambre-Avesnois ?",

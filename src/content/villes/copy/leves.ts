@@ -49,7 +49,7 @@ export const LEVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lèves et dans l'agglomération de Chartres ?",
-      a: "Oui, Axion-IA intervient à Lèves et dans toute l'agglomération de Chartres Métropole (Chartres, Mainvilliers, Lucé, Luisant, Champhol). Couverture également Dreux à 35 min, Paris à 1h20 et Orléans à 1h15.",
+      a: "Oui, Axion-IA intervient à Lèves et dans toute l'agglomération de Chartres Métropole (Chartres, Mainvilliers, Lucé, Luisant, Champhol). Couverture également Dreux, Paris et Orléans.",
     },
     {
       q: "Travaillez-vous avec les PME de services et négoce du bassin chartrain ?",
@@ -65,7 +65,7 @@ export const LEVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Lèves ?",
-      a: "Nos consultants se déplacent via la gare de Chartres (Intercités Paris-Montparnasse 1h) ou par l'A11 depuis Paris (1h20). Lèves est à 5 minutes de Chartres.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

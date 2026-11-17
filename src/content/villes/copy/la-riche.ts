@@ -65,7 +65,7 @@ export const LA_RICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à La Riche ?",
-      a: "Nos consultants interviennent sur site à La Riche (Tours centre à 5 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. La Riche est à 5 min du centre de Tours.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const LUYNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Luynes et ouest de Tours ?",
-      a: "Oui, Axion-IA intervient à Luynes et tout l'ouest de Tours Métropole (Saint-Étienne-de-Chigny, Fondettes, Saint-Cyr-sur-Loire, Savonnières). Consultants depuis Tours centre (15 min) ou gare TGV Saint-Pierre-des-Corps (20 min).",
+      a: "Oui, Axion-IA intervient à Luynes et tout l'ouest de Tours Métropole (Saint-Étienne-de-Chigny, Fondettes, Saint-Cyr-sur-Loire, Savonnières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs AOC Touraine à Luynes ?",
@@ -64,8 +64,8 @@ export const LUYNES_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Luynes, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (15 min D952 bords de Loire). Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Luynes ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Cadre exceptionnel en surplomb de Loire. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

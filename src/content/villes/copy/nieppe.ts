@@ -49,7 +49,7 @@ export const NIEPPE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Nieppe ?",
-      a: "Oui, Axion-IA intervient à Nieppe et dans la Flandre française (Armentières, Bailleul, Hazebrouck, Estaires). Consultants via A25 ou gare SNCF d'Armentières. Bassin agricole, agroalimentaire et PME industrielles, proximité immédiate de Lille et de la Belgique.",
+      a: "Oui, Axion-IA intervient à Nieppe et dans la Flandre française (Armentières, Bailleul, Hazebrouck, Estaires). Nous intervenons partout en France, sur place ou à distance. Bassin agricole, agroalimentaire et PME industrielles, proximité immédiate de Lille et de la Belgique.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME agriculture et agroalimentaire ?",
@@ -65,7 +65,7 @@ export const NIEPPE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Nieppe ?",
-      a: "Nos consultants se déplacent via autoroute A25 (10 min) ou gare SNCF d'Armentières (7 min). Bassin de Flandre française sur les bords de la Lys, proximité immédiate de Lille (25 min) et de la frontière belge.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Bassin de Flandre française sur les bords de la Lys, proximité immédiate de Lille (25 min) et de la frontière belge.",
     },
   ],
 };

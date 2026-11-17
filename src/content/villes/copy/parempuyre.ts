@@ -49,7 +49,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parempuyre ?",
-      a: "Oui, Axion-IA intervient à Parempuyre et dans tout le nord Bordeaux-Médoc (Blanquefort, Le Taillan-Médoc, Ludon-Médoc). Nos consultants se déplacent depuis Bordeaux centre (25 min) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Parempuyre et dans tout le nord Bordeaux-Médoc (Blanquefort, Le Taillan-Médoc, Ludon-Médoc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Parempuyre  ?",
@@ -65,7 +65,7 @@ export const PAREMPUYRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Parempuyre ?",
-      a: "Nos consultants interviennent dans vos locaux à Parempuyre ou en visio. Tramway C à proximité (Blanquefort). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Parempuyre ou en visio. Tarifs et planning convenus en amont.",
     },
   ],
 };

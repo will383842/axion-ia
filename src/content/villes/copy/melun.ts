@@ -246,7 +246,7 @@ export const MELUN_COPY: VilleCopy = {
       a: "Toutes les solutions livrées à Melun respectent le RGPD : hébergement UE, minimisation des données, journalisation, DPA contractuel. Pour les acteurs de santé, attention particulière aux données sensibles. Code custom, pas de boîte noire.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Melun ?",
+      q: "Quelles communes proches couvrez-vous ?",
       a: "Nous couvrons aussi Dammarie-lès-Lys, Le Mée-sur-Seine, Vaux-le-Pénil, Voisenon, Vert-Saint-Denis, La Rochette, Maincy, Rubelles, ainsi que l'ensemble de l'arrondissement de Melun.",
     },
   ],

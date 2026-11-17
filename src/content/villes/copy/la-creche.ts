@@ -49,7 +49,7 @@ export const LA_CRECHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Crèche et bassin niortais ?",
-      a: "Oui, Axion-IA intervient à La Crèche et tout le bassin niortais est (Niort à 15 min, Saint-Maixent-l'École, Chauray, Échiré). Consultants depuis Poitiers (50 min) ou La Rochelle (1h15). Couverture complète du Haut-Val-de-Sèvre.",
+      a: "Oui, Axion-IA intervient à La Crèche et tout le bassin niortais est (Niort à 15 min, Saint-Maixent-l'École, Chauray, Échiré). Nous intervenons partout en France, sur place ou à distance. Couverture complète du Haut-Val-de-Sèvre.",
     },
     {
       q: "Travaillez-vous avec les artisans BTP de La Crèche ?",
@@ -64,8 +64,8 @@ export const LA_CRECHE_COPY: VilleCopy = {
       a: "Pour les professions libérales et commerces de La Crèche, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Poitiers ou Niort ?",
-      a: "Nos consultants viennent de Niort (15 min) ou Poitiers (50 min via N11/A10). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à La Crèche ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Moyeuvre-Grande ?",
-      a: "Oui, Axion-IA intervient à Moyeuvre-Grande et dans toute la Vallée de l'Orne (Rombas, Amnéville, Clouange, Rosselange). Consultants via gare SNCF Moyeuvre-Grande ou autoroute A4/A31.",
+      a: "Oui, Axion-IA intervient à Moyeuvre-Grande et dans toute la Vallée de l'Orne (Rombas, Amnéville, Clouange, Rosselange). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants de la Vallée de l'Orne ?",
@@ -65,7 +65,7 @@ export const MOYEUVRE_GRANDE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Moyeuvre-Grande ?",
-      a: "Nos consultants se déplacent via gare SNCF Moyeuvre-Grande (ligne Metz–Conflans) ou autoroute A4/A31. Metz à 25 min, Thionville à 20 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Metz à 25 min, Thionville à 20 min.",
     },
   ],
 };

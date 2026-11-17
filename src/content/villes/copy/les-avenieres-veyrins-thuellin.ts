@@ -49,7 +49,7 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Avenières Veyrins-Thuellin et Vals du Dauphiné ?",
-      a: "Oui, Axion-IA intervient aux Avenières Veyrins-Thuellin et toute la Communauté de communes Les Vals du Dauphiné (La Tour-du-Pin, Saint-André-le-Gaz, Le Pont-de-Beauvoisin). Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h).",
+      a: "Oui, Axion-IA intervient aux Avenières Veyrins-Thuellin et toute la Communauté de communes Les Vals du Dauphiné (La Tour-du-Pin, Saint-André-le-Gaz, Le Pont-de-Beauvoisin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Nord-Isère ?",
@@ -64,8 +64,8 @@ export const LES_AVENIERES_VEYRINS_THUELLIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants aux Avenières, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
-      a: "Nos consultants viennent de Lyon (1h A43) ou Chambéry (1h). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission aux Avenières Veyrins-Thuellin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

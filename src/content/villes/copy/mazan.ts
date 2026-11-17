@@ -49,7 +49,7 @@ export const MAZAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mazan et dans le Comtat Venaissin ?",
-      a: "Oui, Axion-IA intervient à Mazan et dans tout le Comtat Venaissin (Carpentras, Pernes-les-Fontaines, Caromb, Bedoin). Consultants accessibles en 10 min depuis Carpentras et 35 min depuis Avignon.",
+      a: "Oui, Axion-IA intervient à Mazan et dans tout le Comtat Venaissin (Carpentras, Pernes-les-Fontaines, Caromb, Bedoin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
@@ -65,7 +65,7 @@ export const MAZAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Mazan ?",
-      a: "Nos consultants interviennent depuis Carpentras (10 min) ou Avignon (35 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation, hébergement ou commerce. Comtat Venaissin bien desservi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation, hébergement ou commerce. Comtat Venaissin bien desservi.",
     },
   ],
 };

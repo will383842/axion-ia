@@ -49,7 +49,7 @@ export const LOCMARIA_PLOUZANE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Locmaria-Plouzané et dans l'agglomération brestoise ?",
-      a: "Oui, Axion-IA intervient à Locmaria-Plouzané, au technopôle Brest-Iroise et dans toute l'agglomération brestoise (Plouzané, Le Conquet, Saint-Renan, Guipavas). Nos consultants couvrent l'ensemble du pays de Brest.",
+      a: "Oui, Axion-IA intervient à Locmaria-Plouzané, au technopôle Brest-Iroise et dans toute l'agglomération brestoise (Plouzané, Le Conquet, Saint-Renan, Guipavas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tech et sous-traitants défense du technopôle ?",

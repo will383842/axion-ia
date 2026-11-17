@@ -49,7 +49,7 @@ export const LES_ANDELYS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il aux Andelys et dans Seine Normandie Agglomération ?",
-      a: "Oui, Axion-IA intervient aux Andelys et dans toute Seine Normandie Agglomération (Gaillon, Vernon, Étrépagny). Nos consultants se déplacent depuis Rouen (40 min) ou Paris (1h30 A13).",
+      a: "Oui, Axion-IA intervient aux Andelys et dans toute Seine Normandie Agglomération (Gaillon, Vernon, Étrépagny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial et fluvial ?",
@@ -64,8 +64,8 @@ export const LES_ANDELYS_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants aux Andelys, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (40 min) ou Paris (1h30 A13, gare Gaillon-Aubevoye à 15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission aux Andelys ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

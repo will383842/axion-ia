@@ -49,7 +49,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Salvetat-Saint-Gilles ?",
-      a: "Oui, Axion-IA intervient à La Salvetat-Saint-Gilles et dans tout l'ouest de Toulouse (Plaisance-du-Touch, Fonsorbes, Léguevin). Déplacement en 22 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à La Salvetat-Saint-Gilles et dans tout l'ouest de Toulouse (Plaisance-du-Touch, Fonsorbes, Léguevin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à La Salvetat-Saint-Gilles ?",
@@ -61,7 +61,7 @@ export const LA_SALVETAT_SAINT_GILLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à La Salvetat-Saint-Gilles ?",
-      a: "Nos consultants se déplacent à La Salvetat-Saint-Gilles depuis Toulouse (22 min D632). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à La Salvetat-Saint-Gilles ?",

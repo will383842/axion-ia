@@ -49,7 +49,7 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Isle-Adam et nord Val-d'Oise ?",
-      a: "Oui, Axion-IA intervient à L'Isle-Adam et tout le nord Val-d'Oise bords de l'Oise (Parmain, Auvers-sur-Oise, Persan-Beaumont, Méry-sur-Oise). Consultants depuis Paris Gare du Nord (45 min Transilien H).",
+      a: "Oui, Axion-IA intervient à L'Isle-Adam et tout le nord Val-d'Oise bords de l'Oise (Parmain, Auvers-sur-Oise, Persan-Beaumont, Méry-sur-Oise). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et commerçants de L'Isle-Adam ?",
@@ -64,8 +64,8 @@ export const L_ISLE_ADAM_COPY: VilleCopy = {
       a: "Pour les PME tertiaires installées à L'Isle-Adam et bords de l'Oise, audit Stratégique, intervention formation équipes, implémentation IA complète (agents, automatisation, classification). ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris (45 min Transilien H Gare du Nord → L'Isle-Adam — Parmain ou voiture A115/N1).",
+      q: "Comment se déroule une mission à L'Isle-Adam ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

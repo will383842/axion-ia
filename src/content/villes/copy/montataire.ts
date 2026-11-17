@@ -49,7 +49,7 @@ export const MONTATAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montataire ?",
-      a: "Oui, Axion-IA intervient à Montataire et dans tout le bassin creillois (Creil, Nogent-sur-Oise, Senlis, Chantilly). Consultants via gare SNCF Creil ou autoroute A1.",
+      a: "Oui, Axion-IA intervient à Montataire et dans tout le bassin creillois (Creil, Nogent-sur-Oise, Senlis, Chantilly). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour un audit IA à Montataire ?",

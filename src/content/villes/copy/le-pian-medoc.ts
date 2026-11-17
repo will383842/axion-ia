@@ -49,7 +49,7 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Pian-Médoc ?",
-      a: "Oui, Axion-IA intervient au Pian-Médoc et dans tout le nord Bordeaux-Médoc (Le Taillan-Médoc, Parempuyre, Saint-Aubin-de-Médoc, Ludon-Médoc). Depuis Bordeaux centre (25 min).",
+      a: "Oui, Axion-IA intervient au Pian-Médoc et dans tout le nord Bordeaux-Médoc (Le Taillan-Médoc, Parempuyre, Saint-Aubin-de-Médoc, Ludon-Médoc). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Pian-Médoc ?",
@@ -65,7 +65,7 @@ export const LE_PIAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Pian-Médoc ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio. Depuis Bordeaux centre (25 min). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

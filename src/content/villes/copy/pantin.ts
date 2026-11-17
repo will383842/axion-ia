@@ -232,11 +232,11 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Pantin ?",
-      a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. La desserte par les lignes 5 et 7 du métro et le RER E rend l'accès rapide depuis Paris intra-muros.",
+      a: "Nous intervenons sur site à Pantin dans les 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Pantin ?",
-      a: "Depuis Pantin, nous couvrons les communes limitrophes : Paris (19e arrondissement), Aubervilliers, Bobigny, La Courneuve, Les Lilas, Noisy-le-Sec, Le Pré-Saint-Gervais et Romainville.",
+      q: "Quelles communes proches couvrez-vous ?",
+      a: "Nous intervenons aussi dans les communes limitrophes : Paris (19e arrondissement), Aubervilliers, Bobigny, La Courneuve, Les Lilas, Noisy-le-Sec, Le Pré-Saint-Gervais et Romainville.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Pantin ?",
@@ -248,7 +248,7 @@ export const PANTIN_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Pantin ?",
-      a: "Oui, notre équipe se déplace directement à Pantin pour audits, interventions et implémentations. Le métro 5 et 7 et le RER E rendent l'accès très simple depuis tout Paris et sa première couronne.",
+      a: "Oui, notre équipe se déplace directement à Pantin pour audits, interventions et implémentations. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

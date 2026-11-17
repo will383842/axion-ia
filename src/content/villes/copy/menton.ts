@@ -237,7 +237,7 @@ export const MENTON_COPY: VilleCopy = {
       a: "Oui. Environ 40 % des actifs mentonnais travaillent à Monaco, ce qui crée un tissu spécifique d'experts-comptables, conseillers en fiscalité bi-nationale, agences de paie et services RH. Nous intervenons sur l'automatisation des dossiers frontaliers et la conformité bi-nationale France-Monaco.",
     },
     {
-      q: "Sous combien de temps intervenez-vous sur la Côte d'Azur depuis Menton ?",
+      q: "Sous combien de temps intervenez-vous sur la Côte d'Azur ?",
       a: "Nos experts IA seniors se déplacent sur Menton et l'ensemble de la Côte d'Azur (Monaco, Nice, Cap-d'Ail, Roquebrune-Cap-Martin) sous 5 jours ouvrés en moyenne. Pour les TPE et PME du Vieux Menton ou du front de mer, nous combinons visites sur site et travail distant sécurisé.",
     },
     {

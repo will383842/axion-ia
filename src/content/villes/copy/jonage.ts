@@ -49,7 +49,7 @@ export const JONAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Jonage et est lyonnais ?",
-      a: "Oui, Axion-IA intervient à Jonage et tout l'est lyonnais (Meyzieu limitrophe, Décines-Charpieu, Chassieu, aéroport Saint-Exupéry à 15 min). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Jonage et tout l'est lyonnais (Meyzieu limitrophe, Décines-Charpieu, Chassieu, aéroport Saint-Exupéry à 15 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const JONAGE_COPY: VilleCopy = {
       a: "Agents conversationnels patient/client, automatisation RDV, classification dossiers. RGPD strict. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Jonage ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

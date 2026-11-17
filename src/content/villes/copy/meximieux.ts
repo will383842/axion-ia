@@ -49,7 +49,7 @@ export const MEXIMIEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Meximieux et plaine de l'Ain ?",
-      a: "Oui, Axion-IA intervient à Meximieux et toute la plaine de l'Ain (Miribel à 20 min, Ambérieu à 15 min, Pérouges). Consultants depuis Lyon (40 min).",
+      a: "Oui, Axion-IA intervient à Meximieux et toute la plaine de l'Ain (Miribel à 20 min, Ambérieu à 15 min, Pérouges). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const MEXIMIEUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min).",
+      q: "Comment se déroule une mission à Meximieux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

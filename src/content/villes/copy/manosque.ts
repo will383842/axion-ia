@@ -230,7 +230,7 @@ export const MANOSQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Manosque et en Haute-Provence ?",
-      a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nos consultants viennent d'Aix-en-Provence, à 50 minutes.",
+      a: "Oui, Axion-IA intervient à Manosque et tout le bassin du pays de Forcalquier-Montagne de Lure (Volx, Sainte-Tulle, Gréoux-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE du tourisme et de la cosmétique ?",
@@ -246,7 +246,7 @@ export const MANOSQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Manosque ?",
-      a: "Nos consultants se déplacent depuis Aix-en-Provence ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

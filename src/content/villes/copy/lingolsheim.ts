@@ -9,18 +9,18 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   pitchEn:
     "Lingolsheim (67), deuxième commune de l'Eurométropole de Strasbourg, est une ville résidentielle et tertiaire du Bas-Rhin, directement reliée au centre strasbourgeois par le tram. Son tissu économique mêle TPE de services et commerces, artisans, professions libérales, indépendants et PME prestataires ou sous-traitantes des grands employeurs de l'agglomération. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME lingolsheimoises, l'ETI restant marginale.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Strasbourg pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Strasbourg pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Lingolsheim (67). Nous accompagnons en priorité les TPE — commerces, artisans, professions libérales, indépendants, prestataires de services — puis les PME tertiaires et de santé de l'Eurométropole, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, support, traitement documentaire). Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire & services Eurométropole",
   ecosystemFr:
     "Lingolsheim profite de son intégration à l'Eurométropole de Strasbourg, l'un des plus grands bassins d'emploi du Grand Est, et de sa desserte directe par le tram. Son économie locale repose sur les TPE — commerces, artisans, professions libérales, services de proximité — et sur des PME tertiaires, de santé et prestataires gravitant autour des grands employeurs strasbourgeois. Ce profil résidentiel et tertiaire produit un volume élevé de tâches répétitives : devis, prise de rendez-vous, relances, support, gestion documentaire. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux dégage un temps directement réinvesti dans le métier.",
   ecosystemEn:
     "Lingolsheim profite de son intégration à l'Eurométropole de Strasbourg, l'un des plus grands bassins d'emploi du Grand Est, et de sa desserte directe par le tram. Son économie locale repose sur les TPE — commerces, artisans, professions libérales, services de proximité — et sur des PME tertiaires, de santé et prestataires gravitant autour des grands employeurs strasbourgeois. Ce profil résidentiel et tertiaire produit un volume élevé de tâches répétitives : devis, prise de rendez-vous, relances, support, gestion documentaire. Axion-IA y privilégie les TPE et PME, pour qui l'automatisation de ces flux dégage un temps directement réinvesti dans le métier.",
   distancesFr:
-    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nos consultants rejoignent Lingolsheim depuis Strasbourg.",
+    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nos consultants rejoignent Lingolsheim depuis Strasbourg.",
+    "Tram B relie Lingolsheim au centre de Strasbourg en ~20 min. Gare de Strasbourg (TGV) à 7 km, aéroport de Strasbourg-Entzheim à 5 km. Illkirch-Graffenstaden à 6 km, frontière allemande à ~10 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de détail de proximité",
     "Artisanat du bâtiment",
@@ -53,7 +53,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
+        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance.",
         whyHere: [
           "Deuxième commune de l'Eurométropole, ville résidentielle desservie par le tram B et raccordée à l'A35 par le Grand Contournement Ouest ouvert en 2021 : le commerce de proximité et l'artisanat du bâtiment lingolsheimois gagnent une vitrine e-commerce mobile-first et un moteur de devis automatisé, calibrés pour une clientèle locale qui réserve depuis son smartphone.",
           "Densité de cabinets de santé et de professions libérales, juridiques et comptables : nous construisons des portails de prise de rendez-vous, des assistants de tri des demandes entrantes et du traitement documentaire respectant le secret professionnel et le RGPD, conçus mobile-first pour les patients et clients de l'Eurométropole.",
@@ -74,7 +74,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio depuis Strasbourg, avec rendez-vous physique au Parc des Tanneries si besoin.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio, avec rendez-vous physique au Parc des Tanneries si besoin.",
           },
           {
             step: "Recette + mise en ligne",
@@ -139,7 +139,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, y compris pour un commerce ou un cabinet en pleine activité. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun lock-in, aucun abonnement imposé, transférable à tout prestataire local de l'Eurométropole de Strasbourg ou repris en interne par vos équipes.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance depuis Strasbourg.",
+        hero: "Axion-IA conçoit et augmente à Lingolsheim des sites web, boutiques e-commerce et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure et mobile-first, prise de rendez-vous en ligne, chatbot RAG ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour la deuxième commune de l'Eurométropole de Strasbourg, ville résidentielle et tertiaire faite de TPE du commerce de proximité, d'artisans du bâtiment, de cabinets de santé et de professions libérales, mais aussi des entreprises du Parc Eiffel des Tanneries, reliées au centre strasbourgeois par le tram B et à l'A35 par le Grand Contournement Ouest. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous. Kick-off sur place à Lingolsheim, itérations à distance.",
         whyHere: [
           "Deuxième commune de l'Eurométropole, ville résidentielle desservie par le tram B et raccordée à l'A35 par le Grand Contournement Ouest ouvert en 2021 : le commerce de proximité et l'artisanat du bâtiment lingolsheimois gagnent une vitrine e-commerce mobile-first et un moteur de devis automatisé, calibrés pour une clientèle locale qui réserve depuis son smartphone.",
           "Densité de cabinets de santé et de professions libérales, juridiques et comptables : nous construisons des portails de prise de rendez-vous, des assistants de tri des demandes entrantes et du traitement documentaire respectant le secret professionnel et le RGPD, conçus mobile-first pour les patients et clients de l'Eurométropole.",
@@ -160,7 +160,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio depuis Strasbourg, avec rendez-vous physique au Parc des Tanneries si besoin.",
+              "Greffe IA sur l'existant ou build IA-native : prise de rendez-vous en ligne, e-commerce multi-CMS, chatbot RAG, recherche sémantique, agents de devis et de relance. Démos hebdomadaires en visio, avec rendez-vous physique au Parc des Tanneries si besoin.",
           },
           {
             step: "Recette + mise en ligne",
@@ -230,7 +230,7 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lingolsheim et dans l'Eurométropole ?",
-      a: "Oui. Nos consultants se déplacent à Lingolsheim et dans l'Eurométropole de Strasbourg (Strasbourg, Illkirch-Graffenstaden, Ostwald, Eckbolsheim), depuis Strasbourg.",
+      a: "Oui, à Lingolsheim et dans les communes voisines (Strasbourg, Illkirch-Graffenstaden, Ostwald, Eckbolsheim). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans lingolsheimois ?",
@@ -246,11 +246,11 @@ export const LINGOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à Lingolsheim ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Strasbourg permet un premier rendez-vous rapide sur site, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à Lingolsheim : nos experts IA se déplacent depuis Strasbourg, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence à Lingolsheim : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

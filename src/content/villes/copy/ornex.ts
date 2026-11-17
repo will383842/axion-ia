@@ -18,9 +18,9 @@ export const ORNEX_COPY: VilleCopy = {
   ecosystemEn:
     "Ornex appartient au pays de Gex, territoire frontalier en pleine expansion qui vit à l'heure de Genève, de son bassin d'emploi et du CERN tout proche. La forte croissance démographique alimente le BTP, l'artisanat, les commerces de proximité et un tertiaire de services tourné vers la Suisse voisine. Ces TPE et PME gessiennes, souvent multilingues et confrontées à des flux administratifs transfrontaliers, trouvent dans l'automatisation IA et les agents conversationnels FR/EN/DE un levier concret de productivité et de qualité de service.",
   distancesFr:
-    "Ornex est à quelques minutes de la frontière suisse : le centre de Genève est à un quart d'heure, l'aéroport de Genève-Cointrin à 15 minutes, Ferney-Voltaire et le CERN à 5 minutes, Gex à 5 minutes également. Lyon et sa gare TGV sont à environ une heure trente par l'autoroute. Cette position frontalière unique facilite nos interventions sur tout le pays de Gex, de Saint-Genis-Pouilly à Divonne-les-Bains.",
+    "Ornex est à quelques minutes de la frontière suisse : le centre de Genève est à un quart d'heure, l'aéroport de Genève-Cointrin à 15 minutes, Ferney-Voltaire et le CERN à 5 minutes, Gex à 5 minutes également. Lyon et sa gare TGV sont à environ une heure trente par l'autoroute. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Ornex est à quelques minutes de la frontière suisse : le centre de Genève est à un quart d'heure, l'aéroport de Genève-Cointrin à 15 minutes, Ferney-Voltaire et le CERN à 5 minutes, Gex à 5 minutes également. Lyon et sa gare TGV sont à environ une heure trente par l'autoroute. Cette position frontalière unique facilite nos interventions sur tout le pays de Gex, de Saint-Genis-Pouilly à Divonne-les-Bains.",
+    "Ornex est à quelques minutes de la frontière suisse : le centre de Genève est à un quart d'heure, l'aéroport de Genève-Cointrin à 15 minutes, Ferney-Voltaire et le CERN à 5 minutes, Gex à 5 minutes également. Lyon et sa gare TGV sont à environ une heure trente par l'autoroute. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Services aux entreprises transfrontaliers",
     "Artisanat et travaux de construction BTP",
@@ -68,7 +68,7 @@ export const ORNEX_COPY: VilleCopy = {
       a: "Audit sur place pour cartographier les automatisations utiles, intervention d'une journée pour un premier cas d'usage, puis coaching 1-to-1 du dirigeant. Les TPE puis les PME sont prioritaires ; les ETI restent marginales pour nous.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Genève ?",
+      q: "Comment se déroule une mission à Ornex ?",
       a: "Ornex est à un quart d'heure de Genève et à environ une heure trente de Lyon par l'autoroute. Nous couvrons tout le pays de Gex.",
     },
   ],

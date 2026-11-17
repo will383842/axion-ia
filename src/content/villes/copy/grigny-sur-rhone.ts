@@ -49,7 +49,7 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grigny et sud lyonnais ?",
-      a: "Oui, Axion-IA intervient à Grigny et tout le sud lyonnais (Givors limitrophe, Vienne à 15 min, Feyzin, Saint-Fons). Consultants depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Grigny et tout le sud lyonnais (Givors limitrophe, Vienne à 15 min, Feyzin, Saint-Fons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const GRIGNY_SUR_RHONE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Grigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (25 min).",
+      q: "Comment se déroule une mission à Grigny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

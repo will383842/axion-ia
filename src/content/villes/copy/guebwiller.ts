@@ -49,7 +49,7 @@ export const GUEBWILLER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guebwiller ?",
-      a: "Oui, Axion-IA intervient à Guebwiller et dans la vallée du Florival (Soultz-Haut-Rhin, Buhl, Lautenbach). Consultants via A35 (15 min) ou gare de Bollwiller (10 min). Position centrale entre Mulhouse et Colmar (25 min chacune).",
+      a: "Oui, Axion-IA intervient à Guebwiller et dans la vallée du Florival (Soultz-Haut-Rhin, Buhl, Lautenbach). Nous intervenons partout en France, sur place ou à distance. Position centrale entre Mulhouse et Colmar (25 min chacune).",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Grand Cru et le tourisme ?",
@@ -65,7 +65,7 @@ export const GUEBWILLER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Guebwiller ?",
-      a: "Nos consultants se déplacent via autoroute A35 (15 min) ou gare de Bollwiller (TER Mulhouse-Colmar, 10 min). Position centrale Mulhouse/Colmar, accès Suisse-Allemagne via aéroport Bâle-Mulhouse.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Position centrale Mulhouse/Colmar, accès Suisse-Allemagne via aéroport Bâle-Mulhouse.",
     },
   ],
 };

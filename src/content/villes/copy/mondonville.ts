@@ -49,7 +49,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mondonville ?",
-      a: "Oui, Axion-IA intervient à Mondonville et dans tout le nord-ouest de Toulouse (Cornebarrieu, Aussonne, Beauzelle). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Mondonville et dans tout le nord-ouest de Toulouse (Cornebarrieu, Aussonne, Beauzelle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Mondonville ?",
@@ -61,7 +61,7 @@ export const MONDONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Mondonville ?",
-      a: "Nos consultants se déplacent à Mondonville depuis Toulouse (20 min D902). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à Mondonville ?",

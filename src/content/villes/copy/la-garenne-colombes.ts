@@ -9,18 +9,18 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   pitchEn:
     "La Garenne-Colombes (92) est une commune résidentielle et tertiaire des Hauts-de-Seine, collée à La Défense et Courbevoie. Son tissu est dense en TPE de services, indépendants, cabinets (conseil, comptabilité, droit), commerces de proximité et PME tournées vers les grands comptes voisins. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité ces TPE puis les PME garennoises, plus marginalement les ETI, pour transformer un quotidien administratif chargé en flux automatisés et fiables.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nos consultants se déplacent sur site depuis Paris pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à La Garenne-Colombes (92). Nous accompagnons en priorité les TPE — cabinets de conseil, experts-comptables, professions libérales, commerçants, indépendants — puis les PME de services, et plus marginalement les ETI. Nous intervenons partout en France, sur place ou à distance, pour auditer vos processus, former vos équipes et déployer des automatisations concrètes (devis, relances, reporting, support client). Tarifs publics, frais de déplacement transparents.",
   seoHook: "tertiaire & services proche La Défense",
   ecosystemFr:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   ecosystemEn:
     "La Garenne-Colombes vit dans l'orbite immédiate de La Défense, premier quartier d'affaires européen. Son économie locale repose sur les TPE de services (conseil, comptabilité, droit, communication), les indépendants en télétravail, les commerces de centre-ville et les PME sous-traitantes des grands comptes voisins. Ce profil tertiaire génère un volume élevé de tâches répétitives — propositions commerciales, facturation, suivi client, veille — directement adressables par l'IA. Axion-IA y privilégie les TPE et PME, là où un gain de quelques heures par semaine change réellement la donne, l'ETI restant minoritaire dans ce tissu.",
   distancesFr:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nos consultants rejoignent la commune en moins de 20 min depuis Paris intra-muros.",
+    "Gare de La Garenne-Colombes (ligne L Saint-Lazare) à 9 min de Paris-Saint-Lazare. La Défense à 10 min en transilien ou tramway T2. Aéroport Paris-Charles-de-Gaulle à 30 km, Paris-Orly à 25 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Conseil de gestion et stratégie",
     "Activités comptables et juridiques",
@@ -136,7 +136,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Devis remis à partir de 24-48 h selon la complexité, frais de déplacement depuis Paris indiqués séparément du forfait. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
+          "Devis remis à partir de 24-48 h selon la complexité, frais de déplacement indiqués séparément du forfait. Hébergement en Europe par défaut et conformité RGPD : vous restez propriétaire de vos données, de votre code et de vos contenus. Le site et ses agents IA sont portables — repris en interne ou par tout prestataire de votre choix, sans verrou éditeur ni contrat de maintenance imposé. Nous couvrons l'ensemble de la chaîne sans sous-traiter : UX/UI, responsive mobile, e-commerce multi-CMS (Shopify, WooCommerce, Wix, sur-mesure) et couche IA (chatbot RAG, search sémantique, agents), des commerces de la rue de l'Aigle aux filiales France du quartier Champs-Philippe.",
       },
       en: {
         hero: "In La Garenne-Colombes (Hauts-de-Seine), Axion-IA builds AI-augmented websites and SaaS platforms for the two worlds the town packs into under two square kilometres: on one side, the large-group subsidiaries installed to the west, in the orbit of Paris La Défense — Sage at Atrium Défense (Place de Belgique), Hyundai Motor France at Tour Nova (boulevard National), Bayer on the same axis — which need business portals, customer areas and conversational agents wired into their systems; on the other, the small businesses, the shops on rue de l'Aigle, the firms and independent professionals of the town centre who want a showcase or e-commerce site that books appointments and answers enquiries on its own. Custom code, EU hosting under GDPR, zero vendor lock-in.",
@@ -222,7 +222,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
           },
         ],
         guarantees:
-          "Quote delivered from 24-48 h depending on complexity, travel costs from Paris shown separately from the package. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
+          "Quote delivered from 24-48 h depending on complexity, travel costs shown separately from the package. Hosting in Europe by default and GDPR compliance: you remain the owner of your data, your code and your content. The site and its AI agents are portable — taken over in-house or by any provider of your choice, with no vendor lock-in or imposed maintenance contract. We cover the whole chain without subcontracting: UX/UI, mobile responsive, multi-CMS e-commerce (Shopify, WooCommerce, Wix, custom) and the AI layer (RAG chatbot, semantic search, agents), from the shops on rue de l'Aigle to the France subsidiaries of the Champs-Philippe district.",
       },
     },
   },
@@ -230,7 +230,7 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA se déplace-t-il à La Garenne-Colombes ?",
-      a: "Oui. Nos consultants rejoignent La Garenne-Colombes en moins de 20 min depuis Paris et interviennent directement dans vos locaux, ainsi qu'à Courbevoie, Colombes, Bois-Colombes et sur La Défense.",
+      a: "Oui. Nous intervenons directement dans vos locaux à La Garenne-Colombes, ainsi qu'à Courbevoie, Colombes, Bois-Colombes et sur La Défense.",
     },
     {
       q: "Travaillez-vous avec les TPE et indépendants garennois ?",
@@ -246,11 +246,11 @@ export const LA_GARENNE_COLOMBES_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour démarrer une mission à La Garenne-Colombes ?",
-      a: "Sous 5 jours ouvrés après validation. La proximité de Paris permet un premier rendez-vous sur site très rapidement, suivi d'un audit puis d'un plan d'action chiffré.",
+      a: "Sous 5 jours ouvrés après validation. Nous planifions un premier rendez-vous sur site, suivi d'un audit puis d'un plan d'action chiffré.",
     },
     {
       q: "Faut-il une implantation locale d'Axion-IA pour intervenir ?",
-      a: "Non. Axion-IA n'a pas d'agence à La Garenne-Colombes : nos experts IA se déplacent depuis Paris, avec des frais de transport transparents distincts du forfait.",
+      a: "Non. Axion-IA n'a pas d'agence à La Garenne-Colombes : nous intervenons partout en France, sur place ou à distance, avec des frais de transport transparents distincts du forfait.",
     },
   ],
 };

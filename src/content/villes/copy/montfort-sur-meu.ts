@@ -49,7 +49,7 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Montfort-sur-Meu et pays de Brocéliande ?",
-      a: "Oui, Axion-IA intervient à Montfort-sur-Meu et dans tout le pays de Brocéliande (Bédée, Iffendic, Plélan-le-Grand, Talensac). Nos consultants viennent de Rennes (25 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Montfort-sur-Meu et dans tout le pays de Brocéliande (Bédée, Iffendic, Plélan-le-Grand, Talensac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial Brocéliande ?",
@@ -65,7 +65,7 @@ export const MONTFORT_SUR_MEU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Montfort-sur-Meu ?",
-      a: "Nos consultants viennent de Rennes centre (25 min via N24). TER possible gare de Montfort-sur-Meu. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. TER possible gare de Montfort-sur-Meu. Intervention sur site ou en visio.",
     },
   ],
 };

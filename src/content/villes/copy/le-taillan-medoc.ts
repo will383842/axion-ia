@@ -49,7 +49,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Taillan-Médoc ?",
-      a: "Oui, Axion-IA intervient au Taillan-Médoc et dans tout le nord-ouest bordelais (Blanquefort, Saint-Aubin-de-Médoc, Le Pian-Médoc, Parempuyre). Depuis Bordeaux centre (20 min).",
+      a: "Oui, Axion-IA intervient au Taillan-Médoc et dans tout le nord-ouest bordelais (Blanquefort, Saint-Aubin-de-Médoc, Le Pian-Médoc, Parempuyre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA au Taillan-Médoc ?",
@@ -65,7 +65,7 @@ export const LE_TAILLAN_MEDOC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Taillan-Médoc ?",
-      a: "Nos consultants interviennent dans vos locaux au Taillan-Médoc ou en visio. Depuis Bordeaux centre (20 min). Livrables documentés, tarifs publics.",
+      a: "Nos consultants interviennent dans vos locaux au Taillan-Médoc ou en visio. Nous intervenons partout en France, sur place ou à distance. Livrables documentés, tarifs publics.",
     },
   ],
 };

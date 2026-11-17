@@ -49,7 +49,7 @@ export const PACE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pacé et ouest Rennes ?",
-      a: "Oui, Axion-IA intervient à Pacé et tout l'ouest de Rennes Métropole (Le Rheu, Vezin-le-Coquet, Mordelles, L'Hermitage). Nos consultants se déplacent directement dans vos locaux depuis le centre de Rennes (10 min).",
+      a: "Oui, Axion-IA intervient à Pacé et tout l'ouest de Rennes Métropole (Le Rheu, Vezin-le-Coquet, Mordelles, L'Hermitage). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans pacéens ?",
@@ -65,7 +65,7 @@ export const PACE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pacé ?",
-      a: "Nos consultants viennent de Rennes centre (10 min route D29). Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio selon vos préférences. Aéroport Rennes-Bretagne à 15 min. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

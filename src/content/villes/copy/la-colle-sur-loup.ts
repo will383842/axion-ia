@@ -49,7 +49,7 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Colle-sur-Loup et Saint-Paul-de-Vence ?",
-      a: "Oui, Axion-IA intervient à La Colle-sur-Loup, Saint-Paul-de-Vence et tout l'arrière-pays azuréen (Villeneuve-Loubet, Roquefort-les-Pins, Tourrettes-sur-Loup). Accès rapide depuis Nice (25 min) ou Cagnes-sur-Mer (10 min).",
+      a: "Oui, Axion-IA intervient à La Colle-sur-Loup, Saint-Paul-de-Vence et tout l'arrière-pays azuréen (Villeneuve-Loubet, Roquefort-les-Pins, Tourrettes-sur-Loup). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôtels et restaurants de l'arrière-pays ?",
@@ -64,8 +64,8 @@ export const LA_COLLE_SUR_LOUP_COPY: VilleCopy = {
       a: "Pour les professions libérales du moyen-pays azuréen (avocats, médecins, architectes, consultants), nous proposons : automatisation secrétariat, transcription, classification documents, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se déroule une mission depuis Nice ou Cagnes ?",
-      a: "Nos consultants interviennent depuis Nice (25 min) ou Cagnes-sur-Mer (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à La Colle-sur-Loup ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

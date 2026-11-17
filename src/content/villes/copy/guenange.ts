@@ -49,7 +49,7 @@ export const GUENANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Guénange et dans la vallée de la Fensch ?",
-      a: "Oui, Axion-IA intervient à Guénange et dans toute la vallée de la Fensch (Thionville, Hayange, Yutz, Florange). Nos consultants se déplacent depuis Metz ou Luxembourg, accès rapide A31 et liaison ferroviaire Thionville.",
+      a: "Oui, Axion-IA intervient à Guénange et dans toute la vallée de la Fensch (Thionville, Hayange, Yutz, Florange). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d''un audit IA à Guénange ?",
@@ -65,7 +65,7 @@ export const GUENANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Guénange ?",
-      a: "Nos consultants interviennent depuis Metz (30 min) ou Luxembourg (35 min). Guénange est dans la vallée de la Fensch, accès direct A31. Sessions sur site ou en visio selon vos préférences, déplacements sans surcoût hébergement.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Guénange est dans la vallée de la Fensch, accès direct A31. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

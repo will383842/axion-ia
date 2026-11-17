@@ -49,7 +49,7 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Cateau-Cambrésis et Cambrésis ?",
-      a: "Oui, Axion-IA intervient au Cateau-Cambrésis et tout le Cambrésis (Cambrai, Caudry, Solesmes, Le Quesnoy proche). Consultants depuis Lille (1 h 10).",
+      a: "Oui, Axion-IA intervient au Cateau-Cambrésis et tout le Cambrésis (Cambrai, Caudry, Solesmes, Le Quesnoy proche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP catésiens ?",
@@ -64,8 +64,8 @@ export const LE_CATEAU_CAMBRESIS_COPY: VilleCopy = {
       a: "Pour les commerçants, professions libérales et acteurs du tourisme culturel (musée Matisse) au Cateau-Cambrésis, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents conversationnels, billetterie, fidélisation.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (1 h 10).",
+      q: "Comment se déroule une mission au Cateau-Cambrésis ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

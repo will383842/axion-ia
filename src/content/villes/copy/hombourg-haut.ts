@@ -49,7 +49,7 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Hombourg-Haut ?",
-      a: "Oui, Axion-IA intervient à Hombourg-Haut et dans tout le Bassin houiller mosellan (Freyming-Merlebach, Saint-Avold, Forbach, Farebersviller). Consultants via gare SNCF Hombourg-Haut ou autoroute A4.",
+      a: "Oui, Axion-IA intervient à Hombourg-Haut et dans tout le Bassin houiller mosellan (Freyming-Merlebach, Saint-Avold, Forbach, Farebersviller). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières vers la Sarre ?",
@@ -65,7 +65,7 @@ export const HOMBOURG_HAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Hombourg-Haut ?",
-      a: "Nos consultants se déplacent via gare SNCF Hombourg-Haut ou autoroute A4. Freyming-Merlebach à 5 min, Saint-Avold à 10 min, Metz à 50 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Freyming-Merlebach à 5 min, Saint-Avold à 10 min, Metz à 50 min.",
     },
   ],
 };

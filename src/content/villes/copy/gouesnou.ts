@@ -49,7 +49,7 @@ export const GOUESNOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gouesnou et dans l'agglomération brestoise ?",
-      a: "Oui, Axion-IA intervient à Gouesnou et dans toute Brest Métropole (Brest, Guipavas, Plouzané, Le Relecq-Kerhuon, Plougastel-Daoulas). Gouesnou est à 10 min du centre de Brest, couverture immédiate de toutes les zones d'activités.",
+      a: "Oui, Axion-IA intervient à Gouesnou et dans toute Brest Métropole (Brest, Guipavas, Plouzané, Le Relecq-Kerhuon, Plougastel-Daoulas). Gouesnou est à 10 min du centre de Brest. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME commerciales et logistiques des zones d'activités ?",
@@ -65,7 +65,7 @@ export const GOUESNOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Gouesnou ?",
-      a: "Nos consultants interviennent directement sur les zones d'activités de Gouesnou (Kergaradec). Brest centre à 10 min, gare TGV et aéroport à proximité.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Nous intervenons directement sur les zones d'activités de Gouesnou (Kergaradec).",
     },
   ],
 };

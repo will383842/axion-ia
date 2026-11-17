@@ -65,7 +65,7 @@ export const LA_FARE_LES_OLIVIERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à La Fare-les-Oliviers ?",
-      a: "La Fare-les-Oliviers est à 15 min de Salon et 20 min d'Aix via D113/A7. Nos consultants se déplacent dans vos locaux.",
+      a: "La Fare-les-Oliviers est à 15 min de Salon et 20 min d'Aix via D113/A7. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

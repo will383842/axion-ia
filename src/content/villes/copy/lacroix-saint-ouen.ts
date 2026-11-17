@@ -49,7 +49,7 @@ export const LACROIX_SAINT_OUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lacroix-Saint-Ouen et dans l'agglomération compiégnoise ?",
-      a: "Oui, Axion-IA intervient à Lacroix-Saint-Ouen et dans toute l'agglomération compiégnoise (Compiègne, Margny-lès-Compiègne, Choisy-au-Bac, Pierrefonds). Consultants accessibles via gare de Compiègne (TER Paris-Nord, 40 min).",
+      a: "Oui, Axion-IA intervient à Lacroix-Saint-Ouen et dans toute l'agglomération compiégnoise (Compiègne, Margny-lès-Compiègne, Choisy-au-Bac, Pierrefonds). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Lacroix-Saint-Ouen  ?",

@@ -253,7 +253,7 @@ export const LYON_COPY: VilleCopy = {
           },
           {
             q: "Do you cover Métropole communes (Villeurbanne, Vénissieux, Saint-Priest, Écully)?",
-            a: "Yes. The Métropole de Lyon is our full territory. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
+            a: "Yes. We cover the whole Métropole de Lyon. Our consultants travel to all communes — from Villeurbanne (IT) to Saint-Priest (Renault Trucks), Écully (Centrale, Groupe SEB, EM Lyon) to Bron and Vénissieux.",
           },
           {
             q: "Do I need AI maturity to engage you?",
@@ -642,7 +642,7 @@ export const LYON_COPY: VilleCopy = {
         whyHere: [
           "Lyon concentre des dirigeants d'ETI industrielles (Vallée de la Chimie, Renault Trucks, équipementiers) et de PME biotech (Gerland, Lyonbiopôle) qui ne trouvent pas de pairs pour parler IA en toute confidentialité — notre coaching 1-to-1 répond exactement à ce besoin.",
           "L'écosystème EM Lyon et INSA produit chaque année des cadres dirigeants lyonnais qui prennent des postes à responsabilité sans avoir été formés sur l'IA opérationnelle — le coaching 1-to-1 comble ce gap en quelques sessions.",
-          "Les sièges Part-Dieu (banque, assurance, conseil) et les directions Confluence (services numériques, startups scale-up) sont accessibles en moins de 30 minutes depuis n'importe quel point de la Métropole — les sessions présentielles s'intègrent sans friction dans l'agenda.",
+          "Les sièges Part-Dieu (banque, assurance, conseil) et les directions Confluence (services numériques, startups scale-up) accueillent des sessions présentielles qui s'intègrent sans friction dans l'agenda.",
           "Confidentialité absolue : aucun compte-rendu ne sort de la session, aucune référence client publiée sans accord explicite. Essentiel pour les dirigeants de groupes industriels ou de structures sensibles (pharma, médical, données réglementées).",
           "Format hybride : sessions courtes fréquentes ou sessions longues espacées selon votre rythme de dirigeant. Présentiel Lyon ou distanciel pur, ou mix — vous choisissez à chaque session.",
           "Ancrage sectoriel lyonnais : vos cas concrets (reporting qualité chimie, gouvernance données cliniques, négociation fournisseurs, management équipes R&D) sont nos supports de travail. Aucun exemple générique, aucun slide recyclé.",

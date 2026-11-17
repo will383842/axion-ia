@@ -49,7 +49,7 @@ export const JUVIGNAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Juvignac près de Montpellier ?",
-      a: "Oui, Axion-IA intervient à Juvignac et dans toute l'agglomération de Montpellier ouest. Consultants accessibles via le tramway T3 (10 min Montpellier centre), la gare TGV Montpellier-Saint-Roch (15 min) et l'aéroport Montpellier-Méditerranée (20 min).",
+      a: "Oui, Axion-IA intervient à Juvignac et dans toute l'agglomération de Montpellier ouest. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Juvignac  ?",
@@ -65,7 +65,7 @@ export const JUVIGNAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Juvignac ?",
-      a: "Nos consultants interviennent sur site à Juvignac et dans l'agglo Montpellier ouest. Déplacement direct dans votre entreprise. Tramway T3 direct, gare TGV Montpellier à 15 min, aéroport à 20 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Juvignac est desservie par le tramway T3, à 15 min de la gare TGV de Montpellier et à 20 min de l'aéroport.",
     },
   ],
 };

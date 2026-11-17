@@ -9,9 +9,9 @@ export const LES_ULIS_COPY: VilleCopy = {
   pitchEn:
     "Les Ulis (91, Essonne), à la lisière sud du plateau de Saclay, accueille le parc d'activités de Courtaboeuf, l'une des plus grandes zones technologiques d'Europe, orientée pharma, électronique, informatique et R&D. Au-delà des grands sièges, la commune concentre un dense tissu de TPE de services techniques et de PME sous-traitantes. Axion-IA accompagne en priorité ces TPE puis les PME, l'ETI en complément.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, sur place ou en visio.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, à 20 min de Massy ou en visio.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient aux Ulis (91) et sur le parc de Courtaboeuf. Nous accompagnons en priorité les TPE de services techniques et indépendants, puis les PME sous-traitantes des filières pharma, électronique et informatique du sud Saclay, l'ETI restant un complément. Nous définissons un cas d'usage IA concret — documentation technique, qualité, support, relation client — avant tout déploiement, sur place ou en visio.",
   seoHook: "tech, pharma & électronique",
   ecosystemFr:
     "Les Ulis sont structurées par le parc d'activités de Courtaboeuf, pôle technologique majeur du sud Saclay : pharma et santé, électronique et instrumentation, informatique et logiciel, R&D. Autour des grands établissements, un réseau dense de TPE de services techniques et de PME sous-traitantes alimente les filières. Proximité immédiate d'Orsay, Gif-sur-Yvette et du cluster Paris-Saclay.",
@@ -74,7 +74,7 @@ export const LES_ULIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio depuis Courtaboeuf, avec priorisation continue selon vos retours d'équipe technique.",
+              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio, avec priorisation continue selon vos retours d'équipe technique.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const LES_ULIS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio depuis Courtaboeuf, avec priorisation continue selon vos retours d'équipe technique.",
+              "Greffe IA sur l'existant ou build IA-native : portail produit, e-commerce B2B multi-CMS, chatbot RAG multilingue sur vos notices, recherche sémantique, agents de qualification. Démos hebdomadaires en visio, avec priorisation continue selon vos retours d'équipe technique.",
           },
           {
             step: "Recette + mise en ligne",
@@ -246,7 +246,7 @@ export const LES_ULIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA aux Ulis ?",
-      a: "Nos consultants se déplacent (Massy TGV à 15 min, Paris-Orly à 25 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions aux Ulis ?",

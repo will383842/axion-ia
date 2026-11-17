@@ -65,7 +65,7 @@ export const LEFOREST_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Leforest ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Hénin-Beaumont à 5 min, Lille à 30 min A1. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance. Accès à Leforest : Gare Hénin-Beaumont à 5 min, Lille à 30 min A1.",
     },
   ],
 };

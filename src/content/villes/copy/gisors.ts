@@ -49,7 +49,7 @@ export const GISORS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gisors et dans le Vexin normand ?",
-      a: "Oui, Axion-IA intervient à Gisors et dans tout le Vexin normand (Étrépagny, Écouis, Lyons-la-Forêt, Les Andelys). Nos consultants se déplacent depuis Paris (1h15 train) ou Rouen (55 min).",
+      a: "Oui, Axion-IA intervient à Gisors et dans tout le Vexin normand (Étrépagny, Écouis, Lyons-la-Forêt, Les Andelys). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du Vexin ?",
@@ -64,8 +64,8 @@ export const GISORS_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Gisors, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Rouen ?",
-      a: "Nos consultants viennent de Paris (1h15 train direct gare Gisors) ou Rouen (55 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Gisors ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

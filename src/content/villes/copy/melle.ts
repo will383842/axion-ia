@@ -49,7 +49,7 @@ export const MELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Melle et dans le Mellois ?",
-      a: "Oui, Axion-IA intervient à Melle et tout le Mellois en Poitou (Celles-sur-Belle, Lezay, Chef-Boutonne). Consultants depuis Niort (30 min) ou Poitiers (50 min). Couverture complète du sud Deux-Sèvres.",
+      a: "Oui, Axion-IA intervient à Melle et tout le Mellois en Poitou (Celles-sur-Belle, Lezay, Chef-Boutonne). Nous intervenons partout en France, sur place ou à distance. Couverture complète du sud Deux-Sèvres.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et agroalimentaires ?",
@@ -64,8 +64,8 @@ export const MELLE_COPY: VilleCopy = {
       a: "Pour les acteurs du tourisme patrimonial à Melle (mines d'argent, églises romanes UNESCO), nous proposons : agents conversationnels visiteurs multilingues, automatisation réservations, classification archives patrimoniales, et plateformes web IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Niort ou Poitiers ?",
-      a: "Nos consultants viennent de Niort (30 min) ou Poitiers (50 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Melle ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

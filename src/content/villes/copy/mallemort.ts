@@ -49,7 +49,7 @@ export const MALLEMORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mallemort et vallée de la Durance ?",
-      a: "Oui, Axion-IA intervient à Mallemort et dans toute la vallée de la Durance (Sénas, Charleval, La Roque-d'Anthéron, Alleins, Ménerbes). Accès rapide via A7 depuis Salon ou Aix.",
+      a: "Oui, Axion-IA intervient à Mallemort et dans toute la vallée de la Durance (Sénas, Charleval, La Roque-d'Anthéron, Alleins, Ménerbes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un exploitant agricole ?",
@@ -65,7 +65,7 @@ export const MALLEMORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Mallemort ?",
-      a: "Mallemort est à 15 min de Salon et 35 min d'Aix via A7. Nos consultants se déplacent dans vos locaux.",
+      a: "Mallemort est à 15 min de Salon et 35 min d'Aix via A7. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

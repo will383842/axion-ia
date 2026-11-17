@@ -49,7 +49,7 @@ export const PAIMPOL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Paimpol et Côte du Goëlo ?",
-      a: "Oui, Axion-IA intervient à Paimpol et toute la Côte du Goëlo (Ploubazlanec, Plouézec, Lanloup, Bréhat). Nos consultants arrivent via TGV Guingamp (3h30 Paris) puis TER Paimpol (30 min).",
+      a: "Oui, Axion-IA intervient à Paimpol et toute la Côte du Goëlo (Ploubazlanec, Plouézec, Lanloup, Bréhat). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les conchyliculteurs et pêcheurs ?",

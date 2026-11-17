@@ -226,7 +226,7 @@ export const MITRY_MORY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mitry-Mory et dans la zone Mitry-Compans ?",
-      a: "Oui, nous intervenons à Mitry-Mory et dans toute la communauté d'agglomération Roissy Pays de France (Villeparisis, Claye-Souilly, Tremblay-en-France, Compans, Le Mesnil-Amelot, Gressy). Déplacement depuis Paris (~30 min).",
+      a: "Oui, nous intervenons à Mitry-Mory et dans toute la communauté d'agglomération Roissy Pays de France (Villeparisis, Claye-Souilly, Tremblay-en-France, Compans, Le Mesnil-Amelot, Gressy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs à Mitry-Mory ?",

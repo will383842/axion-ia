@@ -49,7 +49,7 @@ export const MONDEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mondeville et est agglomération Caen ?",
-      a: "Oui, Axion-IA intervient à Mondeville et toute l'agglomération caennaise est (Colombelles, Hérouville-Saint-Clair, Giberville, Démouville). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Mondeville et toute l'agglomération caennaise est (Colombelles, Hérouville-Saint-Clair, Giberville, Démouville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises des zones d'activités de Mondeville ?",
@@ -64,8 +64,8 @@ export const MONDEVILLE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}}. Tarifs publics consultables sur notre site. Devis adapté selon la taille de votre structure (TPE, PME, ETI) et la complexité de vos processus métier.",
     },
     {
-      q: "Êtes-vous accessibles en transport depuis Mondeville ?",
-      a: "Oui, Mondeville est desservie par le tramway T2 depuis Caen centre. Nos consultants se déplacent directement sur site.",
+      q: "Comment se déroule une intervention à Mondeville ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mondeville est desservie par le tramway T2, qui la relie à Caen centre.",
     },
   ],
 };

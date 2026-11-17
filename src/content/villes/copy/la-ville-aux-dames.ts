@@ -49,7 +49,7 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Ville-aux-Dames et est de Tours ?",
-      a: "Oui, Axion-IA intervient à La Ville-aux-Dames et tout l'est de Tours Métropole (Saint-Pierre-des-Corps, Montlouis-sur-Loire, Saint-Avertin). Consultants depuis Tours centre (10 min) ou gare TGV Saint-Pierre-des-Corps (5 min).",
+      a: "Oui, Axion-IA intervient à La Ville-aux-Dames et tout l'est de Tours Métropole (Saint-Pierre-des-Corps, Montlouis-sur-Loire, Saint-Avertin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et PME de la ZA des Granges ?",
@@ -60,8 +60,8 @@ export const LA_VILLE_AUX_DAMES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professions libérales (cabinets médicaux, juridiques, comptables) sur leurs cas IA : automatisation prise de RDV, classification dossiers, agents conversationnels patients/clients, rédaction assistée. Audit sur place {{price:audit-flash|flat}}.",
     },
     {
-      q: "Comment se passe une mission depuis Tours ?",
-      a: "Nos consultants interviennent depuis Tours centre (10 min) ou arrivent par la gare TGV Saint-Pierre-des-Corps (5 min, Paris 1h05). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à La Ville-aux-Dames ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
     {
       q: "Respectez-vous le RGPD lors de vos interventions ?",

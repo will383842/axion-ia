@@ -49,7 +49,7 @@ export const L_HOPITAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à L'Hôpital ?",
-      a: "Oui, Axion-IA intervient à L'Hôpital et dans le bassin houiller de la Moselle-est (Saint-Avold, Carling, Freyming-Merlebach, Forbach). Consultants via A4 (accès 15 min) ou gares SNCF de Saint-Avold et Forbach. Position frontalière avec l'Allemagne (Sarrebruck à 30 min).",
+      a: "Oui, Axion-IA intervient à L'Hôpital et dans le bassin houiller de la Moselle-est (Saint-Avold, Carling, Freyming-Merlebach, Forbach). Nous intervenons partout en France, sur place ou à distance. Position frontalière avec l'Allemagne (Sarrebruck à 30 min).",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et de sous-traitance ?",
@@ -65,7 +65,7 @@ export const L_HOPITAL_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à L'Hôpital ?",
-      a: "Nos consultants se déplacent via autoroute A4 (accès 15 min) ou gares SNCF de Saint-Avold et Forbach. Position frontalière stratégique avec Sarrebruck (30 min) et Luxembourg (1h10).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Position frontalière stratégique avec Sarrebruck (30 min) et Luxembourg (1h10).",
     },
   ],
 };

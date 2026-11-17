@@ -84,7 +84,7 @@ export const MULHOUSE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-il dans les entreprises industrielles du bassin Haut-Rhin ?",
-      a: "Oui. Nos consultants couvrent l'ensemble du bassin mulhousien : Mulhouse intra-muros, Riedisheim, Kingersheim, Illzach, Pfastatt, Lutterbach, Brunstatt-Didenheim, Rixheim et les zones industrielles (Île Napoléon, Parc des Collines, Bourtzwiller). Aucun supplément de zone.",
+      a: "Oui. Nous intervenons sur l'ensemble du bassin mulhousien : Mulhouse intra-muros, Riedisheim, Kingersheim, Illzach, Pfastatt, Lutterbach, Brunstatt-Didenheim, Rixheim et les zones industrielles (Île Napoléon, Parc des Collines, Bourtzwiller). Aucun supplément de zone.",
     },
     {
       q: "Comment Axion-IA prend-il en compte la dimension trinationale de Mulhouse ?",

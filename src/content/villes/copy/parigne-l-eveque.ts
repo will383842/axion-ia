@@ -49,7 +49,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parigné-l'Évêque et au sud du Mans ?",
-      a: "Oui, Axion-IA intervient à Parigné-l'Évêque et dans tout le sud de Le Mans Métropole. Le Mans centre est à 15 min. Déplacements sur site inclus dans le périmètre agglo.",
+      a: "Oui, Axion-IA intervient à Parigné-l'Évêque et dans tout le sud de Le Mans Métropole. Le Mans centre est à 15 min. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les TPE et PME de Parigné-l'Évêque ?",
@@ -65,7 +65,7 @@ export const PARIGNE_L_EVEQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Parigné-l'Évêque ?",
-      a: "Nos consultants interviennent depuis Le Mans (15 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Gare TGV Le Mans à 20 min, Paris en 55 min TGV.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Gare TGV Le Mans à 20 min, Paris en 55 min TGV.",
     },
   ],
 };

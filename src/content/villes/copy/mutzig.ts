@@ -49,7 +49,7 @@ export const MUTZIG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mutzig ?",
-      a: "Oui, Axion-IA intervient à Mutzig et dans la vallée de la Bruche (Molsheim, Obernai, Schirmeck, Wasselonne). Consultants via A352 ou gares SNCF de Molsheim. Bassin industriel et artisanal du Piémont des Vosges.",
+      a: "Oui, Axion-IA intervient à Mutzig et dans la vallée de la Bruche (Molsheim, Obernai, Schirmeck, Wasselonne). Nous intervenons partout en France, sur place ou à distance. Bassin industriel et artisanal du Piémont des Vosges.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrie agroalimentaire ?",
@@ -65,7 +65,7 @@ export const MUTZIG_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mutzig ?",
-      a: "Nos consultants se déplacent via autoroute A352 (5 min) ou gares SNCF de Molsheim. Bassin industriel et artisanal de la vallée de la Bruche, proximité de Strasbourg (30 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Bassin industriel et artisanal de la vallée de la Bruche, proximité de Strasbourg (30 min).",
     },
   ],
 };

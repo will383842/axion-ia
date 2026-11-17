@@ -49,7 +49,7 @@ export const MOLSHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Molsheim ?",
-      a: "Oui, Axion-IA intervient à Molsheim et dans toute la communauté de communes (Obernai, Mutzig, Rosheim, Dorlisheim). Consultants via gare SNCF Molsheim ou autoroute A352. Strasbourg accessible en 25 min.",
+      a: "Oui, Axion-IA intervient à Molsheim et dans toute la communauté de communes (Obernai, Mutzig, Rosheim, Dorlisheim). Nous intervenons partout en France, sur place ou à distance. Strasbourg accessible en 25 min.",
     },
     {
       q: "Travaillez-vous avec les domaines viticoles et l'oenotourisme ?",
@@ -65,7 +65,7 @@ export const MOLSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Molsheim ?",
-      a: "Nos consultants se déplacent via gare SNCF Molsheim (ligne Strasbourg–Saint-Dié) ou autoroute A352. Strasbourg à 25 min, aéroport Entzheim à 20 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Strasbourg à 25 min, aéroport Entzheim à 20 min.",
     },
   ],
 };

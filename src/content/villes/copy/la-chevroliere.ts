@@ -49,7 +49,7 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Chevrolière et sud Nantes ?",
-      a: "Oui, Axion-IA intervient à La Chevrolière et tout le sud nantais (Pont-Saint-Martin, Saint-Philbert-de-Grand-Lieu, Bouaye, Rezé). Consultants depuis Nantes centre (20 min). Couverture complète sud Loire-Atlantique.",
+      a: "Oui, Axion-IA intervient à La Chevrolière et tout le sud nantais (Pont-Saint-Martin, Saint-Philbert-de-Grand-Lieu, Bouaye, Rezé). Nous intervenons partout en France, sur place ou à distance. Couverture complète sud Loire-Atlantique.",
     },
     {
       q: "Accompagnez-vous les exploitations maraîchères ?",
@@ -64,8 +64,8 @@ export const LA_CHEVROLIERE_COPY: VilleCopy = {
       a: "L'Audit sur place démarre à {{price:audit-flash|flat}} (4 heures, diagnostic complet avec ROI chiffré). Tarifs publics et transparents adaptés aux TPE et PME du sud nantais.",
     },
     {
-      q: "Comment se déroule une mission depuis Nantes ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      q: "Comment se déroule une mission à La Chevrolière ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

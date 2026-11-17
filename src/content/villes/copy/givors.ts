@@ -18,9 +18,9 @@ export const GIVORS_COPY: VilleCopy = {
   ecosystemEn:
     "Givors occupe une position stratégique au sud de Lyon, au confluent du Rhône et du Gier, à la charnière entre la métropole lyonnaise et la vallée de la chimie. La ville porte un héritage industriel fort, marqué par sa tradition verrière historique, et conserve un tissu de PME manufacturières, de prestataires logistiques et d'entreprises du bâtiment. Son positionnement sur les axes de la vallée du Rhône en fait un point de passage logistique important. Ce réseau de TPE et PME, souvent peu équipé en outils numériques avancés, trouve dans Axion-IA un partenaire pragmatique pour automatiser ses opérations et gagner en compétitivité.",
   distancesFr:
-    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Cette desserte sur l'axe rhodanien facilite les déplacements de nos consultants vers les zones d'activités de Givors, Grigny et de la vallée du Gier.",
+    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Cette desserte sur l'axe rhodanien facilite les déplacements de nos consultants vers les zones d'activités de Givors, Grigny et de la vallée du Gier.",
+    "Givors est reliée au centre de Lyon en environ 25 minutes par le train depuis la gare de Givors-Ville, et l'autoroute A47 dessert directement la commune vers Lyon et Saint-Étienne. La gare TGV Lyon Part-Dieu est accessible en une trentaine de minutes, et l'aéroport Lyon-Saint-Exupéry à environ 40 minutes par la Rocade Est. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Industrie manufacturière et travail du verre",
     "Entreposage et services logistiques",
@@ -74,7 +74,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lyon, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",
@@ -160,7 +160,7 @@ export const GIVORS_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio depuis Lyon, code versionné et livré au fil de l'eau.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce, portail de commande B2B, devis logistiques automatisés, chatbot RAG multilingue, recherche sémantique, agents et automatisations. Démos hebdomadaires en visio, code versionné et livré au fil de l'eau.",
           },
           {
             step: "Recette + mise en ligne",

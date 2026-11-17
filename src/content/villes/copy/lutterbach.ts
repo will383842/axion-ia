@@ -49,7 +49,7 @@ export const LUTTERBACH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Lutterbach dans le Haut-Rhin ?",
-      a: "Oui, Axion-IA intervient à Lutterbach et dans toute l'agglomération mulhousienne (Mulhouse, Wittenheim, Pfastatt, Reiningue, Cernay). Nos consultants se déplacent sur site ou en visio, gare TER Lutterbach et D20 directes.",
+      a: "Oui, Axion-IA intervient à Lutterbach et dans toute l'agglomération mulhousienne (Mulhouse, Wittenheim, Pfastatt, Reiningue, Cernay). Nos consultants se déplacent sur site ou interviennent en visio.",
     },
     {
       q: "Quel est le prix d'un audit IA à Lutterbach ?",

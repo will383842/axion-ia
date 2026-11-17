@@ -65,7 +65,7 @@ export const MARQUETTE_LEZ_LILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Marquette-lez-Lille ?",
-      a: "Nos consultants interviennent depuis Lille en 10 min. Marquette-lez-Lille fait partie de la MEL, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

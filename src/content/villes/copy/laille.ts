@@ -65,7 +65,7 @@ export const LAILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Laillé ?",
-      a: "Nos consultants interviennent depuis Rennes (15 min) ou se déplacent directement. Sessions dans vos locaux, à l'exploitation ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions dans vos locaux, à l'exploitation ou en visio.",
     },
   ],
 };

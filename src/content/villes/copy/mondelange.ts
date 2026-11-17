@@ -49,7 +49,7 @@ export const MONDELANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mondelange ?",
-      a: "Oui, Axion-IA intervient à Mondelange et dans toute l''agglomération Hagondange-Mondelange (Hagondange, Talange, Maizières-lès-Metz, Richemont). Consultants via gare SNCF Hagondange ou autoroute A31. Metz accessible en 20 min.",
+      a: "Oui, Axion-IA intervient à Mondelange et dans toute l''agglomération Hagondange-Mondelange (Hagondange, Talange, Maizières-lès-Metz, Richemont). Nous intervenons partout en France, sur place ou à distance. Metz accessible en 20 min.",
     },
     {
       q: "Travaillez-vous avec les TPE/PME industrielles et logistiques ?",
@@ -65,7 +65,7 @@ export const MONDELANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Mondelange ?",
-      a: "Nos consultants se déplacent via gare SNCF Hagondange (ligne Metz–Luxembourg–TGV) ou autoroute A31. Metz à 20 min, Thionville à 15 min, Luxembourg à 45 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Metz à 20 min, Thionville à 15 min, Luxembourg à 45 min.",
     },
   ],
 };

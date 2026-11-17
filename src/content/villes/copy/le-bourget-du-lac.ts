@@ -49,7 +49,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Bourget-du-Lac et Technolac ?",
-      a: "Oui, Axion-IA intervient au Bourget-du-Lac, sur le technopôle Technolac et dans tout le bassin Chambérien (Chambéry, Aix-les-Bains, La Ravoire, La Motte-Servolex). Nos consultants se déplacent depuis Lyon (1h20) ou localement.",
+      a: "Oui, Axion-IA intervient au Bourget-du-Lac, sur le technopôle Technolac et dans tout le bassin Chambérien (Chambéry, Aix-les-Bains, La Ravoire, La Motte-Servolex). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les startups du technopôle Technolac ?",
@@ -65,7 +65,7 @@ export const LE_BOURGET_DU_LAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission au Bourget-du-Lac ?",
-      a: "Nos consultants interviennent sur site (campus, Technolac, vos locaux) ou en visio. Depuis Chambéry (10 min) ou Lyon (1h20 A43). Hébergement local possible pour les missions multi-jours.",
+      a: "Nos consultants interviennent sur site (campus, Technolac, vos locaux) ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour les missions multi-jours.",
     },
   ],
 };

@@ -34,8 +34,8 @@ export const GRANS_COPY: VilleCopy = {
       en: "Audit IA à Grans : diagnostic adapté aux TPE artisans, PME services, agriculteurs (foin de Crau, oléiculteurs) et commerces de l'agglo salonaise. ROI chiffré, audit sur place {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Grans : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Salon.",
-      en: "Interventions IA sur site à Grans : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Salon.",
+      fr: "Interventions IA sur site à Grans : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux à Grans.",
+      en: "Interventions IA sur site à Grans : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux à Grans.",
     },
     implementation: {
       fr: "Implémentation IA à Grans : automatisation devis BTP, optimisation gestion agricole (foin de Crau, oliveraies, élevage), agents conversationnels SAV, content marketing local, gestion administrative TPE. RGPD strict.",
@@ -65,7 +65,7 @@ export const GRANS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déplace Axion-IA à Grans ?",
-      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nos consultants se déplacent dans vos locaux. Coûts de déplacement à part, tarification transparente.",
+      a: "Grans est à 10 min de Salon-de-Provence et 30 min d'Aix-en-Provence via A54. Nous intervenons partout en France, sur place ou à distance. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

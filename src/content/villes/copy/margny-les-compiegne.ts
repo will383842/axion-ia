@@ -49,7 +49,7 @@ export const MARGNY_LES_COMPIEGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Margny-lès-Compiègne et dans l'agglomération ?",
-      a: "Oui, Axion-IA intervient à Margny-lès-Compiègne et dans toute l'agglomération compiégnoise (Compiègne, Jaux, Venette, Clairoix, Choisy-au-Bac). Consultants accessibles via gare de Compiègne (TER Paris-Nord, 40 min).",
+      a: "Oui, Axion-IA intervient à Margny-lès-Compiègne et dans toute l'agglomération compiégnoise (Compiègne, Jaux, Venette, Clairoix, Choisy-au-Bac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Margny-lès-Compiègne  ?",

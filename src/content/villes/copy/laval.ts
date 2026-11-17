@@ -11,9 +11,9 @@ export const LAVAL_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Laval (49 400 habitants, 53000), préfecture de la Mayenne en Pays de la Loire. À 1h10 de Paris en TGV Atlantique (huit liaisons quotidiennes via la LGV Bretagne-Pays de la Loire) et 65 km de Rennes, Le Mans et Angers, Laval s'appuie sur un bassin de vie de 144 000 personnes. Notre équipe se déplace pour automatiser les processus métiers des entreprises locales — agroalimentaire, plasturgie, automobile — avec du code custom maintenable, pas de plateforme no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés, code custom sans no-code, conformité RGPD documentée.",
   directAnswerEn:
-    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés via la gare TGV de Laval ou l'autoroute A81 (axe Paris-Brest), code custom sans no-code, conformité RGPD documentée.",
+    "Axion-IA intervient à Laval (Mayenne, 53000) pour les TPE et PME de la préfecture mayennaise — sous-traitants agroalimentaires liés à l'écosystème laitier, ateliers de plasturgie, fournisseurs automobile, commerces et services. Nous proposons un Audit sur place 4h dès {{price:audit-flash|flat}}, une Formation 4 h à partir de {{price:intervention-4h|flat}} et un accompagnement un-à-un dirigeant à {{price:intervention-dirigeants|flat}}. Déplacement sous 5 jours ouvrés, code custom sans no-code, conformité RGPD documentée.",
   seoHook: "TPE & PME Laval · agroalimentaire, plasturgie, automobile",
   ecosystemFr:
     "Laval, préfecture de la Mayenne, dispose d'une aire d'attraction de 144 373 habitants sur 66 communes. Le tissu économique, historiquement textile (lin), s'est restructuré autour de l'agroalimentaire (production laitière), de la plasturgie et de la sous-traitance automobile. La ville accueille aussi des activités de services, des commerces et un écosystème universitaire et numérique structuré autour de la technopole locale, avec une forte densité de TPE et PME.",
@@ -233,11 +233,11 @@ export const LAVAL_COPY: VilleCopy = {
     },
     {
       q: "Sous quel délai vous déplacez-vous à Laval ?",
-      a: "Notre équipe nationale intervient à Laval sous 5 jours ouvrés après validation. Nous arrivons en 1h10 depuis Paris-Montparnasse via la gare TGV de Laval ou par l'A81.",
+      a: "Notre équipe nationale intervient à Laval sous 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Laval ?",
-      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics, sans surcoût kilométrique.",
+      a: "Oui — nous nous déplaçons à Changé, Saint-Berthevin, Bonchamp-lès-Laval, Montigné-le-Brillant, L'Huisserie et Entrammes aux mêmes tarifs publics.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Laval ?",

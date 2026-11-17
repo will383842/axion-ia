@@ -18,9 +18,9 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
   ecosystemEn:
     "Joinville-le-Pont conjugue un héritage cinématographique fort, héritier de ses célèbres studios, une vie de bord de Marne animée par guinguettes et loisirs, et un tissu de proximité dense en commerces, services et professions libérales. Sa position aux portes de Paris attire agences créatives, audiovisuel et activités numériques. Ces TPE et PME, très orientées relation client et gestion de projet, profitent de l'IA pour automatiser devis, plannings et relances. Axion-IA cible en priorité ces TPE de services et créatives, puis les PME du commerce et de l'audiovisuel local.",
   distancesFr:
-    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
+    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km, ce qui rend nos déplacements sur site très rapides dans l'est parisien.",
+    "Joinville-le-Pont est desservie par le RER A, qui relie le centre de Paris en une vingtaine de minutes. La gare de Lyon est à environ 10 km, l'aéroport de Paris-Orly à 16 km et celui de Roissy-Charles-de-Gaulle à 30 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Production audiovisuelle et cinéma (héritage studios de Joinville)",
     "Hôtellerie, restauration et guinguettes des bords de Marne",
@@ -58,7 +58,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
           "Tissu 100 % TPE/PME de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
-          "Aux portes de Paris via le RER A (~20 min) et l'A4 dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons vite sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
+          "Aux portes de Paris dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const JOINVILLE_LE_PONT_COPY: VilleCopy = {
           "Héritage audiovisuel et agences créatives : héritière des studios de Joinville actifs dès les années 1910 puis exploités par Pathé et Gaumont, la ville garde une culture de production, post-production et métiers de l'image — terrain idéal pour des portfolios dynamiques, des sites de présentation de catalogue et des recherches sémantiques dans des médiathèques de projets, branchés sur vos rushes et références.",
           "Vie de bord de Marne et loisirs nautiques : guinguettes, restaurants, clubs d'aviron et de canoë-kayak, base nautique et événements saisonniers autour de l'Île Fanac réclament réservation en ligne, pages mobile-first et chatbots multilingues pour une clientèle francilienne et touristique de passage le long des quais.",
           "Tissu 100 % TPE/PME de services et de professions libérales très orienté relation client : sur l'avenue Galliéni, le centre-ville et les abords de la gare, on greffe l'IA sur l'existant (widget, plugin WordPress, API) sans refonte coûteuse — devis intelligents, relances, prise de rendez-vous — ou on construit une vitrine e-commerce sur mesure sous Shopify, WooCommerce ou PrestaShop.",
-          "Aux portes de Paris via le RER A (~20 min) et l'A4 dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons vite sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
+          "Aux portes de Paris dans l'est parisien, à la jonction de Saint-Maur-des-Fossés, Nogent-sur-Marne et Champigny : nous cadrons sur site, et toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données client et de réservation restent maîtrisées.",
         ],
         methodology: [
           {

@@ -64,8 +64,8 @@ export const MONTLHERY_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les organisateurs événementiels sur leurs cas IA : billetterie automatisée, chatbot participants, gestion logistique, CRM sponsors, communication ciblée.",
     },
     {
-      q: "Comment se passe une mission à Montlhéry depuis Paris ?",
-      a: "Nos consultants interviennent à Montlhéry (35 min depuis Paris via A6/RN20, Massy TGV à 15 min). Aéroport Orly à 20 min.",
+      q: "Comment se déroule une mission à Montlhéry ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Aéroport Orly à 20 min.",
     },
   ],
 };

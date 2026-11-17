@@ -88,8 +88,8 @@ export const MONTREUIL_COPY: VilleCopy = {
       a: "Oui. Les directions financières, équipes crédit, compliance et gestion des risques figurent parmi nos profils d'intervention récurrents. Nos démos s'appuient sur vos données réelles (reporting, scoring, contrats) pour montrer l'IA appliquée à vos vrais workflows.",
     },
     {
-      q: "Comment rejoindre Montreuil pour une intervention depuis Paris ou la banlieue ?",
-      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Depuis Paris intra-muros, le trajet est court. Nos consultants gèrent leur déplacement",
+      q: "Comment rejoindre Montreuil pour une intervention ?",
+      a: "Le centre-ville et le Bas-Montreuil sont directement desservis par le métro ligne 9 (Croix de Chavaux, Robespierre, Mairie de Montreuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "En combien de temps pouvez-vous démarrer une mission à Montreuil ?",
@@ -110,7 +110,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         hero: "L'audit IA Axion-IA cartographie ce qui peut être automatisé dans votre organisation montreuilloise et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des studios indépendants et agences numériques du Bas-Montreuil aux grandes directions financières et IT de Montreuil.",
         whyHere: [
           "Montreuil concentre un tissu B2B sectorisé exceptionnel pour sa taille : numérique (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), conseil IT et ESS — tous secteurs pour lesquels l'IA opérationnelle génère un ROI mesurable rapide.",
-          "Le Bas-Montreuil est notre zone d'intervention principale en Seine-Saint-Denis : nos consultants connaissent les contraintes des équipes créatives (jeu vidéo, médias), des directions IT et des back-offices financiers présents dans ce quartier.",
+          "Au Bas-Montreuil, nos consultants connaissent les contraintes des équipes créatives (jeu vidéo, médias), des directions IT et des back-offices financiers présents dans ce quartier.",
           "Nos consultants se déplacent sur l'ensemble de la commune et des communes limitrophes : Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
           "Restitutions toujours en présentiel : ateliers d'idéation dans vos locaux montreuillois, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
           "Aucun jeu de devis opaque : tarifs publics affichés, vous savez exactement ce que vous payez avant de signer.",
@@ -202,7 +202,7 @@ export const MONTREUIL_COPY: VilleCopy = {
         hero: "Axion-IA's AI audit maps what can be automated at your Montreuil organisation and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from independent Bas-Montreuil studios to large financial and IT leadership teams.",
         whyHere: [
           "Montreuil packs an exceptional sectorised B2B fabric for its size: digital (Ubisoft, Capgemini), finance (AFD, BNP Paribas Personal Finance), IT consulting and social economy — all sectors where operational AI delivers measurable ROI fast.",
-          "Bas-Montreuil is our primary intervention zone in Seine-Saint-Denis: our consultants are familiar with the constraints of creative teams (gaming, media), IT departments and financial back-offices present in this district.",
+          "In Bas-Montreuil, our consultants are familiar with the constraints of creative teams (gaming, media), IT departments and financial back-offices present in this district.",
           "Our consultants travel across the full commune and neighbouring areas: Bas-Montreuil, Croix de Chavaux, Mairie de Montreuil, Bagnolet, Vincennes, Rosny-sous-Bois, Fontenay-sous-Bois.",
           "Read-outs always in person: ideation workshops at your Montreuil offices, deliverable walk-through with your leadership, action plan handed over face to face.",
           "No opaque quote game: public pricing, you know exactly what you pay before signing.",
@@ -671,7 +671,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "La confidentialité est totale : vos données, vos projets et vos enjeux stratégiques restent dans le cadre de la session. Confidentialité stricte avant chaque accompagnement.",
           "Le rythme est le vôtre : sessions ponctuelles à la demande, suivi régulier mensuel ou intensif sur quelques semaines selon votre objectif.",
           "Chaque session part de vos vrais documents et de vos vrais workflows — pas d'exercices fictifs. Vous repartez avec des outils et des pratiques opérationnels.",
-          "Accessible depuis Montreuil sans contrainte : sessions sur site dans vos locaux ou en visio selon votre préférence.",
+          "Nous intervenons partout en France, sur place ou à distance : sessions sur site ou en visio selon votre préférence.",
           "Tarif d'entrée accessible aux profils indépendants et TPE — pas réservé aux grandes structures.",
         ],
         methodology: [
@@ -759,7 +759,7 @@ export const MONTREUIL_COPY: VilleCopy = {
           "Full confidentiality: your data, your projects and your strategic issues stay within the session framework. Strict confidentiality before each engagement.",
           "The pace is yours: ad-hoc sessions on demand, regular monthly follow-up or intensive over a few weeks depending on your goal.",
           "Each session starts from your real documents and your real workflows — no fictional exercises. You leave with operational tools and practices.",
-          "Accessible from Montreuil without constraints: on-site sessions at your offices or video call depending on your preference.",
+          "We work anywhere in France, on site or remotely: on-site sessions at your offices or video call depending on your preference.",
           "Entry price accessible to freelancers and micro-businesses — not reserved for large organisations.",
         ],
         methodology: [

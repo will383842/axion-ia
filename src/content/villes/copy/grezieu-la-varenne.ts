@@ -49,7 +49,7 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Grézieu-la-Varenne et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Grézieu-la-Varenne et tout l'ouest lyonnais (Craponne à 5 min, Vaugneray, Francheville, Brindas). Consultants depuis Lyon (20 min).",
+      a: "Oui, Axion-IA intervient à Grézieu-la-Varenne et tout l'ouest lyonnais (Craponne à 5 min, Vaugneray, Francheville, Brindas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales grézillons ?",
@@ -64,8 +64,8 @@ export const GREZIEU_LA_VARENNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Grézieu-la-Varenne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (20 min).",
+      q: "Comment se déroule une mission à Grézieu-la-Varenne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

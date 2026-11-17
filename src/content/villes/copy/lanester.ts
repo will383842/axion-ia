@@ -72,7 +72,7 @@ export const LANESTER_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue, recherche sémantique, automatisation de devis BTP, classification de documents fournisseurs Kership ou Piriou. Démos hebdomadaires en visio depuis l'agglo lorientaise.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue, recherche sémantique, automatisation de devis BTP, classification de documents fournisseurs Kership ou Piriou. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const LANESTER_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue, recherche sémantique, automatisation de devis BTP, classification de documents fournisseurs Kership ou Piriou. Démos hebdomadaires en visio depuis l'agglo lorientaise.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue, recherche sémantique, automatisation de devis BTP, classification de documents fournisseurs Kership ou Piriou. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -236,7 +236,7 @@ export const LANESTER_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour démarrer une mission à Lanester ?",
-      a: "Williams se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit sur place restitué sous 7 jours. Trajet depuis la gare de Lorient (5 min) ou aéroport Lorient Bretagne Sud (15 min).",
+      a: "Williams se déplace à Lanester sous 5 jours ouvrés après confirmation. Audit sur place restitué sous 7 jours.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD à Lanester ?",

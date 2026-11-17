@@ -49,7 +49,7 @@ export const IDRON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Idron et dans l'agglo Pau sud ?",
-      a: "Oui, Axion-IA intervient à Idron et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Jurançon, Gan, Billère, Lescar, Lons). Déplacement inclus dans l'agglo paloise.",
+      a: "Oui, Axion-IA intervient à Idron et dans toute l'agglomération Pau Béarn Pyrénées (Pau, Jurançon, Gan, Billère, Lescar, Lons). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professions libérales d'Idron ?",
@@ -65,7 +65,7 @@ export const IDRON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Idron ?",
-      a: "Nos consultants accèdent à Idron via la gare de Pau (TGV 4h20 Paris, 8 min voiture) ou l'aéroport Pau-Pyrénées (18 min). Mission sur site dans votre cabinet, bureaux ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans votre cabinet, bureaux ou commerce.",
     },
   ],
 };

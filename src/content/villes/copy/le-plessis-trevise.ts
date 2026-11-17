@@ -11,9 +11,9 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   pitchEn:
     "Le Plessis-Trévise (21 112 habitants, Val-de-Marne) est une commune urbaine dense (4 887 hab/km²) du Grand Paris Sud Est Avenir (GPSEA), urbanisée depuis les années 1950. Située à 18 km à l'est de Paris, elle est desservie par le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) et bordée par l'A4 au nord. Axion-IA accompagne les TPE et PME locales (commerce de proximité, services, BTP) avec des interventions code custom sur site.",
   directAnswerFr:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace sur site. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   directAnswerEn:
-    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou par l'A4. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
+    "Axion-IA intervient au Plessis-Trévise pour les TPE et PME du Val-de-Marne : commerçants de proximité, artisans BTP, services aux entreprises et professions libérales du centre dense (4 887 hab/km², 67,7 % d'appartements). Nous proposons des audits IA sur place à {{price:audit-flash|flat}}, des interventions sur site et des implémentations code custom (pas de no-code). Williams se déplace sur site. La commune appartient au territoire GPSEA regroupant 16 communes du Val-de-Marne.",
   seoHook: "commerce proximité & artisanat GPSEA",
   ecosystemFr:
     "Le Plessis-Trévise s'inscrit dans le territoire Grand Paris Sud Est Avenir (GPSEA), aux côtés de Champigny-sur-Marne, Chennevières-sur-Marne, Noisy-le-Grand, Pontault-Combault, La Queue-en-Brie et Villiers-sur-Marne. Le tissu économique de cette commune urbaine de peuplement récent (existence administrative depuis 1899, urbanisation post-1950) repose sur le commerce de proximité, les services aux entreprises et les professions libérales, avec un taux de propriétaires de 56,8 %.",
@@ -36,8 +36,8 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
       en: "Réaliser un audit IA au Plessis-Trévise pour les TPE et PME du centre urbain dense (4 887 hab/km²) — identifier les automatisations prioritaires pour commerçants, artisans et professions libérales.",
     },
     interventions: {
-      fr: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
-      en: "Intervenir au Plessis-Trévise (RER E ou A4 depuis Paris) pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
+      fr: "Intervenir au Plessis-Trévise pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
+      en: "Intervenir au Plessis-Trévise pour automatiser les processus métier des TPE et PME locales — code custom, pas de no-code.",
     },
     implementation: {
       fr: "Implémenter des solutions IA sur mesure au Plessis-Trévise pour les TPE et PME du commerce de proximité et des services, avec accompagnement post-livraison.",
@@ -51,7 +51,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Axion-IA conçoit et augmente au Plessis-Trévise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune urbaine dense du Val-de-Marne (21 112 habitants, 4 887 hab/km²) du territoire Grand Paris Sud Est Avenir, où cohabitent TPE du commerce de proximité, artisans BTP, professions libérales et les entreprises des zones d'activité Ponroy et Clara. Que vous soyez un commerçant de l'avenue Ardouin ou une PME des zones Ponroy et Clara, on conçoit l'expérience complète et on greffe l'IA sur votre existant, sans refonte imposée. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, aucun verrou propriétaire. Cadrage en présentiel au Plessis-Trévise via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Plessis-Trévise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune urbaine dense du Val-de-Marne (21 112 habitants, 4 887 hab/km²) du territoire Grand Paris Sud Est Avenir, où cohabitent TPE du commerce de proximité, artisans BTP, professions libérales et les entreprises des zones d'activité Ponroy et Clara. Que vous soyez un commerçant de l'avenue Ardouin ou une PME des zones Ponroy et Clara, on conçoit l'expérience complète et on greffe l'IA sur votre existant, sans refonte imposée. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, aucun verrou propriétaire. Cadrage en présentiel au Plessis-Trévise, itérations à distance.",
         whyHere: [
           "Centre-ville dense et commerce de proximité (avenue Ardouin, marché communal) : nous construisons des vitrines e-commerce et des boutiques en ligne click-and-collect pour les détaillants, restaurateurs et primeurs qui veulent vendre au-delà de leur rue, en WordPress, Shopify ou WooCommerce, avec un parcours d'achat mobile-first et une recherche sémantique de catalogue.",
           "Zones d'activité Ponroy (10,23 ha) et Clara (3,86 ha) regroupant des centaines de PME et artisans : pour ces acteurs du BTP, de la logistique et des services aux entreprises, on greffe l'IA sur l'existant — formulaires de devis intelligents, prise de rendez-vous, agents de suivi de chantier et de relance — sans imposer une refonte coûteuse.",
@@ -130,14 +130,14 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, Williams se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:
           "Devis ferme en forfait fixe (à partir de 24-48 h selon la complexité) : pas de régie ni de dérive horaire cachée. Mise en ligne sans downtime quand on augmente l'existant, sans couper l'activité d'un commerce de l'avenue Ardouin ou d'une PME des zones Ponroy et Clara. Web Vitals et accessibilité contrôlés à la livraison. Code source, bases et modèles livrés dans votre infrastructure (hébergement UE possible), conformes RGPD et AI Act : propriété totale, aucun verrou propriétaire, aucun abonnement imposé. L'ensemble est documenté et transférable à tout prestataire local d'Île-de-France ou repris en interne.",
       },
       en: {
-        hero: "Axion-IA conçoit et augmente au Plessis-Trévise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune urbaine dense du Val-de-Marne (21 112 habitants, 4 887 hab/km²) du territoire Grand Paris Sud Est Avenir, où cohabitent TPE du commerce de proximité, artisans BTP, professions libérales et les entreprises des zones d'activité Ponroy et Clara. Que vous soyez un commerçant de l'avenue Ardouin ou une PME des zones Ponroy et Clara, on conçoit l'expérience complète et on greffe l'IA sur votre existant, sans refonte imposée. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, aucun verrou propriétaire. Cadrage en présentiel au Plessis-Trévise via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, itérations à distance.",
+        hero: "Axion-IA conçoit et augmente au Plessis-Trévise des sites web, applications et plateformes SaaS avec l'IA intégrée : UX/UI sur mesure mobile-first, e-commerce multi-CMS (WordPress, Shopify, WooCommerce, PrestaShop, Magento), chatbot RAG multilingue ancré sur vos contenus, recherche sémantique, agents et automatisations. Pensé pour cette commune urbaine dense du Val-de-Marne (21 112 habitants, 4 887 hab/km²) du territoire Grand Paris Sud Est Avenir, où cohabitent TPE du commerce de proximité, artisans BTP, professions libérales et les entreprises des zones d'activité Ponroy et Clara. Que vous soyez un commerçant de l'avenue Ardouin ou une PME des zones Ponroy et Clara, on conçoit l'expérience complète et on greffe l'IA sur votre existant, sans refonte imposée. Devis à partir de 24-48 h selon la complexité, hébergement UE, code et données à vous, aucun verrou propriétaire. Cadrage en présentiel au Plessis-Trévise, itérations à distance.",
         whyHere: [
           "Centre-ville dense et commerce de proximité (avenue Ardouin, marché communal) : nous construisons des vitrines e-commerce et des boutiques en ligne click-and-collect pour les détaillants, restaurateurs et primeurs qui veulent vendre au-delà de leur rue, en WordPress, Shopify ou WooCommerce, avec un parcours d'achat mobile-first et une recherche sémantique de catalogue.",
           "Zones d'activité Ponroy (10,23 ha) et Clara (3,86 ha) regroupant des centaines de PME et artisans : pour ces acteurs du BTP, de la logistique et des services aux entreprises, on greffe l'IA sur l'existant — formulaires de devis intelligents, prise de rendez-vous, agents de suivi de chantier et de relance — sans imposer une refonte coûteuse.",
@@ -216,7 +216,7 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous sur place au Plessis-Trévise et le devis est-il ferme ?",
-            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, Williams se déplaçant depuis Paris via le RER E (gare Villiers-sur-Marne - Le Plessis-Trévise) ou l'A4, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
+            a: "Oui. Le cadrage se fait en présentiel au Plessis-Trévise, généralement sous 5 à 10 jours ouvrés. Après ce cadrage, on remet un devis ferme en forfait fixe, à partir de 24-48 h pour un projet simple comme une vitrine de commerçant. Pas de régie, pas de dérive horaire cachée ; les itérations se font ensuite à distance en visio.",
           },
         ],
         guarantees:
@@ -228,11 +228,11 @@ export const LE_PLESSIS_TREVISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Quels sont les tarifs pour un audit IA au Plessis-Trévise ?",
-      a: "Les audits IA au Plessis-Trévise débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement Williams depuis Paris via RER E inclus. Tarifs publics consultables sur axion-ia.com.",
+      a: "Les audits IA au Plessis-Trévise débutent à {{price:audit-flash|flat}} pour un Audit sur place de 4 heures sur site, déplacement inclus. Tarifs publics consultables sur axion-ia.com.",
     },
     {
       q: "Comment se déroule une intervention IA au Plessis-Trévise ?",
-      a: "Williams se déplace sur site au Plessis-Trévise (18 km de Paris via RER E ou A4) pour des interventions à partir de {{price:intervention-4h|flat}}. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
+      a: "Williams se déplace sur site au Plessis-Trévise pour des interventions à partir de {{price:intervention-4h|flat}}. Nous développons du code custom (pas de no-code) adapté aux besoins des TPE et PME locales.",
     },
     {
       q: "Quels délais pour une implémentation IA au Plessis-Trévise ?",

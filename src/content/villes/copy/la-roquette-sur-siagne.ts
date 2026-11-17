@@ -49,7 +49,7 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à La Roquette-sur-Siagne ?",
-      a: "Oui, Axion-IA intervient à La Roquette-sur-Siagne et dans toute la vallée de la Siagne (Pégomas, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture arrière-pays cannois et accès rapide depuis Cannes (10 min) ou Grasse (15 min).",
+      a: "Oui, Axion-IA intervient à La Roquette-sur-Siagne et dans toute la vallée de la Siagne (Pégomas, Mouans-Sartoux, Auribeau-sur-Siagne). Couverture arrière-pays cannois.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de la commune ?",
@@ -64,8 +64,8 @@ export const LA_ROQUETTE_SUR_SIAGNE_COPY: VilleCopy = {
       a: "Pour les professions libérales et commerces de La Roquette-sur-Siagne, nous proposons : automatisation secrétariat, agents IA client, gestion stocks, CRM augmenté, classification documents. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1.",
     },
     {
-      q: "Comment se déroule une mission depuis Cannes ?",
-      a: "Nos consultants interviennent depuis Cannes (10 min). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines. Déplacement arrière-pays cannois inclus dans le forfait.",
+      q: "Comment se déroule une mission à La Roquette-sur-Siagne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

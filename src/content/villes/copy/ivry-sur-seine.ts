@@ -130,7 +130,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "Quels délais pour un devis sur un projet de site ou SaaS à Ivry-sur-Seine ?",
-            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville), facilement accessible par la ligne 7, le RER C et le tramway T9.",
+            a: "Nous transmettons un devis à partir de 24-48 h selon la complexité du projet. Le kick-off se tient sur site à Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine ou centre-ville).",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote for a website or SaaS project in Ivry-sur-Seine?",
-            a: "We send a quote from 24-48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre), easily reached via metro line 7, RER C and tram T9.",
+            a: "We send a quote from 24-48 h depending on project complexity. The kick-off takes place on site in Ivry-sur-Seine (Ivry-Port, ZAC Confluences, Cap de Seine or town centre).",
           },
         ],
         guarantees:
@@ -232,11 +232,11 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention à Ivry-sur-Seine ?",
-      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. La desserte par la ligne 7, le RER C et le tramway T9 facilite l'accès depuis Paris.",
+      a: "Nous intervenons à Ivry-sur-Seine dans les 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Ivry-sur-Seine ?",
-      a: "Depuis Ivry-sur-Seine, nous couvrons les communes limitrophes : Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre et Villejuif. Tout le sud-est parisien est accessible facilement.",
+      q: "Quelles communes proches couvrez-vous ?",
+      a: "Oui, à Ivry-sur-Seine et dans les communes voisines (Paris, Charenton-le-Pont, Alfortville, Vitry-sur-Seine, Le Kremlin-Bicêtre, Villejuif). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Ivry-sur-Seine ?",
@@ -248,7 +248,7 @@ export const IVRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Ivry-sur-Seine ?",
-      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Le métro ligne 7 (4 stations sur la commune) rend le déplacement très simple depuis Paris.",
+      a: "Oui, notre équipe se déplace directement à Ivry-sur-Seine pour audits, interventions et implémentations. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

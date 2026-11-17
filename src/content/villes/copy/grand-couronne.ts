@@ -49,7 +49,7 @@ export const GRAND_COURONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Grand-Couronne et dans la boucle de Seine ?",
-      a: "Oui, Axion-IA intervient a Grand-Couronne et dans toute la boucle de Seine (Petit-Couronne, Rouen sud, Elbeuf). Consultants depuis Rouen (15 min) ou Paris (1h30).",
+      a: "Oui, Axion-IA intervient a Grand-Couronne et dans toute la boucle de Seine (Petit-Couronne, Rouen sud, Elbeuf). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les sous-traitants industriels de Grand-Couronne ?",

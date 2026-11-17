@@ -49,7 +49,7 @@ export const NOYON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Noyon ?",
-      a: "Oui, Axion-IA intervient à Noyon et dans le Noyonnais (Guiscard, Chauny, Ribécourt). Consultants via gare SNCF Noyon (ligne Compiègne–Saint-Quentin). Compiègne à 25 min.",
+      a: "Oui, Axion-IA intervient à Noyon et dans le Noyonnais (Guiscard, Chauny, Ribécourt). Nous intervenons partout en France, sur place ou à distance. Compiègne à 25 min.",
     },
     {
       q: "Quels tarifs pour un audit IA à Noyon ?",
@@ -61,7 +61,7 @@ export const NOYON_COPY: VilleCopy = {
     },
     {
       q: "Quel délai pour une intervention IA à Noyon ?",
-      a: "Nous intervenons généralement sous 5 jours ouvrés à Noyon. Déplacements sur site inclus. Compiègne à 25 min, Paris à 1h10 via TER.",
+      a: "Nous intervenons généralement sous 5 jours ouvrés à Noyon. Nous intervenons partout en France, sur place ou à distance. Noyon est à 25 min de Compiègne et à 1h10 de Paris en TER.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Noyon ?",

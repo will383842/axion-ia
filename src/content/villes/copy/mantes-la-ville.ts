@@ -70,7 +70,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis le bassin Mantois, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
           },
           {
             step: "Recette + mise en ligne",
@@ -156,7 +156,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio depuis le bassin Mantois, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce multi-CMS, portail fournisseurs, chatbot RAG multilingue, recherche sémantique, agents d'automatisation. Démos hebdomadaires en visio, avec points d'étape réguliers pour les sous-traitants industriels et les commerces du centre-ville.",
           },
           {
             step: "Recette + mise en ligne",
@@ -226,7 +226,7 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Mantes-la-Ville et Mantois ?",
-      a: "Oui, Axion-IA intervient à Mantes-la-Ville et tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Aubergenville, Flins-sur-Seine, Limay). Couverture également Vexin yvelinois et accès Paris (35 min RER E ou Transilien J).",
+      a: "Oui, Axion-IA intervient à Mantes-la-Ville et tout le bassin Mantois (Mantes-la-Jolie, Buchelay, Aubergenville, Flins-sur-Seine, Limay). Couverture également du Vexin yvelinois.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants Renault Flins / Safran ?",
@@ -241,8 +241,8 @@ export const MANTES_LA_VILLE_COPY: VilleCopy = {
       a: "Pour les commerçants et professions libérales mantevillois, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas IA : agents IA fidélité client, automatisation gestion RDV, transcription consultations, classification dossiers. RGPD strict.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en RER E récent (35 min Mantes-la-Jolie) ou Transilien J/N pour les missions sur site à Mantes-la-Ville. Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Mantes-la-Ville ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -64,7 +64,7 @@ export const ORMESSON_SUR_MARNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Ormesson-sur-Marne ?",
       a: "Paris-Gare de Lyon (35 min RER A via Sucy-Bonneuil). Aéroport Orly à 25 min.",
     },
   ],
