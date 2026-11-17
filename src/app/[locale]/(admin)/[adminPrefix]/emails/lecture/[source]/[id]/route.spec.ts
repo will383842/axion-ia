@@ -73,6 +73,23 @@ describe("locale (second tour d'audit, constat A)", () => {
     expect(h.logCreate).not.toHaveBeenCalled();
   });
 
+  it("contrôle de locale isolé : URL en /fr/ mais params.locale invalide : 404, auth et base jamais appelés", async () => {
+    const r = await GET(
+      new Request(`https://exemple.invalid/fr/${PREFIXE}/emails/lecture/envoye/${ID}`),
+      {
+        params: Promise.resolve({
+          locale: "questionnaire",
+          adminPrefix: PREFIXE,
+          source: "envoye",
+          id: ID,
+        }),
+      },
+    );
+    expect(r.status).toBe(404);
+    expect(h.auth).not.toHaveBeenCalled();
+    expect(h.findUnique).not.toHaveBeenCalled();
+  });
+
   it("fr et en avec le bon préfixe : servi comme avant", async () => {
     for (const l of ["fr", "en"])
       expect((await appel("envoye", ID, "", PREFIXE, l)).status).toBe(200);
@@ -87,6 +104,7 @@ describe("locale (second tour d'audit, constat A)", () => {
     );
     expect(r.status).toBe(404);
     expect(h.auth).not.toHaveBeenCalled();
+    expect(h.findUnique).not.toHaveBeenCalled();
   });
 });
 

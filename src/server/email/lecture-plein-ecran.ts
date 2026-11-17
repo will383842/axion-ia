@@ -40,6 +40,11 @@ function echapperHtml(t: string): string {
 // `rendreLiensInertes`, le HTML n'est pas servi (échec fermé, audit I0b-3 constats B et C).
 const ATTRIBUT_ACTIF = /[\s"'/](href|xlink:href|action|formaction|ping|srcdoc|http-equiv)\s*=/i;
 
+// Animation déclarative (SVG/MathML) qui POSE un `href` sans que le texte `href=` apparaisse
+// (`<set attributeName="href" …>`) : ni `sandbox` ni la feuille d'inertie ne l'arrêtent
+// (audit I0b-3, constat C1). Toute balise `svg`, `math`, `set`, `animate…` ou tout `attributeName` : échec fermé.
+const ANIMATION_ACTIVE = /<(?:svg|math|set|animate\w*)\b|\battributename\s*=/i;
+
 const FEUILLE_INERTE =
   "<style>a,area{pointer-events:none!important;cursor:default!important}</style>";
 
@@ -61,7 +66,7 @@ export function corpsServi(copie: { subject: string; html: string; text: string 
   const m = masquerSecretsEmail(copie);
   if (m.html.trim() !== "") {
     const inerte = rendreLiensInertes(m.html).replace(META_CONTENT_TYPE, "");
-    if (!ATTRIBUT_ACTIF.test(inerte)) {
+    if (!ATTRIBUT_ACTIF.test(inerte) && !ANIMATION_ACTIVE.test(inerte)) {
       return inerte.includes("</head>")
         ? inerte.replace("</head>", `${FEUILLE_INERTE}</head>`)
         : `${FEUILLE_INERTE}${inerte}`;

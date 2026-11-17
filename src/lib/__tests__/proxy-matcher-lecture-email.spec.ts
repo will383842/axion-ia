@@ -19,6 +19,12 @@ describe("matcher du proxy et lecture plein écran", () => {
     }
   });
 
+  it("(a2) un id portant une extension (.json, .txt, .html) reste couvert par le proxy", () => {
+    for (const l of routing.locales)
+      for (const ext of ["json", "txt", "html"])
+        expect(couvert(`/${l}/pfx-factice/emails/lecture/gabarit/x.${ext}`)).toBe(true);
+  });
+
   it("(b) tout chemin non couvert de la forme /x/y/emails/lecture/a/b a un premier segment qui n'est pas une locale", () => {
     const premiers = [
       ...routing.locales,

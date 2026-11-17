@@ -1,8 +1,7 @@
 // @vitest-environment node
 // Registre des sources de la lecture plein écran (lot I0b-3) : un registre, pas des `if`.
 import { describe, expect, it } from "vitest";
-import { renderEmailTemplate } from "@/lib/email/templates";
-import { PAYLOAD_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
+import { VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import type { EmailJobName } from "@/server/queue/types";
 import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { SOURCES_LECTURE, corpsServi, enTetesLecturePleinEcran } from "../lecture-plein-ecran";
@@ -107,22 +106,57 @@ describe("échec fermé : un lien ou une redirection survit (audit I0b-3, B et C
     expect(c).toContain("pointer-events:none");
   });
 
-  it("aucun gabarit du catalogue ne tombe en <pre>", async () => {
-    const r = await gabaritCharger();
-    expect(r.length).toBeGreaterThan(0);
-    for (const [nom, html] of r) expect([nom, html.includes("<pre")]).toEqual([nom, false]);
+  it("animation SVG qui pose un href (constat C1) : servi en <pre> échappé", () => {
+    for (const html of [
+      '<svg><a><set attributeName="href" to="https://evil.example/"/><text pointer-events="auto">Voir</text></a></svg>',
+      "<p>x</p><MATH><mi>y</mi></MATH>",
+      '<a><animate attributeName="href" values="https://evil.example/"/></a>',
+      "<a><ANIMATETRANSFORM/></a>",
+      "<a><set\nATTRIBUTENAME = 'href'/></a>",
+    ]) {
+      const c = corpsServi({ subject: "s", html, text: "" })!;
+      expect(c).toContain("<pre");
+      expect(c).not.toMatch(/<(?:svg|math|set|animate)/i);
+    }
+  });
+
+  it("aucun gabarit du catalogue (ni aucune variante d'exemple) ne tombe en <pre>", async () => {
+    const { testes, ignores } = await gabaritCharger();
+    // Aucun gabarit ignoré en silence : tout le catalogue est parcouru, sauf liste explicite.
+    expect(ignores).toEqual([]);
+    const attendus = Object.keys(CATALOGUE).filter((n) => !SANS_HTML.includes(n));
+    expect(
+      testes
+        .map(([nom]) => nom.split("?")[0])
+        .filter((n, i, a) => a.indexOf(n) === i)
+        .sort(),
+    ).toEqual([...attendus].sort());
+    expect(testes.length).toBeGreaterThanOrEqual(attendus.length);
+    for (const [nom, html] of testes) expect([nom, html.includes("<pre")]).toEqual([nom, false]);
   });
 });
 
-async function gabaritCharger(): Promise<[string, string][]> {
+// Gabarits rendus SANS HTML (texte seul), servis en <pre> depuis toujours : aucun pour l'instant.
+// Toute entrée ajoutée ici doit être justifiée par un commentaire.
+const SANS_HTML: string[] = [];
+
+async function gabaritCharger(): Promise<{ testes: [string, string][]; ignores: string[] }> {
   const g = SOURCES_LECTURE["gabarit"]!;
-  const sortie: [string, string][] = [];
+  const testes: [string, string][] = [];
+  const ignores: string[] = [];
   for (const nom of Object.keys(CATALOGUE) as EmailJobName[]) {
-    // Un gabarit qui rend SANS HTML (texte seul) est servi en <pre> depuis toujours : hors sujet ici.
-    const brut = await renderEmailTemplate(nom, "fr", { ...PAYLOAD_EXEMPLE }).catch(() => null);
-    if (!brut || brut.html.trim() === "") continue;
-    const r = await g.charger(nom, {});
-    if (r.ok) sortie.push([nom, r.html]);
+    if (SANS_HTML.includes(nom)) continue;
+    const variantes = [undefined, ...Object.keys(VARIANTES_EXEMPLE[nom] ?? {})];
+    for (const v of variantes) {
+      const etiquette = v === undefined ? nom : `${nom}?${v}`;
+      try {
+        const r = await g.charger(nom, { variante: v });
+        if (r.ok) testes.push([etiquette, r.html]);
+        else ignores.push(etiquette);
+      } catch {
+        ignores.push(etiquette);
+      }
+    }
   }
-  return sortie;
+  return { testes, ignores };
 }

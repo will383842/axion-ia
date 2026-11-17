@@ -2,7 +2,8 @@
 //
 // `GET /<locale>/<prefixe>/emails/lecture/<source>/<id>` rend le HTML d'un e-mail
 // (copie envoyée, exemple de gabarit) pour qu'on le lise en grand. Ordre imposé :
-// préfixe d'administration exact (404) → session (401) → source connue (404) → rôle (403) → forme de l'identifiant (404)
+// locale connue (404) → préfixe d'administration exact (404) → chemin couvert par le proxy (404)
+// → session (401) → source connue (404) → rôle (403) → forme de l'identifiant (404)
 // → SEULEMENT ALORS la base. Le corps sort masqué et inerte (voir le registre).
 //
 // `GET` seul. Jamais mis en cache : le contenu d'un e-mail est une donnée de personne.
