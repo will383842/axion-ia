@@ -34,7 +34,7 @@ import {
   __reinitialiserPourTests as reinitialiserEnfileur,
   poserChargeurEnfileurEmail,
 } from "@/server/notifications/enfileur-email";
-import { collecterDemandesVeille, envoyerRecapVeille } from "../recap";
+import { collecterDemandesVeille, envoyerRecapVeille, joursOuvresEcoules } from "../recap";
 
 const CLE_DE_TEST = "ab".repeat(32);
 // 14/11/2026, 7 h 30 à Paris (hiver, UTC+1) : la veille est le 13/11.
@@ -352,5 +352,130 @@ describe("🔴 le lien d'annulation du client ne part pas par e-mail (L2b)", () 
     // La ligne du visiteur, qui contient le même texte, n'est pas retirée.
     expect(r.demandes[0]!.lignes.join("\n")).toContain(`Annuler / déplacer : ${TEMOIN}`);
     expect(JSON.stringify(r.rendezVous)).not.toContain("TEMOIN");
+  });
+});
+
+// ── L5a : « En attente de votre réponse » ─────────────────────────────────────
+// MAINTENANT = samedi 14/11/2026. Reçue lundi 09/11 : mar, mer, jeu, ven = 4 jours ouvrés.
+describe("L5a — demandes en attente de réponse", () => {
+  const LUNDI = new Date("2026-11-09T10:00:00Z");
+  const JEUDI_APRES_MIDI = new Date("2026-11-12T14:00:00Z");
+  const VENDREDI = new Date("2026-11-13T10:15:00Z");
+  /** La requête « en attente » est celle qui filtre sur le statut ; la requête de la veille ne le fait pas. */
+  const enAttenteDe = (liste: unknown[]) =>
+    d.submissions.mockImplementation(async (arg: { where: Record<string, unknown> }) =>
+      arg.where["status"] === "new" ? liste : [],
+    );
+
+  it("compte les jours ouvrés (lundi à vendredi, fériés non exclus)", () => {
+    expect(joursOuvresEcoules("2026-11-09", "2026-11-14")).toBe(4);
+    expect(joursOuvresEcoules("2026-11-12", "2026-11-14")).toBe(1);
+    expect(joursOuvresEcoules("2026-11-13", "2026-11-16")).toBe(1);
+    expect(joursOuvresEcoules("2026-11-13", "2026-11-17")).toBe(2);
+  });
+
+  it("une demande de 3 jours ouvrés est listée, celle d'un jour non", async () => {
+    // Ven 13 reçue / lun 16, mar 17, mer 18 : 3 jours ouvrés à la date du 18/11.
+    enAttenteDe([
+      submission({ id: "sub_vieille", submittedAt: LUNDI }),
+      submission({ id: "sub_jeune", submittedAt: JEUDI_APRES_MIDI }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente?.map((e) => e.consoleUrl)).toEqual([
+      `${lienConsole("")}/contacts/messages/sub_vieille`,
+    ]);
+    expect(r.enAttente?.[0]?.lignes).toEqual(["En attente depuis 4 jours ouvrés"]);
+  });
+
+  it("exactement 2 jours ouvrés : pas encore listée ; 3 : listée", async () => {
+    // Reçue jeudi 12, vu de lundi 16 : ven, lun = 2 (non) ; vu de mardi 17 : 3 (oui).
+    enAttenteDe([submission({ id: "sub_j", submittedAt: JEUDI_APRES_MIDI })]);
+    const lundi = await collecterDemandesVeille(new Date("2026-11-16T06:30:00Z"));
+    expect(lundi.enAttente).toBeUndefined();
+    const mardi = await collecterDemandesVeille(new Date("2026-11-17T06:30:00Z"));
+    expect(mardi.enAttente).toHaveLength(1);
+  });
+
+  it("la requête : statut « new », hors corbeille, entre 2 et 30 jours, bornée, lecture seule", async () => {
+    await collecterDemandesVeille(MAINTENANT);
+    const arg = d.submissions.mock.calls
+      .map((c) => c[0] as { where: Record<string, unknown>; take?: number })
+      .find((a) => a.where["status"] === "new")!;
+    expect(arg.where["deletedAt"]).toBeNull();
+    expect(arg.where["submittedAt"]).toEqual({
+      gte: new Date("2026-10-15T06:30:00Z"),
+      lte: new Date("2026-11-12T06:30:00Z"),
+    });
+    expect(arg.take).toBe(50);
+  });
+
+  it("plafond de 10, du plus ancien au plus récent", async () => {
+    enAttenteDe(
+      Array.from({ length: 14 }, (_, i) => submission({ id: `sub_${i}`, submittedAt: LUNDI })),
+    );
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toHaveLength(10);
+  });
+
+  it("une demande presse n'est pas listée ; une demande traitée ne revient pas de la base", async () => {
+    enAttenteDe([
+      submission({ id: "sub_presse", submittedAt: LUNDI, details: { unifiedType: "presse" } }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.enAttente).toBeUndefined();
+    // La base ne rend que le statut « new » : la requête le demande explicitement (test ci-dessus).
+  });
+
+  it("🔴 aucun texte du visiteur dans la section : ni message, ni e-mail, ni téléphone", async () => {
+    enAttenteDe([
+      submission({
+        submittedAt: LUNDI,
+        details: { unifiedType: "audit", message: "SECRET-MESSAGE", ville: "SECRET-VILLE" },
+      }),
+    ]);
+    const r = await collecterDemandesVeille(MAINTENANT);
+    const json = JSON.stringify(r.enAttente);
+    for (const interdit of ["SECRET-MESSAGE", "SECRET-VILLE", "camille@exemple.fr", "+33 6"]) {
+      expect(json).not.toContain(interdit);
+    }
+    expect(r.enAttente?.[0]?.nom).toBe("Camille Exemple");
+  });
+
+  it("aucune demande en attente : la clé est absente, le récap est celui d'avant", async () => {
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect("enAttente" in r).toBe(false);
+    expect(r.total).toBe(0);
+  });
+
+  it("la section ne change ni le total annoncé ni l'objet", async () => {
+    enAttenteDe([submission({ submittedAt: LUNDI })]);
+    expect((await collecterDemandesVeille(MAINTENANT)).total).toBe(0);
+  });
+
+  it("une panne de la requête « en attente » ne fait pas perdre le récap de la veille", async () => {
+    d.submissions.mockImplementation(async (arg: { where: Record<string, unknown> }) => {
+      if (arg.where["status"] === "new") throw new Error("boom");
+      return [submission({ submittedAt: VENDREDI })];
+    });
+    const r = await collecterDemandesVeille(MAINTENANT);
+    expect(r.demandes).toHaveLength(1);
+    expect(r.enAttente).toBeUndefined();
+  });
+
+  it("zéro envoi externe : seul l'enfileur interne est appelé, vers le destinataire interne", async () => {
+    enAttenteDe([submission({ submittedAt: LUNDI })]);
+    const enqueue = vi.fn(async () => ({ enqueued: true }));
+    poserChargeurEnfileurEmail(async () => enqueue as never);
+    await envoyerRecapVeille(MAINTENANT);
+    expect(enqueue).toHaveBeenCalledTimes(1);
+    const [gabarit, destinataire, , payload] = enqueue.mock.calls[0] as unknown as [
+      string,
+      string,
+      string,
+      Record<string, unknown>,
+    ];
+    expect(gabarit).toBe("recap-demandes-clients");
+    expect(destinataire).not.toContain("exemple.fr");
+    expect((payload["enAttente"] as unknown[]).length).toBe(1);
   });
 });

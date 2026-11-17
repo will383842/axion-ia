@@ -45,7 +45,7 @@ import {
   notifCategoryFor,
 } from "@/features/unified-contact/categorie-notification";
 import type { UnifiedContactType } from "@/lib/schemas/unified-contact-schema";
-import { bornesVeilleParis, type BornesVeille } from "./bornes-paris";
+import { bornesVeilleParis, jourParis, type BornesVeille } from "./bornes-paris";
 
 /** Trace un échec du récap (messages fixes, sans donnée personnelle) avec son propre préfixe. */
 const tracerEchec = (message: string): Promise<void> =>
@@ -86,6 +86,12 @@ export interface DemandesVeille {
   nonListees: { demandes: number; rendezVous: number; autresRendezVous: number };
   /** Lignes illisibles (déchiffrement impossible) : comptées, jamais perdues en silence. */
   illisibles: number;
+  /**
+   * L5a — CLÉ FACULTATIVE : demandes de formulaire restées « nouvelles » depuis plus de 2 jours
+   * ouvrés (lundi à vendredi, jours fériés NON exclus) et moins de 30 jours, 10 au plus. Un ancien
+   * worker qui ne connaît pas la clé l'ignore : le récap reste celui d'avant. Absente quand il n'y a rien.
+   */
+  enAttente?: ElementRecap[];
   /** Total annoncé dans l'objet : messages + rendez-vous de clients (hors « Autres »). */
   total: number;
 }
@@ -156,15 +162,96 @@ function estLeadChatbot(details: Record<string, unknown>): boolean {
   return chaine(details["canal"]) === "chatbot" && !chaine(details["unifiedType"]);
 }
 
+/** Plafond de la section « En attente de votre réponse ». */
+export const PLAFOND_EN_ATTENTE = 10;
+/** Ancienneté minimale (jours ouvrés, STRICTEMENT plus de) et maximale (jours calendaires). */
+export const JOURS_OUVRES_MINIMUM = 2;
+export const JOURS_MAXIMUM = 30;
+
+/**
+ * Jours ouvrés écoulés entre le jour de réception (exclu) et aujourd'hui (inclus), en jours de
+ * Paris. Lundi à vendredi ; les jours fériés ne sont PAS exclus. Pur : les jours sont « AAAA-MM-JJ ».
+ */
+export function joursOuvresEcoules(recu: string, aujourdhui: string): number {
+  const [y1, m1, d1] = recu.split("-").map(Number) as [number, number, number];
+  const [y2, m2, d2] = aujourdhui.split("-").map(Number) as [number, number, number];
+  const fin = Date.UTC(y2, m2 - 1, d2);
+  let n = 0;
+  for (let t = Date.UTC(y1, m1 - 1, d1 + 1); t <= fin; t += 86_400_000) {
+    const j = new Date(t).getUTCDay();
+    if (j !== 0 && j !== 6) n += 1;
+  }
+  return n;
+}
+
+/**
+ * Demandes de formulaire encore « nouvelles », plus de 2 jours ouvrés après leur arrivée.
+ * Lecture seule, UNE requête : `submissions` filtrée par `submittedAt` (index
+ * `@@index([submittedAt])`), triée du plus ancien au plus récent, bornée à 50 lignes ; les lignes
+ * de catégorie non client sont écartées ensuite. Aucun texte du visiteur n'en sort : seulement le
+ * nom, le libellé du type de demande, l'ancienneté et le lien de la fiche.
+ */
+async function collecterEnAttente(
+  maintenant: Date,
+): Promise<{ elements: ElementRecap[]; illisibles: number }> {
+  const aujourdhui = jourParis(maintenant);
+  const trenteJours = new Date(maintenant.getTime() - JOURS_MAXIMUM * 86_400_000);
+  // Pré-filtre de calendrier (2 jours ouvrés = au moins 2 jours) ; le compte exact est fait en JS.
+  const deuxJours = new Date(maintenant.getTime() - JOURS_OUVRES_MINIMUM * 86_400_000);
+  const lignes = await prisma.submission.findMany({
+    where: {
+      deletedAt: null,
+      status: "new",
+      submittedAt: { gte: trenteJours, lte: deuxJours },
+    },
+    orderBy: { submittedAt: "asc" },
+    take: 50,
+  });
+  const elements: ElementRecap[] = [];
+  let illisibles = 0;
+  for (const s of lignes) {
+    if (elements.length >= PLAFOND_EN_ATTENTE) break;
+    const ouvres = joursOuvresEcoules(jourParis(s.submittedAt), aujourdhui);
+    if (ouvres <= JOURS_OUVRES_MINIMUM) continue;
+    const details = lireDetails(s.details);
+    const category: NotificationCategory = estLeadChatbot(details)
+      ? "CHATBOT_LEAD_CAPTURED"
+      : categorieSubmission(details);
+    if (!estCategorieClient(category)) continue;
+    let nom: string | undefined;
+    try {
+      nom = net(decryptPii(s.contactName));
+    } catch {
+      illisibles += 1;
+      continue;
+    }
+    const event = {
+      category,
+      payload: { submissionId: s.id, formType: chaine(details["unifiedType"]) ?? "" },
+    } as EvenementClient;
+    elements.push({
+      type: libelleTypeDemande(event),
+      nom: nom ?? "",
+      quand: formatParisDateTime(s.submittedAt),
+      lignes: [`En attente depuis ${ouvres} jours ouvrés`],
+      consoleUrl: lienFicheClient(event),
+    });
+  }
+  return { elements, illisibles };
+}
+
 /** Lit la veille. Lecture seule ; ne lève que si la base est injoignable (l'appelant le trace). */
 export async function collecterDemandesVeille(
   maintenant: Date = new Date(),
 ): Promise<DemandesVeille> {
   const bornes = bornesVeilleParis(maintenant);
-  return collecterPourBornes(bornes);
+  return collecterPourBornes(bornes, maintenant);
 }
 
-export async function collecterPourBornes(bornes: BornesVeille): Promise<DemandesVeille> {
+export async function collecterPourBornes(
+  bornes: BornesVeille,
+  maintenant?: Date,
+): Promise<DemandesVeille> {
   const dansLaVeille = { gte: bornes.debut, lt: bornes.fin };
   const demandes: ElementRecap[] = [];
   const rendezVous: ElementRecap[] = [];
@@ -349,6 +436,16 @@ export async function collecterPourBornes(bornes: BornesVeille): Promise<Demande
     else nonListees[client ? "rendezVous" : "autresRendezVous"] += 1;
   }
 
+  // L5a : section facultative. Un échec ici ne doit JAMAIS faire perdre le récap de la veille.
+  let enAttente: ElementRecap[] = [];
+  if (maintenant) {
+    try {
+      enAttente = (await collecterEnAttente(maintenant)).elements;
+    } catch {
+      enAttente = [];
+    }
+  }
+
   return {
     jour: bornes.jour,
     jourCourt: bornes.jourCourt,
@@ -358,6 +455,7 @@ export async function collecterPourBornes(bornes: BornesVeille): Promise<Demande
     autresRendezVous,
     nonListees,
     illisibles,
+    ...(enAttente.length > 0 ? { enAttente } : {}),
     total:
       demandes.length +
       rendezVous.length +
@@ -391,7 +489,7 @@ export async function envoyerRecapVeille(maintenant: Date = new Date()): Promise
       await tracerEchec("aucun enfileur d'e-mail posé");
       return "failed";
     }
-    const donnees = await collecterPourBornes(bornes);
+    const donnees = await collecterPourBornes(bornes, maintenant);
     const res = await enqueueEmail(
       "recap-demandes-clients",
       destinataireAlertesClients(),

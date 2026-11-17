@@ -161,3 +161,39 @@ describe("recap-demandes-clients", () => {
     expect(libelleTemplateEmail("recap-demandes-clients")).not.toMatch(/«/);
   });
 });
+
+describe("L5a — section « En attente de votre réponse »", () => {
+  const EN_ATTENTE = [
+    {
+      type: "Audit IA",
+      nom: "Camille Exemple",
+      quand: "9 nov. 2026, 11:00",
+      lignes: ["En attente depuis 4 jours ouvrés"],
+      consoleUrl: FICHE,
+    },
+  ];
+
+  it("le payload sans la clé donne le rendu d'avant, sans la section", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", PAYLOAD);
+    expect(html).not.toContain("En attente de votre réponse");
+  });
+
+  it("avec la clé : titre, ancienneté, bouton de fiche ; liens hors console ignorés", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttente: [...EN_ATTENTE, { ...EN_ATTENTE[0], consoleUrl: "https://evil.example/x" }],
+    });
+    expect(html).toContain("En attente de votre réponse (2)");
+    expect(html).toContain("En attente depuis 4 jours ouvrés");
+    expect(html).toContain(FICHE);
+    expect(html).not.toContain("evil.example");
+  });
+
+  it("aucun mot interdit dans la section", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttente: EN_ATTENTE,
+    });
+    expect(html).not.toMatch(/Qualiopi|OPCO|prise en charge|financeur/i);
+  });
+});
