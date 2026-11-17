@@ -1275,7 +1275,7 @@ async function emettreLienMandat(args: {
     return {
       mode: "non_emis",
       motif:
-        "Mandat généré en SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans Qualiopi › Configuration, puis régénérez le mandat.",
+        "Mandat généré en SPÉCIMEN, sans valeur juridique : l'identité de l'organisme est incomplète. Renseignez-la dans la configuration de l'organisme, puis régénérez le mandat.",
     };
   }
 
