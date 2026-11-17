@@ -8,12 +8,10 @@
  */
 import { BESOINS, type BesoinEntreprise } from "@/content/videos/besoins";
 import { THEMES } from "@/content/videos/themes";
+import { SEUIL_PAGE_GROUPE } from "./groupes";
 import type { VideoPubliee } from "./lecture";
 
 export const LIEES_MAX = 3;
-
-/** Même seuil que `groupes.ts` (décision D3) ; dupliqué ici pour ne pas modifier ce fichier. */
-const SEUIL_LISTE = 3;
 
 export function videosLiees(
   courante: VideoPubliee,
@@ -36,11 +34,32 @@ export interface GroupeBesoin {
   readonly aPage: boolean;
 }
 
+/**
+ * Une page de besoin existe si elle atteint le seuil ET si sa liste n'est pas identique à
+ * celle d'une page de thème (sinon : deux adresses indexables pour un même contenu).
+ */
+export function besoinAPage(
+  besoin: BesoinEntreprise,
+  videos: ReadonlyArray<VideoPubliee>,
+): boolean {
+  const siennes = videos.filter((v) => besoin.themes.includes(v.theme));
+  if (siennes.length < SEUIL_PAGE_GROUPE) return false;
+  const cle = (l: ReadonlyArray<VideoPubliee>) =>
+    l
+      .map((v) => v.slug)
+      .sort()
+      .join("|");
+  return !THEMES.some((t) => {
+    const duTheme = videos.filter((v) => v.theme === t.slug);
+    return duTheme.length >= SEUIL_PAGE_GROUPE && cle(duTheme) === cle(siennes);
+  });
+}
+
 /** Besoins ayant au moins une vidéo ; une vidéo peut compter dans plusieurs besoins. */
 export function groupesParBesoin(videos: ReadonlyArray<VideoPubliee>): GroupeBesoin[] {
   return BESOINS.map((besoin) => {
     const doBesoin = videos.filter((v) => besoin.themes.includes(v.theme));
-    return { besoin, videos: doBesoin, aPage: doBesoin.length >= SEUIL_LISTE };
+    return { besoin, videos: doBesoin, aPage: besoinAPage(besoin, videos) };
   }).filter((g) => g.videos.length > 0);
 }
 
@@ -73,14 +92,14 @@ export function listesProches(
   for (const t of THEMES) {
     if (courante.type === "theme" && t.slug === courante.slug) continue;
     if (courante.type === "besoin" && !themesDuCourant.includes(t.slug)) continue;
-    if (nb([t.slug]) >= SEUIL_LISTE) {
+    if (nb([t.slug]) >= SEUIL_PAGE_GROUPE) {
       sortie.push({ href: `/fr/videos/theme/${t.slug}`, libelle: `Vidéos ${t.libelle}` });
     }
   }
   for (const b of BESOINS) {
     if (courante.type === "besoin" && b.slug === courante.slug) continue;
     if (!b.themes.some((t) => themesDuCourant.includes(t))) continue;
-    if (nb(b.themes) >= SEUIL_LISTE) {
+    if (besoinAPage(b, videos)) {
       sortie.push({
         href: `/fr/videos/besoin/${b.slug}`,
         libelle: `Vidéos pour ${b.libelle.toLowerCase()}`,

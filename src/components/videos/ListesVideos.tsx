@@ -181,7 +181,7 @@ export function EntreesClassement({
       <div className="mt-4 grid gap-4 md:grid-cols-2">
         <Entree
           id="entree-type"
-          titre="Par type d'automatisation"
+          titre="Par thème"
           lignes={themes.map((g) => ({
             libelle: g.theme.libelle,
             nb: g.videos.length,

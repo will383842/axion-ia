@@ -18,8 +18,7 @@ import {
 import { routing } from "@/i18n/routing";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildListeVideosJsonLd } from "@/lib/seo/video-jsonld";
-import { SEUIL_PAGE_GROUPE } from "@/server/videos/groupes";
-import { listesProches } from "@/server/videos/liees";
+import { besoinAPage, listesProches } from "@/server/videos/liees";
 import { videosPubliees } from "@/server/videos/lecture";
 
 interface Props {
@@ -38,7 +37,7 @@ async function charger(besoin: string) {
   if (!def) return null;
   const toutes = await videosPubliees();
   const videos = toutes.filter((v) => def.themes.includes(v.theme));
-  return videos.length >= SEUIL_PAGE_GROUPE ? { def, videos, toutes } : null;
+  return besoinAPage(def, toutes) ? { def, videos, toutes } : null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
