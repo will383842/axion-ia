@@ -27,6 +27,7 @@
 
 import { PrismaClient } from "../../prisma/generated/client";
 import {
+  OBJETS_AJOUTES_APRES,
   OBJETS_SQL_BRUTS,
   TABLES_DU_CHANTIER,
   type ObjetSqlBrut,
@@ -91,11 +92,11 @@ async function main(): Promise<void> {
     const cle = (o: { table: string; nom: string; type: string }): string =>
       `${o.type}:${o.table}.${o.nom}`;
     const ensemblePresents = new Set(presents.map(cle));
-    const ensembleDeclares = new Set(OBJETS_SQL_BRUTS.map(cle));
+    const ensembleDeclares = new Set([...OBJETS_SQL_BRUTS, ...OBJETS_AJOUTES_APRES].map(cle));
     const fautes: string[] = [];
 
     // 1. Déclarés → présents.
-    for (const o of OBJETS_SQL_BRUTS) {
+    for (const o of [...OBJETS_SQL_BRUTS, ...OBJETS_AJOUTES_APRES]) {
       if (!ensemblePresents.has(cle(o))) fautes.push(`déclaré mais ABSENT en base : ${cle(o)}`);
     }
 
