@@ -344,12 +344,26 @@ export function isCredentialedEmbedderPath(pathname: string): boolean {
   return CREDENTIALED_EMBEDDER_PATH_RE.test(pathname);
 }
 
+// Lecture plein écran d'un e-mail enregistré : `/<locale>/<segment>/emails/lecture/<source>/<id>`.
+// 🔴 Volontairement INDÉPENDANT du préfixe d'administration (audit I0b-3, constat 1) : le
+// proxy ne sait pas si le segment est le bon, or la route est servie pour n'importe quelle
+// valeur de `[adminPrefix]` (un layout n'enveloppe pas un route handler). Le motif large
+// pose donc `sandbox` aussi sur un mauvais préfixe ; la route, elle, répond 404 à ceux-là.
+// Constante de module : compilée une seule fois. Aucune page publique ne vit à cette forme.
+const LECTURE_EMAIL_PATH_RE = /^\/(?:fr|en)\/[^/]+\/emails\/lecture\/[^/]+\/[^/]+\/?$/;
+
 /**
- * `true` si le chemin est la lecture plein écran d'un e-mail enregistré :
- * `/<locale>/<prefixe>/emails/lecture/<source>/<id>`. Le préfixe de console est
- * comparé à la lettre. Edge-runtime safe (regex pure).
+ * `true` si le chemin est la lecture plein écran d'un e-mail enregistré, quel que
+ * soit le segment d'administration. Edge-runtime safe (regex pure).
  */
-export function isLectureEmailPath(pathname: string, prefixe: string): boolean {
-  const echappe = prefixe.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`^/(?:fr|en)/${echappe}/emails/lecture/[^/]+/[^/]+/?$`).test(pathname);
+export function isLectureEmailPath(pathname: string): boolean {
+  return LECTURE_EMAIL_PATH_RE.test(pathname);
+}
+
+/**
+ * Préfixe d'administration attendu : MÊME lecture d'environnement que le layout de la
+ * console (`(admin)/[adminPrefix]/layout.tsx`) et `isStrictCspPath` ci-dessus.
+ */
+export function prefixeAdminAttendu(): string {
+  return process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
 }

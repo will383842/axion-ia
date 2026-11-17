@@ -39,28 +39,24 @@ describe("buildCspHeader({ lectureEmail: true })", () => {
   });
 });
 
-describe("isLectureEmailPath", () => {
-  const P = "admin-x7k2n9";
+describe("isLectureEmailPath (indépendant du préfixe d'administration)", () => {
   const UUID = "11111111-1111-4111-8111-111111111111";
 
-  it("vrai pour la lecture d'un e-mail enregistré", () => {
-    expect(isLectureEmailPath(`/fr/${P}/emails/lecture/envoye/${UUID}`, P)).toBe(true);
-    expect(isLectureEmailPath(`/fr/${P}/emails/lecture/gabarit/submission-reply`, P)).toBe(true);
+  it("vrai pour la lecture d'un e-mail, quel que soit le segment", () => {
+    for (const seg of ["admin-x7k2n9", "zzz", "a.c"]) {
+      expect(isLectureEmailPath(`/fr/${seg}/emails/lecture/envoye/${UUID}`)).toBe(true);
+      expect(isLectureEmailPath(`/en/${seg}/emails/lecture/gabarit/submission-reply/`)).toBe(true);
+    }
   });
 
   it("faux pour le reste", () => {
-    expect(isLectureEmailPath(`/fr/${P}/emails/gabarits/x`, P)).toBe(false);
-    expect(isLectureEmailPath(`/fr/autre-prefixe/emails/lecture/envoye/${UUID}`, P)).toBe(false);
-    expect(isLectureEmailPath(`/fr/${P}/emails/lecture`, P)).toBe(false);
-    expect(isLectureEmailPath(`/fr/${P}/emails/lecture/envoye`, P)).toBe(false);
-    expect(isLectureEmailPath(`/fr/${P}/emails/lecture/envoye/${UUID}/x`, P)).toBe(false);
-    expect(isLectureEmailPath(`/fr/${P}x/emails/lecture/envoye/${UUID}`, P)).toBe(false);
-    expect(isLectureEmailPath("/fr/about", P)).toBe(false);
-  });
-
-  it("un préfixe contenant des caractères de regex est pris à la lettre", () => {
-    expect(isLectureEmailPath(`/fr/a.c/emails/lecture/envoye/${UUID}`, "a.c")).toBe(true);
-    expect(isLectureEmailPath(`/fr/abc/emails/lecture/envoye/${UUID}`, "a.c")).toBe(false);
+    expect(isLectureEmailPath("/fr/p/emails/gabarits/x")).toBe(false);
+    expect(isLectureEmailPath("/fr/p/emails/lecture")).toBe(false);
+    expect(isLectureEmailPath("/fr/p/emails/lecture/envoye")).toBe(false);
+    expect(isLectureEmailPath(`/fr/p/emails/lecture/envoye/${UUID}/x`)).toBe(false);
+    expect(isLectureEmailPath(`/de/p/emails/lecture/envoye/${UUID}`)).toBe(false);
+    expect(isLectureEmailPath(`/emails/lecture/envoye/${UUID}`)).toBe(false);
+    expect(isLectureEmailPath("/fr/about")).toBe(false);
   });
 });
 

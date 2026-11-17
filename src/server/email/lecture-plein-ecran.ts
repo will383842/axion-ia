@@ -7,19 +7,44 @@
 // ⛔ Le plein écran ne sert que des e-mails enregistrés (copies, gabarits, réponses),
 // jamais un aperçu avant envoi : un aperçu n'est pas adressable par un lien.
 //
-// Le corps sort TOUJOURS masqué (`masquerSecretsEmail`) et sous une CSP `sandbox`
-// sans aucun `allow-` : ni script, ni formulaire, ni navigation.
+// Le corps sort TOUJOURS masqué (`masquerSecretsEmail`), à liens inertes
+// (`rendreLiensInertes`) et sous une CSP `sandbox` sans aucun `allow-` : ni script,
+// ni formulaire. (`sandbox` n'empêche pas un clic de naviguer l'onglet : d'où les liens inertes.)
+//
+// ⛔ Les en-têtes de `enTetesLecturePleinEcran` sont posés par la route EN DÉFENSE EN
+// PROFONDEUR : sous Next 16.3.1 ceux du proxy l'emportent (`router-server.js` /
+// `send-response.js`). Ce qui protège réellement le corps est la branche `lectureEmail`
+// de `poserEnTetesDeSecurite` (`src/proxy.ts`).
 
 import { prisma } from "@/lib/prisma";
 import { buildCspHeader } from "@/lib/csp";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
+import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
 import { peutConsulter } from "@/server/auth/habilitations";
 import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import type { EmailJobName } from "@/server/queue/types";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function echapperHtml(t: string): string {
+  return t
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+/** Corps servi : masqué, liens inertes. Copie sans HTML : le texte échappé dans un `<pre>`, sinon `null`. */
+export function corpsServi(copie: { subject: string; html: string; text: string }): string | null {
+  const m = masquerSecretsEmail(copie);
+  if (m.html.trim() !== "") return rendreLiensInertes(m.html);
+  if (m.text.trim() !== "") {
+    return `<!doctype html><html lang="fr"><head><meta charset="utf-8"></head><body><pre style="white-space:pre-wrap;font:14px/1.5 monospace;margin:16px">${echapperHtml(m.text)}</pre></body></html>`;
+  }
+  return null;
+}
 
 export type ResultatLecture = { ok: true; html: string } | { ok: false; phrase: string };
 
@@ -52,7 +77,8 @@ const envoye: SourceLecture = {
     });
     if (!copie) return aucuneCopie;
     // Sans effet sur une copie déjà masquée ; utile pour une ancienne copie.
-    return { ok: true, html: masquerSecretsEmail(copie).html };
+    const html = corpsServi(copie);
+    return html === null ? aucuneCopie : { ok: true, html };
   },
 };
 
@@ -73,7 +99,7 @@ const gabarit: SourceLecture = {
         : {};
     try {
       const r = await renderEmailTemplate(id, "fr", { ...PAYLOAD_EXEMPLE, ...choisie });
-      return { ok: true, html: masquerSecretsEmail(r).html };
+      return { ok: true, html: rendreLiensInertes(masquerSecretsEmail(r).html) };
     } catch {
       return { ok: false, phrase: "Ce gabarit ne se rend pas avec le jeu d'exemple." };
     }

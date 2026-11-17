@@ -1,7 +1,7 @@
 // @vitest-environment node
 // Registre des sources de la lecture plein écran (lot I0b-3) : un registre, pas des `if`.
 import { describe, expect, it } from "vitest";
-import { SOURCES_LECTURE, enTetesLecturePleinEcran } from "../lecture-plein-ecran";
+import { SOURCES_LECTURE, corpsServi, enTetesLecturePleinEcran } from "../lecture-plein-ecran";
 
 describe("registre des sources", () => {
   it("contient envoye et gabarit, chacun avec sa garde de rôle et de forme d'identifiant", () => {
@@ -41,5 +41,34 @@ describe("en-têtes", () => {
       ].sort(),
     );
     expect(e["Content-Security-Policy"]).not.toContain("allow-");
+  });
+});
+
+describe("corpsServi", () => {
+  it("un <a href> du corps n'est plus cliquable", () => {
+    const c = corpsServi({
+      subject: "s",
+      html: '<p><a href="https://exemple.fr/x">Lien</a></p>',
+      text: "",
+    });
+    expect(c).not.toBeNull();
+    expect(c).not.toMatch(/href\s*=/i);
+    expect(c).toContain("Lien");
+  });
+
+  it("sans HTML : le texte échappé dans un <pre>", () => {
+    const c = corpsServi({
+      subject: "s",
+      html: "  ",
+      text: "Bonjour <script>alert(1)</script> & merci",
+    });
+    expect(c).toContain("<pre");
+    expect(c).not.toContain("<script>");
+    expect(c).toContain("&lt;script&gt;");
+    expect(c).toContain("&amp; merci");
+  });
+
+  it("sans HTML ni texte : null", () => {
+    expect(corpsServi({ subject: "s", html: "", text: " " })).toBeNull();
   });
 });

@@ -10,31 +10,51 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const h = vi.hoisted(() => ({
   auth: vi.fn(),
   findUnique: vi.fn(),
+  logCreate: vi.fn(),
 }));
 
 vi.mock("@/auth", () => ({ auth: h.auth }));
 vi.mock("@/lib/prisma", () => ({
-  prisma: { emailLogContent: { findUnique: h.findUnique } },
+  prisma: {
+    emailLogContent: { findUnique: h.findUnique },
+    activityLog: { create: h.logCreate },
+  },
 }));
+vi.mock("@/lib/client-ip", () => ({ getClientIp: async () => "203.0.113.9" }));
 
 import { GET } from "./route";
 import { cspCorpsEmail } from "@/lib/email/apercu-lecteur";
 
 const ID = "11111111-1111-4111-8111-111111111111";
 const JETON = "Zq7rT9xWm2LpV4nB8cD6fH1jK3sA5gYe0uIoPlMkNb";
-const appel = (source: string, id: string, query = "") =>
+const PREFIXE = "pfx-test";
+const appel = (source: string, id: string, query = "", adminPrefix = PREFIXE) =>
   GET(new Request(`https://exemple.invalid/x${query}`), {
-    params: Promise.resolve({ adminPrefix: "admin-dev", source, id }),
+    params: Promise.resolve({ adminPrefix, source, id }),
   });
 
 beforeEach(() => {
   vi.clearAllMocks();
+  vi.stubEnv("ADMIN_URL_PREFIX", PREFIXE);
   vi.stubEnv("DATABASE_URL", "postgresql://u:p@db.example:5432/x");
   h.auth.mockResolvedValue({ user: { id: "u1", role: "admin" } });
   h.findUnique.mockResolvedValue({
     subject: "Objet",
     html: "<p>Bonjour</p>",
     text: "Bonjour",
+  });
+});
+
+describe("préfixe d'administration", () => {
+  it("0) mauvais préfixe : 404, auth jamais appelé, aucune lecture en base", async () => {
+    for (const p of ["zzz", "", "PFX-TEST", `${PREFIXE}x`, "emails"]) {
+      const r = await appel("envoye", ID, "", p);
+      expect(r.status).toBe(404);
+      expect(await r.text()).toBe("");
+    }
+    expect(h.auth).not.toHaveBeenCalled();
+    expect(h.findUnique).not.toHaveBeenCalled();
+    expect(h.logCreate).not.toHaveBeenCalled();
   });
 });
 
@@ -89,6 +109,40 @@ describe("source « envoye »", () => {
     const corps = await (await appel("envoye", ID)).text();
     expect(corps).not.toContain(JETON);
     expect(corps).toContain("[masqué]");
+  });
+
+  it("4c) un lien du corps n'est plus cliquable", async () => {
+    h.findUnique.mockResolvedValue({
+      subject: "o",
+      html: '<a href="https://exemple.fr/x">Lien</a>',
+      text: "",
+    });
+    const corps = await (await appel("envoye", ID)).text();
+    expect(corps).not.toMatch(/href\s*=/i);
+    expect(corps).toContain("Lien");
+  });
+
+  it("4d) copie sans HTML : texte échappé dans un <pre> ; sans texte non plus : 404", async () => {
+    h.findUnique.mockResolvedValue({ subject: "o", html: "", text: "a <b> c" });
+    const r = await appel("envoye", ID);
+    expect(r.status).toBe(200);
+    expect(await r.text()).toContain("<pre");
+    h.findUnique.mockResolvedValue({ subject: "o", html: "", text: "" });
+    expect((await appel("envoye", ID)).status).toBe(404);
+  });
+
+  it("4e) trace d'accès sans donnée de personne ; une panne du journal ne bloque pas", async () => {
+    await appel("envoye", ID);
+    expect(h.logCreate).toHaveBeenCalledTimes(1);
+    const data = h.logCreate.mock.calls[0]![0].data;
+    expect(data).toMatchObject({
+      adminUserId: "u1",
+      action: "email.lecture_plein_ecran",
+      targetId: ID,
+    });
+    expect(JSON.stringify(data)).not.toContain("Bonjour");
+    h.logCreate.mockRejectedValue(new Error("journal HS"));
+    expect((await appel("envoye", ID)).status).toBe(200);
   });
 
   it("5) sans copie : 404 avec une phrase", async () => {
