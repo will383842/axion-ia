@@ -34,3 +34,87 @@ describe("devis-envoi : le texte de signature dit le vrai parcours (CGV 6.2)", (
     }
   });
 });
+
+describe("devis-envoi : clé facultative `salutation`", () => {
+  const rendre = async (locale: "fr" | "en", extra: Record<string, unknown>) =>
+    (await renderEmailTemplate("devis-envoi", locale, { numero: "N1", ...extra })).text;
+
+  it("civilité + nom → « Bonjour Monsieur Dupont, », jamais le nom complet", async () => {
+    const t = await rendre("fr", {
+      clientNom: "Michel Dupont",
+      salutation: { civilite: "monsieur", prenom: "Michel", nomFamille: "Dupont" },
+    });
+    expect(t).toContain("Bonjour Monsieur Dupont,");
+    expect(t).not.toContain("Michel Dupont");
+  });
+  it("prénom seul → « Bonjour Michel, »", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: { prenom: "Michel" } });
+    expect(t).toContain("Bonjour Michel,");
+    expect(t).not.toContain("Michel Dupont");
+  });
+  it("clé vide → « Bonjour, » même si clientNom est rempli", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: {} });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Michel");
+  });
+  it("civilité sans nom → prénom, ou « Bonjour, » sans prénom", async () => {
+    expect(await rendre("fr", { salutation: { civilite: "madame", prenom: "Camille" } })).toContain(
+      "Bonjour Camille,",
+    );
+    const t = await rendre("fr", { salutation: { civilite: "madame" } });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Madame");
+  });
+  it("ancien payload : sans clé, rendu identique (clientNom vide puis rempli)", async () => {
+    expect(await rendre("fr", { clientNom: "" })).toContain("Bonjour,");
+    expect(await rendre("fr", {})).toContain("Bonjour,");
+    expect(await rendre("fr", { clientNom: "Acme SAS" })).toContain("Bonjour Acme SAS,");
+    expect(await rendre("en", { clientNom: "Acme" })).toContain("Hello Acme,");
+  });
+  it("version anglaise", async () => {
+    expect(
+      await rendre("en", { salutation: { civilite: "monsieur", nomFamille: "Dupont" } }),
+    ).toContain("Hello Mr Dupont,");
+    expect(await rendre("en", { salutation: { prenom: "Michel" } })).toContain("Hello Michel,");
+    expect(await rendre("en", { salutation: {} })).toContain("Hello,");
+  });
+  it("salutation null : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: null });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("salutation chaîne : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: "x" });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("salutation tableau : « Bonjour, » et jamais le nom complet", async () => {
+    const t = await rendre("fr", { clientNom: "Michel Dupont", salutation: [] });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("valeurs non-chaînes dans la salutation : « Bonjour, »", async () => {
+    const t = await rendre("fr", {
+      numero: "N1",
+      clientNom: "Michel Dupont",
+      salutation: { civilite: 1, nomFamille: ["x"] },
+    });
+    expect(t).toContain("Bonjour,");
+    expect(t).not.toContain("Dupont");
+  });
+  it("le HTML porte « Bonjour Monsieur Dupont, »", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", {
+      numero: "N1",
+      salutation: { civilite: "monsieur", nomFamille: "Dupont" },
+    });
+    expect(r.html).toContain("Bonjour Monsieur Dupont,");
+  });
+  it("le nom de famille est échappé dans le HTML", async () => {
+    const r = await renderEmailTemplate("devis-envoi", "fr", {
+      numero: "N1",
+      salutation: { civilite: "monsieur", nomFamille: "<b>&" },
+    });
+    expect(r.html).toContain("&lt;b&gt;&amp;");
+    expect(r.html).not.toContain("<b>&");
+  });
+});
