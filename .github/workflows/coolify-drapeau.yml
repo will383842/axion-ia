@@ -108,6 +108,8 @@ on:
           # la table des versions). Éteint = 404 / « indisponible ». Les variables R2 et le mode de stockage se
           # posent dans Coolify et se LISENT (présence seulement) par coolify-lire-drapeaux.yml.
           - "GUIDES_RESEAU_FABRIQUE_ENABLED"
+          # Stockage des PDF fabriqués : `volume` ou `r2` (pas un drapeau vrai/faux). Cible : site seulement.
+          - "GUIDES_RESEAU_STOCKAGE"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon, une adresse d'essai, ou 1 à 5 adresses @axion-ia.com (GUIDES_RESEAU_ESSAI_ADRESSES ; vide pour retirer)"
         required: false
@@ -196,6 +198,9 @@ jobs:
           if [ "$CLE" = "GUIDES_RESEAU_FABRIQUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
+          if [ "$CLE" = "GUIDES_RESEAU_STOCKAGE" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
           if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
             echo "::error::$CLE se pose sur « site » seulement"; exit 1
           fi
@@ -242,6 +247,8 @@ jobs:
             if [ -n "$VALEUR" ] && ! [[ "$VALEUR" =~ $motif_essai ]]; then
               echo "::error::Refus : 1 à 5 adresses @axion-ia.com séparées par des virgules (ou vide pour retirer)"; exit 1
             fi
+          elif [ "$CLE" = "GUIDES_RESEAU_STOCKAGE" ]; then
+            [[ "$VALEUR" =~ ^(volume|r2)$ ]] || { echo "::error::volume ou r2"; exit 1; }
           elif [ "$CLE" = "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI" ]; then
             [[ "$VALEUR" =~ ^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$ ]] || { echo "::error::Adresse e-mail attendue"; exit 1; }
           elif [[ "$CLE" =~ ^(DOSSIER_FICHE_AUTO|QUESTIONNAIRE_RELANCES_ENABLED|QUESTIONNAIRE_CONFIRMATIONS_ENABLED|QUESTIONNAIRE_TELEGRAM_ENABLED)$ ]]; then
