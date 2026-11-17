@@ -14,11 +14,20 @@ export const LIBELLE_ENVOYE = "Envoyé (accepté par le relais d'envoi).";
 export const LIBELLE_TRAITEMENT_LONG =
   "Envoi en cours de traitement, vérifiez la frise avant de renvoyer.";
 
-export type PhaseApresSondage = "envoye" | "echec" | null;
+/**
+ * Phrase affichée quand le serveur du destinataire a refusé l'adresse (`bounced`).
+ * Sans colonne de type de rebond, on ne sait pas distinguer un refus définitif
+ * d'un refus temporaire : aucun « Réessayer », il faut écrire de nouveau.
+ */
+export const LIBELLE_REBOND =
+  "Adresse refusée par le serveur du destinataire : vérifier l'adresse avant d'écrire de nouveau.";
+
+export type PhaseApresSondage = "envoye" | "echec" | "rebond" | null;
 
 /** Phase à afficher d'après le statut lu en base ; `null` = rien de tranché. */
 export function phaseApresSondage(statut: string): PhaseApresSondage {
   if (statut === "sent") return "envoye";
-  if (statut === "failed" || statut === "bounced") return "echec";
+  if (statut === "failed") return "echec";
+  if (statut === "bounced") return "rebond";
   return null;
 }
