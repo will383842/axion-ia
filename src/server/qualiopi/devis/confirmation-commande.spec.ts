@@ -1,7 +1,10 @@
 // @vitest-environment node
 import { describe, it, expect, vi } from "vitest";
 
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+const findFirstDevis = vi.hoisted(() => vi.fn());
+const captureMessage = vi.hoisted(() => vi.fn());
+vi.mock("@/lib/prisma", () => ({ prisma: { devis: { findFirst: findFirstDevis } } }));
+vi.mock("@sentry/nextjs", () => ({ captureMessage }));
 vi.mock("@/lib/r2-storage", () => ({ uploadToR2: vi.fn() }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: vi.fn() }));
 vi.mock("@/server/cgv-pdf", () => ({ rendreCgvPdf: vi.fn() }));
@@ -13,6 +16,7 @@ import {
   type DependancesConfirmation,
 } from "./confirmation-commande";
 import { CGV_VERSION } from "@/content/cgv-version";
+import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 
 import { offreFictive } from "./offre-fixtures.spec-util";
 import { choixCanonique, sha256Offre } from "./offre-calculs";
@@ -71,6 +75,7 @@ function deps(over: Partial<DependancesConfirmation> & { devis?: unknown } = {})
       },
     formulesActives: async () => false,
     regimeEtTaux: async () => ({ regime: "assujetti", taux: 20 }),
+    lireMetadataPiece: async () => null,
     versionCgvAcceptee: async () => CGV_VERSION,
     cgvExiste: async () => false,
     pdfCgv: async () => Buffer.from("pdf"),
@@ -373,5 +378,100 @@ describe("envoyerConfirmationCommande — appels concurrents (verrou par devis)"
     const r = await envoyerConfirmationCommande(DEMANDE, d);
     expect(r).toEqual({ envoye: false, raison: "etat_inconnu" });
     expect(enfiler).not.toHaveBeenCalled();
+  });
+});
+
+describe("envoyerConfirmationCommande — devis classique : montants de la PHOTO (B3-bis)", () => {
+  const LIGNES = [{ designation: "x", quantite: 1, prixUnitaireHtCents: 100_000 }];
+  const photo = (data: Record<string, unknown>) => ({ renderData: { data } });
+  const payloadDe = (enfiler: ReturnType<typeof vi.fn>) =>
+    (enfiler.mock.calls[0] as unknown as [string, string, string, Record<string, string>])[3];
+  const norm = (s: string | undefined) => (s ?? "").replace(/\s/g, " ");
+
+  it("(a) photo à 5,5 % alors que la configuration dit 20 % : le courriel annonce la photo, comme la page", async () => {
+    const metadata = photo({
+      lignes: LIGNES,
+      regimeTva: "assujetti",
+      tauxTvaStandardPercent: 5.5,
+      client: { raisonSociale: "Acme" },
+    });
+    const { d, enfiler } = deps({ lireMetadataPiece: async () => metadata });
+    await envoyerConfirmationCommande(DEMANDE, d);
+    const p = payloadDe(enfiler);
+    expect(norm(p["montantHtLabel"])).toContain("1 000,00");
+    expect(norm(p["montantTtcLabel"])).toContain("1 055,00");
+
+    // Parité : la page de signature, pour la MÊME photo, rend les mêmes totaux.
+    findFirstDevis.mockResolvedValue({
+      id: "dv1",
+      numero: "AXI-DEV-1",
+      statut: "envoye",
+      offre: null,
+      dateValidite: new Date("2026-12-31T00:00:00Z"),
+      montantTotalHtCents: 100_000,
+      client: { raisonSociale: "Acme" },
+      documentGenere: { metadata },
+    });
+    const page = await lireDevisASigner("dg1");
+    expect(norm(p["montantHtLabel"])).toBe(norm(page?.totalHtLisible));
+    expect(norm(p["montantTtcLabel"])).toBe(norm(page?.totalTtcLisible));
+  });
+
+  it("(a bis) photo en exonération alors que la configuration dit assujetti : TVA nulle", async () => {
+    const { d, enfiler } = deps({
+      lireMetadataPiece: async () =>
+        photo({ lignes: LIGNES, regimeTva: "exoneration_261", client: { raisonSociale: "A" } }),
+    });
+    await envoyerConfirmationCommande(DEMANDE, d);
+    const p = payloadDe(enfiler);
+    expect(norm(p["montantTvaLabel"])).toContain("0,00");
+    expect(norm(p["montantTtcLabel"])).toContain("1 000,00");
+  });
+
+  it("(b) pas de photo : calcul par la configuration + signal Sentry sans montant ni personne", async () => {
+    captureMessage.mockReset();
+    const { d, enfiler } = deps({ lireMetadataPiece: async () => null });
+    await envoyerConfirmationCommande(DEMANDE, d);
+    expect(norm(payloadDe(enfiler)["montantTtcLabel"])).toContain("1 200,00");
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+    const [msg, opts] = captureMessage.mock.calls[0] as unknown as [string, { level: string }];
+    expect(opts.level).toBe("warning");
+    expect(JSON.stringify([msg, opts])).not.toMatch(/Acme|acme|1 ?200|AXI-DEV|dv1/);
+  });
+
+  it("(c) photo illisible : repli sur la configuration, signal, aucune exception", async () => {
+    captureMessage.mockReset();
+    const { d, enfiler } = deps({
+      lireMetadataPiece: async () => photo({ lignes: "pas un tableau", regimeTva: 42 }),
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(r).toMatchObject({ envoye: true });
+    expect(norm(payloadDe(enfiler)["montantTtcLabel"])).toContain("1 200,00");
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it("(c bis) la lecture de la pièce lève : repli sur la configuration, l'envoi a lieu", async () => {
+    captureMessage.mockReset();
+    const { d, enfiler } = deps({
+      lireMetadataPiece: async () => {
+        throw new Error("base muette");
+      },
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(r).toMatchObject({ envoye: true });
+    expect(norm(payloadDe(enfiler)["montantTtcLabel"])).toContain("1 200,00");
+    expect(captureMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it("(d) devis à formules : inchangé, la photo n'est même pas lue", async () => {
+    const lireMetadataPiece = vi.fn(async () => photo({ lignes: LIGNES, regimeTva: "assujetti" }));
+    const { d } = deps({
+      devis: devisFormules(),
+      formulesActives: async () => true,
+      lireMetadataPiece,
+    });
+    const r = await envoyerConfirmationCommande(DEMANDE, d);
+    expect(r).toMatchObject({ envoye: true });
+    expect(lireMetadataPiece).not.toHaveBeenCalled();
   });
 });
