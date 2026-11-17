@@ -36,7 +36,7 @@ import { resolveConversationPrivee } from "./routing";
 import { sendTelegramRaw } from "./channels/telegram";
 import { signalerIncident } from "./channels/sentry";
 import { chargerEnfileurEmail } from "./enfileur-email";
-import { compacter } from "./texte-brut";
+import { compacter, ligne } from "./texte-brut";
 import type { DoublonsClient } from "./types";
 
 /** Les deux familles d'alerte : un message écrit, ou un rendez-vous Calendly. */
@@ -262,13 +262,22 @@ async function doublerParEmail(
     // exacte que `lignesDetailClient` a construite, jamais une ligne du texte du visiteur.
     const ligneFiche = (l: string): boolean =>
       l === `Fiche : ${r.fiche}` || l === `Console : ${r.fiche}`;
+    // Le lien d'annulation du client (Calendly) donne la main sur SON rendez-vous : il reste dans
+    // la conversation privée Telegram, jamais dans un e-mail à la boîte de contact. Même technique :
+    // seule la ligne exacte construite par `lignesDetailClient` part, jamais une ligne du visiteur.
+    const cancelUrl =
+      "cancelUrl" in event.payload && typeof event.payload.cancelUrl === "string"
+        ? event.payload.cancelUrl
+        : undefined;
+    const ligneAnnulation = (l: string): boolean =>
+      cancelUrl !== undefined && l === ligne("Annuler / déplacer", cancelUrl);
     const payload: Record<string, unknown> = {
       canal: r.canal,
       evenement: r.evenement,
       typeDemande: r.typeDemande,
       nom: r.nom ?? r.entreprise ?? "",
       recuLe: formatParisDateTime(quand),
-      lignes: lignesDetailClient(event).filter((l) => !ligneFiche(l)),
+      lignes: lignesDetailClient(event).filter((l) => !ligneFiche(l) && !ligneAnnulation(l)),
       ...(r.fiche ? { consoleUrl: r.fiche } : {}),
     };
     // Le jour dans le jobId : BullMQ garde les jobs terminés 7 jours, l'anti-doublon 24 h. Sans

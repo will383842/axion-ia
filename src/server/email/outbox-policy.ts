@@ -172,6 +172,30 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
 ] as const;
 
 /**
+ * Gabarits dont le corps LIT le « message personnalisé » saisi en file « E-mails
+ * à valider » (`payload.messagePersonnalise`).
+ *
+ * Pour tout autre gabarit, le champ était affiché mais le texte saisi était
+ * perdu en silence : l'e-mail partait sans lui. La console n'affiche donc le
+ * champ que pour ces gabarits.
+ *
+ * ⚠️ Source UNIQUE, et gardée : `outbox-policy.messages.spec.ts` lit la source de
+ * chaque gabarit et refuse toute différence avec cette liste, dans les deux sens.
+ */
+export const GABARITS_QUI_LISENT_LE_MESSAGE: readonly string[] = [
+  "devis-envoi",
+  "relance-devis-client",
+  "convention-envoi",
+  "facture-envoi",
+  "qualiopi-relance-impayee",
+] as const;
+
+/** Vrai si le gabarit insère le message personnalisé dans le corps de l'e-mail. */
+export function gabaritLitLeMessage(template: string): boolean {
+  return GABARITS_QUI_LISENT_LE_MESSAGE.includes(template);
+}
+
+/**
  * 🔴 CES IDENTIFIANTS S'AFFICHAIENT TELS QUELS, à trois endroits : le menu
  * « Nature d'email » des réglages, la liste des règles enregistrées, et la
  * phrase d'explication de la page — en monospace, comme pour assumer.

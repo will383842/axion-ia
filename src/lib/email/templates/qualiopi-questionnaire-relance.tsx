@@ -55,9 +55,8 @@ export function QualiopiQuestionnaireRelanceEmail({
         {p.libelleQuestionnaire} attend toujours votre réponse.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        Bonjour {p.stagiairePrenomNom} — deux minutes suffisent, et votre retour compte double : il
-        nous aide à améliorer nos formations, et il alimente le suivi qualité que nous devons tenir
-        pour chaque session.
+        Bonjour {p.stagiairePrenomNom} — deux minutes suffisent, et votre retour nous est précieux :
+        il nous aide à améliorer nos formations pour les personnes que nous accueillerons ensuite.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Si vous avez déjà répondu entre-temps, merci — vous pouvez ignorer ce message.

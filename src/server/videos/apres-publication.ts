@@ -20,6 +20,7 @@ import { revalidatePath, revalidateTag } from "next/cache";
 import { submitToIndexNow, type IndexNowResult } from "@/lib/indexnow";
 import { purgerToutEdge, revalidateAndPurge } from "@/server/cache/revalidate-and-purge";
 import { EXPIRATION_IMMEDIATE } from "@/server/cache/expiration-immediate";
+import { BESOINS } from "@/content/videos/besoins";
 import { THEMES } from "@/content/videos/themes";
 import { redis } from "@/lib/redis";
 import { viderCacheVideos } from "./lecture";
@@ -92,6 +93,8 @@ export function urlsAImpacter(e: EffetPublication): string[] {
     `/fr/videos/${e.slug}`,
     "/fr/videos",
     `/fr/videos/theme/${e.theme}`,
+    // Pages de besoin dont la liste couvre le thème de la vidéo (même traitement que le thème).
+    ...BESOINS.filter((b) => b.themes.includes(e.theme)).map((b) => `/fr/videos/besoin/${b.slug}`),
     ...(e.serieSlug ? [`/fr/videos/serie/${e.serieSlug}`] : []),
     "/llms.txt",
     "/llms-full.txt",

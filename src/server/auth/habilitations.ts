@@ -116,7 +116,14 @@ export type ActeEngageant =
    * accusés de réclamation…) : c'est une décision de direction. `editor` et
    * `secretaire` passent `requireAdminWrite` et ne doivent pas pouvoir la prendre.
    */
-  | "piloter_interrupteurs";
+  | "piloter_interrupteurs"
+  /**
+   * Écrire un e-mail à la main (lot I4) : le message part au nom du fondateur,
+   * donc il engage l'organisme. Réservé à la direction ; `secretaire`, `editor`
+   * et `reader` passent `requireAdminWrite` ou moins, et ne doivent pas pouvoir
+   * écrire au nom de l'organisme. À contrôler CÔTÉ SERVEUR dans chaque action.
+   */
+  | "ecrire_email_manuel";
 
 /**
  * Les rôles du produit, du plus au moins étendu.
@@ -290,6 +297,7 @@ export const HABILITATIONS: Readonly<Record<ActeEngageant, ReadonlyArray<RoleAdm
   revoquer_signature: ["super_admin", "admin"],
   rouvrir_dossier: ["super_admin", "admin"],
   piloter_interrupteurs: ["super_admin", "admin"],
+  ecrire_email_manuel: ["super_admin", "admin"],
 };
 
 /**
@@ -326,6 +334,9 @@ export const MOTIF_REFUS: Readonly<Record<ActeEngageant, string>> = {
   piloter_interrupteurs:
     "Changer un interrupteur Qualiopi peut faire partir des e-mails à de vrais clients : " +
     "acte réservé à la direction (administrateur). Demandez-lui de faire la bascule.",
+  ecrire_email_manuel:
+    "Écrire un e-mail à la main le fait partir au nom du fondateur et engage l'organisme : " +
+    "acte réservé à la direction (administrateur).",
 };
 
 /**

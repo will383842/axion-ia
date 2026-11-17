@@ -28,6 +28,7 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import {
   formulesDepuisMetadata,
+  nomPourSalutationDevis,
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
@@ -176,7 +177,7 @@ export async function envoyerDevisEmailAction(
     to,
     "fr",
     payloadDevisEnvoi({
-      clientNom: devis.client.raisonSociale,
+      clientNom: nomPourSalutationDevis(devis.client),
       numero: devis.numero,
       montantTotalHtCents: devis.montantTotalHtCents,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,

@@ -89,9 +89,6 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "../legal-footer";
 import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
-// Drapeau d'AFFIRMATION de la certification. Lecture `process.env` pure, aucun
-// import next/prisma : compatible avec le rendu d'e-mail hors requête (worker).
-import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 
 /**
  * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
@@ -147,7 +144,6 @@ export function avecDonneesRendu<T>(
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
-const QUALIOPI_LOCKUP = `${BASE_URL}/email/axion-qualiopi-lockup.png`;
 const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 
 /**
@@ -723,7 +719,6 @@ const TXT = {
      */
     tagline: "Le partenaire IA de bout en bout des PME",
     reviewsWord: "avis clients",
-    qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
     soupape:
       "Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.",
@@ -773,7 +768,6 @@ const TXT = {
   en: {
     tagline: "The end-to-end AI partner for SMEs",
     reviewsWord: "client reviews",
-    qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
     soupape: "A question? Just reply to this email — it reaches us directly, and a human reads it.",
     reviewTitle: "Your feedback",
@@ -835,16 +829,9 @@ export function EmailLayout({
   const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
   const showReviews = rs.count >= AGGREGATE_MIN_COUNT && rs.avg > 0;
-  // 🔴 2026-08-19 — `trust` est un booléen de MISE EN PAGE (« ce gabarit affiche
-  // un bandeau de confiance »), pas un drapeau de certification. Le lockup
-  // « Organisme de formation certifié Qualiopi » partirait donc quoi qu'il
-  // arrive, alors que la certification n'est PAS obtenue — cas qualifié
-  // d'ILLÉGAL par l'en-tête de `server/qualiopi/config/flag.ts`.
-  //
-  // On conjugue les deux notions au lieu de remplacer l'une par l'autre : le
-  // bandeau survit (il porte aussi la note d'avis, qui est vraie et vérifiable),
-  // seule l'IMAGE de certification est conditionnée.
-  const afficherLockupQualiopi = isQualiopiCertificationObtenue();
+  // 2026-11-17 — le bandeau ne porte plus que la note d'avis (vraie et
+  // vérifiable) : l'image de certification est retirée, l'entreprise n'a pas
+  // cette certification.
   // 🔑 Le régime de famille PRIME sur la demande du gabarit. Un gabarit de
   // famille A qui passerait `trust` ou `snowball` par mégarde ne les obtient
   // pas : la règle est portée ici, une fois, et non par la discipline de 44
@@ -981,17 +968,8 @@ export function EmailLayout({
                 </Text>
               </Section>
             )}
-            {bandeau && (afficherLockupQualiopi || showReviews) && (
+            {bandeau && showReviews && (
               <Section style={trustBand} className="ax-trust" data-bloc="bandeau">
-                {afficherLockupQualiopi && (
-                  <Img
-                    src={QUALIOPI_LOCKUP}
-                    width="340"
-                    height="227"
-                    alt={t.qualiopiAlt}
-                    style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
-                  />
-                )}
                 {showReviews && <Text style={starsStyle}>{reviewLine}</Text>}
               </Section>
             )}

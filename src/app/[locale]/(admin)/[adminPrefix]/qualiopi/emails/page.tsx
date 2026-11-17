@@ -2,7 +2,7 @@
  * Admin — Qualiopi · Corbeille de validation des emails (F60).
  *
  * Les emails commerciaux (relance d'impayé, devis, facture, contrat) attendent
- * ici une relecture avant de partir. La chaîne Qualiopi — convocation, rappel
+ * ici une relecture avant de partir. La chaîne formation — convocation, rappel
  * J-7, satisfaction J+1, suivi J+30, attestation — n'y passe PAS : la retenir
  * exposerait un stagiaire à ne jamais recevoir sa convocation, et les
  * indicateurs 4, 9, 11, 30 et 32 en dépendent.
@@ -28,6 +28,7 @@ import {
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
+  gabaritLitLeMessage,
   libelleTemplateEmail,
   reglesRetenantDesEnvoisReglementaires,
 } from "@/server/email/outbox-policy";
@@ -46,7 +47,7 @@ const TEMPLATES_REGLABLES: readonly string[] = [
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Qualiopi — E-mails à valider | Axion-IA Admin",
+  title: "Formation — E-mails à valider | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -155,7 +156,7 @@ export default async function EmailsAValiderPage({
     <AdminPageShell>
       <AdminPageHeader
         title="E-mails à valider"
-        description="Les emails commerciaux attendent votre relecture avant de partir. La chaîne Qualiopi — convocation, rappel, questionnaires, attestation — part automatiquement et n'apparaît pas ici."
+        description="Les emails commerciaux attendent votre relecture avant de partir. La chaîne formation — convocation, rappel, questionnaires, attestation — part automatiquement et n'apparaît pas ici."
       />
 
       {naturesRetenues.length > 0 && (
@@ -207,6 +208,7 @@ export default async function EmailsAValiderPage({
                   ...construireApercu(e.payload),
                 ]}
                 nbPiecesJointes={Array.isArray(e.attachments) ? e.attachments.length : 0}
+                accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
                 approuverAction={approuverEmailAction}
                 refuserAction={refuserEmailAction}
               />

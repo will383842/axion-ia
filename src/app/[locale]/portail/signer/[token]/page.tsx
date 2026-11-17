@@ -23,7 +23,6 @@ import { notFound } from "next/navigation";
 import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import {
   statutDevisDuLien,
   verifierTokenDocument,
@@ -47,12 +46,6 @@ import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
 import { lienTelechargement } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
-import {
-  REGIME_TVA_DEFAUT,
-  TAUX_TVA_STANDARD,
-  isRegimeTva,
-  type RegimeTva,
-} from "@/server/qualiopi/legal/tva";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -194,11 +187,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // lien est affiché juste en dessous.
   let devis: Awaited<ReturnType<typeof lireDevisASigner>> = null;
   if (piece.type === "devis") {
-    const regimeConfig = await getQualiopiConfig("regime_tva");
-    const regimeTva: RegimeTva = isRegimeTva(regimeConfig) ? regimeConfig : REGIME_TVA_DEFAUT;
-    const tauxStandard =
-      (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-    devis = await lireDevisASigner(verif.documentGenereId, regimeTva, tauxStandard);
+    devis = await lireDevisASigner(verif.documentGenereId);
     if (devis === null) notFound();
 
     if (devis.statutBloquant !== null) {
@@ -259,6 +248,17 @@ export default async function SignerDevisPage({ params }: PageProps) {
       }
       offreAffichee = presenterOffre(offre.data);
     }
+  }
+
+  // 🔴 Devis classique dont la photo de la pièce est absente ou illisible : on ne
+  // recalcule PAS (ni la configuration actuelle, ni Devis.lignes), on ne propose pas de signer.
+  if (devis !== null && devis.chiffrageIndisponible && offreAffichee === null) {
+    return (
+      <Message
+        titre="Ce devis ne peut pas être affiché"
+        detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
+      />
+    );
   }
 
   // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent

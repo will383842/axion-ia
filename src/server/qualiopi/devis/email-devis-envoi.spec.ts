@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { formulesDepuisMetadata, payloadDevisEnvoi } from "./email-devis-envoi";
+import {
+  formulesDepuisMetadata,
+  nomPourSalutationDevis,
+  payloadDevisEnvoi,
+} from "./email-devis-envoi";
 import { offreFictive } from "./offre-fixtures.spec-util";
 import { vueFormules } from "./vue-formules";
 
@@ -78,5 +82,37 @@ describe("payloadDevisEnvoi", () => {
       devisAFormules: true,
     });
     expect(p).not.toHaveProperty("montantLabel");
+  });
+});
+
+describe("nomPourSalutationDevis (A3)", () => {
+  it("raison sociale + contactNom « Léa Michel » : rien de fiable → chaîne vide", () => {
+    expect(nomPourSalutationDevis({ raisonSociale: "Fondation X", contactNom: "Léa Michel" })).toBe(
+      "",
+    );
+  });
+
+  it("ne devine jamais un prénom ni un nom depuis contactNom", () => {
+    expect(nomPourSalutationDevis({ contactNom: "Jean Dupont" })).toBe("");
+    expect(nomPourSalutationDevis({ contactNom: null })).toBe("");
+  });
+
+  it("le payload porte clientNom vide, jamais la raison sociale", () => {
+    const p = payloadDevisEnvoi({
+      ...base,
+      clientNom: nomPourSalutationDevis({ raisonSociale: "Fondation X", contactNom: "Léa Michel" }),
+      montantTotalHtCents: 100000,
+    });
+    expect(p["clientNom"]).toBe("");
+  });
+
+  it("prêt pour de futurs champs : civilité + nom de famille", () => {
+    expect(
+      nomPourSalutationDevis({ contactCivilite: "monsieur", contactNomFamille: "Dupont" }),
+    ).toBe("Monsieur Dupont");
+  });
+
+  it("prêt pour de futurs champs : prénom seul", () => {
+    expect(nomPourSalutationDevis({ contactPrenom: "Léa" })).toBe("Léa");
   });
 });

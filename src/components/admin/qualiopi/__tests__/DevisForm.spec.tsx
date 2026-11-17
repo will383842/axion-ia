@@ -126,6 +126,32 @@ describe("DevisForm — offre catalogue → intitulé + prix", () => {
   });
 });
 
+describe("DevisForm — aucun financement proposé (A2)", () => {
+  it("n'affiche ni OPCO, ni France Travail, ni « Financement suggéré »", () => {
+    monter();
+    const t = document.body.textContent ?? "";
+    expect(t).not.toMatch(/OPCO|France Travail|Financement suggéré/);
+    expect(screen.getByLabelText(/Activité/)).toBeTruthy();
+  });
+
+  it("n'envoie ni financementSuggere ni champ OPCO à l'action", async () => {
+    const f = monter();
+    fireEvent.change(f.client, { target: { value: CLIENT_ID } });
+    fireEvent.change(f.offre, { target: { value: "AXI-OFF-205" } });
+    fireEvent.click(f.submit);
+    await waitFor(() => expect(createDevisActionMock).toHaveBeenCalledTimes(1));
+    const arg = createDevisActionMock.mock.calls[0]![0]!;
+    for (const cle of [
+      "financementSuggere",
+      "modaliteOpco",
+      "opcoEnveloppeRestanteCents",
+      "dateDebutSessionPrevue",
+    ]) {
+      expect(arg).not.toHaveProperty(cle);
+    }
+  });
+});
+
 describe("DevisForm — ce qui part au serveur", () => {
   it("catalogue V2 : `offreCode` seul, jamais un code rangé dans `offreTierId`", async () => {
     const f = monter();

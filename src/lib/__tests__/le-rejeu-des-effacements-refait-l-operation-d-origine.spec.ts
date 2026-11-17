@@ -93,6 +93,9 @@ vi.mock("@/lib/prisma", () => {
     "clientTache",
     "preRemplissage",
     "enregistrementConsentement",
+    // Fiche F1b : la purge du pilote refuse si un e-mail écrit à la main vise une fiche ou un contact.
+    "emailManuel",
+    "emailManuelPieceJointe",
   ];
   const tx: Record<string, unknown> = Object.fromEntries(noms.map((n) => [n, modele(n)]));
   tx["$executeRawUnsafe"] = async () => 0;
@@ -104,7 +107,13 @@ vi.mock("@/lib/prisma", () => {
   };
 });
 
-import { PERSONNE_EFFACEE, rejouerEffacements } from "../rgpd-erase";
+import { decryptPii, encryptPii } from "../pii-crypto";
+import {
+  MOTIF_EMAIL_MANUEL_NEUTRALISE,
+  OBJET_EMAIL_MANUEL_EFFACE,
+  PERSONNE_EFFACEE,
+  rejouerEffacements,
+} from "../rgpd-erase";
 
 const journal = (tableCible: string, ligneId: string, motif: string): Ligne => ({
   tableCible,
@@ -335,5 +344,152 @@ describe("le rejeu ré-efface les documents des projets du pilote", () => {
     await rejouerEffacements({ appliquer: true });
     expect(etat.tables["documentProjet"]).toHaveLength(3);
     expect(etat.tables["documentProjetContenu"]).toHaveLength(3);
+  });
+});
+
+/**
+ * Fiche F1b — les e-mails écrits à la main entrent dans le rejeu, et ne le font JAMAIS lever
+ * (non-régression : un e-mail manuel écrit depuis une fiche d'essai annulait tout le rejeu, y compris
+ * le ré-effacement des personnes art. 17).
+ */
+describe("le rejeu et les e-mails écrits à la main", () => {
+  const ADRESSE = "tiers.fictif@exemple-fictif.fr";
+  const mail = (over: Ligne): Ligne => ({
+    id: "em-1",
+    entiteType: "ClientContact",
+    contactId: null,
+    clientId: null,
+    destinataireChiffre: encryptPii(ADRESSE),
+    destinataireHash: "h:tiers",
+    destinataireNom: "Tiers Fictif",
+    objet: "Votre dossier",
+    corpsSource: "Bonjour, texte source.",
+    corpsHtml: "<p>Bonjour</p>",
+    corpsTexte: "Bonjour",
+    statut: "en_file",
+    motif: null,
+    inReplyTo: null,
+    referencesEntete: null,
+    idRelais: null,
+    ...over,
+  });
+  beforeEach(() => {
+    process.env["PII_ENCRYPTION_KEY"] = "e".repeat(64);
+  });
+
+  it("🔴 (a) journal pilote + e-mail manuel sur une personne d'essai : le rejeu ne lève pas ET la personne art. 17 est de nouveau pseudonymisée", async () => {
+    etat.tables["effacementJournal"]?.push(journal("client_contacts", "essai", "pilote"));
+    etat.tables["clientContact"]?.push({ id: "essai", clientId: "c-test", nom: "Testeur" });
+    etat.tables["emailManuel"] = [mail({ contactId: "essai" })];
+    const aBlanc = await rejouerEffacements();
+    expect(aBlanc.personnesPiloteGardees).toBe(1);
+    const r = await rejouerEffacements({ appliquer: true });
+    expect(r.personnesPiloteGardees).toBe(1);
+    const parId = (i: string) => etat.tables["clientContact"]?.find((c) => c["id"] === i);
+    expect(parId("alice")).toMatchObject({ nom: PERSONNE_EFFACEE });
+    expect(parId("essai")).toMatchObject({ nom: "Testeur" });
+    expect(etat.tables["emailManuel"]).toHaveLength(1);
+  });
+
+  it("🔴 (b) une ligne `emails_manuels` restaurée avec son contenu : à blanc compte 1, --appliquer la neutralise, une seconde passe compte 0", async () => {
+    const base = (await rejouerEffacements()).reappliquees;
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1", "art17"));
+    etat.tables["emailManuel"] = [mail({})];
+    etat.tables["emailManuelPieceJointe"] = [
+      { id: "pj", emailManuelId: "em-1", nomFichier: "devis.pdf" },
+    ];
+    const ecrituresAvant = etat.ecritures;
+    expect((await rejouerEffacements()).reappliquees).toBe(base + 1);
+    expect(etat.ecritures).toBe(ecrituresAvant);
+    await rejouerEffacements({ appliquer: true });
+    expect(etat.tables["emailManuel"]?.[0]).toMatchObject({
+      objet: OBJET_EMAIL_MANUEL_EFFACE,
+      corpsSource: "",
+      corpsHtml: "",
+      corpsTexte: null,
+      destinataireNom: null,
+      statut: "retenu",
+      motif: MOTIF_EMAIL_MANUEL_NEUTRALISE,
+    });
+    expect(etat.tables["emailManuel"]?.[0]?.["destinataireHash"]).toBe("h:tiers");
+    expect(etat.tables["emailManuelPieceJointe"]?.[0]?.["nomFichier"]).toBe("[nom effacé]");
+    expect((await rejouerEffacements()).reappliquees).toBe(0);
+  });
+
+  it("(b bis) `<id>:contenu` : contenu vidé, adresse et nom du tiers gardés", async () => {
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1:contenu", "art17"));
+    etat.tables["emailManuel"] = [mail({ destinataireNom: "Assistante" })];
+    await rejouerEffacements({ appliquer: true });
+    expect(etat.tables["emailManuel"]?.[0]).toMatchObject({
+      objet: OBJET_EMAIL_MANUEL_EFFACE,
+      destinataireNom: "Assistante",
+    });
+  });
+
+  it("(b ter) `<id>:contenu` : le nom des pièces jointes est neutralisé comme en mode « destinataire »", async () => {
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1:contenu", "art17"));
+    etat.tables["emailManuel"] = [mail({})];
+    etat.tables["emailManuelPieceJointe"] = [
+      { id: "pj", emailManuelId: "em-1", nomFichier: "devis-alice.pdf" },
+    ];
+    await rejouerEffacements({ appliquer: true });
+    expect(etat.tables["emailManuelPieceJointe"]?.[0]?.["nomFichier"]).toBe("[nom effacé]");
+  });
+
+  it("🔴 (c) destinataire indéchiffrable : ligne intacte, `emailsManuelsIllisibles` vaut 1", async () => {
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1", "art17"));
+    const ligne = mail({ destinataireChiffre: "enc:v1:illisible" });
+    etat.tables["emailManuel"] = [ligne];
+    const avant = structuredClone(ligne);
+    const r = await rejouerEffacements({ appliquer: true });
+    expect(r.emailsManuelsIllisibles).toBe(1);
+    expect(etat.tables["emailManuel"]?.[0]).toEqual(avant);
+  });
+  it("🔴 (d) lignes illisibles : comptées à part, jamais « à réappliquer » (une seconde passe affiche 0)", async () => {
+    const base = (await rejouerEffacements()).reappliquees;
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1", "art17"));
+    etat.tables["emailManuel"] = [mail({ destinataireChiffre: "enc:v1:illisible" })];
+    const aBlanc = await rejouerEffacements();
+    expect(aBlanc.emailsManuelsIllisibles).toBe(1);
+    expect(aBlanc.reappliquees).toBe(base);
+    const r = await rejouerEffacements({ appliquer: true });
+    expect(r.emailsManuelsIllisibles).toBe(1);
+    expect(r.reappliquees).toBe(base);
+    expect((await rejouerEffacements({ appliquer: true })).reappliquees).toBe(0);
+  });
+
+  it("🔴 (e) contenu déjà vidé (effacement de l'AUTRE personne) puis effacement du destinataire : adresse et nom neutralisés, seconde passe vide", async () => {
+    etat.tables["effacementJournal"]?.push(journal("emails_manuels", "em-1", "art17"));
+    etat.tables["emailManuel"] = [
+      mail({
+        objet: OBJET_EMAIL_MANUEL_EFFACE,
+        corpsSource: "",
+        corpsHtml: "",
+        corpsTexte: null,
+      }),
+    ];
+    const base = (await rejouerEffacements()).reappliquees;
+    await rejouerEffacements({ appliquer: true });
+    const ligne = etat.tables["emailManuel"]?.[0];
+    expect(ligne?.["destinataireNom"]).toBeNull();
+    expect(decryptPii(ligne?.["destinataireChiffre"] as string)).toBe(
+      "erased:h:tiers@erased.local",
+    );
+    expect(base).toBeGreaterThan(0);
+    const apres = structuredClone(etat.tables["emailManuel"]);
+    expect((await rejouerEffacements({ appliquer: true })).reappliquees).toBe(0);
+    expect(etat.tables["emailManuel"]).toEqual(apres);
+  });
+
+  it("(f) e-mail manuel rattaché à une fiche d'essai par `client_id` seulement : le rejeu ne lève pas, aucune personne gardée, la ligne reste", async () => {
+    etat.tables["effacementJournal"]?.push(journal("client_contacts", "essai", "pilote"));
+    etat.tables["clientContact"]?.push({ id: "essai", clientId: "c-test", nom: "Testeur" });
+    etat.tables["emailManuel"] = [mail({ clientId: "c-test" })];
+    const aBlanc = await rejouerEffacements();
+    expect(aBlanc.personnesPiloteGardees).toBe(0);
+    const r = await rejouerEffacements({ appliquer: true });
+    expect(r.personnesPiloteGardees).toBe(0);
+    expect(etat.tables["emailManuel"]).toHaveLength(1);
+    expect(etat.tables["emailManuel"]?.[0]).toMatchObject({ clientId: "c-test" });
   });
 });

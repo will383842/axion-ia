@@ -154,6 +154,8 @@ idempotent : sur un état déjà chiffré, il n'écrit rien.
 
 ### Étape 3 ter — Rejouer les effacements RGPD (dossier client, enregistrements des visios)
 
+> Le rejeu refait aussi les e-mails écrits à la main neutralisés (`emails_manuels`) : le lancer depuis un conteneur qui contient F1b (sinon la valeur est inconnue du code). Un nombre `emailsManuelsIllisibles` > 0 (adresse indéchiffrable, ligne non touchée) se traite à la main.
+
 ⚠️ **Vaut pour les trois voies (A, B et C).** Un dump ou un snapshot pris **avant** un effacement
 RGPD (art. 17, retrait d'accord, fin de conservation, purge du pilote) fait **revenir** ce qui avait
 été effacé : paroles, faits, comptes rendus, nom d'une personne dans le dossier client. Le journal

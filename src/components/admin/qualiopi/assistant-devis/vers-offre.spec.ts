@@ -194,6 +194,30 @@ describe("prix unique (T4)", () => {
   });
 });
 
+describe("ancien brouillon en mode opco", () => {
+  it("enveloppe illisible : abandonnée, ne bloque pas la conversion", () => {
+    const e = reducteur(etatT4(), {
+      type: "champs",
+      patch: {
+        financement: {
+          mode: "opco",
+          modaliteOpco: "intra",
+          nbParticipants: "8",
+          dureeHeures: "14",
+          enveloppeRestante: "abc",
+          dateDebutSession: "",
+        },
+      },
+    });
+    const r = versOffre(e, CTX);
+    expect(r.ok).toBe(true);
+    if (r.ok && r.type === "classique") {
+      expect(r.classique).not.toHaveProperty("opcoEnveloppeRestanteCents");
+      expect(r.classique).toMatchObject({ nbParticipants: 8 });
+    }
+  });
+});
+
 describe("offre héritée et aller-retour", () => {
   const AUTO = {
     code: "AUTO-1",

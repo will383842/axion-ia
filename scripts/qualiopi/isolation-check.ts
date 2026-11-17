@@ -567,7 +567,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    relances : ce sont des documents commerciaux d'un organisme de
   //    formation. Les recopier hors du domaine créerait la seconde vérité que
   //    ce contrôle existe pour empêcher.
-  "src/lib/email/templates/_layout.tsx",
   "src/lib/email/legal-footer.ts",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,

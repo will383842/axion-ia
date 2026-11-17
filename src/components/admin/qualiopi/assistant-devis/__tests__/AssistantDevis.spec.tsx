@@ -29,6 +29,13 @@ function remplirEtape1(p: Partial<PropsAssistantDevis> = {}) {
   return { ...BASE, brouillonInitial: { id: "b1", majLe: "t", donnees: serialiser(e, 1) }, ...p };
 }
 
+describe("AssistantDevis — aucun financement proposé (A2)", () => {
+  it("l'assistant n'affiche ni OPCO, ni France Travail, ni « Financement suggéré »", () => {
+    render(<AssistantDevis {...remplirEtape1()} rendreEtape={rendre} />);
+    expect(document.body.textContent).not.toMatch(/OPCO|France Travail|Financement suggéré/);
+  });
+});
+
 describe("AssistantDevis", () => {
   it("affiche le titre de l'étape 1 et annonce « Étape 1 sur 4 : Client et projet »", () => {
     render(<AssistantDevis {...BASE} rendreEtape={rendre} />);

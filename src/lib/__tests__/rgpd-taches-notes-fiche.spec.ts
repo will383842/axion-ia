@@ -121,6 +121,8 @@ vi.mock("@/lib/prisma", () => {
     questionnaireAvantAuditEnvoi: modele("questionnaireAvantAuditEnvoi"),
     emailSuivi: modele("emailSuivi"),
     devisAssistantBrouillon: modele("devisAssistantBrouillon"),
+    emailManuel: modele("emailManuel"),
+    emailManuelPieceJointe: modele("emailManuelPieceJointe"),
     clientFusion: modele("clientFusion"),
     projetContact: modele("projetContact"),
     projet: modele("projet"),
