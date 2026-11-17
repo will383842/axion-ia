@@ -104,7 +104,7 @@ export default async function DemandeDevisPage({ params, searchParams }: Props) 
       <section className="py-12 sm:py-16">
         <Container className="max-w-2xl">
           <UnifiedContactForm
-            defaultType="audit"
+            defaultType="devis"
             advancedOpenByDefault
             source="/demande-devis"
             {...(defaultIntervention ? { defaultSubType: defaultIntervention } : {})}
