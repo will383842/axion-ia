@@ -9,11 +9,18 @@ import { setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { themeParSlug } from "@/content/videos/themes";
 import { JsonLd } from "@/components/marketing/JsonLd";
-import { EnteteListe, GrilleVideos, PagesLiees } from "@/components/videos/ListesVideos";
+import {
+  EnteteListe,
+  FilAriane,
+  GrilleVideos,
+  ListesProches,
+  PagesLiees,
+} from "@/components/videos/ListesVideos";
 import { routing } from "@/i18n/routing";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildListeVideosJsonLd } from "@/lib/seo/video-jsonld";
 import { SEUIL_PAGE_GROUPE } from "@/server/videos/groupes";
+import { listesProches } from "@/server/videos/liees";
 import { videosPubliees } from "@/server/videos/lecture";
 
 interface Props {
@@ -30,8 +37,9 @@ export async function generateStaticParams(): Promise<Array<{ theme: string }>> 
 async function charger(theme: string) {
   const def = themeParSlug(theme);
   if (!def) return null;
-  const videos = (await videosPubliees()).filter((v) => v.theme === def.slug);
-  return videos.length >= SEUIL_PAGE_GROUPE ? { def, videos } : null;
+  const toutes = await videosPubliees();
+  const videos = toutes.filter((v) => v.theme === def.slug);
+  return videos.length >= SEUIL_PAGE_GROUPE ? { def, videos, toutes } : null;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -71,8 +79,12 @@ export default async function PageTheme({ params }: Props) {
         })}
       />
       <div className="mx-auto w-full max-w-5xl px-4 py-8 md:py-12">
+        <FilAriane
+          etapes={[{ libelle: "Vidéos", href: "/fr/videos" }, { libelle: t.def.libelle }]}
+        />
         <EnteteListe titre={`Vidéos ${t.def.libelle}`} intro={t.def.intro} />
         <GrilleVideos videos={t.videos} />
+        <ListesProches pages={listesProches({ type: "theme", slug: t.def.slug }, t.toutes)} />
         <PagesLiees pages={t.def.pagesLiees} />
       </div>
     </>

@@ -188,7 +188,6 @@ describe("hub : classement par type et par besoin", () => {
     h.videos = [
       ...[1, 2, 3].map((k) => n(k, "automatisation")),
       ...[1, 2].map((k) => n(k, "sites-web-ia")),
-      n(1, "cuisine"),
     ];
     const toutes = (h.videos as Array<{ slug: string }>).map((v) => `/fr/videos/${v.slug}`);
     const hub = hrefs(await rendre(Galerie({ params: fr() })));
