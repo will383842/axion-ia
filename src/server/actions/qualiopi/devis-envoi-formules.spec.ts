@@ -8,25 +8,28 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 
 const findUnique = vi.fn();
-const transaction = vi.fn();
-const txDevisUpdate = vi.fn();
+const txDevisUpdateMany = vi.fn();
 const generateDocument = vi.fn();
 const creerToken = vi.fn();
 const enqueueEmail = vi.fn();
 const formulesActives = vi.fn();
 const logActivity = vi.fn();
 
+// B1 : verrou + relecture du devis + écriture « envoye » gardée, tous DANS la transaction.
 vi.mock("@/lib/prisma", () => ({
   prisma: {
-    devis: { findUnique: (...a: unknown[]) => findUnique(...a) },
-    $transaction: (fn: (tx: unknown) => Promise<unknown>) => {
-      transaction();
-      return fn({
-        devis: { update: (...a: unknown[]) => txDevisUpdate(...a) },
+    $transaction: (fn: (tx: unknown) => Promise<unknown>) =>
+      fn({
+        $queryRaw: async () => [{ locked: true }],
+        emailOutbox: { findFirst: async () => null },
+        devis: {
+          findUnique: (...a: unknown[]) => findUnique(...a),
+          updateMany: (...a: unknown[]) => txDevisUpdateMany(...a),
+          update: vi.fn(),
+        },
         client: { updateMany: vi.fn() },
         documentSignatureToken: { updateMany: vi.fn() },
-      });
-    },
+      }),
   },
 }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -52,7 +55,7 @@ vi.mock("@/server/qualiopi/documents/documents-service", () => ({
 }));
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   creerTokenDocument: (...a: unknown[]) => creerToken(...a),
-  revoquerTokensDocument: vi.fn(),
+  revoquerTokensDocument: vi.fn(async () => 0),
   TokenDocumentError: class extends Error {
     motif = "x";
   },
@@ -127,6 +130,7 @@ beforeEach(() => {
   generateDocument.mockResolvedValue({ id: "doc-1", numero: "AXI-DEV-2026-001" });
   creerToken.mockResolvedValue({ token: "tok" });
   enqueueEmail.mockResolvedValue({ enqueued: true });
+  txDevisUpdateMany.mockResolvedValue({ count: 1 });
 });
 
 describe("sendDevisAction — devis à formules", () => {
@@ -135,15 +139,16 @@ describe("sendDevisAction — devis à formules", () => {
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
     expect(generateDocument).not.toHaveBeenCalled();
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
   it("2 formules, total de lignes à 0 : l'envoi passe (envoyé, pièce posée, lien émis)", async () => {
     const r = await sendDevisAction(ID);
     expect("data" in r).toBe(true);
-    expect(txDevisUpdate).toHaveBeenCalledWith(
+    expect(txDevisUpdateMany).toHaveBeenCalledWith(
       expect.objectContaining({
+        where: { id: ID, statut: "brouillon" },
         data: expect.objectContaining({ statut: "envoye", documentGenereId: "doc-1" }),
       }),
     );
@@ -156,23 +161,23 @@ describe("sendDevisAction — devis à formules", () => {
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
     expect(generateDocument).not.toHaveBeenCalled();
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("échec du rendu PDF : refus, aucune transaction, aucun e-mail", async () => {
+  it("échec du rendu PDF : refus, aucune écriture « envoye », aucun e-mail", async () => {
     generateDocument.mockRejectedValue(new Error("rendu KO"));
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(creerToken).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
-  it("pièce sans identifiant : refus, aucune transaction, aucun e-mail", async () => {
+  it("pièce sans identifiant : refus, aucune écriture « envoye », aucun e-mail", async () => {
     generateDocument.mockResolvedValue({ id: null, numero: "AXI-DEV-2026-001" });
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 });
@@ -195,12 +200,12 @@ function offreAboSeul(periodes: { mois: number; remiseBps: number }[]) {
 }
 
 describe("sendDevisAction — devis à formules : gardes complémentaires", () => {
-  it("lien de signature non créé : refus avant la transaction, aucun e-mail", async () => {
+  it("lien de signature non créé : refus, aucune écriture « envoye », aucun e-mail", async () => {
     creerToken.mockRejectedValue(new Error("panne"));
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
     if ("error" in r) expect(r.error).toContain("lien de signature");
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
@@ -210,7 +215,7 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
     expect(generateDocument).not.toHaveBeenCalled();
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 
@@ -221,20 +226,20 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     expect("error" in r).toBe(true);
     if ("error" in r) expect(r.error).toContain("n'ont pas pu être construites");
     expect(generateDocument).not.toHaveBeenCalled();
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("rendu PDF en échec : message dédié « n'a pas pu être généré »", async () => {
+  it("rendu PDF en échec : message dédié « n'a pas pu être créé »", async () => {
     generateDocument.mockRejectedValue(new Error("rendu KO"));
     const r = await sendDevisAction(ID);
-    if ("error" in r) expect(r.error).toContain("n'a pas pu être généré");
+    if ("error" in r) expect(r.error).toContain("n'a pas pu être créé");
     else throw new Error("refus attendu");
   });
 
-  it("pièce sans identifiant : message dédié « Aucune pièce à signer »", async () => {
+  it("pièce sans identifiant : traitée comme un PDF raté (message dédié)", async () => {
     generateDocument.mockResolvedValue({ id: null, numero: "AXI-DEV-2026-001" });
     const r = await sendDevisAction(ID);
-    if ("error" in r) expect(r.error).toContain("Aucune pièce à signer");
+    if ("error" in r) expect(r.error).toContain("n'a pas pu être créé");
     else throw new Error("refus attendu");
   });
 
@@ -245,7 +250,7 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
       expect(r.error).toContain("Offre du devis invalide");
       expect(r.error).not.toContain("PDF");
     } else throw new Error("refus attendu");
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
   it("remise 100 % : une période à 0 €/mois parmi des périodes payantes est refusée", async () => {
@@ -260,7 +265,7 @@ describe("sendDevisAction — devis à formules : gardes complémentaires", () =
     const r = await sendDevisAction(ID);
     expect("error" in r).toBe(true);
     expect(generateDocument).not.toHaveBeenCalled();
-    expect(transaction).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
   it("total 0 et toutes périodes payantes : l'envoi passe", async () => {
@@ -279,7 +284,7 @@ describe("sendDevisAction — devis classique (inchangé)", () => {
     expect(generateDocument).not.toHaveBeenCalled();
   });
 
-  it("échec du rendu PDF : reste fail-soft (envoyé sans pièce)", async () => {
+  it("échec du rendu PDF : refus (fin du fail-soft des devis classiques), rien n'est écrit", async () => {
     findUnique.mockResolvedValue(
       devis({
         offre: null,
@@ -289,7 +294,8 @@ describe("sendDevisAction — devis classique (inchangé)", () => {
     );
     generateDocument.mockRejectedValue(new Error("rendu KO"));
     const r = await sendDevisAction(ID);
-    expect("data" in r).toBe(true);
-    expect(transaction).toHaveBeenCalledOnce();
+    expect("error" in r).toBe(true);
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
   });
 });

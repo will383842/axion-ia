@@ -9,8 +9,16 @@ const mockFindUnique = vi.fn();
 const mockDonnees = vi.fn();
 const mockGenerate = vi.fn();
 
+// B1 : le devis est relu DANS la transaction (après le verrou consultatif).
 vi.mock("@/lib/prisma", () => ({
-  prisma: { devis: { findUnique: (...a: unknown[]) => mockFindUnique(...a) } },
+  prisma: {
+    $transaction: async (f: (t: unknown) => unknown) =>
+      f({
+        $queryRaw: async () => [{ locked: true }],
+        emailOutbox: { findFirst: async () => null },
+        devis: { findUnique: (...a: unknown[]) => mockFindUnique(...a) },
+      }),
+  },
 }));
 
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
@@ -25,8 +33,7 @@ vi.mock("@/server/qualiopi/documents/documents-service", () => ({
 
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
 
-// Interception : le bloc PDF est fail-soft, l'action poursuit puis échoue sur
-// les mocks absents — le test ne regarde que l'appel.
+// Interception : l'action refuse ou échoue sur les mocks absents — le test ne regarde que l'appel.
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
   lireContextePdfDevis: vi.fn().mockResolvedValue({ contexte: true }),
@@ -54,7 +61,11 @@ describe("sendDevisAction — données du PDF", () => {
       statut: "brouillon",
       montantTotalHtCents: 150000,
       lignes: [],
-      client: { type: "entreprise", raisonSociale: "Client SA" },
+      client: {
+        type: "entreprise",
+        raisonSociale: "Client SA",
+        contactEmail: "client@example.test",
+      },
     };
     mockFindUnique.mockResolvedValue(devis);
     await sendDevisAction(DEVIS_ID).catch(() => undefined);
@@ -76,7 +87,11 @@ describe("sendDevisAction — données du PDF", () => {
       statut: "brouillon",
       montantTotalHtCents: 150000,
       lignes: [],
-      client: { type: "entreprise", raisonSociale: "Client SA" },
+      client: {
+        type: "entreprise",
+        raisonSociale: "Client SA",
+        contactEmail: "client@example.test",
+      },
     });
     // contexte.identite porte un numéro : il ne doit PAS être celui transmis.
     const { lireContextePdfDevis } = await import("@/server/qualiopi/documents/donnees-pdf-devis");
