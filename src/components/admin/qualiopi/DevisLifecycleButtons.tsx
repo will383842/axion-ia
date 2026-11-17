@@ -9,7 +9,8 @@
  *                 montant). Devis classique sans e-mail de contact : une note remplace le bouton ;
  *                 « Remis en main propre… » (devis classique seulement) →
  *                 marquerRemisEnMainPropreAction, après confirmation (dialogue `useConfirmation`, pas de boîte native).
- *   - envoye    : « Marquer accepté » → acceptDevisAction
+ *   - envoye    : (sauf si le client a signé : une note renvoie à la contresignature)
+ *                 « Marquer accepté » → acceptDevisAction
  *                 « Marquer refusé »  → declineDevisAction
  *                 « Corriger et renvoyer » (classique, non signé par le client) →
  *                 reviseDevisAction après confirmation, puis écran /corriger.
@@ -53,6 +54,8 @@ export interface DevisLifecycleButtonsProps {
   destinataire?: string | null;
   /** Le client a déjà signé : « Corriger et renvoyer » n'est plus proposé. */
   clientASigne?: boolean;
+  /** Signature du client non annulée ni révoquée : il ne reste qu'à contresigner. */
+  signeParClient?: boolean;
 }
 
 type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -75,6 +78,7 @@ export function DevisLifecycleButtons({
   montantHtLabel,
   destinataire = null,
   clientASigne = false,
+  signeParClient = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -311,7 +315,7 @@ export function DevisLifecycleButtons({
             target="_blank"
             rel="noopener noreferrer"
             className="admin-button"
-            aria-label="Ouvrir l'aperçu PDF du brouillon (aucun numéro attribué, rien n'est envoyé)"
+            aria-label="Ouvrir l'aperçu PDF du brouillon (aucune pièce numérotée créée, rien n'est envoyé)"
           >
             Aperçu
           </a>
@@ -328,7 +332,16 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Corriger et renvoyer"}
           </button>
         )}
-        {statut === "envoye" && (
+        {statut === "envoye" && signeParClient && (
+          <p
+            data-testid="note-signe-par-client"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Le client a signé ce devis. Contresignez-le dans le bloc « Signature électronique »
+            ci-dessus pour le conclure.
+          </p>
+        )}
+        {statut === "envoye" && !signeParClient && (
           <>
             <button
               type="button"
@@ -351,7 +364,7 @@ export function DevisLifecycleButtons({
           </>
         )}
 
-        {(statut === "envoye" || statut === "accepte") && (
+        {statut === "envoye" && !signeParClient && (
           <button
             type="button"
             onClick={handleResend}
@@ -362,7 +375,7 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Renvoyer par email"}
           </button>
         )}
-        {statut === "envoye" && (
+        {statut === "envoye" && !signeParClient && (
           <p
             data-testid="avertissement-renvoi-lien"
             className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"

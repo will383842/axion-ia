@@ -32,6 +32,10 @@ import {
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  SELECT_SIGNATURES_PIECE,
+  signatureClientDuDevis,
+} from "@/server/qualiopi/devis/signature-client-du-devis";
 import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
@@ -77,9 +81,21 @@ export async function envoyerDevisEmailAction(
           contactFonction: true,
         },
       },
+      ...SELECT_SIGNATURES_PIECE,
     },
   });
   if (!devis) return { error: "Devis introuvable." };
+  // Renvoyer un devis déjà signé (ou accepté) émettrait un nouveau lien et redemanderait au client
+  // de signer : refusé, quel que soit l'écran.
+  if (
+    signatureClientDuDevis(devis).clientASigne ||
+    devis.statut === "accepte" ||
+    devis.statut === "transforme_convention"
+  ) {
+    return {
+      error: "Ce devis est déjà signé par le client : le renvoyer lui redemanderait de signer.",
+    };
+  }
   // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
   // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
   // signature. `offre` est un champ scalaire, déjà lu par `include`.

@@ -242,4 +242,32 @@ describe("acceptDevisAction — version remplacée par une version émise", () =
     const r = await acceptDevisAction(DEVIS);
     expect(r).toMatchObject({ error: expect.stringContaining("propose des formules") });
   });
+
+  describe("🔴 devis signé par le client en ligne (contresignature manquante)", () => {
+    const signe = (signatures: Array<{ partie: string }>, annuleeAt: Date | null = null) => ({
+      statut: "envoye",
+      offreSha256: null,
+      formuleRetenue: null,
+      documentGenere: { annuleeAt, signatures },
+    });
+
+    it("refusé côté serveur : ni écriture, ni émission, ni confirmation de commande", async () => {
+      h.tx.devis.findUnique.mockResolvedValue(signe([{ partie: "client" }]));
+      const r = await acceptDevisAction(DEVIS);
+      expect(r).toEqual({
+        error: "Le client a signé ce devis en ligne : contresignez-le pour le conclure.",
+      });
+      expect(h.tx.devis.update).not.toHaveBeenCalled();
+      expect(h.emettre).not.toHaveBeenCalled();
+      expect(h.monter).not.toHaveBeenCalled();
+      expect(h.log).not.toHaveBeenCalled();
+    });
+
+    it("contre-témoins : pièce annulée, ou aucune signature client → l'acceptation à la main reste possible", async () => {
+      h.tx.devis.findUnique.mockResolvedValue(signe([{ partie: "client" }], new Date()));
+      expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
+      h.tx.devis.findUnique.mockResolvedValue(signe([]));
+      expect(await acceptDevisAction(DEVIS)).toEqual({ data: { id: DEVIS } });
+    });
+  });
 });

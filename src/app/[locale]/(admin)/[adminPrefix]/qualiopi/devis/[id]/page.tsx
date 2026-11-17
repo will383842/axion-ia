@@ -265,6 +265,18 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       : [];
   const clientASigne = signatures.some((s) => s.partie === "client");
   const organismeASigne = signatures.some((s) => s.partie === "axionia");
+  // Signature du client NON annulée ni révoquée sur la pièce (une pièce annulée ne compte pas) :
+  // il ne reste qu'à contresigner. Pilote la mention de statut et les boutons de cycle de vie.
+  const signeParClient =
+    devis.documentGenereId !== null &&
+    (await prisma.documentSignature.count({
+      where: {
+        documentGenereId: devis.documentGenereId,
+        partie: "client",
+        revokedAt: null,
+        documentGenere: { annuleeAt: null },
+      },
+    })) > 0;
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
@@ -388,6 +400,14 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             >
               {STATUT_LABELS[devis.statut] ?? devis.statut}
             </p>
+            {devis.statut === "envoye" && signeParClient && (
+              <p
+                data-testid="mention-signe-par-client"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé par le client, à contresigner
+              </p>
+            )}
           </div>
 
           {/* Montant HT */}
@@ -767,6 +787,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           montantHtLabel={formatEur(devis.montantTotalHtCents)}
           destinataire={client?.contactEmail ?? null}
           clientASigne={clientASigne}
+          signeParClient={signeParClient}
         />
         <DevisSuiviLivraison
           devisId={devis.id}
