@@ -13,9 +13,14 @@ import { z } from "zod";
 
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import { prisma } from "@/lib/prisma";
 import { peutEngager } from "@/server/auth/habilitations";
-import { apercu, envoyer, texteValide } from "@/server/qualiopi/formateurs-independants/envois";
+import {
+  apercuLecteurFormateur,
+  envoyer,
+  texteValide,
+} from "@/server/qualiopi/formateurs-independants/envois";
 import {
   MESSAGES_REFUS_FIN,
   MOTIFS_FIN,
@@ -76,7 +81,7 @@ export interface ApercuFin {
   readonly missionsApresEffet: number;
   readonly conservation: { contratEtVigilance: string; piecesComptables: string };
   /** `null` : aucun e-mail (décès). */
-  readonly email: { sujet: string; html: string; destinataire: string } | null;
+  readonly email: ApercuLecteur | null;
   /** Le texte F47 est-il validé ? Sinon l'e-mail ne partira pas (il pourra être renvoyé). */
   readonly texteValide: boolean;
 }
@@ -117,7 +122,7 @@ export async function apercuFinCollaborationAction(
     const email =
       texte === null
         ? null
-        : await apercu({
+        : await apercuLecteurFormateur({
             gabarit: "formateur-fin-collaboration",
             destinataire: ctx.trainer.email,
             payload: { prenom: ctx.trainer.prenom, texteLibre: texte },
@@ -134,7 +139,7 @@ export async function apercuFinCollaborationAction(
           contratEtVigilance: jourIso(c.contratEtVigilance),
           piecesComptables: jourIso(c.piecesComptables),
         },
-        email: email && { sujet: email.sujet, html: email.html, destinataire: email.destinataire },
+        email,
         texteValide: await texteValide("formateur-fin-collaboration"),
       },
     };
@@ -263,18 +268,18 @@ async function preparerAvertissement(input: z.input<typeof schemaAvertissement>)
 /** F49 en aperçu, sans rien envoyer. */
 export async function apercuAvertissementAction(
   input: z.input<typeof schemaAvertissement>,
-): Promise<{ data: { sujet: string; html: string; destinataire: string } } | Refus> {
+): Promise<{ data: ApercuLecteur } | Refus> {
   const a = await autorise();
   if ("error" in a) return a;
   try {
     const e = await preparerAvertissement(input);
     if ("error" in e) return e;
-    const r = await apercu({
+    const data = await apercuLecteurFormateur({
       gabarit: "formateur-avertissement",
       destinataire: e.destinataire,
       payload: e.payload,
     });
-    return { data: { sujet: r.sujet, html: r.html, destinataire: r.destinataire } };
+    return { data };
   } catch (err) {
     Sentry.captureException(err, { tags: { action: "apercuAvertissement" } });
     return { error: "Aperçu impossible pour le moment." };

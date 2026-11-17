@@ -37,6 +37,8 @@ export const LIBELLES_ERREUR_REPONSE: Record<string, string> = {
   invalid_recipient: "Adresse du candidat illisible (clé de chiffrement absente ?).",
   render_failed: "Erreur de génération de l'e-mail.",
   db_failed: "Échec d'enregistrement en base.",
+  lien_complement_expire:
+    "Le lien pour compléter la candidature a expiré : écrivez une nouvelle réponse.",
   enqueue_failed: "File d'envoi indisponible — la réponse est enregistrée, réessayez.",
   champs_invalides: "Champs invalides.",
   deja_envoyee: "Cette réponse est déjà partie.",
