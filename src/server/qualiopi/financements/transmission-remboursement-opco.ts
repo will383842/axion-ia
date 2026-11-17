@@ -23,6 +23,7 @@
 import { prisma } from "@/lib/prisma";
 import { documentPdfKey } from "@/lib/r2-storage";
 import { enqueueEmail } from "@/server/queue/queues";
+import { emailsFinancementTiersActifs } from "./sommeil";
 import { factureOuvreLaTransmissionRemboursement } from "./circuit-paiement-opco";
 import { libellesPiecesTransmises } from "./pieces-facturation-opco";
 import { chargerPiecesFacturation } from "./pieces-facturation-opco-lecture";
@@ -32,6 +33,7 @@ export const TEMPLATE_TRANSMISSION_REMBOURSEMENT = "facture-pieces-remboursement
 export type ResultatTransmission =
   | { statut: "preparee"; to: string }
   | { statut: "sans_objet" }
+  | { statut: "en_sommeil"; raison: "en_sommeil" }
   | { statut: "impossible"; motif: string };
 
 const eur = (cents: number): string =>
@@ -41,6 +43,8 @@ const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR", { timeZone: "E
 export async function preparerTransmissionRemboursementOpco(
   factureId: string,
 ): Promise<ResultatTransmission> {
+  // Mise en sommeil (L9) : avant toute lecture ou écriture (ligne « à valider », file).
+  if (!emailsFinancementTiersActifs()) return { statut: "en_sommeil", raison: "en_sommeil" };
   const f = await chargerPiecesFacturation(factureId);
   if (f === null || f.statut !== "payee") return { statut: "sans_objet" };
   if (

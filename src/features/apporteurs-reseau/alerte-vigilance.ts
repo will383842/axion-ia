@@ -58,6 +58,8 @@ export async function alerterPieceVigilance(pieceId: string): Promise<boolean> {
       cibleType: "ApporteurReseau",
       cibleId: p.apporteurId,
       createdAt: p.deposeeAt.toLocaleDateString("fr-FR"),
+      rubrique: "apporteurs",
+      chemin: `apporteurs/${p.apporteurId}`,
     },
     { jobId, entityType: "ApporteurReseau", entityId: p.apporteurId },
   );

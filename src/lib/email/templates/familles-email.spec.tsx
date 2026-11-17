@@ -35,6 +35,12 @@ import { renderEmailTemplate, EMAIL_TEMPLATE_NAMES, familleDuHtml } from "./inde
 import { REGIME_FAMILLE, type FamilleEmail } from "./_layout";
 import { OBJET_MAX } from "../objet-email";
 import { EMAIL_LEGAL } from "../legal-footer";
+import { GROUPES, PREHEADER_DEPUIS_TEXTE_LIBRE } from "./__tests__/cliquets";
+import {
+  corpsParagraphes,
+  fautePreEnTete,
+  lignesSalutationIsolee,
+} from "./__tests__/regles-chassis";
 
 /**
  * Charge d'essai. L'intitulé de formation est VOLONTAIREMENT long (52
@@ -433,28 +439,42 @@ describe("Référentiel e-mail — poids du message (§8)", () => {
 });
 
 describe("Référentiel e-mail — première phrase optimisée pour les résumés IA (§3.6)", () => {
-  // Apple Intelligence, Gmail/Gemini et Outlook Copilot résument l'e-mail dans
-  // la LISTE de la boîte de réception, à partir des premiers caractères du
-  // corps. Une salutation en tête consomme ce résumé pour ne rien dire.
-  const SALUTATION_EN_TETE = /^(bonjour|bonsoir|hello|hi)\b[^.!?]{0,40}[,.]?\s*$/i;
+  // Apple Intelligence, Gmail/Gemini et Outlook Copilot résument l'e-mail dans la LISTE de la
+  // boîte de réception, à partir des 100 premiers caractères du corps : la salutation y occupe
+  // au plus 40 caractères, l'information au moins 60. Une salutation seule sur sa ligne est
+  // interdite partout.
+  //
+  // 🔴 2026-11-17 — l'ancienne garde de ce bloc testait la devise du châssis, pas le corps. Elle
+  // cherchait « la première ligne de plus de 12 caractères » du rendu texte ; or le pré-en-tête
+  // est sauté de ce rendu (`data-skip-in-text`) et le logo est une image, si bien que cette ligne
+  // était « Le partenaire IA de bout en bout des PME » (ou l'URL du logo), la même pour tous les
+  // gabarits : verte quoi qu'écrive le corps. Preuve dans la description de la PR du lot S1.
+  // La règle n'est pas affaiblie : elle est mesurée sur le CORPS réel (repères `data-bloc`),
+  // refuse une salutation isolée n'importe où, et le pré-en-tête est gardé à part.
+  //
+  // Les gabarits non encore migrés (`data-destinataire` absent) sont couverts par le cliquet
+  // `salutationHorsOuverture` de `__tests__/cliquets/` ; ils sortent de la liste à leur migration.
+  const enDette = new Set(Object.values(GROUPES).flatMap((g) => g.dettes.salutationHorsOuverture));
 
   for (const name of EMAIL_TEMPLATE_NAMES) {
-    it(`${name} (fr) : le corps n'ouvre pas sur une salutation isolée`, async () => {
-      const { text } = await renderEmailTemplate(name, "fr", PAYLOAD);
-      // Le rendu texte débute par le pré-en-tête puis le titre ; on cherche la
-      // première ligne de CORPS, c'est-à-dire la première phrase substantielle.
-      const lignes = text
-        .split("\n")
-        .map((l) => l.trim())
-        .filter((l) => l.length > 0);
-      const premiere = lignes.find((l) => l.length > 12) ?? "";
-      expect(
-        SALUTATION_EN_TETE.test(premiere),
-        `${name} : le corps ouvre sur « ${premiere} ». Les résumés affichés ` +
-          `dans la boîte de réception se construisent sur les 100 premiers ` +
-          `caractères : mettre l'information d'abord, la politesse ensuite ` +
-          `(« Votre place est réservée. Bonjour Marie — voici les détails. »).`,
-      ).toBe(false);
+    it(`${name} (fr) : aucune salutation isolée dans le corps, pré-en-tête sans salutation`, async () => {
+      const { html } = await renderEmailTemplate(name, "fr", PAYLOAD);
+      const isolees = lignesSalutationIsolee(corpsParagraphes(html));
+      if (!enDette.has(name)) {
+        expect(
+          isolees,
+          `${name} : le corps porte « ${isolees[0] ?? ""} » seul sur sa ligne. Les résumés ` +
+            `affichés dans la boîte de réception se construisent sur les 100 premiers ` +
+            `caractères : la salutation et l'information vont sur la MÊME ligne ` +
+            `(« Bonjour Marie, votre place est réservée… »).`,
+        ).toEqual([]);
+      }
+      if (!PREHEADER_DEPUIS_TEXTE_LIBRE.includes(name)) {
+        expect(
+          fautePreEnTete(html),
+          `${name} : le pré-en-tête commence par une salutation.`,
+        ).toBeNull();
+      }
     });
   }
 });
