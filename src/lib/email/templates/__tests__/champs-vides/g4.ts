@@ -8,15 +8,13 @@
  * encore listé rougit aussi. La liste ne fait que diminuer : la fiche de migration du groupe
  * (S4 à S11) vide ce fichier, et lui seul. Ne jamais y AJOUTER une ligne : corriger le gabarit.
  */
-import { GABARITS_FINANCEMENT_TIERS_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
-
 export const CHAMPS_VIDES_G4: readonly string[] = [
   "cancellation-confirmed-by-user|vide|undefined",
   "devis-commande-confirmation|vide|virgule-seule",
   "devis-envoi|vide|virgule-seule",
   "facture-envoi|vide|virgule-seule",
   "force-majeure-notice|vide|undefined",
-  `${GABARITS_FINANCEMENT_TIERS_EN_SOMMEIL[0]}|vide|virgule-seule`,
+  "opco-suivi-entreprise|vide|virgule-seule",
   "payment-failed|vide|undefined",
   "payment-link|vide|undefined",
   "payment-receipt|vide|undefined",
