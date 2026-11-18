@@ -38,7 +38,7 @@ vi.mock("../../../../prisma/generated/client", () => {
   };
 });
 
-import { SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
+import { METHODE_REPONSES_REELLES, SEUIL_REPONSES_REELLES } from "@/content/observatoire/study";
 import { aggregateAllSegments, aggregateBarometer } from "../snapshot";
 
 function sqlDe(q: unknown): string {
@@ -76,6 +76,7 @@ describe("aggregateBarometer — seuil et exclusion du seed", () => {
     simulerBase(SEUIL_REPONSES_REELLES);
     const p = await aggregateBarometer();
     expect(p.totalResponses).toBe(SEUIL_REPONSES_REELLES);
+    expect(p.methode).toBe(METHODE_REPONSES_REELLES);
     expect(Object.keys(p.insights)).toContain("competitors_use_ai");
     expect(queryRawMock.mock.calls.length).toBeGreaterThan(10);
     for (const [q] of queryRawMock.mock.calls) {
@@ -85,14 +86,17 @@ describe("aggregateBarometer — seuil et exclusion du seed", () => {
     }
   });
 
-  it("vue filtrée : le seuil porte sur l'effectif réel GLOBAL, pas sur le filtre", async () => {
-    // Le filtre ne compte que 8 lignes, mais 500 réponses réelles existent au global.
+  it.each([
+    [4, 0],
+    [5, 5],
+  ])("vue filtrée de %i réponses : publiée avec %i (minimum 5)", async (effectif, attendu) => {
+    // Le filtre ne compte que `effectif` lignes, mais 500 réponses réelles existent au global.
     queryRawMock.mockImplementation(async (q) => {
       if (!estUnCompte(q)) return [];
-      return sqlDe(q).includes("company_size") ? [{ count: 8 }] : [{ count: 500 }];
+      return sqlDe(q).includes("company_size") ? [{ count: effectif }] : [{ count: 500 }];
     });
     const p = await aggregateBarometer({ companySize: "PME" });
-    expect(p.totalResponses).toBe(8);
+    expect(p.totalResponses).toBe(attendu);
     expect(p.filter.companySize).toBe("PME");
   });
 

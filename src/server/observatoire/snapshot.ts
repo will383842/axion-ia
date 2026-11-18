@@ -18,7 +18,8 @@ import { BAROMETER_QUESTIONS, SECTOR_SLUGS, REGION_SLUGS } from "@/content/obser
 import {
   SNAPSHOT_KEY_LATEST,
   SEUIL_REPONSES_REELLES,
-  HISTORIQUE_FIABLE_DEPUIS,
+  METHODE_REPONSES_REELLES,
+  MIN_SEGMENT_N,
 } from "@/content/observatoire/study";
 
 export interface DistributionEntry {
@@ -47,6 +48,12 @@ export interface SegmentMetric {
 }
 
 export interface BarometerSnapshotPayload {
+  /**
+   * Marqueur de méthode : présent (= METHODE_REPONSES_REELLES) seulement si le
+   * payload exclut les réponses de test. Un snapshot sans ce marqueur n'est
+   * JAMAIS publié (voir `readLatestSnapshot`).
+   */
+  readonly methode?: number;
   readonly totalResponses: number;
   readonly generatedAt: string;
   readonly filter: {
@@ -279,6 +286,7 @@ function sumMap(m: Map<string, number>): number {
 /** Payload vide (fallback build/stub ou aucune réponse) — jamais de throw. */
 export function emptySnapshotPayload(f: BarometerFilter = {}): BarometerSnapshotPayload {
   return {
+    methode: METHODE_REPONSES_REELLES,
     totalResponses: 0,
     generatedAt: new Date(0).toISOString(),
     filter: {
@@ -306,6 +314,9 @@ export async function aggregateBarometer(
   const total = await countResponses(conds);
   const reellesGlobal = conds.length > 1 ? await countResponses([REPONSE_REELLE]) : total;
   if (reellesGlobal < SEUIL_REPONSES_REELLES) return emptySnapshotPayload(f);
+  // Données de personnes : un effectif filtré trop petit permettrait de
+  // réidentifier des répondants → aucun pourcentage sous MIN_SEGMENT_N.
+  if (total < MIN_SEGMENT_N) return emptySnapshotPayload(f);
 
   // Requêtes indépendantes lancées en parallèle (13 single + 3 multi).
   const [singleResults, multiResults] = await Promise.all([
@@ -363,6 +374,7 @@ export async function aggregateBarometer(
   };
 
   return {
+    methode: METHODE_REPONSES_REELLES,
     totalResponses: total,
     generatedAt: new Date().toISOString(),
     filter: {
@@ -408,7 +420,12 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
       await prisma.barometerSnapshotHistory.create({
         data: {
           totalResponses: payload.totalResponses,
-          insights: payload.insights as unknown as Prisma.InputJsonValue,
+          // Marqueur de méthode dans le JSON (pas de migration) : les anciens
+          // points, calculés avec le seed, n'en ont pas et ne sont pas publiés.
+          insights: {
+            ...payload.insights,
+            [CLE_METHODE_HISTORIQUE]: METHODE_REPONSES_REELLES,
+          } as unknown as Prisma.InputJsonValue,
         },
       });
     }
@@ -419,11 +436,18 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
   return payload;
 }
 
+const CLE_METHODE_HISTORIQUE = "__methode";
+
+function sansMarqueur(i: Record<string, number>): Record<string, number> {
+  const { [CLE_METHODE_HISTORIQUE]: _m, ...reste } = i;
+  return reste;
+}
+
 /**
  * Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution.
  * Lot L3 : on ne renvoie que les points obtenus à partir d'au moins
  * SEUIL_REPONSES_REELLES réponses (les anciens points sous le seuil restent en base,
- * mais ne sont plus publiés, de même que ceux d'avant HISTORIQUE_FIABLE_DEPUIS : page et export JSON passent tous deux par ici).
+ * mais ne sont plus publiés, de même que ceux sans marqueur de méthode : page et export JSON passent tous deux par ici).
  */
 export async function readSnapshotHistory(
   limit = 60,
@@ -433,7 +457,7 @@ export async function readSnapshotHistory(
   const rows = await prisma.barometerSnapshotHistory.findMany({
     where: {
       totalResponses: { gte: SEUIL_REPONSES_REELLES },
-      computedAt: { gte: HISTORIQUE_FIABLE_DEPUIS },
+      insights: { path: [CLE_METHODE_HISTORIQUE], equals: METHODE_REPONSES_REELLES },
     },
     orderBy: { computedAt: "asc" },
     take: limit,
@@ -441,7 +465,7 @@ export async function readSnapshotHistory(
   return rows.map((r) => ({
     computedAt: r.computedAt.toISOString(),
     totalResponses: r.totalResponses,
-    insights: (r.insights as Record<string, number>) ?? {},
+    insights: sansMarqueur((r.insights as Record<string, number>) ?? {}),
   }));
 }
 
@@ -469,5 +493,8 @@ export async function readLatestSnapshot(): Promise<BarometerSnapshotPayload | n
     where: { key: SNAPSHOT_KEY_LATEST },
   });
   if (!row) return null;
-  return row.payload as unknown as BarometerSnapshotPayload;
+  const payload = row.payload as unknown as BarometerSnapshotPayload;
+  // Snapshot écrit par l'ancien code (réponses de test comprises) : jamais publié.
+  if (payload?.methode !== METHODE_REPONSES_REELLES) return null;
+  return payload;
 }

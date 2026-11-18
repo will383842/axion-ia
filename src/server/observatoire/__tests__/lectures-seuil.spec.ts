@@ -4,13 +4,15 @@
  */
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-const { historyFindMany, analysisFindUnique } = vi.hoisted(() => ({
+const { historyFindMany, analysisFindUnique, snapshotFindUnique } = vi.hoisted(() => ({
+  snapshotFindUnique: vi.fn(),
   historyFindMany: vi.fn(),
   analysisFindUnique: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    barometerSnapshot: { findUnique: snapshotFindUnique },
     barometerSnapshotHistory: { findMany: historyFindMany },
     barometerAnalysis: { findUnique: analysisFindUnique },
   },
@@ -19,8 +21,8 @@ vi.mock("@/lib/prisma", () => ({
 // analysis.ts importe le routeur LLM : on le neutralise (aucun appel payant).
 vi.mock("../../content-gen/providers/provider-router", () => ({ generate: vi.fn() }));
 
-import { SEUIL_REPONSES_REELLES, HISTORIQUE_FIABLE_DEPUIS } from "@/content/observatoire/study";
-import { readSnapshotHistory } from "../snapshot";
+import { SEUIL_REPONSES_REELLES, METHODE_REPONSES_REELLES } from "@/content/observatoire/study";
+import { readLatestSnapshot, readSnapshotHistory } from "../snapshot";
 import { readLatestAnalysis } from "../analysis";
 
 describe("readSnapshotHistory — seuil de publication", () => {
@@ -33,21 +35,11 @@ describe("readSnapshotHistory — seuil de publication", () => {
       expect.objectContaining({
         where: {
           totalResponses: { gte: SEUIL_REPONSES_REELLES },
-          computedAt: { gte: HISTORIQUE_FIABLE_DEPUIS },
+          insights: { path: ["__methode"], equals: METHODE_REPONSES_REELLES },
         },
         take: 10,
       }),
     );
-  });
-
-  it("coupe par date : un ancien point à 8 627 réponses (seed compris) n'est pas demandé", async () => {
-    historyFindMany.mockResolvedValue([]);
-    await readSnapshotHistory();
-    const where = historyFindMany.mock.calls[0]?.[0]?.where;
-    // Le point ancien (total 8 627 > seuil) est écarté par la date seule.
-    const ancien = new Date("2026-10-10T00:00:00.000Z");
-    expect(where.totalResponses.gte).toBeLessThan(8627);
-    expect(where.computedAt.gte.getTime()).toBeGreaterThan(ancien.getTime());
   });
 
   it("convertit les lignes renvoyées", async () => {
@@ -55,7 +47,7 @@ describe("readSnapshotHistory — seuil de publication", () => {
       {
         computedAt: new Date("2026-10-01T00:00:00Z"),
         totalResponses: SEUIL_REPONSES_REELLES,
-        insights: { a: 1 },
+        insights: { a: 1, __methode: METHODE_REPONSES_REELLES },
       },
     ]);
     const h = await readSnapshotHistory();
@@ -92,5 +84,25 @@ describe("readLatestAnalysis — seuil de publication", () => {
   it("renvoie null si aucune ligne", async () => {
     analysisFindUnique.mockResolvedValue(null);
     expect(await readLatestAnalysis()).toBeNull();
+  });
+});
+
+describe("readLatestSnapshot — marqueur de méthode", () => {
+  beforeEach(() => snapshotFindUnique.mockReset());
+
+  const ligne = (payload: Record<string, unknown>) => ({ payload });
+
+  it("un ancien snapshot sans marqueur n'est jamais publié", async () => {
+    snapshotFindUnique.mockResolvedValue(
+      ligne({ totalResponses: 8627, insights: { a: 1 }, distributions: {} }),
+    );
+    expect(await readLatestSnapshot()).toBeNull();
+  });
+
+  it("un snapshot avec le marqueur est publié", async () => {
+    snapshotFindUnique.mockResolvedValue(
+      ligne({ methode: METHODE_REPONSES_REELLES, totalResponses: 150, insights: {} }),
+    );
+    expect((await readLatestSnapshot())?.totalResponses).toBe(150);
   });
 });

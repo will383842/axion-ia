@@ -40,14 +40,15 @@ export const STUDY_ATTRIBUTION = "Source : Observatoire Axion-IA 2026 — axion-
 export const SEUIL_REPONSES_REELLES = 100;
 
 /**
- * Date de coupure de l'historique publié. Avant le 24/10/2026, le total
- * `totalResponses` des points de `barometer_snapshot_history` comptait aussi les
- * réponses de test (`visitor_id` commençant par `seed:`, environ 8 627) : ces
- * points ne disent pas combien de vraies réponses ils contiennent. Rien n'est
- * supprimé en base ; ces anciens points ne sont simplement plus publiés (page et
- * export JSON).
+ * Marqueur de méthode des snapshots : 2 = calculé SANS les réponses de test
+ * (`visitor_id` commençant par `seed:`). Les snapshots et points d'historique
+ * sans ce marqueur (ancien code, totaux gonflés par le seed) ne sont jamais
+ * publiés. Rien n'est supprimé en base.
  */
-export const HISTORIQUE_FIABLE_DEPUIS = new Date("2026-10-24T00:00:00.000Z");
+export const METHODE_REPONSES_REELLES = 2;
+
+/** Effectif minimal d'un périmètre filtré pour publier un pourcentage. */
+export const MIN_SEGMENT_N = 5;
 
 /**
  * Période de terrain — collecte CONTINUE (l'observatoire ne se clôt pas).
