@@ -136,7 +136,17 @@ describe("LivretAccueilPdf — véracité des mentions qualité", () => {
       React.createElement(LivretAccueilPdf, { data, identite: { ...IDENTITE, qualiopi: "" } }),
     );
     expect(nonCertifie).not.toContain("certifié Qualiopi");
-    expect(nonCertifie).toContain("référentiel national qualité");
+    expect(nonCertifie).toContain(
+      "Notre organisme applique une démarche qualité exigeante dans ses processus de formation.",
+    );
+  });
+
+  it("sans numéro Qualiopi : aucune mention de Qualiopi ni de certification", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(LivretAccueilPdf, { data, identite: { ...IDENTITE, qualiopi: "" } }),
+    ).toLowerCase();
+    expect(t).not.toContain("qualiopi");
+    expect(t).not.toContain("certif");
   });
 });
 
