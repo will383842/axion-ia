@@ -157,6 +157,18 @@ export default async function SignerDevisPage({ params }: PageProps) {
   const circuit = circuitPour(piece.type);
   if (circuit === null) notFound();
 
+  // Numéro montré sur les écrans de fin : le client a reçu un devis AXI-DEV-…, pas la référence
+  // interne AXI-DOC-…. Lu seulement dans les retours anticipés (aucune lecture sur le chemin normal).
+  // Aucun devis lié (ancien devis révisé) : repli sur le numéro de la pièce.
+  const numeroAffiche = async (): Promise<string> => {
+    if (piece.type !== "devis") return piece.numero;
+    const lie = await prisma.devis.findFirst({
+      where: { documentGenereId: verif.documentGenereId },
+      select: { numero: true },
+    });
+    return lie?.numero ?? piece.numero;
+  };
+
   // 🔴 Une pièce annulée ne se signe plus — `signerDocument` la refuse. Le dire
   // ICI évite au signataire de lire la pièce puis de tracer sa signature pour
   // rien, et surtout de croire son engagement pris. On NOMME l'annulation
@@ -167,7 +179,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Cette pièce a été annulée"
-        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
+        detail={`${majusculeInitiale(circuit.libelleDefini)} ${await numeroAffiche()} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
       />
     );
   }
@@ -182,7 +194,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Vous avez déjà signé cette pièce"
-        detail={`Votre signature sur ${circuit.libelleDefini} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
+        detail={`Votre signature sur ${circuit.libelleDefini} ${await numeroAffiche()} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
     );
   }
