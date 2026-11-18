@@ -7,7 +7,7 @@
  *   · `QuestionnaireAvantAudit` (+ essai) -> le questionnaire, sa rencontre, son client ;
  *   · `QuestionnaireAvantAuditEnvoi`     -> la réponse reçue, son questionnaire, sa rencontre.
  *   · `Devis`                            -> le devis, donc `devis.client_id` ;
- *   · `DocumentGenere` (pièce signée...) -> la pièce, son `client_id`, sinon le devis qui la porte ;
+ *   · `DocumentGenere` (pièce signée...) -> la pièce, son `client_id`, sinon le client commun de tous les devis qui la portent ;
  *   · `FactureFormation`                 -> la facture, donc `factures_formation.client_id`.
  * Les autres familles (convocations de session...) ne sont pas rattachées ici : la ligne
  * n'affiche alors aucun lien, jamais un faux (une pièce sans client ni devis reste sans lien).
@@ -106,7 +106,7 @@ export async function clientsDesLignes(
             select: {
               id: true,
               client: clientSelect,
-              devisPortes: { take: 1, select: { client: clientSelect } },
+              devisPortes: { select: { client: clientSelect } },
             },
           }),
       factureIds.length === 0
@@ -126,7 +126,16 @@ export async function clientsDesLignes(
     for (const e of envois)
       poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
     for (const d of devis) poser(d.id, d.client);
-    for (const p of pieces) poser(p.id, p.client ?? p.devisPortes?.[0]?.client);
+    for (const p of pieces) {
+      // Une pièce sans client propre : celui de ses devis, seulement s'ils sont TOUS du même client.
+      let c: C = p.client;
+      if (!c) {
+        const portes = (p.devisPortes ?? []).map((d) => d.client);
+        const premier = portes[0];
+        if (premier && portes.every((x) => x?.id === premier.id)) c = premier;
+      }
+      poser(p.id, c);
+    }
     for (const f of factures) poser(f.id, f.client);
     for (const l of lignes) {
       const c = l.entityId === null ? undefined : parEntite.get(l.entityId);

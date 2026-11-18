@@ -4,7 +4,7 @@
  */
 
 import { renderToStaticMarkup } from "react-dom/server";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 const prismaMock = vi.hoisted(() => ({
   rencontre: { findMany: vi.fn() },
@@ -18,8 +18,13 @@ vi.mock("@/lib/prisma", () => ({ prisma: prismaMock }));
 const idsMock = vi.hoisted(() => vi.fn());
 vi.mock("@/features/admin-emails/rattachement-client", () => ({ idsLiesAuClient: idsMock }));
 
+import { GABARITS_INTERNES } from "../gabarits-internes";
 import { assemblerFil, lireFilDesEchanges, type EchangeDuFil } from "../fil-des-echanges";
 import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
+
+afterEach(() => {
+  idsMock.mockReset();
+});
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -134,7 +139,10 @@ describe("lireFilDesEchanges", () => {
       (m.mock.calls[0]![0] as { where: Record<string, unknown> }).where;
     const select = (m: { mock: { calls: unknown[][] } }): Record<string, unknown> =>
       (m.mock.calls[0]![0] as { select: Record<string, unknown> }).select;
-    expect(where(prismaMock.emailLog.findMany)).toEqual({ entityId: { in: ["r1", "q1"] } });
+    expect(where(prismaMock.emailLog.findMany)).toEqual({
+      entityId: { in: ["r1", "q1"] },
+      template: { notIn: [...GABARITS_INTERNES] },
+    });
     expect(where(prismaMock.emailOutbox.findMany)).toEqual({
       clientId: "cl",
       statut: { in: ["a_valider", "refuse"] },
@@ -237,5 +245,31 @@ describe("FilDesEchanges", () => {
     expect(
       renderToStaticMarkup(<FilDesEchanges fil={[]} clientId="cl" adminPrefix="adm" />),
     ).toContain("Aucun échange");
+  });
+});
+
+describe("lireFilDesEchanges : les alertes internes ne sont pas des échanges avec le client", () => {
+  it("écarte les gabarits internes du fil", async () => {
+    idsMock.mockResolvedValue(["d1"]);
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    prismaMock.emailOutbox.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAuditCourrier.findMany.mockResolvedValue([]);
+    const log = (id: string, template: string) => ({
+      id,
+      template,
+      status: "sent",
+      createdAt: new Date("2026-11-10T10:00:00Z"),
+      sentAt: new Date("2026-11-10T10:01:00Z"),
+      contenu: { subject: "x" },
+    });
+    prismaMock.emailLog.findMany.mockResolvedValue([
+      log("interne", "devis-signe-a-contresigner"),
+      log("client", "devis-envoi"),
+    ]);
+    const { fil } = await lireFilDesEchanges("c-interne", "adm");
+    expect(fil.map((x) => x.cle)).toEqual(["mail:client"]);
+    expect(prismaMock.emailLog.findMany.mock.calls[0]![0].where.template).toEqual({
+      notIn: [...GABARITS_INTERNES],
+    });
   });
 });

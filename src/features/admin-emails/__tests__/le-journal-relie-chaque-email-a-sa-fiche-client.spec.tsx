@@ -136,6 +136,22 @@ describe("les e-mails de devis, de pièces et de factures sont rattachés (AD-C3
     expect(m.get("p")?.id).toBe(U(9));
   });
 
+  it("une pièce portée par deux devis de clients différents n'a aucun lien", async () => {
+    const AUTRE = { id: U(20), numero: "AXI-CLI-006", raisonSociale: "Autre société" };
+    prismaMock.documentGenere.findMany.mockResolvedValue([
+      { id: U(43), client: null, devisPortes: [{ client: CLIENT }, { client: AUTRE }] },
+      { id: U(44), client: null, devisPortes: [{ client: CLIENT }, { client: CLIENT }] },
+    ]);
+    const m = await clientsDesLignes([
+      { id: "p3", entityType: "DocumentGenere", entityId: U(43) },
+      { id: "p4", entityType: "DocumentGenere", entityId: U(44) },
+    ]);
+    expect(m.has("p3")).toBe(false);
+    expect(m.get("p4")?.id).toBe(U(9));
+    const sel = prismaMock.documentGenere.findMany.mock.calls[0]![0].select.devisPortes;
+    expect(sel.take).toBeUndefined();
+  });
+
   it("idsLiesAuClient ajoute devis, pièces (clientId OU pièce d'un devis) et factures, fiches absorbées comprises, sans doublon", async () => {
     prismaMock.rencontre.findMany.mockResolvedValue([]);
     prismaMock.clientFusion.findMany

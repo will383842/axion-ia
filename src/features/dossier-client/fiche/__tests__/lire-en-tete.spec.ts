@@ -116,6 +116,34 @@ describe("dernierEchange / prochain rendez-vous / dernier e-mail", () => {
     expect(dernierEmailParti(f, MAINTENANT)).toEqual(new Date("2026-10-15T10:00:00Z"));
     expect(dernierEmailParti([], MAINTENANT)).toBeNull();
   });
+  it("une alerte interne seule n'est pas un e-mail parti vers le client", () => {
+    const f = [
+      {
+        genre: "email",
+        statutEmail: "sent",
+        gabarit: "qualiopi-alerte-interne",
+        date: new Date("2026-10-20T10:00:00Z"),
+      },
+    ];
+    expect(dernierEmailParti(f, MAINTENANT)).toBeNull();
+  });
+  it("une alerte interne plus un vrai e-mail : la date est celle du vrai e-mail", () => {
+    const f = [
+      {
+        genre: "email",
+        statutEmail: "sent",
+        gabarit: "devis-signe-a-contresigner",
+        date: new Date("2026-10-20T10:00:00Z"),
+      },
+      {
+        genre: "email",
+        statutEmail: "sent",
+        gabarit: "devis-envoi",
+        date: new Date("2026-10-12T10:00:00Z"),
+      },
+    ];
+    expect(dernierEmailParti(f, MAINTENANT)).toEqual(new Date("2026-10-12T10:00:00Z"));
+  });
 });
 
 describe("factures", () => {
