@@ -39,14 +39,12 @@ import { createHash } from "node:crypto";
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
-import { renderEmailTemplate } from "@/lib/email/templates";
 import { enqueueEmail } from "@/server/queue/queues";
-import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import type { ModeleComposeurId } from "@/content/recrutement/modeles-reponse";
 import type { Locale } from "../../../prisma/generated/client";
 
 import { consignerEvenement } from "./journal";
-import { lienSuppressionCandidature } from "@/server/careers/lien-suppression-candidature";
+import { rendreReponseCandidat } from "./rendu-reponse";
 
 /** Le dossier, réduit à ce dont l'envoi a besoin. */
 export interface CandidatureDestinataire {
@@ -192,25 +190,22 @@ export async function ecrireEtEnfilerReponse(
   contenu: ContenuDeLaReponse,
   options: OptionsEcriture = {},
 ): Promise<IssueEnvoi> {
-  if (!isDecryptedEmailUsable(decryptPii(candidature.email))) {
-    return { ecrit: false, error: "invalid_recipient" };
-  }
-
-  let rendu: { subject: string; html: string; text: string };
-  try {
-    // Le HTML est rendu ICI et stocké : le lien « Supprimer ma candidature »
-    // y est donc figé, avec un jeton qui vit plus longtemps que le dossier.
-    const lienSuppression = await lienSuppressionCandidature(candidature.id);
-    rendu = await renderEmailTemplate("candidature-reponse", candidature.locale, {
-      subject: contenu.subject,
-      bodyMarkdown: contenu.bodyMarkdown,
-      offerTitle: candidature.offerTitleSnap,
-      ...(lienSuppression ? { lienSuppression } : {}),
-    });
-  } catch (e) {
-    Sentry.captureException(e);
+  // Le rendu passe par `rendreReponseCandidat`, la MÊME fonction que l'aperçu de la console :
+  // l'adresse est déchiffrée ICI (processus web, qui a la clé) et le HTML porte le lien
+  // d'opposition du destinataire. Une adresse illisible échoue AVANT qu'on crée une réponse
+  // orpheline que personne ne pourra envoyer.
+  const resultatRendu = await rendreReponseCandidat(candidature, {
+    subject: contenu.subject,
+    bodyMarkdown: contenu.bodyMarkdown,
+  });
+  if (!resultatRendu.ok) {
+    if (resultatRendu.error === "invalid_recipient") {
+      return { ecrit: false, error: "invalid_recipient" };
+    }
+    Sentry.captureException(resultatRendu.cause);
     return { ecrit: false, error: "render_failed" };
   }
+  const rendu = resultatRendu;
 
   // 🔑 LA RÉPONSE ET SA TRACE SONT ÉCRITES DANS LA MÊME TRANSACTION.
   // Si le journal était écrit après coup, un échec entre les deux laisserait une
