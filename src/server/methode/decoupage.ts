@@ -344,6 +344,15 @@ function candidatNumerote(ligne: string): { n: number; titre: string; question: 
   return { n: Number(m[1]), titre, question: titre.endsWith("?") };
 }
 
+/**
+ * Détecteur LARGE d'un numéro de titre en début de ligne (« 2. », « 2) », « 2.Titre », « 1.1 »,
+ * chiffres pleine chasse, titre de toute longueur) : si une telle ligne est versée dans un corps,
+ * la section qui l'avale est neutralisée, que `candidatNumerote` la lise comme titre ou non.
+ */
+function ressembleNumero(ligne: string): boolean {
+  return /^\d+\s*[.)]/.test(ligne.normalize("NFKC").trim());
+}
+
 /** La ligne non vide suivante est-elle un vrai paragraphe (≥ 70 car.) ? */
 function suiviDUnParagraphe(lignes: readonly string[], i: number): boolean {
   let j = i + 1;
@@ -424,7 +433,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
           )
             break;
           // un titre « N. » versé dans l'encadré : il n'est plus celui du corpus
-          if (candidatNumerote(l)) essentiel.neutre = true;
+          if (candidatNumerote(l) || ressembleNumero(l)) essentiel.neutre = true;
           essentiel.lignes.push(lignes[j]!);
           j++;
         }
@@ -495,8 +504,8 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
       }
       // Un titre « N. » lu comme candidat mais versé dans le corps (question, numéro sauté,
       // cellule imbriquée) : la section qui l'avale n'est plus celle du corpus → jamais servie.
-      if (c) courant.neutre = true;
-    } else if (candidatNumerote(ligne)) {
+      if (c || ressembleNumero(ligne)) courant.neutre = true;
+    } else if (candidatNumerote(ligne) || ressembleNumero(ligne)) {
       // dans un bloc fixe, un titre « N. » (même attendu) est versé dans le corps : neutralisé.
       courant.neutre = true;
     }

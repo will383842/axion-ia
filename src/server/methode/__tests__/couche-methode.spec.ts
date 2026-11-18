@@ -968,6 +968,40 @@ describe("11 · tour 4 : une ligne sautée ou avalée dans une section marquée 
     expect(noyau.filter((x) => x.approuvee && x.slug.endsWith("/essentiel"))).toEqual([]);
   });
 
+  it("tour 4 ter : toute forme de numéro de titre avalée neutralise (titre long, « 2) », « 2.Titre », « 1.1 », pleine chasse)", () => {
+    const formes = [
+      ["2.", "Un titre très long ".repeat(8)].join(" "),
+      "2. A",
+      "2.Titre collé",
+      "2) Titre à parenthèse",
+      "100. Titre à trois chiffres",
+      "1.1 Sous-numéro",
+      "\uff12. Titre pleine chasse",
+    ];
+    for (const f of formes) {
+      aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, f, "Texte non relu."]);
+      aucuneServie(["# faux-quatre", "1. Premier titre", LONG, "Si… alors…", M, LONG, f, LONG]);
+      const noyau = decouperFichier(
+        "livres/faux-00-quatre.md",
+        [
+          "# x",
+          "1. Premier titre",
+          LONG,
+          "L'ESSENTIEL EN 30 SECONDES",
+          M,
+          "Idée.",
+          f,
+          LONG,
+          "Les idées clés",
+        ].join("\n"),
+      );
+      expect(
+        noyau.filter((x) => x.approuvee && x.slug.endsWith("/essentiel")),
+        f,
+      ).toEqual([]);
+    }
+  });
+
   it("tour 4 bis : un titre Markdown vide dans le corps rend la section non approuvable", () => {
     aucuneServie(["## A", M, "Texte.", "##", "Texte non relu."]);
     aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, "##", "Texte non relu."]);
