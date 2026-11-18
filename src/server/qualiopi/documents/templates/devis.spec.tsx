@@ -191,7 +191,7 @@ describe("DevisPdf — totaux TVA mixte (formation 0 % + conseil 20 %)", () => {
 });
 
 describe("DevisPdf — estimation de financement", () => {
-  it("affiche prise en charge OPCO + reste à charge quand présents", () => {
+  it("v7 : n'imprime plus ni prise en charge ni reste à charge, même quand les données y sont", () => {
     const text = devisText(
       makeDevis({
         financementSuggere: "OPCO",
@@ -199,10 +199,10 @@ describe("DevisPdf — estimation de financement", () => {
         resteAChargeCents: 130000,
       }),
     );
-    expect(text).toContain("Estimation de financement");
-    expect(text.replace(/ | /g, " ")).toContain("1 500,00");
-    expect(text.replace(/ | /g, " ")).toContain("1 300,00");
-    expect(text).toContain("non contractuelle");
+    expect(text).not.toContain("Estimation de financement");
+    expect(text.replace(/ | /g, " ")).not.toContain("1 500,00");
+    expect(text.replace(/ | /g, " ")).not.toContain("1 300,00");
+    expect(text).not.toContain("non contractuelle");
   });
 
   it("masque le bloc estimation quand aucun montant n'est fourni", () => {
@@ -237,7 +237,7 @@ describe("DevisPdf — estimation de financement", () => {
     expect(text).not.toContain("Reste à charge estimé");
   });
 
-  it("mais garde le bloc VISIBLE et explique — un silence ferait croire qu'aucun financement n'existe", () => {
+  it("v7 : la mention d'indisponibilité n'imprime plus rien non plus (carte retirée)", () => {
     const text = devisText(
       makeDevis({
         financementSuggere: "OPCO",
@@ -245,9 +245,9 @@ describe("DevisPdf — estimation de financement", () => {
           "aucune estimation de prise en charge n'est communiquée à ce stade (art. L.6316-1)",
       }),
     );
-    expect(text).toContain("Estimation de financement");
-    expect(text).toContain("Financement envisagé : OPCO");
-    expect(text).toContain("L.6316-1");
+    expect(text).not.toContain("Estimation de financement");
+    expect(text).not.toContain("Financement envisagé");
+    expect(text).not.toContain("L.6316-1");
   });
 });
 

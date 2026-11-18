@@ -115,9 +115,9 @@ describe("devis sans mot interdit (A1)", () => {
     }
   });
 
-  it("certification obtenue : comportement ancien conservé", () => {
+  it("certification obtenue : v7, la carte d'estimation et le champ certification sont retirés", () => {
     const t = texte(true).toLowerCase();
-    expect(t).toContain("qualiopi");
-    expect(t).toContain("opco");
+    expect(t).not.toContain("qualiopi");
+    expect(t).not.toContain("opco");
   });
 });

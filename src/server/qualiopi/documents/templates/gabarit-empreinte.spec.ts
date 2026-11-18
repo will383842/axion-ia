@@ -110,8 +110,11 @@ const EMPREINTES: Readonly<
     // (v5 — 17/11/2026 : bloc « Conditions particulières », sha d6eb37c8… : voir EMPREINTES_ARCHIVES.)
     // Taux de TVA décimaux à la française (« 5,5 % », 18/11/2026) : v6 PAS ENCORE EN LIGNE,
     // aucun exemplaire signé sous v6 → empreinte reportée SANS incrément (version 6 conservée).
-    sha: "7177c2a2e65e795710c5c7621ec55fcc1400801a93ccffcd5a3b8d18793d57e5",
-    version: 6,
+    // v7 — 18/11/2026 : retrait de la carte « Estimation de financement » et du champ
+    // « Certification Qualiopi » (décision du fondateur) ; aucun montant ni total modifié ;
+    // v6 archivée (`archives/devis.v6.tsx`, sha 7177c2a2… : voir EMPREINTES_ARCHIVES).
+    sha: "3735c8e8ab1f8f50ca7f8a467b5244b074ee3b39575af2d62eaa933464f4e4db",
+    version: 7,
   },
   convention: {
     // v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé ; v6 archivée.
@@ -332,6 +335,9 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027 (empreinte
   // identique à celle de l'ancienne v5 courante, d6eb37c8…).
   "devis.v5.tsx": "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
+  // 18/11/2026 : copie conforme du gabarit courant d'avant le retrait de la carte d'estimation
+  // (empreinte identique à celle de l'ancienne v6 courante, 7177c2a2…).
+  "devis.v6.tsx": "7177c2a2e65e795710c5c7621ec55fcc1400801a93ccffcd5a3b8d18793d57e5",
   // 18/11/2026 : copies conformes des gabarits courants d'avant la refonte charte 2027 (seule
   // différence : la mention légale de tête est figée dans le fichier).
   "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",

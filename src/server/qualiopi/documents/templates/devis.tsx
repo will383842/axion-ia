@@ -1,13 +1,12 @@
 /**
- * Qualiopi — Devis de prestation (CRM) — version 6, style de la charte 2027 (`charte/v1`).
+ * Qualiopi — Devis de prestation (CRM) — version 7, style de la charte 2027 (`charte/v1`).
  *
  * Miroir commercial de la facture (facture.tsx) :
  *   - Identité + adresse du siège de l'émetteur (bandeau + pied via `PageCharte`).
- *   - SIRET / NDA / Qualiopi (carte « Proposé par », `required`).
+ *   - SIRET / NDA (carte « Proposé par », `required`).
  *   - Numéro du devis, date d'émission, date de validité, référence client (tuiles).
  *   - Lignes avec taux de TVA par ligne (devis mixtes formation 0 % + conseil 20 %).
  *   - Totaux HT / TVA (ventilation par taux) / TTC via computeTotauxFacture.
- *   - Estimation OPCO / reste à charge (indicative, non contractuelle).
  *   - Mention TVA dérivée du régime (exonération 261-4-4° / franchise 293 B).
  *   - Bloc signature « Bon pour accord » (nom/fonction, date, signature).
  *   - Mention « Devis gratuit, valable jusqu'au {dateValidite} ».
@@ -16,6 +15,11 @@
  * changent. Les phrases juridiques, les montants et les mentions sont repris MOT POUR MOT de
  * la v5 (archivée : `archives/devis.v5.tsx`). Les pièces signées sous la v5 se re-rendent par
  * l'archive, jamais par ce fichier (`__tests__/devis-v5-reproductible.spec.tsx`).
+ *
+ * 🔑 v7 (18/11/2026) : la carte « Estimation de financement » et le champ « Certification
+ * Qualiopi » sont RETIRÉS (décision du fondateur : aucune mention visible de certification ni de
+ * financement). Aucun autre texte, aucun montant, aucun total ne change. La v6 est archivée :
+ * `archives/devis.v6.tsx` (`__tests__/devis-v6-reproductible.spec.tsx`).
  *
  * Montants en centimes d'euro (prixUnitaireHtCents) pour éviter les erreurs
  * d'arrondi flottant. Le numéro affiché est celui du Devis CRM (pré-construit
@@ -255,14 +259,14 @@ export interface DevisData {
   tauxTvaStandardPercent?: number;
   /** Libellé de l'activité facturée (SSOT ACTIVITE_LABELS). */
   activiteLabel?: string;
-  /** Libellé du financement suggéré (OPCO, CPF, France Travail…). */
+  /** Ignoré depuis la v7 (plus imprimé). Conservé pour les instantanés existants. */
   financementSuggere?: string;
-  /** Prise en charge financeur estimée (centimes) — indicative. */
+  /** Ignoré depuis la v7 (plus imprimé). */
   montantOpcoEstimeCents?: number;
-  /** Reste à charge client estimé (centimes) — indicatif. */
+  /** Ignoré depuis la v7 (plus imprimé). */
   resteAChargeCents?: number;
   /**
-   * Sous-lot 8G — mention qui REMPLACE l'estimation quand le financement
+   * Ignoré depuis la v7 (plus imprimé). Historique : mention qui REMPLAÇAIT l'estimation quand le financement
    * mutualisé n'est pas accessible faute de certification (L.6316-1).
    *
    * 🔴 Sa présence retire les montants du bloc : ce n'est pas un complément
@@ -573,17 +577,6 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
   const cgvMention = siteBase
     ? `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'${identite.raisonSociale || "Axion-IA"}, consultables sur ${siteBase}/conditions-generales et communiquées sur simple demande.${cgvOpposabilite}`
     : `L'acceptation du présent devis emporte acceptation des Conditions générales de vente, communiquées sur simple demande.${cgvOpposabilite}`;
-  // Sous-lot 8G — la mention d'indisponibilité PRIME sur les montants : voir le
-  // commentaire de `mentionEstimationIndisponible`. Le bloc reste affiché (le
-  // client doit savoir que le dispositif existe), seuls les chiffres partent.
-  const estimationIndisponible =
-    data.mentionEstimationIndisponible !== undefined &&
-    data.mentionEstimationIndisponible.trim() !== "";
-  const afficheEstimation =
-    estimationIndisponible ||
-    data.montantOpcoEstimeCents !== undefined ||
-    data.resteAChargeCents !== undefined;
-
   // 🔑 Totaux : UNE seule liste, construite UNE fois. Le Total TTC mis en grand par
   // `CarteTotaux` est la dernière ligne de cette liste — la même valeur, jamais un second calcul.
   const lignesTotaux: LigneTotal[] = [
@@ -606,7 +599,10 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
       <PageCharte
         docTitle="Devis"
         docNumber={data.numero}
-        identite={identite}
+        // v7 : le pied de page de la charte imprime « Qualiopi … » dès que `identite.qualiopi` est
+        // renseigné. Aucune mention de certification n'est visible sur le devis : on le vide ici
+        // (la charte v1 reste gelée).
+        identite={{ ...identite, qualiopi: "" }}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
         {/* Titre de la pièce */}
@@ -658,9 +654,6 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
                 {identite.nda && identite.nda.trim() !== "" ? (
                   <Champ label="N° de déclaration d'activité" value={identite.nda.trim()} />
                 ) : null}
-                {identite.qualiopi ? (
-                  <Champ label="Certification Qualiopi" value={identite.qualiopi} />
-                ) : null}
               </View>
             </Carte>
           </View>
@@ -693,31 +686,6 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
             <CarteTotaux lignes={lignesTotaux} />
           </>
         )}
-
-        {/* Estimation de financement (indicative — jamais contractuelle) */}
-        {afficheEstimation ? (
-          <Carte titre="Estimation de financement" insecable>
-            {estimationIndisponible
-              ? [
-                  data.financementSuggere !== undefined && data.financementSuggere !== ""
-                    ? `Financement envisagé : ${data.financementSuggere}. `
-                    : "",
-                  data.mentionEstimationIndisponible ?? "",
-                ].join("")
-              : [
-                  data.financementSuggere !== undefined && data.financementSuggere !== ""
-                    ? `Financement suggéré : ${data.financementSuggere}. `
-                    : "",
-                  data.montantOpcoEstimeCents !== undefined
-                    ? `Prise en charge estimée : ${formatEurosFromCents(data.montantOpcoEstimeCents)}. `
-                    : "",
-                  data.resteAChargeCents !== undefined
-                    ? `Reste à charge estimé : ${formatEurosFromCents(data.resteAChargeCents)}. `
-                    : "",
-                  "Estimation indicative, non contractuelle — sous réserve de l'accord de prise en charge du financeur.",
-                ].join("")}
-          </Carte>
-        ) : null}
 
         {/* Conditions particulières (v5) — AVANT le renvoi aux Conditions générales.
             Carte sécable, jamais un cadre insécable. */}

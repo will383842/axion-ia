@@ -248,19 +248,22 @@ describe("v6 — les phrases qui engagent sont reprises MOT POUR MOT", () => {
     CONDITIONS.phrasePrimaute,
     "Le client accepte le présent devis dans son intégralité : désignations, quantités, prix unitaires, taux de TVA et totaux ci-dessus, les conditions particulières ainsi que les Conditions générales de vente rappelées ci-dessus, dont il reconnaît avoir pris connaissance.",
   ]);
-  verifie(
-    "estimation de financement",
-    {
-      ...BASE,
-      montantOpcoEstimeCents: 100000,
-      resteAChargeCents: 80000,
-      financementSuggere: "OPCO",
-    },
-    [
-      "Estimation de financement",
-      "Financement suggéré : OPCO. Prise en charge estimée : 1 000,00 €. Reste à charge estimé : 800,00 €. Estimation indicative, non contractuelle — sous réserve de l'accord de prise en charge du financeur.",
-    ],
-  );
+  // v7 : la carte d'estimation est retirée — rien n'est imprimé, même quand les données y sont.
+  it("estimation de financement : rien n'est imprimé (retirée en v7)", () => {
+    const t = collectPdfTextNormalized(
+      <DevisPdf
+        data={{
+          ...BASE,
+          montantOpcoEstimeCents: 100000,
+          resteAChargeCents: 80000,
+          financementSuggere: "OPCO",
+        }}
+      />,
+    );
+    expect(t).not.toContain("Estimation de financement");
+    expect(t).not.toContain("Prise en charge estimée");
+    expect(t).not.toContain("Reste à charge estimé");
+  });
   verifie("formules : garantie, services tiers, engagement, préavis, indemnité", CAS[2]![1], [
     ...COMMUNES.slice(0, 5),
     "Garantie",
@@ -402,11 +405,11 @@ describe("v6 — aucun mot interdit", () => {
     });
   }
 
-  it("avec un numéro Qualiopi saisi, il n'est jamais PLUS imprimé qu'en v5 (l'en-tête allégé le répète moins)", () => {
+  it("avec un numéro Qualiopi saisi, la v7 n'en imprime plus aucun (alors que l'archive v6 l'imprimait)", () => {
     const d = { ...BASE, identite: { ...IDENTITE, qualiopi: "FR-2024-001" } };
     const dedans = (t: string) => t.split("Qualiopi").length - 1;
-    expect(dedans(texteV6(d))).toBeGreaterThanOrEqual(1);
-    expect(dedans(texteV6(d))).toBeLessThanOrEqual(dedans(texteV5(d)));
+    expect(dedans(texteV5(d))).toBeGreaterThanOrEqual(1);
+    expect(dedans(texteV6(d))).toBe(0);
   });
 });
 

@@ -93,6 +93,7 @@ export type TypeGabaritSignable =
  * | `devis` | 4 | 07/11 — bloc « Formule retenue par le client » (formule, automatisations retenues, totaux, récurrent, empreinte du choix scellé), imprimé SEULEMENT sur l'exemplaire signé d'un devis à formules dont le choix scellé (V4) est cohérent. Sans ce bloc, le texte imprimé est celui de la v3 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v3 archivée** |
  * | `devis` | 5 | 17/11 — bloc « Conditions particulières » (devis classique) : titre, texte saisi, phrase de primauté sur les CGV, imprimé AVANT « Conditions du devis », et mention dans le « Bon pour accord ». Sans ce texte, le texte imprimé est celui de la v4 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v4 archivée** |
  * | `devis` | 6 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : cartes, libellés simplifiés (sens inchangé), Total TTC mis en avant. Phrases juridiques, montants et mentions repris mot pour mot. **v5 archivée** |
+ * | `devis` | 7 | 18/11 — retrait de la carte d'estimation et du champ certification ; aucun montant ni total modifié ; v6 archivée |
  * | `convention` | 6 | 16/10 — L15 : même mention, section non numérotée « Accessibilité et situation de handicap » avant les signatures. **v5 archivée** |
  * | `convention_tripartite` | 6 | 16/10 — L15 : même mention, mot pour mot. **v5 archivée** |
  * | `convention` | 7 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : sections en cartes, lignes libellé / valeur, signatures en cadre. Aucun texte changé (mentions, clauses, intitulés, montants) ; taux écrits à la française. **v6 archivée** |
@@ -137,7 +138,8 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
   /* v4 — 07/11/2026, bloc « Formule retenue par le client » sur l'exemplaire signé ; v3 archivée. */
   /* v5 — 17/11/2026, bloc « Conditions particulières » (devis classique) ; v4 archivée. */
   /* v6 — 18/11/2026, refonte au style de la charte 2027 (libellés simplifiés, même sens) ; v5 archivée. */
-  devis: 6,
+  /* v7 — 18/11/2026, retrait de la carte d'estimation et du champ certification ; v6 archivée. */
+  devis: 7,
   /*
     v5 — 04/10/2026, INT-T65-A : clause de condition suspensive OPCO.
 

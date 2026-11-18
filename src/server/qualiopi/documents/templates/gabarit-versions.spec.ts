@@ -87,7 +87,7 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     expect(versionGabaritInstantane(instantaneApres)).toBe(courante);
   });
 
-  it("le devis est en v6 (charte 2027, 18/11) ; ses v1 à v5 restent rendables par l'archive", () => {
+  it("le devis est en v7 (18/11) ; ses v1 à v6 restent rendables par l'archive", () => {
     // Avant le 16/10 le devis restait en v1 : sa garde de certification change les
     // données, pas le texte. La mention handicap, elle, est du TEXTE rendu : v2, et la
     // v1 est archivée pour que les devis déjà signés se re-rendent à l'identique.
@@ -98,6 +98,8 @@ describe("le scénario réel qui a motivé le mécanisme", () => {
     // 17/11 : le bloc « Conditions particulières » passe la pièce en v5 ; la v4 (choix imprimé)
     // est archivée telle quelle.
     // 18/11 : la refonte au style de la charte 2027 passe la pièce en v6 ; la v5 est archivée telle quelle.
-    expect(versionGabaritCourante("devis")).toBe(6);
+    // 18/11 : le retrait de la carte d'estimation et du champ certification passe la pièce en v7 ;
+    // la v6 est archivée telle quelle.
+    expect(versionGabaritCourante("devis")).toBe(7);
   });
 });

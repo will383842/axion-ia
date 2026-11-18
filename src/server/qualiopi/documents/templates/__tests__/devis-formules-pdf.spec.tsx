@@ -117,13 +117,14 @@ describe("PDF du devis à formules (v3)", () => {
 });
 
 describe("pièces déjà signées : rendues en v2", () => {
-  it("la v6 est la version courante et les v2, v3, v4 et v5 sont archivées", () => {
-    expect(GABARIT_VERSIONS.devis).toBe(6);
+  it("la v7 est la version courante et les v2 à v6 sont archivées", () => {
+    expect(GABARIT_VERSIONS.devis).toBe(7);
     expect(gabaritArchive("devis", 2)).not.toBeNull();
     expect(gabaritArchive("devis", 3)).not.toBeNull();
     expect(gabaritArchive("devis", 4)).not.toBeNull();
     expect(gabaritArchive("devis", 5)).not.toBeNull();
-    expect(gabaritArchive("devis", 6)).toBeNull();
+    expect(gabaritArchive("devis", 6)).not.toBeNull();
+    expect(gabaritArchive("devis", 7)).toBeNull();
   });
 
   it("la v2 archivée ignore les formules (instantané ancien rendu à l'identique)", () => {

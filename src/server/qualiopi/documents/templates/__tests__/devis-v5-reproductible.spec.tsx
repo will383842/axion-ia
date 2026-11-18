@@ -161,8 +161,8 @@ describe("🔴 un devis signé sous la v5 se re-rend à l'identique", () => {
     }, 60_000);
   }
 
-  it("la v5 est archivée : la version courante est la v6", () => {
-    expect(versionGabaritCourante("devis")).toBe(6);
+  it("la v5 est archivée : la version courante est la v7", () => {
+    expect(versionGabaritCourante("devis")).toBe(7);
     expect(gabaritArchive("devis", 5)).not.toBeNull();
   });
 });
