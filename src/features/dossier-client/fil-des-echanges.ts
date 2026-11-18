@@ -26,6 +26,7 @@ import {
   questionnairesDesFiches,
 } from "@/features/questionnaire-preaudit/de-la-fiche";
 import { idsLiesAuClient } from "@/features/admin-emails/rattachement-client";
+import { GABARITS_INTERNES, estGabaritInterne } from "./gabarits-internes";
 import { LIBELLES_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 import {
   LIBELLE_NATURE,
@@ -53,6 +54,8 @@ export interface EchangeDuFil {
   readonly etat: string;
   /** Statut d'envoi, pour les seules lignes `email` (journal) : « sent » = parti pour de bon. */
   readonly statutEmail?: EmailLogStatus;
+  /** Gabarit de l'e-mail du journal (lignes `email`) : sert à écarter les alertes internes. */
+  readonly gabarit?: string;
   /** Courriers du questionnaire seulement : canal (« email », « telegram »...) et statut brut. */
   readonly canal?: string;
   readonly statutCourrier?: string;
@@ -124,7 +127,8 @@ async function lireFilBrut(clientId: string, adminPrefix: string): Promise<FilLu
     idsLiesAuClient(clientId).then(async (ids) => {
       if (ids.length === 0) return [];
       const logs = await prisma.emailLog.findMany({
-        where: { entityId: { in: ids } },
+        // Les alertes internes (adressées au fondateur) ne sont pas des échanges avec le client.
+        where: { entityId: { in: ids }, template: { notIn: [...GABARITS_INTERNES] } },
         orderBy: { createdAt: "desc" },
         take: PAR_SOURCE,
         select: {
@@ -136,15 +140,18 @@ async function lireFilBrut(clientId: string, adminPrefix: string): Promise<FilLu
           contenu: { select: { subject: true } },
         },
       });
-      return logs.map((l): EchangeDuFil => ({
-        cle: `mail:${l.id}`,
-        genre: "email",
-        date: l.sentAt ?? l.createdAt,
-        titre: l.contenu?.subject ?? l.template,
-        etat: LIBELLES_STATUT_EMAIL[l.status as EmailLogStatus] ?? l.status,
-        statutEmail: l.status as EmailLogStatus,
-        lien: `${base}/emails-envoyes/${l.id}`,
-      }));
+      return logs
+        .filter((l) => !estGabaritInterne(l.template))
+        .map((l): EchangeDuFil => ({
+          cle: `mail:${l.id}`,
+          genre: "email",
+          date: l.sentAt ?? l.createdAt,
+          titre: l.contenu?.subject ?? l.template,
+          etat: LIBELLES_STATUT_EMAIL[l.status as EmailLogStatus] ?? l.status,
+          statutEmail: l.status as EmailLogStatus,
+          gabarit: l.template,
+          lien: `${base}/emails-envoyes/${l.id}`,
+        }));
     }),
   );
 
