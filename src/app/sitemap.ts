@@ -43,7 +43,11 @@ import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
 import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
-import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
+import {
+  GLOSSARY_UPDATED_ISO,
+  listGlossaryTermSlugs,
+  isGlossaryTermIndexable,
+} from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
@@ -1218,7 +1222,8 @@ function buildSecteursSitemap(now: Date): MetadataRoute.Sitemap {
  * ChangeFrequency `monthly` — alignement réaliste avec la cadence d'enrichissement
  * du glossaire (Will valide périodiquement les ajouts).
  */
-function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
+function buildGlossarySitemap(_now: Date): MetadataRoute.Sitemap {
+  const modifie = new Date(GLOSSARY_UPDATED_ISO);
   const entries: MetadataRoute.Sitemap = [];
 
   // 1) Le hub /glossaire (FR canonique + EN miroir si activé).
@@ -1227,7 +1232,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const url = `${SITE_URL}/${locale}${localizedHref(hubKey, locale)}`;
     entries.push({
       url,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: alternateLanguages(hubKey) },
@@ -1248,7 +1253,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
     entries.push({
       url: frUrl,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.6,
       alternates: { languages: langs },
@@ -1256,7 +1261,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     if (!EN_LOCALE_DISABLED) {
       entries.push({
         url: enUrl,
-        lastModified: now,
+        lastModified: modifie,
         changeFrequency: "monthly",
         priority: 0.6,
         alternates: { languages: langs },

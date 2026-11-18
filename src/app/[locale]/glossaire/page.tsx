@@ -97,7 +97,7 @@ export default async function GlossaryPage({ params }: Props) {
       name: t.term,
       description: t.definition,
       url: `${urlHub}/${t.slug}`,
-      inDefinedTermSet: urlHub,
+      inDefinedTermSet: { "@id": `${urlHub}#glossaire` },
     })),
   } as const;
 

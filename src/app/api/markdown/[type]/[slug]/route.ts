@@ -202,9 +202,8 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   if (type === "glossaire") {
     // GEO-038 — même source que `/glossaire/[slug]` : le SSOT fichier
     // `glossary-extension` (aucun appel DB, donc insensible au stub de build).
-    const { getGlossaryTermBySlug, GLOSSARY_UPDATED_ISO } = await import(
-      "@/content/glossary-extension"
-    );
+    const { getGlossaryTermBySlug, GLOSSARY_UPDATED_ISO } =
+      await import("@/content/glossary-extension");
     const term = getGlossaryTermBySlug(slug);
     if (!term) return null;
     const alias =
@@ -223,8 +222,7 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
         alias,
       ]
         .filter(Boolean)
-        .join("
-"),
+        .join("\n"),
       updatedAt: new Date(GLOSSARY_UPDATED_ISO),
       canonicalSegment: "glossaire",
     };

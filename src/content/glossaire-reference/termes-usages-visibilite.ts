@@ -143,7 +143,7 @@ export const TERMES_USAGES_VISIBILITE: readonly TermeSource[] = [
     exemple:
       "Un syndic de copropriété enregistre ses assemblées, obtient la retranscription puis un projet de procès-verbal, qu'un gestionnaire corrige avant diffusion aux copropriétaires.",
     limite:
-      "Les accents, le bruit de fond et les termes techniques font des erreurs. Enregistrer des personnes demande de les informer, et parfois leur accord. Le texte produit est à relire avant toute diffusion.",
+      "Les accents, le bruit de fond et les termes techniques provoquent des erreurs. Enregistrer des personnes demande de les informer, et parfois leur accord. Le texte produit est à relire avant toute diffusion.",
     offre: "automatisations",
   },
   {
@@ -185,7 +185,7 @@ export const TERMES_USAGES_VISIBILITE: readonly TermeSource[] = [
     aliases: ["GEO", "Generative Engine Optimization", "optimisation pour les moteurs génératifs"],
     related: ["aeo", "ia-et-seo", "llm", "rag"],
     definition:
-      "Le GEO (Generative Engine Optimization) est l'ensemble des pratiques qui visent à rendre le contenu d'une entreprise compréhensible, fiable et citable par les assistants d'IA, comme ChatGPT, Perplexity ou Mistral, lorsqu'ils répondent à une question.",
+      "Le GEO (Generative Engine Optimization) est l'ensemble des pratiques qui visent à rendre le contenu d'une entreprise compréhensible, fiable et citable par les assistants d'IA, comme ChatGPT, Perplexity ou Le Chat de Mistral, lorsqu'ils répondent à une question.",
     fonctionnement:
       "Ces assistants lisent le web, puis résument et citent quelques sources. Pour être retenu, un contenu doit répondre clairement à une question précise, être daté, signé, factuel et structuré, avec des définitions courtes et des données vérifiables. Les données structurées et un site rapide et accessible aident à être bien lu.",
     exemple:
@@ -217,7 +217,7 @@ export const TERMES_USAGES_VISIBILITE: readonly TermeSource[] = [
     aliases: ["SEO et IA", "référencement et intelligence artificielle", "SEO"],
     related: ["geo", "aeo", "ia-generative", "hallucination"],
     definition:
-      "Le lien entre IA et référencement naturel (SEO) est un double sujet : l'usage de l'IA pour produire et améliorer des contenus de site, et l'influence des réponses générées par IA sur la façon dont les internautes trouvent des entreprises.",
+      "L'IA en référencement naturel (SEO) désigne à la fois l'usage de l'IA pour produire et améliorer les contenus d'un site, et l'effet des réponses générées par IA sur la façon dont les internautes trouvent une entreprise.",
     fonctionnement:
       "Les moteurs de recherche affichent désormais des synthèses générées par IA au-dessus des résultats classiques. Ils valorisent les contenus utiles, fiables et rédigés pour les lecteurs, qu'ils soient écrits par une personne ou aidés par une IA. Publier en masse du texte automatique et sans valeur ajoutée est un risque pour la réputation du site.",
     exemple:

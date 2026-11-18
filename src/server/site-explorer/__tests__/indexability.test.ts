@@ -24,6 +24,16 @@ describe("computeIndexability — glossaire (constat F49, corrigé le 18/11/2026
     }
   });
 
+  it("un slug inconnu du glossaire → noindex (anti-thin)", () => {
+    const r = computeIndexability({
+      pathRendered: "/fr/glossaire/slug-inexistant",
+      pathPattern: "/fr/glossaire/[slug]",
+      section: "glossaire",
+    });
+    expect(r.indexable).toBe(false);
+    expect(r.reason).toMatch(/thin/i);
+  });
+
   it("le hub /fr/glossaire reste indexable", () => {
     const r = computeIndexability({
       pathRendered: "/fr/glossaire",

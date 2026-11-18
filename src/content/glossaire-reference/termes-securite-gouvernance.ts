@@ -38,14 +38,25 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     slug: "ai-act",
     term: "AI Act (règlement européen sur l'IA)",
     category: "security",
-    aliases: ["AI Act", "règlement sur l'intelligence artificielle", "règlement (UE) 2024/1689", "loi européenne sur l'IA"],
-    related: ["maitrise-ia-article-4", "systeme-ia-haut-risque", "rgpd-gdpr", "gouvernance-ia", "hypertrucage"],
+    aliases: [
+      "AI Act",
+      "règlement sur l'intelligence artificielle",
+      "règlement (UE) 2024/1689",
+      "loi européenne sur l'IA",
+    ],
+    related: [
+      "maitrise-ia-article-4",
+      "systeme-ia-haut-risque",
+      "rgpd-gdpr",
+      "gouvernance-ia",
+      "hypertrucage",
+    ],
     definition:
       "L'AI Act est le règlement européen (UE) 2024/1689 qui encadre la conception et l'utilisation des systèmes d'intelligence artificielle dans l'Union, en classant les usages selon leur niveau de risque et en fixant des règles proportionnées à ce niveau.",
     fonctionnement:
       "Il s'applique par étapes. Certaines pratiques sont interdites depuis le 2 février 2025, la plupart des règles générales s'appliquent depuis le 2 août 2026, et celles des systèmes à haut risque de l'annexe III sont reportées au 2 décembre 2027. Il vise les fournisseurs d'IA et les entreprises qui les utilisent, appelées déployeurs.",
     exemple:
-      "Une PME de bâtiment qui emploie un assistant de rédaction pour ses devis fait un usage courant de l'IA : elle gagne à lister ses outils, à indiquer quand un texte est généré et à faire monter ses équipes en compétence.",
+      "Une PME de bâtiment qui emploie un assistant de rédaction pour ses devis fait un usage courant de l'IA : elle gagne à lister ses outils, à faire monter ses équipes en compétence et, pour les contenus qu'elle publie, à vérifier si une mention est nécessaire.",
     limite:
       "Ce texte évolue et son application dépend de chaque usage. Cette fiche donne un repère général et ne constitue pas un conseil juridique : pour un cas précis, faites-vous accompagner par un juriste.",
     offre: "journee-ia",
@@ -77,21 +88,26 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     fonctionnement:
       "Ces systèmes sont soumis à des exigences renforcées : gestion des risques, qualité des données, documentation, supervision humaine et information des personnes. Pour les systèmes listés à l'annexe III, ces obligations sont prévues à partir du 2 décembre 2027. Le fournisseur et l'entreprise utilisatrice ont chacun des responsabilités.",
     exemple:
-      "Une entreprise qui utilise un logiciel pour présélectionner des candidatures entre dans ce périmètre : elle garde une personne qui examine chaque dossier et ne délègue jamais le refus à l'outil.",
+      "Présélectionner des candidatures avec un logiciel entre dans ce périmètre : l'entreprise garde une personne qui examine chaque dossier et ne délègue jamais le refus à l'outil. Elles s'appliquent à partir du 2 décembre 2027 ; le RGPD (article 22) prévoit déjà le droit de ne pas être soumis à une décision purement automatisée produisant des effets importants.",
     limite:
-      "Tous les usages ne sont pas à haut risque : un assistant de rédaction n'en fait pas partie. Avant de classer un outil, il faut vérifier sa finalité exacte. Pour un doute, un avis juridique s'impose.",
+      "Tous les usages ne sont pas à haut risque : un assistant de rédaction utilisé pour des courriers n'en fait en principe pas partie ; c'est l'usage qui compte. Avant de classer un outil, vérifiez sa finalité exacte ; en cas de doute, demandez un avis juridique.",
     offre: "cartographie",
   },
   {
     slug: "rgpd-gdpr",
     term: "RGPD et IA",
     category: "security",
-    aliases: ["RGPD", "GDPR", "règlement général sur la protection des données", "protection des données"],
+    aliases: [
+      "RGPD",
+      "GDPR",
+      "règlement général sur la protection des données",
+      "protection des données",
+    ],
     related: ["donnee-personnelle", "dpa", "opt-out-training", "pii-detection", "ai-act"],
     definition:
       "Le RGPD (règlement général sur la protection des données) est le règlement européen qui encadre le traitement des données personnelles ; il s'applique à toute utilisation d'une IA qui manipule des informations sur des personnes identifiables.",
     fonctionnement:
-      "Utiliser un outil d'IA avec des données de clients, de salariés ou de candidats est un traitement de données. Il faut une raison légitime, informer les personnes, ne collecter que le nécessaire, sécuriser et encadrer le sous-traitant par un contrat. Les droits des personnes, comme l'accès ou l'effacement, restent valables.",
+      "Utiliser un outil d'IA avec des données de clients, de salariés ou de candidats est un traitement de données. Il faut une base légale (par exemple l'exécution d'un contrat ou l'intérêt légitime) et une finalité précise, informer les personnes, ne collecter que le nécessaire, sécuriser et encadrer le sous-traitant par un contrat. Les droits des personnes, comme l'accès ou l'effacement, restent valables.",
     exemple:
       "Un cabinet de recrutement local qui souhaite faire résumer des CV par un assistant vérifie avant tout les conditions du fournisseur, informe les candidats et limite les informations envoyées au strict utile.",
     limite:
@@ -111,7 +127,7 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     exemple:
       "Avant de demander à un assistant de résumer des échanges avec un client, une conseillère d'un cabinet d'assurances retire le nom, le numéro de contrat et l'adresse, puis conserve l'original dans son logiciel.",
     limite:
-      "Rendre un texte anonyme est plus difficile qu'on le croit : des détails croisés peuvent suffire à reconnaître quelqu'un. Les données sensibles, comme la santé, demandent une vigilance particulière et un cadre encore plus strict.",
+      "Rendre un texte anonyme est plus difficile qu'on le croit : des détails croisés peuvent suffire à reconnaître quelqu'un. Les données sensibles, comme la santé, demandent une vigilance particulière et un cadre encore plus strict. Des données pseudonymisées (noms remplacés par des repères) restent en principe des données personnelles pour l'entreprise qui garde la correspondance.",
     offre: "formations",
   },
   {
@@ -155,7 +171,7 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     definition:
       "Le masquage des données personnelles (détection de PII, pour personally identifiable information) est une étape automatique qui repère les noms, adresses, numéros et autres informations identifiantes d'un texte, puis les masque ou les remplace avant tout envoi à un outil d'IA.",
     fonctionnement:
-      "Un filtre analyse le contenu et remplace, par exemple, « Marie Durand » par « personne A » et un numéro de téléphone par un repère. La réponse de l'IA est ensuite reliée aux vraies informations, qui n'ont jamais quitté l'entreprise. Ce procédé limite la quantité de données personnelles transmises à un tiers.",
+      "Un filtre analyse le contenu et remplace, par exemple, « Marie Durand » par « personne A » et un numéro de téléphone par un repère. La réponse de l'IA est ensuite reliée aux vraies informations, qui n'ont jamais quitté l'entreprise. Ce procédé limite la quantité de données personnelles transmises à un tiers. Des données pseudonymisées (noms remplacés par des repères) restent en principe des données personnelles pour l'entreprise qui garde la correspondance.",
     exemple:
       "Un cabinet de médiation familiale masque automatiquement les noms et les adresses de ses comptes rendus avant de les faire résumer, puis réintègre les vrais éléments dans le document final.",
     limite:
@@ -167,7 +183,13 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     term: "IA fantôme (shadow AI)",
     category: "gouvernance",
     aliases: ["shadow AI", "IA parallèle", "usage non encadré de l'IA"],
-    related: ["charte-ia", "gouvernance-ia", "opt-out-training", "donnee-personnelle", "maitrise-ia-article-4"],
+    related: [
+      "charte-ia",
+      "gouvernance-ia",
+      "opt-out-training",
+      "donnee-personnelle",
+      "maitrise-ia-article-4",
+    ],
     definition:
       "L'IA fantôme (shadow AI) désigne l'usage d'outils d'IA par des salariés sans que leur entreprise le sache ni l'ait encadré, par exemple avec un compte personnel d'assistant en ligne pour traiter des documents professionnels.",
     fonctionnement:
@@ -183,7 +205,12 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     term: "Biais de l'IA",
     category: "evaluation",
     aliases: ["biais algorithmique", "biais cognitif de modèle", "discrimination algorithmique"],
-    related: ["donnees-entrainement", "systeme-ia-haut-risque", "explicabilite", "human-in-the-loop"],
+    related: [
+      "donnees-entrainement",
+      "systeme-ia-haut-risque",
+      "explicabilite",
+      "human-in-the-loop",
+    ],
     definition:
       "Un biais de l'IA est une déformation systématique des résultats d'un modèle, qui favorise ou défavorise certains groupes, certaines situations ou certaines idées, le plus souvent parce que les données d'entraînement reflétaient déjà ces déséquilibres.",
     fonctionnement:
@@ -231,7 +258,13 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     term: "Charte d'usage de l'IA",
     category: "gouvernance",
     aliases: ["charte IA", "politique d'usage de l'IA", "règles internes IA"],
-    related: ["gouvernance-ia", "shadow-ai", "maitrise-ia-article-4", "donnee-personnelle", "human-in-the-loop"],
+    related: [
+      "gouvernance-ia",
+      "shadow-ai",
+      "maitrise-ia-article-4",
+      "donnee-personnelle",
+      "human-in-the-loop",
+    ],
     definition:
       "Une charte d'usage de l'IA est un document court, rédigé par l'entreprise, qui fixe les règles que les équipes suivent lorsqu'elles emploient des outils d'IA : outils autorisés, données interdites, vérification des résultats et personne à contacter.",
     fonctionnement:
@@ -367,7 +400,7 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     exemple:
       "Une entreprise d'artisanat note pendant quelques semaines le temps passé à rédiger ses devis, puis compare avec l'usage d'un assistant, en comptant aussi le temps de relecture de la gérante.",
     limite:
-      "On ne peut pas promettre un gain à l'avance : il varie selon l'entreprise, la qualité du cadrage et l'adoption par les équipes. Mieux vaut commencer petit, mesurer honnêtement et décider ensuite d'étendre ou d'arrêter.",
+      "Le gain varie selon l'entreprise, la qualité du cadrage et l'adoption par les équipes : mieux vaut commencer petit, mesurer honnêtement et décider ensuite d'étendre ou d'arrêter.",
     offre: "cartographie",
   },
   {
@@ -381,7 +414,7 @@ export const TERMES_SECURITE_GOUVERNANCE: readonly TermeSource[] = [
     fonctionnement:
       "On choisit un cas précis, un petit groupe d'utilisateurs, quelques semaines et des critères de réussite définis à l'avance. On l'essaie avec de vraies données, en limitant les risques. À la fin, on décide : abandonner, ajuster ou généraliser. Un bon POC se termine par une décision claire, pas par un simple « c'était intéressant ».",
     exemple:
-      "Une société de transport teste pendant un mois un assistant qui prépare les réponses aux demandes de devis, avec deux dispatcheurs volontaires, avant de décider de l'étendre ou non à toute l'équipe.",
+      "Une société de transport teste pendant un mois un assistant qui prépare les réponses aux demandes de devis, avec deux agents d'exploitation volontaires, avant de décider de l'étendre ou non à toute l'équipe.",
     limite:
       "Un POC réussi en laboratoire ne garantit pas la réussite à grande échelle : la maintenance, la formation et l'adoption restent à organiser. Inversement, un échec indique souvent un mauvais cadrage plus qu'une limite de l'IA.",
     offre: "journee-ia",

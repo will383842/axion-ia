@@ -23,6 +23,7 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
+import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -68,9 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!term) return {};
 
   const description =
-    term.definition.length > 160
-      ? `${term.definition.slice(0, 157).trim()}…`
-      : term.definition;
+    term.definition.length > 160 ? `${term.definition.slice(0, 157).trim()}…` : term.definition;
 
   const meta = await buildProductMetadata({
     locale,
@@ -248,6 +247,12 @@ export default async function GlossaryTermPage({ params }: Props) {
           </Container>
         </Section>
       ) : null}
+
+      <Section>
+        <Container className="max-w-3xl">
+          <AiContentDisclaimer locale="fr" />
+        </Container>
+      </Section>
 
       <Section>
         <Container className="max-w-3xl">

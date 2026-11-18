@@ -212,12 +212,12 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
   },
   {
     slug: "sonnet-model",
-    term: "Modèle de taille intermédiaire",
+    term: "Modèle de gamme intermédiaire",
     category: "models",
     aliases: ["Sonnet", "modèle équilibré", "modèle polyvalent"],
     related: ["opus-model", "haiku-model", "claude-anthropic", "inference"],
     definition:
-      "Un modèle de taille intermédiaire est un modèle de langage qui offre un bon équilibre entre qualité, vitesse et coût ; chez Anthropic, c'est le rôle de la gamme appelée Sonnet.",
+      "Un modèle de gamme intermédiaire est un modèle de langage qui offre un bon équilibre entre qualité, vitesse et coût ; chez Anthropic, c'est le rôle de la gamme appelée Sonnet.",
     fonctionnement:
       "Les fournisseurs proposent en général trois niveaux : un petit modèle rapide, un modèle intermédiaire polyvalent et un grand modèle plus puissant mais plus lent et plus cher. Le niveau intermédiaire convient à la majorité des tâches d'une entreprise : rédaction, synthèse, tri de messages, aide à la programmation.",
     exemple:
@@ -244,16 +244,16 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
   },
   {
     slug: "haiku-model",
-    term: "Petit modèle rapide",
+    term: "Modèle d'entrée de gamme, rapide",
     category: "models",
     aliases: ["Haiku", "modèle léger", "modèle économique"],
     related: ["sonnet-model", "opus-model", "slm", "throughput"],
     definition:
-      "Un petit modèle rapide est un modèle de langage conçu pour répondre vite et à faible coût sur des tâches simples et répétitives ; chez Anthropic, c'est le rôle de la gamme appelée Haiku.",
+      "Un modèle d'entrée de gamme, rapide, est un modèle de langage conçu pour répondre vite et à faible coût sur des tâches simples et répétitives ; chez Anthropic, c'est le rôle de la gamme appelée Haiku.",
     fonctionnement:
       "Moins gourmand en calcul, il traite un grand nombre de demandes en peu de temps. Il convient à des opérations bien cadrées : classer un message, extraire une date ou un montant d'un e-mail, reformuler une phrase. On l'emploie volontiers comme premier étage d'une chaîne, les cas difficiles étant transmis à un modèle plus puissant.",
     exemple:
-      "Un cabinet d'expertise comptable utilise un petit modèle rapide pour trier chaque matin les e-mails reçus par type de demande, puis un collaborateur traite ceux qui sont signalés comme complexes.",
+      "Un cabinet d'expertise comptable utilise un modèle d'entrée de gamme pour trier chaque matin les e-mails reçus par type de demande, puis un collaborateur traite ceux qui sont signalés comme complexes.",
     limite:
       "Sur des questions ouvertes, ambiguës ou longues, un petit modèle perd en finesse. Son usage suppose des tâches bien définies et un échantillon de contrôle, pour s'assurer que la vitesse ne se paie pas en erreurs.",
     offre: "automatisations",
@@ -265,7 +265,7 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
     aliases: ["open source", "open weight", "modèle ouvert", "poids ouverts"],
     related: ["llama-model", "mistral-model", "on-premise-ai", "slm", "ia-souveraine"],
     definition:
-      "Un modèle à poids ouverts (open weight) est un modèle d'IA dont les paramètres sont publiés et téléchargeables, ce qui permet de l'installer et de l'adapter soi-même ; il est dit open source seulement si le code, les données et la licence sont aussi ouverts.",
+      "Un modèle à poids ouverts (open weight) est un modèle d'IA dont les paramètres sont publiés et téléchargeables, ce qui permet de l'installer et de l'adapter soi-même ; on parle d'open source au sens strict quand la licence permet librement d'utiliser, d'étudier, de modifier et de partager le modèle, avec son code et une description détaillée des données d'entraînement.",
     fonctionnement:
       "Les deux expressions sont souvent confondues. Beaucoup de modèles « ouverts » ne publient que les poids, sous une licence qui fixe des conditions d'usage. L'avantage est la maîtrise : on choisit où le modèle tourne et qui voit les données. Le prix à payer est la charge technique d'installation et de maintenance.",
     exemple:
@@ -279,7 +279,13 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
     term: "IA souveraine",
     category: "gouvernance",
     aliases: ["souveraineté numérique", "IA de confiance", "IA européenne"],
-    related: ["mistral-model", "on-premise-ai", "open-source-open-weight", "rgpd-gdpr", "gouvernance-ia"],
+    related: [
+      "mistral-model",
+      "on-premise-ai",
+      "open-source-open-weight",
+      "rgpd-gdpr",
+      "gouvernance-ia",
+    ],
     definition:
       "L'IA souveraine désigne une approche où un pays, une organisation ou une entreprise garde la maîtrise des modèles, des données et de l'hébergement qu'elle utilise, sans dépendre d'un fournisseur ou d'une juridiction étrangère.",
     fonctionnement:
@@ -295,7 +301,13 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
     term: "IA installée sur ses propres machines",
     category: "infra",
     aliases: ["on-premise", "IA locale", "déploiement sur site", "IA en local"],
-    related: ["open-source-open-weight", "slm", "ia-souveraine", "quantification", "edge-deployment"],
+    related: [
+      "open-source-open-weight",
+      "slm",
+      "ia-souveraine",
+      "quantification",
+      "edge-deployment",
+    ],
     definition:
       "Une IA installée sur ses propres machines (on-premise) est un modèle qui fonctionne sur les serveurs ou les ordinateurs de l'entreprise, et non chez un fournisseur en ligne, de sorte que les données ne quittent pas son périmètre.",
     fonctionnement:
@@ -406,7 +418,12 @@ export const TERMES_MODELES_INFRA: readonly TermeSource[] = [
     slug: "mlops",
     term: "MLOps",
     category: "infra",
-    aliases: ["MLOps", "LLMOps", "exploitation des modèles", "opérations d'apprentissage automatique"],
+    aliases: [
+      "MLOps",
+      "LLMOps",
+      "exploitation des modèles",
+      "opérations d'apprentissage automatique",
+    ],
     related: ["inference", "eval-suite", "gouvernance-ia", "poc"],
     definition:
       "Le MLOps est l'ensemble des pratiques qui permettent de déployer, surveiller, mettre à jour et maintenir un modèle d'IA en production de façon fiable, comme on le fait pour n'importe quel logiciel professionnel.",

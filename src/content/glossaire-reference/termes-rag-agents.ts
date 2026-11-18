@@ -41,7 +41,7 @@ export const TERMES_RAG_AGENTS: readonly TermeSource[] = [
     aliases: ["vectorization", "encodage vectoriel", "calcul d'embeddings"],
     related: ["embedding", "vector-database", "chunking", "rag"],
     definition:
-      "La vectorisation est l'opération qui transforme des documents en plongements numériques, afin de les enregistrer dans une base de recherche par le sens, préalable indispensable à un système de type RAG.",
+      "La vectorisation est l'opération qui transforme des documents en plongements numériques, afin de les enregistrer dans une base de recherche par le sens, étape habituelle d'un système de type RAG.",
     fonctionnement:
       "On découpe d'abord les documents en extraits, puis un modèle de plongement convertit chaque extrait en vecteur, enregistré avec son texte d'origine. L'opération se fait une fois, puis à chaque modification d'un document. Elle représente en général un coût modeste comparé au reste du projet, mais elle doit être refaite si l'on change de modèle de plongement.",
     exemple:
@@ -123,7 +123,7 @@ export const TERMES_RAG_AGENTS: readonly TermeSource[] = [
     definition:
       "La recherche hybride combine une recherche par mots-clés et une recherche par le sens, puis fusionne leurs résultats, pour profiter de la précision de l'une et de la souplesse de l'autre.",
     fonctionnement:
-      "La recherche par mots retrouve très bien les références exactes, comme un numéro de contrat ou un nom propre. La recherche sémantique retrouve les contenus de même sens, quels que soient les mots. Le système lance les deux, additionne leurs scores et propose une liste unifiée, souvent suivie d'un reclassement.",
+      "La recherche par mots retrouve très bien les références exactes, comme un numéro de contrat ou un nom propre. La recherche sémantique retrouve les contenus de même sens, quels que soient les mots. Le système lance les deux et fusionne leurs classements (par exemple en combinant les rangs de chaque document), puis propose une liste unifiée, souvent suivie d'un reclassement.",
     exemple:
       "Un fournisseur de pièces détachées permet à ses clients de chercher par référence exacte ou en décrivant la pièce avec leurs mots : les deux types de requêtes aboutissent à la bonne fiche.",
     limite:
@@ -311,7 +311,13 @@ export const TERMES_RAG_AGENTS: readonly TermeSource[] = [
     term: "Garde-fous",
     category: "security",
     aliases: ["guardrails", "barrières de sécurité", "filtres de sécurité"],
-    related: ["system-prompt", "prompt-injection", "human-in-the-loop", "pii-detection", "charte-ia"],
+    related: [
+      "system-prompt",
+      "prompt-injection",
+      "human-in-the-loop",
+      "pii-detection",
+      "charte-ia",
+    ],
     definition:
       "Les garde-fous (guardrails) sont l'ensemble des règles et des contrôles, techniques ou organisationnels, qui encadrent ce qu'un système d'IA peut dire ou faire : sujets interdits, données masquées, validations et plafonds d'action.",
     fonctionnement:
@@ -351,7 +357,7 @@ export const TERMES_RAG_AGENTS: readonly TermeSource[] = [
     exemple:
       "Un cabinet d'ostéopathes relie son formulaire de prise de rendez-vous à son agenda et à son logiciel de rappel : dès qu'un patient réserve, tout se met à jour sans intervention.",
     limite:
-      "Un webhook non protégé peut être déclenché par n'importe qui qui connaît l'adresse. On vérifie donc l'expéditeur par une signature, et l'on prévoit le cas où le message est reçu deux fois ou n'arrive pas.",
+      "Un webhook non protégé peut être déclenché par toute personne qui connaît l'adresse. On vérifie donc l'expéditeur par une signature, et l'on prévoit le cas où le message est reçu deux fois ou n'arrive pas.",
     offre: "automatisations",
   },
 ];

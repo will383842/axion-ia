@@ -57,6 +57,11 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
 /** Fichiers de contenu (hors `app/` et `components/`) rendus au public par ce lot. */
 const CONTENUS: ReadonlyArray<string> = [
   "content/audit-detail-configs.ts",
+  "content/glossaire-reference/termes-fondamentaux.ts",
+  "content/glossaire-reference/termes-modeles-infra.ts",
+  "content/glossaire-reference/termes-rag-agents.ts",
+  "content/glossaire-reference/termes-securite-gouvernance.ts",
+  "content/glossaire-reference/termes-usages-visibilite.ts",
   "content/audit-taxonomy.ts",
   "content/intervention-detail-configs.ts",
   "content/interventions-taxonomy.ts",
@@ -228,8 +233,6 @@ const MONTANT_EUR = /\d[\d.,\s  ]*(?:k\s?€|M€|€|EUR\b|euros?\b)|(?:€|k�
 const FICHIERS_EXEMPTES: Readonly<Record<string, string>> = {
   "content/comparaisons.ts":
     "comparatif de marché : coûts SaaS tiers (20-30 €/user/mois), RAG/fine-tuning, salaires data scientist, seuils d'internalisation",
-  "content/glossary-extension.ts":
-    "coûts d'API de modèles tiers (€/Mtok) et exemples de définition",
   "content/stack-ia-details.ts": "prix d'outils tiers (licences par siège)",
   "content/case-studies.ts":
     "seuil de validation de factures chez un client (« montants > 5000 € »)",

@@ -23,7 +23,12 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     term: "Apprentissage automatique",
     category: "foundational",
     aliases: ["machine learning", "ML", "apprentissage machine"],
-    related: ["intelligence-artificielle", "deep-learning", "donnees-entrainement", "reseau-de-neurones"],
+    related: [
+      "intelligence-artificielle",
+      "deep-learning",
+      "donnees-entrainement",
+      "reseau-de-neurones",
+    ],
     definition:
       "L'apprentissage automatique (machine learning) est une branche de l'IA où un programme apprend à partir d'exemples plutôt que de suivre des règles écrites une à une par un informaticien.",
     fonctionnement:
@@ -75,11 +80,11 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     definition:
       "L'IA générative est un type d'intelligence artificielle capable de produire un contenu nouveau, comme du texte, une image, un son, une vidéo ou du code, à partir d'une consigne écrite en langage courant.",
     fonctionnement:
-      "Le modèle a été entraîné sur d'immenses volumes de contenus. Il y a appris les formes habituelles du langage ou de l'image. Quand on lui donne une consigne, il construit sa réponse pas à pas, en choisissant à chaque étape l'élément le plus probable. Le résultat paraît naturel, mais il est calculé, non recopié.",
+      "Le modèle a été entraîné sur d'immenses volumes de contenus. Il y a appris les formes habituelles du langage ou de l'image. Quand on lui donne une consigne, il construit sa réponse pas à pas, en choisissant à chaque étape un élément parmi les plus probables (pour une image, en affinant progressivement un brouillon). Le résultat est calculé et, en général, pas recopié, même si des reprises très proches d'un contenu existant restent possibles.",
     exemple:
       "Une agence immobilière indépendante peut demander à un outil génératif un premier jet d'annonce à partir de la fiche du bien, puis le conseiller l'ajuste, corrige les détails et le publie.",
     limite:
-      "Un contenu généré peut contenir des erreurs présentées avec assurance. Il faut donc relire, vérifier les faits et ne jamais y déposer de données confidentielles dans un outil dont on ne connaît pas les conditions d'usage.",
+      "Un contenu généré peut contenir des erreurs présentées avec assurance. Il faut donc relire, vérifier les faits et ne jamais déposer de données confidentielles dans un outil dont on ne connaît pas les conditions d'usage.",
     offre: "journee-ia",
   },
   {
@@ -95,7 +100,7 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     exemple:
       "Un restaurateur peut demander à un LLM de reformuler poliment une réponse à un avis client mécontent, puis de la traduire en anglais pour un touriste, en la relisant avant publication.",
     limite:
-      "Un LLM ignore les événements récents et vos documents internes, sauf si on les lui fournit. Il peut inventer un fait ou une source. On le complète donc par des documents de l'entreprise et par une relecture humaine.",
+      "Un LLM ignore les événements postérieurs à son entraînement et vos documents internes, sauf s'il dispose d'un outil de recherche ou si on les lui fournit. Il peut inventer un fait ou une source. On le complète donc par des documents de l'entreprise et par une relecture humaine.",
     offre: "formations",
   },
   {
@@ -103,7 +108,13 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     term: "SLM (petit modèle de langage)",
     category: "models",
     aliases: ["Small Language Model", "petit modèle de langage", "modèle compact"],
-    related: ["llm", "quantification", "on-premise-ai", "edge-deployment", "open-source-open-weight"],
+    related: [
+      "llm",
+      "quantification",
+      "on-premise-ai",
+      "edge-deployment",
+      "open-source-open-weight",
+    ],
     definition:
       "Un SLM (Small Language Model, ou petit modèle de langage) est un modèle de langage de taille réduite, conçu pour fonctionner avec peu de ressources, parfois sur un ordinateur de bureau ou un téléphone, et pour une gamme de tâches limitée.",
     fonctionnement:
@@ -135,11 +146,17 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     term: "Données d'entraînement",
     category: "foundational",
     aliases: ["jeu de données d'entraînement", "training data", "corpus d'entraînement"],
-    related: ["machine-learning", "biais", "fine-tuning", "donnee-personnelle", "modele-de-fondation"],
+    related: [
+      "machine-learning",
+      "biais",
+      "fine-tuning",
+      "donnee-personnelle",
+      "modele-de-fondation",
+    ],
     definition:
       "Les données d'entraînement sont l'ensemble des textes, images, sons ou chiffres à partir desquels un modèle d'IA apprend à produire ses réponses.",
     fonctionnement:
-      "Pendant l'apprentissage, le modèle examine ces exemples et ajuste ses paramètres pour reproduire les régularités qu'il y trouve. Ce qu'il sait vient donc de là, et uniquement de là. Une fois l'entraînement terminé, le modèle n'a plus accès aux données elles-mêmes, seulement à ce qu'il en a retenu sous forme de paramètres.",
+      "Pendant l'apprentissage, le modèle examine ces exemples et ajuste ses paramètres pour reproduire les régularités qu'il y trouve. Ce qu'il sait de lui-même vient de là ; le reste doit lui être fourni dans la consigne ou par des documents. Une fois l'entraînement terminé, le modèle n'a plus accès aux données elles-mêmes, seulement à ce qu'il en a retenu sous forme de paramètres.",
     exemple:
       "Une entreprise de transport régionale qui veut prévoir ses retards rassemble ses plannings des dernières années : ces historiques propres et bien étiquetés deviennent les données d'entraînement de son outil.",
     limite:
@@ -235,7 +252,7 @@ export const TERMES_FONDAMENTAUX: readonly TermeSource[] = [
     definition:
       "Un jeton (token en anglais) est le petit morceau de texte, souvent une syllabe ou un mot court, que manipule un modèle de langage ; c'est aussi l'unité servant à mesurer la longueur d'une conversation et à facturer l'usage d'une interface de programmation.",
     fonctionnement:
-      "Avant de traiter un message, le modèle le découpe en jetons. Il en lit un certain nombre en entrée et en produit d'autres en sortie. La longueur de l'échange se compte donc en jetons, pas en pages. Un texte en français en utilise généralement un peu plus qu'en anglais, car les mots y sont plus longs.",
+      "Avant de traiter un message, le modèle le découpe en jetons. Il en lit un certain nombre en entrée et en produit d'autres en sortie. La longueur de l'échange se compte donc en jetons, pas en pages. Un texte en français en utilise généralement un peu plus qu'en anglais, car les découpeurs de la plupart des modèles ont été conçus surtout à partir de textes anglais.",
     exemple:
       "Un cabinet d'avocats qui fait résumer un long contrat par un assistant doit vérifier que le document, une fois découpé en jetons, tient dans la limite du modèle, sinon il le fournit en plusieurs morceaux.",
     limite:

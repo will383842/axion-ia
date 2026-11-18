@@ -10,7 +10,7 @@
  *   4. `limite`         : erreur fréquente ou limite.
  * Les termes liés (`related`) et le lien vers l'offre (`offre`) sont rendus en plus.
  *
- * Verrouillé par `src/content/glossaire-reference/glossaire-reference.test.ts`.
+ * Verrouillé par `src/content/glossary-extension.test.ts`.
  */
 
 export type CategorieGlossaire =
