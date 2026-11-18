@@ -269,6 +269,9 @@ function gabaritConnu(nom: string): boolean {
   }
 }
 
+/** Jobs pour lesquels `sendEmail` a abouti : sert au seul journal `completed` (cf. plus bas). */
+const jobsAyantEnvoye = new WeakSet<object>();
+
 export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   const worker = new Worker<EmailJobData, void, EmailJobName>(
     "emails",
@@ -503,6 +506,7 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
           ...(unsubscribeToken ? { unsubscribeToken } : {}),
           ...(attachments ? { attachments } : {}),
         });
+        jobsAyantEnvoye.add(job);
         // Journalisation fail-soft : ne jamais rethrow après un envoi réussi
         // (sinon retry BullMQ → email renvoyé).
         await cloturerJournal({
@@ -663,8 +667,15 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
   // deja comme donnee personnelle et la masque avant Sentry. On ne protegeait
   // que le canal SaaS, jamais les journaux du conteneur. Le domaine reste
   // visible : c'est lui qui sert au diagnostic, et il n'identifie personne.
+  // 🔑 « sent: » seulement si `sendEmail` a réellement abouti pour CE job (BullMQ rend au
+  // gestionnaire la même instance que celle du processeur). Un job qui sort sans envoyer
+  // (retenu, déjà parti, écarté, verrou perdu, gabarit inconnu) est « terminé » sans envoi.
   worker.on("completed", (job) =>
-    console.log(`[email-worker] sent: ${job.name} → ${redactEmailValue(String(job.data.to))}`),
+    console.log(
+      jobsAyantEnvoye.has(job)
+        ? `[email-worker] sent: ${job.name} → ${redactEmailValue(String(job.data.to))}`
+        : `[email-worker] terminé sans envoi : ${job.name} → ${redactEmailValue(String(job.data.to))}`,
+    ),
   );
   worker.on("failed", (job, err) => {
     // STOP-T1b — jamais `err.message` brut : un refus du relais y cite l'adresse. Nom et code
@@ -1203,6 +1214,7 @@ async function envoyerReponseUnSeulEnvoi<L extends LigneReponse>(
         replyTo,
       });
       messageId = resultat.messageId;
+      jobsAyantEnvoye.add(ctx.job as object);
     } catch (e) {
       if (classerEchecEnvoi(e) === "ambigu") {
         // Le relais a pu prendre le message : issue inconnue tout de suite, aucun nouvel essai,

@@ -39,6 +39,8 @@ import {
   remplirModele,
   type ModeleComposeurId,
 } from "@/content/recrutement/modeles-reponse";
+import { MarquerEnvoyeeButton } from "@/components/admin/contacts/MarquerEnvoyeeButton";
+import { estIssueInconnue } from "@/lib/email/reponse-manuelle-etat";
 import { fragmenter, paragraphes } from "@/lib/email/markdown-leger";
 import { OBJET_MAX } from "@/lib/email/objet-email";
 import {
@@ -461,6 +463,16 @@ export function ComposerReponse({
               >
                 Réessayer
               </button>
+            ) : null}
+            {phase.replyId && estIssueInconnue(phase.message) ? (
+              <MarquerEnvoyeeButton
+                replyId={phase.replyId}
+                gabarit="candidature-reponse"
+                onDone={() => {
+                  setPhase({ nom: "envoye" });
+                  router.refresh();
+                }}
+              />
             ) : null}
           </span>
         ) : null}
