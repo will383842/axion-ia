@@ -310,7 +310,9 @@ export interface DevisData {
 // Devis à formules — blocs d'affichage (v3, restyle v6)
 // ============================================================
 
-const pct = (n: number): string => String(n).replace(".", ",");
+const FORMAT_TAUX_FR = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
+/** Taux affiché à la française : « 5,5 », « 20 », « 2,1 » (le « % » est ajouté par l'appelant). */
+const pct = (n: number): string => FORMAT_TAUX_FR.format(n);
 const eur = (c: number): string => formatEurosFromCents(c);
 
 function TitreSection({ children }: { children: string }): React.ReactElement {
@@ -589,8 +591,8 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
     ...totaux.ventilation.map((v) => ({
       libelle:
         totaux.ventilation.length > 1
-          ? `TVA ${v.tauxPercent} % (base ${formatEurosFromCents(v.baseHtCents)})`
-          : `TVA (${v.tauxPercent} %)`,
+          ? `TVA ${pct(v.tauxPercent)} % (base ${formatEurosFromCents(v.baseHtCents)})`
+          : `TVA (${pct(v.tauxPercent)} %)`,
       montant: formatEurosFromCents(v.montantTvaCents),
     })),
     { libelle: "Total TTC", montant: formatEurosFromCents(totaux.totalTtcCents) },
@@ -682,7 +684,7 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
                 designation: ligne.designation,
                 qte: String(ligne.quantite),
                 pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
-                tva: `${tauxLigne(ligne)} %`,
+                tva: `${pct(tauxLigne(ligne))} %`,
                 total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
               }))}
             />

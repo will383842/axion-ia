@@ -108,7 +108,9 @@ const EMPREINTES: Readonly<
     // v6 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), libellés simplifiés,
     // phrases juridiques et montants repris mot pour mot ; v5 archivée (`archives/devis.v5.tsx`).
     // (v5 — 17/11/2026 : bloc « Conditions particulières », sha d6eb37c8… : voir EMPREINTES_ARCHIVES.)
-    sha: "b14fd554e0172384b8999ee7e3c603dbe9963d5dee201cf14c8f77dc324cff94",
+    // Taux de TVA décimaux à la française (« 5,5 % », 18/11/2026) : v6 PAS ENCORE EN LIGNE,
+    // aucun exemplaire signé sous v6 → empreinte reportée SANS incrément (version 6 conservée).
+    sha: "7177c2a2e65e795710c5c7621ec55fcc1400801a93ccffcd5a3b8d18793d57e5",
     version: 6,
   },
   convention: {

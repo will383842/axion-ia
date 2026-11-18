@@ -137,11 +137,14 @@ describe("v6 — montants identiques à la v5 : cas limites (audit argent-donné
       ],
     };
     const { v5, v6 } = memesMontants(data);
+    // Seule différence tolérée : le taux décimal (« 5.5 » en v5, « 5,5 » en v6).
     for (const t of [v5, v6]) {
       expect(t).toContain("TVA 20 % (base 1 000,00 €)");
-      expect(t).toContain("TVA 5.5 % (base 150,00 €)");
       expect(t).toContain("TVA 10 % (base 40,00 €)");
     }
+    expect(v5).toContain("TVA 5.5 % (base 150,00 €)");
+    expect(v6).toContain("TVA 5,5 % (base 150,00 €)");
+    expect(v6).not.toContain("5.5 %");
     expect(v6.split("(base ").length).toBe(v5.split("(base ").length);
   });
 
@@ -420,4 +423,26 @@ describe("v6 — un nombre de pages raisonnable", () => {
       expect(v6).toBeLessThanOrEqual(v5 + 1);
     }, 60_000);
   }
+});
+
+describe("v6 — taux de TVA à la française", () => {
+  it("5,5 % et 2,1 % s'impriment avec une virgule, 20 % sans décimale", () => {
+    const un = texteV6({
+      ...BASE,
+      lignes: [
+        { designation: "Support", quantite: 1, prixUnitaireHtCents: 10000, tauxTvaPercent: 5.5 },
+      ],
+    });
+    expect(un).toContain("5,5 %");
+    expect(un).not.toContain("5.5");
+    const deux = texteV6({
+      ...BASE,
+      lignes: [
+        { designation: "Presse", quantite: 1, prixUnitaireHtCents: 10000, tauxTvaPercent: 2.1 },
+      ],
+    });
+    expect(deux).toContain("2,1 %");
+    expect(deux).not.toContain("2.1");
+    expect(texteV6(BASE)).toContain("20 %");
+  });
 });
