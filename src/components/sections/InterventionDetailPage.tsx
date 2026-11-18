@@ -90,15 +90,19 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
     },
   ];
 
-  const serviceJsonLd = buildServiceJsonLd({
-    locale,
-    path: `/interventions/${slug}`,
-    name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
-    description: isFr ? config.promiseFr : config.promiseEn,
-    serviceType: "AI training & strategy",
-    priceEur: config.priceFlatEur ?? 0,
-    areasServed: buildServiceAreasServed(locale),
-  });
+  // V2-08 : un seul Service de coaching sur le site (celui de /fr/un-a-un).
+  const serviceJsonLd =
+    slug === "dirigeant-vision-strategique"
+      ? null
+      : buildServiceJsonLd({
+          locale,
+          path: `/interventions/${slug}`,
+          name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
+          description: isFr ? config.promiseFr : config.promiseEn,
+          serviceType: "AI training & strategy",
+          priceEur: config.priceFlatEur ?? 0,
+          areasServed: buildServiceAreasServed(locale),
+        });
 
   const faqJsonLd =
     config.faq.length > 0
@@ -360,7 +364,7 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
+      {serviceJsonLd ? <JsonLd data={serviceJsonLd} /> : null}
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
       {howToJsonLd ? <JsonLd data={howToJsonLd} /> : null}
       {/* BreadcrumbList JSON-LD : déjà émis automatiquement par <Breadcrumbs>

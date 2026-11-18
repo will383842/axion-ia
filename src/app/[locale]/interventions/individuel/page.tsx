@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "Individual AI coaching · 1-on-1 · managers, independents · Axion-IA",
     description:
       loc === "fr"
-        ? "Coaching IA personnel 1-to-1 pour managers, indépendants, freelances. Format adapté à votre besoin, sur devis. Cadrage par visio, devis sous 48 h."
+        ? "Coaching IA personnel 1-to-1 pour managers, indépendants, freelances. Format adapté à votre besoin, sur devis. Diagnostic IA de 45 min, devis sous 48 h."
         : "Personal 1-on-1 AI coaching for managers, independents, freelancers. Format tailored to your need, on request. Framing by video, quote within 48 h.",
   });
   // V2-08 : une seule page de référence pour le coaching individuel.
@@ -213,7 +213,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
           titleEm={isFr ? "construit avec vous" : "built with you"}
           description={
             isFr
-              ? "Aucun format pré-emballé : on construit votre parcours selon votre niveau IA, votre métier et vos objectifs. Échange préalable de 45 min par visio, devis sous 48 h ouvrées."
+              ? "Aucun format pré-emballé : on construit votre parcours selon votre niveau IA, votre métier et vos objectifs. Diagnostic IA gratuit de 45 min, devis sous 48 h ouvrées."
               : "No pre-packaged format: we build your journey based on your AI level, role and goals. 45-min preliminary call by video, quote within 48 business hours."
           }
           contentClassName={TIGHT_X}
@@ -235,7 +235,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
             <ul className="mt-6 space-y-2.5 text-[14.5px]">
               {(isFr
                 ? [
-                    "Échange préalable de 45 min en visio pour comprendre votre contexte",
+                    "Diagnostic IA de 45 min pour comprendre votre contexte",
                     "Parcours personnalisé construit ensemble — séances, durée, format",
                     "Devis détaillé sous 48 h ouvrées · facturation après chaque séance",
                   ]
@@ -394,7 +394,7 @@ export default async function IndividuelFamilyPage({ params }: Props) {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Réservez votre appel de 45 minutes" : "Book your 45-minute call"}
+        title={isFr ? "Réservez votre Diagnostic IA, 45 min" : "Book your 45-minute call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre besoin, on construit un parcours, on chiffre. Aucun engagement avant la signature du devis."

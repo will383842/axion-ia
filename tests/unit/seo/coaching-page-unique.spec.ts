@@ -65,16 +65,26 @@ describe("V2-08 — pages secondaires : canonical vers la référence", () => {
     expect(lire(f)).toContain("metadataCanoniqueVersCoaching(meta, locale)");
   });
 
-  it.each(SECONDAIRES.slice(0, 2))("%s n'émet plus de Service ni de WebPage", (f) => {
-    const src = lire(f);
-    expect(src).not.toMatch(/buildServiceJsonLd|buildWebPageJsonLd/);
-  });
+  it.each(SECONDAIRES.filter((f) => !f.includes("dirigeant-vision")))(
+    "%s n'émet plus de Service ni de WebPage",
+    (f) => {
+      const src = lire(f);
+      expect(src).not.toMatch(/buildServiceJsonLd|buildWebPageJsonLd/);
+    },
+  );
 
   it("une seule page de coaching émet le Service « Coaching IA individuel »", () => {
-    const avecService = [HUB, ...SECONDAIRES.slice(0, 2)].filter((f) =>
-      /buildServiceJsonLd\(/.test(lire(f)),
-    );
+    const avecService = [HUB, ...SECONDAIRES].filter((f) => /buildServiceJsonLd\(/.test(lire(f)));
     expect(avecService).toEqual([HUB]);
+  });
+
+  it("la page Vision IA stratégique n'émet pas de Service : le gabarit partagé le neutralise pour ce slug", () => {
+    expect(lire(SECONDAIRES[2])).toContain("InterventionDetailPage");
+    const gabarit = lire("src/components/sections/InterventionDetailPage.tsx");
+    expect(gabarit).toMatch(
+      /slug === "dirigeant-vision-strategique"\s*\? null\s*: buildServiceJsonLd\(/,
+    );
+    expect(gabarit).toContain("{serviceJsonLd ? <JsonLd data={serviceJsonLd} /> : null}");
   });
 
   it("les trois pages sont exclues de pages.xml et existent bien dans routing.pathnames", () => {
