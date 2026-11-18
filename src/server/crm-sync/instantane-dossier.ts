@@ -27,11 +27,22 @@
  * · un PARTICULIER (sa « raison sociale » est son nom : donnée personnelle) ;
  * · un contact d'origine `mention` (cité sans être présent : jamais informé) ;
  * · un contact dont l'adresse est exclue (`estExclueDuCrm`, l'opposition gagne) ;
- * · une adresse qui n'est pas PRO (jamais une adresse personnelle).
+ * · une adresse qui n'est pas PRO ne part pas (jamais une adresse personnelle) ;
+ *   seule son EMPREINTE part (voir ci-dessous).
  * Ces règles sont ICI, dans le passage obligé, pas chez l'appelant.
  * `url_console` n'est jamais émise : elle porte le préfixe secret de la console.
  * Un numéro trop long pour le CRM est OMIS, jamais tronqué (un numéro faux
  * partirait sinon).
+ *
+ * ── Empreinte seule d'une adresse grand public (S2, décision du fondateur 18/11) ──
+ * Un contact à adresse grand public (Gmail, Orange… : `emailType !== "pro"`) part
+ * AVEC `person_key` mais SANS `email`. La clé est le HMAC `hashEmailForLookup`
+ * (`lire-dossier.ts`), la même que `person.person_key` des formulaires
+ * (`index.ts`) : le CRM Pro rattache ainsi la personne née d'une demande du site
+ * à son entreprise, au lieu de la laisser en doublon. Elle ne révèle pas
+ * l'adresse (HMAC à clé secrète). Toutes les exclusions ci-dessus passent AVANT :
+ * un contact opposé, exclu, parti, cité ou sans nom ne fait partir NI l'adresse
+ * NI l'empreinte.
  *
  * ── Idempotence ─────────────────────────────────────────────────────────────
  * `event_id` = UUID v5 de `dossier_client_synchro:<client>:<version>:<empreinte>`.
@@ -384,7 +395,8 @@ export function dossierPourCrm(entree: EntreeInstantaneCrm): DossierPourCrm {
     if (t !== undefined) envoye.telephone = t;
     const f = propre(c.fonction, 120);
     if (f !== undefined) envoye.fonction = f;
-    if (email !== undefined && c.emailHash !== null && /^[0-9a-f]{64}$/.test(c.emailHash)) {
+    // Empreinte seule, adresse pro OU grand public : cf. « Empreinte seule » en tête.
+    if (c.emailHash !== null && /^[0-9a-f]{64}$/.test(c.emailHash)) {
       envoye.person_key = c.emailHash;
     }
     if (c.roleDecision) envoye.role_decision = c.roleDecision;
