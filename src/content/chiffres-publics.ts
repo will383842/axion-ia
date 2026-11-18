@@ -31,7 +31,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     url: "https://www.insee.fr/fr/statistiques/9025878",
     consulteLe: "2026-11-18",
     extrait:
-      "En 2025, 18 % des entreprises françaises de 10 salariés ou plus déclarent utiliser au moins une technologie d’ intelligence artificielle (IA)",
+      "En 2025, 18 % des entreprises implantées en France déclarent utiliser au moins une technologie d’intelligence artificielle (IA)",
     citation:
       "En 2025, 18 % des entreprises françaises de 10 salariés ou plus déclarent utiliser au moins une technologie d’IA (Insee).",
   },
@@ -75,7 +75,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "(respectivement 15 %, 31 %, et 58 %)",
     citation:
-      "En 2025, 15 % des entreprises françaises de moins de 50 salariés utilisent l’IA (Insee).",
+      "En 2025, 15 % des entreprises françaises de 10 à 49 salariés utilisent l’IA (Insee).",
   },
   {
     id: "insee-ia-50-249",
@@ -114,7 +114,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "et 59 % pour celles du secteur de l’information‑communication",
     citation:
-      "En 2025, 59 % des entreprises françaises de l’information-communication utilisent l’IA (Insee).",
+      "En 2025, 59 % des entreprises françaises de 10 salariés ou plus de l’information-communication utilisent l’IA (Insee).",
   },
   {
     id: "insee-ia-transports",
@@ -128,7 +128,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "(66 % en pondéré, contre 9 % en non pondéré)",
     citation:
-      "En 2025, 9 % des entreprises françaises des transports et de l’entreposage utilisent l’IA, mais elles pèsent 66 % de l’emploi du secteur (Insee).",
+      "En 2025, 9 % des entreprises françaises de 10 salariés ou plus des transports et de l’entreposage utilisent l’IA, mais elles pèsent 66 % de l’emploi du secteur (Insee).",
   },
   {
     id: "insee-ia-chiffre-affaires",
@@ -187,7 +187,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     extrait:
       "Plus de la moitié déclarent utiliser la fouille automatique de texte (analyse du langage écrit, 56 %).",
     citation:
-      "Parmi les entreprises françaises qui utilisent l’IA, 56 % font de la fouille automatique de texte en 2025 (Insee).",
+      "Parmi les entreprises françaises de 10 salariés ou plus qui utilisent l’IA, 56 % font de la fouille automatique de texte en 2025 (Insee).",
   },
   {
     id: "insee-ia-generative-texte",
@@ -201,7 +201,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "Viennent ensuite les outils d’IA générative de texte ou de parole (43 %)",
     citation:
-      "Parmi les entreprises françaises qui utilisent l’IA, 43 % emploient des outils d’IA générative de texte ou de parole en 2025 (Insee).",
+      "Parmi les entreprises françaises de 10 salariés ou plus qui utilisent l’IA, 43 % emploient des outils d’IA générative de texte ou de parole en 2025 (Insee).",
   },
   {
     id: "insee-ia-frein-utilite",
@@ -216,7 +216,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     extrait:
       "Le manque d’utilité est la raison la plus souvent citée pour ne pas utiliser l’IA (71 %)",
     citation:
-      "Parmi les entreprises françaises qui n’utilisent pas l’IA, 71 % invoquent le manque d’utilité en 2025 (Insee).",
+      "Parmi les entreprises françaises de 10 salariés ou plus qui n’utilisent pas l’IA, 71 % invoquent le manque d’utilité en 2025 (Insee).",
   },
   {
     id: "insee-ia-frein-expertise",
@@ -230,7 +230,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "Le manque d’expertise est évoqué par 54 % des entreprises",
     citation:
-      "Parmi les entreprises françaises qui n’utilisent pas l’IA, 54 % évoquent un manque d’expertise en 2025 (Insee).",
+      "Parmi les entreprises françaises de 10 salariés ou plus qui n’utilisent pas l’IA, 54 % évoquent un manque d’expertise en 2025 (Insee).",
   },
   {
     id: "eurostat-ia-ue-2025",
@@ -342,7 +342,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "the information and communication sector (with 62.52%)",
     citation:
-      "En 2025, 62,52 % des entreprises européennes de l’information et de la communication utilisent l’IA (Eurostat).",
+      "En 2025, 62,52 % des entreprises européennes de 10 salariés ou plus de l’information et de la communication utilisent l’IA (Eurostat).",
   },
   {
     id: "eurostat-ia-construction",
@@ -356,7 +356,7 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     consulteLe: "2026-11-18",
     extrait: "This ranged from 24.82% (real estate activities) to 10.79% (construction).",
     citation:
-      "En 2025, 10,79 % des entreprises européennes de la construction utilisent l’IA (Eurostat).",
+      "En 2025, 10,79 % des entreprises européennes de 10 salariés ou plus de la construction utilisent l’IA (Eurostat).",
   },
   {
     id: "eurostat-ia-analyse-texte",
@@ -486,15 +486,16 @@ export const CHIFFRES_PUBLICS: readonly ChiffrePublic[] = [
     valeur: "38",
     unite: "%",
     perimetre:
-      "entreprises françaises de 20 salariés et plus (même champ) citant le manque de cas d’usage comme principal frein",
+      "toutes les entreprises françaises de 20 salariés et plus (même champ), utilisatrices ou non, citant le manque de cas d’usage comme principal frein ; à ne pas confondre avec la part parmi les seules non-utilisatrices",
     annee: 2026,
     source:
       "Banque de France, Bulletin 266/1 (septembre-octobre 2026) : L’IA s’installe dans les entreprises françaises",
     url: "https://www.banque-france.fr/system/files/2026-09/BDF266-1_IA-et-entreprises_web.pdf",
     consulteLe: "2026-11-18",
-    extrait: "la part des entreprises citant le manque de cas d’usage comme principal frein",
+    extrait:
+      "la part des entreprises citant le manque de cas d’usage comme principal frein à un développement plus poussé de l’IA",
     citation:
-      "Début 2026, 38 % des entreprises françaises de 20 salariés et plus citent le manque de cas d’usage comme principal frein à l’IA (Banque de France).",
+      "Début 2026, 38 % des entreprises françaises de 20 salariés et plus (utilisatrices ou non) citent le manque de cas d’usage comme principal frein à un développement plus poussé de l’IA (Banque de France).",
   },
   {
     id: "bpifrance-iag-2025",

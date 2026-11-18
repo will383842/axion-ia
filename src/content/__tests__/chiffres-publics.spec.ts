@@ -2,6 +2,18 @@ import { describe, expect, it } from "vitest";
 
 import { CHIFFRES_PUBLICS } from "../chiffres-publics";
 
+const DOMAINES_OFFICIELS = [
+  "insee.fr",
+  "ec.europa.eu",
+  "digital-strategy.ec.europa.eu",
+  "banque-france.fr",
+  "bpifrance.fr",
+  "bpifrance-lelab.fr",
+  "francenum.gouv.fr",
+  "entreprises.gouv.fr",
+  "cnil.fr",
+];
+
 describe("CHIFFRES_PUBLICS", () => {
   it("contient au moins 30 chiffres", () => {
     expect(CHIFFRES_PUBLICS.length).toBeGreaterThanOrEqual(30);
@@ -15,6 +27,9 @@ describe("CHIFFRES_PUBLICS", () => {
   it.each(CHIFFRES_PUBLICS.map((c) => [c.id, c] as const))("%s : champs valides", (_id, c) => {
     const url = new URL(c.url);
     expect(url.protocol).toBe("https:");
+    expect(
+      DOMAINES_OFFICIELS.some((d) => url.hostname === d || url.hostname.endsWith("." + d)),
+    ).toBe(true);
     expect(url.pathname).not.toBe("/");
     expect(url.pathname.length).toBeGreaterThan(1);
     expect(Number.isInteger(c.annee)).toBe(true);
