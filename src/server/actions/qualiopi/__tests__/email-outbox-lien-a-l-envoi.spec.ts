@@ -93,7 +93,14 @@ vi.mock("@/lib/prisma", () => ({
     },
     $transaction: async (f: (t: unknown) => unknown) => {
       h.nbTransactions.v += 1;
-      return f({ $queryRaw: (...a: unknown[]) => h.queryRaw(...a) });
+      return f({
+        $queryRaw: (...a: unknown[]) => h.queryRaw(...a),
+        // B2 PR 4 : le renvoi relit le devis DANS la transaction, après le verrou.
+        devis: {
+          findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
+          count: (...a: unknown[]) => h.devisCount(...a),
+        },
+      });
     },
   },
 }));
@@ -431,5 +438,16 @@ describe("journaux", () => {
     expect(s).not.toContain("JETON-NEUF");
     expect(s).not.toContain("portail/signer");
     expect(s).not.toContain("http");
+  });
+  it("RENVOI : verrou pris → même message d'attente, aucun jeton, aucun refus, ligne remise à valider", async () => {
+    h.queryRaw.mockResolvedValue([{ locked: false }]);
+    const r = await approuverEmailAction({ id: ID });
+    expect(r).toEqual({
+      error: "Cet e-mail est déjà en cours d'envoi. Réessayez dans un instant.",
+    });
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.enqueue).not.toHaveBeenCalled();
+    expect(h.etat.statut).toBe("a_valider");
+    expect(h.etat.refuseMotif).toBeNull();
   });
 });
