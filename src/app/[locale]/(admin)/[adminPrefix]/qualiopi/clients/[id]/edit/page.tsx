@@ -21,9 +21,13 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { ChangerTypeClient } from "@/components/admin/qualiopi/ChangerTypeClient";
 import { ClientEditForm } from "@/components/admin/qualiopi/ClientEditForm";
 import { titreOngletClient, libelleBlocBranche } from "@/server/qualiopi/crm/libelles-fiche-client";
 import { getClient } from "@/server/qualiopi/crm/clients";
+import { raisonBlocageChangementType } from "@/server/qualiopi/crm/changer-type-client";
+import { prisma } from "@/lib/prisma";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { profilDeLaFiche } from "@/components/admin/dossier-client/fiche/ProfilDeLaFiche";
 import { gardePage } from "@/server/auth/garde-page";
@@ -39,10 +43,14 @@ export function generateMetadata(): Metadata {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 }
 
-export default async function ModifierClientPage({ params }: PageProps) {
+export default async function ModifierClientPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  const sp = (await searchParams) ?? {};
+  const erreurType = lireMessageDeRetour(sp, "erreur");
+  const messageType = lireMessageDeRetour(sp, "message");
   const acces = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -50,6 +58,8 @@ export default async function ModifierClientPage({ params }: PageProps) {
 
   const client = await getClient(id);
   if (!client) notFound();
+
+  const blocageType = await raisonBlocageChangementType(prisma, client).catch(() => null);
 
   const base = `/${locale}/${adminPrefix}/qualiopi/clients`;
   // Retour à la FICHE du client (et non à la liste) : on vient de la fiche.
@@ -69,6 +79,28 @@ export default async function ModifierClientPage({ params }: PageProps) {
       <AdminPageHeader
         title={`Modifier ${client.raisonSociale}`}
         description={`${client.numero} — entreprise, adresse, contact et facturation. La branche (IDCC, effectif) se modifie sur la fiche, bloc « ${libelleBlocBranche()} ».`}
+      />
+
+      {erreurType !== null ? (
+        <p
+          role="alert"
+          className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-danger)]"
+        >
+          {erreurType}
+        </p>
+      ) : null}
+      {messageType !== null ? (
+        <p role="status" className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+          {messageType}
+        </p>
+      ) : null}
+      <ChangerTypeClient
+        clientId={client.id}
+        type={client.type === "particulier" ? "particulier" : "entreprise"}
+        raisonSociale={client.raisonSociale}
+        contactNom={client.contactNom}
+        contactFacturationNom={client.contactNom}
+        blocage={blocageType}
       />
 
       <ClientEditForm
