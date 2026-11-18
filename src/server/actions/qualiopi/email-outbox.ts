@@ -35,7 +35,6 @@ import { ligneDuLien } from "@/server/qualiopi/documents/signature/lien-preceden
 import {
   EnvoiOccupe,
   envoyerAvecLienALEnvoi,
-  lireMarqueur,
 } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import * as Sentry from "@sentry/nextjs";
 import type { Prisma } from "../../../../prisma/generated/client";
@@ -128,8 +127,6 @@ export async function approuverEmailAction(
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
   let res: { enqueued: boolean; retenu?: MotifRetenue };
-  // B2 — une ligne à marqueur ne porte aucun lien : il naît ici, à l'approbation.
-  const lienALEnvoi = lireMarqueur(email.payload) !== null;
   try {
     const resultat = await envoyerAvecLienALEnvoi({
       ligne: {
@@ -290,8 +287,7 @@ export async function approuverEmailAction(
     targetId: v.id,
     changes: {
       template: email.template,
-      // B2 : pas d'adresse dans le journal d'une ligne à lien créé à l'envoi.
-      ...(lienALEnvoi ? {} : { destinataire: email.recipient }),
+      // JRN-1 : jamais d'adresse dans le journal ; `targetId` retrouve la ligne.
       sujetModifie: v.sujet !== undefined && v.sujet !== email.sujet,
       messageAjoute: Boolean(v.messagePersonnalise),
       envoye: res.enqueued,
