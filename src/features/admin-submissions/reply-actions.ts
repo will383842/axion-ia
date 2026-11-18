@@ -23,7 +23,8 @@ import * as Sentry from "@sentry/nextjs";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
-import { renderEmailTemplate } from "@/lib/email/templates";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
+import { apercuDepuisRendu, rendreReponseDemande } from "./rendu-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import { decryptPii, isDecryptedEmailUsable } from "@/lib/pii-crypto";
 import { appliquerTransition, marquerPretASigner, type ResultatPretASigner } from "./transitions";
@@ -90,17 +91,18 @@ export async function replyToSubmissionAction(
   // 0. Pré-vol : déchiffrer + valider l'adresse DANS le process web (qui a la
   //    clé). Si l'adresse est illisible (clé absente → placeholder) ou invalide,
   //    on échoue AVANT de créer une reply orpheline, avec une erreur claire.
-  if (!isDecryptedEmailUsable(decryptPii(submission.contactEmail))) {
+  const destinataire = decryptPii(submission.contactEmail);
+  if (!destinataire || !isDecryptedEmailUsable(destinataire)) {
     return { ok: false, error: "invalid_recipient" };
   }
 
-  // 1. Pre-render template HTML + plain text via @react-email/render.
+  // 1. Rendu HTML + texte avec le VRAI destinataire : même fonction que l'aperçu.
   let rendered: { subject: string; html: string; text: string };
   try {
-    rendered = await renderEmailTemplate("submission-reply", submission.locale, {
-      subject: data.subject,
-      bodyMarkdown: data.bodyMarkdown,
-    });
+    rendered = await rendreReponseDemande(
+      { locale: submission.locale, destinataire },
+      { subject: data.subject, bodyMarkdown: data.bodyMarkdown },
+    );
   } catch (e) {
     Sentry.captureException(e);
     return { ok: false, error: "render_failed" };
@@ -224,6 +226,52 @@ export async function replyToSubmissionAction(
   }
 
   return { ok: true, replyId };
+}
+
+// ============================================================
+// apercuReponseDemandeAction : « Voir l'aperçu exact » avant d'envoyer
+// ============================================================
+//
+// Même garde, même pré-vol, même fonction de rendu que `replyToSubmissionAction`. Ne
+// renvoie au navigateur qu'un aperçu masqué et inerte. Rien n'est écrit, rien n'est envoyé.
+
+const apercuSchema = replySchema.pick({ submissionId: true, subject: true, bodyMarkdown: true });
+
+export type ApercuReponseDemandeState =
+  { ok: true; apercu: ApercuLecteur } | { ok: false; error: string };
+
+export async function apercuReponseDemandeAction(
+  input: z.input<typeof apercuSchema>,
+): Promise<ApercuReponseDemandeState> {
+  try {
+    await requireAdminWriteSession();
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : "unauthorized" };
+  }
+  const parsed = apercuSchema.safeParse(input);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides" };
+  }
+  const data = parsed.data;
+
+  const submission = await prisma.submission.findUnique({ where: { id: data.submissionId } });
+  if (!submission) return { ok: false, error: "submission_not_found" };
+
+  const destinataire = decryptPii(submission.contactEmail);
+  if (!destinataire || !isDecryptedEmailUsable(destinataire)) {
+    return { ok: false, error: "invalid_recipient" };
+  }
+
+  try {
+    const rendu = await rendreReponseDemande(
+      { locale: submission.locale, destinataire },
+      { subject: data.subject, bodyMarkdown: data.bodyMarkdown },
+    );
+    return { ok: true, apercu: apercuDepuisRendu(rendu, destinataire) };
+  } catch {
+    // Pas de Sentry ici : l'erreur de rendu pourrait citer le HTML ou l'adresse.
+    return { ok: false, error: "render_failed" };
+  }
 }
 
 // ============================================================

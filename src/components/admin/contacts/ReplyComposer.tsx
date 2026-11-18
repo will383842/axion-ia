@@ -1,11 +1,15 @@
 "use client";
 // use-client: composer modal interactif (états locaux subject/body + submit).
-// Sprint Notif Infra 2026-05-26 / fix P1-3 audit 2026-05-27 — preview live
-// du markdown léger à droite du textarea.
+// Fiche I2-1 : plus de second moteur de mise en forme dans le navigateur. L'aperçu est
+// celui du serveur (« Voir l'aperçu exact »), masqué et inerte ; « Envoyer » reste verrouillé
+// tant que l'aperçu du contenu en cours n'a pas été vu.
 
 import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import {
+  apercuReponseDemandeAction,
   replyToSubmissionAction,
   retryFailedReplyAction,
   getReplyDeliveryStatusAction,
@@ -33,72 +37,6 @@ const REPLY_ERROR_LABELS: Record<string, string> = {
 };
 function replyErrorLabel(code: string): string {
   return REPLY_ERROR_LABELS[code] ?? `Échec de l'envoi (${code}).`;
-}
-
-/**
- * Rendu inline du markdown léger pour la preview composer. Mêmes règles que
- * le template email (`src/lib/email/templates/submission-reply.tsx`) :
- * paragraphes séparés double-newline, **bold**, *italic*, [label](url).
- */
-function renderMarkdownPreview(text: string): React.ReactNode {
-  const linkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-  const boldRegex = /\*\*([^*]+)\*\*/g;
-  const italicRegex = /(?<!\*)\*([^*]+)\*(?!\*)/g;
-  type Part = { type: "text" | "bold" | "italic" | "link"; value: string; href?: string };
-
-  const paragraphs = text.split(/\n\s*\n/).filter((p) => p.trim().length > 0);
-  return paragraphs.map((para, pi) => {
-    let parts: Part[] = [{ type: "text", value: para }];
-    const apply = (regex: RegExp, kind: "bold" | "italic" | "link") => {
-      const next: Part[] = [];
-      for (const p of parts) {
-        if (p.type !== "text") {
-          next.push(p);
-          continue;
-        }
-        let lastIdx = 0;
-        let m: RegExpExecArray | null;
-        regex.lastIndex = 0;
-        while ((m = regex.exec(p.value)) !== null) {
-          if (m.index > lastIdx)
-            next.push({ type: "text", value: p.value.slice(lastIdx, m.index) });
-          if (kind === "link") {
-            next.push({ type: "link", value: m[1] ?? "", href: m[2] ?? "" });
-          } else {
-            next.push({ type: kind, value: m[1] ?? "" });
-          }
-          lastIdx = m.index + m[0].length;
-        }
-        if (lastIdx < p.value.length) next.push({ type: "text", value: p.value.slice(lastIdx) });
-      }
-      parts = next;
-    };
-    apply(linkRegex, "link");
-    apply(boldRegex, "bold");
-    apply(italicRegex, "italic");
-    return (
-      <p key={pi} className="mb-3 whitespace-pre-line last:mb-0">
-        {parts.map((p, i) => {
-          if (p.type === "bold") return <strong key={i}>{p.value}</strong>;
-          if (p.type === "italic") return <em key={i}>{p.value}</em>;
-          if (p.type === "link" && p.href) {
-            return (
-              <a
-                key={i}
-                href={p.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[color:var(--color-admin-info)] underline"
-              >
-                {p.value}
-              </a>
-            );
-          }
-          return <span key={i}>{p.value}</span>;
-        })}
-      </p>
-    );
-  });
 }
 
 const MESSAGE_PERTE_BROUILLON = "Fermer sans envoyer ? Le message en cours sera perdu.";
@@ -142,6 +80,13 @@ export function ReplyComposer({
   const [internalNote, setInternalNote] = useState("");
   const [, startTransition] = useTransition();
   const [state, setState] = useState<ReplyUiState>({ phase: "idle" });
+  // Aperçu serveur + empreinte locale de la saisie qui l'a produit : « Envoyer » ne s'active
+  // que si l'empreinte de la saisie en cours est la même.
+  const [apercu, setApercu] = useState<{ empreinte: string; contenu: ApercuLecteur } | null>(null);
+  const [apercuEnCours, setApercuEnCours] = useState(false);
+  const [apercuErreur, setApercuErreur] = useState<string | null>(null);
+  const empreinteCourante = JSON.stringify([subject, body]);
+  const apercuAJour = apercu !== null && apercu.empreinte === empreinteCourante;
 
   // Le vrai « ✓ envoyée » vient du worker (envoi asynchrone). Tant qu'on est
   // « queued », on interroge le statut réel toutes les 2 s (max ~12 s) jusqu'à
@@ -183,8 +128,24 @@ export function ReplyComposer({
     if (t && t.body) setBody(t.body);
   }
 
+  function voirApercu() {
+    const empreinte = empreinteCourante;
+    setApercuEnCours(true);
+    setApercuErreur(null);
+    startTransition(async () => {
+      const r = await apercuReponseDemandeAction({ submissionId, subject, bodyMarkdown: body });
+      setApercuEnCours(false);
+      if (r.ok) setApercu({ empreinte, contenu: r.apercu });
+      else {
+        setApercu(null);
+        setApercuErreur(replyErrorLabel(r.error));
+      }
+    });
+  }
+
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!apercuAJour) return;
     setState({ phase: "sending" });
     startTransition(async () => {
       const r = await replyToSubmissionAction({
@@ -241,6 +202,8 @@ export function ReplyComposer({
     setBody("");
     setInternalNote("");
     setTemplate("default");
+    setApercu(null);
+    setApercuErreur(null);
     setState({ phase: "idle" });
     setOpen(false);
     router.refresh();
@@ -316,32 +279,47 @@ export function ReplyComposer({
               Message{" "}
               <span className="text-xs">(markdown léger : **gras**, *italique*, [lien](url))</span>
             </label>
-            <div className="grid grid-cols-1 gap-3 lg:grid-cols-2">
-              <textarea
-                id="reply-body"
-                value={body}
-                onChange={(e) => setBody(e.target.value)}
-                rows={12}
-                maxLength={50_000}
-                required
-                className="admin-input admin-textarea admin-input-mono"
-                disabled={inputsDisabled}
-                aria-describedby="reply-body-preview"
-              />
-              <div
-                id="reply-body-preview"
-                aria-label="Aperçu du message"
-                className="rounded-lg border border-[color:var(--color-admin-border-default)] bg-[color:var(--color-admin-bg-subtle)] p-4 text-sm leading-relaxed"
-              >
-                {body.trim() === "" ? (
-                  <p className="text-[color:var(--color-admin-fg-muted)] italic">
-                    L&apos;aperçu apparaîtra ici (markdown léger rendu).
-                  </p>
-                ) : (
-                  renderMarkdownPreview(body)
-                )}
+            <textarea
+              id="reply-body"
+              value={body}
+              onChange={(e) => setBody(e.target.value)}
+              rows={12}
+              maxLength={50_000}
+              required
+              className="admin-input admin-textarea admin-input-mono"
+              disabled={inputsDisabled}
+            />
+          </div>
+
+          <div className="admin-field">
+            <button
+              type="button"
+              onClick={voirApercu}
+              className="admin-button-ghost"
+              disabled={inputsDisabled || apercuEnCours || body.trim() === ""}
+            >
+              {apercuEnCours ? "Génération de l'aperçu…" : "Voir l'aperçu exact"}
+            </button>
+            {apercuErreur ? (
+              <p role="alert" className="admin-alert admin-alert-error mt-2">
+                {apercuErreur}
+              </p>
+            ) : null}
+            {apercu && !apercuAJour ? (
+              <p role="status" className="mt-2 text-sm text-[color:var(--color-admin-fg-muted)]">
+                Le message a changé depuis l&apos;aperçu : regardez-le de nouveau avant
+                d&apos;envoyer.
+              </p>
+            ) : null}
+            {apercu ? (
+              <div className="mt-3" aria-label="Aperçu exact du message">
+                <LecteurEmail
+                  apercu={apercu.contenu}
+                  liensInertes
+                  titre="Aperçu exact de la réponse"
+                />
               </div>
-            </div>
+            ) : null}
           </div>
 
           <div className="admin-field">
@@ -397,7 +375,7 @@ export function ReplyComposer({
                     Réessayer
                   </button>
                 ) : (
-                  <button type="submit" className="admin-button">
+                  <button type="submit" className="admin-button" disabled={!apercuAJour}>
                     Renvoyer
                   </button>
                 )}
@@ -412,7 +390,11 @@ export function ReplyComposer({
                 >
                   Annuler
                 </button>
-                <button type="submit" className="admin-button" disabled={state.phase === "sending"}>
+                <button
+                  type="submit"
+                  className="admin-button"
+                  disabled={state.phase === "sending" || !apercuAJour}
+                >
                   {state.phase === "sending" ? "Envoi…" : "Envoyer"}
                 </button>
               </>
