@@ -1,0 +1,167 @@
+// Fiche locale Nice : chiffres Urssaf (open.urssaf.fr) et geo.api.gouv.fr relevés le 2026-11-18.
+// Aucun chiffre sans source (voir les champs url*) ; la prose ne reprend que ces champs.
+import type { FicheLocale } from "./types";
+
+export const FICHE_NICE: FicheLocale = {
+  slug: "nice",
+  nomVille: "Nice",
+  dateFiche: "2026-11-18",
+  population: {
+    valeur: 357737,
+    source: "INSEE, population municipale, via geo.api.gouv.fr",
+    url: "https://geo.api.gouv.fr/communes/06088?fields=nom,population,epci",
+    consulteLe: "2026-11-18",
+  },
+  epci: {
+    nom: "Métropole Nice Côte d'Azur",
+    code: "200030195",
+    population: 568596,
+    nombreCommunes: 51,
+    source: "geo.api.gouv.fr (intercommunalités)",
+    url: "https://geo.api.gouv.fr/epcis/200030195/communes?fields=nom,code,population",
+    communes: [
+      "Aspremont",
+      "Bairols",
+      "Beaulieu-sur-Mer",
+      "Belvédère",
+      "Bonson",
+      "Cagnes-sur-Mer",
+      "Cap-d'Ail",
+      "Carros",
+      "Castagniers",
+      "Châteauneuf-Villevieille",
+      "Clans",
+      "Colomars",
+      "Drap",
+      "Duranus",
+      "Èze",
+      "Falicon",
+      "Gattières",
+      "Gilette",
+      "Ilonse",
+      "Isola",
+      "La Bollène-Vésubie",
+      "La Gaude",
+      "La Roquette-sur-Var",
+      "La Tour",
+      "La Trinité",
+      "Lantosque",
+      "Le Broc",
+      "Levens",
+      "Marie",
+      "Nice",
+      "Rimplas",
+      "Roquebillière",
+      "Roubion",
+      "Roure",
+      "Saint-André-de-la-Roche",
+      "Saint-Blaise",
+      "Saint-Dalmas-le-Selvage",
+      "Saint-Étienne-de-Tinée",
+      "Saint-Jean-Cap-Ferrat",
+      "Saint-Jeannet",
+      "Saint-Laurent-du-Var",
+      "Saint-Martin-du-Var",
+      "Saint-Martin-Vésubie",
+      "Saint-Sauveur-sur-Tinée",
+      "Tournefort",
+      "Tourrette-Levens",
+      "Utelle",
+      "Valdeblore",
+      "Venanson",
+      "Vence",
+      "Villefranche-sur-Mer",
+    ],
+    consulteLe: "2026-11-18",
+  },
+  entreprises: {
+    millesime: 2025,
+    perimetre: "commune",
+    etablissements: 13953,
+    salaries: 111608,
+    urlTotal:
+      "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/etablissements-et-effectifs-salaries-au-niveau-commune-x-ape-last/records?select=sum(nombre_d_etablissements_2025)%20as%20e%2C%20sum(effectifs_salaries_2025)%20as%20s&where=code_commune%20in%20(%2206088%22)",
+    urlSecteurs:
+      "https://open.urssaf.fr/api/explore/v2.1/catalog/datasets/etablissements-et-effectifs-salaries-au-niveau-commune-x-ape-last/records?select=secteur_na17%2C%20sum(nombre_d_etablissements_2025)%20as%20e%2C%20sum(effectifs_salaries_2025)%20as%20s&group_by=secteur_na17&order_by=e%20desc&where=code_commune%20in%20(%2206088%22)&limit=20",
+    source:
+      "Urssaf, établissements employeurs et effectifs salariés du secteur privé, par commune et APE (au 31/12/2025)",
+    consulteLe: "2026-11-18",
+    secteurs: [
+      {
+        code: "MN",
+        libelle: "Activités scientifiques, techniques et services administratifs",
+        etablissements: 2924,
+        salaries: 18789,
+      },
+      {
+        code: "GZ",
+        libelle: "Commerce",
+        etablissements: 2695,
+        salaries: 19178,
+      },
+      {
+        code: "IZ",
+        libelle: "Hébergement et restauration",
+        etablissements: 1782,
+        salaries: 14840,
+      },
+      {
+        code: "FZ",
+        libelle: "Construction",
+        etablissements: 1449,
+        salaries: 7441,
+      },
+    ],
+    infoCom: {
+      etablissements: 363,
+      salaries: 2546,
+    },
+    extras: {
+      transports: {
+        etablissements: 4,
+        salaries: 10,
+      },
+      agroalimentaire: {
+        etablissements: 225,
+        salaries: 1443,
+      },
+    },
+  },
+  institutions: [
+    {
+      nom: "Université Côte d’Azur",
+      categorie: "universite",
+      url: "https://univ-cotedazur.fr/",
+      role: "université implantée à Nice, Sophia-Antipolis, Cannes, Grasse et Menton",
+      consulteLe: "2026-11-18",
+    },
+    {
+      nom: "Aéroport Nice Côte d’Azur",
+      categorie: "aeroport",
+      url: "https://www.nice.aeroport.fr/",
+      role: "aéroport de la métropole",
+      consulteLe: "2026-11-18",
+    },
+  ],
+  prose: {
+    tissu:
+      "Nice compte 13 953 établissements employeurs privés, qui emploient 111 608 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives en regroupent 2 924 et le commerce 2 695, soit presque le même ordre de grandeur. Viennent ensuite l’hébergement-restauration (1 782) et la construction (1 449). La restauration et la construction y pèsent donc presque autant que les services aux entreprises.",
+    ecosysteme:
+      "L’Université Côte d’Azur, implantée à Nice, Sophia-Antipolis, Cannes, Grasse et Menton, est le principal repère public de la formation supérieure et de la recherche. L’aéroport Nice Côte d’Azur est celui de la métropole. Nous n’indiquons ici ni technopôle ni entreprise que nous n’aurions pas vérifié sur une source officielle.",
+    zone: "La Métropole Nice Côte d’Azur rassemble 51 communes et 568 596 habitants. La Journée IA se tient dans vos locaux, à Nice ou dans l’une d’elles. Nous n’avons pas de bureau sur place. Pour les modalités de déplacement, consultez la politique de déplacement. Parmi les communes de l’intercommunalité : Aspremont, Bairols, Beaulieu-sur-Mer, Belvédère, Bonson. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+  },
+  faqLocale: [
+    {
+      q: "Les petites structures niçoises ont-elles leur place dans la Journée IA ?",
+      a: "Oui. À Nice, l’Urssaf compte 1 782 établissements d’hébergement-restauration et 1 449 de construction parmi 13 953 établissements employeurs privés. La journée part de vos dossiers réels, avec jusqu’à 15 personnes, quelle que soit la taille de l’entreprise. Les chiffres viennent du jeu de données Urssaf par commune et APE, consultable en ligne par le lien de la fiche.",
+    },
+    {
+      q: "Intervenez-vous hors de Nice, dans la métropole ?",
+      a: "Oui, dans les 51 communes de la Métropole Nice Côte d’Azur. Nous venons chez vous, sans bureau local. Le diagnostic gratuit de 45 minutes sert à fixer la date et l’adresse ; le déroulé reste le même qu’ailleurs en France. Exemples de communes concernées : Valdeblore, Venanson, Vence, Villefranche-sur-Mer.",
+    },
+    {
+      q: "Quels repères publics pour l’innovation à Nice ?",
+      a: "L’Université Côte d’Azur, présente à Nice et à Sophia-Antipolis, est le repère principal, et l’aéroport Nice Côte d’Azur la porte d’entrée de la métropole. Nous ne citons pas d’entreprise privée. Aucun partenariat n’existe avec ces institutions. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+    },
+  ],
+};
