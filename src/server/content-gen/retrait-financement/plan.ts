@@ -34,7 +34,10 @@ export interface Proposition {
   cle: string;
   table: Table;
   id: string;
-  /** Valeurs d'origine des SEULS champs modifiés (c'est la sauvegarde). */
+  /**
+   * SAUVEGARDE : valeurs d'origine de TOUS les champs textuels du contenu (et le statut pour les
+   * offres), modifiés ou non. La restauration ne réécrit que les clés de `apres`.
+   */
   avant: Champs;
   /** Nouvelles valeurs. */
   apres: Champs;
@@ -68,6 +71,11 @@ class Collecteur {
 
   constructor(private readonly nom: string) {}
 
+  /** Garde la valeur d'origine d'un champ dans la sauvegarde, qu'il soit modifié ou non. */
+  garder(champ: string, original: unknown): void {
+    this.avant[champ] = original === undefined ? null : original;
+  }
+
   champ(
     champ: string,
     original: unknown,
@@ -75,14 +83,13 @@ class Collecteur {
     modifie: boolean,
     ambigus: string[],
   ): void {
-    if (modifie) {
-      this.avant[champ] = original;
-      this.apres[champ] = nouveau;
-    }
+    this.garder(champ, original);
+    if (modifie) this.apres[champ] = nouveau;
     for (const a of ambigus) this.ambigus.push(`${this.nom}.${champ} : ${a}`);
   }
 
   texte(champ: string, valeur: string | null | undefined, langue: Langue, titre = false): void {
+    this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return;
     this.conserves.push(...conservees(valeur));
     const r = reecrireTexte(valeur, langue, { titre });
@@ -90,6 +97,7 @@ class Collecteur {
   }
 
   html(champ: string, valeur: string | null | undefined, langue: Langue): string | null {
+    this.garder(champ, valeur);
     if (typeof valeur !== "string" || valeur === "") return null;
     this.conserves.push(...conservees(htmlVersTexte(valeur)));
     const r = reecrireHtml(valeur, langue);
@@ -98,6 +106,7 @@ class Collecteur {
   }
 
   json(champ: string, valeur: unknown, langue: Langue): void {
+    this.garder(champ, valeur);
     if (valeur === null || valeur === undefined) return;
     const r = reecrireJson(valeur, langue);
     this.champ(champ, valeur, r.valeur, r.modifie, r.ambigus);
@@ -140,6 +149,7 @@ export function proposerTraduction(l: LigneTraduction): Proposition | null {
   const corps = c.html("body", l.body, langue);
   c.json("bodyJson", l.bodyJson, langue);
   if (corps !== null) c.champ("bodyText", l.bodyText, htmlVersTexte(corps), true, []);
+  else c.garder("bodyText", l.bodyText);
   c.texte("metaTitle", l.metaTitle, langue, true);
   c.texte("metaDescription", l.metaDescription, langue);
   c.texte("ogImageAlt", l.ogImageAlt, langue);
@@ -181,7 +191,7 @@ export function proposerArticle(l: LigneArticle): Proposition | null {
       return r.modifie ? { ...o, question: r.valeur.question, answer: r.valeur.reponse } : it;
     });
     c.champ("faqJson", l.faqJson, sortie, modifie, ambigus);
-  }
+  } else c.garder("faqJson", l.faqJson);
   return c.resultat("article", l.id);
 }
 
@@ -226,13 +236,70 @@ export interface LigneOffre {
   bodyTextEn: string;
   metaTitle: string | null;
   metaDescription: string | null;
+  /** `[{ labelFr, labelEn }]` : avantages affichés sur la page de l'offre. */
+  perks?: unknown;
+}
+
+/** Champs textuels d'une offre, tous gardés dans la sauvegarde d'une offre archivée. */
+const CHAMPS_TEXTE_OFFRE = [
+  "titleFr",
+  "titleEn",
+  "summaryFr",
+  "summaryEn",
+  "bodyFr",
+  "bodyEn",
+  "bodyJsonFr",
+  "bodyJsonEn",
+  "bodyTextFr",
+  "bodyTextEn",
+  "metaTitle",
+  "metaDescription",
+  "perks",
+] as const;
+
+/**
+ * Avantages (`perks`) : un avantage dont le libellé parle de financement est retiré ; un libellé
+ * qui ne contient qu'un fragment (« (CPF) ») est nettoyé. Tableau vide possible (la page masque
+ * alors le bloc).
+ */
+export function reecrirePerks(perks: unknown): { valeur: unknown; modifie: boolean } {
+  if (!Array.isArray(perks)) return { valeur: perks, modifie: false };
+  let modifie = false;
+  const sortie: unknown[] = [];
+  for (const it of perks as unknown[]) {
+    if (!it || typeof it !== "object") {
+      sortie.push(it);
+      continue;
+    }
+    const o = { ...(it as Record<string, unknown>) };
+    let retire = false;
+    for (const [cle, langue] of [
+      ["labelFr", "fr"],
+      ["labelEn", "en"],
+    ] as const) {
+      const v = o[cle];
+      if (typeof v !== "string") continue;
+      const r = reecrireTexte(v, langue);
+      if (r.ambigus.length > 0) retire = true;
+      else if (r.modifie) {
+        o[cle] = r.valeur;
+        modifie = true;
+      }
+    }
+    if (retire) modifie = true;
+    else sortie.push(o);
+  }
+  return { valeur: modifie ? sortie : perks, modifie };
 }
 
 export function proposerOffre(l: LigneOffre): Proposition | null {
   const c = new Collecteur(`job_offer:${l.id}`);
   if (SLUGS_OFFRES_ARCHIVEES.includes(l.slug)) {
     // Arbitrage 1 : poste que nous ne proposons pas → statut existant « archived », données gardées.
-    if (l.status !== "archived") c.champ("status", l.status, "archived", true, []);
+    if (l.status === "archived") return null;
+    // Sauvegarde complète : statut ET tous les champs textuels d'origine (rien n'est supprimé).
+    for (const k of CHAMPS_TEXTE_OFFRE) c.garder(k, (l as unknown as Champs)[k]);
+    c.champ("status", l.status, "archived", true, []);
     return c.resultat("job_offer", l.id);
   }
   c.texte("titleFr", l.titleFr, "fr", true);
@@ -244,9 +311,15 @@ export function proposerOffre(l: LigneOffre): Proposition | null {
   c.json("bodyJsonFr", l.bodyJsonFr, "fr");
   c.json("bodyJsonEn", l.bodyJsonEn, "en");
   if (fr !== null) c.champ("bodyTextFr", l.bodyTextFr, htmlVersTexte(fr), true, []);
+  else c.garder("bodyTextFr", l.bodyTextFr);
   if (en !== null) c.champ("bodyTextEn", l.bodyTextEn, htmlVersTexte(en), true, []);
+  else c.garder("bodyTextEn", l.bodyTextEn);
   c.texte("metaTitle", l.metaTitle, "fr", true);
   c.texte("metaDescription", l.metaDescription, "fr");
+  if (l.perks !== undefined && l.perks !== null) {
+    const p = reecrirePerks(l.perks);
+    c.champ("perks", l.perks, p.valeur, p.modifie, []);
+  }
   return c.resultat("job_offer", l.id);
 }
 
@@ -288,6 +361,18 @@ export function appliquerOverrides(
   return { proposition: { ...p, avant, apres, ambigus }, ignores };
 }
 
+/**
+ * Restauration : on ne remet QUE les champs que le script a écrits (clés de `apres`), avec leur
+ * valeur d'origine tirée de la sauvegarde complète (`avant`). Les autres champs, éventuellement
+ * modifiés à la main depuis, ne sont jamais touchés. Compatible avec les anciennes sauvegardes
+ * (qui ne portaient que les champs modifiés).
+ */
+export function champsARestaurer(avant: Champs, apres: Champs): Champs {
+  const out: Champs = {};
+  for (const k of Object.keys(apres)) out[k] = avant[k] === undefined ? null : avant[k];
+  return out;
+}
+
 /** Empreinte du plan : (clé, valeurs après) triés. `apply` exige la même que l'essai à blanc. */
 export function empreintePlan(propositions: readonly Proposition[]): string {
   const stable = [...propositions]
@@ -315,4 +400,24 @@ export function resume(propositions: readonly Proposition[]): {
     if (classe === "ambigu" && Object.keys(p.apres).length > 0) aReecrire++;
   }
   return { a_reecrire: aReecrire, ambigus, total: propositions.length };
+}
+
+/** Rapport de restauration : clés et noms de champs seulement (aucun contenu). */
+export function rapportRestauration(r: {
+  restaures: number;
+  divergences: string[];
+  lignes: string[];
+}): string {
+  const l = [
+    "# Retrait des mentions de financement — restore",
+    "",
+    `Contenus restaurés : ${r.restaures}`,
+    "",
+    "## Restaurés",
+    ...r.lignes.map((x) => `- ${x}`),
+    "",
+    "## Divergences (non restaurés)",
+    ...r.divergences.map((x) => `- ${x}`),
+  ];
+  return `${l.join("\n")}\n`;
 }

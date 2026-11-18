@@ -11,7 +11,8 @@
  * Options : --only=<id,id,…> (ids de lignes) · --report=<fichier> · --overrides=<fichier.json>.
  *
  * Sauvegarde : une ligne `ContentGenAuditLog` par contenu (action « retrait-financement-2026-11 »,
- * settingKey « <table>:<id> », oldValue = champs d'origine, newValue = nouveaux champs), écrite DANS
+ * settingKey « <table>:<id> », oldValue = TOUS les champs textuels d'origine du contenu (et le statut
+ * pour les offres), newValue = les seuls champs modifiés), écrite DANS
  * la même transaction que la mise à jour. Aucune migration. Aucune sauvegarde existante n'est écrasée.
  *
  * Le script n'appelle ni l'IA ni le réseau. La purge du cache et IndexNow sont faites par le
@@ -27,12 +28,14 @@ import {
   type Proposition,
   type Table,
   appliquerOverrides,
+  champsARestaurer,
   empreinte,
   empreintePlan,
   proposerArticle,
   proposerFaq,
   proposerOffre,
   proposerTraduction,
+  rapportRestauration,
   resume,
 } from "../../src/server/content-gen/retrait-financement/plan";
 
@@ -71,6 +74,31 @@ function lireOptions(argv: string[]): Options {
     overrides: val("overrides"),
     urls: val("urls"),
   };
+}
+
+// ───────────────────────────── URL à purger ─────────────────────────────
+
+/** Pages publiques d'un article (une par traduction). */
+async function urlsArticle(articleId: string): Promise<string[]> {
+  const ts = await prisma.articleTranslation.findMany({
+    where: { articleId },
+    select: { locale: true, slug: true },
+  });
+  return ts.map((t) => `/${t.locale}/blog/${t.slug}`);
+}
+
+/** Pages à purger pour une ligne : une FAQ fille s'affiche sur la page de son article parent. */
+async function urlsDe(table: Table, ligne: Record<string, unknown>): Promise<string[]> {
+  switch (table) {
+    case "article_translation":
+      return [`/${String(ligne.locale)}/blog/${String(ligne.slug)}`];
+    case "article":
+      return urlsArticle(String(ligne.id));
+    case "faq":
+      return typeof ligne.parentArticleId === "string" ? urlsArticle(ligne.parentArticleId) : [];
+    case "job_offer":
+      return [`/fr/carrieres/${String(ligne.slug)}`];
+  }
 }
 
 // ───────────────────────────── lecture ─────────────────────────────
@@ -121,7 +149,10 @@ async function construirePlan(
   }
   for (const f of await prisma.fAQ.findMany({ where: { parentArticleId: { not: null } } })) {
     if (!garde(f.id)) continue;
-    ajouter(proposerFaq(f), f as unknown as Champs, null);
+    const p = proposerFaq(f);
+    ajouter(p, f as unknown as Champs, null);
+    // La FAQ fille se rend sur la page de l'article parent : purger cette page aussi.
+    if (p && Object.keys(p.apres).length > 0) urls.push(...(await urlsDe("faq", f)));
   }
   for (const j of await prisma.jobOffer.findMany()) {
     if (!garde(j.id)) continue;
@@ -201,13 +232,15 @@ async function appliquer(propositions: Proposition[]): Promise<{ ecrits: number;
 
 async function restaurer(
   only: Set<string> | null,
-): Promise<{ restaures: number; divergences: string[] }> {
+): Promise<{ restaures: number; divergences: string[]; urls: string[]; lignes: string[] }> {
   const lignes = await prisma.contentGenAuditLog.findMany({
     where: { action: ACTION_RETRAIT },
     orderBy: { createdAt: "asc" },
   });
   let restaures = 0;
   const divergences: string[] = [];
+  const urls: string[] = [];
+  const restaurees: string[] = [];
   for (const l of lignes) {
     const [table, id] = (l.settingKey ?? "").split(":") as [Table, string];
     if (!table || !id || (only && !only.has(id))) continue;
@@ -239,20 +272,24 @@ async function restaurer(
         );
         return;
       }
-      await d.update({ where: { id }, data: donnees(avant) });
+      // Seuls les champs écrits par le script sont remis (la sauvegarde porte tous les champs).
+      const remis = champsARestaurer(avant, apres);
+      await d.update({ where: { id }, data: donnees(remis) });
       await tx.contentGenAuditLog.create({
         data: {
           action: ACTION_RESTAURATION,
           settingKey: l.settingKey,
           oldValue: apres as Prisma.InputJsonValue,
-          newValue: avant as Prisma.InputJsonValue,
+          newValue: remis as Prisma.InputJsonValue,
           actorEmail: ACTEUR,
         },
       });
       restaures++;
+      restaurees.push(`${l.settingKey} : ${Object.keys(remis).join(", ")}`);
+      urls.push(...(await urlsDe(table, courant)));
     });
   }
-  return { restaures, divergences };
+  return { restaures, divergences, urls: [...new Set(urls)].sort(), lignes: restaurees };
 }
 
 // ───────────────────────────── rapport ─────────────────────────────
@@ -305,6 +342,9 @@ async function main() {
     const r = await restaurer(o.only);
     console.log(`Restaurés : ${r.restaures}`);
     for (const d of r.divergences) console.log(`⚠ ${d}`);
+    // Le workflow purge le cache et notifie IndexNow à partir de ces fichiers, aussi en restore.
+    if (o.rapport) fs.writeFileSync(o.rapport, rapportRestauration(r));
+    if (o.urls) fs.writeFileSync(o.urls, r.urls.length > 0 ? `${r.urls.join("\n")}\n` : "");
     return;
   }
 

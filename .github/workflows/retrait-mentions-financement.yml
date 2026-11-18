@@ -242,6 +242,8 @@ jobs:
           FLAGS="--$MODE --overrides=scripts/content-gen/retrait-financement-overrides.json --report=/tmp/rapport.md --urls=/tmp/urls.txt"
           if [ "$MODE" = "apply" ]; then FLAGS="$FLAGS --plan-sha=$PLAN_SHA"; fi
           if [ -n "$ONLY" ]; then FLAGS="$FLAGS --only=$ONLY"; fi
+          # Jamais de fichier d'un passage précédent : /tmp du conteneur worker persiste entre les runs.
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$WORKER' rm -f /tmp/rapport.md /tmp/urls.txt"
           ssh -o BatchMode=yes root@178.105.55.15 \
             "docker exec '$WORKER' sh -ec 'cd /app && node_modules/.bin/tsx scripts/content-gen/retrait-mentions-financement.ts $FLAGS'" 2>&1 | tee run.log
           mkdir -p out

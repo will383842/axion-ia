@@ -107,7 +107,8 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const offer = await getJobOfferBySlug(slug);
-  if (!offer || isJobOfferArchived(offer)) return { robots: { index: false, follow: false }, alternates: {} };
+  if (!offer || isJobOfferArchived(offer))
+    return { robots: { index: false, follow: false }, alternates: {} };
 
   const isFr = locale === "fr";
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).

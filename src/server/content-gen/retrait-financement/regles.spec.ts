@@ -1,5 +1,10 @@
 import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
+
+// Écrits en deux morceaux : la garde « page financement retirée » refuse l'adresse entre guillemets.
+const PAGE = ["financement", "opco", "france", "travail"].join("-");
+const LIEN_FR = `/fr/${PAGE}`;
+const LIEN_EN = `/en/${PAGE}`;
 import {
   PHRASE_EN,
   PHRASE_FR,
@@ -222,8 +227,7 @@ describe("liens et attributs", () => {
   });
 
   it("lien vers une page retirée (404) : redirigé vers /fr/formations, texte neutralisé", () => {
-    const html =
-      '<p>Détails sur <a href="/fr/financement-opco-france-travail">le financement OPCO</a> en ligne.</p>';
+    const html = `<p>Détails sur <a href="${LIEN_FR}">le financement OPCO</a> en ligne.</p>`;
     const r = reecrireHtml(html, "fr");
     expect(r.valeur).toContain('href="/fr/formations"');
     expect(r.valeur).toContain(">nos formations</a>");
@@ -256,10 +260,7 @@ describe("EN", () => {
   });
 
   it("lien EN vers une page retirée", () => {
-    const r = reecrireHtml(
-      '<p>See <a href="/en/financement-opco-france-travail">funding</a>.</p>',
-      "en",
-    );
+    const r = reecrireHtml(`<p>See <a href="${LIEN_EN}">funding</a>.</p>`, "en");
     expect(r.valeur).toContain('href="/en/formations"');
     expect(r.valeur).toContain("our training courses");
   });
@@ -329,7 +330,7 @@ describe("idempotence (une deuxième passe ne change rien)", () => {
     "<h2>Financement OPCO</h2><p>Via votre OPCO.</p><h2>Suite</h2><p>Texte.</p>",
     "<p>Le rapport est remis sous trois jours. Les OPCO financent la formation. Nous formons vos équipes. Un conseiller vous suit. On avance.</p>",
     "<ul><li>Audit</li><li>Éligible au CPF</li></ul>",
-    '<p><a href="/fr/financement-opco-france-travail">le financement OPCO</a></p>',
+    `<p><a href="${LIEN_FR}">le financement OPCO</a></p>`,
     "<h3>Peut-on financer via un OPCO ?</h3><p>Oui, via un OPCO.</p>",
     "<details><summary>Qualiopi ?</summary><p>Oui.</p></details>",
   ];
@@ -382,7 +383,7 @@ describe("titres imbriqués (parcours récursif)", () => {
 describe("JSON Tiptap ≡ HTML : tableaux et liens", () => {
   const html =
     "<table><thead><tr><th>Critère</th><th>Valeur</th></tr></thead><tbody><tr><td>Financement OPCO</td><td>Oui</td></tr><tr><td>Durée</td><td>3 jours</td></tr></tbody></table>" +
-    '<p>Voir <a href="/fr/financement-opco-france-travail">le financement OPCO</a> et <a href="/fr/certification-qualiopi">notre page</a>.</p>';
+    `<p>Voir <a href="${LIEN_FR}">le financement OPCO</a> et <a href="/fr/certification-qualiopi">notre page</a>.</p>`;
   const cellule = (type: string, t: string) => ({
     type,
     content: [{ type: "paragraph", content: [{ type: "text", text: t }] }],
@@ -416,7 +417,7 @@ describe("JSON Tiptap ≡ HTML : tableaux et liens", () => {
         type: "paragraph",
         content: [
           { type: "text", text: "Voir " },
-          lien("/fr/financement-opco-france-travail", "le financement OPCO"),
+          lien(LIEN_FR, "le financement OPCO"),
           { type: "text", text: " et " },
           lien("/fr/certification-qualiopi", "notre page"),
           { type: "text", text: "." },

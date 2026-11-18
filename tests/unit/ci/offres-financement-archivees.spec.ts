@@ -32,8 +32,10 @@ describe("offres de financement archivées", () => {
 
   it("la page détail répond notFound() pour une offre archivée (metadata noindex aussi)", () => {
     const page = lire("src/app/[locale]/carrieres/[slug]/page.tsx");
-    expect(page).toMatch(/if \(!offer \|\| isJobOfferArchived\(offer\)\) notFound\(\);/);
-    expect(page).toMatch(/if \(!offer \|\| isJobOfferArchived\(offer\)\) return \{ robots/);
+    const compte = page.match(/!offer \|\| isJobOfferArchived\(offer\)/g) ?? [];
+    expect(compte.length).toBe(2);
+    expect(page).toMatch(/isJobOfferArchived\(offer\)\)\s*notFound\(\)/);
+    expect(page).toMatch(/isJobOfferArchived\(offer\)\)\s*return\s*\{\s*robots/);
   });
 
   const archivee = {

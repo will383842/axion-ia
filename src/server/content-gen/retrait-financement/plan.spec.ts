@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 import {
   SLUGS_OFFRES_ARCHIVEES,
   appliquerOverrides,
+  champsARestaurer,
   empreinte,
   empreintePlan,
   proposerArticle,
   proposerFaq,
   proposerOffre,
   proposerTraduction,
+  rapportRestauration,
+  reecrirePerks,
 } from "./plan";
 import { PHRASE_FR } from "./regles";
 
@@ -37,7 +40,7 @@ describe("plan — offres d'emploi", () => {
         offre({ slug, titleFr: "Assistant — OPCO", bodyFr: "<p>CPF, OPCO</p>" }),
       );
       expect(p?.apres).toEqual({ status: "archived" });
-      expect(p?.avant).toEqual({ status: "published" });
+      expect(p?.avant.status).toBe("published");
     }
   });
   it("offre déjà archivée : rien à faire", () => {
@@ -153,5 +156,104 @@ describe("overrides et empreinte du plan", () => {
     expect(empreintePlan([a])).not.toBe(
       empreintePlan([{ ...a, apres: { ...a.apres, answerFr: "autre" } }]),
     );
+  });
+});
+
+describe("sauvegarde complète (oldValue) et restauration partielle", () => {
+  it("traduction : avant porte TOUS les champs textuels d'origine, apres les seuls modifiés", () => {
+    const t = {
+      id: "t9",
+      locale: "fr" as const,
+      title: "Guide",
+      excerpt: "Un extrait.",
+      body: "<p>Intro.</p><h2>Financement OPCO</h2><p>Via l'OPCO.</p>",
+      bodyJson: { type: "doc", content: [] },
+      bodyText: "x",
+      metaTitle: "Meta",
+      metaDescription: "Desc",
+      ogImageAlt: null,
+    };
+    const p = proposerTraduction(t)!;
+    expect(Object.keys(p.apres).sort()).toEqual(["body", "bodyText"]);
+    for (const [k, v] of Object.entries(t)) {
+      if (k === "id" || k === "locale") continue;
+      expect(p.avant, k).toHaveProperty(k);
+      expect(p.avant[k], k).toEqual(v);
+    }
+  });
+  it("offre archivée : avant = statut + tous les champs textuels ; apres = statut seul", () => {
+    const o = offre({
+      slug: "charge-subventions",
+      titleFr: "Chargé de subventions",
+      bodyFr: "<p>CPF, OPCO</p>",
+      bodyTextFr: "CPF, OPCO",
+      perks: [{ labelFr: "a", labelEn: "b" }],
+    });
+    const p = proposerOffre(o)!;
+    expect(p.apres).toEqual({ status: "archived" });
+    expect(p.avant.status).toBe("published");
+    for (const k of [
+      "titleFr",
+      "titleEn",
+      "summaryFr",
+      "bodyFr",
+      "bodyEn",
+      "bodyTextFr",
+      "metaTitle",
+      "perks",
+    ])
+      expect(p.avant, k).toHaveProperty(k);
+    expect(p.avant.bodyFr).toBe("<p>CPF, OPCO</p>");
+    expect(p.avant.perks).toEqual([{ labelFr: "a", labelEn: "b" }]);
+  });
+  it("FAQ et article : tous les champs d'origine gardés", () => {
+    const f = proposerFaq({
+      id: "f",
+      questionFr: "OPCO ?",
+      answerFr: "OPCO",
+      questionEn: "Delay?",
+      answerEn: "Three days.",
+      metaTitle: "m",
+      metaDescription: null,
+    })!;
+    expect(f.avant).toMatchObject({
+      questionEn: "Delay?",
+      answerEn: "Three days.",
+      metaTitle: "m",
+    });
+    expect(f.avant).toHaveProperty("metaDescription", null);
+  });
+  it("champsARestaurer : seulement les clés écrites, valeurs d'origine", () => {
+    expect(champsARestaurer({ a: 1, b: 2, c: 3 }, { a: 9 })).toEqual({ a: 1 });
+    // ancienne sauvegarde (champs modifiés seulement) : même résultat
+    expect(champsARestaurer({ a: 1 }, { a: 9 })).toEqual({ a: 1 });
+  });
+  it("rapport de restauration : sans contenu, avec restaurés et divergences", () => {
+    const r = rapportRestauration({
+      restaures: 1,
+      lignes: ["faq:f : answerFr"],
+      divergences: ["x : divergence"],
+    });
+    expect(r).toContain("Contenus restaurés : 1");
+    expect(r).toContain("faq:f : answerFr");
+    expect(r).toContain("x : divergence");
+  });
+});
+
+describe("perks des offres", () => {
+  it("un avantage de financement est retiré, les autres restent ; idempotent", () => {
+    const perks = [
+      { labelFr: "Mutuelle", labelEn: "Health" },
+      { labelFr: "Formations financées par l'OPCO", labelEn: "OPCO-funded training" },
+    ];
+    const p = proposerOffre(offre({ perks }))!;
+    expect(p.apres.perks).toEqual([{ labelFr: "Mutuelle", labelEn: "Health" }]);
+    expect(p.avant.perks).toEqual(perks);
+    expect(reecrirePerks(p.apres.perks).modifie).toBe(false);
+  });
+  it("perks propres : rien à faire", () => {
+    expect(
+      proposerOffre(offre({ perks: [{ labelFr: "Mutuelle", labelEn: "Health" }] })),
+    ).toBeNull();
   });
 });

@@ -30,6 +30,11 @@ describe("workflow retrait-mentions-financement : garde-fous", () => {
     expect(yml).toContain("split -l 30");
     expect(yml).toContain("api.indexnow.org");
   });
+  it("les fichiers /tmp d'un passage précédent sont supprimés avant l'exécution", () => {
+    const rm = yml.indexOf("rm -f /tmp/rapport.md /tmp/urls.txt");
+    expect(rm).toBeGreaterThan(-1);
+    expect(rm).toBeLessThan(yml.indexOf("node_modules/.bin/tsx scripts/content-gen/retrait"));
+  });
   it("aucune entrée n'est interpolée dans un script shell (variables d'environnement)", () => {
     const runs = yml
       .split("run: |")
@@ -44,6 +49,13 @@ describe("script retrait-mentions-financement : garde-fous", () => {
   it("essai à blanc par défaut, apply refusé sans empreinte", () => {
     expect(script).toContain('"dry-run"');
     expect(script).toContain("--apply exige --plan-sha");
+  });
+  it("restore écrit aussi --urls et --report ; la FAQ fille purge la page de l'article parent", () => {
+    const restore = script.slice(script.indexOf('if (o.mode === "restore")'));
+    expect(restore.slice(0, restore.indexOf("return;"))).toMatch(
+      /fs\.writeFileSync\(o\.rapport[\s\S]*fs\.writeFileSync\(o\.urls/,
+    );
+    expect(script).toMatch(/urlsDe\("faq", f\)/);
   });
   it("sauvegarde dans ContentGenAuditLog, sans suppression", () => {
     expect(script).toContain("contentGenAuditLog.create");
