@@ -13,7 +13,7 @@ import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 import { CHEMIN_JOURNEE_IA } from "@/content/journee-ia-commun";
 import type { FicheLocale } from "@/content/villes/fiches-locales/types";
 
-/** Passe à `true` quand la page /fr/cartographie est en ligne (PR #2125 fusionnée, route en 200). */
+/** Passe à `true` quand la page /fr/cartographie est en ligne (PR 2125 fusionnée, route en 200). */
 export const CARTOGRAPHIE_EN_LIGNE = false;
 
 const MOIS = [
