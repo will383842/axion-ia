@@ -161,12 +161,13 @@ export function getIndexableVillesCore(): ReadonlyArray<VilleData> {
   return VILLES_CORE.filter((v) => hasVilleCopy(v.slug));
 }
 
-/** Villes de la cohorte indexable à la date `now`, dans l'ordre de classement. */
-export function getVillesCoreIndexableNow(now: Date = new Date()): ReadonlyArray<VilleData> {
+/**
+ * Villes CITABLES dans les listes de maillage (pages nationales « nos villes »),
+ * population décroissante : les villes indexées SAUF celles de `VILLES_HORS_MAILLAGE`.
+ * Ce n'est PAS la liste des villes indexables : pour cela, utiliser `isVilleIndexable`.
+ */
+export function getVillesCitablesMaillage(now: Date = new Date()): ReadonlyArray<VilleData> {
   // Liste de MAILLAGE (pages nationales « nos villes ») : les villes hors maillage
   // (cf. `villes-indexees.ts`) n'y figurent jamais, tout en restant indexées.
-  return RANKED_INDEXABLE.filter((v) => estCitableDansLeMaillage(v.slug)).slice(
-    0,
-    cohortSize(now),
-  );
+  return RANKED_INDEXABLE.filter((v) => estCitableDansLeMaillage(v.slug)).slice(0, cohortSize(now));
 }

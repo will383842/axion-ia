@@ -171,7 +171,7 @@ vi.mock("@/content/villes/core", () => ({
   getVillesCoreByRegion: (region: string) => VILLES_FIXTURE.filter((v) => v.region === region),
   getVillesCoreByDepartement: (code: string) =>
     VILLES_FIXTURE.filter((v) => v.departement === code),
-  getVillesCoreIndexableNow: () => VILLES_FIXTURE,
+  getVillesCitablesMaillage: () => VILLES_FIXTURE,
   getIndexableVillesCore: () => VILLES_FIXTURE,
   hasVilleCopy: () => true,
   isPremiumVilleCore: () => true,
