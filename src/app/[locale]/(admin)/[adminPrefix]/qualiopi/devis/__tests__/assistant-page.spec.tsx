@@ -180,7 +180,7 @@ describe("interrupteur", () => {
 });
 
 describe("paramètres", () => {
-  it("clientId inconnu et rencontreId qui n'est pas un UUID : transmis au chargeur, qui les ignore ; pas de lien Rendez-vous", async () => {
+  it("clientId inconnu et rencontreId qui n'est pas un UUID : transmis au chargeur ; pas de lien Rendez-vous", async () => {
     await rendre({ clientId: "99999999-9999-4999-8999-999999999999", rencontreId: "pas-un-uuid" });
     expect(m.charger).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -189,10 +189,8 @@ describe("paramètres", () => {
       }),
     );
     expect(screen.queryByRole("link", { name: /Rendez-vous/ })).toBeNull();
-    expect(
-      (m.assistant.mock.calls[0]![0] as { payloadInitial: { clientId: unknown } }).payloadInitial
-        .clientId,
-    ).toBeNull();
+    // Que le chargeur ignore un clientId inconnu se vérifie sur le VRAI chargeur
+    // (`charger.spec.ts`, « clientId retenu seulement s'il existe ») : ici il est simulé.
   });
 
   it("rencontreId valide : lien de retour", async () => {
@@ -275,5 +273,64 @@ describe("?devis= sans brouillon d'assistant", () => {
     await rendre({ devis: DEVIS });
     expect(screen.getByTestId("assistant")).toBeTruthy();
     expect(m.devis).not.toHaveBeenCalled();
+  });
+});
+
+describe("?devis= invalide ou inconnu (jamais une page 500)", () => {
+  it.each([["abc"], [""]])(
+    "?devis=%j : ignoré, ni requête devis ni erreur, assistant vide",
+    async (v) => {
+      expect(await cible({ devis: v })).toBeNull();
+      await rendre({ devis: v });
+      expect(m.devis).not.toHaveBeenCalled();
+      expect(m.charger.mock.calls.every(([a]) => !("devisId" in a))).toBe(true);
+      expect(screen.getByTestId("assistant")).toBeTruthy();
+      expect((m.assistant.mock.calls.at(-1)![0] as { devisId?: string }).devisId).toBeUndefined();
+    },
+  );
+
+  it("UUID valide mais inconnu : « Devis introuvable », aucun lien mort vers une fiche", async () => {
+    m.charger.mockResolvedValue(
+      contexte({
+        payloadInitial: {
+          ...payloadVide(20),
+          sync: { devisId: null, devisMajLe: null },
+        },
+      }),
+    );
+    m.devis.mockResolvedValue(null);
+    await rendre({ devis: DEVIS });
+    expect(screen.getByText("Devis introuvable.")).toBeTruthy();
+    expect(screen.queryByText(/créé avant l'assistant/)).toBeNull();
+    expect(screen.queryByTestId("assistant")).toBeNull();
+    for (const a of screen.getAllByRole("link"))
+      expect(a.getAttribute("href")).not.toContain(DEVIS);
+  });
+});
+
+describe("Nouvelle vente : nom du paramètre", () => {
+  it("?venteBrouillonId= est transmis au chargeur", async () => {
+    await rendre({ venteBrouillonId: BROUILLON });
+    expect(m.charger).toHaveBeenCalledWith(
+      expect.objectContaining({ venteBrouillonId: BROUILLON }),
+    );
+  });
+
+  it("?vente= (ancien nom) reste lu en repli", async () => {
+    await rendre({ vente: BROUILLON });
+    expect(m.charger).toHaveBeenCalledWith(
+      expect.objectContaining({ venteBrouillonId: BROUILLON }),
+    );
+  });
+});
+
+describe("mode essai", () => {
+  it("l'assistant reçoit modeEssai (pas de création de fiche) ; actif : non", async () => {
+    m.etat.mockResolvedValue("essai");
+    m.charger.mockResolvedValue(
+      contexte({ payloadInitial: { ...payloadVide(20), clientId: CLIENT_ESSAI } }),
+    );
+    await rendre({ clientId: CLIENT_ESSAI });
+    expect((m.assistant.mock.calls.at(-1)![0] as { modeEssai: boolean }).modeEssai).toBe(true);
   });
 });

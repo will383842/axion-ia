@@ -45,6 +45,8 @@ import {
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { projetOuvrableDuClient } from "@/server/qualiopi/crm/devis-projet";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 import {
   payloadVersCreation,
@@ -200,6 +202,28 @@ async function lier(
   return { revision: apres?.revision ?? attendu + 1, aRenumeroter: true };
 }
 
+const MSG_ASSISTANT_ETEINT =
+  "L'assistant de devis est désactivé : aucun devis n'a été créé ni envoyé.";
+const MSG_ASSISTANT_ESSAI =
+  "L'assistant de devis est en essai : il n'agit que sur une fiche d'essai. Aucun devis n'a été créé ni envoyé.";
+
+/**
+ * Garde serveur : relit l'interrupteur à l'appel (jamais l'écran). Éteint → refus ; « essai » →
+ * refus si le client du brouillon n'est pas une fiche d'essai. Aucune écriture avant ce contrôle.
+ */
+async function refusInterrupteur(clientId: string | null): Promise<string | null> {
+  const etat = await lireInterrupteurQualiopi(LOT_DEVIS_ASSISTANT);
+  if (etat === "eteint") return MSG_ASSISTANT_ETEINT;
+  if (etat === "actif") return null;
+  const essai =
+    clientId !== null &&
+    (await prisma.client.findFirst({
+      where: { id: clientId, testInterne: { isNot: null } },
+      select: { id: true },
+    })) !== null;
+  return estActifPour(etat, { estTestInterne: essai }) ? null : MSG_ASSISTANT_ESSAI;
+}
+
 async function numeroter(i: unknown): Promise<Interne> {
   if (enBuild()) return { error: BUILD };
   const session = await requireAdminWrite();
@@ -220,6 +244,9 @@ async function numeroter(i: unknown): Promise<Interne> {
   const lu = lirePayload(row.payload);
   if (!lu.ok) return { error: lu.error };
   const payload = lu.payload;
+
+  const refus = await refusInterrupteur(payload.clientId || null);
+  if (refus !== null) return { error: refus };
 
   // ── Devis déjà lié : il doit être encore un brouillon, du même client et du même type. ──
   let devisLie: {

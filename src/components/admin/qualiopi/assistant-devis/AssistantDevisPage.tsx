@@ -7,7 +7,7 @@
  * n'est calculé ici : tout vient du serveur ou du moteur déjà branché dans les étapes.
  */
 import { useRouter } from "next/navigation";
-import { useMemo, type ReactNode } from "react";
+import { useMemo, useState, type ReactNode } from "react";
 
 import { createClientAction } from "@/server/actions/qualiopi/clients";
 import { lireBandeauAttributionAction } from "@/server/actions/qualiopi/devis";
@@ -48,12 +48,20 @@ export interface PropsAssistantDevisPage {
   devisId?: string | undefined;
   /** Panneau « Ce que le client a dit », rendu par le serveur. */
   aide?: ReactNode;
+  /** Interrupteur en « essai » : aucune création de fiche, seules les fiches d'essai sont proposées. */
+  modeEssai?: boolean | undefined;
   /** Chemin de la fiche d'un devis, sans identifiant final (`…/qualiopi/devis`). */
   baseDevis: string;
 }
 
+/** Salutation d'un contact créé ici : la fiche la fixe, l'écran ne l'invente pas. */
+export const SALUTATION_SUIT_LA_FICHE = "La salutation suit la fiche du client.";
+
 export function AssistantDevisPage(p: PropsAssistantDevisPage) {
   const router = useRouter();
+  // Contacts créés à l'étape 1 : tenus ICI pour que l'envoi les retrouve.
+  const [crees, setCrees] = useState<ClientOption[]>([]);
+  const clients = useMemo(() => [...p.clients, ...crees], [p.clients, crees]);
   const offres = useMemo<OffreCatalogue[]>(
     () =>
       p.offres.map((o) => ({
@@ -68,14 +76,15 @@ export function AssistantDevisPage(p: PropsAssistantDevisPage) {
   const salutations = useMemo(() => {
     const r: Record<string, string> = {};
     for (const c of p.clients) if (c.salutation !== undefined) r[c.id] = c.salutation;
+    for (const c of crees) r[c.id] = SALUTATION_SUIT_LA_FICHE;
     return r;
-  }, [p.clients]);
+  }, [p.clients, crees]);
 
   return (
     <AssistantDevisBranche
       payloadInitial={p.payloadInitial}
       brouillon={p.brouillon}
-      clients={p.clients}
+      clients={clients}
       textesParDefaut={p.textesParDefaut}
       tauxStandard={p.tauxStandard}
       formulesActives={p.formulesActives}
@@ -91,11 +100,12 @@ export function AssistantDevisPage(p: PropsAssistantDevisPage) {
             <EtapeClientProjet
               etat={etat}
               dispatch={dispatch}
-              clients={p.clients}
+              clients={clients}
+              onClientCree={(c) => setCrees((a) => [...a, c])}
               offres={offres}
               tvaStandardPct={p.tauxStandard}
               lireBandeau={lireBandeauAttributionAction}
-              creerClient={createClientAction}
+              {...(p.modeEssai ? {} : { creerClient: createClientAction })}
               aujourdhui={p.aujourdhui}
               aide={p.aide}
             />
