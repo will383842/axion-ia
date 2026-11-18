@@ -1,4 +1,4 @@
-// Cartographie de l'entreprise : page statique, serveur seulement (aucun « use client », aucune base).
+// Cartographie de l'entreprise : page statique, serveur seulement (aucun composant client, aucune base).
 // Tout le texte vient de `contenu.ts`, qui importe les sources uniques (Journée IA, accueil). Aucun
 // prix, aucun témoignage. La langue anglaise est désactivée : toute autre locale part vers /fr.
 
