@@ -78,6 +78,7 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // `src/server/content-gen/retrait-financement/` — chemins cités, aucun code de pipeline.
   /^\.github\/workflows\/retrait-mentions-financement\.yml$/,
   /^scripts\/seed-careers-offers\.ts$/,
+  /^tests\/unit\/ci\/offres-financement-archivees\.spec\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
   // Queue manager + worker entry — orchestrent les queues content-gen
