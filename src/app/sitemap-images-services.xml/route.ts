@@ -40,8 +40,8 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 // base ni Redis (il lit un manifeste statique) et la réponse porte déjà
 // `SITEMAP_CACHE_HEADER` (max-age 3600) avec Cloudflare devant — le coût est
 // donc nul en pratique, et le drapeau suit désormais le conteneur, comme les
-// pages `/certification-qualiopi` et `/financement-opco-france-travail`
-// (toutes deux en `revalidate = 3600`).
+// page `/certification-qualiopi`
+// (en `revalidate = 3600`).
 //
 // ⚠️ Conséquence à connaître : après un changement de drapeau côté Coolify, ce
 // sitemap suit sous 1 h — pas immédiatement. C'est le même délai que les pages

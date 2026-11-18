@@ -59,15 +59,6 @@ import { WILLIAMS_PROFILE } from "@/lib/seo/williams-person";
 interface FounderProfileProps {
   /** FAQ déjà filtrée par le drapeau Qualiopi — le composant ne gate rien. */
   readonly faq: ReadonlyArray<{ id: string; question: string; answer: string }>;
-  /**
-   * `true` uniquement quand la certification Qualiopi est RÉELLEMENT obtenue
-   * ET les pages de l'organisme de formation publiques. Conditionne l'unique
-   * mention de financement de la page — et le lien vers
-   * `/financement-opco-france-travail`, qui répond 404 tant que les deux
-   * drapeaux ne sont pas levés : le lien n'existe donc que quand sa cible
-   * existe.
-   */
-  readonly financementPublic: boolean;
 }
 
 const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [

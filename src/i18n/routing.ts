@@ -249,7 +249,6 @@ export const routing = defineRouting({
     // fr==en : EN redirigé 301→FR (proxy), évite le bug next-intl 307.
     "/certification-qualiopi": { fr: "/certification-qualiopi", en: "/certification-qualiopi" },
 
-
     // Transversales
     "/a-propos": { fr: "/a-propos", en: "/about" },
     "/contact": { fr: "/contact", en: "/contact" },

@@ -753,7 +753,9 @@ export default async function JourneeIaPage({ params }: Props) {
             <p className="border-border-on-mocha text-mocha-fg-muted mt-5 border-t pt-4 text-[15px]">
               {prix.ancre}
             </p>
-            <p className="text-mocha-fg-muted mt-3 text-[15px]">{remplacerJetons(prix.deduction)}</p>
+            <p className="text-mocha-fg-muted mt-3 text-[15px]">
+              {remplacerJetons(prix.deduction)}
+            </p>
           </div>
 
           <div

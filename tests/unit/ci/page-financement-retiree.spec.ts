@@ -46,10 +46,19 @@ describe("aucun chemin vers la page dans le code ni dans les fichiers publics", 
     try {
       sortie = execFileSync(
         "git",
-        ["grep", "-n", "-E", "[\"'`](/(fr|en))?/financement-opco-france-travail", "--", "src", "public"],
+        [
+          "grep",
+          "-n",
+          "-E",
+          "[\"'`](/(fr|en))?/financement-opco-france-travail",
+          "--",
+          "src",
+          "public",
+        ],
         { cwd: RACINE, encoding: "utf8" },
       );
-    } catch {
+    } catch (e) {
+      if ((e as { status?: number }).status !== 1) throw e;
       sortie = ""; // code 1 : aucune occurrence
     }
     expect(sortie.trim()).toBe("");

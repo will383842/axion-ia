@@ -269,8 +269,7 @@ export const CONTENU = {
     {
       id: "faq-prix",
       question: "Combien coûte la Journée IA, et qu’est-ce qui est compris\u202f?",
-      reponse:
-        `{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis. ${DEDUCTION_JOURNEE_IA}`,
+      reponse: `{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis. ${DEDUCTION_JOURNEE_IA}`,
     },
     {
       id: "faq-audit-cout",
