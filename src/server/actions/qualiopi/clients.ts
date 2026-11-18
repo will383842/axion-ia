@@ -10,6 +10,7 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import type { Prisma } from "../../../../prisma/generated/client";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { adminPath } from "@/lib/admin-path";
@@ -33,6 +34,16 @@ import {
   type BaseEffectif,
   type ResultatReleveEffectif,
 } from "@/server/qualiopi/crm/effectif-insee";
+import {
+  CHAMPS_ENTREPRISE,
+  SELECT_CHAMPS_EMPLOYEUR,
+  champsEmployeurRestants,
+  compterPiecesClient,
+  motsTries,
+  raisonEmployeur,
+  raisonPieces,
+  type BasePieces,
+} from "@/server/qualiopi/crm/changer-type-client";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 import {
   creerOuRetrouverClient,
@@ -75,23 +86,6 @@ const CLIENT_STATUTS = [
  * une mise à jour qui ne touche pas au type ne peut pas être refusée à cause de
  * données historiques qu'elle ne modifie pas.
  */
-const CHAMPS_ENTREPRISE = [
-  "siret",
-  "siren",
-  "nafCode",
-  "conventionCollective",
-  "idcc",
-  "taille",
-  "opcoIdentifie",
-  "opcoNumeroAdherent",
-  "opcoEnveloppeAnnuelleCents",
-  "opco",
-  "effectif",
-  "opcoAdhesionOffreMobilites",
-  "opcoVersementVolontaire",
-  // Fiche Modifier (lot A2) : le numéro de TVA identifie une entreprise.
-  "tvaIntracom",
-] as const;
 
 function refuserChampsEntreprisePourParticulier(
   valeurs: Record<string, unknown>,
@@ -536,6 +530,16 @@ export async function updateClientAction(
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const { id, ...fields } = parsed.data;
 
+  // Le type ne change plus ici : `changerTypeClientAction` vérifie pièces, fusion et champs
+  // d'employeur sous verrou. Le MÊME type passe (les formulaires qui le renvoient restent valides).
+  if (fields.type !== undefined) {
+    const typeEnBase = (await prisma.client.findUnique({ where: { id }, select: { type: true } }))
+      ?.type;
+    if (typeEnBase !== undefined && typeEnBase !== fields.type) {
+      return { error: "Utilisez « Changer le type » : le type d'une fiche ne se modifie pas ici." };
+    }
+  }
+
   // ── SIREN (chantier visio) ────────────────────────────────────────────────
   //  • SIRET transmis        → SIREN dérivé ; un SIREN saisi contraire = refus
   //  • SIRET effacé (`null`) → le SIREN n'est touché que s'il est transmis
@@ -585,7 +589,7 @@ export async function updateClientAction(
   // P-5 : une fiche dont le type EN BASE est « particulier » ne reçoit ni SIREN
   // ni SIRET, même si la charge ne dit rien du type (« C'est elle » ne
   // transmet que le SIREN de l'annuaire). Repasser la fiche en entreprise dans
-  // la même charge reste possible.
+  // la même charge N'EST PLUS possible : le type ne change que par `changerTypeClientAction`.
   // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
   // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
   // Lot A7b : même règle pour l'enveloppe, le n° d'adhérent et les deux faits OPCO.
@@ -715,7 +719,8 @@ export async function updateClientAction(
       await tx.client.update({
         where: { id },
         data: {
-          ...(fields.type !== undefined ? { type: fields.type } : {}),
+          // Pas de `type` ici : seul le MÊME type est accepté (contrôle plus haut, hors verrou),
+          // donc il n'y a rien à écrire. Le type ne s'écrit que dans `changerTypeClientAction`.
           ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
           ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
           ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
@@ -811,6 +816,125 @@ export async function updateClientAction(
   });
 
   return { data: { id, ...(avertissement !== undefined ? { avertissement } : {}) } };
+}
+
+const changerTypeSchema = z.object({
+  id: z.string().uuid(),
+  type: z.enum(CLIENT_TYPES),
+  raisonSociale: z.string().trim().min(1, "Indiquez le nom.").max(250),
+  motif: z.string().trim().max(300).optional(),
+});
+
+/** Les modèles de pièces lus par `compterPiecesClient`, tels que `tx` les expose. */
+type TxPieces = Prisma.TransactionClient & BasePieces;
+
+/**
+ * Change le type « particulier / entreprise » d'une fiche SANS pièce.
+ *
+ * Écrit `type` et `raisonSociale`, rien d'autre : ni les personnes, ni les champs d'employeur
+ * (vers « particulier », s'il en reste, c'est un refus — rien n'est effacé). La synchro vers le
+ * CRM Pro n'est pas appelée ici : le balayage du worker prend la fiche au passage suivant.
+ */
+export async function changerTypeClientAction(
+  input: z.input<typeof changerTypeSchema>,
+): Promise<ActionResult<{ id: string }>> {
+  const session = await requireAdminWrite();
+  const parsed = changerTypeSchema.safeParse(input);
+  if (!parsed.success) return { error: premierMessageZod(parsed.error) };
+  const { id, type, raisonSociale, motif } = parsed.data;
+
+  const resultat = await prisma.$transaction(async (db) => {
+    const tx = db as TxPieces;
+    // Verrou de la ligne : deux changements, ou un changement et une pièce créée, se suivent.
+    await tx.$queryRaw`SELECT 1 FROM clients WHERE id = ${id}::uuid FOR UPDATE`;
+
+    const fiche = await tx.client.findUnique({
+      where: { id },
+      select: { type: true, raisonSociale: true, contactNom: true, ...SELECT_CHAMPS_EMPLOYEUR },
+    });
+    if (fiche === null) return { error: "Client introuvable." } as const;
+    if (fiche.type === type) {
+      return { error: "La fiche est déjà de ce type : rien à changer." } as const;
+    }
+
+    const absorbee = await tx.clientFusion.findFirst({
+      where: { absorbeId: id, defaiteLe: null },
+      select: { id: true },
+    });
+    if (absorbee !== null) {
+      return {
+        error: "Cette fiche a été absorbée. Changez le type sur la fiche principale.",
+      } as const;
+    }
+
+    const absorbees = await tx.clientFusion.findMany({
+      where: { absorbantId: id, defaiteLe: null },
+      select: { absorbeId: true },
+    });
+    const pieces = await compterPiecesClient(tx, [id, ...absorbees.map((f) => f.absorbeId)]);
+    if (pieces.length > 0) return { error: raisonPieces(pieces) } as const;
+
+    if (type === "entreprise") {
+      const nouveau = motsTries(raisonSociale);
+      if (nouveau === "") return { error: "Nom de l'entreprise : indiquez un nom." } as const;
+      if (nouveau === motsTries(fiche.contactNom)) {
+        return {
+          error:
+            "Nom de l'entreprise : indiquez celui de la société, pas le nom du contact (le contact garde son nom).",
+        } as const;
+      }
+      if (nouveau === motsTries(fiche.raisonSociale)) {
+        return {
+          error: "Nom de l'entreprise : il est identique à l'ancien nom de la fiche.",
+        } as const;
+      }
+    } else {
+      const restants = champsEmployeurRestants(fiche);
+      if (restants.length > 0) return { error: raisonEmployeur(restants) } as const;
+    }
+
+    // Axion Partners : la charge AVANT l'écriture, le fait APRÈS, dans la même transaction.
+    const avant = await chargeClientAvant(tx, id);
+    await tx.client.update({ where: { id }, data: { type, raisonSociale } });
+    await emettreFaitClient(tx, id, { avant });
+    return { ok: true, typeAvant: fiche.type, raisonSocialeAvant: fiche.raisonSociale } as const;
+  });
+  if ("error" in resultat) return { error: resultat.error };
+
+  await logQualiopiActivity({
+    action: "qualiopi.client.type_change",
+    targetType: "Client",
+    targetId: id,
+    changes: {
+      typeAvant: resultat.typeAvant,
+      typeApres: type,
+      raisonSocialeAvant: resultat.raisonSocialeAvant,
+      raisonSocialeApres: raisonSociale,
+      ...(motif !== undefined && motif !== "" ? { motif } : {}),
+    },
+    session,
+  });
+
+  revalidatePath(adminPath("fr", `qualiopi/clients/${id}`));
+  revalidatePath(adminPath("fr", `qualiopi/clients/${id}/edit`));
+  return { data: { id } };
+}
+
+/** Formulaire serveur du bloc « Type de fiche » (aucun JavaScript) : le message revient scellé. */
+export async function changerTypeClientFormAction(formData: FormData): Promise<void> {
+  const clientId = String(formData.get("id") ?? "");
+  if (!z.string().uuid().safeParse(clientId).success) {
+    redirect(adminPath("fr", "qualiopi/clients"));
+  }
+  const edit = adminPath("fr", `qualiopi/clients/${clientId}/edit`);
+  const r = await changerTypeClientAction({
+    id: clientId,
+    type: String(formData.get("type") ?? "") as "entreprise" | "particulier",
+    raisonSociale: String(formData.get("raisonSociale") ?? ""),
+    motif: String(formData.get("motif") ?? ""),
+  });
+  if ("error" in r) redirect(avecMessageDeRetour(edit, "erreur", r.error));
+  redirect(avecMessageDeRetour(edit, "message", "Le type de la fiche a été changé."));
 }
 
 /**
