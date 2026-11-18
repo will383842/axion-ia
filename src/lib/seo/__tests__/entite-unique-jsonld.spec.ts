@@ -39,8 +39,6 @@ const TIERS_AUTORISES = new Set([
   "src/app/[locale]/stack-ia/page.tsx",
   "src/server/image-bank/services/image-seo.service.ts",
   "src/server/reviews/jsonld.ts", // `ItemReviewed.type` (libellé de type, pas un nœud)
-  // Transitoire : le nœud de la plume IA porte son @id depuis la PR 2141 ; à retirer après sa fusion.
-  "src/components/knowledge/public/AuthorByline.tsx",
 ]);
 
 describe("V1-11 — une seule fiche Organization", () => {
