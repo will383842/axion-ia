@@ -59,6 +59,7 @@ import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/est
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
 import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
@@ -300,6 +301,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const confirmationClassiquePreparee = etatConfirmation === "a_valider";
   const identiteOrganisme = await getOrganismeIdentite();
 
+  const emailEnAttente =
+    devis.statut === "brouillon" && (await emailDevisEnAttente(prisma, devis.id));
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
@@ -837,6 +840,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           montantHtLabel={formatEur(devis.montantTotalHtCents)}
           destinataire={client?.contactEmail ?? null}
           clientASigne={clientASigne}
+          emailEnAttente={emailEnAttente}
+          emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
           signeParClient={signeParClient}
           signeDesDeuxParties={signeDesDeuxParties}
           repriseParRelance={repriseParRelance}

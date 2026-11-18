@@ -25,6 +25,8 @@ import {
   lireContextePdfDevis,
   OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { prendreVerrouEnvoiDevis } from "@/server/qualiopi/devis/marquer-devis-envoye";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import {
   cloreVersionRemplacee,
   MSG_VERSION_REMPLACEE_ACCEPTEE,
@@ -55,9 +57,6 @@ const MSG_VERROU =
 const MSG_PDF_RATE =
   "Le PDF du devis n'a pas pu être créé. Rien n'a été modifié ; le devis reste en brouillon. Réessayez dans un instant.";
 
-/** Même clé que l'envoi : un envoi et une remise simultanés s'excluent. */
-const cleVerrou = (devisId: string): string => "devis.envoi:" + devisId;
-
 export async function marquerRemisEnMainPropreAction(input: {
   id: string;
   motif: "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
@@ -78,10 +77,8 @@ export async function marquerRemisEnMainPropreAction(input: {
     await prisma.$transaction(
       async (tx) => {
         // (a) Verrou consultatif non bloquant, MÊME clé que l'envoi.
-        const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
-          SELECT pg_try_advisory_xact_lock(hashtext(${cleVerrou(devisId)})) AS locked
-        `;
-        if (!verrou?.locked) throw new RemiseRefusee(MSG_VERROU, "verrou_pris");
+        if (!(await prendreVerrouEnvoiDevis(tx, devisId)))
+          throw new RemiseRefusee(MSG_VERROU, "verrou_pris");
 
         // (b) Relecture DANS la transaction, puis gardes.
         const devis = await tx.devis.findUnique({
@@ -153,15 +150,8 @@ export async function marquerRemisEnMainPropreAction(input: {
         }
         // Un courriel de ce devis attend déjà dans la corbeille : le remettre en main propre
         // le laisserait partir ensuite. Validez-le ou refusez-le d'abord.
-        const dejaGare = await tx.emailOutbox.findFirst({
-          where: {
-            template: "devis-envoi",
-            entityType: "Devis",
-            entityId: devisId,
-            statut: "a_valider",
-          },
-          select: { id: true },
-        });
+        // « À valider » ET « approuvé » (en cours d'envoi) : dans les deux cas l'e-mail peut partir.
+        const dejaGare = await emailDevisEnAttente(tx, devisId);
         if (dejaGare) {
           throw new RemiseRefusee(
             "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de remettre le devis en main propre.",

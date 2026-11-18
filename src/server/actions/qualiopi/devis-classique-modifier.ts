@@ -30,6 +30,11 @@ import {
   totalHtClassiqueCents,
 } from "@/server/qualiopi/devis/champs-classiques";
 
+import {
+  emailDevisEnAttente,
+  MSG_EMAIL_EN_ATTENTE_MODIF,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
+
 type ActionResult<T> = { data: T } | { error: string };
 
 const MSG_PERIME = "Ce brouillon a été modifié ailleurs (autre onglet) : rechargez la page.";
@@ -79,6 +84,7 @@ export async function modifierDevisClassiqueBrouillonAction(
   if (actuel.clientId !== v.clientId) {
     return { error: "Le client d'un devis ne se change pas : créez un nouveau devis." };
   }
+  if (await emailDevisEnAttente(prisma, id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
   if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
 
   const opco = await estimationOpcoDevis(v, montantTotalHtCents, actuel.dateValidite);
@@ -233,6 +239,7 @@ export async function fixerValiditeDevisBrouillonAction(
   if (actuel.statut !== "brouillon") {
     return { error: "Un devis envoyé ne se modifie pas : créez une révision (nouvelle version)." };
   }
+  if (await emailDevisEnAttente(prisma, id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
   if (actuel.updatedAt.getTime() !== attendu.getTime()) return { error: MSG_PERIME };
 
   const nouvelleDate = finDeJourneeParis(y, mo, d);

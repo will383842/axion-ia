@@ -28,6 +28,11 @@ import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import { regimeTvaDepuisConfig, mentionTva } from "@/server/qualiopi/legal/tva";
 
+import {
+  emailDevisEnAttente,
+  MSG_EMAIL_EN_ATTENTE_MODIF,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
+
 type ActionResult<T> = { data: T } | { error: string };
 
 const MSG_ETEINT = "Le devis à formules n'est pas activé.";
@@ -80,6 +85,9 @@ export async function modifierDevisBrouillonAction(
   if (!p.success) return { error: "Données invalides" };
   const d = deriver(p.data.offre);
   if (!d.ok) return { error: d.error };
+
+  // Un e-mail de ce devis attend validation : le client recevrait un devis périmé.
+  if (await emailDevisEnAttente(prisma, p.data.id)) return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
 
   const { count } = await prisma.devis.updateMany({
     where: {

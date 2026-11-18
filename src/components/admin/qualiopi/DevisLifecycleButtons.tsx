@@ -55,6 +55,10 @@ export interface DevisLifecycleButtonsProps {
   destinataire?: string | null;
   /** Le client a déjà signé : « Corriger et renvoyer » n'est plus proposé. */
   clientASigne?: boolean;
+  /** Un e-mail d'envoi de ce devis attend validation (ou part) : aucun lien n'existe encore. */
+  emailEnAttente?: boolean;
+  /** Page des e-mails à valider de la console (le préfixe d'administration vient du serveur). */
+  emailsHref?: string;
   /** Le client a signé (non révoquée, pièce non annulée) et l'organisme pas encore : il ne reste qu'à contresigner. */
   signeParClient?: boolean;
   /** Les deux parties ont signé mais le statut est encore « envoyé » : l'acceptation est à finir. */
@@ -87,6 +91,8 @@ export function DevisLifecycleButtons({
   montantHtLabel,
   destinataire = null,
   clientASigne = false,
+  emailEnAttente = false,
+  emailsHref = "../../emails",
   signeParClient = false,
   signeDesDeuxParties = false,
   repriseParRelance = false,
@@ -139,7 +145,7 @@ export function DevisLifecycleButtons({
           if (result.data.garePourValidation === true) {
             setWarningMsg(
               result.data.note ??
-                "Devis marqué envoyé. L'e-mail attend votre validation dans Emails → À valider.",
+                "L'e-mail attend votre validation dans Emails, À valider. Le devis reste en brouillon et aucun lien de signature n'existe tant que l'e-mail n'est pas parti.",
             );
           } else {
             setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
@@ -271,7 +277,7 @@ export function DevisLifecycleButtons({
     <div className="flex flex-col gap-[var(--space-admin-3)]">
       {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-        {statut === "brouillon" && !(estClassique && !destinataire) && (
+        {statut === "brouillon" && !(estClassique && !destinataire) && !emailEnAttente && (
           <button
             type="button"
             onClick={handleSend}
@@ -281,6 +287,17 @@ export function DevisLifecycleButtons({
           >
             {isPending ? "…" : "Envoyer au client"}
           </button>
+        )}
+        {statut === "brouillon" && emailEnAttente && (
+          <p
+            data-testid="email-en-attente"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            E-mail en attente de validation : aucun lien de signature n&apos;existe encore.{" "}
+            <a href={emailsHref} className="admin-link">
+              Ouvrir les e-mails à valider
+            </a>
+          </p>
         )}
         {statut === "brouillon" && estClassique && !destinataire && (
           <p

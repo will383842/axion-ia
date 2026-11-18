@@ -16,13 +16,25 @@ import { PrismaClient } from "../../../prisma/generated/client";
 
 const h = vi.hoisted(() => ({
   pieceId: "" as string,
+  mode: "auto" as "auto" | "validation",
   enqueueEmail: vi.fn(),
+  creerToken: vi.fn(async (..._a: unknown[]) => ({ token: "tok" })),
   generateDocument: vi.fn(),
 }));
 
+// B2, PR 3 : le mode d'envoi est imposé (sans lui, la règle par défaut de `devis-envoi` est
+// « validation » et les deux premiers scénarios ne passeraient plus par le chemin « auto »).
+vi.mock("@/server/email/outbox-service", () => ({ resoudreMode: async () => h.mode }));
+vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/server/actions/qualiopi/_guards", () => ({
-  requireAdminWrite: vi.fn(async () => ({ userId: "adm-test", role: "super_admin" })),
-  requireHabilitation: vi.fn(async () => ({ userId: "adm-test", role: "super_admin" })),
+  requireAdminWrite: vi.fn(async () => ({
+    userId: "00000000-0000-4000-8000-0000000000aa",
+    role: "super_admin",
+  })),
+  requireHabilitation: vi.fn(async () => ({
+    userId: "00000000-0000-4000-8000-0000000000aa",
+    role: "super_admin",
+  })),
   logQualiopiActivity: vi.fn(async () => undefined),
 }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
@@ -38,7 +50,7 @@ vi.mock("@/server/qualiopi/documents/documents-service", () => ({
   generateDocument: (...a: unknown[]) => h.generateDocument(...a),
 }));
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
-  creerTokenDocument: vi.fn(async () => ({ token: "tok" })),
+  creerTokenDocument: (...a: unknown[]) => h.creerToken(...a),
   revoquerTokensDocument: vi.fn(async () => 0),
   TokenDocumentError: class extends Error {},
 }));
@@ -54,18 +66,21 @@ vi.mock("@/server/partners-sync/producteurs/devis", () => ({
 vi.mock("@/lib/telegram", () => ({ sendTelegram: vi.fn(async () => undefined) }));
 
 import { sendDevisAction } from "../../../src/server/actions/qualiopi/devis";
+import { approuverEmailAction } from "../../../src/server/actions/qualiopi/email-outbox";
 
 const db = new PrismaClient();
 const HASH = "b".repeat(64);
 const dansUnAn = new Date(Date.now() + 365 * 86_400_000);
-const creees: { devis: string[]; pieces: string[]; clients: string[] } = {
+const creees: { devis: string[]; pieces: string[]; clients: string[]; outbox: string[] } = {
   devis: [],
   pieces: [],
   clients: [],
+  outbox: [],
 };
 
 afterAll(async () => {
   try {
+    await db.emailOutbox.deleteMany({ where: { id: { in: creees.outbox } } });
     await db.devis.deleteMany({ where: { id: { in: creees.devis } } });
     await db.documentGenere.deleteMany({ where: { id: { in: creees.pieces } } });
     await db.client.deleteMany({ where: { id: { in: creees.clients } } });
@@ -184,5 +199,113 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
     });
     expect(apres.statut).toBe("brouillon");
     expect(apres.sentAt).toBeNull();
+  });
+  it("clic en validation, puis DEUX approbations simultanées : brouillon et sans jeton jusqu'à l'approbation, un seul « envoye », un seul jeton, un seul courriel", async () => {
+    h.generateDocument.mockReset();
+    h.enqueueEmail.mockReset();
+    h.creerToken.mockClear();
+    h.mode = "validation";
+    try {
+      const client = await db.client.create({
+        data: {
+          numero: "TEST-CLI-B2",
+          raisonSociale: "Client test B2",
+          contactEmail: "client-b2@example.test",
+        },
+      });
+      creees.clients.push(client.id);
+      const piece = await db.documentGenere.create({
+        data: {
+          type: "devis",
+          numero: "TEST-DOC-B2",
+          // Le module de l'approbation exige que la pièce soit celle de CE client.
+          clientId: client.id,
+          hashSha256: HASH,
+          suppressionPrevueAt: dansUnAn,
+        },
+      });
+      creees.pieces.push(piece.id);
+      const devis = await db.devis.create({
+        data: {
+          numero: "TEST-DEV-B2",
+          clientId: client.id,
+          lignes: [],
+          montantTotalHtCents: 100000,
+          mentionTva: "TVA 20 %",
+          statut: "brouillon",
+          dateValidite: dansUnAn,
+        },
+      });
+      creees.devis.push(devis.id);
+      h.generateDocument.mockResolvedValue({ id: piece.id, numero: piece.numero });
+      // Garé : la vraie ligne de corbeille est écrite ; approuvé (bypass) : « parti ».
+      h.enqueueEmail.mockImplementation(
+        async (
+          template: string,
+          to: string,
+          _locale: string,
+          payload: Record<string, unknown>,
+          options: Record<string, unknown>,
+        ) => {
+          if (options["bypassValidation"] === true) return { enqueued: true };
+          const ligne = await db.emailOutbox.create({
+            data: {
+              template,
+              recipient: to,
+              payload: payload as never,
+              sujet: "Votre devis",
+              entityType: options["entityType"] as string,
+              entityId: options["entityId"] as string,
+              attachments: options["attachments"] as never,
+            },
+          });
+          creees.outbox.push(ligne.id);
+          return { enqueued: false, garePourValidation: true, outboxId: ligne.id };
+        },
+      );
+
+      // Clic : l'e-mail est garé, le devis reste brouillon, aucun jeton, aucun envoi.
+      const clic = await sendDevisAction(devis.id);
+      expect(clic).toMatchObject({ data: { garePourValidation: true, signatureCreee: false } });
+      expect(h.creerToken).not.toHaveBeenCalled();
+      const avant = await db.devis.findUniqueOrThrow({
+        where: { id: devis.id },
+        select: { statut: true, sentAt: true, documentGenereId: true },
+      });
+      expect(avant).toEqual({ statut: "brouillon", sentAt: null, documentGenereId: null });
+      const ligne = await db.emailOutbox.findFirstOrThrow({
+        where: { entityId: devis.id, template: "devis-envoi" },
+      });
+      expect(JSON.stringify(ligne.payload)).not.toContain("/portail/signer/");
+
+      // Un second clic est refusé tant que l'e-mail attend.
+      const clic2 = await sendDevisAction(devis.id);
+      expect("error" in clic2).toBe(true);
+
+      // Approbation (deux onglets) : un seul passe.
+      const [a, b] = await Promise.all([
+        approuverEmailAction({ id: ligne.id }),
+        approuverEmailAction({ id: ligne.id }),
+      ]);
+      expect([a, b].filter((r) => "data" in r)).toHaveLength(1);
+      expect(h.creerToken).toHaveBeenCalledTimes(1);
+      const bypass = h.enqueueEmail.mock.calls.filter(
+        (c) => (c[4] as Record<string, unknown>)["bypassValidation"] === true,
+      );
+      expect(bypass).toHaveLength(1);
+      expect((bypass[0]![3] as Record<string, unknown>)["signatureUrl"]).toContain(
+        "/portail/signer/tok",
+      );
+
+      const apres = await db.devis.findUniqueOrThrow({
+        where: { id: devis.id },
+        select: { statut: true, sentAt: true, documentGenereId: true },
+      });
+      expect(apres.statut).toBe("envoye");
+      expect(apres.sentAt).not.toBeNull();
+      expect(apres.documentGenereId).toBe(piece.id);
+    } finally {
+      h.mode = "auto";
+    }
   });
 });

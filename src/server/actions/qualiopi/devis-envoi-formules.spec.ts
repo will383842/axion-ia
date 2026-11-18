@@ -70,6 +70,9 @@ vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
     motif = "x";
   },
 }));
+// Ce fichier éprouve le chemin « auto » ; le mode « validation » est dans
+// `__tests__/devis-premier-envoi-a-l-approbation.spec.ts`.
+vi.mock("@/server/email/outbox-service", () => ({ resoudreMode: async () => "auto" }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => enqueueEmail(...a),
 }));
@@ -306,16 +309,16 @@ describe("sendDevisAction — devis à formules : le courriel ne part pas", () =
     expect(txDevisUpdateMany).not.toHaveBeenCalled();
   });
 
-  it("courriel garé puis erreur d'écriture : la ligne de corbeille passe à « refuse »", async () => {
+  it("courriel garé en mode auto (règle changée) : refus sans écriture, la ligne de corbeille passe à « refuse »", async () => {
     enqueueEmail.mockResolvedValue({
       enqueued: false,
       garePourValidation: true,
       outboxId: "ob-1",
     });
-    txDevisUpdateMany.mockResolvedValue({ count: 0 });
     const r = await sendDevisAction(ID);
     if (!("error" in r)) throw new Error("refus attendu");
-    expect(r.error).toContain("Ne le renvoyez pas");
+    expect(r.error).toContain("La règle d'envoi a changé");
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
     expect(outboxUpdateMany).toHaveBeenCalledWith({
       where: { id: "ob-1", statut: "a_valider" },
       data: expect.objectContaining({ statut: "refuse" }),

@@ -200,12 +200,13 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         // 17/11/2026 (B1) : « Remis en main propre » pose le MÊME statut commercial que sendDevisAction
         // (prospect/perdu → devis_envoye, jamais de rétrogradation), hors charge Partners.
         "src/server/actions/qualiopi/devis-remis-main-propre.ts (marquerRemisEnMainPropreAction › travail de prisma.$transaction())",
-        "src/server/actions/qualiopi/devis.ts (sendDevisAction › travail de prisma.$transaction())",
+        // 18/11/2026 (B2, PR 3) : `sendDevisAction` n'écrit plus le statut du client elle-même, elle
+        // appelle `marquerDevisEnvoye(tx, …)` (ligne ci-dessous) : l'écrivain a changé de fichier.
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         // Lot OPCO A7d : n'écrit que l'effectif et sa provenance, hors charge Partners.
         "src/server/qualiopi/crm/effectif-insee.ts (rafraichirEffectifInsee)",
-        // 17/11/2026 (B2, module non branché) : `marquerDevisEnvoye(tx, …)` reprend le MÊME statut
+        // 17/11/2026 (B2) : `marquerDevisEnvoye(tx, …)`, appelée par `sendDevisAction` (PR 3) et l'approbation, reprend le MÊME statut
         // commercial que sendDevisAction (prospect/perdu → devis_envoye), hors charge Partners.
         "src/server/qualiopi/devis/marquer-devis-envoye.ts (marquerDevisEnvoye)",
       ]);

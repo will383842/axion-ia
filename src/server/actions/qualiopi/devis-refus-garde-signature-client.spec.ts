@@ -12,7 +12,10 @@ const DEVIS = "11111111-1111-4111-8111-111111111111";
 
 const h = vi.hoisted(() => ({
   tx: { devis: { update: vi.fn(), findUnique: vi.fn(), findFirst: vi.fn() } },
-  p: { devis: { findUnique: vi.fn(), updateMany: vi.fn() } },
+  p: {
+    devis: { findUnique: vi.fn(), updateMany: vi.fn() },
+    emailOutbox: { findFirst: vi.fn() },
+  },
   monter: vi.fn(),
   proposer: vi.fn(),
   emettre: vi.fn(),
@@ -98,6 +101,7 @@ beforeEach(() => {
   h.p.devis.findUnique.mockResolvedValue(lu("envoye"));
   h.p.devis.updateMany.mockResolvedValue({ count: 1 });
   h.revoquer.mockResolvedValue(1);
+  h.p.emailOutbox.findFirst.mockResolvedValue(null);
 });
 
 describe("declineDevisAction — gardes serveur", () => {
@@ -143,6 +147,16 @@ describe("declineDevisAction — gardes serveur", () => {
     h.p.devis.updateMany.mockResolvedValue({ count: 0 });
     expect(await declineDevisAction(DEVIS)).toMatchObject({ error: expect.any(String) });
     expect(h.revoquer).not.toHaveBeenCalled();
+  });
+
+  it("🔴 un e-mail d'envoi de ce devis attend : refus, rien d'écrit, lien intact", async () => {
+    h.p.emailOutbox.findFirst.mockResolvedValue({ id: "ob-1" });
+    expect(await declineDevisAction(DEVIS)).toEqual({
+      error: "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.",
+    });
+    expect(h.p.devis.updateMany).not.toHaveBeenCalled();
+    expect(h.revoquer).not.toHaveBeenCalled();
+    expect(h.log).not.toHaveBeenCalled();
   });
 
   it("devis introuvable : erreur, rien d'écrit", async () => {

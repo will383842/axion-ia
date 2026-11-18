@@ -6,8 +6,10 @@ const updateMany = vi.fn();
 const findUnique = vi.fn();
 const logActivity = vi.fn();
 const formulesActives = vi.fn();
+const outboxFindFirst = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
+    emailOutbox: { findFirst: (...a: unknown[]) => outboxFindFirst(...a) },
     devis: {
       updateMany: (...a: unknown[]) => updateMany(...a),
       findUnique: (...a: unknown[]) => findUnique(...a),
@@ -33,6 +35,8 @@ beforeEach(() => {
   logActivity.mockReset();
   formulesActives.mockReset();
   formulesActives.mockResolvedValue(true);
+  outboxFindFirst.mockReset();
+  outboxFindFirst.mockResolvedValue(null);
 });
 
 const appel = (over: Record<string, unknown> = {}) =>
@@ -45,6 +49,27 @@ describe("modifierDevisBrouillonAction", () => {
     expect("error" in r).toBe(true);
     expect(updateMany).not.toHaveBeenCalled();
     expect(findUnique).not.toHaveBeenCalled();
+  });
+  it("un e-mail d'envoi du devis attend (a_valider ou approuve) : refus, aucune écriture", async () => {
+    outboxFindFirst.mockResolvedValue({ id: "ob-1" });
+    const r = await appel();
+    expect(r).toEqual({
+      error: "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.",
+    });
+    expect(outboxFindFirst).toHaveBeenCalledWith({
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: ID,
+        OR: [
+          { statut: "a_valider" },
+          { statut: "approuve", approuveAt: { gte: expect.any(Date) } },
+        ],
+      },
+      select: { id: true },
+    });
+    expect(updateMany).not.toHaveBeenCalled();
+    expect(logActivity).not.toHaveBeenCalled();
   });
   it("identifiant ou date de lecture invalides : refus", async () => {
     expect("error" in (await appel({ id: "x" }))).toBe(true);
