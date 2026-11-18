@@ -2,6 +2,13 @@
 0 4 * * 0  /opt/axion-ia/run-r2-backup.sh weekly  >> /var/log/r2-backup.log 2>&1
 0 5 1 * *  /opt/axion-ia/run-r2-backup.sh monthly >> /var/log/r2-backup.log 2>&1
 # Docker cleanup — toutes les 6h (images non utilisées + build cache > 5GB)
+# GARDE posée sur le serveur le 2026-11-18 (accord du fondateur) : juste après `#!/bin/sh`, docker-nettoyage.sh
+# sort SANS rien effacer si un déploiement Coolify est `queued` ou `in_progress`. Cause : le passage de h15
+# faisait `docker rmi` de l'image tout juste construite pendant une mise en ligne (journal Coolify :
+# « pull access denied … repository does not exist » puis « Rolling update failed »).
+#   n=$(docker exec coolify-db psql -U coolify -d coolify -At -c "select count(*) from application_deployment_queues where status in ('queued','in_progress')" 2>/dev/null)
+#   [ "$n" = "0" ] || { echo "$(date -Is) déploiement Coolify en cours (n=$n) : nettoyage sauté"; exit 0; }
+# Sauvegarde de l'ancien script : /opt/axion-ia/docker-nettoyage.sh.avant-garde-2026-11-18
 15 * * * * /opt/axion-ia/docker-nettoyage.sh >> /var/log/docker-image-prune.log 2>&1
 20 * * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
 # Alerte disque si > 80% — envoie dans syslog (visible via journalctl)

@@ -106,6 +106,15 @@ function refuserChampsEntreprisePourParticulier(
   }
 }
 
+/** Prénom / nom de famille à la création : 80 caractères au plus, vide = absent. */
+function texteSalutationCreation() {
+  return z
+    .string()
+    .max(80)
+    .transform((v) => (v.trim() === "" ? undefined : v.trim()))
+    .optional();
+}
+
 const createClientSchema = z
   .object({
     /** entreprise (B2B) | particulier (B2C). Défaut entreprise. */
@@ -136,6 +145,16 @@ const createClientSchema = z
     contactEmail: z.string().email().optional(),
     contactTelephone: z.string().max(40).optional(),
     contactFonction: z.string().max(150).optional(),
+    /**
+     * Salutation des e-mails (R2) : données personnelles, saisies à part, JAMAIS déduites de
+     * `contactNom`. Vide = absent (rien n'est transmis) ; civilité inconnue refusée.
+     */
+    contactCivilite: z
+      .union([z.enum(["madame", "monsieur"]), z.literal("")])
+      .transform((v) => (v === "" ? undefined : v))
+      .optional(),
+    contactPrenom: texteSalutationCreation(),
+    contactNomFamille: texteSalutationCreation(),
     /**
      * OPCO saisi manuellement. Si absent, inféré depuis l'IDCC puis le NAF.
      *
@@ -428,6 +447,9 @@ export async function createClientAction(
       ...(v.contactEmail !== undefined ? { email: v.contactEmail } : {}),
       ...(v.contactTelephone !== undefined ? { telephone: v.contactTelephone } : {}),
       ...(v.contactFonction !== undefined ? { fonction: v.contactFonction } : {}),
+      ...(v.contactCivilite !== undefined ? { civilite: v.contactCivilite } : {}),
+      ...(v.contactPrenom !== undefined ? { prenom: v.contactPrenom } : {}),
+      ...(v.contactNomFamille !== undefined ? { nomFamille: v.contactNomFamille } : {}),
     },
     {
       parAdminId: session.userId,
@@ -455,6 +477,10 @@ export async function createClientAction(
       ...(opcoTypeInfere !== null ? { opco: opcoTypeInfere } : {}),
       ...(siren !== undefined ? { siren } : {}),
       ...(resultat.creationForcee ? { creationForcee: true } : {}),
+      // Identité de salutation : une donnée personnelle, jamais écrite en clair au journal.
+      ...(v.contactCivilite !== undefined ? { contactCivilite: { modifie: true } } : {}),
+      ...(v.contactPrenom !== undefined ? { contactPrenom: { modifie: true } } : {}),
+      ...(v.contactNomFamille !== undefined ? { contactNomFamille: { modifie: true } } : {}),
     },
     session,
   });

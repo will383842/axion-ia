@@ -195,6 +195,9 @@ export default async function ConnaissanceDetail({ params }: Props) {
 
   return (
     <>
+      {/* GEO V2-18 — alternate Markdown brut pour l'ingestion par les LLM. */}
+      <link rel="alternate" type="text/markdown" href={`/api/markdown/connaissances/${slug}`} />
+
       {/* HÉRO éditorial — fond halo-warm + eyebrow terracotta + H1 serif
           (taille adaptative) + réponse directe (AEO) + meta + CTA contextuel.
           Modèle « contenu premium », PAS un hub service (intention informationnelle). */}
