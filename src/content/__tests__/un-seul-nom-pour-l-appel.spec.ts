@@ -20,7 +20,7 @@ import { TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 const NOM = "Appel de cadrage";
 
 const ANCIENS_NOMS =
-  /diagnostic\s+IA\s+gratuit|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
+  /diagnostic\s+IA\s+gratuit|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+(?:de\s+)?d[ée]couverte|diagnostic(?:\s+IA)?\s+de\s+45|appel\s+strat[ée]gique|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
 
 const RACINES = [
   "src/app",
