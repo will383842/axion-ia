@@ -256,3 +256,29 @@ export function versionGabaritInstantane(snapshot: unknown): number {
   const v = (snapshot as { gabaritVersion?: unknown }).gabaritVersion;
   return typeof v === "number" && Number.isFinite(v) && v > 0 ? v : 1;
 }
+
+/**
+ * Pièces de formation NON SIGNABLES dont le gabarit est versionné (charte 2027).
+ *
+ * Elles n'entrent PAS dans `GABARIT_VERSIONS` : y entrer les ferait naître « en attente de
+ * signature » (cf. la note de `convocation.tsx`). Leur version vit dans cette table à part ;
+ * la v1 de chacune est archivée dans `archives/` (registre `GABARITS_ARCHIVES_FORMATION`).
+ *
+ * | Pièce | v | Ce qui a changé |
+ * |---|---|---|
+ * | `programme` | 2 | 18/11 — refonte au style de la charte 2027 (`charte/v1`). Aucun texte changé. **v1 archivée** |
+ * | `convocation` | 2 | 18/11 — idem. Distinct de `versionTexte` (v1/v2 du TEXTE de la convocation) : cette version-ci ne dit que la mise en page. **v1 archivée** |
+ * | `attestation` | 2 | 18/11 — idem. **v1 archivée** |
+ * | `attestation_partielle` | 2 | 18/11 — idem. **v1 archivée** |
+ * | `certificat` | 2 | 18/11 — idem. **v1 archivée** |
+ */
+export type TypeGabaritFormation =
+  "programme" | "convocation" | "attestation" | "attestation_partielle" | "certificat";
+
+export const GABARIT_VERSIONS_FORMATION: Record<TypeGabaritFormation, number> = {
+  programme: 2,
+  convocation: 2,
+  attestation: 2,
+  attestation_partielle: 2,
+  certificat: 2,
+};
