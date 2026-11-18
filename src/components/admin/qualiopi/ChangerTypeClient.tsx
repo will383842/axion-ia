@@ -8,23 +8,19 @@
  */
 
 import { changerTypeClientFormAction } from "@/server/actions/qualiopi/clients";
+import type { ApercuCrmPro } from "@/server/crm-sync/apercu-dossier";
 
 export interface ChangerTypeClientProps {
   clientId: string;
   type: "entreprise" | "particulier";
-  raisonSociale: string;
   /** Nom du contact de la fiche (`Client.contactNom`), qui ne change pas ; préremplit « Repasser en particulier ». */
   contactNom: string | null;
   blocage: string | null;
-  /** Adresse de la fiche (déjà visible sur elle) : dite avant l'envoi au CRM Pro. */
-  adresseCodePostal: string | null;
-  adresseVille: string | null;
-  /** Contacts de la fiche (déjà visibles sur elle) : nom, fonction, téléphone. */
-  contacts: ReadonlyArray<{
-    nom: string;
-    fonction: string | null;
-    telephone: string | null;
-  }>;
+  /**
+   * Ce qui partira au CRM Pro, construit par les fonctions pures de l'envoi (`apercuPourCrm`) :
+   * l'écran ne peut pas s'écarter de la synchro. `null` : lecture impossible, le dit sans rien annoncer.
+   */
+  apercu: ApercuCrmPro | null;
 }
 
 const champCls =
@@ -32,25 +28,45 @@ const champCls =
 const boutonCls =
   "rounded bg-[color:var(--color-admin-accent)] px-3 py-1.5 text-[length:var(--text-admin-sm)] text-white";
 
-function phraseCrmPro(props: ChangerTypeClientProps): string {
-  const ville = [props.adresseCodePostal, props.adresseVille]
-    .map((v) => v?.trim() ?? "")
+function phraseCrmPro(apercu: ApercuCrmPro | null): string {
+  if (apercu === null) {
+    return "Le détail de l'envoi au CRM Pro n'a pas pu être lu : rien n'est annoncé ici.";
+  }
+  const propre = (v: string | null) => v?.trim() ?? "";
+  const ville = [apercu.codePostal, apercu.ville]
+    .map(propre)
     .filter((v) => v !== "")
     .join(" ");
-  const adresse = ville !== "" ? `l'adresse de la fiche (${ville})` : "aucune adresse renseignée";
+  const adresse = [propre(apercu.rue), ville].filter((v) => v !== "").join(", ");
   const contacts =
-    props.contacts.length === 0
-      ? "aucun contact sur la fiche"
-      : "pour chaque contact son nom, sa fonction et son téléphone : " +
-        props.contacts
+    apercu.contacts.length === 0
+      ? "aucun contact"
+      : "contacts : " +
+        apercu.contacts
           .map((c) => {
-            const details = [c.fonction, c.telephone]
-              .map((v) => v?.trim() ?? "")
-              .filter((v) => v !== "");
+            const details = [c.fonction, c.telephone, c.email].map(propre).filter((v) => v !== "");
             return details.length > 0 ? `${c.nom} (${details.join(", ")})` : c.nom;
           })
           .join(" ; ");
-  return `Partira au CRM Pro : le nom de l'entreprise, ${adresse}, et ${contacts}.`;
+  const { etape, questionnaire, nbEchanges, prochaineAction } = apercu.etat;
+  const etat: string[] = [];
+  if (etape !== null) etat.push(`étape : ${etape}`);
+  if (questionnaire !== null) {
+    etat.push(
+      questionnaire.recuLe
+        ? `questionnaire reçu le ${questionnaire.recuLe}`
+        : questionnaire.envoyeLe
+          ? `questionnaire envoyé le ${questionnaire.envoyeLe}`
+          : "questionnaire",
+    );
+  }
+  if (nbEchanges !== null) etat.push(`${nbEchanges} échange${nbEchanges > 1 ? "s" : ""}`);
+  if (prochaineAction !== null) {
+    etat.push(`prochaine action : ${prochaineAction.type} le ${prochaineAction.date}`);
+  }
+  const etatDossier =
+    etat.length > 0 ? `l'état du dossier (${etat.join(", ")})` : "l'état du dossier";
+  return `Partira au CRM Pro : le nom de l'entreprise saisi ci-dessus, ${adresse !== "" ? adresse : "aucune adresse renseignée"} ; ${contacts} ; et ${etatDossier}.`;
 }
 
 export function ChangerTypeClient(props: ChangerTypeClientProps) {
@@ -123,7 +139,7 @@ export function ChangerTypeClient(props: ChangerTypeClientProps) {
               <input type="text" name="motif" maxLength={300} className={champCls} />
             </label>
             {estParticulier ? (
-              <p className="text-[length:var(--text-admin-xs)]">{phraseCrmPro(props)}</p>
+              <p className="text-[length:var(--text-admin-xs)]">{phraseCrmPro(props.apercu)}</p>
             ) : null}
             <button type="submit" className={boutonCls}>
               {estParticulier

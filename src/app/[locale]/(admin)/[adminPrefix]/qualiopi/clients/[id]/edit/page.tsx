@@ -28,6 +28,7 @@ import { titreOngletClient, libelleBlocBranche } from "@/server/qualiopi/crm/lib
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { raisonBlocageChangementType } from "@/server/qualiopi/crm/changer-type-client";
 import { prisma } from "@/lib/prisma";
+import { lireApercuCrmPro } from "@/server/crm-sync/lire-apercu";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { profilDeLaFiche } from "@/components/admin/dossier-client/fiche/ProfilDeLaFiche";
 import { gardePage } from "@/server/auth/garde-page";
@@ -61,14 +62,12 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
 
   const blocageType = await raisonBlocageChangementType(prisma, client).catch(() => null);
 
-  // Ce que « Passer en entreprise » enverra au CRM Pro : des données déjà visibles sur la fiche.
-  const contactsFiche = await prisma.clientContact
-    .findMany({
-      where: { clientId: id, statut: "actif", origine: { not: "mention" } },
-      select: { nom: true, fonction: true, telephone: true },
-      orderBy: { createdAt: "asc" },
-    })
-    .catch(() => []);
+  // Ce que « Passer en entreprise » enverra au CRM Pro : même lecture et mêmes fonctions que
+  // l'envoi, posées comme si la fiche était une entreprise. Lecture seule. Particulier seulement.
+  const apercuCrm =
+    client.type === "particulier" && blocageType === null
+      ? await lireApercuCrmPro(id).catch(() => null)
+      : null;
 
   const base = `/${locale}/${adminPrefix}/qualiopi/clients`;
   // Retour à la FICHE du client (et non à la liste) : on vient de la fiche.
@@ -106,12 +105,9 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
       <ChangerTypeClient
         clientId={client.id}
         type={client.type === "particulier" ? "particulier" : "entreprise"}
-        raisonSociale={client.raisonSociale}
         contactNom={client.contactNom}
         blocage={blocageType}
-        adresseCodePostal={client.adresseCodePostal ?? null}
-        adresseVille={client.adresseVille ?? null}
-        contacts={contactsFiche}
+        apercu={apercuCrm}
       />
 
       <ClientEditForm
