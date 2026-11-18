@@ -118,9 +118,8 @@ export default async function PublicAuthorPage({ params }: Props) {
   // `AuthorProfile` dégradé — c'est ce qui avait fini par lui donner la même
   // page pauvre qu'une persona.
   if (slug === "williams") {
-    // Les deux drapeaux, pas un seul : `/financement-opco-france-travail`
-    // exige la visibilité des pages OF **et** la certification réelle pour
-    // répondre autre chose qu'un 404.
+    // Les deux drapeaux, pas un seul : la visibilité des pages OF **et** la
+    // certification réelle conditionnent les Q/R de financement de la FAQ.
     const financementPublic =
       isQualiopiPublicDisclosureEnabled() && isQualiopiCertificationObtenue();
     const faq = buildWilliamsFaq({ certificationObtenue: financementPublic });
@@ -164,7 +163,7 @@ export default async function PublicAuthorPage({ params }: Props) {
             items={[{ href: `/equipe/williams`, label: FOUNDER.fullName }]}
           />
         </Container>
-        <FounderProfile faq={faq} financementPublic={financementPublic} />
+        <FounderProfile faq={faq} />
       </>
     );
   }

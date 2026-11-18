@@ -89,7 +89,6 @@ export const ROUTE_FRESHNESS: Readonly<Record<string, string>> = {
   "/espace-ressources/connexion": "2026-08-03T17:13:08.000Z",
   "/faq": "2026-11-11T03:00:51.000Z",
   "/faq/par-thematique": "2026-11-11T03:00:51.000Z",
-  "/financement-opco-france-travail": "2026-10-17T06:59:08.000Z",
   "/formations": "2026-11-11T03:00:51.000Z",
   "/formations/entreprise": "2026-11-11T03:00:51.000Z",
   "/formations/metiers": "2026-11-11T03:00:51.000Z",

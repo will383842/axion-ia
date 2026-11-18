@@ -362,6 +362,14 @@ const nextConfig: NextConfig = {
         destination: "/:locale/carrieres/assistant-financements",
         permanent: true,
       },
+      // 2026-11-18 : la page « financement OPCO / France Travail » est retirée du site
+      // (décision du dirigeant). 301 permanent vers le catalogue des formations ; ne pas
+      // recréer la page ni ses liens (garde : tests/unit/ci/page-financement-retiree.spec.ts).
+      {
+        source: "/:locale(fr|en)/financement-opco-france-travail",
+        destination: "/fr/formations",
+        permanent: true,
+      },
       {
         source: "/:locale(fr|en)/apporteur/candidature",
         destination: "/:locale/devenir-commercial-ia/candidature",
