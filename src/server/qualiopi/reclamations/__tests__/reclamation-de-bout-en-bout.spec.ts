@@ -85,6 +85,9 @@ const h = vi.hoisted(() => {
 
 vi.mock("@/lib/prisma", () => ({ prisma: h.prisma }));
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: h.enqueueEmail }));
+vi.mock("@/server/notifications/doublon-client", () => ({
+  doublerAlerteReclamation: vi.fn(async () => ({ prive: "skipped", email: "queued" })),
+}));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(async () => 15),
 }));
