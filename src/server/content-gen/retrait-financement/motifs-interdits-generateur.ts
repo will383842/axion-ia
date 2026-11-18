@@ -1,8 +1,8 @@
 /**
  * Motifs interdits pour les GÉNÉRATEURS de contenu (blog, offres d'emploi) — fichier à part.
  *
- * `src/server/content-gen/brand/positionnement.ts` est modifié par la PR #2137 : on n'y touche pas
- * ici. ➜ IMPORT MANQUANT À FAIRE après la fusion de #2137 : y importer `CONSIGNE_SANS_FINANCEMENT`
+ * `src/server/content-gen/brand/positionnement.ts` est modifié par la PR 2137 : on n'y touche pas
+ * ici. ➜ IMPORT MANQUANT À FAIRE après la fusion de la PR 2137 : y importer `CONSIGNE_SANS_FINANCEMENT`
  * et l'ajouter à `LIGNES_INTERDITS` (ou à `BLOC_POSITIONNEMENT`). Tant que cet import manque, la
  * consigne n'est pas dans le prompt : seul le garde-fou aval (le motif ci-dessous) protège.
  */
