@@ -8,7 +8,7 @@
  *
  * URL canonique : `/api/markdown/{type}/{slug}`
  *   - type : "blog" | "actualites" | "guides" | "cas-concrets" | "centre-aide"
- *            | "faq" | "glossaire"
+ *            | "faq" | "glossaire" | "connaissances"
  *   - slug : slug FR canonique
  *
  * Découvrabilité : les pages HTML correspondantes émettent un
@@ -62,6 +62,7 @@ const ALLOWED_TYPES = new Set([
   "centre-aide",
   "faq",
   "glossaire",
+  "connaissances",
 ]);
 
 interface MarkdownContent {
@@ -213,6 +214,26 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
       body: [`<p>${term.fr}</p>`, alias, exemples].filter(Boolean).join("\n"),
       updatedAt: new Date(SITE_EDITORIAL_DATE),
       canonicalSegment: "glossaire",
+    };
+  }
+
+  if (type === "connaissances") {
+    // GEO V2-18 — base de connaissances : même lecteur que
+    // `/connaissances/[slug]` (triple filtre public : publiée, audience et
+    // confidentialité publiques, embargo respecté). Un brouillon ou une fiche
+    // interne répond donc 404, jamais du Markdown. Aucun accès base au build :
+    // la route est dynamique (lecture à la requête) et le lecteur est fail-soft
+    // (stub.invalid → null → 404).
+    const { fetchPublicKbBySlug } = await import("@/lib/knowledge/public-fetch");
+    const { sanitizeTiptapHtml } = await import("@/lib/knowledge/tiptap-sanitize");
+    const entry = await fetchPublicKbBySlug(slug);
+    if (!entry) return null;
+    return {
+      title: entry.title,
+      excerpt: entry.excerpt,
+      body: sanitizeTiptapHtml(entry.body),
+      updatedAt: entry.updatedAt,
+      canonicalSegment: "connaissances",
     };
   }
 

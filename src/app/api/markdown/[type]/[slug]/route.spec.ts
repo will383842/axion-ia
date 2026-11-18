@@ -39,6 +39,26 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+// V2-18 : base de connaissances — le lecteur public est simulé (aucune base).
+vi.mock("@/lib/knowledge/public-fetch", () => ({
+  fetchPublicKbBySlug: async (slug: string) =>
+    slug === "fiche-kb-test"
+      ? {
+          slug,
+          title: "Fiche de test",
+          excerpt: "Résumé de la fiche.",
+          body: "<h2>Section</h2><p>Un paragraphe de la base de connaissances.</p>",
+          type: "guide",
+          publishedAt: new Date("2026-10-01T00:00:00Z"),
+          updatedAt: new Date("2026-10-02T00:00:00Z"),
+          readingTime: 2,
+          wordCount: 100,
+          metaTitle: null,
+          metaDescription: null,
+        }
+      : null,
+}));
+
 import { GET } from "./route";
 import { listGlossaryTermSlugs } from "@/content/glossary-extension";
 import { getAllSlugs as getAllCaseSlugs } from "@/content/case-studies";
@@ -140,6 +160,27 @@ describe("/api/markdown — les types adossés à un SSOT fichier servent un vra
       const res = await fetchMarkdown(type, slugDe());
       expect(await res.text(), `${type} sert un gabarit non résolu`).not.toContain("{{price:");
     }
+  });
+});
+
+describe("/api/markdown — base de connaissances (V2-18)", () => {
+  it("annonce le type « connaissances » dans la page de détail", () => {
+    expect(annonces).toContain("connaissances");
+  });
+
+  it("sert du Markdown en 200 pour une fiche publique", async () => {
+    const res = await fetchMarkdown("connaissances", "fiche-kb-test");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toMatch(/^text\/markdown/);
+    const corps = await res.text();
+    expect(corps).toContain("# Fiche de test");
+    expect(corps).toContain("## Section");
+    expect(corps).toContain("Source: https://axion-ia.com/fr/connaissances/fiche-kb-test");
+  });
+
+  it("répond 404 pour une fiche absente ou non publique", async () => {
+    const res = await fetchMarkdown("connaissances", "brouillon-inconnu");
+    expect(res.status).toBe(404);
   });
 });
 
