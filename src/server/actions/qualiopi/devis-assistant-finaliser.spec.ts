@@ -745,8 +745,39 @@ describe("envoyerDepuisAssistantAction", () => {
     expect(ordre).toEqual(["numeroter", "envoyer"]);
     expect(m.envoyer).toHaveBeenCalledWith(DEVIS);
     expect(r).toEqual({
-      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true },
+      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
     });
+  });
+
+  it("mode garé : {emailEnvoye:false, garePourValidation:true, note} reprend sendDevisAction", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: {
+        id: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+    expect(await env()).toEqual({
+      data: {
+        devisId: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+  });
+
+  it("mode direct : garePourValidation vaut false", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: { id: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
+    });
+    const r = await env();
+    expect(r).toMatchObject({ data: { emailEnvoye: true, garePourValidation: false } });
   });
 
   it("synchronise (mise à jour) PUIS envoie quand le devis est déjà numéroté", async () => {

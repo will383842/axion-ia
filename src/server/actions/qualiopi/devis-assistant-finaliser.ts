@@ -479,7 +479,14 @@ export async function envoyerDepuisAssistantAction(i: {
   brouillonId: string;
   attenduRevision: number;
 }): Promise<
-  ActionResult<{ devisId: string; emailEnvoye: boolean; signatureCreee: boolean; note?: string }>
+  ActionResult<{
+    devisId: string;
+    emailEnvoye: boolean;
+    signatureCreee: boolean;
+    /** `true` : l'e-mail attend dans Emails → À valider ; le devis reste en brouillon. */
+    garePourValidation: boolean;
+    note?: string;
+  }>
 > {
   const n = await numeroter(i);
   if (!("data" in n)) return { error: n.error };
@@ -500,6 +507,7 @@ export async function envoyerDepuisAssistantAction(i: {
       devisId: n.data.devisId,
       emailEnvoye: r.data.emailEnvoye,
       signatureCreee: r.data.signatureCreee,
+      garePourValidation: r.data.garePourValidation === true,
       ...(r.data.note !== undefined ? { note: r.data.note } : {}),
     },
   };
