@@ -99,8 +99,8 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // d'articles n'étaient annoncés dans aucun sitemap). Cf. `app/sitemap-images-blog.xml`.
   "/sitemap-images-blog.xml",
   "/sitemap-images-villes-t1.xml",
-  "/sitemap-images-villes-t2.xml",
-  "/sitemap-images-villes-t3-t4.xml",
+  // t2 et t3-t4 retirés (18/11/2026) : aucune ville indexée sous 100 000 habitants →
+  // sitemaps vides, refusés par Google. Les routes répondent 404.
   // Module recrutement commercial (devenir-commercial-ia) — hubs T1+T2 indexables
   // + France + candidature. Route Handler isolé (ne touche pas sitemap.ts).
   "/sitemap-recrutement.xml",

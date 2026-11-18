@@ -1,12 +1,8 @@
 /**
- * Tests de sync — garantit que les whitelists hardcodées de
- * `seo-noindex-routes.ts` (Edge-safe) restent en sync avec la source de vérité
- * des datas (`getIndexableVilles()` / `getIndexableRegions()`).
- *
- * Toute promotion d'une ville pilote (ajout dans `COPY_BY_SLUG`) doit aussi
- * mettre à jour `INDEXABLE_VILLE_SLUGS` (et `INDEXABLE_SERVICE_VILLE_SLUGS` si
- * elle porte `copy.services.*`). Ce test fail → ajouter la ville dans
- * `seo-noindex-routes.ts`.
+ * Tests de sync — garantit que la whitelist Edge de `seo-noindex-routes.ts`
+ * (fichier généré `src/generated/indexable-villes.ts`) reste en sync avec la
+ * liste unique `src/content/villes/villes-indexees.ts` via `isVilleIndexable()`.
+ * Échec → `pnpm tsx scripts/gen-indexable-villes.ts`.
  */
 import { describe, it, expect } from "vitest";
 
@@ -47,16 +43,39 @@ describe("seo-noindex-routes — sync vs content datas", () => {
     expect([...__INTERNAL.INDEXABLE_REGION_SLUGS].sort()).toEqual([...fromData].sort());
   });
 
-  it("INDEXABLE_SERVICE_VILLE_SLUGS reflète copy.services par service", () => {
-    for (const service of ["audit", "interventions", "implementation"] as const) {
-      const fromData = new Set(
-        getIndexableVilles()
-          .filter((v) => !!v.copy?.services?.[service])
-          .map((v) => v.slug),
-      );
-      expect([...__INTERNAL.INDEXABLE_SERVICE_VILLE_SLUGS[service]].sort()).toEqual(
-        [...fromData].sort(),
-      );
+  it("toute ville hors liste qui a un copy reçoit le header noindex", () => {
+    for (const v of getIndexableVilles()) {
+      if (isVilleIndexable(v.slug)) continue;
+      expect(
+        isNoindexStubRoute(`/fr/implantations/${v.region}/${v.slug}`),
+        `ville hors liste ${v.slug} sans X-Robots-Tag noindex`,
+      ).toBe(true);
+    }
+  });
+
+  it("toutes les URL par-ville / by-city des 8 sections reçoivent le header noindex", () => {
+    const sections = [
+      ["audit", "par-ville"],
+      ["interventions", "par-ville"],
+      ["implementation", "par-ville"],
+      ["formations", "par-ville"],
+      ["un-a-un", "par-ville"],
+      ["sites-web-augmentes", "par-ville"],
+      ["audit", "by-city"],
+      ["implementation", "by-city"],
+      ["formations", "by-city"],
+      ["one-to-one", "by-city"],
+      ["ai-augmented-websites", "by-city"],
+    ] as const;
+    for (const [section, segment] of sections) {
+      for (const ville of ["paris", "lyon", "grenoble", "acheres", "lestrem"]) {
+        for (const locale of ["fr", "en"]) {
+          expect(
+            isNoindexStubRoute(`/${locale}/${section}/${segment}/${ville}`),
+            `/${locale}/${section}/${segment}/${ville}`,
+          ).toBe(true);
+        }
+      }
     }
   });
 });
@@ -92,10 +111,18 @@ describe("isNoindexStubRoute — logique", () => {
     expect(isNoindexStubRoute("/en/implementation/by-city/lestrem")).toBe(true);
   });
 
-  it("retourne false pour service×ville pilote (Paris)", () => {
-    expect(isNoindexStubRoute("/fr/audit/par-ville/paris")).toBe(false);
-    expect(isNoindexStubRoute("/fr/interventions/par-ville/paris")).toBe(false);
-    expect(isNoindexStubRoute("/en/implementation/by-city/paris")).toBe(false);
+  it("retourne true pour service×ville même pour Paris (toutes en noindex, 18/11/2026)", () => {
+    expect(isNoindexStubRoute("/fr/audit/par-ville/paris")).toBe(true);
+    expect(isNoindexStubRoute("/fr/interventions/par-ville/paris")).toBe(true);
+    expect(isNoindexStubRoute("/en/implementation/by-city/paris")).toBe(true);
+    expect(isNoindexStubRoute("/fr/formations/par-ville/lyon")).toBe(true);
+  });
+
+  it("la page ville gardée n'est pas touchée (Lyon, Brest, Montreuil, Grenoble)", () => {
+    expect(isNoindexStubRoute("/fr/implantations/auvergne-rhone-alpes/lyon")).toBe(false);
+    expect(isNoindexStubRoute("/fr/implantations/bretagne/brest")).toBe(false);
+    expect(isNoindexStubRoute("/fr/implantations/ile-de-france/montreuil")).toBe(false);
+    expect(isNoindexStubRoute("/fr/implantations/auvergne-rhone-alpes/grenoble")).toBe(false);
   });
 
   it("retourne false pour routes hors scope", () => {

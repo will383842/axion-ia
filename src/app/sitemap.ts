@@ -347,16 +347,16 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 // puis disparaisse sans raison.
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
-  // Structure de chunks STABLE : basée sur TOUTES les villes avec copy (pas la
-  // cohorte du jour). Ainsi les IDs de sub-sitemaps ne changent jamais quand la
-  // cohorte drip s'élargit (Google n'aime pas qu'un sub-sitemap apparaisse puis
-  // disparaisse). Seul le CONTENU de chaque chunk grandit dans le temps (cf.
-  // buildVillesByRegionSitemap qui filtre sur isVilleIndexable).
-  const withCopy = VILLES.filter((v) => !!v.copy);
+  // 18/11/2026 : les IDs dérivent UNIQUEMENT des villes de `villes-indexees.ts`
+  // (40 villes, 12 régions, jamais plus de 10 villes par région → aucun découpage).
+  // Une région sans ville gardée (Corse, DROM) n'a PAS de sub-sitemap : l'index
+  // refuse les sitemaps vides (`sitemap-index.xml/route.ts`). Test de garde :
+  // `src/app/__tests__/sitemap-villes.spec.ts`.
+  const gardees = VILLES.filter((v) => !!v.copy && isVilleIndexable(v.slug));
   const regions = [...getIndexableRegions()].sort((a, b) => a.slug.localeCompare(b.slug));
 
   for (const region of regions) {
-    const villesInRegion = withCopy.filter((v) => v.region === region.slug);
+    const villesInRegion = gardees.filter((v) => v.region === region.slug);
     if (villesInRegion.length === 0) continue;
 
     // 2 locales (FR + EN) par ville → multiplie le compte d'URLs par 2

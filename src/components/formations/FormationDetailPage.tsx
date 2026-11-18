@@ -74,7 +74,7 @@ import {
   type FormationBracket,
 } from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesCoreIndexableNow } from "@/content/villes/core";
+import { getVillesCitablesMaillage } from "@/content/villes/core";
 import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
@@ -355,7 +355,7 @@ export function FormationDetailPage({
       (x) => x.id !== f.id && !x.seminaire && x.categorie !== f.categorie && x.duree === f.duree,
     ),
   ].slice(0, 4);
-  const villes = getVillesCoreIndexableNow().slice(0, 48);
+  const villes = getVillesCitablesMaillage().slice(0, 48);
 
   const breadcrumbItems = [
     { href: "/formations", label: "Formations IA" },

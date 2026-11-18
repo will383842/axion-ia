@@ -34,7 +34,7 @@ import {
   isPremiumVilleCore,
   cohortSize as cohortSizeCore,
   isVilleIndexable as isVilleIndexableCore,
-  getVillesCoreIndexableNow,
+  getVillesCitablesMaillage,
   getRegionByDepartement as getRegionByDepartementCore,
 } from "./core";
 
@@ -224,12 +224,12 @@ export function getIndexableVilles(): ReadonlyArray<Ville> {
 }
 
 /**
- * Villes réellement dans la cohorte indexable À LA DATE `now`. Sous-ensemble de
- * `getIndexableVilles()`, dans l'ordre de classement de `core`. Cf. [[isVilleIndexable]].
+ * Villes citables dans les listes de maillage (avec leur `copy`). NE PAS l'utiliser
+ * pour savoir si une ville est indexable : c'est `isVilleIndexable`.
  */
-export function getVillesIndexableNow(now: Date = new Date()): ReadonlyArray<Ville> {
+export function getVillesCitablesMaillageHydratees(now: Date = new Date()): ReadonlyArray<Ville> {
   // `core` donne l'ordre ; on ré-hydrate chaque entrée avec son `copy`.
-  return getVillesCoreIndexableNow(now).map((v) => SLUG_INDEX.get(v.slug) as Ville);
+  return getVillesCitablesMaillage(now).map((v) => SLUG_INDEX.get(v.slug) as Ville);
 }
 
 export function getVillesByDepartement(code: string): ReadonlyArray<Ville> {

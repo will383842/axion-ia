@@ -4,8 +4,8 @@
 // stack JSON-LD complet, FAQ Speakable, maillage interne.
 //
 // Décision Will 2026-05-08 : « toutes les villes indexables ».
-//   - Si copy.services.<service> présent : tier-1 indexable + sitemap inclus.
-//   - Sinon : stub minimal noindex follow (anti-doorway HCU 2024).
+//   - Mise à jour 18/11/2026 : TOUTES ces pages sont en `noindex, follow`, hors
+//     sitemaps (une seule page indexée par ville, cf. villes-indexees.ts).
 
 import type { Metadata } from "next";
 import { ArrowUpRight, MapPin, Users } from "lucide-react";
@@ -28,7 +28,7 @@ import { cn } from "@/lib/utils";
 import { SERVICE_VISUAL, ACCENT_CLASSES } from "@/content/services-visual";
 
 import { getRegion } from "@/content/regions";
-import { VILLES, getIndexableVilles, getVille, isVilleIndexable } from "@/content/villes";
+import { VILLES, getIndexableVilles, getVille } from "@/content/villes";
 import { SEUIL_PRERENDU_HUB_VILLE } from "@/content/villes/prerendu";
 import { getNearbyVilles, haversineKm } from "@/lib/geo";
 import { getBlogArticlesByVille } from "@/server/content-gen/blog/get-articles-by-ville";
@@ -249,19 +249,12 @@ export async function buildPageMetadata(
     },
   });
 
-  // Anti-doorway HCU 2024 : noindex tant qu'aucun copy substantiel + canonical
-  // satellite → ville-hub la plus proche ayant la copy (concentre le SEO, modèle
-  // hub-and-spoke décision Will 2026-06-04). Fallback : self-canonical si aucun hub.
+  // Décision du 18/11/2026 : toutes les pages service × ville restent en ligne
+  // mais en `noindex, follow`, avec un canonical vers elles-mêmes (celui de
+  // `buildProductMetadata`). Une seule page indexée par ville : la page
+  // `/implantations/<région>/<ville>`. En-tête X-Robots-Tag : `seo-noindex-routes.ts`.
   if (!hasCopy) {
-    const hubSlug = nearestHubSlugWithCopy(ville, service);
-    const canonical = hubSlug
-      ? `/${locale}${isFr ? meta.pathFr : meta.pathEn}/${hubSlug}`
-      : undefined;
-    return {
-      ...result,
-      ...(canonical ? { alternates: { ...result.alternates, canonical } } : {}),
-      robots: { index: false, follow: true },
-    };
+    return { ...result, robots: { index: false, follow: true } };
   }
   return {
     ...result,
@@ -270,12 +263,7 @@ export async function buildPageMetadata(
         ? (serviceCopy?.fr.hero.slice(0, 155) ?? description)
         : (serviceCopy?.en.hero.slice(0, 155) ?? description),
     },
-    // VIS-07 (audit visibilité 2026-06-05) — applique le drip d'indexation aussi
-    // aux pages service×ville. Avant : gate seulement sur hasCopy → une ville
-    // avec copy mais hors cohorte du jour émettait robots:index TOUT en étant
-    // absente du sitemap (qui, lui, gate sur isVilleIndexable) → incohérence,
-    // Google pouvait l'indexer via le maillage. Aligne page ↔ sitemap ↔ hub.
-    ...(isVilleIndexable(ville.slug) ? {} : { robots: { index: false, follow: true } }),
+    robots: { index: false, follow: true },
   };
 }
 
