@@ -45,6 +45,10 @@ import {
   SITE_URL,
 } from "@/lib/seo";
 import { loadGuidesIndexForView } from "@/server/content-gen/guides/loader";
+import {
+  hubGuidesEstIndexable,
+  ROBOTS_HUB_GUIDES_VIDE,
+} from "@/server/content-gen/guides/hub-indexable";
 
 // ISR pure : revalidate=3600 → nouveaux guides visibles sous 1h.
 // `force-dynamic` annulerait silencieusement `revalidate`, donc NE PAS le set.
@@ -57,7 +61,9 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
-  return buildProductMetadata({
+  // V1-17 : noindex tant qu'aucun guide n'est publié ; se rétablit seul ensuite.
+  const indexable = await hubGuidesEstIndexable();
+  const meta = await buildProductMetadata({
     locale,
     path: "/guides",
     title:
@@ -69,6 +75,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         ? "Guides piliers Axion-IA : étapes claires, exemples concrets, repères ROI pour cadrer vos chantiers IA en TPE, PME et ETI."
         : "Axion-IA pillar guides: clear steps, concrete examples, ROI benchmarks to scope your AI initiatives for SMBs and mid-market.",
   });
+  return indexable ? meta : { ...meta, robots: ROBOTS_HUB_GUIDES_VIDE };
 }
 
 export default async function GuidesHubPage({ params }: Props) {

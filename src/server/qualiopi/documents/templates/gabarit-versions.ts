@@ -97,6 +97,9 @@ export type TypeGabaritSignable =
  * | `facture` | 2 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : tuiles, cartes, totaux mis en avant, taux de TVA écrits à la française (« 5,5 % »). Intitulés, montants et mentions inchangés. Facture ET avoir (même gabarit). **v1 archivée** |
  * | `convention` | 6 | 16/10 — L15 : même mention, section non numérotée « Accessibilité et situation de handicap » avant les signatures. **v5 archivée** |
  * | `convention_tripartite` | 6 | 16/10 — L15 : même mention, mot pour mot. **v5 archivée** |
+ * | `convention` | 7 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : sections en cartes, lignes libellé / valeur, signatures en cadre. Aucun texte changé (mentions, clauses, intitulés, montants) ; taux écrits à la française. **v6 archivée** |
+ * | `convention_tripartite` | 7 | 18/11 — même refonte, aucun texte changé. **v6 archivée** |
+ * | `contrat_formation` | 3 | 18/11 — même refonte, aucun texte changé. **v2 archivée** |
  * | les autres | 1 | texte inchangé depuis l'origine |
  *
  * 🔑 DEPUIS LE 30/09, UNE VERSION REMPLACÉE S'ARCHIVE (`./archives/`). Avant,
@@ -153,9 +156,12 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
         fond, même conditionnel.
   */
   /* v6 — 16/10/2026, L15 : mention handicap (indicateur 26) ; v5 archivée. */
-  convention: 6,
-  convention_tripartite: 6,
-  contrat_formation: 2,
+  /* v7 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v6 archivée. */
+  convention: 7,
+  /* v7 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v6 archivée. */
+  convention_tripartite: 7,
+  /* v3 — 18/11/2026, refonte au style de la charte 2027 (texte inchangé) ; v2 archivée. */
+  contrat_formation: 3,
   contrat_sous_traitance: 2,
   /*
     v1 — 12/09/2026, premier texte.

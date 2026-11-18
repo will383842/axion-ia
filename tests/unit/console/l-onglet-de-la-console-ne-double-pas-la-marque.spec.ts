@@ -35,6 +35,7 @@ import { describe, it, expect } from "vitest";
 const RACINE = process.cwd();
 const LAYOUT_LOCALE = join(RACINE, "src/app/[locale]/layout.tsx");
 const LAYOUT_ADMIN = join(RACINE, "src/app/[locale]/(admin)/[adminPrefix]/layout.tsx");
+const TITRE_CONSOLE = join(RACINE, "src/lib/titre-console.ts");
 
 /** Le gabarit de titre du layout racine, tel qu'il s'applique à ses enfants. */
 function gabaritDuParent(): string {
@@ -50,12 +51,20 @@ function titreDeLaConsole(): {
   absolu: string | undefined;
   gabarit: string | undefined;
 } {
-  const src = readFileSync(LAYOUT_ADMIN, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  // V1-16 : le titre vit dans `metadataConsole` (src/lib/titre-console.ts), appelé par
+  // le `generateMetadata` du layout admin.
+  const layout = readFileSync(LAYOUT_ADMIN, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+  expect(layout, "le layout admin ne passe plus par `metadataConsole`").toContain(
+    "metadataConsole(",
+  );
+  const src = readFileSync(TITRE_CONSOLE, "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
   const bloc = /title:\s*\{([^}]*)\}/.exec(src);
-  expect(bloc, "le layout admin ne déclare plus de `title`").not.toBeNull();
+  expect(bloc, "`titre-console.ts` ne déclare plus de `title`").not.toBeNull();
   const corps = bloc?.[1] ?? "";
   const lire = (cle: string) => new RegExp(`${cle}:\\s*"([^"]*)"`).exec(corps)?.[1];
-  return { defaut: lire("default"), absolu: lire("absolute"), gabarit: lire("template") };
+  // `default` est un ternaire sur deux constantes : on lit celle de la console.
+  const defaut = /TITRE_CONSOLE\s*=\s*"([^"]*)"/.exec(src)?.[1];
+  return { defaut, absolu: lire("absolute"), gabarit: lire("template") };
 }
 
 describe("l'onglet de la console ne double pas la marque", () => {

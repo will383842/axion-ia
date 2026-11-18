@@ -168,10 +168,10 @@ describe("🔴 régénérer une pièce déjà émise garde la mise en page de l'
     });
   }
 
-  it("avoir émis avant cette PR : PDF identique à la v1, instantané en v1", async () => {
+  it("facture à montant négatif émise avant cette PR : PDF identique à la v1, instantané en v1", async () => {
     const snap = await regenerer(
       {
-        numero: "AXI-AVOIR-2026-003",
+        numero: "AXI-FAC-2026-003",
         lignes: [
           { designation: "Atelier IA — remboursement", quantite: 1, prixUnitaireHtCents: -50000 },
         ],

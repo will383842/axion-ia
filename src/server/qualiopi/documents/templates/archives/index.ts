@@ -45,6 +45,9 @@ import { DevisPdf as DevisPdfV5 } from "./devis.v5";
 import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./convention-tripartite.v4";
 import { ConventionTripartitePdf as ConventionTripartitePdfV5 } from "./convention-tripartite.v5";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
+import { ContratFormationPdf as ContratFormationPdfV2 } from "./contrat-formation.v2";
+import { ConventionPdf as ConventionPdfV6 } from "./convention.v6";
+import { ConventionTripartitePdf as ConventionTripartitePdfV6 } from "./convention-tripartite.v6";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
 import { FacturePdf as FacturePdfV1 } from "./facture.v1";
 
@@ -64,6 +67,7 @@ export const GABARITS_ARCHIVES: Readonly<
     3: { fichier: "convention.v3.tsx", Composant: ConventionPdfV3 as unknown as ComposantPiece },
     4: { fichier: "convention.v4.tsx", Composant: ConventionPdfV4 as unknown as ComposantPiece },
     5: { fichier: "convention.v5.tsx", Composant: ConventionPdfV5 as unknown as ComposantPiece },
+    6: { fichier: "convention.v6.tsx", Composant: ConventionPdfV6 as unknown as ComposantPiece },
   },
   convention_tripartite: {
     2: {
@@ -82,6 +86,10 @@ export const GABARITS_ARCHIVES: Readonly<
       fichier: "convention-tripartite.v5.tsx",
       Composant: ConventionTripartitePdfV5 as unknown as ComposantPiece,
     },
+    6: {
+      fichier: "convention-tripartite.v6.tsx",
+      Composant: ConventionTripartitePdfV6 as unknown as ComposantPiece,
+    },
   },
   devis: {
     1: { fichier: "devis.v1.tsx", Composant: DevisPdfV1 as unknown as ComposantPiece },
@@ -94,6 +102,10 @@ export const GABARITS_ARCHIVES: Readonly<
     1: {
       fichier: "contrat-formation.v1.tsx",
       Composant: ContratFormationPdfV1 as unknown as ComposantPiece,
+    },
+    2: {
+      fichier: "contrat-formation.v2.tsx",
+      Composant: ContratFormationPdfV2 as unknown as ComposantPiece,
     },
   },
   releve_connexion: {

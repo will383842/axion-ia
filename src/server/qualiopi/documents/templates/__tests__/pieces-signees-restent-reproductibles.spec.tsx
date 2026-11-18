@@ -337,9 +337,10 @@ describe("une pièce générée AUJOURD'HUI porte les citations corrigées", () 
   }
 
   it("les pièces retouchées ont changé de version (sinon l'archive ne serait jamais lue)", () => {
-    expect(versionGabaritCourante("convention")).toBe(6);
-    expect(versionGabaritCourante("convention_tripartite")).toBe(6);
-    expect(versionGabaritCourante("contrat_formation")).toBe(2);
+    // Version COURANTE : elle monte à chaque archivage (18/11 : charte 2027 → 7, 7, 3).
+    expect(versionGabaritCourante("convention")).toBeGreaterThanOrEqual(6);
+    expect(versionGabaritCourante("convention_tripartite")).toBeGreaterThanOrEqual(6);
+    expect(versionGabaritCourante("contrat_formation")).toBeGreaterThanOrEqual(2);
     expect(versionGabaritCourante("releve_connexion")).toBe(2);
   });
 
