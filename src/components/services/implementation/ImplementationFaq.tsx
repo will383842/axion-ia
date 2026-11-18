@@ -12,6 +12,7 @@
 import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { faqItems } from "@/content/questions-reference";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 import type { VilleContext } from "@/components/services/types";
@@ -36,23 +37,22 @@ export function ImplementationFaq({
 }: ImplementationFaqProps): ReactNode {
   const baseFaqs: ReadonlyArray<FaqItem> = isFr
     ? [
-        {
-          id: "q-prix",
-          question: "Comment ça marche, côté budget ?",
-          answer:
-            "Toujours en forfait fixe : un devis ferme avant tout démarrage, sans dépassement. Le montant dépend du périmètre — d'une automatisation simple à plusieurs automatisations connectées ou à de l'IA sur-mesure pour ETI et grands comptes. On le cadre ensemble lors d'un premier échange, sans engagement.",
-        },
+        ...faqItems(["ref-automatisation-prix"]).map(({ id, question, answer }) => ({
+          id,
+          question,
+          answer,
+        })),
         {
           id: "q-proprio",
           question: "Qui est propriétaire de ce que vous installez ?",
           answer:
-            "Vous. Le code, les workflows, les configurations, la documentation — tout est livré dans vos comptes, vos outils, votre infrastructure. Si vous nous quittez demain, tout continue de fonctionner.",
+            "Vous êtes propriétaire de tout ce qu'Axion-IA installe : le code, les workflows, les configurations et la documentation sont livrés dans vos comptes, vos outils et votre infrastructure. Si vous cessez de travailler avec nous demain, tout continue de fonctionner, sans redevance à nous verser.",
         },
         {
           id: "q-abonnement",
           question: "Y a-t-il une maintenance mensuelle obligatoire ?",
           answer:
-            "Non. Vous payez une fois, c'est à vous. Si plus tard vous voulez faire évoluer (nouvelles automatisations, ajustements), vous nous rappelez et on chiffre une mission complémentaire. Aucune redevance ne tourne en arrière-plan.",
+            "Non, aucune maintenance mensuelle n'est obligatoire : vous payez une fois, et ce qui est installé est à vous. Si plus tard vous voulez faire évoluer vos automatisations (nouveaux flux, ajustements), vous nous rappelez et nous chiffrons une mission complémentaire sur devis. Aucune redevance ne tourne en arrière-plan.",
         },
         {
           id: "q-delai",
@@ -82,8 +82,13 @@ export function ImplementationFaq({
           id: "q-taille",
           question: "C'est adapté à une entreprise comme la mienne ?",
           answer:
-            "Oui, du moment qu'il y a une tâche répétitive ou un agacement quotidien. On couvre l'artisan (devis, suivi clients) jusqu'au grand groupe (assistant juridique, agents internes). Si vous hésitez, un audit cadre le projet et priorise ce qui rapporte le plus vite.",
+            "Oui, une mise en place d'IA convient à une entreprise comme la vôtre dès qu'il y a une tâche répétitive ou un agacement quotidien. Nous couvrons l'artisan (devis, suivi clients) comme le grand groupe (assistant juridique, agents internes). Si vous hésitez, un audit cadre le projet et priorise ce qui rapporte le plus vite.",
         },
+        ...faqItems(["ref-automatiser-premier"]).map(({ id, question, answer }) => ({
+          id,
+          question,
+          answer,
+        })),
       ]
     : [
         {
