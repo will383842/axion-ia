@@ -312,6 +312,17 @@ export default async function ImageDetailPublicPage({ params }: PageProps) {
             {tr.caption && (
               <figcaption className="mt-3 text-sm text-gray-500 italic">{tr.caption}</figcaption>
             )}
+            {/* V2-21 : texte lu DANS l'image (OCR de l'enrichissement), en HTML natif
+                visible — chiffres et listes citables sans lire les pixels. `<details>`
+                natif : aucun JS client. Rien n'est écrit ici si l'OCR n'a rien lu. */}
+            {tr.embeddedText?.trim() && (
+              <details className="mt-3 rounded-lg border border-gray-100 p-3 text-sm text-gray-700">
+                <summary className="cursor-pointer font-semibold text-gray-900">
+                  {isFr ? "Texte présent dans l'image" : "Text shown in the image"}
+                </summary>
+                <p className="mt-2 leading-relaxed whitespace-pre-line">{tr.embeddedText}</p>
+              </details>
+            )}
           </figure>
 
           <header>
