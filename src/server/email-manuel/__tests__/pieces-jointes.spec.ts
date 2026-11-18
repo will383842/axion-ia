@@ -413,7 +413,6 @@ describe("ouvrir les envois", () => {
     "ancien.doc",
     "tableau.xls",
     "deck.ppt",
-    "rapport.odt",
     "x.pdf.exe",
     "virus.exe",
     "macro.docm",
@@ -595,6 +594,19 @@ describe("finaliser : contrôle, copie définitive, refus conservés", () => {
     const r = await fin(a);
     expect(ligne).toMatchObject({ statut: "refusee", motifRefus: "macros" });
     expect(r.ok && r.pieces[0]!.message).toMatch(/macros/);
+    expect(ligne.cleStockage.startsWith(PREFIXE_REFUSEES_EMAIL)).toBe(true);
+  });
+
+  it("un ODT à macros cachées dans un sous-document : refusé, jamais accepté", async () => {
+    const odt = fabriquerZip([
+      ["mimetype", "application/vnd.oasis.opendocument.text"],
+      ["content.xml", "<office:document-content/>"],
+      ["Object 1/Basic/Standard/Module1.xml", "Sub Main"],
+    ]);
+    const { a, ligne } = await envoyer("rapport.odt", odt);
+    await fin(a);
+    expect(ligne).toMatchObject({ statut: "refusee", motifRefus: "macros" });
+    expect(ligne.statut).not.toBe("acceptee");
     expect(ligne.cleStockage.startsWith(PREFIXE_REFUSEES_EMAIL)).toBe(true);
   });
 
@@ -1028,11 +1040,12 @@ describe("rangement protégé", () => {
     expect(l.motifRefus).toBe("format");
   });
 
-  it("18. ODT refusé à l'ouverture, message sans « ODT »", async () => {
+  it("18. ODT accepté à l'ouverture : une ligne `attendue`, message de format avec « ODT »", async () => {
     const r = await ouvrir([{ nom: "rapport.odt", taille: 1000 }]);
-    expect(r).toMatchObject({ ok: false, refus: "annonce" });
-    expect(!r.ok && r.message).not.toMatch(/ODT/);
-    expect(MESSAGES_PIECES_EMAIL.format("x")).not.toMatch(/ODT/);
+    expect(r.ok).toBe(true);
+    expect(h.lignes).toHaveLength(1);
+    expect(h.lignes[0]).toMatchObject({ statut: "attendue", format: "odt" });
+    expect(MESSAGES_PIECES_EMAIL.format("x")).toMatch(/ODT/);
   });
 
   it("19. clés traçables : chaque clé commence par un des 3 dossiers de son e-mail", async () => {
