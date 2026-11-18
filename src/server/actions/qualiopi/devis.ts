@@ -60,6 +60,7 @@ import {
 } from "@/server/qualiopi/devis/version-remplacee";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 import {
   nomPourSalutationDevis,
   payloadDevisEnvoi,
@@ -374,6 +375,10 @@ export async function sendDevisAction(id: string): Promise<
                 adresseCodePostal: true,
                 adresseVille: true,
                 contactNom: true,
+                // Salutation « Bonjour Madame Dupont, » (B4) : champs saisis à part, jamais découpés.
+                contactCivilite: true,
+                contactPrenom: true,
+                contactNomFamille: true,
                 contactEmail: true,
                 // 🔴 Repris comme QUALITÉ figée du signataire (opposabilité du POUVOIR de
                 // signer au moment de l'engagement).
@@ -540,6 +545,12 @@ export async function sendDevisAction(id: string): Promise<
             "fr",
             payloadDevisEnvoi({
               clientNom: nomPourSalutationDevis(devis.client),
+              salutation: salutationPourPayload({
+                clientNom: nomPourSalutationDevis(devis.client),
+                contactCivilite: devis.client.contactCivilite,
+                contactPrenom: devis.client.contactPrenom,
+                contactNomFamille: devis.client.contactNomFamille,
+              }),
               numero: devis.numero,
               montantTotalHtCents: devis.montantTotalHtCents,
               montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,

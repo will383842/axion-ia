@@ -22,16 +22,20 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { ClientEditForm } from "@/components/admin/qualiopi/ClientEditForm";
+import { titreOngletClient, libelleBlocBranche } from "@/server/qualiopi/crm/libelles-fiche-client";
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { profilDeLaFiche } from "@/components/admin/dossier-client/fiche/ProfilDeLaFiche";
 import { gardePage } from "@/server/auth/garde-page";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Qualiopi — Modifier un client | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// Avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: titreOngletClient("Modifier un client"),
+    robots: { index: false, follow: false },
+  };
+}
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
@@ -64,7 +68,7 @@ export default async function ModifierClientPage({ params }: PageProps) {
 
       <AdminPageHeader
         title={`Modifier ${client.raisonSociale}`}
-        description={`${client.numero} — entreprise, adresse, contact et facturation. La branche (IDCC, effectif, OPCO) se modifie sur la fiche, bloc « Branche et OPCO ».`}
+        description={`${client.numero} — entreprise, adresse, contact et facturation. La branche (IDCC, effectif) se modifie sur la fiche, bloc « ${libelleBlocBranche()} ».`}
       />
 
       <ClientEditForm
@@ -88,6 +92,9 @@ export default async function ModifierClientPage({ params }: PageProps) {
           contactEmail: client.contactEmail ?? "",
           contactTelephone: client.contactTelephone ?? "",
           contactFonction: client.contactFonction ?? "",
+          contactCivilite: client.contactCivilite ?? "",
+          contactPrenom: client.contactPrenom ?? "",
+          contactNomFamille: client.contactNomFamille ?? "",
           delaiPaiementJours: client.delaiPaiementJours?.toString() ?? "",
           tauxAcomptePct: client.tauxAcomptePct?.toString() ?? "",
           modeFacturation: client.modeFacturation ?? "",
@@ -98,6 +105,7 @@ export default async function ModifierClientPage({ params }: PageProps) {
           estPublic: client.estPublic,
           adresseHistorique: client.adresse,
           brancheHref: `${ficheHref}?onglet=resume`,
+          brancheLibelle: libelleBlocBranche(),
         }}
         initialFlags={{ penalitesRetardActives: client.penalitesRetardActives }}
       />
