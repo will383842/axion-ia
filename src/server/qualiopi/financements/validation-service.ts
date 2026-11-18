@@ -69,8 +69,8 @@ type TrainerSousTraitantFields = Pick<Trainer, "statut" | "sousTraitantVerifieAt
  * propres.
  *
  * Les surfaces publiques sont déjà protégées depuis l'audit de certification
- * (`isQualiopiCertificationObtenue`) : `/certification-qualiopi` et
- * `/financement-opco-france-travail` renvoient 404 tant que le certificat n'est
+ * (`isQualiopiCertificationObtenue`) : `/certification-qualiopi`
+ * renvoie 404 tant que le certificat n'est
  * pas délivré. Mais RIEN n'avertissait côté console : on pouvait typer une
  * session « OPCO » et bâtir un devis dessus. Le jour où quelqu'un d'autre que
  * Will saisit un dossier, il promet à un client une prise en charge
