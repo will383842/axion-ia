@@ -218,6 +218,39 @@ const dependancesParDefaut: DependancesConfirmation = {
     ),
 };
 
+/**
+ * Une confirmation de commande existe-t-elle déjà pour ce devis (gardée en corbeille ou déjà
+ * journalisée) ? Même contrôle, même `jobId` que l'anti-rejeu de l'envoi : lecture seule.
+ * `null` : état inconnu (base muette).
+ */
+export async function confirmationCommandeDejaGaree(devisId: string): Promise<boolean | null> {
+  return dependancesParDefaut.dejaEnvoyee(`devis-commande-confirmation-${devisId}`);
+}
+
+export type EtatConfirmationCommande = "aucune" | "a_valider" | "autre";
+
+/**
+ * État de la confirmation de commande d'un devis, en lecture seule (même `jobId` que l'anti-rejeu) :
+ * « a_valider » : une ligne de la file des e-mails attend validation ; « aucune » : ni file ni
+ * journal ; « autre » : approuvée, envoyée, refusée, ou présente seulement au journal.
+ * Base muette : « aucune » (la reprise reste idempotente, l'anti-rejeu de l'envoi tranche).
+ */
+export async function etatConfirmationCommande(devisId: string): Promise<EtatConfirmationCommande> {
+  const jobId = `devis-commande-confirmation-${devisId}`;
+  try {
+    const lignes = await prisma.emailOutbox.findMany({
+      where: { jobId: jobId.slice(0, 200) },
+      select: { statut: true },
+    });
+    if (lignes.some((l) => l.statut === "a_valider")) return "a_valider";
+    if (lignes.length > 0) return "autre";
+    const journal = await prisma.emailLog.findFirst({ where: { jobId }, select: { id: true } });
+    return journal !== null ? "autre" : "aucune";
+  } catch {
+    return "aucune";
+  }
+}
+
 export async function envoyerConfirmationCommande(
   demande: DemandeConfirmationCommande,
   deps: DependancesConfirmation = dependancesParDefaut,

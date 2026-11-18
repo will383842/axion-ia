@@ -1165,12 +1165,18 @@ export async function relancerAcceptationDevisAction(input: {
         session,
       });
       if (classique.confirmationsEchec.length > 0) {
-        return {
-          ok: false,
-          message:
-            messageConfirmationSelonRaisons(classique.echecs.map((e) => e.raison)) ??
-            "La confirmation de commande n'a pas pu être préparée. Relancez depuis la fiche du devis.",
-        };
+        const motif =
+          messageConfirmationSelonRaisons(classique.echecs.map((e) => e.raison)) ??
+          "La confirmation de commande n'a pas pu être préparée. Relancez depuis la fiche du devis.";
+        const nb = classique.confirmationsPreparees.length;
+        // Cas mixte : l'échec ne doit pas faire croire que rien n'est parti en corbeille.
+        const reste =
+          nb === 0
+            ? ""
+            : nb === 1
+              ? " 1 confirmation de commande a déjà été préparée sur cette pièce."
+              : ` ${nb} confirmations de commande ont déjà été préparées sur cette pièce.`;
+        return { ok: false, message: `${motif}${reste}` };
       }
       const preparee = classique.confirmationsPreparees.length > 0;
       return {
