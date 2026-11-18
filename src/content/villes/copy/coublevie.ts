@@ -18,9 +18,9 @@ export const COUBLEVIE_COPY: VilleCopy = {
   ecosystemEn:
     "Coublevie est intégrée à la communauté d'agglomération du Pays voironnais (~93 000 hab), positionnée en banlieue résidentielle de Voiron. Position pied du massif de la Chartreuse. Tissu péri-urbain : PME tertiaires, TPE artisanat BTP, commerces de proximité, professions libérales installées, agriculture résiduelle.",
   distancesFr:
-    "Voiron centre à 5 min. Gare Voiron à 10 min (TER Grenoble-Lyon). Grenoble centre à 30 min A48. Lyon centre à 1h A48. Aéroport Lyon-Saint-Exupéry à 1h. Chartreuse stations 30 min.",
+    "Voiron centre à 5 min. Gare Voiron à 10 min (TER vers Lyon). Lyon centre à 1h A48. Aéroport Lyon-Saint-Exupéry à 1h. Chartreuse stations 30 min.",
   distancesEn:
-    "Voiron centre à 5 min. Gare Voiron à 10 min (TER Grenoble-Lyon). Grenoble centre à 30 min A48. Lyon centre à 1h A48. Aéroport Lyon-Saint-Exupéry à 1h. Chartreuse stations 30 min.",
+    "Voiron centre à 5 min. Gare Voiron à 10 min (TER vers Lyon). Lyon centre à 1h A48. Aéroport Lyon-Saint-Exupéry à 1h. Chartreuse stations 30 min.",
   topSectorsNaf: [
     "PME tertiaires Pays voironnais",
     "TPE artisanat BTP",
@@ -49,7 +49,7 @@ export const COUBLEVIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coublevie et Pays voironnais ?",
-      a: "Oui, Axion-IA intervient à Coublevie et tout le Pays voironnais (Voiron, La Buisse, Moirans, Tullins, Rives). Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48).",
+      a: "Oui, Axion-IA intervient à Coublevie et tout le Pays voironnais (Voiron, La Buisse, Moirans, Tullins, Rives). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales du Voironnais ?",
@@ -64,8 +64,8 @@ export const COUBLEVIE_COPY: VilleCopy = {
       a: "Pour les PME tertiaires et commerces à Coublevie, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA fidélité client, automatisation workflow, classification documents.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (1h A48) ou Grenoble (30 min A48). Pour les multi-jours, hébergement local possible (hôtels Voiron).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Voiron).",
     },
   ],
 };

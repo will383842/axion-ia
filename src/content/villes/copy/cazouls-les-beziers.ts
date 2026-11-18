@@ -64,8 +64,8 @@ export const CAZOULS_LES_BEZIERS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les acteurs de l'œnotourisme du Biterrois : chatbots multilingues visiteurs, automatisation réservations dégustations, classification avis clients, marketing IA ciblé saison touristique canal du Midi.",
     },
     {
-      q: "Comment se passe une mission depuis Montpellier ou Béziers ?",
-      a: "Nos consultants interviennent depuis Béziers (10 min) ou Montpellier (1h10). Déplacement sur site inclus dans le forfait agglo Béziers. Pour missions multi-jours, hébergement Béziers ou littoral.",
+      q: "Comment se déroule une mission à Cazouls-lès-Béziers ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site inclus dans le forfait agglo Béziers. Pour missions multi-jours, hébergement Béziers ou littoral.",
     },
   ],
 };

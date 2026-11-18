@@ -49,7 +49,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villemandeur et dans le Montargois ?",
-      a: "Oui, Axion-IA intervient à Villemandeur et dans toute l'agglomération montargoise (Montargis, Amilly, Châlette-sur-Loing, Paucourt). Couverture nationale, déplacement sur site inclus dans le forfait mission. Accès Paris 1h15 train depuis Montargis.",
+      a: "Oui, Axion-IA intervient à Villemandeur et dans toute l'agglomération montargoise (Montargis, Amilly, Châlette-sur-Loing, Paucourt). Nous intervenons partout en France, sur place ou à distance, déplacement sur site inclus dans le forfait mission.",
     },
     {
       q: "Travaillez-vous avec les TPE et artisans de Villemandeur ?",
@@ -65,7 +65,7 @@ export const VILLEMANDEUR_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Villemandeur ?",
-      a: "Nos consultants se déplacent à Villemandeur depuis Paris (1h15 TER Montargis) ou Orléans (1h A19/A77). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

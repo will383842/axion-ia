@@ -19,7 +19,10 @@ export default defineConfig({
     // isolément + en `--no-file-parallelism`. Trade-off : CI 200s → ~365s mais
     // gates strict + baseline 1687/1694 maintenu. À investiguer / retirer
     // après upgrade Vitest 3.x (qui supporte Node 24 nativement).
-    fileParallelism: false,
+    // 2026-10-26 : en CI SEULEMENT (3 morceaux de 15-17 min : ~48 min-machine par PR), les fichiers
+    // tournent en parallèle sur les 3 forks permis. En local le hook pre-push reste séquentiel (mémoire
+    // du PC). Si les 7 tests de workers de mai ressortent : corriger ces tests ou remettre `false`.
+    fileParallelism: process.env.GITHUB_ACTIONS === "true",
     // Le pool dimensionne encore ses forks sur le nombre de cœurs (CPU - 1),
     // alors que `fileParallelism: false` n'en fait travailler qu'un à la fois.
     // Sur une machine 12 cœurs / 16 Go, jusqu'à onze forks jsdom inactifs
@@ -45,6 +48,7 @@ export default defineConfig({
       "tests/e2e-crm-sync/**/*.{test,spec}.{ts,tsx}",
       // T16 — seeds qualiopi (buildDemoData pure, no DB)
       "prisma/seeds/qualiopi/**/*.spec.ts",
+      "prisma/seeds/content-gen/**/*.spec.ts",
       // T0 — fixture volumétrique. 🔴 Sans cette ligne, le spec qui vérifie la
       // garde « ne jamais écrire en production » ne serait JAMAIS exécuté : un
       // fichier de test hors `include` est un fichier mort, et personne ne le

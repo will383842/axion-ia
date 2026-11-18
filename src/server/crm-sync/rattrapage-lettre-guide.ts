@@ -32,7 +32,18 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { Prisma } from "../../../prisma/generated/client";
 import { FORM_REF_LETTRE } from "@/content/guide-ia-formulaire";
+
+import {
+  coupureOriginesSuivantes,
+  MAX_ORIGINES_PAR_CHARGE,
+  originesSuivantesActives,
+  synchroCrmV3Active,
+  transmettreOriginesSuivantes,
+} from "@/server/guides-reseau/synchro-v3";
+
+export { coupureOriginesSuivantes };
 
 import { isCrmSyncGuideEnabled } from "./config";
 import { estExclueDuCrm } from "./exclusions";
@@ -301,4 +312,181 @@ export function adressesDeLEntree(texte: string): string[] {
     .split(/\r?\n/)
     .map((l) => l.trim())
     .filter((l) => l.length > 0 && !l.startsWith("#"));
+}
+
+// ── Lot guide réseau 4 (O5) : les origines restées en route ─────────────────────────────────────
+
+/** Délai laissé au chemin direct avant que le rattrapage ne reprenne une origine. */
+export const DELAI_RATTRAPAGE_ORIGINES_MS = 10 * 60_000;
+
+/**
+ * Borne d'un passage : nombre maximal de lots de `TAILLE_LOT` lus (soit 10 000 origines).
+ * La lecture ne porte que sur les personnes qui ont cliqué, et que sur leurs `MAX_ORIGINES_PAR_CHARGE`
+ * origines les plus récentes (les autres ne partiront jamais : elles ne sont pas relues). Les origines
+ * d'une adresse exclue ou hors format CRM passent `hors_charge` (mise à l'écart, rien de supprimé) au
+ * premier passage : elles ne reviennent plus et ne mangent donc pas la borne. Au-delà de la borne, le
+ * passage s'arrête et le journal le dit ; les origines non lues restent `NULL` et sont reprises au
+ * passage suivant (les lignes déjà traitées en sont sorties).
+ */
+export const MAX_LOTS_ORIGINES = 20;
+
+export interface OptionsRattrapageOrigines {
+  readonly executer?: boolean;
+  /**
+   * Date de coupure (D3, `ORIGINES_SUIVANTES_DEPUIS`) : seules les origines écrites à partir de
+   * cette date sont reprises ; les plus anciennes restent `NULL` (aucune fausse marque
+   * « transmise »). SANS elle, le passage ne fait rien : la décision de Williams est attendue.
+   */
+  readonly depuis?: Date;
+  /** Adresses à écarter pour CE passage (`--exclure`, `--exclure-stdin`), comme pour les demandes. */
+  readonly exclure?: readonly string[];
+  readonly maintenant?: Date;
+}
+
+export interface BilanRattrapageOrigines {
+  readonly mode: "a-blanc" | "execution";
+  readonly refus?: "coupure-absente" | "interrupteurs-eteints" | "colonne-absente";
+  /** Groupes (personne, guide) ayant des origines en attente. */
+  readonly groupes: number;
+  readonly nonCliques: number;
+  /** Groupes sautés : adresse passée en argument ou présente dans `CRM_SYNC_EXCLUSIONS_SHA256`. */
+  readonly exclues?: number;
+  readonly transmis: number;
+  readonly echecs: number;
+  /** `true` si la borne `MAX_LOTS_ORIGINES` a été atteinte avant la fin de la table. */
+  readonly borneAtteinte?: boolean;
+}
+
+/**
+ * Reprend les origines `crm_statut IS NULL` d'une personne qui a cliqué : UNE transmission
+ * cumulative par (personne, guide), par `transmettreOriginesSuivantes` (qui relit l'opposition
+ * dans sa transaction). À blanc par défaut. Journal agrégé : jamais d'adresse ni d'empreinte.
+ */
+export async function rattraperOriginesSuivantes(
+  options: OptionsRattrapageOrigines = {},
+): Promise<BilanRattrapageOrigines> {
+  const executer = options.executer === true;
+  const mode = executer ? "execution" : "a-blanc";
+  const vide = { groupes: 0, nonCliques: 0, transmis: 0, echecs: 0 };
+  const depuis = options.depuis ?? coupureOriginesSuivantes();
+  if (!depuis) return { mode, refus: "coupure-absente", ...vide };
+  // Interrupteurs éteints : on le dit, au lieu de lire toute la table pour rien.
+  if (!synchroCrmV3Active() || !originesSuivantesActives()) {
+    return { mode, refus: "interrupteurs-eteints", ...vide };
+  }
+  const exclues = new Set((options.exclure ?? []).map(normaliser).filter((a) => a.length > 0));
+  const maintenant = options.maintenant ?? new Date();
+  const groupes = new Map<string, { emailKey: string; guide: string }>();
+  // Curseur sur `id` (comme `parLots`) : les origines qui ne partiront pas (personne jamais
+  // cliquée, exclue) ne bloquent plus la lecture des suivantes. Borné par `MAX_LOTS_ORIGINES`.
+  let curseur: string | null = null;
+  let borneAtteinte = false;
+  try {
+    for (let lot = 0; ; lot += 1) {
+      if (lot >= MAX_LOTS_ORIGINES) {
+        borneAtteinte = true;
+        break;
+      }
+      // Seules les personnes qui ont cliqué (`first_click_at` ET `crm_emitted_at` posés) : les
+      // origines des autres ne partiront pas avant leur clic et ne prennent pas de place dans la borne.
+      const lt = new Date(maintenant.getTime() - DELAI_RATTRAPAGE_ORIGINES_MS);
+      // Une seule requête. Rang = position parmi les origines ACTIVES encore dans la charge
+      // (`NULL` ou `transmise`, de la plus récente à la plus ancienne) : au-delà de
+      // `MAX_ORIGINES_PAR_CHARGE`, l'origine ne partira jamais et n'est pas relue.
+      const depart = curseur ?? "00000000-0000-0000-0000-000000000000";
+      const lignes: { id: string; emailKey: string; guide: string }[] = await prisma.$queryRaw(
+        Prisma.sql`
+          SELECT r.id::text AS "id", r.email_key AS "emailKey", r.guide AS "guide"
+          FROM (
+            SELECT o.id, o.email_key, o.guide, o.crm_statut, o.created_at,
+                   ROW_NUMBER() OVER (
+                     PARTITION BY o.email_key, o.guide ORDER BY o.occurred_at DESC
+                   ) AS rang
+            FROM guide_reseau_origines o
+            WHERE o.archivee_le IS NULL
+              AND (o.crm_statut IS NULL OR o.crm_statut = 'transmise')
+          ) r
+          JOIN guide_requests g ON g.email_key = r.email_key AND g.aimant = r.guide
+          WHERE r.crm_statut IS NULL
+            AND r.rang <= ${MAX_ORIGINES_PAR_CHARGE}
+            AND r.created_at < ${lt}
+            AND r.created_at >= ${depuis}
+            AND g.first_click_at IS NOT NULL
+            AND g.crm_emitted_at IS NOT NULL
+            AND r.id > ${depart}::uuid
+          ORDER BY r.id ASC
+          LIMIT ${TAILLE_LOT}`,
+      );
+      for (const l of lignes) groupes.set(`${l.emailKey}|${l.guide}`, l);
+      if (lignes.length < TAILLE_LOT) break;
+      curseur = lignes[lignes.length - 1]!.id;
+    }
+  } catch (e) {
+    // P2022 (colonne absente) ; en SQL brut, Prisma la rend en P2010 avec le code Postgres 42703.
+    const erreur = e as { code?: unknown; meta?: { code?: unknown } };
+    if (erreur.code === "P2022" || (erreur.code === "P2010" && erreur.meta?.code === "42703")) {
+      console.warn(
+        JSON.stringify({ event: "guides_reseau_origines_crm", resultat: "colonne_absente" }),
+      );
+      return { mode, refus: "colonne-absente", ...vide };
+    }
+    throw e;
+  }
+  if (borneAtteinte) {
+    // Origines abandonnées pour CE passage : gardées telles quelles (NULL), jamais effacées.
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_origines_crm_rattrapage",
+        resultat: "borne_atteinte",
+        lotsLus: MAX_LOTS_ORIGINES,
+        taille_lot: TAILLE_LOT,
+      }),
+    );
+  }
+  let nonCliques = 0;
+  let nbExclues = 0;
+  let transmis = 0;
+  let echecs = 0;
+  for (const g of groupes.values()) {
+    const demande = await prisma.guideRequest.findUnique({
+      where: { emailKey_aimant: { emailKey: g.emailKey, aimant: g.guide } },
+      select: { email: true, firstClickAt: true },
+    });
+    if (demande === null || demande.firstClickAt === null) {
+      nonCliques += 1;
+      continue;
+    }
+    // Adresse exclue par argument ou par l'environnement : le groupe est sauté, les origines
+    // restent `NULL` (rien n'est marqué, rien n'est supprimé).
+    if (exclues.has(normaliser(demande.email)) || estExclueDuCrm(demande.email)) {
+      nbExclues += 1;
+      continue;
+    }
+    if (!executer) continue;
+    const r = await transmettreOriginesSuivantes({
+      email: demande.email,
+      emailKey: g.emailKey,
+      guide: g.guide,
+      depuis,
+    });
+    if (r === "transmise") transmis += 1;
+    else if (r === "echec") echecs += 1;
+  }
+  console.warn(
+    JSON.stringify({
+      event: "guides_reseau_origines_crm_rattrapage",
+      mode,
+      groupes: groupes.size,
+      transmis,
+    }),
+  );
+  return {
+    mode,
+    groupes: groupes.size,
+    nonCliques,
+    exclues: nbExclues,
+    transmis,
+    echecs,
+    borneAtteinte,
+  };
 }

@@ -18,9 +18,9 @@ export const THIAIS_COPY: VilleCopy = {
   ecosystemEn:
     "Thiais doit son dynamisme à sa position au cœur d'un nœud logistique majeur : la proximité immédiate du MIN de Rungis, premier marché de produits frais au monde, et de l'aéroport d'Orly génère un écosystème dense de logistique, transport, distribution et import-export. Le centre commercial Belle Épine en fait aussi un pôle commercial important du sud parisien. Autour gravitent des PME de services, des artisans et des commerces, pour lesquels l'IA peut optimiser la gestion des flux, des stocks et de la relation client.",
   distancesFr:
-    "Aéroport d'Orly à 10 min, MIN de Rungis à 5 min, Paris-Porte d'Italie à 20 min, gare de Lyon à 30 min et tramway T7 desservant la commune. Nos consultants se déplacent depuis Paris.",
+    "Aéroport d'Orly à 10 min, MIN de Rungis à 5 min, Paris-Porte d'Italie à 20 min, gare de Lyon à 30 min et tramway T7 desservant la commune. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Aéroport d'Orly à 10 min, MIN de Rungis à 5 min, Paris-Porte d'Italie à 20 min, gare de Lyon à 30 min et tramway T7 desservant la commune. Nos consultants se déplacent depuis Paris.",
+    "Aéroport d'Orly à 10 min, MIN de Rungis à 5 min, Paris-Porte d'Italie à 20 min, gare de Lyon à 30 min et tramway T7 desservant la commune. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Logistique et entreposage",
     "Transport et import-export",
@@ -230,7 +230,7 @@ export const THIAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thiais et dans le sud du Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thiais, Rungis, Orly, Chevilly-Larue et tout le sud parisien. Nos consultants se déplacent depuis Paris pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Thiais, Rungis, Orly, Chevilly-Larue et tout le sud parisien. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs logistiques liés à Rungis ?",

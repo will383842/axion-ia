@@ -227,7 +227,7 @@ export const CHALONS_EN_CHAMPAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châlons-en-Champagne ?",
-      a: "Oui, Axion-IA intervient sur site à Châlons-en-Champagne pour les administrations préfectorales, PME tertiaires, cabinets juridiques et entreprises de la filière champagne. Nos consultants se déplacent depuis Paris (1h30 train) selon vos impératifs d'agenda.",
+      a: "Oui, Axion-IA intervient sur site à Châlons-en-Champagne pour les administrations préfectorales, PME tertiaires, cabinets juridiques et entreprises de la filière champagne. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous spécifiquement à Châlons ?",

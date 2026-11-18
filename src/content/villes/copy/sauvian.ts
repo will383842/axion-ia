@@ -49,7 +49,7 @@ export const SAUVIAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sauvian ?",
-      a: "Oui, Axion-IA intervient à Sauvian et dans toute l'agglomération biterroise (Béziers, Sérignan, Villeneuve-lès-Béziers, Servian). Nos consultants viennent depuis Montpellier ou Béziers.",
+      a: "Oui, Axion-IA intervient à Sauvian et dans toute l'agglomération biterroise (Béziers, Sérignan, Villeneuve-lès-Béziers, Servian). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",

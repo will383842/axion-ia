@@ -2,8 +2,8 @@
 0 4 * * 0  /opt/axion-ia/run-r2-backup.sh weekly  >> /var/log/r2-backup.log 2>&1
 0 5 1 * *  /opt/axion-ia/run-r2-backup.sh monthly >> /var/log/r2-backup.log 2>&1
 # Docker cleanup — toutes les 6h (images non utilisées + build cache > 5GB)
-0 */6 * * * /usr/bin/docker image prune -af >> /var/log/docker-image-prune.log 2>&1
-0 */6 * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
+15 * * * * /opt/axion-ia/docker-nettoyage.sh >> /var/log/docker-image-prune.log 2>&1
+20 * * * * /usr/bin/docker builder prune -af --keep-storage 2GB >> /var/log/docker-builder-prune.log 2>&1
 # Alerte disque si > 80% — envoie dans syslog (visible via journalctl)
 */30 * * * * USAGE=$(df / | awk "NR==2 {print \$5}" | tr -d "%"); [ "\$USAGE" -gt 80 ] && logger -t disk-alert "DISQUE VPS \${USAGE}% utilise — docker system prune requis" || true
 0 2 * * *  /opt/axion-ia/run-secrets-backup.sh        >> /var/log/secrets-backup.log 2>&1
@@ -21,6 +21,11 @@
 # pour que le bilan puisse voir ce que le miroir vient de faire.
 30 5 * * *   /opt/axion-ia/run-storagebox-mirror.sh >> /var/log/storagebox-mirror.log 2>&1
 # Miroir des pieces legales vers le compartiment R2 verrouille. Ajoute le 2026-09-20 :
-# le script existait dans le depot depuis le 2026-08-19 et n'etait appele par RIEN.
-# 15 5 : apres run-files-backup (15 4) et avant le miroir Storage Box (30 5).
+# le script existait dans le depot depuis le 2026-08-19 et n était appele par RIEN.
 15 5 * * *   /opt/axion-ia/run-documents-mirror.sh daily >> /var/log/documents-mirror.log 2>&1
+40 3 * * * /opt/usine-axion-ia/sauvegarder.sh >/dev/null 2>&1
+50 3 * * * /opt/usine-axion-ia/sauvegarder-hors-serveur.sh >> /var/log/usine-backup.log 2>&1
+*/5 * * * * /opt/usine-axion-ia/surveiller.sh >/dev/null 2>&1
+30 6 * * * /opt/studio-axion-ia/controle-jetons-zernio.sh  # contrôle jetons Zernio (Studio)
+# --- Lignes AJOUTÉES par installer-garde-fous-disque.sh, dans /etc/cron.d/axion-disque (PAS dans ce crontab ; en commentaire ici, hors « crontab -l » réel) ---
+# 10 5 * * 0 root /opt/axion-ia/exporter-journal.sh >> /var/log/exporter-journal.log 2>&1

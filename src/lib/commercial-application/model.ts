@@ -425,7 +425,14 @@ export const commercialApplicationSchema = z
     pitch: z.string().trim().min(150).max(800),
     messageLibre: z.string().trim().max(2000).optional(),
     disponibilite: z.string().regex(MOIS_ANNEE),
-    permisVehicule: z.boolean(),
+    /**
+     * IGNORÉ depuis le 11/11/2026 — Williams retire la question « permis et
+     * véhicule » du formulaire. Même contrat que `consentVivier` ci-dessous : un
+     * onglet ouvert avant le déploiement envoie encore la clé, on la tolère sans
+     * la lire ni l'enregistrer. Les dossiers déjà reçus gardent leur réponse en
+     * base (`details.candidature.permisVehicule`) : rien n'est effacé.
+     */
+    permisVehicule: z.boolean().optional(),
     statut: z.enum(STATUT_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),
     linkedin: z.string().trim().max(255).optional(),
     sourceConnaissance: z.enum(SOURCE_OPTIONS.map((o) => o.id) as [string, ...string[]]).optional(),

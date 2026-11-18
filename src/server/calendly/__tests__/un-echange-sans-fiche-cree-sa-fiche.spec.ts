@@ -27,7 +27,7 @@ vi.mock("@/lib/security/email-hash", () => ({
 vi.mock("@/lib/rgpd-erase", () => ({ ERASED_PLACEHOLDER: "[effacé]" }));
 vi.mock("@/server/careers/clamav", () => ({ analyserOctets: vi.fn() }));
 vi.mock("@/features/commercial-application/relances-invitation-apporteur", () => ({
-  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur",
+  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur-affaires",
 }));
 const enqueueEmail = vi.fn();
 vi.mock("@/server/queue/queues", () => ({ enqueueEmail: (...a: unknown[]) => enqueueEmail(...a) }));

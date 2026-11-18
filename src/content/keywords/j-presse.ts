@@ -34,7 +34,7 @@ import type { KeywordSeed } from "./types";
 //
 //  Douleur : Le journaliste presse éco / tech a une deadline serrée.
 //  Il cherche sur Google un expert accessible, crédible, sachant parler
-//  aux non-techniciens, disponible sous 24-48 h.
+//  aux non-techniciens, disponible.
 //  Intent : informationnel (phase de sourcing expert avant contact direct).
 //  Pages cibles : /fr/presse/ + /fr/presse/intervenants/
 // ─────────────────────────────────────────────────────────────────────────────
@@ -50,14 +50,14 @@ export const KW_PRESSE_J: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Besoin d'un expert IA B2B pour votre article ? Axion-IA répond aux médias sous 48 h",
+      h1: "Besoin d'un expert IA B2B pour votre article ? Axion-IA répond aux médias",
       metaTitle: "Expert IA entreprises France — Interview & Presse | Axion-IA",
       metaDescription:
-        "Cabinet IA franco-européen disponible pour interviews presse, radio et TV. Expertise PME/ETI, chiffres sourcés, disponibilité 48 h. Contactez-nous.",
+        "Cabinet IA franco-européen disponible pour interviews presse, radio et TV. Expertise PME/ETI, chiffres sourcés. Contactez-nous.",
       h2Variants: [
         "Pourquoi solliciter un cabinet IA spécialisé B2B pour vos articles ?",
         "Quels angles et chiffres peut fournir Axion-IA à la presse ?",
-        "Comment prendre contact pour une interview dans les 48 h ?",
+        "Comment prendre contact pour une interview ?",
       ],
     },
     urlCible: "/fr/presse/",
@@ -105,11 +105,11 @@ export const KW_PRESSE_J: KeywordSeed[] = [
       h1: "Axion-IA, source d'expertise IA pour journalistes et rédactions",
       metaTitle: "Cabinet IA France — Source presse & journalistes | Axion-IA",
       metaDescription:
-        "Rédaction spécialisée IA B2B ? Axion-IA fournit citations sourcées, données terrain et accès experts. Franco-européen, réponse sous 48 h.",
+        "Rédaction spécialisée IA B2B ? Axion-IA fournit citations sourcées, données terrain et accès experts. Franco-européen.",
       h2Variants: [
         "Quelle expertise Axion-IA met-il à disposition des rédactions ?",
         "Données terrain et chiffres IA disponibles pour vos articles",
-        "Protocole de contact presse — réponse garantie sous 48 h",
+        "Protocole de contact presse",
       ],
     },
     urlCible: "/fr/presse/",
@@ -157,7 +157,7 @@ export const KW_PRESSE_J: KeywordSeed[] = [
       h1: "Expert IA B2B franco-européen — Disponible pour vos interviews médias",
       metaTitle: "Expert IA B2B France — Interview médias | Axion-IA",
       metaDescription:
-        "Cabinet spécialisé IA pour entreprises. Fondateurs disponibles pour radio, TV, presse écrite et podcasts. Réponse presse sous 48 h.",
+        "Cabinet spécialisé IA pour entreprises. Fondateurs disponibles pour radio, TV, presse écrite et podcasts.",
       h2Variants: [
         "Qui sont les experts IA d'Axion-IA interviewables ?",
         "Formats d'intervention : radio, TV, presse écrite, podcast",
@@ -620,20 +620,20 @@ export const KW_PRESSE_J: KeywordSeed[] = [
     priorite: 1,
     niveau: 3,
     injection: {
-      h1: "Contact presse Axion-IA — Joignez notre équipe médias sous 48 h",
+      h1: "Contact presse Axion-IA — Joignez notre équipe médias",
       metaTitle: "Contact presse Axion-IA | Cabinet IA France — Médias",
       metaDescription:
-        "Journalistes et rédacteurs : contactez l'équipe presse Axion-IA pour interviews, citations, chiffres et kit médias. Réponse garantie 48 h.",
+        "Journalistes et rédacteurs : contactez l'équipe presse Axion-IA pour interviews, citations, chiffres et kit médias.",
       h2Variants: [
         "Comment contacter l'équipe presse Axion-IA ?",
-        "Quel délai de réponse pour une demande presse urgente ?",
+        "Comment faire une demande presse urgente ?",
         "Formulaire de demande presse et ressources disponibles",
       ],
     },
     urlCible: "/fr/presse/",
     canonicalParent: "/fr/presse/",
     source: "manuel",
-    note: "JSON-LD NewsroomPage + ContactPoint — email presse dédié, SLA 48 h affiché ; formulaire de contact avec champ 'deadline article' pour priorisation",
+    note: "JSON-LD NewsroomPage + ContactPoint — email presse dédié, aucun délai affiché ; formulaire de contact avec champ 'deadline article' pour priorisation",
   },
 
   // ─────────────────────────────────────────────────────────────────────────────

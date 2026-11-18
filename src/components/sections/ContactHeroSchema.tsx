@@ -1,6 +1,6 @@
 // Server Component — schéma visuel du hero /contact.
 // Stack de 3 mini-cards illustrant les 3 canaux d'entrée Axion-IA :
-// (1) message direct sous 48 h ouvrées (lead), (2) intervention via
+// (1) message direct (lead), (2) intervention via
 // la formation d’une journée, (3) audit cadré. Pattern hérité de BlogHeroSchema —
 // stack vertical, terracotta accent, première card en avant.
 //
@@ -10,7 +10,7 @@
 
 import type { ReactNode } from "react";
 import { Mail, CalendarClock, ClipboardCheck } from "lucide-react";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
+import { INTERVENTION_TIERS, formatTierPrice, getTierById } from "@/content/pricing";
 
 export interface ContactHeroSchemaProps {
   isFr: boolean;
@@ -23,20 +23,22 @@ export function ContactHeroSchema({
   ariaLabel,
   className,
 }: ContactHeroSchemaProps): ReactNode {
-  const formationJourAmount = getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!;
+  // R7 (ordre de Williams du 08/11/2026) : formateur d'AFFICHAGE, qui rend « Sur devis »
+  // interrupteur des prix publics coupé (seule la Journée IA garde son montant).
+  const formationJour = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
   const channels = isFr
     ? [
         {
           icon: Mail,
           eyebrow: "Message direct",
-          title: "Réponse sous 48 h ouvrées",
+          title: "Nous écrire",
           detail: "Devis détaillé, pas de relance commerciale.",
           lead: true,
         },
         {
           icon: CalendarClock,
           eyebrow: "Intervention",
-          title: `Formation collective · ${formatAmount(formationJourAmount, "fr", { compact: true })}`,
+          title: `Formation collective · ${formatTierPrice(formationJour, "fr", { compact: true })}`,
           detail: "Diagnostic 90 min + plan d'action.",
           lead: false,
         },
@@ -52,14 +54,14 @@ export function ContactHeroSchema({
         {
           icon: Mail,
           eyebrow: "Direct message",
-          title: "Reply within 48 business hours",
+          title: "Write to us",
           detail: "Detailed quote, no commercial chasing.",
           lead: true,
         },
         {
           icon: CalendarClock,
           eyebrow: "Session",
-          title: `Group training · ${formatAmount(formationJourAmount, "en", { compact: true })}`,
+          title: `Group training · ${formatTierPrice(formationJour, "en", { compact: true })}`,
           detail: "90-min diagnostic + action plan.",
           lead: false,
         },

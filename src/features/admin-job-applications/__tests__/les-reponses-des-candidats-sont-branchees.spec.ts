@@ -8,7 +8,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { LEGAL_PAGES } from "@/content/legal";
-import { shouldNotifyWhatsApp, telegramGroupFor, getRouting } from "@/server/notifications/routing";
+import { telegramGroupFor, getRouting } from "@/server/notifications/routing";
 import { formatNotificationPlain } from "@/server/notifications/format";
 
 const lire = (chemin: string) => readFileSync(join(process.cwd(), chemin), "utf8");
@@ -26,12 +26,11 @@ describe("le programme du worker", () => {
     );
   });
 
-  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses cinq passages, sans celui des candidats", () => {
+  it("🔴 la file `apporteur-crons` garde EXACTEMENT ses quatre passages (rappels d'invitation retirés le 26/10), sans celui des candidats", () => {
     const debut = queues.indexOf("if (apporteurCronsQueue) {");
     const programme = queues.slice(debut, queues.indexOf("];", debut));
     const types = [...programme.matchAll(/type: "([^"]+)" as const/g)].map((m) => m[1]);
     expect(types).toEqual([
-      "relance-invitation",
       "reponses-entrantes",
       "invitation-auto",
       "reseau-quotidien",
@@ -61,11 +60,11 @@ describe("le programme du worker", () => {
 });
 
 describe("l'alerte `CANDIDAT_REPLIED`", () => {
-  it("va au salon des candidatures, jamais à celui des apporteurs, et pas sur WhatsApp", () => {
+  it("est rattachée au salon des candidatures (jamais à celui des apporteurs) et muette depuis le 14/11", () => {
     expect(telegramGroupFor("CANDIDAT_REPLIED")).toBe("candidatures");
     expect(telegramGroupFor("APPORTEUR_REPLIED")).toBe("commercial-memo");
-    expect(shouldNotifyWhatsApp("CANDIDAT_REPLIED")).toBe(false);
-    expect(getRouting("CANDIDAT_REPLIED").channels).toEqual(["telegram"]);
+    // Coupée le 14/11/2026 (`CATEGORIES_SANS_ALERTE`) ; la table garde sa route.
+    expect(getRouting("CANDIDAT_REPLIED").channels).toEqual([]);
   });
 
   it("🔴 ne dit QUE le poste et le lien vers la fiche — ni nom ni objet (relecture 2026-10-09)", () => {

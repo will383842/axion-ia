@@ -30,6 +30,7 @@ const LUNDI_ETE = new Date("2026-10-05T06:30:00.000Z"); // 08:30 Paris (UTC+2)
 
 beforeEach(() => {
   vi.stubEnv("OPCO_SUIVI_ENTREPRISE_ENABLED", "true");
+  vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
   db.dossierFinancement.findMany.mockReset();
   for (const fn of Object.values(m)) fn.mockReset();
   m.tables.mockResolvedValue(true);

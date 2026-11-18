@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 // FAQ — liens internes contextuels curés par catégorie (SSOT maillage).
 // Refonte premium hub FAQ 2026-06-01 : le reader `FaqItem` n'expose aucun champ
 // de liens (la DB ne porte ni `tags` ni `relatedLinks`), donc le maillage
@@ -47,8 +48,8 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       href: "/tarifs",
       labelFr: "Tarifs",
       labelEn: "Pricing",
-      descFr: "Prix publics et modalités, sans surprise.",
-      descEn: "Public pricing and terms, no surprises.",
+      descFr: "Devis et modalités, sans surprise.",
+      descEn: "Quotes and terms, no surprises.",
     },
   ],
   interventions: [
@@ -113,8 +114,8 @@ export const FAQ_CATEGORY_RESOURCES: Record<string, ReadonlyArray<FaqResourceLin
       href: "/tarifs",
       labelFr: "Tarifs détaillés",
       labelEn: "Detailed pricing",
-      descFr: "Prix publics, TVA et modalités de paiement.",
-      descEn: "Public pricing, VAT and payment terms.",
+      descFr: "Devis, TVA et modalités de paiement.",
+      descEn: "Quotes, VAT and payment terms.",
     },
     {
       href: "/demande-devis",
@@ -191,5 +192,7 @@ const DEFAULT_RESOURCES: ReadonlyArray<FaqResourceLink> = FAQ_CATEGORY_RESOURCES
  * Fallback sur `general` pour toute catégorie inconnue (ex. legacy/KB).
  */
 export function getFaqResources(category: string): ReadonlyArray<FaqResourceLink> {
-  return FAQ_CATEGORY_RESOURCES[category] ?? DEFAULT_RESOURCES;
+  const liens = FAQ_CATEGORY_RESOURCES[category] ?? DEFAULT_RESOURCES;
+  // Cas concrets éteints (2026-11-08) : pas de lien vers une page en 404.
+  return CAS_CONCRETS_AFFICHES ? liens : liens.filter((l) => l.href !== "/cas-concrets");
 }

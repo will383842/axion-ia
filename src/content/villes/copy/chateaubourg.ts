@@ -49,7 +49,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaubourg et dans l'est rennais ?",
-      a: "Oui, Axion-IA intervient à Châteaubourg et dans tout l'est de Rennes Métropole (Noyal-sur-Vilaine, Servon-sur-Vilaine, Vitré). Nos consultants sont basés sur Rennes, déplacement en 25 min via la RN157.",
+      a: "Oui, Axion-IA intervient à Châteaubourg et dans tout l'est de Rennes Métropole (Noyal-sur-Vilaine, Servon-sur-Vilaine, Vitré). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Châteaubourg  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const CHATEAUBOURG_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site à Châteaubourg ?",
-      a: "Nos consultants interviennent depuis Rennes en 25 min (RN157). Intervention sur site dans vos locaux ou en zone d'activités. Formats demi-journée ou journée complète adaptés aux contraintes de production.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en zone d'activités. Formats demi-journée ou journée complète adaptés aux contraintes de production.",
     },
   ],
 };

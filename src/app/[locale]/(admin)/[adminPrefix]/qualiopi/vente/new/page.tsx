@@ -17,6 +17,8 @@ import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { filtreJetonClientVivant } from "@/server/qualiopi/vente/jeton-client-vivant";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -143,6 +145,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
         sentAt: string | null;
         fichierPdfUrl: string | null;
         docusealSubmissionId: string | null;
+        signatureMaison: boolean;
         montantTotalHtCents: number;
       }
     | undefined;
@@ -192,11 +195,18 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
               sentAt: true,
               fichierPdfUrl: true,
               docusealSubmissionId: true,
+              documentGenereId: true,
               montantTotalHtCents: true,
             },
           })
           .catch(() => null);
         if (d !== null) {
+          // Canal MAISON : un jeton de signature a été émis pour la pièce du devis.
+          const signatureMaison =
+            d.documentGenereId !== null &&
+            (await prisma.documentSignatureToken
+              .count({ where: filtreJetonClientVivant(d.documentGenereId, new Date()) })
+              .catch(() => 0)) > 0;
           devisInitial = {
             id: d.id,
             numero: d.numero,
@@ -204,6 +214,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
             sentAt: d.sentAt?.toISOString() ?? null,
             fichierPdfUrl: d.fichierPdfUrl,
             docusealSubmissionId: d.docusealSubmissionId,
+            signatureMaison,
             montantTotalHtCents: d.montantTotalHtCents,
           };
         }
@@ -253,6 +264,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
                   statut: devisInitial.statut,
                   fichierPdfUrl: devisInitial.fichierPdfUrl,
                   docusealSubmissionId: devisInitial.docusealSubmissionId,
+                  signatureMaison: devisInitial.signatureMaison,
                   sentAt: devisInitial.sentAt,
                 }
               : null,
@@ -287,6 +299,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
   return (
     <VenteWizard
       adminPrefix={adminPrefix}
+      certificationObtenue={isQualiopiCertificationObtenue()}
       role={role}
       clients={clients}
       offres={offres}

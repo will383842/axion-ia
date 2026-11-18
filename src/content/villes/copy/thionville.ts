@@ -18,9 +18,9 @@ export const THIONVILLE_COPY: VilleCopy = {
   ecosystemEn:
     "Thionville, deuxième ville de Moselle, a transformé son passé sidérurgique — héritage des hauts-fourneaux de la vallée de la Fensch — en une économie de services tournée vers le Luxembourg, où travaillent des dizaines de milliers de frontaliers. Le tissu local associe PME tertiaires et de services, sous-traitance industrielle et métallurgique, logistique, commerces, artisanat du bâtiment et professions libérales. Ces TPE et PME, souvent en environnement multilingue et concurrentiel, gagnent à automatiser devis, relances et gestion administrative.",
   distancesFr:
-    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nos consultants se déplacent sur tout le nord mosellan : Yutz, Hayange, la vallée de la Fensch, Cattenom et le bassin frontalier.",
+    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nous intervenons partout en France, sur place ou à distance, y compris à Yutz, Hayange, dans la vallée de la Fensch, à Cattenom et dans le bassin frontalier.",
   distancesEn:
-    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nos consultants se déplacent sur tout le nord mosellan : Yutz, Hayange, la vallée de la Fensch, Cattenom et le bassin frontalier.",
+    "Thionville est sur l'axe TER/TGV Metz-Luxembourg : Metz est à 30 km (20 min), Luxembourg-Ville à 30 km (20 min) et l'aéroport de Luxembourg à 45 km. Nous intervenons partout en France, sur place ou à distance, y compris à Yutz, Hayange, dans la vallée de la Fensch, à Cattenom et dans le bassin frontalier.",
   topSectorsNaf: [
     "PME tertiaires & services",
     "Sous-traitance industrielle & métallurgie",
@@ -246,7 +246,7 @@ export const THIONVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Thionville ?",
-      a: "Nos consultants couvrent tout le nord mosellan, avec Metz et Luxembourg à 20 min par le rail.",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans tout le nord mosellan. Thionville est à 20 min de Metz et de Luxembourg par le rail.",
     },
   ],
 };

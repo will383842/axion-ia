@@ -11,7 +11,6 @@
 
 import { texteParDefaut } from "@/lib/email/templates/apporteur-demarrage";
 import {
-  apercuGabarit,
   avecLienEspaceRecalcule,
   jobIdSansDeuxPoints,
   resultatDeLEnfilage,
@@ -22,6 +21,9 @@ import {
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
 
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
+
+import { apercuMasque } from "./apercu-masque";
 import { signalerErreurReseau } from "./signaler";
 import { prisma } from "@/lib/prisma";
 import { urlDossier } from "./jeton";
@@ -85,17 +87,36 @@ export interface EnvoiApporteur {
   attachments?: Array<{ filename: string; r2Key: string; contentType?: string }>;
 }
 
-/** L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut. */
-export type ApercuRendu = ApercuRenduMonde<GabaritApporteur>;
+/**
+ * L'aperçu exact d'un e-mail, plus (si modifiable) son texte par défaut en texte brut.
+ * 🔴 `html` et `apercu` sont MASQUÉS et INERTES (aucun jeton, aucun `href`) : ils quittent le serveur.
+ */
+export type ApercuRendu = ApercuRenduMonde<GabaritApporteur> & { apercu: ApercuLecteur };
 
 // Fonctions communes du module d'envoi « monde » (FAC-1) : ré-exportées, jamais recopiées.
 export { avecTexteLibre, retirerEnvoiEchoue } from "@/server/email/envoi-monde";
 export type { ResultatEnvoi };
 
+/**
+ * Rend avec le vrai destinataire et la charge EXACTE que `envoyer` met en file (lien d'espace
+ * recalculé compris), par `renderEmailTemplate` comme le worker ; puis masque et rend inerte.
+ */
 export async function apercu(
-  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload">,
+  e: Pick<EnvoiApporteur, "gabarit" | "destinataire" | "payload" | "entityType" | "entityId">,
 ): Promise<ApercuRendu> {
-  return apercuGabarit(e, texteParDefaut);
+  const payload = await avecLienEspace(e as EnvoiApporteur);
+  const rendu = await apercuMasque(e.gabarit, "fr", payload, e.destinataire);
+  // Le texte par défaut se calcule SANS le texte réécrit : « Texte d'origine » reste possible.
+  const { texteLibre: _ignore, ...sansTexte } = e.payload;
+  const texteDefaut = texteParDefaut(e.gabarit, sansTexte);
+  return {
+    gabarit: e.gabarit,
+    sujet: rendu.sujet,
+    html: rendu.html,
+    destinataire: e.destinataire,
+    apercu: rendu.apercu,
+    ...(typeof texteDefaut === "string" ? { texteDefaut } : {}),
+  };
 }
 
 /**

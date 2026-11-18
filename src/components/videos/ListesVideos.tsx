@@ -4,6 +4,7 @@
  */
 import { CarteVideo } from "@/components/videos/CarteVideo";
 import type { GroupeSerie, GroupeTheme } from "@/server/videos/groupes";
+import type { GroupeBesoin, ListeProche } from "@/server/videos/liees";
 import type { VideoPubliee } from "@/server/videos/lecture";
 import type { PageLieeTheme } from "@/content/videos/themes";
 
@@ -88,6 +89,129 @@ export function PagesLiees({ pages }: { pages: ReadonlyArray<PageLieeTheme> }) {
         {pages.map((p) => (
           <li key={p.href}>
             <a href={`/fr${p.href}`} className="text-terracotta font-semibold underline">
+              {p.libelle}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  );
+}
+
+/** Fil d'Ariane visible (le JSON-LD `BreadcrumbList` est porté par la page). */
+export function FilAriane({
+  etapes,
+}: {
+  etapes: ReadonlyArray<{ libelle: string; href?: string | undefined }>;
+}) {
+  return (
+    <nav aria-label="Fil d'Ariane" className="text-fg-muted mb-4 text-sm">
+      <ol className="flex flex-wrap gap-x-2">
+        <li>
+          {/* Lien natif : liste serveur sans JS client, comme les autres liens des listes. */}
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/fr" className="underline">
+            Accueil
+          </a>
+        </li>
+        {etapes.map((e, i) => (
+          <li key={e.libelle} aria-current={i === etapes.length - 1 ? "page" : undefined}>
+            <span aria-hidden="true">› </span>
+            {e.href ? (
+              <a href={e.href} className="underline">
+                {e.libelle}
+              </a>
+            ) : (
+              e.libelle
+            )}
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+function Entree({
+  id,
+  titre,
+  lignes,
+}: {
+  id: string;
+  titre: string;
+  lignes: ReadonlyArray<{ libelle: string; nb: number; href: string | null }>;
+}) {
+  return (
+    <section className="border-border bg-paper rounded-xl border p-4" aria-labelledby={id}>
+      <h3 id={id} className="text-fg font-bold">
+        {titre}
+      </h3>
+      <ul className="mt-2 divide-y">
+        {lignes.map((l) => (
+          <li key={l.libelle} className="flex justify-between gap-2 py-2">
+            {l.href ? (
+              <a href={l.href} className="text-terracotta font-semibold underline">
+                {l.libelle}
+              </a>
+            ) : (
+              <span className="text-fg font-semibold">{l.libelle}</span>
+            )}
+            <span className="text-fg-muted text-sm">
+              {l.nb} vidéo{l.nb > 1 ? "s" : ""}
+            </span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+/** Les deux entrées de classement du hub : par type (thème) et par besoin d'entreprise. */
+export function EntreesClassement({
+  themes,
+  besoins,
+}: {
+  themes: ReadonlyArray<GroupeTheme>;
+  besoins: ReadonlyArray<GroupeBesoin>;
+}) {
+  return (
+    <section className="mt-10" aria-labelledby="entrees-classement">
+      <h2 id="entrees-classement" className="text-fg text-xl font-bold">
+        Choisissez votre entrée
+      </h2>
+      <div className="mt-4 grid gap-4 md:grid-cols-2">
+        <Entree
+          id="entree-type"
+          titre="Par thème"
+          lignes={themes.map((g) => ({
+            libelle: g.theme.libelle,
+            nb: g.videos.length,
+            href: g.aPage ? `/fr/videos/theme/${g.theme.slug}` : null,
+          }))}
+        />
+        <Entree
+          id="entree-besoin"
+          titre="Par besoin d'entreprise"
+          lignes={besoins.map((g) => ({
+            libelle: g.besoin.libelle,
+            nb: g.videos.length,
+            href: g.aPage ? `/fr/videos/besoin/${g.besoin.slug}` : null,
+          }))}
+        />
+      </div>
+    </section>
+  );
+}
+
+/** Pages de liste voisines (maillage interne) ; rien si aucune n'existe. */
+export function ListesProches({ pages }: { pages: ReadonlyArray<ListeProche> }) {
+  if (pages.length === 0) return null;
+  return (
+    <nav className="mt-12" aria-label="Autres classements">
+      <h2 className="text-fg text-xl font-bold">Autres façons de parcourir les vidéos</h2>
+      <ul className="mt-3 space-y-2">
+        {pages.map((p) => (
+          <li key={p.href}>
+            <a href={p.href} className="text-terracotta font-semibold underline">
               {p.libelle}
             </a>
           </li>

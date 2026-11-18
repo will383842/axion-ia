@@ -314,6 +314,42 @@ export async function verifierTokenDocument(token: string): Promise<Verification
 }
 
 /**
+ * Statut du devis auquel se rattache un lien DÉJÀ refusé (révoqué ou périmé) — lecture seule.
+ *
+ * Sert au message de la page de signature : un lien révoqué parce que le devis a été REFUSÉ
+ * ou a expiré ne doit pas laisser croire qu'une version révisée a été envoyée. N'est appelée
+ * qu'après un refus de `verifierTokenDocument` (HMAC donc déjà validé) ; `null` si le lien est
+ * inconnu ou si la pièce n'est pas un devis. Ne rend que le statut, jamais de motif.
+ */
+export async function statutDevisDuLien(
+  token: string,
+): Promise<"refuse" | "expire" | "autre" | null> {
+  if (estStub()) return null;
+  const verified = await verifyMagicToken(token, { scope: "document_signature" });
+  // Un jeton périmé reste authentique : on peut alors dire pourquoi.
+  if (!verified.ok && verified.reason !== "expired") return null;
+  const tokenHash = await sha256Hex(token);
+  const ligne = await prisma.documentSignatureToken.findUnique({
+    where: { tokenHash },
+    select: { documentGenereId: true },
+  });
+  if (ligne === null) return null;
+  const devis = await prisma.devis.findFirst({
+    where: { documentGenereId: ligne.documentGenereId },
+    select: { id: true, statut: true },
+  });
+  if (devis === null) return null;
+  if (devis.statut === "refuse") return "refuse";
+  if (devis.statut === "expire") {
+    // Devis révisé : l'ancien passe `expire` mais un successeur existe → message « version
+    // révisée » conservé ("autre"). Un expire SANS successeur reste "expire".
+    const successeurs = await prisma.devis.count({ where: { replacesDevisId: devis.id } });
+    return successeurs > 0 ? "autre" : "expire";
+  }
+  return "autre";
+}
+
+/**
  * Révoque les jetons actifs d'une pièce — tous, ou ceux d'une seule partie.
  *
  * Cas d'usage : devis révisé (l'ancienne version passe `expire`, son lien ne
@@ -351,6 +387,34 @@ export async function revoquerTokensDocument(input: {
       ...(input.partie !== undefined ? { partie: input.partie } : {}),
     },
     data: { invalideAt: maintenant },
+  });
+  return res.count;
+}
+
+/**
+ * Révoque UN jeton précis, et lui seul — s'il est encore vivant (ni révoqué, ni expiré).
+ *
+ * Usage : un e-mail de la corbeille refusé n'est jamais parti ; le lien qu'il portait n'a été
+ * reçu par personne. Contrairement à `revoquerTokensDocument`, rien d'autre n'est touché : ni
+ * un jeton plus récent de la même pièce, ni un jeton d'une autre partie, ni les codes de
+ * signature (ils sont rattachés à la pièce et à la partie, pas au jeton : un lien neuf vivant
+ * de la même partie s'en sert). Rend 0 ou 1.
+ */
+export async function revoquerJetonPrecis(input: {
+  tokenId: string;
+  motif: string;
+  parAdminId?: string | null;
+  maintenant?: Date;
+}): Promise<number> {
+  if (estStub()) return 0;
+  const maintenant = input.maintenant ?? new Date();
+  const res = await prisma.documentSignatureToken.updateMany({
+    where: { id: input.tokenId, revokedAt: null, expiresAt: { gt: maintenant } },
+    data: {
+      revokedAt: maintenant,
+      revokedMotif: input.motif.slice(0, 500),
+      revokedById: input.parAdminId ?? null,
+    },
   });
   return res.count;
 }

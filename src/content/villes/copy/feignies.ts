@@ -49,7 +49,7 @@ export const FEIGNIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Feignies et Maubeuge ?",
-      a: "Oui, Axion-IA intervient à Feignies et dans toute l'agglomération Maubeuge-Val de Sambre (Louvroil, Jeumont, Hautmont, Ferrière-la-Grande). Nos consultants viennent via gare de Maubeuge (5 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Feignies et dans toute l'agglomération Maubeuge-Val de Sambre (Louvroil, Jeumont, Hautmont, Ferrière-la-Grande). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour un audit IA à Feignies ?",
@@ -64,8 +64,8 @@ export const FEIGNIES_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans BTP feignois : automatisation devis et factures, agents IA prise de rendez-vous, classification photos chantiers, gestion stocks matériaux, planification tournées.",
     },
     {
-      q: "Comment se déroule une mission transfrontalière depuis Feignies ?",
-      a: "Nos consultants viennent via gare de Maubeuge (TER Lille/Paris, 5 min) ou N2/A2. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse.",
+      q: "Comment se déroule une mission transfrontalière à Feignies ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mons (Belgique) à 20 min, Charleroi à 45 min. Expertise transfrontalière FR/BE incluse.",
     },
   ],
 };

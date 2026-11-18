@@ -22,6 +22,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { livraisonCatalogueActive } from "@/server/guides-reseau/config";
+import { resoudreGuide } from "@/server/guides-reseau/guide-a-livrer";
 import { coupeCircuitDeclenche } from "./coupe-circuit";
 import {
   ENTITE_GUIDE,
@@ -37,6 +39,12 @@ export interface DemandeAEnvoyer {
   readonly email: string;
   readonly locale: "fr" | "en";
   readonly downloadToken: string;
+  /**
+   * Aimant de la demande (`guide_requests.aimant`) : `guide-ia` ou un code `gde-…` du catalogue.
+   * OBLIGATOIRE — un appelant qui l'oublierait ne compilerait pas (S2b) ; une valeur inconnue ne
+   * livre jamais le texte du guide-ia.
+   */
+  readonly aimant: string;
 }
 
 export interface OptionsEnvoiGuide {
@@ -48,6 +56,24 @@ export interface OptionsEnvoiGuide {
    * `List-Unsubscribe` One-Click (RFC 8058) : amendement de Will du 24/09.
    */
   readonly unsubscribeToken?: string | null;
+  /**
+   * PV-1 — jeton du DOUBLE ACCORD d'une demande venue d'un réseau : l'e-mail porte le
+   * bloc « confirmez d'un clic » (texte BROUILLON, `content/guides-reseau.ts`). Le clic
+   * (un POST sur la page de confirmation) est seul à écrire la ligne `optin`.
+   */
+  readonly doubleAccordToken?: string | null;
+  /**
+   * Demande venue d'un réseau (décision du 03/11/2026) : l'e-mail livre le guide et rien
+   * d'autre — lien vers la politique de confidentialité, aucune proposition d'autres envois.
+   * Les jetons de lettre sont alors ignorés même s'ils sont fournis.
+   */
+  readonly reseau?: boolean;
+  /**
+   * Demande venue de la page « Recevoir le guide » (lot S2) : même e-mail « réseau » (le guide,
+   * la politique de confidentialité, aucune lettre) AVEC un lien de désinscription — le jeton
+   * d'opposition de l'adresse. N'a d'effet que combiné à `reseau: true`.
+   */
+  readonly pageGuide?: { readonly oppositionToken: string; readonly reseauOrigine?: string };
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -66,6 +92,27 @@ export async function envoisRecentsVers(email: string, maintenant: Date): Promis
     where: {
       template: GABARIT_GUIDE,
       recipient: email,
+      createdAt: { gte: new Date(maintenant.getTime() - FENETRE_DESTINATAIRE_MS) },
+    },
+  });
+}
+
+/**
+ * Nombre d'e-mails du guide mis en file vers cette adresse POUR CETTE DEMANDE (même adresse ET même
+ * guide : la demande est unique par adresse et par guide) sur la fenêtre. Lot LIA-F — utilisé
+ * seulement quand le catalogue est allumé ; `envoisRecentsVers` reste la limite par adresse.
+ */
+export async function envoisRecentsPourDemande(
+  email: string,
+  demandeId: string,
+  maintenant: Date,
+): Promise<number> {
+  return prisma.emailLog.count({
+    where: {
+      template: GABARIT_GUIDE,
+      recipient: email,
+      entityType: ENTITE_GUIDE,
+      entityId: demandeId,
       createdAt: { gte: new Date(maintenant.getTime() - FENETRE_DESTINATAIRE_MS) },
     },
   });
@@ -93,10 +140,51 @@ export async function mettreEnFileGuide(
   }
   if ((await envoisDeLaDerniereHeure(maintenant)) >= PLAFOND_HORAIRE_GUIDE) return "plafond";
 
+  // S2b — QUEL guide ? Le guide-ia est résolu sans aucune lecture (charge inchangée, octet pour octet).
+  // Un guide du catalogue ne part que si la livraison est allumée ; jamais le texte du guide-ia à sa place.
+  const guide = await resoudreGuide(demande.aimant, demande.email);
+  if (guide.kind === "indisponible") {
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_guide_indisponible",
+        raison: guide.raison,
+        demande: demande.id,
+      }),
+    );
+    return "non-parti";
+  }
+  if (guide.kind === "catalogue" && !livraisonCatalogueActive()) {
+    console.warn(
+      JSON.stringify({
+        event: "guides_reseau_livraison_retenue",
+        guide: guide.code,
+        demande: demande.id,
+      }),
+    );
+    return "non-parti";
+  }
+
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
-  if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
-  if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
+  if (options.reseau === true) {
+    payload["reseau"] = true;
+    if (options.pageGuide) {
+      payload["pageGuide"] = true;
+      payload["oppositionToken"] = options.pageGuide.oppositionToken;
+      // Réseau d'origine : sert au seul lien « Suivre la page » (aucune donnée personnelle).
+      if (options.pageGuide.reseauOrigine)
+        payload["reseauOrigine"] = options.pageGuide.reseauOrigine;
+    }
+  } else {
+    if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
+    if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;
+    if (options.doubleAccordToken) payload["doubleAccordToken"] = options.doubleAccordToken;
+  }
   if (options.reprise === true) payload["reprise"] = true;
+  // Les deux seules clés ajoutées (facultatives, jamais pour guide-ia) : le gabarit les relit et les revalide.
+  if (guide.kind === "catalogue") {
+    payload["guideCode"] = guide.code;
+    payload["guideTitre"] = guide.titre;
+  }
 
   // ⛔ JAMAIS `marketing: true` : « Votre guide » répond à une demande
   // (transactionnel, RGPD 6.1.b), part depuis `contact@` par ZeptoMail, dont

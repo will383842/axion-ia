@@ -33,6 +33,8 @@ vi.mock("@/lib/prisma", () => ({
       groupBy: (...a: unknown[]) => d.subGroupBy(...a),
       count: (...a: unknown[]) => d.subCount(...a),
     },
+    // L'optout `business` pose aussi l'opposition d'adresse (écrite directement, sans CRM).
+    emailOpposition: { upsert: vi.fn(async () => ({})) },
     emailOutbox: { findMany: (...a: unknown[]) => d.outboxFindMany(...a) },
     emailLog: { findMany: (...a: unknown[]) => d.logFindMany(...a) },
     guideRequest: {
@@ -105,6 +107,11 @@ describe("rebond sur l'abonné", () => {
 });
 
 describe("opposition venue du CRM", () => {
+  // STOP-T4-SITE : l'optout balaie aussi les demandes de guide (aucune dans ces cas).
+  beforeEach(() => {
+    d.guideFindMany.mockResolvedValue([]);
+  });
+
   it("🔴 écrit l'`optout` au registre de preuve, sous la référence de l'accord", async () => {
     process.env.SITE_SYNC_HMAC_SECRET = "secret-de-test";
     process.env.CRM_SYNC_ENABLED = "true";

@@ -49,7 +49,7 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Francheville et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Francheville et toute la banlieue ouest lyonnaise (Sainte-Foy-lès-Lyon limitrophe, Tassin-la-Demi-Lune, Oullins, Pierre-Bénite). Couverture Métropole de Lyon. Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Francheville et toute la banlieue ouest lyonnaise (Sainte-Foy-lès-Lyon limitrophe, Tassin-la-Demi-Lune, Oullins, Pierre-Bénite). Couverture Métropole de Lyon. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales franchevillois ?",
@@ -64,8 +64,8 @@ export const FRANCHEVILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Francheville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Francheville ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

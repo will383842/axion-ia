@@ -49,7 +49,7 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Plouguerneau et dans le pays des Abers ?",
-      a: "Oui, Axion-IA intervient à Plouguerneau et dans tout le pays des Abers (Lannilis, Landéda, Plabennec, Saint-Pabu). Déplacement depuis Brest en 30 min, couverture de tout le littoral nord Finistère.",
+      a: "Oui, Axion-IA intervient à Plouguerneau et dans tout le pays des Abers (Lannilis, Landéda, Plabennec, Saint-Pabu), sur tout le littoral nord Finistère. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme et de la mer ?",
@@ -65,7 +65,7 @@ export const PLOUGUERNEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Plouguerneau ?",
-      a: "Nos consultants se déplacent depuis Brest (30 min). Gare TGV de Brest sur la ligne Paris-Brest. Aéroport Brest-Bretagne à 40 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV de Brest sur la ligne Paris-Brest. Aéroport Brest-Bretagne à 40 min.",
     },
   ],
 };

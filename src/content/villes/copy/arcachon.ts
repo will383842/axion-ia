@@ -49,7 +49,7 @@ export const ARCACHON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Arcachon ?",
-      a: "Oui, Axion-IA intervient à Arcachon et sur tout le Bassin (La Teste-de-Buch, Gujan-Mestras, Le Teich, Andernos, Lège-Cap-Ferret). Nos consultants se déplacent depuis Bordeaux (TER 50 min) ou Paris (TGV 2h + TER).",
+      a: "Oui, Axion-IA intervient à Arcachon et sur tout le Bassin (La Teste-de-Buch, Gujan-Mestras, Le Teich, Andernos, Lège-Cap-Ferret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Arcachon  : quel budget prévoir ?",

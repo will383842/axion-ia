@@ -49,7 +49,7 @@ export const REIGNIER_ESERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Reignier-Ésery et dans le Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Reignier-Ésery et dans tout le Grand Genève côté français (Annemasse, Gaillard, Ville-la-Grand, Bonne, La Roche-sur-Foron). Nos consultants se déplacent depuis Annecy (30 min) ou Genève (20 min).",
+      a: "Oui, Axion-IA intervient à Reignier-Ésery et dans tout le Grand Genève côté français (Annemasse, Gaillard, Ville-la-Grand, Bonne, La Roche-sur-Foron). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises transfrontalières de Reignier-Ésery ?",

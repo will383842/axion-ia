@@ -86,22 +86,28 @@ describe("identité légale — le JSON-LD doit matcher le registre", () => {
     expect(offenders, "dériver de `BRAND.legalName` au lieu de recopier").toEqual([]);
   });
 
-  it("3a. l'adresse émise porte le complément de domiciliation du Kbis", () => {
+  it("3a. l'adresse émise dans le JSON-LD est le PAYS SEUL (décision Williams 2026-11-08)", () => {
+    // Remplace l'ancien 3a, qui exigeait la rue, le code postal et « Grenoble »
+    // au caractère près (rapprochement NAP avec SIRENE). Williams a tranché
+    // (audit harmonie n°19) : pays seulement dans les données structurées ;
+    // l'adresse complète reste dans les mentions légales, les CGV, le devis et
+    // le pied d'e-mail — documents où elle est obligatoire.
     const org = buildOrganizationJsonLd({ locale: "fr" }) as {
       legalName: string;
-      address: { streetAddress: string; postalCode: string; addressLocality: string };
-      foundingLocation: { address: { streetAddress: string } };
+      address: Record<string, string>;
+      foundingLocation: { address: Record<string, string> };
     };
 
+    // La raison sociale, elle, reste exacte : c'est le champ que les registres rapprochent.
     expect(org.legalName).toBe(BRAND.legalName);
-    expect(org.address.streetAddress).toContain("11 Avenue Paul Verlaine");
-    // Le complément fait partie de l'adresse immatriculée (SIRENE le porte sur
-    // sa propre ligne) : l'omettre casse l'exact-match NAP.
-    expect(org.address.streetAddress).toContain("ELITE BUREAUX");
-    expect(org.address.postalCode).toBe("38100");
-    expect(org.address.addressLocality).toBe("Grenoble");
+    expect(org.address).toEqual({ "@type": "PostalAddress", addressCountry: "FR" });
     // Siège et lieu de fondation ne doivent jamais diverger.
-    expect(org.foundingLocation.address.streetAddress).toBe(org.address.streetAddress);
+    expect(org.foundingLocation.address).toEqual(org.address);
+
+    const json = JSON.stringify(buildOrganizationJsonLd({ locale: "fr" }));
+    for (const interdit of [/Verlaine/, /ELITE BUREAUX/, /38100/, /Grenoble/, /streetAddress/]) {
+      expect(json, String(interdit)).not.toMatch(interdit);
+    }
   });
 
   it("3a-bis. l'adresse du siège ne dépend d'AUCUNE env var", () => {

@@ -60,6 +60,10 @@ vi.mock("@/lib/prisma", () => ({
     crmSyncOutbox: outbox,
     crmInboundEvent: inbound,
     newsletterSubscriber: subscriber,
+    // STOP-T4-SITE : l'optout balaie aussi les demandes de guide (aucune ici).
+    guideRequest: { findMany: async () => [] },
+    // Portée business : l'abonné connu reçoit aussi une opposition d'adresse (jamais émise vers le CRM).
+    emailOpposition: { upsert: async () => ({}) },
     submission,
     jobApplication,
     calendlyEvent,

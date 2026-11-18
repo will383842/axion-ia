@@ -49,7 +49,7 @@ export const VALOGNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valognes et dans le Cotentin ?",
-      a: "Oui, Axion-IA intervient à Valognes et dans tout le Cotentin (Cherbourg, Carentan, Bricquebec, Saint-Sauveur-le-Vicomte). Nos consultants se déplacent depuis Cherbourg (20 min) ou Caen (1 h 10), ou en visio.",
+      a: "Oui, Axion-IA intervient à Valognes et dans tout le Cotentin (Cherbourg, Carentan, Bricquebec, Saint-Sauveur-le-Vicomte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les producteurs cidricoles du Cotentin ?",
@@ -65,7 +65,7 @@ export const VALOGNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Valognes ?",
-      a: "Nos consultants viennent de Cherbourg (20 min) ou Caen (1 h 10). Gare de Valognes (TER Paris 2 h 45 via Caen). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Valognes (TER Paris 2 h 45 via Caen). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

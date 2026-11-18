@@ -86,7 +86,7 @@ describe("⛔ un fait à ranger ne se valide pas par « Valider tous »", () => 
         note: null,
         suivi: { issue: "eu_lieu", suite: "aucune", suiteLe: null },
       }),
-    ).rejects.toThrow(/choisissez un projet/);
+    ).rejects.toThrow(/choisissez une prestation/);
     expect(base.tables["fait"]?.[0]?.["statut"]).toBe("propose");
     expect(base.tables["rencontreSuivi"] ?? []).toHaveLength(0);
     expect(base.tables["faitEvenement"] ?? []).toHaveLength(0);

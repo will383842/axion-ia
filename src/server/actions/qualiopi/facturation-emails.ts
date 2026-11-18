@@ -26,11 +26,33 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
+import {
+  formulesDepuisMetadata,
+  nomPourSalutationDevis,
+  payloadDevisEnvoi,
+} from "@/server/qualiopi/devis/email-devis-envoi";
+import { resoudreMode } from "@/server/email/outbox-service";
+import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  emailDevisEnAttente,
+  GABARIT_DEVIS_ENVOI,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
+import {
+  SELECT_SIGNATURES_PIECE,
+  signatureClientDuDevis,
+} from "@/server/qualiopi/devis/signature-client-du-devis";
 import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
   new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
 const dateFr = (d: Date): string => d.toLocaleDateString("fr-FR");
+
+const MSG_RENVOI_DEJA_GARE =
+  "Un e-mail de ce devis attend déjà dans Emails → À valider : validez-le ou refusez-le avant de renvoyer.";
+const NOTE_RENVOI_GARE =
+  "Renvoi garé dans Emails → À valider : le lien actuel reste valable jusqu'au départ réel ; le nouveau lien naît à l'approbation et remplace alors l'ancien.";
 
 const EnvoyerDevisSchema = z.object({
   devisId: z.string().uuid(),
@@ -67,13 +89,64 @@ export async function envoyerDevisEmailAction(
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          contactCivilite: true,
+          contactPrenom: true,
+          contactNomFamille: true,
           // Voir devis.ts : la qualité porte l'opposabilité du pouvoir de signer.
           contactFonction: true,
         },
       },
+      ...SELECT_SIGNATURES_PIECE,
     },
   });
   if (!devis) return { error: "Devis introuvable." };
+  // Un devis accepté (même sur papier) ou signé par le client ne se renvoie pas : l'e-mail le
+  // présente comme « à signer » (PDF + bouton de signature). Aucun lien n'est émis hors « envoye »,
+  // mais le message serait faux. Deux refus distincts selon la situation.
+  if (devis.statut === "accepte" || devis.statut === "transforme_convention") {
+    return {
+      error:
+        "Ce devis est déjà accepté : il ne se renvoie plus. Pour en transmettre une copie, ouvrez l'exemplaire signé (PDF) depuis la fiche.",
+    };
+  }
+  if (signatureClientDuDevis(devis).clientASigne) {
+    return {
+      error: "Ce devis est déjà signé par le client : le renvoyer lui redemanderait de signer.",
+    };
+  }
+  // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
+  // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
+  // signature. `offre` est un champ scalaire, déjà lu par `include`.
+  if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+    return {
+      error:
+        "Ce devis à formules ne peut pas être renvoyé tant que les devis à formules sont désactivés dans la configuration.",
+    };
+  }
+  const aFormules = devis.offre !== null && devis.offre !== undefined;
+  // Devis à formules : le bouton « signer » est le seul moyen de choisir une formule. Hors
+  // statut « envoye » aucun lien n'est émis : refuser, plutôt qu'un e-mail sans bouton.
+  if (aFormules && devis.statut !== "envoye") {
+    return {
+      error:
+        "Ce devis à formules ne peut être renvoyé que s'il est au statut « envoyé » (aucun e-mail sans lien de signature).",
+    };
+  }
+  // Un devis à formules ne part jamais sans lien : sans pièce générée, aucun jeton n'est
+  // émissible. Refuser AVANT toute écriture (ni lien créé, ni e-mail en file).
+  if (aFormules && devis.documentGenereId === null) {
+    return {
+      error:
+        "Ce devis à formules n'a pas de pièce générée : aucun e-mail sans lien de signature. Générer d'abord le devis.",
+    };
+  }
+  const pieceEnvoyee =
+    devis.documentGenereId !== null
+      ? await prisma.documentGenere.findUnique({
+          where: { id: devis.documentGenereId },
+          select: { metadata: true },
+        })
+      : null;
 
   const to = input.to ?? devis.client.contactEmail ?? null;
   if (to === null) {
@@ -103,18 +176,41 @@ export async function envoyerDevisEmailAction(
   // L'e-mail part alors SANS bouton de signature, et on le DIT.
   let signatureUrl: string | null = null;
   let signatureNote: string | null = null;
-  if (devis.documentGenereId !== null && devis.statut === "envoye") {
+
+  // 🔴 B2, PR 4 — un e-mail de ce devis attend déjà (« à valider », ou « approuvé » depuis peu) :
+  // pas de second renvoi. Même règle que l'envoi et la remise en main propre (module partagé).
+  if (await emailDevisEnAttente(prisma, devis.id)) return { error: MSG_RENVOI_DEJA_GARE };
+
+  const pieceId = devis.documentGenereId;
+  const renvoiAvecLien = pieceId !== null && devis.statut === "envoye";
+  // Mode d'envoi décidé AVANT tout jeton : créer le jeton révoque l'ancien lien.
+  //   - validation : AUCUN jeton ici. La ligne garée porte un marqueur ; le nouveau lien naît à
+  //     l'approbation (`lien-a-l-envoi`) et révoque l'ancien alors. D'ici là l'ancien reste vivant.
+  //   - auto : chemin d'origine, inchangé.
+  const parValidation =
+    renvoiAvecLien && (await resoudreMode(GABARIT_DEVIS_ENVOI, devis.clientId)) === "validation";
+  if (renvoiAvecLien && !parValidation) {
     try {
+      // Calculée AVANT le jeton : si elle lève, aucun jeton n'est créé (créer le jeton révoque
+      // l'ancien lien, le client resterait sans lien valable).
+      const baseSignature = publicUrl("/fr/portail/signer/").toString();
       const { token } = await creerTokenDocument({
-        documentGenereId: devis.documentGenereId,
+        documentGenereId: pieceId,
         partie: "client",
         signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
         signataireEmail: to,
         signataireQualite: devis.client.contactFonction,
         borneMetier: devis.dateValidite,
       });
-      signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
+      signatureUrl = `${baseSignature}${token}`;
     } catch (err) {
+      if (aFormules) {
+        console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
+        return {
+          error:
+            "Le lien de signature n'a pas pu être créé : un devis à formules ne part jamais sans bouton « signer ». Réessayer.",
+        };
+      }
       signatureNote =
         err instanceof TokenDocumentError
           ? `Lien de signature non émis (${err.motif}) : l'email part sans bouton « signer ».`
@@ -123,20 +219,41 @@ export async function envoyerDevisEmailAction(
     }
   }
 
+  const payloadCourriel = payloadDevisEnvoi({
+    clientNom: nomPourSalutationDevis(devis.client),
+    salutation: salutationPourPayload({
+      clientNom: nomPourSalutationDevis(devis.client),
+      contactCivilite: devis.client.contactCivilite,
+      contactPrenom: devis.client.contactPrenom,
+      contactNomFamille: devis.client.contactNomFamille,
+    }),
+    numero: devis.numero,
+    montantTotalHtCents: devis.montantTotalHtCents,
+    montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
+    dateValiditeLabel: dateFr(devis.dateValidite),
+    // Formules figées dans la pièce déjà envoyée : l'e-mail décrit le PDF joint.
+    formules: formulesDepuisMetadata(pieceEnvoyee?.metadata),
+    // Même si les formules figées sont illisibles : un devis à formules n'annonce jamais de montant.
+    devisAFormules: aFormules,
+    signatureUrl,
+    messagePersonnalise: input.messagePersonnalise,
+  });
+  if (parValidation) {
+    // Marqueur sans identité, sans URL, sans jeton : contrat v1 de `lien-a-l-envoi`.
+    payloadCourriel[CLE_MARQUEUR] = {
+      v: 1,
+      nature: "devis-renvoi",
+      documentGenereId: pieceId,
+      partie: "client",
+      devisId: devis.id,
+    };
+  }
+
   const { enqueued, garePourValidation = false } = await enqueueEmail(
     "devis-envoi",
     to,
     "fr",
-    {
-      clientNom: devis.client.raisonSociale,
-      numero: devis.numero,
-      montantLabel: `${eur(devis.montantTotalHtCents)} HT`,
-      dateValiditeLabel: dateFr(devis.dateValidite),
-      ...(signatureUrl !== null ? { signatureUrl } : {}),
-      ...(input.messagePersonnalise !== undefined
-        ? { messagePersonnalise: input.messagePersonnalise }
-        : {}),
-    },
+    payloadCourriel,
     {
       attachments: [{ filename: `${devis.numero}.pdf`, r2Key: devis.fichierPdfUrl }],
       entityType: "Devis",
@@ -147,6 +264,7 @@ export async function envoyerDevisEmailAction(
       // réglages par client structurellement inertes.
       clientId: devis.clientId,
       sujet: `Devis ${devis.numero} — Axion-IA`,
+      ...(parValidation ? { exigerValidation: true } : {}),
     },
   );
 
@@ -173,7 +291,11 @@ export async function envoyerDevisEmailAction(
       enqueued,
       garePourValidation,
       to,
-      ...(signatureNote !== null ? { note: signatureNote } : {}),
+      ...(parValidation
+        ? { note: NOTE_RENVOI_GARE }
+        : signatureNote !== null
+          ? { note: signatureNote }
+          : {}),
     },
   };
 }

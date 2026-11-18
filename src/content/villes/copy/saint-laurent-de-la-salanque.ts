@@ -49,7 +49,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Laurent-de-la-Salanque ?",
-      a: "Oui, Axion-IA intervient à Saint-Laurent-de-la-Salanque et toute la Salanque (Pia, Le Barcarès, Claira, Torreilles). Nos consultants sont basés à proximité de Perpignan (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Laurent-de-la-Salanque et toute la Salanque (Pia, Le Barcarès, Claira, Torreilles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces des zones commerciales ?",
@@ -65,7 +65,7 @@ export const SAINT_LAURENT_DE_LA_SALANQUE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Laurent-de-la-Salanque ?",
-      a: "Nos consultants interviennent depuis Perpignan (15 min). Missions sur site dans votre commerce, exploitation ou atelier. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre commerce, exploitation ou atelier. Visio possible.",
     },
   ],
 };

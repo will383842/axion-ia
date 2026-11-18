@@ -49,7 +49,7 @@ export const AYTRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aytré et dans l'agglomération de La Rochelle ?",
-      a: "Oui, Axion-IA intervient à Aytré et toute l'agglomération de La Rochelle (Périgny, Lagord, Dompierre-sur-Mer, Nieul-sur-Mer). Nos consultants accèdent facilement via la gare TGV de La Rochelle à 10 min.",
+      a: "Oui, Axion-IA intervient à Aytré et toute l'agglomération de La Rochelle (Périgny, Lagord, Dompierre-sur-Mer, Nieul-sur-Mer). Aytré est desservie par la gare TGV de La Rochelle, à 10 min.",
     },
     {
       q: "Quels services IA pour les entreprises ferroviaires à Aytré ?",

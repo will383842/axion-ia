@@ -49,7 +49,7 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-sur-Yonne et nord Yonne ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-sur-Yonne et tout le nord de l'Yonne (Sens, Joigny, Pont-sur-Yonne). Consultants depuis Paris (1h30 A6) ou Sens (20 min).",
+      a: "Oui, Axion-IA intervient à Villeneuve-sur-Yonne et tout le nord de l'Yonne (Sens, Joigny, Pont-sur-Yonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial ?",
@@ -64,8 +64,8 @@ export const VILLENEUVE_SUR_YONNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Paris (1h30 A6) ou TER depuis Paris-Bercy.",
+      q: "Comment se déroule une mission à Villeneuve-sur-Yonne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

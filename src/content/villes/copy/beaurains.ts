@@ -49,7 +49,7 @@ export const BEAURAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Beaurains et dans l'agglo d'Arras ?",
-      a: "Oui, Axion-IA intervient a Beaurains et dans toute l'agglomeration arrageoise (Arras, Dainville, Saint-Laurent-Blangy, Achicourt). Consultants depuis Lille (45 min TGV) ou Paris (50 min TGV direct).",
+      a: "Oui, Axion-IA intervient a Beaurains et dans toute l'agglomeration arrageoise (Arras, Dainville, Saint-Laurent-Blangy, Achicourt). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME en zones d'activites de Beaurains ?",

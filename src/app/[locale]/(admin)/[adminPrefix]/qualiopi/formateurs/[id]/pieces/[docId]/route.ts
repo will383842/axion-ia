@@ -7,6 +7,7 @@ import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
 import { lirePieceDeposee } from "@/server/qualiopi/formateurs-independants/lecture-piece";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -18,8 +19,12 @@ const EN_TETES_NEUTRES = {
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string; docId: string }> },
+  {
+    params,
+  }: { params: Promise<{ locale: string; adminPrefix: string; id: string; docId: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) {
     return new NextResponse("Unauthorized", { status: 401, headers: EN_TETES_NEUTRES });

@@ -13,8 +13,8 @@ import {
 } from "../positionnement";
 import { getBrandVoiceForContentType, injectBrandVoiceForType } from "../brand-voice";
 
-/** Étiquette interdite : TPE et PME accolées, sous toute graphie. */
-const ETIQUETTE_TPE_PME = /\bTPE\s*(\/|,|-|et)\s*PME\b/i;
+/** Étiquette interdite : « TPE/PME » (barre oblique ou tiret, espaces compris). « TPE et PME » est permis. */
+const ETIQUETTE_TPE_PME = /\bTPE\s*(\/|-)\s*PME\b/i;
 
 describe("angles d'entrée", () => {
   it("a 8 angles", () => {
@@ -57,6 +57,33 @@ describe("bloc de positionnement", () => {
       expect(bloc).not.toContain("nous si.");
       expect(bloc.toLowerCase()).not.toContain("aucun gain garanti");
     }
+  });
+
+  it("donne le message principal, l'offre phare et le Diagnostic IA gratuit de 45 minutes", () => {
+    expect(BLOC_POSITIONNEMENT).toContain(
+      "Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.",
+    );
+    expect(BLOC_POSITIONNEMENT).toContain("La Journée IA");
+    expect(BLOC_POSITIONNEMENT).toContain("Diagnostic IA gratuit de 45 minutes, sans engagement");
+  });
+
+  it("cible les PME et autorise « TPE et PME » dans le texte", () => {
+    expect(BLOC_POSITIONNEMENT).toContain("TPE et PME");
+    expect(BLOC_POSITIONNEMENT_ACTUALITE).toContain("TPE et PME");
+  });
+
+  it("n'écrit ni prix en chiffres, ni 30 minutes, ni ETI, ni grandes entreprises dans l'offre", () => {
+    for (const bloc of [BLOC_POSITIONNEMENT, BLOC_POSITIONNEMENT_ACTUALITE]) {
+      expect(bloc).not.toMatch(/\d\s*(?:€|euros?|EUR)/i);
+      expect(bloc).not.toMatch(/30\s*(?:minutes|min)\b/i);
+      expect(bloc).not.toMatch(/\bETI\b/);
+      expect(bloc.toLowerCase()).not.toContain("grandes entreprises");
+    }
+  });
+
+  it("la Journée IA est annoncée sans prix, sans acompte ni frais de déplacement", () => {
+    expect(BLOC_POSITIONNEMENT).not.toMatch(/garantie|remboursé/i);
+    expect(BLOC_POSITIONNEMENT).not.toMatch(/\d\s*(?:€|euros?)/i);
   });
 
   it("porte le marqueur d'idempotence", () => {

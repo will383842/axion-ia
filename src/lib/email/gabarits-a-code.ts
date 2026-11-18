@@ -3,7 +3,10 @@
  * l'envoi le masque, comme les liens personnels — lire « Emails › Envoyés » ne doit jamais
  * permettre de signer à la place du destinataire. Module pur.
  */
-export const GABARITS_A_CODE_UNIQUE: ReadonlySet<string> = new Set(["formateur-code-signature"]);
+export const GABARITS_A_CODE_UNIQUE: ReadonlySet<string> = new Set([
+  "formateur-code-signature",
+  "devis-code-signature",
+]);
 
 const CODE_A_MASQUER = /\b\d{6}\b/g;
 

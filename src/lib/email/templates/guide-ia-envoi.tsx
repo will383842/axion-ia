@@ -35,6 +35,8 @@ import { Button, Link, Section, Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import type { Locale } from "../../../../prisma/generated/client";
 import { GUIDE_IA_PAGES } from "@/content/guide-ia";
+import { RE_CODE_GUIDE, titreGuideSur } from "@/server/guides-reseau/guide-a-livrer";
+import { adressePageSuivre, TEXTE_SUIVRE_PAGE } from "@/server/guides-reseau/page-suivre";
 import { CADENCE_LETTRE, TEXTE_REINSCRIPTION } from "@/content/guide-ia-formulaire";
 
 interface Payload {
@@ -43,8 +45,52 @@ interface Payload {
   confirmToken?: string;
   /** Inscrite à la lettre : lien de désinscription visible + en-tête One-Click. */
   unsubscribeToken?: string;
+  /** PV-1 — double accord d'une demande venue d'un réseau : bloc « confirmez d'un clic ». */
+  doubleAccordToken?: string;
+  /**
+   * Demande venue d'un réseau (décision du 03/11/2026) : le guide et rien d'autre. Lien vers la
+   * politique de confidentialité, AUCUN bloc de lettre, AUCUNE proposition d'autres envois.
+   */
+  reseau?: boolean;
+  /**
+   * Lot S2 — demande venue de la page « Recevoir le guide » : même e-mail « réseau », plus le
+   * lien de désinscription (jeton d'opposition de l'adresse). Ignoré sans `reseau`.
+   */
+  pageGuide?: boolean;
+  oppositionToken?: string;
+  /** Réseau d'origine (page guide) : choisit l'adresse du lien « Suivre la page Axion IA ». */
+  reseauOrigine?: string;
   reprise?: boolean;
+  /**
+   * PR-S2b — guide du CATALOGUE (jamais pour le guide-ia) : code `gde-…` et titre. La branche catalogue
+   * du gabarit ne s'ouvre que si les DEUX sont sûrs (`catalogueDePayload`) ; sinon rendu du guide-ia.
+   */
+  guideCode?: unknown;
+  guideTitre?: unknown;
 }
+
+/** Titre du guide du catalogue si (et seulement si) la charge porte un code ET un titre sûrs. */
+function catalogueDePayload(p: Record<string, unknown>): string | null {
+  const code = p["guideCode"];
+  if (typeof code !== "string" || !RE_CODE_GUIDE.test(code)) return null;
+  const titre = p["guideTitre"];
+  return typeof titre === "string" ? titreGuideSur(titre) : null;
+}
+
+const COPY_CATALOGUE = {
+  fr: {
+    subject: (titre: string) => `Votre guide : ${titre}`,
+    title: "Votre guide",
+    body: (titre: string) => `Voici le guide que vous avez demandé : « ${titre} ».`,
+    cta: "Télécharger le guide (PDF)",
+  },
+  en: {
+    subject: (titre: string) => `Your guide: ${titre}`,
+    title: "Your guide",
+    body: (titre: string) => `Here is the guide you requested: « ${titre} » (in French).`,
+    cta: "Download the guide (PDF)",
+  },
+} as const;
 
 const COPY = {
   fr: {
@@ -62,6 +108,11 @@ const COPY = {
     reinscription: TEXTE_REINSCRIPTION.fr,
     reinscriptionCta: "Recevoir à nouveau la lettre",
     note: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message : vous ne recevrez rien d'autre.",
+    confidentialite: "Comment vos données sont traitées : politique de confidentialité",
+    noteReseau: "Vous n'avez pas fait cette demande ? Ignorez simplement ce message.",
+    pageInformations:
+      "Vous avez accepté de recevoir aussi des informations d'Axion-IA. Pour ne plus en recevoir, un clic suffit :",
+    pageDesinscription: "Me désinscrire",
     noteInscrite:
       "Vous n'avez pas fait cette demande ? Cliquez sur « Se désabonner de la lettre » ci-dessus : vous ne recevrez rien d'autre.",
   },
@@ -79,13 +130,20 @@ const COPY = {
     reinscription: TEXTE_REINSCRIPTION.en,
     reinscriptionCta: "Receive the letter again",
     note: "Didn't request this? Just ignore this message: you will receive nothing else.",
+    confidentialite: "How your data is handled: privacy policy",
+    noteReseau: "Didn't request this? Just ignore this message.",
+    pageInformations:
+      "You agreed to also receive information from Axion-IA. To stop receiving it, one click is enough:",
+    pageDesinscription: "Unsubscribe me",
     noteInscrite:
       'Didn\'t request this? Click "Unsubscribe from the letter" above: you will receive nothing else.',
   },
 } as const;
 
-export const guideIaEnvoiSubject = (locale: Locale, _p: Record<string, unknown>): string =>
-  COPY[locale].subject;
+export const guideIaEnvoiSubject = (locale: Locale, p: Record<string, unknown>): string => {
+  const titre = catalogueDePayload(p);
+  return titre === null ? COPY[locale].subject : COPY_CATALOGUE[locale].subject(titre);
+};
 
 /** URL du lien personnel — page du site, jamais le PDF direct. */
 export function urlLienGuide(baseUrl: string, downloadToken: string): string {
@@ -97,9 +155,20 @@ export function urlDesinscriptionLettre(baseUrl: string, locale: Locale, token: 
   return `${baseUrl.replace(/\/+$/, "")}/${locale}/desabonnement?token=${encodeURIComponent(token)}`;
 }
 
+/** Lien de désinscription de la page « Recevoir le guide » : porte d'opposition (page + bouton). */
+export function urlDesinscriptionOpposition(baseUrl: string, oppositionToken: string): string {
+  return `${baseUrl.replace(/\/+$/, "")}/api/unsubscribe?token=${encodeURIComponent(oppositionToken)}`;
+}
+
 /** URL de confirmation de la lettre — une page avec un bouton, jamais un GET qui confirme. */
 export function urlConfirmationLettre(baseUrl: string, locale: Locale, token: string): string {
   return `${baseUrl.replace(/\/+$/, "")}/${locale}/confirmation/newsletter?token=${encodeURIComponent(token)}`;
+}
+
+/** URL de la politique de confidentialité (route réelle : `app/[locale]/politique-confidentialite`). */
+export function urlPolitiqueConfidentialite(baseUrl: string, locale: Locale): string {
+  const chemin = locale === "en" ? "en/privacy-policy" : "fr/politique-confidentialite";
+  return `${baseUrl.replace(/\/+$/, "")}/${chemin}`;
 }
 
 const boutonSecondaire: React.CSSProperties = {
@@ -118,15 +187,36 @@ export function GuideIaEnvoiEmail({
   locale: Locale;
   payload: Record<string, unknown>;
 }) {
-  const p = payload as unknown as Payload;
+  const p0 = payload as unknown as Payload;
+  // Demande venue d'un réseau : aucun jeton de lettre n'est lu, même s'il traînait dans la charge.
+  const desinscriptionPage =
+    p0.reseau === true && p0.pageGuide === true && typeof p0.oppositionToken === "string";
+  const p: Payload =
+    p0.reseau === true
+      ? {
+          downloadToken: p0.downloadToken,
+          reseau: true,
+          ...(desinscriptionPage
+            ? {
+                pageGuide: true,
+                oppositionToken: p0.oppositionToken!,
+                ...(p0.reseauOrigine ? { reseauOrigine: p0.reseauOrigine } : {}),
+              }
+            : {}),
+        }
+      : p0;
   const t = COPY[locale];
+  const titreCatalogue = catalogueDePayload(payload);
+  const tc = COPY_CATALOGUE[locale];
+  // Simple lien du corps (jamais une condition du guide) ; aucune variable posée → aucun bloc.
+  const adresseSuivre = desinscriptionPage ? adressePageSuivre(p.reseauOrigine) : null;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   return (
     <EmailLayout
       famille="B"
       signature="equipe"
       preview={t.preview}
-      title={t.title}
+      title={titreCatalogue === null ? t.title : tc.title}
       // Deux liens d'ACTION dans le corps (le guide, et la lettre) : la rangée
       // de réseaux sociaux (lien de notoriété) cède sa place, comme sur les
       // e-mails du réseau d'apporteurs (§5.4).
@@ -134,8 +224,14 @@ export function GuideIaEnvoiEmail({
       locale={locale}
     >
       {p.reprise === true ? <Text style={emailStyles.paragraphStyle}>{t.reprise}</Text> : null}
-      <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
-      <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
+      {titreCatalogue === null ? (
+        <>
+          <Text style={emailStyles.paragraphStyle}>{t.body}</Text>
+          <Text style={emailStyles.paragraphStyle}>{t.astuce}</Text>
+        </>
+      ) : (
+        <Text style={emailStyles.paragraphStyle}>{tc.body(titreCatalogue)}</Text>
+      )}
       {/*
         Le bouton du guide vient JUSTE APRÈS « Commencez par la page 5 », avant
         le bloc « lettre » (décision de Will du 25/09, point 1). Le CTA du
@@ -154,7 +250,7 @@ export function GuideIaEnvoiEmail({
           style={emailStyles.ctaStyle}
           className="ax-cta"
         >
-          {t.cta} &nbsp;→
+          {titreCatalogue === null ? t.cta : tc.cta} &nbsp;→
         </Button>
       </Section>
       {p.unsubscribeToken ? (
@@ -183,9 +279,45 @@ export function GuideIaEnvoiEmail({
           </Button>
         </Section>
       ) : null}
+      {desinscriptionPage ? (
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={emailStyles.paragraphStyle}>
+            {t.pageInformations}{" "}
+            <Link
+              href={urlDesinscriptionOpposition(baseUrl, p.oppositionToken!)}
+              style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+            >
+              {t.pageDesinscription}
+            </Link>
+          </Text>
+        </Section>
+      ) : null}
+      {adresseSuivre ? (
+        <Section style={{ margin: "8px 0 4px 0" }}>
+          <Text style={emailStyles.paragraphStyle}>
+            <Link
+              href={adresseSuivre}
+              rel="noopener noreferrer"
+              style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+            >
+              {TEXTE_SUIVRE_PAGE}
+            </Link>
+          </Text>
+        </Section>
+      ) : null}
       <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
-        {p.unsubscribeToken ? t.noteInscrite : t.note}
+        {p.reseau === true ? t.noteReseau : p.unsubscribeToken ? t.noteInscrite : t.note}
       </Text>
+      {p.reseau === true ? (
+        <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+          <Link
+            href={urlPolitiqueConfidentialite(baseUrl, locale)}
+            style={{ color: emailStyles.COLORS.accent, textDecoration: "underline" }}
+          >
+            {t.confidentialite}
+          </Link>
+        </Text>
+      ) : null}
     </EmailLayout>
   );
 }

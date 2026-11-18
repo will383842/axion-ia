@@ -49,7 +49,7 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pont-Évêque et Vienne Condrieu Agglomération ?",
-      a: "Oui, Axion-IA intervient à Pont-Évêque et toute Vienne Condrieu Agglomération (Vienne, Chasse-sur-Rhône, Estrablin, Condrieu, Roussillon proche). Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47).",
+      a: "Oui, Axion-IA intervient à Pont-Évêque et toute Vienne Condrieu Agglomération (Vienne, Chasse-sur-Rhône, Estrablin, Condrieu, Roussillon proche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin Vienne ?",
@@ -64,8 +64,8 @@ export const PONT_EVEQUE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Pont-Évêque, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (35 min A7) ou Saint-Étienne (40 min A47). Pour les multi-jours, hébergement local possible (hôtels Vienne).",
+      q: "Comment se déroule une mission à Pont-Évêque ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Vienne).",
     },
   ],
 };

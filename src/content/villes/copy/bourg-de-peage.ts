@@ -18,9 +18,9 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   ecosystemEn:
     "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, TPE artisanat BTP, commerces et agriculture périphérique (vallée de l'Isère).",
   distancesFr:
-    "Gare Romans-Bourg-de-Péage à 5 min (TER Valence-Grenoble). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15. Grenoble à 1h.",
+    "Gare Romans-Bourg-de-Péage à 5 min (TER vers Valence). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15.",
   distancesEn:
-    "Gare Romans-Bourg-de-Péage à 5 min (TER Valence-Grenoble). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15. Grenoble à 1h.",
+    "Gare Romans-Bourg-de-Péage à 5 min (TER vers Valence). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15.",
   topSectorsNaf: [
     "Industrie filière chaussure / cuir (héritage)",
     "PME industrielles diversifiées",
@@ -49,7 +49,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-de-Péage et bassin Romans ?",
-      a: "Oui, Axion-IA intervient à Bourg-de-Péage et le bassin Romans-Valence (Romans-sur-Isère limitrophe, Valence, Saint-Paul-lès-Romans). Couverture Valence Romans Agglo. Consultants depuis Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min).",
+      a: "Oui, Axion-IA intervient à Bourg-de-Péage et le bassin Romans-Valence (Romans-sur-Isère limitrophe, Valence, Saint-Paul-lès-Romans). Couverture Valence Romans Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME filière cuir/chaussure ?",
@@ -64,8 +64,8 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Bourg-de-Péage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantier.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
+      q: "Comment se déroule une mission à Bourg-de-Péage ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
     },
   ],
 };

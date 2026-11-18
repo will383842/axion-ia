@@ -49,7 +49,7 @@ export const SENAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sénas et dans la vallée de la Durance ?",
-      a: "Oui, Axion-IA intervient à Sénas et dans toute la vallée de la Durance (Mallemort, Charleval, La Roque-d'Anthéron, Alleins). Nœud autoroutier A7 facilite l'accès depuis Aix ou Avignon.",
+      a: "Oui, Axion-IA intervient à Sénas et dans toute la vallée de la Durance (Mallemort, Charleval, La Roque-d'Anthéron, Alleins). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME logistique à Sénas ?",
@@ -64,8 +64,8 @@ export const SENAS_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME de transport et logistique : optimisation tournées livraison IA, maintenance prédictive flotte, automatisation documents transport, gestion planning chauffeurs.",
     },
     {
-      q: "Comment se déplace Axion-IA à Sénas ?",
-      a: "Nos consultants se déplacent dans vos locaux. Sénas est sur l'axe A7, à 15 min de Salon-de-Provence et 35 min d'Aix.",
+      q: "Comment se passe une intervention à Sénas ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux. Sénas est sur l'axe A7, à 15 min de Salon-de-Provence et 35 min d'Aix.",
     },
   ],
 };

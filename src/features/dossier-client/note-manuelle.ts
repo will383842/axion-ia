@@ -115,7 +115,7 @@ export function faitsDeLaNote(s: SaisieNote, avecProjet: boolean): FaitDeLaNote[
           : "projet";
     if (portee === "projet" && !avecProjet) {
       throw new ErreurNote(
-        "Le besoin, le budget, le décideur et l'échéance se rangent dans un projet : " +
+        "Le besoin, le budget, le décideur et l'échéance se rangent dans une prestation : " +
           "choisissez-en un, ou créez-le.",
       );
     }

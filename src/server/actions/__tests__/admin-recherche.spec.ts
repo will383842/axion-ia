@@ -104,7 +104,7 @@ describe("rechercheGlobaleAction — admin", () => {
     expect(r.data.map((g) => g.type)).toEqual(["clients", "sessions", "coaching"]);
 
     const clients = r.data.find((g) => g.type === "clients");
-    expect(clients?.label).toBe("Clients");
+    expect(clients?.label).toBe("Fiches clients");
     // Fiche 360 /qualiopi/clients/[id] (chantier client-360, mergé avant).
     expect(clients?.items[0]?.href).toBe("/fr/console/qualiopi/clients/c1");
     expect(clients?.items[0]?.titre).toBe("Invest Sun");

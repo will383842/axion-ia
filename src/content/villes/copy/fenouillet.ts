@@ -49,7 +49,7 @@ export const FENOUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fenouillet ?",
-      a: "Oui, Axion-IA intervient à Fenouillet et dans tout le nord de Toulouse (Aucamville, Beauzelle, Saint-Alban). Nos consultants se déplacent en 12 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Fenouillet et dans tout le nord de Toulouse (Aucamville, Beauzelle, Saint-Alban). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fenouillet ?",
@@ -61,7 +61,7 @@ export const FENOUILLET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Fenouillet ?",
-      a: "Nos consultants se déplacent à Fenouillet depuis Toulouse (12 min D4). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "L'IA peut-elle aider un commerce à Fenouillet ?",

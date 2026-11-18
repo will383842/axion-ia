@@ -12,22 +12,11 @@
 // portés par `implementation-fr-overrides.ts` (les valeurs ci-dessous ne sont
 // que le repli de forme).
 
-import { IMPLEMENTATION_TIERS, formatAmountRange, getTierById } from "./pricing";
+import { IMPLEMENTATION_TIERS, getTierById } from "./pricing";
 import { IMPL_FR_OVERRIDES } from "./implementation-fr-overrides";
 
 const IA_CUSTOM_TIER = getTierById(IMPLEMENTATION_TIERS, "impl-ia-custom");
-const IA_CUSTOM_RANGE_FR = formatAmountRange(
-  IA_CUSTOM_TIER.priceMin!,
-  IA_CUSTOM_TIER.priceMax!,
-  "fr",
-  { compact: true },
-);
-const IA_CUSTOM_RANGE_EN = formatAmountRange(
-  IA_CUSTOM_TIER.priceMin!,
-  IA_CUSTOM_TIER.priceMax!,
-  "en",
-  { compact: true },
-);
+// R7 (ordre de Williams du 08/11/2026) : le titre ne porte plus la fourchette de prix.
 
 export type ImplementationSlug =
   | "ia-custom"
@@ -102,12 +91,12 @@ export const IMPLEMENTATIONS: ReadonlyArray<ImplementationContent> = [
     fr: makeFr({
       ...IMPL_FR_OVERRIDES["ia-custom"],
       eyebrow: "Service premium · Module 3",
-      title: `IA custom d'entreprise (${IA_CUSTOM_RANGE_FR})`,
+      title: "IA custom d'entreprise (sur devis)",
       answer: `Implémentation IA sur mesure pour grands comptes : modèles ajustés à vos données, intégration profonde dans vos systèmes, équipe dédiée. Vous repartez avec la solution en production, son code, ses pipelines et sa documentation d'exploitation, hébergés dans votre périmètre. Tarif sur devis, livraison ${IA_CUSTOM_TIER.durationFr}.`,
     }),
     en: makeEn({
       eyebrow: "Premium service · Module 3",
-      title: `Custom enterprise AI (${IA_CUSTOM_RANGE_EN})`,
+      title: "Custom enterprise AI (on quote)",
       answer: `Tailor-made AI implementation for large accounts: models fine-tuned on your data, deep integration into your systems, dedicated team. Pricing on request, ${IA_CUSTOM_TIER.durationEn} delivery.`,
     }),
   },
@@ -374,7 +363,7 @@ function makeFr(args: {
     ctaBlockTitle: args.ctaBlockTitle ?? "Prête à industrialiser un usage IA ?",
     ctaBlockDescription:
       args.ctaBlockDescription ??
-      "Demandez un devis — réponse sous 48 h ouvrées avec spécification chiffrée du projet.",
+      "Demandez un devis : nous vous adressons une spécification chiffrée du projet.",
     maturity: {
       eyebrow: "Pour qui ça marche",
       title: "Trois niveaux de maturité technique",
@@ -463,8 +452,7 @@ function makeEn(args: { eyebrow: string; title: string; answer: string }): PageC
       },
     ],
     ctaBlockTitle: "Ready to industrialize an AI use case?",
-    ctaBlockDescription:
-      "Request a quote — reply within 48 business hours with a costed project specification.",
+    ctaBlockDescription: "Request a quote: we send you a costed project specification.",
     maturity: {
       eyebrow: "Who it works for",
       title: "Three technical maturity levels",

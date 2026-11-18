@@ -68,7 +68,11 @@ vi.mock("@/lib/prisma", () => ({
       findMany: (...a: unknown[]) => d.journal(...a),
     },
     emailOutbox: { findMany: (...a: unknown[]) => d.corbeille(...a) },
-    emailOpposition: { findUnique: (...a: unknown[]) => d.opposition(...a) },
+    emailOpposition: {
+      findUnique: (...a: unknown[]) => d.opposition(...a),
+      // Mise à l'écart (effacement) relue au départ : personne n'est écarté ici.
+      findFirst: async () => null,
+    },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => d.abonne(...a) },
     calendlyEvent: { findMany: (...a: unknown[]) => d.calendly(...a) },
     submissionReply: { findMany: (...a: unknown[]) => d.reponses(...a) },

@@ -15,8 +15,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: `${BRAND.name} — ${BRAND.taglineFr.charAt(0).toUpperCase()}${BRAND.taglineFr.slice(1)}`,
     short_name: BRAND.name,
-    description:
-      "Cabinet IA opérationnel B2B — interventions, audits et implémentation IA pour entreprises.",
+    // Audit GEO 2026-11-11 : même positionnement que llms.txt et les données structurées.
+    description: BRAND.sloganFr,
     start_url: ROUTES.home,
     scope: ROUTES.home,
     display: "standalone",

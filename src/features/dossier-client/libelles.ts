@@ -105,6 +105,8 @@ export const LIBELLE_ROLE_PROJET = {
   utilisateur: "bénéficiaire",
   prescripteur: "a recommandé Axion-IA",
   autre: "autre rôle",
+  influenceur: "influence la décision",
+  bloqueur: "freine la décision",
 } as const satisfies Record<RoleDansProjet, string>;
 
 export const LIBELLE_STATUT_RENCONTRE = {

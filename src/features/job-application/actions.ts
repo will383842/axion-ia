@@ -549,7 +549,7 @@ export async function submitJobApplicationAction(
     // Rouvrir cet envoi exige sa validation explicite ; la garde statique
     // `les-candidatures-ne-partent-pas-au-crm.spec.ts` rougit sinon.
 
-    // 9. Telegram (+ WhatsApp pour les offres vidéo freelance : montage et
+    // 9. Telegram (offres vidéo freelance : montage et
     // tournage) — catégorie séparée : salon 🎬 dédié, pas mélangée aux autres
     // candidatures.
     await notify({

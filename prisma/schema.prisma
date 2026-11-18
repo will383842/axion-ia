@@ -239,7 +239,9 @@ enum PaymentStatus {
   cancelled
 }
 
-/// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted V1).
+/// Sprint X.1 — provider signature (ADR 0014 : DocuSeal self-hosted). DocuSeal reste ACTIF pour
+/// les contrats d'apporteurs ; pour les devis il est HISTORIQUE seulement (canal maison depuis le
+/// 2026-07-30).
 /// `physical_signed` = signature papier scannée et uploadée par Will.
 /// `interne` = canal maison (chaîne de hachage + snapshot figé), ajouté par le
 /// socle de preuve de signature. Additif : aucune valeur retirée.
@@ -579,11 +581,18 @@ model Submission {
   // 2026-10-15 — pièces jointes du formulaire de contact (cahier des charges,
   // devis…). Fichiers dans le compartiment R2 PRIVÉ ; ici, la fiche de chacun.
   piecesJointes  SubmissionAttachment[]
+  /// 2026-11-04 — la fiche prospect (console, table `clients`) créée toute seule pour cette
+  /// demande, ou celle qui existait déjà avec exactement la même adresse (`fiche-demande.ts`).
+  /// NULL = pas de fiche (demande exclue, antérieure à l'activation, ou à l'écart). Sans clé
+  /// étrangère : une fiche absorbée par une fusion ne doit jamais bloquer ni suivre ce lien, et
+  /// la colonne ne s'écrit JAMAIS en dehors de ce module. Ajout seul, nullable, sans défaut.
+  ficheClientId  String?                  @map("fiche_client_id") @db.Uuid
 
   @@index([type])
   @@index([status])
   @@index([locale])
   @@index([submittedAt])
+  @@index([ficheClientId])
   @@index([contactEmail])
   /// Index de l'empreinte e-mail — c'est LUI que doivent interroger l'export
   /// (art. 15) et l'effacement (art. 17). `@@index([contactEmail])` ci-dessus
@@ -1644,7 +1653,10 @@ model AdminUser {
 
   // Console éditoriale (lot 0) — relation inverse de `EdMembre.userId`.
   // Aucune colonne n'est ajoutée ici : la clé étrangère vit sur `ed_membres`.
-  edMembre EdMembre?
+  edMembre                    EdMembre?
+  auditTerrainSessionsCreees  AuditTerrainSession[] @relation("AuditTerrainSessionCreePar")
+  auditTerrainRapportsValides AuditTerrainRapport[] @relation("AuditTerrainRapportValidePar")
+  emailsManuelsEcrits         EmailManuel[]         @relation("EmailManuelEcritPar")
 
   @@index([role])
   @@index([status])
@@ -1759,6 +1771,11 @@ enum GuideRequestOrigine {
   /// Un administrateur a déclenché l'envoi depuis la console (lot L3).
   /// ⚠️ Jamais repris par le rattrapage automatique.
   admin
+  /// PV-1 (2026-11-01) — la personne a demandé le guide dans un MESSAGE PRIVÉ
+  /// d'un réseau (parcours « mot en commentaire → message privé → e-mail »).
+  /// Posée AVANT le code qui l'écrit (le worker atterrit avant l'application).
+  /// Le rattrapage la traite comme `formulaire` (tout sauf `admin`).
+  message_prive
 }
 
 model GuideRequest {
@@ -1805,6 +1822,8 @@ model GuideRequest {
   @@index([sentAt, queuedAt])
   @@index([createdAt])
   @@map("guide_requests")
+
+  contactsGuideReseau ContactGuideReseau[]
 }
 
 // ============================================================
@@ -4592,6 +4611,9 @@ enum TypeRendezVous {
   /// Schéma n° 1 formateurs freelance (2026-10-10) : posée, AUCUN classement ne
   /// la produit encore (le miroir `TYPES_RENDEZ_VOUS` ne la porte pas).
   formateur
+  /// Visio de 30 min du Tour de France IA (2026-10-25) — client, circuit propre.
+  /// Valeur AJOUTÉE seule : voir la migration 20261027090000.
+  tour_de_france_ia
 
   @@map("type_rendez_vous")
 }
@@ -5136,6 +5158,10 @@ model Client {
   contactEmail               String?         @map("contact_email") @db.Citext
   contactTelephone           String?         @map("contact_telephone") @db.VarChar(40)
   contactFonction            String?         @map("contact_fonction") @db.VarChar(150)
+  /// Copie du contact de facturation (source : ClientContact) ; contactNom n'est jamais découpé.
+  contactCivilite            String?         @map("contact_civilite") @db.VarChar(10)
+  contactPrenom              String?         @map("contact_prenom") @db.VarChar(80)
+  contactNomFamille          String?         @map("contact_nom_famille") @db.VarChar(80)
   /// OPCO inféré depuis le code NAF (ou saisi manuellement).
   opcoIdentifie              String?         @map("opco_identifie") @db.VarChar(60)
   opcoNumeroAdherent         String?         @map("opco_numero_adherent") @db.VarChar(80)
@@ -5216,18 +5242,36 @@ model Client {
   emailsEnAttente  EmailOutbox[]
   reglesEmail      EmailAutomationSetting[]
   venteBrouillons  VenteBrouillon[]
+  devisAssistantBrouillons DevisAssistantBrouillon[]
   coachingSessions CoachingSession[]
 
   // ── Dossier client (chantier visio, 2026-09-29) ──
   // Champs de RELATION seulement : aucune colonne n'est ajoutée à `clients`
   // (PA-1, PA-2). Les liens vivent dans les tables neuves.
-  contacts          ClientContact[]
-  projets           Projet[]
-  rencontres        Rencontre[]
-  faits             Fait[]
-  fusionsAbsorbee   ClientFusion[]     @relation("FusionAbsorbee")
-  fusionsAbsorbante ClientFusion[]     @relation("FusionAbsorbante")
-  testInterne       ClientTestInterne?
+  contacts                 ClientContact[]
+  projets                  Projet[]
+  rencontres               Rencontre[]
+  faits                    Fait[]
+  fusionsAbsorbee          ClientFusion[]            @relation("FusionAbsorbee")
+  fusionsAbsorbante        ClientFusion[]            @relation("FusionAbsorbante")
+  testInterne              ClientTestInterne?
+  /// Questionnaires avant audit envoyés SANS rendez-vous (relation seule, aucune colonne sur `clients`).
+  questionnairesAvantAudit QuestionnaireAvantAudit[] @relation("QuestionnaireAvantAuditClient")
+  crmDossierSynchro        CrmDossierSynchro?
+  /// Facture établie hors console (relation seule, aucune colonne sur `clients`, ADR 0053).
+  factureHorsConsole       ClientFactureHorsConsole?
+  /// Fiche client en 7 onglets (relations seules, aucune colonne sur `clients`, ADR 0053) : tâches, notes, profil, étiquettes.
+  taches                   ClientTache[]
+  notesDatees              ClientNote[]
+  auditTerrainSessions     AuditTerrainSession[]
+  profil                   ClientProfil?
+  etiquettes               ClientEtiquette[]
+  /// Demandes du Tour France IA rattachées à la fiche (relation seule, aucune colonne sur `clients`).
+  tourDemandes             TourDemande[]             @relation("TourDemandeClient")
+  /// Rapports d'analyse avant audit (relation seule, aucune colonne sur `clients`, 2026-11-02).
+  rapportsAvantAudit       RapportAvantAudit[]
+  /// E-mails écrits à la main vers cette fiche (relation seule ; RESTRICT).
+  emailsManuels            EmailManuel[]            @relation("EmailManuelClient")
 
   @@index([statut])
   @@index([nafCode])
@@ -5306,12 +5350,66 @@ model Devis {
   dossiersFinancement DossierFinancement[]
   relancesProposees   RelanceProposee[]
   venteBrouillons     VenteBrouillon[]
+  devisAssistantBrouillon DevisAssistantBrouillon?
   coachingSessions    CoachingSession[]
+
+  /// Jalons de suivi après signature (colonnes posées par la migration
+  /// 20261104120000_devis_formules). Posés par les boutons « Démarrer la
+  /// livraison » / « Marquer livré » ; l'étape est DÉDUITE (aucune énumération).
+  livraisonDebutAt DateTime? @map("livraison_debut_at")
+  livreAt          DateTime? @map("livre_at")
+  /// NULL pour toute pièce antérieure, jamais rétro-remplie.
+  conditionsParticulieres String? @map("conditions_particulieres") @db.Text
+
+  /// Devis à formules (colonnes posées par la migration 20261104120000_devis_formules).
+  /// `offre` NULL = devis classique, comportement INCHANGÉ. Tant que l'interrupteur
+  /// `qualiopi.devis_formules.actif` est éteint, rien n'écrit ces colonnes.
+  offre          Json?
+  offreSha256    String? @map("offre_sha256") @db.Char(64)
+  /// 'achat' | 'abonnement' (CHECK en base). Posée à l'acceptation (lot 4).
+  formuleRetenue String? @map("formule_retenue") @db.VarChar(12)
+  /// Choix canonique du client (formule, maintenance, périodicité), scellé à la signature.
+  choixRetenu    Json?   @map("choix_retenu")
+
+  /// Plans récurrents PROPOSÉS à l'acceptation (statut `pause` tant que Will n'a pas validé).
+  plansRecurrents PlanRecurrent[]
+
+  /// Lot 4 — signature qui porte le choix retenu (`formuleRetenue` / `choixRetenu` ci-dessus sont
+  /// posés avec elle, UNE fois, à l'acceptation).
+  choixSignatureId String?            @map("choix_signature_id") @db.Uuid
+  choixSignature   DocumentSignature? @relation("DevisChoixSignature", fields: [choixSignatureId], references: [id], onDelete: Restrict)
+  commandeConsole  ConsoleCommande?
 
   @@index([clientId])
   @@index([statut])
   @@index([documentGenereId])
+  @@index([choixSignatureId])
   @@map("devis")
+}
+
+/// Bibliothèque des textes du devis à formules (avantages, inconvénients, prérequis,
+/// clauses). Table posée par la migration 20261104120000_devis_formules. ARCHIVAGE
+/// seulement : un trigger SQL refuse tout DELETE/TRUNCATE. Modifier = nouvelle version,
+/// l'ancienne est archivée. Les textes sont des projets « à valider » (Will + juriste).
+/// rgpd: technique — textes commerciaux génériques de l'organisme ; aucune donnée sur une personne
+model DevisTexteBibliotheque {
+  id             String    @id @default(uuid()) @db.Uuid
+  /// achat | abonnement | commun (CHECK SQL).
+  formule        String    @db.VarChar(12)
+  /// avantage | inconvenient | prerequis | clause (CHECK SQL).
+  nature         String    @db.VarChar(20)
+  texte          String    @db.Text
+  actifParDefaut Boolean   @default(false) @map("actif_par_defaut")
+  ordre          Int       @default(0)
+  version        Int       @default(1)
+  aValider       Boolean   @default(true) @map("a_valider")
+  archiveAt      DateTime? @map("archive_at")
+  majParAdminId  String?   @map("maj_par_admin_id") @db.Uuid
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @default(now()) @updatedAt @map("updated_at")
+
+  @@index([formule, nature, ordre])
+  @@map("devis_textes_bibliotheque")
 }
 
 /// Brouillon du parcours guidé « Nouvelle vente » (wizard admin, plan 2026-08-05).
@@ -5354,6 +5452,44 @@ model VenteBrouillon {
   @@index([retentionUntil])
   @@index([createdByAdminId, updatedAt])
   @@map("vente_brouillons")
+}
+
+/// Brouillon de l'assistant de création de devis (chantier « assistant de devis », fiche S01).
+///
+/// Porte l'état de l'assistant entre deux visites. Aucune purge (décision de Williams) :
+/// pas de `retentionUntil`, aucune suppression — un brouillon abandonné est mis à l'écart
+/// (`statut`), jamais effacé. `adminId` et `venteBrouillonId` sont des liens logiques sans FK.
+/// `devisId` est unique : un seul brouillon d'assistant par devis (rejeu sûr).
+/// Le code qui lit ou écrit cette table arrive APRÈS la mise en ligne de cette migration.
+///
+/// rgpd: dossier-client — brouillon de devis rattaché à une fiche client par `client_id` (requalifié par la fiche S17, AVANT l'allumage de S06). Aucun contact libre dans le payload (plan assistant §5.11) ; jamais supprimé ni purgé. Déclaré dans `EXCLUSIONS_EXPORT_DOSSIER` et `EXCEPTIONS_EFFACEMENT_DOSSIER` avec son motif.
+model DevisAssistantBrouillon {
+  id                   String    @id @default(uuid()) @db.Uuid
+  /// Propriétaire (uuid AdminUser, sans FK — comme `vente_brouillons`).
+  createdByAdminId     String    @map("created_by_admin_id") @db.Uuid
+  clientId             String?   @map("client_id") @db.Uuid
+  client               Client?   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  devisId              String?   @unique @map("devis_id") @db.Uuid
+  devis                Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// Lien logique vers `vente_brouillons` (sans FK).
+  venteBrouillonId     String?   @map("vente_brouillon_id") @db.Uuid
+  etape                Int       @default(1) @db.SmallInt
+  /// Validé par Zod côté code (varchar, pas d'énumération Postgres).
+  statut               String    @default("en_cours") @db.VarChar(16)
+  payload              Json      @default("{}")
+  payloadVersion       Int       @default(1) @map("payload_version") @db.SmallInt
+  /// Concurrence optimiste.
+  revision             Int       @default(0)
+  /// Rejeu d'une sauvegarde déjà appliquée.
+  derniereSauvegardeId String?   @map("derniere_sauvegarde_id") @db.Uuid
+  /// Verrou de numérotation (double clic).
+  verrouDepuis         DateTime? @map("verrou_depuis") @db.Timestamptz(3)
+  createdAt            DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt            DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([createdByAdminId, updatedAt])
+  @@index([clientId])
+  @@map("devis_assistant_brouillons")
 }
 
 // ============================================================
@@ -7676,6 +7812,37 @@ model DocumentSignature {
   /// `code_email` quand un code reçu par e-mail a été saisi. HACHÉE à partir de la
   /// version 2 du tuple ; NULL sur les preuves antérieures, qui ne sont pas réécrites.
   facteurVerification FacteurVerificationSignature? @map("facteur_verification")
+  /// Version des CGV acceptées à la signature d'un DEVIS par jeton (ex. `2026-10-04`). NULL sur
+  /// les autres pièces et canaux, et sur les preuves antérieures. HACHÉE à partir de la version 3.
+  cgvVersion          String?                       @map("cgv_version") @db.VarChar(40)
+
+  /// Sceau V4 (devis à formules, migrations 20261104120000 et 20261106100000). `choixOffre` est le
+  /// choix canonique du client (la ligne `axionia` recopie celui du client) ; son empreinte est
+  /// RECALCULÉE à la vérification. Les empreintes du PDF des CGV et de la trace d'accès sont
+  /// prévues et vides jusqu'au chantier d'archive. NULL partout avant la V4.
+  choixOffre       Json?                   @map("choix_offre")
+  choixOffreSha256 String?                 @map("choix_offre_sha256") @db.Char(64)
+  cgvTexteSha256   String?                 @map("cgv_texte_sha256") @db.Char(64)
+  cgvPdfSha256     String?                 @map("cgv_pdf_sha256") @db.Char(64)
+  /// Instant SERVEUR de réception de la case « j'ai lu et j'accepte les CGV » — distinct de `signeAt`.
+  cgvAccepteeAt    DateTime?               @map("cgv_acceptee_at")
+  cgvTraceSha256   String?                 @map("cgv_trace_sha256") @db.Char(64)
+  /// Lien de signature utilisé (jamais le jeton lui-même). HACHÉ en V4.
+  jetonId          String?                 @map("jeton_id") @db.Uuid
+  jeton            DocumentSignatureToken? @relation(fields: [jetonId], references: [id], onDelete: Restrict)
+  /// Devis dont CETTE signature porte le choix retenu.
+  devisChoisis     Devis[]                 @relation("DevisChoixSignature")
+
+  /// Signature « simple renforcée » du devis (lot 4 bis, migration 20261107120000) : ce que le
+  /// signataire a SAISI (nom, fonction), l'instant où il a déclaré avoir le pouvoir d'engager la
+  /// société et celui où son code reçu par e-mail a été accepté. SCELLÉS en V4 quand ils sont
+  /// présents (clés absentes du sceau sinon : les signatures V4 antérieures restent vérifiables).
+  /// NULL partout avant le lot 4 bis. Jamais de V5.
+  declarationNom      String?   @map("declaration_nom") @db.VarChar(200)
+  declarationFonction String?   @map("declaration_fonction") @db.VarChar(200)
+  pouvoirDeclareAt    DateTime? @map("pouvoir_declare_at")
+  codeVerifieAt       DateTime? @map("code_verifie_at")
+  horodatage          DocumentSignatureHorodatage?
 
   /// 🔴 DISTINCTS de `createdAt` : l'écart entre les deux révèle une insertion
   /// tardive. Les confondre effacerait la seule trace d'une signature antidatée.
@@ -7755,12 +7922,41 @@ model DocumentSignatureToken {
   createdIpHash String?  @map("created_ip_hash") @db.Char(64)
   createdAt     DateTime @default(now()) @map("created_at")
 
+  /// Signatures posées avec ce lien (sceau V4).
+  signatures DocumentSignature[]
+
   /// ⚠️ L'index unique `document_signature_token_actif` est PARTIEL
   /// (`WHERE revoked_at IS NULL`) : créé en SQL brut, Prisma ne sait pas
   /// l'exprimer. Un seul jeton vivant par (pièce, partie).
   @@index([documentGenereId])
   @@index([expiresAt])
   @@map("document_signature_tokens")
+}
+
+/// Fait `commande.signee` du devis à formules (lot 4) : ce que le client a choisi en signant, rangé dans
+/// la MÊME transaction que l'acceptation du devis. Une ligne par devis signé. Le contenu (payload,
+/// identifiants) ne se modifie jamais (déclencheur) ; seuls l'envoi et l'état d'activation renvoyé par
+/// la console (affichage seulement) se mettent à jour. Aucune suppression (déclencheur).
+/// rgpd: dossier-client — copie du choix signé (société, signataire, formule, montants) ; preuve contractuelle conservée, jamais supprimée (art. 17(3)(e)) ; aucune adresse IP ni jeton. Voir `EXCEPTIONS_EFFACEMENT_DOSSIER` et `EXCLUSIONS_EXPORT_DOSSIER`.
+model ConsoleCommande {
+  id                 String    @id @default(uuid()) @db.Uuid
+  devisId            String    @unique @map("devis_id") @db.Uuid
+  devis              Devis     @relation(fields: [devisId], references: [id], onDelete: Restrict)
+  numeroDevis        String    @unique @map("numero_devis") @db.VarChar(40)
+  /// SHA-256 de (type, numéro du devis, empreinte du choix) : idempotence de bout en bout.
+  eventId            String    @unique @map("event_id") @db.Char(64)
+  choixOffreSha256   String    @map("choix_offre_sha256") @db.Char(64)
+  payload            Json
+  creeAt             DateTime  @default(now()) @map("cree_at")
+  envoiEssais        Int       @default(0) @map("envoi_essais")
+  envoyeAt           DateTime? @map("envoye_at")
+  /// recue | a_trancher | acompte_attendu | outils_a_relier | en_service | suspendue (CHECK en base).
+  etat               String?   @db.VarChar(24)
+  etatDetail         Json?     @map("etat_detail")
+  etatRecuAt         DateTime? @map("etat_recu_at")
+  etatCleIdempotence String?   @map("etat_cle_idempotence") @db.VarChar(120)
+
+  @@map("console_commandes")
 }
 
 /// Code à usage unique pour SIGNER une pièce (lot S6a, e — ADR 0066 étape 7).
@@ -7788,10 +7984,69 @@ model DocumentSignatureCode {
   utiliseAt        DateTime?                @map("utilise_at")
   invalideAt       DateTime?                @map("invalide_at")
   createdAt        DateTime                 @default(now()) @map("created_at")
+  /// Signature renforcée du devis (lot 4 bis) : lien de signature qui a demandé le code, pour
+  /// plafonner les envois PAR LIEN. NULL pour le contrat-cadre. Pas de clé étrangère (voir ci-dessus).
+  jetonId          String?                  @map("jeton_id") @db.Uuid
+  /// Cinquième échec : plus aucun code n'est émis ni accepté pour cette pièce avant cet instant
+  /// (15 minutes). NULL tant que la ligne n'a pas épuisé ses essais, et pour le contrat-cadre.
+  bloqueJusquA     DateTime?                @map("bloque_jusqu_a")
 
   @@index([documentGenereId, partie])
   @@index([expiresAt])
+  @@index([jetonId, createdAt])
   @@map("document_signature_codes")
+}
+
+/// Signature renforcée du devis (lot 4 bis, audit sécurité) : compteur d'échecs de saisie de code
+/// CUMULÉ par (pièce, partie), tous codes confondus. Émettre un nouveau code ne le remet pas à zéro :
+/// seuls une signature réussie ou l'écoulement de la fenêtre de 24 h le font. Au 10e échec, la pièce
+/// est bloquée 15 minutes. Table de suivi, jamais de preuve (la preuve reste `DocumentSignature`).
+/// rgpd: technique — compteur et dates ; ni nom, ni adresse, ni code
+model DocumentSignatureEchecs {
+  id               String                   @id @default(uuid()) @db.Uuid
+  documentGenereId String                   @map("document_genere_id") @db.Uuid
+  partie           DocumentPartieSignataire
+  echecs           Int                      @default(0)
+  /// Premier échec de la fenêtre courante (24 h).
+  fenetreDebutAt   DateTime                 @map("fenetre_debut_at")
+  /// Bloque la saisie et l'émission de codes jusqu'à cet instant ; NULL sinon.
+  bloqueJusquA     DateTime?                @map("bloque_jusqu_a")
+
+  @@unique([documentGenereId, partie])
+  @@map("document_signature_echecs")
+}
+
+/// Horodatage certifié RFC 3161 du sceau d'une signature de devis (lot 4 bis).
+///
+/// L'empreinte horodatée est le `selfHash` de la signature. La signature ne dépend JAMAIS de
+/// l'horodatage : la ligne naît `en_attente` avec la signature, un job la complète (réessais sans
+/// limite, intervalle croissant) — l'autorité injoignable ne bloque ni ne perd rien.
+/// Ajout seul : jamais de DELETE ; l'empreinte et la signature ne changent pas ; un jeton obtenu
+/// est définitif (déclencheurs SQL).
+/// rgpd: technique — empreinte SHA-256 d'un sceau et jeton d'horodatage de l'autorité ; ni nom, ni adresse, ni donnée en clair
+model DocumentSignatureHorodatage {
+  id               String            @id @default(uuid()) @db.Uuid
+  signatureId      String            @unique @map("signature_id") @db.Uuid
+  signature        DocumentSignature @relation(fields: [signatureId], references: [id], onDelete: Restrict)
+  /// `selfHash` de la signature : la valeur soumise à l'autorité.
+  empreinteSha256  String            @map("empreinte_sha256") @db.Char(64)
+  /// `en_attente` | `obtenu`.
+  statut           String            @default("en_attente") @db.VarChar(12)
+  /// URL de l'autorité qui a répondu (renseignée à l'obtention).
+  autorite         String?           @db.VarChar(300)
+  /// Réponse RFC 3161 (TimeStampResp, DER) telle que reçue.
+  jeton            Bytes?
+  jetonSha256      String?           @map("jeton_sha256") @db.Char(64)
+  /// `genTime` du jeton.
+  horodateAt       DateTime?         @map("horodate_at")
+  essais           Int               @default(0)
+  dernierEssaiAt   DateTime?         @map("dernier_essai_at")
+  prochainEssaiAt  DateTime          @map("prochain_essai_at")
+  derniereErreur   String?           @map("derniere_erreur") @db.VarChar(200)
+  creeAt           DateTime          @default(now()) @map("cree_at")
+
+  @@index([statut, prochainEssaiAt])
+  @@map("document_signature_horodatages")
 }
 
 // ============================================================
@@ -8071,6 +8326,21 @@ model PlanRecurrent {
   notes                 String?             @db.Text
   createdAt             DateTime            @default(now()) @map("created_at")
   updatedAt             DateTime            @updatedAt @map("updated_at")
+
+  /// Plan PROPOSÉ par un devis à formules (colonnes posées par la migration
+  /// 20261104120000_devis_formules). Un plan lié à un devis naît en `pause` et ne
+  /// facture rien tant que Will ne l'a pas validé (`valideAt`). Index unique partiel
+  /// (devis_id, nature) en SQL : un seul plan d'une nature donnée par devis.
+  devisId          String?   @map("devis_id") @db.Uuid
+  devis            Devis?    @relation(fields: [devisId], references: [id], onDelete: SetNull)
+  /// 'maintenance' | 'abonnement' | 'hebergement' (CHECK en base).
+  nature           String?   @db.VarChar(20)
+  /// Jour du mois d'ancrage (1-31) de la 1re génération : évite que le jour dérive après un
+  /// mois court (31 → 28 → 28…). NULL = plan antérieur, comportement historique.
+  jourAncre        Int?      @map("jour_ancre")
+  proposeAt        DateTime? @map("propose_at")
+  valideAt         DateTime? @map("valide_at")
+  valideParAdminId String?   @map("valide_par_admin_id") @db.Uuid
 
   factures FactureFormation[]
 
@@ -12498,9 +12768,10 @@ model AuditMission {
   createdAt DateTime           @default(now()) @map("created_at")
   updatedAt DateTime           @updatedAt @map("updated_at")
 
-  feeLines            TrainerFeeLine[]
-  facturesFormation   FactureFormation[]
-  dossiersFinancement DossierFinancement[]
+  feeLines             TrainerFeeLine[]
+  facturesFormation    FactureFormation[]
+  dossiersFinancement  DossierFinancement[]
+  auditTerrainSessions AuditTerrainSession[]
 
   @@index([clientId])
   @@index([devisId])
@@ -12676,6 +12947,27 @@ model CrmSyncOutbox {
   @@index([subjectRef])
   @@index([createdAt(sort: Desc)])
   @@map("crm_sync_outbox")
+}
+
+/// État de la synchro AUTOMATIQUE du dossier d'un client vers le CRM Pro (25/10/2026) : une ligne
+/// par client. `version` croît à chaque dossier émis (le CRM ignore une version ≤ à la dernière
+/// appliquée) ; `empreinte` est celle du dernier dossier émis (rien de changé ⇒ rien à émettre).
+/// `crmVuLe` / `crmEmpreinte` : dernier changement reçu DU CRM (sens inverse), pour que ce qui
+/// vient du CRM ne reparte pas. Aucune donnée sur une personne : des compteurs, des dates et des
+/// empreintes. Supprimée avec la fiche (CASCADE) : rien ne survit à l'effacement.
+/// rgpd: technique — compteur, dates et empreintes de synchro ; aucune donnée personnelle
+model CrmDossierSynchro {
+  clientId     String    @id @map("client_id") @db.Uuid
+  client       Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  version      Int       @default(0)
+  empreinte    String?   @db.VarChar(64)
+  emisLe       DateTime? @map("emis_le") @db.Timestamptz(3)
+  crmVuLe      DateTime? @map("crm_vu_le") @db.Timestamptz(3)
+  crmEmpreinte String?   @map("crm_empreinte") @db.VarChar(64)
+  createdAt    DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt    DateTime  @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@map("crm_dossier_synchro")
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -13346,8 +13638,11 @@ model EdInvite {
   @@map("ed_invites")
 }
 
-/// 🔴 BLOQUANT. Aucun épisode ni dérivé ne se publie si l'autorisation
-/// n'est pas `signee`. Signature via DocuSeal, déjà en place.
+/// 🔴 BLOQUANT (INTENTION, pas encore de garde). Un épisode ou un dérivé ne devrait se publier
+/// que si l'autorisation est `signee`. ⚠️ Aucun code n'écrit aujourd'hui `autorisationStatut` :
+/// il reste à `non_demandee` (valeur par défaut) et la colonne n'est lue que par l'évaluateur de
+/// conformité. DocuSeal n'est plus le canal de signature (statut historique depuis le
+/// 2026-11-06) : le circuit d'autorisation reste à brancher sur le procédé de signature maison.
 model EdEpisodeInvite {
   id       String   @id @default(uuid()) @db.Uuid
   assetId  String   @map("asset_id") @db.Uuid
@@ -13724,6 +14019,14 @@ model EmailOpposition {
   /// Gabarit depuis lequel le lien a été cliqué — une trace, pas un secret.
   template  String?  @db.VarChar(60)
   source    String   @default("lien-email") @db.VarChar(40)
+  /// Posée APRÈS la création : le CRM n'a pas encore été prévenu. NULL = ne pas réessayer.
+  crmEnAttenteDepuis DateTime? @map("crm_en_attente_depuis") @db.Timestamptz(6)
+  /// Posée par l'effacement : le CRM ne doit plus jamais recevoir l'adresse.
+  crmInterditLe      DateTime? @map("crm_interdit_le") @db.Timestamptz(6)
+  /// Posée par une DEMANDE D'EFFACEMENT (décision de Williams du 11/11/2026 : on écarte, on ne
+  /// supprime pas). Une fois posée, plus AUCUN envoi ne part vers l'adresse, quel que soit le
+  /// gabarit (`verdict-envoi.ts`). Jamais retirée par le code.
+  effacementDemandeLe DateTime? @map("effacement_demande_le") @db.Timestamptz(6)
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
@@ -13767,6 +14070,11 @@ model ClientContact {
   clientId              String         @map("client_id") @db.Uuid
   client                Client         @relation(fields: [clientId], references: [id], onDelete: Restrict)
   nom                   String         @db.VarChar(200)
+  /// 'madame' | 'monsieur' ; validée par le code (zod), pas de contrainte en base ; jamais déduite du nom
+  civilite              String?        @db.VarChar(10)
+  prenom                String?        @db.VarChar(80)
+  /// Le champ `nom` n'est jamais découpé : prenom / nomFamille sont saisis à part.
+  nomFamille            String?        @map("nom_famille") @db.VarChar(80)
   fonction              String?        @db.VarChar(150)
   telephone             String?        @db.VarChar(40)
   statut                ContactStatut  @default(actif)
@@ -13783,7 +14091,11 @@ model ClientContact {
   createdAt             DateTime       @default(now()) @map("created_at")
   updatedAt             DateTime       @updatedAt @map("updated_at")
 
-  adresses ClientContactAdresse[]
+  adresses     ClientContactAdresse[]
+  /// Tâches de la fiche qui visent cette personne (relation seule ; SET NULL).
+  clientTaches ClientTache[]
+  /// E-mails écrits à la main vers cette personne (relation seule ; RESTRICT).
+  emailsManuels EmailManuel[] @relation("EmailManuelContact")
 
   @@unique([id, clientId])
   @@index([clientId])
@@ -13865,10 +14177,133 @@ model Projet {
   /// Chantier QNC, L00 — sessions de formation issues de ce projet (clé portée
   /// par `training_sessions`, aucun objet SQL sur `projets`).
   sessionsFormation     TrainingSession[]    @relation("ProjetSessionsFormation")
+  /// Ce que le client a pris (type, étape forcée, montant) : relation seule, table `projet_suivis`.
+  suivi                 ProjetSuivi?
+  /// Tâches et notes de la fiche rattachées à ce projet (relations seules ; SET NULL si le projet disparaît).
+  clientTaches          ClientTache[]
+  clientNotes           ClientNote[]
 
   @@unique([id, clientId])
   @@index([clientId, statut])
   @@map("projets")
+}
+
+/// Le suivi de ce que le client a PRIS pour une prestation (un `Projet`, vocabulaire « Prestation »
+/// dans la console) : son type, une étape forcée à la main, un montant. 1-1 avec `projets`, table
+/// neuve (ADR 0053 : aucune colonne ajoutée à `projets` ni à `clients`). 2026-10-26.
+///   · `type` : formation, audit, coaching, integration_automatisation, site_internet, conference,
+///     autre. Texte et non énumération : un type de plus ne doit pas demander une migration.
+///     Les valeurs permises vivent dans le code (une constante, testée), pas dans la base.
+///   · `etape_forcee` : NULL = l'étape est CALCULÉE (proposée, devisée, en cours, livrée, terminée) ;
+///     une valeur = Will l'a forcée à la main.
+///   · `montant_cents` : montant de la prestation, console seulement (jamais vers le CRM).
+/// Le détail libre d'un type « autre » se dit dans le titre du projet, déjà traité par le dossier.
+/// rgpd: technique — un type de prestation, une étape et un montant d'entreprise, aucune parole ni identité de personne
+model ProjetSuivi {
+  projetId        String    @id @map("projet_id") @db.Uuid
+  projet          Projet    @relation(fields: [projetId], references: [id], onDelete: Restrict)
+  type            String    @db.VarChar(30)
+  etapeForcee     String?   @map("etape_forcee") @db.VarChar(30)
+  montantCents    Int?      @map("montant_cents")
+  /// Probabilité de signature, 0 à 100 (CHECK en base). NULL = non estimée. Ajoutée le 2026-10-29.
+  probabilitePct  Int?      @map("probabilite_pct") @db.SmallInt
+  /// Date de clôture prévue (jour). NULL = non estimée.
+  cloturePrevueLe DateTime? @map("cloture_prevue_le") @db.Date
+  creeLe          DateTime  @default(now()) @map("cree_le")
+  majLe           DateTime  @updatedAt @map("maj_le")
+
+  @@index([type])
+  @@map("projet_suivis")
+}
+
+/// « Facture établie hors console » (Tiime...) : Will coche la case et pose la date ; la fiche passe
+/// alors de prospect à client. 1-1 avec `clients`, table neuve (ADR 0053). Une ligne par fiche : la
+/// date est celle de la PREMIÈRE facture hors console. 2026-10-26.
+/// rgpd: technique — une date de facture d'entreprise, aucune parole ni identité de personne
+model ClientFactureHorsConsole {
+  clientId   String   @id @map("client_id") @db.Uuid
+  client     Client   @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  etabliLe   DateTime @map("etabli_le") @db.Date
+  parAdminId String?  @map("par_admin_id") @db.Uuid
+  creeLe     DateTime @default(now()) @map("cree_le")
+
+  @@map("client_factures_hors_console")
+}
+
+/// Une tâche de suivi sur une fiche client (à faire, échéance, responsable). Table neuve, ADR 0053 :
+/// aucune colonne ajoutée à `clients`. `origine` : manuelle, rencontre, relance, questionnaire
+/// (texte fermé par CHECK). L'intitulé peut citer une personne : traité avec le dossier. 2026-10-29.
+/// MIGRATION SEULE : aucun écrivain dans cette PR.
+/// rgpd: dossier-client
+model ClientTache {
+  id               String         @id @default(uuid()) @db.Uuid
+  clientId         String         @map("client_id") @db.Uuid
+  client           Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
+  projetId         String?        @map("projet_id") @db.Uuid
+  projet           Projet?        @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  /// Clé composée (SQL brut) : la personne est du même client.
+  contactId        String?        @map("contact_id") @db.Uuid
+  contact          ClientContact? @relation(fields: [contactId], references: [id], onDelete: SetNull)
+  intitule         String         @db.VarChar(300)
+  echeanceLe       DateTime       @map("echeance_le") @db.Date
+  responsableLabel String         @map("responsable_label") @db.VarChar(80)
+  faiteLe          DateTime?      @map("faite_le")
+  origine          String         @default("manuelle") @db.VarChar(20)
+  createdAt        DateTime       @default(now()) @map("created_at")
+  updatedAt        DateTime       @updatedAt @map("updated_at")
+
+  @@index([clientId, echeanceLe])
+  @@index([projetId])
+  @@map("client_taches")
+}
+
+/// Une note sur une fiche client. `contenu_chiffre` : CHIFFRÉ comme les paroles du dossier (jamais de
+/// clair en base ; le code d'écriture viendra dans un lot suivant). 2026-10-29.
+/// rgpd: dossier-client
+model ClientNote {
+  id             String   @id @default(uuid()) @db.Uuid
+  clientId       String   @map("client_id") @db.Uuid
+  client         Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  /// Clé composée (SQL brut) : projet du même client.
+  projetId       String?  @map("projet_id") @db.Uuid
+  projet         Projet?  @relation(fields: [projetId], references: [id], onDelete: SetNull)
+  contenuChiffre String   @map("contenu_chiffre")
+  auteurLabel    String   @map("auteur_label") @db.VarChar(80)
+  epinglee       Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@index([clientId, createdAt])
+  @@index([projetId])
+  @@map("client_notes")
+}
+
+/// Le profil de suivi d'une fiche (1-1 avec `clients`) : responsable, archivage. 2026-10-29.
+/// rgpd: dossier-client
+model ClientProfil {
+  clientId         String    @id @map("client_id") @db.Uuid
+  client           Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  responsableLabel String?   @map("responsable_label") @db.VarChar(80)
+  archiveLe        DateTime? @map("archive_le")
+  archiveMotif     String?   @map("archive_motif") @db.VarChar(200)
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  @@map("client_profils")
+}
+
+/// Une étiquette libre posée sur une fiche. Unique par (fiche, libellé). 2026-10-29.
+/// rgpd: dossier-client
+model ClientEtiquette {
+  id        String   @id @default(uuid()) @db.Uuid
+  clientId  String   @map("client_id") @db.Uuid
+  client    Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  libelle   String   @db.VarChar(60)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([clientId, libelle])
+  @@map("client_etiquettes")
 }
 
 enum ProjetStatut {
@@ -13963,6 +14398,10 @@ enum RoleDansProjet {
   prescripteur
   /// Autre rôle.
   autre
+  /// Influence la décision.
+  influenceur
+  /// Freine la décision.
+  bloqueur
 
   @@map("role_dans_projet")
 }
@@ -14227,6 +14666,10 @@ model Rencontre {
   /// Code Meet « abc-defg-hij ». Non unique (lien personnel réutilisé).
   meetCode                      String?            @map("meet_code") @db.VarChar(20)
   titre                         String             @db.VarChar(255)
+  /// Lieu du rendez-vous saisi dans la console (adresse, « chez le client »...), 2026-10-25. Facultatif.
+  lieu                          String?            @db.VarChar(200)
+  /// Objet du rendez-vous saisi dans la console, 2026-10-25. Facultatif.
+  objet                         String?            @db.VarChar(255)
   debutPrevu                    DateTime?          @map("debut_prevu")
   finPrevue                     DateTime?          @map("fin_prevue")
   debutReel                     DateTime?          @map("debut_reel")
@@ -14255,13 +14698,14 @@ model Rencontre {
   createdAt                     DateTime           @default(now()) @map("created_at")
   updatedAt                     DateTime           @updatedAt @map("updated_at")
 
-  participants    RencontreParticipant[]
-  suivi           RencontreSuivi?
-  emailsSuivi     EmailSuivi[]
-  comptesRendus   CompteRendu[]
-  faits           Fait[]
-  enregistrements Enregistrement[]
-  traitements     TraitementVisio[]
+  questionnaireAvantAudit QuestionnaireAvantAudit?
+  participants            RencontreParticipant[]
+  suivi                   RencontreSuivi?
+  emailsSuivi             EmailSuivi[]
+  comptesRendus           CompteRendu[]
+  faits                   Fait[]
+  enregistrements         Enregistrement[]
+  traitements             TraitementVisio[]
 
   @@index([clientId, debutPrevu])
   @@index([projetId])
@@ -14520,6 +14964,196 @@ model QuestionnaireQuestion {
   @@unique([questionnaireId, ordre])
   @@index([faitSourceId])
   @@map("questionnaire_questions")
+}
+
+/// Le questionnaire de pré-audit déposé par Will sur une rencontre (2026-10-24) : son HTML adapté
+/// pour ce prospect, servi tel quel sous un lien à jeton. Brouillon tant que `envoye_le` est NULL ;
+/// l'envoi est un clic de Will. Le HTML n'est pas une donnée personnelle.
+/// rgpd: dossier-client
+model QuestionnaireAvantAudit {
+  id               String     @id @default(uuid()) @db.Uuid
+  /// NULL : la rencontre a été supprimée (fin de conservation) — le questionnaire et ses réponses
+  /// RESTENT (2026-10-24 : la suppression d'une rencontre n'efface plus les réponses des salariés).
+  rencontreId      String?    @unique @map("rencontre_id") @db.Uuid
+  rencontre        Rencontre? @relation(fields: [rencontreId], references: [id], onDelete: SetNull)
+  /// Fiche client visée quand le questionnaire est envoyé SANS rendez-vous (2026-10-25, décision de
+  /// Will). NULL : on retrouve le client par la rencontre. Jamais en cascade en base (SetNull).
+  /// La suppression MANUELLE d'une fiche (geste de Will, avec confirmation) emporte ses questionnaires
+  /// `client_id` encore sans envoi réel ; un envoi réel à un prospect la bloque (effacement RGPD).
+  clientId         String?    @map("client_id") @db.Uuid
+  client           Client?    @relation("QuestionnaireAvantAuditClient", fields: [clientId], references: [id], onDelete: SetNull)
+  html             String     @db.Text
+  /// Regroupe les envois du dirigeant, des collaborateurs et du référent informatique.
+  ref              String     @db.VarChar(40)
+  creeLe           DateTime   @default(now()) @map("cree_le")
+  /// NULL = brouillon. Posé par le clic « Envoyer » seulement.
+  envoyeLe         DateTime?  @map("envoye_le")
+  /// Dernière lecture des réponses par Will : NULL ou antérieure à un envoi = à traiter.
+  luLe             DateTime?  @map("lu_le")
+  luParId          String?    @map("lu_par_id") @db.Uuid
+  /// Adresse à qui Will a envoyé le lien (enc) : retrouve les réponses à l'export/effacement même
+  /// sans réservation Calendly. `destinataire_hash` = empreinte de recherche (jamais l'adresse).
+  destinataire     String?    @db.Text
+  destinataireHash String?    @map("destinataire_hash") @db.VarChar(64)
+  /// Le lien cesse de recevoir des réponses : clos par Will, ou à l'expiration.
+  closLe           DateTime?  @map("clos_le")
+  expireLe         DateTime?  @map("expire_le")
+
+  envois     QuestionnaireAvantAuditEnvoi[]
+  brouillons QuestionnaireAvantAuditBrouillon[]
+  /// Ouvertures du lien par chaque personne (2026-10-27, drapeau `QUESTIONNAIRE_SUIVI_OUVERTURES_ENABLED`).
+  ouvertures QuestionnaireAvantAuditOuverture[]
+  /// Suivi après le clic « Envoyer » et courriers (relances, confirmations, Telegram), 2026-10-26.
+  suivi      QuestionnaireAvantAuditSuivi?
+  courriers  QuestionnaireAvantAuditCourrier[]
+
+  @@index([destinataireHash])
+  @@index([clientId])
+  @@map("questionnaires_avant_audit")
+}
+
+/// Une réponse d'UNE personne (dirigeant, collaborateur ou référent informatique) au
+/// questionnaire de pré-audit : la charge « schéma 3 » telle quelle, chiffrée.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditEnvoi {
+  id                 String                            @id @default(uuid()) @db.Uuid
+  questionnaireId    String                            @map("questionnaire_id") @db.Uuid
+  questionnaire      QuestionnaireAvantAudit           @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique).
+  mode               String                            @db.VarChar(8)
+  /// Code du collaborateur (`membre`), ou NULL.
+  membre             String?                           @db.VarChar(60)
+  recuLe             DateTime                          @default(now()) @map("recu_le")
+  /// (enc) JSON complet du schéma 3.
+  donnees            String                            @db.Text
+  /// `envoyeLe` de la charge (heure du NAVIGATEUR, texte tel quel) : clé d'idempotence d'un renvoi
+  /// identique (questionnaire, mode, membre, envoyeLe). NULL pour une charge sans `envoyeLe`.
+  envoyeLeNavigateur String?                           @map("envoye_le_navigateur") @db.VarChar(40)
+  /// Mise à l'écart sur demande d'effacement d'un salarié (2026-10-24) : la réponse n'est plus
+  /// montrée ; son effacement définitif reste un clic de Will (`eraseQuestionnairePreauditMembre`).
+  ecarteLe           DateTime?                         @map("ecarte_le")
+  /// Case SÉPARÉE « recevoir des informations par e-mail » (`consentements.infosEmail`, 25/10/2026) :
+  /// vrai, faux, ou NULL si la charge ne la portait pas. Datée par `recuLe` (heure du serveur).
+  /// ⛔ N'abonne personne et ne déclenche aucun envoi : une information pour Will, rien d'autre.
+  infosEmail         Boolean?                          @map("infos_email")
+  /// Confirmations et notifications nées de cette réponse (2026-10-26).
+  courriers          QuestionnaireAvantAuditCourrier[]
+
+  @@index([questionnaireId])
+  @@index([questionnaireId, mode, envoyeLeNavigateur], map: "questionnaires_avant_audit_envois_idempotence_idx")
+  @@map("questionnaires_avant_audit_envois")
+}
+
+/// Le brouillon d'UNE personne (dirigeant, collaborateur ou référent informatique) pendant le
+/// remplissage (2026-10-24) : le bac à sable n'a pas de stockage local, le brouillon permet de
+/// reprendre après une fermeture. Enregistré SEULEMENT après l'accord explicite de la personne
+/// (`consent: true`). Le dernier enregistrement gagne ; un plus ancien que celui gardé est refusé.
+/// Supprimé à l'envoi réussi de la réponse et avec la personne (jamais d'office : 25/10/2026).
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditBrouillon {
+  id              String                  @id @default(uuid()) @db.Uuid
+  questionnaireId String                  @map("questionnaire_id") @db.Uuid
+  questionnaire   QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique).
+  mode            String                  @db.VarChar(8)
+  /// Code du lien personnel (`m`), chaîne vide pour le dirigeant sans code.
+  membre          String                  @default("") @db.VarChar(60)
+  /// Horodatage du navigateur au moment de la saisie : refuse un vieil onglet.
+  horodatage      DateTime
+  /// Dernier enregistrement reçu (serveur) : base de la purge à 30 jours d'inactivité.
+  majLe           DateTime                @default(now()) @map("maj_le")
+  /// (enc) Le brouillon tel qu'envoyé par la page, jamais en clair.
+  donnees         String                  @db.Text
+
+  @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_brouillons_personne_key")
+  @@index([majLe])
+  @@map("questionnaires_avant_audit_brouillons")
+}
+
+/// Les OUVERTURES du lien du questionnaire avant audit par UNE personne (2026-10-27) : première et
+/// dernière ouverture, nombre (rechargements à moins de 30 min = une ouverture), dernière étape
+/// atteinte (1 = page d'accueil vue, 2 = a commencé à répondre). Notées par la page après son
+/// chargement réel, jamais au rendu serveur. AUCUNE IP, aucun cookie, aucun navigateur, aucun contenu.
+/// Écrit par `suivi-ouvertures.ts` seulement ; jamais supprimé (part avec son questionnaire).
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditOuverture {
+  id                    String                  @id @default(uuid()) @db.Uuid
+  questionnaireId       String                  @map("questionnaire_id") @db.Uuid
+  questionnaire         QuestionnaireAvantAudit @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
+  /// main (dirigeant), emp (collaborateur), it (référent informatique), perso (lien personnel,
+  /// parcours non dit), lien (lien commun, sans code personnel).
+  mode                  String                  @db.VarChar(8)
+  /// Code du lien personnel (`m`), comme le brouillon ; chaîne vide pour le dirigeant et le lien commun.
+  membre                String                  @default("") @db.VarChar(60)
+  premiereOuverture     DateTime                @map("premiere_ouverture")
+  derniereOuverture     DateTime                @map("derniere_ouverture")
+  nombre                Int                     @default(1)
+  derniereEtapeAtteinte Int                     @default(1) @map("derniere_etape_atteinte")
+
+  @@unique([questionnaireId, mode, membre], map: "questionnaires_avant_audit_ouvertures_personne_key")
+  @@map("questionnaires_avant_audit_ouvertures")
+}
+
+/// Suivi d'un questionnaire avant audit après le clic « Envoyer » (2026-10-26) : relances demandées
+/// par Will, date de l'audit, 1er envoi réel (J0), arrêt des relances. Aucune donnée personnelle.
+/// Écrit par la console (clic de Will) et par le balayage du worker (`suivi.ts`), jamais supprimé.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditSuivi {
+  id                 String                   @id @default(uuid()) @db.Uuid
+  /// NULL : questionnaire redéposé ou supprimé ; le suivi (journal) RESTE.
+  questionnaireId    String?                  @unique @map("questionnaire_id") @db.Uuid
+  questionnaire      QuestionnaireAvantAudit? @relation(fields: [questionnaireId], references: [id], onDelete: SetNull)
+  relancesDemandees  Boolean                  @default(false) @map("relances_demandees")
+  dateAudit          DateTime?                @map("date_audit")
+  /// Ex. « dans vos locaux ». Texte de Will, jamais saisi par le prospect.
+  lieuAudit          String?                  @map("lieu_audit") @db.VarChar(80)
+  /// J0 : premier `email_logs.sentAt` réel de l'invitation (posé par le worker).
+  premierEnvoiLe     DateTime?                @map("premier_envoi_le")
+  relancesArreteesLe DateTime?                @map("relances_arretees_le")
+  /// reponse_dirigeant | desinscription | will | clos | expire | supprime | rebond | opposition | audit_proche
+  relancesArretMotif String?                  @map("relances_arret_motif") @db.VarChar(40)
+  creeLe             DateTime                 @default(now()) @map("cree_le")
+  majLe              DateTime                 @default(now()) @updatedAt @map("maj_le")
+
+  @@map("questionnaires_avant_audit_suivis")
+}
+
+/// Un courrier (e-mail ou Telegram) prévu, fait ou annulé : planification ET journal d'audit
+/// (2026-10-26). Jamais supprimé par le code. `cle` = idempotence : un même courrier n'existe
+/// qu'une fois. Ni adresse ni contenu : l'empreinte du destinataire seulement.
+/// rgpd: dossier-client
+model QuestionnaireAvantAuditCourrier {
+  id               String                        @id @default(uuid()) @db.Uuid
+  cle              String                        @unique @db.VarChar(120)
+  questionnaireId  String?                       @map("questionnaire_id") @db.Uuid
+  questionnaire    QuestionnaireAvantAudit?      @relation(fields: [questionnaireId], references: [id], onDelete: SetNull)
+  envoiId          String?                       @map("envoi_id") @db.Uuid
+  envoi            QuestionnaireAvantAuditEnvoi? @relation(fields: [envoiId], references: [id], onDelete: SetNull)
+  /// invitation | relance_1 | relance_2 | relance_3 | confirmation_dirigeant | confirmation_collaborateur
+  /// | telegram_invitation | telegram_reponse | telegram_relance | telegram_arret | telegram_retenu | essai
+  nature           String                        @db.VarChar(28)
+  /// email | telegram | journal
+  canal            String                        @db.VarChar(10)
+  /// prevu | en_cours | envoye | retenu | annule | echec | journal
+  statut           String                        @db.VarChar(12)
+  prevuLe          DateTime                      @map("prevu_le")
+  prisLe           DateTime?                     @map("pris_le")
+  faitLe           DateTime?                     @map("fait_le")
+  tentatives       Int                           @default(0)
+  /// Motif lisible SANS donnée personnelle.
+  motif            String?                       @db.VarChar(200)
+  /// Empreinte de l'adresse (jamais l'adresse) : export et effacement RGPD.
+  destinataireHash String?                       @map("destinataire_hash") @db.VarChar(64)
+  /// Essais seulement : la nature imitée (invitation, relance_2, confirmation_collaborateur…).
+  essaiDe          String?                       @map("essai_de") @db.VarChar(28)
+  jobId            String?                       @map("job_id") @db.VarChar(200)
+  creeLe           DateTime                      @default(now()) @map("cree_le")
+
+  @@index([statut, prevuLe])
+  @@index([questionnaireId])
+  @@index([envoiId])
+  @@index([destinataireHash])
+  @@map("questionnaires_avant_audit_courriers")
 }
 
 /// Un brouillon d'e-mail de suivi d'une rencontre, et ce qu'il est devenu. Le
@@ -15196,6 +15830,8 @@ enum CibleEffacement {
   /// ADR 0063 — document d'un projet du pilote supprimé avec son contenu
   /// (`documents_projet.id`), sous le drapeau d'effacement.
   documents_projet
+  /// Lot I4, F1b — e-mail écrit à la main neutralisé (`emails_manuels.id`, ou `<id>:contenu`).
+  emails_manuels
 
   @@map("cible_effacement")
 }
@@ -17504,4 +18140,494 @@ model SiteVideoReception {
 
   @@index([recueLe], map: "site_video_receptions_recue_le_idx")
   @@map("site_video_receptions")
+}
+
+/// PV-1 (2026-11-01) — journal des demandes SIGNÉES du Studio pour le parcours « mot en
+/// commentaire → message privé → e-mail → guide ». Clé d'idempotence = identifiant du run Zernio
+/// (`cle_idempotence`) ; nonce unique = anti-rejeu. La réponse enregistrée est rejouée telle quelle.
+/// Ne porte JAMAIS l'adresse e-mail (ni le corps, seulement son empreinte SHA-256).
+/// rgpd: technique — journal d'idempotence des appels signés du Studio : identifiant de run, nonce, empreinte du corps et réponse ; ni adresse ni donnée de personne
+model GuideReseauReception {
+  id             String   @id @default(uuid()) @db.Uuid
+  cleIdempotence String   @unique @map("cle_idempotence") @db.VarChar(80)
+  nonce          String   @unique @db.Char(32)
+  corpsSha256    String   @map("corps_sha256") @db.Char(64)
+  reponseStatut  Int      @map("reponse_statut")
+  reponseCorps   Json     @map("reponse_corps")
+  recueLe        DateTime @default(now()) @map("recue_le") @db.Timestamptz(3)
+
+  @@index([recueLe], map: "guide_reseau_receptions_recue_le_idx")
+  @@map("guide_reseau_receptions")
+}
+
+/// L3b (2026-11-03) — historique d'ORIGINE des demandes de guide venues d'un réseau (contrat v3,
+/// ADR-CONTRAT-V3-ORIGINE §2). Union sans retrait, dédoublonnée sur (post_ref, canal, date à la
+/// seconde). Au-delà de 50 entrées ACTIVES par personne, la plus ancienne est ARCHIVÉE
+/// (`archivee_le` posée) : AUCUNE ligne n'est jamais supprimée. Rattachée à la personne par
+/// `email_key` (empreinte HMAC), jamais par l'adresse. Aucun pseudo, aucun texte : le jeton du
+/// commentaire n'est gardé qu'en HMAC à clé serveur (`commentaire_ref_hmac`).
+/// rgpd: technique — origine d'une demande de guide : clés du dictionnaire, jeton de publication opaque, jeton de commentaire en HMAC ; rattachée à la personne par empreinte HMAC d'adresse, aucune adresse ni pseudo ni texte
+model GuideReseauOrigine {
+  id                 String    @id @default(uuid()) @db.Uuid
+  emailKey           String    @map("email_key") @db.VarChar(64)
+  /// SHA-256 de (mot, reseau, guide, post_ref, canal, clé d'idempotence du run) : `null` traité comme valeur. La date n'en fait plus partie.
+  cleDedoublonnage   String    @map("cle_dedoublonnage") @db.Char(64)
+  mot                String    @db.VarChar(30)
+  reseau             String    @db.VarChar(20)
+  guide              String    @db.VarChar(40)
+  postRef            String?   @map("post_ref") @db.VarChar(80)
+  postUrl            String?   @map("post_url") @db.VarChar(300)
+  canal              String?   @db.VarChar(16)
+  famille            String?   @db.VarChar(40)
+  detail             String?   @db.VarChar(60)
+  compte             String?   @db.VarChar(40)
+  versionTexte       String?   @map("version_texte") @db.VarChar(64)
+  utmCampagne        String?   @map("utm_campaign") @db.VarChar(60)
+  commentaireRefHmac String?   @map("commentaire_ref_hmac") @db.Char(64)
+  /// Date de l'origine (à la seconde) : fait foi pour « la plus récente gagne ».
+  occurredAt         DateTime  @map("occurred_at") @db.Timestamptz(3)
+  /// Posée quand l'entrée passe en archive (lecture seule) ; `null` = active.
+  archiveeLe         DateTime? @map("archivee_le") @db.Timestamptz(3)
+  createdAt          DateTime  @default(now()) @map("created_at") @db.Timestamptz(3)
+  /// État CRM : `null` = pas encore partie, `transmise`, `ecartee` (opposition : mise à l'écart, jamais supprimée).
+  crmStatut          String?   @map("crm_statut") @db.VarChar(16)
+  crmTraiteeLe       DateTime? @map("crm_traitee_le") @db.Timestamptz(3)
+
+  @@unique([emailKey, cleDedoublonnage], map: "guide_reseau_origines_dedoublonnage_key")
+  @@index([emailKey, occurredAt], map: "guide_reseau_origines_personne_date_idx")
+  @@map("guide_reseau_origines")
+}
+
+/// Page « Recevoir le guide » (lot S0, 2026-11-08) — le contact laissé par une personne venue d'un réseau
+/// (mot en commentaire → page dédiée), avec la preuve de son consentement et l'état du message de remerciement.
+/// Table posée AVANT tout code qui la lit (S2) : l'ancien conteneur, qui l'ignore, continue de tourner.
+/// rgpd: dossier-client
+///
+/// · Rattachée à la personne par `email_key` (HMAC, la même clé que `guide_requests`) : l'adresse en clair
+///   n'y est JAMAIS écrite. `prenom` est CHIFFRÉ (`encryptPii`, IV aléatoire).
+/// · `guide_request_id` est facultatif : la demande de guide peut ne pas (encore) exister. SET NULL à sa suppression.
+/// · `jeton_empreinte` = SHA-256 du jeton du lien, UNIQUE : le lien est à usage unique ; le jeton lui-même n'est pas gardé.
+/// · `consent_empreinte` = SHA-256 du texte exact de la case cochée, `version_consentement` sa version.
+/// · `merci_statut` en VARCHAR (a_envoyer | envoye | hors_fenetre | expire | aucun | ecarte ; l'ancienne graphie « ecartee » est lue comme écartée) : aucune énumération
+///   Postgres, la migration reste additive.
+model ContactGuideReseau {
+  id                  String        @id @default(cuid())
+  emailKey            String        @map("email_key") @db.VarChar(64)
+  guideRequestId      String?       @map("guide_request_id") @db.Uuid
+  guideRequest        GuideRequest? @relation(fields: [guideRequestId], references: [id], onDelete: SetNull)
+  /// Chiffré (`encryptPii`).
+  prenom              String        @db.Text
+  /// ⚠️ mot, reseau, compteRef, postRef, versionM1 : NULLABLES depuis la migration
+  /// 20261108150000. L'ORIGINE vit dans `guide_reseau_origines` (historique v3) et au CRM Pro,
+  /// jamais recopiée ici : la page n'écrit plus ces colonnes (anciennes lignes seulement).
+  mot                 String?       @db.VarChar(30)
+  reseau              String?       @db.VarChar(20)
+  compteRef           String?       @map("compte_ref") @db.VarChar(80)
+  postRef             String?       @map("post_ref") @db.VarChar(80)
+  versionM1           String?       @map("version_m1") @db.VarChar(64)
+  versionConsentement String        @map("version_consentement") @db.VarChar(64)
+  /// SHA-256 (hex) du texte de la case de consentement.
+  consentEmpreinte    String        @map("consent_empreinte") @db.Char(64)
+  consentiLe          DateTime      @map("consenti_le") @db.Timestamptz(3)
+  /// Case FACULTATIVE « informations d'Axion-IA » : 'aucune' (non cochée) ou 'non_transmise'
+  /// (cochée, enregistrée ici ; le CRM ne la reçoit que si l'interrupteur newsletter_optin est allumé).
+  infosStatut         String        @default("aucune") @map("infos_statut") @db.VarChar(20)
+  infosVersion        String?       @map("infos_version") @db.VarChar(64)
+  infosEmpreinte      String?       @map("infos_empreinte") @db.Char(64)
+  infosConsentiLe     DateTime?     @map("infos_consenti_le") @db.Timestamptz(3)
+  /// SHA-256 (hex) du jeton du lien : unique, usage unique.
+  jetonEmpreinte      String        @unique @map("jeton_empreinte") @db.Char(64)
+  /// Référence opaque de la conversation du réseau.
+  convRef             String        @map("conv_ref") @db.VarChar(120)
+  merciStatut         String        @default("a_envoyer") @map("merci_statut") @db.VarChar(20)
+  merciConfirmeLe     DateTime?     @map("merci_confirme_le") @db.Timestamptz(3)
+  /// Preuve de l'accord (migration 20261112000000) : `en_attente` | `confirmee` | `non_verifiee`
+  /// (mise à l'écart, jamais une suppression) | `sans_objet` (MARQUE d'adresse opposée). NULL se
+  /// lit `en_attente`. Distinct de `merci_statut` : ne pas le surcharger.
+  preuveStatut        String?       @map("preuve_statut") @db.VarChar(16)
+  preuveConfirmeeLe   DateTime?     @map("preuve_confirmee_le") @db.Timestamptz(3)
+  preuveEcarteeLe     DateTime?     @map("preuve_ecartee_le") @db.Timestamptz(3)
+  createdAt           DateTime      @default(now()) @map("created_at") @db.Timestamptz(3)
+  updatedAt           DateTime      @updatedAt @map("updated_at") @db.Timestamptz(3)
+
+  @@index([emailKey], map: "contacts_guide_reseau_email_key_idx")
+  @@index([merciStatut, createdAt], map: "contacts_guide_reseau_merci_statut_created_at_idx")
+  @@index([guideRequestId], map: "contacts_guide_reseau_guide_request_id_idx")
+  @@index([preuveStatut, consentiLe], map: "contacts_guide_reseau_preuve_statut_consenti_le_idx")
+  @@map("contacts_guide_reseau")
+}
+
+/// rgpd: dossier-client
+/// Une demande du Tour France IA : la mini-demande faite AVANT le rendez-vous en visio
+/// (e-mail, ville, nom, téléphone). Table ajoutée par PR-2a ; le formulaire public est PR-2b.
+///
+/// · `nom`, `email`, `telephone` sont CHIFFRÉS (`encryptPii`, IV aléatoire) : on les retrouve par
+///   `emailHash` (jamais par `where: { email }`). Le détail du droit d'accès et d'effacement est
+///   dans `src/features/tour-de-france/rgpd.ts` (l'effacement VIDE la ligne, il ne la supprime pas :
+///   coordonnées remplacées, clés de comptage rendues opaques, la ligne et `compte` restent).
+/// · Le téléphone n'est stocké sous AUCUNE autre forme que le chiffré : ni fin de numéro, ni empreinte
+///   lisible (la colonne `telephone_fin` n'existe pas). Seule sa clé de comptage, un HMAC, en dérive.
+/// · AUCUNE suppression de ligne dans le code (garde `statuts.spec.ts`) : on change un statut.
+/// · Les trois clés de comptage (`cleComptage*`) sont UNIQUES et posées seulement quand la
+///   demande compte pour sa ville ; une clé déjà prise donne une demande « doublon » (`compte`
+///   faux, clés nulles). Chaque clé est `villeCle:HMAC` (clé dérivée de `PII_ENCRYPTION_KEY`,
+///   un libellé de domaine par type de clé) : rien de lisible. Une demande écartée par l'équipe
+///   perd ses clés et son `compte`. Le compteur public ne compte que les lignes `compte = true`.
+/// · Le statut « rendez-vous pris » n'est jamais stocké : il est calculé à la lecture, par
+///   l'empreinte de l'e-mail du rendez-vous Calendly (aucune colonne sur `calendly_events`).
+/// · Statuts en VARCHAR (comme les tables voisines) : aucune énumération Postgres, la migration
+///   reste additive et sans effet sur l'ancien conteneur pendant la bascule.
+model TourDemande {
+  id                   String    @id @default(uuid()) @db.Uuid
+  /// Chiffré (`encryptPii`).
+  nom                  String    @db.Text
+  /// Chiffrée (`encryptPii`).
+  email                String    @db.Text
+  /// Chiffré (`encryptPii`).
+  telephone            String    @db.Text
+  /// `hashEmailForLookup(email)` : clé du rendez-vous, de la fiche, du CRM et du RGPD. Nulle après effacement.
+  emailHash            String?   @map("email_hash") @db.VarChar(64)
+  /// La ville telle que tapée (texte libre : jamais écrite sur une fiche ; « [effacé] » après un effacement).
+  villeSaisie          String    @map("ville_saisie") @db.VarChar(80)
+  /// Clé du référentiel des villes, ou `?<texte normalisé>` hors référentiel ou ambiguë.
+  villeCle             String    @map("ville_cle") @db.VarChar(100)
+  /// Nom du référentiel ; nul = jamais affichée en public.
+  villeNom             String?   @map("ville_nom") @db.VarChar(100)
+  /// recue | relancee_main | ecartee | effacee_rgpd
+  statut               String    @default("recue") @db.VarChar(20)
+  statutChangeLe       DateTime? @map("statut_change_le")
+  statutChangeParId    String?   @map("statut_change_par_id") @db.Uuid
+  /// Vrai si la demande compte pour sa ville (aucune clé de comptage n'était déjà prise).
+  compte               Boolean   @default(false)
+  /// `villeCle:HMAC(adresse canonique)` — une personne ne compte qu'une fois par ville. `efface:<id>:p` après un effacement.
+  cleComptagePersonne  String?   @unique(map: "tour_demandes_cle_comptage_personne_key") @map("cle_comptage_personne") @db.VarChar(170)
+  /// `villeCle:HMAC(domaine)` — domaine PROFESSIONNEL seulement, jamais un webmail. `efface:<id>:d` après un effacement.
+  cleComptageDomaine   String?   @unique(map: "tour_demandes_cle_comptage_domaine_key") @map("cle_comptage_domaine") @db.VarChar(170)
+  /// `villeCle:HMAC(9 derniers chiffres)`. `efface:<id>:t` après un effacement.
+  cleComptageTelephone String?   @unique(map: "tour_demandes_cle_comptage_telephone_key") @map("cle_comptage_telephone") @db.VarChar(170)
+  /// La demande qui tenait déjà la clé, pour un doublon.
+  doublonDeId          String?   @map("doublon_de_id") @db.Uuid
+  /// a_verifier | fiche_completee | a_arbitrer | sans_fiche | fiche_creee
+  rattachement         String    @default("a_verifier") @db.VarChar(20)
+  clientId             String?   @map("client_id") @db.Uuid
+  client               Client?   @relation("TourDemandeClient", fields: [clientId], references: [id], onDelete: SetNull)
+  /// `[{ ficheId, numero, raisonSociale, signal }]` : les fiches proches d'une demande « à arbitrer ». Jamais une fusion.
+  fichesProches        Json?     @map("fiches_proches")
+  depuis               String?   @db.VarChar(60)
+  utmSource            String?   @map("utm_source") @db.VarChar(60)
+  utmMedium            String?   @map("utm_medium") @db.VarChar(60)
+  utmCampaign          String?   @map("utm_campaign") @db.VarChar(60)
+  utmContent           String?   @map("utm_content") @db.VarChar(60)
+  /// Empreinte de l'adresse IP (jamais l'adresse). Nulle après effacement.
+  ipHash               String?   @map("ip_hash") @db.VarChar(64)
+  creeLe               DateTime  @default(now()) @map("cree_le")
+
+  @@index([villeCle, compte], map: "tour_demandes_ville_cle_compte_idx")
+  @@index([emailHash], map: "tour_demandes_email_hash_idx")
+  @@index([creeLe], map: "tour_demandes_cree_le_idx")
+  @@index([clientId], map: "tour_demandes_client_id_idx")
+  @@map("tour_demandes")
+}
+
+/// Un LANCEMENT du rapport d'analyse avant audit d'une fiche client (2026-11-02). Chaque lancement
+/// est une NOUVELLE ligne : l'historique est gardé, jamais écrasé ni supprimé (aucun code ne
+/// supprime une ligne ; `client_id` en RESTRICT). `base_audit` est la base d'audit (JSON
+/// `base-audit/1`) CHIFFRÉE par `chiffrerParole` — elle contient les réponses intégrales du
+/// questionnaire ; `base_empreinte` est le SHA-256 du JSON en clair, vérifié à chaque lecture.
+/// `propositions_fiche` est une enveloppe `{ v, chiffre }` chiffrée de même : jamais de clair.
+/// `statut` : texte + CHECK (aucune énumération Postgres, fenêtre app/worker).
+/// L'effacement RGPD MET À L'ÉCART (`ecarte_le`) et alerte Will : aucune purge automatique.
+/// Fonction retirée le 04/11/2026 : plus aucun code n'écrit de lancement ; table et lignes CONSERVÉES, aucune purge ; seuls l'export art. 15 (rgpd-dossier-client.ts) et la mise à l'écart art. 17 (rgpd-erase.ts) la lisent ou l'écrivent. Contenu chiffré par chiffrerParole.
+/// rgpd: dossier-client
+model RapportAvantAudit {
+  id                String    @id @default(uuid()) @db.Uuid
+  clientId          String    @map("client_id") @db.Uuid
+  client            Client    @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  /// Les questionnaires ENVOYÉS lus pour ce lancement (photographie au lancement).
+  questionnaireIds  String[]  @default([]) @map("questionnaire_ids") @db.Uuid
+  /// en_attente | en_cours | termine | erreur | annule (CHECK `rapports_avant_audit_statut_check`).
+  statut            String    @default("en_attente") @db.VarChar(20)
+  etape             String?   @db.VarChar(200)
+  /// 0 à 100 (CHECK `rapports_avant_audit_progression_check`).
+  progression       Int       @default(0)
+  /// Message d'erreur LISIBLE par Will, jamais un extrait de réponse.
+  erreur            String?   @db.Text
+  /// AdminUser.id de l'auteur du lancement (audit, sans FK pour rester additif).
+  lanceParId        String?   @map("lance_par_id") @db.Uuid
+  debutLe           DateTime? @map("debut_le")
+  finLe             DateTime? @map("fin_le")
+  versionSchema     String?   @map("version_schema") @db.VarChar(40)
+  /// (enc) JSON de la base d'audit, chiffré par `chiffrerParole`.
+  baseAudit         String?   @map("base_audit") @db.Text
+  /// SHA-256 (hex) du JSON en clair de la base d'audit.
+  baseEmpreinte     String?   @map("base_empreinte") @db.VarChar(64)
+  jetonsEntree      Int       @default(0) @map("jetons_entree")
+  jetonsSortie      Int       @default(0) @map("jetons_sortie")
+  nbRecherches      Int       @default(0) @map("nb_recherches")
+  pdfChemin         String?   @map("pdf_chemin") @db.Text
+  pdfValideLe       DateTime? @map("pdf_valide_le")
+  pdfValideParId    String?   @map("pdf_valide_par_id") @db.Uuid
+  /// (enc) Enveloppe `{ v: 1, chiffre }` des propositions de mise à jour de la fiche.
+  propositionsFiche Json?     @map("propositions_fiche")
+  /// Mise à l'écart (demande d'effacement RGPD) : la base n'est plus lue ; Will tranche.
+  ecarteLe          DateTime? @map("ecarte_le")
+  ecarteMotif       String?   @map("ecarte_motif") @db.VarChar(200)
+  creeLe            DateTime  @default(now()) @map("cree_le")
+  majLe             DateTime  @updatedAt @map("maj_le")
+
+  @@index([clientId, creeLe])
+  @@index([statut])
+  @@map("rapports_avant_audit")
+}
+
+/// AUDIT PRÉSENTIEL (PR1, 2026-11-02) — une session d'audit sur place, ouverte depuis la fiche client.
+/// Le PC de l'auditeur envoie des événements signés par un jeton à durée limitée ; seule l'EMPREINTE
+/// du jeton (SHA-256) est gardée, jamais le jeton. Statut en VarChar (pas d'énumération Postgres :
+/// compatible avec les deux conteneurs), validé par zod. Aucune suppression : on révoque le jeton.
+/// Clés étrangères en RESTRICT : rien ne part par ricochet.
+/// rgpd: dossier-client
+model AuditTerrainSession {
+  id                 String        @id @default(uuid()) @db.Uuid
+  clientId           String        @map("client_id") @db.Uuid
+  client             Client        @relation(fields: [clientId], references: [id], onDelete: Restrict)
+  auditMissionId     String?       @map("audit_mission_id") @db.Uuid
+  auditMission       AuditMission? @relation(fields: [auditMissionId], references: [id], onDelete: Restrict)
+  statut             String        @default("ouverte") @db.VarChar(20)
+  jetonEmpreinte     String        @unique @map("jeton_empreinte") @db.Char(64)
+  jetonExpireLe      DateTime      @map("jeton_expire_le") @db.Timestamptz(3)
+  jetonRevoqueLe     DateTime?     @map("jeton_revoque_le") @db.Timestamptz(3)
+  creeParId          String        @map("cree_par_id") @db.Uuid
+  creePar            AdminUser     @relation("AuditTerrainSessionCreePar", fields: [creeParId], references: [id], onDelete: Restrict)
+  dernierSeq         Int           @default(0) @map("dernier_seq")
+  derniereEtapeIndex Int           @default(0) @map("derniere_etape_index")
+  dernierEnvoiLe     DateTime?     @map("dernier_envoi_le") @db.Timestamptz(3)
+  creeLe             DateTime      @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  evenements AuditTerrainEvenement[]
+  rapports   AuditTerrainRapport[]
+
+  @@index([clientId, creeLe], map: "audit_terrain_sessions_client_id_cree_le_idx")
+  @@index([auditMissionId], map: "audit_terrain_sessions_audit_mission_id_idx")
+  @@map("audit_terrain_sessions")
+}
+
+/// AUDIT PRÉSENTIEL (PR1) — journal en AJOUT SEUL des événements reçus du PC. `donneesChiffrees` :
+/// CHIFFRÉ par `chiffrerParole` (jamais de clair en base ; pseudonymes `pid` et postes seulement, les
+/// prénoms restent sur le PC). `empreinte` = SHA-256 de `donnees` en clair, calculée par le PC : un même
+/// `eventId` avec une autre empreinte est un conflit, journalisé, jamais écrasé. Revalider une étape
+/// crée un nouvel événement ; l'ancien reste. Unique (sessionId, eventId).
+/// rgpd: dossier-client
+model AuditTerrainEvenement {
+  id               String              @id @default(uuid()) @db.Uuid
+  sessionId        String              @map("session_id") @db.Uuid
+  session          AuditTerrainSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  eventId          String              @map("event_id") @db.Uuid
+  seq              Int
+  type             String              @db.VarChar(30)
+  etape            String?             @db.VarChar(40)
+  etapeIndex       Int?                @map("etape_index")
+  heurePc          DateTime            @map("heure_pc") @db.Timestamptz(3)
+  recuLe           DateTime            @default(now()) @map("recu_le") @db.Timestamptz(3)
+  empreinte        String              @db.Char(64)
+  donneesChiffrees String              @map("donnees_chiffrees")
+
+  @@unique([sessionId, eventId], map: "audit_terrain_evenements_session_id_event_id_key")
+  @@index([sessionId, seq], map: "audit_terrain_evenements_session_id_seq_idx")
+  @@map("audit_terrain_evenements")
+}
+
+/// AUDIT PRÉSENTIEL (PR1) — rapport de fin d'audit (brouillon produit sur le PC, ou gabarit de secours).
+/// `contenuChiffre` : CHIFFRÉ par `chiffrerParole`. Rien ne part au client : Will relit (`a_relire` →
+/// `valide`). Une nouvelle version s'ajoute, l'ancienne reste. `eventId` unique : l'envoi est idempotent.
+/// rgpd: dossier-client
+model AuditTerrainRapport {
+  id             String              @id @default(uuid()) @db.Uuid
+  sessionId      String              @map("session_id") @db.Uuid
+  session        AuditTerrainSession @relation(fields: [sessionId], references: [id], onDelete: Restrict)
+  version        Int
+  source         String              @db.VarChar(20)
+  eventId        String              @unique @map("event_id") @db.Uuid
+  contenuChiffre String              @map("contenu_chiffre")
+  statut         String              @default("a_relire") @db.VarChar(20)
+  valideParId    String?             @map("valide_par_id") @db.Uuid
+  validePar      AdminUser?          @relation("AuditTerrainRapportValidePar", fields: [valideParId], references: [id], onDelete: Restrict)
+  valideLe       DateTime?           @map("valide_le") @db.Timestamptz(3)
+  creeLe         DateTime            @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@unique([sessionId, version], map: "audit_terrain_rapports_session_id_version_key")
+  @@index([valideParId], map: "audit_terrain_rapports_valide_par_id_idx")
+  @@map("audit_terrain_rapports")
+}
+
+/// F1a-bis (2026-11-12) — catalogue UNIQUE de cibles d'un mot : un guide (PDF) ou une adresse de page.
+/// Rien n'est figé dans le code : tout se saisit par l'écran, sans limite de nombre. Aucune ligne
+/// n'est supprimée : on désactive (`actif`). `test` = fiche factice de test. Contraintes
+/// (guide ⇒ chemin sans adresse, adresse ⇒ adresse sans chemin, formes) posées en SQL dans la migration.
+/// rgpd: technique — contenu éditorial public (titre, chemin de PDF, adresse du site) ; aucune donnée sur une personne
+model CibleReseau {
+  id        String   @id @default(uuid()) @db.Uuid
+  code      String   @unique @db.VarChar(28)
+  type      String   @db.VarChar(10)
+  titre     String   @db.VarChar(120)
+  cheminPdf String?  @map("chemin_pdf") @db.VarChar(200)
+  url       String?  @db.VarChar(300)
+  version   Int      @default(1)
+  actif     Boolean  @default(true)
+  test      Boolean  @default(false)
+  creeLe    DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  mots MotCible[]
+
+  @@map("cibles_reseau")
+}
+
+/// F1a-bis — liaison mot → cible. Un mot mène à UNE cible par réseau (`@@unique([mot, reseau])`) ;
+/// plusieurs mots peuvent mener à la même cible. Mot normalisé (règle du Studio) : minuscules, sans accent, 2 à 20, pas que des chiffres, hors STOP et mots d'opposition — règle appliquée par le code ET reposée en SQL (contrainte `mots_cibles_mot_forme`).
+/// rgpd: technique — mot-clé éditorial ; aucune donnée sur une personne
+model MotCible {
+  id        String       @id @default(uuid()) @db.Uuid
+  mot       String       @db.VarChar(30)
+  reseau    String       @db.VarChar(10)
+  codeCible String       @map("code_cible") @db.VarChar(28)
+  actif     Boolean      @default(true)
+  creeLe    DateTime     @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe DateTime     @updatedAt @map("modifie_le") @db.Timestamptz(3)
+  cible     CibleReseau  @relation(fields: [codeCible], references: [code], onDelete: Restrict)
+
+  @@unique([mot, reseau], map: "mots_cibles_mot_reseau_key")
+  @@index([codeCible], map: "mots_cibles_code_cible_idx")
+  @@map("mots_cibles")
+}
+
+/// G3 (2026-11-15) — versions de PDF de guides FABRIQUÉES par le site (`POST /api/interne/guides-reseau/contenu`).
+/// Une ligne par (code, version) ; `cle_objet` est dérivée du code et de la version, jamais du corps de la requête.
+/// Ne dépend d'aucune autre table (aucune clé étrangère) ; le worker ne l'interroge jamais. Contraintes en SQL (migration).
+/// rgpd: technique — contenu éditorial public (empreintes, titre, taille) ; aucune donnée sur une personne
+model GuideReseauVersion {
+  id           String   @id @default(uuid()) @db.Uuid
+  code         String   @db.VarChar(28)
+  version      Int
+  sha256Texte  String   @map("sha256_texte") @db.Char(64)
+  sha256Pdf    String?  @map("sha256_pdf") @db.Char(64)
+  titre        String   @db.VarChar(120)
+  pages        Int?
+  tailleOctets Int?     @map("taille_octets")
+  stockage     String   @db.VarChar(10)
+  cleObjet     String   @map("cle_objet") @db.VarChar(80)
+  statut       String   @db.VarChar(10)
+  creeLe       DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe    DateTime @updatedAt @map("modifie_le") @db.Timestamptz(3)
+
+  @@unique([code, version], map: "guides_reseau_versions_code_version_key")
+  @@index([code, version(sort: Desc)], map: "guides_reseau_versions_code_version_desc_idx")
+  @@map("guides_reseau_versions")
+}
+
+/// STOP reçu du Studio AVANT la validation de la page du guide : la marque porte la seule référence de
+/// conversation hachée (`conv_ref`, HMAC de 64 caractères), jamais d'adresse. Écrite à chaque STOP
+/// (idempotent), lue par la page de confirmation pour suivre le même déroulé neutre qu'une adresse opposée.
+/// AUCUNE ligne n'est supprimée par le code.
+/// rgpd: technique — référence de conversation hachée (HMAC), aucune adresse ni nom ni texte
+model OppositionConvRef {
+  id      String   @id @default(cuid())
+  convRef String   @unique @map("conv_ref") @db.VarChar(64)
+  creeLe  DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  @@map("oppositions_conv_ref")
+}
+
+// ============================================================
+// E-mails écrits à la main depuis une fiche (chantier e-mails, lot I4, F1)
+// ============================================================
+//
+// Deux tables NEUVES, ajoutées sans toucher à l'existant. Rien ne les lit
+// encore : le worker ne les ouvre qu'à réception d'un job « email-manuel »,
+// que seule l'application à jour émet. Aucune suppression : clés étrangères
+// RESTRICT, jamais de cascade. Texte et non énumération Postgres pour
+// `entiteType` et `statut` (aucune valeur ne pourra être retirée ; l'application
+// et le worker ne partagent pas ce contrat) : les CHECK vivent dans la migration.
+/// rgpd: dossier-client
+model EmailManuel {
+  id                  String    @id @default(uuid()) @db.Uuid
+  /// Tirée par le composeur à l'ouverture : un double clic retrouve la même ligne.
+  cleIdempotence      String    @unique @map("cle_idempotence") @db.VarChar(64)
+  /// `Client` | `ClientContact` | `CalendlyEvent` | `ApporteurReseau` | `Trainer` | `Trainee` (CHECK en base).
+  entiteType          String    @map("entite_type") @db.VarChar(30)
+  /// Texte : `CalendlyEvent.id` est un cuid. Polymorphe, donc sans clé étrangère.
+  entiteId            String    @map("entite_id") @db.VarChar(64)
+  clientId            String?   @map("client_id") @db.Uuid
+  contactId           String?   @map("contact_id") @db.Uuid
+  /// `encryptPii(adresse)`, toujours.
+  destinataireChiffre String    @map("destinataire_chiffre")
+  /// SHA-256 hexadécimal en minuscules (CHECK en base).
+  destinataireHash    String    @map("destinataire_hash") @db.VarChar(64)
+  destinataireNom     String?   @map("destinataire_nom") @db.VarChar(200)
+  expediteurNom       String    @map("expediteur_nom") @db.VarChar(80)
+  objet               String    @db.VarChar(500)
+  /// Markdown léger saisi, salutation comprise.
+  corpsSource         String    @map("corps_source")
+  /// Rendu figé ; NULL tant que la ligne est un brouillon.
+  corpsHtml           String?   @map("corps_html")
+  corpsTexte          String?   @map("corps_texte")
+  tutoiement          Boolean   @default(false)
+  premierContact      Boolean   @default(false) @map("premier_contact")
+  /// `brouillon` | `en_file` | `envoye` | `echec` | `retenu` | `rebondi` (CHECK en base).
+  statut              String    @default("brouillon") @db.VarChar(20)
+  /// Erreur du relais ou motif de retenue, sans adresse.
+  motif               String?
+  tentatives          Int       @default(0)
+  /// Notre `Message-ID`, tiré par l'application.
+  messageId           String?   @unique @map("message_id") @db.VarChar(300)
+  idRelais            String?   @map("id_relais") @db.VarChar(500)
+  inReplyTo           String?   @map("in_reply_to") @db.VarChar(300)
+  referencesEntete    String?   @map("references_entete")
+  ecritParId          String?   @map("ecrit_par_id") @db.Uuid
+  ecritParNom         String    @map("ecrit_par_nom") @db.VarChar(255)
+  creeLe              DateTime  @default(now()) @map("cree_le") @db.Timestamptz(3)
+  modifieLe           DateTime  @default(now()) @map("modifie_le") @db.Timestamptz(3)
+  misEnFileLe         DateTime? @map("mis_en_file_le") @db.Timestamptz(3)
+  envoyeLe            DateTime? @map("envoye_le") @db.Timestamptz(3)
+  echecLe             DateTime? @map("echec_le") @db.Timestamptz(3)
+  rebondiLe           DateTime? @map("rebondi_le") @db.Timestamptz(3)
+  /// `hard` | `soft` (CHECK en base).
+  rebondType          String?   @map("rebond_type") @db.VarChar(10)
+
+  client        Client?                  @relation("EmailManuelClient", fields: [clientId], references: [id], onDelete: Restrict)
+  contact       ClientContact?           @relation("EmailManuelContact", fields: [contactId], references: [id], onDelete: Restrict)
+  ecritPar      AdminUser?               @relation("EmailManuelEcritPar", fields: [ecritParId], references: [id], onDelete: SetNull)
+  piecesJointes EmailManuelPieceJointe[]
+
+  @@index([entiteType, entiteId, creeLe(sort: Desc)], map: "emails_manuels_entite_idx")
+  @@index([clientId, creeLe(sort: Desc)], map: "emails_manuels_client_idx")
+  @@index([destinataireHash], map: "emails_manuels_destinataire_hash_idx")
+  @@index([statut], map: "emails_manuels_statut_idx")
+  @@map("emails_manuels")
+}
+
+/// rgpd: dossier-client
+model EmailManuelPieceJointe {
+  id            String   @id @default(uuid()) @db.Uuid
+  /// Jamais de cascade : rien ne disparaît avec une ligne.
+  emailManuelId String   @map("email_manuel_id") @db.Uuid
+  /// Nom ASSAINI (`assainirNomPieceJointe`).
+  nomFichier    String   @map("nom_fichier") @db.VarChar(160)
+  format        String   @db.VarChar(10)
+  /// CHECK en base : > 0 et <= 10485760.
+  tailleOctets  Int      @map("taille_octets")
+  /// Clé R2 tirée par le serveur.
+  cleStockage   String   @unique @map("cle_stockage") @db.VarChar(300)
+  /// `attendue` | `controle` | `acceptee` | `refusee` | `non_recue` (CHECK en base).
+  statut        String   @default("attendue") @db.VarChar(20)
+  motifRefus    String?  @map("motif_refus") @db.VarChar(20)
+  sha256        String?  @db.Char(64)
+  antivirus     String?  @db.VarChar(20)
+  /// Empreinte du jeton d'envoi (jamais le jeton).
+  jetonHash     String?  @map("jeton_hash") @db.Char(64)
+  creeLe        DateTime @default(now()) @map("cree_le") @db.Timestamptz(3)
+
+  emailManuel EmailManuel @relation(fields: [emailManuelId], references: [id], onDelete: Restrict)
+
+  @@index([emailManuelId], map: "emails_manuels_pieces_jointes_email_idx")
+  @@map("emails_manuels_pieces_jointes")
 }

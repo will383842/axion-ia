@@ -49,7 +49,7 @@ export const CHANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Changé et dans le nord-est du Mans ?",
-      a: "Oui, Axion-IA intervient à Changé et dans tout le nord-est de Le Mans Métropole (Yvré-l'Évêque, Sargé-lès-le-Mans, Savigné-l'Évêque, Parigné-l'Évêque). Nos consultants sont basés en agglomération mancelle, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Changé et dans tout le nord-est de Le Mans Métropole (Yvré-l'Évêque, Sargé-lès-le-Mans, Savigné-l'Évêque, Parigné-l'Évêque). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et professions libérales de Changé ?",
@@ -64,7 +64,7 @@ export const CHANGE_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA pratiques : automatisation administrative, agents conversationnels clients, génération de documents, analyse de données. Sur site à Changé ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Changé depuis Le Mans ?",
+      q: "Comment se déroule une mission IA à Changé ?",
       a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Le Mans à 7 km (55 min Paris). Accès A11 et A28.",
     },
   ],

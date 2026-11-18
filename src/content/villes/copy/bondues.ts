@@ -49,7 +49,7 @@ export const BONDUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bondues et Métropole Lille ?",
-      a: "Oui, Axion-IA intervient à Bondues et toute la Métropole Européenne de Lille (Marcq-en-Barœul, Tourcoing, Roubaix, Mouvaux, Wasquehal). Nos consultants viennent de Lille-Centre (15 min A22), Bruxelles (1h10) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Bondues et toute la Métropole Européenne de Lille (Marcq-en-Barœul, Tourcoing, Roubaix, Mouvaux, Wasquehal). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les sièges sociaux et PME du Nord lillois ?",
@@ -64,8 +64,8 @@ export const BONDUES_COPY: VilleCopy = {
       a: "Pour les TPE commerçants haut de gamme et artisans BTP à Bondues, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, marketing local, gestion fidélité.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Bruxelles ?",
-      a: "Nos consultants viennent de Lille-Centre (15 min A22), Tourcoing (10 min) ou Bruxelles (1h10 A22/E19). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Bondues ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

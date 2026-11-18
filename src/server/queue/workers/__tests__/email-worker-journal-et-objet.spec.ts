@@ -39,7 +39,10 @@ vi.mock("@/lib/email/templates", () => ({
   renderEmailTemplate: (...a: unknown[]) => d.render(...a),
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: vi.fn(), isDecryptedEmailUsable: vi.fn() }));
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+// La mise à l'écart (effacement) est relue au départ : la lecture doit exister (aucune écartée).
+vi.mock("@/lib/prisma", () => ({
+  prisma: { emailOpposition: { findFirst: async () => null } },
+}));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
 vi.mock("@/server/email/email-log", () => ({
   cloturerJournal: (...a: unknown[]) => d.cloturer(...a),

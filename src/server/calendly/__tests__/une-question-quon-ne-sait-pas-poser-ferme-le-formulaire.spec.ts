@@ -28,6 +28,9 @@
  * chaque question archivée, ou le laisserait amputé à chaque type nouveau.
  */
 
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -35,6 +38,7 @@ import {
   champDeLaPosition,
   TYPES_RENDUS,
   QUESTIONS_MASQUEES,
+  questionMasquee,
 } from "../questions";
 
 /** Une question telle que l'API la renvoie. */
@@ -220,5 +224,55 @@ describe("🔴 les questions que NOUS ne posons plus", () => {
     expect(r.ok).toBe(true);
     if (!r.ok) return;
     expect(r.questions).toHaveLength(1);
+  });
+});
+
+describe("🔑 la visio du Tour France IA DEMANDE la ville (2026-10-27)", () => {
+  // Chez Calendly, le type du Tour pose « Ville de votre entreprise »
+  // (obligatoire) : pour lui seul, rien n'est masqué ; les autres types gardent
+  // le masquage de « Ville de l'entreprise ».
+  const VILLE = "Ville de l'entreprise";
+  const lireSource = (chemin: string) => readFileSync(join(process.cwd(), chemin), "utf8");
+
+  it("Tour : la ville est lue, même facultative, sous l'un ou l'autre libellé", () => {
+    for (const libelle of [VILLE, "Ville de votre entreprise"]) {
+      for (const requise of [true, false]) {
+        const r = lireLesQuestions([q(), q({ name: libelle, position: 1, required: requise })], {
+          sansMasquage: true,
+        });
+        expect(r.ok).toBe(true);
+        if (!r.ok) return;
+        expect(r.questions.map((x) => x.libelle)).toEqual(["Quel est votre besoin ?", libelle]);
+      }
+    }
+    expect(questionMasquee(VILLE, false, { sansMasquage: true })).toBe(false);
+  });
+
+  it("contre-témoin : pour les autres types, la ville facultative reste masquée", () => {
+    const r = lireLesQuestions([q(), q({ name: VILLE, position: 1, required: false })]);
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.questions.map((x) => x.libelle)).toEqual(["Quel est votre besoin ?"]);
+    expect(questionMasquee(VILLE, false)).toBe(true);
+    expect(questionMasquee(VILLE, false, { sansMasquage: false })).toBe(true);
+  });
+
+  it("🔴 sans masquage, une question d'un type INCONNU ferme toujours le formulaire", () => {
+    const r = lireLesQuestions([q(), q({ name: VILLE, type: "multi_select", position: 1 })], {
+      sansMasquage: true,
+    });
+    expect(r.ok).toBe(false);
+  });
+
+  it("le parcours de réservation et le report lèvent le masquage pour le Tour, et pour lui seul", () => {
+    for (const chemin of [
+      "src/app/[locale]/appel/reserver/page.tsx",
+      "src/app/[locale]/appel/reserver/actions.ts",
+    ]) {
+      expect(lireSource(chemin), chemin).toMatch(/sansMasquage: choix === "tour"/);
+    }
+    expect(lireSource("src/app/[locale]/appel/reporter/actions.ts")).toMatch(
+      /sansMasquage: rdv\.typeRendezVous === "tour_de_france_ia"/,
+    );
   });
 });

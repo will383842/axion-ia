@@ -49,7 +49,7 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tonnay-Charente ?",
-      a: "Oui, Axion-IA intervient à Tonnay-Charente et tout le bassin Rochefort-Tonnay. Nos consultants accèdent facilement via la N137 (10 min Rochefort, 25 min La Rochelle) ou la gare de Rochefort.",
+      a: "Oui, Axion-IA intervient à Tonnay-Charente et tout le bassin Rochefort-Tonnay. Nous intervenons partout en France, sur place ou à distance. Tonnay-Charente est desservie par la N137 (Rochefort à 10 min, La Rochelle à 25 min).",
     },
     {
       q: "Quels services IA pour les PME logistiques à Tonnay-Charente ?",
@@ -65,7 +65,7 @@ export const TONNAY_CHARENTE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Tonnay-Charente ?",
-      a: "Nos consultants accèdent à Tonnay-Charente via la N137 (25 min La Rochelle, 10 min Rochefort). Mission sur site dans vos locaux, entrepôt ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux, entrepôt ou exploitation à Tonnay-Charente.",
     },
   ],
 };

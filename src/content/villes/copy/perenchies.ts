@@ -49,7 +49,7 @@ export const PERENCHIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pérenchies et dans la MEL ouest ?",
-      a: "Oui, Axion-IA intervient à Pérenchies et dans toute la Métropole Européenne de Lille ouest (Lille, Armentières, Tourcoing, Lambersart, La Madeleine). Nos consultants couvrent l'ensemble de l'agglomération lilloise et la frontière belge à 5 min.",
+      a: "Oui, Axion-IA intervient à Pérenchies et dans toute la Métropole Européenne de Lille ouest (Lille, Armentières, Tourcoing, Lambersart, La Madeleine), jusqu'à la frontière belge. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les commerçants et artisans de Pérenchies ?",
@@ -65,7 +65,7 @@ export const PERENCHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Pérenchies ?",
-      a: "Nos consultants interviennent à Pérenchies depuis Lille (15 min). Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières (10 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre commerce, atelier, bureau ou en visio. Pour missions multi-jours, hébergement à Lille ou Armentières (10 min).",
     },
   ],
 };

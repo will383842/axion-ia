@@ -245,7 +245,7 @@ export const ABBEVILLE_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité. Pour artisans et commerçants, nous déployons devis automatisés, gestion de planning, relances et facturation intelligente, après un audit qui chiffre le retour attendu.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Amiens ?",
+      q: "Comment se déroule une mission à Abbeville ?",
       a: "Abbeville est à 1 h 30 de Paris en train, 50 minutes d'Amiens et sur l'A16. Nos consultants se déplacent sur site ou interviennent en visio.",
     },
   ],

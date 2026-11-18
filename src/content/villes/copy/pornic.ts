@@ -49,7 +49,7 @@ export const PORNIC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pornic ?",
-      a: "Oui, Axion-IA intervient à Pornic et sur toute la Côte de Jade (Saint-Brevin, La Plaine-sur-Mer, Préfailles). Nos consultants se déplacent depuis Nantes (50 min) ou Saint-Nazaire (35 min).",
+      a: "Oui, Axion-IA intervient à Pornic et sur toute la Côte de Jade (Saint-Brevin, La Plaine-sur-Mer, Préfailles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Pornic  ?",

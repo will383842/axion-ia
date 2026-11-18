@@ -166,7 +166,11 @@ const contresignerUne = () =>
 const contresignerLot = () =>
   contresignerParLotAction({ ids: [DOC], methode: "confirmation_accessible" });
 const signerParJeton = () =>
-  signerPieceParJetonAction({ token: "jeton", methode: "confirmation_accessible" });
+  signerPieceParJetonAction({
+    token: "jeton",
+    methode: "confirmation_accessible",
+    mentionVersionAffichee: "doc-v2",
+  });
 
 function rienNEstEcrit(): void {
   expect(mSigner).not.toHaveBeenCalled();

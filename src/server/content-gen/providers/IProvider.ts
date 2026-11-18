@@ -26,6 +26,13 @@ export interface GenerationRequest {
   /// le fallback automatique). Sprint Quality 2026 — utilisé par landing_ville
   /// generators pour forcer Claude Sonnet (verbosité + qualité éditoriale).
   readonly preferredProvider?: ProviderKey;
+  /// Rôle « texte du blog via Claude » (porte `blog-claude.ts`). Interface gelée.
+  readonly blogClaudeRole?: "ecriture" | "relecture";
+  /// Identifiant de la ligne de réservation de coût (`blog-claude-ledger.ts`) :
+  /// quand il est présent, le coût réel SOLDE cette ligne au lieu d'en créer une.
+  /// ⚠️ RÉSERVÉ à la porte `blog-claude.ts` : aucun générateur (`generators/`) ne doit
+  /// jamais le renseigner (une réservation forgée fausserait le solde et les plafonds).
+  readonly reservationId?: string;
   /// System prompt (prefix cache-friendly Anthropic).
   readonly systemPrompt: string;
   /// User prompt (variable, pas cache).
@@ -102,6 +109,10 @@ export class ProviderError extends Error {
     super(message);
     this.name = "ProviderError";
   }
+
+  /// Coût réel (USD) déjà facturé par le fournisseur quand l'appel a échoué APRÈS
+  /// facturation (ex. sortie JSON coupée par max_tokens). Optionnel : absent = inconnu/0.
+  costUsd?: number;
 }
 
 /**
@@ -130,4 +141,27 @@ export interface IProvider {
    * - Cost cap mensuel atteint
    */
   healthCheck(): Promise<boolean>;
+}
+
+/** Marque du message quand une sortie JSON demandée est coupée par `max_tokens` (chemin Claude). */
+export const MARQUE_JSON_TRONQUE = "sortie JSON tronquée";
+
+/**
+ * Vrai pour l'erreur précise « sortie JSON coupée par max_tokens » du fournisseur
+ * Anthropic : les boucles de plan la traitent comme un échec de plan (2e essai),
+ * comme le chemin OpenAI le fait pour un JSON illisible.
+ */
+export function estSortieJsonTronquee(err: unknown): boolean {
+  return (
+    err instanceof ProviderError &&
+    err.provider === "anthropic" &&
+    err.code === "invalid_response" &&
+    err.message.includes(MARQUE_JSON_TRONQUE)
+  );
+}
+
+/** Coût déjà facturé porté par une erreur « JSON tronqué » (0 si absent ou invalide). */
+export function coutErreurTronquee(err: unknown): number {
+  const c = err instanceof ProviderError ? err.costUsd : undefined;
+  return typeof c === "number" && Number.isFinite(c) && c > 0 ? c : 0;
 }

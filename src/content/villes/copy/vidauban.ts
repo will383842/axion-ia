@@ -49,7 +49,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vidauban et dans le centre-Var viticole ?",
-      a: "Oui, Axion-IA intervient à Vidauban et dans tout le centre-Var viticole (Le Luc, Le Cannet-des-Maures, Les Arcs, Lorgues, Draguignan). Consultants accessibles en 25 min depuis Brignoles ou Draguignan via A8.",
+      a: "Oui, Axion-IA intervient à Vidauban et dans tout le centre-Var viticole (Le Luc, Le Cannet-des-Maures, Les Arcs, Lorgues, Draguignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles grands crus de Vidauban ?",
@@ -65,7 +65,7 @@ export const VIDAUBAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vidauban ?",
-      a: "Nos consultants interviennent depuis Brignoles (25 min), Draguignan (25 min) ou Toulon (50 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, cave, atelier ou commerce. A8 directe.",
     },
   ],
 };

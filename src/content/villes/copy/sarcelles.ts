@@ -239,8 +239,8 @@ export const SARCELLES_COPY: VilleCopy = {
       a: `Pour les TPE, PME et ETI de Sarcelles, l'Audit sur place est planifié sous 5 jours ouvrés. ${DELAI_ACCES_PHRASE} La date de la formation est convenue avec vous.`,
     },
     {
-      q: "Couvrez-vous Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt depuis Sarcelles ?",
-      a: "Oui, nous nous déplaçons sans surcoût dans les communes limitrophes de Sarcelles : Garges-lès-Gonesse, Villiers-le-Bel, Arnouville, Saint-Brice-sous-Forêt, Groslay, Montmagny, Écouen, Stains et Saint-Denis.",
+      q: "Intervenez-vous à Garges-lès-Gonesse, Villiers-le-Bel et Saint-Brice-sous-Forêt, autour de Sarcelles ?",
+      a: "Oui, nous intervenons dans les communes limitrophes de Sarcelles : Garges-lès-Gonesse, Villiers-le-Bel, Arnouville, Saint-Brice-sous-Forêt, Groslay, Montmagny, Écouen, Stains et Saint-Denis. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Sarcelles ?",

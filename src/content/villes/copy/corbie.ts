@@ -49,7 +49,7 @@ export const CORBIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Corbie et dans la vallee de la Somme ?",
-      a: "Oui, Axion-IA intervient a Corbie et dans toute la vallee de la Somme (Amiens, Albert, Villers-Bretonneux, Bray-sur-Somme). Consultants depuis Paris (TGV Haute-Picardie 1h30) ou Amiens (15 min TER).",
+      a: "Oui, Axion-IA intervient a Corbie et dans toute la vallee de la Somme (Amiens, Albert, Villers-Bretonneux, Bray-sur-Somme). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Corbie ?",

@@ -49,7 +49,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aubignan et dans le Comtat Venaissin ?",
-      a: "Oui, Axion-IA intervient à Aubignan et dans tout le Comtat Venaissin (Carpentras, Caromb, Beaumes-de-Venise, Sarrians). Consultants accessibles en 8 min depuis Carpentras et 30 min depuis Avignon.",
+      a: "Oui, Axion-IA intervient à Aubignan et dans tout le Comtat Venaissin (Carpentras, Caromb, Beaumes-de-Venise, Sarrians). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les domaines viticoles AOC Ventoux ?",
@@ -65,7 +65,7 @@ export const AUBIGNAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aubignan ?",
-      a: "Nos consultants interviennent depuis Carpentras (8 min) ou Avignon (30 min). Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce. Comtat Venaissin bien desservi via A7 et D942.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, domaine viticole, exploitation agricole ou commerce. Comtat Venaissin bien desservi via A7 et D942.",
     },
   ],
 };

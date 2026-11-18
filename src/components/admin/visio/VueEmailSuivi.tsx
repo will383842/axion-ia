@@ -33,12 +33,10 @@ interface Props {
   readonly erreur: string | undefined;
 }
 
-const carte =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-const titre = "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold";
+const carte = "admin-carte";
+const titre = "admin-carte-titre";
 const discret = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
-const bouton =
-  "rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-3)] py-[var(--space-admin-1)] text-[length:var(--text-admin-sm)] font-medium hover:bg-[color:var(--color-admin-hover)]";
+const bouton = "admin-button-secondary";
 
 function dateFr(d: Date | null): string {
   return d

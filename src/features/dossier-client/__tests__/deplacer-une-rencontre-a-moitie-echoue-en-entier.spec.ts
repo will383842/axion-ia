@@ -136,6 +136,6 @@ describe("⛔ déplacer une rencontre à moitié échoue en entier", () => {
         versClientId: b["id"] as string,
         parAdminId: ADMIN,
       }),
-    ).rejects.toThrow(/projet d'arrivée/);
+    ).rejects.toThrow(/prestation d'arrivée/);
   });
 });

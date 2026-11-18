@@ -1,0 +1,213 @@
+// Suppression MANUELLE depuis la console (demande de Will du 25/10/2026). Composant serveur.
+//
+// Fermé : un lien « Supprimer… » (rien n'est lu en base). Ouvert (`?supprimer=<type>`) : l'écran de
+// confirmation — nom, e-mail, ce qui sera supprimé (compteurs), ce qui l'empêche — et le
+// formulaire avec le mot EFFACER (validation 1 sur 2). Avec le jeton signé de la 1re étape
+// (`&jeton=`), la validation 2 sur 2 : recopie du numéro de la fiche. Super-administrateur seul :
+// sinon rien n'est affiché.
+
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import {
+  preparerSuppressionAction,
+  supprimerManuellementAction,
+} from "@/features/dossier-client/actions-suppression";
+import { empreinteBilan, lireJetonSuppression } from "@/features/dossier-client/suppression-jeton";
+import {
+  bilanSuppression,
+  MESSAGE_BLOQUE,
+  MOT_CONFIRMATION,
+  type TypeCible,
+} from "@/features/dossier-client/suppression-manuelle";
+
+const mutedCls = "text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]";
+
+const QUOI: Readonly<Record<TypeCible, string>> = {
+  questionnaire: "le questionnaire et toutes ses réponses",
+  rencontre: "ce rendez-vous",
+  client: "cette fiche client",
+};
+
+interface Proprietes {
+  type: TypeCible;
+  id: string;
+  /** Super-administrateur : seul à voir et à utiliser ce bloc. */
+  peutSupprimer: boolean;
+  /** La page courante, SANS paramètre (`?supprimer=` y est ajouté). */
+  page: string;
+  /** Vrai si `?supprimer=<type>` est dans l'adresse : l'écran de confirmation. */
+  ouvert: boolean;
+  /** Raison d'un refus (message scellé de la page), affichée sur l'écran de confirmation. */
+  erreur?: string | null;
+  /** Le jeton signé de la 1re validation (`&jeton=`) : ouvre la 2e étape. */
+  jeton?: string | null;
+}
+
+/**
+ * SYNCHRONE : fermé (ou sans droit), rien n'est lu et rien ne suspend le rendu de la page. Seul
+ * l'écran de confirmation, ouvert à la demande, lit la base (`EcranDeConfirmation`).
+ */
+export function SuppressionManuelle(props: Proprietes) {
+  if (!props.peutSupprimer) return null;
+  const lienOuvrir = `${props.page}?supprimer=${props.type}#suppression-${props.type}`;
+  if (!props.ouvert) {
+    return (
+      <p className={mutedCls} id={`suppression-${props.type}`}>
+        <a href={lienOuvrir} className="underline" data-ouvrir-suppression={props.type}>
+          Supprimer {QUOI[props.type]}…
+        </a>{" "}
+        (super-administrateur, après confirmation)
+      </p>
+    );
+  }
+  return <EcranDeConfirmation {...props} />;
+}
+
+async function EcranDeConfirmation(props: Proprietes) {
+  // La cause d'un échec de lecture est gardée (journal du serveur + une ligne sur cet écran, réservé
+  // au super-administrateur) : « Introuvable ou illisible » seul ne dit pas pourquoi.
+  const { bilan, cause } = await bilanSuppression(props.type, props.id).then(
+    (b) => ({ bilan: b, cause: null as string | null }),
+    (e: unknown) => {
+      const texte = (e instanceof Error ? `${e.name} : ${e.message}` : String(e)).slice(0, 400);
+      console.error("[suppression-manuelle] bilan illisible", props.type, props.id, texte);
+      return { bilan: null, cause: texte as string | null };
+    },
+  );
+  // 2e étape : seulement si le jeton est valide, vise cette cible et que le bilan n'a pas changé.
+  const lu = props.jeton ? lireJetonSuppression(props.jeton) : null;
+  const jetonBon =
+    lu !== null &&
+    lu.ok &&
+    bilan !== null &&
+    lu.contenu.t === props.type &&
+    lu.contenu.i === props.id &&
+    lu.contenu.b === empreinteBilan(bilan);
+  const alerteJeton =
+    lu === null
+      ? null
+      : !lu.ok
+        ? lu.motif
+        : !jetonBon && bilan !== null
+          ? "Ce qui serait supprimé a changé : recommencez."
+          : null;
+  return (
+    <AdminBloc
+      teinte="terracotta"
+      haut
+      id={`suppression-${props.type}`}
+      titre={`Supprimer ${QUOI[props.type]} : définitif`}
+    >
+      <div data-bloc={`suppression-${props.type}`}>
+        {props.erreur ? (
+          <p
+            role="alert"
+            data-erreur-suppression
+            className="mb-[var(--space-admin-2)] font-semibold"
+          >
+            {props.erreur}
+          </p>
+        ) : null}
+        {alerteJeton ? (
+          <p role="alert" data-erreur-jeton className="mb-[var(--space-admin-2)] font-semibold">
+            {alerteJeton}
+          </p>
+        ) : null}
+        {bilan === null ? (
+          <>
+            <p role="alert">Introuvable ou illisible : rien ne peut être supprimé d&apos;ici.</p>
+            {cause ? (
+              <p className={mutedCls} data-cause-suppression>
+                Cause : {cause}
+              </p>
+            ) : null}
+          </>
+        ) : (
+          <>
+            <p>
+              <strong>{bilan.nom}</strong>
+              {bilan.email ? ` · ${bilan.email}` : ""}
+            </p>
+            <p className="mt-[var(--space-admin-2)]">Ce qui sera supprimé :</p>
+            <ul data-compteurs>
+              {bilan.compteurs.map((c) => (
+                <li key={c.libelle}>
+                  {c.n} {c.libelle}
+                </li>
+              ))}
+            </ul>
+            <p className={mutedCls}>
+              Les e-mails déjà partis restent dans le journal des envois. Une trace (qui, quand,
+              quoi, sans contenu) est gardée.
+            </p>
+            {bilan.bloquants.length > 0 ? (
+              <div role="alert" data-bloquants className="mt-[var(--space-admin-2)] font-semibold">
+                <p>{MESSAGE_BLOQUE}</p>
+                <ul>
+                  {bilan.bloquants.map((b) => (
+                    <li key={b}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : jetonBon && props.jeton ? (
+              <form
+                action={supprimerManuellementAction}
+                className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+              >
+                <input type="hidden" name="type" value={props.type} />
+                <input type="hidden" name="id" value={props.id} />
+                <input type="hidden" name="page" value={props.page} />
+                <input type="hidden" name="jeton" value={props.jeton} />
+                <p className="w-full font-semibold">Validation 2 sur 2 : dernière étape</p>
+                <p className="w-full">
+                  Pour confirmer, recopiez{" "}
+                  {props.type === "client" ? "le numéro de la fiche" : "le code de contrôle"} :{" "}
+                  <strong data-code-suppression>{bilan.code}</strong>
+                </p>
+                <input
+                  name="code"
+                  required
+                  autoComplete="off"
+                  placeholder="Recopiez le numéro"
+                  aria-label="Recopie du numéro"
+                  className="admin-input"
+                />
+                <AdminButton type="submit" variant="danger">
+                  Supprimer définitivement
+                </AdminButton>
+                <p className={`w-full ${mutedCls}`}>
+                  Valable 5 minutes. Après ce clic, rien ne peut être annulé.
+                </p>
+              </form>
+            ) : (
+              <form
+                action={preparerSuppressionAction}
+                className="mt-[var(--space-admin-3)] flex flex-wrap items-center gap-[var(--space-admin-2)]"
+              >
+                <input type="hidden" name="type" value={props.type} />
+                <input type="hidden" name="id" value={props.id} />
+                <input type="hidden" name="page" value={props.page} />
+                <input
+                  name="confirmation"
+                  required
+                  autoComplete="off"
+                  placeholder={`Écrivez ${MOT_CONFIRMATION}`}
+                  aria-label="Confirmation de la suppression définitive"
+                  className="admin-input"
+                />
+                <AdminButton type="submit" variant="danger">
+                  Continuer : validation 1 sur 2
+                </AdminButton>
+              </form>
+            )}
+          </>
+        )}
+        <p className="mt-[var(--space-admin-2)]">
+          <a href={props.page} className="underline">
+            Annuler
+          </a>
+        </p>
+      </div>
+    </AdminBloc>
+  );
+}

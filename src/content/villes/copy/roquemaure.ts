@@ -49,7 +49,7 @@ export const ROQUEMAURE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roquemaure et Gard rhodanien ?",
-      a: "Oui, Axion-IA intervient à Roquemaure et dans tout le Gard rhodanien (Laudun-l'Ardoise, Tavel, Lirac, Villeneuve-lès-Avignon). Nos consultants viennent d'Avignon (20 min) ou Orange (15 min).",
+      a: "Oui, Axion-IA intervient à Roquemaure et dans tout le Gard rhodanien (Laudun-l'Ardoise, Tavel, Lirac, Villeneuve-lès-Avignon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Côtes du Rhône ?",

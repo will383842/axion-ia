@@ -3,9 +3,19 @@ import { randomUUID } from "node:crypto";
 import { prisma } from "@/lib/prisma";
 import { crmSyncQueue } from "@/server/queue/queues";
 
-import { isCrmSyncCandidatesEnabled, isCrmSyncEnabled, isCrmSyncGuideEnabled } from "./config";
+import {
+  isCrmSyncCandidatesEnabled,
+  isCrmSyncDossierEnabled,
+  isCrmSyncEnabled,
+  isCrmSyncGuideEnabled,
+} from "./config";
 import { estEnvoiCoupe } from "./coupure-recrutement";
-import { CRM_EVENT_TYPES_DU_FLUX_GUIDE, type CrmSyncEvent, type CrmUniverse } from "./types";
+import {
+  CRM_EVENT_TYPES_DU_FLUX_DOSSIER,
+  CRM_EVENT_TYPES_DU_FLUX_GUIDE,
+  type CrmSyncEvent,
+  type CrmUniverse,
+} from "./types";
 
 /**
  * Écriture d'un événement dans l'OUTBOX, puis demande d'émission immédiate.
@@ -148,6 +158,10 @@ export async function enqueueCrmSyncEvent(
   // `CRM_SYNC_GUIDE_ENABLED`. Verrou posé ICI, au passage obligé : un appelant
   // qui oublierait le drapeau n'écrirait quand même rien.
   if (CRM_EVENT_TYPES_DU_FLUX_GUIDE.includes(event.event_type) && !isCrmSyncGuideEnabled()) {
+    return null;
+  }
+  // Synchro automatique du dossier client : même principe, drapeau propre.
+  if (CRM_EVENT_TYPES_DU_FLUX_DOSSIER.includes(event.event_type) && !isCrmSyncDossierEnabled()) {
     return null;
   }
 

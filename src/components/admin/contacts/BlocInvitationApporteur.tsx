@@ -119,7 +119,7 @@ export async function BlocInvitationApporteur({
               type="url"
               required
               defaultValue={lienParDefaut}
-              placeholder="https://calendly.com/axion-ia/echange-apporteur"
+              placeholder="https://calendly.com/axion-ia/echange-apporteur-affaires"
               className="admin-input"
             />
           </div>

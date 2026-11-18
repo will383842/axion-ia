@@ -177,7 +177,8 @@ export const TEINTE_CANAL: Readonly<Record<CanalRendezVous, string | null>> = {
   telephone: "bleu",
   visio: "teal",
   // `terracotta` : la seule teinte d'identité que ni un format ni un TYPE de
-  // rendez-vous (`TEINTE_TYPE_RDV` : or, bleu, violet, magenta) n'emploie déjà,
+  // rendez-vous (`TEINTE_TYPE_RDV` : or, bleu, violet, magenta, vert olive — un vert
+  // jaune, loin du teal de la visio) n'emploie déjà,
   // or les deux pastilles se côtoient sur la même ligne.
   sur_place: "terracotta",
   inconnu: null,

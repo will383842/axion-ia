@@ -49,7 +49,7 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thizy-les-Bourgs et haut-Beaujolais ?",
-      a: "Oui, Axion-IA intervient à Thizy-les-Bourgs et tout le haut-Beaujolais (Amplepuis à 10 min, Tarare à 20 min, Cours-la-Ville). Consultants depuis Lyon (1h) ou Roanne (30 min).",
+      a: "Oui, Axion-IA intervient à Thizy-les-Bourgs et tout le haut-Beaujolais (Amplepuis à 10 min, Tarare à 20 min, Cours-la-Ville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME textile haut-Beaujolais ?",
@@ -64,8 +64,8 @@ export const THIZY_LES_BOURGS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Roanne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Roanne (30 min).",
+      q: "Comment se déroule une mission à Thizy-les-Bourgs ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -147,6 +147,7 @@ import { regleFondsOpcoSuspendusSession } from "./regle-fonds-opco-suspendus-ses
 import { regleSubrogationIncompatibleRegime } from "./regle-subrogation-incompatible-regime";
 import { regleCertificatRealisationManquant } from "./regle-certificat-realisation-manquant";
 import { regleAvisFinanceurManquant } from "./regle-avis-financeur-manquant";
+import { regleConventionNonValideeAvantSession } from "./regle-convention-non-validee-avant-session";
 import { regleSuiviQualiteFormateurs } from "./regle-suivi-qualite-formateurs";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -226,7 +227,7 @@ async function regleReferentHandicap(now: Date): Promise<AlerteCandidate[]> {
       message:
         "Aucun e-mail de référent handicap renseigné dans la configuration. " +
         "L'auditeur attend un référent NOMMÉ ET JOIGNABLE : un nom sans moyen " +
-        "de contact ne prouve pas la désignation. Obligatoire Qualiopi (ind.26⭐).",
+        "de contact ne prouve pas la désignation. Obligatoire pour la certification qualité (ind.26⭐).",
     },
   ];
 }
@@ -290,9 +291,9 @@ async function regleCategoriesCertifiees(now: Date): Promise<AlerteCandidate[]> 
       niveau: "important",
       titre: "Catégorie d'actions certifiées non renseignée",
       message:
-        "La page publique affiche la mention obligatoire de la marque Qualiopi avec une " +
+        "La page publique affiche la mention obligatoire de la marque de certification qualité avec une " +
         "catégorie de repli, qu'aucun certificat n'a confirmée. Ouvrez le certificat et " +
-        "saisissez la ou les catégories exactes dans la configuration Qualiopi " +
+        "saisissez la ou les catégories exactes dans la configuration de la certification qualité " +
         "(« Catégories d'actions certifiées »). Renseignez au passage le certificateur, " +
         "la date d'obtention et la validité : ce sont les pièces que l'auditeur demande.",
     },
@@ -1676,22 +1677,22 @@ async function regleQualiopiExpiration(now: Date): Promise<AlerteCandidate[]> {
     alertes.push({
       code: "qualiopi_expire",
       niveau: "critique",
-      titre: "Certification Qualiopi expirée",
-      message: `La certification Qualiopi a expiré le ${validite.toLocaleDateString("fr-FR")}. Renouvellement urgent.`,
+      titre: "Certification qualité expirée",
+      message: `La certification qualité a expiré le ${validite.toLocaleDateString("fr-FR")}. Renouvellement urgent.`,
     });
   } else if (validite <= daysFromNow(30, now)) {
     alertes.push({
       code: "qualiopi_expire_j30",
       niveau: "critique",
-      titre: "Certification Qualiopi expire dans 30 jours",
-      message: `La certification Qualiopi expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤30 jours).`,
+      titre: "Certification qualité : expire dans 30 jours",
+      message: `La certification qualité expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤30 jours).`,
     });
   } else if (validite <= daysFromNow(90, now)) {
     alertes.push({
       code: "qualiopi_expire_j90",
       niveau: "important",
-      titre: "Certification Qualiopi expire dans 90 jours",
-      message: `La certification Qualiopi expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤90 jours).`,
+      titre: "Certification qualité : expire dans 90 jours",
+      message: `La certification qualité expire le ${validite.toLocaleDateString("fr-FR")} (dans ≤90 jours).`,
     });
   }
 
@@ -1811,7 +1812,7 @@ async function regleVeilleInactive(now: Date): Promise<AlerteCandidate[]> {
         code: "veille_inactive_j45",
         niveau: "important",
         titre: "Aucune entrée de veille depuis 45 jours",
-        message: `La veille réglementaire/pédagogique n'a pas été mise à jour depuis plus de 45 jours. ${msgDate} Obligation Qualiopi (ind.23/24/25).`,
+        message: `La veille réglementaire/pédagogique n'a pas été mise à jour depuis plus de 45 jours. ${msgDate} Obligation de la certification qualité (ind.23/24/25).`,
       },
     ];
   }
@@ -1890,7 +1891,7 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire",
         niveau: "critique",
-        titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
+        titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
         message: `Le formateur sous-traitant ${t.prenom} ${t.nom} n'a jamais été vérifié (aucune date de vérification).`,
         cibleType: "Trainer",
         cibleId: t.id,
@@ -1899,8 +1900,8 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire",
         niveau: "critique",
-        titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
-        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} date du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")} : elle a plus de ${VALIDITE_MOIS} mois.`,
+        titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
+        message: `La vérification de la certification qualité du formateur sous-traitant ${t.prenom} ${t.nom} date du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")} : elle a plus de ${VALIDITE_MOIS} mois.`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -1911,8 +1912,8 @@ async function regleSousTraitantsQualiopi(now: Date): Promise<AlerteCandidate[]>
       alertes.push({
         code: "sous_traitant_qualiopi_expire_j60",
         niveau: "important",
-        titre: "Qualiopi sous-traitant expire dans 60 jours",
-        message: `La vérification Qualiopi du formateur sous-traitant ${t.prenom} ${t.nom} (du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")}) atteint ${VALIDITE_MOIS} mois dans ${joursRestants} jours.`,
+        titre: "Certification qualité du sous-traitant : expire dans 60 jours",
+        message: `La vérification de la certification qualité du formateur sous-traitant ${t.prenom} ${t.nom} (du ${t.sousTraitantVerifieAt.toLocaleDateString("fr-FR")}) atteint ${VALIDITE_MOIS} mois dans ${joursRestants} jours.`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -2139,8 +2140,8 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
     alertes.push({
       code: "opco_sans_accord",
       niveau: "important",
-      titre: "Session dans 7 jours sans accord OPCO",
-      message: `La session ${s.numero} démarre le ${s.dateDebut.toLocaleDateString("fr-FR")} sans accord OPCO (statut : non demandé).`,
+      titre: "Session dans 7 jours sans accord de paiement par un tiers",
+      message: `La session ${s.numero} démarre le ${s.dateDebut.toLocaleDateString("fr-FR")} sans accord de paiement par un tiers (statut : non demandé).`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
@@ -2170,8 +2171,8 @@ async function regleOpco(now: Date): Promise<AlerteCandidate[]> {
     alertes.push({
       code: "opco_formation_demarree_sans_accord",
       niveau: "critique",
-      titre: "Formation démarrée sans accord OPCO",
-      message: `La session ${s.numero} a démarré sans accord OPCO définitif.`,
+      titre: "Formation démarrée sans accord de paiement par un tiers",
+      message: `La session ${s.numero} a démarré sans accord définitif de paiement par un tiers.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
@@ -2226,11 +2227,11 @@ async function regleConventionTripartite(now: Date): Promise<AlerteCandidate[]> 
       code: "convention_tripartite_manquante",
       niveau: "critique" as AlerteNiveau,
       titre: demarree
-        ? "Session démarrée sans convention tripartite (subrogation OPCO perdue)"
-        : "Convention tripartite manquante (subrogation OPCO)",
+        ? "Session démarrée sans convention tripartite (subrogation perdue)"
+        : "Convention tripartite manquante (subrogation)",
       message: demarree
-        ? `La session ${s.numero} a démarré le ${date} en subrogation OPCO sans convention tripartite signée. La subrogation n'est plus opposable à l'OPCO : ou bien la convention est régularisée et acceptée, ou bien la facture part au client, qui devra avancer les fonds.`
-        : `La session ${s.numero} (démarrage le ${date}) est en subrogation OPCO mais la convention tripartite n'est pas signée.`,
+        ? `La session ${s.numero} a démarré le ${date} en subrogation sans convention tripartite signée. La subrogation n'est plus opposable à l'organisme tiers : ou bien la convention est régularisée et acceptée, ou bien la facture part au client, qui devra avancer les fonds.`
+        : `La session ${s.numero} (démarrage le ${date}) est en subrogation mais la convention tripartite n'est pas signée.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     };
@@ -2893,7 +2894,7 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
       code: "dossier_financement_sans_reponse",
       niveau: "important",
       titre: "Dossier de financement envoyé sans réponse depuis +30 jours",
-      message: `Le dossier ${libelleDossier(d)} (${d.financeurNom ?? "financeur non nommé"}) est parti le ${d.envoyeAt.toLocaleDateString("fr-FR")} sans accord ni refus : relancer le financeur.`,
+      message: `Le dossier ${libelleDossier(d)} (${d.financeurNom ?? "organisme tiers non nommé"}) est parti le ${d.envoyeAt.toLocaleDateString("fr-FR")} sans accord ni refus : relancer l'organisme tiers.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
     });
@@ -2923,15 +2924,15 @@ async function regleDossiersFinancement(now: Date): Promise<AlerteCandidate[]> {
   for (const d of enRetard) {
     if (!d.echeanceFinanceurAt) continue;
     const echeance = d.echeanceFinanceurAt.toLocaleDateString("fr-FR");
-    const financeur = d.financeurNom ?? "financeur non nommé";
+    const financeur = d.financeurNom ?? "organisme tiers non nommé";
     alertes.push({
       code: "financeur_paiement_en_retard",
       niveau: "critique",
       titre: d.subrogation
-        ? "Paiement du financeur en retard (échéance dépassée)"
+        ? "Paiement de l'organisme tiers en retard (échéance dépassée)"
         : "Encaissement en retard — hors subrogation, c'est le client qui doit",
       message: d.subrogation
-        ? `Le paiement du dossier ${libelleDossier(d)} (${financeur}) était attendu le ${echeance} et n'est pas reçu : relancer le financeur.`
+        ? `Le paiement du dossier ${libelleDossier(d)} (${financeur}) était attendu le ${echeance} et n'est pas reçu : relancer l'organisme tiers.`
         : `Le règlement du dossier ${libelleDossier(d)} était attendu le ${echeance} et n'est pas reçu. ⚠️ Ce dossier est SANS subrogation : ${financeur} rembourse le client, il ne verse rien à l'organisme. C'est le CLIENT qu'il faut relancer.`,
       cibleType: "DossierFinancement",
       cibleId: d.id,
@@ -3184,12 +3185,12 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
     .map((b) => ({
       code: "bareme_opco_perime",
       niveau: "important" as AlerteNiveau,
-      titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
+      titre: "Barème de l'organisme tiers à rafraîchir (relevé trop ancien)",
       message: `Le barème ${opcoLabel(b.opco)} ${
         b.releveLe
           ? `a été relevé le ${b.releveLe.toLocaleDateString("fr-FR")} (> ${mois} mois)`
           : "n'a pas de date de relevé"
-      }. Vérifiez le portail OPCO et créez une nouvelle version si les plafonds ont changé.`,
+      }. Vérifiez le portail de l'organisme tiers et créez une nouvelle version si les plafonds ont changé.`,
       cibleType: "BaremeOpco",
       cibleId: b.id,
     }));
@@ -3205,7 +3206,7 @@ async function regleBaremeOpcoPerime(now: Date): Promise<AlerteCandidate[]> {
  */
 async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
   const alertes: AlerteCandidate[] = [];
-  const titre = "Aucun barème OPCO applicable (estimation indicative)";
+  const titre = "Aucun barème d'organisme tiers applicable (estimation indicative)";
 
   const devis = await prisma.devis.findMany({
     where: {
@@ -3221,7 +3222,7 @@ async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
       code: "aucun_bareme_opco",
       niveau: "important",
       titre,
-      message: `Le devis ${d.numero} estime la prise en charge OPCO sur les réglages par défaut : aucun barème relevé pour cet OPCO et cette branche. Saisissez le barème ou confirmez le montant auprès de l'OPCO.`,
+      message: `Le devis ${d.numero} estime le montant payé par l'organisme tiers sur les réglages par défaut : aucun barème relevé pour cet organisme et cette branche. Saisissez le barème ou confirmez le montant auprès de l'organisme tiers.`,
       cibleType: "Devis",
       cibleId: d.id,
     });
@@ -3254,7 +3255,7 @@ async function regleAucunBaremeOpco(now: Date): Promise<AlerteCandidate[]> {
       code: "aucun_bareme_opco",
       niveau: "important",
       titre,
-      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'OPCO ${nomOpcoDuClient(client)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
+      message: `La session ${s.numero} (début le ${s.dateDebut.toLocaleDateString("fr-FR")}) est financée par l'organisme tiers ${nomOpcoDuClient(client)} sans barème applicable${idcc ? ` pour l'IDCC ${idcc}` : ""}. Saisissez le barème avant d'engager le dossier.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });
@@ -4355,7 +4356,7 @@ async function regleEffectifDepasse(now: Date): Promise<AlerteCandidate[]> {
       message:
         `${designerSession(s)} compte ${s.enrollments.length} inscrits actifs pour ` +
         `${s.nbParticipantsPrevus} prévus (démarrage le ${s.dateDebut.toLocaleDateString("fr-FR")}). ` +
-        `L'effectif conditionne le montant conventionné, la prise en charge au barème « par ` +
+        `L'effectif conditionne le montant conventionné, le paiement par un tiers au barème « par ` +
         `stagiaire » et l'engagement pédagogique du catalogue : régularisez la convention, ou ` +
         `reportez les inscrits en trop sur une autre date.`,
       cibleType: "TrainingSession",
@@ -5273,6 +5274,8 @@ const REGLES: Array<{ nom: string; fn: RegleFn }> = [
   // du financeur (saisi à la main), quand ils manquent.
   { nom: "certificat_realisation_manquant", fn: regleCertificatRealisationManquant },
   { nom: "avis_financeur_manquant", fn: regleAvisFinanceurManquant },
+  // L5h — convention garée « à valider » alors que la session commence sous 7 jours.
+  { nom: "convention_non_validee_avant_session", fn: regleConventionNonValideeAvantSession },
   { nom: "satisfaction_sous_seuil", fn: regleSatisfactionSousSeuil },
   { nom: "qualiopi_expiration", fn: regleQualiopiExpiration },
   { nom: "bpf", fn: regleBpf },

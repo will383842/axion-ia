@@ -49,7 +49,7 @@ export const BERNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bernay et dans le Pays de Bernay ?",
-      a: "Oui, Axion-IA intervient à Bernay et dans toute l'Intercom Bernay Terres de Normandie (Broglie, Beaumont-le-Roger, Brionne). Nos consultants se déplacent depuis Rouen (50 min) ou Paris (1h40 train).",
+      a: "Oui, Axion-IA intervient à Bernay et dans toute l'Intercom Bernay Terres de Normandie (Broglie, Beaumont-le-Roger, Brionne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitants agricoles du bocage normand ?",
@@ -64,8 +64,8 @@ export const BERNAY_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Bernay, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, chatbot accueil, classification photos produits.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (50 min) ou Paris (1h40 train direct gare Bernay, ligne Paris-Cherbourg). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Bernay ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

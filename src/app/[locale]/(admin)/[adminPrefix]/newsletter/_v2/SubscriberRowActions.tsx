@@ -90,7 +90,7 @@ export function SubscriberRowActions({
               className="admin-button-ghost"
               style={{ color: "var(--color-admin-error)" }}
             >
-              {erasePending ? "…" : "Confirmer l'effacement"}
+              {erasePending ? "…" : "Confirmer la mise à l'écart"}
             </button>
             <button
               type="button"
@@ -106,19 +106,19 @@ export function SubscriberRowActions({
             onClick={() => setConfirmErase(true)}
             className="admin-button-ghost"
             style={{ color: "var(--color-admin-error)" }}
-            title="Droit à l'effacement RGPD — réservé super_admin"
+            title="Demande d'effacement RGPD : mise à l'écart, rien n'est supprimé — réservé super_admin"
           >
-            Effacer de la lettre et du guide (RGPD)
+            Mettre à l&apos;écart (demande d&apos;effacement)
           </button>
         )}
       </div>
-      {/* Le périmètre du bouton, dit sous lui AVANT de confirmer : il ne couvre
-          que la lettre et le guide (`server/newsletter/effacer.ts`). Affiché à
-          l'ouverture seulement, pour ne pas le répéter sur chaque ligne. */}
+      {/* Ce que fait le bouton, dit sous lui AVANT de confirmer (décision de Williams du
+          11/11/2026 : on écarte, on ne supprime pas — `server/newsletter/effacer.ts`). Affiché
+          à l'ouverture seulement, pour ne pas le répéter sur chaque ligne. */}
       {confirmErase ? (
         <span className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-          N&apos;efface pas les demandes de contact, candidatures ni autres données. Pour une
-          demande d&apos;effacement complète, utilisez la procédure d&apos;effacement complet.
+          Rien n&apos;est supprimé : la personne ne recevra plus aucun envoi et ne pourra plus être
+          réinscrite. Une alerte « à traiter à la main » arrive dans la cloche.
         </span>
       ) : null}
       {unsubErr ? (

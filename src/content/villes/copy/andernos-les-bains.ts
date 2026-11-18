@@ -49,7 +49,7 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Andernos et sur le Bassin d'Arcachon ?",
-      a: "Oui, Axion-IA intervient à Andernos-les-Bains et sur tout le Bassin d'Arcachon (Arès, Lanton, Audenge, Biganos, Le Teich, Arcachon). Nos consultants se déplacent depuis Bordeaux (45 min) ou Paris (TGV 2h + 45 min).",
+      a: "Oui, Axion-IA intervient à Andernos-les-Bains et sur tout le Bassin d'Arcachon (Arès, Lanton, Audenge, Biganos, Le Teich, Arcachon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les ostréiculteurs du Bassin ?",
@@ -65,7 +65,7 @@ export const ANDERNOS_LES_BAINS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Andernos-les-Bains ?",
-      a: "Nos consultants interviennent dans vos locaux à Andernos-les-Bains ou en visio. Depuis Bordeaux centre (45 min). Missions adaptées aux saisonnalités du Bassin.",
+      a: "Nos consultants interviennent dans vos locaux à Andernos-les-Bains ou en visio. Nous intervenons partout en France, sur place ou à distance. Missions adaptées aux saisonnalités du Bassin.",
     },
   ],
 };

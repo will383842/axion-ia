@@ -1,6 +1,6 @@
 /**
- * La révision ne change pas l'état d'un devis ACCEPTÉ, et reste dans son
- * projet (PR 7).
+ * Un devis ACCEPTÉ ne se révise plus (refus, il reste accepté) ; une révision d'un devis
+ * envoyé reste dans son projet (PR 7).
  *
  * `reviseDevisAction` crée une NOUVELLE version brouillon qui pointe
  * l'ancienne (`replacesDevisId`) ; l'ancienne n'est jamais modifiée ici (elle
@@ -64,13 +64,54 @@ function semer(avecProjet: boolean) {
   return f.etat;
 }
 
-describe("la révision ne change pas l'état accepté", () => {
-  it("nouvelle version liée au même projet ; l'origine n'est pas touchée", async () => {
+describe("la révision d'un devis accepté est refusée — il reste accepté", () => {
+  const MSG =
+    "Ce devis a été accepté : il ne peut plus être corrigé. Une modification après acceptation passe par un nouveau devis.";
+
+  it("refus : aucun numéro consommé, aucune version créée, l'origine reste acceptée et non touchée", async () => {
     const etat = semer(true);
+    const r = await reviseDevisAction(ORIGINE);
+    expect(r).toEqual({ error: MSG });
+    expect(etat.devis).toHaveLength(1);
+    expect(etat.devis.some((d) => d["replacesDevisId"] === ORIGINE)).toBe(false);
+    expect(etat.devisMisAJour).toBe(0);
+    expect(etat.devis.find((d) => d["id"] === ORIGINE)?.["statut"]).toBe("accepte");
+    // Aucun lien de projet recopié : rien n'a été écrit.
+    expect(etat.projetDevis).toHaveLength(1);
+  });
+
+  it("« transforme_convention » : refusé aussi (garde de statut), rien d'écrit", async () => {
+    const etat = semer(false);
+    etat.devis[0]!["statut"] = "transforme_convention";
+    const r = await reviseDevisAction(ORIGINE);
+    expect("error" in r).toBe(true);
+    expect(etat.devis).toHaveLength(1);
+  });
+
+  it("le statut est relu DANS la transaction : un devis lu « envoye » puis accepté entre-temps est refusé", async () => {
+    const etat = semer(false);
+    etat.devis[0]!["statut"] = "envoye";
+    // La première lecture (hors transaction) voit « envoye » ; l'acceptation passe avant le verrou.
+    const base = h.db as { devis: { findUnique: (a: unknown) => Promise<unknown> } };
+    const lire = base.devis.findUnique.bind(base.devis);
+    base.devis.findUnique = async (a: unknown) => {
+      const lu = (await lire(a)) as Record<string, unknown> | null;
+      const copie = lu === null ? null : { ...lu };
+      etat.devis[0]!["statut"] = "accepte";
+      return copie;
+    };
+    const r = await reviseDevisAction(ORIGINE);
+    expect(r).toEqual({ error: MSG });
+    expect(etat.devis).toHaveLength(1);
+  });
+
+  it("contre-témoin : un devis envoyé se révise, l'origine n'est pas touchée, le lien de projet est recopié", async () => {
+    const etat = semer(true);
+    etat.devis[0]!["statut"] = "envoye";
     const r = await reviseDevisAction(ORIGINE);
     expect("data" in r).toBe(true);
     expect(etat.devisMisAJour).toBe(0);
-    expect(etat.devis.find((d) => d["id"] === ORIGINE)?.["statut"]).toBe("accepte");
+    expect(etat.devis.find((d) => d["id"] === ORIGINE)?.["statut"]).toBe("envoye");
     const nouvelle = etat.devis.find((d) => d["replacesDevisId"] === ORIGINE);
     expect(nouvelle?.["statut"]).toBe("brouillon");
     expect(etat.projetDevis.filter((l) => l["projetId"] === PROJET)).toHaveLength(2);
@@ -78,6 +119,7 @@ describe("la révision ne change pas l'état accepté", () => {
 
   it("contre-témoin : sans projet d'origine, aucun lien", async () => {
     const etat = semer(false);
+    etat.devis[0]!["statut"] = "envoye";
     await reviseDevisAction(ORIGINE);
     expect(etat.projetDevis).toHaveLength(0);
   });

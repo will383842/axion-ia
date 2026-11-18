@@ -49,7 +49,7 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Gaudens ?",
-      a: "Oui, Axion-IA intervient à Saint-Gaudens et dans tout le Comminges (Montréjeau, Luchon, Aspet). Nos consultants se déplacent depuis Toulouse en 1h10 via l'A64.",
+      a: "Oui, Axion-IA intervient à Saint-Gaudens et dans tout le Comminges (Montréjeau, Luchon, Aspet). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Saint-Gaudens ?",
@@ -65,7 +65,7 @@ export const SAINT_GAUDENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Saint-Gaudens ?",
-      a: "Nos consultants se déplacent à Saint-Gaudens (1h10 A64 depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
   ],
 };

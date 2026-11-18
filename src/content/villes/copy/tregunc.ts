@@ -49,7 +49,7 @@ export const TREGUNC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Trégunc et littoral sud Finistère ?",
-      a: "Oui, Axion-IA intervient à Trégunc et tout le littoral sud Finistère (Concarneau, Pont-Aven, Névez, Rosporden, Bannalec). Nos consultants viennent de Quimper (30 min) ou Lorient (50 min).",
+      a: "Oui, Axion-IA intervient à Trégunc et tout le littoral sud Finistère (Concarneau, Pont-Aven, Névez, Rosporden, Bannalec). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hébergeurs et acteurs du tourisme balnéaire ?",
@@ -65,7 +65,7 @@ export const TREGUNC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Trégunc ?",
-      a: "Nos consultants viennent de Quimper (30 min) ou Concarneau (10 min). Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare la plus proche Rosporden à 20 min (TER). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -5,7 +5,7 @@
  *
  * Face ROUGE : un texte source synthétique où un chemin d'acceptation de devis pose
  * `statut: "accepte"` sans passer par `emettreDevisSigne` — le cliquet doit le refuser en nommant
- * le fichier et la ligne. Face VERTE : le dépôt réel, zéro faute, et les trois écrivains connus,
+ * le fichier et la ligne. Face VERTE : le dépôt réel, zéro faute, et les trois écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2),
  * nommés un par un.
  */
 import path from "node:path";
@@ -129,9 +129,128 @@ describe("REQ-INT-007 — face ROUGE : un écrivain de « accepte » qui n'émet
   });
 });
 
+const FICHIER_LISTE = "src/server/qualiopi/devis/marquer-devis-envoye.ts";
+const CORPS_MARQUER = (premier: string) =>
+  [
+    `export async function marquerDevisEnvoye(${premier}: T, id: string) {`,
+    `  await ${premier}.devis.updateMany({ where: { id }, data: { statut: "envoye" } });`,
+    `  await emettreDevisEmis(${premier}, id);`,
+    "}",
+  ].join("\n");
+
+describe("REQ-INT-007 — fonctions sur le tx de l'appelant : liste NOMMÉE (fichier + fonction) et appels contrôlés (E4)", () => {
+  it("REQ-INT-007 : face VERTE — la fonction listée, dans son fichier, avec `tx` ; un appel avec le tx du travail", () => {
+    const b = confronterEcrivains(
+      new Map([
+        [FICHIER_LISTE, CORPS_MARQUER("tx")],
+        [
+          "src/server/qualiopi/appelant.ts",
+          [
+            "export async function envoyer(e: E) {",
+            "  await prisma.$transaction(async (tx) => {",
+            "    await marquerDevisEnvoye(tx, e);",
+            "  });",
+            "}",
+          ].join("\n"),
+        ],
+      ]),
+    );
+    expect(b.fautes).toEqual([]);
+    expect(b.ecrivains).toHaveLength(1);
+  });
+
+  it("REQ-INT-007 : un appel avec `prisma` (pas le tx du travail) rougit (E4)", () => {
+    const b = un(
+      [
+        "export async function envoyer(e: E) {",
+        "  await prisma.$transaction(async (tx) => {",
+        "    await marquerDevisEnvoye(prisma, e);",
+        "  });",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 3]]);
+  });
+
+  it("REQ-INT-007 : un appel hors du travail d'une transaction rougit (E4)", () => {
+    const b = un(
+      [
+        "export async function envoyer(tx: T, e: E) {",
+        "  await marquerDevisEnvoye(tx, e);",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 2]]);
+  });
+
+  it("REQ-INT-007 : un appel dans une fonction imbriquée du travail rougit (E4)", () => {
+    const b = un(
+      [
+        "export async function envoyer(es: E[]) {",
+        "  await prisma.$transaction(async (tx) => {",
+        "    await Promise.all(es.map(async (e) => marquerDevisEnvoye(tx, e)));",
+        "  });",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => f.regle)).toEqual(["E4"]);
+  });
+
+  it("REQ-INT-007 : une référence qui n'est pas un appel (alias) rougit (E4)", () => {
+    const b = un(
+      [
+        "export async function envoyer(e: E) {",
+        "  const f = marquerDevisEnvoye;",
+        "  await prisma.$transaction(async (tx) => f(tx, e));",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 2]]);
+  });
+
+  it("REQ-INT-007 : un import RENOMMÉ puis un appel avec `prisma` rougit (E4)", () => {
+    const b = un(
+      [
+        'import { marquerDevisEnvoye as m } from "./devis/marquer-devis-envoye";',
+        "export async function envoyer(e: E) {",
+        "  await m(prisma, e);",
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 1]]);
+  });
+
+  it("REQ-INT-007 : un réexport RENOMMÉ rougit (E4)", () => {
+    const b = un('export { marquerDevisEnvoye as x } from "./devis/marquer-devis-envoye";');
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 1]]);
+  });
+
+  it('REQ-INT-007 : un accès par crochets `M["…"](…)` rougit (E4)', () => {
+    const b = un(
+      [
+        'import * as M from "./devis/marquer-devis-envoye";',
+        "export async function envoyer(e: E) {",
+        '  await M["marquerDevisEnvoye"](prisma, e);',
+        "}",
+      ].join("\n"),
+    );
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E4", 3]]);
+  });
+
+  it("REQ-INT-007 : le MÊME nom de fonction dans un AUTRE fichier ne passe pas (E3)", () => {
+    const b = un(CORPS_MARQUER("tx"), "src/server/qualiopi/devis/autre-fichier.ts");
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E3", 2]]);
+  });
+
+  it("REQ-INT-007 : une fonction listée dont le premier paramètre ne s'appelle pas `tx` rougit (E3)", () => {
+    const b = un(CORPS_MARQUER("client"), FICHIER_LISTE);
+    expect(b.fautes.map((f) => [f.regle, f.ligne])).toEqual([["E3", 2]]);
+  });
+});
+
 describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
   it(
-    "REQ-INT-007 : zéro faute, et les trois écrivains connus confrontés par identité",
+    "REQ-INT-007 : zéro faute, et les trois écrivains connus (le webhook DocuSeal n'en est plus un : CGV 6.2) confrontés par identité",
     { timeout: 60_000 },
     () => {
       const b = confronterEcrivains(lireLeDepot(RACINE));
@@ -143,8 +262,10 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
           .map((e) => `${e.fichier} (${e.fonction})`)
           .sort(),
       ).toEqual([
-        "src/app/api/docuseal/webhook/route.ts (dispatchDevisEvent › travail de transactionDevisSigne())",
         "src/server/actions/qualiopi/devis.ts (acceptDevisAction › travail de transactionDevisSigne())",
+        // Devis à formules (lot 4) : recopie du choix + acceptation + `devis.signe` + fait
+        // `commande.signee` dans UNE vraie transaction, même canal Partners fermé.
+        "src/server/qualiopi/devis/acceptation-formules.ts (accepterDevisAFormules › travail de client.$transaction())",
         // Lot S6a : l'écrivain du canal maison a quitté `piece-signature.ts`
         // (`consequenceSignatureComplete`) pour l'après-signature commun — même
         // transaction, même garde, un fichier hors « use server ».

@@ -49,7 +49,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dombasle-sur-Meurthe et alentours ?",
-      a: "Oui, Axion-IA intervient à Dombasle-sur-Meurthe et tout le bassin salifère lorrain (Saint-Nicolas-de-Port, Varangéville, Rosières-aux-Salines). Consultants depuis Nancy (15 min) avec accès TGV Paris 1h30.",
+      a: "Oui, Axion-IA intervient à Dombasle-sur-Meurthe et tout le bassin salifère lorrain (Saint-Nicolas-de-Port, Varangéville, Rosières-aux-Salines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et chimiques de Dombasle ?",
@@ -65,7 +65,7 @@ export const DOMBASLE_SUR_MEURTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Dombasle-sur-Meurthe ?",
-      a: "Nos consultants interviennent depuis Nancy (15 min). Missions sur site dans vos locaux industriels, bureau ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans vos locaux industriels, bureau ou commerce.",
     },
   ],
 };

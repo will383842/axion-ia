@@ -65,11 +65,15 @@ describe("🔑 la porte `/appel/[type]`", () => {
   });
 });
 
-describe("🔑 /appel : le choix public ne liste que les deux rendez-vous publics", () => {
+describe("🔑 /appel : le choix public ne montre que le rendez-vous public de 45 minutes", () => {
   const page = sansCommentaires(lire(PAGE));
 
-  it("une carte par rendez-vous PUBLIC, aucune pour un lien privé", () => {
-    for (const c of CHOIX_PUBLICS) expect(page).toContain(`data-cta="appel_choix_${c}"`);
+  it("une seule carte (le rendez-vous de 45 min), aucune pour un lien privé", () => {
+    // L'échange projet reste un choix PUBLIC côté logique (liens anciens `?rdv=projet`),
+    // mais l'écran n'en fait plus une carte : un seul rendez-vous gratuit, le Diagnostic IA.
+    expect(CHOIX_PUBLICS).toContain("diagnostic");
+    expect(page).toContain('data-cta="appel_choix_diagnostic"');
+    expect(page).not.toContain('data-cta="appel_choix_projet"');
     expect(page).not.toContain('data-cta="appel_choix_apporteur"');
     expect(page).not.toContain('data-cta="appel_choix_salon"');
   });
@@ -77,7 +81,7 @@ describe("🔑 /appel : le choix public ne liste que les deux rendez-vous public
   it("« Changer de rendez-vous » n'existe pas pour un rendez-vous privé", () => {
     const i = page.indexOf('data-cta="appel_changer_de_rendez_vous"');
     expect(i).toBeGreaterThan(-1);
-    expect(page.slice(Math.max(0, i - 400), i)).toContain("config.public ?");
+    expect(page.slice(Math.max(0, i - 400), i)).toContain("config.public &&");
   });
 
   it("un rendez-vous privé n'a ni description structurée ni référencement", () => {

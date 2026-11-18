@@ -49,7 +49,7 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Erquinghem-Lys et dans le val de Lys ?",
-      a: "Oui, Axion-IA intervient à Erquinghem-Lys et tout le bassin armentiérois (Armentières, Nieppe, Bois-Grenier, La Chapelle-d'Armentières). Nos consultants viennent de Lille (20 min) ou via la gare d'Armentières (TER).",
+      a: "Oui, Axion-IA intervient à Erquinghem-Lys et tout le bassin armentiérois (Armentières, Nieppe, Bois-Grenier, La Chapelle-d'Armentières). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME textiles et agroalimentaires du val de Lys ?",
@@ -64,8 +64,8 @@ export const ERQUINGHEM_LYS_COPY: VilleCopy = {
       a: "Pour les exploitants agricoles et maraîchers du val de Lys, nous proposons audit sur place {{price:audit-flash|flat}}, implémentation IA prédiction récoltes, classification photos cultures, optimisation vente directe et traçabilité parcelles.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (20 min voiture ou TER via Armentières). Missions sur site à Erquinghem-Lys ou en visio.",
+      q: "Comment se déroule une mission à Erquinghem-Lys ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site à Erquinghem-Lys ou en visio.",
     },
   ],
 };

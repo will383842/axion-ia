@@ -49,7 +49,7 @@ export const VALLEIRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valleiry et dans le Grand Genève ?",
-      a: "Oui, Axion-IA intervient à Valleiry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois à 10 min, Viry, Collonges, Archamps). Nos consultants couvrent le bassin transfrontalier depuis Genève (20 min) ou Annecy.",
+      a: "Oui, Axion-IA intervient à Valleiry et dans tout le Grand Genève côté français (Saint-Julien-en-Genevois à 10 min, Viry, Collonges, Archamps). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises transfrontalières à Valleiry ?",
@@ -65,7 +65,7 @@ export const VALLEIRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Valleiry ?",
-      a: "Nos consultants interviennent à Valleiry depuis Genève (20 min) ou Annecy (35 min). Intervention sur site dans vos locaux, cabinet ou atelier.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, cabinet ou atelier.",
     },
   ],
 };

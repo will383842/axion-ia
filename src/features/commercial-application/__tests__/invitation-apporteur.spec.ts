@@ -51,7 +51,7 @@ import {
   varianteObjet,
 } from "../invitation-apporteur";
 
-const LIEN = "https://calendly.com/axion-ia/echange-apporteur";
+const LIEN = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 function fiche(over: Record<string, unknown> = {}) {
   return {

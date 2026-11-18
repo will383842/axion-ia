@@ -226,7 +226,7 @@ export const BOURG_LA_REINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-la-Reine ?",
-      a: "Oui, Axion-IA intervient à Bourg-la-Reine et dans tout le sud des Hauts-de-Seine. Accès direct depuis Paris en RER B (ligne B station Bourg-la-Reine), nous nous déplaçons aussi à Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses, communes limitrophes.",
+      a: "Oui, Axion-IA intervient à Bourg-la-Reine et dans tout le sud des Hauts-de-Seine. La ville est desservie par le RER B (station Bourg-la-Reine). Nous intervenons aussi à Antony, Sceaux, Bagneux, Cachan et L'Haÿ-les-Roses, communes limitrophes.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Bourg-la-Reine ?",

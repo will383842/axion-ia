@@ -178,7 +178,7 @@ describe("🔑 le calendrier d'un type privé ne passe jamais par le choix publi
 describe("🔑 un report garde son type d'ORIGINE, salon et apporteur compris", () => {
   it.each([
     ["salon", "https://calendly.com/axion-ia/rencontre-salon-gofab"],
-    ["apporteur", "https://calendly.com/axion-ia/echange-apporteur"],
+    ["apporteur", "https://calendly.com/axion-ia/echange-apporteur-affaires"],
     ["echange_projet", "https://calendly.com/axion-ia/premier-contact"],
   ])("type %s → son adresse, jamais celle d'un autre", async (typeRendezVous, attendu) => {
     expect(await urlDeReprogrammation({ typeRendezVous })).toBe(attendu);
@@ -375,7 +375,9 @@ describe("🔴 un type « En privé » : créneaux et réservation passent par l
     expect(
       trouverLeType(types, "https://calendly.com/autre-compte/rencontre-salon-gofab"),
     ).toBeNull();
-    expect(trouverLeType(types, "https://calendly.com/axion-ia/echange-apporteur")).toBeNull();
+    expect(
+      trouverLeType(types, "https://calendly.com/axion-ia/echange-apporteur-affaires"),
+    ).toBeNull();
     expect(trouverLeType(types, "https://calendly.com/axion-ia")).toBeNull();
   });
 

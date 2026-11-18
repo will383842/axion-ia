@@ -47,7 +47,8 @@ vi.mock("@/server/qualiopi/formateurs-independants/dossier-verifie", () => ({
 vi.mock("@/server/partners-sync/producteurs/devis", () => ({
   devisConcernesPourEmission: vi.fn(async () => []),
   emettreDevisSigne: vi.fn(),
-  transactionDevisSigne: vi.fn(),
+  // Rend la liste des devis visés (aucun ici) : la montée du prospect n'a rien à faire.
+  transactionDevisSigne: vi.fn(async () => []),
 }));
 
 import { apresSignature, type ContexteApresSignature } from "./apres-signature";

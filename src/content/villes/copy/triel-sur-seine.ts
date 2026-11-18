@@ -64,7 +64,7 @@ export const TRIEL_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Triel-sur-Seine ?",
       a: "Paris-Saint-Lazare (40 min Transilien J), gare de Triel-sur-Seine sur place. Poissy à 10 min. Tarifs publics.",
     },
   ],

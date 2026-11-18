@@ -49,7 +49,7 @@ export const ECULLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Écully et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Écully et tout l'ouest lyonnais (Tassin-la-Demi-Lune limitrophe, Charbonnières-les-Bains, La Tour-de-Salvagny, Lyon 5e). Couverture Métropole de Lyon. Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Écully et tout l'ouest lyonnais (Tassin-la-Demi-Lune limitrophe, Charbonnières-les-Bains, La Tour-de-Salvagny, Lyon 5e). Couverture Métropole de Lyon. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sièges sociaux et écoles supérieures ?",
@@ -64,8 +64,8 @@ export const ECULLY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Écully, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis haut de gamme, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Écully ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

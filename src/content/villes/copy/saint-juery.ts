@@ -49,7 +49,7 @@ export const SAINT_JUERY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Juéry ?",
-      a: "Oui, Axion-IA intervient à Saint-Juéry et dans toute l'agglomération d'Albi (Albi, Lescure-d'Albigeois, Marssac-sur-Tarn, Le Sequestre). Nos consultants sont à 5 min d'Albi centre.",
+      a: "Oui, Axion-IA intervient à Saint-Juéry et dans toute l'agglomération d'Albi (Albi, Lescure-d'Albigeois, Marssac-sur-Tarn, Le Sequestre). Saint-Juéry est à 5 min d'Albi centre. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Juéry ?",

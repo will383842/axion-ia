@@ -49,7 +49,7 @@ export const REVEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Revel ?",
-      a: "Oui, Axion-IA intervient à Revel et dans tout le Lauragais (Villefranche-de-Lauragais, Castelnaudary, Sorèze). Nos consultants se déplacent en 50 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Revel et dans tout le Lauragais (Villefranche-de-Lauragais, Castelnaudary, Sorèze). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Revel ?",
@@ -65,7 +65,7 @@ export const REVEL_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Revel ?",
-      a: "Nos consultants se déplacent à Revel (50 min depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
   ],
 };

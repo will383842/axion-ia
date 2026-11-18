@@ -49,7 +49,7 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aixe-sur-Vienne et agglo Limoges ?",
-      a: "Oui, Axion-IA intervient à Aixe-sur-Vienne et toute l'agglomération de Limoges sud-ouest (Saint-Priest-sous-Aixe, Verneuil-sur-Vienne, Séreilhac, Nexon). Nos consultants sont basés à Limoges (15 min) et couvrent tout Limoges Métropole.",
+      a: "Oui, Axion-IA intervient à Aixe-sur-Vienne et toute l'agglomération de Limoges sud-ouest (Saint-Priest-sous-Aixe, Verneuil-sur-Vienne, Séreilhac, Nexon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Aixe-sur-Vienne ?",
@@ -64,8 +64,8 @@ export const AIXE_SUR_VIENNE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Aixe-sur-Vienne, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning chantiers.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges à Aixe-sur-Vienne ?",
-      a: "Nos consultants viennent de Limoges (15 min en voiture ou TER direct gare d'Aixe-sur-Vienne 10 min). Visio également possible.",
+      q: "Comment se déroule une mission à Aixe-sur-Vienne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio également possible.",
     },
   ],
 };

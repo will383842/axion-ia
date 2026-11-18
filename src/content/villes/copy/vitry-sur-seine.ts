@@ -54,7 +54,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
-          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
+          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site.",
           "La formation d'une journée (2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
           "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
           "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
@@ -148,7 +148,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
         hero: "Les formations IA en entreprise d'Axion-IA à Vitry-sur-Seine se déroulent sur site, dans vos locaux des Ardoines, du Port-à-l'Anglais ou du centre-ville. Vos collaborateurs ne repartent pas avec un support de slides : ils repartent avec des outils IA installés sur leur poste et configurés pour leur travail réel — veille documentaire en R&D, traitement d'emails, rédaction de fiches techniques, suivi qualité. Williams se déplace pour calibrer chaque session sur votre secteur dominant — industrie chimique et pharmaceutique, recherche scientifique, construction ou commerce — avec des démos construites sur vos propres documents anonymisés. Formats de la demi-journée à deux jours, de la TPE vitriote au comité de direction.",
         whyHere: [
           "Vitry-sur-Seine concentre des profils techniques et scientifiques exigeants — autour du Centre de recherche Sanofi Vitry et des pôles Medicen Paris Region et Systematic Paris-Region — qui réclament des sessions IA calibrées par métier, pas des ateliers génériques.",
-          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site, sans surcoût de déplacement.",
+          "Toute la commune est couverte en présentiel : ZAC Les Ardoines, Port à l'Anglais, ZAC Rouget de Lisle et centre-ville près du MAC VAL. Williams arrive sur site.",
           "La formation d'une journée (2 à 15 participants) convient aux PME vitriotes — industrie chimique, construction, commerce de détail, santé — qui veulent une montée en compétences collective en une journée.",
           "Le format Conférence s'adresse aux grandes plénières des acteurs industriels et de R&D implantés sur la ville, là où une audience large doit être sensibilisée d'un coup.",
           "Le format Dirigeant (1 jour) cadre la trajectoire IA en huis clos pour les DG et directions d'opérations, sans passer par un comité élargi, avec une feuille de route concrète à la sortie.",
@@ -422,7 +422,7 @@ export const VITRY_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA se déplace-t-il réellement sur site à Vitry-sur-Seine ?",
-      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. Williams et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations. La ville est accessible en moins de 30 minutes depuis Paris via le métro ou la Gare de Lyon.",
+      a: "Oui. Axion-IA est un cabinet national qui intervient sur site chez le client. Williams et l'équipe se déplacent à Vitry-sur-Seine pour les audits, interventions et implémentations.",
     },
     {
       q: "Une PME vitriote sans DSI peut-elle bénéficier d'une implémentation IA clés en main ?",

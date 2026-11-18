@@ -49,7 +49,7 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Berthevin et dans l'agglomération lavalloise ?",
-      a: "Oui, Axion-IA intervient à Saint-Berthevin et dans toute l'agglomération lavalloise (Laval, Changé, Bonchamp-lès-Laval, L'Huisserie). Nos consultants sont basés en proximité, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Saint-Berthevin et dans toute l'agglomération lavalloise (Laval, Changé, Bonchamp-lès-Laval, L'Huisserie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du bassin lavallois ?",
@@ -65,7 +65,7 @@ export const SAINT_BERTHEVIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Saint-Berthevin ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Saint-Berthevin (zones d'activités est Laval). Gare TGV Laval à 5 km. Accès A81 direct.",
+      a: "Nos consultants interviennent directement dans vos locaux à Saint-Berthevin (zones d'activités est Laval). Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

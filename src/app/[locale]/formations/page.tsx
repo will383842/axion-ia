@@ -48,7 +48,7 @@ import {
 } from "@/content/formations/catalog-v2-facts";
 import { UnsplashCredit } from "@/components/media/UnsplashCredit";
 import { ServiceReviewsSection } from "@/components/reviews/ServiceReviewsSection";
-import { formatAmount, getFormationCatalogPriceRange, getFormationPrice } from "@/content/pricing";
+import { formatMontantPublic } from "@/content/pricing";
 import {
   buildProductMetadata,
   buildServiceJsonLd,
@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // pas la visibilité de la page. Il exige donc la certification réelle.
   const qualiopiSerp = isQualiopiCertificationObtenue()
     ? "certifié Qualiopi, finançables OPCO"
-    : "générales, par métier ou par secteur d'activité";
+    : "générales, par métier ou par secteur";
   return buildProductMetadata({
     locale,
     path: "/formations",
@@ -108,11 +108,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     // description. Finit par « · Axion-IA » (bypass template).
     title:
       loc === "fr"
-        ? "Formation IA en entreprise sur site · Axion-IA"
+        ? "Formation IA en entreprise : former vos équipes · Axion-IA"
         : "On-site corporate AI training · Axion-IA",
     description:
       loc === "fr"
-        ? `Formations IA présentiel ou distanciel, ${qualiopiSerp} — dès ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} par groupe (${EFFECTIF_PLAGE_FR}). Vos équipes gagnent du temps dès le lendemain.`
+        ? `Formations IA pour vos équipes, sur site ou à distance : ${qualiopiSerp}. Prix par groupe (${EFFECTIF_PLAGE_FR}), sur devis.`
         : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
   });
 }
@@ -146,9 +146,8 @@ export default async function FormationsHub({ params }: Props) {
   const seminaire = getSeminairesV2()[0];
   const metiersMeta = FORMATION_CATEGORIES_META.find((c) => c.id === "metier");
   const secteursMeta = FORMATION_CATEGORIES_META.find((c) => c.id === "secteur");
-  const { minEur } = getFormationCatalogPriceRange();
-  // `formatAmount` non-compact porte déjà « € HT » — ne jamais resuffixer.
-  const minPriceLabel = formatAmount(minEur, "fr");
+  // R7 (ordre de Williams du 08/11/2026) : plus aucun prix de formation au public.
+  // Les cartes passent par `formatMontantPublic` (interrupteur de pricing.ts).
   // Claims certification/financement du héros — gatés Phase B (ISR 1h les
   // réinjecte au flip du flag, comme la meta).
   const ofPublicHero = isQualiopiCertificationObtenue();
@@ -248,7 +247,7 @@ export default async function FormationsHub({ params }: Props) {
       ? "Formations IA équipe · générales, métiers, secteurs · Axion-IA"
       : "Team AI trainings · general, role and industry offers · Axion-IA",
     description: isFr
-      ? `Formations IA opérationnelles pour vos équipes (2 à 15 personnes) : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité. Prix par groupe, dès ${minPriceLabel}.`
+      ? `Formations IA opérationnelles pour vos équipes (2 à 15 personnes) : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité. Prix par groupe, sur devis.`
       : `Operational AI trainings for your teams (2-15 people): general offers plus ${metiers.length} role-specific and ${secteurs.length} industry-specific programmes, priced per group.`,
     serviceType: "AI training",
     areasServed: buildServiceAreasServed(loc),
@@ -264,7 +263,7 @@ export default async function FormationsHub({ params }: Props) {
       ? "Formations IA en entreprise — générales, par métier, par secteur"
       : "Corporate AI trainings — general, by role, by industry",
     description: isFr
-      ? `Hub des formations IA opérationnelles Axion-IA : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité, séminaire entreprise et formule mensuelle. Prix par groupe (2 à 15 pers.), dès ${minPriceLabel}.`
+      ? `Hub des formations IA opérationnelles Axion-IA : ${offresGenerales.length} offres générales, ${metiers.length} formations par métier, ${secteurs.length} formations par secteur d'activité, séminaire entreprise et formule mensuelle. Prix par groupe (2 à 15 pers.), sur devis.`
       : "Hub of Axion-IA operational AI trainings: general offers, role-specific and industry-specific programmes, company seminar and recurring monthly formula. Priced per group (2-15 people).",
     speakable: true,
     ...(buildPrimaryImageOfPage("/formations")
@@ -353,8 +352,10 @@ export default async function FormationsHub({ params }: Props) {
           visibilité sous les CTA. */}
       <ServiceHero
         eyebrow={isFr ? "Module 1 · Formations équipe" : "Module 1 · Team trainings"}
-        title={isFr ? "Explosez la productivité de vos équipes" : "Boost your teams' productivity"}
-        titleEm={isFr ? "par des formations performantes" : "with high-impact trainings"}
+        title={isFr ? "Formation IA en entreprise :" : "Boost your teams' productivity"}
+        titleEm={
+          isFr ? "vos équipes formées sur leurs propres tâches" : "with high-impact trainings"
+        }
         description={
           // ⚠️ « 100 % clients satisfaits » a été RETIRÉ des quatre variantes le
           // 2026-08-12 (décision Will). C'était une statistique invérifiable,
@@ -367,11 +368,11 @@ export default async function FormationsHub({ params }: Props) {
           // résultat obtenu. Ne pas confondre les deux.
           isFr
             ? ofPublicHero
-              ? "Certifié Qualiopi · jusqu'à 100 % finançable OPCO · prix publics par groupe."
-              : "100 % pratique, sur vos propres outils et cas d'usage · prix publics par groupe."
+              ? "Certifié Qualiopi · jusqu'à 100 % finançable OPCO · prix par groupe, sur devis."
+              : "100 % pratique, sur vos propres outils et cas d'usage · prix par groupe, sur devis."
             : ofPublicHero
-              ? "Qualiopi-certified · up to 100% OPCO-fundable · public prices per group."
-              : "100% hands-on, on your own tools and use cases · public prices per group."
+              ? "Qualiopi-certified · up to 100% OPCO-fundable · priced per group, on quote."
+              : "100% hands-on, on your own tools and use cases · priced per group, on quote."
         }
         ctas={
           // CTA primary « Réserver un appel » (aligné Header) + Secondary
@@ -510,7 +511,7 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "commencer et accélérer" : "start and accelerate"}
         description={
           isFr
-            ? `Des formations 100 % pratiques, construites à partir de vos propres outils et cas d'usage — chaque participant repart avec des méthodes et des prompts immédiatement applicables. Prix par groupe (2 à 15 personnes), dès ${minPriceLabel}.`
+            ? `Des formations 100 % pratiques, construites à partir de vos propres outils et cas d'usage — chaque participant repart avec des méthodes et des prompts immédiatement applicables. Prix par groupe (2 à 15 personnes), sur devis.`
             : "100% hands-on trainings, built on your own tools and use cases — every participant leaves with methods and prompts they can apply immediately. Priced per group (2-15 people)."
         }
         contentClassName={TIGHT_X}
@@ -570,16 +571,11 @@ export default async function FormationsHub({ params }: Props) {
                   </p>
                   <p className="text-fg-soft mt-3 text-[13px] leading-relaxed">{offre.pitchFr}</p>
 
-                  {/* Durée & prix — dérivés de la matrice (jamais en dur).
-                      `formatAmount` NON-compact porte déjà « € HT ». */}
+                  {/* Durée & prix — « Sur devis » tant que l'interrupteur R7 est coupé. */}
                   <div className="border-border mt-5 flex items-baseline justify-between gap-3 border-t pt-4 text-[13.5px]">
                     <span className="text-fg-soft font-medium">{dureeLabelFr(offre.f)}</span>
                     <span className="text-fg font-semibold tabular-nums">
-                      {typeof price === "number"
-                        ? formatAmount(price, "fr")
-                        : isFr
-                          ? "Sur devis"
-                          : "On quote"}
+                      {formatMontantPublic(price, isFr ? "fr" : "en")}
                     </span>
                   </div>
                   <p className="text-fg-muted mt-1.5 text-[12px]">
@@ -682,14 +678,14 @@ export default async function FormationsHub({ params }: Props) {
           ))}
         </div>
 
-        {/* Lien grille tarifaire — la page /formations/tarifs porte les 3
-            tableaux (catégorie × durée). href littéral typé (routing.ts). */}
+        {/* Lien grille tarifaire — la page /tarifs est la seule page tarifs
+            (/formations/tarifs redirige en 301 vers elle). href littéral typé (routing.ts). */}
         <p className="mt-8 text-center">
           <Link
-            href="/formations/tarifs"
+            href="/tarifs"
             className="text-terracotta hover:text-terracotta-deep inline-flex items-center gap-1 text-sm font-semibold underline-offset-4 hover:underline focus-visible:underline focus-visible:outline-none"
           >
-            {isFr ? "Voir tous les tarifs en détail" : "See all prices in detail"}
+            {isFr ? "Voir nos tarifs et conditions" : "See our prices and terms"}
             <ArrowRight className="h-4 w-4" aria-hidden="true" />
           </Link>
         </p>
@@ -1427,7 +1423,8 @@ export default async function FormationsHub({ params }: Props) {
                       // JAMAIS hardcodés — cohérents avec les cartes plus haut.
                       id: "prix-formation-ia",
                       question: "Combien coûte une formation IA en entreprise ?",
-                      answer: `Nos prix sont publics et tarifés par groupe (2 à 15 participants) — jamais par personne. Offres générales dès ${minPriceLabel} (4 h) ; formations par métier dès ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "fr")} la journée ; formations par secteur d'activité dès ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "fr")} la journée. Le détail complet figure sur la page tarifs.`,
+                      answer:
+                        "Le prix est établi sur devis, par groupe (2 à 15 participants) — jamais par personne. Il dépend de la formation retenue (offre générale, par métier ou par secteur d'activité), de sa durée (4 h à 2 jours) et du format, sur site ou à distance. Le devis arrive sous 48 h ouvrées, sans engagement.",
                     },
                     {
                       id: "effectif",
@@ -1458,7 +1455,7 @@ export default async function FormationsHub({ params }: Props) {
                       question:
                         "Vos formations IA sont-elles disponibles à Paris et en Île-de-France ?",
                       answer:
-                        "Oui. Paris et l'Île-de-France sont notre premier terrain d'intervention. Toutes les formations du catalogue (générales, par métier, par secteur) sont accessibles dans les arrondissements parisiens et la première couronne (La Défense, Issy, Boulogne, Levallois, Neuilly). Même tarif public qu'en région.",
+                        "Oui. Paris et l'Île-de-France sont notre premier terrain d'intervention. Toutes les formations du catalogue (générales, par métier, par secteur) sont accessibles dans les arrondissements parisiens et la première couronne (La Défense, Issy, Boulogne, Levallois, Neuilly). Mêmes conditions tarifaires qu'en région.",
                     },
                     {
                       id: "couverture-france",
@@ -1507,7 +1504,8 @@ export default async function FormationsHub({ params }: Props) {
                       // Price derived from the catalogue SSOT, never hardcoded.
                       id: "prix-formation-ia",
                       question: "How much does corporate AI training cost?",
-                      answer: `Our prices are public and set per group (2-15 participants) — never per person. General offers from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (4 h); role-specific trainings from ${formatAmount(getFormationPrice("metier", "1j") ?? Number.NaN, "en")} per day; industry-specific trainings from ${formatAmount(getFormationPrice("secteur", "1j") ?? Number.NaN, "en")} per day. Full details on the pricing page.`,
+                      answer:
+                        "Pricing is quoted per group (2-15 participants) — never per person. It depends on the training (general, role-specific or industry-specific), its duration (4 h to 2 days) and the format, on site or remote. The quote arrives within 48 business hours, with no commitment.",
                     },
                     {
                       id: "headcount",
@@ -1537,7 +1535,7 @@ export default async function FormationsHub({ params }: Props) {
                       id: "coverage-paris",
                       question: "Are your AI trainings available in Paris and Greater Paris?",
                       answer:
-                        "Yes. Paris and Greater Paris are our top engagement ground. Every training in the catalogue (general, role-specific, industry-specific) is accessible in Paris arrondissements and inner suburbs (La Défense, Issy, Boulogne, Levallois, Neuilly). Same public pricing as regions.",
+                        "Yes. Paris and Greater Paris are our top engagement ground. Every training in the catalogue (general, role-specific, industry-specific) is accessible in Paris arrondissements and inner suburbs (La Défense, Issy, Boulogne, Levallois, Neuilly). Same pricing as in the regions.",
                     },
                     {
                       id: "coverage-france",

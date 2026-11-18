@@ -64,8 +64,8 @@ export const AMBILLY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification documents, chatbot clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Genève ?",
-      a: "Nos consultants rejoignent Ambilly depuis Genève en 15 min (Léman Express ou voiture via douane Thônex). Gare Annemasse à 5 min.",
+      q: "Comment se déroule une mission à Ambilly ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -84,6 +84,8 @@ const ALL_POLE_KEYS: ReadonlyArray<string> = Object.values(GROUP_POLE_ORDER).fla
 // lucide) résolu par `navIcon()` — l'ancien ICON_MAP par label est supprimé
 // (refonte visuelle console 2026-08, chantier icônes).
 const GROUP_ICON_MAP: Record<AdminNavGroup, LucideIcon> = {
+  // Créé le 2026-10-25 : fiches clients en tête du menu.
+  clients: Building2,
   // « Planification » (ex-« Activité quotidienne ») depuis le 2026-09-28.
   main: Activity,
   // Groupe `rendez-vous` supprimé le 2026-07-29 : les appels réservés sont un

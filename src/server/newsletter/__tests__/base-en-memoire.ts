@@ -69,9 +69,28 @@ export function correspond(ligne: Ligne, where: Where | undefined): boolean {
     }
     const ops = cond as Record<string, unknown>;
     if ("path" in ops) {
-      const { path, equals, ...reste } = ops;
+      const { path, equals, array_contains, ...reste } = ops;
       if (Object.keys(reste).length > 0) {
         throw new Error(`filtre JSON non pris en charge : ${Object.keys(reste).join(", ")}`);
+      }
+      if (array_contains !== undefined) {
+        // `jsonb @>` sur un tableau : un élément contient tous les couples du motif.
+        const liste = valeurAuChemin(v, path as string[]);
+        const motifs = array_contains as Array<Record<string, unknown>>;
+        if (
+          !Array.isArray(liste) ||
+          !motifs.every((m) =>
+            liste.some(
+              (el) =>
+                el !== null &&
+                typeof el === "object" &&
+                Object.entries(m).every(([k, x]) => (el as Record<string, unknown>)[k] === x),
+            ),
+          )
+        ) {
+          return false;
+        }
+        continue;
       }
       if (valeurAuChemin(v, path as string[]) !== equals) return false;
       continue;

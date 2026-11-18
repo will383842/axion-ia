@@ -49,7 +49,7 @@ export const SAINT_REMY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Rémy et agglomération Chalon ?",
-      a: "Oui, Axion-IA intervient à Saint-Rémy et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Châtenoy-le-Royal, Saint-Marcel). Consultants depuis Lyon (1h30) ou gare TGV Le Creusot (30 min).",
+      a: "Oui, Axion-IA intervient à Saint-Rémy et toute l'agglomération du Grand Chalon (Chalon-sur-Saône, Châtenoy-le-Royal, Saint-Marcel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales ?",
@@ -65,7 +65,7 @@ export const SAINT_REMY_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Rémy ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h30) ou via gare TGV Le Creusot (30 min).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

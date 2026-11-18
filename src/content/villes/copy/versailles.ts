@@ -132,7 +132,7 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai obtient-on un devis et intervenez-vous sur place ?",
-            a: "Devis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons à Versailles — centre-ville près du Château, zone Satory ou sites proches de Saint-Quentin-en-Yvelines (Versailles est à environ 12 minutes de Paris par le RER C) — et travaillons aussi à distance selon vos besoins.",
+            a: "Devis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons à Versailles — centre-ville près du Château, zone Satory ou sites proches de Saint-Quentin-en-Yvelines — et travaillons aussi à distance selon vos besoins.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const VERSAILLES_COPY: VilleCopy = {
           },
           {
             q: "How fast is a quote and do you come on site?",
-            a: "Quote from 24-48 hours depending on project complexity. We travel to Versailles — city center near the Palace, the Satory zone or sites near Saint-Quentin-en-Yvelines (Versailles is about 12 minutes from Paris by RER C) — and also work remotely as needed.",
+            a: "Quote from 24-48 hours depending on project complexity. We travel to Versailles — city center near the Palace, the Satory zone or sites near Saint-Quentin-en-Yvelines — and also work remotely as needed.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const VERSAILLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Versailles et dans les Yvelines ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nos consultants se déplacent sur site, à 12 minutes de Paris par le RER C, ou interviennent en visio selon vos besoins.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Versailles et du secteur de Saint-Quentin-en-Yvelines. Nous intervenons partout en France, sur place ou à distance, selon vos besoins.",
     },
     {
       q: "Travaillez-vous avec l'hôtellerie et le tourisme de prestige versaillais ?",
@@ -245,8 +245,8 @@ export const VERSAILLES_COPY: VilleCopy = {
       a: "Automatisation des devis, qualification des demandes entrantes, rédaction d'offres personnalisées, suivi des prestataires et synthèses post-évènement. L'objectif est de libérer du temps commercial sans perdre la touche sur mesure.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Versailles est à 12 minutes de Paris par le RER C, 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly. Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Versailles ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Versailles est desservie par le RER C, à 10 minutes de Saint-Quentin-en-Yvelines et 30 minutes d'Orly.",
     },
   ],
 };

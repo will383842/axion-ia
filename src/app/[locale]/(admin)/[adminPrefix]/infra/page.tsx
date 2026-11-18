@@ -272,6 +272,10 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   routing += process.env["TELEGRAM_CHAT_ID_CLIENTS"]
     ? " · Clients dédié (détail complet)"
     : " · Clients → routes d'avant (message allégé, TELEGRAM_CHAT_ID_CLIENTS absent)";
+  // Salon 📝 Questionnaire audit (2026-10-26) : sans lui, repli sur Clients, puis Système.
+  routing += process.env["TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"]
+    ? " · Questionnaire audit dédié"
+    : " · Questionnaire audit → Clients, puis Système";
 
   try {
     const res = await fetch(`https://api.telegram.org/bot${token}/getMe`, {
@@ -285,36 +289,6 @@ async function checkTelegram(): Promise<{ status: Status; detail: string | null 
   } catch {
     return { status: "unknown", detail: `API injoignable · ${routing}` };
   }
-}
-
-/**
- * Statut du doublon WhatsApp (CallMeBot).
- *
- * Aucune carte n'existait : le canal est no-op silencieux tant que la clé et le
- * numéro ne sont pas posés (cf. `server/notifications/channels/whatsapp.ts`), et
- * rien dans la console ne permettait de savoir dans quel état on se trouvait —
- * « je ne reçois pas de WhatsApp » était indiagnosticable depuis l'admin.
- *
- * Volontairement SANS appel réseau : CallMeBot n'a pas d'endpoint de santé, et
- * un ping enverrait un vrai message WhatsApp à chaque ouverture de la page.
- * On ne divulgue jamais la clé — seulement le numéro masqué.
- */
-function checkWhatsApp(): { status: Status; detail: string | null } {
-  const key = process.env["WHATSAPP_CALLMEBOT_APIKEY"]?.trim();
-  const phone = process.env["WHATSAPP_NOTIFY_PHONE"]?.replace(/[\s-]/g, "");
-  if (!key && !phone) {
-    return {
-      status: "not-configured",
-      detail: "WHATSAPP_CALLMEBOT_APIKEY + WHATSAPP_NOTIFY_PHONE manquants — canal inactif",
-    };
-  }
-  // Une seule des deux variables = panne muette : le canal skip sans rien dire.
-  if (!key)
-    return { status: "down", detail: "WHATSAPP_CALLMEBOT_APIKEY manquante — rien n'est envoyé" };
-  if (!phone)
-    return { status: "down", detail: "WHATSAPP_NOTIFY_PHONE manquant — rien n'est envoyé" };
-  const masked = phone.length > 4 ? `…${phone.slice(-4)}` : "configuré";
-  return { status: "ok", detail: `Doublon leads actif → ${masked}` };
 }
 
 // ─── Page ───────────────────────────────────────────────────────────────────
@@ -348,10 +322,6 @@ export default async function AdminInfraPage({ params }: PageProps) {
     checkHetznerServer(),
     checkCloudflareR2(),
   ]);
-  // Synchrone et volontairement hors du Promise.all : CallMeBot n'a pas
-  // d'endpoint de santé, et le « pinger » enverrait un vrai WhatsApp à chaque
-  // ouverture de cette page.
-  const whatsapp = checkWhatsApp();
 
   const cards: Card[] = [
     {
@@ -453,14 +423,6 @@ export default async function AdminInfraPage({ params }: PageProps) {
       externalUrl: "https://web.telegram.org/",
       status: telegram.status,
       detail: telegram.detail,
-      paid: "0 €",
-    },
-    {
-      name: "WhatsApp (CallMeBot)",
-      role: "Doublon des leads humains (contact, devis, RDV, candidature, podcast)",
-      externalUrl: "https://www.callmebot.com/blog/free-api-whatsapp-messages/",
-      status: whatsapp.status,
-      detail: whatsapp.detail,
       paid: "0 €",
     },
     {

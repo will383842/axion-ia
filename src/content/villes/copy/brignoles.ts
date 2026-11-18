@@ -49,7 +49,7 @@ export const BRIGNOLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Brignoles et dans le centre-Var ?",
-      a: "Oui, Axion-IA intervient à Brignoles et dans tout le centre-Var (Saint-Maximin, Tourves, Le Luc, Vidauban). Consultants accessibles en 45 min depuis Toulon ou Aix-en-Provence via A8.",
+      a: "Oui, Axion-IA intervient à Brignoles et dans tout le centre-Var (Saint-Maximin, Tourves, Le Luc, Vidauban). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Brignoles ?",
@@ -65,7 +65,7 @@ export const BRIGNOLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Brignoles ?",
-      a: "Nos consultants interviennent depuis Toulon (45 min) ou Aix-en-Provence (45 min). Déplacement sur site dans vos locaux professionnels, atelier, usine, domaine viticole ou cabinet. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, usine, domaine viticole ou cabinet. A8 directe.",
     },
   ],
 };

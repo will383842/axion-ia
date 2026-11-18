@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_LUZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Jean-de-Luz ?",
-      a: "Nos consultants interviennent sur site à Saint-Jean-de-Luz et sur la Côte Basque. Déplacement direct sur votre hôtel, restaurant, commerce ou bureau. Gare TGV Saint-Jean-de-Luz—Ciboure, aéroport Biarritz à 20 min.",
+      a: "Nos consultants interviennent sur site à Saint-Jean-de-Luz et sur la Côte Basque, dans votre hôtel, restaurant, commerce ou bureau. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

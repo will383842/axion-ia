@@ -158,7 +158,25 @@ describe("le jeu de données d'exemple couvre tous les gabarits", () => {
     // `qualiopi-presence-confirmation` (avec sa relance, UN fichier) et
     // `qualiopi-presence-entreprise`. Champs tous facultatifs ; `lienPresence`
     // a sa valeur d'exemple.
-    expect(tous.length).toBe(78);
+    // RELEVÉ À 79 (2026-10-24) : `questionnaire-avant-audit`, le lien du questionnaire de pré-audit
+    // envoyé par clic de Will. Champs tous facultatifs.
+    // RELEVÉ À 81 (2026-10-26) : `questionnaire-avant-audit-relance` et
+    // `questionnaire-avant-audit-confirmation`, le suivi du questionnaire (enfilés par le
+    // balayage du worker seulement). Champs tous facultatifs.
+    // RELEVÉ À 82 (2026-10-29) : `relance-devis-client` (lot B9). Champs facultatifs sauf `numero` et `destinataireNom`, déjà au jeu d'exemple.
+    // RELEVÉ À 83 (2026-10-29) : `questionnaire-relance-equipe`, brouillon au dirigeant (lot B10).
+    // Champs tous facultatifs.
+    // RELEVÉ À 84 (2026-11-04) : `devis-signe-a-contresigner`, notification INTERNE « devis signé
+    // par le client ». Champs tous facultatifs.
+    // RELEVÉ À 85 (2026-11-06) : `devis-commande-confirmation`, confirmation de commande au client
+    // (CGV 5.2). Quatre champs de montants/CGV ajoutés au jeu d'exemple.
+    // RELEVÉ À 86 (2026-11-07) : `devis-code-signature`, code à usage unique pour signer un devis
+    // (lot 4 bis). Aucun champ requis : le code et la durée viennent de `valeurs`, remplis au rendu.
+    // RELEVÉ À 87 (2026-11-14) : `alerte-demande-client`, doublon e-mail INTERNE d'une demande de
+    // client (alertes clients, PR B). Champs tous facultatifs.
+    // RELEVÉ À 88 (2026-11-15) : `recap-demandes-clients`, récap quotidien INTERNE des demandes de
+    // clients (alertes clients, PR C). Champs tous facultatifs.
+    expect(tous.length).toBe(88);
   });
 
   it.each(tous.map((g) => g.nom))("%s : tous ses champs requis ont une valeur d'exemple", (nom) => {

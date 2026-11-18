@@ -49,7 +49,7 @@ export const NEUVILLE_DE_POITOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Neuville-de-Poitou et nord Poitou ?",
-      a: "Oui, Axion-IA intervient à Neuville-de-Poitou et tout le nord Poitou (Mirebeau, Vouillé, Jaunay-Marigny, Saint-Martin-la-Pallu). Nos consultants sont basés à Poitiers (15 min) et couvrent tout Grand Poitiers.",
+      a: "Oui, Axion-IA intervient à Neuville-de-Poitou et tout le nord Poitou (Mirebeau, Vouillé, Jaunay-Marigny, Saint-Martin-la-Pallu). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Neuville-de-Poitou ?",

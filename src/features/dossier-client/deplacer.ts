@@ -79,12 +79,12 @@ export async function deplacerRencontre(
     // deux projets (le budget de l'audit rejoindrait celui de la formation).
     if (new Set(faits.filter((f) => f.portee === "projet").map((f) => f.projetId)).size > 1) {
       throw new ErreurDeplacement(
-        "Les faits de ce rendez-vous sont rangés dans plusieurs projets : un déplacement les réunirait dans un seul. Rangez-les d'abord dans un même projet.",
+        "Les faits de ce rendez-vous sont rangés dans plusieurs prestations : un déplacement les réunirait dans une seule. Rangez-les d'abord dans une même prestation.",
       );
     }
     if (versProjetId === null && faits.some((f) => f.portee === "projet")) {
       throw new ErreurDeplacement(
-        "Des faits de ce rendez-vous sont rangés dans un projet : choisissez le projet d'arrivée.",
+        "Des faits de ce rendez-vous sont rangés dans une prestation : choisissez la prestation d'arrivée.",
       );
     }
 

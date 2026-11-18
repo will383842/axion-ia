@@ -1551,7 +1551,7 @@ export const KW_INTERVENTIONS_G2: KeywordSeed[] = [
       h1: "IA et obligation de formation : ce que les employeurs doivent savoir en 2026",
       metaTitle: "Formation IA obligatoire salariés France — 2026",
       metaDescription:
-        "L'AI Act européen impose-t-il une formation IA aux salariés ? Ce que les RH et dirigeants doivent anticiper dès 2026. Obligations, délais, recommandations.",
+        "L'article 4 de l'AI Act demande de prendre des mesures pour la maîtrise de l'IA des équipes. Ce que RH et dirigeants peuvent anticiper. Repères.",
       h2Variants: [
         "Ce que l'AI Act impose aux entreprises en matière de formation IA",
         "Article 4 AI Act : obligation de compétence IA pour les utilisateurs de systèmes IA",

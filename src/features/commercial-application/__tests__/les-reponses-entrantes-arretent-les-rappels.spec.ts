@@ -162,7 +162,7 @@ import type { Entetes } from "@/lib/commercial-application/reponse-entrante";
 const JOUR = 24 * 60 * 60 * 1000;
 const INVITATION = new Date("2026-09-27T19:30:00Z");
 const EMPREINTE = hashEmailForLookup("camille@exemple.fr")!;
-const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const passage = (jour: number) => new Date(Date.UTC(2026, 8, 27 + jour, 8, 0, 0));
 
 function ligne(over: Ligne = {}): Ligne {

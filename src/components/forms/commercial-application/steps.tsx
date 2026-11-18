@@ -887,29 +887,6 @@ export function StepDetails({ a, set, errors }: StepProps) {
       />
 
       <div className="mt-6">
-        <ChipGroup
-          legend="Avez-vous le permis et un véhicule ?"
-          requiredField
-          error={errors.permisVehicule}
-        >
-          <Chip
-            name="permis"
-            value="oui"
-            label="Oui"
-            checked={a.permisVehicule === true}
-            onToggle={() => set({ permisVehicule: true })}
-          />
-          <Chip
-            name="permis"
-            value="non"
-            label="Non"
-            checked={a.permisVehicule === false}
-            onToggle={() => set({ permisVehicule: false })}
-          />
-        </ChipGroup>
-      </div>
-
-      <div className="mt-6">
         <ChipGroup legend="Votre statut aujourd’hui" optionalHint>
           {STATUT_OPTIONS.map((o) => (
             <Chip

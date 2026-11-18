@@ -49,7 +49,7 @@ export const BOLBEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Bolbec et dans la vallee du Commerce ?",
-      a: "Oui, Axion-IA intervient a Bolbec et dans toute la vallee du Commerce (Lillebonne, Barentin, Gruchet-le-Valasse). Consultants depuis Rouen (50 min) ou Le Havre (30 min).",
+      a: "Oui, Axion-IA intervient a Bolbec et dans toute la vallee du Commerce (Lillebonne, Barentin, Gruchet-le-Valasse). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les professionnels de sante a Bolbec ?",

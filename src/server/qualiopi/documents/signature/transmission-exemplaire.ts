@@ -90,6 +90,16 @@ export type ResultatTransmission =
   | { readonly ok: true; readonly destinataires: readonly string[]; readonly r2Key: string }
   | { readonly ok: false; readonly motif: MotifNonTransmission; readonly detail?: string };
 
+/**
+ * Le libellé tel qu'il se lit dans l'OBJET d'un e-mail client : sans la note
+ * entre parenthèses (« (mandat OPCO) » est une note interne). Même expression
+ * que `designationPiece` de `piece-exemplaire-signe.tsx`, qui fait déjà ce
+ * retrait dans le corps. Un libellé sans parenthèse reste identique.
+ */
+function libelleObjet(libelle: string): string {
+  return libelle.replace(/\s*\([^)]*\)/g, "");
+}
+
 /** Clé d'archive de l'exemplaire signé — voisine du PDF vierge, jamais la même. */
 export function exemplaireSignePdfKey(doc: {
   type: string;
@@ -128,6 +138,28 @@ export function metadonneesEmpreinte(
 function champEmpreinte(empreintePiece: string | null | undefined): { empreinte?: string } {
   const piece = (empreintePiece ?? "").trim();
   return piece !== "" ? { empreinte: piece } : {};
+}
+
+/**
+ * Le n° du DEVIS lié à une pièce de type devis — celui que le client connaît.
+ * `{}` pour toute autre pièce, ou si la lecture échoue : le champ du payload est
+ * facultatif, l'e-mail retombe sur le n° de pièce. Ne lève jamais.
+ */
+async function champNumeroDevis(piece: {
+  id: string;
+  type: string;
+}): Promise<{ numeroDevis?: string }> {
+  if (piece.type !== "devis") return {};
+  try {
+    const d = await prisma.devis.findFirst({
+      where: { documentGenereId: piece.id },
+      select: { numero: true },
+    });
+    const n = (d?.numero ?? "").trim();
+    return n !== "" ? { numeroDevis: n } : {};
+  } catch {
+    return {};
+  }
 }
 
 /**
@@ -241,6 +273,8 @@ export async function transmettreExemplaireSigne(
 
   const circuit = circuitPour(piece.type);
   const libellePiece = circuit?.libelle ?? "la pièce";
+  const devisNum = await champNumeroDevis(piece);
+  const numeroConnu = devisNum.numeroDevis ?? piece.numero;
 
   let aumoinsUnEnfile = false;
   for (const to of destinataires) {
@@ -250,6 +284,7 @@ export async function transmettreExemplaireSigne(
       "fr",
       {
         numero: piece.numero,
+        ...devisNum,
         libellePiece,
         signataires: piece.signatures
           .filter((s) => s.signataireNom.trim().length > 0)
@@ -261,7 +296,7 @@ export async function transmettreExemplaireSigne(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Votre exemplaire signé — ${libellePiece} ${piece.numero}`,
+        sujet: `Votre exemplaire signé — ${libelleObjet(libellePiece)} ${numeroConnu}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (res.enqueued) aumoinsUnEnfile = true;
@@ -444,12 +479,14 @@ export async function transmettreCopiePartielle(
     }
 
     const libellePiece = circuitPour(piece.type)?.libelle ?? "la pièce";
+    const devisNum = await champNumeroDevis(piece);
     const res = await enqueueEmail(
       "piece-exemplaire-signe",
       to,
       "fr",
       {
         numero: piece.numero,
+        ...devisNum,
         libellePiece,
         partielle: true,
         ...(signataire !== undefined && signataire.signataireNom.trim() !== ""
@@ -468,7 +505,7 @@ export async function transmettreCopiePartielle(
         entityType: "DocumentGenere",
         entityId: piece.id,
         clientId: piece.clientId,
-        sujet: `Copie de votre signature — ${libellePiece} ${piece.numero}`,
+        sujet: `Copie de votre signature — ${libelleObjet(libellePiece)} ${devisNum.numeroDevis ?? piece.numero}`,
       },
     ).catch(() => ({ enqueued: false }) as const);
     if (!res.enqueued) return { ok: false, motif: "file_indisponible" };

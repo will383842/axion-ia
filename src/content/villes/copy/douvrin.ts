@@ -49,7 +49,7 @@ export const DOUVRIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Douvrin et dans la zone industrielle ?",
-      a: "Oui, Axion-IA intervient a Douvrin et aupres des industriels de la zone (Billy-Berclau, Bethune, Lens). Consultants depuis Lille (45 min TER) ou Paris (TGV 1h20 via Lens).",
+      a: "Oui, Axion-IA intervient a Douvrin et aupres des industriels de la zone (Billy-Berclau, Bethune, Lens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Douvrin ?",

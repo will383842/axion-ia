@@ -49,7 +49,7 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bruay-sur-l'Escaut et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient à Bruay-sur-l'Escaut et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Trith-Saint-Léger, Saint-Saulve). Nos consultants se déplacent depuis Lille ou Paris, accès direct par A23 et A2.",
+      a: "Oui, Axion-IA intervient à Bruay-sur-l'Escaut et dans toute l'agglomération de Valenciennes (Anzin, Petite-Forêt, Trith-Saint-Léger, Saint-Saulve). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Bruay-sur-l'Escaut  ?",
@@ -65,7 +65,7 @@ export const BRUAY_SUR_L_ESCAUT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Bruay-sur-l'Escaut ?",
-      a: "Nos consultants se déplacent depuis Lille (45 min par A23) ou Paris (1h50 TGV via Valenciennes). Sessions sur site dans vos locaux du Valenciennois ou en visio selon vos préférences, formats adaptés au tempo PME industrielles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site dans vos locaux du Valenciennois ou en visio selon vos préférences, formats adaptés au tempo PME industrielles.",
     },
   ],
 };

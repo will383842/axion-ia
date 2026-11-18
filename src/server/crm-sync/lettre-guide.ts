@@ -44,8 +44,12 @@ import { estOpposee } from "@/server/email/opposition";
 import { AIMANT_GUIDE_IA } from "@/server/guide-ia/config";
 import { aPuAtteindreLeCrm } from "@/server/vivier/opposition";
 
+import { evenementDuClicPageGuide } from "@/server/guides-reseau/clic-page-guide";
+import { RE_CODE_GUIDE_CATALOGUE } from "@/server/guides-reseau/format-code-guide";
+import { SOURCE_SLUG_GUIDE_RESEAU, synchroCrmV3Active } from "@/server/guides-reseau/synchro-v3";
+
 import { isCrmSyncGuideEnabled } from "./config";
-import { erreurSansDonnees, mettreEnFileCrm } from "./enqueue";
+import { enqueueCrmSyncEvent, erreurSansDonnees, mettreEnFileCrm } from "./enqueue";
 import { eventIdDemandeGuide } from "./event-id";
 import { estExclueDuCrm } from "./exclusions";
 import { syncLeadMagnetRequestedToCrm, syncNewsletterOptInToCrm } from "./index";
@@ -54,7 +58,7 @@ import {
   evenementInscriptionLettre,
   localeCrm,
 } from "./inscription-lettre";
-import type { CrmBaseLegaleLettre, CrmNatureEmail, CrmStatutLettre } from "./types";
+import type { CrmBaseLegaleLettre, CrmNatureEmail, CrmStatutLettre, CrmSyncEvent } from "./types";
 
 /** `source_slug` gouverné côté CRM (tag `src:guide-ia`). */
 export const SOURCE_SLUG_GUIDE = "guide-ia";
@@ -63,6 +67,19 @@ export const SOURCE_SLUG_GUIDE = "guide-ia";
 export const AIMANT_CRM: Record<string, string> = {
   [AIMANT_GUIDE_IA]: "guide-ia-entreprise",
 };
+
+/**
+ * Code d'un guide du CATALOGUE (`gde-…`, minuscules). Le CRM refuse tout l'événement
+ * (`invalid_token`) si un champ guide sort de ce format : on ne l'envoie alors pas.
+ */
+export const FORMAT_CODE_GUIDE_CATALOGUE = RE_CODE_GUIDE_CATALOGUE;
+
+type ClasseGuide = "guide-ia" | "catalogue" | "hors-format";
+
+function classerGuide(aimant: string): ClasseGuide {
+  if (aimant === AIMANT_GUIDE_IA) return "guide-ia";
+  return FORMAT_CODE_GUIDE_CATALOGUE.test(aimant) ? "catalogue" : "hors-format";
+}
 
 /** Colonnes de `newsletter_subscribers` lues pour transmettre une inscription. */
 export interface AbonnePourCrm {
@@ -278,6 +295,34 @@ class RienEcrit extends Error {
  * Demande DÉJÀ transmise : l'inscription à la lettre, elle, peut ne pas
  * l'être (faite après le premier clic) — elle est transmise à ce clic-ci.
  */
+/**
+ * Opposition : les origines de la personne, de TOUS ses guides (l'opposition porte sur l'adresse, pas
+ * sur un guide), passent `ecartee` (mise à l'écart, JAMAIS de suppression) pour n'être plus reproposées. Sans effet tant que `SYNCHRO_CRM_V3` est éteint
+ * (les colonnes ne sont alors jamais lues ni écrites). Hors transaction, une erreur est avalée :
+ * l'opposition, elle, est déjà actée.
+ */
+async function ecarterOriginesDeLaPersonne(
+  db: Pick<typeof prisma, "guideReseauOrigine">,
+  emailKey: string,
+  quand: Date,
+): Promise<void> {
+  if (!synchroCrmV3Active()) return;
+  const ecrire = () =>
+    db.guideReseauOrigine.updateMany({
+      where: { emailKey, archiveeLe: null, crmStatut: null },
+      data: { crmStatut: "ecartee", crmTraiteeLe: quand },
+    });
+  if (db !== prisma) {
+    await ecrire();
+    return;
+  }
+  try {
+    await ecrire();
+  } catch {
+    /* mise à l'écart non écrite : le rattrapage la refera, rien ne part (opposition relue) */
+  }
+}
+
 export async function transmettreClicGuide(
   demandeId: string,
   maintenant: Date = new Date(),
@@ -289,6 +334,8 @@ export async function transmettreClicGuide(
       select: {
         id: true,
         email: true,
+        emailKey: true,
+        origine: true,
         aimant: true,
         source: true,
         locale: true,
@@ -315,6 +362,7 @@ export async function transmettreClicGuide(
         where: { id: demande.id, crmEmittedAt: null },
         data: { crmEmittedAt: maintenant },
       });
+      await ecarterOriginesDeLaPersonne(prisma, demande.emailKey, maintenant);
       return r.count === 1 ? "opposee" : "deja-transmise";
     }
 
@@ -326,9 +374,51 @@ export async function transmettreClicGuide(
     const base = baseLegaleDeLaDemande(nature, abonne);
     const eventId = eventIdDemandeGuide(demande.id);
     const firstClickAt = demande.firstClickAt;
+    // Lot S3 : une demande venue d'un réseau, avec `SYNCHRO_CRM_V3` allumé, porte la source
+    // `guide-reseau` et, si la page a laissé un consentement, le bloc v3 (prénom, accord, guide
+    // reçu, origine). Éteint : chemin v1 inchangé.
+    // Lot S3-CRM : un guide du catalogue part avec la source `guide-reseau` (famille de provenance),
+    // JAMAIS son code ; le code voyage dans `guides_recus` / `origine_contenu`. Un code hors format
+    // n'envoie aucun champ guide (le CRM rejetterait tout l'événement) : pas de charge v3 non plus,
+    // ses origines portent ce code.
+    const classe = classerGuide(demande.aimant);
+    if (classe === "hors-format") {
+      console.error(
+        `[crm-sync][guide] code de guide hors format, champ guide non envoyé (demande ${demande.id})`,
+      );
+    }
+    const v3 = synchroCrmV3Active() && classe !== "hors-format";
+    const viaReseau = v3 && demande.origine === "message_prive";
+    // Lot guide réseau 4 (D5) : une demande née d'ailleurs (formulaire) garde SA source, mais les
+    // origines réseau de la personne partent quand même (v3 allumé).
+    // N1 : `guide-ia` est réservé à l'ancien guide ; tout autre aimant (catalogue OU code hors format)
+    // part sous la famille `guide-reseau`.
+    const sourceDemande =
+      viaReseau || classe !== "guide-ia" ? SOURCE_SLUG_GUIDE_RESEAU : SOURCE_SLUG_GUIDE;
+
+    // Ce que v1 envoie : conservé tel quel dans la charge v3 (rien n'est perdu en changeant de version).
+    const consentV1 =
+      base === "consent" && abonne !== null
+        ? { version: abonne.consentVersion, at: abonne.confirmedAt }
+        : null;
+    const payloadV1 = {
+      // Le code d'un guide du catalogue n'est PAS un aimant du CRM : il va dans `guides_recus`.
+      ...(classe === "guide-ia" ? { aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant } : {}),
+      ...(demande.source ? { placement: demande.source } : {}),
+      locale: localeCrm(demande.locale),
+      // Le clic prouve la possession de la boîte (décision D1).
+      verifie: true,
+      email_nature: nature,
+      base_legale: base,
+      lettre: statutLettre(abonne),
+      // La version de la MENTION affichée au point de collecte :
+      // l'information donnée, fondement d'un demandeur sans la case.
+      version_mention: demande.version,
+    };
 
     let outboxId: string | null = null;
     let reservee = false;
+    let opposeePendantLaTransaction = false;
     try {
       outboxId = await prisma.$transaction(async (tx) => {
         const r = await tx.guideRequest.updateMany({
@@ -337,30 +427,60 @@ export async function transmettreClicGuide(
         });
         if (r.count !== 1) return null;
         reservee = true;
+        if (v3) {
+          // Même verrou consultatif que `transmettreOriginesSuivantes` (synchro-v3.ts) : une origine
+          // écrite pendant ce clic attend la validation du clic au lieu de voir `crmEmittedAt` vide.
+          // ORDRE DES VERROUS (comme page-confirmation.ts) : d'abord la ligne de la demande
+          // (l'`updateMany` ci-dessus), ENSUITE `origines:<clé>`, avant de lire les origines.
+          // L'inverse ferait un interblocage avec la page « Recevoir le guide ».
+          await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"origines:" + demande.emailKey}))`;
+          // Nouveau contrôle d'opposition, DANS la transaction, juste avant d'écrire : une
+          // opposition arrivée depuis la lecture du début l'emporte. La demande reste réservée
+          // (traitée), rien n'est supprimé, aucune ligne d'outbox n'est écrite ; les origines
+          // sont MISES À L'ÉCART (`ecartee`), jamais supprimées.
+          if (await estOpposee(demande.email, tx)) {
+            await ecarterOriginesDeLaPersonne(tx, demande.emailKey, maintenant);
+            opposeePendantLaTransaction = true;
+            return null;
+          }
+          const lecture = await evenementDuClicPageGuide(
+            tx,
+            demande,
+            firstClickAt,
+            { ...(consentV1 ? { consent: consentV1 } : {}), payloadBase: payloadV1 },
+            sourceDemande,
+          );
+          if (lecture.ok) {
+            const id = await enqueueCrmSyncEvent(lecture.evenement as unknown as CrmSyncEvent, {
+              tx,
+              mettreEnFile: false,
+            });
+            if (id === null) throw new RienEcrit();
+            // Même transaction que l'événement : les origines portées sont marquées parties.
+            if (lecture.origineIds.length > 0) {
+              await tx.guideReseauOrigine.updateMany({
+                where: { id: { in: lecture.origineIds }, crmStatut: null },
+                data: { crmStatut: "transmise", crmTraiteeLe: maintenant },
+              });
+            }
+            return id;
+          }
+          // Sans bloc v3 (aucune origine, prénom illisible, ou valeur hors format CRM) : l'événement
+          // v1 part tel quel, sans optin ni prénom, avec la source de la demande.
+        }
         const ligne = await syncLeadMagnetRequestedToCrm({
           eventId,
           subjectRef: `site:guide_request:${demande.id}`,
           occurredAt: firstClickAt,
-          sourceSlug: SOURCE_SLUG_GUIDE,
+          sourceSlug: sourceDemande,
+          ...(classe === "catalogue"
+            ? { guidesRecus: [{ guide: demande.aimant, date: firstClickAt.toISOString() }] }
+            : {}),
           person: { email: demande.email },
           // Un bloc `consent` pour un CONSENTEMENT seulement : la case cochée
           // (adresse perso inscrite). Sinon, aucun — personne n'a consenti.
-          ...(base === "consent" && abonne !== null
-            ? { consent: { version: abonne.consentVersion, at: abonne.confirmedAt } }
-            : {}),
-          payload: {
-            aimant: AIMANT_CRM[demande.aimant] ?? demande.aimant,
-            ...(demande.source ? { placement: demande.source } : {}),
-            locale: localeCrm(demande.locale),
-            // Le clic prouve la possession de la boîte (décision D1).
-            verifie: true,
-            email_nature: nature,
-            base_legale: base,
-            lettre: statutLettre(abonne),
-            // La version de la MENTION affichée au point de collecte :
-            // l'information donnée, fondement d'un demandeur sans la case.
-            version_mention: demande.version,
-          },
+          ...(consentV1 ? { consent: consentV1 } : {}),
+          payload: payloadV1,
           tx,
           mettreEnFile: false,
         });
@@ -385,6 +505,7 @@ export async function transmettreClicGuide(
       reservee = true;
     }
 
+    if (opposeePendantLaTransaction) return "opposee";
     // Un autre passage a réservé entre notre lecture et la transaction.
     if (!reservee) {
       await inscriptionDeLAdresse(demande.email);

@@ -108,11 +108,7 @@ import { CHAMPS, type Erreurs, type Valeurs } from "@/server/calendly/formulaire
 import type { QuestionEventType } from "@/server/calendly/questions";
 import { MAX_INVITES, type FormatDemande } from "@/server/calendly/reservation";
 
-/** Classes communes à tous les champs de saisie. Voir le PIÈGE `text-base`. */
-const CHAMP =
-  "border-border-strong bg-paper text-fg hover:border-fg/60 focus-visible:border-terracotta focus-visible:ring-terracotta/20 w-full rounded-lg border px-3 text-base transition focus-visible:ring-4 focus-visible:outline-none";
-
-const CHAMP_HAUT = `${CHAMP} h-12`;
+import { BOUTON_ENVOI, CHAMP, CHAMP_HAUT, LIBELLE } from "./classes-formulaire";
 
 interface FormulaireReservationProps {
   /** Le créneau choisi, ISO 8601 UTC. */
@@ -160,6 +156,8 @@ interface FormulaireReservationProps {
    * Un seul : pas de choix, le format est annoncé. Absent : visio ET téléphone.
    */
   readonly formats?: readonly FormatDemande[] | undefined;
+  /** Le texte du bouton d'envoi. Défaut : « Confirmer ce rendez-vous » (tous les types sauf le Tour). */
+  readonly libelleEnvoi?: string | undefined;
 }
 
 const FORMATS_PAR_DEFAUT: readonly FormatDemande[] = ["visio", "telephone"];
@@ -267,7 +265,7 @@ function Champ({
 }) {
   return (
     <div>
-      <label htmlFor={nom} className="text-fg mb-1.5 block text-sm font-semibold">
+      <label htmlFor={nom} className={LIBELLE}>
         {label}
         {requis ? (
           <span className="text-terracotta-deep ml-1" aria-hidden="true">
@@ -303,6 +301,7 @@ export function FormulaireReservation({
   retourAuCalendrier,
   champsCaches,
   formats,
+  libelleEnvoi = "Confirmer ce rendez-vous",
 }: FormulaireReservationProps) {
   const v = (nom: string): string => valeurs[nom] ?? "";
   const e = (nom: string): string | undefined => erreurs[nom];
@@ -790,9 +789,9 @@ export function FormulaireReservation({
           // 🔑 `text-mocha-fg` et NON `text-paper` : c'est l'appariement mesuré
           // du design system pour `bg-terracotta` (5,24:1). Voir le PIÈGE
           // CONTRASTE en tête de fichier.
-          className="bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta shadow-cta-terracotta flex h-12 w-full items-center justify-center gap-2 rounded-lg text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className={BOUTON_ENVOI}
         >
-          Confirmer ce rendez-vous
+          {libelleEnvoi}
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </button>
 

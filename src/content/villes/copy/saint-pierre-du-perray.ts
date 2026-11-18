@@ -64,7 +64,7 @@ export const SAINT_PIERRE_DU_PERRAY_COPY: VilleCopy = {
       a: "Audit IA (Sur place {{price:audit-flash|flat}} à Stratégique), interventions sur site, implémentation IA (agents conversationnels, automatisations métier), coaching 1-to-1 dirigeants, plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Évry ?",
+      q: "Comment se déroule une mission à Saint-Pierre-du-Perray ?",
       a: "Évry-Courcouronnes à 10 min. Paris centre à 40 min (A6 direct). Orly à 25 min. Gare RER D Lieusaint-Moissy à 10 min.",
     },
   ],

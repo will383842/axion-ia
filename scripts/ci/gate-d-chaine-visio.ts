@@ -73,6 +73,7 @@ import {
   validerFaitDeReponse,
 } from "../../src/server/visio/gestes-suivi";
 import type { PortEnvoiEmailSuivi } from "../../src/server/visio/passes/etapes-a-la-demande";
+import { ancreDuScenario, apresAncre, ECARTS_DU_SCENARIO } from "./gate-d-visio-horloge";
 
 const CLE_CI = "0123456789abcdef".repeat(4);
 const DOSSIER = path.resolve(process.cwd(), "tests/fixtures/visio/openai/menuiserie");
@@ -145,7 +146,9 @@ interface Monde {
 }
 
 async function semer(db: PrismaClient, clientId: string, suffixe: string): Promise<Monde> {
-  const debut = new Date("2026-10-06T08:00:00Z");
+  // ⚠️ Jamais une date fixe : l'échéance de purge (fin + 30 j) est comparée au
+  // `now()` de Postgres (cf. `gate-d-visio-horloge.ts`, incident du 2026-11-05).
+  const debut = ancreDuScenario();
   const rencontre = await db.rencontre.create({
     data: {
       source: "saisie_manuelle",
@@ -242,6 +245,18 @@ async function semer(db: PrismaClient, clientId: string, suffixe: string): Promi
     },
     maintenant: new Date(),
   });
+  // Le son doit être ENCORE dans sa durée de conservation quand la chaîne
+  // démarre : sinon le balayage le purge au premier tour et tout ce qui suit
+  // (« R2 : 0 objet(s) au lieu de 4 ») mesure l'horloge, pas le circuit.
+  const clos = await db.enregistrement.findUniqueOrThrow({
+    where: { id: enr.id },
+    select: { audioAPurgerAvant: true },
+  });
+  if (!clos.audioAPurgerAvant || clos.audioAPurgerAvant.getTime() <= Date.now())
+    throw new Error(
+      `chaîne visio : échéance de purge ${clos.audioAPurgerAvant?.toISOString() ?? "absente"} ` +
+        `déjà passée au semis (début ${debut.toISOString()}) — le scénario est daté dans le passé`,
+    );
   return { clientId, rencontreId: rencontre.id, appareil: a, r2, debut };
 }
 
@@ -340,8 +355,8 @@ function extractionDictee(): unknown {
  */
 async function dicteeDeBoutEnBout(db: PrismaClient, clientId: string): Promise<string[]> {
   const fautes: string[] = [];
-  const debut = new Date("2026-10-06T08:00:00Z");
-  const apres = new Date("2026-10-06T09:00:00Z");
+  const debut = ancreDuScenario();
+  const apres = apresAncre(debut, ECARTS_DU_SCENARIO.dictee);
   const rencontre = await db.rencontre.create({
     data: {
       source: "saisie_manuelle",
@@ -696,7 +711,10 @@ export async function chaineVisioDeBoutEnBout(): Promise<string[]> {
         rencontreId: true,
       },
     });
-    const suivant = { id: randomUUID(), debut: new Date("2026-10-20T08:00:00Z") };
+    const suivant = {
+      id: randomUUID(),
+      debut: apresAncre(m.debut, ECARTS_DU_SCENARIO.secondRendezVous),
+    };
     const connus = faitsDejaConnus(
       valides.map((f) => ({ ...f, enonce: "x" })),
       suivant,

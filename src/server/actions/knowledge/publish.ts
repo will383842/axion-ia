@@ -7,7 +7,7 @@
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { validateAltText } from "@/lib/knowledge/alt-text-validation";
-import { checkTranslationBannedWords } from "@/lib/knowledge/banned-words";
+import { raisonDoctrineEntree } from "./_doctrine";
 import { requireAdminWrite } from "./_guards";
 import { executeTransition, type TransitionResult } from "./_transition";
 
@@ -49,16 +49,14 @@ export async function publishAction(input: {
           reason: `${t.locale}: ${altValidation.imagesWithoutAlt}/${altValidation.totalImages} images sans alt — publication refusée (override admin requis)`,
         };
       }
-      // V4 — banned words (doctrine axionia-core, mot « formation » interdit)
-      const bannedCheck = checkTranslationBannedWords(t);
-      if (!bannedCheck.valid) {
-        return {
-          ok: false,
-          error: "banned_words_violation",
-          reason: `${t.locale}: mot banni dans ${bannedCheck.fieldViolations.map((v) => v.field).join(", ")} — utiliser intervention_module ou competence_boost`,
-        };
-      }
     }
+  }
+
+  // Doctrine Axion-IA (interdits + cible PME) : TOUJOURS contrôlée, même avec
+  // `forceOverride` (celui-ci ne couvre que l'alt-text).
+  const raisonDoctrine = await raisonDoctrineEntree(parsed.data.id);
+  if (raisonDoctrine) {
+    return { ok: false, error: "banned_words_violation", reason: raisonDoctrine };
   }
 
   return executeTransition({

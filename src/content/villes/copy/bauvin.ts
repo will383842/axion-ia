@@ -49,7 +49,7 @@ export const BAUVIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bauvin et dans le sud Lillois ?",
-      a: "Oui, Axion-IA intervient à Bauvin et tout le sud de la métropole lilloise (Seclin, Provin, Annœullin, Houplin-Ancoisne). Nos consultants viennent de Lille (25 min) ou via la gare de Seclin (TER).",
+      a: "Oui, Axion-IA intervient à Bauvin et tout le sud de la métropole lilloise (Seclin, Provin, Annœullin, Houplin-Ancoisne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistiques de l'axe A1/A21 ?",
@@ -64,8 +64,8 @@ export const BAUVIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants de Bauvin, nous proposons audit sur place {{price:audit-flash|flat}}, interventions formation sur site, implémentation agents IA (chatbot, automatisation devis, gestion planning) et coaching 1-to-1 dirigeants.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (25 min voiture). Aéroport Lille-Lesquin à 15 min. Missions sur site à Bauvin ou en visio.",
+      q: "Comment se déroule une mission à Bauvin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site à Bauvin ou en visio.",
     },
   ],
 };

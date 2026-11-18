@@ -18,9 +18,9 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   ecosystemEn:
     "Sotteville-lès-Rouen est marquée par son technicentre SNCF, atelier ferroviaire historique qui structure toujours l'emploi et le savoir-faire industriel local. Autour gravitent des sous-traitants de la maintenance, des PME de mécanique et de métallurgie, ainsi qu'une activité logistique adossée au port et aux axes routiers de la métropole rouennaise. Le commerce de proximité et les TPE artisanales complètent ce tissu de banlieue industrielle dense, où l'IA peut fluidifier la gestion administrative, la planification et la relation client.",
   distancesFr:
-    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nos consultants se déplacent depuis Rouen et Paris.",
+    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nos consultants se déplacent depuis Rouen et Paris.",
+    "Rouen centre à 10 min, gare de Rouen Rive Droite à 10 min, Paris à 1h15 en train, aéroport de Rouen-Vallée de Seine à 15 min et Paris-Orly à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Maintenance ferroviaire et sous-traitance SNCF",
     "Mécanique et métallurgie",
@@ -230,7 +230,7 @@ export const SOTTEVILLE_LES_ROUEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sotteville-lès-Rouen et dans la métropole rouennaise ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Sotteville-lès-Rouen, Rouen, Saint-Étienne-du-Rouvray et toute la métropole. Nos consultants se déplacent depuis Rouen et Paris.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Sotteville-lès-Rouen, Rouen, Saint-Étienne-du-Rouvray et toute la métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les sous-traitants ferroviaires et industriels ?",

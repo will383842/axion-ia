@@ -34,6 +34,8 @@ import type { RencontreDuDossier } from "@/features/dossier-client/queries";
 const rencontre = (emails: RencontreDuDossier["emailsSuivi"]): RencontreDuDossier => ({
   id: "r-1",
   titre: "Diagnostic fictif",
+  objet: null,
+  lieu: null,
   type: "visio",
   debutPrevu: new Date("2026-10-06T08:00:00Z"),
   statut: null,

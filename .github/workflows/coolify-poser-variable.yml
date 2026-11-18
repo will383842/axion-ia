@@ -89,6 +89,9 @@ on:
           # (`GET /api/partners/evenements`). Distinct du précédent : un secret
           # par sens. Web seulement. ≥ 32 caractères, sinon la route reste 404.
           - PARTNERS_RELECTURE_SECRET
+          # Secret du lien signé de la page guide (`/guide-reseau?j=…`), même valeur
+          # que côté Studio, lu au démarrage du conteneur. Web seulement.
+          - GUIDES_RESEAU_LIEN_SECRET
           - lister-seulement
       confirmer:
         description: "Taper OUI pour écrire réellement. Toute autre valeur = simulation."
@@ -125,9 +128,8 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
         run: |
           set -euo pipefail
-          # ⚠️ `-f` est volontairement ABSENT : on veut LIRE le corps d'une
-          #    réponse d'erreur. Coolify se met à jour seul et change son API ;
-          #    un code HTTP seul ne dit pas ce qui a changé.
+          # ⚠️ `-f` est volontairement ABSENT pour récupérer le code HTTP, mais le corps
+          #    d'une réponse en erreur n'est JAMAIS imprimé (risque de secrets dans le journal).
           reponse=$(curl -sS -m 20 -w '\n%{http_code}' \
             -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
             "${COOLIFY_URL}/api/v1/applications/${COOLIFY_APP_UUID}/envs")
@@ -135,8 +137,7 @@ jobs:
           corps=$(printf '%s' "$reponse" | sed '$d')
           echo "HTTP $code"
           if [ "$code" != "200" ]; then
-            echo "::error::l'API a répondu $code — corps ci-dessous"
-            printf '%s\n' "$corps" | head -c 2000
+            echo "::error::l'API a répondu $code"
             exit 1
           fi
           # is_preview distingue les paires Production/Preview : deux lignes de
@@ -176,6 +177,8 @@ jobs:
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
           PARTNERS_SYNC_SECRET: ${{ secrets.PARTNERS_SYNC_SECRET }}
           PARTNERS_RELECTURE_SECRET: ${{ secrets.PARTNERS_RELECTURE_SECRET }}
+          # Secret du lien signé de la page guide, même valeur que côté Studio.
+          GUIDES_RESEAU_LIEN_SECRET: ${{ secrets.GUIDES_RESEAU_LIEN_SECRET }}
           CIBLE: ${{ inputs.variable }}
           CONFIRMER: ${{ inputs.confirmer }}
         run: |
@@ -193,10 +196,10 @@ jobs:
           #     placer EN TETE. Mesure du 2026-09-02 : 94 caracteres lus apres le trim
           #     des fins de ligne -> le parasite n'etait pas a la fin.
           valeur="${valeur#$'\xEF\xBB\xBF'}"
-          premier="${valeur:0:1}"; dernier="${valeur: -1}"
-          for c in "$premier" "$dernier"; do
-            if [[ "$c" =~ ^[A-Za-z0-9_]$ ]]; then echo "borne : alphanumerique"; else printf 'borne : code %d (non alphanumerique)\n' "'$c"; fi
-          done
+          # Aucune information sur la valeur n'est journalisée (ni caractère, ni code).
+          if [[ ! "${valeur:0:1}" =~ ^[A-Za-z0-9_]$ || ! "${valeur: -1}" =~ ^[A-Za-z0-9_]$ ]]; then
+            echo "bornes non alphanumériques"
+          fi
           if [ -z "$valeur" ]; then
             echo "::error::le secret GitHub « $CIBLE » est vide ou absent."
             exit 1
@@ -242,10 +245,9 @@ jobs:
           code=$(printf '%s' "$reponse" | tail -n1)
           corps=$(printf '%s' "$reponse" | sed '$d')
           echo "HTTP $code"
-          printf '%s\n' "$corps" | head -c 1000
           case "$code" in
             200 | 201) echo "" ; echo "Écriture acceptée." ;;
-            *) echo "::error::écriture refusée ($code) — lire le corps ci-dessus" ; exit 1 ;;
+            *) echo "::error::écriture refusée ($code)" ; exit 1 ;;
           esac
 
       - name: Vérifier que la variable est bien là (par son NOM)
@@ -321,5 +323,5 @@ jobs:
           echo "HTTP $code"
           case "$code" in
             200 | 201) echo "Écriture worker acceptée." ;;
-            *) echo "::error::écriture worker refusée ($code)"; head -c 1000 /tmp/rep.json; exit 1 ;;
+            *) echo "::error::écriture worker refusée ($code)"; exit 1 ;;
           esac

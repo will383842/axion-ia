@@ -23,8 +23,7 @@ const LIBELLE_STATUT: Readonly<Record<string, string>> = {
   dirigeant: "dirigeant",
 };
 
-const CADRE =
-  "mb-[var(--space-admin-6)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)] py-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]";
+const CADRE = "admin-carte text-[length:var(--text-admin-sm)]";
 const DOUX = "text-[color:var(--color-admin-fg-soft)]";
 
 function Ligne({ f, formateursBase }: { f: FormateurClasse; formateursBase: string }) {

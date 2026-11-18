@@ -53,7 +53,7 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bellerive-sur-Allier et dans l'agglomération de Vichy ?",
-      a: "Oui, Axion-IA intervient à Bellerive-sur-Allier et dans toute l'agglomération vichyssoise (Vichy à 5 min, Cusset, Abrest). Nos consultants se déplacent depuis Clermont-Ferrand (1h) ou Lyon (2h).",
+      a: "Oui, Axion-IA intervient à Bellerive-sur-Allier et dans toute l'agglomération vichyssoise (Vichy à 5 min, Cusset, Abrest). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs du thermalisme ?",
@@ -68,8 +68,8 @@ export const BELLERIVE_SUR_ALLIER_COPY: VilleCopy = {
       a: "Oui, pour les PME tertiaires : agents conversationnels B2B, automatisation des workflows, classification documentaire, CRM augmentés.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont ou Lyon ?",
-      a: "Nos consultants rejoignent Bellerive depuis Clermont-Ferrand (1h) ou Lyon (2h). Grille tarifaire publique. Sessions sur site ou en visio.",
+      q: "Comment se déroule une mission à Bellerive-sur-Allier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Grille tarifaire publique. Sessions sur site ou en visio.",
     },
   ],
 };

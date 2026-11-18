@@ -29,7 +29,7 @@
 
 import type { Locale } from "@/i18n/routing";
 import { getDurationCanonical } from "./formations";
-import { INTERVENTION_TIERS, formatAmount, formatPrice, getTierById } from "./pricing";
+import { INTERVENTION_TIERS, formatPricePublic, getTierById } from "./pricing";
 
 // ============================================================================
 // Types
@@ -247,7 +247,9 @@ export const COLLECTIVE_DURATIONS: ReadonlyArray<DurationDef> = [
 // qu'elle apparaisse automatiquement sur sa page famille / palier durée.
 // ============================================================================
 
-const FOUR_H_PRICE = getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!;
+// R7 (ordre de Williams du 08/11/2026) : prix d'affichage via `formatPricePublic`
+// (interrupteur de pricing.ts) — « Sur devis » tant qu'il est coupé.
+const FOUR_H_TIER = getTierById(INTERVENTION_TIERS, "intervention-4h");
 const DIRIGEANT_VISION_TIER = getTierById(INTERVENTION_TIERS, "intervention-dirigeant-vision");
 const MEMBRE_EQUIPE_TIER = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe");
 
@@ -272,8 +274,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "Demi-journée (4 h) pour démystifier l'IA : panorama outils 2026, démos live sur cas réels de votre secteur, 2-3 prompts opérationnels testés ensemble. Vos équipes ressortent avec une vision claire et des quick-wins prêts à appliquer.",
     taglineEn:
       "Half-day (4 h) to demystify AI: 2026 tools panorama, live demos on real cases from your sector, 2-3 operational prompts tested together. Your teams leave with a clear vision and quick-wins ready to apply.",
-    priceFr: formatAmount(FOUR_H_PRICE, "fr"),
-    priceEn: formatAmount(FOUR_H_PRICE, "en"),
+    priceFr: formatPricePublic(FOUR_H_TIER, "fr"),
+    priceEn: formatPricePublic(FOUR_H_TIER, "en"),
     groupSizeFr: "2 à 12 personnes",
     groupSizeEn: "2 to 12 people",
     audienceFr: "Équipes qui découvrent l'IA · TPE, PME",
@@ -320,8 +322,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "1 journée 1-to-1 pour ouvrir les yeux du dirigeant sur ce que l'IA change DANS SON SECTEUR. Panorama des opportunités stratégiques, ce que font vraiment vos concurrents, quelles automatisations chercher, comment penser différemment l'entreprise. Pas un audit complet — un déclic stratégique.",
     taglineEn:
       "1-on-1 day to open the executive's eyes to what AI changes IN THEIR SECTOR. Strategic opportunity panorama, what competitors actually do, automations to look for, how to think the company differently. Not a full audit — a strategic shift.",
-    priceFr: formatPrice(DIRIGEANT_VISION_TIER, "fr"),
-    priceEn: formatPrice(DIRIGEANT_VISION_TIER, "en"),
+    priceFr: formatPricePublic(DIRIGEANT_VISION_TIER, "fr"),
+    priceEn: formatPricePublic(DIRIGEANT_VISION_TIER, "en"),
     groupSizeFr: "1 dirigeant (1-to-1)",
     groupSizeEn: "1 executive (1-on-1)",
     audienceFr: "Dirigeant qui veut anticiper la vague IA sur son secteur",
@@ -349,8 +351,8 @@ export const INTERVENTION_FORMATS: ReadonlyArray<InterventionFormatEntry> = [
       "1 journée sur votre poste : on cartographie votre fonctionnement actuel et vos chronophages, puis on identifie ce qu'on peut automatiser pour vous faire gagner du temps (et de l'argent). Vous repartez avec un plan d'optimisation personnalisé.",
     taglineEn:
       "1 day at your workstation: we map your current workflow and time-sinks, then identify what can be automated to save you time (and money). You leave with a personalized optimization plan.",
-    priceFr: formatPrice(MEMBRE_EQUIPE_TIER, "fr"),
-    priceEn: formatPrice(MEMBRE_EQUIPE_TIER, "en"),
+    priceFr: formatPricePublic(MEMBRE_EQUIPE_TIER, "fr"),
+    priceEn: formatPricePublic(MEMBRE_EQUIPE_TIER, "en"),
     groupSizeFr: "1 personne (1-to-1 strict)",
     groupSizeEn: "1 person (strict 1-on-1)",
     audienceFr: "Tout poste · secrétaire, chef de chantier, commercial, manager…",

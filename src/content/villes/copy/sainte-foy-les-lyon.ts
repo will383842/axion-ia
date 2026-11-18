@@ -72,7 +72,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio depuis la Métropole de Lyon.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -158,7 +158,7 @@ export const SAINTE_FOY_LES_LYON_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio depuis la Métropole de Lyon.",
+              "Greffe IA sur l'existant ou build IA-native : portail patient, e-commerce multi-CMS, chatbot RAG multilingue, recherche sémantique, agents et automatisations métier branchés sur vos outils (CRM, ERP, agenda, facturation). Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",

@@ -49,7 +49,7 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blainville-sur-Orne et nord agglo Caen ?",
-      a: "Oui, Axion-IA intervient à Blainville-sur-Orne et toute l'agglomération caennaise nord (Hérouville-Saint-Clair, Colombelles, Bénouville). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Blainville-sur-Orne et toute l'agglomération caennaise nord (Hérouville-Saint-Clair, Colombelles, Bénouville). Consultants sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises logistiques du canal de Caen ?",
@@ -65,7 +65,7 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Blainville-sur-Orne ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

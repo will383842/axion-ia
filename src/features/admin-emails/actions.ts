@@ -29,6 +29,8 @@ const LIBELLE_RETENUE: Readonly<Record<MotifRetenue, string>> = {
   // relances et invitation du réseau d'apporteurs) : « tout envoi » était faux,
   // une facture ou une convocation part toujours.
   oppose: "opposé aux sollicitations",
+  // Décision du 11/11/2026 : une demande d'effacement écarte la personne de TOUT envoi.
+  ecarte_effacement: "écarté de tout envoi (demande d'effacement)",
 };
 
 const schema = z.object({ id: z.string().uuid() });

@@ -52,7 +52,11 @@ vi.mock("@/lib/prisma", () => ({
   prisma: {
     submission: { findUnique: (...a: unknown[]) => d.submission(...a) },
     emailLog: { findFirst: (...a: unknown[]) => d.rebond(...a) },
-    emailOpposition: { findUnique: (...a: unknown[]) => d.opposition(...a) },
+    emailOpposition: {
+      findUnique: (...a: unknown[]) => d.opposition(...a),
+      // Mise à l'écart (effacement) relue au départ : personne n'est écarté ici.
+      findFirst: async () => null,
+    },
     newsletterSubscriber: { findUnique: (...a: unknown[]) => d.abonne(...a) },
     setting: { findMany: (...a: unknown[]) => d.settings(...a) },
     trainer: { findUnique: (...a: unknown[]) => d.trainer(...a) },

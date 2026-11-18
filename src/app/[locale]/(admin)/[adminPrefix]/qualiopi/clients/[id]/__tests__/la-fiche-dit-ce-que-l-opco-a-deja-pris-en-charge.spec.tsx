@@ -22,6 +22,9 @@ const d = vi.hoisted(() => ({
   annuaire: vi.fn(),
 }));
 
+vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () => ({
+  ...(await import("./_emplacements-vides")).emplacementsVides,
+}));
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({
   redirect: (url: string) => {
@@ -143,3 +146,11 @@ describe("la fiche dit ce que l'OPCO a déjà pris en charge", () => {
     expect(html).not.toMatch(/<p[^>]*>Effectif<\/p>/);
   });
 });
+
+// Lot 1 fiche client : le bloc « Questionnaire avant audit » lit la base ; ces specs ne la touchent pas.
+vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
+  lireQuestionnairesDeLaFiche: vi.fn().mockResolvedValue([]),
+}));
+vi.mock("@/features/dossier-client/fil-des-echanges", () => ({
+  lireFilDesEchanges: vi.fn().mockResolvedValue({ fil: [], sourcesEnPanne: 0 }),
+}));

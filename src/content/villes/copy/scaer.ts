@@ -49,7 +49,7 @@ export const SCAER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Scaër et dans le centre Finistère ?",
-      a: "Oui, Axion-IA intervient à Scaër et dans tout le centre Finistère (Rosporden, Bannalec, Le Faouët, Gourin, Carhaix-Plouguer). Nos consultants se déplacent depuis Quimper en 35 minutes.",
+      a: "Oui, Axion-IA intervient à Scaër et dans tout le centre Finistère (Rosporden, Bannalec, Le Faouët, Gourin, Carhaix-Plouguer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du secteur de Scaër ?",

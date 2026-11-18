@@ -27,7 +27,9 @@
  */
 
 import { prisma } from "@/lib/prisma";
+import { redactEmailValue, sansAdresse } from "@/server/queue/lib/sanitize-job-data";
 import { EmailLogStatus } from "../../../prisma/generated/client";
+
 import type { Locale } from "../../../prisma/generated/client";
 
 function estStub(): boolean {
@@ -153,8 +155,8 @@ export async function journaliserEnAttente(
     });
   } catch (e) {
     console.error(
-      `[email-log] écriture « en attente » impossible (${entree.template} → ${entree.recipient}) :`,
-      e instanceof Error ? e.message : String(e),
+      `[email-log] écriture « en attente » impossible (${entree.template} → ${redactEmailValue(entree.recipient)}) :`,
+      sansAdresse(e instanceof Error ? e.message : String(e)),
     );
     return null;
   }
@@ -190,7 +192,7 @@ export async function marquerEchecMiseEnFile(id: string, motif: string): Promise
   } catch (e) {
     console.error(
       `[email-log] cloture « échec » impossible (${id}) :`,
-      e instanceof Error ? e.message : String(e),
+      sansAdresse(e instanceof Error ? e.message : String(e)),
     );
     return 0;
   }
@@ -227,7 +229,7 @@ export async function marquerAnnule(jobId: string, motif: string): Promise<numbe
   } catch (e) {
     console.error(
       `[email-log] cloture « annule » impossible (${jobId}) :`,
-      e instanceof Error ? e.message : String(e),
+      sansAdresse(e instanceof Error ? e.message : String(e)),
     );
     return 0;
   }
@@ -250,8 +252,8 @@ export async function noterTentativeEchouee(
     });
   } catch (e) {
     console.error(
-      `[email-log] tentative ratée non consignée (${tentative.template} → ${tentative.recipient}) :`,
-      e instanceof Error ? e.message : String(e),
+      `[email-log] tentative ratée non consignée (${tentative.template} → ${redactEmailValue(tentative.recipient)}) :`,
+      sansAdresse(e instanceof Error ? e.message : String(e)),
     );
   }
 }
@@ -314,8 +316,8 @@ export async function cloturerJournal(cloture: ClotureJournal): Promise<void> {
     });
   } catch (e) {
     console.error(
-      `[email-log] clôture impossible (${cloture.template} → ${cloture.recipient}) :`,
-      e instanceof Error ? e.message : String(e),
+      `[email-log] clôture impossible (${cloture.template} → ${redactEmailValue(cloture.recipient)}) :`,
+      sansAdresse(e instanceof Error ? e.message : String(e)),
     );
   }
 }

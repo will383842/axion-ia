@@ -49,7 +49,7 @@ export const ROUSSILLON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roussillon et sud-Isère ?",
-      a: "Oui, Axion-IA intervient à Roussillon et tout le sud-Isère vallée du Rhône (Le Péage-de-Roussillon, Saint-Maurice-l'Exil, Salaise-sur-Sanne, Vienne à 30 min). Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7).",
+      a: "Oui, Axion-IA intervient à Roussillon et tout le sud-Isère vallée du Rhône (Le Péage-de-Roussillon, Saint-Maurice-l'Exil, Salaise-sur-Sanne, Vienne à 30 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels du sud-Isère ?",
@@ -64,8 +64,8 @@ export const ROUSSILLON_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Roussillon, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (45 min A7) ou Valence (50 min A7). Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
+      q: "Comment se déroule une mission à Roussillon ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Pays Roussillonnais).",
     },
   ],
 };

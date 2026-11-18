@@ -245,7 +245,7 @@ export const CHATEAUROUX_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Châteauroux respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Limoges ?",
+      q: "Comment se déroule une mission à Châteauroux ?",
       a: "Châteauroux est à environ 2h de Paris-Austerlitz en train et à 1h30 de Limoges par l'A20. Nous nous déplaçons sur site.",
     },
     {

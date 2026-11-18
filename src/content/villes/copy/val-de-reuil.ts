@@ -49,7 +49,7 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Val-de-Reuil et dans l'agglomération Seine-Eure ?",
-      a: "Oui, Axion-IA intervient à Val-de-Reuil et dans toute l'agglomération Seine-Eure (Louviers, Pont-de-l'Arche, Léry, Acquigny). Nos consultants se déplacent depuis Rouen (25 min) ou Paris (1h20 train).",
+      a: "Oui, Axion-IA intervient à Val-de-Reuil et dans toute l'agglomération Seine-Eure (Louviers, Pont-de-l'Arche, Léry, Acquigny). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les industriels pharmaceutiques de Val-de-Reuil ?",
@@ -64,8 +64,8 @@ export const VAL_DE_REUIL_COPY: VilleCopy = {
       a: "Pour les TPE et artisans à Val-de-Reuil, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, gestion planning, classification photos chantier, facturation.",
     },
     {
-      q: "Comment se passe une mission depuis Rouen ou Paris ?",
-      a: "Nos consultants viennent de Rouen (25 min A13) ou Paris (1h20 train direct gare Val-de-Reuil). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Val-de-Reuil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

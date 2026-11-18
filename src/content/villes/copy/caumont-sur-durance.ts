@@ -49,7 +49,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caumont-sur-Durance et dans le Grand Avignon ?",
-      a: "Oui, Axion-IA intervient à Caumont-sur-Durance et dans toute l'agglomération du Grand Avignon (Avignon, Le Pontet, Morières-lès-Avignon, Saint-Saturnin-lès-Avignon). Consultants accessibles en 15 min depuis Avignon centre via D900.",
+      a: "Oui, Axion-IA intervient à Caumont-sur-Durance et dans toute l'agglomération du Grand Avignon (Avignon, Le Pontet, Morières-lès-Avignon, Saint-Saturnin-lès-Avignon). Consultants sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles autour de la Durance ?",
@@ -65,7 +65,7 @@ export const CAUMONT_SUR_DURANCE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Caumont-sur-Durance ?",
-      a: "Nos consultants interviennent depuis Avignon (15 min) ou via Gare TGV Avignon (15 min). Déplacement sur site dans vos locaux professionnels, exploitation agricole ou commerce. Grand Avignon bien desservi via A7 et A9.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, exploitation agricole ou commerce. Grand Avignon bien desservi via A7 et A9.",
     },
   ],
 };

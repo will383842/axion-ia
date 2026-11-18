@@ -49,7 +49,7 @@ export const VENDARGUES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vendargues ?",
-      a: "Oui, Axion-IA intervient à Vendargues et dans tout l'est Montpellier (Le Crès, Castries, Baillargues, Jacou). Nos consultants se déplacent depuis Montpellier en 12 min.",
+      a: "Oui, Axion-IA intervient à Vendargues et dans tout l'est Montpellier (Le Crès, Castries, Baillargues, Jacou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour la distribution et le commerce ?",

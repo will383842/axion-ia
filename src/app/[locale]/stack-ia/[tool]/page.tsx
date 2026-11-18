@@ -285,10 +285,9 @@ export default async function StackToolPage({ params }: Props) {
 
   return (
     <>
-      {/* V-04 P1 (Sprint Correctif suite 2026-05-22) — Product inline (SEO
-          critique), FAQ déféré afterInteractive (-100 à -180 ms TBT). */}
+      {/* JSON-LD rendu dans le HTML servi (audit SEO 2026-11-11, I1) : visible des robots sans JS. */}
       <JsonLd data={productJsonLdEnriched} />
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-stack-ia-tool-faq" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-stack-ia-tool-faq" />
 
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
@@ -568,13 +567,13 @@ export default async function StackToolPage({ params }: Props) {
         titleEm={isFr ? ` ${tool.name} dans votre contexte ?` : ` ${tool.name} in your context?`}
         description={
           isFr
-            ? "30 minutes en visio, gratuit. On regarde ensemble si l'outil mérite sa place dans votre stack — et avec quoi on le pairerait."
-            : "30 minutes on video, free. Together we look at whether the tool earns its slot in your stack — and what we'd pair it with."
+            ? "45 minutes en visio ou par téléphone, gratuit. On regarde ensemble si l'outil mérite sa place dans votre stack — et avec quoi on le pairerait."
+            : "45 minutes by video or phone, free. Together we look at whether the tool earns its slot in your stack — and what we'd pair it with."
         }
         cta={
           <>
-            <Cta href="/audit/tpe-1-jour" size="lg">
-              {isFr ? "Réserver l'audit flash" : "Book the flash audit"}
+            <Cta href="/appel" size="lg">
+              {isFr ? "Réserver mon rendez-vous gratuit" : "Book my free meeting"}
               <ArrowRight aria-hidden="true" className="h-4 w-4" />
             </Cta>
             <Link

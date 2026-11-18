@@ -47,7 +47,7 @@ export const RENNES_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA individuel à Rennes : accompagnement 1-to-1 ancré dans votre réalité — numérique, agroalimentaire, industrie ou télécoms. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. From €990 excl. VAT.",
+      en: "Individual AI coaching in Rennes: 1-to-1 support rooted in your reality — digital, agri-food, industry or telecoms. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI rennaises — site vitrine premium pour scale-ups French Tech Atalante, espace client interactif numérique/agroalimentaire, dashboard métier connecté à votre CRM/ERP ou MES industriel (La Janais, Valorial). Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -90,7 +90,7 @@ export const RENNES_COPY: VilleCopy = {
       fr: {
         hero: "L'audit IA Axion-IA à Rennes cartographie ce qui peut être automatisé dans votre organisation et chiffre le retour sur investissement à 12-24 mois. Quatre niveaux du Sur place au Stratégique ETI couvrent toutes les tailles, des TPE du centre-ville aux ETI du numérique installées sur Rennes Atalante Beaulieu. Nos consultants interviennent directement dans vos locaux — centre historique, technopoles, zones La Janais et ViaSilva.",
         whyHere: [
-          "Rennes est notre pôle d'ancrage breton : nous y intervenons régulièrement pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
+          "Nous intervenons régulièrement à Rennes pour les structures du numérique (Atalante), de l'agroalimentaire (Valorial, CFIA), de l'industrie (Stellantis, Safran) et des services tertiaires (banque, conseil, santé).",
           "Tissu économique rennais dense et contrasté : TPE du centre historique, PME en croissance à ViaSilva, ETI numériques à Atalante Beaulieu, sites GE comme Canon CRF et Orange Innovation à Cesson-Sévigné.",
           "Présence forte de l'écosystème French Tech Rennes Saint-Malo : scale-ups deep-tech et IA nées de l'IRISA et de l'Inria, souvent en phase de passage du POC à la production.",
           "Restitutions toujours en présentiel à Rennes : ateliers d'idéation dans vos locaux, lecture du livrable avec votre comité de direction, plan d'action remis en main propre.",
@@ -182,7 +182,7 @@ export const RENNES_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI audit in Rennes maps what can be automated at your organization and quantifies the 12-24 month return on investment. Four tiers from Sur place to Mid-cap Strategic cover every size, from Rennes city-centre micro-businesses to Rennes Atalante Beaulieu digital mid-caps. Our consultants intervene directly at your premises — historic centre, technopoles, La Janais and ViaSilva zones.",
         whyHere: [
-          "Rennes is our Brittany anchor hub: we intervene regularly for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
+          "We work regularly in Rennes for digital (Atalante), agri-food (Valorial, CFIA), industrial (Stellantis, Safran) and business services (banking, consulting, health) organizations.",
           "Dense and varied Rennes economic fabric: city-centre micro-businesses, growing SMEs at ViaSilva, digital mid-caps at Atalante Beaulieu, major GE sites such as Canon CRF and Orange Innovation in Cesson-Sévigné.",
           "Strong French Tech Rennes Saint-Malo ecosystem presence: deep-tech and AI scale-ups born from IRISA and Inria, often transitioning from POC to production.",
           "Read-outs always in person in Rennes: ideation workshops at your offices, deliverable walk-through with your leadership, action plan handed over face to face.",
@@ -741,7 +741,7 @@ export const RENNES_COPY: VilleCopy = {
           "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur (IFS Food, ISO 27001 sur demande).",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Rennes is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. Price on request. Suited to engineers, managers and executives in digital, agri-food, industry and telecoms across the Rennes basin.",
         whyHere: [
           "Rennes brings together highly specialised profiles — a developer or project manager at Atalante, a quality director at Valorial, a product manager at a French Tech scale-up — who need coaching rooted in their precise sector constraints, not a generic course.",
           "The IRISA/Inria ecosystem produces deep-tech profiles seeking to master advanced integrations (fine-tuning, RAG, agents): 1-to-1 adapts the complexity level session by session.",
@@ -780,7 +780,7 @@ export const RENNES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "Entry-level 1-to-1 coaching — freelancer, developer, consultant or Rennes digital or agri-food micro-business executive.",
           },
@@ -826,7 +826,7 @@ export const RENNES_COPY: VilleCopy = {
           },
           {
             q: "Is there a minimum duration or session commitment?",
-            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+            a: "No. No lock-in, no subscription contract. You start with a first session, priced on request. Continuation is decided after each session based on your progress.",
           },
         ],
         guarantees:
@@ -1012,7 +1012,7 @@ export const RENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Rennes ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est le même à Rennes qu'à Paris ou Lyon.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande entreprise) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
     },
     {
       q: "Avez-vous de l'expérience dans l'écosystème numérique de Rennes Atalante ?",

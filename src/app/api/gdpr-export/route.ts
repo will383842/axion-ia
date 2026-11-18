@@ -27,7 +27,9 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { exporterCandidaturesPour } from "@/server/careers/candidature-rgpd";
 import { trouverDemandesPodcast } from "@/features/podcast-request/rgpd";
+import { exporterDemandesTour } from "@/features/tour-de-france/rgpd";
 import { decryptPii, decryptPiiObject } from "@/lib/pii-crypto";
+import { CLE_IDENTITE, lireIdentiteDetails } from "@/server/contact/identite-contact";
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { extractAnswersText } from "@/server/calendly/api";
@@ -38,6 +40,7 @@ import { exportKbDataForEmail } from "@/lib/knowledge/rgpd-export";
 import { exportChatDataForEmail } from "@/lib/rgpd-export-chat";
 import { exporterDossierClientPour, NOTICE_EXCLUSIONS_DOSSIER } from "@/lib/rgpd-dossier-client";
 import { exporterReseauApporteurPour } from "@/lib/rgpd-reseau-apporteur";
+import { exporterGuideReseauPour } from "@/lib/rgpd-guide-reseau";
 import { exporterFormateurIndependantPour } from "@/lib/rgpd-formateur-independant";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { ipVisiteurOuNull } from "@/lib/client-ip";
@@ -241,6 +244,9 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // candidatures avant elles. Un export qui omet une table que le site detient
   // n'est pas un export partiel : c'est une reponse fausse a l'art. 15.
   const podcast = await trouverDemandesPodcast(email);
+  // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire,
+  // retrouvée par l'empreinte de l'adresse (`features/tour-de-france/rgpd.ts`).
+  const demandesTour = await exporterDemandesTour(email);
 
   // Sprint Correctif S+1 (P0-S1-2) : KB data RGPD art. 15 (bookmarks).
   const kb = await exportKbDataForEmail(email);
@@ -254,6 +260,10 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // ce qui ne concerne que d'autres personnes. Détail et exclusions déclarées
   // dans `src/lib/rgpd-reseau-apporteur.ts`.
   const dossierClient = await exporterDossierClientPour(email);
+
+  // Page « Recevoir le guide » (lot S2) : le contact laissé depuis un réseau, prénom déchiffré.
+  const guideReseau = await exporterGuideReseauPour(email);
+  avertissements.push(...guideReseau.avertissements);
 
   // Réseau d'apporteurs (2026-10-05) : le dossier de l'apporteur, ou qui a présenté la personne.
   const reseauApporteurs = await exporterReseauApporteurPour(email);
@@ -363,7 +373,26 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
   // rendue telle quelle. Les enregistrements antérieurs au chiffrement passent
   // donc sans dommage — c'est ce qui permet de brancher la fonction sans
   // migration de données.
-  const submissionsLisibles = submissions.map((s) => decryptPiiObject(s));
+  //
+  // `details.identite` (civilité, prénom, nom de famille) porte des valeurs
+  // chiffrées imbriquées, que `decryptPiiObject` ne parcourt pas : on la
+  // remplace par sa lecture déchiffrée (`lireIdentiteDetails`, tolérante).
+  const submissionsLisibles = submissions.map((s) => {
+    const lisible = decryptPiiObject(s);
+    const details = s.details;
+    if (
+      details &&
+      typeof details === "object" &&
+      !Array.isArray(details) &&
+      CLE_IDENTITE in details
+    ) {
+      return {
+        ...lisible,
+        details: { ...details, [CLE_IDENTITE]: lireIdentiteDetails(details) },
+      };
+    }
+    return lisible;
+  });
 
   // `inviteeEmail` est en `@db.Citext` et indexé : la recherche est directe et
   // insensible à la casse, contrairement aux candidatures dont l'adresse est
@@ -476,6 +505,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
      * paroles, les faits vous concernant, les preuves de votre accord.
      */
     dossierClient,
+    guideReseau: { contacts: guideReseau.contacts, origines: guideReseau.origines },
     reseauApporteurs,
     ...(formateurIndependant ? { formateurIndependant } : {}),
     consentEvents,
@@ -502,6 +532,8 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     candidatures: candidatures.candidatures,
     /** Demandes de tournage de podcast deposees via le formulaire public. */
     podcast: podcast.demandes,
+    /** Demandes du Tour France IA (mini-demande faite avant la visio). */
+    tourFranceIa: demandesTour,
     /**
      * Rendez-vous réservés depuis /appel.
      *

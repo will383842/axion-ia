@@ -40,6 +40,7 @@ const CODES_ATTENDUS: string[] = [
   "catalogue_certifiant_incoherent",
   "cloture_trace_presence_incomplete",
   "email_rebond_dur",
+  "email_plainte_spam",
   "report_accord_financement_a_refaire",
   // Ajoutés 2026-08-19 (audit E2E, `D5-4-01`). Ces quatre codes étaient ÉMIS par
   // le balayage depuis leur écriture et ABSENTS de ce catalogue — donc sans
@@ -116,6 +117,7 @@ const CODES_ATTENDUS: string[] = [
   // Lot 8B — fin de session : certificat de réalisation et avis du financeur manquants.
   "certificat_realisation_manquant",
   "avis_financeur_manquant",
+  "convention_non_validee_avant_session",
   "satisfaction_sous_seuil",
   "reclamation_sans_reponse_j15",
   "reclamation_accuse_en_retard",
@@ -272,9 +274,17 @@ const CODES_ATTENDUS: string[] = [
   "email_retenu_rebond_dur",
   "email_retenu_desabonne",
   "email_retenu_oppose",
+  // Décision du 11/11/2026 : demande d'effacement → mise à l'écart, alerte cloche.
+  "email_retenu_ecarte_effacement",
+  "rgpd_effacement_a_traiter",
   // Chantier visio, PR 4 (correction anti-doublon A3) : les pannes du balayage
   // du dossier client, levées hors du balayage quotidien.
   "visio.balayage_en_panne",
+  "visio.rendez_vous_a_classer",
+  "visio.doublon_possible",
+  "visio.fiche_de_message_efface",
+  "visio.fiche_demande_refus_porte",
+  "visio.fiche_demande_bilan_essai",
   // Chantier visio, PR 5 (anti-doublon A3) : les pannes techniques de
   // l'enregistreur passent par ce catalogue, plus par une table à part.
   "visio.temoin_cle",
@@ -432,7 +442,14 @@ describe("ALERTE_CATALOGUE", () => {
     "email_retenu_rebond_dur",
     "email_retenu_desabonne",
     "email_retenu_oppose",
+    "email_retenu_ecarte_effacement",
+    "rgpd_effacement_a_traiter",
     "visio.balayage_en_panne",
+    "visio.rendez_vous_a_classer",
+    "visio.doublon_possible",
+    "visio.fiche_de_message_efface",
+    "visio.fiche_demande_refus_porte",
+    "visio.fiche_demande_bilan_essai",
   ])("%s — levé hors balayage, donc jamais auto-résolu, et le motif est écrit", (code) => {
     const entree = ALERTE_CATALOGUE[code];
     expect(entree, `« ${code} » est émis par le code mais absent du catalogue`).toBeDefined();

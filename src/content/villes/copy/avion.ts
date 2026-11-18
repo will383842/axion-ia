@@ -49,7 +49,7 @@ export const AVION_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avion et dans l'agglo Lens-Liévin ?",
-      a: "Oui, Axion-IA intervient à Avion et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Hénin-Beaumont, Méricourt, Sallaumines). Nos consultants viennent de Lille (45 min) ou Paris (1h10 TGV Lens).",
+      a: "Oui, Axion-IA intervient à Avion et dans toute l'agglomération Lens-Liévin (Lens, Liévin, Hénin-Beaumont, Méricourt, Sallaumines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants d'Avion ?",
@@ -64,8 +64,8 @@ export const AVION_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les structures ESS et associations du bassin minier sur leurs cas IA : automatisation rapports d'activité, agents IA accueil, classification dossiers bénéficiaires, optimisation planning intervenants, outils collaboratifs.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
-      a: "Nos consultants viennent de Lille (45 min A21/A26) ou Paris (1h10 TGV direct Lens + 5 min). Hébergement local possible (hôtels Lens).",
+      q: "Comment se déroule une mission à Avion ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible (hôtels Lens).",
     },
   ],
 };

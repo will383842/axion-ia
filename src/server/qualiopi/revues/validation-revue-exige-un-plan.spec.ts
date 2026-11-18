@@ -114,6 +114,7 @@ describe("updateRevueDirectionAction — le statut est un enum, pas du texte lib
       vi.clearAllMocks();
       mockUpdateRevue.mockResolvedValue({ id: ID });
       mockGetRevueParId.mockResolvedValue(revueComplete());
+      auditLe("2026-10-15"); // grille V9 : ce test porte sur l'enum du statut, pas sur l'analyse des risques (couverte plus bas)
 
       const result = await updateRevueDirectionAction({ id: ID, statut });
       expect(result, `statut ${statut}`).toEqual({ data: { id: ID } });
@@ -150,6 +151,7 @@ describe("updateRevueDirectionAction — « validee » exige la preuve, au momen
   it("valide sur l'état RÉSULTANT, pas sur l'état stocké", async () => {
     // Le panneau d'édition envoie statut + décisions + plan dans le même geste :
     // refuser sur l'état d'AVANT rendrait la validation impossible en un clic.
+    auditLe("2026-10-15"); // grille V9 : ce test porte sur l'état résultant ; la variante 2026 est couverte plus bas
     mockGetRevueParId.mockResolvedValue(revueVide());
 
     const result = await updateRevueDirectionAction({

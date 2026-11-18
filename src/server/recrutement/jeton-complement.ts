@@ -26,6 +26,9 @@ const ENCODER = new TextEncoder();
 const DECODER = new TextDecoder();
 
 const TOKEN_TTL_MS = 60 * 24 * 60 * 60 * 1000;
+
+/** Durée de vie du lien de complément (lue par le rejeu d'une réponse échouée). */
+export const DUREE_JETON_COMPLEMENT_MS = TOKEN_TTL_MS;
 const AUDIENCE = "candidature-complement";
 
 interface TokenPayload {

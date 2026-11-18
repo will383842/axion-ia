@@ -46,6 +46,10 @@ describe("la purge du pilote emporte les documents de ses projets", () => {
         { id: dVrai, clientId: vraie["id"], projetId: pVrai, titre: "Guide" },
       ],
       documentProjetContenu: [{ documentId: dTest }, { documentId: dVrai }],
+      projetSuivi: [
+        { projetId: pTest, type: "audit", montantCents: 100 },
+        { projetId: pVrai, type: "audit", montantCents: 200 },
+      ],
     });
     d.client = base.client;
 
@@ -55,6 +59,8 @@ describe("la purge du pilote emporte les documents de ses projets", () => {
     expect(t["documentProjetContenu"]?.map((x) => x["documentId"])).toEqual([dVrai]);
     expect(t["documentProjet"]?.map((x) => x["id"])).toEqual([dVrai]);
     expect(t["projet"]?.map((x) => x["id"])).toEqual([pVrai]);
+    // Le suivi de prestation (type, étape, montant) du projet de test part avec lui.
+    expect(t["projetSuivi"]?.map((x) => x["projetId"])).toEqual([pVrai]);
     expect(t["effacementJournal"]?.filter((e) => e["tableCible"] === "documents_projet")).toEqual([
       expect.objectContaining({ ligneId: dTest, motif: "pilote" }),
     ]);

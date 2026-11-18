@@ -218,3 +218,37 @@ describe("garde L6353-6 — la date retenue est celle du CONTRAT signé", () => 
     expect(mockSignatureFindMany).not.toHaveBeenCalled();
   });
 });
+
+describe("T11 — CGV avant signature : la rétractation de 10 jours reste réservée aux PARTICULIERS", () => {
+  it("devis d'une ENTREPRISE accepté, acompte de 50 % : autorisé — ni plafond de 30 %, ni délai, aucune lecture de signatures", async () => {
+    // Constat du chantier « CGV avant signature du devis » : ni l'ajout de la case des CGV
+    // ni la version scellée ne touchent à cette règle. Le plafond de 30 % (L6353-6) et le
+    // délai de 10 jours (L6353-5) ne visent que la personne physique qui finance elle-même
+    // sa formation ; un professionnel peut verser un acompte de 50 % le jour même.
+    mockDevisFindUnique.mockResolvedValue({
+      ...devisParticulier(ilYA(0)),
+      client: { type: "entreprise" },
+    });
+
+    const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID, acomptePercent: 50 });
+
+    expect("data" in r).toBe(true);
+    if ("error" in r) throw new Error(r.error);
+    expect(mockSignatureFindMany).not.toHaveBeenCalled();
+    expect(mockGenererFactureLibre).toHaveBeenCalledTimes(1);
+    // 50 % de 2 000,00 € HT, soit 1 000,00 € HT : bien au-dessus d'un plafond de 30 %.
+    const appel = JSON.stringify(mockGenererFactureLibre.mock.calls[0]);
+    expect(appel).toContain("100000");
+    expect(appel).not.toContain("60000");
+  });
+
+  it("le MÊME acompte de 50 % est refusé à un particulier (la règle existe, elle ne vise que lui)", async () => {
+    mockDevisFindUnique.mockResolvedValue(devisParticulier(ilYA(200)));
+    mockSignatureFindMany.mockResolvedValue([{ signeAt: ilYA(30), revokedAt: null }]);
+
+    const r = await genererFactureDepuisDevisAction({ devisId: DEVIS_ID, acomptePercent: 50 });
+
+    expect("error" in r).toBe(true);
+    expect(mockGenererFactureLibre).not.toHaveBeenCalled();
+  });
+});

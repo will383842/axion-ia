@@ -65,7 +65,7 @@ export const SEICHAMPS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Seichamps ?",
-      a: "Nos consultants se déplacent via autoroute A33 ou gare SNCF Nancy (10 min). Position stratégique à l'est immédiat de Nancy.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Seichamps, à l'est immédiat de Nancy, est desservie par l'autoroute A33 et à 10 min de la gare SNCF de Nancy.",
     },
   ],
 };

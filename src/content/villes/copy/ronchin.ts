@@ -49,7 +49,7 @@ export const RONCHIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ronchin et dans la banlieue sud de Lille ?",
-      a: "Oui, Axion-IA intervient à Ronchin et dans toute la banlieue sud de Lille (Faches-Thumesnil, Lezennes, Lesquin, Wattignies, Templemars). Nos consultants sont basés à Lille (10 min) et couvrent l'ensemble de la Métropole Européenne de Lille.",
+      a: "Oui, Axion-IA intervient à Ronchin et dans toute la banlieue sud de Lille (Faches-Thumesnil, Lezennes, Lesquin, Wattignies, Templemars). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Ronchin  : quel budget prévoir ?",
@@ -61,7 +61,7 @@ export const RONCHIN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Ronchin ?",
-      a: "Nos consultants interviennent à Ronchin depuis Lille (10 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre.",
     },
     {
       q: "Proposez-vous des formations IA individuelles pour dirigeants à Ronchin ?",

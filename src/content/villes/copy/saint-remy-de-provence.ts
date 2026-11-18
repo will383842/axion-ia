@@ -64,8 +64,8 @@ export const SAINT_REMY_DE_PROVENCE_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Saint-Rémy) ou en visio. Format flexible adapté aux saisons touristiques et rythmes dirigeants.",
     },
     {
-      q: "Comment se déplace Axion-IA à Saint-Rémy-de-Provence ?",
-      a: "Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Saint-Rémy-de-Provence ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Rémy-de-Provence est à 25 min d'Avignon et d'Arles via D5/D99.",
     },
   ],
 };

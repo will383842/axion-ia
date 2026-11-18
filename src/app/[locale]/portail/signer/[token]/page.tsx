@@ -20,26 +20,35 @@
 
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { CGV_VERSION, CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { signedDocumentPdfUrl } from "@/lib/r2-storage";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/token-document";
+import {
+  statutDevisDuLien,
+  verifierTokenDocument,
+} from "@/server/qualiopi/documents/signature/token-document";
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
 import {
+  MENTION_VERSION_DOCUMENT,
+  mentionCompleteDocument,
+} from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  apercuChoixAction,
+  demanderCodeDevisAction,
   demanderCodeSignatureAction,
   signerPieceParJetonAction,
 } from "@/server/actions/qualiopi/piece-signature";
+import { devisSignableParFormules } from "@/server/qualiopi/devis/choix-signature";
+import { presenterOffre } from "@/server/qualiopi/devis/choix-affichage";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { sha256Offre } from "@/server/qualiopi/devis/offre-calculs";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import type { OffreAffichee } from "@/server/qualiopi/devis/choix-affichage";
 import { codeRequis } from "@/server/qualiopi/documents/signature/contrat-cadre-signature";
 import { PieceSignatureForm } from "@/components/portail/PieceSignatureForm";
+import { lienTelechargement } from "@/lib/content-disposition";
 import { prisma } from "@/lib/prisma";
-import {
-  REGIME_TVA_DEFAUT,
-  TAUX_TVA_STANDARD,
-  isRegimeTva,
-  type RegimeTva,
-} from "@/server/qualiopi/legal/tva";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -51,11 +60,21 @@ interface PageProps {
   params: Promise<{ locale: string; token: string }>;
 }
 
+const MESSAGE_DEVIS_FERME = {
+  titre: "Ce devis n'est plus ouvert à la signature",
+  detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
+};
+
+/** « le devis » → « Le devis » (début de phrase). */
+function majusculeInitiale(texte: string): string {
+  return `${texte.charAt(0).toUpperCase()}${texte.slice(1)}`;
+}
+
 function Message({ titre, detail }: { titre: string; detail: string }) {
   return (
     <div className="mx-auto w-full max-w-md px-4 py-16">
-      <h1 className="text-lg font-semibold text-gray-900">{titre}</h1>
-      <p className="mt-2 text-sm text-gray-600">{detail}</p>
+      <h1 className="text-fg text-lg font-semibold">{titre}</h1>
+      <p className="text-fg-soft mt-2 text-sm">{detail}</p>
     </div>
   );
 }
@@ -84,6 +103,14 @@ export default async function SignerDevisPage({ params }: PageProps) {
           "Une version révisée du devis vous a probablement été adressée. Utilisez le lien le plus récent, ou contactez votre interlocuteur.",
       },
     };
+    // 🔴 Un lien révoqué ou périmé parce que le devis est REFUSÉ ou expiré ne doit pas dire
+    // « une version révisée vous a été adressée » : c'est faux. Message neutre, sans motif.
+    if (verif.raison === "revoque" || verif.raison === "expire") {
+      const statutDevis = await statutDevisDuLien(token);
+      if (statutDevis === "refuse" || statutDevis === "expire") {
+        return <Message titre={MESSAGE_DEVIS_FERME.titre} detail={MESSAGE_DEVIS_FERME.detail} />;
+      }
+    }
     const m = messages[verif.raison] ?? {
       titre: "Lien invalide",
       detail: "Ce lien ne permet pas d'accéder à un devis à signer.",
@@ -140,7 +167,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Cette pièce a été annulée"
-        detail={`${circuit.libelle} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
+        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
       />
     );
   }
@@ -155,7 +182,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Vous avez déjà signé cette pièce"
-        detail={`Votre signature sur ${circuit.libelle} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
+        detail={`Votre signature sur ${circuit.libelleDefini} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
     );
   }
@@ -168,11 +195,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
   // lien est affiché juste en dessous.
   let devis: Awaited<ReturnType<typeof lireDevisASigner>> = null;
   if (piece.type === "devis") {
-    const regimeConfig = await getQualiopiConfig("regime_tva");
-    const regimeTva: RegimeTva = isRegimeTva(regimeConfig) ? regimeConfig : REGIME_TVA_DEFAUT;
-    const tauxStandard =
-      (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
-    devis = await lireDevisASigner(verif.documentGenereId, regimeTva, tauxStandard);
+    devis = await lireDevisASigner(verif.documentGenereId);
     if (devis === null) notFound();
 
     if (devis.statutBloquant !== null) {
@@ -193,6 +216,57 @@ export default async function SignerDevisPage({ params }: PageProps) {
       const m = messages[devis.statutBloquant]!;
       return <Message titre={m.titre} detail={m.detail} />;
     }
+  }
+
+  // ── Devis À FORMULES (lot 4) : l'offre figée, à choisir avant de signer ──
+  //
+  // `offre` NULL = devis classique, écran inchangé. Interrupteur éteint, offre illisible ou
+  // altérée, date de validité dépassée : on le dit, on ne propose pas de signer.
+  let offreAffichee: OffreAffichee | null = null;
+  if (piece.type === "devis") {
+    const lie = await prisma.devis.findFirst({
+      where: { documentGenereId: verif.documentGenereId },
+      select: { numero: true, offre: true, offreSha256: true, dateValidite: true },
+    });
+    if (lie !== null && lie.offre != null && lie.offreSha256 != null) {
+      if (!(await formulesActives())) {
+        return (
+          <Message
+            titre="Ce devis n'est pas disponible pour le moment"
+            detail="Contactez votre interlocuteur chez Axion-IA : ce devis ne peut pas encore être signé en ligne."
+          />
+        );
+      }
+      if (!devisSignableParFormules(lie, new Date())) {
+        return (
+          <Message
+            titre="Ce devis a dépassé sa date de validité"
+            detail={`Le devis ${lie.numero} ne peut plus être signé. Contactez votre interlocuteur pour en recevoir un nouveau.`}
+          />
+        );
+      }
+      const offre = offreDevisV1.safeParse(lie.offre);
+      if (!offre.success || sha256Offre(offre.data) !== lie.offreSha256) {
+        return (
+          <Message
+            titre="Ce devis ne peut pas être affiché"
+            detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
+          />
+        );
+      }
+      offreAffichee = presenterOffre(offre.data);
+    }
+  }
+
+  // 🔴 Devis classique dont la photo de la pièce est absente ou illisible : on ne
+  // recalcule PAS (ni la configuration actuelle, ni Devis.lignes), on ne propose pas de signer.
+  if (devis !== null && devis.chiffrageIndisponible && offreAffichee === null) {
+    return (
+      <Message
+        titre="Ce devis ne peut pas être affiché"
+        detail="Contactez votre interlocuteur chez Axion-IA pour en recevoir une version à jour."
+      />
+    );
   }
 
   // Le PDF EXACT que la signature scellera. URL signée COURTE — 15 min suffisent
@@ -238,23 +312,30 @@ export default async function SignerDevisPage({ params }: PageProps) {
     null;
 
   const avecCode = codeRequis(piece.type, piece.metadata, verif.partie);
+  // Devis À FORMULES : signature « simple renforcée » (lot 4 bis) — code reçu par e-mail + déclaration.
+  const renforcee = offreAffichee !== null && verif.partie === "client";
 
   const mentions = mentionCompleteDocument(
     verif.partie,
     {
       pieceLibelle: circuit.libelle,
-      pieceNumero: piece.numero,
+      // Un devis se désigne par SON numéro (AXI-DEV), celui que le client connaît ; le n° de
+      // pièce (AXI-DOC) reste affiché à part par le formulaire.
+      pieceNumero: devis?.numero ?? piece.numero,
       organisme: identite.raisonSociale,
     },
     circuit.canal === "maison",
-    avecCode,
+    avecCode || renforcee,
+    MENTION_VERSION_DOCUMENT,
   );
 
   return (
     <PieceSignatureForm
       token={token}
       numero={piece.numero}
+      {...(devis !== null ? { numeroDevis: devis.numero } : {})}
       pieceLibelle={circuit.libelle}
+      pieceLibelleDefini={circuit.libelleDefini}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
       clientRaisonSociale={destinataire}
@@ -266,6 +347,9 @@ export default async function SignerDevisPage({ params }: PageProps) {
             totalHtLisible: devis.totalHtLisible,
             totalTtcLisible: devis.totalTtcLisible,
             mentionTva: devis.mentionTva,
+            conditionsParticulieres: devis.conditionsParticulieres,
+            // Lue dans la PHOTO de la pièce, jamais une constante.
+            phrasePrimaute: devis.phrasePrimaute,
           }
         : {})}
       pdfUrl={pdfUrl}
@@ -275,8 +359,27 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // Le formulaire reçoit désormais le tableau et le rend structuré ; aucun
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
+      // Version de la mention AFFICHÉE : le formulaire la poste, le serveur refuse si elle a changé.
+      mentionVersion={MENTION_VERSION_DOCUMENT}
+      // CGV à lire et accepter avant de signer un DEVIS (case séparée, version scellée).
+      {...(piece.type === "devis"
+        ? {
+            cgv: {
+              version: CGV_VERSION,
+              libelle: CGV_VERSION_LIBELLE,
+              href: "/fr/conditions-generales",
+              pdfHref: lienTelechargement("/api/cgv"),
+            },
+          }
+        : {})}
+      {...(offreAffichee !== null
+        ? { formules: { offre: offreAffichee, apercuAction: apercuChoixAction } }
+        : {})}
       signerAction={signerPieceParJetonAction}
       {...(avecCode ? { demanderCodeAction: demanderCodeSignatureAction } : {})}
+      {...(renforcee
+        ? { demanderCodeAction: demanderCodeDevisAction, declaration: true as const }
+        : {})}
     />
   );
 }

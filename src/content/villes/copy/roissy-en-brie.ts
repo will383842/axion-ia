@@ -10,9 +10,9 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Roissy-en-Brie (23 229 habitants, Seine-et-Marne), commune de Paris-Vallée de la Marne située à 25 km au sud-est de Paris. Le recensement 2019 a dénombré 1 107 unités économiques locales, principalement en commerce, transport, hôtellerie-restauration, construction et industrie légère. Nous intervenons sur site pour automatiser devis, relances, reporting et suivi de chantier avec du code IA sur mesure, sans no-code générique.",
   directAnswerFr:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   directAnswerEn:
-    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune, desservie par le RER E (gare de Roissy-en-Brie, branche Tournan) et la RN 104. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
+    "À Roissy-en-Brie, Axion-IA propose aux TPE et PME locales des audits IA, des interventions d'automatisation et des implémentations de code IA sur mesure. Williams se déplace directement dans la commune. Notre offre démarre à {{price:intervention-4h|flat}} pour le format collectif (1 journée), adapté aux 1 107 entreprises locales recensées en 2019, majoritairement des structures de 1 à 50 salariés. Pas de no-code : du code propriétaire, conforme RGPD, intégré à vos outils.",
   seoHook: "commerce détail & transports terrestres",
   ecosystemFr:
     "Roissy-en-Brie est limitrophe d'Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière. La commune fait partie de l'agglomération Paris-Vallée de la Marne. 45 % du territoire reste couvert par les bois et forêts, ce qui structure une urbanisation maîtrisée. Une importante station de transformation électrique EDF-RTE (400 kV / 225 kV) est implantée sur la commune. Le tissu économique local repose sur le commerce, le transport routier, la restauration et la construction, en lien direct avec les zones d'activités de Pontault-Combault et Émerainville.",
@@ -231,7 +231,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Williams se déplace-t-il vraiment à Roissy-en-Brie ?",
-      a: "Oui. Roissy-en-Brie est accessible en 40 minutes depuis Paris via le RER E (branche Tournan) et en voiture par l'A4 et la RN 104. Les interventions se déroulent dans vos locaux, à Roissy-en-Brie ou dans les communes limitrophes.",
+      a: "Oui. Roissy-en-Brie est accessible en 40 minutes. Les interventions se déroulent dans vos locaux, à Roissy-en-Brie ou dans les communes limitrophes.",
     },
     {
       q: "Quels délais pour une implémentation IA à Roissy-en-Brie ?",
@@ -247,7 +247,7 @@ export const ROISSY_EN_BRIE_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes limitrophes de Roissy-en-Brie ?",
-      a: "Oui. Nous nous déplaçons sans surcoût à Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière, toutes accessibles en moins de 15 minutes depuis Roissy-en-Brie.",
+      a: "Oui. Nous intervenons à Émerainville, Croissy-Beaubourg, Pontault-Combault, Pontcarré et Ozoir-la-Ferrière, communes voisines de Roissy-en-Brie. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

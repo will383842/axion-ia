@@ -49,7 +49,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carentan-les-Marais et dans les marais du Cotentin ?",
-      a: "Oui, Axion-IA intervient à Carentan-les-Marais et dans tout le Cotentin (Saint-Lô, Bayeux, Cherbourg, Valognes). Nos consultants se déplacent via la N13 depuis Caen (1 h) ou Cherbourg (45 min), ou en visio.",
+      a: "Oui, Axion-IA intervient à Carentan-les-Marais et dans tout le Cotentin (Saint-Lô, Bayeux, Cherbourg, Valognes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les éleveurs et agriculteurs des marais du Cotentin ?",
@@ -65,7 +65,7 @@ export const CARENTAN_LES_MARAIS_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Carentan-les-Marais ?",
-      a: "Nos consultants viennent de Caen (1 h N13) ou Cherbourg (45 min). Gare de Carentan (TER Paris 2 h 30 via Caen). Multi-jours : hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Carentan (TER Paris 2 h 30 via Caen). Multi-jours : hébergement local.",
     },
   ],
 };

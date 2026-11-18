@@ -49,7 +49,7 @@ export const AMBOISE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Amboise et Val de Loire ?",
-      a: "Oui, Axion-IA intervient à Amboise et tout le Val de Loire tourangeau (Chargé, Pocé-sur-Cisse, Nazelles-Négron, Limeray). Consultants depuis Tours (25 min) ou gare TGV Saint-Pierre-des-Corps (20 min).",
+      a: "Oui, Axion-IA intervient à Amboise et tout le Val de Loire tourangeau (Chargé, Pocé-sur-Cisse, Nazelles-Négron, Limeray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme patrimonial ?",

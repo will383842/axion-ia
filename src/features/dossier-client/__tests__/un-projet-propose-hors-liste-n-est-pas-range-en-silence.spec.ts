@@ -82,7 +82,7 @@ describe("⛔ un projet proposé hors de la liste n'est pas rangé en silence", 
     fd.set("groupeIntitule_J2", "Audit");
     fd.append("groupeFait_J2", "f2");
     expect(() => lireChoixDesGroupes(fd)).toThrow(ErreurChoixDeGroupe);
-    expect(() => lireChoixDesGroupes(fd)).toThrow(/Choisissez un projet pour « Audit »/);
+    expect(() => lireChoixDesGroupes(fd)).toThrow(/Choisissez une prestation pour « Audit »/);
   });
 
   it("contre-témoin : « principal » choisi explicitement reste permis", () => {

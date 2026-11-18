@@ -65,7 +65,7 @@ export const TALANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Talange ?",
-      a: "Nos consultants arrivent via autoroute A31 ou gare SNCF Hagondange (5 min). Metz et Thionville à 15 min chacun, Luxembourg à 55 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Talange est desservie par l'autoroute A31 et à 5 min de la gare SNCF d'Hagondange, à 15 min de Metz et de Thionville.",
     },
   ],
 };

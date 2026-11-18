@@ -145,6 +145,7 @@ export type EmailJobName =
   | "ressources-magic-link"
   // Hub facturation — envois MANUELS (admin) de devis/facture avec PDF joint
   | "devis-envoi"
+  | "relance-devis-client"
   | "facture-envoi"
   // Lot A8c — remboursement OPCO : après le règlement complet de sa facture,
   // l'entreprise reçoit la facture acquittée et le certificat de réalisation.
@@ -218,6 +219,29 @@ export type EmailJobName =
   // Questionnaire de cadrage EN LIGNE (2026-10-01) — e-mail INTERNE : un client
   // a envoyé ses réponses. Aucune réponse dans le message, un lien vers la console.
   | "questionnaire-reponses-recues"
+  // Devis signé par le client (2026-11-04) — e-mail INTERNE (numéro + lien console, aucune donnée
+  // personnelle), enfilé après la signature par lien (`notification-interne-devis.ts`).
+  | "devis-signe-a-contresigner"
+  // Doublon e-mail d'une demande de client (14/11/2026) — INTERNE, enfilé par
+  // `notifications/doublon-client.ts`. Nom NOUVEAU : ajouté, rien de retiré (le worker atterrit
+  // avant l'app, `axionia/AGENTS.md`).
+  | "alerte-demande-client"
+  // Récap quotidien des demandes de clients (7 h 30, heure de Paris) — INTERNE, enfilé par
+  // `alertes-clients/recap.ts` depuis le worker. Nom NOUVEAU : ajouté, rien de retiré.
+  | "recap-demandes-clients"
+  // Confirmation de commande au client (CGV 5.2, 6.2) — sur contresignature explicite uniquement.
+  | "devis-commande-confirmation"
+  // Code à usage unique pour SIGNER un devis (lot 4 bis) — transactionnel, déclenché par le clic
+  // « Recevoir mon code » du signataire uniquement ; le code traverse la file scellé.
+  | "devis-code-signature"
+  // Questionnaire de pré-audit (2026-10-24) — au prospect, par clic de Will uniquement.
+  | "questionnaire-avant-audit"
+  // Suivi du questionnaire avant audit (2026-10-26) — relances 1 à 3 et confirmation de
+  // réception, enfilées UNIQUEMENT par le balayage du worker (`questionnaire-preaudit/suivi.ts`).
+  | "questionnaire-avant-audit-relance"
+  | "questionnaire-avant-audit-confirmation"
+  // Lot B10 (2026-10-29) — brouillon au dirigeant, garé « à valider » depuis la fiche client.
+  | "questionnaire-relance-equipe"
   // QNC L03 (2026-10-16) — recueil du besoin, temps 1 : questionnaire envoyé à
   // l'ENTREPRISE dès la demande, puis relancé (J+3, J+6 au plus).
   | "recueil-besoin"
@@ -251,7 +275,7 @@ export interface VivierCronJobData {
  * et des confirmations, sentinelle quotidienne. Types déclarés ICI pour la
  * même raison que ceux du vivier (pas d'arête `queues.ts` → worker).
  */
-export type GuideIaCronJobType = "rattrapage" | "sentinelle";
+export type GuideIaCronJobType = "rattrapage" | "sentinelle" | "preuves";
 
 export interface GuideIaCronJobData {
   readonly type?: GuideIaCronJobType;
@@ -276,6 +300,14 @@ export type ApporteurCronJobType =
 
 export interface ApporteurCronJobData {
   readonly type?: ApporteurCronJobType;
+  readonly tick?: string;
+}
+
+/**
+ * 2026-11-15 — récap quotidien des demandes de clients (7 h 30, Paris). La charge ne porte RIEN
+ * d'une demande : un horodatage. Le contenu est lu en base au passage.
+ */
+export interface AlertesClientsCronJobData {
   readonly tick?: string;
 }
 

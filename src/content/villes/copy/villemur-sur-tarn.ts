@@ -9,9 +9,9 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
   pitchEn:
     "Villemur-sur-Tarn (31), bourg fortifié millénaire des bords du Tarn au nord de Toulouse, 6 345 habitants (Villemuriens), à la croisée des trois provinces historiques de Rouergue, Guyenne et Languedoc. La commune n'a jamais été prise par les Anglais durant la guerre de Cent Ans. Tissu économique mêlant industrie (le site Molex dans le quartier Cité verte, hérité de l'histoire manufacturière locale), TPE artisans, PME agroalimentaires, commerces de centre-ville et exploitations agricoles (l'agriculture occupe 78 % du foncier). Axion-IA y accompagne TPE, PME et commerces du nord Haute-Garonne.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nous intervenons partout en France, sur place ou à distance.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nos consultants se déplacent en 45 min depuis Toulouse (38 km par route).",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Villemur-sur-Tarn (31). Nous accompagnons en priorité les TPE artisans, commerçants et professions libérales du nord Haute-Garonne, ainsi que les PME industrielles et agroalimentaires de la vallée du Tarn et les exploitants agricoles. Audit sur place dès {{price:audit-flash|flat}}, code custom (jamais de no-code). Nous intervenons partout en France, sur place ou à distance.",
   seoHook: "industrie, agriculture & artisanat",
   ecosystemFr:
     "Villemur-sur-Tarn est un bourg structurant du nord de la Haute-Garonne, à cheval sur le Tarn et à la frontière du Tarn-et-Garonne. Le foncier est massivement agricole (78,3 % d'usage agricole, 11,3 % forestier), signe d'un tissu rural vivant. Le quartier Cité verte abrite le site industriel Molex (connectique électronique), héritage de la tradition manufacturière villemurienne. À côté, on trouve un tissu dense de TPE artisans BTP, commerces de centre-ville, PME agroalimentaires, exploitations en grandes cultures et vignoble (proximité Fronton AOC), ainsi que des professions libérales. La ville reste exposée aux crues récurrentes du Tarn (crue catastrophique du 3 mars 1930).",
@@ -50,7 +50,7 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villemur-sur-Tarn ?",
-      a: "Oui, Axion-IA intervient à Villemur-sur-Tarn et dans tout le secteur nord Haute-Garonne : Bondigoux, Le Born, Bouloc, Fronton, Villematier, Villaudric, Villebrumier, Nohic, Varennes, ainsi que Montauban et le sud Tarn-et-Garonne. Nos consultants se déplacent en 45 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Villemur-sur-Tarn et dans tout le secteur nord Haute-Garonne : Bondigoux, Le Born, Bouloc, Fronton, Villematier, Villaudric, Villebrumier, Nohic, Varennes, ainsi que Montauban et le sud Tarn-et-Garonne. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Villemur-sur-Tarn ?",
@@ -58,7 +58,7 @@ export const VILLEMUR_SUR_TARN_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une intervention IA à Villemur-sur-Tarn ?",
-      a: "Première intervention sous 5 à 10 jours ouvrés après validation de la commande. Pour les implémentations longues en milieu industriel, le planning est défini lors de l'audit. Nos consultants se déplacent en 45 min depuis Toulouse, intervention 1 journée minimum dans vos locaux.",
+      a: "Première intervention sous 5 à 10 jours ouvrés après validation de la commande. Pour les implémentations longues en milieu industriel, le planning est défini lors de l'audit. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villemur-sur-Tarn ?",

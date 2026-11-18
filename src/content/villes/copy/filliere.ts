@@ -49,7 +49,7 @@ export const FILLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fillière et nord Annecy ?",
-      a: "Oui, Axion-IA intervient à Fillière et tout le nord du bassin annécien (La Roche-sur-Foron à 10 min, Annecy à 15 min). Déplacements depuis Genève (40 min).",
+      a: "Oui, Axion-IA intervient à Fillière et tout le nord du bassin annécien (La Roche-sur-Foron à 10 min, Annecy à 15 min). Déplacement sur site.",
     },
     {
       q: "Combien coûte un audit IA à Fillière  ?",

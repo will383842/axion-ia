@@ -11,6 +11,8 @@
  * terminée affiche ses dates et la conservation de ses pièces : aucun bouton.
  */
 
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, useTransition } from "react";
 
 import { AdminButton } from "@/components/admin/ui/AdminButton";
@@ -51,16 +53,10 @@ export interface FinTerminee {
   readonly conservation: { contratEtVigilance: string; piecesComptables: string } | null;
 }
 
-function Apercu({ sujet, html }: { sujet: string; html: string }) {
+function Apercu({ lecteur }: { lecteur: ApercuLecteur }) {
   return (
     <div className="mt-[var(--space-admin-3)]">
-      <p className="admin-meta">Aperçu — objet : {sujet}</p>
-      <iframe
-        title="Aperçu de l'e-mail"
-        sandbox=""
-        srcDoc={html}
-        className="admin-card mt-[var(--space-admin-2)] h-80 w-full"
-      />
+      <LecteurEmail apercu={lecteur} liensInertes />
     </div>
   );
 }
@@ -76,7 +72,7 @@ export function FinCollaborationPanel({
   const [message, setMessage] = useState<{ ton: "ok" | "erreur"; texte: string } | null>(null);
 
   const [fait, setFait] = useState("");
-  const [apercuAv, setApercuAv] = useState<{ sujet: string; html: string } | null>(null);
+  const [apercuAv, setApercuAv] = useState<ApercuLecteur | null>(null);
 
   const [motif, setMotif] = useState<MotifFin>("initiative_axion");
   const [dateEffet, setDateEffet] = useState("");
@@ -237,7 +233,7 @@ export function FinCollaborationPanel({
           </AdminButton>
         ) : null}
       </div>
-      {apercuAv ? <Apercu sujet={apercuAv.sujet} html={apercuAv.html} /> : null}
+      {apercuAv ? <Apercu lecteur={apercuAv} /> : null}
 
       <h3 className="admin-meta mt-[var(--space-admin-4)]">Mettre fin à la collaboration</h3>
       <div className="flex flex-wrap items-end gap-[var(--space-admin-3)]">
@@ -370,11 +366,7 @@ export function FinCollaborationPanel({
               le renvoyer depuis cette carte une fois le texte validé.
             </p>
           ) : null}
-          {apercuFin.email ? (
-            <Apercu sujet={apercuFin.email.sujet} html={apercuFin.email.html} />
-          ) : (
-            <p>Aucun e-mail ne partira.</p>
-          )}
+          {apercuFin.email ? <Apercu lecteur={apercuFin.email} /> : <p>Aucun e-mail ne partira.</p>}
         </div>
       ) : null}
     </section>

@@ -49,7 +49,7 @@ export const CHENOVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chenôve et dans le sud dijonnais ?",
-      a: "Oui, Axion-IA intervient à Chenôve et dans toute l'agglomération dijonnaise sud (Marsannay-la-Côte, Longvic, Ouges, Perrigny-lès-Dijon). Nos consultants se déplacent depuis Dijon en 10 minutes via le tram T2.",
+      a: "Oui, Axion-IA intervient à Chenôve et dans toute l'agglomération dijonnaise sud (Marsannay-la-Côte, Longvic, Ouges, Perrigny-lès-Dijon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Chenôve  : quel budget prévoir ?",

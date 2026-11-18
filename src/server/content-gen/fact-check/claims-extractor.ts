@@ -36,7 +36,7 @@ const PATTERN_ATTRIBUTION = /\bselon\s+[A-ZÉÈÀÔÎ][^.,;]{2,40}/gi;
 const PATTERN_STAT_YEAR =
   /\b(?:en|in|année|year)\s+(?:20\d{2}|19\d{2})\b.{0,80}\b\d{1,3}(?:[,.]\d{1,2})?\s*%?/gi;
 
-function splitSentences(text: string): ReadonlyArray<string> {
+export function splitSentences(text: string): ReadonlyArray<string> {
   return text
     .replace(/<[^>]+>/g, " ") // strip HTML tags
     .replace(/\s+/g, " ")

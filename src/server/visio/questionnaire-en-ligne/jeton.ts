@@ -43,8 +43,87 @@ function cle(): Buffer | null {
   return createHash("sha256").update("axion-questionnaire-cadrage|dev").digest();
 }
 
-function signer(cleHmac: Buffer, questionnaireId: string): string {
-  return createHmac("sha256", cleHmac).update(`${DOMAINE}${questionnaireId}`).digest("base64url");
+function signer(cleHmac: Buffer, questionnaireId: string, domaine: string = DOMAINE): string {
+  return createHmac("sha256", cleHmac).update(`${domaine}${questionnaireId}`).digest("base64url");
+}
+
+/**
+ * Domaine PROPRE du questionnaire de pré-audit (2026-10-24) : le jeton d'un questionnaire de
+ * cadrage n'ouvre jamais un pré-audit, et inversement (même clé, domaines HMAC distincts).
+ */
+const DOMAINE_PREAUDIT = "questionnaire-preaudit:v1:";
+
+export function jetonPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT);
+}
+
+export function jetonPreauditValide(id: string, jeton: string): boolean {
+  const i = id.toLowerCase();
+  if (!UUID.test(i) || !JETON.test(jeton)) return false;
+  const k = cle();
+  if (k === null) return false;
+  const attendu = Buffer.from(signer(k, i, DOMAINE_PREAUDIT), "utf8");
+  const recu = Buffer.from(jeton, "utf8");
+  return attendu.length === recu.length && timingSafeEqual(attendu, recu);
+}
+
+/**
+ * Code du DIRIGEANT pour le brouillon du pré-audit (2026-10-24) : posé par le serveur dans le lien
+ * envoyé au dirigeant (`?m=`), jamais dans les liens des salariés. Domaine HMAC propre : il ne se
+ * déduit ni du jeton ni de l'identifiant, donc un salarié qui a le lien de base ne peut pas lire
+ * le brouillon du dirigeant.
+ */
+const DOMAINE_PREAUDIT_DIRIGEANT = "questionnaire-preaudit-dirigeant:v1:";
+
+export function codeDirigeantPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT_DIRIGEANT).slice(0, 24);
+}
+
+/** Le code attendu est en base64url : tout autre caractère (accent, emoji…) est refusé d'emblée. */
+const CODE_DIRIGEANT = /^[A-Za-z0-9_-]{24}$/;
+
+/**
+ * Vrai si `code` est le code du dirigeant de ce questionnaire. Ne LÈVE JAMAIS (audit E2, point 6) :
+ * une forme inattendue rend `false`, donc la même réponse neutre. Les longueurs sont comparées en
+ * OCTETS avant `timingSafeEqual` (qui lève sur deux tampons de tailles différentes).
+ */
+export function codeDirigeantPreauditValide(id: string, code: unknown): boolean {
+  if (typeof code !== "string" || !CODE_DIRIGEANT.test(code)) return false;
+  const attendu = codeDirigeantPreaudit(id);
+  if (attendu === null) return false;
+  const a = Buffer.from(attendu, "utf8");
+  const b = Buffer.from(code, "utf8");
+  return a.length === b.length && timingSafeEqual(a, b);
+}
+
+/**
+ * Jeton de la page « Ne plus recevoir de rappel » du pré-audit (2026-10-26) : domaine HMAC PROPRE,
+ * donc le jeton du questionnaire n'arrête pas les rappels, et le jeton d'arrêt n'ouvre pas le
+ * questionnaire.
+ */
+const DOMAINE_PREAUDIT_ARRET = "preaudit-arret:v1:";
+
+export function jetonArretRelancesPreaudit(id: string): string | null {
+  const i = id.toLowerCase();
+  if (!UUID.test(i)) return null;
+  const k = cle();
+  return k === null ? null : signer(k, i, DOMAINE_PREAUDIT_ARRET);
+}
+
+export function jetonArretRelancesPreauditValide(id: string, jeton: string): boolean {
+  const i = id.toLowerCase();
+  if (!UUID.test(i) || !JETON.test(jeton)) return false;
+  const k = cle();
+  if (k === null) return false;
+  const attendu = Buffer.from(signer(k, i, DOMAINE_PREAUDIT_ARRET), "utf8");
+  const recu = Buffer.from(jeton, "utf8");
+  return attendu.length === recu.length && timingSafeEqual(attendu, recu);
 }
 
 /** Le jeton d'un questionnaire, ou `null` (production sans secret, identifiant invalide). */

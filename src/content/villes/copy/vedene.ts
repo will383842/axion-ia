@@ -34,8 +34,8 @@ export const VEDENE_COPY: VilleCopy = {
       en: "Audit IA à Vedène : diagnostic adapté aux TPE artisans, PME logistiques, négoces, commerces et professions libérales de l'est avignonnais. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Vedène : ateliers pour équipes TPE/PME logistique, négoces, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Vedène : optimisation tournées logistiques, automatisation devis BTP, gestion stocks négoces, agents conversationnels SAV commerces, prise de rendez-vous libéraux. RGPD strict.",
@@ -64,8 +64,8 @@ export const VEDENE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et libéral sur automatisation devis et chiffrage, gestion planning chantiers, prise de rendez-vous, comptes-rendus assistés et conformité RGPD santé.",
     },
     {
-      q: "Comment se déplace Axion-IA à Vedène ?",
-      a: "Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Vedène ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Vedène est à 10 min d'Avignon centre et 15 min de la gare TGV via A7.",
     },
   ],
 };

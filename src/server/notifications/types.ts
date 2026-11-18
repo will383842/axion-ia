@@ -159,7 +159,7 @@ export type NotificationEvent =
   | {
       // `VIDEO_EDITOR_APPLICATION_RECEIVED` = même payload, mais catégorie SÉPARÉE
       // (demande Will 2026-08-12) : les candidatures à l'offre monteur vidéo
-      // freelance ont leur propre groupe Telegram + doublon WhatsApp, pour ne pas
+      // freelance ont leur propre groupe Telegram +, pour ne pas
       // être mélangées aux autres candidatures. Le choix de catégorie se fait au
       // call-site sur le slug de l'offre (cf. `videoEditorNotificationCategory`).
       category: "JOB_APPLICATION_RECEIVED" | "VIDEO_EDITOR_APPLICATION_RECEIVED";
@@ -187,7 +187,7 @@ export type NotificationEvent =
   | {
       // Candidature commerciale — tunnel sans CV `/devenir-commercial-ia/candidature`
       // (annonce presse Mémorial de l'Isère, 2026-08-12). Catégorie SÉPARÉE des
-      // autres candidatures : salon Telegram dédié 🧲 + doublon WhatsApp, comme
+      // autres candidatures : salon Telegram dédié 🧲, comme
       // le monteur vidéo. Message volontairement COURT : les 6 champs qui
       // permettent de juger depuis le téléphone, le reste vit en console.
       category: "COMMERCIAL_APPLICATION_RECEIVED";
@@ -373,6 +373,24 @@ export type NotificationEvent =
   | {
       category: "NEWSLETTER_PENDING" | "NEWSLETTER_CONFIRMED" | "NEWSLETTER_UNSUBSCRIBED";
       payload: { email: string; locale?: "fr" | "en" };
+    }
+  // === Tour France IA (2026-10-29) : salon « Tour » ===
+  // 🔴 MINIMISÉES : la ville du référentiel (ou « ville hors liste »), des nombres, un booléen.
+  // Jamais de nom, d'e-mail, de téléphone, d'IP ni de ville saisie. Envoyées APRÈS la réponse
+  // par `features/tour-de-france/alertes.ts`. `villeCle` nul = ville hors liste (pas de fiche).
+  | {
+      category: "TOUR_DEMANDE_RECUE";
+      payload: {
+        ville: string;
+        villeCle: string | null;
+        comptees: number;
+        seuil: number;
+        compte: boolean;
+      };
+    }
+  | {
+      category: "TOUR_VILLE_OUVERTE";
+      payload: { ville: string; villeCle: string; comptees: number; seuil: number };
     }
   // === Guide IA (lot L2, 2026-09-24) ===
   //
@@ -599,6 +617,18 @@ export type NotificationEvent =
         registre: "vert" | "orange" | "rouge" | "muet";
       };
     }
+  // === Questionnaire avant audit (2026-10-26) : salon « Questionnaire audit » ===
+  // 🔴 MINIMISÉES (ADR 0010) : la société, le prénom et l'initiale seulement, des nombres, un
+  // motif sans adresse, un chemin RELATIF de la console. Ni adresse, ni nom complet, ni réponse.
+  // Envoyées UNIQUEMENT par le balayage du worker (`features/questionnaire-preaudit/suivi.ts`).
+  | {
+      category: "QUESTIONNAIRE_PREAUDIT_REPONSE";
+      payload: QuestionnairePreauditTelegram;
+    }
+  | {
+      category: "QUESTIONNAIRE_PREAUDIT_SUIVI";
+      payload: QuestionnairePreauditTelegram;
+    }
   // === Formateur indépendant : pièce déposée depuis son espace (lot E, F42) ===
   // 🔴 MINIMISÉE : ni nom, ni fichier. Un identifiant de fiche et le type de pièce.
   | {
@@ -783,10 +813,40 @@ export type NotifyInput<C extends NotificationCategory = NotificationCategory> =
   sync?: boolean;
 };
 
+/** Le doublon d'une demande de client : conversation privée Telegram et e-mail instantané. */
+export interface DoublonsClient {
+  prive: "sent" | "skipped" | "failed" | "deduped";
+  email: "queued" | "skipped" | "failed" | "deduped";
+}
+
 /** Résultat de `notify()` — soft-fail, jamais de throw. */
 export interface NotifyResult {
   ok: boolean;
   deduped?: boolean;
   rateLimited?: boolean;
+  /** Présent pour une demande de client, en envoi synchrone (14/11/2026). */
+  doublons?: DoublonsClient;
   channels: Partial<Record<NotificationChannel, "sent" | "queued" | "skipped" | "failed">>;
+}
+
+/** Charge des 2 catégories du questionnaire avant audit (2026-10-26). Voir l'ADR 0010. */
+export interface QuestionnairePreauditTelegram {
+  readonly evenement: "reponse" | "invitation" | "relance" | "arret" | "retenu";
+  /** Essai depuis la console : préfixe « ESSAI · ». */
+  readonly essai?: boolean;
+  readonly societe: string;
+  /** « Flora P. » (prénom + initiale, `prenomEtInitiale`). */
+  readonly qui?: string;
+  readonly parcours?: "dirigeant" | "collaborateur" | "referent_it";
+  readonly recues?: number;
+  /** `null` : inconnu tant que le dirigeant n'a pas répondu (« ? »). */
+  readonly attendues?: number | null;
+  readonly dirigeantARepondu?: boolean;
+  readonly rang?: number;
+  /** Motif SANS adresse (arrêt, retenue). */
+  readonly motif?: string;
+  /** Texte pré-formaté : « mer. 4 nov. à 9 h 30 », « 27/10, 30/10, 04/11 ». */
+  readonly prochaine?: string;
+  /** Chemin RELATIF de la console, rendu par `lienConsole`. */
+  readonly chemin: string;
 }

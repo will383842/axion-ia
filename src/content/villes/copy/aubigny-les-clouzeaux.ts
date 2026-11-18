@@ -65,7 +65,7 @@ export const AUBIGNY_LES_CLOUZEAUX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aubigny-Les Clouzeaux ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (10 min) ou Nantes (50 min A87). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation.",
     },
   ],
 };

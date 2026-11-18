@@ -34,8 +34,8 @@ export const VALREAS_COPY: VilleCopy = {
       en: "Audit IA à Valréas : diagnostic adapté aux TPE artisans, viticulteurs AOC, PME cartonnage et agroalimentaires, commerces et libéraux de l'Enclave des Papes. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
-      en: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux ou à Orange.",
+      fr: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Valréas : ateliers pour équipes TPE/PME cartonnage, viticulteurs, artisans BTP et commerces. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Valréas : optimisation chaîne cartonnage et prévision demande, traçabilité parcellaire viticole, e-commerce direct producteur, content marketing oenotouristique, automatisation comptabilité TPE. RGPD strict.",
@@ -64,8 +64,8 @@ export const VALREAS_COPY: VilleCopy = {
       a: "Oui, nous intervenons dans le cartonnage et l'industrie sur prévision de demande, optimisation chaîne production, maintenance prédictive, gestion stocks et automatisation administrative.",
     },
     {
-      q: "Comment se déplace Axion-IA à Valréas ?",
-      a: "Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7. Nos consultants se déplacent dans vos locaux malgré l'enclavement géographique.",
+      q: "Comment se passe une intervention à Valréas ?",
+      a: "Nous intervenons partout en France, sur place ou à distance, dans vos locaux malgré l'enclavement géographique. Valréas est à 45 min d'Orange et 1h d'Avignon via D941 et A7.",
     },
   ],
 };

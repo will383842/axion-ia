@@ -1,12 +1,18 @@
 // Email — confirmation demande implementation (Sprint 15 / M8 step 4).
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  contactName: string;
+  /** Hérité, jamais utilisé pour saluer (voir `salutation`). */
+  contactName?: string;
+  civilite?: string;
+  prenom?: string;
+  nomFamille?: string;
   implType?: string;
   budget?: string;
   submissionId: string;
@@ -15,20 +21,18 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande d'implémentation reçue",
-    preview: "Réponse sous 48 heures ouvrées, avec une proposition cadrée.",
-    intro: (n: string) => `Bonjour ${n},`,
+    preview: "Nous revenons vers vous avec une proposition cadrée.",
     body: (i: string | undefined, b: string | undefined) =>
-      `Nous avons bien reçu votre demande d'implémentation${i ? ` (${i})` : ""}${b ? `, fourchette ${b}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec une proposition cadrée.`,
+      `Nous avons bien reçu votre demande d'implémentation${i ? ` (${i})` : ""}${b ? `, fourchette ${b}` : ""}. Notre équipe revient vers vous avec une proposition cadrée.`,
     next: "Délais types : 1 à 3 semaines automatisation simple, 6 à 10 semaines projet complet, 4 à 12 semaines IA custom. Tous nos déploiements sont hébergés sur infrastructure UE Hetzner conforme RGPD.",
     cta: "Cas concrets",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Implementation request received",
-    preview: "Reply within 48 working hours, with a scoped proposal.",
-    intro: (n: string) => `Hello ${n},`,
+    preview: "We will get back to you with a scoped proposal.",
     body: (i: string | undefined, b: string | undefined) =>
-      `We received your implementation request${i ? ` (${i})` : ""}${b ? `, ${b} budget range` : ""}. Our team gets back to you within 48 working hours with a scoped proposal.`,
+      `We received your implementation request${i ? ` (${i})` : ""}${b ? `, ${b} budget range` : ""}. Our team gets back to you with a scoped proposal.`,
     next: "Typical timelines: 1-3 weeks simple automation, 6-10 weeks complete project, 4-12 weeks custom AI. All our deployments are hosted on EU Hetzner infrastructure, GDPR-compliant.",
     cta: "Case studies",
     refRow: (id: string) => `Reference: ${id}`,
@@ -57,12 +61,19 @@ export function ImplementationConfirmedEmail({
       signature
       preview={t.preview}
       title={t.title}
-      cta={{ label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }}
+      cta={
+        CAS_CONCRETS_AFFICHES
+          ? { label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }
+          : {
+              label: locale === "fr" ? "Notre méthode" : "Our method",
+              href: `${baseUrl}/${locale}/methodologie`,
+            }
+      }
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.body(p.implType, p.budget)}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.intro(p.contactName)}
+        {salutation(p, locale)}
         <br />
         {t.next}
       </Text>

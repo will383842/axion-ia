@@ -49,7 +49,7 @@ export const TOUL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Toul et dans le Toulois ?",
-      a: "Oui, Axion-IA intervient à Toul et tout le Toulois (Domgermain, Foug, Écrouves, Gondreville). Consultants depuis Nancy (25 min A31) ou Metz (50 min).",
+      a: "Oui, Axion-IA intervient à Toul et tout le Toulois (Domgermain, Foug, Écrouves, Gondreville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Côtes de Toul ?",
@@ -64,8 +64,8 @@ export const TOUL_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission à Toul depuis Nancy ?",
-      a: "Nos consultants viennent de Nancy (25 min A31 ou TER direct).",
+      q: "Comment se déroule une mission à Toul ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

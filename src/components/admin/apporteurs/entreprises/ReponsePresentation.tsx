@@ -4,6 +4,7 @@
 // Les trois réponses à une entreprise présentée. Rien ne part avant « Envoyer » :
 // l'aperçu montre les e-mails EXACTS (vrais gabarits). Changer la civilité efface l'aperçu.
 
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { useState, useTransition } from "react";
 
 import {
@@ -173,20 +174,7 @@ export function ReponsePresentation({
               key={e.destinataire + e.sujet}
               className="flex flex-col gap-[var(--space-admin-2)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] p-[var(--space-admin-3)]"
             >
-              <p className="text-[length:var(--text-admin-sm)]">
-                <span className="text-[color:var(--color-admin-fg-muted)]">À : </span>
-                {e.destinataire}
-                <br />
-                <span className="text-[color:var(--color-admin-fg-muted)]">Objet : </span>
-                <strong>{e.sujet}</strong>
-              </p>
-              <iframe
-                title={`Aperçu : ${e.sujet}`}
-                srcDoc={e.html}
-                sandbox=""
-                referrerPolicy="no-referrer"
-                className="h-[50vh] w-full max-w-[680px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-white"
-              />
+              <LecteurEmail apercu={e.apercu} titre={`Aperçu : ${e.sujet}`} liensInertes />
               {e.gabarit && e.texteDefaut !== undefined ? (
                 <EditeurTexte
                   key={e.gabarit}

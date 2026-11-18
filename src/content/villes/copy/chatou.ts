@@ -230,7 +230,7 @@ export const CHATOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chatou et dans la boucle de Seine ?",
-      a: "Oui, Axion-IA intervient à Chatou et dans toute la boucle de Seine (Le Vésinet, Croissy, Rueil-Malmaison, Bougival). Nos consultants se déplacent sur site depuis Paris (RER A, 20 min) ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Chatou et dans toute la boucle de Seine (Le Vésinet, Croissy, Rueil-Malmaison, Bougival). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les antiquaires et commerces d'art de Chatou ?",
@@ -246,7 +246,7 @@ export const CHATOU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Chatou ?",
-      a: "Nos consultants se déplacent depuis Paris (RER A, 20 min) ou La Défense (12 min). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Chatou ?",

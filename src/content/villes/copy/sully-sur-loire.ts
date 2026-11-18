@@ -49,7 +49,7 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sully-sur-Loire et est-Loiret ?",
-      a: "Oui, Axion-IA intervient à Sully-sur-Loire et tout l'est-Loiret (Gien, Châteauneuf-sur-Loire, Ouzouer-sur-Loire, Saint-Père-sur-Loire). Nos consultants se déplacent depuis Orléans (40 min) ou Paris (1h40).",
+      a: "Oui, Axion-IA intervient à Sully-sur-Loire et tout l'est-Loiret (Gien, Châteauneuf-sur-Loire, Ouzouer-sur-Loire, Saint-Père-sur-Loire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du tourisme patrimonial (château de Sully UNESCO) ?",
@@ -65,7 +65,7 @@ export const SULLY_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Sully-sur-Loire ?",
-      a: "Nos consultants se déplacent depuis Orléans (40 min voiture D951 ou A77). Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire. Pour les multi-jours, hébergement local ou Orléans. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare de Sully-sur-Loire desservie par TER Centre-Val de Loire. Pour les multi-jours, hébergement local ou Orléans. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

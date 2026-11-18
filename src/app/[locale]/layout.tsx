@@ -258,6 +258,27 @@ export async function generateMetadata({
   };
 }
 
+// Espaces de noms lus par des composants CLIENT (useTranslations) : common, chatbot,
+// podcast.form, errors. Les autres (home, press, knowledge, observatoire : ~25 Ko)
+// ne sont lus que côté serveur et n'ont pas à être envoyés au navigateur sur chaque page.
+const NAMESPACES_CLIENT = [
+  "_",
+  "common",
+  "nav",
+  "cta",
+  "footer",
+  "errors",
+  "breadcrumb",
+  "chatbot",
+  "podcast",
+] as const;
+
+function messagesClient(messages: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    NAMESPACES_CLIENT.filter((ns) => ns in messages).map((ns) => [ns, messages[ns]]),
+  );
+}
+
 export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
@@ -301,16 +322,24 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   // Signal AEO/GEO : permet à Perplexity/Claude.ai/SGE de comprendre la structure
   // de navigation primaire et de citer les hubs. URLs FR (EN désactivé, cf. AGENTS.md).
   const isFrLocale = (locale as Locale) === "fr";
+  //
+  // Audit SEO 2026-11-11 (B3) : La Journée IA, offre phare, ouvre la liste
+  // (position 1) ; les services suivent, décalés d'un rang.
   const siteNavigationJsonLd = buildSiteNavigationJsonLd([
+    {
+      name: "La Journée IA",
+      url: `${SITE_URL}/${locale}/journee-ia`,
+      position: 1,
+    },
     ...SERVICES.map((s, i) => ({
       name: serviceOfficial(s, isFrLocale),
       url: `${SITE_URL}/${locale}${s.href}`,
-      position: i + 1,
+      position: i + 2,
     })),
     {
       name: isFrLocale ? "Tarifs" : "Pricing",
       url: `${SITE_URL}/${locale}/tarifs`,
-      position: SERVICES.length + 1,
+      position: SERVICES.length + 2,
     },
   ]);
 
@@ -361,7 +390,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <link rel="preconnect" href="https://challenges.cloudflare.com" crossOrigin="anonymous" />
         ) : null}
         <SkipToContent />
-        <NextIntlClientProvider messages={messages} locale={locale}>
+        <NextIntlClientProvider messages={messagesClient(messages)} locale={locale}>
           {/* Header/Footer publics toujours rendus — masqués sur les routes admin
               via CSS :has() injecté dans le layout admin (force-dynamic).
               Cela évite d'appeler headers() ici, ce qui rendrait TOUTES les pages

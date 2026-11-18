@@ -49,7 +49,7 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Junien et Haut-Limousin ?",
-      a: "Oui, Axion-IA intervient à Saint-Junien et tout le Haut-Limousin occidental (Rochechouart, Oradour-sur-Glane, Aixe-sur-Vienne, Confolens). Nos consultants viennent de Limoges (30 min RN141) et couvrent toute la Haute-Vienne.",
+      a: "Oui, Axion-IA intervient à Saint-Junien et tout le Haut-Limousin occidental (Rochechouart, Oradour-sur-Glane, Aixe-sur-Vienne, Confolens). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une PME industrielle à Saint-Junien ?",
@@ -64,8 +64,8 @@ export const SAINT_JUNIEN_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Saint-Junien, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, fidélisation client augmentée.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges (30 min RN141) ou prennent le TER direct gare de Saint-Junien. Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Junien ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

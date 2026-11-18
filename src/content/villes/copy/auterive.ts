@@ -49,7 +49,7 @@ export const AUTERIVE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auterive ?",
-      a: "Oui, Axion-IA intervient à Auterive et dans tout le sud de la Haute-Garonne (Cintegabelle, Labarthe-sur-Lèze, Muret). Nos consultants se déplacent en 35 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Auterive et dans tout le sud de la Haute-Garonne (Cintegabelle, Labarthe-sur-Lèze, Muret). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Auterive ?",
@@ -65,7 +65,7 @@ export const AUTERIVE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Auterive ?",
-      a: "Nos consultants se déplacent à Auterive (35 min A66 depuis Toulouse). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
   ],
 };

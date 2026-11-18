@@ -49,7 +49,7 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sury-le-Comtal et Loire Forez Agglo ?",
-      a: "Oui, Axion-IA intervient à Sury-le-Comtal et toute Loire Forez Agglo (Saint-Just-Saint-Rambert à 5 min, Andrézieux-Bouthéon, Montbrison à 15 min, Feurs). Consultants depuis Lyon (1h) ou Saint-Étienne (25 min).",
+      a: "Oui, Axion-IA intervient à Sury-le-Comtal et toute Loire Forez Agglo (Saint-Just-Saint-Rambert à 5 min, Andrézieux-Bouthéon, Montbrison à 15 min, Feurs). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires foréziennes ?",
@@ -64,8 +64,8 @@ export const SURY_LE_COMTAL_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Sury-le-Comtal, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Sury-le-Comtal ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

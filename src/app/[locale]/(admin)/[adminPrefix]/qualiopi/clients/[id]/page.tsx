@@ -19,7 +19,7 @@
  *
  * Server Component — auth + redirect, force-dynamic, noindex.
  *
- * ## Dossier client (chantier visio, PR 3) — cinq onglets
+ * ## Dossier client (chantier visio, PR 3) — sept onglets (Résumé, Rendez-vous, Questionnaire, E-mails, Prestations, Personnes, Devis et factures)
  *
  * « Pièces et facturation » (tout ce qui précède, inchangé) reste ouvert à tous
  * les rôles de la console : `gardePage("consultation")` reste EN TÊTE.
@@ -32,21 +32,43 @@
  * Garde : `./__tests__/un-lecteur-ne-voit-ni-synthese-ni-echanges.spec.tsx`.
  */
 
+import * as E from "@/components/admin/dossier-client/fiche/emplacements";
+import { FilDesEchanges } from "@/components/admin/dossier-client/FilDesEchanges";
+import {
+  demandesEnEchanges,
+  lireDemandesDeLaFiche,
+} from "@/features/dossier-client/demandes-de-la-fiche";
+import { assemblerFil, lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
+import { prisma } from "@/lib/prisma";
+import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
+import { SuiviPrestations } from "@/components/admin/dossier-client/SuiviPrestations";
+import {
+  assemblerPrestations,
+  lireSuivisDesProjets,
+} from "@/features/dossier-client/suivi-prestations";
+import { BandeauOuEnEst } from "@/components/admin/dossier-client/BandeauOuEnEst";
+import {
+  construireBandeau,
+  TEXTE_LECTURE_IMPOSSIBLE,
+  type LigneBandeau,
+} from "@/features/dossier-client/bandeau-ou-en-est";
+import { BlocQuestionnaireFiche } from "@/components/admin/dossier-client/BlocQuestionnaireFiche";
+import { lireQuestionnairesDeLaFiche } from "@/features/dossier-client/questionnaires-de-la-fiche";
+import { exportCompletActif } from "@/features/questionnaire-preaudit/export-complet";
+import { suiviActif } from "@/features/questionnaire-preaudit/ouvertures";
+import { lireBrouillonAction } from "@/features/questionnaire-preaudit/actions-suivi-ouvertures";
 import type { Metadata } from "next";
+import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
+import { adminPath } from "@/lib/admin-path";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Euro, CalendarDays, Users, Wallet } from "lucide-react";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
-import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
-import {
-  getClient360,
-  calculerEncoursDuCents,
-  resteDuNetCents,
-} from "@/server/qualiopi/crm/clients";
+import { calculerEncoursDuCents } from "@/server/qualiopi/crm/clients";
 import { opcoDuClient, OPCO_LABELS } from "@/server/qualiopi/financements/opco-referentiel";
 import {
   anneeParis,
@@ -57,9 +79,7 @@ import { rafraichirEffectifInseeFormAction } from "@/server/actions/qualiopi/cli
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
 import { etatFondsDuClient } from "@/server/qualiopi/financements/etat-fonds-opco-lecture";
 import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
-import { BandeauAttributionPartners } from "@/components/admin/qualiopi/BandeauAttributionPartners";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
-import { formatDateFrShort } from "@/lib/format-date-fr";
 import { AVERTISSEMENT_SIREN_CONTRAIRE, sirenContreditLeSiret, sirenDuClient } from "@/lib/siret";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { AdminFilterTabs } from "@/components/admin/ui/AdminFilterTabs";
@@ -77,6 +97,7 @@ import {
 import { motifSansAccesAuxEchanges, peutVoirLesEchanges } from "@/features/dossier-client/acces";
 import { consoliderFaits } from "@/features/dossier-client/consolider-faits";
 import { confirmerSirenFormAction } from "@/features/dossier-client/actions";
+import { sirenProposeParQuestionnaire } from "@/features/questionnaire-preaudit/completer-fiche";
 import {
   lireCaseTestVisible,
   lireFichesVivantes,
@@ -85,8 +106,11 @@ import {
 } from "@/features/dossier-client/queries-rencontres";
 import { NouveauRendezVous } from "@/components/admin/dossier-client/NouveauRendezVous";
 import { FusionDeFiches } from "@/components/admin/dossier-client/FusionDeFiches";
+import { titreOngletClient } from "@/server/qualiopi/crm/libelles-fiche-client";
+import { libelleSalutationEmails } from "@/server/qualiopi/crm/libelle-salutation";
 import { BrancheOpcoBloc } from "@/components/admin/qualiopi/BrancheOpcoBloc";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { siteAuditDuClient } from "@/features/site-audit/config";
 import { compterDocumentsParProjet } from "@/features/dossier-client/documents/queries";
 import { toParisLocalInput } from "@/lib/calendar-grid";
 import {
@@ -102,10 +126,40 @@ import {
 } from "@/features/dossier-client/queries";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Qualiopi — Fiche client | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+
+const COMPTEURS_VIDES: Readonly<Record<string, E.CompteurOnglet>> = {};
+
+/**
+ * Abri d'un emplacement : si sa lecture échoue, la fiche reste affichée et la place dit « Lecture
+ * impossible » (jamais un trou muet). Avec `repli`, c'est cette valeur qui est rendue (compteurs).
+ */
+async function abri<T>(lecture: () => Promise<T>): Promise<T | React.ReactElement>;
+async function abri<T, R>(lecture: () => Promise<T>, repli: R): Promise<T | R>;
+async function abri<T, R>(
+  lecture: () => Promise<T>,
+  repli?: R,
+): Promise<T | R | React.ReactElement> {
+  try {
+    return await lecture();
+  } catch {
+    if (repli !== undefined) return repli;
+    return (
+      <AdminBloc teinte="gris" niveau={3} titre="Lecture impossible">
+        <p role="status" className="text-[length:var(--text-admin-sm)]">
+          Cette partie de la fiche : {TEXTE_LECTURE_IMPOSSIBLE}. Rechargez la page ; le reste de la
+          fiche reste fiable.
+        </p>
+      </AdminBloc>
+    );
+  }
+}
+// Avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: titreOngletClient("Fiche client"),
+    robots: { index: false, follow: false },
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Libellés + tonalités FR (convention console : maps locales par page)
@@ -121,139 +175,9 @@ const CLIENT_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
   perdu: { label: "Perdu", tone: "destructive" },
 };
 
-/** TrainingSessionStatut et AuditMissionStatut partagent les mêmes valeurs. */
-const PRESTATION_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
-  planifiee: { label: "Planifiée", tone: "info" },
-  en_cours: { label: "En cours", tone: "warning" },
-  realisee: { label: "Réalisée", tone: "success" },
-  annulee: { label: "Annulée", tone: "destructive" },
-  reportee: { label: "Reportée", tone: "warning" },
-};
-
-const DEVIS_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
-  brouillon: { label: "Brouillon", tone: "neutral" },
-  envoye: { label: "Envoyé", tone: "info" },
-  accepte: { label: "Accepté", tone: "success" },
-  refuse: { label: "Refusé", tone: "destructive" },
-  expire: { label: "Expiré", tone: "destructive" },
-  transforme_convention: { label: "Transformé en convention", tone: "success" },
-};
-
-const FACTURE_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
-  brouillon: { label: "Brouillon", tone: "neutral" },
-  emise: { label: "Émise", tone: "info" },
-  partiellement_payee: { label: "Partiellement payée", tone: "warning" },
-  en_retard: { label: "En retard", tone: "destructive" },
-  payee: { label: "Payée", tone: "success" },
-  annulee: { label: "Annulée", tone: "neutral" },
-};
-
-const DOSSIER_STATUT: Record<string, { label: string; tone: BadgeTone }> = {
-  a_monter: { label: "À monter", tone: "warning" },
-  envoye: { label: "Envoyé", tone: "info" },
-  accord_recu: { label: "Accord reçu", tone: "success" },
-  refuse: { label: "Refusé", tone: "destructive" },
-  facture: { label: "Facturé", tone: "info" },
-  paiement_recu: { label: "Paiement reçu", tone: "success" },
-  clos: { label: "Clos", tone: "neutral" },
-};
-
-const DOSSIER_TYPE: Record<string, string> = {
-  opco: "OPCO",
-  france_travail: "France Travail",
-  cpf: "CPF",
-  mixte: "Mixte",
-};
-
-/** Libellés des types de pièces — alignés sur DocumentsSection (fiche session). */
-const DOC_LABELS: Record<string, string> = {
-  cv_formateur: "Fiche formateur",
-  convention: "Convention de formation",
-  programme: "Programme de l'action",
-  convention_tripartite: "Convention tripartite",
-  contrat: "Contrat de formation",
-  convocation: "Convocation",
-  emargement: "Feuille d'émargement",
-  releve_connexion: "Relevé de connexion",
-  positionnement: "Questionnaire de positionnement",
-  grille_evaluation: "Grille d'évaluation",
-  satisfaction: "Questionnaire de satisfaction",
-  attestation: "Attestation de réalisation",
-  attestation_partielle: "Attestation partielle",
-  certificat_realisation: "Certificat de réalisation",
-  facture: "Facture",
-  devis: "Devis",
-  avoir: "Avoir",
-  kit_opco: "Kit OPCO",
-  kit_cpf: "Kit CPF / EDOF",
-  kit_france_travail: "Kit France Travail",
-  lettre_mission: "Lettre de mission formateur",
-  reglement_interieur: "Règlement intérieur",
-  livret_accueil: "Livret d'accueil stagiaire",
-  protocole_afest: "Protocole individuel AFEST",
-  inventaire_moyens: "Inventaire des moyens pédagogiques",
-  contrat_sous_traitance: "Contrat de sous-traitance",
-};
-
-function eur(cents: number): string {
-  return new Intl.NumberFormat("fr-FR", {
-    style: "currency",
-    currency: "EUR",
-    minimumFractionDigits: 2,
-  }).format(cents / 100);
-}
-
 // ─────────────────────────────────────────────────────────────────────────────
 // Briques locales (RSC pur)
 // ─────────────────────────────────────────────────────────────────────────────
-
-function StatutBadge({
-  map,
-  statut,
-}: {
-  map: Record<string, { label: string; tone: BadgeTone }>;
-  statut: string;
-}): React.ReactElement {
-  const entry = map[statut];
-  return (
-    <AdminBadge tone={entry?.tone ?? "neutral"} dot>
-      {entry?.label ?? statut.replace(/_/g, " ")}
-    </AdminBadge>
-  );
-}
-
-function SectionTitre({
-  titre,
-  toutVoirHref,
-}: {
-  titre: string;
-  /** Lien vers la LISTE (non filtrée — aucun filtre client supporté). Optionnel. */
-  toutVoirHref?: string;
-}): React.ReactElement {
-  return (
-    <div className="mb-[var(--space-admin-3)] flex items-baseline justify-between gap-[var(--space-admin-4)]">
-      <h2 className="text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
-        {titre}
-      </h2>
-      {toutVoirHref ? (
-        <Link
-          href={toutVoirHref}
-          className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-        >
-          Tout voir →
-        </Link>
-      ) : null}
-    </div>
-  );
-}
-
-function SectionVide({ message }: { message: string }): React.ReactElement {
-  return (
-    <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-      {message}
-    </p>
-  );
-}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Page
@@ -263,31 +187,59 @@ interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
   searchParams?: Promise<{
     onglet?: string;
+    bloc?: string;
     erreur?: string;
     annuaire?: string;
     message?: string;
     releve?: string;
+    supprimer?: string;
+    retirer?: string;
+    jeton?: string;
+    sceau?: string;
   }>;
 }
 
-const ONGLETS_DOSSIER = ["synthese", "projets", "echanges", "personnes"] as const;
-type Onglet = (typeof ONGLETS_DOSSIER)[number] | "facturation";
+const ONGLETS_DOSSIER = [
+  "resume",
+  "activite",
+  "rendez-vous",
+  "questionnaire",
+  "emails",
+  "prestations",
+  "personnes",
+] as const;
+type Onglet = (typeof ONGLETS_DOSSIER)[number] | "devis-factures";
 
 const LIBELLE_ONGLET: Readonly<Record<Onglet, string>> = {
-  synthese: "Synthèse",
-  projets: "Projets",
-  echanges: "Échanges",
+  resume: "Résumé",
+  activite: "Activité",
+  "rendez-vous": "Rendez-vous",
+  questionnaire: "Questionnaire",
+  emails: "E-mails",
+  prestations: "Prestations",
   personnes: "Personnes",
-  facturation: "Pièces et facturation",
+  "devis-factures": "Devis et factures",
+};
+
+/**
+ * Les anciens noms d'onglets (adresses déjà enregistrées : redirections des actions, liens des
+ * pages de rendez-vous, e-mails) mènent au nouvel onglet. Aucune adresse ne casse.
+ */
+const ANCIENS_ONGLETS: Readonly<Record<string, Onglet>> = {
+  synthese: "resume",
+  echanges: "rendez-vous",
+  projets: "prestations",
+  facturation: "devis-factures",
 };
 
 /** L'onglet demandé, ramené à ce que le rôle peut voir. */
 function ongletAffiche(demande: string | undefined, voitEchanges: boolean): Onglet {
-  if (!voitEchanges) return "facturation";
-  if (demande === "facturation") return "facturation";
-  return (ONGLETS_DOSSIER as ReadonlyArray<string>).includes(demande ?? "")
-    ? (demande as Onglet)
-    : "synthese";
+  if (!voitEchanges) return "devis-factures";
+  const d = ANCIENS_ONGLETS[demande ?? ""] ?? demande;
+  if (d === "devis-factures") return "devis-factures";
+  // L'onglet Activité n'existe que lorsque son lot l'a rempli.
+  if (d === "activite") return E.ONGLET_ACTIVITE_PRET ? "activite" : "resume";
+  return (ONGLETS_DOSSIER as ReadonlyArray<string>).includes(d ?? "") ? (d as Onglet) : "resume";
 }
 
 export default async function FicheClient360Page({ params, searchParams }: PageProps) {
@@ -298,7 +250,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   }
   const sp = (await searchParams) ?? {};
 
-  const client = await getClient360(id);
+  // Le rôle est consulté AVANT toute lecture du dossier (régime A2, voir plus bas).
+  const voitEchanges = peutVoirLesEchanges(acces.role);
+
+  const client = await E.lireClient360Cache(id);
   if (!client) notFound();
 
   const qBase = `/${locale}/${adminPrefix}/qualiopi`;
@@ -308,11 +263,24 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   // ── Dossier client : régime FILTRE (décision A2) ─────────────────────────
   // 🔴 La vérification du rôle PRÉCÈDE toute lecture du dossier : hors de la
   // liste, aucune requête n'est faite (pas seulement aucun rendu).
-  const voitEchanges = peutVoirLesEchanges(acces.role);
   const onglet = ongletAffiche(sp.onglet, voitEchanges);
   // N1 : seuls les messages scellés par nos actions s'affichent (un lien forgé, rien).
   const erreur = lireMessageDeRetour(sp, "erreur");
   const maintenant = new Date();
+  const ctx: E.ContexteFiche = {
+    clientId: client.id,
+    locale,
+    adminPrefix,
+    qBase,
+    ficheHref,
+    role: acces.role,
+    peutEcrire: acces.peutEcrire,
+    voitEchanges,
+    maintenant,
+    sp,
+    erreur,
+    message: lireMessageDeRetour(sp, "message"),
+  };
   // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
   const bandeauFonds = bandeauEtatFonds(await etatFondsDuClient(client, maintenant));
   // Lot OPCO A7d : ce que l'OPCO a déjà pris en charge, année en cours et précédente.
@@ -339,6 +307,13 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
   const bandeauPartners = await bandeauPourLeRole(acces.role, sirenLu);
   const sirenContraire = estEntreprise && sirenContreditLeSiret(client);
   const sirenACompleter = estEntreprise && sirenLu === null;
+  // Le SIREN tapé par le prospect dans le questionnaire avant audit : PROPOSÉ, jamais posé
+  // sans le clic de Will (« Poser ce SIREN » passe par la porte unique et son verrou).
+  // Lecture d'appoint : une panne ici ne doit jamais empêcher la fiche de s'afficher.
+  const sirenPropose =
+    sirenACompleter && acces.peutEcrire
+      ? await sirenProposeParQuestionnaire(client.id).catch(() => null)
+      : null;
   const annuaire: ResultatAnnuaire | null =
     sirenACompleter && acces.peutEcrire && sp.annuaire === "1"
       ? await rechercherSiren(client.raisonSociale, client.adresseVille ?? null)
@@ -354,38 +329,158 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       ? await lireFormateursProches(client.id, maintenant)
       : undefined;
 
+  // Bandeau « Où en est ce client » : mêmes lectures de dossier que les onglets, donc mêmes
+  // garde de rôle (rien n'est requêté hors `voitEchanges`). Une lecture en panne ne bloque pas la
+  // fiche, mais elle ne se lit JAMAIS comme « rien » : la ligne dit « lecture impossible ».
+  // Les lectures réussies servent aussi aux onglets (une seule lecture par affichage) ; une
+  // lecture en panne y est refaite, pour que l'onglet montre la vraie erreur.
+  let lignesBandeau: ReadonlyArray<LigneBandeau> | null = null;
+  let rendezVousLus: Awaited<ReturnType<typeof lireRencontresDuClient>> | null = null;
+  let questionnairesLus: Awaited<ReturnType<typeof lireQuestionnairesDeLaFiche>> | null = null;
+  let projetsLus: Awaited<ReturnType<typeof lireProjetsDuClient>> | null = null;
+  if (voitEchanges) {
+    const enPanneBandeau: LigneBandeau["cle"][] = [];
+    const lire = async <T,>(cle: LigneBandeau["cle"], lecture: Promise<T>): Promise<T | null> =>
+      lecture.catch(() => {
+        enPanneBandeau.push(cle);
+        return null;
+      });
+    const [rendezVous, questionnairesBandeau, filBandeau, prestationsBandeau] = await Promise.all([
+      lire("rendez_vous", lireRencontresDuClient(id)),
+      lire("questionnaire", lireQuestionnairesDeLaFiche(id)),
+      lire("email", lireFilDesEchanges(id, adminPrefix)),
+      lire("prestations", lireProjetsDuClient(id)),
+    ]);
+    rendezVousLus = rendezVous;
+    questionnairesLus = questionnairesBandeau;
+    projetsLus = prestationsBandeau;
+    lignesBandeau = construireBandeau({
+      maintenant,
+      rendezVous: rendezVous ?? [],
+      questionnaires: questionnairesBandeau ?? [],
+      fil: filBandeau?.fil ?? [],
+      prestations: prestationsBandeau ?? [],
+      nbDevis: client.devis.length,
+      enPanne: enPanneBandeau,
+      sourcesDuFilEnPanne: filBandeau?.sourcesEnPanne ?? 0,
+    });
+  }
+
   let contenuDossier: React.ReactNode = null;
-  if (voitEchanges && onglet === "synthese") {
-    const [faits, projets] = await Promise.all([lireFaitsDuClient(id), lireProjetsDuClient(id)]);
+  if (voitEchanges && onglet === "resume") {
+    const [faits, projets, resumeDesTaches, resumeDesPrestations, resumeDesNotes, demandesRecues] =
+      await Promise.all([
+        lireFaitsDuClient(id),
+        projetsLus ?? lireProjetsDuClient(id),
+        abri(() => E.resumeTaches(ctx)),
+        abri(() => E.resumePrestations(ctx)),
+        abri(() => E.resumeNotes(ctx)),
+        abri(() => E.resumeDemandesRecues(ctx)),
+      ]);
     contenuDossier = (
-      <OngletSynthese
-        consolidation={consoliderFaits(faits, projets, maintenant)}
-        projets={projets}
-        ficheHref={ficheHref}
-        erreur={erreur}
+      <>
+        {/* EMPLACEMENT:RESUME-TACHES (lot B3) */}
+        {resumeDesTaches}
+        {/* EMPLACEMENT:RESUME-PRESTATIONS (lot B8) */}
+        {resumeDesPrestations}
+        {/* EMPLACEMENT:RESUME-NOTES (lot B4) */}
+        {resumeDesNotes}
+        {demandesRecues}
+        <OngletSynthese
+          consolidation={consoliderFaits(faits, projets, maintenant)}
+          projets={projets}
+          ficheHref={ficheHref}
+          erreur={erreur}
+        />
+      </>
+    );
+  } else if (voitEchanges && onglet === "activite") {
+    // EMPLACEMENT:ONGLET-ACTIVITE (lot B2)
+    contenuDossier = await abri(() => E.ongletActivite(ctx));
+  } else if (voitEchanges && onglet === "questionnaire") {
+    const questionnaires = questionnairesLus ?? (await lireQuestionnairesDeLaFiche(id));
+    const enBref = await abri(() => E.questionnaireEnBref(ctx));
+    contenuDossier = (
+      <>
+        {/* EMPLACEMENT:QUESTIONNAIRE-EN-BREF (lot B10) */}
+        {enBref}
+        {questionnaires.length === 0 ? (
+          <p className="mb-[var(--space-admin-6)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
+            Aucun questionnaire n&apos;a été envoyé à ce client.
+          </p>
+        ) : (
+          <BlocQuestionnaireFiche
+            questionnaires={questionnaires}
+            adminPrefix={adminPrefix}
+            ficheHref={ficheHref}
+            afficherOuvertures={suiviActif()}
+            voitBrouillons={acces.role === "super_admin" && suiviActif()}
+            voitAdresses={acces.role === "super_admin"}
+            peutExporter={acces.role === "super_admin" && exportCompletActif()}
+            // Le contenu d'un brouillon : super-administrateur ET interrupteur (l'action revérifie).
+            {...(acces.role === "super_admin" && suiviActif()
+              ? { lireBrouillon: lireBrouillonAction }
+              : {})}
+          />
+        )}
+      </>
+    );
+  } else if (voitEchanges && onglet === "emails") {
+    const [fil, demandesFil] = await Promise.all([
+      lireFilDesEchanges(id, adminPrefix),
+      lireDemandesDeLaFiche(id, acces.role).catch(() => null),
+    ]);
+    const panneDemandes =
+      demandesFil === null ||
+      demandesFil.pannes.messages ||
+      demandesFil.pannes.accuses ||
+      demandesFil.pannes.reponses;
+    // Les rendez-vous ont leur onglet : celui-ci ne montre que les courriers (et les demandes, sans corps).
+    contenuDossier = (
+      <FilDesEchanges
+        fil={assemblerFil([
+          fil.fil.filter((x) => x.genre !== "rendez_vous"),
+          demandesFil === null ? [] : demandesEnEchanges(demandesFil),
+        ])}
+        sourcesEnPanne={fil.sourcesEnPanne + (panneDemandes ? 1 : 0)}
+        clientId={id}
+        adminPrefix={adminPrefix}
       />
     );
-  } else if (voitEchanges && onglet === "projets") {
+  } else if (voitEchanges && onglet === "prestations") {
     const [projets, faitsARanger, nbDocuments] = await Promise.all([
-      lireProjetsDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lireFaitsARanger(id),
       compterDocumentsParProjet(id),
     ]);
+    // Ce que le client a pris (type, étape, montant) : lecture d'appoint, une panne ne cache rien.
+    const suivis = await lireSuivisDesProjets(projets.map((p) => p.id));
     contenuDossier = (
-      <OngletProjets
-        clientId={id}
-        projets={projets}
-        faitsARanger={faitsARanger}
-        ficheHref={ficheHref}
-        qBase={qBase}
-        erreur={erreur}
-        nbDocuments={nbDocuments}
-      />
+      <>
+        {suivis !== null ? (
+          <SuiviPrestations
+            clientId={id}
+            prestations={assemblerPrestations(projets, suivis)}
+            ficheHref={ficheHref}
+            message={sp.bloc === "suivi" ? lireMessageDeRetour(sp, "message") : null}
+            erreur={sp.bloc === "suivi" ? erreur : null}
+          />
+        ) : null}
+        <OngletProjets
+          clientId={id}
+          projets={projets}
+          faitsARanger={faitsARanger}
+          ficheHref={ficheHref}
+          qBase={qBase}
+          erreur={sp.bloc === "suivi" ? null : erreur}
+          nbDocuments={nbDocuments}
+        />
+      </>
     );
-  } else if (voitEchanges && onglet === "echanges") {
+  } else if (voitEchanges && onglet === "rendez-vous") {
     const [rencontres, projets, personnesCourtes, caseTest] = await Promise.all([
-      lireRencontresDuClient(id),
-      lireProjetsDuClient(id),
+      rendezVousLus ?? lireRencontresDuClient(id),
+      projetsLus ?? lireProjetsDuClient(id),
       lirePersonnesCourtes(id),
       lireCaseTestVisible(id),
     ]);
@@ -411,15 +506,26 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
       </>
     );
   } else if (voitEchanges && onglet === "personnes") {
-    const [personnes, projets, fusions, fichesVivantes] = await Promise.all([
+    const [personnes, projets, fusions, fichesVivantes, decision] = await Promise.all([
       lirePersonnesDuClient(id),
       lireProjetsDuClient(id),
       lireFusionsDeLaFiche(id),
       lireFichesVivantes(),
+      abri(() => E.personnesDecision(ctx)),
     ]);
     contenuDossier = (
       <>
-        <OngletPersonnes clientId={id} personnes={personnes} projets={projets} erreur={erreur} />
+        {/* EMPLACEMENT:PERSONNES-DECISION (lot B5) */}
+        {decision}
+        <OngletPersonnes
+          clientId={id}
+          personnes={personnes}
+          projets={projets}
+          // Le refus d'un retrait s'affiche dans son écran, pas sous « Ajouter une personne ».
+          erreur={sp.retirer ? null : erreur}
+          message={lireMessageDeRetour(sp, "message")}
+          retrait={(personneId) => <E.ActionsDeLaPersonne ctx={ctx} personneId={personneId} />}
+        />
         {/* Chantier visio (PR 4, A3) : fusion déclenchée par Will, réversible. */}
         <FusionDeFiches
           clientId={id}
@@ -430,10 +536,41 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     );
   }
 
+  // « Facture établie hors console » : lecture d'appoint (une panne ne cache pas l'onglet).
+  const factureHorsConsoleLe =
+    voitEchanges && onglet === "devis-factures"
+      ? await prisma.clientFactureHorsConsole
+          .findUnique({ where: { clientId: client.id }, select: { etabliLe: true } })
+          .then((l) => l?.etabliLe ?? null)
+          .catch(() => null)
+      : null;
+
+  // Badge « E-mail à valider » des devis : lecture d'appoint, groupée (une requête), lecture seule ;
+  // une panne ne cache pas l'onglet (le badge manque, rien d'autre).
+  const devisAvecEmailAttente =
+    voitEchanges && onglet === "devis-factures"
+      ? await devisAvecEmailEnAttente(
+          prisma,
+          client.devis
+            .filter((d) => d.statut === "brouillon" || d.statut === "envoye")
+            .map((d) => d.id),
+        ).catch(() => new Set<string>())
+      : new Set<string>();
+
   const encoursDuCents = calculerEncoursDuCents(client.facturesFormation);
   // La requête ramène TOUTES les factures (l'encours l'exige) ; l'affichage,
   // lui, s'aligne sur les autres sections : les 10 dernières.
   const factures = client.facturesFormation.slice(0, 10);
+
+  // Valeurs des emplacements de l'en-tête : rien n'est lu hors `voitEchanges` (régime A2).
+  const [enTete, archivage, compteurs] = voitEchanges
+    ? await Promise.all([
+        abri(() => E.enTeteFiche(ctx)),
+        abri(() => E.archivageFiche(ctx)),
+        // EMPLACEMENT:COMPTEURS (lot B1)
+        abri(() => E.compteursOnglets(ctx), COMPTEURS_VIDES),
+      ])
+    : ([null, null, COMPTEURS_VIDES] as const);
 
   const statutClient = CLIENT_STATUT[client.statut];
   const adresseStructuree = [
@@ -449,16 +586,10 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
     "text-[length:var(--text-admin-xs)] tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase";
   const infoValueCls =
     "mt-0.5 text-[length:var(--text-admin-sm)] font-medium text-[color:var(--color-admin-fg)]";
-  const ligneCls = "flex flex-wrap items-center gap-[var(--space-admin-3)]";
-  const ligneMutedCls = "text-[color:var(--color-admin-fg-muted)]";
-  const lienMonoCls =
-    "font-mono text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
-  const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
   const sectionCls = "mb-[var(--space-admin-8)]";
-  const blocCls =
-    "min-w-0 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-  const blocTitreCls =
-    "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+  // `mb-0!` : le `margin-bottom` de `.admin-carte` s'ajouterait au `gap` de la grille.
+  const blocCls = "admin-carte mb-0! min-w-0";
+  const blocTitreCls = "admin-carte-titre";
 
   // Adresse et pénalités : au bloc Société d'une entreprise, au bloc Contact
   // d'un particulier (lot A9).
@@ -512,20 +643,74 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           <>
             {/* Le wizard pré-sélectionne le client (?clientId=) : le parcours
                 de vente démarre depuis la fiche, sans re-chercher le client. */}
-            <AdminButton href={`${qBase}/vente/new?clientId=${client.id}`}>
+            {/* Envoi du questionnaire, SANS rendez-vous : bouton secondaire (aucun bouton plein quand le
+                lecteur voit les échanges). Il ouvre la page d'aperçu ; rien ne part sans le clic
+                « Envoyer ». */}
+            {voitEchanges ? (
+              <AdminButton variant="secondary" href={`${ficheHref}/questionnaire`}>
+                Envoyer le questionnaire
+              </AdminButton>
+            ) : null}
+            {/* Site d'audit servi au super_admin seul, tant que la variable SITE_AUDIT_DOCUMENTS
+                désigne un document pour ce client (route : api/admin/site-audit). */}
+            {acces.role === "super_admin" && siteAuditDuClient(client.id) ? (
+              <AdminButton
+                variant="secondary"
+                href={`/api/admin/site-audit/${client.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Audit : ouvrir le site
+              </AdminButton>
+            ) : null}
+            {/* « Faire un devis » : action principale pour les rôles qui écrivent SANS voir les
+                échanges (/devis/new est gardée en écriture) ; sinon secondaire, l'unique bouton
+                plein de l'écran étant celui de la prochaine action. */}
+            {acces.peutEcrire ? (
+              <AdminButton
+                variant={voitEchanges ? "secondary" : "primary"}
+                href={`${qBase}/devis/new?clientId=${client.id}`}
+              >
+                Faire un devis
+              </AdminButton>
+            ) : null}
+            <AdminButton
+              variant={voitEchanges || acces.peutEcrire ? "secondary" : "primary"}
+              href={`${qBase}/vente/new?clientId=${client.id}`}
+            >
               Nouvelle vente
             </AdminButton>
             <AdminButton variant="secondary" href={`${clientsBase}/${client.id}/edit`}>
-              Éditer
+              Modifier la fiche
             </AdminButton>
           </>
         }
       />
 
+      {/* EMPLACEMENT:EN-TETE (lot B1) */}
+      {enTete}
+
       <BandeauEtatFonds bandeau={bandeauFonds} />
+
+      {/* Suppression MANUELLE (Will, 25/10/2026) : super-administrateur seul, après confirmation. */}
+      <SuppressionManuelle
+        type="client"
+        id={client.id}
+        peutSupprimer={acces.role === "super_admin"}
+        page={adminPath("fr", `/qualiopi/clients/${client.id}`)}
+        ouvert={sp.supprimer === "client"}
+        jeton={sp.jeton ?? null}
+        erreur={erreur}
+      />
+      {/* EMPLACEMENT:ARCHIVAGE (lot B6) */}
+      {archivage}
 
       {proches !== undefined ? (
         <FormateursProches resultat={proches} formateursBase={`${qBase}/formateurs`} />
+      ) : null}
+
+      {lignesBandeau !== null && !E.EN_TETE_REMPLACE_LE_BANDEAU ? (
+        <BandeauOuEnEst lignes={lignesBandeau} ficheHref={ficheHref} />
       ) : null}
 
       {/* ── Onglets du dossier client (A2 : administrateurs seulement) ─────── */}
@@ -533,11 +718,14 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         <AdminFilterTabs
           className="mb-[var(--space-admin-6)]"
           current={onglet}
-          options={([...ONGLETS_DOSSIER, "facturation"] as const).map((o) => ({
-            value: o,
-            label: LIBELLE_ONGLET[o],
-            href: `${ficheHref}?onglet=${o}`,
-          }))}
+          options={([...ONGLETS_DOSSIER, "devis-factures"] as const)
+            .filter((o) => o !== "activite" || E.ONGLET_ACTIVITE_PRET)
+            .map((o) => ({
+              value: o,
+              label: LIBELLE_ONGLET[o],
+              href: `${ficheHref}?onglet=${o}`,
+              ...(compteurs[o]?.count !== undefined ? { count: compteurs[o].count } : {}),
+            }))}
         />
       ) : (
         <p className="mb-[var(--space-admin-6)] rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-bg)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
@@ -545,378 +733,216 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
         </p>
       )}
 
-      {erreur !== null && onglet === "facturation" ? (
+      {erreur !== null && onglet === "devis-factures" ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
           {erreur}
         </p>
       ) : null}
 
-      {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
-          adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
-      <BrancheOpcoBloc
-        client={client}
-        peutEcrire={acces.peutEcrire}
-        complementEffectif={
-          <>
-            {acces.peutEcrire && sirenLu !== null && client.effectifSource !== "saisie" ? (
-              <form
-                action={rafraichirEffectifInseeFormAction}
-                className="mt-[var(--space-admin-1)]"
-              >
-                <input type="hidden" name="clientId" value={client.id} />
-                <button type="submit" className="admin-button-ghost">
-                  Rafraîchir depuis l&apos;INSEE
-                </button>
-              </form>
-            ) : null}
-            {messageReleveInsee !== null ? (
-              <p
-                role="status"
-                className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
-              >
-                {messageReleveInsee}
-              </p>
-            ) : null}
-          </>
-        }
-      />
-
-      {/* ── Société | Contact (lot A9) ─────────────────────────────────────────
-          Deux blocs : aucun identifiant de la société ne doit sembler appartenir
-          à la personne. Un particulier n'a que le bloc Contact. L'effectif et
-          l'OPCO se lisent dans « Branche et OPCO », une seule fois. ─────────── */}
-      <div className={`${sectionCls} grid gap-[var(--space-admin-4)] lg:grid-cols-[3fr_2fr]`}>
-        {estEntreprise ? (
-          <section data-bloc="societe" aria-labelledby="bloc-societe" className={blocCls}>
-            <h2 id="bloc-societe" className={blocTitreCls}>
-              Société
-            </h2>
-            <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-              <div className="sm:col-span-2">
-                <p className={infoLabelCls}>Raison sociale</p>
-                <p className={infoValueCls}>{client.raisonSociale}</p>
-              </div>
-              <div>
-                <p className={infoLabelCls}>SIRET</p>
-                <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
-              </div>
-              <div>
-                <p className={infoLabelCls}>SIREN</p>
-                {sirenLu !== null ? (
-                  <>
-                    <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
-                    {sirenContraire ? (
-                      <p
-                        role="status"
-                        className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
-                      >
-                        {AVERTISSEMENT_SIREN_CONTRAIRE}
-                      </p>
-                    ) : null}
-                  </>
-                ) : (
-                  <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
-                    <AdminBadge tone="warning" className="self-start">
-                      SIREN à compléter
-                    </AdminBadge>
-                    {acces.peutEcrire && annuaire === null ? (
-                      <Link
-                        href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
-                        className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                      >
-                        Chercher le SIREN dans l&apos;annuaire
-                      </Link>
-                    ) : null}
-                    {annuaire !== null && !annuaire.ok ? (
-                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                        L&apos;annuaire des entreprises ne répond pas pour l&apos;instant. Saisissez
-                        le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez plus tard.
-                      </p>
-                    ) : null}
-                    {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
-                      <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
-                        Aucune entreprise trouvée à ce nom.
-                      </p>
-                    ) : null}
-                    {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
-                      <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
-                        {annuaire.propositions.map((prop) => (
-                          <li key={prop.siren}>
-                            <form
-                              action={confirmerSirenFormAction}
-                              className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
-                            >
-                              <input type="hidden" name="clientId" value={client.id} />
-                              <input type="hidden" name="siren" value={prop.siren} />
-                              <span className="font-mono">{prop.siren}</span>
-                              <span>{prop.nom}</span>
-                              <span className="text-[color:var(--color-admin-fg-muted)]">
-                                {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
-                              </span>
-                              <button type="submit" className="admin-button-ghost">
-                                C&apos;est elle
-                              </button>
-                            </form>
-                          </li>
-                        ))}
-                      </ul>
-                    ) : null}
-                  </div>
-                )}
-              </div>
-              {adresseEtPenalites}
-            </div>
-          </section>
-        ) : null}
-
-        <section data-bloc="contact" aria-labelledby="bloc-contact" className={blocCls}>
-          <h2 id="bloc-contact" className={blocTitreCls}>
-            Contact
-          </h2>
-          <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
-            <div>
-              <p className={infoLabelCls}>Nom</p>
-              <p className={infoValueCls}>{client.contactNom || "—"}</p>
-            </div>
-            <div>
-              <p className={infoLabelCls}>Rôle</p>
-              <p className={infoValueCls}>{client.contactFonction || "—"}</p>
-            </div>
-            <div className="min-w-0">
-              <p className={infoLabelCls}>E-mail</p>
-              <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
-            </div>
-            <div>
-              <p className={infoLabelCls}>Téléphone</p>
-              <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
-            </div>
-            {!estEntreprise ? adresseEtPenalites : null}
-          </div>
-        </section>
-      </div>
-
-      {estEntreprise ? (
-        <section className={sectionCls}>
-          <DejaPrisEnChargeOpco
-            opcoLibelle={opcoClient !== null ? OPCO_LABELS[opcoClient] : null}
-            lignes={priseEnChargeOpco}
+      {onglet === "resume" || onglet === "devis-factures" ? (
+        <>
+          {/* ── Branche et OPCO (lot OPCO A7b) : IDCC, effectif, OPCO, enveloppe,
+            adhérent ; « Modifier » sur place. Rien pour un particulier. ────────── */}
+          <BrancheOpcoBloc
+            client={client}
+            peutEcrire={acces.peutEcrire}
+            complementEffectif={
+              <>
+                {acces.peutEcrire && sirenLu !== null && client.effectifSource !== "saisie" ? (
+                  <form
+                    action={rafraichirEffectifInseeFormAction}
+                    className="mt-[var(--space-admin-1)]"
+                  >
+                    <input type="hidden" name="clientId" value={client.id} />
+                    <AdminButton type="submit" variant="secondary">
+                      Rafraîchir depuis l&apos;INSEE
+                    </AdminButton>
+                  </form>
+                ) : null}
+                {messageReleveInsee !== null ? (
+                  <p
+                    role="status"
+                    className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]"
+                  >
+                    {messageReleveInsee}
+                  </p>
+                ) : null}
+              </>
+            }
           />
-        </section>
+
+          {/* ── Société | Contact (lot A9) ─────────────────────────────────────────
+            Deux blocs : aucun identifiant de la société ne doit sembler appartenir
+            à la personne. Un particulier n'a que le bloc Contact. L'effectif et
+            l'OPCO se lisent dans « Branche et OPCO », une seule fois. ─────────── */}
+          <div className={`${sectionCls} grid gap-[var(--space-admin-4)] lg:grid-cols-[3fr_2fr]`}>
+            {estEntreprise ? (
+              <section data-bloc="societe" aria-labelledby="bloc-societe" className={blocCls}>
+                <h2 id="bloc-societe" className={blocTitreCls}>
+                  Société
+                </h2>
+                <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <p className={infoLabelCls}>Raison sociale</p>
+                    <p className={infoValueCls}>{client.raisonSociale}</p>
+                  </div>
+                  <div>
+                    <p className={infoLabelCls}>SIRET</p>
+                    <p className={`${infoValueCls} font-mono`}>{client.siret ?? "—"}</p>
+                  </div>
+                  <div>
+                    <p className={infoLabelCls}>SIREN</p>
+                    {sirenLu !== null ? (
+                      <>
+                        <p className={`${infoValueCls} font-mono`}>{sirenLu}</p>
+                        {sirenContraire ? (
+                          <div className="mt-[var(--space-admin-2)]">
+                            <AdminBloc
+                              teinte="terracotta"
+                              niveau={3}
+                              titre="SIREN contredit le SIRET"
+                            >
+                              <p role="status" className="text-[length:var(--text-admin-sm)]">
+                                {AVERTISSEMENT_SIREN_CONTRAIRE}
+                              </p>
+                            </AdminBloc>
+                          </div>
+                        ) : null}
+                      </>
+                    ) : (
+                      <div className="mt-[var(--space-admin-1)] flex flex-col gap-[var(--space-admin-1)]">
+                        <AdminBadge tone="warning" className="self-start">
+                          SIREN à compléter
+                        </AdminBadge>
+                        {sirenPropose !== null ? (
+                          <form
+                            action={confirmerSirenFormAction}
+                            data-bloc="siren-propose-questionnaire"
+                            className="flex flex-wrap items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-xs)]"
+                          >
+                            <input type="hidden" name="clientId" value={client.id} />
+                            <input type="hidden" name="siren" value={sirenPropose.siren} />
+                            <span>
+                              Proposé par le questionnaire avant audit :{" "}
+                              <span className="font-mono">{sirenPropose.siren}</span>
+                              {sirenPropose.siret !== null ? (
+                                <>
+                                  {" "}
+                                  (SIRET <span className="font-mono">{sirenPropose.siret}</span>)
+                                </>
+                              ) : null}
+                            </span>
+                            <AdminButton type="submit" variant="secondary">
+                              Poser ce SIREN
+                            </AdminButton>
+                          </form>
+                        ) : null}
+                        {acces.peutEcrire && annuaire === null ? (
+                          <Link
+                            href={`${ficheHref}?${ongletCourant ? `onglet=${ongletCourant}&` : ""}annuaire=1`}
+                            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+                          >
+                            Chercher le SIREN dans l&apos;annuaire
+                          </Link>
+                        ) : null}
+                        {annuaire !== null && !annuaire.ok ? (
+                          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                            L&apos;annuaire des entreprises ne répond pas pour l&apos;instant.
+                            Saisissez le SIRET dans « Éditer » (le SIREN en sera tiré), ou réessayez
+                            plus tard.
+                          </p>
+                        ) : null}
+                        {annuaire !== null && annuaire.ok && annuaire.propositions.length === 0 ? (
+                          <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-soft)]">
+                            Aucune entreprise trouvée à ce nom.
+                          </p>
+                        ) : null}
+                        {annuaire !== null && annuaire.ok && annuaire.propositions.length > 0 ? (
+                          <ul className="space-y-[var(--space-admin-1)] text-[length:var(--text-admin-xs)]">
+                            {annuaire.propositions.map((prop) => (
+                              <li key={prop.siren}>
+                                <form
+                                  action={confirmerSirenFormAction}
+                                  className="flex flex-wrap items-center gap-[var(--space-admin-2)]"
+                                >
+                                  <input type="hidden" name="clientId" value={client.id} />
+                                  <input type="hidden" name="siren" value={prop.siren} />
+                                  <span className="font-mono">{prop.siren}</span>
+                                  <span>{prop.nom}</span>
+                                  <span className="text-[color:var(--color-admin-fg-muted)]">
+                                    {[prop.codePostal, prop.ville].filter(Boolean).join(" ")}
+                                  </span>
+                                  <AdminButton type="submit" variant="secondary">
+                                    C&apos;est elle
+                                  </AdminButton>
+                                </form>
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+                      </div>
+                    )}
+                  </div>
+                  {adresseEtPenalites}
+                </div>
+              </section>
+            ) : null}
+
+            <section data-bloc="contact" aria-labelledby="bloc-contact" className={blocCls}>
+              <h2 id="bloc-contact" className={blocTitreCls}>
+                Contact
+              </h2>
+              <div className="grid grid-cols-1 gap-[var(--space-admin-4)] sm:grid-cols-2">
+                <div>
+                  <p className={infoLabelCls}>Nom</p>
+                  <p className={infoValueCls}>{client.contactNom || "—"}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Salutation des e-mails</p>
+                  <p className={infoValueCls}>{libelleSalutationEmails(client)}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Rôle</p>
+                  <p className={infoValueCls}>{client.contactFonction || "—"}</p>
+                </div>
+                <div className="min-w-0">
+                  <p className={infoLabelCls}>E-mail</p>
+                  <p className={`${infoValueCls} truncate`}>{client.contactEmail || "—"}</p>
+                </div>
+                <div>
+                  <p className={infoLabelCls}>Téléphone</p>
+                  <p className={infoValueCls}>{client.contactTelephone || "—"}</p>
+                </div>
+                {!estEntreprise ? adresseEtPenalites : null}
+              </div>
+            </section>
+          </div>
+
+          {estEntreprise ? (
+            <section className={sectionCls}>
+              <DejaPrisEnChargeOpco
+                opcoLibelle={opcoClient !== null ? OPCO_LABELS[opcoClient] : null}
+                lignes={priseEnChargeOpco}
+              />
+            </section>
+          ) : null}
+        </>
       ) : null}
 
       {contenuDossier}
 
-      {onglet === "facturation" ? (
-        <>
-          {/* ── KPI ────────────────────────────────────────────────────────────── */}
-          <div className="mb-[var(--space-admin-8)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
-            <AdminStatCard label="CA cumulé" value={eur(client.caCents)} icon={Euro} />
-            <AdminStatCard label="Sessions" value={client.nbSessions} icon={CalendarDays} />
-            <AdminStatCard label="Stagiaires" value={client.nbStagiaires} icon={Users} />
-            {/* Encours = restes dus nets des factures OUVERTES (avoirs déduits,
-            encaissements `succeeded` soustraits) — pas un agrégat dénormalisé. */}
-            <AdminStatCard
-              label="Encours dû"
-              value={eur(encoursDuCents)}
-              tone={encoursDuCents > 0 ? "destructive" : "default"}
-              icon={Wallet}
-            />
-          </div>
-
-          {/* ── a. Sessions de formation ───────────────────────────────────────── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Sessions de formation" toutVoirHref={`${qBase}/sessions`} />
-            {client.sessions.length === 0 ? (
-              <SectionVide message="Aucune session de formation." />
-            ) : (
-              <ul className={listeCls}>
-                {client.sessions.map((s) => (
-                  <li key={s.id} className={ligneCls}>
-                    <Link href={`${qBase}/sessions/${s.id}`} className={lienMonoCls}>
-                      {s.numero}
-                    </Link>
-                    <span className="font-medium">{s.titreSession}</span>
-                    <span className={ligneMutedCls}>
-                      {formatDateFrShort(s.dateDebut)} → {formatDateFrShort(s.dateFin)}
-                    </span>
-                    <StatutBadge map={PRESTATION_STATUT} statut={s.statut} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── b. Contrats de coaching (pas de fiche dédiée → texte simple) ───── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Contrats de coaching" />
-            {client.coachingContracts.length === 0 ? (
-              <SectionVide message="Aucun contrat de coaching." />
-            ) : (
-              <ul className={listeCls}>
-                {client.coachingContracts.map((c) => (
-                  <li key={c.id} className={ligneCls}>
-                    <span className="font-mono text-[length:var(--text-admin-xs)]">{c.numero}</span>
-                    <span className="tabular-nums">{eur(c.montantHtCents)} HT</span>
-                    <span className={ligneMutedCls}>
-                      {c.interventionSlug}
-                      {c.dateSigneeAt
-                        ? ` · signé le ${formatDateFrShort(c.dateSigneeAt)}`
-                        : " · non signé"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── c. Missions d'audit ────────────────────────────────────────────── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Missions d'audit" toutVoirHref={`${qBase}/audits`} />
-            {client.auditMissions.length === 0 ? (
-              <SectionVide message="Aucune mission d'audit." />
-            ) : (
-              <ul className={listeCls}>
-                {client.auditMissions.map((m) => (
-                  <li key={m.id} className={ligneCls}>
-                    <Link href={`${qBase}/audits/${m.id}`} className={lienMonoCls}>
-                      {m.numero}
-                    </Link>
-                    <span className="font-medium">{m.titre}</span>
-                    <span className={ligneMutedCls}>
-                      {formatDateFrShort(m.dateDebut)} → {formatDateFrShort(m.dateFin)}
-                    </span>
-                    <StatutBadge map={PRESTATION_STATUT} statut={m.statut} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── d. Devis ───────────────────────────────────────────────────────── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Devis" toutVoirHref={`${qBase}/devis`} />
-            <BandeauAttributionPartners texte={bandeauPartners} />
-            {client.devis.length === 0 ? (
-              <SectionVide message="Aucun devis." />
-            ) : (
-              <ul className={listeCls}>
-                {client.devis.map((d) => (
-                  <li key={d.id} className={ligneCls}>
-                    <Link href={`${qBase}/devis/${d.id}`} className={lienMonoCls}>
-                      {d.numero}
-                    </Link>
-                    <span className="tabular-nums">{eur(d.montantTotalHtCents)} HT</span>
-                    <span className={ligneMutedCls}>{formatDateFrShort(d.createdAt)}</span>
-                    <StatutBadge map={DEVIS_STATUT} statut={d.statut} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── e. Factures ────────────────────────────────────────────────────── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Factures" toutVoirHref={`${qBase}/facturation`} />
-            {factures.length === 0 ? (
-              <SectionVide message="Aucune facture." />
-            ) : (
-              <ul className={listeCls}>
-                {factures.map((f) => {
-                  const reste = resteDuNetCents(f);
-                  const estAvoir = f.avoirDeId !== null;
-                  return (
-                    <li key={f.id} className={ligneCls}>
-                      <Link href={`${qBase}/facturation/${f.id}`} className={lienMonoCls}>
-                        {f.numero}
-                      </Link>
-                      {estAvoir ? <AdminBadge tone="outline">Avoir</AdminBadge> : null}
-                      <span className="tabular-nums">
-                        {eur(f.montantTtcCents ?? f.montantHtCents)}
-                      </span>
-                      <span className={ligneMutedCls}>
-                        {formatDateFrShort(f.emiseAt ?? f.createdAt)}
-                      </span>
-                      <StatutBadge map={FACTURE_STATUT} statut={f.statut} />
-                      {!estAvoir &&
-                      reste > 0 &&
-                      f.statut !== "brouillon" &&
-                      f.statut !== "annulee" ? (
-                        <span className="text-[color:var(--color-admin-warning)] tabular-nums">
-                          reste dû {eur(reste)}
-                        </span>
-                      ) : null}
-                    </li>
-                  );
-                })}
-              </ul>
-            )}
-          </section>
-
-          {/* ── f. Documents générés (pas de registre dédié → pas de « Tout voir ») */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Documents générés" />
-            {client.documents.length === 0 ? (
-              <SectionVide message="Aucun document généré." />
-            ) : (
-              <ul className={listeCls}>
-                {client.documents.map((doc) => (
-                  <li key={doc.id} className={ligneCls}>
-                    <span className="font-medium">
-                      {DOC_LABELS[doc.type] ?? doc.type.replace(/_/g, " ")}
-                    </span>
-                    <span className="font-mono text-[length:var(--text-admin-xs)]">
-                      {doc.numero}
-                    </span>
-                    <span className={ligneMutedCls}>{formatDateFrShort(doc.createdAt)}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── g. Dossiers de financement (panel dans le hub facturation) ─────── */}
-          <section className={sectionCls}>
-            <SectionTitre titre="Dossiers de financement" toutVoirHref={`${qBase}/facturation`} />
-            {client.dossiersFinancement.length === 0 ? (
-              <SectionVide message="Aucun dossier de financement." />
-            ) : (
-              <ul className={listeCls}>
-                {client.dossiersFinancement.map((d) => (
-                  <li key={d.id} className={ligneCls}>
-                    <span className="font-medium">{DOSSIER_TYPE[d.type] ?? d.type}</span>
-                    <span className={ligneMutedCls}>
-                      {d.financeurNom ?? "Financeur à préciser"}
-                      {d.echeanceFinanceurAt
-                        ? ` · échéance ${formatDateFrShort(d.echeanceFinanceurAt)}`
-                        : ""}
-                    </span>
-                    <StatutBadge map={DOSSIER_STATUT} statut={d.statut} />
-                  </li>
-                ))}
-              </ul>
-            )}
-          </section>
-
-          {/* ── h. E-mails en attente de validation ────────────────────────────── */}
-          <section>
-            <SectionTitre titre="E-mails en attente" toutVoirHref={`${qBase}/emails`} />
-            {nbEmailsAValider === 0 ? (
-              <SectionVide message="Aucun e-mail en attente de validation." />
-            ) : (
-              <p className="text-[length:var(--text-admin-sm)]">
-                <span className="font-semibold tabular-nums">{nbEmailsAValider}</span> e-mail
-                {nbEmailsAValider > 1 ? "s" : ""} en attente de validation —{" "}
-                <Link
-                  href={`${qBase}/emails`}
-                  className="text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
-                >
-                  valider dans la boîte d&apos;envoi
-                </Link>
-                .
-              </p>
-            )}
-          </section>
-        </>
+      {/* EMPLACEMENT:DEVIS-FACTURES (lot B7) */}
+      {onglet === "devis-factures" ? (
+        <E.OngletDevisFactures
+          ctx={ctx}
+          client={client}
+          encoursDuCents={encoursDuCents}
+          factures={factures}
+          factureHorsConsoleLe={factureHorsConsoleLe}
+          bandeauPartners={bandeauPartners}
+          nbEmailsAValider={nbEmailsAValider}
+          devisAvecEmailAttente={devisAvecEmailAttente}
+        />
       ) : null}
     </AdminPageShell>
   );

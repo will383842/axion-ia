@@ -49,7 +49,7 @@ export const BUXEROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Buxerolles et Grand Poitiers ?",
-      a: "Oui, Axion-IA intervient à Buxerolles et toute l'agglomération Grand Poitiers (Poitiers centre à 10 min, Saint-Benoît, Migné-Auxances, Vouneuil-sous-Biard, Chasseneuil-du-Poitou). Consultants depuis Paris (TGV 1h40 gare Poitiers).",
+      a: "Oui, Axion-IA intervient à Buxerolles et toute l'agglomération Grand Poitiers (Poitiers centre à 10 min, Saint-Benoît, Migné-Auxances, Vouneuil-sous-Biard, Chasseneuil-du-Poitou). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales à Buxerolles ?",
@@ -64,8 +64,8 @@ export const BUXEROLLES_COPY: VilleCopy = {
       a: "Pour les TPE artisans et commerçants à Buxerolles, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos produits.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct (1h40 gare Poitiers, puis 10 min Buxerolles). Pour les multi-jours, hébergement Poitiers centre.",
+      q: "Comment se déroule une mission à Buxerolles ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement Poitiers centre.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const DOULLENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Doullens et dans le Doullennais ?",
-      a: "Oui, Axion-IA intervient à Doullens et tout le Doullennais (Beauquesne, Authie, Bernaville, Lucheux). Nos consultants viennent depuis Amiens (30 min RN25) ou Arras (30 min D939).",
+      a: "Oui, Axion-IA intervient à Doullens et tout le Doullennais (Beauquesne, Authie, Bernaville, Lucheux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles du Doullennais ?",
@@ -65,7 +65,7 @@ export const DOULLENS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Doullens ?",
-      a: "Nos consultants se déplacent à Doullens depuis Amiens (30 min RN25) ou Arras (30 min). Mission sur site dans vos locaux ou exploitation.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos locaux ou exploitation.",
     },
   ],
 };

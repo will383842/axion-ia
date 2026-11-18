@@ -64,8 +64,8 @@ export const DONGES_COPY: VilleCopy = {
       a: "Oui, l'IA apporte des gains concrets au secteur industriel : maintenance prédictive, planification production, gestion qualité, traçabilité réglementaire. Adapté aux PME et sous-traitants de l'estuaire de la Loire.",
     },
     {
-      q: "Comment se passe une mission à Donges depuis Nantes ?",
-      a: "Nos consultants se déplacent à Donges depuis Nantes (45 min) ou Saint-Nazaire (15 min). Gare TER Donges desservie. Hébergement local pour missions multi-jours.",
+      q: "Comment se déroule une mission à Donges ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Donges desservie. Hébergement local pour missions multi-jours.",
     },
   ],
 };

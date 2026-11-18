@@ -3,6 +3,7 @@
 // Sprint correctif SP-01 — error UI formulaires providers.
 
 import { useState, useTransition } from "react";
+import type { updatePlafondsBlogClaude } from "@/server/actions/content-gen/providers";
 import { AdminFormError } from "@/components/admin/ui/AdminFormError";
 
 interface ProviderRow {
@@ -15,12 +16,19 @@ interface ProviderRow {
   monthlyCapUsd: number;
   rateLimitRpm: number | null;
   currentMonthSpentUsd: number;
+  blogClaude?: {
+    jour: number | null;
+    mois: number | null;
+    reserve: number | null;
+    jugeMax: number | null;
+  } | null;
 }
 
 interface Props {
   row: ProviderRow;
   saveAction: (formData: FormData) => Promise<void>;
   resetSpendAction: (formData: FormData) => Promise<void>;
+  saveBlogAction?: (formData: FormData) => ReturnType<typeof updatePlafondsBlogClaude>;
 }
 
 // ─── Formatage FR des montants (audit console 2026-09-02) ───────────────────
@@ -65,9 +73,13 @@ export function ProviderFormClient({
   row,
   saveAction,
   resetSpendAction,
+  saveBlogAction,
 }: Props): React.ReactElement {
   const [saveError, setSaveError] = useState<string | null>(null);
   const [resetError, setResetError] = useState<string | null>(null);
+  const [blogError, setBlogError] = useState<string | null>(null);
+  const [blogOk, setBlogOk] = useState(false);
+  const [isBlogPending, startBlogTransition] = useTransition();
   const [isSavePending, startSaveTransition] = useTransition();
   const [isResetPending, startResetTransition] = useTransition();
 
@@ -100,6 +112,23 @@ export function ProviderFormClient({
         if (err instanceof Error && err.message === "NEXT_REDIRECT") throw err;
         const msg = err instanceof Error ? err.message : "Erreur lors de l'enregistrement.";
         setSaveError(msg);
+      }
+    });
+  }
+
+  function handleSaveBlog(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!saveBlogAction) return;
+    const fd = new FormData(e.currentTarget);
+    setBlogError(null);
+    setBlogOk(false);
+    startBlogTransition(async () => {
+      try {
+        const r = await saveBlogAction(fd);
+        if (!r.ok) setBlogError(r.message);
+        else setBlogOk(true);
+      } catch (err: unknown) {
+        setBlogError(err instanceof Error ? err.message : "Erreur lors de l'enregistrement.");
       }
     });
   }
@@ -159,7 +188,7 @@ export function ProviderFormClient({
           </div>
           <div className="admin-field">
             <label htmlFor={`cap-${row.id}`} className="admin-label">
-              Plafond de dépense mensuel (USD)
+              Plafond mensuel du fournisseur (USD), partagé blog, Qualiopi et chatbot
             </label>
             <input
               id={`cap-${row.id}`}
@@ -209,6 +238,99 @@ export function ProviderFormClient({
             suivant, hors de ce repli. Le titre servait donc d'intitulé à une
             section inexistante — on le rend au bouton qu'il annonçait. */}
       </form>
+      {row.provider === "anthropic" && saveBlogAction && (
+        <form onSubmit={handleSaveBlog} className="mt-[var(--space-admin-4)]">
+          <h3 className="admin-h2">Plafonds du blog Claude</h3>
+          <div className="admin-filters-grid">
+            <div className="admin-field">
+              <label htmlFor={`blog-jour-${row.id}`} className="admin-label">
+                Plafond du jour (USD)
+              </label>
+              <input
+                id={`blog-jour-${row.id}`}
+                name="jour"
+                type="number"
+                min="0.01"
+                max="20"
+                step="0.01"
+                defaultValue={row.blogClaude?.jour ?? ""}
+                className="admin-input"
+                required
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor={`blog-mois-${row.id}`} className="admin-label">
+                Plafond mensuel du blog (USD)
+              </label>
+              <input
+                id={`blog-mois-${row.id}`}
+                name="mois"
+                type="number"
+                min="0.01"
+                max="300"
+                step="0.01"
+                defaultValue={row.blogClaude?.mois ?? ""}
+                className="admin-input"
+                required
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor={`blog-reserve-${row.id}`} className="admin-label">
+                Réserve Qualiopi (USD)
+              </label>
+              <input
+                id={`blog-reserve-${row.id}`}
+                name="reserve"
+                type="number"
+                min="0"
+                step="0.01"
+                defaultValue={row.blogClaude?.reserve ?? ""}
+                className="admin-input"
+                required
+              />
+            </div>
+            <div className="admin-field">
+              <label htmlFor={`blog-juge-${row.id}`} className="admin-label">
+                Relectures max par jour
+              </label>
+              <input
+                id={`blog-juge-${row.id}`}
+                name="jugeMax"
+                type="number"
+                min="1"
+                max="500"
+                step="1"
+                defaultValue={row.blogClaude?.jugeMax ?? ""}
+                className="admin-input"
+                required
+              />
+            </div>
+          </div>
+          <p className="admin-meta-small mt-[var(--space-admin-2)]">
+            Alerte envoyée à 80 % du plafond du jour ou du mois (fixé dans le code).
+          </p>
+          {blogError && (
+            <div className="mt-[var(--space-admin-3)]">
+              <AdminFormError message={blogError} onDismiss={() => setBlogError(null)} />
+            </div>
+          )}
+          {blogOk && (
+            <p role="status" className="admin-meta-small mt-[var(--space-admin-3)]">
+              Plafonds du blog enregistrés.
+            </p>
+          )}
+          <div className="admin-filters-actions">
+            <button
+              type="submit"
+              className="admin-button"
+              disabled={isBlogPending}
+              aria-busy={isBlogPending}
+            >
+              {isBlogPending ? "Enregistrement…" : "Enregistrer les plafonds du blog"}
+            </button>
+          </div>
+        </form>
+      )}
       <form onSubmit={handleReset} className="mt-[var(--space-admin-4)]">
         <p className="admin-meta-small mb-[var(--space-admin-2)]">
           Réinitialiser la dépense mensuelle (fin de cycle)

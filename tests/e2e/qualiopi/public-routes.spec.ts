@@ -67,9 +67,17 @@ const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] 
  */
 const ROUTES_SI_AVIS_PUBLIES = new Set(["/fr/avis"]);
 const avisPublies = process.env["E2E_AVIS_PUBLIES"] === "true";
+/**
+ * Cas concrets — ÉTEINTS le 2026-11-08 (`CAS_CONCRETS_AFFICHES = false`,
+ * src/content/preuves-sociales.ts) : la page redirige en 301 vers /fr/methodologie. Retirée de la liste ;
+ * poser `E2E_CAS_CONCRETS_AFFICHES=true` pour l'auditer le jour où ils reviennent.
+ */
+const ROUTES_SI_CAS_CONCRETS = new Set(["/fr/cas-concrets"]);
+const casConcretsAffiches = process.env["E2E_CAS_CONCRETS_AFFICHES"] === "true";
 const routes = toutesLesRoutes
   .filter((r) => certificationRevendicable || !ROUTES_SI_CERTIFIE.has(r))
-  .filter((r) => avisPublies || !ROUTES_SI_AVIS_PUBLIES.has(r));
+  .filter((r) => avisPublies || !ROUTES_SI_AVIS_PUBLIES.has(r))
+  .filter((r) => casConcretsAffiches || !ROUTES_SI_CAS_CONCRETS.has(r));
 
 /**
  * Routes dont le COÛT D'AUDIT dépasse le budget commun — mesuré, pas supposé.

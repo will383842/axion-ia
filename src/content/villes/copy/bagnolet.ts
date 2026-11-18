@@ -58,7 +58,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           "Filière image, son et spectacle : studios de post-production, agences de communication visuelle et acteurs de l'audiovisuel formés au Campus Fonderie de l'Image et au CFPTS/CFA SVA ont besoin de portfolios performants, de plateformes de diffusion vidéo et d'outils IA de tri, de transcription et de génération de visuels — c'est notre cœur de cible bagnoletais.",
           "Pôle Gallieni en pleine recomposition tertiaire : avec la Tour Gallièni, les projets de bureaux de l'avenue Gallieni (immeuble ~50 000 m² au 108, projet Novaxia 27 000 m², projet LIVE) et le coworking Morning Gallieni, les jeunes structures et scale-ups qui s'y installent réclament des sites corporate rapides et des SaaS métiers IA-native.",
           "Commerce et hôtellerie : autour du centre commercial Bel Est, de l'hypermarché Auchan et du premier pôle hôtelier de l'est parisien, commerçants et hôteliers ont besoin de vitrines e-commerce multi-CMS, de réservation en ligne et de chatbots de support clients multilingues.",
-          "Proximité immédiate : depuis Gallieni et la porte de Bagnolet, nous intervenons sur site en quelques minutes à Montreuil, Pantin, Les Lilas et Romainville, sur le bassin d'emploi Bagnolet/Montreuil qui concentre une part importante de l'emploi de la Seine-Saint-Denis.",
+          "Bagnolet est desservie par Gallieni et la porte de Bagnolet. Nous intervenons partout en France, sur place ou à distance, y compris à Montreuil, Pantin, Les Lilas et Romainville, sur le bassin d'emploi Bagnolet/Montreuil qui concentre une part importante de l'emploi de la Seine-Saint-Denis.",
         ],
         methodology: [
           {
@@ -128,7 +128,7 @@ export const BAGNOLET_COPY: VilleCopy = {
           },
           {
             q: "Travaillez-vous sur place à Bagnolet et dans l'est parisien ?",
-            a: "Oui. Depuis Gallieni (ligne 3) et la porte de Bagnolet sur le périphérique, nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance.",
+            a: "Oui. Nous intervenons sur site à Bagnolet, Montreuil, Pantin, Les Lilas et Romainville. Le kick-off et la recette se font dans vos locaux ; les itérations peuvent se faire à distance.",
           },
           {
             q: "Sommes-nous dépendants d'Axion-IA après la livraison ?",
@@ -230,7 +230,7 @@ export const BAGNOLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bagnolet ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Desservis par la ligne 3 (Gallieni) et le périphérique, nous nous déplaçons rapidement sur site et travaillons aussi en visio. Tarifs publics.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Bagnolet et de l'est parisien. Bagnolet est desservie par la ligne 3 (Gallieni) et le périphérique. Nous intervenons partout en France, sur place ou à distance, et travaillons aussi en visio. Tarifs publics.",
     },
     {
       q: "Quels gains IA pour un studio créatif ou une agence bagnoletaise ?",

@@ -64,7 +64,7 @@ export const CHANVERRIE_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA industriels : maintenance prédictive, contrôle qualité par vision, optimisation production, automatisation tests, gestion stocks intelligents. Sur site à Chanverrie ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Chanverrie depuis Cholet ou Nantes ?",
+      q: "Comment se déroule une mission IA à Chanverrie ?",
       a: "Nos consultants interviennent directement dans vos locaux à Chanverrie. Cholet à 30 km, Nantes à 95 km. Accès A87 à 25 km.",
     },
   ],

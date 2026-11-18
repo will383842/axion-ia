@@ -13,7 +13,7 @@ import { afterEach, describe, it, expect } from "vitest";
 import {
   CHOIX_PUBLICS,
   CHOIX_RENDEZ_VOUS,
-  CHOIX_SANS_TYPE_PROPRE,
+  CHOIX_HORS_DES_QUATRE_HISTORIQUES,
   TOUS_LES_CHOIX,
   choixDeLaRoute,
   choixDuTypeRendezVous,
@@ -37,7 +37,7 @@ describe("l'adresse par défaut", () => {
   it("calque de l'apporteur, sur le slug réel du compte", () => {
     expect(URL_CALENDLY_FORMATEUR_PAR_DEFAUT).toBe(URL_FORMATEUR);
     expect(URL_CALENDLY_APPORTEUR_PAR_DEFAUT).toBe(
-      "https://calendly.com/axion-ia/echange-apporteur",
+      "https://calendly.com/axion-ia/echange-apporteur-affaires",
     );
   });
 
@@ -51,7 +51,7 @@ describe("l'adresse par défaut", () => {
 describe("la cinquième entrée", () => {
   it("existe, privée, classée « autre », en visio seulement", () => {
     expect(TOUS_LES_CHOIX).toContain("formateur");
-    expect(CHOIX_SANS_TYPE_PROPRE).toEqual(["formateur"]);
+    expect(CHOIX_HORS_DES_QUATRE_HISTORIQUES).toEqual(["formateur", "tour"]);
     const c = configDuChoix("formateur");
     expect(c.route).toBe("formateur-independant");
     expect(c.type).toBe("autre");
@@ -83,7 +83,14 @@ describe("les quatre entrées existantes ne bougent pas", () => {
 
   it("CHOIX_RENDEZ_VOUS (les choix à type propre) inchangé, et en tête de TOUS_LES_CHOIX", () => {
     expect(CHOIX_RENDEZ_VOUS).toEqual(["diagnostic", "projet", "apporteur", "salon"]);
-    expect(TOUS_LES_CHOIX).toEqual(["diagnostic", "projet", "apporteur", "salon", "formateur"]);
+    expect(TOUS_LES_CHOIX).toEqual([
+      "diagnostic",
+      "projet",
+      "apporteur",
+      "salon",
+      "formateur",
+      "tour",
+    ]);
   });
 
   it.each([

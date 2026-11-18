@@ -64,8 +64,8 @@ export const BONS_EN_CHABLAIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, classification photos chantier.",
     },
     {
-      q: "Comment se passe une mission depuis Thonon ou Annemasse ?",
-      a: "Nos consultants rejoignent Bons-en-Chablais depuis Thonon (15 min D903) ou Annemasse (20 min). Genève à 30 min via A40. Multi-jours : hébergement local possible.",
+      q: "Comment se déroule une mission à Bons-en-Chablais ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Genève à 30 min via A40. Multi-jours : hébergement local possible.",
     },
   ],
 };

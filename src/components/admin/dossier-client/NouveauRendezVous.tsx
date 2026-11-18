@@ -11,6 +11,7 @@
  * mode pilote (`caseTestInterneVisible`) — et l'action la refuse ailleurs.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { creerRencontreAction } from "@/features/dossier-client/actions-rencontres";
 import { DUREES_RENDEZ_VOUS } from "@/features/dossier-client/creer-rencontre";
 
@@ -80,6 +81,29 @@ export function NouveauRendezVous({
             className={champCls}
           />
         </label>
+        <label className={libelleCls}>
+          Durée libre en minutes (facultatif)
+          <input
+            type="number"
+            name="dureeLibre"
+            min={5}
+            max={480}
+            placeholder="ex. 75"
+            className={champCls}
+          />
+        </label>
+        <label className={libelleCls}>
+          Lieu (facultatif)
+          <input type="text" name="lieu" maxLength={200} className={champCls} />
+        </label>
+        <label className={libelleCls}>
+          Téléphone du contact (facultatif)
+          <input type="tel" name="telephone" maxLength={40} className={champCls} />
+        </label>
+        <label className={`${libelleCls} sm:col-span-2`}>
+          Objet (facultatif)
+          <input type="text" name="objet" maxLength={255} className={champCls} />
+        </label>
         <label className={`${libelleCls} sm:col-span-2`}>
           Titre (facultatif)
           <input
@@ -112,12 +136,11 @@ export function NouveauRendezVous({
         ) : null}
         <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] sm:col-span-2">
           Pour une visio, un e-mail d&apos;invitation est préparé et attend votre validation dans «
-          E-mails à valider » : rien ne part sans vous.
+          E-mails à valider » : rien ne part sans vous. Le rendez-vous est aussi posé dans Google
+          Agenda (sans invitation) : le créneau se ferme à la réservation en ligne.
         </p>
         <div className="sm:col-span-2">
-          <button type="submit" className="admin-button">
-            Créer le rendez-vous
-          </button>
+          <AdminButton type="submit">Créer le rendez-vous</AdminButton>
         </div>
       </form>
     </details>

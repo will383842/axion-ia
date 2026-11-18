@@ -28,6 +28,9 @@
  *   calculée même quand aucun code n'est vivant, ce qui RÉDUIT l'écart de durée
  *   entre les refus sans l'annuler (une écriture de moins) : il faut de toute
  *   façon détenir le jeton du lien pour poser la question.
+ * - **Signature renforcée du devis** : un compteur d'échecs CUMULÉ par pièce (`echecs-cumules.ts`) double
+ *   le plafond par code — redemander un code ne le remet pas à zéro — et le code n'est accepté que par le
+ *   lien pour lequel il a été émis (`jetonId`).
  * - **Un seul code vivant** par (pièce, partie) : en émettre un nouveau
  *   invalide le précédent.
  * - **Refus uniformes** : un code faux, expiré, épuisé ou inexistant rend le
@@ -43,10 +46,15 @@ import { createHmac, randomInt, randomUUID, timingSafeEqual } from "node:crypto"
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "../../../../../prisma/generated/client";
 import type { PartieSignataire } from "./document-signature-hash";
+import { blocageCumule, enregistrerEchecCumule, type PlafondCumule } from "./echecs-cumules";
 
 export const CODE_LONGUEUR = 6;
 export const CODE_VALIDITE_MS = 15 * 60 * 1000;
 export const CODE_ESSAIS_MAX = 5;
+
+/** Refus quand la pièce est bloquée après cinq échecs (signature renforcée du devis, lot 4 bis). */
+export const MESSAGE_CODE_BLOQUE =
+  "Trop d'essais. Par sécurité, la saisie d'un code est bloquée pendant quelques minutes : réessayez plus tard.";
 
 const FORMAT_CODE = /^\d{6}$/;
 
@@ -87,12 +95,16 @@ export async function emettreCodeSignature(input: {
   readonly documentGenereId: string;
   readonly partie: PartieSignataire;
   readonly maintenant?: Date;
+  /** Durée de vie du code ; défaut `CODE_VALIDITE_MS` (15 min). Le devis passe 10 min. */
+  readonly validiteMs?: number;
+  /** Lien de signature demandeur (plafond d'envois par lien) ; absent pour le contrat-cadre. */
+  readonly jetonId?: string;
 }): Promise<{ code: string; expiresAt: Date; id: string }> {
   secret(); // garde fermée AVANT toute écriture
   const maintenant = input.maintenant ?? new Date();
   const code = tirerCode();
   const id = randomUUID();
-  const expiresAt = new Date(maintenant.getTime() + CODE_VALIDITE_MS);
+  const expiresAt = new Date(maintenant.getTime() + (input.validiteMs ?? CODE_VALIDITE_MS));
 
   await prisma.$transaction([
     prisma.documentSignatureCode.updateMany({
@@ -111,6 +123,7 @@ export async function emettreCodeSignature(input: {
         partie: input.partie,
         codeHash: empreinteCode(id, code),
         expiresAt,
+        ...(input.jetonId === undefined ? {} : { jetonId: input.jetonId }),
       },
     }),
   ]);
@@ -119,7 +132,15 @@ export async function emettreCodeSignature(input: {
   return { code, expiresAt, id };
 }
 
-export type VerificationCode = { ok: true } | { ok: false; message: string };
+export type VerificationCode =
+  /**
+   * `codeId` : la ligne consommée, rendue SEULEMENT quand l'appelant a demandé un blocage (signature
+   * renforcée du devis) — pour pouvoir la restituer si la signature est refusée pour une raison
+   * étrangère au code (`restituerCodeSignature`). Contrat-cadre : `{ ok: true }` inchangé.
+   */
+  | { ok: true; codeId?: string }
+  /** `bloque` : la pièce est bloquée (cinquième échec) ; seulement quand l'appelant a demandé un blocage. */
+  | { ok: false; message: string; bloque?: true };
 
 const REFUS: VerificationCode = { ok: false, message: MESSAGE_CODE_REFUSE };
 
@@ -139,9 +160,40 @@ export async function verifierCodeSignature(input: {
   readonly partie: PartieSignataire;
   readonly code: string;
   readonly maintenant?: Date;
+  /**
+   * Signature renforcée du devis : au cinquième échec, la pièce est BLOQUÉE pour cette durée (aucun
+   * code accepté ni émis). Absent (contrat-cadre) : comportement inchangé, le code est seulement
+   * invalidé.
+   */
+  readonly blocageMs?: number;
+  /**
+   * Avec `blocageMs` : plafond d'échecs CUMULÉ par pièce, tous codes confondus (audit sécurité). Sans
+   * lui, redemander un code remettrait le compteur à zéro et contournerait le blocage.
+   */
+  readonly echecsCumules?: PlafondCumule;
+  /**
+   * Lien de signature qui présente le code : seul un code ÉMIS POUR CE LIEN est accepté (un code
+   * demandé via le lien A ne signe pas via le lien B). Absent : pas de contrainte (contrat-cadre).
+   */
+  readonly jetonId?: string;
 }): Promise<VerificationCode> {
   const maintenant = input.maintenant ?? new Date();
   const saisi = (input.code ?? "").trim();
+  if (input.blocageMs !== undefined) {
+    const bloque = await prisma.documentSignatureCode.findFirst({
+      where: {
+        documentGenereId: input.documentGenereId,
+        partie: input.partie,
+        bloqueJusquA: { gt: maintenant },
+      },
+      select: { id: true },
+    });
+    if (bloque !== null) return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    if (input.echecsCumules !== undefined) {
+      const cumule = await blocageCumule(input.documentGenereId, input.partie, maintenant);
+      if (cumule !== null) return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    }
+  }
   if (!FORMAT_CODE.test(saisi)) return REFUS;
   const vivant = { utiliseAt: null, invalideAt: null, expiresAt: { gt: maintenant } } as const;
 
@@ -153,6 +205,7 @@ export async function verifierCodeSignature(input: {
       invalideAt: null,
       expiresAt: { gt: maintenant },
       essais: { lt: CODE_ESSAIS_MAX },
+      ...(input.jetonId === undefined ? {} : { jetonId: input.jetonId }),
     },
     orderBy: { createdAt: "desc" },
     select: { id: true, codeHash: true, essais: true },
@@ -185,10 +238,29 @@ export async function verifierCodeSignature(input: {
   if (!egauxATempsConstant(attendu, ligne.codeHash)) {
     // Conditionné sur le compteur EN BASE : deux échecs simultanés ne laissent pas un
     // code épuisé « vivant ».
-    await prisma.documentSignatureCode.updateMany({
+    const epuise = await prisma.documentSignatureCode.updateMany({
       where: { id: ligne.id, invalideAt: null, essais: { gte: CODE_ESSAIS_MAX } },
-      data: { invalideAt: maintenant },
+      data: {
+        invalideAt: maintenant,
+        ...(input.blocageMs === undefined
+          ? {}
+          : { bloqueJusquA: new Date(maintenant.getTime() + input.blocageMs) }),
+      },
     });
+    // Compteur cumulé de la PIÈCE : survit à l'émission d'un nouveau code.
+    let bloqueCumule = false;
+    if (input.blocageMs !== undefined && input.echecsCumules !== undefined) {
+      bloqueCumule = await enregistrerEchecCumule({
+        documentGenereId: input.documentGenereId,
+        partie: input.partie,
+        maintenant,
+        plafond: input.echecsCumules,
+        blocageMs: input.blocageMs,
+      });
+    }
+    if ((epuise.count > 0 || bloqueCumule) && input.blocageMs !== undefined) {
+      return { ok: false, message: MESSAGE_CODE_BLOQUE, bloque: true };
+    }
     return REFUS;
   }
 
@@ -197,7 +269,23 @@ export async function verifierCodeSignature(input: {
     where: { id: ligne.id, ...vivant },
     data: { utiliseAt: maintenant },
   });
-  return consomme.count === 1 ? { ok: true } : REFUS;
+  if (consomme.count !== 1) return REFUS;
+  return input.blocageMs === undefined ? { ok: true } : { ok: true, codeId: ligne.id };
+}
+
+/**
+ * Rend un code consommé à l'état « vivant » : la signature qu'il devait autoriser a été REFUSÉE
+ * (pièce déjà signée, devis expiré, lien révoqué entre-temps…) pour une raison qui ne tient pas au
+ * code. Sans cela le signataire, déjà vérifié, devrait redemander un code (5 envois par heure et par
+ * lien). Un code expiré ou invalidé n'est jamais ressuscité ; la restitution n'a lieu que sur un
+ * refus typé de `signerDocument`, jamais après une erreur inattendue (on ne sait alors pas si la
+ * signature a été écrite — le code reste consommé, par prudence).
+ */
+export async function restituerCodeSignature(codeId: string, maintenant: Date): Promise<void> {
+  await prisma.documentSignatureCode.updateMany({
+    where: { id: codeId, invalideAt: null, expiresAt: { gt: maintenant } },
+    data: { utiliseAt: null },
+  });
 }
 
 /**

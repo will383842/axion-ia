@@ -36,6 +36,13 @@ import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
 import type { Locale } from "../../../../prisma/generated/client";
 
+/**
+ * Durée de validité du lien après la fin de la session. Valeur de `FENETRE_APRES_FIN_MS`
+ * (`server/qualiopi/emargement/token-service.ts`), recopiée ici pour ne pas tirer la base de
+ * données dans un gabarit ; `textes-stagiaires-entreprise.spec.tsx` vérifie qu'elles concordent.
+ */
+export const HEURES_VALIDITE_LIEN = 48;
+
 interface Payload {
   stagiairePrenomNom: string;
   titreFormation: string;
@@ -104,7 +111,7 @@ export function QualiopiEmargementLienEmail({
       preview={
         p.demiJourneeLibelle
           ? `À signer pendant la demi-journée : ${p.demiJourneeLibelle}.`
-          : "Une demi-journée à la fois, depuis votre téléphone. Valable jusqu'à J+48 h."
+          : `Une demi-journée à la fois, depuis votre téléphone. Valable ${HEURES_VALIDITE_LIEN} h après la fin de la session.`
       }
       title="Votre lien de signature de présence"
       cta={{ label: "Signer ma présence", href: ctaHref }}
@@ -133,8 +140,8 @@ export function QualiopiEmargementLienEmail({
         </Text>
       ) : (
         <Text style={emailStyles.paragraphStyle}>
-          Le lien reste valable jusqu&apos;à 48 heures après la fin de la session. Si vous le
-          perdez, demandez-le simplement à votre formateur.
+          Le lien reste valable jusqu&apos;à {HEURES_VALIDITE_LIEN} heures après la fin de la
+          session. Si vous le perdez, demandez-le simplement à votre formateur.
         </Text>
       )}
     </EmailLayout>

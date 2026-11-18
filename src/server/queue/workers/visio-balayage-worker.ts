@@ -46,6 +46,72 @@ async function processJob(_job: Job<VisioBalayageJobData>): Promise<void> {
   if (balayageActive()) await passerDossierClient(prisma);
   // TOUJOURS, drapeau éteint compris, et même si le dossier client a levé.
   await passerEnregistreur(prisma, enregistreur);
+  // TOUJOURS aussi : le suivi du questionnaire avant audit lit ses propres interrupteurs.
+  await passerQuestionnairesPreaudit(prisma);
+  // TOUJOURS aussi : les jetons d'horodatage RFC 3161 des signatures de devis qui n'en ont pas encore
+  // (autorité injoignable au moment de signer). Son propre `try` : jamais bloquant, jamais fatal.
+  await passerHorodatagesSignatures();
+}
+
+/**
+ * Horodatage RFC 3161 des signatures de devis (lot 4 bis) : reprend les lignes `en_attente` dont
+ * l'heure est venue. Marqueur de déploiement : `horodatage-signatures`. Des nombres seulement
+ * au journal (jamais d'empreinte, de nom ni d'adresse).
+ */
+async function passerHorodatagesSignatures(): Promise<void> {
+  try {
+    const { passerHorodatages } =
+      await import("@/server/qualiopi/documents/signature/horodatage-signature");
+    const b = await passerHorodatages();
+    if (b.tentes > 0) {
+      console.warn(
+        `[visio-balayage-worker] horodatage-signatures : ${b.tentes} tenté(s), ${b.obtenus} obtenu(s), ${b.enAttente} en attente`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] horodatage-signatures en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
+}
+
+/**
+ * Le suivi du questionnaire avant audit (2026-10-26) : relances, confirmations, salon Telegram,
+ * essais (`passerSuiviQuestionnaires`, `src/features/questionnaire-preaudit/suivi.ts`). Ses trois
+ * interrupteurs (`QUESTIONNAIRE_RELANCES_ENABLED`, `QUESTIONNAIRE_CONFIRMATIONS_ENABLED`,
+ * `QUESTIONNAIRE_TELEGRAM_ENABLED`) sont lus par lui : éteints, il ne fait rien. Son propre `try` :
+ * une panne n'arrête ni le dossier client ni l'enregistreur. Des nombres seulement au journal.
+ */
+async function passerQuestionnairesPreaudit(
+  prisma: Parameters<
+    (typeof import("@/features/questionnaire-preaudit/suivi"))["passerSuiviQuestionnaires"]
+  >[0],
+): Promise<void> {
+  try {
+    const { passerSuiviQuestionnaires } = await import("@/features/questionnaire-preaudit/suivi");
+    const b = await passerSuiviQuestionnaires(prisma, { maintenant: new Date() });
+    const essai = Object.values(b.modes).includes("essai");
+    if (essai && (b.seraientCrees > 0 || b.seraientEnvoyes > 0)) {
+      console.warn(
+        `[visio-balayage-worker] questionnaire avant audit À BLANC : créerait ${b.seraientCrees}, ` +
+          `enverrait ${b.seraientEnvoyes}`,
+      );
+    }
+    if (b.crees + b.envoyes + b.annules + b.retenus + b.echecs + b.essais > 0) {
+      console.warn(
+        `[visio-balayage-worker] questionnaire avant audit : ${b.crees} prévu(s), ${b.envoyes} parti(s), ` +
+          `${b.annules} annulé(s), ${b.retenus} retenu(s), ${b.echecs} en échec, ${b.essais} essai(s)`,
+      );
+    }
+  } catch (err) {
+    console.error(
+      "[visio-balayage-worker] questionnaire avant audit en échec :",
+      err instanceof Error ? err.name : "inconnue",
+    );
+    captureWorkerError("visio-balayage", VISIO_BALAYAGE_QUEUE_NAME, undefined, err);
+  }
 }
 
 type BaseDossier = Parameters<(typeof import("@/server/visio/balayage"))["passerBalayage"]>[0];
@@ -64,6 +130,49 @@ async function passerDossierClient(prisma: BaseDossier): Promise<void> {
       notifier: notify,
       drapeauBrut: process.env.DOSSIER_BALAYAGE_ENABLED,
     });
+    const fa = r.fichesAuto;
+    if (fa && fa.mode === "essai") {
+      // À blanc : des nombres seulement (ni nom, ni adresse), rien n'est écrit.
+      console.warn(
+        `[visio-balayage-worker] fiches automatiques À BLANC : créerait ${fa.creeraient}, ` +
+          `rattacherait ${fa.rattacheraient}, douterait ${fa.doutes}, planterait ${fa.plantees}`,
+      );
+    } else if (fa && (fa.creees > 0 || fa.rattachees > 0 || fa.doutes > 0 || fa.plantees > 0)) {
+      console.warn(
+        `[visio-balayage-worker] fiches automatiques : ${fa.creees} créée(s), ` +
+          `${fa.rattachees} rattachée(s), ${fa.doublons.length} doublon(s) possible(s), ` +
+          `${fa.doutes} à classer, ${fa.plantees} plantée(s)`,
+      );
+    }
+    // Les demandes écrites (DOSSIER_FICHE_DEMANDE) : des NOMBRES seulement, jamais un nom ni une
+    // adresse. Sans cette ligne l'étape « essai » ne se lirait nulle part.
+    const fd = r.fichesDemande;
+    if (fd && fd.mode === "essai") {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes À BLANC : créerait ${fd.creeraient}, ` +
+          `lierait ${fd.lieraient}, douterait ${fd.doutes}, planterait ${fd.plantees}, ` +
+          `colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
+      );
+    } else if (
+      fd &&
+      (fd.creees > 0 ||
+        fd.liees > 0 ||
+        fd.doutes > 0 ||
+        fd.plantees > 0 ||
+        fd.colonneAbsente ||
+        fd.dateManquante ||
+        fd.refusAbandonnes > 0 ||
+        fd.doublons.length > 0)
+    ) {
+      console.warn(
+        `[visio-balayage-worker] fiches des demandes : ${fd.creees} créée(s), ` +
+          `${fd.liees} liée(s), ${fd.doublons.length} doublon(s) possible(s), ` +
+          `${fd.doutes} doute(s), ${fd.refusAbandonnes} abandonnée(s) après refus, ` +
+          `${fd.plantees} plantée(s), colonne absente ${fd.colonneAbsente ? "oui" : "non"}, ` +
+          `date d'activation manquante ${fd.dateManquante ? "oui" : "non"}`,
+      );
+    }
     if (r.etapesEnEchec.length > 0 || r.rencontresAssurees > 0) {
       console.warn(
         `[visio-balayage-worker] ${r.rencontresAssurees} rencontre(s) assurée(s), ` +

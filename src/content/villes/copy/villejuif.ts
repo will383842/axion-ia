@@ -230,7 +230,7 @@ export const VILLEJUIF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villejuif et dans le Val-de-Marne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Villejuif et de son pôle santé. Nos consultants se déplacent sur site, à 20 minutes de Paris par la ligne 7 et bientôt le Grand Paris Express, ou interviennent en visio.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Villejuif et de son pôle santé. Nous intervenons sur site ou en visio.",
     },
     {
       q: "Travaillez-vous avec les structures de santé et de biotech villejuifoises ?",
@@ -245,8 +245,8 @@ export const VILLEJUIF_COPY: VilleCopy = {
       a: "Oui, les TPE et professions libérales sont notre priorité à Villejuif. Nous déployons prise de rendez-vous IA, gestion des demandes patients, relances et reporting, après un audit qui chiffre le retour sur investissement.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Villejuif est à 20 minutes de Paris-centre, 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy). Nos consultants se déplacent sur site.",
+      q: "Comment se déroule une mission à Villejuif ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Villejuif est à 15 minutes d'Orly et reliée au Grand Paris Express (gare Institut Gustave Roussy).",
     },
   ],
 };

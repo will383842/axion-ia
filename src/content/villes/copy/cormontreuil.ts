@@ -64,7 +64,7 @@ export const CORMONTREUIL_COPY: VilleCopy = {
       a: "Oui, planification chantiers IA, devis automatisés, CRM augmenté, gestion planning, facturation intelligente pour artisans et commerçants.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Cormontreuil ?",
       a: "Paris-Est à 45 min en TGV (gare Champagne-Ardenne Bezannes à 10 min de Cormontreuil). Autoroute A4 accessible en 10 min.",
     },
   ],

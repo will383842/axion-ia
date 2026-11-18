@@ -49,7 +49,7 @@ export const FEYTIAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Feytiat et agglo Limoges sud ?",
-      a: "Oui, Axion-IA intervient à Feytiat et toute l'agglomération de Limoges sud (Condat-sur-Vienne, Solignac, Eyjeaux, Le Vigen). Nos consultants sont basés à Limoges (10 min) et couvrent tout Limoges Métropole.",
+      a: "Oui, Axion-IA intervient à Feytiat et toute l'agglomération de Limoges sud (Condat-sur-Vienne, Solignac, Eyjeaux, Le Vigen). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Feytiat ?",
@@ -64,8 +64,8 @@ export const FEYTIAT_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Feytiat, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission à Feytiat depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges centre (10 min en voiture). Feytiat est desservie par le réseau STLC. Visio également possible.",
+      q: "Comment se déroule une mission à Feytiat ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Feytiat est desservie par le réseau STLC. Visio également possible.",
     },
   ],
 };

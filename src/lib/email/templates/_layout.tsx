@@ -88,9 +88,7 @@ import { AGGREGATE_MIN_COUNT } from "@/lib/reviews/config";
 // `process.env.COMPANY_*` dont le repli était la chaîne vide (donc un e-mail
 // sans adresse ni SIREN, en silence). Voir l'en-tête de `legal-footer.ts`.
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "../legal-footer";
-// Drapeau d'AFFIRMATION de la certification. Lecture `process.env` pure, aucun
-// import next/prisma : compatible avec le rendu d'e-mail hors requête (worker).
-import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { COORDONNEES_PUBLIQUES } from "@/lib/identite-legale-ssot";
 
 /**
  * Stats avis injectées par `renderEmailTemplate` juste avant le rendu (valeurs
@@ -146,7 +144,6 @@ export function avecDonneesRendu<T>(
 const BRAND = "Axion-IA";
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
 const LOGO_PILL = `${BASE_URL}/email/axion-ia-logo-pill.png`;
-const QUALIOPI_LOCKUP = `${BASE_URL}/email/axion-qualiopi-lockup.png`;
 const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
 
 /**
@@ -163,8 +160,13 @@ const CONTACT_EMAIL = EMAIL_LEGAL.contactEmail;
  * ils sont proscrits en familles A et C.
  */
 const SOCIALS = {
-  linkedinCompany:
-    process.env.COMPANY_LINKEDIN || "https://www.linkedin.com/company/axion-ia-france/",
+  /**
+   * Source unique : `COORDONNEES_PUBLIQUES.linkedinEntreprise` (module pur, pas
+   * de `@/env` dans le worker), la même que `CONTACT_PUBLIC.linkedinEntreprise`
+   * des données structurées. `COMPANY_LINKEDIN` reste une SURCHARGE d'exploitation
+   * (variable préexistante) ; absente, c'est la constante qui fait foi.
+   */
+  linkedinCompany: process.env.COMPANY_LINKEDIN || COORDONNEES_PUBLIQUES.linkedinEntreprise,
   facebookCompany: "https://www.facebook.com/axioniacom",
   /**
    * §5.3 : « Faible impact B2B France, mais gratuit et cohérent. » Manquait.
@@ -692,6 +694,18 @@ export interface EmailLayoutProps {
    */
   sansReseauxSociaux?: boolean;
   unsubscribeHref?: string;
+  /**
+   * Libellé du lien `unsubscribeHref` quand il ne s'agit pas d'un désabonnement de liste
+   * (2026-10-26 : « Ne plus recevoir de rappel » des relances du questionnaire avant audit).
+   */
+  unsubscribeLabel?: string;
+  /** Une phrase courte SOUS le bouton (ex. « Ce lien vous est personnel… »). Texte, pas un lien. */
+  ctaNote?: string;
+  /**
+   * Contenu rendu APRÈS le bouton (2026-10-26) : la formule de fin d'un message signé dans le
+   * corps (famille C, sans bloc signature) doit venir après l'action, pas avant.
+   */
+  apresCta?: ReactNode;
   locale: "fr" | "en";
 }
 
@@ -700,12 +714,11 @@ const TXT = {
     /*
      * Registre revu le 2026-09-01. L'ancienne ligne énumérait cinq prestations
      * à plat — un menu de prestataire, pas le positionnement d'un cabinet. Face
-     * à un acheteur d'ETI ou de grand groupe, une liste de services suggère
+     * à un dirigeant de PME, une liste de services suggère
      * qu'on prend ce qui passe. La ligne dit désormais CE QU'EST la structure.
      */
-    tagline: "Cabinet IA pour entreprises — TPE, PME, ETI et grands groupes",
+    tagline: "Le partenaire IA de bout en bout des PME",
     reviewsWord: "avis clients",
-    qualiopiAlt: "Organisme de formation certifié Qualiopi — Axion-IA",
     ctaFallback: "Le bouton ne fonctionne pas ? Copiez cette adresse :",
     soupape:
       "Une question ? Répondez simplement à cet e-mail — il arrive directement chez nous, et c'est un humain qui lit.",
@@ -734,7 +747,7 @@ const TXT = {
     signaturePositionnement:
       "Vous entendez parler d’IA partout et ne savez plus par où commencer ? On fait le tri, et on s’en occupe pour vous, de bout en bout.",
     signatureServices:
-      "Audit IA · Implémentation de systèmes automatisés · Formation finançable OPCO · Coaching 1-to-1",
+      "Audit IA · Implémentation de systèmes automatisés · Formation · Coaching 1-to-1",
     signatureRdv: "Prendre rendez-vous",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormFr,
@@ -753,9 +766,8 @@ const TXT = {
     autoNoticeAsk: "Vous n'êtes pas à l'origine de cette demande ? Écrivez-nous :",
   },
   en: {
-    tagline: "AI consultancy for mid-market and enterprise",
+    tagline: "The end-to-end AI partner for SMEs",
     reviewsWord: "client reviews",
-    qualiopiAlt: "Qualiopi-certified training organisation — Axion-IA",
     ctaFallback: "Button not working? Copy this address:",
     soupape: "A question? Just reply to this email — it reaches us directly, and a human reads it.",
     reviewTitle: "Your feedback",
@@ -770,8 +782,7 @@ const TXT = {
     signatureEquipe: "The Axion-IA team",
     signaturePositionnement:
       "Hearing about AI everywhere and no longer sure where to start? We cut through the noise, and handle it for you, end to end.",
-    signatureServices:
-      "AI audit · Automated systems implementation · OPCO-fundable training · 1-to-1 coaching",
+    signatureServices: "AI audit · Automated systems implementation · Training · 1-to-1 coaching",
     signatureRdv: "Book a call",
     signatureLinkedin: "LinkedIn",
     legalForm: EMAIL_LEGAL.legalFormEn,
@@ -803,6 +814,9 @@ export function EmailLayout({
   campagne,
   sansReseauxSociaux,
   unsubscribeHref,
+  unsubscribeLabel,
+  ctaNote,
+  apresCta,
   locale,
 }: EmailLayoutProps) {
   const t: { readonly [K in keyof (typeof TXT)["fr"]]: string } = TXT[locale];
@@ -815,16 +829,9 @@ export function EmailLayout({
   const rs = CURRENT_REVIEW_STATS;
   // Ligne avis RÉELLE (masquée sous 5 avis — même seuil que l'AggregateRating du site).
   const showReviews = rs.count >= AGGREGATE_MIN_COUNT && rs.avg > 0;
-  // 🔴 2026-08-19 — `trust` est un booléen de MISE EN PAGE (« ce gabarit affiche
-  // un bandeau de confiance »), pas un drapeau de certification. Le lockup
-  // « Organisme de formation certifié Qualiopi » partirait donc quoi qu'il
-  // arrive, alors que la certification n'est PAS obtenue — cas qualifié
-  // d'ILLÉGAL par l'en-tête de `server/qualiopi/config/flag.ts`.
-  //
-  // On conjugue les deux notions au lieu de remplacer l'une par l'autre : le
-  // bandeau survit (il porte aussi la note d'avis, qui est vraie et vérifiable),
-  // seule l'IMAGE de certification est conditionnée.
-  const afficherLockupQualiopi = isQualiopiCertificationObtenue();
+  // 2026-11-17 — le bandeau ne porte plus que la note d'avis (vraie et
+  // vérifiable) : l'image de certification est retirée, l'entreprise n'a pas
+  // cette certification.
   // 🔑 Le régime de famille PRIME sur la demande du gabarit. Un gabarit de
   // famille A qui passerait `trust` ou `snowball` par mégarde ne les obtient
   // pas : la règle est portée ici, une fois, et non par la discipline de 44
@@ -892,16 +899,29 @@ export function EmailLayout({
 
           {/* Carte de contenu */}
           <Container style={card} className="ax-card">
-            {eyebrow && <Text style={eyebrowStyle}>{eyebrow}</Text>}
-            <Heading style={headingStyle} className="ax-heading ax-title">
+            {eyebrow && (
+              <Text style={eyebrowStyle} data-bloc="surtitre">
+                {eyebrow}
+              </Text>
+            )}
+            <Heading style={headingStyle} className="ax-heading ax-title" data-bloc="titre">
               {title}
             </Heading>
+            {/* Marqueurs de mesure (lot S1) : vides et sautés du rendu texte. Les gardes
+                de `__tests__/` lisent la tranche du corps entre ces deux repères. */}
+            <span data-bloc="debut-corps" data-skip-in-text="true" />
             {children}
+            <span data-bloc="fin-corps" data-skip-in-text="true" />
             {cta && (
-              <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }}>
+              <Section style={{ textAlign: "center", margin: "30px 0 8px 0" }} data-bloc="action">
                 <Button href={cta.href} style={ctaStyle} className="ax-cta">
                   {cta.label} &nbsp;→
                 </Button>
+                {ctaNote && (
+                  <Text style={{ margin: "8px 0 0 0", fontSize: "13px", color: C.muted }}>
+                    {ctaNote}
+                  </Text>
+                )}
                 {/*
                   Repli en texte brut — §3.8, rendu ICI pour les 44 gabarits.
 
@@ -923,8 +943,12 @@ export function EmailLayout({
                 )}
               </Section>
             )}
+            {apresCta}
             {lienEspace && cta?.href !== lienEspace && (
-              <Section style={{ textAlign: "center", margin: "22px 0 4px 0" }}>
+              <Section
+                style={{ textAlign: "center", margin: "22px 0 4px 0" }}
+                data-bloc="lienEspace"
+              >
                 <Link
                   href={lienEspace}
                   style={{
@@ -944,22 +968,13 @@ export function EmailLayout({
                 </Text>
               </Section>
             )}
-            {bandeau && (afficherLockupQualiopi || showReviews) && (
-              <Section style={trustBand} className="ax-trust">
-                {afficherLockupQualiopi && (
-                  <Img
-                    src={QUALIOPI_LOCKUP}
-                    width="340"
-                    height="227"
-                    alt={t.qualiopiAlt}
-                    style={{ margin: "0 auto", display: "block", border: "0", maxWidth: "100%" }}
-                  />
-                )}
+            {bandeau && showReviews && (
+              <Section style={trustBand} className="ax-trust" data-bloc="bandeau">
                 {showReviews && <Text style={starsStyle}>{reviewLine}</Text>}
               </Section>
             )}
             {partage && (snowball === "review" || snowball === "both") && (
-              <Section style={snowballCard}>
+              <Section style={snowballCard} data-bloc="partage">
                 <Text style={snowballTitle} className="ax-heading">
                   {t.reviewTitle}
                 </Text>
@@ -975,7 +990,7 @@ export function EmailLayout({
               </Section>
             )}
             {partage && (snowball === "referral" || snowball === "both") && (
-              <Section style={snowballCard}>
+              <Section style={snowballCard} data-bloc="partage">
                 <Text style={snowballTitle} className="ax-heading">
                   {t.referralTitle}
                 </Text>
@@ -999,12 +1014,12 @@ export function EmailLayout({
               méfier autrement (formation anti-hameçonnage).
             */}
             {regime.soupapeReponse && (
-              <Text style={soupapeStyle} className="ax-muted">
+              <Text style={soupapeStyle} className="ax-muted" data-bloc="soupape">
                 {t.soupape}
               </Text>
             )}
             {signatureVisible && (
-              <Text style={signatureStyle} className="ax-text">
+              <Text style={signatureStyle} className="ax-text" data-bloc="signature">
                 <span style={signatureNameStyle}>
                   {signatureEquipe ? t.signatureEquipe : EMAIL_SIGNATURE.fullName}
                 </span>
@@ -1053,7 +1068,7 @@ export function EmailLayout({
 
               Familles B, C, D → forme COMPLÈTE du §6.2.
              ─────────────────────────────────────────────────────────────── */}
-          <Section style={{ padding: "26px 12px 0 12px" }}>
+          <Section style={{ padding: "26px 12px 0 12px" }} data-bloc="pied">
             {regime.reseauxSociaux === "complet" && sansReseauxSociaux !== true && (
               <Text style={socialRowStyle} className="ax-muted">
                 {t.followBrand} —{" "}
@@ -1131,7 +1146,7 @@ export function EmailLayout({
                     href={unsubscribeHref}
                     style={{ color: C.muted, textDecoration: "underline" }}
                   >
-                    {t.unsubscribe}
+                    {unsubscribeLabel ?? t.unsubscribe}
                   </Link>
                 </>
               )}

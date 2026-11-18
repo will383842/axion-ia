@@ -49,7 +49,7 @@ export const RONCQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roncq et dans la métropole lilloise nord ?",
-      a: "Oui, Axion-IA intervient à Roncq et dans toute la métropole lilloise nord (Tourcoing, Halluin, Neuville-en-Ferrain, Linselles, Bousbecque) ainsi que côté belge (Mouscron, Menin). Nos consultants sont basés à Lille (20 min) et couvrent l'ensemble de l'axe Lille-Tourcoing-frontière belge.",
+      a: "Oui, Axion-IA intervient à Roncq et dans toute la métropole lilloise nord (Tourcoing, Halluin, Neuville-en-Ferrain, Linselles, Bousbecque) ainsi que côté belge (Mouscron, Menin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Roncq  ?",
@@ -61,7 +61,7 @@ export const RONCQ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Roncq ?",
-      a: "Nos consultants interviennent à Roncq depuis Lille (20 min) ou Tourcoing (8 min). Intervention sur site dans vos locaux commerciaux, entrepôt ou bureau. Pour missions multi-jours, hébergement à Lille ou Tourcoing.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux commerciaux, entrepôt ou bureau. Pour missions multi-jours, hébergement à Lille ou Tourcoing.",
     },
     {
       q: "Proposez-vous des solutions IA pour les prestataires logistiques de Roncq ?",

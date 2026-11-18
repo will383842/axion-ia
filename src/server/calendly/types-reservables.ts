@@ -1,4 +1,8 @@
-// Les CINQ rendez-vous que le site sait réserver lui-même — une seule table.
+// Les SIX rendez-vous que le site sait réserver lui-même — une seule table.
+//
+// 2026-10-25 : sixième entrée, la visio du Tour France IA (`tour`), classée
+// `autre` comme l'échange formateur mais restée CLIENT (son nom ne porte aucun
+// des mots-clés hors clients).
 //
 // 2026-10-09 (lot F-CAL-1, chantier « formateurs freelance ») : cinquième entrée,
 // l'échange formateur indépendant. Classée `autre` (l'enum Prisma n'a pas de
@@ -30,6 +34,7 @@
 //
 // Module NEUTRE (ni `server-only`, ni Next) : le worker et les tests l'importent.
 
+import { DUREE_RDV, OFFRE_JOURNEE_IA } from "@/content/offre";
 import type { FormatDemande } from "@/server/calendly/reservation";
 import {
   URL_CALENDLY_APPEL_PAR_DEFAUT,
@@ -37,6 +42,7 @@ import {
   URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT,
   URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
   URL_CALENDLY_SALON_PAR_DEFAUT,
+  URL_CALENDLY_TOUR_PAR_DEFAUT,
 } from "@/server/calendly/urls-par-defaut";
 // Import de TYPE seulement (effacé à la compilation) : aucun cycle à l'exécution.
 import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
@@ -49,16 +55,19 @@ import type { TypeRendezVous } from "@/server/calendly/type-rendez-vous";
 export const CHOIX_RENDEZ_VOUS = ["diagnostic", "projet", "apporteur", "salon"] as const;
 
 /**
- * Les rendez-vous réservables SANS type propre en base — classés `autre`,
- * reconnus par le NOM de l'événement (2026-10-09, lot F-CAL-1 : l'échange
- * formateur ; l'enum n'a pas de valeur « formateur » et ce lot ne migre rien).
- * Ils ont leur page, leur adresse et leur lien d'e-mail, mais `autre` ne les
- * désigne JAMAIS (`choixDuTypeRendezVous`).
+ * Les rendez-vous réservables HORS des quatre historiques. L'échange formateur est
+ * classé `autre` ; la visio du Tour France IA a, depuis le 2026-10-27, son type
+ * propre (`tour_de_france_ia`) — elle reste ici parce que la liste des quatre est
+ * figée par les tests du parcours, et `choixDuTypeRendezVous` la retrouve par son type.
+ * Le nom dit la vérité : « formateur » n'a PAS de type propre en base (classé
+ * `autre`, reconnu par le NOM de l'événement — 2026-10-09, lot F-CAL-1), alors que
+ * « tour » en a un. Les deux ont leur page, leur adresse et leur lien d'e-mail, et
+ * `autre` ne désigne JAMAIS « formateur » (`choixDuTypeRendezVous`).
  */
-export const CHOIX_SANS_TYPE_PROPRE = ["formateur"] as const;
+export const CHOIX_HORS_DES_QUATRE_HISTORIQUES = ["formateur", "tour"] as const;
 
-/** Les cinq rendez-vous réservables sur le site : pages, routes, adresses Calendly. */
-export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_SANS_TYPE_PROPRE] as const;
+/** Les six rendez-vous réservables sur le site : pages, routes, adresses Calendly. */
+export const TOUS_LES_CHOIX = [...CHOIX_RENDEZ_VOUS, ...CHOIX_HORS_DES_QUATRE_HISTORIQUES] as const;
 export type ChoixRendezVous = (typeof TOUS_LES_CHOIX)[number];
 
 /**
@@ -122,6 +131,9 @@ function varSalon(): string | undefined {
 function varFormateur(): string | undefined {
   return process.env.CALENDLY_FORMATEUR_URL;
 }
+function varTour(): string | undefined {
+  return process.env.CALENDLY_TOUR_URL;
+}
 
 const LECTURE_DE_LA_VARIABLE: Readonly<Record<ChoixRendezVous, () => string | undefined>> = {
   diagnostic: varDiagnostic,
@@ -129,10 +141,14 @@ const LECTURE_DE_LA_VARIABLE: Readonly<Record<ChoixRendezVous, () => string | un
   apporteur: varApporteur,
   salon: varSalon,
   formateur: varFormateur,
+  tour: varTour,
 };
 
 // 🔴 Le CHOIX DU FORMAT s'annonce à l'étape 1, et pas ailleurs : c'est le moment où
 // l'on s'apprête à cliquer (chantier visio B5, Will 28/09 : Google Meet seulement).
+const PREMIERE_ETAPE_VISIO_OU_TELEPHONE =
+  "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet ou par téléphone.";
+
 const PREMIERE_ETAPE_VISIO =
   "Choisissez un créneau : le rendez-vous se tient en visioconférence Google Meet.";
 
@@ -147,10 +163,10 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     route: "diagnostic",
     type: "diagnostic",
     public: true,
-    nom: "Diagnostic IA",
-    titre: "Votre diagnostic IA",
-    promesse: "Gratuit et sans engagement",
-    premiereEtape: PREMIERE_ETAPE_VISIO,
+    nom: "Diagnostic IA gratuit",
+    titre: "Votre diagnostic IA gratuit",
+    promesse: `${OFFRE_JOURNEE_IA.rendezVous.nom}, ${DUREE_RDV}, en visio ou par téléphone, sans engagement`,
+    premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:
       "Quelques questions sur votre activité, et vous repartez avec des pistes concrètes.",
@@ -166,7 +182,7 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     nom: "Échange projet",
     titre: "Votre échange projet",
     promesse: "Gratuit et sans engagement",
-    premiereEtape: PREMIERE_ETAPE_VISIO,
+    premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape: "On discute de votre projet ou tout autre besoin de renseignements.",
     formats: ["visio", "telephone"],
@@ -239,6 +255,29 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     urlParDefaut: URL_CALENDLY_FORMATEUR_PAR_DEFAUT,
     variable: "CALENDLY_FORMATEUR_URL",
   },
+  // 2026-10-25 — la visio de la landing du Tour France IA (`/tour-france-ia`).
+  // Type PROPRE `tour_de_france_ia` (migration du 2026-10-27) : la réservation reste
+  // dans les familles CLIENT — fiche prospect dans la console, CRM des ventes (sous
+  // `autre`, avec la clé `circuit`), et ses propres e-mails (confirmation, J-1,
+  // H-1). Lien privé : jamais listée sur l'écran du choix d'`/appel`.
+  // 🔴 Aucun prix. « Gratuit » et « offert » sont réservés, sur la landing, à
+  // l'audit et à la formation : la visio n'est dite que « sans engagement ».
+  tour: {
+    choix: "tour",
+    route: "tour-france-ia",
+    type: "tour_de_france_ia",
+    public: false,
+    nom: "Tour France IA",
+    titre: "Votre visio Tour France IA — 30 minutes",
+    promesse: "Visio de 30 minutes, sans engagement",
+    premiereEtape: PREMIERE_ETAPE_VISIO,
+    deuxiemeEtape: CONFIRMATION_CLIENT,
+    troisiemeEtape:
+      "Nous découvrons votre entreprise, nous vous présentons la journée et son podcast, puis nous vous disons si votre entreprise est retenue.",
+    formats: ["visio"],
+    urlParDefaut: URL_CALENDLY_TOUR_PAR_DEFAUT,
+    variable: "CALENDLY_TOUR_URL",
+  },
 };
 
 /** Le descriptif d'un choix. */
@@ -246,7 +285,7 @@ export function configDuChoix(choix: ChoixRendezVous): ConfigRendezVous {
   return TYPES_RESERVABLES[choix];
 }
 
-/** Vrai si la valeur est l'un des cinq choix. */
+/** Vrai si la valeur est l'un des six choix. */
 export function estUnChoix(valeur: unknown): valeur is ChoixRendezVous {
   return typeof valeur === "string" && (TOUS_LES_CHOIX as readonly string[]).includes(valeur);
 }

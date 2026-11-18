@@ -38,11 +38,31 @@ import { join } from "node:path";
 const updateMany = vi.fn();
 const suiviUpdateMany = vi.fn();
 const queryRaw = vi.fn();
+const preDeleteMany = vi.fn();
+const preParentUpdateMany = vi.fn();
+const brouillonDeleteMany = vi.fn();
+const courrierUpdateMany = vi.fn();
+const transaction = vi.fn();
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     calendlyEvent: { updateMany: (...a: unknown[]) => updateMany(...a) },
     // Le suivi après l'appel (2026-09-27) : sa note part avec le reste.
     rendezVousSuivi: { updateMany: (...a: unknown[]) => suiviUpdateMany(...a) },
+    // Questionnaire de pré-audit (2026-10-24) : réponses effacées avec la personne.
+    questionnaireAvantAuditEnvoi: { deleteMany: (...a: unknown[]) => preDeleteMany(...a) },
+    questionnaireAvantAudit: { updateMany: (...a: unknown[]) => preParentUpdateMany(...a) },
+    questionnaireAvantAuditBrouillon: {
+      deleteMany: (...a: unknown[]) => brouillonDeleteMany(...a),
+    },
+    // Journal des courriers de suivi (2026-10-26) : ANONYMISÉ, jamais supprimé.
+    questionnaireAvantAuditCourrier: {
+      updateMany: (...a: unknown[]) => courrierUpdateMany(...a),
+    },
+    // Réponses et brouillon partent dans la MÊME transaction (forme tableau).
+    $transaction: (ops: unknown[]) => {
+      transaction(ops.length);
+      return Promise.all(ops);
+    },
     // 🔑 Ajouté le 2026-08-31 avec l'élargissement de l'effacement à la charge
     // brute : `eraseCalendlyEventsForEmail` cherche d'abord les lignes dont le
     // `raw_payload` contient l'adresse, parce qu'une réservation non enrichie a
@@ -60,6 +80,9 @@ beforeEach(() => {
   updateMany.mockResolvedValue({ count: 1 });
   suiviUpdateMany.mockResolvedValue({ count: 1 });
   queryRaw.mockResolvedValue([]);
+  preDeleteMany.mockResolvedValue({ count: 0 });
+  preParentUpdateMany.mockResolvedValue({ count: 0 });
+  brouillonDeleteMany.mockResolvedValue({ count: 0 });
 });
 
 describe("la note du suivi après l'appel", () => {
@@ -75,6 +98,80 @@ describe("la note du suivi après l'appel", () => {
     expect(suiviUpdateMany.mock.invocationCallOrder[0]).toBeLessThan(
       updateMany.mock.invocationCallOrder[0] ?? 0,
     );
+  });
+});
+
+describe("questionnaire de pré-audit (2026-10-24)", () => {
+  it("efface les réponses du DIRIGEANT seul, retrouvé par réservation ou adresse d'envoi", async () => {
+    const { eraseCalendlyEventsForEmail } = await import("../rgpd-erase");
+    await eraseCalendlyEventsForEmail("temoin@example.invalid");
+    const ou = {
+      OR: [
+        { rencontre: { calendlyEvent: { inviteeEmail: "temoin@example.invalid" } } },
+        { destinataireHash: "hash" },
+      ],
+    };
+    expect(preDeleteMany).toHaveBeenCalledWith({ where: { mode: "main", questionnaire: ou } });
+    // Son brouillon en cours part avec ses réponses (2026-10-24).
+    expect(brouillonDeleteMany).toHaveBeenCalledWith({
+      where: { mode: "main", questionnaire: ou },
+    });
+    // Ses courriers de suivi : ceux à venir annulés, l'empreinte retirée, rien supprimé.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: { destinataireHash: "hash", statut: "prevu" },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    });
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: { destinataireHash: "hash" },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
+    });
+    // Ses relances encore prévues : annulées (elles n'ont pas d'empreinte), jamais supprimées.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: {
+        nature: { in: ["relance_1", "relance_2", "relance_3"] },
+        statut: "prevu",
+        questionnaire: { is: ou },
+      },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    });
+    expect(transaction).toHaveBeenCalledWith(5);
+    expect(preParentUpdateMany).toHaveBeenCalledWith({
+      where: ou,
+      data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
+    });
+  });
+
+  it("efface les réponses d'un salarié par son code, sans toucher au dirigeant", async () => {
+    const { eraseQuestionnairePreauditMembre } = await import("../rgpd-erase");
+    preDeleteMany.mockResolvedValue({ count: 1 });
+    expect(await eraseQuestionnairePreauditMembre("ref1", "m42")).toBe(1);
+    // Seulement les réponses MISES À L'ÉCART : une réponse arrivée après l'écart reste.
+    expect(preDeleteMany).toHaveBeenCalledWith({
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre: "m42",
+        questionnaire: { ref: "ref1" },
+        ecarteLe: { not: null },
+      },
+    });
+    expect(brouillonDeleteMany).toHaveBeenCalledWith({
+      where: { mode: { in: ["emp", "it"] }, membre: "m42", questionnaire: { ref: "ref1" } },
+    });
+    // Sa confirmation au journal : anonymisée AVANT la suppression qui la détacherait.
+    expect(courrierUpdateMany).toHaveBeenCalledWith({
+      where: {
+        envoi: {
+          mode: { in: ["emp", "it"] },
+          membre: "m42",
+          questionnaire: { ref: "ref1" },
+          ecarteLe: { not: null },
+        },
+      },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
+    });
+    preDeleteMany.mockClear();
+    expect(await eraseQuestionnairePreauditMembre("", "m42")).toBe(0);
+    expect(preDeleteMany).not.toHaveBeenCalled();
   });
 });
 
@@ -178,9 +275,12 @@ describe("la personne est informée de ce qui a été effacé", () => {
     expect(s).toContain("appels: number");
     expect(s).toMatch(/rendez-vous anonymisé/);
 
+    // Décision de Williams du 11/11/2026 : la route ne supprime plus et n'envoie plus ce
+    // courriel (il affirmerait un effacement qui n'a pas lieu). Le gabarit reste juste pour
+    // un effacement fait à la main.
     const route = source("src/app/api/gdpr-erase/route.ts");
-    expect(route).toContain("eraseCalendlyEventsForEmail");
-    expect(route).toContain("appels: appelsResult.anonymized");
+    expect(route).not.toContain("eraseCalendlyEventsForEmail");
+    expect(route).not.toContain('enqueueEmail("rgpd-effacement-confirme"');
   });
 
   it("l'export art. 15 rend les rendez-vous", () => {

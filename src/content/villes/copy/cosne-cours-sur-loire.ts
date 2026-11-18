@@ -65,7 +65,7 @@ export const COSNE_COURS_SUR_LOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Cosne-Cours-sur-Loire ?",
-      a: "Nos consultants interviennent à Cosne-Cours-sur-Loire depuis Paris (2 h A77) ou Nevers (50 min). Gare SNCF Cosne-sur-Loire sur la ligne Paris-Nevers. Intervention sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare SNCF Cosne-sur-Loire sur la ligne Paris-Nevers. Intervention sur site.",
     },
   ],
 };

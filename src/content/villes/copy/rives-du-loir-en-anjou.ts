@@ -49,7 +49,7 @@ export const RIVES_DU_LOIR_EN_ANJOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rives-du-Loir-en-Anjou ?",
-      a: "Oui, Axion-IA intervient à Rives-du-Loir-en-Anjou et dans tout le bassin du Loir (Seiches, Lézigné, Jarzé, Durtal). Nos consultants se déplacent depuis Angers (25 min D323).",
+      a: "Oui, Axion-IA intervient à Rives-du-Loir-en-Anjou et dans tout le bassin du Loir (Seiches, Lézigné, Jarzé, Durtal). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles et viticoles du Loir ?",

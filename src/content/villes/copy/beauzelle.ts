@@ -49,7 +49,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauzelle ?",
-      a: "Oui, Axion-IA intervient à Beauzelle et dans tout le nord-ouest de Toulouse (Blagnac, Aussonne, Cornebarrieu). Nos consultants se déplacent en 15 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Beauzelle et dans tout le nord-ouest de Toulouse (Blagnac, Aussonne, Cornebarrieu). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Beauzelle ?",
@@ -61,7 +61,7 @@ export const BEAUZELLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Beauzelle ?",
-      a: "Nos consultants se déplacent à Beauzelle depuis Toulouse (15 min D902). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Beauzelle ?",

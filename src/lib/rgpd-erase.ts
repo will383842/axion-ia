@@ -23,6 +23,10 @@
  * Tous les appels génèrent un ActivityLog `gdpr.erase.<table>` (forensique).
  */
 
+import {
+  MERCI_STATUT_ECARTE,
+  MERCI_STATUTS_ECARTES_LUS,
+} from "@/server/guides-reseau/merci-statut";
 import { createHash } from "node:crypto";
 import type {
   CibleEffacement,
@@ -32,9 +36,14 @@ import type {
 } from "../../prisma/generated/client";
 import { Prisma as PrismaRuntime } from "../../prisma/generated/client";
 import * as Sentry from "@sentry/nextjs";
+import {
+  envoisDuDirigeant,
+  questionnairesDuDirigeant,
+} from "@/features/questionnaire-preaudit/portee-rgpd";
 import { prisma } from "@/lib/prisma";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
+import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
+import { decryptPii, encryptPii, PII_DECRYPT_PLACEHOLDER } from "@/lib/pii-crypto";
 import { deleteFromR2 } from "@/lib/r2-storage";
 import { CONSENT_FORM_REFS } from "@/lib/consents";
 import { CONSERVATION_VISIO } from "@/content/visio-annonce-textes";
@@ -208,7 +217,9 @@ export interface EraseSignatureTokensResult {
  * ## La distinction, qui est tout le sujet
  *
  * `DocumentSignature.signataireEmail` est **scellé** dans le tuple haché
- * (`COLONNES_SCELLEES_DOCUMENT`) : l'écraser ferait rendre `empreinte_invalide`
+ * (`COLONNES_SCELLEES_DOCUMENT`) — comme `signataireNom` et, pour le devis à formules (V4),
+ * `declarationNom` et `declarationFonction` (la déclaration de pouvoir saisie par le signataire) :
+ * l'écraser ferait rendre `empreinte_invalide`
  * à la vérification de chaîne, c'est-à-dire, dans un dossier présenté à un
  * contrôle, le verdict « ces pièces ont été modifiées après coup » sur des
  * pièces intactes. Ce dépôt a déjà payé ce défaut exact côté émargement. On n'y
@@ -426,6 +437,49 @@ export async function eraseEmailTracesForEmail(email: string): Promise<EraseEmai
   };
 }
 
+export interface MasquageAlertesResult {
+  /** Alertes de la cloche dont l'adresse a été masquée (mise à jour, aucune suppression). */
+  readonly alertesMasquees: number;
+}
+
+/**
+ * Geste humain, APRÈS un effacement accepté : masque l'adresse dans les alertes de la cloche
+ * (`rgpd_effacement_a_traiter`, `email_retenu_*`). Depuis la décision du 11/11/2026, une demande
+ * d'effacement MET LA PERSONNE À L'ÉCART au lieu de supprimer (`src/server/rgpd/ecarter-au-lieu-d-effacer.ts`)
+ * et lève une alerte `critique` SANS adresse (ni motif libre) : la personne se retrouve par la
+ * référence de la trace et l'empreinte de l'alerte, et la réponse est due AVANT l'échéance d'un
+ * mois (art. 12.3 RGPD). Ce passage ne sert donc plus qu'aux alertes plus anciennes, qui portent
+ * encore l'adresse en clair ; sans lui elles la gardent sans limite de durée. MISE À JOUR
+ * seulement : l'alerte reste, son adresse devient `[adresse masquée]`.
+ *
+ * À LANCER À LA MAIN avec les autres effaceurs, une fois l'effacement passé : la procédure est
+ * écrite dans `docs/dpo-templates/03-effacement-art-17.md` (aucun automate ne l'appelle, voulu).
+ */
+export async function masquerAdresseDansAlertes(email: string): Promise<MasquageAlertesResult> {
+  const adresse = email.trim();
+  if (adresse === "") return { alertesMasquees: 0 };
+  const lignes = await prisma.alerteSysteme.findMany({
+    where: {
+      OR: [{ code: "rgpd_effacement_a_traiter" }, { code: { startsWith: "email_retenu_" } }],
+      message: { contains: adresse, mode: "insensitive" },
+    },
+    select: { id: true, message: true, titre: true },
+  });
+  let alertesMasquees = 0;
+  for (const l of lignes) {
+    await prisma.alerteSysteme.update({
+      where: { id: l.id },
+      data: {
+        message: masquerAdresseDansTexte(l.message, adresse),
+        titre: masquerAdresseDansTexte(l.titre, adresse),
+      },
+      select: { id: true },
+    });
+    alertesMasquees += 1;
+  }
+  return { alertesMasquees };
+}
+
 export interface EraseCrmOutboxResult {
   /** Lignes de `crm_sync_outbox` supprimées (tous statuts). */
   readonly supprimees: number;
@@ -460,11 +514,42 @@ export async function eraseCrmOutboxForEmail(email: string): Promise<EraseCrmOut
   // L'adresse telle que saisie ET sa forme normalisée : le filtre JSON est
   // sensible à la casse, contrairement aux colonnes `citext`.
   const formes = [...new Set([email, email.trim().toLowerCase()])];
+  // 🔴 AVANT de vider la file : ferme la porte du CRM pour cette adresse (l'opposition, elle, est
+  // gardée — jamais de suppression). Sans cette marque, un réessai renverrait l'adresse au CRM.
+  // Son échec ne bloque jamais l'effacement.
+  if (empreinte) {
+    try {
+      await prisma.emailOpposition.updateMany({
+        where: { emailHash: empreinte },
+        data: { crmInterditLe: new Date() },
+      });
+    } catch (e) {
+      Sentry.captureException(
+        { name: e instanceof Error ? e.name : "erreur" },
+        { tags: { rgpd: "art17", etape: "interdire-crm-opposition" } },
+      );
+    }
+  }
   const r = await prisma.crmSyncOutbox.deleteMany({
     where: {
       OR: [
         ...(empreinte ? [{ payload: { path: ["person", "person_key"], equals: empreinte } }] : []),
         ...formes.map((f) => ({ payload: { path: ["person", "email"], equals: f } })),
+        // Dossier client (`dossier_client_synchro`) : pas de `person`, les
+        // interlocuteurs sont dans `payload.payload.dossier.contacts[]`.
+        ...(empreinte
+          ? [
+              {
+                payload: {
+                  path: ["payload", "dossier", "contacts"],
+                  array_contains: [{ person_key: empreinte }],
+                },
+              },
+            ]
+          : []),
+        ...formes.map((f) => ({
+          payload: { path: ["payload", "dossier", "contacts"], array_contains: [{ email: f }] },
+        })),
       ],
     },
   });
@@ -618,6 +703,10 @@ export async function eraseClientsForEmail(email: string): Promise<EraseClientsR
         data: {
           contactEmail: hashedEmail,
           contactNom: null,
+          // Identité de salutation (B4) : elle suit le contact dans l'effacement.
+          contactCivilite: null,
+          contactPrenom: null,
+          contactNomFamille: null,
           contactTelephone: null,
           contactFonction: null,
           // Champs de saisie libre : ils portent régulièrement le nom et le
@@ -837,6 +926,52 @@ export async function eraseCalendlyEventsForEmail(email: string): Promise<EraseC
   // autres faits dont elle est sujet. Elle ne porte que l'issue, la suite et
   // leur date (annotation `rgpd: technique`), et part avec sa rencontre.
 
+  // Questionnaire de pré-audit (2026-10-24) : les réponses sont des paroles de la personne
+  // (chiffrées, `rgpd: dossier-client`) ; elles partent avec elle, AVANT l'anonymisation
+  // ci-dessous qui remplace l'adresse par laquelle on les retrouve. Le questionnaire lui-même
+  // (le HTML de Will) ne porte aucune donnée personnelle : on le garde.
+  // Seules les réponses du DIRIGEANT partent avec lui (celles d'un salarié sont les siennes :
+  // `eraseQuestionnairePreauditMembre`). Retrouvé par la réservation OU l'adresse d'envoi du lien.
+  const empreintePreaudit = hashEmailForLookup(email);
+  // Son brouillon en cours (2026-10-24, `rgpd: dossier-client`) part avec ses réponses, dans la
+  // MÊME transaction : jamais l'un sans l'autre.
+  // Le journal de ses courriers de suivi (relances, confirmations : 2026-10-26) est ANONYMISÉ,
+  // jamais supprimé : l'empreinte part, ce qui restait à envoyer est annulé.
+  await prisma.$transaction([
+    ...(empreintePreaudit === null
+      ? []
+      : [
+          prisma.questionnaireAvantAuditCourrier.updateMany({
+            where: { destinataireHash: empreintePreaudit, statut: "prevu" },
+            data: { statut: "annule", motif: "effacement RGPD" },
+          }),
+          prisma.questionnaireAvantAuditCourrier.updateMany({
+            where: { destinataireHash: empreintePreaudit },
+            data: { destinataireHash: null, motif: "effacement RGPD" },
+          }),
+        ]),
+    // Ses relances encore prévues (elles ne portent pas d'empreinte : elles visent l'adresse du
+    // questionnaire) sont ANNULÉES, jamais supprimées : plus rien ne part après l'effacement.
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: {
+        nature: { in: ["relance_1", "relance_2", "relance_3"] },
+        statut: "prevu",
+        questionnaire: { is: questionnairesDuDirigeant(email, empreintePreaudit) },
+      },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    }),
+    prisma.questionnaireAvantAuditEnvoi.deleteMany({
+      where: envoisDuDirigeant(email, empreintePreaudit),
+    }),
+    prisma.questionnaireAvantAuditBrouillon.deleteMany({
+      where: envoisDuDirigeant(email, empreintePreaudit),
+    }),
+  ]);
+  await prisma.questionnaireAvantAudit.updateMany({
+    where: questionnairesDuDirigeant(email, empreintePreaudit),
+    data: { luLe: null, luParId: null, destinataire: null, destinataireHash: null },
+  });
+
   // UNE SEULE instruction, donc atomique : la ligne perd ses coordonnées ET
   // sort de la fenêtre du cron au même instant. En deux temps, un passage de
   // `refresh` glissé entre les deux réécrirait la charge brute.
@@ -932,8 +1067,15 @@ const PARTICIPANT_PSEUDONYMISE = {
   etiquetteVoix: null,
 } as const;
 
-/** Fiche personne effacée : nom pseudonymisé, fonction et téléphone vidés. */
-const CONTACT_PSEUDONYMISE = { nom: PERSONNE_EFFACEE, fonction: null, telephone: null } as const;
+/** Fiche personne effacée : nom pseudonymisé ; fonction, téléphone et identité de salutation vidés. */
+const CONTACT_PSEUDONYMISE = {
+  nom: PERSONNE_EFFACEE,
+  fonction: null,
+  telephone: null,
+  civilite: null,
+  prenom: null,
+  nomFamille: null,
+} as const;
 
 /** Compte rendu partagé avec d'autres voix : vidé, une réécriture sans elle est proposée. */
 const COMPTE_RENDU_A_REGENERER = {
@@ -968,11 +1110,14 @@ async function rencontresOuSeuleVoixClient(
   });
 }
 
+/** Intitulé d'une tâche de fiche dont la personne a été effacée. */
+const TACHE_NEUTRALISEE = "Tâche d'une personne effacée";
+
 /**
  * Ce qui suit une personne effacée sans être journalisé ligne à ligne : les
  * questions qu'on lui a adressées (vidées), le corps pré-rempli de ses e-mails
  * de suivi (vidé avant que le lien ne parte), ses e-mails de suivi et ses rôles
- * dans les projets (supprimés). Rend le nombre de questions vidées.
+ * dans les projets (supprimés), ses tâches de fiche (neutralisées). Rend le nombre de questions vidées.
  */
 async function effacerCeQuiSuitLesPersonnes(
   tx: Prisma.TransactionClient,
@@ -994,6 +1139,12 @@ async function effacerCeQuiSuitLesPersonnes(
   await tx.preRemplissage.updateMany({
     where: { cible: "email_suivi", cibleId: { in: emailsSuivi.map((e) => e.id) } },
     data: PRE_REMPLISSAGE_VIDE,
+  });
+  // Ses tâches de fiche (2026-10-29, lot A1) : neutralisées, jamais supprimées — la tâche (date,
+  // état, responsable interne) reste, sans la personne ni ce que l'intitulé pouvait dire d'elle.
+  await tx.clientTache.updateMany({
+    where: { contactId: { in: ids } },
+    data: { contactId: null, intitule: TACHE_NEUTRALISEE },
   });
   await tx.emailSuivi.deleteMany({ where: { contactId: { in: ids } } });
   await tx.projetContact.deleteMany({ where: { contactId: { in: ids } } });
@@ -1017,6 +1168,289 @@ async function pseudonymiserPersonnes(
   return personnes.count;
 }
 
+/** Ce que `neutraliserEmailsManuelsPour` a fait, pour le compte rendu du fondateur. */
+export interface NeutralisationEmailsManuels {
+  readonly emailsNeutralises: number;
+  readonly piecesJointesNeutralisees: number;
+  /**
+   * Clés R2 des pièces jointes de ces e-mails. Aucun objet n'est supprimé ici : le fondateur
+   * décide, avec cette liste, de ce qui part du stockage.
+   */
+  readonly clesStockage: readonly string[];
+  /**
+   * E-mails écrits depuis la fiche de la personne mais envoyés à UNE AUTRE adresse (assistante,
+   * collègue). Listés, jamais touchés sauf option `aussiRattachesAutreAdresse` (le fondateur décide).
+   */
+  readonly rattachesAutreAdresse: readonly string[];
+}
+
+export const OBJET_EMAIL_MANUEL_EFFACE = "[contenu effacé]";
+export const NOM_PIECE_JOINTE_EFFACE = "[nom effacé]";
+/** Motif posé sur un e-mail écrit à la main dont l'envoi est arrêté par une neutralisation. */
+export const MOTIF_EMAIL_MANUEL_NEUTRALISE = "envoi arrêté : effacement demandé";
+
+interface LigneEmailManuelANeutraliser {
+  readonly id: string;
+  readonly entiteType: string;
+  readonly destinataireChiffre: string;
+  readonly destinataireHash: string;
+  readonly objet: string;
+  readonly corpsSource: string;
+  readonly corpsTexte: string | null;
+  readonly statut: string;
+  readonly motif: string | null;
+  readonly inReplyTo: string | null;
+  readonly referencesEntete: string | null;
+  readonly idRelais: string | null;
+  readonly corpsHtml: string | null;
+}
+
+const SELECTION_EMAIL_MANUEL = {
+  id: true,
+  entiteType: true,
+  destinataireChiffre: true,
+  destinataireHash: true,
+  objet: true,
+  corpsSource: true,
+  corpsHtml: true,
+  corpsTexte: true,
+  statut: true,
+  motif: true,
+  inReplyTo: true,
+  referencesEntete: true,
+  idRelais: true,
+} as const;
+
+/** Adresse en clair d'une ligne (null si illisible : la ligne n'est alors pas touchée). */
+function adresseDeLaLigne(l: { readonly destinataireChiffre: string }): string | null {
+  try {
+    const a = decryptPii(l.destinataireChiffre);
+    return typeof a === "string" && a !== "" && a !== PII_DECRYPT_PLACEHOLDER ? a : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Contenu déjà vidé (ligne non stagiaire, ou mode « contenu »). */
+function contenuDejaVide(l: LigneEmailManuelANeutraliser): boolean {
+  return l.objet === OBJET_EMAIL_MANUEL_EFFACE && l.corpsSource === "" && l.corpsTexte === null;
+}
+
+/**
+ * Déjà neutralisée ? Mode « contenu » : le contenu est vide. Mode « destinataire » : l'adresse est
+ * déjà le pseudonyme ET (hors stagiaire) le contenu est vide.
+ */
+function emailManuelDejaNeutralise(
+  l: LigneEmailManuelANeutraliser,
+  mode: "destinataire" | "contenu",
+): boolean {
+  if (mode === "contenu") return contenuDejaVide(l);
+  const adresseEffacee = adresseDeLaLigne(l)?.startsWith("erased:") === true;
+  // Mode « destinataire » : un contenu déjà vidé (par le mode « contenu », pour une autre personne)
+  // ne suffit pas, l'adresse et le nom du destinataire restent à neutraliser.
+  if (l.entiteType !== "Trainee") return contenuDejaVide(l) && adresseEffacee;
+  return adresseEffacee;
+}
+
+/**
+ * Neutralise des lignes d'`emails_manuels` EN PLACE (rien n'est supprimé : clés RESTRICT). Commune à
+ * `neutraliserEmailsManuelsPour` et au rejeu après restauration, pour qu'ils fassent la même chose.
+ *   · `destinataire` : l'adresse devient `erased:<empreinte>@erased.local` (empreinte gardée) et le
+ *     contenu est vidé (stagiaire : seulement masqué, règle formation) ;
+ *   · `contenu` : lignes rattachées à la fiche mais envoyées à une autre adresse ; l'adresse et le nom
+ *     du destinataire (un tiers) sont GARDÉS, seul le contenu est vidé.
+ * Un e-mail `en_file` ou `echec` passe `retenu` (il ne doit plus partir) ; un brouillon reste brouillon
+ * (le CHECK `rendu_si_parti` interdit `retenu` sans rendu). Les lignes déjà neutralisées sont sautées.
+ * `adressesDe` rend les adresses à masquer ; `null` = illisible, la ligne n'est pas touchée.
+ */
+async function neutraliserLignesEmailsManuels(
+  tx: Prisma.TransactionClient,
+  lignes: readonly LigneEmailManuelANeutraliser[],
+  mode: "destinataire" | "contenu",
+  adressesDe: (l: LigneEmailManuelANeutraliser) => readonly string[] | null,
+): Promise<{ readonly modifies: string[]; readonly illisibles: number }> {
+  const modifies: string[] = [];
+  let illisibles = 0;
+  for (const brute of lignes) {
+    // Les colonnes facultatives non lues valent `null` (jamais `undefined`).
+    const l: LigneEmailManuelANeutraliser = {
+      ...brute,
+      corpsHtml: brute.corpsHtml ?? null,
+      corpsTexte: brute.corpsTexte ?? null,
+      motif: brute.motif ?? null,
+      inReplyTo: brute.inReplyTo ?? null,
+      referencesEntete: brute.referencesEntete ?? null,
+      idRelais: brute.idRelais ?? null,
+    };
+    if (emailManuelDejaNeutralise(l, mode)) continue;
+    const stagiaire = mode === "destinataire" && l.entiteType === "Trainee";
+    const adresses = mode === "destinataire" ? adressesDe(l) : [];
+    if (adresses === null) {
+      illisibles += 1;
+      continue;
+    }
+    const masquer = (t: string): string =>
+      adresses.reduce((acc, a) => masquerAdresseDansTexte(acc, a), t);
+    const bascule = l.statut === "en_file" || l.statut === "echec";
+    const destinataire =
+      mode === "destinataire"
+        ? { destinataireChiffre: encryptPii(`erased:${l.destinataireHash}@erased.local`) }
+        : {};
+    const statut = bascule ? { statut: "retenu" } : {};
+    await tx.emailManuel.updateMany({
+      where: { id: l.id },
+      data: stagiaire
+        ? {
+            ...destinataire,
+            ...statut,
+            objet: masquer(l.objet).slice(0, 500),
+            corpsSource: masquer(l.corpsSource),
+            corpsHtml: l.corpsHtml === null ? null : masquer(l.corpsHtml),
+            corpsTexte: l.corpsTexte === null ? null : masquer(l.corpsTexte),
+            motif: bascule
+              ? MOTIF_EMAIL_MANUEL_NEUTRALISE
+              : l.motif === null
+                ? null
+                : masquer(l.motif),
+            inReplyTo: l.inReplyTo === null ? null : masquer(l.inReplyTo).slice(0, 300),
+            referencesEntete: l.referencesEntete === null ? null : masquer(l.referencesEntete),
+            idRelais: l.idRelais === null ? null : masquer(l.idRelais).slice(0, 500),
+            modifieLe: new Date(),
+          }
+        : {
+            ...destinataire,
+            ...statut,
+            ...(mode === "destinataire" ? { destinataireNom: null } : {}),
+            objet: OBJET_EMAIL_MANUEL_EFFACE,
+            corpsSource: "",
+            corpsHtml: "",
+            corpsTexte: null,
+            motif: bascule ? MOTIF_EMAIL_MANUEL_NEUTRALISE : null,
+            inReplyTo: null,
+            referencesEntete: null,
+            // Gardé (masqué) : le webhook du relais retrouve la ligne par cet identifiant.
+            idRelais: l.idRelais === null ? null : masquer(l.idRelais).slice(0, 500),
+            modifieLe: new Date(),
+          },
+    });
+    modifies.push(l.id);
+  }
+  return { modifies, illisibles };
+}
+
+/**
+ * GESTE MANUEL du fondateur (art. 17), jamais appelé par `/api/gdpr-erase` ni par un automate :
+ * neutralise les e-mails écrits à la main dont le destinataire a cette adresse (`destinataire_hash`).
+ * Les lignes et les pièces jointes sont GARDÉES et mises à jour en place — rien n'est supprimé
+ * (clés RESTRICT) ; voir `neutraliserLignesEmailsManuels` pour le détail champ par champ.
+ *   · pièces jointes : lignes gardées, `nom_fichier` neutralisé. Les objets R2 ne sont JAMAIS
+ *     supprimés ici : leurs clés sont rendues au fondateur.
+ *   · chaque ligne modifiée est journalisée (`emails_manuels`, art17) pour que le rejeu après
+ *     restauration la refasse (procédure R33).
+ * Les lignes verrouillées d'abord (`FOR UPDATE`) : un envoi en cours ne passe pas entre la lecture et
+ * l'écriture. Idempotente : une seconde passe ne modifie ni n'écrit rien. À appeler AVANT tout geste
+ * qui retire les adresses de la fiche personne : l'option se fonde sur elles.
+ *
+ * Les e-mails écrits depuis la fiche de la personne mais envoyés à une AUTRE adresse sont LISTÉS
+ * (`rattachesAutreAdresse`) et laissés intacts ; avec `aussiRattachesAutreAdresse: true`, leur contenu
+ * est vidé (l'adresse du tiers est gardée) et le journal reçoit `<id>:contenu`.
+ */
+export async function neutraliserEmailsManuelsPour(
+  email: string,
+  options: { readonly aussiRattachesAutreAdresse?: boolean } = {},
+): Promise<NeutralisationEmailsManuels> {
+  const empreinte = hashEmailForLookup(email);
+  if (!empreinte) {
+    return {
+      emailsNeutralises: 0,
+      piecesJointesNeutralisees: 0,
+      clesStockage: [],
+      rattachesAutreAdresse: [],
+    };
+  }
+  const adresses = [...new Set([email.trim(), normalizeEmail(email)])].filter((a) => a !== "");
+
+  return prisma.$transaction(
+    async (tx) => {
+      await tx.$queryRaw`SELECT id FROM "emails_manuels" WHERE "destinataire_hash" = ${empreinte} FOR UPDATE`;
+      const lignes = await tx.emailManuel.findMany({
+        where: { destinataireHash: empreinte },
+        select: SELECTION_EMAIL_MANUEL,
+      });
+      const { modifies } = await neutraliserLignesEmailsManuels(
+        tx,
+        lignes,
+        "destinataire",
+        () => adresses,
+      );
+      await journaliserEffacements(tx, "emails_manuels", modifies, "art17");
+
+      const ids = lignes.map((l) => l.id);
+      const pieces =
+        ids.length === 0
+          ? []
+          : await tx.emailManuelPieceJointe.findMany({
+              where: { emailManuelId: { in: ids } },
+              select: { cleStockage: true },
+            });
+      if (ids.length > 0) {
+        await tx.emailManuelPieceJointe.updateMany({
+          where: { emailManuelId: { in: ids } },
+          data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+        });
+      }
+
+      // Défaut 7 : écrits depuis SA fiche, envoyés à une autre adresse.
+      const fiches = await tx.clientContactAdresse.findMany({
+        where: { emailHash: empreinte },
+        select: { contactId: true },
+      });
+      const ficheIds = [...new Set(fiches.map((f) => f.contactId))];
+      const autres =
+        ficheIds.length === 0
+          ? []
+          : await tx.emailManuel.findMany({
+              where: { contactId: { in: ficheIds }, destinataireHash: { not: empreinte } },
+              select: SELECTION_EMAIL_MANUEL,
+            });
+      let piecesContenu: { cleStockage: string }[] = [];
+      if (options.aussiRattachesAutreAdresse === true && autres.length > 0) {
+        const { modifies: contenus } = await neutraliserLignesEmailsManuels(
+          tx,
+          autres,
+          "contenu",
+          () => [],
+        );
+        await journaliserEffacements(
+          tx,
+          "emails_manuels",
+          contenus.map((i) => `${i}:contenu`),
+          "art17",
+        );
+        // Pièces jointes : même traitement que le mode « destinataire » (nom neutralisé, clés rendues).
+        if (contenus.length > 0) {
+          piecesContenu = await tx.emailManuelPieceJointe.findMany({
+            where: { emailManuelId: { in: contenus } },
+            select: { cleStockage: true },
+          });
+          await tx.emailManuelPieceJointe.updateMany({
+            where: { emailManuelId: { in: contenus } },
+            data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+          });
+        }
+      }
+      const toutesPieces = [...pieces, ...piecesContenu];
+      return {
+        emailsNeutralises: modifies.length,
+        piecesJointesNeutralisees: toutesPieces.length,
+        clesStockage: toutesPieces.map((x) => x.cleStockage),
+        rattachesAutreAdresse: autres.map((l) => l.id),
+      };
+    },
+    { timeout: 30_000 },
+  );
+}
+
 /** Périmètre d'une suppression du pilote. */
 interface PerimetrePilote {
   /** Fiches inscrites dans `clients_test_interne`. */
@@ -1026,6 +1460,22 @@ interface PerimetrePilote {
   readonly contactIds: readonly string[];
   /** ADR 0063 — documents de projet journalisés `pilote` (rejeu) ; ceux des projets ci-dessus partent aussi. */
   readonly documentIds: readonly string[];
+}
+
+/**
+ * Personnes d'essai visées par au moins un e-mail écrit à la main (`contact_id`, RESTRICT) : elles ne
+ * sont pas supprimées par la purge du pilote.
+ */
+async function personnesPiloteAvecEmailManuel(
+  db: Pick<Prisma.TransactionClient, "emailManuel">,
+  contactIds: readonly string[],
+): Promise<Set<string>> {
+  if (contactIds.length === 0) return new Set();
+  const lignes = await db.emailManuel.findMany({
+    where: { contactId: { in: [...contactIds] } },
+    select: { contactId: true },
+  });
+  return new Set(lignes.flatMap((l) => (l.contactId === null ? [] : [l.contactId])));
 }
 
 /**
@@ -1044,7 +1494,14 @@ async function supprimerDonneesPilote(
   readonly faits: number;
   readonly preuvesAccord: number;
   readonly documentIds: readonly string[];
+  readonly personnesGardees: readonly string[];
 }> {
+  // Fiche F1b : seule la clé `contact_id` (RESTRICT) d'un e-mail écrit à la main compte ici ; aucune
+  // fiche n'est supprimée, donc `client_id` ne bloque rien. Une personne d'essai visée par au moins un
+  // e-mail écrit à la main est GARDÉE, mise à l'écart de la suppression et signalée au fondateur :
+  // la purge et le rejeu ne lèvent jamais à cause d'elle.
+  const gardees = await personnesPiloteAvecEmailManuel(tx, p.contactIds);
+  const contactsASupprimer = p.contactIds.filter((id) => !gardees.has(id));
   const faits = await tx.fait.deleteMany({
     where: {
       OR: [{ clientId: { in: [...p.clientIds] } }, { rencontreId: { in: [...p.rencontreIds] } }],
@@ -1067,9 +1524,16 @@ async function supprimerDonneesPilote(
   const documentIds = documents.map((d) => d.id);
   await tx.documentProjetContenu.deleteMany({ where: { documentId: { in: documentIds } } });
   await tx.documentProjet.deleteMany({ where: { id: { in: documentIds } } });
+  // Suivi de prestation (type, étape, montant) : données de test, purgées sur ordre.
+  await tx.projetSuivi.deleteMany({ where: { projetId: { in: [...p.projetIds] } } });
   await tx.projet.deleteMany({ where: { id: { in: [...p.projetIds] } } });
-  await tx.clientContact.deleteMany({ where: { id: { in: [...p.contactIds] } } });
-  return { faits: faits.count, preuvesAccord: preuves.count, documentIds };
+  await tx.clientContact.deleteMany({ where: { id: { in: contactsASupprimer } } });
+  return {
+    faits: faits.count,
+    preuvesAccord: preuves.count,
+    documentIds,
+    personnesGardees: [...gardees],
+  };
 }
 
 async function journaliserEffacements(
@@ -1176,6 +1640,29 @@ export type EffacementCibleResultat = {
   readonly questions: number;
 };
 
+/**
+ * `contacts_guide_reseau` (page « Recevoir le guide », lot S2) — MISE À L'ÉCART, jamais suppression.
+ *
+ * Décision de Williams : aucune suppression de données de personnes sans sa décision. La ligne reste
+ * (prénom chiffré, preuve du consentement : art. 17(3)(e) pour la preuve) ; elle passe
+ * `merci_statut = 'ecarte'`, état que le remerciement (lot S4) ne traite jamais. Retirer l'envoi
+ * est le rôle de l'opposition (`email_oppositions`), posée par la voie de la demande ; ici on ne
+ * touche à aucun envoi. Idempotent. Le prénom chiffré reste en base jusqu'à décision de Williams.
+ */
+async function mettreAEcartContactsGuideReseau(empreintes: readonly string[]): Promise<number> {
+  const r = await prisma.contactGuideReseau.updateMany({
+    where: {
+      emailKey: { in: [...empreintes] },
+      merciStatut: { notIn: [...MERCI_STATUTS_ECARTES_LUS] },
+    },
+    data: { merciStatut: MERCI_STATUT_ECARTE },
+  });
+  if (r.count > 0) {
+    console.warn(JSON.stringify({ event: "rgpd_guide_reseau_mis_a_l_ecart", lignes: r.count }));
+  }
+  return r.count;
+}
+
 const EFFACEMENT_VIDE: EffacementCibleResultat = {
   personnes: 0,
   segments: 0,
@@ -1226,9 +1713,10 @@ const EFFACEMENT_VIDE: EffacementCibleResultat = {
  *     (ADR 0056) ; la réécriture d'un compte rendu `a_regenerer` ne doit pas
  *     s'en servir (à tenir dans la PR du circuit, PR 6) ;
  *   · un texte libre saisi par Will qui NOMMERAIT la personne (titre de
- *     projet, motif d'un journal) n'est pas réécrit : l'effaceur ne peut pas
- *     savoir quel nom y figure. Un titre de projet, Will le corrige à la
- *     main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
+ *     projet, note de fiche `client_notes`, intitulé d'une tâche qui n'est pas
+ *     rattachée à elle, motif d'un journal) n'est pas réécrit : l'effaceur ne
+ *     peut pas savoir quel nom y figure. Un titre de projet, une note ou un
+ *     intitulé de tâche, Will le corrige à la main ; le motif d'un journal, lui, ne se réécrit PAS (trigger
  *     `visio_journal_ajout_seul`, ajout seul sans exception, même sous le
  *     drapeau) : il reste tel quel.
  */
@@ -1242,6 +1730,10 @@ export async function effacerCibleParAdresses(
     ...new Set(emails.map((e) => hashEmailForLookup(e)).filter((h): h is string => !!h)),
   ];
   if (empreintes.length === 0) return EFFACEMENT_VIDE;
+
+  // Page « Recevoir le guide » (lot S2) : MISE À L'ÉCART, avant toute sortie à vide (cette table se
+  // retrouve par l'empreinte d'adresse, sans fiche personne).
+  await mettreAEcartContactsGuideReseau(empreintes);
 
   // La personne, puis TOUTES ses adresses (une adresse pro, une perso…).
   const trouvees = await prisma.clientContactAdresse.findMany({
@@ -1602,6 +2094,8 @@ export interface PurgePiloteResultat {
   readonly projets: number;
   readonly personnes: number;
   readonly preuvesAccord: number;
+  /** Personnes d'essai gardées (visées par un e-mail écrit à la main) : à traiter par le fondateur. */
+  readonly personnesGardees: number;
 }
 
 /**
@@ -1632,13 +2126,15 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       where: { clientId: { in: clientIds } },
       select: { id: true },
     });
-    const { faits, preuvesAccord, documentIds } = await supprimerDonneesPilote(tx, {
+    const perimetre: PerimetrePilote = {
       clientIds,
       rencontreIds,
       projetIds: projets.map((p) => p.id),
       contactIds: personnes.map((p) => p.id),
       documentIds: [],
-    });
+    };
+    const supprime = await supprimerDonneesPilote(tx, perimetre);
+    const { faits, preuvesAccord, documentIds, personnesGardees } = supprime;
 
     await journaliserEffacements(tx, "rencontres", rencontreIds, "pilote");
     // ADR 0063 — journalisés pour que le rejeu après restauration les resupprime.
@@ -1649,10 +2145,13 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       projets.map((p) => p.id),
       "pilote",
     );
+    // Seules les personnes réellement supprimées sont journalisées (le rejeu ne doit pas viser les gardées).
+    const gardees = new Set(personnesGardees);
+    const supprimees = personnes.filter((p) => !gardees.has(p.id));
     await journaliserEffacements(
       tx,
       "client_contacts",
-      personnes.map((p) => p.id),
+      supprimees.map((p) => p.id),
       "pilote",
     );
 
@@ -1660,8 +2159,9 @@ export async function purgerPilote(): Promise<PurgePiloteResultat> {
       rencontres: rencontreIds.length,
       faits,
       projets: projets.length,
-      personnes: personnes.length,
+      personnes: supprimees.length,
       preuvesAccord,
+      personnesGardees: gardees.size,
     };
   });
 }
@@ -1678,6 +2178,15 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
   readonly motif: string;
 }> = [
   {
+    // Assistant de devis, fiche S17 — requalifié `dossier-client` AVANT l'allumage de S06.
+    modele: "DevisAssistantBrouillon",
+    motif:
+      "brouillon de travail d'un devis, rattaché à une fiche par un simple lien `client_id` " +
+      "(aucune coordonnée dans son contenu) ; jamais supprimé ni purgé (décision de Williams) : " +
+      "un brouillon abandonné est mis à l'écart, pas effacé. Une demande qui vise un brouillon " +
+      "précis est traitée à la main.",
+  },
+  {
     modele: "EnregistrementConsentement",
     motif:
       "preuve que l'enregistrement était licite (art. 17(3)(e)) ; conservée jusqu'à la fin " +
@@ -1693,6 +2202,24 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "données du pilote (fiches de test) et son rejeu, sous le drapeau d'effacement, " +
       "journalisée (`documents_projet`). Une demande qui vise une pièce précise est traitée " +
       "à la main, sous le même drapeau — seule voie que la base admet.",
+  },
+  {
+    // 2026-10-27 — les ouvertures du lien : dates, nombre, étape. Ni adresse, ni IP, ni contenu ;
+    // aucune colonne ne désigne la personne (le dirigeant n'y a pas même son code). Elles partent
+    // avec leur questionnaire (cascade) ; jamais supprimées à part (aucune suppression ajoutée).
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit (dates, nombre, étape atteinte) : " +
+      "aucune adresse, aucune IP, aucun contenu ; elles restent attachées au questionnaire.",
+  },
+  {
+    // 2026-10-26 — le suivi du questionnaire avant audit : AUCUNE donnée personnelle (relances
+    // demandées, date et lieu de l'audit écrits par Will, dates d'envoi). Ses courriers, eux,
+    // portent l'empreinte du destinataire : anonymisés ci-dessus, jamais supprimés.
+    modele: "QuestionnaireAvantAuditSuivi",
+    motif:
+      "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +
+      "aucune donnée vous concernant, il reste attaché au questionnaire.",
   },
   {
     modele: "DocumentProjetContenu",
@@ -1715,6 +2242,80 @@ export const EXCEPTIONS_EFFACEMENT_DOSSIER: ReadonlyArray<{
       "réponse par e-mail d'un candidat : effacée avec sa candidature par " +
       "`effacerCandidaturesPour` (`candidature-rgpd.ts`, appelé par la même route), " +
       "par la cascade du dossier ET par l'empreinte de l'adresse.",
+  },
+  {
+    // 2026-10-29 (lot A1) — `ClientTache` est NEUTRALISÉE (pas exception) : voir
+    // `effacerCeQuiSuitLesPersonnes`. Les trois autres tables sont des données de la FICHE
+    // d'entreprise, sans colonne qui les rattache à une personne.
+    modele: "ClientNote",
+    motif:
+      "notes internes de la fiche d'entreprise (contenu chiffré) : aucune colonne ne les rattache " +
+      "à une personne, donc l'effacement ciblé par adresse ne peut pas savoir lesquelles la " +
+      "citent ; jamais supprimées automatiquement (ordre permanent), Will les corrige à la main " +
+      "sur demande, comme un titre de projet (angle mort déclaré ci-dessus).",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "responsable interne et archivage de la fiche d'entreprise : donnée de la fiche, aucune " +
+      "donnée de la personne.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes de classement de la fiche d'entreprise : donnée de la fiche, aucune donnée de " +
+      "la personne.",
+  },
+  {
+    // Tour France IA (2026-10-27) : VIDÉE (jamais supprimée) par `anonymiserDemandesTour`.
+    modele: "TourDemande",
+    motif:
+      "vidée, non supprimée, par `anonymiserDemandesTour` (`features/tour-de-france/rgpd.ts`, " +
+      "appelé par la route d'effacement) : nom, e-mail, téléphone, ville tapée, provenance et " +
+      "repères de campagne remplacés ou retirés, empreintes retirées, clés de comptage remplacées " +
+      "par une valeur opaque propre à la ligne ; la ligne et son drapeau « compte » restent pour " +
+      "que le compteur d'une ville ne recule pas.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainSession",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainEvenement",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
+  },
+  {
+    // Devis à formules, lot 4 (2026-11-06) : le fait `commande.signee`, rangé avec l'acceptation.
+    modele: "ConsoleCommande",
+    motif:
+      "copie du choix signé (société, nom et fonction du signataire, formule, montants), rangée " +
+      "dans la même transaction que l'acceptation du devis : preuve contractuelle, conservée " +
+      "comme la signature qu'elle copie (art. 17(3)(e)) ; jamais supprimée automatiquement " +
+      "(ordre permanent) et protégée par un déclencheur qui refuse modification du contenu et " +
+      "suppression. Aucune adresse IP, aucun lien de signature. Toute demande d'effacement est " +
+      "traitée à la main par Will.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : journal en ajout seul, jamais supprimé (ordre permanent).
+    modele: "AuditTerrainRapport",
+    motif:
+      "relevé de l'audit sur place, chiffré, sans prénom (pseudonymes et postes), sans colonne " +
+      "qui le rattache à une personne : l'effacement automatique ne les touche pas et ne les " +
+      "supprime jamais (journal en ajout seul, triggers en base) ; l'alerte à l'opérateur sur " +
+      "demande d'effacement N'EXISTE PAS ENCORE (à coder en PR2/PR3) ; d'ici là Will traite " +
+      "à la main, sous le drapeau d'effacement.",
   },
 ];
 
@@ -2064,6 +2665,10 @@ export interface RejeuResultat {
   readonly lues: number;
   /** Cibles encore présentes (restaurées) : ré-effacées, ou à ré-effacer à blanc. */
   readonly reappliquees: number;
+  /** E-mails écrits à la main dont l'adresse est indéchiffrable : non touchés, à traiter à la main. */
+  readonly emailsManuelsIllisibles: number;
+  /** Personnes d'essai gardées par le rejeu (visées par un e-mail écrit à la main). */
+  readonly personnesPiloteGardees: number;
 }
 
 /** Motifs pour lesquels l'effacement d'un compte rendu a TOUJOURS été une suppression. */
@@ -2103,6 +2708,10 @@ const MOTIFS_SUPPRESSION_COMPTE_RENDU: ReadonlySet<MotifEffacement> = new Set<Mo
  * questionnaires par fiche, preuves d'accord par rencontre).
  *
  * ANGLES MORTS DÉCLARÉS (repris dans R33) :
+ *   · un texte libre qui nommerait la personne (titre de projet, note de
+ *     fiche `client_notes`, intitulé d'une tâche qui n'est pas rattachée à
+ *     elle) n'est pas réécrit : une note ou un intitulé de tâche, Will le
+ *     corrige à la main ;
  *   · une participation SANS fiche personne (rendez-vous « à classer »,
  *     retrouvée à l'origine par sa seule empreinte d'adresse) n'est pas
  *     journalisée : son nom affiché revient. Ses segments et ses faits, eux,
@@ -2162,6 +2771,12 @@ export async function rejouerEffacements(
   const documentsPilote = ids("documents_projet").filter((id) => pilote.has(id));
   const contactsPilote = contacts.filter((id) => pilote.has(id));
   const contactsEffaces = contacts.filter((id) => !pilote.has(id));
+  // Fiche F1b : e-mails écrits à la main neutralisés (`<id>` = adresse, `<id>:contenu` = contenu seul).
+  const emailsManuelsJournalises = ids("emails_manuels");
+  const emailsManuelsDestinataire = emailsManuelsJournalises.filter((i) => !i.endsWith(":contenu"));
+  const emailsManuelsContenu = emailsManuelsJournalises
+    .filter((i) => i.endsWith(":contenu"))
+    .map((i) => i.slice(0, -":contenu".length));
   const unePurgePiloteAEuLieu =
     rencontresPilote.length + projetsPilote.length + contactsPilote.length > 0;
 
@@ -2180,8 +2795,42 @@ export async function rejouerEffacements(
     | "questionnaireQuestion"
     | "emailSuivi"
     | "projetContact"
+    | "clientTache"
     | "enregistrementConsentement"
+    | "emailManuel"
+    | "emailManuelPieceJointe"
   >;
+
+  /** Lignes d'e-mails écrits à la main du journal, encore à neutraliser (même prédicat que l'écriture). */
+  const emailsManuelsANeutraliser = async (
+    db: Lecteur,
+  ): Promise<{
+    readonly destinataire: LigneEmailManuelANeutraliser[];
+    readonly contenu: LigneEmailManuelANeutraliser[];
+    /** Adresse indéchiffrable : ligne intacte, comptée à part (jamais « à réappliquer »). */
+    readonly illisibles: number;
+  }> => {
+    const lire = async (idsLus: string[]): Promise<LigneEmailManuelANeutraliser[]> =>
+      idsLus.length === 0
+        ? []
+        : db.emailManuel.findMany({
+            where: { id: { in: idsLus } },
+            select: SELECTION_EMAIL_MANUEL,
+          });
+    const aTraiter = (await lire(emailsManuelsDestinataire)).filter(
+      (l) => !emailManuelDejaNeutralise(l, "destinataire"),
+    );
+    const destinataire = aTraiter.filter((l) => adresseDeLaLigne(l) !== null);
+    const illisibles = aTraiter.length - destinataire.length;
+    const contenu = (await lire(emailsManuelsContenu)).filter(
+      (l) => !emailManuelDejaNeutralise(l, "contenu"),
+    );
+    return { destinataire, contenu, illisibles };
+  };
+
+  /** Personnes d'essai gardées : visées par un e-mail écrit à la main (jamais une levée). */
+  const personnesGardees = async (db: Lecteur): Promise<Set<string>> =>
+    personnesPiloteAvecEmailManuel(db, contactsPilote);
 
   /** Périmètre du pilote : celui de `purgerPilote`, rencontres/projets/personnes lus au journal. */
   const perimetrePilote = async (db: Lecteur): Promise<PerimetrePilote> => ({
@@ -2227,6 +2876,8 @@ export async function rejouerEffacements(
   const compter = async (db: Lecteur): Promise<number> => {
     const cr = await trierComptesRendus(db);
     const p = await perimetrePilote(db);
+    const gardees = await personnesGardees(db);
+    const emails = await emailsManuelsANeutraliser(db);
     const questionnaires = (
       await db.questionnaireCadrage.findMany({
         where: { contactDestinataireId: { in: contactsEffaces } },
@@ -2261,6 +2912,7 @@ export async function rejouerEffacements(
       }),
       db.emailSuivi.count({ where: { contactId: { in: contactsEffaces } } }),
       db.projetContact.count({ where: { contactId: { in: contactsEffaces } } }),
+      db.clientTache.count({ where: { contactId: { in: contactsEffaces } } }),
       // Pilote : exactement ce que `supprimerDonneesPilote` supprime.
       db.fait.count({
         where: {
@@ -2281,13 +2933,23 @@ export async function rejouerEffacements(
         },
       }),
       db.projet.count({ where: { id: { in: [...p.projetIds] } } }),
-      db.clientContact.count({ where: { id: { in: [...p.contactIds] } } }),
+      db.clientContact.count({
+        where: { id: { in: p.contactIds.filter((id) => !gardees.has(id)) } },
+      }),
       db.rencontre.count({ where: { id: { in: rencontresEchues } } }),
     ]);
-    return nombres.reduce((a, b) => a + b, 0);
+    return nombres.reduce((a, b) => a + b, 0) + emails.destinataire.length + emails.contenu.length;
   };
 
-  if (!options.appliquer) return { lues: lignes.length, reappliquees: await compter(prisma) };
+  if (!options.appliquer) {
+    const emails = await emailsManuelsANeutraliser(prisma);
+    return {
+      lues: lignes.length,
+      reappliquees: await compter(prisma),
+      emailsManuelsIllisibles: emails.illisibles,
+      personnesPiloteGardees: (await personnesGardees(prisma)).size,
+    };
+  }
 
   return executerSousDrapeauEffacement(prisma, async (tx) => {
     const reappliquees = await compter(tx);
@@ -2319,7 +2981,39 @@ export async function rejouerEffacements(
     await effacerCeQuiSuitLesPersonnes(tx, contactsEffaces);
     await pseudonymiserPersonnes(tx, participantIds, contactsEffaces);
     await tx.clientContactAdresse.deleteMany({ where: { contactId: { in: contactsEffaces } } });
-    return { lues: lignes.length, reappliquees };
+    // E-mails écrits à la main (fiche F1b) : adresse reprise par déchiffrement ; illisible = intacte.
+    const emails = await emailsManuelsANeutraliser(tx);
+    const resultatDestinataire = await neutraliserLignesEmailsManuels(
+      tx,
+      emails.destinataire,
+      "destinataire",
+      (l) => {
+        const a = adresseDeLaLigne(l);
+        return a === null
+          ? null
+          : [...new Set([a.trim(), normalizeEmail(a)])].filter((x) => x !== "");
+      },
+    );
+    const resultatContenu = await neutraliserLignesEmailsManuels(
+      tx,
+      emails.contenu,
+      "contenu",
+      () => [],
+    );
+    // Pièces jointes : même traitement dans les deux modes (nom neutralisé).
+    const piecesIds = [...resultatDestinataire.modifies, ...resultatContenu.modifies];
+    if (piecesIds.length > 0) {
+      await tx.emailManuelPieceJointe.updateMany({
+        where: { emailManuelId: { in: piecesIds } },
+        data: { nomFichier: NOM_PIECE_JOINTE_EFFACE },
+      });
+    }
+    return {
+      lues: lignes.length,
+      reappliquees,
+      emailsManuelsIllisibles: emails.illisibles,
+      personnesPiloteGardees: (await personnesGardees(tx)).size,
+    };
   });
 }
 
@@ -2421,4 +3115,147 @@ export async function eraseReseauApporteurForEmail(
     },
   });
   return { apporteur: "efface", presentationsAnonymisees: presentations.count };
+}
+
+/** Motif posé sur un rapport avant audit mis à l'écart par une demande d'effacement. */
+export const MOTIF_ECART_RAPPORT_RGPD = "demande d'effacement RGPD (art. 17) du dirigeant";
+
+/**
+ * Rapports d'analyse avant audit établis sur les questionnaires du DIRIGEANT qui demande
+ * l'effacement (2026-11-02) : MIS À L'ÉCART, JAMAIS SUPPRIMÉS (règle de Will : aucune purge de
+ * données clients). La base n'est plus déchiffrée : plus aucun code ne la déchiffre ;
+ * un lancement encore en attente ou en cours est ANNULÉ (le worker ne peut plus y
+ * écrire). L'appelant ALERTE Will, qui décide de la suite.
+ *
+ * ⚠️ À appeler AVANT `eraseCalendlyEventsForEmail` : celui-ci retire l'adresse et l'empreinte par
+ * lesquelles on retrouve les questionnaires du dirigeant.
+ */
+export async function ecarterRapportsAvantAuditPourEmail(
+  email: string,
+  maintenant: Date = new Date(),
+): Promise<{ readonly ecartes: number; readonly annules: number }> {
+  const qs = await prisma.questionnaireAvantAudit.findMany({
+    where: questionnairesDuDirigeant(email, hashEmailForLookup(email)),
+    select: { id: true },
+  });
+  if (qs.length === 0) return { ecartes: 0, annules: 0 };
+  const sur = { questionnaireIds: { hasSome: qs.map((q) => q.id) } };
+  const [annules, ecartes] = await prisma.$transaction([
+    prisma.rapportAvantAudit.updateMany({
+      where: { ...sur, statut: { in: ["en_attente", "en_cours"] } },
+      data: { statut: "annule", etape: "Annulé : demande d'effacement", finLe: maintenant },
+    }),
+    prisma.rapportAvantAudit.updateMany({
+      where: { ...sur, ecarteLe: null },
+      data: { ecarteLe: maintenant, ecarteMotif: MOTIF_ECART_RAPPORT_RGPD },
+    }),
+  ]);
+  return { ecartes: ecartes.count, annules: annules.count };
+}
+
+/** Motif posé sur un rapport avant audit mis à l'écart par la demande d'un membre de l'équipe. */
+export const MOTIF_ECART_RAPPORT_RGPD_MEMBRE =
+  "demande d'effacement RGPD (art. 17) d'un membre de l'équipe";
+
+/** Ce que la mise à l'écart d'un membre a touché : des nombres, pour l'alerte à Will. */
+export interface EcartMembre {
+  readonly reponses: number;
+  readonly rapportsEcartes: number;
+  readonly rapportsAnnules: number;
+}
+
+/**
+ * DEMANDE d'effacement d'un salarié ou du référent informatique au questionnaire de pré-audit
+ * (audit des données du 24/10/2026, point 12) : ses réponses sont MISES À L'ÉCART (plus montrées
+ * dans la console, `ecarte_le` posé) et la console alerte Will. RIEN n'est supprimé ici : aucune
+ * donnée d'un client n'est supprimée sans décision de Will. L'effacement définitif est son clic,
+ * `eraseQuestionnairePreauditMembre`, sur des réponses déjà mises à l'écart.
+ */
+export async function ecarterQuestionnairePreauditMembre(
+  ref: string,
+  membre: string,
+  maintenant: Date = new Date(),
+): Promise<EcartMembre> {
+  const rien = { reponses: 0, rapportsEcartes: 0, rapportsAnnules: 0 } as const;
+  if (ref.trim() === "" || membre.trim() === "") return rien;
+  const r = await prisma.questionnaireAvantAuditEnvoi.updateMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref }, ecarteLe: null },
+    data: { ecarteLe: maintenant },
+  });
+  if (r.count === 0) return rien;
+
+  // Les rapports avant audit établis sur ce questionnaire contiennent ses réponses (déchiffrées
+  // dans leur base) : même traitement que pour le dirigeant — MIS À L'ÉCART, lancements en vol
+  // ANNULÉS, JAMAIS supprimés. L'appelant remonte les nombres à Will, qui décide.
+  const qs = await prisma.questionnaireAvantAudit.findMany({
+    where: { ref },
+    select: { id: true },
+  });
+  let rapportsEcartes = 0;
+  let rapportsAnnules = 0;
+  for (const q of qs) {
+    const sur = { questionnaireIds: { has: q.id } };
+    const [annules, ecartes] = await prisma.$transaction([
+      prisma.rapportAvantAudit.updateMany({
+        where: { ...sur, statut: { in: ["en_attente", "en_cours"] } },
+        data: { statut: "annule", etape: "Annulé : demande d'effacement", finLe: maintenant },
+      }),
+      prisma.rapportAvantAudit.updateMany({
+        where: { ...sur, ecarteLe: null },
+        data: { ecarteLe: maintenant, ecarteMotif: MOTIF_ECART_RAPPORT_RGPD_MEMBRE },
+      }),
+    ]);
+    rapportsAnnules += annules.count;
+    rapportsEcartes += ecartes.count;
+  }
+  return { reponses: r.count, rapportsEcartes, rapportsAnnules };
+}
+
+/**
+ * Effacement DÉFINITIF des réponses d'UN salarié ou du référent informatique au questionnaire de
+ * pré-audit (2026-10-24) : il n'a pas d'adresse dans nos tables, le code `membre` (affiché par la
+ * console à côté de sa réponse) et la référence du questionnaire l'identifient. L'adresse qu'il a
+ * saisie lui-même est dans sa réponse chiffrée et part avec elle ; celle que le dirigeant a saisie
+ * dans la liste de son équipe reste dans la réponse du dirigeant, que cette fonction ne touche pas.
+ * ⛔ Clic de Will SEULEMENT (console, super-administrateur), après la mise à l'écart
+ * (`ecarterQuestionnairePreauditMembre`) : jamais appelé par une tâche ni automatiquement.
+ */
+export async function eraseQuestionnairePreauditMembre(
+  ref: string,
+  membre: string,
+): Promise<number> {
+  if (ref.trim() === "" || membre.trim() === "") return 0;
+  // Son brouillon en cours suit (2026-10-24), dans la MÊME transaction ; le compte rendu reste
+  // celui des réponses.
+  const ecartees = {
+    mode: { in: ["emp", "it"] },
+    membre,
+    questionnaire: { ref },
+    ecarteLe: { not: null },
+  };
+  const [, , r] = await prisma.$transaction([
+    // Le journal des courriers nés de ces réponses (sa confirmation, 2026-10-26) : ANONYMISÉ
+    // avant la suppression (qui le détacherait), jamais supprimé.
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: { envoi: ecartees, statut: "prevu" },
+      data: { statut: "annule", motif: "effacement RGPD" },
+    }),
+    prisma.questionnaireAvantAuditCourrier.updateMany({
+      where: { envoi: ecartees },
+      data: { destinataireHash: null, motif: "effacement RGPD" },
+    }),
+    // Seulement ce qui a été MIS À L'ÉCART : une réponse arrivée après l'écart n'est pas touchée.
+    prisma.questionnaireAvantAuditEnvoi.deleteMany({
+      where: {
+        mode: { in: ["emp", "it"] },
+        membre,
+        questionnaire: { ref },
+        ecarteLe: { not: null },
+      },
+    }),
+    prisma.questionnaireAvantAuditBrouillon.deleteMany({
+      where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+    }),
+  ]);
+  return r.count;
 }

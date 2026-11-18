@@ -64,8 +64,8 @@ export const BONDOUFLE_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les PME services aux entreprises du bassin Évry-Courcouronnes sur leurs cas IA : automatisation reporting, CRM intelligent, classification emails, rédaction assistée, gestion RH.",
     },
     {
-      q: "Comment se passe une mission à Bondoufle depuis Paris ?",
-      a: "Nos consultants interviennent à Bondoufle (40 min depuis Paris via A6, Évry-Courcouronnes RER D à 10 min). Aéroport Orly à 20 min.",
+      q: "Comment se déroule une mission à Bondoufle ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

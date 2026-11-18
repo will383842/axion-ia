@@ -111,6 +111,7 @@ import {
   QualiopiRelanceImpayeeEmail,
   qualiopiRelanceImpayeeSubject,
 } from "./qualiopi-relance-impayee";
+import { RelanceDevisClientEmail, relanceDevisClientSubject } from "./relance-devis-client";
 import {
   QualiopiAlerteInterneEmail,
   qualiopiAlerteInterneSubject,
@@ -139,6 +140,11 @@ import {
 } from "./formateur-contresignature";
 import { RessourcesMagicLinkEmail, ressourcesMagicLinkSubject } from "./ressources-magic-link";
 import { DevisEnvoiEmail, devisEnvoiSubject } from "./devis-envoi";
+import {
+  DevisCommandeConfirmationEmail,
+  devisCommandeConfirmationSubject,
+} from "./devis-commande-confirmation";
+import { DevisCodeSignatureEmail, devisCodeSignatureSubject } from "./devis-code-signature";
 import {
   CandidatureCommercialConfirmeeEmail,
   candidatureCommercialConfirmeeSubject,
@@ -226,9 +232,31 @@ import { PreavisSousTraitantsEmail, preavisSousTraitantsSubject } from "./preavi
 import { RencontreInvitationEmail, rencontreInvitationSubject } from "./rencontre-invitation";
 import { VisioEmailSuiviEmail, visioEmailSuiviSubject } from "./visio-email-suivi";
 import {
+  DevisSigneAContresignerEmail,
+  devisSigneAContresignerSubject,
+} from "./devis-signe-a-contresigner";
+import { AlerteDemandeClientEmail, alerteDemandeClientSubject } from "./alerte-demande-client";
+import { RecapDemandesClientsEmail, recapDemandesClientsSubject } from "./recap-demandes-clients";
+import {
   QuestionnaireReponsesRecuesEmail,
   questionnaireReponsesRecuesSubject,
 } from "./questionnaire-reponses-recues";
+import {
+  QuestionnaireAvantAuditEmail,
+  questionnaireAvantAuditSubject,
+} from "./questionnaire-avant-audit";
+import {
+  QuestionnaireAvantAuditRelanceEmail,
+  questionnaireAvantAuditRelanceSubject,
+} from "./questionnaire-avant-audit-relance";
+import {
+  QuestionnaireRelanceEquipeEmail,
+  questionnaireRelanceEquipeSubject,
+} from "./questionnaire-relance-equipe";
+import {
+  QuestionnaireAvantAuditConfirmationEmail,
+  questionnaireAvantAuditConfirmationSubject,
+} from "./questionnaire-avant-audit-confirmation";
 import { OpcoSuiviEntrepriseEmail, opcoSuiviEntrepriseSubject } from "./opco-suivi-entreprise";
 import { RecueilBesoinEmail, recueilBesoinSubject } from "./recueil-besoin";
 import {
@@ -508,6 +536,21 @@ const TEMPLATES: TemplateMap = {
   },
   // Hub facturation — envois MANUELS admin (PDF joint par le worker, clé R2).
   "devis-envoi": { subject: devisEnvoiSubject, component: DevisEnvoiEmail },
+  // Confirmation de commande (CGV 5.2 et 6.2) — au client, sur contresignature explicite d'Axion-IA.
+  "devis-commande-confirmation": {
+    subject: devisCommandeConfirmationSubject,
+    component: DevisCommandeConfirmationEmail,
+  },
+  // Lot 4 bis — code à usage unique pour signer un devis (clic « Recevoir mon code » uniquement).
+  "devis-code-signature": {
+    subject: devisCodeSignatureSubject,
+    component: DevisCodeSignatureEmail,
+  },
+  // Lot B9 : relance de devis, toujours garée « à valider » par l'action de la fiche client.
+  "relance-devis-client": {
+    subject: relanceDevisClientSubject,
+    component: RelanceDevisClientEmail,
+  },
   "convention-envoi": { subject: conventionEnvoiSubject, component: ConventionEnvoiEmail },
   "piece-exemplaire-signe": {
     subject: pieceExemplaireSigneSubject,
@@ -669,9 +712,46 @@ const TEMPLATES: TemplateMap = {
   },
   // Questionnaire en ligne (2026-10-01) — e-mail interne, sans contenu de
   // réponse (`app/questionnaire/[id]/[jeton]/actions.ts`).
+  // Devis signé par le client (2026-11-04) — e-mail INTERNE, enfilé par
+  // `server/qualiopi/documents/signature/notification-interne-devis.ts`.
+  "devis-signe-a-contresigner": {
+    subject: devisSigneAContresignerSubject,
+    component: DevisSigneAContresignerEmail,
+  },
+  // Doublon e-mail d'une demande de client (14/11/2026) — INTERNE, enfilé par
+  // `server/notifications/doublon-client.ts`.
+  "alerte-demande-client": {
+    subject: alerteDemandeClientSubject,
+    component: AlerteDemandeClientEmail,
+  },
+  // Récap quotidien des demandes de clients (PR C) — INTERNE, enfilé par `alertes-clients/recap.ts`.
+  "recap-demandes-clients": {
+    subject: recapDemandesClientsSubject,
+    component: RecapDemandesClientsEmail,
+  },
   "questionnaire-reponses-recues": {
     subject: questionnaireReponsesRecuesSubject,
     component: QuestionnaireReponsesRecuesEmail,
+  },
+  // Questionnaire de pré-audit (2026-10-24) — envoyé UNIQUEMENT par clic de Will, avec aperçu.
+  "questionnaire-avant-audit": {
+    subject: questionnaireAvantAuditSubject,
+    component: QuestionnaireAvantAuditEmail,
+  },
+  // Suivi du questionnaire avant audit (2026-10-26) — enfilés UNIQUEMENT par le balayage du
+  // worker (`features/questionnaire-preaudit/suivi.ts`), dans le cadre du clic de Will.
+  "questionnaire-avant-audit-relance": {
+    subject: questionnaireAvantAuditRelanceSubject,
+    component: QuestionnaireAvantAuditRelanceEmail,
+  },
+  // Lot B10 (2026-10-29) — brouillon au dirigeant seul, garé « à valider », jamais enfilé seul.
+  "questionnaire-relance-equipe": {
+    subject: questionnaireRelanceEquipeSubject,
+    component: QuestionnaireRelanceEquipeEmail,
+  },
+  "questionnaire-avant-audit-confirmation": {
+    subject: questionnaireAvantAuditConfirmationSubject,
+    component: QuestionnaireAvantAuditConfirmationEmail,
   },
   // QNC L03 — recueil du besoin, temps 1 : questionnaire envoyé à l'ENTREPRISE
   // (premier envoi et relances), `server/qualiopi/recueil/envoi-email.ts`.
@@ -692,6 +772,14 @@ const TEMPLATES: TemplateMap = {
   // partent qu'une fois validés par Will (`server/qualiopi/formateurs-independants/envois.ts`).
   ...ENTREES_FORMATEUR_INDEPENDANT,
 };
+
+/**
+ * Ce worker connaît-il ce nom de gabarit ? Faux pour un nom émis par une application plus récente
+ * que le worker (fenêtre de déploiement, lot S3) : le worker le reporte au lieu de planter.
+ */
+export function estGabaritConnu(name: string): name is EmailJobName {
+  return Object.prototype.hasOwnProperty.call(TEMPLATES, name);
+}
 
 /** Tous les noms de templates email enregistrés (pour tests de couverture). */
 export const EMAIL_TEMPLATE_NAMES = Object.keys(TEMPLATES) as EmailJobName[];

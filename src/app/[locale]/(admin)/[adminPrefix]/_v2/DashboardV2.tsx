@@ -55,6 +55,7 @@ import { FormateursSection } from "./pilotage/FormateursSection";
 import { FinancierSection } from "./pilotage/FinancierSection";
 import { PipelineSection } from "./pilotage/PipelineSection";
 import { libelleRole } from "./pilotage/format";
+import { peutEcrire } from "@/server/auth/habilitations";
 
 /**
  * Forme donnée à chaque famille d'action du journal.
@@ -189,11 +190,19 @@ export function DashboardV2({
         title="Tableau de bord"
         description={`Ce qui attend, ce qui rentre, ce qui bloque — ${libelleRole(role).toLowerCase()}.`}
         actions={
-          <form action={logoutAction}>
-            <button type="submit" className="admin-button-ghost">
-              Déconnexion
-            </button>
-          </form>
+          <>
+            {/* Réservé aux rôles qui écrivent : /qualiopi/devis/new est gardée en écriture. */}
+            {peutEcrire(role) ? (
+              <Link href={`${base}/qualiopi/devis/new`} className="admin-button">
+                Faire un devis
+              </Link>
+            ) : null}
+            <form action={logoutAction}>
+              <button type="submit" className="admin-button-ghost">
+                Déconnexion
+              </button>
+            </form>
+          </>
         }
       />
 

@@ -49,7 +49,7 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bures-sur-Yvette et vallée de Chevreuse ?",
-      a: "Oui, Axion-IA intervient à Bures-sur-Yvette et toute la vallée de Chevreuse (Orsay, Gif-sur-Yvette, Les Ulis, Palaiseau). Nos consultants accèdent facilement via le RER B depuis Paris (45 min).",
+      a: "Oui, Axion-IA intervient à Bures-sur-Yvette et toute la vallée de Chevreuse (Orsay, Gif-sur-Yvette, Les Ulis, Palaiseau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales buressoises ?",
@@ -64,8 +64,8 @@ export const BURES_SUR_YVETTE_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les TPE de Bures-sur-Yvette souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se passe une mission à Bures-sur-Yvette depuis Paris ?",
-      a: "Nos consultants accèdent à Bures-sur-Yvette en 45 min via le RER B (gare de Bures-sur-Yvette). Orsay et le campus Saclay sont à 10 min.",
+      q: "Comment se déroule une mission à Bures-sur-Yvette ?",
+      a: "Bures-sur-Yvette est desservie par le RER B (gare de Bures-sur-Yvette). Orsay et le campus Saclay sont à 10 min.",
     },
   ],
 };

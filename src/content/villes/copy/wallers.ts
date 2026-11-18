@@ -49,7 +49,7 @@ export const WALLERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wallers et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient à Wallers et dans tout le bassin minier du Nord (Denain, Anzin, Raismes, Haveluy, Wallers-Arenberg) ainsi que le Parc Scarpe-Escaut. Nos consultants couvrent l'ensemble du secteur depuis Valenciennes (15 min) ou Douai (20 min).",
+      a: "Oui, Axion-IA intervient à Wallers et dans tout le bassin minier du Nord (Denain, Anzin, Raismes, Haveluy, Wallers-Arenberg) ainsi que le Parc Scarpe-Escaut. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs du tourisme patrimonial et sportif ?",
@@ -65,7 +65,7 @@ export const WALLERS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wallers ?",
-      a: "Nos consultants interviennent à Wallers depuis Valenciennes (15 min) ou Douai (20 min). Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Douai.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, bureau, commerce, site touristique ou en visio. Pour missions multi-jours, hébergement à Valenciennes ou Douai.",
     },
   ],
 };

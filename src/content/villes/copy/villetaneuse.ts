@@ -49,7 +49,7 @@ export const VILLETANEUSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villetaneuse et Plaine Commune ?",
-      a: "Oui, Axion-IA intervient à Villetaneuse et dans tout le territoire Plaine Commune (Saint-Denis, Épinay-sur-Seine, Pierrefitte, Stains). Nos consultants se déplacent depuis Paris (Gare du Nord à 20 min en train).",
+      a: "Oui, Axion-IA intervient à Villetaneuse et dans tout le territoire Plaine Commune (Saint-Denis, Épinay-sur-Seine, Pierrefitte, Stains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les structures liées à l'Université Sorbonne Paris Nord ?",
@@ -65,7 +65,7 @@ export const VILLETANEUSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Villetaneuse ?",
-      a: "Nos consultants se déplacent à Villetaneuse depuis Paris (20 min Gare du Nord, RER D ou Transilien H). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
     },
   ],
 };

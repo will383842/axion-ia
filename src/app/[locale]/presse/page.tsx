@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, Download, Mail } from "lucide-react";
 
 import { routing, type Locale } from "@/i18n/routing";
-import { BRAND } from "@/lib/brand";
+import { BRAND, FOUNDER, FOUNDER_PERSON_ID, founderUrl } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Button } from "@/components/ui/button";
@@ -246,9 +246,8 @@ export default async function PressePage({ params, searchParams }: Props) {
       url: SITE_URL,
       address: {
         "@type": "PostalAddress",
-        // Ville du siège dès qu'elle est renseignée : un `addressCountry` seul
-        // ne rapproche l'entité d'aucun registre.
-        ...(legal.addressCity ? { addressLocality: legal.addressCity } : {}),
+        // Pays seulement (décision Williams 2026-11-08, n°19) : l'adresse du siège
+        // reste dans les mentions légales, pas dans les données structurées.
         addressCountry: "FR",
       },
       contactPoint: [
@@ -318,12 +317,16 @@ export default async function PressePage({ params, searchParams }: Props) {
   // Person (porte-parole) — expose le fondateur comme source interviewable pour
   // Google / AI Overviews sur « interview fondateur cabinet IA », « porte-parole
   // Axion-IA ». Rattaché à l'Organization via worksFor @id.
+  // Audit GEO 2026-11-11 : même entité que le reste du site — `@id` canonique
+  // (`FOUNDER_PERSON_ID`, …/fr/equipe/williams#person) et nom complet, au lieu d'un
+  // `…/#founder` « Williams » qui fabriquait une seconde personne aux yeux des moteurs.
   const spokespersonJsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
-    "@id": `${SITE_URL}/#founder`,
-    name: founder[loc].name,
-    jobTitle: founder[loc].role,
+    "@id": FOUNDER_PERSON_ID,
+    name: FOUNDER.fullName,
+    url: founderUrl(),
+    jobTitle: loc === "fr" ? FOUNDER.jobTitleFr : FOUNDER.jobTitleEn,
     description: founder[loc].bio,
     image: `${SITE_URL}/illustrations/home-founder-william.jpg`,
     knowsLanguage: founder.languages.map((l) => (l === "fr" ? "French" : "English")),
@@ -635,8 +638,8 @@ export default async function PressePage({ params, searchParams }: Props) {
         titleEm={isFr ? "demande presse" : "press request"}
         description={
           isFr
-            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient sous 48 h ouvrées avec une réponse personnalisée."
-            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back within 48 business hours with a personalized reply."
+            ? "Interview, presskit, citation, podcast, fact-check — décrivez votre demande, on revient vers vous avec une réponse personnalisée."
+            : "Interview, presskit, quote, podcast, fact-check — describe your request and we get back to you with a personalized reply."
         }
       >
         <Container>
@@ -657,8 +660,6 @@ export default async function PressePage({ params, searchParams }: Props) {
           cta: t("contactCta"),
           email: t("contactEmail"),
           subjectLabel: t("contactSubject"),
-          responseTimeLabel: t("contactResponseTimeLabel"),
-          responseTimeValue: t("contactResponseTimeValue"),
           languagesLabel: t("contactLanguagesLabel"),
           languagesValue: t("contactLanguagesValue"),
         }}

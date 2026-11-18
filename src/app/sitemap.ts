@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { MetadataRoute } from "next";
 import { routing } from "@/i18n/routing";
 import { SITE_URL } from "@/lib/seo";
@@ -5,6 +6,7 @@ import {
   isQualiopiPublicDisclosureEnabled,
   isQualiopiCertificationObtenue,
 } from "@/server/qualiopi/config/flag";
+import { PRIX_PUBLICS_AFFICHES } from "@/content/pricing";
 import { DB_BLOG_CATEGORY_SLUGS } from "@/server/content-gen/blog/category-loader";
 import {
   isRoutableArticleSlug,
@@ -47,6 +49,7 @@ import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
 // cf. `editorialFor()` plus bas et `scripts/gen-content-freshness.mjs`.
 import { CONTENT_FRESHNESS } from "@/generated/content-freshness";
+import { EDITORIAL_BASELINE_ISO, dateRoute } from "@/lib/seo/fraicheur";
 // Fix sitemap 2026-07-06 — `buildPresseSitemap` lit désormais la DB (communiqués
 // publiés en console admin), la MÊME source que la page `/presse/[slug]`. Avant :
 // lecture des fixtures `PRESS_RELEASES` (3 slugs figés) alors que le fallback
@@ -177,6 +180,9 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // publiée. Elle est annoncée par `sitemap-videos.xml`, qui est lui-même 404 dans ce cas ;
   // la déclarer ici ferait figurer une URL 404 dans pages.xml.
   "/videos",
+  // 301 next.config (2026-11) : doublons de /formations et /tarifs, à ne pas annoncer dans pages.xml.
+  "/formations/entreprise",
+  "/formations/tarifs",
   "/design",
   "/components",
   "/desabonnement",
@@ -229,6 +235,9 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // que `/mes-donnees/export` ci-dessus.
   "/carrieres/widget",
   "/carrieres/widget-builder",
+  // R5a (08/11/2026) — « Audit sur place · 1 journée » retiré : la page renvoie en 308 vers
+  // /journee-ia. Une URL redirigée n'a pas sa place dans pages.xml (crawl-budget, GSC).
+  "/audit/tpe-1-jour",
 ];
 
 function isSlugTemplate(key: PathnameKey): boolean {
@@ -395,7 +404,7 @@ export async function generateSitemaps(): Promise<Array<{ id: string }>> {
     // `app/sitemap-index.xml/route.ts` manuellement.
     "faq",
     "help",
-    "cas-concrets",
+    ...(CAS_CONCRETS_AFFICHES ? (["cas-concrets"] as const) : []),
     "comparaisons",
     // "guides" RETIRÉ de generateSitemaps() 2026-08-16 (audit GEO/AEO, GEO-147).
     // Ce sub-sitemap ne contenait QU'UNE URL — le hub `/fr/guides` — déjà émise
@@ -488,7 +497,9 @@ function buildTimeOrNow(): Date {
  * knowledge DB) continuent d'avoir priorité via `lastModFor`.
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
-const EDITORIAL_BASELINE = new Date("2026-06-08T00:00:00.000Z");
+// Audit SEO 2026-11-11 (I2) : dérivée de la source unique (`seo/fraicheur.ts`),
+// que `SITE_EDITORIAL_DATE` (`seo.ts`) lit aussi — plus de copie à synchroniser.
+const EDITORIAL_BASELINE = new Date(EDITORIAL_BASELINE_ISO);
 
 /**
  * Date de refonte des pages villes (2026-05-26). Utilisée pour les `<lastmod>`
@@ -726,6 +737,8 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
+    if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
     // Phase A tant que l'agrément n'est pas public). On la garde HORS sitemap tant
     // que `OF_PUBLIC_DISCLOSURE_ENABLED` ≠ "true" pour éviter une URL 404 dans
@@ -737,7 +750,9 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       continue;
     // Catalogue : redirige vers /fr/formations tant que la certification n'est
     // pas délivrée (feuilletoir avec logo Qualiopi, 2026-10-14) → hors sitemap.
+    // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
+    if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
     // Page financement OPCO/France Travail : Phase-B only (mentions financement
     // interdites avant l'agrément OF) → hors sitemap en Phase A.
     if (
@@ -745,11 +760,17 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
       (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
     )
       continue;
+    // Date PAR ROUTE (audit SEO 2026-11-11, I2) : avant, les 87 URL portaient
+    // toutes `now` (date de la famille `pages`). `dateRoute` est la fonction que
+    // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
+    // elle retombe sur la famille `pages` — donc sur `now` — si la route est
+    // absente du manifeste.
+    const lastModified = new Date(dateRoute(key));
     for (const locale of effectiveLocales) {
       const url = localeUrl(key, locale);
       entries.push({
         url,
-        lastModified: now,
+        lastModified,
         changeFrequency: "weekly",
         priority: key === "/" ? 1 : (key as string).split("/").length === 2 ? 0.8 : 0.6,
         alternates: { languages: alternateLanguages(key) },
@@ -1099,6 +1120,8 @@ async function buildFaqSitemap(now: Date): Promise<MetadataRoute.Sitemap> {
 // supporte pas le namespace requis par Google News.
 
 function buildCasConcretsSitemap(now: Date): MetadataRoute.Sitemap {
+  // Cas concrets éteints (2026-11-08) : aucune URL, la page répond 404.
+  if (!CAS_CONCRETS_AFFICHES) return [];
   return buildDynamic(
     [
       {
@@ -1383,7 +1406,6 @@ function buildStackIaToolsSitemap(now: Date): MetadataRoute.Sitemap {
  *
  * Contenu (Phase B uniquement) :
  *   - le hub `/formations` (priority 0.8)
- *   - la page tarifs `/formations/tarifs` (priority 0.7)
  *   - les 2 listings par catégorie `/formations/metiers` + `/formations/secteurs`
  *   - les 22 fiches `/formations/<slug>` (FORMATIONS_V2, slug FR canonique +
  *     slug EN miroir routing-only)
@@ -1400,13 +1422,12 @@ function buildFormationsSitemap(now: Date): MetadataRoute.Sitemap {
   // (hub + tarifs + métiers/secteurs + 22 fiches), ZÉRO mention Qualiopi côté public.
   const entries: MetadataRoute.Sitemap = [];
 
-  // Hub /formations · /training et page tarifs /formations/tarifs · /training/pricing.
+  // Hub /formations · /training.
   const hubs: ReadonlyArray<{ fr: string; en: string; priority: number }> = [
-    // Landing flagship « Toutes nos formations IA entreprise » — priorité max du
-    // module (catalogue complet, cible principale « formation IA entreprise »).
-    { fr: "/formations/entreprise", en: "/formations/entreprise", priority: 0.9 },
+    // /formations/entreprise et /formations/tarifs ne figurent plus ici : elles redirigent en
+    // 301 (next.config) vers /formations et /tarifs ; une URL qui redirige n'a rien à faire
+    // dans un sitemap.
     { fr: "/formations", en: "/training", priority: 0.8 },
-    { fr: "/formations/tarifs", en: "/training/pricing", priority: 0.7 },
   ];
   for (const hub of hubs) {
     const frUrl = `${SITE_URL}/fr${hub.fr}`;

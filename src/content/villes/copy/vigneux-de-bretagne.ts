@@ -49,7 +49,7 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vigneux-de-Bretagne ?",
-      a: "Oui, Axion-IA intervient à Vigneux-de-Bretagne et tout le nord-ouest nantais (Treillières, Sautron, Couëron, Savenay). Consultants depuis Nantes centre (20 min). Couverture complète nord-ouest métropole.",
+      a: "Oui, Axion-IA intervient à Vigneux-de-Bretagne et tout le nord-ouest nantais (Treillières, Sautron, Couëron, Savenay). Nous intervenons partout en France, sur place ou à distance. Couverture complète nord-ouest métropole.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires des zones d'activités ?",
@@ -65,7 +65,7 @@ export const VIGNEUX_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

@@ -34,8 +34,8 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
       en: "Audit IA à Pernes-les-Fontaines : diagnostic adapté aux TPE artisans, PME tourisme, viticulteurs, commerces et professions libérales du Comtat Venaissin. ROI mesurable, audit sur place dès {{price:audit-flash|flat}}.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
-      en: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux ou à Carpentras.",
+      fr: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Pernes-les-Fontaines : ateliers pour équipes TPE/PME tourisme, viticulteurs, artisans et commerces. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Pernes-les-Fontaines : gestion réservations hôtels et gîtes, agents conversationnels multilingues touristes, automatisation cave viticole, content marketing patrimoine, fiches Google Business commerces. RGPD strict.",
@@ -64,8 +64,8 @@ export const PERNES_LES_FONTAINES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en viticulture sur prévision de récoltes, traçabilité parcellaire, gestion cave, e-commerce direct producteur, marketing oenotouristique et conformité réglementaire.",
     },
     {
-      q: "Comment se déplace Axion-IA à Pernes-les-Fontaines ?",
-      a: "Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Pernes-les-Fontaines ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pernes-les-Fontaines est à 10 min de Carpentras et 25 min d'Avignon via D938.",
     },
   ],
 };

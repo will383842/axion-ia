@@ -49,7 +49,7 @@ export const VAUVERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vauvert et en Petite Camargue ?",
-      a: "Oui, Axion-IA intervient à Vauvert et dans toute la Petite Camargue (Saint-Gilles, Aimargues, Beauvoisin, Le Grau-du-Roi). Nos consultants viennent de Nîmes (20 min) ou Montpellier (40 min).",
+      a: "Oui, Axion-IA intervient à Vauvert et dans toute la Petite Camargue (Saint-Gilles, Aimargues, Beauvoisin, Le Grau-du-Roi). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les viticulteurs Costières de Nîmes ?",

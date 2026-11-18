@@ -47,8 +47,8 @@ export const FAQ_CATEGORIES: ReadonlyArray<FaqCategoryDef> = [
     slug: "pricing",
     labelFr: "Tarifs & facturation",
     labelEn: "Pricing & billing",
-    descFr: "Prix publics, modalités de paiement, TVA, annulation.",
-    descEn: "Public pricing, payment terms, VAT, cancellation.",
+    descFr: "Devis, modalités de paiement, TVA, annulation.",
+    descEn: "Quotes, payment terms, VAT, cancellation.",
   },
   {
     slug: "process",

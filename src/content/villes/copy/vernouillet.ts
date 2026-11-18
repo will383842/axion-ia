@@ -49,7 +49,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vernouillet et agglomération Dreux ?",
-      a: "Oui, Axion-IA intervient à Vernouillet et toute l'agglomération de Dreux (Dreux à 5 min, Cherisy, Luray). Consultants depuis Chartres (35 min) ou Paris (1h15).",
+      a: "Oui, Axion-IA intervient à Vernouillet et toute l'agglomération de Dreux (Dreux à 5 min, Cherisy, Luray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE/PME tertiaires de Vernouillet ?",
@@ -64,7 +64,7 @@ export const VERNOUILLET_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Formats adaptés aux petites structures.",
     },
     {
-      q: "Comment se passe une mission depuis Chartres ou Paris ?",
+      q: "Comment se déroule une mission à Vernouillet ?",
       a: "Chartres (35 min) ou Paris Montparnasse (1h15 TER via Dreux).",
     },
   ],

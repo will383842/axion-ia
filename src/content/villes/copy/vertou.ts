@@ -242,7 +242,7 @@ export const VERTOU_COPY: VilleCopy = {
     },
     {
       q: "Quelle est la distance entre Vertou et Nantes pour une intervention ?",
-      a: "Vertou est limitrophe Sud de Nantes : 13 km du centre, accessible en tramway TAN et bus, à 15 km de l'aéroport Nantes-Atlantique. Nos consultants combinent souvent des missions Vertou avec d'autres clients Nantes Métropole sur la même journée, ce qui optimise nos déplacements depuis Paris en TGV (gare de Nantes, 2 h).",
+      a: "Vertou est limitrophe Sud de Nantes : 13 km du centre, accessible en tramway TAN et bus, à 15 km de l'aéroport Nantes-Atlantique. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA travaille-t-elle avec l'écosystème industriel Manitou et Saint-Nazaire ?",

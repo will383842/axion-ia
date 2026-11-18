@@ -9,7 +9,7 @@
 //   - encryptPii sur nom/email/téléphone, hashIp SHA-256 RGPD
 //   - Submission.create (type DB `contact`, `details.unifiedType="recrutement"`
 //     → la vue console Contacts → Commercial la reçoit sans migration)
-//   - PUIS SEULEMENT les notifications, toutes best-effort : Telegram+WhatsApp
+//   - PUIS SEULEMENT les notifications, toutes best-effort : Telegram
 //     (COMMERCIAL_APPLICATION_RECEIVED), email candidat, récap interne.
 //     Une notification en échec ne perd JAMAIS la candidature (déjà en base).
 
@@ -132,8 +132,6 @@ function internalRecipient(): string {
  */
 const SEUIL_ALERTE_VOLUME_JOUR = 25;
 
-const oui = (v: boolean) => (v ? "Oui" : "Non");
-
 /** « mars 2019 → aujourd'hui » pour une expérience. */
 function periodeOf(e: CommercialApplicationInput["experiences"][number]): string {
   const fin = e.posteActuel ? "aujourd'hui" : formatMoisAnnee(e.fin);
@@ -196,7 +194,6 @@ function buildRecapRows(d: CommercialApplicationInput): Array<{ label: string; v
         ]
       : []),
     { label: "Disponibilité", value: formatMoisAnnee(d.disponibilite) },
-    { label: "Permis + véhicule", value: oui(d.permisVehicule) },
     ...(d.statut ? [{ label: "Statut actuel", value: optionLabel(STATUT_OPTIONS, d.statut) }] : []),
     ...(d.linkedin ? [{ label: "LinkedIn", value: d.linkedin }] : []),
     ...(d.sourceConnaissance
@@ -398,7 +395,6 @@ export async function submitCommercialApplicationAction(
             pitch: d.pitch,
             ...(d.messageLibre ? { messageLibre: d.messageLibre } : {}),
             disponibilite: d.disponibilite,
-            permisVehicule: d.permisVehicule,
             ...(d.statut ? { statut: d.statut } : {}),
             ...(d.linkedin ? { linkedin: d.linkedin } : {}),
             ...(d.sourceConnaissance ? { sourceConnaissance: d.sourceConnaissance } : {}),
@@ -491,7 +487,7 @@ export async function submitCommercialApplicationAction(
       Sentry.captureException(err, { tags: { service: "commercial-application-volume" } });
     }
 
-    // 6. Telegram + WhatsApp — best-effort, la candidature est déjà en base.
+    // 6. Telegram — best-effort, la candidature est déjà en base.
     try {
       await notify({
         category: "COMMERCIAL_APPLICATION_RECEIVED",

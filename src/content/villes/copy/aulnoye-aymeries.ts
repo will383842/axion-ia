@@ -49,7 +49,7 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aulnoye-Aymeries et dans la vallée de la Sambre ?",
-      a: "Oui, Axion-IA intervient à Aulnoye-Aymeries et dans toute la vallée de la Sambre (Maubeuge, Jeumont, Feignies, Hautmont, Berlaimont) ainsi que l'Avesnois. Nos consultants se déplacent depuis Lille (1h10 TER) ou Valenciennes (35 min) et couvrent l'ensemble du bassin sambrien.",
+      a: "Oui, Axion-IA intervient à Aulnoye-Aymeries et dans toute la vallée de la Sambre (Maubeuge, Jeumont, Feignies, Hautmont, Berlaimont) ainsi que l'Avesnois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles du bassin sambrien ?",
@@ -65,7 +65,7 @@ export const AULNOYE_AYMERIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aulnoye-Aymeries ?",
-      a: "Nos consultants interviennent à Aulnoye-Aymeries depuis Lille (1h10 TER direct via gare d'Aulnoye) ou Valenciennes (35 min). Intervention sur site dans votre usine, atelier, commerce ou en visio. Pour missions multi-jours, hébergement à Maubeuge ou Valenciennes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, atelier, commerce ou en visio. Pour missions multi-jours, hébergement à Maubeuge ou Valenciennes.",
     },
   ],
 };

@@ -230,7 +230,7 @@ export const VERNON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vernon ?",
-      a: "Oui, Axion-IA intervient à Vernon et dans toute la vallée de la Seine, dans l'Eure. Nos consultants se déplacent depuis Paris (gare de Vernon-Giverny, ~45 min) pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Vernon et dans toute la vallée de la Seine, dans l'Eure. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Vernon ?",
@@ -246,7 +246,7 @@ export const VERNON_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Vernon ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Paris. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

@@ -140,8 +140,8 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     ];
 
     const parTunnel = agregerTunnels(lignes).parTunnel;
-    // Les quatre tunnels connus sont toujours là ; un seul porte la session.
-    expect(parTunnel).toHaveLength(4);
+    // Les cinq tunnels connus sont toujours là ; un seul porte la session.
+    expect(parTunnel).toHaveLength(5);
     expect(parTunnel[0]?.cle).toBe("diagnostic");
     expect(parTunnel[0]?.questionnairesTermines).toBe(1);
     expect(parTunnel.find((t) => t.cle === "simulateur")?.sessions).toBe(0);
@@ -153,9 +153,9 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     // lisait « /roi n'est pas suivie » au lieu de « personne n'est venu ».
     const parTunnel = agregerTunnels([]).parTunnel;
     expect(parTunnel.map((t) => t.cle)).toEqual(
-      expect.arrayContaining(["diagnostic", "simulateur", "roi", "apporteur"]),
+      expect.arrayContaining(["diagnostic", "simulateur", "roi", "apporteur", "tour"]),
     );
-    expect(parTunnel).toHaveLength(4);
+    expect(parTunnel).toHaveLength(5);
     expect(parTunnel.every((t) => t.sessions === 0)).toBe(true);
     // Chaque ligne porte de quoi ouvrir la page publique depuis la console.
     expect(parTunnel.find((t) => t.cle === "roi")?.chemin).toBe("/fr/roi");
@@ -167,7 +167,7 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     expect([...TUNNELS_CONNUS].map((t) => t.cle).sort()).toEqual([...FUNNEL_KEYS].sort());
   });
 
-  it("SOMME exactement au nombre de sessions — la propriété qui rend les taux justes", () => {
+  it("SOMME exactement au nombre de sessions hors Tour — et excède `sessions` d'exactement le nombre de sessions Tour sans questionnaire", () => {
     // Compter une session dans chaque tunnel touché ferait une somme
     // supérieure au total, et tout pourcentage bâti dessus serait faux sans
     // qu'aucun chiffre n'ait l'air aberrant.
@@ -194,6 +194,35 @@ describe("agregerTunnels — statistiques par tunnel", () => {
     const somme = s.parTunnel.reduce((n, t) => n + t.sessions, 0);
     expect(somme).toBe(s.sessions);
     expect(somme).toBe(3);
+
+    // Une session du Tour vit dans `parTunnel` mais pas dans les totaux :
+    // la somme excède alors `sessions` d'exactement le nombre de sessions Tour
+    // sans questionnaire (une session Tour qui ouvre le questionnaire est déjà dans `sessions`).
+    const avecTour = agregerTunnels([
+      ...lignes,
+      balise("t", "Call Booking Viewed", {
+        funnel: "tour",
+        createdAt: new Date("2026-08-01T13:00:00Z"),
+      }),
+    ]);
+    const sommeAvecTour = avecTour.parTunnel.reduce((n, t) => n + t.sessions, 0);
+    expect(sommeAvecTour).toBe(avecTour.sessions + 1);
+  });
+
+  it("une session Tour puis questionnaire dans le même onglet reste comptée", () => {
+    const s = agregerTunnels([
+      balise("t", "Call Booking Viewed", {
+        funnel: "tour",
+        createdAt: new Date("2026-08-01T10:00:00Z"),
+      }),
+      balise("t", "Simulator Started", {
+        funnel: "diagnostic",
+        createdAt: new Date("2026-08-01T10:01:00Z"),
+      }),
+    ]);
+    expect(s.questionnairesOuverts).toBe(1);
+    expect(s.sessions).toBe(1);
+    expect(s.sessionsPub).toBe(0);
   });
 
   it("ne dépend PAS de l'ordre des lignes reçues", () => {

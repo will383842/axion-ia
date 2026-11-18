@@ -60,8 +60,8 @@ export const WORMHOUT_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les exploitations agricoles de Flandre intérieure. Cas typiques IA : prédiction rendements, optimisation assolement, automatisation gestion parcelles, classification images satellites, suivi troupeaux.",
     },
     {
-      q: "Comment se passe une mission à Wormhout depuis Dunkerque ou Lille ?",
-      a: "Nos consultants rejoignent Wormhout en 25 min depuis Dunkerque ou 1h depuis Lille via A25. Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Wormhout ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Wormhout ?",

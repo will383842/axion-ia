@@ -5,7 +5,7 @@
 //
 // CE QUE LE VISITEUR VIVAIT AVANT, MESURÉ EN PRODUCTION
 // -----------------------------------------------------
-// Sur un écran de 390 px, le premier champ saisissable (« Nom complet »)
+// Sur un écran de 390 px, le premier champ saisissable (« Prénom »)
 // tombait à ~1 100 px du haut de la page : deux écrans et demi de défilement
 // avant de pouvoir taper une seule lettre. Le sélecteur d'objet à lui seul
 // occupait cinq grandes cartes à icône, sept pastilles, et TROIS lignes d'aide
@@ -103,8 +103,14 @@ const LABELS = {
       support_client: "Support client",
       autre: "Autre",
     },
-    nom: "Nom complet",
-    nomPlaceholder: "Prénom Nom",
+    civilite: "Civilité (facultative)",
+    civiliteNonPrecisee: "Non précisée",
+    madame: "Madame",
+    monsieur: "Monsieur",
+    prenom: "Prénom",
+    prenomPlaceholder: "Camille",
+    nomFamille: "Nom",
+    nomFamillePlaceholder: "Dupont",
     email: "Email professionnel",
     emailPlaceholder: "vous@entreprise.com",
     telephone: "Téléphone",
@@ -159,7 +165,7 @@ const LABELS = {
     sending: "Envoi…",
     successTitle: "Demande reçue.",
     successBody:
-      "Un consultant senior Axion-IA vous recontacte personnellement sous 48 h ouvrées. Votre projet a notre entière attention.",
+      "Un consultant senior Axion-IA vous recontacte personnellement. Votre projet a notre entière attention.",
     failure: "Une erreur est survenue. Réessayez ou écrivez à contact@axion-ia.com.",
     captchaBlocked:
       "Le contrôle anti-spam (Cloudflare) est bloqué par votre navigateur ou une extension. Autorisez « challenges.cloudflare.com » (ou désactivez votre bloqueur pour ce site), puis réessayez — ou écrivez-nous directement à contact@axion-ia.com.",
@@ -169,7 +175,7 @@ const LABELS = {
     submitAgain: "Faire une autre demande",
     referenceLabel: "Référence",
     trustPills: [
-      "⏱️ Réponse sous 48 h ouvrées",
+      "✉️ Réponse personnelle",
       "🧑 Lu par un consultant senior",
       "🔒 RGPD · données en UE",
       "🙂 Sans engagement",
@@ -195,8 +201,14 @@ const LABELS = {
       support_client: "Support",
       autre: "Other",
     },
-    nom: "Full name",
-    nomPlaceholder: "First Last",
+    civilite: "Title (optional)",
+    civiliteNonPrecisee: "Not specified",
+    madame: "Ms",
+    monsieur: "Mr",
+    prenom: "First name",
+    prenomPlaceholder: "Camille",
+    nomFamille: "Last name",
+    nomFamillePlaceholder: "Dupont",
     email: "Work email",
     emailPlaceholder: "you@company.com",
     telephone: "Phone",
@@ -250,7 +262,7 @@ const LABELS = {
     sending: "Sending…",
     successTitle: "Request received.",
     successBody:
-      "A senior Axion-IA consultant will get back to you personally within 48 business hours. Your project has our full attention.",
+      "A senior Axion-IA consultant will get back to you personally. Your project has our full attention.",
     failure: "An error occurred. Try again or email contact@axion-ia.com.",
     captchaBlocked:
       "The anti-spam check (Cloudflare) is blocked by your browser or an extension. Allow « challenges.cloudflare.com » (or disable your blocker for this site) and try again — or email us directly at contact@axion-ia.com.",
@@ -260,7 +272,7 @@ const LABELS = {
     submitAgain: "Send another request",
     referenceLabel: "Reference",
     trustPills: [
-      "⏱️ Reply within 48 business hours",
+      "✉️ Personal reply",
       "🧑 Read by a senior consultant",
       "🔒 GDPR · data in the EU",
       "🙂 No commitment",
@@ -628,7 +640,9 @@ function UnifiedContactFormBody({
     try {
       const fd = new FormData();
       fd.set("type", values.type);
-      fd.set("nom", values.nom);
+      fd.set("prenom", values.prenom);
+      fd.set("nomFamille", values.nomFamille);
+      if (values.civilite) fd.set("civilite", values.civilite);
       fd.set("email", values.email);
       fd.set("telephone", values.telephone);
       fd.set("ville", values.ville);
@@ -834,7 +848,7 @@ function UnifiedContactFormBody({
       {/* Objet de la demande — pastilles compactes.
           Cinq intentions commerciales visibles, sept périphériques repliées :
           le bloc tient en ~190 px au lieu de ~480 px, ce qui suffit à faire
-          remonter « Nom complet » dans le premier écran d'un téléphone. */}
+          remonter « Prénom » dans le premier écran d'un téléphone. */}
       {!lockType ? (
         // `min-w-0` est OBLIGATOIRE : un <fieldset> porte
         // `min-inline-size: min-content` par la feuille de style du navigateur et
@@ -920,30 +934,79 @@ function UnifiedContactFormBody({
         <input type="hidden" {...register("type")} />
       )}
 
-      {/* Nom + Email — empilés sur mobile, appariés dès `sm`. */}
-      <div className="grid gap-4 sm:grid-cols-2">
+      {/* Identité : civilité (facultative, sans présélection), prénom, nom.
+          Empilés sur mobile, sur une rangée dès `sm`. */}
+      <div className="grid gap-4 sm:grid-cols-[10rem_1fr_1fr]">
         <div className="grid gap-1.5">
-          <Label htmlFor="unified-nom">
-            {t.nom}
-            <Req />
-          </Label>
-          <Input
-            id="unified-nom"
-            aria-required="true"
-            autoComplete="name"
-            autoCapitalize="words"
-            enterKeyHint="next"
-            placeholder={t.nomPlaceholder}
-            {...register("nom")}
-            aria-invalid={!!errors.nom}
-            aria-describedby={errors.nom ? "unified-nom-err" : undefined}
-          />
-          {errors.nom ? (
-            <p id="unified-nom-err" role="alert" className="text-accent-red text-xs">
-              {errors.nom.message}
+          <Label htmlFor="unified-civilite">{t.civilite}</Label>
+          <select
+            id="unified-civilite"
+            autoComplete="honorific-prefix"
+            {...register("civilite")}
+            aria-invalid={!!errors.civilite}
+            aria-describedby={errors.civilite ? "unified-civilite-err" : undefined}
+            className="border-border-strong bg-paper text-fg focus-visible:border-terracotta focus-visible:ring-terracotta/20 h-12 rounded-lg border px-3 text-base transition focus-visible:ring-4 focus-visible:outline-none"
+          >
+            <option value="">{t.civiliteNonPrecisee}</option>
+            <option value="madame">{t.madame}</option>
+            <option value="monsieur">{t.monsieur}</option>
+          </select>
+          {errors.civilite ? (
+            <p id="unified-civilite-err" role="alert" className="text-accent-red text-xs">
+              {errors.civilite.message}
             </p>
           ) : null}
         </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="unified-prenom">
+            {t.prenom}
+            <Req />
+          </Label>
+          <Input
+            id="unified-prenom"
+            aria-required="true"
+            autoComplete="given-name"
+            autoCapitalize="words"
+            spellCheck={false}
+            enterKeyHint="next"
+            placeholder={t.prenomPlaceholder}
+            {...register("prenom")}
+            aria-invalid={!!errors.prenom}
+            aria-describedby={errors.prenom ? "unified-prenom-err" : undefined}
+          />
+          {errors.prenom ? (
+            <p id="unified-prenom-err" role="alert" className="text-accent-red text-xs">
+              {errors.prenom.message}
+            </p>
+          ) : null}
+        </div>
+        <div className="grid gap-1.5">
+          <Label htmlFor="unified-nom-famille">
+            {t.nomFamille}
+            <Req />
+          </Label>
+          <Input
+            id="unified-nom-famille"
+            aria-required="true"
+            autoComplete="family-name"
+            autoCapitalize="words"
+            spellCheck={false}
+            enterKeyHint="next"
+            placeholder={t.nomFamillePlaceholder}
+            {...register("nomFamille")}
+            aria-invalid={!!errors.nomFamille}
+            aria-describedby={errors.nomFamille ? "unified-nom-famille-err" : undefined}
+          />
+          {errors.nomFamille ? (
+            <p id="unified-nom-famille-err" role="alert" className="text-accent-red text-xs">
+              {errors.nomFamille.message}
+            </p>
+          ) : null}
+        </div>
+      </div>
+
+      {/* Email : pleine largeur. */}
+      <div className="grid gap-4">
         <div className="grid gap-1.5">
           <Label htmlFor="unified-email">
             {t.email}

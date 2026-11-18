@@ -226,7 +226,7 @@ export const CHATENAY_MALABRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtenay-Malabry ?",
-      a: "Oui, Axion-IA intervient à Châtenay-Malabry et dans les communes limitrophes : Antony, Sceaux, Clamart, Le Plessis-Robinson, Verrières-le-Buisson. Déplacement sur site possible depuis Paris via T10 ou A86.",
+      a: "Oui, Axion-IA intervient à Châtenay-Malabry et dans les communes limitrophes : Antony, Sceaux, Clamart, Le Plessis-Robinson, Verrières-le-Buisson. Déplacement sur site possible (T10 ou A86).",
     },
     {
       q: "Quels sont les tarifs pour une mission IA à Châtenay-Malabry ?",

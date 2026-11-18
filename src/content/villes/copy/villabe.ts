@@ -49,7 +49,7 @@ export const VILLABE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villabé et zone Corbeil ?",
-      a: "Oui, Axion-IA intervient à Villabé et toute la zone Corbeil-Essonnes (Lisses, Évry-Courcouronnes, Ris-Orangis, Courcouronnes). Consultants depuis Paris (40 min RER D + navette).",
+      a: "Oui, Axion-IA intervient à Villabé et toute la zone Corbeil-Essonnes (Lisses, Évry-Courcouronnes, Ris-Orangis, Courcouronnes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et commerces villabéens ?",
@@ -64,8 +64,8 @@ export const VILLABE_COPY: VilleCopy = {
       a: "Oui, implémentation IA pour enseignes commerciales de Villabé : agents conversationnels clients, analyse prédictive ventes, CRM augmentés, automatisation gestion RH. Tarifs publics, ROI chiffré contractuel.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en voiture par A6/N7 (40 min) ou en RER D via Corbeil-Essonnes. Accès direct A6 et Francilienne N104.",
+      q: "Comment se déroule une mission à Villabé ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Accès direct A6 et Francilienne N104.",
     },
   ],
 };

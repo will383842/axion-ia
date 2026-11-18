@@ -524,12 +524,8 @@ export default async function SecteurPilier({ params }: Props) {
       <JsonLd data={breadcrumbJsonLd} />
       <JsonLd data={serviceJsonLd} />
       {sectorImagesJsonLd ? <JsonLd data={sectorImagesJsonLd} /> : null}
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-secteur-itemlist"
-      />
-      <JsonLd data={faqJsonLd} strategy="afterInteractive" scriptId="jsonld-secteur-faq" />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-secteur-itemlist" />
+      <JsonLd data={faqJsonLd} scriptId="jsonld-secteur-faq" />
     </>
   );
 }

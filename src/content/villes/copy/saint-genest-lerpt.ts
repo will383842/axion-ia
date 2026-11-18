@@ -49,7 +49,7 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Genest-Lerpt et ouest Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à Saint-Genest-Lerpt et toute la banlieue ouest stéphanoise (Saint-Étienne à 10 min, Roche-la-Molière à 5 min, Firminy). Consultants depuis Lyon (1h) ou Saint-Étienne (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-Genest-Lerpt et toute la banlieue ouest stéphanoise (Saint-Étienne à 10 min, Roche-la-Molière à 5 min, Firminy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales genestois ?",
@@ -64,8 +64,8 @@ export const SAINT_GENEST_LERPT_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Genest-Lerpt, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Saint-Genest-Lerpt ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

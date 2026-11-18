@@ -6,9 +6,9 @@ import type { VilleCopy } from "./types";
 
 export const VOIRON_COPY: VilleCopy = {
   pitchFr:
-    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située à 29 km au nord-ouest de Grenoble en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
+    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
   pitchEn:
-    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située à 29 km au nord-ouest de Grenoble en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
+    "Axion-IA se déplace à Voiron, sous-préfecture de l'Isère de 21 847 habitants et ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Située en bordure du parc naturel régional de Chartreuse, Voiron accueille la production des liqueurs de Chartreuse, la chocolaterie Bonnat, les tissages Denantes et un centre hospitalier de référence. Nous y accompagnons les TPE et PME locales en code custom pour automatiser leurs processus métier.",
   directAnswerFr:
     "Axion-IA est un cabinet IA qui intervient à Voiron (Isère, 21 847 habitants, unité urbaine de 64 814 habitants) pour auditer, intervenir et implémenter du code custom chez les TPE et PME locales. Ville-centre de la Communauté d'agglomération du Pays Voironnais (34 communes), Voiron concentre des acteurs comme la chocolaterie Bonnat, les tissages Denantes, la production des liqueurs de Chartreuse, le tourisme lié au massif de Chartreuse et son centre hospitalier. L'audit sur place démarre à {{price:audit-flash|flat}} et les interventions à {{price:intervention-4h|flat}}.",
   directAnswerEn:
@@ -19,9 +19,9 @@ export const VOIRON_COPY: VilleCopy = {
   ecosystemEn:
     "Voiron est la ville-centre du Pays Voironnais (34 communes, plus de 90 000 habitants). Le tissu local mêle l'industrie agroalimentaire (chocolaterie Bonnat, production des liqueurs de Chartreuse), le textile historique (tissages Denantes), l'artisanat de petite et moyenne manufacture, le centre hospitalier et un secteur touristique porté par la proximité immédiate du parc naturel régional de Chartreuse et du monastère de la Grande Chartreuse.",
   distancesFr:
-    "Voiron est à 29 km par la route au nord-ouest de Grenoble via l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Grenoble (env. 25 min) et Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
+    "Voiron est accessible par l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
   distancesEn:
-    "Voiron est à 29 km par la route au nord-ouest de Grenoble via l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Grenoble (env. 25 min) et Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
+    "Voiron est accessible par l'autoroute A48 (sorties Champfeuillet et Moirans). La gare de Voiron, sur la ligne Lyon-Marseille, propose un TER cadencé toutes les 20 minutes en heures de pointe vers Lyon (env. 1 h). Quatre lignes urbaines desservent la ville, complétées par les Cars Région Isère.",
   topSectorsNaf: [
     "Industrie agroalimentaire",
     "Industrie textile",
@@ -56,7 +56,7 @@ export const VOIRON_COPY: VilleCopy = {
           "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
           "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
           "Tissu industriel dense sur la zone de Champfeuillet (plus de 200 entreprises) et le parc technologique Centr'Alp à Moirans-Voreppe (200 sociétés, environ 6 000 emplois) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on développe un portail de suivi de production, de devis et de reporting sur mesure pour les TPE/PME et les tissages Denantes.",
-          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Grenoble et Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
           {
@@ -142,7 +142,7 @@ export const VOIRON_COPY: VilleCopy = {
           "Patrimoine agroalimentaire à forte image de marque (liqueurs de Chartreuse, chocolaterie Bonnat) : nous construisons des vitrines e-commerce premium sur WordPress, Shopify ou PrestaShop et des parcours d'achat multilingues capables de raconter l'origine et le savoir-faire, avec paiement sécurisé, fiches produits enrichies et logistique connectée à votre gestion de stock.",
           "Économie touristique adossée au massif de Chartreuse et au monastère de la Grande Chartreuse : nos chatbots RAG et moteurs de réservation directe sont multilingues par défaut, calibrés pour l'hôtellerie, les hébergements de montagne et les activités de plein air, avec UX mobile-first pour des visiteurs qui réservent depuis leur smartphone en chemin vers Saint-Pierre-de-Chartreuse.",
           "Tissu industriel dense sur la zone de Champfeuillet (plus de 200 entreprises) et le parc technologique Centr'Alp à Moirans-Voreppe (200 sociétés, environ 6 000 emplois) : on greffe l'IA sur l'existant (widget, API, plugin) sans refonte coûteuse, ou on développe un portail de suivi de production, de devis et de reporting sur mesure pour les TPE/PME et les tissages Denantes.",
-          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Grenoble et Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
+          "Pôle santé structurant avec le centre hospitalier de Voiron et bonne desserte TER (cadencé 20 min vers Lyon) qui irrigue l'initiative économique Econex : toute la chaîne IA est hébergeable en UE, conforme RGPD et AI Act — vos données patients, clients et de production restent maîtrisées et ne transitent jamais hors UE sans DPA.",
         ],
         methodology: [
           {
@@ -232,7 +232,7 @@ export const VOIRON_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Voiron ?",
-      a: "Nous nous engageons à intervenir sur site à Voiron sous 5 jours ouvrés après validation de votre demande, en TER depuis Grenoble ou Lyon (cadencé 20 min) ou par l'autoroute A48.",
+      a: "Nous nous engageons à intervenir sur site à Voiron sous 5 jours ouvrés après validation de votre demande, en TER (cadencé 20 min) ou par l'autoroute A48.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Voiron ?",

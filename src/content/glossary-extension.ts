@@ -614,8 +614,8 @@ const NEW_TERMS_EXTENDED: readonly GlossaryTermExtended[] = [
   {
     slug: "ai-act",
     term: "AI Act EU",
-    fr: "Règlement européen IA entré en vigueur 2024, plein effet août 2026. Classifie les systèmes IA par risque. Impose disclosures (art. 50), audits, gouvernance.",
-    en: "EU AI regulation in force since 2024, fully applicable August 2026. Classifies AI systems by risk. Mandates disclosures (art. 50), audits, governance.",
+    fr: "Règlement européen sur l'IA, en vigueur depuis 2024, appliqué par étapes de 2025 à 2028. Classe les systèmes IA par risque. Prévoit notamment l'information sur l'IA (art. 50).",
+    en: "EU AI regulation in force since 2024, applied in stages from 2025 to 2028. Classifies AI systems by risk. Includes AI transparency rules (art. 50).",
     category: "security",
     relatedSlugs: ["rgpd-gdpr", "dpa", "guardrails"],
     aliases: ["EU AI Act", "Règlement IA", "AIA"],

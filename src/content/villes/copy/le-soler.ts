@@ -49,7 +49,7 @@ export const LE_SOLER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Soler et dans l'agglo Perpignan sud ?",
-      a: "Oui, Axion-IA intervient au Soler et toute l'agglo Perpignan sud (Toulouges à 5 min, Canohès, Pollestres, Thuir à 8 min). Nos consultants sont basés à proximité de Perpignan (10 min).",
+      a: "Oui, Axion-IA intervient au Soler et toute l'agglo Perpignan sud (Toulouges à 5 min, Canohès, Pollestres, Thuir à 8 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires périurbaines ?",

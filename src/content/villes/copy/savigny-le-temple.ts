@@ -11,9 +11,9 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
   pitchEn:
     "Axion-IA accompagne les TPE et PME de Savigny-le-Temple (77176, Seine-et-Marne, 31 148 habitants en 2023), cinquième ville la plus peuplée du département et l'une des plus jeunes de France (36,2 % de moins de 20 ans). Issue du développement de la ville nouvelle de Sénart à partir des années 1970, la commune accueille des zones industrielles, logistiques et tertiaires structurées autour de la gare RER D Savigny-le-Temple-Nandy. Le tissu local est dominé à près de 79 % par les services (commerce, hôtellerie, services aux entreprises).",
   directAnswerFr:
-    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nous intervenons partout en France, sur place ou à distance. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
   directAnswerEn:
-    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nos consultants arrivent par le RER D (gare Savigny-le-Temple-Nandy, ouverte en 1976) en 35 minutes depuis Châtelet-Les Halles, ou par l'A5 et la Francilienne (N104). Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
+    "Axion-IA se déplace à Savigny-le-Temple pour accompagner les TPE, PME et plus ponctuellement ETI dans le cadrage, le prototypage et l'industrialisation de cas d'usage IA. Nous intervenons partout en France, sur place ou à distance. Audit sur place dès {{price:audit-flash|flat}}, Formation 4 h dès {{price:intervention-4h|flat}}, Implémentation dès {{price:intervention-dirigeants|flat}}. Cibles prioritaires : entrepôts logistiques de Sénart, commerces de détail, restauration, services aux entreprises et artisans BTP. Livrables en code custom, conformes RGPD.",
   seoHook: "logistique Sénart & services PME",
   ecosystemFr:
     "Savigny-le-Temple est intégrée à la ville nouvelle de Sénart, ce qui en a fait un pôle logistique et tertiaire majeur du sud de l'Île-de-France depuis les années 1970 (la population est passée de 828 habitants en 1968 à plus de 31 000 aujourd'hui). Les zones d'activités locales mélangent logistique, industrie légère et services aux entreprises. Près de 79 % du tissu économique repose sur les services, en particulier le commerce de détail, l'hôtellerie-restauration et les services aux entreprises. La commune fait partie de la communauté d'agglomération Grand Paris Sud Seine-Essonne-Sénart.",
@@ -130,7 +130,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "Quels sont vos délais pour un devis à Savigny-le-Temple ?",
-            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons sur site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) pour le cadrage.",
+            a: "Un devis est remis à partir de 24-48 h selon la complexité du projet. Nous nous déplaçons sur site à Savigny-le-Temple pour le cadrage. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -216,7 +216,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
           },
           {
             q: "What are your lead times for a quote in Savigny-le-Temple?",
-            a: "A quote is delivered from 24-48 hours depending on project complexity. We travel on site (RER D Savigny-le-Temple-Nandy, A5, Francilienne N104) for framing, with no additional travel fees within Île-de-France.",
+            a: "A quote is delivered from 24-48 hours depending on project complexity. We travel on site in Savigny-le-Temple for framing. We work anywhere in France, on site or remotely.",
           },
         ],
         guarantees:
@@ -232,7 +232,7 @@ export const SAVIGNY_LE_TEMPLE_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour intervenir à Savigny-le-Temple ?",
-      a: "Nous intervenons sous 5 à 10 jours ouvrés à Savigny-le-Temple. Le RER D et l'A5 / Francilienne assurent un accès rapide depuis Paris (~35 min) ou Melun (~10 min).",
+      a: "Nous intervenons sous 5 à 10 jours ouvrés à Savigny-le-Temple.",
     },
     {
       q: "Intervenez-vous dans les communes proches de Savigny-le-Temple ?",

@@ -49,7 +49,7 @@ export const BALMA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Balma ?",
-      a: "Oui, Axion-IA intervient à Balma et dans toute la première couronne est de Toulouse (L'Union, Saint-Orens, Quint-Fonsegrives). Nos consultants se déplacent depuis Toulouse centre en 10 min via le métro Balma-Gramont.",
+      a: "Oui, Axion-IA intervient à Balma et dans toute la première couronne est de Toulouse (L'Union, Saint-Orens, Quint-Fonsegrives). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Balma ?",
@@ -61,7 +61,7 @@ export const BALMA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Balma ?",
-      a: "Nos consultants se déplacent à Balma depuis Toulouse (10 min métro). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes avec les outils IA configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos équipes repartent autonomes avec les outils IA configurés.",
     },
     {
       q: "Proposez-vous du coaching individuel IA à Balma ?",

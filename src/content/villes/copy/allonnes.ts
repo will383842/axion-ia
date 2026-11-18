@@ -49,7 +49,7 @@ export const ALLONNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Allonnes et dans le sud du Mans ?",
-      a: "Oui, Axion-IA intervient à Allonnes et dans tout le sud de Le Mans Métropole (Arnage, Mulsanne, Ruaudin, Changé). Nos consultants sont basés en agglomération mancelle, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Allonnes et dans tout le sud de Le Mans Métropole (Arnage, Mulsanne, Ruaudin, Changé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME du secteur automobile sarthois ?",
@@ -64,7 +64,7 @@ export const ALLONNES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes assurance aux outils IA : automatisation traitement sinistres, agents conversationnels clients, détection fraude, analyse prédictive portefeuille. Sur site ou visio.",
     },
     {
-      q: "Comment se passe une mission IA à Allonnes depuis Le Mans ?",
+      q: "Comment se déroule une mission IA à Allonnes ?",
       a: "Nos consultants interviennent directement dans vos locaux à Allonnes. Gare TGV Le Mans à 8 km (55 min Paris). Accès A11 direct.",
     },
   ],

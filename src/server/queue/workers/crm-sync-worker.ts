@@ -27,6 +27,7 @@ import { Worker, type Job } from "bullmq";
 import { prisma } from "@/lib/prisma";
 import { alertCrmSync, CRM_SYNC_BACKLOG_THRESHOLD } from "@/server/crm-sync/alerts";
 import { isCrmSyncEnabled } from "@/server/crm-sync/config";
+import { balayerDossiersClients } from "@/server/crm-sync/dossier-client";
 import { emitOutboxRow } from "@/server/crm-sync/emit";
 import { runCrmSyncReconciliation } from "@/server/crm-sync/reconcile";
 import { captureWorkerError } from "@/server/queue/lib/sentry-worker";
@@ -37,8 +38,13 @@ export const CRM_SYNC_QUEUE_NAME = "crm-sync";
  * `reconcile` ajouté au lot L5 : le passage QUOTIDIEN qui compare les
  * enregistrements source aux `subject_ref` émis. Le balayage donne la
  * fraîcheur, la réconciliation donne la garantie.
+ *
+ * `dossiers` (25/10/2026) : relit les dossiers clients et pose en outbox ceux
+ * qui ont changé (synchro automatique console → CRM). Un ANCIEN worker qui
+ * recevrait ce type (fenêtre app/worker) le traite comme un balayage de
+ * l'outbox : sans `outboxId`, il tombe dans la branche `sweep`. Inoffensif.
  */
-export type CrmSyncJobType = "emit" | "sweep" | "reconcile";
+export type CrmSyncJobType = "emit" | "sweep" | "reconcile" | "dossiers";
 
 export interface CrmSyncJobData {
   readonly type?: CrmSyncJobType;
@@ -124,6 +130,16 @@ async function processJob(job: Job<CrmSyncJobData>): Promise<void> {
   // qu'un job rouge dont personne ne lit la trace.
   if (job.data.type === "reconcile") {
     await runCrmSyncReconciliation();
+    return;
+  }
+
+  if (job.data.type === "dossiers") {
+    const res = await balayerDossiersClients();
+    if (res.emis > 0 || res.erreurs > 0) {
+      console.warn(
+        `[crm-sync] dossiers clients : ${res.emis} émis, ${res.erreurs} erreur(s) sur ${res.lus} relus`,
+      );
+    }
     return;
   }
 

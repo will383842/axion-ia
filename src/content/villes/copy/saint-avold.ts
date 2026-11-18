@@ -49,7 +49,7 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Avold ?",
-      a: "Oui, Axion-IA intervient à Saint-Avold et dans tout le bassin houiller mosellan (Carling, Folschviller, L'Hôpital, Forbach). Consultants via gare SNCF Saint-Avold ou autoroute A4. Sarrebruck accessible en 35 min.",
+      a: "Oui, Axion-IA intervient à Saint-Avold et dans tout le bassin houiller mosellan (Carling, Folschviller, L'Hôpital, Forbach). Saint-Avold est desservie par la gare SNCF et l'autoroute A4. Sarrebruck accessible en 35 min.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et sous-traitants chimie ?",
@@ -65,7 +65,7 @@ export const SAINT_AVOLD_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Saint-Avold ?",
-      a: "Nos consultants se déplacent via gare SNCF Saint-Avold (ligne Metz–Forbach) ou autoroute A4. Metz à 45 min, Forbach à 20 min, Sarrebruck à 35 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Avold est desservie par sa gare SNCF (ligne Metz–Forbach) et l'autoroute A4, à 45 min de Metz et 20 min de Forbach.",
     },
   ],
 };

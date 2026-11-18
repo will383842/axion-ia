@@ -53,7 +53,7 @@ export const GENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Genay et dans le nord lyonnais ?",
-      a: "Oui, Axion-IA intervient à Genay et dans tout le nord de la métropole de Lyon (Neuville-sur-Saône à 5 min, Massieux, Villefranche-sur-Saône à 20 min). Nos consultants se déplacent depuis Lyon (25 min).",
+      a: "Oui, Axion-IA intervient à Genay et dans tout le nord de la métropole de Lyon (Neuville-sur-Saône à 5 min, Massieux, Villefranche-sur-Saône à 20 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles et logistiques de Genay ?",
@@ -68,8 +68,8 @@ export const GENAY_COPY: VilleCopy = {
       a: "Oui, les TPE sont notre priorité : artisans BTP, commerçants, indépendants. Audit sur place {{price:audit-flash|flat}}, intervention d'une journée, coaching 1-to-1. Cas typiques : automatisation des devis et de la relation client.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ?",
-      a: "Nos consultants rejoignent Genay depuis Lyon (25 min). Sessions sur site ou en visio selon votre préférence.",
+      q: "Comment se déroule une mission à Genay ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon votre préférence.",
     },
   ],
 };

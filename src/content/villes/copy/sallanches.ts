@@ -49,7 +49,7 @@ export const SALLANCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sallanches et Pays du Mont-Blanc ?",
-      a: "Oui, Axion-IA intervient à Sallanches et dans tout le Pays du Mont-Blanc (Passy, Chamonix, Saint-Gervais, Megève, Combloux). Nos consultants se déplacent depuis Annecy (55 min) ou Genève (1h10).",
+      a: "Oui, Axion-IA intervient à Sallanches et dans tout le Pays du Mont-Blanc (Passy, Chamonix, Saint-Gervais, Megève, Combloux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les hôteliers et acteurs du tourisme montagne ?",
@@ -65,7 +65,7 @@ export const SALLANCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Sallanches ?",
-      a: "Nos consultants interviennent sur site dans vos locaux à Sallanches ou en visio. Depuis Annecy (55 min) ou Genève (1h10). Hébergement local possible pour missions multi-jours en saison.",
+      a: "Nos consultants interviennent sur site dans vos locaux à Sallanches ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours en saison.",
     },
   ],
 };

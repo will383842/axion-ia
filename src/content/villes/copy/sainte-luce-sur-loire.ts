@@ -49,7 +49,7 @@ export const SAINTE_LUCE_SUR_LOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sainte-Luce-sur-Loire ?",
-      a: "Oui, Axion-IA intervient à Sainte-Luce-sur-Loire et dans toute l'agglomération nantaise est (Thouaré, Carquefou, Mauves-sur-Loire). Nos consultants sont basés sur le bassin nantais, à 15 min du centre.",
+      a: "Oui, Axion-IA intervient à Sainte-Luce-sur-Loire et dans toute l'agglomération nantaise est (Thouaré, Carquefou, Mauves-sur-Loire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Sainte-Luce-sur-Loire  ?",

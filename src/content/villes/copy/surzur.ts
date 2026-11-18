@@ -49,7 +49,7 @@ export const SURZUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Surzur et sur la presqu'île de Rhuys ?",
-      a: "Oui, Axion-IA intervient à Surzur et toute la presqu'île de Rhuys (Sarzeau, Le Tour-du-Parc, Ambon, Muzillac, Theix-Noyalo). Nos consultants se déplacent depuis Vannes (15 min).",
+      a: "Oui, Axion-IA intervient à Surzur et toute la presqu'île de Rhuys (Sarzeau, Le Tour-du-Parc, Ambon, Muzillac, Theix-Noyalo). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les exploitants agricoles et maraîchers du secteur ?",
@@ -64,8 +64,8 @@ export const SURZUR_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les gîtes, campings et chambres d'hôtes autour de Surzur et Rhuys sur leurs cas IA : agents conversationnels réservation multilingue, optimisation tarification saisonnière, classification avis clients, automatisation channel management.",
     },
     {
-      q: "Comment se passe une mission à Surzur depuis Vannes ?",
-      a: "Nos consultants viennent de Vannes (15 min voiture). Pour les multi-jours, hébergement local possible (gîtes presqu'île de Rhuys).",
+      q: "Comment se déroule une mission à Surzur ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes presqu'île de Rhuys).",
     },
   ],
 };

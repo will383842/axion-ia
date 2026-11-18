@@ -83,10 +83,69 @@ export const env = createEnv({
     // (`visio-balayage-worker.ts`). Passé à "true" après la reprise réelle de
     // l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
+    // E-mails écrits à la main depuis la console (lot I4). ABSENT = ÉTEINT : actif
+    // SEULEMENT si "true". Rien ne lit encore ces trois variables (fiche F5).
+    // Le nom d'expéditeur réel se pose dans la configuration du serveur, jamais
+    // dans le dépôt.
+    EMAIL_MANUEL_ACTIF: z.enum(["true", "false"]).optional(),
+    EMAIL_MANUEL_NOM_EXPEDITEUR: z.string().min(1).max(100).default("Axion-IA"),
+    EMAIL_MANUEL_SIGNATURE: z.string().min(1).max(200).default("L'équipe Axion-IA"),
+    // Dégel des 4 générateurs annexes de pages ville (écosystème, secteurs, FAQ
+    // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
+    // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
+    VILLES_GENERATEURS_ANNEXES_ACTIFS: z.enum(["true", "false"]).optional(),
+    // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
+    // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
+    // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
+    // (journal de ce qui serait fait, rien d'écrit) ; absent ou "false" = coupé.
+    // ⚠️ La fiche auto tourne DANS le balayage du dossier client : elle ne fait rien si
+    // DOSSIER_BALAYAGE_ENABLED n'est pas "true" (visio-balayage-worker.ts), quel que
+    // soit DOSSIER_FICHE_AUTO. Il faut donc les DEUX, plus DOSSIER_FICHE_AUTO_DEPUIS.
+    // Sans DOSSIER_FICHE_AUTO_DEPUIS (date ISO d'activation) : rien n'est traité, et
+    // le stock créé avant cette date reste à classer à la main.
+    DOSSIER_FICHE_AUTO: z.enum(["true", "false", "essai"]).optional(),
+    DOSSIER_FICHE_AUTO_DEPUIS: z.string().optional(),
+    // Fiche prospect depuis une DEMANDE écrite (2026-11-04, `fiche-demande.ts`) : même mécanique que
+    // DOSSIER_FICHE_AUTO, même balayage (DOSSIER_BALAYAGE_ENABLED exigé). ABSENT = COUPÉ ; "essai" =
+    // à blanc. Ne l'ouvrir qu'APRÈS la preuve que la colonne `submissions.fiche_client_id` existe.
+    // DOSSIER_FICHE_DEMANDE_DEPUIS (date ISO) absente : rien n'est traité.
+    DOSSIER_FICHE_DEMANDE: z.enum(["true", "false", "essai"]).optional(),
+    DOSSIER_FICHE_DEMANDE_DEPUIS: z.string().optional(),
     // Lot OPCO A8 — envoi du dossier prêt à déposer à l'entreprise et relances.
     // Lu par le site ET le worker. Absent : ACTIF (hors tests) ; "false" coupe
     // tout (envoi automatique, bouton, relances, réponses par lien).
     OPCO_SUIVI_ENTREPRISE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Questionnaire de pré-audit (2026-10-24) : dépôt, essai et envoi par clic de Will. ABSENT =
+    // ÉTEINT. L'envoi RÉEL exige en plus les deux mentions de la notice RGPD ci-dessous.
+    QUESTIONNAIRE_AVANT_AUDIT_ENABLED: z.enum(["true", "false"]).optional(),
+    QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: z.string().optional(),
+    QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: z.string().optional(),
+    // Suivi du questionnaire (2026-10-26) : relances, confirmations, salon Telegram. Lus par
+    // le WORKER. ABSENT = ÉTEINT ; "true" allume ; "essai" calcule sans rien écrire ni envoyer.
+    // Texte libre (revue du 25/10) : une valeur mal saisie ne fait JAMAIS planter app ni worker ;
+    // seules « true » et « essai » allument (`drapeaux-suivi.ts`), tout le reste éteint.
+    QUESTIONNAIRE_RELANCES_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_TELEGRAM_ENABLED: z.string().optional(),
+    // Suivi des ouvertures du questionnaire (2026-10-27), lus par le SITE. ABSENT = ÉTEINT ; seule
+    // « true » allume (`ouvertures.ts`). Texte libre pour la même raison que ci-dessus.
+    //   · SUIVI_ENABLED : la page note ses ouvertures, la fiche les affiche avec l'avancée, le
+    //     super-administrateur lit un brouillon (tracé) ;
+    //   · SUIVI_NOTICE_VISIBLE : ne commande QUE le texte d'information de la page.
+    QUESTIONNAIRE_SUIVI_ENABLED: z.string().optional(),
+    QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: z.string().optional(),
+    // Copie complète des réponses d'un questionnaire (super-administrateur) : ABSENT = ÉTEINT.
+    QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: z.string().optional(),
+    // Alerte Telegram du Tour France IA (2026-10-29) : nouvelle mini-demande et ville qui atteint
+    // 5 demandes comptées. Lu par le SITE (`features/tour-de-france/alertes.ts`). ⚠️ EXCEPTION à la
+    // convention du dépôt (absent = éteint) : ici ABSENT = ALLUMÉ, seule la valeur "false" éteint
+    // (décision de Will). Texte libre : une valeur mal saisie ne fait jamais planter l'application.
+    // Le salon se règle par `TELEGRAM_CHAT_ID_TOUR` (lu par `process.env`, comme les autres salons).
+    TOUR_TELEGRAM_ENABLED: z.string().optional(),
+    // Boîte d'Axion IA qui reçoit les essais de la console (jamais le prospect). Lue par le WORKER.
+    // Texte libre (une faute de frappe ne doit jamais empêcher le démarrage) : `adresseEssai()`
+    // la vérifie et l'essai échoue, visible au journal, si elle est invalide.
+    QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: z.string().optional(),
     // INT-T60-A — import mensuel de la table IDCC → OPCO (SIRO, data.gouv.fr),
     // lu par le WORKER (`opco-siro-import-worker.ts`). Absent : ACTIF (hors
     // tests) ; "false" coupe le téléchargement et l'import.
@@ -107,6 +166,12 @@ export const env = createEnv({
     // par défaut ; ne s'ouvre qu'après le drapeau `crm.ingest.personnes_enabled`
     // du CRM, contrôlé sur un premier événement réel. Web ET worker.
     CRM_SYNC_GUIDE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Synchro AUTOMATIQUE du dossier client (25/10/2026) : FERMÉ par défaut.
+    CRM_SYNC_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
+    // Retour du CRM vers le dossier client (25/10/2026) : FERMÉ par défaut.
+    CRM_INBOUND_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
+    // Base unique du chatbot (V3-3) : ÉTEINT par défaut, seule la valeur exacte "true" l'allume.
+    CHATBOT_KB_UNIFIED: z.enum(["true", "false"]).optional(),
     // Exclusions PERSISTANTES du flux lettre et guide (lot L4-S, décision D4) :
     // empreintes SHA-256 de l'adresse normalisée (trim + minuscules), séparées
     // par des virgules. Jamais une adresse en clair. Voir `crm-sync/exclusions.ts`.
@@ -129,6 +194,7 @@ export const env = createEnv({
     ENREGISTREMENT_VISIO_PILOTE: z.enum(["true", "false"]).optional(),
     ENREGISTREMENT_VISIO_OUVERT: z.enum(["true", "false"]).optional(),
 
+    // `TELEGRAM_CHAT_ID` : salon général, nommé « 🔧 Axion-IA — Technique » dans Telegram (14/11/2026).
     TELEGRAM_BOT_TOKEN: z.string().optional(),
     TELEGRAM_CHAT_ID: z.string().optional(),
 
@@ -143,13 +209,13 @@ export const env = createEnv({
     // fichiers pour ajouter un groupe.
     TELEGRAM_CALENDLY_BOT_TOKEN: z.string().optional(),
 
-    // WhatsApp (CallMeBot) — notif GRATUITE des leads humains vers le numéro perso.
-    // Optionnelles : sans elles le canal WhatsApp est un no-op silencieux (le reste
-    // des notifs Telegram continue normalement). Cf. `src/server/notifications/channels/whatsapp.ts`.
-    //   - WHATSAPP_CALLMEBOT_APIKEY : la clé renvoyée par le bot CallMeBot sur WhatsApp.
-    //   - WHATSAPP_NOTIFY_PHONE     : le numéro destinataire au format international (ex. +33755512345).
-    WHATSAPP_CALLMEBOT_APIKEY: z.string().optional(),
-    WHATSAPP_NOTIFY_PHONE: z.string().optional(),
+    // Doublon des demandes de CLIENTS (14/11/2026) : conversation PRIVÉE du fondateur avec le robot
+    // (son identifiant, obtenu via @userinfobot après un /start), SANS repli sur un salon : absent =
+    // pas de doublon Telegram, l'e-mail part quand même. À poser sur l'app ET le worker.
+    TELEGRAM_CHAT_ID_PRIVE: z.string().optional(),
+    // Destinataire de l'e-mail « IMPORTANT DEMANDE CLIENT … ». Absent = contact@axion-ia.com
+    // (`destinataireAlertesClients`, `src/lib/destinataires-internes.ts`).
+    ALERTES_CLIENTS_EMAIL: z.string().optional(),
 
     TURNSTILE_SECRET_KEY: z.string().optional(),
 
@@ -416,6 +482,11 @@ export const env = createEnv({
     /// Clé des liens privés envoyés aux candidats (HMAC, L5). Indépendante
     /// d'`AUTH_SECRET` : sa rotation couperait tous les liens. 32 caractères au moins.
     PARTAGES_SECRET: z.string().min(32).optional(),
+    /// Clé des jetons d'opposition opaques `op2` (e-mails). Indépendante d'`AUTH_SECRET` :
+    /// sa rotation ne doit pas couper les liens. Ne se supprime JAMAIS (les liens n'expirent
+    /// pas) ; une rotation ajoute un `kid` et `OPPOSITION_JETON_SECRET_<KID>`. Lue à
+    /// l'exécution par `opposition-jeton.ts` (app ET worker). Facultative : absente → `op1`.
+    OPPOSITION_JETON_SECRET: z.string().min(32).optional(),
 
     HETZNER_STORAGE_ENDPOINT: z.string().optional(),
     HETZNER_STORAGE_BUCKET: z.string().optional(),
@@ -706,11 +777,33 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    EMAIL_MANUEL_ACTIF: process.env.EMAIL_MANUEL_ACTIF,
+    EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
+    EMAIL_MANUEL_SIGNATURE: process.env.EMAIL_MANUEL_SIGNATURE,
+    CHATBOT_KB_UNIFIED: process.env.CHATBOT_KB_UNIFIED,
+    VILLES_GENERATEURS_ANNEXES_ACTIFS: process.env.VILLES_GENERATEURS_ANNEXES_ACTIFS,
+    DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
+    DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
+    DOSSIER_FICHE_DEMANDE: process.env.DOSSIER_FICHE_DEMANDE,
+    DOSSIER_FICHE_DEMANDE_DEPUIS: process.env.DOSSIER_FICHE_DEMANDE_DEPUIS,
     OPCO_SUIVI_ENTREPRISE_ENABLED: process.env.OPCO_SUIVI_ENTREPRISE_ENABLED,
+    QUESTIONNAIRE_AVANT_AUDIT_ENABLED: process.env.QUESTIONNAIRE_AVANT_AUDIT_ENABLED,
+    QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT: process.env.QUESTIONNAIRE_PREAUDIT_RGPD_CONTACT,
+    QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION: process.env.QUESTIONNAIRE_PREAUDIT_RGPD_CONSERVATION,
+    QUESTIONNAIRE_RELANCES_ENABLED: process.env.QUESTIONNAIRE_RELANCES_ENABLED,
+    QUESTIONNAIRE_CONFIRMATIONS_ENABLED: process.env.QUESTIONNAIRE_CONFIRMATIONS_ENABLED,
+    QUESTIONNAIRE_TELEGRAM_ENABLED: process.env.QUESTIONNAIRE_TELEGRAM_ENABLED,
+    QUESTIONNAIRE_SUIVI_ENABLED: process.env.QUESTIONNAIRE_SUIVI_ENABLED,
+    QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE: process.env.QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE,
+    QUESTIONNAIRE_EXPORT_COMPLET_ENABLED: process.env.QUESTIONNAIRE_EXPORT_COMPLET_ENABLED,
+    TOUR_TELEGRAM_ENABLED: process.env.TOUR_TELEGRAM_ENABLED,
+    QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI: process.env.QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI,
     IDCC_OPCO_IMPORT_ENABLED: process.env.IDCC_OPCO_IMPORT_ENABLED,
     VISIO_ADRESSES_DE_TEST: process.env.VISIO_ADRESSES_DE_TEST,
     CRM_SYNC_CANDIDATES_ENABLED: process.env.CRM_SYNC_CANDIDATES_ENABLED,
     CRM_SYNC_GUIDE_ENABLED: process.env.CRM_SYNC_GUIDE_ENABLED,
+    CRM_SYNC_DOSSIER_ENABLED: process.env.CRM_SYNC_DOSSIER_ENABLED,
+    CRM_INBOUND_DOSSIER_ENABLED: process.env.CRM_INBOUND_DOSSIER_ENABLED,
     CRM_SYNC_EXCLUSIONS_SHA256: process.env.CRM_SYNC_EXCLUSIONS_SHA256,
     CRM_SYNC_URL: process.env.CRM_SYNC_URL,
     SITE_SYNC_HMAC_SECRET: process.env.SITE_SYNC_HMAC_SECRET,
@@ -720,8 +813,8 @@ export const env = createEnv({
     TELEGRAM_BOT_TOKEN: process.env.TELEGRAM_BOT_TOKEN,
     TELEGRAM_CALENDLY_BOT_TOKEN: process.env.TELEGRAM_CALENDLY_BOT_TOKEN,
     TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
-    WHATSAPP_CALLMEBOT_APIKEY: process.env.WHATSAPP_CALLMEBOT_APIKEY,
-    WHATSAPP_NOTIFY_PHONE: process.env.WHATSAPP_NOTIFY_PHONE,
+    TELEGRAM_CHAT_ID_PRIVE: process.env.TELEGRAM_CHAT_ID_PRIVE,
+    ALERTES_CLIENTS_EMAIL: process.env.ALERTES_CLIENTS_EMAIL,
     TURNSTILE_SECRET_KEY: process.env.TURNSTILE_SECRET_KEY,
     CALENDLY_API_TOKEN: process.env.CALENDLY_API_TOKEN,
     CALENDLY_WEBHOOK_SIGNING_KEY: process.env.CALENDLY_WEBHOOK_SIGNING_KEY,
@@ -763,6 +856,7 @@ export const env = createEnv({
     R2_PARTAGES_ACCESS_KEY_ID: process.env.R2_PARTAGES_ACCESS_KEY_ID,
     R2_PARTAGES_SECRET_ACCESS_KEY: process.env.R2_PARTAGES_SECRET_ACCESS_KEY,
     PARTAGES_SECRET: process.env.PARTAGES_SECRET,
+    OPPOSITION_JETON_SECRET: process.env.OPPOSITION_JETON_SECRET,
     HETZNER_STORAGE_ENDPOINT: process.env.HETZNER_STORAGE_ENDPOINT,
     HETZNER_STORAGE_BUCKET: process.env.HETZNER_STORAGE_BUCKET,
     HETZNER_STORAGE_KEY: process.env.HETZNER_STORAGE_KEY,

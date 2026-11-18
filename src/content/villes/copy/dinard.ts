@@ -49,7 +49,7 @@ export const DINARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dinard ?",
-      a: "Oui, Axion-IA intervient à Dinard et sur toute la Côte d'Émeraude (Saint-Malo, Saint-Lunaire, Saint-Briac-sur-Mer, Pleurtuit). Nos consultants couvrent le littoral nord breton depuis Rennes (1h).",
+      a: "Oui, Axion-IA intervient à Dinard et sur toute la Côte d'Émeraude (Saint-Malo, Saint-Lunaire, Saint-Briac-sur-Mer, Pleurtuit). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôteliers et restaurateurs de Dinard ?",
@@ -65,7 +65,7 @@ export const DINARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Dinard ?",
-      a: "Nos consultants interviennent à Dinard depuis Rennes (1h) ou via l'aéroport Dinard-Pleurtuit (5 min). Intervention sur site dans vos locaux, hôtel, commerce ou cabinet.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, hôtel, commerce ou cabinet.",
     },
   ],
 };

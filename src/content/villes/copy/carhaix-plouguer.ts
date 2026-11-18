@@ -49,7 +49,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carhaix-Plouguer et centre Finistère ?",
-      a: "Oui, Axion-IA intervient à Carhaix-Plouguer et tout le centre Finistère (Huelgoat, Châteauneuf-du-Faou, Pleyben, Rostrenen). Nos consultants viennent de Brest (1h N164) ou Quimper (55 min).",
+      a: "Oui, Axion-IA intervient à Carhaix-Plouguer et tout le centre Finistère (Huelgoat, Châteauneuf-du-Faou, Pleyben, Rostrenen). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME agroalimentaires du Poher ?",
@@ -65,7 +65,7 @@ export const CARHAIX_PLOUGUER_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Carhaix-Plouguer ?",
-      a: "Nos consultants viennent de Brest (1h N164) ou Quimper (55 min). Gare TER Carhaix accessible (ligne vers Guingamp). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER Carhaix accessible (ligne vers Guingamp). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

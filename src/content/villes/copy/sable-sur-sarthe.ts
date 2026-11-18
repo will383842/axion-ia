@@ -49,7 +49,7 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sablé-sur-Sarthe et dans le bassin sabolien ?",
-      a: "Oui, Axion-IA intervient à Sablé-sur-Sarthe et dans tout le bassin sabolien (Solesmes, Précigné, Juigné-sur-Sarthe, Parcé-sur-Sarthe). Gare TGV sur place, accès direct depuis Paris, Le Mans et Angers.",
+      a: "Oui, Axion-IA intervient à Sablé-sur-Sarthe et dans tout le bassin sabolien (Solesmes, Précigné, Juigné-sur-Sarthe, Parcé-sur-Sarthe). Gare TGV sur place, accès direct.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires du bassin sabolien ?",
@@ -65,7 +65,7 @@ export const SABLE_SUR_SARTHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission IA à Sablé-sur-Sarthe ?",
-      a: "Nos consultants arrivent en gare TGV Sablé-sur-Sarthe (1 h 30 Paris, 25 min Le Mans). Intervention directe dans vos locaux. Format mixte sur site + visio. Tarifs publics, frais déplacement à part.",
+      a: "La gare TGV de Sablé-sur-Sarthe dessert la commune (25 min du Mans). Intervention directe dans vos locaux. Format mixte sur site + visio. Tarifs publics, frais déplacement à part.",
     },
   ],
 };

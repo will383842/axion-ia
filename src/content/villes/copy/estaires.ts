@@ -49,7 +49,7 @@ export const ESTAIRES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Estaires ?",
-      a: "Oui, Axion-IA intervient à Estaires et dans toute la Flandre-Lys (La Gorgue, Merville, Laventie, Sailly-sur-la-Lys). Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Estaires et dans toute la Flandre-Lys (La Gorgue, Merville, Laventie, Sailly-sur-la-Lys). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour un audit IA à Estaires ?",
@@ -65,7 +65,7 @@ export const ESTAIRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Estaires ?",
-      a: "Nos consultants viennent via gare d'Estaires (TER Lille-Hazebrouck-Calais sur place) ou A25. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hazebrouck à 15 min, Armentières à 15 min, Lille à 35 min.",
     },
   ],
 };

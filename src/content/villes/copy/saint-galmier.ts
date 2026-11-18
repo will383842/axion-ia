@@ -49,7 +49,7 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Galmier et plaine Forez ?",
-      a: "Oui, Axion-IA intervient à Saint-Galmier et toute la plaine du Forez (Montrond-les-Bains à 10 min, Andrézieux-Bouthéon, Sury-le-Comtal). Couverture Loire Forez Agglo. Consultants depuis Lyon (50 min) ou Saint-Étienne (25 min).",
+      a: "Oui, Axion-IA intervient à Saint-Galmier et toute la plaine du Forez (Montrond-les-Bains à 10 min, Andrézieux-Bouthéon, Sury-le-Comtal). Couverture Loire Forez Agglo. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec la filière agroalimentaire eau minérale ?",
@@ -64,8 +64,8 @@ export const SAINT_GALMIER_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Galmier, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (25 min). Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier).",
+      q: "Comment se déroule une mission à Saint-Galmier ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Saint-Galmier).",
     },
   ],
 };

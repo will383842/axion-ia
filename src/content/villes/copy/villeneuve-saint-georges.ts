@@ -235,8 +235,8 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
       a: "Nous intervenons sur site à Villeneuve-Saint-Georges dans les 5 jours ouvrés après validation de la mission. Les deux gares du RER D et la RN6 facilitent la planification.",
     },
     {
-      q: "Quelles communes proches couvrez-vous depuis Villeneuve-Saint-Georges ?",
-      a: "Depuis Villeneuve-Saint-Georges, nous couvrons les communes limitrophes : Choisy-le-Roi, Crosne, Montgeron, Orly, Valenton, Vigneux-sur-Seine et Villeneuve-le-Roi (séparée par la Seine).",
+      q: "Quelles communes autour de Villeneuve-Saint-Georges couvrez-vous ?",
+      a: "Nous couvrons les communes limitrophes de Villeneuve-Saint-Georges : Choisy-le-Roi, Crosne, Montgeron, Orly, Valenton, Vigneux-sur-Seine et Villeneuve-le-Roi (séparée par la Seine). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs locaux accompagnez-vous à Villeneuve-Saint-Georges ?",
@@ -248,7 +248,7 @@ export const VILLENEUVE_SAINT_GEORGES_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Villeneuve-Saint-Georges ?",
-      a: "Oui, notre équipe se déplace directement à Villeneuve-Saint-Georges pour audits, interventions et implémentations. Les deux gares RER D et la proximité de la RN6 et de Paris-Orly rendent l'accès simple.",
+      a: "Oui, notre équipe se déplace directement à Villeneuve-Saint-Georges pour audits, interventions et implémentations. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

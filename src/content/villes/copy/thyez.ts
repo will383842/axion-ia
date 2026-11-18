@@ -49,7 +49,7 @@ export const THYEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thyez et dans la vallée de l'Arve ?",
-      a: "Oui, Axion-IA intervient à Thyez et dans toute la vallée de l'Arve (Bonneville, Cluses, Marnaz, Scionzier, Marignier). Nos consultants se déplacent depuis Annecy (45 min) ou Genève (35 min).",
+      a: "Oui, Axion-IA intervient à Thyez et dans toute la vallée de l'Arve (Bonneville, Cluses, Marnaz, Scionzier, Marignier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les TPE du décolletage à Thyez ?",

@@ -9,7 +9,7 @@
  * « Pré-réserver » :
  *   - Les 3 cartes : « Réserver un appel » (/appel) + « Nous écrire » (/contact).
  *   - Les 3 : « Plus d'infos sur le déroulement » → page détail du tier
- *     (/audit/tpe-1-jour, /audit/strategique-pme, /audit/strategique-eti).
+ *     (/journee-ia, /audit/strategique-pme, /audit/strategique-eti).
  *
  * Server Component pur, zéro JS. Prix via SSOT (jamais en dur). FR canonique —
  * EN = miroir (locale 301→FR, règle Will 2026-05-16).
@@ -20,7 +20,7 @@ import { ArrowRight, Phone, Mail } from "lucide-react";
 import { Section } from "@/components/layout/Section";
 import { Cta } from "@/components/marketing/Cta";
 import { Link } from "@/i18n/navigation";
-import { AUDIT_TIERS, formatAmount, formatTierPrice, getTierById } from "@/content/pricing";
+import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 
 interface AudienceCard {
   readonly segment: string;
@@ -35,52 +35,30 @@ interface AudienceCard {
   readonly metaEn: string;
   /** Page détail du tier — « plus d'infos sur le déroulement ». */
   readonly detailHref: string;
+  /** Texte du lien détail quand il doit décrire la page visée (défaut : « Plus d'infos sur le déroulement »). */
+  readonly detailLabelFr?: string;
 }
 
-// Prix d'entrée audit sur place (TPE) — SSOT pricing.ts (audit-flash).
-// `formatTierPrice` (et non `formatAmount(priceFlat!)`) pour respecter le
-// `isFromPrice` du tier : Will 2026-07-17, les audits s'annoncent toujours en
-// « à partir de ». Sans ça, le TPE restait le seul niveau en prix ferme.
-const FLASH_PRICE = formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr", {
-  compact: true,
-});
-// Variante EN — `FLASH_PRICE` porte désormais le préfixe « À partir de » (FR) :
-// le réutiliser tel quel dans `metaEn` injecterait du français dans la carte EN.
-const FLASH_PRICE_EN = formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "en", {
-  compact: true,
-});
-
-// Prix d'entrée audit PME — SSOT pricing.ts (audit-cible priceMin).
-const ENTRY_PRICE = formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", {
-  compact: true,
-});
-
-// Prix d'entrée audit ETI — SSOT pricing.ts (audit-strategique-eti priceMin).
-// Will 2026-06-03 — corrige le bug qui réutilisait ENTRY_PRICE (tier PME) ;
-// la carte ETI dérive désormais de son propre tier.
-const ETI_ENTRY_PRICE = formatAmount(
-  getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
-  "fr",
-  {
-    compact: true,
-  },
-);
+// R5a (08/11/2026, décision n°7) : la carte TPE présente La Journée IA (prix lu dans
+// pricing.ts) ; les audits PME et ETI sont sur devis, sans montant.
+const TARIF_JOURNEE = formatTierPrice(JOURNEE_IA_TIER, "fr", { compact: true });
+const TARIF_JOURNEE_EN = formatTierPrice(JOURNEE_IA_TIER, "en", { compact: true });
 
 const CARDS: ReadonlyArray<AudienceCard> = [
   {
     segment: "TPE",
     sizeFr: "TPE, artisans & commerçants",
     sizeEn: "Small businesses, artisans & retailers",
-    titleFr: "L'IA accessible, tout de suite",
-    titleEn: "AI made accessible, right now",
+    titleFr: "La Journée IA : par où commencer",
+    titleEn: "The AI Day: where to start",
     bodyFr:
-      "Vous portez l'entreprise au quotidien. On identifie 3 à 5 automatisations qui vous libèrent du temps dès la première semaine — devis, relances, administratif.",
+      "Nous venons chez vous, nous chiffrons avec vos équipes le temps perdu sur les tâches qui reviennent, et nous les formons sur leurs propres dossiers.",
     bodyEn:
-      "You carry the business day to day. We pinpoint 3 to 5 automations that free up your time from week one — quotes, follow-ups, admin.",
-    // Prix en tête, comme les cartes PME/ETI (« À partir de X · sur devis »).
-    metaFr: `${FLASH_PRICE} · 1 journée sur place`,
-    metaEn: `${FLASH_PRICE_EN} · 1 full day on site`,
-    detailHref: "/audit/tpe-1-jour",
+      "We come to your company, work out with your teams the time lost on recurring tasks, and train them on their own files.",
+    metaFr: `${TARIF_JOURNEE} HT · 1 journée dans votre entreprise`,
+    metaEn: `${TARIF_JOURNEE_EN} excl. VAT · 1 day in your company`,
+    detailHref: "/journee-ia",
+    detailLabelFr: "Audit + formation IA en une journée : le déroulement",
   },
   {
     segment: "PME",
@@ -92,13 +70,13 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous avez déjà testé quelques outils IA. On structure ce qui marche, on élimine le superflu, et on chiffre les prochains chantiers prioritaires.",
     bodyEn:
       "You've already tried a few AI tools. We structure what works, cut the fluff, and cost the next priority projects.",
-    metaFr: `À partir de ${ENTRY_PRICE} · sur devis`,
-    metaEn: `From ${ENTRY_PRICE} · on quote`,
+    metaFr: "Sur devis",
+    metaEn: "On quote",
     detailHref: "/audit/strategique-pme",
   },
   {
     segment: "ETI",
-    sizeFr: "ETI & grandes entreprises",
+    sizeFr: "PME multi-sites",
     sizeEn: "Mid-caps & large enterprises",
     titleFr: "Gouvernance et impact à grande échelle",
     titleEn: "Governance and impact at scale",
@@ -106,8 +84,8 @@ const CARDS: ReadonlyArray<AudienceCard> = [
       "Vous pilotez des enjeux multi-sites. On cartographie l'ensemble, on priorise par ROI, et on cadre la gouvernance IA (AI Act, RGPD, conduite du changement).",
     bodyEn:
       "You steer multi-site challenges. We map everything, prioritise by ROI, and frame AI governance (AI Act, GDPR, change management).",
-    metaFr: `À partir de ${ETI_ENTRY_PRICE} · sur devis`,
-    metaEn: `From ${ETI_ENTRY_PRICE} · on quote`,
+    metaFr: "Sur devis",
+    metaEn: "On quote",
     detailHref: "/audit/strategique-eti",
   },
 ];
@@ -147,7 +125,7 @@ function CardCtas({ card, isFr }: { card: AudienceCard; isFr: boolean }): ReactN
         href={card.detailHref as never}
         className="text-fg-muted hover:text-terracotta-deep mt-1 inline-flex items-center gap-1.5 text-[13px] font-medium underline-offset-2 hover:underline"
       >
-        {isFr ? "Plus d'infos sur le déroulement" : "More on how it works"}
+        {isFr ? (card.detailLabelFr ?? "Plus d'infos sur le déroulement") : "More on how it works"}
         <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
       </Link>
     </div>
@@ -163,7 +141,7 @@ export function AuditAudience({ isFr }: { isFr: boolean }): ReactNode {
       titleEm={isFr ? "chaque profil" : "every profile"}
       description={
         isFr
-          ? "De l'artisan à l'ETI, on calibre la profondeur de l'audit à votre taille et vos enjeux."
+          ? "De l'artisan à la PME multi-sites, nous calibrons la profondeur de l'audit à votre taille et à vos enjeux."
           : "From sole trader to mid-cap, we calibrate the audit depth to your size and challenges."
       }
     >

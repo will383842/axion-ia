@@ -49,7 +49,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-Tolosane ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-Tolosane et dans tout le sud-ouest de Toulouse (Cugnaux, Frouzins, Seysses). Nos consultants se déplacent en 15 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Villeneuve-Tolosane et dans tout le sud-ouest de Toulouse (Cugnaux, Frouzins, Seysses). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Villeneuve-Tolosane ?",
@@ -61,7 +61,7 @@ export const VILLENEUVE_TOLOSANE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Villeneuve-Tolosane ?",
-      a: "Nos consultants se déplacent à Villeneuve-Tolosane depuis Toulouse (15 min). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "Proposez-vous du coaching individuel à Villeneuve-Tolosane ?",

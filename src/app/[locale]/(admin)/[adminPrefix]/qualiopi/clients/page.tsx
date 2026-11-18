@@ -10,6 +10,9 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -22,6 +25,19 @@ import { Hash, Users, FileText, CheckCircle2 } from "lucide-react";
 import { AdminEmptyState } from "@/components/admin/ui";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { prisma } from "@/lib/prisma";
+import { separerLesArchivees } from "@/features/dossier-client/fiche/archivage-liste";
+import { TEXTE_LECTURE_IMPOSSIBLE } from "@/features/dossier-client/bandeau-ou-en-est";
+import {
+  adresseListe,
+  appliquerFiltreStatut,
+  compterParFiltre,
+  FILTRES_STATUT,
+  LIBELLE_FILTRE,
+  lireFiltreStatut,
+} from "@/features/dossier-client/filtre-statut-liste";
+// Alias : un nom en « lire… » est compté comme une lecture du dossier par la garde « rôle avant lecture ».
+import { lireMessageDeRetour as messageScelle } from "@/features/dossier-client/message-de-retour";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -35,6 +51,14 @@ const STATUT_LABELS: Record<string, string> = {
   client_actif: "Client actif",
   client_inactif: "Client inactif",
   perdu: "Perdu",
+};
+
+const TON_STATUT: Record<string, "neutral" | "warning" | "success"> = {
+  prospect: "neutral",
+  devis_envoye: "warning",
+  client_actif: "success",
+  client_inactif: "neutral",
+  perdu: "neutral",
 };
 
 // Le OPCO_LABELS local (5 entrées) a été supprimé : c'était un duplicat
@@ -53,12 +77,18 @@ const TAILLE_LABELS: Record<string, string> = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
-  searchParams: Promise<{ q?: string }>;
+  searchParams: Promise<{
+    q?: string;
+    archives?: string;
+    statut?: string;
+    message?: string;
+    sceau?: string;
+  }>;
 }
 
 export default async function QualiopiClientsPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix } = await params;
-  const { q } = await searchParams;
+  const { q, archives, statut, message, sceau } = await searchParams;
   const acces = await gardePage("consultation", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -66,17 +96,39 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
 
   const recherche = (q ?? "").trim();
   // R3 : les fiches d'essai du pilote visio n'apparaissent que sur recherche.
-  const clients = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+  const tous = await listClients(recherche === "" ? { horsFichesDEssai: true } : { recherche });
+
+  // Lot B6 : les fiches archivées sont masquées par défaut (`?archives=1` les montre seules).
+  const partage = await separerLesArchivees(prisma, tous);
+  const voirArchives = archives === "1";
+  // `vue` = ce que `archives` et `q` donnent ; `clients` = la vue réduite par `?statut=`.
+  const vue = voirArchives ? partage.archivees : partage.actives;
+  const filtre = lireFiltreStatut(statut);
+  const clients = appliquerFiltreStatut(vue, filtre);
+  const parFiltre = compterParFiltre(vue);
+  // Archivées que le filtre courant laisserait voir : c'est CE nombre que les liens annoncent.
+  const archiveesDuFiltre = appliquerFiltreStatut(partage.archivees, filtre).length;
+  // Confirmation laissée par la suppression (`?message=`) : seul un message SCELLÉ par nos actions
+  // s'affiche (un lien forgé ne montre rien), en texte brut (React échappe), 300 caractères au plus.
+  const messageRetour = messageScelle({ message, sceau }, "message");
+  const hrefListe = `/${locale}/${adminPrefix}/qualiopi/clients`;
+  // Le rôle vient de la session lue ICI, côté serveur : jamais d'un paramètre d'adresse.
+  const estSuperAdmin = acces.role === "super_admin";
 
   // 🔴 Les compteurs portent sur le RÉSULTAT AFFICHÉ, et le libellé le dit.
+  // Avec `?statut=`, les cartes suivent le filtre (suffixe « · Perdus ») : « Total 6 » au-dessus
+  // d'une ligne serait faux. La carte « Prospects sans devis » dit ce qu'elle compte (`prospect`
+  // seul) pour ne pas se confondre avec le filtre « Prospects » (prospect + devis envoyé).
   //
   // Laisser « Total 3 » au-dessus d'une liste filtrée à 1 ligne fait douter de
   // l'écran : on ne sait plus si la recherche a filtré ou si des fiches ont
   // disparu. Un compteur qui ne décrit pas ce qu'on voit est pire que pas de
   // compteur.
-  const prospects = clients.filter((c) => c.statut === "prospect").length;
-  const actifs = clients.filter((c) => c.statut === "client_actif").length;
-  const devisEnvoyes = clients.filter((c) => c.statut === "devis_envoye").length;
+  const compte = appliquerFiltreStatut(partage.actives, filtre);
+  const suffixeFiltre = filtre === "tous" ? "" : ` · ${LIBELLE_FILTRE[filtre]}`;
+  const prospects = compte.filter((c) => c.statut === "prospect").length;
+  const actifs = compte.filter((c) => c.statut === "client_actif").length;
+  const devisEnvoyes = compte.filter((c) => c.statut === "devis_envoye").length;
 
   const cellCls = "px-[var(--space-admin-4)] py-[var(--space-admin-3)] align-top";
   const headCls =
@@ -89,73 +141,185 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
         description="CRM organisme de formation — entreprises (B2B) et particuliers (B2C). OPCO déduit de l'IDCC (source légale), à défaut du code NAF ; corrigeable par ligne."
       />
 
-      <div className="mb-[var(--space-admin-6)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
-        <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+      <div className="mb-[var(--space-admin-6)]">
+        <AdminButton href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} size="lg">
           + Nouveau client
-        </Link>
+        </AdminButton>
+      </div>
 
-        {/*
-          Recherche en <form method="get"> : aucun JavaScript client.
-          Le terme vit dans l'URL, donc il se partage, se met en favori et
-          survit à un rechargement — trois choses qu'un filtre en état local
-          ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
-          avec 4 millions d'établissements collectés côté prospection, filtrer
-          après chargement ne tiendrait de toute façon pas.
-        */}
-        <form method="get" className="flex flex-1 gap-[var(--space-admin-2)]">
+      {/*
+        Recherche en <form method="get"> : aucun JavaScript client.
+        Le terme vit dans l'URL, donc il se partage, se met en favori et
+        survit à un rechargement — trois choses qu'un filtre en état local
+        ne sait pas faire. C'est le serveur qui filtre, pas le navigateur :
+        avec 4 millions d'établissements collectés côté prospection, filtrer
+        après chargement ne tiendrait de toute façon pas.
+      */}
+      <AdminBloc teinte="violet" titre="Chercher un client">
+        <form method="get" className="flex flex-wrap gap-[var(--space-admin-2)]">
           <input
             type="search"
             name="q"
             defaultValue={recherche}
-            placeholder="Rechercher : raison sociale, SIRET, SIREN, n° de fiche, contact…"
+            placeholder="Raison sociale, SIRET, SIREN, n° de fiche, contact…"
             aria-label="Rechercher un client par raison sociale, SIRET, SIREN, numéro de fiche ou contact"
-            className="min-w-[18rem] flex-1 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]"
+            className="admin-input min-w-[16rem] flex-1"
           />
-          <button type="submit" className="admin-button-secondary">
+          {voirArchives ? <input type="hidden" name="archives" value="1" /> : null}
+          {filtre !== "tous" ? <input type="hidden" name="statut" value={filtre} /> : null}
+          <AdminButton type="submit" variant="secondary">
             Rechercher
-          </button>
+          </AdminButton>
           {recherche !== "" ? (
             <Link
-              href={`/${locale}/${adminPrefix}/qualiopi/clients`}
+              href={adresseListe(hrefListe, { statut: filtre })}
               className="self-center text-[length:var(--text-admin-sm)] underline"
             >
               Effacer
             </Link>
           ) : null}
         </form>
-      </div>
+      </AdminBloc>
 
-      {recherche !== "" ? (
+      {/* Filtre par statut : de simples liens (composant serveur), combinés à `q` et `archives`.
+          Les compteurs portent sur la vue courante, donc chaque lien donne exactement son nombre. */}
+      <nav
+        aria-label="Filtrer par statut"
+        className="mb-[var(--space-admin-4)] flex flex-wrap gap-[var(--space-admin-2)]"
+      >
+        {FILTRES_STATUT.map((f) => (
+          <Link
+            key={f}
+            href={adresseListe(hrefListe, { q: recherche, archives: voirArchives, statut: f })}
+            aria-current={f === filtre ? "page" : undefined}
+            className={`inline-flex min-h-11 items-center rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] px-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] ${
+              f === filtre
+                ? "bg-[color:var(--color-admin-fg)] font-semibold text-[color:var(--color-admin-paper)]"
+                : "underline"
+            }`}
+          >
+            {`${LIBELLE_FILTRE[f]} (${parFiltre[f]})`}
+          </Link>
+        ))}
+      </nav>
+
+      {messageRetour !== null ? (
+        <p role="status" data-message-retour className="mb-[var(--space-admin-4)] font-semibold">
+          {messageRetour}
+        </p>
+      ) : null}
+
+      {recherche !== "" &&
+      !(voirArchives && partage.lectureImpossible) &&
+      (vue.length === 0 || clients.length > 0) ? (
         <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
-          {clients.length === 0
-            ? `Aucun client ne correspond à « ${recherche} ». Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
+          {vue.length === 0
+            ? `${voirArchives ? "Aucune fiche archivée" : "Aucune fiche active"} ne correspond à « ${recherche} »${
+                !voirArchives && archiveesDuFiltre > 0
+                  ? ` ; ${archiveesDuFiltre} fiche${archiveesDuFiltre > 1 ? "s archivées correspondent" : " archivée correspond"}`
+                  : ""
+              }. Vérifiez l'orthographe avant d'en créer un nouveau : un doublon coûte plus cher qu'une recherche ratée.`
             : `${clients.length} résultat${clients.length > 1 ? "s" : ""} pour « ${recherche} ».`}
+          {vue.length === 0 && !voirArchives && archiveesDuFiltre > 0 ? (
+            <>
+              {" "}
+              <Link
+                href={adresseListe(hrefListe, { q: recherche, archives: true, statut: filtre })}
+                className="inline-flex min-h-11 items-center underline"
+              >
+                Voir les archivées
+              </Link>
+            </>
+          ) : null}
+        </p>
+      ) : null}
+
+      {partage.lectureImpossible ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Archives : ${TEXTE_LECTURE_IMPOSSIBLE} pour le moment. `}
+          {voirArchives ? (
+            <Link
+              href={adresseListe(hrefListe, { q: recherche, statut: filtre })}
+              className="inline-flex min-h-11 items-center underline"
+            >
+              Revenir aux clients
+            </Link>
+          ) : null}
+        </p>
+      ) : voirArchives ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          {`Fiches archivées (${clients.length}). `}
+          <Link
+            href={adresseListe(hrefListe, { q: recherche, statut: filtre })}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            Revenir aux clients
+          </Link>
+        </p>
+      ) : partage.archivees.length > 0 ? (
+        <p className="mb-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
+          <Link
+            href={adresseListe(hrefListe, { q: recherche, archives: true, statut: filtre })}
+            className="inline-flex min-h-11 items-center underline"
+          >
+            {`Voir les archivées (${archiveesDuFiltre})`}
+          </Link>
         </p>
       ) : null}
 
       <div className="mb-[var(--space-admin-6)] grid grid-cols-1 gap-[var(--space-admin-5)] sm:grid-cols-4">
         <AdminStatCard
-          label={recherche === "" ? "Total" : "Résultats"}
-          value={clients.length}
+          label={
+            voirArchives
+              ? recherche === ""
+                ? `Total (hors archivées)${suffixeFiltre}`
+                : `Résultats (hors archivées)${suffixeFiltre}`
+              : recherche === ""
+                ? `Total${suffixeFiltre}`
+                : `Résultats${suffixeFiltre}`
+          }
+          value={compte.length}
           icon={Hash}
         />
-        <AdminStatCard label="Prospects" value={prospects} icon={Users} />
-        <AdminStatCard label="Devis envoyés" value={devisEnvoyes} tone="warning" icon={FileText} />
-        <AdminStatCard label="Clients actifs" value={actifs} tone="success" icon={CheckCircle2} />
+        <AdminStatCard
+          label={voirArchives ? "Prospects sans devis (hors archivées)" : "Prospects sans devis"}
+          value={prospects}
+          icon={Users}
+        />
+        <AdminStatCard
+          label={voirArchives ? "Devis envoyés (hors archivées)" : "Devis envoyés"}
+          value={devisEnvoyes}
+          tone="warning"
+          icon={FileText}
+        />
+        <AdminStatCard
+          label={voirArchives ? "Clients actifs (hors archivées)" : "Clients actifs"}
+          value={actifs}
+          tone="success"
+          icon={CheckCircle2}
+        />
       </div>
 
       {/* Note : création d'un client via createClientAction (src/server/actions/qualiopi/clients.ts).
           L'IDCC (déclencheur du barème OPCO par dossier) et la taille sont éditables par ligne
           via ClientBrancheForm → updateClientAction ; la saisie complète (enveloppe, adhérent,
           offre Mobilités, versement volontaire) est dans le bloc « Branche et OPCO » de la fiche. */}
-      {clients.length === 0 ? (
+      {voirArchives && vue.length === 0 && !partage.lectureImpossible ? (
+        <AdminEmptyState
+          title={recherche === "" ? "Aucune fiche archivée" : "Aucune fiche archivée ne correspond"}
+        />
+      ) : vue.length > 0 && clients.length === 0 ? (
+        <p className="text-[length:var(--text-admin-sm)]">
+          {`Aucune fiche dans cette vue (${LIBELLE_FILTRE[filtre]}). Choisissez un autre filtre ci-dessus.`}
+        </p>
+      ) : vue.length === 0 && tous.length > 0 ? null : vue.length === 0 ? (
         <AdminEmptyState
           title="Aucun client enregistré"
           description="Un client est nécessaire avant de créer une session ou d'émettre un devis."
           primaryAction={
-            <Link href={`/${locale}/${adminPrefix}/qualiopi/clients/new`} className="admin-button">
+            <AdminButton href={`/${locale}/${adminPrefix}/qualiopi/clients/new`}>
               + Nouveau client
-            </Link>
+            </AdminButton>
           }
         />
       ) : (
@@ -163,16 +327,13 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
           <table className="w-full border-collapse bg-[color:var(--color-admin-paper)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <thead className="border-b border-[color:var(--color-admin-border)]">
               <tr>
-                <th className={headCls}>Numéro</th>
-                <th className={headCls}>Raison sociale</th>
+                <th className={headCls}>Client</th>
                 <th className={headCls}>Type</th>
-                <th className={headCls}>SIRET</th>
-                <th className={headCls}>NAF</th>
-                <th className={headCls}>IDCC</th>
+                <th className={headCls}>Identifiants</th>
                 <th className={headCls}>Taille</th>
                 <th className={headCls}>OPCO inféré</th>
                 <th className={headCls}>Statut</th>
-                <th className={headCls}>Édition branche</th>
+                <th className={headCls}>Branche</th>
               </tr>
             </thead>
             <tbody>
@@ -184,9 +345,7 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                   <td className={cellCls}>
                     <span className="font-mono text-[length:var(--text-admin-xs)]">
                       {client.numero}
-                    </span>
-                  </td>
-                  <td className={cellCls}>
+                    </span>{" "}
                     {/* Le nom ouvre la fiche 360° (vue d'ensemble : sessions,
                         devis, factures, encours). L'édition garde son accès
                         PROPRE juste à côté — la retirer referait de
@@ -204,6 +363,20 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     >
                       Éditer
                     </Link>
+                    {estSuperAdmin ? (
+                      <>
+                        {" "}
+                        {/* Même adresse que le lien d'ouverture de la fiche (SuppressionManuelle) :
+                            l'écran de confirmation à double validation reste celui de la fiche. */}
+                        <Link
+                          href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}?supprimer=client#suppression-client`}
+                          className="admin-button-ghost"
+                          aria-label={`Supprimer ${client.raisonSociale} (écran de confirmation)`}
+                        >
+                          Supprimer
+                        </Link>
+                      </>
+                    ) : null}
                     {client.contactEmail ? (
                       <div className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
                         {client.contactEmail}
@@ -220,25 +393,20 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     {client.type === "particulier" ? "Particulier" : "Entreprise"}
                   </td>
                   <td className={cellCls}>
-                    <span className="font-mono text-[length:var(--text-admin-xs)]">
-                      {client.siret ?? (
-                        <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                      )}
-                    </span>
-                  </td>
-                  <td className={cellCls}>
-                    {client.nafCode ?? (
-                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                    )}
-                  </td>
-                  <td className={cellCls}>
-                    {client.idcc ? (
-                      <span className="font-mono text-[length:var(--text-admin-xs)]">
-                        {client.idcc}
-                      </span>
-                    ) : (
-                      <em className="text-[color:var(--color-admin-fg-muted)] not-italic">—</em>
-                    )}
+                    <dl className="space-y-1 text-[length:var(--text-admin-xs)]">
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">SIRET </dt>
+                        <dd className="inline font-mono">{client.siret ?? "—"}</dd>
+                      </div>
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">NAF </dt>
+                        <dd className="inline">{client.nafCode ?? "—"}</dd>
+                      </div>
+                      <div>
+                        <dt className="inline text-[color:var(--color-admin-fg-muted)]">IDCC </dt>
+                        <dd className="inline font-mono">{client.idcc ?? "—"}</dd>
+                      </div>
+                    </dl>
                   </td>
                   <td className={cellCls}>
                     {client.taille ? (
@@ -257,23 +425,9 @@ export default async function QualiopiClientsPage({ params, searchParams }: Page
                     )}
                   </td>
                   <td className={cellCls}>
-                    {client.statut === "client_actif" ? (
-                      <span className="text-[color:var(--color-admin-success)]">
-                        ● {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : client.statut === "prospect" ? (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        ○ {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : client.statut === "devis_envoye" ? (
-                      <span className="text-[color:var(--color-admin-warning)]">
-                        ◑ {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    ) : (
-                      <span className="text-[color:var(--color-admin-fg-muted)]">
-                        {STATUT_LABELS[client.statut] ?? client.statut}
-                      </span>
-                    )}
+                    <AdminBadge plein tone={TON_STATUT[client.statut] ?? "neutral"}>
+                      {STATUT_LABELS[client.statut] ?? client.statut}
+                    </AdminBadge>
                   </td>
                   <td className={cellCls}>
                     <ClientBrancheForm

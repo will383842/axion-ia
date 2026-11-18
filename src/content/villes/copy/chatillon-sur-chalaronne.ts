@@ -49,7 +49,7 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châtillon-sur-Chalaronne et Dombes ?",
-      a: "Oui, Axion-IA intervient à Châtillon-sur-Chalaronne et toute la Dombes (Villars-les-Dombes, Marlieux, Saint-André-de-Corcy). Consultants depuis Lyon (50 min) ou Bourg-en-Bresse (30 min).",
+      a: "Oui, Axion-IA intervient à Châtillon-sur-Chalaronne et toute la Dombes (Villars-les-Dombes, Marlieux, Saint-André-de-Corcy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les pisciculteurs Dombes ?",
@@ -64,8 +64,8 @@ export const CHATILLON_SUR_CHALARONNE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (50 min).",
+      q: "Comment se déroule une mission à Châtillon-sur-Chalaronne ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

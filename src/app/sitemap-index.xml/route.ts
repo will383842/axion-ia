@@ -42,6 +42,7 @@ import { listEvergreenNewsEntries } from "@/app/sitemap-news-evergreen.xml/route
 import { avisPublies } from "@/server/reviews/presence";
 import { videosPubliees } from "@/server/videos/lecture";
 import { derniereModification } from "@/server/videos/sitemap";
+import { TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 // Sub-sitemaps custom (Route Handlers XML brut, hors `generateSitemaps()`).
 // Référencés manuellement pour que Googlebot les découvre via l'index racine.
@@ -119,6 +120,9 @@ const CUSTOM_SITEMAPS: ReadonlyArray<string> = [
   // l'interrupteur est allumé ET qu'au moins une vidéo est publiée (sinon la route répond 404).
   // `lastmod` = dernière modification d'une vidéo. Cf. `app/sitemap-videos.xml/route.ts`.
   "/sitemap-videos.xml",
+  // Landing du Tour France IA (2026-10-25) — listé CONDITIONNELLEMENT : seulement
+  // quand `TOUR_PUBLIC` est vrai (la route rend un urlset vide tant qu'il est faux).
+  "/sitemap-tour-france-ia.xml",
 ];
 
 // Rendu DYNAMIQUE au runtime (2026-07-06). Auparavant `force-static` : l'index
@@ -153,8 +157,10 @@ const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
  * sitemaps statiques/pSEO (pages, faq, help, villes, services-villes) se
  * déclaraient « modifiés » à CHAQUE deploy sans changement de contenu. Sur un
  * site jeune à faible crawl-budget, Google re-crawle alors de l'inchangé.
- * Fix : fallback figé sur une date éditoriale STABLE (= `EDITORIAL_BASELINE` de
- * `sitemap.ts`, gardée en sync manuellement). Les sources DB (news/knowledge/blog)
+ * Fix : fallback figé sur une date éditoriale STABLE. Elle n'est plus recopiée
+ * ici : elle vient de `editorialLastmodForSitemapId` (`sitemap.ts`), qui dérive
+ * de `EDITORIAL_BASELINE_ISO` (`@/lib/seo/fraicheur`, source unique) et de la
+ * fraîcheur réelle par famille (cf. bloc ci-dessous). Les sources DB (news/knowledge/blog)
  * conservent leur `MAX(updatedAt)` réel (signal honnête, gold-standard intact).
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */
@@ -321,6 +327,8 @@ export async function GET(): Promise<Response> {
     // `images-en.xml` est vide tant qu'EN est désactivé (301→FR) → ne pas le
     // lister (sinon urlset vide flaggé par GSC). Réapparaît si EN réactivé.
     if (path === "/sitemaps/images-en.xml") return EN_LOCALE_ENABLED;
+    // Tour France IA refermé → landing en 404 → pas de sitemap du Tour.
+    if (path === "/sitemap-tour-france-ia.xml") return TOUR_PUBLIC;
     return true;
   });
 

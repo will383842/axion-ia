@@ -5,9 +5,16 @@
  * DevisLifecycleButtons — Boutons du cycle de vie d&apos;un devis commercial.
  *
  * Affichage conditionnel selon le statut :
- *   - brouillon : « Envoyer au client » → sendDevisAction.
- *   - envoye    : « Marquer accepté » → acceptDevisAction
- *                 « Marquer refusé »  → declineDevisAction.
+ *   - brouillon : « Envoyer au client » → sendDevisAction, APRÈS confirmation (destinataire,
+ *                 montant). Devis classique sans e-mail de contact : une note remplace le bouton ;
+ *                 « Remis en main propre… » (devis classique seulement) →
+ *                 marquerRemisEnMainPropreAction, après confirmation (dialogue `useConfirmation`, pas de boîte native).
+ *   - envoye    : (client signé, organisme pas encore : une note renvoie à la contresignature ;
+ *                 signé des deux parties : seul « Marquer accepté » reste, pour finir l'acceptation)
+ *                 « Marquer accepté » → acceptDevisAction
+ *                 « Marquer refusé »  → declineDevisAction
+ *                 « Corriger et renvoyer » (classique, non signé par le client) →
+ *                 reviseDevisAction après confirmation, puis écran /corriger.
  *   - autres    : aucun bouton (terminal).
  *
  * router.refresh() après chaque succès.
@@ -19,10 +26,13 @@ import { useRouter } from "next/navigation";
 import { messageEnvoi, type TonMessage } from "@/server/qualiopi/financements/message-envoi";
 import {
   sendDevisAction,
+  reviseDevisAction,
   acceptDevisAction,
   declineDevisAction,
   transformDevisToConventionAction,
 } from "@/server/actions/qualiopi/devis";
+import { marquerRemisEnMainPropreAction } from "@/server/actions/qualiopi/devis-remis-main-propre";
+import { useConfirmation } from "@/components/admin/ui/useConfirmation";
 import { envoyerDevisEmailAction } from "@/server/actions/qualiopi/facturation-emails";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -35,7 +45,39 @@ type DevisStatut =
 export interface DevisLifecycleButtonsProps {
   devisId: string;
   statut: DevisStatut;
+  /** Devis classique (ni offre ni empreinte) : seul à pouvoir être remis en main propre. */
+  estClassique?: boolean;
+  /** Numéro du devis, affiché dans la confirmation. */
+  numero?: string;
+  /** Montant HT déjà formaté côté serveur, affiché dans la confirmation d'envoi. */
+  montantHtLabel?: string;
+  /** Adresse e-mail du contact du client, ou `null` s'il n'en a pas. */
+  destinataire?: string | null;
+  /** Le client a déjà signé : « Corriger et renvoyer » n'est plus proposé. */
+  clientASigne?: boolean;
+  /** Un e-mail d'envoi de ce devis attend validation (ou part) : aucun lien n'existe encore. */
+  emailEnAttente?: boolean;
+  /** Page des e-mails à valider de la console (le préfixe d'administration vient du serveur). */
+  emailsHref?: string;
+  /** Le client a signé (non révoquée, pièce non annulée) et l'organisme pas encore : il ne reste qu'à contresigner. */
+  signeParClient?: boolean;
+  /** Les deux parties ont signé mais le statut est encore « envoyé » : l'acceptation est à finir. */
+  signeDesDeuxParties?: boolean;
+  /**
+   * Devis À FORMULES signé des deux parties, resté « envoyé » : la reprise se fait par le bloc
+   * « relancer l'acceptation » de la fiche. Aucune action de cycle de vie n'est proposée ici
+   * (`acceptDevisAction` refuserait de toute façon).
+   */
+  repriseParRelance?: boolean;
 }
+
+type MotifRemise = "sans_email" | "adresse_bloquee" | "remis_en_rendez_vous";
+
+const MOTIFS_REMISE: ReadonlyArray<{ valeur: MotifRemise; libelle: string }> = [
+  { valeur: "sans_email", libelle: "Le client n'a pas d'adresse e-mail" },
+  { valeur: "adresse_bloquee", libelle: "L'adresse e-mail est bloquée" },
+  { valeur: "remis_en_rendez_vous", libelle: "Remis lors d'un rendez-vous" },
+];
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Composant
@@ -44,6 +86,16 @@ export interface DevisLifecycleButtonsProps {
 export function DevisLifecycleButtons({
   devisId,
   statut,
+  estClassique = false,
+  numero,
+  montantHtLabel,
+  destinataire = null,
+  clientASigne = false,
+  emailEnAttente = false,
+  emailsHref = "../../emails",
+  signeParClient = false,
+  signeDesDeuxParties = false,
+  repriseParRelance = false,
 }: DevisLifecycleButtonsProps): React.ReactElement {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
@@ -59,6 +111,11 @@ export function DevisLifecycleButtons({
   // afficher en vert « succès » — sinon l'admin croit le devis reçu par le client.
   const [warningMsg, setWarningMsg] = useState<string | null>(null);
 
+  const { demander, dialogue } = useConfirmation();
+  // `useConfirmation` ne propose pas de choix DANS le dialogue : le motif se choisit ici,
+  // à côté du bouton, puis la confirmation est simple.
+  const [motifRemise, setMotifRemise] = useState<MotifRemise>("sans_email");
+
   function resetMessages() {
     setError(null);
     setSuccessMsg(null);
@@ -67,33 +124,86 @@ export function DevisLifecycleButtons({
   }
 
   function handleSend() {
-    resetMessages();
-    startTransition(async () => {
-      const result = await sendDevisAction(devisId);
-      if ("error" in result) {
-        setError(result.error);
-      } else {
-        if (result.data.emailEnvoye && result.data.signatureCreee) {
-          setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
-        } else if (result.data.emailEnvoye) {
-          // 🔴 F4 : ce message vert annonçait un « lien de signature » qui
-          // n'existait dans AUCUN des envois réels. Ne jamais promettre en vert
-          // ce que l'action n'a pas produit — l'admin doit savoir qu'il faut
-          // relancer autrement (PDF signé retourné, ou révision du devis).
-          setWarningMsg(
-            result.data.note ??
-              "Devis envoyé par email (PDF joint), mais SANS lien de signature électronique.",
-          );
-        } else {
-          // Statut passé à « envoyé », mais le client n'a rien reçu → avertissement.
-          setWarningMsg(
-            result.data.note ??
-              "Devis marqué comme envoyé, mais aucun email n'a été expédié au client.",
-          );
-        }
-        router.refresh();
-      }
-    });
+    const montant = montantHtLabel !== undefined ? ` (${montantHtLabel} HT)` : "";
+    const vers = destinataire ? ` à ${destinataire}` : " au client";
+    demander(
+      {
+        titre: `Envoyer le devis${numero ? ` ${numero}` : ""} ?`,
+        description: `Envoyer le devis${numero ? ` ${numero}` : ""}${montant}${vers} ? Le PDF et le lien de signature partent au client, ou attendent votre validation dans Emails → À valider.`,
+        libelleConfirmer: "Envoyer",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await sendDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+            return;
+          }
+          // Un envoi réussi part toujours avec PDF et lien (sinon l'action refuse). Seul cas
+          // à part : le courriel est GARÉ, il n'est pas encore parti — ce n'est pas un succès.
+          if (result.data.garePourValidation === true) {
+            setWarningMsg(
+              result.data.note ??
+                "L'e-mail attend votre validation dans Emails, À valider. Le devis reste en brouillon et aucun lien de signature n'existe tant que l'e-mail n'est pas parti.",
+            );
+          } else {
+            setSuccessMsg("Devis envoyé au client par email (PDF joint + lien de signature).");
+          }
+          router.refresh();
+        });
+      },
+    );
+  }
+
+  function handleCorriger() {
+    demander(
+      {
+        titre: `Corriger et renvoyer le devis${numero ? ` ${numero}` : ""} ?`,
+        description:
+          "Une nouvelle version en brouillon est créée. L'ancien lien de signature reste valable jusqu'à l'envoi de la nouvelle version, qui le désactivera.",
+        libelleConfirmer: "Créer la nouvelle version",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await reviseDevisAction(devisId);
+          if ("error" in result) {
+            setError(result.error);
+            return;
+          }
+          // Même préfixe que la fiche courante : on remplace le dernier segment (l'identifiant).
+          const base = window.location.pathname.replace(/\/[^/]+\/?$/, "");
+          router.push(`${base}/${result.data.id}/corriger`);
+        });
+      },
+    );
+  }
+
+  function handleRemisMainPropre() {
+    const motif = motifRemise;
+    const libelle = MOTIFS_REMISE.find((m) => m.valeur === motif)?.libelle ?? "";
+    demander(
+      {
+        titre: `Remettre le devis${numero ? ` ${numero}` : ""} en main propre ?`,
+        description: `Motif : ${libelle}. Le PDF numéroté est créé et le devis passe « envoyé » sans aucun e-mail ni lien de signature. Faites signer le devis papier, puis « Marquer accepté ».`,
+        libelleConfirmer: "Confirmer",
+      },
+      () => {
+        resetMessages();
+        startTransition(async () => {
+          const result = await marquerRemisEnMainPropreAction({ id: devisId, motif });
+          if ("error" in result) {
+            setError(result.error);
+          } else {
+            setSuccessMsg(
+              "Devis marqué remis en main propre. Faites-le signer sur papier, puis « Marquer accepté ».",
+            );
+            router.refresh();
+          }
+        });
+      },
+    );
   }
 
   function handleResend() {
@@ -165,8 +275,9 @@ export function DevisLifecycleButtons({
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-3)]">
+      {dialogue}
       <div className="flex flex-wrap gap-[var(--space-admin-3)]">
-        {statut === "brouillon" && (
+        {statut === "brouillon" && !(estClassique && !destinataire) && !emailEnAttente && (
           <button
             type="button"
             onClick={handleSend}
@@ -177,8 +288,97 @@ export function DevisLifecycleButtons({
             {isPending ? "…" : "Envoyer au client"}
           </button>
         )}
+        {statut === "brouillon" && emailEnAttente && (
+          <p
+            data-testid="email-en-attente"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            E-mail en attente de validation : aucun lien de signature n&apos;existe encore.{" "}
+            <a href={emailsHref} className="admin-link">
+              Ouvrir les e-mails à valider
+            </a>
+          </p>
+        )}
+        {statut === "brouillon" && estClassique && !destinataire && (
+          <p
+            data-testid="note-sans-adresse"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Ce client n&apos;a pas d&apos;adresse e-mail.
+          </p>
+        )}
 
-        {statut === "envoye" && (
+        {statut === "brouillon" && estClassique && (
+          <>
+            <label className="flex items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
+              <span>Motif</span>
+              <select
+                value={motifRemise}
+                onChange={(e) => setMotifRemise(e.target.value as MotifRemise)}
+                disabled={isPending}
+                className="admin-input"
+              >
+                {MOTIFS_REMISE.map((m) => (
+                  <option key={m.valeur} value={m.valeur}>
+                    {m.libelle}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              type="button"
+              onClick={handleRemisMainPropre}
+              disabled={isPending}
+              className="admin-button-secondary"
+              aria-label="Remis en main propre : remettre le devis sans e-mail ni lien de signature"
+            >
+              {isPending ? "…" : "Remis en main propre…"}
+            </button>
+          </>
+        )}
+
+        {statut === "brouillon" && (
+          <a
+            href={`/api/qualiopi/devis/${devisId}/apercu`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="admin-button"
+            aria-label="Ouvrir l'aperçu PDF du brouillon (aucune pièce numérotée créée, rien n'est envoyé)"
+          >
+            Aperçu
+          </a>
+        )}
+
+        {statut === "envoye" && estClassique && !clientASigne && (
+          <button
+            type="button"
+            onClick={handleCorriger}
+            disabled={isPending}
+            className="admin-button-secondary"
+            aria-label="Créer une nouvelle version en brouillon de ce devis pour la corriger et la renvoyer"
+          >
+            {isPending ? "…" : "Corriger et renvoyer"}
+          </button>
+        )}
+        {statut === "envoye" && signeParClient && (
+          <p
+            data-testid="note-signe-par-client"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Le client a signé ce devis. Contresignez-le dans le bloc « Signature électronique »
+            ci-dessus pour le conclure.
+          </p>
+        )}
+        {statut === "envoye" && signeDesDeuxParties && (
+          <p
+            data-testid="note-signe-des-deux-parties"
+            className="basis-full text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Ce devis est signé des deux parties, mais son acceptation n&apos;a pas été enregistrée.
+            Cliquez sur « Marquer accepté » pour la finir.
+          </p>
+        )}
+        {statut === "envoye" && !signeParClient && !repriseParRelance && (
           <>
             <button
               type="button"
@@ -189,19 +389,21 @@ export function DevisLifecycleButtons({
             >
               {isPending ? "…" : "Marquer accepté"}
             </button>
-            <button
-              type="button"
-              onClick={handleDecline}
-              disabled={isPending}
-              className="admin-button-danger"
-              aria-label="Marquer le devis comme refusé"
-            >
-              {isPending ? "…" : "Marquer refusé"}
-            </button>
+            {!signeDesDeuxParties && (
+              <button
+                type="button"
+                onClick={handleDecline}
+                disabled={isPending}
+                className="admin-button-danger"
+                aria-label="Marquer le devis comme refusé"
+              >
+                {isPending ? "…" : "Marquer refusé"}
+              </button>
+            )}
           </>
         )}
 
-        {(statut === "envoye" || statut === "accepte") && (
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
           <button
             type="button"
             onClick={handleResend}
@@ -211,6 +413,16 @@ export function DevisLifecycleButtons({
           >
             {isPending ? "…" : "Renvoyer par email"}
           </button>
+        )}
+        {statut === "envoye" && !signeParClient && !signeDesDeuxParties && !repriseParRelance && (
+          <p
+            data-testid="avertissement-renvoi-lien"
+            className="basis-full text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+          >
+            Renvoyer par email désactive dès maintenant l&apos;ancien lien de signature, avant
+            l&apos;approbation de l&apos;e-mail en corbeille : s&apos;il est refusé ou supprimé, le
+            client n&apos;a plus de lien valable.
+          </p>
         )}
 
         {statut === "accepte" && (

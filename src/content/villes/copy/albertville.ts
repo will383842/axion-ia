@@ -64,7 +64,7 @@ export const ALBERTVILLE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Chambéry ?",
+      q: "Comment se déroule une mission à Albertville ?",
       a: "Chambéry (50 min). Aéroport Lyon-Saint-Exupéry (1h30). Gare TGV Albertville directe.",
     },
   ],

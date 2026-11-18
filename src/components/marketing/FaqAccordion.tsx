@@ -6,6 +6,11 @@ interface FaqEntry {
   id: string;
   question: string;
   answer: string;
+  /**
+   * Liens affichés sous la réponse (chemin complet, préfixe de locale compris, comme `permalinkBase`). Ils ne font pas
+   * partie du texte de la réponse : le `FAQPage` JSON-LD n'émet que `answer`.
+   */
+  liens?: ReadonlyArray<{ href: string; label: string }>;
 }
 
 interface FaqAccordionProps {
@@ -20,6 +25,11 @@ interface FaqAccordionProps {
    */
   faqAuthorId?: string;
   className?: string;
+  /**
+   * Pose l'identifiant de chaque question sur son `<details>` (ancre `#faq-…`). Faux par défaut :
+   * le HTML des pages existantes ne change pas.
+   */
+  ancres?: boolean;
   /**
    * If provided, each open answer renders a "permalink" CTA pointing to
    * `${permalinkBase}/${item.id}`. Use on the public FAQ index where each
@@ -42,6 +52,7 @@ export function FaqAccordion({
   emitJsonLd = true,
   faqAuthorId,
   className,
+  ancres = false,
   permalinkBase,
   permalinkLabel = "Page dédiée",
 }: FaqAccordionProps) {
@@ -54,7 +65,10 @@ export function FaqAccordion({
       <ul role="list" className={className}>
         {items.map((item) => (
           <li key={item.id}>
-            <details className="group border-border border-b">
+            <details
+              id={ancres && item.id ? item.id : undefined}
+              className="group border-border border-b"
+            >
               <summary className="text-fg flex cursor-pointer list-none items-start justify-between gap-4 py-4 text-left text-base font-medium">
                 <span data-faq-q className="flex-1">
                   {item.question}
@@ -70,6 +84,20 @@ export function FaqAccordion({
                 <p data-faq-a data-answer className="text-fg-soft text-[15px] leading-relaxed">
                   {item.answer}
                 </p>
+                {item.liens && item.liens.length > 0 ? (
+                  <ul role="list" className="mt-3 flex flex-wrap gap-x-5">
+                    {item.liens.map((lien) => (
+                      <li key={lien.href}>
+                        <a
+                          href={lien.href}
+                          className="text-terracotta inline-flex min-h-11 items-center text-[15px] font-semibold underline underline-offset-2"
+                        >
+                          {lien.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                ) : null}
                 {permalinkBase ? (
                   <a
                     href={`${permalinkBase}/${item.id}`}

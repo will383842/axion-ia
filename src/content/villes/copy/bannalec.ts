@@ -49,7 +49,7 @@ export const BANNALEC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bannalec et Est Cornouaille ?",
-      a: "Oui, Axion-IA intervient à Bannalec et tout l'Est Cornouaille (Quimperlé, Rosporden, Scaër, Mellac, Moëlan-sur-Mer). Nos consultants viennent de Quimper (45 min) ou Lorient (40 min).",
+      a: "Oui, Axion-IA intervient à Bannalec et tout l'Est Cornouaille (Quimperlé, Rosporden, Scaër, Mellac, Moëlan-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les éleveurs avicoles du Finistère ?",
@@ -64,8 +64,8 @@ export const BANNALEC_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Bannalec, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, gestion stocks, comptabilité simplifiée.",
     },
     {
-      q: "Comment se passe une mission depuis Quimper ou Lorient ?",
-      a: "Nos consultants viennent de Quimper (45 min voiture) ou Lorient (40 min). Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé).",
+      q: "Comment se déroule une mission à Bannalec ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Bannalec desservie par TER Quimper-Lorient. Pour les multi-jours, hébergement local possible (hôtels Quimperlé).",
     },
   ],
 };

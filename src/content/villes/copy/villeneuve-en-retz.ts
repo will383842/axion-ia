@@ -49,7 +49,7 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villeneuve-en-Retz et dans le Pays de Retz ?",
-      a: "Oui, Axion-IA intervient à Villeneuve-en-Retz et dans tout le Pays de Retz (Pornic, Machecoul, Saint-Philbert-de-Grand-Lieu, Sainte-Pazanne). Nos consultants se déplacent sur site depuis Nantes en 45 minutes.",
+      a: "Oui, Axion-IA intervient à Villeneuve-en-Retz et dans tout le Pays de Retz (Pornic, Machecoul, Saint-Philbert-de-Grand-Lieu, Sainte-Pazanne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "L'IA est-elle utile pour les ostréiculteurs de la baie de Bourgneuf ?",
@@ -64,8 +64,8 @@ export const VILLENEUVE_EN_RETZ_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants de Villeneuve-en-Retz sur des cas IA concrets : automatisation devis, gestion planning, communication digitale, agents IA prise de rendez-vous et optimisation stocks.",
     },
     {
-      q: "Comment vos consultants accèdent-ils à Villeneuve-en-Retz ?",
-      a: "Nos consultants se déplacent depuis Nantes (45 min via D751) ou Pornic (15 min). L'aéroport Nantes Atlantique est à 35 min.",
+      q: "Comment se passe une intervention à Villeneuve-en-Retz ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Villeneuve-en-Retz est à 35 min de l'aéroport Nantes Atlantique.",
     },
   ],
 };

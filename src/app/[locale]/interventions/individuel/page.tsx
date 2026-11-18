@@ -251,8 +251,8 @@ export default async function IndividuelFamilyPage({ params }: Props) {
             </div>
             <h2 className="text-fg text-2xl leading-tight font-semibold">
               {isFr
-                ? "Décrivez votre besoin · on revient sous 48 h"
-                : "Describe your need · we get back within 48 h"}
+                ? "Décrivez votre besoin · on revient vers vous"
+                : "Describe your need · we get back to you"}
             </h2>
             <p className="text-fg-soft mt-3 text-base leading-relaxed">
               {isFr

@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -39,8 +40,8 @@ import {
   buildHowToJsonLd,
   buildArticleJsonLd,
   buildWebPageJsonLd,
-  SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 import { INTERVENTION_TIERS, getTierById } from "@/content/pricing";
 
 interface Props {
@@ -70,7 +71,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ogType: "article",
     article: {
       publishedTime: "2025-12-01",
-      modifiedTime: SITE_EDITORIAL_DATE,
+      modifiedTime: dateRoute("/methodologie"),
       section: locale === "fr" ? "Méthodologie" : "Methodology",
       tags:
         locale === "fr"
@@ -115,7 +116,7 @@ export default async function MethodologyPage({ params }: Props) {
       ? "Notre méthode propriétaire en 4 étapes : identifier sur le terrain, auditer en 5 jours, implémenter en 6-8 semaines, mesurer le ROI réel."
       : "Our proprietary 4-step method: identify in the field, audit in 5 days, implement in 6-8 weeks, measure real ROI.",
     datePublished: "2025-12-01",
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/methodologie"),
     articleSection: isFr ? "Méthodologie" : "Methodology",
     keywords: isFr
       ? ["méthodologie IA", "audit IA", "implémentation IA", "ROI IA"]
@@ -542,9 +543,11 @@ export default async function MethodologyPage({ params }: Props) {
                   {isFr ? "Voir les 4 niveaux d'audit" : "See the 4 audit levels"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
-                <Cta href="/cas-concrets" variant="outline" size="lg">
-                  {isFr ? "Voir les cas concrets" : "See case studies"}
-                </Cta>
+                {CAS_CONCRETS_AFFICHES ? (
+                  <Cta href="/cas-concrets" variant="outline" size="lg">
+                    {isFr ? "Voir les cas concrets" : "See case studies"}
+                  </Cta>
+                ) : null}
               </div>
             </div>
 

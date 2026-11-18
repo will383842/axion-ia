@@ -40,6 +40,7 @@ import {
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import { prisma } from "@/lib/prisma";
 import { VARIANTES_VALIDEES_A_PART } from "@/server/email/textes-formateurs-a-valider";
+import { blocageCumule } from "@/server/qualiopi/documents/signature/echecs-cumules";
 import { estTexteValide } from "@/server/email/textes-valides";
 import { lireTextesValides } from "@/server/email/textes-valides-lecture";
 import { interrupteurAllume } from "@/server/qualiopi/formateurs-independants/interrupteur-allume";
@@ -597,6 +598,50 @@ const relireCodeSignature: LecteurAuDepart = async (job) => {
   }
 };
 
+/**
+ * Code de signature d'un DEVIS (lot 4 bis) : même règle que F17 — le code doit être encore VIVANT au
+ * départ (ni utilisé, ni remplacé, ni expiré, ni pièce bloquée), sinon l'e-mail ne part pas. Pas de
+ * fiche formateur ici : la ligne du code est la seule source. Sans identifiant, on retient.
+ */
+const relireCodeDevis: LecteurAuDepart = async (job) => {
+  try {
+    const id = champ(job.payload, CLE_CODE_SIGNATURE);
+    if (typeof id !== "string") return "ligne du code absente — retenu par prudence";
+    const code = await prisma.documentSignatureCode.findUnique({
+      where: { id },
+      select: {
+        expiresAt: true,
+        utiliseAt: true,
+        invalideAt: true,
+        documentGenereId: true,
+        partie: true,
+      },
+    });
+    if (code === null) return "code de signature introuvable";
+    if (code.utiliseAt !== null) return "le code de signature a déjà servi";
+    if (code.invalideAt !== null) return "le code de signature a été remplacé";
+    if (code.expiresAt.getTime() <= Date.now()) return "le code de signature a expiré";
+    // Pièce BLOQUÉE (cinq échecs sur un code, ou plafond cumulé) : aucun code n'est accepté, donc
+    // un e-mail qui en porterait un n'a plus d'objet — et relancerait l'attaquant.
+    const maintenant = new Date();
+    const bloque = await prisma.documentSignatureCode.findFirst({
+      where: {
+        documentGenereId: code.documentGenereId,
+        partie: code.partie,
+        bloqueJusquA: { gt: maintenant },
+      },
+      select: { id: true },
+    });
+    if (bloque !== null) return "la saisie du code est bloquée";
+    if ((await blocageCumule(code.documentGenereId, code.partie, maintenant)) !== null) {
+      return "la saisie du code est bloquée";
+    }
+    return null;
+  } catch {
+    return "état illisible au départ — retenu par prudence";
+  }
+};
+
 /** Le registre : gabarit → lecteur d'état. */
 export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Map<
   string,
@@ -624,4 +669,5 @@ export const RELECTURES_AU_DEPART: ReadonlyMap<string, LecteurAuDepart> = new Ma
   [F21, relireRelanceNda],
   [F61, relireRelanceBilan],
   [F17, relireCodeSignature],
+  ["devis-code-signature", relireCodeDevis],
 ]);

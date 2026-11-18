@@ -82,7 +82,7 @@ vi.mock("@/features/commercial-application/relances-lead-apporteur", () => ({
   annulerRelancesLeadApporteur: (...a: unknown[]) => annulerRelancesLeadApporteur(...a),
 }));
 vi.mock("@/features/commercial-application/relances-invitation-apporteur", () => ({
-  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur",
+  lienReservation: () => "https://calendly.com/axion-ia/echange-apporteur-affaires",
 }));
 const renderEmailTemplate = vi.fn();
 vi.mock("@/lib/email/templates", () => ({
@@ -318,7 +318,7 @@ describe("l'envoi confirmé", () => {
       "fr",
       {
         contactName: "Camille Martin",
-        calendlyUrl: "https://calendly.com/axion-ia/echange-apporteur",
+        calendlyUrl: "https://calendly.com/axion-ia/echange-apporteur-affaires",
         dateEchange: "mardi 22 septembre",
       },
       expect.objectContaining({ entityType: "Submission", entityId: "sub_1" }),
@@ -457,5 +457,53 @@ describe("🔴 « Retenu » refusé AVANT l'ouverture du dossier (2026-10-07)", 
       fd({ issue: "retenu", confirmer: "oui", noteSur20: "17", justification: "Réseau solide." }),
     );
     expect(r).toMatchObject({ etat: "ok" });
+  });
+});
+
+// Fiche I2-4a : l'aperçu rend comme l'envoi, puis sort masqué et inerte.
+describe("l'aperçu ne livre aucun lien personnel à la console", () => {
+  const MARQUEUR = "JETONMARQUEURabcdef0123456789";
+  const LIEN = `https://axion-ia.com/apporteur/dossier/6f1c2a3b-4d5e-4f60-8a7b-9c0d1e2f3a4b/${MARQUEUR}`;
+  // Construit à l'exécution : aucun littéral qui ressemble à un secret dans le dépôt.
+  const OPPOSITION = [
+    "https://axion-ia.com/api/unsubscribe?token=op1",
+    "JETONOPPOSITION",
+    "abcdef0123456789",
+  ].join(".");
+
+  beforeEach(() => {
+    renderEmailTemplate.mockResolvedValue({
+      subject: "Objet",
+      html: `<p>Bonjour</p><a href="${LIEN}">Ouvrir</a><a href="${OPPOSITION}">Ne plus recevoir</a>`,
+      text: `Bonjour\nOuvrir : ${LIEN}\nSe désinscrire : ${OPPOSITION}`,
+      famille: "B",
+    });
+  });
+
+  it("aucun jeton, aucun href, un texte, un en-tête complet", async () => {
+    const a = await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+    expect(a.etat).toBe("apercu");
+    if (a.etat !== "apercu" || !a.email) throw new Error("aperçu attendu");
+    const dehors = JSON.stringify(a.email);
+    expect(dehors).not.toContain(MARQUEUR);
+    expect(dehors).not.toContain("JETONOPPOSITION");
+    expect(a.email.html).not.toMatch(/href=/i);
+    const lecteur = (a.email as unknown as { apercu: Record<string, string> }).apercu;
+    expect(lecteur["html"]).toBe(a.email.html);
+    expect(lecteur["texte"]).toContain("Bonjour");
+    expect(lecteur["a"]).toBe("camille@exemple.fr");
+    expect(lecteur["de"]).toContain("@");
+    expect(lecteur["repondreA"]).toContain("@");
+  });
+
+  it("l'aperçu rend avec la charge exacte que l'envoi met en file", async () => {
+    await apercuIssueApporteurAction({ calendlyEventId: "evt_1", issue: "retenu" });
+    const rendu = renderEmailTemplate.mock.calls[0]!;
+    await enregistrerIssueApporteurAction(INITIAL, fd({ issue: "retenu", confirmer: "oui" }));
+    const [gabarit, destinataire, locale, payload] = enqueueEmail.mock.calls[0]!;
+    expect(rendu[0]).toBe(gabarit);
+    expect(rendu[1]).toBe(locale);
+    expect(rendu[2]).toEqual(payload);
+    expect(rendu[3]).toEqual({ destinataire });
   });
 });

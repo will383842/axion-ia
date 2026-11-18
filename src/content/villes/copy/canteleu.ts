@@ -49,7 +49,7 @@ export const CANTELEU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Canteleu et agglo Rouen ouest ?",
-      a: "Oui, Axion-IA intervient à Canteleu et toute l'agglo rouennaise ouest (Maromme à 5 min, Déville-lès-Rouen, Saint-Étienne-du-Rouvray, Rouen centre à 10 min). Nos consultants viennent de Paris (TGV Rouen 1h15).",
+      a: "Oui, Axion-IA intervient à Canteleu et toute l'agglo rouennaise ouest (Maromme à 5 min, Déville-lès-Rouen, Saint-Étienne-du-Rouvray, Rouen centre à 10 min). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires cantelusiennes ?",
@@ -64,8 +64,8 @@ export const CANTELEU_COPY: VilleCopy = {
       a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME tertiaires et logistiques, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris via TGV Rouen (1h15) puis Canteleu à 10 min de Rouen centre.",
+      q: "Comment se déroule une mission à Canteleu ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

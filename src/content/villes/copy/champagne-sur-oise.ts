@@ -64,7 +64,7 @@ export const CHAMPAGNE_SUR_OISE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA planification chantier, devis automatisés, suivi temps et facturation.",
     },
     {
-      q: "Comment se passe une mission depuis L'Isle-Adam ou Paris ?",
+      q: "Comment se déroule une mission à Champagne-sur-Oise ?",
       a: "L'Isle-Adam (3 min). Persan-Beaumont (5 min). Cergy-Pontoise (25 min). Paris Gare du Nord (45 min). CDG (35 min).",
     },
   ],

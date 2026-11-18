@@ -110,7 +110,7 @@ et l'a toujours été :
   honnête — cumulatif comme son nom l'annonce. ⚠️ Les deux chiffres qui circulaient
   auparavant dans ce fichier (135,78 puis 134,87) étaient tous les deux **faux** : lire la
   sortie de l'étape « Poids du bundle » d'un run récent, jamais cette page.
-  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit) et
+  Le bucket porte désormais un **CLIQUET à 138 KB** (mesure + ~2 KB de marge de bruit ; **relevé à 139 KB le 2026-11-11**, ADR 0075 — il ne doit plus monter sans réduction) et
   la **CIBLE de 100 KB reste écrite dans son nom**. Le cliquet n'excuse pas la dette : il
   empêche qu'elle grossisse, ce qui est le seul risque qu'une gate sache traiter. Abaisser
   ce seuil se fait APRÈS le travail de réduction — jamais avant, sous peine de rouvrir un
@@ -132,6 +132,14 @@ dernier à 30 KB) — l'étape est donc devenue bloquante **en passant**, ce qui
 état dans lequel poser une gate.
 
 Source de vérité : `_AUDIT/AUDIT-WEB-VITALS-2026-BUDGETS.md`.
+
+## CI : brouillon = pas de CI lourde (CI-LOT1, 2026-11-08)
+
+- Une PR **reste en brouillon pendant le travail** (règle pour tout agent : ouvrir en brouillon, ne passer en « prête » qu'une fois, à la fin du lot). En brouillon, Gate A (types, lint, gitleaks, anti-SIREN, admin-gardes…) et Gate D tournent ; la couverture ×3 et Gate B ×2 sautent ; `ready_for_review` relance tout.
+- ⛔ Les deux VERDICTS exigés (« Gate A · couverture », « Gate B · per-PR ») **ne sautent jamais** : un contexte exigé `skipped` compte comme réussi pour GitHub (fenêtre de contournement sur le même SHA après `ready_for_review`). En brouillon, leur première étape « Refus en brouillon » les rend **rouges** (« verdict non rendu »). Une PR en brouillon est donc rouge sur ces deux contextes, par construction.
+- `push: branches: [main]` est conservé : Gate A et Gate D tournent après chaque fusion ; couverture, Gate B et verdicts n'y tournent pas. Le passage quotidien (`schedule`) rejoue `main` en entier.
+- Gate B build avec `SKIP_NEXT_TYPECHECK=true` ; la vérification de types (y compris `.next/types` via `next typegen`) est faite par « Gate A · per-commit ».
+- ⚠️ Un « Re-run » d'un vieux run lancé en brouillon rejoue `draft: true` : les verdicts restent rouges. Ne relancer que le run de `ready_for_review`, ou pousser un commit.
 
 ## Build externalisé GitHub Actions + stubs Prisma/Redis (ADR 0026)
 
@@ -280,6 +288,7 @@ quand un code atterrit : au prochain créneau, + la durée du build + celle du j
    - `docker pull` layers manquantes
    - Container restart + entrypoint `prisma migrate deploy` + healthcheck
 4. **Job `purge`** : Cloudflare `purge_everything`
+   - puis job `deploy_worker` : POST du worker seulement après `finished` du site et le retrait (D8b)
 5. **Job `lhci`** : Lighthouse CI gate 5 URLs prod live
 
 ### 🔴 DEUX conteneurs, DEUX vitesses — le worker atterrit ~50 min AVANT l'app
@@ -346,6 +355,61 @@ ssh root@178.105.55.15 'docker exec <worker> grep -rl "<marqueur de la PR>" /app
 - L'écart de **90 s** entre les deux bascules, mesuré le matin du 2026-09-04 et repris
   tel quel par trois sessions, était l'écart entre deux **redémarrages de conteneurs**
   — **pas** entre deux versions de code. Mesure juste, conclusion fausse.
+
+### 🔄 D8b (2026-11-16) : par le workflow, le worker atterrit désormais APRÈS l'app
+
+Le POST Coolify du worker n'est plus dans le job `deploy` : il part dans le job `deploy_worker`
+(`needs: deploy`, seulement si le site a fini), après `finished` du site et après le retrait de
+l'ancienne image. Par le workflow, le worker atterrit donc **après** l'app (de quelques minutes à
+~35 min) : la fenêtre est **inversée**, nouvelle app + ancien worker. Si l'auto-déploiement Coolify
+du worker est actif, une fusion le met encore à jour **avant** l'app (cf. section précédente) : les
+deux sens restent possibles.
+
+**RÈGLE SYMÉTRIQUE** : une PR qui change un contrat app↔worker doit tolérer les deux versions dans
+les deux sens.
+
+- le worker doit savoir lire une nouvelle tâche ou valeur d'énumération **avant** que l'app ne
+  l'émette (PR séparée ou créneau précédent) ;
+- toute nouvelle colonne est nullable ou porte une valeur par défaut ;
+- ne jamais retirer une valeur dans la même PR que son dernier usage.
+
+**Échec du worker après un site réussi** : `precheck` saute le créneau suivant (même SHA), donc rien
+ne le relance seul. Réparer par `gh run rerun <run_id> --failed` (relance les jobs en échec ; si `deploy` est vert, il relance `deploy_worker` puis `notify` ; si `deploy` est rouge, il relance aussi `deploy` (nouveau POST du site hors créneau) et ses suites lhci, warm, indexnow et deploy_worker)
+ou par « Redeploy » du worker dans Coolify.
+
+⚠️ `gh run rerun --failed` relance **TOUS** les jobs en échec : si `deploy` est rouge (purge ou
+retrait d'image), le rerun relance aussi `deploy`, donc un **nouveau POST du site hors créneau**.
+Dans ce cas, préférer « Redeploy » du worker dans Coolify. Et le worker est reconstruit depuis la
+**tête de `main` au moment du POST**, pas depuis le commit du run : un rerun tardif livre le `main`
+du moment.
+
+**`gabaritRepli` (lot S3, chantier e-mails)** : tout **nouveau nom de gabarit** émis par l'application
+porte dans sa charge `gabaritRepli`, le nom d'un gabarit **ancien et sûr** (ex. `"contact-confirmed"`).
+Un worker S3 qui reçoit un nom qu'il ne connaît pas (`estGabaritConnu`) reporte le job de 10 min,
+jusqu'à 9 fois (90 min, au-delà de la fenêtre de ~35 min), sans tentative comptée et journal « en
+attente » ; au-delà, il rend le `gabaritRepli` s'il le connaît, sinon échoue franchement
+(`UnrecoverableError`, motif « gabarit inconnu de ce worker » au journal). Un worker antérieur à S3
+n'a pas ce repli : S3 doit être en ligne **avant** le premier émetteur d'un nouveau nom.
+La charge d'un nouveau nom de gabarit doit aussi satisfaire le gabarit de repli : aucune validation
+n'est faite, et un repli qui reçoit une charge incompatible rend des champs vides ou échoue après
+5 tentatives. Un job reporté apparaît « bloqué en file » dans l'alarme de santé des e-mails pendant
+la fenêtre de mise en ligne : c'est attendu.
+
+### ⛔ Worker d'e-mails : jamais de retour arrière sous la PR #2057 (réponses écrites à la main)
+
+Depuis #2057, le worker envoie les réponses écrites à la main (`submission-reply`, `candidature-reponse`) sous un verrou Redis `verrou:envoi-reponse:<gabarit>:<replyId>` et pose un marqueur `envoye:envoi-reponse:<gabarit>:<replyId>` dès que le relais a accepté. Un worker plus ancien ne lit ni l'un ni l'autre et ne relit pas l'état de la ligne : il renvoie tout job qu'il reprend. Exemple : réponse partie, écriture `sent` en échec, job reporté de 60 s ; l'ancien worker le reprend et la personne reçoit l'e-mail deux fois.
+
+**Interdit** : ramener le conteneur worker sur un commit antérieur à #2057, par quelque moyen que ce soit (retour arrière ou ancienne image dans Coolify, `git revert` de #2057 ou d'une fusion qui la contient, puis mise en ligne). Un incident du worker se corrige vers l'avant.
+
+**Si un retour arrière est forcé malgré tout**, dans cet ordre, AVANT de démarrer l'ancien worker (et sans répondre à une demande ni cliquer « Réessayer » pendant l'opération) :
+
+1. Mettre la file `emails` en pause (`new Queue("emails", { connection: getBullConnectionOrThrow() }).pause()`, fonction de `src/server/queue/connection.ts`, depuis le conteneur worker en place), arrêter le PROCESSUS du worker sans supprimer le conteneur, ou lancer un conteneur ponctuel de la même image pour les étapes 2 à 5 (elles demandent Node, Redis et la base : `node_modules/.bin/tsx -e '…'`), attendre 3 minutes (expiration des verrous BullMQ).
+2. Lister les jobs `active`, `waiting`, `paused`, `delayed` et `prioritized` nommés `submission-reply` ou `candidature-reponse` (`queue.getJobs(["active","waiting","paused","delayed","prioritized"])`). Une file en pause range ses jobs en attente dans `paused` : sans ce nom, ils n'apparaissent pas.
+3. Pour chacun : lire `payload.replyId`, la ligne (`submission_replies` ou `job_application_replies`) et, dans Redis, `envoye:envoi-reponse:<gabarit>:<replyId>` et `verrou:envoi-reponse:<gabarit>:<replyId>`.
+4. Retirer de la file (`job.remove()`) tout job dont la ligne n'est ni `pending` ni `failed`, ou a `sent_at` rempli, ou a un `error_msg` qui commence par `[issue-inconnue]`, ou pour lequel l'une des deux clés existe. Noter ces `replyId` : un humain tranche chacun dans ZeptoMail (page « E-mails envoyés », bouton « ZeptoMail », onglet « Processed emails ») et renvoie à la main ce qui n'est pas parti.
+5. Démarrer l'ancien worker, puis reprendre la file (`resume()`).
+
+Au retour vers l'avant, rien à faire : le nouveau worker relit l'état de chaque ligne avant d'envoyer.
 
 ### ⚠️ Un déploiement vert ne prouve PAS que le schéma a bougé
 
@@ -467,3 +531,14 @@ worker seulement) ; les PR 5 et 6 y ajoutent le circuit de transcription et de c
 - La fenêtre app/worker (~50 min) s'applique : le balayage n'utilise que des tables et des
   énumérations déjà posées par la migration du chantier (PR 2), et aucune forme de tâche
   BullMQ n'y porte de donnée du dossier (`{ tick }` seulement).
+
+## Disque du VPS (axion-prod) : règles depuis l'audit du 14/11/2026
+
+Le VPS (150 Go, aussi hôte du Studio) sature par PICS (mises en ligne rapprochées : images du site de 8,3 Go ; builds du Studio ; `/tmp` des sessions), pas par dérive. Détail : `_PLAN-DISQUE-VPS-2026-10-23/AUDIT-2026-11-14.md`, runbook `docs/runbooks/R20-disk-saturation.md`.
+
+- **Jamais** `docker system prune`, `docker image prune -a`, `docker volume prune`, `--volumes` (efface les retours arrière `studio-*:precedente` et les volumes de conteneurs arrêtés : Plausible, sonde Postgres). Verrouillé par `src/server/ops/__tests__/disque-vps-aucune-purge-dangereuse.spec.ts` (seules exceptions : deux étapes sur un runner GitHub jetable, et le cache de build borné par `--keep-storage`). L'ancien workflow `disk-cleanup-prod.yml` et `scripts/ops/disk-cleanup.sh` sont supprimés.
+- Ne touche jamais à : volumes, bases, sauvegardes, `cv-storage`, `f0-facecam`, `medias-reels`, `contenu-reel-hors-depot`, `avant-reconciliation-*`, images `studio-*`.
+- **Les sessions (Claude ou autres) travaillent dans `/root/travaux-claude/<date>-<session>/`, jamais dans `/tmp`, et nettoient en partant** (après avoir archivé ce qui n'est pas dans git).
+- Surveillance et ménage versionnés dans `scripts/vps/` (`surveiller-disque.sh` toutes les 10 min → Telegram « 🔧 Technique » ; `menage-tmp.sh` quotidien ; journald limité à 500 Mo) : voir `scripts/vps/README.md`, « Garde-fous disque ». Ils sont installés à la main par `installer-garde-fous-disque.sh` ; rien ne s'applique tout seul depuis le dépôt.
+- **Anciennes images du site (D8)** : le job `deploy` attend d'abord que Coolify soit au repos : **tout** déploiement `in_progress` ou `queued` (toutes applications, le serveur porte aussi le Studio) compte comme occupé ; réponse API muette, vide, non-tableau ou illisible = occupé ; sortie 0 seulement si l'API a répondu un tableau JSON dont le compte vaut 0 (20 min max, échec avant tout POST). Après un déploiement `finished` et la purge Cloudflare, l'étape de retrait (best-effort, checkout `scripts/vps` lui aussi best-effort ; ignorée si le script est absent) refait ce même contrôle juste avant la connexion SSH, en boucle (relevé toutes les 30 s, jusqu'à 10 min : le worker n'est lancé qu'après ce job (D8b) ; la boucle protège des autres déploiements (Studio, workflows manuels) ; si plus aucun déploiement n'est actif dans ce délai le retrait a lieu, sinon il est ignoré avec un avertissement, sans rien retirer), puis lance `scripts/vps/retirer-anciennes-images-site.sh --appliquer`. Le script ne retire que les images `<APP_UUID>:*` dont la création est **antérieure** à celle de l'image du conteneur sain (une image en cours de déploiement n'est jamais candidate), garde l'image servie **+ la plus récente des précédentes non servies** (retour arrière Coolify, N=1), jamais `latest` ni l'image d'un conteneur, `rmi` sans `-f`, liste noire, verrou ; un retrait par référence dont l'image existe encore est journalisé « étiquette retirée, image gardée » et non compté. Verrouillé par `tests/unit/ci/deploiement-repos-et-retrait-image.spec.ts`. Essai à blanc serveur (`--essai`) obligatoire avant la première fusion.
+- Les nettoyages Docker de Coolify (`force_docker_cleanup`) et le crontab Studio relèvent de la session Studio ; ClickHouse/Plausible (journaux, TTL) : lot à part.

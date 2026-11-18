@@ -2,38 +2,30 @@
 // Doctrine éditoriale v3 : ton factuel, anti-marketing. Anti-formation strict.
 // FR canonical · EN miroir. Parité enforced via tests/content/press.test.ts.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
+import { FOUNDER } from "@/lib/brand";
 import {
-  AUDIT_TIERS,
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
-  formatAmount,
+  formatTierPrice,
   getEntryLabel,
   getTierById,
 } from "@/content/pricing";
 
 // ─────────────────────────────────────────────────────────────────
-// Helpers prix dérivés (zéro hardcode — Sprint 14.10.5).
+// Helpers prix dérivés (zéro hardcode — Sprint 14.10.5). R7 (ordre de Williams du
+// 08/11/2026) : plus aucun montant d'offre au public — `getEntryLabel` et
+// `formatTierPrice` lisent l'interrupteur de pricing.ts et rendent « Sur devis ».
 // ─────────────────────────────────────────────────────────────────
-const auditFlash = getTierById(AUDIT_TIERS, "audit-flash");
-const auditCible = getTierById(AUDIT_TIERS, "audit-cible");
-const auditPme = getTierById(AUDIT_TIERS, "audit-strategique-pme");
-const auditEti = getTierById(AUDIT_TIERS, "audit-strategique-eti");
 const formationJour = getTierById(INTERVENTION_TIERS, "formation-generale-1j");
 
 function pressReleaseLaunchBody(loc: "fr" | "en"): string {
   const interventionsEntry = getEntryLabel(INTERVENTION_TIERS, loc, { compact: true });
-  const flash = formatAmount(auditFlash.priceFlat!, loc, { compact: true });
-  // Ciblé / PME / ETI = « à partir de 1 900 € · sur devis » (Will 2026-06-03,
-  // bornes hautes supprimées) → prix d'entrée uniquement (l'ancien « à ${max} »
-  // rendait « NaN », priceMax étant absent).
-  const cibleMin = formatAmount(auditCible.priceMin!, loc, { compact: true });
-  const pmeMin = formatAmount(auditPme.priceMin!, loc, { compact: true });
-  const etiFrom = formatAmount(auditEti.priceMin!, loc, { compact: true });
   const implEntry = getEntryLabel(IMPLEMENTATION_TIERS, loc, { compact: true });
   if (loc === "fr") {
-    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash dès ${flash}, Ciblé dès ${cibleMin}, Stratégique PME dès ${pmeMin}, Stratégique ETI à partir de ${etiFrom}), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
+    return `Axion-IA, cabinet IA opérationnel, annonce le lancement de sa plateforme axion-ia.com. Le site présente trois modules d'intervention — sessions terrain ${interventionsEntry}, audits IA chiffrés en 4 niveaux (Flash, Ciblé, Stratégique PME, Stratégique ETI), et implémentations sur mesure ${implEntry} — avec une promesse mesurable : un retour sur investissement chiffré dès la mise en production. Hébergée en UE, la plateforme cible les entreprises de toutes tailles, de l'artisan à l'ETI.`;
   }
-  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash from ${flash}, Targeted from ${cibleMin}, Strategic SME from ${pmeMin}, Strategic Mid-cap from ${etiFrom}), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
+  return `Axion-IA, an operational AI consultancy, announces the launch of its platform axion-ia.com. The site presents three service modules — on-site sessions ${interventionsEntry}, AI audits in 4 tiers (Flash, Targeted, Strategic SME, Strategic Mid-cap), and custom implementations ${implEntry} — with one measurable promise: a costed return on investment from the moment of go-live. Hosted in the EU, the platform targets companies of all sizes, from sole traders to mid-caps.`;
 }
 
 export type PressReleaseTag = "launch" | "partnership" | "study" | "product" | "milestone";
@@ -182,18 +174,18 @@ export const PRESS_FACTS: ReadonlyArray<PressFact> = [
   {
     id: "starting-price",
     fr: {
-      label: "Prix d'entrée",
-      value: `${formatAmount(formationJour.priceFlat!, "fr", { compact: true })} · ${formationJour.durationFr ?? "1 journée"}`,
+      label: "Tarif",
+      value: `${formatTierPrice(formationJour, "fr", { compact: true })} · ${formationJour.durationFr ?? "1 journée"}`,
     },
     en: {
-      label: "Starting price",
-      value: `${formatAmount(formationJour.priceFlat!, "en", { compact: true })} · ${formationJour.durationEn ?? "1 day"}`,
+      label: "Pricing",
+      value: `${formatTierPrice(formationJour, "en", { compact: true })} · ${formationJour.durationEn ?? "1 day"}`,
     },
   },
   {
-    id: "response-time",
-    fr: { label: "Délai de réponse presse", value: "48 h ouvrées" },
-    en: { label: "Press response time", value: "48 business hours" },
+    id: "interview-formats",
+    fr: { label: "Formats d'interview", value: "Écrit, audio, vidéo, podcast" },
+    en: { label: "Interview formats", value: "Written, audio, video, podcast" },
   },
 ];
 
@@ -457,15 +449,17 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
     ],
     fr: {
       name: "Williams",
-      role: "Fondateur · lead consultant Axion-IA",
-      bio: "Dix ans en transformation digitale, opérationnel terrain. Williams dirige les interventions Axion-IA en entreprise et incarne l'approche opérationnelle du cabinet — démos sur données réelles, plans chiffrés, mise en production rapide. Disponible pour interviews FR + EN, réponse sous 48 h ouvrées.",
+      // Voix « nous » (audit GEO 2026-11-11) : la fonction vient de `FOUNDER`, et la bio ne
+      // promet plus que Williams intervient lui-même sur chaque mission.
+      role: FOUNDER.roleLineFr,
+      bio: "Dix ans en transformation digitale, opérationnel terrain. Williams a fondé Axion-IA, et c'est notre approche qu'il porte en interview : démos sur données réelles, plans chiffrés, mise en production rapide. Interviews en français et en anglais.",
       quote:
         "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",
     },
     en: {
       name: "Williams",
-      role: "Founder · lead consultant Axion-IA",
-      bio: "Ten years in digital transformation, hands-on field practice. Williams leads Axion-IA enterprise engagements and embodies the firm's operational approach — demos on real data, costed plans, fast go-live. Available for FR + EN interviews, response within 48 business hours.",
+      role: FOUNDER.roleLineEn,
+      bio: "Ten years in digital transformation, hands-on field practice. Williams founded Axion-IA and speaks for our approach in interviews: demos on real data, costed plans, fast go-live. Interviews in French and English.",
       // EN = miroir FR (locale EN désactivée, aucun travail de traduction — Will).
       quote:
         "L'IA en entreprise ne se joue pas sur la technologie, mais sur l'exécution. La plupart des projets échouent parce qu'ils ne dépassent jamais le stade du POC. Notre rôle, c'est de prouver la valeur sur les vraies données du client, puis de la mettre en production — avec un retour sur investissement chiffré, pas une promesse.",
@@ -476,7 +470,7 @@ export const PRESS_SPOKESPERSONS: ReadonlyArray<PressSpokesperson> = [
 // ─────────────────────────────────────────────────────────────────
 // FAQ presse — questions journalistes (FAQPage JSON-LD via FaqAccordion).
 // ─────────────────────────────────────────────────────────────────
-export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
+const ALL_PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
   {
     id: "company",
     fr: {
@@ -521,12 +515,12 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     fr: {
       question: "Acceptez-vous les interviews vidéo et podcast ?",
       answer:
-        "Oui. Williams, fondateur, est disponible pour interviews écrites, vocales (téléphone, Zoom, Google Meet), vidéo (studio ou visio HD) et podcast. Langues : FR et EN. Délai de coordination : 48 h ouvrées.",
+        "Oui. Williams, fondateur, est disponible pour interviews écrites, vocales (téléphone, Zoom, Google Meet), vidéo (studio ou visio HD) et podcast. Langues : FR et EN.",
     },
     en: {
       question: "Do you accept video and podcast interviews?",
       answer:
-        "Yes. Williams, founder, is available for written, voice (phone, Zoom, Google Meet), video (studio or HD video call) and podcast interviews. Languages: FR and EN. Coordination lead time: 48 business hours.",
+        "Yes. Williams, founder, is available for written, voice (phone, Zoom, Google Meet), video (studio or HD video call) and podcast interviews. Languages: FR and EN.",
     },
   },
   {
@@ -556,6 +550,11 @@ export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = [
     },
   },
 ] as const;
+
+/** Sans l'entrée « cas concrets » tant que les cas sont éteints (2026-11-08). */
+export const PRESS_FAQ: ReadonlyArray<PressFaqEntry> = ALL_PRESS_FAQ.filter(
+  (e) => CAS_CONCRETS_AFFICHES || e.id !== "case-studies",
+);
 
 // ─────────────────────────────────────────────────────────────────
 // HELPERS — accès slug pour /presse/[slug] (Phase 2, sprint suivant).

@@ -19,11 +19,13 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     documentGenere: { findUnique: vi.fn() },
-    devis: { findFirst: vi.fn(), updateMany: vi.fn() },
+    // `findMany` : la lecture des devis visés, avant l'acceptation (montée du prospect en client).
+    devis: { findFirst: vi.fn(), updateMany: vi.fn(), findMany: vi.fn(async () => []) },
     documentSignature: { count: vi.fn(), findMany: vi.fn() },
     questionnaire: { findMany: vi.fn(), update: vi.fn() },
   },
@@ -86,6 +88,7 @@ import { signerDocument } from "@/server/qualiopi/documents/signature/document-s
 import { checkRateLimit } from "@/lib/rate-limit";
 import { sendTelegram } from "@/lib/telegram";
 import { envoyerPositionnement } from "@/server/qualiopi/notifications/notifications-service";
+import { CGV_VERSION } from "@/content/cgv-version";
 import { signerPieceParJetonAction } from "./piece-signature";
 
 type Mock = ReturnType<typeof vi.fn>;
@@ -150,6 +153,11 @@ function entree(over: Record<string, unknown> = {}) {
     token: "jeton-en-clair",
     methode: "trace" as const,
     imageDataUrl: "data:image/png;base64,AAAA",
+    // Case des CGV cochée par défaut : elle ne vise que le devis, les autres types l'ignorent.
+    cgvAcceptees: true as const,
+    cgvVersionAffichee: CGV_VERSION,
+    // Version de mention affichée par la page : celle du serveur par défaut.
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     ...over,
   };
 }
@@ -435,5 +443,98 @@ describe("🔴 personne ne doit ignorer qu'un client a signé", () => {
     mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse" });
     await signerPieceParJetonAction(entree());
     expect(mockTelegram).not.toHaveBeenCalled();
+  });
+});
+
+describe("🔴 CGV avant signature du devis — case obligatoire, version enregistrée par le serveur", () => {
+  it("T1 — devis sans cgvAcceptees : refus `cgv_non_acceptees`, signerDocument jamais appelé", async () => {
+    const res = await signerPieceParJetonAction(entree({ cgvAcceptees: undefined }));
+    expect(res).toMatchObject({ ok: false, raison: "cgv_non_acceptees" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("T2 — la chaîne « true » ou `false` ne valent pas acceptation", async () => {
+    for (const cgvAcceptees of ["true", false, 1, "oui"]) {
+      mockSigner.mockClear();
+      const res = await signerPieceParJetonAction(entree({ cgvAcceptees }));
+      expect(res).toMatchObject({ ok: false, raison: "cgv_non_acceptees" });
+      expect(mockSigner).not.toHaveBeenCalled();
+    }
+  });
+
+  it("T3 — version affichée périmée ou absente : refus `cgv_perimees`", async () => {
+    for (const cgvVersionAffichee of ["2020-01-01", undefined]) {
+      mockSigner.mockClear();
+      const res = await signerPieceParJetonAction(entree({ cgvVersionAffichee }));
+      expect(res).toMatchObject({ ok: false, raison: "cgv_perimees" });
+      if (!res.ok) expect(res.message).toMatch(/mises à jour/);
+      expect(mockSigner).not.toHaveBeenCalled();
+    }
+  });
+
+  it("mention — version affichée absente ou différente : refus, rien n'est écrit", async () => {
+    for (const mentionVersionAffichee of ["doc-v1", "doc-v0", "", undefined]) {
+      mockSigner.mockClear();
+      const res = await signerPieceParJetonAction(entree({ mentionVersionAffichee }));
+      expect(res, String(mentionVersionAffichee)).toMatchObject({
+        ok: false,
+        raison: "mention_perimee",
+        message: "Cette page a été mise à jour. Rechargez-la, relisez la mention, puis signez.",
+      });
+      expect(mockSigner).not.toHaveBeenCalled();
+    }
+  });
+
+  it("mention — le refus vaut pour toute pièce (convention sans CGV)", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "convention",
+      numero: "AXI-DOC-2026-032",
+    });
+    const res = await signerPieceParJetonAction(
+      entree({
+        cgvAcceptees: undefined,
+        cgvVersionAffichee: undefined,
+        mentionVersionAffichee: undefined,
+      }),
+    );
+    expect(res).toMatchObject({ ok: false, raison: "mention_perimee" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("mention — version courante : la signature passe", async () => {
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(mockSigner).toHaveBeenCalled();
+  });
+
+  it("T4 — avec la case : signerDocument reçoit la version SERVEUR", async () => {
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(mockSigner).toHaveBeenCalledWith(expect.objectContaining({ cgvVersion: CGV_VERSION }));
+  });
+
+  it("T4 — la version envoyée par le navigateur n'est jamais celle qu'on enregistre", async () => {
+    // Même chaîne que le serveur ou refus : il n'existe aucun chemin où une autre valeur passe.
+    await signerPieceParJetonAction(entree({ cgvVersionAffichee: CGV_VERSION }));
+    expect(mockSigner.mock.calls[0]?.[0]?.cgvVersion).toBe(CGV_VERSION);
+  });
+
+  it("T5 — convention sans case : passe, aucune version transmise", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "convention",
+      numero: "AXI-DOC-2026-032",
+    });
+    const res = await signerPieceParJetonAction(
+      entree({ cgvAcceptees: undefined, cgvVersionAffichee: undefined }),
+    );
+    expect(res).toMatchObject({ ok: true });
+    const arg = mockSigner.mock.calls[0]?.[0] as Record<string, unknown>;
+    expect(arg["cgvVersion"] ?? null).toBeNull();
+  });
+
+  it("le refus CGV passe après l'objection métier (devis refusé : message du devis)", async () => {
+    mockPrisma.devis.findFirst.mockResolvedValue({ statut: "refuse" });
+    const res = await signerPieceParJetonAction(entree({ cgvAcceptees: undefined }));
+    expect(res).toMatchObject({ ok: false, raison: "piece_non_signable_maintenant" });
   });
 });

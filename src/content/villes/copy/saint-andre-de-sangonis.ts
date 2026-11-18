@@ -49,7 +49,7 @@ export const SAINT_ANDRE_DE_SANGONIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-André-de-Sangonis ?",
-      a: "Oui, Axion-IA intervient à Saint-André-de-Sangonis et dans toute la vallée de l'Hérault (Gignac, Aniane, Clermont-l'Hérault). Nos consultants viennent depuis Montpellier en 35 min par A750.",
+      a: "Oui, Axion-IA intervient à Saint-André-de-Sangonis et dans toute la vallée de l'Hérault (Gignac, Aniane, Clermont-l'Hérault). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",

@@ -49,7 +49,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castanet-Tolosan ?",
-      a: "Oui, Axion-IA intervient à Castanet-Tolosan et dans tout le Sicoval (Ramonville, Escalquens, Labège). Nos consultants se déplacent depuis Toulouse centre en 15 min.",
+      a: "Oui, Axion-IA intervient à Castanet-Tolosan et dans tout le Sicoval (Ramonville, Escalquens, Labège). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Castanet-Tolosan ?",
@@ -61,7 +61,7 @@ export const CASTANET_TOLOSAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Castanet-Tolosan ?",
-      a: "Nos consultants se déplacent à Castanet-Tolosan depuis Toulouse (15 min D813). Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux. Vos collaborateurs gèrent ensuite la stack en autonomie.",
     },
     {
       q: "Proposez-vous du coaching individuel pour dirigeants à Castanet-Tolosan ?",

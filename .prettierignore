@@ -47,3 +47,4 @@ src/server/partners/contrat/fixtures/signature-relecture.vecteurs.json
 # se formate pas.
 extensions/enregistreur-meet/contrat.json
 extensions/enregistreur-meet/contrat.sha256
+docs/pdf-hors-ligne-certification

@@ -49,7 +49,7 @@ export const PLOEREN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ploeren et dans l'agglomération vannetaise ?",
-      a: "Oui, Axion-IA intervient à Ploeren et dans toute l'agglomération de Vannes (Séné, Arradon, Baden, Theix-Noyalo, Saint-Avé). Nos consultants se déplacent depuis Vannes en 10 minutes.",
+      a: "Oui, Axion-IA intervient à Ploeren et dans toute l'agglomération de Vannes (Séné, Arradon, Baden, Theix-Noyalo, Saint-Avé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA proposez-vous aux PME de services à Ploeren ?",

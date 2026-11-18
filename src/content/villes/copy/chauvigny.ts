@@ -49,7 +49,7 @@ export const CHAUVIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chauvigny et vallée de la Vienne ?",
-      a: "Oui, Axion-IA intervient à Chauvigny et toute la vallée de la Vienne est (Saint-Savin-sur-Gartempe à 15 min, Lussac-les-Châteaux, Civaux). Consultants depuis Poitiers (25 min) ou Paris (TGV 1h40 + 25 min).",
+      a: "Oui, Axion-IA intervient à Chauvigny et toute la vallée de la Vienne est (Saint-Savin-sur-Gartempe à 15 min, Lussac-les-Châteaux, Civaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les carriers et artisans pierre de Chauvigny ?",
@@ -64,8 +64,8 @@ export const CHAUVIGNY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chauvigny, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, gestion stocks, agents IA prise de RDV, classification photos chantiers.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV direct gare Poitiers (1h40) puis 25 min route vers Chauvigny. Pour les multi-jours, hébergement local ou Poitiers centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Chauvigny ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local ou Poitiers centre. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

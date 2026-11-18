@@ -37,6 +37,7 @@ const updateMock = vi.fn();
 const rendreMock = vi.fn();
 const storeMock = vi.fn();
 const enqueueMock = vi.fn();
+const devisFindFirstMock = vi.fn();
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -45,6 +46,7 @@ vi.mock("@/lib/prisma", () => ({
       updateMany: (...a: unknown[]) => updateManyMock(...a),
       update: (...a: unknown[]) => updateMock(...a),
     },
+    devis: { findFirst: (...a: unknown[]) => devisFindFirstMock(...a) },
   },
 }));
 
@@ -62,6 +64,7 @@ vi.mock("@/server/queue/queues", () => ({
 
 import {
   transmettreExemplaireSigne,
+  transmettreCopiePartielle,
   destinatairesExemplaire,
   exemplaireSignePdfKey,
 } from "./transmission-exemplaire";
@@ -123,6 +126,7 @@ beforeEach(() => {
     rendreMock,
     storeMock,
     enqueueMock,
+    devisFindFirstMock,
   ]) {
     m.mockReset();
   }
@@ -369,5 +373,92 @@ describe("la fonction ne lève JAMAIS", () => {
       ok: false,
       motif: "file_indisponible",
     });
+  });
+});
+
+describe("🔴 numéro du DEVIS sur l'exemplaire d'un devis signé", () => {
+  it("le payload et le sujet portent AXI-DEV-…, le n° de pièce reste dans `numero`", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "devis" }));
+    devisFindFirstMock.mockResolvedValue({ numero: "AXI-DEV-2026-001" });
+    await transmettreExemplaireSigne("doc-039");
+    const [, , , payload, options] = enqueueMock.mock.calls[0] as [
+      string,
+      string,
+      unknown,
+      Record<string, unknown>,
+      { sujet: string },
+    ];
+    expect(payload["numeroDevis"]).toBe("AXI-DEV-2026-001");
+    expect(payload["numero"]).toBe("AXI-DOC-2026-039");
+    expect(options.sujet).toContain("AXI-DEV-2026-001");
+    expect(options.sujet).not.toContain("AXI-DOC-2026-039");
+  });
+
+  it("une autre pièce n'interroge pas les devis et garde son numéro", async () => {
+    cheminNominal();
+    await transmettreExemplaireSigne("doc-039");
+    expect(devisFindFirstMock).not.toHaveBeenCalled();
+    const [, , , payload] = enqueueMock.mock.calls[0] as [
+      string,
+      string,
+      unknown,
+      Record<string, unknown>,
+    ];
+    expect(payload).not.toHaveProperty("numeroDevis");
+  });
+
+  it("devis introuvable ou lecture en échec : repli sur le n° de pièce, l'envoi part", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "devis" }));
+    devisFindFirstMock.mockRejectedValue(new Error("db"));
+    const res = await transmettreExemplaireSigne("doc-039");
+    expect(res.ok).toBe(true);
+    const [, , , payload] = enqueueMock.mock.calls[0] as [
+      string,
+      string,
+      unknown,
+      Record<string, unknown>,
+    ];
+    expect(payload).not.toHaveProperty("numeroDevis");
+  });
+});
+
+describe("🔴 l'objet de l'exemplaire signé sans la parenthèse du libellé (L11)", () => {
+  type Options = { sujet: string };
+  const sujetEnfile = (): string =>
+    (enqueueMock.mock.calls[0] as [unknown, unknown, unknown, unknown, Options])[4].sujet;
+  const MOTS_INTERDITS = /OPCO|prise en charge|financeur|Qualiopi|\(|\)/i;
+
+  it("un mandat : l'objet de l'exemplaire signé ne porte ni parenthèse ni mot interne", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "mandat_opco" }));
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — procuration spéciale AXI-DOC-2026-039");
+    expect(sujetEnfile()).not.toMatch(MOTS_INTERDITS);
+  });
+
+  it("un mandat : l'objet de la copie partielle ne porte ni parenthèse ni mot interne", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(
+      pieceSignee({ type: "mandat_opco", statutSignature: "partielle" }),
+    );
+    await transmettreCopiePartielle("doc-039", "client");
+    expect(sujetEnfile()).toBe("Copie de votre signature — procuration spéciale AXI-DOC-2026-039");
+    expect(sujetEnfile()).not.toMatch(MOTS_INTERDITS);
+  });
+
+  it("une convention : l'objet d'avant, au caractère près", async () => {
+    cheminNominal();
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — convention de formation AXI-DOC-2026-039");
+  });
+
+  it("un devis : l'objet d'avant, au caractère près", async () => {
+    cheminNominal();
+    findUniqueMock.mockResolvedValue(pieceSignee({ type: "devis" }));
+    devisFindFirstMock.mockResolvedValue({ numero: "AXI-DEV-2026-001" });
+    await transmettreExemplaireSigne("doc-039");
+    expect(sujetEnfile()).toBe("Votre exemplaire signé — devis AXI-DEV-2026-001");
   });
 });

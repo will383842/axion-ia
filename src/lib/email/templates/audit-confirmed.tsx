@@ -3,10 +3,15 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  contactName: string;
+  /** Hérité, jamais utilisé pour saluer (voir `salutation`). */
+  contactName?: string;
+  civilite?: string;
+  prenom?: string;
+  nomFamille?: string;
   auditType?: string;
   size?: string;
   industry?: string;
@@ -16,20 +21,18 @@ interface Payload {
 const COPY = {
   fr: {
     title: "Demande d'audit reçue",
-    preview: "Réponse sous 48 heures ouvrées, avec un calendrier de mission.",
-    intro: (n: string) => `Bonjour ${n},`,
+    preview: "Nous revenons vers vous avec un calendrier de mission.",
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
-      `Nous avons bien reçu votre demande d'audit${a ? ` (${a})` : ""}${s ? ` pour entreprise ${s}` : ""}${i ? ` — secteur ${i}` : ""}. Notre équipe revient vers vous sous 48 heures ouvrées avec un calendrier de mission.`,
+      `Nous avons bien reçu votre demande d'audit${a ? ` (${a})` : ""}${s ? ` pour entreprise ${s}` : ""}${i ? ` — secteur ${i}` : ""}. Notre équipe revient vers vous avec un calendrier de mission.`,
     next: "L'audit dure 5 à 10 jours selon le périmètre. Vous recevrez un rapport actionnable avec quick-wins chiffrés et un plan d'action 90 jours.",
     cta: "Méthodologie d'audit",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Audit request received",
-    preview: "Reply within 48 working hours, with a mission calendar.",
-    intro: (n: string) => `Hello ${n},`,
+    preview: "We will get back to you with a mission calendar.",
     body: (a: string | undefined, s: string | undefined, i: string | undefined) =>
-      `We received your audit request${a ? ` (${a})` : ""}${s ? ` for ${s} company` : ""}${i ? ` — ${i} sector` : ""}. Our team gets back to you within 48 working hours with a mission calendar.`,
+      `We received your audit request${a ? ` (${a})` : ""}${s ? ` for ${s} company` : ""}${i ? ` — ${i} sector` : ""}. Our team gets back to you with a mission calendar.`,
     next: "The audit takes 5 to 10 days depending on scope. You'll receive an actionable report with quantified quick-wins and a 90-day action plan.",
     cta: "Audit methodology",
     refRow: (id: string) => `Reference: ${id}`,
@@ -60,7 +63,7 @@ export function AuditConfirmedEmail({
     >
       <Text style={emailStyles.paragraphStyle}>{t.body(p.auditType, p.size, p.industry)}</Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.intro(p.contactName)}
+        {salutation(p, locale)}
         <br />
         {t.next}
       </Text>

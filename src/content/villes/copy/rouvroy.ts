@@ -65,7 +65,7 @@ export const ROUVROY_COPY: VilleCopy = {
     },
     {
       q: "Quels délais pour une mission à Rouvroy ?",
-      a: "Intervention sous 5 jours ouvrés après validation. Gare Hénin-Beaumont à 5 min, Lille à 35 min A1. Nos consultants se déplacent sur site.",
+      a: "Intervention sous 5 jours ouvrés après validation. Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

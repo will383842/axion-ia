@@ -49,7 +49,7 @@ export const CHANGE_53_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Changé en Mayenne ?",
-      a: "Oui, Axion-IA intervient à Changé (53) et dans toute l'agglomération lavalloise (Laval, Saint-Berthevin, Bonchamp-lès-Laval, L'Huisserie). Nos consultants sont basés en proximité, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Changé (53) et dans toute l'agglomération lavalloise (Laval, Saint-Berthevin, Bonchamp-lès-Laval, L'Huisserie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises de Laval Mayenne Technopole ?",
@@ -64,7 +64,7 @@ export const CHANGE_53_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA : IA générative, automatisation workflows, agents conversationnels, analyse de données, intégration API IA. Sur site technopole ou visio.",
     },
     {
-      q: "Comment se passe une mission IA à Changé depuis Laval ?",
+      q: "Comment se déroule une mission IA à Changé ?",
       a: "Nos consultants interviennent directement dans vos locaux à Changé. Gare TGV Laval à 5 km, accès A81 direct. Tarifs publics.",
     },
   ],

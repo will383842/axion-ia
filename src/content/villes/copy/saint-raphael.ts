@@ -18,9 +18,9 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Raphaël, station balnéaire phare de l'est varois, vit du tourisme et de l'hôtellerie-restauration concentrés sur son front de mer, d'une intense activité de plaisance autour de ses ports et d'une offre de loisirs nature adossée au massif de l'Estérel. La commune forme avec Fréjus un bassin économique commun de commerces, services et artisans. Ce tissu de TPE saisonnières et de PME du tourisme, soumis à de fortes pointes d'activité estivales, gagne beaucoup à automatiser réservations, relances et gestion administrative grâce à une IA bien cadrée.",
   distancesFr:
-    "Saint-Raphaël dispose de la gare TGV de Saint-Raphaël-Valescure, qui relie Paris en environ 4h et place Nice et Marseille à moins d'une heure et demie. L'A8 (« la Provençale ») dessert directement la commune, et l'aéroport de Nice-Côte d'Azur se trouve à environ 65 km vers l'est, tandis que celui de Toulon-Hyères est accessible vers l'ouest. Le port de plaisance structure l'activité nautique locale. Cette desserte facilite nos déplacements sur site dans tout le bassin Fréjus-Saint-Raphaël.",
+    "Saint-Raphaël dispose de la gare TGV de Saint-Raphaël-Valescure, qui relie Paris en environ 4h et place Nice et Marseille à moins d'une heure et demie. L'A8 (« la Provençale ») dessert directement la commune, et l'aéroport de Nice-Côte d'Azur se trouve à environ 65 km vers l'est, tandis que celui de Toulon-Hyères est accessible vers l'ouest. Le port de plaisance structure l'activité nautique locale. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Saint-Raphaël dispose de la gare TGV de Saint-Raphaël-Valescure, qui relie Paris en environ 4h et place Nice et Marseille à moins d'une heure et demie. L'A8 (« la Provençale ») dessert directement la commune, et l'aéroport de Nice-Côte d'Azur se trouve à environ 65 km vers l'est, tandis que celui de Toulon-Hyères est accessible vers l'ouest. Le port de plaisance structure l'activité nautique locale. Cette desserte facilite nos déplacements sur site dans tout le bassin Fréjus-Saint-Raphaël.",
+    "Saint-Raphaël dispose de la gare TGV de Saint-Raphaël-Valescure, qui relie Paris en environ 4h et place Nice et Marseille à moins d'une heure et demie. L'A8 (« la Provençale ») dessert directement la commune, et l'aéroport de Nice-Côte d'Azur se trouve à environ 65 km vers l'est, tandis que celui de Toulon-Hyères est accessible vers l'ouest. Le port de plaisance structure l'activité nautique locale. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Hébergement et restauration (station balnéaire)",
     "Nautisme et activités de plaisance",
@@ -132,7 +132,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Où sont hébergées les données et quel est le délai pour un devis ?",
-            a: "Hébergement en Union européenne, conforme RGPD et AI Act, avec données clients maîtrisées dès la conception. Pour un devis, comptez à partir de 24-48 h selon la complexité du projet, après un premier échange. Nous nous déplaçons sur site à Saint-Raphaël et dans tout le bassin Fréjus-Saint-Raphaël, desservi par la gare TGV de Valescure et l'A8.",
+            a: "Hébergement en Union européenne, conforme RGPD et AI Act, avec données clients maîtrisées dès la conception. Pour un devis, comptez à partir de 24-48 h selon la complexité du projet, après un premier échange. Nous nous déplaçons sur site à Saint-Raphaël et dans tout le bassin Fréjus-Saint-Raphaël.",
           },
         ],
         guarantees:
@@ -218,7 +218,7 @@ export const SAINT_RAPHAEL_COPY: VilleCopy = {
           },
           {
             q: "Where is data hosted and how long for a quote?",
-            a: "Hosting in the European Union, GDPR- and AI Act-compliant, with customer data controlled by design. For a quote, allow from 24-48 h depending on project complexity, after an initial exchange. We travel on site in Saint-Raphaël and across the Fréjus-Saint-Raphaël basin, served by the Valescure TGV station and the A8.",
+            a: "Hosting in the European Union, GDPR- and AI Act-compliant, with customer data controlled by design. For a quote, allow from 24-48 h depending on project complexity, after an initial exchange. We travel on site in Saint-Raphaël and across the Fréjus-Saint-Raphaël basin.",
           },
         ],
         guarantees:

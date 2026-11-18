@@ -1,6 +1,10 @@
 /**
  * Sprint A User Journeys — 5 critical paths.
  *
+ * 2026-11-11 — les pages villes sont centrées sur La Journée IA (plus de cartes
+ * « 5 services ») : les parcours 1 et 2 vérifient le CTA diagnostic et le lien vers
+ * /fr/journee-ia.
+ *
  * Refonte villes 2026-05-26 (Will) — Les routes /implantations/[region]/[ville]/[verticale]
  * ont ete supprimees (risque doorway HCU 2024 + cannibalisation pages services). Les 5
  * cards du hub ville pointent desormais vers les pages services principales (/audit,
@@ -44,59 +48,48 @@ test.describe("Journey 1 — Discovery via SEO Paris hub @sprint-a", () => {
     );
     expect(hasSpeakable, "Expected SpeakableSpecification in JSON-LD on Paris hub").toBe(true);
 
-    // 🔴 2026-08-22 — TROISIÈME INSTANCE DU MÊME DÉFAUT, DANS CE FICHIER.
-    //
-    // Le sélecteur visait d'abord `[data-testid='orange-banner']` — un testid
-    // qui n'existe NULLE PART dans `src/` (une seule occurrence dans tout le
-    // dépôt : cette ligne même). Le repli `.bg-terracotta, [class*='terracotta']`
-    // résolvait alors 166 éléments sur le hub Paris, et `.first()` prenait le
-    // PREMIER dans l'ordre du DOM : le `<header data-tone="terracotta">` du
-    // site, hors du contenu.
-    //
-    // 🔑 Le test s'appelle « bannière CTA » et validait l'en-tête du site. Il
-    // aurait continué à passer si la bannière disparaissait complètement.
-    // On vise l'ancre réelle, bornée au contenu.
-    const ctaBanner = page.locator('main [data-cta="orange_banner_contact"]');
+    // 2026-11-11 — refonte « La Journée IA ville par ville » : le bandeau orange
+    // « Nous contacter » (OrangeContactBanner) a disparu avec la vente des 5 services.
+    // L'appel à l'action de la page est désormais le diagnostic gratuit, en bas de page,
+    // avec un emplacement `depuis=` explicite. On vise l'ancre réelle, bornée au contenu.
+    const ctaFinal = page.locator('main [data-cta-tracking="ville_cta_final_diagnostic"]');
     await expect(
-      ctaBanner,
-      "aucune bannière CTA orange dans le contenu du hub Paris — le visiteur " +
-        "arrive au bout de la page sans moyen d'agir",
+      ctaFinal,
+      "aucun appel à l'action « diagnostic gratuit » en bas du contenu de la page Paris — " +
+        "le visiteur arrive au bout de la page sans moyen d'agir",
     ).toBeVisible();
+    await expect(ctaFinal).toHaveAttribute(
+      "href",
+      /\/appel\?rdv=diagnostic&depuis=ville-paris-bas/,
+    );
 
     expect(consoleErrors).toEqual([]);
   });
 });
 
-test.describe("Journey 2 — Navigation hub ville to page service @sprint-a", () => {
-  test("Click on Audit IA module card on Paris hub then land on /fr/audit", async ({ page }) => {
+test.describe("Journey 2 — Navigation page ville vers la Journée IA @sprint-a", () => {
+  test("Click on the Journée IA link in the Paris page content then land on /fr/journee-ia", async ({
+    page,
+  }) => {
     await page.goto("/fr/implantations/ile-de-france/paris");
     const hubH1 = page.locator("h1").first();
     await expect(hubH1).toBeVisible();
-    await expect(hubH1).toContainText(/Paris/i);
+    await expect(hubH1).toContainText(/Journée IA à Paris/i);
 
-    // 🔴 2026-08-21 — `.first()` NE DÉSIGNAIT PAS LA CARTE, MAIS LE MENU.
-    //
-    // Le titre du test dit « Click on Audit IA module card ». Le sélecteur, lui,
-    // prenait le PREMIER `a[href="/fr/audit"]` du document — c'est-à-dire
-    // l'entrée de navigation du header, masquée à cette largeur (`hidden` sous
-    // le point de rupture `nav`). Playwright résolvait bien un élément, treize
-    // fois de suite, et le déclarait invisible : « 13 × locator resolved to <a
-    // href="/fr/audit" class="relative text-[17px] … after:absolute …" ».
-    //
-    // 🔑 Le parcours ne mesurait donc pas ce que son titre annonce. Un
-    // `.first()` sur un site où le même lien vit dans le menu, la carte et le
-    // pied de page ne choisit rien : il prend l'ordre du DOM. On borne au
-    // contenu — c'est la carte du hub qu'on veut cliquer, et c'est elle qui
-    // doit exister.
-    const auditLink = page.locator("main").locator('a[href="/fr/audit"]').first();
+    // 2026-11-11 — la page ville ne vend plus « 5 services » : son maillage interne
+    // principal mène à la Journée IA. On borne au contenu (`main`) pour ne pas cliquer
+    // l'entrée du menu ou du pied de page (cf. l'historique du `.first()` sur le header).
+    const lienJourneeIa = page
+      .locator("main")
+      .locator('[data-cta-tracking="ville_en_bref_journee_ia"]');
     await expect(
-      auditLink,
-      "aucune carte « Audit IA » dans le contenu du hub Paris — le maillage " +
-        "interne ville → service est ce que ce parcours mesure",
+      lienJourneeIa,
+      "aucun lien vers la Journée IA dans le « En bref » de la page Paris — le maillage " +
+        "interne ville → offre est ce que ce parcours mesure",
     ).toBeVisible();
-    await auditLink.click();
+    await lienJourneeIa.click();
 
-    await expect(page).toHaveURL(/\/fr\/audit($|\/|\?|#)/);
+    await expect(page).toHaveURL(/\/fr\/journee-ia($|\/|\?|#)/);
 
     await expect(page.locator("main")).toBeVisible();
     await expect(page.locator("h1")).toBeVisible();

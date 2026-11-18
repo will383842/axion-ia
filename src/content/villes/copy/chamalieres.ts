@@ -18,9 +18,9 @@ export const CHAMALIERES_COPY: VilleCopy = {
   ecosystemEn:
     "Chamalières profite de sa position privilégiée à l'ouest de Clermont-Ferrand, au sein de Clermont Auvergne Métropole, premier bassin d'emploi auvergnat dynamisé par Michelin et l'industrie pneumatique. La commune, résidentielle et aisée, abrite l'imprimerie de la Banque de France et un tissu dense de professions libérales, de cabinets de conseil et de santé, de commerces premium et de petites PME tertiaires. Ces TPE et PME, dirigées par des indépendants exigeants, trouvent dans l'IA appliquée un levier direct pour libérer du temps et fluidifier leur relation client.",
   distancesFr:
-    "Clermont-Ferrand centre à 5 min, Royat limitrophe. Gare de Clermont-Ferrand à 10 min, aéroport de Clermont-Auvergne à 20 min. Vichy à 40 min, Lyon à 2h via l'A89, Paris à 3h30 en train. Nos consultants se déplacent sur site depuis Clermont-Ferrand, frais indiqués séparément, ou interviennent en visio.",
+    "Clermont-Ferrand centre à 5 min, Royat limitrophe. Gare de Clermont-Ferrand à 10 min, aéroport de Clermont-Auvergne à 20 min. Vichy à 40 min, Lyon à 2h via l'A89, Paris à 3h30 en train. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Clermont-Ferrand centre à 5 min, Royat limitrophe. Gare de Clermont-Ferrand à 10 min, aéroport de Clermont-Auvergne à 20 min. Vichy à 40 min, Lyon à 2h via l'A89, Paris à 3h30 en train. Nos consultants se déplacent sur site depuis Clermont-Ferrand, frais indiqués séparément, ou interviennent en visio.",
+    "Clermont-Ferrand centre à 5 min, Royat limitrophe. Gare de Clermont-Ferrand à 10 min, aéroport de Clermont-Auvergne à 20 min. Vichy à 40 min, Lyon à 2h via l'A89, Paris à 3h30 en train. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Professions libérales (juridique, conseil, santé)",
     "Santé humaine et cabinets médicaux",
@@ -53,7 +53,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chamalières et dans Clermont Auvergne Métropole ?",
-      a: "Oui. Nous couvrons Chamalières et toute la métropole clermontoise (Clermont-Ferrand à 5 min, Royat, Beaumont, Cournon). Nos consultants se déplacent sur site depuis Clermont-Ferrand ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Chamalières et toute la métropole clermontoise (Clermont-Ferrand à 5 min, Royat, Beaumont, Cournon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales et cabinets de santé ?",
@@ -68,7 +68,7 @@ export const CHAMALIERES_COPY: VilleCopy = {
       a: "Absolument. Toutes nos implémentations respectent le RGPD : minimisation des données, hébergement maîtrisé et traçabilité. C'est un point central de nos missions auprès des cabinets et praticiens chamalièrois.",
     },
     {
-      q: "Comment se déroule une mission depuis Clermont-Ferrand ou Lyon ?",
+      q: "Comment se déroule une mission à Chamalières ?",
       a: "Le diagnostic et les sessions clés se font sur site à Chamalières ; le suivi se poursuit en visio.",
     },
   ],

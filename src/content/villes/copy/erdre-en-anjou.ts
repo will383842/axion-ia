@@ -49,7 +49,7 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Erdre-en-Anjou et dans le nord angevin ?",
-      a: "Oui, Axion-IA intervient à Erdre-en-Anjou et dans tout le nord angevin (Vern-d'Anjou, Gené, Segré, Candé). Nos consultants se déplacent depuis Angers (25 min N162).",
+      a: "Oui, Axion-IA intervient à Erdre-en-Anjou et dans tout le nord angevin (Vern-d'Anjou, Gené, Segré, Candé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les exploitations agricoles du nord d'Angers ?",
@@ -64,8 +64,8 @@ export const ERDRE_EN_ANJOU_COPY: VilleCopy = {
       a: "Oui, notre format 1-to-1 permet un accompagnement personnalisé pour les dirigeants TPE/PME d'Erdre-en-Anjou. Sessions sur site, dans votre exploitation ou en visio, à partir de {{price:intervention-dirigeants|flat}}.",
     },
     {
-      q: "Comment se passe une mission IA depuis Angers ?",
-      a: "Nos consultants viennent d'Angers (25 min N162). Déplacement inclus dans la zone nord angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      q: "Comment se déroule une mission IA à Erdre-en-Anjou ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement inclus dans la zone nord angevin. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const ARNAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Arnage ?",
-      a: "Nos consultants sont accessibles depuis la gare TGV Le Mans (15 min d'Arnage, Paris à 55 min TGV). Intervention sur site dans vos locaux industriels, ateliers ou bureaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux industriels, ateliers ou bureaux.",
     },
   ],
 };

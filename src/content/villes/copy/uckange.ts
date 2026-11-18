@@ -49,7 +49,7 @@ export const UCKANGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Uckange et dans la vallée de la Fensch ?",
-      a: "Oui, Axion-IA intervient à Uckange et dans toute la vallée de la Fensch (Florange, Hayange, Sérémange-Erzange, Knutange). Nos consultants se déplacent depuis Metz ou Luxembourg, accessibles en 30-40 min via A30/A31.",
+      a: "Oui, Axion-IA intervient à Uckange et dans toute la vallée de la Fensch (Florange, Hayange, Sérémange-Erzange, Knutange). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Uckange  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const UCKANGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Uckange ?",
-      a: "Nos consultants interviennent depuis Metz, Luxembourg ou Nancy. Uckange est accessible en 30-40 min via A30/A31. Sessions sur site ou en visio selon vos préférences, sans surcoût de déplacement pour les missions courtes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Uckange est desservie par l'A30 et l'A31. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

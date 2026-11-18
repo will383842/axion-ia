@@ -14,13 +14,11 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Saint-Martin-d'Uriage (38). Nous accompagnons tous types d'activités : acteurs du thermalisme et tourisme Uriage-les-Bains, TPE artisans BTP, commerçants, agriculteurs/éleveurs montagne, professions libérales et services aux entreprises du Grésivaudan oriental Belledonne.",
   seoHook: "thermalisme santé & hôtellerie restauration",
   ecosystemFr:
-    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
+    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de l'agglomération grenobloise. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
   ecosystemEn:
-    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de Grenoble. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
-  distancesFr:
-    "Grenoble centre à 20 min voiture (D524). Aéroport Grenoble-Alpes-Isère à 1h. Station Chamrousse à 30 min. Eybens à 10 min.",
-  distancesEn:
-    "Grenoble centre à 20 min voiture (D524). Aéroport Grenoble-Alpes-Isère à 1h. Station Chamrousse à 30 min. Eybens à 10 min.",
+    "Saint-Martin-d'Uriage est positionnée sur les contreforts du massif de Belledonne, à l'est de l'agglomération grenobloise. La station d'Uriage-les-Bains (établissement thermal historique, soins dermatologiques et rhumatologiques) constitue le pivot économique local. Tissu PME thermalisme/hôtellerie, TPE artisans BTP, agriculture/élevage montagne, commerces. Position vers stations de ski Chamrousse.",
+  distancesFr: "Station Chamrousse à 30 min. Eybens à 10 min.",
+  distancesEn: "Station Chamrousse à 30 min. Eybens à 10 min.",
   topSectorsNaf: [
     "Thermalisme & santé (Uriage-les-Bains)",
     "Hôtellerie & restauration tourisme thermal",
@@ -49,7 +47,7 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Martin-d'Uriage et Belledonne ?",
-      a: "Oui, Axion-IA intervient à Saint-Martin-d'Uriage et tout l'est grenoblois Belledonne (Vaulnaveys-le-Haut, Vaulnaveys-le-Bas, Chamrousse, Herbeys). Nos consultants viennent de Grenoble (20 min D524).",
+      a: "Oui, Axion-IA intervient à Saint-Martin-d'Uriage et tout l'est grenoblois Belledonne (Vaulnaveys-le-Haut, Vaulnaveys-le-Bas, Chamrousse, Herbeys). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs du thermalisme Uriage-les-Bains ?",
@@ -64,8 +62,8 @@ export const SAINT_MARTIN_D_URIAGE_COPY: VilleCopy = {
       a: "Pour les hôteliers tourisme thermal et commerçants à Saint-Martin-d'Uriage, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas IA : agents conversationnels multilingues, automatisation réservations, classification feedback.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ?",
-      a: "Nos consultants viennent de Grenoble (20 min D524). Pour les multi-jours, hébergement local possible (hôtels Uriage).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible (hôtels Uriage).",
     },
   ],
 };

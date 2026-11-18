@@ -49,7 +49,7 @@ export const AUDRUICQ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Audruicq et dans le marais audomarois ?",
-      a: "Oui, Axion-IA intervient a Audruicq et dans tout l'Audomarois (Saint-Omer, Calais, Ardres). Consultants depuis Lille (1h10 TER) ou via Calais-Frethun (Eurostar 15 min).",
+      a: "Oui, Axion-IA intervient a Audruicq et dans tout l'Audomarois (Saint-Omer, Calais, Ardres). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les agriculteurs d'Audruicq ?",

@@ -49,7 +49,7 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Fargeau-Ponthierry et dans le sud Melun ?",
-      a: "Oui, Axion-IA intervient à Saint-Fargeau-Ponthierry et dans tout le bassin sud Melun (Pringy, Le Mée-sur-Seine, Boissise-le-Roi, Nandy). Nos consultants se déplacent depuis Paris (50 min via A6/N7).",
+      a: "Oui, Axion-IA intervient à Saint-Fargeau-Ponthierry et dans tout le bassin sud Melun (Pringy, Le Mée-sur-Seine, Boissise-le-Roi, Nandy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Saint-Fargeau-Ponthierry ?",
@@ -65,7 +65,7 @@ export const SAINT_FARGEAU_PONTHIERRY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Saint-Fargeau-Ponthierry ?",
-      a: "Nos consultants interviennent à Saint-Fargeau-Ponthierry (gare Transilien R Ponthierry-Pringy à 5 min, 50 min depuis Paris via A6). Intervention dans vos locaux, atelier pratique, livraison d'outils configurés.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique, livraison d'outils configurés.",
     },
   ],
 };

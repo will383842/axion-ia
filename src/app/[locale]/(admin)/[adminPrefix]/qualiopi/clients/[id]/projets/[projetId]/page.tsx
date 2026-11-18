@@ -54,7 +54,7 @@ import { DocumentsDuProjet } from "@/components/admin/dossier-client/DocumentsDu
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
-  title: "Dossier client — Projet | Axion-IA Admin",
+  title: "Dossier client — Prestation | Axion-IA Admin",
   robots: { index: false, follow: false },
 };
 
@@ -83,9 +83,9 @@ const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-s
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 
 const LIBELLE_EVENEMENT: Readonly<Record<string, string>> = {
-  cree: "Projet créé",
+  cree: "Prestation créée",
   statut_change: "Statut changé",
-  reouvert: "Projet rouvert",
+  reouvert: "Prestation rouverte",
   fusionne: "Fusionné",
   deplace: "Déplacé vers une autre fiche",
   renomme: "Renommé",
@@ -180,8 +180,8 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
       />
 
       <section className={carteCls}>
-        <h2 className={titreCls}>Ce que l&apos;on sait de ce projet</h2>
-        <ListeValeurs portee={portee} vide="Rien de validé pour ce projet." />
+        <h2 className={titreCls}>Ce que l&apos;on sait de cette prestation</h2>
+        <ListeValeurs portee={portee} vide="Rien de validé pour cette prestation." />
         <div className="mt-[var(--space-admin-3)]">
           <Trous trous={portee?.trous ?? []} />
         </div>
@@ -206,10 +206,10 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
       </section>
 
       <section className={carteCls}>
-        <h2 className={titreCls}>Personnes du projet</h2>
+        <h2 className={titreCls}>Personnes de la prestation</h2>
         {personnesDuProjet.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucune personne rattachée à ce projet.
+            Aucune personne rattachée à cette prestation.
           </p>
         ) : (
           <ul className={listeCls}>
@@ -221,7 +221,9 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
                   .filter((r) => r.projetId === projet.id)
                   .map((r) => LIBELLE_ROLE_PROJET[r.role])
                   .join(", ")}
-                {!p.rencontree ? <span className={mutedCls}> (jamais rencontrée)</span> : null}
+                {!p.rencontree ? (
+                  <span className={mutedCls}> (jamais vue en rendez-vous)</span>
+                ) : null}
               </li>
             ))}
           </ul>
@@ -237,13 +239,13 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
             href={`/${locale}/${adminPrefix}/qualiopi/devis/new?clientId=${id}&projetId=${projet.id}`}
             variant="secondary"
           >
-            Créer un devis pour ce projet
+            Créer un devis pour cette prestation
           </AdminButton>
           <AdminButton
             href={`/${locale}/${adminPrefix}/qualiopi/vente/new?clientId=${id}&projetId=${projet.id}`}
             variant="secondary"
           >
-            Vente guidée pour ce projet
+            Vente guidée pour cette prestation
           </AdminButton>
           <AdminButton href={retourQuestionnaire} variant="secondary">
             Questionnaire de cadrage
@@ -268,7 +270,7 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
       </section>
 
       <section className={carteCls}>
-        <h2 className={titreCls}>Rendez-vous du projet</h2>
+        <h2 className={titreCls}>Rendez-vous de la prestation</h2>
         {/* Chantier visio (PR 4, B9) : un rendez-vous en 2 clics depuis le projet. */}
         <NouveauRendezVous
           clientId={id}
@@ -279,7 +281,7 @@ export default async function ProjetPage({ params, searchParams }: PageProps) {
         />
         {rencontresDuProjet.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun rendez-vous rangé dans ce projet.
+            Aucun rendez-vous rangé dans cette prestation.
           </p>
         ) : (
           <ul className={listeCls}>

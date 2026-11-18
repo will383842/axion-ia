@@ -128,16 +128,19 @@ describe("non-régression du chemin collectif", () => {
   it("🔴 les versions de tuple sont INDÉPENDANTES entre contextes", () => {
     expect(HASH_VERSION_COURANTE).toBe(1);
     expect(HASH_VERSION_CONTRESIGNATURE).toBe(1);
-    // Le DOCUMENT est passé en v2 (V1-A-7, facteur de vérification) : les deux autres
-    // familles, elles, n'ont pas bougé — c'est la preuve de leur indépendance.
-    expect(HASH_VERSION_DOCUMENT).toBe(2);
+    // Le DOCUMENT est passé en v2 (V1-A-7, facteur de vérification) puis en v3 (version des
+    // CGV acceptées) : les deux autres familles, elles, n'ont pas bougé — c'est la preuve de
+    // leur indépendance.
+    expect(HASH_VERSION_DOCUMENT).toBe(3);
   });
 
   it("🔴 la version de mention DOCUMENT est INDÉPENDANTE de celle du collectif", () => {
     expect(MENTION_VERSION_DOCUMENT).not.toBe(MENTION_VERSION);
     // Elle n'en DÉRIVE pas : une valeur dérivée suivrait
     // silencieusement le prochain bump de l'autre famille.
-    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v1");
+    // « doc-v2 » depuis le 17/11/2026 (accord du genre dans l'attestation ; « doc-v1 » conservé,
+    // cf. `mentions-document-versions.spec.ts`).
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v2");
     // Mention et consentement sont DEUX axes : reformuler le texte affiché ne
     // change pas ce à quoi le signataire consent, et l'inverse.
     expect(CONSENTEMENT_VERSION_DOCUMENT).not.toBe(MENTION_VERSION_DOCUMENT);

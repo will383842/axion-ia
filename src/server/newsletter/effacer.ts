@@ -1,68 +1,33 @@
 /**
- * EFFACEMENT D'UN ABONNÉ DEPUIS LA CONSOLE (lot L3, 2026-09-24).
+ * DEMANDE D'EFFACEMENT D'UN ABONNÉ DEPUIS LA CONSOLE.
  *
- * 🔴 L'ancien bouton « Effacer (RGPD) » supprimait la seule ligne
- * `newsletter_subscribers`. Il laissait derrière lui :
- *   · les demandes du guide (adresse en clair) ;
- *   · les journaux d'e-mail (`email_logs`, adresse en clair) et la corbeille
- *     d'envoi (`email_outbox`, charge utile complète) ;
- *   · la fiche du CRM, qui n'en apprenait rien ;
- * et, s'il n'y avait pas de ligne, il levait une erreur non rattrapée : l'écran
- * tombait au lieu de dire « introuvable ».
+ * 🔴 DÉCISION DE WILLIAMS DU 11/11/2026 (fait foi) — PLUS AUCUNE SUPPRESSION.
  *
- * Il passe désormais par les MÊMES fonctions que l'effacement public
- * (`/api/gdpr-erase`) pour tout ce qui touche la lettre et le guide :
- *   · `eraseNewsletterForEmail`   — l'abonné ET ses demandes du guide ;
- *   · `eraseEmailTracesForEmail`  — journal pseudonymisé (preuve gardée),
- *                                    corbeille supprimée ;
- *   · `eraseCrmOutboxForEmail`    — file vers le CRM (charge en clair) supprimée ;
- *   · `propagateGdprToCrm(erase)` — le CRM efface par `person_key` et inscrit
- *                                    l'empreinte en liste de suppression.
- * Les autres tables (demandes de contact, candidatures, podcast…) restent le
- * périmètre de l'effacement complet : ce bouton ne les couvre PAS. Son libellé
- * le dit (« Effacer de la lettre et du guide (RGPD) »), et l'aide affichée
- * sous lui aussi : « N'efface pas les demandes de contact, candidatures ni
- * autres données. Pour une demande d'effacement complète, utilisez la
- * procédure d'effacement complet. »
+ * Jusqu'à cette date (lot L3, 2026-09-24), ce bouton supprimait l'abonné et ses demandes du
+ * guide (`eraseNewsletterForEmail`), vidait la corbeille d'envoi (`eraseEmailTracesForEmail`) et
+ * la file vers le CRM (`eraseCrmOutboxForEmail`). Audit RGPD du 11/11/2026, point E1.
  *
- * Le motif saisi est gardé au journal : le champ demande « sans adresse
- * e-mail », sans quoi l'effacement laisserait l'adresse dans sa propre trace.
+ * Désormais il MET LA PERSONNE À L'ÉCART, par le MÊME module que la route publique
+ * (`server/rgpd/ecarter-au-lieu-d-effacer.ts`) : opposition, plus aucun envoi, plus aucune
+ * réinscription, abonné « désabonné », contacts du guide écartés, CRM prévenu, preuve au journal
+ * (`gdpr.erase.requested`, avec le motif saisi et le SHA-256 relu par la liste de suppression),
+ * alerte dans la cloche. Données GARDÉES : l'effacement éventuel est un geste humain, à part.
  *
- * Journal : `gdpr.newsletter.erased`, avec le SHA-256 de l'adresse (jamais
- * l'adresse) — c'est aussi ce que relit la liste de suppression exportée.
- *
- * 🔴 Préfixe `gdpr.` depuis l'audit final du 2026-09-26. Sous son ancien nom
- * (`newsletter.erased`), la trace tombait à 12 mois avec les journaux
- * ordinaires (`retention-purge-worker.ts` n'épargne que `gdpr.*`) : passé un
- * an, la liste de suppression oubliait la personne effacée, et un import
- * pouvait la réintroduire dans l'outil de lettres. Renommer plutôt qu'exempter :
- * le préfixe protège déjà les traces de l'effacement public
- * (`gdpr.erase.completed`), avec la même échéance (celle des pièces, 5 ans) —
- * aucune liste d'exceptions à tenir dans le worker. Les traces déjà écrites
- * sous l'ancien nom restent lues par l'export (`exports.ts`).
+ * Le motif saisi est gardé au journal : le champ demande « sans adresse e-mail », sans quoi la
+ * trace porterait l'adresse.
  *
  * ⚠️ Module serveur ordinaire, PAS `"use server"`.
  */
 
-import { createHash } from "node:crypto";
 import { prisma } from "@/lib/prisma";
-import { hashEmailForLookup } from "@/lib/security/email-hash";
-import {
-  eraseCrmOutboxForEmail,
-  eraseEmailTracesForEmail,
-  eraseNewsletterForEmail,
-} from "@/lib/rgpd-erase";
-import { propagateGdprToCrm } from "@/server/crm-sync/gdpr";
-import { ACTION_EFFACEMENT_CONSOLE } from "./actions-journal";
+import { ecarterPourDemandeEffacement } from "@/server/rgpd/ecarter-au-lieu-d-effacer";
 
 export type IssueEffacement =
   | {
       readonly ok: true;
-      readonly abonnesSupprimes: number;
-      readonly demandesGuideSupprimees: number;
-      readonly journauxPseudonymises: number;
-      readonly corbeilleSupprimee: number;
-      readonly crm: "ok" | "deferred" | "failed";
+      readonly abonnesEcartes: number;
+      readonly contactsGuideEcartes: number;
+      readonly etapesEnEchec: readonly string[];
     }
   | { readonly ok: false; readonly erreur: "introuvable" };
 
@@ -77,49 +42,20 @@ export async function effacerAbonneDepuisConsole(entree: {
     select: { id: true, email: true },
   });
   if (!abonne) return { ok: false, erreur: "introuvable" };
-  const email = abonne.email;
 
-  // CRM d'abord calculé, NON bloquant (même doctrine que la route publique) :
-  // l'effacement local a lieu que le second système réponde ou non.
-  const crm = await propagateGdprToCrm({
-    action: "erase",
-    personKey: hashEmailForLookup(email) ?? "",
-    email,
-  });
-
-  const [lettre, traces, outboxCrm] = await Promise.all([
-    eraseNewsletterForEmail(email),
-    eraseEmailTracesForEmail(email),
-    // L6 — la file vers le CRM porte l'adresse en clair dans sa charge.
-    eraseCrmOutboxForEmail(email),
-  ]);
-
-  await prisma.activityLog.create({
-    data: {
-      adminUserId: entree.adminUserId,
-      action: ACTION_EFFACEMENT_CONSOLE,
-      targetType: "newsletter_subscriber",
-      targetId: abonne.id,
-      changes: {
-        reason: entree.motif,
-        // SHA-256 de l'adresse normalisée — relu par la liste de suppression.
-        emailHash: createHash("sha256").update(email.trim().toLowerCase()).digest("hex"),
-        guideDeleted: lettre.guideDeleted,
-        logsPseudonymises: traces.logsPseudonymises,
-        outboxSupprimes: traces.outboxSupprimes,
-        outboxCrmSupprimes: outboxCrm.supprimees,
-        crmStatus: crm.status,
-      },
-      ipAddress: entree.ip ?? null,
-    },
+  const r = await ecarterPourDemandeEffacement({
+    email: abonne.email,
+    origine: "console-lettre",
+    adminUserId: entree.adminUserId,
+    motif: entree.motif,
+    ip: entree.ip ?? null,
+    cible: { type: "newsletter_subscriber", id: abonne.id },
   });
 
   return {
     ok: true,
-    abonnesSupprimes: lettre.deleted,
-    demandesGuideSupprimees: lettre.guideDeleted,
-    journauxPseudonymises: traces.logsPseudonymises,
-    corbeilleSupprimee: traces.outboxSupprimes,
-    crm: crm.status,
+    abonnesEcartes: r.abonnesEcartes,
+    contactsGuideEcartes: r.contactsGuideEcartes,
+    etapesEnEchec: r.etapesEnEchec,
   };
 }

@@ -49,7 +49,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-de-Boiseau ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-de-Boiseau et tout le sud-ouest nantais (La Montagne, Bouguenais, Le Pellerin, Indre). Consultants depuis Nantes centre (20 min). Couverture complète sud-ouest métropole.",
+      a: "Oui, Axion-IA intervient à Saint-Jean-de-Boiseau et tout le sud-ouest nantais (La Montagne, Bouguenais, Le Pellerin, Indre). Nous intervenons partout en France, sur place ou à distance. Couverture complète sud-ouest métropole.",
     },
     {
       q: "Accompagnez-vous les professions libérales ?",
@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_BOISEAU_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention sur site ?",
-      a: "Nos consultants se déplacent depuis Nantes centre (20 min). Formats demi-journée ou journée complète, sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats demi-journée ou journée complète, sur site ou en visio.",
     },
   ],
 };

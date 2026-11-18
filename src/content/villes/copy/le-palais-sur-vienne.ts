@@ -49,7 +49,7 @@ export const LE_PALAIS_SUR_VIENNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il au Palais-sur-Vienne ?",
-      a: "Oui, Axion-IA intervient au Palais-sur-Vienne et dans toute l'agglomération nord de Limoges (Ambazac, Rilhac-Rancon, Bonnac-la-Côte). Nos consultants sont basés à proximité de Limoges, déplacement en 10 min.",
+      a: "Oui, Axion-IA intervient au Palais-sur-Vienne et dans toute l'agglomération nord de Limoges (Ambazac, Rilhac-Rancon, Bonnac-la-Côte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous au Palais-sur-Vienne ?",

@@ -49,7 +49,7 @@ export const POUSSAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Poussan ?",
-      a: "Oui, Axion-IA intervient à Poussan et dans tout le bassin de Thau (Sète, Balaruc-les-Bains, Gigean, Bouzigues, Mèze). Nos consultants viennent depuis Montpellier en 30 min.",
+      a: "Oui, Axion-IA intervient à Poussan et dans tout le bassin de Thau (Sète, Balaruc-les-Bains, Gigean, Bouzigues, Mèze). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous un audit IA pour les viticulteurs ?",

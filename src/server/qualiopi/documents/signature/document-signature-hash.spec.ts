@@ -23,12 +23,17 @@ import {
   tupleDocumentDepuisLigne,
   versionDocumentRecalculable,
   HASH_VERSION_DOCUMENT,
+  HASH_VERSION_DOCUMENT_V4,
+  COLONNES_V4_VIDES,
+  type TupleDocumentSignatureV4,
   type LigneDocumentSignature,
   type PieceScellee,
   type TupleDocumentSignatureV1,
   type TupleDocumentSignatureV2,
+  type TupleDocumentSignatureV3,
 } from "./document-signature-hash";
 import { verifierChaine } from "@/server/qualiopi/emargement/hash";
+import { sha256Choix } from "@/server/qualiopi/devis/offre-calculs";
 
 const DOC = "11111111-1111-4111-8111-111111111111";
 
@@ -78,6 +83,8 @@ function ligne(over: Partial<LigneDocumentSignature> = {}): LigneDocumentSignatu
     // Preuve de VERSION 1 : celles qui existent déjà et ne seront jamais réécrites.
     hashVersion: 1,
     facteurVerification: null,
+    cgvVersion: null,
+    ...COLONNES_V4_VIDES,
     ...over,
   };
 }
@@ -231,26 +238,25 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
     facteurVerification: "code_email",
   };
 
-  it("la version courante est 2, et la version 1 reste recalculable", () => {
-    expect(HASH_VERSION_DOCUMENT).toBe(2);
+  it("les versions 1 et 2 restent recalculables (la courante est la 3, voir plus bas)", () => {
     expect(versionDocumentRecalculable(1)).toBe(true);
     expect(versionDocumentRecalculable(2)).toBe(true);
   });
 
   it("la forme v2 porte `facteurVerification` et `v: 2`", () => {
-    const canon = tupleDocumentCanonique(TUPLE_V2);
+    const canon = tupleDocumentCanonique(TUPLE_V2, 2);
     expect(canon).toContain('"facteurVerification":"code_email"');
     expect(canon).toContain('"v":2');
   });
 
   it("modifier le facteur change l'empreinte ; nul et `code_email` ne se confondent pas", () => {
-    expect(calculerSelfHashDocument(TUPLE_V2)).not.toBe(
-      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }),
+    expect(calculerSelfHashDocument(TUPLE_V2, 2)).not.toBe(
+      calculerSelfHashDocument({ ...TUPLE_V2, facteurVerification: null }, 2),
     );
   });
 
   it("un tuple v2 SANS facteur ne se hache pas (absent n'est pas nul)", () => {
-    expect(() => calculerSelfHashDocument(TUPLE)).toThrow(/sans facteurVerification/);
+    expect(() => calculerSelfHashDocument(TUPLE, 2)).toThrow(/sans facteurVerification/);
   });
 
   it("la v1 ignore le facteur : une preuve existante garde son empreinte", () => {
@@ -266,7 +272,7 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
       consentementVersion: "doc-consent-code-v1",
       hashVersion: 2,
       facteurVerification: "code_email",
-      selfHash: calculerSelfHashDocument(TUPLE_V2),
+      selfHash: calculerSelfHashDocument(TUPLE_V2, 2),
     });
     expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V2);
     expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
@@ -281,5 +287,397 @@ describe("🔴 version 2 — le facteur de vérification est scellé (V1-A-7)", 
     expect(
       tupleDocumentDepuisLigne(ligne({ facteurVerification: "code_email" }), PIECE),
     ).toBeNull();
+  });
+});
+
+describe("🔴 version 3 — la version des CGV acceptées est scellée (devis)", () => {
+  const TUPLE_V3: TupleDocumentSignatureV3 = {
+    ...TUPLE,
+    facteurVerification: null,
+    cgvVersion: "2026-10-04",
+  };
+
+  it("🔴 le vecteur d'or de la version 2 est FIGÉ (aucun octet du sérialiseur v2 n'a bougé)", () => {
+    const t = { ...TUPLE, facteurVerification: "code_email" as const };
+    expect(calculerSelfHashDocument(t, 2)).toBe(
+      "eaf6685d4b56702cf133291eed1457e7abd3be6cda91205179d92ff27157d286",
+    );
+  });
+
+  it("🔴 le vecteur d'or de la version 1 reste inchangé au caractère près", () => {
+    expect(calculerSelfHashDocument(TUPLE, 1)).toBe(
+      "63898b6d0b0e4f2023f85efbaef1e1254bc5fb8cd17048b1af277ef63977af2e",
+    );
+  });
+
+  it("la version courante est 3 ; 1, 2 et 3 sont recalculables", () => {
+    expect(HASH_VERSION_DOCUMENT).toBe(3);
+    expect(versionDocumentRecalculable(1)).toBe(true);
+    expect(versionDocumentRecalculable(2)).toBe(true);
+    expect(versionDocumentRecalculable(3)).toBe(true);
+    expect(versionDocumentRecalculable(4)).toBe(true);
+    expect(versionDocumentRecalculable(5)).toBe(false);
+  });
+
+  it("la forme v3 porte `cgvVersion`, `facteurVerification` et `v: 3`", () => {
+    const canon = tupleDocumentCanonique(TUPLE_V3);
+    expect(canon).toContain('"cgvVersion":"2026-10-04"');
+    expect(canon).toContain('"facteurVerification":null');
+    expect(canon).toContain('"v":3');
+  });
+
+  it("modifier la version des CGV change l'empreinte ; nulle et renseignée ne se confondent pas", () => {
+    const h = calculerSelfHashDocument(TUPLE_V3);
+    expect(h).not.toBe(calculerSelfHashDocument({ ...TUPLE_V3, cgvVersion: "2026-10-05" }));
+    expect(h).not.toBe(calculerSelfHashDocument({ ...TUPLE_V3, cgvVersion: null }));
+  });
+
+  it("un tuple v3 SANS cgvVersion ne se hache pas (absent n'est pas nul)", () => {
+    expect(() =>
+      calculerSelfHashDocument({ ...TUPLE, facteurVerification: null } as TupleDocumentSignatureV2),
+    ).toThrow(/sans cgvVersion/);
+  });
+
+  it("une ligne v3 se reconstruit et se vérifie, version des CGV comprise", () => {
+    const l = ligne({
+      hashVersion: 3,
+      cgvVersion: "2026-10-04",
+      selfHash: calculerSelfHashDocument(TUPLE_V3),
+    });
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V3);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    // Version des CGV modifiée ou effacée après coup : la preuve le dit.
+    for (const cgvVersion of ["2026-01-01", null]) {
+      expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, cgvVersion }, PIECE)]).valide).toBe(
+        false,
+      );
+    }
+  });
+
+  it("une ligne v1 ou v2 qui porte une version des CGV a été écrite après coup : irrecalculable", () => {
+    expect(tupleDocumentDepuisLigne(ligne({ cgvVersion: "2026-10-04" }), PIECE)).toBeNull();
+    expect(
+      tupleDocumentDepuisLigne(ligne({ hashVersion: 2, cgvVersion: "2026-10-04" }), PIECE),
+    ).toBeNull();
+  });
+
+  it("une ligne v2 déjà scellée garde sa validité (aucune réécriture)", () => {
+    const t = { ...TUPLE, facteurVerification: "code_email" as const };
+    const l = ligne({
+      hashVersion: 2,
+      facteurVerification: "code_email",
+      selfHash: calculerSelfHashDocument(t, 2),
+    });
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+  });
+});
+
+describe("🔴 version 4 — le choix d'offre et la preuve d'acceptation des CGV sont scellés", () => {
+  const CHOIX = {
+    v: 1 as const,
+    devisNumero: "AXI-DEV-2026-001",
+    offreSha256: "d".repeat(64),
+    formule: "abonnement" as const,
+    automatisationsRetenues: ["auto1"],
+    maintenanceRetenue: false,
+    periodiciteMois: 1,
+  };
+  const SHA_CHOIX = sha256Choix(CHOIX);
+  const TUPLE_V4: TupleDocumentSignatureV4 = {
+    ...TUPLE,
+    facteurVerification: null,
+    cgvVersion: "2026-10-04",
+    choixOffreSha256: SHA_CHOIX,
+    cgvTexteSha256: "e".repeat(64),
+    cgvPdfSha256: null,
+    cgvAccepteeAtIso: "2026-06-10T10:15:00.000Z",
+    cgvTraceSha256: null,
+    jetonId: "33333333-3333-4333-8333-333333333333",
+  };
+  const ligneV4 = (over: Partial<LigneDocumentSignature> = {}) =>
+    ligne({
+      hashVersion: 4,
+      cgvVersion: "2026-10-04",
+      choixOffre: CHOIX,
+      choixOffreSha256: SHA_CHOIX,
+      cgvTexteSha256: "e".repeat(64),
+      cgvAccepteeAt: new Date("2026-06-10T10:15:00.000Z"),
+      jetonId: "33333333-3333-4333-8333-333333333333",
+      selfHash: calculerSelfHashDocument(TUPLE_V4, 4),
+      ...over,
+    });
+
+  it("🔴 la version courante reste 3 (devis classique inchangé) ; la 4 est explicite", () => {
+    expect(HASH_VERSION_DOCUMENT).toBe(3);
+    expect(HASH_VERSION_DOCUMENT_V4).toBe(4);
+  });
+
+  it("🔴 les vecteurs d'or V1 et V2 restent inchangés (la V4 n'a rien déplacé)", () => {
+    expect(calculerSelfHashDocument(TUPLE, 1)).toBe(
+      "63898b6d0b0e4f2023f85efbaef1e1254bc5fb8cd17048b1af277ef63977af2e",
+    );
+    expect(
+      calculerSelfHashDocument({ ...TUPLE, facteurVerification: "code_email" as const }, 2),
+    ).toBe("eaf6685d4b56702cf133291eed1457e7abd3be6cda91205179d92ff27157d286");
+  });
+
+  it("la forme v4 porte tous les champs du sceau et `v: 4`", () => {
+    const canon = tupleDocumentCanonique(TUPLE_V4, 4);
+    for (const cle of [
+      "choixOffreSha256",
+      "cgvTexteSha256",
+      "cgvPdfSha256",
+      "cgvAccepteeAtIso",
+      "cgvTraceSha256",
+      "jetonId",
+      "cgvVersion",
+    ]) {
+      expect(canon).toContain(`"${cle}"`);
+    }
+    expect(canon).toContain('"v":4');
+  });
+
+  it("🔴 chaque champ V4 change l'empreinte ; nul et renseigné ne se confondent pas", () => {
+    const h = calculerSelfHashDocument(TUPLE_V4, 4);
+    const variantes: Partial<TupleDocumentSignatureV4>[] = [
+      { choixOffreSha256: "f".repeat(64) },
+      { choixOffreSha256: null },
+      { cgvTexteSha256: "f".repeat(64) },
+      { cgvTexteSha256: null },
+      { cgvPdfSha256: "f".repeat(64) },
+      { cgvAccepteeAtIso: "2026-06-10T10:15:01.000Z" },
+      { cgvTraceSha256: "f".repeat(64) },
+      { jetonId: "44444444-4444-4444-8444-444444444444" },
+      { jetonId: null },
+    ];
+    for (const v of variantes) {
+      expect(calculerSelfHashDocument({ ...TUPLE_V4, ...v }, 4)).not.toBe(h);
+    }
+  });
+
+  it("un tuple v4 incomplet ne se hache pas (absent n'est pas nul)", () => {
+    const { jetonId: _jeton, ...incomplet } = TUPLE_V4;
+    expect(() => calculerSelfHashDocument(incomplet as TupleDocumentSignatureV4, 4)).toThrow(
+      /sans jetonId/,
+    );
+  });
+
+  it("une ligne v4 se reconstruit et se vérifie, sceau stable", () => {
+    const l = ligneV4();
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toStrictEqual(TUPLE_V4);
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    // Recalcul répété : même empreinte.
+    expect(calculerSelfHashDocument(tupleDocumentDepuisLigne(l, PIECE)!, 4)).toBe(l.selfHash);
+  });
+
+  it("🔴 modifier `choix_offre` en base invalide l'empreinte", () => {
+    const l = ligneV4();
+    const modifie = { ...CHOIX, formule: "achat" as const };
+    expect(
+      verifierChaine([maillonDocumentDepuisLigne({ ...l, choixOffre: modifie }, PIECE)]).valide,
+    ).toBe(false);
+    // Même en recalculant la colonne d'empreinte pour la rendre cohérente avec le JSON modifié.
+    expect(
+      verifierChaine([
+        maillonDocumentDepuisLigne(
+          { ...l, choixOffre: modifie, choixOffreSha256: sha256Choix(modifie) },
+          PIECE,
+        ),
+      ]).valide,
+    ).toBe(false);
+    // Effacer le choix : idem.
+    expect(
+      verifierChaine([
+        maillonDocumentDepuisLigne({ ...l, choixOffre: null, choixOffreSha256: null }, PIECE),
+      ]).valide,
+    ).toBe(false);
+  });
+
+  it("🔴 modifier seulement la colonne d'empreinte du choix : irrecalculable", () => {
+    const l = ligneV4({ choixOffreSha256: "0".repeat(64) });
+    expect(tupleDocumentDepuisLigne(l, PIECE)).toBeNull();
+  });
+
+  it("🔴 modifier l'empreinte du texte des CGV, l'instant de la case ou le lien invalide la preuve", () => {
+    const l = ligneV4();
+    for (const mod of [
+      { cgvTexteSha256: "0".repeat(64) },
+      { cgvAccepteeAt: new Date("2026-06-10T10:16:00.000Z") },
+      { jetonId: "55555555-5555-4555-8555-555555555555" },
+      { cgvPdfSha256: "0".repeat(64) },
+      { cgvTraceSha256: "0".repeat(64) },
+    ]) {
+      expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, ...mod }, PIECE)]).valide).toBe(
+        false,
+      );
+    }
+  });
+
+  it("une ligne V1/V2/V3 qui porte une colonne V4 a été écrite après coup : irrecalculable", () => {
+    for (const hashVersion of [1, 2, 3]) {
+      expect(
+        tupleDocumentDepuisLigne(ligne({ hashVersion, cgvTexteSha256: "e".repeat(64) }), PIECE),
+      ).toBeNull();
+      expect(tupleDocumentDepuisLigne(ligne({ hashVersion, jetonId: "x" }), PIECE)).toBeNull();
+      expect(
+        tupleDocumentDepuisLigne(
+          ligne({ hashVersion, choixOffre: CHOIX, choixOffreSha256: SHA_CHOIX }),
+          PIECE,
+        ),
+      ).toBeNull();
+    }
+  });
+
+  it("la contresignature recopie le choix du client : même empreinte de choix, sans CGV propre", () => {
+    const axionia: TupleDocumentSignatureV4 = {
+      ...TUPLE,
+      partie: "axionia",
+      facteurVerification: null,
+      cgvVersion: null,
+      choixOffreSha256: SHA_CHOIX,
+      cgvTexteSha256: null,
+      cgvPdfSha256: null,
+      cgvAccepteeAtIso: null,
+      cgvTraceSha256: null,
+      jetonId: null,
+    };
+    const l = ligne({
+      partie: "axionia",
+      hashVersion: 4,
+      choixOffre: CHOIX,
+      choixOffreSha256: SHA_CHOIX,
+      selfHash: calculerSelfHashDocument(axionia, 4),
+    });
+    expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+  });
+
+  // ── Lot 4 bis : déclaration du signataire et code vérifié, scellés SANS déplacer un octet de la V4 ──
+  describe("V4 : déclaration du signataire (signature renforcée)", () => {
+    const DECL = {
+      declarationNom: "Jeanne Martin",
+      declarationFonction: "Directrice générale",
+      pouvoirDeclareAtIso: "2026-06-10T10:15:00.000Z",
+      codeVerifieAtIso: "2026-06-10T10:14:00.000Z",
+    } as const;
+    const TUPLE_RENF: TupleDocumentSignatureV4 = { ...TUPLE_V4, ...DECL };
+    const ligneRenf = (over: Partial<LigneDocumentSignature> = {}) =>
+      ligneV4({
+        declarationNom: DECL.declarationNom,
+        declarationFonction: DECL.declarationFonction,
+        pouvoirDeclareAt: new Date(DECL.pouvoirDeclareAtIso),
+        codeVerifieAt: new Date(DECL.codeVerifieAtIso),
+        facteurVerification: "code_email",
+        selfHash: calculerSelfHashDocument({ ...TUPLE_RENF, facteurVerification: "code_email" }, 4),
+        ...over,
+      });
+
+    it("🔴 une V4 SANS déclaration garde exactement l'empreinte d'avant le lot 4 bis", () => {
+      // Vecteur d'or calculé avant le lot : la V4 déjà scellée en production reste vérifiable.
+      expect(tupleDocumentCanonique(TUPLE_V4, 4)).not.toContain("declaration");
+      expect(
+        tupleDocumentCanonique(
+          {
+            ...TUPLE_V4,
+            declarationNom: null,
+            declarationFonction: null,
+            pouvoirDeclareAtIso: null,
+            codeVerifieAtIso: null,
+          },
+          4,
+        ),
+      ).toBe(tupleDocumentCanonique(TUPLE_V4, 4));
+    });
+
+    it("la déclaration entre dans le sceau : nom, fonction, pouvoir et code", () => {
+      const canon = tupleDocumentCanonique(TUPLE_RENF, 4);
+      for (const cle of [
+        "declarationNom",
+        "declarationFonction",
+        "pouvoirDeclareAtIso",
+        "codeVerifieAtIso",
+      ]) {
+        expect(canon).toContain(`"${cle}"`);
+      }
+      expect(canon).toContain('"v":4');
+    });
+
+    it("🔴 chaque élément de la déclaration change l'empreinte", () => {
+      const h = calculerSelfHashDocument(TUPLE_RENF, 4);
+      expect(h).not.toBe(calculerSelfHashDocument(TUPLE_V4, 4));
+      for (const v of [
+        { declarationNom: "Jeanne Martine" },
+        { declarationFonction: "Présidente" },
+        { pouvoirDeclareAtIso: "2026-06-10T10:15:01.000Z" },
+        { codeVerifieAtIso: "2026-06-10T10:14:01.000Z" },
+      ]) {
+        expect(calculerSelfHashDocument({ ...TUPLE_RENF, ...v }, 4)).not.toBe(h);
+      }
+    });
+
+    it("une déclaration incomplète ne se hache pas", () => {
+      expect(() =>
+        calculerSelfHashDocument({ ...TUPLE_V4, declarationNom: "Jeanne Martin" }, 4),
+      ).toThrow(/déclaration incomplète/);
+    });
+
+    it("une ligne renforcée se reconstruit et se vérifie", () => {
+      const l = ligneRenf();
+      expect(verifierChaine([maillonDocumentDepuisLigne(l, PIECE)]).valide).toBe(true);
+    });
+
+    it("🔴 effacer, ajouter ou modifier la déclaration en base invalide la preuve", () => {
+      const l = ligneRenf();
+      for (const mod of [
+        { declarationNom: "Autre Personne" },
+        { declarationFonction: "Stagiaire" },
+        { pouvoirDeclareAt: new Date("2026-06-10T10:15:02.000Z") },
+        { codeVerifieAt: new Date("2026-06-10T10:14:02.000Z") },
+        {
+          declarationNom: null,
+          declarationFonction: null,
+          pouvoirDeclareAt: null,
+          codeVerifieAt: null,
+        },
+      ]) {
+        expect(verifierChaine([maillonDocumentDepuisLigne({ ...l, ...mod }, PIECE)]).valide).toBe(
+          false,
+        );
+      }
+      // Ajoutée après coup sur une V4 classique : la preuve casse.
+      expect(
+        verifierChaine([
+          maillonDocumentDepuisLigne(
+            {
+              ...ligneV4(),
+              declarationNom: "X Y",
+              declarationFonction: "Z Z",
+              pouvoirDeclareAt: new Date(DECL.pouvoirDeclareAtIso),
+              codeVerifieAt: new Date(DECL.codeVerifieAtIso),
+            },
+            PIECE,
+          ),
+        ]).valide,
+      ).toBe(false);
+    });
+
+    it("une déclaration partielle en base est irrecalculable", () => {
+      expect(tupleDocumentDepuisLigne(ligneRenf({ declarationFonction: null }), PIECE)).toBeNull();
+      expect(tupleDocumentDepuisLigne(ligneRenf({ codeVerifieAt: null }), PIECE)).toBeNull();
+    });
+
+    it("une ligne V1/V2/V3 qui porte une déclaration a été écrite après coup : irrecalculable", () => {
+      for (const hashVersion of [1, 2, 3]) {
+        expect(
+          tupleDocumentDepuisLigne(ligne({ hashVersion, declarationNom: "Jeanne Martin" }), PIECE),
+        ).toBeNull();
+      }
+    });
+
+    it("le texte exact accepté est scellé : devis (PDF), CGV (texte) et offre (via le choix)", () => {
+      const canon = tupleDocumentCanonique(TUPLE_RENF, 4);
+      expect(canon).toContain(`"documentHashSha256":"${TUPLE_RENF.documentHashSha256}"`);
+      expect(canon).toContain(`"cgvTexteSha256":"${"e".repeat(64)}"`);
+      expect(canon).toContain(`"choixOffreSha256":"${SHA_CHOIX}"`);
+    });
   });
 });

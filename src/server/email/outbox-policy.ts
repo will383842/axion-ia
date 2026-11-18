@@ -57,10 +57,14 @@ export const EMAILS_A_VALIDER_PAR_DEFAUT: readonly string[] = [
   // ⚠️ NE PAS remettre ce template ici sans supprimer la confirmation en amont :
   // deux garages successifs sur un même envoi, c'est un envoi qui n'a pas lieu.
   "devis-envoi",
+  "relance-devis-client",
   "convention-envoi",
   "facture-envoi",
   // Lot A8c — préparé seul à l'encaissement : il part au client, donc relu.
   "facture-pieces-remboursement-opco",
+  // Lot B10 — brouillon au dirigeant, toujours relu par Will. L'approbation passe par
+  // `bypassValidation` (email-outbox.ts) : elle ne re-gare pas.
+  "questionnaire-relance-equipe",
 ] as const;
 
 /**
@@ -98,6 +102,11 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // Un rappel retenu en validation manque le rendez-vous qu il devait preparer :
   // il part seul, exactement comme la convocation et le rappel J-7.
   "appel-rappel",
+  // Suivi du questionnaire avant audit (2026-10-26, décision 4) : le clic d'envoi de Will
+  // vaut validation (il couvre l'invitation ET ses relances, dates affichées avant le clic).
+  // Une relance relue en retard n'a plus de sens ; la confirmation suit la réponse.
+  "questionnaire-avant-audit-relance",
+  "questionnaire-avant-audit-confirmation",
   // 🔴 L'exemplaire signé part SEUL, et c'est un choix, pas un oubli.
   //
   // Le garer en corbeille recréerait exactement le défaut qu'il répare : la
@@ -111,6 +120,13 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // lui-même de signer. La décision humaine a DÉJÀ eu lieu — c'est la
   // contresignature.
   "piece-exemplaire-signe",
+  // 🔴 Le code de signature d'un devis part SEUL (lot 4 bis) : valable 10 minutes, il expirerait dans
+  // la corbeille avant d'être relu. Il est déclenché par le clic « Recevoir mon code » du signataire,
+  // jamais par un automate ; il n'y a rien à relire (un code et un numéro de devis).
+  "devis-code-signature",
+  // ⛔ « devis-commande-confirmation » n'est volontairement PAS ici : ce gabarit ne part
+  // jamais seul. Il passe par la file à valider ; il est déclenché par le clic de
+  // contresignature d'Axion-IA (CGV 6.2), jamais par un envoi automatique.
   // 🔴 Le rappel de la VEILLE part SEUL, et c'est le cas le plus net de toute
   // cette liste (2026-09-05, ADR 0048 §4.3).
   //
@@ -130,6 +146,16 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   // a répondu »), sans contenu de réponse. Garée, elle serait une alerte perdue
   // — même raisonnement que `qualiopi-alerte-interne`.
   "questionnaire-reponses-recues",
+  // Devis signé par le client (2026-11-04) : notification INTERNE à l'organisme (numéro du devis
+  // et lien console, aucune donnée personnelle), jamais au client. Garée, ce serait une alerte
+  // perdue : le devis resterait à contresigner sans que personne le sache.
+  "devis-signe-a-contresigner",
+  // Doublon e-mail d'une demande de client (14/11/2026) : notification INTERNE au fondateur. Garée,
+  // ce serait une alerte perdue — c'est tout son objet d'arriver tout de suite.
+  "alerte-demande-client",
+  // Récap quotidien des demandes de clients (7 h 30) : notification INTERNE au fondateur, même
+  // raisonnement. Garé « à valider », il n'arriverait jamais à l'heure et le signal de vie serait mort.
+  "recap-demandes-clients",
   // QNC L03 (2026-10-16) : le recueil du besoin part SEUL, sur décision du
   // brief du lot (« envoi AUTOMATIQUE à l'entreprise dès la demande, avec
   // relance »). Il ne contient ni prix, ni engagement : un questionnaire. Retenu
@@ -144,6 +170,30 @@ export const EMAILS_AUTOMATIQUES_PAR_DEFAUT: readonly string[] = [
   "apporteur-dossier-a-verifier",
   "apporteur-vigilance",
 ] as const;
+
+/**
+ * Gabarits dont le corps LIT le « message personnalisé » saisi en file « E-mails
+ * à valider » (`payload.messagePersonnalise`).
+ *
+ * Pour tout autre gabarit, le champ était affiché mais le texte saisi était
+ * perdu en silence : l'e-mail partait sans lui. La console n'affiche donc le
+ * champ que pour ces gabarits.
+ *
+ * ⚠️ Source UNIQUE, et gardée : `outbox-policy.messages.spec.ts` lit la source de
+ * chaque gabarit et refuse toute différence avec cette liste, dans les deux sens.
+ */
+export const GABARITS_QUI_LISENT_LE_MESSAGE: readonly string[] = [
+  "devis-envoi",
+  "relance-devis-client",
+  "convention-envoi",
+  "facture-envoi",
+  "qualiopi-relance-impayee",
+] as const;
+
+/** Vrai si le gabarit insère le message personnalisé dans le corps de l'e-mail. */
+export function gabaritLitLeMessage(template: string): boolean {
+  return GABARITS_QUI_LISENT_LE_MESSAGE.includes(template);
+}
 
 /**
  * 🔴 CES IDENTIFIANTS S'AFFICHAIENT TELS QUELS, à trois endroits : le menu
@@ -186,11 +236,12 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "apporteur-virement-fait": "Apporteur : virement de commission confirmé",
   "apporteur-lien-espace": "Apporteur : lien de son espace, à sa demande",
   "devis-envoi": "Envoi d'un devis",
+  "relance-devis-client": "Relance d'un devis sans réponse",
   "convention-envoi": "Envoi d'une convention",
   "recueil-besoin": "Recueil du besoin : questionnaire envoyé à l'entreprise (et relances)",
   "facture-envoi": "Envoi d'une facture",
   "facture-pieces-remboursement-opco":
-    "Pièces de remboursement OPCO (facture acquittée, certificat de réalisation)",
+    "Pièces de remboursement (facture acquittée, certificat de réalisation)",
   "autofacture-transmission": "Transmission d'une facture d'honoraires (autofacturation)",
   "qualiopi-convocation": "Convocation à une session",
   "qualiopi-rappel-j7": "Rappel à J-7",
@@ -213,7 +264,17 @@ export const LIBELLE_TEMPLATE_EMAIL: Record<string, string> = {
   "qualiopi-relance-impayee": "Relance d'impayé",
   "appel-rappel": "Rappel avant un appel de découverte",
   "piece-exemplaire-signe": "Remise de l'exemplaire signé",
+  "devis-commande-confirmation": "Confirmation de commande (contresignature d'Axion-IA)",
+  "devis-code-signature": "Code à usage unique pour signer un devis",
+  "devis-signe-a-contresigner": "Devis signé par le client, à contresigner (interne)",
+  "alerte-demande-client": "Alerte : demande d'un client (interne)",
+  "recap-demandes-clients": "Récap quotidien des demandes de clients (interne)",
   "questionnaire-reponses-recues": "Questionnaire en ligne : réponses reçues (interne)",
+  "questionnaire-avant-audit": "Questionnaire de pré-audit envoyé par Will",
+  "questionnaire-avant-audit-relance": "Relance du questionnaire de pré-audit (J+2, J+5, J+10)",
+  "questionnaire-avant-audit-confirmation": "Questionnaire de pré-audit : réponses bien arrivées",
+  "questionnaire-relance-equipe":
+    "Questionnaire de pré-audit : demande au dirigeant de relancer son équipe",
   "apporteur-declaration-recue": "Alerte interne : entreprise déclarée par un apporteur",
   // Lot OPCO A8 — volontairement HORS des deux listes : défaut « auto » (envoi
   // automatique demandé par Will le 04/10), mais une règle « validation »,

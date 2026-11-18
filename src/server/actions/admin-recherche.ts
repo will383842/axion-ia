@@ -145,7 +145,7 @@ export async function rechercheGlobaleAction(
     const groupes: GroupeResultats[] = [
       {
         type: "clients",
-        label: "Clients",
+        label: "Fiches clients",
         items: clients.map((c) => ({
           id: c.id,
           titre: c.raisonSociale,

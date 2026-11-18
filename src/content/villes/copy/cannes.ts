@@ -226,7 +226,7 @@ export const CANNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cannes et sur la Côte d'Azur ?",
-      a: "Oui, Axion-IA intervient à Cannes et toute la Côte d'Azur (Mougins, Mandelieu, Antibes, Sophia Antipolis, Nice). Consultants depuis Nice (30 min A8) ou en visio. Période Festival (mai) : interventions sur site possibles selon disponibilité hôtelière.",
+      a: "Oui, Axion-IA intervient à Cannes et toute la Côte d'Azur (Mougins, Mandelieu, Antibes, Sophia Antipolis, Nice). Nous intervenons partout en France, sur place ou à distance. Période Festival (mai) : interventions sur site possibles selon disponibilité hôtelière.",
     },
     {
       q: "Accompagnez-vous l'hôtellerie de prestige et la restauration cannoise ?",
@@ -241,7 +241,7 @@ export const CANNES_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1 dirigeants. Cas d'usage : CRM clients VIP, automatisation devis yachting, gestion inventaire boutique luxe, suivi commandes haut de gamme.",
     },
     {
-      q: "Comment se passe une mission depuis Nice ou Sophia Antipolis ?",
+      q: "Comment se déroule une mission à Cannes ?",
       a: "Nice (30 min A8) ou Sophia Antipolis (15 min). Possibilité de combiner Cannes + Antibes + Mougins en une journée.",
     },
   ],

@@ -14,8 +14,14 @@ function estStub(): boolean {
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-/** Durée de conservation des copies, en mois — celle de la purge de rétention. */
-export const CONSERVATION_COPIES_MOIS = 12;
+/**
+ * Durée de conservation des copies (objet et contenu), en mois : 5 ans pour TOUS les e-mails
+ * (décision de Will, 25/10/2026). Aucune purge automatique n'existe depuis le 07/10 : cette durée
+ * est celle que l'écran annonce, pas celle d'une suppression.
+ */
+export const CONSERVATION_COPIES_MOIS = 60;
+/** Ancien nom (e-mail rattaché à une fiche client) : même durée, 5 ans. */
+export const CONSERVATION_COPIES_FICHE_MOIS = CONSERVATION_COPIES_MOIS;
 
 export interface CopieEmail {
   subject: string;
@@ -132,6 +138,7 @@ export function raisonSansCopie(
   premiereCopie: Date | null,
   maintenant: Date = new Date(),
 ): RaisonSansCopie {
+  const mois = CONSERVATION_COPIES_MOIS;
   if (e.status !== "sent" && e.status !== "bounced") {
     return {
       kind: "pas-parti",
@@ -145,11 +152,12 @@ export function raisonSansCopie(
   }
   const envoi = e.sentAt ?? e.createdAt;
   const limite = new Date(maintenant);
-  limite.setUTCMonth(limite.getUTCMonth() - CONSERVATION_COPIES_MOIS);
+  limite.setUTCMonth(limite.getUTCMonth() - mois);
   if (envoi < limite) {
     return {
       kind: "purgee",
-      phrase: `Copie purgée : les copies sont conservées ${CONSERVATION_COPIES_MOIS} mois, puis supprimées.`,
+      phrase:
+        "Copie absente : cet e-mail date de plus de 5 ans, la durée de conservation. Aucune copie n'est supprimée automatiquement.",
     };
   }
   if (premiereCopie === null || envoi < premiereCopie) {

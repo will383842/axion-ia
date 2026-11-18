@@ -18,9 +18,9 @@ export const SUCY_EN_BRIE_COPY: VilleCopy = {
   ecosystemEn:
     "Sucy-en-Brie est une commune résidentielle du sud-est du Val-de-Marne dont l'économie repose surtout sur le commerce de proximité, l'artisanat, les professions libérales et les services aux particuliers et aux entreprises. La douceur de son cadre pavillonnaire et sa proximité du pôle de Créteil en font un bassin de petites structures dynamiques. Pour ces TPE et PME, l'IA bien dosée allège la gestion administrative, la prise de rendez-vous et la relation client, sans imposer d'outils surdimensionnés.",
   distancesFr:
-    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos experts se déplacent sur site dans tout le sud-est du Val-de-Marne.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nos experts se déplacent sur site dans tout le sud-est du Val-de-Marne.",
+    "Sucy-en-Brie est desservie par le RER A qui rejoint le cœur de Paris en une trentaine de minutes, et reliée à Créteil à quelques kilomètres. La gare de Lyon est accessible en moins d'une heure et l'aéroport de Paris-Orly se trouve à une vingtaine de kilomètres. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Commerce de détail de proximité",
     "Artisanat & construction",

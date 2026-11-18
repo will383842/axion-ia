@@ -23,11 +23,8 @@ export function DejaPrisEnChargeOpco({
 }) {
   const texteCls = "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]";
   return (
-    <div
-      data-bloc="deja-pris-en-charge-opco"
-      className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]"
-    >
-      <h2 className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]">
+    <div data-bloc="deja-pris-en-charge-opco" className="admin-carte">
+      <h2 className="admin-carte-titre">
         Déjà pris en charge par l&apos;OPCO{opcoLibelle ? ` (${opcoLibelle})` : ""}
       </h2>
       {opcoLibelle === null ? (

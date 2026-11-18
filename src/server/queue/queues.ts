@@ -6,7 +6,9 @@
 // Toggle dev : si `BULLMQ_DISABLED=true`, toutes les queues sont `null` et
 // les helpers `enqueueEmail` / `bootRepeatableJobs` no-op proprement.
 
+import { poserChargeurEnfileurEmail } from "@/server/notifications/enfileur-email";
 import { randomUUID } from "node:crypto";
+import { redactEmail } from "@/lib/pii-redaction";
 import { Queue } from "bullmq";
 import { getBullConnection, isBullmqDisabled } from "./connection";
 import { resoudreMode, garerPourValidation } from "@/server/email/outbox-service";
@@ -28,6 +30,7 @@ import type {
   GuideIaCronJobType,
   ApporteurCronJobData,
   ApporteurCronJobType,
+  AlertesClientsCronJobData,
   VisioBalayageJobData,
   OpcoSiroImportJobData,
   VisioJobData,
@@ -249,6 +252,28 @@ export const PATTERN_RESEAU_QUOTIDIEN = "0 7 * * *";
  * le quotidien garde tout le reste.
  */
 export const PATTERN_RESEAU_FACTURATION = "10 * * * *";
+
+/**
+ * 2026-11-15 — récap quotidien des demandes de clients (`alertes-clients/recap.ts`).
+ * `attempts: 3` (reprise fixe de 5 minutes) : le jobId du jour de l'e-mail rend un rejeu sans danger,
+ * et le rattrapage au démarrage du worker (`rattraperRecapSiManque`) reprend un passage manqué.
+ */
+export const alertesClientsCronsQueue: Queue<AlertesClientsCronJobData> | null = connection
+  ? new Queue<AlertesClientsCronJobData>("alertes-clients-crons", {
+      connection,
+      defaultJobOptions: {
+        ...defaultJobOptions,
+        attempts: 3,
+        backoff: { type: "fixed", delay: 5 * 60_000 },
+        removeOnComplete: { age: 7 * 24 * 3600, count: 50 },
+        removeOnFail: { age: 30 * 24 * 3600, count: 100 },
+      },
+    })
+  : null;
+
+/** 7 h 30 à PARIS : `tz` fait suivre l'heure d'été et d'hiver (jamais un décalage UTC écrit en dur). */
+export const PATTERN_RECAP_CLIENTS = "30 7 * * *";
+export const FUSEAU_RECAP_CLIENTS = "Europe/Paris";
 
 /**
  * 2026-09-29 (chantier visio, PR 4) — le BALAYAGE du dossier client
@@ -992,7 +1017,9 @@ export async function enqueueEmail(
 }> {
   if (!emailsQueue) {
     if (process.env.NODE_ENV !== "production" && !isBullmqDisabled()) {
-      console.warn(`[bullmq] no connection, skipping enqueueEmail(${template}, ${to})`);
+      console.warn(
+        `[bullmq] no connection, skipping enqueueEmail(${template}, ${redactEmail(to)})`,
+      );
     }
     // Retour détectable : les appelants qui exigent une garantie de mise en file
     // (ex. reply admin) peuvent marquer un échec explicite au lieu d'un faux succès.
@@ -1085,7 +1112,7 @@ export async function enqueueEmail(
       ? { attachments: options.attachments }
       : {}),
   };
-  const journalise = template !== "submission-reply";
+  const journalise = template !== "submission-reply" && template !== "candidature-reponse";
   const jobId = options?.jobId ?? (journalise ? `email-${randomUUID()}` : undefined);
   const addOptions: Record<string, unknown> = {};
   if (options?.delayMs) addOptions["delay"] = options.delayMs;
@@ -1113,7 +1140,11 @@ export async function enqueueEmail(
   // l'autre). `await` volontaire : la fonction ne lève jamais (elle avale ses propres
   // erreurs).
   //
-  // ⚠️ `submission-reply` est le SEUL gabarit exclu, et l'exclusion est
+  // ⚠️ `candidature-reponse` est exclu pour la même raison que `submission-reply` : son suivi
+  // est sur `JobApplicationReply`. Lui écrivait dans `email_logs` avant l'exclusion : 360 lignes
+  // restées « en attente » en production. Ce qui suit décrit `submission-reply`, et vaut pour lui.
+  //
+  // ⚠️ `submission-reply` et `candidature-reponse` sont les SEULS gabarits exclus, et l'exclusion est
   // nécessaire, pas cosmétique. Ce chemin n'a jamais écrit dans `email_logs` :
   // il porte son propre suivi, plus riche, sur `SubmissionReply`
   // (`deliveryStatus` / `sentAt` / `failedAt` / `errorMsg` / `retryCount`), et
@@ -1175,6 +1206,10 @@ export async function enqueueEmail(
 
   return { enqueued: true };
 }
+
+// Le hub de notifications n'importe pas ce module (garde graphe-worker) : il y trouve l'enfileur
+// par ce registre. Le worker charge `queues.ts` statiquement, donc la pose a toujours lieu.
+poserChargeurEnfileurEmail(async () => enqueueEmail);
 
 /**
  * Boot des cron jobs recurrents — appele une seule fois au demarrage du
@@ -1320,6 +1355,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "reconcile" },
       { repeat: { pattern: "30 4 * * *" }, jobId: "crm-sync-reconcile-cron" },
     );
+
+    // ── Synchro AUTOMATIQUE du dossier client (25/10/2026) ────────────────
+    // Toutes les 15 minutes : relit les dossiers clients et pose en outbox ceux
+    // qui ont changé depuis le dernier envoi (le sweep ci-dessus les émet).
+    // Drapeau `CRM_SYNC_DOSSIER_ENABLED` fermé ⇒ le passage ne lit rien.
+    await crmSyncQueue.removeRepeatable(
+      "dossiers",
+      { pattern: "*/15 * * * *" },
+      "crm-sync-dossiers-cron",
+    );
+    await crmSyncQueue.add(
+      "dossiers",
+      { type: "dossiers" },
+      { repeat: { pattern: "*/15 * * * *" }, jobId: "crm-sync-dossiers-cron" },
+    );
   }
 
   // ── Lot L4 — intégration au vivier à J+30 ────────────────────────────────
@@ -1367,6 +1417,21 @@ export async function bootRepeatableJobs(): Promise<void> {
       { type: "sentinelle", tick: new Date().toISOString() },
       { repeat: { pattern: "40 6 * * *" }, jobId: "guide-ia-sentinelle-cron" },
     );
+    // Lot guide réseau 3 — preuve de l'accord de la page « Recevoir le guide » : une fois par
+    // jour (04:23 UTC, hors des créneaux déjà chargés), mise à l'écart des accords jamais
+    // vérifiés après N jours. Le répétable est posé en permanence ; c'est l'INTERRUPTEUR
+    // (`PREUVE_PAGE_GUIDE_ECART_ENABLED`, éteint par défaut) qui décide — éteint, le passage
+    // sort sans lire la base.
+    await guideIaCronsQueue.removeRepeatable(
+      "preuves",
+      { pattern: "23 4 * * *" },
+      "guides-reseau-preuves-cron",
+    );
+    await guideIaCronsQueue.add(
+      "preuves",
+      { type: "preuves", tick: new Date().toISOString() },
+      { repeat: { pattern: "23 4 * * *" }, jobId: "guides-reseau-preuves-cron" },
+    );
   }
 
   // ── 2026-09-27 — rappels J+3 / J+7 de l'invitation à l'échange apporteur ─
@@ -1378,11 +1443,9 @@ export async function bootRepeatableJobs(): Promise<void> {
   // déterministe), mais personne ne saurait plus lequel fait foi.
   if (apporteurCronsQueue) {
     const programme = [
-      {
-        type: "relance-invitation" as const,
-        pattern: PATTERN_RELANCES_INVITATION,
-        jobId: "apporteur-relance-invitation-cron",
-      },
+      // 2026-10-26 (ordre de Will) : le passage quotidien des rappels J+3 / J+7 est
+      // RETIRÉ du programme — la purge ci-dessous l'ôte de la file au démarrage du
+      // worker. Plus aucun rappel d'invitation ne part, même après une mise en ligne.
       {
         type: "reponses-entrantes" as const,
         pattern: PATTERN_REPONSES_ENTRANTES,
@@ -1451,6 +1514,23 @@ export async function bootRepeatableJobs(): Promise<void> {
       {
         repeat: { pattern: PATTERN_IMPORT_SIRO, tz: FUSEAU_IMPORT_SIRO },
         jobId: "opco-siro-import-cron",
+      },
+    );
+  }
+
+  // ── 2026-11-15 — récap quotidien des demandes de clients, 7 h 30 Paris ──
+  // Purge EXHAUSTIVE d'abord (un seul répétable, cadence à jour : une ancienne entrée UTC
+  // enverrait deux récaps par jour), puis ajout.
+  if (alertesClientsCronsQueue) {
+    for (const existing of await alertesClientsCronsQueue.getRepeatableJobs()) {
+      await alertesClientsCronsQueue.removeRepeatableByKey(existing.key);
+    }
+    await alertesClientsCronsQueue.add(
+      "recap-quotidien",
+      { tick: new Date().toISOString() },
+      {
+        repeat: { pattern: PATTERN_RECAP_CLIENTS, tz: FUSEAU_RECAP_CLIENTS },
+        jobId: "alertes-clients-recap-cron",
       },
     );
   }

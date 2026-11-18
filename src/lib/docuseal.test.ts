@@ -4,19 +4,14 @@
 //   - isDocusealConfigured / isDocusealWebhookConfigured gates
 //   - verifyWebhookSignature (HMAC-SHA256 timing-safe)
 //   - parseWebhookPayload (parsing + idempotence id)
-//   - createSubmission shape attendue (mock fetch)
 
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { createHmac } from "node:crypto";
 import {
   isDocusealConfigured,
   isDocusealWebhookConfigured,
   verifyWebhookSignature,
   parseWebhookPayload,
-  createSubmission,
-  createContractSubmission,
-  DocusealApiError,
-  DOCUSEAL_ROLES,
 } from "./docuseal";
 
 describe("docuseal — gates de configuration", () => {
@@ -69,10 +64,16 @@ describe("docuseal — verifyWebhookSignature", () => {
     process.env = { ...originalEnv };
   });
 
-  it("retourne true pour signature valide", () => {
+  it("refuse le format v1 hex64 nu, même parfaitement signé (rejouable : pas d'horodatage)", () => {
     const body = '{"event":"form.completed"}';
     const sig = createHmac("sha256", "test-secret-32chars-min-len-ok").update(body).digest("hex");
-    expect(verifyWebhookSignature(body, sig)).toBe(true);
+    expect(verifyWebhookSignature(body, sig)).toBe(false);
+  });
+
+  it("n'exporte plus le repli « secret en clair » ni le wrapper dual-mode", async () => {
+    const mod = (await import("./docuseal")) as Record<string, unknown>;
+    expect(mod["verifyWebhookSecret"]).toBeUndefined();
+    expect(mod["verifyWebhookAuth"]).toBeUndefined();
   });
 
   it("retourne false pour signature corrompue", () => {
@@ -210,331 +211,6 @@ describe("docuseal — parseWebhookPayload", () => {
   });
 });
 
-describe("docuseal — createSubmission (fetch mocké)", () => {
-  const originalEnv = { ...process.env };
-
-  beforeEach(() => {
-    process.env["DOCUSEAL_BASE_URL"] = "https://docuseal.example.com";
-    process.env["DOCUSEAL_API_KEY"] = "test-key";
-    vi.restoreAllMocks();
-  });
-
-  afterEach(() => {
-    process.env = { ...originalEnv };
-  });
-
-  it("POST /api/submissions avec body correct + retourne submissionId/embedUrl", async () => {
-    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify([
-          {
-            id: 1,
-            submission_id: 42,
-            embed_src: "https://docuseal.example.com/s/abc",
-            email: "client@example.com",
-            name: "John Doe",
-            status: "pending",
-          },
-        ]),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
-
-    const result = await createSubmission({
-      templateId: 1,
-      signers: [{ email: "client@example.com", name: "John Doe" }],
-      fields: [{ name: "amount", default_value: "1500 EUR" }],
-      sendEmail: false,
-      metadata: { bookingId: "uuid-1" },
-    });
-
-    expect(result.submissionId).toBe("42");
-    expect(result.embedUrl).toBe("https://docuseal.example.com/s/abc");
-    expect(result.status).toBe("pending");
-
-    expect(fetchMock).toHaveBeenCalledOnce();
-    const [url, init] = fetchMock.mock.calls[0] ?? [];
-    expect(String(url)).toBe("https://docuseal.example.com/api/submissions");
-    const reqInit = init as RequestInit;
-    expect(reqInit.method).toBe("POST");
-    const headers = reqInit.headers as Record<string, string>;
-    expect(headers["X-Auth-Token"]).toBe("test-key");
-    const body = JSON.parse(reqInit.body as string);
-    expect(body.template_id).toBe(1);
-    expect(body.submitters).toHaveLength(1);
-    expect(body.submitters[0].email).toBe("client@example.com");
-  });
-
-  it("throw DocusealApiError si 400 retourné", async () => {
-    vi.spyOn(global, "fetch").mockResolvedValueOnce(new Response("Bad Request", { status: 400 }));
-    await expect(
-      createSubmission({
-        templateId: 1,
-        signers: [{ email: "x@y.z" }],
-      }),
-    ).rejects.toBeInstanceOf(DocusealApiError);
-  });
-
-  it("throw si tableau vide retourné", async () => {
-    vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response("[]", { status: 200, headers: { "content-type": "application/json" } }),
-    );
-    await expect(
-      createSubmission({
-        templateId: 1,
-        signers: [{ email: "x@y.z" }],
-      }),
-    ).rejects.toThrow(/empty submission/);
-  });
-
-  it("default submitters_order = preserved (séquentiel)", async () => {
-    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify([
-          {
-            id: 1,
-            submission_id: 1,
-            embed_src: "x",
-            email: "a@b.c",
-            name: null,
-            status: "pending",
-          },
-        ]),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
-    await createSubmission({
-      templateId: 1,
-      signers: [{ email: "a@b.c" }, { email: "d@e.f" }],
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters_order).toBe("preserved");
-  });
-
-  it("signOrder='random' propagé tel quel", async () => {
-    const fetchMock = vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify([
-          {
-            id: 1,
-            submission_id: 1,
-            embed_src: "x",
-            email: "a@b.c",
-            name: null,
-            status: "pending",
-          },
-        ]),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
-    await createSubmission({
-      templateId: 1,
-      signOrder: "random",
-      signers: [{ email: "a@b.c" }],
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters_order).toBe("random");
-  });
-});
-
-describe("docuseal — createContractSubmission (pattern B2B client → Axion-IA)", () => {
-  const originalEnv = { ...process.env };
-
-  beforeEach(() => {
-    process.env["DOCUSEAL_BASE_URL"] = "https://docuseal.example.com";
-    process.env["DOCUSEAL_API_KEY"] = "test-key";
-    delete process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"];
-    delete process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"];
-    vi.restoreAllMocks();
-  });
-
-  afterEach(() => {
-    process.env = { ...originalEnv };
-  });
-
-  function mockOk() {
-    return vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify([
-          {
-            id: 1,
-            submission_id: 99,
-            embed_src: "https://docuseal.example.com/s/abc",
-            email: "client@example.com",
-            name: "John Doe",
-            status: "pending",
-          },
-        ]),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
-  }
-
-  it("envoie 2 submitters dans l'ordre client (1er) → Axion-IA (2e)", async () => {
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe", phone: "+33612345678" },
-      metadata: { bookingId: "uuid-1" },
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters).toHaveLength(2);
-    expect(body.submitters[0].email).toBe("client@example.com");
-    expect(body.submitters[0].role).toBe(DOCUSEAL_ROLES.CLIENT);
-    expect(body.submitters[0].phone).toBe("+33612345678");
-    expect(body.submitters[1].email).toBe("contact@axion-ia.com");
-    expect(body.submitters[1].role).toBe(DOCUSEAL_ROLES.AXIONIA);
-    expect(body.submitters_order).toBe("preserved");
-  });
-
-  it("contre-signataire override via env AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL", async () => {
-    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_EMAIL"] = "will@axion-ia.com";
-    process.env["AXIONIA_CONTRACT_COUNTERSIGNER_NAME"] = "Williams";
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe" },
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[1].email).toBe("will@axion-ia.com");
-    expect(body.submitters[1].name).toBe("Williams");
-  });
-
-  it("contre-signataire override explicite (paramètre `countersigner`)", async () => {
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe" },
-      countersigner: { email: "admin@axion-ia.com", name: "Admin Override" },
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[1].email).toBe("admin@axion-ia.com");
-    expect(body.submitters[1].name).toBe("Admin Override");
-  });
-
-  it("fallback final = contact@axion-ia.com si aucun override", async () => {
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe" },
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[1].email).toBe("contact@axion-ia.com");
-  });
-
-  it("rôles canoniques DOCUSEAL_ROLES restent stables", () => {
-    expect(DOCUSEAL_ROLES.CLIENT).toBe("Client");
-    expect(DOCUSEAL_ROLES.AXIONIA).toBe("Axion-IA");
-  });
-
-  // ── Cause racine du 422 (constat F4) ─────────────────────────────────────
-  // Reproduit sur le conteneur DocuSeal 2.5.3 : `fields[].default_value` est
-  // reversé dans `values` puis validé RÔLE PAR RÔLE
-  // (`Submitters::NormalizeValues`, `throw_errors: true`). role="Client" résout
-  // les 3 champs ; role="Axion-IA" lève `Unknown field: devis_number` → 422, et
-  // la soumission ENTIÈRE est refusée. Ces tests sont le garde-fou.
-
-  it("les champs pré-remplis ne partent QU'AU client, jamais au contre-signataire", async () => {
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe" },
-      fields: [
-        { name: "devis_number", default_value: "AXI-DEV-2026-003", readonly: true },
-        { name: "amount_ht", default_value: "1200.00", readonly: true },
-      ],
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[0].fields).toHaveLength(2);
-    expect(body.submitters[0].fields[0].name).toBe("devis_number");
-    // `readonly` doit survivre au transport : sans lui le client peut réécrire
-    // le montant avant de signer.
-    expect(body.submitters[0].fields[0].readonly).toBe(true);
-    expect(body.submitters[1].fields).toBeUndefined();
-  });
-
-  it("la metadata reste sur LES DEUX submitters", async () => {
-    const fetchMock = mockOk();
-    await createContractSubmission({
-      templateId: 42,
-      client: { email: "client@example.com", name: "John Doe" },
-      fields: [{ name: "devis_number", default_value: "AXI-DEV-2026-003" }],
-      metadata: { devisId: "uuid-devis", kind: "devis" },
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    // Le webhook porte la metadata DU submitter concerné : sans elle sur le 2e,
-    // `dispatchDevisEvent` perdrait `devisId`.
-    expect(body.submitters[0].metadata.devisId).toBe("uuid-devis");
-    expect(body.submitters[1].metadata.devisId).toBe("uuid-devis");
-  });
-});
-
-describe("docuseal — createSubmission : distribution des champs par signataire", () => {
-  const originalEnv = { ...process.env };
-
-  beforeEach(() => {
-    process.env["DOCUSEAL_BASE_URL"] = "https://docuseal.example.com";
-    process.env["DOCUSEAL_API_KEY"] = "test-key";
-    vi.restoreAllMocks();
-  });
-
-  afterEach(() => {
-    process.env = { ...originalEnv };
-  });
-
-  function mockOkMulti() {
-    return vi.spyOn(global, "fetch").mockResolvedValueOnce(
-      new Response(
-        JSON.stringify([
-          {
-            id: 1,
-            submission_id: 7,
-            embed_src: "https://docuseal.example.com/s/abc",
-            email: "a@x.fr",
-            name: null,
-            status: "pending",
-          },
-        ]),
-        { status: 200, headers: { "content-type": "application/json" } },
-      ),
-    );
-  }
-
-  it("chaque signataire ne porte QUE ses propres champs", async () => {
-    const fetchMock = mockOkMulti();
-    await createSubmission({
-      templateId: 1,
-      signers: [
-        { email: "a@x.fr", fields: [{ name: "f1" }] },
-        { email: "b@x.fr", fields: [{ name: "f2" }] },
-      ],
-      fields: [{ name: "globalement_ignore" }],
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[0].fields).toEqual([{ name: "f1" }]);
-    expect(body.submitters[1].fields).toEqual([{ name: "f2" }]);
-  });
-
-  it("le `fields` global ne va qu'au signataire d'index 0", async () => {
-    const fetchMock = mockOkMulti();
-    await createSubmission({
-      templateId: 1,
-      signers: [{ email: "a@x.fr" }, { email: "b@x.fr" }],
-      fields: [{ name: "f1" }],
-    });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[0].fields).toEqual([{ name: "f1" }]);
-    expect(body.submitters[1].fields).toBeUndefined();
-  });
-
-  it("un tableau `fields` VIDE n'émet pas la clé du tout", async () => {
-    const fetchMock = mockOkMulti();
-    await createSubmission({ templateId: 1, signers: [{ email: "a@x.fr" }], fields: [] });
-    const body = JSON.parse((fetchMock.mock.calls[0]?.[1] as RequestInit).body as string);
-    expect(body.submitters[0].fields).toBeUndefined();
-  });
-});
-
 describe("docuseal — signature webhook v2 (format réellement émis par DocuSeal 2.5.3)", () => {
   const originalEnv = { ...process.env };
   const SECRET = "test-secret-32chars-min-len-ok";
@@ -580,9 +256,9 @@ describe("docuseal — signature webhook v2 (format réellement émis par DocuSe
     expect(verifyWebhookSignature("{}", `${ts}.${"z".repeat(64)}`)).toBe(false);
   });
 
-  it("le format legacy hex64 nu reste accepté", () => {
+  it("le format legacy hex64 nu est refusé", () => {
     const body = '{"event":"form.completed"}';
     const sig = createHmac("sha256", SECRET).update(body).digest("hex");
-    expect(verifyWebhookSignature(body, sig)).toBe(true);
+    expect(verifyWebhookSignature(body, sig)).toBe(false);
   });
 });

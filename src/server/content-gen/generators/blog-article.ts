@@ -4,7 +4,7 @@
  * Différences vs blog-from-keywords :
  * - primaryKeyword optionnel (synthétisé depuis anchorVilleSlug + templateVariant)
  * - Angle "mise en pratique / retour terrain" plutôt que ciblage keyword pur
- * - Audience B2B PME/ETI France — format conseil opérationnel
+ * - Audience B2B : PME (et TPE) de France — format conseil opérationnel
  *
  * ARCHITECTURE 3-APPELS (2026-06-25) — voir audit content-gen profond.
  * Le mono-appel JSON faisait écrire le modèle court (~400 mots, finish_reason
@@ -15,7 +15,11 @@
  *      bodyHtml complet par tranches de 4 sections (130-190 mots/section).
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
+import { coutErreurTronquee, estSortieJsonTronquee } from "../providers/IProvider";
+import { UnrecoverableError } from "bullmq";
+import { interrupteurBlogClaude } from "../providers/blog-claude";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
 import { computeReadabilityFr } from "../quality/readability";
@@ -64,7 +68,7 @@ const MIN_WORD_COUNT = 850;
 // APPEL 1 — PLAN : produit l'ossature (métadonnées + FAQ + outline 8 sections).
 // PAS de bodyHtml ici (c'est l'appel 2 qui développe).
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
 - INTERDIT : angle purement définitionnel. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (cas d'usage réels, bénéfices mesurables, retour terrain).
@@ -84,7 +88,7 @@ Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps se
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // C'est ici que se joue la LONGUEUR : chaque section doit faire 130-190 mots.
 const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS). Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - INTERDIT : fabriquer un cas client (« Entreprise Anonyme », « une PME de la région »…) — n'utilise QUE les cas réels présents dans les faits fournis ; à défaut, n'invente aucun exemple chiffré.
 - INTERDIT : section purement définitionnelle. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement (angle opérationnel : cas d'usage réels, bénéfices mesurables, retour terrain). 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
@@ -108,12 +112,7 @@ function synthesizeTopic(input: GeneratorBaseInput): string {
         ? "implémentation IA"
         : "déploiement de l'IA";
 
-  const audience =
-    input.targetAudienceSize === "TPE"
-      ? " pour TPE"
-      : input.targetAudienceSize === "ETI" || input.targetAudienceSize === "GRANDE_ENTREPRISE"
-        ? " pour ETI/GE"
-        : " pour PME";
+  const audience = input.targetAudienceSize === "TPE" ? " pour TPE" : " pour PME";
 
   const geo = input.anchorVilleSlug
     ? ` à ${input.anchorVilleSlug.replace(/-/g, " ")}`
@@ -131,7 +130,9 @@ export const blogArticleGenerator: Generator = {
     const topic = synthesizeTopic(input);
     const safeTopic = escapeLlmInput(topic, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
     // Mot-clé effectif pour les gates/SEO : primaryKeyword si présent, sinon le
     // topic synthétisé (les articles de campagne n'ont pas toujours de keyword).
@@ -217,20 +218,35 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
 { title, metaTitle, metaDescription, slug, directAnswer, faq:[{q,a}×8], tags, keyTakeaway, expertTake, outline:[{h2,brief}×8] }`;
 
     let plan: PlanParsed | null = null;
+    let dernierPlanTronque = false;
     for (let planAttempt = 0; planAttempt < 2 && !plan; planAttempt++) {
-      const planResult = await routerGenerate({
-        jobId: input.jobId,
-        contentType: "blog_article",
-        role: "text",
-        responseFormatJson: true,
-        systemPrompt: planSystem,
-        userPrompt:
-          planAttempt === 0
-            ? planUserPrompt
-            : `${planUserPrompt}\n\n## Correction\nLe "title" et le "metaTitle" DOIVENT couvrir le sujet "${safeTopic}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
-        maxTokens: 2600,
-        temperature: 0.6,
-      });
+      let planResult: Awaited<ReturnType<typeof routerGenerate>>;
+      try {
+        planResult = await routerGenerate({
+          jobId: input.jobId,
+          contentType: "blog_article",
+          role: "text",
+          blogClaudeRole: "ecriture",
+          responseFormatJson: true,
+          systemPrompt: planSystem,
+          userPrompt:
+            planAttempt === 0
+              ? planUserPrompt
+              : `${planUserPrompt}\n\n## Correction\nLe "title" et le "metaTitle" DOIVENT couvrir le sujet "${safeTopic}" (≤ 60 caractères ; « IA » accepté pour « intelligence artificielle »).`,
+          maxTokens: 2600,
+          temperature: 0.6,
+        });
+      } catch (err) {
+        // Chemin Claude : JSON coupé par max_tokens = échec de plan (2e essai), comme OpenAI.
+        if (estSortieJsonTronquee(err)) {
+          // Le plan tronqué est facturé : il compte dans le cumul du job.
+          accumulatedCostUsd += coutErreurTronquee(err);
+          dernierPlanTronque = true;
+          continue;
+        }
+        throw err;
+      }
+      dernierPlanTronque = false;
       accumulatedCostUsd += planResult.costUsd;
       lastTokensInput += planResult.tokensInput;
       lastTokensOutput += planResult.tokensOutput;
@@ -257,6 +273,14 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       if ((titleOk && mtOk) || planAttempt === 1) plan = candidate;
     }
     if (!plan) {
+      // Chemin Claude : deux plans tronqués payés — un rejeu BullMQ en repayerait deux de plus.
+      if (dernierPlanTronque) {
+        throw new UnrecoverableError("blog-article: plan tronqué (max_tokens) après 2 tentatives");
+      }
+      // Chemin Claude : tout échec final de plan (illisible ou tronqué) est non relançable.
+      if (interrupteurBlogClaude()) {
+        throw new UnrecoverableError("blog-article: plan invalide après 2 tentatives");
+      }
       throw new Error("blog-article: plan invalide après 2 tentatives");
     }
     // Net de sécurité titres (audit 2026-07-03) : si le LLM ignore la consigne
@@ -297,6 +321,7 @@ ${sectionChiffresVerifies()}## Output attendu (JSON)
       const expandResult = await expandOutlineChunked({
         jobId: input.jobId,
         contentType: "blog_article",
+        blogClaudeRole: "ecriture",
         outline: plan.outline ?? [],
         chunkSize: 4,
         expandSystem,

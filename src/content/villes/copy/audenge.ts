@@ -49,7 +49,7 @@ export const AUDENGE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Audenge ?",
-      a: "Oui, Axion-IA intervient à Audenge et dans tout le Bassin d'Arcachon (Biganos, Lanton, Le Teich, Arcachon). Nos consultants se déplacent depuis Bordeaux (40 min) ou Paris (TGV 2h + 40 min).",
+      a: "Oui, Axion-IA intervient à Audenge et dans tout le Bassin d'Arcachon (Biganos, Lanton, Le Teich, Arcachon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Audenge  : quel budget prévoir ?",

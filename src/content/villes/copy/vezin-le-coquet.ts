@@ -49,7 +49,7 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vezin-le-Coquet ?",
-      a: "Oui, Axion-IA intervient à Vezin-le-Coquet et dans tout l'ouest de Rennes Métropole (Le Rheu, Pacé, L'Hermitage, Mordelles). Nos consultants viennent de Rennes centre (10 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Vezin-le-Coquet et dans tout l'ouest de Rennes Métropole (Le Rheu, Pacé, L'Hermitage, Mordelles). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de l'ouest de Rennes ?",
@@ -65,7 +65,7 @@ export const VEZIN_LE_COQUET_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Vezin-le-Coquet ?",
-      a: "Nos consultants viennent de Rennes centre (10 min via rocade ouest). Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Possibilité métro ligne b proximité Le Gast. Intervention sur site ou en visio.",
     },
   ],
 };

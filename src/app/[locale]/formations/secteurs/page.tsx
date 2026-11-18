@@ -19,7 +19,7 @@ import {
   getFormationsV2ByCategorie,
   getFormationV2EntryPrice,
 } from "@/content/formations/catalog-v2";
-import { formatAmount } from "@/content/pricing";
+import { PRIX_PUBLICS_AFFICHES, formatMontantPublic } from "@/content/pricing";
 import { buildProductMetadata } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -49,7 +49,7 @@ export async function generateMetadata({
         : "Industry-specific AI trainings · Axion-IA",
     description:
       locale === "fr"
-        ? `${formations.length} formations IA par secteur — santé, BTP, immobilier, commerce, hôtellerie-restauration, industrie, transport-logistique, banque-assurance. Intra-entreprise, prix par groupe${typeof min === "number" ? ` dès ${formatAmount(min, "fr")}` : ""}.`
+        ? `${formations.length} formations IA par secteur — santé, BTP, immobilier, commerce, hôtellerie-restauration, industrie, transport-logistique, banque-assurance. Intra-entreprise, prix par groupe${PRIX_PUBLICS_AFFICHES && typeof min === "number" ? ` dès ${formatMontantPublic(min, "fr")}` : ", sur devis"}.`
         : `${formations.length} industry-specific AI trainings — healthcare, construction, real estate, retail, hospitality, industry, transport & logistics, banking & insurance. In-house, priced per group.`,
   });
 }

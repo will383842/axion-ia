@@ -8,7 +8,8 @@
  *
  * ── Ce qui est repris ────────────────────────────────────────────────────────
  * Une demande du guide, SI TOUT CECI EST VRAI :
- *   · elle vient d'un FORMULAIRE (`origine = formulaire`) — un envoi déclenché
+ *   · elle vient de la PERSONNE (`origine <> admin` : formulaire, ou message
+ *     privé d'un réseau, PV-1) — un envoi déclenché
  *     depuis la console est un geste humain, on ne le rejoue pas dans le dos
  *     de l'administrateur ;
  *   · elle n'est pas partie (`sent_at` nul) ;
@@ -22,6 +23,8 @@
  *
  * ── Ce qui l'arrête ──────────────────────────────────────────────────────────
  *   · le coupe-circuit : tant qu'il est déclenché, le passage ne fait RIEN ;
+ *   · une adresse opposée (email_oppositions), quelle que soit l'origine de la demande :
+ *     écartée, rien n'est supprimé ni modifié ;
  *   · le plafond horaire du guide : il ne relâche que la place restante.
  *
  * L'e-mail repris porte ce que la ligne d'abonné dit AU MOMENT DE L'ENVOI :
@@ -40,6 +43,8 @@
  * silence, jusqu'au passage suivant.
  */
 
+import { estOpposee } from "@/server/email/opposition";
+import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import {
@@ -53,6 +58,7 @@ import {
 import { coupeCircuitDeclenche } from "./coupe-circuit";
 import { envoisDeLaDerniereHeure, mettreEnFileGuide } from "./envoi";
 import { lettreDansLEmail } from "./lettre";
+import { etatPageGuide } from "./page-guide-ecartee";
 
 export interface RapportRattrapage {
   readonly suspendu: boolean;
@@ -117,7 +123,11 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
     const t = maintenant.getTime();
     const candidates = await prisma.guideRequest.findMany({
       where: {
-        origine: "formulaire",
+        // PV-1 : « tout sauf admin » et non « formulaire OU message_prive ». Le
+        // worker peut atterrir avant la migration de l'énumération : citer
+        // `message_prive` dans la requête ferait échouer le passage (valeur
+        // d'énumération inconnue de la base) ; `<> 'admin'` marche avant ET après.
+        origine: { not: "admin" },
         sentAt: null,
         createdAt: {
           gte: new Date(t - HORIZON_RATTRAPAGE_MS),
@@ -125,7 +135,15 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         OR: [{ queuedAt: null }, { queuedAt: { lt: new Date(t - AGE_RATTRAPAGE_MS) } }],
       },
-      select: { id: true, email: true, locale: true, downloadToken: true, sendCount: true },
+      select: {
+        id: true,
+        email: true,
+        locale: true,
+        downloadToken: true,
+        sendCount: true,
+        origine: true,
+        aimant: true,
+      },
       orderBy: { createdAt: "asc" },
       take: 200,
     });
@@ -161,6 +179,22 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         ecartees++;
         continue;
       }
+      // Une adresse opposée (ou qui a demandé l'effacement) APRÈS la demande ne reçoit pas le
+      // guide par le rattrapage, QUELLE QUE SOIT l'origine de la demande : on écarte, on ne
+      // supprime ni ne modifie rien. Ce contrôle passe après la réparation de trace (qui
+      // n'envoie rien) et avant toute lecture de la ligne d'abonnée. Pas de try/catch : si la
+      // base ne répond pas, l'erreur remonte et rien n'est mis en file (échec fermé).
+      if (await estOpposee(c.email)) {
+        ecartees++;
+        continue;
+      }
+      // STOP reçu sur la conversation de la page (MG-STOP01) : la demande reste sans envoi mais ne
+      // doit JAMAIS être reprise. Lecture fermée (erreur ou table absente = écartée).
+      const etatPage = await etatPageGuide(c.id);
+      if (etatPage.ecartee) {
+        ecartees++;
+        continue;
+      }
       // Même liste de suppression que l'enfilage : une adresse en rebond dur ne
       // doit pas être re-tentée toutes les heures pendant une semaine.
       const verdict = await verdictAvantEnvoi(c.email, {
@@ -172,27 +206,41 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         continue;
       }
 
-      const lettre = await lettreDansLEmail(c.email);
+      // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
+      // Venue de la page « Recevoir le guide » : même e-mail qu'au premier envoi, AVEC le lien de
+      // désinscription promis par la case (jeton d'opposition signé : `op2` opaque une fois
+      // `OPPOSITION_JETON_V2` allumé, `op1` — adresse en base64url, donc lisible — sinon ; le même
+      // `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
+      const pageGuide = etatPage.page;
+      const reseau = pageGuide || (c.origine as string) === "message_prive";
+      const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
+        ? {}
+        : await lettreDansLEmail(c.email);
       const r = await mettreEnFileGuide(
         {
           id: c.id,
           email: c.email,
           locale: c.locale === "en" ? "en" : "fr",
           downloadToken: c.downloadToken,
+          aimant: c.aimant,
         },
         {
+          reseau,
+          ...(pageGuide ? { pageGuide: { oppositionToken: jetonOpposition(c.email) } } : {}),
           confirmToken: lettre.confirmToken ?? null,
+          doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,
           maintenant,
         },
       );
       if (r === "en-file") {
         relancees++;
-        if (lettre.confirmToken) {
+        const jetonConfirmation = lettre.confirmToken ?? lettre.doubleAccordToken;
+        if (jetonConfirmation) {
           confirmationsViaGuide++;
           await prisma.newsletterSubscriber
             .updateMany({
-              where: { email: c.email, confirmToken: lettre.confirmToken },
+              where: { email: c.email, confirmToken: jetonConfirmation },
               data: { confirmSentAt: maintenant },
             })
             .catch(() => undefined);

@@ -183,19 +183,35 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
       expect(client.ecrivains.map((e) => `${e.fichier} (${e.fonction})`).sort()).toEqual([
         "src/features/dossier-client/defaire-fusion.ts (defaireDansUneTransaction › travail de db.$transaction())",
         "src/features/dossier-client/fusionner.ts (fusionnerFiches › travail de db.$transaction())",
+        // 25/10/2026 : champs VIDES de la fiche complétés depuis la réponse du dirigeant.
+        "src/features/questionnaire-preaudit/completer-fiche.ts (completerFicheDepuisReponse › travail de reessayerSiInterblocage() › travail de prisma.$transaction())",
+        // 27/10/2026 : « Compléter la fiche » d'une demande du Tour France IA, à la main, ce qui est VIDE.
+        "src/features/tour-de-france/fiche.ts (completerFicheDepuisDemande › travail de reessayerSiInterblocage() › travail de prisma.$transaction())",
         "src/lib/rgpd-erase.ts (eraseClientsForEmail › travail de prisma.$transaction())",
         "src/server/actions/qualiopi/clients.ts (updateClientAction › travail de prisma.$transaction())",
+        "src/server/crm-sync/retour-dossier.ts (appliquerRetourDossier › travail de prisma.$transaction())",
         "src/server/qualiopi/crm/porte-client.ts (creerOuRetrouverClient › travail de withNumberRetry() › travail de db.$transaction())",
       ]);
       expect(client.horsChampsTransmis.map((e) => `${e.fichier} (${e.fonction})`)).toEqual([
-        "src/server/actions/qualiopi/devis.ts (sendDevisAction › travail de prisma.$transaction())",
+        // 26/10/2026 : « Facture établie hors console » ne pose que le statut commercial (hors charge Partners).
+        "src/features/dossier-client/actions-facture-hors-console.ts (factureHorsConsoleAction › travail de prisma.$transaction())",
+        // 04/11/2026 : « un prospect passe en client lorsqu'un devis est signé » ne pose que le statut commercial.
+        "src/features/dossier-client/devis-signe-fait-client.ts (faireMonterLesFichesDesDevisSignes › travail de db.$transaction())",
+        // 17/11/2026 (B1) : « Remis en main propre » pose le MÊME statut commercial que sendDevisAction
+        // (prospect/perdu → devis_envoye, jamais de rétrogradation), hors charge Partners.
+        "src/server/actions/qualiopi/devis-remis-main-propre.ts (marquerRemisEnMainPropreAction › travail de prisma.$transaction())",
+        // 18/11/2026 (B2, PR 3) : `sendDevisAction` n'écrit plus le statut du client elle-même, elle
+        // appelle `marquerDevisEnvoye(tx, …)` (ligne ci-dessous) : l'écrivain a changé de fichier.
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         // Lot OPCO A7d : n'écrit que l'effectif et sa provenance, hors charge Partners.
         "src/server/qualiopi/crm/effectif-insee.ts (rafraichirEffectifInsee)",
+        // 17/11/2026 (B2) : `marquerDevisEnvoye(tx, …)`, appelée par `sendDevisAction` (PR 3) et l'approbation, reprend le MÊME statut
+        // commercial que sendDevisAction (prospect/perdu → devis_envoye), hors charge Partners.
+        "src/server/qualiopi/devis/marquer-devis-envoye.ts (marquerDevisEnvoye)",
       ]);
       const { code, lignes } = rendu(b);
-      expect(lignes.at(-1)).toMatch(/5 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);
+      expect(lignes.at(-1)).toMatch(/8 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);
       expect(code).toBe(0);
     },
   );

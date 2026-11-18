@@ -46,7 +46,7 @@ describe("⛔ la synthèse montre ce que fait la société", () => {
     for (const attendu of ["Menuiserie industrielle", "42", "Excel", "Débutant"]) {
       expect(html).toContain(attendu);
     }
-    expect(iSociete).toBeLessThan(html.indexOf("Projets"));
+    expect(iSociete).toBeLessThan(html.indexOf("Prestations"));
   });
 
   it("contre-témoin : sans fait, le message « Rien de validé » s'affiche", () => {

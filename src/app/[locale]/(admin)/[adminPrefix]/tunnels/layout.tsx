@@ -4,7 +4,8 @@
 //   ├── Vue d'ensemble     → les deux tunnels côte à côte
 //   ├── Tunnel diagnostic & simulateur → de la pub au rapport : où l'on perd les gens
 //   ├── Tunnel de vente     → du prospect au règlement
-//   └── Tunnel apporteurs   → de la publicité à l'apporteur actif, coût compris
+//   ├── Tunnel apporteurs   → de la publicité à l'apporteur actif, coût compris
+//   └── Tunnel Tour France IA → du bouton « Participer » à la visio tenue
 //
 // Groupe distinct de « Boîte de réception » à dessein : celle-ci montre les
 // gens qui ONT écrit, celui-ci montre ceux qu'on a PERDUS en route.
@@ -41,12 +42,14 @@ export default async function TunnelsLayout({
   if (chemin.includes("/tunnels/prospects")) actif = "prospects";
   else if (chemin.includes("/tunnels/vente")) actif = "vente";
   else if (chemin.includes("/tunnels/apporteurs")) actif = "apporteurs";
+  else if (chemin.includes("/tunnels/tour")) actif = "tour";
 
   const onglets: AdminTabItem[] = [
     { id: "ensemble", label: "Vue d'ensemble", href: base },
     { id: "prospects", label: "Tunnel diagnostic & simulateur", href: `${base}/prospects` },
     { id: "vente", label: "Tunnel de vente", href: `${base}/vente` },
     { id: "apporteurs", label: "Tunnel apporteurs", href: `${base}/apporteurs` },
+    { id: "tour", label: "Tunnel Tour France IA", href: `${base}/tour` },
   ];
 
   return (

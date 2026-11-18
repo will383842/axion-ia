@@ -263,11 +263,7 @@ export async function KbListingView({ locale, page }: KbListingViewProps) {
       />
 
       <JsonLd data={collectionJsonLd} />
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-connaissances-itemlist"
-      />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-connaissances-itemlist" />
     </>
   );
 }

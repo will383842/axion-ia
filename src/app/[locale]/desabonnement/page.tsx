@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
+import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
@@ -8,6 +9,9 @@ import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata } from "@/lib/seo";
+// Module PUR (node:crypto seulement) : pas de Prisma, pas de files.
+import { COOKIE_DESINSCRIPTION } from "@/lib/unsubscribe-cookie";
+import { estJetonOpposition } from "@/server/email/opposition-jeton";
 
 // Unsubscribe landing — RFC 8058 (List-Unsubscribe) + RGPD compliance.
 // Public, no-index — accessed via signed token in email footers.
@@ -15,8 +19,9 @@ import { buildProductMetadata } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
+  // 🔴 Pas de `token` ici : il n'est plus dans l'URL (J2). Un vieil URL `?token=` mis en
+  // favori est IGNORÉ — sa valeur n'est jamais relue ni réaffichée.
   searchParams: Promise<{
-    token?: string;
     status?: "ok" | "fail";
     already?: string;
     reason?: string;
@@ -42,7 +47,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DesabonnementPage({ params, searchParams }: Props) {
   const { locale } = await params;
-  const { token, status, already, reason } = await searchParams;
+  const { status, already, reason } = await searchParams;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
@@ -94,11 +99,13 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
     { href: "/desabonnement", label: isFr ? "Désabonnement" : "Unsubscribe" },
   ];
 
+  // Le jeton vient du cookie court posé par `GET /api/unsubscribe`, jamais de l'URL.
+  const token = (await cookies()).get(COOKIE_DESINSCRIPTION)?.value;
   const hasToken = typeof token === "string" && token.length > 0;
-  // Lot 1b (2026-09-02) : un jeton `op1.` porte une OPPOSITION aux sollicitations
+  // Lot 1b (2026-09-02) : un jeton `op1.` ou `op2.` porte une OPPOSITION aux sollicitations
   // commerciales (depuis n'importe quel e-mail), pas un désabonnement de liste.
   // La page dit lequel des deux elle confirme.
-  const estOpposition = hasToken && token.startsWith("op1.");
+  const estOpposition = hasToken && estJetonOpposition(token);
 
   return (
     <>
@@ -156,7 +163,6 @@ export default async function DesabonnementPage({ params, searchParams }: Props)
                 method="POST"
                 className="flex flex-wrap items-center gap-3"
               >
-                <input type="hidden" name="token" value={token} />
                 <button
                   type="submit"
                   className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-primary inline-flex items-center gap-2 rounded-md px-5 py-3 text-base font-medium focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"

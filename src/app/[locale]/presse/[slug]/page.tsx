@@ -411,8 +411,8 @@ export default async function PressReleaseDetailPage({ params }: Props) {
             </h2>
             <p className="text-fg-soft mb-5 text-base leading-relaxed">
               {isFr
-                ? "Notre équipe répond aux journalistes sous 48 h ouvrées, en français et en anglais. Interviews, exclusivités sectorielles, vérification de chiffres : écrivez-nous directement."
-                : "Our team replies to journalists within 48 business hours, in French and English. Interviews, sector exclusives, fact-checking: reach out directly."}
+                ? "Notre équipe répond aux journalistes en français et en anglais. Interviews, exclusivités sectorielles, vérification de chiffres : écrivez-nous directement."
+                : "Our team replies to journalists in French and English. Interviews, sector exclusives, fact-checking: reach out directly."}
             </p>
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" shape="pill">

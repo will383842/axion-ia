@@ -10,7 +10,7 @@
  *
  * Modèles default Day 1 (master prompt Q2 option recommandée) :
  *   openai-text  : gpt-4o
- *   anthropic    : claude-sonnet-4-6
+ *   anthropic    : claude-sonnet-5-5
  *   perplexity   : sonar-pro
  *   unsplash     : (n/a — pas de modèle)
  */
@@ -35,7 +35,7 @@ export async function seedProviderConfig(prisma: PrismaClient): Promise<number> 
       role: "text" as const,
       enabled: true,
       primary: false, // fallback
-      model: "claude-sonnet-4-6",
+      model: "claude-sonnet-5-5",
       monthlyCapUsd: 100,
       apiKeyEnvVar: "ANTHROPIC_API_KEY",
       rateLimitRpm: 50,

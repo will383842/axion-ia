@@ -18,6 +18,7 @@ import { z } from "zod";
 
 import { auth } from "@/auth";
 import { adminPath } from "@/lib/admin-path";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 import { prisma } from "@/lib/prisma";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
@@ -31,7 +32,7 @@ import {
   versionContratAEmettre,
 } from "@/server/qualiopi/formateurs-independants/contrat-cadre-emission";
 import {
-  apercu,
+  apercuLecteurFormateur,
   envoyer,
   texteValide,
   valeursManquantes,
@@ -168,7 +169,7 @@ function payloadNouvelleVersion(prenom: string, lien: string, resume: string | n
 export async function apercuNouvelleVersionAction(
   input: z.input<typeof schemaFiche>,
 ): Promise<
-  { data: { sujet: string; html: string; texteValide: boolean; resumeEcrit: boolean } } | Refus
+  { data: { apercu: ApercuLecteur; texteValide: boolean; resumeEcrit: boolean } } | Refus
 > {
   const a = await autorise("contresigner", "nouvelle_version_contrat");
   if ("error" in a) return a;
@@ -183,15 +184,14 @@ export async function apercuNouvelleVersionAction(
     const version = versionContratAEmettre();
     const resume =
       version === null ? null : resumeVersionArretee("contrat_sous_traitance", version);
-    const rendu = await apercu({
+    const rendu = await apercuLecteurFormateur({
       gabarit: GABARIT_NOUVELLE_VERSION,
       destinataire: t.email,
       payload: payloadNouvelleVersion(t.prenom, "https://axion-ia.com/fr/portail/signer/…", resume),
     });
     return {
       data: {
-        sujet: rendu.sujet,
-        html: rendu.html,
+        apercu: rendu,
         texteValide: await texteValide(GABARIT_NOUVELLE_VERSION),
         resumeEcrit: resume !== null,
       },

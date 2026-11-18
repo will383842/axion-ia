@@ -67,7 +67,7 @@ const ALERTE_STUB = {
   id: VALID_UUID,
   code: "opco_sans_accord",
   niveau: "important" as const,
-  titre: "Session dans 7 jours sans accord OPCO",
+  titre: "Session dans 7 jours sans accord de paiement par un tiers",
   message: "Aucun accord reçu.",
   cibleType: null,
   cibleId: null,

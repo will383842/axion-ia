@@ -65,7 +65,7 @@ export const BEAUGENCY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Beaugency ?",
-      a: "Nos consultants se déplacent à Beaugency depuis Orléans (25 min A10) ou Paris (1h30 TGV+TER). Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Audit sur place : 4h sur site. Interventions : 1 à 5 jours selon le besoin.",
     },
   ],
 };

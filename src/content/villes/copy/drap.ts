@@ -49,7 +49,7 @@ export const DRAP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Drap et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à Drap et dans toute la vallée du Paillon (La Trinité, Contes, Peillon, Cantaron). Couverture Métropole Nice Côte d'Azur et accès rapide depuis Nice centre (15 min D2204).",
+      a: "Oui, Axion-IA intervient à Drap et dans toute la vallée du Paillon (La Trinité, Contes, Peillon, Cantaron). Couverture Métropole Nice Côte d'Azur et accès par la D2204.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Drap ?",
@@ -64,8 +64,8 @@ export const DRAP_COPY: VilleCopy = {
       a: "Pour les professions libérales de Drap (médecins, avocats, comptables), nous proposons : automatisation secrétariat, transcription, classification dossiers, agents IA prise de RDV. Audit sur place {{price:audit-flash|flat}} ou coaching 1-to-1 personnalisé.",
     },
     {
-      q: "Comment se déroule une mission à Drap depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (15 min D2204 vallée du Paillon). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Drap ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

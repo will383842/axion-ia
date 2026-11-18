@@ -49,7 +49,7 @@ export const UZES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Uzès et dans l'Uzège ?",
-      a: "Oui, Axion-IA intervient à Uzès et dans toute la communauté de communes Pays d'Uzès (Saint-Quentin-la-Poterie, Arpaillargues, Montaren). Nos consultants viennent de Nîmes (25 min) ou Avignon (40 min).",
+      a: "Oui, Axion-IA intervient à Uzès et dans toute la communauté de communes Pays d'Uzès (Saint-Quentin-la-Poterie, Arpaillargues, Montaren). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans d'art d'Uzès ?",

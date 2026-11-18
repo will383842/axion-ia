@@ -34,6 +34,8 @@
  * du code serveur.
  */
 
+import { createHash } from "node:crypto";
+
 import * as Sentry from "@sentry/nextjs";
 
 import { prisma } from "@/lib/prisma";
@@ -72,6 +74,18 @@ export interface ContenuDeLaReponse {
   bodyMarkdown: string;
   modele: ModeleComposeurId;
   internalNote?: string | undefined;
+  /**
+   * Le texte TEL QUE SAISI, avant remplacement de `{lien_complement}` (dont le
+   * jeton change à chaque milliseconde). Jamais enregistré en clair : seule son
+   * empreinte SHA-256 l'est (`meta.empreinte_saisie` de l'événement du journal),
+   * pour que la garde contre le doublon reconnaisse deux envois du même texte.
+   */
+  texteSaisi?: string | undefined;
+}
+
+/** Empreinte SHA-256 hexadécimale du texte saisi. */
+export function empreinteDuTexteSaisi(texte: string): string {
+  return createHash("sha256").update(texte, "utf8").digest("hex");
 }
 
 /**
@@ -86,7 +100,84 @@ export interface ContenuDeLaReponse {
 export type IssueEnvoi =
   | { ecrit: true; enfile: true; replyId: string }
   | { ecrit: true; enfile: false; replyId: string; error: "enqueue_failed" }
-  | { ecrit: false; error: "invalid_recipient" | "render_failed" | "db_failed" };
+  | { ecrit: false; error: "invalid_recipient" | "render_failed" | "db_failed" }
+  /** Une réponse identique existe déjà (garde demandée) : rien n'est écrit ni enfilé. */
+  | { ecrit: false; error: "doublon"; replyId: string };
+
+/** Fenêtre dans laquelle deux envois identiques sont un seul envoi (double clic). */
+export const FENETRE_DOUBLON_REPONSE_MS = 60_000;
+
+/** Options de l'écriture. */
+export interface OptionsEcriture {
+  /**
+   * Refuse d'écrire si une réponse identique (même auteur, même objet, même
+   * corps, `pending` à tout âge ou `sent` depuis moins de 60 s) existe déjà. La recherche
+   * se fait DANS la transaction, sous verrou consultatif : deux requêtes
+   * simultanées se sérialisent, la seconde voit la première.
+   */
+  garderContreDoublon?: boolean;
+}
+
+type ClientTx = Pick<typeof prisma, "$executeRaw" | "jobApplicationReply" | "jobApplicationEvent">;
+
+/** Verrou de transaction, clé dérivée de l'identifiant de la candidature (paramétrée). */
+async function verrouillerCandidature(tx: ClientTx, applicationId: string): Promise<void> {
+  await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`candidature.reponse:${applicationId}`}))`;
+}
+
+/** Identifiant d'une réponse identique récente, ou `null`. */
+async function trouverDoublon(
+  tx: ClientTx,
+  candidatureId: string,
+  userId: string | null,
+  contenu: ContenuDeLaReponse,
+): Promise<string | null> {
+  const recentes = await tx.jobApplicationReply.findMany({
+    where: {
+      applicationId: candidatureId,
+      repliedByUserId: userId,
+      subject: contenu.subject,
+      // Une réponse encore `pending` est un doublon quel que soit son âge (elle peut
+      // être en essais automatiques depuis plus d'une minute) ; une `sent` ne l'est
+      // que dans la fenêtre.
+      OR: [
+        { deliveryStatus: "pending" },
+        {
+          deliveryStatus: "sent",
+          repliedAt: { gte: new Date(Date.now() - FENETRE_DOUBLON_REPONSE_MS) },
+        },
+      ],
+    },
+    select: { id: true },
+    orderBy: { repliedAt: "desc" },
+    take: 5,
+  });
+  if (recentes.length === 0) return null;
+  // Le corps stocké sur la réponse est le HTML rendu ; le texte écrit par
+  // l'auteur est celui du journal, écrit dans la même transaction.
+  // Avec une empreinte, on compare le texte SAISI (le corps rempli contient un
+  // lien au jeton unique et ne se recompare jamais). Les anciennes lignes n'ont
+  // pas l'empreinte : elles se comparent sur le corps, comme avant.
+  const empreinte =
+    contenu.texteSaisi === undefined ? null : empreinteDuTexteSaisi(contenu.texteSaisi);
+  const evenement = await tx.jobApplicationEvent.findFirst({
+    where: {
+      applicationId: candidatureId,
+      type: "email_envoye",
+      ...(empreinte === null
+        ? { body: contenu.bodyMarkdown }
+        : {
+            OR: [
+              { meta: { path: ["empreinte_saisie"], equals: empreinte } },
+              { body: contenu.bodyMarkdown },
+            ],
+          }),
+      replyId: { in: recentes.map((r) => r.id) },
+    },
+    select: { replyId: true },
+  });
+  return evenement?.replyId ?? null;
+}
 
 /**
  * Écrit la réponse, sa trace au journal, et la remet à la file d'envoi.
@@ -99,6 +190,7 @@ export async function ecrireEtEnfilerReponse(
   candidature: CandidatureDestinataire,
   acteur: ActeurDeLaReponse,
   contenu: ContenuDeLaReponse,
+  options: OptionsEcriture = {},
 ): Promise<IssueEnvoi> {
   if (!isDecryptedEmailUsable(decryptPii(candidature.email))) {
     return { ecrit: false, error: "invalid_recipient" };
@@ -124,8 +216,17 @@ export async function ecrireEtEnfilerReponse(
   // Si le journal était écrit après coup, un échec entre les deux laisserait une
   // réponse partie sans trace. `consignerEvenement` accepte le client de
   // transaction pour cette raison précise.
-  const replyId = await prisma
+  const resultat = await prisma
     .$transaction(async (tx) => {
+      // 🔴 Verrou D'ABORD, recherche du doublon ENSUITE, écriture en dernier :
+      // hors transaction, deux requêtes simultanées trouvaient zéro réponse et
+      // écrivaient toutes les deux. Le verrou se libère au commit.
+      if (options.garderContreDoublon) {
+        await verrouillerCandidature(tx, candidature.id);
+        const doublon = await trouverDoublon(tx, candidature.id, acteur.userId, contenu);
+        if (doublon) return { doublon };
+      }
+
       const reponse = await tx.jobApplicationReply.create({
         data: {
           applicationId: candidature.id,
@@ -164,19 +265,28 @@ export async function ecrireEtEnfilerReponse(
           summary: `Réponse envoyée — ${contenu.subject}`,
           body: contenu.bodyMarkdown,
           replyId: reponse.id,
-          meta: { modele: contenu.modele },
+          meta: {
+            modele: contenu.modele,
+            ...(contenu.texteSaisi === undefined
+              ? {}
+              : { empreinte_saisie: empreinteDuTexteSaisi(contenu.texteSaisi) }),
+          },
         },
         tx,
       );
 
-      return reponse.id;
+      return { replyId: reponse.id };
     })
     .catch((e: unknown) => {
       Sentry.captureException(e);
       return null;
     });
 
-  if (!replyId) return { ecrit: false, error: "db_failed" };
+  if (!resultat) return { ecrit: false, error: "db_failed" };
+  if ("doublon" in resultat) {
+    return { ecrit: false, error: "doublon", replyId: resultat.doublon };
+  }
+  const { replyId } = resultat;
 
   // Le worker relit l'adresse depuis la base et la déchiffre au moment de
   // l'envoi : AUCUNE donnée personnelle ne transite par la file.

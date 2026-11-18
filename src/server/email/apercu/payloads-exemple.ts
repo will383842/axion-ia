@@ -138,8 +138,13 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   moment: "j1",
   montantDu: "1 450,00 €",
   montantLabel: "1 450,00 €",
+  montantHtLabel: "1 450,00 €",
+  montantTvaLabel: "290,00 €",
+  montantTtcLabel: "1 740,00 €",
+  cgvVersionLabel: "4 octobre 2026",
   newsletter: 120,
   nom: "Dupont",
+  nomFamille: "Dupont",
   notes: "Bonjour, voici le message d'exemple utilisé pour l'aperçu de ce gabarit.",
   numero: "F-2026-0142",
   numeroFacture: "F-2026-0142",
@@ -189,7 +194,7 @@ export const PAYLOAD_EXEMPLE: Readonly<Record<string, unknown>> = {
   subject: "Votre demande",
   submissionId: "demo-0000",
   // Alerte interne : sans ces trois champs, l'apercu affichait
-  // « [INFO] Alerte Qualiopi — undefined ».
+  // « [INFO] Alerte formation — undefined ».
   niveau: "critique",
   code: "FACTURE_IMPAYEE",
   titre: "Facture arrivée à échéance sans règlement",

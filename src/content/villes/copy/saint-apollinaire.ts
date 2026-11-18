@@ -49,7 +49,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Apollinaire et agglo dijonnaise ?",
-      a: "Oui, Axion-IA intervient à Saint-Apollinaire et toute la métropole dijonnaise (Quetigny, Chenôve, Talant, Fontaine-lès-Dijon). Consultants depuis Dijon (10 min).",
+      a: "Oui, Axion-IA intervient à Saint-Apollinaire et toute la métropole dijonnaise (Quetigny, Chenôve, Talant, Fontaine-lès-Dijon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME logistique Cap Nord ?",
@@ -64,7 +64,7 @@ export const SAINT_APOLLINAIRE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Dijon ?",
+      q: "Comment se déroule une mission à Saint-Apollinaire ?",
       a: "Dijon centre (10 min).",
     },
   ],

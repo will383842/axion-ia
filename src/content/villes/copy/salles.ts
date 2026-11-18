@@ -49,7 +49,7 @@ export const SALLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Salles ?",
-      a: "Oui, Axion-IA intervient à Salles et dans la vallée de la Leyre (Belin-Béliet, Le Barp, Mios, Biganos). Nos consultants se déplacent depuis Bordeaux (45 min A63) ou Paris (TGV 2h + 45 min).",
+      a: "Oui, Axion-IA intervient à Salles et dans la vallée de la Leyre (Belin-Béliet, Le Barp, Mios, Biganos). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Tarifs audit IA à Salles  : quel budget prévoir ?",
@@ -65,7 +65,7 @@ export const SALLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Salles ?",
-      a: "Nos consultants interviennent dans vos locaux à Salles ou en visio. Depuis Bordeaux (45 min A63). Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent dans vos locaux à Salles ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const EPONE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Épône ?",
-      a: "Nos consultants interviennent à Épône via A13 (40 min depuis La Défense) ou Transilien J (gare Épône — Mézières, ~50 min Paris Saint-Lazare).",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

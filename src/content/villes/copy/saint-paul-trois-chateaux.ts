@@ -49,7 +49,7 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Paul-Trois-Châteaux et Tricastin ?",
-      a: "Oui, Axion-IA intervient à Saint-Paul-Trois-Châteaux et tout le bassin Tricastin (Pierrelatte à 10 min, Donzère, Bollène, Grignan). Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min).",
+      a: "Oui, Axion-IA intervient à Saint-Paul-Trois-Châteaux et tout le bassin Tricastin (Pierrelatte à 10 min, Donzère, Bollène, Grignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les trufficulteurs Tricastin ?",
@@ -64,8 +64,8 @@ export const SAINT_PAUL_TROIS_CHATEAUX_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Paul-Trois-Châteaux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (50 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Paul-Trois-Châteaux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

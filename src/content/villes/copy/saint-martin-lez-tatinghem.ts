@@ -49,7 +49,7 @@ export const SAINT_MARTIN_LEZ_TATINGHEM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Saint-Martin-lez-Tatinghem et dans l'Audomarois ?",
-      a: "Oui, Axion-IA intervient a Saint-Martin-lez-Tatinghem et dans toute l'agglomeration audomaroise (Saint-Omer, Longuenesse, Arques). Consultants depuis Lille (1h TER) ou Calais (30 min).",
+      a: "Oui, Axion-IA intervient a Saint-Martin-lez-Tatinghem et dans toute l'agglomeration audomaroise (Saint-Omer, Longuenesse, Arques). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME tertiaires de l'Audomarois ?",

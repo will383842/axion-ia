@@ -28,8 +28,8 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
       en: "Audit IA à Rosny-sous-Bois : diagnostic pour TPE commerce de détail des galeries Westfield Rosny 2 et Domus, PME BTP, sociétés de services numériques et fournisseurs de l'IGN. Cas d'usage typiques : prévision stocks, chatbot SAV, classification documents, optimisation tournées. Audit sur place {{price:audit-flash|flat}}, ROI chiffré.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier. Déplacement depuis Paris via RER E (25 min Châtelet) ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
-      en: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier. Déplacement depuis Paris via RER E (25 min Châtelet) ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
+      fr: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier.",
+      en: "Interventions IA sur site à Rosny-sous-Bois : ateliers pour TPE commerçantes (Westfield Rosny 2, Domus), PME BTP et services informatiques. Équipes autonomes sur outils IA métier.",
     },
     implementation: {
       fr: "Implémentation IA à Rosny-sous-Bois : prévision de demande pour commerces Westfield, chatbot SAV centres commerciaux, automatisation devis BTP, classification documentaire pour PME tertiaires, agents IA cartographie pour écosystème IGN. Code custom, pas de no-code.",
@@ -48,7 +48,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
           "Profil retail dominant : commerçants et franchises de Westfield Rosny 2 (180 boutiques, 111 600 m²) et de Domus — fiches produits, recherche sémantique, recommandation et chatbot SAV intégrés à votre site ou marketplace.",
           "Distribution et négoce technique : catalogues volumineux de pièces et SAV pour acteurs type Frisquet (chaudières, chauffage) ou Fraikin (flotte de véhicules) — search produit/référence, configurateur et assistant de devis IA.",
           "Conception UX/UI complète si besoin — research, wireframes, design system, prototype Figma, mobile-first — pas seulement la brique IA, sur WooCommerce, PrestaShop, Shopify, Magento ou stack sur mesure.",
-          "Ancrage local : kick-off sur site à Rosny et dans l'Est parisien (Montreuil, Noisy-le-Sec, Bondy, Villemomble, Fontenay-sous-Bois), accès direct via le métro 11 prolongé et le RER E — hébergement UE strict, RGPD, zéro lock-in éditeur.",
+          "Sur place : kick-off sur site à Rosny et dans l'Est parisien (Montreuil, Noisy-le-Sec, Bondy, Villemomble, Fontenay-sous-Bois), accès direct via le métro 11 prolongé et le RER E — hébergement UE strict, RGPD, zéro lock-in éditeur.",
         ],
         methodology: [
           {
@@ -220,7 +220,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rosny-sous-Bois ?",
-      a: "Oui, Axion-IA intervient à Rosny-sous-Bois (93110) et dans les communes voisines de l'Est parisien : Bondy, Fontenay-sous-Bois, Montreuil, Neuilly-Plaisance, Noisy-le-Sec, Villemomble. Accès direct depuis Paris en 25 min via RER E ou métro ligne 11 (terminus Rosny-Bois-Perrier).",
+      a: "Oui, Axion-IA intervient à Rosny-sous-Bois (93110) et dans les communes voisines de l'Est parisien : Bondy, Fontenay-sous-Bois, Montreuil, Neuilly-Plaisance, Noisy-le-Sec, Villemomble.",
     },
     {
       q: "Quels sont les tarifs Axion-IA à Rosny-sous-Bois ?",
@@ -240,7 +240,7 @@ export const ROSNY_SOUS_BOIS_COPY: VilleCopy = {
     },
     {
       q: "Vous déplacez-vous sur site à Rosny-sous-Bois ?",
-      a: "Oui, nos consultants se déplacent depuis Paris en 25 min via RER E (gares Rosny-sous-Bois ou Rosny-Bois-Perrier) ou métro ligne 11 (terminus Rosny-Bois-Perrier). Pour les missions courtes, visio possible. Pas de surcoût de déplacement dans la Métropole du Grand Paris.",
+      a: "Oui. Nous intervenons partout en France, sur place ou à distance. Pour les missions courtes, visio possible. Pas de surcoût de déplacement dans la Métropole du Grand Paris.",
     },
   ],
   // EN mirror FR (Will rule 2026-05-22 : NE JAMAIS traduire EN pour villes).

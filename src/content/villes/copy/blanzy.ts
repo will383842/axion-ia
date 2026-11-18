@@ -65,7 +65,7 @@ export const BLANZY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Blanzy ?",
-      a: "Nos consultants se déplacent à Blanzy depuis la gare TGV Le Creusot-Montchanin (15 min). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles pour les TPE éloignées.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles pour les TPE éloignées.",
     },
   ],
 };

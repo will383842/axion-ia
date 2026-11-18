@@ -112,11 +112,7 @@ export function SitesWebMethodology({ isFr }: SitesWebMethodologyProps): ReactNo
           }))}
         />
       </Section>
-      <JsonLd
-        data={howToJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-sites-web-augmentes-howto"
-      />
+      <JsonLd data={howToJsonLd} scriptId="jsonld-sites-web-augmentes-howto" />
     </>
   );
 }

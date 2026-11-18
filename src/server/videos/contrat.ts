@@ -129,6 +129,49 @@ const publication = publicationBrute.superRefine((v, ctx) => {
 
 export type PublicationVideo = z.infer<typeof publicationBrute>;
 
+/**
+ * FICHE DE PAGE (SEO-05, `usine/seo/FICHE-DE-PAGE.md`, qui fait loi) : ce que le Studio
+ * prépare pour la page d'une automatisation. Les longueurs sont celles du cahier des charges.
+ *
+ * ⚠️ Volontairement HORS de `publicationBrute` : `reception.ts` n'a pas encore de colonne
+ * où la ranger (migration à venir). L'ajouter à la publication la ferait ACCEPTER puis
+ * PERDRE en silence. Ce schéma sert à lire la fiche (`lecture.ts`) quand la colonne existera.
+ */
+const imageAvecAlt = z
+  .object({
+    chemin: z
+      .string()
+      .max(300)
+      .regex(/^\/medias\/videos\/[a-z0-9/._-]+$/)
+      .refine((c) => !c.includes("..")),
+    // Champ 20 : décrit ce qu'on voit, 80 à 125 caractères.
+    alt: texte(80, 125),
+    largeur: z.number().int().positive(),
+    hauteur: z.number().int().positive(),
+  })
+  .strict();
+
+const fichePageSchema = z
+  .object({
+    titre: texte(50, 60),
+    metaDescription: texte(140, 160),
+    h1: texte(40, 70),
+    resumeCitable: texte(200, 320),
+    gain: texte(80, 140),
+    limites: z.array(texte(10, 120)).min(1).max(3),
+    questions: z
+      .array(z.object({ question: texte(60, 110), reponse: texte(200, 400) }).strict())
+      .min(3)
+      .max(6),
+    auteur: texte(3, 60),
+    carrousel: z.array(imageAvecAlt).max(10).optional(),
+    infographie: imageAvecAlt.optional(),
+  })
+  .strict();
+
+export type FichePage = z.infer<typeof fichePageSchema>;
+export type ImageAvecAlt = z.infer<typeof imageAvecAlt>;
+
 const retrait = z
   .object({
     schemaVersion: z.literal(1),
@@ -159,6 +202,10 @@ function analyser<T>(schema: z.ZodType<T, z.ZodTypeDef, unknown>, entree: unknow
 
 export function analyserPublication(entree: unknown): Analyse<PublicationVideo> {
   return analyser(publication, entree);
+}
+
+export function analyserFichePage(entree: unknown): Analyse<FichePage> {
+  return analyser(fichePageSchema, entree);
 }
 
 export function analyserRetrait(entree: unknown): Analyse<RetraitVideo> {

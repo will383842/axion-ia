@@ -134,13 +134,15 @@ describe("🔴 l'aiguillage de la file apporteur-crons", () => {
     expect(d.reponses).not.toHaveBeenCalled();
   });
 
-  it("le programme pose le relevé toutes les 15 minutes, jobId stable, à côté des rappels", () => {
+  it("le programme pose le relevé toutes les 15 minutes, jobId stable, SANS les rappels d'invitation", () => {
     const queues = readFileSync(join(process.cwd(), "src/server/queue/queues.ts"), "utf8");
     expect(queues).toMatch(/PATTERN_REPONSES_ENTRANTES = "\*\/15 \* \* \* \*"/);
     expect(queues).toMatch(
       /type: "reponses-entrantes" as const,\s*pattern: PATTERN_REPONSES_ENTRANTES,\s*jobId: "apporteur-reponses-entrantes-cron"/,
     );
-    expect(queues).toMatch(/jobId: "apporteur-relance-invitation-cron"/);
+    // 26/10 (ordre de Will) : le passage quotidien des rappels n'est PLUS au programme ;
+    // la purge exhaustive l'ôte de la file au démarrage du worker.
+    expect(queues).not.toMatch(/jobId: "apporteur-relance-invitation-cron"/);
   });
 
   it("un job `invitation-auto` invite, et ne lance ni les rappels ni le relevé", async () => {

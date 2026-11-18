@@ -1,6 +1,7 @@
 "use client";
 // use-client: Next.js requires error boundaries to be Client Components.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { ArrowRight, RefreshCcw } from "lucide-react";
@@ -57,7 +58,9 @@ export default function LocaleError({ error, reset }: ErrorProps) {
           {[
             { href: "/formations", label: t("notFoundLinkFormations") },
             { href: "/audit", label: t("notFoundLinkAudit") },
-            { href: "/cas-concrets", label: t("notFoundLinkCases") },
+            ...(CAS_CONCRETS_AFFICHES
+              ? [{ href: "/cas-concrets", label: t("notFoundLinkCases") }]
+              : []),
             { href: "/appel", label: t("notFoundLinkBook") },
           ].map((s) => (
             <li key={s.href}>

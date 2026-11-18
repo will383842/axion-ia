@@ -57,7 +57,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           "L'Espace Européen de l'Entreprise (créé en 1994, ~110 ha, ~540 entreprises, ~9 000 emplois, fibre très haut débit) concentre conseil, IT, banque, assurance et ingénierie : un terrain dense pour des plateformes SaaS B2B, portails clients et search sémantique sur documentation technique.",
           "Le Quartier Fischer, livré le 31 décembre 2024 sur la friche de l'ancienne brasserie Fischer (~3 960 m² de commerces et locaux d'activité en pied d'immeuble, cinéma, services), fait émerger une demande concrète de vitrines e-commerce et de sites de commerce de proximité.",
           "La fermeture programmée en 2026 de la Brasserie de l'Espérance (Heineken France), classée Monument historique le 1er mars 2024, libère 12 hectares destinés à un futur pôle d'affaires — un vivier de sièges et de PME à équiper en outils web et IA.",
-          "Nous nous déplaçons sans surcoût sur tout l'EEE et les communes limitrophes de l'Eurométropole (Bischheim, Hœnheim, Souffelweyersheim, Strasbourg), pour des ateliers de conception en présentiel.",
+          "Nous nous déplaçons sur tout l'EEE et les communes limitrophes de l'Eurométropole (Bischheim, Hœnheim, Souffelweyersheim, Strasbourg), pour des ateliers de conception en présentiel.",
         ],
         methodology: [
           {
@@ -131,7 +131,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           },
           {
             q: "Intervenez-vous au-delà de Schiltigheim dans l'Eurométropole ?",
-            a: "Oui, sans surcoût sur l'ensemble de l'Espace Européen de l'Entreprise et les communes limitrophes : Strasbourg, Bischheim, Hœnheim, Souffelweyersheim et les communes proches. Les ateliers de conception et la recette se tiennent en présentiel dans vos locaux.",
+            a: "Oui, sur l'ensemble de l'Espace Européen de l'Entreprise et les communes limitrophes : Strasbourg, Bischheim, Hœnheim, Souffelweyersheim et les communes proches. Les ateliers de conception et la recette se tiennent en présentiel dans vos locaux.",
           },
         ],
         guarantees:
@@ -143,7 +143,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           "The Espace Européen de l'Entreprise (created in 1994, ~110 ha, ~540 companies, ~9,000 jobs, very-high-speed fibre) concentrates consulting, IT, banking, insurance and engineering: a dense ground for B2B SaaS platforms, client portals and semantic search over technical documentation.",
           "The Quartier Fischer, delivered on 31 December 2024 on the former Fischer brewery brownfield (~3,960 m² of ground-floor retail and business premises, a cinema, services), creates concrete demand for e-commerce storefronts and local retail websites.",
           "The scheduled 2026 closure of the Brasserie de l'Espérance (Heineken France), listed as a Historic Monument on 1 March 2024, frees up 12 hectares earmarked for a future business hub — a pipeline of HQs and SMEs to equip with web and AI tools.",
-          "We travel at no extra cost across the whole EEE and the neighbouring Eurométropole communes (Bischheim, Hœnheim, Souffelweyersheim, Strasbourg) for in-person design workshops.",
+          "We travel across the whole EEE and the neighbouring Eurométropole communes (Bischheim, Hœnheim, Souffelweyersheim, Strasbourg) for in-person design workshops.",
         ],
         methodology: [
           {
@@ -217,7 +217,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
           },
           {
             q: "Do you work beyond Schiltigheim across the Eurométropole?",
-            a: "Yes, at no extra cost across the entire Espace Européen de l'Entreprise and neighbouring communes: Strasbourg, Bischheim, Hœnheim, Souffelweyersheim and nearby towns. Design workshops and acceptance are held in person at your premises.",
+            a: "Yes, across the entire Espace Européen de l'Entreprise and neighbouring communes: Strasbourg, Bischheim, Hœnheim, Souffelweyersheim and nearby towns. Design workshops and acceptance are held in person at your premises.",
           },
         ],
         guarantees:
@@ -232,8 +232,8 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
       a: "Nos interventions IA à Schiltigheim démarrent à {{price:intervention-4h|flat}} pour le format collectif (1 journée), après un Audit sur place à {{price:audit-flash|flat}}. Tarifs publics affichés.",
     },
     {
-      q: "Williams se déplace-t-il à Schiltigheim depuis Paris ?",
-      a: "Oui, Williams se déplace à Schiltigheim (gare TGV de Strasbourg à 5 km, 1h45 de Paris en TGV) dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
+      q: "Williams se déplace-t-il à Schiltigheim ?",
+      a: "Oui, Williams se déplace à Schiltigheim dans les 5 jours ouvrés suivant la signature, pour intervenir directement chez vous ou à l'Espace Européen de l'Entreprise.",
     },
     {
       q: "Quels secteurs schilikois Axion-IA accompagne-t-il ?",
@@ -241,7 +241,7 @@ export const SCHILTIGHEIM_COPY: VilleCopy = {
     },
     {
       q: "Intervenez-vous dans les communes proches de Schiltigheim ?",
-      a: "Oui, nous intervenons sans surcoût à Strasbourg, Bischheim, Hœnheim, Niederhausbergen, Mittelhausbergen, Oberhausbergen et Souffelweyersheim, toutes limitrophes de Schiltigheim.",
+      a: "Oui, nous intervenons à Strasbourg, Bischheim, Hœnheim, Niederhausbergen, Mittelhausbergen, Oberhausbergen et Souffelweyersheim, toutes limitrophes de Schiltigheim. Plus largement, nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA garantit-il la conformité RGPD à Schiltigheim ?",

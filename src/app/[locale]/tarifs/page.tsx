@@ -19,33 +19,40 @@ import {
 } from "@/lib/seo";
 import { ServiceHero } from "@/components/sections/ServiceHero";
 import {
-  AUDIT_TIERS,
   INTERVENTION_TIERS,
-  UN_A_UN_TIERS,
   UN_A_UN_RECURRING_TIER,
-  IMPLEMENTATION_TIERS,
-  MAINTENANCE_TIERS,
-  formatPrice,
-  formatAmount,
-  getFormationCatalogPriceRange,
+  JOURNEE_IA_TIER,
   getTierById,
-  getEntryPriceEur,
   type PricingTier,
   formatTierPrice,
 } from "@/content/pricing";
+import {
+  CHEMIN_JOURNEE_IA,
+  CONDITION_GARANTIE,
+  DEROULE_JOURNEE_IA,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  lienDiagnostic,
+} from "@/content/journee-ia-commun";
+import { ANCRE_JOURNEE_IA, LIBELLE_RENDEZ_VOUS_RENVOI } from "@/content/renvoi-journee-ia";
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
-// Sprint Header refonte 2026-05-24 (Will). Page récap tarifs multi-modules.
-// Source de vérité unique = `pricing.ts` — aucun prix hardcodé ici. Tout
-// changement dans `pricing.ts` se propage automatiquement.
+// Page récap tarifs (Sprint Header refonte 2026-05-24, Will ; réalignée sur La
+// Journée IA après l'audit SEO/GEO du 11/11/2026).
 //
-// Cette page est un récap éditorial : elle agrège les tiers existants et
-// renvoie vers les pages module dédiées (`/audit`, `/interventions/...`,
-// `/implementation`, `/un-a-un`, `/codage-developpement`) pour les détails.
-// Pas de duplication du JSON-LD Service (déjà émis par chaque page module).
-// Ici uniquement BreadcrumbList + ItemList (modules) + FAQPage.
+// 🔑 UN SEUL prix public : celui de La Journée IA, lu dans `pricing.ts`
+// (`formatTierPrice(JOURNEE_IA_TIER)`). Elle est en tête de la page, avec son
+// rapport (sous 3 jours ouvrés) et sa garantie, mot pour mot depuis
+// `journee-ia-commun.ts`. Tout le reste est « sur devis écrit » : aucune carte de
+// cette page n'affiche un autre montant, même si l'interrupteur des prix publics
+// de `pricing.ts` venait à être levé.
+//
+// Cette page renvoie vers les pages module (`/journee-ia`, `/formations`, `/audit`,
+// `/implementation`, `/un-a-un`, `/sites-web-augmentes`) pour le détail. JSON-LD :
+// CollectionPage + ItemList ; la FAQPage est émise par `FaqAccordion` À PARTIR DES
+// MÊMES `faqItems` que la FAQ visible (identiques par construction).
 //
 // ISR : revalidate 1 h pour que les changements `pricing.ts` se propagent
 // sous l'heure suivante en prod sans rebuild complet.
@@ -55,6 +62,23 @@ interface Props {
   params: Promise<{ locale: string }>;
 }
 
+/** Le libellé de tout ce qui n'est pas La Journée IA. */
+function libelleSurDevisEcrit(locale: "fr" | "en"): string {
+  return locale === "fr" ? "Sur devis écrit" : "On written quote";
+}
+
+function titreMeta(isFr: boolean): string {
+  return isFr
+    ? "Tarifs Axion-IA · La Journée IA, le reste sur devis écrit"
+    : "Axion-IA pricing · the AI Day, everything else on quote";
+}
+
+function descriptionMeta(isFr: boolean): string {
+  return isFr
+    ? `La Journée IA : ${formatTierPrice(JOURNEE_IA_TIER, "fr")}, rapport complet sous 3 jours ouvrés et garantie écrite. Formations, audit approfondi et projets IA : sur devis écrit.`
+    : `The AI Day: ${formatTierPrice(JOURNEE_IA_TIER, "en")}, full report within 3 business days and a written guarantee. Trainings, in-depth audit and AI projects: on written quote.`;
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
@@ -62,28 +86,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/tarifs",
-    title: isFr
-      ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
-      : "AI pricing · Audits, Training, Implementations · Axion-IA",
-    description: isFr
-      ? "Combien coûte l'IA pour votre entreprise ? Formations, audits, coaching 1-to-1, implémentation et sites IA — tous nos tarifs transparents au même endroit, sans engagement."
-      : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`,
+    title: titreMeta(isFr),
+    description: descriptionMeta(isFr),
     alternates: { fr: "/tarifs", en: "/pricing" },
   });
 }
 
 // ---- Helpers locaux (page-only) ----------------------------------------
 
-interface PricingSectionDef {
+/** Une prestation sur devis écrit : une carte, un lien vers sa page. */
+interface CarteSurDevisDef {
   id: string;
   href: string;
   eyebrow: string;
   title: string;
   description: string;
-  tiers: ReadonlyArray<PricingTier>;
+  detail: string;
   ctaLabel: string;
-  /** Note optionnelle sous la grille (ex: frais déplacement Interventions). */
-  note?: string;
+  /** Les formats de la prestation, sans montant (accompagnement individuel). */
+  tiers?: ReadonlyArray<PricingTier>;
 }
 
 function TierCard({ tier, locale }: { tier: PricingTier; locale: "fr" | "en" }) {
@@ -91,21 +112,14 @@ function TierCard({ tier, locale }: { tier: PricingTier; locale: "fr" | "en" }) 
   const description = locale === "fr" ? tier.descriptionFr : tier.descriptionEn;
   const duration = locale === "fr" ? tier.durationFr : tier.durationEn;
   const groupSize = locale === "fr" ? tier.groupSizeFr : tier.groupSizeEn;
-  const isFeatured = tier.subTiers?.some((s) => s.isFeatured);
   return (
     <article
       className="border-border-strong/40 bg-paper hover:border-terracotta/40 hover:shadow-card relative flex h-full flex-col rounded-2xl border p-6 transition"
       data-tier-id={tier.id}
     >
-      {isFeatured ? (
-        <span className="bg-terracotta/10 text-terracotta-deep absolute top-4 right-4 rounded-full px-2 py-0.5 text-[10px] font-semibold tracking-[0.12em] uppercase">
-          ★
-        </span>
-      ) : null}
       <h3 className="text-fg text-lg leading-tight font-semibold">{label}</h3>
-      <p className="text-terracotta-deep mt-3 text-2xl leading-none font-bold tabular-nums">
-        {formatPrice(tier, locale)}
-      </p>
+      {/* Un seul prix public (La Journée IA) : jamais de montant sur ces cartes. */}
+      <p className="text-fg-muted mt-2 text-sm">{libelleSurDevisEcrit(locale)}</p>
       {duration || groupSize ? (
         <p className="text-fg-muted mt-2 text-xs leading-snug">
           {[duration, groupSize].filter(Boolean).join(" · ")}
@@ -124,63 +138,73 @@ export default async function PricingPage({ params }: Props) {
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
+  const prixJournee = formatTierPrice(JOURNEE_IA_TIER, loc);
+  const surDevis = libelleSurDevisEcrit(loc);
 
   // Titre/description meta réutilisés à l'identique (SSOT avec generateMetadata)
   // pour le nœud CollectionPage ci-dessous.
-  const metaTitle = isFr
-    ? "Tarifs IA · Audits, Formations, Implémentations · Axion-IA"
-    : "AI pricing · Audits, Training, Implementations · Axion-IA";
-  const metaDescription = isFr
-    ? "Combien coûte l'IA pour votre entreprise ? Formations, audits, coaching 1-to-1, implémentation et sites IA — tous nos tarifs transparents au même endroit, sans engagement."
-    : `All our AI pricing, transparent: Audits from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} ex. VAT, Trainings from ${formatAmount(getTierById(INTERVENTION_TIERS, "intervention-4h").priceFlat!, "en", { compact: true })}, Implementations from ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, 1-to-1 from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, Web platform/SaaS on quote.`;
+  const metaTitle = titreMeta(isFr);
+  const metaDescription = descriptionMeta(isFr);
 
-  const heroEyebrow = isFr ? "Tarifs · transparence totale" : "Pricing · full transparency";
-  const heroTitle = isFr ? "Nos tarifs IA en" : "Our AI pricing in";
-  const heroTitleEm = isFr ? "clair" : "plain sight";
   const heroDesc = isFr
-    ? `Formations, Audits, Implémentations et 1-to-1 à prix publics HT. Les formations sont tarifées par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne ; paiement, annulation et TVA : voir les conditions de vente.`
-    : `Trainings, Audits, Implementations and 1-to-1 at public prices excl. VAT. Trainings are priced per group (${EFFECTIF_PLAGE_EN}), never per person; payment, cancellation and VAT: see the terms of sale.`;
+    ? `${RAPPORT_COMPLET} ${GARANTIE_PHRASE} Tout le reste — formations, audit approfondi, accompagnement individuel, mise en place de l'IA — est sur devis écrit, sous 48 h ouvrées.`
+    : `Full report within 3 business days after the day. If the gains identified do not exceed 3 times the price of the day, we refund you within 30 days. Everything else — trainings, in-depth audit, 1-to-1 support, AI deployment — is on written quote, within 48 business hours.`;
 
-  // — Séparation nette collectif vs 1-to-1 (parité /fr/formations vs /fr/un-a-un).
-  // `INTERVENTION_TIERS` mélange les formats collectifs ET le coaching 1-to-1
-  // individuel (Dirigeant, Collaborateur, Vision IA, variantes 2 j). Sur /tarifs
-  // on ne garde QUE le collectif dans la section Formations ; tout le 1-to-1 est
-  // porté par la section dédiée ci-dessous. Évite la duplication des cartes.
-  // Section 1-to-1 : Collaborateur & Dirigeant × 1 jour + coaching régulier.
-  // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17) :
-  // les kits d'intervention 16/17 (catalogue AXION) ne couvrent qu'une journée —
-  // aucun déroulé n'existe pour un jour 2. Ne pas les réafficher sans kits.
+  // Accompagnement individuel : Collaborateur & Dirigeant × 1 jour + suivi régulier.
+  // Les formats 2 jours ont été RETIRÉS de la vente (décision Will 2026-07-17).
   const unAUnDisplayTiers: ReadonlyArray<PricingTier> = [
     getTierById(INTERVENTION_TIERS, "intervention-membre-equipe"),
     getTierById(INTERVENTION_TIERS, "intervention-dirigeants"),
     UN_A_UN_RECURRING_TIER,
   ];
 
-  // 5 modules tarifés. Plateforme web/SaaS = section custom (sur devis pur).
-  // Ordre voulu par Will (2026-06-23) : Formations et interventions → 1-to-1 →
-  // Audit → Intégration d'agents IA sur-mesure → Plateforme web & SaaS.
-  const sections: ReadonlyArray<PricingSectionDef> = [
+  // R7 (ordre de Williams du 08/11/2026) : plus de fourchette publique. Le prix
+  // d'une formation reste par groupe, sur devis écrit.
+  const formationsCount = getFormationsV2().length;
+
+  // Tout ce qui suit La Journée IA, dans l'ordre de la page.
+  const cartes: ReadonlyArray<CarteSurDevisDef> = [
+    {
+      id: "formations",
+      href: "/formations",
+      eyebrow: isFr ? "Montée en compétence" : "Upskilling",
+      title: isFr ? "Formations IA en entreprise" : "Corporate AI trainings",
+      description: isFr
+        ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, ${EFFECTIF_PLAGE_FR} (séminaire : 50).`
+        : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, ${EFFECTIF_PLAGE_EN} (seminar: 50).`,
+      detail: isFr
+        ? `Prix par groupe (${EFFECTIF_PLAGE_FR}), jamais par personne, établi sur devis écrit selon la formation, la durée et le format. Les conditions de paiement et d'annulation figurent dans nos conditions générales.`
+        : `Price per group (${EFFECTIF_PLAGE_EN}), never per person, on written quote according to the training, duration and format. Payment and cancellation terms are set out in our terms and conditions.`,
+      ctaLabel: isFr
+        ? `Voir les ${formationsCount} formations`
+        : `See the ${formationsCount} trainings`,
+    },
     {
       id: "un-a-un",
       href: "/un-a-un",
-      eyebrow: isFr ? "Coaching premium" : "Premium coaching",
+      eyebrow: isFr ? "Accompagnement individuel" : "1-to-1 support",
       title: serviceOfficial(SERVICE_BY_ID.unAUn, isFr),
       description: isFr
-        ? "Journée 1-to-1 avec le dirigeant ou un collaborateur clé. Structuration et chiffrage précis des gains IA."
-        : "1-on-1 day with the executive or a key team member. Structuring and precise quantification of AI gains.",
+        ? "Une journée en tête-à-tête avec le dirigeant ou un collaborateur clé, ou un suivi régulier."
+        : "A one-to-one day with the executive or a key team member, or regular follow-up.",
+      detail: isFr
+        ? "Chaque format est établi sur devis écrit, selon la personne accompagnée et la durée."
+        : "Each format is on written quote, according to the person and the duration.",
+      ctaLabel: isFr ? "Voir l'accompagnement individuel" : "See 1-to-1 support",
       tiers: unAUnDisplayTiers,
-      ctaLabel: isFr ? "Voir le coaching 1-to-1" : "See 1-to-1 coaching",
     },
     {
       id: "audits",
       href: "/audit",
-      eyebrow: isFr ? "Diagnostic" : "Diagnostic",
-      title: serviceOfficial(SERVICE_BY_ID.audit, isFr),
+      eyebrow: isFr ? "Au-delà de La Journée IA" : "Beyond the AI Day",
+      title: isFr ? "Audit IA approfondi" : "In-depth AI audit",
       description: isFr
-        ? "4 niveaux, de la PME au grand groupe. Cartographie de vos opportunités IA chiffrées action par action."
-        : "4-level pyramid SME → large group. Map of your AI opportunities, costed action by action.",
-      tiers: AUDIT_TIERS,
-      ctaLabel: isFr ? "Voir les 4 audits" : "See the 4 audits",
+        ? "Quand votre situation demande plus qu'une journée : cartographie détaillée, gains chiffrés action par action, feuille de route."
+        : "When your situation needs more than a day: detailed mapping, gains costed action by action, roadmap.",
+      detail: isFr
+        ? "Un autre cadrage que La Journée IA : périmètre, durée et livrables sont fixés ensemble, puis chiffrés sur devis écrit sous 48 h ouvrées."
+        : "A different scope from the AI Day: perimeter, duration and deliverables are set together, then priced on written quote within 48 business hours.",
+      ctaLabel: isFr ? "Voir l'audit IA" : "See the AI audit",
     },
     {
       id: "implementations",
@@ -188,83 +212,52 @@ export default async function PricingPage({ params }: Props) {
       eyebrow: isFr ? "Mise en production" : "Production deployment",
       title: serviceOfficial(SERVICE_BY_ID.implementation, isFr),
       description: isFr
-        ? "Pilote, chatbot RAG, agents IA, automatisations, IA custom. Production en 4 à 12 semaines, support 30 j inclus."
-        : "Pilot, RAG chatbot, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",
-      tiers: IMPLEMENTATION_TIERS,
-      ctaLabel: isFr ? "Voir les 5 chantiers" : "See the 5 builds",
+        ? "Pilote, assistant sur vos documents, agents IA, automatisations, IA sur mesure. Mise en production en 4 à 12 semaines, support de 30 jours inclus."
+        : "Pilot, assistant on your documents, AI agents, automations, custom AI. In production in 4 to 12 weeks, 30-day support included.",
+      detail: isFr
+        ? "Chaque chantier est chiffré sur devis écrit, après un cadrage de 45 minutes."
+        : "Each build is priced on written quote, after a 45-minute scoping call.",
+      ctaLabel: isFr ? "Voir la mise en place" : "See the builds",
+    },
+    {
+      id: "plateforme",
+      href: "/sites-web-augmentes",
+      eyebrow: isFr ? "Plateforme sur mesure" : "Custom platform",
+      title: isFr ? "Plateforme web augmentée à l'IA" : "AI-augmented web platform",
+      description: isFr
+        ? "Plateforme web conçue pour l'IA, ou IA greffée sur votre outil existant (assistant sur vos documents, recherche, automatisations, agents)."
+        : "AI-native custom web platform or AI graft on your existing stack (document assistant, semantic search, automations, agents).",
+      detail: isFr
+        ? "Devis écrit sous 48 h après un cadrage de 45 minutes. Le périmètre varie selon vos outils, vos intégrations et la complexité : c'est pourquoi nous établissons un devis plutôt qu'une fourchette."
+        : "Written quote within 48 h after a 45-minute scoping call. Scope varies with your tools, integrations and complexity — that's why we write a quote rather than a range.",
+      ctaLabel: isFr ? "Voir les plateformes web" : "See web platforms",
     },
   ];
 
-  // Module formations — PRIX PUBLICS depuis la refonte catalogue 2026-07-19
-  // (décision Will) : prix fixes par groupe (de 2 à 15 stagiaires par session), dérivés de
-  // la matrice catégorie × durée (getFormationCatalogPriceRange — jamais en dur).
-  const formationsRange = getFormationCatalogPriceRange();
-  const formationsCount = getFormationsV2().length;
-  const formationsSection = {
-    id: "formations",
-    href: "/formations",
-    eyebrow: isFr ? "Montée en compétence" : "Upskilling",
-    title: isFr ? "Formations IA en entreprise" : "Corporate AI trainings",
-    description: isFr
-      ? `${formationsCount} formations, de 4 h à 2 jours — offres générales, par métier et par secteur d'activité. Intra-entreprise, dans vos locaux ou à distance, ${EFFECTIF_PLAGE_FR} (séminaire : 50).`
-      : `${formationsCount} trainings, 4 h to 2 days — general, role-specific and industry-specific. In-house, on site or remote, ${EFFECTIF_PLAGE_EN} (seminar: 50).`,
-    // `formatAmount` non-compact porte déjà « € HT » — ne pas resuffixer.
-    quoteLabel: isFr
-      ? `De ${formatAmount(formationsRange.minEur, "fr")} à ${formatAmount(formationsRange.maxEur, "fr")} · par groupe`
-      : `From ${formatAmount(formationsRange.minEur, "en")} to ${formatAmount(formationsRange.maxEur, "en")} · per group`,
-    detail: isFr
-      ? `Prix publics hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. La grille complète (générales, métiers, secteurs) et les conditions de paiement et d'annulation sont sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis.`
-      : `Public prices excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The full grid (general, roles, industries) and the payment and cancellation terms are on the training pricing page; the seminar (up to 50 people) is on quote.`,
-    ctaLabel: isFr
-      ? `Voir les ${formationsCount} formations`
-      : `See the ${formationsCount} trainings`,
-  };
-
-  // Module plateforme web/SaaS — sur devis pur (pas de tiers pricing.ts).
-  // Géré séparément avec une card unique descriptive.
-  const platformSection = {
-    id: "plateforme",
-    href: "/sites-web-augmentes",
-    eyebrow: isFr ? "Plateforme custom" : "Custom platform",
-    // Titre local (override de nav.platform) : ajout « augmentée à l'IA » (Will 2026-06-23).
-    title: isFr ? "Plateforme web & SaaS augmentée à l'IA" : "AI-augmented web platform & SaaS",
-    description: isFr
-      ? "Plateforme web IA-native sur mesure ou greffe IA sur votre stack existante (chatbot RAG, search sémantique, automatisations, agents). Toute stack moderne."
-      : "AI-native custom web platform or AI graft on your existing stack (RAG chatbot, semantic search, automations, agents). Any modern stack.",
-    quoteLabel: isFr ? "Sur devis · cadrage offert" : "On quote · free scoping",
-    detail: isFr
-      ? "Devis détaillé sous 48 h après cadrage 45 min. Périmètre variable selon stack, intégrations et complexité — c'est pourquoi nous publions un devis personnalisé plutôt qu'une fourchette."
-      : "Detailed quote within 48 h after 45-min scoping. Variable scope based on stack, integrations and complexity — that's why we publish a personalised quote rather than a range.",
-    ctaLabel: isFr ? "Voir la plateforme web/SaaS" : "See the web platform/SaaS",
-  };
-
-  // FAQ Speakable — 5 questions communes (AEO 2026 critical : Google AI
-  // Overviews + Perplexity + Claude citent les FAQPage schemas pour répondre
-  // à « combien coûte un audit IA ? », « comment se déroule une formation IA ? »
-  // etc. `FaqAccordion` injecte automatiquement `buildFaqJsonLd` (Speakable
-  // inclus). Marqueurs `data-faq-q` / `data-faq-a` à appliquer pour Speakable
-  // précis sont gérés par le composant.
-  // Tier d'entrée de gamme formation — source unique du prix ET du libellé de
-  // durée injectés dans la FAQ (jamais figés dans la prose) : si le tier change
-  // de prix ou de durée, la réponse suit (audit FAQ prix dynamique 2026-07-06).
+  // FAQ — `FaqAccordion` émet la FAQPage JSON-LD À PARTIR DE CES MÊMES ITEMS :
+  // le balisage est identique au texte visible par construction.
   const faqItems = isFr
     ? [
         {
+          id: "prix-journee-ia",
+          question: "Combien coûte La Journée IA ?",
+          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
+        },
+        {
           id: "prix-formation-ia",
           question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Nos prix formations sont publics, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne : de ${formatAmount(getFormationCatalogPriceRange().minEur, "fr")} (offre générale 4 h) à ${formatAmount(getFormationCatalogPriceRange().maxEur, "fr")} (formation sectorielle 2 jours). La grille complète par catégorie, avec les conditions de paiement et d'annulation, est sur la page tarifs formations ; le séminaire (jusqu'à 50 personnes) est sur devis.`,
+          answer: `Le prix d'une formation est établi sur devis écrit, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. Il dépend de la formation retenue (offre générale, métier ou secteur), de sa durée (4 h à 2 jours) et du format (sur site ou à distance). Les conditions de paiement et d'annulation figurent dans nos conditions générales.`,
         },
         {
           id: "tarifs-publics",
-          question: "Pourquoi vos tarifs sont-ils publics ?",
-          answer:
-            "Parce que la transparence accélère le bon match. Si nos tarifs ne correspondent pas à votre budget, vous le savez en 30 secondes — pas après 3 calls et un devis. Plus de respect du temps de chacun.",
+          question: "Pourquoi un devis plutôt qu'une grille ?",
+          answer: `Parce que deux entreprises n'ont jamais le même besoin : taille de l'équipe, outils en place, objectifs. Le devis écrit part de votre situation et arrive sous 48 h ouvrées, sans engagement. Une seule prestation a un prix affiché : La Journée IA, ${prixJournee}.`,
         },
         {
           id: "tva",
           question: "Les tarifs incluent-ils la TVA ?",
           answer:
-            "Non. Tous nos tarifs publics sont HT (hors taxes). La TVA française à 20 % s'ajoute sur les factures, sauf clients hors UE (auto-liquidation B2B intra-UE).",
+            "Non. Nos prix et nos devis sont établis hors taxes. La TVA au taux en vigueur s'ajoute sur toutes nos factures.",
         },
         {
           id: "engagement",
@@ -276,26 +269,30 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Puis-je avoir un devis personnalisé ?",
           answer:
-            "Oui — décrivez votre besoin via la page Contact, réponse personnalisée sous 48 h ouvrées. Pour les formats > 5 000 € HT, nous proposons aussi un cadrage 45 min gratuit avant devis détaillé." /* price-exempt: seuil qualification devis */,
+            "Oui. Décrivez votre besoin via la page Contact : nous établissons un devis écrit adapté à votre situation. Pour un projet de mise en place, nous proposons aussi un cadrage gratuit de 45 minutes avant le devis détaillé.",
         },
       ]
     : [
         {
+          id: "prix-journee-ia",
+          question: "How much does the AI Day cost?",
+          answer: `${prixJournee}, single price. A 2 to 4 h audit in the morning on your premises, 4 h of team training in the afternoon. Full report within 3 business days. ${GARANTIE_PHRASE}`,
+        },
+        {
           id: "prix-formation-ia",
           question: "How much does corporate AI training cost?",
-          answer: `Our training prices are public, excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person: from ${formatAmount(getFormationCatalogPriceRange().minEur, "en")} (general 4 h offer) to ${formatAmount(getFormationCatalogPriceRange().maxEur, "en")} (2-day industry training). The full grid, with the payment and cancellation terms, is on the training pricing page; the seminar (up to 50 people) is on quote.`,
+          answer: `Training is quoted excl. VAT, per group (${EFFECTIF_PLAGE_EN}) — never per person. The price depends on the training (general, role or industry), its duration (4 h to 2 days) and the format (on site or remote). The payment and cancellation terms are set out in our terms and conditions.`,
         },
         {
           id: "tarifs-publics",
-          question: "Why are your prices public?",
-          answer:
-            "Because transparency speeds up the right match. If our prices don't match your budget, you know in 30 seconds — not after 3 calls and a quote. More respect for everyone's time.",
+          question: "Why a quote rather than a price grid?",
+          answer: `Because no two companies have the same need: team size, tools in place, goals. The written quote starts from your situation and arrives within 48 business hours, with no commitment. Only one engagement has a displayed price: the AI Day, ${prixJournee}.`,
         },
         {
           id: "tva",
           question: "Are prices VAT-included?",
           answer:
-            "No. All our public prices are excl. VAT. French 20 % VAT is added on invoices, except non-EU customers (B2B EU reverse-charge).",
+            "No. Our prices and quotes are excl. VAT. VAT at the applicable rate is added on invoices, except non-EU customers (B2B EU reverse-charge).",
         },
         {
           id: "engagement",
@@ -307,7 +304,7 @@ export default async function PricingPage({ params }: Props) {
           id: "devis-personnalise",
           question: "Can I get a custom quote?",
           answer:
-            "Yes — describe your need via the Contact page, personalised reply within 48 business hours. For formats > €5,000 ex. VAT, we also offer a free 45-min scoping call before detailed quote." /* price-exempt: seuil qualification devis */,
+            "Yes — describe your need via the Contact page and we prepare a written quote for your situation. For deployment projects, we also offer a free 45-minute scoping call before the detailed quote.",
         },
       ];
 
@@ -315,23 +312,28 @@ export default async function PricingPage({ params }: Props) {
   // BreadcrumbList JSON-LD est émis automatiquement par <Breadcrumbs />
   // (emitJsonLd=true default). On NE le ré-émet PAS ici pour éviter le doublon.
 
-  // ItemList des 5 modules — utilisé par Google AI Overviews / Perplexity
-  // pour énumérer les modules quand un utilisateur demande « quels services
-  // Axion-IA propose ? ».
+  // ItemList : La Journée IA en tête, puis les prestations sur devis écrit.
   const itemListJsonLd = buildItemListJsonLd({
     locale: loc,
     path: "/tarifs",
     name: isFr ? "Catalogue tarifaire Axion-IA" : "Axion-IA pricing catalogue",
-    items: [formationsSection, ...sections, platformSection].map((s, i) => ({
-      url: `${SITE_URL}/${loc}${s.href}`,
-      name: s.title,
-      description: s.description,
-      position: i + 1,
-    })),
+    items: [
+      {
+        url: `${SITE_URL}/${loc}${CHEMIN_JOURNEE_IA}`,
+        name: isFr ? "La Journée IA" : "The AI Day",
+        description: isFr ? JOURNEE_IA_TIER.descriptionFr : JOURNEE_IA_TIER.descriptionEn,
+        position: 1,
+      },
+      ...cartes.map((s, i) => ({
+        url: `${SITE_URL}/${loc}${s.href}`,
+        name: s.title,
+        description: s.description,
+        position: i + 2,
+      })),
+    ],
   });
 
-  // Nœud CollectionPage — page catalogue (listing des modules tarifés). Porte
-  // le speakable (cible h1). Pas d'images manifeste → pas de primaryImageOfPage.
+  // Nœud CollectionPage — page catalogue. Porte le speakable (cible h1).
   const collectionPageJsonLd = buildCollectionPageJsonLd({
     locale: loc,
     path: "/tarifs",
@@ -351,165 +353,137 @@ export default async function PricingPage({ params }: Props) {
         <Breadcrumbs items={breadcrumbItems} />
       </Container>
 
-      {/* HERO 2 colonnes — Sprint Uniformisation héros 2026-05-24 (Will) */}
+      {/* HERO — La Journée IA en tête : son prix, son rapport, sa garantie ; puis
+          « tout le reste sur devis écrit » (audit SEO/GEO du 11/11/2026). */}
       <ServiceHero
-        eyebrow={heroEyebrow}
-        title={heroTitle.trim()}
-        titleEm={heroTitleEm}
+        eyebrow={isFr ? "Tarifs" : "Pricing"}
+        title={isFr ? "La Journée IA :" : "The AI Day:"}
+        titleEm={prixJournee}
         description={heroDesc}
         ctas={
-          <nav
-            aria-label={isFr ? "Aller à un module" : "Jump to module"}
-            className="flex flex-wrap gap-2"
-          >
-            {[formationsSection, ...sections, platformSection].map((s) => (
-              <a
-                key={s.id}
-                href={`#${s.id}`}
-                className="border-border bg-paper text-fg hover:border-terracotta hover:text-terracotta inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-medium transition"
-              >
-                {s.title}
-              </a>
-            ))}
-          </nav>
+          <div className="flex flex-wrap gap-3">
+            <Cta href={CHEMIN_JOURNEE_IA} variant="primary" shape="pill" size="md">
+              {isFr ? ANCRE_JOURNEE_IA : "Discover the AI Day"}
+              <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+            </Cta>
+            <Cta
+              href={lienDiagnostic("tarifs-heros")}
+              variant="secondary"
+              shape="pill"
+              size="md"
+              track="tarifs-heros-rendez-vous"
+            >
+              {isFr ? LIBELLE_RENDEZ_VOUS_RENVOI : "Book a call"}
+            </Cta>
+          </div>
         }
-        schemaCenterLabel={isFr ? "Tarifs publics" : "Public pricing"}
+        schemaCenterLabel={isFr ? "La Journée IA" : "The AI Day"}
         schemaAriaLabel={
           isFr
-            ? `Schéma : tarifs publics au centre, entourés des prestations Axion-IA (Audit sur place ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })}, Audit Ciblé ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true })}, Formations de ${formatAmount(formationsRange.minEur, "fr", { compact: true })} à ${formatAmount(formationsRange.maxEur, "fr", { compact: true })} par groupe, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr", { compact: true })}, Pilote IA ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "fr", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceFr}).`
-            : `Diagram: public pricing at the center, surrounded by Axion-IA services (on-site audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })}, Targeted audit ${formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "en", { compact: true })}, trainings ${formatAmount(formationsRange.minEur, "en", { compact: true })} to ${formatAmount(formationsRange.maxEur, "en", { compact: true })} per group, 1-to-1 ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "en", { compact: true })}, AI Pilot ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "en", { compact: true })}, Maintenance ${formatAmount(getTierById(MAINTENANCE_TIERS, "maintenance-standard").priceFlat!, "en", { compact: true })}${getTierById(MAINTENANCE_TIERS, "maintenance-standard").recurrenceEn}).`
+            ? `Schéma : La Journée IA au centre, seul prix affiché (${prixJournee}) ; autour, les prestations sur devis écrit (formations, audit approfondi, accompagnement individuel, mise en place, plateforme web).`
+            : `Diagram: the AI Day at the centre, the only displayed price (${prixJournee}); around it, the services on written quote (trainings, in-depth audit, 1-to-1 support, deployment, web platform).`
         }
         schemaNodes={[
           {
-            label: "Sur place",
-            // formatTierPrice → respecte `isFromPrice` (audits toujours en
-            // « à partir de », Will 2026-07-17).
-            benefit: formatTierPrice(getTierById(AUDIT_TIERS, "audit-flash"), "fr"),
+            label: isFr ? "Journée IA" : "AI Day",
+            // Le seul prix public (ordre de Williams du 08/11/2026).
+            benefit: prixJournee,
             accent: "terracotta",
           },
+          { label: "Formations", benefit: surDevis, accent: "sage" },
           {
-            label: isFr ? "Ciblé" : "Targeted",
-            benefit: formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr"),
+            label: isFr ? "Audit approfondi" : "In-depth audit",
+            benefit: surDevis,
             accent: "primary",
           },
-          {
-            label: "Formations",
-            // 🔴 2026-09-30 (audit) : affichait « Sur devis » alors que la même
-            // page publie la fourchette des prix fixes — seul le séminaire est
-            // sur devis. Dérivé de la même source que le module formations.
-            benefit: isFr
-              ? `De ${formatAmount(formationsRange.minEur, "fr", { compact: true })} à ${formatAmount(formationsRange.maxEur, "fr")}`
-              : `${formatAmount(formationsRange.minEur, "en", { compact: true })} to ${formatAmount(formationsRange.maxEur, "en")}`,
-            accent: "sage",
-          },
-          {
-            label: "1-to-1",
-            benefit: formatAmount(getEntryPriceEur(UN_A_UN_TIERS)!, "fr"),
-            accent: "primary",
-          },
-          {
-            label: isFr ? "Pilote IA" : "AI Pilot",
-            benefit: formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, "fr"),
-            accent: "sage",
-          },
-          {
-            label: "Maintenance",
-            benefit: formatPrice(getTierById(MAINTENANCE_TIERS, "maintenance-standard"), "fr"),
-            accent: "mocha",
-          },
+          { label: "1-to-1", benefit: surDevis, accent: "primary" },
+          { label: isFr ? "Mise en place" : "Deployment", benefit: surDevis, accent: "sage" },
+          { label: isFr ? "Plateforme web" : "Web platform", benefit: surDevis, accent: "mocha" },
         ]}
       />
 
-      {/* SECTION FORMATIONS — sur devis pur (cohérence fiches AXION), card unique */}
+      {/* JOURNÉE IA — le seul prix public (ordre de Williams du 08/11/2026). */}
       <Section
-        id={formationsSection.id}
-        eyebrow={formationsSection.eyebrow}
-        title={formationsSection.title}
-        description={formationsSection.description}
+        id="journee-ia"
+        eyebrow={isFr ? "Prix unique" : "Single price"}
+        title={isFr ? "La Journée IA" : "The AI Day"}
+        description={isFr ? JOURNEE_IA_TIER.descriptionFr : JOURNEE_IA_TIER.descriptionEn}
         tone="canvas"
       >
         <Container>
-          <article className="border-border-strong/40 bg-paper rounded-2xl border p-8 sm:p-10">
-            <p className="text-terracotta-deep text-3xl leading-none font-bold">
-              {formationsSection.quoteLabel}
+          <article className="border-terracotta/40 bg-paper rounded-2xl border-2 p-8 sm:p-10">
+            <p className="text-terracotta-deep text-3xl leading-none font-bold tabular-nums">
+              {prixJournee}
             </p>
-            <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
-              {formationsSection.detail}
-            </p>
+            {isFr ? (
+              <>
+                <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
+                  {DEROULE_JOURNEE_IA} {RAPPORT_COMPLET}
+                </p>
+                <p className="text-fg-soft mt-3 max-w-2xl text-sm leading-relaxed">
+                  {GARANTIE_PHRASE} {CONDITION_GARANTIE}
+                </p>
+              </>
+            ) : (
+              <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
+                {`${JOURNEE_IA_TIER.durationEn} on your premises, with your team: a single price, known upfront.`}
+              </p>
+            )}
             <div className="mt-6 flex flex-wrap gap-3">
-              <Cta href={formationsSection.href} variant="primary" shape="pill" size="md">
-                {formationsSection.ctaLabel}
+              <Cta href={CHEMIN_JOURNEE_IA} variant="primary" shape="pill" size="md">
+                {isFr ? ANCRE_JOURNEE_IA : "Discover the AI Day"}
                 <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
               </Cta>
-              <Cta href="/appel" variant="secondary" shape="pill" size="md">
-                {isFr ? "Demander un devis" : "Request a quote"}
+              <Cta
+                href={lienDiagnostic("tarifs-journee-ia")}
+                variant="secondary"
+                shape="pill"
+                size="md"
+                track="tarifs-journee-ia-rendez-vous"
+              >
+                {isFr ? LIBELLE_RENDEZ_VOUS_RENVOI : "Book a call"}
               </Cta>
             </div>
           </article>
         </Container>
       </Section>
 
-      {/* 3 SECTIONS pricing.ts (1-to-1 → Audits → Implémentations) */}
-      {sections.map((s) => (
+      {/* TOUT LE RESTE — sur devis écrit, aucun montant. */}
+      {cartes.map((c) => (
         <Section
-          key={s.id}
-          id={s.id}
-          eyebrow={s.eyebrow}
-          title={s.title}
-          description={s.description}
+          key={c.id}
+          id={c.id}
+          eyebrow={c.eyebrow}
+          title={c.title}
+          description={c.description}
           tone="canvas"
         >
           <Container>
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {s.tiers.map((tier) => (
-                <TierCard key={tier.id} tier={tier} locale={loc} />
-              ))}
-            </div>
-            {s.note ? (
-              <p className="text-fg-muted mt-6 max-w-3xl text-xs leading-relaxed italic">
-                {s.note}
-              </p>
+            {c.tiers ? (
+              <div className="mb-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {c.tiers.map((tier) => (
+                  <TierCard key={tier.id} tier={tier} locale={loc} />
+                ))}
+              </div>
             ) : null}
-            <div className="mt-8 flex justify-start">
-              <Cta href={s.href} variant="primary" shape="pill" size="md">
-                {s.ctaLabel}
-                <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
-              </Cta>
-            </div>
+            <article className="border-border-strong/40 bg-paper rounded-2xl border p-8 sm:p-10">
+              <p className="text-terracotta-deep text-3xl leading-none font-bold">{surDevis}</p>
+              <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">{c.detail}</p>
+              <div className="mt-6 flex flex-wrap gap-3">
+                <Cta href={c.href} variant="primary" shape="pill" size="md">
+                  {c.ctaLabel}
+                  <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
+                </Cta>
+                <Cta href="/contact" variant="secondary" shape="pill" size="md">
+                  {isFr ? "Demander un devis écrit" : "Request a written quote"}
+                </Cta>
+              </div>
+            </article>
           </Container>
         </Section>
       ))}
 
-      {/* SECTION 5 — Plateforme web/SaaS (sur devis pur, card unique) */}
-      <Section
-        id={platformSection.id}
-        eyebrow={platformSection.eyebrow}
-        title={platformSection.title}
-        description={platformSection.description}
-        tone="canvas"
-      >
-        <Container>
-          <article className="border-border-strong/40 bg-paper rounded-2xl border p-8 sm:p-10">
-            <p className="text-terracotta-deep text-3xl leading-none font-bold">
-              {platformSection.quoteLabel}
-            </p>
-            <p className="text-fg-soft mt-4 max-w-2xl text-sm leading-relaxed">
-              {platformSection.detail}
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Cta href={platformSection.href} variant="primary" shape="pill" size="md">
-                {platformSection.ctaLabel}
-                <ArrowRight className="ml-1.5 h-4 w-4" aria-hidden="true" />
-              </Cta>
-              <Cta href="/contact" variant="secondary" shape="pill" size="md">
-                {isFr ? "Demander un devis" : "Request a quote"}
-              </Cta>
-            </div>
-          </article>
-        </Container>
-      </Section>
-
-      {/* SECTION FAQ — FaqAccordion inject buildFaqJsonLd + Speakable auto */}
+      {/* SECTION FAQ — FaqAccordion injecte buildFaqJsonLd (mêmes items) + Speakable */}
       <Section
         eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
         title={isFr ? "Tarifs ·" : "Pricing ·"}
@@ -517,8 +491,8 @@ export default async function PricingPage({ params }: Props) {
         titleTail="."
         description={
           isFr
-            ? "Les 5 questions que nos clients posent le plus souvent sur nos tarifs."
-            : "The 5 questions our customers ask most often about our pricing."
+            ? `Les ${faqItems.length} questions que nos clients posent le plus souvent sur nos tarifs.`
+            : `The ${faqItems.length} questions our customers ask most often about our pricing.`
         }
         tone="sand"
       >
@@ -531,7 +505,7 @@ export default async function PricingPage({ params }: Props) {
       <CtaBlock
         eyebrow={isFr ? "Prêt à démarrer ?" : "Ready to start?"}
         title={isFr ? "Un devis" : "A"}
-        titleEm={isFr ? "personnalisé" : "personalised quote"}
+        titleEm={isFr ? "écrit" : "written quote"}
         titleTail={isFr ? " sous 48 h ouvrées." : " within 48 business hours."}
         description={
           isFr

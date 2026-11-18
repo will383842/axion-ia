@@ -49,7 +49,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quint-Fonsegrives ?",
-      a: "Oui, Axion-IA intervient à Quint-Fonsegrives et dans toute la couronne est de Toulouse (Balma, Saint-Orens, L'Union). Nos consultants se déplacent en 12 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Quint-Fonsegrives et dans toute la couronne est de Toulouse (Balma, Saint-Orens, L'Union). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Quint-Fonsegrives ?",
@@ -61,7 +61,7 @@ export const QUINT_FONSEGRIVES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Quint-Fonsegrives ?",
-      a: "Nos consultants se déplacent à Quint-Fonsegrives depuis Toulouse (12 min D2). Intervention 1 journée minimum, atelier pratique.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique.",
     },
     {
       q: "Proposez-vous du coaching individuel à Quint-Fonsegrives ?",

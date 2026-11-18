@@ -15,10 +15,41 @@ import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { peutCorrigerBrouillonClassique } from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
+import { ChoixClientSigne } from "@/components/admin/qualiopi/ChoixClientSigne";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { choixImprimable } from "@/server/qualiopi/devis/choix-exemplaire";
 import { DevisContresignature } from "@/components/admin/qualiopi/DevisContresignature";
-import { contresignerPieceAction } from "@/server/actions/qualiopi/piece-signature";
+import {
+  compterPlansAttendus,
+  evaluerPlansManquants,
+} from "@/server/qualiopi/devis/proposer-plans";
+import { RelancerAcceptationDevis } from "@/components/admin/qualiopi/RelancerAcceptationDevis";
+import {
+  contresignerPieceAction,
+  relancerAcceptationDevisAction,
+} from "@/server/actions/qualiopi/piece-signature";
+import { etatConfirmationCommande } from "@/server/qualiopi/devis/confirmation-commande";
+import { signatureClientDuDevis } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
+import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
+import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  OffreDevisInvalideError,
+  formulesDuDevis,
+} from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { regimeTvaDepuisConfig } from "@/server/qualiopi/legal/tva";
+import {
+  LIBELLE_MONTANT_AU_CHOIX,
+  ResumeFormulesDevis,
+} from "@/components/admin/qualiopi/ResumeFormulesDevis";
+import { lirePalierSuivant, totalHtLignesDevis } from "@/server/qualiopi/devis/palier-suivant";
 import { FacturerDevisButtons } from "@/components/admin/qualiopi/FacturerDevisButtons";
 import { getDevis } from "@/server/qualiopi/crm/devis";
 import { bandeauEtatFonds } from "@/server/qualiopi/financements/etat-fonds-opco";
@@ -27,9 +58,16 @@ import { BandeauEtatFonds } from "@/components/admin/qualiopi/BandeauEtatFonds";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/estimation-certification";
 import { getClient } from "@/server/qualiopi/crm/clients";
+import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
+import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
+import { ValiditeBrouillon } from "@/components/admin/qualiopi/ValiditeBrouillon";
+import {
+  formatDateParis,
+  validiteBrouillonModifiable,
+} from "@/components/admin/qualiopi/devis-validite";
 import { SiretEtablissementDevis } from "@/components/admin/qualiopi/SiretEtablissementDevis";
 import { lireSiretsDevis } from "@/features/apporteurs-reseau/etablissement-presentation";
 
@@ -41,14 +79,28 @@ const ORIGINE_ESTIMATION_LABELS = {
   reglage_par_defaut: "réglages par défaut (aucun barème)",
   hors_fonds_legaux: "hors fonds légaux (50 salariés ou plus)",
 } as const;
-export const metadata: Metadata = {
-  title: "Qualiopi — Devis | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// B6b-1 : avant la certification, le titre n'emploie pas le mot « Qualiopi ».
+export function generateMetadata(): Metadata {
+  return {
+    title: isQualiopiCertificationObtenue()
+      ? "Qualiopi — Devis | Axion-IA Admin"
+      : "Devis | Axion-IA Admin",
+    robots: { index: false, follow: false },
+  };
+}
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers & libellés
 // ─────────────────────────────────────────────────────────────────────────────
+
+const STATUT_TONES: Record<string, "neutral" | "info" | "success" | "warning"> = {
+  brouillon: "neutral",
+  envoye: "warning",
+  accepte: "success",
+  refuse: "neutral",
+  expire: "neutral",
+  transforme_convention: "info",
+};
 
 const STATUT_LABELS: Record<string, string> = {
   brouillon: "Brouillon",
@@ -59,12 +111,10 @@ const STATUT_LABELS: Record<string, string> = {
   transforme_convention: "Transformé en convention",
 };
 
-const FINANCEMENT_LABELS: Record<string, string> = {
-  direct: "Direct (entreprise)",
-  opco: "OPCO",
-  cpf: "CPF / EDOF",
-  france_travail: "France Travail",
-};
+function maintenanceFacultativeDe(offre: unknown): boolean {
+  const o = offreDevisV1.safeParse(offre);
+  return o.success && o.data.achat?.maintenance.regle === "facultative";
+}
 
 function formatEur(cents: number): string {
   return new Intl.NumberFormat("fr-FR", {
@@ -74,13 +124,7 @@ function formatEur(cents: number): string {
   }).format(cents / 100);
 }
 
-function formatDate(date: Date): string {
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
+const formatDate = formatDateParis;
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types des lignes JSON
@@ -137,17 +181,18 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   const devis = await getDevis(id);
   if (!devis) notFound();
 
+  // B6b-1 : lu une fois, côté serveur ; sans certification, aucun mot de tiers payeur.
+  const certifie = isQualiopiCertificationObtenue();
+
   const client = await getClient(devis.clientId);
   // Lot OPCO A5 : suspension de la branche ou date limite de dépôt de l'OPCO.
-  const bandeauFonds = client ? bandeauEtatFonds(await etatFondsDuClient(client)) : null;
+  const bandeauFonds =
+    certifie && client ? bandeauEtatFonds(await etatFondsDuClient(client)) : null;
 
   // Sous-lot 8G — même règle que celle appliquée au PDF, lue au même endroit :
   // deux calculs du même régime finiraient par diverger, et l'écran affirmerait
   // le contraire de la pièce.
-  const avertissementEstimation = avertissementEstimationAdmin(
-    devis.financementSuggere,
-    isQualiopiCertificationObtenue(),
-  );
+  const avertissementEstimation = avertissementEstimationAdmin(devis.financementSuggere, certifie);
 
   // Factures déjà émises sur ce devis (hors avoirs/annulées) — alimente le
   // bloc « Facturer ce devis » (acompte / solde avec déduction).
@@ -157,6 +202,41 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     orderBy: { createdAt: "asc" },
   });
   const dejaFactureHtCents = facturesLiees.reduce((acc, f) => acc + f.montantHtCents, 0);
+
+  // Devis à formules : palier d'échéancier suivant (pré-remplit le bloc de facturation).
+  // Inerte interrupteur éteint ou sans offre/formule retenue : le bloc reste celui d'avant.
+  const totalLignesHtCents = totalHtLignesDevis(devis.lignes);
+  const lecturePalier =
+    devis.offre !== null &&
+    devis.formuleRetenue !== null &&
+    totalLignesHtCents !== null &&
+    (await formulesActives())
+      ? lirePalierSuivant({
+          offre: devis.offre,
+          formuleRetenue: devis.formuleRetenue,
+          totalHtCents: totalLignesHtCents,
+          nbFacturesEmises: facturesLiees.length,
+        })
+      : null;
+
+  // Devis à formules accepté dont AUCUN plan récurrent n'a été proposé (la proposition a échoué
+  // après le COMMIT) : alerte persistante lue en base, la reprise repropose (idempotente).
+  const devisAFormulesAccepte =
+    devis.offreSha256 !== null &&
+    devis.formuleRetenue !== null &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
+    (await formulesActives());
+  // 🔴 « Aucun plan en base » ne suffit PAS : une formule « achat » sans maintenance donne
+  // normalement ZÉRO plan. Règle pure et testée : `evaluerPlansManquants`. `null` attendu = les
+  // plans ne peuvent pas être calculés : message DISTINCT, jamais silencieux.
+  const etatPlans = devisAFormulesAccepte
+    ? evaluerPlansManquants(
+        await compterPlansAttendus(devis.id),
+        await prisma.planRecurrent.count({ where: { devisId: devis.id } }),
+      )
+    : "aucun";
+  const plansAReproposer = etatPlans === "manquants";
+  const plansImpossibles = etatPlans === "impossibles";
 
   // ── État RÉEL de la signature, lu du registre de preuve ──
   //
@@ -176,6 +256,12 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             signeAt: true,
             selfHash: true,
             methode: true,
+            // Choix scellé (sceau V4) : lu en lecture seule pour l'affichage.
+            hashVersion: true,
+            choixOffre: true,
+            choixOffreSha256: true,
+            // Pièce annulée : ses signatures ne comptent pas (même règle que les gardes serveur).
+            documentGenere: { select: { annuleeAt: true } },
           },
           // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
           // `signeAt` afficherait un ordre qui peut différer de celui du
@@ -183,12 +269,70 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         })
       : [];
-  const clientASigne = signatures.some((s) => s.partie === "client");
-  const organismeASigne = signatures.some((s) => s.partie === "axionia");
+  // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
+  // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
+  const { clientASigne, organismeASigne } = signatureClientDuDevis({
+    documentGenere: {
+      annuleeAt: signatures[0]?.documentGenere.annuleeAt ?? null,
+      signatures,
+    },
+  });
+  const signeParClient = clientASigne && !organismeASigne;
+  // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
+  // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
+  const signeDesDeuxParties =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+  const repriseParRelance =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
+  // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
+  // accepté : l'état de la confirmation de commande se lit en base, donc l'information qui suit
+  // survit au rafraîchissement. « aucune » : reprise proposée (idempotente) ; « a_valider » : ligne
+  // d'information persistante ; « autre » (approuvée, envoyée, refusée, journal) : rien.
+  const classiqueSigneDesDeuxParties =
+    devis.documentGenereId !== null &&
+    devis.offre == null &&
+    devis.offreSha256 === null &&
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention");
+  const etatConfirmation = classiqueSigneDesDeuxParties
+    ? await etatConfirmationCommande(devis.id)
+    : null;
+  const confirmationClassiqueAPreparer = etatConfirmation === "aucune";
+  const confirmationClassiquePreparee = etatConfirmation === "a_valider";
   const identiteOrganisme = await getOrganismeIdentite();
 
+  const emailEnAttente =
+    devis.statut === "brouillon" && (await emailDevisEnAttente(prisma, devis.id));
+  // Badge d'affichage (lecture seule) : un ancien devis « envoyé » peut aussi avoir une ligne en
+  // attente. `emailEnAttente` ci-dessus garde son sens (brouillon seulement) pour les gardes.
+  const emailEnAttentePourBadge =
+    devis.statut === "envoye"
+      ? await emailDevisEnAttente(prisma, devis.id).catch(() => false)
+      : emailEnAttente;
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
+  // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
+  const peutModifierFormules =
+    devis.statut === "brouillon" && devis.offreSha256 !== null && (await formulesActives());
+  // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
+  const estClassique = devis.offre === null && devis.offreSha256 === null;
+  const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
   const lignes = parseLignes(devis.lignes);
+  // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
+  // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
+  let resumeFormules: ReturnType<typeof formulesDuDevis>;
+  if (devis.offre !== null && devis.formuleRetenue === null) {
+    try {
+      resumeFormules = formulesDuDevis(
+        devis.offre,
+        await formulesActives(),
+        regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva")),
+      );
+    } catch (err) {
+      if (!(err instanceof OffreDevisInvalideError)) throw err;
+      resumeFormules = undefined; // offre illisible : la fiche garde son affichage d'avant
+    }
+  }
 
   const isExpired =
     (devis.statut === "brouillon" || devis.statut === "envoye") && devis.dateValidite < new Date();
@@ -206,7 +350,15 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   return (
     <AdminPageShell width="wide">
       {/* Fil d&apos;Ariane */}
-      <div className="mb-[var(--space-admin-4)] flex items-center gap-[var(--space-admin-3)]">
+      <div className="mb-[var(--space-admin-4)] flex flex-wrap items-center gap-[var(--space-admin-4)]">
+        {client ? (
+          <Link
+            href={`/${locale}/${adminPrefix}/qualiopi/clients/${client.id}`}
+            className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
+          >
+            ← {client.raisonSociale}
+          </Link>
+        ) : null}
         <Link
           href={devisBase}
           className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline"
@@ -217,14 +369,46 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       <AdminPageHeader
         title={`Devis ${devis.numero}`}
-        description={
-          client
-            ? `${client.raisonSociale} · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
-            : `Client inconnu · ${STATUT_LABELS[devis.statut] ?? devis.statut}`
+        description={client ? client.raisonSociale : "Client inconnu"}
+        meta={
+          <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+            <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+              {STATUT_LABELS[devis.statut] ?? devis.statut}
+            </AdminBadge>
+            <BadgeEmailDevis
+              statut={devis.statut}
+              enAttente={emailEnAttentePourBadge}
+              href={`/${locale}/${adminPrefix}/qualiopi/emails`}
+            />
+          </span>
+        }
+        actions={
+          <>
+            {devis.statut === "brouillon" ? (
+              <AdminButton
+                variant="secondary"
+                href={`/api/qualiopi/devis/${devis.id}/apercu`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Voir l&apos;aperçu PDF
+              </AdminButton>
+            ) : null}
+            {peutModifierFormules ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/modifier`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+            {peutCorrigerClassique ? (
+              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/corriger`}>
+                Modifier le brouillon
+              </AdminButton>
+            ) : null}
+          </>
         }
       />
 
-      <BandeauEtatFonds bandeau={bandeauFonds} />
+      {certifie ? <BandeauEtatFonds bandeau={bandeauFonds} /> : null}
 
       {/* Contrat d'apporteur 2.6 : l'établissement qui commande (attribution par SIRET). */}
       <section className="mb-[var(--space-admin-6)]">
@@ -254,22 +438,42 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             >
               {STATUT_LABELS[devis.statut] ?? devis.statut}
             </p>
+            {(devis.statut === "envoye" || devis.statut === "expire") && signeParClient && (
+              <p
+                data-testid="mention-signe-par-client"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé par le client, à contresigner
+              </p>
+            )}
+            {signeDesDeuxParties && (
+              <p
+                data-testid="mention-signe-des-deux-parties"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé des deux parties, acceptation à finir
+              </p>
+            )}
           </div>
 
           {/* Montant HT */}
           <div>
             <p className={infoLabelCls}>Montant HT</p>
             <p className={infoValueCls}>
-              <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              {resumeFormules !== undefined ? (
+                LIBELLE_MONTANT_AU_CHOIX
+              ) : (
+                <span className="tabular-nums">{formatEur(devis.montantTotalHtCents)}</span>
+              )}
             </p>
           </div>
 
           {/* Financement */}
           <div>
-            <p className={infoLabelCls}>Financement suggéré</p>
+            <p className={infoLabelCls}>{certifie ? "Financement suggéré" : "Mode de règlement"}</p>
             <p className={infoValueCls}>
               {devis.financementSuggere ? (
-                (FINANCEMENT_LABELS[devis.financementSuggere] ?? devis.financementSuggere)
+                libelleReglementDevis(devis.financementSuggere, certifie, "fiche")
               ) : (
                 <span className="text-[color:var(--color-admin-fg-muted)]">—</span>
               )}
@@ -291,12 +495,26 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                 </span>
               )}
             </p>
+            {validiteBrouillonModifiable(devis) ? (
+              <div className="mt-[var(--space-admin-3)]">
+                <ValiditeBrouillon
+                  devisId={devis.id}
+                  statut={devis.statut}
+                  dateValidite={devis.dateValidite.toISOString()}
+                  majLe={devis.updatedAt.toISOString()}
+                />
+              </div>
+            ) : null}
           </div>
 
           {/* OPCO estimé */}
           {devis.montantOpcoEstimeCents != null && (
             <div>
-              <p className={infoLabelCls}>Prise en charge OPCO estimée</p>
+              <p className={infoLabelCls}>
+                {certifie
+                  ? "Prise en charge OPCO estimée"
+                  : "Montant estimé réglé par un tiers (interne, non imprimé)"}
+              </p>
               <p className={infoValueCls}>
                 <span className="tabular-nums">{formatEur(devis.montantOpcoEstimeCents)}</span>
               </p>
@@ -309,18 +527,27 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                   une promesse orale, ce qui est pire. */}
               {avertissementEstimation !== null && (
                 <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  {avertissementEstimation}
+                  {certifie
+                    ? avertissementEstimation
+                    : "Estimation enregistrée, non imprimée sur le devis (interne)."}
                 </p>
               )}
               {/* Lot A4 — d'où vient le chiffre (barème relevé ou non). */}
               {devis.opcoEstimationOrigine != null && (
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
-                  Origine : {ORIGINE_ESTIMATION_LABELS[devis.opcoEstimationOrigine]}
+                  Origine :{" "}
+                  {certifie
+                    ? ORIGINE_ESTIMATION_LABELS[devis.opcoEstimationOrigine]
+                    : devis.opcoEstimationOrigine === "bareme"
+                      ? "barème relevé"
+                      : "estimation indicative"}
                 </p>
               )}
               {devis.opcoEstimationAvertissement && (
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]">
-                  {devis.opcoEstimationAvertissement}
+                  {certifie
+                    ? devis.opcoEstimationAvertissement
+                    : "Note d'estimation enregistrée (non affichée avant certification)"}
                 </p>
               )}
             </div>
@@ -329,7 +556,11 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           {/* Reste à charge */}
           {devis.resteAChargeCents != null && (
             <div>
-              <p className={infoLabelCls}>Reste à charge</p>
+              <p className={infoLabelCls}>
+                {certifie
+                  ? "Reste à charge"
+                  : "Part estimée restant au client (interne, non imprimée)"}
+              </p>
               <p className={infoValueCls}>
                 <span className="tabular-nums">{formatEur(devis.resteAChargeCents)}</span>
               </p>
@@ -383,7 +614,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Lignes ──────────────────────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Lignes</h2>
-        {lignes.length === 0 ? (
+        {lignes.length === 0 && resumeFormules !== undefined ? (
+          <ResumeFormulesDevis vue={resumeFormules} />
+        ) : lignes.length === 0 ? (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]">
             Aucune ligne.
           </p>
@@ -442,8 +675,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
       {/* ── Signature électronique ───────────────────────────────────────── */}
       {/*
-        Cette section affichait la soumission DocuSeal et un champ « copier le
-        lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
+        Cette section affichait l'ancienne soumission DocuSeal (n'émet plus rien
+        depuis le 30/07/2026) et un champ « copier le lien du client ». La bascule du 2026-07-30 vers le canal maison la rend
         sans objet, et c'est un GAIN de sûreté : on ne stocke que le HASH du
         jeton, si bien que la console ne détient plus le lien personnel du
         client. Le composant `DevisSignatureLinkCopy` disait lui-même pourquoi ce
@@ -478,6 +711,19 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
                     ? " — confirmation nominative, sans tracé manuscrit"
                     : ""}
                 </p>
+                {s.partie === "client" && devis.offre !== null && devis.offreSha256 !== null ? (
+                  <ChoixClientSigne
+                    resultat={choixImprimable(
+                      { offre: devis.offre, offreSha256: devis.offreSha256, numero: devis.numero },
+                      {
+                        hashVersion: s.hashVersion,
+                        choixOffre: s.choixOffre,
+                        choixOffreSha256: s.choixOffreSha256,
+                      },
+                    )}
+                    maintenanceFacultativeProposee={maintenanceFacultativeDe(devis.offre)}
+                  />
+                ) : null}
                 {/* L'empreinte EN ENTIER : une empreinte tronquée ne se
                     vérifie pas, et une preuve invérifiable n'en est pas une. */}
                 <p className="mt-[var(--space-admin-1)] text-[length:var(--text-admin-xs)] break-all text-[color:var(--color-admin-fg-muted)]">
@@ -500,10 +746,63 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           />
         )}
 
+        {/* Signé des deux parties : deux alertes DISTINCTES, persistantes (lues en base) + reprise.
+            « acceptation non enregistrée » (aucune formule retenue) ≠ « plans non proposés ». */}
+        {devis.documentGenereId !== null &&
+          clientASigne &&
+          organismeASigne &&
+          devis.offreSha256 !== null &&
+          (devis.formuleRetenue === null &&
+          (devis.statut === "envoye" || devis.statut === "expire") ? (
+            <RelancerAcceptationDevis
+              cas="acceptation"
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          ) : plansAReproposer ? (
+            <RelancerAcceptationDevis
+              cas="plans"
+              documentGenereId={devis.documentGenereId}
+              relancerAction={relancerAcceptationDevisAction}
+            />
+          ) : null)}
+
+        {confirmationClassiqueAPreparer && devis.documentGenereId !== null && (
+          <RelancerAcceptationDevis
+            cas="confirmation-classique"
+            documentGenereId={devis.documentGenereId}
+            relancerAction={relancerAcceptationDevisAction}
+          />
+        )}
+
+        {confirmationClassiquePreparee && (
+          <p
+            role="status"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+          >
+            La confirmation de commande est préparée : elle attend votre validation dans les{" "}
+            <Link href={`/${locale}/${adminPrefix}/qualiopi/emails`} className="admin-link">
+              e-mails à valider
+            </Link>
+            .
+          </p>
+        )}
+
+        {plansImpossibles && (
+          <p
+            role="alert"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+          >
+            Plans récurrents impossibles à proposer, à vérifier : la formule retenue n&apos;a pas pu
+            être transformée en plan (offre ou choix illisible, ou règle de facturation non
+            décidée). Créez le plan à la main si nécessaire.
+          </p>
+        )}
+
         {clientASigne && organismeASigne && (
           <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
-            Devis intégralement signé. La chaîne de preuve est vérifiable dans Qualiopi › Mode
-            auditeur › Signatures.
+            Devis intégralement signé. La chaîne de preuve est vérifiable dans{" "}
+            {certifie ? "Qualiopi › " : ""}Mode auditeur › Signatures.
           </p>
         )}
 
@@ -539,7 +838,7 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           >
             {devis.documentGenereId === null
               ? "Aucune pièce n'a été générée pour ce devis : le client ne peut pas signer en ligne. Réviser le devis pour le réémettre."
-              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email en émet un nouveau et invalide le précédent."}
+              : "Le client n'a pas encore signé. Le lien de signature lui a été envoyé avec le devis ; renvoyer l'email émet un nouveau lien et invalide l'ancien IMMÉDIATEMENT, avant même la validation de l'e-mail en corbeille : si l'e-mail est refusé ou supprimé, le client n'a plus de lien valable (il faudra alors renvoyer à nouveau)."}
           </p>
         )}
       </section>
@@ -547,7 +846,35 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
       {/* ── Actions de cycle de vie ──────────────────────────────────────── */}
       <section className="mb-[var(--space-admin-8)]">
         <h2 className={sectionHeadCls}>Actions</h2>
-        <DevisLifecycleButtons devisId={devis.id} statut={devis.statut} />
+        <DevisLifecycleButtons
+          devisId={devis.id}
+          statut={devis.statut}
+          estClassique={estClassique}
+          numero={devis.numero}
+          montantHtLabel={formatEur(devis.montantTotalHtCents)}
+          destinataire={client?.contactEmail ?? null}
+          clientASigne={clientASigne}
+          emailEnAttente={emailEnAttente}
+          emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
+          signeParClient={signeParClient}
+          signeDesDeuxParties={signeDesDeuxParties}
+          repriseParRelance={repriseParRelance}
+        />
+        <DevisSuiviLivraison
+          devisId={devis.id}
+          peutDemarrer={peutDemarrerLivraison(devis)}
+          peutLivrer={peutMarquerLivre(devis)}
+        />
+        {devis.livraisonDebutAt && (
+          <p className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]">
+            Livraison démarrée le{" "}
+            {devis.livraisonDebutAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}
+            {devis.livreAt
+              ? ` · livré le ${devis.livreAt.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })}`
+              : ""}
+            .
+          </p>
+        )}
       </section>
 
       {/* ── Facturation (acompte / solde) — devis accepté uniquement ─────── */}
@@ -568,6 +895,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             devisId={devis.id}
             dejaFactureHtCents={dejaFactureHtCents}
             totalDevisHtCents={devis.montantTotalHtCents}
+            {...(lecturePalier?.ok === true && lecturePalier.palier !== null
+              ? { palierSuivant: lecturePalier.palier }
+              : {})}
+            {...(lecturePalier?.ok === false ? { palierIndisponible: lecturePalier.motif } : {})}
           />
         </section>
       )}

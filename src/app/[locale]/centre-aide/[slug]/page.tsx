@@ -226,11 +226,7 @@ export default async function HelpArticlePage({ params }: Props) {
 
       <CtaBlock
         title={isFr ? "Question pas couverte ?" : "Question not covered?"}
-        description={
-          isFr
-            ? "Contactez-nous — réponse sous 48 h ouvrées."
-            : "Contact us — reply within 48 business hours."
-        }
+        description={isFr ? "Contactez-nous." : "Contact us."}
         cta={
           <Cta href="/contact" size="lg">
             Contact →
@@ -238,10 +234,10 @@ export default async function HelpArticlePage({ params }: Props) {
         }
       />
 
-      {/* V-04 P1 — Article inline (SEO racine), QAPage déféré afterInteractive. */}
+      {/* JSON-LD rendu dans le HTML servi (audit SEO 2026-11-11, I1) : visible des robots sans JS. */}
       <JsonLd data={articleJsonLd} />
       {personJsonLd ? <JsonLd data={personJsonLd} /> : null}
-      <JsonLd data={qaJsonLd} strategy="afterInteractive" scriptId="jsonld-centre-aide-qa" />
+      <JsonLd data={qaJsonLd} scriptId="jsonld-centre-aide-qa" />
     </>
   );
 }

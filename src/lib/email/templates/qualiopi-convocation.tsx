@@ -11,7 +11,8 @@ interface Payload {
   titreFormation: string;
   dateDebut: string; // ISO ou formatée côté service
   dateFin: string;
-  lieu: string;
+  /** Facultatif : clé omise quand le lieu est inconnu (anciens jobs : « Voir convocation »). */
+  lieu?: string;
   modalite: string;
   numeroSession: string;
   lienPortail?: string;
@@ -36,14 +37,25 @@ interface Payload {
   copieEntreprise?: boolean;
 }
 
+/**
+ * Le lieu à afficher, ou `null` quand il est inconnu. La valeur « Voir
+ * convocation » posée par les anciens jobs vaut « pas de lieu » : un e-mail de
+ * convocation qui renvoie à « la convocation » est circulaire.
+ */
+export function lieuRenseigne(lieu: string | undefined | null): string | null {
+  const v = typeof lieu === "string" ? lieu.trim() : "";
+  if (v === "" || v.toLowerCase() === "voir convocation") return null;
+  return v;
+}
+
 const COPY = {
   fr: {
     title: "Votre convocation à la formation",
-    preview: (debut: string, lieu: string) =>
+    preview: (debut: string, lieu: string | null) =>
       `Début le ${debut}${lieu ? ` — ${lieu}` : ""}. Modalités pratiques dans votre espace.`,
     intro: (n: string) => `Bonjour ${n},`,
-    body: (titre: string, debut: string, fin: string, lieu: string, modalite: string) =>
-      `Nous avons le plaisir de vous convoquer à la formation « ${titre} » du ${debut} au ${fin} — ${modalite} — ${lieu}.`,
+    body: (titre: string, debut: string, fin: string, lieu: string | null, modalite: string) =>
+      `Nous avons le plaisir de vous convoquer à la formation « ${titre} » du ${debut} au ${fin} — ${modalite}${lieu ? ` — ${lieu}` : ""}.`,
     kit: "Votre convocation officielle et les modalités pratiques (accès, matériel, règlement intérieur) sont disponibles dans votre espace stagiaire.",
     // Annonce SANS lien, et c'est voulu : un jeton d'émargement créé ici serait
     // révoqué par celui du rappel J-7 (un seul jeton vivant par inscription), et
@@ -84,12 +96,13 @@ export function QualiopiConvocationEmail({
   const t = COPY.fr; // T15 : emails publics en FR uniquement (EN désactivé runtime)
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
+  const lieu = lieuRenseigne(p.lieu);
   const copie = p.copieEntreprise === true;
   const joints = Array.isArray(p.piecesJointes) && p.piecesJointes.length > 0;
   return (
     <EmailLayout
       famille="B"
-      preview={t.preview(p.dateDebut, p.lieu)}
+      preview={t.preview(p.dateDebut, lieu)}
       title={t.title}
       {...(copie ? {} : { cta: { label: t.cta, href: ctaHref } })}
       locale={locale}
@@ -98,7 +111,7 @@ export function QualiopiConvocationEmail({
         {copie ? t.copieIntro(p.stagiairePrenomNom) : t.intro(p.stagiairePrenomNom)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.body(p.titreFormation, p.dateDebut, p.dateFin, p.lieu, p.modalite)}
+        {t.body(p.titreFormation, p.dateDebut, p.dateFin, lieu, p.modalite)}
       </Text>
       {p.outilVisio ? (
         <Text style={emailStyles.paragraphStyle}>

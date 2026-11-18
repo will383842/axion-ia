@@ -49,7 +49,7 @@ export const VEIGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Veigné et vallée de l'Indre ?",
-      a: "Oui, Axion-IA intervient à Veigné et dans toute la vallée de l'Indre sud-tourangelle (Montbazon, Monts, Artannes-sur-Indre, Esvres, Truyes). Couverture Tours Métropole et accès depuis Tours (20 min) ou Paris (2h30 TGV via Tours).",
+      a: "Oui, Axion-IA intervient à Veigné et dans toute la vallée de l'Indre sud-tourangelle (Montbazon, Monts, Artannes-sur-Indre, Esvres, Truyes), ainsi que dans Tours Métropole. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE et artisans à Veigné ?",
@@ -65,7 +65,7 @@ export const VEIGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Veigné ?",
-      a: "Nos consultants viennent depuis Tours centre (20 min voiture) ou gare de Montbazon (5 min). Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible (Montbazon, vallée Indre).",
     },
   ],
 };

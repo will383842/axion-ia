@@ -65,7 +65,7 @@ export const SAINT_AFFRIQUE_COPY: VilleCopy = {
     },
     {
       q: "Proposez-vous du coaching individuel IA à Saint-Affrique ?",
-      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Affrique. Format flexible : dans vos locaux, en visio ou à Millau. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
+      a: "Oui, sessions 1-to-1 pour dirigeants TPE et PME à Saint-Affrique. Format flexible : dans vos locaux ou en visio. Accompagnement personnalisé à partir de {{price:intervention-dirigeants|flat}}.",
     },
   ],
 };

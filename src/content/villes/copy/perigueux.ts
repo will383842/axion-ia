@@ -232,7 +232,7 @@ export const PERIGUEUX_COPY: VilleCopy = {
     },
     {
       q: "Sous quels délais Axion-IA intervient-il à Périgueux ?",
-      a: "Nous nous déplaçons à Périgueux sous 5 jours ouvrés. L'A89, les liaisons Intercités et l'aéroport de Bassillac (9 km) facilitent nos interventions depuis Bordeaux, Limoges ou Paris.",
+      a: "Nous nous déplaçons à Périgueux sous 5 jours ouvrés. Nous intervenons partout en France, sur place ou à distance. Périgueux est desservie par l'A89, les liaisons Intercités et l'aéroport de Bassillac (9 km).",
     },
     {
       q: "Axion-IA couvre-t-il les communes autour de Périgueux ?",

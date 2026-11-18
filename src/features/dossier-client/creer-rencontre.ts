@@ -58,6 +58,10 @@ export interface EntreeCreerRencontre {
   /** Personnes de la fiche invitées. */
   readonly contactIds?: readonly string[];
   readonly testInterne?: boolean;
+  /** Lieu (adresse, salle) : texte libre, 200 caractères au plus. */
+  readonly lieu?: string | null;
+  /** Objet du rendez-vous : texte libre, 255 caractères au plus. */
+  readonly objet?: string | null;
   readonly parAdminId: string;
 }
 
@@ -74,6 +78,11 @@ export interface InvitationAPreparer {
 
 export interface ResultatCreerRencontre {
   readonly rencontreId: string;
+  /** Titre et fin tels qu'écrits sur la rencontre (repris tels quels pour Google Agenda). */
+  readonly titre: string;
+  readonly finPrevue: Date;
+  /** Noms des personnes invitées (pour l'événement Google). */
+  readonly contactNoms: readonly string[];
   /** L'e-mail à garer pour validation (visio avec une personne joignable), ou `null`. */
   readonly invitation: InvitationAPreparer | null;
 }
@@ -148,6 +157,8 @@ export async function creerRencontre(
         type: e.type,
         estTestInterne: e.testInterne === true,
         titre,
+        lieu: (e.lieu ?? "").trim().slice(0, 200) || null,
+        objet: (e.objet ?? "").trim().slice(0, 255) || null,
         debutPrevu: e.debut,
         finPrevue: new Date(e.debut.getTime() + e.dureeMin * 60_000),
         statut: "planifie",
@@ -167,6 +178,7 @@ export async function creerRencontre(
     });
 
     let premiereAdresse: string | null = null;
+    const contactNoms: string[] = [];
     for (const contactId of [...new Set(e.contactIds ?? [])]) {
       const c = await tx.clientContact.findUnique({
         where: { id: contactId },
@@ -181,6 +193,7 @@ export async function creerRencontre(
         select: { email: true },
       });
       premiereAdresse ??= adresse?.email ?? null;
+      contactNoms.push(c.nom.slice(0, 200));
       await tx.rencontreParticipant.create({
         data: {
           rencontreId: rencontre.id,
@@ -217,6 +230,12 @@ export async function creerRencontre(
           }
         : null;
 
-    return { rencontreId: rencontre.id, invitation };
+    return {
+      rencontreId: rencontre.id,
+      titre,
+      finPrevue: new Date(e.debut.getTime() + e.dureeMin * 60_000),
+      contactNoms,
+      invitation,
+    };
   });
 }

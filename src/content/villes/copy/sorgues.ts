@@ -34,8 +34,8 @@ export const SORGUES_COPY: VilleCopy = {
       en: "Audit IA à Sorgues : diagnostic adapté aux TPE artisans, PME industrielles, logistique, services aux entreprises et commerces du Grand Avignon. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
-      en: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux ou à Avignon.",
+      fr: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Sorgues : ateliers pour équipes TPE/PME industrielles, logisticiens, artisans et professions libérales. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Sorgues : automatisation supply chain industrielle, optimisation tournées logistique fluviale-routière, devis BTP artisans, content marketing, agents conversationnels SAV, prédiction qualité production. RGPD strict.",
@@ -64,8 +64,8 @@ export const SORGUES_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP, artisanat et commerce de proximité sur automatisation devis, gestion planning chantiers, content marketing local, fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Sorgues ?",
-      a: "Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Sorgues ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sorgues est à 15 min d'Avignon et 15 min d'Orange via A7.",
     },
   ],
 };

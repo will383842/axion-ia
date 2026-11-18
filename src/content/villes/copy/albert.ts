@@ -49,7 +49,7 @@ export const ALBERT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Albert et dans le bassin de la Somme ?",
-      a: "Oui, Axion-IA intervient a Albert et dans tout le bassin de la Somme (Amiens, Peronne, Corbie, Meaulte). Consultants depuis Paris (TGV Haute-Picardie 1h30) ou Amiens (30 min TER).",
+      a: "Oui, Axion-IA intervient a Albert et dans tout le bassin de la Somme (Amiens, Peronne, Corbie, Meaulte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Albert ?",

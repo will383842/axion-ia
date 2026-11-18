@@ -49,7 +49,7 @@ export const SAINT_OMER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Omer et dans l'Audomarois ?",
-      a: "Oui, Axion-IA intervient à Saint-Omer et dans tout l'Audomarois (Arques, Longuenesse, Blendecques, Wizernes). Nos consultants viennent de Lille (1h TER) ou via la gare TGV Calais-Fréthun (35 min).",
+      a: "Oui, Axion-IA intervient à Saint-Omer et dans tout l'Audomarois (Arques, Longuenesse, Blendecques, Wizernes). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Saint-Omer ?",
@@ -64,8 +64,8 @@ export const SAINT_OMER_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les professionnels du tourisme à Saint-Omer (hôtels, restaurants, offices de tourisme, sites patrimoniaux) sur agents conversationnels multilingues, automatisation réservations, classification avis, optimisation tarification dynamique.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Calais ?",
-      a: "Nos consultants viennent de Lille (1h TER direct ou A26) ou Calais (40 min A26). Gare TGV Calais-Fréthun à 35 min. Hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Omer ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TGV Calais-Fréthun à 35 min. Hébergement local possible.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const PERONNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Peronne et dans la Haute Somme ?",
-      a: "Oui, Axion-IA intervient a Peronne et dans toute la Haute Somme (Albert, Ham, Roye, Nesle). Consultants depuis Paris (TGV Haute-Picardie 1h15 + 15 min) ou Amiens (50 min).",
+      a: "Oui, Axion-IA intervient a Peronne et dans toute la Haute Somme (Albert, Ham, Roye, Nesle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA a Peronne ?",

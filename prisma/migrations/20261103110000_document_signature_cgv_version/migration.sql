@@ -1,0 +1,8 @@
+-- CGV avant signature du devis (2026-11-03) : version des CGV acceptees, scellee dans l empreinte (hash_version 3).
+-- SQL SEUL (le champ Prisma arrive avec le code, PR B : le worker ne doit pas connaitre la colonne avant qu elle existe).
+-- STRICTEMENT ADDITIF : une colonne nullable, sans defaut, sans rattrapage, sans CHECK, sans enumeration.
+-- Compatible avec l ANCIEN code (qui ne la connait pas) : migration AVANT le code, worker comme app.
+-- Retour arriere (JAMAIS execute par defaut) : ALTER TABLE "document_signatures" DROP COLUMN "cgv_version";
+
+-- AlterTable
+ALTER TABLE "document_signatures" ADD COLUMN "cgv_version" VARCHAR(40);

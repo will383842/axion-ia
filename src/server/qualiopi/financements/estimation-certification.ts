@@ -108,14 +108,14 @@ export function regimeEstimationMutualisee(
  * de configuration interne, soit un écran qui parle au client.
  */
 export function avertissementEstimationAdmin(
-  financement: string | null | undefined,
+  _financement: string | null | undefined,
   certificationObtenue: boolean,
 ): string | null {
-  if (regimeEstimationMutualisee(financement, certificationObtenue).presentable) return null;
+  // Sans certification, le PDF ne porte ni montant estimé ni mention, quel que soit le mode.
+  if (certificationObtenue) return null;
   return (
-    "Estimation calculée et enregistrée, mais NON imprimée sur le devis : la certification " +
-    "Qualiopi n'est pas obtenue, et l'accès aux fonds mutualisés l'exige (art. L.6316-1). " +
-    "Le PDF porte à la place une mention expliquant au client que l'offre est établie pour un " +
-    "règlement direct."
+    "Estimation enregistrée pour usage interne, NON imprimée sur le devis : tant que la " +
+    "certification n'est pas obtenue, le PDF ne porte ni montant estimé ni mention de " +
+    "règlement par un tiers."
   );
 }

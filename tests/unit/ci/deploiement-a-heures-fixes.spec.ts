@@ -56,6 +56,8 @@ describe("🕛 mise en ligne à heures fixes", () => {
         "7 2 * * *",
         "7 3 * * *",
         "7 4 * * *",
+        "7 6 * * *",
+        "7 7 * * *",
       ].sort(),
     );
   });
@@ -64,7 +66,7 @@ describe("🕛 mise en ligne à heures fixes", () => {
     const p = job("precheck");
     expect(p).toContain("TZ=Europe/Paris date +%z");
     expect(p).toContain(
-      "+0200:10|+0200:15|+0200:20|+0200:23|+0200:1|+0200:3|+0100:11|+0100:16|+0100:21|+0100:0|+0100:2|+0100:4",
+      "+0200:10|+0200:15|+0200:20|+0200:23|+0200:0|+0200:1|+0200:3|+0200:6|+0100:11|+0100:16|+0100:21|+0100:0|+0100:1|+0100:2|+0100:4|+0100:7",
     );
     expect(p).toContain("x-axion-build-sha");
     // Un créneau rejoué plus de 90 min après l'heure de son cron est refusé

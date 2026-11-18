@@ -64,7 +64,7 @@ export const SAINT_AVERTIN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, coaching 1-to-1 {{price:intervention-membre-equipe|flat}}. Agents conversationnels, gestion stocks, fidélisation clients, automatisation commandes.",
     },
     {
-      q: "Comment accéder à Saint-Avertin depuis Paris ?",
+      q: "Comment accéder à Saint-Avertin ?",
       a: "Paris à 1h15 TGV (gare Saint-Pierre-des-Corps), puis 15 min. Consultants sur site Tours Métropole. Frais de déplacement en sus.",
     },
   ],

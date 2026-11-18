@@ -45,9 +45,10 @@
  * Un contrôle qui cherche `branches:` sous `pull_request:` et n'en trouve
  * jamais est indiscernable d'un contrôle qui ne lit rien du tout — un chemin
  * faux, un bloc mal découpé, et il verdit pour toujours. On exige donc en plus
- * que le découpage RETROUVE le filtre `branches:` du déclencheur `push:`, qui
- * lui doit rester : c'est la preuve que la lecture atteint bien le bloc, et
- * qu'elle distingue les deux déclencheurs l'un de l'autre.
+ * que le découpage RETROUVE la ligne `types:` du bloc `pull_request:` : c'est la
+ * preuve que la lecture atteint bien le bloc et en sépare les lignes filles.
+ * (Jusqu'au 2026-11-08, le témoin lisait le filtre du déclencheur `push:`,
+ * limité à `main` par CI-LOT1.)
  */
 
 import { readdirSync, readFileSync } from "node:fs";
@@ -124,25 +125,30 @@ describe("une PR empilée est gardée comme les autres", () => {
     }
   }
 
-  it("TÉMOIN POSITIF — le découpage retrouve bien le filtre du déclencheur `push`", () => {
+  it("TÉMOIN POSITIF — le découpage retrouve bien le bloc `pull_request:` et ses `types`", () => {
     // Sans ce témoin, un découpage qui ne rendrait JAMAIS rien (mauvais chemin,
     // mauvaise clé, indentation mal comptée) verdirait pour toujours : « je n'ai
     // trouvé aucun filtre » et « je ne sais pas lire » ont la même couleur.
+    //
+    // 2026-11-08 (CI-LOT1) : le témoin lisait le filtre `branches:` du déclencheur
+    // `push:`, LIMITÉ à `main` ce jour-là (10 runs sur 13 annulés sur main ; main est rejoué
+    // en entier par le passage quotidien). Il lit désormais la ligne `types:` du
+    // bloc `pull_request:` lui-même — preuve plus directe encore que la lecture
+    // atteint le bloc qu'on inspecte, et qu'elle en sépare bien les lignes filles.
     const lignes = lignesDeCode(readFileSync(path.join(WORKFLOWS, "ci.yml"), "utf8"));
 
-    const surPush = blocDe(lignes, "push:");
-    expect(surPush, "le déclencheur `push:` de ci.yml n'a pas été trouvé").not.toBeNull();
+    const surPr = blocDe(lignes, "pull_request:");
+    expect(surPr, "le déclencheur `pull_request:` de ci.yml n'a pas été trouvé").not.toBeNull();
     expect(
-      surPush!.some((l) => l.trim() === "branches: [main, staging]"),
-      "le filtre de `push:` doit RESTER : rien ne doit lancer la CI sur chaque poussée " +
-        "de branche de travail, seules les PR et les deux branches longues comptent",
+      surPr!.some((l) => l.trim() === "types: [opened, synchronize, reopened, ready_for_review]"),
+      "`ready_for_review` doit rester dans les types : les jobs lourds sautent en brouillon, " +
+        "et sans ce type, passer une PR en « prête » ne relancerait rien",
     ).toBe(true);
 
-    // Et le bloc `pull_request:` existe bel et bien — il est simplement vide.
-    expect(
-      blocDe(lignes, "pull_request:"),
-      "ci.yml doit garder un déclencheur `pull_request`",
-    ).not.toBeNull();
+    // `push` limité à `main` (relecture Opus) : Gate A et Gate D tournent après fusion.
+    const surPush = blocDe(lignes, "push:");
+    expect(surPush, "ci.yml doit garder `push: branches: [main]`").not.toBeNull();
+    expect(surPush!.some((l) => l.trim() === "branches: [main]")).toBe(true);
 
     // La file de fusion reste câblée : sans elle, une file activée attend
     // indéfiniment des checks qui ne se lancent jamais.

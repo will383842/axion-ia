@@ -49,7 +49,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Yssingeaux et dans le Velay ?",
-      a: "Oui, Axion-IA intervient à Yssingeaux et dans tout le Velay (Le Puy-en-Velay, Monistrol-sur-Loire, Sainte-Sigolène). Consultants depuis Saint-Étienne (50 min) ou Lyon (1h30).",
+      a: "Oui, Axion-IA intervient à Yssingeaux et dans tout le Velay (Le Puy-en-Velay, Monistrol-sur-Loire, Sainte-Sigolène). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaire ?",
@@ -64,7 +64,7 @@ export const YSSINGEAUX_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Saint-Étienne ?",
+      q: "Comment se déroule une mission à Yssingeaux ?",
       a: "Saint-Étienne (50 min) ou Lyon (1h30).",
     },
   ],

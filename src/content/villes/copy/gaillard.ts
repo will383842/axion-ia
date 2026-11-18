@@ -49,7 +49,7 @@ export const GAILLARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Gaillard et dans l'agglomeration d'Annemasse ?",
-      a: "Oui, Axion-IA intervient a Gaillard et dans toute l'agglomeration annemassienne du Grand Geneve (Annemasse, Vetraz-Monthoux, Ambilly, Ville-la-Grand). Nos consultants se deplacent depuis Annecy (40 min) ou directement depuis Geneve (5 min).",
+      a: "Oui, Axion-IA intervient a Gaillard et dans toute l'agglomeration annemassienne du Grand Geneve (Annemasse, Vetraz-Monthoux, Ambilly, Ville-la-Grand). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les commerces transfrontaliers de Gaillard ?",

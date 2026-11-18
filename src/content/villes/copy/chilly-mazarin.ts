@@ -245,7 +245,7 @@ export const CHILLY_MAZARIN_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Chilly-Mazarin respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Chilly-Mazarin ?",
       a: "Chilly-Mazarin est à environ 30 min de Paris centre par l'A6 ou le RER, et la gare TGV de Massy est à 10 min. Nous nous déplaçons sur site.",
     },
     {

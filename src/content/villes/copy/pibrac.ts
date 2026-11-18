@@ -49,7 +49,7 @@ export const PIBRAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pibrac ?",
-      a: "Oui, Axion-IA intervient à Pibrac et dans tout l'ouest de Toulouse (Léguevin, Colomiers, Cornebarrieu). Nos consultants se déplacent en 20 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Pibrac et dans tout l'ouest de Toulouse (Léguevin, Colomiers, Cornebarrieu). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Pibrac ?",
@@ -61,7 +61,7 @@ export const PIBRAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Pibrac ?",
-      a: "Nos consultants se déplacent à Pibrac depuis Toulouse (20 min RN124). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Pibrac ?",

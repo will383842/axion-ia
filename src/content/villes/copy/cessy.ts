@@ -68,7 +68,7 @@ export const CESSY_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Cessy respectent le RGPD et privilégient des architectures souveraines. Vous conservez la maîtrise de vos données, y compris pour les flux transfrontaliers.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Genève ?",
+      q: "Comment se déroule une mission à Cessy ?",
       a: "Lyon est à 1h30 par l'A40, Genève à 15 min. Nous nous déplaçons sur site à Cessy.",
     },
     {

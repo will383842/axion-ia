@@ -23,8 +23,6 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
 import {
   ACTION_DESINSCRIT_PURGE,
@@ -209,8 +207,11 @@ describe("liste de suppression", () => {
 
   it("🔴 l'effacement PUBLIC est relu par son `emailSha256` (pas par son empreinte HMAC)", async () => {
     d.subFindMany.mockResolvedValue([]);
-    d.activity.mockImplementation(async (arg: { where: { action: string } }) =>
-      arg.where.action === "gdpr.erase.completed"
+    // Le filtre lit les DEUX traces : l'ancienne (`gdpr.erase.completed`) et la demande mise à
+    // l'écart depuis le 11/11/2026 (`gdpr.erase.requested`).
+    d.activity.mockImplementation(async (arg: { where: { action: unknown } }) =>
+      JSON.stringify(arg.where.action).includes("gdpr.erase.completed") &&
+      JSON.stringify(arg.where.action).includes("gdpr.erase.requested")
         ? [
             {
               changes: {
@@ -252,9 +253,8 @@ describe("liste de suppression", () => {
     ]);
   });
 
-  it("la trace des purgés porte bien le nom que `retention.ts` écrit (littéral, verrouillé ailleurs)", () => {
-    const src = readFileSync(join(process.cwd(), "src/server/newsletter/retention.ts"), "utf8");
-    expect(src).toContain(`action: "${ACTION_DESINSCRIT_PURGE}"`);
+  it("le nom de la trace des purgés reste celui des lignes DÉJÀ écrites (plus aucun écrivain : la purge est retirée)", () => {
+    expect(ACTION_DESINSCRIT_PURGE).toBe("newsletter.purged");
   });
 
   it("🔴 l'effacement console est relu sous ses DEUX noms : le nouveau (`gdpr.*`) et l'ancien", async () => {

@@ -10,7 +10,7 @@
 //   - honeypot (champ `website`)
 //   - Cloudflare Turnstile verify
 //   - Zod parse (discriminé par type)
-//   - encryptPii sur PII (nom/email/téléphone)
+//   - encryptPii sur PII (prénom/nom/email/téléphone ; civilité facultative en clair)
 //   - hashIp SHA-256 RGPD
 //   - UTM funnel + referrerCity capture
 //   - Submission.create (table polymorphe, type = `unified-{...}`)
@@ -32,11 +32,14 @@ import {
   unifiedContactSchema,
   type UnifiedContactType,
 } from "@/lib/schemas/unified-contact-schema";
+import { unifiedContactSchemaHerite } from "./schema-herite";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 import { encryptPii } from "@/lib/pii-crypto";
+import { CLE_IDENTITE, identitePourDetails } from "@/server/contact/identite-contact";
 import { hashIp } from "@/lib/security/ip-hash";
-import type { NotificationCategory, NotifyInput } from "@/server/notifications";
+import type { NotifyInput } from "@/server/notifications";
+import { notifCategoryFor } from "./categorie-notification";
 import { notifyApresReponse } from "@/server/notifications/apres-reponse";
 import { enqueueEmail } from "@/server/queue/queues";
 import type { EmailJobName } from "@/server/queue/types";
@@ -113,34 +116,6 @@ function submissionTypeFor(type: UnifiedContactType): SubmissionType {
   }
 }
 
-function notifCategoryFor(type: UnifiedContactType): NotificationCategory {
-  switch (type) {
-    case "audit":
-      return "AUDIT_REQUEST_SUBMITTED";
-    case "implementation":
-      return "IMPLEMENTATION_REQUEST_SUBMITTED";
-    case "formation":
-    case "un_a_un":
-      return "INTERVENTION_REQUEST_SUBMITTED";
-    case "devis":
-      return "QUOTE_REQUEST_RECEIVED";
-    // Form v2 — catégories dédiées pour routage Telegram fin
-    case "presse":
-      return "PRESS_REQUEST_SUBMITTED";
-    case "recrutement":
-      return "RECRUITMENT_RECEIVED";
-    case "speaker":
-      return "SPEAKER_INVITATION_RECEIVED";
-    case "investisseur":
-      return "INVESTOR_INQUIRY_RECEIVED";
-    case "support_client":
-      return "CUSTOMER_SUPPORT_REQUEST";
-    case "partenariat":
-    case "autre":
-      return "CONTACT_FORM_SUBMITTED";
-  }
-}
-
 // 🔑 Chaque gabarit rendu ici doit figurer dans `GABARITS_ACCUSE_MESSAGE`
 // (`lib/contact/accuse-attendu.ts`), la liste où la console cherche l'accusé :
 // un test lit ce `switch` et le vérifie, sinon la console afficherait « aucun
@@ -214,10 +189,12 @@ export async function submitUnifiedContactAction(
   const turnstileToken = formData.get("cf-turnstile-response") as string | null;
   const turnstilePassed = await verifyTurnstile(turnstileToken, ip).catch(() => false);
 
-  // 4. Zod parse
-  const parsed = unifiedContactSchema.safeParse({
+  // 4. Zod parse. Nouveau formulaire : civilité facultative + prénom + nom de
+  // famille. Une page ouverte avant la mise en ligne envoie encore `nom` : le
+  // schéma hérité l'accepte (zéro demande perdue).
+  const nouveau = formData.has("prenom") || formData.has("nomFamille");
+  const communs = {
     type: formData.get("type"),
-    nom: formData.get("nom"),
     email: formData.get("email"),
     telephone: formData.get("telephone"),
     ville: formData.get("ville"),
@@ -231,11 +208,30 @@ export async function submitUnifiedContactAction(
     source: formData.get("source") || undefined,
     subType: formData.get("subType") || undefined,
     consent: formData.get("consent") === "true" || formData.get("consent") === "on",
-  });
+  };
+  const parsed = nouveau
+    ? unifiedContactSchema.safeParse({
+        ...communs,
+        civilite: formData.get("civilite") || undefined,
+        prenom: formData.get("prenom"),
+        nomFamille: formData.get("nomFamille"),
+      })
+    : unifiedContactSchemaHerite.safeParse({ ...communs, nom: formData.get("nom") });
   if (!parsed.success) {
     return { ok: false, error: "Champs invalides." };
   }
   const data = parsed.data;
+  // `contactName` reste « Prénom Nom » (plus de trente consommateurs le lisent) ;
+  // prénom et nom de famille vont, chiffrés, dans `details.identite`.
+  const identite =
+    "prenom" in data
+      ? {
+          ...(data.civilite ? { civilite: data.civilite } : {}),
+          prenom: data.prenom,
+          nomFamille: data.nomFamille,
+        }
+      : null;
+  const nomComplet = "prenom" in data ? `${data.prenom} ${data.nomFamille}` : data.nom;
 
   // 4 bis. Pièces jointes (2026-10-15) — le formulaire n'envoie que leur
   // ANNONCE (nom, taille) : les fichiers partiront du navigateur vers R2, sur des
@@ -279,7 +275,7 @@ export async function submitUnifiedContactAction(
         type: submissionTypeFor(data.type),
         locale,
         companyName: data.companyName ?? "—",
-        contactName: encryptPii(data.nom),
+        contactName: encryptPii(nomComplet),
         contactEmail: encryptPii(data.email),
         contactEmailHash: hashEmailForLookup(data.email),
         contactPhone: telephone === null ? null : encryptPii(telephone),
@@ -294,6 +290,7 @@ export async function submitUnifiedContactAction(
           timingWeeks: data.timingWeeks,
           source: data.source,
           consentVersion: CONSENT_VERSION,
+          ...(identite ? { [CLE_IDENTITE]: identitePourDetails(identite) } : {}),
           // Turnstile soft-fail : trace si le captcha n'a pas validé (audit abus).
           ...(turnstilePassed ? {} : { turnstilePassed: false }),
           // Pièces jointes (2026-10-15) : combien annoncées ; si aucune URL n'a été
@@ -321,7 +318,8 @@ export async function submitUnifiedContactAction(
       occurredAt: submission.submittedAt,
       person: {
         email: data.email,
-        fullName: data.nom,
+        fullName: nomComplet,
+        ...(identite ? { firstName: identite.prenom, lastName: identite.nomFamille } : {}),
         phone: telephone,
       },
       company: {
@@ -382,7 +380,7 @@ export async function submitUnifiedContactAction(
     const category = notifCategoryFor(data.type);
     const notifPayload = {
       submissionId: submission.id,
-      contactName: data.nom,
+      contactName: nomComplet,
       contactEmail: data.email,
       ...(telephone ? { contactPhone: telephone } : {}),
       // Le message INTÉGRAL (décision Will 15/10) : le salon « Clients » le
@@ -441,7 +439,8 @@ export async function submitUnifiedContactAction(
           data.email,
           locale,
           payloadAccuseContact({
-            nom: data.nom,
+            nom: nomComplet,
+            ...(identite ?? {}),
             submissionId: submission.id,
             companyName: data.companyName,
             type: data.type,

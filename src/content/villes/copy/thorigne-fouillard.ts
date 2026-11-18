@@ -49,7 +49,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thorigné-Fouillard et nord-est Rennes ?",
-      a: "Oui, Axion-IA intervient à Thorigné-Fouillard et dans tout le nord-est de Rennes Métropole (Cesson-Sévigné, Acigné, Betton, Saint-Grégoire). Nos consultants viennent de Rennes centre (15 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Thorigné-Fouillard et dans tout le nord-est de Rennes Métropole (Cesson-Sévigné, Acigné, Betton, Saint-Grégoire). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de services du nord-est rennais ?",
@@ -65,7 +65,7 @@ export const THORIGNE_FOUILLARD_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Thorigné-Fouillard ?",
-      a: "Nos consultants viennent de Rennes centre (15 min). Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Thorigné-Fouillard est desservie par le réseau bus STAR (métro ligne B à Cesson-Sévigné proche).",
     },
   ],
 };

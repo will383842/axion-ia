@@ -49,7 +49,7 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Château-Arnoux-Saint-Auban ?",
-      a: "Oui, Axion-IA intervient à Château-Arnoux-Saint-Auban et toute la Moyenne Durance (Sisteron, Oraison, Les Mées, Volonne). Nos consultants viennent d'Aix-en-Provence (1h20 A51) ou Digne-les-Bains (25 min).",
+      a: "Oui, Axion-IA intervient à Château-Arnoux-Saint-Auban et toute la Moyenne Durance (Sisteron, Oraison, Les Mées, Volonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles de la plateforme chimique ?",
@@ -65,7 +65,7 @@ export const CHATEAU_ARNOUX_SAINT_AUBAN_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Château-Arnoux-Saint-Auban ?",
-      a: "Nos consultants se déplacent sur site depuis Aix-en-Provence (1h20 A51) ou Digne-les-Bains (25 min). Hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Hébergement local possible.",
     },
   ],
 };

@@ -233,7 +233,7 @@ export const SAINT_MICHEL_SUR_ORGE_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA peut-il se déplacer rapidement à Saint-Michel-sur-Orge ?",
-      a: "Oui, notre équipe se déplace sur site sous 5 jours ouvrés après validation de la mission. Accès via le RER C (gare de Saint-Michel-sur-Orge), la RN20 ou la francilienne N104.",
+      a: "Oui, notre équipe se déplace sur site sous 5 jours ouvrés après validation de la mission. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Axion-IA couvre-t-il les communes voisines de Saint-Michel-sur-Orge ?",

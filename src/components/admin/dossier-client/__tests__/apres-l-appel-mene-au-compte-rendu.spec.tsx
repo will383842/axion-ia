@@ -110,7 +110,7 @@ describe("« Après l'appel » mène au compte rendu", () => {
         principal: "J1",
       },
     });
-    expect(html).toContain("Autre projet évoqué");
+    expect(html).toContain("Autre prestation évoquée");
     expect(html).not.toContain("« J3 »");
   });
 

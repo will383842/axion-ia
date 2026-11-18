@@ -230,7 +230,7 @@ export const FONTENAY_SOUS_BOIS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontenay-sous-Bois ?",
-      a: "Oui, Axion-IA intervient à Fontenay-sous-Bois et dans l'est du Val-de-Marne (Vincennes, Nogent-sur-Marne, Montreuil). Nos consultants se déplacent depuis Paris via le RER A pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Fontenay-sous-Bois et dans l'est du Val-de-Marne (Vincennes, Nogent-sur-Marne, Montreuil). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Fontenay-sous-Bois ?",

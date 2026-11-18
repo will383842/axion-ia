@@ -49,7 +49,7 @@ export const VILLENOY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villenoy et dans le bassin meldois ?",
-      a: "Oui, Axion-IA intervient à Villenoy et dans toute l'agglomération du Pays de Meaux (Meaux, Trilport, Nanteuil-lès-Meaux, Crégy-lès-Meaux). Nos consultants se déplacent depuis Paris-Est en 25 min express via le Transilien ligne P.",
+      a: "Oui, Axion-IA intervient à Villenoy et dans toute l'agglomération du Pays de Meaux (Meaux, Trilport, Nanteuil-lès-Meaux, Crégy-lès-Meaux). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Villenoy ?",
@@ -61,7 +61,7 @@ export const VILLENOY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA sur site à Villenoy ?",
-      a: "Nos consultants viennent sur site à Villenoy (gare de Meaux, Transilien ligne P depuis Paris-Est, 25 min). Format journée ou demi-journée adapté à votre activité.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Format journée ou demi-journée adapté à votre activité.",
     },
     {
       q: "Quels services IA pour les professions libérales à Villenoy ?",

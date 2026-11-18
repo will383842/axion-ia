@@ -70,7 +70,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio depuis Saumur.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -156,7 +156,7 @@ export const SAUMUR_COPY: VilleCopy = {
           {
             step: "Développement par sprints",
             detail:
-              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio depuis Saumur.",
+              "Greffe IA sur l'existant ou build IA-native : e-commerce direct producteur multi-CMS (WooCommerce, Shopify, PrestaShop, Magento), réservation de visites de caves, chatbot RAG multilingue, recherche sémantique de cuvées, agents d'automatisation. Démos hebdomadaires en visio.",
           },
           {
             step: "Recette + mise en ligne",
@@ -226,7 +226,7 @@ export const SAUMUR_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saumur et Val de Loire ?",
-      a: "Oui, Axion-IA intervient à Saumur et tout le Val de Loire (Angers, Tours, Chinon, Bourgueil, Montsoreau). Nos consultants viennent de Paris (TGV Nantes/Tours puis TER) ou Nantes (1h en voiture).",
+      a: "Oui, Axion-IA intervient à Saumur et tout le Val de Loire (Angers, Tours, Chinon, Bourgueil, Montsoreau). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les viticulteurs Saumur-Champigny ?",

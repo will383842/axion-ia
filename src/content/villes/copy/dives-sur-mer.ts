@@ -49,7 +49,7 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dives-sur-Mer et sur la Côte Fleurie ?",
-      a: "Oui, Axion-IA intervient à Dives-sur-Mer et sur toute la Côte Fleurie (Cabourg, Houlgate, Deauville-Trouville). Nos consultants se déplacent depuis Caen (25 min) ou Paris (2h A13).",
+      a: "Oui, Axion-IA intervient à Dives-sur-Mer et sur toute la Côte Fleurie (Cabourg, Houlgate, Deauville-Trouville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme et de l'hôtellerie ?",
@@ -64,8 +64,8 @@ export const DIVES_SUR_MER_COPY: VilleCopy = {
       a: "Pour les TPE et ostréiculteurs à Dives-sur-Mer, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : traçabilité lots, prédiction récoltes, classification photos produits, gestion commandes.",
     },
     {
-      q: "Comment se passe une mission depuis Caen ou Paris ?",
-      a: "Nos consultants viennent de Caen (25 min) ou Paris (2h A13). Pour les multi-jours, hébergement local possible sur la Côte Fleurie.",
+      q: "Comment se déroule une mission à Dives-sur-Mer ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible sur la Côte Fleurie.",
     },
   ],
 };

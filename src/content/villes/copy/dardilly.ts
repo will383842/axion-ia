@@ -49,7 +49,7 @@ export const DARDILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dardilly et Techlid ?",
-      a: "Oui, Axion-IA intervient à Dardilly et tout le technopôle Techlid / NO lyonnais (Écully à 5 min, Limonest, Charbonnières-les-Bains). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Dardilly et tout le technopôle Techlid / NO lyonnais (Écully à 5 min, Limonest, Charbonnières-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME technologiques Techlid ?",
@@ -64,8 +64,8 @@ export const DARDILLY_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Dardilly, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Dardilly ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -18,9 +18,9 @@ export const THOIRY_COPY: VilleCopy = {
   ecosystemEn:
     "Thoiry s'inscrit dans le pays de Gex, l'un des territoires français les plus dynamiques grâce à sa proximité immédiate avec Genève et le CERN. L'économie frontalière y irrigue un tissu de PME tertiaires, de services aux entreprises et de professions libérales, tandis que la forte croissance démographique soutient les TPE artisanales du bâtiment et un commerce de proximité prospère. Cette singularité transfrontalière impose des enjeux de multilinguisme et de conformité multi-juridiction que l'IA peut adresser pour fluidifier la gestion et la relation client.",
   distancesFr:
-    "Genève centre à 15 min, Saint-Genis-Pouilly et le CERN à 5 min, Gex à 5 min, aéroport de Genève-Cointrin à 20 min et Lyon à 1h30. Nos consultants se déplacent depuis Lyon et Genève.",
+    "Genève centre à 15 min, Saint-Genis-Pouilly et le CERN à 5 min, Gex à 5 min, aéroport de Genève-Cointrin à 20 min et Lyon à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Genève centre à 15 min, Saint-Genis-Pouilly et le CERN à 5 min, Gex à 5 min, aéroport de Genève-Cointrin à 20 min et Lyon à 1h30. Nos consultants se déplacent depuis Lyon et Genève.",
+    "Genève centre à 15 min, Saint-Genis-Pouilly et le CERN à 5 min, Gex à 5 min, aéroport de Genève-Cointrin à 20 min et Lyon à 1h30. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Services tertiaires frontaliers",
     "Professions libérales et conseil",
@@ -53,7 +53,7 @@ export const THOIRY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thoiry et dans tout le pays de Gex ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Thoiry, Saint-Genis-Pouilly, Gex, Ferney-Voltaire et Divonne. Nos consultants se déplacent depuis Lyon et Genève pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Thoiry, Saint-Genis-Pouilly, Gex, Ferney-Voltaire et Divonne. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'économie frontalière genevoise ?",
@@ -68,8 +68,8 @@ export const THOIRY_COPY: VilleCopy = {
       a: "Audit sur place pour cadrer les priorités, intervention d'une journée pour rendre vos équipes autonomes, et coaching individuel. Tous nos tarifs sont publics et transparents.",
     },
     {
-      q: "Comment se déroule une mission depuis Lyon ou Genève ?",
-      a: "Nos consultants viennent de Lyon (1h30) ou Genève (15 min). Les déplacements sont facturés séparément selon des tarifs publics, sans surprise ni devis opaque.",
+      q: "Comment se déroule une mission à Thoiry ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Les déplacements sont facturés séparément selon des tarifs publics, sans surprise ni devis opaque.",
     },
     {
       q: "Comment Axion-IA garantit-il la conformité RGPD à Thoiry ?",

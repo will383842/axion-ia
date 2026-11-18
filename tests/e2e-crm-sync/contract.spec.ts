@@ -85,6 +85,7 @@ const CRM_EXPECTED_EVENT_TYPES = [
   "opt_out",
   "lead_magnet_requested",
   "email_hard_bounced",
+  "dossier_client_synchro",
 ];
 
 /** Miroir de `SiteSyncEvent::TOP_LEVEL_KEYS` — toute clé hors liste ⇒ 422. */
@@ -142,6 +143,7 @@ const EVENT_TYPE_MIRROR: Record<CrmEventType, true> = {
   opt_out: true,
   lead_magnet_requested: true,
   email_hard_bounced: true,
+  dossier_client_synchro: true,
 };
 
 /** Même verrou pour les statuts rendus par le CRM. */

@@ -9,9 +9,9 @@ export const TRESSES_COPY: VilleCopy = {
   pitchEn:
     "Tresses, commune périurbaine de l'est de Bordeaux Métropole, mêle coteaux viticoles de l'Entre-deux-Mers, artisans du bâtiment, professions libérales et petites PME de services. Axion-IA, cabinet d'architectes seniors en intelligence artificielle, accompagne en priorité les TPE puis les PME de l'est bordelais qui veulent gagner du temps sans recruter.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tresses (33) et dans l'est de Bordeaux Métropole. Nous accompagnons d'abord les TPE — artisans du bâtiment, propriétés viticoles de l'Entre-deux-Mers, commerçants, professions libérales — puis les PME de services, plus rarement quelques ETI. Diagnostic sur site ou en visio depuis Bordeaux, livrables documentés, automatisation des devis, des relances et de la gestion administrative.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tresses (33) et dans l'est de Bordeaux Métropole. Nous accompagnons d'abord les TPE — artisans du bâtiment, propriétés viticoles de l'Entre-deux-Mers, commerçants, professions libérales — puis les PME de services, plus rarement quelques ETI. Diagnostic sur site ou en visio, livrables documentés, automatisation des devis, des relances et de la gestion administrative.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tresses (33) et dans l'est de Bordeaux Métropole. Nous accompagnons d'abord les TPE — artisans du bâtiment, propriétés viticoles de l'Entre-deux-Mers, commerçants, professions libérales — puis les PME de services, plus rarement quelques ETI. Diagnostic sur site ou en visio depuis Bordeaux, livrables documentés, automatisation des devis, des relances et de la gestion administrative.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Tresses (33) et dans l'est de Bordeaux Métropole. Nous accompagnons d'abord les TPE — artisans du bâtiment, propriétés viticoles de l'Entre-deux-Mers, commerçants, professions libérales — puis les PME de services, plus rarement quelques ETI. Diagnostic sur site ou en visio, livrables documentés, automatisation des devis, des relances et de la gestion administrative.",
   seoHook: "artisanat, viticole & libéral",
   ecosystemFr:
     "Tresses occupe les premiers coteaux de l'Entre-deux-Mers, à la frontière entre Bordeaux Métropole et le vignoble girondin. Le tissu local est dominé par les TPE : artisans du bâtiment, propriétés et négoces viticoles, professions libérales, commerces de proximité et petites PME de services. La commune est connectée à la rocade A630 et à l'A89 vers Libourne et Périgueux, ce qui en fait une zone résidentielle et d'activités prisée à l'est de l'agglomération. Axion-IA y adapte ses chantiers IA aux réalités d'entreprises de moins de dix salariés.",
@@ -42,8 +42,8 @@ export const TRESSES_COPY: VilleCopy = {
       en: "Implémentation IA à Tresses : automatisation des devis bâtiment, agents conversationnels pour la prise de rendez-vous, classement documentaire et suivi clientèle pour TPE et petites PME de services.",
     },
     unAUn: {
-      fr: "Accompagnement un-à-un à Tresses : sessions dans vos locaux ou en visio depuis Bordeaux. Pour artisans, professions libérales, vignerons et dirigeants de petites PME de l'est de la métropole.",
-      en: "Accompagnement un-à-un à Tresses : sessions dans vos locaux ou en visio depuis Bordeaux. Pour artisans, professions libérales, vignerons et dirigeants de petites PME de l'est de la métropole.",
+      fr: "Accompagnement un-à-un à Tresses : sessions dans vos locaux ou en visio. Pour artisans, professions libérales, vignerons et dirigeants de petites PME de l'est de la métropole.",
+      en: "Accompagnement un-à-un à Tresses : sessions dans vos locaux ou en visio. Pour artisans, professions libérales, vignerons et dirigeants de petites PME de l'est de la métropole.",
     },
     sitesWeb: {
       fr: "Sites web augmentés à Tresses : vitrine ou plateforme dotée d'IA pour artisans et domaines viticoles — devis en ligne, prise de rendez-vous automatisée, réponses clients instantanées.",
@@ -53,7 +53,7 @@ export const TRESSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Tresses ?",
-      a: "Oui. Axion-IA intervient à Tresses et dans tout l'est de Bordeaux Métropole (Artigues-près-Bordeaux, Fargues-Saint-Hilaire, Carignan-de-Bordeaux, Pompignac). Nos consultants se déplacent depuis Bordeaux centre en 15 min ou travaillent en visio.",
+      a: "Oui. Axion-IA intervient à Tresses et dans tout l'est de Bordeaux Métropole (Artigues-près-Bordeaux, Fargues-Saint-Hilaire, Carignan-de-Bordeaux, Pompignac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Tresses ?",
@@ -69,7 +69,7 @@ export const TRESSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Tresses ?",
-      a: "Nos consultants seniors interviennent dans vos locaux ou en visio depuis Bordeaux centre (15 min). Chaque mission donne lieu à des livrables documentés et à une prise en main par vos équipes, sans dépendance technique durable.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Chaque mission donne lieu à des livrables documentés et à une prise en main par vos équipes, sans dépendance technique durable.",
     },
   ],
 };

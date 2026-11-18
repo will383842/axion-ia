@@ -17,7 +17,6 @@ import { HeroBadge } from "@/components/marketing/HeroBadge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { ImplementationHeroSchema } from "@/components/sections/ImplementationHeroSchema";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { INTERVENTION_TIERS, formatAmount, getTierById } from "@/content/pricing";
 import type { VilleContext } from "@/components/services/types";
 
 export interface ImplementationHeroProps {
@@ -26,13 +25,6 @@ export interface ImplementationHeroProps {
 }
 
 export function ImplementationHero({ isFr, villeContext }: ImplementationHeroProps): ReactNode {
-  const loc: "fr" | "en" = isFr ? "fr" : "en";
-  const startupAmount = formatAmount(
-    getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!,
-    loc,
-    { compact: true },
-  );
-
   // 8 nœuds satellites — 1 par fonction métier (ordre = disposition horaire SVG).
   const heroNodes = isFr
     ? [
@@ -62,7 +54,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `Implémentation IA à ${villeContext.name}`
       : `AI implementation in ${villeContext.name}`
     : isFr
-      ? "On implémente l'IA dans votre entreprise,"
+      ? "Agents IA et automatisations"
       : "We implement AI across your company,";
 
   const titleEm = villeContext
@@ -70,13 +62,13 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       ? `& région ${villeContext.region}`
       : `& ${villeContext.region} region`
     : isFr
-      ? "quel que soit votre besoin."
+      ? "sur mesure pour votre entreprise."
       : "whatever you need.";
 
   const description = villeContext
     ? isFr
-      ? `Cabinet IA & automatisation au service des entreprises de ${villeContext.name} et sa région. Forfait fixe à partir de ${startupAmount}, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
-      : `AI & automation consultancy serving ${villeContext.name}-area companies. Fixed fee from ${startupAmount}, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`
+      ? `Cabinet IA & automatisation au service des entreprises de ${villeContext.name} et sa région. Forfait fixe sur devis, livraison en 2 à 6 semaines. Vous payez une fois, c'est à vous — pas d'abonnement mensuel.`
+      : `AI & automation consultancy serving ${villeContext.name}-area companies. Fixed fee on quote, delivery in 2 to 6 weeks. You pay once, it's yours — no monthly subscription.`
     : isFr
       ? `Chatbots, agents IA, automatisations, intégrations à vos outils… on conçoit et on livre la solution adaptée à votre métier. Du vrai code sur-mesure, robuste — pas du no-code fragile (Zapier, Make, n8n).`
       : `Chatbots, AI agents, automations, integrations with your tools… we design and ship the solution that fits your business. Real custom code, robust — not brittle no-code (Zapier, Make, n8n).`;
@@ -135,7 +127,7 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
                 <Cta href="/contact" size="lg" track="impl-hero-primary">
-                  {isFr ? "Décrire mon besoin · réponse 48 h" : "Describe my need · 48 h reply"}
+                  {isFr ? "Décrire mon besoin" : "Describe my need"}
                   <ArrowRight aria-hidden="true" className="h-4 w-4" />
                 </Cta>
                 <Cta href="/audit" variant="outline" size="lg" track="impl-hero-audit">
@@ -205,7 +197,6 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
       </section>
       <JsonLd
         data={speakableJsonLd}
-        strategy="afterInteractive"
         scriptId={
           villeContext
             ? `jsonld-impl-hero-speakable-${villeContext.villeSlug}`

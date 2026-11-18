@@ -49,7 +49,7 @@ export const CAUDEBEC_LES_ELBEUF_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Caudebec-les-Elbeuf et dans l'agglo d'Elbeuf ?",
-      a: "Oui, Axion-IA intervient a Caudebec-les-Elbeuf et dans toute l'agglo d'Elbeuf (Elbeuf, Saint-Aubin-les-Elbeuf, Saint-Pierre-les-Elbeuf). Consultants depuis Rouen (25 min) ou Paris (1h40).",
+      a: "Oui, Axion-IA intervient a Caudebec-les-Elbeuf et dans toute l'agglo d'Elbeuf (Elbeuf, Saint-Aubin-les-Elbeuf, Saint-Pierre-les-Elbeuf). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Caudebec-les-Elbeuf ?",

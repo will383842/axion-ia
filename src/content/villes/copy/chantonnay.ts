@@ -49,7 +49,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chantonnay et dans le bocage vendéen ?",
-      a: "Oui, Axion-IA intervient à Chantonnay et dans tout le bocage vendéen. Consultants depuis La Roche-sur-Yon (25 min) ou gare SNCF Chantonnay (TER direct).",
+      a: "Oui, Axion-IA intervient à Chantonnay et dans tout le bocage vendéen. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les exploitations agricoles de Chantonnay ?",
@@ -65,7 +65,7 @@ export const CHANTONNAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chantonnay ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (25 min) ou via gare SNCF Chantonnay. Déplacement sur site dans vos locaux, atelier ou exploitation. A83 à 15 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux, atelier ou exploitation. A83 à 15 min.",
     },
   ],
 };

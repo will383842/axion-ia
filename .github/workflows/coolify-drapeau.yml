@@ -6,7 +6,8 @@ name: Coolify · basculer un drapeau (site + worker)
 # ── Pourquoi une liste FERMÉE de clés ─────────────────────────────────────────
 # Les entrées d'un workflow_dispatch sont visibles dans l'interface GitHub et
 # dans les journaux. Ce workflow ne doit donc jamais servir à poser un secret :
-# la clé est choisie dans une liste, la valeur est `true` ou `false`, point.
+# la clé est choisie dans une liste, la valeur est validée selon la clé (`true`/`false`,
+# `essai`, une date, un identifiant de salon, une adresse d'essai d'Axion IA), point.
 # Pour un secret, voir `calendly-jeton-vers-coolify.yml`.
 #
 # ── Pourquoi les deux applications par défaut ─────────────────────────────────
@@ -34,14 +35,86 @@ on:
           # Enregistrement des visios (PR 5) : lu par le site ET le worker.
           - "ENREGISTREMENT_VISIO_PILOTE"
           - "ENREGISTREMENT_VISIO_OUVERT"
+          # Fiche prospect créée toute seule au rendez-vous (PR #1642). Cible : worker.
+          # Valeurs : true | false | essai. Sans la date ci-dessous, rien n'est traité.
+          - "DOSSIER_FICHE_AUTO"
+          # Date ISO d'activation (ex. 2026-10-24T16:00:00+02:00) : seuls les rendez-vous
+          # réservés APRÈS cette date reçoivent une fiche. Cible : worker.
+          - "DOSSIER_FICHE_AUTO_DEPUIS"
+          # Questionnaire avant audit (PR #1644, #1649). Cible : les deux. Allumé, il OUVRE
+          # la réception réelle des réponses et le bouton « Envoyer » de la console ; aucun
+          # e-mail ne part jamais sans le clic de Will (conservation 5 ans, sans purge).
+          - "QUESTIONNAIRE_AVANT_AUDIT_ENABLED"
+          # Suivi du questionnaire (2026-10-26). Cible : les deux (le worker agit, la console affiche). Valeurs : true | false | essai
+          # (« essai » compte sans rien écrire ni envoyer). Rien ne part sans l'envoi de Will.
+          - "QUESTIONNAIRE_RELANCES_ENABLED"
+          - "QUESTIONNAIRE_CONFIRMATIONS_ENABLED"
+          - "QUESTIONNAIRE_TELEGRAM_ENABLED"
+          # Suivi des ouvertures du questionnaire (2026-10-27). Cible : site (la page et la console
+          # lisent ; le worker ne les lit pas). Valeurs : true | false.
+          # SUIVI_ENABLED : ouvertures, avancée, lecture du brouillon par Will. SUIVI_NOTICE_VISIBLE :
+          # ne commande QUE le texte d'information de la page (`notice-suivi.ts`, à valider par Will).
+          - "QUESTIONNAIRE_SUIVI_ENABLED"
+          - "QUESTIONNAIRE_SUIVI_NOTICE_VISIBLE"
+          # Copie complète des réponses d'un questionnaire (super-administrateur) : ÉTEINT par défaut.
+          - "QUESTIONNAIRE_EXPORT_COMPLET_ENABLED"
+          # Rapport d'analyse avant audit (2026-11-02) : bouton « Lancer l'analyse complète ».
+          # Cible : les deux (le site lance, le worker traite). ÉTEINT par défaut ; n'envoie jamais
+          # rien au client.
+          - "RAPPORT_AVANT_AUDIT_ENABLED"
+          # Salon Telegram « Questionnaire audit » (identifiant, ex. -1001234567890). Sans lui :
+          # Clients, puis Système. Cible : worker.
+          - "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT"
+          # Boîte d'Axion IA qui reçoit les essais (« M'envoyer un essai »). Cible : les deux.
+          - "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI"
+          # Synchro du dossier client avec le CRM Pro (2026-10-26). Valeurs : true | false.
+          # SYNC : le site ENVOIE le dossier au CRM (cible : les-deux, le worker balaie). INBOUND : le CRM
+          # RENVOIE le code NAF (cible : site, route signée). Aucune suppression propagée.
+          - "CRM_SYNC_DOSSIER_ENABLED"
+          - "CRM_INBOUND_DOSSIER_ENABLED"
+          # Parcours viral — guides par réseau (docs/guides-reseau-interrupteurs.md). Cible : site seulement
+          # (lus par le conteneur app). Valeurs : true | false. Aucune donnée personnelle.
+          # OPPOSITIONS_RESEAU_ENABLED s'allume AVANT GUIDES_RESEAU_ENABLED et ne s'éteint JAMAIS sauf
+          # incident (un « stop » refusé en 503 serait perdu) : l'extinction exige `confirmer_extinction`.
+          - "OPPOSITIONS_RESEAU_ENABLED"
+          - "GUIDES_RESEAU_ENABLED"
+          # Page « Recevoir le guide » (lot S2) : `/guide-reseau?j=…` (404) et sa route d'envoi (503) tant
+          # que la valeur n'est pas exactement `true`. Cible : site seulement. Valeurs : true | false.
+          - "PAGE_GUIDE_RESEAU_ENABLED"
+          # « Merci » de la page « Recevoir le guide » (lots S4a/S4b) : `POST /api/interne/confirmations-page-guide`
+          # et son accusé `/issue` (503 tant que la valeur n'est pas exactement `true`). Cible : site seulement.
+          # Valeurs : true | false. ÉTEINT par défaut. Aucun secret ici (docs/guides-reseau-interrupteurs.md).
+          - "CONFIRMATIONS_PAGE_GUIDE_ENABLED"
+          # Synchro CRM v3 de la page « Recevoir le guide » (lot S3, PR #1919). Cible : les-deux — le
+          # site émet l'événement, le rattrapage tourne dans le worker et doit lire le même format.
+          # Valeurs : true | false. ÉTEINTS par défaut ; ne jamais les allumer sans l'ordre du guide
+          # (docs/guides-reseau-interrupteurs.md). NEWSLETTER_OPTIN : attend l'avis de l'auditeur RGPD.
+          - "SYNCHRO_CRM_V3"
+          - "SYNCHRO_CRM_V3_NEWSLETTER_OPTIN"
+          # Origines suivantes (lot guide réseau 4) : site (chemin direct) ET worker (rattrapage). `true` seulement.
+          - "SYNCHRO_CRM_V3_ORIGINES_SUIVANTES"
+          # Date de départ des origines suivantes (une date ISO 8601 UTC `…Z`, pas un secret). Refusée si
+          # elle est antérieure à l'heure du run (aucun historique par ce chemin) ou au-delà de +366 jours. Jamais
+          # redéployée par ce workflow (prise en compte au prochain redéploiement). Cible : les-deux.
+          - "ORIGINES_SUIVANTES_DEPUIS"
+          # Guides réseaux : catalogue, livraison, adresses d'essai. Valeurs : true | false (sauf les adresses).
+          # CATALOGUE : cible site seulement. LIVRAISON : cible les-deux (le rattrapage du worker appelle
+          # `resoudreGuide`). ESSAI_ADRESSES : cible les-deux ; 1 à 5 adresses `…@axion-ia.com` séparées par des
+          # virgules, JAMAIS celle d'une personne réelle ; vide = retirer. La valeur n'est jamais imprimée.
+          - "GUIDES_RESEAU_CATALOGUE_ENABLED"
+          - "GUIDES_RESEAU_LIVRAISON_ENABLED"
+          - "GUIDES_RESEAU_ESSAI_ADRESSES"
+          # Guides fabriqués par le site (G3/G4) : true | false, cible site seulement (le worker n'interroge jamais
+          # la table des versions). Éteint = 404 / « indisponible ». Les variables R2 et le mode de stockage se
+          # posent dans Coolify et se LISENT (présence seulement) par coolify-lire-drapeaux.yml.
+          - "GUIDES_RESEAU_FABRIQUE_ENABLED"
+          # Stockage des PDF fabriqués : `volume` ou `r2` (pas un drapeau vrai/faux). Cible : site seulement.
+          - "GUIDES_RESEAU_STOCKAGE"
       valeur:
-        description: "Valeur"
-        required: true
+        description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS, ORIGINES_SUIVANTES_DEPUIS en UTC « Z »), un identifiant de salon, une adresse d'essai, ou 1 à 5 adresses @axion-ia.com (GUIDES_RESEAU_ESSAI_ADRESSES ; vide pour retirer)"
+        required: false
         default: "true"
-        type: choice
-        options:
-          - "true"
-          - "false"
+        type: string
       cible:
         description: "Application(s)"
         required: true
@@ -51,6 +124,14 @@ on:
           - "les-deux"
           - "site"
           - "worker"
+      confirmer_extinction:
+        description: "Confirmer l'extinction de OPPOSITIONS_RESEAU_ENABLED (incident seulement ; ignoré pour les autres clés)"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
       redeploy:
         description: "Redéployer après (Restart ne recharge pas les variables)"
         required: true
@@ -68,6 +149,23 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Masquer la valeur
+        # Aucune interpolation de inputs.valeur ici (ni dans aucun env:) : GitHub imprime le bloc env:
+        # dans l'en-tête « Run » du journal, public. La valeur est lue dans l'événement, jamais interpolée.
+        run: |
+          set -euo pipefail
+          VAL=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
+          CLE_LUE=$(jq -r '.inputs.cle // ""' "$GITHUB_EVENT_PATH")
+          # Seules les clés qui portent une adresse sont masquées : masquer « true » partout noircirait le journal.
+          case "$CLE_LUE" in
+            GUIDES_RESEAU_ESSAI_ADRESSES|QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI)
+              if [ -n "$VAL" ] && [[ "$VAL" != *$'\n'* ]]; then echo "::add-mask::$VAL"; fi
+              while IFS= read -r morceau; do
+                if [ -n "$morceau" ]; then echo "::add-mask::$morceau"; fi
+              done < <(printf '%s\n' "$VAL" | tr ',' '\n')
+              ;;
+          esac
+
       - name: Valider les secrets
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
@@ -84,6 +182,81 @@ jobs:
           done
           echo "Secrets présents."
 
+      - name: Valider la valeur
+        env:
+          CLE: ${{ inputs.cle }}
+          CIBLE: ${{ inputs.cible }}
+          CONFIRMER_EXTINCTION: ${{ inputs.confirmer_extinction }}
+        run: |
+          set -euo pipefail
+          export LC_ALL=C
+          VALEUR=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
+          # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
+          if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "GUIDES_RESEAU_FABRIQUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "GUIDES_RESEAU_STOCKAGE" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "CONFIRMATIONS_PAGE_GUIDE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          # Guides réseaux : le catalogue est lu par le site seulement ; la livraison et les adresses d'essai
+          # par le site ET le worker (le rattrapage du worker appelle resoudreGuide).
+          if [ "$CLE" = "GUIDES_RESEAU_CATALOGUE_ENABLED" ] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [[ "$CLE" =~ ^GUIDES_RESEAU_(LIVRAISON_ENABLED|ESSAI_ADRESSES)$ ]] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
+          fi
+          if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then
+            echo "::error::Refus : éteindre OPPOSITIONS_RESEAU_ENABLED ferait refuser (503) les « stop » des personnes. À éteindre uniquement en cas d'incident, avec confirmer_extinction=true (voir docs/guides-reseau-interrupteurs.md)."; exit 1
+          fi
+          # Les interrupteurs du suivi du questionnaire se posent TOUJOURS sur les deux applications :
+          # le worker agit, la console affiche le même état (sinon elle dirait « éteintes » à tort).
+          # Synchro CRM v3 : site ET worker redéployés ensemble (le worker rattrape et lirait l'ancien format).
+          if [[ "$CLE" =~ ^SYNCHRO_CRM_V3(_NEWSLETTER_OPTIN|_ORIGINES_SUIVANTES)?$ ]] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
+          fi
+          if [ "$CLE" = "ORIGINES_SUIVANTES_DEPUIS" ] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
+          fi
+          if [[ "$CLE" =~ ^QUESTIONNAIRE_(RELANCES|CONFIRMATIONS|TELEGRAM)_ENABLED$ ]] && [ "$CIBLE" != "les-deux" ]; then
+            echo "::error::$CLE se pose sur « les-deux »"; exit 1
+          fi
+          if [ "$CLE" = "DOSSIER_FICHE_AUTO_DEPUIS" ]; then
+            [[ "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]] || { echo "::error::Date ISO attendue"; exit 1; }
+          elif [ "$CLE" = "ORIGINES_SUIVANTES_DEPUIS" ]; then
+            [[ "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$ ]] || { echo "::error::Date ISO 8601 UTC attendue (AAAA-MM-JJTHH:MM:SSZ)"; exit 1; }
+            depuis=$(date -u -d "$VALEUR" +%s 2>/dev/null) || { echo "::error::Date illisible"; exit 1; }
+            if [ "$depuis" -lt "$(date -u +%s)" ]; then
+              echo "::error::Refus : $VALEUR est antérieure à l'heure du run (aucun historique par ce chemin)."; exit 1
+            fi
+            if [ "$depuis" -gt "$(( $(date -u +%s) + 366 * 86400 ))" ]; then
+              echo "::error::Refus : $VALEUR dépasse l'heure du run de plus de 366 jours (faute de frappe probable)."; exit 1
+            fi
+          elif [ "$CLE" = "TELEGRAM_CHAT_ID_QUESTIONNAIRE_AUDIT" ]; then
+            [[ "$VALEUR" =~ ^-?[0-9]+$ ]] || { echo "::error::Identifiant de salon Telegram attendu"; exit 1; }
+          elif [ "$CLE" = "GUIDES_RESEAU_ESSAI_ADRESSES" ]; then
+            # Jamais l'adresse d'une personne réelle : seul le domaine d'Axion IA passe. Vide = retirer.
+            # La valeur n'est jamais reprise dans un message.
+            motif_essai='^[a-z0-9.+-]+@axion-ia\.com(,[a-z0-9.+-]+@axion-ia\.com){0,4}$'
+            if [ -n "$VALEUR" ] && ! [[ "$VALEUR" =~ $motif_essai ]]; then
+              echo "::error::Refus : 1 à 5 adresses @axion-ia.com séparées par des virgules (ou vide pour retirer)"; exit 1
+            fi
+          elif [ "$CLE" = "GUIDES_RESEAU_STOCKAGE" ]; then
+            [[ "$VALEUR" =~ ^(volume|r2)$ ]] || { echo "::error::volume ou r2"; exit 1; }
+          elif [ "$CLE" = "QUESTIONNAIRE_PREAUDIT_ADRESSE_ESSAI" ]; then
+            [[ "$VALEUR" =~ ^[^[:space:]@]+@[^[:space:]@]+\.[^[:space:]@]+$ ]] || { echo "::error::Adresse e-mail attendue"; exit 1; }
+          elif [[ "$CLE" =~ ^(DOSSIER_FICHE_AUTO|QUESTIONNAIRE_RELANCES_ENABLED|QUESTIONNAIRE_CONFIRMATIONS_ENABLED|QUESTIONNAIRE_TELEGRAM_ENABLED)$ ]]; then
+            [[ "$VALEUR" =~ ^(true|false|essai)$ ]] || { echo "::error::true, false ou essai"; exit 1; }
+          else
+            [[ "$VALEUR" =~ ^(true|false)$ ]] || { echo "::error::true ou false"; exit 1; }
+          fi
+
       - name: Lire l'état actuel
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
@@ -98,7 +271,7 @@ jobs:
             echo "──── $nom ────"
             curl -fsSL -m 20 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
               "${COOLIFY_URL}/api/v1/applications/${uuid}/envs" \
-              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | "\(.key) = \(.value) (preview=\(.is_preview))"' \
+              | jq -r --arg k "$CLE" '.[] | select(.key == $k) | ((.value // "") | tostring) as $v | "\(.key) = \(if .key == "GUIDES_RESEAU_ESSAI_ADRESSES" then (if $v == "" then "0 adresse(s)" else "\($v | split(",") | length) adresse(s)" end) elif ($v | test("^(true|false)$|^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$")) then $v else "valeur masquée (\($v | length) caractères)" end) (preview=\(.is_preview))"' \
               || echo "(lecture impossible)"
           done
 
@@ -109,27 +282,36 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
           CLE: ${{ inputs.cle }}
-          VALEUR: ${{ inputs.valeur }}
           CIBLE: ${{ inputs.cible }}
         run: |
           set -euo pipefail
+          VALEUR=$(jq -r '.inputs.valeur // "true"' "$GITHUB_EVENT_PATH")
           payload=$(jq -nc --arg key "$CLE" --arg value "$VALEUR" '{
             key: $key, value: $value,
             is_preview: false, is_literal: false, is_multiline: false, is_shown_once: false
           }')
+          # Seuls true/false et les dates ISO s'affichent ; le reste (ex. une adresse) est masqué.
+          if [ "$CLE" = "GUIDES_RESEAU_ESSAI_ADRESSES" ]; then
+            # Les adresses ne s'impriment jamais : seulement leur nombre.
+            if [ -z "$VALEUR" ]; then affiche="0 adresse(s)"; else affiche="$(( $(printf '%s' "$VALEUR" | tr -cd ',' | wc -c) + 1 )) adresse(s)"; fi
+          elif [[ "$VALEUR" =~ ^(true|false)$ || "$VALEUR" =~ ^20[0-9]{2}-[0-9]{2}-[0-9]{2}T[0-9:]{8}(Z|[+-][0-9]{2}:[0-9]{2})$ ]]; then
+            affiche="$VALEUR"
+          else
+            affiche="valeur masquée (${#VALEUR} caractères)"
+          fi
           upsert() {
             local uuid="$1" nom="$2" code
-            echo "──── $nom ($uuid) : $CLE=$VALEUR ────"
+            echo "──── $nom ($uuid) : $CLE=$affiche ────"
             code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X PATCH \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
               -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
             if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "PATCH ✅ ($code)"; return 0; fi
-            echo "PATCH → $code : $(head -c 200 /tmp/resp) — tentative POST"
+            echo "PATCH → $code — tentative POST"
             code=$(curl -sS -m 20 -o /tmp/resp -w "%{http_code}" -X POST \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Content-Type: application/json" \
               -d "$payload" "${COOLIFY_URL}/api/v1/applications/${uuid}/envs")
             if [ "$code" = "200" ] || [ "$code" = "201" ]; then echo "POST ✅ ($code)"; return 0; fi
-            echo "::error::$nom : POST → $code : $(head -c 300 /tmp/resp)"
+            echo "::error::$nom : POST → $code"
             return 1
           }
           case "$CIBLE" in
@@ -146,15 +328,20 @@ jobs:
           COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
           CIBLE: ${{ inputs.cible }}
+          CLE: ${{ inputs.cle }}
         run: |
           set -euo pipefail
+          if [ "$CLE" = "ORIGINES_SUIVANTES_DEPUIS" ]; then
+            echo "Redéploiement ignoré pour $CLE : pris en compte au prochain redéploiement."
+            exit 0
+          fi
           deploy() {
             local uuid="$1" nom="$2" r
             r=$(curl -fsSL -X POST -m 30 \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" -H "Accept: application/json" \
               --data-urlencode "uuid=${uuid}" --data-urlencode "force=true" \
               "${COOLIFY_URL}/api/v1/deploy")
-            echo "$nom : $r"
+            echo "$nom : deployment_uuid=$(printf '%s' "$r" | jq -r '.deployments[0].deployment_uuid // "inconnu"' 2>/dev/null || echo inconnu)"
           }
           case "$CIBLE" in
             site) deploy "$COOLIFY_APP_UUID" site ;;

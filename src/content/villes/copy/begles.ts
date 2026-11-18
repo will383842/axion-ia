@@ -75,7 +75,7 @@ export const BEGLES_COPY: VilleCopy = {
           {
             step: "Recette + mise en ligne",
             detail:
-              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime. Accès rapide depuis Bordeaux-Saint-Jean (TGV) à 10 min.",
+              "Tests d'acceptation, Web Vitals et SEO/AEO validés, mise en production sans downtime.",
           },
           {
             step: "Livraison + autonomie",

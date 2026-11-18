@@ -10,6 +10,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const d = vi.hoisted(() => ({ session: null as unknown, fiche: null as unknown }));
 
+vi.mock("@/components/admin/dossier-client/fiche/emplacements", async () => ({
+  ...(await import("./_emplacements-vides")).emplacementsVides,
+}));
 vi.mock("@/auth", () => ({ auth: () => Promise.resolve(d.session) }));
 vi.mock("next/navigation", () => ({
   redirect: (url: string) => {
@@ -67,7 +70,7 @@ beforeEach(() => {
 
 /** Le bloc seul, découpé dans le rendu de la page. */
 function bloc(html: string): string {
-  const debut = html.indexOf("Branche et OPCO");
+  const debut = html.indexOf("Branche professionnelle");
   return debut < 0 ? "" : html.slice(debut, html.indexOf("</section>", debut));
 }
 
@@ -94,6 +97,14 @@ describe("fiche client — bloc « Branche et OPCO »", () => {
     d.session = { user: { id: "u1", role: "admin" } };
     d.fiche = { ...FICHE_360, ...BRANCHE, type: "particulier" };
     const html = await rendreFiche(Page, "facturation");
-    expect(html).not.toContain("Branche et OPCO");
+    expect(html).not.toContain("Branche professionnelle");
   });
 });
+
+// Lot 1 fiche client : le bloc « Questionnaire avant audit » lit la base ; ces specs ne la touchent pas.
+vi.mock("@/features/dossier-client/questionnaires-de-la-fiche", () => ({
+  lireQuestionnairesDeLaFiche: vi.fn().mockResolvedValue([]),
+}));
+vi.mock("@/features/dossier-client/fil-des-echanges", () => ({
+  lireFilDesEchanges: vi.fn().mockResolvedValue({ fil: [], sourcesEnPanne: 0 }),
+}));

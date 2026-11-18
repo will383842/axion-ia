@@ -49,7 +49,7 @@ export const QUIMPERLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quimperlé et dans le sud Finistère ?",
-      a: "Oui, Axion-IA intervient à Quimperlé et tout le Pays de Quimperlé (Moëlan-sur-Mer, Riec-sur-Bélon, Clohars-Carnoët, Bannalec, Scaër). Nos consultants viennent via TGV gare de Quimperlé ou depuis Lorient (20 min N165).",
+      a: "Oui, Axion-IA intervient à Quimperlé et tout le Pays de Quimperlé (Moëlan-sur-Mer, Riec-sur-Bélon, Clohars-Carnoët, Bannalec, Scaër). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires bretonnes du sud Finistère ?",
@@ -65,7 +65,7 @@ export const QUIMPERLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Quimperlé ?",
-      a: "Nos consultants arrivent par TGV gare de Quimperlé (3h40 Paris) ou depuis Lorient (20 min). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

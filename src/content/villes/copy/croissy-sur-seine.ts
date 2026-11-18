@@ -64,7 +64,7 @@ export const CROISSY_SUR_SEINE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Croissy-sur-Seine ?",
       a: "Gare Chatou-Croissy (RER A) à 5 min de Croissy. Paris-La Défense à 15 min, Paris-Étoile à 25 min via RER A. Tarifs publics.",
     },
   ],

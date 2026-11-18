@@ -54,6 +54,7 @@ import {
   adressesDeLEntree,
   lireArgumentsRattrapage,
   rattraperLettreEtGuide,
+  rattraperOriginesSuivantes,
 } from "@/server/crm-sync/rattrapage-lettre-guide";
 
 async function lireEntreeStandard(): Promise<string> {
@@ -100,6 +101,17 @@ async function main(): Promise<void> {
     console.error("\n✗ CRM_SYNC_GUIDE_ENABLED est fermé : rien n'a été écrit.");
     process.exit(1);
   }
+  // Lot guide réseau 4 (O5) : origines suivantes restées en route. Sans `ORIGINES_SUIVANTES_DEPUIS`
+  // (décision D3 de Williams), le passage ne fait rien ; il ne s'exécute que si les interrupteurs
+  // `SYNCHRO_CRM_V3` et `SYNCHRO_CRM_V3_ORIGINES_SUIVANTES` sont allumés (sinon la fonction rend « eteinte »).
+  const o = await rattraperOriginesSuivantes({ executer: args.executer, exclure });
+  console.log("Origines suivantes (guide réseau)");
+  console.log(
+    o.refus
+      ? `  · passage ignoré                     : ${o.refus}`
+      : `  · groupes en attente / transmis      : ${o.groupes} / ${o.transmis}`,
+  );
+  if (!o.refus) console.log(`  · groupes exclus (sautés)            : ${o.exclues ?? 0}`);
   if (b.mode === "a-blanc") {
     console.log("\nÀ blanc : AUCUNE écriture. Relancer avec --executer pour agir.");
     return;

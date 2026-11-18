@@ -49,7 +49,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vaucresson et dans l'ouest des Hauts-de-Seine ?",
-      a: "Oui, Axion-IA intervient à Vaucresson et dans tout l'ouest des Hauts-de-Seine (Garches, Marnes-la-Coquette, Rueil-Malmaison, La Celle-Saint-Cloud, Ville-d'Avray). Accès rapide depuis La Défense (10 min) et Paris (25 min Transilien L).",
+      a: "Oui, Axion-IA intervient à Vaucresson et dans tout l'ouest des Hauts-de-Seine (Garches, Marnes-la-Coquette, Rueil-Malmaison, La Celle-Saint-Cloud, Ville-d'Avray). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Vaucresson  ?",
@@ -65,7 +65,7 @@ export const VAUCRESSON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe le déplacement pour une mission à Vaucresson ?",
-      a: "Nos consultants se déplacent à Vaucresson depuis Paris ou La Défense (10-25 min). Interventions dans vos locaux sur vos cas métier réels.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Interventions dans vos locaux sur vos cas métier réels.",
     },
   ],
 };

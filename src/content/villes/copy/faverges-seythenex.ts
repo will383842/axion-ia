@@ -49,7 +49,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Faverges-Seythenex ?",
-      a: "Oui, Axion-IA intervient à Faverges-Seythenex et dans tout le bassin entre Annecy (25 min) et Albertville (20 min). Nos consultants couvrent le secteur depuis Annecy, Chambéry ou Genève. Commune nouvelle depuis 2016, nous accompagnons entreprises des deux bourgs fusionnés.",
+      a: "Oui, Axion-IA intervient à Faverges-Seythenex et dans tout le bassin entre Annecy (25 min) et Albertville (20 min). Nous intervenons partout en France, sur place ou à distance. Commune nouvelle depuis 2016, nous accompagnons entreprises des deux bourgs fusionnés.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de Faverges ?",
@@ -65,7 +65,7 @@ export const FAVERGES_SEYTHENEX_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Faverges-Seythenex ?",
-      a: "Nos consultants interviennent à Faverges-Seythenex depuis Annecy (25 min) ou Albertville (20 min). Intervention sur site dans votre usine, exploitation ou commerce. Pour missions multi-jours, hébergement local montagne.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre usine, exploitation ou commerce. Pour missions multi-jours, hébergement local montagne.",
     },
   ],
 };

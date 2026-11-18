@@ -49,7 +49,7 @@ export const BLAIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blain et nord Loire-Atlantique ?",
-      a: "Oui, Axion-IA intervient à Blain et tout le nord Loire-Atlantique (Le Gâvre, Guémené-Penfao, Nozay, Nort-sur-Erdre). Nos consultants viennent de Nantes (40 min D164) ou de Redon (30 min).",
+      a: "Oui, Axion-IA intervient à Blain et tout le nord Loire-Atlantique (Le Gâvre, Guémené-Penfao, Nozay, Nort-sur-Erdre). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec la filière bois et les scieries ?",
@@ -64,8 +64,8 @@ export const BLAIN_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et agriculteurs à Blain, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, traçabilité élevage, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Nantes ?",
-      a: "Nos consultants viennent de Nantes en 40 min via la D164. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest).",
+      q: "Comment se déroule une mission à Blain ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (gîtes canal Nantes-Brest).",
     },
   ],
 };

@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-10-11" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-14" as const;
 
 export type TransferFramework = "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu";
 
@@ -58,7 +58,18 @@ export interface Subprocessor {
   /** Base légale RGPD (art. 6 §1). */
   legalBasis: "6.1.b_contract" | "6.1.f_legitimate_interest" | "6.1.a_consent";
   /** DPA signé / disponible. */
-  dpaStatus: "signed" | "auto_signable_dashboard" | "self_hosted_no_dpa" | "pending";
+  dpaStatus:
+    | "signed"
+    | "auto_signable_dashboard"
+    | "self_hosted_no_dpa"
+    | "pending"
+    /**
+     * Sans objet : le tiers ne reçoit AUCUNE donnée personnelle (une empreinte SHA-256 non
+     * réversible, sans nom ni adresse) — il n'y a donc pas de contrat de sous-traitance à signer
+     * (RGPD art. 28 ne s'applique pas). À n'utiliser que pour un flux qui le démontre ; jamais pour
+     * contourner la garde « aucun sous-traitant ACTIF avec un DPA en attente ».
+     */
+    | "not_required";
   /** Cadre transfert international. */
   transferFramework: TransferFramework;
   /**
@@ -78,8 +89,16 @@ export interface Subprocessor {
    * effectivement des données au provider aujourd'hui. `pending_activation` =
    * intégration codée mais clé API absente de Coolify env → aucun flux data
    * réel (cas content-gen IA tant que Will n'a pas signé les DPA).
+   * `historique` = plus aucune nouvelle donnée n'est envoyée ; seules des données
+   * anciennes sont conservées (aucune entrée aujourd'hui : DocuSeal reste `active`, il sert
+   * aux contrats d'apporteurs ; seul son usage pour les devis est historique).
    */
-  activationStatus: "active" | "pending_activation";
+  activationStatus: "active" | "pending_activation" | "historique";
+  /**
+   * Vrai pour un procédé interne d'Axion-IA, qui ne confie aucune donnée à un tiers : il est
+   * déclaré en transparence mais NE COMPTE PAS dans le total « N sous-traitants ».
+   */
+  sansSousTraitant?: true;
   /** Lien DPO / documentation publique du sous-processeur. */
   documentationUrl?: string;
 }
@@ -226,19 +245,62 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Hébergement Hetzner Allemagne (UE)",
     serversLocation: "Frankfurt, Allemagne (UE)",
     purposeFr:
-      "Signature électronique des contrats et devis (Sprint X.3+). Auto-hébergé sur notre infrastructure — pas de SaaS tiers.",
+      "Signature électronique des contrats d'apporteurs : usage actif. Devis : usage historique, un seul devis a été signé par ce procédé (avant le 30/07/2026), conservé ; les nouveaux devis se signent par le procédé interne d'Axion-IA. Auto-hébergé sur notre infrastructure en Allemagne — pas de SaaS tiers.",
     purposeEn:
-      "E-signature for contracts and quotes (Sprint X.3+). Self-hosted on our infra — no third-party SaaS.",
+      "Electronic signature of referral-partner contracts: active use. Quotes: historical use only — a single quote was signed with this tool (before 30 July 2026) and is kept; new quotes are signed through Axion-IA's in-house process. Self-hosted on our infrastructure in Germany — no third-party SaaS.",
     dataCategoriesFr:
-      "Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF.",
+      "Contrats d'apporteurs : nom, e-mail et signature des signataires, contenu signé, journal d'audit (horodatage, adresse IP, navigateur), empreinte du PDF. Devis historique (un seul) : nom et e-mail du signataire, contenu signé, horodatage, empreinte du PDF.",
     dataCategoriesEn:
-      "Signers' name and email, signed contract content, cryptographic timestamp, PDF hash.",
+      "Referral-partner contracts: signers' name, email and signature, signed content, audit log (timestamp, IP address, browser), PDF fingerprint. Historical quote (a single one): signer's name and email, signed content, timestamp, PDF fingerprint.",
     legalBasis: "6.1.b_contract",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "self_hosted_eu",
     category: "payments",
     activationStatus: "active",
     documentationUrl: "https://www.docuseal.com",
+  },
+  {
+    name: "Signature maison Axion-IA (procédé de signature électronique interne)",
+    location: "Axion-IA (France) — procédé interne, sans sous-traitant",
+    serversLocation: "Base de données sur Hetzner (Allemagne, UE) ; pièces sur Cloudflare R2 (UE)",
+    purposeFr:
+      "Signature électronique des devis et documents contractuels par un procédé développé par Axion-IA, sans prestataire de signature tiers. Le contrat est formé lorsqu'Axion-IA a contresigné.",
+    purposeEn:
+      "Electronic signature of quotes and contractual documents through a process built by Axion-IA, with no third-party signature provider. The contract is formed once Axion-IA has countersigned.",
+    dataCategoriesFr:
+      "Adresse IP hachée, image de signature, identité du signataire (nom et fonction saisis, adresse électronique à laquelle est envoyé le code à usage unique), empreintes du document signé et du texte des CGV acceptées. Le code à usage unique est conservé haché et n'est jamais lisible après son envoi.",
+    dataCategoriesEn:
+      "Hashed IP address, signature image, signer's identity (name and position entered, email address to which the one-time code is sent), fingerprints of the signed document and of the accepted terms of sale. The one-time code is stored hashed and is never readable after it has been sent.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "self_hosted_no_dpa",
+    transferFramework: "self_hosted_eu",
+    category: "payments",
+    activationStatus: "active",
+    sansSousTraitant: true,
+  },
+  {
+    // Lot 4 bis (2026-11-07) — horodatage RFC 3161 des signatures de devis. Service GRATUIT : aucun
+    // contrat payant, aucun compte. Ce qui part : UNE empreinte SHA-256 (64 caractères) et un nombre
+    // aléatoire — ni nom, ni adresse, ni montant. L'autorité est CONFIGURABLE (`HORODATAGE_TSA_URL`, HTTPS
+    // obligatoire en production) et il n'y en a AUCUNE par défaut (audit sécurité, 2026-11-07) : l'horodatage
+    // reste coupé tant que l'exploitant n'en a pas choisi une. Au choix, cette entrée (nom, localisation,
+    // cadre de transfert) est à compléter dans la même PR, et le statut à repasser à « active ».
+    name: "Autorité d'horodatage RFC 3161 (service gratuit, à désigner)",
+    location: "À préciser à la désignation de l'autorité",
+    serversLocation: "À préciser à la désignation de l'autorité",
+    purposeFr:
+      "Horodatage certifié (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service public gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
+    purposeEn:
+      "Certified time-stamping (RFC 3161) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free public service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
+    dataCategoriesFr:
+      "Une empreinte numérique SHA-256 du sceau de la signature (64 caractères hexadécimaux, non réversible) et un nombre aléatoire à usage unique. Aucun nom, aucune adresse électronique, aucun montant ni document n'est transmis.",
+    dataCategoriesEn:
+      "A SHA-256 digital fingerprint of the signature seal (64 hexadecimal characters, not reversible) and a one-time random number. No name, email address, amount or document is transmitted.",
+    legalBasis: "6.1.b_contract",
+    dpaStatus: "not_required",
+    transferFramework: "intra_eu",
+    category: "core_infra",
+    activationStatus: "pending_activation",
   },
   // ───────────────────────────── communications & géo
   {
@@ -264,9 +326,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     purposeEn:
       "Transactional SMTP relay: carries every outbound email from the site (invitations, agreements, certificates, attendance links, GDPR acknowledgements, internal notifications). Since 2026-09-27, the application also reads, read-only, the Zoho Mail mailbox contact@axion-ia.com to recognise replies from business introducer candidates to their invitation.",
     dataCategoriesFr:
-      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite. Pour la lecture de la boîte : expéditeur, date, objet et résumé du corps des messages reçus ; seuls l'objet et un court extrait des réponses reconnues sont conservés.",
+      "Adresse e-mail du destinataire et CORPS COMPLET du message : nom et prénom, intitulé et dates de formation, numéros de pièces, liens personnels d'accès. Aucune minimisation possible — c'est le message lui-même qui transite. Pour la lecture de la boîte : expéditeur, date, objet et résumé du corps des messages reçus ; seuls l'objet et un court extrait des réponses reconnues sont conservés. Alertes internes de demandes de clients (nom, entreprise, téléphone, adresse e-mail, message complet, date du rendez-vous), envoyées à la boîte contact@ de l'organisme (intérêt légitime : répondre vite).",
     dataCategoriesEn:
-      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits. For the mailbox reading: sender, date, subject and body summary of received messages; only the subject and a short excerpt of recognised replies are kept.",
+      "Recipient email address and FULL message body: first and last name, training title and dates, document numbers, personal access links. No minimisation possible — the message itself is what transits. For the mailbox reading: sender, date, subject and body summary of received messages; only the subject and a short excerpt of recognised replies are kept. Internal client-request alerts (name, company, phone number, email address, full message, appointment date), sent to the organisation's contact@ mailbox (legitimate interest: answering quickly).",
     legalBasis: "6.1.b_contract",
     dpaStatus: "signed",
     transferFramework: "intra_eu",
@@ -292,20 +354,25 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // `notifications/format.ts` transmet nom, e-mail, téléphone et le message
     // ENTIER, en clair.
     //
-    // 🔑 Depuis le 11/10/2026 (décision du responsable de traitement), toutes
-    // les alertes suivent une règle unique : prénom + initiale du nom, et un
-    // lien vers la fiche console (`notifications/personne.ts`). Le garde-fou
-    // `telegram-sans-coordonnees-personnelles.spec.ts` le vérifie sur tout `src/`.
-    // Lot L16b-2 : l'alerte « dossier de formateur reçu » ne porte aucun nom
-    // (`TRAINER_DOSSIER_RECU` dans `notifications/format.ts`) — déclarée à part.
+    // 🔑 Depuis le 11/10/2026, les alertes courantes suivent une règle réduite : prénom +
+    // initiale du nom, et un lien vers la fiche console (`notifications/personne.ts`).
+    // Le garde-fou `telegram-sans-coordonnees-personnelles.spec.ts` le vérifie sur tout `src/`.
     //
-    // 🔑 Décision Will 15/10 : le salon « Clients » (et lui seul) reçoit le
-    // contenu COMPLET des demandes de clients (`notifications/format-clients.ts`).
-    // Déclaré ici, art. 13-14 : `sous-traitants-telegram-dit-vrai.spec.ts`.
+    // 🔑 Décision du fondateur 14/11/2026 (« toutes les informations possibles via Telegram ») :
+    // les salons DÉDIÉS reçoivent le contenu COMPLET — salon « Clients » (`format-clients.ts`) ;
+    // Calendly de tout type (candidats apporteurs et formateurs compris), presse, investisseurs,
+    // avis, podcast et conférences (`format-detail.ts`). Déclaré ici (art. 13-14) :
+    // `sous-traitants-telegram-dit-vrai.spec.ts` contrôle les deux fichiers.
+    // Doublon des demandes de clients (14/11/2026, `doublon-client.ts`) : la conversation PRIVÉE du
+    // fondateur avec le robot (`TELEGRAM_CHAT_ID_PRIVE`) en reçoit nom, entreprise, téléphone,
+    // e-mail et date du rendez-vous. Déclaré dans la phrase « Exception : demandes de clients ».
+    // Les candidatures (emploi, vidéaste, apporteur, formateur) ne sont plus signalées
+    // (`CATEGORIES_SANS_ALERTE`, `routing.ts`). Restent, minimisées, `CANDIDAT_SELF_ERASED`
+    // (poste + heure) et `TRAINER_CHANGEMENT_DEMANDE` (identifiant court, nature, lien).
     dataCategoriesFr:
-      "Données minimisées pour toutes les alertes, sauf les demandes de clients (voir ci-dessous). **Demandes RGPD** : initiales (`J. D.`) et référence du dossier. **Dossier d'un formateur indépendant reçu** : un identifiant court et le résultat de la vérification au registre, sans aucun nom. **Autres alertes** (candidature, invitation, presse, rendez-vous d'un candidat apporteur ou d'un formateur, avis — et les demandes de clients tant que leur salon réservé n'est pas ouvert) : prénom et initiale du nom (« Marie D. »), nom de l'entreprise, ville, provenance, montant ou statut, et un lien vers la fiche dans la console. Aucune adresse e-mail, aucun numéro de téléphone ni aucun contenu de message ne sont transmis. S'y ajoutent dates et identifiants techniques. **Exception : demandes de clients** (formulaires de demande, échanges avec l'assistant du site, réservations, annulations et reports de rendez-vous) : afin d'y répondre rapidement, le salon réservé du gérant reçoit le contenu complet de la demande — nom, entreprise, adresse e-mail, téléphone, ville, message et, pour une annulation, le motif indiqué.",
+      "Données minimisées pour les alertes courantes ; contenu complet pour les demandes reçues, dans des groupes privés réservés au fondateur (voir ci-dessous). **Demandes RGPD** : initiales (`J. D.`) et référence du dossier. **Autres alertes** : prénom et initiale du nom (« Marie D. »), nom de l'entreprise, ville, provenance, montant ou statut, et un lien vers la fiche dans la console. Aucune adresse e-mail, aucun numéro de téléphone ni aucun contenu de message ne sont transmis. S'y ajoutent dates et identifiants techniques. **Candidatures** (emploi, vidéaste, apporteur d'affaires, formateur) : plus signalées par Telegram. Deux alertes restent, sans nom : la suppression de sa candidature par le candidat (intitulé du poste, date et heure) et une demande de changement de coordonnées d'un formateur (identifiant court de la fiche, nature de la demande — compte bancaire ou adresse — et lien vers la console ; ni nom, ni IBAN, ni adresse). **Exception : demandes de clients** (formulaires de demande, échanges avec l'assistant du site, réservations, annulations et reports de rendez-vous) : afin d'y répondre rapidement, le salon réservé du gérant reçoit le contenu complet de la demande — nom, entreprise, adresse e-mail, téléphone, ville, message et, pour une annulation, le motif indiqué. La conversation privée du fondateur avec le robot reçoit un résumé (nom, entreprise, téléphone, adresse e-mail, date du rendez-vous et lien de la fiche), avec notification sonore. **Autres exceptions : presse, investisseurs, invitations (conférences, podcast), avis et rendez-vous pris sur Calendly, y compris ceux des candidats apporteurs et des formateurs** : chacune de ces catégories part dans un groupe privé réservé au fondateur (podcast et conférences partagent le même), qui reçoit le contenu complet — nom, adresse e-mail, téléphone et message intégral ; pour un avis, l'auteur, la note, l'entreprise, le secteur, la ville, le service et le début du commentaire ; pour un rendez-vous Calendly, le lieu, les réponses au formulaire de réservation et, pour une annulation, qui annule et le motif indiqué. Si un groupe n'est pas ouvert, l'alerte part en forme réduite, sans coordonnées.",
     dataCategoriesEn:
-      'Minimised data for every alert except client requests (see below). **GDPR requests**: initials (`J. D.`) and case reference. **Independent trainer file received**: a short identifier and the result of the register check, without any name. **Other alerts** (job application, invitation, press, appointment with a business-introducer candidate or a trainer, review — and client requests while their dedicated channel is not open): first name and last-name initial ("Marie D."), company name, city, origin, amount or status, and a link to the record in the admin console. No email address, phone number or message content is sent. Plus dates and technical identifiers. **Exception: client requests** (request forms, conversations with the site assistant, appointment bookings, cancellations and reschedulings): so that they can be answered quickly, the manager\'s dedicated channel receives the full content of the request — name, company, email address, phone number, city, message and, for a cancellation, the reason given.',
+      "Minimised data for routine alerts; full content for incoming requests, in private groups reserved to the founder (see below). **GDPR requests**: initials (`J. D.`) and case reference. **Other alerts**: first name and last-name initial (\"Marie D.\"), company name, city, origin, amount or status, and a link to the record in the admin console. No email address, phone number or message content is sent. Plus dates and technical identifiers. **Applications** (job, video editor, business introducer, trainer): no longer reported on Telegram. Two alerts remain, without a name: an applicant deleting their own application (job title, date and time) and a trainer's request to change contact details (short file identifier, nature of the request — bank account or address — and a link to the console; no name, IBAN or address). **Exception: client requests** (request forms, conversations with the site assistant, appointment bookings, cancellations and reschedulings): so that they can be answered quickly, the manager's dedicated channel receives the full content of the request — name, company, email address, phone number, city, message and, for a cancellation, the reason given. The founder's private conversation with the bot receives a summary (name, company, phone number, email address, appointment date and a link to the record), with a sound notification. **Other exceptions: press, investors, invitations (conferences, podcast), reviews and appointments booked on Calendly, including those of business-introducer candidates and trainers**: each of these categories goes to a private group reserved to the founder (podcast and conferences share one), which receives the full content — name, email address, phone number and the whole message; for a review, the author, rating, company, sector, city, service and the start of the comment; for a Calendly appointment, the location, the answers to the booking form and, for a cancellation, who cancels and the reason given. If a group is not open, the alert is sent in reduced form, without contact details.",
     legalBasis: "6.1.f_legitimate_interest",
     dpaStatus: "self_hosted_no_dpa",
     transferFramework: "scc",
@@ -607,6 +674,40 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     // après coup.
     activationStatus: "pending_activation",
     documentationUrl: "https://www.zoom.com/en/trust/gdpr/",
+  },
+  {
+    // Ajouté le 2026-11-14. Le Studio du fondateur passe par l'API de Zernio pour lire les
+    // commentaires Facebook / Instagram sous les publications de la page, y répondre
+    // publiquement et envoyer des messages privés (parcours « mot → guide »).
+    //
+    // Faits officiels lus le 2026-11-14 : exploitant ZERNIO SOFTWARE SL (Espagne), pages
+    // https://zernio.com/legal-disclosure, /privacy-policy, /dpa, /tos (section 5) et /subprocessors.
+    // Détail et points à vérifier : `_AUDIT/DPA-REGISTER.md`, fiche 7nonies.
+    name: "Zernio (zernio.com)",
+    location: "Espagne",
+    serversLocation:
+      "Royaume-Uni et UE (via ses sous-traitants) ; certains sous-traitants aux États-Unis",
+    purposeFr:
+      "Réponses aux commentaires et messages privés sur les réseaux sociaux de la page : lecture des commentaires Facebook / Instagram sous nos publications, réponse publique et envoi d'un message privé à la personne qui a commenté un mot-clé pour obtenir un guide. Zernio est l'interface de gestion des réseaux sociaux par laquelle passent ces échanges.",
+    purposeEn:
+      "Replies to comments and private messages on the page's social networks: reading Facebook / Instagram comments under our posts, replying publicly and sending a private message to the person who commented a keyword to get a guide. Zernio is the social-media management interface these exchanges go through.",
+    dataCategoriesFr:
+      "Identifiant et nom du compte de la personne qui commente, texte du commentaire, contenu des messages privés échangés et, si la personne la saisit dans le message privé, son adresse e-mail.",
+    dataCategoriesEn:
+      "Account identifier and name of the person who comments, comment text, content of the private messages exchanged and, if the person types it in the private message, their email address.",
+    // Intérêt légitime (6.1.f) : répondre à une demande faite en commentaire.
+    legalBasis: "6.1.f_legitimate_interest",
+    // DPA de Zernio (version du 19/10/2026) intégré aux CGU : il s'applique à l'acceptation des
+    // CGU, sans signature séparée (https://zernio.com/dpa, https://zernio.com/tos section 5).
+    // `signed` = DPA en vigueur ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi).
+    dpaStatus: "signed",
+    // Le type n'a qu'une valeur couvrant les transferts hors EEE : `scc`, comme pour les autres
+    // fournisseurs mixtes. Zernio : clauses contractuelles types par défaut (DPA §11.1), et
+    // EU-US Data Privacy Framework pour les sous-traitants certifiés ; Royaume-Uni : adéquation.
+    transferFramework: "scc",
+    category: "communications",
+    activationStatus: "active",
+    documentationUrl: "https://zernio.com/dpa",
   },
   {
     name: "OpenStreetMap Foundation (Nominatim)",

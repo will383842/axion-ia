@@ -49,7 +49,7 @@ export const RABASTENS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rabastens ?",
-      a: "Oui, Axion-IA intervient à Rabastens et dans tout le vignoble gaillacois (Gaillac, Lisle-sur-Tarn, Couffouleux, Saint-Sulpice). Nos consultants se déplacent depuis Toulouse (35 min A68) ou Albi (30 min).",
+      a: "Oui, Axion-IA intervient à Rabastens et dans tout le vignoble gaillacois (Gaillac, Lisle-sur-Tarn, Couffouleux, Saint-Sulpice). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour un vigneron à Rabastens ?",

@@ -49,7 +49,7 @@ export const THOUARS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Thouars et dans le Thouarsais ?",
-      a: "Oui, Axion-IA intervient à Thouars et dans tout le Thouarsais (Airvault, Loudun, Saint-Varent). Nos consultants accèdent via la gare de Thouars (TER) ou par la route (Poitiers 50 min, Saumur 25 min).",
+      a: "Oui, Axion-IA intervient à Thouars et dans tout le Thouarsais (Airvault, Loudun, Saint-Varent). Nous intervenons partout en France, sur place ou à distance. Thouars est desservie par une gare TER, à 25 min de Saumur et 50 min de Poitiers par la route.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Thouars ?",
@@ -65,7 +65,7 @@ export const THOUARS_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Thouars ?",
-      a: "Nos consultants accèdent à Thouars par la gare TER ou par la route (Poitiers 50 min, Saumur 25 min). Mission sur site dans vos usines, ateliers ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos usines, ateliers ou commerces de Thouars.",
     },
   ],
 };

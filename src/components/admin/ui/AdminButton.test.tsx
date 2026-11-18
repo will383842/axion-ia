@@ -81,4 +81,11 @@ describe("AdminButton", () => {
       expect(el.hasAttribute(leaked)).toBe(false);
     }
   });
+
+  it("expose la taille lg (grand bouton du socle dossier)", () => {
+    render(<AdminButton size="lg">Envoyer cet e-mail</AdminButton>);
+    const el = screen.getByRole("button", { name: "Envoyer cet e-mail" });
+    expect(el.className).toContain("admin-button-lg");
+    expect(el.className).not.toContain("admin-button-sm");
+  });
 });

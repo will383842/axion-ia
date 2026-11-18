@@ -49,7 +49,7 @@ export const BASSENS_73_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bassens et Grand Chambéry ?",
-      a: "Oui, Axion-IA intervient à Bassens et dans toute l'agglomération Grand Chambéry (Chambéry, La Ravoire, Le Bourget-du-Lac, La Motte-Servolex, Cognin). Nos consultants se déplacent depuis Lyon (1h20) ou localement.",
+      a: "Oui, Axion-IA intervient à Bassens et dans toute l'agglomération Grand Chambéry (Chambéry, La Ravoire, Le Bourget-du-Lac, La Motte-Servolex, Cognin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professions libérales à Bassens ?",
@@ -65,7 +65,7 @@ export const BASSENS_73_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Bassens ?",
-      a: "Nos consultants interviennent directement dans vos locaux à Bassens ou en visio. Depuis Chambéry centre (5 min). Hébergement local possible pour les missions multi-jours. Tarifs et planning convenus en amont.",
+      a: "Nos consultants interviennent directement dans vos locaux à Bassens ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour les missions multi-jours. Tarifs et planning convenus en amont.",
     },
   ],
 };

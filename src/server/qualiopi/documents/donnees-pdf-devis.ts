@@ -1,0 +1,246 @@
+/**
+ * Qualiopi — Données du PDF d'un devis, UNE source pour l'envoi et l'aperçu.
+ *
+ * `sendDevisAction` (envoi réel, pièce numérotée) et la route d'aperçu d'un
+ * brouillon construisent le même `DevisData` : sinon l'aperçu montrerait autre
+ * chose que ce qui partira chez le client.
+ *
+ *  - `donneesPdfDevis`      : fonction PURE (aucune lecture, aucune écriture,
+ *                             pas d'horloge : la date arrive en paramètre).
+ *  - `lireContextePdfDevis` : lectures de configuration seules (identité,
+ *                             régime TVA, taux, drapeau de certification).
+ */
+
+import { getOrganismeIdentite, type OrganismeIdentite } from "./organisme";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import {
+  ACTIVITE_LABELS,
+  normaliserLignesPourActivite,
+} from "@/server/qualiopi/financements/facture-libre-pur";
+import {
+  regimeTvaDepuisConfig,
+  TAUX_TVA_STANDARD,
+  type RegimeTva,
+} from "@/server/qualiopi/legal/tva";
+import { phrasePrimauteAImprimer } from "@/server/qualiopi/devis/conditions-particulieres";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { vueFormules, type VueFormules } from "@/server/qualiopi/devis/vue-formules";
+import type { DevisData } from "./templates/devis";
+import type { LigneFacture } from "./templates/facture";
+
+type Financement = "direct" | "opco" | "cpf" | "france_travail";
+
+/** Libellés d'affichage du financement suggéré (PDF devis). */
+const FINANCEMENT_LABELS: Record<Financement, string> = {
+  direct: "Financement direct (fonds propres)",
+  opco: "OPCO",
+  cpf: "CPF",
+  france_travail: "France Travail",
+};
+
+/** Assemble l'adresse d'affichage : structurée si présente, sinon champ libre. */
+export function adresseClientDevis(client: {
+  adresse: string | null;
+  adresseRue: string | null;
+  adresseCodePostal: string | null;
+  adresseVille: string | null;
+}): string | undefined {
+  if (client.adresseRue && client.adresseVille) {
+    return [
+      client.adresseRue,
+      [client.adresseCodePostal, client.adresseVille].filter(Boolean).join(" "),
+    ]
+      .filter(Boolean)
+      .join(", ");
+  }
+  return client.adresse ?? undefined;
+}
+
+/** Champs du devis lus par le PDF (sous-ensemble du `select` de l'envoi). */
+export interface DevisPourPdf {
+  numero: string;
+  lignes: unknown;
+  activite: keyof typeof ACTIVITE_LABELS | null;
+  refClient: string | null;
+  financementSuggere: string | null;
+  montantOpcoEstimeCents: number | null;
+  resteAChargeCents: number | null;
+  dateValidite: Date;
+  /**
+   * Offre à formules (Json). ABSENT ou NULL = devis classique, rendu inchangé.
+   * Lue par `SELECT_DEVIS_POUR_PDF` (`offre: true`) : sans elle, l'aperçu imprimerait un
+   * tableau vide à 0,00 €. Elle n'est exploitée que si l'interrupteur est allumé.
+   */
+  offre?: unknown;
+  /**
+   * Conditions particulières (texte simple, devis CLASSIQUE seulement). OBLIGATOIRE : chaque
+   * `select` écrit à la main doit le lire, sinon le texte saisi disparaîtrait du PDF en silence.
+   */
+  conditionsParticulieres: string | null;
+  client: {
+    type: string;
+    raisonSociale: string;
+    siret: string | null;
+    adresse: string | null;
+    adresseRue: string | null;
+    adresseCodePostal: string | null;
+    adresseVille: string | null;
+    contactEmail: string | null;
+  };
+}
+
+/** `select` Prisma des champs nécessaires à `DevisPourPdf`. */
+export const SELECT_DEVIS_POUR_PDF = {
+  numero: true,
+  statut: true,
+  lignes: true,
+  activite: true,
+  refClient: true,
+  financementSuggere: true,
+  montantOpcoEstimeCents: true,
+  resteAChargeCents: true,
+  dateValidite: true,
+  // Offre à formules : sans elle, l'aperçu d'un devis à formules rendrait un tableau vide à 0,00 €.
+  offre: true,
+  conditionsParticulieres: true,
+  client: {
+    select: {
+      type: true,
+      raisonSociale: true,
+      siret: true,
+      adresse: true,
+      adresseRue: true,
+      adresseCodePostal: true,
+      adresseVille: true,
+      contactEmail: true,
+    },
+  },
+} as const;
+
+export interface ContextePdfDevis {
+  identite: OrganismeIdentite;
+  regimeTva: RegimeTva;
+  tauxStandard: number;
+  certificationObtenue: boolean;
+  /**
+   * Interrupteur `qualiopi.devis_formules.actif`. Absent = ÉTEINT : une offre éventuelle
+   * est alors ignorée et le devis est rendu comme avant.
+   */
+  formulesActives?: boolean | undefined;
+}
+
+/** Une offre stockée est illisible : on n'imprime pas un devis à 0 € à sa place. */
+export class OffreDevisInvalideError extends Error {
+  constructor(detail: string) {
+    super(`Offre du devis invalide : ${detail}`);
+    this.name = "OffreDevisInvalideError";
+  }
+}
+
+/**
+ * Vue des formules, ou `undefined` si l'interrupteur est éteint ou si le devis n'a pas
+ * d'offre. UNE seule porte pour le PDF et pour l'e-mail.
+ */
+export function formulesDuDevis(
+  offre: unknown,
+  actif: boolean | undefined,
+  regime: RegimeTva = "assujetti",
+): VueFormules | undefined {
+  if (actif !== true || offre === null || offre === undefined) return undefined;
+  const parsed = offreDevisV1.safeParse(offre);
+  if (!parsed.success) {
+    throw new OffreDevisInvalideError(parsed.error.issues[0]?.message ?? "schéma non conforme");
+  }
+  return vueFormules(parsed.data, regime);
+}
+
+/** Lectures de configuration (aucune écriture). */
+export async function lireContextePdfDevis(): Promise<ContextePdfDevis> {
+  const identite = await getOrganismeIdentite();
+  const regimeTva: RegimeTva = regimeTvaDepuisConfig(await getQualiopiConfig("regime_tva"));
+  const tauxStandard = (await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD;
+  return {
+    identite,
+    regimeTva,
+    tauxStandard,
+    certificationObtenue: isQualiopiCertificationObtenue(),
+    formulesActives: await formulesActives(),
+  };
+}
+
+/** Construit le `DevisData` du PDF. Pure : mêmes entrées, mêmes données. */
+export function donneesPdfDevis(
+  devis: DevisPourPdf,
+  contexte: ContextePdfDevis,
+  maintenant: Date,
+): DevisData {
+  const { regimeTva, tauxStandard } = contexte;
+  // Fiche A1 — tant que la certification n'est pas obtenue, AUCUNE mention de
+  // certification ni de financement sur la pièce. Le PDF signé est rendu depuis
+  // la photo de ces données : on corrige donc les DONNÉES, pas le gabarit.
+  const certifie = contexte.certificationObtenue === true;
+  const identite = certifie ? contexte.identite : { ...contexte.identite, qualiopi: "" };
+
+  const lignesBrutes = (Array.isArray(devis.lignes)
+    ? devis.lignes
+    : []) as unknown as LigneFacture[];
+  const lignes =
+    devis.activite !== null
+      ? normaliserLignesPourActivite(lignesBrutes, devis.activite, regimeTva, tauxStandard)
+      : lignesBrutes;
+
+  const formatDate = (d: Date) => d.toLocaleDateString("fr-FR");
+  const adresse = adresseClientDevis(devis.client);
+  const financementLabel =
+    devis.financementSuggere !== null
+      ? (FINANCEMENT_LABELS[devis.financementSuggere as Financement] ?? devis.financementSuggere)
+      : undefined;
+
+  const formules = formulesDuDevis(devis.offre, contexte.formulesActives, regimeTva);
+  // Conditions particulières : devis CLASSIQUE seulement (une offre, même éteinte, les exclut).
+  const conditionsParticulieres =
+    devis.offre == null && devis.conditionsParticulieres?.trim()
+      ? devis.conditionsParticulieres
+      : undefined;
+
+  return {
+    numero: devis.numero,
+    dateEmission: formatDate(maintenant),
+    dateValidite: formatDate(devis.dateValidite),
+    identite,
+    client: {
+      // Un devis part TOUJOURS au client lui-meme : pas de destinataire tiers
+      // ici, contrairement a la facture (OPCO, France Travail, beneficiaire).
+      // Le predicat se reduit donc au type du client.
+      estPersonnePhysique: devis.client.type === "particulier",
+      raisonSociale: devis.client.raisonSociale,
+      ...(devis.client.siret !== null ? { siret: devis.client.siret } : {}),
+      ...(adresse !== undefined ? { adresse } : {}),
+      ...(devis.client.contactEmail !== null ? { email: devis.client.contactEmail } : {}),
+    },
+    lignes,
+    ...(formules !== undefined ? { formules } : {}),
+    // La phrase de primauté est une DONNÉE figée avec la photo ; `null` tant qu'elle n'est pas validée.
+    ...(conditionsParticulieres !== undefined
+      ? { conditionsParticulieres, phrasePrimaute: phrasePrimauteAImprimer() }
+      : {}),
+    regimeTva,
+    tauxTvaStandardPercent: tauxStandard,
+    ...(devis.refClient !== null ? { refClient: devis.refClient } : {}),
+    ...(devis.activite !== null ? { activiteLabel: ACTIVITE_LABELS[devis.activite] } : {}),
+    ...(certifie && financementLabel !== undefined ? { financementSuggere: financementLabel } : {}),
+    // Sous-lot 8G — les montants d'estimation ne partent au PDF que si la
+    // certification est obtenue (L.6316-1) : alors le financement mutualisé est
+    // toujours présentable (regimeEstimationMutualisee). Sinon la pièce ne porte
+    // AUCUNE mention de financement (fiche A1) : ni montant, ni mention de
+    // remplacement.
+    ...(certifie && devis.montantOpcoEstimeCents !== null
+      ? { montantOpcoEstimeCents: devis.montantOpcoEstimeCents }
+      : {}),
+    ...(certifie && devis.resteAChargeCents !== null
+      ? { resteAChargeCents: devis.resteAChargeCents }
+      : {}),
+  };
+}

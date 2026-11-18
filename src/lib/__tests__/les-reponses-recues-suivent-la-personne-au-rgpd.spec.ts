@@ -25,10 +25,10 @@ describe("🔴 art. 17 — l'effacement", () => {
     });
   });
 
-  it("la route d'effacement l'appelle, et le dit dans son compte rendu", () => {
+  it("11/11/2026 — la route d'effacement ne l'appelle plus (mise à l'écart, rien n'est supprimé)", () => {
     const route = lire("src/app/api/gdpr-erase/route.ts");
-    expect(route).toMatch(/eraseReponsesEntrantesForEmail\(email\)/);
-    expect(route).toMatch(/reponsesEntrantesSupprimees: reponsesEntrantesResult\.supprimees/);
+    expect(route).not.toMatch(/eraseReponsesEntrantesForEmail\(email\)/);
+    expect(route).toContain("ecarterPourDemandeEffacement(");
   });
 });
 

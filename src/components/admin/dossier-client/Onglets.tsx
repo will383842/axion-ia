@@ -10,6 +10,7 @@
  * Tout est en texte brut : aucun HTML venant d'une donnée n'est interprété.
  */
 
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import Link from "next/link";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
@@ -22,7 +23,6 @@ import {
   LIBELLE_ROLE_PROJET,
   LIBELLE_RUBRIQUE,
   LIBELLE_STATUT_PROJET,
-  LIBELLE_STATUT_RENCONTRE,
   LIBELLE_TYPE_FAIT,
   MENTION_ETAT,
   valeurLisible,
@@ -40,14 +40,15 @@ import {
   creerProjetFormAction,
   garderCetteValeurFormAction,
 } from "@/features/dossier-client/actions";
-import { LIBELLE_ETAT_EMAIL_SUIVI } from "@/features/dossier-client/etat-email-suivi";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { FaitType } from "../../../../prisma/generated/client";
+import {
+  CarteRendezVous,
+  rangerDuProchainAuPlusAncien,
+} from "@/components/admin/dossier-client/fiche/CarteRendezVous";
 
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
+const titreCls = "admin-carte-titre";
+const carteCls = "admin-carte";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
@@ -101,9 +102,9 @@ export function LigneValeur({
             <form key={faitId} action={garderCetteValeurFormAction}>
               <input type="hidden" name="faitId" value={faitId} />
               <input type="hidden" name="retour" value={retour} />
-              <button type="submit" className="admin-button-ghost">
+              <AdminButton type="submit" variant="secondary">
                 Garder {valeur}
-              </button>
+              </AdminButton>
             </form>
           ))
         : null}
@@ -222,9 +223,9 @@ export function OngletSynthese({
 
       {projets.length === 0 ? (
         <section className={carteCls}>
-          <h2 className={titreCls}>Projets</h2>
+          <h2 className={titreCls}>Prestations</h2>
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun projet. Créez-en un dans l&apos;onglet « Projets ».
+            Aucune prestation. Créez-en une dans l&apos;onglet « Prestations ».
           </p>
         </section>
       ) : (
@@ -251,7 +252,7 @@ export function OngletSynthese({
               <ListeValeurs
                 portee={portee}
                 types={TYPES_BLOC_PROJET}
-                vide="Rien de validé pour ce projet."
+                vide="Rien de validé pour cette prestation."
                 retour={ficheHref}
               />
               <h3 className="mt-[var(--space-admin-4)] mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold">
@@ -271,10 +272,10 @@ export function OngletSynthese({
           {consolidation.nbProposes > 1 ? "s" : ""} pas encore validée
           {consolidation.nbProposes > 1 ? "s" : ""} ·{" "}
           <span className="font-semibold tabular-nums">{consolidation.nbARanger}</span> à ranger
-          dans un projet{" "}
+          dans une prestation{" "}
           {consolidation.nbARanger > 0 ? (
             <Link href={`${ficheHref}?onglet=projets`} className={lienCls}>
-              (créer ou choisir un projet)
+              (créer ou choisir une prestation)
             </Link>
           ) : null}
         </p>
@@ -308,10 +309,10 @@ export function OngletProjets({
   return (
     <div>
       <section className={carteCls}>
-        <h2 className={titreCls}>Projets</h2>
+        <h2 className={titreCls}>Prestations</h2>
         {projets.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-            Aucun projet pour l&apos;instant.
+            Aucune prestation pour l&apos;instant.
           </p>
         ) : (
           <ul className={listeCls}>
@@ -352,7 +353,7 @@ export function OngletProjets({
       </section>
 
       <section className={carteCls} id="nouveau-projet">
-        <h2 className={titreCls}>Nouveau projet</h2>
+        <h2 className={titreCls}>Nouvelle prestation</h2>
         {erreur !== null ? (
           <p className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-error)]">
             {erreur}
@@ -361,13 +362,13 @@ export function OngletProjets({
         <form action={creerProjetFormAction} className="flex flex-col gap-[var(--space-admin-3)]">
           <input type="hidden" name="clientId" value={clientId} />
           <label className="flex flex-col gap-1 text-[length:var(--text-admin-sm)]">
-            Titre du projet (par exemple « Formation IA des équipes RH, automne »)
+            Titre de la prestation (par exemple « Formation IA des équipes RH, automne »)
             <input name="titre" required maxLength={200} className={inputCls} />
           </label>
           {faitsARanger.length > 0 ? (
             <fieldset className="text-[length:var(--text-admin-sm)]">
               <legend className="mb-[var(--space-admin-2)] font-medium">
-                Informations à ranger dans ce projet
+                Informations à ranger dans cette prestation
               </legend>
               {faitsARanger.map((f) => (
                 <label key={f.id} className="flex items-baseline gap-[var(--space-admin-2)]">
@@ -381,9 +382,7 @@ export function OngletProjets({
             </fieldset>
           ) : null}
           <div>
-            <button type="submit" className="admin-button">
-              Créer le projet
-            </button>
+            <AdminButton type="submit">Créer la prestation</AdminButton>
           </div>
         </form>
       </section>
@@ -409,7 +408,7 @@ export function OngletEchanges({
   if (rencontres.length === 0) {
     return (
       <section className={carteCls}>
-        <h2 className={titreCls}>Échanges</h2>
+        <h2 className={titreCls}>Rendez-vous</h2>
         <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
           Aucun rendez-vous rangé sur cette fiche pour l&apos;instant.
         </p>
@@ -418,57 +417,17 @@ export function OngletEchanges({
   }
   return (
     <section className={carteCls}>
-      <h2 className={titreCls}>Échanges</h2>
+      <h2 className={titreCls}>Rendez-vous</h2>
       <ul className="space-y-[var(--space-admin-4)] text-[length:var(--text-admin-sm)]">
-        {rencontres.map((r) => {
-          const projet = projets.find((p) => p.id === r.projetId);
-          const aVenir = r.debutPrevu !== null && r.debutPrevu.getTime() > maintenant.getTime();
-          const statut =
-            r.statut !== null
-              ? LIBELLE_STATUT_RENCONTRE[r.statut]
-              : aVenir
-                ? LIBELLE_STATUT_RENCONTRE.planifie
-                : r.issue === "absent"
-                  ? LIBELLE_STATUT_RENCONTRE.absent
-                  : LIBELLE_STATUT_RENCONTRE.tenu;
-          return (
-            <li
-              key={r.id}
-              data-rencontre={r.id}
-              className="border-b border-[color:var(--color-admin-border)] pb-[var(--space-admin-3)]"
-            >
-              <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
-                <span className="font-medium">{r.titre}</span>
-                <span className={mutedCls}>
-                  {r.debutPrevu !== null ? formatDateFrShort(r.debutPrevu) : "date inconnue"}
-                </span>
-                <AdminBadge tone="outline">{statut}</AdminBadge>
-                {projet !== undefined ? (
-                  <span className={mutedCls}>Projet : {projet.titre}</span>
-                ) : null}
-                {r.estTestInterne ? <AdminBadge tone="warning">test interne</AdminBadge> : null}
-                {!aVenir && r.compteRenduValide === null ? (
-                  <AdminBadge tone="warning">sans compte rendu validé</AdminBadge>
-                ) : null}
-                <Link href={`${rendezVousBase}/rencontres/${r.id}`} className={lienCls}>
-                  Compte rendu →
-                </Link>
-              </div>
-              {r.compteRenduValide !== null ? (
-                <p className="mt-[var(--space-admin-2)] whitespace-pre-line">
-                  <span className="font-medium">En bref : </span>
-                  {r.compteRenduValide.enBref ?? "(compte rendu validé, sans résumé)"}
-                </p>
-              ) : null}
-              {r.emailsSuivi.map((e, i) => (
-                <p key={i} className={`mt-[var(--space-admin-1)] ${mutedCls}`}>
-                  E-mail de suivi du {formatDateFrShort(e.creeLe)} :{" "}
-                  {LIBELLE_ETAT_EMAIL_SUIVI[e.etat]}
-                </p>
-              ))}
-            </li>
-          );
-        })}
+        {rangerDuProchainAuPlusAncien(rencontres, maintenant).map((r) => (
+          <CarteRendezVous
+            key={r.id}
+            rencontre={r}
+            prestationTitre={projets.find((p) => p.id === r.projetId)?.titre ?? null}
+            rendezVousBase={rendezVousBase}
+            maintenant={maintenant}
+          />
+        ))}
       </ul>
     </section>
   );
@@ -483,16 +442,27 @@ export function OngletPersonnes({
   personnes,
   projets,
   erreur,
+  message = null,
+  retrait,
 }: {
   clientId: string;
   personnes: ReadonlyArray<PersonneDuDossier>;
   projets: ReadonlyArray<ProjetDuDossier>;
   erreur: string | null;
+  /** Retour scellé d'un retrait réussi (« Personne retirée : … »). */
+  message?: string | null;
+  /** Le bloc « Retirer cette personne » (rendu par la page : il lit la base une fois ouvert). */
+  retrait?: (personneId: string) => React.ReactNode;
 }): React.ReactElement {
   return (
     <div>
       <section className={carteCls}>
         <h2 className={titreCls}>Personnes</h2>
+        {message !== null ? (
+          <p role="status" className="mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)]">
+            {message}
+          </p>
+        ) : null}
         {personnes.length === 0 ? (
           <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
             Aucune personne sur cette fiche.
@@ -513,7 +483,9 @@ export function OngletPersonnes({
                   {p.statut === "parti" ? (
                     <AdminBadge tone="neutral">a quitté l&apos;entreprise</AdminBadge>
                   ) : null}
-                  {!p.rencontree ? <AdminBadge tone="outline">jamais rencontrée</AdminBadge> : null}
+                  {!p.rencontree ? (
+                    <AdminBadge tone="outline">jamais vue en rendez-vous</AdminBadge>
+                  ) : null}
                 </div>
                 {p.adresses.length > 0 ? (
                   <p className="mt-[var(--space-admin-1)]">
@@ -527,7 +499,7 @@ export function OngletPersonnes({
                     {p.roles
                       .map((r) => {
                         const projet = projets.find((x) => x.id === r.projetId);
-                        return `${projet?.titre ?? "projet"} : ${LIBELLE_ROLE_PROJET[r.role]}`;
+                        return `${projet?.titre ?? "prestation"} : ${LIBELLE_ROLE_PROJET[r.role]}`;
                       })
                       .join(" · ")}
                   </p>
@@ -549,12 +521,13 @@ export function OngletPersonnes({
                       cette personne.
                     </span>
                   ) : null}
-                  <button type="submit" className="admin-button-ghost">
+                  <AdminButton type="submit" variant="secondary">
                     {p.oppositionIaLe === null
                       ? "Cette personne s'oppose au traitement par IA"
                       : "Lever l'opposition"}
-                  </button>
+                  </AdminButton>
                 </form>
+                {retrait ? retrait(p.id) : null}
               </li>
             ))}
           </ul>
@@ -590,9 +563,7 @@ export function OngletPersonnes({
             <input name="telephone" maxLength={40} className={inputCls} />
           </label>
           <div className="sm:col-span-2">
-            <button type="submit" className="admin-button">
-              Ajouter la personne
-            </button>
+            <AdminButton type="submit">Ajouter la personne</AdminButton>
           </div>
         </form>
       </section>

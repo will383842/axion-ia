@@ -49,7 +49,7 @@ export const CARVIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carvin et dans le bassin minier ?",
-      a: "Oui, Axion-IA intervient à Carvin et tout le bassin minier du Pas-de-Calais (Lens, Liévin, Hénin-Beaumont, Libercourt, Oignies). Nos consultants viennent de Lille (25 min A1) ou Paris (1h15 TGV + TER).",
+      a: "Oui, Axion-IA intervient à Carvin et tout le bassin minier du Pas-de-Calais (Lens, Liévin, Hénin-Beaumont, Libercourt, Oignies). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services pour les TPE artisans et commerçants de Carvin ?",
@@ -64,8 +64,8 @@ export const CARVIN_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les entreprises du bassin minier en reconversion ou diversification sur leurs cas IA : automatisation processus, agents conversationnels, optimisation production, formation équipes. Toutes tailles (TPE, PME) et tous secteurs.",
     },
     {
-      q: "Comment se passe une mission depuis Lille ou Paris ?",
-      a: "Nos consultants viennent de Lille (25 min A1) ou Paris (1h15 TGV Lille + 25 min TER). Carvin est accessible directement par l'A1. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Carvin ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Carvin est accessible directement par l'A1. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

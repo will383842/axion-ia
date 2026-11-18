@@ -86,6 +86,8 @@ vi.mock("@/lib/prisma", () => ({
     // lecture échoue) ; `avis_financeur_manquant` lit les appréciations.
     setting: { findUnique: vi.fn() },
     appreciation: { findMany: vi.fn() },
+    // L5h — `convention_non_validee_avant_session` lit les e-mails garés et leurs pièces.
+    emailOutbox: { findMany: vi.fn() },
   },
 }));
 
@@ -194,6 +196,7 @@ const mp = prisma as unknown as {
   rgpdDemande: { findMany: ReturnType<typeof vi.fn> };
   devis: { findMany: ReturnType<typeof vi.fn> };
   documentGenere: { findMany: ReturnType<typeof vi.fn> };
+  emailOutbox: { findMany: ReturnType<typeof vi.fn> };
   relanceProposee: { findMany: ReturnType<typeof vi.fn> };
   offreSite: { findMany: ReturnType<typeof vi.fn> };
   interventionDocument: { findMany: ReturnType<typeof vi.fn> };
@@ -244,6 +247,7 @@ function setupEmptyMocks() {
   mp.rgpdDemande.findMany.mockResolvedValue([]);
   mp.devis.findMany.mockResolvedValue([]);
   mp.documentGenere.findMany.mockResolvedValue([]);
+  mp.emailOutbox.findMany.mockResolvedValue([]);
   mp.relanceProposee.findMany.mockResolvedValue([]);
   // 🔴 [2026-08-03] Ces deux-là manquaient : `regleVigilanceSousTraitance` lisait
   // un mock non configuré, levait, et le fail-soft par règle avalait l'exception.
@@ -2179,9 +2183,9 @@ describe("vigilance sous-traitance", () => {
     id: "st-1",
     nom: "Organisme X",
     contratSigneAt: new Date("2026-01-10"),
-    rcProEcheanceAt: new Date("2027-01-10"),
+    rcProEcheanceAt: new Date("2028-01-10"),
     rcProAttestationUrl: "https://r2/rc.pdf",
-    prochaineVerifAt: new Date("2027-01-10"),
+    prochaineVerifAt: new Date("2028-01-10"),
   };
 
   beforeEach(() => {
@@ -2250,9 +2254,9 @@ describe("vigilance sous-traitance", () => {
       nom: "Dupont",
       prenom: "Marie",
       sousTraitantContratSigneAt: new Date("2026-01-10"),
-      rcProEcheanceAt: new Date("2027-01-10"),
+      rcProEcheanceAt: new Date("2028-01-10"),
       rcProAttestationUrl: "https://r2/rc.pdf",
-      sousTraitantProchaineVerifAt: new Date("2027-01-10"),
+      sousTraitantProchaineVerifAt: new Date("2028-01-10"),
     };
 
     it("un seul incident bloquant ne lève RIEN — un accident n'est pas un motif", async () => {

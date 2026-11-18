@@ -10,9 +10,9 @@ export const GANNAT_COPY: VilleCopy = {
   pitchEn:
     "Gannat (03), commune de 5 610 habitants (2023) sur 36,85 km² en Limagne bourbonnaise, sud de l'Allier. Siège de la Communauté de communes Saint-Pourçain Sioule Limagne (fusion 2017). À 21 km de Vichy, 51 km au nord de Clermont-Ferrand, 57 km au sud de Moulins, sur l'axe A71/A719. Tissu local : 318 entreprises principalement en commerce et services, trois zones commerciales le long de l'A719, agriculture dominante (75,6 % du sol en 2018, grandes cultures Limagne et élevage). Patrimoine : église Sainte-Croix, château médiéval, fossiles de rhinocéros oligo-miocènes. Festival international « Les Cultures du Monde » chaque juillet. Axion-IA y intervient pour TPE et PME gannatoises, en priorité commerçants, artisans BTP et exploitants agricoles.",
   directAnswerFr:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gannat (03), siège de la CC Saint-Pourçain Sioule Limagne. Consultants depuis Clermont-Ferrand (45 min A71) ou Lyon (2h15). Nous accompagnons en priorité les TPE gannatoises (commerces de proximité, artisans BTP, services aux entreprises des trois ZAC A719, professions libérales) puis les PME (exploitations agricoles grandes cultures et élevage Limagne, industries locales). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gannat (03), siège de la CC Saint-Pourçain Sioule Limagne. Nous intervenons partout en France, sur place ou à distance. Nous accompagnons en priorité les TPE gannatoises (commerces de proximité, artisans BTP, services aux entreprises des trois ZAC A719, professions libérales) puis les PME (exploitations agricoles grandes cultures et élevage Limagne, industries locales). Code custom, pas no-code, tarifs publics.",
   directAnswerEn:
-    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gannat (03), siège de la CC Saint-Pourçain Sioule Limagne. Consultants depuis Clermont-Ferrand (45 min A71) ou Lyon (2h15). Nous accompagnons en priorité les TPE gannatoises (commerces de proximité, artisans BTP, services aux entreprises des trois ZAC A719, professions libérales) puis les PME (exploitations agricoles grandes cultures et élevage Limagne, industries locales). Code custom, pas no-code, tarifs publics.",
+    "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Gannat (03), siège de la CC Saint-Pourçain Sioule Limagne. Nous intervenons partout en France, sur place ou à distance. Nous accompagnons en priorité les TPE gannatoises (commerces de proximité, artisans BTP, services aux entreprises des trois ZAC A719, professions libérales) puis les PME (exploitations agricoles grandes cultures et élevage Limagne, industries locales). Code custom, pas no-code, tarifs publics.",
   seoHook: "TPE, PME & 3 zones commerciales A719 Allier",
   ecosystemFr:
     "Gannat est en Limagne bourbonnaise, sud de l'Allier, sur l'axe A71/A719 Clermont-Paris. Économie locale : 318 entreprises (2013) dominées par commerce et services, trois zones d'activité commerciale le long de l'A719, agriculture occupant 75,6 % du sol (grandes cultures céréalières Limagne, élevage bovin), artisanat BTP, professions libérales. Siège administratif de la CC Saint-Pourçain Sioule Limagne issue de la fusion 2017. Patrimoine paléontologique reconnu (fossiles de rhinocéros oligo-miocènes). Festival international « Les Cultures du Monde » chaque juillet attire visiteurs et délégations étrangères. Communes voisines : Bègues, Mazerier, Ébreuil, Charmes et deux communes du Puy-de-Dôme limitrophes.",
@@ -50,7 +50,7 @@ export const GANNAT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Gannat et en Limagne bourbonnaise ?",
-      a: "Oui, Axion-IA intervient à Gannat, siège de la CC Saint-Pourçain Sioule Limagne, et dans les communes voisines (Bègues, Mazerier, Ébreuil, Charmes, Aigueperse, Saint-Pourçain-sur-Sioule). Consultants depuis Clermont-Ferrand (45 min A71).",
+      a: "Oui, Axion-IA intervient à Gannat, siège de la CC Saint-Pourçain Sioule Limagne, et dans les communes voisines (Bègues, Mazerier, Ébreuil, Charmes, Aigueperse, Saint-Pourçain-sur-Sioule). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels tarifs pour une mission IA à Gannat ?",
@@ -73,8 +73,8 @@ export const GANNAT_COPY: VilleCopy = {
       a: "Code et données hébergés en Union européenne, contrats DPA signés, registre des traitements fourni, formation des équipes. Conformité native, pas d'option payante.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont-Ferrand ?",
-      a: "Nos consultants viennent de Clermont-Ferrand par l'A71 (45 min, 51 km). Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
+      q: "Comment se déroule une mission à Gannat ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Visio possible pour cadrage et coaching, présentiel recommandé pour ateliers d'équipe.",
     },
   ],
 };

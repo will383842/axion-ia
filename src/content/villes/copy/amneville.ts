@@ -49,7 +49,7 @@ export const AMNEVILLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Amnéville et sillon mosellan ?",
-      a: "Oui, Axion-IA intervient à Amnéville et tout le sillon mosellan (Metz, Thionville, Hagondange, Talange, Rombas). Nos consultants viennent de Metz (20 min A31), Luxembourg (50 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Amnéville et tout le sillon mosellan (Metz, Thionville, Hagondange, Talange, Rombas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les hôtels et restaurants du pôle thermal ?",
@@ -64,8 +64,8 @@ export const AMNEVILLE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Amnéville, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Metz ou Luxembourg ?",
-      a: "Nos consultants viennent de Metz (20 min A31), Nancy (50 min) ou Luxembourg-Ville (50 min). Pour les multi-jours, hébergement local possible (offre hôtelière dense pôle thermal).",
+      q: "Comment se déroule une mission à Amnéville ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (offre hôtelière dense pôle thermal).",
     },
   ],
 };

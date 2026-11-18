@@ -20,7 +20,7 @@ import type { EmailJobName } from "@/server/queue/types";
 import { choixDeLUrlCalendly, lienDeReservationDuSite, lienDuSite } from "../lien-du-site";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 
-const CALENDLY_APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY_APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const SITE = "https://axion-ia.com";
 
 beforeAll(() => {
@@ -48,9 +48,9 @@ describe("la traduction d'une adresse Calendly en page du site", () => {
   });
 
   it("la casse, la barre finale et les paramètres n'y changent rien", () => {
-    expect(choixDeLUrlCalendly("https://Calendly.com/Axion-IA/Echange-Apporteur/?x=1")).toBe(
-      "apporteur",
-    );
+    expect(
+      choixDeLUrlCalendly("https://Calendly.com/Axion-IA/Echange-Apporteur-Affaires/?x=1"),
+    ).toBe("apporteur");
   });
 
   it("une variable d'environnement redéfinit l'adresse reconnue", () => {
@@ -116,7 +116,7 @@ describe("🔑 les gabarits d'e-mail écrivent le lien du site", () => {
     expect(r.html).toContain("/fr/appel/apporteur");
     expect(r.html).toContain(`depuis=${depuis}`);
     // Le lien Calendly brut ne figure plus dans le message.
-    expect(r.html).not.toContain("calendly.com/axion-ia/echange-apporteur");
+    expect(r.html).not.toContain("calendly.com/axion-ia/echange-apporteur-affaires");
   });
 
   it("🔴 l'aperçu RECONSTITUÉ d'une invitation d'avant le 05/10 garde le lien Calendly brut", async () => {

@@ -64,7 +64,7 @@ export const ELVEN_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Vannes ou Rennes ?",
+      q: "Comment se déroule une mission à Elven ?",
       a: "Vannes (20 min), Rennes (1h). Gare TGV Vannes à 20 min.",
     },
   ],

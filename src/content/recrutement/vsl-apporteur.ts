@@ -90,13 +90,25 @@ export const VSL_VIDEO_FICHIERS = {
  */
 export const AFFICHER_BLOC_COMMISSION: boolean = true;
 
-export function commissionVsl(montant: string): {
+export function commissionVsl(montant: string | null): {
   readonly titre: string;
   readonly indicatif: string;
   readonly montant: string;
   readonly apres: string;
   readonly sousLigne: string;
 } {
+  // R7 (08/11/2026) — `null` : aucun chiffre au public (`commission-publique.ts`).
+  // Le bloc garde sa place et dit la règle sans montant.
+  if (montant === null) {
+    return {
+      titre: "Votre commission",
+      indicatif: "",
+      montant: "Sur chaque mission signée",
+      apres: "et payée, détaillée dans votre contrat",
+      sousLigne:
+        "Règle de calcul du contrat, pas une promesse de gain. Versée quand l'entreprise a payé à 100 %, réduite au prorata en cas de remise.",
+    };
+  }
   return {
     titre: "Votre commission",
     indicatif: "À titre indicatif",
@@ -149,7 +161,8 @@ export const VSL_PAS_CA: readonly string[] = [
 /** Preuves honnêtes : ce qui existe réellement. Aucune statistique. */
 export const VSL_PREUVES = {
   catalogue: {
-    titre: "Des formations réelles, avec leurs prix publics",
+    // R7 (08/11/2026) : plus de prix publics (hors Journée IA) — « avec leurs prix publics » retiré.
+    titre: "Des formations réelles, avec leur programme détaillé",
     lien: "Voir le catalogue",
   },
   commission: {
@@ -178,7 +191,7 @@ export const VSL_PREUVES = {
  * par la page à partir de `pricing.ts`), « à titre indicatif » dans la même
  * phrase (garde `jur:remuneration-indicative`).
  */
-export function faqVsl(commissionParJournee: string): readonly {
+export function faqVsl(commissionParJournee: string | null): readonly {
   readonly id: string;
   readonly question: string;
   readonly answer: string;
@@ -198,7 +211,11 @@ export function faqVsl(commissionParJournee: string): readonly {
     {
       id: "gains",
       question: "Combien puis-je gagner ?",
-      answer: `À titre indicatif, ${commissionParJournee}\u00a0HT par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
+      // R7 (08/11/2026) — `null` : aucun chiffre au public (`commission-publique.ts`).
+      answer:
+        commissionParJournee === null
+          ? "Une commission sur chaque mission signée et payée, détaillée dans votre contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain."
+          : `À titre indicatif, ${commissionParJournee}\u00a0HT par journée de formation facturée et encaissée, selon le contrat. Cela dépend des entreprises que vous présentez et de celles qui signent : nous ne garantissons aucun gain.`,
     },
     {
       id: "negocier",

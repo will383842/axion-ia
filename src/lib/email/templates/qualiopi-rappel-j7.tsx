@@ -4,6 +4,7 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { objetCompose } from "../objet-email";
+import { lieuRenseigne } from "./qualiopi-convocation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
@@ -11,7 +12,7 @@ interface Payload {
   titreFormation: string;
   dateDebut: string;
   dateFin: string;
-  lieu: string;
+  lieu?: string;
   modalite: string;
   numeroSession: string;
   lienPortail?: string;
@@ -30,7 +31,13 @@ export const qualiopiRappelJ7Subject = (
 ): string => {
   const p = payload as unknown as Payload;
   if (locale === "fr") {
-    return objetCompose("Rappel J-7 —", p.titreFormation ?? "Formation");
+    // Le rappel part vers J-4 selon l'audit : « J-7 » était faux. Avec la date,
+    // l'objet la porte (le titre est abrégé, jamais la date) ; sans date, il
+    // reste générique.
+    if (p.dateDebut) {
+      return objetCompose(`Rappel : formation le ${p.dateDebut} —`, p.titreFormation ?? "");
+    }
+    return objetCompose("Rappel avant votre formation —", p.titreFormation ?? "Formation");
   }
   return objetCompose("7-day reminder —", p.titreFormation ?? "Training");
 };
@@ -44,6 +51,7 @@ export function QualiopiRappelJ7Email({
 }) {
   const p = payload as unknown as Payload;
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://axion-ia.com";
+  const lieu = lieuRenseigne(p.lieu);
   const ctaHref = p.lienPortail ?? `${baseUrl}/fr/portail/mon-espace`;
   return (
     <EmailLayout
@@ -55,7 +63,8 @@ export function QualiopiRappelJ7Email({
     >
       <Text style={emailStyles.paragraphStyle}>
         Votre formation <strong>{p.titreFormation}</strong> démarre le{" "}
-        <strong>{p.dateDebut}</strong> — {p.modalite} — {p.lieu}.
+        <strong>{p.dateDebut}</strong> — {p.modalite}
+        {lieu ? ` — ${lieu}` : ""}.
       </Text>
       <Text style={emailStyles.paragraphStyle}>
         Bonjour {p.stagiairePrenomNom} — pensez à consulter votre convocation et les informations

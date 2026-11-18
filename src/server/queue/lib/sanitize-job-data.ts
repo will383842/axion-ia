@@ -24,6 +24,12 @@
 
 const REDACTED = "[REDACTED]";
 
+/** Gabarits d'e-mail dont le payload est masqué en bloc (données de clients). */
+const GABARITS_PAYLOAD_MASQUE: ReadonlySet<string> = new Set([
+  "alerte-demande-client",
+  "recap-demandes-clients",
+]);
+
 /** Patterns regex pour détecter et masquer des secrets dans un string libre. */
 const SECRET_PATTERNS: ReadonlyArray<RegExp> = [
   // API keys génériques (sk-..., pk-..., gh*_, etc.)
@@ -38,6 +44,10 @@ const SECRET_PATTERNS: ReadonlyArray<RegExp> = [
   /\beyJ[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/g,
   // INDEXNOW key (hex 32 chars typique)
   /\b[a-f0-9]{32}\b/gi,
+  // Lien de signature maison (`/portail/signer/<payloadB64>.<sigB64>`) : jeton porteur à
+  // 2 segments, que ni le motif JWT (3 segments) ni le motif hex n'attrapent. On masque toute
+  // l'URL / le chemin contenant `/signer/`, jusqu'au prochain espace ou délimiteur.
+  /(?:https?:\/\/)?[^\s"'<>()]*\/signer\/[^\s"'<>()]*/gi,
   // Postgres URL passwords (postgres://user:PASSWORD@host)
   /(postgres(?:ql)?:\/\/[^:]+:)[^@]+(@)/gi,
   // Redis URL passwords
@@ -77,6 +87,8 @@ const SENSITIVE_KEYS: ReadonlySet<string> = new Set([
   "docuseal_strict_hmac",
   // S6b — code de signature à usage unique (scellé dans la file, masqué ici en plus).
   "code",
+  // Lien de signature maison (jeton porteur) — cf. SECRET_PATTERNS pour les valeurs libres.
+  "signatureurl",
 ]);
 
 /** Noms de clés à redacter via redactEmail (premier char + masque + @domaine). */
@@ -145,6 +157,11 @@ export function redactEmailValue(raw: string): string {
   const domain = raw.slice(idx + 1);
   if (local.length <= 1) return `*@${domain}`;
   return `${local[0]}****@${domain}`;
+}
+
+/** Texte libre : chaque adresse y est remplacée par sa forme masquée (`m****@domaine`). */
+export function sansAdresse(texte: string): string {
+  return texte.replace(/[^\s@"'<>(),;:]+@[^\s@"'<>(),;:]+/g, (a) => redactEmailValue(a));
 }
 
 function redactPhoneValue(raw: string): string {
@@ -239,5 +256,13 @@ export function sanitizeJobData(raw: unknown): Record<string, unknown> | null {
   if (raw === null || raw === undefined) return null;
   if (typeof raw !== "object") return null;
   if (Array.isArray(raw)) return null;
-  return sanitizeObject(raw as Record<string, unknown>, 1);
+  const obj = raw as Record<string, unknown>;
+  const out = sanitizeObject(obj, 1);
+  // Gabarits dont le `payload` ne contient que des données de clients (noms, téléphones, messages,
+  // liens d'annulation) : on le retire ENTIÈREMENT, quelle que soit la clé (le filtre par clé ne
+  // les couvre pas). Couvre tout chemin Sentry/journal qui passe par ce filtre.
+  if (typeof obj["template"] === "string" && GABARITS_PAYLOAD_MASQUE.has(obj["template"])) {
+    out["payload"] = REDACTED;
+  }
+  return out;
 }

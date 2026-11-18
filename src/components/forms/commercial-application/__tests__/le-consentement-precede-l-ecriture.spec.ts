@@ -20,7 +20,14 @@ import { describe, expect, it } from "vitest";
 import { render } from "@testing-library/react";
 import { commercialApplicationSchema } from "@/lib/commercial-application/model";
 import { StepDetails, StepIdentite } from "../steps";
-import { buildSubmissionPayload, emptyAnswers, validateStep } from "../wizard-state";
+import {
+  buildSubmissionPayload,
+  clearDraft,
+  emptyAnswers,
+  loadDraft,
+  saveDraft,
+  validateStep,
+} from "../wizard-state";
 
 /** Le texte de l'accord, tel qu'il est affiché (apostrophes typographiques). */
 const TEXTE_ACCORD = /J’accepte que mes informations soient utilisées/;
@@ -142,11 +149,78 @@ describe("le consentement n'est demandé qu'une fois", () => {
       pitch: "x".repeat(200),
       dispoMois: "12",
       dispoAnnee: String(new Date().getFullYear() + 1),
-      permisVehicule: true,
     };
     const payload = buildSubmissionPayload(reponses);
     expect(payload.consent).toBe(true);
     const verdict = commercialApplicationSchema.safeParse(payload);
     expect(verdict.success, JSON.stringify(verdict.error?.issues)).toBe(true);
+  });
+});
+
+// 11/11/2026 (Williams) : la question « permis et véhicule » est retirée du
+// dossier apporteur. La question « Avez-vous déjà vendu en B2B ? » reste.
+describe("le dossier apporteur ne demande plus ni permis ni véhicule", () => {
+  const complet = () => ({
+    ...emptyAnswers(),
+    prenom: "Camille",
+    nom: "Durand",
+    email: "camille.durand@example.com",
+    telephone: "0612345678",
+    ville: "Lyon",
+    codePostal: "69001",
+    consent: true,
+    b2bDejaVendu: true,
+    b2bAnnees: "5-10",
+    experiences: [
+      {
+        ...emptyAnswers().experiences[0]!,
+        entreprise: "Exemple SA",
+        ville: "Lyon",
+        poste: "Apporteur d'affaires",
+        debutMois: "01",
+        debutAnnee: "2020",
+        posteActuel: true,
+      },
+    ],
+    iaUtilise: false,
+    informatiqueUtilise: false,
+    zoneMobile: true,
+    deplacement: "oui",
+    pitch: "x".repeat(200),
+    dispoMois: "12",
+    dispoAnnee: String(new Date().getFullYear() + 1),
+  });
+
+  it("le dernier écran ne pose plus la question", () => {
+    const { container } = render(
+      React.createElement(StepDetails, { a: emptyAnswers(), set: () => {}, errors: {} }),
+    );
+    expect(container.textContent ?? "").not.toMatch(/permis|v[ée]hicule/i);
+    expect(container.querySelector('input[name="permis"]')).toBeNull();
+  });
+
+  it("le dernier écran se valide sans cette réponse, et l'envoi ne la porte pas", () => {
+    expect(validateStep(9, complet())).toEqual({});
+    const payload = buildSubmissionPayload(complet()) as Record<string, unknown>;
+    expect(payload).not.toHaveProperty("permisVehicule");
+    expect(commercialApplicationSchema.safeParse(payload).success).toBe(true);
+  });
+
+  it("un onglet ouvert avant le retrait, qui envoie encore la réponse, n'est pas refusé", () => {
+    const ancien = { ...buildSubmissionPayload(complet()), permisVehicule: true };
+    expect(commercialApplicationSchema.safeParse(ancien).success).toBe(true);
+  });
+
+  it("un brouillon antérieur ne ramène pas la réponse dans le dossier", () => {
+    saveDraft(9, { ...complet(), permisVehicule: true } as never);
+    const repris = loadDraft();
+    expect(repris).not.toBeNull();
+    expect(repris!.answers).not.toHaveProperty("permisVehicule");
+    clearDraft();
+  });
+
+  it("la question « déjà vendu en B2B » reste obligatoire", () => {
+    expect(validateStep(2, { ...complet(), b2bDejaVendu: null }).b2bDejaVendu).toBeTruthy();
+    expect(validateStep(2, complet()).b2bDejaVendu).toBeUndefined();
   });
 });

@@ -230,7 +230,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Courbevoie ?",
-      a: "Oui, Axion-IA intervient à Courbevoie et dans tout le quartier d'affaires de La Défense. Nos consultants se déplacent depuis Paris (RER A, ~10 min) pour rencontrer cabinets, PME tertiaires et indépendants sur site.",
+      a: "Oui, Axion-IA intervient à Courbevoie et dans tout le quartier d'affaires de La Défense. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Courbevoie ?",
@@ -246,7 +246,7 @@ export const COURBEVOIE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Courbevoie ?",
-      a: "Nos consultants interviennent dans vos locaux ou en visio, depuis Paris. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Le périmètre, le planning et les tarifs sont fixés en amont, sans engagement caché.",
     },
     {
       q: "Comment garantissez-vous la conformité RGPD ?",

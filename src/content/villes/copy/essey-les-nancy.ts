@@ -49,7 +49,7 @@ export const ESSEY_LES_NANCY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Essey-lès-Nancy et zone Saint-Sébastien ?",
-      a: "Oui, Axion-IA intervient à Essey-lès-Nancy et toute la Métropole du Grand Nancy, y compris la zone commerciale Saint-Sébastien. Consultants depuis Metz (50 min) ou Paris (1 h 30 via TGV).",
+      a: "Oui, Axion-IA intervient à Essey-lès-Nancy et toute la Métropole du Grand Nancy, y compris la zone commerciale Saint-Sébastien. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Essey-lès-Nancy  ?",

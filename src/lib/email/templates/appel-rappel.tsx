@@ -168,7 +168,10 @@ export interface PayloadAppel {
    * le message générique d'hier — jamais une erreur.
    */
   typeRendezVous?: string;
-  /** Le service choisi pour un échange projet (« Formation »…), s'il est connu. */
+  /**
+   * Le service choisi pour un échange projet (« Formation »…), s'il est connu ; pour
+   * la visio du Tour France IA, la VILLE indiquée dans le formulaire.
+   */
   besoin?: string;
 }
 
@@ -203,7 +206,10 @@ interface VarianteType {
   readonly puceRienAPreparer: (besoin: string | null) => string;
 }
 
-const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteType>> = {
+/** Les types qui ont leur propre variante française. */
+type TypeAvecVariante = "diagnostic" | "echange_projet" | "tour_de_france_ia";
+
+const VARIANTES_FR: Readonly<Record<TypeAvecVariante, VarianteType>> = {
   diagnostic: {
     eyebrow: "Diagnostic IA gratuit",
     objetConfirme: "Diagnostic IA :",
@@ -247,12 +253,35 @@ const VARIANTES_FR: Readonly<Record<"diagnostic" | "echange_projet", VarianteTyp
         ? `Rien à préparer : nous partons de votre projet et du service choisi (${b}).`
         : "Rien à préparer : nous partons de votre projet.",
   },
+  // La visio de 30 minutes du Tour France IA (2026-10-25) : modèle de l'appel de
+  // découverte, ton chaleureux. Ici `besoin` porte la VILLE lue dans le formulaire.
+  // Rien de vendu, rien de chiffré : on annonce une prise de contact.
+  tour_de_france_ia: {
+    eyebrow: "Tour France IA",
+    objetConfirme: "Tour France IA :",
+    objetConfirmeSansDate: "Votre visio Tour France IA est confirmée",
+    objetJ1: (h) => objetCompose("Tour France IA :", h ? `visio demain à ${h}` : "visio demain"),
+    objetH1: (h) =>
+      objetCompose("Tour France IA :", h ? `visio dans 1 h, à ${h}` : "visio dans une heure"),
+    titreJ1: "Votre visio Tour France IA a lieu demain",
+    titreH1: "Votre visio Tour France IA a lieu dans une heure",
+    deroule: (b) =>
+      `Merci de votre intérêt pour le Tour France IA. ${b ? `Votre ville : ${b}. ` : ""}Nous faisons connaissance, nous vous présentons le Tour, et vous décidez ensuite, à votre rythme, si vous confirmez votre participation.`,
+    attendu: (b) =>
+      b
+        ? `Rien à préparer. Nous faisons connaissance et nous vous présentons le Tour France IA, pour votre ville : ${b}.`
+        : "Rien à préparer. Nous faisons connaissance et nous vous présentons le Tour France IA.",
+    puceRienAPreparer: () =>
+      "Rien à préparer : nous faisons connaissance et nous vous présentons le Tour France IA.",
+  },
 };
 
 /** La variante du type, ou `null` (type absent, autre, ou message anglais). */
 function varianteDe(locale: Locale, p: { typeRendezVous?: unknown }): VarianteType | null {
   if (locale !== "fr") return null;
-  return p.typeRendezVous === "diagnostic" || p.typeRendezVous === "echange_projet"
+  return p.typeRendezVous === "diagnostic" ||
+    p.typeRendezVous === "echange_projet" ||
+    p.typeRendezVous === "tour_de_france_ia"
     ? VARIANTES_FR[p.typeRendezVous]
     : null;
 }
@@ -264,7 +293,15 @@ function besoinDe(p: { besoin?: unknown }): string | null {
   return b.length > 80 ? `${b.slice(0, 79)}…` : b;
 }
 
-const momentDe = (p: { moment?: MomentAppel }): MomentAppel => p.moment ?? "h1";
+/**
+ * Le moment du message, ou `"sans_moment"` quand la charge n'en porte pas (anciens jobs
+ * posés avant que les émetteurs le fournissent). Ce cas ne doit JAMAIS annoncer « dans
+ * une heure » : sans moment, on ne sait pas quand le rendez-vous a lieu par rapport à
+ * l'envoi. Rendu neutre : « Rappel de votre rendez-vous », avec date et heure si présentes.
+ */
+type MomentRendu = MomentAppel | "sans_moment";
+const momentDe = (p: { moment?: unknown }): MomentRendu =>
+  p.moment === "confirmation" || p.moment === "j1" || p.moment === "h1" ? p.moment : "sans_moment";
 
 /** Une chaîne non vide, ou `null`. Aucune branche ne doit rendre « undefined ». */
 const texteOuNull = (v: unknown): string | null => {
@@ -297,6 +334,15 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const p = payload as unknown as PayloadAppel;
   const m = momentDe(p);
   const quand = quandTexte(locale, p);
+  if (m === "sans_moment") {
+    return locale === "fr"
+      ? quand
+        ? objetCompose("Rappel de votre rendez-vous :", quand)
+        : "Rappel de votre rendez-vous"
+      : quand
+        ? objetCompose("Reminder of your meeting:", quand)
+        : "Reminder of your meeting";
+  }
   const v = varianteDe(locale, p);
   if (v) {
     const heure = texteOuNull(p.heure);
@@ -483,7 +529,7 @@ const COPY = {
           : `Rien à préparer. Les liens pour reporter ou annuler sont dans le message.`,
       eyebrow: "Rendez-vous de découverte",
       title: "C'est confirmé",
-      signature: "À très vite,\nL'équipe Axion-IA",
+      signature: "À très vite,\nWilliams",
     },
     j1: {
       preview: (d: string | null) =>
@@ -493,7 +539,21 @@ const COPY = {
       title: "Votre rendez-vous a lieu demain",
       quand: (h: string, d: string | null) =>
         `Petit rappel : nous nous retrouvons demain à ${h} (heure de Paris)${d ? `, pour ${d}` : ""}.`,
-      signature: "À demain,\nL'équipe Axion-IA",
+      signature: "À demain,\nWilliams",
+    },
+    sansMoment: {
+      preview: (d: string | null) =>
+        d ? `${d}, rien à préparer de votre côté.` : `Rien à préparer de votre côté.`,
+      title: "Rappel de votre rendez-vous",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `Petit rappel : votre rendez-vous a lieu le ${date} à ${heure} (heure de Paris).`
+          : heure
+            ? `Petit rappel : votre rendez-vous a lieu à ${heure} (heure de Paris).`
+            : date
+              ? `Petit rappel : votre rendez-vous a lieu le ${date}.`
+              : "Petit rappel de votre rendez-vous.",
+      signature: "À bientôt,\nWilliams",
     },
     h1: {
       preview: (d: string | null) =>
@@ -501,7 +561,7 @@ const COPY = {
       title: "Votre rendez-vous a lieu dans une heure",
       quand: (h: string, d: string | null) =>
         `Petit rappel : nous nous retrouvons à ${h} (heure de Paris)${d ? `, pour ${d}` : ""}.`,
-      signature: "À tout à l'heure,\nL'équipe Axion-IA",
+      signature: "À tout à l'heure,\nWilliams",
     },
   },
   en: {
@@ -512,7 +572,7 @@ const COPY = {
           : `Nothing to prepare. Links to reschedule or cancel are inside.`,
       eyebrow: "Discovery meeting",
       title: "You're all set",
-      signature: "Talk soon,\nThe Axion-IA team",
+      signature: "Talk soon,\nWilliams",
     },
     j1: {
       preview: (d: string | null) =>
@@ -522,7 +582,21 @@ const COPY = {
       title: "Your meeting is tomorrow",
       quand: (h: string, d: string | null) =>
         `A quick reminder: we meet tomorrow at ${h} (Paris time)${d ? `, for ${d}` : ""}.`,
-      signature: "Talk tomorrow,\nThe Axion-IA team",
+      signature: "Talk tomorrow,\nWilliams",
+    },
+    sansMoment: {
+      preview: (d: string | null) =>
+        d ? `${d}, nothing to prepare on your side.` : `Nothing to prepare on your side.`,
+      title: "Reminder of your meeting",
+      quand: (date: string | null, heure: string | null) =>
+        date && heure
+          ? `A quick reminder: your meeting is on ${date} at ${heure} (Paris time).`
+          : heure
+            ? `A quick reminder: your meeting is at ${heure} (Paris time).`
+            : date
+              ? `A quick reminder: your meeting is on ${date}.`
+              : "A quick reminder of your meeting.",
+      signature: "Talk soon,\nWilliams",
     },
     h1: {
       preview: (d: string | null) =>
@@ -530,7 +604,7 @@ const COPY = {
       title: "Your meeting is in one hour",
       quand: (h: string, d: string | null) =>
         `A quick reminder: we meet at ${h} (Paris time)${d ? `, for ${d}` : ""}.`,
-      signature: "Talk soon,\nThe Axion-IA team",
+      signature: "Talk soon,\nWilliams",
     },
   },
 } as const;
@@ -695,6 +769,10 @@ function lignesRecap(
   const besoin =
     varianteDe(locale, p) && p.typeRendezVous === "echange_projet" ? besoinDe(p) : null;
   if (besoin) lignes.push({ libelle: "Service choisi", valeur: besoin });
+  // Tour France IA : la ville indiquée dans le formulaire, portée par `besoin`.
+  const ville =
+    varianteDe(locale, p) && p.typeRendezVous === "tour_de_france_ia" ? besoinDe(p) : null;
+  if (ville) lignes.push({ libelle: "Votre ville", valeur: ville });
 
   const lieu = texteOuNull(p.lieu);
 
@@ -1016,6 +1094,24 @@ export function AppelRappelEmail({
   // 20 à 30 % », mais seulement s'il se lit en deux secondes : le récapitulatif
   // et le bloc « ce qui se passe maintenant » y coûteraient de la surface pour
   // une information déjà lue à la confirmation. Ne pas les propager ici.
+  if (m === "sans_moment") {
+    const tn = COPY[locale].sansMoment;
+    return (
+      <EmailLayout famille="C" preview={tn.preview(duree)} title={tn.title} locale={locale}>
+        <Text style={emailStyles.paragraphStyle}>
+          {tn.quand(texteOuNull(p.date), texteOuNull(p.heure))}
+        </Text>
+        <LigneLieu lieu={p.lieu} format={format} c={c} />
+        <Text style={emailStyles.paragraphStyle}>
+          {c.intro(p.prenom)}
+          <br />
+          {v ? v.attendu(besoin) : c.attendu}
+        </Text>
+        <ActionsSecondaires p={p} c={c} encadre={false} />
+        <Text style={emailStyles.paragraphStyle}>{tn.signature}</Text>
+      </EmailLayout>
+    );
+  }
   const t = COPY[locale][m === "j1" ? "j1" : "h1"];
   const heure = texteOuNull(p.heure) ?? (locale === "fr" ? "l'heure prévue" : "the agreed time");
   return (

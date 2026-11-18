@@ -49,7 +49,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wattignies et dans la banlieue sud de Lille ?",
-      a: "Oui, Axion-IA intervient à Wattignies et dans toute la banlieue sud de Lille (Faches-Thumesnil, Ronchin, Templemars, Seclin, Lesquin). Nos consultants sont basés à Lille (12 min) et couvrent l'ensemble de la Métropole Européenne de Lille.",
+      a: "Oui, Axion-IA intervient à Wattignies et dans toute la banlieue sud de Lille (Faches-Thumesnil, Ronchin, Templemars, Seclin, Lesquin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Wattignies  ?",
@@ -61,7 +61,7 @@ export const WATTIGNIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wattignies ?",
-      a: "Nos consultants interviennent à Wattignies depuis Lille (12 min). Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux professionnels ou en visio. Pour missions multi-jours, hébergement à Lille centre.",
     },
     {
       q: "Proposez-vous des formations IA individuelles pour dirigeants à Wattignies ?",

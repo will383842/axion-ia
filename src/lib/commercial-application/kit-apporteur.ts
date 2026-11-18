@@ -41,8 +41,9 @@ export const DOCUMENT_APPORTEUR_CHEMIN = "imprimes/devenir-apporteur-d-affaires-
  * remet qu'après cette réécriture (JUR-T45) — en repassant ce drapeau à `true`
  * et en rétablissant les textes qui l'annonçaient.
  *
- * Le fichier reste servi à son chemin : des e-mails déjà envoyés pointent
- * dessus. Témoin : `__tests__/kit-apporteur-sans-pdf.spec.ts`, sur le rendu
+ * Le fichier reste dans `public/`, mais depuis R7 (08/11/2026, plus aucun prix public)
+ * son chemin est REDIRIGÉ par `next.config.ts` vers /fr/apporteur-affaires : il porte
+ * des commissions et des prix de vente (`fichiers-publics-a-prix-masques.spec.ts`). Témoin : `__tests__/kit-apporteur-sans-pdf.spec.ts`, sur le rendu
  * réel de chaque gabarit et de la page de remerciement.
  */
 export const DOCUMENT_APPORTEUR_DIFFUSE: boolean = false;

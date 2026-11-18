@@ -64,7 +64,7 @@ export const ETRECHY_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : gestion stocks, agents IA prise de commande, fidélisation client, marketing local.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Massy ?",
+      q: "Comment se déroule une mission à Étréchy ?",
       a: "Paris centre (50 min RER C). Massy TGV (25 min). Étampes (10 min).",
     },
   ],

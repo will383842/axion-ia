@@ -49,7 +49,7 @@ export const FONSORBES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fonsorbes ?",
-      a: "Oui, Axion-IA intervient à Fonsorbes et dans toute la couronne ouest de Toulouse (Plaisance-du-Touch, Saint-Lys, Léguevin). Nos consultants se déplacent en 25 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Fonsorbes et dans toute la couronne ouest de Toulouse (Plaisance-du-Touch, Saint-Lys, Léguevin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Fonsorbes ?",
@@ -61,7 +61,7 @@ export const FONSORBES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Fonsorbes ?",
-      a: "Nos consultants se déplacent à Fonsorbes depuis Toulouse (25 min D632). Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux. Équipes autonomes en fin de session.",
     },
     {
       q: "L'IA est-elle utile pour un artisan BTP à Fonsorbes ?",

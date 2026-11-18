@@ -15,6 +15,12 @@ name: Daily IndexNow re-submit
 #
 # Output : log seulement (pas de commit/push). Voir GH Actions logs pour
 # le compte URLs pinged.
+#
+# ⚠️ Refus Microsoft (audit GEO 2026-11-11) : `api.indexnow.org` renvoie 403
+# pour ce domaine (cf. `src/lib/indexnow.ts`), et la cascade bascule sur Yandex.
+# Le script émet alors une annotation `::warning title=IndexNow Microsoft refuse::`
+# et un résumé de run : le refus se VOIT sur la page du run, sans rougir ce cron
+# (indépendant du déploiement, qu'il ne peut donc pas casser).
 
 on:
   schedule:

@@ -227,7 +227,7 @@ export const VILLIERS_LE_BEL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Villiers-le-Bel et dans Roissy Pays de France ?",
-      a: "Oui, nous intervenons à Villiers-le-Bel et dans les communes voisines de Sarcelles, Arnouville, Gonesse, Écouen, Bouqueval et Le Plessis-Gassot. Accès rapide via RER D ou voiture depuis Paris (~25 min).",
+      a: "Oui, nous intervenons à Villiers-le-Bel et dans les communes voisines de Sarcelles, Arnouville, Gonesse, Écouen, Bouqueval et Le Plessis-Gassot. Accès rapide via RER D ou voiture.",
     },
     {
       q: "Quels sont vos tarifs pour une intervention IA à Villiers-le-Bel ?",

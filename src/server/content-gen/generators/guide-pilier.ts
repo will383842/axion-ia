@@ -67,7 +67,7 @@ import { extractMentionedCitiesFromText } from "@/lib/geo/extract-mentioned-citi
 const QUALITY_THRESHOLD = 60;
 
 const SYSTEM_PROMPT_OUTLINE =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 95 % (méthodologie + cas concrets + tarifs SSOT)
 - SIREN : [SIREN à compléter] · FR uniquement
@@ -99,7 +99,7 @@ Output STRICT JSON (zéro prose hors JSON) :
 }`);
 
 const SYSTEM_PROMPT_SECTION =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA (cabinet conseil IA France).
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe).
 Doctrine v2.5 stricte (FR · Axion-IA-centric ≥ 95 %).
 
 Mission STEP 2 : tu rédiges UNE seule section d'un guide pilier (la section

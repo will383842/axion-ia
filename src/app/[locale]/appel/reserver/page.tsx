@@ -33,6 +33,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { Container } from "@/components/layout/Container";
 import { FormulaireReservation } from "@/components/booking/FormulaireReservation";
+import { FilEtapesTour } from "@/components/tour/FilEtapesTour";
 import { RemonterAuMessage } from "@/components/booking/RemonterAuMessage";
 import { resoudreEventTypePourReservation } from "@/server/calendly/availability";
 import { lireLaRepriseDuCreneau } from "@/server/calendly/reprise-formulaire";
@@ -62,6 +63,7 @@ import {
   identiteDuJetonVsl,
   PARAM_JETON_VSL,
 } from "@/features/commercial-application/identite-reservation-vsl";
+import { champVilleDuTour, identiteDuJetonTour } from "@/features/tour-de-france/identite-visio";
 import { identiteDuJetonReservation } from "@/server/qualiopi/formateurs-independants/identite-reservation";
 
 /**
@@ -145,7 +147,10 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // Les questions et l'event_type DU BON TYPE ; diagnostic introuvable chez
   // Calendly → type appel, sans bruit (`choix-rendez-vous.ts`).
   const resolu = await resoudreChoix(choix);
-  const et = await resoudreEventTypePourReservation(resolu.url);
+  // Visio du Tour : la ville est demandée, donc jamais masquée (`questions.ts`).
+  const et = await resoudreEventTypePourReservation(resolu.url, {
+    sansMasquage: choix === "tour",
+  });
   if (!et) {
     // Jeton absent, API muette, ou une question qu'on ne sait pas poser : le
     // contrat de repli s'applique, et il est écrit dans `questions.ts`.
@@ -172,6 +177,12 @@ export default async function ReserverPage({ params, searchParams }: Props) {
   // un jeton faux ou expiré ne change rien au formulaire.
   // Lot B (M25) : échange formateur ouvert depuis F1 ou F7, même règle (jeton signé,
   // candidature de formateur freelance seulement ; sinon formulaire vide).
+  // Visio du Tour France IA : le jeton de la mini-demande (`?j=`, domaine `tour-demande-v1`) propose
+  // le nom, l'e-mail et la ville (jamais le téléphone : il est saisi ici, à l'étape 2). Un jeton d'un autre parcours (page vidéo des
+  // apporteurs) ne s'y lit pas, et réciproquement ; un jeton faux : formulaire vide, sans erreur.
+  const identiteTour =
+    !reprise && choix === "tour" ? await identiteDuJetonTour(sp[PARAM_JETON_VSL]) : null;
+  const champVille = identiteTour ? champVilleDuTour(et.questions) : null;
   const prerempli =
     (!reprise && choix === "apporteur" ? await identiteDuJetonVsl(sp[PARAM_JETON_VSL]) : null) ??
     (!reprise && choix === "formateur"
@@ -203,30 +214,47 @@ export default async function ReserverPage({ params, searchParams }: Props) {
 
               Rendu en `<ol>` : l'ordre est l'information, et un lecteur d'écran
               annonce « liste de 3 éléments » plutôt qu'une suite de mots. */}
-          <ol className="text-fg-muted mt-4 flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase">
-            <li className="text-sage flex items-center gap-1.5">
-              <Check className="h-3.5 w-3.5" aria-hidden="true" />
-              Créneau
-            </li>
-            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
-            <li className="text-terracotta-deep">Vos coordonnées</li>
-            <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
-            <li>C&apos;est réservé</li>
-          </ol>
+          {choix === "tour" ? (
+            <>
+              <FilEtapesTour etapeCourante={2} />
+              <h1
+                className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Votre visio de {et.dureeMinutes ?? 30} minutes
+              </h1>
+              <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+                Plus qu&apos;une minute : vos coordonnées, dont un téléphone pour vous joindre.
+              </p>
+            </>
+          ) : (
+            <>
+              <ol className="text-fg-muted mt-4 flex items-center gap-2 text-[11px] font-semibold tracking-wide uppercase">
+                <li className="text-sage flex items-center gap-1.5">
+                  <Check className="h-3.5 w-3.5" aria-hidden="true" />
+                  Créneau
+                </li>
+                <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+                <li className="text-terracotta-deep">Vos coordonnées</li>
+                <li aria-hidden="true" className="bg-border-strong h-px w-4 shrink-0" />
+                <li>C&apos;est réservé</li>
+              </ol>
 
-          <h1
-            className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
-            Plus qu&apos;une minute et c&apos;est réservé
-          </h1>
-          {/* 🔑 Le sous-titre chiffre l'effort restant AVANT de rassurer sur
-              l'engagement. « Dernière étape » ne disait pas combien de temps ;
-              « une minute » se compare à l'envie d'abandonner. */}
-          <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
-            Une minute, pas de carte bancaire, aucun engagement — et vous pourrez annuler ou
-            déplacer d&apos;un clic depuis l&apos;e-mail de confirmation.
-          </p>
+              <h1
+                className="text-fg mt-2.5 mb-1.5 text-[clamp(1.625rem,5.5vw,2.125rem)] leading-tight font-semibold tracking-tight"
+                style={{ fontFamily: "var(--font-serif)" }}
+              >
+                Plus qu&apos;une minute et c&apos;est réservé
+              </h1>
+              {/* 🔑 Le sous-titre chiffre l'effort restant AVANT de rassurer sur
+                l'engagement. « Dernière étape » ne disait pas combien de temps ;
+                « une minute » se compare à l'envie d'abandonner. */}
+              <p className="text-fg-soft mb-5 text-[15px] leading-relaxed">
+                Une minute, pas de carte bancaire, aucun engagement — et vous pourrez annuler ou
+                déplacer d&apos;un clic depuis l&apos;e-mail de confirmation.
+              </p>
+            </>
+          )}
 
           {/* ⚠️ Quand la reprise n'a pas pu tout garder, on le DIT. Un champ vide
               sans explication ferait croire à une perte de données ; un champ
@@ -249,21 +277,32 @@ export default async function ReserverPage({ params, searchParams }: Props) {
             questions={et.questions}
             {...(reprise
               ? { erreurs: reprise.erreurs, valeurs: reprise.valeurs }
-              : prerempli
+              : identiteTour
                 ? {
                     valeurs: {
-                      [CHAMPS.nom]: prerempli.nom,
-                      [CHAMPS.email]: prerempli.email,
-                      // Le téléphone de l'étape 2, s'il est sur la fiche ; modifiable.
-                      ...(prerempli.telephone ? { [CHAMPS.telephone]: prerempli.telephone } : {}),
+                      [CHAMPS.nom]: identiteTour.nom,
+                      [CHAMPS.email]: identiteTour.email,
+                      ...(champVille && identiteTour.ville
+                        ? { [champVille]: identiteTour.ville }
+                        : {}),
                     },
                   }
-                : {})}
+                : prerempli
+                  ? {
+                      valeurs: {
+                        [CHAMPS.nom]: prerempli.nom,
+                        [CHAMPS.email]: prerempli.email,
+                        // Le téléphone de l'étape 2, s'il est sur la fiche ; modifiable.
+                        ...(prerempli.telephone ? { [CHAMPS.telephone]: prerempli.telephone } : {}),
+                      },
+                    }
+                  : {})}
             replidUrl={avecUtmContent(resolu.url, suivi)}
             action={soumettreLaReservation}
             // Les formats DE CE TYPE — le même jugement que l'action
             // (`formatsProposes`), jamais une liste recopiée ici.
             formats={formatsProposes(choix, et.lieux?.formats)}
+            {...(choix === "tour" ? { libelleEnvoi: "Confirmer ma visio" } : {})}
             locale={locale}
             champLocale={CHAMP_LOCALE}
             champLeurre={CHAMP_LEURRE}

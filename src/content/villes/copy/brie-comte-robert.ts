@@ -64,7 +64,7 @@ export const BRIE_COMTE_ROBERT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Outils IA réservation, gestion salle, fidélisation clientèle.",
     },
     {
-      q: "Comment se passe une mission depuis Melun ou Paris ?",
+      q: "Comment se déroule une mission à Brie-Comte-Robert ?",
       a: "Melun (20 min). Créteil (20 min). Paris centre (35 min A5/Francilienne). Orly (20 min). RER D Combs-la-Ville (10 min).",
     },
   ],

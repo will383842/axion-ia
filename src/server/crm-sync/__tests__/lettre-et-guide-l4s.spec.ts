@@ -1073,9 +1073,12 @@ describe("newsletter_optout depuis tous les chemins", () => {
     // Un NOUVEAU chemin de désinscription qui n'émettrait pas `newsletter_optout`
     // doit rougir ici : on l'ajoute à la liste en disant s'il émet (via
     // `desabonnerAbonne`) ou pourquoi il ne le doit pas (l'entrant).
-    const ecrivains = new Map<string, "emet" | "entrant-anti-boucle">([
+    const ecrivains = new Map<string, "emet" | "entrant-anti-boucle" | "emet-par-opposition">([
       ["src/server/newsletter/desabonner.ts", "emet"],
       ["src/server/crm-sync/inbound.ts", "entrant-anti-boucle"],
+      // 11/11/2026 — la demande d'effacement (mise à l'écart) : le CRM est prévenu par
+      // l'opposition (`enregistrerOppositionPourAdresse` émet `newsletter_optout`).
+      ["src/server/rgpd/ecarter-au-lieu-d-effacer.ts", "emet-par-opposition"],
     ]);
     const motif = /data:\s*\{[^}]*status:\s*"unsubscribed"/s;
     const trouves: string[] = [];
@@ -1098,6 +1101,9 @@ describe("newsletter_optout depuis tous les chemins", () => {
     // Le chemin qui émet le fait bien ; l'entrant n'importe aucun `sync*ToCrm`.
     expect(readFileSync("src/server/newsletter/desabonner.ts", "utf-8")).toMatch(
       /syncNewsletterOptOutToCrm\(/,
+    );
+    expect(readFileSync("src/server/rgpd/ecarter-au-lieu-d-effacer.ts", "utf-8")).toMatch(
+      /enregistrerOppositionPourAdresse\(/,
     );
     const entrant = readFileSync("src/server/crm-sync/inbound.ts", "utf-8");
     expect(entrant).not.toMatch(/import[^;]*sync\w+ToCrm/);

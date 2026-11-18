@@ -49,7 +49,7 @@ export const VITRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Vitré et marches de Bretagne ?",
-      a: "Oui, Axion-IA intervient à Vitré et toute Vitré Communauté (Châteaubourg, Argentré-du-Plessis, Janzé). Couverture également marches bretonnes jusqu'à Fougères et Laval. Nos consultants viennent de Rennes (30 min TGV ou route).",
+      a: "Oui, Axion-IA intervient à Vitré et toute Vitré Communauté (Châteaubourg, Argentré-du-Plessis, Janzé). Couverture également marches bretonnes jusqu'à Fougères et Laval. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises agroalimentaires vitréennes ?",
@@ -64,8 +64,8 @@ export const VITRE_COPY: VilleCopy = {
       a: "Pour les TPE, artisans et commerçants à Vitré, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks.",
     },
     {
-      q: "Comment se passe une mission depuis Rennes ?",
-      a: "Nos consultants viennent de Rennes (30 min TGV ou route). Pour les multi-jours, hébergement local possible. Paris direct en 1h30 TGV.",
+      q: "Comment se déroule une mission à Vitré ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Paris direct en 1h30 TGV.",
     },
   ],
 };

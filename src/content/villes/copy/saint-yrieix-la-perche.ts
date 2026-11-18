@@ -49,7 +49,7 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Yrieix-la-Perche et sud Haute-Vienne ?",
-      a: "Oui, Axion-IA intervient à Saint-Yrieix-la-Perche et tout le sud Haute-Vienne (Nexon, Châlus, Pierre-Buffière, Coussac-Bonneval). Nos consultants viennent de Limoges (40 min RN21) et couvrent toute la Haute-Vienne.",
+      a: "Oui, Axion-IA intervient à Saint-Yrieix-la-Perche et tout le sud Haute-Vienne (Nexon, Châlus, Pierre-Buffière, Coussac-Bonneval). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Saint-Yrieix ?",
@@ -64,8 +64,8 @@ export const SAINT_YRIEIX_LA_PERCHE_COPY: VilleCopy = {
       a: "Pour les PME céramique et kaolin à Saint-Yrieix, contrôle qualité par vision IA (détection défauts pièces), optimisation fours, prédiction maintenance, traçabilité lots, automatisation devis clients. Audit sur place {{price:audit-flash|flat}} en premier jalon.",
     },
     {
-      q: "Comment se passe une mission depuis Limoges ?",
-      a: "Nos consultants viennent de Limoges (40 min RN21) ou prennent le TER direct gare de Saint-Yrieix. Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Saint-Yrieix-la-Perche ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };

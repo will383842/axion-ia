@@ -74,6 +74,29 @@ export const IDENTITE_LEGALE = {
   vat: "FR51108018631",
 } as const;
 
+/**
+ * Coordonnées de contact PUBLIQUES — littéraux uniques (audit du 2026-11-11).
+ *
+ * Ce ne sont pas des valeurs de registre, mais elles posent le même problème
+ * que la raison sociale : le pied de page des e-mails (rendu dans le worker,
+ * sans `@/env`) et les données structurées du site (`brand.ts` → `seo*.ts`)
+ * en ont besoin tous les deux. Elles vivaient en deux copies
+ * (`EMAIL_LEGAL.contactEmail` et `CONTACT_PUBLIC.email`) ; elles descendent ici
+ * pour que les deux côtés en dérivent.
+ *
+ * - `contactEmail` : boîte de contact réellement joignable (Zoho Mail Lite),
+ *   cible du `Reply-To` de tous les envois.
+ * - `linkedinEntreprise` : page ENTREPRISE LinkedIn (vanity confirmé par Will
+ *   le 2026-06-05), jamais le profil personnel du fondateur.
+ *
+ * ⛔ Rien de configurable ICI. La seule surcharge tolérée est celle qui
+ * existait déjà : `COMPANY_LINKEDIN` dans le gabarit d'e-mail (`_layout.tsx`).
+ */
+export const COORDONNEES_PUBLIQUES = {
+  contactEmail: "contact@axion-ia.com",
+  linkedinEntreprise: "https://www.linkedin.com/company/axion-ia-france",
+} as const;
+
 /** Adresse du siège sur une ligne, complément compris. Pied de page e-mail. */
 export function adresseSiegeUneLigne(): string {
   const i = IDENTITE_LEGALE;

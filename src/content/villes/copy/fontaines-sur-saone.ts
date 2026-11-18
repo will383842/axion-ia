@@ -49,7 +49,7 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Fontaines-sur-Saône et nord lyonnais ?",
-      a: "Oui, Axion-IA intervient à Fontaines-sur-Saône et tout le nord lyonnais (Neuville-sur-Saône limitrophe, Caluire-et-Cuire, Collonges-au-Mont-d'Or). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Fontaines-sur-Saône et tout le nord lyonnais (Neuville-sur-Saône limitrophe, Caluire-et-Cuire, Collonges-au-Mont-d'Or). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les professions libérales fontainois ?",
@@ -64,8 +64,8 @@ export const FONTAINES_SUR_SAONE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Fontaines-sur-Saône, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Fontaines-sur-Saône ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -11,9 +11,9 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
   pitchEn:
     "Saint-Chamond, 35 646 habitants dans la Loire (Auvergne-Rhône-Alpes), est la troisième commune du département, au cœur de la vallée du Gier entre Saint-Étienne (12 km) et Lyon (49 km). Capitale historique du lacet (jusqu'à 75 % de la production nationale dans les années 1920) puis bassin métallurgique (Forges et aciéries de la Marine, plus tard Creusot-Loire jusqu'en 1985), la ville garde aujourd'hui un tissu de PME industrielles, de sous-traitants mécaniques et de commerces. Axion-IA y accompagne les TPE et PME locales avec du code custom (Python/TypeScript), sans no-code.",
   directAnswerFr:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nous intervenons partout en France, sur place ou à distance, pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   directAnswerEn:
-    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nos consultants se déplacent sur site depuis l'axe Saint-Étienne–Lyon (gare TER de Saint-Chamond, A47) pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
+    "Axion-IA intervient à Saint-Chamond (Loire, 35 646 hab.) pour les TPE et PME de la vallée du Gier : ateliers mécaniques, sous-traitants industriels héritiers du bassin métallurgique, commerces du centre-ville, transporteurs, cabinets libéraux. Nous intervenons partout en France, sur place ou à distance, pour des audits, interventions et implémentations, à partir de {{price:intervention-4h|flat}} pour une intervention. Le code est livré en Python/TypeScript, versionné et documenté, sans dépendance no-code propriétaire.",
   seoHook: "PME industrielles & sous-traitance mécanique",
   ecosystemFr:
     "Saint-Chamond a hérité d'une longue tradition industrielle : capitale du lacet au tournant du XXe siècle, puis bassin métallurgique structuré par les Forges et aciéries de la Marine (devenues Creusot-Loire, fermées en 1985). Le tissu actuel est dominé par les PME de mécanique, de fonderie, de plasturgie, de transport et logistique, complété par les commerces du centre-ville et les services aux entreprises. La vallée du Gier concentre une sous-traitance industrielle dense, irriguée par l'A47 et la ligne TER Saint-Étienne–Lyon. C'est ce maillage de TPE et PME qui constitue le cœur de cible d'Axion-IA.",
@@ -56,7 +56,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           "Cœur de cible : les sous-traitants industriels et fabricants de la vallée du Gier (mécanique, acier façon Loire Industrie ZI du Clos Marquet, tressage métallique pour gaines et câbles héritier du lacet, plasturgie type Agripolyane), pour qui un site doit exposer un catalogue technique vivant plutôt qu'une plaquette figée.",
           "Saint-Chamond conjugue une filière de défense exigeante (NBC-Sys / KNDS, équipements NRBC souverains) et une sous-traitance acier de précision : nous construisons des espaces clients et configurateurs où la confidentialité des données et l'hébergement UE sont des prérequis non négociables, pas des options.",
           "L'écoquartier Novaciéries (ancienne friche Creusot-Loire de 45 ha) fait émerger ~100 entreprises et des commerces neufs autour du cinéma Veo Grand Lumière : nouveaux sites vitrines, e-commerce et prise de rendez-vous en ligne y trouvent un terrain direct, du commerce de proximité à Novasoie et la soie de luxe.",
-          "Nous nous déplaçons depuis l'axe Saint-Étienne–Lyon (gare TER du Gier, A47) : kick-off sur site dans vos ateliers du Clos Marquet, de la vallée du Gier ou de Novaciéries, puis itérations à distance — l'architecture reste maintenable par votre équipe ou un prestataire local.",
+          "Nous intervenons sur place (gare TER du Gier, A47) : kick-off sur site dans vos ateliers du Clos Marquet, de la vallée du Gier ou de Novaciéries, puis itérations à distance — l'architecture reste maintenable par votre équipe ou un prestataire local.",
         ],
         methodology: [
           {
@@ -126,7 +126,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
-            a: "Oui. Nous arrivons par la gare TER de Saint-Chamond (ligne du Gier, Saint-Étienne ↔ Lyon) ou par l'A47. Le cadrage et la recette se font sur site — atelier ZI du Clos Marquet, locaux vallée du Gier ou espace Novaciéries — puis les itérations peuvent continuer à distance si vous préférez.",
+            a: "Oui. Le cadrage et la recette se font sur site — atelier ZI du Clos Marquet, locaux vallée du Gier ou espace Novaciéries — puis les itérations peuvent continuer à distance si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
           },
           {
             q: "Sous quel délai obtenir un devis, et serai-je dépendant d'Axion-IA ensuite ?",
@@ -142,7 +142,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           "Core target: the industrial subcontractors and makers of the Gier valley (mechanics, steel like Loire Industrie on the Clos Marquet estate, metal braiding for sheaths and cables inherited from the lace trade, plastics processing like Agripolyane), for whom a website must expose a living technical catalogue rather than a static brochure.",
           "Saint-Chamond combines a demanding defence sector (NBC-Sys / KNDS, sovereign NRBC equipment) and precision steel subcontracting: we build client portals and configurators where data confidentiality and EU hosting are non-negotiable prerequisites, not options.",
           "The Novaciéries eco-district (former 45-hectare Creusot-Loire wasteland) is bringing ~100 firms and new retail around the Veo Grand Lumière cinema: new showcase sites, e-commerce and online booking find direct ground here, from local retail to Novasoie and luxury silk.",
-          "We travel along the Saint-Étienne–Lyon axis (Gier valley TER station, A47): on-site kick-off in your Clos Marquet workshops, Gier valley premises or Novaciéries, then remote iterations — the architecture stays maintainable by your team or a local provider.",
+          "On-site kick-off in your Clos Marquet workshops, Gier valley premises or Novaciéries, then remote iterations — the architecture stays maintainable by your team or a local provider. We work anywhere in France, on site or remotely.",
         ],
         methodology: [
           {
@@ -212,7 +212,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
           },
           {
             q: "Do your consultants actually travel to Saint-Chamond?",
-            a: "Yes. We arrive via the Saint-Chamond TER station (Gier line, Saint-Étienne ↔ Lyon) or the A47. Framing and acceptance happen on site — Clos Marquet workshop, Gier valley premises or Novaciéries space — then iterations can continue remotely if you prefer.",
+            a: "Yes. Framing and acceptance happen on site — Clos Marquet workshop, Gier valley premises or Novaciéries space — then iterations can continue remotely if you prefer. We work anywhere in France, on site or remotely.",
           },
           {
             q: "How quickly do I get a quote, and will I then depend on Axion-IA?",
@@ -232,7 +232,7 @@ export const SAINT_CHAMOND_COPY: VilleCopy = {
     },
     {
       q: "Vos consultants se déplacent-ils réellement à Saint-Chamond ?",
-      a: "Oui. Nous arrivons par la gare TER de Saint-Chamond (ligne Saint-Étienne–Lyon) ou par l'A47. Les phases d'observation et de mise en route se font sur site ; le suivi peut ensuite continuer en visio si vous préférez.",
+      a: "Oui. Les phases d'observation et de mise en route se font sur site à Saint-Chamond ; le suivi peut ensuite continuer en visio si vous préférez. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Intervenez-vous aussi dans les communes proches de Saint-Chamond ?",

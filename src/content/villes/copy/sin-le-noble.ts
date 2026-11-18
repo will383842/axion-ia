@@ -49,7 +49,7 @@ export const SIN_LE_NOBLE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Sin-le-Noble et dans le Douaisis ?",
-      a: "Oui, Axion-IA intervient à Sin-le-Noble et sur tout le Douaisis (Douai, Waziers, Aniche, Somain, Lambres-lez-Douai). A1 facilite l'accès depuis Lille en 35 minutes, Paris à 1h10 en TGV depuis la gare de Douai.",
+      a: "Oui, Axion-IA intervient à Sin-le-Noble et sur tout le Douaisis (Douai, Waziers, Aniche, Somain, Lambres-lez-Douai). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Sin-le-Noble  ?",

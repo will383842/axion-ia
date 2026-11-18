@@ -49,7 +49,7 @@ export const ARGENTAN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Argentan et plaine normande ?",
-      a: "Oui, Axion-IA intervient à Argentan et toute la plaine normande ornaise (Flers à 40 km, Alençon à 50 km, Sées, Gacé). Nos consultants se déplacent depuis Caen (50 min) ou Paris (TGV Caen + voiture).",
+      a: "Oui, Axion-IA intervient à Argentan et toute la plaine normande ornaise (Flers à 40 km, Alençon à 50 km, Sées, Gacé). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires d'Argentan ?",
@@ -64,8 +64,8 @@ export const ARGENTAN_COPY: VilleCopy = {
       a: "L'audit sur place débute selon la taille de votre activité pour les TPE. Pour les PME agroalimentaires, l'audit stratégique complet est adapté au périmètre. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ou Caen ?",
-      a: "Nos consultants viennent de Caen (50 min voiture) ou Paris (TGV Caen 2h + voiture 50 min).",
+      q: "Comment se déroule une mission à Argentan ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const BISCARROSSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Biscarrosse et sur la côte d'Argent ?",
-      a: "Oui, Axion-IA intervient à Biscarrosse et toute la côte d'Argent landaise (Parentis-en-Born, Mimizan, Sanguinet). Couverture lac, plage et bourg. Déplacement depuis Bordeaux ou Mont-de-Marsan.",
+      a: "Oui, Axion-IA intervient à Biscarrosse et toute la côte d'Argent landaise (Parentis-en-Born, Mimizan, Sanguinet). Couverture lac, plage et bourg. Déplacement sur site.",
     },
     {
       q: "Proposez-vous des audits IA pour les campings et hébergeurs saisonniers ?",
@@ -64,8 +64,8 @@ export const BISCARROSSE_COPY: VilleCopy = {
       a: "Pour les PME papetières et forestières autour de Biscarrosse, nous proposons audit IA, implémentation prédiction maintenance, optimisation logistique supply chain bois, classification qualité produits, automatisation reporting production.",
     },
     {
-      q: "Comment se déroule une mission à Biscarrosse depuis Bordeaux ?",
-      a: "Nos consultants se déplacent depuis Bordeaux (1h15 voiture A63+D652). Pour les missions multi-jours, hébergement local (hôtels Biscarrosse-Bourg ou Biscarrosse-Plage). Tarifs publics.",
+      q: "Comment se déroule une mission à Biscarrosse ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local (hôtels Biscarrosse-Bourg ou Biscarrosse-Plage). Tarifs publics.",
     },
   ],
 };

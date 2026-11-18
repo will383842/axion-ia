@@ -8,7 +8,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { SITE_URL } from "@/lib/seo";
 import { OG_IMAGE_LARGEUR, OG_IMAGE_HAUTEUR } from "@/lib/og-format";
-import "./globals.css";
+// CSS pur : surtout pas globals.css (+260 Ko de Tailwind dans le flux de chaque page).
+import "./erreur-racine.css";
 
 // metadataBase + og:image absolus explicites pour les 404 globales.
 //
@@ -54,30 +55,21 @@ export const metadata: Metadata = {
 export default function RootNotFound() {
   return (
     <html lang="fr">
-      <body className="bg-halo-warm text-fg flex min-h-screen items-center justify-center p-8">
-        <div className="max-w-xl text-center">
-          <p className="text-fg-muted text-[13px] font-medium tracking-[0.16em] uppercase">
-            <span
-              aria-hidden="true"
-              className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
-            />
+      <body className="racine-corps">
+        <div className="racine-bloc">
+          <p className="racine-etiquette">
+            <span aria-hidden="true" className="racine-puce" />
             404 · Page introuvable
           </p>
-          <h1
-            className="text-fg mt-5 text-[clamp(2.5rem,6vw,4rem)] leading-[1.04] font-medium tracking-tight"
-            style={{ fontFamily: "var(--font-serif)" }}
-          >
+          <h1 className="racine-titre">
             Cette URL n&apos;
-            <span className="text-terracotta italic">existe pas</span>
+            <span className="racine-accent">existe pas</span>
           </h1>
-          <p className="text-fg-soft mx-auto mt-5 max-w-md text-base leading-relaxed">
+          <p className="racine-texte">
             La page que vous cherchez n&apos;existe pas ou a été déplacée.
           </p>
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link
-              href="/fr"
-              className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover inline-flex items-center gap-2 rounded-full px-6 py-3 text-base font-semibold"
-            >
+          <div className="racine-actions">
+            <Link href="/fr" className="racine-bouton">
               Retour à l&apos;accueil →
             </Link>
           </div>

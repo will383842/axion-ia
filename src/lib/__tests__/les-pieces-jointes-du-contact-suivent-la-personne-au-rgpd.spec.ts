@@ -57,11 +57,10 @@ describe("effacement art. 17 — pièces jointes du contact", () => {
     expect(h.deleteFromR2).toHaveBeenCalledTimes(2);
   });
 
-  it("la route l'appelle AVANT l'anonymisation des demandes", () => {
+  it("11/11/2026 — la route ne l'appelle plus : la demande met à l'écart, rien n'est supprimé", () => {
     const route = readFileSync(join(process.cwd(), "src/app/api/gdpr-erase/route.ts"), "utf8");
-    const pieces = route.indexOf("erasePiecesJointesContactForEmail(email)");
-    const anonymisation = route.indexOf("eraseSubmissionsForEmail(email)");
-    expect(pieces).toBeGreaterThan(0);
-    expect(pieces).toBeLessThan(anonymisation);
+    expect(route).not.toContain("erasePiecesJointesContactForEmail(email)");
+    expect(route).not.toContain("eraseSubmissionsForEmail(email)");
+    expect(route).toContain("ecarterPourDemandeEffacement(");
   });
 });

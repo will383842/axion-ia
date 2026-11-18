@@ -49,7 +49,7 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Jean-Bonnefonds et nord-est Saint-Étienne ?",
-      a: "Oui, Axion-IA intervient à Saint-Jean-Bonnefonds et toute la banlieue nord-est stéphanoise (Saint-Étienne à 15 min, Sorbiers limitrophe, La Talaudière). Consultants depuis Lyon (50 min) ou Saint-Étienne (15 min).",
+      a: "Oui, Axion-IA intervient à Saint-Jean-Bonnefonds et toute la banlieue nord-est stéphanoise (Saint-Étienne à 15 min, Sorbiers limitrophe, La Talaudière). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,8 +64,8 @@ export const SAINT_JEAN_BONNEFONDS_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Saint-Jean-Bonnefonds, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (50 min) ou Saint-Étienne (15 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      q: "Comment se déroule une mission à Saint-Jean-Bonnefonds ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

@@ -49,7 +49,7 @@ export const PIA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pia et dans la Salanque ?",
-      a: "Oui, Axion-IA intervient à Pia et toute la Salanque perpignanaise (Saint-Laurent-de-la-Salanque, Claira, Bompas, Saint-Estève). Nos consultants sont basés à proximité de Perpignan (10 min).",
+      a: "Oui, Axion-IA intervient à Pia et toute la Salanque perpignanaise (Saint-Laurent-de-la-Salanque, Claira, Bompas, Saint-Estève). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les agriculteurs maraîchers de la Salanque ?",
@@ -65,7 +65,7 @@ export const PIA_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Pia ?",
-      a: "Nos consultants interviennent depuis Perpignan (10 min). Missions sur site dans votre atelier, exploitation ou bureau. Visio possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Missions sur site dans votre atelier, exploitation ou bureau. Visio possible.",
     },
   ],
 };

@@ -28,7 +28,9 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 11  | Voyage AI, Inc.            | Embeddings KB (voyage-3-lite)        | États-Unis              | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 12  | Stripe Payments Europe Ltd | Paiements (Checkout + Radar)         | Irlande (UE) + USA      | online | SCC + EU-US DPF            | 🟡 à accepter   |
 | 13  | OSM Foundation (Nominatim) | Géocodage villes saisies             | UK + UE                 | NA     | Décision d'adéquation UE   | ✅ usage public |
-| 14  | DocuSeal (self-hosted)     | Signature électronique contrats      | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14  | DocuSeal (self-hosted)     | **Actif : contrats d'apporteurs.** Devis : usage historique (un seul devis, avant le 30/07/2026, conservé) | Allemagne (VPS Hetzner) | NA     | UE intra-zone              | ✅ self-hosted  |
+| 14b | Signature maison Axion-IA (procédé interne) | Signature électronique maison (IP hachée, image de signature, identité, empreinte) | Hetzner (DB) + Cloudflare R2 | NA | UE intra-zone | ✅ interne |
+| 14c | Autorité d'horodatage RFC 3161 (gratuit, à désigner ; aucune par défaut) | Horodatage du sceau d'une signature de devis : **empreinte SHA-256 seule** | À préciser à la désignation | NA — aucune donnée personnelle | À préciser | ✅ sans objet (voir §7octies) |
 | 15  | Microsoft Corporation      | Clarity analytics qualitatifs UX     | États-Unis (Azure)      | online | SCC + EU-US DPF            | 🟡 à signer     |
 | 16  | Calendly LLC               | Prise de RDV /appel + capture event  | États-Unis (AWS)        | accepté | SCC                       | ✅ DPA accepté 2026-08-28 |
 | 17  | Zoho Corporation (ZeptoMail) | Relais SMTP transactionnel — TOUS les e-mails sortants | Union européenne (`smtp.zeptomail.eu`) | signé | UE intra-zone | ✅ DPA signé |
@@ -39,6 +41,7 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 | 22  | Zoom Communications, Inc. | **Sessions de formation à distance** en visioconférence + rapport des participants (relevé de connexion) | États-Unis (régions paramétrables) | ❌ aucun (pas encore de compte) | SCC | ⚪ non activé — abonnement Pro à souscrire avant la 1re session |
 | 23  | Meta Platforms Ireland Limited | Pixel Meta + API Conversions — mesure et reciblage de la campagne Facebook apporteurs (pages `/apporteur-affaires*` uniquement, après consentement) | Irlande (UE) + USA | online | SCC + EU-US DPF | ⚪ non activé (`NEXT_PUBLIC_META_PIXEL_ID` absent) |
 | 24  | OpenAI, LLC (comptes rendus de rendez-vous) | **Transcription** du son des visioconférences enregistrées **avec l'accord** des participants, puis **compte rendu** et extraction des faits du dossier client | États-Unis | online (même DPA que la ligne 7) | SCC + EU-US DPF | ⚪ **non activé** — ouverture après le préavis de 30 j aux clients actifs, la signature du DPA et la publication de la notice (voir fiche 5 bis) |
+| 25  | Zernio (zernio.com) | Réponses aux commentaires et messages privés sur les réseaux sociaux de la page (parcours « mot → guide ») : ID et nom du compte, texte du commentaire, messages privés, e-mail si saisi | Espagne (ZERNIO SOFTWARE SL) ; serveurs Royaume-Uni et UE, certains sous-traitants aux États-Unis | DPA intégré aux CGU (version du 19/10/2026) | SCC par défaut (DPA §11.1) + EU-US DPF pour les sous-traitants certifiés ; Royaume-Uni : adéquation | DPA de Zernio intégré aux CGU (accepté à l'inscription) ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi) (voir fiche 7nonies) |
 
 > 🆕 **Ligne 17 ajoutée 2026-08-20** (audit Qualiopi E2E, constat `D9-5-10`).
 > ZeptoMail était en production depuis le **2026-08-16** et n'apparaissait NI
@@ -484,21 +487,80 @@ de traitement) côté sous-processeurs. Révision trimestrielle minimum.
 
 ---
 
-## 7sexies. DocuSeal Community (self-hosted)
+## 7sexies. DocuSeal Community (self-hosted) — ACTIF (contrats d'apporteurs) ; devis : usage historique (2026-11-06)
 
-| Champ                     | Valeur                                                                                                   |
-| ------------------------- | -------------------------------------------------------------------------------------------------------- |
-| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                |
-| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                   |
-| **Finalité**              | Signature électronique des contrats et devis (Sprint X.3+)                                               |
-| **Données traitées**      | Nom et email des signataires, contenu signé du contrat, horodatage cryptographique, hash PDF             |
-| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                            |
-| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box. |
-| **DPA**                   | NA — pas de sous-traitant externe                                                                        |
-| **Lien**                  | https://www.docuseal.com                                                                                 |
-| **Statut**                | ✅ **CONFORME** (self-hosted UE)                                                                         |
+| Champ                     | Valeur                                                                                                                                  |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| **Nom légal**             | Auto-hébergement (open-source DocuSeal Community Edition)                                                                               |
+| **Adresse**               | Hébergement Hetzner Frankfurt (VPS dédié AXION IA SAS)                                                                                  |
+| **Finalité**              | **Contrats d'apporteurs : usage actif.** **Devis : usage historique** — un seul devis a été signé par ce procédé avant le 30/07/2026 et il est conservé ; les nouveaux devis se signent par le procédé interne (section 7septies) |
+| **Données traitées**      | Contrats d'apporteurs : nom, e-mail et signature des signataires, contenu signé, journal d'audit (horodatage, IP, navigateur), empreinte du PDF. Devis historique (un seul) : nom et e-mail du signataire, contenu signé, horodatage, empreinte du PDF |
+| **Localisation physique** | Allemagne (UE) — auto-hébergé                                                                                                           |
+| **Garanties**             | Pas de tiers extérieur (AXION IA SAS seul responsable). Backups chiffrés AES-256 sur Hetzner Storage Box.                               |
+| **DPA**                   | NA — pas de sous-traitant externe                                                                                                       |
+| **Lien**                  | https://www.docuseal.com                                                                                                                |
+| **Statut**                | ✅ **CONFORME** (self-hosted UE). Preuve du devis historique : `scripts/export-docuseal-devis-historique.ts` (PDF signé + journal d'audit versés dans R2). |
+
+## 7septies. Signature maison Axion-IA (procédé de signature électronique interne)
+
+| Champ                | Valeur                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Nature**           | Procédé développé par Axion-IA, sans prestataire de signature tiers                                        |
+| **Finalité**         | Signature des devis et documents contractuels ; le contrat est formé à la contresignature d'Axion-IA (CGV art. 6.2) |
+| **Données traitées** | Adresse IP hachée, image de signature, identité du signataire, empreinte du document                       |
+| **Localisation**     | Base : Hetzner (UE) ; pièces et images de signature : Cloudflare R2 (cf. section Cloudflare)               |
+| **DPA**              | NA — pas de sous-traitant supplémentaire                                                                   |
+| **Statut**           | ✅ **CONFORME** (interne, UE)                                                                              |
+
+### 7septies.1 — Signature renforcée du devis à formules (lot 4 bis) : conservation et droits
+
+| Donnée | Durée de conservation | Effacement / export (RGPD) |
+| ------ | --------------------- | -------------------------- |
+| `document_signatures` : `signataireNom`, `signataireEmail`, **`declarationNom`, `declarationFonction`**, `pouvoirDeclareAt`, `codeVerifieAt` | Durée de la preuve de signature (conservation du devis signé) | **Exception « colonne scellée »** (art. 17(3)(e), art. 1366 C. civ.) : ces colonnes entrent dans l'empreinte du sceau V4 ; les écraser ferait rendre `empreinte_invalide`. Déclarée dans `src/lib/rgpd-erase.ts` et `rgpd-aucune-table-n-echappe-en-silence.spec.ts`. |
+| **`document_signature_codes`** (code **haché** HMAC, `jeton_id`, essais, instants) | **Pas de purge automatique** : aucune suppression logique n'est possible sans perdre la preuve que le code a été vérifié avant la signature ; la durée de conservation est donc **celle de la preuve de signature** du devis auquel la ligne se rattache. Le code n'est jamais lisible (HMAC à clé serveur, 6 chiffres, expiré après 10 min) ; `jeton_id` ne renvoie à l'adresse que via le jeton, dont l'adresse est pseudonymisée à l'effacement (`eraseSignatureTokensForEmail`). | Aucune donnée en clair : hors périmètre de l'effacement (« technique »). |
+| `document_signature_echecs` (compteur d'échecs par pièce) | Idem : compteur et dates seulement, ni nom, ni adresse, ni code. | Hors périmètre (technique). |
+| `document_signature_horodatages` (empreinte SHA-256 du sceau, jeton) | Durée de la preuve de signature | Aucune donnée personnelle en clair (empreinte non réversible). |
+
+**Export RGPD de la personne** : il n'existe **aucun export des signataires de devis** (ni dans `rgpd-service.ts`
+ni ailleurs) ; une demande d'accès d'un signataire se traite à la main, sur demande écrite à l'organisme, à partir de
+`document_signatures` (nom, fonction, déclaration, adresse). Pas d'e-mail automatique. À ouvrir en lot dédié si
+le volume le justifie.
 
 ---
+
+
+## 7octies. Autorité d'horodatage RFC 3161 (à désigner — aucune par défaut) — lot 4 bis, 2026-11-07
+
+| Champ                | Valeur                                                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------------------------------- |
+| **Nature**           | Service GRATUIT d'horodatage (norme RFC 3161), autorité **à désigner par Will** ; **désactivé** tant que `HORODATAGE_TSA_URL` et `HORODATAGE_TSA_CA_PEM` ne sont pas posées |
+| **Finalité**         | Horodater le sceau de la signature d'un devis (preuve que l'empreinte existait à l'instant du jeton)       |
+| **Données traitées** | **Une empreinte SHA-256** (64 hexadécimaux, non réversible) et un nombre aléatoire. Ni nom, ni e-mail, ni montant, ni document. |
+| **Localisation**     | Selon l'autorité désignée (`HORODATAGE_TSA_URL`, HTTPS en production) ; AUCUNE par défaut depuis l'audit sécurité du 2026-11-07 — horodatage coupé tant qu'elle n'est pas choisie           |
+| **Sous-traitant ?**  | Non au sens de l'art. 28 RGPD : aucune donnée personnelle ne lui est confiée. Déclaré en transparence.     |
+| **Dégradation**      | Autorité injoignable : la signature reste valable, le jeton est redemandé par le worker (sans plafond d'essais) |
+| **Vérification**     | Un jeton n'est conservé que si sa signature CMS, l'usage `timeStamping` et la chaîne jusqu'à `HORODATAGE_TSA_CA_PEM` se vérifient ; réponse lue en flux, plafond 64 Ko |
+| **Si l'autorité est désignée / change** | Corriger CETTE section et l'entrée de `src/content/subprocessors.ts` (nom, localisation, `active`) dans la même PR |
+| **Statut**           | ✅ **SANS OBJET** (pas de données personnelles) — à reconfirmer si l'on transmet autre chose qu'une empreinte |
+
+## 7nonies. Zernio (zernio.com) — parcours « mot → guide », 2026-11-14
+
+| Champ                    | Valeur |
+| ------------------------ | ------ |
+| **Nom légal**            | ZERNIO SOFTWARE SL, TVA ESB88719281 (https://zernio.com/legal-disclosure, https://zernio.com/privacy-policy) |
+| **Siège / pays**         | Carrer Mallorca 2A, 17230 Palamós, Girona, Espagne (UE) |
+| **Finalité**             | Le Studio du fondateur utilise l'API de gestion des réseaux sociaux de Zernio pour lire les commentaires Facebook / Instagram sous les publications de la page, y répondre publiquement et envoyer des messages privés (parcours « mot → guide ») |
+| **Données traitées**     | Identifiant et nom du compte de la personne qui commente, texte du commentaire, messages privés, adresse e-mail si la personne la saisit dans le message privé |
+| **Base légale**          | Intérêt légitime (art. 6.1.f) : répondre à une demande faite en commentaire |
+| **Localisation serveurs** | Pas de région unique ; via ses sous-traitants : Vercel (Londres, UK), PlanetScale (Londres, AWS eu-west-2), Cloudflare (stockage média Europe de l'Ouest, réseau mondial), Sentry (Allemagne), Tinybird (Londres), Axiom (États-Unis, Virginie). Source : https://zernio.com/subprocessors (25 sous-traitants, mise à jour du 09/10/2026, préavis de 14 jours) |
+| **DPA**                  | Existe, intégré aux CGU : s'applique automatiquement à l'acceptation des CGU, sans signature séparée ; Zernio se déclare sous-traitant au sens de l'art. 28 ; version du 19/10/2026. Sources : https://zernio.com/dpa, https://zernio.com/tos (section 5) |
+| **Cadre de transfert**   | DPA §11.1 : accord écrit du client, clauses contractuelles types par défaut. Liste des sous-traitants : EU-US Data Privacy Framework pour les certifiés, sinon clauses contractuelles types (module 3). Données aussi traitées au Royaume-Uni (décision d'adéquation) et aux États-Unis. La SSOT publique déclare `scc` (seule valeur du type couvrant ces transferts, comme Meta / OpenAI) |
+| **Sous-traitants ultérieurs** | 25, liste publique https://zernio.com/subprocessors (mise à jour du 09/10/2026, préavis de 14 jours) |
+| **Durée de conservation** | Suppression sous 10 jours ouvrés après la fin des services (DPA §9.1) ; sauvegardes 30 jours, journaux 90 jours (§9.3). La politique de confidentialité dit 30 jours après suppression du compte |
+| **Exercice des droits**  | Formulaire de la politique de confidentialité (section 10) : https://zernio.com/privacy-policy |
+| **Statut contrat art. 28** | DPA de Zernio intégré aux CGU (accepté à l'inscription) ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi) |
+| **Points à vérifier**    | (1) l'annexe 2 vaut autorisation écrite des transferts prévus au §11.1 ; le DPF n'est cité que dans la liste des sous-traitants, pas dans le DPA ; (2) délais de conservation 10 jours ouvrés (DPA) contre 30 jours (politique de confidentialité) : noter l'écart et retenir le plus long dans la notice tant qu'il n'est pas levé |
+| **Vérification**         | Pages officielles lues le 2026-11-14 par la session principale (URL ci-dessus) |
 
 ## 8. Action correctif Backblaze (clarification legal.ts)
 
@@ -554,6 +616,7 @@ Cf. `src/app/[locale]/mes-donnees/page.tsx` (page exposée) +
 | 2026-09-15 | ⏳ **En attente de validation de Will.** Donnée de santé (art. 9) : le détail du besoin d'adaptation des positionnements répondus du 2026-07-26 au 2026-08-20 reste présent **en clair** dans les dumps PostgreSQL **chiffrés** (Hetzner Storage Box, R2) antérieurs à la date du passage du rattrapage (`docs/runbooks/R34-rattrapage-chiffrement-details-adaptation.md`), jusqu'à leur rotation (mensuels : ≤ 12 mois). Aucune purge de sauvegarde proposée. |
 | 2026-09-29 | Entité corrigée le 29/09/2026 : reste de la bascule de juin. Responsable AXION IA SAS, droit français, CNIL compétente.                                   |
 | 2026-09-29 | Chantier visio (PR 8) : ligne 24 et fiche 5 bis « OpenAI, LLC (comptes rendus de rendez-vous) », non activée ; doublon « 21 » renuméroté (Meta → 23) ; Notetaker « remplacé par l'extension interne » ; son chiffré des visios ajouté à la ligne 2 ; note datée du retour sur la décision du 2026-09-01. |
+| 2026-11-14 | Ajout de Zernio (ligne 25, fiche 7nonies) : parcours « mot → guide ». Faits officiels vérifiés, DPA intégré aux CGU ; copie signée facultative (PDF de https://zernio.com/dpa à remplir et signer, sans renvoi). |
 | _(date)_   | DPA Hetzner signé (Will). Référence : **\*\*\*\***\_**\*\*\*\***                                                                                         |
 | 2026-05-09 | DPA Cloudflare accepté (Will). Couvre TOUS les services du compte, **R2 compris**. Source : `docs/runbooks/R28-dpa-renewal.md`. Date inscrite le 2026-09-20. |
 | _(date)_   | DPA OpenAI signé + ZDR activé (Will). ID compte : **\*\*\*\***\_**\*\*\*\***                                                                             |

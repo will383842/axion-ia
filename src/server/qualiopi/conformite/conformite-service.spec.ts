@@ -54,7 +54,12 @@ import { lireAppreciationsHorsPreuve } from "@/server/qualiopi/appreciations/hor
 import { MENTION_OFF12_VIOLENCES_HORS_CONSOLE, evaluerConformite } from "./conformite-service";
 // Le trio certifiant (3/7/16) est DERIVE de ce registre par la garde off.1,
 // jamais recopie : un predicat recopie diverge, ce depot l'a paye 4 fois.
-import { INDICATEURS_RNQ, MOTIFS_NON_APPLICABLE, choisirReferentiel } from "./indicateurs-registre";
+import {
+  INDICATEURS_RNQ,
+  MOTIFS_NON_APPLICABLE,
+  choisirReferentiel,
+  grilleParId,
+} from "./indicateurs-registre";
 
 type MockPrisma = {
   formation: { count: ReturnType<typeof vi.fn>; findMany: ReturnType<typeof vi.fn> };
@@ -1081,7 +1086,9 @@ describe("evaluerConformite", () => {
   it("chaque indicateur non applicable porte le motif de SA condition, et seulement lui", async () => {
     const result = await evaluerConformite();
     for (const ind of result.indicateurs) {
-      const registre = INDICATEURS_RNQ.find((r) => r.numero === ind.numero);
+      const registre = grilleParId(result.referentiel.grille).indicateurs.find(
+        (r) => r.numero === ind.numero,
+      );
       if (ind.statut === "non_applicable") {
         expect(registre?.conditionnel).toBeDefined();
         expect(ind.motifNonApplicable).toBe(

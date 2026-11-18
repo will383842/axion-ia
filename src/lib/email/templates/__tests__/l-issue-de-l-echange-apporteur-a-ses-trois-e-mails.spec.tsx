@@ -22,7 +22,7 @@ import {
   type GabaritIssueApporteur,
 } from "@/features/admin-rendezvous/issue-apporteur";
 
-const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const DESTINATAIRE = "camille@exemple.fr";
 
 function texte(h: string): string {

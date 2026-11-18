@@ -16,7 +16,7 @@ import { ImageResponse } from "@vercel/og";
 import { resolveVilleWithCopy } from "@/content/villes/resolve-with-copy";
 
 export const runtime = "edge";
-export const alt = "Axion-IA — IA pour votre entreprise";
+export const alt = "La Journée IA d’Axion-IA : audit et formation IA dans vos locaux";
 export const size = { width: 1200, height: 675 };
 export const contentType = "image/png";
 
@@ -91,7 +91,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
             opacity: 0.95,
           }}
         >
-          {isFr ? "Structurez et déployez l'IA" : "Structure and deploy AI"}
+          La Journée IA
         </div>
         <div
           style={{
@@ -103,7 +103,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
             marginTop: 4,
           }}
         >
-          {isFr ? "dans votre entreprise à" : "in your business in"}
+          dans vos locaux à
         </div>
         <div
           style={{
@@ -151,9 +151,7 @@ export default async function VilleOpengraphImage({ params }: Params) {
       >
         <span style={{ display: "flex", flexDirection: "column", gap: 4 }}>
           <span style={{ fontWeight: 600 }}>
-            {isFr
-              ? "Audit · Formation · Implémentation · Coaching · Web/SaaS IA"
-              : "Audit · Training · Implementation · Coaching · AI Web/SaaS"}
+            {isFr ? "Audit · Formation · Rapport chiffré" : "Audit · Formation · Rapport chiffré"}
           </span>
           {seoHook && (
             <span style={{ fontSize: 18, opacity: 0.85, fontStyle: "italic" }}>{seoHook}</span>

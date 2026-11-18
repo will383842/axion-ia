@@ -49,7 +49,7 @@ export const CHAVANOZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chavanoz et aire Lyon est ?",
-      a: "Oui, Axion-IA intervient à Chavanoz et toute la zone Pont-de-Chéruy / Charvieu-Chavagneux / Villette-d'Anthon. Consultants depuis Lyon (40 min A43) ou Grenoble (1h voiture).",
+      a: "Oui, Axion-IA intervient à Chavanoz et toute la zone Pont-de-Chéruy / Charvieu-Chavagneux / Villette-d'Anthon. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Nord-Isère ?",
@@ -64,8 +64,8 @@ export const CHAVANOZ_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Chavanoz, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (40 min A43). Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
+      q: "Comment se déroule une mission à Chavanoz ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Lyon-Saint-Exupéry).",
     },
   ],
 };

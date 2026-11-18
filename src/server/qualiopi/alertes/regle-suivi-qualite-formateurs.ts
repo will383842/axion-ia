@@ -114,7 +114,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
         code: "fi_observation_manquante",
         niveau: "important" as AlerteNiveau,
         titre: "Formateur : observation de la 1re mission non saisie",
-        message: `${nom} a terminé sa première mission (fin le ${dateFr(obs.premiere.fin)}) sans grille d'observation. Son habilitation n'est pas confirmée : aucune autre mission ne lui sera confiée avant l'observation (Qualiopi ind. 21).`,
+        message: `${nom} a terminé sa première mission (fin le ${dateFr(obs.premiere.fin)}) sans grille d'observation. Son habilitation n'est pas confirmée : aucune autre mission ne lui sera confiée avant l'observation (certification qualité, ind. 21).`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -123,7 +123,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
         code: "fi_observation_insuffisante",
         niveau: "important" as AlerteNiveau,
         titre: "Formateur : observation sous le seuil, habilitation non confirmée",
-        message: `La dernière observation de ${nom} est sous ${virgule(R.observationMoyenneMin)}/5. Aucune autre mission avant une nouvelle observation favorable (Qualiopi ind. 21).`,
+        message: `La dernière observation de ${nom} est sous ${virgule(R.observationMoyenneMin)}/5. Aucune autre mission avant une nouvelle observation favorable (certification qualité, ind. 21).`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -171,7 +171,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
         code: "fi_reevaluation_echue",
         niveau: "important" as AlerteNiveau,
         titre: "Formateur : réévaluation annuelle échue",
-        message: `La réévaluation annuelle de ${nom} est échue depuis le ${dateFr(reeval.echeance)}. Aucune nouvelle mission avant qu'elle soit saisie (Qualiopi ind. 21).`,
+        message: `La réévaluation annuelle de ${nom} est échue depuis le ${dateFr(reeval.echeance)}. Aucune nouvelle mission avant qu'elle soit saisie (certification qualité, ind. 21).`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -185,7 +185,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
         code: "fi_cv_declare_perime",
         niveau: "important" as AlerteNiveau,
         titre: `Formateur : CV déclaré de plus de ${R.cvDeclareMaxMois} mois`,
-        message: `Le CV de ${nom} est daté de plus de ${R.cvDeclareMaxMois} mois (date déclarée par le formateur). Demandez un CV à jour : il ne prouve plus ses compétences (Qualiopi ind. 21).`,
+        message: `Le CV de ${nom} est daté de plus de ${R.cvDeclareMaxMois} mois (date déclarée par le formateur). Demandez un CV à jour : il ne prouve plus ses compétences (certification qualité, ind. 21).`,
         cibleType: "Trainer",
         cibleId: t.id,
       });
@@ -209,7 +209,7 @@ export async function candidatesSuiviQualite(now: Date): Promise<AlerteCandidate
         code: "fi_evaluation_mission_manquante",
         niveau: "important" as AlerteNiveau,
         titre: "Grille d'évaluation après mission manquante",
-        message: `Mission finie le ${e.detail} : la grille d'évaluation de ${qui} manque toujours après ${R.evaluationAlerteJours} jours (Qualiopi ind. 21).`,
+        message: `Mission finie le ${e.detail} : la grille d'évaluation de ${qui} manque toujours après ${R.evaluationAlerteJours} jours (certification qualité, ind. 21).`,
         cibleType: "TrainingSession",
         cibleId: sessionId,
       });

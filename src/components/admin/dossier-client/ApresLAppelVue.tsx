@@ -29,6 +29,8 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminBloc } from "@/components/admin/ui/AdminBloc";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { PastilleTypeRdv } from "@/components/admin/contacts/PastilleTypeRdv";
 import {
   creerProspectAction,
@@ -55,10 +57,8 @@ import { grouperParProjetEvoque } from "@/features/dossier-client/projets-evoque
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
 
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+const carteCls = "admin-carte";
+const titreCls = "admin-carte-titre";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 const inputCls =
@@ -170,8 +170,7 @@ export async function ApresLAppelVue({
       ) : null}
 
       {/* ── Qui ─────────────────────────────────────────────────────────── */}
-      <section className={carteCls}>
-        <h2 className={titreCls}>Qui</h2>
+      <AdminBloc teinte="gris" titre="Qui">
         <p className="text-[length:var(--text-admin-sm)]">
           {r.titulaire?.nom ?? r.participants.find((p) => p.role === "client")?.nom ?? "—"}
           {r.titulaire?.email ? <span className={mutedCls}> · {r.titulaire.email}</span> : null}
@@ -208,7 +207,7 @@ export async function ApresLAppelVue({
             </dl>
           </div>
         ) : null}
-      </section>
+      </AdminBloc>
 
       {/* ── 1. Le rangement ─────────────────────────────────────────────── */}
       <section className={carteCls}>
@@ -238,9 +237,7 @@ export async function ApresLAppelVue({
                     <span className={mutedCls}> — {LIBELLE_MOTIF[r.motifProposition]}</span>
                   ) : null}
                 </span>
-                <button type="submit" className="admin-button">
-                  Confirmer le client proposé
-                </button>
+                <AdminButton type="submit">Confirmer le client proposé</AdminButton>
               </form>
             ) : (
               <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>
@@ -269,9 +266,9 @@ export async function ApresLAppelVue({
                     ))}
                   </select>
                 </label>
-                <button type="submit" className="admin-button-ghost">
+                <AdminButton type="submit" variant="secondary">
                   Ranger
-                </button>
+                </AdminButton>
               </form>
             ) : null}
 
@@ -350,9 +347,9 @@ export async function ApresLAppelVue({
                 <input name="motif" maxLength={300} className={inputCls} />
               </label>
               <div className="sm:col-span-2">
-                <button type="submit" className="admin-button">
+                <AdminButton type="submit" variant="secondary">
                   Créer la fiche prospect
-                </button>
+                </AdminButton>
               </div>
             </form>
           </div>
@@ -365,12 +362,12 @@ export async function ApresLAppelVue({
           <input type="hidden" name="rencontreId" value={r.id} />
 
           <section className={carteCls}>
-            <h2 className={titreCls}>2. Quel projet ?</h2>
+            <h2 className={titreCls}>2. Quelle prestation ?</h2>
             {groupes.autres.length > 0 && groupes.principal.intitule !== null ? (
               <p
                 className={`mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] ${mutedCls}`}
               >
-                Projet évoqué : « {groupes.principal.intitule} »
+                Prestation évoquée : « {groupes.principal.intitule} »
               </p>
             ) : null}
             <div className="space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]">
@@ -401,20 +398,20 @@ export async function ApresLAppelVue({
                     (r.projetId === null && proposePrincipal?.mode === "nouveau")
                   }
                 />
-                Nouveau projet :
+                Nouvelle prestation :
                 <input
                   name="projetTitre"
                   maxLength={200}
                   defaultValue={(proposePrincipal?.mode === "nouveau"
                     ? proposePrincipal.titre
-                    : (groupes.principal.intitule ?? `Projet ${client.raisonSociale}`)
+                    : (groupes.principal.intitule ?? `Prestation ${client.raisonSociale}`)
                   ).slice(0, 200)}
                   className={`${inputCls} max-w-md`}
                 />
               </label>
               <label className="flex items-center gap-[var(--space-admin-2)]">
                 <input type="radio" name="projet" value="aucun" />
-                Aucun projet pour l&apos;instant (activité et effectif seulement)
+                Aucune prestation pour l&apos;instant (activité et effectif seulement)
               </label>
             </div>
             {groupes.autres.map((g) => (
@@ -424,14 +421,14 @@ export async function ApresLAppelVue({
               >
                 <legend className="font-medium">
                   {g.intitule !== null
-                    ? `Autre projet évoqué : « ${g.intitule} »`
-                    : "Autre projet évoqué"}
+                    ? `Autre prestation évoquée : « ${g.intitule} »`
+                    : "Autre prestation évoquée"}
                 </legend>
                 <input type="hidden" name="groupe" value={g.ref ?? ""} />
                 <input
                   type="hidden"
                   name={`groupeIntitule_${g.ref}`}
-                  value={g.intitule ?? "l'autre projet évoqué"}
+                  value={g.intitule ?? "l'autre prestation évoquée"}
                 />
                 {g.faits.map((f) => (
                   <input key={f.id} type="hidden" name={`groupeFait_${g.ref}`} value={f.id} />
@@ -456,20 +453,20 @@ export async function ApresLAppelVue({
                     value="nouveau"
                     defaultChecked={g.proposition?.mode !== "existant"}
                   />
-                  Nouveau projet :
+                  Nouvelle prestation :
                   <input
                     name={`projetTitre_${g.ref}`}
                     maxLength={200}
                     defaultValue={(g.proposition?.mode === "nouveau"
                       ? g.proposition.titre
-                      : (g.intitule ?? `Projet ${client.raisonSociale}`)
+                      : (g.intitule ?? `Prestation ${client.raisonSociale}`)
                     ).slice(0, 200)}
                     className={`${inputCls} max-w-md`}
                   />
                 </label>
                 <label className="flex items-center gap-[var(--space-admin-2)]">
                   <input type="radio" name={`projet_${g.ref}`} value="principal" />
-                  Le même projet que ci-dessus
+                  La même prestation que ci-dessus
                 </label>
               </fieldset>
             ))}
@@ -482,7 +479,7 @@ export async function ApresLAppelVue({
                 className={`mb-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] ${mutedCls}`}
               >
                 Les cases non cochées d&apos;avance se valident une par une : budget, décideur,
-                confiance faible, ou pas encore rangé dans un projet.
+                confiance faible, ou pas encore rangé dans une prestation.
               </p>
               {[groupes.principal, ...groupes.autres].map((g) => (
                 <ul
@@ -491,7 +488,9 @@ export async function ApresLAppelVue({
                 >
                   {groupes.autres.length > 0 ? (
                     <li className="font-semibold">
-                      {g.intitule ? `Projet évoqué : « ${g.intitule} »` : "Sans projet évoqué"}
+                      {g.intitule
+                        ? `Prestation évoquée : « ${g.intitule} »`
+                        : "Sans prestation évoquée"}
                     </li>
                   ) : null}
                   {g.faits.map((f) => (
@@ -509,7 +508,7 @@ export async function ApresLAppelVue({
                             <span className={mutedCls}> ({f.question})</span>
                           ) : null} : {f.enonce}
                           {f.portee === "a_ranger" ? (
-                            <span className={mutedCls}> — à ranger dans le projet choisi</span>
+                            <span className={mutedCls}> — à ranger dans la prestation choisie</span>
                           ) : null}
                         </span>
                       </label>
@@ -542,8 +541,7 @@ export async function ApresLAppelVue({
             </div>
           </section>
 
-          <section className={carteCls}>
-            <h2 className={titreCls}>Et ensuite ?</h2>
+          <AdminBloc teinte="terracotta" haut titre="Et ensuite ?">
             <div className="grid gap-[var(--space-admin-3)] sm:grid-cols-3">
               <label className={labelCls}>
                 Le rendez-vous
@@ -575,19 +573,19 @@ export async function ApresLAppelVue({
                 />
               </label>
             </div>
-          </section>
+          </AdminBloc>
 
           {/* UX-07 : le libellé suit les choix, sans JavaScript (CSS `:has`) — le
               devis ne s'ouvre qu'avec la suite « devis » ET un rendez-vous tenu
               (absent ou reporté : la suite est annulée, `garderSuiteEtEcheance`). */}
-          <button type="submit" className="admin-button">
+          <AdminButton type="submit" size="lg">
             <span className="[.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:hidden">
               Valider
             </span>
             <span className="hidden [.group:has(option[value=devis]:checked):not(:has(option[value=absent]:checked)):not(:has(option[value=reporte]:checked))_&]:inline">
               Valider et ouvrir le devis
             </span>
-          </button>
+          </AdminButton>
         </form>
       ) : (
         <p className={`text-[length:var(--text-admin-sm)] ${mutedCls}`}>

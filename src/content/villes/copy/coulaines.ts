@@ -49,7 +49,7 @@ export const COULAINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coulaines et dans le nord du Mans ?",
-      a: "Oui, Axion-IA intervient à Coulaines et dans tout le nord de Le Mans Métropole (Saint-Pavace, Sargé-lès-le-Mans, Yvré-l'Évêque, Savigné-l'Évêque). Nos consultants sont basés en agglomération mancelle, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Coulaines et dans tout le nord de Le Mans Métropole (Saint-Pavace, Sargé-lès-le-Mans, Yvré-l'Évêque, Savigné-l'Évêque). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et professions libérales de Coulaines ?",
@@ -64,7 +64,7 @@ export const COULAINES_COPY: VilleCopy = {
       a: "Oui, nos interventions forment vos équipes aux outils IA pratiques : automatisation administrative, agents conversationnels clients, génération de documents, analyse de données. Sur site à Coulaines ou en visio.",
     },
     {
-      q: "Comment se passe une mission IA à Coulaines depuis Le Mans ?",
+      q: "Comment se déroule une mission IA à Coulaines ?",
       a: "Nos consultants interviennent directement dans vos locaux à Coulaines. Gare TGV Le Mans à 4 km (55 min Paris). Accès A11 et A28.",
     },
   ],

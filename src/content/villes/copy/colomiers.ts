@@ -230,7 +230,7 @@ export const COLOMIERS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Colomiers et dans l'ouest toulousain ?",
-      a: "Oui, Axion-IA intervient à Colomiers et toute la couronne ouest de Toulouse (Blagnac, Cornebarrieu, Tournefeuille, Pibrac). Nos consultants viennent de Toulouse, à 15 minutes.",
+      a: "Oui, Axion-IA intervient à Colomiers et toute la couronne ouest de Toulouse (Blagnac, Cornebarrieu, Tournefeuille, Pibrac). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous la sous-traitance aéronautique fournissant Airbus ?",
@@ -245,8 +245,8 @@ export const COLOMIERS_COPY: VilleCopy = {
       a: "Agents conversationnels techniques, automatisation documentaire, classification, copilotes de rédaction et CRM augmentés. Tarifs publics, sans devis opaque.",
     },
     {
-      q: "Comment se passe une mission depuis Toulouse ?",
-      a: "Nos consultants se déplacent depuis Toulouse en 15 minutes.",
+      q: "Comment se déroule une mission à Colomiers ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Vos interventions sont-elles conformes au RGPD ?",

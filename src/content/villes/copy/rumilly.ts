@@ -49,7 +49,7 @@ export const RUMILLY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rumilly et dans l'Albanais ?",
-      a: "Oui, Axion-IA intervient à Rumilly et dans tout l'Albanais (Alby-sur-Chéran, Marcellaz-Albanais, Sales, Bloye, Vallières-sur-Fier). Nos consultants se déplacent depuis Annecy (20 min) ou Chambéry (35 min).",
+      a: "Oui, Axion-IA intervient à Rumilly et dans tout l'Albanais (Alby-sur-Chéran, Marcellaz-Albanais, Sales, Bloye, Vallières-sur-Fier). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME agroalimentaires de Rumilly ?",
@@ -65,7 +65,7 @@ export const RUMILLY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Rumilly ?",
-      a: "Nos consultants interviennent sur site dans votre usine, exploitation ou commerce à Rumilly, ou en visio. Depuis Annecy (20 min) ou Aix-les-Bains (20 min). Hébergement local possible pour missions multi-jours.",
+      a: "Nos consultants interviennent sur site dans votre usine, exploitation ou commerce à Rumilly, ou en visio. Nous intervenons partout en France, sur place ou à distance. Hébergement local possible pour missions multi-jours.",
     },
   ],
 };

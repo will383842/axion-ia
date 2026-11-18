@@ -146,6 +146,55 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
  * pour rien.
  */
 const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — ce test de garde RGPD (aucune table ne garde une
+  // donnée personnelle en silence) lit `COLONNES_SCELLEES_DOCUMENT` (colonnes scellées de la signature,
+  // `document-reconstruction`) : c'est la liste unique des colonnes que l'effacement ne touche pas ; la
+  // recopier dans le test la ferait diverger. N'importe que ce module du domaine, rien d'autre. Nommé seul.
+  "src/lib/__tests__/rgpd-aucune-table-n-echappe-en-silence.spec.ts",
+  // Signature renforcée du devis, lot 4 bis (07/11/2026) — le passage périodique du worker (5 min,
+  // toujours allumé) reprend les jetons d'horodatage RFC 3161 restés « en attente » quand l'autorité
+  // était injoignable (`passerHorodatages`, import PARESSEUX). Une file dédiée pour une seule requête
+  // toutes les 5 minutes serait plus de plomberie que de valeur. N'importe que ce module du domaine.
+  "src/server/queue/workers/visio-balayage-worker.ts",
+  // Synchro console ↔ CRM (étape 6, 26/10/2026) — le NAF qui revient du CRM doit recalculer
+  // l'OPCO déduit EXACTEMENT comme la saisie en console (`inferOpcoDepuisTable`, `nomOpcoDuClient`,
+  // `isOpcoId`) : une seule règle, jamais un OPCO saisi écrasé. Déplacer cette fonction dans
+  // `src/server/qualiopi` ne change rien (la garde compte tout import du domaine) ; le fichier
+  // n'importe que ces deux modules, rien d'autre. Nommé seul.
+  "src/server/crm-sync/retour-dossier.ts",
+  // Fiche client, lot 0 (29/10/2026) — le bloc « Devis et factures » a été DÉPLACÉ tel quel de la page
+  // (zone qualiopi) dans `fiche/OngletDevisFactures.tsx` pour que les lots suivants ne touchent plus la
+  // page : il lit le type `Client360` et `resteDuNetCents` (règle unique du reste dû). `fiche/montants.ts`
+  // applique `TAUX_TVA_STANDARD` (SSOT de la TVA), jamais un taux recopié. Rien d'autre du domaine. Nommés seuls.
+  "src/components/admin/dossier-client/fiche/OngletDevisFactures.tsx",
+  "src/components/admin/dossier-client/fiche/montants.ts",
+  // Fiche client, lot B5 (29/10/2026) — AJOUT À LA LISTE PARTAGÉE (d'autres lots y ajoutent aussi des
+  // lignes) : nécessaire, ces deux fichiers lisent le domaine par les règles communes. La carte « Qui décide » dit « Financement : <OPCO> » avec la
+  // MÊME règle que le reste de la console (`opcoDuClient`, `nomOpcoDuClient` : opco-referentiel), jamais
+  // recopiée. Rien d'autre du domaine. Nommé seul.
+  "src/components/admin/dossier-client/fiche/PersonnesDecision.tsx",
+  // Même lot — « Noter le départ » trace l'action dans le journal d'audit commun (`logQualiopiActivity`,
+  // `_guards`), comme `features/dossier-client/actions.ts`. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/depart-personne.ts",
+  // Fiche client, lot B6 (30/10/2026) — profil et étiquettes tracent leurs actes dans le journal d'audit
+  // commun (`logQualiopiActivity`, `_guards`), comme « Noter le départ ». Rien d'autre du domaine. Nommés seuls.
+  "src/features/dossier-client/fiche/profil.ts",
+  "src/features/dossier-client/fiche/etiquettes.ts",
+  // Même lot — `fiche/contexte.ts` partage la lecture du client 360 entre la page et les emplacements
+  // (`getClient360` sous `React.cache`) : une requête par affichage. Rien d'autre du domaine.
+  "src/components/admin/dossier-client/fiche/contexte.ts",
+  // Fiche client, lot B1 (29/10/2026) — la tuile « Reste à encaisser » doit afficher EXACTEMENT l'encours de
+  // la fiche (`calculerEncoursDuCents`, règle unique du reste dû) et lit le type `Client360` ; la recopier
+  // donnerait deux règles. Rien d'autre du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/lire-en-tete.ts",
+  // Fiche client, lot B7 (29/10/2026) — l'argent de l'onglet Devis et factures (affichage seul) :
+  // `resteDuNetCents` (règle unique du reste dû) et `estFactureOuverte` (source unique des statuts
+  // ouverts). Ce fichier est le SEUL point d'entrée ; les cartes et tuiles passent par lui. Nommé seul.
+  "src/features/dossier-client/fiche/argent-de-la-fiche.ts",
+  // Fiche client, lot B3 (30/10/2026) — « Ajouter / Marquer faite / Rouvrir » une tâche trace l'action dans le
+  // journal d'audit commun (`logQualiopiActivity`, `_guards`), comme `depart-personne.ts`. Rien d'autre
+  // du domaine. Nommé seul.
+  "src/features/dossier-client/fiche/taches.ts",
   // Chantier QNC, lot L05 — le libellé de la modalité « hybride » a UNE seule source
   // (`libelles-enumerations`, constante pure, sans lecture de base ni d'interrupteur) :
   // la fiche formation publique, la convocation et la console disent la même chose.
@@ -295,7 +344,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/app/[locale]/equipe/[slug]/page.tsx",
   "src/app/[locale]/financement-opco-france-travail/page.tsx",
   "src/app/[locale]/memo-isere/page.tsx",
-  "src/app/[locale]/page.tsx",
   "src/app/[locale]/secteurs/[secteur]/[activite]/page.tsx",
   "src/app/api/zeptomail/webhook/route.ts",
   "src/app/sitemap-images-services.xml/route.ts",
@@ -519,7 +567,6 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    relances : ce sont des documents commerciaux d'un organisme de
   //    formation. Les recopier hors du domaine créerait la seconde vérité que
   //    ce contrôle existe pour empêcher.
-  "src/lib/email/templates/_layout.tsx",
   "src/lib/email/legal-footer.ts",
   // ── Plan de production éditorial en PDF : n'emprunte au domaine que la
   //    PLOMBERIE du rendu — jetons de marque, polices, nettoyage d'espaces,
@@ -553,6 +600,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //    tout ce qui enfile un e-mail. Même plomberie d'alerte que `health.ts` ;
   //    au troisième emprunteur, sortir `creerOuDedup` vers une zone neutre.
   "src/server/email/suppression.ts",
+  // ── Demande d'effacement → mise à l'écart (décision de Williams du 11/11/2026) :
+  //    l'alerte « à traiter à la main » est une alerte de la cloche, créée par
+  //    `creerOuDedup` (code `rgpd_effacement_a_traiter`, au catalogue). Import
+  //    DYNAMIQUE au point d'usage, comme `suppression.ts`. Aucun autre usage du domaine.
+  "src/server/rgpd/ecarter-au-lieu-d-effacer.ts",
   // ── Relecture au départ (chantier formateurs indépendants, CAMP-1) : le
   //    worker relit, juste avant d'envoyer un e-mail formateur, les
   //    interrupteurs du chantier (`formateurs-independants/interrupteurs*.ts`,
@@ -664,6 +716,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "tests/integration/formateurs-interrupteurs/allumer-couper.spec.ts",
   // ── Même calque pour les interrupteurs du socle de signature (S6a).
   "tests/integration/formateurs-interrupteurs/signature-allumer-couper.spec.ts",
+  // ── Envoi simultané d'un devis sur Postgres réel (B1, 2026-11-17). Le test appelle
+  //    `sendDevisAction` TELLE QUELLE (verrou consultatif + écriture gardée) : copier la logique
+  //    dans un double ne prouverait rien. Il vit sous `tests/integration/`, seul dossier que lit
+  //    `vitest.integration.config.ts`. Tout ce qui sort de la base est simulé.
+  "tests/integration/devis/envoi-concurrent-un-seul-envoye.spec.ts",
   // ── Banc @formateurs, scénarios d'ARGENT (vérification 1, équipe C,
   //    2026-10-14). L'exécuteur `tsx` du banc appelle le code serveur RÉEL du
   //    paiement des formateurs (passage par mission, autofacture, virements,
@@ -708,6 +765,39 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   //      jamais écrire une fiche.
   "src/features/dossier-client/creer-prospect.ts",
   "src/features/dossier-client/rattacher.ts",
+  // ── Fiche prospect créée toute seule au rendez-vous Calendly (2026-10-24) : elle
+  //    passe par la MÊME porte unique `crm/porte-client.ts` (refus SIREN/motif
+  //    compris) et lit les fiches proches par ses fonctions ; sa spec appelle la
+  //    vraie porte. Aucune seconde porte, aucune table nouvelle.
+  "src/features/dossier-client/fiche-auto.ts",
+  // ── Fiche prospect créée toute seule depuis une DEMANDE écrite (2026-11-04) : même porte unique
+  //    `crm/porte-client.ts` que `fiche-auto.ts`, mêmes fonctions de lecture des fiches proches ; sa
+  //    spec appelle la porte (simulée à l'écriture). Aucune seconde porte, aucune table nouvelle.
+  "src/features/dossier-client/fiche-demande.ts",
+  // ── Effacement art. 17 d'un message relié à une fiche prospect (2026-11-05) : l'action écrit, APRÈS
+  //    le commit, l'alerte `visio.fiche_de_message_efface` par `creerOuDedup` (qui absorbe une alerte
+  //    déjà ouverte) ; la fiche n'est pas touchée. Une seule arête vers le service d'alertes.
+  "src/features/admin-submissions/actions.ts",
+  "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-depuis-une-demande.spec.ts",
+  // ── Fiche client, lot B9 (29/10/2026) : « Préparer une relance » d'un devis envoyé. Une seule arête,
+  //    la même que `actions.ts` : la garde d'écriture de la console et la trace d'audit
+  //    (`_guards` : `requireAdminWrite`, `logQualiopiActivity`). L'action ne fait que garer un brouillon
+  //    « à valider » (`email/outbox-service`) ; elle n'envoie rien. Nommée seule.
+  "src/features/dossier-client/fiche/actions-relance-devis.ts",
+  "src/features/dossier-client/__tests__/la-fiche-prospect-se-cree-toute-seule-au-rendez-vous-calendly.spec.ts",
+  // ── Demandes du Tour France IA (2026-10-27, PR-2a) : deux arêtes, nommées seules.
+  //    · `fiche.ts` : porte unique des fiches (`crm/porte-client.ts`: recherche des fiches proches,
+  //      création, ajout d'une personne) et `NOM_A_COMPLETER` (`crm/contact-facturation.ts`) — aucune
+  //      seconde porte, aucune table nouvelle ; une demande publique n'y écrit jamais seule.
+  //    · `villes.ts` : `normaliserVille` (`crm/normaliser-nom.ts`), fonction PURE, la même
+  //      normalisation que l'anti-doublon des fiches.
+  "src/features/tour-de-france/fiche.ts",
+  "src/features/tour-de-france/villes.ts",
+  // ── Fiche complétée depuis la réponse du dirigeant au questionnaire (2026-10-25) :
+  //    champs VIDES seulement ; le SIREN n'est JAMAIS posé (proposé à Will, qui le pose
+  //    d'un clic par la porte unique), la personne passe par `ajouterPersonneAFiche`.
+  //    Aucune seconde porte, aucune table nouvelle.
+  "src/features/questionnaire-preaudit/completer-fiche.ts",
   "scripts/visio/pilote.ts",
   // ── Alertes visio (PR 4, correction anti-doublon A3, 2026-09-29) : AUCUNE
   //    table ni service d'alerte parallèle. Les alertes du circuit visio
@@ -743,6 +833,11 @@ const CONSOMMATEURS_ASSUMES: ReadonlySet<string> = new Set([
   "src/server/calendly/annonces-echange-formateur.ts",
   //  · la page neutre du dossier mène à « Retrouver mon espace » quand le dossier est ouvert.
   "src/app/formateur/dossier/[id]/[jeton]/not-found.tsx",
+  // E-mails en sommeil déjà en file (L9b, 17/11/2026) — le worker d'e-mails lit la seule fonction
+  // `gabaritEnSommeil` (et le message associé) pour ne jamais envoyer un e-mail en sommeil déjà en file ;
+  // il n'importe que ce module du domaine, rien d'autre. Son test fait de même. Nommés seuls.
+  "src/server/queue/workers/email-worker.ts",
+  "src/server/queue/workers/__tests__/email-worker.sommeil.spec.ts",
 ]);
 
 /**

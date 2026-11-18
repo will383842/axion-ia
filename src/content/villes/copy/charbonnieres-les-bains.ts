@@ -49,7 +49,7 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Charbonnières-les-Bains et ouest lyonnais ?",
-      a: "Oui, Axion-IA intervient à Charbonnières-les-Bains et tout l'ouest lyonnais (Écully à 5 min, Dardilly, Tassin). Consultants depuis Lyon (15 min).",
+      a: "Oui, Axion-IA intervient à Charbonnières-les-Bains et tout l'ouest lyonnais (Écully à 5 min, Dardilly, Tassin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les acteurs tourisme thermal et casino ?",
@@ -64,8 +64,8 @@ export const CHARBONNIERES_LES_BAINS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ?",
-      a: "Nos consultants viennent de Lyon (15 min).",
+      q: "Comment se déroule une mission à Charbonnières-les-Bains ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

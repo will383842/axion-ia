@@ -245,7 +245,7 @@ export const CHARLEVILLE_MEZIERES_COPY: VilleCopy = {
       a: "Oui. Toutes nos implémentations à Charleville-Mézières respectent le RGPD et privilégient des architectures souveraines. Vous gardez la maîtrise de vos données et la propriété des outils.",
     },
     {
-      q: "Comment se passe une mission depuis Reims ou Paris ?",
+      q: "Comment se déroule une mission à Charleville-Mézières ?",
       a: "Reims est à 1h par l'A34, avec une gare TGV reliant Paris en 45 min. Nous nous déplaçons sur site à Charleville-Mézières.",
     },
     {

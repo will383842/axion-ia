@@ -49,7 +49,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Blanquefort et dans le Médoc ?",
-      a: "Oui, Axion-IA intervient à Blanquefort, au Taillan-Médoc, à Parempuyre et dans tout le nord Bordeaux-Médoc. Nos consultants se déplacent depuis Bordeaux centre (25 min tramway C) ou Paris (TGV 2h).",
+      a: "Oui, Axion-IA intervient à Blanquefort, au Taillan-Médoc, à Parempuyre et dans tout le nord Bordeaux-Médoc. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Blanquefort  ?",
@@ -65,7 +65,7 @@ export const BLANQUEFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Blanquefort ?",
-      a: "Nos consultants interviennent dans vos locaux à Blanquefort ou en visio. Depuis Bordeaux centre (25 min tramway C). Tarifs et planning convenus en amont, livrables documentés.",
+      a: "Nos consultants interviennent dans vos locaux à Blanquefort ou en visio. Nous intervenons partout en France, sur place ou à distance. Tarifs et planning convenus en amont, livrables documentés.",
     },
   ],
 };

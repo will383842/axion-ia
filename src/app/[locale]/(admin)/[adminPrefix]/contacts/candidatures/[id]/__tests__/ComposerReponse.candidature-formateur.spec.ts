@@ -11,7 +11,7 @@ import { describe, expect, it } from "vitest";
 import { liensInsertionComposeur } from "@/lib/imprimes/liens-email";
 import { estCandidatureFormateur } from "@/lib/careers/fiche-formateur";
 
-const CALENDLY_APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY_APPORTEUR = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 describe("composeur d'une candidature de formateur", () => {
   it("contre-témoin : hors formateur, le lien d'échange est proposé", () => {

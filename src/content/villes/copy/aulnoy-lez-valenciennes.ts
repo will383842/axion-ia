@@ -49,7 +49,7 @@ export const AULNOY_LEZ_VALENCIENNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Aulnoy-lez-Valenciennes et dans le Valenciennois ?",
-      a: "Oui, Axion-IA intervient a Aulnoy-lez-Valenciennes et dans tout le Valenciennois (Valenciennes, Marly, Petite-Foret, Anzin). Consultants depuis Lille (45 min TER) ou Paris (TGV Valenciennes 1h50).",
+      a: "Oui, Axion-IA intervient a Aulnoy-lez-Valenciennes et dans tout le Valenciennois (Valenciennes, Marly, Petite-Foret, Anzin). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les startups issues de l'UPHF ?",

@@ -14,6 +14,8 @@ export default defineConfig({
   ...baseConfig,
   test: {
     ...baseConfig.test,
+    // Une seule base Postgres partagée : jamais de fichiers en parallèle, même en CI.
+    fileParallelism: false,
     include: ["tests/integration/**/*.{test,spec}.{ts,tsx}"],
     exclude: ["node_modules", ".next", "tests/e2e/**", "src/**"],
     setupFiles: ["./vitest.integration.setup.ts", "./vitest.setup.ts"],

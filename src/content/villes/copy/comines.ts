@@ -49,7 +49,7 @@ export const COMINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Comines et dans le nord lillois ?",
-      a: "Oui, Axion-IA intervient à Comines et dans tout le nord de la Métropole Européenne de Lille (Wervicq-Sud, Halluin, Tourcoing, Roncq). Nos consultants sont basés sur Lille, déplacement en 20 min.",
+      a: "Oui, Axion-IA intervient à Comines et dans tout le nord de la Métropole Européenne de Lille (Wervicq-Sud, Halluin, Tourcoing, Roncq). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Comines  ?",
@@ -65,7 +65,7 @@ export const COMINES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Comines ?",
-      a: "Nos consultants interviennent depuis Lille en 20 min. Comines fait partie de la Métropole Européenne de Lille, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

@@ -20,7 +20,6 @@ const STRATEGIC_PATHS = [
   { path: "/fr/implementation", label: "implementation" },
   { path: "/fr/appel", label: "appel" },
   // Tier 2 — content marketing + AEO/GEO (P1-19 extension 2026-05-15)
-  { path: "/fr/cas-concrets", label: "cas-concrets" },
   { path: "/fr/methodologie", label: "methodologie" },
   { path: "/fr/comparaisons", label: "comparaisons" },
   { path: "/fr/stack-ia", label: "stack-ia" },
@@ -67,6 +66,10 @@ test.describe("a11y WCAG 2.2 AA @a11y", () => {
    */
   const BUDGET_PAR_PAGE: Record<string, number> = {
     "/fr/implantations": 240_000,
+    // 14/11/2026 : /fr/faq pèse 6,96 Mo de HTML et 4 431 liens en prod ; le délai de
+    // 90 s est dépassé 4 nuits sur 5. Le poids de la page est un problème de
+    // performance suivi à part. Le test reste bloquant sur serious/critical.
+    "/fr/faq": 240_000,
   };
 
   for (const { path, label } of STRATEGIC_PATHS) {

@@ -49,7 +49,7 @@ export const CLUSES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cluses et vallée de l'Arve ?",
-      a: "Oui, Axion-IA intervient à Cluses et dans toute la vallée de l'Arve (Scionzier, Thyez, Marnaz, Magland, Sallanches, Bonneville). Nos consultants se déplacent depuis Annecy (50 min) ou Genève (50 min).",
+      a: "Oui, Axion-IA intervient à Cluses et dans toute la vallée de l'Arve (Scionzier, Thyez, Marnaz, Magland, Sallanches, Bonneville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME décolletage de la vallée de l'Arve ?",
@@ -65,7 +65,7 @@ export const CLUSES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Cluses ?",
-      a: "Nos consultants interviennent sur site dans votre atelier ou bureau d'études à Cluses, ou en visio. Depuis Annecy (50 min) ou Genève (50 min A40). Hébergement local pour missions multi-jours.",
+      a: "Nos consultants interviennent sur site dans votre atelier ou bureau d'études à Cluses, ou en visio. Hébergement local pour missions multi-jours.",
     },
   ],
 };

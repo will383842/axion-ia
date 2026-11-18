@@ -28,7 +28,7 @@ import * as React from "react";
 import { ApporteurInvitationAppelEmail } from "../apporteur-invitation-appel";
 import { IDENTITE_LEGALE } from "@/lib/identite-legale-ssot";
 
-const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 
 /** Texte visible, sans balises ni entités — ce que la personne lit. */
 function texte(h: string): string {

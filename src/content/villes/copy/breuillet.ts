@@ -49,7 +49,7 @@ export const BREUILLET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Breuillet et dans le sud de l'Essonne ?",
-      a: "Oui, Axion-IA intervient à Breuillet et tout le sud de l'Essonne (Dourdan, Arpajon, Saint-Chéron, Bruyères-le-Châtel, Ollainville). Nos consultants accèdent facilement à Breuillet via le RER C depuis Paris (50 min).",
+      a: "Oui, Axion-IA intervient à Breuillet et tout le sud de l'Essonne (Dourdan, Arpajon, Saint-Chéron, Bruyères-le-Châtel, Ollainville). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et artisans de Breuillet ?",
@@ -64,8 +64,8 @@ export const BREUILLET_COPY: VilleCopy = {
       a: "Oui, notre Audit sur place de 4 heures est disponible à partir de {{price:audit-flash|flat}}, idéal pour les PME de Breuillet souhaitant un diagnostic rapide de leurs processus avant toute implémentation IA.",
     },
     {
-      q: "Comment se passe une mission à Breuillet depuis Paris ?",
-      a: "Nos consultants accèdent à Breuillet en 50 min via le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Breuillet ?",
+      a: "Breuillet est desservie par le RER C (gare de Breuillet - Bruyères-le-Châtel). Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

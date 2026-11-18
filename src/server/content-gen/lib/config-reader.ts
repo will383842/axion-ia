@@ -16,7 +16,7 @@ import type { ProviderConfig, ProviderKey } from "../../../../prisma/generated/c
 const V0_DEFAULTS: Record<ProviderKey, { model: string; enabled: boolean; monthlyCapUsd: number }> =
   {
     openai: { model: "gpt-4o", enabled: true, monthlyCapUsd: 200 },
-    anthropic: { model: "claude-sonnet-4-6", enabled: true, monthlyCapUsd: 100 },
+    anthropic: { model: "claude-sonnet-5-5", enabled: true, monthlyCapUsd: 100 },
     perplexity: { model: "sonar-pro", enabled: true, monthlyCapUsd: 80 },
     unsplash: { model: "unsplash-api-v1", enabled: true, monthlyCapUsd: 0 },
     gpt_image: { model: "gpt-image-1", enabled: false, monthlyCapUsd: 0 },

@@ -247,16 +247,24 @@ export async function eraseSubscriberAction(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Champs invalides." };
   }
 
-  // 🔴 Lot L3 (2026-09-24) — les fonctions de l'effacement PUBLIC : l'abonné,
-  // ses demandes du guide, ses traces d'e-mail, et le CRM. Une fiche absente
-  // se dit, elle ne fait plus tomber l'écran.
+  // Décision de Williams du 11/11/2026 : MISE À L'ÉCART, plus aucune suppression (même module
+  // que la route publique). Une fiche absente se dit, elle ne fait plus tomber l'écran.
   const issue = await effacerAbonneDepuisConsole({
     abonneId: parsed.data.id,
     motif: parsed.data.reason,
     adminUserId: session.user.id,
     ip: await getClientIp(),
   });
-  if (!issue.ok) return { ok: false, error: "Abonné introuvable (déjà effacé ?)." };
+  if (!issue.ok) return { ok: false, error: "Abonné introuvable." };
+  // Une marque ou une opposition qui n'a pas pu être posée n'est PAS « fait » : les envois
+  // continueraient pendant que l'écran confirme la mise à l'écart.
+  const manque = issue.etapesEnEchec.filter((e) => e === "marque" || e === "opposition");
+  if (manque.length > 0) {
+    return {
+      ok: false,
+      error: `Mise à l'écart incomplète : ${manque.join(", ")} en échec. Réessayez (rien n'est supprimé).`,
+    };
+  }
 
   revalidatePath(adminPath("fr", "newsletter"));
   return { ok: true };

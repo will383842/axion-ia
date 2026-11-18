@@ -65,7 +65,7 @@ export const SAINT_JEAN_DE_MAURIENNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission en vallée de la Maurienne ?",
-      a: "Nos consultants se déplacent à Saint-Jean-de-Maurienne (1h depuis Chambéry par A43). Pour les missions multi-jours, hébergement local en Maurienne. Visio possible pour les sessions coaching.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local en Maurienne. Visio possible pour les sessions coaching.",
     },
   ],
 };

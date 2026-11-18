@@ -37,7 +37,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 
 const SOURCE = join(
@@ -252,5 +252,77 @@ describe("🛑 aucun effacement automatique de données de personnes", () => {
           "et de l'exception candidatures (décision du 2026-10-11)",
       ).toEqual([]);
     });
+  });
+});
+
+/**
+ * 🛑 Aucun chemin AUTOMATIQUE n'importe une fonction d'effacement de `lib/rgpd-erase.ts`.
+ *
+ * Les routes HTTP (`src/app/api/**`) et les files (`src/server/queue/**`) tournent sans humain à
+ * la barre : y importer un `erase*` ou un `purger*` rebrancherait un effacement de personnes. Les
+ * effacements restent des gestes de console (humain) ou de la personne elle-même, hors de ces
+ * deux arbres.
+ */
+describe("🛑 ni les routes ni les files n'importent un erase* / purger* de lib/rgpd-erase", () => {
+  const RACINES = [join("src", "app", "api"), join("src", "server", "queue")];
+
+  function fichiers(dossier: string): string[] {
+    const sortie: string[] = [];
+    for (const nom of readdirSync(dossier)) {
+      const chemin = join(dossier, nom);
+      if (statSync(chemin).isDirectory()) {
+        if (nom === "__tests__" || nom === "node_modules") continue;
+        sortie.push(...fichiers(chemin));
+      } else if (/\.tsx?$/.test(nom) && !/\.(spec|test)\.tsx?$/.test(nom)) {
+        sortie.push(chemin);
+      }
+    }
+    return sortie;
+  }
+
+  /** Noms importés (hors `import type`) depuis `rgpd-erase`, alias `as` ignorés. */
+  function importsDeRgpdErase(code: string): string[] {
+    const noms: string[] = [];
+    const re = /import\s+(type\s+)?\{([^}]*)\}\s+from\s+["'][^"']*\/rgpd-erase["']/g;
+    for (const m of code.matchAll(re)) {
+      if (m[1]) continue;
+      for (const brut of m[2]!.split(",")) {
+        const nom = brut
+          .trim()
+          .replace(/^type\s+/, "")
+          .split(/\s+as\s+/)[0]!
+          .trim();
+        if (nom) noms.push(nom);
+      }
+    }
+    // `import * as x` ou import dynamique : on ne sait pas lesquels, donc on les refuse.
+    if (/import\s+\*\s+as\s+\w+\s+from\s+["'][^"']*\/rgpd-erase["']/.test(code)) noms.push("*");
+    if (/import\(\s*["'][^"']*\/rgpd-erase["']\s*\)/.test(code)) noms.push("import()");
+    return noms;
+  }
+
+  it("le détecteur voit bien un import fautif (témoin)", () => {
+    expect(
+      importsDeRgpdErase(
+        'import { eraseNewsletterForEmail as x, ADRESSE_MASQUEE } from "@/lib/rgpd-erase";',
+      ),
+    ).toEqual(["eraseNewsletterForEmail", "ADRESSE_MASQUEE"]);
+  });
+
+  it("aucun fichier sous src/app/api/** ni src/server/queue/** n'importe un erase* ou purger*", () => {
+    const fautes: string[] = [];
+    let vus = 0;
+    for (const racine of RACINES) {
+      for (const f of fichiers(join(process.cwd(), racine))) {
+        vus++;
+        for (const nom of importsDeRgpdErase(readFileSync(f, "utf8"))) {
+          if (/^(erase|purger)/i.test(nom) || nom === "*" || nom === "import()") {
+            fautes.push(`${f.replace(process.cwd() + "/", "")} → ${nom}`);
+          }
+        }
+      }
+    }
+    expect(vus, "le parcours doit voir des fichiers").toBeGreaterThan(20);
+    expect(fautes).toEqual([]);
   });
 });

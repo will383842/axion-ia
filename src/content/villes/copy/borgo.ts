@@ -64,7 +64,7 @@ export const BORGO_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP à Borgo et plaine orientale, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos chantiers, gestion planning.",
     },
     {
-      q: "Comment se passe une mission en Corse depuis le continent ?",
+      q: "Comment se déroule une mission en Corse ?",
       a: "Nos consultants arrivent directement à l'aéroport Bastia-Poretta (sur la commune de Borgo, vols directs Paris/Lyon/Marseille/Nice). Borgo est à 5 min de l'aéroport.",
     },
   ],

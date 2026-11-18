@@ -1,7 +1,9 @@
+import { profilDuTour, type ProfilDuTour } from "@/server/calendly/reponses-du-tour";
 import { hashEmailForLookup, normalizeEmail } from "@/lib/security/email-hash";
 import { familleHorsClients } from "@/server/calendly/appel-apporteur";
 import {
   classerParNom,
+  estVisioTourDeFranceIa,
   bornerReponsesCrm,
   BESOIN_MAX,
   couperTexte,
@@ -92,6 +94,8 @@ interface BaseInput {
   company?: CompanyInput | null;
   consent?: ConsentInput | null;
   sourceSlug?: string | null;
+  /** Guides remis (contrat v3) : lot S3-CRM, guide du catalogue sur le chemin v1. */
+  guidesRecus?: Array<{ guide: string; date: string }>;
   tags?: string[];
   payload?: Record<string, unknown>;
   tx?: CrmOutboxWriter;
@@ -130,6 +134,12 @@ function lireNomTypeEvenement(payload: Record<string, unknown> | undefined): str
   return typeof slug === "string" && slug.trim() ? slug : null;
 }
 
+/** `{ profil }` pour la visio du Tour quand le formulaire en dit quelque chose, sinon rien. */
+function profilCrmDuTour(reponsesBrutes: unknown): { profil?: ProfilDuTour } {
+  const profil = profilDuTour(bornerReponsesCrm(reponsesBrutes));
+  return profil ? { profil } : {};
+}
+
 /**
  * Le payload d'un rendez-vous, mis au CONTRAT (chantier « Types de rendez-vous »,
  * 2026-10-04) : `eventTypeName`, `typeRendezVous` et `besoin` sont TOUJOURS
@@ -142,16 +152,28 @@ export function payloadRendezVousAuContrat(
 ): Record<string, unknown> & ChampsCrmRendezVous {
   const nom = lireNomTypeEvenement(payload);
   const brut = payload?.["typeRendezVous"];
-  const typeRendezVous = estTypeRendezVous(brut) ? brut : classerParNom(nom);
+  // Le repli d'écriture sans colonne `type` arrive en `autre` : si le nom (ou le slug)
+  // est celui du Tour, on reclasse par le nom.
+  const typeRendezVous =
+    estTypeRendezVous(brut) && !(brut === "autre" && estVisioTourDeFranceIa(nom))
+      ? brut
+      : classerParNom(nom);
   const besoin = payload?.["besoin"];
   // Lot L5b : les réponses du questionnaire, BORNÉES ici quel que soit
   // l'appelant, et seulement pour un rendez-vous client (diagnostic, échange
   // projet). Pour tout autre type la clé est retirée, même fournie.
   const { reponses: reponsesBrutes, ...reste } = payload ?? {};
+  // Le CRM ne connaît que quatre valeurs (`CrmTypeRendezVous`) : la visio du Tour France IA
+  // lui part sous `autre`, avec la clé libre `circuit` qui la nomme.
+  const duTour = typeRendezVous === "tour_de_france_ia";
   return {
     ...reste,
     eventTypeName: nom ?? "Calendly",
-    typeRendezVous,
+    typeRendezVous: duTour ? "autre" : typeRendezVous,
+    ...(duTour ? { circuit: "tour_de_france_ia" } : {}),
+    // Le profil lu dans le formulaire du Tour (secteur, taille, usage de l'IA…),
+    // ajouté à `reponses` sans rien retirer : clé libre, absente s'il n'y a rien.
+    ...(duTour ? profilCrmDuTour(reponsesBrutes) : {}),
     // Borné ici aussi, quel que soit l'appelant, et sans casser un emoji
     // (relecture A09) : un JSON invalide = 422 = rendez-vous perdu pour le CRM.
     besoin:
@@ -320,6 +342,9 @@ async function dispatch(
     ...(input.sourceSlug ? { source_slug: input.sourceSlug } : {}),
     ...(input.company ? { company: companySection(input.company) } : {}),
     ...(input.consent ? { consent: consentSection(input.consent) } : {}),
+    ...(input.guidesRecus && input.guidesRecus.length > 0
+      ? { guides_recus: input.guidesRecus }
+      : {}),
     ...(input.tags && input.tags.length > 0 ? { tags: input.tags } : {}),
     ...(input.payload ? { payload: input.payload } : {}),
     ...extra,

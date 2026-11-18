@@ -103,7 +103,13 @@ describe("⚠️ la dette reste MESURÉE, pour qu'elle ne s'oublie pas", () => {
       if (prof === 0 && t.startsWith(".admin-") && t.includes("{")) nues++;
       prof += (l.match(/\{/g) ?? []).length - (l.match(/\}/g) ?? []).length;
     }
-    expect(nues, "des règles `.admin-*` hors couche ont été AJOUTÉES").toBeLessThanOrEqual(280);
+    // 2026-10-25 : 280 -> 302 (+22, mesuré) pour la « peau dossier » (D0, PLAN-DESIGN-CLIENTS).
+    // Ces 18 règles sont HORS COUCHE à dessein : toutes scopées sous `.admin-ton-dossier`
+    // (ou `.admin-button-lg`), elles doivent BATTRE les règles de base `.admin-button`,
+    // `.admin-input`… qui sont elles-mêmes hors couche ; une règle en couche perdrait.
+    // Les classes NEUVES (bloc, carte, étape, aperçu, pastille pleine) sont, elles, dans
+    // `@layer admin-dossier`. Ne pas relever davantage sans les mettre en couche.
+    expect(nues, "des règles `.admin-*` hors couche ont été AJOUTÉES").toBeLessThanOrEqual(302);
     expect(
       nues,
       "le motif d'extraction ne trouve plus rien : ce témoin ne mesure plus",

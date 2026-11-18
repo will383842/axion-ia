@@ -49,7 +49,7 @@ export const DONZERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Donzère et bassin Tricastin ?",
-      a: "Oui, Axion-IA intervient à Donzère et tout le bassin Tricastin (Pierrelatte à 10 min, Saint-Paul-Trois-Châteaux, Bollène, Grignan). Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min).",
+      a: "Oui, Axion-IA intervient à Donzère et tout le bassin Tricastin (Pierrelatte à 10 min, Saint-Paul-Trois-Châteaux, Bollène, Grignan). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Tricastin ?",
@@ -64,8 +64,8 @@ export const DONZERE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Donzère, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
-      a: "Nos consultants viennent de Lyon (1h45 A7) ou Valence (45 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Donzère ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

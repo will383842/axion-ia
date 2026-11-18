@@ -67,7 +67,8 @@ describe("signature — e-mails qui ouvrent un dialogue", () => {
     for (const nom of [...SIGNE_FONDATEUR, ...SIGNE_EQUIPE]) {
       const html = await rendre(nom);
       expect(html, nom).toContain("de bout en bout");
-      expect(html, nom).toContain("Formation finançable OPCO");
+      expect(html, nom).toContain("Formation · Coaching 1-to-1");
+      expect(html, nom).not.toMatch(/OPCO/i);
     }
   });
 

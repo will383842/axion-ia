@@ -18,9 +18,9 @@ export const DRAVEIL_COPY: VilleCopy = {
   ecosystemEn:
     "Draveil, étirée le long de la Seine et adossée à la forêt de Sénart, est une commune résidentielle de l'Essonne intégrée au sud de l'agglomération parisienne. Son économie locale repose sur le commerce de centre-ville, l'artisanat du bâtiment, la restauration, les services aux particuliers et les professions libérales installées au plus près des habitants. Ce maillage de TPE et de petites PME, souvent en sous-effectif administratif, tire un bénéfice immédiat de l'IA pour automatiser devis, relances et gestion du quotidien.",
   distancesFr:
-    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nos consultants se déplacent depuis Paris sur tout le sud-est de l'Essonne : Montgeron, Vigneux-sur-Seine, Ris-Orangis et la vallée de la Seine.",
+    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nos consultants se déplacent depuis Paris sur tout le sud-est de l'Essonne : Montgeron, Vigneux-sur-Seine, Ris-Orangis et la vallée de la Seine.",
+    "Draveil est à 25 km au sud de Paris, reliée par le RER D via Juvisy-sur-Orge (10 min) et à 12 km de l'aéroport de Paris-Orly. Massy TGV est à 20 km. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "BTP et artisanat du bâtiment",
     "Commerce et restauration de bord de Seine",
@@ -131,8 +131,8 @@ export const DRAVEIL_COPY: VilleCopy = {
             a: "En Union européenne, par défaut, en conformité RGPD. C'est un point important pour les structures draveilloises manipulant des données sensibles — services à la personne, secteur santé-gériatrie autour de Joffre-Dupuytren, cabinets libéraux. Vous gardez la propriété du code et des accès, sans verrou éditeur.",
           },
           {
-            q: "Comment se passe une mission depuis Paris ?",
-            a: "Nos consultants viennent de Paris (environ 25 minutes par le RER D via Juvisy-sur-Orge) et se déplacent sur tout le sud-est de l'Essonne : Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off et passation en présentiel — au commerce, au cabinet ou sur la ZA de Mainville ; itérations à distance. Devis sous 24 à 48 h selon la complexité.",
+            q: "Comment se déroule une mission à Draveil ?",
+            a: "Nous intervenons partout en France, sur place ou à distance. Kick-off et passation en présentiel — au commerce, au cabinet ou sur la ZA de Mainville ; itérations à distance. Devis sous 24 à 48 h selon la complexité.",
           },
         ],
         guarantees:
@@ -217,8 +217,8 @@ export const DRAVEIL_COPY: VilleCopy = {
             a: "In the European Union by default, GDPR-compliant. This matters for Draveil organisations handling sensitive data — personal services, the health and geriatric sector around Joffre-Dupuytren, independent practices. You keep ownership of the code and access, with no vendor lock-in.",
           },
           {
-            q: "How does a mission work from Paris?",
-            a: "Our consultants come from Paris (about 25 minutes via RER D through Juvisy-sur-Orge) and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
+            q: "How does a mission work in Draveil?",
+            a: "We work across France, on site or remotely (Draveil is served by RER D via Juvisy-sur-Orge), and travel across south-east Essonne: Draveil, Montgeron, Vigneux-sur-Seine, Ris-Orangis. Kick-off and handover in person — at the shop, the practice or the Mainville park; iterations remote. Quote within 24 to 48 hours depending on complexity.",
           },
         ],
         guarantees:
@@ -230,7 +230,7 @@ export const DRAVEIL_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Draveil et dans le sud-est de l'Essonne ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Draveil et des communes voisines (Montgeron, Vigneux-sur-Seine, Ris-Orangis). Nos consultants viennent de Paris, à 25 min par le RER D.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Draveil et des communes voisines (Montgeron, Vigneux-sur-Seine, Ris-Orangis). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans du bâtiment de Draveil ?",
@@ -245,8 +245,8 @@ export const DRAVEIL_COPY: VilleCopy = {
       a: "Audit sur place, intervention d'une journée de formation et coaching 1-to-1. Nous adaptons les formats au quotidien des TPE locales, sans jargon technique.",
     },
     {
-      q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants se déplacent depuis Paris (25 min par le RER D via Juvisy).",
+      q: "Comment se déroule une mission à Draveil ?",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

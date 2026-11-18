@@ -49,7 +49,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Chartres-de-Bretagne et sud Rennes ?",
-      a: "Oui, Axion-IA intervient à Chartres-de-Bretagne et dans tout le sud de Rennes Métropole (Bruz, Pont-Péan, Vern-sur-Seiche, Noyal-Châtillon-sur-Seiche). Nos consultants viennent de Rennes centre (10 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Chartres-de-Bretagne et dans tout le sud de Rennes Métropole (Bruz, Pont-Péan, Vern-sur-Seiche, Noyal-Châtillon-sur-Seiche). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles des zones d'activités ?",
@@ -65,7 +65,7 @@ export const CHARTRES_DE_BRETAGNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Chartres-de-Bretagne ?",
-      a: "Nos consultants viennent de Rennes centre (10 min). Gare TER de Chartres-de-Bretagne sur la commune. Interventions directement dans vos locaux zone d'activités.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare TER de Chartres-de-Bretagne sur la commune. Interventions directement dans vos locaux zone d'activités.",
     },
   ],
 };

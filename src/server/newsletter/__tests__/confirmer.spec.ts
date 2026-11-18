@@ -29,6 +29,8 @@ vi.mock("@/lib/consents", () => ({
   recordConsentEvent: (...a: unknown[]) => recordConsentEvent(...a),
 }));
 vi.mock("@/server/notifications", () => ({ notify: (...a: unknown[]) => notify(...a) }));
+const estOpposee = vi.hoisted(() => vi.fn());
+vi.mock("@/server/email/opposition", () => ({ estOpposee }));
 vi.mock("@sentry/nextjs", () => ({ captureException: vi.fn() }));
 
 import { confirmerLettre } from "../confirmer";
@@ -46,6 +48,7 @@ const ABONNE = {
 };
 
 beforeEach(() => {
+  estOpposee.mockReset().mockResolvedValue(false);
   findUnique.mockReset().mockResolvedValue(ABONNE);
   update.mockReset().mockResolvedValue({});
   updateMany.mockReset().mockResolvedValue({ count: 1 });
@@ -160,6 +163,12 @@ describe("confirmerLettre", () => {
     });
     expect(recordConsentEvent).not.toHaveBeenCalled();
     expect(syncNewsletterOptInToCrm).not.toHaveBeenCalled();
+  });
+
+  it("adresse opposée : refus, rien n'est confirmé", async () => {
+    estOpposee.mockResolvedValue(true);
+    expect(await confirmerLettre(JETON)).toEqual({ ok: false, error: "unsubscribed" });
+    expect(updateMany).not.toHaveBeenCalled();
   });
 
   it("Telegram : adresse masquée", async () => {

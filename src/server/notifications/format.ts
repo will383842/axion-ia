@@ -10,13 +10,9 @@ import type {
   NotificationEvent,
   NotificationSeverity,
   PalierAlerteIncident,
+  QuestionnairePreauditTelegram,
 } from "./types";
-import {
-  estCategorieClient,
-  telegramGroupFor,
-  type CategorieClient,
-  type TelegramGroup,
-} from "./routing";
+import { telegramGroupFor, type CategorieClient, type TelegramGroup } from "./routing";
 import { careerCategoryLabel } from "@/content/careers/categories";
 import { adminPath } from "@/lib/admin-path";
 import { SITE_URL } from "@/lib/site-url";
@@ -39,11 +35,7 @@ const SEVERITY_EMOJI: Record<NotificationSeverity, string> = {
  * Sur Telegram il double le nom du groupe — utile, car le bandeau de
  * notification du téléphone ne montre pas toujours dans quel groupe on écrit.
  *
- * Sur WhatsApp il porte TOUTE la distinction : CallMeBot n'écrit que dans une
- * seule conversation (une clé = un destinataire, pas de groupes), donc il n'y a
- * pas de fil séparé possible. Ces ~20 caractères sont exactement ce que l'écran
- * verrouillé affiche — c'est là, et nulle part ailleurs, que se joue le fait de
- * distinguer un rendez-vous d'une candidature sans ouvrir le téléphone.
+ * (Le canal WhatsApp, qui s'appuyait sur cet en-tête, est coupé depuis le 14/11/2026.)
  *
  * ⚠️ NE PAS déplacer en fin de message ni faire précéder d'autre chose.
  */
@@ -64,6 +56,9 @@ const THEME: Record<TelegramGroup, { emoji: string; label: string }> = {
   messages: { emoji: "💬", label: "MESSAGE" },
   "crm-sync": { emoji: "🔗", label: "SYNCHRO CRM" },
   incidents: { emoji: "🚨", label: "INCIDENT DE DONNÉES" },
+  "questionnaire-audit": { emoji: "📝", label: "QUESTIONNAIRE AUDIT" },
+  tour: { emoji: "🚌", label: "TOUR FRANCE IA" },
+  // Le salon général se nomme « 🔧 Axion-IA — Technique » dans Telegram (14/11/2026).
   system: { emoji: "🔔", label: "SYSTÈME" },
 };
 
@@ -83,7 +78,7 @@ const TITLES: Record<NotificationCategory, string> = {
   // contre le plafond de 800 du message (`channels/telegram.ts`).
   VIDEO_EDITOR_APPLICATION_RECEIVED: "Candidature",
   // « apporteur », jamais « commercial » (2026-09-19) : la personne recommande,
-  // elle ne vend pas. Titre partagé avec WhatsApp, qui ne voit que la catégorie.
+  // elle ne vend pas.
   COMMERCIAL_APPLICATION_RECEIVED: "Nouveau candidat apporteur",
   JOB_OFFERS_STALE: "Offres d'emploi à republier",
   JOB_APPLICATIONS_STALE: "Candidatures oubliées",
@@ -99,6 +94,8 @@ const TITLES: Record<NotificationCategory, string> = {
   NEWSLETTER_CONFIRMED: "Newsletter — opt-in confirmé",
   NEWSLETTER_UNSUBSCRIBED: "Newsletter — désinscription",
   GUIDE_REQUESTED: "Guide IA — demande",
+  TOUR_DEMANDE_RECUE: "Tour France IA : nouvelle demande",
+  TOUR_VILLE_OUVERTE: "Tour France IA : VILLE OUVERTE",
   GUIDE_RECAP: "Guide IA — récapitulatif du jour",
   BOOKING_CREATED: "Nouvelle réservation",
   BOOKING_CANCELLED: "Réservation annulée",
@@ -106,7 +103,7 @@ const TITLES: Record<NotificationCategory, string> = {
   OPTION_CONFIRMED: "Option confirmée",
   OPTION_REFUSED: "Option refusée",
   OPTION_EXPIRED: "Option expirée",
-  // Titre de REPLI : WhatsApp ne reçoit que la catégorie (aucune donnée), et
+  // Titre de REPLI : le repli ne reçoit que la catégorie (aucune donnée), et
   // Telegram l'affiche quand le type d'événement manque. Sinon Telegram précise
   // « apporteur » ou « client » — cf. `titreDe`.
   CALENDLY_INVITEE_CREATED: "Nouvelle réservation",
@@ -119,6 +116,8 @@ const TITLES: Record<NotificationCategory, string> = {
   APPORTEUR_REPLIED: "Un candidat apporteur a répondu",
   CANDIDAT_REPLIED: "Un candidat a répondu par e-mail",
   TRAINER_DOSSIER_RECU: "Dossier de formateur reçu, à vérifier",
+  QUESTIONNAIRE_PREAUDIT_REPONSE: "Questionnaire avant audit : réponse reçue",
+  QUESTIONNAIRE_PREAUDIT_SUIVI: "Questionnaire avant audit : suivi",
   TRAINER_PIECE_DEPOSEE: "Pièce déposée par un formateur",
   TRAINER_CHANGEMENT_DEMANDE: "Demande de changement de coordonnées d'un formateur",
   FORMATEUR_REPLIED: "Un formateur indépendant a répondu par e-mail",
@@ -181,10 +180,10 @@ export function escapeMarkdownV2(text: string): string {
 // est passé par `escapeMarkdownV2`, chaque `\` présent EST un backslash d'échappement
 // → l'inversion est exacte (aucune sur-suppression). Les marqueurs de structure
 // `*label*` (gras) NE sont PAS précédés d'un `\` (ajoutés après échappement) donc
-// ils survivent — et WhatsApp rend nativement `*gras*`.
+// ils survivent.
 const MD_V2_UNESCAPE = /\\([_*[\]()~`>#+\-=|{}.!\\])/g;
 
-/** Convertit un message MarkdownV2 (Telegram) en texte plain lisible par WhatsApp. */
+/** Convertit un message MarkdownV2 (Telegram) en texte plain lisible. */
 export function markdownV2ToPlain(text: string): string {
   return text.replace(MD_V2_UNESCAPE, "$1");
 }
@@ -295,7 +294,79 @@ function titreDe(event: NotificationEvent): string {
       besoin,
     );
   }
+  if (
+    event.category === "QUESTIONNAIRE_PREAUDIT_REPONSE" ||
+    event.category === "QUESTIONNAIRE_PREAUDIT_SUIVI"
+  ) {
+    return titreQuestionnairePreaudit(event.payload);
+  }
   return TITLES[event.category];
+}
+
+const MOTIFS_ARRET_LISIBLES: Readonly<Record<string, string>> = {
+  reponse_dirigeant: "réponse du dirigeant",
+  desinscription: "désinscription",
+  will: "arrêtées par Will",
+  clos: "questionnaire clos",
+  expire: "lien expiré",
+  supprime: "questionnaire redéposé ou supprimé",
+  rebond: "adresse en rebond",
+  opposition: "opposition",
+  audit_proche: "trop près de l'audit",
+};
+
+/** Le titre d'un événement du questionnaire avant audit (2026-10-26). PUR. */
+export function titreQuestionnairePreaudit(p: QuestionnairePreauditTelegram): string {
+  const essai = p.essai === true ? "ESSAI · " : "";
+  switch (p.evenement) {
+    case "reponse":
+      return `${essai}Questionnaire avant audit : réponse reçue`;
+    case "invitation":
+      return `${essai}Premier e-mail parti`;
+    case "relance":
+      return `${essai}Rappel ${p.rang ?? "?"} sur 3 parti`;
+    case "arret":
+      return `${essai}Rappels arrêtés : ${MOTIFS_ARRET_LISIBLES[p.motif ?? ""] ?? "arrêt"}`;
+    case "retenu":
+      return `${essai}Envoi retenu`;
+  }
+}
+
+const PARCOURS_LISIBLE = {
+  dirigeant: "dirigeant",
+  collaborateur: "collaborateur",
+  referent_it: "référent informatique",
+} as const;
+
+/**
+ * Le corps (10 lignes au plus) : société, qui (prénom + initiale), réponses reçues sur
+ * attendues, prochain rappel, motif sans adresse, lien de la console. ADR 0010. PUR.
+ */
+export function formatQuestionnairePreaudit(p: QuestionnairePreauditTelegram): string {
+  const qui =
+    p.qui !== undefined && p.qui !== ""
+      ? `${p.qui}${p.parcours !== undefined ? ` (${PARCOURS_LISIBLE[p.parcours]})` : ""}`
+      : undefined;
+  const reponses =
+    p.recues === undefined
+      ? undefined
+      : // Tant que le dirigeant n'a pas répondu, le nombre attendu est inconnu : on ne l'écrit pas
+        // (« sur ? attendue » ne voulait rien dire).
+        `${p.recues} reçue${p.recues > 1 ? "s" : ""}${
+          p.attendues === undefined || p.attendues === null
+            ? " (nombre attendu connu après la réponse du dirigeant)"
+            : ` sur ${p.attendues} attendue${p.attendues > 1 ? "s" : ""}`
+        } (dirigeant : ${p.dirigeantARepondu === true ? "a répondu" : "pas encore"})`;
+  return [
+    formatKV("Société", p.societe),
+    formatKV("Qui", qui),
+    formatKV("Réponses", reponses),
+    formatKV(p.evenement === "invitation" ? "Rappels prévus" : "Rappels", p.prochaine),
+    p.evenement === "retenu" ? formatKV("Motif", p.motif) : null,
+    formatKV("Voir", lienConsole(p.chemin)),
+  ]
+    .filter((v): v is string => v !== null)
+    .join("\n");
 }
 
 /** Longueur maximale du besoin recopié dans un titre d'alerte. */
@@ -324,6 +395,8 @@ export function titreReservation(
     }
     case "salon":
       return salonDuNom(nomType) === "gofab" ? "Salon GOFAB réservé" : "Rendez-vous salon réservé";
+    case "tour_de_france_ia":
+      return "Tour France IA réservé";
     case "autre":
       return "Appel client réservé";
   }
@@ -698,6 +771,33 @@ function formatBody(event: NotificationEvent): string {
         .filter((v): v is string => v !== null)
         .join("\n");
     }
+    case "TOUR_DEMANDE_RECUE":
+    case "TOUR_VILLE_OUVERTE": {
+      // Minimisée : ville du référentiel, nombres, lien. Ni nom, ni adresse, ni ville saisie.
+      const p = event.payload;
+      const compte =
+        event.category === "TOUR_DEMANDE_RECUE"
+          ? formatKV("Compte pour la ville", event.payload.compte ? "oui" : "non (déjà comptée)")
+          : null;
+      return [
+        formatKV("Ville", p.ville),
+        formatKV("Demandes comptées", `${p.comptees} sur ${p.seuil}`),
+        compte,
+        formatKV(
+          "Voir en console",
+          lienConsole(
+            p.villeCle === null
+              ? "tunnels/tour/demandes"
+              : `tunnels/tour/demandes?ville=${encodeURIComponent(p.villeCle)}`,
+          ),
+        ),
+      ]
+        .filter((v): v is string => v !== null)
+        .join("\n");
+    }
+    case "QUESTIONNAIRE_PREAUDIT_REPONSE":
+    case "QUESTIONNAIRE_PREAUDIT_SUIVI":
+      return formatQuestionnairePreaudit(event.payload);
     case "TRAINER_DOSSIER_RECU": {
       // Minimisée (L-ENV) : identifiant court, couleur du registre, lien. Rien d'autre.
       const p = event.payload;
@@ -977,83 +1077,10 @@ export function formatNotification(
 }
 
 /**
- * Le message WhatsApp — SANS aucune donnée personnelle.
- *
- * ## Pourquoi WhatsApp ne reçoit pas le même message que Telegram
- *
- * 🔴 `D6-5-C1` (2026-08-20). WhatsApp passe par CallMeBot, et trois faits,
- * vérifiés le 2026-08-20 sur leurs propres pages :
- *
- * 1. **Aucune entité légale n'est publiée** — ni nom, ni adresse, ni juridiction,
- *    ni dans les conditions d'utilisation ni dans la politique de
- *    confidentialité. La page publique `/sous-processeurs` ne PEUT donc pas le
- *    déclarer : il n'y a personne à nommer. Pas de contrat de sous-traitance,
- *    pas de durée de conservation annoncée, transferts hors UE reconnus sans
- *    garantie détaillée.
- * 2. **Leurs conditions INTERDISENT** l'usage du service pour « collect or track
- *    the personal information of others » — soit exactement ce que faisait
- *    l'envoi du nom et du téléphone d'un prospect.
- * 3. Le message part dans l'**URL** (requête GET), donc journalisé par chaque
- *    intermédiaire qu'il traverse, avec la clé d'API.
- *
- * ## Ce que ce message contient, et ce qu'il suffit à faire
- *
- * L'en-tête (thème + nature de l'alerte), l'heure, et la catégorie technique.
- * Rien d'autre.
- *
- * 🔑 C'est ce que l'écran verrouillé affiche de toute façon : les ~20 premiers
- * caractères. Le rôle de WhatsApp est de PRÉVENIR vite ; celui de Telegram — un
- * canal déclaré, sous clauses contractuelles types — est de porter le détail
- * qui permet de rappeler. Le canal rapide n'a jamais eu besoin de la donnée.
- *
- * ⚠️ Ne PAS y réintroduire le corps du message. Ce serait remettre nom,
- * téléphone et contenu chez un prestataire qu'on ne peut pas nommer.
- */
-export function formatNotificationWhatsApp(
-  // 🔑 La CATÉGORIE, pas l'événement. Ce message ne porte aucune donnée : lui
-  // passer le payload complet serait rouvrir la porte qu'on vient de fermer,
-  // au premier « juste une ligne de plus ».
-  category: NotificationCategory,
-  severity: NotificationSeverity,
-  /**
-   * Le TYPE de demande en clair (« Audit IA », « Diagnostic IA réservé »),
-   * calculé par `libelleTypeDemande` — une nature de demande, jamais une
-   * donnée de la personne.
-   */
-  typeDemande?: string,
-): FormattedMessage {
-  // 🔥 Décision Will 15/10 : WhatsApp est la SONNETTE des clients. Une ligne :
-  // la nature de l'événement, le type, l'heure, et où lire le détail.
-  if (estCategorieClient(category)) {
-    const type = typeDemande?.trim() || TITLES[category];
-    const heure = new Intl.DateTimeFormat("fr-FR", {
-      timeZone: "Europe/Paris",
-      hour: "2-digit",
-      minute: "2-digit",
-    }).format(new Date());
-    return {
-      text: `${enteteClient(category)} · ${type} · ${heure} — tout le détail dans Telegram (salon Clients)`,
-    };
-  }
-  const emoji = SEVERITY_EMOJI[severity];
-  const title = TITLES[category];
-  const theme = THEME[telegramGroupFor(category)];
-  return {
-    text: [
-      `${theme.emoji} ${theme.label} · ${emoji} ${title}`,
-      "",
-      `🕐 ${formatParisDateTime(new Date())} · 🏷️ ${category}`,
-      "",
-      "Détail sur Telegram ou dans la console.",
-    ].join("\n"),
-  };
-}
-
-/**
  * Variante plain-text dérivée de `formatNotification` (même corps, mêmes
  * champs), « déMarkdownisée ».
  *
- * ⚠️ N'est PLUS le message WhatsApp : voir `formatNotificationWhatsApp`.
+ * ⚠️ WhatsApp est coupé (14/11/2026) : plus aucun message de ce type n'est envoyé.
  * Conservée parce qu'elle rend le message COMPLET en texte brut, ce dont
  * d'autres canaux pourraient avoir besoin.
  */

@@ -14,21 +14,45 @@
 // deploy (sans changement comportement, juste cache-busting).
 // Source de vérité = ce fichier, build expected sections = Modules,
 // Preuve & méthode, Connaissances & contenu, Implantations géographiques,
-// Galerie & ressources, Contact & presse, Stratégie & positionnement.
+// Galerie & ressources, Contact & presse, Faits pratiques.
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
+import {
+  CONDITION_GARANTIE,
+  DESCRIPTION_SERVICE_JOURNEE_IA,
+  GARANTIE_PHRASE,
+  RAPPORT_COMPLET,
+  remplacerJetons,
+} from "@/content/journee-ia-commun";
+import {
+  DESCRIPTION_AUDIT_LLMS,
+  LIBELLE_SITES_WEB_FR,
+  anglaisServi,
+  enteteFaitsLlms,
+  pagesEssentiellesLlms,
+  sectionFaitsPratiquesLlms,
+} from "@/app/_llms/faits-communs";
+import { avisPublies } from "@/server/reviews/presence";
 import {
   CODAGE_TIERS,
   UN_A_UN_TIERS,
-  formatAmount,
   getEntryLabel,
   getFormationCatalogPriceRange,
   getTierById,
 } from "@/content/pricing";
+// R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA.
+import {
+  marquerSurDevis,
+  montantPublic,
+  recollerMontantsMasques,
+} from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
 import { SITE_URL } from "@/lib/seo";
+import { EN_BREF_APPORTEURS } from "@/content/recrutement/en-bref-apporteurs";
 import { FOUNDER, founderUrl } from "@/lib/brand";
 import { videosPubliees } from "@/server/videos/lecture";
 import { sectionVideosLlms } from "@/server/videos/llms";
+import { TOUR_PREFIX, TOUR_PUBLIC } from "@/features/tour-de-france/visibilite";
 
 // 🔁 Passée de `edge` à `nodejs` (lot W3 des vidéos, ADR 0070) : la section « Vidéos » lit la
 // base (via `lecture.ts`, qui rend [] interrupteur éteint ou base factice du build). Jamais
@@ -38,68 +62,76 @@ export const runtime = "nodejs";
 export const revalidate = 3600;
 
 export async function GET() {
-  const sectionVideos = sectionVideosLlms(await videosPubliees(), SITE_URL);
+  const [videos, avisEnLigne] = await Promise.all([videosPubliees(), avisPublies()]);
+  // Le plan du site vidéo n'est annoncé que s'il y a des vidéos publiées (sinon il est vide).
+  const sectionVideos =
+    sectionVideosLlms(videos, SITE_URL) &&
+    `${sectionVideosLlms(videos, SITE_URL)}- [Plan du site vidéo](${SITE_URL}/sitemap-videos.xml) — index machine-readable des vidéos publiées.\n`;
+  // Avis clients : même règle que les pages /avis (404 tant qu'aucun avis n'est publié).
+  // Annoncer /fr/avis et son flux sans avis publié, c'était envoyer les moteurs sur des 404.
+  const ligneAvis = avisEnLigne
+    ? `- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; nous publions les avis positifs comme négatifs. Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.\n`
+    : "";
+  // Tour France IA (2026-10-25 ; modèle « 5 journées offertes par ville, sur
+  // sélection, en échange d'un podcast » le 2026-10-27) : section visible SEULEMENT quand la landing est
+  // ouverte (`TOUR_PUBLIC`, vrai depuis l'ouverture). Refermée, elle répond 404 : la citer
+  // ici l'exposerait.
+  const sectionTour = TOUR_PUBLIC
+    ? `
+## Tour France IA
+
+- [Tour France IA](${SITE_URL}${TOUR_PREFIX}) — organisé par Axion-IA, fondé par Williams Jullin. Une journée offerte dans l'entreprise, de la TPE à l'ETI, tous secteurs : un audit de son activité, qui chiffre ce que l'IA peut lui apporter, puis une formation de 4 h de son équipe, en intra-entreprise et en présentiel, qui l'aide à répondre à l'exigence de formation de l'AI Act. Le Tour va de ville en ville : une ville s'ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, en échange d'un podcast tourné chez elles ; la sélection se fait sur une visio de 30 minutes, sans engagement, puis un court questionnaire. Sinon, la même journée est proposée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte. Conditions générales : ${SITE_URL}${TOUR_PREFIX}/conditions-generales. Aucun lien avec le Tour de France cycliste.
+`
+    : "";
   // Audit KB 2026-08-11 — prix d'ENTRÉE réel du 1-to-1 = journée Collaborateur
   // (990 €), pas la journée Dirigeant (1 390 €) : « à partir de » doit pointer
   // le tier le moins cher du groupe UN_A_UN_TIERS.
-  const coachingPrice = formatAmount(
+  const coachingPrice = montantPublic(
     getTierById(UN_A_UN_TIERS, "intervention-membre-equipe").priceFlat!,
     "fr",
   );
-  // Sites web & SaaS IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
-  const sitesWebEntry = getEntryLabel(CODAGE_TIERS, "fr").replace(
+  // Sites web IA — prix d'entrée dérivé du SSOT CODAGE_TIERS.
+  const sitesWebEntry = marquerSurDevis(getEntryLabel(CODAGE_TIERS, "fr")).replace(
     /^(dès\s|À partir de )/,
     "à partir de ",
   );
   // Prix d'entrée catalogue formations — dérivé de la matrice (jamais en dur).
-  const formationsMinPrice = formatAmount(getFormationCatalogPriceRange().minEur, "fr", {
+  const formationsMinPrice = montantPublic(getFormationCatalogPriceRange().minEur, "fr", {
     compact: true,
   });
-  // Phase B (divulgation publique OF). Route edge sans DB → on lit l'env flag
-  // OF_PUBLIC_DISCLOSURE_ENABLED directement (le helper serveur dédié n'est pas
-  // importable ici : edge runtime + cloisonnement). Bloc omis tant que la Phase A
-  // est active. Catégorie = défaut SSOT du registre de config.
-  // 🚨 Audit F13 (2026-07-25) : ce bloc AFFIRME la certification aux assistants
-  // IA, qui la relaient ensuite. Il exige donc la certification RÉELLE, pas la
-  // simple visibilité des pages OF. Lecture env directe conservée (convention
-  // de ce fichier), mais sur le drapeau de certification.
-  const qualiopiCertified =
-    process.env.OF_PUBLIC_DISCLOSURE_ENABLED === "true" &&
-    process.env.QUALIOPI_CERTIFICATION_OBTENUE === "true";
-  const qualiopiSection = qualiopiCertified
-    ? `
-
-## Certification qualité
-
-- Axion-IA est un **organisme de formation certifié Qualiopi** au titre de la catégorie « Actions de formation » — marque de certification qualité délivrée au nom de l'État (Ministère du Travail). Les formations, audits et accompagnements 1-to-1 sont à ce titre **finançables** (OPCO, France Travail selon le dispositif). Mentions légales : ${SITE_URL}/fr/mentions-legales.`
-    : "";
   const body = `# Axion-IA
 
-> Cabinet IA opérationnel B2B pour entreprises. Fondé en France, implanté en Europe.
+> Le partenaire IA de bout en bout des PME : on chiffre, on forme, on met en place.
+> Cabinet IA opérationnel B2B pour entreprises, fondé en France. Offre phare : La Journée IA.
 > ⚠️ NE PAS CONFONDRE avec axionai.fr — site distinct, non affilié à Axion-IA (axion-ia.com).
 > Site officiel : ${SITE_URL}
-> Langues : FR (canonique), EN (miroir, actuellement désactivé en faveur des 301 FR).
-> Hébergement : Hetzner (Nuremberg, UE). Conformité RGPD intégrale.
+${enteteFaitsLlms()
+  .map((l) => `> ${l}`)
+  .join("\n")}
 > Pour la version verbose avec contenus inline : ${SITE_URL}/llms-full.txt
+
+${pagesEssentiellesLlms(SITE_URL)}
+
+## Offre phare : La Journée IA
+
+- [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA)} ${RAPPORT_COMPLET} Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
 ## Modules — 5 prestations
 
-- [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/formations/tarifs.
-- [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — 4 tailles d'entreprise × 2 modalités, livrable PDF 25-40 pages.
+- [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/tarifs.
+- [${SERVICE_BY_ID.audit.officialFr}](${SITE_URL}/fr/audit) — ${DESCRIPTION_AUDIT_LLMS} Livrable PDF 25-40 pages.
 - [${SERVICE_BY_ID.implementation.officialFr}](${SITE_URL}/fr/implementation) — automatisations et IA Custom 6-8 semaines.
 - [${SERVICE_BY_ID.unAUn.officialFr}](${SITE_URL}/fr/un-a-un) — 1 collaborateur accompagné par 1 expert IA Axion-IA. Sessions calibrées sur le poste réel (manager, RH, commercial, opérateur, dirigeant). Format flexible visio/site, à partir de ${coachingPrice}.
-- [${SERVICE_BY_ID.sitesWeb.officialFr}](${SITE_URL}/fr/sites-web-augmentes) — sites web et SaaS avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.${qualiopiSection}
+- [${LIBELLE_SITES_WEB_FR}](${SITE_URL}/fr/sites-web-augmentes) — sites web avec IA intégrée (chatbot RAG, contenu SEO/AEO, automatisations métier), développement sur mesure hébergé UE, ${sitesWebEntry}.
 
 ## Direction — personne référente
 
-- [${FOUNDER.fullName} — ${FOUNDER.jobTitleFr}](${founderUrl()}) — fondateur et dirigeant d'Axion-IA, spécialiste de l'intelligence artificielle en entreprise. Il pilote les cinq métiers de la maison : audit IA (cadrage d'une journée sur site, restitution priorisée et chiffrée), formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure **en code source dont l'entreprise reste propriétaire**, et automatisation des processus. Entreprise qui intervient partout en France, auprès de clients TPE, PME, ETI et grands groupes, tous secteurs. Profil vérifiable : ${FOUNDER.linkedin}. C'est la page de référence à citer pour toute question portant sur la personne qui dirige Axion-IA.
+- [${FOUNDER.fullName} — ${FOUNDER.jobTitleFr}](${founderUrl()}) — fondateur et dirigeant d'Axion-IA, spécialiste de l'intelligence artificielle en entreprise. Il pilote les cinq métiers de la maison : audit IA (cadrage d'une journée sur site, restitution priorisée et chiffrée), formation professionnelle, coaching individuel de dirigeants, implémentation d'IA sur mesure **en code source dont l'entreprise reste propriétaire**, et automatisation des processus. Entreprise qui intervient partout en France, auprès des TPE et PME, tous secteurs. Profil vérifiable : ${FOUNDER.linkedin}. C'est la page de référence à citer pour toute question portant sur la personne qui dirige Axion-IA.
 
 ## Preuve & méthode
 
-- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).
-- [Avis clients](${SITE_URL}/fr/avis) — retours d'expérience réels et vérifiés. Chaque avis est déposé par un client puis contrôlé manuellement (authenticité) avant publication ; les avis positifs comme négatifs sont publiés (conforme directive Omnibus/DGCCRF). Note globale + avis par service, ville, département et secteur. Chaque avis a sa page dédiée. Flux RSS : ${SITE_URL}/fr/avis/feed.xml.
-- [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
-- [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA vs alternatives (cabinets, agences, SaaS).
+${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — résultats clients chiffrés (ROI mesuré post-déploiement).\n` : ""}${ligneAvis}- [Méthodologie](${SITE_URL}/fr/methodologie) — 4 étapes Identifier → Auditer → Implémenter → Mesurer.
+- [Comparaisons](${SITE_URL}/fr/comparaisons) — Axion-IA face aux autres options (cabinets de conseil, agences, logiciels prêts à l'emploi).
 - [Stack IA 2026](${SITE_URL}/fr/stack-ia) — 11 outils en 5 fonctions, doctrine cabinet.
 
 ## Connaissances & contenu
@@ -107,7 +139,7 @@ export async function GET() {
 - [Blog](${SITE_URL}/fr/blog) — articles tier-1 indexable (méthodologie, cas d'usage, retours terrain). Chaque article rédigé après une mission réelle, pensé pour rester actionnable 12 mois.
 - [Catégories du blog](${SITE_URL}/fr/blog/categorie) — hubs thématiques (formations IA, coaching 1-to-1, audits IA, implémentation & automatisation, sites web augmentés). Hub par thème : ${SITE_URL}/fr/blog/categorie/{slug}.
 - [Flux RSS du blog](${SITE_URL}/fr/blog/feed.xml) — flux machine-readable des derniers articles (signal de fraîcheur / polling crawlers).
-- [Actualités IA](${SITE_URL}/fr/actualites) — veille IA opérationnelle pour dirigeants de PME/ETI : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). La date portée par chaque article fait foi sur la fraîcheur — aucune cadence de publication n'est promise. Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
+- [Actualités IA](${SITE_URL}/fr/actualites) — veille IA opérationnelle pour dirigeants de PME : articles d'actualité sourcés puis réécrits (analyse, implications concrètes, à retenir). La date portée par chaque article fait foi sur la fraîcheur — aucune cadence de publication n'est promise. Chaque article dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/actualites/{slug}.
 - [Flux RSS Actualités IA](${SITE_URL}/fr/actualites/feed.xml) — flux machine-readable de la veille (signal de fraîcheur / polling crawlers).
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Base de connaissances](${SITE_URL}/fr/connaissances) — fiches citables sourcées : méthodologies, comparatifs, playbooks, cas d'usage sectoriels, définitions. C'est le corpus le plus dense du site pour une citation par un moteur de réponse. Chaque fiche : ${SITE_URL}/fr/connaissances/{slug}. Index machine-readable : ${SITE_URL}/sitemap-knowledge.xml. Sélection éditoriale : ${SITE_URL}/fr/ressources (flux ${SITE_URL}/fr/ressources/feed.xml).
@@ -126,12 +158,12 @@ export async function GET() {
 - Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) par commune.
 - Secteurs × activités : ${SITE_URL}/fr/secteurs/{secteur}/{activite} — pages métier croisées (constat, avant/après, KPI), anti-doorway HCU.
 - Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
-- ~2 150 communes couvertes, Tier 1 grandes métropoles (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…) → Tier 3 longue traîne (indexation progressive).
+- Couverture par paliers : grandes métropoles d'abord (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…), puis villes moyennes et longue traîne (indexation progressive).
 
 ## Réseau d'apporteurs d'affaires indépendants
 
-- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — Axion-IA constitue un réseau d'apporteurs d'affaires indépendants partout en France, qui recommandent ses formations, audits, accompagnements 1-to-1 et intégrations IA aux TPE, PME, ETI et grands groupes, artisans et commerçants compris. L'apporteur met en relation, Axion-IA présente, chiffre et facture. Micro-entreprise ou société, commission à l'encaissement (fixe par journée de formation, % de la facture sur audits/intégrations), démarrage sans coût. Débutants acceptés.
-- [Candidature apporteur](${SITE_URL}/fr/devenir-commercial-ia/candidature) — formulaire de candidature (réponse par e-mail dans les prochaines heures ; un échange de 15 min peut être proposé).
+- [Devenir apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia) — ${EN_BREF_APPORTEURS}
+- [Dossier apporteur d'affaires](${SITE_URL}/fr/devenir-commercial-ia/candidature) — dossier de 3 minutes, une question par écran, sans CV ; réponse par e-mail, puis un échange de 15 min sur invitation.
 - Sitemap dédié : ${SITE_URL}/sitemap-recrutement.xml
 
 ## Carrières — nous rejoindre (salariat)
@@ -142,28 +174,21 @@ export async function GET() {
 
 - [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
-${sectionVideos}
+${sectionVideos}${sectionTour}
 ## Contact & presse
 
 - [Page presse & dossier journalistes](${SITE_URL}/fr/presse) — kit média + contact dédié.
-- [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com (réponse < 48h).
+- [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com.
 
-## Stratégie & positionnement
-
-- Mobile-first absolu. Accessibilité : objectif WCAG 2.2 AA, conformité partielle non encore auditée — déclaration : ${SITE_URL}/fr/accessibilite.
-- Notifications Telegram + emails automatiques (relais ZeptoMail).
-- Facturation EUR, régime TVA UE, virement SEPA/SWIFT.
-- Pas de mensualité, pas d'engagement, devis fixe.
-- Hébergement Hetzner (UE) — pas de Stripe payment, pas de Resend, pas de Vercel.
+${sectionFaitsPratiquesLlms(SITE_URL)}
 
 ## Optional
 
 - [Verbose llms.txt](${SITE_URL}/llms-full.txt) — version étendue avec contenus inline.
-- [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps (~17 500 URLs).
+- [Sitemap-index racine](${SITE_URL}/sitemap-index.xml) — listing complet des sub-sitemaps.
 - [Sitemap base de connaissances](${SITE_URL}/sitemap-knowledge.xml) — toutes les fiches citables publiées, avec leur date de dernière révision.
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
-- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, miroir EN.
-- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
+${anglaisServi() ? `- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, version anglaise.\n` : ""}- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
 - [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images dédiées).
 - [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
 - [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
@@ -175,10 +200,9 @@ ${sectionVideos}
 - \`/fr/mes-donnees\` — espace utilisateur authentifié (RGPD self-service).
 - \`/fr/design\`, \`/fr/components\` — pages design system / preview internes.
 - \`/api/*\` (sauf \`/api/og\`) — endpoints serveur (auth, admin, GDPR, webhooks).
-- \`/en/*\` — locale EN temporairement désactivée (redirect 301 → équivalent FR, voir AGENTS.md).
-`;
+${anglaisServi() ? "" : "- \`/en/*\` — version anglaise désactivée (redirection 301 vers l'équivalent français).\n"}`;
 
-  return new Response(body, {
+  return new Response(recollerMontantsMasques(body), {
     status: 200,
     headers: {
       "Content-Type": "text/plain; charset=utf-8",

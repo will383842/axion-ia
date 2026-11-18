@@ -64,8 +64,8 @@ export const VELAUX_COPY: VilleCopy = {
       a: "Oui, nos interventions et coaching 1-to-1 sont disponibles en présentiel (vos locaux à Velaux) ou en visio. Format flexible adapté aux cadres et professions libérales du bassin Aix-Marseille.",
     },
     {
-      q: "Comment se déplace Axion-IA à Velaux ?",
-      a: "Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Velaux ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Velaux est à 20 min d'Aix et 15 min de Marignane via A7-A8.",
     },
   ],
 };

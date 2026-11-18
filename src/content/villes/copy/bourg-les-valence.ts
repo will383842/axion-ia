@@ -18,9 +18,9 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   ecosystemEn:
     "Bourg-lès-Valence est intégrée à la Communauté d'agglomération Valence Romans Agglo (~225 000 hab) et fait partie du tissu économique nord de Valence. Tissu PME industrielles (transformation, mécanique), commerces et zones d'activités, agriculture vallée du Rhône (vergers, viticulture), TPE artisanat BTP, professions libérales. Position axe A7 Lyon-Marseille.",
   distancesFr:
-    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Grenoble centre à 1h15. Axe A7 Lyon-Marseille / A49 vers Grenoble.",
+    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Axe A7 Lyon-Marseille.",
   distancesEn:
-    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Grenoble centre à 1h15. Axe A7 Lyon-Marseille / A49 vers Grenoble.",
+    "Gare Valence-Ville à 5 min (TGV Paris 2h15). Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h A7. Axe A7 Lyon-Marseille.",
   topSectorsNaf: [
     "PME industrielles agglomération Valence",
     "Commerce & zones d'activités",
@@ -49,7 +49,7 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-lès-Valence et Valence Romans Agglo ?",
-      a: "Oui, Axion-IA intervient à Bourg-lès-Valence et toute Valence Romans Agglo (Valence, Romans-sur-Isère, Portes-lès-Valence, Bourg-de-Péage, Saint-Marcel-lès-Valence). Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence-TGV 2h15).",
+      a: "Oui, Axion-IA intervient à Bourg-lès-Valence et toute Valence Romans Agglo (Valence, Romans-sur-Isère, Portes-lès-Valence, Bourg-de-Péage, Saint-Marcel-lès-Valence). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles drômoises ?",
@@ -64,8 +64,8 @@ export const BOURG_LES_VALENCE_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Bourg-lès-Valence, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h A7) ou Paris (TGV Valence 2h15). Pour les multi-jours, hébergement local possible (hôtels Valence).",
+      q: "Comment se déroule une mission à Bourg-lès-Valence ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Valence).",
     },
   ],
 };

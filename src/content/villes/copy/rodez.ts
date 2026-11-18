@@ -238,7 +238,7 @@ export const RODEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rodez ?",
-      a: "Oui, Axion-IA intervient à Rodez et dans tout l'Aveyron. Nos consultants se déplacent par avion (aéroport de Rodez-Aveyron à 10 km) ou par la route depuis Toulouse pour rencontrer TPE et PME sur site.",
+      a: "Oui, Axion-IA intervient à Rodez et dans tout l'Aveyron. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Combien coûte un audit IA à Rodez ?",

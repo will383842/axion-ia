@@ -45,7 +45,7 @@ const TEXTES = {
  * (`Accept-Language`), et le français par défaut.
  */
 export type LangueLien = "fr" | "en";
-export type ErreurLien = "introuvable" | "debit";
+export type ErreurLien = "introuvable" | "debit" | "indisponible";
 
 export function langueDeLaRequete(acceptLanguage: string | null): LangueLien {
   const premiere = (acceptLanguage ?? "").split(",")[0]?.trim().toLowerCase() ?? "";
@@ -83,6 +83,19 @@ const ERREURS: Record<
         libelle: "axion-ia.com/en/ai-guide",
         apres: ".",
       },
+    },
+  },
+  // S2b — le guide du catalogue demandé n'est plus servi (désactivé, fichier absent, chemin refusé).
+  indisponible: {
+    fr: {
+      titre: "Guide indisponible",
+      texte: "Ce guide n'est plus proposé pour le moment.",
+      lien: { avant: "Retrouvez Axion-IA sur ", href: "/fr", libelle: "axion-ia.com", apres: "." },
+    },
+    en: {
+      titre: "Guide unavailable",
+      texte: "This guide is no longer available for now.",
+      lien: { avant: "Find Axion-IA at ", href: "/en", libelle: "axion-ia.com", apres: "." },
     },
   },
   debit: {
@@ -126,8 +139,26 @@ a{color:#1f4e8c}
 }
 
 /** La page du lien : un titre, une phrase, un bouton. Aucun script. */
-export function pageDuLien(jeton: string, locale: "fr" | "en"): string {
-  const t = TEXTES[locale];
+export function pageDuLien(
+  jeton: string,
+  locale: "fr" | "en",
+  catalogue?: { readonly titre: string },
+): string {
+  // Guide du catalogue : pas de promesse du guide-ia (« 40 pages », « page 5 »). Sans `catalogue`, rendu inchangé.
+  const t =
+    catalogue === undefined
+      ? TEXTES[locale]
+      : locale === "en"
+        ? {
+            ...TEXTES.en,
+            titre: "Your guide",
+            texte: `« ${catalogue.titre} » (in French) is ready to download.`,
+          }
+        : {
+            ...TEXTES.fr,
+            titre: "Votre guide",
+            texte: `« ${catalogue.titre} » est prêt à être téléchargé.`,
+          };
   const accueil = locale === "en" ? "/en" : "/fr";
   return `<!doctype html>
 <html lang="${locale}">

@@ -52,7 +52,11 @@ import { MENTION_NON_AGREMENT, NDA_NUMERO } from "@/server/qualiopi/legal/legal-
 // `identite-legale-registre.spec.ts` interdit toute copie littérale sous `src/`,
 // et à raison : la raison sociale avait déjà divergé en sept copies, dont une
 // écrivait « Axion-IA SAS » là où le Kbis porte « AXION IA ».
-import { IDENTITE_LEGALE, adresseSiegeUneLigne } from "@/lib/identite-legale-ssot";
+import {
+  COORDONNEES_PUBLIQUES,
+  IDENTITE_LEGALE,
+  adresseSiegeUneLigne,
+} from "@/lib/identite-legale-ssot";
 
 /**
  * Identité légale de l'émetteur, telle qu'elle DOIT figurer au pied de chaque
@@ -97,8 +101,11 @@ export const EMAIL_LEGAL = {
    * au destinataire où écrire. Le désaligner de l'en-tête `Reply-To` réel — ce
    * qu'une variable absente sur le worker suffirait à provoquer — enverrait les
    * réponses dans le vide en promettant le contraire.
+   *
+   * Littéral unique dans `COORDONNEES_PUBLIQUES` (`identite-legale-ssot.ts`),
+   * partagé avec `CONTACT_PUBLIC.email` des données structurées.
    */
-  contactEmail: "contact@axion-ia.com",
+  contactEmail: COORDONNEES_PUBLIQUES.contactEmail,
   /** Téléphone du fondateur, tel qu'imprimé sur la carte. Bloc signature. */
   phone: "+33 7 43 33 12 01",
   phoneTel: "+33743331201",

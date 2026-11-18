@@ -49,7 +49,7 @@ export const SCHWEIGHOUSE_SUR_MODER_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Schweighouse-sur-Moder et dans l'agglo Haguenau ?",
-      a: "Oui, Axion-IA intervient à Schweighouse-sur-Moder et dans toute la CA Haguenau (Haguenau, Bischwiller, Brumath, Val-de-Moder). Nos consultants se déplacent depuis Strasbourg en 35 min via l'A4, ou Haguenau centre en 5 min.",
+      a: "Oui, Axion-IA intervient à Schweighouse-sur-Moder et dans toute la CA Haguenau (Haguenau, Bischwiller, Brumath, Val-de-Moder). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Schweighouse-sur-Moder  ?",
@@ -65,7 +65,7 @@ export const SCHWEIGHOUSE_SUR_MODER_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Schweighouse-sur-Moder ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 35 min via l'A4, ou depuis Haguenau centre en 5 min. Schweighouse-sur-Moder appartient à la CA Haguenau, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Schweighouse-sur-Moder appartient à la CA Haguenau. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

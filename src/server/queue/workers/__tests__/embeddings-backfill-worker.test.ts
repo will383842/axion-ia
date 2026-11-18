@@ -55,6 +55,11 @@ vi.mock("@/server/content-gen/config-store", () => ({
   readKillSwitchFailSafe: (...args: unknown[]) => readKillSwitchMock(...args),
 }));
 
+const notifyMock = vi.fn();
+vi.mock("@/server/notifications", () => ({
+  notify: (...a: unknown[]) => notifyMock(...a),
+}));
+
 vi.mock("bullmq", () => ({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Worker: vi.fn().mockImplementation((name: string, fn: any) => {
@@ -69,6 +74,7 @@ import {
   startEmbeddingsBackfillWorker,
   EMBEDDINGS_BACKFILL_QUEUE,
 } from "../embeddings-backfill-worker";
+import { __resetCreditAlertMemory } from "@/server/notifications/openai-credit-alert";
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
@@ -105,6 +111,8 @@ beforeEach(() => {
   configUpsertMock.mockResolvedValue({ key: "embeddings_last_run", value: {} });
   executeRawMock.mockResolvedValue(1);
   readKillSwitchMock.mockResolvedValue({ active: false });
+  notifyMock.mockResolvedValue({ ok: true, channels: { telegram: "sent" } });
+  __resetCreditAlertMemory();
 });
 
 afterEach(() => {
@@ -249,6 +257,27 @@ describe("embeddings-backfill-worker", () => {
     )?.create?.value;
     expect(lastRunValue?.processed).toBe(3);
     expect(lastRunValue?.errors).toBe(20);
+  });
+
+  it("T8: crédit OpenAI épuisé (429 insufficient_quota) sur le batch → un seul appel à notify", async () => {
+    const articles = Array.from({ length: 40 }, (_, i) => ({
+      id: `article-${i + 1}`,
+      title: `Article ${i + 1}`,
+      content: `Contenu ${i + 1}`,
+    }));
+    queryRawUnsafeMock.mockResolvedValueOnce(articles);
+    openaiEmbeddingsCreateMock.mockRejectedValue(
+      Object.assign(new Error("429 You exceeded your current quota"), {
+        status: 429,
+        type: "insufficient_quota",
+      }),
+    );
+
+    await expect(capturedProcessor.fn!(MOCK_JOB)).resolves.not.toThrow();
+
+    // 2 batches en échec, mais anti-doublon : une seule alerte.
+    expect(openaiEmbeddingsCreateMock).toHaveBeenCalledTimes(2);
+    expect(notifyMock).toHaveBeenCalledTimes(1);
   });
 
   it("T7 (F8 2026-08-15): kill switch actif → skip propre, aucun appel OpenAI ni DB articles", async () => {

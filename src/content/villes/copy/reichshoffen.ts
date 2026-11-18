@@ -49,7 +49,7 @@ export const REICHSHOFFEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Reichshoffen et Outre-Forêt ?",
-      a: "Oui, Axion-IA intervient à Reichshoffen et tout le nord de l'Alsace (Niederbronn-les-Bains, Haguenau, Wissembourg, Soultz-sous-Forêts). Consultants depuis Strasbourg (45 min) ou gare TER Reichshoffen.",
+      a: "Oui, Axion-IA intervient à Reichshoffen et tout le nord de l'Alsace (Niederbronn-les-Bains, Haguenau, Wissembourg, Soultz-sous-Forêts). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs de l'industrie ferroviaire ?",

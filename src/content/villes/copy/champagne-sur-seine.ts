@@ -49,7 +49,7 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Champagne-sur-Seine ?",
-      a: "Oui, Axion-IA intervient à Champagne-sur-Seine et dans tout le sud Seine-et-Marne (Thomery, Avon, Fontainebleau, Moret-Loing-et-Orvanne). Nos consultants se déplacent depuis Paris Gare de Lyon (55 min en Transilien R) ou en voiture via A6.",
+      a: "Oui, Axion-IA intervient à Champagne-sur-Seine et dans tout le sud Seine-et-Marne (Thomery, Avon, Fontainebleau, Moret-Loing-et-Orvanne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME industrielles de Champagne-sur-Seine ?",
@@ -65,7 +65,7 @@ export const CHAMPAGNE_SUR_SEINE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Champagne-sur-Seine ?",
-      a: "Nos consultants se déplacent à Champagne-sur-Seine depuis Paris (55 min en Transilien R, gare à 5 min à pied). Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes. Sessions en visio également possibles.",
     },
   ],
 };

@@ -68,7 +68,11 @@ import {
 import { CONDITIONS_TARIFAIRES_RESUME_FR } from "@/content/formations/conditions-tarifaires";
 import { VISIO_FORMATIONS_A_DISTANCE } from "@/content/formations/materiel";
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
-import { formatAmount, type FormationBracket } from "@/content/pricing";
+import {
+  PRIX_PUBLICS_AFFICHES,
+  formatMontantPublic,
+  type FormationBracket,
+} from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
@@ -79,6 +83,7 @@ import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formatMentionMarqueQualiopi } from "@/server/qualiopi/legal/legal-mentions";
 import type { ResultatsPublicsFormation } from "@/server/qualiopi/indicateurs/resultats-publics";
 import { ResultatsFormation } from "@/components/formations/ResultatsFormation";
+import { RenvoiJourneeIa } from "@/components/sections/RenvoiJourneeIa";
 
 /** « 2-15 » → « 2 à 15 personnes ». */
 /**
@@ -161,11 +166,13 @@ export function FormationDetailPage({
   const ofPublic = isQualiopiCertificationObtenue();
   const mentionMarque = formatMentionMarqueQualiopi("Actions de formation");
 
-  // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».
-  const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
+  // R7 (ordre de Williams du 08/11/2026) : « Sur devis » tant que l'interrupteur des prix
+  // publics de pricing.ts est coupé ; rallumé, « 1 900 € HT ».
+  const priceValue = formatMontantPublic(entryPrice, "fr");
   // Prix FIXE public par groupe (refonte 2026-07 : plus de « À partir de »).
   // « Tarif » pour le sur-devis (séminaire) → jamais « À partir de / Sur devis ».
-  const priceEyebrow = typeof entryPrice === "number" ? "Prix par groupe" : "Tarif";
+  const priceEyebrow =
+    PRIX_PUBLICS_AFFICHES && typeof entryPrice === "number" ? "Prix par groupe" : "Tarif";
   const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
   const effectif = getFormationEffectif(f);
@@ -516,6 +523,16 @@ export function FormationDetailPage({
           </div>
         </Container>
       </section>
+
+      {/* ── RENVOI LA JOURNÉE IA — sur les fiches qui la prolongent (audit
+          SEO/GEO du 11/11/2026) : le point de départ recommandé, juste
+          après le héros (le h1 reste le premier titre de la page). */}
+      {f.renvoiJourneeIa ? (
+        <RenvoiJourneeIa
+          depuis={f.renvoiJourneeIa.depuis}
+          precision={f.renvoiJourneeIa.precisionFr}
+        />
+      ) : null}
 
       {/* ── NAV ANCRES — accès direct aux sections clés (disposition type
           fiche référence : « Programme · Tarifs · Infos pratiques · FAQ »). */}
@@ -1005,9 +1022,11 @@ export function FormationDetailPage({
                           className="text-fg text-[clamp(2.5rem,5vw,3.5rem)] leading-none font-medium tracking-tight tabular-nums"
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
-                          {formatAmount(price, "fr", { compact: true })}
+                          {formatMontantPublic(price, "fr", { compact: true })}
                         </span>
-                        <span className="text-fg-muted text-sm font-semibold">HT</span>
+                        {PRIX_PUBLICS_AFFICHES ? (
+                          <span className="text-fg-muted text-sm font-semibold">HT</span>
+                        ) : null}
                       </p>
                       <p className="text-fg-soft mt-4 text-base leading-relaxed">
                         {formatDureeFr(f)}, dans vos locaux. {f.accrocheFr}
@@ -1039,7 +1058,7 @@ export function FormationDetailPage({
         eyebrow="Devis express"
         title="Votre devis"
         titleEm="en 30 secondes"
-        description="Dites-nous l'essentiel : nous revenons vers vous sous 24-48 h ouvrées avec un devis personnalisé pour cette formation — sans engagement."
+        description="Dites-nous l'essentiel : nous revenons vers vous avec un devis personnalisé pour cette formation — sans engagement."
       >
         <Container className="max-w-2xl">
           <UnifiedContactForm

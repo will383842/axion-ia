@@ -65,7 +65,7 @@ export const TETEGHEM_COUDEKERQUE_VILLAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Téteghem-Coudekerque-Village ?",
-      a: "Nos consultants interviennent à Téteghem-Coudekerque-Village depuis Lille (1h15, A25) ou en mission longue avec hébergement Dunkerque (10 min). Intervention sur site dans votre entrepôt, usine, commerce, exploitation ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans votre entrepôt, usine, commerce, exploitation ou en visio.",
     },
   ],
 };

@@ -1,0 +1,35 @@
+-- ⚠️ RETOUR ARRIÈRE : cette instruction PERD toutes les marques « effacement demandé » posées.
+-- Les personnes concernées recommenceraient à recevoir convocations, factures et guide.
+--
+-- AVANT de l'exécuter, garder la liste des marques (empreintes, jamais d'adresse) :
+--   SELECT email_hash, effacement_demande_le FROM email_oppositions
+--    WHERE effacement_demande_le IS NOT NULL;
+--
+-- APRÈS un retour arrière puis un redéploiement, REPOSER les marques depuis le journal
+-- (`gdpr.erase.requested`, `changes.emailHash`, conservé 5 ans) :
+-- ⚠️ Ne PAS reposer une marque que Williams a LEVÉE depuis (trace `gdpr.erase.leve` postérieure à
+-- la DERNIÈRE demande : une nouvelle demande après la levée repose la marque), ni une
+-- demande de message privé jamais confirmée (`changes.marque` = 'non_posee') :
+--   UPDATE email_oppositions o SET effacement_demande_le = l.created_at
+--     FROM (SELECT changes->>'emailHash' AS h, MIN(created_at) AS created_at,
+--                  MAX(created_at) AS derniere
+--             FROM activity_logs
+--            WHERE action = 'gdpr.erase.requested'
+--              AND COALESCE(changes->>'marque', '') <> 'non_posee'
+--            GROUP BY 1) l
+--    WHERE o.email_hash = l.h AND o.effacement_demande_le IS NULL
+--      AND NOT EXISTS (SELECT 1 FROM activity_logs v
+--                       WHERE v.action = 'gdpr.erase.leve'
+--                         AND v.changes->>'emailHash' = l.h
+--                         AND v.created_at > l.derniere);
+-- (une demande de message privé confirmée en console porte, elle, une trace d'origine `console`
+-- avec `marque` = 'ok' : elle est reposée.)
+--
+-- LEVER UNE MARQUE posée par erreur (mauvaise ligne cliquée en console) : aucun geste de console
+-- ne le fait. Requête manuelle, une personne à la fois, puis écrire la trace de la levée :
+--   UPDATE email_oppositions SET effacement_demande_le = NULL WHERE email_hash = '<empreinte>';
+--   INSERT INTO activity_logs (id, action, target_type, changes, created_at)
+--     VALUES (gen_random_uuid(), 'gdpr.erase.leve', 'email_opposition',
+--             jsonb_build_object('emailHash', '<empreinte>', 'motif', '<motif>'), now());
+-- (la ligne d'opposition elle-même reste : la lever est une autre décision).
+ALTER TABLE "email_oppositions" DROP COLUMN IF EXISTS "effacement_demande_le";

@@ -49,7 +49,7 @@ export const QUEVEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Quéven et dans l'agglomération de Lorient ?",
-      a: "Oui, Axion-IA intervient à Quéven et dans toute l'agglomération lorientaise (Lorient, Lanester, Hennebont, Ploemeur, Larmor-Plage, Guidel). Nos consultants sont à 10 minutes du centre de Lorient.",
+      a: "Oui, Axion-IA intervient à Quéven et dans toute l'agglomération lorientaise (Lorient, Lanester, Hennebont, Ploemeur, Larmor-Plage, Guidel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME technologiques de Quéven ?",

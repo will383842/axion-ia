@@ -44,7 +44,7 @@ export type CategorieEmail =
 
 export const LIBELLE_CATEGORIE: Readonly<Record<CategorieEmail, string>> = {
   "rendez-vous": "Rendez-vous & Calendly",
-  formation: "Formation (Qualiopi)",
+  formation: "Formation",
   commerce: "Commerce & facturation",
   recrutement: "Recrutement",
   rgpd: "RGPD",
@@ -219,7 +219,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     source: null,
   },
 
-  // ── Formation (Qualiopi) ──────────────────────────────────────────────────
+  // ── Formation ──────────────────────────────────────────────────
   "qualiopi-convocation": {
     categorie: "formation",
     quand: "Convocation à une session, cron quotidien (J-5)",
@@ -361,7 +361,7 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "qualiopi-alerte-interne": {
     categorie: "formation",
-    quand: "Anomalie détectée sur la chaîne Qualiopi",
+    quand: "Anomalie détectée sur la chaîne de formation",
     destinataire: "interne",
     source: "server/qualiopi/alertes/envoi-groupe.ts",
   },
@@ -372,6 +372,13 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand: "Envoi d'un devis — passe par la corbeille de validation",
     destinataire: "le client",
     source: "server/actions/qualiopi/facturation-emails.ts",
+  },
+  "relance-devis-client": {
+    categorie: "commerce",
+    quand:
+      "Relance d'un devis envoyé, préparée à la main depuis la fiche client — toujours relue avant envoi",
+    destinataire: "le contact de facturation du client",
+    source: "features/dossier-client/fiche/relance-devis.ts",
   },
   "convention-envoi": {
     categorie: "commerce",
@@ -384,6 +391,20 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     quand: "Toutes les parties ont signé — remise automatique de l'exemplaire signé",
     destinataire: "chaque signataire, sauf l'organisme",
     source: "server/qualiopi/documents/signature/transmission-exemplaire.ts",
+  },
+  "devis-commande-confirmation": {
+    categorie: "commerce",
+    quand:
+      "Axion-IA contresigne un devis (action explicite uniquement) — confirmation de commande (formule, automatisations et lignes récurrentes retenues) avec devis signé et CGV en pièces jointes ; TOUJOURS garée dans la corbeille « à valider », jamais envoyée seule",
+    destinataire: "le client",
+    source: "server/qualiopi/devis/confirmation-commande.ts",
+  },
+  "devis-code-signature": {
+    categorie: "commerce",
+    quand:
+      "Le signataire clique « Recevoir mon code » sur la page de signature de son devis — code à usage unique (10 minutes), jamais automatique",
+    destinataire: "le signataire du devis (adresse figée sur le lien de signature)",
+    source: "server/qualiopi/devis/code-signature-devis.ts",
   },
   "autofacture-transmission": {
     categorie: "commerce",
@@ -677,6 +698,55 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
     destinataire: "le client",
     source: "server/qualiopi/recueil/envoi-email.ts",
   },
+  "questionnaire-avant-audit": {
+    categorie: "rendez-vous",
+    quand:
+      "Quand Will clique « Envoyer » sur le questionnaire de pré-audit d'une rencontre (aperçu exact avant) — jamais automatique",
+    destinataire: "la personne à qui Will envoie le questionnaire",
+    source: "features/questionnaire-preaudit/envoyer.ts",
+  },
+  "questionnaire-avant-audit-relance": {
+    categorie: "rendez-vous",
+    quand:
+      "Relances J+2, J+5 et J+10 du questionnaire de pré-audit, seulement si Will les a cochées en cliquant « Envoyer » ; arrêtées dès la réponse du dirigeant, par le lien « Ne plus recevoir de rappel » ou par Will",
+    destinataire: "la personne à qui Will a envoyé le questionnaire",
+    source: "features/questionnaire-preaudit/suivi.ts",
+  },
+  "questionnaire-relance-equipe": {
+    categorie: "rendez-vous",
+    quand:
+      "Quand Will clique « Demander au dirigeant de relancer son équipe » sur la fiche client : un brouillon garé « à valider », relu par Will avant tout envoi — jamais automatique",
+    destinataire: "le dirigeant seul (jamais un collaborateur)",
+    source: "features/dossier-client/fiche/actions-relance-equipe.ts",
+  },
+  "questionnaire-avant-audit-confirmation": {
+    categorie: "rendez-vous",
+    quand:
+      "Une personne vient d'envoyer ses réponses au questionnaire de pré-audit (dirigeant, collaborateur ou référent informatique) — texte neutre, sans bouton",
+    destinataire: "la personne qui a répondu",
+    source: "features/questionnaire-preaudit/suivi.ts",
+  },
+  "alerte-demande-client": {
+    categorie: "rendez-vous",
+    quand:
+      "Une demande de client arrive (message, rendez-vous Calendly, annulation, report) — doublon instantané du salon Telegram « Clients », avec toutes les informations",
+    destinataire: "interne",
+    source: "server/notifications/doublon-client.ts",
+  },
+  "recap-demandes-clients": {
+    categorie: "rendez-vous",
+    quand:
+      "Chaque jour à 7 h 30 (heure de Paris), même sans demande : tout ce que les clients ont envoyé la veille (messages, rendez-vous, annulations), avec toutes les informations",
+    destinataire: "interne",
+    source: "server/alertes-clients/recap.ts",
+  },
+  "devis-signe-a-contresigner": {
+    categorie: "commerce",
+    quand:
+      "Le client signe son devis par lien (puis, si c'est la dernière signature, « signé des deux parties ») — numéro et lien console, aucune donnée personnelle",
+    destinataire: "interne",
+    source: "server/qualiopi/documents/signature/notification-interne-devis.ts",
+  },
   "questionnaire-reponses-recues": {
     categorie: "rendez-vous",
     quand:
@@ -714,13 +784,15 @@ export const CATALOGUE: Readonly<Record<EmailJobName, FicheEmail>> = {
   },
   "rgpd-effacement-confirme": {
     categorie: "rgpd",
-    quand: "Effacement effectué, confirmation",
+    quand:
+      "DORMANT depuis le 11/11/2026 (décision de Williams) : une demande d'effacement met la personne à l'écart, rien n'est supprimé, et ce courriel affirmerait un effacement qui n'a pas eu lieu. Il ne peut de toute façon plus partir après une mise à l'écart : l'adresse est bloquée pour tout envoi, tous modèles confondus. Gardé pour un effacement fait à la main ; l'accusé de réception de la demande est à trancher par Williams.",
     destinataire: "la personne concernée",
-    source: "app/api/gdpr-erase/route.ts",
+    source: null,
   },
   "gdpr-export-link": {
     categorie: "rgpd",
-    quand: "Lien d'export des données personnelles",
+    quand:
+      "Lien d'export des données personnelles, en réponse à la demande d'accès de la personne elle-même. Seul modèle qui part encore vers une adresse mise à l'écart après une demande d'effacement (réponse à un droit, aucun contenu commercial) ; tous les autres restent bloqués.",
     destinataire: "la personne concernée",
     source: "app/api/gdpr-export/request/route.ts",
   },

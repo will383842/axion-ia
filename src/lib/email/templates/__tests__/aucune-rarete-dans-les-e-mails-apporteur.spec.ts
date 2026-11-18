@@ -19,7 +19,7 @@ import {
 } from "@/lib/commercial-application/vsl-apporteur";
 
 const RARETE = /limit[ée]|places? (?:sont )?compt[ée]es|derni[èe]res? places?/i;
-const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const DOSSIER = "https://axion-ia.com/fr/devenir-commercial-ia/candidature";
 
 const RENDUS: Array<[string, string, Record<string, unknown>]> = [

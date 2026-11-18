@@ -49,7 +49,7 @@ export const CHATEAUBRIANT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Châteaubriant ?",
-      a: "Oui, Axion-IA intervient à Châteaubriant et dans tout le nord de la Loire-Atlantique (Derval, Nozay, Blain). Nos consultants se déplacent depuis Nantes (1h, tram-train) ou Rennes (50 min).",
+      a: "Oui, Axion-IA intervient à Châteaubriant et dans tout le nord de la Loire-Atlantique (Derval, Nozay, Blain). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Châteaubriant  ?",

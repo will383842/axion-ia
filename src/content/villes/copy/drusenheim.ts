@@ -49,7 +49,7 @@ export const DRUSENHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Drusenheim et bords du Rhin ?",
-      a: "Oui, Axion-IA intervient à Drusenheim et tout le nord-est Alsace rhénan (Gambsheim, Bischwiller, Soufflenheim, Roeschwoog). Consultants depuis Strasbourg (30 min) ou gare TER Drusenheim.",
+      a: "Oui, Axion-IA intervient à Drusenheim et tout le nord-est Alsace rhénan (Gambsheim, Bischwiller, Soufflenheim, Roeschwoog). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les industries chimique et pétrochimique ?",

@@ -143,4 +143,12 @@ describe("V1-C-11 — la ligne « en attente » est écrite AVANT la mise en fil
     expect(d.journaliser).not.toHaveBeenCalled();
     expect(d.add).toHaveBeenCalledWith("submission-reply", expect.anything(), undefined);
   });
+
+  // Aucune ligne au journal : le worker sort par `handleCandidatureReponse` sans la clore,
+  // et elle resterait « en attente » à vie, sans destinataire (360 lignes en production).
+  it("candidature-reponse garde son suivi propre : ni journal, ni identifiant fabriqué", async () => {
+    await enqueueEmail("candidature-reponse" as never, "", "fr", {});
+    expect(d.journaliser).not.toHaveBeenCalled();
+    expect(d.add).toHaveBeenCalledWith("candidature-reponse", expect.anything(), undefined);
+  });
 });

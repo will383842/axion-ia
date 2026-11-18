@@ -27,25 +27,33 @@ import {
   estCategorieClient,
   getRouting,
   groupeDeRepliClient,
+  aDetailComplet,
   resolveSalonClients,
+  resolveSalonDedie,
+  resolveTelegramRepli,
+  type TelegramTarget,
+  telegramGroupFor,
   shouldDispatchAsync,
-  shouldNotifyWhatsApp,
   resolveTelegramTarget,
   resolveTelegramTargetPourCategorie,
+  CATEGORIES_SANS_ALERTE,
 } from "./routing";
-import { formatNotification, formatNotificationWhatsApp } from "./format";
-import {
-  formatNotificationClient,
-  libelleTypeDemandeWhatsApp,
-  type EvenementClient,
-} from "./format-clients";
+import { formatNotification } from "./format";
+import { formatNotificationClient, type EvenementClient } from "./format-clients";
+import { formatNotificationDetail, type EvenementDetail } from "./format-detail";
 import { decouperPourTelegram, sendTelegramRaw } from "./channels/telegram";
 import { sendSentryBreadcrumb } from "./channels/sentry";
 import { sendEmailNotification } from "./channels/email";
-import { sendWhatsAppRaw } from "./channels/whatsapp";
+import { doublerAlerteClient } from "./doublon-client";
 import { isDuplicate, libererDedup } from "./dedup";
 import { checkCategoryRateLimit } from "./rate-limit";
-import type { NotificationChannel, NotificationEvent, NotifyInput, NotifyResult } from "./types";
+import type {
+  DoublonsClient,
+  NotificationChannel,
+  NotificationEvent,
+  NotifyInput,
+  NotifyResult,
+} from "./types";
 
 export type {
   NotificationEvent,
@@ -57,19 +65,22 @@ export type {
 } from "./types";
 
 /**
- * Le salon « Clients » (décision Will 15/10) : TOUT le détail, en texte brut,
- * découpé sous 4096 caractères, toujours AVEC SON.
+ * Un salon DÉDIÉ à détail complet : TOUT le détail, en texte brut, découpé sous 4096
+ * caractères, toujours AVEC SON. Salon « Clients » (décision du fondateur 15/10), puis, depuis le
+ * 14/11/2026, les salons Calendly, Presse, Investisseurs, Avis et Messages.
  *
- * Si un morceau n'arrive pas, dernier essai vers la route d'avant de la
- * catégorie, avec le gabarit ALLÉGÉ : jamais les coordonnées dans un autre
- * salon, mais jamais non plus une demande de client perdue.
+ * Si un morceau n'arrive pas, ou si le salon dédié n'existe pas, dernier essai vers `repli`
+ * avec le gabarit ALLÉGÉ : jamais les coordonnées dans un autre salon, mais jamais non plus une
+ * demande perdue.
  */
-async function envoyerAuSalonClients(
-  event: EvenementClient,
+async function envoyerEnDetail(
+  texteDetail: string,
+  salon: TelegramTarget | undefined,
   texteAllege: string,
+  repli: TelegramTarget | undefined,
   suivi: { unMessageEstParti: boolean },
+  silencieuxAuRepli = false,
 ): Promise<EnvoiSalonClients> {
-  const salon = resolveSalonClients();
   // Relecture PR 1553 : vrai dès qu'UN message est arrivé quelque part. La clé
   // anti-doublon est alors gardée même si la suite échoue — sinon un rejeu
   // renverrait le 1er morceau en double.
@@ -77,11 +88,13 @@ async function envoyerAuSalonClients(
   // morceau parti, l'appelant sait quand même qu'un message est arrivé.
   if (salon) {
     let toutEstParti = true;
-    for (const morceau of decouperPourTelegram(formatNotificationClient(event))) {
+    for (const morceau of decouperPourTelegram(texteDetail)) {
       const ok = await sendTelegramRaw({
         text: morceau,
         brut: true,
         silent: false,
+        // Le détail complet ne doit pas pousser Telegram à aller lire l'URL de la console.
+        sansApercuLien: true,
         chatId: salon.chatId,
         botToken: salon.botToken,
       });
@@ -93,13 +106,12 @@ async function envoyerAuSalonClients(
     }
     if (toutEstParti) return { statut: "sent", unMessageEstParti: suivi.unMessageEstParti };
   }
-  // Salon pas encore créé, ou envoi échoué : la route d'avant.
-  const repli = resolveTelegramTarget(groupeDeRepliClient(event.category));
+  // Salon pas encore créé, ou envoi échoué : la route d'avant, gabarit allégé.
   if (!repli)
     return { statut: salon ? "failed" : "skipped", unMessageEstParti: suivi.unMessageEstParti };
   const ok = await sendTelegramRaw({
     text: texteAllege,
-    silent: false,
+    silent: silencieuxAuRepli,
     chatId: repli.chatId,
     botToken: repli.botToken,
   });
@@ -134,10 +146,29 @@ async function dispatchChannels(
   let partiellementParti = false;
 
   for (const ch of channels) {
-    if (ch === "telegram" && estCategorieClient(category)) {
+    if (ch === "telegram" && (estCategorieClient(category) || aDetailComplet(category))) {
       const suivi = { unMessageEstParti: false };
+      const evenementDetail = event as EvenementClient | EvenementDetail;
+      const client = estCategorieClient(category);
+      // Client : salon « Clients » et repli d'avant. Autres : salon dédié du groupe (jamais un
+      // repli pour le détail) et, à défaut, la route habituelle avec le gabarit allégé.
+      const salon = client ? resolveSalonClients() : resolveSalonDedie(telegramGroupFor(category));
+      const repli = client
+        ? resolveTelegramTarget(groupeDeRepliClient(category))
+        : resolveTelegramRepli(telegramGroupFor(category));
+      const texteDetail = client
+        ? formatNotificationClient(evenementDetail as EvenementClient)
+        : formatNotificationDetail(evenementDetail as EvenementDetail);
       tasks.push(
-        envoyerAuSalonClients(event as EvenementClient, formattedText, suivi)
+        envoyerEnDetail(
+          texteDetail,
+          salon,
+          formattedText,
+          repli,
+          suivi,
+          // Le repli garde le comportement d'avant : muet pour une simple info, sauf client.
+          !client && severity === "info",
+        )
           .then(({ statut, unMessageEstParti }) => {
             results.telegram = statut;
             partiellementParti = unMessageEstParti;
@@ -163,6 +194,7 @@ async function dispatchChannels(
           sendTelegramRaw({
             text: formattedText,
             silent: severity === "info",
+            sansApercuLien: telegramGroupFor(category) === "questionnaire-audit",
             chatId: target.chatId,
             botToken: target.botToken,
           })
@@ -192,31 +224,6 @@ async function dispatchChannels(
           })
           .catch(() => {
             results.email = "failed";
-          }),
-      );
-    } else if (ch === "whatsapp") {
-      // 🔴 `D6-5-C1` (2026-08-20) — WhatsApp ne reçoit PLUS le même contenu que
-      // Telegram. Il portait nom, e-mail, téléphone et le message entier vers
-      // CallMeBot : un prestataire qui ne publie AUCUNE entité légale (donc
-      // indéclarable sur `/sous-processeurs`), sans contrat de sous-traitance,
-      // et dont les conditions interdisent explicitement de s'en servir pour
-      // « collect or track the personal information of others ».
-      //
-      // 🔑 Le canal reste — il prévient vite, et c'est son seul rôle. Le détail
-      // qui permet de rappeler vit sur Telegram, qui est déclaré et couvert par
-      // des clauses contractuelles types. Voir `formatNotificationWhatsApp`.
-      // Pour un client, la sonnette dit le TYPE de demande (« Audit IA ») —
-      // une nature, jamais une donnée de la personne (décision Will 15/10).
-      const typeDemande = estCategorieClient(category)
-        ? libelleTypeDemandeWhatsApp(event as EvenementClient)
-        : undefined;
-      tasks.push(
-        sendWhatsAppRaw({ text: formatNotificationWhatsApp(category, severity, typeDemande).text })
-          .then((status) => {
-            results.whatsapp = status;
-          })
-          .catch(() => {
-            results.whatsapp = "failed";
           }),
       );
     }
@@ -251,14 +258,12 @@ export async function flushPendingDispatches(): Promise<void> {
 export async function notify(input: NotifyInput): Promise<NotifyResult> {
   const routing = getRouting(input.category);
   const severity = input.severity ?? routing.severity;
-  // Canaux du routing par défaut + doublon WhatsApp pour les leads humains.
-  // Si l'appelant force `input.channels`, on respecte exactement sa liste (usage
-  // avancé). Le canal WhatsApp reste no-op tant que la clé CallMeBot est absente.
-  const baseChannels = input.channels ?? routing.channels;
-  const channels: NotificationChannel[] =
-    input.channels === undefined && shouldNotifyWhatsApp(input.category)
-      ? [...baseChannels, "whatsapp"]
-      : baseChannels;
+  // Canaux du routing par défaut ; si l'appelant force `input.channels`, on respecte
+  // exactement sa liste (usage avancé), SAUF pour une catégorie muette (`CATEGORIES_SANS_ALERTE`) :
+  // elle reste muette même si l'appelant force des canaux. WhatsApp est coupé depuis le 14/11/2026.
+  const channels: NotificationChannel[] = CATEGORIES_SANS_ALERTE.has(input.category)
+    ? []
+    : (input.channels ?? routing.channels);
   const payload = input.payload as Record<string, unknown>;
 
   // 0. Aucun canal configuré → skip immédiat (catégorie volontairement muette).
@@ -305,6 +310,16 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     if (!aboutie) await libererDedup(input.category, dedupKey);
   };
 
+  // Doublon d'une demande de CLIENT (14/11/2026) : conversation privée du fondateur + e-mail.
+  // Après le dédoublonnage et le plafond (jamais sur un rejeu ni un plafond atteint), seulement
+  // pour le routage par défaut (un appelant qui force ses canaux n'en veut pas), et HORS
+  // `libererSiEchec` : son échec ne doit pas rouvrir l'alerte du salon. Ne lève jamais.
+  const doubler = input.channels === undefined && estCategorieClient(input.category);
+  const lancerDoublon = (): Promise<DoublonsClient | undefined> =>
+    doubler
+      ? doublerAlerteClient(event as EvenementClient, dedupKey).catch(() => undefined)
+      : Promise.resolve(undefined);
+
   // 4. Dispatch sync ou fire-and-forget
   const forceSync = input.sync === true;
   const async = !forceSync && shouldDispatchAsync(severity);
@@ -313,9 +328,10 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     // Fire-and-forget : on lance la promise détachée, on retourne tout de suite.
     // On garde une référence attendable (tests / arrêt gracieux) sans bloquer le
     // runtime ; la référence s'auto-supprime à la résolution.
-    const dispatch = dispatchChannels(event, severity, channels, formatted.text).then(
-      libererSiEchec,
-    );
+    const dispatch = Promise.all([
+      dispatchChannels(event, severity, channels, formatted.text).then(libererSiEchec),
+      lancerDoublon(),
+    ]);
     inFlightDispatches.add(dispatch);
     void dispatch.finally(() => inFlightDispatches.delete(dispatch));
     const queued: StatutsCanaux = {};
@@ -323,9 +339,12 @@ export async function notify(input: NotifyInput): Promise<NotifyResult> {
     return { ok: true, channels: queued };
   }
 
-  const dispatch = await dispatchChannels(event, severity, channels, formatted.text);
+  const [dispatch, doublons] = await Promise.all([
+    dispatchChannels(event, severity, channels, formatted.text),
+    lancerDoublon(),
+  ]);
   await libererSiEchec(dispatch);
   const results = dispatch.results;
   const okOverall = Object.values(results).some((v) => v === "sent" || v === "queued");
-  return { ok: okOverall, channels: results };
+  return { ok: okOverall, channels: results, ...(doublons ? { doublons } : {}) };
 }

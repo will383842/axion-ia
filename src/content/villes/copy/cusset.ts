@@ -49,7 +49,7 @@ export const CUSSET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Cusset et agglomération Vichy ?",
-      a: "Oui, Axion-IA intervient à Cusset et toute l'agglomération Vichy (Vichy à 5 min, Bellerive-sur-Allier, Abrest). Consultants depuis Clermont (1h) ou Lyon (2h).",
+      a: "Oui, Axion-IA intervient à Cusset et toute l'agglomération Vichy (Vichy à 5 min, Bellerive-sur-Allier, Abrest). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME tertiaires et industrielles ?",
@@ -64,7 +64,7 @@ export const CUSSET_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Clermont ou Lyon ?",
+      q: "Comment se déroule une mission à Cusset ?",
       a: "Clermont-Ferrand (1h) ou Lyon (2h).",
     },
   ],

@@ -13,7 +13,7 @@
 import type { NextRequest } from "next/server";
 import { checkRateLimit } from "@/lib/rate-limit";
 import { ipDepuisEntetes } from "@/lib/client-ip";
-import { raisonExtinction, secretsStudio, videosSiteActives } from "./config";
+import { raisonExtinction, secretsStudio, videosSiteActives, type SecretsStudio } from "./config";
 import { refus } from "./reponse";
 import { RE_HORODATAGE, RE_NONCE, RE_SIGNATURE, sha256Hex, verifierRequete } from "./signature";
 
@@ -52,21 +52,39 @@ async function lireCorpsPlafonne(req: NextRequest, max: number): Promise<Buffer 
   return Buffer.concat(morceaux);
 }
 
+export interface OptionsEntree {
+  methode: "GET" | "POST" | "DELETE";
+  chemin: string;
+  /**
+   * Drapeau, secret et seau de débit PROPRES à la route (PV-1, COR-INT-A). Par défaut :
+   * ceux des vidéos (`VIDEOS_SITE_ENABLED`, `VIDEOS_STUDIO_HMAC_SECRET`, `internal:videos`).
+   * Une route qui les fournit ne dépend plus du tout des variables des vidéos.
+   */
+  drapeau?: () => boolean;
+  secrets?: () => SecretsStudio | null;
+  prefixeDebit?: string;
+  /** Plafond du corps propre à la route (défaut : `CORPS_MAX_OCTETS`). */
+  corpsMaxOctets?: number;
+}
+
 export async function controlerEntree(
   req: NextRequest,
-  options: { methode: "GET" | "POST" | "DELETE"; chemin: string },
+  options: OptionsEntree,
 ): Promise<ResultatEntree> {
+  const drapeau = options.drapeau ?? videosSiteActives;
+  const lireSecrets = options.secrets ?? (() => secretsStudio());
+  const prefixeDebit = options.prefixeDebit ?? "internal:videos";
   // 1-2. Interrupteur, configuration, base factice.
-  if (!videosSiteActives()) return { ok: false, reponse: refus(503, "reception_eteinte") };
-  if (raisonExtinction() !== null)
-    return { ok: false, reponse: refus(503, "reception_non_configuree") };
-  const secrets = secretsStudio()!;
+  if (!drapeau()) return { ok: false, reponse: refus(503, "reception_eteinte") };
+  // Route aux secrets propres : le secret seul décide. Sinon : règle historique des vidéos.
+  const secrets = options.secrets || raisonExtinction() === null ? lireSecrets() : null;
+  if (secrets === null) return { ok: false, reponse: refus(503, "reception_non_configuree") };
   if (process.env.DATABASE_URL?.includes("stub.invalid")) {
     return { ok: false, reponse: refus(503, "base_indisponible") };
   }
 
   const ip = ipDepuisEntetes(req.headers);
-  const limite = await checkRateLimit(`internal:videos:${ip}`, { limit: 60, windowSec: 60 });
+  const limite = await checkRateLimit(`${prefixeDebit}:${ip}`, { limit: 60, windowSec: 60 });
   if (!limite.allowed) return { ok: false, reponse: refus(429, "trop_de_requetes") };
 
   // 3. Forme des en-têtes, type du contenu, plafond du corps.
@@ -88,7 +106,9 @@ export async function controlerEntree(
     if (type !== "application/json") return { ok: false, reponse: refus(415, "type_non_supporte") };
   }
   const corps =
-    options.methode === "GET" ? Buffer.alloc(0) : await lireCorpsPlafonne(req, CORPS_MAX_OCTETS);
+    options.methode === "GET"
+      ? Buffer.alloc(0)
+      : await lireCorpsPlafonne(req, options.corpsMaxOctets ?? CORPS_MAX_OCTETS);
   if (corps === null) return { ok: false, reponse: refus(413, "corps_trop_gros") };
 
   // 4-5. Horodatage et signature.

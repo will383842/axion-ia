@@ -49,7 +49,7 @@ export const BARENTIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il a Barentin et dans la vallee du Commerce ?",
-      a: "Oui, Axion-IA intervient a Barentin et dans toute la vallee du Commerce (Pavilly, Duclair, Yvetot). Consultants depuis Rouen (20 min) ou Paris (1h30 via Rouen).",
+      a: "Oui, Axion-IA intervient a Barentin et dans toute la vallee du Commerce (Pavilly, Duclair, Yvetot). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les commercants de Barentin ?",

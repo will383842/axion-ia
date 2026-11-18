@@ -14,7 +14,7 @@
 // Composant serveur pur : icônes Lucide rendues en HTML au build, 0 KB de JS.
 
 import Image from "next/image";
-import { Hammer, Building2, Building, Landmark } from "lucide-react";
+import { Hammer, Building2 } from "lucide-react";
 
 import { FadeInOnView } from "@/components/motion/FadeInOnView";
 import { homeImageFor } from "@/content/home/home-images";
@@ -63,7 +63,7 @@ interface SegmentVisual {
   slot: string;
 }
 
-/** Ordre = celui de `audienceSegments` dans la home (TPE → PME → ETI → GE). */
+/** Ordre = celui de `audienceSegments` dans la home (TPE → PME). */
 const SEGMENT_VISUALS: readonly SegmentVisual[] = [
   {
     id: "tpe",
@@ -80,22 +80,6 @@ const SEGMENT_VISUALS: readonly SegmentVisual[] = [
     Icon: Building2,
     level: 2,
     slot: "audience-02-pme",
-  },
-  {
-    id: "eti",
-    headcount: "250 – 4 999",
-    accent: "primary",
-    Icon: Building,
-    level: 3,
-    slot: "audience-03-eti",
-  },
-  {
-    id: "large",
-    headcount: "5 000+",
-    accent: "sage",
-    Icon: Landmark,
-    level: 4,
-    slot: "audience-04-grands-comptes",
   },
 ] as const;
 
@@ -120,7 +104,7 @@ export function AudienceSegments({
     // 2026-08-10 dans globals.css — l'ordre est rétabli, `sm:` est de nouveau
     // utilisable partout.)
     <>
-      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+      <ul className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:gap-6">
         {segments.map((seg, idx) => {
           const v = SEGMENT_VISUALS[idx];
           if (!v) return null;
@@ -149,7 +133,7 @@ export function AudienceSegments({
                         src={image.src}
                         alt={image.alt}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        sizes="(max-width: 640px) 100vw, 50vw"
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (

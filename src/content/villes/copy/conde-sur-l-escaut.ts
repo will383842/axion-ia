@@ -64,7 +64,7 @@ export const CONDE_SUR_L_ESCAUT_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Condé-sur-l'Escaut ?",
       a: "Paris-Nord (1h45 via TGV Valenciennes puis 15 min route). Frontière belge à 5 min.",
     },
   ],

@@ -65,7 +65,7 @@ export const SEMEAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Séméac ?",
-      a: "Séméac est à 5 min de Tarbes centre et 15 min de l'aéroport Tarbes-Lourdes. Gare SNCF Tarbes à 7 min. Nos consultants interviennent sur site.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Séméac est à 5 min de Tarbes centre, 7 min de la gare SNCF de Tarbes et 15 min de l'aéroport Tarbes-Lourdes.",
     },
   ],
 };

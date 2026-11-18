@@ -22,13 +22,21 @@
  *     (type, date, version du texte annoncé) ;
  *   · les questions qu'on lui a adressées et ses réponses ;
  *   · les e-mails de suivi qui lui ont été préparés (le message lui-même est
- *     rendu avec `email_outbox` / `email_logs`).
+ *     rendu avec `email_outbox` / `email_logs`) ;
+ *   · les e-mails écrits à la main qui lui sont adressés (fiche F1b) : dates, statut, objet, texte
+ *     (ou texte source d'un brouillon), nom, format et taille des pièces jointes — retrouvés par
+ *     l'empreinte de l'une de ses adresses OU par une de ses fiches personne ; jamais l'adresse
+ *     d'un tiers.
  *
  * Tout texte issu d'une conversation est déchiffré par `chiffrer-parole`, qui
  * LÈVE plutôt que de rendre du chiffré ou un texte de remplacement. Une
  * lecture impossible est DITE dans l'export (`avertissements`), jamais tue.
  */
 
+import {
+  envoisDuDirigeant,
+  questionnairesDuDirigeant,
+} from "@/features/questionnaire-preaudit/portee-rgpd";
 import { dechiffrerParole, dechiffrerParoleOuNull } from "@/lib/chiffrer-parole";
 import { prisma } from "@/lib/prisma";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
@@ -43,6 +51,43 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
   readonly modele: string;
   readonly motif: string;
 }> = [
+  {
+    modele: "ConsoleCommande",
+    motif:
+      "la copie, transmise à notre console des automatisations, de ce que vous avez choisi en " +
+      "signant votre devis : votre choix et votre signature figurent déjà dans le devis signé " +
+      "et son exemplaire, qui vous ont été remis.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditBrouillon",
+    motif:
+      "votre brouillon en cours du questionnaire avant audit : il vous est rendu par votre propre " +
+      "lien tant que vous remplissez, et il est supprimé dès l'envoi de vos réponses.",
+  },
+  {
+    modele: "QuestionnaireAvantAudit",
+    motif:
+      "la copie du questionnaire préparée pour vous : l'adresse d'envoi et vos réponses sont " +
+      "rendues ci-dessus.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditOuverture",
+    motif:
+      "les ouvertures du lien du questionnaire avant audit : des dates, un nombre et l'étape " +
+      "atteinte, sans adresse IP, sans navigateur et sans contenu, rattachés au questionnaire.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditSuivi",
+    motif:
+      "le suivi des e-mails du questionnaire avant audit (relances demandées, date de l'audit) : " +
+      "des dates et des statuts, sans contenu ni adresse.",
+  },
+  {
+    modele: "QuestionnaireAvantAuditCourrier",
+    motif:
+      "le journal des e-mails de suivi du questionnaire avant audit (relances, confirmations) : " +
+      "des dates et des statuts, sans contenu ni adresse.",
+  },
   {
     modele: "CompteRendu",
     motif:
@@ -77,6 +122,29 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
   },
   {
+    // 2026-10-29 (lot A1) — les notes d'une fiche n'ont AUCUNE colonne qui les rattache à une
+    // personne (elles appartiennent à la fiche d'entreprise) et leur texte, chiffré, peut citer
+    // d'autres personnes. Règle EXISTANTE la plus proche : celle de `DocumentProjet` et de
+    // `CompteRendu` ci-dessus (écrits de la fiche, tiers possibles) — exclusion déclarée, réponse
+    // manuelle sous un mois. Aucune note n'est lue ici, donc aucun déchiffrement ni clair en journal.
+    modele: "ClientNote",
+    motif:
+      "les notes internes de la fiche d'entreprise concernent l'entreprise et peuvent citer " +
+      "d'autres personnes : réponse manuelle sous un mois, tiers occultés (contact@axion-ia.com).",
+  },
+  {
+    modele: "ClientProfil",
+    motif:
+      "responsable interne et archivage de la fiche d'entreprise : donnée de la fiche, aucune " +
+      "donnée vous concernant.",
+  },
+  {
+    modele: "ClientEtiquette",
+    motif:
+      "étiquettes de classement de la fiche d'entreprise : donnée de la fiche, aucune donnée " +
+      "vous concernant.",
+  },
+  {
     modele: "DocumentProjetContenu",
     motif: "le contenu des fichiers des documents de projet ci-dessus (même réponse manuelle).",
   },
@@ -102,6 +170,45 @@ export const EXCLUSIONS_EXPORT_DOSSIER: ReadonlyArray<{
       "les fichiers joints à vos messages envoyés par le formulaire de contact (cahier des " +
       "charges, devis…) : copie, tels que reçus, sur demande à contact@axion-ia.com.",
   },
+  {
+    // Tour France IA (2026-10-27) : la mini-demande avant la visio, chiffrée à IV aléatoire.
+    // Elle est exportée, mais PAS dans la partie « dossier client » : par une lecture à part.
+    modele: "TourDemande",
+    motif:
+      "ces demandes ne sont pas dans la partie « dossier client » : vos demandes du Tour France " +
+      "IA (nom, e-mail, téléphone, ville, statut) sont rendues à part, dans la partie " +
+      "« tourFranceIa » de cet export, retrouvées par l'empreinte de votre adresse.",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainSession",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainEvenement",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
+  {
+    // Audit présentiel (2026-11-02, PR1) : contenu chiffré par `chiffrerParole`, pseudonymes et postes
+    // seulement (les prénoms restent sur le PC de l'auditeur). Aucune colonne ne rattache une ligne à
+    // une personne : lecture manuelle, comme les comptes rendus.
+    modele: "AuditTerrainRapport",
+    motif:
+      "les relevés de l'audit sur place concernent l'entreprise (postes, pseudonymes, jamais les " +
+      "prénoms) et peuvent citer d'autres personnes : réponse manuelle sous un mois, tiers " +
+      "occultés (contact@axion-ia.com).",
+  },
 ];
 
 /** Le texte de la notice, pour `notice.excludedTables` de l'export. */
@@ -113,6 +220,10 @@ export interface ExportDossierClient {
   readonly personnes: ReadonlyArray<{
     readonly entreprise: string;
     readonly nom: string;
+    /** Identité de salutation des e-mails (B4) : « madame » | « monsieur », prénom, nom de famille. */
+    readonly civilite: string | null;
+    readonly prenom: string | null;
+    readonly nomFamille: string | null;
     readonly fonction: string | null;
     readonly telephone: string | null;
     readonly statut: string;
@@ -157,8 +268,70 @@ export interface ExportDossierClient {
     readonly questions: ReadonlyArray<{ readonly texte: string; readonly reponse: string | null }>;
   }>;
   readonly emailsSuiviPrepares: ReadonlyArray<{ readonly preparesLe: Date }>;
+  /** E-mails écrits à la main à cette personne (fiche F1b) : jamais l'adresse du destinataire. */
+  readonly emailsEcritsALaMain: ReadonlyArray<{
+    readonly creeLe: Date;
+    readonly envoyeLe: Date | null;
+    readonly statut: string;
+    readonly objet: string;
+    /** `corps_source` pour un brouillon, `corps_texte` sinon ; `null` si le contenu a été effacé. */
+    readonly corps: string | null;
+    readonly piecesJointes: ReadonlyArray<{
+      readonly nomFichier: string;
+      readonly format: string;
+      readonly tailleOctets: number;
+    }>;
+  }>;
+  /** Tâches de suivi de la fiche liées à cette personne (`client_taches.contact_id`). */
+  readonly tachesVousConcernant: ReadonlyArray<{
+    readonly intitule: string;
+    readonly echeanceLe: Date;
+    readonly faiteLe: Date | null;
+  }>;
+  /** Questionnaires de pré-audit envoyés à cette adresse : l'adresse d'envoi (droit d'accès). */
+  readonly questionnairesPreauditEnvoyes: ReadonlyArray<{
+    readonly envoyeLe: Date | null;
+    readonly adresseEnvoi: string | null;
+  }>;
+  /** Réponses au questionnaire de pré-audit d'une rencontre réservée sous cette adresse. */
+  readonly questionnairesPreaudit: ReadonlyArray<{
+    readonly recuLe: Date;
+    readonly parcours: string;
+    readonly reponses: string;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
+  }>;
+  /**
+   * Rapports d'analyse avant audit établis à partir de ses réponses (2026-11-02) : leur
+   * EXISTENCE et leurs dates. Le contenu mêle ses réponses à celles de son équipe : il est
+   * communiqué sur demande, après retrait des réponses des autres personnes (avertissement).
+   */
+  readonly rapportsAvantAudit: ReadonlyArray<{
+    readonly lanceLe: Date;
+    readonly statut: string;
+    readonly termineLe: Date | null;
+    readonly misALecartLe: Date | null;
+  }>;
+  /**
+   * Brouillons de l'assistant de devis de SA fiche (S17) : sans coordonnées de personne — id, dates,
+   * statut, contenu de travail (payload) et lien vers la fiche.
+   */
+  readonly brouillonsDevis: ReadonlyArray<{
+    readonly id: string;
+    readonly creeLe: Date;
+    readonly modifieLe: Date;
+    readonly statut: string;
+    readonly payload: unknown;
+    readonly ficheLien: string;
+  }>;
   readonly avertissements: readonly string[];
 }
+
+/** Ce que l'export dit des rapports avant audit quand il en existe. */
+export const NOTE_RAPPORTS_AVANT_AUDIT =
+  "rapportsAvantAudit : le contenu d'un rapport d'analyse avant audit mêle vos réponses à celles " +
+  "des autres personnes de votre entreprise et à nos analyses. Il vous est communiqué sur demande " +
+  "à contact@axion-ia.com, après retrait des réponses des autres personnes.";
 
 const VIDE: ExportDossierClient = {
   personnes: [],
@@ -170,6 +343,12 @@ const VIDE: ExportDossierClient = {
   preuvesAccord: [],
   questionnairesRecus: [],
   emailsSuiviPrepares: [],
+  emailsEcritsALaMain: [],
+  tachesVousConcernant: [],
+  questionnairesPreauditEnvoyes: [],
+  questionnairesPreaudit: [],
+  rapportsAvantAudit: [],
+  brouillonsDevis: [],
   avertissements: [],
 };
 
@@ -218,11 +397,15 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             select: {
               id: true,
               nom: true,
+              civilite: true,
+              prenom: true,
+              nomFamille: true,
               fonction: true,
               telephone: true,
               statut: true,
               partiLe: true,
               oppositionIaLe: true,
+              clientId: true,
               client: { select: { raisonSociale: true } },
               adresses: { select: { email: true, nature: true, emailHash: true } },
             },
@@ -315,6 +498,31 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             orderBy: { survenuLe: "asc" },
           });
 
+    // Questionnaire de pré-audit (2026-10-24) : les réponses du DIRIGEANT seulement (jamais celles
+    // de ses salariés), retrouvées par la réservation du titulaire ou l'adresse d'envoi du lien.
+    const reponsesPreaudit = await prisma.questionnaireAvantAuditEnvoi.findMany({
+      where: envoisDuDirigeant(email, empreinte),
+      select: { mode: true, recuLe: true, donnees: true, infosEmail: true },
+      orderBy: { recuLe: "asc" },
+    });
+
+    const preauditEnvoyes = await prisma.questionnaireAvantAudit.findMany({
+      where: questionnairesDuDirigeant(email, empreinte),
+      select: { id: true, envoyeLe: true, destinataire: true },
+    });
+
+    // Rapports avant audit (2026-11-02) établis sur SES questionnaires : l'existence et les
+    // dates, rien de déchiffré (le contenu mêle les réponses de son équipe, `NOTE_…`).
+    const rapportsAvantAudit =
+      preauditEnvoyes.length === 0
+        ? []
+        : await prisma.rapportAvantAudit.findMany({
+            where: { questionnaireIds: { hasSome: preauditEnvoyes.map((p) => p.id) } },
+            select: { creeLe: true, statut: true, finLe: true, ecarteLe: true },
+            orderBy: { creeLe: "asc" },
+          });
+    if (rapportsAvantAudit.length > 0) avertissements.push(NOTE_RAPPORTS_AVANT_AUDIT);
+
     const questionnaires =
       contactIds.length === 0
         ? []
@@ -339,6 +547,75 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             select: { creeLe: true },
           });
 
+    // E-mails écrits à la main (fiche F1b) : par l'empreinte de l'une de SES adresses (une ligne sans
+    // `contact_id`, ex. entité `CalendlyEvent`, n'est retrouvable que par là) OU par une de SES
+    // fiches personne. Jamais par la fiche entreprise : les e-mails d'un collègue ne sont pas les siens.
+    const emailsManuels = await prisma.emailManuel.findMany({
+      where: {
+        OR: [{ destinataireHash: { in: toutesEmpreintes } }, { contactId: { in: contactIds } }],
+      },
+      select: {
+        id: true,
+        creeLe: true,
+        envoyeLe: true,
+        statut: true,
+        objet: true,
+        corpsSource: true,
+        corpsTexte: true,
+      },
+      orderBy: { creeLe: "asc" },
+    });
+    const piecesManuelles =
+      emailsManuels.length === 0
+        ? []
+        : await prisma.emailManuelPieceJointe.findMany({
+            where: { emailManuelId: { in: emailsManuels.map((e) => e.id) } },
+            select: { emailManuelId: true, nomFichier: true, format: true, tailleOctets: true },
+            orderBy: { creeLe: "asc" },
+          });
+
+    // Les tâches de la fiche liées à SES fiches personne seulement (jamais celles d'une autre
+    // personne ni d'une autre fiche) : `responsableLabel` est un libellé interne, pas rendu.
+    const taches =
+      contactIds.length === 0
+        ? []
+        : await prisma.clientTache.findMany({
+            where: { contactId: { in: contactIds } },
+            select: { intitule: true, echeanceLe: true, faiteLe: true },
+            orderBy: { echeanceLe: "asc" },
+          });
+
+    // Brouillons de l'assistant de devis (S17) : rattachés à la FICHE (`client_id`), sans coordonnée.
+    // Fusion : elle déplace les PERSONNES vers la fiche absorbante mais laisse les brouillons sur la
+    // fiche ABSORBÉE. On y ajoute donc les fiches absorbées (fusion non défaite) dans une de SES
+    // fiches, transitivement (A dans B puis B dans C). Lecture seule, rien n'est modifié.
+    const clientIds = [...new Set(contacts.map((c) => c.clientId))];
+    for (let frontiere = [...clientIds]; frontiere.length > 0;) {
+      const fusions = await prisma.clientFusion.findMany({
+        where: { absorbantId: { in: frontiere }, defaiteLe: null },
+        select: { absorbeId: true },
+      });
+      frontiere = [...new Set(fusions.map((f) => f.absorbeId))].filter(
+        (id) => !clientIds.includes(id),
+      );
+      clientIds.push(...frontiere);
+    }
+    const brouillons =
+      clientIds.length === 0
+        ? []
+        : await prisma.devisAssistantBrouillon.findMany({
+            where: { clientId: { in: clientIds } },
+            select: {
+              id: true,
+              clientId: true,
+              createdAt: true,
+              updatedAt: true,
+              statut: true,
+              payload: true,
+            },
+            orderBy: { createdAt: "asc" },
+          });
+
     const siens = new Set(contactIds);
     // « Elle l'a dit » exige un locuteur VALIDÉ (plan §3.15 : « ses citations
     // (locuteur validé) ») : `contactLocuteurId` n'est posé qu'après la
@@ -358,6 +635,9 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       personnes: contacts.map((c) => ({
         entreprise: c.client.raisonSociale,
         nom: c.nom,
+        civilite: c.civilite ?? null,
+        prenom: c.prenom ?? null,
+        nomFamille: c.nomFamille ?? null,
         fonction: c.fonction,
         telephone: c.telephone,
         statut: c.statut,
@@ -423,6 +703,57 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
           })),
       })),
       emailsSuiviPrepares: emails.map((e) => ({ preparesLe: e.creeLe })),
+      emailsEcritsALaMain: emailsManuels.map((e) => {
+        // Le texte écrit par le fondateur (`corpsSource`, NOT NULL) quand il n'y a pas de rendu texte ;
+        // une ligne neutralisée (vide) rend `null`.
+        const brut = e.statut === "brouillon" ? e.corpsSource : (e.corpsTexte ?? e.corpsSource);
+        return {
+          creeLe: e.creeLe,
+          envoyeLe: e.envoyeLe,
+          statut: e.statut,
+          objet: e.objet,
+          corps: brut === "" ? null : brut,
+          piecesJointes: piecesManuelles
+            .filter((x) => x.emailManuelId === e.id)
+            .map((x) => ({
+              nomFichier: x.nomFichier,
+              format: x.format,
+              tailleOctets: x.tailleOctets,
+            })),
+        };
+      }),
+      tachesVousConcernant: taches.map((t) => ({
+        intitule: t.intitule,
+        echeanceLe: t.echeanceLe,
+        faiteLe: t.faiteLe,
+      })),
+      questionnairesPreauditEnvoyes: preauditEnvoyes.map((p) => ({
+        envoyeLe: p.envoyeLe,
+        adresseEnvoi:
+          p.destinataire === null
+            ? null
+            : lisible(p.destinataire, avertir, "questionnairesPreauditEnvoyes"),
+      })),
+      questionnairesPreaudit: reponsesPreaudit.flatMap((r) => {
+        const reponses = lisible(r.donnees, avertir, "questionnairesPreaudit");
+        return reponses === null
+          ? []
+          : [{ recuLe: r.recuLe, parcours: r.mode, reponses, infosEmail: r.infosEmail ?? null }];
+      }),
+      rapportsAvantAudit: rapportsAvantAudit.map((r) => ({
+        lanceLe: r.creeLe,
+        statut: r.statut,
+        termineLe: r.finLe,
+        misALecartLe: r.ecarteLe,
+      })),
+      brouillonsDevis: brouillons.map((b) => ({
+        id: b.id,
+        creeLe: b.createdAt,
+        modifieLe: b.updatedAt,
+        statut: b.statut,
+        payload: b.payload,
+        ficheLien: `client:${b.clientId}`,
+      })),
       avertissements,
     };
   } catch {
@@ -434,4 +765,58 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       ],
     };
   }
+}
+
+/** Ce que reçoit un SALARIÉ (ou le référent informatique) qui exerce son droit d'accès. */
+export interface ExportReponsesPreauditMembre {
+  readonly ref: string;
+  readonly membre: string;
+  readonly reponses: ReadonlyArray<{
+    readonly recuLe: Date;
+    readonly parcours: string;
+    /** `null` : réponse illisible au moment de l'export (voir `avertissements`). */
+    readonly reponses: string | null;
+    /** Mise à l'écart sur sa demande d'effacement (en attente de l'effacement définitif). */
+    readonly ecarteLe: Date | null;
+    /** Case « informations par e-mail » (oui, non, `null` = non posée), datée par `recuLe`. */
+    readonly infosEmail: boolean | null;
+  }>;
+  readonly avertissements: readonly string[];
+}
+
+/**
+ * Droit d'accès (art. 15) d'un salarié au questionnaire de pré-audit (2026-10-24) : il n'a pas
+ * d'adresse dans nos tables ; la référence du questionnaire et le code de son lien personnel
+ * (affichés par la console à côté de sa réponse) l'identifient. Ses réponses SEULEMENT — jamais
+ * celles du dirigeant ni d'un autre salarié. Appelé par la console (geste de Will), jamais
+ * automatiquement. Ne lève pas : une lecture impossible devient un avertissement.
+ */
+export async function exporterReponsesPreauditMembre(
+  ref: string,
+  membre: string,
+): Promise<ExportReponsesPreauditMembre> {
+  const avertissements: string[] = [];
+  const avertir = (m: string) => {
+    if (!avertissements.includes(m)) avertissements.push(m);
+  };
+  if (ref.trim() === "" || membre.trim() === "") {
+    return { ref, membre, reponses: [], avertissements: ["Référence ou code manquant."] };
+  }
+  const lignes = await prisma.questionnaireAvantAuditEnvoi.findMany({
+    where: { mode: { in: ["emp", "it"] }, membre, questionnaire: { ref } },
+    select: { recuLe: true, mode: true, donnees: true, ecarteLe: true, infosEmail: true },
+    orderBy: { recuLe: "asc" },
+  });
+  return {
+    ref,
+    membre,
+    reponses: lignes.map((l) => ({
+      recuLe: l.recuLe,
+      parcours: l.mode,
+      reponses: lisible(l.donnees, avertir, "questionnairesPreaudit"),
+      ecarteLe: l.ecarteLe,
+      infosEmail: l.infosEmail ?? null,
+    })),
+    avertissements,
+  };
 }

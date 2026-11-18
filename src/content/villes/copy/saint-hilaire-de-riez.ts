@@ -49,7 +49,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Hilaire-de-Riez et sur le littoral vendéen ?",
-      a: "Oui, Axion-IA intervient à Saint-Hilaire-de-Riez et sur tout le littoral vendéen (Saint-Gilles-Croix-de-Vie, Saint-Jean-de-Monts, Les Sables-d'Olonne). Consultants depuis La Roche-sur-Yon (45 min) ou Nantes (1h10).",
+      a: "Oui, Axion-IA intervient à Saint-Hilaire-de-Riez et sur tout le littoral vendéen (Saint-Gilles-Croix-de-Vie, Saint-Jean-de-Monts, Les Sables-d'Olonne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les campings de Saint-Hilaire-de-Riez ?",
@@ -65,7 +65,7 @@ export const SAINT_HILAIRE_DE_RIEZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Hilaire-de-Riez ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (45 min) ou Nantes (1h10). Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles hors-saison ou en pré-saison.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans votre camping, hôtel, restaurant ou commerce. Interventions possibles hors-saison ou en pré-saison.",
     },
   ],
 };

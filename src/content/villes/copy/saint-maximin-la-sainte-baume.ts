@@ -49,7 +49,7 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Maximin-la-Sainte-Baume et dans le centre-Var ?",
-      a: "Oui, Axion-IA intervient à Saint-Maximin-la-Sainte-Baume et dans tout le centre-Var (Brignoles, Tourves, Trets). Consultants accessibles en 30 min depuis Aix-en-Provence et 45 min depuis Marseille via A8.",
+      a: "Oui, Axion-IA intervient à Saint-Maximin-la-Sainte-Baume et dans tout le centre-Var (Brignoles, Tourves, Trets). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels services IA pour les PME industrielles de Saint-Maximin ?",
@@ -65,7 +65,7 @@ export const SAINT_MAXIMIN_LA_SAINTE_BAUME_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Saint-Maximin ?",
-      a: "Nos consultants interviennent depuis Aix-en-Provence (30 min), Marseille (45 min) ou Toulon (50 min). Déplacement sur site dans vos locaux professionnels, atelier, usine, hôtel ou commerce. A8 directe.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier, usine, hôtel ou commerce. A8 directe.",
     },
   ],
 };

@@ -34,8 +34,8 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
       en: "Audit IA à Peyrolles-en-Provence : diagnostic adapté aux TPE artisans, PME services, agriculteurs, professions libérales et commerces de la vallée de la Durance. Audit sur place {{price:audit-flash|flat}} avec ROI quantifié.",
     },
     interventions: {
-      fr: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
-      en: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux ou à Aix.",
+      fr: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
+      en: "Interventions IA sur site à Peyrolles-en-Provence : ateliers pour équipes TPE/PME, agriculteurs et artisans. Outils IA configurés métier réel, dans vos locaux.",
     },
     implementation: {
       fr: "Implémentation IA à Peyrolles-en-Provence : automatisation devis BTP, optimisation gestion agricole (vigne, olive, maraîchage), agents conversationnels SAV, content marketing patrimonial (château Renaissance), gestion administrative TPE. RGPD strict.",
@@ -64,8 +64,8 @@ export const PEYROLLES_EN_PROVENCE_COPY: VilleCopy = {
       a: "Oui, nous intervenons en BTP et commerce de proximité sur automatisation devis et chiffrage, gestion planning chantiers, content marketing local (patrimoine, château Renaissance), fiches Google Business, SAV conversationnel.",
     },
     {
-      q: "Comment se déplace Axion-IA à Peyrolles-en-Provence ?",
-      a: "Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51. Nos consultants se déplacent dans vos locaux.",
+      q: "Comment se passe une intervention à Peyrolles-en-Provence ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Peyrolles-en-Provence est à 25 min d'Aix-en-Provence et 50 min de Marseille via A51.",
     },
   ],
 };

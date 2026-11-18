@@ -224,6 +224,9 @@ export function enBrefDuContenu(contenuClair: string | null): string | null {
 export interface RencontreDuDossier {
   readonly id: string;
   readonly titre: string;
+  /** Ce dont on parle ; sans lui, la carte retombe sur `titre`. */
+  readonly objet: string | null;
+  readonly lieu: string | null;
   readonly type: RencontreType;
   readonly debutPrevu: Date | null;
   readonly statut: RencontreStatut | null;
@@ -249,6 +252,8 @@ export async function lireRencontresDuClient(clientId: string): Promise<Rencontr
     select: {
       id: true,
       titre: true,
+      objet: true,
+      lieu: true,
       type: true,
       debutPrevu: true,
       statut: true,
@@ -272,6 +277,8 @@ export async function lireRencontresDuClient(clientId: string): Promise<Rencontr
     return {
       id: r.id,
       titre: r.titre,
+      objet: r.objet,
+      lieu: r.lieu,
       type: r.type,
       debutPrevu: r.debutPrevu,
       statut: r.statut,

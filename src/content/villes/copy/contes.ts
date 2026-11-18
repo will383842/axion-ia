@@ -49,7 +49,7 @@ export const CONTES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Contes et vallée du Paillon ?",
-      a: "Oui, Axion-IA intervient à Contes et dans toute la vallée du Paillon (La Trinité, Drap, L'Escarène, Peillon, Lucéram). Couverture moyen-pays niçois et accès rapide depuis Nice centre (25 min D2204).",
+      a: "Oui, Axion-IA intervient à Contes et dans toute la vallée du Paillon (La Trinité, Drap, L'Escarène, Peillon, Lucéram). Couverture moyen-pays niçois et accès par la D2204.",
     },
     {
       q: "Travaillez-vous avec les TPE artisans BTP de Contes ?",
@@ -64,8 +64,8 @@ export const CONTES_COPY: VilleCopy = {
       a: "Pour les commerçants de Contes, nous proposons : gestion stocks prédictive, agents conversationnels client, automatisation commandes fournisseurs, CRM fidélisation, marketing digital. Audit sur place {{price:audit-flash|flat}} pour démarrer.",
     },
     {
-      q: "Comment se déroule une mission à Contes depuis Nice ?",
-      a: "Nos consultants interviennent depuis Nice centre (25 min D2204 vallée du Paillon). Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
+      q: "Comment se déroule une mission à Contes ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Formats flexibles : demi-journée audit, journée intervention, mission implémentation multi-semaines.",
     },
   ],
 };

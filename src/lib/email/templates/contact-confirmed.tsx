@@ -3,10 +3,15 @@
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
+import { salutation } from "../salutation";
 import type { Locale } from "../../../../prisma/generated/client";
 
 interface Payload {
-  contactName: string;
+  /** Hérité, jamais utilisé pour saluer (voir `salutation`). */
+  contactName?: string;
+  civilite?: string;
+  prenom?: string;
+  nomFamille?: string;
   submissionId: string;
 }
 
@@ -14,15 +19,14 @@ const COPY = {
   fr: {
     title: "Message bien reçu",
     // Pré-en-tête (§3.5) : il PROLONGE l'objet au lieu de le répéter. L'objet dit
-    // que le message est arrivé ; celui-ci dit sous combien de temps on répond
-    // — l'information qui décide d'ouvrir maintenant ou plus tard.
-    preview: "Réponse sous 48 heures ouvrées — la référence de votre demande est dans le message.",
-    intro: (n: string) => `Bonjour ${n},`,
+    // que le message est arrivé ; celui-ci rappelle que la référence de la demande
+    // est dans le message. Aucun délai de réponse n'est promis (décision du 11/11/2026).
+    preview: "Message bien reçu — la référence de votre demande est dans le message.",
     // §12.2 question 2 : « La première phrase parle-t-elle de LUI plutôt que
     // de nous ? » « Nous avons bien reçu… » parlait de nous. La refonte du
     // 2026-08-31 avait corrigé l'ORDRE (l'info avant la politesse) sans
     // corriger la VOIX — deux choses distinctes.
-    body: "Votre message est bien arrivé. Une réponse vous parvient sous 48 heures ouvrées.",
+    body: "Votre message est bien arrivé. Nous revenons vers vous.",
     // 🔴 Corrigé le 2026-08-16. Le texte promettait « notre calendrier de
     // réservation » et le bouton disait « Voir le calendrier » — alors que le
     // site n'expose pas de calendrier public, mais une page de réservation
@@ -30,15 +34,20 @@ const COPY = {
     // moitié du défaut : un bouton qui annonce autre chose que ce qu'il ouvre.
     next: "Pour les sujets urgents (intervention sous 7 jours), réservez directement un appel avec nous.",
     cta: "Réserver un appel",
+    // Ajout du 2026-11-06 (ordre de Will) : le formulaire accepte n'importe quelle
+    // adresse ; si quelqu'un a saisi celle d'un tiers, ce tiers sait quoi faire.
+    pasVous:
+      "Si vous n'êtes pas à l'origine de ce message, ignorez-le ou répondez-nous : nous effaçons vos données.",
     refRow: (id: string) => `Référence : ${id}`,
   },
   en: {
     title: "Message received",
-    preview: "Reply within 48 working hours — your request reference is in the message.",
-    intro: (n: string) => `Hello ${n},`,
-    body: "Your message has arrived. You will have a reply within 48 working hours.",
+    preview: "Message received — your request reference is in the message.",
+    body: "Your message has arrived. We will get back to you.",
     next: "For urgent topics (session within 7 days), book a call with us directly.",
     cta: "Book a call",
+    pasVous:
+      "If you did not send this message, please ignore it or reply to us: we will erase your data.",
     refRow: (id: string) => `Reference: ${id}`,
   },
 } as const;
@@ -79,9 +88,12 @@ export function ContactConfirmedEmail({
         {t.refRow(p.submissionId)}
       </Text>
       <Text style={emailStyles.paragraphStyle}>
-        {t.intro(p.contactName)}
+        {salutation(p, locale)}
         <br />
         {t.next}
+      </Text>
+      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+        {t.pasVous}
       </Text>
     </EmailLayout>
   );

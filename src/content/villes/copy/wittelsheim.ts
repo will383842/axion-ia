@@ -65,7 +65,7 @@ export const WITTELSHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Wittelsheim ?",
-      a: "Nos consultants se déplacent via autoroute A36 (10 min) ou gare de Mulhouse-Ville (20 min). Position bassin potassique reconverti à l'ouest de Mulhouse, accès Suisse-Allemagne via Bâle-Mulhouse.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Wittelsheim, dans le bassin potassique reconverti à l'ouest de Mulhouse, est à 10 min de l'autoroute A36 et 20 min de la gare de Mulhouse-Ville, avec un accès vers la Suisse et l'Allemagne via Bâle-Mulhouse.",
     },
   ],
 };

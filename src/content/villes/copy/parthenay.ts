@@ -49,7 +49,7 @@ export const PARTHENAY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Parthenay et dans la Gâtine ?",
-      a: "Oui, Axion-IA intervient à Parthenay et dans toute la Gâtine (Moncoutant, Secondigny, Thénezay). Nos consultants accèdent via la gare de Parthenay (TER) ou par la route (Poitiers 45 min, Niort 40 min).",
+      a: "Oui, Axion-IA intervient à Parthenay et dans toute la Gâtine (Moncoutant, Secondigny, Thénezay). Nous intervenons partout en France, sur place ou à distance. Parthenay est desservie par une gare TER, à 45 min de Poitiers et 40 min de Niort par la route.",
     },
     {
       q: "Quels services IA pour les éleveurs de race parthenaise ?",
@@ -65,7 +65,7 @@ export const PARTHENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA sur site à Parthenay ?",
-      a: "Nos consultants accèdent à Parthenay par la gare TER ou par la route (Poitiers 45 min, Niort 40 min). Mission sur site dans vos exploitations, ateliers ou commerces.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Mission sur site dans vos exploitations, ateliers ou commerces de Parthenay, desservie par une gare TER et à 45 min de Poitiers par la route.",
     },
   ],
 };

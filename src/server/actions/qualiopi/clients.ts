@@ -26,6 +26,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
 import { OPCO_IDS, isOpcoId, type OpcoId } from "@/server/qualiopi/financements/opco-referentiel";
 import { parisDateISO } from "@/server/qualiopi/presence/time";
+import { DELAI_PAIEMENT_MAX_JOURS } from "@/server/qualiopi/financements/conditions-client";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
 import {
   rafraichirEffectifInsee,
@@ -88,6 +89,8 @@ const CHAMPS_ENTREPRISE = [
   "effectif",
   "opcoAdhesionOffreMobilites",
   "opcoVersementVolontaire",
+  // Fiche Modifier (lot A2) : le numéro de TVA identifie une entreprise.
+  "tvaIntracom",
 ] as const;
 
 function refuserChampsEntreprisePourParticulier(
@@ -177,6 +180,16 @@ const createClientSchema = z
       });
   });
 
+/** Prénom / nom de famille du contact : 80 caractères au plus, vide → `null`. */
+function texteSalutation() {
+  return z
+    .string()
+    .max(80)
+    .transform((v) => (v.trim() === "" ? null : v.trim()))
+    .nullable()
+    .optional();
+}
+
 const updateClientSchema = z
   .object({
     id: z.string().uuid(),
@@ -200,6 +213,47 @@ const updateClientSchema = z
     secteur: z.string().max(200).optional(),
     taille: z.enum(COMPANY_SIZES).optional(),
     adresse: z.string().optional(),
+    /**
+     * Fiche Modifier (lot A2) : champs déjà en base, jusque-là sans écrivain
+     * console. `null` efface (la chaîne vide est traitée côté écran).
+     */
+    tvaIntracom: z
+      .string()
+      .max(40)
+      .transform((t) => t.replace(/\s/g, "").toUpperCase())
+      .refine(
+        (t) => !t.startsWith("FR") || /^FR[0-9A-Z]{2}\d{9}$/.test(t),
+        "Numéro de TVA : FR suivi de 11 caractères (ex. FR12 345678901).",
+      )
+      .nullable()
+      .optional(),
+    adresseRue: z.string().max(300).nullable().optional(),
+    adresseCodePostal: z
+      .string()
+      .max(12)
+      .refine((t) => /^\d{5}$/.test(t) || !/^\d+$/.test(t), "Code postal : 5 chiffres.")
+      .nullable()
+      .optional(),
+    adresseVille: z.string().max(120).nullable().optional(),
+    delaiPaiementJours: z
+      .number({ invalid_type_error: "Délai de paiement : un nombre de jours est attendu." })
+      .int("Délai de paiement : un nombre entier de jours est attendu.")
+      .min(0, "Délai de paiement : il ne peut pas être négatif.")
+      .max(
+        DELAI_PAIEMENT_MAX_JOURS,
+        "Délai de paiement : 60 jours au plus (art. L441-10 du code de commerce).",
+      )
+      .nullable()
+      .optional(),
+    /** Acompte de 0 à 100 % toujours possible (décision de Will). */
+    tauxAcomptePct: z
+      .number({ invalid_type_error: "Acompte : un pourcentage est attendu." })
+      .int("Acompte : un pourcentage entier est attendu.")
+      .min(0, "Acompte : il ne peut pas être négatif.")
+      .max(100, "Acompte : 100 % au plus.")
+      .nullable()
+      .optional(),
+    modeFacturation: z.enum(["acompte_solde", "solde_unique"]).nullable().optional(),
     contactNom: z.string().max(200).optional(),
     /**
      * `.nullable()` en PLUS, exactement pour le motif déjà écrit sur `siret` : la
@@ -214,6 +268,16 @@ const updateClientSchema = z
     contactEmail: z.string().email().nullable().optional(),
     contactTelephone: z.string().max(40).optional(),
     contactFonction: z.string().max(150).optional(),
+    /**
+     * Salutation des e-mails (B4) : « Bonjour Madame Dupont, ». Saisis à part,
+     * JAMAIS déduits de `contactNom`. Vide → `null` (efface) ; civilité inconnue refusée.
+     */
+    contactCivilite: z
+      .union([z.enum(["madame", "monsieur"]), z.literal("")])
+      .transform((v) => (v === "" ? null : v))
+      .optional(),
+    contactPrenom: texteSalutation(),
+    contactNomFamille: texteSalutation(),
     /**
      * Voir createClientSchema pour `.min(1)`.
      *
@@ -528,6 +592,7 @@ export async function updateClientAction(
   const identifiantEntreprise =
     (typeof sirenAEcrire === "string" && sirenAEcrire !== "") ||
     (typeof fields.siret === "string" && fields.siret !== "") ||
+    (typeof fields.tvaIntracom === "string" && fields.tvaIntracom.trim() !== "") ||
     typeof fields.effectif === "number" ||
     typeof fields.opco === "string" ||
     typeof fields.opcoEnveloppeAnnuelleCents === "number" ||
@@ -541,7 +606,7 @@ export async function updateClientAction(
     if (typeEnBase === "particulier") {
       return {
         error:
-          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un effectif ou un OPCO ne s'y pose pas. " +
+          "Cette fiche est celle d'un particulier : un SIREN, un SIRET, un numéro de TVA, un effectif ou un OPCO ne s'y pose pas. " +
           "Changez d'abord le type du client si c'est une entreprise.",
       };
     }
@@ -634,7 +699,10 @@ export async function updateClientAction(
     fields.contactNom !== undefined ||
     fields.contactEmail !== undefined ||
     fields.contactTelephone !== undefined ||
-    fields.contactFonction !== undefined;
+    fields.contactFonction !== undefined ||
+    fields.contactCivilite !== undefined ||
+    fields.contactPrenom !== undefined ||
+    fields.contactNomFamille !== undefined;
 
   try {
     await prisma.$transaction(async (tx) => {
@@ -659,6 +727,19 @@ export async function updateClientAction(
           ...(fields.secteur !== undefined ? { secteur: fields.secteur } : {}),
           ...(fields.taille !== undefined ? { taille: fields.taille } : {}),
           ...(fields.adresse !== undefined ? { adresse: fields.adresse } : {}),
+          ...(fields.tvaIntracom !== undefined ? { tvaIntracom: fields.tvaIntracom } : {}),
+          ...(fields.adresseRue !== undefined ? { adresseRue: fields.adresseRue } : {}),
+          ...(fields.adresseCodePostal !== undefined
+            ? { adresseCodePostal: fields.adresseCodePostal }
+            : {}),
+          ...(fields.adresseVille !== undefined ? { adresseVille: fields.adresseVille } : {}),
+          ...(fields.delaiPaiementJours !== undefined
+            ? { delaiPaiementJours: fields.delaiPaiementJours }
+            : {}),
+          ...(fields.tauxAcomptePct !== undefined ? { tauxAcomptePct: fields.tauxAcomptePct } : {}),
+          ...(fields.modeFacturation !== undefined
+            ? { modeFacturation: fields.modeFacturation }
+            : {}),
           ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
           ...(fields.opcoNumeroAdherent !== undefined
             ? { opcoNumeroAdherent: fields.opcoNumeroAdherent }
@@ -689,6 +770,11 @@ export async function updateClientAction(
           ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
           ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
           ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),
+          ...(fields.contactCivilite !== undefined ? { civilite: fields.contactCivilite } : {}),
+          ...(fields.contactPrenom !== undefined ? { prenom: fields.contactPrenom } : {}),
+          ...(fields.contactNomFamille !== undefined
+            ? { nomFamille: fields.contactNomFamille }
+            : {}),
           parAdminId: session.userId,
         });
       }
@@ -710,6 +796,10 @@ export async function updateClientAction(
     // null. Une écriture non tracée est un angle mort pour l'auditeur.
     changes: {
       ...fields,
+      // Identité de salutation : une donnée personnelle, jamais écrite en clair au journal.
+      ...(fields.contactCivilite !== undefined ? { contactCivilite: { modifie: true } } : {}),
+      ...(fields.contactPrenom !== undefined ? { contactPrenom: { modifie: true } } : {}),
+      ...(fields.contactNomFamille !== undefined ? { contactNomFamille: { modifie: true } } : {}),
       ...(opcoAEcrire !== undefined ? { opcoIdentifie: opcoAEcrire } : {}),
       ...(opcoTypeInfere !== undefined ? { opco: opcoTypeInfere } : {}),
       ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),

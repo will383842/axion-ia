@@ -49,7 +49,7 @@ export const DUGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Dugny et Paris Terres d'Envol ?",
-      a: "Oui, Axion-IA intervient à Dugny et sur tout le territoire Paris Terres d'Envol (Le Bourget, Drancy, Le Blanc-Mesnil, Aulnay-sous-Bois). Nos consultants se déplacent depuis Paris (Gare du Nord à 25 min en RER B).",
+      a: "Oui, Axion-IA intervient à Dugny et sur tout le territoire Paris Terres d'Envol (Le Bourget, Drancy, Le Blanc-Mesnil, Aulnay-sous-Bois). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les prestataires de l'aéroport du Bourget ?",
@@ -65,7 +65,7 @@ export const DUGNY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Dugny ?",
-      a: "Nos consultants se déplacent à Dugny depuis Paris (25 min RER B via Le Bourget). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
     },
   ],
 };

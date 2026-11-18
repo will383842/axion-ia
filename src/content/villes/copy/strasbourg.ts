@@ -47,7 +47,7 @@ export const STRASBOURG_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA 1-to-1 à Strasbourg : accompagnement individuel pour dirigeants et managers des institutions européennes, du biotech PII et des ETI industrielles de l'Eurométropole. Sessions confidentielles en présentiel (Wacken, Presqu'île, Illkirch) ou à distance. Tarif d'entrée {{price:intervention-dirigeants|flat}}.",
-      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Entry rate from €990 excl. VAT.",
+      en: "1-to-1 AI coaching in Strasbourg: individual coaching for executives and managers from European institutions, PII biotech firms and Eurométropole industrial mid-caps. Confidential sessions on-site (Wacken, Presqu'île, Illkirch) or remote. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour institutions européennes, biotech Alsace BioValley et ETI industrielles strasbourgeoises — site multilingue FR/DE/EN, portail métier biotech, dashboard connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -276,7 +276,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       fr: {
         hero: "Les interventions IA Axion-IA à Strasbourg se déclinent en formats sur site d'une à plusieurs journées selon vos équipes. Vos collaborateurs ne repartent pas avec des slides : ils repartent avec des outils IA installés sur leur poste, configurés pour leur travail réel.",
         whyHere: [
-          "Strasbourg est desservie en moins de 2h depuis Paris en TGV et en 1h15 depuis Francfort en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
+          "Strasbourg est desservie en TGV et en ICE : nos consultants arrivent le matin et repartent le soir, limitant les coûts logistiques pour vous.",
           "Tous les secteurs du bassin strasbourgeois couverts en présentiel : Wacken-Europe, Presqu'île, Parc d'Innovation d'Illkirch (PII), Espace Européen de l'Entreprise à Schiltigheim, Port du Rhin, communes de l'Eurométropole.",
           "Dimension bilingue FR/DE gérée nativement : pour les équipes franco-allemandes de l'Eurodistrict, les démos et ateliers peuvent être conduits en français, en allemand ou en mode mixte selon les participants.",
           "Le format collectif (1 journée) est calibré pour les TPE, PME et ETI industrielles, biotech et de services strasbourgeoises jusqu'à une centaine de collaborateurs.",
@@ -368,7 +368,7 @@ export const STRASBOURG_COPY: VilleCopy = {
       en: {
         hero: "Axion-IA's AI sessions in Strasbourg come in on-site formats from one to several days depending on your teams. Your staff don't leave with slides: they leave with AI tools installed on their workstations, configured for their real work.",
         whyHere: [
-          "Strasbourg is under 2h from Paris by TGV and 1h15 from Frankfurt by ICE: our consultants arrive in the morning and leave in the evening, minimising logistics costs for you.",
+          "Strasbourg is served by TGV and ICE: we can work on site in a day, minimising logistics costs for you.",
           "All Strasbourg basin sectors covered in person: Wacken-Europe, Presqu'île, Illkirch Innovation Park (PII), Espace Européen de l'Entreprise in Schiltigheim, Port du Rhin, Eurométropole communes.",
           "FR/DE bilingualism natively handled: for Franco-German teams in the Eurodistrict, demos and workshops can be conducted in French, German or mixed mode per participants.",
           "The one-day format is calibrated for Strasbourg industrial, biotech and service SMEs and mid-caps up to about a hundred staff.",
@@ -652,7 +652,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           "La dimension trilingue FR/DE/EN de l'Eurodistrict fait de Strasbourg un cas particulier : nous conduisons les séances dans la langue de travail du dirigeant, y compris en mode bilingue pour les profils franco-allemands de l'Eurodistrict Strasbourg-Ortenau.",
           "Les institutions européennes et les organismes internationaux (Parlement, Conseil de l'Europe, INSP ex-ENA) emploient des cadres de haut niveau soumis à des contraintes de confidentialité fortes — notre coaching 1-to-1 répond exactement à ce besoin d'accompagnement discret.",
           "Les dirigeants des PME et ETI biotech du PII (Alsace BioValley, Eli Lilly, IRCAD) ont besoin d'intégrer l'IA dans leur pratique sans exposer leurs données cliniques ou de R&D — notre approche souveraine et confidentielle est calibrée pour ces contraintes.",
-          "Accessibilité maximale : Gare de Strasbourg à 1h46 de Paris, ICE Frankfurt 1h15 — nos consultants sont présents sur site avec un coût logistique minimal pour vous.",
+          "Accessibilité maximale : gare de Strasbourg desservie par le TGV et l'ICE — nous intervenons sur place, avec un coût logistique minimal pour vous.",
           "Aucun group dynamics : vous progressez à votre rythme, sur vos vraies questions, dans votre langue de travail, sans vous adapter à un niveau collectif qui n'est pas le vôtre.",
         ],
         methodology: [
@@ -738,13 +738,13 @@ export const STRASBOURG_COPY: VilleCopy = {
           "Entretien de positionnement inclus sans engagement. Séances facturées au forfait, pas à l'heure — vous savez exactement ce que vous payez. Coaching disponible en FR, DE ou EN selon votre profil. Confidentialité stricte dès le démarrage, aucune référence publiée sans accord écrit. Aucun lock-in : les compétences acquises sont utilisables en autonomie totale.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Entry rate from €990 excl. VAT.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Strasbourg is for executives, managers and experts from European institutions (Parliament, Council of Europe, ECHR), Illkirch Innovation Park biotech firms and Eurométropole industrial mid-caps. No group, no generic programme: each session is built around your real challenges, in your working language (FR, DE or EN). Price on request.",
         whyHere: [
           "Strasbourg concentrates a unique density of 1-to-1 AI coaching profiles: European institution officials and managers, PII R&D directors, Franco-German industrial mid-cap managers — people who find no peers to discuss AI freely.",
           "The trilingual FR/DE/EN dimension of the Eurodistrict makes Strasbourg a special case: we conduct sessions in the executive's working language, including bilingual mode for Franco-German profiles in the Strasbourg-Ortenau Eurodistrict.",
           "European institutions and international bodies (Parliament, Council of Europe, INSP ex-ENA) employ senior staff subject to strong confidentiality constraints — our 1-to-1 coaching addresses exactly this need for discreet support.",
           "PII biotech SME and mid-cap leaders (Alsace BioValley, Eli Lilly, IRCAD) need to integrate AI without exposing clinical or R&D data — our sovereign and confidential approach is calibrated for these constraints.",
-          "Maximum accessibility: Strasbourg station 1h46 from Paris, ICE Frankfurt 1h15 — our consultants are on site with minimal logistics cost for you.",
+          "Maximum accessibility: Strasbourg station served by TGV and ICE — we work on site with minimal logistics cost for you.",
           "No group dynamics: you progress at your own pace, on your real questions, in your working language, without adapting to a collective level that is not yours.",
         ],
         methodology: [
@@ -777,7 +777,7 @@ export const STRASBOURG_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "from €990 excl. VAT",
+            price: "Price on request",
             detail:
               "For Strasbourg freelancers, micro-business managers and independent professionals. Short programme of 2-3 sessions on your priority use cases.",
           },
@@ -811,7 +811,7 @@ export const STRASBOURG_COPY: VilleCopy = {
           },
           {
             q: "What is the entry rate and how is coaching invoiced?",
-            a: "The entry rate is €990 excl. VAT for a short programme. The full programme is defined after the positioning interview, no blind commitment.",
+            a: "The entry rate for a short programme is quoted on request. The full programme is defined after the positioning interview, no blind commitment.",
           },
           {
             q: "Is confidentiality guaranteed for institutional or biotech profiles?",
@@ -1009,7 +1009,7 @@ export const STRASBOURG_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Combien coûte un audit IA opérationnel à Strasbourg ?",
-      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique à Paris.",
+      a: "Le tarif dépend du niveau retenu — Audit sur place, Ciblé, Stratégique PME ou Stratégique ETI. Tarifs publics affichés sur la page Audit, calibrés selon votre taille (TPE, PME, ETI, grande organisation) et votre périmètre. Aucun supplément géographique : le tarif est identique partout en France.",
     },
     {
       q: "Intervenez-vous pour les institutions européennes à Strasbourg ?",

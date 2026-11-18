@@ -64,7 +64,7 @@ export const AY_CHAMPAGNE_COPY: VilleCopy = {
       a: "Oui, réservation en ligne IA, gestion planning dégustations, CRM visiteurs, marketing automatisé, reporting fréquentation, fidélisation clients.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ou Reims ?",
+      q: "Comment se déroule une mission à Aÿ-Champagne ?",
       a: "Reims à 25 min par route, Épernay à 5 min. Paris à 1 h 15 via A4. Gare SNCF Aÿ sur ligne Reims-Épernay.",
     },
   ],

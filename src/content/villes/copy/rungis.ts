@@ -64,7 +64,7 @@ export const RUNGIS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1, implémentation outils IA métier alimentaire.",
     },
     {
-      q: "Comment se déroule une mission depuis Paris ?",
+      q: "Comment se déroule une mission à Rungis ?",
       a: "Paris-Denfert-Rochereau (20 min RER B, gare Pont de Rungis). Aéroport Orly à 5 min.",
     },
   ],

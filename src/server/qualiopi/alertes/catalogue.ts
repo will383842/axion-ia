@@ -172,6 +172,14 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — l'alerte naît d'un ÉVÉNEMENT reçu du relais (webhook), pas du balayage quotidien. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse corrigée.",
     guichet: "administratif",
   },
+  email_plainte_spam: {
+    niveau: "important",
+    titre: "Une plainte pour spam a été reçue",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — événement ponctuel du webhook, aucun balayage ne le réémet. `synchroniserAlertes` ne la verrait jamais parmi les candidates et la résoudrait au premier tour, avant lecture. Elle se résout à la main, une fois l'adresse vérifiée dans la console.",
+    guichet: "administratif",
+  },
   cloture_trace_presence_incomplete: {
     niveau: "important",
     titre: "Session clôturée sans trace de présence pour tous les inscrits",
@@ -950,27 +958,38 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
    */
   avis_financeur_manquant: {
     niveau: "important",
-    titre: "Avis du financeur non recueilli",
+    titre: "Avis de l'organisme tiers non recueilli",
     resolutionAuto: true,
     guichet: "qualite",
+  },
+  /**
+   * L5h — l'e-mail d'envoi de la convention est garé « à valider » alors que la
+   * session commence dans 7 jours ou moins. Se referme seule dès qu'il n'est
+   * plus en attente.
+   */
+  convention_non_validee_avant_session: {
+    niveau: "important",
+    titre: "Convention non validée à l'approche de la session",
+    resolutionAuto: true,
+    guichet: "administratif",
   },
 
   // ── Qualiopi expiration ────────────────────────────────────────────────────
   qualiopi_expire_j90: {
     niveau: "important",
-    titre: "Certification Qualiopi expire dans 90 jours",
+    titre: "Certification qualité : expire dans 90 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   qualiopi_expire_j30: {
     niveau: "critique",
-    titre: "Certification Qualiopi expire dans 30 jours",
+    titre: "Certification qualité : expire dans 30 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   qualiopi_expire: {
     niveau: "critique",
-    titre: "Certification Qualiopi expirée",
+    titre: "Certification qualité expirée",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non », là où _j90 et _j30 portent « Oui si renouvelée ». Les paliers d avertissement se referment seuls ; celui-ci constate que la certification EST expirée, et l acquittement est la trace que la direction l a vu.",
@@ -1242,13 +1261,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── Sous-traitants ────────────────────────────────────────────────────────
   sous_traitant_qualiopi_expire_j60: {
     niveau: "important",
-    titre: "Qualiopi sous-traitant expire dans 60 jours",
+    titre: "Certification qualité du sous-traitant : expire dans 60 jours",
     resolutionAuto: true,
     guichet: "qualite",
   },
   sous_traitant_qualiopi_expire: {
     niveau: "critique",
-    titre: "Qualiopi sous-traitant expiré (sessions futures en cours)",
+    titre: "Certification qualité du sous-traitant expirée (sessions futures en cours)",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non », là où _j60 porte « Oui si renouvelée ». Des sessions futures sont déjà positionnées sur un sous-traitant non certifié : la situation s acquitte, elle ne s efface pas.",
@@ -1309,13 +1328,13 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // ── OPCO / financement ────────────────────────────────────────────────────
   opco_sans_accord: {
     niveau: "important",
-    titre: "Session dans 7 jours sans accord OPCO",
+    titre: "Session dans 7 jours sans accord de paiement par un tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   opco_formation_demarree_sans_accord: {
     niveau: "critique",
-    titre: "Formation démarrée sans accord OPCO",
+    titre: "Formation démarrée sans accord de paiement par un tiers",
     resolutionAuto: false,
     motifSansResolutionAuto:
       "SPEC_PART2 §6.5 — « Non ». FAIT ACCOMPLI : la formation a démarré sans accord, le risque financier est déjà pris. Un accord obtenu après coup ferait disparaître l alerte comme si de rien n était, alors que c est précisément l écart qu il faut avoir vu.",
@@ -1323,7 +1342,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   convention_tripartite_manquante: {
     niveau: "critique",
-    titre: "Convention tripartite manquante (subrogation OPCO)",
+    titre: "Convention tripartite manquante (subrogation)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1331,7 +1350,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // relevé portail périmé (> config `bareme_opco_validite_mois`, défaut 12 mois).
   bareme_opco_perime: {
     niveau: "important",
-    titre: "Barème OPCO à rafraîchir (relevé trop ancien)",
+    titre: "Barème de l'organisme tiers à rafraîchir (relevé trop ancien)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1340,7 +1359,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // dès que la facture est émise.
   delai_facturation_opco: {
     niveau: "important",
-    titre: "Facture OPCO à émettre avant la date limite",
+    titre: "Facture à l'organisme tiers à émettre avant la date limite",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1349,7 +1368,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // Se referme dès que « Dépôt fait le » est saisi sur le dossier.
   depot_opco_a_faire: {
     niveau: "important",
-    titre: "Dépôt de la demande OPCO à faire par l'entreprise",
+    titre: "Dépôt de la demande de paiement par un tiers à faire par l'entreprise",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1359,7 +1378,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // referme dès que l'état est constaté (`active` ou `caduque`).
   condition_suspensive_opco: {
     niveau: "important",
-    titre: "Condition suspensive OPCO à suivre",
+    titre: "Condition suspensive (accord de l'organisme tiers) à suivre",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1368,7 +1387,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // le lot A7c, quand un OPCO qui a une session à venir n'a AUCUN relevé.
   etat_fonds_perime: {
     niveau: "important",
-    titre: "État des fonds OPCO à relever (veille mensuelle)",
+    titre: "État des fonds des organismes tiers à relever (veille mensuelle)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1377,7 +1396,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // réglages par défaut. Se résout dès qu'un barème est saisi (ou le devis clos).
   aucun_bareme_opco: {
     niveau: "important",
-    titre: "Aucun barème OPCO applicable (estimation indicative)",
+    titre: "Aucun barème d'organisme tiers applicable (estimation indicative)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1387,7 +1406,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // subrogation est retirée, l'accord coché, la fiche corrigée ou la facture émise.
   subrogation_incompatible_regime: {
     niveau: "critique",
-    titre: "Subrogation OPCO incompatible avec le régime de paiement",
+    titre: "Subrogation incompatible avec le régime de paiement",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1396,7 +1415,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // saisi à temps. Se referme quand un relevé rouvre les fonds ou que le dépôt est saisi.
   fonds_opco_suspendus_session: {
     niveau: "critique",
-    titre: "Session planifiée sur des fonds OPCO suspendus",
+    titre: "Session planifiée sur des fonds suspendus de l'organisme tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1405,7 +1424,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // quand la fiche est complète.
   donnees_opco_incompletes: {
     niveau: "important",
-    titre: "Données OPCO du client incomplètes",
+    titre: "Données de l'organisme tiers du client incomplètes",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1415,19 +1434,19 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   // arrêtées en console, dossier clos ou renvoyé.
   entreprise_a_appeler_depot: {
     niveau: "important",
-    titre: "Entreprise à appeler : dépôt de la demande OPCO",
+    titre: "Entreprise à appeler : dépôt de la demande de paiement par un tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   entreprise_a_appeler_reponse_opco: {
     niveau: "important",
-    titre: "Entreprise à appeler : réponse de l'OPCO",
+    titre: "Entreprise à appeler : réponse de l'organisme tiers",
     resolutionAuto: true,
     guichet: "direction",
   },
   opco_refus_a_traiter: {
     niveau: "critique",
-    titre: "Refus de l'OPCO à traiter",
+    titre: "Refus de l'organisme tiers à traiter",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1743,7 +1762,7 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
   },
   financeur_paiement_en_retard: {
     niveau: "critique",
-    titre: "Paiement du financeur en retard (échéance dépassée)",
+    titre: "Paiement de l'organisme tiers en retard (échéance dépassée)",
     resolutionAuto: true,
     guichet: "direction",
   },
@@ -1866,6 +1885,29 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     guichet: "administratif",
   },
 
+  // Décision de Williams du 11/11/2026 — une demande d'effacement MET À L'ÉCART au lieu de
+  // supprimer (`server/rgpd/ecarter-au-lieu-d-effacer.ts`). Deux codes : `email_retenu_ecarte_effacement`
+  // reste `info` (cloche seulement) ; `rgpd_effacement_a_traiter` est `critique` (voir plus bas).
+  email_retenu_ecarte_effacement: {
+    niveau: "info",
+    titre: "Envoi retenu : la personne a demandé l'effacement de ses données",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée à l'instant de l'envoi, jamais par `evaluerAlertes`. La mise à l'écart pour effacement est définitive : l'alerte est la trace d'un envoi qui n'est pas parti, et doit survivre au balayage qui ne la voit pas.",
+    guichet: "direction",
+  },
+  // 🔴 `critique` (et non plus `info`) : le délai légal de réponse est d'UN MOIS (RGPD art. 12.3).
+  // Une alerte « cloche seulement » pouvait être ratée. `critique` part seul et tout de suite par
+  // l'e-mail d'alerte existant (`routage.ts` › `estImmediat`), sans nouveau canal.
+  rgpd_effacement_a_traiter: {
+    niveau: "critique",
+    titre: "Demande d'effacement RGPD à traiter à la main",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la demande d'effacement (`/api/gdpr-erase` ou la console Lettre), jamais par `evaluerAlertes`. Rien n'est supprimé automatiquement : seule la personne qui a traité la demande à la main peut la refermer.",
+    guichet: "direction",
+  },
+
   // ── Circuit visio (chantier « enregistrement des visios », PR 4) ──────────
   //
   // Correction anti-doublon A3 : les pannes du circuit s'écrivent ICI, pas dans
@@ -1877,6 +1919,47 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
     resolutionAuto: false,
     motifSansResolutionAuto:
       "STRUCTUREL — levée par le balayage du dossier client (worker `visio-balayage`, toutes les 5 minutes), jamais par `evaluerAlertes`. Le balayage la résout lui-même quand toutes ses étapes sont revenues au vert ; `synchroniserAlertes` la fermerait au premier tour, pendant la panne.",
+    guichet: "direction",
+  },
+
+  "visio.doublon_possible": {
+    niveau: "important",
+    titre: "Fiche prospect créée toute seule : doublon possible à fusionner",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — émise une fois par fiche créée en doute d'identité par le balayage du dossier client ; elle attend la fusion au SIRET (une autre PR), `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.fiche_de_message_efface": {
+    niveau: "important",
+    titre: "Message effacé (art. 17) : sa fiche prospect est restée, à examiner",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — émise une fois par l'effacement d'un message relié à une fiche ; rien n'est supprimé tout seul, la fiche attend la décision de Will, `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.fiche_demande_refus_porte": {
+    niveau: "important",
+    titre: "Messages du site sans fiche prospect : la porte a refusé trois fois",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage (étape « fiches-demande ») quand un message est écarté après trois refus de la porte unique ; le refus est permanent, `synchroniserAlertes` la fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.fiche_demande_bilan_essai": {
+    niveau: "info",
+    titre: "Essai à blanc des fiches des demandes",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par le balayage (étape « fiches-demande ») en mode essai, une fois par jour (cible = le jour de Paris) ; c'est un bilan chiffré à lire, `synchroniserAlertes` le fermerait au premier tour.",
+    guichet: "direction",
+  },
+  "visio.rendez_vous_a_classer": {
+    niveau: "important",
+    titre: "Rendez-vous Calendly à classer à la main (fiche automatique en doute)",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — ouverte et résolue par le balayage du dossier client (étape « fiches-auto »), qui sait seul combien de rendez-vous attendent ; `synchroniserAlertes` la fermerait au premier tour.",
     guichet: "direction",
   },
 

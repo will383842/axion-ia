@@ -49,7 +49,7 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Roche-la-Molière et Saint-Étienne Métropole ?",
-      a: "Oui, Axion-IA intervient à Roche-la-Molière et toute la banlieue ouest stéphanoise (Saint-Étienne à 10 min, Firminy à 10 min, La Ricamarie). Consultants depuis Lyon (1h) ou Saint-Étienne (10 min).",
+      a: "Oui, Axion-IA intervient à Roche-la-Molière et toute la banlieue ouest stéphanoise (Saint-Étienne à 10 min, Firminy à 10 min, La Ricamarie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles diversifiées ?",
@@ -64,8 +64,8 @@ export const ROCHE_LA_MOLIERE_COPY: VilleCopy = {
       a: "Pour les indépendants et professions libérales à Roche-la-Molière, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1. Cas typiques : agents IA prise de RDV, classification documents, CRM augmentés.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Saint-Étienne ?",
-      a: "Nos consultants viennent de Lyon (1h) ou Saint-Étienne (10 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une mission à Roche-la-Molière ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

@@ -4,9 +4,22 @@
 **Délai légal** : 30 jours.
 **Action interne** :
 
+> 🔴 **Depuis le 11/11/2026 (décision de Williams), une demande d'effacement ne supprime rien automatiquement.**
+> La route `/api/gdpr-erase`, le bouton « Effacer (RGPD) » de la console Lettre et le message privé d'un
+> réseau mettent la personne **à l'écart** (opposition, plus aucun envoi, trace `gdpr.erase.requested`) et
+> posent une alerte dans la **cloche** (jamais d'e-mail). Pour une demande reçue par **e-mail**, par le
+> portail stagiaire, ou en **message privé** (adresse non prouvée : seule l'opposition est posée), utiliser
+> **Conformité RGPD › Demandes › « Mettre une adresse à l'écart »** (super_admin, motif obligatoire) : il
+> pose la marque « effacement demandé ». L'effacement éventuel reste un geste humain, ci-dessous.
+> **Une fois l'effacement accepté et passé**, masquer l'adresse restée en clair dans les alertes de la
+> cloche (mise à jour, aucune suppression) : `masquerAdresseDansAlertes(adresse)` de `src/lib/rgpd-erase.ts`,
+> à lancer avec les autres effaceurs. Lever une marque posée par erreur : requête documentée dans
+> `prisma/migrations/20261112110000_oppositions_effacement_demande/rollback.sql`.
+
 - Submissions / contact / audit / implementation → `eraseSubmissionAction` (Sprint 24/D1, super_admin only).
 - Newsletter → `eraseSubscriberAction` (Sprint 24/D1, super_admin only).
 - Dossier client et enregistrements des visios → `effacerCibleParAdresses` (`src/lib/rgpd-erase.ts`), appelé par `/api/gdpr-erase` : segments de sa voix, faits dont elle est sujet ou locutrice, comptes rendus vidés pour réécriture ; la preuve d'accord reste (art. 17(3)(e)).
+- E-mails écrits à la main depuis une fiche → **étape manuelle du fondateur**, jamais lancée par `/api/gdpr-erase` ni par un automate : `neutraliserEmailsManuelsPour(adresse)` de `src/lib/rgpd-erase.ts`, **une fois par adresse de la personne**. Elle met les lignes à jour en place et ne supprime rien : adresse remplacée par un pseudonyme chiffré (empreinte gardée), nom, objet et corps vidés (pour un stagiaire : seule l'adresse est masquée, le contenu reste), pièces jointes gardées avec un nom neutralisé. **Les fichiers des pièces jointes restent dans le stockage R2** : la fonction rend la liste de leurs clés (`clesStockage`) ; le fondateur décide, à la main, de ce qui y est supprimé. Chaque ligne modifiée est **journalisée** (`emails_manuels`, art. 17) et **rejouée** après une restauration (R33). Un e-mail `en_file` ou `echec` passe `retenu` (il ne partira plus) ; un brouillon reste brouillon. **Ordre : neutraliser AVANT toute autre étape qui retire les adresses de la fiche personne**, sinon la recherche par fiche ne trouve plus rien. Les e-mails écrits depuis SA fiche mais envoyés à **une autre adresse** (assistante, collègue) sont **listés** (`rattachesAutreAdresse`) sans être touchés ; le fondateur les vide d'un geste avec l'option `aussiRattachesAutreAdresse: true` (l'adresse du tiers est gardée). Tant qu'un e-mail écrit à la main existe, la suppression d'une fiche ou d'une personne depuis la console **refuse** en clair. **La purge du pilote ne refuse plus** : une personne d'essai visée par un e-mail écrit à la main est **gardée, mise à l'écart et signalée au fondateur** (`personnesGardees`) ; le reste est purgé.
 - Bookings ferme → conservé 10 ans (obligation comptable française) → expliqué dans la réponse.
 
 **Limitations légales à signaler** : factures + bookings = obligation de conservation

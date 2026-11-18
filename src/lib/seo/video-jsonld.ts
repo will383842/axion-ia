@@ -1,6 +1,8 @@
 /**
  * JSON-LD d'une PAGE VIDÉO (lot W2, plan PLAN-W1-W4 §6.3) : `VideoObject` +
- * `Clip` + `SeekToAction` + `BreadcrumbList`, dans un seul `@graph`.
+ * `Clip` + `SeekToAction` + `BreadcrumbList`, dans un seul `@graph`. SEO-05 y ajoute
+ * `ImageObject` (carrousel, infographie) et `FAQPage` : ils reprennent EXACTEMENT le texte
+ * visible (fiche de page, champ 25), jamais un texte que la page n'affiche pas.
  *
  * Règles (verrouillées par `__tests__/video-jsonld.spec.ts`) :
  *  - `thumbnailUrl` est un TABLEAU de 3 (16:9, 4:3, 1:1), URL absolues `/medias/` ;
@@ -106,6 +108,33 @@ export function buildVideoPageJsonLd(v: VideoPubliee, { siteUrl, theme }: Option
       : {}),
   };
 
+  const fiche = v.fichePage ?? null;
+  const images = [...(fiche?.carrousel ?? []), ...(fiche?.infographie ? [fiche.infographie] : [])];
+  const imageObjects = images.map((img, i) => ({
+    "@type": "ImageObject",
+    "@id": `${page}#image-${i + 1}`,
+    contentUrl: `${site}${img.chemin}`,
+    url: `${site}${img.chemin}`,
+    caption: img.alt,
+    width: img.largeur,
+    height: img.hauteur,
+    inLanguage: "fr",
+  }));
+  const questions = fiche?.questions ?? v.questions;
+  const faq =
+    questions.length > 0
+      ? {
+          "@type": "FAQPage",
+          "@id": `${page}#faq`,
+          inLanguage: "fr",
+          mainEntity: questions.map((q) => ({
+            "@type": "Question",
+            name: q.question,
+            acceptedAnswer: { "@type": "Answer", text: q.reponse },
+          })),
+        }
+      : null;
+
   const fil = [
     { name: "Accueil", href: "/fr" },
     { name: "Vidéos", href: "/fr/videos" },
@@ -117,6 +146,8 @@ export function buildVideoPageJsonLd(v: VideoPubliee, { siteUrl, theme }: Option
     "@context": "https://schema.org",
     "@graph": [
       videoObject,
+      ...imageObjects,
+      ...(faq ? [faq] : []),
       {
         "@type": "BreadcrumbList",
         "@id": `${page}#breadcrumb`,

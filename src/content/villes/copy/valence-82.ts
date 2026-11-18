@@ -49,7 +49,7 @@ export const VALENCE_82_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valence-d'Agen (82) ?",
-      a: "Oui, Axion-IA intervient à Valence-d'Agen et dans toute la Lomagne tarn-et-garonnaise (Moissac, Castelsarrasin, Lauzerte). Nos consultants se déplacent depuis Toulouse (1h15) ou Agen (25 min).",
+      a: "Oui, Axion-IA intervient à Valence-d'Agen et dans toute la Lomagne tarn-et-garonnaise (Moissac, Castelsarrasin, Lauzerte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Valence (82)  ?",

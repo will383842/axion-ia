@@ -18,9 +18,9 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   ecosystemEn:
     "Charvieu-Chavagneux est une des trois villes-centres de l'unité urbaine du même nom, dans la partie orientale de l'aire d'attraction de Lyon. Position stratégique entre Lyon (35 min A43) et Bourgoin-Jallieu (20 min). Tissu industriel/logistique dense lié à la proximité du couloir rhodanien et de Lyon-Saint-Exupéry (25 min). PME, TPE artisanat BTP, commerces de proximité.",
   distancesFr:
-    "Gare Bourgoin-Jallieu à 20 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 35 min A43. Grenoble centre à 1h. Frontière Rhône à 5 min.",
+    "Gare Bourgoin-Jallieu à 20 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 35 min A43. Frontière Rhône à 5 min.",
   distancesEn:
-    "Gare Bourgoin-Jallieu à 20 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 35 min A43. Grenoble centre à 1h. Frontière Rhône à 5 min.",
+    "Gare Bourgoin-Jallieu à 20 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 25 min. Lyon centre à 35 min A43. Frontière Rhône à 5 min.",
   topSectorsNaf: [
     "Industrie manufacturière Nord-Isère",
     "Logistique & transport (axe rhodanien)",
@@ -49,7 +49,7 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Charvieu-Chavagneux et aire lyonnaise est ?",
-      a: "Oui, Axion-IA intervient à Charvieu-Chavagneux et toute l'aire lyonnaise est (Pont-de-Chéruy, Tignieu-Jameyzieu, Janneyrias, Villette-d'Anthon). Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture).",
+      a: "Oui, Axion-IA intervient à Charvieu-Chavagneux et toute l'aire lyonnaise est (Pont-de-Chéruy, Tignieu-Jameyzieu, Janneyrias, Villette-d'Anthon). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles Nord-Isère ?",
@@ -64,8 +64,8 @@ export const CHARVIEU_CHAVAGNEUX_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et commerçants à Charvieu-Chavagneux, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation pratique, coaching 1-to-1. Cas typiques : automatisation devis, agents IA prise de RDV, classification photos, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Grenoble ?",
-      a: "Nos consultants viennent de Lyon (35 min A43) ou Grenoble (1h voiture). Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les missions multi-jours, hébergement local possible (hôtels Bourgoin-Jallieu ou Lyon-Saint-Exupéry).",
     },
   ],
 };

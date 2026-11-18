@@ -36,8 +36,7 @@ import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import type { NatureDocumentProjet } from "../../../../prisma/generated/client";
 
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
+const carteCls = "admin-carte";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
 const actionCls = "admin-button-secondary min-h-[44px] whitespace-nowrap";
@@ -457,8 +456,8 @@ export function CarteDocuments(p: PropsCarteDocuments): React.ReactElement {
 
       {aucun ? (
         <p className={`mb-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] ${mutedCls}`}>
-          Rangez ici tout ce qui concerne ce projet : ce que vous avez envoyé au client (e-mail,
-          PDF, liens) et vos documents internes.
+          Rangez ici tout ce qui concerne cette prestation : ce que vous avez envoyé au client
+          (e-mail, PDF, liens) et vos documents internes.
         </p>
       ) : null}
 

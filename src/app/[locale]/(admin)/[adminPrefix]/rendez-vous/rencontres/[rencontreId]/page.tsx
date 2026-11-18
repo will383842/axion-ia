@@ -40,6 +40,9 @@ import { VueCompteRendu } from "@/components/admin/visio/VueCompteRendu";
 import { lireCircuitDeLaRencontre, lireCompteRendu } from "@/features/dossier-client/compte-rendu";
 import { compteRenduEnregistre } from "@/features/dossier-client/compte-rendu-en-preparation";
 import { lireMessageDeRetour } from "@/features/dossier-client/message-de-retour";
+import { QuestionnairePreaudit } from "@/components/admin/dossier-client/QuestionnairePreaudit";
+import { SuppressionManuelle } from "@/components/admin/dossier-client/SuppressionManuelle";
+import { adminPath } from "@/lib/admin-path";
 import { prisma } from "@/lib/prisma";
 import { formatDateFrShort } from "@/lib/format-date-fr";
 import { timeInParis } from "@/lib/calendar-grid";
@@ -55,10 +58,8 @@ interface PageProps {
   searchParams: Promise<Record<string, string | undefined>>;
 }
 
-const carteCls =
-  "mb-[var(--space-admin-5)] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-const titreCls =
-  "mb-[var(--space-admin-3)] text-[length:var(--text-admin-base)] font-semibold text-[color:var(--color-admin-fg)]";
+const carteCls = "admin-carte";
+const titreCls = "admin-carte-titre";
 const mutedCls = "text-[color:var(--color-admin-fg-muted)]";
 const listeCls = "space-y-[var(--space-admin-2)] text-[length:var(--text-admin-sm)]";
 const lienCls = "text-[color:var(--color-admin-accent)] underline-offset-2 hover:underline";
@@ -94,6 +95,15 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
 
   const r = await lireRencontreDetaillee(rencontreId);
   if (r === null) notFound();
+  const pageIci = adminPath("fr", `/rendez-vous/rencontres/${r.id}`);
+  const questionnaireId =
+    acces.role === "super_admin"
+      ? ((
+          await prisma.questionnaireAvantAudit
+            .findUnique({ where: { rencontreId: r.id }, select: { id: true } })
+            .catch(() => null)
+        )?.id ?? null)
+      : null;
   // « Après l'appel » est une VUE de cette page (pas une page de plus :
   // cliquet de poids de la console, ADR 0058). Même garde, déjà posée.
   if (sp.vue === "apres-l-appel") {
@@ -180,6 +190,27 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
           {message}
         </p>
       ) : null}
+
+      <QuestionnairePreaudit
+        rencontreId={r.id}
+        peutDeposer={acces.role === "super_admin"}
+        titulaire={r.titulaire}
+        debutPrevu={r.debutPrevu}
+        societe={r.client?.raisonSociale ?? null}
+        apercu={
+          typeof sp.pa_email === "string" && sp.pa_email.trim() !== ""
+            ? {
+                email: sp.pa_email.trim().slice(0, 200),
+                prenom: typeof sp.pa_prenom === "string" ? sp.pa_prenom.trim().slice(0, 60) : "",
+                date: typeof sp.pa_date === "string" ? sp.pa_date.trim().slice(0, 16) : "",
+                lieu: typeof sp.pa_lieu === "string" ? sp.pa_lieu.trim().slice(0, 80) : "",
+                objet: typeof sp.pa_objet === "string" ? sp.pa_objet.slice(0, 200) : "",
+                message: typeof sp.pa_message === "string" ? sp.pa_message.slice(0, 1500) : "",
+                corps: typeof sp.pa_corps === "string" ? sp.pa_corps.slice(0, 2500) : "",
+              }
+            : null
+        }
+      />
 
       <section className={carteCls}>
         <h2 className={titreCls}>Compte rendu</h2>
@@ -309,12 +340,34 @@ export default async function RencontrePage({ params, searchParams }: PageProps)
                 ))}
               </select>
             </label>
-            <button type="submit" className="admin-button-ghost">
+            <AdminButton type="submit" variant="secondary">
               Déplacer
-            </button>
+            </AdminButton>
           </form>
         </section>
       ) : null}
+
+      {/* Suppression MANUELLE (Will, 25/10/2026) : super-administrateur seul, après confirmation. */}
+      {questionnaireId !== null ? (
+        <SuppressionManuelle
+          type="questionnaire"
+          id={questionnaireId}
+          peutSupprimer={acces.role === "super_admin"}
+          page={pageIci}
+          ouvert={sp.supprimer === "questionnaire"}
+          jeton={sp["jeton"] ?? null}
+          erreur={erreur}
+        />
+      ) : null}
+      <SuppressionManuelle
+        type="rencontre"
+        id={r.id}
+        peutSupprimer={acces.role === "super_admin"}
+        page={pageIci}
+        ouvert={sp.supprimer === "rencontre"}
+        jeton={sp["jeton"] ?? null}
+        erreur={erreur}
+      />
     </AdminPageShell>
   );
 }

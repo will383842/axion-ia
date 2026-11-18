@@ -65,7 +65,7 @@ export const TERVILLE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Terville ?",
-      a: "Nos consultants arrivent via autoroute A31 ou gare SNCF Thionville (10 min). Metz à 30 min, Luxembourg à 40 min.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Terville est desservie par l'autoroute A31 et à 10 min de la gare SNCF de Thionville, à 30 min de Metz.",
     },
   ],
 };

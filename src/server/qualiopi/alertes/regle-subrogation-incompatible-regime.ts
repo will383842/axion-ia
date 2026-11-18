@@ -74,8 +74,8 @@ export function candidatsSubrogationIncompatibleRegime(
     alertes.push({
       code: "subrogation_incompatible_regime",
       niveau: "critique",
-      titre: "Subrogation OPCO incompatible avec le régime de paiement",
-      message: `La session ${s.numero} est en subrogation (paiement direct par ${nomOpcoDuClient(s.client)}), alors que le régime de paiement depuis le 1er octobre 2026 est le remboursement de l'entreprise : ${motif}. Sans accord écrit de l'OPCO prévoyant le paiement direct, la facture adressée à l'OPCO sera rejetée. Sur la page Financement de la session, retirez la subrogation ou cochez « L'accord écrit de l'OPCO prévoit le paiement direct à l'organisme ».`,
+      titre: "Subrogation incompatible avec le régime de paiement",
+      message: `La session ${s.numero} est en subrogation (paiement direct par ${nomOpcoDuClient(s.client)}), alors que le régime de paiement depuis le 1er octobre 2026 est le remboursement de l'entreprise : ${motif}. Sans accord écrit de l'organisme tiers prévoyant le paiement direct, la facture adressée à l'organisme tiers sera rejetée. Sur la page Financement de la session, retirez la subrogation ou cochez la case de l'accord écrit prévoyant le paiement direct à l'organisme.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });

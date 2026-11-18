@@ -13,7 +13,7 @@ import { OBJET_MAX } from "../../objet-email";
 import { DOCUMENT_APPORTEUR_CHEMIN } from "@/lib/commercial-application/kit-apporteur";
 import { EMAIL_LEGAL, EMAIL_SIGNATURE } from "@/lib/email/legal-footer";
 
-const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur";
+const CALENDLY = "https://calendly.com/axion-ia/echange-apporteur-affaires";
 const DESTINATAIRE = "camille@exemple.fr";
 
 function texte(h: string): string {

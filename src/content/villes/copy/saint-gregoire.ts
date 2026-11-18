@@ -49,7 +49,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Grégoire ?",
-      a: "Oui, Axion-IA intervient à Saint-Grégoire et dans tout le nord de Rennes Métropole (Betton, La Chapelle-des-Fougeretz, Pacé, Montgermont). Nos consultants accèdent via rocade nord (10 min depuis Rennes centre).",
+      a: "Oui, Axion-IA intervient à Saint-Grégoire et dans tout le nord de Rennes Métropole (Betton, La Chapelle-des-Fougeretz, Pacé, Montgermont). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les PME tertiaires de Saint-Grégoire ?",
@@ -65,7 +65,7 @@ export const SAINT_GREGOIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Saint-Grégoire ?",
-      a: "Nos consultants interviennent à Saint-Grégoire depuis Rennes (10 min via rocade nord). Intervention sur site dans vos bureaux, cabinet ou commerce.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos bureaux, cabinet ou commerce.",
     },
   ],
 };

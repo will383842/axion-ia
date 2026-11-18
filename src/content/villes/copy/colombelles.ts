@@ -49,7 +49,7 @@ export const COLOMBELLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Colombelles et est agglomération Caen ?",
-      a: "Oui, Axion-IA intervient à Colombelles et toute l'agglomération caennaise est (Mondeville, Hérouville-Saint-Clair, Giberville, Cuverville). Consultants sur place en 10 min depuis Caen centre.",
+      a: "Oui, Axion-IA intervient à Colombelles et toute l'agglomération caennaise est (Mondeville, Hérouville-Saint-Clair, Giberville, Cuverville). Consultants sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les acteurs de la reconversion créative ?",
@@ -65,7 +65,7 @@ export const COLOMBELLES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Colombelles ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (bureau, atelier, espace créatif, commerce).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (bureau, atelier, espace créatif, commerce).",
     },
   ],
 };

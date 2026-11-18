@@ -233,7 +233,7 @@ export const VILLENEUVE_D_ASCQ_COPY: VilleCopy = {
     },
     {
       q: "Comment Williams se déplace-t-il à Villeneuve-d'Ascq ?",
-      a: "Williams se déplace depuis Paris par TGV jusqu'à Lille-Europe ou Lille-Flandres (environ 1 h), puis métro VAL jusqu'à Villeneuve-d'Ascq (10 minutes). Intervention dans vos locaux.",
+      a: "Intervention dans vos locaux.",
     },
     {
       q: "Quels délais pour un audit IA à Villeneuve-d'Ascq ?",

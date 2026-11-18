@@ -38,7 +38,7 @@ export const NIMES_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA individuel à Nîmes : accompagnement 1-to-1 ancré dans votre réalité gardoise — BTP, logistique, agroalimentaire ou services. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. From €990 excl. VAT.",
+      en: "Individual AI coaching in Nîmes: 1-to-1 support rooted in your Gard reality — construction, logistics, agri-food or services. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI gardoises — site vitrine premium pour acteurs BTP, ingénierie eau (BRL Groupe) et agroalimentaire (Royal Canin, Perrier), espace client B2B pour structures tertiaires Parc Georges Besse, dashboard métier connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -728,7 +728,7 @@ export const NIMES_COPY: VilleCopy = {
           "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Nîmes is an individual, bespoke engagement: you progress at your own pace, on your own Gard business cases, with a dedicated consultant. From €990 excl. VAT. Suited to SME executives in construction, logistics, agri-food and services across the Gard.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Nîmes is an individual, bespoke engagement: you progress at your own pace, on your own Gard business cases, with a dedicated consultant. Price on request. Suited to SME executives in construction, logistics, agri-food and services across the Gard.",
         whyHere: [
           "Nîmes is a basin of independent micro-businesses and SMEs where the executive often wears several hats: 1-to-1 coaching adapts to your busy schedule, your real pace and your immediate operational cases.",
           "Nîmes construction and business services generate high daily document volumes (quotes, purchase orders, site meeting minutes): each session works on your real documents for immediate gains.",
@@ -767,7 +767,7 @@ export const NIMES_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "Entry-level 1-to-1 coaching — Nîmes tradesperson, retailer, service or construction micro-business executive.",
           },
@@ -812,7 +812,7 @@ export const NIMES_COPY: VilleCopy = {
           },
           {
             q: "Is there a minimum duration or session commitment?",
-            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+            a: "No. No lock-in, no subscription contract. You start with a first session, priced on request. Continuation is decided after each session based on your progress.",
           },
         ],
         guarantees:

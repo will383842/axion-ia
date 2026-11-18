@@ -274,7 +274,7 @@ export async function checkDoctrine(
     blocking.push({
       pattern: `prix-non-SSOT:${pv.amount}`,
       severity: "block",
-      reason: `Montant « ${pv.amount} » absent de pricing.ts (SSOT). Utiliser un token {{price:<tierId>}} ou un tarif de la grille.`,
+      reason: `Montant « ${pv.amount} » non affichable au public (seule la Journée IA l'est). Écrire « sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes ».`,
       occurrences: 1,
     });
   }

@@ -37,7 +37,16 @@ vi.mock("@/lib/email/templates", () => ({
   renderEmailTemplate: (...a: unknown[]) => d.render(...a),
 }));
 vi.mock("@/lib/pii-crypto", () => ({ decryptPii: vi.fn(), isDecryptedEmailUsable: vi.fn() }));
-vi.mock("@/lib/prisma", () => ({ prisma: {} }));
+// La mise à l'écart (effacement) est relue au départ : la lecture doit exister (aucune écartée).
+vi.mock("@/lib/prisma", () => ({
+  // `findUnique` : l'opposition est relue au départ (D-STOP-1) ; sans elle, la lecture lèverait.
+  // `guideRequest` / `emailLog` : la garde du guide relit la demande et le journal (STOP-T1b) ; aucun envoi antérieur.
+  prisma: {
+    emailOpposition: { findFirst: async () => null, findUnique: async () => null },
+    guideRequest: { findUnique: async () => null },
+    emailLog: { findFirst: async () => null },
+  },
+}));
 vi.mock("@/lib/r2-storage", () => ({ isR2Configured: () => false, getObjectBufferR2: vi.fn() }));
 vi.mock("@/server/email/email-log", () => ({
   cloturerJournal: (...a: unknown[]) => d.cloturer(...a),
@@ -57,7 +66,15 @@ function processeur(): Processeur {
 }
 
 function job(data: Record<string, unknown>): Record<string, unknown> {
-  return { id: "job-1", name: data["template"], data, attemptsMade: 0, opts: { attempts: 5 } };
+  // `timestamp` : sans date de création lisible, la garde du guide retient l'envoi (STOP-T1b, B1).
+  return {
+    id: "job-1",
+    name: data["template"],
+    timestamp: Date.parse("2026-11-10T08:00:00Z"),
+    data,
+    attemptsMade: 0,
+    opts: { attempts: 5 },
+  };
 }
 
 beforeEach(() => {
@@ -133,6 +150,79 @@ describe("« Votre guide » : la demande est close APRÈS l'envoi réel", () => 
     );
     expect(d.sendEmail).toHaveBeenCalledWith(
       expect.objectContaining({ unsubscribeToken: "u".repeat(64), marketing: false }),
+    );
+  });
+});
+
+describe("🔴 guide de la page « Recevoir le guide » : List-Unsubscribe par le jeton d'opposition", () => {
+  const ADRESSE = "jeanne@example.test";
+
+  async function envoyer(payload: Record<string, unknown>, famille: string | null = "B") {
+    d.render.mockResolvedValue({ subject: "Objet", html: "<p>x</p>", text: "x", famille });
+    await processeur()(
+      job({
+        template: "guide-ia-envoi",
+        to: ADRESSE,
+        locale: "fr",
+        payload,
+        entityType: "GuideRequest",
+        entityId: "demande-1",
+      }),
+    );
+    return d.sendEmail.mock.calls[0]?.[0] as { unsubscribeToken?: string };
+  }
+
+  it("oppositionToken du payload => unsubscribeToken transmis à l'envoi (donc List-Unsubscribe)", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const jeton = jetonOpposition(ADRESSE);
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      reseau: true,
+      oppositionToken: jeton,
+    });
+    expect(envoi.unsubscribeToken).toBe(jeton);
+  });
+
+  it("même si la famille du gabarit n'est pas déterminée (null)", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const jeton = jetonOpposition(ADRESSE);
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: jeton }, null);
+    expect(envoi.unsubscribeToken).toBe(jeton);
+  });
+
+  it("le jeton d'un AUTRE destinataire est refusé : jamais d'en-tête qui désinscrirait un tiers", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const autre = jetonOpposition("autre@example.test");
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: autre }, null);
+    expect(envoi.unsubscribeToken).toBeUndefined();
+  });
+
+  it("une valeur qui n'est pas un jeton d'opposition est ignorée", async () => {
+    const envoi = await envoyer({ downloadToken: "a".repeat(64), oppositionToken: ADRESSE }, null);
+    expect(envoi.unsubscribeToken).toBeUndefined();
+  });
+
+  it("le jeton de la lettre garde la priorité", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      unsubscribeToken: "u".repeat(64),
+      oppositionToken: jetonOpposition(ADRESSE),
+    });
+    expect(envoi.unsubscribeToken).toBe("u".repeat(64));
+  });
+
+  it("l'adresse ne figure jamais EN CLAIR dans le jeton transmis ni dans les journaux", async () => {
+    const { jetonOpposition } = await import("@/server/email/opposition-jeton");
+    const logs = vi.spyOn(console, "log").mockImplementation(() => {});
+    const warns = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const envoi = await envoyer({
+      downloadToken: "a".repeat(64),
+      oppositionToken: jetonOpposition(ADRESSE),
+    });
+    expect(envoi.unsubscribeToken).not.toContain(ADRESSE);
+    expect(JSON.stringify([...logs.mock.calls, ...warns.mock.calls])).not.toContain(
+      envoi.unsubscribeToken ?? "jamais",
     );
   });
 });

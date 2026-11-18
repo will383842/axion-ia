@@ -49,7 +49,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Wambrechies et dans le nord lillois ?",
-      a: "Oui, Axion-IA intervient à Wambrechies et dans tout le nord de la métropole lilloise (Marquette-lez-Lille, Saint-André-lez-Lille, Bondues, Quesnoy-sur-Deûle). Nos consultants accèdent depuis Lille centre en 10 min via l'A25.",
+      a: "Oui, Axion-IA intervient à Wambrechies et dans tout le nord de la métropole lilloise (Marquette-lez-Lille, Saint-André-lez-Lille, Bondues, Quesnoy-sur-Deûle). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les cabinets conseil et professions libérales ?",
@@ -65,7 +65,7 @@ export const WAMBRECHIES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Wambrechies ?",
-      a: "Nos consultants se déplacent à Wambrechies depuis Lille centre (10 min, A25). Gare Lille-Flandres et Lille-Europe TGV à 15 min. Intervention sur site ou en visio.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare Lille-Flandres et Lille-Europe TGV à 15 min. Intervention sur site ou en visio.",
     },
   ],
 };

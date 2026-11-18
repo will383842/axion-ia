@@ -233,7 +233,7 @@ export const EPINAL_COPY: VilleCopy = {
     },
     {
       q: "Axion-IA intervient-elle dans les communes autour d'Épinal ?",
-      a: "Oui, nous couvrons l'agglomération d'Épinal et notamment Golbey, Chantraine, Dinozé, Jeuxey, Thaon-les-Vosges, Charmes et Remiremont, en déplacement depuis Épinal.",
+      a: "Oui, nous couvrons l'agglomération d'Épinal et notamment Golbey, Chantraine, Dinozé, Jeuxey, Thaon-les-Vosges, Charmes et Remiremont, en déplacement sur site.",
     },
     {
       q: "Quel est le délai d'intervention d'Axion-IA à Épinal ?",

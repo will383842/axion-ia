@@ -39,12 +39,13 @@ export interface EtatAdresseConsole {
  */
 export function refusConsole(
   etat: EtatAdresseConsole,
-  origine: "formulaire" | "admin" | null,
+  origine: "formulaire" | "admin" | "message_prive" | null,
 ): RefusConsole | "introuvable" | null {
   // Le rebond dur arrête tout, demande ou pas : rien n'arriverait.
   if (etat.rebondDur || etat.statut === "bounced") return "adresse-rejetee";
   // La personne a demandé le guide elle-même : le renvoi reste permis.
-  if (origine === "formulaire") return null;
+  // PV-1 : demandé dans un message privé = demandé par la personne elle-même.
+  if (origine === "formulaire" || origine === "message_prive") return null;
   if (etat.opposee) return "adresse-opposee";
   if (etat.statut === "unsubscribed") return "adresse-desabonnee";
   if (etat.statut === "pending") return "inscription-non-confirmee";

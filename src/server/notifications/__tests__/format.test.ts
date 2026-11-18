@@ -1,7 +1,13 @@
 // Tests format.ts — escapeMarkdownV2 + formatNotification (Sprint Notif Infra 2026-05-26).
 
 import { describe, it, expect } from "vitest";
-import { escapeMarkdownV2, formatNotification, formatParisDateTime } from "../format";
+import {
+  escapeMarkdownV2,
+  formatNotification,
+  formatNotificationPlain,
+  formatParisDateTime,
+  markdownV2ToPlain,
+} from "../format";
 import { preparerPourTelegram } from "../channels/telegram";
 import { labeledAnswers, parseScreeningQuestions } from "@/lib/careers/screening-answers";
 
@@ -175,8 +181,8 @@ describe("formatNotification", () => {
   });
 
   // Depuis la refonte 2026-08-09, le message commence par l'EN-TÊTE DE THÈME et
-  // non plus par l'emoji de gravité : c'est ce que WhatsApp affiche sur l'écran
-  // verrouillé, et c'est là que se joue la distinction entre un rendez-vous et
+  // non plus par l'emoji de gravité : c'est ce que l'écran
+  // verrouillé affiche, et c'est là que se joue la distinction entre un rendez-vous et
   // une candidature. La gravité reste présente, juste après.
   it("severity warn/error utilise le bon emoji, après le thème", () => {
     const warn = formatNotification(
@@ -369,5 +375,87 @@ describe("candidature vidéo freelance : le message Telegram arrive entier", () 
     expect(envoye).not.toContain("TRONQUE");
     expect(envoye).not.toContain("25 €");
     expect(envoye).toContain("Voir en console");
+  });
+});
+
+describe("Tour France IA : alertes minimisées", () => {
+  const texte = (event: Parameters<typeof formatNotification>[0]) =>
+    formatNotification(event, "warn").text;
+
+  it("nouvelle demande : ville, compteur, compte oui, lien vers la fiche de la ville", () => {
+    const t = texte({
+      category: "TOUR_DEMANDE_RECUE",
+      payload: { ville: "Lyon", villeCle: "lyon", comptees: 3, seuil: 5, compte: true },
+    });
+    expect(t).toContain("Tour France IA : nouvelle demande");
+    expect(t).toContain("Lyon");
+    expect(t).toContain("3 sur 5");
+    expect(t).toContain("Compte pour la ville");
+    expect(t).toContain("oui");
+    expect(t).toContain("tunnels/tour/demandes");
+    expect(t).not.toContain("fiche");
+    expect(t).toContain(String.raw`ville\=lyon`);
+  });
+
+  it("doublon : « non (déjà comptée) » ; ville hors liste : lien vers la liste des villes", () => {
+    const t = texte({
+      category: "TOUR_DEMANDE_RECUE",
+      payload: {
+        ville: "ville hors liste (à vérifier)",
+        villeCle: null,
+        comptees: 0,
+        seuil: 5,
+        compte: false,
+      },
+    });
+    expect(t).toContain(String.raw`non \(déjà comptée\)`);
+    expect(t).toContain("ville hors liste");
+    expect(t).toContain("tunnels/tour/demandes");
+    expect(t).not.toContain("fiche");
+  });
+
+  it("ville ouverte : titre dédié et compteur", () => {
+    const t = texte({
+      category: "TOUR_VILLE_OUVERTE",
+      payload: { ville: "Lyon", villeCle: "lyon", comptees: 5, seuil: 5 },
+    });
+    expect(t).toContain("VILLE OUVERTE");
+    expect(t).not.toContain("(5 sur 5)");
+    expect(t).toContain("5 sur 5");
+  });
+});
+
+// ── Inversion MarkdownV2 → plain (déplacé de whatsapp.test.ts, canal coupé le 14/11/2026) ──
+describe("markdownV2ToPlain", () => {
+  it("inverse exactement escapeMarkdownV2", () => {
+    const raw = "Budget: 1.900€ (HT) — a+b_c #ok!";
+    expect(markdownV2ToPlain(escapeMarkdownV2(raw))).toBe(raw);
+  });
+
+  it("conserve les marqueurs de gras *label* ", () => {
+    const plain = markdownV2ToPlain(
+      `• *${escapeMarkdownV2("Nom")}* : ${escapeMarkdownV2("Marie D.")}`,
+    );
+    expect(plain).toBe("• *Nom* : Marie D.");
+  });
+
+  it("formatNotificationPlain ne contient aucun backslash d'échappement", () => {
+    const { text } = formatNotificationPlain(
+      {
+        category: "CONTACT_FORM_SUBMITTED",
+        payload: {
+          submissionId: "sub_1",
+          contactName: "Marie Dupont",
+          contactEmail: "marie@example.com",
+          formType: "contact",
+          ville: "Grenoble",
+          locale: "fr",
+        },
+      },
+      "info",
+    );
+    expect(text).not.toContain("\\");
+    expect(text).toContain("Marie D.");
+    expect(text).toContain("Grenoble");
   });
 });

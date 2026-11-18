@@ -162,7 +162,7 @@ export function lireChoixDesGroupes(
       else if (UUID.test(choix)) projet = { mode: "existant", projetId: choix };
       else {
         throw new ErreurChoixDeGroupe(
-          `Choisissez un projet pour « ${txt(`groupeIntitule_${g}`) || "l'autre projet évoqué"} ».`,
+          `Choisissez une prestation pour « ${txt(`groupeIntitule_${g}`) || "l'autre prestation évoquée"} ».`,
         );
       }
       return {

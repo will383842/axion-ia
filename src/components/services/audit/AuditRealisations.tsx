@@ -44,7 +44,7 @@ interface Realisation {
 const SEGMENT_LABEL: Record<Segment, { fr: string; en: string }> = {
   TPE: { fr: "TPE", en: "Small business" },
   PME: { fr: "PME", en: "SME" },
-  ETI: { fr: "ETI & grands comptes", en: "Mid-cap & key accounts" },
+  ETI: { fr: "PME multi-sites", en: "Mid-cap & key accounts" },
 };
 
 // 8 réalisations diversifiées — TPE / PME / ETI, secteurs variés. Images = banque
@@ -239,13 +239,13 @@ export function AuditRealisations({ isFr }: { isFr: boolean }): ReactNode {
               style={{ fontFamily: "var(--font-serif)" }}
             >
               {isFr
-                ? "pour les TPE, PME, ETI et grands groupes"
+                ? "pour les PME et les TPE"
                 : "for small businesses, SMEs, mid-caps and large groups"}
             </span>
           </h2>
           <p className="text-fg-soft max-w-2xl text-lg leading-relaxed sm:text-xl">
             {isFr
-              ? "De l'artisan à l'ETI, chaque mission part d'un audit et se termine par un résultat mesurable. Voici un aperçu de ce que nous déployons."
+              ? "De l'artisan à la PME multi-sites, chaque mission part d'un audit et se termine par un résultat mesurable. Voici un aperçu de ce que nous déployons."
               : "From the sole trader to the mid-cap, every engagement starts with an audit and ends with a measurable result. Here is a glimpse of what we deploy."}
           </p>
         </header>

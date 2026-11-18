@@ -15,10 +15,12 @@ export const URL_CALENDLY_APPEL_PAR_DEFAUT = "https://calendly.com/axion-ia/prem
 export const URL_CALENDLY_DIAGNOSTIC_PAR_DEFAUT = "https://calendly.com/axion-ia/diagnostic-ia";
 /**
  * Type « Échange apporteur d'affaires » (15 min, Google Meet). Slug donné par
- * Will le 2026-10-05 (`echange-apporteur`) ; en production la variable
+ * Will le 2026-10-05 (`echange-apporteur`), devenu `echange-apporteur-affaires` dans
+ * Calendly (l'ancien slug renvoie 404, constaté le 2026-10-29) ; en production la variable
  * `CALENDLY_APPORTEUR_URL` le porte déjà et l'emporte sur ce défaut.
  */
-export const URL_CALENDLY_APPORTEUR_PAR_DEFAUT = "https://calendly.com/axion-ia/echange-apporteur";
+export const URL_CALENDLY_APPORTEUR_PAR_DEFAUT =
+  "https://calendly.com/axion-ia/echange-apporteur-affaires";
 /**
  * L'ANCIEN défaut (`echange-apporteur-affaires`), jamais confirmé chez Calendly.
  * Gardé UNIQUEMENT pour le classement (`urlsDeReservationConfigurees`) : si une
@@ -35,3 +37,10 @@ export const URL_CALENDLY_SALON_PAR_DEFAUT = "https://calendly.com/axion-ia/renc
  */
 export const URL_CALENDLY_FORMATEUR_PAR_DEFAUT =
   "https://calendly.com/axion-ia/echange-formateur-independant";
+/**
+ * Type « Tour France IA » (visio de 30 min, landing `/tour-france-ia`,
+ * 2026-10-25). Classé `tour_de_france_ia` en base (type à part), reconnu par
+ * le nom de l'événement. La variable `CALENDLY_TOUR_URL`, si elle est
+ * posée, l'emporte sur ce défaut.
+ */
+export const URL_CALENDLY_TOUR_PAR_DEFAUT = "https://calendly.com/axion-ia/tour-de-france-ia";

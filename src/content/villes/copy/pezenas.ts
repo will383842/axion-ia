@@ -49,7 +49,7 @@ export const PEZENAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pézenas ?",
-      a: "Oui, Axion-IA intervient à Pézenas et dans tout le Piscénois (Roujan, Tourbes, Caux, Nizas). Nos consultants viennent depuis Montpellier (50 min) ou Béziers (20 min).",
+      a: "Oui, Axion-IA intervient à Pézenas et dans tout le Piscénois (Roujan, Tourbes, Caux, Nizas). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Proposez-vous des audits IA pour les artisans d'art ?",

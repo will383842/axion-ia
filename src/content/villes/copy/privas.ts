@@ -49,7 +49,7 @@ export const PRIVAS_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Privas et centre-Ardèche ?",
-      a: "Oui, Axion-IA intervient à Privas et tout le centre-Ardèche (Les Ollières, Chomérac, La Voulte-sur-Rhône). Consultants depuis Lyon (1h45) ou Valence (40 min).",
+      a: "Oui, Axion-IA intervient à Privas et tout le centre-Ardèche (Les Ollières, Chomérac, La Voulte-sur-Rhône). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les confiseurs marrons glacés ?",
@@ -64,7 +64,7 @@ export const PRIVAS_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation, coaching 1-to-1.",
     },
     {
-      q: "Comment se passe une mission depuis Lyon ou Valence ?",
+      q: "Comment se déroule une mission à Privas ?",
       a: "Lyon (1h45) ou Valence (40 min).",
     },
   ],

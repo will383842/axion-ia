@@ -46,6 +46,7 @@ export const CRM_EVENT_TYPES = [
   "opt_out",
   "lead_magnet_requested",
   "email_hard_bounced",
+  "dossier_client_synchro",
 ] as const;
 
 export type CrmEventType = (typeof CRM_EVENT_TYPES)[number];
@@ -59,6 +60,13 @@ export const CRM_EVENT_TYPES_DU_FLUX_GUIDE: readonly CrmEventType[] = [
   "lead_magnet_requested",
   "email_hard_bounced",
 ];
+
+/**
+ * Le type qui n'existe que derrière `CRM_SYNC_DOSSIER_ENABLED` (synchro
+ * AUTOMATIQUE du dossier client de la console, 25/10/2026). Verrou posé dans
+ * `enqueue.ts`, au passage obligé, comme celui du flux guide.
+ */
+export const CRM_EVENT_TYPES_DU_FLUX_DOSSIER: readonly CrmEventType[] = ["dossier_client_synchro"];
 
 /**
  * `payload` des événements « personnes » (lettre et guide), clés lues par
@@ -175,6 +183,13 @@ export interface CrmSyncEvent {
     experiences?: unknown[];
     cv_ref?: string;
   };
+  /**
+   * Preuves de consentement portées à la RACINE (contrat v3, lot S3) : une entrée par accord
+   * recueilli (ex. la case de la page « Recevoir le guide »). Absent = aucun accord à consigner.
+   */
+  consentements?: Array<{ nature: string; date: string; source: string; version: string }>;
+  /** Guides remis à la personne (contrat v3, lot S3) : nom du guide et date de remise (clic). */
+  guides_recus?: Array<{ guide: string; date: string }>;
   /** Tags gouvernés supplémentaires (`namespace:valeur`). */
   tags?: string[];
   /** Métadonnées de timeline (page, UTM…). Jamais de PII hors des champs dédiés. */

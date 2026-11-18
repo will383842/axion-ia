@@ -49,7 +49,7 @@ export const RIXHEIM_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Rixheim et dans l'est de Mulhouse ?",
-      a: "Oui, Axion-IA intervient à Rixheim et dans toute m2A est (Illzach, Sausheim, Habsheim, Riedisheim). Nos consultants se déplacent depuis Strasbourg en 1h via l'A35/A36, ou Mulhouse centre en 10 min.",
+      a: "Oui, Axion-IA intervient à Rixheim et dans toute m2A est (Illzach, Sausheim, Habsheim, Riedisheim). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA à Rixheim  ?",
@@ -65,7 +65,7 @@ export const RIXHEIM_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission Axion-IA à Rixheim ?",
-      a: "Nos consultants interviennent depuis Strasbourg en 1h via l'A35/A36, ou depuis Mulhouse centre en 10 min. Rixheim appartient à Mulhouse Alsace Agglomération, déplacements quotidiens sans surcoût hébergement. Sessions sur site ou en visio selon vos préférences.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Rixheim appartient à Mulhouse Alsace Agglomération. Sessions sur site ou en visio selon vos préférences.",
     },
   ],
 };

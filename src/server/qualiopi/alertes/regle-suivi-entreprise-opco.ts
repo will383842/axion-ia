@@ -54,17 +54,17 @@ interface EntreeAlerte {
 const ENTREES: Record<CodeAlerteSuivi, EntreeAlerte> = {
   entreprise_a_appeler_depot: {
     code: "entreprise_a_appeler_depot",
-    titre: "Entreprise à appeler : dépôt de la demande OPCO",
+    titre: "Entreprise à appeler : dépôt de la demande de paiement par un tiers",
     niveau: "important",
   },
   entreprise_a_appeler_reponse_opco: {
     code: "entreprise_a_appeler_reponse_opco",
-    titre: "Entreprise à appeler : réponse de l'OPCO",
+    titre: "Entreprise à appeler : réponse de l'organisme tiers",
     niveau: "important",
   },
   opco_refus_a_traiter: {
     code: "opco_refus_a_traiter",
-    titre: "Refus de l'OPCO à traiter",
+    titre: "Refus de l'organisme tiers à traiter",
     niveau: "critique",
   },
 };
@@ -88,7 +88,7 @@ export function candidatsSuiviEntreprise(
     for (const a of alertesSuivi(c.dossier, c.suivi, now)) {
       const message =
         a.code === "entreprise_a_appeler_depot"
-          ? `${entreprise} (session ${c.numeroSession}) n'a pas confirmé le dépôt de sa demande de prise en charge auprès de ${c.nomOpco} : ${a.motif}. ${joindre(c)}, puis saisissez la date de dépôt sur la page Financement de la session.`
+          ? `${entreprise} (session ${c.numeroSession}) n'a pas confirmé le dépôt de sa demande de paiement par un tiers auprès de ${c.nomOpco} : ${a.motif}. ${joindre(c)}, puis saisissez la date de dépôt sur la page Financement de la session.`
           : a.code === "entreprise_a_appeler_reponse_opco"
             ? `${entreprise} (session ${c.numeroSession}) a déposé sa demande auprès de ${c.nomOpco}${c.dossier.depotFaitLe ? ` le ${jourFr(jourDeDate(c.dossier.depotFaitLe))}` : ""} et aucune réponse n'est enregistrée : ${a.motif}. ${joindre(c)}, puis saisissez l'accord sur la page Financement de la session.`
             : `${entreprise} déclare un refus de ${c.nomOpco} pour la session ${c.numeroSession}. ${joindre(c)} pour en connaître le motif, puis renvoyez ou clôturez le dossier depuis le Hub facturation.`;

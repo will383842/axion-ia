@@ -230,7 +230,7 @@ export const BRUAY_LA_BUISSIERE_COPY: VilleCopy = {
       a: "Audit sur place {{price:audit-flash|flat}} (4 h sur site, livré sous 5 jours ouvrés), interventions sur site à partir de {{price:intervention-4h|flat}} la demi-journée, coaching 1-to-1 dirigeant à partir de {{price:intervention-dirigeants|flat}}. Tarifs publics, pas de devis opaque.",
     },
     {
-      q: "Axion-IA se déplace-t-il à Bruay-la-Buissière depuis Lille ou Paris ?",
+      q: "Axion-IA se déplace-t-il à Bruay-la-Buissière ?",
       a: "Oui, nos consultants se déplacent à Bruay-la-Buissière et dans toute l'agglomération Béthune-Bruay Artois Lys Romane (Béthune, Lens, Houdain, Divion, Auchel) sous 5 jours ouvrés. Accès direct via A26.",
     },
     {

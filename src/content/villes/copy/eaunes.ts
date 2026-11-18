@@ -49,7 +49,7 @@ export const EAUNES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Eaunes ?",
-      a: "Oui, Axion-IA intervient à Eaunes et dans tout le sud de Toulouse (Muret, Labarthe-sur-Lèze, Seysses). Nos consultants se déplacent en 22 min depuis Toulouse.",
+      a: "Oui, Axion-IA intervient à Eaunes et dans tout le sud de Toulouse (Muret, Labarthe-sur-Lèze, Seysses). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels secteurs accompagnez-vous à Eaunes ?",
@@ -61,7 +61,7 @@ export const EAUNES_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Eaunes ?",
-      a: "Nos consultants se déplacent à Eaunes depuis Toulouse (22 min D820). Intervention 1 journée minimum, atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, atelier pratique dans vos locaux.",
     },
     {
       q: "Proposez-vous du coaching individuel à Eaunes ?",

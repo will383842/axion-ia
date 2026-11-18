@@ -64,8 +64,8 @@ export const SEGRE_EN_ANJOU_BLEU_COPY: VilleCopy = {
       a: "Oui, nous accompagnons les TPE artisans et commerçants de Segré et des 14 communes déléguées sur des cas IA concrets : automatisation devis, gestion stocks, communication locale, agents IA prise de rendez-vous.",
     },
     {
-      q: "Comment vos consultants se rendent-ils à Segré-en-Anjou Bleu ?",
-      a: "Nos consultants viennent d'Angers (45 min D775) ou de Laval (50 min). La gare TGV Angers Saint-Laud est à 45 min. Pour les missions multi-jours, hébergement local possible.",
+      q: "Comment se passe une intervention à Segré-en-Anjou Bleu ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Segré-en-Anjou Bleu est à 45 min d'Angers (D775) et de sa gare TGV Saint-Laud. Pour les missions multi-jours, hébergement local possible.",
     },
   ],
 };
