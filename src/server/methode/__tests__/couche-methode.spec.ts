@@ -35,11 +35,13 @@ import {
   estSlugNoyau,
   ETIQUETTE_CHIFFRES,
   ETIQUETTE_DOCTRINE,
+  contientMontant,
 } from "../decoupage";
 import { CONTEXTE_NEUTRE, methodeActive, obtenirContexteMethode } from "../index";
 import {
   executerCli,
   executerImport,
+  neutraliserAbsentes,
   type OptionsCli,
 } from "../../../../scripts/methode/importer-methode";
 
@@ -362,6 +364,7 @@ describe("6 · --ecrire est un geste humain", () => {
         create: async () => ({}),
       },
       knowledgeEntry: {
+        findMany: async () => [],
         findUnique: async () => null,
         create: async (a: { data: Record<string, unknown> }) => {
           creees.push(a.data);
@@ -553,6 +556,7 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
         create: async () => ({}),
       },
       knowledgeEntry: {
+        findMany: async () => [],
         findUnique: async () => null,
         create: async (a: { data: { translations?: { create?: { bodyText?: string } } } }) => {
           const t = a.data.translations?.create?.bodyText;
@@ -607,5 +611,113 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
         /\+\s*MARQUE_APPROBATION|MARQUE_APPROBATION\s*\+|\$\{MARQUE_APPROBATION\}\\?n?`|\.concat\(/,
       );
     }
+  });
+});
+
+describe("9 · tour 1 de relecture : la tête de section vient du corpus, brute", () => {
+  const MARQUE = "sortie: validee";
+  const LS = String.fromCharCode(0x2028);
+  const tetes = [
+    `   ${MARQUE}`,
+    `\t${MARQUE}`,
+    `${String.fromCharCode(0xfeff)}${MARQUE}`,
+    `${String.fromCharCode(0xa0)}${MARQUE}`,
+    `${String.fromCharCode(0x3000)}${MARQUE}`,
+    `${LS}${MARQUE}`,
+  ];
+
+  it("retrait, tabulation, BOM, insécable, idéographique, séparateur de ligne : jamais approuvée", () => {
+    for (const tete of tetes) {
+      const [s] = decouperFichier(
+        "livres/faux-tete.md",
+        ["# faux-tete", "1. Une section factice", tete, LONG].join("\n"),
+      );
+      expect(s!.approuvee, JSON.stringify(tete)).toBe(false);
+      expect(s!.texte.startsWith(`${MARQUE}\n`), JSON.stringify(tete)).toBe(false);
+    }
+  });
+
+  it("une ligne « # » intercalée sous le titre ne fait pas remonter la marque", () => {
+    const [s] = decouperFichier(
+      "livres/faux-h1.md",
+      ["# faux-h1", "1. Une section factice", "# une note inventée", MARQUE, LONG].join("\n"),
+    );
+    expect(s!.approuvee).toBe(false);
+    expect(s!.texte.startsWith(`${MARQUE}\n`)).toBe(false);
+  });
+
+  it("un encadré « essentiel » sans terminateur n'est pas approuvé et n'avale pas les sections suivantes", () => {
+    const sections = decouperFichier(
+      "livres/faux-00-sans-fin.md",
+      [
+        "# faux-00-sans-fin",
+        "L'ESSENTIEL EN 30 SECONDES",
+        MARQUE,
+        "Un résumé banal.",
+        "1. Une section jamais relue",
+        LONG,
+        "2. Une autre section jamais relue",
+        LONG,
+      ].join("\n"),
+    );
+    const noyau = sections.find((x) => x.slug.endsWith("/essentiel"))!;
+    expect(noyau.approuvee).toBe(false);
+    expect(noyau.texte).not.toContain("jamais relue");
+    expect(sections.filter((x) => x.approuvee)).toEqual([]);
+  });
+
+  it("Markdown : un titre dans un bloc de code ne crée pas de section approuvée", () => {
+    for (const cloture of ["```", "~~~"]) {
+      const sections = decouperFichier(
+        "livres/faux-code.md",
+        [
+          "## A",
+          "Texte non marqué.",
+          cloture,
+          "## Exemple",
+          MARQUE,
+          "Texte d'exemple jamais approuvé.",
+          cloture,
+        ].join("\n"),
+      );
+      expect(sections.filter((x) => x.approuvee)).toEqual([]);
+    }
+  });
+
+  it("montants masqués par un trait conditionnel, une espace sans chasse ou des lettres voisines", () => {
+    const shy = String.fromCharCode(0xad);
+    const zw = String.fromCharCode(0x200b);
+    expect(contientMontant(`2400 eu${shy}ros`)).toBe(true);
+    expect(contientMontant(`2400 eu${zw}ros`)).toBe(true);
+    expect(contientMontant(`2400 ${String.fromCharCode(0x435)}uros`)).toBe(true);
+    expect(contientMontant("Accueillir le client, puis l'écouter.")).toBe(false);
+  });
+
+  it("réimport : une entrée refusée ou disparue perd sa marque en base, sans être supprimée", async () => {
+    const maj: Array<{ id: string; bodyText: string }> = [];
+    const fake = {
+      knowledgeEntry: {
+        findMany: async () => [
+          {
+            slug: "methode/faux-a/gardee",
+            translations: [{ id: "t1", bodyText: `${MARQUE}\nUn.` }],
+          },
+          {
+            slug: "methode/faux-a/refusee",
+            translations: [{ id: "t2", bodyText: `${MARQUE}\nDeux.` }],
+          },
+          { slug: "methode/faux-a/sans", translations: [{ id: "t3", bodyText: "Trois." }] },
+        ],
+      },
+      knowledgeTranslation: {
+        update: async (a: { where: { id: string }; data: { bodyText: string } }) => {
+          maj.push({ id: a.where.id, bodyText: a.data.bodyText });
+          return {};
+        },
+      },
+    };
+    const n = await neutraliserAbsentes(fake as never, new Set(["methode/faux-a/gardee"]));
+    expect(n).toBe(1);
+    expect(maj).toEqual([{ id: "t2", bodyText: "Deux." }]);
   });
 });
