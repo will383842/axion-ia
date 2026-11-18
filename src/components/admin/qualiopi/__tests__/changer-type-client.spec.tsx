@@ -139,6 +139,25 @@ describe("ChangerTypeClient", () => {
     expect(html).not.toContain("Partira au CRM Pro");
   });
 
+  it("passage en entreprise : champ SIREN facultatif et lien d'aide vers l'annuaire", () => {
+    const html = renderToStaticMarkup(
+      <ChangerTypeClient {...base} type="particulier" raisonSociale="Dupont & Fils" />,
+    );
+    expect(html).toContain("SIREN (9 chiffres)");
+    expect(html).toContain('name="siren"');
+    expect(html).toContain(
+      'href="https://annuaire-entreprises.data.gouv.fr/rechercher?terme=Dupont%20%26%20Fils"',
+    );
+    expect(html).toContain('target="_blank"');
+    expect(html).toContain('rel="noopener noreferrer"');
+    expect(html).toContain("arbitrage manuel");
+  });
+
+  it("repasser en particulier : aucun champ SIREN", () => {
+    const html = renderToStaticMarkup(<ChangerTypeClient {...base} type="entreprise" />);
+    expect(html).not.toContain('name="siren"');
+  });
+
   it("propose un motif facultatif, transmis sous le nom « motif »", () => {
     for (const type of ["particulier", "entreprise"] as const) {
       const html = renderToStaticMarkup(<ChangerTypeClient {...base} type={type} />);

@@ -33,6 +33,7 @@ const m = vi.hoisted(() => ({
   avant: vi.fn(),
   emettre: vi.fn(),
   revalidate: vi.fn(),
+  sirenLibre: vi.fn(),
   compteurs: {} as Record<string, ReturnType<typeof vi.fn>>,
 }));
 
@@ -62,6 +63,10 @@ vi.mock("@/server/partners-sync/producteurs/client", () => ({
 }));
 vi.mock("@/server/qualiopi/crm/contact-facturation", () => ({
   definirContactFacturation: m.definirContact,
+}));
+vi.mock("@/server/qualiopi/crm/porte-client", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/crm/porte-client")>()),
+  exigerSirenLibre: m.sirenLibre,
 }));
 vi.mock("next/cache", () => ({ revalidatePath: m.revalidate }));
 vi.mock("next/navigation", () => ({ redirect: vi.fn() }));
@@ -107,6 +112,7 @@ beforeEach(() => {
   m.fusionFindMany.mockResolvedValue([]);
   m.avant.mockResolvedValue(null);
   m.emettre.mockResolvedValue(null);
+  m.sirenLibre.mockResolvedValue(undefined);
   for (const nom of MODELES) m.compteurs[nom]!.mockResolvedValue(0);
 });
 
@@ -310,5 +316,109 @@ describe("la synchro CRM reste l'affaire du balayage", () => {
     expect(corps).not.toMatch(
       /crm-sync|synchroniserDossierClient|balayerDossiersClients|enqueueCrmSyncEvent/,
     );
+  });
+});
+
+describe("changerTypeClientAction — SIREN facultatif", () => {
+  // SIREN FICTIF, clé de Luhn valide.
+  const SIREN = "732829320";
+
+  it("SIREN valide (espaces retirés) : écrit dans la même mise à jour, sous verrou, cliquet respecté, journalisé", async () => {
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: "732 829 320" });
+    expect(r).toEqual({ data: { id: ID } });
+    expect(m.update).toHaveBeenCalledTimes(1);
+    expect(m.update.mock.calls[0]![0]).toEqual({
+      where: { id: ID },
+      data: { type: "entreprise", raisonSociale: "Dupont Conseil SAS", siren: SIREN },
+    });
+    expect(m.sirenLibre).toHaveBeenCalledWith(expect.anything(), ID, SIREN);
+    expect(m.queryRaw.mock.invocationCallOrder[0]!).toBeLessThan(
+      m.sirenLibre.mock.invocationCallOrder[0]!,
+    );
+    expect(m.avant.mock.invocationCallOrder[0]!).toBeLessThan(
+      m.update.mock.invocationCallOrder[0]!,
+    );
+    expect(m.update.mock.invocationCallOrder[0]!).toBeLessThan(
+      m.emettre.mock.invocationCallOrder[0]!,
+    );
+    expect(m.log).toHaveBeenCalledWith(
+      expect.objectContaining({
+        action: "qualiopi.client.type_change",
+        changes: expect.objectContaining({ typeApres: "entreprise", siren: SIREN }),
+      }),
+    );
+  });
+
+  it.each([
+    ["clé de Luhn fausse", "732829321", /clé de contrôle/],
+    ["trop court", "73282932", /9 chiffres/],
+    ["trop long", "7328293200", /9 chiffres/],
+    ["lettres", "73282932A", /9 chiffres/],
+  ])("SIREN invalide (%s) : refusé, aucune écriture", async (_nom, siren, motif) => {
+    const r = await changerTypeClientAction({ ...versEntreprise, siren });
+    expect(r).toEqual({ error: expect.stringMatching(motif) });
+    expect(m.update).not.toHaveBeenCalled();
+    expect(m.log).not.toHaveBeenCalled();
+  });
+
+  it("SIREN déjà pris par une autre fiche : refus qui propose « Fusionner cette fiche », sans nom", async () => {
+    const { ErreurSirenDejaPris } = await import("@/server/qualiopi/crm/porte-client");
+    m.sirenLibre.mockRejectedValue(
+      new ErreurSirenDejaPris({
+        ficheId: AUTRE,
+        numero: "AXI-CLI-004",
+        raisonSociale: "Martin Industrie",
+        signal: "siren",
+        force: "bloquant",
+      } as never),
+    );
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: SIREN });
+    const message = (r as { error: string }).error;
+    expect(message).toContain("AXI-CLI-004");
+    expect(message).toContain("Fusionner cette fiche");
+    expect(message).not.toContain("Martin");
+    expect(m.update).not.toHaveBeenCalled();
+    expect(m.log).not.toHaveBeenCalled();
+  });
+
+  it("repasser en particulier avec un SIREN : refusé, jamais écrit", async () => {
+    m.findUnique.mockResolvedValue(ficheEnBase({ type: "entreprise" }));
+    const r = await changerTypeClientAction({
+      id: ID,
+      type: "particulier",
+      raisonSociale: "Anne Dupont",
+      siren: SIREN,
+    });
+    expect(r).toEqual({ error: expect.stringMatching(/particulier/) });
+    expect(m.update).not.toHaveBeenCalled();
+  });
+
+  it("repasser en particulier sans SIREN : aucun SIREN dans l'écriture", async () => {
+    m.findUnique.mockResolvedValue(ficheEnBase({ type: "entreprise" }));
+    const r = await changerTypeClientAction({
+      id: ID,
+      type: "particulier",
+      raisonSociale: "Anne Dupont",
+      siren: "",
+    });
+    expect(r).toEqual({ data: { id: ID } });
+    expect(m.update.mock.calls[0]![0].data).toEqual({
+      type: "particulier",
+      raisonSociale: "Anne Dupont",
+    });
+    expect(m.sirenLibre).not.toHaveBeenCalled();
+  });
+
+  it("champ vide ou espaces : accepté, aucun SIREN écrit, aucun contrôle d'unicité", async () => {
+    for (const siren of ["", "   ", undefined]) {
+      m.update.mockClear();
+      const r = await changerTypeClientAction({ ...versEntreprise, siren });
+      expect(r).toEqual({ data: { id: ID } });
+      expect(m.update.mock.calls[0]![0].data).toEqual({
+        type: "entreprise",
+        raisonSociale: "Dupont Conseil SAS",
+      });
+    }
+    expect(m.sirenLibre).not.toHaveBeenCalled();
   });
 });

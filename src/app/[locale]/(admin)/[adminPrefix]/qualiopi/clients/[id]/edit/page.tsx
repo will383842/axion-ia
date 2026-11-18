@@ -106,6 +106,7 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
         clientId={client.id}
         type={client.type === "particulier" ? "particulier" : "entreprise"}
         contactNom={client.contactNom}
+        raisonSociale={client.raisonSociale}
         blocage={blocageType}
         apercu={apercuCrm}
       />
