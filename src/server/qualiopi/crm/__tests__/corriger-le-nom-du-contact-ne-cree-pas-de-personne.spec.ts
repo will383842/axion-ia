@@ -103,19 +103,48 @@ describe("corriger le nom du contact ne crée pas de personne", () => {
     invariant(db, fiche.id);
   });
 
-  it("T2 · sans le drapeau, « Anne Dupont » et « DUPONT Anne » sont la même personne", async () => {
+  it("T1 bis · une faute de frappe corrigée : une seule personne, téléphone gardé, rien créé", async () => {
     const { fiche, db } = depart();
-    // Même nom, ordre inversé, avec une adresse qui n'existe pas encore : la
-    // personne actuelle convient (mêmes mots), on lui ajoute l'adresse.
-    const r = await definir(db, {
-      clientId: fiche.id,
-      nom: "Anne Dupont",
-      email: "anne.dupont@fictive.example",
-    });
+    // La fiche porte la faute de frappe « Anne Dupond ».
+    const p = db.etat.contacts[0];
+    if (!p) throw new Error("fixture");
+    p.nom = "Anne Dupond";
+    fiche.contactNom = "Anne Dupond";
+    const r = await definir(db, { clientId: fiche.id, nom: "Anne Dupont", nomCorrige: true });
     expect(r.cree).toBe(false);
     expect(db.etat.contacts).toHaveLength(1);
+    expect(db.etat.contacts[0]?.nom).toBe("Anne Dupont");
     expect(db.etat.contacts[0]?.telephone).toBe("01 02 03 04 05");
+    expect(fiche.contactTelephone).toBe("01 02 03 04 05");
     invariant(db, fiche.id);
+  });
+
+  it("T2 · avec le drapeau, « Anne Dupont » et « DUPONT Anne » sont la même personne ; sans, l'ancien comportement", async () => {
+    // Avec le drapeau et une adresse nouvelle : mêmes mots, la personne actuelle convient.
+    {
+      const { fiche, db } = depart();
+      const r = await definir(db, {
+        clientId: fiche.id,
+        nom: "Anne Dupont",
+        email: "anne.dupont@fictive.example",
+        nomCorrige: true,
+      });
+      expect(r.cree).toBe(false);
+      expect(db.etat.contacts).toHaveLength(1);
+      expect(db.etat.contacts[0]?.telephone).toBe("01 02 03 04 05");
+      invariant(db, fiche.id);
+    }
+    // Sans le drapeau : l'ordre des mots compte, c'est une autre personne.
+    {
+      const { fiche, db } = depart();
+      const r = await definir(db, {
+        clientId: fiche.id,
+        nom: "Anne Dupont",
+        email: "anne.dupont@fictive.example",
+      });
+      expect(r.cree).toBe(true);
+      expect(db.etat.contacts).toHaveLength(2);
+    }
   });
 
   it("T3 · un nouveau nom avec une NOUVELLE adresse crée une nouvelle personne (nomCorrige ou non)", async () => {
@@ -133,5 +162,43 @@ describe("corriger le nom du contact ne crée pas de personne", () => {
       expect(fiche.contactNom).toBe("Bruno Fictif");
       invariant(db, fiche.id);
     }
+  });
+
+  it("T4 · saisir l'adresse d'une AUTRE personne de la fiche ne change ni son téléphone ni sa fonction", async () => {
+    const { fiche, db } = depart();
+    db.etat.contacts.push({
+      id: "p-bruno",
+      clientId: fiche.id,
+      nom: "Bruno Fictif",
+      fonction: "DAF",
+      telephone: "06 00 00 00 00",
+      origine: "saisie",
+      estContactFacturation: false,
+      creeParId: null,
+    });
+    db.etat.adresses.push({
+      id: "a-bruno",
+      contactId: "p-bruno",
+      email: "bruno@fictive.example",
+      emailHash: hash("bruno@fictive.example"),
+      nature: "inconnue",
+    });
+    // Ce que le formulaire envoie désormais : nom et adresse, sans téléphone ni fonction.
+    const r = await definir(db, {
+      clientId: fiche.id,
+      nom: "Bruno Fictif",
+      email: "bruno@fictive.example",
+      nomCorrige: true,
+    });
+    expect(r.contactId).toBe("p-bruno");
+    expect(r.cree).toBe(false);
+    const bruno = db.etat.contacts.find((c) => c.id === "p-bruno");
+    expect(bruno?.telephone).toBe("06 00 00 00 00");
+    expect(bruno?.fonction).toBe("DAF");
+    // L'ancienne personne n'est pas touchée non plus.
+    const anne = db.etat.contacts.find((c) => c.id === "p-anne");
+    expect(anne?.telephone).toBe("01 02 03 04 05");
+    expect(anne?.fonction).toBe("Gérante");
+    invariant(db, fiche.id);
   });
 });

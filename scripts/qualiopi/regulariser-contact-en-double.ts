@@ -7,7 +7,7 @@
  * relecture, sur une fiche identifiée.
  *
  * Usage :
- *   pnpm exec tsx scripts/regulariser-contact-en-double.ts \
+ *   pnpm exec tsx scripts/qualiopi/regulariser-contact-en-double.ts \
  *     --client AXI-CLI-NNN --garder <id personne d'origine> --doublon <id doublon>
  *     [--admin <id administrateur>]                 # essai à blanc : affiche seulement
  *   … --executer                                    # écriture réelle
@@ -26,7 +26,7 @@
  * et nombres, jamais un nom ni une adresse.
  */
 
-import type { Prisma } from "../prisma/generated/client";
+import type { Prisma } from "../../prisma/generated/client";
 import { definirContactFacturation } from "@/server/qualiopi/crm/contact-facturation";
 
 export const TEXTE_NOTE = "Doublon créé par Modifier la fiche, régularisé";
@@ -141,7 +141,10 @@ export async function regulariserContactEnDouble(
       clientId: fiche.id,
       email: adresse,
       nom: doublon.nom,
-      fonction: doublon.fonction,
+      // Fonction vide sur le doublon : on ne remplace pas celle de la personne gardée.
+      ...(doublon.fonction !== null && doublon.fonction !== ""
+        ? { fonction: doublon.fonction }
+        : {}),
       // La fiche n'a plus de téléphone : on ne l'efface pas sur la personne gardée.
       ...(telephone !== null ? { telephone } : {}),
       parAdminId: args.parAdminId ?? null,
@@ -208,7 +211,16 @@ async function main(): Promise<void> {
 const lanceDirectement = /regulariser-contact-en-double\.[cm]?[jt]s$/.test(process.argv[1] ?? "");
 if (lanceDirectement) {
   main().catch((err: unknown) => {
-    console.error("[regulariser-contact] échec :", err instanceof Error ? err.message : err);
+    // Le message d'une erreur inattendue peut porter un nom ou une adresse
+    // (erreur de base, de chiffrement) : seul le nom de l'erreur est affiché.
+    console.error(
+      "[regulariser-contact] échec :",
+      err instanceof ErreurRegularisation
+        ? err.message
+        : err instanceof Error
+          ? err.name
+          : "erreur inconnue",
+    );
     process.exit(1);
   });
 }

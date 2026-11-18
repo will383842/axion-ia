@@ -178,7 +178,6 @@ export function ClientEditForm({
     const change = (k: keyof ClientEditValues) => v[k].trim() !== initial[k].trim();
     /** Texte vidé volontairement → `null` (efface), jamais `""`. */
     const texteOuNull = (k: keyof ClientEditValues) => (v[k].trim() === "" ? null : v[k].trim());
-    const contactCorrige = change("contactNom") || change("contactEmail");
 
     // Les chiffres sont contrôlés ici AVANT l'envoi : `Number("abc")` donnerait
     // `NaN`, que le schéma refuse avec un message moins clair.
@@ -221,16 +220,6 @@ export function ClientEditForm({
         ...(change("secteur") ? { secteur: v.secteur.trim() } : {}),
         ...(change("source") ? { source: v.source.trim() } : {}),
         ...(change("contactNom") ? { contactNom: v.contactNom.trim() } : {}),
-        // 🔴 Nom ou adresse corrigé : téléphone et fonction partent AUSSI, avec
-        // les valeurs affichées. Si le serveur doit finalement créer une
-        // nouvelle personne, elle les reçoit au lieu de repartir vide, et la
-        // copie de la fiche n'est pas réécrite sans téléphone.
-        ...(contactCorrige
-          ? {
-              contactTelephone: v.contactTelephone.trim(),
-              contactFonction: v.contactFonction.trim(),
-            }
-          : {}),
         // 🔴 Vidé volontairement → `null`, pas `""`. Le schéma refuse `""`
         // (`.email()`), et une chaîne vide écrite en base ne serait pas
         // « pas d'adresse » : `devis.ts` teste `contactEmail !== null`, et un
@@ -281,9 +270,11 @@ export function ClientEditForm({
     });
   }
 
-  const nouvellePersonne =
-    v.contactNom.trim() !== initial.contactNom.trim() &&
-    v.contactEmail.trim() !== initial.contactEmail.trim();
+  const nomChange = v.contactNom.trim() !== initial.contactNom.trim();
+  const adresseChange = v.contactEmail.trim() !== initial.contactEmail.trim();
+  const nouvellePersonne = nomChange && adresseChange;
+  // Seul le nom change : le serveur renomme la personne actuelle.
+  const personneRenommee = nomChange && !adresseChange;
 
   const labelCls =
     "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
@@ -505,6 +496,9 @@ export function ClientEditForm({
                 Une nouvelle personne sera créée ; l&apos;ancienne reste dans l&apos;onglet
                 Personnes.
               </p>
+            ) : null}
+            {personneRenommee ? (
+              <p className={aideCls}>La personne actuelle sera renommée.</p>
             ) : null}
           </div>
 

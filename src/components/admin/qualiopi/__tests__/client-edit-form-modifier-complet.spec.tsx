@@ -172,13 +172,7 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
     monter({ secteur: "BTP", contactEmail: "a@b.fr", contactFonction: "Gérant" });
     fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "" } });
     const charge = await enregistrer();
-    // Le nom ou l'adresse change : téléphone et fonction partent aussi (T5).
-    expect(charge).toEqual({
-      id: "1",
-      contactEmail: null,
-      contactTelephone: "",
-      contactFonction: "Gérant",
-    });
+    expect(charge).toEqual({ id: "1", contactEmail: null });
   });
 
   it("modifier le délai n'envoie que le délai, en nombre", async () => {
@@ -198,30 +192,35 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
 });
 
 describe("ClientEditForm — corriger le contact ne vide pas le téléphone", () => {
-  it("T5 · nom modifié : téléphone et fonction affichés partent avec", async () => {
+  it("T5 · nom modifié seul : ni téléphone ni fonction ne partent", async () => {
     monter({
       contactNom: "DUPONT Anne",
       contactTelephone: "01 02 03 04 05",
       contactFonction: "Gérante",
     });
     fireEvent.change(screen.getByLabelText("Nom et prénom"), { target: { value: "Anne Dupont" } });
-    expect(await enregistrer()).toEqual({
-      id: "1",
-      contactNom: "Anne Dupont",
-      contactTelephone: "01 02 03 04 05",
-      contactFonction: "Gérante",
-    });
+    const charge = await enregistrer();
+    expect(charge).toEqual({ id: "1", contactNom: "Anne Dupont" });
+    expect(charge).not.toHaveProperty("contactTelephone");
+    expect(charge).not.toHaveProperty("contactFonction");
   });
 
-  it("T5 · e-mail modifié : téléphone et fonction affichés partent avec", async () => {
+  it("T5 · e-mail modifié seul : ni téléphone ni fonction ne partent", async () => {
     monter({ contactEmail: "a@b.fr", contactTelephone: "01 02 03 04 05", contactFonction: "DAF" });
     fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "c@d.fr" } });
-    expect(await enregistrer()).toEqual({
-      id: "1",
-      contactEmail: "c@d.fr",
-      contactTelephone: "01 02 03 04 05",
-      contactFonction: "DAF",
-    });
+    const charge = await enregistrer();
+    expect(charge).toEqual({ id: "1", contactEmail: "c@d.fr" });
+    expect(charge).not.toHaveProperty("contactTelephone");
+    expect(charge).not.toHaveProperty("contactFonction");
+  });
+
+  it("nom seul modifié : la ligne d'aide annonce que la personne actuelle sera renommée", () => {
+    monter({ contactNom: "DUPONT Anne", contactEmail: "a@b.fr" });
+    expect(screen.queryByText("La personne actuelle sera renommée.")).toBeNull();
+    fireEvent.change(screen.getByLabelText("Nom et prénom"), { target: { value: "Anne Dupont" } });
+    expect(screen.getByText("La personne actuelle sera renommée.")).toBeTruthy();
+    fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "c@d.fr" } });
+    expect(screen.queryByText("La personne actuelle sera renommée.")).toBeNull();
   });
 
   it("nom ET adresse modifiés : la ligne d'aide annonce une nouvelle personne", () => {

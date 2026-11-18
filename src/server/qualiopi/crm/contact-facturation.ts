@@ -26,9 +26,11 @@
  *   1. la personne de la fiche qui a DÉJÀ cette adresse (une DAF connue ne se
  *      duplique pas) ;
  *   2. sinon le contact de facturation actuel, si le nom est le même (ou non
- *      transmis) : on lui ajoute l'adresse. « Le même » = mêmes mots, dans
- *      n'importe quel ordre (« DUPONT Anne » = « Anne Dupont »). Avec
- *      `nomCorrige` (« Modifier la fiche »), un nom différent SANS adresse
+ *      transmis) : on lui ajoute l'adresse. « Le même » = même nom
+ *      normalisé (casse, accents, espaces) ; avec `nomCorrige` SEULEMENT, l'ordre
+ *      des mots est ignoré (« DUPONT Anne » = « Anne Dupont »). Limite : sans
+ *      ce drapeau, « Martin Thomas » et « Thomas Martin » restent deux
+ *      personnes. Avec `nomCorrige` (« Modifier la fiche »), un nom différent SANS adresse
  *      transmise est lu comme une correction : la personne actuelle est
  *      renommée, elle garde téléphone et adresses, rien n'est créé ;
  *   3. sinon une nouvelle personne, et l'ancien contact garde sa fiche de
@@ -92,10 +94,19 @@ function motsTries(x: string): string {
   return normaliserNom(x).split(" ").sort().join(" ");
 }
 
-/** Même personne ? Nom normalisé (casse, accents, espaces), ordre des mots ignoré. */
-function memeNom(a: string, b: string): boolean {
-  const na = motsTries(a);
-  return na !== "" && na === motsTries(b);
+/**
+ * Même personne ? Nom normalisé (casse, accents, espaces). L'ordre des mots
+ * n'est ignoré QUE si `ordreLibre` (drapeau `nomCorrige`, écran « Modifier la
+ * fiche ») : ailleurs, « Martin Thomas » et « Thomas Martin » restent deux
+ * personnes.
+ */
+function memeNom(a: string, b: string, ordreLibre: boolean): boolean {
+  if (ordreLibre) {
+    const na = motsTries(a);
+    return na !== "" && na === motsTries(b);
+  }
+  const na = normaliserNom(a);
+  return na !== "" && na === normaliserNom(b);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -242,7 +253,7 @@ export async function definirContactFacturation(
     (nom === undefined ||
       nom === null ||
       actuel.nom === NOM_A_COMPLETER ||
-      memeNom(nom, actuel.nom));
+      memeNom(nom, actuel.nom, entree.nomCorrige === true));
   // Correction de nom sans adresse : la même personne, renommée (chemin de mise à jour).
   const correction =
     entree.nomCorrige === true &&
