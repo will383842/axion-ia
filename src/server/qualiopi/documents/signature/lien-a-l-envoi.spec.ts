@@ -10,8 +10,10 @@ const h = vi.hoisted(() => ({
   txDocFindUnique: vi.fn(),
   txDevisFindFirst: vi.fn(),
   commitEchec: { v: false },
+  verrou: { pris: false },
   devisFindUnique: vi.fn(),
   devisCount: vi.fn(),
+  txDevisCount: vi.fn(),
   txOptions: vi.fn(),
   ordre: [] as string[],
   txRecu: [] as unknown[],
@@ -35,7 +37,13 @@ vi.mock("@/lib/prisma", () => ({
     },
     $transaction: async (f: (t: unknown) => unknown, options?: unknown) => {
       h.txOptions(options);
-      const r = await f(tx);
+      let r: unknown;
+      try {
+        r = await f(tx);
+      } finally {
+        // Un verrou consultatif « xact » tombe à la fin de la transaction.
+        h.verrou.pris = false;
+      }
       if (h.commitEchec.v) throw new Error(`commit échoué ${ADRESSE} /portail/signer/${TOKEN}`);
       return r;
     },
@@ -46,6 +54,7 @@ const tx = {
   devis: {
     findUnique: (...a: unknown[]) => h.txDevisFindUnique(...a),
     findFirst: (...a: unknown[]) => h.txDevisFindFirst(...a),
+    count: (...a: unknown[]) => h.txDevisCount(...a),
   },
   documentGenere: { findUnique: (...a: unknown[]) => h.txDocFindUnique(...a) },
 };
@@ -164,6 +173,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   h.ordre.length = 0;
   h.commitEchec.v = false;
+  h.verrou.pris = false;
   h.queryRaw.mockImplementation(async () => {
     h.ordre.push("verrou");
     return [{ locked: true }];
@@ -182,6 +192,7 @@ beforeEach(() => {
   });
   h.devisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye" }));
   h.devisCount.mockResolvedValue(1);
+  h.txDevisCount.mockResolvedValue(1);
   h.formules.mockResolvedValue(true);
   h.bloque.mockImplementation(async () => {
     h.ordre.push("gardes");
@@ -602,6 +613,13 @@ describe("devis-premier-envoi", () => {
 });
 
 describe("devis-renvoi", () => {
+  beforeEach(() => {
+    h.txDevisFindUnique.mockImplementation(async () => {
+      h.ordre.push("relu");
+      return devisRelu({ statut: "envoye" });
+    });
+  });
+
   const lancer = (enfiler: (p: Record<string, unknown>) => Promise<never>) =>
     envoyerAvecLienALEnvoi({
       ligne: LIGNE,
@@ -626,20 +644,20 @@ describe("devis-renvoi", () => {
   it.each([
     [
       "statut non envoyé",
-      () => h.devisFindUnique.mockResolvedValue(devisRelu({ statut: "brouillon" })),
+      () => h.txDevisFindUnique.mockResolvedValue(devisRelu({ statut: "brouillon" })),
     ],
     [
       "autre pièce",
       () =>
-        h.devisFindUnique.mockResolvedValue(
+        h.txDevisFindUnique.mockResolvedValue(
           devisRelu({ statut: "envoye", documentGenereId: "autre" }),
         ),
     ],
-    ["déjà signé par le client", () => h.devisCount.mockResolvedValue(0)],
+    ["déjà signé par le client", () => h.txDevisCount.mockResolvedValue(0)],
     [
       "formules éteintes",
       () => {
-        h.devisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye", offre: { x: 1 } }));
+        h.txDevisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye", offre: { x: 1 } }));
         h.formules.mockResolvedValue(false);
       },
     ],
@@ -756,6 +774,100 @@ describe("devis-renvoi", () => {
       res: v,
     });
   });
+
+  describe("B2 PR 4 : verrou du devis et relecture dans la transaction", () => {
+    beforeEach(() => {
+      h.txDevisFindUnique.mockImplementation(async () => {
+        h.ordre.push("relu");
+        return devisRelu({ statut: "envoye" });
+      });
+    });
+
+    it("le verrou `devis.envoi:<id>` est pris AVANT la relecture, AVANT le jeton, AVANT l'enfilage", async () => {
+      const enfiler = vi.fn(async () => {
+        h.ordre.push("enfiler");
+        return { enqueued: true };
+      });
+      await lancer(enfiler as never);
+      expect(h.ordre.indexOf("verrou")).toBe(0);
+      expect(h.ordre.indexOf("verrou")).toBeLessThan(h.ordre.indexOf("relu"));
+      expect(h.ordre.indexOf("relu")).toBeLessThan(h.ordre.indexOf("jeton"));
+      expect(h.ordre.indexOf("jeton")).toBeLessThan(h.ordre.indexOf("enfiler"));
+      // Même clé que le premier envoi.
+      const appel = h.queryRaw.mock.calls[0] as unknown[];
+      expect(JSON.stringify(appel)).toContain(`devis.envoi:${DEVIS_ID}`);
+    });
+
+    it("verrou déjà pris : EnvoiOccupe, aucun jeton, aucun enfilage", async () => {
+      h.queryRaw.mockImplementation(async () => [{ locked: false }]);
+      const enfiler = vi.fn(enfileOk);
+      await expect(lancer(enfiler as never)).rejects.toBeInstanceOf(EnvoiOccupe);
+      expect(h.creerToken).not.toHaveBeenCalled();
+      expect(enfiler).not.toHaveBeenCalled();
+    });
+
+    it("deux approbations de renvoi SIMULTANÉES du même devis : un seul jeton, un seul e-mail", async () => {
+      h.queryRaw.mockImplementation(async () => {
+        h.ordre.push("verrou");
+        if (h.verrou.pris) return [{ locked: false }];
+        h.verrou.pris = true;
+        return [{ locked: true }];
+      });
+      const enfiler = vi.fn(async () => {
+        // Laisse la seconde approbation tenter son verrou pendant que la première travaille.
+        await new Promise((r) => setTimeout(r, 5));
+        return { enqueued: true };
+      });
+      const [a, b] = await Promise.allSettled([lancer(enfiler as never), lancer(enfiler as never)]);
+      expect(h.creerToken).toHaveBeenCalledTimes(1);
+      expect(enfiler).toHaveBeenCalledTimes(1);
+      const issues = [a, b].map((x) => x.status);
+      expect(issues.sort()).toEqual(["fulfilled", "rejected"]);
+      const rejet = [a, b].find((x) => x.status === "rejected") as PromiseRejectedResult;
+      expect(rejet.reason).toBeInstanceOf(EnvoiOccupe);
+    });
+
+    it("le devis n'est plus « envoye » dans le tx (changé pendant l'attente du verrou) : refus, aucun jeton", async () => {
+      h.txDevisFindUnique.mockImplementation(async () => devisRelu({ statut: "accepte" }));
+      const r = await lancer(vi.fn(enfileOk) as never);
+      expect(r.type).toBe("refus");
+      expect(h.creerToken).not.toHaveBeenCalled();
+    });
+
+    it("la lecture et le contrôle « déjà signé » se font dans le tx, pas hors verrou", async () => {
+      await lancer(vi.fn(enfileOk) as never);
+      expect(h.devisFindUnique).not.toHaveBeenCalled();
+      expect(h.devisCount).not.toHaveBeenCalled();
+      expect(h.txDevisCount).toHaveBeenCalledTimes(1);
+    });
+
+    it("échec d'enfilage : verrou relâché, ancien lien rendu, erreur neutre", async () => {
+      const levee = await lancer(
+        vi.fn(async () => {
+          throw new Error(`${TOKEN} ${ADRESSE}`);
+        }) as never,
+      ).catch((e: unknown) => e);
+      expect(levee).toBeInstanceOf(EnvoiNonParti);
+      expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+      expect(h.verrou.pris).toBe(false);
+    });
+
+    it("commit en échec APRÈS l'enfilage : rien ne remonte, aucune révocation, alerte sans fuite", async () => {
+      h.commitEchec.v = true;
+      const v = { enqueued: true };
+      await expect(lancer(vi.fn(async () => v) as never)).resolves.toEqual({
+        type: "envoi",
+        res: v,
+      });
+      expect(h.rendrePrecedent).not.toHaveBeenCalled();
+      expect(h.revoquerPrecis).not.toHaveBeenCalled();
+      expect(h.sentryExc).toHaveBeenCalled();
+      const s = toutSerialise();
+      expect(s).not.toContain(TOKEN);
+      expect(s).not.toContain("/portail/signer/");
+      expect(s).not.toContain(ADRESSE);
+    });
+  });
 });
 
 describe("aucune fuite, dans tous les cas", () => {
@@ -793,13 +905,17 @@ describe("aucune fuite, dans tous les cas", () => {
 
   it("m1 : exception à l'enfilage au RENVOI, erreur de jeton non typée, échec du commit", async () => {
     const secret = `${TOKEN} ${ADRESSE} https://exemple.test/fr/portail/signer/${TOKEN}`;
-    const lancerCas = (m: unknown, enfiler: unknown) =>
-      envoyerAvecLienALEnvoi({
+    // Le devis relu dans le tx : « envoye » pour un renvoi, « brouillon » pour un premier envoi.
+    const lancerCas = (m: unknown, enfiler: unknown) => {
+      const statut = (m as { nature: string }).nature === "devis-renvoi" ? "envoye" : "brouillon";
+      h.txDevisFindUnique.mockImplementation(async () => devisRelu({ statut }));
+      return envoyerAvecLienALEnvoi({
         ligne: LIGNE,
         payload: payloadAvec(m),
         acteur: ACTEUR,
         enfiler: enfiler as never,
       }).catch((e: unknown) => e);
+    };
     const erreurs: unknown[] = [];
     // renvoi : exception à l'enfilage
     erreurs.push(
