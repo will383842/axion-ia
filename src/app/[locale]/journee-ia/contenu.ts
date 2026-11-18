@@ -19,6 +19,7 @@ import {
   JETON_PRIX,
   MENTION_DECLARATION_OF,
   RAPPORT_COMPLET,
+  DEDUCTION_JOURNEE_IA,
 } from "@/content/journee-ia-commun";
 
 // Le jeton de prix et la garantie vivent dans le module commun (partagés avec l'accueil, le
@@ -211,6 +212,7 @@ export const CONTENU = {
     montant: JETON_PRIX,
     unite: "la journée",
     lignes: ["Dans vos locaux", "Sans remise", "Devis écrit, rien à payer en ligne"],
+    deduction: DEDUCTION_JOURNEE_IA,
     ancre: "Dans cet exemple type, la journée coûte moins de deux mois de ces heures.",
     titreGarantie: "Pas 3 fois le prix en gains identifiés\u202f? Nous vous remboursons.",
     garantie: GARANTIE_PHRASE,
@@ -267,8 +269,7 @@ export const CONTENU = {
     {
       id: "faq-prix",
       question: "Combien coûte la Journée IA, et qu’est-ce qui est compris\u202f?",
-      reponse:
-        "{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis.",
+      reponse: `{{PRIX}} la journée, dans vos locaux\u202f: un prix unique, sans remise. Il comprend l’audit, la formation, les attestations, le rapport et le plan d’action. Rien ne se paie en ligne\u202f: les modalités figurent dans votre devis. ${DEDUCTION_JOURNEE_IA}`,
     },
     {
       id: "faq-audit-cout",

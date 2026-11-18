@@ -81,6 +81,14 @@ export const EN_BREF_JOURNEE_IA_PARAGRAPHES = [
   "Rapport chiffré sous 3 jours ouvrés. Prix\u202f: {{PRIX}}, garantie écrite sous condition.",
 ] as const;
 
+/**
+ * Déduction du prix de la Journée IA sur un devis d'automatisation ou d'intégration
+ * (décision du dirigeant, 18/11/2026). Jamais applicable à une formation : ne l'écrire
+ * sur aucune page formations. Le prix est le jeton, remplacé par `remplacerJetons()`.
+ */
+export const DEDUCTION_JOURNEE_IA =
+  "Si vous nous confiez ensuite la mise en place d’une automatisation ou d’une intégration dans les 60 jours, les {{PRIX}} de la Journée IA sont déduits de votre devis.";
+
 /** Le chemin de la landing (préfixé par la locale au rendu : `/fr/journee-ia`). */
 export const CHEMIN_JOURNEE_IA = "/journee-ia";
 

@@ -269,11 +269,6 @@ export async function Footer() {
                   {isFr ? "Certification Qualiopi" : "Qualiopi certification"}
                 </Link>
               </li>
-              <li>
-                <Link href={"/financement-opco-france-travail" as never} className={lienTexteCn}>
-                  {isFr ? "Financement OPCO / France Travail" : "OPCO / France Travail funding"}
-                </Link>
-              </li>
             </ul>
           ) : null}
         </div>
