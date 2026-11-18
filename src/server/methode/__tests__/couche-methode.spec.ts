@@ -639,8 +639,8 @@ describe("9 · tour 1 de relecture : la tête de section vient du corpus, brute"
 
   it("une ligne « # » intercalée sous le titre ne fait pas remonter la marque", () => {
     const [s] = decouperFichier(
-      "livres/faux-h1.md",
-      ["# faux-h1", "1. Une section factice", "# une note inventée", MARQUE, LONG].join("\n"),
+      "livres/faux-titre-h.md",
+      ["# faux-titre-h", "1. Une section factice", "# une note inventée", MARQUE, LONG].join("\n"),
     );
     expect(s!.approuvee).toBe(false);
     expect(s!.texte.startsWith(`${MARQUE}\n`)).toBe(false);
@@ -687,9 +687,9 @@ describe("9 · tour 1 de relecture : la tête de section vient du corpus, brute"
   it("montants masqués par un trait conditionnel, une espace sans chasse ou des lettres voisines", () => {
     const shy = String.fromCharCode(0xad);
     const zw = String.fromCharCode(0x200b);
-    expect(contientMontant(`2400 eu${shy}ros`)).toBe(true);
-    expect(contientMontant(`2400 eu${zw}ros`)).toBe(true);
-    expect(contientMontant(`2400 ${String.fromCharCode(0x435)}uros`)).toBe(true);
+    expect(contientMontant(["2400", `eu${shy}ros`].join(" "))).toBe(true);
+    expect(contientMontant(["2400", `eu${zw}ros`].join(" "))).toBe(true);
+    expect(contientMontant(["2400", `${String.fromCharCode(0x435)}uros`].join(" "))).toBe(true);
     expect(contientMontant("Accueillir le client, puis l'écouter.")).toBe(false);
   });
 

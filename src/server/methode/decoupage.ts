@@ -167,8 +167,13 @@ const MOTIF_PERIODE_TAXE =
   /\bpar (?:heure|jour|mois|trimestre|semestre|semaine|an|annee)s?\b|\bde l'heure\b|\bhors[\s-]+(?:taxe|tva|ht)|\bhtva\b|\bh\.? ?t\.? ?v\.? ?a\b/;
 
 export function contientMontant(texte: string): boolean {
+  const lu = lire(texte);
   return (
-    MOTIF_MONTANT.test(texte) || MOTIF_MONETAIRE.test(texte) || MOTIF_PERIODE_TAXE.test(lire(texte))
+    MOTIF_MONTANT.test(texte) ||
+    MOTIF_MONETAIRE.test(texte) ||
+    MOTIF_MONTANT.test(lu) ||
+    MOTIF_MONETAIRE.test(lu) ||
+    MOTIF_PERIODE_TAXE.test(lu)
   );
 }
 
@@ -276,6 +281,11 @@ interface Morceau {
   slug: string;
   titre: string;
   lignes: string[];
+  /**
+   * Le découpage a touché la tête de la section (ligne « # » supprimée, encadré sans
+   * terminateur…) : sa première ligne n'est plus celle du corpus, donc JAMAIS approuvée.
+   */
+  neutre?: boolean;
 }
 
 const MOTIF_NUMERO = /^(\d{1,2})\.\s+(\S.{1,88})$/;
@@ -317,7 +327,12 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
     const brute = lignes[i]!;
     const ligne = brute.trim();
 
-    if (/^# /.test(ligne)) continue; // titre H1 = nom du fichier
+    if (/^# /.test(ligne)) {
+      // titre H1 = nom du fichier ; s'il s'intercale sous un titre de section, la tête
+      // de cette section n'est plus celle du corpus : elle ne pourra pas être approuvée.
+      if (courant.lignes.every((l) => l.trim() === "")) courant.neutre = true;
+      continue;
+    }
 
     const bloc = BLOCS_FIXES.find((b) => b.ligne === ligne);
     if (bloc) {
@@ -333,15 +348,29 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
           lignes: [],
         };
         let j = i + 1;
-        while (j < lignes.length && lignes[j]!.trim() !== "Les idées clés") {
+        let termine = false;
+        while (j < lignes.length) {
+          const l = lignes[j]!.trim();
+          if (l === "Les idées clés") {
+            termine = true;
+            break;
+          }
+          // Terminateur absent : l'encadré s'arrête au prochain bloc fixe ou titre attendu,
+          // et il n'est pas approuvé (il pourrait avoir avalé des sections non relues).
+          if (
+            BLOCS_FIXES.some((b) => b.slug !== null && b.ligne === l) ||
+            candidatNumerote(l)?.n === dernierNumero + 1
+          )
+            break;
           essentiel.lignes.push(lignes[j]!);
           j++;
         }
+        if (!termine) essentiel.neutre = true;
         morceaux.push(essentiel);
         courant = { ...reprise, lignes: [] };
         // `reprise` a déjà été poussé s'il avait du contenu : sa suite reçoit un suffixe.
         courant.slug = `${reprise.slug}-suite`;
-        i = j; // saute « Les idées clés »
+        i = termine ? j : j - 1; // saute « Les idées clés » ; sinon reprend à la ligne qui a arrêté
         continue;
       }
       dansBlocFixe = true;
@@ -460,8 +489,14 @@ function decouperMarkdown(lignes: readonly string[]): Morceau[] {
     return n === 1 ? slug : `${slug}-${n}`;
   };
 
+  let cloture: string | null = null; // bloc de code ouvert : aucun titre n'y est reconnu
   for (const brute of lignes) {
-    const h = /^(#{1,2})\s+(.+?)\s*$/.exec(brute);
+    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(brute);
+    if (f) {
+      if (cloture === null) cloture = f[1]![0]!;
+      else if (f[1]![0] === cloture) cloture = null;
+    }
+    const h = cloture === null && !f ? /^(#{1,2})\s+(.+?)\s*$/.exec(brute) : null;
     if (h) {
       if (courant && compacter(courant.lignes).length > 0) morceaux.push(courant);
       const titre = h[2]!.replace(/\*\*/g, "").trim();
@@ -491,6 +526,9 @@ export function typerSection(slugSection: string, titre: string, nomFichier: str
   if (/si-alors|a-relire|posture/.test(t)) return "posture";
   return "regle";
 }
+
+/** Ligne posée en tête d'un texte dont la marque n'est pas celle du corpus (jamais approuvé). */
+const NOTE_NEUTRALISEE = "[tête de section modifiée par le découpage : non approuvée]";
 
 /** L'avertissement vient en tête, SOUS la ligne de marque quand le corpus en porte une. */
 function avecAvertissement(corps: string, approuvee: boolean): string {
@@ -527,8 +565,13 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
   return morceaux.map((m) => {
     const corps = compacter(m.lignes);
     const montants = contientMontant(corps) || contientMontant(m.titre);
-    // Lue sur le corps du CORPUS, avant tout ajout : l'import ne pose ni ne déduit la marque.
-    const approuvee = estApprouvee(corps);
+    // Lue sur la PREMIÈRE LIGNE BRUTE du corpus, sans retrait ni nettoyage : l'import ne pose
+    // ni ne déduit la marque. Si le nettoyage la ferait apparaître en tête (retrait, BOM,
+    // insécable, ligne « # » supprimée…), le texte stocké est neutralisé pour que le filtre
+    // de sortie ne l'accepte pas non plus.
+    const premiere = m.lignes.find((l) => l.trim() !== "");
+    const approuvee = !m.neutre && premiere === MARQUE_APPROBATION && estApprouvee(corps);
+    const corpsStocke = estApprouvee(corps) && !approuvee ? `${NOTE_NEUTRALISEE}\n${corps}` : corps;
     const type = typerSection(m.slug, m.titre, nomFichier);
     const lu = `${m.titre}\n${corps}`;
     const signalements = Array.from(
@@ -551,7 +594,7 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
     return {
       slug: `${PREFIXE_SLUG}/${fichier}/${m.slug}`.slice(0, 180),
       titre: `${nomFichier} · ${m.titre}`.slice(0, 255),
-      texte: montants ? avecAvertissement(corps, approuvee) : corps,
+      texte: montants ? avecAvertissement(corpsStocke, approuvee) : corpsStocke,
       type,
       etiquettes,
       collection: estSante ? COLLECTION_SANTE : COLLECTION_VENTE,

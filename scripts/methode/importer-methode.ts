@@ -34,8 +34,10 @@ import path from "node:path";
 import {
   COLLECTION_VENTE,
   decouperFichier,
+  estApprouvee,
   estSlugNoyau,
   fichierIgnore,
+  retirerMarque,
   type SectionMethode,
 } from "../../src/server/methode/decoupage";
 import { contientCourriel, contientTelephone } from "../../src/server/methode/filtre-sortie";
@@ -194,6 +196,38 @@ async function rattacher(
   await prisma.knowledgeCollectionItem.create({
     data: { collectionId, entryId, position: (dernier._max.position ?? -1) + 1 },
   });
+}
+
+/**
+ * Une entrée de cette source qui n'est plus parmi les sections retenues (refusée à l'import,
+ * renommée, disparue du corpus) n'est jamais supprimée, mais elle ne reste pas servable :
+ * sa ligne de marque est retirée. Le corpus fait foi, y compris quand il retire la marque.
+ * Retourne le nombre d'entrées neutralisées. Ne pose rien.
+ */
+export async function neutraliserAbsentes(
+  prisma: PrismaClient,
+  retenus: ReadonlySet<string>,
+): Promise<number> {
+  const entrees = await prisma.knowledgeEntry.findMany({
+    where: { sourceFactoryId: SOURCE_IMPORT, slug: { startsWith: "methode/" } },
+    select: {
+      slug: true,
+      translations: { where: { locale: "fr" }, select: { id: true, bodyText: true } },
+    },
+  });
+  let n = 0;
+  for (const e of entrees) {
+    if (retenus.has(e.slug)) continue;
+    for (const t of e.translations) {
+      if (!estApprouvee(t.bodyText ?? "")) continue;
+      await prisma.knowledgeTranslation.update({
+        where: { id: t.id },
+        data: { bodyText: retirerMarque(t.bodyText ?? "") },
+      });
+      n += 1;
+    }
+  }
+  return n;
 }
 
 export async function ecrireSections(
@@ -371,6 +405,10 @@ export async function executerImport(opts: OptionsExecution): Promise<ResultatIm
   const prisma = await opts.fabriquerClient();
   try {
     const bilan = await ecrireSections(prisma, sections);
+    const neutralisees = await neutraliserAbsentes(prisma, new Set(sections.map((x) => x.slug)));
+    journal(
+      `[methode] ${String(neutralisees)} entrée(s) absente(s) du corpus ou refusée(s) : marque retirée.`,
+    );
     journal(
       `[methode] écrit : ${String(bilan.crees)} créée(s), ${String(bilan.misAJour)} mise(s) à jour, ` +
         `${String(bilan.inchanges)} inchangée(s), ${String(bilan.ignores.length)} ignorée(s) (slug pris par une autre source).`,
