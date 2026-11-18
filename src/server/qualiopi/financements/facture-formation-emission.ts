@@ -773,6 +773,10 @@ export async function genererPdfFactureFormation(
     }
 
     const identite = await getOrganismeIdentite();
+    // ⛔ PAS `regimeTvaDepuisConfig` ICI (ADR 0050 §7) : on RE-REND un avoir déjà émis, qui doit
+    // porter le régime FIGÉ de sa ligne en base, exactement comme à l'émission
+    // (`genererAvoirFacture`). Verrouiller réimprimerait l'avoir sous un autre régime que celui
+    // de la facture qu'il annule.
     const regimeTva: RegimeTva = isRegimeTva(facture.regimeTva)
       ? facture.regimeTva
       : REGIME_TVA_DEFAUT;
