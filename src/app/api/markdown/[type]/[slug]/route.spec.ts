@@ -39,6 +39,29 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
+// V2-18 : base de connaissances — le lecteur public est simulé (aucune base).
+const fetchPublicKbBySlugMock = vi.hoisted(() => vi.fn());
+vi.mock("@/lib/knowledge/public-fetch", () => ({
+  fetchPublicKbBySlug: fetchPublicKbBySlugMock,
+}));
+const ficheKbPublique = (slug: string) =>
+  slug === "fiche-kb-test"
+    ? {
+        slug,
+        title: "Fiche de test",
+        excerpt: "Résumé de la fiche.",
+        body: "<h2>Section</h2><p>Un paragraphe de la base de connaissances. Audit : {{price:audit-cible-solo}}. Journée IA : {{price:journee-ia}}.</p>",
+        type: "guide",
+        publishedAt: new Date("2026-10-01T00:00:00Z"),
+        updatedAt: new Date("2026-10-02T00:00:00Z"),
+        readingTime: 2,
+        wordCount: 100,
+        metaTitle: null,
+        metaDescription: null,
+      }
+    : null;
+fetchPublicKbBySlugMock.mockImplementation(async (slug: string) => ficheKbPublique(slug));
+
 import { GET } from "./route";
 import { listGlossaryTermSlugs } from "@/content/glossary-extension";
 import { getAllSlugs as getAllCaseSlugs } from "@/content/case-studies";
@@ -139,6 +162,63 @@ describe("/api/markdown — les types adossés à un SSOT fichier servent un vra
     for (const [type, slugDe] of Object.entries(SLUGS_SANS_DB)) {
       const res = await fetchMarkdown(type, slugDe());
       expect(await res.text(), `${type} sert un gabarit non résolu`).not.toContain("{{price:");
+    }
+  });
+});
+
+describe("/api/markdown — base de connaissances (V2-18)", () => {
+  it("annonce le type « connaissances » dans la page de détail", () => {
+    expect(annonces).toContain("connaissances");
+  });
+
+  it("sert du Markdown en 200 pour une fiche publique", async () => {
+    const res = await fetchMarkdown("connaissances", "fiche-kb-test");
+    expect(res.status).toBe(200);
+    expect(res.headers.get("Content-Type")).toMatch(/^text\/markdown/);
+    const corps = await res.text();
+    expect(corps).toContain("# Fiche de test");
+    expect(corps).toContain("## Section");
+    expect(corps).toContain("Source: https://axion-ia.com/fr/connaissances/fiche-kb-test");
+  });
+
+  it("lit la fiche uniquement via fetchPublicKbBySlug (lecteur à triple filtre)", async () => {
+    fetchPublicKbBySlugMock.mockClear();
+    await fetchMarkdown("connaissances", "fiche-kb-test");
+    expect(fetchPublicKbBySlugMock).toHaveBeenCalledTimes(1);
+    expect(fetchPublicKbBySlugMock).toHaveBeenCalledWith("fiche-kb-test");
+  });
+
+  it("R7 : aucun montant dans le Markdown, sauf celui de la Journée IA", async () => {
+    const corps = await (await fetchMarkdown("connaissances", "fiche-kb-test")).text();
+    expect(corps).not.toContain("{{price:");
+    expect(corps).toMatch(/sur devis/i);
+    expect(corps).toMatch(/1\s?490/);
+    // Aucun autre montant en euros que la Journée IA.
+    const montants = [...corps.matchAll(/\d[\d\s  ]*\s?€/g)].map((m) => m[0].replace(/\D/g, ""));
+    expect(montants.every((m) => m === "1490")).toBe(true);
+  });
+
+  it("répond 404 pour une fiche absente ou non publique", async () => {
+    const res = await fetchMarkdown("connaissances", "brouillon-inconnu");
+    expect(res.status).toBe(404);
+  });
+});
+
+describe("/api/markdown — en-têtes anti-indexation (tous types)", () => {
+  it("envoie Link canonical vers la page HTML et X-Robots-Tag noindex", async () => {
+    const cas: Array<[string, string]> = [
+      ["connaissances", "fiche-kb-test"],
+      ["glossaire", listGlossaryTermSlugs()[0] ?? ""],
+      ["faq", FAQ_GLOBAL[0]?.id ?? ""],
+      ["centre-aide", HELP_ARTICLES[0]?.slug ?? ""],
+    ];
+    for (const [type, slug] of cas) {
+      const res = await fetchMarkdown(type, slug);
+      expect(res.status, `${type}/${slug}`).toBe(200);
+      expect(res.headers.get("X-Robots-Tag")).toBe("noindex");
+      expect(res.headers.get("Link")).toBe(
+        `<https://axion-ia.com/fr/${type}/${slug}>; rel="canonical"`,
+      );
     }
   });
 });
