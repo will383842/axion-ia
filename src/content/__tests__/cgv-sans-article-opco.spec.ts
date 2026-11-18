@@ -8,7 +8,7 @@ import { getLegal } from "@/content/legal";
 const CGV = getLegal("conditions-generales");
 
 describe("CGV sans article OPCO", () => {
-  it.each(["fr", "en"] as const)("aucun article OPCO ni subrogation (%s)", (locale) => {
+  it.each(["fr", "en"] as const)("aucun titre OPCO ni subrogation (%s)", (locale) => {
     const texte = CGV[locale].sections.map((s) => `${s.title} ${s.body}`).join("\n");
     expect(texte).not.toMatch(/OPCO|subrogation/i);
   });
