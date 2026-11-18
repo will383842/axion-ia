@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const RACINE = join(__dirname, "..", "..", "..", "..");
-const DOSSIERS = ["components/knowledge/public", "components/marketing"].map((d) => join(RACINE, d));
+const DOSSIERS = ["components"].map((d) => join(RACINE, d));
 
 function fichiers(dir: string): string[] {
   return readdirSync(dir).flatMap((nom) => {
