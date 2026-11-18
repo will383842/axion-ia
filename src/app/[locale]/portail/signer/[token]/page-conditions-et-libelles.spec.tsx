@@ -175,7 +175,7 @@ describe("page de signature — articles des messages", () => {
   it("pièce annulée : « Le devis … ne fait plus foi »", async () => {
     m.piece.mockResolvedValue(piece({ annuleeAt: new Date() }));
     const html = await rendu();
-    expect(html).toContain("Le devis AXI-DOC-2026-077 ne fait plus foi");
+    expect(html).toContain("Le devis AXI-DEV-2026-014 ne fait plus foi");
     expect(html).not.toContain("Le Le");
   });
 
@@ -200,6 +200,6 @@ describe("page de signature — articles des messages", () => {
   it("déjà signée : « Votre signature sur le devis … »", async () => {
     m.count.mockResolvedValue(1);
     const html = await rendu();
-    expect(html).toContain("Votre signature sur le devis AXI-DOC-2026-077 est enregistrée");
+    expect(html).toContain("Votre signature sur le devis AXI-DEV-2026-014 est enregistrée");
   });
 });
