@@ -330,7 +330,7 @@ export const LEGAL_PAGES: ReadonlyArray<LegalContent> = [
           // convention » pointait vers une convention qui n'en contenait aucune :
           // un abandon en cours de session n'était régi par aucun texte.
           title: "Dédit et abandon en cours d'exécution",
-          body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un tiers (OPCO, France Travail, autre financeur), la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
+          body: "En cas d'abandon en cours d'exécution à l'initiative du Client ou du bénéficiaire, les prestations effectivement réalisées à la date de l'abandon restent dues au prorata. Lorsque l'action est financée par un financeur tiers, la part non réalisée n'est pas facturée au financeur et ne peut être réclamée au Client au-delà de ce prorata. Lorsque l'abandon résulte d'un cas de force majeure dûment constaté, le contrat est résilié et seules les prestations effectivement dispensées sont dues, conformément à l'article L.6353-7 du Code du travail.",
         },
         {
           // F53 — aucune clause de sous-traitance n'existait, alors que
