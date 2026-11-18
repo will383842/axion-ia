@@ -488,7 +488,7 @@ const FR: TextesPageGuide = {
     appel: {
       titre: "Parler de votre projet",
       texte:
-        "Un diagnostic de 45 minutes, en visio, gratuit et sans engagement, sur votre situation, vos priorités ou vos pilotes en cours.",
+        "Un appel de cadrage de 45 minutes, en visio, gratuit et sans engagement, sur votre situation, vos priorités ou vos pilotes en cours.",
       cta: "Demander un appel",
     },
   },
