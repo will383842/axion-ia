@@ -39,6 +39,7 @@ const TIERS_AUTORISES = new Set([
   "src/app/[locale]/stack-ia/page.tsx",
   "src/server/image-bank/services/image-seo.service.ts",
   "src/server/reviews/jsonld.ts", // `ItemReviewed.type` (libellé de type, pas un nœud)
+  // Transitoire : le nœud de la plume IA porte son @id depuis la PR 2141 ; à retirer après sa fusion.
   "src/components/knowledge/public/AuthorByline.tsx",
 ]);
 
@@ -53,7 +54,10 @@ describe("V1-11 — une seule fiche Organization", () => {
         // Émetteur d'une certification / éditeur vidéo passé en paramètre : un tiers, pas Axion-IA.
         const tiers = /qualiopiCertification\.issuer|input\.publisherName/.test(voisinage);
         const porteId =
-          tiers || /#organization|ORG_ID|organizationId|ORGANIZATION_ID/.test(voisinage);
+          tiers ||
+          /#organization|#person|idNoeudPlumeIa|ORG_ID|organizationId|ORGANIZATION_ID/.test(
+            voisinage,
+          );
         if (!porteId && !TIERS_AUTORISES.has(rel)) fautes.push(`${rel}:${i + 1}`);
       });
     }
@@ -104,15 +108,17 @@ describe("V1-11 — des sameAs identiques partout", () => {
     expect(fautes).toEqual([]);
   });
 
-  it("JSON-LD de l'image-bank, des offres d'emploi et de la presse utilisent la liste unique", () => {
+  it("JSON-LD de l'image-bank et des offres d'emploi utilisent la liste unique ; la presse cite l'@id", () => {
     for (const rel of [
       "src/server/image-bank/services/image-jsonld-graph.service.ts",
       "src/lib/seo/job-posting.ts",
-      "src/app/[locale]/presse/page.tsx",
     ]) {
       const { texte } = SOURCES.find((s) => s.rel === rel)!;
       expect(texte, rel).toContain("ORGANIZATION_SAME_AS");
     }
+    const presse = SOURCES.find((s) => s.rel === "src/app/[locale]/presse/page.tsx")!.texte;
+    expect(presse).toContain('about: { "@id": `${SITE_URL}/#organization` }');
+    expect(presse).not.toMatch(/legalName:\s*legal\.legalName/);
   });
 });
 
