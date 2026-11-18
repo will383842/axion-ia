@@ -98,8 +98,8 @@ export function candidatsConditionSuspensiveOpco(
       alerte = {
         code: "condition_suspensive_opco",
         niveau: "critique",
-        titre: "Session sous condition suspensive OPCO non levée",
-        message: `La session ${c.session.numero} commence le ${c.session.dateDebut.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })} alors que la convention ${c.numero} attend toujours l'accord de l'OPCO (date limite : ${limite}). Aucune action ne doit être exécutée avant l'accord ou la renonciation écrite du client : reportez la session, ou enregistrez l'accord ou la renonciation.`,
+        titre: "Session sous condition suspensive non levée (accord de l'organisme tiers)",
+        message: `La session ${c.session.numero} commence le ${c.session.dateDebut.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" })} alors que la convention ${c.numero} attend toujours l'accord de l'organisme tiers (date limite : ${limite}). Aucune action ne doit être exécutée avant l'accord ou la renonciation écrite du client : reportez la session, ou enregistrez l'accord ou la renonciation.`,
         cibleType: "TrainingSession",
         cibleId: c.session.id,
       };
@@ -107,10 +107,10 @@ export function candidatsConditionSuspensiveOpco(
       alerte = {
         code: "condition_suspensive_opco",
         niveau: "important",
-        titre: "Condition suspensive OPCO à constater",
+        titre: "Condition suspensive (accord de l'organisme tiers) à constater",
         message:
           evaluation.etat === "active"
-            ? `L'accord écrit de l'OPCO atteint le seuil de la convention ${c.numero} (session ${c.session.numero}) : constatez l'état de la condition dans la section Documents de la session.`
+            ? `L'accord écrit de l'organisme tiers atteint le seuil de la convention ${c.numero} (session ${c.session.numero}) : constatez l'état de la condition dans la section Documents de la session.`
             : `La condition suspensive de la convention ${c.numero} (session ${c.session.numero}) a défailli (date limite : ${limite}) : constatez-la dans la section Documents. La convention est caduque ; un accord ultérieur appelle une nouvelle convention.`,
         cibleType: "TrainingSession",
         cibleId: c.session.id,
@@ -119,8 +119,8 @@ export function candidatsConditionSuspensiveOpco(
       alerte = {
         code: "condition_suspensive_opco",
         niveau: "important",
-        titre: "Date limite de la condition suspensive OPCO dans 7 jours",
-        message: `La convention ${c.numero} (session ${c.session.numero}) est conclue sous la condition de l'accord écrit de l'OPCO au plus tard le ${limite}. Vérifiez avec l'entreprise où en est sa demande, puis saisissez l'accord ou le refus sur le dossier de financement.`,
+        titre: "Date limite de la condition suspensive dans 7 jours",
+        message: `La convention ${c.numero} (session ${c.session.numero}) est conclue sous la condition de l'accord écrit de l'organisme tiers au plus tard le ${limite}. Vérifiez avec l'entreprise où en est sa demande, puis saisissez l'accord ou le refus sur le dossier de financement.`,
         cibleType: "TrainingSession",
         cibleId: c.session.id,
       };

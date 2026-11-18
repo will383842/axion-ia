@@ -92,6 +92,7 @@ import {
   PREFIXE_CONFIRMATION_NON_PREPAREE,
   PREFIXE_PLANS_NON_PROPOSES,
   reprendreAcceptationDevisFormules,
+  reprendreConfirmationDevisClassiques,
   type ContexteApresSignature,
 } from "./apres-signature";
 
@@ -502,11 +503,124 @@ describe("devis intégralement signé : le prospect passe en client", () => {
       expect(h.confirmer).not.toHaveBeenCalled();
     });
 
-    it("devis classique (sans offre) : aucune confirmation, chemin inchangé", async () => {
+    it("🔴 devis CLASSIQUE contresigné par un administrateur : UNE confirmation, après la montée de la fiche, devis accepté quand même", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      const r = await contresigne();
+      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      expect(h.confirmer).toHaveBeenCalledWith({
+        declencheur: "contresignature_axion_explicite",
+        devisId: "dv-classique",
+      });
+      expect(ordre(h.txDevis.devis.updateMany)).toBeLessThan(ordre(h.confirmer));
+      expect(ordre(h.monter)).toBeLessThan(ordre(h.confirmer));
+      // m4 : la remise de l'exemplaire précède la confirmation, qui précède la proposition des plans.
+      expect(ordre(h.transmettre)).toBeLessThan(ordre(h.confirmer));
+      expect(ordre(h.confirmer)).toBeLessThan(
+        ordre(proposerPlansApresAcceptation as unknown as ReturnType<typeof vi.fn>),
+      );
+      expect(r.activationRefusee ?? null).toBeNull();
+    });
+
+    it("devis classique : signature du CLIENT seule → aucune confirmation", async () => {
       h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      await contresigne({ partie: "client", statutSignature: "partielle" });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("m1 : devis classique, signature du CLIENT intégrale (signee) par un administrateur → aucune confirmation", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      await contresigne({ partie: "client", statutSignature: "signee" });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("m2 : devis classique, client sans adresse e-mail → message qui dit la cause ; autre raison → message inchangé", async () => {
+      const Sentry = await import("@sentry/nextjs");
+      const log = vi.spyOn(console, "error").mockImplementation(() => undefined);
+      h.txDevis.devis.findMany.mockResolvedValue([
+        { id: "dv-classique", offre: null, offreSha256: null },
+      ]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "pas_d_adresse" });
+      const r1 = await contresigne();
+      expect(r1.activationRefusee).toMatchObject({
+        code: "confirmation_commande_non_preparee",
+        prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
+        message:
+          "La confirmation de commande n'a pas pu être préparée : la fiche du client n'a pas d'adresse e-mail. Ajoutez-la, puis relancez depuis la fiche du devis.",
+      });
+      // La raison est journalisée : identifiant du devis et code seulement.
+      const journal = [
+        ...log.mock.calls.map((c) => c.join(" ")),
+        ...(Sentry.captureMessage as unknown as ReturnType<typeof vi.fn>).mock.calls.map((c) =>
+          String(c[0]),
+        ),
+      ].join("\n");
+      expect(journal).toContain("dv-classique");
+      expect(journal).toContain("pas_d_adresse");
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+      const r2 = await contresigne();
+      expect(r2.activationRefusee?.message).toBe(
+        "La confirmation de commande n'a pas pu être préparée : l'exemplaire signé du devis est absent. Relancez depuis la fiche du devis ; si le problème persiste, prévenez le support technique.",
+      );
+      for (const raison of ["etat_inconnu", "file_indisponible"]) {
+        h.confirmer.mockResolvedValueOnce({ envoye: false, raison });
+        const r3 = await contresigne();
+        expect(r3.activationRefusee?.message).toBe(
+          "La signature et l'acceptation sont enregistrées. Relancez l'acceptation depuis la fiche du devis pour préparer la confirmation de commande.",
+        );
+      }
+      log.mockRestore();
+    });
+
+    it("devis classique : acteur signataire (pas administrateur) → aucune confirmation", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      await contresigne({ acteur: { type: "signataire" } });
+      expect(h.confirmer).not.toHaveBeenCalled();
+    });
+
+    it("devis classique : rejeu (déjà accepté, plus rien à accepter) → pas de seconde confirmation ; `deja_envoyee` n'est pas un échec", async () => {
+      h.txDevis.devis.findMany.mockResolvedValueOnce([{ id: "dv-classique" }]);
+      await contresigne();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      // Second passage : la garde (envoye/expire) ne trouve plus rien.
+      h.txDevis.devis.findMany.mockResolvedValue([]);
+      await contresigne();
+      expect(h.confirmer).toHaveBeenCalledTimes(1);
+      // Et si le mécanisme d'anti-rejeu répond `deja_envoyee` : ni alerte ni échec.
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+      const r = await contresigne();
+      expect(r.activationRefusee ?? null).toBeNull();
+    });
+
+    it("devis classique : la préparation échoue (refus typé ou exception) → alerte, acceptation et plans acquis", async () => {
+      const Sentry = await import("@sentry/nextjs");
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-classique" }]);
+      h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+      const r1 = await contresigne();
+      expect(r1.activationRefusee).toMatchObject({
+        code: "confirmation_commande_non_preparee",
+        prefixe: PREFIXE_CONFIRMATION_NON_PREPAREE,
+      });
+      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
+      h.confirmer.mockRejectedValueOnce(new Error("redis"));
+      const r2 = await contresigne();
+      expect(Sentry.captureException).toHaveBeenCalled();
+      expect(r2.activationRefusee?.code).toBe("confirmation_commande_non_preparee");
+      expect(proposerPlansApresAcceptation).toHaveBeenCalledWith(
+        "dv-classique",
+        "signature_complete",
+      );
+    });
+
+    it("devis classique : un devis portant une offre n'est pas confirmé par le chemin classique", async () => {
+      h.txDevis.devis.findMany.mockResolvedValue([{ id: "dv-offre", offre: {}, offreSha256: "x" }]);
       await contresigne();
       expect(h.confirmer).not.toHaveBeenCalled();
-      expect(h.txDevis.devis.updateMany).toHaveBeenCalledOnce();
     });
 
     it("l'envoi lève : signature et acceptation acquises, alerte confirmation_commande_non_preparee", async () => {
@@ -698,5 +812,109 @@ describe("devis intégralement signé : le prospect passe en client", () => {
   it("une autre pièce que le devis : rien ne monte", async () => {
     await apresSignature(ctx({ type: "lettre_mission" }));
     expect(h.monter).not.toHaveBeenCalled();
+  });
+});
+
+describe("reprise de la confirmation d'un devis CLASSIQUE (M1)", () => {
+  const deuxParties = () =>
+    h.p.documentSignature.findMany.mockResolvedValue([{ partie: "client" }, { partie: "axionia" }]);
+  const classique = (id = "dv-classique") => ({ id, offre: null, offreSha256: null });
+
+  it("devis classique accepté et contresigné : la confirmation est appelée, déclencheur explicite", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(h.confirmer).toHaveBeenCalledWith({
+      declencheur: "contresignature_axion_explicite",
+      devisId: "dv-classique",
+    });
+    expect(r).toMatchObject({
+      traite: true,
+      ids: ["dv-classique"],
+      confirmationsPreparees: ["dv-classique"],
+      confirmationsEchec: [],
+    });
+    const where = (h.p.devis.findMany.mock.calls as unknown as [{ where: unknown }][])[0]![0].where;
+    expect(where).toMatchObject({
+      documentGenereId: DOC,
+      statut: { in: ["accepte", "transforme_convention"] },
+    });
+  });
+
+  it("`deja_envoyee` = rien à faire : succès, ni préparée ni en échec", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "deja_envoyee" });
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(true);
+    expect(r.confirmationsEchec).toEqual([]);
+    expect(r.confirmationsPreparees).toEqual([]);
+    expect(r.confirmationsDejaFaites).toEqual(["dv-classique"]);
+  });
+
+  it("autre refus ou exception : échec, avec la raison", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique("a"), classique("b")]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "pas_d_adresse" });
+    h.confirmer.mockRejectedValueOnce(new Error("redis"));
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.confirmationsEchec).toEqual(["a", "b"]);
+    expect(r.echecs).toEqual([
+      { devisId: "a", raison: "pas_d_adresse" },
+      { devisId: "b", raison: "exception" },
+    ]);
+  });
+
+  it("M2 : chaque échec est journalisé avec l'identifiant du devis et le CODE seulement", async () => {
+    const log = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique("a"), classique("b")]);
+    h.confirmer.mockResolvedValueOnce({ envoye: false, raison: "exemplaire_absent" });
+    h.confirmer.mockRejectedValueOnce(new Error("client@exemple.test injoignable"));
+    await reprendreConfirmationDevisClassiques(DOC);
+    const journal = log.mock.calls.map((c) => c.join(" ")).join("\n");
+    expect(journal).toContain("a");
+    expect(journal).toContain("exemplaire_absent");
+    expect(journal).toContain("exception");
+    expect(journal).not.toContain("client@exemple.test");
+    log.mockRestore();
+  });
+
+  it("M1 : le where exclut une pièce annulée (défense en profondeur)", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([classique()]);
+    await reprendreConfirmationDevisClassiques(DOC);
+    const where = (h.p.devis.findMany.mock.calls as unknown as [{ where: unknown }][])[0]![0].where;
+    expect(where).toMatchObject({ documentGenere: { annuleeAt: null } });
+  });
+
+  it("m2 : une ligne portant une offre est EXCLUE, la ligne classique voisine est confirmée", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([
+      classique("dv-ok"),
+      { id: "dv-offre", offre: { x: 1 }, offreSha256: null },
+    ]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.ids).toEqual(["dv-ok"]);
+    expect(h.confirmer).toHaveBeenCalledTimes(1);
+  });
+
+  it("devis non contresigné (pas de signature d'Axion-IA) : AUCUNE confirmation", async () => {
+    h.p.documentSignature.findMany.mockResolvedValue([{ partie: "client" }]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(false);
+    expect(h.p.devis.findMany).not.toHaveBeenCalled();
+    expect(h.confirmer).not.toHaveBeenCalled();
+  });
+
+  it("devis à formules (offre ou empreinte) : jamais confirmé par cette reprise", async () => {
+    deuxParties();
+    h.p.devis.findMany.mockResolvedValueOnce([
+      { id: "dv-f", offre: { x: 1 }, offreSha256: "abc" },
+      { id: "dv-g", offre: null, offreSha256: "abc" },
+    ]);
+    const r = await reprendreConfirmationDevisClassiques(DOC);
+    expect(r.traite).toBe(false);
+    expect(h.confirmer).not.toHaveBeenCalled();
   });
 });

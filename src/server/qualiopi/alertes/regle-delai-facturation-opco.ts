@@ -62,11 +62,11 @@ export function candidatsDelaiFacturationOpco(
       code: "delai_facturation_opco",
       niveau: depassee ? "critique" : "important",
       titre: depassee
-        ? "Date limite de facturation OPCO dépassée"
-        : "Facture OPCO à émettre avant la date limite",
+        ? "Date limite de facturation à l'organisme tiers dépassée"
+        : "Facture à l'organisme tiers à émettre avant la date limite",
       message: depassee
-        ? `La session ${s.numero} est en subrogation ${opcoLabel(opco)} et aucune facture n'a été émise à l'OPCO avant le ${date} : la facture risque le rejet, vérifiez auprès de l'OPCO.`
-        : `La session ${s.numero} est en subrogation ${opcoLabel(opco)} : la facture à l'OPCO doit être émise au plus tard le ${date}.`,
+        ? `La session ${s.numero} est en subrogation ${opcoLabel(opco)} et aucune facture n'a été émise à l'organisme tiers avant le ${date} : la facture risque le rejet, vérifiez auprès de l'organisme tiers.`
+        : `La session ${s.numero} est en subrogation ${opcoLabel(opco)} : la facture à l'organisme tiers doit être émise au plus tard le ${date}.`,
       cibleType: "TrainingSession",
       cibleId: s.id,
     });

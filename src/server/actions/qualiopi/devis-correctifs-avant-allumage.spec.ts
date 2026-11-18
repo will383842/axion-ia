@@ -16,6 +16,8 @@ vi.mock("@/lib/prisma", () => ({
       f({
         // B1 : `sendDevisAction` relit le devis dans la transaction, après le verrou.
         $queryRaw: async () => [{ locked: true }],
+        // Verrou bloquant de révision (`void` : `$executeRaw`, jamais `$queryRaw`).
+        $executeRaw: async () => 1,
         devis: {
           create: (...a: unknown[]) => create(...a),
           findMany: vi.fn(async () => []),

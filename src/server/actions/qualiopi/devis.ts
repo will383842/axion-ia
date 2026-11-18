@@ -1133,7 +1133,7 @@ export async function reviseDevisAction(
     prisma.$transaction(async (tx) => {
       // Verrou consultatif BLOQUANT (libéré en fin de transaction) : deux clics simultanés
       // s'alignent l'un derrière l'autre, le second retrouve la révision du premier.
-      await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
+      await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"devis.revision:" + origine.id}))`;
       // Statut RELU ici, après le verrou (celui lu hors transaction peut être périmé) : un devis
       // accepté ne se corrige plus (refus avant tout numéro consommé).
       const statutActuel = await tx.devis.findUnique({

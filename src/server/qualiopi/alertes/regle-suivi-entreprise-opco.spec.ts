@@ -100,4 +100,36 @@ describe("alertes « à appeler »", () => {
       segmentsAvecTelephone("opco_refus_a_traiter", "SIRET 01234567890123").some((x) => x.tel),
     ).toBe(false);
   });
+  it("le message de « réponse attendue » n'emploie pas le vocabulaire de financement tiers", () => {
+    const mots = new RegExp("op" + "cos?\\b|pris(e|es)? en " + "charge|finan" + "ceurs?", "i");
+    const base = contexte("06 12 34 56 78", 0);
+    const deposeAvecRelances: ContexteSuivi = {
+      ...base,
+      dossier: { ...base.dossier, depotFaitLe: midi("2026-10-05") },
+      suivi: {
+        ...base.suivi,
+        messages: [3, 4, 5].map((n) => ({
+          etape: "relance_reponse" as const,
+          rang: n,
+          jourParis: `2026-10-0${n}`,
+          question: "reponse" as const,
+          envoyeLe: midi(`2026-10-0${n}`),
+          reponse: null,
+          reponduLe: null,
+        })),
+      },
+    } as ContexteSuivi;
+    const procheDuDebut: ContexteSuivi = {
+      ...base,
+      dossier: { ...base.dossier, depotFaitLe: midi("2026-10-05") },
+    };
+    for (const c of [deposeAvecRelances, procheDuDebut]) {
+      const a = candidatsSuiviEntreprise([c], midi("2026-11-14")).find(
+        (x) => x.code === "entreprise_a_appeler_reponse_opco",
+      );
+      expect(a).toBeDefined();
+      expect(a!.message).not.toMatch(mots);
+      expect(a!.message).toContain("organisme tiers");
+    }
+  });
 });

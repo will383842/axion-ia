@@ -52,6 +52,7 @@ import {
 // (même garde de graphe que `verdict-envoi`).
 // Le registre des relectures au départ (CAMP-1) : base, déchiffrement, règles pures
 // seulement — même garde de graphe que `verdict-envoi`.
+import { gabaritEnSommeil } from "@/server/qualiopi/financements/sommeil";
 import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
@@ -291,6 +292,15 @@ export function startEmailWorker(): Worker<EmailJobData, void, EmailJobName> {
       // donnée personnelle ne transite par la file.
       if (template === "candidature-reponse") {
         await handleCandidatureReponse(payload, contexteEssai);
+        return;
+      }
+
+      // L9b — e-mail en sommeil (fiche L9) : un job déjà en file, rejoué ou réessayé ne part pas.
+      // Journal clos « annulé » (jamais « échec »), pas de throw : BullMQ ne réessaie pas.
+      if (gabaritEnSommeil(job.data.template)) {
+        const trace = "Retenu à l'envoi : e-mail en sommeil";
+        if (job.id) await marquerAnnule(job.id, trace);
+        console.warn(`[email-worker] ${trace} (job ${job.id ?? "sans identifiant"})`);
         return;
       }
 

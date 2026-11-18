@@ -26,15 +26,21 @@ import { chargerAideDuProjet } from "@/features/dossier-client/aide-du-projet";
 import { CeQueLeClientADit } from "@/features/dossier-client/ce-que-le-client-a-dit";
 import { isUuid } from "@/lib/is-uuid";
 import { prisma } from "@/lib/prisma";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { TAUX_TVA_STANDARD } from "@/server/qualiopi/legal/tva";
 
 export const dynamic = "force-dynamic";
 
-export const metadata: Metadata = {
-  title: "Qualiopi — Nouveau devis | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// Avant la certification, le titre n'emploie pas le mot « Qualiopi » (modèle de `devis/[id]`).
+export function generateMetadata(): Metadata {
+  return {
+    title: isQualiopiCertificationObtenue()
+      ? "Qualiopi — Nouveau devis | Axion-IA Admin"
+      : "Devis — Nouveau devis | Axion-IA Admin",
+    robots: { index: false, follow: false },
+  };
+}
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string }>;
