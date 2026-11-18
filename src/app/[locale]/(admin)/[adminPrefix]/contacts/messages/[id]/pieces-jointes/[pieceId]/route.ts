@@ -13,6 +13,7 @@ import { fluxTelechargementR2 } from "@/lib/r2-storage";
 import { peutConsulter } from "@/server/auth/habilitations";
 import { getClientIp } from "@/lib/client-ip";
 import { dispositionPieceJointe } from "@/features/dossier-client/documents/formats";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,8 +22,12 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string; pieceId: string }> },
+  {
+    params,
+  }: { params: Promise<{ locale: string; adminPrefix: string; id: string; pieceId: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;

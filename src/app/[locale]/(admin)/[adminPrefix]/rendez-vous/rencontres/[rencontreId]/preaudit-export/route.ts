@@ -9,11 +9,17 @@ import { auth } from "@/auth";
 import { peutVoirLesEchanges } from "@/features/dossier-client/roles-echanges";
 import { prisma } from "@/lib/prisma";
 import { exporterReponsesPreauditMembre } from "@/lib/rgpd-dossier-client";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-export async function GET(req: Request): Promise<NextResponse> {
+export async function GET(
+  req: Request,
+  { params }: { params: Promise<{ locale: string; adminPrefix: string }> },
+): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   const user = session?.user as { id?: string; role?: string | null } | undefined;
   if (!user?.id) return new NextResponse("Unauthorized", { status: 401 });

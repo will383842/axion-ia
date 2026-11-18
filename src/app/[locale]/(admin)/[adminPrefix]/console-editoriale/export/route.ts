@@ -46,6 +46,7 @@ import {
   type AssetPlan,
 } from "@/server/editorial/plan-production";
 import { rendrePlanEnPdf } from "@/server/editorial/plan-production-pdf";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 /** Le titre humain d'un plan. La clé sert l'URL, le mot sert le lecteur. */
 const LIBELLE_TYPE_PLAN: Record<string, string> = {
@@ -480,7 +481,12 @@ async function exporterPlan(
   });
 }
 
-export async function GET(requete: NextRequest): Promise<NextResponse> {
+export async function GET(
+  requete: NextRequest,
+  { params }: { params: Promise<{ locale: string; adminPrefix: string }> },
+): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   try {
     // Exporter, c'est SORTIR des données : le §4 réserve ce geste à
     // `production` et au-dessus, pas à `lecture`.
@@ -491,13 +497,13 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
     return NextResponse.json({ error: message }, { status: statut });
   }
 
-  const params = requete.nextUrl.searchParams;
-  const type = params.get("type") ?? "csv";
+  const parametres = requete.nextUrl.searchParams;
+  const type = parametres.get("type") ?? "csv";
 
   if (type === "sauvegarde") return exporterSauvegarde();
 
   if (type === "archive") {
-    const id = params.get("publication");
+    const id = parametres.get("publication");
     if (!id) {
       return NextResponse.json(
         { error: "Paramètre « publication » attendu pour une archive." },
@@ -508,14 +514,14 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
   }
 
   if (type === "plan") {
-    const demande = params.get("format");
+    const demande = parametres.get("format");
     const format = demande === "csv" ? "csv" : demande === "pdf" ? "pdf" : "md";
     // Par defaut on ne sort QUE ce qui reste a faire : un plan de production
     // qui reliste les assets termines se relit mal et se coche deux fois.
-    const seulementAProduire = params.get("statut") !== "tous";
+    const seulementAProduire = parametres.get("statut") !== "tous";
     return exporterPlan(
-      params.get("asset"),
-      params.get("periode"),
+      parametres.get("asset"),
+      parametres.get("periode"),
       format,
       seulementAProduire,
       // Lue ICI parce que c'est le seul endroit qui voit la requête.
@@ -525,8 +531,8 @@ export async function GET(requete: NextRequest): Promise<NextResponse> {
 
   if (type === "csv") {
     const maintenant = new Date();
-    const annee = lireAnnee(params.get("year") ?? undefined, maintenant.getUTCFullYear());
-    const mois = lireMois(params.get("month") ?? undefined, maintenant.getUTCMonth() + 1);
+    const annee = lireAnnee(parametres.get("year") ?? undefined, maintenant.getUTCFullYear());
+    const mois = lireMois(parametres.get("month") ?? undefined, maintenant.getUTCMonth() + 1);
     return exporterCsv(annee, mois);
   }
 

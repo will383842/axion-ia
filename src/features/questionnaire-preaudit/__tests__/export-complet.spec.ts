@@ -19,6 +19,7 @@ const etat = vi.hoisted(() => ({
   traces: [] as unknown[],
 }));
 
+vi.stubEnv("ADMIN_URL_PREFIX", "prefixe-factice-test");
 vi.mock("@/auth", () => ({
   auth: async () => (etat.user ? { user: { id: "u1", role: etat.role } } : null),
 }));
@@ -93,7 +94,9 @@ vi.mock("@/lib/prisma", () => ({
 import { GET } from "../../../app/[locale]/(admin)/[adminPrefix]/qualiopi/clients/[id]/questionnaire/export/route";
 
 const appeler = (q: string = QID) =>
-  GET(new Request(`http://x/export?q=${q}`), { params: Promise.resolve({ id: FICHE }) });
+  GET(new Request(`http://x/export?q=${q}`), {
+    params: Promise.resolve({ locale: "fr", adminPrefix: "prefixe-factice-test", id: FICHE }),
+  });
 
 beforeEach(() => {
   etat.role = "super_admin";

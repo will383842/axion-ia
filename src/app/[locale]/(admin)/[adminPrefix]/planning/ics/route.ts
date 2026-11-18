@@ -21,6 +21,7 @@ import { auth } from "@/auth";
 import { getPlanningRange } from "@/features/admin-planning/queries";
 import { getTrainer } from "@/server/qualiopi/trainers/trainers";
 import { buildPlanningIcs } from "@/features/admin-planning/ics";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -52,13 +53,9 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ adminPrefix: string; locale: string }> },
 ): Promise<Response> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const { adminPrefix } = await params;
-
-  // ── Garde préfixe admin (le layout ne s'applique pas aux Route Handlers) ──
-  const expectedPrefix = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
-  if (adminPrefix !== expectedPrefix) {
-    return new NextResponse("not found", { status: 404 });
-  }
 
   // ── Auth admin ────────────────────────────────────────────────────────────
   const session = await auth();
