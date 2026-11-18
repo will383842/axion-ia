@@ -357,9 +357,19 @@ const nextConfig: NextConfig = {
         destination: "/:locale/carrieres/responsable-qualite",
         permanent: true,
       },
+      // 2026-11-18 : les 3 offres consacrées au financement sont archivées (poste qu'Axion-IA
+      // ne propose pas) : 301 permanent vers le hub carrières, anciens slugs compris (un seul
+      // saut, pas de chaîne). La page renvoie aussi 404 pour toute offre `archived`.
       {
-        source: "/:locale(fr|en)/carrieres/assistant-financements-qualiopi",
-        destination: "/:locale/carrieres/assistant-financements",
+        source:
+          "/:locale(fr|en)/carrieres/:slug(assistant-financements-qualiopi|assistant-financements|assistant-dossiers-financement-clients|charge-subventions)",
+        destination: "/fr/carrieres",
+        permanent: true,
+      },
+      {
+        source:
+          "/:locale(fr|en)/carrieres/:slug(assistant-financements|assistant-dossiers-financement-clients|charge-subventions)/postuler",
+        destination: "/fr/carrieres",
         permanent: true,
       },
       // 2026-11-18 : la page « financement OPCO / France Travail » est retirée du site

@@ -45,6 +45,7 @@ import {
 } from "@/lib/careers/formateur-freelance";
 import {
   getJobOfferBySlug,
+  isJobOfferArchived,
   isJobOfferIndexable,
   isOfferOpen,
   listIndexableJobOfferSlugs,
@@ -106,7 +107,7 @@ export async function generateMetadata({
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const offer = await getJobOfferBySlug(slug);
-  if (!offer) return { robots: { index: false, follow: false }, alternates: {} };
+  if (!offer || isJobOfferArchived(offer)) return { robots: { index: false, follow: false }, alternates: {} };
 
   const isFr = locale === "fr";
   // FR-only : EN désactivé → noindex explicite (ceinture + bretelles avec le 301).
@@ -167,7 +168,8 @@ export default async function JobOfferDetailPage({
   // notre certification Qualiopi ». Neutralisée au rendu selon l'interrupteur,
   // sans toucher la base : cf. `affirmations-en-base.ts`.
   const offer = neutraliserSelonInterrupteur(await getJobOfferBySlug(slug));
-  if (!offer) notFound();
+  // Offre archivée (retrait des mentions de financement) : 404, la ligne reste en base.
+  if (!offer || isJobOfferArchived(offer)) notFound();
 
   const title = isFr ? offer.titleFr : offer.titleEn;
   const summary = isFr ? offer.summaryFr : offer.summaryEn;
