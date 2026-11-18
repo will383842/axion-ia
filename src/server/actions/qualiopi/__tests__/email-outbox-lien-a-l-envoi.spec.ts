@@ -13,6 +13,7 @@ const h = vi.hoisted(() => ({
   etat: { statut: "a_valider" as string, refuseMotif: null as string | null },
   vivants: new Set<string>(),
   nbJetons: { v: 0 },
+  nbTransactions: { v: 0 },
   findUniqueLigne: vi.fn(),
   enqueue: vi.fn(),
   log: vi.fn(),
@@ -90,8 +91,10 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: (...a: unknown[]) => h.devisFindUnique(...a),
       count: (...a: unknown[]) => h.devisCount(...a),
     },
-    $transaction: async (f: (t: unknown) => unknown) =>
-      f({ $queryRaw: (...a: unknown[]) => h.queryRaw(...a) }),
+    $transaction: async (f: (t: unknown) => unknown) => {
+      h.nbTransactions.v += 1;
+      return f({ $queryRaw: (...a: unknown[]) => h.queryRaw(...a) });
+    },
   },
 }));
 
@@ -140,6 +143,7 @@ beforeEach(() => {
   h.etat.refuseMotif = null;
   h.vivants.clear();
   h.nbJetons.v = 0;
+  h.nbTransactions.v = 0;
   h.avantEcritureRefus.v = null;
   h.ligne.v = ligne();
   h.findUniqueLigne.mockImplementation(async () => h.ligne.v);
@@ -207,6 +211,25 @@ describe("refus automatique (l'e-mail ne peut plus partir)", () => {
       "template",
     ]);
     expect(h.reval).toHaveBeenCalled();
+  });
+
+  it("journal du refus qui lève : ligne refusée, motif rendu, revalidation faite, Sentry sans donnée", async () => {
+    h.devisFindUnique.mockResolvedValue({ ...devisEnvoye, statut: "annule" });
+    h.log.mockRejectedValueOnce(
+      new Error(`panne ${ADRESSE} https://exemple.test/portail/signer/X`),
+    );
+    const r = await approuverEmailAction({ id: ID });
+    expect(h.etat.statut).toBe("refuse");
+    expect(h.etat.refuseMotif).not.toBeNull();
+    expect(r).toEqual({ error: h.etat.refuseMotif });
+    expect((r as { error: string }).error).not.toContain("retourné dans la corbeille");
+    expect(h.reval).toHaveBeenCalled();
+    expect(h.sentryExc).toHaveBeenCalledTimes(1);
+    const s = JSON.stringify(h.sentryExc.mock.calls);
+    expect(s).toContain("devis-envoi");
+    expect(s).not.toContain(ADRESSE);
+    expect(s).not.toContain("portail/signer");
+    expect(s).not.toContain("http");
   });
 
   it.each(["envoye", "refuse"])(
@@ -304,6 +327,90 @@ describe("lignes anciennes et autres gabarits : inchangé", () => {
     const r = await approuverEmailAction({ id: ID });
     expect(r).toEqual({ data: { id: ID, envoye: true } });
     expect(h.nbJetons.v).toBe(0);
+  });
+});
+
+describe("ligne ANCIENNE (sans marqueur) : non-régression", () => {
+  const lien = "https://exemple.test/portail/signer/ANCIEN";
+  const pj = [{ filename: "d.pdf", r2Key: "k/d.pdf", contentType: "application/pdf" }];
+  const ancienne = (over: Record<string, unknown> = {}) =>
+    ligne({ payload: { numero: "D-1", signatureUrl: lien }, ...over });
+
+  it("(a) sujet forcé et pièces jointes : mêmes arguments et options qu'avant", async () => {
+    h.ligne.v = ancienne({ attachments: pj });
+    const r = await approuverEmailAction({
+      id: ID,
+      sujet: "Nouvel objet",
+      messagePersonnalise: "Bonjour",
+    });
+    expect(r).toEqual({ data: { id: ID, envoye: true } });
+    expect(h.enqueue).toHaveBeenCalledTimes(1);
+    expect(h.enqueue.mock.calls[0]).toEqual([
+      "devis-envoi",
+      ADRESSE,
+      "fr",
+      { numero: "D-1", signatureUrl: lien, messagePersonnalise: "Bonjour" },
+      {
+        bypassValidation: true,
+        sujetForce: "Nouvel objet",
+        entityType: "Devis",
+        entityId: "devis-1",
+        attachments: pj,
+      },
+    ]);
+  });
+
+  it("(b) résultat « retenu » : ligne refusée avec le motif, aucun jeton, aucune transaction", async () => {
+    h.enqueue.mockResolvedValue({ enqueued: false, retenu: "rebond_dur" });
+    h.ligne.v = ancienne();
+    const r = await approuverEmailAction({ id: ID });
+    expect(h.etat.statut).toBe("refuse");
+    expect(r).toEqual({ error: h.etat.refuseMotif });
+    expect((r as { error: string }).error).toContain("rebondi définitivement");
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.nbTransactions.v).toBe(0);
+    const actions = h.log.mock.calls.map((c) => (c[0] as { action: string }).action);
+    expect(actions).toEqual(["email.outbox.retenu"]);
+    expect(h.reval).not.toHaveBeenCalled();
+  });
+
+  it("(c) exception d'enfilage : retour à valider, message actuel, aucun jeton créé ni révoqué", async () => {
+    h.enqueue.mockRejectedValue(new Error("redis"));
+    h.ligne.v = ancienne();
+    const r = await approuverEmailAction({ id: ID });
+    expect(r).toEqual({
+      error: "L'envoi a échoué : l'email est retourné dans la corbeille, réessayez.",
+    });
+    expect(h.etat.statut).toBe("a_valider");
+    expect(h.nbJetons.v).toBe(0);
+    expect(h.vivants.size).toBe(0);
+    expect(h.nbTransactions.v).toBe(0);
+  });
+
+  it("(d) journal email.outbox.approuver inchangé (avec l'adresse du destinataire)", async () => {
+    h.ligne.v = ancienne();
+    await approuverEmailAction({ id: ID, sujet: "Autre" });
+    expect(h.log).toHaveBeenCalledTimes(1);
+    expect(h.log.mock.calls[0]?.[0]).toEqual({
+      action: "email.outbox.approuver",
+      targetType: "EmailOutbox",
+      targetId: ID,
+      changes: {
+        template: "devis-envoi",
+        destinataire: ADRESSE,
+        sujetModifie: true,
+        messageAjoute: false,
+        envoye: true,
+      },
+      session: { userId: "u-1", role: "super_admin" },
+    });
+  });
+
+  it("(e) aucune transaction ni verrou ouvert pour une ligne sans marqueur", async () => {
+    h.ligne.v = ancienne();
+    await approuverEmailAction({ id: ID });
+    expect(h.nbTransactions.v).toBe(0);
+    expect(h.queryRaw).not.toHaveBeenCalled();
   });
 });
 
