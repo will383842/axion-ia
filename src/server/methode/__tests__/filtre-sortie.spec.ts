@@ -28,8 +28,16 @@ const TELEPHONE = ["06", "12", "34", "56", "78"].join(" ");
 const ANCRAGE = "Axion-IA est basée à l'étage du fond";
 const SLUG_NOYAU_FAUX = "methode/faux-00-atelier/essentiel";
 
+/** La marque d'approbation du fondateur, écrite en clair : le test ne dépend d'aucune constante du code. */
+const MARQUE = "sortie: validee";
+
+/** Une section APPROUVÉE (marque en première ligne) : seule forme que le filtre peut laisser sortir. */
 function fiche(texte: string, etiquettes: string[] = [], titre = "Un titre inventé") {
-  return { slug: "methode/faux-atelier/une-fiche", titre, texte, etiquettes };
+  return { slug: "methode/faux-atelier/une-fiche", titre, texte: `${MARQUE}\n${texte}`, etiquettes };
+}
+/** Une section SANS marque (ou avec une marque mal placée) : le texte est pris tel quel. */
+function ficheBrute(texte: string, etiquettes: string[] = []) {
+  return { slug: "methode/faux-atelier/une-fiche", titre: "Un titre inventé", texte, etiquettes };
 }
 
 describe("motifRefus — fiche par fiche", () => {
@@ -320,19 +328,28 @@ describe("obtenirContexteMethode — rien d'interdit ne sort", () => {
   });
   afterEach(() => vi.unstubAllEnvs());
 
-  function noyauEn(texte: string, titre = "Essentiel inventé") {
+  function noyauEn(texte: string, titre = "Essentiel inventé", marque = true) {
     findManyMock.mockResolvedValue([
-      { slug: SLUG_NOYAU_FAUX, translations: [{ title: titre, bodyText: texte }] },
+      {
+        slug: SLUG_NOYAU_FAUX,
+        translations: [{ title: titre, bodyText: marque ? `${MARQUE}\n${texte}` : texte }],
+      },
     ]);
   }
   function extraitsEn(
-    lignes: Array<{ slug: string; texte: string; etiquettes?: string[]; titre?: string }>,
+    lignes: Array<{
+      slug: string;
+      texte: string;
+      etiquettes?: string[];
+      titre?: string;
+      marque?: boolean;
+    }>,
   ) {
     queryRawMock.mockResolvedValue(
       lignes.map((l) => ({
         slug: l.slug,
         titre: l.titre ?? "Titre inventé",
-        texte: l.texte,
+        texte: l.marque === false ? l.texte : `${MARQUE}\n${l.texte}`,
         collection: "methode-vente",
         etiquettes: l.etiquettes ?? [],
       })),
@@ -401,5 +418,221 @@ describe("obtenirContexteMethode — rien d'interdit ne sort", () => {
     expect(queryRawMock.mock.calls[0]![2]).toEqual(["methode-vente"]);
     expect(queryRawMock.mock.calls[0]![4] as number).toBeGreaterThan(0);
     expect(queryRawMock.mock.calls[0]![5]).toContain(ETIQUETTE_SANTE);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  DÉCISION DU PILOTE (18/11) : refus par défaut. La sécurité, c'est l'approbation
+//  à la main ; le filtre n'est que le second filet.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SAINE = "Accueillir le client, puis l'écouter sans l'interrompre.";
+
+describe("approbation — une section NON marquée n'est jamais servie, même saine", () => {
+  it("motifRefus : « non-approuvee » pour une section saine sans marque", () => {
+    expect(motifRefus(ficheBrute(SAINE))).toBe("non-approuvee");
+    expect(filtrerPourSortie([ficheBrute(SAINE)])).toEqual([]);
+  });
+
+  it("une marque mal formée, mal placée ou masquée ne compte pas", () => {
+    const j = (...m: string[]) => m.join("");
+    const formes = [
+      `Sortie: validee\n${SAINE}`,
+      `SORTIE: VALIDEE\n${SAINE}`,
+      `sortie:validee\n${SAINE}`,
+      `sortie : validee\n${SAINE}`,
+      `sortie:  validee\n${SAINE}`,
+      `sortie: validée\n${SAINE}`,
+      `sortie: validee \n${SAINE}`,
+      ` sortie: validee\n${SAINE}`,
+      `\tsortie: validee\n${SAINE}`,
+      `\nsortie: validee\n${SAINE}`,
+      `sortie: validee.\n${SAINE}`,
+      `sortie: validees\n${SAINE}`,
+      `sortie: non-validee\n${SAINE}`,
+      `sortie: validee-non\n${SAINE}`,
+      `- sortie: validee\n${SAINE}`,
+      `> sortie: validee\n${SAINE}`,
+      `**sortie: validee**\n${SAINE}`,
+      `\`sortie: validee\`\n${SAINE}`,
+      `<!-- sortie: validee -->\n${SAINE}`,
+      `sortie: validee${String.fromCharCode(0x200b)}\n${SAINE}`,
+      `sortie:${String.fromCharCode(0xa0)}validee\n${SAINE}`,
+      `sortie: validee\r\n${SAINE}`,
+      `${j("sorti", String.fromCharCode(0xff45))}: validee\n${SAINE}`,
+      `sortie: valid${String.fromCharCode(0x435)}e\n${SAINE}`,
+      `sortie: validee ${SAINE}`,
+      `${SAINE}\nsortie: validee`,
+      `${SAINE}\n${MARQUE}\n${SAINE}`,
+      `Une première ligne.\n${MARQUE}`,
+      `Texte ${MARQUE} au milieu d'une phrase.`,
+    ];
+    for (const t of formes) {
+      expect(motifRefus(ficheBrute(t)), JSON.stringify(t)).toBe("non-approuvee");
+    }
+  });
+
+  it("la marque n'est lue que dans le TEXTE, jamais dans le titre ni dans les étiquettes", () => {
+    const f = { slug: "methode/faux/x", titre: MARQUE, texte: SAINE, etiquettes: [MARQUE] };
+    expect(motifRefus(f)).toBe("non-approuvee");
+    expect(
+      motifRefus({ slug: "methode/faux/x", titre: "T", texte: SAINE, etiquettes: ["sortie:validee"] }),
+    ).toBe("non-approuvee");
+  });
+
+  it("filtrerPourSortie ne garde que les sections marquées", () => {
+    const marquee = fiche(SAINE);
+    expect(filtrerPourSortie([ficheBrute(SAINE), marquee, ficheBrute(SAINE)])).toEqual([marquee]);
+  });
+});
+
+describe("approbation — marquée et douteuse : refusée ; marquée et saine : servie", () => {
+  it("marquée et saine : servie", () => {
+    expect(motifRefus(fiche(SAINE))).toBeNull();
+  });
+
+  it("marquée et douteuse : refusée (montant, courriel, téléphone, promesse, étiquettes)", () => {
+    expect(motifRefus(fiche(`Un exercice à ${MONTANT}.`))).toBe("montant");
+    expect(motifRefus(fiche(`Écrire à ${COURRIEL}.`))).toBe("courriel");
+    expect(motifRefus(fiche(`Appeler le ${TELEPHONE}.`))).toBe("telephone");
+    expect(motifRefus(fiche("Un gain garanti."))).toMatch(/^doctrine:/);
+    expect(motifRefus(fiche("Une remise de 20 % ce mois-ci."))).toBe("pourcentage");
+    expect(motifRefus(fiche(SAINE, [ETIQUETTE_CHIFFRES]))).toBe(`etiquette:${ETIQUETTE_CHIFFRES}`);
+  });
+
+  it("la marque seule, sans corps, n'est pas une section servable", () => {
+    expect(motifRefus(ficheBrute(MARQUE))).not.toBeNull();
+  });
+});
+
+describe("approbation — refus à la racine (second filet, sections marquées seulement)", () => {
+  const j = (...m: string[]) => m.join("");
+  const X = String.fromCharCode(0xd7);
+  const formes = [
+    // montants : taxes, périodes, brut / net
+    "Un forfait hors taxes pour l'atelier.",
+    "Un forfait hors-taxe pour l'atelier.",
+    "Un forfait hors TVA pour l'atelier.",
+    "Un forfait HTVA pour l'atelier.",
+    "Un forfait 500 brut pour l'atelier.",
+    "Un forfait 500 net pour l'atelier.",
+    "Un tarif de l'heure pour l'atelier.",
+    "Un forfait par heure pour l'atelier.",
+    "Un forfait par jour pour l'atelier.",
+    "Un forfait par mois pour l'atelier.",
+    "Un forfait par trimestre pour l'atelier.",
+    "Un forfait par an pour l'atelier.",
+    "Un forfait par année pour l'atelier.",
+    // promesses
+    "On vous rend votre argent.",
+    "Il rend l'argent si besoin.",
+    "Pas de résultat, pas de facture.",
+    "Je m'y engage.",
+    "Un engagement de résultat.",
+    "Une obligation de résultat.",
+    "On s'engage sur le résultat.",
+    "On double vos ventes.",
+    "On triple vos ventes.",
+    "Un chiffre d'affaires doublé.",
+    "Un chiffre d'affaires triplé.",
+    "Un chiffre d'affaires décuplé.",
+    "Un chiffre d'affaires quadruplé.",
+    "Un chiffre d'affaires décuplera.",
+    j("Un gain de 10", "x", " sur les ventes."),
+    j("Un gain de 3 ", "x", "."),
+    j("Un gain ", X, "3 sur les ventes."),
+    j("Un gain de 3", X, "."),
+    j("Un gain de 3 ", X, "."),
+    j("Une hausse de x", "10", "."),
+    // parts
+    "La moitié de nos clients reviennent.",
+    "Les deux tiers de nos clients reviennent.",
+    "Un tiers reviennent.",
+    "Un quart reviennent.",
+    "La grande majorité reviennent.",
+    "La majorité de nos clients reviennent.",
+    // courriel : « at » + domaine avec point
+    "Écrire à jean.dupont at exemple.fr pour la suite.",
+    "Écrire à jean.dupont AT exemple.com pour la suite.",
+  ];
+  for (const t of formes) {
+    it(`refuse : ${t}`, () => {
+      expect(motifRefus(fiche(t)), t).not.toBeNull();
+    });
+  }
+
+  it("ne refuse pas à tort une prose saine (l'at de « l'atelier », « et », « dans »)", () => {
+    for (const t of [
+      "Accueillir le client à l'atelier, puis l'écouter.",
+      "Préparer la vitrine avant l'ouverture du matin.",
+      "Noter ce que le client dit, puis reformuler.",
+      "Laisser goûter, puis demander ce qui a plu.",
+    ]) {
+      expect(motifRefus(fiche(t)), t).toBeNull();
+    }
+  });
+});
+
+describe("approbation — la marque ne se pose pas par le code", () => {
+  it("le texte rendu au lecteur ne commence plus par la marque", async () => {
+    findManyMock.mockReset();
+    queryRawMock.mockReset();
+    vi.stubEnv("METHODE_ACTIVE", "true");
+    findManyMock.mockResolvedValue([
+      {
+        slug: SLUG_NOYAU_FAUX,
+        translations: [{ title: "Essentiel inventé", bodyText: `${MARQUE}\n${SAINE}` }],
+      },
+    ]);
+    queryRawMock.mockResolvedValue([
+      {
+        slug: "methode/faux-a/un",
+        titre: "T",
+        texte: `${MARQUE}\n${SAINE}`,
+        collection: "methode-vente",
+        etiquettes: [],
+      },
+    ]);
+    const ctx = await obtenirContexteMethode({ sujet: "vitrine" });
+    expect(ctx.noyau?.texte).toBe(SAINE);
+    expect(ctx.extraits[0]?.texte).toBe(SAINE);
+    vi.unstubAllEnvs();
+  });
+
+  it("noyau et extraits non marqués : jamais servis, par le point d'entrée", async () => {
+    findManyMock.mockReset();
+    queryRawMock.mockReset();
+    vi.stubEnv("METHODE_ACTIVE", "true");
+    findManyMock.mockResolvedValue([
+      { slug: SLUG_NOYAU_FAUX, translations: [{ title: "T", bodyText: SAINE }] },
+    ]);
+    queryRawMock.mockResolvedValue([
+      { slug: "methode/faux-a/un", titre: "T", texte: SAINE, collection: "methode-vente", etiquettes: [] },
+      {
+        slug: "methode/faux-a/deux",
+        titre: "T",
+        texte: `${SAINE}\n${MARQUE}`,
+        collection: "methode-vente",
+        etiquettes: [],
+      },
+    ]);
+    const ctx = await obtenirContexteMethode({ sujet: "vitrine", max: 10 });
+    expect(ctx.noyau).toBeNull();
+    expect(ctx.extraits).toEqual([]);
+    vi.unstubAllEnvs();
+  });
+
+  it("la requête des extraits exige elle aussi la marque (premier filet, côté base)", async () => {
+    findManyMock.mockReset();
+    queryRawMock.mockReset();
+    vi.stubEnv("METHODE_ACTIVE", "true");
+    findManyMock.mockResolvedValue([]);
+    queryRawMock.mockResolvedValue([]);
+    await obtenirContexteMethode({ sujet: "vitrine" });
+    const sql = String(queryRawMock.mock.calls[0]![0]);
+    expect(sql).toMatch(/body_text/);
+    expect(sql).toMatch(/LIKE|~|starts_with|left\(/i);
+    expect(queryRawMock.mock.calls[0]!.slice(1)).toContainEqual(`${MARQUE}\n%`);
+    vi.unstubAllEnvs();
   });
 });

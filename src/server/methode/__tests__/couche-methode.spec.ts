@@ -1,4 +1,4 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 
@@ -448,5 +448,159 @@ describe("7 · interrupteur éteint = neutre", () => {
     const avertir = vi.spyOn(console, "warn").mockImplementation(() => undefined);
     expect(await obtenirContexteMethode({ sujet: "relance" })).toEqual(CONTEXTE_NEUTRE);
     avertir.mockRestore();
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+//  8 · DÉCISION DU PILOTE (18/11) : approbation à la main, section par section
+// ─────────────────────────────────────────────────────────────────────────────
+
+describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
+  const MARQUE = "sortie: validee";
+
+  /** Format PDF : la marque est la première ligne SOUS le titre de la section. */
+  const PDF = [
+    "# faux-marque-pdf",
+    "1. Une section approuvée",
+    MARQUE,
+    LONG,
+    "2. Une section jamais relue",
+    LONG,
+    "3. Une marque cachée dans le corps",
+    LONG,
+    MARQUE,
+    "4. Une marque en variante de casse",
+    "Sortie: validee",
+    LONG,
+  ].join("\n");
+
+  /** Format Markdown (titres #, ##) : même règle. */
+  const MD = [
+    "# Un dossier inventé",
+    "## Approuvée",
+    MARQUE,
+    LONG,
+    "## Jamais relue",
+    LONG,
+    "## Marque dans le corps",
+    LONG,
+    MARQUE,
+    "## Marque en variante d'espace",
+    "sortie:  validee",
+    LONG,
+  ].join("\n");
+
+  const parSlug = (cs: ReturnType<typeof decouperFichier>) =>
+    Object.fromEntries(cs.map((s) => [s.slug.split("/").pop()!, s]));
+
+  it("PDF : seule la section dont la première ligne est la marque est approuvée", () => {
+    const s = decouperFichier("livres/faux-marque-pdf.md", PDF);
+    expect(s.map((x) => x.approuvee)).toEqual([true, false, false, false]);
+    expect(s[0]!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
+  });
+
+  it("Markdown : seule la section dont la première ligne est la marque est approuvée", () => {
+    const s = decouperFichier("livres/faux-marque-md.md", MD);
+    expect(s.map((x) => x.approuvee)).toEqual([true, false, false, false]);
+    expect(parSlug(s)["approuvee"]!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
+  });
+
+  it("l'import ne pose JAMAIS la marque : un corpus sans marque n'en produit aucune", () => {
+    for (const [nom, contenu] of [
+      ["livres/faux-00-atelier-methode.md", FICHE_FAUSSE],
+      ["livres/important-a-savoir/faux-affiche.md", FICHE_AFFICHE],
+      ["livres/faux-md.md", MD.replaceAll(MARQUE, "")],
+    ] as const) {
+      const sections = decouperFichier(nom, contenu);
+      expect(sections.length).toBeGreaterThan(0);
+      for (const s of sections) {
+        expect(s.approuvee, s.slug).toBe(false);
+        expect(s.texte, s.slug).not.toContain(MARQUE);
+        expect(s.etiquettes.join(" "), s.slug).not.toContain("validee");
+      }
+    }
+  });
+
+  it("l'import ne déduit pas la marque : une section saine, sans marque, reste non approuvée", () => {
+    const [s] = decouperFichier(
+      "livres/faux-sain.md",
+      ["# faux-sain", "1. Une section très saine", LONG].join("\n"),
+    );
+    expect(s!.signalements).toEqual([]);
+    expect(s!.etiquettes).not.toContain(ETIQUETTE_DOCTRINE);
+    expect(s!.approuvee).toBe(false);
+  });
+
+  it("l'avertissement « chiffres » ne déplace pas la marque ni ne la fait disparaître", () => {
+    const [s] = decouperFichier(
+      "livres/faux-chiffres.md",
+      ["# faux-chiffres", "1. Un calcul", MARQUE, `${LONG} Exercice à ${MONTANT} par an.`].join("\n"),
+    );
+    expect(s!.etiquettes).toContain(ETIQUETTE_CHIFFRES);
+    expect(s!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
+    expect(s!.texte).toContain(AVERTISSEMENT_CHIFFRES);
+  });
+
+  it("le texte écrit en base est celui du corpus, marque comprise ou absente", async () => {
+    ecrire("livres/faux-marque-pdf.md", PDF);
+    ecrire("livres/faux-sans-marque.md", ["# faux-sans-marque", "1. Une section", LONG].join("\n"));
+    const textes: string[] = [];
+    const fake = {
+      knowledgeTag: { upsert: async () => ({ id: "t" }) },
+      knowledgeCollection: { upsert: async () => ({ id: "c" }) },
+      knowledgeCollectionItem: {
+        findUnique: async () => null,
+        aggregate: async () => ({ _max: { position: null } }),
+        create: async () => ({}),
+      },
+      knowledgeEntry: {
+        findUnique: async () => null,
+        create: async (a: { data: { translations?: { create?: { bodyText?: string } } } }) => {
+          const t = a.data.translations?.create?.bodyText;
+          if (typeof t === "string") textes.push(t);
+          return { id: "e" };
+        },
+      },
+      knowledgeTranslation: {
+        create: async (a: { data: { bodyText?: string } }) => {
+          if (typeof a.data.bodyText === "string") textes.push(a.data.bodyText);
+          return {};
+        },
+        update: async () => ({}),
+      },
+      knowledgeTagOnEntry: { upsert: async () => ({}) },
+      $disconnect: async () => undefined,
+    };
+    const BASE = ["postgresql://utilisateur", "base.exemple.invalid:5432/faux"].join("@");
+    const deps = cliDeps({
+      env: { DATABASE_URL: BASE },
+      fabriquerClient: vi.fn(async () => fake as never),
+    });
+    expect(await executerCli(["--source", racine, "--ecrire"], deps)).toBe(0);
+    // 4 sections du premier fichier + 1 du second ; la marque n'est écrite que là où le corpus la porte
+    expect(textes).toHaveLength(5);
+    expect(textes.filter((t) => t.startsWith(`${MARQUE}\n`))).toHaveLength(1);
+    expect(textes.filter((t) => t.includes(MARQUE) && !t.startsWith(`${MARQUE}\n`))).toHaveLength(1);
+  });
+
+  it("aucune fonction du code ne peut poser la marque : le littéral n'existe que dans decoupage.ts, et seulement pour LIRE", () => {
+    const racineDepot = path.resolve(__dirname, "../../../..");
+    const fichiers = [
+      "src/server/methode/filtre-sortie.ts",
+      "src/server/methode/index.ts",
+      "scripts/methode/importer-methode.ts",
+      "src/server/actions/knowledge/_transition.ts",
+    ];
+    for (const f of fichiers) {
+      const src = readFileSync(path.join(racineDepot, f), "utf8");
+      expect(src, f).not.toContain("sortie: validee");
+      expect(src, f).not.toMatch(/MARQUE_APPROBATION(?!\s*[,}])/);
+    }
+    const dec = readFileSync(path.join(racineDepot, "src/server/methode/decoupage.ts"), "utf8");
+    // la constante ne sert qu'à comparer ou à retirer : jamais à concaténer ni à écrire
+    const usages = dec.split("\n").filter((l) => /MARQUE_APPROBATION/.test(l) && !/^\s*(\*|\/\/)/.test(l));
+    for (const l of usages) {
+      expect(l, l).not.toMatch(/\+\s*MARQUE_APPROBATION|MARQUE_APPROBATION\s*\+|\$\{MARQUE_APPROBATION\}\\?n?`|\.concat\(/);
+    }
   });
 });
