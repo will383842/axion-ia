@@ -10,7 +10,7 @@ import {
   getBrandVoiceForContentType,
   injectBrandVoice,
 } from "../brand-voice";
-import { INTERNAL_EXPERTS, buildExpertQuote } from "../expert-bank";
+import { INTERNAL_EXPERTS, SIGNATURE_AVIS, buildExpertQuote } from "../expert-bank";
 
 const TYPES = [
   "blog_article",
@@ -50,7 +50,8 @@ describe("Manon : plume IA déclarée", () => {
     expect(manon!.title).not.toMatch(/experte/i);
     expect(manon!.title).toMatch(/IA/);
     expect(manon!.title).toMatch(/supervis/i);
-    expect(buildExpertQuote(manon!, "Un avis.")?.title).toBe(manon!.title);
+    // Lot L3 : l'avis est signé de la marque, jamais d'une personne.
+    expect(buildExpertQuote(manon!, "Un avis.")?.title).toBe(SIGNATURE_AVIS.title);
   });
 });
 

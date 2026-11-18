@@ -297,6 +297,12 @@ export async function aggregateBarometer(
     ),
   ]);
 
+  // Données de personnes : un périmètre FILTRÉ trop petit permettrait de
+  // réidentifier des répondants → aucun pourcentage sous MIN_SEGMENT_N.
+  // (Sans filtre, l'affichage global reste inchangé.)
+  const filtre = Boolean(f.companySize || f.sector || f.region);
+  if (filtre && total < MIN_SEGMENT_N) return emptySnapshotPayload(f);
+
   const distributions: Record<string, DistributionEntry[]> = {};
   const singleMaps = new Map<string, Map<string, number>>();
 
