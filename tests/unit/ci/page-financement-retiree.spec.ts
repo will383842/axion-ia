@@ -4,6 +4,7 @@
  * - aucun lien interne ne pointe vers elle ;
  * - la déduction de la Journée IA est écrite sur la Journée IA, jamais sur les formations.
  */
+import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -36,6 +37,22 @@ describe("page financement retirée", () => {
     "src/lib/seo/page-images.ts",
   ])("%s ne lie plus la page", (f) => {
     expect(lire(f)).not.toContain('"/financement-opco-france-travail"');
+  });
+});
+
+describe("aucun chemin vers la page dans le code ni dans les fichiers publics", () => {
+  it("ni lien, ni llms.txt, ni flux, ni JSON-LD ne cite l'adresse entre guillemets", () => {
+    let sortie = "";
+    try {
+      sortie = execFileSync(
+        "git",
+        ["grep", "-n", "-E", "[\"'`](/(fr|en))?/financement-opco-france-travail", "--", "src", "public"],
+        { cwd: RACINE, encoding: "utf8" },
+      );
+    } catch {
+      sortie = ""; // code 1 : aucune occurrence
+    }
+    expect(sortie.trim()).toBe("");
   });
 });
 
