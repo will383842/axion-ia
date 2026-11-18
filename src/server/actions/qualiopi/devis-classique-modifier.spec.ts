@@ -17,6 +17,7 @@ const m = vi.hoisted(() => ({
   devisFindMany: vi.fn(),
   clientFindUnique: vi.fn(),
   transaction: vi.fn(),
+  outboxFindFirst: vi.fn(),
   estimate: vi.fn(),
   config: vi.fn(),
   log: vi.fn(),
@@ -33,6 +34,7 @@ vi.mock("@/lib/prisma", () => ({
       deleteMany: m.devisDeleteMany,
     },
     client: { findUnique: m.clientFindUnique },
+    emailOutbox: { findFirst: m.outboxFindFirst },
     $transaction: m.transaction,
   },
 }));
@@ -80,6 +82,7 @@ beforeEach(() => {
   vi.clearAllMocks();
   m.devisFindUnique.mockResolvedValue(EXISTANT);
   m.devisUpdateMany.mockResolvedValue({ count: 1 });
+  m.outboxFindFirst.mockResolvedValue(null);
   m.config.mockResolvedValue("assujetti");
   m.clientFindUnique.mockResolvedValue({ idcc: null });
 });
@@ -127,6 +130,34 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
       input: ENTREE,
     });
     expect("error" in r).toBe(true);
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+  });
+
+  it("un e-mail d'envoi du devis attend validation : refus, sans écrire", async () => {
+    m.outboxFindFirst.mockResolvedValue({ id: "ob-1" });
+    const MSG = "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
+    const r = await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: ENTREE,
+    });
+    expect(r).toEqual({ error: MSG });
+    expect(m.outboxFindFirst).toHaveBeenCalledWith({
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: DEVIS,
+        statut: { in: ["a_valider", "approuve"] },
+      },
+      select: { id: true },
+    });
+    expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    const v = await fixerValiditeDevisBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      dateValidite: new Date(Date.now() + 30 * 86_400_000).toISOString().slice(0, 10),
+    });
+    expect(v).toEqual({ error: MSG });
     expect(m.devisUpdateMany).not.toHaveBeenCalled();
   });
 

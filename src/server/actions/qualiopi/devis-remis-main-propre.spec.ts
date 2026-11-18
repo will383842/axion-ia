@@ -227,11 +227,16 @@ describe("marquerRemisEnMainPropreAction", () => {
     rienProduit();
   });
 
-  it("ligne a_valider présente : refus, aucun PDF", async () => {
+  it("ligne a_valider ou approuve présente : refus, aucun PDF", async () => {
     h.txOutboxFindFirst.mockResolvedValue({ id: "ob-0" });
     expect(erreur(await appel())).toContain("attend déjà dans Emails → À valider");
     expect(h.txOutboxFindFirst).toHaveBeenCalledWith({
-      where: { template: "devis-envoi", entityType: "Devis", entityId: ID, statut: "a_valider" },
+      where: {
+        template: "devis-envoi",
+        entityType: "Devis",
+        entityId: ID,
+        statut: { in: ["a_valider", "approuve"] },
+      },
       select: { id: true },
     });
     expect(h.generateDocument).not.toHaveBeenCalled();

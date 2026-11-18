@@ -42,17 +42,12 @@ import {
   recopierLienProjet,
 } from "@/server/qualiopi/crm/devis-projet";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
-import {
-  emettreDevisEmis,
-  emettreDevisSigne,
-  transactionDevisSigne,
-} from "@/server/partners-sync/producteurs/devis";
+import { emettreDevisSigne, transactionDevisSigne } from "@/server/partners-sync/producteurs/devis";
 import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/devis-signe-fait-client";
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
 import {
-  cloreVersionRemplacee,
   MSG_VERSION_REMPLACEE_ACCEPTEE,
   MSG_VERSION_REMPLACEE_SIGNEE_ENTRE_TEMPS,
   versionRemplaceeBloqueEmission,
@@ -71,6 +66,16 @@ import {
   OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { publicUrl } from "@/lib/public-url";
+import { resoudreMode } from "@/server/email/outbox-service";
+import {
+  marquerDevisEnvoye,
+  prendreVerrouEnvoiDevis,
+} from "@/server/qualiopi/devis/marquer-devis-envoye";
+import {
+  emailDevisEnAttente,
+  GABARIT_DEVIS_ENVOI,
+} from "@/server/qualiopi/devis/email-devis-en-attente";
+import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import {
   creerTokenDocument,
   revoquerTokensDocument,
@@ -240,9 +245,6 @@ class EnvoiDejaEnCours extends EnvoiRefuse {}
 /** Le courriel n'est PAS parti (retenu, corbeille ou file indisponible, essai bloqué, exception). */
 class EnvoiNonParti extends EnvoiRefuse {}
 
-/** Gabarit du courriel d'envoi (lu par la garde « déjà garé » ET passé à la file : un seul point). */
-const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
-
 const MSG_RIEN_NE_PART = "Rien n'est parti ; le devis reste en brouillon.";
 const MSG_PAS_EMAIL = `Ce client n'a pas d'adresse e-mail de contact. Ajoutez-la sur sa fiche, puis renvoyez le devis. ${MSG_RIEN_NE_PART}`;
 /** Ajoutée aux refus d'un devis CLASSIQUE seulement : un devis à formules se signe en ligne. */
@@ -261,6 +263,10 @@ const MSG_ESSAI =
   "Session d'essai : cette adresse n'est pas dans la liste des adresses d'essai. Rien n'est parti.";
 const MSG_FILE =
   "La file d'envoi des e-mails est indisponible : rien n'est parti ; le devis reste en brouillon. Réessayez plus tard.";
+const MSG_REGLE_CHANGEE =
+  "La règle d'envoi a changé pendant l'envoi : l'e-mail n'est pas parti et le devis reste en brouillon. Réessayez.";
+const MSG_GARE =
+  "L'e-mail attend votre validation dans Emails, À valider. Le devis reste en brouillon et aucun lien de signature n'existe tant que l'e-mail n'est pas parti.";
 const MSG_JETON = `Le lien de signature n'a pas pu être créé. ${MSG_RIEN_NE_PART} Réessayez dans un instant.`;
 const MSG_APRES_COURRIEL =
   "L'e-mail est parti (ou attend validation), mais le devis n'a pas pu être marqué envoyé. Ne le renvoyez pas : prévenez le support technique.";
@@ -276,8 +282,12 @@ const MOTIFS_RETENUE: Record<MotifRetenue, string> = {
  * Marque le devis comme envoyé (statut → envoye, sentAt = now).
  * Fait passer le client de prospect à devis_envoye (jamais un statut plus avancé).
  *
- * 🔴 B1 — « envoyé » ne s'écrit QUE si un courriel est réellement parti (enfilé) ou garé
- * pour validation. Ordre, dans UNE transaction interactive :
+ * 🔴 B2 (PR 3) — en mode « validation », AUCUN jeton n'est créé au clic : l'e-mail est garé sans
+ * lien avec un marqueur, le devis reste « brouillon », et c'est l'approbation (`lien-a-l-envoi`)
+ * qui crée le jeton et marque le devis « envoyé ». Le chemin ci-dessous décrit le mode « auto ».
+ *
+ * 🔴 B1 — « envoyé » ne s'écrit QUE si un courriel est réellement parti (enfilé). Ordre, dans
+ * UNE transaction interactive :
  *   1. verrou consultatif non bloquant (deux clics simultanés : le second est refusé) ;
  *   2. relecture du devis DANS la transaction + gardes (déjà envoyé, formules, total,
  *      e-mail du client, courriel déjà garé) ;
@@ -334,10 +344,8 @@ export async function sendDevisAction(id: string): Promise<
     const resultat = await prisma.$transaction(
       async (tx) => {
         // ── 1. Verrou consultatif non bloquant : un 2e envoi simultané est refusé sans attendre.
-        const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
-          SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + devisId})) AS locked
-        `;
-        if (!verrou?.locked) throw new EnvoiDejaEnCours(MSG_VERROU, "verrou_pris");
+        if (!(await prendreVerrouEnvoiDevis(tx, devisId)))
+          throw new EnvoiDejaEnCours(MSG_VERROU, "verrou_pris");
 
         // ── 2. Relecture DANS la transaction, puis gardes dans l'ordre.
         const devis = await tx.devis.findUnique({
@@ -442,15 +450,8 @@ export async function sendDevisAction(id: string): Promise<
           );
         }
         // (e) Un courriel de ce devis attend déjà dans la corbeille : pas de doublon.
-        const dejaGare = await tx.emailOutbox.findFirst({
-          where: {
-            template: GABARIT_DEVIS_ENVOI,
-            entityType: "Devis",
-            entityId: devisId,
-            statut: "a_valider",
-          },
-          select: { id: true },
-        });
+        // « À valider » ET « approuvé » (en cours d'envoi) : dans les deux cas un e-mail attend.
+        const dejaGare = await emailDevisEnAttente(tx, devisId);
         if (dejaGare) throw new EnvoiRefuse(MSG_DEJA_GARE, "deja_gare");
 
         // Données du PDF : même fonction pure que l'aperçu du brouillon.
@@ -514,68 +515,90 @@ export async function sendDevisAction(id: string): Promise<
           throw new EnvoiRefuse(MSG_PDF_RATE, "pdf_rate");
         }
 
-        // ── 4. Lien de signature MAISON « bon pour accord » (jeton `/portail/signer/`).
+        // ── 4. Mode d'envoi, décidé AVANT tout jeton (B2, PR 3).
+        //   - validation : l'e-mail est garé SANS lien ; la ligne porte un marqueur, le jeton naît
+        //     à l'approbation (`lien-a-l-envoi`), et le devis reste « brouillon » jusque-là.
+        //   - auto : chemin d'origine (jeton, enfilage, puis « envoye »).
+        // `null` : la règle globale du gabarit, comme le faisait `enqueueEmail`.
+        const mode = await resoudreMode(GABARIT_DEVIS_ENVOI, null);
+        const parValidation = mode === "validation";
+
+        // ── 4 bis. Lien de signature MAISON « bon pour accord » (jeton `/portail/signer/`).
         // Un devis sans lien de signature ne sert à rien : un échec refuse l'envoi.
         // ⚠️ DocuSeal n'émet plus rien (30/07/2026) : `docusealSubmissionId` et
         // `docusealEmbedUrl` restent en base pour les anciens devis, sans nouvelle écriture.
-        let signatureUrl: string;
-        try {
-          const { token } = await creerTokenDocument({
-            documentGenereId: pieceId,
-            // Le client est la partie qui reçoit le lien — l'organisme contresigne depuis la
-            // console, authentifié, et n'a donc jamais de jeton.
-            partie: "client",
-            // 🔴 Identité résolue depuis la FICHE CLIENT, côté serveur, et figée.
-            signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
-            signataireEmail: contactEmail,
-            signataireQualite: devis.client.contactFonction,
-            // La date de validité borne le lien : tenir une offre ferme au-delà n'aurait aucun sens.
-            borneMetier: devis.dateValidite,
-          });
-          signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
-        } catch (err) {
-          // Aucune donnée client dans le journal : le détail reste dans les logs serveur.
-          console.warn("[sendDevisAction] émission du lien de signature échouée", err);
-          throw new EnvoiRefuse(MSG_JETON, "jeton_rate");
+        let signatureUrl: string | undefined;
+        if (!parValidation) {
+          try {
+            const { token } = await creerTokenDocument({
+              documentGenereId: pieceId,
+              // Le client est la partie qui reçoit le lien — l'organisme contresigne depuis la
+              // console, authentifié, et n'a donc jamais de jeton.
+              partie: "client",
+              // 🔴 Identité résolue depuis la FICHE CLIENT, côté serveur, et figée.
+              signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+              signataireEmail: contactEmail,
+              signataireQualite: devis.client.contactFonction,
+              // La date de validité borne le lien : tenir une offre ferme au-delà n'aurait aucun sens.
+              borneMetier: devis.dateValidite,
+            });
+            signatureUrl = publicUrl(`/fr/portail/signer/${token}`).toString();
+          } catch (err) {
+            // Aucune donnée client dans le journal : le détail reste dans les logs serveur.
+            console.warn("[sendDevisAction] émission du lien de signature échouée", err);
+            throw new EnvoiRefuse(MSG_JETON, "jeton_rate");
+          }
+          etat.jetonCree = true;
         }
-        etat.jetonCree = true;
 
-        // ── 5. Courriel : DERNIER effet externe, AVANT toute écriture. « Parti » = enfilé ou
-        // garé pour validation ; tout le reste est un refus.
+        // ── 5. Courriel : DERNIER effet externe, AVANT toute écriture. En validation : « parti »
+        // = garé, rien d'autre. En auto : « parti » = enfilé ; tout le reste est un refus.
+        const payloadCourriel = payloadDevisEnvoi({
+          clientNom: nomPourSalutationDevis(devis.client),
+          salutation: salutationPourPayload({
+            clientNom: nomPourSalutationDevis(devis.client),
+            contactCivilite: devis.client.contactCivilite,
+            contactPrenom: devis.client.contactPrenom,
+            contactNomFamille: devis.client.contactNomFamille,
+          }),
+          numero: devis.numero,
+          montantTotalHtCents: devis.montantTotalHtCents,
+          montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
+          dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
+          formules: data.formules,
+          // Validation : ABSENT (aucun jeton n'existe).
+          ...(signatureUrl !== undefined ? { signatureUrl } : {}),
+        });
+        if (parValidation) {
+          // Marqueur sans identité, sans URL, sans jeton : contrat v1 de `lien-a-l-envoi`.
+          payloadCourriel[CLE_MARQUEUR] = {
+            v: 1,
+            nature: "devis-premier-envoi",
+            documentGenereId: pieceId,
+            partie: "client",
+            devisId: devis.id,
+            devisUpdatedAt: devis.updatedAt.toISOString(),
+            pdfCle,
+          };
+        }
         let verdict: Awaited<ReturnType<typeof enqueueEmail>>;
         try {
-          verdict = await enqueueEmail(
-            GABARIT_DEVIS_ENVOI,
-            contactEmail,
-            "fr",
-            payloadDevisEnvoi({
-              clientNom: nomPourSalutationDevis(devis.client),
-              salutation: salutationPourPayload({
-                clientNom: nomPourSalutationDevis(devis.client),
-                contactCivilite: devis.client.contactCivilite,
-                contactPrenom: devis.client.contactPrenom,
-                contactNomFamille: devis.client.contactNomFamille,
-              }),
-              numero: devis.numero,
-              montantTotalHtCents: devis.montantTotalHtCents,
-              montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
-              dateValiditeLabel: devis.dateValidite.toLocaleDateString("fr-FR"),
-              formules: data.formules,
-              signatureUrl,
-            }),
-            {
-              attachments: [{ filename: `${devis.numero}.pdf`, r2Key: pdfCle }],
-              entityType: "Devis",
-              entityId: devis.id,
-            },
-          );
+          verdict = await enqueueEmail(GABARIT_DEVIS_ENVOI, contactEmail, "fr", payloadCourriel, {
+            attachments: [{ filename: `${devis.numero}.pdf`, r2Key: pdfCle }],
+            entityType: "Devis",
+            entityId: devis.id,
+            ...(parValidation ? { exigerValidation: true } : {}),
+          });
         } catch (err) {
           console.warn("[sendDevisAction] enqueueEmail a levé une exception", err);
           throw new EnvoiNonParti(MSG_FILE, "file_exception");
         }
         if (verdict.garePourValidation === true) {
           etat.courriel = { etat: "gare", outboxId: verdict.outboxId };
-        } else if (verdict.enqueued === true) {
+          // Auto : la règle a changé entre-temps. Garé n'est PAS parti : le `catch` refuse la
+          // ligne, masque le lien et révoque le jeton ; le devis n'est pas marqué envoyé.
+          if (!parValidation) throw new EnvoiNonParti(MSG_REGLE_CHANGEE, "regle_changee");
+        } else if (verdict.enqueued === true && !parValidation) {
           etat.courriel = { etat: "enfile" };
         } else if (verdict.retenu !== undefined) {
           throw new EnvoiNonParti(
@@ -591,54 +614,71 @@ export async function sendDevisAction(id: string): Promise<
           throw new EnvoiNonParti(MSG_FILE, "file_absente");
         }
 
-        // ── 6. Écritures, toujours dans `tx` : envoye + statut client + expiration de la
-        // version remplacée. « Devis émis » vers Axion Partners dans la MÊME transaction
-        // (INT-T46-A ; canal fermé : rien n'est lu, écritures atomiques à l'identique).
-        const marque = await tx.devis.updateMany({
-          // `updatedAt` : un enregistrement du brouillon survenu pendant le PDF fait tomber
-          // l'écriture à `count: 0` (le client aurait reçu un PDF et un montant périmés).
-          where: { id: devisId, statut: "brouillon", updatedAt: devis.updatedAt },
-          data: {
-            statut: "envoye",
-            sentAt: new Date(),
-            fichierPdfUrl: pdfCle,
-            // 🔴 Rattachement à la pièce numérotée : c'est lui qui permet à la signature de
-            // désigner CE devis-ci (`accepterDevisSurSignature` ne retrouverait rien sinon).
-            documentGenereId: pieceId,
-          },
-        });
-        if (marque.count !== 1) {
-          throw new Error(`devis non passé à « envoye » (${marque.count} ligne modifiée)`);
+        // Validation : AUCUNE écriture sur le devis, le client ni la version remplacée. Tout se
+        // fait à l'approbation, dans `lien-a-l-envoi`. La pièce PDF reste en base.
+        if (parValidation) {
+          return {
+            enqueued: false,
+            garePourValidation: true,
+            devisExpire: null as string | null,
+            gareSansLien: true,
+          };
         }
-        // Écriture GARDÉE : seul un PROSPECT (ou un prospect « perdu » qui reçoit un nouveau
-        // devis) devient « devis envoyé » ; un client plus avancé n'est jamais rétrogradé.
-        await tx.client.updateMany({
-          where: { id: devis.clientId, statut: { in: ["prospect", "perdu"] } },
-          data: { statut: "devis_envoye" },
-        });
-        // Révision : l'ancienne version passe `expire` et son lien de signature est révoqué,
-        // dans la MÊME transaction (code partagé avec la remise en main propre).
-        await cloreVersionRemplacee(tx, {
-          replacesDevisId: devis.replacesDevisId,
-          documentGenereIdRemplace: devis.replacesDevis?.documentGenereId,
+
+        // ── 6. Écritures, toujours dans `tx` : envoye + statut client + expiration de la
+        // version remplacée + « devis émis » vers Axion Partners (INT-T46-A), dans la MÊME
+        // transaction. Une seule fonction, partagée avec l'approbation (`lien-a-l-envoi`).
+        await marquerDevisEnvoye(tx, {
+          devisId,
+          clientId: devis.clientId,
           numero: devis.numero,
-          statutRemplace: devis.replacesDevis?.statut,
+          // Un enregistrement du brouillon survenu pendant le PDF fait tomber l'écriture.
+          updatedAt: devis.updatedAt,
+          pdfCle,
+          documentGenereId: pieceId,
+          replacesDevisId: devis.replacesDevisId,
+          replacesDevis: devis.replacesDevis,
         });
-        await emettreDevisEmis(tx, devisId);
 
         return {
           enqueued: verdict.enqueued === true,
-          garePourValidation: verdict.garePourValidation === true,
+          garePourValidation: false,
           devisExpire: devis.replacesDevisId,
+          gareSansLien: false,
         };
       },
       { maxWait: 5_000, timeout: 60_000 },
     );
 
-    // Un courriel garé n'est pas encore parti : la note le dit (inchangée).
-    const note = resultat.garePourValidation
-      ? "Devis marqué envoyé. L'email attend votre validation dans Emails → À valider ; il partira une fois approuvé."
-      : undefined;
+    if (resultat.gareSansLien) {
+      // Garé pour validation : le devis reste brouillon, aucun lien n'existe. Ni adresse ni URL.
+      try {
+        await logQualiopiActivity({
+          action: "qualiopi.devis.send_gare",
+          targetType: "Devis",
+          targetId: devisId,
+          changes: {
+            statut: "brouillon",
+            pdfGenere: true,
+            documentGenereId: etat.documentGenereId,
+            lienSignatureEmis: false,
+            garePourValidation: true,
+          },
+          session,
+        });
+      } catch (e) {
+        console.warn("[sendDevisAction] journal de l'e-mail garé échoué", e);
+      }
+      return {
+        data: {
+          id: devisId,
+          emailEnvoye: false,
+          signatureCreee: false,
+          note: MSG_GARE,
+          garePourValidation: true,
+        },
+      };
+    }
 
     await logQualiopiActivity({
       action: "qualiopi.devis.send",
@@ -651,7 +691,6 @@ export async function sendDevisAction(id: string): Promise<
         // ⚠️ Le LIEN lui-même n'est jamais journalisé : il vaut signature.
         lienSignatureEmis: true,
         emailEnvoye: resultat.enqueued,
-        garePourValidation: resultat.garePourValidation,
         devisExpire: resultat.devisExpire,
       },
       session,
@@ -662,8 +701,6 @@ export async function sendDevisAction(id: string): Promise<
         id: devisId,
         emailEnvoye: resultat.enqueued,
         signatureCreee: true,
-        ...(note !== undefined ? { note } : {}),
-        ...(resultat.garePourValidation ? { garePourValidation: true } : {}),
       },
     };
   } catch (err) {
@@ -729,7 +766,10 @@ export async function sendDevisAction(id: string): Promise<
             data: {
               statut: "refuse",
               refuseAt: new Date(),
-              refuseMotif: "Devis non marqué envoyé (erreur base)",
+              refuseMotif:
+                refus?.motif === "regle_changee"
+                  ? "Règle d'envoi changée pendant l'envoi : e-mail non parti"
+                  : "Devis non marqué envoyé (erreur base)",
               ...(payloadMasque !== undefined ? { payload: payloadMasque } : {}),
             },
           });

@@ -32,7 +32,9 @@ describe("lot 3 — une seule source de données", () => {
   });
 
   it("aucun point d'envoi nouveau : un seul enqueueEmail devis-envoi par action", () => {
-    expect(envoi.match(/"devis-envoi"/g)?.length).toBe(1);
+    // Le nom du gabarit vit dans `email-devis-en-attente.ts` (B2, PR 3) : un seul appel, nommé.
+    expect(envoi.match(/enqueueEmail\(\s*GABARIT_DEVIS_ENVOI/g)?.length).toBe(1);
+    expect(envoi.match(/enqueueEmail\(/g)?.length).toBe(1);
     expect(renvoi.match(/"devis-envoi"/g)?.length).toBe(1);
   });
 

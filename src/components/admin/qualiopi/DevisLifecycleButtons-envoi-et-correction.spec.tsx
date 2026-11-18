@@ -88,9 +88,9 @@ describe("envoi : confirmation d'abord", () => {
       data: {
         id: "d",
         emailEnvoye: false,
-        signatureCreee: true,
+        signatureCreee: false,
         garePourValidation: true,
-        note: "L'email attend votre validation dans Emails → À valider.",
+        note: "L'e-mail attend votre validation dans Emails, À valider. Le devis reste en brouillon et aucun lien de signature n'existe tant que l'e-mail n'est pas parti.",
       },
     });
     brouillon();
@@ -98,7 +98,25 @@ describe("envoi : confirmation d'abord", () => {
     await userEvent.click(screen.getByRole("button", { name: "Envoyer" }));
     const alerte = await screen.findByRole("alert");
     expect(alerte.textContent).toContain("attend votre validation");
+    expect(alerte.textContent).toContain("Le devis reste en brouillon");
     expect(screen.queryByRole("status")).toBeNull();
+  });
+
+  it("e-mail en attente : « Envoyer au client » masqué, message et lien vers les e-mails à valider", () => {
+    brouillon({ emailEnAttente: true, emailsHref: "/fr/admin-x/qualiopi/emails" });
+    expect(screen.queryByRole("button", ENVOYER)).toBeNull();
+    const note = screen.getByTestId("email-en-attente");
+    expect(note.textContent).toContain(
+      "E-mail en attente de validation : aucun lien de signature n'existe encore.",
+    );
+    const lien = note.querySelector("a");
+    expect(lien?.getAttribute("href")).toBe("/fr/admin-x/qualiopi/emails");
+  });
+
+  it("aucun e-mail en attente : bouton présent, pas de message", () => {
+    brouillon({ emailEnAttente: false });
+    expect(screen.getByRole("button", ENVOYER)).toBeTruthy();
+    expect(screen.queryByTestId("email-en-attente")).toBeNull();
   });
 
   it("classique sans adresse : note à la place du bouton d'envoi ; « Remis en main propre… » reste", () => {
