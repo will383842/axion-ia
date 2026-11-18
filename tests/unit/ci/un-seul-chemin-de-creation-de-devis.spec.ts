@@ -13,8 +13,10 @@
  * « Importer » : import nommé (renommé compris), import dynamique (`await import(...)`),
  * `import * as`, `export { … } from`, `export * from`. Pour les formes qui prennent le module
  * entier, le spécifieur est résolu vers le module qui définit les actions.
- * LIMITE : une écriture imbriquée (`devis: { create: … }`) n'est vue que sous sa forme
- * littérale directe ; passée par une variable intermédiaire, elle échappe à la garde.
+ * LIMITES CONNUES : une écriture imbriquée (`devis: { create: … }`) n'est vue que sous sa forme
+ * littérale directe ; passée par une variable intermédiaire, elle échappe à la garde. De même,
+ * l'alias `const d = tx.devis; d.create(...)` n'est PAS détecté : seule la forme
+ * `<x>.devis.create(` l'est.
  *
  * Lecture par arbre syntaxique TypeScript : une mention dans un commentaire, une chaîne ou un
  * type n'est pas un import, un appel `.devis.create(` n'est pas un texte.
@@ -51,6 +53,8 @@ const IMPORTEURS_DEVIS_FORM = [
 ];
 
 const ACTIONS = new Set(["createDevisAction", "creerDevisFormulesAction"]);
+/** Méthodes de promesse : appelées sur `import(...)`, elles prennent le module entier. */
+const PROMESSE = new Set(["then", "catch", "finally"]);
 const ECRITURES = new Set(["create", "createMany", "createManyAndReturn", "upsert"]);
 
 function estTest(chemin: string): boolean {
@@ -151,10 +155,12 @@ export function importe(
           (el) => el.dotDotDotToken || noms.has((el.propertyName ?? el.name).getText(sf)),
         );
       } else if (p && ts.isPropertyAccessExpression(p) && p.expression === cible) {
-        prend = noms.has(p.name.text);
+        // `.then` / `.catch` / `.finally` ne lisent pas une propriété du module : ils reçoivent
+        // le module entier dans leur rappel (`import(x).then((m) => m.createDevisAction(y))`).
+        prend = PROMESSE.has(p.name.text) || noms.has(p.name.text);
       } else if (p && ts.isElementAccessExpression(p) && p.expression === cible) {
         const a = p.argumentExpression;
-        prend = !ts.isStringLiteral(a) || noms.has(a.text);
+        prend = !ts.isStringLiteral(a) || PROMESSE.has(a.text) || noms.has(a.text);
       }
       if (prend) trouves.push("*");
     }
@@ -249,7 +255,7 @@ describe("S15 — un seul chemin de création de devis (dépôt réel)", () => {
     expect(reel().actions).toEqual([...IMPORTEURS_ACTIONS].sort());
   });
 
-  it("(b) seuls devis.ts et devis-formules.ts appellent devis.create / createMany / upsert", () => {
+  it("(b) seuls devis.ts et devis-formules.ts appellent devis.create / createMany / createManyAndReturn / upsert", () => {
     expect(reel().tables).toEqual([...ECRIVAINS_TABLE].sort());
   });
 
@@ -321,6 +327,33 @@ describe("S15 — face ROUGE : des sources fictives sont détectées", () => {
       `const m = await import("${ACTIONS_MOD}");`,
     ])
       expect(importeursActions(avec("src/x/I.ts", src))).toContain("src/x/I.ts");
+  });
+
+  it("un import dynamique suivi de `.then` / `.catch` / `.finally` est détecté", () => {
+    for (const src of [
+      `const X = dynamic(() => import("@/components/admin/qualiopi/DevisForm").then((m) => m.DevisForm));`,
+      `import("${ACTIONS_MOD}").then((m) => m.createDevisAction(x));`,
+      `import("${ACTIONS_MOD}").catch(() => null);`,
+      `import("${ACTIONS_MOD}").finally(() => {});`,
+    ])
+      expect(
+        importeursActions(avec("src/x/T.ts", src)).length +
+          importeursDevisForm(avec("src/x/T.ts", src)).length,
+      ).toBeGreaterThan(0);
+    // Les deux formes exigées, nommément, chacune sur sa garde.
+    expect(
+      importeursDevisForm(
+        avec(
+          "src/x/T1.tsx",
+          'const X = dynamic(() => import("@/components/admin/qualiopi/DevisForm").then((m) => m.DevisForm));',
+        ),
+      ),
+    ).toEqual(["src/x/T1.tsx"]);
+    expect(
+      importeursActions(
+        avec("src/x/T2.ts", `import("${ACTIONS_MOD}").then((m) => m.createDevisAction(x));`),
+      ),
+    ).toContain("src/x/T2.ts");
   });
 
   it("un import d'espace de noms du module est détecté (alias ou relatif)", () => {
