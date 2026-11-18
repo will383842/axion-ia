@@ -95,7 +95,7 @@ refus, porte `Cache-Control: no-store`.
 
 **Entrée** : `{ "sujet": "<2 à 300 caractères>" }`, aucun autre champ. **Sortie** :
 `{ "items": [{ "slug", "titre", "texte", "source": "methode" }], "meta": { "returned": N } }`, au plus
-5 extraits de 1 500 caractères. Le nombre d'extraits n'est pas réglable par le client. Rien de la
+5 extraits de 1 500 caractères (plus la marque de coupe de la couche). Le nombre d'extraits n'est pas réglable par le client. Rien de la
 demande ni du texte servi n'est écrit au journal.
 
 **Variables** (noms seulement, jamais de valeur dans le dépôt) : `METHODE_ACTIVE`,
