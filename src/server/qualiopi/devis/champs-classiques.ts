@@ -8,6 +8,13 @@
  */
 
 import { z } from "zod";
+import {
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
+  CONDITIONS_PARTICULIERES_MAX,
+  MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+  nombreDeLignes,
+  normaliserConditionsParticulieres,
+} from "@/server/qualiopi/devis/conditions-particulieres";
 import { prisma } from "@/lib/prisma";
 import {
   dateDeReferenceDevis,
@@ -109,6 +116,21 @@ export const entreeDevisClassiqueSchema = z.object({
    * pré-remplie (décision de Will du 29/09 : le devis s'ouvre vide).
    */
   projetId: z.string().uuid().optional(),
+  /**
+   * Conditions particulières (texte simple, devis CLASSIQUE seulement). Normalisé à la lecture ;
+   * vide → `null`. CLÉ ABSENTE ≠ `null` : à la modification, l'absence laisse la colonne intacte
+   * (l'assistant appelle l'action sans le champ), `null` l'efface.
+   */
+  conditionsParticulieres: z
+    .string()
+    .max(CONDITIONS_PARTICULIERES_MAX)
+    .transform(normaliserConditionsParticulieres)
+    // Contrôle APRÈS normalisation : ce sont les lignes réellement imprimées qui comptent.
+    .refine((v) => v === null || nombreDeLignes(v) <= CONDITIONS_PARTICULIERES_LIGNES_MAX, {
+      message: MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+    })
+    .nullable()
+    .optional(),
 });
 
 export type EntreeDevisClassique = z.infer<typeof entreeDevisClassiqueSchema>;

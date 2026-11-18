@@ -32,9 +32,33 @@
 
 import { DOCUMENT_RETENTION_YEARS } from "@/server/qualiopi/legal/legal-mentions";
 import type { PartieSignataire } from "./document-signature-hash";
+import { CIRCUITS_SIGNATURE_LISTE } from "./parties-requises";
 
-/** Version du texte AFFICHÉ. À incrémenter à chaque modification du contenu. */
-export const MENTION_VERSION_DOCUMENT = "doc-v1" as const;
+/**
+ * Version du texte AFFICHÉ aux NOUVELLES signatures. À incrémenter à chaque modification du
+ * contenu.
+ *
+ * 🔑 « doc-v2 » (17/11/2026) corrige l'accord grammatical de l'attestation (« du devis n° …
+ * établi par … » au lieu de « de la devis n° … établie par … »). Le texte « doc-v1 » est CONSERVÉ
+ * tel quel dans `mentionAttestationDocumentV1` : seule la version portée par chaque ligne scellée
+ * est relue à la vérification (`document-signature-hash.ts` n'importe pas ce module), et on doit
+ * toujours pouvoir dire ce qu'une signature « doc-v1 » avait à l'écran.
+ */
+export const MENTION_VERSION_DOCUMENT = "doc-v2" as const;
+
+/**
+ * Numéro de la pièce que chaque version de mention affiche POUR UN DEVIS (`pieceNumero`) :
+ * - « doc-v1 » : le numéro de la PIÈCE (AXI-DOC-…), celui du registre scellé ;
+ * - « doc-v2 » : le numéro du DEVIS (AXI-DEV-…), celui que le client connaît.
+ * Ce choix est fait par l'appelant (la page de signature) ; il ne change pas le texte des
+ * autres pièces, qui gardent le numéro de pièce dans les deux versions.
+ */
+
+/** Version précédente du texte affiché. Ne s'écrit plus ; reste rendable. */
+export const MENTION_VERSION_DOCUMENT_V1 = "doc-v1" as const;
+
+export type VersionMentionDocument =
+  typeof MENTION_VERSION_DOCUMENT | typeof MENTION_VERSION_DOCUMENT_V1;
 
 /** Version du CONSENTEMENT recueilli. Évolue indépendamment de la précédente. */
 export const CONSENTEMENT_VERSION_DOCUMENT = "doc-consent-v1" as const;
@@ -68,10 +92,11 @@ export interface ParametresMentionDocument {
  * contractant ; l'organisme, lui, CONCLUT. Leur faire signer la même phrase
  * ferait dire à chacun ce qu'un contrôle lui reprocherait.
  */
-export function mentionAttestationDocument(
+export function mentionAttestationDocumentV1(
   partie: PartieSignataire,
   p: ParametresMentionDocument,
 ): string {
+  // ⛔ NE PAS MODIFIER — texte « doc-v1 » (accord fautif sur un nom masculin conservé).
   const piece = `la ${p.pieceLibelle} n° ${p.pieceNumero} établie par ${p.organisme}`;
   switch (partie) {
     case "client":
@@ -91,6 +116,61 @@ export function mentionAttestationDocument(
     case "axionia":
       return `Pour ${p.organisme}, j'accepte ${piece} et je la conclus.`;
   }
+}
+
+/**
+ * Texte « doc-v2 » : articles et accords selon la pièce (« le devis … établi », « la convention …
+ * établie », « l'autorisation … établie »). Le genre et l'article viennent du SSOT des circuits
+ * (`parties-requises.ts`). Libellé inconnu du SSOT : texte de la v1, jamais un texte inventé.
+ */
+export function mentionAttestationDocumentV2(
+  partie: PartieSignataire,
+  p: ParametresMentionDocument,
+): string {
+  const circuit = CIRCUITS_SIGNATURE_LISTE.find((c) => c.libelle === p.pieceLibelle);
+  if (circuit === undefined) return mentionAttestationDocumentV1(partie, p);
+  const defini = circuit.libelleDefini;
+  const etabli = circuit.genre === "masculin" ? "établi" : "établie";
+  const deDefini = deDe(defini);
+  const reste = `n° ${p.pieceNumero} ${etabli} par ${p.organisme}`;
+  const piece = `${defini} ${reste}`;
+  const pieceDe = `${deDefini} ${reste}`;
+  const elle = circuit.genre === "masculin" ? "il" : "elle";
+  const le = circuit.genre === "masculin" ? "le" : "la";
+  switch (partie) {
+    case "client":
+      return `J'ai pris connaissance ${pieceDe} et je l'accepte, au nom et pour le compte de la structure que je représente.`;
+    case "beneficiaire":
+      return `J'ai pris connaissance ${pieceDe} et je l'accepte.`;
+    case "financeur":
+      return `En qualité de financeur, j'accepte ${piece} et la prise en charge qu'${elle} prévoit. Cette acceptation ne vaut pas engagement de suivre l'action de formation.`;
+    case "formateur":
+      return `En qualité de formateur, j'accepte ${piece} et les missions qu'${elle} me confie.`;
+    case "sous_traitant":
+      return `En qualité de prestataire, j'accepte ${piece} et je m'engage à respecter les exigences du référentiel national qualité qu'${elle} rappelle.`;
+    case "tuteur":
+      return `En qualité de tuteur en entreprise, j'ai pris connaissance ${pieceDe} et j'accepte le rôle d'accompagnement qu'${elle} me confie.`;
+    case "responsable_pedagogique":
+      return `En qualité de responsable pédagogique, j'atteste l'exactitude ${pieceDe}.`;
+    case "axionia":
+      return `Pour ${p.organisme}, j'accepte ${piece} et je ${le} conclus.`;
+  }
+}
+
+/** « le devis » → « du devis » ; « la convention » → « de la convention » ; « l'x » → « de l'x ». */
+function deDe(defini: string): string {
+  return defini.startsWith("le ") ? `du ${defini.slice(3)}` : `de ${defini}`;
+}
+
+/** Attestation selon la version demandée (par défaut : la version courante). */
+export function mentionAttestationDocument(
+  partie: PartieSignataire,
+  p: ParametresMentionDocument,
+  version: VersionMentionDocument = MENTION_VERSION_DOCUMENT,
+): string {
+  return version === MENTION_VERSION_DOCUMENT_V1
+    ? mentionAttestationDocumentV1(partie, p)
+    : mentionAttestationDocumentV2(partie, p);
 }
 
 /**
@@ -158,9 +238,10 @@ export function mentionCompleteDocument(
   p: ParametresMentionDocument,
   canalMaison: boolean,
   avecCode = false,
+  version: VersionMentionDocument = MENTION_VERSION_DOCUMENT,
 ): string[] {
   return [
-    mentionAttestationDocument(partie, p),
+    mentionAttestationDocument(partie, p, version),
     MENTION_VALEUR_JURIDIQUE_DOCUMENT,
     ...(canalMaison ? [MENTION_PLAFOND_CANAL_MAISON] : []),
     ...(avecCode ? MENTION_CONSENTEMENT_DOCUMENT_CODE : MENTION_CONSENTEMENT_DOCUMENT),

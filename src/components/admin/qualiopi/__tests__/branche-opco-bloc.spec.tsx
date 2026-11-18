@@ -40,7 +40,7 @@ function rendre(props: Partial<Parameters<typeof BrancheOpcoBloc>[0]> = {}): str
 describe("BrancheOpcoBloc", () => {
   it("affiche la branche, l'effectif et sa source, l'OPCO, l'enveloppe et l'adhérent", () => {
     const html = rendre({ peutEcrire: false });
-    expect(html).toContain("Branche et OPCO");
+    expect(html).toContain("Branche professionnelle");
     expect(html).toContain("1486");
     expect(html).toContain("12");
     expect(html).toContain("Saisi");
@@ -58,7 +58,7 @@ describe("BrancheOpcoBloc", () => {
 
   it("utilisateur en lecture seule : bloc en lecture seule, sans formulaire", () => {
     const html = rendre({ peutEcrire: false });
-    expect(html).toContain("Branche et OPCO");
+    expect(html).toContain("Branche professionnelle");
     expect(html).not.toContain("<form");
     expect(html).not.toContain("<select");
     expect(html).not.toContain("Modifier");

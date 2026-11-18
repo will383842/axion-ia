@@ -19,6 +19,7 @@
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -155,6 +156,8 @@ function entree(over: Record<string, unknown> = {}) {
     // Case des CGV cochée par défaut : elle ne vise que le devis, les autres types l'ignorent.
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
+    // Version de mention affichée par la page : celle du serveur par défaut.
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     ...over,
   };
 }
@@ -467,6 +470,41 @@ describe("🔴 CGV avant signature du devis — case obligatoire, version enregi
       if (!res.ok) expect(res.message).toMatch(/mises à jour/);
       expect(mockSigner).not.toHaveBeenCalled();
     }
+  });
+
+  it("mention — version affichée absente ou différente : refus, rien n'est écrit", async () => {
+    for (const mentionVersionAffichee of ["doc-v1", "doc-v0", "", undefined]) {
+      mockSigner.mockClear();
+      const res = await signerPieceParJetonAction(entree({ mentionVersionAffichee }));
+      expect(res, String(mentionVersionAffichee)).toMatchObject({
+        ok: false,
+        raison: "mention_perimee",
+        message: "Cette page a été mise à jour. Rechargez-la, relisez la mention, puis signez.",
+      });
+      expect(mockSigner).not.toHaveBeenCalled();
+    }
+  });
+
+  it("mention — le refus vaut pour toute pièce (convention sans CGV)", async () => {
+    mockPrisma.documentGenere.findUnique.mockResolvedValue({
+      type: "convention",
+      numero: "AXI-DOC-2026-032",
+    });
+    const res = await signerPieceParJetonAction(
+      entree({
+        cgvAcceptees: undefined,
+        cgvVersionAffichee: undefined,
+        mentionVersionAffichee: undefined,
+      }),
+    );
+    expect(res).toMatchObject({ ok: false, raison: "mention_perimee" });
+    expect(mockSigner).not.toHaveBeenCalled();
+  });
+
+  it("mention — version courante : la signature passe", async () => {
+    const res = await signerPieceParJetonAction(entree());
+    expect(res).toMatchObject({ ok: true });
+    expect(mockSigner).toHaveBeenCalled();
   });
 
   it("T4 — avec la case : signerDocument reçoit la version SERVEUR", async () => {

@@ -5,6 +5,7 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getJobsVilleSectorDetail } from "@/server/actions/content-gen/geo";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,9 @@ function csvEscape(value: string | number | null | undefined): string {
   return str;
 }
 
-export async function GET(req: NextRequest, { params: _params }: RouteParams) {
+export async function GET(req: NextRequest, { params }: RouteParams) {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.email) {
     return new NextResponse("Unauthorized", { status: 401 });
@@ -55,6 +58,8 @@ export async function GET(req: NextRequest, { params: _params }: RouteParams) {
     status: 200,
     headers: {
       "Content-Type": "text/csv; charset=utf-8",
+      "Cache-Control": "private, no-store",
+      "X-Content-Type-Options": "nosniff",
       "Content-Disposition": `attachment; filename="coverage-${new Date().toISOString().slice(0, 10)}.csv"`,
     },
   });

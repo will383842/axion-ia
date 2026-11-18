@@ -5,14 +5,17 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
 import { detectMimeFromMagicBytes } from "@/lib/image-utils";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ locale: string; adminPrefix: string; id: string }> },
 ): Promise<Response> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   const role = (session?.user as { role?: string } | undefined)?.role;
   if (!session?.user || !(role === "super_admin" || role === "admin" || role === "editor")) {

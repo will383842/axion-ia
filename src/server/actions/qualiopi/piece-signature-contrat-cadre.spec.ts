@@ -98,6 +98,7 @@ const signer = (code?: string) =>
   signerPieceParJetonAction({
     token: "jeton",
     methode: "confirmation_accessible",
+    mentionVersionAffichee: "doc-v2",
     ...(code === undefined ? {} : { code }),
   });
 

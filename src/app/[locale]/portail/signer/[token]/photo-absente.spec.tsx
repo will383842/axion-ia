@@ -36,6 +36,7 @@ vi.mock("@/server/qualiopi/documents/signature/parties-requises", () => ({
   circuitPour: () => ({ libelle: "Devis", canal: "publique" }),
 }));
 vi.mock("@/server/qualiopi/documents/signature/mentions-document", () => ({
+  MENTION_VERSION_DOCUMENT: "doc-v2",
   mentionCompleteDocument: () => [],
 }));
 vi.mock("@/server/qualiopi/devis/choix-signature", () => ({

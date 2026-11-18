@@ -211,7 +211,9 @@ describe("🔴 ce qui est présenté au signataire", () => {
     // Le canal maison DOIT porter son plafond probant : la chaîne ne remet
     // aucun certificat au signataire, et le taire serait une survente.
     expect(etat?.mentions.join(" ")).toContain("certificat délivré par un prestataire");
-    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v1");
+    // « doc-v2 » depuis le 17/11/2026 (accord du genre dans l'attestation) ; le texte « doc-v1 »
+    // est conservé et testé dans `mentions-document-versions.spec.ts`.
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v2");
   });
 
   it("🔴 dit que les deux signatures ne sont pas un double contrôle indépendant", async () => {

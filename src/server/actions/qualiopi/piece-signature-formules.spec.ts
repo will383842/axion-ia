@@ -78,6 +78,7 @@ function entree(over: Record<string, unknown> = {}) {
     imageDataUrl: "data:image/png;base64,AAAA",
     cgvAcceptees: true as const,
     cgvVersionAffichee: CGV_VERSION,
+    mentionVersionAffichee: "doc-v2",
     // Signature renforcée (lot 4 bis) : déclaration saisie + code reçu par e-mail.
     declaration: { nom: "Camille Durand", fonction: "Gérante", pouvoirEngager: true },
     code: "123456",

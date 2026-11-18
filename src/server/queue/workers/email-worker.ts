@@ -54,6 +54,16 @@ import {
 // seulement — même garde de graphe que `verdict-envoi`.
 import { gabaritEnSommeil } from "@/server/qualiopi/financements/sommeil";
 import { RELECTURES_AU_DEPART } from "@/server/email/relecture-au-depart";
+import {
+  MOTIF_ECHEC_SANS_ENVOI,
+  MOTIF_ISSUE_INCONNUE,
+  MOTIF_REDIS_INDISPONIBLE,
+  PREFIXE_ISSUE_INCONNUE,
+  TTL_MARQUEUR_ENVOYE_SEC,
+  cleMarqueurEnvoiReponse,
+  cleVerrouEnvoiReponse,
+} from "@/lib/email/reponse-manuelle-etat";
+import type { GabaritReponse } from "@/lib/email/reponse-manuelle-etat";
 import { EmailLogStatus } from "../../../../prisma/generated/client";
 import type { EmailJobData, EmailJobName } from "../types";
 
@@ -754,7 +764,8 @@ interface ContexteEssai {
  * 24 h et se juge d'après son âge (`TTL × 1000 − PTTL`), pas d'après son TTL. Il ne peut
  * donc plus expirer pendant un envoi vivant. `SEUIL_ORPHELIN_MS` (30 min) dépasse le pire
  * envoi avec les délais nodemailer par défaut (~13 min) : au-delà, le détenteur est
- * considéré comme mort. `client.ts` n'est pas touché (délais SMTP : PR à part).
+ * considéré comme mort. Délais explicites dans `client.ts` (30 s, 30 s, 120 s d'inactivité, 30 s
+ * DNS) ; `SEUIL_ORPHELIN_MS` inchangé, il reste au-dessus du pire envoi.
  * Voir `emails-site/PLAN-W1-ADDENDUM.md` et « Addendum 2 W1 ».
  *
  * Ne jamais changer cette valeur sans période de transition : l'âge se calcule par
@@ -768,23 +779,15 @@ const REPORT_PLAFOND_MS = 1_800_000;
 const REPORT_PAS_DE_VERROU_MS = 5_000;
 const REPORT_MARGE_MS = 15_000;
 const REPORT_ECRITURE_MS = 60_000;
-const TTL_MARQUEUR_ENVOYE_SEC = 2_592_000;
 const ESSAIS_ECRITURE_ENVOYE = 3;
 const ATTENTES_ECRITURE_MS = [200, 1_000];
 const MESSAGE_BLOCAGE_BULLMQ = "job stalled more than allowable limit";
-export const PREFIXE_ISSUE_INCONNUE = "[issue-inconnue] ";
-const CONSIGNE_VERIFIER_ZEPTOMAIL =
-  "Avant de réessayer, cherchez le destinataire dans ZeptoMail (page E-mails envoyés, bouton ZeptoMail, onglet Processed emails), pas dans la boîte Zoho. S'il y figure, ne réessayez pas.";
-export const MOTIF_ISSUE_INCONNUE =
-  PREFIXE_ISSUE_INCONNUE +
-  "Envoi interrompu, on ne sait pas si l'e-mail est parti. " +
-  CONSIGNE_VERIFIER_ZEPTOMAIL;
-export const MOTIF_REDIS_INDISPONIBLE =
-  PREFIXE_ISSUE_INCONNUE +
-  "Envoi non tenté : Redis indisponible, et un essai précédent a pu partir. " +
-  CONSIGNE_VERIFIER_ZEPTOMAIL;
-export const MOTIF_ECHEC_SANS_ENVOI =
-  "Envoi non abouti après plusieurs essais, rien n'est parti (erreur technique avant l'envoi). Vous pouvez réessayer.";
+export {
+  PREFIXE_ISSUE_INCONNUE,
+  MOTIF_ISSUE_INCONNUE,
+  MOTIF_REDIS_INDISPONIBLE,
+  MOTIF_ECHEC_SANS_ENVOI,
+} from "@/lib/email/reponse-manuelle-etat";
 // Jeton de verrou = `${jobId}-${essai}-${demarrage}` ; le jobId peut contenir des tirets (email-<uuid>).
 const RE_JETON = /^(.+)-(\d+)-(\d+)$/;
 // Clé du verrou BullMQ du job : préfixe `bull` par défaut (`bullmq/dist/cjs/classes/queue-base.js:30`),
@@ -819,7 +822,7 @@ interface LigneReponse {
 }
 
 interface AdaptateurReponse<L extends LigneReponse> {
-  gabarit: "submission-reply" | "candidature-reponse";
+  gabarit: GabaritReponse;
   /** Relit la ligne (null si absente). */
   lire(replyId: string): Promise<L | null>;
   /** Pose un état sur la ligne, jamais si `sentAt` est rempli. */
@@ -838,10 +841,12 @@ interface AdaptateurReponse<L extends LigneReponse> {
 }
 
 const attendre = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
-const cleVerrou = (gabarit: string, replyId: string) =>
-  `verrou:envoi-reponse:${gabarit}:${replyId}`;
-const cleMarqueur = (gabarit: string, replyId: string) =>
-  `envoye:envoi-reponse:${gabarit}:${replyId}`;
+// Clés Redis `verrou:envoi-reponse:<gabarit>:<replyId>` et `envoye:envoi-reponse:…` : construites
+// par le module pur (AGENTS.md s'appuie sur ce littéral comme marqueur de contenu du conteneur).
+const cleVerrou = (gabarit: GabaritReponse, replyId: string) =>
+  cleVerrouEnvoiReponse(gabarit, replyId);
+const cleMarqueur = (gabarit: GabaritReponse, replyId: string) =>
+  cleMarqueurEnvoiReponse(gabarit, replyId);
 
 export type IssueEchecEnvoi = "rien_parti" | "ambigu";
 
@@ -870,6 +875,18 @@ export function classerEchecEnvoi(e: unknown): IssueEchecEnvoi {
   }
   // 5. Garde de configuration de client.ts : levée avant tout transport.
   if (x.message.startsWith(DEBUT_ERREUR_CONFIG_SMTP)) return "rien_parti";
+  // 6. Connexion déjà détruite : nodemailer refuse AVANT d'écrire quoi que ce soit
+  //    (smtp-connection `_isDestroyedMessage`).
+  if (
+    x.code === "ECONNECTION" &&
+    /^Cannot (connect|login|send message) - smtp connection /.test(x.message)
+  ) {
+    return "rien_parti";
+  }
+  // Restent « ambigu » volontairement : « Unexpected socket close » (sans pool, elle peut survenir
+  // après l'acceptation du message), `ECONNECTION` « Connection closed unexpectedly »,
+  // `ETIMEDOUT` « Timeout », `ESOCKET` sans `syscall: "connect"` (certificats TLS compris),
+  // « Reached maximum number of retries after connection was closed ».
   return "ambigu";
 }
 

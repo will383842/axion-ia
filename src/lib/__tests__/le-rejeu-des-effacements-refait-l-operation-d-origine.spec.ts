@@ -169,7 +169,15 @@ function restaurer(): void {
       { id: "p3", rencontreId: "r-partage", role: "client", contactId: "bob", nomAffiche: "Bob" },
     ],
     clientContact: [
-      { id: "alice", nom: "Alice", fonction: "DAF", telephone: "06" },
+      {
+        id: "alice",
+        nom: "Alice",
+        fonction: "DAF",
+        telephone: "06",
+        civilite: "madame",
+        prenom: "Alice",
+        nomFamille: "Fictive",
+      },
       { id: "bob", nom: "Bob", fonction: null, telephone: null },
     ],
     clientContactAdresse: [{ id: "a1", contactId: "alice", emailHash: "h:alice" }],
@@ -253,6 +261,17 @@ describe("le rejeu des effacements refait l'opération d'origine", () => {
       PERSONNE_EFFACEE,
     ]);
     expect(p.find((x) => x["id"] === "p3")).toMatchObject({ nomAffiche: "Bob" });
+  });
+
+  it("🔴 civilité, prénom et nom de famille de la personne effacée sont vidés (B4)", async () => {
+    await rejouerEffacements({ appliquer: true });
+    const alice = (etat.tables["clientContact"] ?? []).find((c) => c["id"] === "alice");
+    expect(alice).toMatchObject({
+      nom: PERSONNE_EFFACEE,
+      civilite: null,
+      prenom: null,
+      nomFamille: null,
+    });
   });
 
   it("🔴 pilote : rejoué comme `purgerPilote` — faits de la fiche de test, questionnaires, preuves", async () => {

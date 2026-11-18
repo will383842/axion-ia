@@ -12,6 +12,7 @@
  */
 
 import type { ReactNode } from "react";
+import { libelleBlocBranche } from "@/server/qualiopi/crm/libelles-fiche-client";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { ClientBrancheForm } from "@/components/admin/qualiopi/ClientBrancheForm";
 import { formatDateFrShort } from "@/lib/format-date-fr";
@@ -92,7 +93,7 @@ export function BrancheOpcoBloc({
     <section aria-labelledby={`branche-opco-${client.id}`} className="admin-carte">
       <div className="mb-[var(--space-admin-3)] flex flex-wrap items-center justify-between gap-[var(--space-admin-3)]">
         <h2 id={`branche-opco-${client.id}`} className="admin-carte-titre">
-          Branche et OPCO
+          {libelleBlocBranche()}
         </h2>
         {!peutEcrire ? <AdminBadge tone="outline">Lecture seule</AdminBadge> : null}
       </div>

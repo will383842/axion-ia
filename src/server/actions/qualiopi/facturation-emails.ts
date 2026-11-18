@@ -26,12 +26,17 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 import {
   formulesDepuisMetadata,
   nomPourSalutationDevis,
   payloadDevisEnvoi,
 } from "@/server/qualiopi/devis/email-devis-envoi";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import {
+  SELECT_SIGNATURES_PIECE,
+  signatureClientDuDevis,
+} from "@/server/qualiopi/devis/signature-client-du-devis";
 import { preparerEnvoiFactureEmail } from "@/server/qualiopi/financements/facture-envoi-email";
 
 const eur = (cents: number): string =>
@@ -73,13 +78,31 @@ export async function envoyerDevisEmailAction(
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          contactCivilite: true,
+          contactPrenom: true,
+          contactNomFamille: true,
           // Voir devis.ts : la qualité porte l'opposabilité du pouvoir de signer.
           contactFonction: true,
         },
       },
+      ...SELECT_SIGNATURES_PIECE,
     },
   });
   if (!devis) return { error: "Devis introuvable." };
+  // Un devis accepté (même sur papier) ou signé par le client ne se renvoie pas : l'e-mail le
+  // présente comme « à signer » (PDF + bouton de signature). Aucun lien n'est émis hors « envoye »,
+  // mais le message serait faux. Deux refus distincts selon la situation.
+  if (devis.statut === "accepte" || devis.statut === "transforme_convention") {
+    return {
+      error:
+        "Ce devis est déjà accepté : il ne se renvoie plus. Pour en transmettre une copie, ouvrez l'exemplaire signé (PDF) depuis la fiche.",
+    };
+  }
+  if (signatureClientDuDevis(devis).clientASigne) {
+    return {
+      error: "Ce devis est déjà signé par le client : le renvoyer lui redemanderait de signer.",
+    };
+  }
   // Devis à formules : échec FERMÉ si l'interrupteur est éteint. Sinon un renvoi émettrait un
   // nouveau lien (qui révoque l'ancien) et enverrait un e-mail dont le lien serait refusé à la
   // signature. `offre` est un champ scalaire, déjà lu par `include`.
@@ -178,6 +201,12 @@ export async function envoyerDevisEmailAction(
     "fr",
     payloadDevisEnvoi({
       clientNom: nomPourSalutationDevis(devis.client),
+      salutation: salutationPourPayload({
+        clientNom: nomPourSalutationDevis(devis.client),
+        contactCivilite: devis.client.contactCivilite,
+        contactPrenom: devis.client.contactPrenom,
+        contactNomFamille: devis.client.contactNomFamille,
+      }),
       numero: devis.numero,
       montantTotalHtCents: devis.montantTotalHtCents,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,

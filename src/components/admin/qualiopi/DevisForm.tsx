@@ -27,6 +27,14 @@ import {
 import { DevisFormulesPanel } from "./DevisFormulesPanel";
 import { BandeauAttributionPartners } from "./BandeauAttributionPartners";
 import type { LigneFormulaire } from "./devis-edition-lignes";
+import {
+  CONDITIONS_PARTICULIERES_LIGNES_MAX,
+  CONDITIONS_PARTICULIERES_MAX,
+  MESSAGE_CONDITIONS_PARTICULIERES_LIGNES,
+  motsSensiblesTrouves,
+  nombreDeLignes,
+  normaliserConditionsParticulieres,
+} from "@/server/qualiopi/devis/conditions-particulieres";
 import type { ActiviteFacturation } from "../../../../prisma/generated/client";
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -93,6 +101,8 @@ export interface DevisFormProps {
     activite: ActiviteFacturation | null;
     /** Référence client : non éditable ici, transmise à l'identique. */
     refClient: string | null;
+    /** Conditions particulières enregistrées (pré-remplissage) ; `null` = aucune. */
+    conditionsParticulieres: string | null;
   };
 }
 
@@ -223,6 +233,11 @@ export function DevisForm({
   //   · le PDF n'affichait pas `activiteLabel`.
   // L'action l'acceptait depuis toujours ; seul le formulaire ne la posait pas.
   const [activite, setActivite] = useState<ActiviteFacturation | "">(edition?.activite ?? "");
+  // Conditions particulières (devis classique) : texte simple, imprimé tel quel sur le devis.
+  const [conditionsParticulieres, setConditionsParticulieres] = useState(
+    edition?.conditionsParticulieres ?? "",
+  );
+  const motsSensibles = motsSensiblesTrouves(conditionsParticulieres);
 
   // Mode formules (interrupteur allumé seulement) : activité implémentation ou site web.
   const [modeFormules, setModeFormules] = useState(false);
@@ -362,6 +377,16 @@ export function DevisForm({
       return;
     }
 
+    // Même contrôle que le serveur, sur le texte NORMALISÉ (le serveur le refuserait de toute façon).
+    const texteNormalise = normaliserConditionsParticulieres(conditionsParticulieres);
+    if (
+      texteNormalise !== null &&
+      nombreDeLignes(texteNormalise) > CONDITIONS_PARTICULIERES_LIGNES_MAX
+    ) {
+      setError(MESSAGE_CONDITIONS_PARTICULIERES_LIGNES);
+      return;
+    }
+
     if (edition !== undefined) {
       startTransition(async () => {
         // Import à l'appel : l'écran de création (sans `edition`) ne charge rien de plus.
@@ -376,6 +401,10 @@ export function DevisForm({
             ...(activite !== "" ? { activite } : {}),
             // Non éditable ici : transmis à l'identique (sinon l'action le remettrait à null).
             ...(edition.refClient !== null ? { refClient: edition.refClient } : {}),
+            // En édition la clé est TOUJOURS envoyée : `null` efface le texte vidé. Le
+            // financement n'est volontairement PAS envoyé : clé absente = champs intacts.
+            conditionsParticulieres:
+              conditionsParticulieres.trim() === "" ? null : conditionsParticulieres,
           },
         });
         if ("error" in result) {
@@ -395,6 +424,7 @@ export function DevisForm({
         // (même garde que VenteWizard ; l'action le revérifie côté serveur).
         ...(projetId !== undefined && clientId === defaultClientId ? { projetId } : {}),
         ...(activite !== "" ? { activite } : {}),
+        ...(conditionsParticulieres.trim() !== "" ? { conditionsParticulieres } : {}),
       });
 
       if ("error" in result) {
@@ -674,6 +704,44 @@ export function DevisForm({
                 elle, le devis ne pourra pas être facturé.
               </p>
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Conditions particulières (devis classique, pas en mode formules) ── */}
+      {!modeFormules ? (
+        <section className="rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]">
+          <div className={fieldCls}>
+            <label className={labelCls} htmlFor="devis-conditions-particulieres">
+              Conditions particulières (facultatif)
+            </label>
+            <textarea
+              id="devis-conditions-particulieres"
+              value={conditionsParticulieres}
+              onChange={(e) => setConditionsParticulieres(e.target.value)}
+              maxLength={CONDITIONS_PARTICULIERES_MAX}
+              rows={6}
+              disabled={isPending}
+              className={inputCls}
+            />
+            <p className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              Texte simple, imprimé tel quel sur le devis, au-dessus du renvoi aux conditions
+              générales.
+            </p>
+            <p
+              className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)] tabular-nums"
+              aria-live="polite"
+            >
+              {`${conditionsParticulieres.length} / ${CONDITIONS_PARTICULIERES_MAX}`}
+            </p>
+            {motsSensibles.map((mot) => (
+              <p
+                key={mot}
+                className="text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-warning)]"
+              >
+                {`Ce texte contient « ${mot} » : ce mot ne doit pas figurer sur un devis pour le moment.`}
+              </p>
+            ))}
           </div>
         </section>
       ) : null}

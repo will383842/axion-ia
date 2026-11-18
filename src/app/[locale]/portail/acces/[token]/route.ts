@@ -28,6 +28,7 @@ import { SITE_URL } from "@/lib/site-url";
 import { ipDepuisEntetes } from "@/lib/client-ip";
 import { origineOuverture } from "@/features/dossier-client/documents/partage";
 import { tracerOuvertureEspace } from "@/server/qualiopi/portail/ouvertures-espace";
+import { refuserSiLocaleInconnue } from "@/server/auth/garde-route-console";
 
 /** Extrait l'IP réelle depuis les headers Cloudflare / proxy / fallback. */
 function clientIp(req: NextRequest): string {
@@ -40,6 +41,8 @@ interface RouteContext {
 
 export async function GET(request: NextRequest, { params }: RouteContext): Promise<NextResponse> {
   const { locale, token } = await params;
+  const locInconnue = refuserSiLocaleInconnue(locale);
+  if (locInconnue) return locInconnue;
 
   // 🔴 2026-08-23 — ORIGINE CANONIQUE, ET NON UNE VARIABLE FANTÔME.
   //

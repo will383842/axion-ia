@@ -15,6 +15,7 @@ import { isLectureEmailPath, prefixeAdminAttendu } from "@/lib/csp";
 import { routing } from "@/i18n/routing";
 import { prisma } from "@/lib/prisma";
 import { getClientIp } from "@/lib/client-ip";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 import { enTetesLecturePleinEcran, sourceLecture } from "@/server/email/lecture-plein-ecran";
 
 export const runtime = "nodejs";
@@ -26,6 +27,11 @@ export async function GET(
     params,
   }: { params: Promise<{ locale: string; adminPrefix: string; source: string; id: string }> },
 ): Promise<NextResponse> {
+  // Garde commune de la console (SEC-1b) : toujours en tête, avant `auth()` et toute base.
+  // Elle s'ajoute aux contrôles ci-dessous, qui restent (chemin couvert par le proxy).
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
+
   // 🔴 AVANT `auth()` et toute lecture (audit I0b-3, constat 1) : un layout n'enveloppe pas
   // un route handler, donc `[adminPrefix]` accepte n'importe quelle valeur. Sur un mauvais
   // préfixe le proxy ne voit pas une page de console ; on ne sert rien.

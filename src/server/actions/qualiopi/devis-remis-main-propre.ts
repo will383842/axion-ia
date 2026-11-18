@@ -99,6 +99,7 @@ export async function marquerRemisEnMainPropreAction(input: {
             replacesDevisId: true,
             offre: true,
             offreSha256: true,
+            conditionsParticulieres: true,
             replacesDevis: { select: { statut: true, documentGenereId: true } },
             financementSuggere: true,
             montantTotalHtCents: true,

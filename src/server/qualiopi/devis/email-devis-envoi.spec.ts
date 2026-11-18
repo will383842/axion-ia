@@ -116,3 +116,18 @@ describe("nomPourSalutationDevis (A3)", () => {
     expect(nomPourSalutationDevis({ contactPrenom: "Léa" })).toBe("Léa");
   });
 });
+
+describe("payloadDevisEnvoi — clé `salutation` (B4)", () => {
+  it("la clé fournie est transmise telle quelle, y compris {}", () => {
+    expect(
+      payloadDevisEnvoi({ ...base, montantTotalHtCents: 1, salutation: { prenom: "Léa" } }),
+    ).toMatchObject({ salutation: { prenom: "Léa" } });
+    expect(payloadDevisEnvoi({ ...base, montantTotalHtCents: 1, salutation: {} })).toHaveProperty(
+      "salutation",
+      {},
+    );
+  });
+  it("sans salutation fournie, la clé est absente", () => {
+    expect(payloadDevisEnvoi({ ...base, montantTotalHtCents: 1 })).not.toHaveProperty("salutation");
+  });
+});

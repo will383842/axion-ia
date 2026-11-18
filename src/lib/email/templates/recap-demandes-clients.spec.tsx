@@ -161,3 +161,90 @@ describe("recap-demandes-clients", () => {
     expect(libelleTemplateEmail("recap-demandes-clients")).not.toMatch(/«/);
   });
 });
+
+describe("L5a — section « En attente de votre réponse »", () => {
+  const EN_ATTENTE = [
+    {
+      type: "Audit IA",
+      nom: "Camille Exemple",
+      quand: "9 nov. 2026, 11:00",
+      lignes: ["En attente depuis 4 jours ouvrés"],
+      consoleUrl: FICHE,
+    },
+  ];
+
+  it("le payload sans la clé donne le rendu d'avant, sans la section", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", PAYLOAD);
+    expect(html).not.toContain("En attente de votre réponse");
+  });
+
+  it("avec la clé : titre, ancienneté, bouton de fiche ; liens hors console ignorés", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttente: [...EN_ATTENTE, { ...EN_ATTENTE[0], consoleUrl: "https://evil.example/x" }],
+    });
+    expect(html).toContain("En attente de votre réponse (2)");
+    expect(html).toContain("En attente depuis 4 jours ouvrés");
+    expect(html).toContain(FICHE);
+    expect(html).not.toContain("evil.example");
+  });
+
+  it("aucun mot interdit dans la section", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttente: EN_ATTENTE,
+    });
+    expect(html).not.toMatch(/Qualiopi|OPCO|prise en charge|financeur/i);
+  });
+
+  it("clés facultatives : une ligne chacune ; absentes, rien", async () => {
+    const vide = await renderEmailTemplate("recap-demandes-clients", "fr", PAYLOAD);
+    for (const t of [
+      "autres demandes en attente",
+      "illisible(s) : à voir",
+      "ne souhaitent plus",
+      "incomplète",
+      "pas pu être calculée",
+    ]) {
+      expect(vide.html).not.toContain(t);
+    }
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttenteNonListees: 3,
+      enAttenteIllisibles: 2,
+      enAttenteEcartees: 1,
+      enAttenteIncomplete: true,
+      enAttenteIndisponible: true,
+    });
+    // Liste incomplète : le décompte est un minimum.
+    expect(html).toContain("et au moins 3 autres demandes en attente, à voir dans la console");
+    expect(html).toContain("2 demande(s) en attente illisible(s) : à voir dans la console");
+    expect(html).toContain(
+      "1 demande(s) de personnes qui ne souhaitent plus être contactées : non listées",
+    );
+    expect(html).toContain("peut-être incomplète");
+    expect(html).toContain(
+      "La liste des demandes en attente n&#x27;a pas pu être calculée ce matin",
+    );
+    expect(html).not.toMatch(/Qualiopi|OPCO|prise en charge|financeur/i);
+  });
+
+  it("décompte exact sans le drapeau « incomplète »", async () => {
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttenteNonListees: 3,
+    });
+    expect(html).toContain("et 3 autres demandes en attente, à voir dans la console");
+    expect(html).not.toContain("au moins");
+  });
+
+  it("la mention « issue inconnue » d'une ligne est affichée", async () => {
+    const mention =
+      "Une réponse est peut-être déjà partie : vérifier dans ZeptoMail avant de répondre de nouveau";
+    const { html } = await renderEmailTemplate("recap-demandes-clients", "fr", {
+      ...PAYLOAD,
+      enAttente: [{ ...EN_ATTENTE[0], lignes: ["En attente depuis 4 jours ouvrés", mention] }],
+    });
+    expect(html).toContain(mention);
+  });
+});
