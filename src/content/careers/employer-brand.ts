@@ -26,7 +26,7 @@ export const EMPLOYER_BRAND = {
   aboutFr:
     "Axion-IA.com est une startup tech IA qui accompagne les entreprises sur toute la chaîne de l'IA : formations, coaching 1 to 1, audits en entreprise, intégration & implémentation d'IA, et sites web & SaaS augmentés à l'IA. Notre ambition est claire : accompagner les entreprises de toute la France dans l'IA appliquée. On construit comme une vraie équipe produit — du code en production, pas des promesses — avec l'envie de grandir vite. On voit grand.",
   aboutEn:
-    "Axion-IA.com is an AI tech startup supporting businesses across the whole AI chain: training, 1-to-1 coaching, on-site audits, AI integration & implementation, and AI-augmented websites & SaaS. Our ambition is clear: become THE French reference for applied AI in companies. We build like a real product team — code in production, not promises — eager to grow fast. We think big.",
+    "Axion-IA.com is an AI tech startup supporting businesses across the whole AI chain: training, 1-to-1 coaching, on-site audits, AI integration & implementation, and AI-augmented websites & SaaS. Our ambition is clear: support companies across France in applied AI. We build like a real product team — code in production, not promises — eager to grow fast. We think big.",
 
   /** Pourquoi rejoindre l'équipe — bénéfices candidat concrets. */
   whyJoin: [

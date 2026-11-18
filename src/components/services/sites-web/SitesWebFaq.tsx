@@ -51,7 +51,7 @@ export function SitesWebFaq({
           id: "q-rag",
           question: "Comment fonctionne le chatbot RAG sur mon site ?",
           answer:
-            "On indexe vos pages, documents et données dans une base vectorielle hébergée en UE. Le chatbot interroge cette base pour répondre précisément à chaque question, en citant ses sources. Résultat : réponses tirées de votre contenu sur votre périmètre, fidèles à votre contenu, 24h/7j.",
+            "On indexe vos pages, documents et données dans une base vectorielle hébergée en UE. Le chatbot interroge cette base pour répondre précisément à chaque question, en citant ses sources. Réponses disponibles 24h/7j, à partir de votre contenu.",
         },
         {
           id: "q-ia-native",
@@ -100,7 +100,7 @@ export function SitesWebFaq({
           id: "q-rag",
           question: "How does the RAG chatbot work on my site?",
           answer:
-            "We index your pages, documents and data into an EU-hosted vector database. The chatbot queries this base to answer each question precisely, citing its sources. Result: answers drawn from your content within your scope, faithful to your content, 24/7.",
+            "We index your pages, documents and data into an EU-hosted vector database. The chatbot queries this base to answer each question precisely, citing its sources. Answers available 24/7, drawn from your content.",
         },
         {
           id: "q-ai-native",

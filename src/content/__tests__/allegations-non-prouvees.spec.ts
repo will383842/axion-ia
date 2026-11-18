@@ -41,6 +41,9 @@ const INTERDITES: ReadonlyArray<RegExp> = [
   /gains? de temps instantanés?/i,
   /(?:zéro|zero|sans|no|pas d')[ -]?hallucinations?/i,
   /anti-hallucination/i,
+  /the french reference/i,
+  /il n'invente jamais/i,
+  /it never invents/i,
   /instant time savings/i,
 ];
 

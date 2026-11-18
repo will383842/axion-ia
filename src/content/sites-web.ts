@@ -152,7 +152,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
         {
           title: "Réponses fondées sur vos contenus",
           description:
-            "Le chatbot ne répond que depuis vos contenus, en citant ses sources. Si l'info n'existe pas, il le dit — il n'invente jamais.",
+            "Le chatbot ne répond que depuis vos contenus, en citant ses sources. Si l'information manque, il le signale.",
         },
         {
           title: "Moins de tickets répétitifs",
@@ -263,7 +263,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
         {
           title: "Answers based on your content",
           description:
-            "The chatbot only answers from your content, citing sources. If the info doesn't exist, it says so — it never invents.",
+            "The chatbot only answers from your content, citing sources. If the information is missing, it says so.",
         },
         {
           title: "Fewer repetitive tickets",
