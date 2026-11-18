@@ -21,7 +21,7 @@ import { buildCspHeader } from "@/lib/csp";
 import { renderEmailTemplate } from "@/lib/email/templates";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
-import { peutConsulter } from "@/server/auth/habilitations";
+import { peutConsulter, peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import type { EmailJobName } from "@/server/queue/types";
@@ -140,9 +140,54 @@ const gabarit: SourceLecture = {
   },
 };
 
+// Identifiant d'une réponse écrite à la main : un cuid (colonne texte, pas un UUID).
+const ID_REPONSE = /^[A-Za-z0-9]{20,40}$/;
+
+const reponseIntrouvable: ResultatLecture = {
+  ok: false,
+  phrase: "Cette réponse est introuvable.",
+};
+
+/**
+ * Réponse écrite à la main à une DEMANDE. Droit : `peutConsulter`, comme la page d'une demande.
+ * ⛔ Le HTML stocké porte le vrai lien d'opposition : il sort masqué (`corpsServi`).
+ */
+const reponseDemande: SourceLecture = {
+  habilite: peutConsulter,
+  idValide: (id) => ID_REPONSE.test(id),
+  async charger(id) {
+    if (estStub()) return reponseIntrouvable;
+    const l = await prisma.submissionReply.findUnique({
+      where: { id },
+      select: { subject: true, bodyHtml: true, bodyText: true },
+    });
+    if (!l) return reponseIntrouvable;
+    const html = corpsServi({ subject: l.subject, html: l.bodyHtml, text: l.bodyText });
+    return html === null ? reponseIntrouvable : { ok: true, html };
+  },
+};
+
+/** Réponse écrite à la main à un CANDIDAT. Droit : `peutOuvrirDossierCandidat` (pas `reader`). */
+const reponseCandidature: SourceLecture = {
+  habilite: peutOuvrirDossierCandidat,
+  idValide: (id) => ID_REPONSE.test(id),
+  async charger(id) {
+    if (estStub()) return reponseIntrouvable;
+    const l = await prisma.jobApplicationReply.findUnique({
+      where: { id },
+      select: { subject: true, bodyHtml: true, bodyText: true },
+    });
+    if (!l) return reponseIntrouvable;
+    const html = corpsServi({ subject: l.subject, html: l.bodyHtml, text: l.bodyText });
+    return html === null ? reponseIntrouvable : { ok: true, html };
+  },
+};
+
 export const SOURCES_LECTURE: Readonly<Record<string, SourceLecture>> = Object.freeze({
   envoye,
   gabarit,
+  "reponse-demande": reponseDemande,
+  "reponse-candidature": reponseCandidature,
 });
 
 /** Source du registre, ou `null` : une clé héritée de `Object.prototype` n'en est pas une. */
