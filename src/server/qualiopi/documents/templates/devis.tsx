@@ -138,6 +138,36 @@ const styles = StyleSheet.create({
     lineHeight: T.lineNormal,
     marginBottom: S.xs,
   },
+  // Conditions particulières (v5) : cadre SÉCABLE (un texte long passe sur la page suivante ;
+  // `LegalCallout` est insécable et rognerait un texte de plusieurs milliers de caractères).
+  cpBox: {
+    marginTop: S.lg,
+    borderWidth: 1,
+    borderColor: brandColor("border"),
+    borderLeftWidth: 3,
+    borderLeftColor: brandColor("border-strong"),
+    borderRadius: S.radius,
+    paddingVertical: S.lg,
+    paddingHorizontal: S.xl,
+  },
+  cpTitre: {
+    fontSize: T.sm,
+    fontWeight: "bold",
+    color: brandColor("mocha"),
+    marginBottom: S.xs,
+  },
+  cpParagraphe: {
+    fontSize: T.sm,
+    color: brandColor("fg"),
+    lineHeight: T.lineNormal,
+    marginBottom: S.sm,
+  },
+  cpPrimaute: {
+    fontSize: T.xs,
+    fontStyle: "italic",
+    color: brandColor("fg-muted"),
+    lineHeight: T.lineNormal,
+  },
   // Bloc « Bon pour accord » — signature manuscrite du client.
   accordBox: {
     marginTop: S.xxl,
@@ -278,6 +308,17 @@ export interface DevisData {
    * identique à celui d'avant (original, devis classique, sceau incohérent).
    */
   choixRetenu?: ChoixImprimable;
+  /**
+   * Conditions particulières (v5, devis CLASSIQUE seulement) : texte simple, imprimé tel quel
+   * avant les conditions du devis. Posé par `donneesPdfDevis` ; absent ou vide = aucun bloc.
+   */
+  conditionsParticulieres?: string;
+  /**
+   * Phrase de primauté des conditions particulières, FIGÉE dans la photo de la pièce par
+   * `donneesPdfDevis`. Nulle, absente ou blanche = non imprimée (texte non encore validé, ou
+   * photo antérieure). Le gabarit n'en connaît aucune constante.
+   */
+  phrasePrimaute?: string | null | undefined;
 }
 
 // ============================================================
@@ -475,6 +516,15 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
         ? tauxStandard
         : 0;
   const mentionRegimeTva = mentionTva(data.regimeTva);
+  // Conditions particulières : absent ou blanc = aucun bloc (rendu identique à la v4).
+  const conditionsParticulieres =
+    data.conditionsParticulieres !== undefined && data.conditionsParticulieres.trim() !== ""
+      ? data.conditionsParticulieres.trim()
+      : null;
+  const phrasePrimaute =
+    data.phrasePrimaute != null && data.phrasePrimaute.trim() !== ""
+      ? data.phrasePrimaute.trim()
+      : null;
   // Renvoi aux CGV. `identite.site` peut être vide (config Qualiopi non
   // renseignée) : dans ce cas on énonce quand même l'opposabilité et le canal
   // de communication, plutôt que de rendre une URL tronquée du type « /conditions-generales ».
@@ -629,6 +679,24 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
           </LegalCallout>
         ) : null}
 
+        {/* Conditions particulières (v5) — AVANT le renvoi aux Conditions générales.
+            Cadre sécable, jamais `LegalCallout` (insécable). */}
+        {conditionsParticulieres !== null ? (
+          <View style={styles.cpBox}>
+            <Text style={styles.cpTitre} minPresenceAhead={60}>
+              Conditions particulières
+            </Text>
+            {conditionsParticulieres.split(/\n{2,}/).map((paragraphe, i) => (
+              <Text key={i} style={styles.cpParagraphe}>
+                {paragraphe}
+              </Text>
+            ))}
+            {phrasePrimaute !== null ? (
+              <Text style={styles.cpPrimaute}>{phrasePrimaute}</Text>
+            ) : null}
+          </View>
+        ) : null}
+
         {/* Mention TVA (régime) + validité du devis */}
         <LegalCallout variant="legal" title="Conditions du devis">
           {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise
@@ -708,9 +776,7 @@ export function DevisPdf({ data }: { data: DevisData }): React.ReactElement {
         >
           <Text style={styles.accordTitle}>Bon pour accord</Text>
           <Text style={styles.accordHint}>
-            Le client accepte le présent devis dans son intégralité : désignations, quantités, prix
-            unitaires, taux de TVA et totaux ci-dessus, ainsi que les Conditions générales de vente
-            rappelées ci-dessus, dont il reconnaît avoir pris connaissance.
+            {`Le client accepte le présent devis dans son intégralité : désignations, quantités, prix unitaires, taux de TVA et totaux ci-dessus, ${conditionsParticulieres !== null ? "les conditions particulières " : ""}ainsi que les Conditions générales de vente rappelées ci-dessus, dont il reconnaît avoir pris connaissance.`}
           </Text>
           {/* 🔴 L'emplacement de DATE n'est affiché que tant que personne n'a
               signé, et il ne doit pas disparaître du chemin papier : sur une

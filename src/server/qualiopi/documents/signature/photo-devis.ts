@@ -8,6 +8,7 @@
  */
 
 import { z } from "zod";
+import { CONDITIONS_PARTICULIERES_MAX } from "@/server/qualiopi/devis/conditions-particulieres";
 import { instantane } from "@/server/qualiopi/documents/signature/instantane";
 import {
   computeTotauxFacture,
@@ -32,6 +33,13 @@ export const photoDevis = z.object({
   regimeTva: z.custom<"assujetti" | "exoneration_261" | "franchise_293b">(isRegimeTva),
   tauxTvaStandardPercent: z.number().optional(),
   client: z.object({ raisonSociale: z.string() }).optional(),
+  /** Conditions particulières figées avec la pièce (devis classique). Absent = aucune. */
+  conditionsParticulieres: z.string().max(CONDITIONS_PARTICULIERES_MAX).optional(),
+  /**
+   * Phrase de primauté figée avec la pièce (v5), posée par `donneesPdfDevis` seulement quand le
+   * fondateur l'a validée. Absente ou nulle = aucune phrase (photos antérieures comprises).
+   */
+  phrasePrimaute: z.string().nullish(),
 });
 
 export type PhotoDevis = z.infer<typeof photoDevis>;

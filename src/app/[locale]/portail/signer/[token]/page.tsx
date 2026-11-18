@@ -29,7 +29,10 @@ import {
 } from "@/server/qualiopi/documents/signature/token-document";
 import { lireDevisASigner } from "@/server/qualiopi/documents/signature/devis-signature-queries";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
-import { mentionCompleteDocument } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  MENTION_VERSION_DOCUMENT,
+  mentionCompleteDocument,
+} from "@/server/qualiopi/documents/signature/mentions-document";
 import {
   apercuChoixAction,
   demanderCodeDevisAction,
@@ -61,6 +64,11 @@ const MESSAGE_DEVIS_FERME = {
   titre: "Ce devis n'est plus ouvert à la signature",
   detail: "Ce devis ne peut plus être signé en ligne. Contactez votre interlocuteur.",
 };
+
+/** « le devis » → « Le devis » (début de phrase). */
+function majusculeInitiale(texte: string): string {
+  return `${texte.charAt(0).toUpperCase()}${texte.slice(1)}`;
+}
 
 function Message({ titre, detail }: { titre: string; detail: string }) {
   return (
@@ -159,7 +167,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Cette pièce a été annulée"
-        detail={`${circuit.libelle} ${piece.numero} ne fait plus foi et ne peut plus être signée. ${identite.raisonSociale} vous adressera la version qui la remplace.`}
+        detail={`${majusculeInitiale(circuit.libelleDefini)} ${piece.numero} ne fait plus foi et ne peut plus être ${circuit.genre === "masculin" ? "signé" : "signée"}. ${identite.raisonSociale} vous adressera la version qui ${circuit.genre === "masculin" ? "le" : "la"} remplace.`}
       />
     );
   }
@@ -174,7 +182,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
     return (
       <Message
         titre="Vous avez déjà signé cette pièce"
-        detail={`Votre signature sur ${circuit.libelle} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
+        detail={`Votre signature sur ${circuit.libelleDefini} ${piece.numero} est enregistrée. ${identite.raisonSociale} vous adressera l'exemplaire contresigné.`}
       />
     );
   }
@@ -311,11 +319,14 @@ export default async function SignerDevisPage({ params }: PageProps) {
     verif.partie,
     {
       pieceLibelle: circuit.libelle,
-      pieceNumero: piece.numero,
+      // Un devis se désigne par SON numéro (AXI-DEV), celui que le client connaît ; le n° de
+      // pièce (AXI-DOC) reste affiché à part par le formulaire.
+      pieceNumero: devis?.numero ?? piece.numero,
       organisme: identite.raisonSociale,
     },
     circuit.canal === "maison",
     avecCode || renforcee,
+    MENTION_VERSION_DOCUMENT,
   );
 
   return (
@@ -324,6 +335,7 @@ export default async function SignerDevisPage({ params }: PageProps) {
       numero={piece.numero}
       {...(devis !== null ? { numeroDevis: devis.numero } : {})}
       pieceLibelle={circuit.libelle}
+      pieceLibelleDefini={circuit.libelleDefini}
       dateValiditeLisible={devis?.dateValiditeLisible ?? null}
       organismeNom={identite.raisonSociale}
       clientRaisonSociale={destinataire}
@@ -335,6 +347,9 @@ export default async function SignerDevisPage({ params }: PageProps) {
             totalHtLisible: devis.totalHtLisible,
             totalTtcLisible: devis.totalTtcLisible,
             mentionTva: devis.mentionTva,
+            conditionsParticulieres: devis.conditionsParticulieres,
+            // Lue dans la PHOTO de la pièce, jamais une constante.
+            phrasePrimaute: devis.phrasePrimaute,
           }
         : {})}
       pdfUrl={pdfUrl}
@@ -344,6 +359,8 @@ export default async function SignerDevisPage({ params }: PageProps) {
       // Le formulaire reçoit désormais le tableau et le rend structuré ; aucun
       // texte ne change, donc aucune version de mention à incrémenter.
       mentions={mentions}
+      // Version de la mention AFFICHÉE : le formulaire la poste, le serveur refuse si elle a changé.
+      mentionVersion={MENTION_VERSION_DOCUMENT}
       // CGV à lire et accepter avant de signer un DEVIS (case séparée, version scellée).
       {...(piece.type === "devis"
         ? {

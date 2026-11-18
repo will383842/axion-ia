@@ -18,6 +18,18 @@
 //           clôture à l'échec final, reports croissants, épingles sur bullmq / nodemailer
 import { readFileSync } from "node:fs";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import SMTPConnection from "nodemailer/lib/smtp-connection";
+
+/** Vraie erreur nodemailer : `send()` sur une connexion déjà fermée (cf. C1). */
+function erreurConnexionDetruite(): Promise<Error> {
+  const c = new SMTPConnection({ host: "127.0.0.1", port: 1 });
+  c.close();
+  return new Promise((resolve, reject) => {
+    c.send({ from: "a@exemple.fr", to: ["b@exemple.fr"] }, "x", (e: Error | null) =>
+      e ? resolve(e) : reject(new Error("aucune erreur levée")),
+    );
+  });
+}
 
 type Ligne = {
   id: string;
@@ -310,6 +322,18 @@ describe.each(GABARITS)("$template : un seul envoi", (g) => {
     expect(l.errorMsg).toContain("Essai 1/5");
     expect(l.retryCount).toBe(1);
     expect(l.errorMsg).not.toContain("nadia@exemple.fr");
+    expect(d.redisMap.has(cleVerrou(g))).toBe(false);
+  });
+
+  it("W49 : connexion détruite avant l'envoi (vraie erreur nodemailer) → nouvel essai, pas d'issue inconnue", async () => {
+    const l = poser(g);
+    const e = await erreurConnexionDetruite();
+    d.sendEmail.mockRejectedValueOnce(e);
+    await expect(processeur()(job(g))).rejects.toBe(e);
+    expect(l.deliveryStatus).toBe("pending");
+    expect(l.errorMsg).toContain("nouvel essai automatique");
+    expect(l.errorMsg).toContain("Essai 1/5");
+    expect(l.errorMsg ?? "").not.toContain("[issue-inconnue]");
     expect(d.redisMap.has(cleVerrou(g))).toBe(false);
   });
 

@@ -195,17 +195,134 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
     expect(m.enqueueEmail).not.toHaveBeenCalled();
   });
 
-  it("OPCO retiré à la modification : les champs d'estimation sont remis à null", async () => {
+  it("financement ABSENT de l'entrée : financement et estimation restent INTACTS (aucune clé écrite)", async () => {
     m.devisFindUnique
       .mockResolvedValueOnce(EXISTANT)
       .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
     await modifierDevisClassiqueBrouillonAction({ id: DEVIS, attenduMajLe: MAJ, input: ENTREE });
     const d = m.devisUpdateMany.mock.calls[0]?.[0].data;
-    expect(d.financementSuggere).toBeNull();
+    for (const champ of [
+      "financementSuggere",
+      "montantOpcoEstimeCents",
+      "opcoEstimationOrigine",
+      "opcoEstimationAvertissement",
+      "resteAChargeCents",
+    ]) {
+      expect(champ in d, champ).toBe(false);
+    }
+    // Ni l'activité ni la référence ne sont concernées : comportement historique conservé.
+    expect(d.activite).toBeNull();
+    expect(d.refClient).toBeNull();
+  });
+
+  it("financement PRÉSENT (non opco) : le champ est écrit et l'estimation remise à null", async () => {
+    m.devisFindUnique
+      .mockResolvedValueOnce(EXISTANT)
+      .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+    await modifierDevisClassiqueBrouillonAction({
+      id: DEVIS,
+      attenduMajLe: MAJ,
+      input: { ...ENTREE, financementSuggere: "direct" },
+    });
+    const d = m.devisUpdateMany.mock.calls[0]?.[0].data;
+    expect(d.financementSuggere).toBe("direct");
     expect(d.montantOpcoEstimeCents).toBeNull();
     expect(d.opcoEstimationOrigine).toBeNull();
     expect(d.opcoEstimationAvertissement).toBeNull();
     expect(d.resteAChargeCents).toBeNull();
+  });
+
+  describe("conditions particulières", () => {
+    async function ecrit(extra: Record<string, unknown>) {
+      m.devisFindUnique
+        .mockResolvedValueOnce(EXISTANT)
+        .mockResolvedValueOnce({ updatedAt: new Date(MAJ) });
+      const r = await modifierDevisClassiqueBrouillonAction({
+        id: DEVIS,
+        attenduMajLe: MAJ,
+        input: { ...ENTREE, ...extra } as never,
+      });
+      return { r, data: m.devisUpdateMany.mock.calls[0]?.[0]?.data };
+    }
+
+    it("clé ABSENTE : la colonne n'est pas touchée (l'assistant n'envoie pas le champ)", async () => {
+      const { data } = await ecrit({});
+      expect("conditionsParticulieres" in data).toBe(false);
+    });
+    it("texte : écrit normalisé", async () => {
+      const { data } = await ecrit({
+        conditionsParticulieres: "  Acompte de 30 %.\r\n\r\n\r\n\r\nSolde à 30 jours. ",
+      });
+      expect(data.conditionsParticulieres).toBe("Acompte de 30 %.\n\nSolde à 30 jours.");
+    });
+    it("null efface", async () => {
+      const { data } = await ecrit({ conditionsParticulieres: null });
+      expect(data.conditionsParticulieres).toBeNull();
+    });
+    it("texte vide ou blanc efface", async () => {
+      const { data } = await ecrit({ conditionsParticulieres: "  \n " });
+      expect(data.conditionsParticulieres).toBeNull();
+    });
+    it("plus de 4000 caractères : refusé, rien d'écrit", async () => {
+      const r = await modifierDevisClassiqueBrouillonAction({
+        id: DEVIS,
+        attenduMajLe: MAJ,
+        input: { ...ENTREE, conditionsParticulieres: "x".repeat(4001) },
+      });
+      expect("error" in r).toBe(true);
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+    it("devis envoyé : refusé, rien d'écrit", async () => {
+      m.devisFindUnique.mockResolvedValue({ ...EXISTANT, statut: "envoye" });
+      const r = await modifierDevisClassiqueBrouillonAction({
+        id: DEVIS,
+        attenduMajLe: MAJ,
+        input: { ...ENTREE, conditionsParticulieres: "Texte" },
+      });
+      expect("error" in r).toBe(true);
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+    it("version périmée : refusé, rien d'écrit", async () => {
+      const r = await modifierDevisClassiqueBrouillonAction({
+        id: DEVIS,
+        attenduMajLe: "2026-11-08T09:00:00.000Z",
+        input: { ...ENTREE, conditionsParticulieres: "Texte" },
+      });
+      expect("error" in r && r.error).toMatch(/modifié ailleurs/);
+      expect(m.devisUpdateMany).not.toHaveBeenCalled();
+    });
+    it("la garde de l'écriture reste celle de toujours (brouillon, sans offre, updatedAt)", async () => {
+      await ecrit({ conditionsParticulieres: "Texte" });
+      expect(m.devisUpdateMany.mock.calls[0]?.[0].where).toEqual({
+        id: DEVIS,
+        statut: "brouillon",
+        offreSha256: null,
+        updatedAt: new Date(MAJ),
+      });
+    });
+  });
+
+  describe("createDevisAction — conditions particulières", () => {
+    beforeEach(() => {
+      m.devisFindMany.mockResolvedValue([]);
+      m.devisCreate.mockResolvedValue({ id: DEVIS, numero: "AXI-DEV-2026-001" });
+      m.transaction.mockImplementation(async (cb: (tx: unknown) => unknown) =>
+        cb({ devis: { findMany: m.devisFindMany, create: m.devisCreate } }),
+      );
+    });
+    it("écrit le texte normalisé", async () => {
+      await createDevisAction({ ...ENTREE, conditionsParticulieres: " Paiement à 45 jours.\r\n " });
+      expect(m.devisCreate.mock.calls[0]?.[0].data.conditionsParticulieres).toBe(
+        "Paiement à 45 jours.",
+      );
+    });
+    it("sans texte ou texte vide : la colonne n'est pas écrite", async () => {
+      await createDevisAction({ ...ENTREE });
+      expect("conditionsParticulieres" in m.devisCreate.mock.calls[0]?.[0].data).toBe(false);
+      m.devisCreate.mockClear();
+      await createDevisAction({ ...ENTREE, conditionsParticulieres: "   " });
+      expect("conditionsParticulieres" in m.devisCreate.mock.calls[0]?.[0].data).toBe(false);
+    });
   });
 
   it("même entrée → mêmes champs qu'en création (OPCO et mention TVA compris)", async () => {

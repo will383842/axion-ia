@@ -703,6 +703,10 @@ export async function eraseClientsForEmail(email: string): Promise<EraseClientsR
         data: {
           contactEmail: hashedEmail,
           contactNom: null,
+          // Identité de salutation (B4) : elle suit le contact dans l'effacement.
+          contactCivilite: null,
+          contactPrenom: null,
+          contactNomFamille: null,
           contactTelephone: null,
           contactFonction: null,
           // Champs de saisie libre : ils portent régulièrement le nom et le
@@ -1063,8 +1067,15 @@ const PARTICIPANT_PSEUDONYMISE = {
   etiquetteVoix: null,
 } as const;
 
-/** Fiche personne effacée : nom pseudonymisé, fonction et téléphone vidés. */
-const CONTACT_PSEUDONYMISE = { nom: PERSONNE_EFFACEE, fonction: null, telephone: null } as const;
+/** Fiche personne effacée : nom pseudonymisé ; fonction, téléphone et identité de salutation vidés. */
+const CONTACT_PSEUDONYMISE = {
+  nom: PERSONNE_EFFACEE,
+  fonction: null,
+  telephone: null,
+  civilite: null,
+  prenom: null,
+  nomFamille: null,
+} as const;
 
 /** Compte rendu partagé avec d'autres voix : vidé, une réécriture sans elle est proposée. */
 const COMPTE_RENDU_A_REGENERER = {
