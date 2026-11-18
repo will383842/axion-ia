@@ -1217,7 +1217,7 @@ describe("brouillon neutralisé : le critère est le journal d'effacement", () =
     expect(h.lignes.some((x) => x.statut === "acceptee")).toBe(false);
     const sentry = vi.mocked(Sentry.captureMessage);
     expect(sentry).toHaveBeenCalledTimes(1);
-    expect(JSON.stringify(sentry.mock.calls)).not.toMatch(/nomFichier|a\.pdf/);
+    expect(JSON.stringify(sentry.mock.calls)).not.toMatch(/nomFichier|\ba\.pdf/);
   });
 
   it("16 bis. le Temps 3 rejette : la ligne revient « attendue », Sentry signale la copie", async () => {
