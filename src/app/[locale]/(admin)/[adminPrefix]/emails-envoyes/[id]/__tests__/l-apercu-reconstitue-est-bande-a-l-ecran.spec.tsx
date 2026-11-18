@@ -113,8 +113,8 @@ describe("🔴 l'écran bande l'aperçu reconstitué", () => {
     );
     expect(html).not.toContain("Reconstitué");
     expect(html).toContain("Copie exacte");
-    // Onglet texte : pas d'iframe, le texte brut.
-    expect(html).not.toContain("<iframe");
+    // Vue texte : le lecteur coche « Texte brut » et porte le texte brut.
+    expect(html).toMatch(/<input[^>]*checked=""[^>]*value="texte"/);
     expect(html).toContain("<pre");
   });
 
@@ -139,7 +139,7 @@ describe("🔴 l'écran bande l'aperçu reconstitué", () => {
         adminPrefix="p"
       />,
     );
-    expect(html).not.toContain("<iframe");
+    expect(html).toMatch(/<input[^>]*checked=""[^>]*value="texte"/);
     expect(html).toContain("convention.pdf, programme.pdf");
     expect(html).toContain("non conservées dans la copie");
   });

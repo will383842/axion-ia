@@ -11,12 +11,14 @@
 // fenêtre surgissante, ni accès à la page parente. Le contenu vient de nos
 // gabarits, mais une copie n'a aucune raison de pouvoir agir.
 //
-// Onglets HTML / texte par lien (`?vue=texte`) : zéro JavaScript client, donc
-// rien à peser dans le budget de la console.
+// `?vue=texte` choisit la version cochée au départ du lecteur (bascule en CSS seul) :
+// zéro JavaScript client, donc rien à peser dans le budget de la console.
 
 import Link from "next/link";
 import { AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
+import { enveloppeExpedition } from "@/lib/email/enveloppe";
+import { extrairePreEntete } from "@/lib/email/apercu-lecteur";
 import { libelleStatutLigne, TON_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 import type { DetailEmail, RaisonSansCopie } from "@/features/admin-emails/detail";
 import type { ApercuReconstitue } from "@/features/admin-emails/reconstitution-invitation";
@@ -46,76 +48,48 @@ function Ligne({ label, children }: { label: string; children: React.ReactNode }
   );
 }
 
-/** Le rendu : onglets HTML / texte, objet, iframe isolée. */
+/**
+ * Le rendu : un seul lecteur, qui porte l'en-tête complet et la bascule HTML / texte
+ * brut (CSS seul). `?vue=texte` ne fait que choisir la version cochée au départ.
+ */
 function Rendu({
   titre,
   subject,
   html,
   text,
   vue,
-  hrefHtml,
-  hrefTexte,
   a,
+  marketing,
   piecesJointes,
+  pleinEcranHref,
 }: {
   titre: string;
   subject: string;
   html: string;
   text: string;
   vue: "html" | "texte";
-  hrefHtml: string;
-  hrefTexte: string;
   a?: string;
+  marketing: boolean;
   piecesJointes?: readonly string[];
+  pleinEcranHref?: string;
 }): React.ReactElement {
+  const enveloppe = enveloppeExpedition({ marketing });
   return (
-    <>
-      <nav aria-label="Version affichée" className="flex flex-wrap gap-[var(--space-admin-2)]">
-        <Link
-          href={hrefHtml}
-          className={vue === "html" ? "admin-button admin-button-sm" : "admin-button-ghost"}
-          aria-current={vue === "html" ? "page" : undefined}
-        >
-          Rendu HTML
-        </Link>
-        <Link
-          href={hrefTexte}
-          className={vue === "texte" ? "admin-button admin-button-sm" : "admin-button-ghost"}
-          aria-current={vue === "texte" ? "page" : undefined}
-        >
-          Version texte
-        </Link>
-      </nav>
-      {vue === "html" ? (
-        // Lecteur commun : l'objet, le destinataire et les pièces jointes sont dans
-        // son en-tête, et il porte son propre cadre (pas de seconde enveloppe).
-        <div className="mt-[var(--space-admin-3)]">
-          <LecteurEmail
-            html={html}
-            titre={titre}
-            a={a}
-            objet={subject}
-            piecesJointes={piecesJointes}
-          />
-        </div>
-      ) : (
-        <>
-          <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] px-4 py-3">
-            <p className="text-[11px] font-medium tracking-wide text-[color:var(--color-admin-fg-muted)] uppercase">
-              Objet
-            </p>
-            <p className="mt-1 text-sm leading-snug font-semibold text-[color:var(--color-admin-fg)]">
-              {subject}
-            </p>
-          </div>
-          <div className="mt-[var(--space-admin-3)] rounded-lg border border-[color:var(--color-admin-border)] p-3 sm:p-6">
-            <pre className="text-xs leading-relaxed whitespace-pre-wrap text-[color:var(--color-admin-fg)]">
-              {text}
-            </pre>
-          </div>
-        </>
-      )}
-    </>
+    <div className="mt-[var(--space-admin-3)]">
+      <LecteurEmail
+        html={html}
+        texte={text}
+        formatInitial={vue}
+        titre={titre}
+        de={enveloppe.from}
+        a={a}
+        repondreA={enveloppe.replyTo}
+        objet={subject}
+        preEntete={extrairePreEntete(html)}
+        piecesJointes={piecesJointes}
+        pleinEcranHref={pleinEcranHref}
+      />
+    </div>
   );
 }
 
@@ -137,10 +111,6 @@ export function VueDetailEmail({
   base: string;
   adminPrefix: string;
 }): React.ReactElement {
-  const ici = `${base}/${email.id}`;
-  const hrefHtml = ici;
-  const hrefTexte = `${ici}?vue=texte`;
-
   return (
     <>
       <AdminPageHeader
@@ -177,10 +147,10 @@ export function VueDetailEmail({
                 html={email.copie.html}
                 text={email.copie.text}
                 vue={vue}
-                hrefHtml={hrefHtml}
-                hrefTexte={hrefTexte}
                 a={email.recipient}
+                marketing={email.marketing}
                 piecesJointes={email.copie.attachmentNames}
+                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/envoye/${email.id}`}
               />
             </>
           ) : (
@@ -227,9 +197,8 @@ export function VueDetailEmail({
                         html={apercu.html}
                         text={apercu.text}
                         vue={vue}
-                        hrefHtml={hrefHtml}
-                        hrefTexte={hrefTexte}
                         a={email.recipient}
+                        marketing={email.marketing}
                       />
                     </div>
                   </div>
