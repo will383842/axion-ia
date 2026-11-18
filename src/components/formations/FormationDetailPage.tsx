@@ -507,13 +507,6 @@ export function FormationDetailPage({
                         className="text-terracotta underline"
                       >
                         Certifié Qualiopi
-                      </Link>{" "}
-                      ·{" "}
-                      <Link
-                        href={"/financement-opco-france-travail" as never}
-                        className="text-terracotta underline"
-                      >
-                        Financer cette formation
                       </Link>
                     </p>
                   </div>
@@ -1118,9 +1111,6 @@ export function FormationDetailPage({
               <div className="flex flex-wrap gap-3">
                 <Cta href="/certification-qualiopi" variant="outline" size="md">
                   Notre certification Qualiopi
-                </Cta>
-                <Cta href="/financement-opco-france-travail" variant="outline" size="md">
-                  Financer cette formation
                 </Cta>
               </div>
             </div>

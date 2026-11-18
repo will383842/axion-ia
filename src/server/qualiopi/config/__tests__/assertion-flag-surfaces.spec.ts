@@ -165,10 +165,6 @@ const ASSERTION_SURFACES: ReadonlyArray<{ file: string; why: string }> = [
     why: "la page dédiée — notFound() tant que la certification n'est pas obtenue",
   },
   {
-    file: "app/[locale]/financement-opco-france-travail/page.tsx",
-    why: "le financement OPCO découle de la certification",
-  },
-  {
     file: "server/qualiopi/config/public-identity.ts",
     why: "identité publique OF exposée en JSON-LD et PDF",
   },

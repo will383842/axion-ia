@@ -753,13 +753,6 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
     if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
-    // Page financement OPCO/France Travail : Phase-B only (mentions financement
-    // interdites avant l'agrément OF) → hors sitemap en Phase A.
-    if (
-      key === "/financement-opco-france-travail" &&
-      (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
-    )
-      continue;
     // Date PAR ROUTE (audit SEO 2026-11-11, I2) : avant, les 87 URL portaient
     // toutes `now` (date de la famille `pages`). `dateRoute` est la fonction que
     // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;
