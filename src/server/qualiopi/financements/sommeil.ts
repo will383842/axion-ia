@@ -47,3 +47,12 @@ export const REFUS_EN_SOMMEIL = {
   motif: "en_sommeil",
   message: MESSAGE_EMAIL_EN_SOMMEIL,
 } as const;
+
+/** L9b — ce gabarit est-il en sommeil maintenant ? Seule question posée par la console et le worker. */
+export function gabaritEnSommeil(template: string | null | undefined): boolean {
+  if (emailsFinancementTiersActifs()) return false;
+  return (
+    typeof template === "string" &&
+    (GABARITS_FINANCEMENT_TIERS_EN_SOMMEIL as readonly string[]).includes(template)
+  );
+}

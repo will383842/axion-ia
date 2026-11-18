@@ -24,6 +24,7 @@ import {
   generateNonce,
   isStrictCspPath,
   isEmbedPath,
+  isLectureEmailPath,
 } from "./lib/csp";
 import { isEnLocaleDisabled, mapEnToFr } from "./lib/i18n/en-to-fr-redirect";
 import { resolveLegacyRedirect } from "./lib/legacy-redirects";
@@ -51,7 +52,7 @@ import {
 // la réponse d'une page. Extraits du pipeline le 2026-10-25 pour que la landing du
 // Tour France IA (règle 0-TDF), qui ne passe pas par next-intl, reçoive
 // EXACTEMENT les mêmes — comportement des autres routes inchangé.
-function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: string): void {
+export function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: string): void {
   const strict = isStrictCspPath(req.nextUrl.pathname);
   // Route d'embed widget → framable partout (frame-ancestors *) + pas de
   // X-Frame-Options DENY (sinon le navigateur refuse l'iframe quoi qu'en dise
@@ -67,9 +68,16 @@ function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: str
   const origineBouclage = estHoteDeBouclage(
     req.headers.get("x-forwarded-host") ?? req.headers.get("host") ?? req.nextUrl.hostname,
   );
+  // Lecture plein écran d'un e-mail enregistré (I0b-3) : la route pose la même CSP
+  // (`buildCspHeader({ lectureEmail })`) ; on la rend ici à l'identique, (dans Next 16.3.1 les en-têtes du
+  // proxy et de `next.config` l'emportent sur ceux de la route).
+  // 🔴 Next 16.3.1 : un en-tête posé ICI l'emporte sur celui de la route
+  // (`router-server.js` pose `resHeaders` avant le handler ; `send-response.js` n'ajoute
+  // un en-tête de la route que s'il est absent). C'est donc ce bloc qui protège le corps.
+  const lectureEmail = isLectureEmailPath(req.nextUrl.pathname);
   response.headers.set(
     "Content-Security-Policy",
-    buildCspHeader({ nonce, strict, embed, origineBouclage }),
+    buildCspHeader({ nonce, strict, embed, origineBouclage, lectureEmail }),
   );
   // COEP `unsafe-none` site-wide (audit Calendly 2026-07-07).
   //
@@ -99,7 +107,11 @@ function poserEnTetesDeSecurite(req: NextRequest, response: Response, nonce: str
   response.headers.set("X-Content-Type-Options", "nosniff");
   // X-Frame-Options DENY partout SAUF la route d'embed (qui doit être framable).
   if (!embed) response.headers.set("X-Frame-Options", "DENY");
-  response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
+  // Lecture plein écran d'un e-mail : l'URL contient le préfixe secret de la console.
+  response.headers.set(
+    "Referrer-Policy",
+    lectureEmail ? "no-referrer" : "strict-origin-when-cross-origin",
+  );
   // Permissions-Policy minimaliste : on bloque les capabilities qu'on n'utilise
   // pas pour réduire la surface d'attaque + les warnings Lighthouse.
   response.headers.set(

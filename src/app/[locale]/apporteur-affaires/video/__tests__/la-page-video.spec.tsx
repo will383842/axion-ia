@@ -303,9 +303,15 @@ describe("les films : servis hors du proxy, en cache long", () => {
 
   it("next.config.ts pose un cache d'un an, immuable, sur /videos/*", () => {
     const config = readFileSync(join(RACINE, "next.config.ts"), "utf8");
-    const i = config.indexOf('source: "/videos/:path*"');
+    // La source ne vise que de vrais fichiers média (extension), plus tout le dossier.
+    const i = config.indexOf('source: "/videos/:fichier(');
     expect(i).toBeGreaterThan(0);
-    expect(config.slice(i, i + 300)).toContain("public, max-age=31536000, immutable");
+    const bloc = config.slice(i, i + 400);
+    expect(bloc).toContain("public, max-age=31536000");
+    expect(bloc).toContain("immutable");
+    // L'ancienne source large ne doit pas revenir (retour arrière = rouge).
+    expect(config).not.toContain('source: "/videos/:path*"');
+    expect(config).not.toMatch(/source:\s*["'`]\/videos\/:path\*/);
   });
 });
 
