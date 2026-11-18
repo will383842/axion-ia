@@ -150,6 +150,10 @@ vi.mock("@/server/queue/queues", () => ({
 const matche = (l: Ligne, where: Record<string, unknown>): boolean =>
   Object.entries(where).every(([k, v]) => {
     const val = (l as unknown as Record<string, unknown>)[k];
+    if (k === "OR") return (v as Record<string, unknown>[]).some((c) => matche(l, c));
+    if (v !== null && typeof v === "object" && "gte" in (v as object)) {
+      return val instanceof Date && val >= (v as { gte: Date }).gte;
+    }
     if (v !== null && typeof v === "object" && "in" in (v as object)) {
       return ((v as { in: unknown[] }).in as unknown[]).includes(val);
     }
@@ -350,9 +354,21 @@ describe("clic « Envoyer au client » en mode validation", () => {
   it("une ligne déjà APPROUVÉE (en cours d'envoi) bloque aussi un nouveau clic", async () => {
     await sendDevisAction(ID);
     lignes()[0]!.statut = "approuve";
+    (lignes()[0] as unknown as Record<string, unknown>)["approuveAt"] = new Date();
     const r2 = await sendDevisAction(ID);
     expect("error" in r2).toBe(true);
     expect(lignes()).toHaveLength(1);
+  });
+
+  it("une ligne « approuvée » abandonnée (plus de 15 min) ne bloque plus le devis", async () => {
+    await sendDevisAction(ID);
+    lignes()[0]!.statut = "approuve";
+    (lignes()[0] as unknown as Record<string, unknown>)["approuveAt"] = new Date(
+      Date.now() - 16 * 60_000,
+    );
+    const r2 = await sendDevisAction(ID);
+    expect("error" in r2).toBe(false);
+    expect(lignes()).toHaveLength(2);
   });
 
   it("verdict autre que « garé » (corbeille indisponible) : refus, aucune écriture, aucun jeton", async () => {

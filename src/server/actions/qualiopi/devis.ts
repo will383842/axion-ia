@@ -78,6 +78,7 @@ import {
 import {
   emailDevisEnAttente,
   GABARIT_DEVIS_ENVOI,
+  MSG_EMAIL_EN_ATTENTE_MODIF,
 } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { CLE_MARQUEUR } from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import {
@@ -726,7 +727,8 @@ export async function sendDevisAction(id: string): Promise<
 
     // Rien n'est parti : le lien de signature de la pièce neuve est révoqué. S'il est enfilé,
     // le courriel (donc le lien) est déjà chez le client : on ne le révoque pas.
-    if (etat.jetonCree && etat.documentGenereId !== null && etat.courriel?.etat !== "enfile") {
+    const revoquerLien = async (): Promise<void> => {
+      if (!etat.jetonCree || etat.documentGenereId === null) return;
       try {
         await revoquerTokensDocument({
           documentGenereId: etat.documentGenereId,
@@ -736,7 +738,12 @@ export async function sendDevisAction(id: string): Promise<
         console.warn("[sendDevisAction] révocation du lien après refus échouée", e);
         Sentry.captureException(e, { tags: { action: "sendDevisAction.revocation" } });
       }
-    }
+    };
+    // Courriel garé avec sa ligne : la révocation attend le résultat du refus de la ligne. Si un
+    // administrateur l'a approuvée entre-temps (0 ligne refusée), l'e-mail part avec ce lien.
+    const revocationApresRefus =
+      etat.courriel?.etat === "gare" && etat.courriel.outboxId !== undefined;
+    if (etat.courriel?.etat !== "enfile" && !revocationApresRefus) await revoquerLien();
 
     // Erreur APRÈS un courriel garé ou enfilé : le devis n'est pas « envoye » mais le client
     // peut recevoir un message. Garé : la ligne de corbeille est refusée (mise à jour, jamais
@@ -784,14 +791,19 @@ export async function sendDevisAction(id: string): Promise<
           // Aucune ligne refusée : l'e-mail n'est plus « à valider » (validé entre-temps ?) et peut
           // partir. Alerte sans lien ni adresse.
           if (refusee.count === 0) {
+            // Approuvée entre-temps : l'e-mail part avec ce lien, on ne le révoque pas.
+            // Libellé fixe : ni numéro, ni adresse, ni URL, ni jeton, ni payload.
             Sentry.captureMessage(
-              `Devis ${etat.numeroDevis} : la ligne de corbeille n'a pas pu être refusée (déjà validée ou traitée ?). Le client peut recevoir l'e-mail : vérifier Emails.`,
+              "Devis : la ligne de corbeille a été approuvée pendant l'envoi automatique, lien de signature conservé : vérifier Emails.",
               { level: "error", tags: { action: "sendDevisAction.refus_corbeille_aucune_ligne" } },
             );
+          } else {
+            await revoquerLien();
           }
         } catch (e) {
           console.warn("[sendDevisAction] refus de la ligne de corbeille échoué", e);
           Sentry.captureException(e, { tags: { action: "sendDevisAction.refus_corbeille" } });
+          await revoquerLien();
         }
       } else {
         // Aucune adresse ni lien dans l'alerte : Telegram est un canal tiers.
@@ -1063,6 +1075,10 @@ export async function declineDevisAction(id: string): Promise<ActionResult<{ id:
     select: { statut: true, documentGenereId: true, ...SELECT_SIGNATURES_PIECE },
   });
   if (!lu) return { error: "Devis introuvable" };
+  // Un e-mail d'envoi de ce devis attend : même consigne que pour la modification.
+  if (await emailDevisEnAttente(prisma, idParsed.data)) {
+    return { error: MSG_EMAIL_EN_ATTENTE_MODIF };
+  }
   if (signatureClientDuDevis(lu).clientASigne) {
     return { error: "Le client a signé ce devis : il ne peut pas être marqué refusé." };
   }

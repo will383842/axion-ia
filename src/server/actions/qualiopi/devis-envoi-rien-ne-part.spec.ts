@@ -302,7 +302,10 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
         template: "devis-envoi",
         entityType: "Devis",
         entityId: ID,
-        statut: { in: ["a_valider", "approuve"] },
+        OR: [
+          { statut: "a_valider" },
+          { statut: "approuve", approuveAt: { gte: expect.any(Date) } },
+        ],
       },
       select: { id: true },
     });
@@ -350,6 +353,26 @@ describe("sendDevisAction — rien ne part, rien n'est « envoye »", () => {
     expect(alerte).toBeDefined();
     expect(alerte).not.toContain("http");
     expect(alerte).not.toContain("@");
+  });
+
+  it("(13h) mode auto : ligne approuvée entre-temps (refus 0 ligne) → jeton NON révoqué, alerte fixe sans donnée", async () => {
+    h.enqueueEmail.mockResolvedValue({
+      enqueued: false,
+      garePourValidation: true,
+      outboxId: "ob-1",
+    });
+    h.outboxUpdateMany.mockResolvedValue({ count: 0 });
+    await sendDevisAction(ID);
+    expect(h.revoquer).not.toHaveBeenCalled();
+    const alertes = h.sentryMessage.mock.calls.map((c) => String(c[0]));
+    expect(alertes).toContain(
+      "Devis : la ligne de corbeille a été approuvée pendant l'envoi automatique, lien de signature conservé : vérifier Emails.",
+    );
+    for (const a of alertes) {
+      expect(a).not.toContain("http");
+      expect(a).not.toContain("@");
+      expect(a).not.toContain("JETON");
+    }
   });
 
   it("(13g) contre-témoin : ligne de corbeille refusée (count 1) → aucune alerte « corbeille »", async () => {

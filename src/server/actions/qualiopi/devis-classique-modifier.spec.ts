@@ -147,7 +147,10 @@ describe("modifierDevisClassiqueBrouillonAction", () => {
         template: "devis-envoi",
         entityType: "Devis",
         entityId: DEVIS,
-        statut: { in: ["a_valider", "approuve"] },
+        OR: [
+          { statut: "a_valider" },
+          { statut: "approuve", approuveAt: { gte: expect.any(Date) } },
+        ],
       },
       select: { id: true },
     });
