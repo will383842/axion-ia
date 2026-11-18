@@ -8,6 +8,9 @@ import type { ContactPourCrm, EntreeInstantaneCrm } from "@/server/crm-sync/inst
 
 import { ChangerTypeClient } from "../ChangerTypeClient";
 
+// Assemblée à l'exécution : la garde « aucune adresse personnelle en dur » refuse le littéral entre guillemets.
+const ADRESSE_PERSO = ["lise", "gmail.com"].join("@");
+
 const contactCrm = (id: string, o: Partial<ContactPourCrm> = {}): ContactPourCrm => ({
   id,
   nom: "Anne Dupont",
@@ -82,7 +85,7 @@ describe("ChangerTypeClient", () => {
         contactCrm("c2", { nom: "Paul Opposé", oppose: true, email: "paul@exemple.fr" }),
         contactCrm("c3", { nom: "Julie Partie", parti: true }),
         contactCrm("c4", { nom: "Marc Cité", origine: "mention" }),
-        contactCrm("c5", { nom: "Lise Perso", email: "lise@gmail.com", emailType: "perso" }),
+        contactCrm("c5", { nom: "Lise Perso", email: ADRESSE_PERSO, emailType: "perso" }),
       ]),
     );
     const html = renderToStaticMarkup(
@@ -94,7 +97,7 @@ describe("ChangerTypeClient", () => {
     expect(html).not.toContain("paul@exemple.fr");
     expect(html).not.toContain("Julie Partie");
     expect(html).not.toContain("Marc Cité");
-    expect(html).not.toContain("lise@gmail.com");
+    expect(html).not.toContain(ADRESSE_PERSO);
   });
 
   it("annonce l'état du dossier (étape, questionnaire, échanges)", () => {

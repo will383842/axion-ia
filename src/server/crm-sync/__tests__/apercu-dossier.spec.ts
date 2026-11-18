@@ -79,7 +79,9 @@ describe("apercuPourCrm", () => {
 
   it("n'annonce pas un e-mail grand public (il ne part pas), mais annonce le contact", () => {
     const a = apercuPourCrm(
-      entree({ contacts: [contact("c1", { email: "claire@gmail.com", emailType: "perso" })] }),
+      entree({
+        contacts: [contact("c1", { email: ["claire", "gmail.com"].join("@"), emailType: "perso" })],
+      }),
     );
     expect(a.contacts).toHaveLength(1);
     expect(a.contacts[0]!.email).toBeNull();

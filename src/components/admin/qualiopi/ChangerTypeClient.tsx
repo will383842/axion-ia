@@ -89,7 +89,7 @@ export function ChangerTypeClient(props: ChangerTypeClientProps) {
       {blocage !== null ? (
         <p
           aria-disabled="true"
-          className="mt-2 rounded bg-[color:var(--color-admin-surface-muted)] p-2 text-[length:var(--text-admin-xs)] opacity-70"
+          className="mt-2 rounded bg-[color:var(--color-admin-surface-alt)] p-2 text-[length:var(--text-admin-xs)] opacity-70"
         >
           {blocage}
         </p>
