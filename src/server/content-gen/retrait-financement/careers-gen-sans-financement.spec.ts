@@ -7,8 +7,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { estVisee } from "@/server/content-gen/retrait-financement/regles";
-import { MOTIFS_INTERDITS_GENERATEUR } from "@/server/content-gen/retrait-financement/motifs-interdits-generateur";
+import { estVisee } from "./regles";
+import { MOTIFS_INTERDITS_GENERATEUR } from "./motifs-interdits-generateur";
 
 const DOSSIER = path.join(process.cwd(), "careers-gen");
 const fichiers = fs
