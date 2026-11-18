@@ -67,6 +67,8 @@ import { buildJourneeIaVilleJsonLd } from "@/lib/seo/ville-service-jsonld";
 import type { VilleContext } from "@/components/services/types";
 import { VilleCommunesProches } from "@/components/ville/VilleCommunesProches";
 import { VilleFaqGeolocalisee } from "@/components/ville/VilleFaqGeolocalisee";
+import { VilleFicheLocale } from "@/components/ville/VilleFicheLocale";
+import { ficheLocale } from "@/content/villes/fiches-locales";
 
 interface Props {
   params: Promise<{ locale: string; region: string; ville: string }>;
@@ -168,7 +170,9 @@ export default async function VillePage({ params }: Props) {
   const description = descriptionVille(ville);
   const secteurs = secteursDeLaVille(ville);
   const enBref = enBrefVille(ville, region, secteurs);
-  const faq = faqVille(ville);
+  // Fiche locale sourcée (lot 1 : dix villes) : chaque bloc n'apparaît que si la fiche existe.
+  const fiche = ficheLocale(ville.slug);
+  const faq = [...faqVille(ville), ...(fiche ? fiche.faqLocale : [])];
   const [ancre1, ancre2] = ancresJourneeIa(ville.slug);
 
   const villeContext: VilleContext = {
@@ -336,6 +340,9 @@ export default async function VillePage({ params }: Props) {
           </div>
         </Container>
       </section>
+
+      {/* ── Contenu propre à la ville : chiffres sourcés, écosystème public, zone, sources ── */}
+      {fiche ? <VilleFicheLocale fiche={fiche} /> : null}
 
       {/* ── Le déroulé ── */}
       <Section
