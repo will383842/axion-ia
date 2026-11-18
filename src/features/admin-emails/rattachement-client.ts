@@ -6,8 +6,11 @@
  *   · `Rencontre`                        -> la rencontre, donc `rencontres.client_id` ;
  *   · `QuestionnaireAvantAudit` (+ essai) -> le questionnaire, sa rencontre, son client ;
  *   · `QuestionnaireAvantAuditEnvoi`     -> la réponse reçue, son questionnaire, sa rencontre.
- * Les autres familles (convocations de session, devis...) ne sont pas rattachées ici : la ligne
- * n'affiche alors aucun lien, jamais un faux.
+ *   · `Devis`                            -> le devis, donc `devis.client_id` ;
+ *   · `DocumentGenere` (pièce signée...) -> la pièce, son `client_id`, sinon le devis qui la porte ;
+ *   · `FactureFormation`                 -> la facture, donc `factures_formation.client_id`.
+ * Les autres familles (convocations de session...) ne sont pas rattachées ici : la ligne
+ * n'affiche alors aucun lien, jamais un faux (une pièce sans client ni devis reste sans lien).
  *
  * Lectures seules. Tolère une base indisponible (build, stub) : rend du vide.
  */
@@ -23,6 +26,9 @@ export const ENTITES_QUESTIONNAIRE = [
 ] as const;
 const ENTITE_ENVOI = "QuestionnaireAvantAuditEnvoi";
 const ENTITE_RENCONTRE = "Rencontre";
+const ENTITE_DEVIS = "Devis";
+const ENTITE_PIECE = "DocumentGenere";
+const ENTITE_FACTURE = "FactureFormation";
 
 type LigneRattachable = { id: string; entityType: string | null; entityId: string | null };
 
@@ -45,11 +51,21 @@ export async function clientsDesLignes(
   const rencontreIds = ids([ENTITE_RENCONTRE]);
   const questionnaireIds = ids(ENTITES_QUESTIONNAIRE);
   const envoiIds = ids([ENTITE_ENVOI]);
-  if (rencontreIds.length + questionnaireIds.length + envoiIds.length === 0) return resultat;
+  const devisIds = ids([ENTITE_DEVIS]);
+  const pieceIds = ids([ENTITE_PIECE]);
+  const factureIds = ids([ENTITE_FACTURE]);
+  const total =
+    rencontreIds.length +
+    questionnaireIds.length +
+    envoiIds.length +
+    devisIds.length +
+    pieceIds.length +
+    factureIds.length;
+  if (total === 0) return resultat;
 
   try {
     const clientSelect = { select: { id: true, numero: true, raisonSociale: true } } as const;
-    const [rencontres, questionnaires, envois] = await Promise.all([
+    const [rencontres, questionnaires, envois, devis, pieces, factures] = await Promise.all([
       rencontreIds.length === 0
         ? []
         : prisma.rencontre.findMany({
@@ -77,6 +93,28 @@ export async function clientsDesLignes(
               },
             },
           }),
+      devisIds.length === 0
+        ? []
+        : prisma.devis.findMany({
+            where: { id: { in: devisIds } },
+            select: { id: true, client: clientSelect },
+          }),
+      pieceIds.length === 0
+        ? []
+        : prisma.documentGenere.findMany({
+            where: { id: { in: pieceIds } },
+            select: {
+              id: true,
+              client: clientSelect,
+              devisPortes: { take: 1, select: { client: clientSelect } },
+            },
+          }),
+      factureIds.length === 0
+        ? []
+        : prisma.factureFormation.findMany({
+            where: { id: { in: factureIds } },
+            select: { id: true, client: clientSelect },
+          }),
     ]);
     type C = { id: string; numero: string; raisonSociale: string } | null | undefined;
     const parEntite = new Map<string, ClientDuJournal>();
@@ -87,6 +125,9 @@ export async function clientsDesLignes(
     for (const q of questionnaires) poser(q.id, q.rencontre?.client ?? q.client);
     for (const e of envois)
       poser(e.id, e.questionnaire.rencontre?.client ?? e.questionnaire.client);
+    for (const d of devis) poser(d.id, d.client);
+    for (const p of pieces) poser(p.id, p.client ?? p.devisPortes?.[0]?.client);
+    for (const f of factures) poser(f.id, f.client);
     for (const l of lignes) {
       const c = l.entityId === null ? undefined : parEntite.get(l.entityId);
       if (c) resultat.set(l.id, c);
@@ -99,11 +140,14 @@ export async function clientsDesLignes(
 
 /**
  * Les identifiants d'entités qu'une fiche client « couvre » dans le journal : ses rencontres, leurs
- * questionnaires et les réponses reçues. Rend `[]` si la fiche n'existe pas ou n'a rien : le
+ * questionnaires et les réponses reçues, plus ses devis, ses pièces générées (dont celles portées
+ * par ses devis) et ses factures, fiches absorbées par fusion comprises. Pas d'index sur
+ * `document_genere.client_id` : accepté, la table est petite. Rend `[]` si la fiche n'existe pas ou n'a rien : le
  * filtre est alors une liste VIDE (zéro ligne), jamais le journal entier.
  */
 export async function idsLiesAuClient(clientId: string): Promise<string[]> {
   if (!estUuid(clientId)) return [];
+  const fiches = await fichesCouvertes(clientId);
   const rencontres = await prisma.rencontre.findMany({
     where: { clientId },
     select: {
@@ -114,7 +158,7 @@ export async function idsLiesAuClient(clientId: string): Promise<string[]> {
   const ids: string[] = [];
   // Les questionnaires envoyés SANS rendez-vous (rattachés à la fiche directement), et leurs réponses.
   const directs = await prisma.questionnaireAvantAudit.findMany({
-    where: { rencontreId: null, clientId: { in: await fichesCouvertes(clientId) } },
+    where: { rencontreId: null, clientId: { in: fiches } },
     select: { id: true, envois: { select: { id: true } } },
   });
   for (const q of directs) {
@@ -129,7 +173,25 @@ export async function idsLiesAuClient(clientId: string): Promise<string[]> {
       for (const e of q.envois) ids.push(e.id);
     }
   }
-  return ids;
+  const devis = await prisma.devis.findMany({
+    where: { clientId: { in: fiches } },
+    select: { id: true, documentGenereId: true },
+  });
+  const piecesDesDevis = devis
+    .map((d) => d.documentGenereId)
+    .filter((v): v is string => v !== null);
+  const pieces = await prisma.documentGenere.findMany({
+    where: { OR: [{ clientId: { in: fiches } }, { id: { in: piecesDesDevis } }] },
+    select: { id: true },
+  });
+  const factures = await prisma.factureFormation.findMany({
+    where: { clientId: { in: fiches } },
+    select: { id: true },
+  });
+  for (const d of devis) ids.push(d.id);
+  for (const p of pieces) ids.push(p.id);
+  for (const f of factures) ids.push(f.id);
+  return [...new Set(ids)];
 }
 
 /** Le client filtré, tel qu'on le NOMME à l'écran (jamais un UUID nu). */

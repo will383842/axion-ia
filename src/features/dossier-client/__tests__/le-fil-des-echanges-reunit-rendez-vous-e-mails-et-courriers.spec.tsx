@@ -45,6 +45,45 @@ describe("assemblerFil", () => {
   });
 });
 
+describe("lireFilDesEchanges : client sans rencontre, avec un devis (AD-C3)", () => {
+  it("le fil contient l'e-mail du devis, et dernierEmailParti n'est plus nul", async () => {
+    const reel = await vi.importActual<
+      typeof import("@/features/admin-emails/rattachement-client")
+    >("@/features/admin-emails/rattachement-client");
+    const bd = prismaMock as unknown as Record<string, { findMany: ReturnType<typeof vi.fn> }>;
+    idsMock.mockImplementation(reel.idsLiesAuClient);
+    const U = "00000000-0000-4000-8000-";
+    const client = `${U}000000000009`;
+    const devisId = `${U}000000000030`;
+    prismaMock.rencontre.findMany.mockResolvedValue([]);
+    bd.questionnaireAvantAudit = { findMany: vi.fn(async () => []) };
+    bd.devis = { findMany: vi.fn(async () => [{ id: devisId, documentGenereId: null }]) };
+    bd.documentGenere = { findMany: vi.fn(async () => []) };
+    bd.factureFormation = { findMany: vi.fn(async () => []) };
+    prismaMock.emailLog.findMany.mockResolvedValue([
+      {
+        id: "l9",
+        template: "devis-envoi",
+        status: "sent",
+        createdAt: new Date("2026-11-10T10:00:00Z"),
+        sentAt: new Date("2026-11-10T10:01:00Z"),
+        contenu: { subject: "Votre devis" },
+      },
+    ]);
+    prismaMock.emailOutbox.findMany.mockResolvedValue([]);
+    prismaMock.questionnaireAvantAuditCourrier.findMany.mockResolvedValue([]);
+    const { fil } = await lireFilDesEchanges(client, "adm");
+    expect(prismaMock.emailLog.findMany.mock.calls[0]![0].where.entityId).toEqual({
+      in: [devisId],
+    });
+    expect(fil.map((x) => x.cle)).toContain("mail:l9");
+    const { dernierEmailParti } = await import("../fiche/lire-en-tete");
+    expect(dernierEmailParti(fil, new Date("2026-11-18T00:00:00Z"))).toEqual(
+      new Date("2026-11-10T10:01:00Z"),
+    );
+  });
+});
+
 describe("lireFilDesEchanges", () => {
   it("réunit les quatre sources, objet seulement, sans adresse ni corps", async () => {
     prismaMock.rencontre.findMany.mockResolvedValue([
