@@ -351,6 +351,71 @@ describe("mode « auto » : lien perdu sans e-mail (suites d'audit)", () => {
   });
 });
 
+describe("mode « auto » : un seul lien vivant quoi qu'il arrive (M1, M2)", () => {
+  beforeEach(() => d.resoudreMode.mockResolvedValue("auto"));
+
+  it("M1 — l'ancien lien ne peut être rendu (false) : le jeton neuf est révoqué par son identifiant", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockResolvedValue(false);
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({ error: "File d'envoi indisponible — réessayer." });
+    expect(d.revoquer).toHaveBeenCalledTimes(1);
+    expect(d.revoquer).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+  });
+
+  it("M1 — le rendu lève : le jeton neuf est révoqué aussi, sans fuite", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockRejectedValue(new Error(`${JETON} ${ADRESSE}`));
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.revoquer).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(JETON);
+    expect(s).not.toContain(ADRESSE);
+  });
+
+  it("M1 — l'ancien lien est rendu : le jeton neuf n'est pas révoqué à part", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockResolvedValue(true);
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.revoquer).not.toHaveBeenCalled();
+  });
+
+  it("M2 — enqueueEmail lève : état cohérent (ancien lien rendu), message clair, journal sans adresse", async () => {
+    d.enqueueEmail.mockRejectedValue(new Error(`${ADRESSE} ${JETON}`));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({
+      error:
+        "L'enfilage de l'e-mail a échoué : rien n'est parti, le lien de signature précédent a été conservé ou rendu. Réessayer.",
+    });
+    expect(d.rendre).toHaveBeenCalledWith(
+      `https://exemple.test/fr/portail/signer/${JETON}`,
+      "revoquer",
+    );
+    expect(d.log).not.toHaveBeenCalled();
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(ADRESSE);
+    expect(s).not.toContain(JETON);
+    expect(d.verrous.size).toBe(0);
+  });
+
+  it("M2 — enqueueEmail lève ET l'ancien lien n'est pas rendu : le jeton neuf est révoqué (aucun lien vivant en double)", async () => {
+    d.enqueueEmail.mockRejectedValue(new Error("redis"));
+    d.rendre.mockResolvedValue(false);
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.revoquer).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+  });
+
+  it("M2 — mode validation : enqueueEmail lève, aucun jeton à défaire, message clair", async () => {
+    d.resoudreMode.mockResolvedValue("validation");
+    d.enqueueEmail.mockRejectedValue(new Error("redis"));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.rendre).not.toHaveBeenCalled();
+    expect(d.revoquer).not.toHaveBeenCalled();
+  });
+});
+
 describe("renvoi en validation d'un devis à formules : formules, drapeau et marqueur ensemble", () => {
   it("les trois arrivent dans le même payload enfilé, sans jeton ni lien", async () => {
     const formules = { formules: [{ titre: "Essentielle" }, { titre: "Complète" }] };
