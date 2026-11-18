@@ -173,7 +173,7 @@ export const HEROS = {
  * Elle ne dit rien que la page visible, sa FAQ et ses conditions ne disent.
  */
 export const DEFINITION =
-  "Le Tour France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui les aide à répondre à l’exigence de formation de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
+  "Le Tour France IA, organisé par Axion-IA et fondé par Williams Jullin, offre une journée à des entreprises de la TPE à l’ETI, tous secteurs : un audit de leur activité, qui chiffre ce que l’IA peut leur apporter, puis une formation de 4 h de leur équipe, en intra-entreprise et en présentiel, qui est l’une des mesures possibles au titre de l’article 4 de l’AI Act. Le Tour va de ville en ville : une ville s’ouvre dès 5 demandes, puis une semaine, une entreprise par jour. La journée est offerte aux 5 entreprises retenues par ville, après une visio et un court questionnaire, en échange d’un podcast tourné chez elles ; les autres peuvent recevoir la même journée à un tarif Tour. Le vendredi soir, un dîner des dirigeants, facultatif et non compris dans la journée offerte.";
 
 /** La ville : le seuil, la semaine, et la carte — sans aucune ville nommée. */
 export const VILLE = {
@@ -193,7 +193,7 @@ export const GAINS = {
     {
       titre: "Votre équipe formée à l’IA.",
       texte:
-        "4 h chez vous, jusqu’à 15 personnes. Elle aide à répondre à l’exigence de formation de l’AI Act.",
+        "4 h, jusqu’à 15 personnes : l’une des mesures possibles au titre de l’article 4 de l’AI Act.",
     },
   ],
 } as const;
