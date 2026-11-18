@@ -96,7 +96,9 @@ describe("1) droits par source", () => {
   });
 
   it("lecture d'une réponse de candidat par reader : null, base jamais lue", async () => {
-    expect(await lireReponseManuelle("candidature", "x1", "reader")).toBeNull();
+    expect(
+      await lireReponseManuelle("candidature", "ck0000000000000000000001", "reader"),
+    ).toBeNull();
     expect(h.jobFindUnique).not.toHaveBeenCalled();
   });
 });
@@ -192,7 +194,7 @@ describe("5) lecture d'une réponse", () => {
   it("jeton marqueur masqué dans le HTML et le texte rendus", async () => {
     const jeton = "Zq7rT9xWm2LpV4nB8cD6fH1jK3sA5gYe0uIoPlMkNb";
     h.subFindUnique.mockResolvedValue({
-      id: "r1",
+      id: "ck0000000000000000000001",
       submissionId: "11111111-1111-4111-8111-111111111111",
       repliedAt: new Date("2026-11-10T10:00:00Z"),
       repliedByName: "Le fondateur",
@@ -207,7 +209,7 @@ describe("5) lecture d'une réponse", () => {
       internalNote: "à suivre",
       submission: { ficheClientId: "33333333-3333-4333-8333-333333333333" },
     });
-    const r = await lireReponseManuelle("demande", "r1", "admin");
+    const r = await lireReponseManuelle("demande", "ck0000000000000000000001", "admin");
     expect(r).not.toBeNull();
     expect(r!.html).not.toContain(jeton);
     expect(r!.texte).not.toContain(jeton);
@@ -219,7 +221,39 @@ describe("5) lecture d'une réponse", () => {
 
   it("identifiant inconnu : null", async () => {
     h.subFindUnique.mockResolvedValue(null);
-    expect(await lireReponseManuelle("demande", "inconnu", "admin")).toBeNull();
+    expect(await lireReponseManuelle("demande", "ck0000000000000000000009", "admin")).toBeNull();
+  });
+
+  it("identifiant mal formé : null, base jamais lue", async () => {
+    for (const mauvais of ["../x", "r1", "a".repeat(200), "", "ck00000000000000000000;1"]) {
+      expect(await lireReponseManuelle("demande", mauvais, "admin")).toBeNull();
+      expect(await lireReponseManuelle("candidature", mauvais, "admin")).toBeNull();
+    }
+    expect(h.subFindUnique).not.toHaveBeenCalled();
+    expect(h.jobFindUnique).not.toHaveBeenCalled();
+  });
+
+  it("motif d'erreur : jeton masqué et borné à 300 caractères", async () => {
+    const jeton = "Zq7rT9xWm2LpV4nB8cD6fH1jK3sA5gYe0uIoPlMkNb";
+    h.subFindUnique.mockResolvedValue({
+      id: "ck0000000000000000000001",
+      submissionId: "11111111-1111-4111-8111-111111111111",
+      repliedAt: new Date("2026-11-10T10:00:00Z"),
+      repliedByName: "Le fondateur",
+      toEmail: "chiffre:alice@example.invalid",
+      subject: "Objet",
+      bodyHtml: "<p>x</p>",
+      bodyText: "x",
+      deliveryStatus: "failed",
+      sentAt: null,
+      failedAt: new Date("2026-11-10T10:00:00Z"),
+      errorMsg: `550 rejeté https://axion-ia.com/opposition?token=${jeton} ` + "z".repeat(500),
+      internalNote: null,
+      submission: { ficheClientId: null },
+    });
+    const r = await lireReponseManuelle("demande", "ck0000000000000000000001", "admin");
+    expect(r!.erreur).not.toContain(jeton);
+    expect(r!.erreur!.length).toBeLessThanOrEqual(300);
   });
 
   it("source inconnue : null, base jamais lue", async () => {

@@ -17,7 +17,7 @@
 import { prisma } from "@/lib/prisma";
 import { decryptPii } from "@/lib/pii-crypto";
 import { hashEmailForLookup } from "@/lib/security/email-hash";
-import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
+import { masquerSecretsEmail, masquerSecretsTexte } from "@/lib/email/masquer-secrets";
 import { extrairePreEntete } from "@/lib/email/apercu-lecteur";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { peutConsulter, peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
@@ -270,13 +270,16 @@ export interface ReponseLue {
  * Une réponse, prête pour `LecteurEmail`. `null` : source inconnue, rôle sans droit
  * (vérifié AVANT la base), identifiant inconnu, ou build.
  */
+/** Forme d'un identifiant de réponse (cuid). Règle unique, partagée avec le plein écran. */
+export const ID_REPONSE = /^[A-Za-z0-9]{20,40}$/;
+
 export async function lireReponseManuelle(
   source: string,
   id: string,
   role: string | null | undefined,
 ): Promise<ReponseLue | null> {
   const def = definition(source);
-  if (!def || !def.habilite(role) || estStub()) return null;
+  if (!def || !def.habilite(role) || !ID_REPONSE.test(id) || estStub()) return null;
 
   const enveloppe = enveloppeExpedition();
   const commun = (l: {
@@ -307,7 +310,7 @@ export async function lireReponseManuelle(
       date: l.repliedAt,
       envoyeLe: l.sentAt,
       echecLe: l.failedAt,
-      erreur: l.errorMsg,
+      erreur: l.errorMsg ? masquerSecretsTexte(l.errorMsg).sortie.slice(0, 300) : null,
       auteur: l.repliedByName,
       noteInterne: l.internalNote,
     };

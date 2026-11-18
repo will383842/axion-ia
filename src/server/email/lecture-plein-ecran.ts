@@ -22,6 +22,7 @@ import { renderEmailTemplate } from "@/lib/email/templates";
 import { masquerSecretsEmail } from "@/lib/email/masquer-secrets";
 import { rendreLiensInertes } from "@/lib/email/apercu-lecteur";
 import { peutConsulter, peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
+import { ID_REPONSE } from "@/features/admin-emails/reponses-manuelles";
 import { CATALOGUE } from "@/server/email/apercu/catalogue";
 import { PAYLOAD_EXEMPLE, VARIANTES_EXEMPLE } from "@/server/email/apercu/payloads-exemple";
 import type { EmailJobName } from "@/server/queue/types";
@@ -141,7 +142,6 @@ const gabarit: SourceLecture = {
 };
 
 // Identifiant d'une réponse écrite à la main : un cuid (colonne texte, pas un UUID).
-const ID_REPONSE = /^[A-Za-z0-9]{20,40}$/;
 
 const reponseIntrouvable: ResultatLecture = {
   ok: false,
