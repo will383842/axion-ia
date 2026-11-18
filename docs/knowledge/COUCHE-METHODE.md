@@ -41,8 +41,8 @@ la ligne qui suit son titre. C'est le corpus qui fait foi, pas l'import.
 
 `METHODE_ACTIVE=true` (Coolify, portée RUN) puis redémarrage. Seule la valeur exacte `true`
 allume. Éteinte, `obtenirContexteMethode` rend `{ noyau: null, extraits: [] }` sans lire la base.
-`METHODE_STUDIO_OUVERT` et `METHODE_STUDIO_SECRET` sont déclarées mais aucune route ne les lit
-encore.
+`METHODE_STUDIO_OUVERT` et `METHODE_STUDIO_SECRET` ne servent qu'à la porte du Studio
+(section « Porte du Studio » ci-dessous).
 
 ⚠️ Une valeur autre que `true` ou `false` (par exemple `TRUE` ou `1`) sur `METHODE_ACTIVE` ou
 `METHODE_STUDIO_OUVERT`, ou un `METHODE_STUDIO_SECRET` de moins de 32 caractères, **empêche
@@ -69,8 +69,45 @@ caractères, **approuvés, puis passés par `filtrerPourSortie`** (second filet)
 un téléphone, une promesse de gain, un témoignage, un ancrage local, ou une des trois
 étiquettes interdites, n'est pas rendue. Si le noyau est refusé, il n'est jamais remplacé par une fiche qui n'est pas un noyau ; un autre noyau sain (autre fiche numérotée 00), s'il existe, peut être servi. Pour retrouver un noyau, le fondateur réécrit sa section « essentiel » sans chiffres.
 
-Appelants autorisés aujourd'hui : l'import seul. Tout autre fichier qui importerait la couche
+Appelants autorisés aujourd'hui : l'import et la porte du Studio (`src/app/api/internal/methode/studio/route.ts`). Tout autre fichier qui importerait la couche
 fait échouer `aucun-extrait-prive.spec.ts` : ajouter un appelant est une décision à part.
+
+## Porte du Studio
+
+`POST /api/internal/methode/studio` : route sœur, **lecture seule**, **fermée par défaut**, avec son
+propre secret. Le Studio y envoie un sujet et reçoit des extraits. Elle ne lit que par
+`obtenirContexteMethode` : elle ne sert donc que des sections **marquées à la main** puis passées par
+`filtrerPourSortie`. Le noyau, les étiquettes et la collection ne sont jamais rendus.
+
+**Ordre des refus** (figé par les tests ; une route fermée ressemble à une route absente) :
+
+| Ordre | Condition                                                                 | Réponse |
+| ----- | ------------------------------------------------------------------------- | ------- |
+| 1     | `DATABASE_URL` de build hors ligne (`stub.invalid`)                       | 503     |
+| 2     | `METHODE_STUDIO_OUVERT` ou `METHODE_ACTIVE` différente de `"true"` exacte | 404     |
+| 3     | `METHODE_STUDIO_SECRET` absent ou de moins de 32 caractères               | 503     |
+| 4     | plus de 30 appels par minute et par adresse                               | 429     |
+| 5     | en-tête `x-methode-secret` absent ou faux (comparaison à temps constant)  | 401     |
+| 6     | corps illisible, trop long, ou différent de `{ sujet }`                   | 400     |
+
+Les verbes GET, PUT, PATCH et DELETE rendent 405 (`Allow: POST`). **Toute** réponse, succès comme
+refus, porte `Cache-Control: no-store`.
+
+**Entrée** : `{ "sujet": "<2 à 300 caractères>" }`, aucun autre champ. **Sortie** :
+`{ "items": [{ "slug", "titre", "texte", "source": "methode" }], "meta": { "returned": N } }`, au plus
+5 extraits de 1 500 caractères. Le nombre d'extraits n'est pas réglable par le client. Rien de la
+demande ni du texte servi n'est écrit au journal.
+
+**Variables** (noms seulement, jamais de valeur dans le dépôt) : `METHODE_ACTIVE`,
+`METHODE_STUDIO_OUVERT`, `METHODE_STUDIO_SECRET`. Aucune configuration commise ne les pose.
+
+**Gestes du fondateur pour l'ouvrir** (décrits ici, jamais faits par l'usine) :
+
+1. G3 : poser `METHODE_ACTIVE=true` sur le site (Coolify, portée RUN), puis redémarrer.
+2. G4 : poser le **même** `METHODE_STUDIO_SECRET` (32 caractères au moins) sur le site et sur le
+   Studio, puis `METHODE_STUDIO_OUVERT=true` sur le site, puis redémarrer.
+
+Pour refermer : retirer `METHODE_STUDIO_OUVERT` (ou la poser à `false`) ; la route répond 404.
 
 ## 4. Où sont les choses
 

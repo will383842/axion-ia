@@ -8,15 +8,9 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
  * jamais lu ailleurs.
  */
 
-const ECRITURES = [
-  "create",
-  "createMany",
-  "update",
-  "updateMany",
-  "upsert",
-  "delete",
-  "deleteMany",
-] as const;
+const ECRITURES = vi.hoisted(
+  () => ["create", "createMany", "update", "updateMany", "upsert", "delete", "deleteMany"] as const,
+);
 
 const base = vi.hoisted(() => ({
   lectures: 0,
