@@ -561,10 +561,13 @@ jobs:
       - name: Wait for Coolify deployment to finish (max 25 min + early-fail)
         id: attente_site
         if: steps.deploy.outputs.deployment_uuid != ''
-        timeout-minutes: 30
+        # Pire cas : 25 min (1er déploiement) + ~11 min (attendre_repos : 10 min + dernier sleep 30 s)
+        # + 25 min (DEADLINE repoussé après relance) = 61 min → 65 min avec marge.
+        timeout-minutes: 65
         env:
           COOLIFY_API_TOKEN: ${{ secrets.COOLIFY_API_TOKEN }}
           COOLIFY_URL: ${{ secrets.COOLIFY_URL }}
+          COOLIFY_APP_UUID: ${{ secrets.COOLIFY_APP_UUID }}
           DEPLOYMENT_UUID: ${{ steps.deploy.outputs.deployment_uuid }}
           HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
         run: |
@@ -585,6 +588,7 @@ jobs:
           POLL_INTERVAL=30  # poll plus rapide pour early-fail efficace
           QUEUED_STREAK=0
           QUEUED_MAX=10  # 10 polls × 30s = 5 min queued = considéré gelé
+          RELANCE_FAITE=0  # relance UNIQUE sur « pull access denied » (cf. attendre_repos)
 
           dump_failure_logs() {
             local response="$1"
@@ -596,9 +600,13 @@ jobs:
             # OAuth Google…). GitHub ne masque que SES secrets, pas ceux que Coolify renvoie. Tout journal
             # Coolify passe donc par ce filtre avant d'être affiché — jamais `.output` brut.
             JQ_MASQUE='def masquer: gsub("(?<k>ARG[ ]+[A-Za-z0-9_]+=)[^\n]*"; "\(.k)<masqué>")
-                | gsub("(?<k>[A-Za-z0-9_]*(SECRET|TOKEN|PASSWORD|PASSPHRASE|_KEY|SALT|DSN|PRIVATE|CREDENTIAL)[A-Za-z0-9_]*[=:][ ]*)[^ \t\n<]+"; "\(.k)<masqué>"; "i")
+                | gsub("(?<k>[A-Za-z0-9_]*(SECRET|TOKEN|PASSWORD|PASSPHRASE|KEY|SALT|DSN|PRIVATE|CREDENTIAL)[A-Za-z0-9_]*[=:][ ]*)[^ \t\n<]+"; "\(.k)<masqué>"; "i")
                 | gsub("(?<k>://[^:/@ \t\n]+:)[^@ \t\n]+@"; "\(.k)<masqué>@");
-              .logs | fromjson? // . | if type=="array" then .[-200:] else [] end | .[] | "[\(.order // "?")] \(.type // "?"): \(.output // "" | masquer)"'
+              def entrees: .logs | (if type=="string" then (fromjson? // .) else . end);
+              entrees | if type=="array"
+                then [.[] | select(type=="object" and ((.hidden // false) | not))] | .[-200:] | .[]
+                     | "[\(.timestamp // "?")] \(.output // "" | tostring | masquer)"
+                else (tostring | split("\n") | .[-200:] | .[] | masquer) end'
             echo "${response}" \
               | jq -r "$JQ_MASQUE" \
               2>/dev/null || echo "(could not parse logs)"
@@ -617,6 +625,52 @@ jobs:
             fi
           }
 
+          # 2026-11-18 — Une image effacée par le nettoyage du VPS pendant la mise en ligne fait
+          # échouer Coolify avec « pull access denied … repository does not exist ». Le texte est
+          # cherché dans le journal BRUT (jamais affiché ici, donc le masquage n'est pas en jeu).
+          # Le test est fait DANS jq (`-e` + `any`), sans tube vers grep : sous `pipefail`, un
+          # `grep -q` qui quitte au premier hit tue jq encore en train d'écrire (SIGPIPE, 141) et la
+          # relance ne partait jamais sur un gros journal. Ici jq lit toute l'entrée. `logs` peut être
+          # une chaîne JSON, un tableau d'objets, null ou du texte brut (même lecture que JQ_MASQUE).
+          journal_pull_refuse() {
+            printf '%s' "$1" | jq -e '.logs | (if type=="string" then (fromjson? // .) else . end)
+              | if type=="array"
+                then any(.[]; ((.output? // "") | tostring | test("pull access denied"; "i")))
+                else (tostring | test("pull access denied"; "i")) end' >/dev/null 2>&1
+          }
+
+          # Même contrôle que l'étape « Coolify au repos » : tableau JSON, 0 déploiement
+          # in_progress/queued, sinon occupé. 10 min max puis abandon (pas de POST).
+          attendre_repos() {
+            local fin=$((SECONDS + 600)) rep occ
+            while :; do
+              rep=$(curl -fsSL -m 15 -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+                "${COOLIFY_URL}/api/v1/deployments" 2>/dev/null || true)
+              occ=$(printf '%s' "${rep}" | jq -r \
+                'if type=="array" then [.[] | select(.status=="in_progress" or .status=="queued")] | length else "illisible" end' 2>/dev/null || true)
+              [ "${occ}" = "0" ] && return 0
+              echo "[$(date +%H:%M:%S)] relance : Coolify occupé ou API muette ('${occ:-?}') — nouvel essai dans 30 s"
+              [ $SECONDS -ge $fin ] && return 1
+              sleep 30
+            done
+          }
+
+          # Nouveau POST de déploiement, une seule fois. Rend 0 et met à jour DEPLOYMENT_UUID.
+          relancer_deploiement() {
+            local rep nouveau
+            rep=$(curl -fsSL -X POST \
+              -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
+              -H "Accept: application/json" \
+              --data-urlencode "uuid=${COOLIFY_APP_UUID}" \
+              --data-urlencode "force=true" \
+              --max-time 30 \
+              "${COOLIFY_URL}/api/v1/deploy" 2>/dev/null || true)
+            nouveau=$(echo "${rep}" | grep -oE '"deployment_uuid":"[^"]+"' | head -1 | cut -d'"' -f4 || true)
+            [ -n "${nouveau}" ] || return 1
+            echo "Relance : nouveau déploiement ${nouveau}"
+            DEPLOYMENT_UUID="${nouveau}"
+          }
+
           while [ $SECONDS -lt $DEADLINE ]; do
             RESPONSE=$(curl -fsSL -m 15 \
               -H "Authorization: Bearer ${COOLIFY_API_TOKEN}" \
@@ -632,6 +686,24 @@ jobs:
                 exit 0
                 ;;
               failed|cancelled-by-user|cancelled)
+                if [ "${STATUS}" = "failed" ] && [ "${RELANCE_FAITE}" = "0" ] && journal_pull_refuse "${RESPONSE}"; then
+                  RELANCE_FAITE=1
+                  # Il faut RESTER ≥ 15 min avant DEADLINE pour relancer ; sinon échec fatal, comme avant.
+                  if [ $((DEADLINE - SECONDS)) -lt 900 ]; then
+                    dump_failure_logs "${RESPONSE}" "failed (pull access denied, sans relance : moins de 15 min avant DEADLINE)"
+                    echo "::error::« pull access denied » mais il reste $((DEADLINE - SECONDS)) s avant DEADLINE (< 900 s) : relance non tentée."
+                    exit 1
+                  fi
+                  echo "::warning::Échec « pull access denied » (image effacée pendant la mise en ligne) : UNE relance."
+                  dump_failure_logs "${RESPONSE}" "failed (avant relance unique)"
+                  if attendre_repos && relancer_deploiement; then
+                    QUEUED_STREAK=0
+                    DEADLINE=$((SECONDS + 1500))  # 25 min à compter de la relance
+                    continue
+                  fi
+                  echo "::error::Relance impossible (Coolify toujours occupé ou POST sans deployment_uuid)."
+                  exit 1
+                fi
                 dump_failure_logs "${RESPONSE}" "${STATUS}"
                 exit 1
                 ;;

@@ -15,6 +15,10 @@ export interface EntreeNouveauContact {
   raisonSociale: string;
   contactNom?: string;
   contactEmail?: string;
+  /** Salutation des e-mails : saisie à part, jamais découpée depuis `contactNom`. */
+  contactCivilite?: "madame" | "monsieur";
+  contactPrenom?: string;
+  contactNomFamille?: string;
 }
 export type ResultatNouveauContact = { data: { id: string; numero: string } } | { error: string };
 
@@ -28,6 +32,9 @@ export function NouveauContact({ creerClient, onCree, onAnnuler }: PropsNouveauC
   const [raison, setRaison] = useState("");
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
+  const [civilite, setCivilite] = useState<"" | "madame" | "monsieur">("");
+  const [prenom, setPrenom] = useState("");
+  const [nomFamille, setNomFamille] = useState("");
   const [erreur, setErreur] = useState<string | null>(null);
   const [enCours, setEnCours] = useState(false);
   // Un ref et non l'état : deux clics dans la même image ne doivent faire qu'un appel.
@@ -49,6 +56,9 @@ export function NouveauContact({ creerClient, onCree, onAnnuler }: PropsNouveauC
         raisonSociale: rs,
         ...(nom.trim() !== "" ? { contactNom: nom.trim() } : {}),
         ...(email.trim() !== "" ? { contactEmail: email.trim() } : {}),
+        ...(civilite !== "" ? { contactCivilite: civilite } : {}),
+        ...(prenom.trim() !== "" ? { contactPrenom: prenom.trim() } : {}),
+        ...(nomFamille.trim() !== "" ? { contactNomFamille: nomFamille.trim() } : {}),
       };
       const r = await creerClient(entree);
       if ("error" in r) {
@@ -104,7 +114,41 @@ export function NouveauContact({ creerClient, onCree, onAnnuler }: PropsNouveauC
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
+        <label className="flex flex-col">
+          Civilité
+          <select
+            className="min-h-[44px] rounded border px-2"
+            value={civilite}
+            onChange={(e) => setCivilite(e.target.value as "" | "madame" | "monsieur")}
+          >
+            <option value="">—</option>
+            <option value="madame">Madame</option>
+            <option value="monsieur">Monsieur</option>
+          </select>
+        </label>
+        <label className="flex flex-col">
+          Prénom
+          <input
+            className="min-h-[44px] rounded border px-2"
+            value={prenom}
+            maxLength={80}
+            onChange={(e) => setPrenom(e.target.value)}
+          />
+        </label>
+        <label className="flex flex-col">
+          Nom de famille
+          <input
+            className="min-h-[44px] rounded border px-2"
+            value={nomFamille}
+            maxLength={80}
+            onChange={(e) => setNomFamille(e.target.value)}
+          />
+        </label>
       </div>
+      <p className="mt-2 text-[length:var(--text-admin-sm)]">
+        Sert à écrire « Bonjour Madame Dupont, » en tête des e-mails. Laissez vide si vous
+        n&apos;êtes pas sûr.
+      </p>
       {erreur ? (
         <p role="alert" className="mt-2">
           {erreur}

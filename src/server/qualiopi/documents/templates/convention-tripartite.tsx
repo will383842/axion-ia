@@ -32,17 +32,20 @@
 
 import type { LIBELLE_MODALITE_HYBRIDE } from "@/server/qualiopi/documents/libelles-enumerations";
 import React from "react";
-import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { Document, View, Text } from "@react-pdf/renderer";
 import {
-  QualiopiPage,
-  DocSection,
-  FieldRow,
-  NdaFieldRow,
   SignatureZone,
-  pdfStyles,
   assainirEspacesPdf,
   type PreuvesParPartie,
 } from "@/server/qualiopi/documents/base-layout";
+import { BlocSignature, EncadreDoux, PageCharte } from "@/server/qualiopi/documents/charte/v1";
+import {
+  Champ,
+  ChampListe,
+  ChampNda,
+  SectionCarte,
+  stylesPiece,
+} from "@/server/qualiopi/documents/templates/pieces-charte";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import {
@@ -139,39 +142,15 @@ export interface ConventionTripartiteData {
 // Styles locaux
 // ============================================================
 
-const local = StyleSheet.create({
-  subrogationNote: {
-    fontSize: 9,
-    fontStyle: "italic",
-    marginTop: 6,
-    marginBottom: 6,
-    color: pdfStyles.legalNote.color,
-  },
-  annexeItem: {
-    fontSize: 9,
-    marginBottom: 2,
-    paddingLeft: 8,
-  },
-  listItem: {
-    fontSize: 10,
-    marginBottom: 2,
-    paddingLeft: 8,
-  },
-  amountRow: {
-    flexDirection: "row" as const,
-    justifyContent: "space-between" as const,
-    paddingVertical: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: pdfStyles.fieldRow.borderBottomColor,
-  },
-  amountLabel: {
-    fontSize: 10,
-  },
-  amountValue: {
-    fontSize: 10,
-    fontWeight: "bold",
-  },
-});
+const local = {
+  annexeList: { marginTop: 4 },
+  annexeItem: stylesPiece.annexe,
+  listItem: stylesPiece.puce,
+  amountRow: stylesPiece.ligneMontant,
+  amountLabel: stylesPiece.libelleMontant,
+  amountValue: stylesPiece.valeurMontant,
+  subrogationNote: stylesPiece.note,
+};
 
 // ============================================================
 // Helpers
@@ -221,18 +200,18 @@ function ClauseConditionSuspensiveOpco({
   const seuil = libelleSeuilClause(p.seuil);
   const gras = { fontWeight: "bold" as const };
   return (
-    <DocSection title="5 bis. Condition suspensive de prise en charge par l'opérateur de compétences">
-      <Text style={pdfStyles.paragraph}>
+    <SectionCarte title="5 bis. Condition suspensive de prise en charge par l'opérateur de compétences">
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"1. La condition."}</Text>
         {` La présente convention est conclue sous la condition suspensive que l'opérateur de compétences du Client, ${opco}, accorde par écrit, au plus tard le ${dateLimite}, une prise en charge de l'action au moins égale à ${seuil}.`}
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"2. Les diligences."}</Text>
         {
           " Le Client dépose sa demande de prise en charge auprès de son opérateur de compétences dans les délais et selon les modalités fixés par celui-ci ; Axion-IA lui remet sans délai les pièces nécessaires. La condition est réputée accomplie si le Client en a empêché l'accomplissement (article 1304-3 du code civil)."
         }
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"3. L'accomplissement."}</Text>
         {
           " Si l'accord écrit est obtenu dans le délai, la condition est accomplie et la convention produit ses effets "
@@ -242,29 +221,29 @@ function ClauseConditionSuspensiveOpco({
           " (article 1304-6 du code civil). La part du prix non prise en charge reste due par le Client, dans les conditions des conditions générales de vente."
         }
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"4. La renonciation."}</Text>
         {
           " La condition est stipulée dans l'intérêt exclusif du Client. Il peut y renoncer par écrit tant qu'elle n'est ni accomplie ni défaillie (article 1304-4 du code civil) : la convention produit alors ses effets à compter de sa date de signature, et le prix est dû dans les conditions des conditions générales de vente."
         }
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"5. La défaillance."}</Text>
         {` À défaut d'accord écrit au moins égal à ${seuil} au ${dateLimite}, ou en cas de refus ou d'accord inférieur notifié avant cette date, la condition défaille : la convention est caduque de plein droit et réputée n'avoir jamais existé. Aucune somme n'est due par le Client et les sommes versées lui sont restituées. Aucune action n'est exécutée avant l'accomplissement de la condition ou la renonciation du Client.`}
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"6. Après la défaillance."}</Text>
         {
           " Un accord de prise en charge obtenu après la défaillance ne fait pas revivre la présente convention. Les parties peuvent conclure une nouvelle convention, qui prend effet à sa propre date de signature."
         }
       </Text>
-      <Text style={pdfStyles.paragraph}>
+      <Text style={stylesPiece.paragraphe}>
         <Text style={gras}>{"7. Champ de la clause."}</Text>
         {
           " La présente clause ne s'applique que si elle figure à la convention. À défaut, la prise en charge par l'opérateur de compétences ne conditionne pas la convention, et elle est régie par les conditions générales de vente."
         }
       </Text>
-    </DocSection>
+    </SectionCarte>
   );
 }
 
@@ -281,7 +260,7 @@ export function ConventionTripartitePdf({
 }): React.ReactElement {
   return (
     <Document>
-      <QualiopiPage
+      <PageCharte
         docTitle="Convention de formation tripartite"
         docNumber={data.numero}
         identite={identite}
@@ -290,16 +269,14 @@ export function ConventionTripartitePdf({
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
         {/* Mention légale de tête */}
-        <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.convention}</Text>
+        <EncadreDoux>{LEGAL_MENTIONS.convention}</EncadreDoux>
 
         {/* 1. Parties */}
-        <DocSection title="1. Parties">
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
-            Organisme de formation (prestataire)
-          </Text>
-          <FieldRow label="Raison sociale" value={identite.raisonSociale} required />
-          <FieldRow label="SIRET" value={identite.siret} required />
-          <NdaFieldRow nda={identite.nda} />
+        <SectionCarte title="1. Parties">
+          <Text style={stylesPiece.sousTitre}>Organisme de formation (prestataire)</Text>
+          <Champ label="Raison sociale" value={identite.raisonSociale} required />
+          <Champ label="SIRET" value={identite.siret} required />
+          <ChampNda nda={identite.nda} />
           {/*
             🔴 F29 — la ligne n'apparaît QUE si le numéro existe.
             Marquée `required`, elle imprimait « Non renseigné » dans le style
@@ -311,57 +288,46 @@ export function ConventionTripartitePdf({
             aucune raison d'exister. Même traitement que la facture et le devis.
           */}
           {identite.qualiopi ? (
-            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
+            <Champ label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}
-          <FieldRow label="Siège social" value={identite.adresseSiege} required />
-          <FieldRow label="Email" value={identite.email || "—"} />
+          <Champ label="Siège social" value={identite.adresseSiege} required />
+          <Champ label="Email" value={identite.email || "—"} />
 
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
+          <Text style={[stylesPiece.sousTitre, { marginTop: 8 }]}>
             Client (employeur / commanditaire)
           </Text>
-          <FieldRow label="Raison sociale" value={data.client.raisonSociale} />
-          <FieldRow label="SIRET" value={data.client.siret} />
-          <FieldRow label="Adresse" value={data.client.adresse} />
-          <FieldRow label="Contact" value={data.client.contact} />
+          <Champ label="Raison sociale" value={data.client.raisonSociale} />
+          <Champ label="SIRET" value={data.client.siret} />
+          <Champ label="Adresse" value={data.client.adresse} />
+          <Champ label="Contact" value={data.client.contact} />
 
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold", marginTop: 8 }]}>
-            OPCO (organisme financeur)
-          </Text>
-          <FieldRow label="Nom de l'OPCO" value={data.opco.nom} />
-          <FieldRow label="N° de prise en charge" value={data.opco.numeroPriseEnCharge} />
-          {data.opco.adresse ? <FieldRow label="Adresse" value={data.opco.adresse} /> : null}
-          {data.opco.contact ? <FieldRow label="Contact" value={data.opco.contact} /> : null}
+          <Text style={[stylesPiece.sousTitre, { marginTop: 8 }]}>OPCO (organisme financeur)</Text>
+          <Champ label="Nom de l'OPCO" value={data.opco.nom} />
+          <Champ label="N° de prise en charge" value={data.opco.numeroPriseEnCharge} />
+          {data.opco.adresse ? <Champ label="Adresse" value={data.opco.adresse} /> : null}
+          {data.opco.contact ? <Champ label="Contact" value={data.opco.contact} /> : null}
 
           <Text style={local.subrogationNote}>
             En application de la subrogation de paiement, l'OPCO versera directement sa
             participation à l'organisme de formation. Le solde restant à charge reste dû par le
             client.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 2. Objet */}
-        <DocSection title="2. Objet de la convention">
-          <FieldRow label="Intitulé" value={data.intitule} />
-          <View style={pdfStyles.fieldRow}>
-            <Text style={pdfStyles.fieldLabel}>Objectifs</Text>
-            <View style={{ flex: 1 }}>
-              {data.objectifs.map((obj, i) => (
-                <Text key={i} style={local.listItem}>
-                  • {obj}
-                </Text>
-              ))}
-            </View>
-          </View>
-          <FieldRow label="Public visé" value={data.publicVise} />
-          <FieldRow
+        <SectionCarte title="2. Objet de la convention">
+          <Champ label="Intitulé" value={data.intitule} />
+          <ChampListe label="Objectifs" items={data.objectifs} />
+          <Champ label="Public visé" value={data.publicVise} />
+          <Champ
             label="Durée"
             value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
           />
-          <FieldRow label="Date de début" value={data.dateDebut} />
-          <FieldRow label="Date de fin" value={data.dateFin} />
-          <FieldRow label="Modalité" value={data.modalite} />
-          <FieldRow label="Lieu" value={data.lieu} />
-          <FieldRow
+          <Champ label="Date de début" value={data.dateDebut} />
+          <Champ label="Date de fin" value={data.dateFin} />
+          <Champ label="Modalité" value={data.modalite} />
+          <Champ label="Lieu" value={data.lieu} />
+          <Champ
             label="Effectif prévu"
             value={`${data.effectif} stagiaire${data.effectif > 1 ? "s" : ""}`}
           />
@@ -374,31 +340,31 @@ export function ConventionTripartitePdf({
             légale sur deux pièces du même dossier se lisent comme une
             incohérence, et c'est le financeur qui les compare.
           */}
-          <FieldRow
+          <Champ
             label="Moyens pédagogiques et techniques"
             value={
               data.moyensPedagogiques ||
               "Apports méthodologiques, démonstrations et mises en situation ; supports pédagogiques remis à chaque participant ; poste de travail et outils numériques nécessaires à la mise en pratique."
             }
           />
-          <FieldRow
+          <Champ
             label="Suivi de l'exécution et évaluation"
             value={
               data.modalitesEvaluation ||
               "Feuille d'émargement signée par demi-journée en présentiel, relevé de connexion horodaté en distanciel. Questionnaire de positionnement en amont, évaluation des acquis au regard des objectifs en fin d'action, recueil de la satisfaction des participants."
             }
           />
-          <FieldRow
+          <Champ
             label="Sanction de la formation"
             value={
               data.sanction ||
               "Attestation de fin de formation (dernier alinéa de l'article L.6313-7 du Code du travail)."
             }
           />
-        </DocSection>
+        </SectionCarte>
 
         {/* 3. Conditions financières */}
-        <DocSection title="3. Conditions financières">
+        <SectionCarte title="3. Conditions financières">
           <View style={local.amountRow}>
             <Text style={local.amountLabel}>Prix total HT</Text>
             <Text style={local.amountValue}>{formatEur(data.prixHt)}</Text>
@@ -438,13 +404,13 @@ export function ConventionTripartitePdf({
             `null` en régime assujetti → aucun bloc, ce qui est correct.
           */}
           {identite.mentionTvaRegime ? (
-            <Text style={pdfStyles.legalNote}>{identite.mentionTvaRegime}</Text>
+            <Text style={stylesPiece.mention}>{identite.mentionTvaRegime}</Text>
           ) : null}
-        </DocSection>
+        </SectionCarte>
 
         {/* 4. Conditions d'annulation */}
-        <DocSection title="4. Conditions d'annulation">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="4. Conditions d'annulation">
+          <Text style={stylesPiece.paragraphe}>
             En cas de désistement du client, les frais d'annulation suivants s'appliquent :
           </Text>
           <Text style={local.listItem}>
@@ -456,7 +422,7 @@ export function ConventionTripartitePdf({
           <Text style={local.listItem}>
             • Annulation à moins de 8 jours ouvrés avant le début : 100 % du prix HT
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/*
           🔴 Sous-lot 8B — les cinq sections de fond, absentes de cette pièce.
@@ -477,14 +443,14 @@ export function ConventionTripartitePdf({
         */}
 
         {/* 5. Obligations des parties */}
-        <DocSection title="5. Obligations des parties">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="5. Obligations des parties">
+          <Text style={stylesPiece.paragraphe}>
             L&apos;organisme s&apos;engage à réaliser l&apos;action conformément au programme
             annexé, à mettre à disposition les moyens décrits ci-dessus, à remettre au client les
             documents attestant de la réalisation (feuille d&apos;émargement, attestation) et à
             respecter la confidentialité des informations dont il a connaissance.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Le client s&apos;engage à assurer la présence des participants inscrits, à informer
             l&apos;organisme de toute contrainte d&apos;accessibilité au plus tôt afin que les
             adaptations nécessaires soient étudiées, et — lorsque la formation se déroule sur site —
@@ -498,7 +464,7 @@ export function ConventionTripartitePdf({
             relevé à l'audit (Q3) — techniquement le système sait facturer N
             payeurs, mais aucun texte ne permettait de réémettre au client.
           */}
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             La prise en charge par l&apos;OPCO est subordonnée à son accord écrit préalable et au
             respect de ses règles de financement. En cas de refus, de réduction, de caducité de
             l&apos;accord ou de non-paiement par l&apos;OPCO, les sommes correspondantes
@@ -509,7 +475,7 @@ export function ConventionTripartitePdf({
             l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
             l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 5 bis. INT-T65-A — imprimée SEULEMENT si la case a été cochée. */}
         {data.conditionSuspensiveOpco ? (
@@ -517,8 +483,8 @@ export function ConventionTripartitePdf({
         ) : null}
 
         {/* 6. Données personnelles */}
-        <DocSection title="6. Données à caractère personnel">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="6. Données à caractère personnel">
+          <Text style={stylesPiece.paragraphe}>
             Chaque partie agit en qualité de responsable de traitement pour les données qu&apos;elle
             collecte. L&apos;organisme traite les données d&apos;identité, d&apos;émargement et
             d&apos;évaluation des participants aux seules fins d&apos;exécuter la présente
@@ -531,39 +497,39 @@ export function ConventionTripartitePdf({
             financeur lui-même reçoit. L'omettre reviendrait à faire circuler
             des données d'émargement et d'évaluation sans base annoncée.
           */}
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Les pièces justificatives de réalisation (feuille d&apos;émargement, attestation,
             facture) sont transmises à l&apos;OPCO aux seules fins d&apos;instruction et de
             règlement du dossier de prise en charge, en exécution de la présente convention.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Les personnes concernées disposent des droits d&apos;accès, de rectification,
             d&apos;effacement, de limitation et d&apos;opposition prévus par le Règlement (UE)
             2016/679, exerçables auprès de {identite.dpoEmail || identite.email || "l'organisme"}.
             Elles peuvent introduire une réclamation auprès de la CNIL. Aucune donnée n&apos;est
             cédée à des tiers à des fins commerciales.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 7. Propriété intellectuelle et confidentialité */}
-        <DocSection title="7. Propriété intellectuelle et confidentialité">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="7. Propriété intellectuelle et confidentialité">
+          <Text style={stylesPiece.paragraphe}>
             Les supports pédagogiques, méthodes et contenus demeurent la propriété exclusive de
             l&apos;organisme. Ils sont remis aux participants pour leur usage professionnel
             personnel ; toute reproduction, diffusion à des tiers, revente ou utilisation à des fins
             de formation par le client est soumise à l&apos;accord écrit préalable de
             l&apos;organisme.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Chaque partie s&apos;engage à ne pas divulguer les informations confidentielles portées
             à sa connaissance à l&apos;occasion de l&apos;action, pendant sa durée et les deux (2)
             années qui suivent son terme.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 8. Responsabilité et force majeure */}
-        <DocSection title="8. Responsabilité et force majeure">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="8. Responsabilité et force majeure">
+          <Text style={stylesPiece.paragraphe}>
             L&apos;organisme est tenu d&apos;une obligation de moyens quant à l&apos;atteinte des
             objectifs pédagogiques, dont la réalisation dépend de l&apos;implication des
             participants. Sa responsabilité éventuelle est limitée au montant hors taxes
@@ -571,54 +537,54 @@ export function ConventionTripartitePdf({
             indirects tels que perte d&apos;exploitation, de clientèle ou de chiffre
             d&apos;affaires.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Aucune des parties ne peut être tenue responsable d&apos;un manquement résultant
             d&apos;un cas de force majeure au sens de l&apos;article 1218 du Code civil. La partie
             empêchée en informe l&apos;autre sans délai ; l&apos;action est alors reportée à une
             date convenue entre les parties.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 9. Différends */}
-        <DocSection title="9. Droit applicable et différends">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="9. Droit applicable et différends">
+          <Text style={stylesPiece.paragraphe}>
             La présente convention est régie par le droit français. En cas de différend relatif à sa
             formation, son exécution ou son interprétation, les parties s&apos;efforceront de
             trouver une solution amiable. À défaut d&apos;accord dans un délai de trente (30) jours
             à compter de la première notification écrite, le litige sera porté devant le tribunal
             compétent du ressort du siège de l&apos;organisme.
           </Text>
-          <Text style={pdfStyles.paragraph}>
+          <Text style={stylesPiece.paragraphe}>
             Toute réclamation relative au déroulement de l&apos;action peut être adressée à{" "}
             {identite.email || "l'organisme"} ; elle est enregistrée, traitée et fait l&apos;objet
             d&apos;une réponse motivée.
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 10. Annexes */}
-        <DocSection title="10. Documents annexés">
+        <SectionCarte title="10. Documents annexés">
           <Text style={local.annexeItem}>– Programme détaillé de la formation</Text>
           <Text style={local.annexeItem}>– Règlement intérieur des stagiaires</Text>
           <Text style={local.annexeItem}>– Conditions générales de vente (CGV)</Text>
           <Text style={local.annexeItem}>
             – Accord de prise en charge OPCO n° {data.opco.numeroPriseEnCharge}
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* Handicap (L15, NC12, indicateur 26) — non numérotée, pour ne renuméroter
             aucune section : référent, contact et possibilité d'adaptation. */}
-        <DocSection title="Accessibilité et situation de handicap">
-          <Text style={pdfStyles.paragraph}>
+        <SectionCarte title="Accessibilité et situation de handicap">
+          <Text style={stylesPiece.paragraphe}>
             {
               "Situation de handicap : notre référent handicap étudie avec vous, avant la formation, les adaptations possibles (supports, rythme, accès, modalités). Contact : handicap@axion-ia.com."
             }
           </Text>
-        </DocSection>
+        </SectionCarte>
 
         {/* 11. Signatures — 3 parties */}
         {/* « Fait à » = ville du siège — même raisonnement que la convention : un
             blanc sur une pièce signée électroniquement reste vide pour toujours. */}
-        <DocSection title="11. Signatures">
+        <BlocSignature titre="11. Signatures">
           <SignatureZone
             intro="La présente convention est établie en trois exemplaires originaux, un pour chaque partie."
             faitLe={`${identite.rcsVille || "_________________________"}, le ${data.dateConvention}`}
@@ -640,8 +606,8 @@ export function ConventionTripartitePdf({
               },
             ]}
           />
-        </DocSection>
-      </QualiopiPage>
+        </BlocSignature>
+      </PageCharte>
     </Document>
   );
 }
