@@ -460,8 +460,8 @@ export default async function CarrieresHubPage({
           </h2>
           <p className="text-fg-muted mt-3 max-w-3xl">
             {isFr
-              ? "Notre siège et nos bureaux sont à Grenoble (Isère) ; beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
-              : "Our head office and offices are in Grenoble (Isère); many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
+              ? "Beaucoup de postes sont en remote ou hybride, et nos formateurs interviennent par secteur partout en France. On accueille des talents un peu partout :"
+              : "Many roles are remote or hybrid, and our trainers work by sector across France. We welcome talent all over:"}
           </p>
           {/* Disponibilité des postes — discret (décision de Will, 2026-10-11) :
               les annonces constituent un vivier, et la page le dit. */}
@@ -471,14 +471,10 @@ export default async function CarrieresHubPage({
               : "We are preparing our next hires: every application is reviewed and kept for when the role opens."}
           </p>
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
-            {CAREER_CITIES.map((city) => {
-              const isHq = city === "Grenoble";
+            {CAREER_CITIES.filter((city) => city !== "Grenoble").map((city) => {
               return (
-                <li
-                  key={city}
-                  className={`rounded-full border px-3 py-1 text-sm ${isHq ? "border-terracotta bg-terracotta/10 font-medium" : "border-border text-fg-muted"}`}
-                >
-                  {isHq ? `🏔️ ${city}` : city}
+                <li key={city} className="border-border text-fg-muted rounded-full border px-3 py-1 text-sm">
+                  {city}
                 </li>
               );
             })}

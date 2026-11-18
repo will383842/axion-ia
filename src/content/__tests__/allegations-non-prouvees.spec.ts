@@ -10,7 +10,8 @@ import { describe, expect, it } from "vitest";
 const SRC = join(__dirname, "..", "..");
 
 // Mots-clés de rédaction et base de génération : matière interne, pas des textes publiés.
-const EXCLUS = [/keywords/, /content-gen/, /__tests__/, /\.(spec|test)\.tsx?$/, /\(admin\)/, /[\/]components[\/]admin[\/]/, /[\/]server[\/]/, /[\/]lib[\/]email[\/]/];
+// Seuls app, components, content et messages portent du texte publié ; stack-ia-details décrit des modèles tiers.
+const EXCLUS = [/keywords/, /content-gen/, /stack-ia-details/, /^(?!app|components|content|messages)/, /__tests__/, /\.(spec|test)\.tsx?$/, /\(admin\)/, /components.admin/];
 
 function fichiers(dir: string, acc: string[] = []): string[] {
   for (const nom of readdirSync(dir)) {
@@ -38,6 +39,8 @@ const INTERDITES: ReadonlyArray<RegExp> = [
   /5× faster hiring/i,
   /sans hallucination/i,
   /gains? de temps instantanés?/i,
+  /(?:zéro|zero|sans|no|pas d')[ -]?hallucinations?/i,
+  /anti-hallucination/i,
   /instant time savings/i,
 ];
 
@@ -69,5 +72,36 @@ describe("allégations non prouvées : absentes des contenus publics", () => {
 
   it("la FAQ transversale n'emploie plus « prise en charge »", () => {
     expect(readFileSync(join(SRC, "content", "transversal.ts"), "utf8")).not.toMatch(/prise en charge/i);
+  });
+});
+
+describe("texte visible : financement et ville d'édition", () => {
+  const lire = (...parts: string[]): string =>
+    readFileSync(join(SRC, ...parts), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+
+  it("aucune mention de Grenoble dans les textes visibles concernés", () => {
+    const fichiersVisibles = [
+      ["app", "[locale]", "avis", "page.tsx"],
+      ["app", "[locale]", "carrieres", "page.tsx"],
+      ["app", "[locale]", "recherche", "page.tsx"],
+      ["components", "sections", "LocalGeoFaqSection.tsx"],
+      ["components", "careers", "OffersEmbedPromo.tsx"],
+    ];
+    for (const f of fichiersVisibles) {
+      // « Grenoble » n'est toléré que dans le filtre qui l'écarte de l'affichage.
+      expect(lire(...f).replace(/city !== "Grenoble"/g, "")).not.toMatch(/Grenoble/);
+    }
+  });
+
+  it("les surfaces de financement visibles ne parlent ni d'OPCO ni de prise en charge", () => {
+    const fichiersVisibles = [
+      ["components", "formations", "FormationsLesPlus.tsx"],
+    ];
+    for (const f of fichiersVisibles) expect(lire(...f)).not.toMatch(/OPCO|prise en charge|Qualiopi/i);
+    expect(readFileSync(join(SRC, "components", "formations", "FormationDetailPage.tsx"), "utf8")).not.toMatch(
+      /Finançable OPCO|Nous étudions votre prise en charge/,
+    );
+    expect(readFileSync(join(SRC, "lib", "seo", "page-images.ts"), "utf8")).not.toMatch(/montage du dossier OPCO|OPCO funding file/);
+    expect(lire("content", "imprimes.ts")).not.toMatch(/resume:.*prise en charge/);
   });
 });

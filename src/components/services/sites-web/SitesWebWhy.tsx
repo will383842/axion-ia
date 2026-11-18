@@ -74,8 +74,8 @@ export function SitesWebWhy({ isFr }: SitesWebWhyProps): ReactNode {
       icon: Bot,
       title: isFr ? "Un chatbot ancré sur vos données" : "A chatbot grounded in your data",
       sub: isFr
-        ? "RAG sur vos contenus : zéro hallucination, sources citées."
-        : "RAG on your content: zero hallucination, sources cited.",
+        ? "RAG sur vos contenus : réponses fondées sur vos sources, citées."
+        : "RAG on your content: answers based on your sources, cited.",
     },
     {
       icon: SearchCheck,

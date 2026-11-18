@@ -367,9 +367,9 @@ export const PAGE_IMAGES_MANIFEST: readonly PageImagesManifest[] = [
         nameFr: "Comment réserver votre formation IA en entreprise — les 7 étapes Axion-IA",
         nameEn: "How to book your corporate AI training — the 7 Axion-IA steps",
         altFr:
-          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) montage du dossier OPCO, 4) accord de financement, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
+          "Infographie « Comment réserver votre formation IA en entreprise » en 7 étapes : 1) contactez-nous, 2) échange sur vos besoins, 3) point sur le financement, 4) accord sur le devis, 5) intervention sur votre site, 6) interviews & podcast, 7) page dédiée + backlink dofollow.",
         altEn:
-          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) OPCO funding file, 4) funding approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
+          "Infographic “How to book your corporate AI training” in 7 steps: 1) contact us, 2) needs call, 3) funding options, 4) quote approval, 5) on-site delivery, 6) interviews & podcast, 7) dedicated page + dofollow backlink.",
         width: 1983,
         height: 793,
         slot: "inline",

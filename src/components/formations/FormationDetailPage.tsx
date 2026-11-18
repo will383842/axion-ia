@@ -193,7 +193,7 @@ export function FormationDetailPage({
   const reconnaissance = getFormationReconnaissance(f);
   const accessibilite = getFormationAccessibilite(f, referentHandicap);
   // « reste à charge » = mention financement (OPCO), pas un tarif produit.
-  const financeMention = "Finançable OPCO — jusqu’à 0 € de reste à charge selon votre situation."; // price-exempt
+  const financeMention = "Financement : solutions indiquées au premier échange.";
 
   // ── FAQ : spécifiques (SSOT) + génériques DÉRIVÉES des faits (centralisé, DRY,
   //    toujours en phase avec la durée/le format/le matériel) + financement gaté.
@@ -234,7 +234,7 @@ export function FormationDetailPage({
         {
           question: "Cette formation est-elle finançable ?",
           reponse:
-            "Oui, en tout ou partie selon votre situation. En tant qu'organisme certifié Qualiopi, nos formations IA sont éligibles aux financements de la formation professionnelle (OPCO pour les salariés, France Travail pour les demandeurs d'emploi). Nous étudions votre prise en charge et montons le dossier avec vous.",
+            "Des solutions de financement existent selon votre situation : nous vous les indiquons lors du premier échange.",
         },
       ]
     : [];

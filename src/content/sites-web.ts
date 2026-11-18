@@ -150,7 +150,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       benefitsTitle: "Ce que ça change pour vous",
       benefits: [
         {
-          title: "Réponses fiables, pas d'hallucination",
+          title: "Réponses fondées sur vos contenus",
           description:
             "Le chatbot ne répond que depuis vos contenus, en citant ses sources. Si l'info n'existe pas, il le dit — il n'invente jamais.",
         },
@@ -261,7 +261,7 @@ const SITES_WEB: ReadonlyArray<SitesWebContent> = [
       benefitsTitle: "What it changes for you",
       benefits: [
         {
-          title: "Reliable answers, no hallucination",
+          title: "Answers based on your content",
           description:
             "The chatbot only answers from your content, citing sources. If the info doesn't exist, it says so — it never invents.",
         },

@@ -44,11 +44,11 @@ export function FormationsLesPlus({
       icon: Wallet,
       accent: "bg-sage-soft text-sage",
       title: isFr
-        ? "Prise en charge OPCO, en partie ou à 100 %"
-        : "OPCO funding, in part or in full",
+        ? "Financement : solutions indiquées au premier échange"
+        : "Funding: options explained at the first call",
       body: isFr
-        ? "Certifiés Qualiopi : selon votre situation, votre OPCO peut couvrir une partie — voire la totalité — du coût. On monte le dossier avec vous."
-        : "Qualiopi-certified: depending on your situation, your OPCO can cover part — or all — of the cost. We build the file with you.",
+        ? "Selon votre situation, nous vous indiquons les solutions de financement possibles lors du premier échange."
+        : "Depending on your situation, we explain the possible funding options at the first call.",
       on: ofPublic,
     },
     {

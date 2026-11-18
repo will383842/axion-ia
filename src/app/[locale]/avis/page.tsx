@@ -100,7 +100,7 @@ const FAQ_ITEMS = [
     id: "partout",
     question: "Axion-IA a-t-il des avis clients partout en France ?",
     answer:
-      "Oui. Nos clients sont répartis dans toute la France — Grenoble, Lyon, Paris, Bordeaux, Marseille, Toulouse et bien d'autres. Vous pouvez filtrer les avis par ville, département, secteur d'activité ou service.",
+      "Oui. Nos clients sont répartis dans toute la France — Lyon, Paris, Bordeaux, Marseille, Toulouse et bien d'autres. Vous pouvez filtrer les avis par ville, département, secteur d'activité ou service.",
   },
 ];
 
