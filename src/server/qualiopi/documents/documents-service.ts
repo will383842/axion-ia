@@ -204,6 +204,12 @@ export interface GenerateDocumentInput {
    */
   gabaritVersion?: number;
   /**
+   * `true` pour un duplicata ou une régénération d'une pièce DÉJÀ ÉMISE : la version
+   * demandée peut alors être une version ARCHIVÉE (celle de l'original). Sans ce
+   * drapeau, émettre une pièce neuve sous une version archivée reste refusé.
+   */
+  reeditionPieceEmise?: boolean;
+  /**
    * Numéro de la pièce que celle-ci **rectifie**, et motif de la rectification.
    *
    * 🔴 Audit pré-visite 2026-08-03. Régénérer une pièce parce que la DONNÉE a
@@ -496,7 +502,11 @@ export async function generateDocument(
     };
   }
 
-  const gabaritVersion = versionGabaritAEcrire(input.type, input.gabaritVersion);
+  const gabaritVersion = versionGabaritAEcrire(
+    input.type,
+    input.gabaritVersion,
+    input.reeditionPieceEmise === true,
+  );
 
   // Garde-fou conformité (runtime only) : refuse un document à valeur
   // juridique/fiscale si l'identité de l'OF est incomplète (SIRET/NDA/adresse/
