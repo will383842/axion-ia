@@ -564,6 +564,18 @@ describe("approbation — refus à la racine (second filet, sections marquées s
     // courriel : « at » + domaine avec point
     "Écrire à jean.dupont at exemple.fr pour la suite.",
     "Écrire à jean.dupont AT exemple.com pour la suite.",
+    // tour 2 de relecture
+    `Un forfait ${["3000", "bruts"].join(" ")}.`,
+    `Un forfait ${["3000", "brute"].join(" ")}.`,
+    `Un forfait ${["40", "nettes"].join(" ")}.`,
+    "Un chiffre d'affaires redoublé.",
+    "Un chiffre d'affaires dédoublé.",
+    "Un chiffre d'affaires retriplée.",
+    "Un chiffre d'affaires surdécuplé.",
+    "Un forfait hors T.V.A. pour l'atelier.",
+    "Un forfait hors-T.V.A. pour l'atelier.",
+    "Nous prenons un engagement ferme, écrit, signé et contresigné, sur chaque résultat.",
+    "On vous rend, sans discuter et sous quinzaine au plus tard, tout votre argent.",
   ];
   for (const t of formes) {
     it(`refuse : ${t}`, () => {

@@ -36,6 +36,8 @@ import {
   ETIQUETTE_CHIFFRES,
   ETIQUETTE_DOCTRINE,
   contientMontant,
+  retirerMarque,
+  estApprouvee,
 } from "../decoupage";
 import { CONTEXTE_NEUTRE, methodeActive, obtenirContexteMethode } from "../index";
 import {
@@ -719,5 +721,122 @@ describe("9 · tour 1 de relecture : la tête de section vient du corpus, brute"
     const n = await neutraliserAbsentes(fake as never, new Set(["methode/faux-a/gardee"]));
     expect(n).toBe(1);
     expect(maj).toEqual([{ id: "t2", bodyText: "Deux." }]);
+  });
+});
+
+describe("10 · tour 2 de relecture : la marque touche son titre dans le corpus brut", () => {
+  const M = "sortie: validee";
+  const approuvees = (nom: string, lignes: string[]) =>
+    decouperFichier(nom, lignes.join("\n")).filter((x) => x.approuvee);
+  const jamais = (nom: string, lignes: string[]) => expect(approuvees(nom, lignes)).toEqual([]);
+
+  it("une ligne supprimée ou sautée entre le titre et la marque : jamais approuvée", () => {
+    for (const intercalee of [
+      "<!-- page 2 -->",
+      "1 / 3",
+      "AXION IA · bas de page inventé",
+      "Source : Google Drive inventé",
+      "Appliqué à AXION IA",
+      "Les idées clés",
+    ]) {
+      jamais("livres/faux-inter.md", ["# faux-inter", "1. Premier titre", intercalee, M, LONG]);
+    }
+    jamais("livres/faux-cas.md", [
+      "# faux-cas",
+      "Mises en situation",
+      "Cas 1 — Un faux cas",
+      "MISE EN SITUATION",
+      M,
+      LONG,
+    ]);
+    jamais("livres/important-a-savoir/faux-aff.md", ["<!-- page 1 -->", "2 / 5", M, LONG]);
+    jamais("livres/faux-suite.md", [
+      "# faux-suite",
+      "1. Premier titre",
+      "L'ESSENTIEL EN 30 SECONDES",
+      "Un résumé.",
+      "Les idées clés",
+      M,
+      LONG,
+    ]);
+  });
+
+  it("titre puis marque sur la ligne suivante : approuvée (témoin positif)", () => {
+    expect(
+      approuvees("livres/faux-ok.md", ["# faux-ok", "1. Premier titre", M, LONG]),
+    ).toHaveLength(1);
+    expect(
+      approuvees("livres/faux-ok-md.md", ["## Un titre", M, LONG, "## Un autre", LONG]),
+    ).toHaveLength(1);
+  });
+
+  it("une fiche PDF avec une ligne « ## » dans un bloc de code reste PDF et n'avale rien", () => {
+    const s = decouperFichier(
+      "livres/faux-mixte.md",
+      [
+        "# Faux",
+        "1. Premier titre",
+        M,
+        LONG,
+        "2. Second titre non relu",
+        LONG,
+        "```",
+        "## exemple",
+        "```",
+      ].join("\n"),
+    );
+    expect(s.length).toBeGreaterThanOrEqual(2);
+    expect(s.filter((x) => x.approuvee && x.texte.includes("non relu"))).toEqual([]);
+  });
+
+  it("fichier mêlant titres « ## » et sections « N. » : ambigu, aucune section approuvée", () => {
+    jamais("livres/faux-ambigu.md", [
+      "## Un titre",
+      M,
+      LONG,
+      "1. Premier titre",
+      LONG,
+      "2. Second titre",
+      LONG,
+    ]);
+  });
+
+  it("Markdown : clôture plus courte, commentaire HTML, titre indenté ou setext n'approuvent rien de caché", () => {
+    const cas: string[][] = [
+      ["## A", M, "Corps A.", "````", "```", "## B", M, "Corps B non relu.", "````"],
+      ["## A", M, "Corps A.", "<!--", "## B", M, "Corps B non relu.", "-->"],
+      ["## A", M, "Corps A.", "  ## B", "Corps B non relu."],
+      ["## A", M, "Corps A.", "B", "---", "Corps B non relu."],
+      ["## A", M, "Corps A.", "### Un sous-titre", "Corps B non relu."],
+    ];
+    for (const c of cas) {
+      const s = decouperFichier("livres/faux-cm.md", c.join("\n"));
+      expect(
+        s.filter((x) => x.approuvee && x.texte.includes("non relu")),
+        c.join("|"),
+      ).toEqual([]);
+      expect(s.filter((x) => x.approuvee && /^## B/m.test(x.texte))).toEqual([]);
+    }
+  });
+
+  it("marque doublée : retirerMarque ne laisse jamais une entrée approuvée", async () => {
+    expect(estApprouvee(retirerMarque(`${M}\n${M}\nTexte.`))).toBe(false);
+    const maj: string[] = [];
+    const fake = {
+      knowledgeEntry: {
+        findMany: async () => [
+          { slug: "methode/faux-a/x", translations: [{ id: "t", bodyText: `${M}\n${M}\nTexte.` }] },
+        ],
+      },
+      knowledgeTranslation: {
+        update: async (a: { data: { bodyText: string } }) => {
+          maj.push(a.data.bodyText);
+          return {};
+        },
+      },
+    };
+    await neutraliserAbsentes(fake as never, new Set());
+    expect(maj).toHaveLength(1);
+    expect(estApprouvee(maj[0]!)).toBe(false);
   });
 });
