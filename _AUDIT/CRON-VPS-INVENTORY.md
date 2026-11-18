@@ -63,6 +63,16 @@ Coller la sortie réelle ci-dessous à chaque relevé.
 */30 * * * * <alerte disque si usage / > 80% via logger>
 ```
 
+### Garde du nettoyage Docker de h15 (2026-11-18)
+Le cron `15 * * * * /opt/axion-ia/docker-nettoyage.sh` faisait `docker rmi` sur toute image non utilisée. Une mise en ligne Coolify arrivant vers h15 voyait son image tout juste construite effacée : le journal Coolify affichait `pull access denied … repository does not exist` puis « Rolling update failed ». Preuve du 18/11 : l'étape « Trigger Coolify deploy » a échoué en 75 s à 11:14Z et à 13:14Z.
+
+**Garde posée sur le serveur le 2026-11-18, avec l'accord du fondateur** (rien n'est appliqué depuis le dépôt) : juste après `#!/bin/sh`, le script sort sans rien effacer si un déploiement Coolify est en cours.
+```sh
+n=$(docker exec coolify-db psql -U coolify -d coolify -At -c "select count(*) from application_deployment_queues where status in ('queued','in_progress')" 2>/dev/null)
+[ "$n" = "0" ] || { echo "$(date -Is) déploiement Coolify en cours (n=$n) : nettoyage sauté"; exit 0; }
+```
+Fermée en cas de doute : si la requête échoue, `n` est vide et le nettoyage est sauté. Sauvegarde de l'ancien script : `/opt/axion-ia/docker-nettoyage.sh.avant-garde-2026-11-18`. Le script n'est pas versionné dans le dépôt (aucune copie à mettre à jour).
+
 ### Mécanisme réel des backups (important)
 - `/opt/axion-ia/run-r2-backup.sh` (script maison, **PAS** un checkout git) lance un container
   **`postgres:16-alpine` éphémère** sur le réseau `coolify`, injecte l'env depuis le container app
