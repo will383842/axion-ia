@@ -67,10 +67,18 @@ n'est pas créée.
 
 `filtrerPourSortie` (`src/server/methode/filtre-sortie.ts`) est appliqué au noyau **et** aux
 extraits. Il refuse toute fiche : étiquetée `chiffres-exercice`, `doctrine:a-revoir` ou
-`secteur:sante` ; contenant un montant en euros, un courriel, un téléphone ; ou touchée par
-`detecterInterditsSurface` (promesse ou garantie de gain, témoignage ou statistique
-Axion-IA, citation de témoin, ancrage local). Double verrou : les mêmes contrôles, à
-l'import, posent `doctrine:a-revoir`.
+`secteur:sante` ; contenant un montant (euros, dollars, multiplicateurs k, M, mille, million,
+HT/TTC, milliards, avec ou sans devise), un courriel (y compris masqué : « [at] »,
+« arobase », « @ » entouré d'espaces) ou un téléphone (y compris indicatif entre
+parenthèses) ; contenant toute forme de « garanti* » ou « rembours* » (première personne
+comprise) ou tout pourcentage, après normalisation ; ou touchée par `detecterInterditsSurface`
+(promesse ou garantie de gain, témoignage ou statistique Axion-IA, citation de témoin,
+ancrage local).
+
+Double verrou, **les mêmes motifs à l'import** (mêmes fonctions, importées de `decoupage.ts` et
+`filtre-sortie.ts`) : un montant pose `chiffres-exercice` ; une promesse, un pourcentage ou un
+motif de `detecterInterditsSurface` pose `doctrine:a-revoir` ; un courriel ou un téléphone fait
+**refuser** la section (elle n'est pas écrite). Dans tous les cas la fiche n'est jamais servie.
 
 On préfère refuser une fiche saine que laisser passer une fiche douteuse. Conséquence
 acceptée : si le noyau porte un montant, il n'est **pas** servi ; il faut réécrire sa section

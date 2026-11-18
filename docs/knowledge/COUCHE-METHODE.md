@@ -41,6 +41,11 @@ allume. Éteinte, `obtenirContexteMethode` rend `{ noyau: null, extraits: [] }` 
 `METHODE_STUDIO_OUVERT` et `METHODE_STUDIO_SECRET` sont déclarées mais aucune route ne les lit
 encore.
 
+⚠️ Une valeur autre que `true` ou `false` (par exemple `TRUE` ou `1`) sur `METHODE_ACTIVE` ou
+`METHODE_STUDIO_OUVERT`, ou un `METHODE_STUDIO_SECRET` de moins de 32 caractères, **empêche
+l'application de démarrer** (validation de `src/env.ts`, sauf si `SKIP_ENV_VALIDATION` est posé).
+Mieux vaut laisser la variable absente que mal l'écrire.
+
 ## 3. Ce que rend la couche
 
 `obtenirContexteMethode({ sujet, max? })` rend un noyau et au plus dix extraits de 1 500
