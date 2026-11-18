@@ -30,7 +30,7 @@
 
 import type React from "react";
 
-import type { TypeGabaritSignable } from "../gabarit-versions";
+import type { TypeGabaritFormation, TypeGabaritSignable } from "../gabarit-versions";
 import { ConventionPdf as ConventionPdfV2 } from "./convention.v2";
 import { ConventionTripartitePdf as ConventionTripartitePdfV2 } from "./convention-tripartite.v2";
 import { ConventionPdf as ConventionPdfV3 } from "./convention.v3";
@@ -46,6 +46,11 @@ import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./conventi
 import { ConventionTripartitePdf as ConventionTripartitePdfV5 } from "./convention-tripartite.v5";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
+import { ProgrammeFormationPdf as ProgrammeFormationPdfV1 } from "./programme-formation.v1";
+import { ConvocationPdf as ConvocationPdfV1 } from "./convocation.v1";
+import { AttestationPdf as AttestationPdfV1 } from "./attestation.v1";
+import { AttestationPartiellePdf as AttestationPartiellePdfV1 } from "./attestation-partielle.v1";
+import { CertificatRealisationPdf as CertificatRealisationPdfV1 } from "./certificat-realisation.v1";
 
 export type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
 
@@ -106,4 +111,46 @@ export const GABARITS_ARCHIVES: Readonly<
 /** Composant archivé d'une version donnée, ou `null` s'il n'a pas été conservé. */
 export function gabaritArchive(type: TypeGabaritSignable, version: number): ComposantPiece | null {
   return GABARITS_ARCHIVES[type]?.[version]?.Composant ?? null;
+}
+
+/**
+ * Pièces de formation NON signables (programme, convocation, attestations, certificat) :
+ * leur v1 est conservée ici pour re-rendre à l'identique une pièce émise avant le passage à la
+ * charte 2027. Même règle que ci-dessus : une archive ne se modifie jamais.
+ */
+export const GABARITS_ARCHIVES_FORMATION: Readonly<
+  Record<TypeGabaritFormation, Readonly<Record<number, GabaritArchive>>>
+> = {
+  programme: {
+    1: {
+      fichier: "programme-formation.v1.tsx",
+      Composant: ProgrammeFormationPdfV1 as unknown as ComposantPiece,
+    },
+  },
+  convocation: {
+    1: { fichier: "convocation.v1.tsx", Composant: ConvocationPdfV1 as unknown as ComposantPiece },
+  },
+  attestation: {
+    1: { fichier: "attestation.v1.tsx", Composant: AttestationPdfV1 as unknown as ComposantPiece },
+  },
+  attestation_partielle: {
+    1: {
+      fichier: "attestation-partielle.v1.tsx",
+      Composant: AttestationPartiellePdfV1 as unknown as ComposantPiece,
+    },
+  },
+  certificat: {
+    1: {
+      fichier: "certificat-realisation.v1.tsx",
+      Composant: CertificatRealisationPdfV1 as unknown as ComposantPiece,
+    },
+  },
+};
+
+/** Composant archivé d'une pièce de formation non signable, ou `null` s'il n'a pas été conservé. */
+export function gabaritArchiveFormation(
+  type: TypeGabaritFormation,
+  version: number,
+): ComposantPiece | null {
+  return GABARITS_ARCHIVES_FORMATION[type][version]?.Composant ?? null;
 }

@@ -54,7 +54,7 @@ import { join } from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { GABARITS_ARCHIVES } from "./archives";
+import { GABARITS_ARCHIVES, GABARITS_ARCHIVES_FORMATION } from "./archives";
 import { GABARIT_VERSIONS, type TypeGabaritSignable } from "./gabarit-versions";
 
 /** Fichier source de chaque pièce signable. Miroir de `COMPOSANTS`. */
@@ -332,6 +332,15 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   "devis.v5.tsx": "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
+  // 18/11/2026 : copies conformes des cinq gabarits de formation d'avant la charte 2027
+  // (programme, convocation, attestations, certificat : pièces non signables, v1 archivées).
+  "programme-formation.v1.tsx": "b069b4582c5e5d697ffcc9e495a465a013aeb6cbfe0ca058710a66cfa07583c5",
+  "convocation.v1.tsx": "bd97002b7b8f1133a50451bb28b7e2b91466b808e942f29fde694210c06ce0b6",
+  "attestation.v1.tsx": "e4ea5ce69f7bd3e7dddd13df615544fd638c97202dd945dac5ec50c78de76e56",
+  "attestation-partielle.v1.tsx":
+    "1835ed08d7fda3ff9a19754ea6efcdafb9cae18302f81333a7bb45aca8c74aa8",
+  "certificat-realisation.v1.tsx":
+    "e6db1484b612ac9cf972b6e6f47e3552bcfd621d3ae3b13f7a73b7ea1ad5a107",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
 };
 
@@ -362,7 +371,10 @@ describe("⛔ le texte d'une version ARCHIVÉE ne change jamais", () => {
     const inscrits = Object.values(GABARITS_ARCHIVES).flatMap((parVersion) =>
       Object.values(parVersion ?? {}).map((a) => a.fichier),
     );
-    expect([...inscrits, "mentions-figees.ts"].sort()).toEqual(
+    const inscritsFormation = Object.values(GABARITS_ARCHIVES_FORMATION).flatMap((parVersion) =>
+      Object.values(parVersion).map((a) => a.fichier),
+    );
+    expect([...inscrits, ...inscritsFormation, "mentions-figees.ts"].sort()).toEqual(
       Object.keys(EMPREINTES_ARCHIVES).sort(),
     );
   });

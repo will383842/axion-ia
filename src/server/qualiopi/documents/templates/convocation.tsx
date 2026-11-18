@@ -12,14 +12,9 @@
  */
 
 import React from "react";
-import { Document, View, Text } from "@react-pdf/renderer";
-import {
-  QualiopiPage,
-  pdfStyles,
-  DocSection,
-  FieldRow,
-  BulletList,
-} from "@/server/qualiopi/documents/base-layout";
+import { Document } from "@react-pdf/renderer";
+import { PageCharte, Carte, LigneChamp, ListePuces } from "../charte/v1";
+import { NoteLegale, Paragraphe } from "./charte-documents-formation";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import {
   LIBELLE_MODALITE_HYBRIDE_MINUSCULE,
@@ -141,84 +136,84 @@ export function ConvocationPdf({
 
   return (
     <Document>
-      <QualiopiPage
+      <PageCharte
         docTitle="Convocation à la formation"
         docNumber={data.numero}
         identite={identite}
         {...(data.estCopie !== undefined ? { estCopie: data.estCopie } : {})}
       >
         {/* Mention "À conserver" */}
-        <View style={{ marginBottom: 12 }}>
-          <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
+        <Carte>
+          <Paragraphe gras>
             Document à conserver — merci de le présenter le jour de la formation.
-          </Text>
-        </View>
+          </Paragraphe>
+        </Carte>
 
         {/* Section 1 : Informations session */}
-        <DocSection title="Informations sur la session">
-          <FieldRow label="Formation" value={data.intituleFormation} />
-          <FieldRow label="Date de début" value={data.dateDebut} />
-          <FieldRow label="Date de fin" value={data.dateFin} />
-          <FieldRow label="Horaires" value={`${data.horaires} (heure de Paris)`} />
-          <FieldRow
+        <Carte titre="Informations sur la session">
+          <LigneChamp label="Formation" value={data.intituleFormation} />
+          <LigneChamp label="Date de début" value={data.dateDebut} />
+          <LigneChamp label="Date de fin" value={data.dateFin} />
+          <LigneChamp label="Horaires" value={`${data.horaires} (heure de Paris)`} />
+          <LigneChamp
             label="Durée totale"
             value={`${data.dureeHeures} heure${data.dureeHeures > 1 ? "s" : ""}`}
           />
-          <FieldRow label="Modalité" value={data.modalite} />
+          <LigneChamp label="Modalité" value={data.modalite} />
           {data.modalite !== "distanciel" && data.lieu ? (
-            <FieldRow label="Lieu" value={data.lieu} />
+            <LigneChamp label="Lieu" value={data.lieu} />
           ) : null}
           {isDistanciel && data.lienVisio ? (
-            <FieldRow label="Lien visioconférence" value={data.lienVisio} />
+            <LigneChamp label="Lien visioconférence" value={data.lienVisio} />
           ) : null}
           {v2 && isDistanciel && data.outilVisio ? (
-            <FieldRow label="Outil de visioconférence" value={data.outilVisio} />
+            <LigneChamp label="Outil de visioconférence" value={data.outilVisio} />
           ) : null}
           {v2 && isDistanciel && data.mentionLienVisio ? (
-            <FieldRow label="Lien de connexion" value={data.mentionLienVisio} />
+            <LigneChamp label="Lien de connexion" value={data.mentionLienVisio} />
           ) : null}
           {isDistanciel && data.idReunion ? (
-            <FieldRow label="ID de réunion" value={data.idReunion} />
+            <LigneChamp label="ID de réunion" value={data.idReunion} />
           ) : null}
-          <FieldRow label="Formateur / Formatrice" value={data.nomFormateur} />
-          <FieldRow label="Contact" value={data.contactEmail} />
+          <LigneChamp label="Formateur / Formatrice" value={data.nomFormateur} />
+          <LigneChamp label="Contact" value={data.contactEmail} />
           {data.contactTelephone ? (
-            <FieldRow label="Téléphone contact" value={data.contactTelephone} />
+            <LigneChamp label="Téléphone contact" value={data.contactTelephone} />
           ) : null}
-        </DocSection>
+        </Carte>
 
         {/* Section 2 : Vos informations */}
-        <DocSection title="Vos informations">
-          <FieldRow label="Nom et prénom" value={data.nomStagiaire} />
+        <Carte titre="Vos informations">
+          <LigneChamp label="Nom et prénom" value={data.nomStagiaire} />
           {data.entreprise ? (
-            <FieldRow label="Entreprise / Structure" value={data.entreprise} />
+            <LigneChamp label="Entreprise / Structure" value={data.entreprise} />
           ) : null}
           {/* Libellé, jamais l'énumération brute (« france_travail ») — cf.
               `libelles-enumerations.ts` (audit des pièces réelles 2026-09-30). */}
           {data.financement ? (
-            <FieldRow label="Financement" value={libelleFinancement(data.financement)} />
+            <LigneChamp label="Financement" value={libelleFinancement(data.financement)} />
           ) : null}
           {data.numeroOrdrePriseEnCharge ? (
-            <FieldRow label="N° prise en charge OPCO" value={data.numeroOrdrePriseEnCharge} />
+            <LigneChamp label="N° prise en charge OPCO" value={data.numeroOrdrePriseEnCharge} />
           ) : null}
-        </DocSection>
+        </Carte>
 
         {/* Section 3a : Matériel à prévoir sur place — la fiche de la formation */}
         {data.modalite !== "distanciel" && data.materielAPrevoir ? (
-          <DocSection title="Matériel à prévoir sur place">
-            <Text style={pdfStyles.paragraph}>{data.materielAPrevoir}</Text>
-          </DocSection>
+          <Carte titre="Matériel à prévoir sur place">
+            <Paragraphe>{data.materielAPrevoir}</Paragraphe>
+          </Carte>
         ) : null}
 
         {/* Section 3b : Équipement requis (distanciel et mixte) — les éléments
             viennent de `content/formations/materiel.ts`, ceux que publient les
             fiches : la convocation exige ce que le site annonce. */}
         {isDistanciel ? (
-          <DocSection title="Équipement requis (distanciel)">
-            <Text style={pdfStyles.paragraph}>
+          <Carte titre="Équipement requis (distanciel)">
+            <Paragraphe>
               Pour participer dans de bonnes conditions, veuillez disposer de :
-            </Text>
-            <BulletList
+            </Paragraphe>
+            <ListePuces
               items={[
                 `${majuscule(DISTANCIEL_ORDINATEUR)} fonctionnels.`,
                 `${majuscule(DISTANCIEL_CONNEXION)} (≥ 5 Mbit/s recommandé).`,
@@ -226,19 +221,17 @@ export function ConvocationPdf({
                 "Un espace calme et éclairé.",
               ]}
             />
-          </DocSection>
+          </Carte>
         ) : null}
 
         {/* Section 3c : Assistance à distance (distanciel et mixte) — D.6313-3-1.
             Même texte que le livret d'accueil : `legal/assistance-distance.ts`. */}
         {isDistanciel ? (
-          <DocSection title="Assistance à distance">
-            <BulletList items={[ASSISTANCE_PENDANT_SESSION, ASSISTANCE_HORS_SESSION]} />
-            <Text style={[pdfStyles.paragraph, { fontWeight: "bold" }]}>
-              Si la visioconférence tombe
-            </Text>
-            <BulletList items={[...ASSISTANCE_COUPURE]} />
-          </DocSection>
+          <Carte titre="Assistance à distance">
+            <ListePuces items={[ASSISTANCE_PENDANT_SESSION, ASSISTANCE_HORS_SESSION]} />
+            <Paragraphe gras>Si la visioconférence tombe</Paragraphe>
+            <ListePuces items={[...ASSISTANCE_COUPURE]} />
+          </Carte>
         ) : null}
 
         {/* Section 4 : Documents mis à disposition */}
@@ -259,13 +252,13 @@ export function ConvocationPdf({
           Indicateur 9 (information sur les conditions de déroulement).
         */}
         {v2 ? (
-          <DocSection title="Documents joints à cette convocation">
-            <Text style={pdfStyles.paragraph}>
+          <Carte titre="Documents joints à cette convocation">
+            <Paragraphe>
               Les documents suivants sont joints en PDF au courriel qui accompagne cette
               convocation. Ils restent disponibles dans votre espace stagiaire, par le lien
               personnel du même courriel :
-            </Text>
-            <BulletList
+            </Paragraphe>
+            <ListePuces
               items={[
                 "Convocation",
                 "Programme de formation détaillé",
@@ -273,20 +266,20 @@ export function ConvocationPdf({
                 "Livret d'accueil stagiaire",
               ]}
             />
-            <Text style={pdfStyles.paragraph}>
+            <Paragraphe>
               Le questionnaire de positionnement (à remplir avant la formation) se trouve dans votre
               espace stagiaire. Si une pièce jointe ne s'ouvre pas, signalez-le au contact indiqué
               ci-dessus : elle vous sera adressée par un autre moyen.
-            </Text>
-          </DocSection>
+            </Paragraphe>
+          </Carte>
         ) : (
-          <DocSection title="Documents mis à votre disposition">
-            <Text style={pdfStyles.paragraph}>
+          <Carte titre="Documents mis à votre disposition">
+            <Paragraphe>
               Les documents suivants sont mis à votre disposition dans votre espace stagiaire,
               accessible par le lien personnel qui vous est adressé par courriel avec cette
               convocation :
-            </Text>
-            <BulletList
+            </Paragraphe>
+            <ListePuces
               items={[
                 "Programme de formation détaillé",
                 "Règlement intérieur des stagiaires",
@@ -294,16 +287,16 @@ export function ConvocationPdf({
                 "Questionnaire de positionnement (à remplir avant la formation)",
               ]}
             />
-            <Text style={pdfStyles.paragraph}>
+            <Paragraphe>
               Si vous ne parvenez pas à accéder à votre espace stagiaire, signalez-le au contact
               indiqué ci-dessus : ces documents vous seront adressés par un autre moyen.
-            </Text>
-          </DocSection>
+            </Paragraphe>
+          </Carte>
         )}
 
         {v2 ? (
-          <DocSection title="Déroulement de la formation">
-            <BulletList
+          <Carte titre="Déroulement de la formation">
+            <ListePuces
               items={[
                 phraseEffectifEtModalite(data.seminaire),
                 "Émargement : vous signez votre présence pendant chaque demi-journée, en salle comme en visioconférence, avec le lien personnel de signature qui vous est adressé par courriel.",
@@ -312,15 +305,15 @@ export function ConvocationPdf({
                   : "Une difficulté, une réclamation ? Vous pouvez la déposer à tout moment : la procédure est publiée sur notre site, rubrique « Réclamations ».",
               ]}
             />
-          </DocSection>
+          </Carte>
         ) : null}
 
         {/* Section 5 : Situation handicap */}
-        <DocSection title="Situation de handicap — référent dédié">
-          <Text style={pdfStyles.paragraph}>
+        <Carte titre="Situation de handicap — référent dédié">
+          <Paragraphe>
             Si vous êtes en situation de handicap et nécessitez un aménagement, contactez notre
             référent handicap au plus tôt avant la session :
-          </Text>
+          </Paragraphe>
           {/*
             Nom d'abord, puis les deux canaux. L'ancienne version n'affichait que
             l'email — et c'est le contact GÉNÉRAL de l'OF : le stagiaire lisait
@@ -330,48 +323,42 @@ export function ConvocationPdf({
             Le nom et le téléphone étaient en configuration depuis toujours.
           */}
           {identite.referentHandicapNom ? (
-            <FieldRow label="Référent handicap" value={identite.referentHandicapNom} />
+            <LigneChamp label="Référent handicap" value={identite.referentHandicapNom} />
           ) : null}
           {identite.referentHandicapEmail ? (
-            <FieldRow label="Email" value={identite.referentHandicapEmail} />
+            <LigneChamp label="Email" value={identite.referentHandicapEmail} />
           ) : null}
           {identite.referentHandicapTelephone ? (
-            <FieldRow label="Téléphone" value={identite.referentHandicapTelephone} />
+            <LigneChamp label="Téléphone" value={identite.referentHandicapTelephone} />
           ) : null}
-          <Text style={[pdfStyles.legalNote]}>{LEGAL_MENTIONS.referentHandicap}</Text>
-        </DocSection>
+          <NoteLegale>{LEGAL_MENTIONS.referentHandicap}</NoteLegale>
+        </Carte>
 
         {/* Prévention des violences (indicateur 12, décret n° 2026-728) —
             même texte que le livret d'accueil (`src/content/prevention-violences.ts`).
             La convocation est la pièce que le stagiaire lit à coup sûr AVANT
             d'entrer : elle lui dit à qui signaler, sans détour par le règlement. */}
-        <DocSection title={TITRE_ENCART_VIOLENCES}>
+        <Carte titre={TITRE_ENCART_VIOLENCES}>
           {ENCART_VIOLENCES.map((paragraphe) => (
-            <Text key={paragraphe.slice(0, 12)} style={pdfStyles.paragraph}>
-              {paragraphe}
-            </Text>
+            <Paragraphe key={paragraphe.slice(0, 12)}>{paragraphe}</Paragraphe>
           ))}
-        </DocSection>
+        </Carte>
 
         {/* Section 6 : Absence / retard */}
-        <DocSection title="Absence ou retard">
-          <Text style={pdfStyles.paragraph}>
+        <Carte titre="Absence ou retard">
+          <Paragraphe>
             Tout retard ou absence devra être signalé dès que possible auprès du contact indiqué
             ci-dessus. En cas d'annulation tardive, les conditions prévues aux Conditions Générales
             de Vente (CGV) s'appliquent.
-          </Text>
-        </DocSection>
+          </Paragraphe>
+        </Carte>
 
         {/* Mention légale — UNIQUEMENT si le NDA existe. Avant l'enregistrement,
             cette ligne affirmait « déclaration enregistrée auprès du préfet »
             alors que l'en-tête de la même page disait « non encore enregistrée » :
             deux mentions contradictoires, dont une fausse. L'en-tête suffit. */}
-        {identite.nda ? (
-          <View style={{ marginTop: 8 }}>
-            <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.declarationActivite}</Text>
-          </View>
-        ) : null}
-      </QualiopiPage>
+        {identite.nda ? <NoteLegale>{LEGAL_MENTIONS.declarationActivite}</NoteLegale> : null}
+      </PageCharte>
     </Document>
   );
 }
