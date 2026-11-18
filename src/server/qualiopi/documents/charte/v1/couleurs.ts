@@ -21,7 +21,7 @@ export const CHARTE_COULEURS = {
   sombreSecondaire: "#B0AEA5",
   bleuDoux: "#E8F0FA",
   bleu: "#1F5FA8",
-  lisere: ["#2F7FC8", "#F0B323", "#C2185B", "#A8C93A"],
+  lisere: ["#1F5FA8", "#B23F16"],
 } as const;
 
 export const CHARTE_RAYONS = {

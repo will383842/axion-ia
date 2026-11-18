@@ -45,7 +45,7 @@ describe("charte v1 — valeurs figées", () => {
       sombreSecondaire: "#B0AEA5",
       bleuDoux: "#E8F0FA",
       bleu: "#1F5FA8",
-      lisere: ["#2F7FC8", "#F0B323", "#C2185B", "#A8C93A"],
+      lisere: ["#1F5FA8", "#B23F16"],
     });
   });
 

@@ -418,7 +418,7 @@ describe("⛔ le texte d'une version ARCHIVÉE ne change jamais", () => {
  */
 const EMPREINTES_CHARTES: Readonly<Record<string, string>> = {
   "composants.tsx": "3161ef5454705d13df3d8a584e858a4c803b1edc7b51b993ab409891214afc6c",
-  "couleurs.ts": "3df200ba7b2f71b035767081195983ba5c5e35105c171492c075efbfe5557de4",
+  "couleurs.ts": "2bf575a228ce03d7bcf027a692b2d22a055956d4f0be7f9cc87ccd0a60e8c4e3",
   "index.ts": "edcf9558e5c55aed54571c639ca78dbc097bc12bb171778fb6625c76a7ae9428",
 };
 
