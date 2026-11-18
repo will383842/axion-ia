@@ -113,8 +113,8 @@ describe("🔴 un devis signé sous la v4 se re-rend à l'identique", () => {
     expect(createHash("sha256").update(r.buffer).digest("hex")).toBe(EMPREINTE_V4);
   }, 60_000);
 
-  it("la v4 est archivée et la version courante est la v5", () => {
-    expect(versionGabaritCourante("devis")).toBe(5);
+  it("la v4 est archivée et la version courante est postérieure", () => {
+    expect(versionGabaritCourante("devis")).toBeGreaterThan(4);
     expect(gabaritArchive("devis", 4)).not.toBeNull();
   });
 

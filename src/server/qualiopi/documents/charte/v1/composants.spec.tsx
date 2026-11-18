@@ -16,6 +16,7 @@ import {
   collectPdfText,
   collectPdfTextNormalized,
 } from "@/server/qualiopi/documents/collect-pdf-text";
+import { CHARTE_ESPACES, CHARTE_PIED, CHARTE_TYPO } from "./couleurs";
 import {
   BlocSignature,
   BlocSombre,
@@ -67,6 +68,11 @@ function rendu(
     </Page>
   );
   return collectPdfTextNormalized(el);
+}
+
+/** Nombre d'occurrences (non chevauchantes) d'un fragment dans un texte. */
+function occurrences(texte: string, fragment: string): number {
+  return texte.split(fragment).length - 1;
 }
 
 /** Texte situé APRÈS le corps : le pied de page. */
@@ -126,6 +132,10 @@ describe("PageCharte — filigranes et bandeaux", () => {
       expect(t).toContain("SPÉCIMEN");
       expect(t).toContain(BANDEAU_SPECIMEN_TITRE);
       expect(t).toContain(MOTIF_DEFAUT);
+      // « SPÉCIMEN » : le filigrane (1) + le titre du bandeau (1) = 2 ; le bandeau et son motif 1 fois.
+      expect(occurrences(t, "SPÉCIMEN")).toBe(2);
+      expect(occurrences(t, BANDEAU_SPECIMEN_TITRE)).toBe(1);
+      expect(occurrences(t, MOTIF_DEFAUT)).toBe(1);
     }
   });
 
@@ -141,7 +151,14 @@ describe("PageCharte — filigranes et bandeaux", () => {
       expect(t).toContain("ESSAI");
       expect(t).toContain(BANDEAU_ESSAI_TITRE);
       expect(t).toContain(BANDEAU_ESSAI_TEXTE);
+      // « ESSAI » : le numéro (1) + le filigrane (1) + le titre du bandeau (1) = 3, ni plus ni moins.
+      expect(occurrences(t, "ESSAI")).toBe(3);
+      expect(occurrences(t, BANDEAU_ESSAI_TITRE)).toBe(1);
+      expect(occurrences(t, BANDEAU_ESSAI_TEXTE)).toBe(1);
     }
+    expect(occurrences(rendu(PageCharte, { docNumber: "AXI-DEV-ESSAI-2026-001" }), "ESSAI")).toBe(
+      occurrences(rendu(QualiopiPage, { docNumber: "AXI-DEV-ESSAI-2026-001" }), "ESSAI"),
+    );
   });
 
   it("COPIE : affiché si demandé, absent sinon", () => {
@@ -154,6 +171,37 @@ describe("PageCharte — filigranes et bandeaux", () => {
     const t = rendu(PageCharte, {});
     expect(t).not.toContain("ESSAI");
     expect(t).not.toContain("SPÉCIMEN");
+  });
+});
+
+describe("PageCharte — le pied ne recouvre pas le contenu", () => {
+  it("le pied, même sur le maximum de lignes, tient dans la réserve du bas de page", () => {
+    const hauteurLigne = CHARTE_TYPO.pied.taille * CHARTE_TYPO.corps.interligne;
+    const hauteurPied =
+      CHARTE_PIED.filet +
+      CHARTE_PIED.espaceHaut +
+      CHARTE_PIED.lignesMax * hauteurLigne +
+      (CHARTE_PIED.lignesMax - 1) * CHARTE_PIED.espaceEntreLignes;
+    // Le pied est posé à `bas` du bord inférieur ; le contenu s'arrête à `basReserve`.
+    expect(CHARTE_PIED.bas + hauteurPied).toBeLessThanOrEqual(CHARTE_ESPACES.basReserve);
+  });
+
+  it("CONTRE-TÉMOIN : avec l'ancienne géométrie (bas 22, réserve 64, 4 lignes), le contrôle rougit", () => {
+    const hauteurLigne = CHARTE_TYPO.pied.taille * CHARTE_TYPO.corps.interligne;
+    const ancien = 22 + 1 + 6 + 4 * hauteurLigne + 3;
+    expect(ancien).toBeGreaterThan(64);
+  });
+
+  it("le pied le plus long (SIRET, absence de NDA, Qualiopi, contact complet) se rend", async () => {
+    const identite: OrganismeIdentite = { ...SANS_NDA, qualiopi: "B-2026-XXXXXXXXXXXX" };
+    const pdf = await renderToBuffer(
+      <Document>
+        <PageCharte docTitle="Devis" docNumber="AXI-DEV-2026-001" identite={identite}>
+          <Text>{CORPS}</Text>
+        </PageCharte>
+      </Document>,
+    );
+    expect(pdf.subarray(0, 4).toString()).toBe("%PDF");
   });
 });
 
@@ -189,6 +237,30 @@ describe("composants de contenu", () => {
     expect(t).toContain("7,00 €");
     expect(t).toContain("9 999,99 €");
     expect(t).not.toContain("1 007,00");
+  });
+
+  it("Tableau : aligne à droite SEULEMENT si `align` est donné", () => {
+    const arbre = (Tableau as (p: React.ComponentProps<typeof Tableau>) => React.ReactElement)({
+      columns: [
+        { key: "montant", header: "Montant" },
+        { key: "total", header: "Total", align: "right" },
+      ],
+      rows: [{ montant: "1", total: "2" }],
+    });
+    const alignements: string[] = [];
+    const parcourir = (n: React.ReactNode): void => {
+      if (Array.isArray(n)) return n.forEach(parcourir);
+      if (!React.isValidElement(n)) return;
+      const el = n as React.ReactElement<{ style?: unknown; children?: React.ReactNode }>;
+      const st = ([] as unknown[]).concat(el.props.style ?? []).flat() as Array<{
+        textAlign?: string;
+      } | null>;
+      for (const x of st) if (x?.textAlign) alignements.push(x.textAlign);
+      parcourir(el.props.children);
+    };
+    parcourir(arbre);
+    // En-têtes puis cellules : « Montant » (sans align) reste à gauche malgré son nom.
+    expect(alignements).toEqual(["left", "right", "left", "right"]);
   });
 
   it("Tableau : en-têtes, cellules texte et nœuds", () => {
