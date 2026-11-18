@@ -139,6 +139,7 @@ import {
   demanderCodeSignatureAction,
   signerPieceParJetonAction,
 } from "../piece-signature";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 type Mock = ReturnType<typeof vi.fn>;
 const mEnvoyer = envoyerCodeSignature as unknown as Mock;
@@ -155,7 +156,7 @@ const signer = () =>
   signerPieceParJetonAction({
     token: "jeton",
     methode: "confirmation_accessible",
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     code: "123456",
   });
 const contresigner = () =>

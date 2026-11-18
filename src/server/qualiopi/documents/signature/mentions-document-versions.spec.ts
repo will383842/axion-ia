@@ -22,6 +22,7 @@ import {
   mentionAttestationDocument,
   mentionAttestationDocumentV1,
   mentionAttestationDocumentV2,
+  mentionAttestationDocumentV3,
   mentionCompleteDocument,
 } from "./mentions-document";
 import {
@@ -73,8 +74,8 @@ const P_DEVIS = {
 };
 
 describe("doc-v1 — texte conservé tel quel", () => {
-  it("la version courante est doc-v2 ; la v1 reste une fonction à part", () => {
-    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v2");
+  it("la version courante est doc-v3 ; la v1 reste une fonction à part", () => {
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v3");
   });
 
   it.each(PARTIES)("v1 %s : identique au texte relevé avant la retouche", (partie) => {
@@ -245,5 +246,71 @@ describe("une signature « doc-v1 » existante se revérifie à l'identique", ()
       "utf8",
     );
     expect(src.match(/mentionVersion: MENTION_VERSION_DOCUMENT/g)?.length).toBe(2);
+  });
+});
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L11-S1 — « doc-v3 » : le mandat se lit « procuration spéciale » (sans note interne).
+// Les goldens V1 et V2 ont été relevés sur main (e678e275) AVANT la retouche.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const P_MANDAT = {
+  pieceLibelle: "procuration spéciale",
+  pieceNumero: "AXI-DOC-2026-041",
+  organisme: "Axion-IA SAS",
+};
+
+describe("doc-v3 — procuration spéciale", () => {
+  it("la version courante est doc-v3", () => {
+    expect(MENTION_VERSION_DOCUMENT).toBe("doc-v3");
+  });
+
+  it("partie client : texte exact, sans « OPCO »", () => {
+    expect(mentionAttestationDocumentV3("client", P_MANDAT)).toBe(
+      "J'ai pris connaissance de la procuration spéciale n° AXI-DOC-2026-041 établie par Axion-IA SAS et je l'accepte, au nom et pour le compte de la structure que je représente.",
+    );
+    expect(mentionAttestationDocument("client", P_MANDAT)).toBe(
+      mentionAttestationDocumentV3("client", P_MANDAT),
+    );
+  });
+
+  it("partie organisme : texte exact", () => {
+    expect(mentionAttestationDocumentV3("axionia", P_MANDAT)).toBe(
+      "Pour Axion-IA SAS, j'accepte la procuration spéciale n° AXI-DOC-2026-041 établie par Axion-IA SAS et je la conclus.",
+    );
+  });
+
+  it("les autres pièces rendent le même texte en v2 et en v3", () => {
+    for (const partie of PARTIES) {
+      expect(mentionAttestationDocumentV3(partie, P_DEVIS)).toBe(
+        mentionAttestationDocumentV2(partie, P_DEVIS),
+      );
+      expect(mentionAttestationDocumentV3(partie, P_CONVENTION)).toBe(
+        mentionAttestationDocumentV2(partie, P_CONVENTION),
+      );
+    }
+  });
+});
+
+describe("doc-v1 et doc-v2 — la procuration garde le texte qu'elle avait à l'écran", () => {
+  it("v2 figée (client puis organisme)", () => {
+    expect(mentionAttestationDocumentV2("client", P_MANDAT)).toBe(
+      "J'ai pris connaissance de la procuration spéciale (mandat OPCO) n° AXI-DOC-2026-041 établie par Axion-IA SAS et je l'accepte, au nom et pour le compte de la structure que je représente.",
+    );
+    expect(mentionAttestationDocumentV2("axionia", P_MANDAT)).toBe(
+      "Pour Axion-IA SAS, j'accepte la procuration spéciale (mandat OPCO) n° AXI-DOC-2026-041 établie par Axion-IA SAS et je la conclus.",
+    );
+    expect(mentionAttestationDocument("client", P_MANDAT, "doc-v2")).toBe(
+      mentionAttestationDocumentV2("client", P_MANDAT),
+    );
+  });
+
+  it("v1 figée (client puis organisme)", () => {
+    expect(mentionAttestationDocumentV1("client", P_MANDAT)).toBe(
+      "J'ai pris connaissance de la procuration spéciale (mandat OPCO) n° AXI-DOC-2026-041 établie par Axion-IA SAS et je l'accepte, au nom et pour le compte de la structure que je représente.",
+    );
+    expect(mentionAttestationDocumentV1("axionia", P_MANDAT)).toBe(
+      "Pour Axion-IA SAS, j'accepte la procuration spéciale (mandat OPCO) n° AXI-DOC-2026-041 établie par Axion-IA SAS et je la conclus.",
+    );
   });
 });

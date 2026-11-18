@@ -43,8 +43,12 @@ import { CIRCUITS_SIGNATURE_LISTE } from "./parties-requises";
  * tel quel dans `mentionAttestationDocumentV1` : seule la version portée par chaque ligne scellée
  * est relue à la vérification (`document-signature-hash.ts` n'importe pas ce module), et on doit
  * toujours pouvoir dire ce qu'une signature « doc-v1 » avait à l'écran.
+ *
+ * 🔑 « doc-v3 » (18/11/2026) : libellé du mandat sans note interne (« procuration spéciale » au
+ * lieu de « procuration spéciale (mandat OPCO) »). Le texte « doc-v1 » et le texte « doc-v2 »
+ * restent rendables au caractère près (`LIBELLES_FIGES_AVANT_DOC_V3`).
  */
-export const MENTION_VERSION_DOCUMENT = "doc-v2" as const;
+export const MENTION_VERSION_DOCUMENT = "doc-v3" as const;
 
 /**
  * Numéro de la pièce que chaque version de mention affiche POUR UN DEVIS (`pieceNumero`) :
@@ -57,8 +61,28 @@ export const MENTION_VERSION_DOCUMENT = "doc-v2" as const;
 /** Version précédente du texte affiché. Ne s'écrit plus ; reste rendable. */
 export const MENTION_VERSION_DOCUMENT_V1 = "doc-v1" as const;
 
+/** Version « doc-v2 » du texte affiché. Ne s'écrit plus ; reste rendable. */
+export const MENTION_VERSION_DOCUMENT_V2 = "doc-v2" as const;
+
 export type VersionMentionDocument =
-  typeof MENTION_VERSION_DOCUMENT | typeof MENTION_VERSION_DOCUMENT_V1;
+  | typeof MENTION_VERSION_DOCUMENT
+  | typeof MENTION_VERSION_DOCUMENT_V2
+  | typeof MENTION_VERSION_DOCUMENT_V1;
+
+/**
+ * Les libellés que les circuits portaient AVANT « doc-v3 », par libellé actuel. « doc-v1 » et
+ * « doc-v2 » les appliquent en tête, pour rendre au caractère près le texte que les signatures
+ * déjà scellées avaient à l'écran. ⛔ Ne jamais retoucher une valeur de cette table.
+ */
+const LIBELLES_FIGES_AVANT_DOC_V3: Readonly<
+  Record<string, { libelle: string; libelleDefini: string; genre: "masculin" | "feminin" }>
+> = {
+  "procuration spéciale": {
+    libelle: "procuration spéciale (mandat OPCO)",
+    libelleDefini: "la procuration spéciale (mandat OPCO)",
+    genre: "feminin",
+  },
+};
 
 /** Version du CONSENTEMENT recueilli. Évolue indépendamment de la précédente. */
 export const CONSENTEMENT_VERSION_DOCUMENT = "doc-consent-v1" as const;
@@ -97,7 +121,8 @@ export function mentionAttestationDocumentV1(
   p: ParametresMentionDocument,
 ): string {
   // ⛔ NE PAS MODIFIER — texte « doc-v1 » (accord fautif sur un nom masculin conservé).
-  const piece = `la ${p.pieceLibelle} n° ${p.pieceNumero} établie par ${p.organisme}`;
+  const libelle = LIBELLES_FIGES_AVANT_DOC_V3[p.pieceLibelle]?.libelle ?? p.pieceLibelle;
+  const piece = `la ${libelle} n° ${p.pieceNumero} établie par ${p.organisme}`;
   switch (partie) {
     case "client":
       return `J'ai pris connaissance de ${piece} et je l'accepte, au nom et pour le compte de la structure que je représente.`;
@@ -118,16 +143,20 @@ export function mentionAttestationDocumentV1(
   }
 }
 
-/**
- * Texte « doc-v2 » : articles et accords selon la pièce (« le devis … établi », « la convention …
- * établie », « l'autorisation … établie »). Le genre et l'article viennent du SSOT des circuits
- * (`parties-requises.ts`). Libellé inconnu du SSOT : texte de la v1, jamais un texte inventé.
- */
-export function mentionAttestationDocumentV2(
+/** Résout le circuit d'un libellé ; `figer` applique les libellés d'avant « doc-v3 ». */
+function circuitDeLibelle(libelle: string, figer: boolean) {
+  const fige = figer ? LIBELLES_FIGES_AVANT_DOC_V3[libelle] : undefined;
+  if (fige !== undefined) return fige;
+  return CIRCUITS_SIGNATURE_LISTE.find((c) => c.libelle === libelle);
+}
+
+/** Corps commun de « doc-v2 » et « doc-v3 » : seul l'usage des libellés figés les distingue. */
+function mentionAttestationParCircuit(
   partie: PartieSignataire,
   p: ParametresMentionDocument,
+  figer: boolean,
 ): string {
-  const circuit = CIRCUITS_SIGNATURE_LISTE.find((c) => c.libelle === p.pieceLibelle);
+  const circuit = circuitDeLibelle(p.pieceLibelle, figer);
   if (circuit === undefined) return mentionAttestationDocumentV1(partie, p);
   const defini = circuit.libelleDefini;
   const etabli = circuit.genre === "masculin" ? "établi" : "établie";
@@ -157,6 +186,27 @@ export function mentionAttestationDocumentV2(
   }
 }
 
+/**
+ * Texte « doc-v2 » : articles et accords selon la pièce (« le devis … établi », « la convention …
+ * établie », « l'autorisation … établie »). Le genre et l'article viennent du SSOT des circuits
+ * (`parties-requises.ts`), avec les libellés d'avant « doc-v3 » (texte figé). Libellé inconnu du
+ * SSOT : texte de la v1, jamais un texte inventé.
+ */
+export function mentionAttestationDocumentV2(
+  partie: PartieSignataire,
+  p: ParametresMentionDocument,
+): string {
+  return mentionAttestationParCircuit(partie, p, true);
+}
+
+/** Texte « doc-v3 » : le corps de « doc-v2 », relu dans le SSOT actuel des circuits. */
+export function mentionAttestationDocumentV3(
+  partie: PartieSignataire,
+  p: ParametresMentionDocument,
+): string {
+  return mentionAttestationParCircuit(partie, p, false);
+}
+
 /** « le devis » → « du devis » ; « la convention » → « de la convention » ; « l'x » → « de l'x ». */
 function deDe(defini: string): string {
   return defini.startsWith("le ") ? `du ${defini.slice(3)}` : `de ${defini}`;
@@ -168,9 +218,14 @@ export function mentionAttestationDocument(
   p: ParametresMentionDocument,
   version: VersionMentionDocument = MENTION_VERSION_DOCUMENT,
 ): string {
-  return version === MENTION_VERSION_DOCUMENT_V1
-    ? mentionAttestationDocumentV1(partie, p)
-    : mentionAttestationDocumentV2(partie, p);
+  switch (version) {
+    case MENTION_VERSION_DOCUMENT_V1:
+      return mentionAttestationDocumentV1(partie, p);
+    case MENTION_VERSION_DOCUMENT_V2:
+      return mentionAttestationDocumentV2(partie, p);
+    case MENTION_VERSION_DOCUMENT:
+      return mentionAttestationDocumentV3(partie, p);
+  }
 }
 
 /**

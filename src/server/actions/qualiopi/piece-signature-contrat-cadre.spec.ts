@@ -51,6 +51,7 @@ import { verifierTokenDocument } from "@/server/qualiopi/documents/signature/tok
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 
 import { demanderCodeSignatureAction, signerPieceParJetonAction } from "./piece-signature";
+import { MENTION_VERSION_DOCUMENT } from "@/server/qualiopi/documents/signature/mentions-document";
 
 type Mock = ReturnType<typeof vi.fn>;
 const findUnique = prisma.documentGenere.findUnique as unknown as Mock;
@@ -98,7 +99,7 @@ const signer = (code?: string) =>
   signerPieceParJetonAction({
     token: "jeton",
     methode: "confirmation_accessible",
-    mentionVersionAffichee: "doc-v2",
+    mentionVersionAffichee: MENTION_VERSION_DOCUMENT,
     ...(code === undefined ? {} : { code }),
   });
 
