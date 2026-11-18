@@ -46,8 +46,7 @@ encore.
 `obtenirContexteMethode({ sujet, max? })` rend un noyau et au plus dix extraits de 1 500
 caractères, **tous passés par `filtrerPourSortie`** : une fiche avec un montant, un courriel,
 un téléphone, une promesse de gain, un témoignage, un ancrage local, ou une des trois
-étiquettes interdites, n'est pas rendue. Si le noyau est refusé, il n'est pas remplacé : le
-fondateur réécrit sa section « essentiel » sans chiffres.
+étiquettes interdites, n'est pas rendue. Si le noyau est refusé, il n'est jamais remplacé par une fiche qui n'est pas un noyau ; un autre noyau sain (autre fiche numérotée 00), s'il existe, peut être servi. Pour retrouver un noyau, le fondateur réécrit sa section « essentiel » sans chiffres.
 
 Appelants autorisés aujourd'hui : l'import seul. Tout autre fichier qui importerait la couche
 fait échouer `aucun-extrait-prive.spec.ts` : ajouter un appelant est une décision à part.

@@ -51,7 +51,7 @@ const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-
 
 /** Numéro français (national, +33 ou 0033) ou international en « + » suivi de 8 chiffres ou plus. */
 const MOTIF_TELEPHONE =
-  /(?:(?:\+33|0033)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|(?<![\d.,])0[1-9](?:[\s.-]?\d{2}){4}(?![\d])|\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){7,})/;
+  /(?:(?:\(?\+33\)?|0033)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|(?<![\d.,])0[1-9](?:[\s.-]?\d{2}){4}(?![\d])|\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){7,})/;
 
 export function contientCourriel(texte: string): boolean {
   return MOTIF_COURRIEL.test(texte);

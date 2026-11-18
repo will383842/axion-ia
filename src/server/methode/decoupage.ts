@@ -102,7 +102,9 @@ const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
 const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|mds?|mrds?|mrd|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`;
 // symbole ou « EUR » placé devant le nombre
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
-const MOTIF_MONTANT = new RegExp(`${MONTANT_APRES}|${MONTANT_AVANT}`, "i");
+// nombre suivi d'un prix hors taxes / toutes taxes, ou d'un milliard, sans devise
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:HT|TTC|mds?|mrds?|mrd|milliards?)\b`;
+const MOTIF_MONTANT = new RegExp(`${MONTANT_APRES}|${MONTANT_AVANT}|${MONTANT_SANS_DEVISE}`, "i");
 
 export function contientMontant(texte: string): boolean {
   return MOTIF_MONTANT.test(texte);
