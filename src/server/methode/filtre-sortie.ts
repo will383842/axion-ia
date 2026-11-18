@@ -43,25 +43,31 @@ export interface FicheFiltrable {
   readonly etiquettes?: readonly string[];
 }
 
-const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/;
+const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/;
 
 /**
  * Courriel masqué, lu sur le texte normalisé : « [at] », « (at) », « {at} », « arobase »,
  * « @ » entouré d'espaces, ou « @ » suivi d'un domaine écrit « point » / « [dot] ».
  */
 const MOTIF_COURRIEL_MASQUE =
-  /[[({]\s?at\s?[\])}]|\barobase\b|[a-z0-9]\s+@\s+[a-z0-9]|@\s?[a-z0-9-]+\s?(?:[[({]\s?)?(?:dot|point)(?:\s?[\])}])?\s?[a-z]{2,}|@\s?[a-z0-9-]+\.[a-z]{2,}/;
+  /[[({]\s?at\s?[\])}]|\barobase\b|@|\s(?:at|chez|a)\s[a-z0-9-]{2,40}\s(?:dot|point)\s[a-z]{2,}|\s(?:dot|point)\s(?:com|fr|net|org|io|eu|info|biz|be|ch|invalid)\b/;
 
 /** Numéro français (national, +33 ou 0033) ou international en « + » suivi de 8 chiffres ou plus. */
 const MOTIF_TELEPHONE =
   /(?:\(\s?(?:\+|00)?33\s?\)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|\(\s?0[1-9]\s?\)(?:[\s.-]?\d{2}){4}|\(0\)\s?[1-9](?:[\s.-]?\d{2}){4}|(?:\(?\+33\)?|0033)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|(?<![\d.,])0[1-9](?:[\s.-]?\d{2}){4}(?![\d])|\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){7,})/;
 
+/** Dix chiffres commençant par 0 avec n'importe quels séparateurs, ou neuf chiffres en paires sans le 0. */
+const MOTIF_TELEPHONE_LARGE =
+  /(?<![\d.,])0[1-9](?:[\s.\/-]?\d){8}(?!\d)|(?<![\d.,])[1-9](?:[\s.\/-]\d{2}){4}(?!\d)/;
+
 export function contientCourriel(texte: string): boolean {
-  return MOTIF_COURRIEL.test(texte) || MOTIF_COURRIEL_MASQUE.test(normaliserPourControle(texte));
+  const nfkc = texte.normalize("NFKC");
+  return MOTIF_COURRIEL.test(nfkc) || MOTIF_COURRIEL_MASQUE.test(normaliserPourControle(nfkc));
 }
 
 export function contientTelephone(texte: string): boolean {
-  return MOTIF_TELEPHONE.test(texte);
+  const nfkc = texte.normalize("NFKC");
+  return MOTIF_TELEPHONE.test(nfkc) || MOTIF_TELEPHONE_LARGE.test(nfkc);
 }
 
 /**
