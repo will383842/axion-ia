@@ -193,7 +193,7 @@ export const GAINS = {
     {
       titre: "Votre équipe formée à l’IA.",
       texte:
-        "4 h, jusqu’à 15 personnes : l’une des mesures possibles au titre de l’article 4 de l’AI Act.",
+        "4 h, jusqu’à 15 personnes : l’une des mesures possibles au titre de l’article 4 de l’AI Act.",
     },
   ],
 } as const;
