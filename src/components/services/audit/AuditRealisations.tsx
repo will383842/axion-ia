@@ -1,6 +1,6 @@
 /**
  * AuditRealisations — bande « Réalisations » en défilement infini (droite →
- * gauche), placée juste après AuditWhyChooseUs (« Le seul partenaire qui
+ * gauche), placée juste après AuditWhyChooseUs (« Un partenaire qui
  * maîtrise toute la chaîne IA, de bout en bout »).
  *
  * Refonte 2026-05-31 (Will) — 8 projets diversifiés, NON cliquables, qui

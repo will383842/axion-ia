@@ -65,9 +65,8 @@ const REALISATIONS: ReadonlyArray<Realisation> = [
     titleEn: "RAG chatbot grafted on existing site",
     metricFr: "80 % de questions auto",
     metricEn: "80% questions auto-resolved",
-    outcomeFr:
-      "Assistant ancré sur le contenu du site, réponses précises 24h/7j, zéro hallucination.",
-    outcomeEn: "Assistant grounded in the site content, accurate answers 24/7, zero hallucination.",
+    outcomeFr: "Assistant ancré sur le contenu du site, réponses fondées sur le contenu, 24h/7j.",
+    outcomeEn: "Assistant grounded in the site content, answers based on the content, 24/7.",
     image: "/images/axion-ia-traitement-reclamations-312-semaine-4-minutes-ia-banniere.webp",
     imageAltFr: "Chatbot RAG traitant automatiquement les demandes clients sur un site web",
     imageAltEn: "RAG chatbot automatically handling customer requests on a website",

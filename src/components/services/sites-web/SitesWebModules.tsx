@@ -37,9 +37,9 @@ const MODULES: ReadonlyArray<ModuleCard> = [
     metricLabelFr: "questions traitées auto",
     metricLabelEn: "auto-resolved questions",
     bodyFr:
-      "Formé sur votre base documentaire (FAQ, catalogue, procédures), il répond précisément à vos visiteurs 24h/7j — zéro hallucination, sources citées.",
+      "Formé sur votre base documentaire (FAQ, catalogue, procédures), il répond précisément à vos visiteurs 24h/7j — sources citées.",
     bodyEn:
-      "Trained on your knowledge base (FAQ, catalogue, procedures), it answers your visitors precisely 24/7 — zero hallucination, sources cited.",
+      "Trained on your knowledge base (FAQ, catalogue, procedures), it answers your visitors precisely 24/7 — sources cited.",
     delayFr: "3 semaines",
     delayEn: "3 weeks",
   },

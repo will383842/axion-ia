@@ -188,7 +188,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
       "A3 ouvert / A4 fermé · 420 × 297 mm à plat, 210 × 297 mm plié · pli central · " +
       "pages 2-3 conçues comme une seule double page, bandeau traversant le pli",
     resume:
-      "Les 21 formations et le séminaire sur une seule page, avec les prix publics et la prise en charge OPCO. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
+      "Les 21 formations et le séminaire sur une seule page, avec les prix publics. Le format à laisser après un rendez-vous quand le catalogue 48 p. est trop lourd.",
     fichiersPublics: [],
     fichiersHorsLigne: [
       {
@@ -212,7 +212,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     icon: "Newspaper",
     nom: "Flyer A5 · recto-verso",
     format: "A5 · 148 × 210 mm fini · 154 × 216 mm avec 3 mm de fond perdu",
-    resume: `La présentation courte d’Axion-IA : les cinq activités, la prise en charge OPCO jusqu’au reste à charge nul, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
+    resume: `La présentation courte d’Axion-IA : les cinq activités, le financement indiqué au premier échange, et le coup de projecteur — podcast, interviews, page dédiée — affiché ${VALEUR_BARREE} barré puis ${GRATUIT}. À laisser après un rendez-vous ou à diffuser en salon.`,
     fichiersPublics: [],
     fichiersHorsLigne: [
       {

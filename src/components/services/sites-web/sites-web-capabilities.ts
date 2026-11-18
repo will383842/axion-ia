@@ -106,13 +106,13 @@ export const SITES_WEB_CAPABILITIES: ReadonlyArray<Capability> = [
     introFr: "Conversationnel ancré sur vos données.",
     introEn: "Conversational, grounded in your data.",
     itemsFr: [
-      "Chatbot RAG zéro hallucination",
+      "Chatbot RAG sur vos contenus",
       "Assistant contextuel in-app",
       "Escalade humaine",
       "Voix & multilingue",
     ],
     itemsEn: [
-      "Zero-hallucination RAG chatbot",
+      "RAG chatbot on your content",
       "Contextual in-app assistant",
       "Human escalation",
       "Voice & multilingual",

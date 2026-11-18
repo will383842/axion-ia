@@ -21,7 +21,7 @@
 import { EFFECTIF_PLAGE_FR } from "./effectif";
 
 /** Ligne unique, pour une description de section ou une méta. */
-export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Paiement, annulation et prise en charge OPCO : conditions ci-dessous et conditions générales de vente.`;
+export const CONDITIONS_TARIFAIRES_RESUME_FR = `Prix en euros hors taxes, par groupe ${EFFECTIF_PLAGE_FR} — jamais par personne. Paiement, annulation et report : conditions ci-dessous et conditions générales de vente.`;
 
 /** Les conditions réelles, dans l'ordre où le client les rencontre. */
 export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: string }> = [
@@ -40,9 +40,9 @@ export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: str
       "À plus de 15 jours ouvrés avant le début, aucune somme n'est due. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. La formation est reportable une fois sans frais, à une date convenue ensemble.",
   },
   {
-    titre: "Prise en charge OPCO",
+    titre: "Financement",
     texte:
-      "Vous déposez la demande auprès de votre OPCO avant le début de la formation. En cas de refus ou de prise en charge partielle, les sommes non prises en charge restent dues par l'entreprise.",
+      "Nous vous indiquons les solutions de financement possibles lors du premier échange. La formation reste due par l'entreprise dans les conditions prévues au devis.",
   },
 ];
 

@@ -129,7 +129,7 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
         url: `${SITE_URL}/${loc}/sites-web-augmentes`,
         description: isFr
           ? "Assistant conversationnel ancré sur vos contenus, hébergé UE."
-          : "Conversational assistant grounded in your content, zero hallucination, EU-hosted.",
+          : "Conversational assistant grounded in your content, EU-hosted.",
       },
       {
         position: 2,

@@ -1951,12 +1951,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Existe-t-il des aides ou subventions pour un projet IA ?",
       answer:
-        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et une éventuelle prise en charge se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès l'appel de cadrage, avant même le devis.",
+        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et un éventuel financement public se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès l'appel de cadrage, avant même le devis.",
       keyPoints: [
         "Des dispositifs nationaux, régionaux et fiscaux existent — aucun n'est automatique",
         "L'éligibilité dépend de votre taille, de votre secteur et de votre région",
         "Elle se vérifie auprès de l'organisme qui accorde l'aide, pas auprès du prestataire",
-        "Axion-IA ne porte aucun dispositif et ne conditionne aucun devis à une prise en charge",
+        "Axion-IA ne porte aucun dispositif et ne conditionne aucun devis à une aide publique",
         "Périmètre écrit, devis détaillé et gains chiffrés : les pièces utiles à un dossier",
       ],
       facts: [
@@ -1973,7 +1973,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Une aide ne change pas le prix",
           detail:
-            "Le devis reste un montant net, dû dans les conditions prévues. Une prise en charge éventuelle intervient après coup, entre vous et l'organisme, sans effet rétroactif sur la facture.",
+            "Le devis reste un montant net, dû dans les conditions prévues. Une aide éventuelle intervient après coup, entre vous et l'organisme, sans effet rétroactif sur la facture.",
         },
         {
           title: "Ce n'est pas un conseil fiscal",
