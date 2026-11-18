@@ -28,6 +28,7 @@ import {
   STUDY_NAME_FR,
   STUDY_ATTRIBUTION,
   SEUIL_REPONSES_REELLES,
+  METHODE_REPONSES_REELLES,
 } from "@/content/observatoire/study";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import { STUDY_REGIONS } from "@/content/observatoire/study";
@@ -43,6 +44,8 @@ export interface AnalysisSegmentComment {
 }
 
 export interface BarometerAnalysisPayload {
+  /** Marqueur de méthode : sans lui, l'analyse n'est jamais publiée. */
+  readonly methode?: number;
   /** Vue d'ensemble (2-4 phrases, autoportante, citable). */
   readonly overview: string;
   /** Lecture par segment notable (taille / secteur / région). */
@@ -153,6 +156,9 @@ export async function readLatestAnalysis(): Promise<BarometerAnalysisRecord | nu
   try {
     const row = await prisma.barometerAnalysis.findUnique({ where: { key: ANALYSIS_KEY } });
     if (!row || row.basedOnTotal < SEUIL_REPONSES_REELLES) return null;
+    // Ancienne analyse (calculée avec le seed) : jamais publiée, quel que soit basedOnTotal.
+    const marque = (row.payload as { methode?: number } | null)?.methode;
+    if (marque !== METHODE_REPONSES_REELLES) return null;
     return {
       payload: row.payload as unknown as BarometerAnalysisPayload,
       generatedAt: row.generatedAt.toISOString(),
@@ -185,7 +191,13 @@ export async function generateAndPersistAnalysis(
       return { ok: false, reason: "no-real-responses" };
     }
     // Économie : pas de régénération si l'analyse couvre déjà l'effectif courant.
-    if (!opts.force && existing && existing.basedOnTotal === snapshot.totalResponses) {
+    const existingMarque = (existing?.payload as { methode?: number } | null)?.methode;
+    if (
+      !opts.force &&
+      existing &&
+      existingMarque === METHODE_REPONSES_REELLES &&
+      existing.basedOnTotal === snapshot.totalResponses
+    ) {
       return { ok: true, regenerated: false, basedOnTotal: existing.basedOnTotal };
     }
 
@@ -217,6 +229,7 @@ export async function generateAndPersistAnalysis(
     }
 
     const payload: BarometerAnalysisPayload = {
+      methode: METHODE_REPONSES_REELLES,
       overview: parsed.overview.trim(),
       segments: Array.isArray(parsed.segments)
         ? parsed.segments

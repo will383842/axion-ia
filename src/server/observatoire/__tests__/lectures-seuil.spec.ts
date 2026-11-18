@@ -65,7 +65,7 @@ describe("readLatestAnalysis — seuil de publication", () => {
   beforeEach(() => analysisFindUnique.mockReset());
 
   const ligne = (basedOnTotal: number) => ({
-    payload: { overview: "x" },
+    payload: { methode: METHODE_REPONSES_REELLES, overview: "x" },
     generatedAt: new Date("2026-10-01T00:00:00Z"),
     basedOnTotal,
   });
@@ -79,6 +79,11 @@ describe("readLatestAnalysis — seuil de publication", () => {
     analysisFindUnique.mockResolvedValue(ligne(SEUIL_REPONSES_REELLES));
     const a = await readLatestAnalysis();
     expect(a?.basedOnTotal).toBe(SEUIL_REPONSES_REELLES);
+  });
+
+  it("une ancienne analyse sans marqueur n'est jamais publiée, même au-dessus du seuil", async () => {
+    analysisFindUnique.mockResolvedValue({ ...ligne(8627), payload: { overview: "x" } });
+    expect(await readLatestAnalysis()).toBeNull();
   });
 
   it("renvoie null si aucune ligne", async () => {
