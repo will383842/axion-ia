@@ -78,6 +78,13 @@ describe("motifRefus — formes de montant (k, M, symbole devant)", () => {
     ["3 millions d'", "euros"],
     ["2 mille ", "euros"],
     ["EUR", " 40"],
+    ["3 Mds ", EURO],
+    ["3 Mrd", EURO],
+    ["2 Mds d'", "euros"],
+    ["cinq mille ", "euros"],
+    ["cent ", "euros"],
+    ["K", "EUR 5"],
+    ["un prix en ", EURO],
   ].map((morceaux) => morceaux.join(""));
 
   for (const forme of formes) {

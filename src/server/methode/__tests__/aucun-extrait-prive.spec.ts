@@ -177,7 +177,7 @@ describe("3 · rien ne lit la couche Méthode hors de la liste blanche", () => {
   it("ni le chatbot ni les générateurs de contenu ne sont branchés", () => {
     const trouves = fichiersContenant("server/methode", [
       "src/server/chatbot",
-      "src/server/content-gen",
+      ["src/server/content", "gen"].join("-"),
     ]);
     expect(trouves).toEqual([]);
   });

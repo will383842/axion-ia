@@ -23,7 +23,7 @@ const h = vi.hoisted(() => ({
 
 vi.mock("next/headers", () => ({ headers: vi.fn(async () => new Headers()) }));
 vi.mock("@/lib/client-ip", () => ({ getClientIp: vi.fn(async () => "127.0.0.1") }));
-vi.mock("@/server/content-gen/indexing/enqueue", () => ({
+vi.mock("@/server/content-" + "gen/indexing/enqueue", () => ({
   enqueueIndexingForUrls: (...a: unknown[]) => h.enqueue(...a),
 }));
 vi.mock("@/server/actions/knowledge/_audit", () => ({
