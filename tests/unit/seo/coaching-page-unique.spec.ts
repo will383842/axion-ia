@@ -27,10 +27,11 @@ import { metadataCanoniqueVersCoaching } from "@/lib/seo/coaching-canonical";
 
 const lire = (rel: string) => readFileSync(join(process.cwd(), rel), "utf8");
 const HUB = "src/app/[locale]/un-a-un/page.tsx";
+const VISION = "src/app/[locale]/interventions/dirigeant-vision-strategique/page.tsx";
 const SECONDAIRES = [
   "src/app/[locale]/interventions/individuel/page.tsx",
   "src/app/[locale]/interventions/dirigeants/page.tsx",
-  "src/app/[locale]/interventions/dirigeant-vision-strategique/page.tsx",
+  VISION,
 ];
 const INTERDITS =
   /Qualiopi|OPCO|prise en charge|financement|CPF|France Travail|Grenoble|Aucun gain garanti|formation obligatoire|Williams|Jullin/i;
@@ -79,7 +80,7 @@ describe("V2-08 — pages secondaires : canonical vers la référence", () => {
   });
 
   it("la page Vision IA stratégique n'émet pas de Service : le gabarit partagé le neutralise pour ce slug", () => {
-    expect(lire(SECONDAIRES[2])).toContain("InterventionDetailPage");
+    expect(lire(VISION)).toContain("InterventionDetailPage");
     const gabarit = lire("src/components/sections/InterventionDetailPage.tsx");
     expect(gabarit).toMatch(
       /slug === "dirigeant-vision-strategique"\s*\? null\s*: buildServiceJsonLd\(/,
