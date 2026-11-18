@@ -1,34 +1,39 @@
 /**
  * Couche « Méthode » — LE POINT D'ENTRÉE UNIQUE (ADR 0076).
  *
- * Toute automatisation qui parle à un client (mail, offre, script d'appel,
- * outil MCP…) passe par `obtenirContexteMethode`. Elle rend :
- *   - `noyau` : la fiche 00 « Méthode de vente », section « L'essentiel en 30
- *     secondes » + « Le chemin », toujours injectée ;
- *   - `extraits` : les fiches les plus proches du sujet (recherche plein texte
- *     Postgres), dans la collection `methode-vente` — et `methode-secteur-sante`
- *     SEULEMENT si `secteur === "sante"`.
+ * Rien n'appelle cette couche aujourd'hui : ni le chatbot, ni les générateurs de contenu,
+ * ni une route. Tout futur appelant passe par `obtenirContexteMethode`. Elle rend :
+ *   - `noyau` : la section « essentiel » de la fiche numérotée 00 (reconnue par la forme
+ *     du slug, voir `estSlugNoyau`) ;
+ *   - `extraits` : les fiches les plus proches du sujet (recherche plein texte Postgres),
+ *     dans la collection `methode-vente` uniquement. Le secteur santé n'est pas servi.
  *
- * Cloisonnement (non négociable) : audience `team`, statut `approved`, jamais
- * `published`. Ces fiches ne sortent donc jamais par la recherche publique
- * (`searchKnowledge` exige `published`/`deprecated` ET `confidentiality = public`),
- * ni par le sitemap, ni par le chatbot des visiteurs.
+ * Le noyau ET les extraits traversent `filtrerPourSortie` (filtre-sortie.ts) : une fiche
+ * qui porte un montant, un courriel, un téléphone, une promesse de gain, un témoignage ou
+ * un ancrage local, ou une étiquette `chiffres-exercice` / `doctrine:a-revoir` /
+ * `secteur:sante`, n'est jamais rendue.
+ *
+ * Cloisonnement (non négociable) : audience `team`, confidentialité `internal`, statut
+ * `approved`, jamais `published`, issue de l'import (`sourceFactoryId = methode-import`).
+ * Ces fiches ne sortent jamais par un lecteur public, et la console ne peut pas les
+ * publier (garde dans `executeTransition`).
  *
  * Interrupteur : `METHODE_ACTIVE` (défaut éteint). Éteint, la fonction rend
- * `{ noyau: null, extraits: [] }` sans toucher la base : rien ne change nulle part.
+ * `{ noyau: null, extraits: [] }` sans toucher la base.
  */
 
 import { prisma } from "@/lib/prisma";
 import { buildOrTsQuery } from "@/lib/knowledge/search-fts";
 
 import {
-  COLLECTION_SANTE,
   COLLECTION_VENTE,
+  ETIQUETTE_CHIFFRES,
   ETIQUETTE_DOCTRINE,
   ETIQUETTE_SANTE,
   MOTIF_SLUG_NOYAU,
   estSlugNoyau,
 } from "./decoupage";
+import { filtrerPourSortie } from "./filtre-sortie";
 
 export {
   AVERTISSEMENT_CHIFFRES,
@@ -40,6 +45,10 @@ export {
   MOTIF_SLUG_NOYAU,
   estSlugNoyau,
 } from "./decoupage";
+export { filtrerPourSortie, motifRefus } from "./filtre-sortie";
+
+/** Origine des entrées de cette couche (posée par l'import, lue ici). */
+export const SOURCE_IMPORT_METHODE = "methode-import";
 
 /** Nombre d'extraits par défaut, et plafond. */
 export const EXTRAITS_PAR_DEFAUT = 5;
@@ -48,13 +57,15 @@ export const EXTRAITS_MAXIMUM = 10;
 /** Un extrait est borné : le modèle reçoit une fiche, pas un livre. */
 export const EXTRAIT_MAX_CARACTERES = 1_500;
 
-export type SecteurMethode = "sante";
+/**
+ * On lit plus de lignes que demandé : le filtre de sortie en refuse, et un refus ne doit
+ * pas vider la réponse. Plafond de lecture, jamais de sortie.
+ */
+const FACTEUR_DE_LECTURE = 4;
 
 export interface DemandeContexteMethode {
   /** Ce dont parle le texte à produire (« relance après diagnostic », « objection prix »…). */
   readonly sujet: string;
-  /** `"sante"` ouvre la collection santé. Toute autre valeur l'ignore. */
-  readonly secteur?: string | null;
   /** Nombre d'extraits (défaut 5, plafond 10, 0 = noyau seul). */
   readonly max?: number;
 }
@@ -86,16 +97,11 @@ export function methodeActive(): boolean {
 }
 
 /**
- * Étiquettes qui EXCLUENT une fiche des extraits : la doctrine toujours, la
- * santé sauf demande explicite.
+ * Étiquettes qui EXCLUENT une fiche dès la requête (le filtre de sortie les refuse de
+ * toute façon) : le chiffré, la doctrine à revoir et la santé, toujours.
  */
-export function etiquettesExclues(secteur?: string | null): string[] {
-  return secteur === "sante" ? [ETIQUETTE_DOCTRINE] : [ETIQUETTE_SANTE, ETIQUETTE_DOCTRINE];
-}
-
-/** Collections interrogées pour un secteur donné. */
-export function collectionsPour(secteur?: string | null): string[] {
-  return secteur === "sante" ? [COLLECTION_VENTE, COLLECTION_SANTE] : [COLLECTION_VENTE];
+export function etiquettesExclues(): string[] {
+  return [ETIQUETTE_CHIFFRES, ETIQUETTE_DOCTRINE, ETIQUETTE_SANTE];
 }
 
 function borner(texte: string, max: number): string {
@@ -111,12 +117,15 @@ async function lireNoyau(): Promise<FicheMethode | null> {
       slug: { startsWith: "methode/", endsWith: "/essentiel" },
       deletedAt: null,
       audience: "team",
+      confidentiality: "internal",
       status: "approved",
+      sourceFactoryId: SOURCE_IMPORT_METHODE,
     },
     orderBy: { slug: "asc" },
     take: 20,
     select: {
       slug: true,
+      tags: { select: { tag: { select: { slug: true } } } },
       translations: {
         where: { locale: "fr" },
         select: { title: true, bodyText: true },
@@ -124,10 +133,22 @@ async function lireNoyau(): Promise<FicheMethode | null> {
       },
     },
   });
-  const entree = candidates.find((c) => estSlugNoyau(c.slug));
-  const trad = entree?.translations[0];
-  if (!entree || !trad) return null;
-  return { slug: entree.slug, titre: trad.title, texte: trad.bodyText ?? "" };
+  // Le premier noyau SERVABLE : un noyau refusé par le filtre n'est jamais remplacé par
+  // une fiche qui n'est pas le noyau, mais un autre « 00 » sain peut l'être.
+  for (const c of candidates) {
+    if (!estSlugNoyau(c.slug)) continue;
+    const trad = c.translations[0];
+    if (!trad) continue;
+    const fiche: FicheMethode & { etiquettes: readonly string[] } = {
+      slug: c.slug,
+      titre: trad.title,
+      texte: trad.bodyText ?? "",
+      etiquettes: (c.tags ?? []).map((t) => t.tag.slug),
+    };
+    if (filtrerPourSortie([fiche]).length === 0) continue;
+    return { slug: fiche.slug, titre: fiche.titre, texte: fiche.texte };
+  }
+  return null;
 }
 
 interface LigneExtrait {
@@ -138,19 +159,12 @@ interface LigneExtrait {
   etiquettes: string[] | null;
 }
 
-async function chercherExtraits(
-  sujet: string,
-  collections: readonly string[],
-  exclues: readonly string[],
-  limite: number,
-): Promise<ExtraitMethode[]> {
+async function chercherExtraits(sujet: string, limite: number): Promise<ExtraitMethode[]> {
   const requete = buildOrTsQuery(sujet);
   if (!requete || limite <= 0) return [];
 
-  // SQL paramétré. Le filtre « santé » est DOUBLÉ : par la collection, et par
-  // l'étiquette `secteur:sante` — une fiche santé rangée par erreur dans la
-  // collection générale ne sort pas pour autant. Une fiche `doctrine:a-revoir`
-  // ne sort jamais.
+  // SQL paramétré. Seule la collection « vente » est interrogée (la santé n'est pas servie)
+  // et une fiche étiquetée chiffres, doctrine à revoir ou santé ne sort jamais.
   const lignes = await prisma.$queryRawUnsafe<LigneExtrait[]>(
     `
     SELECT
@@ -171,7 +185,9 @@ async function chercherExtraits(
     WHERE kt.locale = 'fr'::"Locale"
       AND ke.deleted_at IS NULL
       AND ke.audience = 'team'::"KbAudience"
+      AND ke.confidentiality = 'internal'::"KbConfidentiality"
       AND ke.status = 'approved'::"KbStatus"
+      AND ke.source_factory_id = 'methode-import'
       AND kc.slug = ANY($2::text[])
       AND ke.slug !~ $3
       AND NOT EXISTS (
@@ -185,24 +201,28 @@ async function chercherExtraits(
     LIMIT $4;
     `,
     requete,
-    [...collections],
+    [COLLECTION_VENTE],
     MOTIF_SLUG_NOYAU.source,
-    limite,
-    [...exclues],
+    limite * FACTEUR_DE_LECTURE,
+    etiquettesExclues(),
   );
 
-  return lignes.map((l) => ({
+  const lues: ExtraitMethode[] = lignes.map((l) => ({
     slug: l.slug,
     titre: l.titre,
-    texte: borner(l.texte ?? "", EXTRAIT_MAX_CARACTERES),
+    texte: l.texte ?? "",
     collection: l.collection,
     etiquettes: l.etiquettes ?? [],
   }));
+  // Le filtre lit le texte ENTIER ; seule la sortie est ensuite bornée.
+  return filtrerPourSortie(lues)
+    .slice(0, limite)
+    .map((e) => ({ ...e, texte: borner(e.texte, EXTRAIT_MAX_CARACTERES) }));
 }
 
 /**
- * LE point d'entrée. Ne jette jamais : une panne de base rend le contexte
- * neutre (l'outil appelant continue sans méthode, comme interrupteur éteint).
+ * LE point d'entrée. Ne jette jamais : une panne de base rend le contexte neutre
+ * (l'appelant continue sans méthode, comme interrupteur éteint).
  */
 export async function obtenirContexteMethode(
   demande: DemandeContexteMethode,
@@ -216,12 +236,7 @@ export async function obtenirContexteMethode(
   try {
     const [noyau, extraits] = await Promise.all([
       lireNoyau(),
-      chercherExtraits(
-        demande.sujet.trim(),
-        collectionsPour(demande.secteur),
-        etiquettesExclues(demande.secteur),
-        max,
-      ),
+      chercherExtraits(demande.sujet.trim(), max),
     ]);
     return { noyau, extraits };
   } catch (err) {

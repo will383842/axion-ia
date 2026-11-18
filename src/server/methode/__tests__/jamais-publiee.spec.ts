@@ -161,7 +161,9 @@ vi.mock("@/lib/prisma", () => ({
       findUnique: vi.fn(async () => h.entry),
       findMany: (...a: unknown[]) => findManyMock(...(a as [never])),
     },
-    knowledgeTranslation: { findFirst: (...a: unknown[]) => translationFindFirstMock(...(a as [never])) },
+    knowledgeTranslation: {
+      findFirst: (...a: unknown[]) => translationFindFirstMock(...(a as [never])),
+    },
     knowledgeVersion: { findFirst: vi.fn(async () => null) },
     $transaction: (...a: unknown[]) => h.transaction(...a),
     $queryRawUnsafe: (...a: unknown[]) => queryRawUnsafeMock(...(a as [string])),
@@ -198,9 +200,11 @@ function entree(extra: Record<string, unknown>): Record<string, unknown> {
 
 describe("A · executeTransition refuse de publier ou de programmer une fiche Méthode", () => {
   beforeEach(() => {
-    h.transaction.mockReset().mockImplementation(async (cb: (tx: unknown) => unknown) =>
-      cb({ knowledgeEntry: { update: h.update }, knowledgeVersion: { create: vi.fn() } }),
-    );
+    h.transaction
+      .mockReset()
+      .mockImplementation(async (cb: (tx: unknown) => unknown) =>
+        cb({ knowledgeEntry: { update: h.update }, knowledgeVersion: { create: vi.fn() } }),
+      );
     h.update.mockReset();
     h.audit.mockReset();
     h.enqueue.mockReset();
@@ -251,15 +255,18 @@ describe("A · executeTransition refuse de publier ou de programmer une fiche M�
 
 describe("B · aucun lecteur public ne rend une entrée équipe / interne / approuvée", () => {
   it("searchKnowledge, même avec audiences « team » demandées", async () => {
-    for (const audiences of [undefined, ["team"], ["public", "team"]] as const) {
+    const cas: Array<string[] | undefined> = [undefined, ["team"], ["public", "team"]];
+    for (const audiences of cas) {
       const r = await searchKnowledge({
         query: "vitrine",
         locale: "fr",
-        ...(audiences ? { audiences: [...audiences] as never } : {}),
+        ...(audiences ? { audiences: audiences as never } : {}),
       });
-      expect(r.hits.map((x) => x.slug)).not.toContain(METHODE.slug);
-      expect(r.hits.map((x) => x.slug)).toEqual([PUBLIQUE.slug]);
-      expect(r.total).toBe(1);
+      const slugs = r.hits.map((x) => x.slug);
+      expect(slugs).not.toContain(METHODE.slug);
+      // « team » seul n'a aucune fiche publiée : vide, jamais la fiche Méthode.
+      expect(slugs).toEqual(audiences && !audiences.includes("public") ? [] : [PUBLIQUE.slug]);
+      expect(r.total).toBe(slugs.length);
     }
   });
 

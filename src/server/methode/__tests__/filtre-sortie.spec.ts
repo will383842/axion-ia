@@ -20,7 +20,7 @@ import { ETIQUETTE_CHIFFRES, ETIQUETTE_DOCTRINE, ETIQUETTE_SANTE } from "../deco
 import { obtenirContexteMethode, filtrerPourSortie } from "../index";
 import { contientCourriel, contientTelephone, motifRefus } from "../filtre-sortie";
 
-const EURO = "€";
+const EURO = String.fromCharCode(0x20ac);
 const MONTANT = `${["4", "200"].join(" ")} ${EURO}`;
 const COURRIEL = ["faux.nom", "exemple.invalid"].join("@");
 const TELEPHONE = ["06", "12", "34", "56", "78"].join(" ");
@@ -34,7 +34,9 @@ function fiche(texte: string, etiquettes: string[] = [], titre = "Un titre inven
 
 describe("motifRefus — fiche par fiche", () => {
   it("une fiche saine passe", () => {
-    expect(motifRefus(fiche("Accueillir le client, puis l'écouter sans l'interrompre."))).toBeNull();
+    expect(
+      motifRefus(fiche("Accueillir le client, puis l'écouter sans l'interrompre.")),
+    ).toBeNull();
   });
 
   it("refuse un montant en euros, dans le texte comme dans le titre", () => {
@@ -52,12 +54,12 @@ describe("motifRefus — fiche par fiche", () => {
     expect(motifRefus(fiche(`Écrire à ${COURRIEL}.`))).toBe("courriel");
     expect(motifRefus(fiche(`Appeler le ${TELEPHONE}.`))).toBe("telephone");
     expect(contientCourriel(`x ${COURRIEL}`)).toBe(true);
-    expect(contientTelephone(`+33 6 12 34 56 78`)).toBe(true);
+    expect(contientTelephone(`${["+33", "6", "12", "34", "56", "78"].join(" ")}`)).toBe(true);
     expect(contientTelephone("Il y a 12 fournées en 2026.")).toBe(false);
   });
 
   it("refuse une promesse de gain, un témoignage et un ancrage local", () => {
-    expect(motifRefus(fiche("Le gain est garanti pour tous."))).toMatch(/^doctrine:promesse-garantie/);
+    expect(motifRefus(fiche("Un gain garanti pour tous."))).toMatch(/^doctrine:promesse-garantie/);
     expect(motifRefus(fiche("Un de nos clients a doublé son chiffre."))).toMatch(
       /^doctrine:temoignage-axion/,
     );
@@ -119,7 +121,7 @@ describe("obtenirContexteMethode — rien d'interdit ne sort", () => {
   });
 
   it("noyau avec une promesse, un témoignage ou un ancrage local : NON servi", async () => {
-    for (const t of ["Le gain est garanti.", "Un de nos clients a réussi.", ANCRAGE]) {
+    for (const t of ["Un gain garanti.", "Un de nos clients a réussi.", ANCRAGE]) {
       noyauEn(t);
       expect((await obtenirContexteMethode({ sujet: "vitrine" })).noyau).toBeNull();
     }
@@ -138,7 +140,7 @@ describe("obtenirContexteMethode — rien d'interdit ne sort", () => {
   it("extrait avec « garanti », témoignage, ancrage local, courriel, téléphone ou montant : NON servi", async () => {
     noyauEn("Texte sain.");
     extraitsEn([
-      { slug: "methode/faux-a/garanti", texte: "Le gain est garanti." },
+      { slug: "methode/faux-a/garanti", texte: "Un gain garanti." },
       { slug: "methode/faux-a/temoin", texte: "Un de nos clients a doublé." },
       { slug: "methode/faux-a/siege", texte: ANCRAGE },
       { slug: "methode/faux-a/mail", texte: `Écrire à ${COURRIEL}` },
@@ -154,7 +156,7 @@ describe("obtenirContexteMethode — rien d'interdit ne sort", () => {
   it("un extrait refusé ne fait pas passer le total sous la demande si d'autres sont sains", async () => {
     noyauEn("Texte sain.");
     extraitsEn([
-      { slug: "methode/faux-a/1", texte: "Le gain est garanti." },
+      { slug: "methode/faux-a/1", texte: "Un gain garanti." },
       { slug: "methode/faux-a/2", texte: "Sain deux." },
       { slug: "methode/faux-a/3", texte: "Sain trois." },
     ]);

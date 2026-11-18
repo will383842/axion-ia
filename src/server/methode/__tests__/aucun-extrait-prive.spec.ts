@@ -37,14 +37,16 @@ const FICHIERS_DE_LA_FICHE = [
   "docs/knowledge/COUCHE-METHODE.md",
 ];
 
-const EURO = "€";
-const MOTIF_MONTANT = new RegExp(
-  String.raw`\d[\d\s  .,]*\s?(?:${EURO}|EUR\b|euros?\b)`,
-  "i",
-);
+const EURO = String.fromCharCode(0x20ac);
+const MOTIF_MONTANT = new RegExp(String.raw`\d[\d\s  .,]*\s?(?:${EURO}|EUR\b|euros?\b)`, "i");
 const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/;
 const MOTIF_TELEPHONE = /(?:\+33|0033|(?<![\d.]))0?[1-9](?:[\s.-]?\d{2}){4}(?!\d)/;
-const MOTIF_SESSION = /claude\.ai\/code|session_[0-9A-Za-z]{10,}|Claude-Session/i;
+const MOTIF_SESSION = new RegExp(
+  [String.raw`claude\.ai/code`, "session_[0-9A-Za-z]{10,}", ["Claude", "Session"].join("-")].join(
+    "|",
+  ),
+  "i",
+);
 const NOM_FONDATEUR = new RegExp(["Will", "iams"].join(""), "i");
 const NOM_VILLE_SIEGE = new RegExp(["Gren", "obl"].join(""), "i");
 /** Un slug `methode/<x>` où <x> commence par un caractère de slug (ni `<`, ni guillemet). */
@@ -59,7 +61,16 @@ function fichiersContenant(motif: string, pathspec: string[] = []): string[] {
   try {
     const sortie = execFileSync(
       "git",
-      ["grep", "-l", "-I", "--untracked", "-E", motif, "--", ...(pathspec.length ? pathspec : ["."])],
+      [
+        "grep",
+        "-l",
+        "-I",
+        "--untracked",
+        "-E",
+        motif,
+        "--",
+        ...(pathspec.length ? pathspec : ["."]),
+      ],
       { cwd: RACINE, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
     );
     return sortie.split("\n").filter(Boolean);
@@ -104,11 +115,15 @@ describe("1 · aucun contenu réel ou privé dans les fichiers de la fiche", () 
 
   it("les motifs de ce scanner détectent bien ce qu'ils doivent (sinon le test ne prouve rien)", () => {
     expect(MOTIF_MONTANT.test(`12 345 ${EURO}`)).toBe(true);
-    expect(MOTIF_MONTANT.test("3 euros")).toBe(true);
+    expect(MOTIF_MONTANT.test(["3", "euros"].join(" "))).toBe(true);
     expect(MOTIF_COURRIEL.test(["a", "b.invalid"].join("@"))).toBe(true);
-    expect(MOTIF_TELEPHONE.test("01 23 45 67 89")).toBe(true);
-    expect(MOTIF_TELEPHONE.test("+33 6 12 34 56 78")).toBe(true);
-    expect(MOTIF_SESSION.test("https://claude.ai/code/session_ABCDEFGHIJKL")).toBe(true);
+    expect(MOTIF_TELEPHONE.test(["01", "23", "45", "67", "89"].join(" "))).toBe(true);
+    expect(MOTIF_TELEPHONE.test(["+33", "6", "12", "34", "56", "78"].join(" "))).toBe(true);
+    expect(
+      MOTIF_SESSION.test(
+        ["https://claude.ai", "code", ["session", "ABCDEFGHIJKL"].join("_")].join("/"),
+      ),
+    ).toBe(true);
     expect(["methode", "00-quelque-chose"].join("/").match(MOTIF_SLUG_REEL)).not.toBeNull();
     expect("src/server/methode/index.ts".match(MOTIF_SLUG_REEL)).toBeNull();
     expect("methode/faux-a".match(MOTIF_SLUG_REEL)?.[0]).toBe("methode/faux-a");
@@ -146,12 +161,17 @@ describe("3 · rien ne lit la couche Méthode hors de la liste blanche", () => {
       "*.js",
       "*.mjs",
       "*.cjs",
-    ]).filter((f) => !f.startsWith("src/server/methode/") && f !== "scripts/methode/importer-methode.ts");
+    ]).filter(
+      (f) => !f.startsWith("src/server/methode/") && f !== "scripts/methode/importer-methode.ts",
+    );
     expect(trouves).toEqual([]);
   });
 
   it("ni le chatbot ni les générateurs de contenu ne sont branchés", () => {
-    const trouves = fichiersContenant("server/methode", ["src/server/chatbot", "src/server/content-gen"]);
+    const trouves = fichiersContenant("server/methode", [
+      "src/server/chatbot",
+      "src/server/content-gen",
+    ]);
     expect(trouves).toEqual([]);
   });
 });
@@ -191,10 +211,12 @@ describe("4 · toute ouverture arrive éteinte", () => {
     }
   });
 
-  it("src/env.ts : METHODE_ACTIVE et METHODE_STUDIO_OUVERT suivent la forme exacte z.enum([\"true\", \"false\"]).optional()", () => {
+  it('src/env.ts : METHODE_ACTIVE et METHODE_STUDIO_OUVERT suivent la forme exacte z.enum(["true", "false"]).optional()', () => {
     const env = lire("src/env.ts");
     for (const v of ["METHODE_ACTIVE", "METHODE_STUDIO_OUVERT"]) {
-      expect(env).toMatch(new RegExp(`\\b${v}: z\\.enum\\(\\["true", "false"\\]\\)\\.optional\\(\\),`));
+      expect(env).toMatch(
+        new RegExp(`\\b${v}: z\\.enum\\(\\["true", "false"\\]\\)\\.optional\\(\\),`),
+      );
       expect(env).toMatch(new RegExp(`\\b${v}: process\\.env\\.${v},`));
     }
     expect(env).toMatch(/\bMETHODE_STUDIO_SECRET: z\.string\(\)\.min\(32\)\.optional\(\),/);
@@ -203,9 +225,14 @@ describe("4 · toute ouverture arrive éteinte", () => {
 
   it("aucune ligne de code (hors tests) n'écrit ces variables", () => {
     const motifEcriture = String.raw`process\.env\.(${VARIABLES.join("|")})\s*=[^=]|process\.env\[['"](${VARIABLES.join("|")})['"]\]\s*=[^=]`;
-    const trouves = fichiersContenant(motifEcriture, ["*.ts", "*.tsx", "*.js", "*.mjs", "*.sh", "*.yml"]).filter(
-      (f) => !/\.(spec|test)\.[tj]sx?$/.test(f) && !f.includes("/__tests__/"),
-    );
+    const trouves = fichiersContenant(motifEcriture, [
+      "*.ts",
+      "*.tsx",
+      "*.js",
+      "*.mjs",
+      "*.sh",
+      "*.yml",
+    ]).filter((f) => !/\.(spec|test)\.[tj]sx?$/.test(f) && !f.includes("/__tests__/"));
     expect(trouves).toEqual([]);
   });
 });

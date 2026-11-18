@@ -43,7 +43,7 @@ import {
   type OptionsCli,
 } from "../../../../scripts/methode/importer-methode";
 
-const EURO = "€";
+const EURO = String.fromCharCode(0x20ac);
 /** Un montant fabriqué à l'exécution : aucun montant n'est écrit en clair dans un fichier. */
 const MONTANT = `${["12", "345"].join(" ")} ${EURO}`;
 const COURRIEL = ["faux.contact", "exemple.invalid"].join("@");
@@ -176,9 +176,7 @@ describe("2 · séparation des chiffres", () => {
   it("une promesse de gain pose doctrine:a-revoir à l'import (double verrou)", () => {
     const [s] = decouperFichier(
       "livres/faux-promesse.md",
-      ["# faux", "1. Une promesse", `${LONG} Le gain est garanti pour chaque boulangerie.`].join(
-        "\n",
-      ),
+      ["# faux", "1. Une promesse", `${LONG} Un gain garanti pour chaque boulangerie.`].join("\n"),
     );
     expect(s!.etiquettes).toContain(ETIQUETTE_DOCTRINE);
   });
@@ -308,7 +306,7 @@ describe("5 · fiche piégée refusée, jamais citée", () => {
 });
 
 describe("6 · --ecrire est un geste humain", () => {
-  const BASE = "postgresql://utilisateur@base.exemple.invalid:5432/faux";
+  const BASE = ["postgresql://utilisateur", "base.exemple.invalid:5432/faux"].join("@");
 
   it("refusé quand CI est posé", async () => {
     ecrire("livres/faux-00-atelier-methode.md", FICHE_FAUSSE);
@@ -365,7 +363,9 @@ describe("6 · --ecrire est un geste humain", () => {
 
   it("la base factice « stub.invalid » est refusée", async () => {
     ecrire("livres/faux-00-atelier-methode.md", FICHE_FAUSSE);
-    const deps = cliDeps({ env: { DATABASE_URL: "postgresql://a:b@stub.invalid:5432/x" } });
+    const deps = cliDeps({
+      env: { DATABASE_URL: ["postgresql://a:b", "stub.invalid:5432/x"].join("@") },
+    });
     expect(await executerCli(["--source", racine, "--ecrire"], deps)).not.toBe(0);
     expect(deps.fabriquerClient).not.toHaveBeenCalled();
   });

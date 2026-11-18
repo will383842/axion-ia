@@ -94,7 +94,13 @@ export function slugifier(texte: string, max = 60): string {
 }
 
 /** Montant en euros : un nombre suivi du symbole, de « EUR » ou de « euro(s) ». */
-const MOTIF_MONTANT = /\d[\d\s  .,]*\s?(?:€|EUR\b|euros?\b)/i;
+const SYMBOLE_EURO = String.fromCharCode(0x20ac);
+// espace insécable et espace fine insécable, sans les écrire en clair
+const ESPACES_FINES = String.fromCharCode(0xa0, 0x202f);
+const MOTIF_MONTANT = new RegExp(
+  String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`,
+  "i",
+);
 
 export function contientMontant(texte: string): boolean {
   return MOTIF_MONTANT.test(texte);

@@ -74,6 +74,21 @@ export async function executeTransition(input: TransitionInput): Promise<Transit
   if (!entry) return { ok: false, error: "not_found" };
   if (entry.deletedAt) return { ok: false, error: "deleted" };
 
+  // Couche « Méthode » (ADR 0076) : une fiche issue de l'import Méthode est interne, pour
+  // toujours. Ni publication ni PROGRAMMATION (le passage « programmé → publié » est
+  // refusé de la même façon), quel que soit le rôle ou le drapeau `system`.
+  // Le littéral est volontaire : cette garde ne dépend d'aucun import de la couche.
+  if (
+    entry.sourceFactoryId === "methode-import" &&
+    (input.toStatus === "published" || input.toStatus === "scheduled")
+  ) {
+    return {
+      ok: false,
+      error: "methode_non_publiable",
+      reason: "Une fiche Méthode est interne : elle ne peut être ni publiée ni programmée.",
+    };
+  }
+
   const decision = validateTransition(entry.status, input.toStatus, {
     ...input.context,
     authorId: entry.createdById,
