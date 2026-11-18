@@ -12,6 +12,7 @@
  */
 
 import type { AuthorProfile } from "../../prisma/generated/client";
+import { LIBELLE_PLUME_IA } from "@/lib/seo/plume-ia";
 import { buildPersonManonSameAs } from "@/lib/seo/wikidata-sameas";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 
@@ -53,11 +54,13 @@ export function buildPersonManonJsonLd(
     `${profile.displayName} est la plume éditoriale d'Axion-IA. Persona éditoriale transparente — portrait IA disclosed.`;
   return {
     "@context": "https://schema.org",
-    "@type": "Person",
+    // V1-18 : auteur IA = Organization, jamais Person. L'@id garde son ancre `#person`
+    // (référencée par tous les `author`/`creator` déjà émis, ISR compris).
+    "@type": "Organization",
     "@id": `${SITE_URL}/fr/equipe/manon#person`,
-    name: profile.displayName,
-    givenName: profile.displayName,
-    jobTitle: profile.jobTitle,
+    name: LIBELLE_PLUME_IA,
+    alternateName: profile.displayName,
+    slogan: LIBELLE_PLUME_IA,
     url: `${SITE_URL}/fr/equipe/manon`,
     image: {
       "@type": "ImageObject",
@@ -79,7 +82,7 @@ export function buildPersonManonJsonLd(
     additionalType: "https://schema.org/AIGeneratedContent",
     knowsAbout: profile.knowsAbout,
     knowsLanguage: ["fr-FR"],
-    worksFor: { "@id": `${SITE_URL}/#organization` },
+    parentOrganization: { "@id": `${SITE_URL}/#organization` },
     // GARDE-FOU v2.1 : pas de sameAs réseau social (Manon est une persona IA-générée).
     // Sprint v7 Phase 10 — Wikidata Q-number autorisé exclusivement (Knowledge Graph,
     // pas réseau social). Helper retourne array vide si WIKIDATA_QNUMBER_MANON
