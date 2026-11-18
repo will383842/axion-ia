@@ -189,6 +189,68 @@ describe("motifRefus — courriels masqués et indicatifs entre parenthèses", (
   }
 });
 
+describe("motifRefus — tour 2 : autres devises, parts, promesses déguisées, coordonnées", () => {
+  const cyr = String.fromCharCode(0x0430); // « а » cyrillique
+  const grec = String.fromCharCode(0x03bf); // « ο » grec
+  const formes = [
+    j("£", "500"),
+    j("1 500 ", "£"),
+    j("500 ", "GBP"),
+    j("500 ", "CHF"),
+    j("500 ", "francs"),
+    j("\u00a5", "5000"),
+    j("4 ", "bn"),
+    j("trois mille ", "balles"),
+    j("un ticket de 2 000 ", "balles"),
+    j("tarif : 1500", "/mois"),
+    j("1500", "/jour"),
+    j("TJ", "M 800"),
+    j("800 la ", "journée"),
+    j("un ", "million"),
+    j("deux ", "millions de CA"),
+    j("trente ", "%"),
+    j("30 ", "pct"),
+    j("30 p. ", "100"),
+    j("30 p", ".c."),
+    j("0,5 ", "\u2030"),
+    j("9 clients ", "sur 10"),
+    j("neuf clients ", "sur dix"),
+    j("la moitié ", "des clients signent"),
+    j("deux tiers ", "des clients"),
+    j("résultat ass", "uré"),
+    j("on vous ass", "ure le résultat"),
+    j("succès cert", "ain"),
+    j("je m'eng", "age sur le résultat"),
+    j("nous prom", "ettons des résultats"),
+    j("dou", "blez vos ventes"),
+    j("tri", "plez votre chiffre"),
+    j("multi", "pliez par 3 vos ventes"),
+    j("un R", "OI x3"),
+    j("g", cyr, "ranti"),
+    j("remb", grec, "ursé"),
+    j("g a r ", "a n t i"),
+    j("06", "/12/34/56/78"),
+    j("0612 345", " 678"),
+    j("6 12 34 56", " 78"),
+    j("nom\uFF20", "domaine.fr"),
+    j("nom\uFF08at\uFF09", "domaine.fr"),
+    j("nom AT domaine ", "DOT fr"),
+    j("nom chez domaine ", "point com"),
+    j("nom@", "domaine"),
+  ];
+  for (const forme of formes) {
+    it(`refuse la forme de ${forme.length} caractères commençant par « ${forme.slice(0, 2)} »`, () => {
+      expect(motifRefus(fiche(`Voici : ${forme}.`))).not.toBeNull();
+    });
+  }
+  it("n'a pas de retour arrière explosif sur un long texte de chiffres", () => {
+    const t0 = Date.now();
+    motifRefus(fiche("1 ".repeat(25000)));
+    motifRefus(fiche("a.".repeat(25000)));
+    expect(Date.now() - t0).toBeLessThan(500);
+  });
+});
+
 describe("filtrerPourSortie — point unique", () => {
   it("ne garde que les fiches sans motif, dans l'ordre", () => {
     const saines = [fiche("Un."), fiche("Deux.")];
