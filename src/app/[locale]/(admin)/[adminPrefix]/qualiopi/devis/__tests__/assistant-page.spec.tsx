@@ -5,8 +5,9 @@
  *   - lire l'interrupteur par `assistantDevisActif` (booléen) au lieu de l'état brut → « essai +
  *     fiche d'essai » rougit ;
  *   - monter l'assistant sans regarder la fiche d'essai → « essai + vraie fiche » rougit ;
- *   - rediriger un devis à formules vers /modifier → la carte rougit (et boucle) ;
- *   - retirer le `redirect` vers /corriger → « devis classique » rougit ;
+ *   - rediriger un devis vers /modifier → la carte rougit (et boucle) ;
+ *   - monter l'assistant pour `?devis=` sans brouillon lié → la ceinture rougit ;
+ *   - ne plus rediriger `?devis=` vers la fiche quand l'assistant n'est pas monté → rougit ;
  *   - ne pas passer `clientId` au chargeur → « clientId » rougit.
  */
 import { render, screen } from "@testing-library/react";
@@ -239,6 +240,21 @@ describe("redirections du chargeur", () => {
     );
     expect(screen.queryByTestId("assistant")).toBeNull();
   });
+
+  it("carte avec libelleLien : le lien porte le libellé du chargeur", async () => {
+    m.charger.mockResolvedValue({
+      redirection: `/qualiopi/devis/${DEVIS}/corriger`,
+      message:
+        "Ce devis a été préparé sans l'assistant : corrigez-le depuis son écran de correction.",
+      libelleLien: "Corriger le brouillon",
+    });
+    await rendre({ devis: DEVIS });
+    expect(screen.getByRole("link", { name: "Corriger le brouillon" }).getAttribute("href")).toBe(
+      `/fr/adm/qualiopi/devis/${DEVIS}/corriger`,
+    );
+    expect(screen.queryByRole("link", { name: /fiche du devis/ })).toBeNull();
+    expect(screen.queryByTestId("assistant")).toBeNull();
+  });
 });
 
 describe("?devis= sans brouillon d'assistant", () => {
@@ -250,29 +266,42 @@ describe("?devis= sans brouillon d'assistant", () => {
       },
     });
 
-  it("devis classique (sans offre) : redirigé vers /corriger", async () => {
+  it("ceinture : ?devis= sans brouillon lié n'est JAMAIS monté (carte « introuvable », lien vers la liste)", async () => {
     m.charger.mockResolvedValue(ctxDevis());
-    m.devis.mockResolvedValue({ id: DEVIS, offre: null });
-    expect(await cible({ devis: DEVIS })).toBe(`/fr/adm/qualiopi/devis/${DEVIS}/corriger`);
-  });
-
-  it("devis à formules : la carte « créé avant l'assistant », lien vers la fiche, jamais /modifier", async () => {
-    m.charger.mockResolvedValue(ctxDevis());
-    m.devis.mockResolvedValue({ id: DEVIS, offre: { version: 1 } });
     expect(await cible({ devis: DEVIS })).toBeNull();
     await rendre({ devis: DEVIS });
-    expect(screen.getByText(/créé avant l'assistant : il ne s'ouvre pas encore ici/)).toBeTruthy();
-    const href = screen.getByRole("link", { name: /fiche du devis/ }).getAttribute("href");
-    expect(href).toBe(`/fr/adm/qualiopi/devis/${DEVIS}`);
-    expect(href).not.toContain("modifier");
+    expect(screen.getByText("Devis introuvable.")).toBeTruthy();
+    expect(
+      screen.getByRole("link", { name: /Retour à la liste des devis/ }).getAttribute("href"),
+    ).toBe("/fr/adm/qualiopi/devis");
     expect(screen.queryByTestId("assistant")).toBeNull();
+    expect(m.assistant).not.toHaveBeenCalled();
+    // plus aucune lecture de devis dans la page : la décision est celle du chargeur
+    expect(m.devis).not.toHaveBeenCalled();
   });
 
-  it("devis avec brouillon d'assistant : l'assistant s'ouvre, ni carte ni redirection", async () => {
+  it("devis avec brouillon d'assistant : l'assistant s'ouvre, ni carte ni redirection, aucune prop devisId", async () => {
     m.charger.mockResolvedValue({ ...ctxDevis(), brouillon: { id: BROUILLON, revision: 2 } });
     await rendre({ devis: DEVIS });
     expect(screen.getByTestId("assistant")).toBeTruthy();
     expect(m.devis).not.toHaveBeenCalled();
+    expect(m.assistant.mock.calls[0]![0]).not.toHaveProperty("devisId");
+  });
+
+  it("interrupteur ÉTEINT + ?devis= : redirection vers la fiche, jamais un DevisForm vide", async () => {
+    m.etat.mockResolvedValue("eteint");
+    expect(await cible({ devis: DEVIS })).toBe(`/fr/adm/qualiopi/devis/${DEVIS}`);
+    expect(m.charger).not.toHaveBeenCalled();
+  });
+
+  it("essai sur une vraie fiche + ?devis= : redirection vers la fiche, jamais un DevisForm vide", async () => {
+    m.etat.mockResolvedValue("essai");
+    m.charger.mockResolvedValue({
+      ...ctxDevis(),
+      brouillon: { id: BROUILLON, revision: 2 },
+      payloadInitial: { ...ctxDevis().payloadInitial, clientId: CLIENT_REEL },
+    });
+    expect(await cible({ devis: DEVIS })).toBe(`/fr/adm/qualiopi/devis/${DEVIS}`);
   });
 });
 
@@ -285,23 +314,18 @@ describe("?devis= invalide ou inconnu (jamais une page 500)", () => {
       expect(m.devis).not.toHaveBeenCalled();
       expect(m.charger.mock.calls.every(([a]) => !("devisId" in a))).toBe(true);
       expect(screen.getByTestId("assistant")).toBeTruthy();
-      expect((m.assistant.mock.calls.at(-1)![0] as { devisId?: string }).devisId).toBeUndefined();
+      expect(m.assistant.mock.calls.at(-1)![0]).not.toHaveProperty("devisId");
     },
   );
 
-  it("UUID valide mais inconnu : « Devis introuvable », aucun lien mort vers une fiche", async () => {
-    m.charger.mockResolvedValue(
-      contexte({
-        payloadInitial: {
-          ...payloadVide(20),
-          sync: { devisId: null, devisMajLe: null },
-        },
-      }),
-    );
-    m.devis.mockResolvedValue(null);
+  it("UUID valide mais inconnu : la carte « Devis introuvable » du chargeur, lien vers la liste, aucun lien mort", async () => {
+    m.charger.mockResolvedValue({
+      redirection: "/qualiopi/devis",
+      message: "Devis introuvable.",
+      libelleLien: "Retour à la liste des devis",
+    });
     await rendre({ devis: DEVIS });
     expect(screen.getByText("Devis introuvable.")).toBeTruthy();
-    expect(screen.queryByText(/créé avant l'assistant/)).toBeNull();
     expect(screen.queryByTestId("assistant")).toBeNull();
     for (const a of screen.getAllByRole("link"))
       expect(a.getAttribute("href")).not.toContain(DEVIS);

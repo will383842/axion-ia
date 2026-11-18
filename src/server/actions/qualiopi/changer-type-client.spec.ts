@@ -209,12 +209,16 @@ describe("changerTypeClientAction — vers entreprise", () => {
         changes: {
           typeAvant: "particulier",
           typeApres: "entreprise",
-          raisonSocialeAvant: "Anne Dupont",
+          // Le nom de la personne (avant) n'est PAS recopié ; la raison sociale d'entreprise l'est.
           raisonSocialeApres: "Dupont Conseil SAS",
+          nomDePersonneNonRecopie: true,
           motif: "Société du client",
         },
       }),
     );
+    const journal = JSON.stringify(m.log.mock.calls);
+    expect(journal).not.toContain("Anne Dupont");
+    expect(journal).not.toContain("raisonSocialeAvant");
     expect(m.revalidate).toHaveBeenCalledTimes(2);
   });
 });
@@ -257,6 +261,17 @@ describe("changerTypeClientAction — vers particulier et fiche absorbée", () =
       type: "particulier",
       raisonSociale: "Anne Dupont",
     });
+    // Vers particulier : la raison sociale d'entreprise d'avant est publique (journalisée) ;
+    // le nom de la personne d'après ne l'est pas.
+    const changes = m.log.mock.calls[0]![0].changes;
+    expect(changes).toMatchObject({
+      typeAvant: "entreprise",
+      typeApres: "particulier",
+      raisonSocialeAvant: "Dupont SAS",
+      nomDePersonneNonRecopie: true,
+    });
+    expect(changes).not.toHaveProperty("raisonSocialeApres");
+    expect(JSON.stringify(m.log.mock.calls)).not.toContain("Anne Dupont");
   });
 
   it("refuse une fiche absorbée : « Changez le type sur la fiche principale »", async () => {

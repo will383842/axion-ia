@@ -62,7 +62,9 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 import { chargerAssistantDevis, type ContexteAssistant } from "../charger";
-import { payloadVide } from "../payload";
+import { lirePayload, payloadVide, type PayloadAssistantV1 } from "../payload";
+import { etatInitial } from "@/components/admin/qualiopi/assistant-devis/etat";
+import { etatVersPayload } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
 
 const ADMIN = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
 const CLIENT = "11111111-1111-4111-8111-111111111111";
@@ -230,38 +232,6 @@ describe("chargerAssistantDevis", () => {
     aucuneEcriture();
   });
 
-  it("?devis brouillon classique → hydratation SANS écriture", async () => {
-    db.devis.findUnique.mockResolvedValue({
-      id: DEVIS,
-      statut: "brouillon",
-      clientId: CLIENT,
-      refClient: "REF",
-      activite: "formation",
-      dateValidite: new Date("2026-12-01T00:00:00Z"),
-      updatedAt: new Date("2026-11-08T09:00:00Z"),
-      offre: null,
-      lignes: [{ designation: "Formation", quantite: 1, prixUnitaireHtCents: 150000 }],
-    });
-    const c = await charge({ devisId: DEVIS });
-    expect(c.payloadInitial).toMatchObject({
-      clientId: CLIENT,
-      typeDevis: "classique",
-      refClient: "REF",
-      dateValidite: "2026-12-01",
-      sync: { devisId: DEVIS, devisMajLe: "2026-11-08T09:00:00.000Z" },
-    });
-    expect(c.payloadInitial.lignesClassiques[0]).toMatchObject({
-      designation: "Formation",
-      prixEur: "1500",
-    });
-    expect(c.brouillon).toBeNull();
-    aucuneEcriture();
-  });
-
-  it("?devis inexistant : ouvert vide", async () => {
-    expect((await charge({ devisId: DEVIS })).payloadInitial).toEqual(payloadVide(20));
-  });
-
   it("venteBrouillonId d'un autre admin ignoré, du sien retenu", async () => {
     const V = "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee";
     expect((await charge({ venteBrouillonId: V })).payloadInitial.venteBrouillonId).toBeNull();
@@ -300,7 +270,22 @@ describe("chargerAssistantDevis", () => {
   });
 });
 
-describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'ouverture", () => {
+/** Payload tel que l'écran l'écrit (source « ecran ») : seul celui-là se rouvre. */
+function payloadEcran(clientId = CLIENT, refClient = "REF-BROUILLON"): PayloadAssistantV1 {
+  const etat = etatInitial({
+    defaultClientId: clientId,
+    validiteParDefaut: "",
+    formulesActives: true,
+  });
+  etat.intitule = "Intitulé du brouillon";
+  const p = etatVersPayload(etat, 1, { tvaStandardPct: 20, textes: [], refClient });
+  // Ce que la sauvegarde persiste : la sortie normalisée de `lirePayload`, jamais le brut de l'écran.
+  const lu = lirePayload(JSON.parse(JSON.stringify(p)));
+  if (!lu.ok) throw new Error(lu.error);
+  return JSON.parse(JSON.stringify(lu.payload)) as PayloadAssistantV1;
+}
+
+describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis", () => {
   const devisBrouillon = (extra: Record<string, unknown> = {}) => ({
     id: DEVIS,
     statut: "brouillon",
@@ -315,36 +300,184 @@ describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'
     montantOpcoEstimeCents: null,
     ...extra,
   });
+  const lie = (extra: Record<string, unknown> = {}) => ({
+    id: BROUILLON,
+    revision: 7,
+    payload: payloadEcran(),
+    statut: "en_cours",
+    createdByAdminId: ADMIN,
+    clientId: CLIENT,
+    ...extra,
+  });
+  const FICHE = `/qualiopi/devis/${DEVIS}`;
+  const MSG_ILLISIBLE =
+    "Le brouillon d'assistant de ce devis est illisible ; rien n'a été modifié.";
 
-  it("?devis déjà lié à un brouillon à soi : SON contenu est relu, pas le devis", async () => {
+  beforeEach(() => {
     db.devis.findUnique.mockResolvedValue(devisBrouillon());
-    const p = payloadVide(20);
-    p.refClient = "REF-BROUILLON";
-    p.recit.intitule = "Intitulé du brouillon";
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 7,
-      payload: JSON.parse(JSON.stringify(p)),
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(null);
+  });
+
+  it("devis inconnu : carte « introuvable », lien vers la liste", async () => {
+    db.devis.findUnique.mockResolvedValue(null);
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: "/qualiopi/devis",
+      message: "Devis introuvable.",
+      libelleLien: "Retour à la liste des devis",
     });
-    const c = await charge({ devisId: DEVIS });
-    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 7 });
-    expect(c.payloadInitial.refClient).toBe("REF-BROUILLON");
-    expect(c.payloadInitial.recit.intitule).toBe("Intitulé du brouillon");
     aucuneEcriture();
   });
 
-  it("?devis lié à un brouillon illisible : repli sur l'hydratation du devis, lien gardé", async () => {
-    db.devis.findUnique.mockResolvedValue(devisBrouillon());
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 2,
-      payload: { v: 9 },
-    });
-    const c = await charge({ devisId: DEVIS });
-    expect(c.payloadInitial.refClient).toBe("REF-DEVIS");
-    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 2 });
+  it("statut ≠ brouillon : la fiche, sans lire le brouillon", async () => {
+    for (const statut of ["envoye", "accepte", "refuse", "expire", "transforme"]) {
+      db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut });
+      expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+        redirection: FICHE,
+      });
+    }
+    expect(db.devisAssistantBrouillon.findUnique).not.toHaveBeenCalled();
+    aucuneEcriture();
   });
 
+  it("le brouillon lié est lu SANS filtre de compte, par devisId", async () => {
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie());
+    await charge({ devisId: DEVIS });
+    expect(db.devisAssistantBrouillon.findUnique.mock.calls[0]![0].where).toEqual({
+      devisId: DEVIS,
+    });
+  });
+
+  it("aucun brouillon lié, devis classique (offre nulle) : renvoi vers /corriger, message clair", async () => {
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: `${FICHE}/corriger`,
+      message:
+        "Ce devis a été préparé sans l'assistant : corrigez-le depuis son écran de correction.",
+      libelleLien: "Corriger le brouillon",
+    });
+    aucuneEcriture();
+  });
+
+  it("aucun brouillon lié, devis à formules : la fiche, jamais /modifier", async () => {
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre: { v: 1 } }));
+    const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
+    expect(r).toEqual({
+      redirection: FICHE,
+      message:
+        "Ce devis a été préparé sans l'assistant : corrigez-le depuis son écran de correction.",
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    expect((r as { redirection: string }).redirection).not.toMatch(/modifier/);
+    aucuneEcriture();
+  });
+
+  it("brouillon d'assistant mis à l'écart : la fiche", async () => {
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ statut: "a_l_ecart" }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: FICHE,
+      message: "Le brouillon d'assistant de ce devis a été mis à l'écart.",
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    aucuneEcriture();
+  });
+
+  it("brouillon d'un autre compte : la fiche, aucune reprise de propriété", async () => {
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(
+      lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
+    );
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: FICHE,
+      message:
+        "Ce devis a été préparé dans l'assistant par un autre compte : seul ce compte peut le rouvrir.",
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    aucuneEcriture();
+  });
+
+  it("payload illisible (lirePayload en échec) : la fiche, l'assistant n'est jamais monté", async () => {
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: { v: 9 } }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: FICHE,
+      message: MSG_ILLISIBLE,
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    aucuneEcriture();
+  });
+
+  it("payload lisible mais sans état d'écran (source « payload ») : la fiche", async () => {
+    const p = JSON.parse(JSON.stringify(payloadVide(20)));
+    p.clientId = CLIENT;
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: FICHE,
+      message: MSG_ILLISIBLE,
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    aucuneEcriture();
+  });
+
+  it("client du brouillon ≠ client du devis (payload, état d'écran ou colonne) : la fiche", async () => {
+    const AUTRE = "22222222-2222-4222-8222-222222222222";
+    const autrePayload = payloadEcran(AUTRE);
+    const mixte = payloadEcran(CLIENT);
+    mixte.clientId = AUTRE; // payload et état d'écran divergent
+    const cas = [
+      lie({ payload: autrePayload, clientId: AUTRE }),
+      lie({ payload: mixte }),
+      lie({ clientId: AUTRE }),
+    ];
+    for (const c of cas) {
+      db.devisAssistantBrouillon.findUnique.mockResolvedValue(c);
+      expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+        redirection: FICHE,
+        message: "Le client du brouillon ne correspond pas à celui du devis.",
+        libelleLien: "Ouvrir la fiche du devis",
+      });
+    }
+    aucuneEcriture();
+  });
+
+  it("offre illisible ou TVA non standard restent REFUSÉES, même avec un brouillon lisible", async () => {
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie());
+    for (const extra of [
+      { offre: { v: 99 } },
+      { lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }] },
+    ]) {
+      db.devis.findUnique.mockResolvedValue(devisBrouillon(extra));
+      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
+      expect(r, JSON.stringify(extra)).toMatchObject({ redirection: FICHE });
+      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
+    }
+    aucuneEcriture();
+  });
+
+  it("CONTRE-TÉMOIN : devis d'assistant du même compte → rouvert, payloadInitial strictement égal au payload stocké", async () => {
+    const stocke = payloadEcran();
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: stocke }));
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 7 });
+    expect(c.payloadInitial).toEqual(stocke);
+    expect(c.payloadInitial.refClient).toBe("REF-BROUILLON");
+    aucuneEcriture();
+  });
+
+  it("CONTRE-TÉMOIN : un devis d'assistant « OPCO » se rouvre avec le contenu du brouillon (le motif OPCO est levé)", async () => {
+    const stocke = payloadEcran();
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: stocke }));
+    const c = await charge({ devisId: DEVIS });
+    expect(c.payloadInitial).toEqual(stocke);
+  });
+
+  it("CONTRE-TÉMOIN : une fiche d'essai est respectée (le client reste dans la liste, marqué essai)", async () => {
+    db.client.findMany.mockResolvedValue([{ id: CLIENT }] as never);
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie());
+    const c = await charge({ devisId: DEVIS });
+    expect(c.clients.find((x) => x.id === CLIENT)?.ficheEssai).toBe(true);
+    expect(c.payloadInitial.clientId).toBe(CLIENT);
+  });
+});
+
+describe("chargerAssistantDevis — ?brouillon=", () => {
   it("?brouillon a_l_ecart : jamais rouvert, redirection vers un assistant vide", async () => {
     db.devisAssistantBrouillon.findFirst.mockResolvedValue({
       id: BROUILLON,
@@ -385,98 +518,5 @@ describe("chargerAssistantDevis — brouillon lié, brouillon écarté, refus d'
     db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "brouillon" });
     const c = await charge({ brouillonId: BROUILLON });
     expect(c.brouillon).toEqual({ id: BROUILLON, revision: 3 });
-  });
-
-  it("?devis classique OPCO, offre illisible ou TVA non standard : refus, renvoi vers la fiche avec message", async () => {
-    for (const extra of [
-      { financementSuggere: "opco" },
-      { montantOpcoEstimeCents: 5000 },
-      { offre: { v: 99 } },
-      { lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }] },
-    ]) {
-      db.devis.findUnique.mockResolvedValue(devisBrouillon(extra));
-      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
-      expect(r, JSON.stringify(extra)).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
-      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
-    }
-    aucuneEcriture();
-  });
-
-  it("?devis lié à un brouillon a_l_ecart : jamais relu (requête filtrée), hydratation du devis", async () => {
-    db.devis.findUnique.mockResolvedValue(devisBrouillon());
-    db.devisAssistantBrouillon.findFirst.mockImplementation(
-      async ({ where }: { where: { statut?: { not: string } } }) =>
-        where.statut?.not === "a_l_ecart"
-          ? null
-          : { id: BROUILLON, revision: 9, payload: JSON.parse(JSON.stringify(payloadVide(20))) },
-    );
-    const c = await charge({ devisId: DEVIS });
-    expect(c.brouillon).toBeNull();
-    expect(c.payloadInitial.refClient).toBe("REF-DEVIS");
-    expect(db.devisAssistantBrouillon.findFirst.mock.calls[0]![0].where).toMatchObject({
-      statut: { not: "a_l_ecart" },
-    });
-  });
-
-  it("?devis classique OPCO avec brouillon lié lisible : rouvert (contenu du brouillon)", async () => {
-    db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
-    const p = payloadVide(20);
-    p.refClient = "REF-BROUILLON";
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 4,
-      payload: JSON.parse(JSON.stringify(p)),
-    });
-    const c = await charge({ devisId: DEVIS });
-    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 4 });
-    expect(c.payloadInitial.refClient).toBe("REF-BROUILLON");
-  });
-
-  it("?devis avec brouillon lié lisible : offre illisible ou TVA non standard restent REFUSÉES (seul le motif OPCO est levé)", async () => {
-    const p = payloadVide(20);
-    p.refClient = "REF-BROUILLON";
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 4,
-      payload: JSON.parse(JSON.stringify(p)),
-    });
-    for (const extra of [
-      { offre: { v: 99 } },
-      { lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }] },
-    ]) {
-      db.devis.findUnique.mockResolvedValue(devisBrouillon(extra));
-      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
-      expect(r, JSON.stringify(extra)).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
-      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
-    }
-    aucuneEcriture();
-  });
-
-  it("?devis OPCO + ligne à 10 % + brouillon lié lisible : refus (redirection vers la fiche)", async () => {
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 4,
-      payload: JSON.parse(JSON.stringify(payloadVide(20))),
-    });
-    db.devis.findUnique.mockResolvedValue(
-      devisBrouillon({
-        financementSuggere: "opco",
-        lignes: [{ designation: "x", quantite: 1, prixUnitaireHtCents: 1, tauxTvaPercent: 10 }],
-      }),
-    );
-    const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
-    expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
-    expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
-    aucuneEcriture();
-  });
-
-  it("?devis classique OPCO sans brouillon lisible (absent ou illisible) : refus", async () => {
-    db.devis.findUnique.mockResolvedValue(devisBrouillon({ financementSuggere: "opco" }));
-    for (const lie of [null, { id: BROUILLON, revision: 1, payload: { v: 9 } }]) {
-      db.devisAssistantBrouillon.findFirst.mockResolvedValue(lie);
-      const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
-      expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
-      expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
-    }
   });
 });

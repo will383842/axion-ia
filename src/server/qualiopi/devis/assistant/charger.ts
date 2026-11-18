@@ -24,6 +24,7 @@ import {
 } from "@/server/qualiopi/legal/tva";
 import { devisVersPayload, type DevisPourAssistant } from "./conversion";
 import { MODELES_DEVIS, appliquerModele, type IdModeleDevis } from "./modeles";
+import { payloadVersEtat } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
 import { lirePayload, payloadVide, type PayloadAssistantV1 } from "./payload";
 
 export interface ClientOption {
@@ -89,6 +90,8 @@ export interface EntreeChargeur {
 export interface RedirectionAssistant {
   redirection: string;
   message?: string;
+  /** Libellé du lien de la carte de message (défaut côté page : « Ouvrir la fiche du devis »). */
+  libelleLien?: string;
 }
 
 /** Statut d'un brouillon mis de côté : jamais rouvert (la ligne reste, aucune suppression). */
@@ -196,39 +199,71 @@ export async function chargerAssistantDevis(
         montantOpcoEstimeCents: true,
       },
     });
-    if (devis) {
-      // Un devis envoyé, accepté… n'est jamais modifié : on renvoie à sa fiche.
-      if (devis.statut !== "brouillon") return { redirection: `/qualiopi/devis/${devis.id}` };
-      const lie = await prisma.devisAssistantBrouillon.findFirst({
-        where: {
-          devisId: devis.id,
-          createdByAdminId: i.adminId,
-          statut: { not: STATUT_BROUILLON_A_L_ECART },
-        },
-        select: { id: true, revision: true, payload: true },
-      });
-      // Un brouillon déjà lié au devis porte SON contenu (récit, textes, champs hors moteur) :
-      // on le relit au lieu de réhydrater depuis le devis, sous peine de le perdre.
-      const lu = lie ? lirePayload(lie.payload) : null;
-      const ouverture = devisVersPayload(
-        devis as unknown as DevisPourAssistant,
-        tauxStandard,
-        isQualiopiCertificationObtenue(),
-      );
-      if ("refus" in ouverture) {
-        // Un devis créé par l'assistant (brouillon lié lisible) se rouvre même s'il est
-        // « classique OPCO » — et SEULEMENT pour ce motif : une offre illisible ou une ligne à
-        // TVA non standard restent refusées. Sans brouillon lisible, on renvoie à sa fiche.
-        if (ouverture.motif !== "opco" || !lu || !lu.ok)
-          return { redirection: `/qualiopi/devis/${devis.id}`, message: ouverture.refus };
-      } else {
-        payload = ouverture.payload;
-      }
-      if (lie) {
-        brouillon = { id: lie.id, revision: lie.revision };
-        if (lu && lu.ok) payload = lu.payload;
-      }
+    if (!devis)
+      return {
+        redirection: "/qualiopi/devis",
+        message: "Devis introuvable.",
+        libelleLien: "Retour à la liste des devis",
+      };
+    // Un devis envoyé, accepté… n'est jamais modifié : on renvoie à sa fiche.
+    if (devis.statut !== "brouillon") return { redirection: `/qualiopi/devis/${devis.id}` };
+    const fiche = `/qualiopi/devis/${devis.id}`;
+    const versFiche = (message: string): RedirectionAssistant => ({
+      redirection: fiche,
+      message,
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    // L'assistant ne rouvre QUE les devis qu'il a créés (ligne liée posée par `lier()` du
+    // finaliseur), sans filtre de compte : le refus d'un autre compte se dit, il ne se cache pas.
+    const lie = await prisma.devisAssistantBrouillon.findUnique({
+      where: { devisId: devis.id },
+      select: {
+        id: true,
+        revision: true,
+        payload: true,
+        statut: true,
+        createdByAdminId: true,
+        clientId: true,
+      },
+    });
+    const sansAssistant = "Ce devis a été préparé sans l'assistant : ";
+    if (!lie) {
+      // JAMAIS vers /modifier (il renvoie ici : boucle).
+      if (devis.offre === null)
+        return {
+          redirection: `${fiche}/corriger`,
+          message: `${sansAssistant}corrigez-le depuis son écran de correction.`,
+          libelleLien: "Corriger le brouillon",
+        };
+      return versFiche(`${sansAssistant}corrigez-le depuis son écran de correction.`);
     }
+    if (lie.statut === STATUT_BROUILLON_A_L_ECART)
+      return versFiche("Le brouillon d'assistant de ce devis a été mis à l'écart.");
+    if (lie.createdByAdminId !== i.adminId)
+      return versFiche(
+        "Ce devis a été préparé dans l'assistant par un autre compte : seul ce compte peut le rouvrir.",
+      );
+    const illisible = "Le brouillon d'assistant de ce devis est illisible ; rien n'a été modifié.";
+    const lu = lirePayload(lie.payload);
+    if (!lu.ok) return versFiche(illisible);
+    const etat = payloadVersEtat(lu.payload);
+    if (etat.source !== "ecran") return versFiche(illisible);
+    if (
+      lu.payload.clientId !== devis.clientId ||
+      etat.etat.clientId !== devis.clientId ||
+      (lie.clientId !== null && lie.clientId !== devis.clientId)
+    )
+      return versFiche("Le client du brouillon ne correspond pas à celui du devis.");
+    // Barrière seulement : une offre illisible ou une TVA non standard restent refusées ; le
+    // contenu rouvert est TOUJOURS celui du brouillon, jamais une réhydratation du devis.
+    const ouverture = devisVersPayload(
+      devis as unknown as DevisPourAssistant,
+      tauxStandard,
+      isQualiopiCertificationObtenue(),
+    );
+    if ("refus" in ouverture && ouverture.motif !== "opco") return versFiche(ouverture.refus);
+    payload = lu.payload;
+    brouillon = { id: lie.id, revision: lie.revision };
   }
 
   if (!payload && i.brouillonId && isUuid(i.brouillonId)) {

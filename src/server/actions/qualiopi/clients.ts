@@ -988,8 +988,16 @@ export async function changerTypeClientAction(
     changes: {
       typeAvant: resultat.typeAvant,
       typeApres: type,
-      raisonSocialeAvant: resultat.raisonSocialeAvant,
-      raisonSocialeApres: raisonSociale,
+      // Pour un particulier, la « raison sociale » est le NOM d'une personne : jamais recopié au
+      // journal. Seule une raison sociale d'entreprise (publique) y figure ; sinon on n'écrit
+      // qu'un drapeau. Les lignes DÉJÀ écrites restent telles quelles : on ne purge rien ici.
+      ...(resultat.typeAvant === "entreprise"
+        ? { raisonSocialeAvant: resultat.raisonSocialeAvant }
+        : {}),
+      ...(type === "entreprise" ? { raisonSocialeApres: raisonSociale } : {}),
+      ...(resultat.typeAvant !== "entreprise" || type !== "entreprise"
+        ? { nomDePersonneNonRecopie: true }
+        : {}),
       // Donnée d'entreprise, publique : elle peut figurer au journal.
       ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
       ...(motif !== undefined && motif !== "" ? { motif } : {}),

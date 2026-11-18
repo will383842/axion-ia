@@ -1,9 +1,10 @@
 /**
  * Admin — Qualiopi · Modifier un brouillon de devis à formules.
  *
- * Interrupteur `devis_assistant` ALLUMÉ : la page n'édite plus rien, elle renvoie vers
- * l'assistant (`/qualiopi/devis/new?devis=<id>`, fiche S11) — un devis qui n'est plus brouillon
- * va à sa fiche, jamais à l'édition. ÉTEINT : comportement d'avant, à l'identique.
+ * Interrupteur `devis_assistant` ALLUMÉ : un devis préparé dans l'assistant (brouillon d'assistant
+ * lié) se rouvre dans l'assistant (`/qualiopi/devis/new?devis=<id>`) ; un brouillon classique
+ * (sans offre) va à `/corriger` ; un brouillon à formules hors assistant garde l'éditeur d'avant ;
+ * un devis qui n'est plus brouillon va à sa fiche. ÉTEINT : comportement d'avant, à l'identique.
  *
  * Server Component — garde d'écriture, force-dynamic, noindex. 404 si l'interrupteur est
  * éteint, si le devis n'existe pas, n'est plus un brouillon ou n'a pas été créé en mode formules.
@@ -43,15 +44,6 @@ export default async function QualiopiDevisModifierPage({ params }: PageProps) {
   }
   if (!isUuid(id)) notFound();
 
-  if (await assistantDevisActif()) {
-    const existant = await prisma.devis.findUnique({ where: { id }, select: { statut: true } });
-    if (!existant) notFound();
-    const base = `/${locale}/${adminPrefix}/qualiopi/devis`;
-    redirect(existant.statut === "brouillon" ? `${base}/new?devis=${id}` : `${base}/${id}`);
-  }
-
-  if (!(await formulesActives())) notFound();
-
   const devis = await prisma.devis.findUnique({
     where: { id },
     select: {
@@ -61,8 +53,24 @@ export default async function QualiopiDevisModifierPage({ params }: PageProps) {
       offre: true,
       offreSha256: true,
       updatedAt: true,
+      devisAssistantBrouillon: { select: { id: true } },
     },
   });
+
+  if (await assistantDevisActif()) {
+    if (!devis) notFound();
+    const base = `/${locale}/${adminPrefix}/qualiopi/devis`;
+    // Un devis qui n'est plus brouillon va à sa fiche, jamais à l'édition.
+    if (devis.statut !== "brouillon") redirect(`${base}/${id}`);
+    // L'assistant ne rouvre QUE les devis qu'il a créés (brouillon d'assistant lié) ; jamais
+    // `/new?devis=` pour un autre : il renverrait ici (boucle).
+    if (devis.devisAssistantBrouillon !== null) redirect(`${base}/new?devis=${id}`);
+    if (devis.offre === null) redirect(`${base}/${id}/corriger`);
+    // Devis à formules préparé hors assistant : la branche d'avant (ci-dessous).
+  }
+
+  if (!(await formulesActives())) notFound();
+
   if (!devis || devis.statut !== "brouillon" || devis.offre === null) notFound();
   const offre = offreDevisV1.safeParse(devis.offre);
   if (!offre.success) notFound();

@@ -43,7 +43,13 @@ import { VenteWizard } from "@/components/admin/qualiopi/VenteWizard";
 const CLIENT = "11111111-1111-4111-8111-111111111111";
 const DEVIS_ID = "22222222-2222-4222-8222-222222222222";
 
-function monter(opts: { assistant?: boolean; devis?: boolean; projetId?: string }) {
+function monter(opts: {
+  assistant?: boolean;
+  devis?: boolean;
+  projetId?: string;
+  parAssistant?: boolean;
+  classique?: boolean;
+}) {
   return render(
     <VenteWizard
       adminPrefix="adm"
@@ -72,6 +78,8 @@ function monter(opts: { assistant?: boolean; devis?: boolean; projetId?: string 
               docusealSubmissionId: null,
               signatureMaison: false,
               montantTotalHtCents: 100000,
+              parAssistant: opts.parAssistant ?? false,
+              ...(opts.classique !== undefined ? { classique: opts.classique } : {}),
             },
           }
         : {})}
@@ -119,11 +127,29 @@ describe("vente — l'étape devis passe par l'assistant quand il est allumé", 
     expect(q.get("projetId")).toBe("p-9");
   });
 
-  it("allumé, devis lié en brouillon : « Ouvrir dans l'assistant » remplace « Envoyer le devis »", () => {
-    monter({ assistant: true, devis: true });
+  it("allumé, devis créé par l'assistant (parAssistant) : « Ouvrir dans l'assistant » remplace « Envoyer le devis »", () => {
+    monter({ assistant: true, devis: true, parAssistant: true });
     expect(screen.queryByRole("button", { name: /Envoyer le devis/ })).toBeNull();
     const lien = screen.getByRole("link", { name: /Ouvrir dans l'assistant/ });
     expect(lien.getAttribute("href")).toBe(`/fr/adm/qualiopi/devis/new?devis=${DEVIS_ID}`);
+    expect(screen.queryByRole("link", { name: /Corriger le brouillon/ })).toBeNull();
+  });
+
+  it("allumé, devis classique hors assistant : « Corriger le brouillon » présent, lien assistant ABSENT", () => {
+    monter({ assistant: true, devis: true, parAssistant: false, classique: true });
+    expect(screen.queryByRole("link", { name: /Ouvrir dans l'assistant/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Envoyer le devis/ })).toBeNull();
+    expect(screen.getByRole("link", { name: /Corriger le brouillon/ }).getAttribute("href")).toBe(
+      `/fr/adm/qualiopi/devis/${DEVIS_ID}/corriger`,
+    );
+  });
+
+  it("allumé, devis à formules hors assistant : ni lien assistant, ni correction, ni envoi", () => {
+    monter({ assistant: true, devis: true, parAssistant: false, classique: false });
+    expect(screen.queryByRole("link", { name: /Ouvrir dans l'assistant/ })).toBeNull();
+    expect(screen.queryByRole("link", { name: /Corriger le brouillon/ })).toBeNull();
+    expect(screen.queryByRole("button", { name: /Envoyer le devis/ })).toBeNull();
+    expect(screen.getByRole("link", { name: /Ouvrir la fiche devis/ })).toBeTruthy();
   });
 
   it("éteint : les anciens boutons sont présents, pas ceux de l'assistant", () => {

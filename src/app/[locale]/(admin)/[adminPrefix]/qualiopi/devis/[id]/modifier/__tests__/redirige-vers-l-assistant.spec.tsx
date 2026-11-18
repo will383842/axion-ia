@@ -6,7 +6,8 @@
  *   - retirer le `redirect` → « allumé » rougit ;
  *   - lire l'interrupteur avant la garde d'accès → « accès refusé » rougit ;
  *   - rediriger aussi quand l'interrupteur est éteint → « éteint » rougit ;
- *   - ne pas regarder le statut du devis → « devis envoyé » rougit.
+ *   - ne pas regarder le statut du devis → « devis envoyé » rougit ;
+ *   - rediriger vers l'assistant un devis SANS brouillon lié → « classique » / « à formules » rougissent.
  */
 import { render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -69,25 +70,63 @@ beforeEach(() => {
     offre: offreFictive(),
     offreSha256: "a".repeat(64),
     updatedAt: new Date("2026-11-08T10:00:00Z"),
+    devisAssistantBrouillon: null,
   });
 });
 
 describe("/modifier → assistant", () => {
-  it("interrupteur ALLUMÉ + brouillon : redirection vers /qualiopi/devis/new?devis=<id>", async () => {
+  it("interrupteur ALLUMÉ + brouillon AVEC brouillon d'assistant lié : /qualiopi/devis/new?devis=<id>", async () => {
     m.actif.mockResolvedValue(true);
+    m.devis.mockResolvedValue({
+      id: ID,
+      numero: "N",
+      statut: "brouillon",
+      offre: offreFictive(),
+      devisAssistantBrouillon: { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" },
+    });
+    expect(await cible()).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+    m.devis.mockResolvedValue({
+      id: ID,
+      numero: "N",
+      statut: "brouillon",
+      offre: null,
+      devisAssistantBrouillon: { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" },
+    });
     expect(await cible()).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
   });
 
-  it("interrupteur ALLUMÉ, devis classique (sans offre) : redirigé aussi (l'assistant sait l'ouvrir)", async () => {
+  it("interrupteur ALLUMÉ, brouillon classique (offre nulle) SANS lien : /corriger, jamais l'assistant", async () => {
     m.actif.mockResolvedValue(true);
-    m.devis.mockResolvedValue({ id: ID, numero: "N", statut: "brouillon", offre: null });
-    expect(await cible()).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+    m.devis.mockResolvedValue({
+      id: ID,
+      numero: "N",
+      statut: "brouillon",
+      offre: null,
+      devisAssistantBrouillon: null,
+    });
+    expect(await cible()).toBe(`/fr/adm/qualiopi/devis/${ID}/corriger`);
+  });
+
+  it("interrupteur ALLUMÉ, brouillon à formules SANS lien : la branche d'avant (éditeur si les formules sont actives, sinon 404)", async () => {
+    m.actif.mockResolvedValue(true);
+    render(await QualiopiDevisModifierPage(params()));
+    expect(screen.getByTestId("editeur-formules")).toBeTruthy();
+    m.formules.mockResolvedValue(false);
+    expect(await cible()).toBe("ERR:NOT_FOUND");
   });
 
   it("interrupteur ALLUMÉ + devis envoyé : renvoyé vers sa fiche, jamais vers l'édition", async () => {
     m.actif.mockResolvedValue(true);
-    m.devis.mockResolvedValue({ id: ID, numero: "N", statut: "envoye", offre: null });
-    expect(await cible()).toBe(`/fr/adm/qualiopi/devis/${ID}`);
+    for (const lien of [null, { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" }]) {
+      m.devis.mockResolvedValue({
+        id: ID,
+        numero: "N",
+        statut: "envoye",
+        offre: null,
+        devisAssistantBrouillon: lien,
+      });
+      expect(await cible()).toBe(`/fr/adm/qualiopi/devis/${ID}`);
+    }
   });
 
   it("interrupteur ALLUMÉ + devis inexistant : 404", async () => {
