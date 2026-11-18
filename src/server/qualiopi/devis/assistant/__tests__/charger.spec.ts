@@ -362,8 +362,7 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
     expect(r).toEqual({
       redirection: FICHE,
-      message:
-        "Ce devis a été préparé sans l'assistant : corrigez-le depuis son écran de correction.",
+      message: "Ce devis a été préparé sans l'assistant : modifiez-le depuis sa fiche.",
       libelleLien: "Ouvrir la fiche du devis",
     });
     expect((r as { redirection: string }).redirection).not.toMatch(/modifier/);
