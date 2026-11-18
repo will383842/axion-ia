@@ -25,7 +25,7 @@ import { contientMontant, MOTIF_MONTANT } from "../decoupage";
 
 const RACINE = path.resolve(__dirname, "../../../..");
 
-/** Les fichiers que la fiche KB-05a a le droit d'ajouter ou de modifier. */
+/** Les fichiers que les fiches KB-05a et KB-05b ont le droit d'ajouter ou de modifier. */
 const FICHIERS_DE_LA_FICHE = [
   "src/server/methode/index.ts",
   "src/server/methode/decoupage.ts",
@@ -37,6 +37,8 @@ const FICHIERS_DE_LA_FICHE = [
   "scripts/methode/importer-methode.ts",
   "docs/adr/0076-couche-methode-collection-separee.md",
   "docs/knowledge/COUCHE-METHODE.md",
+  "src/app/api/internal/methode/studio/route.ts",
+  "src/app/api/internal/methode/studio/__tests__/route.test.ts",
 ];
 
 const EURO = String.fromCharCode(0x20ac);
@@ -180,7 +182,7 @@ describe("2 · rien ne déclenche l'import", () => {
 });
 
 describe("3 · rien ne lit la couche Méthode hors de la liste blanche", () => {
-  it("aucun fichier hors src/server/methode/ (et l'import lui-même) n'importe la couche", () => {
+  it("aucun fichier hors src/server/methode/ (l'import et la porte du Studio exceptés) n'importe la couche", () => {
     const trouves = fichiersContenant(`['"\`][^'"\`]*server/methode(/[^'"\`]*)?['"\`]`, [
       "*.ts",
       "*.tsx",
@@ -188,7 +190,10 @@ describe("3 · rien ne lit la couche Méthode hors de la liste blanche", () => {
       "*.mjs",
       "*.cjs",
     ]).filter(
-      (f) => !f.startsWith("src/server/methode/") && f !== "scripts/methode/importer-methode.ts",
+      (f) =>
+        !f.startsWith("src/server/methode/") &&
+        f !== "scripts/methode/importer-methode.ts" &&
+        f !== "src/app/api/internal/methode/studio/route.ts",
     );
     expect(trouves).toEqual([]);
   });

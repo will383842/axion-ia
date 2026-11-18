@@ -199,7 +199,7 @@ const CLASSEMENT: Readonly<Record<string, Rattachement>> = {
   },
   METHODE_STUDIO_SECRET: {
     exempt:
-      "Secret de la porte interne de la couche Méthode (32 caractères minimum), déclaré mais lu par aucune route. Aucun tiers ne le reçoit.",
+      "Secret de la porte interne Studio de la couche Méthode, comparé à l'en-tête x-methode-secret par POST /api/internal/methode/studio. Aucun tiers ne le reçoit.",
   },
   SENTRY_DSN: { tiers: "Sentry" },
   SENTRY_AUTH_TOKEN: { tiers: "Sentry" },
