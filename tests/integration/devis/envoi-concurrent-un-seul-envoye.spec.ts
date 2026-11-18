@@ -218,6 +218,8 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
         data: {
           type: "devis",
           numero: "TEST-DOC-B2",
+          // Le module de l'approbation exige que la pièce soit celle de CE client.
+          clientId: client.id,
           hashSha256: HASH,
           suppressionPrevueAt: dansUnAn,
         },
