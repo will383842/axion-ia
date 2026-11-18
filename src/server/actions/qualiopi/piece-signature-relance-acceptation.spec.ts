@@ -15,10 +15,16 @@ vi.mock("@/server/qualiopi/documents/signature/document-signature-service", () =
   signerDocument: vi.fn(),
 }));
 const reprise = vi.hoisted(() => vi.fn());
-vi.mock("@/server/qualiopi/documents/signature/apres-signature", () => ({
+const repriseClassique = vi.hoisted(() => vi.fn());
+vi.mock("@/server/qualiopi/documents/signature/apres-signature", async (importOriginal) => ({
+  // Le choix du message selon la raison est du code réel, jamais simulé.
+  messageConfirmationSelonRaisons: (
+    await importOriginal<typeof import("@/server/qualiopi/documents/signature/apres-signature")>()
+  ).messageConfirmationSelonRaisons,
   apresSignature: vi.fn(),
   PREFIXE_ACTIVATION_REFUSEE: "x",
   reprendreAcceptationDevisFormules: reprise,
+  reprendreConfirmationDevisClassiques: repriseClassique,
 }));
 vi.mock("@/server/qualiopi/documents/signature/contexte-requete", () => ({
   contexteRequete: vi.fn(async () => ({})),
@@ -46,8 +52,10 @@ beforeEach(() => {
   (prisma.documentGenere.findUnique as unknown as Mock).mockResolvedValue({
     type: "devis",
     numero: "AXI-DEV-2026-001",
+    annuleeAt: null,
   });
   sigs("client", "axionia");
+  repriseClassique.mockReset();
   reprise.mockResolvedValue({
     traite: true,
     ids: ["dv-1"],
@@ -221,5 +229,136 @@ describe("relancerAcceptationDevisAction", () => {
   it("identifiant invalide : refusé", async () => {
     expect((await relancerAcceptationDevisAction({ documentGenereId: "nope" })).ok).toBe(false);
     expect(reprise).not.toHaveBeenCalled();
+  });
+});
+
+describe("relancerAcceptationDevisAction : devis CLASSIQUE (M1)", () => {
+  const aucunFormules = {
+    traite: false,
+    ids: [],
+    acceptes: [],
+    plansEchec: [],
+    confirmationsEchec: [],
+    confirmationsPreparees: [],
+    plansProposes: [],
+  };
+  const classique = (patch: Record<string, unknown> = {}) => ({
+    traite: true,
+    ids: ["dv-c"],
+    confirmationsPreparees: ["dv-c"],
+    confirmationsDejaFaites: [],
+    confirmationsEchec: [],
+    echecs: [],
+    ...patch,
+  });
+  beforeEach(() => reprise.mockResolvedValue(aucunFormules));
+
+  it("reprise des formules sans effet : la confirmation du devis classique est préparée", async () => {
+    repriseClassique.mockResolvedValue(classique());
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(repriseClassique).toHaveBeenCalledWith(DOC);
+    expect(r).toMatchObject({
+      ok: true,
+      message:
+        "Confirmation de commande préparée : elle attend votre validation dans les e-mails à valider.",
+    });
+  });
+
+  it("confirmation déjà faite : « existe déjà », sans échec", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({ confirmationsPreparees: [], confirmationsDejaFaites: ["dv-c"] }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r).toMatchObject({ ok: true, message: "La confirmation de commande existe déjà." });
+  });
+
+  it("échec pas_d_adresse : le message dit la cause", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({
+        confirmationsPreparees: [],
+        confirmationsEchec: ["dv-c"],
+        echecs: [{ devisId: "dv-c", raison: "pas_d_adresse" }],
+      }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("n'a pas d'adresse e-mail");
+  });
+
+  it("échec exemplaire_absent : le message dit la cause et renvoie au support", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({
+        confirmationsPreparees: [],
+        confirmationsEchec: ["dv-c"],
+        echecs: [{ devisId: "dv-c", raison: "exemplaire_absent" }],
+      }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r).toEqual({
+      ok: false,
+      message:
+        "La confirmation de commande n'a pas pu être préparée : l'exemplaire signé du devis est absent. Relancez depuis la fiche du devis ; si le problème persiste, prévenez le support technique.",
+    });
+  });
+
+  it.each(["etat_inconnu", "file_indisponible", "exception"])(
+    "échec %s : message générique, sans mention d'un code consigné",
+    async (raison) => {
+      repriseClassique.mockResolvedValue(
+        classique({
+          confirmationsPreparees: [],
+          confirmationsEchec: ["dv-c"],
+          echecs: [{ devisId: "dv-c", raison }],
+        }),
+      );
+      const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+      expect(r.ok).toBe(false);
+      expect(!r.ok && r.message).toBe(
+        "La confirmation de commande n'a pas pu être préparée. Relancez depuis la fiche du devis.",
+      );
+    },
+  );
+
+  it("m1 : devisAcceptes compte les confirmations préparées, pas les déjà faites", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({ ids: ["a", "b"], confirmationsPreparees: ["a"], confirmationsDejaFaites: ["b"] }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r).toMatchObject({ ok: true, devisAcceptes: 1 });
+  });
+
+  it("M1 : pièce annulée : refus AVANT toute reprise (formules et classique)", async () => {
+    (prisma.documentGenere.findUnique as unknown as Mock).mockResolvedValue({
+      type: "devis",
+      numero: "AXI-DEV-2026-001",
+      annuleeAt: new Date("2026-11-01T10:00:00Z"),
+    });
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r).toEqual({ ok: false, message: "Cette pièce est annulée : aucune relance possible." });
+    expect(reprise).not.toHaveBeenCalled();
+    expect(repriseClassique).not.toHaveBeenCalled();
+  });
+
+  it("rien à reprendre nulle part : refus", async () => {
+    repriseClassique.mockResolvedValue({ ...classique(), traite: false, ids: [] });
+    expect((await relancerAcceptationDevisAction({ documentGenereId: DOC })).ok).toBe(false);
+  });
+
+  it("devis non contresigné : refusé AVANT toute reprise", async () => {
+    sigs("client");
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(repriseClassique).not.toHaveBeenCalled();
+  });
+
+  it("devis à formules traité par la reprise des formules : la reprise classique n'est pas appelée", async () => {
+    reprise.mockResolvedValue({
+      ...aucunFormules,
+      traite: true,
+      ids: ["dv-1"],
+      acceptes: ["dv-1"],
+    });
+    await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(repriseClassique).not.toHaveBeenCalled();
   });
 });

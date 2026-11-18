@@ -31,6 +31,10 @@ import {
   libelleTypeDemande,
   type EvenementClient,
 } from "./format-clients";
+import {
+  UNIFIED_TYPE_LABELS,
+  resolveSubmissionLabel,
+} from "@/features/admin-submissions/type-labels";
 import { isDuplicate, libererDedup } from "./dedup";
 import { resolveConversationPrivee } from "./routing";
 import { sendTelegramRaw } from "./channels/telegram";
@@ -53,6 +57,8 @@ export interface ResumeDemande {
   canal: CanalDoublon;
   evenement: EvenementDoublon;
   typeDemande: string;
+  /** Type de formulaire en clair (« Formation IA »), pour l'objet de l'alerte. Absent : objet d'avant. */
+  libelleType?: string;
   nom?: string;
   entreprise?: string;
   telephone?: string;
@@ -75,6 +81,54 @@ interface ChampsPersonne {
   rdv?: string | undefined;
 }
 
+/** Type de la base de chaque catégorie de formulaire (repli de `resolveSubmissionLabel`). */
+const TYPE_BASE_PAR_CATEGORIE: Readonly<Record<string, string>> = {
+  CONTACT_FORM_SUBMITTED: "contact",
+  CUSTOMER_SUPPORT_REQUEST: "contact",
+  AUDIT_REQUEST_SUBMITTED: "audit",
+  INTERVENTION_REQUEST_SUBMITTED: "intervention",
+  IMPLEMENTATION_REQUEST_SUBMITTED: "implementation",
+  QUOTE_REQUEST_RECEIVED: "quote_request",
+};
+
+/** Mots qu'un libellé de type ne doit jamais porter dans l'objet (filtres, confidentialité). */
+const MOTS_INTERDITS_OBJET = /qualiopi|opco|prise en charge|financeur/i;
+
+/**
+ * Le libellé de type pour l'objet, en MAJUSCULES, ou `undefined` (rien à ajouter). Vient du
+ * catalogue `resolveSubmissionLabel`, jamais d'un `subType` brut. Un libellé qui porterait un mot
+ * interdit devient « FORMATION ». (Le gabarit d'e-mail refait la même garde : ancien payload.)
+ */
+export function suffixeTypeObjet(libelle: string | undefined): string | undefined {
+  // Retours à la ligne et caractères de contrôle : jamais dans un objet d'e-mail.
+  const t = libelle
+
+    ?.replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!t) return undefined;
+  if (MOTS_INTERDITS_OBJET.test(t)) return "FORMATION";
+  return Array.from(t.toLocaleUpperCase("fr-FR")).slice(0, LONGUEUR_MAX_TYPE_OBJET).join("").trim();
+}
+
+/** Borne du type dans l'objet : préfixe (35) + « · » (3) + 40 = 78 caractères au plus. */
+export const LONGUEUR_MAX_TYPE_OBJET = 40;
+
+/** Le libellé de type d'un formulaire (jamais d'un rendez-vous ni du chatbot), ou `undefined`. */
+function libelleTypeFormulaire(event: EvenementClient): string | undefined {
+  const base = TYPE_BASE_PAR_CATEGORIE[event.category];
+  if (!base) return undefined;
+  const formType =
+    "formType" in event.payload && typeof event.payload.formType === "string"
+      ? event.payload.formType
+      : undefined;
+  // Type connu du catalogue des formulaires : son libellé. Sinon (type hors formulaire comme
+  // « simulateur_roi_rappel », ou pas de type) : la même source que la ligne de type du corps et
+  // de Telegram, qui ne lit aucun champ libre.
+  if (formType && UNIFIED_TYPE_LABELS[formType]) return resolveSubmissionLabel(base, formType);
+  return libelleTypeDemande(event);
+}
+
 /** Résume l'événement : qui, quoi, quand, et le lien de la fiche. */
 export function resumerDemande(event: EvenementClient): ResumeDemande {
   // Lien construit à partir des identifiants : jamais lu dans le texte libre du visiteur
@@ -89,6 +143,9 @@ export function resumerDemande(event: EvenementClient): ResumeDemande {
     canal,
     evenement,
     typeDemande: libelleTypeDemande(event),
+    ...(canal === "message" && libelleTypeFormulaire(event)
+      ? { libelleType: libelleTypeFormulaire(event)! }
+      : {}),
     ...(net(c.nom) ? { nom: net(c.nom)! } : {}),
     ...(net(c.entreprise) ? { entreprise: net(c.entreprise)! } : {}),
     ...(net(c.telephone) ? { telephone: net(c.telephone)! } : {}),
@@ -160,7 +217,7 @@ export function formatDoublonPrive(event: EvenementClient, maintenant = new Date
       : maintenant;
   const qui = [r.nom, r.entreprise].filter((v): v is string => v !== undefined).join(" — ");
   const lignes: Array<string | null> = [
-    `🚨 IMPORTANT — DEMANDE CLIENT · ${SUITE_OBJET[r.canal][r.evenement]}`,
+    `🚨 IMPORTANT — DEMANDE CLIENT · ${SUITE_OBJET[r.canal][r.evenement]}${suffixeType(r.libelleType)}`,
     r.typeDemande,
     qui || null,
     r.telephone ? `📞 ${r.telephone}` : null,
@@ -174,9 +231,18 @@ export function formatDoublonPrive(event: EvenementClient, maintenant = new Date
     .slice(0, MAX_TELEGRAM);
 }
 
-/** Objet de l'e-mail, ≤ 45 caractères (le test du gabarit le mesure). */
-export function objetAlerteClient(canal: CanalDoublon, evenement: EvenementDoublon): string {
-  return `🔴 IMPORTANT DEMANDE CLIENT ${SUITE_OBJET[canal][evenement]}`;
+const suffixeType = (libelle: string | undefined): string => {
+  const s = suffixeTypeObjet(libelle);
+  return s ? ` · ${s}` : "";
+};
+
+/** Objet de l'e-mail. Sans type : ≤ 45 caractères (le test du gabarit le mesure). */
+export function objetAlerteClient(
+  canal: CanalDoublon,
+  evenement: EvenementDoublon,
+  libelleType?: string,
+): string {
+  return `🔴 IMPORTANT DEMANDE CLIENT ${SUITE_OBJET[canal][evenement]}${suffixeType(libelleType)}`;
 }
 
 /** Le jour (AAAA-MM-JJ) à Paris : borne la mémoire du jobId à la durée des jobs terminés. */
@@ -275,6 +341,8 @@ async function doublerParEmail(
       canal: r.canal,
       evenement: r.evenement,
       typeDemande: r.typeDemande,
+      // Clé facultative : un ancien worker l'ignore et rend l'objet d'avant.
+      ...(r.libelleType ? { libelleType: r.libelleType } : {}),
       nom: r.nom ?? r.entreprise ?? "",
       recuLe: formatParisDateTime(quand),
       lignes: lignesDetailClient(event).filter((l) => !ligneFiche(l) && !ligneAnnulation(l)),

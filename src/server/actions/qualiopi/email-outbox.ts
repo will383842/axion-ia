@@ -175,13 +175,25 @@ export async function approuverEmailAction(
       });
       if (refus.count === 1) {
         // Gabarit et motif seulement : ni adresse, ni lien, ni payload.
-        await logQualiopiActivity({
-          action: "email.outbox.refus_auto",
-          targetType: "EmailOutbox",
-          targetId: v.id,
-          changes: { template: email.template, motif: resultat.motif },
-          session,
-        });
+        // La ligne est déjà refusée : un journal en panne ne doit ni masquer le motif ni
+        // sauter la revalidation. Sentry reçoit un libellé fixe, le gabarit et le nom de classe.
+        try {
+          await logQualiopiActivity({
+            action: "email.outbox.refus_auto",
+            targetType: "EmailOutbox",
+            targetId: v.id,
+            changes: { template: email.template, motif: resultat.motif },
+            session,
+          });
+        } catch (errJournal) {
+          Sentry.captureException(new Error("Journal du refus automatique impossible"), {
+            tags: {
+              action: "approuverEmailAction",
+              template: email.template,
+              cause: errJournal instanceof Error ? errJournal.name : "inconnue",
+            },
+          });
+        }
       }
       revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
       return { error: resultat.motif };
