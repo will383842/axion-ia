@@ -78,6 +78,13 @@ const KILL_SWITCH_DEFAULT_REVIEW = process.env.KB_AUTO_PUBLISH !== "true"; // de
  * Idempotent via `idempotencyKey`. Retourne `accepted=false` si rejet quality/PII/dedup/banned.
  */
 export async function ingestEntry(payload: IngestPayload): Promise<IngestResult> {
+  // ----- 0. Origine réservée -----
+  // « methode-import » est l'ancre d'origine de la couche Méthode : seul l'import du corpus
+  // peut la poser. Un appel d'ingestion ne doit jamais pouvoir la falsifier.
+  if (payload.source.factoryId === "methode-import") {
+    return { accepted: false, status: "rejected", rejectReason: "factory_id_reserve" };
+  }
+
   // ----- 1. Idempotency check -----
   const existing = await prisma.knowledgeIngestRequest.findUnique({
     where: { idempotencyKey: payload.idempotencyKey },
