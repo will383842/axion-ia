@@ -473,7 +473,10 @@ export default async function CarrieresHubPage({
           <ul className="mt-5 flex flex-wrap gap-2" role="list">
             {CAREER_CITIES.filter((city) => city !== "Grenoble").map((city) => {
               return (
-                <li key={city} className="border-border text-fg-muted rounded-full border px-3 py-1 text-sm">
+                <li
+                  key={city}
+                  className="border-border text-fg-muted rounded-full border px-3 py-1 text-sm"
+                >
                   {city}
                 </li>
               );

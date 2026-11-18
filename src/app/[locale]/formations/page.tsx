@@ -789,7 +789,6 @@ export default async function FormationsHub({ params }: Props) {
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Formule mensuelle (la plus mise en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
-
               {/* Filet couleur */}
               <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
 

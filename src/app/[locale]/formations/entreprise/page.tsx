@@ -137,7 +137,8 @@ export default async function FormationsEntreprise({ params }: Props) {
   const heroImage = images.find((i) => i.slot === "hero");
   // Infographie « comment réserver » retirée de l'affichage (elle montre encore une étape de dossier OPCO
   // dans l'image) ; le fichier et sa déclaration restent en place.
-  const reserveImage: (typeof images)[number] | undefined = undefined as (typeof images)[number] | undefined;
+  const reserveImage: (typeof images)[number] | undefined = undefined as
+    (typeof images)[number] | undefined;
 
   const breadcrumbItems = [
     { href: "/formations", label: isFr ? "Formations IA" : "AI training" },

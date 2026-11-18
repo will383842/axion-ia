@@ -11,7 +11,16 @@ const SRC = join(__dirname, "..", "..");
 
 // Mots-clés de rédaction et base de génération : matière interne, pas des textes publiés.
 // Seuls app, components, content et messages portent du texte publié ; stack-ia-details décrit des modèles tiers.
-const EXCLUS = [/keywords/, /content-gen/, /stack-ia-details/, /^(?!app|components|content|messages)/, /__tests__/, /\.(spec|test)\.tsx?$/, /\(admin\)/, /components.admin/];
+const EXCLUS = [
+  /keywords/,
+  /content-gen/,
+  /stack-ia-details/,
+  /^(?!app|components|content|messages)/,
+  /__tests__/,
+  /\.(spec|test)\.tsx?$/,
+  /\(admin\)/,
+  /components.admin/,
+];
 
 function fichiers(dir: string, acc: string[] = []): string[] {
   for (const nom of readdirSync(dir)) {
@@ -68,19 +77,26 @@ describe("allégations non prouvées : absentes des contenus publics", () => {
   });
 
   it("les conditions tarifaires des formations ne citent ni OPCO, ni prise en charge, ni Qualiopi", () => {
-    const txt = readFileSync(join(SRC, "content", "formations", "conditions-tarifaires.ts"), "utf8");
+    const txt = readFileSync(
+      join(SRC, "content", "formations", "conditions-tarifaires.ts"),
+      "utf8",
+    );
     const code = txt.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
     expect(code).not.toMatch(/OPCO|prise en charge|Qualiopi/i);
   });
 
   it("la FAQ transversale n'emploie plus « prise en charge »", () => {
-    expect(readFileSync(join(SRC, "content", "transversal.ts"), "utf8")).not.toMatch(/prise en charge/i);
+    expect(readFileSync(join(SRC, "content", "transversal.ts"), "utf8")).not.toMatch(
+      /prise en charge/i,
+    );
   });
 });
 
 describe("texte visible : financement et ville d'édition", () => {
   const lire = (...parts: string[]): string =>
-    readFileSync(join(SRC, ...parts), "utf8").replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+    readFileSync(join(SRC, ...parts), "utf8")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^\s*\/\/.*$/gm, "");
 
   it("aucune mention de Grenoble dans les textes visibles concernés", () => {
     const fichiersVisibles = [
@@ -97,14 +113,15 @@ describe("texte visible : financement et ville d'édition", () => {
   });
 
   it("les surfaces de financement visibles ne parlent ni d'OPCO ni de prise en charge", () => {
-    const fichiersVisibles = [
-      ["components", "formations", "FormationsLesPlus.tsx"],
-    ];
-    for (const f of fichiersVisibles) expect(lire(...f)).not.toMatch(/OPCO|prise en charge|Qualiopi/i);
-    expect(readFileSync(join(SRC, "components", "formations", "FormationDetailPage.tsx"), "utf8")).not.toMatch(
-      /Finançable OPCO|Nous étudions votre prise en charge/,
+    const fichiersVisibles = [["components", "formations", "FormationsLesPlus.tsx"]];
+    for (const f of fichiersVisibles)
+      expect(lire(...f)).not.toMatch(/OPCO|prise en charge|Qualiopi/i);
+    expect(
+      readFileSync(join(SRC, "components", "formations", "FormationDetailPage.tsx"), "utf8"),
+    ).not.toMatch(/Finançable OPCO|Nous étudions votre prise en charge/);
+    expect(readFileSync(join(SRC, "lib", "seo", "page-images.ts"), "utf8")).not.toMatch(
+      /montage du dossier OPCO|OPCO funding file/,
     );
-    expect(readFileSync(join(SRC, "lib", "seo", "page-images.ts"), "utf8")).not.toMatch(/montage du dossier OPCO|OPCO funding file/);
     expect(lire("content", "imprimes.ts")).not.toMatch(/resume:.*prise en charge/);
   });
 });
