@@ -16,6 +16,9 @@ const d = vi.hoisted(() => ({
   enqueueEmail: vi.fn(),
   resoudreMode: vi.fn(),
   log: vi.fn(),
+  rendre: vi.fn(),
+  verrous: new Set<string>(),
+  ordre: [] as string[],
 }));
 
 vi.mock("@/lib/prisma", () => ({
@@ -23,7 +26,37 @@ vi.mock("@/lib/prisma", () => ({
     devis: { findUnique: d.findUnique },
     documentGenere: { findUnique: d.docFindUnique },
     emailOutbox: { findFirst: (...a: unknown[]) => d.outboxFindFirst(...a) },
+    // Verrou consultatif « xact » simulé : pris une fois par clé, relâché à la fin de la transaction.
+    $transaction: async (f: (t: unknown) => unknown) => {
+      const acquis: string[] = [];
+      const tx = {
+        $queryRaw: async (_s: unknown, cle: string) => {
+          d.ordre.push("verrou");
+          if (d.verrous.has(cle)) return [{ locked: false }];
+          d.verrous.add(cle);
+          acquis.push(cle);
+          return [{ locked: true }];
+        },
+        emailOutbox: {
+          findFirst: (...a: unknown[]) => {
+            d.ordre.push("garde");
+            return d.outboxFindFirst(...a);
+          },
+        },
+      };
+      try {
+        return await f(tx);
+      } finally {
+        for (const c of acquis) d.verrous.delete(c);
+      }
+    },
   },
+}));
+vi.mock("@/server/qualiopi/documents/signature/lien-precedent", async (importOriginal) => ({
+  ...(await importOriginal<
+    typeof import("@/server/qualiopi/documents/signature/lien-precedent")
+  >()),
+  rendreLienPrecedent: (...a: unknown[]) => d.rendre(...a),
 }));
 vi.mock("@/server/queue/queues", () => ({
   enqueueEmail: (...a: unknown[]) => d.enqueueEmail(...a),
@@ -87,6 +120,9 @@ const optionsEnfile = () =>
 let espions: ReturnType<typeof vi.spyOn>[] = [];
 beforeEach(() => {
   vi.clearAllMocks();
+  d.verrous.clear();
+  d.ordre.length = 0;
+  d.rendre.mockResolvedValue(true);
   d.findUnique.mockResolvedValue(devis());
   d.docFindUnique.mockResolvedValue({ metadata: null });
   d.outboxFindFirst.mockResolvedValue(null);
@@ -220,6 +256,7 @@ describe("aucune fuite", () => {
     d.creerToken.mockRejectedValue(new Error(`${JETON} /portail/signer/${JETON}`));
     await envoyerDevisEmailAction({ devisId: ID });
     const s = JSON.stringify([d.log.mock.calls, espions.flatMap((e) => e.mock.calls)]);
+    expect(s).not.toContain(ADRESSE);
     expect(s).not.toContain(JETON);
     expect(s).not.toContain("/portail/signer/");
   });
@@ -228,5 +265,106 @@ describe("aucune fuite", () => {
     await envoyerDevisEmailAction({ devisId: ID });
     const changes = (d.log.mock.calls[0] as [{ changes: Record<string, unknown> }])[0].changes;
     expect(changes["lienSignatureReemis"]).toBe(false);
+  });
+});
+
+describe("verrou du devis à la mise en attente (suites d'audit)", () => {
+  const CLE = `devis.envoi:${ID}`;
+
+  it("le verrou est pris AVANT la garde « déjà garé » et AVANT l'enfilage", async () => {
+    d.enqueueEmail.mockImplementation(async () => {
+      d.ordre.push("enfilage");
+      return { enqueued: false, garePourValidation: true, outboxId: "o-1" };
+    });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.ordre).toEqual(["verrou", "garde", "enfilage"]);
+  });
+
+  it("verrou occupé : message clair, ni garde, ni jeton, ni enfilage", async () => {
+    d.verrous.add(CLE);
+    expect(await envoyerDevisEmailAction({ devisId: ID })).toEqual({
+      error: "Un envoi de ce devis est déjà en cours, réessayez dans un instant.",
+    });
+    expect(d.outboxFindFirst).not.toHaveBeenCalled();
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.enqueueEmail).not.toHaveBeenCalled();
+  });
+
+  it("deux clics en parallèle (deux onglets) : une seule ligne garée, l'autre est refusée", async () => {
+    let lignes = 0;
+    d.outboxFindFirst.mockImplementation(async () => (lignes > 0 ? { id: "o-0" } : null));
+    d.enqueueEmail.mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 10));
+      lignes += 1;
+      return { enqueued: false, garePourValidation: true, outboxId: "o-1" };
+    });
+    const [a, b] = await Promise.all([
+      envoyerDevisEmailAction({ devisId: ID }),
+      envoyerDevisEmailAction({ devisId: ID }),
+    ]);
+    expect(d.enqueueEmail).toHaveBeenCalledTimes(1);
+    expect([a, b].filter((r) => "data" in r)).toHaveLength(1);
+    expect([a, b].filter((r) => "error" in r)).toHaveLength(1);
+  });
+
+  it("le verrou est relâché après l'envoi : un clic ultérieur n'est pas bloqué par lui", async () => {
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.verrous.size).toBe(0);
+  });
+});
+
+describe("mode « auto » : lien perdu sans e-mail (suites d'audit)", () => {
+  beforeEach(() => d.resoudreMode.mockResolvedValue("auto"));
+
+  it("jeton créé au clic puis file indisponible : l'ancien lien est rendu (revoquer, URL du jeton neuf)", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({ error: "File d'envoi indisponible — réessayer." });
+    expect(d.rendre).toHaveBeenCalledTimes(1);
+    expect(d.rendre).toHaveBeenCalledWith(
+      `https://exemple.test/fr/portail/signer/${JETON}`,
+      "revoquer",
+    );
+  });
+
+  it("e-mail enfilé : l'ancien lien n'est pas rendu", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: true });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.rendre).not.toHaveBeenCalled();
+  });
+
+  it("aucun jeton créé (émission en échec) : rien à rendre", async () => {
+    d.creerToken.mockRejectedValue(new Error("x"));
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.rendre).not.toHaveBeenCalled();
+  });
+
+  it("le rendu qui lève ne remonte pas, et rien de sensible n'est écrit", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockRejectedValue(new Error(`${JETON} ${ADRESSE}`));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({ error: "File d'envoi indisponible — réessayer." });
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(JETON);
+    expect(s).not.toContain(ADRESSE);
+  });
+});
+
+describe("renvoi en validation d'un devis à formules : formules, drapeau et marqueur ensemble", () => {
+  it("les trois arrivent dans le même payload enfilé, sans jeton ni lien", async () => {
+    const formules = { formules: [{ titre: "Essentielle" }, { titre: "Complète" }] };
+    d.findUnique.mockResolvedValue(devis({ offre: { choix: "x" } }));
+    d.docFindUnique.mockResolvedValue({ metadata: { renderData: { data: { formules } } } });
+    await envoyerDevisEmailAction({ devisId: ID });
+    const p = payloadEnfile();
+    // Les formules figées : décrites, et AUCUN montant unique annoncé.
+    expect(p["nbFormules"]).toBe(2);
+    expect(p["libellesFormules"]).toEqual(["Essentielle", "Complète"]);
+    expect(p).not.toHaveProperty("montantLabel");
+    expect(p["lienSignatureALEnvoi"]).toMatchObject({ nature: "devis-renvoi", devisId: ID });
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(p).not.toHaveProperty("signatureUrl");
+    expect(optionsEnfile()).toMatchObject({ exigerValidation: true });
   });
 });

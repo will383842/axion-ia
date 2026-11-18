@@ -767,6 +767,9 @@ export async function updateClientAction(
         await definirContactFacturation(tx, {
           clientId: id,
           ...(fields.contactNom !== undefined ? { nom: fields.contactNom } : {}),
+          // « Modifier la fiche » corrige un nom : sans nouvelle adresse, c'est
+          // la même personne, pas une nouvelle.
+          nomCorrige: true,
           ...(fields.contactEmail !== undefined ? { email: fields.contactEmail } : {}),
           ...(fields.contactTelephone !== undefined ? { telephone: fields.contactTelephone } : {}),
           ...(fields.contactFonction !== undefined ? { fonction: fields.contactFonction } : {}),

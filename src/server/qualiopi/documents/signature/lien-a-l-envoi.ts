@@ -190,7 +190,7 @@ export async function envoyerAvecLienALEnvoi<R extends VerdictEnfilage = Verdict
 
   return marqueur.nature === "devis-premier-envoi"
     ? premierEnvoi({ ligne, payload, acteur, enfiler, marqueur })
-    : renvoi({ ligne, payload, enfiler, marqueur });
+    : renvoi({ ligne, payload, acteur, enfiler, marqueur });
 }
 
 // ── devis-premier-envoi ─────────────────────────────────────────────────────
@@ -303,6 +303,9 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           if (!estEnfile(verdict)) {
             // Le jeton neuf a pu révoquer un lien vivant plus ancien : on le rend.
             await annulerLeJeton(etat.tokenId, etat.url);
+            // Défait : le `catch` (échec de commit) ne doit pas le défaire une seconde fois
+            // (fausse alerte `ancien_lien_non_rendu`, ligne remise à valider à tort).
+            etat.tokenId = null;
             return { type: "envoi", res: verdict };
           }
           etat.verdict = verdict;
@@ -384,6 +387,24 @@ async function journaliserEnvoi(
   }
 }
 
+/** Trace du nouveau lien émis au renvoi. Ni URL, ni jeton, ni adresse ; ne lève jamais. */
+async function journaliserRenvoi(
+  acteur: { session: AdminSession },
+  marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-renvoi" }>,
+): Promise<void> {
+  try {
+    await logQualiopiActivity({
+      action: "qualiopi.devis.renvoi",
+      targetType: "Devis",
+      targetId: marqueur.devisId,
+      changes: { lienSignatureEmis: true, documentGenereId: marqueur.documentGenereId },
+      session: acteur.session,
+    });
+  } catch (err) {
+    signaler("lienALEnvoi.journal_renvoi", err);
+  }
+}
+
 /**
  * Les écritures ont échoué APRÈS l'enfilage : alerte (texte repris de `sendDevisAction`, ni
  * adresse ni lien) et trace de journal `qualiopi.devis.send_refuse` / `apres_courriel`. Ne lève
@@ -431,10 +452,11 @@ async function traiterEchecApresEnfilage(a: {
 async function renvoi<R extends VerdictEnfilage>(a: {
   ligne: LigneALEnvoi;
   payload: Record<string, unknown>;
+  acteur: { session: AdminSession };
   enfiler: Enfiler<R>;
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-renvoi" }>;
 }): Promise<ResultatEnvoi<R>> {
-  const { ligne, payload, enfiler, marqueur } = a;
+  const { ligne, payload, enfiler, marqueur, acteur } = a;
   // État visible depuis le `catch` : ce qui est déjà produit, donc ce qu'il faut défaire.
   const etat: { tokenId: string | null; url: string | null; verdict: R | null } = {
     tokenId: null,
@@ -443,7 +465,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
   };
 
   try {
-    return await prisma.$transaction(
+    const res = await prisma.$transaction(
       async (tx): Promise<ResultatEnvoi<R>> => {
         // (a) Verrou non bloquant, MÊME clé que `premierEnvoi`, `sendDevisAction` et la remise en
         // main propre : sans lui, deux lignes de renvoi approuvées ensemble créeraient deux
@@ -507,6 +529,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
         }
         if (!estEnfile(verdict)) {
           await annulerLeJeton(etat.tokenId, etat.url);
+          // Défait : pas de seconde annulation depuis le `catch` (échec de commit).
+          etat.tokenId = null;
           return { type: "envoi", res: verdict };
         }
         etat.verdict = verdict;
@@ -514,6 +538,8 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       },
       { maxWait: 5_000, timeout: 60_000 },
     );
+    if (etat.verdict !== null) await journaliserRenvoi(acteur, marqueur);
+    return res;
   } catch (err) {
     if (etat.verdict !== null) {
       // L'e-mail est parti (échec de fin de transaction) : on alerte, on ne relance JAMAIS, et
@@ -527,6 +553,7 @@ async function renvoi<R extends VerdictEnfilage>(a: {
       } catch {
         // Une alerte qui échoue ne remonte pas : l'e-mail est parti.
       }
+      await journaliserRenvoi(acteur, marqueur);
       return { type: "envoi", res: etat.verdict };
     }
     if (err instanceof EnvoiOccupe) throw err;

@@ -1253,6 +1253,8 @@ export function buildOrganizationJsonLd({
       // La seule verification possible est humaine, connectee — elle a ete faite
       // par Will le 2026-08-16.
       "https://www.crunchbase.com/organization/axion-ia",
+      // Chaîne YouTube officielle (identifiant UCWytcD2gC5TdBr7Fhv8g1lQ).
+      "https://www.youtube.com/@Axion-IA-com",
     ],
     // Offre phare (audit SEO 2026-11-11, B3) : le catalogue pointe la Journée IA,
     // référencée par l'`@id` de son nœud Service (émis en entier par l'accueil et

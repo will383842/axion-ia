@@ -47,3 +47,10 @@ describe("buildOrganizationJsonLd — certification Qualiopi", () => {
     expect(cred?.recognizedBy).toHaveLength(1);
   });
 });
+
+describe("buildOrganizationJsonLd — sameAs", () => {
+  it("déclare la chaîne YouTube officielle", () => {
+    const org = buildOrganizationJsonLd({ locale: "fr" });
+    expect(org.sameAs).toContain("https://www.youtube.com/@Axion-IA-com");
+  });
+});

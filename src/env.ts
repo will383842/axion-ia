@@ -172,6 +172,14 @@ export const env = createEnv({
     CRM_INBOUND_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
     // Base unique du chatbot (V3-3) : ÉTEINT par défaut, seule la valeur exacte "true" l'allume.
     CHATBOT_KB_UNIFIED: z.enum(["true", "false"]).optional(),
+    // Couche « Méthode » (ADR 0076) : ÉTEINTE par défaut, seule la valeur exacte "true"
+    // l'allume. Éteinte, `obtenirContexteMethode` rend un contexte vide sans lire la base.
+    METHODE_ACTIVE: z.enum(["true", "false"]).optional(),
+    // Porte du Studio vers la couche Méthode (lot suivant, ADR 0076) : ÉTEINTE par défaut,
+    // seule la valeur exacte "true" l'ouvre. Déclarée ici, aucune route ne la lit encore.
+    METHODE_STUDIO_OUVERT: z.enum(["true", "false"]).optional(),
+    // Secret partagé de cette porte (en-tête dédié, jamais le secret MCP). Absent = porte close.
+    METHODE_STUDIO_SECRET: z.string().min(32).optional(),
     // Exclusions PERSISTANTES du flux lettre et guide (lot L4-S, décision D4) :
     // empreintes SHA-256 de l'adresse normalisée (trim + minuscules), séparées
     // par des virgules. Jamais une adresse en clair. Voir `crm-sync/exclusions.ts`.
@@ -781,6 +789,9 @@ export const env = createEnv({
     EMAIL_MANUEL_NOM_EXPEDITEUR: process.env.EMAIL_MANUEL_NOM_EXPEDITEUR,
     EMAIL_MANUEL_SIGNATURE: process.env.EMAIL_MANUEL_SIGNATURE,
     CHATBOT_KB_UNIFIED: process.env.CHATBOT_KB_UNIFIED,
+    METHODE_ACTIVE: process.env.METHODE_ACTIVE,
+    METHODE_STUDIO_OUVERT: process.env.METHODE_STUDIO_OUVERT,
+    METHODE_STUDIO_SECRET: process.env.METHODE_STUDIO_SECRET,
     VILLES_GENERATEURS_ANNEXES_ACTIFS: process.env.VILLES_GENERATEURS_ANNEXES_ACTIFS,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
     DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
