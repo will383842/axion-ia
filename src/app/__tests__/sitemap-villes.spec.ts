@@ -24,7 +24,9 @@ describe("sitemaps villes", () => {
   });
 
   it("les ids villes-* émettent exactement les villes de la liste, sans id vide", async () => {
-    const ids = (await generateSitemaps()).map((s) => s.id).filter((id) => id.startsWith("villes-"));
+    const ids = (await generateSitemaps())
+      .map((s) => s.id)
+      .filter((id) => id.startsWith("villes-"));
     expect(ids.length).toBeGreaterThan(0);
     expect(ids).not.toContain("villes-corse");
 

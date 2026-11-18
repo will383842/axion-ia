@@ -4,23 +4,55 @@
  */
 import { describe, it, expect } from "vitest";
 
-import { VILLES_INDEXEES_SLUGS, VILLES_INDEXEES, estCitableDansLeMaillage } from "../villes-indexees";
+import {
+  VILLES_INDEXEES_SLUGS,
+  VILLES_INDEXEES,
+  estCitableDansLeMaillage,
+} from "../villes-indexees";
 import { VILLES_CORE, isVilleIndexable, getIndexableVillesCore } from "../core";
 import { getIndexableRegions } from "@/content/regions";
 
 const ATTENDUES = [
-  "paris", "saint-denis", "boulogne-billancourt", "montreuil", "argenteuil",
-  "marseille", "nice", "toulon", "aix-en-provence",
-  "lyon", "saint-etienne", "villeurbanne", "grenoble", "clermont-ferrand", "annecy",
-  "toulouse", "montpellier", "nimes", "perpignan",
-  "nantes", "angers", "le-mans",
-  "strasbourg", "reims", "metz", "mulhouse", "nancy",
-  "bordeaux", "limoges",
-  "lille", "amiens",
-  "rennes", "brest",
-  "le-havre", "rouen", "caen",
-  "dijon", "besancon",
-  "tours", "orleans",
+  "paris",
+  "saint-denis",
+  "boulogne-billancourt",
+  "montreuil",
+  "argenteuil",
+  "marseille",
+  "nice",
+  "toulon",
+  "aix-en-provence",
+  "lyon",
+  "saint-etienne",
+  "villeurbanne",
+  "grenoble",
+  "clermont-ferrand",
+  "annecy",
+  "toulouse",
+  "montpellier",
+  "nimes",
+  "perpignan",
+  "nantes",
+  "angers",
+  "le-mans",
+  "strasbourg",
+  "reims",
+  "metz",
+  "mulhouse",
+  "nancy",
+  "bordeaux",
+  "limoges",
+  "lille",
+  "amiens",
+  "rennes",
+  "brest",
+  "le-havre",
+  "rouen",
+  "caen",
+  "dijon",
+  "besancon",
+  "tours",
+  "orleans",
 ];
 
 describe("villes-indexees · la liste contient exactement les pages prévues", () => {

@@ -110,7 +110,9 @@ describe("liste d'indexation unique (villes-indexees.ts, 18/11/2026)", () => {
   });
 
   it("une ville hors liste n'est PAS indexable, même premium", () => {
-    const horsListe = VILLES.find((v) => !!v.copy && isPremiumVille(v) && !VILLES_INDEXEES.has(v.slug));
+    const horsListe = VILLES.find(
+      (v) => !!v.copy && isPremiumVille(v) && !VILLES_INDEXEES.has(v.slug),
+    );
     expect(horsListe).toBeDefined();
     expect(isVilleIndexable(horsListe!.slug)).toBe(false);
   });
