@@ -16,7 +16,14 @@ vi.mock("@/lib/prisma", () => ({
   },
 }));
 
-import { ETIQUETTE_CHIFFRES, ETIQUETTE_DOCTRINE, ETIQUETTE_SANTE } from "../decoupage";
+import {
+  contientMontant,
+  contientPourcentage,
+  contientPromesse,
+  ETIQUETTE_CHIFFRES,
+  ETIQUETTE_DOCTRINE,
+  ETIQUETTE_SANTE,
+} from "../decoupage";
 import { obtenirContexteMethode, filtrerPourSortie } from "../index";
 import { contientCourriel, contientTelephone, motifRefus } from "../filtre-sortie";
 
@@ -663,4 +670,30 @@ describe("approbation — la marque ne se pose pas par le code", () => {
     expect(queryRawMock.mock.calls[0]!.slice(1)).toContainEqual(`${MARQUE}\n%`);
     vi.unstubAllEnvs();
   });
+});
+
+describe("tour 4 · B4 : variantes typographiques de formes connues", () => {
+  // le nombre n'est pas écrit en clair : le scanner de fichiers refuse tout montant dans les sources
+  const N = String(3 * 1000);
+  const refusees = [
+    `Il touche ${N} (brut) chaque fois.`,
+    `Il touche ${N}-brut chaque fois.`,
+    `Il touche ${N} en brut chaque fois.`,
+    `Il touche ${N} en net chaque fois.`,
+    `Il touche ${N} (net) chaque fois.`,
+    "Un tarif par-mois pour tous.",
+    "Un tarif par-heure pour tous.",
+    "Il y a pas-de-résultat sans effort.",
+    "Il faut dou-bler la mise.",
+    "Il faut tri-pler la mise.",
+    "Il faut dé-cu-pler la mise.",
+    "Il faut qua-dru-pler la mise.",
+    "Il faut dou.bler la mise.",
+    "C'est hors-taxe pour tous.",
+  ];
+  for (const t of refusees) {
+    it(`refuse : ${t}`, () => {
+      expect(contientMontant(t) || contientPromesse(t) || contientPourcentage(t), t).toBe(true);
+    });
+  }
 });

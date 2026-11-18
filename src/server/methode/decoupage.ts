@@ -143,7 +143,7 @@ const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:k|m|md
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
 // nombre suivi d'un prix hors taxes / toutes taxes, d'un multiplicateur (k, M, mille, million),
 // d'un milliard, d'un dollar ou d'un code USD, sans « euro »
-const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|brut(?:e|s|es)?|nett?(?:e|s|es)?|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:en\s)?(?:(?:HT|TTC|brut(?:e|s|es)?|nett?(?:e|s|es)?|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
 // dollar : symbole collé ou séparé d'un nombre, dans les deux sens, ou « USD » devant
 // autres devises (livre, franc suisse, yen, « balles »), périodicité (« /mois », « par an »), taux journalier
 const MONTANT_AUTRES = String.raw`[£\u00a5]\s?\d|\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:[£\u00a5]|gbp\b|chf\b|jpy\b|francs?\b|bn\b|balles?\b|\/\s?(?:mois|jour|an|semaine|h)\b|par (?:mois|jour|an|semaine|heure)\b|la journee\b|la journée\b)|\btjm\b`;
@@ -168,14 +168,28 @@ const MOTIF_MONETAIRE = new RegExp(
 const MOTIF_PERIODE_TAXE =
   /\bpar (?:heure|jour|mois|trimestre|semestre|semaine|an|annee)s?\b|\bde l'heure\b|\bhors[\s-]+(?:taxe|t\.? ?v\.? ?a|h\.? ?t)|\bhtva\b|\bh\.? ?t\.? ?v\.? ?a\b/;
 
+/**
+ * Texte lu avec tirets, parenthèses, crochets, accolades, points médians, soulignés et coupures
+ * remplacés par des espaces (espaces repliés) : « 3000 (brut) », « par-mois », « pas-de-résultat »
+ * se lisent alors comme leur forme simple. Toujours testé EN PLUS du texte lu tel quel.
+ */
+function espacer(lu: string): string {
+  return lu
+    .replace(/[\-_‐‑‒–—―−()[\]{}·•*\u00ad\u200b-\u200d\u2060\ufeff]/g, " ")
+    .replace(/\s+/g, " ");
+}
+
 export function contientMontant(texte: string): boolean {
   const lu = lire(texte);
+  const espace = espacer(lu);
   return (
     MOTIF_MONTANT.test(texte) ||
     MOTIF_MONETAIRE.test(texte) ||
     MOTIF_MONTANT.test(lu) ||
     MOTIF_MONETAIRE.test(lu) ||
-    MOTIF_PERIODE_TAXE.test(lu)
+    MOTIF_MONTANT.test(espace) ||
+    MOTIF_PERIODE_TAXE.test(lu) ||
+    MOTIF_PERIODE_TAXE.test(espace)
   );
 }
 
@@ -227,12 +241,19 @@ function lire(texte: string): string {
 
 export function contientPromesse(texte: string): boolean {
   const lu = lire(texte);
-  // « g a r a n t i » : on cherche aussi sans espaces ni séparateurs
-  return MOTIF_PROMESSE.test(lu) || /garant|rembours/.test(lu.replace(/[\s.\-_*]/g, ""));
+  // « g a r a n t i », « dou-bler » : on cherche aussi sans espaces ni séparateurs, et avec
+  // les tirets et parenthèses lus comme des espaces (« pas-de-résultat »)
+  const compact = espacer(lu).replace(/[\s.]/g, "");
+  return (
+    MOTIF_PROMESSE.test(lu) ||
+    MOTIF_PROMESSE.test(espacer(lu)) ||
+    /garant|rembours|doubl|tripl|quadrupl|quintupl|decupl|centupl|pasderesultat/.test(compact)
+  );
 }
 
 export function contientPourcentage(texte: string): boolean {
-  return MOTIF_POURCENTAGE.test(lire(texte));
+  const lu = lire(texte);
+  return MOTIF_POURCENTAGE.test(lu) || MOTIF_POURCENTAGE.test(espacer(lu));
 }
 
 /** `livre:<nom du fichier, sans numéro, borné>` : aucune liste de titres ni d'auteurs en dur. */
@@ -332,15 +353,23 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
     const ligne = brute.trim();
 
     if (/^# /.test(ligne)) {
-      // titre H1 = nom du fichier ; s'il s'intercale sous un titre de section, la tête
-      // de cette section n'est plus celle du corpus : elle ne pourra pas être approuvée.
-      if (courant.lignes.every((l) => l.trim() === "")) courant.neutre = true;
+      // titre H1 = nom du fichier. Une ligne sautée dans le corps d'une section la neutralise
+      // ENTIÈREMENT (décision du 18/11, règle la plus prudente), quel que soit le contenu déjà lu :
+      // le texte qui suit n'a jamais été relu sous cette marque.
+      courant.neutre = true;
       continue;
     }
 
     const bloc = BLOCS_FIXES.find((b) => b.ligne === ligne);
     if (bloc) {
-      if (bloc.slug === null) continue; // simple étiquette de mise en page
+      if (bloc.slug === null) {
+        // étiquette de mise en page sautée : une ligne du corps a disparu, la section n'est
+        // plus lue telle qu'elle est écrite dans le corpus → jamais servie.
+        courant.neutre = true;
+        continue;
+      }
+      // l'encadré interrompt la section en cours (qui reprendra en « -suite ») : jamais servie.
+      if (bloc.slug === "essentiel") courant.neutre = true;
       pousser();
       if (bloc.slug === "essentiel") {
         // Le noyau s'arrête à « Les idées clés » ; la section numérotée en cours
@@ -397,7 +426,10 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
         };
         continue;
       }
-      if (ligne === "MISE EN SITUATION") continue;
+      if (ligne === "MISE EN SITUATION") {
+        courant.neutre = true; // ligne sautée dans le corps
+        continue;
+      }
     }
 
     if (!dansBlocFixe) {
@@ -432,6 +464,9 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
         };
         continue;
       }
+      // Un titre « N. » lu comme candidat mais versé dans le corps (question, numéro sauté,
+      // cellule imbriquée) : la section qui l'avale n'est plus celle du corpus → jamais servie.
+      if (c) courant.neutre = true;
     }
 
     courant.lignes.push(brute);
@@ -446,9 +481,11 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
       const origine = fusion.find((x) => x.slug === m.slug.replace(/-suite$/, ""));
       if (origine) {
         origine.lignes.push("", ...m.lignes);
+        origine.neutre = true; // texte recollé d'ailleurs : jamais servie
         continue;
       }
       m.slug = m.slug.replace(/-suite$/, "");
+      m.neutre = true; // sa tête n'est pas celle du corpus
     }
     fusion.push(m);
   }

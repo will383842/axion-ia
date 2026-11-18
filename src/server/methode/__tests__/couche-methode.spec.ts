@@ -840,3 +840,88 @@ describe("10 · tour 2 de relecture : la marque touche son titre dans le corpus 
     expect(estApprouvee(maj[0]!)).toBe(false);
   });
 });
+
+describe("11 · tour 4 : une ligne sautée ou avalée dans une section marquée la neutralise ENTIÈREMENT", () => {
+  const M = "sortie: validee";
+  const sections = (lignes: string[]) =>
+    decouperFichier("livres/faux-quatre.md", lignes.join("\n"));
+  const servies = (lignes: string[]) => sections(lignes).filter((x) => x.approuvee);
+  const aucuneServie = (lignes: string[]) => expect(servies(lignes), lignes.join("|")).toEqual([]);
+
+  it("B1 : une ligne « # » au milieu d'une section marquée : la section n'est pas servie", () => {
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      M,
+      LONG,
+      "# Autre titre",
+      "Texte non relu.",
+    ]);
+    aucuneServie(["# faux-quatre", "1. Premier titre", M, "# Autre titre", LONG]);
+    aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, "# Autre titre"]);
+  });
+
+  it("B2 : un titre « N. » avalé dans le corps (question, numéro sauté) neutralise la section", () => {
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      M,
+      LONG,
+      "2. Un titre en forme de question ?",
+      "Court.",
+      "Texte non relu.",
+      "3. Suivant",
+      LONG,
+    ]);
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      M,
+      LONG,
+      "3. Numéro sauté",
+      LONG,
+      "Texte non relu.",
+    ]);
+    // la section avalée en cascade n'est pas servie non plus
+    expect(
+      servies(["# faux-quatre", "1. Premier titre", M, LONG, "3. Numéro sauté", M, LONG]),
+    ).toEqual([]);
+  });
+
+  it("B3 : une étiquette de mise en page sautée neutralise la section", () => {
+    for (const etiquette of ["Appliqué à AXION IA", "Les idées clés"]) {
+      aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, etiquette, "Texte non relu."]);
+    }
+  });
+
+  it("B3 : la ligne « MISE EN SITUATION » sautée dans un cas marqué le neutralise", () => {
+    aucuneServie([
+      "# faux-quatre",
+      "Mises en situation",
+      "Cas 1 — Un faux cas",
+      M,
+      LONG,
+      "MISE EN SITUATION",
+      "Texte non relu.",
+    ]);
+  });
+
+  it("B3 : l'encadré qui coupe une section marquée la neutralise (fusion « -suite »)", () => {
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      M,
+      LONG,
+      "L'ESSENTIEL EN 30 SECONDES",
+      "Un résumé.",
+      "Les idées clés",
+      "Suite non relue.",
+    ]);
+  });
+
+  it("témoin positif : une section marquée, intacte, reste servie", () => {
+    expect(
+      servies(["# faux-quatre", "1. Premier titre", M, LONG, "2. Second titre", LONG]),
+    ).toHaveLength(1);
+  });
+});

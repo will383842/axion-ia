@@ -98,6 +98,19 @@ Markdown (un `###` fait partie de la section du dessus et la rend non approuvabl
 commentaires HTML ne portent aucun titre ; une section dont le corps contient un titre
 indenté, un sous-titre, un soulignement setext ou un commentaire HTML n'est pas approuvable ;
 un fichier qui mêle titres `##` et sections numérotées est ambigu : rien n'y est approuvé.
+
+**Format PDF, règle la plus prudente (décision du pilote, 18/11, 09 h).** Dès qu'une ligne du
+corps d'une section marquée est sautée ou supprimée (ligne `# `, étiquette de mise en page,
+ligne « MISE EN SITUATION »), fusionnée (recollage « -suite » après l'encadré de l'essentiel,
+qui neutralise aussi la section interrompue) ou qu'un titre « N. » (question, numéro sauté,
+cellule imbriquée) entre dans le corps, la section **entière** est neutralisée : jamais servie.
+Le second filet teste aussi le texte normalisé dont les tirets, parenthèses et coupures sont
+remplacés par des espaces (« par-mois », « (brut) », « pas-de-résultat »), et cherche
+doubl, tripl, quadrupl, quintupl, décupl, centupl sur le texte compacté (« dou-bler »).
+Formes exotiques connues et non bloquantes, la sécurité étant l'approbation à la main : une
+adresse écrite « at exemple .invalid », « hors taxe » collé par une espace de largeur nulle,
+un `<h2>` HTML brut, un `> ## titre` en citation, un `- ## titre` en liste, un titre « N. »
+dans un bloc de code d'une fiche PDF.
 La marque est lue sur la **première ligne brute** de la section dans le corpus : si le
 découpage la ferait apparaître en tête (retrait, tabulation, BOM, espace insécable, ligne
 « # » supprimée, encadré « essentiel » sans terminateur), la section n'est pas approuvée et

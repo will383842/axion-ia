@@ -59,6 +59,10 @@ Mieux vaut laisser la variable absente que mal l'écrire.
 > **ne pose jamais** la marque et ne la déduit de rien : il recopie le corpus ; réimporter un
 > corpus sans marque la retire (avec `--ecrire`, une entrée refusée ou disparue perd aussi sa ligne de marque, sans être supprimée). La marque doit être sur la ligne qui suit IMMÉDIATEMENT la ligne de titre, telle qu'écrite dans le fichier : retrait, BOM, ligne de mise en page ou « # » intercalée la rendent invalide. Une section dont le corps contient un sous-titre `###`, un titre indenté ou un commentaire HTML n'est pas approuvable. Aucune fonction du code ne peut l'écrire. La ligne de marque
 > n'est pas rendue à l'appelant.
+>
+> **Fiches PDF : dès qu'une ligne du corps d'une section marquée est sautée, supprimée ou
+> fusionnée (« # » intercalé, étiquette de mise en page, recollage « -suite »), ou qu'un titre
+> « N. » entre dans son corps, la section ENTIÈRE n'est pas servie.**
 
 `obtenirContexteMethode({ sujet, max? })` rend un noyau et au plus dix extraits de 1 500
 caractères, **approuvés, puis passés par `filtrerPourSortie`** (second filet) : une fiche avec un montant, un courriel,
