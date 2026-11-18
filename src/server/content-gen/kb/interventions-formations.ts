@@ -207,7 +207,7 @@ export const KB_INTERVENTIONS_FORMATIONS: readonly KbFact[] = [
     text: "La Journée IA d'Axion-IA, pour les TPE et PME : une journée dans vos locaux, partout en France. Le matin, nous regardons service par service ce qui prend du temps et nous le chiffrons avec vos heures ; l'après-midi, pendant 4 heures de formation, vos équipes apprennent sur leurs vrais dossiers ce qu'on confie à l'IA et ce qu'on garde. Le soir avant le départ, vous avez par écrit 3 à 5 priorités ; sous 3 jours ouvrés, vous recevez votre rapport complet (vos gains chiffrés et les tâches à automatiser, classées par rentabilité) avec un plan d'action sur 90 jours, et chaque personne formée repart avec une attestation. {{price:journee-ia|flat}} la journée, dans vos locaux. On commence par un rendez-vous gratuit de 45 minutes, en visio ou par téléphone, sans engagement.",
     source: "Axion-IA — La Journée IA",
     sourceUrl: "https://axion-ia.com/fr/journee-ia",
-    verifiedAt: "2026-11-08",
+    verifiedAt: "2026-11-18",
     verticales: ["interventions_formations"],
     confidence: 0.95,
   },
