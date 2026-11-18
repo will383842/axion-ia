@@ -9,6 +9,7 @@ const NOW = new Date("2030-01-01T00:00:00Z");
 const etat = vi.hoisted(() => ({
   ids: new Set<string>(),
   lectures: 0,
+  panne: false,
   demandes: [] as string[][],
 }));
 
@@ -46,6 +47,7 @@ vi.mock("@/lib/prisma", () => ({
     emailOutbox: {
       findMany: (args: { where: { entityId: { in: string[] } } }) => {
         etat.lectures += 1;
+        if (etat.panne) return Promise.reject(new Error("lecture indisponible"));
         etat.demandes.push(args.where.entityId.in);
         return Promise.resolve(
           args.where.entityId.in.filter((i) => etat.ids.has(i)).map((entityId) => ({ entityId })),
@@ -76,6 +78,7 @@ describe("liste des devis : badge « E-mail à valider »", () => {
     cleanup();
     etat.ids = new Set();
     etat.lectures = 0;
+    etat.panne = false;
     etat.demandes = [];
   });
 
@@ -95,9 +98,7 @@ describe("liste des devis : badge « E-mail à valider »", () => {
 
   it("badge « ancien » pour un devis envoyé dont la ligne est encore à valider", async () => {
     etat.ids = new Set(["e1"]);
-    expect(badges(await afficher()).map((b) => b.texte)).toEqual([
-      "Marqué envoyé, e-mail pas encore parti",
-    ]);
+    expect(badges(await afficher()).map((b) => b.texte)).toEqual(["E-mail du devis à valider"]);
   });
 
   it("un devis accepté ne porte jamais le badge, même si une ligne traîne", async () => {
@@ -107,5 +108,13 @@ describe("liste des devis : badge « E-mail à valider »", () => {
 
   it("aucun e-mail en attente : aucun badge", async () => {
     expect(badges(await afficher())).toEqual([]);
+  });
+
+  it("une panne de lecture des e-mails en attente ne fait pas tomber la liste", async () => {
+    etat.panne = true;
+    const c = await afficher();
+    expect(etat.lectures).toBe(1);
+    expect(badges(c)).toEqual([]);
+    expect(c.textContent).toContain("AXI-DEV-2030-b1");
   });
 });

@@ -38,7 +38,7 @@ describe("<BadgeEmailDevis />", () => {
 
   it("textes exacts", () => {
     expect(TEXTE_BADGE_A_VALIDER).toBe("E-mail à valider");
-    expect(TEXTE_BADGE_ANCIEN).toBe("Marqué envoyé, e-mail pas encore parti");
+    expect(TEXTE_BADGE_ANCIEN).toBe("E-mail du devis à valider");
   });
 
   it("brouillon en attente : badge avec lien vers les e-mails à valider", () => {
@@ -56,7 +56,12 @@ describe("<BadgeEmailDevis />", () => {
 
   it("envoyé avec ligne à valider : badge « ancien »", () => {
     const { container } = render(<BadgeEmailDevis statut="envoye" enAttente href={href} />);
-    expect(container.textContent).toBe("Marqué envoyé, e-mail pas encore parti");
+    expect(container.textContent).toBe("E-mail du devis à valider");
+  });
+
+  it("envoyé avec une ligne de renvoi à valider : « E-mail du devis à valider »", () => {
+    const { container } = render(<BadgeEmailDevis statut="envoye" enAttente href={href} />);
+    expect(container.textContent).toBe("E-mail du devis à valider");
   });
 
   it("accepté : rien", () => {
@@ -86,7 +91,7 @@ describe("fiche client : cartes de devis", () => {
     const badges = [...container.querySelectorAll('[data-testid="badge-email-devis"]')];
     expect(badges.map((b) => b.textContent)).toEqual([
       "E-mail à valider",
-      "Marqué envoyé, e-mail pas encore parti",
+      "E-mail du devis à valider",
     ]);
     expect(badges[0]?.getAttribute("href")).toBe("/fr/adm/qualiopi/emails");
   });

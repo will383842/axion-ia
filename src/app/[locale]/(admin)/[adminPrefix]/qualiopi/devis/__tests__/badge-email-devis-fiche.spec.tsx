@@ -1,6 +1,6 @@
 /**
  * B2, PR 5 — la fiche d'un devis porte le badge « E-mail à valider » quand un e-mail d'envoi
- * attend (brouillon), et « Marqué envoyé, e-mail pas encore parti » pour un ancien devis « envoyé »
+ * attend (brouillon), et « E-mail du devis à valider » pour un ancien devis « envoyé »
  * dont la ligne est encore à valider. Lecture seule.
  */
 import { cleanup, render } from "@testing-library/react";
@@ -155,7 +155,7 @@ describe("fiche devis : badge « E-mail à valider »", () => {
   it("envoyé avec ligne encore à valider : badge « ancien »", async () => {
     etat.devis = { ...base, statut: "envoye" };
     etat.enAttente = true;
-    expect((await badge()).texte).toBe("Marqué envoyé, e-mail pas encore parti");
+    expect((await badge()).texte).toBe("E-mail du devis à valider");
   });
 
   it("envoyé sans ligne en attente : pas de badge", async () => {

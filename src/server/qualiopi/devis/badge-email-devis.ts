@@ -3,11 +3,12 @@
  *
  * En mode validation humaine, un devis envoyé reste « brouillon » tant que l'e-mail garé n'est
  * pas approuvé : l'écran doit le dire. Un devis marqué envoyé AVANT ce mode (statut « envoyé »)
- * peut porter une ligne encore à valider : l'e-mail n'est alors pas parti, et on le dit aussi.
+ * peut porter une ligne encore à valider (premier e-mail, ou renvoi : le premier est alors bien
+ * parti, seul le renvoi attend) : le libellé « E-mail du devis à valider » vaut pour les deux.
  */
 
 export const TEXTE_BADGE_A_VALIDER = "E-mail à valider";
-export const TEXTE_BADGE_ANCIEN = "Marqué envoyé, e-mail pas encore parti";
+export const TEXTE_BADGE_ANCIEN = "E-mail du devis à valider";
 
 export type EtatBadgeEmailDevis = "a_valider" | "ancien" | null;
 

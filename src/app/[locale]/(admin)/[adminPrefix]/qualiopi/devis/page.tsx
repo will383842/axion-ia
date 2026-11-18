@@ -106,7 +106,7 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
   const emailsEnAttente = await devisAvecEmailEnAttente(
     prisma,
     devisList.filter((d) => d.statut === "brouillon" || d.statut === "envoye").map((d) => d.id),
-  );
+  ).catch(() => new Set<string>());
 
   // Index clients par id pour affichage rapide
   const clientIndex = new Map(clients.map((c) => [c.id, c.raisonSociale]));

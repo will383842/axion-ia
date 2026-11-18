@@ -307,7 +307,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   // Badge d'affichage (lecture seule) : un ancien devis « envoyé » peut aussi avoir une ligne en
   // attente. `emailEnAttente` ci-dessus garde son sens (brouillon seulement) pour les gardes.
   const emailEnAttentePourBadge =
-    devis.statut === "envoye" ? await emailDevisEnAttente(prisma, devis.id) : emailEnAttente;
+    devis.statut === "envoye"
+      ? await emailDevisEnAttente(prisma, devis.id).catch(() => false)
+      : emailEnAttente;
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
