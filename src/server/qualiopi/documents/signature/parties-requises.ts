@@ -46,6 +46,14 @@ export interface CircuitSignature {
   readonly canal: CanalSignature;
   /** Libellé de la pièce, tel qu'il apparaît dans la mention affichée. */
   readonly libelle: string;
+  /**
+   * Libellé AVEC article (« le devis », « la convention de formation »…), pour les phrases
+   * où l'article manque (« Signer le devis »). `libelle` reste tel quel : il sert aux mentions
+   * scellées et à d'autres appelants.
+   */
+  readonly libelleDefini: string;
+  /** Genre grammatical du libellé : accord de « établi / établie » dans la mention « doc-v2 ». */
+  readonly genre: "masculin" | "feminin";
 }
 
 /**
@@ -69,6 +77,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["formateur", "responsable_pedagogique"],
     canal: "maison",
     libelle: "relevé de connexion",
+    libelleDefini: "le relevé de connexion",
+    genre: "masculin",
   },
   // Le formateur est DÉJÀ authentifié par magic link, et la preuve maison y est
   // MEILLEURE qu'un aller-retour fournisseur : identité connue, chaîne de
@@ -78,6 +88,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["formateur", "axionia"],
     canal: "maison",
     libelle: "lettre de mission",
+    libelleDefini: "la lettre de mission",
+    genre: "feminin",
   },
 
   // ── Canal A — maison, par lien public à jeton ──
@@ -118,7 +130,13 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
   // faisceau, que la chaîne de hachage produit. Le jour où un grand compte
   // exigera un certificat opposable, ce circuit repassera `fournisseur` : c'est
   // une ligne à changer ici, et le socle porte déjà les deux canaux.
-  devis: { parties: ["client", "axionia"], canal: "maison", libelle: "devis" },
+  devis: {
+    parties: ["client", "axionia"],
+    canal: "maison",
+    libelle: "devis",
+    libelleDefini: "le devis",
+    genre: "masculin",
+  },
 
   // ── Les cinq pièces contractuelles — canal A, bascule du 2026-07-30 ──
   //
@@ -158,11 +176,15 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["client", "axionia"],
     canal: "maison",
     libelle: "convention de formation",
+    libelleDefini: "la convention de formation",
+    genre: "feminin",
   },
   convention_tripartite: {
     parties: ["client", "financeur", "axionia"],
     canal: "maison",
     libelle: "convention tripartite",
+    libelleDefini: "la convention tripartite",
+    genre: "feminin",
   },
   // Contrat de formation avec un PARTICULIER (art. L.6353-3 à L.6353-7).
   // 🔴 C'est la date de signature de CETTE pièce qui doit faire courir le délai
@@ -172,6 +194,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["beneficiaire", "axionia"],
     canal: "maison",
     libelle: "contrat de formation",
+    libelleDefini: "le contrat de formation",
+    genre: "masculin",
   },
   // Tiers contractant, pas un formateur de l'équipe : il attend un exemplaire
   // certifié (indicateur 27 — clause de vérification RNQ). ⚠️ C'est, avec la
@@ -180,6 +204,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["sous_traitant", "axionia"],
     canal: "maison",
     libelle: "contrat de sous-traitance",
+    libelleDefini: "le contrat de sous-traitance",
+    genre: "masculin",
   },
   // Contrat de travail d'un formateur SALARIÉ.
   //
@@ -197,6 +223,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["formateur", "axionia"],
     canal: "maison",
     libelle: "contrat de travail",
+    libelleDefini: "le contrat de travail",
+    genre: "masculin",
   },
   // 🔴 UNE SEULE partie, et c'est voulu : un consentement est UNILATÉRAL.
   // L'organisme ne "co-signe" pas une autorisation d'image, il la reçoit.
@@ -206,6 +234,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["beneficiaire"],
     canal: "maison",
     libelle: "autorisation de captation",
+    libelleDefini: "l'autorisation de captation",
+    genre: "feminin",
   },
   // Mandat de l'entreprise pour déposer sa demande auprès de son OPCO
   // (INT-T66-A). Canal MAISON, comme les conventions — décision de Williams
@@ -222,6 +252,8 @@ const CIRCUITS: Readonly<Record<string, CircuitSignature>> = {
     parties: ["client", "axionia"],
     canal: "maison",
     libelle: "procuration spéciale (mandat OPCO)",
+    libelleDefini: "la procuration spéciale (mandat OPCO)",
+    genre: "feminin",
   },
   // 2026-08-10 (décision Will) : le circuit `protocole_afest` a été retiré avec
   // le module AFEST 1-to-1 (conseil hors Qualiopi). La valeur d'enum reste au
@@ -256,3 +288,6 @@ export function pieceSignable(documentType: string): boolean {
 
 /** Types de pièces signables, pour les tests de propriété et le mode auditeur. */
 export const TYPES_SIGNABLES: readonly string[] = Object.keys(CIRCUITS);
+
+/** Les circuits en liste (lecture par libellé, pour les mentions affichées). */
+export const CIRCUITS_SIGNATURE_LISTE: readonly CircuitSignature[] = Object.values(CIRCUITS);

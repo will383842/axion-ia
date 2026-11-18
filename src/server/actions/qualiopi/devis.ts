@@ -184,6 +184,9 @@ export async function createDevisAction(
           dateValidite,
           ...(v.activite !== undefined ? { activite: v.activite } : {}),
           ...(v.refClient !== undefined ? { refClient: v.refClient } : {}),
+          ...(v.conditionsParticulieres
+            ? { conditionsParticulieres: v.conditionsParticulieres }
+            : {}),
           ...(v.financementSuggere !== undefined
             ? { financementSuggere: v.financementSuggere }
             : {}),
@@ -354,6 +357,8 @@ export async function sendDevisAction(id: string): Promise<
             offre: true,
             // Avec `offre` : un devis CLASSIQUE n'a ni offre ni empreinte (message de refus).
             offreSha256: true,
+            // Texte imprimé sur le PDF (devis classique) : sans lui, il disparaîtrait de la pièce envoyée.
+            conditionsParticulieres: true,
             // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
             // elle (voir l'écriture plus bas).
             replacesDevis: { select: { statut: true, documentGenereId: true } },
@@ -1041,6 +1046,7 @@ export async function reviseDevisAction(
       // Devis à formules : la révision reste éditable par /modifier, donc garde son offre.
       offre: true,
       offreSha256: true,
+      conditionsParticulieres: true,
     },
   });
   if (!origine) return { error: "Devis introuvable" };
@@ -1113,6 +1119,9 @@ export async function reviseDevisAction(
           replacesDevisId: origine.id,
           ...(origine.activite !== null ? { activite: origine.activite } : {}),
           ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
+          ...(origine.conditionsParticulieres !== null
+            ? { conditionsParticulieres: origine.conditionsParticulieres }
+            : {}),
           ...(origine.financementSuggere !== null
             ? { financementSuggere: origine.financementSuggere }
             : {}),

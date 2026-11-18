@@ -80,7 +80,10 @@ import {
   CODE_DEVIS_ECHECS_CUMULES_MAX,
   validerDeclaration,
 } from "@/server/qualiopi/devis/signature-renforcee";
-import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  CONSENTEMENT_VERSION_DOCUMENT_CODE,
+  MENTION_VERSION_DOCUMENT,
+} from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
@@ -136,6 +139,8 @@ export type RefusSignaturePiece =
   | "cgv_non_acceptees"
   /** Devis : la page affichait une autre version des CGV que la version en vigueur. */
   | "cgv_perimees"
+  /** La page affichait une autre version de la mention que la version courante : rien n'est écrit. */
+  | "mention_perimee"
   /** Devis à formules : le choix est absent ou refusé contre l'offre figée (voir `choix-signature`). */
   | RaisonRefusChoix
   | "choix_requis"
@@ -186,6 +191,11 @@ const entreeJetonSchema = z.object({
    */
   cgvAcceptees: z.literal(true).optional(),
   cgvVersionAffichee: z.string().max(40).optional(),
+  /**
+   * Version de la mention telle que la page l'a AFFICHÉE. Ne sert qu'à refuser une page périmée :
+   * la version scellée reste celle du serveur. Absente ou différente = refus, rien n'est écrit.
+   */
+  mentionVersionAffichee: z.string().max(40).optional(),
   /**
    * Signature « simple renforcée » du devis à formules (lot 4 bis) : ce que le signataire SAISIT.
    * `pouvoirEngager` n'est volontairement pas typé ici : `validerDeclaration` exige EXACTEMENT
@@ -319,6 +329,7 @@ export async function signerPieceParJetonAction(input: {
   code?: string;
   cgvAcceptees?: boolean;
   cgvVersionAffichee?: string;
+  mentionVersionAffichee?: string;
   declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   choix?: {
     formule: "achat" | "abonnement";
@@ -425,6 +436,18 @@ export async function signerPieceParJetonAction(input: {
   });
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
+  }
+
+  // 🔴 La mention scellée doit être celle que le signataire a LUE : une page rendue avant une
+  // mise en ligne montre l'ancien texte, alors que le service scelle `MENTION_VERSION_DOCUMENT`.
+  // Absente ou différente : refus, avant toute consommation de code, rien n'est écrit. Vaut pour
+  // toutes les pièces qui passent par ce formulaire.
+  if (donnees.mentionVersionAffichee !== MENTION_VERSION_DOCUMENT) {
+    return {
+      ok: false,
+      raison: "mention_perimee",
+      message: "Cette page a été mise à jour. Rechargez-la, relisez la mention, puis signez.",
+    };
   }
 
   // CGV avant signature du devis : case obligatoire, sur la version en vigueur. Placé

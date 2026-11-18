@@ -187,6 +187,23 @@ export interface PieceSignatureFormProps {
   mentionTva?: string | null;
   /** Libellé de la pièce, depuis le SSOT (« convention de formation »…). */
   pieceLibelle: string;
+  /**
+   * Libellé AVEC article, depuis le SSOT (« le devis », « la convention de formation »…).
+   * Absent : on retombe sur `pieceLibelle` (ancien comportement).
+   */
+  pieceLibelleDefini?: string;
+  /**
+   * Conditions particulières figées avec la pièce (devis classique), lues dans la PHOTO de la
+   * pièce. Texte brut, imprimé après les totaux et avant les conditions générales.
+   */
+  conditionsParticulieres?: string | null;
+  /** Phrase de primauté LUE DANS LA PHOTO de la pièce ; nulle ou absente = non affichée. */
+  phrasePrimaute?: string | null;
+  /**
+   * Version de la mention affichée à la lecture de la page. Postée avec la signature : le serveur
+   * refuse si elle n'est plus la version courante (page rendue avant une mise en ligne).
+   */
+  mentionVersion?: string;
   /** Lien vers le PDF exact qui sera scellé. */
   pdfUrl: string | null;
   /**
@@ -233,6 +250,7 @@ export interface PieceSignatureFormProps {
     code?: string;
     cgvAcceptees?: true;
     cgvVersionAffichee?: string;
+    mentionVersionAffichee?: string;
     choix?: ChoixFormules;
     declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   }) => Promise<
@@ -261,6 +279,10 @@ export function PieceSignatureForm({
   totalTtcLisible,
   mentionTva,
   pieceLibelle,
+  pieceLibelleDefini,
+  conditionsParticulieres,
+  phrasePrimaute,
+  mentionVersion,
   pdfUrl,
   mentions,
   cgv,
@@ -399,6 +421,7 @@ export function PieceSignatureForm({
               },
             }
           : {}),
+        ...(mentionVersion !== undefined ? { mentionVersionAffichee: mentionVersion } : {}),
         ...(cgv !== undefined
           ? { cgvAcceptees: true as const, cgvVersionAffichee: cgv.version }
           : {}),
@@ -411,6 +434,7 @@ export function PieceSignatureForm({
 
   // Le numéro que le client CONNAÎT : celui du devis quand il existe. Le n° de pièce reste
   // affiché à part, car la case d'acceptation et le registre scellé s'y réfèrent.
+  const libelleDefini = pieceLibelleDefini ?? pieceLibelle;
   const numeroAffiche = numeroDevis != null && numeroDevis.trim() !== "" ? numeroDevis : numero;
   const numeroPieceSecondaire = numeroAffiche !== numero ? numero : null;
 
@@ -419,7 +443,7 @@ export function PieceSignatureForm({
       <div className="mx-auto w-full max-w-2xl px-4 py-16">
         <h1 className="text-fg text-xl font-semibold">Votre signature est enregistrée</h1>
         <p className="text-fg-soft mt-3 text-sm">
-          {`Merci. Votre signature sur ${pieceLibelle} ${numeroAffiche} a bien été enregistrée, horodatée et
+          {`Merci. Votre signature sur ${libelleDefini} ${numeroAffiche} a bien été enregistrée, horodatée et
           rattachée au document que vous venez de lire.`}
         </p>
         {formules !== undefined && (
@@ -510,6 +534,21 @@ export function PieceSignatureForm({
           </>
         ) : null}
 
+        {/* Conditions particulières (devis classique) — texte BRUT de la photo de la pièce,
+            après les totaux et AVANT les conditions générales. Jamais de HTML interprété. */}
+        {conditionsParticulieres != null && conditionsParticulieres.trim() !== "" && (
+          <div
+            className="border-border mt-5 rounded border p-4"
+            data-testid="conditions-particulieres"
+          >
+            <h3 className="text-fg text-sm font-semibold">Conditions particulières</h3>
+            <p className="text-fg mt-2 text-sm whitespace-pre-line">{conditionsParticulieres}</p>
+            {phrasePrimaute != null && phrasePrimaute.trim() !== "" && (
+              <p className="text-fg-soft mt-3 text-xs italic">{phrasePrimaute}</p>
+            )}
+          </div>
+        )}
+
         {pdfUrl !== null && (
           <p className="mt-4 text-sm">
             <a
@@ -521,7 +560,7 @@ export function PieceSignatureForm({
               {/* 🔴 Disait « le devis » sur TOUTES les pièces — donc sur une
                   convention, un contrat, une tripartite. Le libellé DÉRIVE du
                   SSOT des circuits, il ne se réécrit pas ici. */}
-              {`Ouvrir ${pieceLibelle} au format PDF`}
+              {`Ouvrir ${libelleDefini} au format PDF`}
             </a>
             <span className="text-fg-soft block text-xs">
               C&apos;est ce document exact, et son empreinte, que votre signature scelle.
@@ -965,7 +1004,7 @@ export function PieceSignatureForm({
           disabled={!pretASigner || enCours}
           className="bg-terracotta hover:bg-terracotta-deep mt-6 rounded px-5 py-2.5 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-40"
         >
-          {enCours ? "Enregistrement…" : `Signer ${pieceLibelle}`}
+          {enCours ? "Enregistrement…" : `Signer ${libelleDefini}`}
         </button>
         {!pretASigner && (
           <p className="text-fg-soft mt-2 text-xs">
