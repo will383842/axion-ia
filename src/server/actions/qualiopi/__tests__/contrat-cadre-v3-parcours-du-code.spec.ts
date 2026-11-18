@@ -212,7 +212,12 @@ async function codeLuDansLEmail(): Promise<string> {
 }
 
 const signer = (code: string) =>
-  signerPieceParJetonAction({ token: "jeton", methode: "confirmation_accessible", code });
+  signerPieceParJetonAction({
+    token: "jeton",
+    methode: "confirmation_accessible",
+    mentionVersionAffichee: "doc-v2",
+    code,
+  });
 
 describe("contrat-cadre v3 : demande → e-mail F17 → saisie → signature", () => {
   it("🔴 le bon code, lu dans l'e-mail, signe — une seule fois, avec le consentement « code »", async () => {

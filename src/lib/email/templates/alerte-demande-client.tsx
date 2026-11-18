@@ -17,6 +17,8 @@ interface Payload {
   canal?: string;
   evenement?: string;
   typeDemande?: string;
+  /** Facultatif (L6c) : le type de formulaire, ajouté à l'objet après le préfixe. */
+  libelleType?: string;
   nom?: string;
   recuLe?: string;
   lignes?: unknown;
@@ -25,13 +27,27 @@ interface Payload {
 
 const texte = (v: unknown): string => (typeof v === "string" ? v.trim() : "");
 
-/** « 🔴 IMPORTANT DEMANDE CLIENT MESSAGE » / « … CALENDLY » / « … CALENDLY ANNULÉ » / « … REPORTÉ ». */
+/** Même garde que `suffixeTypeObjet` (doublon-client.ts, non importé : graphe du worker). */
+const MOTS_INTERDITS_OBJET = /qualiopi|opco|prise en charge|financeur/i;
+
+const suffixeType = (v: unknown): string => {
+  const t = texte(v)
+    .replace(/[\u0000-\u001f\u007f-\u009f\u2028\u2029]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!t) return "";
+  if (MOTS_INTERDITS_OBJET.test(t)) return " · FORMATION";
+  return ` · ${Array.from(t.toLocaleUpperCase("fr-FR")).slice(0, 40).join("").trim()}`;
+};
+
+/** « 🔴 IMPORTANT DEMANDE CLIENT MESSAGE [· FORMATION IA] » / « … CALENDLY » / « … CALENDLY ANNULÉ » / « … REPORTÉ ». */
 export const alerteDemandeClientSubject = (
   _locale: Locale,
   payload: Record<string, unknown>,
 ): string => {
   const p = payload as Payload;
-  if (texte(p.canal) !== "calendly") return "🔴 IMPORTANT DEMANDE CLIENT MESSAGE";
+  if (texte(p.canal) !== "calendly")
+    return `🔴 IMPORTANT DEMANDE CLIENT MESSAGE${suffixeType(p.libelleType)}`;
   const e = texte(p.evenement);
   if (e === "annule") return "🔴 IMPORTANT DEMANDE CLIENT CALENDLY ANNULÉ";
   if (e === "reporte") return "🔴 IMPORTANT DEMANDE CLIENT CALENDLY REPORTÉ";

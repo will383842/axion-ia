@@ -51,6 +51,8 @@ import {
   apresSignature,
   PREFIXE_ACTIVATION_REFUSEE,
   reprendreAcceptationDevisFormules,
+  messageConfirmationSelonRaisons,
+  reprendreConfirmationDevisClassiques,
 } from "@/server/qualiopi/documents/signature/apres-signature";
 import { contexteRequete } from "@/server/qualiopi/documents/signature/contexte-requete";
 import {
@@ -78,7 +80,10 @@ import {
   CODE_DEVIS_ECHECS_CUMULES_MAX,
   validerDeclaration,
 } from "@/server/qualiopi/devis/signature-renforcee";
-import { CONSENTEMENT_VERSION_DOCUMENT_CODE } from "@/server/qualiopi/documents/signature/mentions-document";
+import {
+  CONSENTEMENT_VERSION_DOCUMENT_CODE,
+  MENTION_VERSION_DOCUMENT,
+} from "@/server/qualiopi/documents/signature/mentions-document";
 import { circuitPour } from "@/server/qualiopi/documents/signature/parties-requises";
 import { envoyerCodeSignature } from "@/server/qualiopi/formateurs-independants/code-signature-envoi";
 import { objectionContresignatureContratCadre } from "@/server/qualiopi/formateurs-independants/garde-contresignature-contrat-cadre";
@@ -134,6 +139,8 @@ export type RefusSignaturePiece =
   | "cgv_non_acceptees"
   /** Devis : la page affichait une autre version des CGV que la version en vigueur. */
   | "cgv_perimees"
+  /** La page affichait une autre version de la mention que la version courante : rien n'est écrit. */
+  | "mention_perimee"
   /** Devis à formules : le choix est absent ou refusé contre l'offre figée (voir `choix-signature`). */
   | RaisonRefusChoix
   | "choix_requis"
@@ -184,6 +191,11 @@ const entreeJetonSchema = z.object({
    */
   cgvAcceptees: z.literal(true).optional(),
   cgvVersionAffichee: z.string().max(40).optional(),
+  /**
+   * Version de la mention telle que la page l'a AFFICHÉE. Ne sert qu'à refuser une page périmée :
+   * la version scellée reste celle du serveur. Absente ou différente = refus, rien n'est écrit.
+   */
+  mentionVersionAffichee: z.string().max(40).optional(),
   /**
    * Signature « simple renforcée » du devis à formules (lot 4 bis) : ce que le signataire SAISIT.
    * `pouvoirEngager` n'est volontairement pas typé ici : `validerDeclaration` exige EXACTEMENT
@@ -317,6 +329,7 @@ export async function signerPieceParJetonAction(input: {
   code?: string;
   cgvAcceptees?: boolean;
   cgvVersionAffichee?: string;
+  mentionVersionAffichee?: string;
   declaration?: { nom: string; fonction: string; pouvoirEngager: boolean };
   choix?: {
     formule: "achat" | "abonnement";
@@ -423,6 +436,18 @@ export async function signerPieceParJetonAction(input: {
   });
   if (objection !== null) {
     return { ok: false, raison: "piece_non_signable_maintenant", message: objection.message };
+  }
+
+  // 🔴 La mention scellée doit être celle que le signataire a LUE : une page rendue avant une
+  // mise en ligne montre l'ancien texte, alors que le service scelle `MENTION_VERSION_DOCUMENT`.
+  // Absente ou différente : refus, avant toute consommation de code, rien n'est écrit. Vaut pour
+  // toutes les pièces qui passent par ce formulaire.
+  if (donnees.mentionVersionAffichee !== MENTION_VERSION_DOCUMENT) {
+    return {
+      ok: false,
+      raison: "mention_perimee",
+      message: "Cette page a été mise à jour. Rechargez-la, relisez la mention, puis signez.",
+    };
   }
 
   // CGV avant signature du devis : case obligatoire, sur la version en vigueur. Placé
@@ -1082,7 +1107,9 @@ export async function contresignerPieceAction(input: {
  */
 export async function relancerAcceptationDevisAction(input: {
   documentGenereId: string;
-}): Promise<{ ok: true; devisAcceptes: number } | { ok: false; message: string }> {
+}): Promise<
+  { ok: true; devisAcceptes: number; message?: string } | { ok: false; message: string }
+> {
   const session = await requireAdminWrite();
   if (!peutSignerPourOrganisme(session.role)) {
     return { ok: false, message: REFUS_ROLE_ORGANISME.message };
@@ -1093,10 +1120,14 @@ export async function relancerAcceptationDevisAction(input: {
 
   const piece = await prisma.documentGenere.findUnique({
     where: { id: id.data },
-    select: { type: true, numero: true },
+    select: { type: true, numero: true, annuleeAt: true },
   });
   if (piece === null || piece.type !== "devis") {
     return { ok: false, message: "Cette pièce n'est pas un devis." };
+  }
+  // Annuler une pièce ne révoque pas ses signatures : aucune reprise (formules ni classique).
+  if (piece.annuleeAt !== null) {
+    return { ok: false, message: "Cette pièce est annulée : aucune relance possible." };
   }
   const signatures = await prisma.documentSignature.findMany({
     where: { documentGenereId: id.data, revokedAt: null },
@@ -1112,9 +1143,42 @@ export async function relancerAcceptationDevisAction(input: {
   try {
     const res = await reprendreAcceptationDevisFormules(id.data, { confirmer: true });
     if (!res.traite) {
+      // Devis CLASSIQUE : la reprise des formules ne le voit pas. Même garde (pièce signée des deux
+      // parties, vérifiée plus haut ; la reprise relit la contresignature elle-même).
+      const classique = await reprendreConfirmationDevisClassiques(id.data);
+      if (!classique.traite) {
+        return {
+          ok: false,
+          message: "Aucun devis en attente d'acceptation ou de confirmation pour cette pièce.",
+        };
+      }
+      await logQualiopiActivity({
+        action: "qualiopi.devis.relance_acceptation",
+        targetType: "DocumentGenere",
+        targetId: id.data,
+        changes: {
+          numero: piece.numero,
+          devis: classique.ids,
+          confirmationsEchec: classique.confirmationsEchec,
+          echecs: classique.echecs,
+        },
+        session,
+      });
+      if (classique.confirmationsEchec.length > 0) {
+        return {
+          ok: false,
+          message:
+            messageConfirmationSelonRaisons(classique.echecs.map((e) => e.raison)) ??
+            "La confirmation de commande n'a pas pu être préparée. Relancez depuis la fiche du devis.",
+        };
+      }
+      const preparee = classique.confirmationsPreparees.length > 0;
       return {
-        ok: false,
-        message: "Aucun devis à formules en attente d'acceptation pour cette pièce.",
+        ok: true,
+        devisAcceptes: classique.confirmationsPreparees.length,
+        message: preparee
+          ? "Confirmation de commande préparée : elle attend votre validation dans les e-mails à valider."
+          : "La confirmation de commande existe déjà.",
       };
     }
     if (res.ids.length === 0) {

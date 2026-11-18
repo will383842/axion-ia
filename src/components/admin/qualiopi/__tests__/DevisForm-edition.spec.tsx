@@ -28,6 +28,7 @@ const DEVIS_ID = "22222222-2222-4222-8222-222222222222";
 const MAJ = "2026-11-01T10:00:00.000Z";
 
 const edition = {
+  conditionsParticulieres: null,
   devisId: DEVIS_ID,
   attenduMajLe: MAJ,
   lignes: [
@@ -90,6 +91,7 @@ describe("DevisForm — édition", () => {
         ],
         activite: "formation",
         refClient: "BC-12",
+        conditionsParticulieres: null,
       },
     });
     expect(creer).not.toHaveBeenCalled();

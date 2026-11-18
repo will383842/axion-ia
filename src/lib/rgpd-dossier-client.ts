@@ -220,6 +220,10 @@ export interface ExportDossierClient {
   readonly personnes: ReadonlyArray<{
     readonly entreprise: string;
     readonly nom: string;
+    /** Identité de salutation des e-mails (B4) : « madame » | « monsieur », prénom, nom de famille. */
+    readonly civilite: string | null;
+    readonly prenom: string | null;
+    readonly nomFamille: string | null;
     readonly fonction: string | null;
     readonly telephone: string | null;
     readonly statut: string;
@@ -393,6 +397,9 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
             select: {
               id: true,
               nom: true,
+              civilite: true,
+              prenom: true,
+              nomFamille: true,
               fonction: true,
               telephone: true,
               statut: true,
@@ -628,6 +635,9 @@ export async function exporterDossierClientPour(email: string): Promise<ExportDo
       personnes: contacts.map((c) => ({
         entreprise: c.client.raisonSociale,
         nom: c.nom,
+        civilite: c.civilite ?? null,
+        prenom: c.prenom ?? null,
+        nomFamille: c.nomFamille ?? null,
         fonction: c.fonction,
         telephone: c.telephone,
         statut: c.statut,

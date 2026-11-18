@@ -20,6 +20,8 @@ export interface EntreePayloadDevisEnvoi {
   readonly devisAFormules?: boolean | undefined;
   readonly signatureUrl?: string | null | undefined;
   readonly messagePersonnalise?: string | undefined;
+  /** Clé `salutation` du gabarit (voir `salutationPourPayload`) ; absente → clé omise. */
+  readonly salutation?: Record<string, unknown> | undefined;
 }
 
 export function payloadDevisEnvoi(e: EntreePayloadDevisEnvoi): Record<string, unknown> {
@@ -33,6 +35,7 @@ export function payloadDevisEnvoi(e: EntreePayloadDevisEnvoi): Record<string, un
     e.formules === undefined && e.devisAFormules !== true && e.montantTotalHtCents > 0;
   return {
     clientNom: e.clientNom,
+    ...(e.salutation !== undefined ? { salutation: e.salutation } : {}),
     numero: e.numero,
     ...(annonceMontant ? { montantLabel: e.montantLabel } : {}),
     dateValiditeLabel: e.dateValiditeLabel,

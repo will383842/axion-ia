@@ -34,6 +34,7 @@ const IDENTITE: OrganismeIdentite = {
 };
 
 const DEVIS: DevisPourPdf = {
+  conditionsParticulieres: null,
   numero: "AXI-DEV-2026-001",
   lignes: [{ designation: "Formation IA", quantite: 1, prixUnitaireHtCents: 150000 }],
   activite: null,

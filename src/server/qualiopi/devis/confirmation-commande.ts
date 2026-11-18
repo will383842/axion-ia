@@ -2,7 +2,8 @@
  * Confirmation de commande au client (CGV art. 5.2 et 6.2).
  *
  * ⛔ SEULE porte d'entrée : l'action EXPLICITE de contresignature d'Axion-IA, branchée dans
- * `apres-signature.ts` (devis à formules) et dans la reprise manuelle de l'acceptation.
+ * `apres-signature.ts` (devis à formules ET devis classiques : `accepterDevis`) et dans les
+ * reprises manuelles (`reprendreAcceptationDevisFormules`, `reprendreConfirmationDevisClassiques`).
  * Jamais un cron, jamais un webhook : le contrat est formé à la contresignature (art. 6.2), pas à
  * la signature du client. `declencheur` est un littéral exprès : un appelant qui voudrait
  * l'invoquer d'ailleurs doit mentir dans son propre code, ce que la revue voit.

@@ -243,6 +243,8 @@ describe("(b) le rendu des gabarits ne parle pas de financement par un tiers", (
 const CONNUS: ReadonlySet<string> = new Set([
   // Données de test (noms de gabarits dans des listes), aucun envoi ni mise en file.
   "src/lib/email/__tests__/salutation-jamais-par-nom-complet-toutes-formes.spec.tsx",
+  // Fichier de mesure qui fige l'existant (champs vides du groupe G4) : il cite le nom du gabarit en clair, n'émet rien.
+  "src/lib/email/templates/__tests__/champs-vides/g4.ts",
   "src/lib/email/templates/__tests__/cliquets/g4.ts",
   "src/lib/email/templates/__tests__/e-mails-prospects-sans-montant.spec.ts",
   "src/lib/email/templates/__tests__/l-accuse-ne-salue-jamais-par-le-nom-complet.spec.tsx",

@@ -350,3 +350,32 @@ describe("sendDevisAction — devis classique (inchangé)", () => {
     expect(enqueueEmail).not.toHaveBeenCalled();
   });
 });
+
+describe("sendDevisAction — la salutation de l'e-mail (B4)", () => {
+  function payloadEnvoye(): Record<string, unknown> {
+    return enqueueEmail.mock.calls[0]?.[3] as Record<string, unknown>;
+  }
+  function avecClient(extra: Record<string, unknown>) {
+    const d0 = devis();
+    findUnique.mockResolvedValue({ ...d0, client: { ...d0.client, ...extra } });
+  }
+
+  it("civilité + nom de famille : « Bonjour Madame Dupont, »", async () => {
+    avecClient({ contactCivilite: "madame", contactPrenom: "Léa", contactNomFamille: "Dupont" });
+    await sendDevisAction(ID);
+    expect(payloadEnvoye()["salutation"]).toEqual({ civilite: "madame", nomFamille: "Dupont" });
+    expect(payloadEnvoye()["clientNom"]).toBe("Madame Dupont");
+  });
+
+  it("prénom seul : { prenom }", async () => {
+    avecClient({ contactPrenom: "Léa" });
+    await sendDevisAction(ID);
+    expect(payloadEnvoye()["salutation"]).toEqual({ prenom: "Léa" });
+  });
+
+  it("aucune identité fiable : jamais le nom complet de contactNom", async () => {
+    await sendDevisAction(ID);
+    expect(payloadEnvoye()["clientNom"]).toBe("");
+    expect(JSON.stringify(payloadEnvoye())).not.toContain("Camille");
+  });
+});
