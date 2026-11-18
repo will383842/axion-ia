@@ -55,6 +55,7 @@ describe("motifRefus — fiche par fiche", () => {
     expect(motifRefus(fiche(`Appeler le ${TELEPHONE}.`))).toBe("telephone");
     expect(contientCourriel(`x ${COURRIEL}`)).toBe(true);
     expect(contientTelephone(`${["+33", "6", "12", "34", "56", "78"].join(" ")}`)).toBe(true);
+    expect(contientTelephone(["(+33)", "6", "12", "34", "56", "78"].join(" "))).toBe(true);
     expect(contientTelephone("Il y a 12 fournées en 2026.")).toBe(false);
   });
 
@@ -85,6 +86,10 @@ describe("motifRefus — formes de montant (k, M, symbole devant)", () => {
     ["cent ", "euros"],
     ["K", "EUR", " 5"],
     ["un prix en ", EURO],
+    ["1 500 ", "HT"],
+    ["1 490 ", "TTC"],
+    ["3 ", "Mds"],
+    ["2 ", "milliards"],
   ].map((morceaux) => morceaux.join(""));
 
   for (const forme of formes) {
