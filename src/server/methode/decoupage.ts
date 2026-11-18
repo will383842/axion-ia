@@ -373,7 +373,7 @@ export function typerSection(slugSection: string, titre: string, nomFichier: str
 
 /**
  * Découpe un fichier. `cheminRelatif` est relatif au dossier `methode/`
- * (ex. `livres/03-Hormozi-100M-Offers.md`, `secteurs/sante/Dossier….md`).
+ * (ex. `livres/faux-exemple.md`).
  */
 export function decouperFichier(cheminRelatif: string, contenu: string): SectionMethode[] {
   if (fichierIgnore(cheminRelatif)) return [];
