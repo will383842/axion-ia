@@ -21,6 +21,8 @@
 
 import { prisma } from "@/lib/prisma";
 import { enqueueEmail } from "@/server/queue/queues";
+import { doublerAlerteReclamation } from "@/server/notifications/doublon-client";
+import { signalerIncident } from "@/server/notifications/channels/sentry";
 import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
 import type { ReclamationSource } from "../../../../prisma/generated/client";
 import { creerReclamation } from "@/server/qualiopi/registres/reclamations-service";
@@ -165,7 +167,26 @@ export async function deposerReclamation(depot: DepotReclamation): Promise<Recla
   });
 
   const accuse = await envoyerAccuse(reclamation);
+  await alerterEquipe(reclamation);
   return { id: reclamation.id, numero: reclamation.numero, accuse };
+}
+
+/**
+ * Alerte immédiate à l'équipe (L6d) : numéro, date, lien de la fiche, jamais le texte. Le dépôt est
+ * déjà accepté : une alerte qui échoue est capturée, jamais relevée.
+ */
+async function alerterEquipe(r: {
+  id: string;
+  numero: string;
+  dateReception: Date;
+}): Promise<void> {
+  try {
+    await doublerAlerteReclamation({ id: r.id, numero: r.numero, recueLe: r.dateReception });
+  } catch {
+    // Motif seul : aucun texte de réclamation ni donnée de personne dans le journal.
+    console.error(`[reclamations] alerte de ${r.numero} non partie`);
+    await signalerIncident("Réclamation déposée : alerte à l'équipe non partie").catch(() => {});
+  }
 }
 
 async function envoyerAccuse(r: {

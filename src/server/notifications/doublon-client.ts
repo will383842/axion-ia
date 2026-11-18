@@ -24,6 +24,7 @@
 
 import { createHash } from "node:crypto";
 import { destinataireAlertesClients } from "@/lib/destinataires-internes";
+import { lienConsole } from "./personne";
 import { formatParisDateTime, humanDateOrText } from "./format";
 import {
   lienFicheClient,
@@ -44,7 +45,7 @@ import { compacter, ligne } from "./texte-brut";
 import type { DoublonsClient } from "./types";
 
 /** Les deux familles d'alerte : un message écrit, ou un rendez-vous Calendly. */
-export type CanalDoublon = "message" | "calendly";
+export type CanalDoublon = "message" | "calendly" | "reclamation";
 export type EvenementDoublon = "nouveau" | "annule" | "reporte";
 
 /** Durée de mémoire de l'anti-doublon propre au doublon : 24 h. */
@@ -203,6 +204,7 @@ export function resumerDemande(event: EvenementClient): ResumeDemande {
 const SUITE_OBJET: Readonly<Record<CanalDoublon, Readonly<Record<EvenementDoublon, string>>>> = {
   message: { nouveau: "MESSAGE", annule: "MESSAGE", reporte: "MESSAGE" },
   calendly: { nouveau: "CALENDLY", annule: "CALENDLY ANNULÉ", reporte: "CALENDLY REPORTÉ" },
+  reclamation: { nouveau: "RÉCLAMATION", annule: "RÉCLAMATION", reporte: "RÉCLAMATION" },
 };
 
 /**
@@ -405,6 +407,117 @@ export async function doublerAlerteClient(
   const [prive, email] = await Promise.all([
     doublerSurTelegram(event, dedupKey).catch((): DoublonsClient["prive"] => "failed"),
     doublerParEmail(event, dedupKey).catch((): DoublonsClient["email"] => "failed"),
+  ]);
+  return { prive, email };
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// L6d — Le doublon d'une RÉCLAMATION déposée (canal « reclamation »).
+//
+// Contenu : numéro, date de réception, lien de la fiche. JAMAIS le texte de la réclamation ni les
+// coordonnées du déposant (e-mail comme Telegram). Clé de dédoublonnage = identifiant de la
+// réclamation : un rejeu du dépôt ne renvoie pas une seconde alerte. Ne lève jamais.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface AlerteReclamation {
+  /** Identifiant de la réclamation : clé de dédoublonnage. */
+  readonly id: string;
+  readonly numero: string;
+  readonly recueLe: Date;
+}
+
+/** Lien de la fiche en console (registre des réclamations), construit comme les autres alertes. */
+export function lienFicheReclamation(): string {
+  return lienConsole("qualiopi/reclamations");
+}
+
+export function formatDoublonReclamation(a: AlerteReclamation): string {
+  const lignes: string[] = [
+    `🚨 IMPORTANT — DEMANDE CLIENT · ${SUITE_OBJET.reclamation.nouveau}`,
+    `Réclamation ${a.numero}`,
+    `Reçu le ${formatParisDateTime(a.recueLe)} (heure de Paris)`,
+    `Fiche : ${lienFicheReclamation()}`,
+  ];
+  return compacter(lignes).join("\n").slice(0, MAX_TELEGRAM);
+}
+
+async function doublerReclamationSurTelegram(
+  a: AlerteReclamation,
+): Promise<DoublonsClient["prive"]> {
+  const cible = resolveConversationPrivee();
+  if (!cible) return "skipped";
+  const categorie = "prive:RECLAMATION_DEPOSEE";
+  if (await isDuplicate(categorie, a.id, TTL_DOUBLON_SEC)) return "deduped";
+  let ok = false;
+  let motif = "envoi refusé par Telegram";
+  try {
+    ok = await sendTelegramRaw({
+      text: formatDoublonReclamation(a),
+      brut: true,
+      silent: false,
+      sansApercuLien: true,
+      chatId: cible.chatId,
+      botToken: cible.botToken,
+    });
+  } catch {
+    ok = false;
+    motif = "exception à l'envoi Telegram";
+  }
+  if (!ok) {
+    await tracerEchec(`réclamation : conversation privée non prévenue (${motif})`);
+    await libererDedup(categorie, a.id);
+  }
+  return ok ? "sent" : "failed";
+}
+
+async function doublerReclamationParEmail(a: AlerteReclamation): Promise<DoublonsClient["email"]> {
+  const categorie = "email:RECLAMATION_DEPOSEE";
+  if (await isDuplicate(categorie, a.id, TTL_DOUBLON_SEC)) return "deduped";
+  try {
+    const payload: Record<string, unknown> = {
+      canal: "reclamation",
+      evenement: "nouveau",
+      typeDemande: "Réclamation",
+      nom: "",
+      recuLe: formatParisDateTime(a.recueLe),
+      lignes: [`Numéro : ${a.numero}`],
+      consoleUrl: lienFicheReclamation(),
+    };
+    const jobId = `alerte-client-${createHash("sha256").update(`RECLAMATION_DEPOSEE|${a.id}|${jourParis()}`).digest("hex").slice(0, 40)}`;
+    const enqueueEmail = await chargerEnfileurEmail();
+    if (!enqueueEmail) {
+      await tracerEchec("réclamation : aucun enfileur d'e-mail posé");
+      await libererDedup(categorie, a.id);
+      return "failed";
+    }
+    const res = await enqueueEmail(
+      "alerte-demande-client",
+      destinataireAlertesClients(),
+      "fr",
+      payload,
+      {
+        jobId,
+        entityType: "NotificationClient",
+        entityId: entiteDeLAlerte("RECLAMATION_DEPOSEE", a.id),
+        clientId: null,
+      },
+    );
+    if (res.enqueued) return "queued";
+    await tracerEchec("réclamation : e-mail non parti");
+    await libererDedup(categorie, a.id);
+    return "failed";
+  } catch {
+    await tracerEchec("réclamation : exception à l'enfilage de l'e-mail");
+    await libererDedup(categorie, a.id);
+    return "failed";
+  }
+}
+
+/** Double une réclamation déposée : conversation privée Telegram + e-mail. Ne lève jamais. */
+export async function doublerAlerteReclamation(a: AlerteReclamation): Promise<DoublonsClient> {
+  const [prive, email] = await Promise.all([
+    doublerReclamationSurTelegram(a).catch((): DoublonsClient["prive"] => "failed"),
+    doublerReclamationParEmail(a).catch((): DoublonsClient["email"] => "failed"),
   ]);
   return { prive, email };
 }
