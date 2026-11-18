@@ -16,8 +16,7 @@ import {
   storeConsoleDoc,
   deleteConsoleDocFile,
   sanitizeConsoleDocFileName,
-  CONSOLE_DOC_ALLOWED_MIME,
-  CONSOLE_DOC_ALLOWED_EXTENSIONS,
+  mimeAutorise,
   CONSOLE_DOC_MAX_BYTES,
 } from "@/server/console-documents/storage";
 import { getConsoleDocSection } from "@/server/console-documents/sections";
@@ -53,11 +52,6 @@ const uploadSchema = z.object({
   sensitive: z.boolean().optional(),
 });
 
-const EXT_RE = new RegExp(
-  `(${CONSOLE_DOC_ALLOWED_EXTENSIONS.map((e) => "\\" + e).join("|")})$`,
-  "i",
-);
-
 function revalidateBucket(section: ConsoleDocSection): void {
   const segment = getConsoleDocSection(section)?.segment ?? "autres";
   revalidatePath(adminPath("fr", `documents-interventions/${segment}`));
@@ -86,9 +80,8 @@ export async function uploadConsoleDocAction(formData: FormData): Promise<Action
   if (file.size > CONSOLE_DOC_MAX_BYTES) {
     return { ok: false, error: "Fichier trop volumineux (10 Mo max)." };
   }
-  const okExt = EXT_RE.test(file.name);
-  const okMime = (CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(file.type);
-  if (!okExt && !okMime) {
+  const mimeStocke = mimeAutorise(file);
+  if (mimeStocke === null) {
     return { ok: false, error: "Type de fichier non autorisé (PDF, Office ou image)." };
   }
 
@@ -109,7 +102,7 @@ export async function uploadConsoleDocAction(formData: FormData): Promise<Action
       description: parsed.data.description ?? null,
       fileName: sanitizeConsoleDocFileName(file.name),
       storagePath,
-      mimeType: file.type || "application/octet-stream",
+      mimeType: mimeStocke,
       sizeBytes: file.size,
       hashSha256,
       sensitive: parsed.data.sensitive ?? false,
@@ -195,9 +188,8 @@ export async function remplacerConsoleDocAction(formData: FormData): Promise<Act
   if (file.size > CONSOLE_DOC_MAX_BYTES) {
     return { ok: false, error: "Fichier trop volumineux (10 Mo max)." };
   }
-  const okExt = EXT_RE.test(file.name);
-  const okMime = (CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(file.type);
-  if (!okExt && !okMime) {
+  const mimeStocke = mimeAutorise(file);
+  if (mimeStocke === null) {
     return { ok: false, error: "Type de fichier non autorisé (PDF, Office ou image)." };
   }
   const buffer = Buffer.from(await file.arrayBuffer());
@@ -218,7 +210,7 @@ export async function remplacerConsoleDocAction(formData: FormData): Promise<Act
           description: ancien.description,
           fileName: sanitizeConsoleDocFileName(file.name),
           storagePath,
-          mimeType: file.type || "application/octet-stream",
+          mimeType: mimeStocke,
           sizeBytes: file.size,
           hashSha256,
           sensitive: ancien.sensitive,

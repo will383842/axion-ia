@@ -45,6 +45,35 @@ export const CONSOLE_DOC_ALLOWED_MIME = [
   "image/webp",
 ] as const;
 
+/** MIME canonique de chaque extension autorisée : seul cet appariement est stocké et servi. */
+export const MIME_PAR_EXTENSION: Record<(typeof CONSOLE_DOC_ALLOWED_EXTENSIONS)[number], string> = {
+  ".pdf": "application/pdf",
+  ".doc": "application/msword",
+  ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  ".ppt": "application/vnd.ms-powerpoint",
+  ".pptx": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  ".xls": "application/vnd.ms-excel",
+  ".xlsx": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp",
+};
+
+/**
+ * MIME à stocker pour un fichier déposé, ou `null` si le dépôt doit être refusé :
+ * extension hors liste, OU type déclaré non vide et hors liste. Le MIME rendu vient
+ * toujours de l'extension, jamais de `file.type` (déclaré par le client).
+ */
+export function mimeAutorise(fichier: File): string | null {
+  const ext = extname(fichier.name).toLowerCase();
+  if (!Object.prototype.hasOwnProperty.call(MIME_PAR_EXTENSION, ext)) return null;
+  if (fichier.type && !(CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(fichier.type)) {
+    return null;
+  }
+  return MIME_PAR_EXTENSION[ext as keyof typeof MIME_PAR_EXTENSION];
+}
+
 export const CONSOLE_DOC_MAX_BYTES = 10 * 1024 * 1024; // 10 Mo (= bodySizeLimit server actions)
 
 /** Nettoie un nom de fichier (anti path-traversal), conserve l'extension. */

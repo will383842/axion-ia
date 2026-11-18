@@ -12,22 +12,11 @@
 import { NextResponse } from "next/server";
 import { hasLocale } from "next-intl";
 import { routing } from "@/i18n/routing";
+import { prefixeAdminAttendu } from "@/lib/prefixe-admin";
 
-/** Même repli de développement que le layout de la console (valeur publique, hors production). */
-const PREFIXE_DEV_PAR_DEFAUT = "admin-dev-x7k2n9";
+export { prefixeAdminAttendu };
 
 type ParamsConsole = Promise<{ locale: string; adminPrefix: string }>;
-
-/**
- * Préfixe d'administration attendu, ou `null` si on doit tout refuser
- * (production sans variable d'environnement : refus par défaut).
- */
-export function prefixeAdminAttendu(): string | null {
-  const brut = process.env["ADMIN_URL_PREFIX"];
-  if (brut !== undefined && brut !== "") return brut;
-  if (process.env["NODE_ENV"] === "production") return null;
-  return PREFIXE_DEV_PAR_DEFAUT;
-}
 
 function reponse404(): NextResponse {
   return new NextResponse("not found", {

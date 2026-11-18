@@ -9,18 +9,21 @@
 
 import type { NextAuthConfig } from "next-auth";
 
+import { regexConsole, segmentConsole } from "./lib/prefixe-admin";
+
 // Lit ADMIN_URL_PREFIX depuis l'env au moment du module load (Edge runtime
 // = même process pour toutes les requêtes). Auth.js v5 exige une string
 // statique pour `pages.signIn` (pas une fonction), donc on la résout ici.
 // Si l'env var change en cours de runtime (rare), un redéploiement est
 // nécessaire — comportement attendu pour une URL de fingerprint admin.
-const adminUrlPrefix = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+// Production sans variable : segment sentinelle (aucune page ne l'écoute).
+const adminUrlPrefix = segmentConsole();
 
 export const authConfig = {
   pages: {
     // Construit dynamiquement depuis ADMIN_URL_PREFIX au lieu de hardcoder
     // /fr/admin/login (qui pointait sur une route inexistante en prod où
-    // le prefix vaut admin-xfz5hk0j7hrk). Bug latent : si Auth.js
+    // le préfixe est propre à l'environnement). Bug latent : si Auth.js
     // redirigeait vers cette page (catch-all redirect avant authorized()),
     // l'utilisateur voyait un 404. Le callback authorized() ci-dessous
     // override la plupart des cas mais pas tous (server actions errors,
@@ -45,9 +48,10 @@ export const authConfig = {
     authorized({ auth, request }) {
       const { nextUrl, headers } = request;
       const isLoggedIn = !!auth?.user;
-      const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
-      const adminRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
-      const isOnAdmin = adminRegex.test(nextUrl.pathname);
+      const adminSegment = segmentConsole();
+      // `null` = console fermée (production sans variable) : aucune adresse n'est « console ».
+      const adminRegex = regexConsole();
+      const isOnAdmin = adminRegex?.test(nextUrl.pathname) ?? false;
       if (!isOnAdmin) return true; // hors admin = laisse passer (public site)
 
       const loginRegex = new RegExp(`^/(fr|en)/${adminSegment}/login/?$`);

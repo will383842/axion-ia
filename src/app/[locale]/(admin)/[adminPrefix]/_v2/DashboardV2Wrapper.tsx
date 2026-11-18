@@ -16,6 +16,7 @@ import { DashboardV2 } from "./DashboardV2";
 // action hors de sa table (« auth.2fa.setup_started » affiché tel quel en
 // production). `decrireAction` décode la STRUCTURE domaine.objet.verbe — une
 // clé inconnue reste une phrase française, jamais un identifiant technique.
+import { segmentConsole } from "@/lib/prefixe-admin";
 import { decrireAction } from "@/lib/admin/activity-labels";
 
 function fmtDate(d: Date | null | undefined): string {
@@ -48,7 +49,7 @@ interface DashboardV2WrapperProps {
 async function logoutAction(): Promise<void> {
   "use server";
   await signOut({ redirect: false });
-  const prefix = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
+  const prefix = segmentConsole();
   redirect(`/fr/${prefix}/login`);
 }
 
