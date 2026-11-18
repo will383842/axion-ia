@@ -130,6 +130,7 @@ describe("fermée par défaut : 404 sans lire la base", () => {
   ];
 
   it.each(cas)("%s → 404, base jamais lue, limiteur jamais appelé", async (_nom, env) => {
+    vi.stubEnv("DATABASE_URL", "postgresql://test:test@localhost:5432/test");
     for (const [k, v] of Object.entries(env)) if (v !== undefined) vi.stubEnv(k, v);
     vi.stubEnv("METHODE_STUDIO_SECRET", SECRET);
     const r = await POST(requete({ sujet: "relance" }));
@@ -141,9 +142,14 @@ describe("fermée par défaut : 404 sans lire la base", () => {
   });
 
   it("fermée, même sans secret ni en-tête : 404 avant 503 et 401", async () => {
+    vi.stubEnv("DATABASE_URL", "postgresql://test:test@localhost:5432/test");
+    vi.stubEnv("METHODE_STUDIO_SECRET", "");
+    debit.autorise = false;
     const r = await POST(requete({ sujet: "relance" }, { "x-methode-secret": "faux" }));
     expect(r.status).toBe(404);
     neverCached(r);
+    expect(base.lectures).toBe(0);
+    expect(debit.appels).toHaveLength(0);
   });
 });
 
@@ -163,12 +169,14 @@ describe("refus d'une route ouverte", () => {
     ["31 caractères", "x".repeat(31)],
   ])("secret en configuration %s → 503", async (_n, valeur) => {
     ouvrir();
+    debit.autorise = false;
     if (valeur === undefined) vi.stubEnv("METHODE_STUDIO_SECRET", undefined as unknown as string);
     else vi.stubEnv("METHODE_STUDIO_SECRET", valeur);
     const r = await POST(requete({ sujet: "relance" }, { "x-methode-secret": valeur ?? "" }));
     expect(r.status).toBe(503);
     neverCached(r);
     expect(base.lectures).toBe(0);
+    expect(debit.appels).toHaveLength(0);
   });
 
   it("limite de débit atteinte → 429 + Retry-After: 60, avant le secret", async () => {
@@ -183,10 +191,10 @@ describe("refus d'une route ouverte", () => {
 
   it("le limiteur est appelé avec methode:studio:<ip>, 30 par 60 s", async () => {
     ouvrir();
-    await POST(requete({ sujet: "relance" }, { "x-forwarded-for": "203.0.113.9" }));
+    await POST(requete({ sujet: "relance" }, { "x-real-ip": "203.0.113.9" }));
     expect(debit.appels).toHaveLength(1);
     const [cle, config] = debit.appels[0] as [string, unknown];
-    expect(cle).toMatch(/^methode:studio:.+/);
+    expect(cle).toBe("methode:studio:203.0.113.9");
     expect(config).toEqual({ limit: 30, windowSec: 60 });
   });
 
@@ -210,18 +218,34 @@ describe("refus d'une route ouverte", () => {
   });
 });
 
+describe("401 avant 400", () => {
+  it("mauvais secret + corps illisible ou invalide → 401, base non lue", async () => {
+    ouvrir();
+    const faux = { "x-methode-secret": "autre-secret-factice-abcdefghijklmnop-qrstuv" };
+    for (const [corps, brut] of [
+      ["{pas du json", true],
+      [{ sujet: "relance", intrus: 1 }, false],
+    ] as const) {
+      const r = await POST(requete(corps, faux, brut));
+      expect(r.status).toBe(401);
+      neverCached(r);
+    }
+    expect(base.lectures).toBe(0);
+  });
+});
+
 describe("entrée stricte → 400", () => {
   const mauvais: Array<[string, unknown, boolean]> = [
-    ["corps illisible", "{pas du json", true],
+    ["corps illisible", "{SUJET-TEMOIN-ZZ", true],
     ["corps vide", "", true],
-    ["tableau", [], false],
-    ["sujet absent", {}, false],
-    ["sujet d'un caractère", { sujet: "a" }, false],
+    ["tableau", ["SUJET-TEMOIN-ZZ"], false],
+    ["sujet absent", { autre: "SUJET-TEMOIN-ZZ" }, false],
+    ["sujet d'un caractère", { sujet: "a", intrus: "SUJET-TEMOIN-ZZ" }, false],
     ["sujet de blancs", { sujet: "      " }, false],
     ["sujet de 301 caractères", { sujet: "a".repeat(301) }, false],
-    ["sujet non chaîne", { sujet: 12 }, false],
-    ["champ en trop (max)", { sujet: "relance", max: 10 }, false],
-    ["champ en trop (autre)", { sujet: "relance", noyau: true }, false],
+    ["sujet non chaîne", { sujet: 12, intrus: "SUJET-TEMOIN-ZZ" }, false],
+    ["champ en trop (max)", { sujet: "relance", max: 10, intrus: "SUJET-TEMOIN-ZZ" }, false],
+    ["champ en trop (autre)", { sujet: "relance", noyau: "SUJET-TEMOIN-ZZ" }, false],
     ["corps énorme", { sujet: "relance", bourrage: "z".repeat(50_000) }, false],
   ];
 
@@ -230,7 +254,7 @@ describe("entrée stricte → 400", () => {
     async (_n, corps, brut) => {
       ouvrir();
       const sujetTemoin = "SUJET-TEMOIN-ZZ";
-      const r = await POST(requete(brut ? corps : corps, {}, brut));
+      const r = await POST(requete(corps, {}, brut));
       expect(r.status).toBe(400);
       neverCached(r);
       expect(base.lectures).toBe(0);
@@ -306,6 +330,8 @@ describe("sortie", () => {
     expect(tout).not.toContain("faux-montant");
     expect(tout).not.toContain("faux-promesse");
     expect(tout).not.toContain("faux-00");
+    expect(tout).not.toContain("Faux noyau");
+    expect(tout).not.toContain("Noyau factice sain");
     expect(tout).not.toContain("etiquettes");
     expect(tout).not.toContain("collection");
   });
@@ -326,7 +352,8 @@ describe("sortie", () => {
     };
     expect(json.items).toHaveLength(5);
     expect(json.meta.returned).toBe(5);
-    for (const it of json.items) expect(it.texte.length).toBeLessThanOrEqual(1_510);
+    // 1 500 caractères + la marque de coupe « \n[…] » (4 caractères) posée par la couche.
+    for (const it of json.items) expect(it.texte.length).toBeLessThanOrEqual(1_504);
   });
 
   it("aucun résultat → 200 avec items vide", async () => {

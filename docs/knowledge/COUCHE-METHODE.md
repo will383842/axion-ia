@@ -107,7 +107,7 @@ demande ni du texte servi n'est écrit au journal.
 2. G4 : poser le **même** `METHODE_STUDIO_SECRET` (32 caractères au moins) sur le site et sur le
    Studio, puis `METHODE_STUDIO_OUVERT=true` sur le site, puis redémarrer.
 
-Pour refermer : retirer `METHODE_STUDIO_OUVERT` (ou la poser à `false`) ; la route répond 404.
+Pour refermer : retirer `METHODE_STUDIO_OUVERT` (ou la poser à `false`), puis redémarrer (Coolify) : la variable n'est relue qu'au démarrage ; la route répond alors 404.
 
 ## 4. Où sont les choses
 
