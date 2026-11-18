@@ -172,7 +172,13 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
     monter({ secteur: "BTP", contactEmail: "a@b.fr", contactFonction: "Gérant" });
     fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "" } });
     const charge = await enregistrer();
-    expect(charge).toEqual({ id: "1", contactEmail: null });
+    // Le nom ou l'adresse change : téléphone et fonction partent aussi (T5).
+    expect(charge).toEqual({
+      id: "1",
+      contactEmail: null,
+      contactTelephone: "",
+      contactFonction: "Gérant",
+    });
   });
 
   it("modifier le délai n'envoie que le délai, en nombre", async () => {
@@ -188,6 +194,47 @@ describe("ClientEditForm — formulaire complet (lot A2)", () => {
       target: { value: "solde_unique" },
     });
     expect(screen.getByText(/l'acompte n'est pas appliqué/)).toBeTruthy();
+  });
+});
+
+describe("ClientEditForm — corriger le contact ne vide pas le téléphone", () => {
+  it("T5 · nom modifié : téléphone et fonction affichés partent avec", async () => {
+    monter({
+      contactNom: "DUPONT Anne",
+      contactTelephone: "01 02 03 04 05",
+      contactFonction: "Gérante",
+    });
+    fireEvent.change(screen.getByLabelText("Nom et prénom"), { target: { value: "Anne Dupont" } });
+    expect(await enregistrer()).toEqual({
+      id: "1",
+      contactNom: "Anne Dupont",
+      contactTelephone: "01 02 03 04 05",
+      contactFonction: "Gérante",
+    });
+  });
+
+  it("T5 · e-mail modifié : téléphone et fonction affichés partent avec", async () => {
+    monter({ contactEmail: "a@b.fr", contactTelephone: "01 02 03 04 05", contactFonction: "DAF" });
+    fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "c@d.fr" } });
+    expect(await enregistrer()).toEqual({
+      id: "1",
+      contactEmail: "c@d.fr",
+      contactTelephone: "01 02 03 04 05",
+      contactFonction: "DAF",
+    });
+  });
+
+  it("nom ET adresse modifiés : la ligne d'aide annonce une nouvelle personne", () => {
+    monter({ contactNom: "Anne Dupont", contactEmail: "a@b.fr" });
+    expect(screen.queryByText(/Une nouvelle personne sera créée/)).toBeNull();
+    fireEvent.change(screen.getByLabelText("Nom et prénom"), { target: { value: "Bruno Fictif" } });
+    expect(screen.queryByText(/Une nouvelle personne sera créée/)).toBeNull();
+    fireEvent.change(screen.getByLabelText("E-mail"), { target: { value: "b@c.fr" } });
+    expect(
+      screen.getByText(
+        "Une nouvelle personne sera créée ; l'ancienne reste dans l'onglet Personnes.",
+      ),
+    ).toBeTruthy();
   });
 });
 

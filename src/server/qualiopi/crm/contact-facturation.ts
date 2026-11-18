@@ -26,7 +26,11 @@
  *   1. la personne de la fiche qui a DÉJÀ cette adresse (une DAF connue ne se
  *      duplique pas) ;
  *   2. sinon le contact de facturation actuel, si le nom est le même (ou non
- *      transmis) : on lui ajoute l'adresse ;
+ *      transmis) : on lui ajoute l'adresse. « Le même » = mêmes mots, dans
+ *      n'importe quel ordre (« DUPONT Anne » = « Anne Dupont »). Avec
+ *      `nomCorrige` (« Modifier la fiche »), un nom différent SANS adresse
+ *      transmise est lu comme une correction : la personne actuelle est
+ *      renommée, elle garde téléphone et adresses, rien n'est créé ;
  *   3. sinon une nouvelle personne, et l'ancien contact garde sa fiche de
  *      personne (il n'est plus « de facturation », il n'est pas supprimé).
  *
@@ -58,6 +62,15 @@ export interface ContactFacturationEntree {
   /** Origine d'une personne CRÉÉE par cet appel. Défaut : `saisie`. */
   readonly origine?: ContactOrigine;
   readonly parAdminId?: string | null;
+  /**
+   * Le nom transmis CORRIGE celui de la personne actuelle (écran « Modifier la
+   * fiche », qui n'envoie que les champs modifiés, donc pas l'adresse). Sans
+   * adresse transmise, la personne actuelle est renommée au lieu d'être
+   * remplacée. Avec une adresse nouvelle, une nouvelle personne est toujours
+   * créée. Défaut : `false` (porte de création, `creer-prospect`, tour de
+   * France, reprise : inchangés).
+   */
+  readonly nomCorrige?: boolean;
 }
 
 export interface ContactFacturationResultat {
@@ -74,10 +87,15 @@ function texteOuNull(v: string | null | undefined): string | null | undefined {
   return t === "" ? null : t;
 }
 
-/** Même personne ? Comparaison sur le nom normalisé (casse, accents, espaces). */
+/** Mots du nom normalisé, triés : « DUPONT Anne » et « Anne Dupont » coïncident. */
+function motsTries(x: string): string {
+  return normaliserNom(x).split(" ").sort().join(" ");
+}
+
+/** Même personne ? Nom normalisé (casse, accents, espaces), ordre des mots ignoré. */
 function memeNom(a: string, b: string): boolean {
-  const na = normaliserNom(a);
-  return na !== "" && na === normaliserNom(b);
+  const na = motsTries(a);
+  return na !== "" && na === motsTries(b);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -225,7 +243,13 @@ export async function definirContactFacturation(
       nom === null ||
       actuel.nom === NOM_A_COMPLETER ||
       memeNom(nom, actuel.nom));
-  let cible = parAdresse ?? (actuelConvient ? actuel : null);
+  // Correction de nom sans adresse : la même personne, renommée (chemin de mise à jour).
+  const correction =
+    entree.nomCorrige === true &&
+    parAdresse === null &&
+    actuel !== null &&
+    (email === undefined || email === null);
+  let cible = parAdresse ?? (actuelConvient || correction ? actuel : null);
 
   // Rien à écrire : ni personne connue, ni nom, ni adresse.
   const nomACreer = typeof nom === "string" ? nom : (fiche.contactNom ?? null);

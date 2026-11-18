@@ -91,6 +91,19 @@ vi.mock("@/server/qualiopi/crm/effectif-insee", () => ({
   rafraichirEffectifInsee: (...a: unknown[]) => mockRafraichirEffectif(...a),
 }));
 
+// Espion sur la porte du contact de facturation : le comportement réel est gardé.
+const mockDefinirContact = vi.fn();
+vi.mock("@/server/qualiopi/crm/contact-facturation", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("@/server/qualiopi/crm/contact-facturation")>();
+  return {
+    ...reel,
+    definirContactFacturation: (...a: Parameters<typeof reel.definirContactFacturation>) => {
+      mockDefinirContact(...a);
+      return reel.definirContactFacturation(...a);
+    },
+  };
+});
+
 import { createClientAction, rafraichirEffectifInseeAction, updateClientAction } from "./clients";
 
 const ID = "550e8400-e29b-41d4-a716-446655440099";
@@ -307,6 +320,18 @@ describe("🔴 updateClientAction — le CONTACT est corrigible (chantier V18)",
     expect(data.contactNom).toBe("Camille Durand");
     expect(data.contactEmail).toBe("camille@client.test");
     expect(data.contactFonction).toBe("Directrice des ressources humaines");
+  });
+
+  it("🔴 un nom corrigé passe `nomCorrige: true` (pas de deuxième personne)", async () => {
+    const r = await updateClientAction({ id: ID, contactNom: "Anne Dupont" });
+
+    expect("data" in r).toBe(true);
+    expect(mockDefinirContact).toHaveBeenCalledTimes(1);
+    expect(mockDefinirContact.mock.calls[0]?.[1]).toMatchObject({
+      clientId: ID,
+      nom: "Anne Dupont",
+      nomCorrige: true,
+    });
   });
 
   it("🔴 `null` efface une adresse fautive — sinon elle serait DÉFINITIVE", async () => {
