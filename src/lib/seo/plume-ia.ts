@@ -11,3 +11,21 @@ export const LIBELLE_PLUME_IA = "Plume IA d'Axion-IA";
 
 /** Slug de la plume IA dans `AuthorProfile`. */
 export const SLUG_PLUME_IA = "manon";
+
+/** `@id` du nœud JSON-LD de la plume IA (nœud non humain, émis une seule fois en FR). */
+export function idNoeudPlumeIa(siteUrl: string): string {
+  return `${siteUrl}/fr/equipe/${SLUG_PLUME_IA}#person`;
+}
+
+/**
+ * Auteur JSON-LD d'un article : la plume IA est une simple référence `@id` vers son
+ * nœud non humain ; seul un vrai humain reste typé `Person`.
+ */
+export function auteurJsonLd(
+  nom: string,
+  siteUrl: string,
+): { "@id": string } | { "@type": "Person"; name: string } {
+  return nom.trim().toLowerCase() === SLUG_PLUME_IA
+    ? { "@id": idNoeudPlumeIa(siteUrl) }
+    : { "@type": "Person", name: nom };
+}

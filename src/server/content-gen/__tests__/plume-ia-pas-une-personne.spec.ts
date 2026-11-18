@@ -1,8 +1,11 @@
 /**
  * V1-18 — garde : l'auteur IA n'est jamais un `Person` ni « Expert(e) IA ».
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join } from "node:path";
+import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
+import { AuthorByline } from "@/components/knowledge/public/AuthorByline";
 import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { LIBELLE_PLUME_IA } from "@/lib/seo/plume-ia";
 
@@ -35,8 +38,44 @@ describe("V1-18 — la plume IA n'est pas une personne experte", () => {
     expect(src).not.toMatch(/Expert(e)?\s+(en\s+)?IA/);
   });
 
-  it("l'AuthorByline type la plume IA en Organization", () => {
-    const src = readFileSync("src/components/knowledge/public/AuthorByline.tsx", "utf8");
-    expect(src).toMatch(/estPlumeIa \? "Organization" : "Person"/);
+  it('AuthorByline (authorSlug="manon") émet une Organization avec @id, url FR, jamais Person', () => {
+    for (const locale of ["fr", "en"] as const) {
+      const html = renderToStaticMarkup(
+        AuthorByline({
+          authorName: "Manon",
+          authorSlug: "manon",
+          publishedAt: new Date("2026-01-15T00:00:00.000Z"),
+          locale,
+        }),
+      );
+      const m = /<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/.exec(html);
+      expect(m, "JSON-LD absent").not.toBeNull();
+      const ld = JSON.parse(m![1]!.replace(/\\u003c/g, "<")) as Record<string, unknown>;
+      expect(ld["@type"]).toBe("Organization");
+      expect(String(ld["@id"])).toMatch(/\/fr\/equipe\/manon#person$/);
+      expect(String(ld["url"])).toMatch(/\/fr\/equipe\/manon$/);
+      expect(html).not.toContain('"@type":"Person"');
+    }
+  });
+
+  it("aucun fichier de src/ ne type Manon / manon#person en Person", () => {
+    const fautifs: string[] = [];
+    const parcourir = (dir: string): void => {
+      for (const e of readdirSync(dir)) {
+        const p = join(dir, e);
+        if (statSync(p).isDirectory()) {
+          parcourir(p);
+        } else if (/\.(ts|tsx)$/.test(e) && !/\.(spec|test)\.tsx?$/.test(e)) {
+          const src = readFileSync(p, "utf8").replace(/\/\*[\s\S]*?\*\/|\/\/.*$/gm, "");
+          // un littéral `"@type": "Person"` à moins de 200 caractères de Manon / manon#person
+          for (const mt of src.matchAll(/"@type":\s*"Person"/g)) {
+            const fenetre = src.slice(Math.max(0, mt.index - 200), mt.index + 200);
+            if (/manon/i.test(fenetre)) fautifs.push(`${p}:${mt.index}`);
+          }
+        }
+      }
+    };
+    parcourir("src");
+    expect(fautifs).toEqual([]);
   });
 });

@@ -48,7 +48,7 @@ describe("truncateHeadline (VIS-13)", () => {
 });
 
 describe("buildPersonManonJsonLd", () => {
-  it("emits valid Person JSON-LD with @id and no sameAs", () => {
+  it("emits valid Organization JSON-LD (plume IA) with @id and no sameAs", () => {
     const ld = buildPersonManonJsonLd(MANON_FIXTURE);
     expect(ld["@type"]).toBe("Organization");
     expect(ld["@id"]).toMatch(/\/fr\/equipe\/manon#person$/);

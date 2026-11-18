@@ -7,7 +7,7 @@ import Image from "next/image";
 
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { SITE_URL } from "@/lib/seo";
-import { LIBELLE_PLUME_IA, SLUG_PLUME_IA } from "@/lib/seo/plume-ia";
+import { LIBELLE_PLUME_IA, SLUG_PLUME_IA, idNoeudPlumeIa } from "@/lib/seo/plume-ia";
 
 /**
  * Une URL d'avatar servie depuis `public/` (donc optimisable par `next/image`)
@@ -56,11 +56,17 @@ export function AuthorByline(props: AuthorBylineProps) {
   const personJsonLd = {
     "@context": "https://schema.org",
     "@type": estPlumeIa ? "Organization" : "Person",
+    ...(estPlumeIa ? { "@id": idNoeudPlumeIa(SITE_URL) } : {}),
     name: estPlumeIa ? LIBELLE_PLUME_IA : authorName,
     ...(authorAvatarUrl ? { image: authorAvatarUrl } : {}),
     ...(authorBio ? { description: authorBio } : {}),
     ...(authorLinkedinUrl ? { sameAs: [authorLinkedinUrl] } : {}),
-    ...(authorSlug ? { url: `${SITE_URL}/${locale}/equipe/${authorSlug}` } : {}),
+    ...(authorSlug
+      ? {
+          // La plume IA n'a qu'une page canonique (FR) : même @id et même URL quelle que soit la langue.
+          url: `${SITE_URL}/${estPlumeIa ? "fr" : locale}/equipe/${authorSlug}`,
+        }
+      : {}),
   };
 
   return (
