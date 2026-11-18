@@ -33,7 +33,9 @@ describe("contenu /cartographie", () => {
     expect(TEXTES.principe).toBe("Par vos tâches, pas par un outil.");
     const accueil = ACCUEIL.faq.questions.find((q) => q.id === "faq-commencer")!.reponse;
     expect(FAQ.find((f) => f.id === "faq-commencer")!.reponse).toBe(accueil);
-    expect(TEXTES.deroule.etapes[1].texte).toContain(ACCUEIL.blocJournee.tuiles[0].texte);
+    expect(TEXTES.deroule.etapes[1].texte).toContain(
+      ACCUEIL.deuxFacons.blocJournee.tuiles[0].texte,
+    );
     const etapes = JOURNEE.deroule.etapes;
     expect(TEXTES.deroule.etapes[0].texte).toContain(etapes[0].jalons[0].texte);
     expect(TEXTES.deroule.etapes[2].texte).toContain(etapes[3].jalons[0].texte);
@@ -45,7 +47,9 @@ describe("contenu /cartographie", () => {
   it("ne contient aucun prix, jeton résiduel ni mot interdit", () => {
     expect(tout).not.toMatch(/\d[  .]?\d*\s?€\s?HT/);
     expect(tout).not.toContain("{{PRIX}}");
-    expect(tout).not.toMatch(/Grenoble|Qualiopi|OPCO|prise en charge|certifi|n°\s?1|référence du marché|témoign/i);
+    expect(tout).not.toMatch(
+      /Grenoble|Qualiopi|OPCO|prise en charge|certifi|n°\s?1|référence du marché|témoign/i,
+    );
     expect(page).not.toMatch(/\d[  ]?€/);
     // `no-code` et `financ…` sont filtrés dans llms ; ici on réutilise le même motif.
     expect(tout).not.toMatch(MOTS_INTERDITS_LLMS);

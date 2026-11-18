@@ -4,12 +4,11 @@
 // celui de la Journée IA, porté par sa page. Les chiffres de l'exemple sont ceux de la landing
 // (calculés dans `journee-ia-commun.ts`), présentés comme un exemple, pas comme un résultat.
 
-import { DATE_MISE_A_JOUR_CARTOGRAPHIE, DEFINITION_CARTOGRAPHIE } from "@/content/cartographie-date";
 import {
-  DEROULE_JOURNEE_IA,
-  RAPPORT_COMPLET,
-  remplacerJetons,
-} from "@/content/journee-ia-commun";
+  DATE_MISE_A_JOUR_CARTOGRAPHIE,
+  DEFINITION_CARTOGRAPHIE,
+} from "@/content/cartographie-date";
+import { DEROULE_JOURNEE_IA, RAPPORT_COMPLET, remplacerJetons } from "@/content/journee-ia-commun";
 
 import { CONTENU as ACCUEIL } from "../_accueil/contenu";
 import { CONTENU as JOURNEE } from "../journee-ia/contenu";
@@ -32,7 +31,7 @@ export const OG_IMAGE_ALT =
 /** « Par vos tâches, pas par un outil », tel que la FAQ de l'accueil le dit. */
 const REPONSE_COMMENCER =
   ACCUEIL.faq.questions.find((q) => q.id === "faq-commencer")?.reponse ?? "";
-const MATIN = ACCUEIL.blocJournee.tuiles[0].texte;
+const MATIN = ACCUEIL.deuxFacons.blocJournee.tuiles[0].texte;
 /** Jalons de la landing Journée IA (source unique) : jamais recopiés ici. */
 const AVANT = JOURNEE.deroule.etapes[0].jalons[0].texte;
 const PRIORITES = JOURNEE.deroule.etapes[3].jalons[0].texte;
@@ -62,15 +61,14 @@ export const TEXTES = {
   },
   recu: {
     titre: "Ce que vous recevez",
-    elements: [
-      `${PRIORITES}.`,
-      RAPPORT_COMPLET,
-    ],
+    elements: [`${PRIORITES}.`, RAPPORT_COMPLET],
   },
   exemple: {
     titre: "Un exemple fictif",
     intro: JOURNEE.accroche.carteDesGains.sousTitre,
-    lignes: JOURNEE.accroche.carteDesGains.lignes.map((l) => `${l.libelle} : ${l.heures} par semaine`),
+    lignes: JOURNEE.accroche.carteDesGains.lignes.map(
+      (l) => `${l.libelle} : ${l.heures} par semaine`,
+    ),
     total: remplacerJetons(
       `Sur la première ligne, {{HEURES_EXEMPLE}} par semaine représentent ${JOURNEE.accroche.carteDesGains.total.montant} ${JOURNEE.accroche.carteDesGains.total.suite}. Chiffres d’illustration : ce n’est pas un résultat client.`,
     ),
@@ -93,8 +91,7 @@ export const FAQ = [
   {
     id: "faq-quand",
     question: "Quand a-t-elle lieu ?",
-    reponse:
-      `Le matin de la Journée IA, de ${HEURES_MATIN}, dans vos locaux, partout en France. L’après-midi, nous formons vos équipes sur leurs propres dossiers.`,
+    reponse: `Le matin de la Journée IA, de ${HEURES_MATIN}, dans vos locaux, partout en France. L’après-midi, nous formons vos équipes sur leurs propres dossiers.`,
   },
   {
     id: "faq-commencer",
@@ -115,7 +112,6 @@ export const FAQ = [
   {
     id: "faq-gratuit",
     question: "Y a-t-il un premier pas gratuit ?",
-    reponse:
-      "Oui : un diagnostic IA gratuit de 45 minutes, en visio ou par téléphone.",
+    reponse: "Oui : un diagnostic IA gratuit de 45 minutes, en visio ou par téléphone.",
   },
 ] as const;
