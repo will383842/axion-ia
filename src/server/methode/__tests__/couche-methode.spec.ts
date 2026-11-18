@@ -180,6 +180,34 @@ describe("2 · séparation des chiffres", () => {
     );
     expect(s!.etiquettes).toContain(ETIQUETTE_DOCTRINE);
   });
+
+  it("une garantie à la première personne ou un pourcentage pose doctrine:a-revoir à l'import", () => {
+    for (const phrase of [
+      ["Je garan", "tis des gains."].join(""),
+      ["Je rembour", "se tout."].join(""),
+      ["Une hausse de 7", " % en un mois."].join(""),
+    ]) {
+      const [s] = decouperFichier(
+        "livres/faux-promesse.md",
+        ["# faux", "1. Une promesse", `${LONG} ${phrase}`].join("\n"),
+      );
+      expect(s!.etiquettes).toContain(ETIQUETTE_DOCTRINE);
+    }
+  });
+
+  it("un montant sans devise (k, millions, dollars) pose chiffres-exercice à l'import", () => {
+    for (const phrase of [
+      ["Un exercice à 5", "k par mois."].join(""),
+      ["Un chiffre de 2 ", "millions."].join(""),
+      ["Un prix de $", "40."].join(""),
+    ]) {
+      const [s] = decouperFichier(
+        "livres/faux-chiffre.md",
+        ["# faux", "1. Un chiffre", `${LONG} ${phrase}`].join("\n"),
+      );
+      expect(s!.etiquettes).toContain(ETIQUETTE_CHIFFRES);
+    }
+  });
 });
 
 /** Dossier de travail partagé par les tests d'import. */

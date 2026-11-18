@@ -103,6 +103,92 @@ describe("motifRefus — formes de montant (k, M, symbole devant)", () => {
   });
 });
 
+/** Formes INVENTÉES, assemblées à l'exécution : aucun montant ni coordonnée n'est écrit en clair. */
+const j = (...m: string[]) => m.join("");
+const NBSP = String.fromCharCode(0xa0);
+
+describe("motifRefus — promesses et pourcentages (première personne comprise)", () => {
+  const formes = [
+    j("Je garan", "tis des gains rapides."),
+    j("Je rembour", "se si ça ne marche pas."),
+    j("On garan", "tit +30", " %"),
+    j("Un résultat gar", "anti."),
+    j("La garan", "tie du résultat."),
+    j("Un rembour", "sement intégral."),
+    j("Gar", "antissez-vous un gain"),
+    j("92", " % des clients d'Axion-IA sont satisfaits."),
+    j("92", NBSP, "% des clients."),
+    j("Hausse de 7", "% en un mois."),
+    j("Hausse de 7", "\uFF05 en un mois."),
+    j("Dix pour", " cent de mieux."),
+  ];
+  for (const forme of formes) {
+    it(`refuse « ${forme.length} caractères, ${forme.slice(0, 3)}… »`, () => {
+      expect(motifRefus(fiche(forme))).not.toBeNull();
+    });
+  }
+  it("refuse aussi dans le titre", () => {
+    expect(motifRefus(fiche("Texte sain.", [], j("Je garan", "tis")))).not.toBeNull();
+  });
+  it("une fiche saine sans promesse ni pourcentage passe encore", () => {
+    expect(motifRefus(fiche("Écouter, reformuler, proposer deux choix."))).toBeNull();
+  });
+});
+
+describe("motifRefus — montants sans devise (k, M, millions, mille) et dollars", () => {
+  const formes = [
+    j("5", "k par mois"),
+    j("300", "K de CA"),
+    j("2 ", "M de CA"),
+    j("2 ", "millions"),
+    j("1,2 ", "million"),
+    j("3 ", "mille"),
+    j("$", "1,500"),
+    j("$ ", "40"),
+    j("1500 ", "USD"),
+    j("USD ", "1500"),
+    j("50 ", "dollars"),
+    j("1", "$"),
+  ];
+  for (const forme of formes) {
+    it(`refuse « ${forme.length} caractères, ${forme.slice(0, 2)}… »`, () => {
+      expect(motifRefus(fiche(`Un exercice : ${forme}.`))).toBe("montant");
+    });
+  }
+  it("ne refuse pas des nombres ordinaires", () => {
+    expect(motifRefus(fiche("Trois étapes, 12 fournées, 5 km, 10 min."))).toBeNull();
+  });
+});
+
+describe("motifRefus — courriels masqués et indicatifs entre parenthèses", () => {
+  const formes = [
+    j("faux.nom", " [at] ", "exemple.invalid"),
+    j("faux.nom", "[at]", "exemple.invalid"),
+    j("faux.nom", " (arobase) ", "exemple.invalid"),
+    j("faux.nom", " (at) ", "exemple.invalid"),
+    j("faux.nom", " @ ", "exemple.invalid"),
+    j("faux.nom", " arobase ", "exemple point invalid"),
+    j("faux.nom", "@", "exemple [dot] invalid"),
+  ];
+  for (const forme of formes) {
+    it(`refuse le courriel masqué « ${forme.length} caractères »`, () => {
+      expect(motifRefus(fiche(`Écrire à ${forme}.`))).toBe("courriel");
+    });
+  }
+  const tels = [
+    j("(06", ") 12-34-56-78"),
+    j("(06", ")12 34 56 78"),
+    j("(0", ")6 12 34 56 78"),
+    j("(+33", ") (0)6 12 34 56 78"),
+    j("(33", ") 6 12 34 56 78"),
+  ];
+  for (const t of tels) {
+    it(`refuse le téléphone « ${t.length} caractères »`, () => {
+      expect(motifRefus(fiche(`Appeler le ${t}.`))).toBe("telephone");
+    });
+  }
+});
+
 describe("filtrerPourSortie — point unique", () => {
   it("ne garde que les fiches sans motif, dans l'ordre", () => {
     const saines = [fiche("Un."), fiche("Deux.")];

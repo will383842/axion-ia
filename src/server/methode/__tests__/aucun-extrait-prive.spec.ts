@@ -4,6 +4,8 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
+import { contientMontant } from "../decoupage";
+
 /**
  * **RÈGLE INTANGIBLE DE LA COUCHE MÉTHODE (ADR 0076) : CE DÉPÔT EST PUBLIC.**
  *
@@ -85,6 +87,24 @@ function fichiersContenant(motif: string, pathspec: string[] = []): string[] {
     throw e;
   }
 }
+
+describe("0 · le garde-fou de montant est celui de la production", () => {
+  it("détecte les mêmes formes que decoupage.ts (k, M, millions, dollars, HT/TTC, Mds)", () => {
+    const formes = [
+      ["5", "k par mois"],
+      ["2 ", "M de CA"],
+      ["2 ", "millions"],
+      ["$", "40"],
+      ["40 ", "USD"],
+      ["1 490 ", "TTC"],
+      ["3 ", "Mds"],
+    ].map((m) => m.join(""));
+    for (const f of formes) {
+      expect(MOTIF_MONTANT.test(f), f.length.toString()).toBe(true);
+      expect(contientMontant(f)).toBe(true);
+    }
+  });
+});
 
 describe("1 · aucun contenu réel ou privé dans les fichiers de la fiche", () => {
   const presents = FICHIERS_DE_LA_FICHE.filter((f) => existsSync(path.join(RACINE, f)));
