@@ -331,10 +331,16 @@ describe("relecture Opus : accueil, régions, presse, transparence (décisions n
     expect(brutCharte).toMatch(/newsAutoPublish/);
   });
 
-  it("presse : le nœud #organization du JSON-LD n'émet que le pays", () => {
+  it("presse : ne redéfinit plus l'Organization (V1-11), elle cite l'@id ; l'adresse du layout n'émet que le pays", () => {
     const p = page("src/app/[locale]/presse/page.tsx");
     expect(p).not.toMatch(/addressLocality/);
-    expect(p).toMatch(/addressCountry:\s*"FR"/);
+    expect(p).not.toMatch(/PostalAddress/);
+    expect(p).toMatch(/about: \{ "@id": `\$\{SITE_URL\}\/#organization` \}/);
+    const seo = page("src/lib/seo.ts");
+    const debut = seo.indexOf("function buildSiegePostalAddress()");
+    const corps = seo.slice(debut, seo.indexOf("\n}\n", debut));
+    expect(corps).not.toMatch(/addressLocality/);
+    expect(corps).toMatch(/addressCountry:\s*"FR"/);
   });
 
   it("transparence, bandeau IA et blog : aucune promesse de relecture humaine systématique ou de fact-check avant publication", () => {
