@@ -387,17 +387,19 @@ describe("ligne ANCIENNE (sans marqueur) : non-régression", () => {
     expect(h.nbTransactions.v).toBe(0);
   });
 
-  it("(d) journal email.outbox.approuver inchangé (avec l'adresse du destinataire)", async () => {
+  it("(d) journal email.outbox.approuver : jamais d'adresse, même sans marqueur", async () => {
     h.ligne.v = ancienne();
     await approuverEmailAction({ id: ID, sujet: "Autre" });
     expect(h.log).toHaveBeenCalledTimes(1);
+    const changes = (h.log.mock.calls[0]?.[0] as { changes: Record<string, unknown> }).changes;
+    expect("destinataire" in changes).toBe(false);
+    expect(JSON.stringify(changes)).not.toContain(ADRESSE);
     expect(h.log.mock.calls[0]?.[0]).toEqual({
       action: "email.outbox.approuver",
       targetType: "EmailOutbox",
       targetId: ID,
       changes: {
         template: "devis-envoi",
-        destinataire: ADRESSE,
         sujetModifie: true,
         messageAjoute: false,
         envoye: true,
