@@ -50,6 +50,8 @@ const ATTENDU = {
   "x-robots-tag": "noindex",
 };
 
+vi.stubEnv("ADMIN_URL_PREFIX", "admin-x");
+
 function appeler(id: string, projetId = PROJET, clientId = CLIENT) {
   return GET(new Request("https://axion-ia.com/x"), {
     params: Promise.resolve({

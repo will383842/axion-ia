@@ -37,6 +37,7 @@ import {
 } from "@/server/formateur/acces-apres-fin";
 import { FORMATEUR_LECTURE_SEULE_PATH } from "@/server/formateur/guard";
 import { publicUrl } from "@/lib/public-url";
+import { refuserSiLocaleInconnue } from "@/server/auth/garde-route-console";
 
 export const dynamic = "force-dynamic";
 
@@ -52,7 +53,9 @@ export async function GET(
   _request: NextRequest,
   { params }: { params: Promise<{ token: string; locale: string }> },
 ): Promise<Response> {
-  const { token } = await params;
+  const { token, locale } = await params;
+  const locInconnue = refuserSiLocaleInconnue(locale);
+  if (locInconnue) return locInconnue;
   if (!(await formateurMagicLinkUtilisable(token))) return NextResponse.redirect(urlEchec());
   return new NextResponse(pageConfirmerConnexion(), {
     status: 200,
@@ -64,7 +67,9 @@ export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ token: string; locale: string }> },
 ): Promise<Response> {
-  const { token } = await params;
+  const { token, locale } = await params;
+  const locInconnue = refuserSiLocaleInconnue(locale);
+  if (locInconnue) return locInconnue;
   const failureUrl = urlEchec();
 
   // Le bouton est sur la page elle-même : un envoi venu d'un AUTRE site (connexion
