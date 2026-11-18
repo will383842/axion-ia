@@ -403,6 +403,8 @@ interface Option {
   readonly surcharge?: Partial<EmailLayoutProps>;
   readonly corps?: ReactNode;
   readonly sansOuverture?: boolean;
+  /** Simule un rendu sans destinataire connu : le lien d'opposition n'est pas posé. */
+  readonly sansLienOpposition?: boolean;
 }
 
 async function rendreTemoin(o: Option): Promise<Rendu> {
@@ -422,10 +424,13 @@ async function rendreTemoin(o: Option): Promise<Rendu> {
       {o.corps ?? <Text>Le corps du témoin.</Text>}
     </EmailLayout>
   );
-  return avecDonneesRendu({ oppositionHref: LIEN_OPPOSITION, lienEspace: null }, async () => ({
-    html: await render(element, { pretty: false }),
-    text: await render(element, { plainText: true }),
-  }));
+  return avecDonneesRendu(
+    { oppositionHref: o.sansLienOpposition === true ? null : LIEN_OPPOSITION, lienEspace: null },
+    async () => ({
+      html: await render(element, { pretty: false }),
+      text: await render(element, { plainText: true }),
+    }),
+  );
 }
 
 const COMBINAISONS: Option[] = DESTINATAIRES.flatMap((destinataire) =>
@@ -931,19 +936,41 @@ function fautesChassis(r: Rendu, locale: "fr" | "en"): string[] {
   return fautes;
 }
 
+const DESTINATAIRE_DE_TEST = "jean.dupont@client-test.fr";
+
 describe("S2 — gardes dures appliquées à chaque gabarit réel migré", () => {
-  it("chaque gabarit rendu portant `data-destinataire` respecte toutes les gardes", () => {
-    const migres: string[] = [];
+  beforeAll(() => {
+    process.env["AUTH_SECRET"] ??= "secret-de-test-suffisamment-long-0123456789";
+  });
+
+  it("chaque gabarit rendu portant `data-destinataire` respecte toutes les gardes (rendu AVEC destinataire)", async () => {
     for (const nom of EMAIL_TEMPLATE_NAMES) {
       for (const locale of ["fr", "en"] as const) {
-        const r = rendus.get(nom)![locale];
-        if (estampilleHtml(r.html, "destinataire") === null) continue;
-        migres.push(`${nom}/${locale}`);
+        // Le repérage de la migration se fait sur le rendu sans destinataire (déjà mesuré) ;
+        // le jugement, lui, porte sur un rendu AVEC destinataire : sans lui le lien d'opposition
+        // n'est jamais posé et la garde rougirait à tort sur un gabarit correct.
+        if (estampilleHtml(rendus.get(nom)![locale].html, "destinataire") === null) continue;
+        const r = await renderEmailTemplate(nom, locale, CHARGE, {
+          destinataire: DESTINATAIRE_DE_TEST,
+        });
         expect(fautesChassis(r, locale), `${nom} (${locale})`).toEqual([]);
       }
     }
-    // Aujourd'hui aucun gabarit réel n'est migré : la liste est vide. Elle grossit avec S4 et suivants.
-    expect(migres.length % 2).toBe(0);
+  });
+
+  it("test du test : un rendu de famille B sans destinataire ne porte pas le lien, avec destinataire il le porte", async () => {
+    const base = {
+      destinataire: "client",
+      nature: "relation",
+      famille: "B",
+      locale: "fr",
+    } as const;
+    const sans = await rendreTemoin({ ...base, sansLienOpposition: true });
+    expect(lienOpposition(sans.html)).toBe(false);
+    expect(fautesChassis(sans, "fr")).toContain("lien d'opposition : présence incorrecte");
+    const avec = await rendreTemoin(base);
+    expect(lienOpposition(avec.html)).toBe(true);
+    expect(fautesChassis(avec, "fr")).toEqual([]);
   });
 
   it("les gardes laissent passer tous les gabarits témoins conformes (6 × 11 × 4 × 2)", () => {

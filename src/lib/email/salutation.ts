@@ -85,7 +85,7 @@ function ressembleAUnNom(s: string): boolean {
  */
 const AUTORISES = /^[\p{L}\p{M}' ’\-.]+$/u;
 const INVISIBLES =
-  /[\u115F\u1160\u3164\uFFA0\u034F\u17B4\u17B5\u180B-\u180F\uFE00-\uFE0F\u{E0100}-\u{E01EF}]/u;
+  /[\u115F\u1160\u3164\uFFA0\u034F\u17B4\u17B5\u180B-\u180F\uFE00-\uFE0F\u{E0100}-\u{E01EF}\uA78F\u1427\u{16FE4}]/u;
 
 function sondeOk(s: string): boolean {
   if (!AUTORISES.test(s) || INVISIBLES.test(s) || /\p{M}{3,}/u.test(s)) return false;
@@ -94,7 +94,7 @@ function sondeOk(s: string): boolean {
     .replace(/\p{M}/gu, "")
     .replace(/[\u3002\uFF61\u2024\uFE52]/g, ".");
   if (/[\p{N}@]/u.test(sonde)) return false;
-  return !/(?:^|[\s.])www(?:[\s.]|$)|[\p{L}\-']\.\p{L}{2,}|https?/iu.test(sonde);
+  return !/(?:^|[\s.])www(?:[\s.]|$)|[\p{L}\-'’ ]\.+\p{L}{2,}|https?/iu.test(sonde);
 }
 
 /**

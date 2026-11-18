@@ -219,6 +219,14 @@ describe("salutation : liste blanche des noms (audit S2, constat 1)", () => {
     ["paypal͏.xyz", "CGJ invisible puis domaine"],
     ["bit.l͏y", "domaine coupé par une marque invisible"],
     ["paypal-.xyz", "domaine avec trait d'union"],
+    ["paypal\uA78Fcom", "point latin sinologique U+A78F"],
+    ["paypal\u1427com", "point syllabique canadien U+1427"],
+    ["compte\u{16FE4}bloqué\u{16FE4}répondez", "remplissage khitan U+16FE4"],
+    ["paypal’.xyz", "apostrophe courbe puis domaine"],
+    ["paypal'.xyz", "apostrophe droite puis domaine"],
+    ["paypal-.com", "trait d'union puis domaine"],
+    ["paypal..xyz", "double point puis domaine"],
+    ["paypal .xyz", "espace puis point puis domaine"],
     ["jean＠gmail", "arobase pleine chasse"],
     ["ｗｗｗ paypal", "www pleine chasse"],
     ["Rappelez ０６１２３４５６７８", "chiffres pleine chasse"],
@@ -279,6 +287,7 @@ describe("salutation : liste blanche des noms (audit S2, constat 1)", () => {
     "สมชาย",
     "Νίκος",
     "St. Clair",
+    "J.-P. Martin",
   ])("le vrai nom « %s » reste accepté, sortie exacte", (nom) => {
     expect(nettoyerNomPropre(nom)).toBe(nom);
     expect(salutation({ prenom: nom }, "fr")).toBe(`Bonjour ${nom},`);
