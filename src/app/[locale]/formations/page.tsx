@@ -113,7 +113,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       loc === "fr"
         ? `Formations IA pour vos équipes, sur site ou à distance : ${qualiopiSerp}. Prix par groupe (${EFFECTIF_PLAGE_FR}), sur devis.`
-        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Instant time savings for your teams.`,
+        : `Corporate AI training on site: general offers plus role-specific and industry-specific programmes, priced per group (${EFFECTIF_PLAGE_EN}). Practical use cases for your teams.`,
   });
 }
 
@@ -735,8 +735,8 @@ export default async function FormationsHub({ params }: Props) {
         titleEm={isFr ? "mensuelle" : "monthly"}
         description={
           isFr
-            ? "Pour les TPE, PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Gains de temps instantanés mesurés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
-            : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Instant time savings measured at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
+            ? "Pour les TPE, PME, ETI et grands groupes, un formateur IA expert intervient chez vous régulièrement, sur 6, 12 ou 24 mois. Cas d'usage concrets travaillés à chaque session, automatisations métier déployées progressivement, échanges continus entre les journées de formation pour ne jamais vous laisser seul."
+            : "For SMEs, mid-caps and large companies, an expert AI trainer comes on site regularly, over 6, 12 or 24 months. Practical use cases worked on at each session, business automations rolled out progressively, continuous exchanges between training days so you're never left alone."
         }
         contentClassName={TIGHT_X}
       >
@@ -789,10 +789,6 @@ export default async function FormationsHub({ params }: Props) {
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Formule mensuelle (la plus mise en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
-              {/* Badge "Le plus choisi" */}
-              <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                {isFr ? "Le plus choisi" : "Most chosen"}
-              </span>
 
               {/* Filet couleur */}
               <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
@@ -816,14 +812,14 @@ export default async function FormationsHub({ params }: Props) {
                     ? [
                         "Formateur IA expert dédié à votre entreprise",
                         "Montée en compétence progressive et mesurable",
-                        "Gain de temps instantané dès la 1ʳᵉ session",
+                        "Premières automatisations applicables dès la 1ʳᵉ session",
                         "Nouveaux cas d'automatisation métier maîtrisés chaque journée",
                         "WhatsApp d'entraide continue entre les sessions",
                       ]
                     : [
                         "Dedicated expert AI trainer for your company",
                         "Progressive, measurable upskilling",
-                        "Instant time savings from session 1",
+                        "First automations you can apply from session 1",
                         "New business automation cases mastered every session",
                         "Continuous WhatsApp peer-support between sessions",
                       ]
@@ -955,8 +951,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Les apprentissages s'installent dans la durée. Chaque mois consolide les gains du précédent et ouvre de nouveaux cas d'usage.",
                     },
                     {
-                      t: "Gain de temps instantané",
-                      d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui leur font gagner du temps immédiatement.",
+                      t: "Premières automatisations applicables",
+                      d: "Dès la 1ʳᵉ journée, les participants maîtrisent 3-5 automatisations applicables à leurs tâches, qui peuvent être mises en pratique tout de suite.",
                     },
                     {
                       t: "Adapté à toutes les tailles",
@@ -981,8 +977,8 @@ export default async function FormationsHub({ params }: Props) {
                       d: "Learning sticks over time. Each month consolidates previous gains and opens new use cases.",
                     },
                     {
-                      t: "Instant time savings",
-                      d: "From day 1, participants master 3-5 automations applicable to their tasks, saving time immediately.",
+                      t: "First automations you can apply",
+                      d: "From day 1, participants master 3-5 automations applicable to their tasks, ready to be put into practice right away.",
                     },
                     {
                       t: "Fits all company sizes",
@@ -1254,7 +1250,7 @@ export default async function FormationsHub({ params }: Props) {
                   className="text-fg text-2xl font-semibold tracking-tight"
                   style={{ fontFamily: "var(--font-serif)" }}
                 >
-                  {isFr ? "30 min, sans engagement" : "30 min, no commitment"}
+                  {isFr ? "45 minutes, sans engagement" : "45 minutes, no commitment"}
                 </h2>
                 <p className="text-fg-soft mt-2 text-sm leading-relaxed">
                   {isFr ? "Scannez le QR code ou rendez-vous sur :" : "Scan the QR code or go to:"}

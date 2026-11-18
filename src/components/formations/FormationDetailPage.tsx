@@ -1001,12 +1001,6 @@ export function FormationDetailPage({
                 if (typeof price !== "number") return null;
                 return (
                   <li key={b} className="relative">
-                    {i === 0 && brackets.length > 1 ? (
-                      <span className="bg-terracotta text-mocha-fg shadow-subtle absolute -top-3 left-6 z-10 inline-flex items-center gap-1 rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                        <Sparkles aria-hidden="true" className="h-3 w-3" />
-                        Le plus choisi
-                      </span>
-                    ) : null}
                     <article
                       className={`bg-paper hover:shadow-card relative flex h-full flex-col rounded-3xl border-2 p-7 transition-all lg:p-8 ${
                         i === 0 && brackets.length > 1

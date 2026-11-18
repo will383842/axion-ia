@@ -491,9 +491,6 @@ export default async function UnAUnHubPage({ params }: Props) {
           <div className="mx-auto grid max-w-5xl gap-6 md:grid-cols-2 md:gap-7">
             {/* CARD 1 — Mensuel (mis en avant) */}
             <article className="bg-paper border-terracotta/40 shadow-subtle hover:border-terracotta hover:shadow-card group relative flex flex-col overflow-hidden rounded-3xl border-2 transition-all duration-200 hover:-translate-y-1">
-              <span className="bg-terracotta text-mocha-fg absolute top-5 right-5 z-[2] inline-flex items-center rounded-full px-3 py-1 text-[11px] font-bold tracking-wide uppercase">
-                {isFr ? "Le plus choisi" : "Most chosen"}
-              </span>
               <span aria-hidden="true" className="bg-terracotta block h-2 w-full" />
               <div className="flex flex-1 flex-col p-7 sm:p-8">
                 <div className="bg-terracotta-soft text-terracotta-deep mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl">

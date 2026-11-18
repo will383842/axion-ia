@@ -42,8 +42,8 @@ const EXPERTISES: ReadonlyArray<Expertise> = [
     icon: MessagesSquare,
     titleFr: "Chatbots & assistants",
     titleEn: "Chatbots & assistants",
-    bodyFr: "Répondre vite et juste, 24/7, à partir de vos documents — sans hallucination.",
-    bodyEn: "Fast, accurate answers 24/7, grounded in your documents — no hallucination.",
+    bodyFr: "Répondre vite et juste, 24/7, à partir de vos documents — réponses fondées sur vos sources.",
+    bodyEn: "Fast, accurate answers 24/7, grounded in your documents — answers grounded in your sources.",
   },
   {
     icon: Workflow,

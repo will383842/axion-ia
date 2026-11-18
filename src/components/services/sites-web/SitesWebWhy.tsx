@@ -110,8 +110,8 @@ export function SitesWebWhy({ isFr }: SitesWebWhyProps): ReactNode {
               className="bg-terracotta mr-3 inline-block h-1.5 w-1.5 rounded-full align-middle"
             />
             {isFr
-              ? "Sites web & SaaS IA · la référence française"
-              : "AI websites & SaaS · the French benchmark"}
+              ? "Sites web & SaaS IA · partout en France"
+              : "AI websites & SaaS · across France"}
           </p>
           <h2 className="text-fg mt-5 text-[clamp(2.25rem,4.5vw,4rem)] leading-[1.04] font-semibold tracking-tight">
             {isFr ? "Un site, tout le monde en a un." : "Everyone has a website."}

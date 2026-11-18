@@ -30,21 +30,21 @@ export function ImplementationHero({ isFr, villeContext }: ImplementationHeroPro
     ? [
         { label: "Ventes", benefit: "+ CA, − coût", accent: "primary" as const },
         { label: "Service client", benefit: "Réponse 24/7", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "Visibilité 10×", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "Plus de visibilité", accent: "terracotta" as const },
         { label: "Données", benefit: "Décisions claires", accent: "primary" as const },
         { label: "Métier", benefit: "Chiffrer en 30 s", accent: "terracotta" as const },
         { label: "Admin", benefit: "Zéro saisie", accent: "sage" as const },
-        { label: "RH", benefit: "Recruter 5× +", accent: "mocha" as const },
+        { label: "RH", benefit: "Recrutement facilité", accent: "mocha" as const },
         { label: "Com' interne", benefit: "Équipes alignées", accent: "sage" as const },
       ]
     : [
         { label: "Sales", benefit: "+ revenue, − cost", accent: "primary" as const },
         { label: "Customer service", benefit: "24/7 answers", accent: "terracotta" as const },
-        { label: "Marketing", benefit: "10× visibility", accent: "terracotta" as const },
+        { label: "Marketing", benefit: "More visibility", accent: "terracotta" as const },
         { label: "Data", benefit: "Clear decisions", accent: "primary" as const },
         { label: "Operations", benefit: "Quote in 30 s", accent: "terracotta" as const },
         { label: "Back-office", benefit: "Zero data entry", accent: "sage" as const },
-        { label: "HR", benefit: "5× faster hiring", accent: "mocha" as const },
+        { label: "HR", benefit: "Easier hiring", accent: "mocha" as const },
         { label: "Internal comms", benefit: "Aligned teams", accent: "sage" as const },
       ];
 
