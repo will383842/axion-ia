@@ -510,7 +510,7 @@ export default async function NewsArticlePage({ params }: Props) {
               <span>
                 Mis à jour le{" "}
                 <time dateTime={lastReviewed.toISOString()} className="tabular-nums">
-                  {lastReviewed.toLocaleDateString("fr-FR")}
+                  {lastReviewed.toLocaleDateString("fr-FR", { timeZone: "UTC" })}
                 </time>
               </span>
             </div>
