@@ -53,8 +53,8 @@ vi.mock("@/features/dossier-client/aide-du-projet", () => ({ chargerAideDuProjet
 vi.mock("@/components/admin/qualiopi/DevisForm", () => ({
   DevisForm: () => <div data-testid="devis-form" />,
 }));
-vi.mock("@/components/admin/qualiopi/assistant-devis/AssistantDevisPage", () => ({
-  AssistantDevisPage: (p: unknown) => {
+vi.mock("@/components/admin/qualiopi/assistant-devis/AssistantDevisDiffere", () => ({
+  AssistantDevisDiffere: (p: unknown) => {
     m.assistant(p);
     return <div data-testid="assistant" />;
   },

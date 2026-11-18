@@ -15,7 +15,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
-import { AssistantDevisPage } from "@/components/admin/qualiopi/assistant-devis/AssistantDevisPage";
+import { AssistantDevisDiffere } from "@/components/admin/qualiopi/assistant-devis/AssistantDevisDiffere";
 import { payloadVersEtat } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
 import { CGV_VERSION_LIBELLE } from "@/content/cgv-version";
 import { dayKeyInParis } from "@/lib/calendar-grid";
@@ -207,7 +207,7 @@ export default async function QualiopiDevisNewPage({ params, searchParams }: Pag
             title="Nouveau devis"
             description="Le numéro est alloué automatiquement (AXI-DEV-AAAA-NNN). La TVA suit le régime configuré."
           />
-          <AssistantDevisPage
+          <AssistantDevisDiffere
             payloadInitial={ctx.payloadInitial}
             brouillon={ctx.brouillon}
             clients={clientsAssistant}
