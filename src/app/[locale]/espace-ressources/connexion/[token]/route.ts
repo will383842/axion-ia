@@ -10,6 +10,7 @@ import { signFormateurSession } from "@/lib/formateur-session";
 import { setRessourcesCookie } from "@/server/ressources/cookie";
 import { RESSOURCES_BASE_PATH, RESSOURCES_CONNEXION_PATH } from "@/server/ressources/routes";
 import { publicUrl } from "@/lib/public-url";
+import { refuserSiLocaleInconnue } from "@/server/auth/garde-route-console";
 
 export const dynamic = "force-dynamic";
 
@@ -17,7 +18,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ token: string; locale: string }> },
 ): Promise<Response> {
-  const { token } = await params;
+  const { token, locale } = await params;
+  const locInconnue = refuserSiLocaleInconnue(locale);
+  if (locInconnue) return locInconnue;
   // 🔴 Même défaut que l'espace formateur : `request.url` porte l'adresse
   // interne du conteneur derrière le proxy. Voir `@/lib/public-url`.
   const failureUrl = publicUrl(`${RESSOURCES_CONNEXION_PATH}?erreur=lien_invalide`);

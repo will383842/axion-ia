@@ -7,14 +7,17 @@ import { prisma } from "@/lib/prisma";
 import { readCv } from "@/server/careers/cv-storage";
 import { peutOuvrirDossierCandidat } from "@/server/auth/habilitations";
 import { getClientIp } from "@/lib/client-ip";
+import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ id: string }> },
+  { params }: { params: Promise<{ locale: string; adminPrefix: string; id: string }> },
 ): Promise<NextResponse> {
+  const horsConsole = await refuserSiHorsConsole(params);
+  if (horsConsole) return horsConsole;
   const session = await auth();
   if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
   const role = (session.user as { role?: string }).role;

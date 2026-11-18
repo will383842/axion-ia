@@ -29,7 +29,12 @@ function sansCommentaires(source: string): string {
 
 /** Les fonctions exportées dont la première instruction n'est pas la garde. */
 function sansGardeEnTete(source: string): string[] {
-  const code = sansCommentaires(source);
+  // SEC-1b : la garde « hors console » précède désormais toute autre instruction ; elle ne
+  // lit ni session ni base, donc la garde d'accès reste la première qui compte.
+  const code = sansCommentaires(source).replace(
+    /const horsConsole = await refuserSiHorsConsole\(params\);\s*if \(horsConsole\) return horsConsole;/g,
+    "",
+  );
   const fautives: string[] = [];
   const re = /export async function (\w+)\s*\([^)]*\)[^{]*\{/g;
   let m: RegExpExecArray | null;

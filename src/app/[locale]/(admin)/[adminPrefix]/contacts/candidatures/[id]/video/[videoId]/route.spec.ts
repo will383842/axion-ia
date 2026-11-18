@@ -22,7 +22,9 @@ vi.mock("@/server/careers/videos-candidat", () => ({
 
 import { GET } from "./route";
 
-const params = Promise.resolve({ id: "app-1", videoId: "vid-1" });
+vi.stubEnv("ADMIN_URL_PREFIX", "prefixe-factice-test");
+const CONSOLE = { locale: "fr", adminPrefix: "prefixe-factice-test" };
+const params = Promise.resolve({ ...CONSOLE, id: "app-1", videoId: "vid-1" });
 const req = () => new Request("http://localhost/x");
 
 beforeEach(() => {

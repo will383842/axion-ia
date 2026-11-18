@@ -30,6 +30,13 @@ interface Payload {
   demandes?: unknown;
   rendezVous?: unknown;
   autresRendezVous?: unknown;
+  /** L5a — facultative : un ancien payload ne l'a pas, le rendu reste celui d'avant. */
+  enAttente?: unknown;
+  enAttenteIndisponible?: unknown;
+  enAttenteIllisibles?: unknown;
+  enAttenteNonListees?: unknown;
+  enAttenteIncomplete?: unknown;
+  enAttenteEcartees?: unknown;
   nonListees?: { demandes?: unknown; rendezVous?: unknown; autresRendezVous?: unknown };
   illisibles?: unknown;
 }
@@ -99,6 +106,45 @@ function Fiche({ el }: { el: Element }) {
   );
 }
 
+/** L5a : une demande en attente = type, nom, ancienneté, bouton. Aucun texte du visiteur. */
+function FicheEnAttente({ el }: { el: Element }) {
+  const lien = texte(el.consoleUrl);
+  const href = lien.startsWith(`${lienConsole("")}/`) ? lien : "";
+  const nom = texte(el.nom);
+  const type = texte(el.type);
+  const anciennete = (Array.isArray(el.lignes) ? el.lignes : []).find(
+    (l): l is string => typeof l === "string" && l.startsWith("En attente depuis "),
+  );
+  const mention = (Array.isArray(el.lignes) ? el.lignes : []).find(
+    (l): l is string => typeof l === "string" && l.startsWith("Une réponse est peut-être"),
+  );
+  return (
+    <>
+      <Text
+        style={{
+          ...emailStyles.paragraphStyle,
+          borderTop: `1px solid ${emailStyles.COLORS.border}`,
+          paddingTop: 12,
+          marginBottom: 4,
+        }}
+      >
+        <strong>{[type, nom].filter(Boolean).join(" — ") || "Demande"}</strong>
+      </Text>
+      <Text style={{ ...emailStyles.paragraphStyle, color: emailStyles.COLORS.textMuted }}>
+        {[anciennete, texte(el.quand) ? `reçue le ${texte(el.quand)}` : ""]
+          .filter(Boolean)
+          .join(" · ")}
+      </Text>
+      {mention ? <Text style={emailStyles.paragraphStyle}>{mention}</Text> : null}
+      {href ? (
+        <Button href={href} style={emailStyles.ctaStyle} className="ax-cta">
+          Ouvrir la fiche &nbsp;→
+        </Button>
+      ) : null}
+    </>
+  );
+}
+
 function Section({ titre, elements }: { titre: string; elements: Element[] }) {
   if (elements.length === 0) return null;
   return (
@@ -124,9 +170,16 @@ export function RecapDemandesClientsEmail({
   const demandes = liste(p.demandes);
   const rendezVous = liste(p.rendezVous);
   const autres = liste(p.autresRendezVous);
+  const enAttente = liste(p.enAttente);
   const nl = p.nonListees ?? {};
   const nonListees = entier(nl.demandes) + entier(nl.rendezVous) + entier(nl.autresRendezVous);
   const illisibles = entier(p.illisibles);
+  // L5a : toutes ces clés sont facultatives ; absentes, le rendu est celui d'avant.
+  const attIndispo = p.enAttenteIndisponible === true;
+  const attIllisibles = entier(p.enAttenteIllisibles);
+  const attNonListees = entier(p.enAttenteNonListees);
+  const attIncomplete = p.enAttenteIncomplete === true;
+  const attEcartees = entier(p.enAttenteEcartees);
   const titre = recapDemandesClientsSubject(locale, payload).replace(/^🔴\s*/, "");
 
   return (
@@ -150,6 +203,42 @@ export function RecapDemandesClientsEmail({
       <Section titre={`Messages (${demandes.length})`} elements={demandes} />
       <Section titre={`Rendez-vous de clients (${rendezVous.length})`} elements={rendezVous} />
       <Section titre={`Autres rendez-vous (${autres.length})`} elements={autres} />
+      {enAttente.length > 0 ? (
+        <>
+          <Text style={{ ...emailStyles.headingStyle, marginTop: 24 }}>
+            {`En attente de votre réponse (${enAttente.length})`}
+          </Text>
+          {enAttente.map((el, i) => (
+            <FicheEnAttente key={i} el={el} />
+          ))}
+        </>
+      ) : null}
+      {attNonListees > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {`et ${attIncomplete ? "au moins " : ""}${attNonListees} autres demandes en attente, à voir dans la console`}
+        </Text>
+      ) : null}
+      {attIllisibles > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {`${attIllisibles} demande(s) en attente illisible(s) : à voir dans la console`}
+        </Text>
+      ) : null}
+      {attEcartees > 0 ? (
+        <Text style={emailStyles.paragraphStyle}>
+          {`${attEcartees} demande(s) de personnes qui ne souhaitent plus être contactées : non listées`}
+        </Text>
+      ) : null}
+      {attIncomplete ? (
+        <Text style={emailStyles.paragraphStyle}>
+          La liste des demandes en attente est peut-être incomplète : à voir dans la console.
+        </Text>
+      ) : null}
+      {attIndispo ? (
+        <Text style={emailStyles.paragraphStyle}>
+          La liste des demandes en attente n&apos;a pas pu être calculée ce matin : à voir dans la
+          console.
+        </Text>
+      ) : null}
       {nonListees > 0 ? (
         <Text style={emailStyles.paragraphStyle}>
           {nonListees} autre(s) demande(s) non listée(s) ici : à lire dans la console.

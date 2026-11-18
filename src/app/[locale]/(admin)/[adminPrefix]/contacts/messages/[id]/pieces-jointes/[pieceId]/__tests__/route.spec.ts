@@ -14,6 +14,7 @@ const h = vi.hoisted(() => ({
   activityLogCreate: vi.fn(),
 }));
 
+vi.stubEnv("ADMIN_URL_PREFIX", "prefixe-factice-test");
 vi.mock("@/auth", () => ({ auth: h.auth }));
 vi.mock("@/lib/prisma", () => ({
   prisma: {
@@ -29,7 +30,9 @@ import { GET } from "../route";
 const SUB = "11111111-1111-4111-8111-111111111111";
 const PIECE = "22222222-2222-4222-8222-222222222222";
 const appel = (id = SUB, pieceId = PIECE) =>
-  GET(new Request("https://exemple.invalid/x"), { params: Promise.resolve({ id, pieceId }) });
+  GET(new Request("https://exemple.invalid/x"), {
+    params: Promise.resolve({ locale: "fr", adminPrefix: "prefixe-factice-test", id, pieceId }),
+  });
 
 beforeEach(() => {
   vi.clearAllMocks();

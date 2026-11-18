@@ -32,6 +32,8 @@ import {
   contresignerPieceAction,
   relancerAcceptationDevisAction,
 } from "@/server/actions/qualiopi/piece-signature";
+import { etatConfirmationCommande } from "@/server/qualiopi/devis/confirmation-commande";
+import { signatureClientDuDevis } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
 import { peutDemarrerLivraison, peutMarquerLivre } from "@/server/qualiopi/devis/suivi-livraison";
@@ -257,6 +259,8 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             hashVersion: true,
             choixOffre: true,
             choixOffreSha256: true,
+            // Pièce annulée : ses signatures ne comptent pas (même règle que les gardes serveur).
+            documentGenere: { select: { annuleeAt: true } },
           },
           // ⚠️ Même tri que la chaîne (`createdAt`, puis `id`) : trier sur
           // `signeAt` afficherait un ordre qui peut différer de celui du
@@ -264,8 +268,37 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           orderBy: [{ createdAt: "asc" }, { id: "asc" }],
         })
       : [];
-  const clientASigne = signatures.some((s) => s.partie === "client");
-  const organismeASigne = signatures.some((s) => s.partie === "axionia");
+  // UN SEUL calcul, partagé par le bloc « Signature électronique » et le bloc « Actions » :
+  // signature non révoquée ET pièce non annulée (`signatureClientDuDevis`, comme les gardes serveur).
+  const { clientASigne, organismeASigne } = signatureClientDuDevis({
+    documentGenere: {
+      annuleeAt: signatures[0]?.documentGenere.annuleeAt ?? null,
+      signatures,
+    },
+  });
+  const signeParClient = clientASigne && !organismeASigne;
+  // Devis CLASSIQUE seulement : pour un devis à formules, `acceptDevisAction` refuse l'acceptation
+  // manuelle et la reprise est le bloc « relancer l'acceptation » (`repriseParRelance`).
+  const signeDesDeuxParties =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
+  const repriseParRelance =
+    clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
+  // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
+  // accepté : l'état de la confirmation de commande se lit en base, donc l'information qui suit
+  // survit au rafraîchissement. « aucune » : reprise proposée (idempotente) ; « a_valider » : ligne
+  // d'information persistante ; « autre » (approuvée, envoyée, refusée, journal) : rien.
+  const classiqueSigneDesDeuxParties =
+    devis.documentGenereId !== null &&
+    devis.offre == null &&
+    devis.offreSha256 === null &&
+    clientASigne &&
+    organismeASigne &&
+    (devis.statut === "accepte" || devis.statut === "transforme_convention");
+  const etatConfirmation = classiqueSigneDesDeuxParties
+    ? await etatConfirmationCommande(devis.id)
+    : null;
+  const confirmationClassiqueAPreparer = etatConfirmation === "aucune";
+  const confirmationClassiquePreparee = etatConfirmation === "a_valider";
   const identiteOrganisme = await getOrganismeIdentite();
 
   const emailEnAttente =
@@ -391,6 +424,22 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             >
               {STATUT_LABELS[devis.statut] ?? devis.statut}
             </p>
+            {(devis.statut === "envoye" || devis.statut === "expire") && signeParClient && (
+              <p
+                data-testid="mention-signe-par-client"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé par le client, à contresigner
+              </p>
+            )}
+            {signeDesDeuxParties && (
+              <p
+                data-testid="mention-signe-des-deux-parties"
+                className="mt-1 text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]"
+              >
+                Signé des deux parties, acceptation à finir
+              </p>
+            )}
           </div>
 
           {/* Montant HT */}
@@ -704,6 +753,27 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             />
           ) : null)}
 
+        {confirmationClassiqueAPreparer && devis.documentGenereId !== null && (
+          <RelancerAcceptationDevis
+            cas="confirmation-classique"
+            documentGenereId={devis.documentGenereId}
+            relancerAction={relancerAcceptationDevisAction}
+          />
+        )}
+
+        {confirmationClassiquePreparee && (
+          <p
+            role="status"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+          >
+            La confirmation de commande est préparée : elle attend votre validation dans les{" "}
+            <Link href={`/${locale}/${adminPrefix}/qualiopi/emails`} className="admin-link">
+              e-mails à valider
+            </Link>
+            .
+          </p>
+        )}
+
         {plansImpossibles && (
           <p
             role="alert"
@@ -772,6 +842,9 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
           clientASigne={clientASigne}
           emailEnAttente={emailEnAttente}
           emailsHref={`/${locale}/${adminPrefix}/qualiopi/emails`}
+          signeParClient={signeParClient}
+          signeDesDeuxParties={signeDesDeuxParties}
+          repriseParRelance={repriseParRelance}
         />
         <DevisSuiviLivraison
           devisId={devis.id}

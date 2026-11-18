@@ -142,8 +142,9 @@ export async function approuverEmailAction(
       payload,
       acteur: { session },
       // Ne lève QUE si l'e-mail n'est pas parti : rien après l'enfilage ne doit remonter.
-      enfiler: (payloadFinal) =>
-        enqueueEmail(
+      enfiler: async (payloadFinal) => {
+        // Le retour est rendu à l'enveloppe, qui lit `enqueued`.
+        return enqueueEmail(
           email.template as EmailJobName,
           email.recipient,
           email.locale === "en" ? "en" : "fr",
@@ -162,7 +163,8 @@ export async function approuverEmailAction(
             ...(email.entityId ? { entityId: email.entityId } : {}),
             ...(attachments && attachments.length > 0 ? { attachments } : {}),
           },
-        ),
+        );
+      },
     });
     if (resultat.type === "refus") {
       // L'e-mail ne peut plus partir (devis annulé, signé…). Écriture CONDITIONNELLE : seule une

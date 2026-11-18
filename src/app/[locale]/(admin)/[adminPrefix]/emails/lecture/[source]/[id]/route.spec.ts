@@ -53,7 +53,7 @@ describe("préfixe d'administration", () => {
     for (const p of ["zzz", "", "PFX-TEST", `${PREFIXE}x`, "emails"]) {
       const r = await appel("envoye", ID, "", p);
       expect(r.status).toBe(404);
-      expect(await r.text()).toBe("");
+      expect(await r.text()).toBe("not found");
     }
     expect(h.auth).not.toHaveBeenCalled();
     expect(h.findUnique).not.toHaveBeenCalled();
@@ -66,7 +66,7 @@ describe("locale (second tour d'audit, constat A)", () => {
     for (const l of ["questionnaire", "document", "videos", "api", "sitemap", "widget", "zz"]) {
       const r = await appel("envoye", ID, "", PREFIXE, l);
       expect(r.status).toBe(404);
-      expect(await r.text()).toBe("");
+      expect(await r.text()).toBe("not found");
     }
     expect(h.auth).not.toHaveBeenCalled();
     expect(h.findUnique).not.toHaveBeenCalled();
@@ -88,6 +88,17 @@ describe("locale (second tour d'audit, constat A)", () => {
     expect(r.status).toBe(404);
     expect(h.auth).not.toHaveBeenCalled();
     expect(h.findUnique).not.toHaveBeenCalled();
+  });
+
+  it("garde de console (SEC-1b) : mauvais préfixe → même refus que les autres routes, en-têtes no-store, sans session ni base", async () => {
+    const r = await appel("envoye", ID, "", "prefixe-faux-factice");
+    expect(r.status).toBe(404);
+    expect(await r.text()).toBe("not found");
+    expect(r.headers.get("Cache-Control")).toBe("private, no-store");
+    expect(r.headers.get("X-Robots-Tag")).toBe("noindex");
+    expect(h.auth).not.toHaveBeenCalled();
+    expect(h.findUnique).not.toHaveBeenCalled();
+    expect(h.logCreate).not.toHaveBeenCalled();
   });
 
   it("fr et en avec le bon préfixe : servi comme avant", async () => {
