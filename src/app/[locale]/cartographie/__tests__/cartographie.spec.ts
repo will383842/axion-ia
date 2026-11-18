@@ -11,6 +11,7 @@ import { MOTS_INTERDITS_LLMS } from "@/app/_llms/faits-communs";
 import { routing } from "@/i18n/routing";
 
 import { CONTENU as ACCUEIL } from "../../_accueil/contenu";
+import { CONTENU as JOURNEE } from "../../journee-ia/contenu";
 import { DEFINITION, FAQ, TEXTES, DESCRIPTION_META, TITRE } from "../contenu";
 import { jsonLdCartographie } from "../jsonld";
 
@@ -33,6 +34,12 @@ describe("contenu /cartographie", () => {
     const accueil = ACCUEIL.faq.questions.find((q) => q.id === "faq-commencer")!.reponse;
     expect(FAQ.find((f) => f.id === "faq-commencer")!.reponse).toBe(accueil);
     expect(TEXTES.deroule.etapes[1].texte).toContain(ACCUEIL.blocJournee.tuiles[0].texte);
+    const etapes = JOURNEE.deroule.etapes;
+    expect(TEXTES.deroule.etapes[0].texte).toContain(etapes[0].jalons[0].texte);
+    expect(TEXTES.deroule.etapes[2].texte).toContain(etapes[3].jalons[0].texte);
+    expect(TEXTES.recu.elements[0]).toContain(etapes[3].jalons[0].texte);
+    expect(FAQ.find((f) => f.id === "faq-recu")!.reponse).toContain(etapes[3].jalons[0].texte);
+    expect(FAQ.find((f) => f.id === "faq-quand")!.reponse).toContain(etapes[1].jalons[0].moment);
   });
 
   it("ne contient aucun prix, jeton résiduel ni mot interdit", () => {
@@ -47,6 +54,7 @@ describe("contenu /cartographie", () => {
   it("présente l'exemple comme fictif, sans garantie de résultat", () => {
     expect(TEXTES.exemple.titre).toMatch(/fictif/);
     expect(TEXTES.exemple.total).toMatch(/pas un résultat client/);
+    expect(tout).not.toMatch(/Exemple type/);
     expect(tout).not.toMatch(/garanti/i);
   });
 

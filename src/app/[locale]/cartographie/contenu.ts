@@ -33,6 +33,10 @@ export const OG_IMAGE_ALT =
 const REPONSE_COMMENCER =
   ACCUEIL.faq.questions.find((q) => q.id === "faq-commencer")?.reponse ?? "";
 const MATIN = ACCUEIL.blocJournee.tuiles[0].texte;
+/** Jalons de la landing Journée IA (source unique) : jamais recopiés ici. */
+const AVANT = JOURNEE.deroule.etapes[0].jalons[0].texte;
+const PRIORITES = JOURNEE.deroule.etapes[3].jalons[0].texte;
+const HEURES_MATIN = JOURNEE.deroule.etapes[1].jalons[0].moment;
 
 export const TEXTES = {
   filAriane: "Cartographie de l’entreprise",
@@ -47,28 +51,28 @@ export const TEXTES = {
     titre: "Le déroulé",
     intro: DEROULE_JOURNEE_IA,
     etapes: [
-      { moment: "Avant", texte: "Un court questionnaire." },
+      { moment: JOURNEE.deroule.etapes[0].jalons[0].moment, texte: `${AVANT}.` },
       {
         moment: "9 h – 12 h",
         texte: "La cartographie, service par service. " + MATIN,
       },
-      { moment: "17 h 30", texte: "Vos 3 à 5 priorités, écrites avant notre départ." },
+      { moment: "17 h 30", texte: `${PRIORITES}.` },
       { moment: "Sous 3 jours ouvrés", texte: "Le rapport complet." },
     ],
   },
   recu: {
     titre: "Ce que vous recevez",
     elements: [
-      "Vos 3 à 5 priorités, écrites avant notre départ.",
+      `${PRIORITES}.`,
       RAPPORT_COMPLET,
     ],
   },
   exemple: {
-    titre: "Un exemple fictif, pas le vôtre",
+    titre: "Un exemple fictif",
     intro: JOURNEE.accroche.carteDesGains.sousTitre,
     lignes: JOURNEE.accroche.carteDesGains.lignes.map((l) => `${l.libelle} : ${l.heures} par semaine`),
     total: remplacerJetons(
-      `${JOURNEE.accroche.carteDesGains.total.phrase}, soit ${JOURNEE.accroche.carteDesGains.total.montant} ${JOURNEE.accroche.carteDesGains.total.suite}. Exemple type, calculé à titre d’illustration : ce n’est pas un résultat client.`,
+      `Sur la première ligne, {{HEURES_EXEMPLE}} par semaine représentent ${JOURNEE.accroche.carteDesGains.total.montant} ${JOURNEE.accroche.carteDesGains.total.suite}. Chiffres d’illustration : ce n’est pas un résultat client.`,
     ),
   },
   liens: {
@@ -90,7 +94,7 @@ export const FAQ = [
     id: "faq-quand",
     question: "Quand a-t-elle lieu ?",
     reponse:
-      "Le matin de la Journée IA, dans vos locaux, partout en France : 2 à 4 h d’audit, de 9 h à 12 h. L’après-midi, nous formons vos équipes sur leurs propres dossiers.",
+      `Le matin de la Journée IA, de ${HEURES_MATIN}, dans vos locaux, partout en France. L’après-midi, nous formons vos équipes sur leurs propres dossiers.`,
   },
   {
     id: "faq-commencer",
@@ -100,7 +104,7 @@ export const FAQ = [
   {
     id: "faq-recu",
     question: "Que reçoit-on à la fin ?",
-    reponse: `Vos 3 à 5 priorités, écrites avant notre départ. ${RAPPORT_COMPLET}`,
+    reponse: `${PRIORITES}. ${RAPPORT_COMPLET}`,
   },
   {
     id: "faq-outil",
