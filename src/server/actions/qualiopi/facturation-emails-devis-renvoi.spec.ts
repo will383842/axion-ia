@@ -12,7 +12,8 @@ const d = vi.hoisted(() => ({
   docFindUnique: vi.fn(),
   outboxFindFirst: vi.fn(),
   creerToken: vi.fn(),
-  revoquer: vi.fn(),
+  revoquerJeton: vi.fn(),
+  revoquerTousTokens: vi.fn(),
   enqueueEmail: vi.fn(),
   resoudreMode: vi.fn(),
   log: vi.fn(),
@@ -76,8 +77,8 @@ vi.mock("@/lib/public-url", () => ({
 }));
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({
   creerTokenDocument: (...a: unknown[]) => d.creerToken(...a),
-  revoquerJetonPrecis: (...a: unknown[]) => d.revoquer(...a),
-  revoquerTokensDocument: (...a: unknown[]) => d.revoquer(...a),
+  revoquerJetonPrecis: (...a: unknown[]) => d.revoquerJeton(...a),
+  revoquerTokensDocument: (...a: unknown[]) => d.revoquerTousTokens(...a),
   TokenDocumentError: class extends Error {
     motif = "x";
   },
@@ -123,6 +124,8 @@ beforeEach(() => {
   d.verrous.clear();
   d.ordre.length = 0;
   d.rendre.mockResolvedValue(true);
+  d.revoquerJeton.mockReset();
+  d.revoquerTousTokens.mockReset();
   d.findUnique.mockResolvedValue(devis());
   d.docFindUnique.mockResolvedValue({ metadata: null });
   d.outboxFindFirst.mockResolvedValue(null);
@@ -145,7 +148,7 @@ describe("renvoi en mode « validation »", () => {
     const r = await envoyerDevisEmailAction({ devisId: ID });
     expect("data" in r).toBe(true);
     expect(d.creerToken).not.toHaveBeenCalled();
-    expect(d.revoquer).not.toHaveBeenCalled();
+    expect(d.revoquerJeton).not.toHaveBeenCalled();
     expect(payloadEnfile()).not.toHaveProperty("signatureUrl");
     expect(JSON.stringify(payloadEnfile())).not.toContain("/portail/signer/");
   });
@@ -348,6 +351,94 @@ describe("mode « auto » : lien perdu sans e-mail (suites d'audit)", () => {
     const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
     expect(s).not.toContain(JETON);
     expect(s).not.toContain(ADRESSE);
+  });
+});
+
+describe("mode « auto » : un seul lien vivant quoi qu'il arrive (M1, M2)", () => {
+  beforeEach(() => d.resoudreMode.mockResolvedValue("auto"));
+
+  it("M1 — l'ancien lien ne peut être rendu (false) : le jeton neuf est révoqué par son identifiant", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockResolvedValue(false);
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({ error: "File d'envoi indisponible — réessayer." });
+    expect(d.revoquerJeton).toHaveBeenCalledTimes(1);
+    expect(d.revoquerJeton).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+    expect(d.revoquerTousTokens).not.toHaveBeenCalled();
+  });
+
+  it("M1 — le rendu lève : le jeton neuf est révoqué aussi, sans fuite", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockRejectedValue(new Error(`${JETON} ${ADRESSE}`));
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.revoquerJeton).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+    expect(d.revoquerTousTokens).not.toHaveBeenCalled();
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(JETON);
+    expect(s).not.toContain(ADRESSE);
+  });
+
+  it("M1 — l'ancien lien est rendu : le jeton neuf n'est pas révoqué à part", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockResolvedValue(true);
+    d.revoquerJeton.mockReset();
+    d.revoquerTousTokens.mockReset();
+    await envoyerDevisEmailAction({ devisId: ID });
+    expect(d.revoquerJeton).not.toHaveBeenCalled();
+    expect(d.revoquerTousTokens).not.toHaveBeenCalled();
+  });
+
+  it("M2 — enqueueEmail lève : état cohérent (ancien lien rendu), message clair, journal sans adresse", async () => {
+    d.enqueueEmail.mockRejectedValue(new Error(`${ADRESSE} ${JETON}`));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({
+      error:
+        "L'enfilage de l'e-mail a échoué : rien n'est parti, le lien de signature précédent a été conservé ou rendu. Réessayer.",
+    });
+    expect(d.rendre).toHaveBeenCalledWith(
+      `https://exemple.test/fr/portail/signer/${JETON}`,
+      "revoquer",
+    );
+    expect(d.log).not.toHaveBeenCalled();
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(ADRESSE);
+    expect(s).not.toContain(JETON);
+    expect(d.verrous.size).toBe(0);
+  });
+
+  it("M2 — enqueueEmail lève ET l'ancien lien n'est pas rendu : le jeton neuf est révoqué (aucun lien vivant en double)", async () => {
+    d.enqueueEmail.mockRejectedValue(new Error("redis"));
+    d.rendre.mockResolvedValue(false);
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({
+      error:
+        "L'e-mail n'a pas pu être mis en file et le client n'a plus de lien de signature valable : renvoyez le devis.",
+    });
+    expect(d.revoquerJeton).toHaveBeenCalledWith(expect.objectContaining({ tokenId: "t-1" }));
+    expect(d.revoquerTousTokens).not.toHaveBeenCalled();
+  });
+
+  it("M1 — la révocation du jeton neuf lève : erreur prévue, rien ne fuit dans la console", async () => {
+    d.enqueueEmail.mockResolvedValue({ enqueued: false });
+    d.rendre.mockResolvedValue(false);
+    d.revoquerJeton.mockRejectedValue(new Error(`${JETON} ${ADRESSE}`));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect(r).toEqual({ error: "File d'envoi indisponible — réessayer." });
+    expect(d.revoquerJeton).toHaveBeenCalledTimes(1);
+    expect(d.revoquerTousTokens).not.toHaveBeenCalled();
+    const s = JSON.stringify(espions.flatMap((e) => e.mock.calls));
+    expect(s).not.toContain(JETON);
+    expect(s).not.toContain(ADRESSE);
+  });
+
+  it("M2 — mode validation : enqueueEmail lève, aucun jeton à défaire, message clair", async () => {
+    d.resoudreMode.mockResolvedValue("validation");
+    d.enqueueEmail.mockRejectedValue(new Error("redis"));
+    const r = await envoyerDevisEmailAction({ devisId: ID });
+    expect("error" in r).toBe(true);
+    expect(d.creerToken).not.toHaveBeenCalled();
+    expect(d.rendre).not.toHaveBeenCalled();
+    expect(d.revoquerJeton).not.toHaveBeenCalled();
   });
 });
 

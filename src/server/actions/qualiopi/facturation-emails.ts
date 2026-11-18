@@ -25,6 +25,7 @@ import { requireAdminWrite, logQualiopiActivity } from "@/server/actions/qualiop
 import { publicUrl } from "@/lib/public-url";
 import {
   creerTokenDocument,
+  revoquerJetonPrecis,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
 import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
@@ -56,6 +57,42 @@ const MSG_RENVOI_DEJA_GARE =
 const MSG_ENVOI_EN_COURS = "Un envoi de ce devis est déjà en cours, réessayez dans un instant.";
 const NOTE_RENVOI_GARE =
   "Renvoi garé dans Emails → À valider : le lien actuel reste valable jusqu'au départ réel ; le nouveau lien naît à l'approbation et remplace alors l'ancien.";
+
+const MSG_FILE_INDISPONIBLE = "File d'envoi indisponible — réessayer.";
+const MSG_ENFILAGE_EN_ERREUR =
+  "L'enfilage de l'e-mail a échoué : rien n'est parti, le lien de signature précédent a été conservé ou rendu. Réessayer.";
+const MSG_ENFILAGE_EN_ERREUR_SANS_LIEN =
+  "L'e-mail n'a pas pu être mis en file et le client n'a plus de lien de signature valable : renvoyez le devis.";
+
+/**
+ * Rien n'est parti ni garé alors qu'un jeton neuf a révoqué l'ancien lien : rendre l'ancien.
+ * S'il ne peut l'être (`false` ou exception), le jeton NEUF est révoqué par son identifiant :
+ * jamais deux liens vivants. Ne lève jamais ; ni URL, ni jeton, ni adresse en console.
+ * Rend `true` si l'ancien lien a été rendu, `false` sinon (le client n'a alors plus de lien valable).
+ */
+async function rendreAncienLienDuRenvoi(url: string, tokenId: string | null): Promise<boolean> {
+  const revoquerLeNeuf = async (): Promise<void> => {
+    if (tokenId === null) return;
+    try {
+      await revoquerJetonPrecis({ tokenId, motif: "Envoi annulé : rien n'est parti" });
+    } catch {
+      console.warn("[envoyerDevisEmailAction] jeton neuf non révoqué");
+    }
+  };
+  try {
+    const rendu = await rendreLienPrecedent(url, "revoquer");
+    if (rendu === false) {
+      console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
+      await revoquerLeNeuf();
+      return false;
+    }
+    return true;
+  } catch {
+    console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
+    await revoquerLeNeuf();
+    return false;
+  }
+}
 
 const EnvoyerDevisSchema = z.object({
   devisId: z.string().uuid(),
@@ -190,6 +227,7 @@ export async function envoyerDevisEmailAction(
       `;
       if (!verrou?.locked) return { error: MSG_ENVOI_EN_COURS };
       let signatureUrl: string | null = null;
+      let tokenId: string | null = null;
       let signatureNote: string | null = null;
 
       // 🔴 B2, PR 4 — un e-mail de ce devis attend déjà (« à valider », ou « approuvé » depuis peu) :
@@ -210,7 +248,7 @@ export async function envoyerDevisEmailAction(
           // Calculée AVANT le jeton : si elle lève, aucun jeton n'est créé (créer le jeton révoque
           // l'ancien lien, le client resterait sans lien valable).
           const baseSignature = publicUrl("/fr/portail/signer/").toString();
-          const { token } = await creerTokenDocument({
+          const { token, tokenId: idNeuf } = await creerTokenDocument({
             documentGenereId: pieceId,
             partie: "client",
             signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
@@ -219,6 +257,7 @@ export async function envoyerDevisEmailAction(
             borneMetier: devis.dateValidite,
           });
           signatureUrl = `${baseSignature}${token}`;
+          tokenId = idNeuf;
         } catch (err) {
           if (aFormules) {
             console.warn("[envoyerDevisEmailAction] émission du lien de signature échouée", err);
@@ -265,12 +304,11 @@ export async function envoyerDevisEmailAction(
         };
       }
 
-      const { enqueued, garePourValidation = false } = await enqueueEmail(
-        "devis-envoi",
-        to,
-        "fr",
-        payloadCourriel,
-        {
+      let enqueued = false;
+      let garePourValidation = false;
+      let enfilageEnErreur = false;
+      try {
+        const r = await enqueueEmail("devis-envoi", to, "fr", payloadCourriel, {
           attachments: [{ filename: `${devis.numero}.pdf`, r2Key: clePdf }],
           entityType: "Devis",
           entityId: devis.id,
@@ -281,15 +319,43 @@ export async function envoyerDevisEmailAction(
           clientId: devis.clientId,
           sujet: `Devis ${devis.numero} — Axion-IA`,
           ...(parValidation ? { exigerValidation: true } : {}),
-        },
-      );
+        });
+        enqueued = r.enqueued;
+        garePourValidation = r.garePourValidation ?? false;
+      } catch (err) {
+        // Cas limite : un délai de réponse Redis peut lever alors que le job a bien été ajouté.
+        // L'e-mail partirait alors avec un lien révoqué, mais le client garde son ancien lien
+        // rendu (cf. `rendreAncienLienDuRenvoi`) : jamais zéro lien, jamais deux.
+        // Journalisé sans adresse ni lien : seul le nom de l'erreur.
+        console.warn(
+          "[envoyerDevisEmailAction] enfilage de l'e-mail en erreur",
+          err instanceof Error ? err.name : "inconnue",
+        );
+        enfilageEnErreur = true;
+      }
 
-      return { enqueued, garePourValidation, signatureUrl, signatureNote, parValidation };
+      return {
+        enqueued,
+        garePourValidation,
+        enfilageEnErreur,
+        signatureUrl,
+        tokenId,
+        signatureNote,
+        parValidation,
+      };
     },
     { maxWait: 5_000, timeout: 60_000 },
   );
   if ("error" in issue) return { error: issue.error };
-  const { enqueued, garePourValidation, signatureUrl, signatureNote, parValidation } = issue;
+  const {
+    enqueued,
+    garePourValidation,
+    enfilageEnErreur,
+    signatureUrl,
+    tokenId,
+    signatureNote,
+    parValidation,
+  } = issue;
 
   // 🔴 `enqueued: false` ne signifie PAS un échec : c'est aussi ce que renvoie
   // un email correctement GARÉ en corbeille de validation. Le traiter comme une
@@ -298,15 +364,14 @@ export async function envoyerDevisEmailAction(
   // créant une ligne de plus en corbeille, sans déduplication.
   if (!enqueued && !garePourValidation) {
     // Un jeton créé au clic a révoqué l'ancien lien : rien n'est parti ni garé, le nouveau lien est
-    // perdu. On rend l'ancien (jamais d'erreur remontée, ni URL ni adresse dans la console).
-    if (signatureUrl !== null) {
-      try {
-        await rendreLienPrecedent(signatureUrl, "revoquer");
-      } catch {
-        console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
-      }
+    // perdu. On rend l'ancien ; s'il ne peut l'être, le jeton neuf est révoqué (jamais deux liens
+    // vivants). Jamais d'erreur remontée, ni URL ni adresse dans la console.
+    const rendu =
+      signatureUrl === null ? true : await rendreAncienLienDuRenvoi(signatureUrl, tokenId);
+    if (enfilageEnErreur) {
+      return { error: rendu ? MSG_ENFILAGE_EN_ERREUR : MSG_ENFILAGE_EN_ERREUR_SANS_LIEN };
     }
-    return { error: "File d'envoi indisponible — réessayer." };
+    return { error: MSG_FILE_INDISPONIBLE };
   }
 
   await logQualiopiActivity({
