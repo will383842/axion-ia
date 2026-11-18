@@ -48,7 +48,7 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/\[locale\]\/implantations\/page\.tsx$/,
   /src\/app\/\[locale\]\/_accueil\/contenu\.ts$/,
   /src\/app\/\[locale\]\/a-propos\/page\.tsx$/,
-  /src\/server\/content-gen\/brand\/positionnement\.ts$/,
+  /brand\/positionnement\.ts$/,
 ];
 
 function lister(dossier: string, sortie: string[]): void {
