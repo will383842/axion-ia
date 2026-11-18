@@ -107,7 +107,7 @@ const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:k|m|md
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
 // nombre suivi d'un prix hors taxes / toutes taxes, d'un multiplicateur (k, M, mille, million),
 // d'un milliard, d'un dollar ou d'un code USD, sans « euro »
-const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:HT|TTC|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?)\b`;
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
 // dollar : symbole collé ou séparé d'un nombre, dans les deux sens, ou « USD » devant
 // autres devises (livre, franc suisse, yen, « balles »), périodicité (« /mois », « par an »), taux journalier
 const MONTANT_AUTRES = String.raw`[£\u00a5]\s?\d|\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:[£\u00a5]|gbp\b|chf\b|jpy\b|francs?\b|bn\b|balles?\b|\/\s?(?:mois|jour|an|semaine|h)\b|par (?:mois|jour|an|semaine|heure)\b|la journee\b|la journée\b)|\btjm\b`;
@@ -135,9 +135,9 @@ export function contientMontant(texte: string): boolean {
  * première personne comprise, et tout pourcentage. On préfère refuser une fiche saine.
  */
 const MOTIF_PROMESSE =
-  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|promet|m'engage|nous nous engageons|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b/;
+  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|\bpromet|\bpromis\b|m'engage|\bs'engage|engageons|ne payez (?:pas|rien)|satisfait ou|a coup sur|forcement|certain de|rentabilis|\bdivis(?:ez|er|e) par\b|fois plus|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b/;
 const MOTIF_POURCENTAGE =
-  /%|‰|\bpct\b|\bp\.? ?c\.?(?![a-z])|\bp\. ?100\b|pour ?cent|\d+ (?:[a-z]+ )?sur \d+|\bsur (?:dix|cent|vingt|trois|quatre|cinq)\b|\b(?:moitie|tiers|quart|majorite|totalite)s? des\b/;
+  /%|‰|\bpct\b|\bp\.? ?c\.?(?![a-z])|\bp\. ?100\b|pour[\s-]?cent|(?<!\d)\d{1,4} (?:[a-z]+ )?sur \d{1,4}\b|\bsur (?:\d{1,4}|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\b|\b(?:moitie|tiers|quarts?|majorite|totalite)s? (?:des|du|de la)\b/;
 
 /** Lettres cyrilliques et grecques qui ressemblent à des lettres latines : ramenées au latin. */
 const HOMOGLYPHES: Record<string, string> = {

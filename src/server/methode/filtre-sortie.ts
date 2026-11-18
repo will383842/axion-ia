@@ -58,7 +58,7 @@ const MOTIF_TELEPHONE =
 
 /** Dix chiffres commençant par 0 avec n'importe quels séparateurs, ou neuf chiffres en paires sans le 0. */
 const MOTIF_TELEPHONE_LARGE =
-  /(?<![\d.,])0[1-9](?:[\s.\/-]?\d){8}(?!\d)|(?<![\d.,])[1-9](?:[\s.\/-]\d{2}){4}(?!\d)/;
+  /(?<![\d.,])0[1-9](?:[\s.\/-]?\d){8}(?!\d)|(?<![\d.,])[1-9](?:[\s.\/-]\d{2}){4}(?!\d)|(?<![\d.,])0[\s.-]?[1-9](?:[\s.\/-]?\d){8}(?!\d)/;
 
 export function contientCourriel(texte: string): boolean {
   const nfkc = texte.normalize("NFKC");
