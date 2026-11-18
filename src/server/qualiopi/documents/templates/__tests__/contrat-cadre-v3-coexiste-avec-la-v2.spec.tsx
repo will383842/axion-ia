@@ -168,9 +168,7 @@ describe("L7a — la v3 est arrêtée, la v2 reste émise par défaut", () => {
       join(process.cwd(), "src", "server", "qualiopi", "documents", "documents-service.ts"),
       "utf8",
     );
-    const validation = source.indexOf(
-      "const gabaritVersion = versionGabaritAEcrire(input.type, input.gabaritVersion);",
-    );
+    const validation = source.indexOf("const gabaritVersion = versionGabaritAEcrire(");
     expect(validation).toBeGreaterThan(-1);
     expect(validation).toBeLessThan(source.indexOf("await nextNumero("));
     expect(source).not.toContain("versionGabaritCourante(");

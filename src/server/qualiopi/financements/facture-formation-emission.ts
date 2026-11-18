@@ -56,6 +56,9 @@ import { resolveRibFacture } from "@/lib/legal-identity";
 import { periodePrestationSession } from "@/server/qualiopi/financements/periode-prestation";
 import { designationFormation } from "@/server/qualiopi/financements/designation-facture";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
+import { gabaritArchive } from "@/server/qualiopi/documents/templates/archives";
+import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
+import { versionGabaritDeLaPieceOrigine } from "@/server/qualiopi/documents/version-piece-origine";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import { avecVerrouFactureSession } from "@/server/qualiopi/financements/verrou-facture-session";
@@ -722,6 +725,8 @@ export async function genererPdfFactureFormation(
       regimeTva: true,
       subrogation: true,
       numeroDossierOpco: true,
+      // Règle du fondateur : une pièce déjà envoyée garde exactement sa mise en page.
+      documentId: true,
       emiseAt: true,
       echeanceAt: true,
       sessionId: true,
@@ -854,9 +859,31 @@ export async function genererPdfFactureFormation(
   // le classement interne R2 — artefact de stockage, sans valeur comptable.
   let documentId: string;
   try {
+    // 🔴 Audit argent — régénérer une facture (ou un avoir) DÉJÀ ÉMIS la rend avec le
+    // gabarit de l'ORIGINAL. Version absente de l'instantané (émise avant la v2) = v1.
+    // Sans PDF d'origine : version courante.
+    const versionOrigine = await versionGabaritDeLaPieceOrigine(facture.documentId);
+    const versionCourante = versionGabaritCourante("facture");
+    const Archive =
+      versionOrigine !== undefined && versionCourante !== null && versionOrigine < versionCourante
+        ? gabaritArchive("facture", versionOrigine)
+        : null;
+    if (
+      versionOrigine !== undefined &&
+      versionOrigine < (versionCourante ?? 0) &&
+      Archive === null
+    ) {
+      return {
+        error: `PDF non régénéré : la mise en page v${String(versionOrigine)} de la pièce d'origine n'est plus disponible.`,
+      };
+    }
+    const Composant = (Archive ?? FacturePdf) as React.ComponentType<{ data: FactureData }>;
     const docResult = await generateDocument({
       type: "facture",
-      buildElement: () => React.createElement(FacturePdf, { data: factureData }),
+      buildElement: () => React.createElement(Composant, { data: factureData }),
+      ...(Archive !== null && versionOrigine !== undefined
+        ? { gabaritVersion: versionOrigine, reeditionPieceEmise: true }
+        : {}),
       refs: facture.sessionId != null ? { sessionId: facture.sessionId } : {},
     });
     documentId = docResult.id;
