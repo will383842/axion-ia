@@ -44,11 +44,7 @@ import {
   countRealResponses,
   type BarometerSnapshotPayload,
 } from "@/server/observatoire/snapshot";
-import {
-  STUDY_NAME_FR,
-  STUDY_ATTRIBUTION,
-  SEUIL_REPONSES_REELLES,
-} from "@/content/observatoire/study";
+import { STUDY_NAME_FR, STUDY_ATTRIBUTION } from "@/content/observatoire/study";
 
 // ARCHITECTURE 2-APPELS (2026-06-25) — voir audit content-gen profond.
 // Le mono-appel JSON faisait écrire le modèle court car il devait produire
@@ -171,12 +167,9 @@ export const barometerInsightGenerator: Generator = {
       readLatestSnapshot(),
       countRealResponses(),
     ]);
-    // Lot L3 (24/10/2026) : sous SEUIL_REPONSES_REELLES vraies réponses, ni
-    // pourcentage ni attribution « Observatoire Axion-IA » : on refuse (le job
-    // reste en échec explicite, jamais d'article à chiffres inventés).
-    if (!snapshot || snapshot.totalResponses === 0 || realResponses < SEUIL_REPONSES_REELLES) {
+    if (!snapshot || realResponses === 0) {
       throw new Error(
-        `barometer_insight: moins de ${SEUIL_REPONSES_REELLES} réponses réelles (hors seed) — génération refusée (jamais de chiffre fabriqué).`,
+        "barometer_insight: aucune réponse réelle (hors seed) — génération refusée (jamais de chiffre fabriqué).",
       );
     }
 

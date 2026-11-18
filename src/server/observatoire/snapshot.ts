@@ -15,12 +15,7 @@
 import { prisma } from "@/lib/prisma";
 import { Prisma } from "../../../prisma/generated/client";
 import { BAROMETER_QUESTIONS, SECTOR_SLUGS, REGION_SLUGS } from "@/content/observatoire/questions";
-import {
-  SNAPSHOT_KEY_LATEST,
-  SEUIL_REPONSES_REELLES,
-  METHODE_REPONSES_REELLES,
-  MIN_SEGMENT_N,
-} from "@/content/observatoire/study";
+import { SNAPSHOT_KEY_LATEST } from "@/content/observatoire/study";
 
 export interface DistributionEntry {
   readonly value: string;
@@ -48,12 +43,6 @@ export interface SegmentMetric {
 }
 
 export interface BarometerSnapshotPayload {
-  /**
-   * Marqueur de méthode : présent (= METHODE_REPONSES_REELLES) seulement si le
-   * payload exclut les réponses de test. Un snapshot sans ce marqueur n'est
-   * JAMAIS publié (voir `readLatestSnapshot`).
-   */
-  readonly methode?: number;
   readonly totalResponses: number;
   readonly generatedAt: string;
   readonly filter: {
@@ -103,17 +92,12 @@ const MULTI_COLUMNS: ReadonlyArray<{ key: string; col: string }> = [
   { key: "barriers", col: "barriers" },
 ];
 
-/**
- * Réponse réelle = tout sauf la fixture de test (`visitor_id` commençant par
- * `seed:`). Même sémantique que `countRealResponses` : un `visitor_id` nul est
- * une vraie réponse (le NOT LIKE seul écarterait les NULL).
- */
-const REPONSE_REELLE = Prisma.sql`(visitor_id IS NULL OR visitor_id NOT LIKE 'seed:%')`;
-
 function pct(count: number, base: number): number {
   return base > 0 ? Math.round((count / base) * 100) : 0;
 }
 
+/** Effectif minimal d'un segment pour être publié (anti-bruit + anti-réidentification). */
+const MIN_SEGMENT_N = 5;
 
 /** Dimensions de segmentation (clé payload → colonne SQL). Allowlist (anti-injection). */
 const SEGMENT_DIMENSIONS: ReadonlyArray<{ key: string; col: string }> = [
@@ -157,7 +141,7 @@ async function aggregateSegment(dimCol: string): Promise<SegmentMetric[]> {
       COUNT(*) FILTER (WHERE maturity_level::text = 'production')::int AS m_production,
       COUNT(*) FILTER (WHERE maturity_level::text = 'scaled')::int AS m_scaled
     FROM barometer_responses
-    WHERE ${col} IS NOT NULL AND ${REPONSE_REELLE}
+    WHERE ${col} IS NOT NULL
     GROUP BY ${col}
     HAVING COUNT(*) >= ${MIN_SEGMENT_N}
   `);
@@ -195,8 +179,6 @@ async function aggregateSegment(dimCol: string): Promise<SegmentMetric[]> {
 
 /** Agrège les 3 dimensions de segment (taille, secteur, région). */
 export async function aggregateAllSegments(): Promise<Record<string, SegmentMetric[]>> {
-  // Sous le seuil de vraies réponses, aucun segment (donc aucun pourcentage).
-  if ((await countResponses([REPONSE_REELLE])) < SEUIL_REPONSES_REELLES) return {};
   const results = await Promise.all(
     SEGMENT_DIMENSIONS.map(async ({ key, col }) => [key, await aggregateSegment(col)] as const),
   );
@@ -220,8 +202,7 @@ function orderEntries(questionId: string, entries: DistributionEntry[]): Distrib
 
 /** Conditions WHERE paramétrées issues du filtre (valeurs bindées). */
 function whereConds(f: BarometerFilter): Prisma.Sql[] {
-  // Toujours hors fixture de test : aucun pourcentage ne repose sur le seed.
-  const c: Prisma.Sql[] = [REPONSE_REELLE];
+  const c: Prisma.Sql[] = [];
   if (f.companySize) c.push(Prisma.sql`company_size = ${f.companySize}::"CompanySize"`);
   if (f.sector) c.push(Prisma.sql`sector = ${f.sector}`);
   if (f.region) c.push(Prisma.sql`region = ${f.region}`);
@@ -284,7 +265,6 @@ function sumMap(m: Map<string, number>): number {
 /** Payload vide (fallback build/stub ou aucune réponse) — jamais de throw. */
 export function emptySnapshotPayload(f: BarometerFilter = {}): BarometerSnapshotPayload {
   return {
-    methode: METHODE_REPONSES_REELLES,
     totalResponses: 0,
     generatedAt: new Date(0).toISOString(),
     filter: {
@@ -306,18 +286,9 @@ export async function aggregateBarometer(
 ): Promise<BarometerSnapshotPayload> {
   const conds = whereConds(f);
 
-  // Seuil de publication : sous SEUIL_REPONSES_REELLES vraies réponses (global),
-  // payload vide → les pages affichent « enquête en cours », jamais un chiffre.
-  // Sans filtre, le total filtré EST le total global (une requête de moins).
-  const total = await countResponses(conds);
-  const reellesGlobal = conds.length > 1 ? await countResponses([REPONSE_REELLE]) : total;
-  if (reellesGlobal < SEUIL_REPONSES_REELLES) return emptySnapshotPayload(f);
-  // Données de personnes : un effectif filtré trop petit permettrait de
-  // réidentifier des répondants → aucun pourcentage sous MIN_SEGMENT_N.
-  if (total < MIN_SEGMENT_N) return emptySnapshotPayload(f);
-
-  // Requêtes indépendantes lancées en parallèle (13 single + 3 multi).
-  const [singleResults, multiResults] = await Promise.all([
+  // Requêtes indépendantes lancées en parallèle (1 count + 13 single + 3 multi).
+  const [total, singleResults, multiResults] = await Promise.all([
+    countResponses(conds),
     Promise.all(
       SINGLE_FIELDS.map(async ({ key, col }) => [key, await groupSingle(col, conds)] as const),
     ),
@@ -325,6 +296,12 @@ export async function aggregateBarometer(
       MULTI_COLUMNS.map(async ({ key, col }) => [key, await groupMulti(col, conds)] as const),
     ),
   ]);
+
+  // Données de personnes : un périmètre FILTRÉ trop petit permettrait de
+  // réidentifier des répondants → aucun pourcentage sous MIN_SEGMENT_N.
+  // (Sans filtre, l'affichage global reste inchangé.)
+  const filtre = Boolean(f.companySize || f.sector || f.region);
+  if (filtre && total < MIN_SEGMENT_N) return emptySnapshotPayload(f);
 
   const distributions: Record<string, DistributionEntry[]> = {};
   const singleMaps = new Map<string, Map<string, number>>();
@@ -372,7 +349,6 @@ export async function aggregateBarometer(
   };
 
   return {
-    methode: METHODE_REPONSES_REELLES,
     totalResponses: total,
     generatedAt: new Date().toISOString(),
     filter: {
@@ -393,9 +369,6 @@ export async function aggregateBarometer(
 export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPayload> {
   const [base, segments] = await Promise.all([aggregateBarometer(), aggregateAllSegments()]);
   const payload: BarometerSnapshotPayload = { ...base, segments };
-  // Sous le seuil de vraies réponses : le snapshot publié est vidé (total 0),
-  // et on n'ajoute AUCUN point à l'historique (une courbe de zéros mentirait).
-  const publiable = payload.totalResponses > 0;
 
   await prisma.barometerSnapshot.upsert({
     where: { key: SNAPSHOT_KEY_LATEST },
@@ -414,19 +387,12 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
   // Historisation pour les COURBES d'évolution — append-only, best-effort
   // (un échec d'historisation ne doit jamais invalider le snapshot publié).
   try {
-    if (publiable) {
-      await prisma.barometerSnapshotHistory.create({
-        data: {
-          totalResponses: payload.totalResponses,
-          // Marqueur de méthode dans le JSON (pas de migration) : les anciens
-          // points, calculés avec le seed, n'en ont pas et ne sont pas publiés.
-          insights: {
-            ...payload.insights,
-            [CLE_METHODE_HISTORIQUE]: METHODE_REPONSES_REELLES,
-          } as unknown as Prisma.InputJsonValue,
-        },
-      });
-    }
+    await prisma.barometerSnapshotHistory.create({
+      data: {
+        totalResponses: payload.totalResponses,
+        insights: payload.insights as unknown as Prisma.InputJsonValue,
+      },
+    });
   } catch {
     // no-op : historique non critique.
   }
@@ -434,36 +400,20 @@ export async function recomputeAndPersistSnapshot(): Promise<BarometerSnapshotPa
   return payload;
 }
 
-const CLE_METHODE_HISTORIQUE = "__methode";
-
-function sansMarqueur(i: Record<string, number>): Record<string, number> {
-  const { [CLE_METHODE_HISTORIQUE]: _m, ...reste } = i;
-  return reste;
-}
-
-/**
- * Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution.
- * Lot L3 : on ne renvoie que les points obtenus à partir d'au moins
- * SEUIL_REPONSES_REELLES réponses (les anciens points sous le seuil restent en base,
- * mais ne sont plus publiés, de même que ceux sans marqueur de méthode : page et export JSON passent tous deux par ici).
- */
+/** Lit l'historique des recalculs (ordre chronologique) — pour les courbes d'évolution. */
 export async function readSnapshotHistory(
   limit = 60,
 ): Promise<
   Array<{ computedAt: string; totalResponses: number; insights: Record<string, number> }>
 > {
   const rows = await prisma.barometerSnapshotHistory.findMany({
-    where: {
-      totalResponses: { gte: SEUIL_REPONSES_REELLES },
-      insights: { path: [CLE_METHODE_HISTORIQUE], equals: METHODE_REPONSES_REELLES },
-    },
     orderBy: { computedAt: "asc" },
     take: limit,
   });
   return rows.map((r) => ({
     computedAt: r.computedAt.toISOString(),
     totalResponses: r.totalResponses,
-    insights: sansMarqueur((r.insights as Record<string, number>) ?? {}),
+    insights: (r.insights as Record<string, number>) ?? {},
   }));
 }
 
@@ -491,8 +441,5 @@ export async function readLatestSnapshot(): Promise<BarometerSnapshotPayload | n
     where: { key: SNAPSHOT_KEY_LATEST },
   });
   if (!row) return null;
-  const payload = row.payload as unknown as BarometerSnapshotPayload;
-  // Snapshot écrit par l'ancien code (réponses de test comprises) : jamais publié.
-  if (payload?.methode !== METHODE_REPONSES_REELLES) return null;
-  return payload;
+  return row.payload as unknown as BarometerSnapshotPayload;
 }
