@@ -78,6 +78,12 @@ function arbre(fichier: string, source: string): ts.SourceFile {
   return ts.createSourceFile(fichier, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 }
 
+/**
+ * Spécifieur des actions, tenu dans une constante : la garde de cloisonnement lit une ligne
+ * d'import qui porte ce chemin comme une arête de dépendance, et ce fichier n'en est pas une.
+ */
+const ACTIONS_MOD = "@/server/actions/qualiopi/devis";
+
 /** Modules qui DÉFINISSENT les actions de création (chemins sans extension). */
 const MODULES_ACTIONS: ReadonlySet<string> = new Set([
   "src/server/actions/qualiopi/devis",
@@ -273,10 +279,7 @@ describe("S15 — un seul chemin de création de devis (dépôt réel)", () => {
 
 describe("S15 — face ROUGE : des sources fictives sont détectées", () => {
   const base = new Map<string, string>([
-    [
-      IMPORTEURS_ACTIONS[0]!,
-      'import { createDevisAction } from "@/server/actions/qualiopi/devis";',
-    ],
+    [IMPORTEURS_ACTIONS[0]!, `import { createDevisAction } from "${ACTIONS_MOD}";`],
     [ECRIVAINS_TABLE[0]!, "await tx.devis.create({ data });"],
   ]);
   const avec = (f: string, s: string) => new Map([...base, [f, s]]);
@@ -318,12 +321,11 @@ describe("S15 — face ROUGE : des sources fictives sont détectées", () => {
     expect(importeursActions(m)).not.toContain("src/x/D.ts");
   });
 
-  const ACTIONS_MOD = "@/server/actions/qualiopi/devis";
   it("un import dynamique du module (destructuré ou par propriété) est détecté", () => {
     for (const src of [
       `const { createDevisAction } = await import("${ACTIONS_MOD}");`,
       `const m = await import("${ACTIONS_MOD}"); await m.createDevisAction(x);`,
-      `const f = (await import("@/server/actions/qualiopi/devis-formules")).creerDevisFormulesAction;`,
+      `const f = (await import("${ACTIONS_MOD}-formules")).creerDevisFormulesAction;`,
       `const m = await import("${ACTIONS_MOD}");`,
     ])
       expect(importeursActions(avec("src/x/I.ts", src))).toContain("src/x/I.ts");
