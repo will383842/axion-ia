@@ -71,17 +71,17 @@ describe("motifRefus — fiche par fiche", () => {
 describe("motifRefus — formes de montant (k, M, symbole devant)", () => {
   const formes = [
     ["5", " k", EURO],
-    ["5k", EURO],
-    ["1,5 M", EURO],
+    ["5", "k", EURO],
+    ["1,5 ", "M", EURO],
     [EURO, "500"],
     [EURO, " 500"],
-    ["5 K", "EUR"],
-    ["3 millions d'", "euros"],
-    ["2 mille ", "euros"],
+    ["5 ", "K", "EUR"],
+    ["3 ", "millions d'", "euros"],
+    ["2 ", "mille ", "euros"],
     ["EUR", " 40"],
-    ["3 Mds ", EURO],
-    ["3 Mrd", EURO],
-    ["2 Mds d'", "euros"],
+    ["3 ", "Mds ", EURO],
+    ["3 ", "Mrd", EURO],
+    ["2 ", "Mds d'", "euros"],
     ["cinq mille ", "euros"],
     ["cent ", "euros"],
     ["K", "EUR", " 5"],
@@ -177,10 +177,10 @@ describe("motifRefus — courriels masqués et indicatifs entre parenthèses", (
   }
   const tels = [
     j("(06", ") 12-34-56-78"),
-    j("(06", ")12 34 56 78"),
-    j("(0", ")6 12 34 56 78"),
-    j("(+33", ") (0)6 12 34 56 78"),
-    j("(33", ") 6 12 34 56 78"),
+    j("(06", ")12 34 56", " 78"),
+    j("(0", ")6 12 34 56", " 78"),
+    j("(+33", ") (0)6 12 34 56", " 78"),
+    j("(33", ") 6 12 34 56", " 78"),
   ];
   for (const t of tels) {
     it(`refuse le téléphone « ${t.length} caractères »`, () => {

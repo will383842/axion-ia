@@ -4,7 +4,7 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { contientMontant } from "../decoupage";
+import { contientMontant, MOTIF_MONTANT } from "../decoupage";
 
 /**
  * **RÈGLE INTANGIBLE DE LA COUCHE MÉTHODE (ADR 0076) : CE DÉPÔT EST PUBLIC.**
@@ -40,12 +40,6 @@ const FICHIERS_DE_LA_FICHE = [
 ];
 
 const EURO = String.fromCharCode(0x20ac);
-const ESPACES_FINES = String.fromCharCode(0xa0, 0x202f);
-const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
-const MOTIF_MONTANT = new RegExp(
-  String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|md|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${EURO}|EUR\b|euros?\b)|(?:${EURO}|\bEUR)\s?\d`,
-  "i",
-);
 const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/;
 const MOTIF_TELEPHONE = /(?:\+33|0033|(?<![\d.]))0?[1-9](?:[\s.-]?\d{2}){4}(?!\d)/;
 const MOTIF_SESSION = new RegExp(
@@ -121,7 +115,12 @@ describe("1 · aucun contenu réel ou privé dans les fichiers de la fiche", () 
       }
       const texte = lire(fichier);
 
-      it("aucun montant en euros", () => expect(MOTIF_MONTANT.exec(texte)?.[0]).toBeUndefined());
+      // Les paramètres SQL numérotés (requêtes préparées) ne sont pas des montants.
+      const sansParametresSql = fichier.endsWith("/index.ts")
+        ? texte.replace(/\$\d{1,2}(?!\d)/g, "")
+        : texte;
+      it("aucun montant (euros, k, M, dollars, HT/TTC…)", () =>
+        expect(MOTIF_MONTANT.exec(sansParametresSql)?.[0]).toBeUndefined());
       it("aucun courriel", () => expect(MOTIF_COURRIEL.exec(texte)?.[0]).toBeUndefined());
       it("aucun téléphone", () => expect(MOTIF_TELEPHONE.exec(texte)?.[0]).toBeUndefined());
       it("aucun lien ou identifiant de session", () =>
@@ -139,7 +138,7 @@ describe("1 · aucun contenu réel ou privé dans les fichiers de la fiche", () 
   }
 
   it("les motifs de ce scanner détectent bien ce qu'ils doivent (sinon le test ne prouve rien)", () => {
-    expect(MOTIF_MONTANT.test(`12 345 ${EURO}`)).toBe(true);
+    expect(MOTIF_MONTANT.test(["12 345 ", EURO].join(""))).toBe(true);
     expect(MOTIF_MONTANT.test(["3", "euros"].join(" "))).toBe(true);
     expect(MOTIF_MONTANT.test(["5", "k", EURO].join(" "))).toBe(true);
     expect(MOTIF_MONTANT.test([EURO, "500"].join(""))).toBe(true);

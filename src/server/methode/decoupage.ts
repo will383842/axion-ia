@@ -19,7 +19,10 @@
  * celui de `src/content/offre.ts`.
  */
 
-import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+import {
+  detecterInterditsSurface,
+  normaliserPourControle,
+} from "@/lib/contenu/interdits-publication";
 
 export const PREFIXE_SLUG = "methode";
 
@@ -102,12 +105,42 @@ const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
 const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|mds?|mrds?|mrd|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`;
 // symbole ou « EUR » placé devant le nombre
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
-// nombre suivi d'un prix hors taxes / toutes taxes, ou d'un milliard, sans devise
-const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:HT|TTC|mds?|mrds?|mrd|milliards?)\b`;
-const MOTIF_MONTANT = new RegExp(`${MONTANT_APRES}|${MONTANT_AVANT}|${MONTANT_SANS_DEVISE}`, "i");
+// nombre suivi d'un prix hors taxes / toutes taxes, d'un multiplicateur (k, M, mille, million),
+// d'un milliard, d'un dollar ou d'un code USD, sans « euro »
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:HT|TTC|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?)\b`;
+// dollar : symbole collé ou séparé d'un nombre, dans les deux sens, ou « USD » devant
+const MONTANT_DOLLAR = String.raw`\$\s?\d|\d[\d\s${ESPACES_FINES}.,]*\s?\$|\bUSD\s?\d`;
+const MOTIF_MONTANT_SOURCE = `${MONTANT_APRES}|${MONTANT_AVANT}|${MONTANT_SANS_DEVISE}|${MONTANT_DOLLAR}`;
+/** Le motif de montant de la couche (sans drapeau `g` : `test` est sans état). Partagé avec le garde-fou de test. */
+export const MOTIF_MONTANT = new RegExp(MOTIF_MONTANT_SOURCE, "i");
+
+/**
+ * Toute mention monétaire, AVEC OU SANS chiffre (« cinq mille euros », « KEUR 5 ») :
+ * le symbole, « EUR » (avec un multiplicateur éventuel collé), « euro(s) », « dollar(s) ».
+ */
+const MOTIF_MONETAIRE = new RegExp(
+  `${SYMBOLE_EURO}|\\$|\\b(?:k|m|md|mds|mrd|mrds)?eur\\b|\\beuros?\\b|\\bdollars?\\b|\\busd\\b`,
+  "i",
+);
 
 export function contientMontant(texte: string): boolean {
-  return MOTIF_MONTANT.test(texte);
+  return MOTIF_MONTANT.test(texte) || MOTIF_MONETAIRE.test(texte);
+}
+
+/**
+ * Promesse de résultat ou pourcentage, après normalisation (casse, accents, espaces
+ * insécables, « ％ » pleine chasse) : toute forme de « garanti* » et de « rembours* »,
+ * première personne comprise, et tout pourcentage. On préfère refuser une fiche saine.
+ */
+const MOTIF_PROMESSE = /garant|rembours/;
+const MOTIF_POURCENTAGE = /\d\s?%|%\s?\d|pour ?cent/;
+
+export function contientPromesse(texte: string): boolean {
+  return MOTIF_PROMESSE.test(normaliserPourControle(texte));
+}
+
+export function contientPourcentage(texte: string): boolean {
+  return MOTIF_POURCENTAGE.test(normaliserPourControle(texte));
 }
 
 /** `livre:<nom du fichier, sans numéro, borné>` : aucune liste de titres ni d'auteurs en dur. */
@@ -400,13 +433,16 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
     const corps = compacter(m.lignes);
     const montants = contientMontant(corps) || contientMontant(m.titre);
     const type = typerSection(m.slug, m.titre, nomFichier);
+    const lu = `${m.titre}\n${corps}`;
     const signalements = Array.from(
-      new Set(
-        detecterInterditsSurface(
+      new Set([
+        ...detecterInterditsSurface(
           { titre: m.titre, texte: corps },
           { actualite: false, financementPublicAutorise: false },
         ).map((v) => v.code),
-      ),
+        ...(contientPromesse(lu) ? ["promesse"] : []),
+        ...(contientPourcentage(lu) ? ["pourcentage"] : []),
+      ]),
     ).sort();
     const etiquettes = [
       etiquetteLivre(nomFichier),

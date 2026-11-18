@@ -14,10 +14,15 @@
  *     témoignage ou statistique Axion-IA, citation de témoin, ancrage local…
  */
 
-import { detecterInterditsSurface } from "@/lib/contenu/interdits-publication";
+import {
+  detecterInterditsSurface,
+  normaliserPourControle,
+} from "@/lib/contenu/interdits-publication";
 
 import {
   contientMontant,
+  contientPourcentage,
+  contientPromesse,
   ETIQUETTE_CHIFFRES,
   ETIQUETTE_DOCTRINE,
   ETIQUETTE_SANTE,
@@ -38,23 +43,21 @@ export interface FicheFiltrable {
   readonly etiquettes?: readonly string[];
 }
 
-/**
- * Toute mention monétaire, AVEC OU SANS chiffre (« cinq mille euros », « KEUR 5 ») :
- * le symbole, « EUR » (avec un multiplicateur éventuel collé) et « euro(s) ».
- */
-const MOTIF_MONETAIRE = new RegExp(
-  `${String.fromCharCode(0x20ac)}|\\b(?:k|m|md|mds|mrd|mrds)?eur\\b|\\beuros?\\b`,
-  "i",
-);
-
 const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/;
+
+/**
+ * Courriel masqué, lu sur le texte normalisé : « [at] », « (at) », « {at} », « arobase »,
+ * « @ » entouré d'espaces, ou « @ » suivi d'un domaine écrit « point » / « [dot] ».
+ */
+const MOTIF_COURRIEL_MASQUE =
+  /[[({]\s?at\s?[\])}]|\barobase\b|[a-z0-9]\s+@\s+[a-z0-9]|@\s?[a-z0-9-]+\s?(?:[[({]\s?)?(?:dot|point)(?:\s?[\])}])?\s?[a-z]{2,}|@\s?[a-z0-9-]+\.[a-z]{2,}/;
 
 /** Numéro français (national, +33 ou 0033) ou international en « + » suivi de 8 chiffres ou plus. */
 const MOTIF_TELEPHONE =
-  /(?:(?:\(?\+33\)?|0033)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|(?<![\d.,])0[1-9](?:[\s.-]?\d{2}){4}(?![\d])|\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){7,})/;
+  /(?:\(\s?(?:\+|00)?33\s?\)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|\(\s?0[1-9]\s?\)(?:[\s.-]?\d{2}){4}|\(0\)\s?[1-9](?:[\s.-]?\d{2}){4}|(?:\(?\+33\)?|0033)[\s.-]?\(?0?\)?[1-9](?:[\s.-]?\d{2}){4}|(?<![\d.,])0[1-9](?:[\s.-]?\d{2}){4}(?![\d])|\+\d{1,3}[\s.-]?\d(?:[\s.-]?\d){7,})/;
 
 export function contientCourriel(texte: string): boolean {
-  return MOTIF_COURRIEL.test(texte);
+  return MOTIF_COURRIEL.test(texte) || MOTIF_COURRIEL_MASQUE.test(normaliserPourControle(texte));
 }
 
 export function contientTelephone(texte: string): boolean {
@@ -70,7 +73,7 @@ export function motifRefus(fiche: FicheFiltrable): string | null {
     if (ETIQUETTES_REFUSEES.includes(e)) return `etiquette:${e}`;
   }
   const champs = `${fiche.titre}\n${fiche.texte}`;
-  if (contientMontant(champs) || MOTIF_MONETAIRE.test(champs)) return "montant";
+  if (contientMontant(champs)) return "montant";
   if (contientCourriel(champs)) return "courriel";
   if (contientTelephone(champs)) return "telephone";
   const interdits = detecterInterditsSurface(
@@ -80,6 +83,8 @@ export function motifRefus(fiche: FicheFiltrable): string | null {
   if (interdits.length > 0) {
     return `doctrine:${Array.from(new Set(interdits.map((i) => i.code))).sort()[0]!}`;
   }
+  if (contientPromesse(champs)) return "promesse";
+  if (contientPourcentage(champs)) return "pourcentage";
   return null;
 }
 
