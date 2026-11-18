@@ -13,6 +13,9 @@ import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminStatCard } from "@/components/admin/ui/AdminStatCard";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
+import { prisma } from "@/lib/prisma";
+import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { Hash, FileText, Send, CheckCircle2, ArrowRight, PenLine } from "lucide-react";
 import { listDevis } from "@/server/qualiopi/crm/devis";
 import { listClients } from "@/server/qualiopi/crm/clients";
@@ -98,6 +101,12 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
     listClients(),
     idsPiecesDevisAContresigner(),
   ]);
+
+  // Badge « E-mail à valider » : UNE lecture groupée pour toute la liste (brouillons et envoyés).
+  const emailsEnAttente = await devisAvecEmailEnAttente(
+    prisma,
+    devisList.filter((d) => d.statut === "brouillon" || d.statut === "envoye").map((d) => d.id),
+  ).catch(() => new Set<string>());
 
   // Index clients par id pour affichage rapide
   const clientIndex = new Map(clients.map((c) => [c.id, c.raisonSociale]));
@@ -240,9 +249,16 @@ export default async function QualiopiDevisPage({ params, searchParams }: PagePr
                           À contresigner
                         </AdminBadge>
                       ) : (
-                        <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
-                          {STATUT_LABELS[devis.statut] ?? devis.statut}
-                        </AdminBadge>
+                        <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+                            {STATUT_LABELS[devis.statut] ?? devis.statut}
+                          </AdminBadge>
+                          <BadgeEmailDevis
+                            statut={devis.statut}
+                            enAttente={emailsEnAttente.has(devis.id)}
+                            href={`/${locale}/${adminPrefix}/qualiopi/emails`}
+                          />
+                        </span>
                       )}
                     </td>
                     <td className={cellCls}>

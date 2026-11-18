@@ -70,6 +70,7 @@ vi.mock("@/lib/prisma", () => ({
         ),
     },
     planRecurrent: { count: () => Promise.resolve(0) },
+    emailOutbox: { findFirst: () => Promise.resolve(null) },
   },
 }));
 vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({

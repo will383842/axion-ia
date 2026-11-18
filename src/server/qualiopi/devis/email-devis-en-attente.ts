@@ -24,6 +24,9 @@ export const AGE_APPROUVE_ENCORE_EN_COURS_MIN = 15;
 export const MSG_EMAIL_EN_ATTENTE_MODIF =
   "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
 
+type CondStatut =
+  { statut: EmailOutboxStatus } | { statut: EmailOutboxStatus; approuveAt: { gte: Date } };
+
 interface LecteurOutbox {
   emailOutbox: {
     findFirst: (args: {
@@ -31,13 +34,31 @@ interface LecteurOutbox {
         template: string;
         entityType: string;
         entityId: string;
-        OR: Array<
-          { statut: EmailOutboxStatus } | { statut: EmailOutboxStatus; approuveAt: { gte: Date } }
-        >;
+        OR: CondStatut[];
       };
       select: { id: true };
     }) => Promise<{ id: string } | null>;
   };
+}
+
+interface LecteurOutboxGroupe {
+  emailOutbox: {
+    findMany: (args: {
+      where: {
+        template: string;
+        entityType: string;
+        entityId: { in: string[] };
+        OR: CondStatut[];
+      };
+      select: { entityId: true };
+    }) => Promise<Array<{ entityId: string | null }>>;
+  };
+}
+
+/** LA règle « en attente », partagée par la version unitaire et la version groupée. */
+function conditionsEnAttente(maintenant: Date): CondStatut[] {
+  const seuilApprouve = new Date(maintenant.getTime() - AGE_APPROUVE_ENCORE_EN_COURS_MIN * 60_000);
+  return [{ statut: "a_valider" }, { statut: "approuve", approuveAt: { gte: seuilApprouve } }];
 }
 
 export async function emailDevisEnAttente(
@@ -45,15 +66,37 @@ export async function emailDevisEnAttente(
   devisId: string,
   maintenant: Date = new Date(),
 ): Promise<boolean> {
-  const seuilApprouve = new Date(maintenant.getTime() - AGE_APPROUVE_ENCORE_EN_COURS_MIN * 60_000);
   const ligne = await db.emailOutbox.findFirst({
     where: {
       template: GABARIT_DEVIS_ENVOI,
       entityType: "Devis",
       entityId: devisId,
-      OR: [{ statut: "a_valider" }, { statut: "approuve", approuveAt: { gte: seuilApprouve } }],
+      OR: conditionsEnAttente(maintenant),
     },
     select: { id: true },
   });
   return ligne !== null;
+}
+
+/**
+ * Version groupée, pour une liste : UNE seule requête, même règle. Rend l'ensemble des devis
+ * de `ids` qui ont un e-mail `devis-envoi` en attente. Liste vide : aucune requête.
+ */
+export async function devisAvecEmailEnAttente(
+  db: LecteurOutboxGroupe,
+  ids: readonly string[],
+  maintenant: Date = new Date(),
+): Promise<Set<string>> {
+  const uniques = [...new Set(ids)];
+  if (uniques.length === 0) return new Set();
+  const lignes = await db.emailOutbox.findMany({
+    where: {
+      template: GABARIT_DEVIS_ENVOI,
+      entityType: "Devis",
+      entityId: { in: uniques },
+      OR: conditionsEnAttente(maintenant),
+    },
+    select: { entityId: true },
+  });
+  return new Set(lignes.flatMap((l) => (l.entityId === null ? [] : [l.entityId])));
 }
