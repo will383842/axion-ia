@@ -381,8 +381,8 @@ describe("mode « auto » : un seul lien vivant quoi qu'il arrive (M1, M2)", () 
   it("M1 — l'ancien lien est rendu : le jeton neuf n'est pas révoqué à part", async () => {
     d.enqueueEmail.mockResolvedValue({ enqueued: false });
     d.rendre.mockResolvedValue(true);
-  d.revoquerJeton.mockReset();
-  d.revoquerTousTokens.mockReset();
+    d.revoquerJeton.mockReset();
+    d.revoquerTousTokens.mockReset();
     await envoyerDevisEmailAction({ devisId: ID });
     expect(d.revoquerJeton).not.toHaveBeenCalled();
     expect(d.revoquerTousTokens).not.toHaveBeenCalled();
