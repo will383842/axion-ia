@@ -19,6 +19,7 @@ import { AdminPageHeader, AdminCard, AdminBadge } from "@/components/admin/ui";
 import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
 import { enveloppeExpedition } from "@/lib/email/enveloppe";
 import { extrairePreEntete } from "@/lib/email/apercu-lecteur";
+import { masquerSecretsTexte } from "@/lib/email/masquer-secrets";
 import { libelleStatutLigne, TON_STATUT_EMAIL } from "@/features/admin-emails/statut-libelles";
 import type { DetailEmail, RaisonSansCopie } from "@/features/admin-emails/detail";
 import type { ApercuReconstitue } from "@/features/admin-emails/reconstitution-invitation";
@@ -85,7 +86,7 @@ function Rendu({
         a={a}
         repondreA={enveloppe.replyTo}
         objet={subject}
-        preEntete={extrairePreEntete(html)}
+        preEntete={masquerSecretsTexte(extrairePreEntete(html)).sortie}
         piecesJointes={piecesJointes}
         pleinEcranHref={pleinEcranHref}
       />
@@ -150,7 +151,7 @@ export function VueDetailEmail({
                 a={email.recipient}
                 marketing={email.marketing}
                 piecesJointes={email.copie.attachmentNames}
-                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/envoye/${email.id}`}
+                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/envoye/${encodeURIComponent(email.id)}`}
               />
             </>
           ) : (

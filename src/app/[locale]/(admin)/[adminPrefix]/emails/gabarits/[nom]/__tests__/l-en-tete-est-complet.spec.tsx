@@ -29,10 +29,13 @@ import type { DetailEmail } from "@/features/admin-emails/detail";
 
 const NOM = "contact-confirmed";
 
-async function rendreGabarit(search: Record<string, string | undefined> = {}): Promise<string> {
+async function rendreGabarit(
+  search: Record<string, string | undefined> = {},
+  nom: string = NOM,
+): Promise<string> {
   d.session = { user: { id: "u-1", role: "admin" } };
   const el = (await Page({
-    params: Promise.resolve({ adminPrefix: "p", nom: NOM }),
+    params: Promise.resolve({ adminPrefix: "p", nom }),
     searchParams: Promise.resolve(search),
   })) as ReactElement;
   return renderToStaticMarkup(el);
@@ -122,6 +125,19 @@ describe("fiche I0b-4", () => {
     expect(gab).toContain(`href="/fr/p/emails/lecture/gabarit/${NOM}"`);
   });
 
+  it("3b) lien plein écran : une variante connue est reportée en paramètre", async () => {
+    const gab = await rendreGabarit({ variante: "honoraires" }, "formateur-mission-proposee");
+    expect(gab).toContain(
+      'href="/fr/p/emails/lecture/gabarit/formateur-mission-proposee?variante=honoraires"',
+    );
+  });
+
+  it("3c) lien plein écran : une variante inconnue est ignorée", async () => {
+    const gab = await rendreGabarit({ variante: "inconnue" }, "formateur-mission-proposee");
+    expect(gab).toContain('href="/fr/p/emails/lecture/gabarit/formateur-mission-proposee"');
+    expect(gab).not.toContain("?variante=inconnue");
+  });
+
   it("4) aperçu reconstitué : bandeau présent, aucun lien plein écran", () => {
     const html = rendreDetail(email(null), "html", {
       ok: true,
@@ -132,6 +148,8 @@ describe("fiche I0b-4", () => {
       hypotheses: [],
     } as never);
     expect(html).toContain('data-testid="bandeau-reconstitue"');
+    expect(html).toContain("<dt>De</dt>");
+    expect(html).toContain("<dt>Répondre à</dt>");
     expect(html).not.toContain("/emails/lecture/");
     expect(html).not.toContain("Ouvrir en plein écran");
   });
@@ -144,5 +162,28 @@ describe("fiche I0b-4", () => {
     expect(html).toContain(`<dd>${attendu}</dd>`);
     expect(html).toContain("<dt>De</dt>");
     expect(html).toContain("<dt>Répondre à</dt>");
+  });
+});
+
+describe("fiche I0b-4 — pré-en-tête masqué à l'affichage", () => {
+  it("6) une copie dont le pré-en-tête contient un lien à jeton n'affiche pas le jeton", () => {
+    const jeton = "A1b2C3d4E5f6G7h8I9j0K1l2M3n4O5p6";
+    const html = renderToStaticMarkup(
+      <VueDetailEmail
+        email={email({
+          ...COPIE,
+          html: `<html><body><div data-skip-in-text="true">Signez ici https://example.invalid/signer/${jeton}</div><p>Bonjour</p></body></html>`,
+        })}
+        vue="html"
+        raison={null}
+        apercu={null}
+        base="/fr/p/emails-envoyes"
+        adminPrefix="p"
+      />,
+    );
+    // Le pré-en-tête (hors cadre isolé) ne montre pas le jeton.
+    const preEntete = html.match(/<dt>Pré-en-tête<\/dt><dd>(.*?)<\/dd>/)?.[1] ?? "";
+    expect(preEntete).toContain("[masqué]");
+    expect(preEntete).not.toContain(jeton);
   });
 });

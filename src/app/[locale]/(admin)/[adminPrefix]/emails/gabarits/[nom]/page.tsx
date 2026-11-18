@@ -169,7 +169,7 @@ export default async function ApercuGabaritPage({
                 de={enveloppe.from}
                 repondreA={enveloppe.replyTo}
                 preEntete={extrairePreEntete(rendu?.html ?? "")}
-                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/gabarit/${nom}${
+                pleinEcranHref={`/fr/${adminPrefix}/emails/lecture/gabarit/${encodeURIComponent(nom)}${
                   variante !== null ? `?variante=${encodeURIComponent(variante)}` : ""
                 }`}
               />
