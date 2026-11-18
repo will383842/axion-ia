@@ -17,12 +17,17 @@ export interface ChampsAvoirInstantane {
   avoirSurNumero: string | null;
   numero: string | null;
   tauxTvaStandardPercent?: number;
+  /** Présent seulement s'il est un booléen dans `data.client` : jamais recalculé. */
+  estPersonnePhysique?: boolean;
 }
 
 export interface AvoirOrigine {
   motifAvoir: string;
   avoirSurNumero: string;
   tauxTvaStandardPercent?: number;
+  estPersonnePhysique?: boolean;
+  /** Document d'ORIGINE d'où viennent ces champs : sa version de gabarit fait foi. */
+  documentId: string | null;
 }
 
 function objet(v: unknown): Record<string, unknown> | null {
@@ -38,6 +43,7 @@ export function extraireChampsAvoir(snapshot: unknown): ChampsAvoirInstantane | 
     if (data === null) return null;
     const texte = (v: unknown): string | null => (typeof v === "string" && v !== "" ? v : null);
     const taux = data["tauxTvaStandardPercent"];
+    const estPersonnePhysique = objet(data["client"])?.["estPersonnePhysique"];
     return {
       estAvoir: data["estAvoir"] === true,
       motifAvoir: texte(data["motifAvoir"]),
@@ -46,6 +52,7 @@ export function extraireChampsAvoir(snapshot: unknown): ChampsAvoirInstantane | 
       ...(typeof taux === "number" && Number.isFinite(taux)
         ? { tauxTvaStandardPercent: taux }
         : {}),
+      ...(typeof estPersonnePhysique === "boolean" ? { estPersonnePhysique } : {}),
     };
   } catch {
     return null;
@@ -56,7 +63,10 @@ function renderDataDe(metadata: unknown): unknown {
   return objet(metadata)?.["renderData"];
 }
 
-function origineDepuis(champs: ChampsAvoirInstantane | null): AvoirOrigine | null {
+function origineDepuis(
+  champs: ChampsAvoirInstantane | null,
+  documentId: string | null,
+): AvoirOrigine | null {
   if (champs === null || !champs.estAvoir) return null;
   if (champs.motifAvoir === null || champs.avoirSurNumero === null) return null;
   return {
@@ -65,6 +75,10 @@ function origineDepuis(champs: ChampsAvoirInstantane | null): AvoirOrigine | nul
     ...(champs.tauxTvaStandardPercent !== undefined
       ? { tauxTvaStandardPercent: champs.tauxTvaStandardPercent }
       : {}),
+    ...(champs.estPersonnePhysique !== undefined
+      ? { estPersonnePhysique: champs.estPersonnePhysique }
+      : {}),
+    documentId,
   };
 }
 
@@ -81,7 +95,12 @@ export async function lireAvoirOrigine(
       where: { id: documentIdCourant },
       select: { metadata: true },
     });
-    const depuisCourant = origineDepuis(extraireChampsAvoir(renderDataDe(courant?.metadata)));
+    const champsCourant = extraireChampsAvoir(renderDataDe(courant?.metadata));
+    // Le PDF courant doit être CELUI de cet avoir : son numéro d'instantané égale `avoirNumero`.
+    const depuisCourant =
+      champsCourant?.numero === avoirNumero
+        ? origineDepuis(champsCourant, documentIdCourant)
+        : null;
     if (depuisCourant !== null) return depuisCourant;
   }
 
@@ -91,7 +110,10 @@ export async function lireAvoirOrigine(
       metadata: { path: ["renderData", "data", "numero"], equals: avoirNumero },
     },
     orderBy: { createdAt: "asc" },
-    select: { metadata: true },
+    select: { id: true, metadata: true },
   });
-  return origineDepuis(extraireChampsAvoir(renderDataDe(ancien?.metadata)));
+  return origineDepuis(
+    extraireChampsAvoir(renderDataDe(ancien?.metadata)),
+    typeof ancien?.id === "string" ? ancien.id : null,
+  );
 }

@@ -43,6 +43,7 @@ import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { FacturePdf } from "@/server/qualiopi/documents/templates/facture";
 import type { FactureData, LigneFacture } from "@/server/qualiopi/documents/templates/facture";
 import { resolveRibFacture } from "@/lib/legal-identity";
+import { destinataireEstPersonnePhysique } from "./destinataire-facture";
 import { resoudreConditions } from "./conditions-client";
 import { marquerPaiementRecuSiSoldee } from "@/server/qualiopi/financements/dossier-financement";
 import { preparerTransmissionRemboursementOpco } from "./transmission-remboursement-opco";
@@ -333,6 +334,8 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
 
   const origine = await prisma.factureFormation.findUniqueOrThrow({
     where: { id: input.factureId },
+    // Type du client de la session éventuelle : même lecture que l'émission d'une facture.
+    include: { session: { select: { client: { select: { type: true } } } } },
   });
 
   if (origine.avoirDeId !== null) {
@@ -484,6 +487,12 @@ export async function genererAvoirFacture(input: GenererAvoirInput): Promise<Gen
     regimeTva,
     tauxTvaStandardPercent: tauxStandard,
     client: {
+      // Décision du fondateur : un avoir NEUF pour un particulier affiche « Nom et prénom »,
+      // comme la facture d'origine (même fonction, mêmes arguments que l'émission).
+      estPersonnePhysique: destinataireEstPersonnePhysique(
+        origine.destinataire,
+        origine.session?.client ?? null,
+      ),
       raisonSociale: origine.destinataireNom,
       ...(origine.destinataireSiret !== null ? { siret: origine.destinataireSiret } : {}),
       ...(origine.destinataireTvaIntracom !== null

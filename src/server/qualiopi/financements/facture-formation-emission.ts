@@ -753,8 +753,9 @@ export async function genererPdfFactureFormation(
   // ── AVOIR : régénéré à l'identique de l'émission (`genererAvoirFacture`), jamais comme une facture.
   // Le motif n'a pas de colonne : il vient de l'instantané du PDF d'origine ; sans lui on refuse
   // (rien n'est écrit), aucun motif n'est inventé.
-  // ⚠️ Reproduit l'émission TELLE QUELLE : ni `estPersonnePhysique`, ni `periodePrestation`, ni
-  // `subrogationOpco` (absents à l'émission ; leur éventuel ajout est une décision du fondateur).
+  // ⚠️ Reproduit l'émission TELLE QUELLE : ni `periodePrestation`, ni `subrogationOpco` (absents à
+  // l'émission). `estPersonnePhysique` est recopié de l'instantané SEULEMENT s'il y figure : un
+  // avoir ancien sans le champ reste sans le champ, il n'est JAMAIS recalculé ici.
   if (estAvoir) {
     const origine = await lireAvoirOrigine(facture.numero, facture.documentId);
     if (origine === null) {
@@ -791,6 +792,9 @@ export async function genererPdfFactureFormation(
       regimeTva,
       tauxTvaStandardPercent,
       client: {
+        ...(origine.estPersonnePhysique !== undefined
+          ? { estPersonnePhysique: origine.estPersonnePhysique }
+          : {}),
         raisonSociale: facture.destinataireNom,
         ...(facture.destinataireSiret !== null ? { siret: facture.destinataireSiret } : {}),
         ...(facture.destinataireTvaIntracom !== null
@@ -811,7 +815,8 @@ export async function genererPdfFactureFormation(
 
     let documentIdAvoir: string;
     try {
-      const versionOrigine = await versionGabaritDeLaPieceOrigine(facture.documentId);
+      // Version lue sur le document d'ORIGINE de l'instantané, pas sur le document courant.
+      const versionOrigine = await versionGabaritDeLaPieceOrigine(origine.documentId);
       const versionCourante = versionGabaritCourante("facture");
       const Archive =
         versionOrigine !== undefined && versionCourante !== null && versionOrigine < versionCourante

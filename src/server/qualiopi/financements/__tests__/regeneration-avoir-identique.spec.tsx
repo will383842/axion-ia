@@ -97,6 +97,7 @@ vi.mock("@/server/qualiopi/documents/organisme", async () => {
 import { registerPdfTestFontsFallback } from "../../documents/register-pdf-test-fonts";
 import { FacturePdf } from "../../documents/templates/facture";
 import { computeTotauxFacture } from "../../legal/tva";
+import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { genererAvoirFacture } from "../facture-libre";
 import { genererPdfFactureFormation } from "../facture-formation-emission";
 
@@ -232,7 +233,8 @@ describe("🔴 un avoir régénéré reste un avoir, identique à l'émission", 
       motifAvoir: MOTIF,
       dateEcheance: "05/11/2026",
     });
-    expect(regen.metadata.renderData.data["client"]).not.toHaveProperty("estPersonnePhysique");
+    // Entreprise : l'avoir neuf porte `estPersonnePhysique: false`, recopié tel quel à la régénération.
+    expect(regen.metadata.renderData.data["client"]).toHaveProperty("estPersonnePhysique", false);
     expect(regen.metadata.renderData.data).not.toHaveProperty("periodePrestation");
     expect(regen.metadata.renderData.data).not.toHaveProperty("subrogationOpco");
     expect(regen["clientId"]).toBe("client-1");
@@ -257,8 +259,12 @@ describe("🔴 un avoir régénéré reste un avoir, identique à l'émission", 
       },
     };
     delete (defectueux.metadata.renderData.data as Record<string, unknown>)["avoirSurNumero"];
-    h.m.docParId.mockResolvedValue(JSON.parse(JSON.stringify(defectueux)));
-    h.m.docAvoirAncien.mockResolvedValue({ metadata: em.metadata });
+    h.m.docParId.mockImplementation(async (a: { where: { id: string } }) =>
+      a.where.id === "doc-ancien"
+        ? { metadata: em.metadata }
+        : JSON.parse(JSON.stringify(defectueux)),
+    );
+    h.m.docAvoirAncien.mockResolvedValue({ id: "doc-ancien", metadata: em.metadata });
 
     const r = await regenerer(ligneAvoirEnBase(em.ligneCreee, { documentId: "doc-defectueux" }));
     expect("error" in r).toBe(false);
@@ -400,5 +406,129 @@ describe("🔴 un avoir régénéré reste un avoir, identique à l'émission", 
         orderBy: { createdAt: "asc" },
       }),
     );
+  });
+});
+
+/** Texte rendu par le gabarit (composants fonctions dépliés), pour lire un libellé sans décoder le PDF. */
+function texteDe(n: unknown): string {
+  if (typeof n === "string" || typeof n === "number") return String(n);
+  if (Array.isArray(n)) return n.map(texteDe).join(" ");
+  if (typeof n !== "object" || n === null) return "";
+  const el = n as { type?: unknown; props?: { children?: unknown } };
+  if (typeof el.type === "function") {
+    return texteDe((el.type as (p: unknown) => unknown)(el.props));
+  }
+  return texteDe(el.props?.children);
+}
+const texteAvoir = (data: unknown) =>
+  texteDe(React.createElement(FacturePdf, { data: data as never }));
+
+describe("🔴 avoir neuf pour un particulier : « Nom et prénom » (décision du fondateur)", () => {
+  it("T8 — particulier : l'instantané porte true, le PDF dit « Nom et prénom », la régénération est identique", async () => {
+    const em = await emettre({ destinataire: "stagiaire", destinataireNom: "Jeanne Martin" });
+    const client = em.renderData.data["client"] as Record<string, unknown>;
+    expect(client["estPersonnePhysique"]).toBe(true);
+    expect(texteAvoir(em.renderData.data)).toContain("Nom et prénom");
+    expect(texteAvoir(em.renderData.data)).not.toContain("Raison sociale");
+
+    h.m.docParId.mockResolvedValue({ metadata: em.metadata });
+    const r = await regenerer(ligneAvoirEnBase(em.ligneCreee, { destinataire: "stagiaire" }));
+    expect("error" in r).toBe(false);
+    const regen = derniereCreation();
+    expect(regen.metadata.renderData.data).toStrictEqual(em.renderData.data);
+    expect(sha(h.m.pdfs.at(-1)!)).toBe(sha(em.pdf));
+  });
+
+  it("T8b — entreprise cliente de type particulier : même résultat (type lu sur la session d'origine)", async () => {
+    const em = await emettre({
+      destinataire: "entreprise",
+      session: { client: { type: "particulier" } },
+    });
+    expect((em.renderData.data["client"] as Record<string, unknown>)["estPersonnePhysique"]).toBe(
+      true,
+    );
+  });
+
+  it("T9 — avoir ancien sans le champ : régénéré sans le champ (jamais recalculé)", async () => {
+    // Destinataire « stagiaire » aujourd'hui, mais l'avoir a été émis avant la décision.
+    const em = await emettre({ destinataire: "stagiaire" });
+    const ancien = JSON.parse(JSON.stringify(em.metadata)) as {
+      renderData: { data: Record<string, unknown> };
+    };
+    delete (ancien.renderData.data["client"] as Record<string, unknown>)["estPersonnePhysique"];
+    h.m.docParId.mockResolvedValue({ metadata: ancien });
+
+    const r = await regenerer(ligneAvoirEnBase(em.ligneCreee, { destinataire: "stagiaire" }));
+    expect("error" in r).toBe(false);
+    const regen = derniereCreation();
+    expect(regen.metadata.renderData.data["client"]).not.toHaveProperty("estPersonnePhysique");
+    expect(texteAvoir(regen.metadata.renderData.data)).toContain("Raison sociale");
+    expect(texteAvoir(regen.metadata.renderData.data)).not.toContain("Nom et prénom");
+  });
+
+  it("T10 — avoir pour une entreprise : inchangé (« Raison sociale »)", async () => {
+    const em = await emettre({ destinataire: "entreprise", session: { client: { type: "pme" } } });
+    expect((em.renderData.data["client"] as Record<string, unknown>)["estPersonnePhysique"]).toBe(
+      false,
+    );
+    expect(texteAvoir(em.renderData.data)).toContain("Raison sociale");
+    expect(texteAvoir(em.renderData.data)).not.toContain("Nom et prénom");
+  });
+});
+
+describe("🔴 mineurs de l'audit argent", () => {
+  it("T3c — taux standard 20 à l'émission, configuration simulée à 10 à la régénération : 20 partout", async () => {
+    const em = await emettre({}, { montantPartielHtCents: 123456 });
+    h.m.docParId.mockResolvedValue({ metadata: em.metadata });
+    const ligne = ligneAvoirEnBase(em.ligneCreee);
+    vi.mocked(getQualiopiConfig).mockResolvedValue(10 as never);
+    try {
+      const r = await regenerer(ligne);
+      expect("error" in r).toBe(false);
+    } finally {
+      vi.mocked(getQualiopiConfig).mockResolvedValue(20 as never);
+    }
+    const data = derniereCreation().metadata.renderData.data as {
+      lignes: never[];
+      regimeTva: "assujetti";
+      tauxTvaStandardPercent: number;
+    };
+    expect(data.tauxTvaStandardPercent).toBe(20);
+    const t = computeTotauxFacture(data.lignes, data.regimeTva, data.tauxTvaStandardPercent);
+    expect(t.totalTvaCents).toBe(ligne.montantTvaCents);
+    expect(t.totalTtcCents).toBe(ligne.montantTtcCents);
+  });
+
+  it("(b) — la version de gabarit est lue sur le document d'ORIGINE, pas sur le courant", async () => {
+    const em = await emettre();
+    const courantDefectueux = { renderData: { gabaritVersion: 1, data: {} } };
+    h.m.docParId.mockImplementation(async (a: { where: { id: string } }) =>
+      a.where.id === "doc-ancien" ? { metadata: em.metadata } : { metadata: courantDefectueux },
+    );
+    h.m.docAvoirAncien.mockResolvedValue({ id: "doc-ancien", metadata: em.metadata });
+    const r = await regenerer(ligneAvoirEnBase(em.ligneCreee, { documentId: "doc-defectueux" }));
+    expect("error" in r).toBe(false);
+    const regen = derniereCreation();
+    // Le courant dit v1 (archive) ; l'origine porte la version d'émission → pas de ré-édition en v1.
+    expect(regen.metadata.renderData.gabaritVersion).toBe(
+      (em.metadata.renderData as { gabaritVersion: number }).gabaritVersion,
+    );
+    expect(sha(h.m.pdfs.at(-1)!)).toBe(sha(em.pdf));
+  });
+
+  it("(c) — source 1 refusée si data.numero n'est pas le numéro de l'avoir", async () => {
+    const em = await emettre();
+    const autre = JSON.parse(JSON.stringify(em.metadata)) as {
+      renderData: { data: Record<string, unknown> };
+    };
+    autre.renderData.data["numero"] = "AXI-AVO-2026-999";
+    autre.renderData.data["motifAvoir"] = "Motif d'un AUTRE avoir";
+    h.m.docParId.mockImplementation(async (a: { where: { id: string } }) =>
+      a.where.id === "doc-ancien" ? { metadata: em.metadata } : { metadata: autre },
+    );
+    h.m.docAvoirAncien.mockResolvedValue({ id: "doc-ancien", metadata: em.metadata });
+    const r = await regenerer(ligneAvoirEnBase(em.ligneCreee));
+    expect("error" in r).toBe(false);
+    expect(derniereCreation().metadata.renderData.data).toMatchObject({ motifAvoir: MOTIF });
   });
 });
