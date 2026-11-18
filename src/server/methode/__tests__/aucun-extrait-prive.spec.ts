@@ -38,7 +38,12 @@ const FICHIERS_DE_LA_FICHE = [
 ];
 
 const EURO = String.fromCharCode(0x20ac);
-const MOTIF_MONTANT = new RegExp(String.raw`\d[\d\s  .,]*\s?(?:${EURO}|EUR\b|euros?\b)`, "i");
+const ESPACES_FINES = String.fromCharCode(0xa0, 0x202f);
+const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
+const MOTIF_MONTANT = new RegExp(
+  String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|md|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${EURO}|EUR\b|euros?\b)|(?:${EURO}|\bEUR)\s?\d`,
+  "i",
+);
 const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\.[A-Za-z]{2,}/;
 const MOTIF_TELEPHONE = /(?:\+33|0033|(?<![\d.]))0?[1-9](?:[\s.-]?\d{2}){4}(?!\d)/;
 const MOTIF_SESSION = new RegExp(

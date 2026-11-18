@@ -97,10 +97,12 @@ export function slugifier(texte: string, max = 60): string {
 const SYMBOLE_EURO = String.fromCharCode(0x20ac);
 // espace insécable et espace fine insécable, sans les écrire en clair
 const ESPACES_FINES = String.fromCharCode(0xa0, 0x202f);
-const MOTIF_MONTANT = new RegExp(
-  String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`,
-  "i",
-);
+const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
+// nombre, multiplicateur éventuel (k, M, Md, mille, million…), puis symbole ou « EUR/euro »
+const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|md|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`;
+// symbole ou « EUR » placé devant le nombre
+const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
+const MOTIF_MONTANT = new RegExp(`${MONTANT_APRES}|${MONTANT_AVANT}`, "i");
 
 export function contientMontant(texte: string): boolean {
   return MOTIF_MONTANT.test(texte);
@@ -160,7 +162,7 @@ const MOTIF_NUMERO = /^(\d{1,2})\.\s+(\S.{1,88})$/;
 
 /**
  * Lecture d'une ligne « N. Titre » : candidate à un titre de section, ou rien.
- * Un titre en forme de question (« 3. Pourquoi toi, et pas un autre ? ») n'est
+ * Un titre en forme de question (« 3. Un titre en forme de question ? ») n'est
  * retenu que s'il est suivi d'un paragraphe : les questions de quiz ne le sont pas.
  */
 function candidatNumerote(ligne: string): { n: number; titre: string; question: boolean } | null {
@@ -181,7 +183,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
   const morceaux: Morceau[] = [];
   let courant: Morceau = { slug: "introduction", titre: titreFichier, lignes: [] };
   let dernierNumero = 0;
-  // Liste numérotée IMBRIQUÉE (cellules de tableau « 1. Se positionner »…) :
+  // Liste numérotée IMBRIQUÉE (cellules de tableau « 1. Premier pas »…) :
   // elle repart de 1 et peut croiser le numéro attendu de la section suivante.
   let numeroImbrique = 0;
   let dansBlocFixe = false;
