@@ -7,8 +7,10 @@
  * lu : ni payload, ni adresse.
  */
 
+import type { EmailOutboxStatus } from "../../../../prisma/generated/client";
+
 export const GABARIT_DEVIS_ENVOI = "devis-envoi" as const;
-export const STATUTS_EMAIL_EN_ATTENTE = ["a_valider", "approuve"] as const;
+export const STATUTS_EMAIL_EN_ATTENTE: readonly EmailOutboxStatus[] = ["a_valider", "approuve"];
 
 export const MSG_EMAIL_EN_ATTENTE_MODIF =
   "Un e-mail de ce devis attend validation : refusez-le avant de modifier le devis.";
@@ -20,7 +22,7 @@ interface LecteurOutbox {
         template: string;
         entityType: string;
         entityId: string;
-        statut: { in: string[] };
+        statut: { in: EmailOutboxStatus[] };
       };
       select: { id: true };
     }) => Promise<{ id: string } | null>;
