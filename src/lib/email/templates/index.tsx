@@ -6,6 +6,7 @@
 import { render } from "@react-email/render";
 import { avecDonneesRendu, type FamilleEmail } from "./_layout";
 import { urlOpposition } from "@/server/email/opposition-jeton";
+import { urlRepereOpposition } from "@/server/email/opposition-differee";
 import type { ReactElement } from "react";
 import type { EmailJobName } from "@/server/queue/types";
 import type { Locale } from "../../../../prisma/generated/client";
@@ -822,8 +823,10 @@ export async function renderEmailTemplate(
    * Destinataire — lot 1b (2026-09-02). Quand il est connu, le pied de page
    * des familles B, C et D porte son lien d'opposition signé. Le worker le
    * fournit toujours ; les aperçus de la console et les tests peuvent l'omettre.
+   * `oppositionDifferee` (I2-0) : le lien porte un repère, remplacé par le worker au départ ;
+   * aucune adresse (même encodée) n'entre dans le corps figé.
    */
-  contexte: { destinataire?: string | null } = {},
+  contexte: { destinataire?: string | null; oppositionDifferee?: boolean } = {},
 ): Promise<RenderedEmail> {
   const tpl = TEMPLATES[name];
   const Component = tpl.component;
@@ -831,7 +834,11 @@ export async function renderEmailTemplate(
   // Données propres à CE rendu (lien d'opposition du destinataire) : portées par un contexte
   // asynchrone créé ici, jamais par une variable de module — deux rendus s'entrelacent (`await`).
   const donnees = {
-    oppositionHref: contexte.destinataire ? urlOpposition(contexte.destinataire) : null,
+    oppositionHref: contexte.oppositionDifferee
+      ? urlRepereOpposition()
+      : contexte.destinataire
+        ? urlOpposition(contexte.destinataire)
+        : null,
     // « Ouvrir mon espace » : seulement pour un e-mail d'apporteur qui porte son lien (2026-10-09).
     lienEspace:
       (name.startsWith("apporteur-") || estGabaritFormateurIndependant(name)) &&
