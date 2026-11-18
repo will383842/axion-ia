@@ -205,6 +205,9 @@ describe("REQ-INT-007 — face VERTE : le dépôt réel", () => {
         "src/server/qualiopi/crm/contact-facturation.ts (definirContactFacturation)",
         // Lot OPCO A7d : n'écrit que l'effectif et sa provenance, hors charge Partners.
         "src/server/qualiopi/crm/effectif-insee.ts (rafraichirEffectifInsee)",
+        // 17/11/2026 (B2, module non branché) : `marquerDevisEnvoye(tx, …)` reprend le MÊME statut
+        // commercial que sendDevisAction (prospect/perdu → devis_envoye), hors charge Partners.
+        "src/server/qualiopi/devis/marquer-devis-envoye.ts (marquerDevisEnvoye)",
       ]);
       const { code, lignes } = rendu(b);
       expect(lignes.at(-1)).toMatch(/8 écrivain\(s\) de client\.cree\|client\.mis_a_jour/);

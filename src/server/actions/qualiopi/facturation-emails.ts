@@ -26,6 +26,7 @@ import {
   creerTokenDocument,
   TokenDocumentError,
 } from "@/server/qualiopi/documents/signature/token-document";
+import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 import {
   formulesDepuisMetadata,
   nomPourSalutationDevis,
@@ -77,6 +78,9 @@ export async function envoyerDevisEmailAction(
           raisonSociale: true,
           contactEmail: true,
           contactNom: true,
+          contactCivilite: true,
+          contactPrenom: true,
+          contactNomFamille: true,
           // Voir devis.ts : la qualité porte l'opposabilité du pouvoir de signer.
           contactFonction: true,
         },
@@ -197,6 +201,12 @@ export async function envoyerDevisEmailAction(
     "fr",
     payloadDevisEnvoi({
       clientNom: nomPourSalutationDevis(devis.client),
+      salutation: salutationPourPayload({
+        clientNom: nomPourSalutationDevis(devis.client),
+        contactCivilite: devis.client.contactCivilite,
+        contactPrenom: devis.client.contactPrenom,
+        contactNomFamille: devis.client.contactNomFamille,
+      }),
       numero: devis.numero,
       montantTotalHtCents: devis.montantTotalHtCents,
       montantLabel: `${eur(devis.montantTotalHtCents)} HT`,

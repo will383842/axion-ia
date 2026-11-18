@@ -64,6 +64,7 @@ import {
   signatureClientDuDevis,
 } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 import {
   nomPourSalutationDevis,
   payloadDevisEnvoi,
@@ -187,6 +188,9 @@ export async function createDevisAction(
           dateValidite,
           ...(v.activite !== undefined ? { activite: v.activite } : {}),
           ...(v.refClient !== undefined ? { refClient: v.refClient } : {}),
+          ...(v.conditionsParticulieres
+            ? { conditionsParticulieres: v.conditionsParticulieres }
+            : {}),
           ...(v.financementSuggere !== undefined
             ? { financementSuggere: v.financementSuggere }
             : {}),
@@ -357,6 +361,8 @@ export async function sendDevisAction(id: string): Promise<
             offre: true,
             // Avec `offre` : un devis CLASSIQUE n'a ni offre ni empreinte (message de refus).
             offreSha256: true,
+            // Texte imprimé sur le PDF (devis classique) : sans lui, il disparaîtrait de la pièce envoyée.
+            conditionsParticulieres: true,
             // Pièce de la version REMPLACÉE : son lien de signature doit mourir avec
             // elle (voir l'écriture plus bas).
             replacesDevis: { select: { statut: true, documentGenereId: true } },
@@ -378,6 +384,10 @@ export async function sendDevisAction(id: string): Promise<
                 adresseCodePostal: true,
                 adresseVille: true,
                 contactNom: true,
+                // Salutation « Bonjour Madame Dupont, » (B4) : champs saisis à part, jamais découpés.
+                contactCivilite: true,
+                contactPrenom: true,
+                contactNomFamille: true,
                 contactEmail: true,
                 // 🔴 Repris comme QUALITÉ figée du signataire (opposabilité du POUVOIR de
                 // signer au moment de l'engagement).
@@ -544,6 +554,12 @@ export async function sendDevisAction(id: string): Promise<
             "fr",
             payloadDevisEnvoi({
               clientNom: nomPourSalutationDevis(devis.client),
+              salutation: salutationPourPayload({
+                clientNom: nomPourSalutationDevis(devis.client),
+                contactCivilite: devis.client.contactCivilite,
+                contactPrenom: devis.client.contactPrenom,
+                contactNomFamille: devis.client.contactNomFamille,
+              }),
               numero: devis.numero,
               montantTotalHtCents: devis.montantTotalHtCents,
               montantLabel: `${eurHt(devis.montantTotalHtCents)} HT`,
@@ -1109,6 +1125,7 @@ export async function reviseDevisAction(
       // Devis à formules : la révision reste éditable par /modifier, donc garde son offre.
       offre: true,
       offreSha256: true,
+      conditionsParticulieres: true,
     },
   });
   if (!origine) return { error: "Devis introuvable" };
@@ -1184,6 +1201,9 @@ export async function reviseDevisAction(
           replacesDevisId: origine.id,
           ...(origine.activite !== null ? { activite: origine.activite } : {}),
           ...(origine.refClient !== null ? { refClient: origine.refClient } : {}),
+          ...(origine.conditionsParticulieres !== null
+            ? { conditionsParticulieres: origine.conditionsParticulieres }
+            : {}),
           ...(origine.financementSuggere !== null
             ? { financementSuggere: origine.financementSuggere }
             : {}),

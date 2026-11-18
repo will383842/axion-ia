@@ -15,6 +15,7 @@ const DEVIS: DevisPourPdf = {
   montantOpcoEstimeCents: 100000,
   resteAChargeCents: 50000,
   dateValidite: new Date("2026-12-31T12:00:00Z"),
+  conditionsParticulieres: null,
   client: {
     type: "particulier",
     raisonSociale: "Jeanne Martin",
@@ -80,5 +81,81 @@ describe("donneesPdfDevis", () => {
       maintenant,
     );
     expect(d.identite.qualiopi).toBe("FR-2024-001");
+  });
+
+  describe("conditions particulières", () => {
+    const ctx = {
+      identite,
+      regimeTva: "assujetti" as const,
+      tauxStandard: 20,
+      certificationObtenue: true,
+    };
+
+    it("devis classique avec texte : le champ part au PDF", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect(d.conditionsParticulieres).toBe("Acompte de 30 %.");
+    });
+
+    it("drapeau faux : la phrase de primauté part en NULL (rien à imprimer)", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect(d.phrasePrimaute).toBeNull();
+    });
+
+    it("sans conditions particulières : la phrase est nulle ou absente", () => {
+      const d = donneesPdfDevis({ ...DEVIS, conditionsParticulieres: null }, ctx, maintenant);
+      expect(d.phrasePrimaute ?? null).toBeNull();
+    });
+
+    it("drapeau levé : la phrase validée part au PDF, avec les conditions seulement", async () => {
+      vi.resetModules();
+      vi.doMock("@/server/qualiopi/devis/conditions-particulieres", async (orig) => ({
+        ...(await orig<typeof import("@/server/qualiopi/devis/conditions-particulieres")>()),
+        phrasePrimauteAImprimer: () => "Phrase validée.",
+      }));
+      const { donneesPdfDevis: avecPhrase } = await import("./donnees-pdf-devis");
+      const avec = avecPhrase(
+        { ...DEVIS, offre: null, conditionsParticulieres: "Acompte." },
+        ctx,
+        maintenant,
+      );
+      expect(avec.phrasePrimaute).toBe("Phrase validée.");
+      const sans = avecPhrase({ ...DEVIS, conditionsParticulieres: null }, ctx, maintenant);
+      expect(sans.phrasePrimaute ?? null).toBeNull();
+      vi.doUnmock("@/server/qualiopi/devis/conditions-particulieres");
+      vi.resetModules();
+    });
+
+    it("devis à formules (offre non nulle) : le champ est absent même si la colonne est remplie", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, offre: { formules: [] }, conditionsParticulieres: "Acompte de 30 %." },
+        ctx,
+        maintenant,
+      );
+      expect("conditionsParticulieres" in d).toBe(false);
+    });
+
+    it("texte absent ou blanc : aucune clé", () => {
+      for (const c of [null, "", "  \n "]) {
+        const d = donneesPdfDevis({ ...DEVIS, conditionsParticulieres: c }, ctx, maintenant);
+        expect("conditionsParticulieres" in d, JSON.stringify(c)).toBe(false);
+      }
+    });
+
+    it("le champ part même sans certification (texte du client, pas une mention de l'organisme)", () => {
+      const d = donneesPdfDevis(
+        { ...DEVIS, conditionsParticulieres: "Texte." },
+        { ...ctx, certificationObtenue: false },
+        maintenant,
+      );
+      expect(d.conditionsParticulieres).toBe("Texte.");
+    });
   });
 });

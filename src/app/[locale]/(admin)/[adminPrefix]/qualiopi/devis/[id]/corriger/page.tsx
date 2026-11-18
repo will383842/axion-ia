@@ -67,6 +67,7 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
       lignes: true,
       activite: true,
       refClient: true,
+      conditionsParticulieres: true,
       updatedAt: true,
       client: { select: { id: true, numero: true, raisonSociale: true } },
     },
@@ -169,6 +170,7 @@ export default async function QualiopiDevisCorrigerPage({ params }: PageProps) {
           lignes,
           activite: devis.activite,
           refClient: devis.refClient,
+          conditionsParticulieres: devis.conditionsParticulieres,
         }}
       />
     </AdminPageShell>

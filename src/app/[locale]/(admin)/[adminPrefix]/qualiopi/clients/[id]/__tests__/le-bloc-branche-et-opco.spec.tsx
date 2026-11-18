@@ -70,7 +70,7 @@ beforeEach(() => {
 
 /** Le bloc seul, découpé dans le rendu de la page. */
 function bloc(html: string): string {
-  const debut = html.indexOf("Branche et OPCO");
+  const debut = html.indexOf("Branche professionnelle");
   return debut < 0 ? "" : html.slice(debut, html.indexOf("</section>", debut));
 }
 
@@ -97,7 +97,7 @@ describe("fiche client — bloc « Branche et OPCO »", () => {
     d.session = { user: { id: "u1", role: "admin" } };
     d.fiche = { ...FICHE_360, ...BRANCHE, type: "particulier" };
     const html = await rendreFiche(Page, "facturation");
-    expect(html).not.toContain("Branche et OPCO");
+    expect(html).not.toContain("Branche professionnelle");
   });
 });
 
