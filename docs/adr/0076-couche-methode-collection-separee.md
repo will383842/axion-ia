@@ -63,7 +63,39 @@ n'est pas créée.
 - aucun workflow, worker, cron ni script de `package.json` ne l'appelle (test) ;
 - idempotent sur le slug `methode/<fichier>/<section>` ; jamais de suppression.
 
-### 2.5 Filtre de sortie unique
+### 2.5 Refus par défaut : la sécurité, c'est l'approbation à la main
+
+**Décision du pilote, 18/11/2026 (elle l'emporte sur ce qui suit).** Un filtre qui cherche les
+mauvaises formes une par une (montants, promesses, parts, coordonnées) ne sera jamais
+complet : chaque relecture en trouvait de nouvelles. Le principe est donc inversé.
+
+- **Liste blanche.** Une section n'est servie que si la **première ligne de son texte**, dans
+  le corpus, est exactement `sortie: validee` : la marque que le fondateur pose **à la main,
+  section par section**, sous le titre de la section. Sans cette marque : jamais servie, quel
+  que soit son texte, même saine, même noyau.
+- **Aucune tolérance.** Une autre casse, une espace de plus ou de moins, un accent, un retrait,
+  une mise en forme (citation, liste, gras, commentaire), un caractère invisible ou
+  d'alphabet voisin, ou la marque ailleurs que sur la première ligne (dans le corps, en fin de
+  texte), ne comptent pas. La marque n'est lue que dans le texte de la section : jamais dans
+  le titre, jamais dans une étiquette.
+- **L'import ne pose jamais la marque et ne la déduit de rien.** Il recopie le corpus tel quel :
+  une section saine sans marque reste non approuvée, et un corpus réimporté sans la marque la
+  retire. Aucune fonction du code ne l'écrit (un test le garde : le littéral n'existe que dans
+  `decoupage.ts`, et seulement pour comparer).
+- **Deux lectures de la même règle** : le filtre de sortie (`estApprouvee`, exact, appliqué au
+  noyau et aux extraits) et la requête des extraits (`LIKE`, premier filet qui borne la
+  lecture). La ligne de marque est retirée du texte rendu.
+- **Le filtre ci-dessous n'est que le SECOND FILET**, appliqué aux seules sections
+  approuvées : il ne rend aucune section sûre, il rattrape une erreur de relecture. **La
+  sécurité repose sur l'approbation à la main.** Mieux vaut refuser une section saine.
+
+Formes connues qui peuvent encore passer le second filet dans une section approuvée (la
+relecture du fondateur les arrête, c'est le principe) : « 5000e », « CHF » devant le nombre,
+entité HTML pour l'euro, « cinq cents balles », « 90 pour 100 », numéro court 3615, adresses
+postales, URL de profil nominatif, nombre nu sans unité, « l'année » seule, « méthode
+infaillible ».
+
+### 2.6 Second filet : filtre de sortie
 
 `filtrerPourSortie` (`src/server/methode/filtre-sortie.ts`) est appliqué au noyau **et** aux
 extraits. Il refuse toute fiche : étiquetée `chiffres-exercice`, `doctrine:a-revoir` ou
@@ -80,12 +112,18 @@ Double verrou, **les mêmes motifs à l'import** (mêmes fonctions, importées d
 motif de `detecterInterditsSurface` pose `doctrine:a-revoir` ; un courriel ou un téléphone fait
 **refuser** la section (elle n'est pas écrite). Dans tous les cas la fiche n'est jamais servie.
 
+Refus à la racine ajoutés le 18/11 (second filet) : radicaux « doubl / tripl / quadrupl /
+décupl » ; un nombre collé à `x` ou `×` (dans les deux sens) ; « engag… » avec « résultat » ;
+« moitié, tiers, quart, majorité » seuls ; « hors » avec taxe ou TVA, « HTVA » ; « at » suivi
+d'un domaine avec point ; « rend » ou « restitue » avec argent ; « pas de résultat » ; « brut »
+ou « net » après un nombre ; « par heure, jour, mois, trimestre, an », « de l'heure ».
+
 On préfère refuser une fiche saine que laisser passer une fiche douteuse. Conséquence
 acceptée : si le noyau porte un montant, il n'est **pas** servi ; il faut réécrire sa section
 « essentiel » sans chiffres. Le noyau est reconnu par la forme de son slug
 (`methode/<fichier numéroté 00>/essentiel`), jamais par un titre écrit en dur.
 
-### 2.6 Rien n'est ouvert ni allumé
+### 2.7 Rien n'est ouvert ni allumé
 
 Trois variables, toutes éteintes par défaut, déclarées dans `src/env.ts` et seulement
 commentées dans `.env.example` :
@@ -108,6 +146,8 @@ l'empreinte épinglée du manifeste).
 
 ## 4. Gestes du fondateur
 
+0. **Relire chaque section et poser la marque `sortie: validee` à la main**, sur la première
+   ligne, sous son titre, dans le corpus source. Sans marque, une section n'est jamais servie.
 1. Fournir une copie locale propre du dossier source, et une liste locale de noms sensibles.
 2. Lancer l'essai à blanc, lire le journal, puis `--ecrire` sur la base voulue.
 3. Poser `METHODE_ACTIVE=true` le moment venu.

@@ -30,6 +30,9 @@ pnpm tsx scripts/methode/importer-methode.ts --source <dossier> --ecrire
   autre source n'est pas touchée.
 - Lire le journal de l'essai à blanc avant `--ecrire` : comptes, slugs, motifs seulement.
 
+Le corpus d'abord : le fondateur relit chaque section et pose la marque `sortie: validee` sur
+la ligne qui suit son titre. C'est le corpus qui fait foi, pas l'import.
+
 Étiquettes posées : `livre:<nom du fichier>`, `type:regle|script|objection|calcul|posture`,
 `chiffres-exercice` (un montant : avertissement en tête), `secteur:sante`,
 `doctrine:a-revoir`. Ces trois dernières ne sortent **jamais**.
@@ -48,8 +51,17 @@ Mieux vaut laisser la variable absente que mal l'écrire.
 
 ## 3. Ce que rend la couche
 
+> ⛔ **La sécurité repose sur l'approbation à la main, section par section. Le filtre n'est
+> qu'un filet.** Une section n'est servie que si sa **première ligne** est exactement
+> `sortie: validee`, posée par le fondateur dans le corpus, sous le titre de la section.
+> Sans cette marque : jamais servie, même saine (le noyau compris). Aucune variante n'est
+> tolérée (casse, espace, accent, retrait, mise en forme, marque dans le corps). L'import
+> **ne pose jamais** la marque et ne la déduit de rien : il recopie le corpus ; réimporter un
+> corpus sans marque la retire. Aucune fonction du code ne peut l'écrire. La ligne de marque
+> n'est pas rendue à l'appelant.
+
 `obtenirContexteMethode({ sujet, max? })` rend un noyau et au plus dix extraits de 1 500
-caractères, **tous passés par `filtrerPourSortie`** : une fiche avec un montant, un courriel,
+caractères, **approuvés, puis passés par `filtrerPourSortie`** (second filet) : une fiche avec un montant, un courriel,
 un téléphone, une promesse de gain, un témoignage, un ancrage local, ou une des trois
 étiquettes interdites, n'est pas rendue. Si le noyau est refusé, il n'est jamais remplacé par une fiche qui n'est pas un noyau ; un autre noyau sain (autre fiche numérotée 00), s'il existe, peut être servi. Pour retrouver un noyau, le fondateur réécrit sa section « essentiel » sans chiffres.
 
