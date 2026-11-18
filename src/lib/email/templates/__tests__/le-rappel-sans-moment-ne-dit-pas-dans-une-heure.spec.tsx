@@ -137,7 +137,7 @@ const AVANT: Record<string, { objet: string; sha: string }> = {
     sha: "a2d7c10beaaea88c5365994581611b170a608bb4277e367f8a3f08ddfbd79910",
   },
   "fr|confirmation|diagnostic": {
-    objet: "Appel de cadrage : vendredi 25 septembre à…",
+    objet: "Appel de cadrage à 11:30, vendredi 25…",
     sha: "0ca6d707c9b9a1faf8dc9c7c332f9ef553cc7596a589dfaadab2f8a9e6e20fa6",
   },
   "fr|confirmation|echange_projet": {

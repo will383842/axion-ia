@@ -190,6 +190,8 @@ interface VarianteType {
   readonly eyebrow: string;
   readonly objetConfirme: string;
   readonly objetConfirmeSansDate: string;
+  /** L'heure vient avant la date dans l'objet : la borne de 45 caractères coupe la fin, jamais l'heure. */
+  readonly heureAvantDate?: boolean;
   /**
    * Objets des rappels : `heure` `null` quand la charge ne la porte pas. Ils
    * passent par `objetCompose` (borne de 45 caractères), comme la confirmation.
@@ -214,6 +216,7 @@ const VARIANTES_FR: Readonly<Record<TypeAvecVariante, VarianteType>> = {
     eyebrow: "Appel de cadrage",
     objetConfirme: "Appel de cadrage :",
     objetConfirmeSansDate: "Votre appel de cadrage est confirmé",
+    heureAvantDate: true,
     objetJ1: (h) =>
       objetCompose("Rappel :", h ? `appel de cadrage demain à ${h}` : "appel de cadrage demain"),
     objetH1: (h) =>
@@ -343,8 +346,17 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const v = varianteDe(locale, p);
   if (v) {
     const heure = texteOuNull(p.heure);
-    if (m === "confirmation")
+    if (m === "confirmation") {
+      const date = texteOuNull(p.date);
+      if (v.heureAvantDate && heure && date) {
+        const prefixe = v.objetConfirme.replace(/\s*:$/, "");
+        return objetCompose(
+          prefixe,
+          locale === "fr" ? `à ${heure}, ${date}` : `at ${heure}, ${date}`,
+        );
+      }
       return quand ? objetCompose(v.objetConfirme, quand) : v.objetConfirmeSansDate;
+    }
     if (m === "j1") return v.objetJ1(heure);
     return v.objetH1(heure);
   }

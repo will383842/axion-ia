@@ -179,7 +179,7 @@ export const FICHE_LYON: FicheLocale = {
     },
     {
       q: "Pouvez-vous intervenir dans une commune de la métropole autre que Lyon ?",
-      a: "Oui. La Métropole de Lyon compte 58 communes et la Journée IA se tient dans vos locaux, où qu’ils soient dans cette zone. Nous ne disposons pas de bureau à Lyon : nous nous déplaçons. L’adresse et la date sont fixées pendant le diagnostic gratuit de 45 minutes, avant toute réservation. Exemples de communes concernées : Vaulx-en-Velin, Vénissieux, Vernaison, Villeurbanne.",
+      a: "Oui. La Métropole de Lyon compte 58 communes et la Journée IA se tient dans vos locaux, où qu’ils soient dans cette zone. Nous ne disposons pas de bureau à Lyon : nous nous déplaçons. L’adresse et la date sont fixées pendant l’appel de cadrage gratuit de 45 minutes, avant toute réservation. Exemples de communes concernées : Vaulx-en-Velin, Vénissieux, Vernaison, Villeurbanne.",
     },
     {
       q: "Quelles institutions de l’écosystème lyonnais pouvons-nous consulter ?",

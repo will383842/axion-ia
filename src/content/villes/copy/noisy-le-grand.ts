@@ -53,7 +53,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
   services: {
     sitesWeb: {
       fr: {
-        hero: "Noisy-le-Grand site web et plateforme SaaS augmentés par l'IA : Axion-IA conçoit des sites et applications métier IA-native pour le tissu tertiaire du Mont d'Est et de Marne-la-Vallée. Le quartier d'affaires concentre des back-offices financiers et d'assurance (RCI Banque / Mobilize Financial Services avenue du Pavé Neuf, Groupama Paris Val de Loire), du marketing agroalimentaire (Lactalis Nestlé Ultra-Frais) et une direction régionale France Travail, sur fond d'un tissu à 70 % d'entreprises individuelles — 1 159 créations d'EI sur les 1 655 établissements ouverts en 2024. Pour ces structures, nous construisons des plateformes sur mesure : agents conversationnels RAG, automatisation du suivi client B2B, prise de RDV et portails self-service, avec hébergement en Union européenne et conformité RGPD. UX/UI, mobile, e-commerce multi-CMS et IA dans la même mission.",
+        hero: "Noisy-le-Grand site web et plateforme SaaS augmentés par l'IA : Axion-IA conçoit des sites et applications métier IA-native pour le tissu tertiaire du Mont d'Est et de Marne-la-Vallée. Le quartier d'affaires concentre des back-offices financiers et d'assurance (RCI Banque / Mobilize Financial Services avenue du Pavé Neuf, Groupama Paris Val de Loire), du marketing agroalimentaire (Lactalis Nestlé Ultra-Frais) et une direction régionale d’un organisme public, sur fond d'un tissu à 70 % d'entreprises individuelles — 1 159 créations d'EI sur les 1 655 établissements ouverts en 2024. Pour ces structures, nous construisons des plateformes sur mesure : agents conversationnels RAG, automatisation du suivi client B2B, prise de RDV et portails self-service, avec hébergement en Union européenne et conformité RGPD. UX/UI, mobile, e-commerce multi-CMS et IA dans la même mission.",
         whyHere: [
           "Le Mont d'Est est d'abord un quartier de back-offices financiers et d'assurance : RCI Banque / Mobilize Financial Services (avenue du Pavé Neuf) et Groupama Paris Val de Loire y opèrent des fonctions support à fort volume documentaire, terrain naturel pour des portails B2B et des agents IA de qualification et de traitement de dossiers.",
           "Le tissu économique noiséen est massivement composé de TPE et d'indépendants : 1 159 des 1 655 établissements créés en 2024 sont des entreprises individuelles (70 %). Nous livrons à ces structures des sites vitrines et e-commerce avec assistant IA intégré, sans budget de scale-up.",
@@ -110,7 +110,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
             sizeLabel: "Grande entreprise",
             price: "Programme multi-sites et gouvernance IA",
             detail:
-              "Pour les sièges et directions régionales implantés à Noisy-le-Grand (type France Travail, groupes financiers et agroalimentaires) : socle commun multi-sites, design system, gouvernance IA centralisée et déploiement progressif.",
+              "Pour les sièges et directions régionales implantés à Noisy-le-Grand (type organismes publics, groupes financiers et agroalimentaires) : socle commun multi-sites, design system, gouvernance IA centralisée et déploiement progressif.",
           },
         ],
         faq: [
@@ -139,7 +139,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
           "Devis à partir de 24-48 h selon la complexité, grille tarifaire publique. Hébergement en Union européenne par défaut et conformité RGPD intégrée dès la conception, ce qui compte pour les back-offices financiers et d'assurance du Mont d'Est. Le code, les données et les accès restent intégralement chez vous : votre site ou votre SaaS est repris par vos équipes ou par tout prestataire de Marne-la-Vallée, sans verrou Axion-IA.",
       },
       en: {
-        hero: "Noisy-le-Grand AI-augmented websites and SaaS platforms: Axion-IA builds AI-native sites and business applications for the tertiary fabric of the Mont d'Est district and Marne-la-Vallée. This business hub concentrates financial and insurance back-offices (RCI Banque / Mobilize Financial Services on avenue du Pavé Neuf, Groupama Paris Val de Loire), food-industry marketing (Lactalis Nestlé Ultra-Frais) and a France Travail regional directorate, against a fabric that is 70% sole proprietorships — 1,159 individual-business registrations out of 1,655 establishments opened in 2024. For these organisations we build bespoke platforms: RAG conversational agents, B2B client-follow-up automation, online booking and self-service portals, with European Union hosting and GDPR compliance. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement.",
+        hero: "Noisy-le-Grand AI-augmented websites and SaaS platforms: Axion-IA builds AI-native sites and business applications for the tertiary fabric of the Mont d'Est district and Marne-la-Vallée. This business hub concentrates financial and insurance back-offices (RCI Banque / Mobilize Financial Services on avenue du Pavé Neuf, Groupama Paris Val de Loire), food-industry marketing (Lactalis Nestlé Ultra-Frais) and a public-agency regional directorate, against a fabric that is 70% sole proprietorships — 1,159 individual-business registrations out of 1,655 establishments opened in 2024. For these organisations we build bespoke platforms: RAG conversational agents, B2B client-follow-up automation, online booking and self-service portals, with European Union hosting and GDPR compliance. UX/UI, mobile, multi-CMS e-commerce and AI in a single engagement.",
         whyHere: [
           "The Mont d'Est is first and foremost a district of financial and insurance back-offices: RCI Banque / Mobilize Financial Services (avenue du Pavé Neuf) and Groupama Paris Val de Loire run document-heavy support functions there — a natural fit for B2B portals and AI agents for case qualification and processing.",
           "The Noisy-le-Grand fabric is overwhelmingly micro-businesses and freelancers: 1,159 of the 1,655 establishments created in 2024 are sole proprietorships (70%). We deliver showcase and e-commerce sites with an embedded AI assistant to these structures, without a scale-up budget.",
@@ -196,7 +196,7 @@ export const NOISY_LE_GRAND_COPY: VilleCopy = {
             sizeLabel: "Large enterprise",
             price: "Multi-site programme and AI governance",
             detail:
-              "For headquarters and regional directorates based in Noisy-le-Grand (France Travail type, financial and food groups): shared multi-site foundation, design system, centralised AI governance and phased rollout.",
+              "For headquarters and regional directorates based in Noisy-le-Grand (public-agency type, financial and food groups): shared multi-site foundation, design system, centralised AI governance and phased rollout.",
           },
         ],
         faq: [

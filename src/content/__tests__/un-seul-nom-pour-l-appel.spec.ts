@@ -42,7 +42,6 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/tour-france-ia\//, // autre rendez-vous (visio de 30 min)
   /src\/server\/calendly\/type-rendez-vous\.ts$/,
   /src\/server\/calendly\/(?:rappels-appel|choix-rendez-vous|urls-par-defaut)\.ts$/,
-  /\/villes\//, // pages ville : traitées par le chantier villes
   // EN ATTENTE de fusion de PR ouvertes (à vider, une fois fusionnées) : PR 2134 (implantations),
   // PR 2136 (accueil, a-propos), PR 2137 (positionnement du générateur).
   /src\/app\/\[locale\]\/implantations\/page\.tsx$/,

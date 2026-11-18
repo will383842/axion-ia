@@ -40,7 +40,7 @@ async function rendre(job: Job, extra: Record<string, unknown>) {
 describe("diagnostic IA", () => {
   it("confirmation : objet, surtitre « Appel de cadrage », réponses utiles", async () => {
     const r = await rendre("appel-confirme", { typeRendezVous: "diagnostic" });
-    expect(r.subject).toBe("Appel de cadrage : vendredi 9 octobre à 11:30");
+    expect(r.subject).toBe("Appel de cadrage à 11:30, vendredi 9 octobre");
     expect(r.text).toContain("Appel de cadrage");
     expect(r.text).toContain("votre appel de cadrage");
     expect(r.text).toContain("Vos réponses nous aident à préparer l'échange");

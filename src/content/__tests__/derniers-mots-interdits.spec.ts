@@ -17,7 +17,8 @@ import { describe, it, expect } from "vitest";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
 
-const MOTS = /grenoble|prise en charge|\bopco\b|qualiopi|\bcpf\b|france travail/i;
+const MOTS =
+  /grenoble|prise en charge|\bopco\b|qualiopi|\bcpf\b|france travail|aucun gain garanti|formation obligatoire/i;
 
 /** Les textes publics lus, sans exception. Un chemin disparu fait ROUGIR. */
 const CIBLES = [
@@ -28,6 +29,9 @@ const CIBLES = [
   "src/content/home-data.ts",
   "src/content/journee-ia-commun.ts",
   "src/content/offre.ts",
+  "src/content/villes/copy",
+  "src/content/villes/fiches-locales",
+  "src/content/villes/journee-ia-locale.ts",
   "src/content/regions.ts",
   "src/content/case-studies.ts",
   "src/app/[locale]/journee-ia",
@@ -62,8 +66,24 @@ export function lignesVisibles(source: string): { n: number; ligne: string }[] {
     );
 }
 
+/**
+ * Fichiers lus par la garde mais volontairement écartés, avec la raison :
+ *  · la page de la ville de Grenoble (Grenoble ne vit que là) ;
+ *  · `dunkerque.ts` : sa FAQ porte encore « prise en charge », mais le fichier est touché par la
+ *    PR 1979 (ouverte) : à retirer de cette liste dès que cette PR est fusionnée et corrigée.
+ * Les données brutes (`villes/data`, `villes/economic-data`) ne sont pas de la prose : elles
+ * nomment des lieux et des employeurs, et ne sont pas lues ici.
+ */
+const ECARTES: ReadonlyArray<RegExp> = [
+  /src\/content\/villes\/copy\/grenoble\.ts$/,
+  /src\/content\/villes\/copy\/dunkerque\.ts$/,
+];
+
 const TOUS: string[] = [];
 for (const c of CIBLES) fichiers(c, TOUS);
+for (let i = TOUS.length - 1; i >= 0; i--) {
+  if (ECARTES.some((re) => re.test(TOUS[i]!.replace(/\\/g, "/")))) TOUS.splice(i, 1);
+}
 
 describe("V1-05 — derniers mots interdits dans les textes publics", () => {
   it("lit bien les fichiers (plancher)", () => {
@@ -78,6 +98,8 @@ describe("V1-05 — derniers mots interdits dans les textes publics", () => {
       "Qualiopi",
       "CPF",
       "France Travail",
+      "Aucun gain garanti",
+      "formation obligatoire",
     ]) {
       expect(MOTS.test(`Texte avec ${mot}.`)).toBe(true);
     }

@@ -149,7 +149,7 @@ export const FICHE_BORDEAUX: FicheLocale = {
     },
     {
       q: "La Journée IA dessert-elle les communes de Bordeaux Métropole ?",
-      a: "Oui, les 28 communes de la métropole. Nous n’avons pas de bureau à Bordeaux : l’audit et la formation ont lieu chez vous. L’adresse et la date se fixent pendant le diagnostic gratuit de 45 minutes. Exemples de communes concernées : Saint-Médard-en-Jalles, Saint-Vincent-de-Paul, Talence, Villenave-d'Ornon.",
+      a: "Oui, les 28 communes de la métropole. Nous n’avons pas de bureau à Bordeaux : l’audit et la formation ont lieu chez vous. L’adresse et la date se fixent pendant l’appel de cadrage gratuit de 45 minutes. Exemples de communes concernées : Saint-Médard-en-Jalles, Saint-Vincent-de-Paul, Talence, Villenave-d'Ornon.",
     },
     {
       q: "Quels acteurs institutionnels existent autour de Bordeaux ?",
