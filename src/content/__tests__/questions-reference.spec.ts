@@ -19,7 +19,7 @@ describe("questions-reference", () => {
 
   it("le sujet figure dans la 1re phrase", () => {
     for (const q of Object.values(QUESTIONS_REFERENCE)) {
-      const phrase = premierePhrase(faqItems([q.id])[0].answer).toLowerCase();
+      const phrase = premierePhrase(faqItems([q.id])[0]!.answer).toLowerCase();
       expect(phrase, q.id).toContain(q.sujet.toLowerCase());
     }
   });

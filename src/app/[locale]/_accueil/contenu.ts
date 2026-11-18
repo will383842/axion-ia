@@ -22,7 +22,7 @@ import {
   MENTION_DECLARATION_OF,
 } from "@/content/journee-ia-commun";
 import { EFFECTIF_CIBLE, MICRO_TEXTE_RDV } from "@/content/offre";
-import { QUESTIONS_REFERENCE } from "@/content/questions-reference";
+import { reponseReference } from "@/content/questions-reference";
 
 /** Titre de la page : porte la marque, donc rendu tel quel (`title.absolute`). */
 export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
@@ -296,7 +296,7 @@ export const CONTENU = {
       {
         id: "faq-commencer",
         question: "Par où commencer avec l’IA dans une PME ?",
-        reponse: QUESTIONS_REFERENCE["ref-commencer"].reponse,
+        reponse: reponseReference("ref-commencer"),
       },
       {
         id: "faq-devis-relances",
@@ -313,7 +313,7 @@ export const CONTENU = {
       {
         id: "faq-ai-act",
         question: "Et l’AI Act, ça nous concerne ?",
-        reponse: QUESTIONS_REFERENCE["ref-ai-act-pme"].reponse,
+        reponse: reponseReference("ref-ai-act-pme"),
       },
     ],
     liensDebut: "Pour aller plus loin :",

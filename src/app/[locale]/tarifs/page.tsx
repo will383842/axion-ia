@@ -38,7 +38,7 @@ import { ANCRE_JOURNEE_IA, LIBELLE_RENDEZ_VOUS_RENVOI } from "@/content/renvoi-j
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
-import { faqItems } from "@/content/questions-reference";
+import { faqItems as faqReference } from "@/content/questions-reference";
 
 // Page récap tarifs (Sprint Header refonte 2026-05-24, Will ; réalignée sur La
 // Journée IA après l'audit SEO/GEO du 11/11/2026).
@@ -244,7 +244,7 @@ export default async function PricingPage({ params }: Props) {
           question: "Combien coûte La Journée IA ?",
           answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
         },
-        ...faqItems(["ref-formation-prix", "ref-audit-prix", "ref-automatisation-prix"]).map(
+        ...faqReference(["ref-formation-prix", "ref-audit-prix", "ref-automatisation-prix"]).map(
           ({ id, question, answer }) => ({
             id,
             question,

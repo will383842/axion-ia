@@ -167,6 +167,13 @@ export interface ItemFaqReference {
   liens?: ReadonlyArray<{ href: string; label: string }>;
 }
 
+/** Réponse brute d'une question de référence (lève si l'id est inconnu). */
+export function reponseReference(id: string): string {
+  const q = QUESTIONS_REFERENCE[id];
+  if (!q) throw new Error(`Question de référence inconnue : ${id}`);
+  return q.reponse;
+}
+
 /** Les questions demandées, dans l'ordre, jetons résolus (même tableau pour le texte visible et le JSON-LD). */
 export function faqItems(ids: readonly string[], _locale: "fr" = "fr"): ItemFaqReference[] {
   return ids.map((id) => {

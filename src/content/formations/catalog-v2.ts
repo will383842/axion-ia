@@ -7006,7 +7006,8 @@ const FORMATIONS_V2_SOURCE: ReadonlyArray<FormationV2> = [
  * montant ni durée) et « l'AI Act l'exige-t-il ? » (importée de `questions-reference.ts`).
  */
 function questionsCommunesFiche(f: FormationV2): FormationV2Faq[] {
-  const [aiAct] = faqItems(["ref-ai-act-formation"]);
+  const aiAct = faqItems(["ref-ai-act-formation"])[0];
+  if (!aiAct) throw new Error("ref-ai-act-formation absente");
   return [
     {
       question: `Quelle différence entre la formation « ${f.titreFr} » et la Journée IA ?`,
