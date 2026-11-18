@@ -608,13 +608,10 @@ export default async function BlogArticle({ params }: Props) {
               />
             </svg>
             <span>
-              {isFr ? "Dernière révision : " : "Last reviewed: "}
+              {isFr ? "Mis à jour le " : "Updated "}
               <time dateTime={view.updatedAt ?? view.publishedAt} className="tabular-nums">
                 {view.updatedAt ?? view.publishedAt}
               </time>
-              {view.updatedAt && view.updatedAt !== view.publishedAt ? (
-                <span className="text-fg-muted ml-1">{isFr ? "(mis à jour)" : "(updated)"}</span>
-              ) : null}
             </span>
           </div>
         </Container>

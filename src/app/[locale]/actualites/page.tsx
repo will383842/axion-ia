@@ -18,7 +18,6 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight, Rss, Newspaper, ShieldCheck, CalendarClock } from "lucide-react";
 import { routing } from "@/i18n/routing";
-import { FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { HeroBadge } from "@/components/marketing/HeroBadge";
@@ -195,11 +194,7 @@ export default async function ActualitesHub({ params }: Props) {
       url: `${SITE_URL}/fr/actualites/${item.slug}`,
       datePublished: item.publishedAt?.toISOString(),
     })),
-    // E-E-A-T : revue éditoriale rattachée au nœud Person canonique du fondateur
-    // (référence `@id`, pas de duplication d'identité). Parité hub /blog.
-    extra: {
-      reviewedBy: { "@id": FOUNDER_PERSON_ID },
-    },
+    // V2-17 : aucune relecture déclarée (`reviewedBy`) : aucune donnée n'atteste une relecture humaine.
   });
 
   // FAQ hub — AEO/GEO (réponses answer-first citables) + parité /blog. FAQPage

@@ -508,11 +508,10 @@ export default async function NewsArticlePage({ params }: Props) {
                 />
               </svg>
               <span>
-                Dernière révision :{" "}
+                Mis à jour le{" "}
                 <time dateTime={lastReviewed.toISOString()} className="tabular-nums">
                   {lastReviewed.toLocaleDateString("fr-FR")}
                 </time>
-                {showUpdated ? <span className="text-fg-muted ml-1">(mis à jour)</span> : null}
               </span>
             </div>
           </Container>

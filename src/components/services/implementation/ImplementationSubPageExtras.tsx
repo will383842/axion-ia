@@ -12,6 +12,7 @@ import { ArrowUpRight } from "lucide-react";
 
 import { Section } from "@/components/layout/Section";
 import { JsonLd } from "@/components/marketing/JsonLd";
+import { MisAJourLe } from "@/components/marketing/MisAJourLe";
 import { Link } from "@/i18n/navigation";
 import { FaqBlock } from "@/components/sections/FaqBlock";
 import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection";
@@ -118,6 +119,7 @@ export function ImplementationSubPageExtras({
 
       {/* Connaissances liées — KB V4.1 Service Binding (masqué si vide) */}
       <RelatedKnowledge service="implementation" />
+      <MisAJourLe locale={locale} chemin={path} />
     </>
   );
 }
