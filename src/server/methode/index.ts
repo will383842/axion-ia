@@ -8,8 +8,12 @@
  *   - `extraits` : les fiches les plus proches du sujet (recherche plein texte Postgres),
  *     dans la collection `methode-vente` uniquement. Le secteur santé n'est pas servi.
  *
- * Le noyau ET les extraits traversent `filtrerPourSortie` (filtre-sortie.ts) : une fiche
- * qui porte un montant, un courriel, un téléphone, une promesse de gain, un témoignage ou
+ * REFUS PAR DÉFAUT (décision du 18/11/2026) : une section n'est servie que si elle porte
+ * la marque d'approbation posée à la main par le fondateur dans le corpus (`estApprouvee`) ;
+ * sans cette marque, jamais, même saine. La couche ne pose la marque nulle part.
+ *
+ * Le noyau ET les extraits traversent `filtrerPourSortie` (filtre-sortie.ts), second filet
+ * appliqué aux sections approuvées : une fiche qui porte un montant, un courriel, un téléphone, une promesse de gain, un témoignage ou
  * un ancrage local, ou une étiquette `chiffres-exercice` / `doctrine:a-revoir` /
  * `secteur:sante`, n'est jamais rendue.
  *
@@ -31,7 +35,9 @@ import {
   ETIQUETTE_DOCTRINE,
   ETIQUETTE_SANTE,
   MOTIF_SLUG_NOYAU,
+  MOTIF_SQL_APPROBATION,
   estSlugNoyau,
+  retirerMarque,
 } from "./decoupage";
 import { filtrerPourSortie } from "./filtre-sortie";
 
@@ -43,6 +49,7 @@ export {
   ETIQUETTE_DOCTRINE,
   ETIQUETTE_SANTE,
   MOTIF_SLUG_NOYAU,
+  estApprouvee,
   estSlugNoyau,
 } from "./decoupage";
 export { filtrerPourSortie, motifRefus } from "./filtre-sortie";
@@ -146,7 +153,7 @@ async function lireNoyau(): Promise<FicheMethode | null> {
       etiquettes: (c.tags ?? []).map((t) => t.tag.slug),
     };
     if (filtrerPourSortie([fiche]).length === 0) continue;
-    return { slug: fiche.slug, titre: fiche.titre, texte: fiche.texte };
+    return { slug: fiche.slug, titre: fiche.titre, texte: retirerMarque(fiche.texte) };
   }
   return null;
 }
@@ -190,6 +197,7 @@ async function chercherExtraits(sujet: string, limite: number): Promise<ExtraitM
       AND ke.source_factory_id = 'methode-import'
       AND kc.slug = ANY($2::text[])
       AND ke.slug !~ $3
+      AND kt.body_text LIKE $6
       AND NOT EXISTS (
         SELECT 1 FROM knowledge_tags_on_entries te2
         JOIN knowledge_tags tg2 ON tg2.id = te2.tag_id
@@ -205,6 +213,7 @@ async function chercherExtraits(sujet: string, limite: number): Promise<ExtraitM
     MOTIF_SLUG_NOYAU.source,
     limite * FACTEUR_DE_LECTURE,
     etiquettesExclues(),
+    MOTIF_SQL_APPROBATION,
   );
 
   const lues: ExtraitMethode[] = lignes.map((l) => ({
@@ -217,7 +226,7 @@ async function chercherExtraits(sujet: string, limite: number): Promise<ExtraitM
   // Le filtre lit le texte ENTIER ; seule la sortie est ensuite bornée.
   return filtrerPourSortie(lues)
     .slice(0, limite)
-    .map((e) => ({ ...e, texte: borner(e.texte, EXTRAIT_MAX_CARACTERES) }));
+    .map((e) => ({ ...e, texte: borner(retirerMarque(e.texte), EXTRAIT_MAX_CARACTERES) }));
 }
 
 /**

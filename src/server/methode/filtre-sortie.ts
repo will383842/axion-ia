@@ -6,7 +6,12 @@
  * qu'un seul motif la touche ; on préfère refuser une fiche saine que laisser passer
  * une fiche douteuse.
  *
- * Refus :
+ * ⛔ LA SÉCURITÉ, C'EST L'APPROBATION À LA MAIN (décision du 18/11/2026) : une section
+ * n'est servie que si le fondateur l'a marquée dans le corpus (`estApprouvee`). Sans
+ * marque : jamais servie, même saine. Tout ce qui suit n'est que le SECOND FILET, appliqué
+ * aux seules sections approuvées : il ne rend aucune section sûre, il rattrape une erreur.
+ *
+ * Refus du second filet :
  *   - étiquette `chiffres-exercice`, `doctrine:a-revoir` ou `secteur:sante` ;
  *   - un montant en euros (titre ou texte) ;
  *   - un courriel ou un numéro de téléphone ;
@@ -26,6 +31,7 @@ import {
   ETIQUETTE_CHIFFRES,
   ETIQUETTE_DOCTRINE,
   ETIQUETTE_SANTE,
+  estApprouvee,
 } from "./decoupage";
 
 /** Étiquettes qui interdisent la sortie, quel que soit le texte. */
@@ -50,7 +56,7 @@ const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]{1,64}@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*
  * « @ » entouré d'espaces, ou « @ » suivi d'un domaine écrit « point » / « [dot] ».
  */
 const MOTIF_COURRIEL_MASQUE =
-  /[[({]\s?at\s?[\])}]|\barobase\b|@|\s(?:at|chez|a)\s[a-z0-9-]{2,40}\s(?:dot|point)\s[a-z]{2,}|\s(?:dot|point)\s(?:com|fr|net|org|io|eu|info|biz|be|ch|invalid)\b/;
+  /[[({]\s?at\s?[\])}]|\barobase\b|@|\sat\s[a-z0-9-]{2,40}\.[a-z]{2,}|\s(?:at|chez|a)\s[a-z0-9-]{2,40}\s(?:dot|point)\s[a-z]{2,}|\s(?:dot|point)\s(?:com|fr|net|org|io|eu|info|biz|be|ch|invalid)\b/;
 
 /** Numéro français (national, +33 ou 0033) ou international en « + » suivi de 8 chiffres ou plus. */
 const MOTIF_TELEPHONE =
@@ -75,6 +81,9 @@ export function contientTelephone(texte: string): boolean {
  * (jamais un extrait du texte) : il peut être journalisé sans rien divulguer.
  */
 export function motifRefus(fiche: FicheFiltrable): string | null {
+  // REFUS PAR DÉFAUT (décision du 18/11) : sans la marque du corpus en première ligne,
+  // jamais servie, quel que soit son texte. Tout ce qui suit n'est que le second filet.
+  if (!estApprouvee(fiche.texte)) return "non-approuvee";
   for (const e of fiche.etiquettes ?? []) {
     if (ETIQUETTES_REFUSEES.includes(e)) return `etiquette:${e}`;
   }

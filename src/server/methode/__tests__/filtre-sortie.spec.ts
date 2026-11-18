@@ -33,7 +33,12 @@ const MARQUE = "sortie: validee";
 
 /** Une section APPROUVÉE (marque en première ligne) : seule forme que le filtre peut laisser sortir. */
 function fiche(texte: string, etiquettes: string[] = [], titre = "Un titre inventé") {
-  return { slug: "methode/faux-atelier/une-fiche", titre, texte: `${MARQUE}\n${texte}`, etiquettes };
+  return {
+    slug: "methode/faux-atelier/une-fiche",
+    titre,
+    texte: `${MARQUE}\n${texte}`,
+    etiquettes,
+  };
 }
 /** Une section SANS marque (ou avec une marque mal placée) : le texte est pris tel quel. */
 function ficheBrute(texte: string, etiquettes: string[] = []) {
@@ -473,10 +478,15 @@ describe("approbation — une section NON marquée n'est jamais servie, même sa
   });
 
   it("la marque n'est lue que dans le TEXTE, jamais dans le titre ni dans les étiquettes", () => {
-    const f = { slug: "methode/faux/x", titre: MARQUE, texte: SAINE, etiquettes: [MARQUE] };
+    const f = { slug: "methode/faux-a/x", titre: MARQUE, texte: SAINE, etiquettes: [MARQUE] };
     expect(motifRefus(f)).toBe("non-approuvee");
     expect(
-      motifRefus({ slug: "methode/faux/x", titre: "T", texte: SAINE, etiquettes: ["sortie:validee"] }),
+      motifRefus({
+        slug: "methode/faux-a/x",
+        titre: "T",
+        texte: SAINE,
+        etiquettes: ["sortie:validee"],
+      }),
     ).toBe("non-approuvee");
   });
 
@@ -514,8 +524,8 @@ describe("approbation — refus à la racine (second filet, sections marquées s
     "Un forfait hors-taxe pour l'atelier.",
     "Un forfait hors TVA pour l'atelier.",
     "Un forfait HTVA pour l'atelier.",
-    "Un forfait 500 brut pour l'atelier.",
-    "Un forfait 500 net pour l'atelier.",
+    `Un forfait ${["500", "brut"].join(" ")} pour l'atelier.`,
+    `Un forfait ${["500", "net"].join(" ")} pour l'atelier.`,
     "Un tarif de l'heure pour l'atelier.",
     "Un forfait par heure pour l'atelier.",
     "Un forfait par jour pour l'atelier.",
@@ -607,7 +617,13 @@ describe("approbation — la marque ne se pose pas par le code", () => {
       { slug: SLUG_NOYAU_FAUX, translations: [{ title: "T", bodyText: SAINE }] },
     ]);
     queryRawMock.mockResolvedValue([
-      { slug: "methode/faux-a/un", titre: "T", texte: SAINE, collection: "methode-vente", etiquettes: [] },
+      {
+        slug: "methode/faux-a/un",
+        titre: "T",
+        texte: SAINE,
+        collection: "methode-vente",
+        etiquettes: [],
+      },
       {
         slug: "methode/faux-a/deux",
         titre: "T",

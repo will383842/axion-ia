@@ -49,6 +49,38 @@ export const ETIQUETTE_SANTE = "secteur:sante";
  */
 export const ETIQUETTE_DOCTRINE = "doctrine:a-revoir";
 
+/**
+ * MARQUE D'APPROBATION (décision du pilote, 18/11/2026 — refus par défaut).
+ *
+ * Une section n'est servie QUE si sa PREMIÈRE ligne, dans le corpus, est exactement ce
+ * texte : la marque que le fondateur pose à la main, section par section, sous le titre
+ * de la section. Aucune tolérance : ni casse, ni espace en plus, ni accent, ni retrait,
+ * ni mise en forme. Une marque ailleurs que sur la première ligne (dans le corps) n'est
+ * qu'un texte.
+ *
+ * ⛔ Ce module LIT la marque, il ne la POSE jamais : aucune fonction de la couche ne
+ * l'écrit, l'import recopie le corpus tel quel, rien ne la déduit d'un texte « sain ».
+ * Réimporter un corpus sans la marque la retire. Un test garde ce contrat.
+ */
+export const MARQUE_APPROBATION = "sortie: validee";
+
+/**
+ * Motif SQL `LIKE` du même contrôle (premier filet, côté base). Le filtre de sortie
+ * refait le contrôle exact : ce motif ne fait que borner la lecture.
+ */
+export const MOTIF_SQL_APPROBATION = "sortie: validee\n%";
+
+/** Vrai si la première ligne du texte est la marque ET qu'un corps non vide la suit. */
+export function estApprouvee(texte: string): boolean {
+  const i = texte.indexOf("\n");
+  return i > 0 && texte.slice(0, i) === MARQUE_APPROBATION && texte.slice(i + 1).trim().length > 0;
+}
+
+/** Le texte sans sa ligne de marque (inchangé s'il n'est pas approuvé). */
+export function retirerMarque(texte: string): string {
+  return estApprouvee(texte) ? texte.slice(texte.indexOf("\n") + 1).replace(/^\n+/, "") : texte;
+}
+
 export const AVERTISSEMENT_CHIFFRES =
   "> ⚠️ Montants d'entraînement, pas de prix public. Le seul prix public est celui de " +
   "la Journée IA, tiré de `src/content/offre.ts`. Ne jamais recopier ces montants " +
@@ -67,6 +99,8 @@ export interface SectionMethode {
   readonly collection: typeof COLLECTION_VENTE | typeof COLLECTION_SANTE;
   readonly fichier: string;
   readonly contientMontants: boolean;
+  /** La section porte la marque d'approbation du CORPUS (jamais posée par l'import). */
+  readonly approuvee: boolean;
   /** Codes de la doctrine heurtés (vide = fiche servable). */
   readonly signalements: readonly string[];
 }
@@ -107,7 +141,7 @@ const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:k|m|md
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
 // nombre suivi d'un prix hors taxes / toutes taxes, d'un multiplicateur (k, M, mille, million),
 // d'un milliard, d'un dollar ou d'un code USD, sans « euro »
-const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|brut|nets?|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
 // dollar : symbole collé ou séparé d'un nombre, dans les deux sens, ou « USD » devant
 // autres devises (livre, franc suisse, yen, « balles »), périodicité (« /mois », « par an »), taux journalier
 const MONTANT_AUTRES = String.raw`[£\u00a5]\s?\d|\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:[£\u00a5]|gbp\b|chf\b|jpy\b|francs?\b|bn\b|balles?\b|\/\s?(?:mois|jour|an|semaine|h)\b|par (?:mois|jour|an|semaine|heure)\b|la journee\b|la journée\b)|\btjm\b`;
@@ -125,8 +159,17 @@ const MOTIF_MONETAIRE = new RegExp(
   "i",
 );
 
+/**
+ * Refus à la racine (second filet) : une périodicité ou une taxe suffit, même sans chiffre
+ * (« par heure », « de l'heure », « hors taxes », « HTVA »). Lu sur le texte normalisé.
+ */
+const MOTIF_PERIODE_TAXE =
+  /\bpar (?:heure|jour|mois|trimestre|semestre|semaine|an|annee)s?\b|\bde l'heure\b|\bhors[\s-]+(?:taxe|tva|ht)|\bhtva\b|\bh\.? ?t\.? ?v\.? ?a\b/;
+
 export function contientMontant(texte: string): boolean {
-  return MOTIF_MONTANT.test(texte) || MOTIF_MONETAIRE.test(texte);
+  return (
+    MOTIF_MONTANT.test(texte) || MOTIF_MONETAIRE.test(texte) || MOTIF_PERIODE_TAXE.test(lire(texte))
+  );
 }
 
 /**
@@ -135,9 +178,9 @@ export function contientMontant(texte: string): boolean {
  * première personne comprise, et tout pourcentage. On préfère refuser une fiche saine.
  */
 const MOTIF_PROMESSE =
-  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|\bpromet|\bpromis\b|m'engage|\bs'engage|engageons|ne payez (?:pas|rien)|satisfait ou|a coup sur|forcement|certain de|rentabilis|\bdivis(?:ez|er|e) par\b|fois plus|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b/;
+  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|\bpromet|\bpromis\b|m'engage|\bs'engage|engageons|ne payez (?:pas|rien)|satisfait ou|a coup sur|forcement|certain de|rentabilis|\bdivis(?:ez|er|e) par\b|fois plus|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b|\b(?:doubl|tripl|quadrupl|quintupl|decupl|centupl)|\d ?[x×](?![a-z])|(?<![a-z])[x×] ?\d|engag.{0,40}resultat|resultat.{0,40}engag|obligation de resultat|m'y engag|\brend\w*.{0,30}(?:argent|euros?)|(?:argent|euros?).{0,30}\brend|restitu\w*.{0,30}(?:argent|euros?)|pas de resultat/;
 const MOTIF_POURCENTAGE =
-  /%|‰|\bpct\b|\bp\.? ?c\.?(?![a-z])|\bp\. ?100\b|pour[\s-]?cent|(?<!\d)\d{1,4} (?:[a-z]+ )?sur \d{1,4}\b|\bsur (?:\d{1,4}|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\b|\b(?:moitie|tiers|quarts?|majorite|totalite)s? (?:des|du|de la)\b/;
+  /%|‰|\bpct\b|\bp\.? ?c\.?(?![a-z])|\bp\. ?100\b|pour[\s-]?cent|(?<!\d)\d{1,4} (?:[a-z]+ )?sur \d{1,4}\b|\bsur (?:\d{1,4}|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\b|\b(?:moitie|tiers|quarts?|majorite)s?\b|\btotalite\b/;
 
 /** Lettres cyrilliques et grecques qui ressemblent à des lettres latines : ramenées au latin. */
 const HOMOGLYPHES: Record<string, string> = {
@@ -392,7 +435,10 @@ function decouperParPage(contenu: string): Morceau[] {
     const titre =
       lignes
         .map((l) => l.trim())
-        .find((l) => l.length >= 8 && !/^A X I O N/.test(l) && !/^#/.test(l)) ?? `Page ${n}`;
+        .find(
+          (l) =>
+            l.length >= 8 && !/^A X I O N/.test(l) && !/^#/.test(l) && l !== MARQUE_APPROBATION,
+        ) ?? `Page ${n}`;
     morceaux.push({ slug: `page-${String(n).padStart(2, "0")}`, titre, lignes });
   }
   return morceaux;
@@ -446,6 +492,13 @@ export function typerSection(slugSection: string, titre: string, nomFichier: str
   return "regle";
 }
 
+/** L'avertissement vient en tête, SOUS la ligne de marque quand le corpus en porte une. */
+function avecAvertissement(corps: string, approuvee: boolean): string {
+  if (!approuvee) return `${AVERTISSEMENT_CHIFFRES}\n\n${corps}`;
+  const i = corps.indexOf("\n");
+  return `${corps.slice(0, i)}\n${AVERTISSEMENT_CHIFFRES}\n\n${corps.slice(i + 1)}`;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 //  Point d'entrée du module
 // ─────────────────────────────────────────────────────────────────────────────
@@ -474,6 +527,8 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
   return morceaux.map((m) => {
     const corps = compacter(m.lignes);
     const montants = contientMontant(corps) || contientMontant(m.titre);
+    // Lue sur le corps du CORPUS, avant tout ajout : l'import ne pose ni ne déduit la marque.
+    const approuvee = estApprouvee(corps);
     const type = typerSection(m.slug, m.titre, nomFichier);
     const lu = `${m.titre}\n${corps}`;
     const signalements = Array.from(
@@ -496,12 +551,13 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
     return {
       slug: `${PREFIXE_SLUG}/${fichier}/${m.slug}`.slice(0, 180),
       titre: `${nomFichier} · ${m.titre}`.slice(0, 255),
-      texte: montants ? `${AVERTISSEMENT_CHIFFRES}\n\n${corps}` : corps,
+      texte: montants ? avecAvertissement(corps, approuvee) : corps,
       type,
       etiquettes,
       collection: estSante ? COLLECTION_SANTE : COLLECTION_VENTE,
       fichier,
       contientMontants: montants,
+      approuvee,
       signalements,
     };
   });

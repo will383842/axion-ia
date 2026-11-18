@@ -490,9 +490,6 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
     LONG,
   ].join("\n");
 
-  const parSlug = (cs: ReturnType<typeof decouperFichier>) =>
-    Object.fromEntries(cs.map((s) => [s.slug.split("/").pop()!, s]));
-
   it("PDF : seule la section dont la première ligne est la marque est approuvée", () => {
     const s = decouperFichier("livres/faux-marque-pdf.md", PDF);
     expect(s.map((x) => x.approuvee)).toEqual([true, false, false, false]);
@@ -502,7 +499,7 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
   it("Markdown : seule la section dont la première ligne est la marque est approuvée", () => {
     const s = decouperFichier("livres/faux-marque-md.md", MD);
     expect(s.map((x) => x.approuvee)).toEqual([true, false, false, false]);
-    expect(parSlug(s)["approuvee"]!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
+    expect(s[0]!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
   });
 
   it("l'import ne pose JAMAIS la marque : un corpus sans marque n'en produit aucune", () => {
@@ -534,7 +531,9 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
   it("l'avertissement « chiffres » ne déplace pas la marque ni ne la fait disparaître", () => {
     const [s] = decouperFichier(
       "livres/faux-chiffres.md",
-      ["# faux-chiffres", "1. Un calcul", MARQUE, `${LONG} Exercice à ${MONTANT} par an.`].join("\n"),
+      ["# faux-chiffres", "1. Un calcul", MARQUE, `${LONG} Exercice à ${MONTANT} par an.`].join(
+        "\n",
+      ),
     );
     expect(s!.etiquettes).toContain(ETIQUETTE_CHIFFRES);
     expect(s!.texte.startsWith(`${MARQUE}\n`)).toBe(true);
@@ -580,7 +579,9 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
     // 4 sections du premier fichier + 1 du second ; la marque n'est écrite que là où le corpus la porte
     expect(textes).toHaveLength(5);
     expect(textes.filter((t) => t.startsWith(`${MARQUE}\n`))).toHaveLength(1);
-    expect(textes.filter((t) => t.includes(MARQUE) && !t.startsWith(`${MARQUE}\n`))).toHaveLength(1);
+    expect(textes.filter((t) => t.includes(MARQUE) && !t.startsWith(`${MARQUE}\n`))).toHaveLength(
+      1,
+    );
   });
 
   it("aucune fonction du code ne peut poser la marque : le littéral n'existe que dans decoupage.ts, et seulement pour LIRE", () => {
@@ -598,9 +599,13 @@ describe("8 · la marque d'approbation vient du corpus, et de lui seul", () => {
     }
     const dec = readFileSync(path.join(racineDepot, "src/server/methode/decoupage.ts"), "utf8");
     // la constante ne sert qu'à comparer ou à retirer : jamais à concaténer ni à écrire
-    const usages = dec.split("\n").filter((l) => /MARQUE_APPROBATION/.test(l) && !/^\s*(\*|\/\/)/.test(l));
+    const usages = dec
+      .split("\n")
+      .filter((l) => /MARQUE_APPROBATION/.test(l) && !/^\s*(\*|\/\/)/.test(l));
     for (const l of usages) {
-      expect(l, l).not.toMatch(/\+\s*MARQUE_APPROBATION|MARQUE_APPROBATION\s*\+|\$\{MARQUE_APPROBATION\}\\?n?`|\.concat\(/);
+      expect(l, l).not.toMatch(
+        /\+\s*MARQUE_APPROBATION|MARQUE_APPROBATION\s*\+|\$\{MARQUE_APPROBATION\}\\?n?`|\.concat\(/,
+      );
     }
   });
 });
