@@ -64,4 +64,17 @@ describe("RelancerAcceptationDevis", () => {
     );
     expect(action).toHaveBeenCalledWith({ documentGenereId: "d" });
   });
+
+  it("la zone de statut n'est pas imbriquée dans l'alerte", () => {
+    const { container } = render(
+      <RelancerAcceptationDevis
+        cas="confirmation-classique"
+        documentGenereId="d"
+        relancerAction={async () => ({ ok: true, devisAcceptes: 1 })}
+      />,
+    );
+    const statut = container.querySelector('[role="status"]');
+    expect(statut).not.toBeNull();
+    expect(statut?.closest('[role="alert"]')).toBeNull();
+  });
 });

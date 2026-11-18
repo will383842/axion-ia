@@ -2,7 +2,7 @@
  * X3 — la fiche d'un devis CLASSIQUE signé des deux parties propose de préparer la confirmation
  * de commande quand elle n'existe pas encore. Les devis à formules gardent leur propre bloc.
  */
-import { render } from "@testing-library/react";
+import { cleanup, render } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const NOW = new Date("2030-01-01T00:00:00Z");
@@ -10,7 +10,7 @@ const etat = vi.hoisted(() => ({
   devis: {} as Record<string, unknown>,
   signatures: [] as Array<{ partie: string }>,
   annulee: null as Date | null,
-  gare: false as boolean | null,
+  confirmation: "aucune" as "aucune" | "a_valider" | "autre",
 }));
 
 const base = {
@@ -88,7 +88,7 @@ vi.mock("@/features/apporteurs-reseau/etablissement-presentation", () => ({
   lireSiretsDevis: () => Promise.resolve(new Map()),
 }));
 vi.mock("@/server/qualiopi/devis/confirmation-commande", () => ({
-  confirmationCommandeDejaGaree: () => Promise.resolve(etat.gare),
+  etatConfirmationCommande: () => Promise.resolve(etat.confirmation),
 }));
 vi.mock("@/server/actions/qualiopi/piece-signature", () => ({
   contresignerPieceAction: vi.fn(),
@@ -110,12 +110,19 @@ for (const c of [
   vi.doMock(`@/components/admin/qualiopi/${c}`, () => ({ [c]: () => null }));
 }
 
-async function afficher(): Promise<string[]> {
+const TEXTE_PREPAREE =
+  "La confirmation de commande est préparée : elle attend votre validation dans les e-mails à valider.";
+
+async function afficherPage(): Promise<HTMLElement> {
   const { default: Page } = await import("../[id]/page");
   const ui = await Page({
     params: Promise.resolve({ locale: "fr", adminPrefix: "adm", id: "d1" }),
   });
-  const { container } = render(ui);
+  return render(ui).container;
+}
+
+async function afficher(): Promise<string[]> {
+  const container = await afficherPage();
   return [...container.querySelectorAll('[data-testid="relance"]')].map((n) => n.textContent ?? "");
 }
 
@@ -125,7 +132,7 @@ describe("fiche devis : relance de la confirmation de commande (devis classique)
     etat.devis = { ...base };
     etat.signatures = [{ partie: "client" }, { partie: "axionia" }];
     etat.annulee = null;
-    etat.gare = false;
+    etat.confirmation = "aucune";
   });
 
   it("classique signé des deux parties, accepté, sans confirmation : bloc affiché", async () => {
@@ -137,9 +144,52 @@ describe("fiche devis : relance de la confirmation de commande (devis classique)
     expect(await afficher()).toEqual(["confirmation-classique"]);
   });
 
-  it("confirmation déjà préparée ou envoyée : bloc non affiché", async () => {
-    etat.gare = true;
+  it("confirmation à valider : ligne d'information persistante avec lien, sans bloc", async () => {
+    etat.confirmation = "a_valider";
+    const c = await afficherPage();
+    expect(c.querySelector('[data-testid="relance"]')).toBeNull();
+    expect(c.textContent).toContain(TEXTE_PREPAREE);
+    const lien = [...c.querySelectorAll("a")].find((a) =>
+      a.getAttribute("href")?.endsWith("/qualiopi/emails"),
+    );
+    expect(lien?.getAttribute("href")).toBe("/fr/adm/qualiopi/emails");
+  });
+
+  it("confirmation approuvée, envoyée, refusée ou au journal : rien de nouveau", async () => {
+    etat.confirmation = "autre";
+    const c = await afficherPage();
+    expect(c.querySelector('[data-testid="relance"]')).toBeNull();
+    expect(c.textContent).not.toContain(TEXTE_PREPAREE);
+  });
+
+  it("aucune confirmation : bloc affiché, pas de ligne d'information", async () => {
+    const c = await afficherPage();
+    expect(c.querySelector('[data-testid="relance"]')).not.toBeNull();
+    expect(c.textContent).not.toContain(TEXTE_PREPAREE);
+  });
+
+  it("après une préparation réussie, la page relue porte l'information de l'état « à valider »", async () => {
+    expect(await afficher()).toEqual(["confirmation-classique"]);
+    cleanup();
+    vi.resetModules();
+    etat.confirmation = "a_valider"; // ce que la base rend après la préparation
+    const c = await afficherPage();
+    expect(c.querySelector('[data-testid="relance"]')).toBeNull();
+    expect(c.textContent).toContain(TEXTE_PREPAREE);
+  });
+
+  it("état « à valider » mais devis non contresigné ou annulé : aucune ligne", async () => {
+    etat.confirmation = "a_valider";
+    etat.signatures = [{ partie: "client" }];
+    expect((await afficherPage()).textContent).not.toContain(TEXTE_PREPAREE);
+  });
+
+  it("devis portant une offre sans empreinte : pas classique, aucun bloc ni ligne", async () => {
+    etat.devis = { ...base, offre: {}, offreSha256: null };
     expect(await afficher()).toEqual([]);
+    cleanup();
+    etat.confirmation = "a_valider";
+    expect((await afficherPage()).textContent).not.toContain(TEXTE_PREPAREE);
   });
 
   it("devis non contresigné : bloc non affiché", async () => {

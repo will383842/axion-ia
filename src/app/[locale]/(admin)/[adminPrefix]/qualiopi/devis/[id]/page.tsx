@@ -32,7 +32,7 @@ import {
   contresignerPieceAction,
   relancerAcceptationDevisAction,
 } from "@/server/actions/qualiopi/piece-signature";
-import { confirmationCommandeDejaGaree } from "@/server/qualiopi/devis/confirmation-commande";
+import { etatConfirmationCommande } from "@/server/qualiopi/devis/confirmation-commande";
 import { signatureClientDuDevis } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { getOrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { DevisSuiviLivraison } from "@/components/admin/qualiopi/DevisSuiviLivraison";
@@ -282,16 +282,22 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 === null;
   const repriseParRelance =
     clientASigne && organismeASigne && devis.statut === "envoye" && devis.offreSha256 !== null;
-  // X3 — devis CLASSIQUE signé des deux parties, accepté, dont la confirmation de commande n'a
-  // jamais été préparée (ni gardée en corbeille ni envoyée) : la reprise existe côté serveur.
-  // `null` (état inconnu) laisse le bouton visible : la reprise est idempotente.
-  const confirmationClassiqueAPreparer =
+  // X3 — devis CLASSIQUE (sans offre ni empreinte) signé des deux parties (pièce non annulée),
+  // accepté : l'état de la confirmation de commande se lit en base, donc l'information qui suit
+  // survit au rafraîchissement. « aucune » : reprise proposée (idempotente) ; « a_valider » : ligne
+  // d'information persistante ; « autre » (approuvée, envoyée, refusée, journal) : rien.
+  const classiqueSigneDesDeuxParties =
     devis.documentGenereId !== null &&
+    devis.offre == null &&
     devis.offreSha256 === null &&
     clientASigne &&
     organismeASigne &&
-    (devis.statut === "accepte" || devis.statut === "transforme_convention") &&
-    (await confirmationCommandeDejaGaree(devis.id)) !== true;
+    (devis.statut === "accepte" || devis.statut === "transforme_convention");
+  const etatConfirmation = classiqueSigneDesDeuxParties
+    ? await etatConfirmationCommande(devis.id)
+    : null;
+  const confirmationClassiqueAPreparer = etatConfirmation === "aucune";
+  const confirmationClassiquePreparee = etatConfirmation === "a_valider";
   const identiteOrganisme = await getOrganismeIdentite();
 
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
@@ -750,6 +756,19 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
             documentGenereId={devis.documentGenereId}
             relancerAction={relancerAcceptationDevisAction}
           />
+        )}
+
+        {confirmationClassiquePreparee && (
+          <p
+            role="status"
+            className="text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
+          >
+            La confirmation de commande est préparée : elle attend votre validation dans les{" "}
+            <Link href={`/${locale}/${adminPrefix}/qualiopi/emails`} className="admin-link">
+              e-mails à valider
+            </Link>
+            .
+          </p>
         )}
 
         {plansImpossibles && (
