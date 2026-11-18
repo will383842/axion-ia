@@ -308,4 +308,82 @@ describe("envoi simultané du même brouillon, Postgres réel (B1)", () => {
       h.mode = "auto";
     }
   });
+  it("B2 PR 4 : DEUX lignes de renvoi du même devis envoyé, approuvées ensemble : un seul nouveau jeton, un seul courriel", async () => {
+    h.generateDocument.mockReset();
+    h.enqueueEmail.mockReset();
+    h.creerToken.mockClear();
+    const client = await db.client.create({
+      data: {
+        numero: "TEST-CLI-B2R",
+        raisonSociale: "Client test B2 renvoi",
+        contactEmail: "client-b2r@example.test",
+      },
+    });
+    creees.clients.push(client.id);
+    const piece = await db.documentGenere.create({
+      data: {
+        type: "devis",
+        numero: "TEST-DOC-B2R",
+        clientId: client.id,
+        hashSha256: HASH,
+        suppressionPrevueAt: dansUnAn,
+      },
+    });
+    creees.pieces.push(piece.id);
+    const devis = await db.devis.create({
+      data: {
+        numero: "TEST-DEV-B2R",
+        clientId: client.id,
+        lignes: [],
+        montantTotalHtCents: 100000,
+        mentionTva: "TVA 20 %",
+        statut: "envoye",
+        sentAt: new Date(),
+        documentGenereId: piece.id,
+        dateValidite: dansUnAn,
+      },
+    });
+    creees.devis.push(devis.id);
+    const marqueur = {
+      v: 1,
+      nature: "devis-renvoi",
+      documentGenereId: piece.id,
+      partie: "client",
+      devisId: devis.id,
+    };
+    const lignes = [];
+    for (let i = 0; i < 2; i++) {
+      const ligne = await db.emailOutbox.create({
+        data: {
+          template: "devis-envoi",
+          recipient: "client-b2r@example.test",
+          payload: { numero: "TEST-DEV-B2R", lienSignatureALEnvoi: marqueur } as never,
+          sujet: "Votre devis",
+          entityType: "Devis",
+          entityId: devis.id,
+        },
+      });
+      creees.outbox.push(ligne.id);
+      lignes.push(ligne);
+    }
+    // L'enfilage « dure » : les deux approbations se chevauchent.
+    h.enqueueEmail.mockImplementation(async () => {
+      await new Promise((r) => setTimeout(r, 300));
+      return { enqueued: true };
+    });
+
+    const [a, b] = await Promise.all([
+      approuverEmailAction({ id: lignes[0]!.id }),
+      approuverEmailAction({ id: lignes[1]!.id }),
+    ]);
+
+    expect([a, b].filter((r) => "data" in r)).toHaveLength(1);
+    expect(h.creerToken).toHaveBeenCalledTimes(1);
+    expect(h.enqueueEmail).toHaveBeenCalledTimes(1);
+    const apres = await db.devis.findUniqueOrThrow({
+      where: { id: devis.id },
+      select: { statut: true },
+    });
+    expect(apres.statut).toBe("envoye");
+  });
 });
