@@ -13,7 +13,7 @@ const SRC = join(__dirname, "..", "..");
 // Seuls app, components, content et messages portent du texte publié ; stack-ia-details décrit des modèles tiers.
 const EXCLUS = [
   /keywords/,
-  /content-gen/,
+  /content.gen/,
   /stack-ia-details/,
   /^(?!app|components|content|messages)/,
   /__tests__/,
