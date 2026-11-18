@@ -1,7 +1,9 @@
 /**
  * Charte v1 — composants de style des PDF (cartes arrondies, contraste, total mis en avant).
  *
- * ⚠️ AUCUN gabarit ne les utilise encore : ce module n'a donc aucun effet sur un PDF existant.
+ * ⛔ MODULE GELÉ : l'empreinte de chaque fichier est figée par `EMPREINTES_CHARTES`
+ * (`templates/gabarit-empreinte.spec.ts`). Un gabarit déjà signé s'y appuie : toute évolution de
+ * style se fait dans un nouveau dossier `charte/v2`, jamais ici.
  *
  * Contraintes du moteur @react-pdf respectées : `borderRadius` oui ; ni dégradé, ni ombre, ni
  * grille, ni graisse 800 ; jamais de bordure d'un seul côté sur un bloc arrondi ; colonnes en
@@ -22,6 +24,7 @@ import type { DataColumn } from "@/server/qualiopi/documents/base-layout";
 import {
   CHARTE_COULEURS as C,
   CHARTE_ESPACES as E,
+  CHARTE_PIED as P,
   CHARTE_RAYONS as R,
   CHARTE_TYPO as T,
 } from "./couleurs";
@@ -121,19 +124,19 @@ const s = StyleSheet.create({
   avisTexte: { fontSize: T.petit.taille, color: C.texte },
   pied: {
     position: "absolute",
-    bottom: 22,
+    bottom: P.bas,
     left: E.margeCote,
     right: E.margeCote,
-    borderTopWidth: 1,
+    borderTopWidth: P.filet,
     borderTopColor: C.grisChaud,
-    paddingTop: 6,
+    paddingTop: P.espaceHaut,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "flex-end",
   },
   piedIdentite: { flex: 1, paddingRight: 12 },
   piedOrg: { fontSize: T.pied.taille, fontWeight: G.grasse, color: C.texte },
-  piedLigne: { fontSize: T.pied.taille, color: C.texte, marginTop: 1 },
+  piedLigne: { fontSize: T.pied.taille, color: C.texte, marginTop: P.espaceEntreLignes },
   piedPage: { fontSize: T.pied.taille, color: C.texte },
 
   surTitre: {
@@ -306,6 +309,9 @@ const s = StyleSheet.create({
   totauxFinaleLibelle: { fontSize: T.titreCarte.taille, fontWeight: G.grasse, color: C.texte },
   totauxFinaleMontant: {
     fontSize: T.montantTotal.taille,
+    // Interligne serré : hérité de la page (1,4), il rendait la ligne plus haute que la carte
+    // (le grand montant débordait sous la bordure).
+    lineHeight: 1,
     fontWeight: G.grasse,
     color: C.terracotta,
     textAlign: "right",
@@ -357,8 +363,15 @@ export interface PageCharteProps {
 }
 
 /**
- * Page A4 de la charte v1. Mêmes propriétés que `QualiopiPage`, et MÊMES textes de pied de
- * page et de bandeaux : seul le style change, jamais une mention.
+ * Page A4 de la charte v1. Mêmes propriétés que `QualiopiPage`.
+ *
+ * Ce qui est IDENTIQUE à `QualiopiPage`, mot pour mot : le pied de page (organisme, adresse,
+ * SIRET, NDA ou son absence, Qualiopi, contact, pagination) et les bandeaux SPÉCIMEN et ESSAI.
+ *
+ * Ce qui DIFFÈRE : l'en-tête est ALLÉGÉ. Il ne porte plus que la marque et
+ * « {docTitle} N° {docNumber} » ; l'adresse et les identifiants que `QualiopiPage` répète sous
+ * le nom de l'organisme n'y sont plus, ils restent dans le pied (aucune mention n'est perdue).
+ * `docNumber` est le numéro SEUL, sans « N° » : l'en-tête l'ajoute.
  */
 export function PageCharte({
   docTitle,
@@ -603,13 +616,9 @@ export interface TableauProps {
   minRowHeight?: number;
 }
 
-/** Une colonne dont la clé évoque un montant s'aligne à droite quand `align` n'est pas donné. */
-function estColonneMontant(key: string): boolean {
-  return /(montant|prix|total|tva|ttc|\bht\b)/i.test(key);
-}
-
+/** Alignement d'une colonne : à droite (ou au centre) SEULEMENT si `align` le demande, sinon à gauche. */
 function alignement(c: DataColumn): "left" | "right" | "center" {
-  return c.align ?? (estColonneMontant(c.key) ? "right" : "left");
+  return c.align ?? "left";
 }
 
 /** Même interface que `DataTable`. En-tête gris chaud arrondi, filets fins, lignes sécables d'une page à l'autre. */

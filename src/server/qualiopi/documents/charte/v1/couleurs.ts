@@ -1,11 +1,11 @@
 /**
  * Charte v1 — constantes de style des PDF (couleurs, rayons, typographie, espaces).
  *
- * Module AUTONOME : aucun gabarit ne l'utilise encore. Les codes couleur vivent ICI et non
+ * Module GELÉ (cf. `EMPREINTES_CHARTES`, `templates/gabarit-empreinte.spec.ts`). Les codes couleur vivent ICI et non
  * dans `COULEURS_MARQUE` (`src/lib/brand/couleurs-marque.ts`) : ce dernier est comparé au
  * site par un test de parité, et cette palette n'est pas celle du site.
  *
- * Les valeurs sont FIGÉES (verrouillées par `couleurs.spec.ts`).
+ * Les valeurs sont FIGÉES (verrouillées par `couleurs.spec.ts` et par l'empreinte du fichier).
  */
 
 export const CHARTE_COULEURS = {
@@ -21,7 +21,7 @@ export const CHARTE_COULEURS = {
   sombreSecondaire: "#B0AEA5",
   bleuDoux: "#E8F0FA",
   bleu: "#1F5FA8",
-  lisere: ["#2F7FC8", "#F0B323", "#C2185B", "#A8C93A"],
+  lisere: ["#1F5FA8", "#B23F16"],
 } as const;
 
 export const CHARTE_RAYONS = {
@@ -52,11 +52,25 @@ export const CHARTE_TYPO = {
 export const CHARTE_ESPACES = {
   margeHaut: 37,
   margeCote: 40,
-  basReserve: 64,
+  /** Réserve du bas de page (marge basse du contenu) : doit contenir le pied, cf. `CHARTE_PIED`. */
+  basReserve: 76,
   ecartCartes: 7,
   carteV: 11,
   carteH: 13,
   hauteurLisere: 5,
+} as const;
+
+/**
+ * Géométrie du pied de page (posé en absolu au bas de la page). Le contenu s'arrête à
+ * `CHARTE_ESPACES.basReserve` : le pied, même sur `lignesMax` lignes (identité, identifiants
+ * qui passent à la ligne, contact), doit tenir dans cette réserve — voir `composants.spec.tsx`.
+ */
+export const CHARTE_PIED = {
+  bas: 20,
+  filet: 1,
+  espaceHaut: 6,
+  espaceEntreLignes: 1,
+  lignesMax: 4,
 } as const;
 
 /**
@@ -78,6 +92,7 @@ export const CHARTE_COUPLES_TEXTE: ReadonlyArray<{
   },
   { nom: "texte sur bleu doux", texte: CHARTE_COULEURS.texte, fond: CHARTE_COULEURS.bleuDoux },
   { nom: "bleu sur bleu doux", texte: CHARTE_COULEURS.bleu, fond: CHARTE_COULEURS.bleuDoux },
+  { nom: "bleu sur carte", texte: CHARTE_COULEURS.bleu, fond: CHARTE_COULEURS.carte },
   { nom: "terracotta sur page", texte: CHARTE_COULEURS.terracotta, fond: CHARTE_COULEURS.fond },
   { nom: "terracotta sur carte", texte: CHARTE_COULEURS.terracotta, fond: CHARTE_COULEURS.carte },
   {

@@ -4,11 +4,14 @@
  * Charte v1 — valeurs figées et contraste des couples texte / fond réellement utilisés.
  */
 
+import { readdirSync, readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   CHARTE_COULEURS,
   CHARTE_COUPLES_TEXTE,
   CHARTE_ESPACES,
+  CHARTE_PIED,
   CHARTE_RAYONS,
   CHARTE_TYPO,
 } from "./couleurs";
@@ -42,7 +45,7 @@ describe("charte v1 — valeurs figées", () => {
       sombreSecondaire: "#B0AEA5",
       bleuDoux: "#E8F0FA",
       bleu: "#1F5FA8",
-      lisere: ["#2F7FC8", "#F0B323", "#C2185B", "#A8C93A"],
+      lisere: ["#1F5FA8", "#B23F16"],
     });
   });
 
@@ -68,7 +71,7 @@ describe("charte v1 — valeurs figées", () => {
     expect(CHARTE_ESPACES).toEqual({
       margeHaut: 37,
       margeCote: 40,
-      basReserve: 64,
+      basReserve: 76,
       ecartCartes: 7,
       carteV: 11,
       carteH: 13,
@@ -97,5 +100,93 @@ describe("charte v1 — contraste des couples réellement utilisés", () => {
       expect(valeurs.has(c.texte)).toBe(true);
       expect(valeurs.has(c.fond)).toBe(true);
     }
+  });
+});
+
+describe("charte v1 — le pied de page", () => {
+  it("géométrie figée", () => {
+    expect(CHARTE_PIED).toEqual({
+      bas: 20,
+      filet: 1,
+      espaceHaut: 6,
+      espaceEntreLignes: 1,
+      lignesMax: 4,
+    });
+  });
+});
+
+/**
+ * 🔑 `CHARTE_COUPLES_TEXTE` est tenu à la main : sans ce lien, un composant qui pose une
+ * nouvelle couleur de texte ou de fond échapperait au contrôle de contraste en silence.
+ * On lit donc les sources qui posent des couleurs (les composants et tout gabarit qui
+ * importe la charte) et on exige la correspondance dans les DEUX sens.
+ */
+describe("charte v1 — CHARTE_COUPLES_TEXTE est relié aux couleurs réellement utilisées", () => {
+  const RACINE_DOCUMENTS = join(__dirname, "..", "..");
+  const nettoyer = (src: string): string =>
+    src.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "");
+
+  const sources = [
+    join(__dirname, "composants.tsx"),
+    ...readdirSync(join(RACINE_DOCUMENTS, "templates"))
+      .filter((f) => f.endsWith(".tsx") && !f.endsWith(".spec.tsx"))
+      .map((f) => join(RACINE_DOCUMENTS, "templates", f))
+      .filter((f) => readFileSync(f, "utf8").includes("charte/v1")),
+  ];
+  const code = sources.map((f) => nettoyer(readFileSync(f, "utf8"))).join("\n");
+
+  const noms = (motif: RegExp): Set<string> =>
+    new Set([...code.matchAll(motif)].map((m) => m[1] as string));
+
+  /** Couleurs de TEXTE posées via `color: C.xxx` (le `backgroundColor`/`borderColor` ne comptent pas). */
+  const textesUtilises = noms(/(?<![A-Za-z])color:\s*C\.(\w+)/g);
+  /** Fonds posés via `backgroundColor: C.xxx`. */
+  const fondsUtilises = noms(/backgroundColor:\s*C\.(\w+)/g);
+  /** Aplat décoratif sans texte dessus : la puce des listes. */
+  const FONDS_SANS_TEXTE = new Set(["terracotta"]);
+
+  /**
+   * Valeur hexadécimale d'une couleur nommée. ⚠️ On compare des VALEURS, jamais des noms :
+   * `texte` et `sombre` valent le même `#141413`, un nom retrouvé à partir de la valeur serait
+   * ambigu.
+   */
+  const valeur = (nom: string): string => {
+    const v = (CHARTE_COULEURS as Record<string, unknown>)[nom];
+    if (typeof v !== "string") throw new Error(`couleur hors charte : ${nom}`);
+    return v;
+  };
+  const textesHex = new Set([...textesUtilises].map(valeur));
+  const fondsHex = new Set([...fondsUtilises].filter((n) => !FONDS_SANS_TEXTE.has(n)).map(valeur));
+  fondsHex.add(CHARTE_COULEURS.fond);
+
+  it("les sources scannées comprennent les composants et au moins un gabarit", () => {
+    expect(sources.length).toBeGreaterThanOrEqual(2);
+    expect(textesUtilises.size).toBeGreaterThanOrEqual(4);
+    expect(fondsUtilises.size).toBeGreaterThanOrEqual(4);
+  });
+
+  it("toute couleur de texte posée figure comme texte dans au moins un couple", () => {
+    const couples = new Set(CHARTE_COUPLES_TEXTE.map((c) => c.texte));
+    const manquantes = [...textesHex].filter((h) => !couples.has(h));
+    expect(manquantes, `couleurs de texte sans couple : ${manquantes.join(", ")}`).toEqual([]);
+  });
+
+  it("tout fond posé sous du texte figure comme fond dans au moins un couple", () => {
+    const couples = new Set(CHARTE_COUPLES_TEXTE.map((c) => c.fond));
+    const manquants = [...fondsHex].filter((h) => !couples.has(h));
+    expect(manquants, `fonds sans couple : ${manquants.join(", ")}`).toEqual([]);
+  });
+
+  it("réciproquement : aucun couple ne décrit une couleur que personne n'utilise", () => {
+    const orphelins = CHARTE_COUPLES_TEXTE.filter(
+      (c) => !textesHex.has(c.texte) || !fondsHex.has(c.fond),
+    ).map((c) => c.nom);
+    expect(orphelins, `couples orphelins : ${orphelins.join(", ")}`).toEqual([]);
+  });
+
+  it("CONTRE-TÉMOIN : une couleur de texte absente des couples serait vue", () => {
+    const couples = new Set(CHARTE_COUPLES_TEXTE.map((c) => c.texte));
+    expect(couples.has(CHARTE_COULEURS.grisChaud)).toBe(false);
+    expect(couples.has(CHARTE_COULEURS.bleu)).toBe(true);
   });
 });

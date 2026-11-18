@@ -100,21 +100,30 @@ describe("PDF du devis à formules (v3)", () => {
     expect(texte(avecFormules())).not.toMatch(/token|jeton/i);
   });
 
-  it("🔑 sans offre : texte identique à la v2 archivée (ancienne mise en page)", () => {
+  it("🔑 sans offre : aucune formule imprimée, et les phrases de la v2 archivée sont conservées", () => {
     const courant = collectPdfTextNormalized(React.createElement(DevisPdf, { data: BASE }));
     const v2 = collectPdfTextNormalized(React.createElement(DevisPdfV2, { data: BASE }));
-    expect(courant).toBe(v2);
     expect(courant).not.toContain("Formule A");
+    // Les libellés ont été simplifiés en v6 ; les phrases juridiques, elles, sont reprises telles quelles.
+    for (const phrase of [
+      "Devis gratuit, valable jusqu'au 06/12/2026.",
+      "Situation de handicap : notre référent handicap étudie avec vous",
+      "Bon pour accord",
+    ]) {
+      expect(v2).toContain(phrase);
+      expect(courant).toContain(phrase);
+    }
   });
 });
 
 describe("pièces déjà signées : rendues en v2", () => {
-  it("la v5 est la version courante et les v2, v3 et v4 sont archivées", () => {
-    expect(GABARIT_VERSIONS.devis).toBe(5);
+  it("la v6 est la version courante et les v2, v3, v4 et v5 sont archivées", () => {
+    expect(GABARIT_VERSIONS.devis).toBe(6);
     expect(gabaritArchive("devis", 2)).not.toBeNull();
     expect(gabaritArchive("devis", 3)).not.toBeNull();
     expect(gabaritArchive("devis", 4)).not.toBeNull();
-    expect(gabaritArchive("devis", 5)).toBeNull();
+    expect(gabaritArchive("devis", 5)).not.toBeNull();
+    expect(gabaritArchive("devis", 6)).toBeNull();
   });
 
   it("la v2 archivée ignore les formules (instantané ancien rendu à l'identique)", () => {

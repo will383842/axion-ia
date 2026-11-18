@@ -255,7 +255,7 @@ describe("DevisPdf — identifiants émetteur manquants signalés (jamais masqu�
   it("SIRET vide → « Non renseigné » apparaît au lieu de disparaître", () => {
     const text = devisText(makeDevis({ identite: { ...IDENTITE, siret: "" } }));
     expect(text).toContain("Non renseigné");
-    expect(text).toContain("SIRET de l'organisme");
+    expect(text).toContain("SIRET");
   });
 });
 
