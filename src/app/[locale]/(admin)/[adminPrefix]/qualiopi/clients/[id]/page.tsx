@@ -40,6 +40,7 @@ import {
 } from "@/features/dossier-client/demandes-de-la-fiche";
 import { assemblerFil, lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { prisma } from "@/lib/prisma";
+import { devisAvecEmailEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { SuiviPrestations } from "@/components/admin/dossier-client/SuiviPrestations";
 import {
   assemblerPrestations,
@@ -544,6 +545,18 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           .catch(() => null)
       : null;
 
+  // Badge « E-mail à valider » des devis : lecture d'appoint, groupée (une requête), lecture seule ;
+  // une panne ne cache pas l'onglet (le badge manque, rien d'autre).
+  const devisAvecEmailAttente =
+    voitEchanges && onglet === "devis-factures"
+      ? await devisAvecEmailEnAttente(
+          prisma,
+          client.devis
+            .filter((d) => d.statut === "brouillon" || d.statut === "envoye")
+            .map((d) => d.id),
+        ).catch(() => new Set<string>())
+      : new Set<string>();
+
   const encoursDuCents = calculerEncoursDuCents(client.facturesFormation);
   // La requête ramène TOUTES les factures (l'encours l'exige) ; l'affichage,
   // lui, s'aligne sur les autres sections : les 10 dernières.
@@ -928,6 +941,7 @@ export default async function FicheClient360Page({ params, searchParams }: PageP
           factureHorsConsoleLe={factureHorsConsoleLe}
           bandeauPartners={bandeauPartners}
           nbEmailsAValider={nbEmailsAValider}
+          devisAvecEmailAttente={devisAvecEmailAttente}
         />
       ) : null}
     </AdminPageShell>

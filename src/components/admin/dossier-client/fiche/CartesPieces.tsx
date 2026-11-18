@@ -8,6 +8,7 @@ import { Bell } from "lucide-react";
 
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { dayKeyInParis } from "@/lib/calendar-grid";
 import { htEtTtc } from "./montants";
 import {
@@ -51,6 +52,7 @@ export function CartesDevis({
   devis,
   qBase,
   statuts,
+  emailsEnAttente,
 }: {
   devis: ReadonlyArray<{
     id: string;
@@ -61,6 +63,8 @@ export function CartesDevis({
   }>;
   qBase: string;
   statuts: CorrespondanceStatut;
+  /** Devis dont un e-mail d'envoi attend : badge « E-mail à valider » (lecture seule). */
+  emailsEnAttente?: ReadonlySet<string>;
 }): React.ReactElement {
   return (
     <ul className="grid grid-cols-1 gap-[var(--space-admin-3)] lg:grid-cols-2">
@@ -72,7 +76,14 @@ export function CartesDevis({
               <Link href={`${qBase}/devis/${d.id}`} className={lienNumeroCls}>
                 {d.numero}
               </Link>
-              <Statut map={statuts} statut={d.statut} />
+              <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+                <Statut map={statuts} statut={d.statut} />
+                <BadgeEmailDevis
+                  statut={d.statut}
+                  enAttente={emailsEnAttente?.has(d.id) ?? false}
+                  href={`${qBase}/emails`}
+                />
+              </span>
             </div>
             <p className="mt-[var(--space-admin-2)] font-semibold tabular-nums">{m.ht}</p>
             <p className={`${petitCls} tabular-nums`}>{m.ttc}</p>

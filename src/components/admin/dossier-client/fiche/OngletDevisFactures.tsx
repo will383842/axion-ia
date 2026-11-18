@@ -149,6 +149,7 @@ export function OngletDevisFactures({
   factureHorsConsoleLe,
   bandeauPartners,
   nbEmailsAValider,
+  devisAvecEmailAttente,
 }: {
   ctx: ContexteFiche;
   client: Client360;
@@ -157,6 +158,8 @@ export function OngletDevisFactures({
   factureHorsConsoleLe: Date | null;
   bandeauPartners: Awaited<ReturnType<typeof bandeauPourLeRole>>;
   nbEmailsAValider: number;
+  /** Devis dont un e-mail d'envoi attend (badge « E-mail à valider »). */
+  devisAvecEmailAttente?: ReadonlySet<string>;
 }): React.ReactElement {
   const qBase = ctx.qBase;
   const sessionsEnCours = client.sessions.filter((s) => s.statut === "en_cours").length;
@@ -190,7 +193,12 @@ export function OngletDevisFactures({
         {client.devis.length === 0 ? (
           <SectionVide message="Aucun devis." />
         ) : (
-          <CartesDevis devis={client.devis} qBase={qBase} statuts={DEVIS_STATUT} />
+          <CartesDevis
+            devis={client.devis}
+            qBase={qBase}
+            statuts={DEVIS_STATUT}
+            {...(devisAvecEmailAttente ? { emailsEnAttente: devisAvecEmailAttente } : {})}
+          />
         )}
       </section>
 

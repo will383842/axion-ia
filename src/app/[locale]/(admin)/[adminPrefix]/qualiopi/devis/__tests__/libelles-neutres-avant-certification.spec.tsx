@@ -51,6 +51,10 @@ vi.mock("@/lib/prisma", () => ({
     factureFormation: { findMany: () => Promise.resolve([]) },
     documentSignature: { findMany: () => Promise.resolve([]) },
     planRecurrent: { count: () => Promise.resolve(0) },
+    emailOutbox: {
+      findFirst: () => Promise.resolve(null),
+      findMany: () => Promise.resolve([]),
+    },
   },
 }));
 vi.mock("@/server/qualiopi/financements/etat-fonds-opco-lecture", () => ({

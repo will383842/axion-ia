@@ -16,6 +16,7 @@ import Link from "next/link";
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
 import { AdminPageHeader } from "@/components/admin/ui/AdminPageHeader";
 import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { BadgeEmailDevis } from "@/components/admin/qualiopi/BadgeEmailDevis";
 import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { peutCorrigerBrouillonClassique } from "@/server/qualiopi/devis/brouillon-classique-modifiable";
 import { DevisLifecycleButtons } from "@/components/admin/qualiopi/DevisLifecycleButtons";
@@ -303,6 +304,10 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
 
   const emailEnAttente =
     devis.statut === "brouillon" && (await emailDevisEnAttente(prisma, devis.id));
+  // Badge d'affichage (lecture seule) : un ancien devis « envoyé » peut aussi avoir une ligne en
+  // attente. `emailEnAttente` ci-dessus garde son sens (brouillon seulement) pour les gardes.
+  const emailEnAttentePourBadge =
+    devis.statut === "envoye" ? await emailDevisEnAttente(prisma, devis.id) : emailEnAttente;
   const devisBase = `/${locale}/${adminPrefix}/qualiopi/devis`;
   // Édition d'un brouillon à formules : lien proposé seulement interrupteur allumé.
   const peutModifierFormules =
@@ -364,9 +369,16 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
         title={`Devis ${devis.numero}`}
         description={client ? client.raisonSociale : "Client inconnu"}
         meta={
-          <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
-            {STATUT_LABELS[devis.statut] ?? devis.statut}
-          </AdminBadge>
+          <span className="inline-flex flex-wrap items-center gap-[var(--space-admin-2)]">
+            <AdminBadge tone={STATUT_TONES[devis.statut] ?? "neutral"} dot>
+              {STATUT_LABELS[devis.statut] ?? devis.statut}
+            </AdminBadge>
+            <BadgeEmailDevis
+              statut={devis.statut}
+              enAttente={emailEnAttentePourBadge}
+              href={`/${locale}/${adminPrefix}/qualiopi/emails`}
+            />
+          </span>
         }
         actions={
           <>
