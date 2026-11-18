@@ -398,6 +398,10 @@ export interface PersonneSaisie {
   readonly email?: string;
   readonly telephone?: string;
   readonly fonction?: string;
+  /** Salutation des e-mails : saisie à part, jamais déduite de `nom`. */
+  readonly civilite?: string;
+  readonly prenom?: string;
+  readonly nomFamille?: string;
 }
 
 export interface OptionsCreation {
@@ -538,6 +542,9 @@ export async function creerOuRetrouverClient(
           ...(personne.email ? { email: personne.email } : {}),
           ...(personne.telephone ? { telephone: personne.telephone } : {}),
           ...(personne.fonction ? { fonction: personne.fonction } : {}),
+          ...(personne.civilite ? { civilite: personne.civilite } : {}),
+          ...(personne.prenom ? { prenom: personne.prenom } : {}),
+          ...(personne.nomFamille ? { nomFamille: personne.nomFamille } : {}),
           origine: options.origineContact ?? "saisie",
           parAdminId: options.parAdminId,
         });
