@@ -89,6 +89,15 @@ complet : chaque relecture en trouvait de nouvelles. Le principe est donc invers
   approuvées : il ne rend aucune section sûre, il rattrape une erreur de relecture. **La
   sécurité repose sur l'approbation à la main.** Mieux vaut refuser une section saine.
 
+La marque doit être sur **la ligne qui suit immédiatement la ligne de titre**, telle
+qu'écrite dans le fichier du corpus (titre `N. …`, bloc fixe, `Cas N — …`, marqueur de page
+des affiches, titre Markdown `##`). Une ligne de mise en page, un numéro de page ou un
+commentaire entre le titre et la marque l'invalide. Seuls `#` et `##` ouvrent une section
+Markdown (un `###` fait partie de la section du dessus et la rend non approuvable) ; un titre
+`#` est le titre du dossier, jamais une section approuvée ; les blocs de code et les
+commentaires HTML ne portent aucun titre ; une section dont le corps contient un titre
+indenté, un sous-titre, un soulignement setext ou un commentaire HTML n'est pas approuvable ;
+un fichier qui mêle titres `##` et sections numérotées est ambigu : rien n'y est approuvé.
 La marque est lue sur la **première ligne brute** de la section dans le corpus : si le
 découpage la ferait apparaître en tête (retrait, tabulation, BOM, espace insécable, ligne
 « # » supprimée, encadré « essentiel » sans terminateur), la section n'est pas approuvée et
@@ -109,7 +118,11 @@ postales, URL de profil nominatif, nombre nu sans unité, « l'année » seule, 
 infaillible », périodicités sans nombre (« abonnement mensuel », « tarif journalier »,
 « chaque mois »), « prix HT » seul, « la plupart », « demi-tarif », « on s'y engage »,
 « à tous les coups », « sans faille », « deux fois mieux », adresse de messagerie écrite en
-toutes lettres, téléphone en lettres, « le prix d'un smic ».
+toutes lettres, téléphone en lettres, « le prix d'un smic », « à l'heure », « à la journée »,
+« chaque trimestre », « prix TTC » seul, « rendement assuré », « multiplié par », « 3✕ », courriel
+en entité HTML, « brut 3000 » (brut avant le nombre), « il rend la mise », « majoritaire »,
+« at mon_site.fr ». Si `--ecrire` échoue en cours de route, le nettoyage des entrées absentes
+n'a pas lieu : relancer l'import.
 
 ### 2.6 Second filet : filtre de sortie
 
