@@ -25,7 +25,13 @@ export interface PropsEtapeClientProjet {
   offres: readonly OffreCatalogue[];
   tvaStandardPct: number;
   lireBandeau: (clientId: string) => Promise<string | null>;
-  creerClient: (input: EntreeNouveauContact) => Promise<ResultatNouveauContact>;
+  /** Absent (mode essai) : l'étape ne propose pas de créer un contact. */
+  creerClient?: ((input: EntreeNouveauContact) => Promise<ResultatNouveauContact>) | undefined;
+  /**
+   * Si fourni, le PARENT tient la liste des contacts créés (`clients` les contient déjà) : ils
+   * survivent à la sortie de l'étape et les étapes suivantes (envoi) les voient.
+   */
+  onClientCree?: ((c: ClientOption) => void) | undefined;
   aujourdhui?: string | undefined;
   aide?: ReactNode;
 }
@@ -33,7 +39,7 @@ export interface PropsEtapeClientProjet {
 export function EtapeClientProjet(p: PropsEtapeClientProjet) {
   const { etat, dispatch } = p;
   const [crees, setCrees] = useState<ClientOption[]>([]);
-  const clients = [...p.clients, ...crees];
+  const clients = p.onClientCree ? p.clients : [...p.clients, ...crees];
   const client = clients.find((c) => c.id === etat.clientId);
 
   return (
@@ -47,7 +53,10 @@ export function EtapeClientProjet(p: PropsEtapeClientProjet) {
           lireBandeau={p.lireBandeau}
           creerClient={p.creerClient}
           aujourdhui={p.aujourdhui}
-          onClientCree={(c) => setCrees((a) => [...a, c])}
+          onClientCree={(c) => {
+            if (p.onClientCree) p.onClientCree(c);
+            else setCrees((a) => [...a, c]);
+          }}
         />
         <BlocMotsDuClient etat={etat} dispatch={dispatch} />
         <ListeLignes etat={etat} dispatch={dispatch} offres={p.offres} />

@@ -43,7 +43,11 @@ import { FAQ_CATEGORIES } from "@/content/faq-categories";
 import { prisma } from "@/lib/prisma";
 import { SitemapDbIndisponibleError } from "@/lib/seo/sitemap-erreur";
 // Sprint S+4-A 2026-05-18 — glossary extension (60 termes /glossaire/[slug]).
-import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossary-extension";
+import {
+  GLOSSARY_UPDATED_ISO,
+  listGlossaryTermSlugs,
+  isGlossaryTermIndexable,
+} from "@/content/glossary-extension";
 // Sprint S+4-B 2026-05-18 (audit P1-17 TYPE-9-STACK-IA) — pages détail outils.
 import { getAllStackToolSlugs } from "@/content/stack-ia-details";
 // Fraîcheur réelle par famille (dernier commit git des sources), générée en CI —
@@ -347,16 +351,16 @@ function buildDynamic(entries: ReadonlyArray<DynamicSlug>, now: Date): MetadataR
 // puis disparaisse sans raison.
 function getVillesSitemapIds(): string[] {
   const ids: string[] = [];
-  // Structure de chunks STABLE : basée sur TOUTES les villes avec copy (pas la
-  // cohorte du jour). Ainsi les IDs de sub-sitemaps ne changent jamais quand la
-  // cohorte drip s'élargit (Google n'aime pas qu'un sub-sitemap apparaisse puis
-  // disparaisse). Seul le CONTENU de chaque chunk grandit dans le temps (cf.
-  // buildVillesByRegionSitemap qui filtre sur isVilleIndexable).
-  const withCopy = VILLES.filter((v) => !!v.copy);
+  // 18/11/2026 : les IDs dérivent UNIQUEMENT des villes de `villes-indexees.ts`
+  // (40 villes, 12 régions, jamais plus de 10 villes par région → aucun découpage).
+  // Une région sans ville gardée (Corse, DROM) n'a PAS de sub-sitemap : l'index
+  // refuse les sitemaps vides (`sitemap-index.xml/route.ts`). Test de garde :
+  // `src/app/__tests__/sitemap-villes.spec.ts`.
+  const gardees = VILLES.filter((v) => !!v.copy && isVilleIndexable(v.slug));
   const regions = [...getIndexableRegions()].sort((a, b) => a.slug.localeCompare(b.slug));
 
   for (const region of regions) {
-    const villesInRegion = withCopy.filter((v) => v.region === region.slug);
+    const villesInRegion = gardees.filter((v) => v.region === region.slug);
     if (villesInRegion.length === 0) continue;
 
     // 2 locales (FR + EN) par ville → multiplie le compte d'URLs par 2
@@ -1218,7 +1222,8 @@ function buildSecteursSitemap(now: Date): MetadataRoute.Sitemap {
  * ChangeFrequency `monthly` — alignement réaliste avec la cadence d'enrichissement
  * du glossaire (Will valide périodiquement les ajouts).
  */
-function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
+function buildGlossarySitemap(_now: Date): MetadataRoute.Sitemap {
+  const modifie = new Date(GLOSSARY_UPDATED_ISO);
   const entries: MetadataRoute.Sitemap = [];
 
   // 1) Le hub /glossaire (FR canonique + EN miroir si activé).
@@ -1227,7 +1232,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const url = `${SITE_URL}/${locale}${localizedHref(hubKey, locale)}`;
     entries.push({
       url,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.7,
       alternates: { languages: alternateLanguages(hubKey) },
@@ -1248,7 +1253,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     const langs = { fr: frUrl, en: enUrl, "x-default": frUrl };
     entries.push({
       url: frUrl,
-      lastModified: now,
+      lastModified: modifie,
       changeFrequency: "monthly",
       priority: 0.6,
       alternates: { languages: langs },
@@ -1256,7 +1261,7 @@ function buildGlossarySitemap(now: Date): MetadataRoute.Sitemap {
     if (!EN_LOCALE_DISABLED) {
       entries.push({
         url: enUrl,
-        lastModified: now,
+        lastModified: modifie,
         changeFrequency: "monthly",
         priority: 0.6,
         alternates: { languages: langs },

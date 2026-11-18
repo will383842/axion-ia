@@ -1,23 +1,14 @@
 /**
- * Sprint S+4-A 2026-05-18 — `/glossaire/[slug]` détail d'un terme glossaire.
+ * `/glossaire/[slug]` : fiche d'un terme du glossaire de référence (décision du 18/11/2026).
  *
- * Audit source : `_AUDIT/CONTENT-GEN-DEEP-AUDIT-2026-05-18/22-TYPE-11-GLOSSAIRE.md`
- * Gap P1-19 : index `/glossaire` existait (12 termes hardcode) mais AUCUNE
- * page détail → impossible de linker un terme depuis un article, pas de
- * JSON-LD `DefinedTerm`, pas de mesh interne, pas d'AEO citable au niveau terme.
- *
- * Doctrine ce fichier (cohérence `/centre-aide/[slug]/page.tsx` P0-5) :
- *   - ISR `revalidate=3600` + `dynamicParams=false` (anti soft-404 SSG)
- *   - `generateStaticParams` pour tous les slugs glossaire (60 au 2026-05-18)
- *   - Metadata bilingue (FR canonique + EN miroir 301 via proxy.ts AGENTS.md)
- *   - JSON-LD `DefinedTerm` (termCode + name + description + inDefinedTermSet)
- *   - JSON-LD `BreadcrumbList` (Home → Glossaire → Terme)
- *   - JSON-LD `WebPage` + `Speakable` cssSelector `[data-aeo="glossary-definition"]`
- *   - Anti-doorway HCU : `robots: noindex` auto si définition < 80 mots
- *   - `notFound()` si slug inconnu
- *   - Mesh : 3-5 termes liés via `relatedSlugs[]` + lien CTA `/blog`
- *   - Réutilisation `<Container>`, `<Breadcrumbs>`, `<JsonLd>`, `<AnswerCard>`,
- *     `<AiContentDisclaimer>` (doctrine V1)
+ * Contenu statique rendu côté serveur (aucun JavaScript client ajouté) :
+ *   - définition citable en tête (`data-aeo="glossary-definition"`), puis comment ça marche,
+ *     exemple en PME française, limite, termes liés, pages de la base de connaissances et offre ;
+ *   - JSON-LD `DefinedTerm` (dans le `DefinedTermSet` du hub) et `BreadcrumbList` (composant
+ *     `Breadcrumbs`) ; date de mise à jour visible et reprise dans le JSON-LD ;
+ *   - `noindex` seulement si la fiche tombe sous le seuil de substance (`isGlossaryTermIndexable`),
+ *     SSOT partagé avec le sitemap ;
+ *   - ISR 1 h, `dynamicParams = false`, `notFound()` si le slug est inconnu.
  */
 
 import type { Metadata } from "next";
@@ -25,20 +16,23 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { BookText, Tag, ArrowRight, Quote, Lightbulb } from "lucide-react";
-import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
+import { ArrowRight } from "lucide-react";
+import { routing, STATIC_LOCALES } from "@/i18n/routing";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { Cta } from "@/components/marketing/Cta";
-import { CtaBlock } from "@/components/sections/CtaBlock";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { AnswerCard } from "@/components/marketing/AnswerCard";
 import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
-import { buildProductMetadata, SITE_URL, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, SITE_URL } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
+import { FAQ_GLOBAL } from "@/content/transversal";
 import {
-  ALL_GLOSSARY_TERMS_EXTENDED,
+  GLOSSARY_CATEGORY_LABELS,
+  GLOSSARY_FAQ_LINKS,
+  GLOSSARY_OFFERS,
+  GLOSSARY_UPDATED_ISO,
   getGlossaryTermBySlug,
   getRelatedGlossaryTerms,
   isGlossaryTermIndexable,
@@ -49,16 +43,9 @@ interface Props {
   params: Promise<{ locale: string; slug: string }>;
 }
 
-/**
- * ISR 1h — terme glossaire évolue rarement, mais on veut pouvoir corriger une
- * définition sans full rebuild de 60 pages.
- */
 export const revalidate = 3600;
 
-/**
- * Audit indexation 2026-05-18 — anti soft-404 SSG : slugs hardcode connus,
- * tout slug hors liste → notFound() immédiat sans tentative ISR.
- */
+/** Anti soft-404 : tout slug hors liste répond 404 sans tentative ISR. */
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -66,43 +53,37 @@ export async function generateStaticParams() {
   return slugs.flatMap((slug) => STATIC_LOCALES.map((locale) => ({ locale, slug })));
 }
 
+function dateLisible(iso: string): string {
+  return new Date(iso).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, slug } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const term = getGlossaryTermBySlug(slug);
   if (!term) return {};
-  const isFr = locale === "fr";
-  const description = isFr ? term.fr : term.en;
 
-  // Build une description SEO-safe ≤ 160 chars (Google SERP cap).
-  const metaDescription =
-    description.length > 160 ? `${description.slice(0, 157).trim()}…` : description;
-
-  // Anti-doorway HCU 2024 + AEO 2026 : noindex si définition < 80 mots cumulés
-  // (FR + EN + examples). SSOT partagé avec le sitemap (`isGlossaryTermIndexable`)
-  // pour qu'un terme thin ne soit JAMAIS sitemappé tout en étant `noindex` (audit
-  // indexation 2026-06-17 — fin de l'incohérence sitemap↔page).
-  const thin = !isGlossaryTermIndexable(slug);
+  const description =
+    term.definition.length > 160 ? `${term.definition.slice(0, 157).trim()}…` : term.definition;
 
   const meta = await buildProductMetadata({
     locale,
     path: `/glossaire/${slug}`,
-    title: isFr
-      ? `${term.term} · définition IA · Axion-IA`
-      : `${term.term} · AI definition · Axion-IA`,
-    description: metaDescription,
+    title: `${term.term} : définition simple et exemple · Axion-IA`,
+    description,
     alternates: { fr: `/glossaire/${slug}`, en: `/glossary/${slug}` },
   });
 
-  if (thin) {
-    // Override robots.noindex sans casser les autres metadata produites.
+  // Filet anti contenu mince : une fiche ajoutée trop courte ne part jamais en `index`.
+  if (!isGlossaryTermIndexable(slug)) {
     return {
       ...meta,
-      robots: {
-        index: false,
-        follow: true,
-        googleBot: { index: false, follow: true },
-      },
+      robots: { index: false, follow: true, googleBot: { index: false, follow: true } },
     };
   }
   return meta;
@@ -114,81 +95,53 @@ export default async function GlossaryTermPage({ params }: Props) {
   const term = getGlossaryTermBySlug(slug);
   if (!term) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
-  const isFr = loc === "fr";
-  const definition = isFr ? term.fr : term.en;
 
-  // Compute related (3-5 termes) via mesh interne pré-validé par les tests.
   const related = getRelatedGlossaryTerms(slug, 5);
+  const offre = GLOSSARY_OFFERS[term.offre];
+  const categorie = GLOSSARY_CATEGORY_LABELS[term.category];
+  const urlHub = `${SITE_URL}/${locale}/glossaire`;
+  const urlTerme = `${urlHub}/${slug}`;
 
-  // JSON-LD DefinedTerm (Schema.org canonical glossary type).
-  // `termCode` = slug stable (jamais renommé rétroactivement, doctrine slug-history).
-  // `inDefinedTermSet` boucle vers le hub glossaire (signal AEO/GEO 2026 :
-  // permet à Perplexity/Claude.ai/SGE de comprendre la structure ontologique).
+  const faqLiees = (GLOSSARY_FAQ_LINKS[slug] ?? [])
+    .map((id) => FAQ_GLOBAL.find((f) => f.id === id))
+    .filter((f): f is NonNullable<typeof f> => Boolean(f))
+    .map((f) => ({ id: f.id, question: f.fr.question }));
+
   const definedTermJsonLd = {
     "@context": "https://schema.org",
     "@type": "DefinedTerm",
-    "@id": `${SITE_URL}/${locale}/glossaire/${slug}#term`,
+    "@id": `${urlTerme}#term`,
     termCode: term.slug,
     name: term.term,
-    description: definition,
+    description: term.definition,
     alternateName: [...term.aliases],
     inDefinedTermSet: {
       "@type": "DefinedTermSet",
-      "@id": `${SITE_URL}/${locale}/glossaire`,
-      name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
-      url: `${SITE_URL}/${locale}/glossaire`,
+      "@id": `${urlHub}#glossaire`,
+      name: "Glossaire de l'IA en entreprise · Axion-IA",
+      url: urlHub,
     },
-    url: `${SITE_URL}/${locale}/glossaire/${slug}`,
-    inLanguage: locale,
-    // AEO 2026 : `subjectOf` pointe vers la page WebPage pour citation LLM.
+    url: urlTerme,
+    inLanguage: "fr",
     subjectOf: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/${locale}/glossaire/${slug}`,
-      url: `${SITE_URL}/${locale}/glossaire/${slug}`,
-      isPartOf: {
-        "@type": "WebSite",
-        "@id": `${SITE_URL}/#website`,
-      },
-      datePublished: SITE_EDITORIAL_DATE,
-      dateModified: SITE_EDITORIAL_DATE,
-      // Speakable cssSelector pour Google Assistant + Alexa.
+      "@id": urlTerme,
+      url: urlTerme,
+      isPartOf: { "@type": "WebSite", "@id": `${SITE_URL}/#website` },
+      dateModified: GLOSSARY_UPDATED_ISO,
       speakable: buildSpeakableSpecification({
         selectors: ['[data-aeo="glossary-definition"]'],
       }),
     },
   } as const;
 
-  // Breadcrumb visuel + JSON-LD (le composant Breadcrumbs ajoute auto l'item Home).
   const breadcrumbItems = [
-    { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
+    { href: "/glossaire", label: "Glossaire" },
     { href: `/glossaire/${slug}`, label: term.term },
   ];
 
-  // Category label (FR-first car prod 2026-05-16 EN désactivé).
-  const categoryLabelFr: Record<typeof term.category, string> = {
-    foundational: "Fondamentaux",
-    agents: "Agents & orchestration",
-    rag: "RAG & connaissance",
-    models: "Modèles",
-    infra: "Infrastructure",
-    security: "Sécurité & conformité",
-    evaluation: "Évaluation",
-  };
-  const categoryLabelEn: Record<typeof term.category, string> = {
-    foundational: "Foundational",
-    agents: "Agents & orchestration",
-    rag: "RAG & knowledge",
-    models: "Models",
-    infra: "Infrastructure",
-    security: "Security & compliance",
-    evaluation: "Evaluation",
-  };
-  const categoryLabel = isFr ? categoryLabelFr[term.category] : categoryLabelEn[term.category];
-
   return (
     <>
-      {/* P1-17 alternate format markdown brut pour LLM ingestion (cohérence centre-aide). */}
       <link rel="alternate" type="text/markdown" href={`/api/markdown/glossaire/${slug}`} />
       <Container className="border-border border-b py-3">
         <Breadcrumbs items={breadcrumbItems} />
@@ -196,75 +149,47 @@ export default async function GlossaryTermPage({ params }: Props) {
 
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Glossaire IA" : "AI glossary"}
+        eyebrow={`Glossaire IA · ${categorie}`}
         title={term.term}
-        titleEm={isFr ? "· définition" : "· definition"}
+        titleEm="· définition"
         description={
-          isFr
-            ? "Définition courte, sourcée, citable par les LLMs."
-            : "Short, sourced, LLM-citable definition."
+          <>
+            Mis à jour le{" "}
+            <time dateTime={GLOSSARY_UPDATED_ISO}>{dateLisible(GLOSSARY_UPDATED_ISO)}</time>
+          </>
         }
       >
-        <Container className="mt-8 max-w-2xl">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-            <li className="text-fg-soft inline-flex items-center gap-2 text-sm">
-              <Tag aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-              <span>{categoryLabel}</span>
-            </li>
-            <li className="text-fg-soft inline-flex items-center gap-2 text-sm">
-              <BookText aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-              <span>
-                {ALL_GLOSSARY_TERMS_EXTENDED.length} {isFr ? "termes" : "terms"}
-              </span>
-            </li>
-            <li className="text-fg-soft inline-flex items-center gap-2 text-sm">
-              <Quote aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-              <span>{isFr ? "AEO citable" : "AEO citable"}</span>
-            </li>
-          </ul>
-        </Container>
-      </Section>
-
-      {/* Canonical Answer (TL;DR) pour LLMs — definition wrappée pour Speakable. */}
-      <Section>
-        <Container className="max-w-3xl">
+        <Container className="mt-8 max-w-3xl">
           <div data-aeo="glossary-definition">
-            <AnswerCard
-              locale={loc}
-              question={isFr ? `Qu'est-ce que ${term.term} ?` : `What is ${term.term}?`}
-            >
-              {definition}
+            <AnswerCard locale="fr" question={`Qu'est-ce que ${term.term} ?`}>
+              {term.definition}
             </AnswerCard>
           </div>
         </Container>
       </Section>
 
-      {term.examples.length > 0 ? (
-        <Section eyebrow={isFr ? "En pratique" : "In practice"}>
-          <Container className="max-w-3xl">
-            <ul className="space-y-4">
-              {term.examples.map((ex, i) => (
-                <li
-                  key={`ex-${i}`}
-                  className="border-border bg-halo-warm border-l-terracotta rounded-xl border-l-4 px-5 py-4"
-                >
-                  <div className="flex items-start gap-3">
-                    <Lightbulb
-                      aria-hidden="true"
-                      className="text-terracotta mt-0.5 h-5 w-5 flex-shrink-0"
-                      strokeWidth={2}
-                    />
-                    <p className="text-fg text-base leading-relaxed">{ex}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </Container>
-        </Section>
-      ) : null}
+      <Section eyebrow="Comment ça marche">
+        <Container className="max-w-3xl">
+          <p className="text-fg text-base leading-relaxed">{term.fonctionnement}</p>
+        </Container>
+      </Section>
+
+      <Section eyebrow="Exemple dans une PME">
+        <Container className="max-w-3xl">
+          <p className="border-border bg-halo-warm border-l-terracotta text-fg rounded-xl border-l-4 px-5 py-4 text-base leading-relaxed">
+            {term.exemple}
+          </p>
+        </Container>
+      </Section>
+
+      <Section eyebrow="Erreur fréquente ou limite">
+        <Container className="max-w-3xl">
+          <p className="text-fg text-base leading-relaxed">{term.limite}</p>
+        </Container>
+      </Section>
 
       {term.aliases.length > 0 ? (
-        <Section eyebrow={isFr ? "Aussi appelé" : "Also known as"}>
+        <Section eyebrow="Aussi appelé">
           <Container className="max-w-3xl">
             <ul className="flex flex-wrap gap-2">
               {term.aliases.map((a) => (
@@ -281,7 +206,7 @@ export default async function GlossaryTermPage({ params }: Props) {
       ) : null}
 
       {related.length > 0 ? (
-        <Section eyebrow={isFr ? "Termes liés" : "Related terms"}>
+        <Section eyebrow="Termes liés">
           <Container className="max-w-3xl">
             <ul className="border-border divide-border divide-y border-y">
               {related.map((r) => (
@@ -292,51 +217,63 @@ export default async function GlossaryTermPage({ params }: Props) {
                   >
                     {r.term} →{" "}
                     <span className="text-fg-soft text-sm font-normal">
-                      {isFr ? r.fr.slice(0, 100) : r.en.slice(0, 100)}…
+                      {r.definition.length > 110
+                        ? `${r.definition.slice(0, 107).trim()}…`
+                        : r.definition}
                     </span>
                   </Link>
                 </li>
               ))}
             </ul>
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <Cta href={`/blog/tag/${term.category}`} variant="outline" size="lg">
-                {isFr
-                  ? `Articles sur ${categoryLabel.toLowerCase()}`
-                  : `Articles about ${categoryLabel.toLowerCase()}`}
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
-              </Cta>
-              <Cta href="/glossaire" variant="ghost" size="lg">
-                {isFr ? "← Retour au glossaire" : "← Back to glossary"}
-              </Cta>
-            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {faqLiees.length > 0 ? (
+        <Section eyebrow="Pour aller plus loin">
+          <Container className="max-w-3xl">
+            <ul className="space-y-2">
+              {faqLiees.map((f) => (
+                <li key={f.id}>
+                  <Link
+                    href={`/${locale}/faq/${f.id}`}
+                    className="text-fg hover:text-primary text-base underline-offset-4 hover:underline"
+                  >
+                    {f.question}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </Container>
         </Section>
       ) : null}
 
       <Section>
         <Container className="max-w-3xl">
-          <AiContentDisclaimer locale={loc} />
+          <AiContentDisclaimer locale="fr" />
         </Container>
       </Section>
 
-      <CtaBlock
-        title={
-          isFr
-            ? "Besoin d'aller plus loin sur l'IA opérationnelle ?"
-            : "Want to go deeper on operational AI?"
-        }
-        description={
-          isFr
-            ? "Notre guide 40 pages traite chaque concept du glossaire avec des cas concrets."
-            : "Our 40-page guide covers every glossary concept with concrete cases."
-        }
-        cta={
-          <Cta href="/guide-ia" size="lg">
-            {isFr ? "Lire le guide IA" : "Read the AI guide"}
-            <ArrowRight className="h-4 w-4" aria-hidden="true" />
-          </Cta>
-        }
-      />
+      <Section>
+        <Container className="max-w-3xl">
+          <p className="text-fg-soft text-base leading-relaxed">
+            {offre.texte}{" "}
+            <Link
+              href={`/${locale}${offre.href}`}
+              className="text-primary underline underline-offset-4"
+            >
+              {offre.lien}
+            </Link>
+            .
+          </p>
+          <div className="mt-6">
+            <Cta href="/glossaire" variant="ghost" size="lg">
+              <ArrowRight className="h-4 w-4 rotate-180" aria-hidden="true" />
+              Retour au glossaire
+            </Cta>
+          </div>
+        </Container>
+      </Section>
 
       <JsonLd data={definedTermJsonLd} />
     </>

@@ -127,22 +127,14 @@ describe("garde R7 — les détecteurs voient ce qu'ils doivent voir (anti-test-
 
 /**
  * Montants qui ne sont PAS des prix d'Axion-IA, admis nommément (ressource → montants exacts) :
- * tarifs publics d'API ou de matériel de TIERS cités par le glossaire, un exemple de commande
- * vocale, un seuil de validation dans un cas client. Tout autre montant fait rougir.
+ * un seuil de validation dans un cas client (aucune exemption aujourd'hui). Tout autre montant fait rougir.
  */
 const EXEMPTIONS: Record<string, readonly string[]> = {
   // Exemption « cas-concrets/industrie-comptabilite : 5000 € » RETIRÉE (PR 1871) : les cas concrets
   // sont éteints (CAS_CONCRETS_AFFICHES = false, retrait juridique du 2026-11-08) ; /api/markdown
   // répond 404, donc plus aucun corps ne peut servir ce montant. Si les cas reviennent, la
   // ré-ajouter (seuil de validation des factures du client).
-  "glossaire/fine-tuning": ["50 k€"], // coût marché d'un fine-tuning
-  "glossaire/vectorisation": ["5 €"], // coût d'API d'embeddings (tiers)
-  "glossaire/tokens": ["0,75 €"], // coût d'API au million de jetons (tiers)
-  "glossaire/function-calling": ["200 €"], // exemple : « envoie 200 € à Marie »
-  "glossaire/sonnet-model": ["3 €"], // tarif d'API Anthropic
-  "glossaire/opus-model": ["15 €"], // tarif d'API Anthropic
-  "glossaire/haiku-model": ["0,25 €", "5 €"], // tarif d'API Anthropic
-  "glossaire/on-premise-ai": ["50 K€"], // coût de 2 GPU H100 par an
+  // Le glossaire de référence (18/11/2026) ne cite plus aucun tarif de tiers : plus d'exemption.
 };
 
 async function markdown(type: string, slug: string): Promise<string> {

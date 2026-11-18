@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
-import { ArrowRight, BookText, Mic, RefreshCw, Quote } from "lucide-react";
-import { routing, type Locale } from "@/i18n/routing";
+import { ArrowRight } from "lucide-react";
+import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -11,16 +11,45 @@ import { Cta } from "@/components/marketing/Cta";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { buildProductMetadata, SITE_URL } from "@/lib/seo";
-import { dateRoute } from "@/lib/seo/fraicheur";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
-import { getGlossaryTerms } from "@/lib/knowledge/readers";
+import {
+  ALL_GLOSSARY_TERMS_EXTENDED,
+  GLOSSARY_CATEGORY_LABELS,
+  GLOSSARY_UPDATED_ISO,
+  type GlossaryCategory,
+} from "@/content/glossary-extension";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
-// ISR 1h (P1 audit KB 2026-05-29) — aligné /connaissances et /ressources.
+// Contenu statique rendu côté serveur : aucune lecture de base, aucun JavaScript client ajouté.
 export const revalidate = 3600;
+
+/** Ordre d'affichage des familles : du plus général au plus spécialisé. */
+const ORDRE_CATEGORIES: readonly GlossaryCategory[] = [
+  "foundational",
+  "models",
+  "rag",
+  "agents",
+  "usages",
+  "security",
+  "gouvernance",
+  "evaluation",
+  "infra",
+  "visibilite",
+];
+
+const NB_TERMES = ALL_GLOSSARY_TERMS_EXTENDED.length;
+
+function dateLisible(iso: string): string {
+  return new Date(iso).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
@@ -28,70 +57,51 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return buildProductMetadata({
     locale,
     path: "/glossaire",
-    title:
-      locale === "fr"
-        ? "Glossaire IA · termes essentiels · Axion-IA"
-        : "AI glossary · essential terms · Axion-IA",
-    description:
-      locale === "fr"
-        ? "Glossaire IA Axion-IA : LLM, RAG, fine-tuning, agents, MCP, vectorisation, hallucination, prompt engineering."
-        : "Axion-IA AI glossary: LLM, RAG, fine-tuning, agents, MCP, vectorization, hallucination, prompt engineering.",
+    title: `Glossaire de l'IA en entreprise : ${NB_TERMES} termes expliqués simplement · Axion-IA`,
+    description: `Le vocabulaire de l'IA en entreprise défini en clair : agent IA, RAG, MCP, AI Act, GEO… ${NB_TERMES} termes avec des exemples de PME françaises.`,
     alternates: { fr: "/glossaire", en: "/glossary" },
   });
 }
-
-// KB-6.2 : 12 termes hardcode déplacés en SSOT `src/lib/knowledge/legacy-mapping-glossary-hardcode.ts`
-// Lecture via `getGlossaryTerms()` qui choisit DB ou hardcode selon `KB_BACKEND_UNIFIED_GLOSSARY`.
 
 export default async function GlossaryPage({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  const loc = locale as Locale;
-  const isFr = loc === "fr";
 
-  // KB-6.2 : lecture via reader unifié (DB si KB_BACKEND_UNIFIED_GLOSSARY=1,
-  // sinon SSOT hardcode GLOSSARY_TERMS_HARDCODE — comportement identique).
-  // Fallback hardcode TERMS const ci-dessus retiré : suffit le SSOT lib.
-  const terms = await getGlossaryTerms();
+  const urlHub = `${SITE_URL}/${locale}/glossaire`;
+  const termes = ALL_GLOSSARY_TERMS_EXTENDED;
+
+  const groupes = ORDRE_CATEGORIES.map((cat) => ({
+    cat,
+    termes: termes.filter((t) => t.category === cat),
+  })).filter((g) => g.termes.length > 0);
 
   const definedTermSetJsonLd = {
     "@context": "https://schema.org",
     "@type": "DefinedTermSet",
-    name: isFr ? "Glossaire IA Axion-IA" : "Axion-IA AI glossary",
-    inLanguage: locale,
-    url: `${SITE_URL}/${locale}/glossaire`,
-    // DefinedTermSet ⊂ CreativeWork → dateModified valide (signal de fraîcheur AEO/GEO).
-    dateModified: dateRoute("/glossaire"),
+    "@id": `${urlHub}#glossaire`,
+    name: "Glossaire de l'IA en entreprise · Axion-IA",
+    description:
+      "Le vocabulaire de l'intelligence artificielle en entreprise, défini en clair, avec des exemples de PME françaises.",
+    inLanguage: "fr",
+    url: urlHub,
+    dateModified: GLOSSARY_UPDATED_ISO,
+    publisher: { "@id": `${SITE_URL}/#organization` },
     speakable: buildSpeakableSpecification({
       selectors: ["[data-aeo='glossary-intro']"],
     }),
-    hasDefinedTerm: terms.map((t) => ({
+    hasDefinedTerm: termes.map((t) => ({
       "@type": "DefinedTerm",
+      "@id": `${urlHub}/${t.slug}#term`,
+      termCode: t.slug,
       name: t.term,
-      description: t[loc],
-      inDefinedTermSet: `${SITE_URL}/${locale}/glossaire`,
+      description: t.definition,
+      url: `${urlHub}/${t.slug}`,
+      inDefinedTermSet: { "@id": `${urlHub}#glossaire` },
     })),
   } as const;
 
-  const itemListJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "ItemList",
-    name: isFr
-      ? `Glossaire IA — ${terms.length} termes essentiels · Axion-IA`
-      : `AI glossary — ${terms.length} essential terms · Axion-IA`,
-    numberOfItems: terms.length,
-    itemListElement: terms.slice(0, 100).map((t, i) => ({
-      "@type": "ListItem",
-      position: i + 1,
-      name: isFr ? t.term : t.term,
-      url: `${SITE_URL}/${loc}/glossaire/${t.slug}`,
-    })),
-  };
-
-  // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
-  // est ajouté automatiquement par le composant.
-  const breadcrumbItems = [{ href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" }];
+  const breadcrumbItems = [{ href: "/glossaire", label: "Glossaire" }];
 
   return (
     <>
@@ -100,69 +110,74 @@ export default async function GlossaryPage({ params }: Props) {
       </Container>
       <Section
         titleAs="h1"
-        eyebrow={isFr ? "Glossaire" : "Glossary"}
-        title={isFr ? "Termes IA" : "Essential AI"}
-        titleEm={isFr ? "essentiels" : "terms"}
+        eyebrow="Glossaire"
+        title="Le vocabulaire de l'IA en entreprise,"
+        titleEm="expliqué simplement"
         description={
           <span data-aeo="glossary-intro">
-            {isFr
-              ? `${terms.length} termes pour parler IA en réunion sans se tromper. Définitions courtes, sourcées, citables par les LLMs. MAJ à chaque évolution majeure.`
-              : `${terms.length} terms to discuss AI in meetings without errors. Short, sourced, LLM-citable definitions. Updated on each major evolution.`}
+            {`${NB_TERMES} termes pour parler d'IA sans jargon : chaque fiche donne une définition claire, explique comment ça marche, montre un exemple dans une PME française et rappelle les limites.`}
           </span>
         }
       >
         <Container className="mt-8 max-w-2xl">
-          <ul className="flex flex-wrap gap-x-5 gap-y-2.5">
-            {[
-              { icon: BookText, label: isFr ? `${terms.length} termes` : `${terms.length} terms` },
-              { icon: Mic, label: isFr ? "AEO citable" : "AEO citable" },
-              { icon: Quote, label: isFr ? "Sources vérifiées" : "Verified sources" },
-              { icon: RefreshCw, label: isFr ? "MAJ continue" : "Continuous updates" },
-            ].map((pill) => {
-              const Icon = pill.icon;
-              return (
-                <li
-                  key={pill.label}
-                  className="text-fg-soft inline-flex items-center gap-2 text-sm"
-                >
-                  <Icon aria-hidden="true" className="text-terracotta h-4 w-4" strokeWidth={2} />
-                  <span>{pill.label}</span>
+          <p className="text-fg-soft text-sm">
+            {`${NB_TERMES} termes · mis à jour le `}
+            <time dateTime={GLOSSARY_UPDATED_ISO}>{dateLisible(GLOSSARY_UPDATED_ISO)}</time>
+          </p>
+          <nav aria-label="Familles de termes" className="mt-5">
+            <ul className="flex flex-wrap gap-2">
+              {groupes.map((g) => (
+                <li key={g.cat}>
+                  <a
+                    href={`#famille-${g.cat}`}
+                    className="border-border text-fg-soft hover:text-primary inline-flex rounded-full border px-3 py-1 text-sm"
+                  >
+                    {GLOSSARY_CATEGORY_LABELS[g.cat]}
+                  </a>
                 </li>
-              );
-            })}
-          </ul>
+              ))}
+            </ul>
+          </nav>
           <div className="mt-7 flex flex-wrap items-center gap-4">
-            <Cta href="/guide-ia" size="lg">
-              {isFr ? "Lire le guide IA 40 pages" : "Read the 40-page AI guide"}
+            <Cta href="/journee-ia" size="lg">
+              Découvrir La Journée IA
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Cta>
-            <Cta href="/audit" variant="outline" size="lg">
-              {isFr ? "Demander un audit" : "Request an audit"}
+            <Cta href="/guide-ia" variant="outline" size="lg">
+              Lire le guide IA
             </Cta>
           </div>
         </Container>
       </Section>
-      <Section>
-        <Container className="max-w-3xl">
-          <dl className="border-border divide-border space-y-0 divide-y border-y">
-            {terms.map((t) => (
-              <div key={t.slug} className="grid gap-1 py-4 sm:grid-cols-[10rem_1fr] sm:gap-4">
-                <dt className="font-mono text-sm font-semibold">
-                  <Link
-                    href={{ pathname: "/glossaire/[slug]", params: { slug: t.slug } }}
-                    className="text-fg hover:text-primary"
-                  >
-                    {t.term}
-                  </Link>
-                </dt>
-                <dd className="text-fg-soft text-base leading-relaxed">{t[loc]}</dd>
-              </div>
-            ))}
-          </dl>
-        </Container>
-      </Section>
+      {groupes.map((g) => (
+        <Section key={g.cat} eyebrow={GLOSSARY_CATEGORY_LABELS[g.cat]}>
+          <Container className="max-w-3xl">
+            <h2 id={`famille-${g.cat}`} className="sr-only">
+              {GLOSSARY_CATEGORY_LABELS[g.cat]}
+            </h2>
+            <dl className="border-border divide-border space-y-0 divide-y border-y">
+              {g.termes.map((t) => (
+                <div
+                  key={t.slug}
+                  id={t.slug}
+                  className="grid scroll-mt-24 gap-1 py-4 sm:grid-cols-[12rem_1fr] sm:gap-4"
+                >
+                  <dt className="text-sm font-semibold">
+                    <Link
+                      href={{ pathname: "/glossaire/[slug]", params: { slug: t.slug } }}
+                      className="text-fg hover:text-primary"
+                    >
+                      {t.term}
+                    </Link>
+                  </dt>
+                  <dd className="text-fg-soft text-base leading-relaxed">{t.definition}</dd>
+                </div>
+              ))}
+            </dl>
+          </Container>
+        </Section>
+      ))}
       <JsonLd data={definedTermSetJsonLd} />
-      <JsonLd data={itemListJsonLd} scriptId="jsonld-glossaire-itemlist" />
     </>
   );
 }

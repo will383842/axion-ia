@@ -10,6 +10,7 @@ import {
   isPremiumVille,
   isVilleIndexable,
 } from "./index";
+import { VILLES_INDEXEES, VILLES_INDEXEES_SLUGS } from "./villes-indexees";
 
 /**
  * P2-4 Sprint S+5 — tests des deux helpers villes/département/région.
@@ -100,21 +101,19 @@ describe("cohérence helpers ville/département/région", () => {
   });
 });
 
-describe("cap indexation T1/T2 + curées (P0 2026-07-03)", () => {
+describe("liste d'indexation unique (villes-indexees.ts, 18/11/2026)", () => {
   const indexable = getIndexableVilles().filter((v) => isVilleIndexable(v.slug));
 
-  it("indexe au moins toutes les grosses villes (pop ≥ 20k)", () => {
-    expect(indexable.length).toBeGreaterThanOrEqual(400);
+  it("les villes indexables sont exactement celles de la liste", () => {
+    expect(indexable.map((v) => v.slug).sort()).toEqual([...VILLES_INDEXEES_SLUGS].sort());
     expect(isVilleIndexable("paris")).toBe(true);
   });
 
-  it("INVARIANT : toute ville indexable est premium (pop ≥ 20k OU réécrite gold)", () => {
-    expect(indexable.every((v) => isPremiumVille(v))).toBe(true);
-  });
-
-  it("une petite ville non-premium (pop < 20k, non curée) n'est PAS indexable", () => {
-    const small = VILLES.find((v) => !!v.copy && v.population < 20_000 && !isPremiumVille(v));
-    // garde-fou : si le dataset venait à ne plus contenir de petite ville non-premium
-    if (small) expect(isVilleIndexable(small.slug)).toBe(false);
+  it("une ville hors liste n'est PAS indexable, même premium", () => {
+    const horsListe = VILLES.find(
+      (v) => !!v.copy && isPremiumVille(v) && !VILLES_INDEXEES.has(v.slug),
+    );
+    expect(horsListe).toBeDefined();
+    expect(isVilleIndexable(horsListe!.slug)).toBe(false);
   });
 });

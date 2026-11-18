@@ -55,7 +55,7 @@ import {
 } from "@/components/formations/FormationsCatalogueFilterable";
 import { FormationsLesPlus } from "@/components/formations/FormationsLesPlus";
 import { CLIENT_SECTORS } from "@/content/sectors";
-import { getVillesCoreIndexableNow } from "@/content/villes/core";
+import { getVillesCitablesMaillage } from "@/content/villes/core";
 import {
   FORMATIONS_V2,
   getFormationsV2,
@@ -394,7 +394,7 @@ export default async function FormationsEntreprise({ params }: Props) {
     },
   ];
 
-  const villes = getVillesCoreIndexableNow().slice(0, 60);
+  const villes = getVillesCitablesMaillage().slice(0, 60);
 
   // Données slim du catalogue passées au filtre client (prix déjà formaté côté
   // serveur → catalog-v2 reste hors bundle client). Refonte 2026-07-19 : filtre

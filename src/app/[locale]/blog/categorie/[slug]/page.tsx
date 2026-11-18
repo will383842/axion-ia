@@ -4,6 +4,7 @@ import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { ArrowRight } from "lucide-react";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
+import { auteurJsonLd } from "@/lib/seo/plume-ia";
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
@@ -208,7 +209,7 @@ export default async function BlogCategoryPage({ params }: Props) {
       headline: p.title,
       url: `${SITE_URL}/${locale}/${p.route}/${p.slug}`,
       datePublished: p.publishedAt,
-      author: { "@type": "Person", name: p.author },
+      author: auteurJsonLd(p.author, SITE_URL),
     })),
   });
 

@@ -34,7 +34,8 @@ export interface PropsBlocClient {
   dispatch: Dispatch<ActionAssistant>;
   clients: readonly ClientOption[];
   lireBandeau: (clientId: string) => Promise<string | null>;
-  creerClient: (input: EntreeNouveauContact) => Promise<ResultatNouveauContact>;
+  /** Absent (mode essai) : aucun contact ne se crée, seules les fiches fournies sont proposées. */
+  creerClient?: ((input: EntreeNouveauContact) => Promise<ResultatNouveauContact>) | undefined;
   /** Date du jour ISO (AAAA-MM-JJ) fournie par la page serveur ; absente = bornes non posées. */
   aujourdhui?: string | undefined;
   /**
@@ -124,16 +125,18 @@ export function BlocClient({
             ))}
           </select>
         </label>
-        <button
-          type="button"
-          className="min-h-[44px] rounded border px-4"
-          onClick={() => setCreation(true)}
-          aria-expanded={creation}
-        >
-          + Nouveau contact
-        </button>
+        {creerClient ? (
+          <button
+            type="button"
+            className="min-h-[44px] rounded border px-4"
+            onClick={() => setCreation(true)}
+            aria-expanded={creation}
+          >
+            + Nouveau contact
+          </button>
+        ) : null}
       </div>
-      {creation ? (
+      {creation && creerClient ? (
         <NouveauContact
           creerClient={creerClient}
           onAnnuler={() => setCreation(false)}

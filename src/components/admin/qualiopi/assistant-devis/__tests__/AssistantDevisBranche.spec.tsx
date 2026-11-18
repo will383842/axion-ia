@@ -58,6 +58,7 @@ function monter(
     brouillon?: { id: string; revision: number } | null;
     clients?: ClientOption[];
     devisId?: string;
+    salutations?: Record<string, string>;
     onEnvoye?: (r: { devisId: string }) => void;
   } = {},
 ) {
@@ -68,6 +69,7 @@ function monter(
       payloadInitial={payload}
       brouillon={o.brouillon === undefined ? { id: BROUILLON, revision: 5 } : o.brouillon}
       clients={o.clients ?? [CLIENT]}
+      salutations={o.salutations}
       textesParDefaut={[]}
       tauxStandard={20}
       formulesActives
@@ -258,7 +260,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     monter({ etape: 4, onEnvoye });
     await screen.findByText(/Proposition n°/);
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
-    expect(await screen.findByText(/en corbeille, à valider/i)).toBeTruthy();
+    expect(await screen.findByText("Le devis est envoyé au client.")).toBeTruthy();
     expect(A.envoyer).toHaveBeenCalledTimes(1);
     expect(A.envoyer.mock.calls[0]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
@@ -351,7 +353,7 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
     expect(A.numeroter.mock.calls[1]![0]).toEqual({ brouillonId: BROUILLON, attenduRevision: 8 });
   });
 
-  it("e-mail non préparé : le devis est déjà envoyé, onEnvoye est appelé et le message n'est PAS une erreur", async () => {
+  it("e-mail non préparé : la note du serveur est affichée, ce n'est PAS une erreur, et onEnvoye n'est PAS appelé", async () => {
     A.envoyer.mockResolvedValue({
       data: {
         devisId: NUM.devisId,
@@ -368,8 +370,52 @@ describe("étape 4 : sauver → numéroter → aperçu → envoyer", () => {
       expect(document.body.textContent).toContain("Le client n'a pas d'adresse."),
     );
     expect(screen.queryByRole("alert")).toBeNull();
-    expect(screen.queryByText(/en corbeille, à valider/i)).toBeNull();
+    expect(document.body.textContent).not.toContain("En attente dans");
+    expect(onEnvoye).not.toHaveBeenCalled();
+  });
+
+  it("garé pour validation : le texte « À valider », le devis reste en brouillon, AUCUN onEnvoye", async () => {
+    A.envoyer.mockResolvedValue({
+      data: {
+        devisId: NUM.devisId,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "Garé.",
+      },
+    });
+    const onEnvoye = vi.fn();
+    monter({ etape: 4, onEnvoye });
+    await screen.findByText(/Proposition n°/);
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await waitFor(() =>
+      expect(document.body.textContent).toContain(
+        "reste en brouillon tant que l'e-mail n'est pas validé dans « Emails, À valider »",
+      ),
+    );
+    expect(onEnvoye).not.toHaveBeenCalled();
+    expect(screen.queryByRole("alert")).toBeNull();
+  });
+
+  it("direct : onEnvoye est appelé avec le devis", async () => {
+    const onEnvoye = vi.fn();
+    monter({ etape: 4, onEnvoye });
+    await screen.findByText(/Proposition n°/);
+    fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
+    await screen.findByText("Le devis est envoyé au client.");
     expect(onEnvoye).toHaveBeenCalledWith({ devisId: NUM.devisId });
+  });
+
+  it("la salutation du client choisi est affichée à l'étape 4", async () => {
+    monter({ etape: 4, salutations: { [CLIENT.id]: "Bonjour Madame Martin," } });
+    expect(
+      await screen.findByText("L'e-mail commencera par : Bonjour Madame Martin,"),
+    ).toBeTruthy();
+  });
+
+  it("sans salutation connue : la salutation suit la fiche", async () => {
+    monter({ etape: 4 });
+    expect(await screen.findByText("La salutation suit la fiche du client.")).toBeTruthy();
   });
 });
 

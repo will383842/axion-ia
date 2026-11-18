@@ -202,17 +202,28 @@ async function loadContent(type: string, slug: string): Promise<MarkdownContent 
   if (type === "glossaire") {
     // GEO-038 — même source que `/glossaire/[slug]` : le SSOT fichier
     // `glossary-extension` (aucun appel DB, donc insensible au stub de build).
-    const { getGlossaryTermBySlug } = await import("@/content/glossary-extension");
+    const { getGlossaryTermBySlug, GLOSSARY_UPDATED_ISO } =
+      await import("@/content/glossary-extension");
     const term = getGlossaryTermBySlug(slug);
     if (!term) return null;
-    const exemples = term.examples.map((e) => `<p>${e}</p>`).join("\n");
     const alias =
       term.aliases.length > 0 ? `<p>Aussi appelé : ${term.aliases.join(", ")}.</p>` : "";
     return {
       title: term.term,
       excerpt: null,
-      body: [`<p>${term.fr}</p>`, alias, exemples].filter(Boolean).join("\n"),
-      updatedAt: new Date(SITE_EDITORIAL_DATE),
+      body: [
+        `<p>${term.definition}</p>`,
+        `<h2>Comment ça marche</h2>`,
+        `<p>${term.fonctionnement}</p>`,
+        `<h2>Exemple dans une PME</h2>`,
+        `<p>${term.exemple}</p>`,
+        `<h2>Erreur fréquente ou limite</h2>`,
+        `<p>${term.limite}</p>`,
+        alias,
+      ]
+        .filter(Boolean)
+        .join("\n"),
+      updatedAt: new Date(GLOSSARY_UPDATED_ISO),
       canonicalSegment: "glossaire",
     };
   }

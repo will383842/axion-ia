@@ -8,16 +8,16 @@
  */
 
 import React from "react";
-import { Document, View, Text, StyleSheet, Image } from "@react-pdf/renderer";
+import { Document } from "@react-pdf/renderer";
+import { PageCharte, Carte, LigneChamp } from "../charte/v1";
 import {
-  QualiopiPage,
-  pdfStyles,
-  DocSection,
-  FieldRow,
-} from "@/server/qualiopi/documents/base-layout";
+  BlocVerification,
+  CartePhrase,
+  CarteSignatureCachet,
+  LigneResultat,
+} from "./charte-documents-formation";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
-import { brandColor } from "@/server/qualiopi/brand/brand-tokens";
 import { NATURE_ACTION_LABELS } from "./certificat-realisation";
 import { assiduiteSurMinutes, heuresMinutesFr } from "@/server/qualiopi/evaluations/heures-suivies";
 import { libelleModalite } from "@/server/qualiopi/documents/libelles-enumerations";
@@ -26,55 +26,6 @@ import {
   signataireOrganisme,
   sujetAttestation,
 } from "@/server/qualiopi/documents/representant-legal";
-
-// ============================================================
-// Styles spécifiques
-// ============================================================
-
-const styles = StyleSheet.create({
-  certifPhrase: {
-    fontSize: 11,
-    lineHeight: 1.6,
-    marginBottom: 14,
-  },
-  resultRow: {
-    flexDirection: "row",
-    marginBottom: 4,
-    paddingVertical: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("sand"),
-  },
-  resultLabel: {
-    fontSize: 9,
-    color: brandColor("fg-soft"),
-    width: 180,
-    fontWeight: "bold",
-  },
-  resultValue: {
-    fontSize: 10,
-    color: brandColor("fg"),
-    flex: 1,
-  },
-  qrBlock: {
-    flexDirection: "row",
-    alignItems: "flex-start",
-    marginTop: 12,
-    gap: 12,
-  },
-  qrTextBlock: {
-    flex: 1,
-  },
-  qrToken: {
-    fontSize: 8,
-    fontFamily: "Inconsolata",
-    marginBottom: 2,
-  },
-  qrUrl: {
-    fontSize: 8,
-    color: brandColor("fg-muted"),
-    fontStyle: "italic",
-  },
-});
 
 // ============================================================
 // Types de données
@@ -163,9 +114,9 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
 
   return (
     <Document>
-      <QualiopiPage
+      <PageCharte
         docTitle="Attestation de fin de formation"
-        docNumber={`N° ${data.numero}`}
+        docNumber={data.numero}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
       >
@@ -176,105 +127,76 @@ export function AttestationPdf({ data }: { data: AttestationData }): React.React
             assidue mais « Non validée » recevait une attestation qui se contredisait
             deux blocs plus bas. La phrase certifie ce que la pièce prouve — le suivi —
             et renvoie aux résultats, qu'elle imprime tels quels. */}
-        <View style={pdfStyles.section}>
-          <Text style={styles.certifPhrase}>
-            {`${sujetAttestation(signataire)} atteste que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
-          </Text>
-          <Text style={pdfStyles.legalNote}>{LEGAL_MENTIONS.attestation}</Text>
-        </View>
+        <CartePhrase
+          grande
+          phrase={`${sujetAttestation(signataire)} atteste que ${prenomNom} a suivi la formation mentionnée ci-dessous. Les résultats de l'évaluation des acquis figurent ci-après.`}
+          note={LEGAL_MENTIONS.attestation}
+        />
 
         {/* Bénéficiaire */}
-        <DocSection title="Bénéficiaire">
-          <FieldRow label="Nom / Prénom" value={prenomNom} />
+        <Carte titre="Bénéficiaire">
+          <LigneChamp label="Nom / Prénom" value={prenomNom} />
           {data.beneficiaire.entreprise ? (
-            <FieldRow label="Entreprise" value={data.beneficiaire.entreprise} />
+            <LigneChamp label="Entreprise" value={data.beneficiaire.entreprise} />
           ) : null}
           {data.beneficiaire.fonction ? (
-            <FieldRow label="Fonction" value={data.beneficiaire.fonction} />
+            <LigneChamp label="Fonction" value={data.beneficiaire.fonction} />
           ) : null}
-        </DocSection>
+        </Carte>
 
         {/* Formation */}
-        <DocSection title="Formation suivie">
-          <FieldRow label="Intitulé" value={data.formation.intitule} />
+        <Carte titre="Formation suivie">
+          <LigneChamp label="Intitulé" value={data.formation.intitule} />
           {/* 🔴 Audit initial 2026-09-14 (X-documents-pdf-05) : l'attestation porte
               la nature de l'action, et le règlement publié l'annonce. */}
-          <FieldRow
+          <LigneChamp
             label="Nature de l'action"
             value={NATURE_ACTION_LABELS[data.formation.natureAction ?? "action_formation"]}
           />
-          <FieldRow label="Objectifs" value={data.formation.objectifs} />
-          <FieldRow label="Durée totale" value={`${hMin(data.formation.dureeHeures)}`} />
-          <FieldRow label="Du" value={data.formation.dateDebut} />
-          <FieldRow label="Au" value={data.formation.dateFin} />
-          <FieldRow label="Modalité" value={libelleModalite(data.formation.modalite)} />
-          <FieldRow label="Formateur(rice)" value={data.formation.formateur} />
-        </DocSection>
+          <LigneChamp label="Objectifs" value={data.formation.objectifs} />
+          <LigneChamp label="Durée totale" value={`${hMin(data.formation.dureeHeures)}`} />
+          <LigneChamp label="Du" value={data.formation.dateDebut} />
+          <LigneChamp label="Au" value={data.formation.dateFin} />
+          <LigneChamp label="Modalité" value={libelleModalite(data.formation.modalite)} />
+          <LigneChamp label="Formateur(rice)" value={data.formation.formateur} />
+        </Carte>
 
         {/* Résultats */}
-        <DocSection title="Résultats">
-          <View style={styles.resultRow}>
-            <Text style={styles.resultLabel}>Assiduité</Text>
-            <Text style={styles.resultValue}>
-              {`${hMin(data.resultats.heuresSuivies)} / ${hMin(data.resultats.heuresTotales)} = ${assiduitePercent(data.resultats)}`}
-            </Text>
-          </View>
+        <Carte titre="Résultats">
+          <LigneResultat
+            libelle="Assiduité"
+            valeur={`${hMin(data.resultats.heuresSuivies)} / ${hMin(data.resultats.heuresTotales)} = ${assiduitePercent(data.resultats)}`}
+          />
           {data.resultats.evaluationObtenue ? (
-            <View style={styles.resultRow}>
-              <Text style={styles.resultLabel}>Évaluation</Text>
-              <Text style={styles.resultValue}>{data.resultats.evaluationObtenue}</Text>
-            </View>
+            <LigneResultat libelle="Évaluation" valeur={data.resultats.evaluationObtenue} />
           ) : null}
-          <View style={styles.resultRow}>
-            <Text style={styles.resultLabel}>Compétences acquises</Text>
-            <Text style={styles.resultValue}>{data.resultats.competencesAcquises}</Text>
-          </View>
+          <LigneResultat
+            libelle="Compétences acquises"
+            valeur={data.resultats.competencesAcquises}
+          />
           {data.resultats.competencesReserves ? (
-            <View style={styles.resultRow}>
-              <Text style={styles.resultLabel}>Réserves</Text>
-              <Text style={styles.resultValue}>{data.resultats.competencesReserves}</Text>
-            </View>
+            <LigneResultat libelle="Réserves" valeur={data.resultats.competencesReserves} />
           ) : null}
-        </DocSection>
+        </Carte>
 
         {/* QR de vérification */}
-        {verifyUrl ? (
-          <DocSection title="Vérification d'authenticité">
-            <View style={styles.qrBlock}>
-              {data.qrDataUrl ? (
-                <Image src={data.qrDataUrl} style={{ width: 90, height: 90 }} />
-              ) : null}
-              <View style={styles.qrTextBlock}>
-                <Text style={styles.qrToken}>{`Token : ${data.qrToken}`}</Text>
-                <Text style={styles.qrUrl}>{verifyUrl}</Text>
-                <Text style={pdfStyles.legalNote}>
-                  Scannez le QR code ou saisissez l'URL ci-dessus pour vérifier l'authenticité de
-                  cette attestation.
-                </Text>
-              </View>
-            </View>
-          </DocSection>
+        {verifyUrl && data.qrToken ? (
+          <BlocVerification
+            qrDataUrl={data.qrDataUrl}
+            qrToken={data.qrToken}
+            url={verifyUrl}
+            explication="Scannez le QR code ou saisissez l'URL ci-dessus pour vérifier l'authenticité de cette attestation."
+          />
         ) : null}
 
         {/* Signature */}
-        <DocSection title="Signature et cachet">
-          <View style={pdfStyles.signatureZone}>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>
-                {/* Ville du siège, pas l'adresse complète : « Fait à ELITE
-                    BUREAUX - boîte 53, 11 Avenue… » n'est pas un lieu d'acte. */}
-                {`Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`}
-              </Text>
-              <Text
-                style={pdfStyles.paragraph}
-              >{`Le représentant légal : ${identificationSignataire(signataire)}`}</Text>
-            </View>
-            <View style={pdfStyles.signatureBox}>
-              <Text style={pdfStyles.paragraph}>Cachet de l'organisme</Text>
-            </View>
-          </View>
-        </DocSection>
-      </QualiopiPage>
+        <CarteSignatureCachet
+          lignes={[
+            `Fait à ${identite.rcsVille || identite.adresseSiege || "—"}, le ${data.dateEmission}`,
+            `Le représentant légal : ${identificationSignataire(signataire)}`,
+          ]}
+        />
+      </PageCharte>
     </Document>
   );
 }

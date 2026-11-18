@@ -5,6 +5,7 @@
  */
 
 import type { Client360 } from "@/server/qualiopi/crm/clients";
+import { estGabaritInterne } from "@/features/dossier-client/gabarits-internes";
 import { lireFilDesEchanges } from "@/features/dossier-client/fil-des-echanges";
 import { lireProjetsDuClient, lireRencontresDuClient } from "@/features/dossier-client/queries";
 import {
@@ -231,6 +232,15 @@ async function construire(ctx: ContexteEnTete, lireClient: LireClient): Promise<
   };
 }
 
+/** Un e-mail PARTI, et pas une alerte interne au fondateur. */
+function estEmailPartiAuClient(x: {
+  genre: string;
+  statutEmail?: string;
+  gabarit?: string;
+}): boolean {
+  return x.genre === "email" && x.statutEmail === "sent" && !estGabaritInterne(x.gabarit);
+}
+
 /** Dernier rendez-vous tenu OU dernier e-mail parti (`statutEmail === "sent"`), le plus récent. */
 export function dernierEchange(
   rendezVous: ReadonlyArray<{
@@ -238,14 +248,14 @@ export function dernierEchange(
     debutPrevu: Date | null;
     estTestInterne: boolean;
   }>,
-  fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
+  fil: ReadonlyArray<{ genre: string; statutEmail?: string; gabarit?: string; date: Date }>,
   maintenant: Date,
 ): Date | null {
   const dates = [
     ...rendezVous
       .filter((r) => r.statut === "tenu" && r.debutPrevu !== null && !r.estTestInterne)
       .map((r) => r.debutPrevu!),
-    ...fil.filter((x) => x.genre === "email" && x.statutEmail === "sent").map((x) => x.date),
+    ...fil.filter(estEmailPartiAuClient).map((x) => x.date),
   ].filter((d) => d.getTime() <= maintenant.getTime());
   return dates.length === 0 ? null : new Date(Math.max(...dates.map((d) => d.getTime())));
 }
@@ -254,11 +264,11 @@ type FactureEnTete = { statut: string; avoirDeId: string | null; echeanceAt: Dat
 
 /** Dernier e-mail PARTI (`statutEmail === "sent"`), jamais dans le futur. */
 export function dernierEmailParti(
-  fil: ReadonlyArray<{ genre: string; statutEmail?: string; date: Date }>,
+  fil: ReadonlyArray<{ genre: string; statutEmail?: string; gabarit?: string; date: Date }>,
   maintenant: Date,
 ): Date | null {
   const dates = fil
-    .filter((x) => x.genre === "email" && x.statutEmail === "sent")
+    .filter(estEmailPartiAuClient)
     .map((x) => x.date.getTime())
     .filter((t) => t <= maintenant.getTime());
   return dates.length === 0 ? null : new Date(Math.max(...dates));

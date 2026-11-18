@@ -44,14 +44,6 @@ const STRATEGIC_PATHS = [
   "/blog",
 ] as const;
 
-// Services × villes — émis depuis `getIndexableVilles()` quand
-// `ville.copy.services.<svc>` présent (pattern aligné `app/sitemap.ts`).
-const SERVICE_VILLES_PATHS = {
-  audit: "/audit/par-ville",
-  interventions: "/interventions/par-ville",
-  implementation: "/implementation/par-ville",
-} as const;
-
 async function main(): Promise<void> {
   const key = process.env["INDEXNOW_KEY"];
   const siteUrl = process.env["NEXT_PUBLIC_SITE_URL"];
@@ -128,10 +120,9 @@ function warn(message: string): void {
  * Audit indexation 2026-05-18 P0-5 — discovery dynamique villes indexable.
  *
  * Récupère via `getIndexableVilles()` (FS, pas DB) toutes les villes ayant
- * un `copy` substantiel + leurs services × ville quand `copy.services.<svc>`
- * est présent. Pattern identique à `app/sitemap.ts` builders :
+ * un `copy` substantiel ET présentes dans la liste des villes indexées :
  *   - Hub ville : `/{locale}/implantations/{region}/{ville}`
- *   - Services × ville : `/{locale}/{service}/par-ville/{ville}`
+ *   - (pas de services × ville : noindex depuis le 18/11/2026)
  *
  * Import dynamique car le script est exécuté postbuild (Node.js), pas Next
  * runtime — pas de `@/` alias direct, mais `../src/...` relative OK.
@@ -143,32 +134,11 @@ async function collectIndexableCityUrls(
   effectiveLocales: ReadonlyArray<"fr" | "en">,
 ): Promise<string[]> {
   try {
-    // Drip indexation (Will 2026-05-28) — on ne signale à IndexNow (Bing/Yandex)
-    // QUE la cohorte indexable du jour (`getVillesIndexableNow`), pas les 2157
-    // villes éligibles. Cohérent avec le sitemap + les meta robots : on ne pousse
-    // jamais plus de villes au crawl que ce qui est réellement index:true
-    // aujourd'hui. La cohorte s'élargissant (+50/jour), les pings successifs
-    // couvrent progressivement tout le corpus.
-    const { getVillesIndexableNow } = await import("../src/content/villes");
-    const villes = getVillesIndexableNow();
-    const urls: string[] = [];
-    for (const ville of villes) {
-      // Hub ville : /{locale}/implantations/{region}/{ville}
-      for (const locale of effectiveLocales) {
-        const segment = locale === "fr" ? "implantations" : "locations";
-        urls.push(`${siteUrl}/${locale}/${segment}/${ville.region}/${ville.slug}`);
-      }
-      // Services × ville : /{locale}/{service}/par-ville/{ville} (EN: /by-city/).
-      // Aligné `app/sitemap.ts SERVICE_VILLES_PATHS` (pathFr / pathEn miroir).
-      for (const [svc, pathFr] of Object.entries(SERVICE_VILLES_PATHS)) {
-        const svcKey = svc as keyof typeof SERVICE_VILLES_PATHS;
-        if (!ville.copy?.services?.[svcKey]) continue;
-        for (const locale of effectiveLocales) {
-          const path = locale === "fr" ? pathFr : pathFr.replace("/par-ville", "/by-city");
-          urls.push(`${siteUrl}/${locale}${path}/${ville.slug}`);
-        }
-      }
-    }
+    // 18/11/2026 : on ne signale QUE les villes de la liste unique
+    // (`isVilleIndexable`, Grenoble comprise) et JAMAIS les pages service × ville
+    // (toutes en noindex). Voir `src/content/villes/villes-indexees.ts`.
+    const { urlsVillesIndexNow } = await import("../src/lib/seo/urls-villes-indexnow");
+    const urls = urlsVillesIndexNow(siteUrl, effectiveLocales);
     return urls;
   } catch (err) {
     console.warn(

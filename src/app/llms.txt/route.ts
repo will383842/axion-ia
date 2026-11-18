@@ -143,7 +143,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 - [Flux RSS Actualités IA](${SITE_URL}/fr/actualites/feed.xml) — flux machine-readable de la veille (signal de fraîcheur / polling crawlers).
 - [FAQ](${SITE_URL}/fr/faq) — Q/R structurées, ${SITE_URL}/fr/faq/par-thematique pour navigation.
 - [Base de connaissances](${SITE_URL}/fr/connaissances) — fiches citables sourcées : méthodologies, comparatifs, playbooks, cas d'usage sectoriels, définitions. C'est le corpus le plus dense du site pour une citation par un moteur de réponse. Chaque fiche : ${SITE_URL}/fr/connaissances/{slug}. Index machine-readable : ${SITE_URL}/sitemap-knowledge.xml. Sélection éditoriale : ${SITE_URL}/fr/ressources (flux ${SITE_URL}/fr/ressources/feed.xml).
-- [Glossaire](${SITE_URL}/fr/glossaire) — termes IA opérationnelle (RAG, fine-tuning, agents, etc.). Chaque terme dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/glossaire/{slug}.
+- [Glossaire de l'IA en entreprise](${SITE_URL}/fr/glossaire) — plus de 100 termes définis en clair (agent IA, RAG, MCP, AI Act, maîtrise de l'IA, GEO, automatisation, gouvernance…), chacun avec une définition citable, un exemple en PME française et ses limites ; date de mise à jour visible sur chaque fiche. Chaque terme dispose d'une version markdown brute pour ingestion LLM : ${SITE_URL}/api/markdown/glossaire/{slug}.
 - [Guide IA entreprise 2026](${SITE_URL}/fr/guide-ia) — guide PDF gratuit de 40 pages : usages, coûts réels, données, AI Act, retour sur investissement, 13 outils à recopier.
 - [Observatoire de l'IA 2026](${SITE_URL}/fr/observatoire-ia) — étude Axion-IA sur l'adoption de l'IA dans les entreprises françaises (maturité, usages, budgets, freins, RGPD, intentions d'investissement). Données ouvertes CC BY 4.0, export CSV : ${SITE_URL}/api/observatoire/export-csv · export JSON : ${SITE_URL}/api/observatoire/export-json. Méthodo : questionnaire 16 questions, 13 régions × 30 secteurs × 4 tailles.
 
@@ -155,7 +155,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Couverture géographique
 
-- Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) par commune.
+- Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) des grandes villes (communes de 100 000 habitants ou plus).
 - Secteurs × activités : ${SITE_URL}/fr/secteurs/{secteur}/{activite} — pages métier croisées (constat, avant/après, KPI), anti-doorway HCU.
 - Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
 - Couverture par paliers : grandes métropoles d'abord (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…), puis villes moyennes et longue traîne (indexation progressive).
@@ -172,7 +172,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Galerie & ressources
 
-- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
+- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
 ${sectionVideos}${sectionTour}
 ## Contact & presse
@@ -190,8 +190,6 @@ ${sectionFaitsPratiquesLlms(SITE_URL)}
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
 ${anglaisServi() ? `- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, version anglaise.\n` : ""}- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
 - [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images dédiées).
-- [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
-- [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
 - [Google News Sitemap](${SITE_URL}/sitemap-news.xml) — actualités fenêtre 48 h glissante.
 
 ## Excluded

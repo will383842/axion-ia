@@ -195,7 +195,11 @@ describe("EmailEnvoi (D9 : pas d'e-mail personnalisé en v1)", () => {
     expect(envoyer).toHaveBeenCalledTimes(1);
     expect(envoyer).toHaveBeenCalledWith({ a: "client@example.test" });
     await act(async () => fin({ data: { enCorbeille: true } }));
-    expect(await screen.findByText(/en corbeille, à valider/i)).toBeTruthy();
+    await waitFor(() =>
+      expect(screen.getByRole("status").textContent).toMatch(
+        /En attente dans « Emails, À valider »/,
+      ),
+    );
     expect(
       (screen.getByRole("button", { name: /Envoyer au client/ }) as HTMLButtonElement).disabled,
     ).toBe(true);
@@ -216,7 +220,11 @@ describe("EmailEnvoi (D9 : pas d'e-mail personnalisé en v1)", () => {
     expect((await screen.findByRole("alert")).textContent).toContain("Conflit : recharger.");
     fireEvent.click(screen.getByRole("button", { name: /Envoyer au client/ }));
     await waitFor(() => expect(envoyer).toHaveBeenCalledTimes(2));
-    expect(await screen.findByText(/en corbeille, à valider/i)).toBeTruthy();
+    await waitFor(() =>
+      expect(screen.getByRole("status").textContent).toMatch(
+        /En attente dans « Emails, À valider »/,
+      ),
+    );
   });
 
   it("sans destinataire, l'envoi est refusé avec un message", () => {
@@ -226,14 +234,39 @@ describe("EmailEnvoi (D9 : pas d'e-mail personnalisé en v1)", () => {
     expect(screen.getByRole("alert").textContent).toMatch(/adresse/i);
   });
 
-  it("annonce « relu dans la corbeille avant envoi » et aucune relance automatique", () => {
+  it("annonce les deux modes (part tout de suite ou attend « Emails, À valider ») et aucune relance automatique", () => {
     email();
-    expect(screen.getByText(/relu dans la corbeille avant envoi/)).toBeTruthy();
+    expect(screen.getByText(/attend votre validation dans « Emails, À valider »/)).toBeTruthy();
+    expect(screen.queryByText(/relu dans la corbeille avant envoi/)).toBeNull();
     expect(screen.getByText(/jamais de relance automatique/)).toBeTruthy();
   });
 
   it("un seul statut annoncé (pas de aria-live bavard)", () => {
     email();
     expect(document.querySelectorAll("[aria-live]").length).toBeLessThanOrEqual(1);
+  });
+});
+
+describe("EmailEnvoi : salutation en lecture seule", () => {
+  it("avec une salutation : « L'e-mail commencera par : … »", () => {
+    render(
+      <EmailEnvoi
+        destinataire="client@example.test"
+        salutation="Bonjour Madame Martin,"
+        envoyer={vi.fn()}
+      />,
+    );
+    expect(screen.getByText("L'e-mail commencera par : Bonjour Madame Martin,")).toBeTruthy();
+  });
+
+  it("sans salutation : « La salutation suit la fiche du client. »", () => {
+    render(<EmailEnvoi destinataire="client@example.test" envoyer={vi.fn()} />);
+    expect(screen.getByText("La salutation suit la fiche du client.")).toBeTruthy();
+    expect(screen.queryByText(/commencera par/)).toBeNull();
+  });
+
+  it("l'étape d'envoi la transmet à l'e-mail", async () => {
+    monter({ salutation: "Bonjour Léa," });
+    expect(await screen.findByText("L'e-mail commencera par : Bonjour Léa,")).toBeTruthy();
   });
 });

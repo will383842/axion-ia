@@ -57,7 +57,7 @@ const FAMILIES = {
   // par famille pour ne pas sur-déclarer celles qui n'ont pas bougé.
   formations: ["src/content/formations"],
   secteurs: ["src/content/sectors.ts", "src/content/sectors"],
-  glossaire: ["src/content/glossary-extension.ts"],
+  glossaire: ["src/content/glossary-extension.ts", "src/content/glossaire-reference"],
   faq: ["src/content/faq-categories.ts", "src/lib/knowledge/readers.ts"],
   help: ["src/content/transversal.ts"],
   "cas-concrets": ["src/content/case-studies.ts", "src/content/case-studies"],

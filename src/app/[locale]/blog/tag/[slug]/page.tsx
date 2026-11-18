@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing, STATIC_LOCALES, type Locale } from "@/i18n/routing";
+import { auteurJsonLd } from "@/lib/seo/plume-ia";
 import { Section } from "@/components/layout/Section";
 import { Container } from "@/components/layout/Container";
 import { ArticleCard } from "@/components/marketing/ArticleCard";
@@ -58,7 +59,7 @@ export default async function BlogTagPage({ params }: Props) {
       headline: p[loc].title,
       url: `${SITE_URL}/${locale}/blog/${p.slug}`,
       datePublished: p.publishedAt,
-      author: { "@type": "Person", name: p.author },
+      author: auteurJsonLd(p.author, SITE_URL),
     })),
   });
 

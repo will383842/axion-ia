@@ -40,6 +40,11 @@ export function GET(): Response {
     )
     .sort((a, b) => b.population - a.population);
 
+  // 18/11/2026 : les seules villes indexées ont ≥ 100 000 habitants (tier 1) → ce
+  // sitemap est vide. Un urlset vide est refusé par Google : on répond 404 et il
+  // n'est plus listé dans `sitemap-index.xml`.
+  if (t3t4.length === 0) return new Response("Not found", { status: 404 });
+
   const body = buildVillesSitemapXml(
     t3t4,
     (v) => (v.population >= 20_000 ? GENERIC_SLUG_T3 : GENERIC_SLUG_T4),
