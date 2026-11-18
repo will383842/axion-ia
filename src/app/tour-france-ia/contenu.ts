@@ -193,7 +193,7 @@ export const GAINS = {
     {
       titre: "Votre équipe formée à l’IA.",
       texte:
-        "4 h chez vous, jusqu’à 15 personnes. Elle aide à répondre à l’exigence de formation de l’AI Act.",
+        "4 h chez vous, jusqu’à 15 personnes. Elle est une mesure concrète au titre de l’article 4 de l’AI Act.",
     },
   ],
 } as const;

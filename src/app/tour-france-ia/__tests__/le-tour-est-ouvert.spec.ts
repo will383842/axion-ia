@@ -555,8 +555,8 @@ describe("🔴 le contenu : mots interdits, typographie, SEO", () => {
     );
   });
 
-  it("🔴 l'AI Act dit avec prudence : « aide à répondre », jamais d'obligation ni de conformité promise", () => {
-    expect(texte).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+  it("🔴 l'AI Act dit avec prudence : « mesure concrète au titre de l’article 4 », jamais d'obligation ni de conformité promise", () => {
+    expect(texte).toMatch(/mesure concrète au titre de l’article 4 de l’AI Act/);
     expect(texte).not.toMatch(
       /obligatoire|obligation|certifi|attestation|conforme à l|conforme (à l[’'])?AI Act|en conformit[ée] totale|garanti/i,
     );
@@ -643,7 +643,7 @@ describe("🔴 le Tour est une OFFRE aux entreprises, pas un événement (JSON-L
     expect(description).toMatch(
       /formation de 4 h de leur équipe, en intra-entreprise et en présentiel/,
     );
-    expect(description).toMatch(/aide à répondre à l’exigence de formation de l’AI Act/);
+    expect(description).toMatch(/mesure concrète au titre de l’article 4 de l’AI Act/);
     expect(description).toMatch(/une ville s’ouvre dès 5 demandes/);
     expect(description).toMatch(/offerte aux 5 entreprises retenues par ville/);
     expect(description).toMatch(/en échange d’un podcast/);
