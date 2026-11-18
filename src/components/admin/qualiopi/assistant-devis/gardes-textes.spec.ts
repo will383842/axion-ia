@@ -228,8 +228,10 @@ describe("E18 — face ROUGE : chaque règle détecte une source fictive", () =>
     expect(texte("const A = () => <p>Montant : {fmt(x)} €</p>;")).toEqual([]);
   });
 
+  // « § » tient la place du dièse : le source de ce spec ne porte aucune couleur hex littérale
+  // (garde anti-hex de la CI), la face rouge la reconstitue ici.
   const source = (src: string) =>
-    fautesSource("x.tsx", src).map((f) => f.split("[")[1]!.split("]")[0]);
+    fautesSource("x.tsx", src.replaceAll("§", "#")).map((f) => f.split("[")[1]!.split("]")[0]);
   it("teinte bleue", () => {
     expect(source('const c = "bg-blue-600";')).toEqual(["teinte bleue"]);
     expect(source('const c = "text-indigo-300";')).toEqual(["teinte bleue"]);
@@ -240,16 +242,16 @@ describe("E18 — face ROUGE : chaque règle détecte une source fictive", () =>
   it("rgba du bleu de marque", () =>
     expect(source('const s = "rgba(26, 77, 217, 0.1)";')).toEqual(["rgba du bleu de marque"]));
   it("couleur littérale", () => {
-    expect(source('const s = "#1a4dd9";')).toEqual(["couleur littérale"]);
-    expect(source('const s = "#fff";')).toEqual(["couleur littérale"]);
+    expect(source('const s = "§1a4dd9";')).toEqual(["couleur littérale"]);
+    expect(source('const s = "§fff";')).toEqual(["couleur littérale"]);
   });
   it("un commentaire n'est pas lu (ligne, bloc, fin de ligne)", () => {
     expect(
       source(
         [
-          "// bg-blue-600 #fff",
+          "// bg-blue-600 §fff",
           "/* rgba(26,77,217,.1) */",
-          "const a = 1; // text-sky-500 #123456",
+          "const a = 1; // text-sky-500 §123456",
         ].join("\n"),
       ),
     ).toEqual([]);
@@ -257,13 +259,13 @@ describe("E18 — face ROUGE : chaque règle détecte une source fictive", () =>
 
   it("un commentaire JSX, avant `}` ou `)`, ou dans les arguments n'est pas lu", () => {
     for (const src of [
-      "const A = () => <div>{/* bg-blue-600 #fff */}</div>;",
-      "const A = () => <div>{x /* #fff */}</div>;",
-      "const a = f(/* #fff */);",
+      "const A = () => <div>{/* bg-blue-600 §fff */}</div>;",
+      "const A = () => <div>{x /* §fff */}</div>;",
+      "const a = f(/* §fff */);",
       "const a = f(x /* bg-blue-600 */, y);",
-      "const a = [1, /* #123456 */];",
+      "const a = [1, /* §123456 */];",
       "const o = { a: 1 /* text-sky-500 */ };",
-      "function g() { return 1; /* #fff */ }",
+      "function g() { return 1; /* §fff */ }",
     ])
       expect(source(src)).toEqual([]);
     // et le code voisin reste lu
