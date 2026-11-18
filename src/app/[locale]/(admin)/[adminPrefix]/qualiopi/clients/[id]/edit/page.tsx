@@ -61,6 +61,15 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
 
   const blocageType = await raisonBlocageChangementType(prisma, client).catch(() => null);
 
+  // Ce que « Passer en entreprise » enverra au CRM Pro : des données déjà visibles sur la fiche.
+  const contactsFiche = await prisma.clientContact
+    .findMany({
+      where: { clientId: id, statut: "actif", origine: { not: "mention" } },
+      select: { nom: true, fonction: true, telephone: true },
+      orderBy: { createdAt: "asc" },
+    })
+    .catch(() => []);
+
   const base = `/${locale}/${adminPrefix}/qualiopi/clients`;
   // Retour à la FICHE du client (et non à la liste) : on vient de la fiche.
   const ficheHref = `/${locale}/${adminPrefix}/qualiopi/clients/${id}`;
@@ -99,8 +108,10 @@ export default async function ModifierClientPage({ params, searchParams }: PageP
         type={client.type === "particulier" ? "particulier" : "entreprise"}
         raisonSociale={client.raisonSociale}
         contactNom={client.contactNom}
-        contactFacturationNom={client.contactNom}
         blocage={blocageType}
+        adresseCodePostal={client.adresseCodePostal ?? null}
+        adresseVille={client.adresseVille ?? null}
+        contacts={contactsFiche}
       />
 
       <ClientEditForm

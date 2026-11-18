@@ -13,17 +13,45 @@ export interface ChangerTypeClientProps {
   clientId: string;
   type: "entreprise" | "particulier";
   raisonSociale: string;
-  /** Nom du contact de la fiche (`Client.contactNom`), qui ne change pas. */
+  /** Nom du contact de la fiche (`Client.contactNom`), qui ne change pas ; préremplit « Repasser en particulier ». */
   contactNom: string | null;
-  /** Nom du contact de facturation, qui préremplit « Repasser en particulier ». */
-  contactFacturationNom: string | null;
   blocage: string | null;
+  /** Adresse de la fiche (déjà visible sur elle) : dite avant l'envoi au CRM Pro. */
+  adresseCodePostal: string | null;
+  adresseVille: string | null;
+  /** Contacts de la fiche (déjà visibles sur elle) : nom, fonction, téléphone. */
+  contacts: ReadonlyArray<{
+    nom: string;
+    fonction: string | null;
+    telephone: string | null;
+  }>;
 }
 
 const champCls =
   "mt-1 block w-full rounded border border-[color:var(--color-admin-border)] bg-white px-2 py-1 text-[length:var(--text-admin-sm)]";
 const boutonCls =
   "rounded bg-[color:var(--color-admin-accent)] px-3 py-1.5 text-[length:var(--text-admin-sm)] text-white";
+
+function phraseCrmPro(props: ChangerTypeClientProps): string {
+  const ville = [props.adresseCodePostal, props.adresseVille]
+    .map((v) => v?.trim() ?? "")
+    .filter((v) => v !== "")
+    .join(" ");
+  const adresse = ville !== "" ? `l'adresse de la fiche (${ville})` : "aucune adresse renseignée";
+  const contacts =
+    props.contacts.length === 0
+      ? "aucun contact sur la fiche"
+      : "pour chaque contact son nom, sa fonction et son téléphone : " +
+        props.contacts
+          .map((c) => {
+            const details = [c.fonction, c.telephone]
+              .map((v) => v?.trim() ?? "")
+              .filter((v) => v !== "");
+            return details.length > 0 ? `${c.nom} (${details.join(", ")})` : c.nom;
+          })
+          .join(" ; ");
+  return `Partira au CRM Pro : le nom de l'entreprise, ${adresse}, et ${contacts}.`;
+}
 
 export function ChangerTypeClient(props: ChangerTypeClientProps) {
   const { clientId, type, blocage } = props;
@@ -85,11 +113,18 @@ export function ChangerTypeClient(props: ChangerTypeClientProps) {
                   name="raisonSociale"
                   required
                   maxLength={250}
-                  defaultValue={props.contactFacturationNom ?? ""}
+                  defaultValue={props.contactNom ?? ""}
                   className={champCls}
                 />
               </label>
             )}
+            <label className="block text-[length:var(--text-admin-sm)]">
+              Motif (facultatif)
+              <input type="text" name="motif" maxLength={300} className={champCls} />
+            </label>
+            {estParticulier ? (
+              <p className="text-[length:var(--text-admin-xs)]">{phraseCrmPro(props)}</p>
+            ) : null}
             <button type="submit" className={boutonCls}>
               {estParticulier
                 ? "Confirmer le passage en entreprise"

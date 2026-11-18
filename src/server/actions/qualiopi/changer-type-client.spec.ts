@@ -18,6 +18,7 @@ const MODELES = vi.hoisted(() => [
   "coachingContract",
   "planRecurrent",
   "auditMission",
+  "clientFactureHorsConsole",
 ]);
 
 const m = vi.hoisted(() => ({
@@ -65,7 +66,11 @@ vi.mock("@/server/qualiopi/crm/contact-facturation", () => ({
 vi.mock("next/cache", () => ({ revalidatePath: m.revalidate }));
 vi.mock("next/navigation", () => ({ redirect: vi.fn() }));
 
-import { changerTypeClientAction, updateClientAction } from "./clients";
+import {
+  changerTypeClientAction,
+  changerTypeClientFormAction,
+  updateClientAction,
+} from "./clients";
 
 function ficheEnBase(sur: Record<string, unknown> = {}) {
   return {
@@ -113,6 +118,7 @@ describe("changerTypeClientAction — refus avec pièces", () => {
     ["factureFormation", "facture"],
     ["documentGenere", "convention"],
     ["trainingSession", "session"],
+    ["clientFactureHorsConsole", "factures hors console"],
   ])("refuse s'il y a des %s, nomme la pièce, aucun client.update", async (modele, mot) => {
     m.compteurs[modele]!.mockResolvedValue(2);
     const r = await changerTypeClientAction(versEntreprise);
@@ -255,6 +261,21 @@ describe("changerTypeClientAction — vers particulier et fiche absorbée", () =
   });
 });
 
+describe("changerTypeClientFormAction — le motif", () => {
+  it("transmet le motif saisi jusqu'au journal", async () => {
+    const fd = new FormData();
+    fd.set("id", ID);
+    fd.set("type", "entreprise");
+    fd.set("raisonSociale", "Dupont Conseil SAS");
+    fd.set("motif", "Création de la société en septembre");
+    await changerTypeClientFormAction(fd);
+    expect(m.log).toHaveBeenCalledTimes(1);
+    expect(JSON.stringify(m.log.mock.calls[0]![0])).toContain(
+      "Création de la société en septembre",
+    );
+  });
+});
+
 describe("updateClientAction — l'ancienne porte est fermée", () => {
   it("refuse de changer le type (particulier → entreprise)", async () => {
     m.findUnique.mockResolvedValue({ type: "particulier" });
@@ -268,6 +289,14 @@ describe("updateClientAction — l'ancienne porte est fermée", () => {
     const r = await updateClientAction({ id: ID, type: "particulier", notes: "x" });
     expect("error" in r).toBe(false);
     expect(m.update).toHaveBeenCalledTimes(1);
+  });
+
+  it("n'écrit jamais `type` dans l'update (le type a été lu hors verrou)", async () => {
+    m.findUnique.mockResolvedValue({ type: "particulier" });
+    await updateClientAction({ id: ID, type: "particulier", notes: "x" });
+    const data = m.update.mock.calls[0]![0].data as Record<string, unknown>;
+    expect("type" in data).toBe(false);
+    expect(data["notes"]).toBe("x");
   });
 });
 

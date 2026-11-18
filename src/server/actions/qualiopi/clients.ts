@@ -589,7 +589,7 @@ export async function updateClientAction(
   // P-5 : une fiche dont le type EN BASE est « particulier » ne reçoit ni SIREN
   // ni SIRET, même si la charge ne dit rien du type (« C'est elle » ne
   // transmet que le SIREN de l'annuaire). Repasser la fiche en entreprise dans
-  // la même charge reste possible.
+  // la même charge N'EST PLUS possible : le type ne change que par `changerTypeClientAction`.
   // Lot OPCO A1 : même règle pour l'effectif et l'OPCO typé, qui n'ont de sens
   // que pour un employeur — refus SERVEUR, pas seulement masquage du formulaire.
   // Lot A7b : même règle pour l'enveloppe, le n° d'adhérent et les deux faits OPCO.
@@ -719,7 +719,8 @@ export async function updateClientAction(
       await tx.client.update({
         where: { id },
         data: {
-          ...(fields.type !== undefined ? { type: fields.type } : {}),
+          // Pas de `type` ici : seul le MÊME type est accepté (contrôle plus haut, hors verrou),
+          // donc il n'y a rien à écrire. Le type ne s'écrit que dans `changerTypeClientAction`.
           ...(fields.raisonSociale !== undefined ? { raisonSociale: fields.raisonSociale } : {}),
           ...(fields.siret !== undefined ? { siret: fields.siret } : {}),
           ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
@@ -927,6 +928,7 @@ export async function changerTypeClientFormAction(formData: FormData): Promise<v
     id: clientId,
     type: String(formData.get("type") ?? "") as "entreprise" | "particulier",
     raisonSociale: String(formData.get("raisonSociale") ?? ""),
+    motif: String(formData.get("motif") ?? ""),
   });
   if ("error" in r) redirect(avecMessageDeRetour(edit, "erreur", r.error));
   redirect(avecMessageDeRetour(edit, "message", "Le type de la fiche a été changé."));

@@ -63,7 +63,16 @@ export function motsTries(nom: string | null | undefined): string {
 
 // ── Pièces ───────────────────────────────────────────────────────────────────
 
-/** Documents contractuels qui engagent le type de la fiche. */
+/**
+ * Documents contractuels qui engagent le type de la fiche.
+ *
+ * `mandat_opco` n'y figure PAS, après vérification (`documents.ts`, génération du mandat) : un
+ * mandat exige une session (`refs: { sessionId, clientId }`) ET que le client en soit partie,
+ * soit par `trainingSession.clientId`, soit par une inscription portant son `clientId` (sinon
+ * « Ce client n'est pas partie à cette session »). Les deux sont déjà comptés (familles
+ * `trainingSession` et `enrollment`, sans filtre de statut), et aucune session n'est supprimée
+ * par le code. Un mandat ne peut donc pas exister sans qu'une pièce déjà comptée bloque.
+ */
 export const TYPES_DOCUMENT_CONTRACTUEL = [
   "convention",
   "convention_tripartite",
@@ -83,6 +92,8 @@ export interface BasePieces {
   coachingContract: Compteur;
   planRecurrent: Compteur;
   auditMission: Compteur;
+  /** Facture établie hors console (Tiime…) : une ligne par fiche, clé `clientId`. */
+  clientFactureHorsConsole: Compteur;
 }
 
 interface Famille {
@@ -111,6 +122,11 @@ const FAMILLES: readonly Famille[] = [
   { cle: "coachingContract", singulier: "contrat de coaching", pluriel: "contrats de coaching" },
   { cle: "planRecurrent", singulier: "plan récurrent", pluriel: "plans récurrents" },
   { cle: "auditMission", singulier: "mission d'audit", pluriel: "missions d'audit" },
+  {
+    cle: "clientFactureHorsConsole",
+    singulier: "facture hors console",
+    pluriel: "factures hors console",
+  },
 ];
 
 export interface PieceCompteeClient {
@@ -147,10 +163,32 @@ export function raisonPieces(pieces: readonly PieceCompteeClient[]): string {
   return `Le type ne peut plus changer : la fiche porte ${phrasePieces(pieces)}.`;
 }
 
+/** Libellés français des champs d'employeur, pour les messages (jamais les noms de colonnes). */
+export const LIBELLES_CHAMPS_EMPLOYEUR: Record<string, string> = {
+  siret: "SIRET",
+  siren: "SIREN",
+  nafCode: "code NAF",
+  conventionCollective: "convention collective",
+  idcc: "IDCC",
+  taille: "taille de l'entreprise",
+  opcoIdentifie: "OPCO identifié",
+  opcoNumeroAdherent: "numéro d'adhérent OPCO",
+  opcoEnveloppeAnnuelleCents: "enveloppe annuelle OPCO",
+  opco: "OPCO",
+  effectif: "effectif",
+  opcoAdhesionOffreMobilites: "adhésion OPCO à l'offre mobilités",
+  opcoVersementVolontaire: "versement volontaire OPCO",
+  tvaIntracom: "numéro de TVA intracommunautaire",
+  opcoAdhesionsRenseigneesLe: "date de renseignement des adhésions OPCO",
+  effectifSource: "source de l'effectif",
+  effectifReleveLe: "date de relevé de l'effectif",
+};
+
 export function raisonEmployeur(champs: readonly string[]): string {
+  const libelles = champs.map((c) => LIBELLES_CHAMPS_EMPLOYEUR[c] ?? c);
   return (
     "Le type ne peut pas repasser en particulier : la fiche porte des informations d'employeur " +
-    `(${champs.join(", ")}). Rien n'est effacé.`
+    `(${libelles.join(", ")}). Rien n'est effacé.`
   );
 }
 
