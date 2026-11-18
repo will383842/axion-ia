@@ -40,6 +40,8 @@ const TOUJOURS: readonly RegExp[] = [
   /FNE[- ]Formation/i,
   /\bAIF\b/,
   /finan[cç]ables?/i,
+  // « Axion-IA prépare la certification qualité », « certifié qualité » : même retrait que Qualiopi.
+  /certifi(?:cation|[ée]e?s?)\s+qualit[ée]/i,
 ];
 
 /** Visés seulement avec un marqueur de financement dans la MÊME phrase. */
@@ -56,8 +58,32 @@ const MARQUEUR =
 
 /** « prise en charge » : visée seulement au sens financier (« prise en charge des appels » reste). */
 const PRISE_EN_CHARGE = /pris(?:e|es)? en charge|covered by|taken care of by/i;
-const SENS_FINANCIER =
-  /financ|co[ûu]t|rembours|frais|tarif|prix|€|euros?|gratuit|OPCO|CPF|France Travail|[ée]ligible|subvention|\bfund/i;
+/**
+ * Marqueurs d'un sens FINANCIER de « prise en charge ». Ni « coût », ni « tarif », ni « € »,
+ * ni « gratuit » n'y suffisent : « La prise en charge des appels réduit le coût de 30 % » reste.
+ */
+const SENS_FINANCIER = new RegExp(
+  [
+    "financ",
+    "\\bfund",
+    "OPCO",
+    "\\bCPF\\b",
+    "France Travail",
+    "P[ôo]le[- ]emploi",
+    "France Comp[ée]tences",
+    "formations? certifiantes?",
+    "rembours",
+    "reimburs",
+    "subrogation",
+    "subvention",
+    "[ée]ligible",
+    "\\beligible",
+    "pris(?:e|es)? en charge (?:totale|partielle|financi[èe]re)",
+    "(?:totally|fully|partially) covered",
+    "pris(?:e|es)? en charge par (?:l'|le |la |les )?(?:organisme|op[ée]rateur|r[ée]gion|[ÉEée]tat|employeur|branche|agefiph|conseil r[ée]gional)",
+  ].join("|"),
+  "i",
+);
 
 /** Titre qui parle de financement (pour ne retirer une section que si elle en parle). */
 const TITRE_FINANCEMENT = /financ|\bfund|prise en charge|subvention|rembours/i;
@@ -285,20 +311,39 @@ function estPhraseStandard(el: Element | null): boolean {
   return t === PHRASE_FR || t === PHRASE_EN;
 }
 
+/** Faut-il remplacer le TEXTE d'un lien vers une page retirée ? (HTML et JSON : même règle.) */
+function texteLienARemplacer(texte: string): boolean {
+  return estVisee(texte) || MARQUEUR.test(texte) || TOUJOURS.some((r) => r.test(texte));
+}
+
+function hrefReecrit(href: string): string {
+  return /\/en\//i.test(href) ? "/en/formations" : "/fr/formations";
+}
+
+function texteLienRemplace(langue: Langue): string {
+  return langue === "en" ? "our training courses" : "nos formations";
+}
+
+/**
+ * Ligne de tableau consacrée au financement (HTML et JSON : même règle). `"retirer"` : première
+ * colonne visée, ou libellé de financement avec une autre cellule visée ; `"ambigu"` : cellule
+ * visée hors première colonne ; `"garder"` sinon.
+ */
+function verdictLigne(premiere: string, autres: string[]): "retirer" | "ambigu" | "garder" {
+  const p = premiere.trim();
+  if (estVisee(p) || (TITRE_FINANCEMENT.test(normaliser(p)) && autres.some((c) => estVisee(c))))
+    return "retirer";
+  return autres.some((c) => estVisee(c)) ? "ambigu" : "garder";
+}
+
 function reecrireLiens(racine: Element, langue: Langue): boolean {
   let modifie = false;
   for (const a of Array.from(racine.querySelectorAll("a[href]"))) {
     const href = a.getAttribute("href") ?? "";
     if (!LIENS_RETIRES.test(href)) continue;
     // Seuls ces deux liens sont réécrits ; la langue du lien d'origine est conservée.
-    a.setAttribute("href", /\/en\//i.test(href) ? "/en/formations" : "/fr/formations");
-    if (
-      estVisee(a.textContent ?? "") ||
-      MARQUEUR.test(a.textContent ?? "") ||
-      TOUJOURS.some((r) => r.test(a.textContent ?? ""))
-    ) {
-      a.textContent = langue === "en" ? "our training courses" : "nos formations";
-    }
+    a.setAttribute("href", hrefReecrit(href));
+    if (texteLienARemplacer(a.textContent ?? "")) a.textContent = texteLienRemplace(langue);
     modifie = true;
   }
   return modifie;
@@ -325,6 +370,23 @@ function sectionVisee(corps: Element[]): boolean {
 
 /** Titres H2-H4 : questions et sections consacrées au financement. */
 function traiterTitres(racine: Element, d: Document, langue: Langue, ambigus: string[]): boolean {
+  let modifie = false;
+  // Parcours récursif : les titres imbriqués dans section / div / article sont traités comme ceux
+  // de la racine (chaque conteneur qui porte au moins un titre est traité).
+  const conteneurs = [
+    racine,
+    ...Array.from(racine.querySelectorAll("*")).filter((e) =>
+      Array.from(e.children).some((c) => niveau(c) > 0),
+    ),
+  ];
+  for (const conteneur of conteneurs) {
+    if (!conteneur.isConnected) continue;
+    modifie = traiterTitresDe(conteneur, d, langue, ambigus) || modifie;
+  }
+  return modifie;
+}
+
+function traiterTitresDe(racine: Element, d: Document, langue: Langue, ambigus: string[]): boolean {
   let modifie = false;
   const enfants = Array.from(racine.children);
   for (let i = 0; i < enfants.length; i++) {
@@ -409,20 +471,16 @@ function traiterTableaux(racine: Element, ambigus: string[]): boolean {
   for (const tr of Array.from(racine.querySelectorAll("tbody tr, table > tr"))) {
     const cellules = Array.from(tr.children);
     if (cellules.length === 0) continue;
-    const premiere = (cellules[0]!.textContent ?? "").trim();
-    if (
-      estVisee(premiere) ||
-      (TITRE_FINANCEMENT.test(normaliser(premiere)) &&
-        cellules.slice(1).some((c) => estVisee(c.textContent ?? "")))
-    ) {
+    const autres = cellules.slice(1).map((c) => c.textContent ?? "");
+    const v = verdictLigne(cellules[0]!.textContent ?? "", autres);
+    if (v === "retirer") {
       tr.remove();
       modifie = true;
-    } else {
-      const autre = cellules.slice(1).find((c) => estVisee(c.textContent ?? ""));
-      if (autre)
-        ambigus.push(
-          `tableau : cellule visée hors première colonne : « ${(autre.textContent ?? "").trim().slice(0, 100)} »`,
-        );
+    } else if (v === "ambigu") {
+      const autre = autres.find((c) => estVisee(c)) ?? "";
+      ambigus.push(
+        `tableau : cellule visée hors première colonne : « ${autre.trim().slice(0, 100)} »`,
+      );
     }
   }
   return modifie;
@@ -508,8 +566,9 @@ function paragrapheStandard(langue: Langue): NoeudTiptap {
 
 /**
  * Document Tiptap : mêmes règles que le HTML, au niveau des paragraphes, listes et sections
- * (titres H2/H3). Un paragraphe réécrit perd ses marques en ligne (gras, lien) ; un paragraphe
- * intact est conservé tel quel. Les tableaux ne sont pas réécrits : cas ambigu signalé.
+ * (titres H2/H3), lignes de tableau et liens vers les pages retirées (même règle que le HTML).
+ * Un paragraphe réécrit perd ses marques en ligne (gras, lien) ; un paragraphe intact est
+ * conservé tel quel.
  */
 export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<unknown> {
   if (!documentJson || typeof documentJson !== "object")
@@ -517,6 +576,45 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
   const racine = structuredClone(documentJson) as NoeudTiptap;
   const ambigus: string[] = [];
   let modifie = false;
+
+  /** Liens vers les pages retirées : même réécriture que le HTML (href et, si besoin, texte). */
+  const reecrireLiensJson = (n: NoeudTiptap): void => {
+    const marques = Array.isArray(n.marks) ? (n.marks as NoeudTiptap[]) : [];
+    for (const m of marques) {
+      const href = typeof m.attrs?.href === "string" ? m.attrs.href : "";
+      if (m.type !== "link" || !LIENS_RETIRES.test(href)) continue;
+      m.attrs = { ...m.attrs, href: hrefReecrit(href) };
+      if (typeof n.text === "string" && texteLienARemplacer(n.text))
+        n.text = texteLienRemplace(langue);
+      modifie = true;
+    }
+    for (const c of n.content ?? []) reecrireLiensJson(c);
+  };
+  reecrireLiensJson(racine);
+
+  /** Tableau : mêmes retraits de lignes que le HTML (lignes d'en-tête exclues). */
+  const traiterTableauJson = (t: NoeudTiptap): void => {
+    t.content = (t.content ?? []).filter((ligne) => {
+      const cellules = ligne.content ?? [];
+      if (cellules.length === 0 || cellules.every((c) => c.type === "tableHeader")) return true;
+      const v = verdictLigne(texteNoeud(cellules[0]!), cellules.slice(1).map(texteNoeud));
+      if (v === "retirer") {
+        modifie = true;
+        return false;
+      }
+      if (v === "ambigu") {
+        const autre =
+          cellules
+            .slice(1)
+            .map(texteNoeud)
+            .find((c) => estVisee(c)) ?? "";
+        ambigus.push(
+          `tableau : cellule visée hors première colonne : « ${autre.trim().slice(0, 100)} »`,
+        );
+      }
+      return true;
+    });
+  };
 
   const traiterParagraphe = (n: NoeudTiptap): "garde" | "modifie" | "vide" => {
     const t = texteNoeud(n);
@@ -608,8 +706,7 @@ export function reecrireJson(documentJson: unknown, langue: Langue): Resultat<un
         continue;
       }
       if (c.type === "table") {
-        if (phrases(texteNoeud(c)).some((p) => estVisee(p)))
-          ambigus.push("tableau (JSON) contenant un motif : à relire");
+        traiterTableauJson(c);
         sortie.push(c);
         continue;
       }

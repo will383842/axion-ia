@@ -1,3 +1,4 @@
+import { JSDOM } from "jsdom";
 import { describe, expect, it } from "vitest";
 import {
   PHRASE_EN,
@@ -34,9 +35,38 @@ describe("estVisee — motifs toujours visés", () => {
   });
 
   it("‘prise en charge’ au sens financier est visée", () => {
-    expect(estVisee("Le coût de la formation peut faire l'objet d'une prise en charge.")).toBe(
-      true,
+    expect(
+      estVisee("Le coût de la formation peut faire l'objet d'une prise en charge financière."),
+    ).toBe(true);
+    expect(estVisee("Une prise en charge partielle est possible.")).toBe(true);
+    expect(estVisee("Une prise en charge par l'organisme collecteur est possible.")).toBe(true);
+    expect(
+      estVisee("France Compétences pour la prise en charge des formations certifiantes."),
+    ).toBe(true);
+  });
+
+  it("‘prise en charge’ + coût / tarif / € / gratuit seuls : CONSERVÉE", () => {
+    for (const t of [
+      "La prise en charge des appels réduit le coût de 30 %.",
+      "La prise en charge des demandes est gratuite pour vos clients.",
+      "La prise en charge à 49 € par mois reste simple.",
+      "Le tarif inclut la prise en charge des tickets.",
+    ])
+      expect(estVisee(t), t).toBe(false);
+  });
+
+  it("« certification qualité » : visée (variantes)", () => {
+    for (const t of [
+      "Axion-IA prépare la certification qualité.",
+      "Axion-IA est certifié qualité.",
+      "Notre organisme est certifiée qualité depuis 2024.",
+    ])
+      expect(estVisee(t), t).toBe(true);
+    const r = reecrireHtml(
+      "<p>Une équipe. Un autre point. Axion-IA prépare la certification qualité.</p>",
+      "fr",
     );
+    expect(r.valeur).toBe("<p>Une équipe. Un autre point.</p>");
   });
 
   it("CPF / France Travail sans marqueur de financement : conservés", () => {
@@ -328,5 +358,105 @@ describe("contenu sain : aucune modification, chaîne d'origine rendue telle que
     expect(r.modifie).toBe(false);
     expect(r.valeur).toBe(html);
     expect(classer(r)).toBe("propre");
+  });
+});
+
+describe("titres imbriqués (parcours récursif)", () => {
+  it("h2 dans section / div / article : section de financement remplacée", () => {
+    const html =
+      "<article><div><section><h2>Financement OPCO</h2><p>Via l'OPCO.</p><h2>Suite</h2><p>Autre.</p></section></div></article>";
+    const r = reecrireHtml(html, "fr");
+    expect(r.modifie).toBe(true);
+    expect(r.valeur).not.toMatch(/OPCO/);
+    expect(r.valeur).toContain(PHRASE_FR);
+    expect(r.valeur).toContain("<h2>Suite</h2><p>Autre.</p>");
+    expect(reecrireHtml(r.valeur, "fr").modifie).toBe(false);
+  });
+  it("h2 question imbriqué : question standard", () => {
+    const r = reecrireHtml("<div><h3>Éligible au CPF ?</h3><p>Oui, OPCO.</p></div>", "fr");
+    expect(r.valeur).toContain(QUESTION_FR);
+    expect(r.valeur).not.toMatch(/CPF|OPCO/);
+  });
+});
+
+describe("JSON Tiptap ≡ HTML : tableaux et liens", () => {
+  const html =
+    "<table><thead><tr><th>Critère</th><th>Valeur</th></tr></thead><tbody><tr><td>Financement OPCO</td><td>Oui</td></tr><tr><td>Durée</td><td>3 jours</td></tr></tbody></table>" +
+    '<p>Voir <a href="/fr/financement-opco-france-travail">le financement OPCO</a> et <a href="/fr/certification-qualiopi">notre page</a>.</p>';
+  const cellule = (type: string, t: string) => ({
+    type,
+    content: [{ type: "paragraph", content: [{ type: "text", text: t }] }],
+  });
+  const lien = (href: string, text: string) => ({
+    type: "text",
+    text,
+    marks: [{ type: "link", attrs: { href } }],
+  });
+  const doc = {
+    type: "doc",
+    content: [
+      {
+        type: "table",
+        content: [
+          {
+            type: "tableRow",
+            content: [cellule("tableHeader", "Critère"), cellule("tableHeader", "Valeur")],
+          },
+          {
+            type: "tableRow",
+            content: [cellule("tableCell", "Financement OPCO"), cellule("tableCell", "Oui")],
+          },
+          {
+            type: "tableRow",
+            content: [cellule("tableCell", "Durée"), cellule("tableCell", "3 jours")],
+          },
+        ],
+      },
+      {
+        type: "paragraph",
+        content: [
+          { type: "text", text: "Voir " },
+          lien("/fr/financement-opco-france-travail", "le financement OPCO"),
+          { type: "text", text: " et " },
+          lien("/fr/certification-qualiopi", "notre page"),
+          { type: "text", text: "." },
+        ],
+      },
+    ],
+  };
+  it("mêmes lignes retirées, mêmes liens réécrits, même texte", () => {
+    const h = reecrireHtml(html, "fr");
+    const j = reecrireJson(doc, "fr");
+    expect(h.modifie).toBe(true);
+    expect(j.modifie).toBe(true);
+    const dom = new JSDOM(`<body>${h.valeur}</body>`).window.document;
+    const hrefsHtml = Array.from(dom.querySelectorAll("a")).map((a) => a.getAttribute("href"));
+    const textesHtml = Array.from(dom.querySelectorAll("a")).map((a) => a.textContent);
+    const hrefsJson: string[] = [];
+    const textesJson: string[] = [];
+    const lignes: string[] = [];
+    const marcher = (n: any): void => {
+      for (const m of n.marks ?? [])
+        if (m.type === "link") {
+          hrefsJson.push(m.attrs.href);
+          textesJson.push(n.text);
+        }
+      if (n.type === "tableRow") lignes.push((n.content as any[]).map(texteDe).join("|"));
+      (n.content ?? []).forEach(marcher);
+    };
+    const texteDe = (n: any): string => n.text ?? (n.content ?? []).map(texteDe).join("");
+    marcher(j.valeur);
+    expect(hrefsJson).toEqual(hrefsHtml);
+    expect(hrefsJson).toEqual(["/fr/formations", "/fr/formations"]);
+    expect(textesJson).toEqual(textesHtml);
+    const lignesHtml = Array.from(dom.querySelectorAll("tr")).map((tr) =>
+      Array.from(tr.children)
+        .map((c) => c.textContent)
+        .join("|"),
+    );
+    expect(lignes).toEqual(lignesHtml);
+    expect(lignes).toEqual(["Critère|Valeur", "Durée|3 jours"]);
+    // idempotent
+    expect(reecrireJson(j.valeur, "fr").modifie).toBe(false);
   });
 });
