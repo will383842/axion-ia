@@ -675,6 +675,10 @@ describe("approbation — la marque ne se pose pas par le code", () => {
 describe("tour 4 · B4 : variantes typographiques de formes connues", () => {
   // le nombre n'est pas écrit en clair : le scanner de fichiers refuse tout montant dans les sources
   const N = String(3 * 1000);
+  const SHY = String.fromCharCode(0xad);
+  const ZW = String.fromCharCode(0x200b);
+  const WJ = String.fromCharCode(0x2060);
+  const BOM = String.fromCharCode(0xfeff);
   const refusees = [
     `Il touche ${N} (brut) chaque fois.`,
     `Il touche ${N}-brut chaque fois.`,
@@ -690,6 +694,11 @@ describe("tour 4 · B4 : variantes typographiques de formes connues", () => {
     "Il faut qua-dru-pler la mise.",
     "Il faut dou.bler la mise.",
     "C'est hors-taxe pour tous.",
+    `Un tarif par${SHY}mois pour tous.`,
+    `Un tarif par${ZW}mois pour tous.`,
+    `Un tarif par${WJ}mois pour tous.`,
+    `Un tarif par${BOM}mois pour tous.`,
+    `C'est hors${SHY}taxe pour tous.`,
   ];
   for (const t of refusees) {
     it(`refuse : ${t}`, () => {

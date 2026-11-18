@@ -919,6 +919,60 @@ describe("11 · tour 4 : une ligne sautée ou avalée dans une section marquée 
     ]);
   });
 
+  it("tour 4 bis : une ligne retirée par le nettoyage neutralise la section (PDF, Markdown, affiche)", () => {
+    aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, "3 / 12", "Suite."]);
+    aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, "AXION IA · bas inventé", LONG]);
+    aucuneServie(["## A", M, LONG, "<!-- page 2 -->", "Suite non relue."]);
+    const aff = decouperFichier(
+      "livres/important-a-savoir/faux-quatre.md",
+      ["<!-- page 1 -->", M, LONG, "  <!-- page 2 -->", "Texte non relu de la page 2."].join("\n"),
+    );
+    expect(aff.filter((x) => x.approuvee)).toEqual([]);
+  });
+
+  it("tour 4 bis : un titre « N. » avalé dans un bloc fixe ou dans l'encadré neutralise", () => {
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      LONG,
+      "Si… alors…",
+      M,
+      "Si a alors b.",
+      `2. Deux non relu`,
+      LONG,
+    ]);
+    aucuneServie([
+      "# faux-quatre",
+      "1. Premier titre",
+      LONG,
+      "Teste-toi",
+      M,
+      LONG,
+      "3. Trois non relu",
+      LONG,
+    ]);
+    const noyau = decouperFichier(
+      "livres/faux-00-quatre.md",
+      [
+        "# faux-00-quatre",
+        "1. Premier titre",
+        LONG,
+        "L'ESSENTIEL EN 30 SECONDES",
+        M,
+        "Idée.",
+        "3. Trois non relu",
+        LONG,
+        "Les idées clés",
+      ].join("\n"),
+    );
+    expect(noyau.filter((x) => x.approuvee && x.slug.endsWith("/essentiel"))).toEqual([]);
+  });
+
+  it("tour 4 bis : un titre Markdown vide dans le corps rend la section non approuvable", () => {
+    aucuneServie(["## A", M, "Texte.", "##", "Texte non relu."]);
+    aucuneServie(["# faux-quatre", "1. Premier titre", M, LONG, "##", "Texte non relu."]);
+  });
+
   it("témoin positif : une section marquée, intacte, reste servie", () => {
     expect(
       servies(["# faux-quatre", "1. Premier titre", M, LONG, "2. Second titre", LONG]),

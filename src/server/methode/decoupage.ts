@@ -174,14 +174,17 @@ const MOTIF_PERIODE_TAXE =
  * se lisent alors comme leur forme simple. Toujours testé EN PLUS du texte lu tel quel.
  */
 function espacer(lu: string): string {
-  return lu
-    .replace(/[\-_‐‑‒–—―−()[\]{}·•*\u00ad\u200b-\u200d\u2060\ufeff]/g, " ")
-    .replace(/\s+/g, " ");
+  return lu.replace(/[\-_‐‑‒–—―−()[\]{}·•*]/g, " ").replace(/\s+/g, " ");
+}
+
+/** Coupures invisibles (césure, largeur nulle, joint) lues comme des ESPACES, avant toute normalisation. */
+function lireEspace(texte: string): string {
+  return espacer(lire(texte.replace(/[\u00ad\u200b-\u200d\u2060\ufeff]/g, " ")));
 }
 
 export function contientMontant(texte: string): boolean {
   const lu = lire(texte);
-  const espace = espacer(lu);
+  const espace = lireEspace(texte);
   return (
     MOTIF_MONTANT.test(texte) ||
     MOTIF_MONETAIRE.test(texte) ||
@@ -243,17 +246,18 @@ export function contientPromesse(texte: string): boolean {
   const lu = lire(texte);
   // « g a r a n t i », « dou-bler » : on cherche aussi sans espaces ni séparateurs, et avec
   // les tirets et parenthèses lus comme des espaces (« pas-de-résultat »)
-  const compact = espacer(lu).replace(/[\s.]/g, "");
+  const espace = lireEspace(texte);
+  const compact = espace.replace(/[\s.]/g, "");
   return (
     MOTIF_PROMESSE.test(lu) ||
-    MOTIF_PROMESSE.test(espacer(lu)) ||
+    MOTIF_PROMESSE.test(espace) ||
     /garant|rembours|doubl|tripl|quadrupl|quintupl|decupl|centupl|pasderesultat/.test(compact)
   );
 }
 
 export function contientPourcentage(texte: string): boolean {
   const lu = lire(texte);
-  return MOTIF_POURCENTAGE.test(lu) || MOTIF_POURCENTAGE.test(espacer(lu));
+  return MOTIF_POURCENTAGE.test(lu) || MOTIF_POURCENTAGE.test(lireEspace(texte));
 }
 
 /** `livre:<nom du fichier, sans numéro, borné>` : aucune liste de titres ni d'auteurs en dur. */
@@ -266,14 +270,27 @@ export function etiquetteLivre(nomFichier: string): string {
 //  Nettoyage des artefacts d'extraction PDF
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Une ligne retirée par le nettoyage n'est pas effacée en silence : elle laisse ce repère,
+ * et la section qui la porte est neutralisée (une ligne du corps supprimée ⇒ jamais servie).
+ */
+const LIGNE_RETIREE = "\u0000ligne-retiree";
+
+function estArtefact(l: string): boolean {
+  const t = l.trim();
+  return (
+    /^<!--\s*page\s+\d+\s*-->$/.test(t) ||
+    /^\d+\s*\/\s*\d+$/.test(t) ||
+    /^AXION IA · .+$/.test(t) ||
+    /^Source : Google Drive/.test(t)
+  );
+}
+
 function lignesNettoyees(texte: string): string[] {
   return texte
     .replace(/\r\n?/g, "\n")
     .split("\n")
-    .filter((l) => !/^<!--\s*page\s+\d+\s*-->$/.test(l.trim()))
-    .filter((l) => !/^\d+\s*\/\s*\d+$/.test(l.trim()))
-    .filter((l) => !/^AXION IA · .+$/.test(l.trim()))
-    .filter((l) => !/^Source : Google Drive/.test(l.trim()));
+    .map((l) => (estArtefact(l) ? LIGNE_RETIREE : l));
 }
 
 function compacter(lignes: readonly string[]): string {
@@ -352,6 +369,11 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
     const brute = lignes[i]!;
     const ligne = brute.trim();
 
+    if (brute === LIGNE_RETIREE) {
+      courant.neutre = true;
+      continue;
+    }
+
     if (/^# /.test(ligne)) {
       // titre H1 = nom du fichier. Une ligne sautée dans le corps d'une section la neutralise
       // ENTIÈREMENT (décision du 18/11, règle la plus prudente), quel que soit le contenu déjà lu :
@@ -389,6 +411,11 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
             termine = true;
             break;
           }
+          if (lignes[j] === LIGNE_RETIREE) {
+            essentiel.neutre = true;
+            j++;
+            continue;
+          }
           // Terminateur absent : l'encadré s'arrête au prochain bloc fixe ou titre attendu,
           // et il n'est pas approuvé (il pourrait avoir avalé des sections non relues).
           if (
@@ -396,6 +423,8 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
             candidatNumerote(l)?.n === dernierNumero + 1
           )
             break;
+          // un titre « N. » versé dans l'encadré : il n'est plus celui du corpus
+          if (candidatNumerote(l)) essentiel.neutre = true;
           essentiel.lignes.push(lignes[j]!);
           j++;
         }
@@ -467,6 +496,9 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
       // Un titre « N. » lu comme candidat mais versé dans le corps (question, numéro sauté,
       // cellule imbriquée) : la section qui l'avale n'est plus celle du corpus → jamais servie.
       if (c) courant.neutre = true;
+    } else if (candidatNumerote(ligne)) {
+      // dans un bloc fixe, un titre « N. » (même attendu) est versé dans le corps : neutralisé.
+      courant.neutre = true;
     }
 
     courant.lignes.push(brute);
@@ -509,7 +541,8 @@ function decouperParPage(contenu: string): Morceau[] {
   // split avec groupe capturant : [avant, n1, texte1, n2, texte2, …]
   for (let k = 1; k < blocs.length; k += 2) {
     const n = Number(blocs[k]);
-    const lignes = lignesNettoyees(blocs[k + 1] ?? "");
+    const brutesPage = lignesNettoyees(blocs[k + 1] ?? "");
+    const lignes = brutesPage.filter((l) => l !== LIGNE_RETIREE);
     const titre =
       lignes
         .map((l) => l.trim())
@@ -521,6 +554,7 @@ function decouperParPage(contenu: string): Morceau[] {
       slug: `page-${String(n).padStart(2, "0")}`,
       titre,
       lignes,
+      neutre: brutesPage.length !== lignes.length,
       titreBrut: brutes.find((l) => new RegExp(`^<!--\\s*page\\s+${n}\\s*-->\\s*$`).test(l)),
     });
   }
@@ -583,6 +617,10 @@ function decouperMarkdown(lignes: readonly string[]): Morceau[] {
 
   for (let i = 0; i < lignes.length; i++) {
     const brute = lignes[i]!;
+    if (brute === LIGNE_RETIREE) {
+      if (courant) courant.neutre = true;
+      continue;
+    }
     const h = vives[i] ? /^(#{1,2})\s+(.+?)\s*$/.exec(brute) : null;
     if (h) {
       if (courant && compacter(courant.lignes).length > 0) morceaux.push(courant);
@@ -630,7 +668,7 @@ function titreCache(corps: string): boolean {
   const l = corps.split("\n");
   return l.some(
     (x, i) =>
-      /^\s{0,3}#{1,6}\s/.test(x) ||
+      /^\s{0,3}#{1,6}(?:\s|$)/.test(x) ||
       x.includes("<!--") ||
       (i > 0 && l[i - 1]!.trim() !== "" && /^\s{0,3}(?:=+|-+)\s*$/.test(x)),
   );

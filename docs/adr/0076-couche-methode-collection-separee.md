@@ -111,6 +111,12 @@ Formes exotiques connues et non bloquantes, la sécurité étant l'approbation �
 adresse écrite « at exemple .invalid », « hors taxe » collé par une espace de largeur nulle,
 un `<h2>` HTML brut, un `> ## titre` en citation, un `- ## titre` en liste, un titre « N. »
 dans un bloc de code d'une fiche PDF.
+
+Tour 4 bis : une ligne retirée par le nettoyage d'extraction (numéro de page, bandeau, repère de
+page) neutralise aussi la section qui la portait ; un titre « N. » versé dans un bloc fixe ou
+dans l'encadré de l'essentiel la neutralise ; un titre Markdown vide (`##` seul) la rend non
+approuvable ; les césures et caractères de largeur nulle sont lus comme des espaces AVANT la
+normalisation du second filet.
 La marque est lue sur la **première ligne brute** de la section dans le corpus : si le
 découpage la ferait apparaître en tête (retrait, tabulation, BOM, espace insécable, ligne
 « # » supprimée, encadré « essentiel » sans terminateur), la section n'est pas approuvée et
