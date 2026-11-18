@@ -37,6 +37,7 @@ import {
   buildProductMetadata,
   buildFaqSpeakableJsonLd,
   buildPageImageGraphJsonLd,
+  ORGANIZATION_SAME_AS,
   SITE_URL,
 } from "@/lib/seo";
 import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
@@ -264,10 +265,7 @@ export default async function PressePage({ params, searchParams }: Props) {
           availableLanguage: ["French", "English"],
         },
       ],
-      sameAs: [
-        "https://www.linkedin.com/company/axion-ia-france",
-        "https://www.facebook.com/axioniacom",
-      ],
+      sameAs: [...ORGANIZATION_SAME_AS],
     },
   };
 
