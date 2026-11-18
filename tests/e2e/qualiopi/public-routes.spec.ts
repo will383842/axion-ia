@@ -51,7 +51,6 @@ const toutesLesRoutes = JSON.parse(
  */
 const ROUTES_SI_CERTIFIE = new Set([
   "/fr/certification-qualiopi",
-  "/fr/financement-opco-france-travail",
 ]);
 const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
 /**
