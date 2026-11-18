@@ -12,6 +12,8 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourOffre } from "@/content/maillage-glossaire";
 
 // Sprint 14.10.8 (Will 2026-05-12) — wrapper Audit Stratégique PME via template.
 
@@ -72,6 +74,7 @@ export default async function AuditStrategiquePmePage({ params }: Props) {
   return (
     <>
       <AuditDetailPage tier={TIER} locale={loc} />
+      <TermesGlossaireLies locale={locale} termes={termesPourOffre("audit", "strategique-pme")} />
       <JsonLd data={webPageJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>

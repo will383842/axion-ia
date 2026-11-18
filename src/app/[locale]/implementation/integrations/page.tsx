@@ -19,6 +19,8 @@ import {
   buildPrimaryImageOfPage,
   buildWebPageJsonLd,
 } from "@/lib/seo";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourOffre } from "@/content/maillage-glossaire";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -104,6 +106,7 @@ export default async function IntegrationsPage({ params }: Props) {
       />
 
       <ImplementationSubPageExtras isFr={isFr} slug={SLUG} />
+      <TermesGlossaireLies locale={locale} termes={termesPourOffre("implementation", SLUG)} />
     </>
   );
 }
