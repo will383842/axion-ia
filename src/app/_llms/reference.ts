@@ -24,6 +24,8 @@ import {
   STUDY_NAME_FR,
   STUDY_QUESTION_COUNT,
 } from "@/content/observatoire/study";
+import { DEFINITION_CARTOGRAPHIE } from "@/content/cartographie-date";
+import { EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { routing } from "@/i18n/routing";
 
 export { MOTS_INTERDITS_LLMS };
@@ -56,7 +58,8 @@ const OFFRES: readonly OffreLlms[] = [
   {
     cle: "/formations",
     nom: "Formations IA",
-    definition: () => reponse("ref-formation-prix").split(". ")[0] + ".",
+    definition: () =>
+      `Formations IA pour les équipes d’une entreprise, sur site ou à distance, de 4 heures à 2 jours, en groupe (${EFFECTIF_PLAGE_FR}) : elles changent les pratiques des équipes sur leurs propres dossiers.`,
   },
   {
     cle: "/un-a-un",
@@ -73,8 +76,7 @@ const OFFRES: readonly OffreLlms[] = [
   {
     cle: "/cartographie",
     nom: "Cartographie de l’entreprise",
-    definition: () =>
-      "Le matin de la Journée IA, l’entreprise est passée en revue service par service et les gains sont chiffrés en heures et en euros.",
+    definition: () => DEFINITION_CARTOGRAPHIE,
   },
 ];
 

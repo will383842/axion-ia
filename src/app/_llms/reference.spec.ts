@@ -90,6 +90,8 @@ describe("routes llms.txt et llms-full.txt", () => {
       expect(res.headers.get("Cache-Control")).toMatch(/max-age=\d+/);
       const corps = await res.text();
       expect(corps.length).toBeGreaterThan(2000);
+      expect(corps).toContain("## Nos offres (pages de référence)");
+      expect(corps).toContain("https://axion-ia.com/fr/un-a-un");
       expect(corps).not.toMatch(INTERDITS);
       expect(corps).not.toMatch(/https:\/\/axion-ia\.com\/en(\/|\b)/);
     },
