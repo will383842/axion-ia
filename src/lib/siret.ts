@@ -159,6 +159,9 @@ export function sirenDuSiret(siret: string): string {
 
 export type SirenCheck = { ok: true; value: string } | { ok: false; message: string };
 
+/** Longueur maximale d'un SIREN saisi, espaces compris (« 732 829 320 » = 11) : formulaire ET schéma. */
+export const SIREN_SAISIE_LONGUEUR_MAX = 20;
+
 /** Contrôle format + clé d'un SIREN NON VIDE saisi à la main. */
 export function checkSirenFormat(raw: string): SirenCheck {
   const v = normalizeSiret(raw);

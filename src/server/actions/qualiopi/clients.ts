@@ -17,6 +17,7 @@ import { adminPath } from "@/lib/admin-path";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import {
   AVERTISSEMENT_SIREN_CONTRAIRE,
+  SIREN_SAISIE_LONGUEUR_MAX,
   checkSirenFormat,
   resoudreSiren,
   sirenContreditLeSiret,
@@ -851,7 +852,7 @@ const changerTypeSchema = z.object({
   raisonSociale: z.string().trim().min(1, "Indiquez le nom.").max(250),
   motif: z.string().trim().max(300).optional(),
   /** SIREN facultatif, saisi en passant en entreprise (espaces tolérés ; contrôlé plus bas). */
-  siren: z.string().max(30).optional(),
+  siren: z.string().max(SIREN_SAISIE_LONGUEUR_MAX).optional(),
 });
 
 /** Les modèles de pièces lus par `compterPiecesClient`, tels que `tx` les expose. */
@@ -889,6 +890,11 @@ export async function changerTypeClientAction(
   try {
     resultat = await prisma.$transaction(async (db) => {
       const tx = db as TxPieces;
+      // ORDRE DES VERROUS, le même que `updateClientAction` et que la création : le SIREN
+      // d'abord (verrou consultatif de `exigerSirenLibre`), puis la ligne de la fiche.
+      // Deux sessions qui prennent les deux verrous en sens inverse s'interbloquent.
+      if (sirenAEcrire !== undefined) await exigerSirenLibre(tx, id, sirenAEcrire);
+
       // Verrou de la ligne : deux changements, ou un changement et une pièce créée, se suivent.
       await tx.$queryRaw`SELECT 1 FROM clients WHERE id = ${id}::uuid FOR UPDATE`;
 
@@ -937,8 +943,17 @@ export async function changerTypeClientAction(
         if (restants.length > 0) return { error: raisonEmployeur(restants) } as const;
       }
 
-      // SIREN : même verrou que la création (`exigerSirenLibre`), AVANT l'écriture, sous le verrou de la fiche.
-      if (sirenAEcrire !== undefined) await exigerSirenLibre(tx, id, sirenAEcrire);
+      // Cohérence du SIREN saisi avec ce que la fiche porte déjà (lu sous le verrou de la ligne).
+      if (sirenAEcrire !== undefined) {
+        const r = resoudreSiren(fiche.siret, sirenAEcrire);
+        if (!r.ok) return { error: r.message } as const;
+        if (fiche.siren != null && fiche.siren !== "" && fiche.siren !== sirenAEcrire) {
+          return {
+            error:
+              "SIREN : la fiche porte déjà un autre SIREN. Corrigez-le depuis « Modifier la fiche », ou laissez ce champ vide.",
+          } as const;
+        }
+      }
 
       // Axion Partners : la charge AVANT l'écriture, le fait APRÈS, dans la même transaction.
       const avant = await chargeClientAvant(tx, id);
