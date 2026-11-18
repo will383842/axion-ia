@@ -319,6 +319,34 @@ describe("relancerAcceptationDevisAction : devis CLASSIQUE (M1)", () => {
     },
   );
 
+  it("X3 : une confirmation préparée et une autre en échec : le message dit combien ont été préparées", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({
+        ids: ["a", "b"],
+        confirmationsPreparees: ["a"],
+        confirmationsEchec: ["b"],
+        echecs: [{ devisId: "b", raison: "pas_d_adresse" }],
+      }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(r.ok).toBe(false);
+    expect(!r.ok && r.message).toContain("n'a pas d'adresse e-mail");
+    expect(!r.ok && r.message).toContain("1 confirmation de commande a déjà été préparée");
+  });
+
+  it("X3 : deux préparées et une en échec : accord au pluriel", async () => {
+    repriseClassique.mockResolvedValue(
+      classique({
+        ids: ["a", "b", "c"],
+        confirmationsPreparees: ["a", "b"],
+        confirmationsEchec: ["c"],
+        echecs: [{ devisId: "c", raison: "exception" }],
+      }),
+    );
+    const r = await relancerAcceptationDevisAction({ documentGenereId: DOC });
+    expect(!r.ok && r.message).toContain("2 confirmations de commande ont déjà été préparées");
+  });
+
   it("m1 : devisAcceptes compte les confirmations préparées, pas les déjà faites", async () => {
     repriseClassique.mockResolvedValue(
       classique({ ids: ["a", "b"], confirmationsPreparees: ["a"], confirmationsDejaFaites: ["b"] }),
