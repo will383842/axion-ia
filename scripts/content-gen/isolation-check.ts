@@ -73,6 +73,12 @@ const ALLOWED_PATTERNS: ReadonlyArray<RegExp> = [
   // ci-dessus : consommateur, marqueur "content-gen" dans des commentaires
   // explicatifs uniquement (aucun code pipeline).
   /^src\/app\/sitemap-blog\.xml\/route\.ts$/,
+  // Retrait des mentions de financement (2026-11) : le workflow manuel et le seed d'offres
+  // nomment le script `scripts/content-gen/retrait-mentions-financement.ts` et le plan dans
+  // `src/server/content-gen/retrait-financement/` — chemins cités, aucun code de pipeline.
+  /^\.github\/workflows\/retrait-mentions-financement\.yml$/,
+  /^scripts\/seed-careers-offers\.ts$/,
+  /^tests\/unit\/ci\/offres-financement-archivees\.spec\.ts$/,
   // Script anti-siren : exclut content-gen (doctrine code détecte SIREN patterns)
   /^scripts\/check-anti-siren\.sh$/,
   // Queue manager + worker entry — orchestrent les queues content-gen

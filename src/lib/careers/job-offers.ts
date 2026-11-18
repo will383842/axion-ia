@@ -19,6 +19,14 @@ export async function getJobOfferBySlug(slug: string): Promise<JobOffer | null> 
 }
 
 /**
+ * Offre archivée : retirée du site (404 sur la page, hors sitemap, hors JSON-LD). La ligne
+ * reste en base (aucune suppression) ; seul le statut dit qu'elle n'est plus servie.
+ */
+export function isJobOfferArchived(o: Pick<JobOffer, "status"> | null | undefined): boolean {
+  return o?.status === "archived";
+}
+
+/**
  * Indexable ssi : publiée, non pourvue, tier_1, et non expirée (validThrough).
  * Sert au robots meta (C2), au sitemap et à generateStaticParams.
  */

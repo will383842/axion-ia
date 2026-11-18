@@ -1,0 +1,293 @@
+name: Retrait des mentions de financement (blog + offres d'emploi)
+
+# Plan : `geo/PLAN-RETRAIT-FINANCEMENT.md` (dépôt axion-plans-prive). Script :
+# `scripts/content-gen/retrait-mentions-financement.ts`. Règles : `src/server/content-gen/retrait-financement/`.
+#
+# 🔴 DÉCLENCHEMENT MANUEL SEULEMENT (workflow_dispatch). Rien ne tourne seul, jamais.
+#
+# Ordre d'emploi, un mode à la fois :
+#   1. copie    → restaure la dernière sauvegarde R2 dans un Postgres JETABLE du runner, y joue
+#                 dry-run → apply → vérification → restore → dry-run. La production n'est pas touchée.
+#   2. dry-run  → lit la base de PRODUCTION (lecture seule), publie le rapport, affiche PLAN_SHA.
+#   3. apply    → écrit en production, avec `plan_sha` (empreinte lue à l'étape 2 : refus si elle
+#                 diffère) ET une sauvegarde Postgres de moins de 24 h. Puis purge du cache par lots
+#                 de 30 URL et IndexNow.
+#   4. restore  → remet les valeurs d'origine (seulement si la valeur actuelle est celle écrite).
+#
+# Modèles : `careers-offres-seed.yml` (SSH + docker cp + docker exec dans le conteneur WORKER) et
+# `restore-drill-monthly.yml` (restauration R2 → Postgres éphémère).
+#
+# Le rapport est publié en artefact : textes PUBLICS seulement (phrases retirées), jamais le dump.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "copie (essai sur une copie) | dry-run (prod, lecture) | apply (prod, écrit) | restore (prod)"
+        required: true
+        default: "copie"
+        type: choice
+        options: ["copie", "dry-run", "apply", "restore"]
+      plan_sha:
+        description: "apply seulement : empreinte PLAN_SHA lue lors du dry-run"
+        required: false
+        default: ""
+        type: string
+      only:
+        description: "Ids de lignes à traiter, séparés par des virgules (vide = tout le périmètre)"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: retrait-mentions-financement
+  cancel-in-progress: false
+
+jobs:
+  # ═══════════════════════════════════════════════════════════════════════
+  # copie — Postgres éphémère du runner. AUCUN accès à la production.
+  # ═══════════════════════════════════════════════════════════════════════
+  copie:
+    name: Essai sur une copie (R2 → Postgres éphémère)
+    if: ${{ inputs.mode == 'copie' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    services:
+      postgres:
+        image: pgvector/pgvector:pg16
+        env:
+          POSTGRES_USER: axionia_copie
+          POSTGRES_PASSWORD: copie
+          POSTGRES_DB: axionia_copie
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      DATABASE_URL: postgresql://axionia_copie:copie@localhost:5432/axionia_copie
+      SKIP_ENV_VALIDATION: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v5
+        with:
+          version: 10.33.4
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm prisma:generate
+      - name: Install aws-cli
+        run: aws --version 2>/dev/null || (sudo apt-get update && sudo apt-get install -y awscli)
+      - name: Restaurer la dernière sauvegarde dans la copie
+        env:
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET_NAME: ${{ secrets.R2_BUCKET_NAME }}
+          BACKUP_ENCRYPTION_PASSPHRASE: ${{ secrets.BACKUP_ENCRYPTION_PASSPHRASE }}
+        run: |
+          set -euo pipefail
+          chmod +x scripts/restore-postgres-test-r2.sh scripts/backup-lib.sh
+          DATABASE_URL_TEST="$DATABASE_URL" bash scripts/restore-postgres-test-r2.sh
+      - name: 1/5 dry-run sur la copie
+        run: |
+          set -euo pipefail
+          mkdir -p out
+          pnpm tsx scripts/content-gen/retrait-mentions-financement.ts --dry-run \
+            --overrides=scripts/content-gen/retrait-financement-overrides.json --report=out/rapport-1-dry-run.md | tee out/dry-run.log
+          echo "PLAN_SHA=$(grep -o 'PLAN_SHA=[0-9a-f]*' out/dry-run.log | head -1 | cut -d= -f2)" >> "$GITHUB_ENV"
+      - name: 2/5 apply sur la copie
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/content-gen/retrait-mentions-financement.ts --apply --plan-sha="$PLAN_SHA" \
+            --overrides=scripts/content-gen/retrait-financement-overrides.json --report=out/rapport-2-apply.md
+      - name: 3/5 vérification — le plan est vide après apply (idempotence)
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/content-gen/retrait-mentions-financement.ts --dry-run \
+            --overrides=scripts/content-gen/retrait-financement-overrides.json --report=out/rapport-3-apres-apply.md | tee out/apres-apply.log
+          grep -q "à réécrire : 0" out/apres-apply.log || { echo "::error::Le plan n'est pas vide après apply : règles non idempotentes."; exit 1; }
+      - name: 4/5 restore sur la copie
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/content-gen/retrait-mentions-financement.ts --restore | tee out/restore.log
+      - name: 5/5 le plan d'origine est revenu à l'identique
+        run: |
+          set -euo pipefail
+          pnpm tsx scripts/content-gen/retrait-mentions-financement.ts --dry-run \
+            --overrides=scripts/content-gen/retrait-financement-overrides.json --report=out/rapport-5-apres-restore.md | tee out/apres-restore.log
+          grep -q "PLAN_SHA=$PLAN_SHA" out/apres-restore.log || { echo "::error::Après restore, le plan diffère de l'essai initial."; exit 1; }
+          echo "✓ Copie : dry-run → apply → plan vide → restore → plan d'origine."
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrait-financement-copie
+          path: out/rapport-*.md
+          retention-days: 14
+
+  # ═══════════════════════════════════════════════════════════════════════
+  # prod — via le conteneur WORKER (comme careers-offres-seed.yml)
+  # ═══════════════════════════════════════════════════════════════════════
+  prod:
+    name: Production (${{ inputs.mode }})
+    if: ${{ inputs.mode != 'copie' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+
+      # Les entrées d'un workflow_dispatch sont du texte fourni par l'appelant : jamais interpolées
+      # dans un script shell, et validées avant usage.
+      - name: Valider les entrées
+        env:
+          MODE: ${{ inputs.mode }}
+          PLAN_SHA: ${{ inputs.plan_sha }}
+          ONLY: ${{ inputs.only }}
+        run: |
+          set -euo pipefail
+          if [ "$MODE" = "apply" ] && ! printf '%s' "$PLAN_SHA" | grep -Eq '^[0-9a-f]{64}$'; then
+            echo "::error::apply exige plan_sha (64 caractères hexadécimaux), lu dans la sortie du dry-run."
+            exit 1
+          fi
+          if [ -n "$ONLY" ] && ! printf '%s' "$ONLY" | grep -Eq '^[0-9a-fA-F-]+(,[0-9a-fA-F-]+)*$'; then
+            echo "::error::only : ids (hexadécimal et tirets) séparés par des virgules."
+            exit 1
+          fi
+
+      - name: Setup SSH
+        env:
+          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
+        run: |
+          if [ -z "${HETZNER_SSH_KEY:-}" ]; then
+            echo "::error::Secret HETZNER_SSH_KEY manquant."
+            exit 1
+          fi
+          mkdir -p ~/.ssh
+          echo "$HETZNER_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H -T 8 178.105.55.15 >> ~/.ssh/known_hosts 2>/dev/null || true
+          ssh -o BatchMode=yes -o ConnectTimeout=10 root@178.105.55.15 'echo SSH_OK'
+
+      - name: Find axion-ia WORKER container
+        id: worker
+        env:
+          COOLIFY_WORKER_APP_UUID: ${{ secrets.COOLIFY_WORKER_APP_UUID }}
+        run: |
+          set -euo pipefail
+          if [ -z "${COOLIFY_WORKER_APP_UUID:-}" ]; then
+            echo "::error::Secret COOLIFY_WORKER_APP_UUID manquant — le script exige le conteneur worker (src/ + tsx)."
+            exit 1
+          fi
+          ROWS=$(ssh -o BatchMode=yes root@178.105.55.15 'docker ps --format "{{.Names}}|{{.Status}}"' 2>&1)
+          NAME=$(echo "$ROWS" | awk -F'|' -v uuid="$COOLIFY_WORKER_APP_UUID" '$1 ~ "^"uuid {print $1; exit}')
+          if [ -z "$NAME" ]; then
+            echo "::error::Conteneur worker introuvable."
+            exit 1
+          fi
+          echo "✓ Worker container: $NAME"
+          echo "name=$NAME" >> "$GITHUB_OUTPUT"
+
+      # apply : une sauvegarde Postgres RÉUSSIE de moins de 24 h doit exister (BackupRun).
+      - name: Vérifier une sauvegarde de moins de 24 h
+        if: ${{ inputs.mode == 'apply' }}
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          set -euo pipefail
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' node -e \
+            \"const{PrismaClient}=require('/app/prisma/generated/client');const p=new PrismaClient();
+            p.backupRun.findFirst({where:{component:'postgres',status:'success',startedAt:{gte:new Date(Date.now()-24*3600*1000)}},orderBy:{startedAt:'desc'},select:{startedAt:true}})
+            .then(r=>{if(!r){console.log('AUCUNE sauvegarde postgres réussie < 24 h');process.exit(2)}console.log('Dernière sauvegarde :',r.startedAt.toISOString());process.exit(0)})
+            .catch(e=>{console.log('lecture impossible:',e.message.slice(0,120));process.exit(3)})\""
+
+      - name: Copier script et règles dans le conteneur
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+        run: |
+          set -euo pipefail
+          D=/tmp/retrait-financement
+          ssh -o BatchMode=yes root@178.105.55.15 "rm -rf $D && mkdir -p $D/rules"
+          scp -o BatchMode=yes scripts/content-gen/retrait-mentions-financement.ts scripts/content-gen/retrait-financement-overrides.json root@178.105.55.15:$D/
+          for f in regles.ts plan.ts; do
+            scp -o BatchMode=yes "src/server/content-gen/retrait-financement/$f" root@178.105.55.15:$D/rules/
+          done
+          ssh -o BatchMode=yes root@178.105.55.15 "
+            set -e
+            docker exec -u 0 '$WORKER' mkdir -p /app/scripts/content-gen /app/src/server/content-gen/retrait-financement
+            docker cp $D/retrait-mentions-financement.ts '$WORKER':/app/scripts/content-gen/retrait-mentions-financement.ts
+            docker cp $D/retrait-financement-overrides.json '$WORKER':/app/scripts/content-gen/retrait-financement-overrides.json
+            docker cp $D/rules/regles.ts '$WORKER':/app/src/server/content-gen/retrait-financement/regles.ts
+            docker cp $D/rules/plan.ts '$WORKER':/app/src/server/content-gen/retrait-financement/plan.ts
+            rm -rf $D
+          "
+
+      - name: Exécuter (${{ inputs.mode }})
+        id: run
+        env:
+          WORKER: ${{ steps.worker.outputs.name }}
+          MODE: ${{ inputs.mode }}
+          PLAN_SHA: ${{ inputs.plan_sha }}
+          ONLY: ${{ inputs.only }}
+        timeout-minutes: 30
+        run: |
+          set -euo pipefail
+          FLAGS="--$MODE --overrides=scripts/content-gen/retrait-financement-overrides.json --report=/tmp/rapport.md --urls=/tmp/urls.txt"
+          if [ "$MODE" = "apply" ]; then FLAGS="$FLAGS --plan-sha=$PLAN_SHA"; fi
+          if [ -n "$ONLY" ]; then FLAGS="$FLAGS --only=$ONLY"; fi
+          # Jamais de fichier d'un passage précédent : /tmp du conteneur worker persiste entre les runs.
+          ssh -o BatchMode=yes root@178.105.55.15 "docker exec '$WORKER' rm -f /tmp/rapport.md /tmp/urls.txt"
+          ssh -o BatchMode=yes root@178.105.55.15 \
+            "docker exec '$WORKER' sh -ec 'cd /app && node_modules/.bin/tsx scripts/content-gen/retrait-mentions-financement.ts $FLAGS'" 2>&1 | tee run.log
+          mkdir -p out
+          ssh -o BatchMode=yes root@178.105.55.15 "docker cp '$WORKER':/tmp/rapport.md -" 2>/dev/null | tar -xO > out/rapport.md || true
+          ssh -o BatchMode=yes root@178.105.55.15 "docker cp '$WORKER':/tmp/urls.txt -" 2>/dev/null | tar -xO > out/urls.txt || true
+          grep -o 'PLAN_SHA=[0-9a-f]*' run.log | head -1 >> "$GITHUB_STEP_SUMMARY" || true
+
+      # Purge du cache : par lots de 30 (limite de /api/internal/revalidate : 60/min), après apply ET restore.
+      - name: Purger le cache (lots de 30)
+        if: ${{ (inputs.mode == 'apply' || inputs.mode == 'restore') && !cancelled() }}
+        env:
+          REVALIDATE_SECRET: ${{ secrets.REVALIDATE_SECRET }}
+        run: |
+          set -u
+          [ -s out/urls.txt ] || { echo "Aucune URL à purger."; exit 0; }
+          if [ -z "${REVALIDATE_SECRET:-}" ]; then echo "::warning::REVALIDATE_SECRET absent — purge ignorée (ISR : 1 h)."; exit 0; fi
+          split -l 30 out/urls.txt out/lot-
+          for lot in out/lot-*; do
+            PATHS=$(jq -Rn '[inputs | select(length>0)]' < "$lot")
+            code=$(curl -sS -o /dev/null -w '%{http_code}' -m 60 -X POST "https://axion-ia.com/api/internal/revalidate" \
+              -H "Content-Type: application/json" -H "X-Revalidate-Secret: ${REVALIDATE_SECRET}" \
+              --data "{\"paths\":${PATHS}}" || echo 000)
+            echo "$lot → HTTP $code"
+            sleep 2
+          done
+
+      - name: IndexNow
+        if: ${{ (inputs.mode == 'apply' || inputs.mode == 'restore') && !cancelled() }}
+        env:
+          INDEXNOW_KEY: ${{ secrets.INDEXNOW_KEY }}
+        run: |
+          set -u
+          [ -s out/urls.txt ] || exit 0
+          if [ -z "${INDEXNOW_KEY:-}" ]; then echo "::notice::INDEXNOW_KEY absent — IndexNow ignoré."; exit 0; fi
+          LIST=$(jq -Rn '[inputs | select(length>0) | "https://axion-ia.com" + .]' < out/urls.txt)
+          curl -sS -o /dev/null -w 'IndexNow HTTP %{http_code}\n' -m 30 -X POST "https://api.indexnow.org/indexnow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            --data "{\"host\":\"axion-ia.com\",\"key\":\"${INDEXNOW_KEY}\",\"urlList\":${LIST}}" || true
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: retrait-financement-${{ inputs.mode }}
+          path: |
+            out/rapport.md
+            out/urls.txt
+          retention-days: 14

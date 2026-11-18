@@ -30,6 +30,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { PrismaClient } from "../prisma/generated/client";
 import { normalizeApplicantCountries } from "../src/lib/careers/format";
+import { SLUGS_OFFRES_ARCHIVEES } from "../src/server/content-gen/retrait-financement/plan";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.join(__dirname, "..");
@@ -119,6 +120,13 @@ async function main() {
   let skipped = 0;
   for (const p of input.postes) {
     if (scope && !scope.has(p.slug)) {
+      skipped++;
+      continue;
+    }
+    // Offres consacrées au financement : archivées (retrait des mentions de financement, 2026-11).
+    // Un seed ne doit JAMAIS les remettre en ligne.
+    if (SLUGS_OFFRES_ARCHIVEES.includes(p.slug)) {
+      console.log(`⏭  ${p.slug} : offre archivée (retrait du financement), ignorée.`);
       skipped++;
       continue;
     }
