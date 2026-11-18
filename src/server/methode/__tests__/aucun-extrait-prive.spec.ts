@@ -116,6 +116,8 @@ describe("1 · aucun contenu réel ou privé dans les fichiers de la fiche", () 
   it("les motifs de ce scanner détectent bien ce qu'ils doivent (sinon le test ne prouve rien)", () => {
     expect(MOTIF_MONTANT.test(`12 345 ${EURO}`)).toBe(true);
     expect(MOTIF_MONTANT.test(["3", "euros"].join(" "))).toBe(true);
+    expect(MOTIF_MONTANT.test(["5", "k", EURO].join(" "))).toBe(true);
+    expect(MOTIF_MONTANT.test([EURO, "500"].join(""))).toBe(true);
     expect(MOTIF_COURRIEL.test(["a", "b.invalid"].join("@"))).toBe(true);
     expect(MOTIF_TELEPHONE.test(["01", "23", "45", "67", "89"].join(" "))).toBe(true);
     expect(MOTIF_TELEPHONE.test(["+33", "6", "12", "34", "56", "78"].join(" "))).toBe(true);

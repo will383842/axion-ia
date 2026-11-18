@@ -67,6 +67,30 @@ describe("motifRefus — fiche par fiche", () => {
   });
 });
 
+describe("motifRefus — formes de montant (k, M, symbole devant)", () => {
+  const formes = [
+    ["5", " k", EURO],
+    ["5k", EURO],
+    ["1,5 M", EURO],
+    [EURO, "500"],
+    [EURO, " 500"],
+    ["5 K", "EUR"],
+    ["3 millions d'", "euros"],
+    ["2 mille ", "euros"],
+    ["EUR 40"],
+  ].map((morceaux) => morceaux.join(""));
+
+  for (const forme of formes) {
+    it(`refuse la forme « ${forme.length} caractères » dans le texte`, () => {
+      expect(motifRefus(fiche(`Un exercice : ${forme} par an.`))).toBe("montant");
+    });
+  }
+
+  it("ne refuse pas un texte sans montant", () => {
+    expect(motifRefus(fiche("Cinq clients, 3 étapes, 12 fournées, 2026."))).toBeNull();
+  });
+});
+
 describe("filtrerPourSortie — point unique", () => {
   it("ne garde que les fiches sans motif, dans l'ordre", () => {
     const saines = [fiche("Un."), fiche("Deux.")];
