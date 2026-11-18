@@ -435,59 +435,105 @@ async function renvoi<R extends VerdictEnfilage>(a: {
   marqueur: Extract<MarqueurLienALEnvoi, { nature: "devis-renvoi" }>;
 }): Promise<ResultatEnvoi<R>> {
   const { ligne, payload, enfiler, marqueur } = a;
+  // État visible depuis le `catch` : ce qui est déjà produit, donc ce qu'il faut défaire.
+  const etat: { tokenId: string | null; url: string | null; verdict: R | null } = {
+    tokenId: null,
+    url: null,
+    verdict: null,
+  };
 
-  const devis = await prisma.devis.findUnique({
-    where: { id: marqueur.devisId },
-    select: {
-      id: true,
-      statut: true,
-      offre: true,
-      documentGenereId: true,
-      dateValidite: true,
-      client: { select: { raisonSociale: true, contactNom: true, contactFonction: true } },
-    },
-  });
-  if (!devis) return refus(MSG_INTROUVABLE);
-  if (devis.statut !== "envoye") return refus(MSG_PAS_ENVOYE);
-  if (devis.documentGenereId !== marqueur.documentGenereId) return refus(MSG_PIECE_DIFFERENTE);
-  // Le client a déjà signé : plus de lien à émettre (filtre existant).
-  if ((await prisma.devis.count({ where: { id: devis.id, ...pasSigneParLeClient } })) === 0) {
-    return refus(MSG_SIGNE);
-  }
-  if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
-    return refus(MSG_FORMULES);
-  }
-
-  // URL de base AVANT le jeton : créer le jeton révoque l'ancien lien.
-  const base = publicUrl("/fr/portail/signer/").toString();
-  let url: string;
-  let tokenId: string;
   try {
-    const cree = await creerTokenDocument({
-      documentGenereId: marqueur.documentGenereId,
-      partie: "client",
-      signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
-      signataireEmail: ligne.recipient,
-      signataireQualite: devis.client.contactFonction,
-      borneMetier: devis.dateValidite,
-    });
-    url = `${base}${cree.token}`;
-    tokenId = cree.tokenId;
-  } catch (err) {
-    if (err instanceof TokenDocumentError) return refus(err.message);
-    signaler("lienALEnvoi.jeton_renvoi", err);
-    return refus(MSG_JETON);
-  }
+    return await prisma.$transaction(
+      async (tx): Promise<ResultatEnvoi<R>> => {
+        // (a) Verrou non bloquant, MÊME clé que `premierEnvoi`, `sendDevisAction` et la remise en
+        // main propre : sans lui, deux lignes de renvoi approuvées ensemble créeraient deux
+        // jetons (le second révoque le premier) et enverraient deux e-mails.
+        const [verrou] = await tx.$queryRaw<{ locked: boolean }[]>`
+          SELECT pg_try_advisory_xact_lock(hashtext(${"devis.envoi:" + marqueur.devisId})) AS locked
+        `;
+        if (!verrou?.locked) throw new EnvoiOccupe();
 
-  let verdict: R;
-  try {
-    verdict = await enfiler(payloadPourEnvoi(payload, url), ligne.recipient);
+        // (b) Relecture + gardes DANS le tx, APRÈS le verrou, AVANT tout jeton.
+        const devis = await tx.devis.findUnique({
+          where: { id: marqueur.devisId },
+          select: {
+            id: true,
+            statut: true,
+            offre: true,
+            documentGenereId: true,
+            dateValidite: true,
+            client: { select: { raisonSociale: true, contactNom: true, contactFonction: true } },
+          },
+        });
+        if (!devis) return refus(MSG_INTROUVABLE);
+        if (devis.statut !== "envoye") return refus(MSG_PAS_ENVOYE);
+        if (devis.documentGenereId !== marqueur.documentGenereId) {
+          return refus(MSG_PIECE_DIFFERENTE);
+        }
+        // Le client a déjà signé : plus de lien à émettre (filtre existant).
+        if ((await tx.devis.count({ where: { id: devis.id, ...pasSigneParLeClient } })) === 0) {
+          return refus(MSG_SIGNE);
+        }
+        if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
+          return refus(MSG_FORMULES);
+        }
+
+        // (c) URL de base AVANT le jeton : créer le jeton révoque l'ancien lien.
+        const base = publicUrl("/fr/portail/signer/").toString();
+        try {
+          const cree = await creerTokenDocument({
+            documentGenereId: marqueur.documentGenereId,
+            partie: "client",
+            signataireNom: devis.client.contactNom ?? devis.client.raisonSociale,
+            // L'adresse où part réellement l'e-mail.
+            signataireEmail: ligne.recipient,
+            signataireQualite: devis.client.contactFonction,
+            borneMetier: devis.dateValidite,
+          });
+          etat.url = `${base}${cree.token}`;
+          etat.tokenId = cree.tokenId;
+        } catch (err) {
+          if (err instanceof TokenDocumentError) return refus(err.message);
+          signaler("lienALEnvoi.jeton_renvoi", err);
+          return refus(MSG_JETON);
+        }
+
+        // (d) Enfilage : dernier effet externe.
+        let verdict: R;
+        try {
+          verdict = await enfiler(payloadPourEnvoi(payload, etat.url), ligne.recipient);
+        } catch (err) {
+          throw new EnvoiNonParti(err);
+        }
+        if (!estEnfile(verdict)) {
+          await annulerLeJeton(etat.tokenId, etat.url);
+          return { type: "envoi", res: verdict };
+        }
+        etat.verdict = verdict;
+        return { type: "envoi", res: verdict };
+      },
+      { maxWait: 5_000, timeout: 60_000 },
+    );
   } catch (err) {
-    await rendreAncienLien(url, tokenId);
-    throw new EnvoiNonParti(err);
+    if (etat.verdict !== null) {
+      // L'e-mail est parti (échec de fin de transaction) : on alerte, on ne relance JAMAIS, et
+      // le nouveau jeton reste valable (il est dans l'e-mail).
+      try {
+        signaler("lienALEnvoi.renvoi_apres_enfilage", err);
+        Sentry.captureMessage(
+          "Renvoi de devis : courriel enfilé mais la transaction de fin a échoué. Vérifier le lien de signature du devis depuis sa fiche.",
+          { level: "error", tags: { action: "lienALEnvoi.renvoi_apres_enfilage_message" } },
+        );
+      } catch {
+        // Une alerte qui échoue ne remonte pas : l'e-mail est parti.
+      }
+      return { type: "envoi", res: etat.verdict };
+    }
+    if (err instanceof EnvoiOccupe) throw err;
+    // Rien n'est parti : le jeton neuf (s'il existe) est défait, l'ancien lien rendu.
+    await annulerLeJeton(etat.tokenId, etat.url);
+    throw err instanceof EnvoiNonParti ? err : new EnvoiNonParti(err);
   }
-  if (!estEnfile(verdict)) await rendreAncienLien(url, tokenId);
-  return { type: "envoi", res: verdict };
 }
 
 /**
