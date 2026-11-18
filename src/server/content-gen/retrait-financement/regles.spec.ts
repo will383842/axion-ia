@@ -436,17 +436,23 @@ describe("JSON Tiptap ≡ HTML : tableaux et liens", () => {
     const hrefsJson: string[] = [];
     const textesJson: string[] = [];
     const lignes: string[] = [];
-    const marcher = (n: any): void => {
+    interface NoeudTest {
+      type?: string;
+      text?: string;
+      marks?: Array<{ type: string; attrs: { href: string } }>;
+      content?: NoeudTest[];
+    }
+    const marcher = (n: NoeudTest): void => {
       for (const m of n.marks ?? [])
         if (m.type === "link") {
           hrefsJson.push(m.attrs.href);
-          textesJson.push(n.text);
+          textesJson.push(n.text ?? "");
         }
-      if (n.type === "tableRow") lignes.push((n.content as any[]).map(texteDe).join("|"));
+      if (n.type === "tableRow") lignes.push((n.content ?? []).map(texteDe).join("|"));
       (n.content ?? []).forEach(marcher);
     };
-    const texteDe = (n: any): string => n.text ?? (n.content ?? []).map(texteDe).join("");
-    marcher(j.valeur);
+    const texteDe = (n: NoeudTest): string => n.text ?? (n.content ?? []).map(texteDe).join("");
+    marcher(j.valeur as NoeudTest);
     expect(hrefsJson).toEqual(hrefsHtml);
     expect(hrefsJson).toEqual(["/fr/formations", "/fr/formations"]);
     expect(textesJson).toEqual(textesHtml);
