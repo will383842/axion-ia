@@ -55,7 +55,9 @@ function simulerBase(reelles: number): void {
 }
 
 describe("aggregateBarometer — seuil et exclusion du seed", () => {
-  beforeEach(() => queryRawMock.mockReset());
+  beforeEach(() => {
+    queryRawMock.mockReset();
+  });
 
   it("le seuil est de 100 vraies réponses", () => {
     expect(SEUIL_REPONSES_REELLES).toBe(100);
@@ -107,7 +109,9 @@ describe("aggregateBarometer — seuil et exclusion du seed", () => {
 });
 
 describe("aggregateAllSegments — seuil et exclusion du seed", () => {
-  beforeEach(() => queryRawMock.mockReset());
+  beforeEach(() => {
+    queryRawMock.mockReset();
+  });
 
   it("sous le seuil : aucun segment, aucune requête de segment", async () => {
     simulerBase(SEUIL_REPONSES_REELLES - 1);
