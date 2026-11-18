@@ -251,6 +251,53 @@ describe("motifRefus — tour 2 : autres devises, parts, promesses déguisées, 
   });
 });
 
+describe("motifRefus — tour 3 : promesses, parts, montants, numéros spéciaux", () => {
+  const formes = [
+    j("On s'eng", "age sur des résultats concrets."),
+    j("C'est pro", "mis, vous gagnerez du temps."),
+    j("Si vous n'êtes pas sati", "sfait, vous ne payez pas."),
+    j("Si c'est sati", "sfait ou rien."),
+    j("Divi", "sez par deux le temps passé."),
+    j("Deux ", "fois plus de rendez-vous."),
+    j("Vous êtes cer", "tain de gagner dix heures."),
+    j("À coup ", "sûr, vos équipes gagneront."),
+    j("Vous gagnerez for", "cément du temps."),
+    j("La journée est renta", "bilisée en un mois."),
+    j("Un dirigeant ", "sur deux hésite."),
+    j("Huit dirigeants ", "sur 10 hésitent."),
+    j("Trente pour", "-cent de mieux."),
+    j("La moi", "tié du temps."),
+    j("Trois qua", "rts du temps."),
+    j("Un CA de 50 ", "KE."),
+    j("Un prix de 1 490 H", ".T."),
+    j("Un prix de 1 490 T", ".T.C."),
+    j("290 men", "suels."),
+    j("1 200 an", "nuels."),
+    j("Le 0 8", "00 123 456."),
+  ];
+  for (const forme of formes) {
+    it(`refuse la forme de ${forme.length} caractères commençant par « ${forme.slice(0, 2)} »`, () => {
+      expect(motifRefus(fiche(forme))).not.toBeNull();
+    });
+  }
+  it("pas de retour arrière quadratique sur des chiffres collés", () => {
+    const t0 = Date.now();
+    motifRefus(fiche("1".repeat(50000)));
+    motifRefus(fiche(`+${"1".repeat(50000)}a`));
+    expect(Date.now() - t0).toBeLessThan(500);
+  });
+  it("les phrases saines passent encore", () => {
+    for (const t of [
+      "Avant de parler du prix, je reformule le besoin en une phrase.",
+      "Je pose trois questions ouvertes, puis je laisse le silence travailler.",
+      "Quand une objection arrive, je la remercie puis je demande ce qui se cache derrière.",
+      "Il faut compromettre le moins possible la relation.",
+    ]) {
+      expect(motifRefus(fiche(t))).toBeNull();
+    }
+  });
+});
+
 describe("filtrerPourSortie — point unique", () => {
   it("ne garde que les fiches sans motif, dans l'ordre", () => {
     const saines = [fiche("Un."), fiche("Deux.")];
