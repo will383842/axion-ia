@@ -23,6 +23,7 @@
 
 import { CONTENT_FRESHNESS, ROUTE_FRESHNESS } from "@/generated/content-freshness";
 import { routing } from "@/i18n/routing";
+import { DATE_MISE_A_JOUR_CARTOGRAPHIE } from "@/content/cartographie-date";
 import { DATE_MISE_A_JOUR_JOURNEE_IA } from "@/content/journee-ia-commun";
 
 /**
@@ -49,6 +50,7 @@ function isoValide(iso: string | undefined): string | undefined {
 export const DATES_EDITORIALES: Readonly<Record<string, string>> = {
   "/": DATE_MISE_A_JOUR_JOURNEE_IA,
   "/journee-ia": DATE_MISE_A_JOUR_JOURNEE_IA,
+  "/cartographie": DATE_MISE_A_JOUR_CARTOGRAPHIE,
 };
 
 /** Date réelle d'une famille de contenu (`CONTENT_FRESHNESS`), sinon la baseline. */
