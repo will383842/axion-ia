@@ -137,15 +137,15 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Clermont-Ferrand, Annecy, Saint-Étienne. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
+      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
     pitchEn:
-      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Clermont-Ferrand, Annecy, Saint-Étienne. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
+      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
     metaTitleFr: "Auvergne-Rhône-Alpes · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaTitleEn: "Auvergne-Rhône-Alpes · Senior AI experts · Audit, Training, Coaching, SaaS",
     metaDescFr:
-      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Clermont-Ferrand.",
+      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Annecy.",
     metaDescEn:
-      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Clermont-Ferrand, Annecy, Clermont.",
+      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Annecy, Clermont.",
     audienceLocalFr:
       "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces de Lyon et d’Annecy. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Saint-Étienne, Annecy), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceCaseStudyFr: {
