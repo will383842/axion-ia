@@ -117,6 +117,70 @@ describe("v6 — les montants sont ceux de la v5", () => {
   });
 });
 
+describe("v6 — montants identiques à la v5 : cas limites (audit argent-données)", () => {
+  /** Même nombre d'apparitions de chaque montant, v5 contre v6. */
+  const memesMontants = (data: DevisData) => {
+    const v5 = montants(texteV5(data));
+    const v6 = montants(texteV6(data));
+    expect(v5.length).toBeGreaterThan(0);
+    expect(v6).toEqual(v5);
+    return { v5: texteV5(data), v6: texteV6(data) };
+  };
+
+  it("plusieurs taux de TVA : même ventilation « base … » en v5 et en v6", () => {
+    const data: DevisData = {
+      ...BASE,
+      lignes: [
+        { designation: "Atelier", quantite: 1, prixUnitaireHtCents: 100000, tauxTvaPercent: 20 },
+        { designation: "Support", quantite: 3, prixUnitaireHtCents: 5000, tauxTvaPercent: 5.5 },
+        { designation: "Livre", quantite: 2, prixUnitaireHtCents: 2000, tauxTvaPercent: 10 },
+      ],
+    };
+    const { v5, v6 } = memesMontants(data);
+    for (const t of [v5, v6]) {
+      expect(t).toContain("TVA 20 % (base 1 000,00 €)");
+      expect(t).toContain("TVA 5.5 % (base 150,00 €)");
+      expect(t).toContain("TVA 10 % (base 40,00 €)");
+    }
+    expect(v6.split("(base ").length).toBe(v5.split("(base ").length);
+  });
+
+  for (const regime of ["exoneration_261", "franchise_293b"] as const) {
+    it(`régime ${regime} : mêmes montants, même mention de TVA, aucune ligne de TVA chiffrée`, () => {
+      const data: DevisData = { ...BASE, regimeTva: regime };
+      const { v5, v6 } = memesMontants(data);
+      const mention = (mentionTva(regime) ?? "").replace(/\s+/g, " ");
+      expect(mention).not.toBe("");
+      expect(v5).toContain(mention);
+      expect(v6).toContain(mention);
+      expect(v6.split(mention).length).toBe(v5.split(mention).length);
+      // 2 800 + 2 × 900 = 4 600 € : HT = TTC.
+      expect(montants(v6).filter((m) => m === "4600,00€").length).toBe(
+        montants(v5).filter((m) => m === "4600,00€").length,
+      );
+    });
+  }
+
+  it("arrondi limite : 3 × 3,33 € à 20 % (9,99 HT, TVA 2,00, TTC 11,99)", () => {
+    const data: DevisData = {
+      ...BASE,
+      lignes: [{ designation: "Fascicule", quantite: 3, prixUnitaireHtCents: 333 }],
+    };
+    const { v6 } = memesMontants(data);
+    expect(v6).toContain("Total TTC");
+    expect(montants(v6)).toContain("9,99€");
+  });
+
+  it("montant à 0 € : même rendu des montants en v5 et en v6", () => {
+    const data: DevisData = {
+      ...BASE,
+      lignes: [{ designation: "Séance offerte", quantite: 1, prixUnitaireHtCents: 0 }],
+    };
+    const { v6 } = memesMontants(data);
+    expect(montants(v6)).toContain("0,00€");
+  });
+});
+
 describe("v6 — les phrases qui engagent sont reprises MOT POUR MOT", () => {
   const CGV = (site: string, opposabilite: boolean) =>
     `L'acceptation du présent devis emporte acceptation des Conditions générales de vente d'Axion-IA SAS, consultables sur ${site}/conditions-generales et communiquées sur simple demande.` +
