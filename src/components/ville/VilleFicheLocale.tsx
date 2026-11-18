@@ -74,6 +74,10 @@ export function VilleFicheLocale({ fiche }: { fiche: FicheLocale }) {
     { libelle: `${e.source}, total`, url: e.urlTotal },
     { libelle: `${e.source}, secteurs`, url: e.urlSecteurs },
     { libelle: fiche.population.source, url: fiche.population.url },
+    {
+      libelle: `${fiche.epci.source}, population de ${fiche.epci.nom}`,
+      url: fiche.epci.urlPopulation,
+    },
     { libelle: `${fiche.epci.source}, communes de ${fiche.epci.nom}`, url: fiche.epci.url },
     ...fiche.institutions.map((i) => ({ libelle: i.nom, url: i.url })),
   ];
@@ -215,7 +219,7 @@ export function VilleFicheLocale({ fiche }: { fiche: FicheLocale }) {
               {`Nos accompagnements à ${v}`}
             </h2>
             <p className="text-fg-soft mt-5 text-base leading-relaxed">
-              {`La Journée IA : le matin, audit (2 à 4 h selon l’entreprise) ; l’après-midi, formation de 4 h. ${prix} la journée, jusqu’à 15 personnes.`}
+              {`Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h. ${prix} la journée, jusqu’à 15 personnes.`}
             </p>
             <ul className="mt-4 space-y-2 text-[15px]">
               <li>

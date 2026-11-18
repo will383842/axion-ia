@@ -19,6 +19,7 @@ export const FICHE_MONTPELLIER: FicheLocale = {
     nombreCommunes: 31,
     source: "geo.api.gouv.fr (intercommunalités)",
     url: "https://geo.api.gouv.fr/epcis/243400017/communes?fields=nom,code,population",
+    urlPopulation: "https://geo.api.gouv.fr/epcis/243400017?fields=nom,population",
     communes: [
       "Baillargues",
       "Beaulieu",
@@ -127,8 +128,8 @@ export const FICHE_MONTPELLIER: FicheLocale = {
     tissu:
       "Montpellier compte 10 241 établissements employeurs privés et 106 228 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives forment le premier secteur (2 160 établissements), suivies du commerce (1 641), de l’hébergement-restauration (1 289) et des autres services (1 242). L’information et la communication comptent 574 établissements et 8 230 salariés.",
     ecosysteme:
-      "Le principal repère public est l’Université de Montpellier, dont le site présente formation, recherche et innovation. L’aéroport Montpellier Méditerranée dessert la métropole. Nous ne citons ici que ces deux institutions, vérifiées sur leurs sites officiels, faute de source équivalente pour d’autres, et aucune entreprise privée : le but est de situer le territoire, pas de laisser entendre que ces acteurs travaillent avec nous.",
-    zone: "Montpellier Méditerranée Métropole regroupe 31 communes et 516 657 habitants. La Journée IA se déroule dans vos locaux, à Montpellier ou dans l’une d’entre elles, sans bureau local. Les modalités de déplacement sont décrites dans notre politique de déplacement. Parmi les communes de l’intercommunalité : Baillargues, Beaulieu, Castelnau-le-Lez, Castries, Clapiers. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+      "Le principal repère institutionnel est l’Université de Montpellier, dont le site présente formation, recherche et innovation. L’aéroport Montpellier Méditerranée dessert la métropole. Nous ne citons ici que ces deux institutions, vérifiées sur leurs sites officiels, faute de source équivalente pour d’autres, et aucune entreprise privée : le but est de situer le territoire, pas de laisser entendre que ces acteurs travaillent avec nous.",
+    zone: "Montpellier Méditerranée Métropole regroupe 31 communes et 516 657 habitants. La Journée IA se déroule dans vos locaux, à Montpellier ou dans l’une d’entre elles, sans bureau local. Les modalités de déplacement sont décrites dans notre politique de déplacement. Parmi les communes de l’intercommunalité : Baillargues, Beaulieu, Castelnau-le-Lez, Castries, Clapiers. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -141,7 +142,7 @@ export const FICHE_MONTPELLIER: FicheLocale = {
     },
     {
       q: "Comment la journée s’articule-t-elle avec l’université locale ?",
-      a: "Elle ne s’y articule pas : l’Université de Montpellier est un repère public pour situer le territoire, sans partenariat avec nous. La Journée IA reste centrée sur votre entreprise, avec jusqu’à 15 personnes formées sur leurs propres dossiers. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "Elle ne s’y articule pas : l’Université de Montpellier est un repère institutionnel pour situer le territoire, sans partenariat avec nous. La Journée IA reste centrée sur votre entreprise, avec jusqu’à 15 personnes formées sur leurs propres dossiers. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

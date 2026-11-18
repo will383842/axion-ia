@@ -83,6 +83,23 @@ const NOMBRES_COMMUNS = new Set(["2", "3", "4", "15", "45", "2025", "31"]);
 
 const nbMots = (t: string) => t.trim().split(/\s+/).length;
 
+/** Nombres entiers portés par les champs chiffrés (valeurs numériques seulement, ni URL ni prose). */
+function nombresDesChamps(f: FicheLocale): Set<number> {
+  const out = new Set<number>();
+  const marche = (v: unknown, cle: string): void => {
+    if (cle === "prose" || cle === "faqLocale") return;
+    if (typeof v === "number" && Number.isInteger(v)) out.add(v);
+    else if (Array.isArray(v)) v.forEach((x) => marche(x, cle));
+    else if (v && typeof v === "object") {
+      for (const [k, x] of Object.entries(v)) marche(x, k);
+    }
+  };
+  marche(f, "");
+  // Chiffres faisant partie du nom d'une institution (ex. « Lyon 1 »).
+  for (const i of f.institutions) for (const n of i.nom.match(/\d+/g) ?? []) out.add(Number(n));
+  return out;
+}
+
 function textesEcrits(f: FicheLocale): string[] {
   return [
     f.prose.tissu,
@@ -104,6 +121,7 @@ describe("fiches locales : sources et dates", () => {
       const urls = [
         f.population.url,
         f.epci.url,
+        f.epci.urlPopulation,
         f.entreprises.urlTotal,
         f.entreprises.urlSecteurs,
         ...f.institutions.map((i) => i.url),
@@ -153,11 +171,11 @@ describe("fiches locales : texte", () => {
 
   it("aucun chiffre orphelin : tout nombre écrit figure dans un champ chiffré", () => {
     for (const f of FICHES) {
-      const champs = JSON.stringify({ ...f, prose: null, faqLocale: null });
+      const champs = nombresDesChamps(f);
       for (const t of textesEcrits(f)) {
         const nombres = t.replace(/[  ]/g, "").match(/\d+/g) ?? [];
         for (const n of nombres) {
-          expect(NOMBRES_COMMUNS.has(n) || champs.includes(n), `${f.slug} : ${n}`).toBe(true);
+          expect(NOMBRES_COMMUNS.has(n) || champs.has(Number(n)), `${f.slug} : ${n}`).toBe(true);
         }
       }
     }

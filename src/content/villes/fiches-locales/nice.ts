@@ -19,6 +19,7 @@ export const FICHE_NICE: FicheLocale = {
     nombreCommunes: 51,
     source: "geo.api.gouv.fr (intercommunalités)",
     url: "https://geo.api.gouv.fr/epcis/200030195/communes?fields=nom,code,population",
+    urlPopulation: "https://geo.api.gouv.fr/epcis/200030195?fields=nom,population",
     communes: [
       "Aspremont",
       "Bairols",
@@ -145,10 +146,10 @@ export const FICHE_NICE: FicheLocale = {
   ],
   prose: {
     tissu:
-      "Nice compte 13 953 établissements employeurs privés, qui emploient 111 608 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives en regroupent 2 924 et le commerce 2 695, soit presque le même ordre de grandeur. Viennent ensuite l’hébergement-restauration (1 782) et la construction (1 449). La restauration et la construction y pèsent donc presque autant que les services aux entreprises.",
+      "Nice compte 13 953 établissements employeurs privés, qui emploient 111 608 salariés (Urssaf, 31 décembre 2025). Les activités scientifiques, techniques et administratives en regroupent 2 924 et le commerce 2 695, soit presque le même ordre de grandeur. Viennent ensuite l’hébergement-restauration (1 782) et la construction (1 449).",
     ecosysteme:
-      "L’Université Côte d’Azur, implantée à Nice, Sophia-Antipolis, Cannes, Grasse et Menton, est le principal repère public de la formation supérieure et de la recherche. L’aéroport Nice Côte d’Azur est celui de la métropole. Nous n’indiquons ici ni technopôle ni entreprise que nous n’aurions pas vérifié sur une source officielle.",
-    zone: "La Métropole Nice Côte d’Azur rassemble 51 communes et 568 596 habitants. La Journée IA se tient dans vos locaux, à Nice ou dans l’une d’elles. Nous n’avons pas de bureau sur place. Pour les modalités de déplacement, consultez la politique de déplacement. Parmi les communes de l’intercommunalité : Aspremont, Bairols, Beaulieu-sur-Mer, Belvédère, Bonson. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+      "L’Université Côte d’Azur, implantée à Nice, Sophia-Antipolis, Cannes, Grasse et Menton, est le principal repère institutionnel de la formation supérieure et de la recherche. L’aéroport Nice Côte d’Azur est celui de la métropole. Nous n’indiquons ici ni technopôle ni entreprise que nous n’aurions pas vérifié sur une source officielle.",
+    zone: "La Métropole Nice Côte d’Azur rassemble 51 communes et 568 596 habitants. La Journée IA se tient dans vos locaux, à Nice ou dans l’une d’elles. Nous n’avons pas de bureau sur place. Pour les modalités de déplacement, consultez la politique de déplacement. Parmi les communes de l’intercommunalité : Aspremont, Bairols, Beaulieu-sur-Mer, Belvédère, Bonson. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -160,7 +161,7 @@ export const FICHE_NICE: FicheLocale = {
       a: "Oui, dans les 51 communes de la Métropole Nice Côte d’Azur. Nous venons chez vous, sans bureau local. Le diagnostic gratuit de 45 minutes sert à fixer la date et l’adresse ; le déroulé reste le même qu’ailleurs en France. Exemples de communes concernées : Valdeblore, Venanson, Vence, Villefranche-sur-Mer.",
     },
     {
-      q: "Quels repères publics pour l’innovation à Nice ?",
+      q: "Quels repères institutionnels pour l’innovation à Nice ?",
       a: "L’Université Côte d’Azur, présente à Nice et à Sophia-Antipolis, est le repère principal, et l’aéroport Nice Côte d’Azur la porte d’entrée de la métropole. Nous ne citons pas d’entreprise privée. Aucun partenariat n’existe avec ces institutions. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],

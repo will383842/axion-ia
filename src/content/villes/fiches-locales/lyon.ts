@@ -19,6 +19,7 @@ export const FICHE_LYON: FicheLocale = {
     nombreCommunes: 58,
     source: "geo.api.gouv.fr (intercommunalités)",
     url: "https://geo.api.gouv.fr/epcis/200046977/communes?fields=nom,code,population",
+    urlPopulation: "https://geo.api.gouv.fr/epcis/200046977?fields=nom,population",
     communes: [
       "Albigny-sur-Saône",
       "Bron",
@@ -169,7 +170,7 @@ export const FICHE_LYON: FicheLocale = {
       "Lyon rassemble 24 076 établissements employeurs du secteur privé et 301 972 salariés au 31 décembre 2025 (Urssaf, sur les neuf arrondissements). Ici, ce sont les activités scientifiques, techniques et les services administratifs qui dominent, avec 6 611 établissements, avant le commerce (3 974), l’hébergement-restauration (2 862) et les autres services (2 494). L’information et la communication regroupent 1 655 établissements et 33 834 salariés.",
     ecosysteme:
       "Côté institutions, Lyon dispose de deux universités que nous citons à titre de repère : Claude Bernard Lyon 1 et Lumière Lyon 2 (sciences humaines et sociales). Axelera, pôle de compétitivité de la chimie et de l’environnement, relie la ville à l’industrie de la région. L’aéroport Lyon-Saint-Exupéry sert de porte d’entrée. Aucune entreprise privée n’est nommée : un nom cité près d’une offre pourrait passer pour une référence client, ce que nous voulons éviter.",
-    zone: "La ville se confond avec la Métropole de Lyon, qui regroupe 58 communes et 1 433 613 habitants. Notre journée a lieu dans vos locaux, qu’ils soient à Lyon ou dans une autre commune de la métropole. Nous n’avons pas de bureau sur place ; la page sur la politique de déplacement précise les modalités. Parmi les communes de l’intercommunalité : Albigny-sur-Saône, Bron, Cailloux-sur-Fontaines, Caluire-et-Cuire, Champagne-au-Mont-d'Or. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+    zone: "Lyon est l’une des 58 communes de la Métropole de Lyon, qui compte 1 433 613 habitants. Notre journée a lieu dans vos locaux, qu’ils soient à Lyon ou dans une autre commune de la métropole. Nous n’avons pas de bureau sur place ; la page sur la politique de déplacement précise les modalités. Parmi les communes de l’intercommunalité : Albigny-sur-Saône, Bron, Cailloux-sur-Fontaines, Caluire-et-Cuire, Champagne-au-Mont-d'Or. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -182,7 +183,7 @@ export const FICHE_LYON: FicheLocale = {
     },
     {
       q: "Quelles institutions de l’écosystème lyonnais pouvons-nous consulter ?",
-      a: "Les universités Claude Bernard Lyon 1 et Lumière Lyon 2, le pôle de compétitivité Axelera et l’aéroport Lyon-Saint-Exupéry sont des repères publics. Nous n’avons aucun partenariat avec eux et nous ne citons pas d’entreprise privée : leurs sites officiels donnent les informations à jour. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "Les universités Claude Bernard Lyon 1 et Lumière Lyon 2, le pôle de compétitivité Axelera et l’aéroport Lyon-Saint-Exupéry sont des repères institutionnels. Nous n’avons aucun partenariat avec eux et nous ne citons pas d’entreprise privée : leurs sites officiels donnent les informations à jour. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

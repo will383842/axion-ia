@@ -19,6 +19,7 @@ export const FICHE_LILLE: FicheLocale = {
     nombreCommunes: 95,
     source: "geo.api.gouv.fr (intercommunalités)",
     url: "https://geo.api.gouv.fr/epcis/200093201/communes?fields=nom,code,population",
+    urlPopulation: "https://geo.api.gouv.fr/epcis/200093201?fields=nom,population",
     communes: [
       "Allennes-les-Marais",
       "Annœullin",
@@ -199,7 +200,7 @@ export const FICHE_LILLE: FicheLocale = {
       "Lille compte 9 176 établissements employeurs privés et 117 695 salariés au 31 décembre 2025 (Urssaf). Les activités scientifiques, techniques et administratives en regroupent 1 894 et le commerce 1 707. Suivent l’hébergement-restauration (1 389) et les autres services (1 045). L’information et la communication regroupent 584 établissements et 10 031 salariés.",
     ecosysteme:
       "L’Université de Lille est le repère de la formation supérieure. EuraTechnologies, site d’innovation lillois, réunit entreprises tech, startups, laboratoires et écoles. L’aéroport de Lille est celui de la métropole. Nous ne citons aucune entreprise : même une marque installée dans un lieu d’innovation pourrait passer pour notre client.",
-    zone: "La Métropole Européenne de Lille rassemble 95 communes et 1 194 040 habitants. La Journée IA a lieu dans vos locaux, à Lille ou dans l’une de ces communes, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Allennes-les-Marais, Annœullin, Anstaing, Armentières, Aubers. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+    zone: "La Métropole Européenne de Lille rassemble 95 communes et 1 194 040 habitants. La Journée IA a lieu dans vos locaux, à Lille ou dans l’une de ces communes, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Allennes-les-Marais, Annœullin, Anstaing, Armentières, Aubers. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -212,7 +213,7 @@ export const FICHE_LILLE: FicheLocale = {
     },
     {
       q: "EuraTechnologies est-elle votre partenaire ?",
-      a: "Non. EuraTechnologies, qui réunit entreprises tech, startups, laboratoires et écoles, est citée comme repère public de l’écosystème lillois, comme l’Université de Lille. Nous n’avons aucun partenariat avec elles et nous ne nommons aucune entreprise. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "Non. EuraTechnologies, qui réunit entreprises tech, startups, laboratoires et écoles, est citée comme repère institutionnel de l’écosystème lillois, comme l’Université de Lille. Nous n’avons aucun partenariat avec elles et nous ne nommons aucune entreprise. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };

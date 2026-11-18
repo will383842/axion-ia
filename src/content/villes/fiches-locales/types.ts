@@ -51,6 +51,8 @@ export interface FicheLocale {
     readonly nombreCommunes: number;
     readonly source: string;
     readonly url: string;
+    /** URL qui renvoie la population de l'intercommunalité. */
+    readonly urlPopulation: string;
     readonly communes: ReadonlyArray<string>;
     readonly consulteLe: string;
   };

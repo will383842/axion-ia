@@ -19,6 +19,7 @@ export const FICHE_NANTES: FicheLocale = {
     nombreCommunes: 24,
     source: "geo.api.gouv.fr (intercommunalités)",
     url: "https://geo.api.gouv.fr/epcis/244400404/communes?fields=nom,code,population",
+    urlPopulation: "https://geo.api.gouv.fr/epcis/244400404?fields=nom,population",
     communes: [
       "Basse-Goulaine",
       "Bouaye",
@@ -128,7 +129,7 @@ export const FICHE_NANTES: FicheLocale = {
       "Nantes totalise 10 028 établissements employeurs privés et 133 493 salariés au 31 décembre 2025 (Urssaf). Les activités scientifiques, techniques et administratives dominent nettement : 2 475 établissements, contre 1 493 pour le commerce. Les autres services en comptent 1 367 et l’hébergement-restauration 1 161. L’information et la communication, avec 719 établissements, emploient 19 317 salariés.",
     ecosysteme:
       "Nantes Université est le repère de la formation supérieure. Atlanpole accompagne chercheurs et entrepreneurs de la pré-incubation à l’accélération, à Nantes et en Pays de la Loire. Le pôle EMC2 soutient le montage de projets innovants pour la transformation industrielle. Ces institutions ne sont pas nos partenaires ; elles situent le territoire.",
-    zone: "Nantes Métropole compte 24 communes et 683 981 habitants. Nous venons dans vos locaux, à Nantes ou dans l’une d’elles, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Basse-Goulaine, Bouaye, Bouguenais, Brains, Carquefou. Le matin, un audit (2 à 4 h selon l’entreprise) ; l’après-midi, une formation de 4 h, jusqu’à 15 personnes.",
+    zone: "Nantes Métropole compte 24 communes et 683 981 habitants. Nous venons dans vos locaux, à Nantes ou dans l’une d’elles, sans bureau sur place. La politique de déplacement précise le cadre. Parmi les communes de l’intercommunalité : Basse-Goulaine, Bouaye, Bouguenais, Brains, Carquefou. Le matin : audit (2 à 4 h selon l’entreprise) ; l’après-midi : formation de 4 h, jusqu’à 15 personnes.",
   },
   faqLocale: [
     {
@@ -141,7 +142,7 @@ export const FICHE_NANTES: FicheLocale = {
     },
     {
       q: "Quelles institutions d’innovation existent à Nantes ?",
-      a: "Atlanpole (accompagnement des chercheurs et entrepreneurs), le pôle EMC2 (projets pour la transformation industrielle) et Nantes Université. Ce sont des repères publics, sans lien contractuel avec nous. Leurs sites officiels détaillent leurs services. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
+      a: "Atlanpole (accompagnement des chercheurs et entrepreneurs), le pôle EMC2 (projets pour la transformation industrielle) et Nantes Université. Ce sont des repères institutionnels, sans lien contractuel avec nous. Leurs sites officiels détaillent leurs services. Les liens vers chaque site officiel figurent en bas de page, avec la date de consultation.",
     },
   ],
 };
