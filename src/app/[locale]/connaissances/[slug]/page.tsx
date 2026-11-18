@@ -24,6 +24,7 @@ import { AiContentDisclaimer } from "@/components/marketing/AiContentDisclaimer"
 import { Link } from "@/i18n/navigation";
 import { prisma } from "@/lib/prisma";
 import { buildProductMetadata, buildBreadcrumbJsonLd, SITE_URL } from "@/lib/seo";
+import { LIBELLE_PLUME_IA } from "@/lib/seo/plume-ia";
 import { buildArticleJsonLd, buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
 import { fetchPublicKbBySlug } from "@/lib/knowledge/public-fetch";
 import { findRedirectFromHistory } from "@/lib/knowledge/slug-history";
@@ -135,7 +136,7 @@ export default async function ConnaissanceDetail({ params }: Props) {
     .catch(() => null);
   const personJsonLd = author?.slug === "manon" ? buildPersonManonJsonLd(author) : null;
   const authorName = author?.displayName ?? "Manon";
-  const authorTitle = author?.jobTitle ?? null;
+  const authorTitle = author ? LIBELLE_PLUME_IA : null;
 
   const publishedStr = formatDate(entry.publishedAt);
   const updatedStr = formatDate(entry.updatedAt);

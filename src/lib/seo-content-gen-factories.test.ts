@@ -177,7 +177,7 @@ describe("buildArticleJsonLd — urlSegment blog default", () => {
 });
 
 describe("buildPersonManonJsonLd — doctrine v2.1 (zéro réseau social)", () => {
-  it("émet Person sans sameAs (doctrine intouchable § 21)", () => {
+  it("émet une Organization (plume IA) sans sameAs (doctrine intouchable § 21)", () => {
     const out = buildPersonManonJsonLd({
       slug: "manon",
       displayName: "Manon",
@@ -187,7 +187,7 @@ describe("buildPersonManonJsonLd — doctrine v2.1 (zéro réseau social)", () =
       knowsAbout: ["IA opérationnelle", "RAG"],
       personaDisclaimer: null,
     });
-    expect(out["@type"]).toBe("Person");
+    expect(out["@type"]).toBe("Organization");
     expect("sameAs" in out).toBe(false);
   });
 

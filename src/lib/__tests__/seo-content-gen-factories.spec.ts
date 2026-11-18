@@ -48,11 +48,11 @@ describe("truncateHeadline (VIS-13)", () => {
 });
 
 describe("buildPersonManonJsonLd", () => {
-  it("emits valid Person JSON-LD with @id and no sameAs", () => {
+  it("emits valid Organization JSON-LD (plume IA) with @id and no sameAs", () => {
     const ld = buildPersonManonJsonLd(MANON_FIXTURE);
-    expect(ld["@type"]).toBe("Person");
+    expect(ld["@type"]).toBe("Organization");
     expect(ld["@id"]).toMatch(/\/fr\/equipe\/manon#person$/);
-    expect(ld["name"]).toBe("Manon");
+    expect(ld["name"]).toBe("Plume IA d'Axion-IA");
     expect(ld["sameAs"]).toBeUndefined(); // doctrine v2.1 — zéro réseau social
   });
 
