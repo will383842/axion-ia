@@ -117,7 +117,7 @@ export const GROUPE_G7 = {
       "apporteur-echange-rappel",
     ],
     repondezDansLeCorps: ["apporteur-commission-avoir-client"],
-    delaiEnDur: ["apporteur-releve", "vivier-information"],
+    delaiEnDur: ["vivier-information"],
     valeurTechnique: [
       "candidature-commercial-confirmee",
       "lead-apporteur-recu",
