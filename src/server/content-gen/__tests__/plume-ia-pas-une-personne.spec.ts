@@ -3,8 +3,8 @@
  */
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { buildPersonManonJsonLd } from "../../seo-content-gen-factories";
-import { LIBELLE_PLUME_IA } from "../plume-ia";
+import { buildPersonManonJsonLd } from "@/lib/seo-content-gen-factories";
+import { LIBELLE_PLUME_IA } from "@/lib/seo/plume-ia";
 
 const LIGNE_ANCIENNE = {
   slug: "manon",
