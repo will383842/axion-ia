@@ -38,6 +38,7 @@ import { RESSOURCES_COOKIE_NAME } from "./server/ressources/routes";
 // exactement où vivent ses deux frères ci-dessus. Ainsi la proxy ne référence aucun
 // symbole qualiopi et reste scannée par `pnpm qualiopi:isolation-check`.
 // Import RELATIF comme ses deux voisins — pas d'alias.
+import { regexConsole } from "./lib/prefixe-admin";
 import { PORTAIL_COOKIE_NAME, localeSiPortailProtege } from "./server/portail/routes";
 // Tour France IA — interrupteur et porte d'aperçu, modules PURS (Web Crypto seulement).
 import { TOUR_PUBLIC } from "./features/tour-de-france/visibilite";
@@ -428,9 +429,8 @@ const authPipeline = auth(async (req) => {
   //    Le secret `ADMIN_URL_PREFIX` reste côté Edge runtime (jamais exposé
   //    au bundle client), donc utiliser un header propagé est la seule
   //    approche compatible.
-  const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
-  const adminPathRegex = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`);
-  if (adminPathRegex.test(req.nextUrl.pathname)) {
+  const adminPathRegex = regexConsole();
+  if (adminPathRegex?.test(req.nextUrl.pathname)) {
     req.headers.set("x-admin-route", "1");
     // Propage le pathname courant aux Server Components admin (via `headers()`).
     // Les layouts à onglets (documents-interventions, contacts) dérivent l'onglet
@@ -475,8 +475,7 @@ export default async function proxy(req: NextRequest, ev: NextFetchEvent) {
   try {
     if (res && req.method === "GET") {
       const pathname = req.nextUrl.pathname;
-      const adminSegment = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
-      const isAdminRoute = new RegExp(`^/(fr|en)/${adminSegment}(?:/|$)`).test(pathname);
+      const isAdminRoute = regexConsole()?.test(pathname) ?? false;
       if (
         !isAdminRoute &&
         !STRIP_AUTH_SPACE.test(pathname) &&

@@ -24,9 +24,9 @@ on:
   workflow_dispatch:
     inputs:
       action:
-        description: 'status (dump only) | migrate (status + migrate + restart)'
+        description: "status (dump only) | migrate (status + migrate + restart)"
         required: true
-        default: 'status'
+        default: "status"
         type: choice
         options:
           - status
@@ -148,5 +148,5 @@ jobs:
           curl -s -o /tmp/healthz.json -w "HTTP=%{http_code} time=%{time_total}s\n" https://axion-ia.com/api/healthz
           cat /tmp/healthz.json
           echo ""
-          echo "──── Smoke admin login page ────"
-          curl -sI https://axion-ia.com/fr/admin-xfz5hk0j7hrk/login | head -3
+          echo "──── Smoke page d'accueil ────"
+          curl -sI https://axion-ia.com/fr/ | head -3

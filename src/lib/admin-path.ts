@@ -18,13 +18,13 @@
 
 import type { Locale } from "../../prisma/generated/client";
 
-const DEV_FALLBACK = "admin-dev-x7k2n9";
+import { segmentConsole } from "./prefixe-admin";
 
 /**
- * Retourne le segment admin courant (ADMIN_URL_PREFIX) ou le fallback dev.
+ * Retourne le segment admin courant (ADMIN_URL_PREFIX) ou, si la console est fermée (production sans variable), un segment sentinelle.
  */
 export function adminSegment(): string {
-  return process.env.ADMIN_URL_PREFIX ?? DEV_FALLBACK;
+  return segmentConsole();
 }
 
 /**

@@ -54,7 +54,7 @@ function middlewareSExecute(chemin: string): boolean {
 // Un préfixe admin quelconque : le matcher ne doit RIEN savoir de sa valeur.
 // `ADMIN_URL_PREFIX` est `z.string().min(1).optional()` — rien ne l'oblige à
 // commencer par `admin-`, et Next exige un matcher statiquement analysable.
-const PREFIXES = ["admin-xfz5hk0j7hrk", "console-secrete", "zzz"];
+const PREFIXES = ["prefixe-factice-test", "console-secrete", "zzz"];
 
 describe("le matcher du proxy n'exclut jamais une route localisée", () => {
   it("TÉMOIN POSITIF — le harnais mesure vraiment (sinon tout ce fichier est creux)", () => {

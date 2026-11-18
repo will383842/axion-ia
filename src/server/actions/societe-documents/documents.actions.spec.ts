@@ -311,6 +311,76 @@ describe("remplacer le fichier", () => {
   });
 });
 
+// ── Types de fichiers (SEC-1c) : le type stocké vient de l'extension, jamais du client ──
+
+function fichierTypé(nom: string, type: string): File {
+  const octets = new Uint8Array([1, 2, 3]);
+  const f = new File([octets], nom, { type });
+  if (typeof f.arrayBuffer !== "function") {
+    Object.defineProperty(f, "arrayBuffer", {
+      value: async () => octets.buffer.slice(0),
+      configurable: true,
+    });
+  }
+  return f;
+}
+
+describe("types de fichiers acceptés (SEC-1c)", () => {
+  it("importer : x.pdf déclaré text/html est refusé, rien n'est écrit", async () => {
+    const res = await importerSocieteDocAction(
+      formulaire({ type: "kbis", titre: "x", file: fichierTypé("x.pdf", "text/html") }),
+    );
+    expect(res.ok).toBe(false);
+    expect(appels).toEqual([]);
+    expect(db.societeDocument["create"]).not.toHaveBeenCalled();
+  });
+
+  it("importer : x.html déclaré application/pdf est refusé", async () => {
+    const res = await importerSocieteDocAction(
+      formulaire({ type: "kbis", titre: "x", file: fichierTypé("x.html", "application/pdf") }),
+    );
+    expect(res.ok).toBe(false);
+    expect(db.societeDocument["create"]).not.toHaveBeenCalled();
+  });
+
+  it("importer : x.pdf sans type est accepté et stocké application/pdf", async () => {
+    const res = await importerSocieteDocAction(
+      formulaire({ type: "kbis", titre: "x", file: fichierTypé("x.pdf", "") }),
+    );
+    expect(res).toEqual({ ok: true });
+    expect(db.societeDocument["create"]!.mock.calls[0]?.[0]?.data.mimeType).toBe("application/pdf");
+  });
+
+  it("remplacer : x.pdf déclaré text/html est refusé, x.html déclaré pdf aussi", async () => {
+    db.societeDocument["findUnique"]!.mockResolvedValue({
+      storagePath: "/vol/ancien.pdf",
+      type: "kbis",
+      hashSha256: "a".repeat(64),
+    });
+    for (const f of [fichierTypé("x.pdf", "text/html"), fichierTypé("x.html", "application/pdf")]) {
+      const res = await remplacerFichierSocieteDocAction(
+        formulaire({ id: crypto.randomUUID(), file: f }),
+      );
+      expect(res.ok).toBe(false);
+    }
+    expect(db.societeDocument["update"]).not.toHaveBeenCalled();
+    expect(appels).toEqual([]);
+  });
+
+  it("remplacer : x.pdf sans type est accepté et stocké application/pdf", async () => {
+    db.societeDocument["findUnique"]!.mockResolvedValue({
+      storagePath: "/vol/ancien.pdf",
+      type: "kbis",
+      hashSha256: "a".repeat(64),
+    });
+    const res = await remplacerFichierSocieteDocAction(
+      formulaire({ id: crypto.randomUUID(), file: fichierTypé("x.pdf", "") }),
+    );
+    expect(res).toEqual({ ok: true });
+    expect(db.societeDocument["update"]!.mock.calls[0]?.[0]?.data.mimeType).toBe("application/pdf");
+  });
+});
+
 // ── Suppression ──────────────────────────────────────────────────────────────
 
 describe("supprimer", () => {

@@ -24,8 +24,7 @@ import {
   storeConsoleDoc,
   deleteConsoleDocFile,
   sanitizeConsoleDocFileName,
-  CONSOLE_DOC_ALLOWED_MIME,
-  CONSOLE_DOC_ALLOWED_EXTENSIONS,
+  mimeAutorise,
   CONSOLE_DOC_MAX_BYTES,
 } from "@/server/console-documents/storage";
 import { getRubriqueForType, SOCIETE_DOC_TYPES } from "@/server/societe-documents/rubriques";
@@ -83,11 +82,6 @@ const metaSchema = z.object({
   sensitive: z.boolean().optional(),
 });
 
-const EXT_RE = new RegExp(
-  `(${CONSOLE_DOC_ALLOWED_EXTENSIONS.map((e) => "\\" + e).join("|")})$`,
-  "i",
-);
-
 function lireMeta(formData: FormData): unknown {
   return {
     type: formData.get("type"),
@@ -117,7 +111,8 @@ function revalidateRubrique(type: SocieteDocumentType): void {
 async function accepterFichier(
   file: unknown,
 ): Promise<
-  { ok: true; storagePath: string; hashSha256: string; file: File } | { ok: false; error: string }
+  | { ok: true; storagePath: string; hashSha256: string; file: File; mimeType: string }
+  | { ok: false; error: string }
 > {
   if (!(file instanceof File) || file.size === 0) {
     return { ok: false, error: "Aucun fichier fourni." };
@@ -125,14 +120,13 @@ async function accepterFichier(
   if (file.size > CONSOLE_DOC_MAX_BYTES) {
     return { ok: false, error: "Fichier trop volumineux (10 Mo max)." };
   }
-  const okExt = EXT_RE.test(file.name);
-  const okMime = (CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(file.type);
-  if (!okExt && !okMime) {
+  const mimeStocke = mimeAutorise(file);
+  if (mimeStocke === null) {
     return { ok: false, error: "Type de fichier non autorisé (PDF, Office ou image)." };
   }
   const buffer = Buffer.from(await file.arrayBuffer());
   const { storagePath, hashSha256 } = await storeConsoleDoc(buffer, file.name);
-  return { ok: true, storagePath, hashSha256, file };
+  return { ok: true, storagePath, hashSha256, file, mimeType: mimeStocke };
 }
 
 /** Importer une pièce dans le dossier société. */
@@ -164,7 +158,7 @@ export async function importerSocieteDocAction(formData: FormData): Promise<Acti
       dateExpiration: parsed.data.dateExpiration,
       fileName: sanitizeConsoleDocFileName(fichier.file.name),
       storagePath: fichier.storagePath,
-      mimeType: fichier.file.type || "application/octet-stream",
+      mimeType: fichier.mimeType,
       sizeBytes: fichier.file.size,
       hashSha256: fichier.hashSha256,
       sensitive: parsed.data.sensitive ?? false,
@@ -292,7 +286,7 @@ export async function remplacerFichierSocieteDocAction(formData: FormData): Prom
     data: {
       fileName: sanitizeConsoleDocFileName(fichier.file.name),
       storagePath: fichier.storagePath,
-      mimeType: fichier.file.type || "application/octet-stream",
+      mimeType: fichier.mimeType,
       sizeBytes: fichier.file.size,
       hashSha256: fichier.hashSha256,
       ...(dates.data.dateEmission ? { dateEmission: dates.data.dateEmission } : {}),
@@ -410,7 +404,7 @@ async function remplacerEnNouvelleVersion(
           dateExpiration: dates.dateExpiration ?? ancien.dateExpiration,
           fileName: sanitizeConsoleDocFileName(fichier.file.name),
           storagePath: fichier.storagePath,
-          mimeType: fichier.file.type || "application/octet-stream",
+          mimeType: fichier.mimeType,
           sizeBytes: fichier.file.size,
           hashSha256: fichier.hashSha256,
           sensitive: ancien.sensitive,

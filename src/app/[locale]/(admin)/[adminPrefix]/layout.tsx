@@ -131,6 +131,7 @@ import {
 
 import { peutConsulter } from "@/server/auth/habilitations";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { prefixeAdminAttendu, segmentConsole } from "@/lib/prefixe-admin";
 import "@/app/admin.css";
 import "@/app/print.css";
 
@@ -236,16 +237,17 @@ function buildNav(
 async function logoutAction(): Promise<void> {
   "use server";
   await signOut({ redirect: false });
-  const prefix = process.env["ADMIN_URL_PREFIX"] ?? "admin-dev-x7k2n9";
+  const prefix = segmentConsole();
   redirect(`/fr/${prefix}/login`);
 }
 
 export default async function AdminLayout({ children, params }: AdminLayoutProps) {
   const { locale, adminPrefix } = await params;
-  const expectedPrefix = process.env.ADMIN_URL_PREFIX ?? "admin-dev-x7k2n9";
+  const expectedPrefix = prefixeAdminAttendu();
 
-  // 1. Valide segment URL contre env (404 silencieux sinon — pas de fingerprint)
-  if (adminPrefix !== expectedPrefix) {
+  // 1. Valide segment URL contre env (404 silencieux sinon — pas de fingerprint).
+  //    Production sans variable : `null`, donc tout est refusé.
+  if (expectedPrefix === null || adminPrefix !== expectedPrefix) {
     notFound();
   }
 

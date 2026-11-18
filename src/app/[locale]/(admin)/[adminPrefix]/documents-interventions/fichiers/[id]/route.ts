@@ -9,7 +9,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/auth";
 import { getConsoleDocForDownload } from "@/server/console-documents/queries";
-import { readConsoleDoc } from "@/server/console-documents/storage";
+import { CONSOLE_DOC_ALLOWED_MIME, readConsoleDoc } from "@/server/console-documents/storage";
 import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
 export const runtime = "nodejs";
@@ -55,11 +55,14 @@ export async function GET(
 
   const forceDownload = new URL(req.url).searchParams.get("dl") === "1";
   const safeName = doc.fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const inline = !doc.sensitive && !forceDownload;
+  // Ouverture en ligne seulement pour un type de la liste : une ligne déjà stockée
+  // avec un autre type (ex. text/html) est servie en téléchargement, jamais rendue.
+  const typeSur = (CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(doc.mimeType);
+  const inline = !doc.sensitive && !forceDownload && typeSur;
   const disposition = inline ? "inline" : "attachment";
   // Type réel pour permettre le rendu inline (impression) des PDF/images ;
   // octet-stream pour les docs sensibles (jamais rendus dans le navigateur).
-  const contentType = doc.sensitive ? "application/octet-stream" : doc.mimeType;
+  const contentType = doc.sensitive || !typeSur ? "application/octet-stream" : doc.mimeType;
 
   return new NextResponse(new Uint8Array(buf), {
     headers: {

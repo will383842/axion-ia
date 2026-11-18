@@ -12,7 +12,7 @@
 import { NextResponse } from "next/server";
 
 import { auth } from "@/auth";
-import { readConsoleDoc } from "@/server/console-documents/storage";
+import { CONSOLE_DOC_ALLOWED_MIME, readConsoleDoc } from "@/server/console-documents/storage";
 import { getSocieteDocForDownload } from "@/server/societe-documents/queries";
 import { refuserSiHorsConsole } from "@/server/auth/garde-route-console";
 
@@ -49,13 +49,14 @@ export async function GET(
 
   const forceDownload = new URL(req.url).searchParams.get("dl") === "1";
   const safeName = doc.fileName.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const inline = !doc.sensitive && !forceDownload;
+  // Ouverture en ligne seulement pour un type de la liste : une ligne déjà stockée
+  // avec un autre type (ex. text/html) est servie en téléchargement, jamais rendue.
+  const typeSur = (CONSOLE_DOC_ALLOWED_MIME as readonly string[]).includes(doc.mimeType);
+  const inline = !doc.sensitive && !forceDownload && typeSur;
 
   return new NextResponse(new Uint8Array(buf), {
     headers: {
-      "Content-Type": doc.sensitive
-        ? "application/octet-stream"
-        : doc.mimeType || "application/octet-stream",
+      "Content-Type": doc.sensitive || !typeSur ? "application/octet-stream" : doc.mimeType,
       "X-Content-Type-Options": "nosniff",
       "Content-Disposition": `${inline ? "inline" : "attachment"}; filename="${safeName}"`,
       "Cache-Control": "private, no-store",
