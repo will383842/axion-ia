@@ -78,7 +78,9 @@ export function estApprouvee(texte: string): boolean {
 
 /** Le texte sans sa ligne de marque (inchangé s'il n'est pas approuvé). */
 export function retirerMarque(texte: string): string {
-  return estApprouvee(texte) ? texte.slice(texte.indexOf("\n") + 1).replace(/^\n+/, "") : texte;
+  let t = texte;
+  while (estApprouvee(t)) t = t.slice(t.indexOf("\n") + 1).replace(/^\n+/, "");
+  return t;
 }
 
 export const AVERTISSEMENT_CHIFFRES =
@@ -141,7 +143,7 @@ const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:k|m|md
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
 // nombre suivi d'un prix hors taxes / toutes taxes, d'un multiplicateur (k, M, mille, million),
 // d'un milliard, d'un dollar ou d'un code USD, sans « euro »
-const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|brut|nets?|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
+const MONTANT_SANS_DEVISE = String.raw`\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:(?:HT|TTC|brut(?:e|s|es)?|nett?(?:e|s|es)?|ke|k|m|mds?|mrds?|mrd|mille|millions?|milliards?|usd|dollars?|mensuel(?:le)?s?|annuel(?:le)?s?)\b|h\.\s?t\.|t\.\s?t\.\s?c\.)`;
 // dollar : symbole collé ou séparé d'un nombre, dans les deux sens, ou « USD » devant
 // autres devises (livre, franc suisse, yen, « balles »), périodicité (« /mois », « par an »), taux journalier
 const MONTANT_AUTRES = String.raw`[£\u00a5]\s?\d|\d[\d\s${ESPACES_FINES}.,]{0,24}\s?(?:[£\u00a5]|gbp\b|chf\b|jpy\b|francs?\b|bn\b|balles?\b|\/\s?(?:mois|jour|an|semaine|h)\b|par (?:mois|jour|an|semaine|heure)\b|la journee\b|la journée\b)|\btjm\b`;
@@ -164,7 +166,7 @@ const MOTIF_MONETAIRE = new RegExp(
  * (« par heure », « de l'heure », « hors taxes », « HTVA »). Lu sur le texte normalisé.
  */
 const MOTIF_PERIODE_TAXE =
-  /\bpar (?:heure|jour|mois|trimestre|semestre|semaine|an|annee)s?\b|\bde l'heure\b|\bhors[\s-]+(?:taxe|tva|ht)|\bhtva\b|\bh\.? ?t\.? ?v\.? ?a\b/;
+  /\bpar (?:heure|jour|mois|trimestre|semestre|semaine|an|annee)s?\b|\bde l'heure\b|\bhors[\s-]+(?:taxe|t\.? ?v\.? ?a|h\.? ?t)|\bhtva\b|\bh\.? ?t\.? ?v\.? ?a\b/;
 
 export function contientMontant(texte: string): boolean {
   const lu = lire(texte);
@@ -183,7 +185,7 @@ export function contientMontant(texte: string): boolean {
  * première personne comprise, et tout pourcentage. On préfère refuser une fiche saine.
  */
 const MOTIF_PROMESSE =
-  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|\bpromet|\bpromis\b|m'engage|\bs'engage|engageons|ne payez (?:pas|rien)|satisfait ou|a coup sur|forcement|certain de|rentabilis|\bdivis(?:ez|er|e) par\b|fois plus|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b|\b(?:doubl|tripl|quadrupl|quintupl|decupl|centupl)|\d ?[x×](?![a-z])|(?<![a-z])[x×] ?\d|engag.{0,40}resultat|resultat.{0,40}engag|obligation de resultat|m'y engag|\brend\w*.{0,30}(?:argent|euros?)|(?:argent|euros?).{0,30}\brend|restitu\w*.{0,30}(?:argent|euros?)|pas de resultat/;
+  /garant|rembours|assur(?:e|ee|es|ees|ez|er|ons)? (?:le |vos |votre |un |des )?(?:resultat|succes|gain|roi)|(?:resultat|succes)s? (?:est |sont )?(?:assure|certain)|succes certain|\bpromet|\bpromis\b|m'engage|\bs'engage|engageons|ne payez (?:pas|rien)|satisfait ou|a coup sur|forcement|certain de|rentabilis|\bdivis(?:ez|er|e) par\b|fois plus|\b(?:doubl|tripl|quadrupl|multipli)(?:ez|er|ons)\b|\bx ?\d|\broi\b|(?:doubl|tripl|quadrupl|quintupl|decupl|centupl)|\d ?[x×](?![a-z])|(?<![a-z])[x×] ?\d|engag[^.!?\n]{0,200}resultat|resultat[^.!?\n]{0,200}engag|obligation de resultat|m'y engag|\brend\w*[^.!?\n]{0,200}(?:argent|euros?)|(?:argent|euros?)[^.!?\n]{0,200}\brend|restitu\w*[^.!?\n]{0,200}(?:argent|euros?)|pas de resultat/;
 const MOTIF_POURCENTAGE =
   /%|‰|\bpct\b|\bp\.? ?c\.?(?![a-z])|\bp\. ?100\b|pour[\s-]?cent|(?<!\d)\d{1,4} (?:[a-z]+ )?sur \d{1,4}\b|\bsur (?:\d{1,4}|deux|trois|quatre|cinq|six|sept|huit|neuf|dix|onze|douze|vingt|cent)\b|\b(?:moitie|tiers|quarts?|majorite)s?\b|\btotalite\b/;
 
@@ -286,6 +288,8 @@ interface Morceau {
    * terminateur…) : sa première ligne n'est plus celle du corpus, donc JAMAIS approuvée.
    */
   neutre?: boolean;
+  /** La ligne BRUTE du corpus qui ouvre la section (jamais celle d'une introduction). */
+  titreBrut?: string | undefined;
 }
 
 const MOTIF_NUMERO = /^(\d{1,2})\.\s+(\S.{1,88})$/;
@@ -346,6 +350,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
           slug: "essentiel",
           titre: "L'essentiel en 30 secondes",
           lignes: [],
+          titreBrut: brute,
         };
         let j = i + 1;
         let termine = false;
@@ -374,7 +379,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
         continue;
       }
       dansBlocFixe = true;
-      courant = { slug: bloc.slug, titre: ligne, lignes: [] };
+      courant = { slug: bloc.slug, titre: ligne, lignes: [], titreBrut: brute };
       continue;
     }
 
@@ -384,7 +389,12 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
       if (cas) {
         pousser();
         numeroCas = Number(cas[1]);
-        courant = { slug: `cas-${numeroCas}-${slugifier(cas[2]!, 50)}`, titre: ligne, lignes: [] };
+        courant = {
+          slug: `cas-${numeroCas}-${slugifier(cas[2]!, 50)}`,
+          titre: ligne,
+          lignes: [],
+          titreBrut: brute,
+        };
         continue;
       }
       if (ligne === "MISE EN SITUATION") continue;
@@ -418,6 +428,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
           slug: `${String(dernierNumero).padStart(2, "0")}-${slugifier(c.titre, 50)}`,
           titre: `${dernierNumero}. ${c.titre}`,
           lignes: [],
+          titreBrut: brute,
         };
         continue;
       }
@@ -456,6 +467,7 @@ function decouperFichePdf(lignes: readonly string[], titreFichier: string): Morc
  */
 function decouperParPage(contenu: string): Morceau[] {
   const morceaux: Morceau[] = [];
+  const brutes = contenu.replace(/\r\n?/g, "\n").split("\n");
   const blocs = contenu.replace(/\r\n?/g, "\n").split(/^<!--\s*page\s+(\d+)\s*-->\s*$/m);
   // split avec groupe capturant : [avant, n1, texte1, n2, texte2, …]
   for (let k = 1; k < blocs.length; k += 2) {
@@ -468,7 +480,12 @@ function decouperParPage(contenu: string): Morceau[] {
           (l) =>
             l.length >= 8 && !/^A X I O N/.test(l) && !/^#/.test(l) && l !== MARQUE_APPROBATION,
         ) ?? `Page ${n}`;
-    morceaux.push({ slug: `page-${String(n).padStart(2, "0")}`, titre, lignes });
+    morceaux.push({
+      slug: `page-${String(n).padStart(2, "0")}`,
+      titre,
+      lignes,
+      titreBrut: brutes.find((l) => new RegExp(`^<!--\\s*page\\s+${n}\\s*-->\\s*$`).test(l)),
+    });
   }
   return morceaux;
 }
@@ -477,11 +494,49 @@ function decouperParPage(contenu: string): Morceau[] {
 //  Fichiers Markdown (dossier santé)
 // ─────────────────────────────────────────────────────────────────────────────
 
+/**
+ * Pour chaque ligne : « vive » (lue comme du Markdown) ou non (bloc de code, commentaire
+ * HTML, ou ligne de clôture). Une clôture ne ferme que si elle est du même caractère et
+ * d'une longueur au moins égale à celle d'ouverture.
+ */
+function lignesVives(lignes: readonly string[]): boolean[] {
+  const vives: boolean[] = [];
+  let cloture: { c: string; n: number } | null = null;
+  let commentaire = false;
+  for (const l of lignes) {
+    if (commentaire) {
+      vives.push(false);
+      if (l.includes("-->")) commentaire = false;
+      continue;
+    }
+    if (cloture) {
+      vives.push(false);
+      const m = /^\s{0,3}(`{3,}|~{3,})\s*$/.exec(l);
+      if (m && m[1]![0] === cloture.c && m[1]!.length >= cloture.n) cloture = null;
+      continue;
+    }
+    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(l);
+    if (f) {
+      cloture = { c: f[1]![0]!, n: f[1]!.length };
+      vives.push(false);
+      continue;
+    }
+    if (l.includes("<!--")) {
+      vives.push(false);
+      if (!l.includes("-->")) commentaire = true;
+      continue;
+    }
+    vives.push(true);
+  }
+  return vives;
+}
+
 function decouperMarkdown(lignes: readonly string[]): Morceau[] {
   const morceaux: Morceau[] = [];
   let courant: Morceau | null = null;
   let parent = "";
   const vus = new Map<string, number>();
+  const vives = lignesVives(lignes);
 
   const unique = (slug: string) => {
     const n = (vus.get(slug) ?? 0) + 1;
@@ -489,20 +544,22 @@ function decouperMarkdown(lignes: readonly string[]): Morceau[] {
     return n === 1 ? slug : `${slug}-${n}`;
   };
 
-  let cloture: string | null = null; // bloc de code ouvert : aucun titre n'y est reconnu
-  for (const brute of lignes) {
-    const f = /^\s{0,3}(`{3,}|~{3,})/.exec(brute);
-    if (f) {
-      if (cloture === null) cloture = f[1]![0]!;
-      else if (f[1]![0] === cloture) cloture = null;
-    }
-    const h = cloture === null && !f ? /^(#{1,2})\s+(.+?)\s*$/.exec(brute) : null;
+  for (let i = 0; i < lignes.length; i++) {
+    const brute = lignes[i]!;
+    const h = vives[i] ? /^(#{1,2})\s+(.+?)\s*$/.exec(brute) : null;
     if (h) {
       if (courant && compacter(courant.lignes).length > 0) morceaux.push(courant);
       const titre = h[2]!.replace(/\*\*/g, "").trim();
       if (h[1] === "#") parent = slugifier(titre, 40);
       const base = h[1] === "#" ? parent : `${parent}--${slugifier(titre, 40)}`;
-      courant = { slug: unique(base || "introduction"), titre, lignes: [] };
+      // Un titre de niveau 1 est le titre du dossier : jamais une section approuvable.
+      courant = {
+        slug: unique(base || "introduction"),
+        titre,
+        lignes: [],
+        titreBrut: brute,
+        neutre: h[1] === "#",
+      };
       continue;
     }
     if (!courant) courant = { slug: unique("introduction"), titre: "Introduction", lignes: [] };
@@ -525,6 +582,21 @@ export function typerSection(slugSection: string, titre: string, nomFichier: str
     return "script";
   if (/si-alors|a-relire|posture/.test(t)) return "posture";
   return "regle";
+}
+
+/**
+ * Le corps contient une ligne qui se lit comme un titre ou un commentaire Markdown que le
+ * découpage n'a pas coupé (titre indenté, sous-titre, setext, commentaire HTML) : une autre
+ * section, non relue, pourrait s'y cacher. La section n'est alors pas approuvable.
+ */
+function titreCache(corps: string): boolean {
+  const l = corps.split("\n");
+  return l.some(
+    (x, i) =>
+      /^\s{0,3}#{1,6}\s/.test(x) ||
+      x.includes("<!--") ||
+      (i > 0 && l[i - 1]!.trim() !== "" && /^\s{0,3}(?:=+|-+)\s*$/.test(x)),
+  );
 }
 
 /** Ligne posée en tête d'un texte dont la marque n'est pas celle du corpus (jamais approuvé). */
@@ -554,7 +626,8 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
   const lignes = lignesNettoyees(contenu);
 
   // Markdown structuré = au moins un titre de niveau 2 ; sinon, fiche PDF.
-  const estMarkdown = lignes.some((l) => /^##\s+/.test(l));
+  const vives = lignesVives(lignes);
+  const estMarkdown = lignes.some((l, i) => vives[i] && /^##\s+/.test(l));
   const estAffiche = /(^|\/)important-a-savoir\//.test(cheminRelatif.replace(/\\/g, "/"));
   const morceaux = estMarkdown
     ? decouperMarkdown(lignes)
@@ -562,15 +635,50 @@ export function decouperFichier(cheminRelatif: string, contenu: string): Section
       ? decouperParPage(contenu)
       : decouperFichePdf(lignes, nomFichier);
 
+  // Disposition BRUTE du corpus : la marque n'approuve une section que posée sur la ligne
+  // qui suit immédiatement SA ligne de titre, telle qu'elle est écrite dans le fichier.
+  const brutes = contenu.replace(/\r\n?/g, "\n").split("\n");
+  const occurrencesDuTitre = new Map<string, number>();
+  for (const m of morceaux) {
+    if (m.titreBrut !== undefined) {
+      occurrencesDuTitre.set(m.titreBrut, (occurrencesDuTitre.get(m.titreBrut) ?? 0) + 1);
+    }
+  }
+  const rangs = new Map<string, number>();
+  // Un fichier qui mêle titres « ## » et sections numérotées est ambigu : rien n'y est approuvé.
+  const ambigu =
+    estMarkdown &&
+    decouperFichePdf(lignes, nomFichier).filter((x) => /^\d{2}-/.test(x.slug)).length >= 2;
+
   return morceaux.map((m) => {
     const corps = compacter(m.lignes);
+    let rang = 0;
+    if (m.titreBrut !== undefined) {
+      rang = rangs.get(m.titreBrut) ?? 0;
+      rangs.set(m.titreBrut, rang + 1);
+    }
+    const colle =
+      m.titreBrut !== undefined &&
+      !ambigu &&
+      (() => {
+        const places = brutes.flatMap((l, k) => (l === m.titreBrut ? [k] : []));
+        return (
+          places.length === occurrencesDuTitre.get(m.titreBrut!) &&
+          brutes[places[rang]! + 1] === MARQUE_APPROBATION
+        );
+      })();
     const montants = contientMontant(corps) || contientMontant(m.titre);
     // Lue sur la PREMIÈRE LIGNE BRUTE du corpus, sans retrait ni nettoyage : l'import ne pose
     // ni ne déduit la marque. Si le nettoyage la ferait apparaître en tête (retrait, BOM,
     // insécable, ligne « # » supprimée…), le texte stocké est neutralisé pour que le filtre
     // de sortie ne l'accepte pas non plus.
     const premiere = m.lignes.find((l) => l.trim() !== "");
-    const approuvee = !m.neutre && premiere === MARQUE_APPROBATION && estApprouvee(corps);
+    const approuvee =
+      colle &&
+      !m.neutre &&
+      premiere === MARQUE_APPROBATION &&
+      estApprouvee(corps) &&
+      !titreCache(corps);
     const corpsStocke = estApprouvee(corps) && !approuvee ? `${NOTE_NEUTRALISEE}\n${corps}` : corps;
     const type = typerSection(m.slug, m.titre, nomFichier);
     const lu = `${m.titre}\n${corps}`;
