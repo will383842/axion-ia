@@ -7,6 +7,7 @@
  * changer (pièces portées, informations d'employeur). Bloc grisé, aucun formulaire.
  */
 
+import { SIREN_SAISIE_LONGUEUR_MAX } from "@/lib/siret";
 import { changerTypeClientFormAction } from "@/server/actions/qualiopi/clients";
 import type { ApercuCrmPro } from "@/server/crm-sync/apercu-dossier";
 
@@ -74,6 +75,7 @@ function phraseCrmPro(apercu: ApercuCrmPro | null): string {
 export function ChangerTypeClient(props: ChangerTypeClientProps) {
   const { clientId, type, blocage } = props;
   const estParticulier = type === "particulier";
+  const termeAnnuaire = (props.raisonSociale ?? "").trim();
   const nomContact = props.contactNom ?? "";
 
   return (
@@ -145,22 +147,27 @@ export function ChangerTypeClient(props: ChangerTypeClientProps) {
                     name="siren"
                     inputMode="numeric"
                     autoComplete="off"
-                    maxLength={20}
+                    maxLength={SIREN_SAISIE_LONGUEUR_MAX}
                     placeholder="facultatif"
                     className={champCls}
                   />
                 </label>
                 <p className="mt-1 text-[length:var(--text-admin-xs)]">
                   Les espaces sont acceptés. Avec un SIREN valide, le CRM Pro rattache directement
-                  le dossier à l&apos;entreprise ; sans SIREN, il le met en arbitrage manuel.{" "}
-                  <a
-                    href={`https://annuaire-entreprises.data.gouv.fr/rechercher?terme=${encodeURIComponent(props.raisonSociale ?? "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-[color:var(--color-admin-accent)] underline"
-                  >
-                    Chercher dans l&apos;annuaire des entreprises
-                  </a>
+                  le dossier à l&apos;entreprise ; sans SIREN, il le met en arbitrage manuel.
+                  {termeAnnuaire !== "" ? (
+                    <>
+                      {" "}
+                      <a
+                        href={`https://annuaire-entreprises.data.gouv.fr/rechercher?terme=${encodeURIComponent(termeAnnuaire)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[color:var(--color-admin-accent)] underline"
+                      >
+                        Chercher dans l&apos;annuaire des entreprises
+                      </a>
+                    </>
+                  ) : null}
                 </p>
               </div>
             ) : null}

@@ -153,6 +153,18 @@ describe("ChangerTypeClient", () => {
     expect(html).toContain("arbitrage manuel");
   });
 
+  it.each([[null], [""], ["   "]])(
+    "passage en entreprise sans raison sociale (%j) : aucun lien d'annuaire avec un terme vide",
+    (raisonSociale) => {
+      const html = renderToStaticMarkup(
+        <ChangerTypeClient {...base} type="particulier" raisonSociale={raisonSociale} />,
+      );
+      expect(html).toContain('name="siren"');
+      expect(html).not.toContain("terme=");
+      expect(html).not.toContain("annuaire-entreprises.data.gouv.fr");
+    },
+  );
+
   it("repasser en particulier : aucun champ SIREN", () => {
     const html = renderToStaticMarkup(<ChangerTypeClient {...base} type="entreprise" />);
     expect(html).not.toContain('name="siren"');
