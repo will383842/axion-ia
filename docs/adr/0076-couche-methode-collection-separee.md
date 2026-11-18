@@ -89,11 +89,27 @@ complet : chaque relecture en trouvait de nouvelles. Le principe est donc invers
   approuvées : il ne rend aucune section sûre, il rattrape une erreur de relecture. **La
   sécurité repose sur l'approbation à la main.** Mieux vaut refuser une section saine.
 
+La marque est lue sur la **première ligne brute** de la section dans le corpus : si le
+découpage la ferait apparaître en tête (retrait, tabulation, BOM, espace insécable, ligne
+« # » supprimée, encadré « essentiel » sans terminateur), la section n'est pas approuvée et
+son texte stocké est neutralisé. Aucun titre n'est reconnu dans un bloc de code Markdown.
+Avec `--ecrire`, une entrée de l'import absente des sections retenues (refusée, renommée,
+disparue) n'est jamais supprimée mais perd sa ligne de marque : le corpus fait foi.
+
+Limites assumées : dans le format PDF, une ligne « N. Titre » suivie de la marque écrite dans
+le corps d'une autre section est indiscernable d'un vrai titre (elle crée une section
+approuvée : c'est la main du fondateur qui l'a écrite). La console permet à un administrateur
+d'éditer le texte d'une fiche de l'import : y poser la marque est un geste humain, de même
+nature que la poser dans le corpus ; un réimport écrase le texte depuis le corpus.
+
 Formes connues qui peuvent encore passer le second filet dans une section approuvée (la
 relecture du fondateur les arrête, c'est le principe) : « 5000e », « CHF » devant le nombre,
 entité HTML pour l'euro, « cinq cents balles », « 90 pour 100 », numéro court 3615, adresses
 postales, URL de profil nominatif, nombre nu sans unité, « l'année » seule, « méthode
-infaillible ».
+infaillible », périodicités sans nombre (« abonnement mensuel », « tarif journalier »,
+« chaque mois »), « prix HT » seul, « la plupart », « demi-tarif », « on s'y engage »,
+« à tous les coups », « sans faille », « deux fois mieux », adresse de messagerie écrite en
+toutes lettres, téléphone en lettres, « le prix d'un smic ».
 
 ### 2.6 Second filet : filtre de sortie
 

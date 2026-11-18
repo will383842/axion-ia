@@ -57,7 +57,7 @@ Mieux vaut laisser la variable absente que mal l'écrire.
 > Sans cette marque : jamais servie, même saine (le noyau compris). Aucune variante n'est
 > tolérée (casse, espace, accent, retrait, mise en forme, marque dans le corps). L'import
 > **ne pose jamais** la marque et ne la déduit de rien : il recopie le corpus ; réimporter un
-> corpus sans marque la retire. Aucune fonction du code ne peut l'écrire. La ligne de marque
+> corpus sans marque la retire (avec `--ecrire`, une entrée refusée ou disparue perd aussi sa ligne de marque, sans être supprimée). La marque est lue sur la première ligne brute : retrait, BOM ou ligne « # » intercalée la rendent invalide. Aucune fonction du code ne peut l'écrire. La ligne de marque
 > n'est pas rendue à l'appelant.
 
 `obtenirContexteMethode({ sujet, max? })` rend un noyau et au plus dix extraits de 1 500
