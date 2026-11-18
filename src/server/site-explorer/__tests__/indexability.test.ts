@@ -7,21 +7,21 @@ import { listGlossaryTermSlugs, isGlossaryTermIndexable } from "@/content/glossa
 
 const FUTURE = new Date("2030-01-01T00:00:00Z"); // cohorte drip maximale
 
-describe("computeIndexability — glossaire (constat F49)", () => {
-  // Derive du SSOT : le test choisit automatiquement un terme encore sous le
-  // seuil. Il ne devient rouge que le jour ou LES 60 passeraient le gate —
-  // bonne nouvelle qui se traite en supprimant ce cas, pas en le contournant.
-  const slugThin = listGlossaryTermSlugs().find((s) => !isGlossaryTermIndexable(s));
-
-  it("un terme sous le seuil anti-thin → noindex (la prod sert `noindex, follow`)", () => {
-    if (!slugThin) throw new Error("aucun terme sous le seuil — supprimer ce cas");
-    const r = computeIndexability({
-      pathRendered: `/fr/glossaire/${slugThin}`,
-      pathPattern: "/fr/glossaire/[slug]",
-      section: "glossaire",
-    });
-    expect(r.indexable).toBe(false);
-    expect(r.reason).toMatch(/thin/i);
+describe("computeIndexability — glossaire (constat F49, corrigé le 18/11/2026)", () => {
+  // Le glossaire de référence compte des fiches de 120 à 200 mots : toutes passent le gate.
+  // Le site explorer doit donc les déclarer indexables, comme la page et le sitemap.
+  it("chaque fiche du glossaire est indexable (même SSOT que la page et le sitemap)", () => {
+    const slugs = listGlossaryTermSlugs();
+    expect(slugs.length).toBeGreaterThanOrEqual(100);
+    for (const slug of slugs) {
+      expect(isGlossaryTermIndexable(slug), slug).toBe(true);
+      const r = computeIndexability({
+        pathRendered: `/fr/glossaire/${slug}`,
+        pathPattern: "/fr/glossaire/[slug]",
+        section: "glossaire",
+      });
+      expect(r.indexable, slug).toBe(true);
+    }
   });
 
   it("le hub /fr/glossaire reste indexable", () => {
