@@ -26,15 +26,21 @@ import {
 import { gardePage } from "@/server/auth/garde-page";
 import { prisma } from "@/lib/prisma";
 import { isUuid } from "@/lib/is-uuid";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { ACTIVITE_LABELS } from "@/server/qualiopi/financements/facture-libre-pur";
 import type { ActiviteFacturation } from "../../../../../../../../../prisma/generated/client";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = {
-  title: "Qualiopi — Corriger le brouillon | Axion-IA Admin",
-  robots: { index: false, follow: false },
-};
+// Avant la certification, le titre n'emploie pas le mot « Qualiopi » (même modèle que la fiche).
+export function generateMetadata(): Metadata {
+  return {
+    title: isQualiopiCertificationObtenue()
+      ? "Qualiopi — Corriger le brouillon | Axion-IA Admin"
+      : "Devis — Corriger le brouillon | Axion-IA Admin",
+    robots: { index: false, follow: false },
+  };
+}
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
