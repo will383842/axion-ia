@@ -114,20 +114,22 @@ const EMPREINTES: Readonly<
     version: 6,
   },
   convention: {
-    // v6 — 16/10/2026 : mention handicap (L15, NC12) ; v5 archivée.
-    // (v5 — 04/10/2026 : clause de condition suspensive OPCO, INT-T65-A.)
-    sha: "35a373df500c40867d21b308039019061a7aad97be0179ec799e17efd2b1fe85",
-    version: 6,
+    // v7 — 18/11/2026 : refonte au style de la charte 2027 (`charte/v1`), texte inchangé ; v6 archivée.
+    // (v6 — 16/10/2026 : mention handicap, L15, NC12. v5 — 04/10/2026 : clause de condition suspensive OPCO.)
+    sha: "8f0a882e2999541f7f89e0affb5903ad47bc754b7d21af8577c38e78368a74c2",
+    version: 7,
   },
   convention_tripartite: {
-    // v6 — 16/10/2026 : même mention, mot pour mot (L15) ; v5 archivée.
-    sha: "a2b0b6933d0425a6cdfc5763e2981f75567996856fcce697aec02ab00301f9a6",
-    version: 6,
+    // v7 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v6 archivée.
+    // (v6 — 16/10/2026 : même mention handicap, mot pour mot.)
+    sha: "23672fe072fb72fd852b3ae940423389d5acc9dfcacbe5646f6f535f2bebd956",
+    version: 7,
   },
   contrat_formation: {
-    // v2 — 30/09/2026 : citations juridiques corrigées ; v1 archivée.
-    sha: "d33ee1d4f4a602d05cedb86907ae56d380b995502655ee65c9df85cbaf8fbafa",
-    version: 2,
+    // v3 — 18/11/2026 : refonte au style de la charte 2027, texte inchangé ; v2 archivée.
+    // (v2 — 30/09/2026 : citations juridiques corrigées.)
+    sha: "9c2f344b57fa6ddcca856f1f60ac781a912e568cb3cdca178d8e1aeeb0dc1ac1",
+    version: 3,
   },
   contrat_sous_traitance: {
     sha: "826c87dd9c49c4d2424bfb8a9457e22bd6b99cbb8c14752e6588fb05a01136eb",
@@ -330,6 +332,12 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027 (empreinte
   // identique à celle de l'ancienne v5 courante, d6eb37c8…).
   "devis.v5.tsx": "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
+  // 18/11/2026 : copies conformes des gabarits courants d'avant la refonte charte 2027 (seule
+  // différence : la mention légale de tête est figée dans le fichier).
+  "convention.v6.tsx": "ecfd0277704317e97b34c135203f42f246f7fa932d4bb9887c7e9bb3a2bc5218",
+  "convention-tripartite.v6.tsx":
+    "e994a458883987781d2b3b4b4d2d2c00dc782ee8248fe75d6846b4544f4a7660",
+  "contrat-formation.v2.tsx": "50a48f4ac853f805ab112d463ae15a2a61c5548eb02231db18aee78b420b3fa3",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   // 18/11/2026 : copies conformes des cinq gabarits de formation d'avant la charte 2027

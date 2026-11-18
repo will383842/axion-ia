@@ -131,6 +131,7 @@ import {
 
 import { peutConsulter } from "@/server/auth/habilitations";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
+import { metadataConsole } from "@/lib/titre-console";
 import "@/app/admin.css";
 import "@/app/print.css";
 
@@ -180,10 +181,29 @@ export const dynamic = "force-dynamic";
  * geste sûr est de retirer la marque d'ici et de laisser le parent la poser une
  * fois : l'onglet lit « Console admin · Axion-IA ».
  */
-export const metadata: Metadata = {
-  title: { default: "Console admin", template: "%s" },
-  robots: { index: false, follow: false },
-};
+/**
+ * 🔴 V1-16 (2026-11-18) — UNE 404 PUBLIQUE NE S'ANNONCE PLUS « CONSOLE ADMIN ».
+ *
+ * `notFound()` rend la 404 À L'INTÉRIEUR de ce layout : l'onglet d'une page
+ * publique introuvable (ex. `/fr/cartographie`) portait « Console admin ».
+ * Pire, le titre variait avec la validité du préfixe : un titre différent entre
+ * un préfixe valide et un préfixe faux serait un oracle sur le préfixe secret.
+ *
+ * Règle : le titre ne dépend QUE de la session. Sans session authentifiée et
+ * dotée d'un rôle reconnu, c'est « Page introuvable », que le préfixe soit
+ * valide ou non. ⛔ Ne lire ici ni `adminPrefix` ni `ADMIN_URL_PREFIX` : verrouillé
+ * par `src/lib/__tests__/titre-console.spec.ts`.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  let authentifie = false;
+  try {
+    const session = (await auth()) as { user?: { role?: string | null } | null } | null;
+    authentifie = Boolean(session?.user) && peutConsulter(session?.user?.role ?? null);
+  } catch {
+    authentifie = false;
+  }
+  return metadataConsole(authentifie);
+}
 
 interface AdminLayoutProps {
   children: React.ReactNode;

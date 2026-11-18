@@ -68,6 +68,7 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 // Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
+import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -591,7 +592,9 @@ export default async function sitemap(props: {
   // Static IDs
   switch (id) {
     case "pages":
-      return filterEnIfDisabled(buildPagesSitemap(editorialFor("pages")));
+      return filterEnIfDisabled(
+        buildPagesSitemap(editorialFor("pages"), await hubGuidesEstIndexable()),
+      );
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
       // date ne sert que de défaut pour les entrées sans date propre.
@@ -732,11 +735,13 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
-function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
+function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // V1-17 : hub /guides vide = noindex, donc hors pages.xml (revient seul avec le 1er guide).
+    if (key === "/guides" && !hubGuidesIndexable) continue;
     // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
     if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
@@ -753,13 +758,6 @@ function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
     // R7 (08/11/2026) : la page redirige aussi tant que les prix publics sont masqués.
     if (key === "/catalogue" && !isQualiopiCertificationObtenue()) continue;
     if (key === "/catalogue" && !PRIX_PUBLICS_AFFICHES) continue;
-    // Page financement OPCO/France Travail : Phase-B only (mentions financement
-    // interdites avant l'agrément OF) → hors sitemap en Phase A.
-    if (
-      key === "/financement-opco-france-travail" &&
-      (!isQualiopiPublicDisclosureEnabled() || !isQualiopiCertificationObtenue())
-    )
-      continue;
     // Date PAR ROUTE (audit SEO 2026-11-11, I2) : avant, les 87 URL portaient
     // toutes `now` (date de la famille `pages`). `dateRoute` est la fonction que
     // lit aussi le `dateModified` JSON-LD de la page (`buildWebPageJsonLd`) ;

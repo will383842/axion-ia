@@ -59,15 +59,6 @@ import { WILLIAMS_PROFILE } from "@/lib/seo/williams-person";
 interface FounderProfileProps {
   /** FAQ déjà filtrée par le drapeau Qualiopi — le composant ne gate rien. */
   readonly faq: ReadonlyArray<{ id: string; question: string; answer: string }>;
-  /**
-   * `true` uniquement quand la certification Qualiopi est RÉELLEMENT obtenue
-   * ET les pages de l'organisme de formation publiques. Conditionne l'unique
-   * mention de financement de la page — et le lien vers
-   * `/financement-opco-france-travail`, qui répond 404 tant que les deux
-   * drapeaux ne sont pas levés : le lien n'existe donc que quand sa cible
-   * existe.
-   */
-  readonly financementPublic: boolean;
 }
 
 const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
@@ -78,7 +69,7 @@ const PILLS: ReadonlyArray<{ icon: LucideIcon; label: string }> = [
   { icon: ShieldCheck, label: "Hébergement des données en UE" },
 ];
 
-export function FounderProfile({ faq, financementPublic }: FounderProfileProps) {
+export function FounderProfile({ faq }: FounderProfileProps) {
   return (
     <>
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -295,19 +286,6 @@ export function FounderProfile({ faq, financementPublic }: FounderProfileProps) 
             </article>
           ))}
         </div>
-        {financementPublic ? (
-          <p className="text-fg-soft mt-8 text-sm">
-            Selon votre situation, une formation IA peut être prise en charge, en tout ou partie,
-            par votre OPCO ou par France Travail —{" "}
-            <Link
-              href="/financement-opco-france-travail"
-              className="text-terracotta hover:text-terracotta-deep font-semibold underline underline-offset-4"
-            >
-              conditions et montage du dossier
-            </Link>
-            .
-          </p>
-        ) : null}
       </Section>
 
       {/* ── CODE vs KIT ──────────────────────────────────────────────────── */}
