@@ -100,6 +100,8 @@ export const routing = defineRouting({
     // R5a (08/11/2026) — offre phare. Même slug en FR et EN : pas de boucle 307 next-intl ;
     // la version EN est de toute façon redirigée vers le FR (proxy + permanentRedirect).
     "/journee-ia": { fr: "/journee-ia", en: "/journee-ia" },
+    // GEO V2-09 : la cartographie, étape du matin de la Journée IA (EN redirigée vers FR).
+    "/cartographie": { fr: "/cartographie", en: "/cartographie" },
     "/audit/tpe-1-jour": { fr: "/audit/tpe-1-jour", en: "/audit/tpe-1-jour" },
     // Sprint 14.10.8 (Will 2026-05-12) — /audit/cible remplace /audit/process.
     // Slug aligné sur pricing.ts AUDIT_TIERS id "audit-cible".

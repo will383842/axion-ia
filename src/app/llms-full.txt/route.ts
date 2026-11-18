@@ -13,6 +13,7 @@ import {
   RAPPORT_COMPLET,
   remplacerJetons,
 } from "@/content/journee-ia-commun";
+import { DEFINITION_CARTOGRAPHIE } from "@/content/cartographie-date";
 import {
   DESCRIPTION_AUDIT_LLMS,
   LIBELLE_SITES_WEB_FR,
@@ -166,6 +167,10 @@ Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}
 
 C'est le seul tarif publié ; les autres prestations sont sur devis.
 URL : ${SITE_URL}/fr/journee-ia
+
+### Cartographie de l'entreprise
+${DEFINITION_CARTOGRAPHIE} Par vos tâches, pas par un outil.
+URL : ${SITE_URL}/fr/cartographie
 
 ## 5 modules
 

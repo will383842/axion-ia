@@ -582,6 +582,16 @@ export default async function JourneeIaPage({ params }: Props) {
                 );
               })}
             </ol>
+            <p className="text-fg-soft mt-6 text-base">
+              Le détail du matin :{" "}
+              <Link
+                href="/cartographie"
+                className="text-terracotta-deep font-bold underline underline-offset-4"
+              >
+                la cartographie de l’entreprise
+              </Link>
+              .
+            </p>
             <div className="mt-8">
               <Cta
                 href={lien("journee-ia-deroule")}

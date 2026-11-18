@@ -116,6 +116,8 @@ ${pagesEssentiellesLlms(SITE_URL)}
 
 - [La Journée IA](${SITE_URL}/fr/journee-ia) — ${remplacerJetons(DESCRIPTION_SERVICE_JOURNEE_IA)} ${RAPPORT_COMPLET} Garantie : ${GARANTIE_PHRASE} ${CONDITION_GARANTIE} C'est le seul tarif publié ; les autres prestations sont sur devis.
 
+- [Cartographie de l'entreprise](${SITE_URL}/fr/cartographie) — le matin de la Journée IA, l'entreprise est passée en revue service par service, avec chiffrage des gains en heures et en euros. Par vos tâches, pas par un outil.
+
 ## Modules — 5 prestations
 
 - [${SERVICE_BY_ID.formations.officialFr}](${SITE_URL}/fr/formations) — formations intra-entreprise sur site ou à distance : offres générales, par métier (${SITE_URL}/fr/formations/metiers) et par secteur d'activité (${SITE_URL}/fr/formations/secteurs), 4 h à 2 jours, dès ${formationsMinPrice} par groupe (2-15 pers.). Tarifs HT : ${SITE_URL}/fr/tarifs.
