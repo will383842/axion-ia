@@ -36,7 +36,11 @@
 
 import { prisma } from "@/lib/prisma";
 import { inferOpcoDepuisTable } from "@/server/qualiopi/crm/naf-opco";
-import { isOpcoId, nomOpcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
+import {
+  isOpcoId,
+  NOM_OPCO_A_PRECISER,
+  nomOpcoDuClient,
+} from "@/server/qualiopi/financements/opco-referentiel";
 import { chargeClientAvant, emettreFaitClient } from "@/server/partners-sync/producteurs/client";
 
 import { lireEntreeDossier } from "./lire-dossier";
@@ -174,7 +178,7 @@ export async function appliquerRetourDossier(msg: RetourDossier): Promise<IssueR
     // Même règle que la console : un NAF nouveau recalcule l'OPCO déduit, sauf
     // s'il a été saisi (valeur posée = saisie, jamais écrasée).
     let opcoDeduit: Record<string, string> = {};
-    if (data.nafCode !== undefined && nomOpcoDuClient(fiche) === "OPCO (à préciser)") {
+    if (data.nafCode !== undefined && nomOpcoDuClient(fiche) === NOM_OPCO_A_PRECISER) {
       const infere = await inferOpcoDepuisTable(tx, { idcc: fiche.idcc, naf: data.nafCode });
       if (infere !== null) {
         opcoDeduit = { opcoIdentifie: infere };

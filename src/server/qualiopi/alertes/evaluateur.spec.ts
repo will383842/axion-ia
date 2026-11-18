@@ -1445,6 +1445,22 @@ describe("evaluerAlertes — dossiers de financement", () => {
     expect(a?.message).toContain("OPCO EP");
   });
 
+  it("🔴 hors subrogation : « il ne nous verse rien » (L11-S2)", async () => {
+    mp.dossierFinancement.findMany.mockResolvedValueOnce([]).mockResolvedValueOnce([
+      {
+        id: "dos-00000003",
+        financeurNom: "OPCO EP",
+        numeroDossierExterne: null,
+        echeanceFinanceurAt: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000),
+        subrogation: false,
+      },
+    ]);
+    const alertes = await evaluerAlertes();
+    const a = alertes.find((x) => x.code === "financeur_paiement_en_retard");
+    expect(a?.message).toContain("rembourse le client, il ne nous verse rien.");
+    expect(a?.message).not.toContain("à l'organisme.");
+  });
+
   it("aucun dossier en souffrance → aucune alerte de financement", async () => {
     const alertes = await evaluerAlertes();
     expect(alertes.filter((x) => x.code === "dossier_financement_sans_reponse")).toHaveLength(0);

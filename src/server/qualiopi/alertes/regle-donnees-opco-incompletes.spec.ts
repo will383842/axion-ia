@@ -57,6 +57,13 @@ describe("candidatsDonneesOpcoIncompletes", () => {
     expect(a?.message).toContain("S-1");
   });
 
+  it("🔴 le titre est celui de la fiche, au catalogue comme dans l'alerte rendue", () => {
+    const TITRE = "Fiche client incomplète pour le paiement par un tiers";
+    expect(ALERTE_CATALOGUE.donnees_opco_incompletes?.titre).toBe(TITRE);
+    const [a] = candidatsDonneesOpcoIncompletes([session("S-1", { idcc: null })]);
+    expect(a?.titre).toBe(TITRE);
+  });
+
   it("OPCO absent ou texte libre non reconnu : « organisme tiers reconnu » manque", () => {
     const [absent] = candidatsDonneesOpcoIncompletes([session("S-1", { opco: null })]);
     expect(absent?.message).toContain("organisme tiers reconnu");
