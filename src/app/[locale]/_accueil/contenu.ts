@@ -285,8 +285,7 @@ export const CONTENU = {
       {
         id: "faq-prix",
         question: "Combien coûte la Journée IA ?",
-        reponse:
-          "{{PRIX}} la journée, dans vos locaux : un prix unique, sans remise. Rien ne se paie en ligne : le paiement est fixé dans votre devis, après un premier échange.",
+        reponse: reponseReference("ref-journee-prix"),
       },
       {
         id: "faq-garantie",

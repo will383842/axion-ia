@@ -40,6 +40,7 @@ import {
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { FORMATION_CATEGORIES_META, formationDureeIso } from "@/content/formations/catalog-v2-meta";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { faqItems } from "@/content/questions-reference";
 import {
   FORMATION_DUREE_FACTS,
   getFormationCourseModes,
@@ -1413,14 +1414,11 @@ export default async function FormationsHub({ params }: Props) {
             items={
               isFr
                 ? [
-                    {
-                      // Prix dérivés du SSOT catalogue (matrice pricing.ts),
-                      // JAMAIS hardcodés — cohérents avec les cartes plus haut.
-                      id: "prix-formation-ia",
-                      question: "Combien coûte une formation IA en entreprise ?",
-                      answer:
-                        "Le prix est établi sur devis, par groupe (2 à 15 participants) — jamais par personne. Il dépend de la formation retenue (offre générale, par métier ou par secteur d'activité), de sa durée (4 h à 2 jours) et du format, sur site ou à distance. Le devis arrive sous 48 h ouvrées, sans engagement.",
-                    },
+                    ...faqItems(["ref-formation-prix"]).map(({ id, question, answer }) => ({
+                      id,
+                      question,
+                      answer,
+                    })),
                     {
                       id: "effectif",
                       question: "Combien de participants par session ?",

@@ -6971,7 +6971,7 @@ const SEMINAIRE_IA_ENTREPRISE: FormationV2 = {
   ],
 };
 
-const FORMATIONS_V2_SOURCE: ReadonlyArray<FormationV2> = [
+export const FORMATIONS_V2_SOURCE: ReadonlyArray<FormationV2> = [
   // Offres générales (4)
   BIEN_COMMENCER_4H,
   BIEN_COMMENCER_JOURNEE,
@@ -7011,7 +7011,7 @@ function questionsCommunesFiche(f: FormationV2): FormationV2Faq[] {
   return [
     {
       question: `Quelle différence entre la formation « ${f.titreFr} » et la Journée IA ?`,
-      reponse: `La formation « ${f.titreFr} » approfondit un sujet précis pour les personnes concernées, sur devis écrit, alors que la Journée IA est une journée d’audit et de formation dans vos locaux : l’audit du matin repère et chiffre vos priorités, la formation de l’après-midi forme les équipes sur leurs propres dossiers. La Journée IA est le point de départ recommandé.`,
+      reponse: `La formation « ${f.titreFr} » répond à un besoin de formation défini avec vous, sur devis écrit, alors que la Journée IA est une journée d’audit et de formation dans vos locaux : l’audit du matin repère et chiffre vos priorités, la formation de l’après-midi forme les équipes sur leurs propres dossiers. La Journée IA est le point de départ recommandé.`,
     },
     { question: aiAct.question, reponse: aiAct.answer },
   ];

@@ -239,12 +239,7 @@ export default async function PricingPage({ params }: Props) {
   // le balisage est identique au texte visible par construction.
   const faqItems = isFr
     ? [
-        {
-          id: "prix-journee-ia",
-          question: "Combien coûte La Journée IA ?",
-          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
-        },
-        ...faqReference(["ref-formation-prix", "ref-audit-prix", "ref-automatisation-prix"]).map(
+        ...faqReference(["ref-journee-prix", "ref-formation-prix", "ref-automatisation-prix"]).map(
           ({ id, question, answer }) => ({
             id,
             question,

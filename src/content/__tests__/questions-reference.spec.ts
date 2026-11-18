@@ -2,7 +2,7 @@ import { describe, it, expect } from "vitest";
 import { QUESTIONS_REFERENCE, faqItems } from "../questions-reference";
 
 const INTERDITS =
-  /qualiopi|opco|prise en charge|financement|subvention|grenoble|aucun gain garanti|faites-le vous-m|le faire seul|formation obligatoire|niveau suffisant|conformité garantie|attestation de conformité|amende|fondateur|williams|rembours/i;
+  /qualiopi|opco|prise en charge|financement|subvention|grenoble|aucun gain garanti|faites-le vous-m|le faire seul|formation obligatoire|niveau suffisant|conformité garantie|attestation de conformité|amende|fondateur|williams/i;
 
 const toutes = faqItems(Object.keys(QUESTIONS_REFERENCE));
 const mots = (t: string) => t.trim().split(/\s+/).length;

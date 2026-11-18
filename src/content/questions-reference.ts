@@ -10,9 +10,14 @@
  *  - AI Act : uniquement les formulations sûres de l'état du droit au 18/11/2026 ;
  *  - une page qui pose une de ces questions l'IMPORTE (`faqItems`) au lieu de la recopier.
  *
- * Volontairement absent de cette première vague : la garantie de remboursement, le
- * plafond de participants, les horaires, la durée de l'audit approfondi et la
- * déduction de la Journée IA (décisions en attente).
+ * Décisions de Williams du 18/11/2026 reprises ici : la Journée IA va jusqu'à 15 personnes
+ * au même prix ; audit le matin (2 à 4 h selon l'entreprise), formation de 4 h l'après-midi ;
+ * garantie gardée (« Si la Journée IA n'identifie pas des gains d'au moins 3 fois son prix, elle
+ * est remboursée », distincte d'une « garantie de résultat », qu'on ne donne pas) ; les {{PRIX}}
+ * sont déduits d'un devis d'automatisation ou de mise en place signé dans les 60 jours suivant
+ * la Journée IA, jamais d'une formation.
+ *
+ * Volontairement absent : l'audit approfondi (durée non décidée) et le nom du fondateur.
  */
 import { remplacerJetons } from "./journee-ia-commun";
 
@@ -36,6 +41,14 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
       "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, chiffre vos plus gros gains en heures et en euros, puis retient 3 à 5 priorités. Le premier pas est gratuit : un diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
     sujet: "PME",
     source: "src/app/[locale]/_accueil/contenu.ts (faq-commencer)",
+  },
+  "ref-journee-prix": {
+    id: "ref-journee-prix",
+    question: "Combien coûte la Journée IA ?",
+    reponse:
+      "La Journée IA d’Axion-IA coûte {{PRIX}}, prix unique, pour une équipe jusqu’à 15 personnes. Elle comprend l’audit du matin (2 à 4 h selon l’entreprise), la formation de 4 h l’après-midi, 3 à 5 priorités écrites le soir, puis le rapport chiffré et le plan d’action sous 3 jours ouvrés. Si la Journée IA n’identifie pas des gains d’au moins 3 fois son prix, elle est remboursée.",
+    sujet: "Journée IA",
+    source: "src/content/pricing.ts, src/content/journee-ia-commun.ts",
   },
   "ref-formation-prix": {
     id: "ref-formation-prix",
@@ -97,7 +110,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-automatisation-prix",
     question: "Combien coûte une automatisation IA pour une PME ?",
     reponse:
-      "Une automatisation IA pour une PME est facturée sur devis écrit et forfaitaire : le prix est fixé avant de commencer, sans heures qui tournent. Il dépend des outils à relier, du nombre d’étapes et du volume traité. Le premier pas est gratuit : un diagnostic de 45 minutes pour cadrer le besoin, en visio ou par téléphone, sans engagement avant le devis.",
+      "Une automatisation IA pour une PME est facturée sur devis écrit et forfaitaire, fixé avant de commencer, sans heures qui tournent, selon les outils à relier et le volume traité. Les {{PRIX}} de la Journée IA sont déduits d’un devis d’automatisation ou de mise en place signé dans les 60 jours suivant la Journée IA, jamais d’une formation. Premier pas gratuit : un diagnostic de 45 minutes.",
     sujet: "automatisation IA",
     source: "src/content/implementation-fr-overrides.ts",
   },
