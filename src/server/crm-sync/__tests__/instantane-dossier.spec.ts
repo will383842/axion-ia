@@ -238,11 +238,60 @@ describe("photo du dossier pour le CRM", () => {
     expect(d.contacts?.map((c) => c.ref)).toEqual(["c1"]);
   });
 
-  it("une adresse personnelle ne part pas (le contact part sans e-mail ni clé)", () => {
+  it("adresse grand public : l'empreinte part, l'adresse non", () => {
     const base = entree().contacts[0]!;
     const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: "perso" }] }));
     expect(d.contacts![0]).not.toHaveProperty("email");
-    expect(d.contacts![0]).not.toHaveProperty("person_key");
+    expect(d.contacts![0]!.person_key).toBe(HASH);
+    expect(JSON.stringify(d)).not.toContain("marie@exemple.fr");
+  });
+
+  it("adresse de type inconnu (null) : l'empreinte part aussi, pas l'adresse", () => {
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: null }] }));
+    expect(d.contacts![0]).not.toHaveProperty("email");
+    expect(d.contacts![0]!.person_key).toBe(HASH);
+  });
+
+  it("adresse grand public + empreinte mal formée : ni adresse ni clé", () => {
+    const base = entree().contacts[0]!;
+    for (const emailHash of ["xyz", "A".repeat(64), null]) {
+      const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: "perso", emailHash }] }));
+      expect(d.contacts![0]).not.toHaveProperty("email");
+      expect(d.contacts![0]).not.toHaveProperty("person_key");
+    }
+  });
+
+  it("contact opposé à adresse grand public : il ne part pas du tout", () => {
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: "perso", oppose: true }] }));
+    expect(d.contacts).toBeUndefined();
+  });
+
+  it("adresse grand public exclue (estExclueDuCrm) : contact absent, clé comprise", () => {
+    vi.stubEnv("CRM_SYNC_EXCLUSIONS_SHA256", empreinteSha256("marie@exemple.fr"));
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(entree({ contacts: [{ ...base, emailType: "perso" }] }));
+    expect(d.contacts).toBeUndefined();
+    expect(JSON.stringify(d)).not.toContain(HASH);
+  });
+
+  it("contact parti ou cité, adresse grand public : aucune empreinte ne part", () => {
+    const base = entree().contacts[0]!;
+    const d = dossierPourCrm(
+      entree({
+        contacts: [
+          { ...base, id: "p", emailType: "perso", parti: true },
+          { ...base, id: "m", emailType: "perso", origine: "mention" },
+        ],
+      }),
+    );
+    expect(d.contacts).toBeUndefined();
+  });
+
+  it("adresse pro : adresse et clé partent, comme avant", () => {
+    const d = dossierPourCrm(entree());
+    expect(d.contacts![0]).toMatchObject({ email: "marie@exemple.fr", person_key: HASH });
   });
 
   it("l'opposition gagne : un contact dont l'adresse est exclue ne part pas du tout", () => {
