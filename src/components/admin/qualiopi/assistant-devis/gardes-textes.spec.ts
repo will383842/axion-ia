@@ -51,28 +51,41 @@ const INTERDITS_SOURCE: ReadonlyArray<[string, RegExp]> = [
  * Une exception sur un fichier réservé aux routines R1/R2 porterait « à retirer après R1/R2 » ;
  * il n'y en a aucune.
  */
-const EXCEPTIONS: ReadonlyArray<{ fichier: string; texte: string; pourquoi: string }> = [
+const EXCEPTIONS: ReadonlyArray<{
+  fichier: string;
+  texte: string;
+  regle: string;
+  pourquoi: string;
+}> = [
   {
     fichier: "/fixtures.ts",
+    // Égalité EXACTE sur le texte nettoyé, et seulement pour cette règle : « 112 € » rougit.
     texte: "12 €",
+    regle: "montant en dur",
     // Jeu d'essai du cas T6 (saisie invalide qui DOIT être refusée) : lu par les specs seulement,
     // jamais affiché, et le littéral est la donnée testée. Le modifier changerait le test.
     pourquoi: "saisie invalide du cas T6, donnée de test jamais affichée",
   },
 ];
 
-/** Source sans ses commentaires (les positions de ligne sont conservées). */
+/**
+ * Source sans ses commentaires (les positions de ligne sont conservées). Parcours de TOUS les
+ * jetons de l'arbre (ponctuation comprise) : un commentaire est la « trivia » qui précède un
+ * jeton, donc `{/* … *\/}` (jeton `}`), un commentaire avant `)` ou `}`, ou dans les arguments
+ * sont vus. Le texte JSX n'est jamais lu comme code : `//` y est du texte.
+ */
 export function sansCommentaires(nom: string, source: string): string {
   const sf = ts.createSourceFile(nom, source, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const plages: Array<[number, number]> = [];
+  const plages = new Map<number, number>();
   const visite = (n: ts.Node): void => {
-    if (!ts.isJsxText(n)) {
+    if (n.kind !== ts.SyntaxKind.JsxText) {
+      // `leading` ne rend pas les commentaires de la ligne du jeton précédent : `trailing` les prend.
       for (const r of ts.getLeadingCommentRanges(source, n.getFullStart()) ?? [])
-        plages.push([r.pos, r.end]);
-      for (const r of ts.getTrailingCommentRanges(source, n.getEnd()) ?? [])
-        plages.push([r.pos, r.end]);
+        plages.set(r.pos, r.end);
+      for (const r of ts.getTrailingCommentRanges(source, n.getFullStart()) ?? [])
+        plages.set(r.pos, r.end);
     }
-    ts.forEachChild(n, visite);
+    for (const enfant of n.getChildren(sf)) visite(enfant);
   };
   visite(sf);
   let out = source;
@@ -107,6 +120,16 @@ export function textesJsx(nom: string, source: string): Array<{ ligne: number; t
       (ts.isStringLiteral(n.expression) || ts.isNoSubstitutionTemplateLiteral(n.expression))
     ) {
       noter(n.expression, n.expression.text);
+    } else if (
+      ts.isJsxExpression(n) &&
+      n.expression &&
+      !ts.isJsxAttribute(n.parent) &&
+      ts.isTemplateExpression(n.expression)
+    ) {
+      // Gabarit avec variable en enfant JSX : {`${n} €`}. Chaque `${…}` devient un chiffre, car
+      // une valeur calculée suivie de « € » est un montant composé dans l'écran.
+      const t = n.expression;
+      noter(t, t.head.text + t.templateSpans.map((s) => `0${s.literal.text}`).join(""));
     }
     ts.forEachChild(n, visite);
   };
@@ -115,6 +138,9 @@ export function textesJsx(nom: string, source: string): Array<{ ligne: number; t
 }
 
 type Faute = string;
+
+/** Chemin relatif au dossier, séparateurs POSIX (sinon l'exception ne s'applique pas sous Windows). */
+const relatif = (f: string): string => f.replace(RACINE, "").split("\\").join("/");
 
 function fautesTextes(
   nom: string,
@@ -127,7 +153,9 @@ function fautesTextes(
     for (const [regle, re] of regles)
       if (
         re.test(t.texte) &&
-        !EXCEPTIONS.some((e) => e.fichier === rel && t.texte.includes(e.texte))
+        !EXCEPTIONS.some(
+          (e) => e.fichier === rel && e.regle === regle && t.texte.trim() === e.texte,
+        )
       )
         fautes.push(`${rel}:${t.ligne} [${regle}] « ${t.texte.trim()} »`);
   return fautes;
@@ -140,8 +168,7 @@ function fautesSource(nom: string, source: string, rel = nom): Faute[] {
     .forEach((ligne, i) => {
       for (const [regle, re] of INTERDITS_SOURCE) {
         const m = re.exec(ligne);
-        if (m && !EXCEPTIONS.some((e) => e.fichier === rel && m[0].includes(e.texte)))
-          fautes.push(`${rel}:${i + 1} [${regle}] ${m[0]}`);
+        if (m) fautes.push(`${rel}:${i + 1} [${regle}] ${m[0]}`);
       }
     });
   return fautes;
@@ -156,12 +183,7 @@ describe("E18 — gardes de textes de l'assistant (dossier réel)", () => {
 
   it("aucun texte visible ne contient ville, gain garanti, capital social, prénom ni montant en dur", () => {
     const fautes = liste.flatMap((f) =>
-      fautesTextes(
-        f,
-        textesVisibles(f, readFileSync(f, "utf8")),
-        INTERDITS_TEXTE,
-        f.replace(RACINE, ""),
-      ),
+      fautesTextes(f, textesVisibles(f, readFileSync(f, "utf8")), INTERDITS_TEXTE, relatif(f)),
     );
     expect(fautes).toEqual([]);
   });
@@ -233,6 +255,43 @@ describe("E18 — face ROUGE : chaque règle détecte une source fictive", () =>
     ).toEqual([]);
   });
 
+  it("un commentaire JSX, avant `}` ou `)`, ou dans les arguments n'est pas lu", () => {
+    for (const src of [
+      "const A = () => <div>{/* bg-blue-600 #fff */}</div>;",
+      "const A = () => <div>{x /* #fff */}</div>;",
+      "const a = f(/* #fff */);",
+      "const a = f(x /* bg-blue-600 */, y);",
+      "const a = [1, /* #123456 */];",
+      "const o = { a: 1 /* text-sky-500 */ };",
+      "function g() { return 1; /* #fff */ }",
+    ])
+      expect(source(src)).toEqual([]);
+    // et le code voisin reste lu
+    expect(source('const A = () => <div>{/* ok */}<i className="bg-blue-600" /></div>;')).toEqual([
+      "teinte bleue",
+    ]);
+  });
+
+  it("exception « 12 € » : égalité exacte, limitée à la règle « montant en dur »", () => {
+    const f = (src: string) =>
+      fautesTextes("/fixtures.ts", textesVisibles("/fixtures.ts", src), INTERDITS_TEXTE).length;
+    expect(f('const a = { saisie: "12 €" };')).toBe(0);
+    expect(f('const a = { saisie: "112 €" };')).toBe(1);
+    expect(f('const a = { saisie: "12 € de plus" };')).toBe(1);
+    expect(f('const a = { saisie: "12 € à Grenoble" };')).toBe(2);
+  });
+
+  it("le chemin relatif d'un fichier Windows est normalisé en POSIX", () => {
+    expect(relatif(`${RACINE}\\fixtures.ts`)).toBe("/fixtures.ts");
+  });
+
+  it("page : un gabarit avec variable en enfant JSX est lu pour la règle des euros", () => {
+    const src = "export default function P() { return <p>{`${n} €`}</p>; }";
+    expect(fautesTextes("page.tsx", textesJsx("page.tsx", src), INTERDITS_PAGE)).toHaveLength(1);
+    const ok = "export default function P() { return <p>{`Pour ${n} personnes`}</p>; }";
+    expect(fautesTextes("page.tsx", textesJsx("page.tsx", ok), INTERDITS_PAGE)).toEqual([]);
+  });
+
   it("page : le texte JSX et un attribut de texte sont lus, pas un commentaire ni un titre de métadonnée", () => {
     const src = [
       'export const metadata = { title: "Qualiopi — Nouveau devis" };',
@@ -256,6 +315,7 @@ describe("E18 — face ROUGE : chaque règle détecte une source fictive", () =>
     for (const e of EXCEPTIONS) {
       expect(e.fichier).toMatch(/\.tsx?$/);
       expect(e.texte.length).toBeGreaterThan(2);
+      expect(e.regle.length).toBeGreaterThan(2);
       expect(e.pourquoi.length).toBeGreaterThan(10);
     }
   });
