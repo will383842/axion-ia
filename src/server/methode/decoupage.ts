@@ -99,7 +99,7 @@ const SYMBOLE_EURO = String.fromCharCode(0x20ac);
 const ESPACES_FINES = String.fromCharCode(0xa0, 0x202f);
 const APOSTROPHES = `'${String.fromCharCode(0x2019)}`;
 // nombre, multiplicateur éventuel (k, M, Md, mille, million…), puis symbole ou « EUR/euro »
-const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|md|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`;
+const MONTANT_APRES = String.raw`\d[\d\s${ESPACES_FINES}.,]*\s?(?:(?:k|m|mds?|mrds?|mrd|mille|millions?|milliards?)\s?)?(?:d[${APOSTROPHES}]\s?)?(?:${SYMBOLE_EURO}|EUR\b|euros?\b)`;
 // symbole ou « EUR » placé devant le nombre
 const MONTANT_AVANT = String.raw`(?:${SYMBOLE_EURO}|\bEUR)\s?\d`;
 const MOTIF_MONTANT = new RegExp(`${MONTANT_APRES}|${MONTANT_AVANT}`, "i");
@@ -124,7 +124,7 @@ function lignesNettoyees(texte: string): string[] {
     .split("\n")
     .filter((l) => !/^<!--\s*page\s+\d+\s*-->$/.test(l.trim()))
     .filter((l) => !/^\d+\s*\/\s*\d+$/.test(l.trim()))
-    .filter((l) => !/^AXION IA · Plus de performance, moins de charges$/.test(l.trim()))
+    .filter((l) => !/^AXION IA · .+$/.test(l.trim()))
     .filter((l) => !/^Source : Google Drive/.test(l.trim()));
 }
 

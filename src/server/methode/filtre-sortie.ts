@@ -38,6 +38,15 @@ export interface FicheFiltrable {
   readonly etiquettes?: readonly string[];
 }
 
+/**
+ * Toute mention monétaire, AVEC OU SANS chiffre (« cinq mille euros », « KEUR 5 ») :
+ * le symbole, « EUR » (avec un multiplicateur éventuel collé) et « euro(s) ».
+ */
+const MOTIF_MONETAIRE = new RegExp(
+  `${String.fromCharCode(0x20ac)}|\\b(?:k|m|md|mds|mrd|mrds)?eur\\b|\\beuros?\\b`,
+  "i",
+);
+
 const MOTIF_COURRIEL = /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}/;
 
 /** Numéro français (national, +33 ou 0033) ou international en « + » suivi de 8 chiffres ou plus. */
@@ -61,7 +70,7 @@ export function motifRefus(fiche: FicheFiltrable): string | null {
     if (ETIQUETTES_REFUSEES.includes(e)) return `etiquette:${e}`;
   }
   const champs = `${fiche.titre}\n${fiche.texte}`;
-  if (contientMontant(champs)) return "montant";
+  if (contientMontant(champs) || MOTIF_MONETAIRE.test(champs)) return "montant";
   if (contientCourriel(champs)) return "courriel";
   if (contientTelephone(champs)) return "telephone";
   const interdits = detecterInterditsSurface(

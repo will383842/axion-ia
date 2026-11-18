@@ -60,7 +60,7 @@ const FICHE_FAUSSE = [
   "<!-- page 1 -->",
   "",
   "1 / 2",
-  "AXION IA · Plus de performance, moins de charges",
+  "AXION IA · Un bandeau inventé",
   "1. Le pain se vend d'abord par l'odeur",
   LONG,
   "L'ESSENTIEL EN 30 SECONDES",
