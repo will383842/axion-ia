@@ -15,6 +15,7 @@ import {
   contenuDeFiche,
   creerRechercheChatbot,
   estKbUnifieeActive,
+  sansDoublons,
   KE_CONTENU_MAX,
   montantsHorsJourneeIa,
   type KnowledgeEntryRow,
@@ -205,6 +206,24 @@ describe("chercherDansKnowledgeEntry", () => {
       ]);
     const r = await chercherDansKnowledgeEntry("prix", { query });
     expect(r.map((c) => c.sourceRef)).toEqual(["journee-ia"]);
+  });
+
+  it("conserverHorsGrille : l'essai voit aussi les fiches au montant étranger (lecture seule)", async () => {
+    const query = vi
+      .fn()
+      .mockResolvedValue([
+        ROW,
+        { ...ROW, slug: "audit", body_text: "Audit à partir de 2 900 € HT." },
+      ]);
+    const r = await chercherDansKnowledgeEntry("prix", { query, conserverHorsGrille: true });
+    expect(r.map((c) => c.sourceRef)).toEqual(["journee-ia", "audit"]);
+  });
+
+  it("sansDoublons : retire la fiche déjà couverte par un chunk `slug#i`", () => {
+    const f = { ...FICHE, sourceRef: "faq-x" };
+    const c = { ...CHUNKS[0]!, sourceRef: "faq-x#2" };
+    expect(sansDoublons([f], [c])).toEqual([]);
+    expect(sansDoublons([f], [])).toEqual([f]);
   });
 
   it("question vide : aucune requête", async () => {

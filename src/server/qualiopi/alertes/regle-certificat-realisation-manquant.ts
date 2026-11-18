@@ -77,7 +77,7 @@ export async function regleCertificatRealisationManquant(now: Date): Promise<Ale
       message:
         `Le certificat de réalisation de ${e.trainee.prenom} ${e.trainee.nom} (session ${e.session.numero}) ` +
         `n'existe pas ${DELAI_ALERTE_CERTIFICAT_JOURS} jours après la fin de la formation : les ` +
-        "financeurs le demandent pour régler un dossier, et l'audit le contrôle. Générez-le " +
+        "organismes tiers le demandent pour régler un dossier, et l'audit le contrôle. Générez-le " +
         "depuis les documents de la session ; le bouton dit ce qui manque (taux de présence " +
         "non calculé, aucune signature d'émargement). Cette alerte se referme dès que le " +
         `certificat existe, et au plus tard ${FENETRE_CERTIFICAT_AUTO_JOURS} jours après la fin de la session.`,

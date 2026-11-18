@@ -1627,6 +1627,8 @@ jobs:
         run: pnpm test:integration tests/integration/condition-suspensive
       - name: "Devis : tests d'intégration (expiration, envoi concurrent)"
         run: pnpm test:integration tests/integration/devis
+      - name: "E-mails écrits à la main : pièces jointes concurrentes (Postgres réel)"
+        run: pnpm test:integration tests/integration/emails-manuels
       - name: Visio — comportements sur base réelle
         run: pnpm exec tsx scripts/ci/gate-d-visio.ts
       - name: Verify _prisma_migrations table healthy

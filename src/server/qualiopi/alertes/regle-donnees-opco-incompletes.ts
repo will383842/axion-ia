@@ -49,7 +49,9 @@ export function candidatsDonneesOpcoIncompletes(sessions: SessionOpcoAVenir[]): 
     if (opcoDuClient(client) === null) {
       const libre = referenceOpcoDuClient(client);
       manques.push(
-        libre ? `OPCO reconnu (« ${libre} » n'est pas l'un des 11 OPCO)` : "OPCO reconnu",
+        libre
+          ? `organisme tiers reconnu (« ${libre} » n'est pas dans la liste officielle des 11 organismes)`
+          : "organisme tiers reconnu",
       );
     }
     if (normaliserIdcc(client.idcc) === null) manques.push("IDCC");
@@ -68,8 +70,8 @@ export function candidatsDonneesOpcoIncompletes(sessions: SessionOpcoAVenir[]): 
     return {
       code: "donnees_opco_incompletes",
       niveau: "important",
-      titre: "Données OPCO du client incomplètes",
-      message: `La fiche de ce client, financé par un OPCO pour ${sessionsTexte} à venir, n'indique pas : ${listeFr(manques)}. Sans ces données, le régime de paiement, le barème, l'état des fonds et la date limite de dépôt restent inconnus. Complétez la fiche client.`,
+      titre: "Données de l'organisme tiers du client incomplètes",
+      message: `La fiche de ce client, financé par un organisme tiers pour ${sessionsTexte} à venir, n'indique pas : ${listeFr(manques)}. Sans ces données, le régime de paiement, le barème, l'état des fonds et la date limite de dépôt restent inconnus. Complétez la fiche client.`,
       cibleType: "Client",
       cibleId: clientId,
     };

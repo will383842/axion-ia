@@ -24,6 +24,7 @@ import { enqueueEmail } from "@/server/queue/queues";
 import type { MotifRetenue } from "@/server/email/suppression";
 import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
+import { gabaritEnSommeil, MESSAGE_EMAIL_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
 import { refusGabaritFormateur } from "@/server/email/outbox-policy";
 import {
   GABARITS_AVEC_LIEN_SIGNATURE,
@@ -83,6 +84,8 @@ export async function approuverEmailAction(
     },
   });
   if (!email) return { error: "Email introuvable" };
+  // L9b — e-mail en sommeil : refus AVANT le verrou. Rien n'est écrit ni envoyé, la ligne reste « à valider ».
+  if (gabaritEnSommeil(email.template)) return { error: MESSAGE_EMAIL_EN_SOMMEIL };
   const refusFormateur = refusGabaritFormateur(email.template, estSuperAdmin(session.role));
   if (refusFormateur) return { error: refusFormateur };
   if (email.statut !== "a_valider") {

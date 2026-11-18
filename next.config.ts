@@ -952,8 +952,14 @@ const nextConfig: NextConfig = {
       // Films des pages d'atterrissage (`public/videos/`, ex. VSL apporteurs) : nom de
       // fichier VERSIONNÉ (`…-v1.mp4`), donc cache long et immuable (1 an). Un film refait
       // prend un nouveau nom. Sans cette règle, Cloudflare revalide chaque lecture.
+      //
+      // 🔒 SEC-1a — la règle ne couvre qu'UN segment portant une extension de fichier
+      // média. Avec `/videos/:path*`, un chemin comme `/videos/x/<console>/export` (qui retombe
+      // sur une route dynamique `[locale]/(admin)/[adminPrefix]/…`, hors proxy) recevait
+      // `public, immutable` : les en-têtes de `next.config` passent avant ceux du gestionnaire.
+      // Verrouillé par `tests/unit/ci/cache-public-fichiers-seulement.spec.ts`.
       {
-        source: "/videos/:path*",
+        source: "/videos/:fichier([^/]+\\.(?:mp4|webm|vtt|avif|webp|jpg|jpeg|png))",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       // P1 fix audit Web Vitals — Cache-Control explicites sinon Cloudflare
@@ -971,8 +977,10 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // 🔒 SEC-1a — un seul segment `<id>.xml` (les sous-plans de `generateSitemaps`), jamais
+      // une route dynamique de plusieurs segments (cf. règle `/videos/` plus haut).
       {
-        source: "/sitemap/:path*",
+        source: "/sitemap/:id([^/]+\\.xml)",
         headers: [
           {
             key: "Cache-Control",
