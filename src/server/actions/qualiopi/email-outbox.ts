@@ -32,6 +32,11 @@ import {
 } from "@/server/email/masquer-lien-signature-payload";
 import { revoquerJetonPrecis } from "@/server/qualiopi/documents/signature/token-document";
 import { ligneDuLien } from "@/server/qualiopi/documents/signature/lien-precedent";
+import {
+  EnvoiOccupe,
+  envoyerAvecLienALEnvoi,
+  lireMarqueur,
+} from "@/server/qualiopi/documents/signature/lien-a-l-envoi";
 import * as Sentry from "@sentry/nextjs";
 import type { Prisma } from "../../../../prisma/generated/client";
 
@@ -123,32 +128,83 @@ export async function approuverEmailAction(
   // `enqueueEmail` peut lever (Redis coupé en cours d'appel) : sans ce filet, la
   // ligne resterait en `approuve` — le même tombeau, par une autre porte.
   let res: { enqueued: boolean; retenu?: MotifRetenue };
+  // B2 — une ligne à marqueur ne porte aucun lien : il naît ici, à l'approbation.
+  const lienALEnvoi = lireMarqueur(email.payload) !== null;
   try {
-    res = await enqueueEmail(
-      email.template as EmailJobName,
-      email.recipient,
-      email.locale === "en" ? "en" : "fr",
-      payload,
-      {
-        // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
-        // corbeille se remplirait d'elle-même à l'infini.
-        bypassValidation: true,
-        // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
-        // Il était persisté, journalisé « modifié », puis jeté : le worker
-        // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
-        // objet inchangé (ou le nom technique d'un vieux garage) laisse le
-        // gabarit décider, comme avant.
-        ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
-        ...(email.entityType ? { entityType: email.entityType } : {}),
-        ...(email.entityId ? { entityId: email.entityId } : {}),
-        ...(attachments && attachments.length > 0 ? { attachments } : {}),
+    const resultat = await envoyerAvecLienALEnvoi({
+      ligne: {
+        id: email.id,
+        template: email.template,
+        recipient: email.recipient,
+        entityType: email.entityType ?? "",
+        entityId: email.entityId ?? "",
       },
-    );
-  } catch {
+      payload,
+      acteur: { session },
+      // Ne lève QUE si l'e-mail n'est pas parti : rien après l'enfilage ne doit remonter.
+      enfiler: (payloadFinal) =>
+        enqueueEmail(
+          email.template as EmailJobName,
+          email.recipient,
+          email.locale === "en" ? "en" : "fr",
+          payloadFinal,
+          {
+            // 🔴 INDISPENSABLE : sans lui, l'email approuvé serait re-garé et la
+            // corbeille se remplirait d'elle-même à l'infini.
+            bypassValidation: true,
+            // Lot 2 (2026-09-02) : l'objet corrigé par l'admin traverse enfin la file.
+            // Il était persisté, journalisé « modifié », puis jeté : le worker
+            // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
+            // objet inchangé (ou le nom technique d'un vieux garage) laisse le
+            // gabarit décider, comme avant.
+            ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
+            ...(email.entityType ? { entityType: email.entityType } : {}),
+            ...(email.entityId ? { entityId: email.entityId } : {}),
+            ...(attachments && attachments.length > 0 ? { attachments } : {}),
+          },
+        ),
+    });
+    if (resultat.type === "refus") {
+      // L'e-mail ne peut plus partir (devis annulé, signé…). Écriture CONDITIONNELLE : seule une
+      // ligne encore `approuve` (celle de notre verrou) devient refusée ; jamais un `envoye`/`refuse`.
+      const refus = await prisma.emailOutbox.updateMany({
+        where: { id: v.id, statut: "approuve" },
+        data: { statut: "refuse", refuseAt: new Date(), refuseMotif: resultat.motif },
+      });
+      if (refus.count === 1) {
+        // Gabarit et motif seulement : ni adresse, ni lien, ni payload.
+        // La ligne est déjà refusée : un journal en panne ne doit ni masquer le motif ni
+        // sauter la revalidation. Sentry reçoit un libellé fixe, le gabarit et le nom de classe.
+        try {
+          await logQualiopiActivity({
+            action: "email.outbox.refus_auto",
+            targetType: "EmailOutbox",
+            targetId: v.id,
+            changes: { template: email.template, motif: resultat.motif },
+            session,
+          });
+        } catch (errJournal) {
+          Sentry.captureException(new Error("Journal du refus automatique impossible"), {
+            tags: {
+              action: "approuverEmailAction",
+              template: email.template,
+              cause: errJournal instanceof Error ? errJournal.name : "inconnue",
+            },
+          });
+        }
+      }
+      revalidatePath("/[locale]/(admin)/[adminPrefix]/qualiopi/emails", "page");
+      return { error: resultat.motif };
+    }
+    res = resultat.res;
+  } catch (err) {
     await prisma.emailOutbox.updateMany({
       where: { id: v.id, statut: "approuve" },
       data: { statut: "a_valider", approuveAt: null, approuveById: null },
     });
+    if (err instanceof EnvoiOccupe) {
+      return { error: "Cet e-mail est déjà en cours d'envoi. Réessayez dans un instant." };
+    }
     return { error: "L'envoi a échoué : l'email est retourné dans la corbeille, réessayez." };
   }
 
@@ -232,7 +288,8 @@ export async function approuverEmailAction(
     targetId: v.id,
     changes: {
       template: email.template,
-      destinataire: email.recipient,
+      // B2 : pas d'adresse dans le journal d'une ligne à lien créé à l'envoi.
+      ...(lienALEnvoi ? {} : { destinataire: email.recipient }),
       sujetModifie: v.sujet !== undefined && v.sujet !== email.sujet,
       messageAjoute: Boolean(v.messagePersonnalise),
       envoye: res.enqueued,
