@@ -355,6 +355,12 @@ export interface SanteEmails {
    * est levé — ils n'ont jamais été renseignés.
    */
   mesureIndisponible: boolean;
+  /** Réponses écrites à la main dont un job existe depuis plus d'une heure (W1-S2). */
+  reponsesEnFileDepuisTrop: number;
+  /** Réponses sans job passées en « issue inconnue » par la veille (W1-S2). */
+  reponsesPerduesCloses: number;
+  /** Configuration Redis lue par la veille ; `null` : illisible (W1-S2). */
+  redisConfig: { politique: string; aof: boolean } | null;
 }
 
 /**
@@ -381,6 +387,9 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     notificationsRelachees: 0,
     alertesLevees: [],
     mesureIndisponible: false,
+    reponsesEnFileDepuisTrop: 0,
+    reponsesPerduesCloses: 0,
+    redisConfig: null,
   };
   if (estStub()) return resultat;
 
@@ -629,7 +638,69 @@ export async function verifierSanteEmails(maintenant: Date = new Date()): Promis
     resultat.alertesLevees.push("emails_bloques_en_file");
   }
 
+  await veillerSurLesReponses(maintenant, resultat);
+
   return resultat;
+}
+
+/**
+ * Veille des réponses écrites à la main (W1-S2). Ne fait JAMAIS échouer le cron.
+ *
+ * ⚠️ Import dynamique : la veille importe `queues.ts`, qui importe le worker des crons, qui
+ * importe CE module — un import statique ferait un cycle.
+ */
+async function veillerSurLesReponses(maintenant: Date, resultat: SanteEmails): Promise<void> {
+  try {
+    const { veillerReponsesEnCours } = await import("./veille-reponses-en-cours");
+    const veille = await veillerReponsesEnCours(maintenant);
+    resultat.reponsesEnFileDepuisTrop = veille.enFileDepuisTrop;
+    resultat.reponsesPerduesCloses = veille.perduesCloses;
+    resultat.redisConfig = veille.redis;
+
+    if (veille.enFileDepuisTrop > 0) {
+      await leverAlerte(
+        "reponses_envoi_bloque",
+        `${veille.enFileDepuisTrop} réponse(s) écrite(s) à la main en cours d'envoi depuis plus d'une heure`,
+        "Elles sont encore dans la file (attente ou reports répétés : base ou Redis en difficulté). " +
+          "Rien n'est renvoyé automatiquement. Si cela dure, vérifier le conteneur worker et Redis.",
+        veille.enFileDepuisTrop,
+      );
+      resultat.alertesLevees.push("reponses_envoi_bloque");
+    } else if (!veille.mesureImpossible) {
+      const fermees = await resoudreAlertesParCode(["reponses_envoi_bloque"]);
+      if (fermees > 0) resultat.alertesResolues.push("reponses_envoi_bloque");
+    }
+
+    if (veille.perduesCloses > 0) {
+      await leverAlerte(
+        "reponses_envoi_interrompu",
+        `${veille.perduesCloses} réponse(s) écrite(s) à la main interrompue(s) : à vérifier dans ZeptoMail`,
+        "Plus aucun envoi ne s'en occupait (file vidée ou envoi interrompu). Elles sont passées en " +
+          "« issue inconnue », rien n'a été renvoyé. Pour chacune : chercher le destinataire dans " +
+          "ZeptoMail (page E-mails envoyés, bouton ZeptoMail, onglet Processed emails). S'il y figure, " +
+          "cliquer « Marquer comme envoyée », sinon « Réessayer ».",
+        veille.perduesCloses,
+      );
+      resultat.alertesLevees.push("reponses_envoi_interrompu");
+    }
+
+    if (veille.redis && (veille.redis.politique !== "noeviction" || !veille.redis.aof)) {
+      await leverAlerte(
+        "redis_config_risque",
+        "Redis peut perdre des clés : la protection anti-doublon des réponses est fragilisée",
+        `Redis peut perdre des clés (politique ${veille.redis.politique}, AOF ${veille.redis.aof ? "oui" : "non"}) : ` +
+          "le verrou et la trace d'envoi des réponses écrites à la main pourraient disparaître, et un " +
+          "doublon devenir possible. Régler maxmemory-policy noeviction et appendonly yes, puis redémarrer Redis.",
+        1,
+      );
+      resultat.alertesLevees.push("redis_config_risque");
+    }
+  } catch (e) {
+    console.error(
+      "[email-sante] veille des réponses impossible :",
+      e instanceof Error ? e.message : String(e),
+    );
+  }
 }
 
 /**

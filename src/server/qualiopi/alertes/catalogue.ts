@@ -2033,6 +2033,30 @@ export const ALERTE_CATALOGUE: Record<string, AlerteCatalogueEntry> = {
       "STRUCTUREL — levée par la sonde de santé e-mail, hors du balayage d'`evaluerAlertes` : la passer à `true` la ferait refermer au premier `synchroniserAlertes`, sur une chaîne peut-être toujours morte. Elle se referme néanmoins toute seule, mais par la SONDE et sur preuve positive (un envoi a réussi depuis), pas par le balayage.",
     guichet: "direction",
   },
+  reponses_envoi_bloque: {
+    niveau: "critique",
+    titre: "Réponses écrites à la main bloquées en file",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail (`server/email/health.ts`), hors du balayage quotidien : la passer à `true` la ferait refermer au premier `synchroniserAlertes`, alors que la file est peut-être toujours en difficulté. Elle se referme par la SONDE quand plus aucune réponse n'est en retard.",
+    guichet: "direction",
+  },
+  reponses_envoi_interrompu: {
+    niveau: "critique",
+    titre: "Réponses écrites à la main interrompues",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail (`server/email/health.ts`), hors du balayage quotidien : la passer à `true` la ferait refermer sans que personne ait vérifié dans ZeptoMail. Fermeture à la main.",
+    guichet: "direction",
+  },
+  redis_config_risque: {
+    niveau: "critique",
+    titre: "Configuration Redis à risque pour les réponses",
+    resolutionAuto: false,
+    motifSansResolutionAuto:
+      "STRUCTUREL — levée par la sonde de santé e-mail (`server/email/health.ts`), hors du balayage quotidien : la passer à `true` la ferait refermer sans preuve que Redis est corrigé. Fermeture à la main.",
+    guichet: "direction",
+  },
   emails_bloques_en_file: {
     niveau: "critique",
     titre: "E-mails enfilés mais jamais envoyés",

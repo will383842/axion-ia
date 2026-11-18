@@ -192,6 +192,10 @@ const CODES_ATTENDUS: string[] = [
   // Celui-ci compte des échecs CONSÉCUTIFS : indépendant du volume.
   "emails_echecs_consecutifs",
   "emails_bloques_en_file",
+  // W1-S2 : veille des réponses écrites à la main et configuration Redis (même sonde).
+  "reponses_envoi_bloque",
+  "reponses_envoi_interrompu",
+  "redis_config_risque",
   // Ajoutés le 2026-08-31 : la sonde levait CINQ codes, ce catalogue en
   // connaissait deux. Les trois autres arrivaient en console sans niveau ni
   // guichet. La liste ci-dessus reste tenue à la main — c'est sa faiblesse ;
