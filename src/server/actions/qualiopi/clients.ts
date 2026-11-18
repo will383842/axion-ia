@@ -17,6 +17,7 @@ import { adminPath } from "@/lib/admin-path";
 import { avecMessageDeRetour } from "@/features/dossier-client/message-de-retour";
 import {
   AVERTISSEMENT_SIREN_CONTRAIRE,
+  checkSirenFormat,
   resoudreSiren,
   sirenContreditLeSiret,
   sirenDuClient,
@@ -823,6 +824,8 @@ const changerTypeSchema = z.object({
   type: z.enum(CLIENT_TYPES),
   raisonSociale: z.string().trim().min(1, "Indiquez le nom.").max(250),
   motif: z.string().trim().max(300).optional(),
+  /** SIREN facultatif, saisi en passant en entreprise (espaces tolérés ; contrôlé plus bas). */
+  siren: z.string().max(30).optional(),
 });
 
 /** Les modèles de pièces lus par `compterPiecesClient`, tels que `tx` les expose. */
@@ -843,62 +846,98 @@ export async function changerTypeClientAction(
   if (!parsed.success) return { error: premierMessageZod(parsed.error) };
   const { id, type, raisonSociale, motif } = parsed.data;
 
-  const resultat = await prisma.$transaction(async (db) => {
-    const tx = db as TxPieces;
-    // Verrou de la ligne : deux changements, ou un changement et une pièce créée, se suivent.
-    await tx.$queryRaw`SELECT 1 FROM clients WHERE id = ${id}::uuid FOR UPDATE`;
-
-    const fiche = await tx.client.findUnique({
-      where: { id },
-      select: { type: true, raisonSociale: true, contactNom: true, ...SELECT_CHAMPS_EMPLOYEUR },
-    });
-    if (fiche === null) return { error: "Client introuvable." } as const;
-    if (fiche.type === type) {
-      return { error: "La fiche est déjà de ce type : rien à changer." } as const;
+  // SIREN facultatif (passage en entreprise seulement) : espaces retirés, 9 chiffres, clé de Luhn.
+  // Une fiche qui repasse en particulier ne reçoit jamais de SIREN.
+  const sirenSaisi = (parsed.data.siren ?? "").trim();
+  let sirenAEcrire: string | undefined;
+  if (sirenSaisi !== "") {
+    if (type === "particulier") {
+      return { error: "Une fiche de particulier ne porte pas de SIREN : rien n'est écrit." };
     }
+    const controle = checkSirenFormat(sirenSaisi);
+    if (!controle.ok) return { error: controle.message };
+    sirenAEcrire = controle.value;
+  }
 
-    const absorbee = await tx.clientFusion.findFirst({
-      where: { absorbeId: id, defaiteLe: null },
-      select: { id: true },
+  let resultat;
+  try {
+    resultat = await prisma.$transaction(async (db) => {
+      const tx = db as TxPieces;
+      // Verrou de la ligne : deux changements, ou un changement et une pièce créée, se suivent.
+      await tx.$queryRaw`SELECT 1 FROM clients WHERE id = ${id}::uuid FOR UPDATE`;
+
+      const fiche = await tx.client.findUnique({
+        where: { id },
+        select: { type: true, raisonSociale: true, contactNom: true, ...SELECT_CHAMPS_EMPLOYEUR },
+      });
+      if (fiche === null) return { error: "Client introuvable." } as const;
+      if (fiche.type === type) {
+        return { error: "La fiche est déjà de ce type : rien à changer." } as const;
+      }
+
+      const absorbee = await tx.clientFusion.findFirst({
+        where: { absorbeId: id, defaiteLe: null },
+        select: { id: true },
+      });
+      if (absorbee !== null) {
+        return {
+          error: "Cette fiche a été absorbée. Changez le type sur la fiche principale.",
+        } as const;
+      }
+
+      const absorbees = await tx.clientFusion.findMany({
+        where: { absorbantId: id, defaiteLe: null },
+        select: { absorbeId: true },
+      });
+      const pieces = await compterPiecesClient(tx, [id, ...absorbees.map((f) => f.absorbeId)]);
+      if (pieces.length > 0) return { error: raisonPieces(pieces) } as const;
+
+      if (type === "entreprise") {
+        const nouveau = motsTries(raisonSociale);
+        if (nouveau === "") return { error: "Nom de l'entreprise : indiquez un nom." } as const;
+        if (nouveau === motsTries(fiche.contactNom)) {
+          return {
+            error:
+              "Nom de l'entreprise : indiquez celui de la société, pas le nom du contact (le contact garde son nom).",
+          } as const;
+        }
+        if (nouveau === motsTries(fiche.raisonSociale)) {
+          return {
+            error: "Nom de l'entreprise : il est identique à l'ancien nom de la fiche.",
+          } as const;
+        }
+      } else {
+        const restants = champsEmployeurRestants(fiche);
+        if (restants.length > 0) return { error: raisonEmployeur(restants) } as const;
+      }
+
+      // SIREN : même verrou que la création (`exigerSirenLibre`), AVANT l'écriture, sous le verrou de la fiche.
+      if (sirenAEcrire !== undefined) await exigerSirenLibre(tx, id, sirenAEcrire);
+
+      // Axion Partners : la charge AVANT l'écriture, le fait APRÈS, dans la même transaction.
+      const avant = await chargeClientAvant(tx, id);
+      await tx.client.update({
+        where: { id },
+        data: {
+          type,
+          raisonSociale,
+          ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
+        },
+      });
+      await emettreFaitClient(tx, id, { avant });
+      return { ok: true, typeAvant: fiche.type, raisonSocialeAvant: fiche.raisonSociale } as const;
     });
-    if (absorbee !== null) {
+  } catch (e) {
+    if (e instanceof ErreurSirenDejaPris) {
+      // Le numéro de la fiche seulement : jamais son nom.
       return {
-        error: "Cette fiche a été absorbée. Changez le type sur la fiche principale.",
-      } as const;
+        error:
+          `Ce SIREN est déjà celui de la fiche ${e.fiche.numero}. Ouvrez-la et utilisez ` +
+          "« Fusionner cette fiche » pour regrouper les deux : une entreprise n'a qu'une fiche.",
+      };
     }
-
-    const absorbees = await tx.clientFusion.findMany({
-      where: { absorbantId: id, defaiteLe: null },
-      select: { absorbeId: true },
-    });
-    const pieces = await compterPiecesClient(tx, [id, ...absorbees.map((f) => f.absorbeId)]);
-    if (pieces.length > 0) return { error: raisonPieces(pieces) } as const;
-
-    if (type === "entreprise") {
-      const nouveau = motsTries(raisonSociale);
-      if (nouveau === "") return { error: "Nom de l'entreprise : indiquez un nom." } as const;
-      if (nouveau === motsTries(fiche.contactNom)) {
-        return {
-          error:
-            "Nom de l'entreprise : indiquez celui de la société, pas le nom du contact (le contact garde son nom).",
-        } as const;
-      }
-      if (nouveau === motsTries(fiche.raisonSociale)) {
-        return {
-          error: "Nom de l'entreprise : il est identique à l'ancien nom de la fiche.",
-        } as const;
-      }
-    } else {
-      const restants = champsEmployeurRestants(fiche);
-      if (restants.length > 0) return { error: raisonEmployeur(restants) } as const;
-    }
-
-    // Axion Partners : la charge AVANT l'écriture, le fait APRÈS, dans la même transaction.
-    const avant = await chargeClientAvant(tx, id);
-    await tx.client.update({ where: { id }, data: { type, raisonSociale } });
-    await emettreFaitClient(tx, id, { avant });
-    return { ok: true, typeAvant: fiche.type, raisonSocialeAvant: fiche.raisonSociale } as const;
-  });
+    throw e;
+  }
   if ("error" in resultat) return { error: resultat.error };
 
   await logQualiopiActivity({
@@ -910,6 +949,8 @@ export async function changerTypeClientAction(
       typeApres: type,
       raisonSocialeAvant: resultat.raisonSocialeAvant,
       raisonSocialeApres: raisonSociale,
+      // Donnée d'entreprise, publique : elle peut figurer au journal.
+      ...(sirenAEcrire !== undefined ? { siren: sirenAEcrire } : {}),
       ...(motif !== undefined && motif !== "" ? { motif } : {}),
     },
     session,
@@ -932,6 +973,7 @@ export async function changerTypeClientFormAction(formData: FormData): Promise<v
     type: String(formData.get("type") ?? "") as "entreprise" | "particulier",
     raisonSociale: String(formData.get("raisonSociale") ?? ""),
     motif: String(formData.get("motif") ?? ""),
+    siren: String(formData.get("siren") ?? ""),
   });
   if ("error" in r) redirect(avecMessageDeRetour(edit, "erreur", r.error));
   redirect(avecMessageDeRetour(edit, "message", "Le type de la fiche a été changé."));

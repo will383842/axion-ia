@@ -15,6 +15,8 @@ export interface ChangerTypeClientProps {
   type: "entreprise" | "particulier";
   /** Nom du contact de la fiche (`Client.contactNom`), qui ne change pas ; préremplit « Repasser en particulier ». */
   contactNom: string | null;
+  /** Nom actuel de la fiche (`Client.raisonSociale`) : sert au lien d'aide vers l'annuaire des entreprises. */
+  raisonSociale?: string | null;
   blocage: string | null;
   /**
    * Ce qui partira au CRM Pro, construit par les fonctions pures de l'envoi (`apercuPourCrm`) :
@@ -134,6 +136,34 @@ export function ChangerTypeClient(props: ChangerTypeClientProps) {
                 />
               </label>
             )}
+            {estParticulier ? (
+              <div>
+                <label className="block text-[length:var(--text-admin-sm)]">
+                  SIREN (9 chiffres)
+                  <input
+                    type="text"
+                    name="siren"
+                    inputMode="numeric"
+                    autoComplete="off"
+                    maxLength={20}
+                    placeholder="facultatif"
+                    className={champCls}
+                  />
+                </label>
+                <p className="mt-1 text-[length:var(--text-admin-xs)]">
+                  Les espaces sont acceptés. Avec un SIREN valide, le CRM Pro rattache directement
+                  le dossier à l&apos;entreprise ; sans SIREN, il le met en arbitrage manuel.{" "}
+                  <a
+                    href={`https://annuaire-entreprises.data.gouv.fr/rechercher?terme=${encodeURIComponent(props.raisonSociale ?? "")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[color:var(--color-admin-accent)] underline"
+                  >
+                    Chercher dans l&apos;annuaire des entreprises
+                  </a>
+                </p>
+              </div>
+            ) : null}
             <label className="block text-[length:var(--text-admin-sm)]">
               Motif (facultatif)
               <input type="text" name="motif" maxLength={300} className={champCls} />
