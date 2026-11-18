@@ -235,7 +235,7 @@ export async function chargerAssistantDevis(
           message: `${sansAssistant}corrigez-le depuis son écran de correction.`,
           libelleLien: "Corriger le brouillon",
         };
-      return versFiche(`${sansAssistant}corrigez-le depuis son écran de correction.`);
+      return versFiche(`${sansAssistant}modifiez-le depuis sa fiche.`);
     }
     if (lie.statut === STATUT_BROUILLON_A_L_ECART)
       return versFiche("Le brouillon d'assistant de ce devis a été mis à l'écart.");
