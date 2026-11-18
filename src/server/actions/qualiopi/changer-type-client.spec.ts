@@ -332,9 +332,6 @@ describe("changerTypeClientAction — SIREN facultatif", () => {
       data: { type: "entreprise", raisonSociale: "Dupont Conseil SAS", siren: SIREN },
     });
     expect(m.sirenLibre).toHaveBeenCalledWith(expect.anything(), ID, SIREN);
-    expect(m.queryRaw.mock.invocationCallOrder[0]!).toBeLessThan(
-      m.sirenLibre.mock.invocationCallOrder[0]!,
-    );
     expect(m.avant.mock.invocationCallOrder[0]!).toBeLessThan(
       m.update.mock.invocationCallOrder[0]!,
     );
@@ -420,5 +417,39 @@ describe("changerTypeClientAction — SIREN facultatif", () => {
       });
     }
     expect(m.sirenLibre).not.toHaveBeenCalled();
+  });
+
+  it("ordre des verrous : le SIREN d'abord, la ligne ensuite (comme updateClientAction)", async () => {
+    await changerTypeClientAction({ ...versEntreprise, siren: SIREN });
+    expect(m.sirenLibre.mock.invocationCallOrder[0]!).toBeLessThan(
+      m.queryRaw.mock.invocationCallOrder[0]!,
+    );
+  });
+
+  it("SIRET de la fiche dont les 9 premiers chiffres diffèrent du SIREN saisi : refusé", async () => {
+    m.findUnique.mockResolvedValue(ficheEnBase({ siret: "55210055400013" }));
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: SIREN });
+    expect(r).toEqual({ error: expect.stringMatching(/ne correspond pas au SIRET/) });
+    expect(m.update).not.toHaveBeenCalled();
+    expect(m.log).not.toHaveBeenCalled();
+  });
+
+  it("fiche qui porte déjà un autre SIREN : refusé", async () => {
+    m.findUnique.mockResolvedValue(ficheEnBase({ siren: "552100554" }));
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: SIREN });
+    expect(r).toEqual({ error: expect.stringMatching(/déjà un autre SIREN/) });
+    expect(m.update).not.toHaveBeenCalled();
+  });
+
+  it("fiche qui porte déjà ce même SIREN : accepté", async () => {
+    m.findUnique.mockResolvedValue(ficheEnBase({ siren: SIREN }));
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: SIREN });
+    expect(r).toEqual({ data: { id: ID } });
+  });
+
+  it("longueur maximale : 20 caractères, comme le formulaire", async () => {
+    const r = await changerTypeClientAction({ ...versEntreprise, siren: "7".repeat(21) });
+    expect("error" in r).toBe(true);
+    expect(m.update).not.toHaveBeenCalled();
   });
 });
