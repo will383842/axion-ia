@@ -77,9 +77,10 @@ describe("une fiche de particulier ne reçoit jamais de SIREN", () => {
     expect("error" in r).toBe(false);
   });
 
-  it("contre-témoin : repasser la fiche en entreprise dans la même charge l'accepte", async () => {
+  it("l'ancienne porte est fermée : changer le type dans la même charge est refusé (« Changer le type »)", async () => {
     enBase("particulier");
     const r = await updateClientAction({ id: ID, type: "entreprise", siren: SIREN_FICTIF });
-    expect("error" in r).toBe(false);
+    expect(r).toEqual({ error: expect.stringContaining("Changer le type") });
+    expect(mockUpdate).not.toHaveBeenCalled();
   });
 });

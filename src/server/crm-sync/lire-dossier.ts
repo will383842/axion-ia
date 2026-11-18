@@ -262,10 +262,16 @@ async function factureHorsConsole(clientIds: readonly string[]): Promise<boolean
   return lignes[0]?.ok === true;
 }
 
-/** Lit un client et en fait l'entrée de la photo. `null` : à ne pas synchroniser. */
+/**
+ * Lit un client et en fait l'entrée de la photo. `null` : à ne pas synchroniser.
+ *
+ * `commeEntreprise` (aperçu « Passer en entreprise », lecture seule) : lit une fiche particulier
+ * comme si elle était déjà une entreprise. Défaut `false` : la synchro garde sa sortie.
+ */
 export async function lireEntreeDossier(
   clientId: string,
   maintenant: Date,
+  options: { readonly commeEntreprise?: boolean } = {},
 ): Promise<{ entree: EntreeInstantaneCrm; dernierChangement: Date } | null> {
   const client = await prisma.client.findUnique({
     where: { id: clientId },
@@ -304,7 +310,8 @@ export async function lireEntreeDossier(
       },
     },
   });
-  if (client === null || client.type !== "entreprise") return null;
+  if (client === null) return null;
+  if (client.type !== "entreprise" && options.commeEntreprise !== true) return null;
   // Une fiche absorbée est un doublon fusionné : elle ne part pas comme dossier à part.
   if (client.fusionsAbsorbee.length > 0) return null;
   // Factures, case hors console et questionnaires : la fiche ET ses fiches absorbées.
