@@ -26,6 +26,7 @@ import type { EmailJobName } from "@/server/queue/types";
 import { estSuperAdmin } from "@/server/auth/habilitations";
 import { gabaritEnSommeil, MESSAGE_EMAIL_EN_SOMMEIL } from "@/server/qualiopi/financements/sommeil";
 import { refusGabaritFormateur } from "@/server/email/outbox-policy";
+import { chargeApprouvee, objetApprouve } from "@/server/email/outbox-charge";
 import {
   GABARITS_AVEC_LIEN_SIGNATURE,
   masquerLienSignaturePayload,
@@ -116,10 +117,8 @@ export async function approuverEmailAction(
 
   // Le message personnalisé rejoint la charge utile : c'est le template qui
   // décide où l'insérer, pas cette action.
-  const payload = {
-    ...((email.payload as Record<string, unknown>) ?? {}),
-    ...(v.messagePersonnalise ? { messagePersonnalise: v.messagePersonnalise } : {}),
-  };
+  const payload = chargeApprouvee(email.payload, v.messagePersonnalise);
+  const sujetForce = objetApprouve(v.sujet, email.sujet);
 
   const attachments = Array.isArray(email.attachments)
     ? (email.attachments as Array<{ filename: string; r2Key: string; contentType?: string }>)
@@ -158,7 +157,7 @@ export async function approuverEmailAction(
             // recalculait l'objet du gabarit. On ne force que s'il a CHANGÉ — un
             // objet inchangé (ou le nom technique d'un vieux garage) laisse le
             // gabarit décider, comme avant.
-            ...(v.sujet !== undefined && v.sujet !== email.sujet ? { sujetForce: v.sujet } : {}),
+            ...(sujetForce !== undefined ? { sujetForce } : {}),
             ...(email.entityType ? { entityType: email.entityType } : {}),
             ...(email.entityId ? { entityId: email.entityId } : {}),
             ...(attachments && attachments.length > 0 ? { attachments } : {}),

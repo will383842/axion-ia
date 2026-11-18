@@ -25,6 +25,7 @@ import {
   definirReglageEmailAction,
   supprimerReglageEmailAction,
 } from "@/server/actions/qualiopi/email-outbox";
+import { apercuOutboxAction } from "@/server/actions/qualiopi/email-outbox-apercu";
 import {
   EMAILS_A_VALIDER_PAR_DEFAUT,
   EMAILS_AUTOMATIQUES_PAR_DEFAUT,
@@ -211,6 +212,7 @@ export default async function EmailsAValiderPage({
                 accepteMessagePersonnalise={gabaritLitLeMessage(e.template)}
                 approuverAction={approuverEmailAction}
                 refuserAction={refuserEmailAction}
+                apercuAction={apercuOutboxAction}
               />
             ))}
           </div>

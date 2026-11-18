@@ -19,6 +19,8 @@
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { libelleTemplateEmail } from "@/server/email/outbox-policy";
+import { LecteurEmail } from "@/components/admin/ui/LecteurEmail";
+import type { ApercuLecteur } from "@/lib/email/apercu-lecteur";
 
 type ActionResult<T> = { data: T } | { error: string };
 
@@ -43,6 +45,12 @@ export interface EmailOutboxItemProps {
     id: string;
     motif: string;
   }) => Promise<ActionResult<{ id: string; jetonsRevoques?: number }>>;
+  /** Aperçu exact, rendu par le serveur (masqué, liens inertes). */
+  apercuAction: (input: {
+    id: string;
+    sujet?: string;
+    messagePersonnalise?: string;
+  }) => Promise<ActionResult<ApercuLecteur>>;
 }
 
 export function EmailOutboxItem({
@@ -57,6 +65,7 @@ export function EmailOutboxItem({
   accepteMessagePersonnalise,
   approuverAction,
   refuserAction,
+  apercuAction,
 }: EmailOutboxItemProps): React.ReactElement {
   const router = useRouter();
   const [sujet, setSujet] = useState(sujetInitial);
@@ -66,6 +75,13 @@ export function EmailOutboxItem({
   const [confirmeEnvoi, setConfirmeEnvoi] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
   const [isPending, startTransition] = useTransition();
+  // Aperçu exact : l'envoi n'est possible qu'après l'aperçu DU CONTENU EN COURS.
+  const [apercuLu, setApercuLu] = useState<{ empreinte: string; lecteur: ApercuLecteur } | null>(
+    null,
+  );
+  const messageEnvoye = accepteMessagePersonnalise ? message.trim() : "";
+  const empreinte = JSON.stringify([sujet.trim(), messageEnvoye]);
+  const apercuAJour = apercuLu !== null && apercuLu.empreinte === empreinte;
 
   const champ =
     "w-full rounded-[var(--radius-admin-sm)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface)] px-[var(--space-admin-3)] py-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]";
@@ -91,6 +107,24 @@ export function EmailOutboxItem({
         return;
       }
       router.refresh();
+    });
+  }
+
+  function voirApercu() {
+    setErreur(null);
+    const saisie = empreinte;
+    startTransition(async () => {
+      const r = await apercuAction({
+        id,
+        ...(sujet.trim() !== sujetInitial ? { sujet: sujet.trim() } : {}),
+        ...(messageEnvoye !== "" ? { messagePersonnalise: messageEnvoye } : {}),
+      });
+      if ("error" in r) {
+        setApercuLu(null);
+        setErreur(r.error);
+        return;
+      }
+      setApercuLu({ empreinte: saisie, lecteur: r.data });
     });
   }
 
@@ -176,6 +210,17 @@ export function EmailOutboxItem({
         </label>
       )}
 
+      {apercuLu !== null && (
+        <div className="mb-[var(--space-admin-3)]">
+          <LecteurEmail apercu={apercuLu.lecteur} liensInertes titre="Aperçu de l'e-mail" />
+          {!apercuAJour && (
+            <p className="mt-[var(--space-admin-2)] text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+              L&apos;objet ou le message a changé : voyez l&apos;aperçu à jour avant d&apos;envoyer.
+            </p>
+          )}
+        </div>
+      )}
+
       {erreur && (
         <p
           role="alert"
@@ -221,20 +266,28 @@ export function EmailOutboxItem({
           {/* Lot 3 (2026-09-02) : cette case est l'unique garde-fou avant un
               envoi irréversible, et elle faisait ~13 px. 24 px pour la case,
               44 px de hauteur pour le libellé cliquable qui l'entoure. */}
+          <button
+            type="button"
+            onClick={voirApercu}
+            disabled={isPending}
+            className={`${bouton} border border-[color:var(--color-admin-border)] text-[color:var(--color-admin-fg)]`}
+          >
+            Voir l&apos;e-mail tel qu&apos;il partira
+          </button>
           <label className="flex min-h-11 items-center gap-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]">
             <input
               type="checkbox"
               className="h-6 w-6 shrink-0"
-              checked={confirmeEnvoi}
+              checked={confirmeEnvoi && apercuAJour}
               onChange={(e) => setConfirmeEnvoi(e.target.checked)}
-              disabled={isPending}
+              disabled={isPending || !apercuAJour}
             />
             J&apos;ai relu — envoyer à {destinataire}
           </label>
           <button
             type="button"
             onClick={approuver}
-            disabled={isPending || !confirmeEnvoi}
+            disabled={isPending || !apercuAJour || !confirmeEnvoi}
             className={`${bouton} bg-[color:var(--color-admin-accent)] text-white`}
           >
             {isPending ? "Envoi…" : "Approuver et envoyer"}
