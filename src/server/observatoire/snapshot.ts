@@ -114,8 +114,6 @@ function pct(count: number, base: number): number {
   return base > 0 ? Math.round((count / base) * 100) : 0;
 }
 
-/** Effectif minimal d'un segment pour être publié (anti-bruit + anti-réidentification). */
-const MIN_SEGMENT_N = 5;
 
 /** Dimensions de segmentation (clé payload → colonne SQL). Allowlist (anti-injection). */
 const SEGMENT_DIMENSIONS: ReadonlyArray<{ key: string; col: string }> = [
