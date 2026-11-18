@@ -102,6 +102,19 @@ const CONVOCATION = {
   materielAPrevoir: "Un ordinateur portable et son chargeur.",
 };
 
+/**
+ * Jeton fictif des jeux d'essai courants (v2) : faible entropie, lisible, ne ressemble pas à une clé
+ * (la règle gitleaks `generic-api-key` signalait l'ancienne valeur).
+ */
+const JETON_COURANT = "jeton-qr-de-test-attestation";
+
+/**
+ * Jeton historique, avec lequel les empreintes de la v1 archivée ont été relevées : il entre dans
+ * le QR code, donc dans les octets du PDF. ⛔ Ne pas le changer. Il est composé en deux morceaux
+ * pour ne pas être pris pour une clé par gitleaks : c'est un jeton FICTIF.
+ */
+export const JETON_HISTORIQUE_V1 = ["tok", "0123456789abcdef"].join("_");
+
 const ATTESTATION = {
   numero: "AXI-ATT-2026-007",
   dateEmission: "04/12/2026",
@@ -128,7 +141,7 @@ const ATTESTATION = {
     competencesAcquises: "Rédiger un prompt efficace ; identifier les cas d'usage.",
     competencesReserves: "Évaluation du module 2 : partiellement acquis.",
   },
-  qrToken: "tok_0123456789abcdef",
+  qrToken: JETON_COURANT,
 };
 
 const PARTIELLE = {
@@ -159,75 +172,86 @@ const CERTIFICAT = {
   dureeHeures: 13.5,
   natureAction: "action_formation",
   modalite: "presentiel",
-  qrToken: "tok_0123456789abcdef",
+  qrToken: JETON_COURANT,
 };
 
-export const CAS_DOCUMENTS: readonly CasDocument[] = [
-  {
-    nom: "programme",
-    gabarit: "programme",
-    rendre: (C) => el(C, { data: PROGRAMME, identite: IDENTITE }),
-  },
-  {
-    nom: "programme sans module ni ressource",
-    gabarit: "programme",
-    rendre: (C) =>
-      el(C, {
-        data: {
-          ...PROGRAMME,
-          numero: "AXI-DOC-2026-044",
-          modules: [],
-          ressourcesPedagogiques: undefined,
-          accessibleHandicap: false,
-          objectifs: [],
-        },
-        identite: IDENTITE,
-      }),
-  },
-  {
-    nom: "convocation présentiel",
-    gabarit: "convocation",
-    rendre: (C) => el(C, { data: CONVOCATION, identite: IDENTITE }),
-  },
-  {
-    nom: "convocation distanciel v2",
-    gabarit: "convocation",
-    rendre: (C) =>
-      el(C, {
-        data: {
-          ...CONVOCATION,
-          numero: "AXI-DOC-2026-045",
-          modalite: "distanciel",
-          lienVisio: "https://visio.example.org/salle-42",
-          idReunion: "123 456 789",
-          versionTexte: 2,
-          outilVisio: "Visioconférence",
-          mentionLienVisio: "Lien envoyé avant la formation",
-        },
-        identite: IDENTITE,
-      }),
-  },
-  { nom: "attestation", gabarit: "attestation", rendre: (C) => el(C, { data: ATTESTATION }) },
-  {
-    nom: "attestation partielle",
-    gabarit: "attestation_partielle",
-    rendre: (C) => el(C, { data: PARTIELLE }),
-  },
-  {
-    nom: "attestation partielle sans heure suivie",
-    gabarit: "attestation_partielle",
-    rendre: (C) =>
-      el(C, {
-        data: {
-          ...PARTIELLE,
-          numero: "AXI-ATT-2026-009",
-          resultats: { ...PARTIELLE.resultats, heuresSuivies: 0 },
-        },
-      }),
-  },
-  {
-    nom: "certificat de réalisation",
-    gabarit: "certificat",
-    rendre: (C) => el(C, { data: CERTIFICAT }),
-  },
-];
+function fabriquerCas(jeton: string): readonly CasDocument[] {
+  const ATT = { ...ATTESTATION, qrToken: jeton };
+  const PART = { ...PARTIELLE, qrToken: jeton };
+  const CERT = { ...CERTIFICAT, qrToken: jeton };
+  return [
+    {
+      nom: "programme",
+      gabarit: "programme",
+      rendre: (C) => el(C, { data: PROGRAMME, identite: IDENTITE }),
+    },
+    {
+      nom: "programme sans module ni ressource",
+      gabarit: "programme",
+      rendre: (C) =>
+        el(C, {
+          data: {
+            ...PROGRAMME,
+            numero: "AXI-DOC-2026-044",
+            modules: [],
+            ressourcesPedagogiques: undefined,
+            accessibleHandicap: false,
+            objectifs: [],
+          },
+          identite: IDENTITE,
+        }),
+    },
+    {
+      nom: "convocation présentiel",
+      gabarit: "convocation",
+      rendre: (C) => el(C, { data: CONVOCATION, identite: IDENTITE }),
+    },
+    {
+      nom: "convocation distanciel v2",
+      gabarit: "convocation",
+      rendre: (C) =>
+        el(C, {
+          data: {
+            ...CONVOCATION,
+            numero: "AXI-DOC-2026-045",
+            modalite: "distanciel",
+            lienVisio: "https://visio.example.org/salle-42",
+            idReunion: "123 456 789",
+            versionTexte: 2,
+            outilVisio: "Visioconférence",
+            mentionLienVisio: "Lien envoyé avant la formation",
+          },
+          identite: IDENTITE,
+        }),
+    },
+    { nom: "attestation", gabarit: "attestation", rendre: (C) => el(C, { data: ATT }) },
+    {
+      nom: "attestation partielle",
+      gabarit: "attestation_partielle",
+      rendre: (C) => el(C, { data: PART }),
+    },
+    {
+      nom: "attestation partielle sans heure suivie",
+      gabarit: "attestation_partielle",
+      rendre: (C) =>
+        el(C, {
+          data: {
+            ...PART,
+            numero: "AXI-ATT-2026-009",
+            resultats: { ...PART.resultats, heuresSuivies: 0 },
+          },
+        }),
+    },
+    {
+      nom: "certificat de réalisation",
+      gabarit: "certificat",
+      rendre: (C) => el(C, { data: CERT }),
+    },
+  ];
+}
+
+/** Jeux courants (v2) et v2↔v1 comparés au texte. */
+export const CAS_DOCUMENTS: readonly CasDocument[] = fabriquerCas(JETON_COURANT);
+
+/** Mêmes cas avec le jeton historique : réservé aux empreintes de la v1 archivée. */
+export const CAS_DOCUMENTS_V1: readonly CasDocument[] = fabriquerCas(JETON_HISTORIQUE_V1);

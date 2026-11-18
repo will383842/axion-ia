@@ -22,7 +22,7 @@ vi.mock("@/lib/r2-storage", () => ({
 
 import { registerPdfTestFontsFallback } from "../../register-pdf-test-fonts";
 import { gabaritArchiveFormation } from "../archives";
-import { CAS_DOCUMENTS } from "./fixtures-documents-formation";
+import { CAS_DOCUMENTS_V1 } from "./fixtures-documents-formation";
 
 /** Rendu v1, relevé AVANT la v2. ⛔ Ne jamais mettre à jour. */
 const EMPREINTES_V1: Readonly<Record<string, string>> = {
@@ -52,7 +52,7 @@ afterAll(() => {
 const sha = (b: Buffer) => createHash("sha256").update(b).digest("hex");
 
 describe("🔴 une pièce émise sous la v1 se re-rend à l'identique", () => {
-  for (const cas of CAS_DOCUMENTS) {
+  for (const cas of CAS_DOCUMENTS_V1) {
     it(`v1 ${cas.nom} — mêmes octets qu'avant le passage en v2`, async () => {
       const C = gabaritArchiveFormation(cas.gabarit, 1);
       expect(C).not.toBeNull();
