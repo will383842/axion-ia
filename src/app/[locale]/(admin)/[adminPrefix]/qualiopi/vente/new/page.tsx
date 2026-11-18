@@ -18,6 +18,7 @@ import { prisma } from "@/lib/prisma";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import { estOffreUnAUn } from "@/server/qualiopi/offres/famille-prestation";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { assistantDevisActif } from "@/server/qualiopi/devis/interrupteur-assistant";
 import { filtreJetonClientVivant } from "@/server/qualiopi/vente/jeton-client-vivant";
 import type { ChecklistVenteInput, VenteFinancement } from "@/server/qualiopi/vente/checklist";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
@@ -56,6 +57,9 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
   const session = await auth();
   const userId = session?.user?.id;
   if (!userId) redirect(`/${locale}/${adminPrefix}/login`);
+
+  // « essai » vaut éteint ici : sans cible, l'assistant n'agit que s'il est allumé.
+  const assistantActif = await assistantDevisActif();
 
   const [offresWithPrice, formations, clients, mesBrouillons] = await Promise.all([
     listOffres({ actifOnly: true }),
@@ -301,6 +305,7 @@ export default async function QualiopiVenteNewPage({ params, searchParams }: Pag
       adminPrefix={adminPrefix}
       certificationObtenue={isQualiopiCertificationObtenue()}
       role={role}
+      assistantDevisActif={assistantActif}
       clients={clients}
       offres={offres}
       formations={formations}
