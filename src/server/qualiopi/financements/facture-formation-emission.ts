@@ -60,6 +60,7 @@ import { gabaritArchive } from "@/server/qualiopi/documents/templates/archives";
 import { versionGabaritCourante } from "@/server/qualiopi/documents/templates/gabarit-versions";
 import { versionGabaritDeLaPieceOrigine } from "@/server/qualiopi/documents/version-piece-origine";
 import type { FactureData } from "@/server/qualiopi/documents/templates/facture";
+import { lireAvoirOrigine } from "@/server/qualiopi/financements/avoir-instantane-origine";
 import { factureVivante } from "@/server/qualiopi/financements/facture-vivante";
 import { avecVerrouFactureSession } from "@/server/qualiopi/financements/verrou-facture-session";
 import type { FactureFormationDestinataire } from "../../../../prisma/generated/client";
@@ -737,9 +738,120 @@ export async function genererPdfFactureFormation(
       // differents pour la meme facture, c'est pire que le defaut d'origine.
       destinataire: true,
       session: { select: { client: { select: { type: true } } } },
+      // Un AVOIR est une ligne `factures_formation` dont `avoirDeId` est non nul : il se
+      // régénère comme à l'émission (`genererAvoirFacture`), jamais comme une facture.
+      avoirDeId: true,
+      avoirDe: { select: { numero: true } },
+      clientId: true,
     },
   });
   if (!facture) return { error: "Facture introuvable" };
+
+  // `!=` voulu : les fixtures existantes n'ont pas ce champ (undefined → pas un avoir).
+  const estAvoir = facture.avoirDeId != null;
+
+  // ── AVOIR : régénéré à l'identique de l'émission (`genererAvoirFacture`), jamais comme une facture.
+  // Le motif n'a pas de colonne : il vient de l'instantané du PDF d'origine ; sans lui on refuse
+  // (rien n'est écrit), aucun motif n'est inventé.
+  // ⚠️ Reproduit l'émission TELLE QUELLE : ni `estPersonnePhysique`, ni `periodePrestation`, ni
+  // `subrogationOpco` (absents à l'émission ; leur éventuel ajout est une décision du fondateur).
+  if (estAvoir) {
+    const origine = await lireAvoirOrigine(facture.numero, facture.documentId);
+    if (origine === null) {
+      return {
+        error:
+          "PDF non régénéré : motif de l'avoir introuvable (aucun PDF d'origine). Aucun motif n'est inventé.",
+      };
+    }
+    const numeroFactureOrigine = facture.avoirDe?.numero;
+    if (numeroFactureOrigine === undefined || origine.avoirSurNumero !== numeroFactureOrigine) {
+      return {
+        error:
+          "PDF non régénéré : la facture d'origine de l'avoir ne correspond pas au PDF d'origine. Rien n'a été produit.",
+      };
+    }
+
+    const identite = await getOrganismeIdentite();
+    // ⛔ PAS `regimeTvaDepuisConfig` ICI (ADR 0050 §7) : on RE-REND un avoir déjà émis, qui doit
+    // porter le régime FIGÉ de sa ligne en base, exactement comme à l'émission
+    // (`genererAvoirFacture`). Verrouiller réimprimerait l'avoir sous un autre régime que celui
+    // de la facture qu'il annule.
+    const regimeTva: RegimeTva = isRegimeTva(facture.regimeTva)
+      ? facture.regimeTva
+      : REGIME_TVA_DEFAUT;
+    const tauxTvaStandardPercent =
+      origine.tauxTvaStandardPercent ??
+      ((await getQualiopiConfig("taux_tva_standard_percent")) || TAUX_TVA_STANDARD);
+    const rib = await resolveRibFacture();
+    const formatDate = (d: Date | null | undefined): string =>
+      d ? d.toLocaleDateString("fr-FR") : new Date().toLocaleDateString("fr-FR");
+    const dateEmission = formatDate(facture.emiseAt);
+
+    const factureData: FactureData = {
+      numero: facture.numero,
+      dateEmission,
+      dateEcheance: dateEmission,
+      identite,
+      regimeTva,
+      tauxTvaStandardPercent,
+      client: {
+        raisonSociale: facture.destinataireNom,
+        ...(facture.destinataireSiret !== null ? { siret: facture.destinataireSiret } : {}),
+        ...(facture.destinataireTvaIntracom !== null
+          ? { numeroTvaIntracom: facture.destinataireTvaIntracom }
+          : {}),
+        ...(facture.destinataireAdresse !== null ? { adresse: facture.destinataireAdresse } : {}),
+      },
+      // Lignes TELLES QU'EN BASE (déjà négatives) : aucune négation, aucun Math.abs.
+      lignes: (Array.isArray(facture.lignes)
+        ? facture.lignes
+        : []) as unknown as FactureData["lignes"],
+      ...(facture.refClient !== null ? { refClient: facture.refClient } : {}),
+      ...(rib !== null ? { rib } : {}),
+      estAvoir: true,
+      avoirSurNumero: numeroFactureOrigine,
+      motifAvoir: origine.motifAvoir,
+    };
+
+    let documentIdAvoir: string;
+    try {
+      const versionOrigine = await versionGabaritDeLaPieceOrigine(facture.documentId);
+      const versionCourante = versionGabaritCourante("facture");
+      const Archive =
+        versionOrigine !== undefined && versionCourante !== null && versionOrigine < versionCourante
+          ? gabaritArchive("facture", versionOrigine)
+          : null;
+      if (
+        versionOrigine !== undefined &&
+        versionOrigine < (versionCourante ?? 0) &&
+        Archive === null
+      ) {
+        return {
+          error: `PDF non régénéré : la mise en page v${String(versionOrigine)} de la pièce d'origine n'est plus disponible.`,
+        };
+      }
+      const Composant = (Archive ?? FacturePdf) as React.ComponentType<{ data: FactureData }>;
+      const docResult = await generateDocument({
+        type: "avoir",
+        identite,
+        buildElement: () => React.createElement(Composant, { data: factureData }),
+        ...(Archive !== null && versionOrigine !== undefined
+          ? { gabaritVersion: versionOrigine, reeditionPieceEmise: true }
+          : {}),
+        refs: facture.clientId != null ? { clientId: facture.clientId } : {},
+      });
+      documentIdAvoir = docResult.id;
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Erreur de génération PDF";
+      return { error: `PDF non généré : ${msg}` };
+    }
+
+    await prisma.factureFormation.update({
+      where: { id: factureId },
+      data: { documentId: documentIdAvoir },
+    });
+    return { data: { factureId, documentId: documentIdAvoir } };
+  }
 
   // Reconstruction de FactureData pour le renderer
   const identite = await getOrganismeIdentite();
