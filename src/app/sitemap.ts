@@ -68,6 +68,7 @@ import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
 // Contenu unique par combo (pain-matrix 50/50) → indexable, anti-doorway.
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { SERVICE_DEFS } from "@/content/knowledge/services";
+import { hubGuidesEstIndexable } from "@/server/content-gen/guides/hub-indexable";
 
 // Next.js 16 sitemap-index pattern via `generateSitemaps()`.
 //
@@ -591,7 +592,9 @@ export default async function sitemap(props: {
   // Static IDs
   switch (id) {
     case "pages":
-      return filterEnIfDisabled(buildPagesSitemap(editorialFor("pages")));
+      return filterEnIfDisabled(
+        buildPagesSitemap(editorialFor("pages"), await hubGuidesEstIndexable()),
+      );
     case "blog":
       // Les articles portent leur `publishedAt` réel via `lastModFor` ; cette
       // date ne sert que de défaut pour les entrées sans date propre.
@@ -732,11 +735,13 @@ export function buildExcludeSlugsByType(): ReadonlyMap<string, ReadonlySet<strin
 
 // Static routes — declared in `routing.pathnames` minus excluded + slug templates.
 // Priority 1.0 (home) > 0.8 (depth 2) > 0.6 (depth ≥ 3). changefreq weekly.
-function buildPagesSitemap(now: Date): MetadataRoute.Sitemap {
+function buildPagesSitemap(now: Date, hubGuidesIndexable = true): MetadataRoute.Sitemap {
   const entries: MetadataRoute.Sitemap = [];
   for (const key of Object.keys(routing.pathnames) as PathnameKey[]) {
     if (EXCLUDED_FROM_INDEX.includes(key)) continue;
     if (isSlugTemplate(key)) continue;
+    // V1-17 : hub /guides vide = noindex, donc hors pages.xml (revient seul avec le 1er guide).
+    if (key === "/guides" && !hubGuidesIndexable) continue;
     // Cas concrets éteints (2026-11-08) : la page répond 404, donc hors pages.xml.
     if (key === "/cas-concrets" && !CAS_CONCRETS_AFFICHES) continue;
     // Page de réassurance Qualiopi : Phase-B uniquement (la page `notFound()` en
