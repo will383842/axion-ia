@@ -126,8 +126,8 @@ const LABELS = {
     messageNearLimit: (n: number) => `${n} / 2000`,
     advancedToggle: "Ajouter des détails (facultatif)",
     advancedHint: "Plus de contexte, c'est un devis plus juste et un premier appel plus court.",
-    companyName: "Société",
-    companyNamePlaceholder: "Raison sociale",
+    companyName: "Société (si vous écrivez pour une entreprise)",
+    companyNamePlaceholder: "Nom de votre entreprise",
     companySize: "Effectif",
     companySizeOptions: {
       tpe: "TPE — 1 à 19",
@@ -223,7 +223,7 @@ const LABELS = {
     messageNearLimit: (n: number) => `${n} / 2000`,
     advancedToggle: "Add details (optional)",
     advancedHint: "More context means a sharper quote and a shorter first call.",
-    companyName: "Company",
+    companyName: "Company (if you are writing on behalf of a business)",
     companyNamePlaceholder: "Company name",
     companySize: "Headcount",
     companySizeOptions: {
@@ -1033,6 +1033,18 @@ function UnifiedContactFormBody({
             </p>
           ) : null}
         </div>
+        {/* Société : facultative, visible d'emblée (sans elle la fiche sort « particulier »). */}
+        <div className="grid gap-1.5">
+          <Label htmlFor="unified-companyName">{t.companyName}</Label>
+          <Input
+            id="unified-companyName"
+            autoComplete="organization"
+            autoCapitalize="words"
+            enterKeyHint="next"
+            placeholder={t.companyNamePlaceholder}
+            {...register("companyName")}
+          />
+        </div>
       </div>
 
       {/* Téléphone + Ville */}
@@ -1224,15 +1236,6 @@ function UnifiedContactFormBody({
         >
           <p className="text-fg-muted text-[12.5px] leading-relaxed">{t.advancedHint}</p>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div className="grid gap-1.5">
-              <Label htmlFor="unified-companyName">{t.companyName}</Label>
-              <Input
-                id="unified-companyName"
-                autoComplete="organization"
-                placeholder={t.companyNamePlaceholder}
-                {...register("companyName")}
-              />
-            </div>
             <div className="grid gap-1.5">
               <Label htmlFor="unified-companySize">{t.companySize}</Label>
               <select
