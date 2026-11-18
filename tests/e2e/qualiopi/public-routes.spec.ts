@@ -49,9 +49,7 @@ const toutesLesRoutes = JSON.parse(
  * ils divergent, ces deux routes rendront un faux rouge — et le message
  * d'échec, qui porte le statut HTTP, le dira.
  */
-const ROUTES_SI_CERTIFIE = new Set([
-  "/fr/certification-qualiopi",
-]);
+const ROUTES_SI_CERTIFIE = new Set(["/fr/certification-qualiopi"]);
 const certificationRevendicable = process.env["QUALIOPI_CERTIFICATION_OBTENUE"] === "true";
 /**
  * Pages d'avis — règle AUTOMATIQUE (src/content/preuves-sociales.ts, 2026-10-09).
