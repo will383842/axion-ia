@@ -328,6 +328,11 @@ export async function GET(_req: NextRequest, ctx: RouteParams): Promise<Response
         "Cache-Control":
           "public, max-age=3600, stale-while-revalidate=86400, stale-if-error=604800",
         "X-Content-Type-Options": "nosniff",
+        // GEO V2-18 — la version Markdown est un format alternatif, jamais une
+        // page à indexer : le canonical pointe vers la page HTML, et l'indexation
+        // de la ressource Markdown elle-même est refusée (tous types).
+        Link: `<${SITE_URL}/fr/${content.canonicalSegment}/${slug}>; rel="canonical"`,
+        "X-Robots-Tag": "noindex",
       },
     });
   } catch (err) {
