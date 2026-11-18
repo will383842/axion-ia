@@ -25,6 +25,7 @@ import { Link } from "@/i18n/navigation";
 
 import { REGIONS } from "@/content/regions";
 import { getIndexableVillesCore } from "@/content/villes/core";
+import { estCitableDansLeMaillage } from "@/content/villes/villes-indexees";
 import { EN_BREF_JOURNEE_IA_PARAGRAPHES, remplacerJetons } from "@/content/journee-ia-commun";
 import {
   CHEMIN_JOURNEE_IA,
@@ -66,6 +67,7 @@ export default async function ImplantationsHub({ params }: Props) {
   setRequestLocale(locale);
 
   const principales = [...getIndexableVillesCore()]
+    .filter((v) => estCitableDansLeMaillage(v.slug))
     .sort((a, b) => b.population - a.population)
     .slice(0, NB_VILLES_PRINCIPALES);
 

@@ -32,7 +32,7 @@
 
 import type { VilleData } from "./data/types";
 import { PREMIUM_REWRITE_SLUGS } from "./premium-rewrite-slugs";
-import { UNIQUE_VILLE_SLUGS } from "./unique-ville-slugs";
+import { VILLES_INDEXEES, estCitableDansLeMaillage } from "./villes-indexees";
 import { REGIONS, type Region } from "@/content/regions";
 import { VILLE_SLUGS_WITH_COPY } from "@/generated/villes-slugs-with-copy";
 
@@ -115,73 +115,40 @@ export function hasVilleCopy(slug: string): boolean {
 // adossé aux clés générées plutôt qu'aux contenus. Les commentaires d'origine
 // sont conservés : ils portent les décisions SEO, pas de l'ornement.
 
-const INDEXATION_START = new Date("2026-05-28T00:00:00Z");
-const VILLES_PER_DAY = 50;
-
-const BURST_DAYS = 9; // socle figé = premium + 9*50 (~cohorte du 2026-06-06)
-const REOPEN_START = new Date("2026-06-06T00:00:00Z");
-const REOPEN_WEEK1 = 100; // villes rouvertes la 1re semaine
-const REOPEN_ACCEL = 25; // +25 villes/semaine de plus chaque semaine (S1=100…S5=200)
-const WEEK_MS = 7 * 86_400_000;
-
-/** Nb de villes uniques rouvertes (cumul) depuis REOPEN_START — accélérant par semaine. */
-function reopenedSince(now: Date): number {
-  const ms = now.getTime() - REOPEN_START.getTime();
-  if (ms <= 0) return 0;
-  const w = Math.floor(ms / WEEK_MS); // semaines pleines écoulées
-  // cumul = Σ_{k=1..w} (REOPEN_WEEK1 + REOPEN_ACCEL*(k-1))
-  return REOPEN_WEEK1 * w + (REOPEN_ACCEL * (w * (w - 1))) / 2;
-}
-
 /** Ville premium = a un copy ET (pop ≥ 20k OU rewrite premium MANUAL-REWRITE). */
 export function isPremiumVilleCore(v: VilleData): boolean {
   return hasVilleCopy(v.slug) && (v.population >= 20_000 || PREMIUM_REWRITE_SLUGS.has(v.slug));
 }
 
-// Villes RÉELLEMENT indexables — garde-fou anti-doorway au mérite (décision Will
-// 2026-05-31 « indexation au mérite + AEO », Phase 2B). Une ville n'entre dans la
-// cohorte d'indexation que si elle a un `copy` ET passe le scorer d'unicité
-// (`UNIQUE_VILLE_SLUGS`). Les ~341 villes templatées restent PRÉSENTES, crawlables,
-// maillées et citables par les IA (AEO), mais sortent `noindex` au niveau page.
+// Villes RÉELLEMENT indexables : UNIQUEMENT celles de `villes-indexees.ts` (source
+// unique, décision du 18/11/2026 : 40 villes de 100 000 habitants ou plus). Toutes
+// les autres villes restent présentes, crawlables et en ligne, mais sortent
+// `noindex, follow` au niveau page et en-tête, et hors des sitemaps.
+// RÉVERSIBLE : modifier la liste dans `villes-indexees.ts`.
 //
-// P0 2026-07-03 (décision Will) — CAP INDEXATION T1/T2 + CURÉES : la cohorte est
-// restreinte aux villes PREMIUM. RÉVERSIBLE : retirer `isPremiumVilleCore(v) &&`.
-//
-// Tri par priorité : premium d'abord (population décroissante), puis le reste.
-// Ordre déterministe et stable entre builds (tri par pop puis slug en tie-break).
-const RANKED_INDEXABLE: ReadonlyArray<VilleData> = VILLES_CORE.filter(
-  (v) => isPremiumVilleCore(v) && UNIQUE_VILLE_SLUGS.has(v.slug),
+// Ordre déterministe : population décroissante, puis slug.
+const RANKED_INDEXABLE: ReadonlyArray<VilleData> = VILLES_CORE.filter((v) =>
+  VILLES_INDEXEES.has(v.slug),
 ).sort((a, b) => {
-  const pa = isPremiumVilleCore(a);
-  const pb = isPremiumVilleCore(b);
-  if (pa !== pb) return pa ? -1 : 1;
   if (b.population !== a.population) return b.population - a.population;
   return a.slug.localeCompare(b.slug);
 });
 
-const PREMIUM_COUNT = RANKED_INDEXABLE.filter(isPremiumVilleCore).length;
-const INDEXABLE_RANK = new Map(RANKED_INDEXABLE.map((v, i) => [v.slug, i] as const));
-
-/** Taille de la cohorte indexable à la date `now` (premium + ramp quotidien). */
+/** Taille de la cohorte indexable : toute la liste `villes-indexees.ts` (plus de drip). */
 export function cohortSize(now: Date = new Date()): number {
-  const elapsed = Math.max(
-    0,
-    Math.floor((now.getTime() - INDEXATION_START.getTime()) / 86_400_000),
-  );
-  const burst = PREMIUM_COUNT + Math.min(elapsed, BURST_DAYS) * VILLES_PER_DAY;
-  return Math.min(RANKED_INDEXABLE.length, burst + reopenedSince(now));
+  void now;
+  return RANKED_INDEXABLE.length;
 }
 
 /**
  * True si la ville (par slug) est indexable.
  *
- * P0 2026-06-14 (décision Will) : le drip progressif est RETIRÉ — toutes les
- * villes UNIQUES éligibles sont indexables IMMÉDIATEMENT. `now` est conservé pour
- * compatibilité de signature.
+ * Lit UNIQUEMENT `villes-indexees.ts` (source unique, 18/11/2026). `now` est
+ * conservé pour compatibilité de signature.
  */
 export function isVilleIndexable(slug: string, now: Date = new Date()): boolean {
   void now;
-  return INDEXABLE_RANK.has(slug);
+  return VILLES_INDEXEES.has(slug);
 }
 
 /** Slugs des villes ÉLIGIBLES à indexation (= ont un `copy`). Base du sitemap. */
@@ -196,5 +163,10 @@ export function getIndexableVillesCore(): ReadonlyArray<VilleData> {
 
 /** Villes de la cohorte indexable à la date `now`, dans l'ordre de classement. */
 export function getVillesCoreIndexableNow(now: Date = new Date()): ReadonlyArray<VilleData> {
-  return RANKED_INDEXABLE.slice(0, cohortSize(now));
+  // Liste de MAILLAGE (pages nationales « nos villes ») : les villes hors maillage
+  // (cf. `villes-indexees.ts`) n'y figurent jamais, tout en restant indexées.
+  return RANKED_INDEXABLE.filter((v) => estCitableDansLeMaillage(v.slug)).slice(
+    0,
+    cohortSize(now),
+  );
 }

@@ -121,7 +121,7 @@ describe("computeIndexability — villes (drip temporel)", () => {
     expect(r.indexable).toBe(false);
   });
 
-  it("page ville×service d'une ville premium (lyon) → indexable au futur", () => {
+  it("page ville×service d'une ville gardée (lyon) → noindex (toutes les pages service × ville le sont)", () => {
     const r = computeIndexability(
       {
         pathRendered: "/fr/audit/par-ville/lyon",
@@ -130,7 +130,7 @@ describe("computeIndexability — villes (drip temporel)", () => {
       },
       FUTURE,
     );
-    expect(r.indexable).toBe(true);
+    expect(r.indexable).toBe(false);
   });
 
   it("page ville×service d'un slug inexistant → noindex (hors cohorte)", () => {
@@ -143,6 +143,6 @@ describe("computeIndexability — villes (drip temporel)", () => {
       FUTURE,
     );
     expect(r.indexable).toBe(false);
-    expect(r.reason).toMatch(/drip|cohorte/i);
+    expect(r.reason).toMatch(/service × ville|noindex/i);
   });
 });

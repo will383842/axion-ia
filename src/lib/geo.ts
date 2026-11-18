@@ -15,6 +15,7 @@ import type { CaseStudy } from "@/content/case-studies";
 import { CASE_STUDIES } from "@/content/case-studies";
 import { BLOG_POSTS, type BlogPost } from "@/content/transversal";
 import { VILLES_CORE, hasVilleCopy } from "@/content/villes/core";
+import { estCitableDansLeMaillage } from "@/content/villes/villes-indexees";
 import { slugify } from "@/lib/slug";
 
 import { haversineKm } from "./geo-distance";
@@ -38,6 +39,8 @@ export function getNearbyVilles(
   const candidates: NearbyVille[] = [];
   for (const ville of VILLES_CORE) {
     if (opts.excludeSlug && ville.slug === opts.excludeSlug) continue;
+    // 18/11/2026 : certaines villes ne sont jamais citées dans le maillage des autres pages.
+    if (!estCitableDansLeMaillage(ville.slug)) continue;
     if (opts.sameRegion && ville.region !== opts.sameRegion) continue;
     // Audit maillage 2026-07-03 — `indexableOnly` : ne retenir que les villes
     // avec `copy` (= vraies pages éligibles à l'index). Évite de mailler vers
@@ -140,6 +143,7 @@ export function getNearbyVillesExtended(source: VilleData): NearbyVillesExtended
 
   for (const ville of VILLES_CORE) {
     if (ville.slug === source.slug) continue;
+    if (!estCitableDansLeMaillage(ville.slug)) continue;
     const distanceKm = haversineKm(source.geo, ville.geo);
 
     if (distanceKm <= 30) {

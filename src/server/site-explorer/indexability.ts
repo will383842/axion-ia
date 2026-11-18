@@ -101,20 +101,20 @@ export function computeIndexability(
       return { indexable: false, reason: `Région « ${regionSlug} » non indexable` };
     }
     if (villeSlug && !isVilleIndexable(villeSlug, now)) {
-      return { indexable: false, reason: "Ville hors cohorte drip (noindex temporaire)" };
+      return { indexable: false, reason: "Ville hors liste des villes indexées (noindex, follow)" };
     }
     if (villeSlug) return { indexable: true, reason: "" };
     // Hub région indexable.
     return { indexable: true, reason: "" };
   }
 
-  // 3) Pages ville×service `/fr/<service>/par-ville/<ville>` (drip temporel).
-  if (rest[0] === "par-ville" || rest[0] === "by-city") {
-    const villeSlug = rest[1];
-    if (villeSlug && !isVilleIndexable(villeSlug, now)) {
-      return { indexable: false, reason: "Ville hors cohorte drip (noindex temporaire)" };
-    }
-    if (villeSlug) return { indexable: true, reason: "" };
+  // 3) Pages ville×service `/fr/<service>/par-ville/<ville>` : TOUJOURS noindex, follow
+  //    (décision du 18/11/2026, une seule page indexée par ville).
+  if ((rest[0] === "par-ville" || rest[0] === "by-city") && rest[1]) {
+    return {
+      indexable: false,
+      reason: "Page service × ville (noindex, follow : une seule page indexée par ville)",
+    };
   }
 
   // 3 bis) Glossaire : `isGlossaryTermIndexable` est le MEME SSOT que le rendu

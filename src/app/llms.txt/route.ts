@@ -155,7 +155,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Couverture géographique
 
-- Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) par commune.
+- Hub par ville : ${SITE_URL}/fr/implantations/{region}/{ville} — page locale (services IA, écosystème, secteurs, FAQ) des grandes villes (communes de 100 000 habitants ou plus).
 - Secteurs × activités : ${SITE_URL}/fr/secteurs/{secteur}/{activite} — pages métier croisées (constat, avant/après, KPI), anti-doorway HCU.
 - Services localisés par ville : ${SITE_URL}/fr/audit/par-ville/{ville} (idem interventions / implementation / un-a-un / sites-web-augmentes).
 - Couverture par paliers : grandes métropoles d'abord (Paris, Lyon, Marseille, Toulouse, Nice, Nantes, Strasbourg, Montpellier, Bordeaux, Lille…), puis villes moyennes et longue traîne (indexation progressive).
@@ -172,7 +172,7 @@ ${CAS_CONCRETS_AFFICHES ? `- [Cas concrets](${SITE_URL}/fr/cas-concrets) — ré
 
 ## Galerie & ressources
 
-- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml · T2 ${SITE_URL}/sitemap-images-villes-t2.xml · T3/T4 ${SITE_URL}/sitemap-images-villes-t3-t4.xml
+- [Banque d'images CC BY 4.0](${SITE_URL}/fr/galerie) — 72 visuels marketing Axion-IA. Licence CC BY 4.0, attribution "© 2026 Axion-IA". Catégories : Audit IA (17) · Formation IA (15) · Automatisation (4) · Coaching 1-to-1 (8) · Graphiques (5) · Logos (7) · Propositions (11) · Villes France (5 dédiées + 2157 via métadonnées). Sitemaps images : ${SITE_URL}/sitemap-images-services.xml · T1 ${SITE_URL}/sitemap-images-villes-t1.xml
 - [Centre d'aide](${SITE_URL}/fr/centre-aide) — articles support classés par catégorie.
 ${sectionVideos}${sectionTour}
 ## Contact & presse
@@ -190,8 +190,6 @@ ${sectionFaitsPratiquesLlms(SITE_URL)}
 - [Image Sitemap FR](${SITE_URL}/sitemaps/images-fr.xml) — Google Images, banque CC BY 4.0.
 ${anglaisServi() ? `- [Image Sitemap EN](${SITE_URL}/sitemaps/images-en.xml) — Google Images, version anglaise.\n` : ""}- [Image Sitemap Services](${SITE_URL}/sitemap-images-services.xml) — 72 images marketing sur 20 pages services.
 - [Image Sitemap Villes T1](${SITE_URL}/sitemap-images-villes-t1.xml) — villes ≥ 100 000 hab (images dédiées).
-- [Image Sitemap Villes T2](${SITE_URL}/sitemap-images-villes-t2.xml) — villes 50K–100K hab (template Sharp auto).
-- [Image Sitemap Villes T3/T4](${SITE_URL}/sitemap-images-villes-t3-t4.xml) — 2 034 villes 5K–50K hab.
 - [Google News Sitemap](${SITE_URL}/sitemap-news.xml) — actualités fenêtre 48 h glissante.
 
 ## Excluded
