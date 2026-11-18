@@ -870,6 +870,75 @@ describe("devis-renvoi", () => {
   });
 });
 
+describe("suites d'audit du renvoi (double annulation, trace du nouveau lien)", () => {
+  beforeEach(() => {
+    h.txDevisFindUnique.mockImplementation(async () => devisRelu({ statut: "envoye" }));
+  });
+  const lancerRenvoi = (enfiler: unknown) =>
+    envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurRenvoi()),
+      acteur: ACTEUR,
+      enfiler: enfiler as never,
+    });
+  const lancerPremier = (enfiler: unknown) =>
+    envoyerAvecLienALEnvoi({
+      ligne: LIGNE,
+      payload: payloadAvec(marqueurPremier()),
+      acteur: ACTEUR,
+      enfiler: enfiler as never,
+    });
+  const refus = async () => ({ enqueued: false, retenu: "oppose" });
+
+  it("renvoi : non enfilé PUIS commit en échec → l'ancien lien n'est rendu qu'UNE fois, une seule alerte", async () => {
+    h.commitEchec.v = true;
+    h.rendrePrecedent.mockResolvedValue(false);
+    await lancerRenvoi(vi.fn(refus)).catch(() => undefined);
+    expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+    expect(h.revoquerPrecis).toHaveBeenCalledTimes(1);
+    const alertes = h.sentryExc.mock.calls.filter((c) =>
+      JSON.stringify(c).includes("ancien_lien_non_rendu"),
+    );
+    expect(alertes).toHaveLength(1);
+  });
+
+  it("premier envoi : non enfilé PUIS commit en échec → l'ancien lien n'est rendu qu'UNE fois", async () => {
+    h.txDevisFindUnique.mockImplementation(async () => devisRelu());
+    h.commitEchec.v = true;
+    await lancerPremier(vi.fn(refus)).catch(() => undefined);
+    expect(h.rendrePrecedent).toHaveBeenCalledTimes(1);
+  });
+
+  it("renvoi : au départ réel, journal qualiopi.devis.renvoi sans adresse ni URL ni jeton", async () => {
+    await lancerRenvoi(vi.fn(enfileOk));
+    const appel = h.log.mock.calls.find(
+      (c) => (c[0] as { action: string }).action === "qualiopi.devis.renvoi",
+    );
+    expect(appel?.[0]).toMatchObject({
+      targetType: "Devis",
+      targetId: DEVIS_ID,
+      changes: { lienSignatureEmis: true, documentGenereId: PIECE_ID },
+      session: { userId: "adm-1", role: "super_admin" },
+    });
+    const s = JSON.stringify(h.log.mock.calls);
+    expect(s).not.toContain(ADRESSE);
+    expect(s).not.toContain(TOKEN);
+    expect(s).not.toContain("/portail/signer/");
+  });
+
+  it("renvoi : rien n'est journalisé quand rien n'est parti", async () => {
+    await lancerRenvoi(vi.fn(refus));
+    expect(h.log).not.toHaveBeenCalled();
+  });
+
+  it("renvoi : une erreur de journal ne remonte jamais", async () => {
+    h.log.mockRejectedValue(new Error(`${ADRESSE} ${TOKEN}`));
+    const r = await lancerRenvoi(vi.fn(enfileOk));
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true } });
+    expect(toutSerialise()).not.toContain(TOKEN);
+  });
+});
+
 describe("aucune fuite, dans tous les cas", () => {
   it("rien de sensible dans console, Sentry, Telegram ni journal (échec de rendu du lien précédent compris)", async () => {
     h.rendrePrecedent.mockRejectedValue(
