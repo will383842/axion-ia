@@ -81,6 +81,11 @@ const OFFRES: readonly OffreLlms[] = [
 ];
 
 /** Vrai si la clé est une route déclarée (donc servie). */
+/** Vrai si le texte ne porte aucun mot proscrit dans ce canal (« certification » même niée). */
+function propre(texte: string): boolean {
+  return !MOTS_INTERDITS_LLMS.test(texte) && !/certifi|qualiopi|finançable/i.test(texte);
+}
+
 export function routeExiste(cle: string): boolean {
   return Object.prototype.hasOwnProperty.call(routing.pathnames, cle);
 }
@@ -125,7 +130,14 @@ export function sectionReferenceLlms(siteUrl: string, complet: boolean): string 
     `- [Glossaire de l’IA en entreprise](${fr("/glossaire")}) — ${TERMES_GLOSSAIRE.length} termes définis en clair (définition, exemple en PME, limite). Mis à jour le ${GLOSSAIRE_DATE_MISE_A_JOUR.split("-").reverse().join("/")}. Chaque terme : ${fr("/glossaire")}/{slug}.`,
   );
   if (complet) {
-    for (const t of TERMES_GLOSSAIRE) {
+    // Les définitions qui portent un mot proscrit dans ce canal (cf. `MOTS_INTERDITS_LLMS`, et
+    // « certification » même niée) restent servies par /glossaire : seul le lien est omis ici.
+    const propres = TERMES_GLOSSAIRE.filter(
+      (t) =>
+        !MOTS_INTERDITS_LLMS.test(t.definition) &&
+        !/certifi|qualiopi|finançable/i.test(t.definition),
+    );
+    for (const t of propres) {
       l.push(`  - [${t.term}](${fr("/glossaire")}/${t.slug}) — ${t.definition}`);
     }
   }
@@ -133,7 +145,9 @@ export function sectionReferenceLlms(siteUrl: string, complet: boolean): string 
   l.push(
     `- [FAQ](${fr("/faq")}) — questions fréquentes des dirigeants de PME ; [base de connaissances](${fr("/connaissances")}) — fiches citables.`,
   );
-  for (const q of Object.values(QUESTIONS_REFERENCE)) {
+  for (const q of Object.values(QUESTIONS_REFERENCE).filter((q) =>
+    propre(`${q.question} ${q.reponse}`),
+  )) {
     l.push(complet ? `- **${q.question}** ${remplacerJetons(q.reponse)}` : `- ${q.question}`);
   }
   l.push("", "## Observatoire", "");
