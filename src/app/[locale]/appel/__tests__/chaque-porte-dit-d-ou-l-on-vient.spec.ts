@@ -117,7 +117,7 @@ describe("🔑 la consigne du compte rendu visio dit UN seul rendez-vous gratuit
 
   it("45 minutes, un seul : ni « Échange projet » proposé, ni deux rendez-vous", () => {
     expect(consigne).toContain(
-      "le plus souvent le Diagnostic IA gratuit de 45 minutes réservé sur le site",
+      "le plus souvent l’Appel de cadrage de 45 minutes réservé sur le site",
     );
     expect(consigne).not.toMatch(/\b(15|20|30) minutes/);
     expect(consigne).not.toMatch(/l'un des deux rendez-vous/);

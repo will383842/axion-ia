@@ -51,7 +51,7 @@ describe("offre.ts — les faits de la source", () => {
     expect(DUREE_RDV).toBe("45 minutes");
     expect(DUREE_RDV_COURTE).toBe("45 min");
     expect(MICRO_TEXTE_RDV).toBe(
-      "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+      "Appel de cadrage · 45 minutes · en visio ou par téléphone · sans engagement",
     );
   });
 
@@ -79,13 +79,13 @@ describe("offre.ts — les faits de la source", () => {
 describe("offre.ts — les premiers consommateurs rendent EXACTEMENT le même texte", () => {
   it("promesse du Diagnostic IA (réservation)", () => {
     expect(TYPES_RESERVABLES.diagnostic.promesse).toBe(
-      "Diagnostic IA gratuit, 45 minutes, en visio ou par téléphone, sans engagement",
+      "Appel de cadrage, 45 minutes, gratuit, en visio ou par téléphone, sans engagement",
     );
   });
 
   it("règles fixes du chatbot", () => {
     expect(REGLES_FIXES).toContain(
-      "L'orientation par défaut est le Diagnostic IA gratuit de 45 minutes, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.",
+      "L'orientation par défaut est l’Appel de cadrage de 45 minutes, sans engagement (un seul rendez-vous gratuit) ; cette durée est un fait que vous pouvez citer.",
     );
   });
 });
@@ -153,13 +153,13 @@ const REGLES: ReadonlyArray<{
   {
     nom: "durée du rendez-vous gratuit",
     motif:
-      /(?:rendez-vous gratuit|diagnostic IA gratuit|diagnostic gratuit|appel découverte|échange gratuit|premier échange)[^.\n]{0,60}?\b(\d+)\s?-?\s?(?:min\b|minutes?\b)/gi,
+      /(?:rendez-vous gratuit|appel de cadrage|diagnostic IA gratuit|diagnostic gratuit|appel découverte|échange gratuit|premier échange)[^.\n]{0,60}?\b(\d+)\s?-?\s?(?:min\b|minutes?\b)/gi,
     diverge: (m) => Number(m[1]) !== DUREE_ATTENDUE,
   },
   {
     nom: "durée du rendez-vous gratuit (durée avant)",
     motif:
-      /\b(\d+)\s?-?\s?(?:min\b|minutes?\b)[^.\n]{0,40}?(?:rendez-vous gratuit|diagnostic IA gratuit|diagnostic gratuit|appel découverte)/gi,
+      /\b(\d+)\s?-?\s?(?:min\b|minutes?\b)[^.\n]{0,40}?(?:rendez-vous gratuit|appel de cadrage|diagnostic IA gratuit|diagnostic gratuit|appel découverte)/gi,
     diverge: (m) => Number(m[1]) !== DUREE_ATTENDUE,
   },
   {
@@ -190,8 +190,8 @@ describe("offre.ts — aucun texte public, prompt ou e-mail ne contredit la sour
   it("les témoins : chaque règle attrape un vrai défaut et laisse passer la bonne valeur", () => {
     expect(divergences("La Journée IA à 2 450 € HT, dans vos locaux.")).toHaveLength(1);
     expect(divergences("La Journée IA à 1 490 € HT, dans vos locaux.")).toHaveLength(0);
-    expect(divergences("Réservez votre Diagnostic IA gratuit de 30 minutes.")).toHaveLength(1);
-    expect(divergences("Réservez votre Diagnostic IA gratuit de 45 minutes.")).toHaveLength(0);
+    expect(divergences("Réservez votre appel de cadrage de 30 minutes.")).toHaveLength(1);
+    expect(divergences("Réservez votre appel de cadrage de 45 minutes.")).toHaveLength(0);
     expect(divergences("Un appel de 60 min, diagnostic gratuit et sans engagement.")).toHaveLength(
       1,
     );

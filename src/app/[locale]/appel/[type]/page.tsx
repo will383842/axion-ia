@@ -50,7 +50,7 @@ export async function generateMetadata({ params }: Pick<Props, "params">): Promi
   const brut = choixDeLaRoute(type);
   if (!brut) return { robots: { index: false, follow: false } };
   // Un seul rendez-vous public (r10) : l'ancien « échange projet » montre le corps du
-  // Diagnostic IA gratuit (cf. /appel), son titre doit dire la même chose.
+  // Appel de cadrage (cf. /appel), son titre doit dire la même chose.
   const choix = brut === "projet" ? "diagnostic" : brut;
   return {
     title: { absolute: `${configDuChoix(choix).nom} · réservation · Axion-IA` },

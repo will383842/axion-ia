@@ -52,7 +52,7 @@ export function VilleFaqGeolocalisee({ villeContext, faqs, isFr }: VilleFaqGeolo
     : `Your questions — ${villeContext.name}`;
 
   const description = isFr
-    ? "Votre question n’y est pas ? Posez-la pendant le diagnostic gratuit de 45 minutes."
+    ? "Votre question n’y est pas ? Posez-la pendant l’appel de cadrage de 45 minutes."
     : "Your question isn't listed? Ask it during the free 45-minute call.";
 
   // JSON-LD FAQPage + SpeakableSpecification (cible data-faq-q / data-faq-a).

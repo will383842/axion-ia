@@ -163,9 +163,9 @@ export const TYPES_RESERVABLES: Readonly<Record<ChoixRendezVous, ConfigRendezVou
     route: "diagnostic",
     type: "diagnostic",
     public: true,
-    nom: "Diagnostic IA gratuit",
-    titre: "Votre diagnostic IA gratuit",
-    promesse: `${OFFRE_JOURNEE_IA.rendezVous.nom}, ${DUREE_RDV}, en visio ou par téléphone, sans engagement`,
+    nom: "Appel de cadrage",
+    titre: "Votre appel de cadrage",
+    promesse: `${OFFRE_JOURNEE_IA.rendezVous.nom}, ${DUREE_RDV}, gratuit, en visio ou par téléphone, sans engagement`,
     premiereEtape: PREMIERE_ETAPE_VISIO_OU_TELEPHONE,
     deuxiemeEtape: CONFIRMATION_CLIENT,
     troisiemeEtape:

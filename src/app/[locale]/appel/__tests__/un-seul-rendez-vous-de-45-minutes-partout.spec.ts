@@ -7,7 +7,7 @@
  * (audit harmonie A08, décision n° 12 ; règle r10 du Brain, décidée par Williams le 07/11/2026).
  *
  * - le type `diagnostic` change de LIBELLÉ seulement (clés, routes, slugs, types inchangés) ;
- * - un ancien lien `?rdv=projet` s'affiche comme le Diagnostic IA gratuit, sans toucher
+ * - un ancien lien `?rdv=projet` s'affiche comme l’Appel de cadrage, sans toucher
  *   au report ni à l'annulation d'un échange projet déjà réservé.
  */
 
@@ -25,8 +25,8 @@ const sansCommentaires = (s: string) =>
 describe("🔑 le type `diagnostic` est le rendez-vous gratuit de 45 minutes (règle r10 du Brain)", () => {
   const diag = TYPES_RESERVABLES.diagnostic;
   it("libellés changés, identifiants intacts", () => {
-    expect(diag.nom).toBe("Diagnostic IA gratuit");
-    expect(diag.titre).toBe("Votre diagnostic IA gratuit");
+    expect(diag.nom).toBe("Appel de cadrage");
+    expect(diag.titre).toBe("Votre appel de cadrage");
     expect(diag.promesse).toMatch(/45 minutes/);
     expect(diag.promesse).toMatch(/gratuit/i);
     expect(diag.promesse).toMatch(/sans engagement/i);
@@ -50,7 +50,7 @@ describe("🔑 le type `diagnostic` est le rendez-vous gratuit de 45 minutes (r�
   });
 });
 
-describe("🔑 /appel : l'ancien échange projet s'affiche comme le Diagnostic IA gratuit", () => {
+describe("🔑 /appel : l'ancien échange projet s'affiche comme l’Appel de cadrage", () => {
   const page = sansCommentaires(lire("src/app/[locale]/appel/page.tsx"));
 
   it("`projet` est rabattu sur `diagnostic` à l'affichage", () => {
@@ -123,12 +123,12 @@ describe("🔑 FAQ et stack-ia : 45 minutes, et le bouton mène au rendez-vous g
   );
 });
 
-describe("🔑 /appel/echange-projet : le titre suit le corps (Diagnostic IA gratuit)", () => {
+describe("🔑 /appel/echange-projet : le titre suit le corps (Appel de cadrage)", () => {
   const route = sansCommentaires(lire("src/app/[locale]/appel/[type]/page.tsx"));
   it("generateMetadata rabat `projet` vers `diagnostic` avant de lire le nom", () => {
     expect(route).toMatch(/brut === "projet" \? "diagnostic" : brut/);
     expect(route).toMatch(/configDuChoix\(choix\)\.nom/);
-    expect(TYPES_RESERVABLES.diagnostic.nom).toBe("Diagnostic IA gratuit");
+    expect(TYPES_RESERVABLES.diagnostic.nom).toBe("Appel de cadrage");
   });
 });
 

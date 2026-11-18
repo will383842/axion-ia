@@ -271,7 +271,7 @@ export default async function VillePage({ params }: Props) {
                   track="ville_cta_diagnostic"
                   data-source-ville={ville.slug}
                 >
-                  Réserver le diagnostic gratuit
+                  Réserver l’appel de cadrage
                   <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Cta>
                 <Cta
@@ -452,7 +452,7 @@ export default async function VillePage({ params }: Props) {
               {`Votre Journée IA ${aVille(ville.nameFr)} commence par 45 minutes gratuites`}
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA gratuit de 45 minutes, en visio ou par téléphone : une première tâche
+              Appel de cadrage de 45 minutes, en visio ou par téléphone : une première tâche
               chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
@@ -461,7 +461,7 @@ export default async function VillePage({ params }: Props) {
               data-source-ville={ville.slug}
               className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              Réserver le diagnostic gratuit
+              Réserver l’appel de cadrage
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -500,7 +500,7 @@ function VilleStub({ ville, region, breadcrumbItems }: VilleStubProps) {
           track="ville_stub_diagnostic"
           data-source-ville={ville.slug}
         >
-          Réserver le diagnostic gratuit
+          Réserver l’appel de cadrage
           <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </Cta>
         <Cta

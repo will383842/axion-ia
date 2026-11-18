@@ -184,7 +184,7 @@ export default async function RegionPage({ params }: Props) {
                 track="region_cta_diagnostic"
                 data-source-region={region.slug}
               >
-                Réserver le diagnostic gratuit
+                Réserver l’appel de cadrage
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Cta>
               <Cta
@@ -349,7 +349,7 @@ export default async function RegionPage({ params }: Props) {
               Votre Journée IA commence par 45 minutes gratuites
             </h2>
             <p className="text-paper/85 text-base leading-relaxed sm:text-lg">
-              Diagnostic IA gratuit de 45 minutes, en visio ou par téléphone : une première tâche
+              Appel de cadrage de 45 minutes, en visio ou par téléphone : une première tâche
               chiffrée, et la date de votre journée fixée ensemble.
             </p>
             <Link
@@ -358,7 +358,7 @@ export default async function RegionPage({ params }: Props) {
               data-source-region={region.slug}
               className="bg-paper text-terracotta cta-lift focus-visible:ring-paper inline-flex h-14 items-center justify-center gap-2 rounded-full px-7 text-base font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
-              Réserver le diagnostic gratuit
+              Réserver l’appel de cadrage
               <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
           </div>
@@ -367,7 +367,7 @@ export default async function RegionPage({ params }: Props) {
 
       <StickyMobileCta
         href={lienRendezVous(depuisRegion(region.slug, "bas"))}
-        label="Réserver le diagnostic gratuit"
+        label="Réserver l’appel de cadrage"
         track="region-sticky-mobile"
         threshold={600}
       />

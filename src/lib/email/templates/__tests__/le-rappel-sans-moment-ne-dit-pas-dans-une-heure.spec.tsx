@@ -137,8 +137,8 @@ const AVANT: Record<string, { objet: string; sha: string }> = {
     sha: "a2d7c10beaaea88c5365994581611b170a608bb4277e367f8a3f08ddfbd79910",
   },
   "fr|confirmation|diagnostic": {
-    objet: "Diagnostic IA : vendredi 25 septembre à 11:30",
-    sha: "80d3de8b704f9d747a34b54ae2d0cfdcb6069a5071681b0d2507db5d2c8a4cfc",
+    objet: "Appel de cadrage : vendredi 25 septembre à…",
+    sha: "0ca6d707c9b9a1faf8dc9c7c332f9ef553cc7596a589dfaadab2f8a9e6e20fa6",
   },
   "fr|confirmation|echange_projet": {
     objet: "Échange projet : vendredi 25 septembre à…",
@@ -149,8 +149,8 @@ const AVANT: Record<string, { objet: string; sha: string }> = {
     sha: "dd12ed0811b55f11c579b1c731c78723d826fd30371613ca070055b7a9e4ffd5",
   },
   "fr|j1|diagnostic": {
-    objet: "Rappel : votre diagnostic IA demain à 11:30",
-    sha: "666320f2acf5d539c6ec9821f2f080b3916cb1d0bb43c94872187c92af148e1b",
+    objet: "Rappel : appel de cadrage demain à 11:30",
+    sha: "4cf68669b7019c16e085a1a74a5c7c5ff30194c1867e587b58fe645239f0b838",
   },
   "fr|j1|echange_projet": {
     objet: "Rappel : votre échange projet demain à 11:30",
@@ -161,8 +161,8 @@ const AVANT: Record<string, { objet: string; sha: string }> = {
     sha: "bc9d9c4a4813e76e1d67223f9571e3e79f908da763aa35561222860d383ae547",
   },
   "fr|h1|diagnostic": {
-    objet: "Votre diagnostic IA dans une heure, à 11:30",
-    sha: "c4a1f8fa7e0dc862dc606c4919f64af8b68475a4f7efee43aaf6128635dc0811",
+    objet: "Appel de cadrage dans une heure, à 11:30",
+    sha: "132bcc3c9e292f616c336fd527bb71370e2d9deae37c6dcdeac4ca02db9c8227",
   },
   "fr|h1|echange_projet": {
     objet: "Votre échange projet dans une heure, à 11:30",

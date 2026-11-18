@@ -30,8 +30,8 @@ export function AuditMethodology({ isFr }: AuditMethodologyProps): ReactNode {
               id: "step-1-cadrage",
               title: isFr ? "Cadrage 45 min" : "45-min scoping",
               description: isFr
-                ? "Appel découverte gratuit. On cadre le périmètre et la date."
-                : "Free discovery call. We scope the perimeter and date.",
+                ? "Appel de cadrage gratuit. On cadre le périmètre et la date."
+                : "Free scoping call. We scope the perimeter and date.",
             },
             {
               id: "step-2-investigation",
