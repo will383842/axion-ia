@@ -61,13 +61,16 @@ const NOTE_RENVOI_GARE =
 const MSG_FILE_INDISPONIBLE = "File d'envoi indisponible — réessayer.";
 const MSG_ENFILAGE_EN_ERREUR =
   "L'enfilage de l'e-mail a échoué : rien n'est parti, le lien de signature précédent a été conservé ou rendu. Réessayer.";
+const MSG_ENFILAGE_EN_ERREUR_SANS_LIEN =
+  "L'e-mail n'a pas pu être mis en file et le client n'a plus de lien de signature valable : renvoyez le devis.";
 
 /**
  * Rien n'est parti ni garé alors qu'un jeton neuf a révoqué l'ancien lien : rendre l'ancien.
  * S'il ne peut l'être (`false` ou exception), le jeton NEUF est révoqué par son identifiant :
  * jamais deux liens vivants. Ne lève jamais ; ni URL, ni jeton, ni adresse en console.
+ * Rend `true` si l'ancien lien a été rendu, `false` sinon (le client n'a alors plus de lien valable).
  */
-async function rendreAncienLienDuRenvoi(url: string, tokenId: string | null): Promise<void> {
+async function rendreAncienLienDuRenvoi(url: string, tokenId: string | null): Promise<boolean> {
   const revoquerLeNeuf = async (): Promise<void> => {
     if (tokenId === null) return;
     try {
@@ -81,10 +84,13 @@ async function rendreAncienLienDuRenvoi(url: string, tokenId: string | null): Pr
     if (rendu === false) {
       console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
       await revoquerLeNeuf();
+      return false;
     }
+    return true;
   } catch {
     console.warn("[envoyerDevisEmailAction] ancien lien de signature non rendu");
     await revoquerLeNeuf();
+    return false;
   }
 }
 
@@ -317,6 +323,9 @@ export async function envoyerDevisEmailAction(
         enqueued = r.enqueued;
         garePourValidation = r.garePourValidation ?? false;
       } catch (err) {
+        // Cas limite : un délai de réponse Redis peut lever alors que le job a bien été ajouté.
+        // L'e-mail partirait alors avec un lien révoqué, mais le client garde son ancien lien
+        // rendu (cf. `rendreAncienLienDuRenvoi`) : jamais zéro lien, jamais deux.
         // Journalisé sans adresse ni lien : seul le nom de l'erreur.
         console.warn(
           "[envoyerDevisEmailAction] enfilage de l'e-mail en erreur",
@@ -357,8 +366,12 @@ export async function envoyerDevisEmailAction(
     // Un jeton créé au clic a révoqué l'ancien lien : rien n'est parti ni garé, le nouveau lien est
     // perdu. On rend l'ancien ; s'il ne peut l'être, le jeton neuf est révoqué (jamais deux liens
     // vivants). Jamais d'erreur remontée, ni URL ni adresse dans la console.
-    if (signatureUrl !== null) await rendreAncienLienDuRenvoi(signatureUrl, tokenId);
-    return { error: enfilageEnErreur ? MSG_ENFILAGE_EN_ERREUR : MSG_FILE_INDISPONIBLE };
+    const rendu =
+      signatureUrl === null ? true : await rendreAncienLienDuRenvoi(signatureUrl, tokenId);
+    if (enfilageEnErreur) {
+      return { error: rendu ? MSG_ENFILAGE_EN_ERREUR : MSG_ENFILAGE_EN_ERREUR_SANS_LIEN };
+    }
+    return { error: MSG_FILE_INDISPONIBLE };
   }
 
   await logQualiopiActivity({
