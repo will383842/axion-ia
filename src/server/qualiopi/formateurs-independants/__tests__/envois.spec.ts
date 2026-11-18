@@ -23,7 +23,12 @@ vi.mock("@/lib/email/templates", () => ({
   renderEmailTemplate: (...a: unknown[]) => h.render(...a),
 }));
 
-import { GABARITS_FORMATEUR, apercu, envoyer, type EnvoiFormateur } from "../envois";
+import {
+  GABARITS_FORMATEUR,
+  apercuBrutServeurSeulement,
+  envoyer,
+  type EnvoiFormateur,
+} from "../envois";
 import { empreinteAttendue } from "@/server/email/textes-formateurs-a-valider";
 import {
   GABARITS_FORMATEUR_INDEPENDANT,
@@ -175,7 +180,11 @@ describe("après une fin de collaboration, seuls les e-mails d'argent partent", 
 describe("l'aperçu s'ouvre pour chaque gabarit, et rien ne part", () => {
   it.each(GABARITS_FORMATEUR_INDEPENDANT)("%s", async (g) => {
     reglages({});
-    const r = await apercu({ gabarit: g, destinataire: "a@exemple.invalid", payload: {} });
+    const r = await apercuBrutServeurSeulement({
+      gabarit: g,
+      destinataire: "a@exemple.invalid",
+      payload: {},
+    });
     expect(r.gabarit).toBe(g);
     expect(r.texteDefaut?.length ?? 0).toBeGreaterThan(0);
     expect(h.enqueueEmail).not.toHaveBeenCalled();
