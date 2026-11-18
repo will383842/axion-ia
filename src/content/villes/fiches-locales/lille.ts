@@ -209,7 +209,7 @@ export const FICHE_LILLE: FicheLocale = {
     },
     {
       q: "Quelles communes autour de Lille sont couvertes ?",
-      a: "Les 95 communes de la Métropole Européenne de Lille, en venant chez vous : nous n’avons pas de bureau sur place. L’appel de cadrage gratuit de 45 minutes permet de fixer la date et l’adresse de la journée. Exemples de communes concernées : Wavrin, Wervicq-Sud, Wicres, Willems.",
+      a: "Les 95 communes de la Métropole Européenne de Lille, en venant chez vous : nous n’avons pas de bureau sur place. Le Diagnostic IA gratuit de 45 minutes permet de fixer la date et l’adresse de la journée. Exemples de communes concernées : Wavrin, Wervicq-Sud, Wicres, Willems.",
     },
     {
       q: "EuraTechnologies est-elle votre partenaire ?",

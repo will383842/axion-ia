@@ -4,7 +4,7 @@
  * Chantier « Types de rendez-vous », lot L3. Un diagnostic IA et un échange
  * projet partent du même gabarit (`appel-rappel.tsx`), mais leur surtitre, leur
  * objet et leur texte diffèrent :
- *   · diagnostic : « votre appel de cadrage », on arrive avec des pistes ;
+ *   · diagnostic : « votre diagnostic IA gratuit », on arrive avec des pistes ;
  *   · échange projet : le service choisi est rappelé ;
  *   · sans type (charge d'avant, déjà en file) : le message d'hier, intact.
  * La durée vient de la charge (bornes du rendez-vous), le lien de visio ne
@@ -38,11 +38,11 @@ async function rendre(job: Job, extra: Record<string, unknown>) {
 }
 
 describe("diagnostic IA", () => {
-  it("confirmation : objet, surtitre « Appel de cadrage », réponses utiles", async () => {
+  it("confirmation : objet, surtitre « Diagnostic IA gratuit », réponses utiles", async () => {
     const r = await rendre("appel-confirme", { typeRendezVous: "diagnostic" });
-    expect(r.subject).toBe("Appel de cadrage à 11:30, vendredi 9 octobre");
-    expect(r.text).toContain("Appel de cadrage");
-    expect(r.text).toContain("votre appel de cadrage");
+    expect(r.subject).toBe("Diagnostic IA : vendredi 9 octobre à 11:30");
+    expect(r.text).toContain("Diagnostic IA gratuit");
+    expect(r.text).toContain("votre diagnostic IA gratuit");
     expect(r.text).toContain("Vos réponses nous aident à préparer l'échange");
     expect(r.text).not.toContain("Rendez-vous de découverte");
     // Vu en réel le 04/10 : la phrase figurait deux fois (intro + puce).
@@ -51,11 +51,11 @@ describe("diagnostic IA", () => {
 
   it("rappels J-1 et H-1 : objets et titres propres au diagnostic", async () => {
     const j1 = await rendre("appel-rappel-j1", { typeRendezVous: "diagnostic" });
-    expect(j1.subject).toBe("Rappel : appel de cadrage demain à 11:30");
-    expect(j1.html).toContain("Votre appel de cadrage a lieu demain");
+    expect(j1.subject).toBe("Rappel : votre diagnostic IA demain à 11:30");
+    expect(j1.html).toContain("Votre diagnostic IA a lieu demain");
     const h1 = await rendre("appel-rappel", { typeRendezVous: "diagnostic" });
-    expect(h1.subject).toBe("Appel de cadrage dans une heure, à 11:30");
-    expect(h1.html).toContain("Votre appel de cadrage a lieu dans une heure");
+    expect(h1.subject).toBe("Votre diagnostic IA dans une heure, à 11:30");
+    expect(h1.html).toContain("Votre diagnostic IA a lieu dans une heure");
     expect(h1.text).toContain("Vos réponses nous aident à préparer l'échange");
   });
 

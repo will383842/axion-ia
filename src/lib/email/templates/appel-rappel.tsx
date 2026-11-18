@@ -190,8 +190,6 @@ interface VarianteType {
   readonly eyebrow: string;
   readonly objetConfirme: string;
   readonly objetConfirmeSansDate: string;
-  /** L'heure vient avant la date dans l'objet : la borne de 45 caractères coupe la fin, jamais l'heure. */
-  readonly heureAvantDate?: boolean;
   /**
    * Objets des rappels : `heure` `null` quand la charge ne la porte pas. Ils
    * passent par `objetCompose` (borne de 45 caractères), comme la confirmation.
@@ -213,18 +211,20 @@ type TypeAvecVariante = "diagnostic" | "echange_projet" | "tour_de_france_ia";
 
 const VARIANTES_FR: Readonly<Record<TypeAvecVariante, VarianteType>> = {
   diagnostic: {
-    eyebrow: "Appel de cadrage",
-    objetConfirme: "Appel de cadrage :",
-    objetConfirmeSansDate: "Votre appel de cadrage est confirmé",
-    heureAvantDate: true,
+    eyebrow: "Diagnostic IA gratuit",
+    objetConfirme: "Diagnostic IA :",
+    objetConfirmeSansDate: "Votre diagnostic IA gratuit est confirmé",
     objetJ1: (h) =>
-      objetCompose("Rappel :", h ? `appel de cadrage demain à ${h}` : "appel de cadrage demain"),
+      objetCompose(
+        "Rappel :",
+        h ? `votre diagnostic IA demain à ${h}` : "votre diagnostic IA demain",
+      ),
     objetH1: (h) =>
-      objetCompose("Appel de cadrage", h ? `dans une heure, à ${h}` : "dans une heure"),
-    titreJ1: "Votre appel de cadrage a lieu demain",
-    titreH1: "Votre appel de cadrage a lieu dans une heure",
+      objetCompose("Votre diagnostic IA", h ? `dans une heure, à ${h}` : "dans une heure"),
+    titreJ1: "Votre diagnostic IA a lieu demain",
+    titreH1: "Votre diagnostic IA a lieu dans une heure",
     deroule: () =>
-      "Merci d'avoir réservé votre appel de cadrage. Vos réponses nous aident à préparer l'échange ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
+      "Merci d'avoir réservé votre diagnostic IA gratuit. Vos réponses nous aident à préparer l'échange ; vous repartez avec une idée claire de ce que l'IA peut vous apporter — même si la réponse est « pas tout de suite ».",
     attendu: () => "Rien à préparer. Vos réponses nous aident à préparer l'échange.",
     puceRienAPreparer: () =>
       "Rien d'autre à préparer : nous partons de vos réponses au questionnaire.",
@@ -346,17 +346,8 @@ export const appelRappelSubject = (locale: Locale, payload: Record<string, unkno
   const v = varianteDe(locale, p);
   if (v) {
     const heure = texteOuNull(p.heure);
-    if (m === "confirmation") {
-      const date = texteOuNull(p.date);
-      if (v.heureAvantDate && heure && date) {
-        const prefixe = v.objetConfirme.replace(/\s*:$/, "");
-        return objetCompose(
-          prefixe,
-          locale === "fr" ? `à ${heure}, ${date}` : `at ${heure}, ${date}`,
-        );
-      }
+    if (m === "confirmation")
       return quand ? objetCompose(v.objetConfirme, quand) : v.objetConfirmeSansDate;
-    }
     if (m === "j1") return v.objetJ1(heure);
     return v.objetH1(heure);
   }

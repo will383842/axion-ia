@@ -19,7 +19,7 @@ import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 
 /** Le rendez-vous gratuit, UNIQUE, qui ouvre toute relation (décision de Williams, 08/11/2026). */
 export interface RendezVousGratuit {
-  readonly nom: "Appel de cadrage";
+  readonly nom: "Diagnostic IA";
   readonly dureeMinutes: 45;
   readonly gratuit: true;
   readonly sansEngagement: true;
@@ -78,7 +78,7 @@ export const OFFRE_JOURNEE_IA: OffreJourneeIa = {
   },
   cible: { libelle: "PME et TPE", effectifMin: 5, effectifMax: 249 },
   rendezVous: {
-    nom: "Appel de cadrage",
+    nom: "Diagnostic IA",
     dureeMinutes: 45,
     gratuit: true,
     sansEngagement: true,
@@ -104,5 +104,5 @@ export const DUREE_RDV_COURTE = `${OFFRE_JOURNEE_IA.rendezVous.dureeMinutes} min
 /** « de 5 à 249 salariés » */
 export const EFFECTIF_CIBLE = `de ${OFFRE_JOURNEE_IA.cible.effectifMin} à ${OFFRE_JOURNEE_IA.cible.effectifMax} salariés`;
 
-/** « Appel de cadrage · 45 minutes · en visio ou par téléphone · sans engagement » */
+/** « Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement » */
 export const MICRO_TEXTE_RDV = `${OFFRE_JOURNEE_IA.rendezVous.nom} · ${DUREE_RDV} · en visio ou par téléphone · sans engagement`;

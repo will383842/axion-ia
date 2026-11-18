@@ -53,14 +53,14 @@ describe("🔑 /appel montre le choix, puis le bon calendrier", () => {
     expect(page).toContain("<ChoixDuRendezVous");
   });
 
-  it("🔑 UN SEUL rendez-vous gratuit (règle r10 du Brain) : la carte « Appel de cadrage », 45 minutes", () => {
+  it("🔑 UN SEUL rendez-vous gratuit (règle r10 du Brain) : la carte « Diagnostic IA », 45 minutes", () => {
     const diag = page.indexOf('data-cta="appel_choix_diagnostic"');
     expect(diag).toBeGreaterThan(-1);
     // Plus de carte « Échange projet » : une seule carte, un seul bouton.
     expect(page).not.toContain('data-cta="appel_choix_projet"');
     expect(page).not.toContain("Échange projet");
     expect(page.match(/data-cta="appel_choix_/g)).toHaveLength(1);
-    expect(page).toContain("Appel de cadrage");
+    expect(page).toContain("Diagnostic IA");
     // La durée de la carte est la promesse du site, écrite en dur : la durée lue chez
     // Calendly ne sert qu'à l'écran du calendrier.
     expect(page).toContain("Gratuit · 45 minutes · Sans engagement");

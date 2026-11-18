@@ -295,12 +295,12 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
     format: `A4 portrait · 210 × 297 mm · ${GUIDE_IA_PAGES} pages, lecture à l'écran`,
     resume:
-      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un appel de cadrage.",
+      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un Diagnostic IA.",
     fichiersPublics: [
       {
         chemin: GUIDE_IA_CHEMIN,
         nom: `Le PDF, ${GUIDE_IA_PAGES} pages`,
-        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un appel de cadrage. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
+        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un Diagnostic IA. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
       },
     ],
     fichiersHorsLigne: [

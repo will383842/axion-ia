@@ -1,9 +1,10 @@
-// Garde « un seul nom pour l'appel » (lot V1-19, chantier GEO) : « Appel de cadrage, 45 min ».
+// Garde « un seul nom pour l'appel » (lot V1-19, chantier GEO) : « Diagnostic IA, 45 min ».
 //
-// Le rendez-vous gratuit qui ouvre toute relation s'appelle « Appel de cadrage » PARTOUT où le
+// Le rendez-vous gratuit qui ouvre toute relation s'appelle « Diagnostic IA » PARTOUT où le
 // public le lit : boutons, FAQ, JSON-LD, e-mails de réservation, chatbot. « Score » reste réservé
-// à l'outil de diagnostic en ligne ; « Diagnostic IA gratuit » et « appel découverte » sont
-// d'anciens noms qui ne doivent pas revenir.
+// à l'outil de diagnostic en ligne ; « appel de cadrage » (quand il désigne l'appel de 45 min),
+// « diagnostic gratuit de 45 minutes » (sans « IA ») et « appel découverte » sont d'anciens noms
+// qui ne doivent pas revenir (décision du 18/11 : le nom reste « Diagnostic IA »).
 //
 // Ce que la garde ne regarde pas : les commentaires ; `src/server/calendly/type-rendez-vous.ts`
 // et les alertes internes, qui reconnaissent le NOM d'un type d'événement TEL QUE CALENDLY le
@@ -17,10 +18,10 @@ import { join } from "node:path";
 import { OFFRE_JOURNEE_IA, MICRO_TEXTE_RDV, DUREE_RDV_COURTE } from "@/content/offre";
 import { TYPES_RESERVABLES } from "@/server/calendly/types-reservables";
 
-const NOM = "Appel de cadrage";
+const NOM = "Diagnostic IA";
 
 const ANCIENS_NOMS =
-  /diagnostic\s+IA\s+gratuit|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+(?:de\s+)?d[ée]couverte|diagnostic(?:\s+IA)?\s+de\s+45|appel\s+strat[ée]gique|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
+  /appel\s+(?:de\s+)?cadrage|diagnostic\s+gratuit\s+de\s+45|appel\s+(?:de\s+)?d[ée]couverte|appel\s+strat[ée]gique|(?:réserver|reserver|lancer)\s+(?:le|mon|votre)\s+diagnostic\s+gratuit/i;
 
 const RACINES = [
   "src/app",
@@ -42,6 +43,19 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/tour-france-ia\//, // autre rendez-vous (visio de 30 min)
   /src\/server\/calendly\/type-rendez-vous\.ts$/,
   /src\/server\/calendly\/(?:rappels-appel|choix-rendez-vous|urls-par-defaut)\.ts$/,
+  // EXCEPTIONS PERMANENTES : « appel de cadrage » y désigne une AUTRE étape que l'appel gratuit de
+  // 45 min, l'échange que l'équipe a avec le client APRÈS une demande de devis qualifiée.
+  /src\/app\/\[locale\]\/demande-devis\/page\.tsx$/,
+  /src\/app\/\[locale\]\/demande-devis\/confirmation\/page\.tsx$/,
+  /src\/lib\/email\/templates\/quote-request-received\.tsx$/,
+  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : ces fichiers sont modifiés par
+  // d'autres PR ouvertes (réécriture ou lots anciens) ; les toucher ici créerait des conflits.
+  // À VIDER, une fois ces PR fusionnées : transversal.ts, secteurs/[secteur]/page.tsx, kb/un-a-un.ts,
+  // kb/interventions-formations.ts, kb/sites-web-augmentes.ts, category-hub-content.ts.
+  /src\/content\/transversal\.ts$/,
+  /src\/app\/\[locale\]\/secteurs\/\[secteur\]\/page\.tsx$/,
+  /src\/server\/content-gen\/kb\/(?:un-a-un|interventions-formations|sites-web-augmentes)\.ts$/,
+  /src\/server\/content-gen\/lib\/category-hub-content\.ts$/,
   // EN ATTENTE de fusion de PR ouvertes (à vider, une fois fusionnées) : PR 2134 (implantations),
   // PR 2136 (accueil, a-propos), PR 2137 (positionnement du générateur).
   /src\/app\/\[locale\]\/implantations\/page\.tsx$/,
@@ -62,22 +76,24 @@ function lister(dossier: string, sortie: string[]): void {
 const FICHIERS: string[] = [];
 for (const r of RACINES) lister(r, FICHIERS);
 
-describe("V1-19 — un seul nom pour l'appel : « Appel de cadrage, 45 min »", () => {
+describe("V1-19 — un seul nom pour l'appel : « Diagnostic IA, 45 min »", () => {
   it("lit bien les fichiers (plancher)", () => {
     expect(FICHIERS.length).toBeGreaterThan(1_500);
   });
 
   it("témoin positif : le motif voit les anciens noms", () => {
     for (const ancien of [
-      "Diagnostic IA gratuit",
-      "diagnostic IA gratuit",
+      "Appel de cadrage",
+      "appel de cadrage gratuit",
+      "diagnostic gratuit de 45 minutes",
       "appel découverte",
       "Appel de découverte",
       "Réserver mon diagnostic gratuit",
     ]) {
       expect(ANCIENS_NOMS.test(ancien), ancien).toBe(true);
     }
-    expect(ANCIENS_NOMS.test("Appel de cadrage, 45 min")).toBe(false);
+    expect(ANCIENS_NOMS.test("Diagnostic IA, 45 min")).toBe(false);
+    expect(ANCIENS_NOMS.test("un Diagnostic IA gratuit de 45 minutes")).toBe(false);
   });
 
   it("la source unique et la réservation portent le nom", () => {

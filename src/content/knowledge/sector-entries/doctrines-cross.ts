@@ -91,7 +91,7 @@ Cette doctrine s'appuie sur le cadre juridique suivant :
       "Axion-IA publie sa grille tarifaire pour les prestations standard. Cette page explique pourquoi cette transparence est un avantage concurrentiel et un acte de confiance envers les décideurs B2B.",
     bodyMarkdownFr: `## Contexte : le marché du conseil IA sans prix affiché
 
-La très grande majorité des cabinets de conseil IA en France n'affiche aucun tarif public. La logique dominante est celle du « devis sur demande » systématique, qui contraint l'acheteur à entrer dans un cycle commercial (appel de cadrage, proposition formelle, relance) avant d'obtenir la moindre indication de budget.
+La très grande majorité des cabinets de conseil IA en France n'affiche aucun tarif public. La logique dominante est celle du « devis sur demande » systématique, qui contraint l'acheteur à entrer dans un cycle commercial (Diagnostic IA, proposition formelle, relance) avant d'obtenir la moindre indication de budget.
 
 Cette pratique est compréhensible pour les projets complexes sur-mesure, où le périmètre détermine entièrement le coût. Elle devient un obstacle à la confiance lorsqu'elle est appliquée indifféremment à des prestations dont le cadre est suffisamment standard pour permettre une tarification lisible.
 

@@ -93,7 +93,7 @@ describe("page /journee-ia", () => {
     expect(page).toMatch(/permanentRedirect\(\s*["'`]\/fr\/journee-ia["'`]\s*\)/);
   });
 
-  it("le bouton mène à l’Appel de cadrage de 45 minutes : /appel?rdv=diagnostic", () => {
+  it("le bouton mène à le Diagnostic IA de 45 minutes : /appel?rdv=diagnostic", () => {
     expect(page).toContain("/appel?rdv=diagnostic&depuis=");
     expect(page).not.toContain("rdv=projet");
     expect(page).not.toContain("rdv=journee");

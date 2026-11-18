@@ -132,7 +132,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Les modalités de règlement sont vues lors de l’appel de cadrage.",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Les modalités de règlement sont vues lors du Diagnostic IA.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",
@@ -224,7 +224,7 @@ export const TOURCOING_COPY: VilleCopy = {
           },
           {
             q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Les modalités de règlement sont vues lors de l’appel de cadrage.",
+            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Les modalités de règlement sont vues lors du Diagnostic IA.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",

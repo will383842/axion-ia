@@ -7,7 +7,7 @@ import { CONTENU } from "@/app/[locale]/_accueil/contenu";
 
 describe("accueil — textes branchés sur la source unique de l'offre", () => {
   it("les deux réassurances du rendez-vous gratuit", () => {
-    const attendu = "Appel de cadrage · 45 minutes · en visio ou par téléphone · sans engagement";
+    const attendu = "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement";
     expect(CONTENU.heros.reassurance).toBe(attendu);
     expect(CONTENU.rendezVous.reassurance).toBe(attendu);
   });

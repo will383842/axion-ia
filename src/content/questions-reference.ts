@@ -38,7 +38,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-commencer",
     question: "Par où commencer avec l’IA dans une PME ?",
     reponse:
-      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, chiffre vos plus gros gains en heures et en euros, puis retient 3 à 5 priorités. Le premier pas est gratuit : un appel de cadrage de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
+      "Pour commencer avec l’IA dans une PME, partez de vos tâches, pas d’un outil. Axion-IA cartographie l’entreprise service par service, chiffre vos plus gros gains en heures et en euros, puis retient 3 à 5 priorités. Le premier pas est gratuit : un Diagnostic IA de 45 minutes, en visio ou par téléphone, avant de décider de la Journée IA.",
     sujet: "PME",
     source: "src/app/[locale]/_accueil/contenu.ts (faq-commencer)",
   },
@@ -110,7 +110,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-automatisation-prix",
     question: "Combien coûte une automatisation IA pour une PME ?",
     reponse:
-      "Une automatisation IA pour une PME est facturée sur devis écrit et forfaitaire, fixé avant de commencer, sans heures qui tournent, selon les outils à relier et le volume traité. Les {{PRIX}} de la Journée IA sont déduits d’un devis d’automatisation ou de mise en place signé dans les 60 jours suivant la Journée IA, jamais d’une formation. Premier pas gratuit : un appel de cadrage de 45 minutes.",
+      "Une automatisation IA pour une PME est facturée sur devis écrit et forfaitaire, fixé avant de commencer, sans heures qui tournent, selon les outils à relier et le volume traité. Les {{PRIX}} de la Journée IA sont déduits d’un devis d’automatisation ou de mise en place signé dans les 60 jours suivant la Journée IA, jamais d’une formation. Premier pas gratuit : un Diagnostic IA de 45 minutes.",
     sujet: "automatisation IA",
     source: "src/content/implementation-fr-overrides.ts",
   },
@@ -167,7 +167,7 @@ export const QUESTIONS_REFERENCE: Readonly<Record<string, QuestionReference>> = 
     id: "ref-partout-france",
     question: "Axion-IA intervient-il partout en France ?",
     reponse:
-      "Axion-IA intervient partout en France métropolitaine, dans vos locaux. La Journée IA, la formation et l’audit se déroulent chez vous ; l’appel de cadrage de 45 minutes se fait en visio ou par téléphone. La date est fixée avec vous pendant cet appel, sans engagement avant le devis écrit.",
+      "Axion-IA intervient partout en France métropolitaine, dans vos locaux. La Journée IA, la formation et l’audit se déroulent chez vous ; le Diagnostic IA de 45 minutes se fait en visio ou par téléphone. La date est fixée avec vous pendant cet appel, sans engagement avant le devis écrit.",
     sujet: "Axion-IA",
     source: "src/content/offre.ts",
   },

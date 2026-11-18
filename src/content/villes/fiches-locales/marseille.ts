@@ -213,7 +213,7 @@ export const FICHE_MARSEILLE: FicheLocale = {
     },
     {
       q: "La Journée IA couvre-t-elle toute la Métropole d’Aix-Marseille-Provence ?",
-      a: "Oui, la journée se déroule chez vous, dans n’importe laquelle des 92 communes de la métropole. Nous n’avons pas de bureau sur place : vous nous indiquez votre adresse et nous organisons la date pendant l’appel de cadrage gratuit de 45 minutes. Le déroulé est identique partout : audit le matin, formation de 4 h l’après-midi. Exemples de communes concernées : Venelles, Ventabren, Vernègues, Vitrolles.",
+      a: "Oui, la journée se déroule chez vous, dans n’importe laquelle des 92 communes de la métropole. Nous n’avons pas de bureau sur place : vous nous indiquez votre adresse et nous organisons la date pendant le Diagnostic IA gratuit de 45 minutes. Le déroulé est identique partout : audit le matin, formation de 4 h l’après-midi. Exemples de communes concernées : Venelles, Ventabren, Vernègues, Vitrolles.",
     },
     {
       q: "Quels acteurs institutionnels de l’innovation existent autour de Marseille ?",

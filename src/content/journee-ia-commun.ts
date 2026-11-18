@@ -45,7 +45,7 @@ export const MENTION_DECLARATION_OF = `Enregistré sous le numéro ${NUMERO_DECL
 
 /** Le bloc « En bref » de l'accueil (le prix est un jeton). */
 export const EN_BREF_ACCUEIL =
-  "Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous 3 jours ouvrés. Premier pas possible\u202f: un appel de cadrage de 45 minutes, en visio ou par téléphone.";
+  "Axion-IA, partenaire IA des PME et des TPE fondé par Williams Jullin, intervient partout en France. Sa Journée IA se déroule dans les locaux de l’entreprise pour {{PRIX}}. Le matin, l’audit cartographie l’entreprise et chiffre ses plus gros gains, en heures et en euros. L’après-midi, les équipes sont formées sur leurs propres dossiers, avec une attestation par participant. Le rapport suit sous 3 jours ouvrés. Premier pas possible\u202f: un Diagnostic IA de 45 minutes, en visio ou par téléphone.";
 
 /**
  * Description de l'entité Axion-IA (nœuds JSON-LD `Organization` et `WebSite`).

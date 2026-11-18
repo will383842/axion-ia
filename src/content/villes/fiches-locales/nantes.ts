@@ -138,7 +138,7 @@ export const FICHE_NANTES: FicheLocale = {
     },
     {
       q: "Combien de communes la Journée IA peut-elle couvrir autour de Nantes ?",
-      a: "Nantes Métropole en compte 24, toutes accessibles pour une journée dans vos locaux. Nous n’avons pas de bureau à Nantes. Date et adresse se fixent pendant l’appel de cadrage gratuit de 45 minutes, avant toute réservation. Exemples de communes concernées : Sainte-Luce-sur-Loire, Sautron, Thouaré-sur-Loire, Vertou.",
+      a: "Nantes Métropole en compte 24, toutes accessibles pour une journée dans vos locaux. Nous n’avons pas de bureau à Nantes. Date et adresse se fixent pendant le Diagnostic IA gratuit de 45 minutes, avant toute réservation. Exemples de communes concernées : Sainte-Luce-sur-Loire, Sautron, Thouaré-sur-Loire, Vertou.",
     },
     {
       q: "Quelles institutions d’innovation existent à Nantes ?",
