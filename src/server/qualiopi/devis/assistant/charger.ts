@@ -14,6 +14,7 @@ import type { TexteCopie } from "@/components/admin/qualiopi/devis-formules/sais
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
 import { listClients } from "@/server/qualiopi/crm/clients";
+import { libelleSalutationEmails } from "@/server/qualiopi/crm/libelle-salutation";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { listOffres } from "@/server/qualiopi/offres/offres";
 import {
@@ -29,6 +30,23 @@ export interface ClientOption {
   id: string;
   numero: string;
   raisonSociale: string;
+  type: "entreprise" | "particulier";
+  adresse: string | null;
+  contactNom: string | null;
+  /** = `contactEmail` de la fiche. */
+  email: string | null;
+  /** Ce que le gabarit d'e-mail écrira en tête (`libelleSalutationEmails`). */
+  salutation: string;
+  /** Fiche du banc d'essai (relation `testInterne` non nulle). */
+  ficheEssai: boolean;
+}
+/** Textes de la bibliothèque proposés à l'étape des formules (aucune phrase écrite ici). */
+export interface BibliothequeAssistant {
+  avantages: { A: string[]; B: string[] };
+  aSavoir: { A: string[]; B: string[] };
+  delais: string;
+  garantie: string;
+  plafond: string;
 }
 export interface OffreOption {
   tierId: string | null;
@@ -46,6 +64,7 @@ export interface ContexteAssistant {
   clients: ClientOption[];
   offres: OffreOption[];
   textesParDefaut: TexteCopie[];
+  bibliotheque: BibliothequeAssistant;
   formulesActives: boolean;
   regimeTva: RegimeTva;
   tauxStandard: number;
@@ -75,6 +94,35 @@ export interface RedirectionAssistant {
 /** Statut d'un brouillon mis de côté : jamais rouvert (la ligne reste, aucune suppression). */
 export const STATUT_BROUILLON_A_L_ECART = "a_l_ecart";
 
+/**
+ * Bibliothèque : textes non archivés et déjà validés (`aValider` faux). achat → A, abonnement → B ;
+ * avantage → avantages, inconvénient → à savoir. Délais, garantie et plafond : la bibliothèque ne
+ * porte aucun repère qui les distingue (la formule `commun` mêle prérequis et clauses, sans
+ * rubrique) ; on ne devine pas, et aucune phrase n'est écrite ici : chaîne vide, l'écran
+ * propose alors sa saisie libre.
+ */
+async function chargerBibliotheque(): Promise<BibliothequeAssistant> {
+  const b: BibliothequeAssistant = {
+    avantages: { A: [], B: [] },
+    aSavoir: { A: [], B: [] },
+    delais: "",
+    garantie: "",
+    plafond: "",
+  };
+  const lignes = await prisma.devisTexteBibliotheque.findMany({
+    where: { archiveAt: null, aValider: false },
+    orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
+    select: { formule: true, nature: true, texte: true },
+  });
+  for (const l of lignes) {
+    const cle = l.formule === "achat" ? "A" : l.formule === "abonnement" ? "B" : null;
+    if (cle === null) continue;
+    if (l.nature === "avantage") b.avantages[cle].push(l.texte);
+    else if (l.nature === "inconvenient") b.aSavoir[cle].push(l.texte);
+  }
+  return b;
+}
+
 export async function chargerAssistantDevis(
   i: EntreeChargeur,
 ): Promise<RedirectionAssistant | ContexteAssistant> {
@@ -88,11 +136,22 @@ export async function chargerAssistantDevis(
   const regimeTva = regimeTvaDepuisConfig(regimeBrut);
   const tauxStandard = tauxBrut || TAUX_TVA_STANDARD;
 
+  const essais = await prisma.client
+    .findMany({ where: { testInterne: { isNot: null } }, select: { id: true } })
+    .then((l) => new Set(l.map((x) => x.id)))
+    .catch(() => new Set<string>());
   const clients: ClientOption[] = clientsBruts.map((c) => ({
     id: c.id,
     numero: c.numero,
     raisonSociale: c.raisonSociale,
+    type: c.type,
+    adresse: c.adresse ?? null,
+    contactNom: c.contactNom ?? null,
+    email: c.contactEmail ?? null,
+    salutation: libelleSalutationEmails(c),
+    ficheEssai: essais.has(c.id),
   }));
+  const bibliotheque = await chargerBibliotheque();
   // Montants en CENTIMES déjà résolus côté serveur (jamais `pricing.ts` dans le bundle admin).
   const offres: OffreOption[] = offresBrutes.map((o) => ({
     tierId: o.offre.tierId,
@@ -234,6 +293,7 @@ export async function chargerAssistantDevis(
     clients,
     offres,
     textesParDefaut,
+    bibliotheque,
     formulesActives: formulesOn,
     regimeTva,
     tauxStandard,

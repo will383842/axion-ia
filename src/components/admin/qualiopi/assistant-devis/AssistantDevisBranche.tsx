@@ -63,6 +63,8 @@ export interface PropsAssistantDevisBranche {
   /** Version des CGV en vigueur (lue en configuration par la page, jamais écrite en dur). */
   versionCgv: string;
   urlAssistant: string;
+  /** Salutation des e-mails par identifiant de client (lue sur la fiche, côté serveur). */
+  salutations?: Readonly<Record<string, string>> | undefined;
   defaultClientId?: string | undefined;
   /** Devis brouillon rouvert : lié au brouillon d'assistant à sa création. */
   devisId?: string | undefined;
@@ -390,19 +392,28 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           return { error: r.error };
         }
         await relireRevision();
-        // Le devis est ENVOYÉ côté serveur dans tous les cas : l'écran en est informé.
-        props.onEnvoye?.({ devisId });
-        if (!r.data.emailEnvoye) {
+        if (r.data.garePourValidation) {
+          // Garé : l'e-mail n'est pas parti, le devis reste en brouillon. Pas d'`onEnvoye`.
           return {
             data: {
-              enCorbeille: false,
-              note:
-                r.data.note ??
-                "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
+              enCorbeille: true,
+              note: "Le devis reste en brouillon tant que l'e-mail n'est pas validé dans « Emails, À valider ».",
             },
           };
         }
-        return { data: { enCorbeille: true, ...(r.data.note ? { note: r.data.note } : {}) } };
+        if (r.data.emailEnvoye) {
+          props.onEnvoye?.({ devisId });
+          return { data: { enCorbeille: false, note: "Le devis est envoyé au client." } };
+        }
+        // Ni garé ni parti : la note du serveur, sans `onEnvoye`.
+        return {
+          data: {
+            enCorbeille: false,
+            note:
+              r.data.note ??
+              "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis.",
+          },
+        };
       } catch (err) {
         console.error("[devis-assistant] envoi", err);
         await relireRevision();
@@ -418,6 +429,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
           preparer={preparer}
           envoyer={envoyer}
           destinataire={client?.email ?? ""}
+          salutation={client ? props.salutations?.[client.id] : undefined}
         />
       </>
     );

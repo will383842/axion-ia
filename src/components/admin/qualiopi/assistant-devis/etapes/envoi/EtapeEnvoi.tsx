@@ -35,6 +35,7 @@ export interface PropsEtapeEnvoi {
     email: EmailAEnvoyer,
   ) => Promise<ResultatAction<{ enCorbeille: boolean; note?: string }>>;
   destinataire: string;
+  salutation?: string | undefined;
   onModifier?: (() => void) | undefined;
 }
 
@@ -43,7 +44,13 @@ type Chargement =
   | { etat: "erreur"; message: string }
   | { etat: "pret"; prepare: ApercuPrepare };
 
-export function EtapeEnvoi({ preparer, envoyer, destinataire, onModifier }: PropsEtapeEnvoi) {
+export function EtapeEnvoi({
+  preparer,
+  envoyer,
+  destinataire,
+  salutation,
+  onModifier,
+}: PropsEtapeEnvoi) {
   const [chargement, setChargement] = useState<Chargement>({ etat: "attente" });
   const lance = useRef(false);
   // Verrou anti double clic de « Réessayer » : un seul appel à la fois.
@@ -108,6 +115,7 @@ export function EtapeEnvoi({ preparer, envoyer, destinataire, onModifier }: Prop
       {prete ? (
         <EmailEnvoi
           destinataire={destinataire}
+          salutation={salutation}
           envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
         />
       ) : null}

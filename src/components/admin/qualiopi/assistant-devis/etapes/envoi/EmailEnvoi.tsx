@@ -19,10 +19,12 @@ type Resultat<T> = { data: T } | { error: string };
 
 export interface PropsEmailEnvoi {
   destinataire: string;
+  /** Salutation lue sur la fiche du client (affichée en lecture seule) ; absente = suit la fiche. */
+  salutation?: string | undefined;
   envoyer: (email: EmailAEnvoyer) => Promise<Resultat<{ enCorbeille: boolean; note?: string }>>;
 }
 
-export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
+export function EmailEnvoi({ destinataire, salutation, envoyer }: PropsEmailEnvoi) {
   const uid = useId();
   // Lecture seule : le serveur écrit à la fiche client, aucune adresse n'est saisie ici.
   const a = destinataire;
@@ -51,7 +53,7 @@ export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
         setEnvoye(true);
         setStatut(
           r.data.enCorbeille
-            ? `En corbeille, à valider.${r.data.note ? ` ${r.data.note}` : ""}`
+            ? `En attente dans « Emails, À valider ».${r.data.note ? ` ${r.data.note}` : ""}`
             : (r.data.note ??
                 "Le devis est envoyé, mais l'e-mail n'a pas été préparé : ouvrez la fiche du devis."),
         );
@@ -79,9 +81,16 @@ export function EmailEnvoi({ destinataire, envoyer }: PropsEmailEnvoi) {
         Adresse lue sur la fiche du client ; elle ne se modifie pas ici.
       </p>
       <p className="text-[length:var(--text-admin-sm)]">
-        Pièce jointe : le devis en PDF, avec le bouton pour choisir et signer. L&apos;e-mail sera
-        relu dans la corbeille avant envoi. Le client reçoit uniquement ce message, jamais de
-        relance automatique.
+        Pièce jointe : le devis en PDF, avec le bouton pour choisir et signer. Selon le réglage en
+        vigueur, l&apos;e-mail part tout de suite ou attend votre validation dans « Emails, À
+        valider » ; dans ce second cas, le devis reste en brouillon tant que l&apos;e-mail
+        n&apos;est pas validé. Le client reçoit uniquement ce message, jamais de relance
+        automatique.
+      </p>
+      <p className="text-[length:var(--text-admin-sm)]" data-testid="salutation-email">
+        {salutation !== undefined && salutation.trim() !== ""
+          ? `L'e-mail commencera par : ${salutation}`
+          : "La salutation suit la fiche du client."}
       </p>
       <div className="mt-3 flex flex-wrap gap-3">
         <button

@@ -38,13 +38,15 @@ const m = vi.hoisted(() => ({
   projetOuvrable: vi.fn(),
   log: vi.fn(),
   admin: vi.fn(),
+  interrupteur: vi.fn(),
+  clientFindFirst: vi.fn(),
 }));
 
 vi.mock("@/lib/prisma", () => ({
   prisma: {
     devisAssistantBrouillon: { findFirst: m.findFirst, updateMany: m.updateMany },
     devis: { findUnique: m.devisFindUnique },
-    client: { findUnique: m.clientFindUnique },
+    client: { findUnique: m.clientFindUnique, findFirst: m.clientFindFirst },
     venteBrouillon: { updateMany: m.venteUpdateMany },
     $executeRaw: m.executeRaw,
   },
@@ -70,6 +72,10 @@ vi.mock("@/server/qualiopi/devis/interrupteur-formules", () => ({
 }));
 vi.mock("@/server/qualiopi/crm/devis-projet", () => ({
   projetOuvrableDuClient: m.projetOuvrable,
+}));
+vi.mock("@/server/qualiopi/socle/interrupteurs", async (orig) => ({
+  ...(await orig<typeof import("@/server/qualiopi/socle/interrupteurs")>()),
+  lireInterrupteurQualiopi: m.interrupteur,
 }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({
   getQualiopiConfig: vi.fn(async () => 20),
@@ -202,6 +208,8 @@ beforeEach(() => {
     return 1;
   });
   // Le devis « en base » : créé par l'action, relu pour sa date de dernière mise à jour.
+  m.interrupteur.mockResolvedValue("actif");
+  m.clientFindFirst.mockResolvedValue(null);
   m.devisFindUnique.mockResolvedValue(devisBrouillon());
   m.creerClassique.mockResolvedValue({ data: { id: DEVIS, numero: "AXI-DEV-2026-007" } });
   m.creerFormules.mockResolvedValue({ data: { id: DEVIS, numero: "AXI-DEV-2026-007" } });
@@ -745,8 +753,39 @@ describe("envoyerDepuisAssistantAction", () => {
     expect(ordre).toEqual(["numeroter", "envoyer"]);
     expect(m.envoyer).toHaveBeenCalledWith(DEVIS);
     expect(r).toEqual({
-      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true },
+      data: { devisId: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
     });
+  });
+
+  it("mode garé : {emailEnvoye:false, garePourValidation:true, note} reprend sendDevisAction", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: {
+        id: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+    expect(await env()).toEqual({
+      data: {
+        devisId: DEVIS,
+        emailEnvoye: false,
+        signatureCreee: false,
+        garePourValidation: true,
+        note: "À valider",
+      },
+    });
+  });
+
+  it("mode direct : garePourValidation vaut false", async () => {
+    poser(classique());
+    m.envoyer.mockResolvedValue({
+      data: { id: DEVIS, emailEnvoye: true, signatureCreee: true, garePourValidation: false },
+    });
+    const r = await env();
+    expect(r).toMatchObject({ data: { emailEnvoye: true, garePourValidation: false } });
   });
 
   it("synchronise (mise à jour) PUIS envoie quand le devis est déjà numéroté", async () => {
@@ -835,5 +874,48 @@ describe("envoyerDepuisAssistantAction", () => {
     );
     expect(src).not.toMatch(/prisma\.devis\.(update|updateMany|create|delete)/);
     expect(src).not.toMatch(/\.delete(Many)?\(/);
+  });
+});
+
+describe("garde serveur — interrupteur relu à chaque appel", () => {
+  const rienEcrit = () => {
+    expect(m.creerClassique).not.toHaveBeenCalled();
+    expect(m.creerFormules).not.toHaveBeenCalled();
+    expect(m.envoyer).not.toHaveBeenCalled();
+    expect(m.updateMany).not.toHaveBeenCalled();
+    expect(m.executeRaw).not.toHaveBeenCalled();
+  };
+
+  it("éteint : refus clair, aucune écriture, aucun envoi", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("eteint");
+    const r = await envoyerDepuisAssistantAction({ brouillonId: ID, attenduRevision: 4 });
+    expect(r).toEqual({ error: expect.stringContaining("désactivé") });
+    rienEcrit();
+  });
+
+  it("essai + vrai client : refus, aucune écriture", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("essai");
+    m.clientFindFirst.mockResolvedValue(null);
+    const r = await num();
+    expect(r).toEqual({ error: expect.stringContaining("fiche d'essai") });
+    expect(m.clientFindFirst).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: CLIENT, testInterne: { isNot: null } } }),
+    );
+    rienEcrit();
+  });
+
+  it("essai + fiche d'essai : passe", async () => {
+    poser(classique());
+    m.interrupteur.mockResolvedValue("essai");
+    m.clientFindFirst.mockResolvedValue({ id: CLIENT });
+    expect(await num()).toMatchObject({ data: { devisId: DEVIS } });
+  });
+
+  it("actif : passe sans lire la fiche", async () => {
+    poser(classique());
+    expect(await num()).toMatchObject({ data: { devisId: DEVIS } });
+    expect(m.clientFindFirst).not.toHaveBeenCalled();
   });
 });

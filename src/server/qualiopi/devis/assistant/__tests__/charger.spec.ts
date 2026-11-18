@@ -16,6 +16,7 @@ const db = vi.hoisted(() => {
     devisAssistantBrouillon: m(),
     venteBrouillon: m(),
     devisTexteBibliotheque: m(),
+    client: m(),
     $transaction: vi.fn(),
   };
 });
@@ -28,8 +29,20 @@ vi.mock("@/server/qualiopi/crm/clients", () => ({
       id: "11111111-1111-4111-8111-111111111111",
       numero: "CLI-1",
       raisonSociale: "SCI Invest Sun",
+      type: "entreprise",
+      adresse: "1 rue du Test",
+      contactNom: "Léa Martin",
+      contactEmail: "lea@example.test",
+      contactCivilite: "mme",
+      contactPrenom: "Léa",
+      contactNomFamille: "Martin",
     },
-    { id: "22222222-2222-4222-8222-222222222222", numero: "CLI-2", raisonSociale: "Autre" },
+    {
+      id: "22222222-2222-4222-8222-222222222222",
+      numero: "CLI-2",
+      raisonSociale: "Autre",
+      type: "particulier",
+    },
   ]),
 }));
 vi.mock("@/server/qualiopi/offres/offres", () => ({
@@ -81,6 +94,8 @@ beforeEach(() => {
   db.devis.findUnique.mockResolvedValue(null);
   db.devisAssistantBrouillon.findFirst.mockResolvedValue(null);
   db.venteBrouillon.findFirst.mockResolvedValue(null);
+  db.client.findMany.mockResolvedValue([]);
+  db.devisTexteBibliotheque.findMany.mockResolvedValue([]);
 });
 
 describe("chargerAssistantDevis", () => {
@@ -92,6 +107,52 @@ describe("chargerAssistantDevis", () => {
     expect(c.offres[0]).toMatchObject({ code: "AXI-OFF-001", prixHtCents: 1234 });
     expect(c.regimeTva).toBe("assujetti");
     expect(c.tauxStandard).toBe(20);
+    aucuneEcriture();
+  });
+
+  it("chaque client porte type, adresse, contact, e-mail, salutation et fiche d'essai", async () => {
+    db.client.findMany.mockResolvedValue([{ id: "22222222-2222-4222-8222-222222222222" }] as never);
+    const [a, b] = (await charge()).clients;
+    expect(a).toMatchObject({
+      type: "entreprise",
+      adresse: "1 rue du Test",
+      contactNom: "Léa Martin",
+      email: "lea@example.test",
+      ficheEssai: false,
+    });
+    expect(a!.salutation).toMatch(/^Bonjour/);
+    expect(b).toMatchObject({
+      type: "particulier",
+      adresse: null,
+      contactNom: null,
+      email: null,
+      ficheEssai: true,
+    });
+    expect(db.client.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { testInterne: { isNot: null } } }),
+    );
+  });
+
+  it("bibliothèque : validés non archivés seulement, achat → A, abonnement → B, avantage / à savoir", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { formule: "achat", nature: "avantage", texte: "a1" },
+      { formule: "achat", nature: "inconvenient", texte: "a2" },
+      { formule: "abonnement", nature: "avantage", texte: "b1" },
+      { formule: "abonnement", nature: "inconvenient", texte: "b2" },
+      { formule: "commun", nature: "clause", texte: "c1" },
+      { formule: "achat", nature: "prerequis", texte: "p1" },
+    ] as never);
+    const c = await charge();
+    expect(c.bibliotheque).toEqual({
+      avantages: { A: ["a1"], B: ["b1"] },
+      aSavoir: { A: ["a2"], B: ["b2"] },
+      delais: "",
+      garantie: "",
+      plafond: "",
+    });
+    expect(db.devisTexteBibliotheque.findMany).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { archiveAt: null, aValider: false } }),
+    );
     aucuneEcriture();
   });
 
