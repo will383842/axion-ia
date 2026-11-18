@@ -62,7 +62,7 @@ function enMinuscule(libelle: string): string {
 /** Ce qu'il faut avoir sous la main pour compléter le dossier en ligne. */
 export function ligneAPreparer(l: Langue = "fr"): string {
   if (l === "en") {
-    return "To have at hand: your SIREN number, your IBAN, an identity document, your bank details (RIB) and, if you have one, your professional liability insurance certificate. About 10 minutes; you can resume later.";
+    return "To have at hand: your SIRET number, your IBAN, an identity document, your bank details (RIB) and, if you have one, your professional liability insurance certificate. About 10 minutes; you can resume later.";
   }
   const pieces = [
     ...PIECES_POUR_SIGNER.map((p) => enMinuscule(LIBELLE_PIECE[p])),

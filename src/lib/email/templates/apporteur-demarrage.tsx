@@ -154,7 +154,7 @@ export const COPY_DEMARRAGE = {
       "Ouvrez votre lien personnel, celui de votre dossier : le formulaire « Déclarer une entreprise » vous y attend. Il demande :",
     cta: "Déclarer une entreprise",
     champs: [
-      "le nom de l'entreprise et son numéro SIREN ;",
+      "le nom de l'entreprise et le numéro SIRET de l'établissement visité ;",
       "la personne rencontrée : son nom, sa fonction, son e-mail et son téléphone ;",
       "la date de votre échange.",
     ],
@@ -334,7 +334,7 @@ export const COPY_DEMARRAGE = {
     title: "Votre commission est facturée",
     preview: "Votre facture, établie par nos soins, est jointe à ce message.",
     texte: (montant: string) =>
-      `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message. Nous nous efforçons de vous verser cette commission sous deux jours ouvrés.`,
+      `Votre commission de ${montant || "la somme indiquée en pièce jointe"} hors taxes est facturée en votre nom et pour votre compte : la facture est jointe à ce message.`,
     echeance: (d: string) => (d ? `Échéance de paiement : ${d}.` : ""),
     somme: (s: string) => `Somme virée : ${s}.`,
     compense: (montant: string) =>
