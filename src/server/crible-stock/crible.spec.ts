@@ -162,7 +162,8 @@ describe("plan", () => {
     expect(empreintePlan(p)).not.toBe(empreintePlan(p.slice(1)));
   });
   it("restauration : remet les valeurs d'origine des champs écrits", () => {
-    const [x] = propositions(rs);
+    const x = propositions(rs)[0];
+    if (!x) throw new Error("plan vide");
     expect(champsARestaurer(x.avant, x.apres)).toEqual(x.avant);
   });
   it("le rapport nomme les exclus sans leur proposer de correction", () => {
