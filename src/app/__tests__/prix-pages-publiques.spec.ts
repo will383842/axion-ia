@@ -242,11 +242,6 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
     raison: "devis opaque d'un concurrent (repoussoir), pas un tarif Axion-IA",
   },
   {
-    fichier: "components/formations/FormationDetailPage.tsx",
-    motif: /0 € de reste à charge/,
-    raison: "reste à charge après financement OPCO, pas un tarif",
-  },
-  {
     fichier: "app/[locale]/formations/entreprise/page.tsx",
     motif: /0 € de reste à charge|€0 out of pocket/,
     raison: "reste à charge après financement OPCO, pas un tarif",

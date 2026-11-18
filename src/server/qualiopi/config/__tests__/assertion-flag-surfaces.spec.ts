@@ -211,14 +211,6 @@ const EXEMPTIONS: ReadonlyArray<{
   gardeChez?: { fichier: string; jeton: string };
 }> = [
   {
-    chemin: "components/formations/FormationsLesPlus.tsx",
-    raison:
-      "Composant purement présentationnel : sa ligne assertive porte `on: ofPublic`, " +
-      "et son UNIQUE appelant (app/[locale]/formations/entreprise/page.tsx, au registre) " +
-      "dérive `ofPublic` de isQualiopiCertificationObtenue().",
-    jeton: "ofPublic",
-  },
-  {
     chemin: "components/qualiopi/QualiopiBadge.tsx",
     raison:
       "Rend `null` quand getQualiopiPublicIdentity() est nulle — cette source est elle-même " +
