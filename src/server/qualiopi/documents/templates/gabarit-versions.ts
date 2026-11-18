@@ -65,7 +65,8 @@ export type TypeGabaritSignable =
   | "releve_connexion"
   | "lettre_mission"
   | "mandat_opco"
-  | "autorisation_captation";
+  | "autorisation_captation"
+  | "facture";
 
 /**
  * Version courante du texte rendu, par type de pièce.
@@ -92,6 +93,7 @@ export type TypeGabaritSignable =
  * | `devis` | 3 | 06/11 — devis à formules (lot 3) : section « formules A et B côte à côte » (prestations, options, totaux, échéancier, abonnement, engagement, préavis, indemnité de sortie maximale en euros, maintenance, garantie, services tiers). Sans offre, le texte imprimé est celui de la v2 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v2 archivée** |
  * | `devis` | 4 | 07/11 — bloc « Formule retenue par le client » (formule, automatisations retenues, totaux, récurrent, empreinte du choix scellé), imprimé SEULEMENT sur l'exemplaire signé d'un devis à formules dont le choix scellé (V4) est cohérent. Sans ce bloc, le texte imprimé est celui de la v3 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v3 archivée** |
  * | `devis` | 5 | 17/11 — bloc « Conditions particulières » (devis classique) : titre, texte saisi, phrase de primauté sur les CGV, imprimé AVANT « Conditions du devis », et mention dans le « Bon pour accord ». Sans ce texte, le texte imprimé est celui de la v4 ; l'incrément est gardé par prudence (branche de fond ajoutée). **v4 archivée** |
+ * | `facture` | 2 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : tuiles, cartes, totaux mis en avant, taux de TVA écrits à la française (« 5,5 % »). Intitulés, montants et mentions inchangés. Facture ET avoir (même gabarit). **v1 archivée** |
  * | `devis` | 6 | 18/11 — refonte au style de la charte 2027 (`charte/v1`) : cartes, libellés simplifiés (sens inchangé), Total TTC mis en avant. Phrases juridiques, montants et mentions repris mot pour mot. **v5 archivée** |
  * | `convention` | 6 | 16/10 — L15 : même mention, section non numérotée « Accessibilité et situation de handicap » avant les signatures. **v5 archivée** |
  * | `convention_tripartite` | 6 | 16/10 — L15 : même mention, mot pour mot. **v5 archivée** |
@@ -198,6 +200,12 @@ export const GABARIT_VERSIONS: Record<TypeGabaritSignable, number> = {
     v1, ce qui est exact — c'est le seul texte qui ait existé.
   */
   autorisation_captation: 1,
+  /*
+    v1 — état d'origine (toute facture ou tout avoir émis avant le 18/11/2026 se lit v1).
+    v2 — 18/11/2026, refonte au style de la charte 2027 ; v1 archivée. Mise en page seule :
+    montants, TVA, intitulés et mentions légales identiques (prouvé par test contre l'archive).
+  */
+  facture: 2,
 };
 
 /**
@@ -221,6 +229,8 @@ export function versionGabaritCourante(type: string): number | null {
  */
 const ALIAS_TYPE_PIECE: Readonly<Record<string, TypeGabaritSignable>> = {
   contrat: "contrat_formation",
+  // L'avoir est rendu par le gabarit de la facture (`estAvoir`).
+  avoir: "facture",
 };
 
 /** Type de gabarit d'un type de pièce, ou `null` si la pièce n'est pas signable. */

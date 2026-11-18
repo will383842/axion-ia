@@ -46,6 +46,7 @@ import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./conventi
 import { ConventionTripartitePdf as ConventionTripartitePdfV5 } from "./convention-tripartite.v5";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
 import { ReleveConnexionPdf as ReleveConnexionPdfV1 } from "./releve-connexion.v1";
+import { FacturePdf as FacturePdfV1 } from "./facture.v1";
 
 export type ComposantPiece = React.ComponentType<{ data: never; identite?: never }>;
 
@@ -100,6 +101,9 @@ export const GABARITS_ARCHIVES: Readonly<
       fichier: "releve-connexion.v1.tsx",
       Composant: ReleveConnexionPdfV1 as unknown as ComposantPiece,
     },
+  },
+  facture: {
+    1: { fichier: "facture.v1.tsx", Composant: FacturePdfV1 as unknown as ComposantPiece },
   },
 };
 

@@ -1,9 +1,10 @@
 /**
- * Qualiopi — Facture de prestation de formation professionnelle.
+ * Qualiopi — Facture de prestation de formation professionnelle (et AVOIR : même gabarit,
+ * `estAvoir`) — version 2, style de la charte 2027 (`charte/v1`).
  *
  * Conformité mentions obligatoires :
- *   - Identité + adresse du siège du vendeur (en-tête + pied via QualiopiPage).
- *   - SIRET / NDA / Qualiopi (en-tête + bloc facturation, `required`).
+ *   - Identité + adresse du siège du vendeur (bandeau + pied via `PageCharte`).
+ *   - SIRET / NDA / Qualiopi (carte « Informations de facturation », `required`).
  *   - Date d'émission, date d'échéance, date de réalisation de la prestation
  *     (art. 242 nonies A CGI).
  *   - TVA : mention DÉRIVÉE du régime configuré (`regime_tva`), jamais figée.
@@ -11,6 +12,13 @@
  *     mention correspondante. Voir F25.
  *   - Pénalités de retard (art. L.441-10), indemnité forfaitaire 40 €
  *     (art. D.441-5), absence d'escompte (art. L.441-9) — C. commerce, B2B.
+ *
+ * 🔑 v2 (18/11/2026) : seule la MISE EN PAGE change. Intitulés, montants, TVA, mentions
+ * légales et numérotation sont repris MOT POUR MOT de la v1 (archivée :
+ * `archives/facture.v1.tsx`, qui porte aussi l'historique complet des commentaires de
+ * conformité F25 / F26 / D9-3-02). Seul le taux de TVA s'écrit à la française (« 5,5 % »).
+ * Une facture ou un avoir émis sous la v1 se re-rend par l'archive, jamais par ce fichier
+ * (`__tests__/facture-v1-reproductible.spec.tsx`).
  *
  * Montants en centimes d'euro (prixUnitaireHtCents, totalHtCents) pour éviter
  * les erreurs d'arrondi flottant.
@@ -20,15 +28,21 @@
 
 import React from "react";
 import { Document, View, Text, StyleSheet } from "@react-pdf/renderer";
+import { formatEurosFromCents } from "@/server/qualiopi/documents/base-layout";
 import {
-  QualiopiPage,
-  DocSection,
-  FieldRow,
-  NdaFieldRow,
-  DataTable,
-  LegalCallout,
-  formatEurosFromCents,
-} from "@/server/qualiopi/documents/base-layout";
+  Carte,
+  CarteTotaux,
+  CHARTE_COULEURS as C,
+  CHARTE_ESPACES as E,
+  CHARTE_TYPO as T,
+  EncadreDoux,
+  LigneChamp,
+  PageCharte,
+  Tableau,
+  Titre,
+  Tuile,
+  type LigneTotal,
+} from "@/server/qualiopi/documents/charte/v1";
 import type { OrganismeIdentite } from "@/server/qualiopi/documents/organisme";
 import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
 import {
@@ -37,75 +51,41 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
-import {
-  brandColor,
-  QUALIOPI_PDF_TYPE as T,
-  QUALIOPI_PDF_SPACE as S,
-} from "@/server/qualiopi/brand/brand-tokens";
+
+const G = T.graisses;
 
 // ============================================================
-// Styles spécifiques (totaux + RIB)
+// Styles spécifiques — palette, espaces et typo : uniquement ceux de la charte
 // ============================================================
 
 const styles = StyleSheet.create({
-  totalsBlock: {
-    marginTop: S.xl,
-    alignItems: "flex-end",
-  },
-  totalRow: {
-    flexDirection: "row",
-    width: 240,
-    paddingVertical: 3,
-    borderBottomWidth: 1,
-    borderBottomColor: brandColor("border"),
-  },
-  totalLabel: {
-    fontSize: T.base,
-    flex: 1,
-    color: brandColor("fg-soft"),
-    fontWeight: "bold",
-  },
-  totalValue: {
-    fontSize: T.base,
-    color: brandColor("fg"),
-    fontFamily: "Inconsolata",
-    textAlign: "right",
-  },
-  totalTtcRow: {
-    flexDirection: "row",
-    width: 240,
-    paddingVertical: S.md,
-    backgroundColor: brandColor("mocha"),
-    paddingHorizontal: S.md,
-    marginTop: S.xs,
-    borderRadius: S.radius,
-  },
-  totalTtcLabel: {
-    fontSize: T.lg,
-    flex: 1,
-    color: brandColor("primary-fg"),
-    fontWeight: "bold",
-  },
-  totalTtcValue: {
-    fontSize: T.lg,
-    color: brandColor("primary-fg"),
-    fontFamily: "Inconsolata",
-    fontWeight: "bold",
-    textAlign: "right",
-  },
-  ribTitle: {
-    fontSize: T.sm,
-    fontWeight: "bold",
-    color: brandColor("fg-soft"),
-    marginBottom: S.sm,
+  rangee: { flexDirection: "row", marginBottom: E.ecartCartes },
+  separateur: { width: 8 },
+  colonne: { flex: 1 },
+  sectionTitre: {
+    fontSize: T.titre2.taille,
+    fontWeight: G.grasse,
+    letterSpacing: T.titre2.interlettrage,
+    color: C.texte,
+    marginTop: 8,
+    marginBottom: 6,
   },
   legalLine: {
-    fontSize: T.xs,
-    color: brandColor("fg"),
-    lineHeight: T.lineNormal,
-    marginBottom: S.xs,
+    fontSize: T.petit.taille,
+    color: C.texte,
+    lineHeight: T.corps.interligne,
+    marginBottom: 4,
+  },
+  noteRib: {
+    fontSize: T.petit.taille,
+    color: C.texte,
+    marginTop: 4,
   },
 });
+
+const FORMAT_TAUX_FR = new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 });
+/** Taux affiché à la française : « 5,5 », « 20 », « 2,1 » (le « % » est ajouté par l'appelant). */
+const pct = (n: number): string => FORMAT_TAUX_FR.format(n);
 
 // ============================================================
 // Types de données
@@ -199,6 +179,7 @@ export interface FactureData {
 
 export function FacturePdf({ data }: { data: FactureData }): React.ReactElement {
   const { identite } = data;
+  const estAvoir = data.estAvoir === true;
 
   const tauxStandard = data.tauxTvaStandardPercent ?? TAUX_TVA_STANDARD;
   const totaux = computeTotauxFacture(data.lignes, data.regimeTva, tauxStandard);
@@ -210,241 +191,183 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
         : 0;
   const mentionRegimeTva = mentionTva(data.regimeTva);
 
+  // 🔑 Totaux : UNE seule liste, construite UNE fois. Le Total TTC mis en grand par
+  // `CarteTotaux` est la dernière ligne de cette liste — la même valeur, jamais un second calcul.
+  const lignesTotaux: LigneTotal[] = [
+    { libelle: "Total HT", montant: formatEurosFromCents(totaux.totalHtCents) },
+    ...totaux.ventilation.map((v) => ({
+      libelle:
+        totaux.ventilation.length > 1
+          ? `TVA ${pct(v.tauxPercent)} % (base ${formatEurosFromCents(v.baseHtCents)})`
+          : `TVA (${pct(v.tauxPercent)} %)`,
+      montant: formatEurosFromCents(v.montantTvaCents),
+    })),
+    { libelle: "Total TTC", montant: formatEurosFromCents(totaux.totalTtcCents) },
+  ];
+
   return (
     <Document>
-      <QualiopiPage
-        docTitle={data.estAvoir === true ? "Avoir" : "Facture"}
-        docNumber={`N° ${data.numero}`}
+      <PageCharte
+        docTitle={estAvoir ? "Avoir" : "Facture"}
+        docNumber={data.numero}
         identite={identite}
         {...(data.estCopie === true ? { estCopie: true } : {})}
         {...(data.estSpecimen ? { estSpecimen: true as const } : {})}
         {...(data.specimenMotif ? { specimenMotif: data.specimenMotif } : {})}
       >
-        {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
-        <DocSection title="Informations de facturation">
-          <FieldRow
-            label={data.estAvoir === true ? "N° d'avoir" : "N° de facture"}
-            value={data.numero}
-            required
-          />
-          {data.estAvoir === true && data.avoirSurNumero !== undefined && (
-            <FieldRow label="Avoir sur facture" value={data.avoirSurNumero} required />
-          )}
-          {data.estAvoir === true && data.motifAvoir !== undefined && (
-            <FieldRow label="Motif de la rectification" value={data.motifAvoir} />
-          )}
-          {data.refClient !== undefined && data.refClient !== "" && (
-            <FieldRow label="Référence client / commande" value={data.refClient} />
-          )}
-          <FieldRow label="Date d'émission" value={data.dateEmission} required />
-          <FieldRow
-            label="Date de réalisation de la prestation"
-            value={data.periodePrestation ?? data.dateEmission}
-          />
-          <FieldRow label="Date d'échéance" value={data.dateEcheance} required />
-          <FieldRow label="SIRET de l'organisme" value={identite.siret} required />
-          {/*
-            🔴 F26 — mentions obligatoires de toute société commerciale :
-            forme juridique, capital social et RCS + ville (art. R123-238 C. com.),
-            n° de TVA intracommunautaire dès 150 € (art. 242 nonies A CGI).
-            Elles manquaient : la facture n'était pas régulière.
+        <Titre>{estAvoir ? "Avoir" : "Facture"}</Titre>
 
-            🔴 `D9-3-02` (2026-08-20) — CES QUATRE BLOCS ÉTAIENT CONDITIONNELS,
-            ET GARDÉS PAR RIEN.
+        {/* Tuiles : numéro, dates d'émission et d'échéance (mêmes intitulés qu'en v1) */}
+        <View style={styles.rangee}>
+          <Tuile libelle={estAvoir ? "N° d'avoir" : "N° de facture"} valeur={data.numero} />
+          <View style={styles.separateur} />
+          <Tuile libelle="Date d'émission" valeur={data.dateEmission} />
+          <View style={styles.separateur} />
+          <Tuile libelle="Date d'échéance" valeur={data.dateEcheance} />
+        </View>
 
-            Le commentaire d'origine disait : « on omet plutôt que d'imprimer un
-            libellé vide, qui se lirait comme une donnée perdue ». C'est le
-            raisonnement inverse de celui que ce dépôt applique partout ailleurs,
-            et l'ASYMÉTRIE le prouve : trente lignes plus bas, l'adresse de
-            l'ACHETEUR — imposée par le même corpus — est `required`, avec dix
-            lignes expliquant que « Non renseigné » vaut avertissement.
-
-            L'en-tête de `documents/conformite.ts` énonce d'ailleurs la doctrine
-            sans ambiguïté : les templates « signalent visuellement l'absence via
-            `FieldRow required` plutôt que de la masquer ».
-
-            Une mention absente d'une facture n'est pas une donnée perdue : c'est
-            une IRRÉGULARITÉ. Omise, elle est invisible à l'émetteur comme au
-            client ; affichée « Non renseigné », elle se corrige avant l'envoi.
-
-            ⚠️ On ne BLOQUE pas l'émission — `capitalSocial`, `rcsVille` et
-            `tvaIntracom` valent `null` en configuration aujourd'hui : les rendre
-            bloquants arrêterait toute facturation à l'instant du déploiement.
-            C'est exactement l'impasse pour laquelle `nda` et `qualiopi` ont déjà
-            été RETIRÉS de `CHAMPS_OBLIGATOIRES` deux fois dans ce dépôt. On rend
-            l'absence visible, et l'alerte console dit le geste.
-          */}
-          <FieldRow label="Forme juridique" value={identite.formeJuridique ?? ""} required />
-          <FieldRow label="Capital social" value={identite.capitalSocial ?? ""} required />
-          <FieldRow
-            label="RCS"
-            value={
-              identite.rcsVille
-                ? identite.siren
-                  ? `${identite.rcsVille} ${identite.siren}`
-                  : identite.rcsVille
-                : ""
-            }
-            required
-          />
-          {/*
-            ⚠️ La TVA est le seul des quatre à dépendre du RÉGIME.
-
-            Sous exonération 261-4-4° ou franchise 293 B, l'organisme n'a pas de
-            numéro à porter : la mention légale du régime le remplace, et elle est
-            imprimée plus bas. Exiger le numéro afficherait « Non renseigné » sur
-            une facture parfaitement régulière — une fausse alerte sur une pièce
-            comptable, ce qui apprend à ignorer les vraies.
-
-            Assujetti : le numéro est obligatoire (art. 242 nonies A CGI), et son
-            omission au-delà de 150 € est sanctionnée (art. 1737 CGI).
-          */}
-          {data.regimeTva === "assujetti" ? (
-            <FieldRow
-              label="N° TVA intracommunautaire"
-              value={identite.tvaIntracom ?? ""}
-              required
-            />
-          ) : null}
-          <NdaFieldRow label="N° déclaration activité (NDA)" nda={identite.nda} />
-          {identite.qualiopi ? (
-            <FieldRow label="Certification Qualiopi" value={identite.qualiopi} />
-          ) : null}
-        </DocSection>
-
-        {/* Client */}
-        <DocSection title="Client">
-          <FieldRow
-            label={data.client.estPersonnePhysique === true ? "Nom et prénom" : "Raison sociale"}
-            value={data.client.raisonSociale}
-            required
-          />
-          {data.client.siret ? <FieldRow label="SIRET" value={data.client.siret} /> : null}
-          {/*
-            `required` et non conditionnel : l'article L.441-9 C. com. impose « le nom
-            des parties ainsi que leur adresse ». Rendue en conditionnel, la ligne
-            disparaissait quand la donnée manquait — et la facture sortait non
-            conforme sans que rien ne le signale. Constaté sur AXI-FACT-2026-001 :
-            `destinataire_adresse` vide en base, aucune adresse au PDF, aucun
-            avertissement. `required` affiche « Non renseigné », ce qui rend le
-            manque visible à la relecture au lieu de le masquer.
-
-            Le SIRET de l'acheteur reste conditionnel : L.441-9 n'exige que le nom et
-            l'adresse. On l'affiche quand on l'a, sans le réclamer.
-          */}
-          <FieldRow label="Adresse" value={data.client.adresse ?? ""} required />
-          {data.client.numeroTvaIntracom ? (
-            <FieldRow label="N° TVA intracommunautaire" value={data.client.numeroTvaIntracom} />
-          ) : null}
-          {data.client.email ? <FieldRow label="Email" value={data.client.email} /> : null}
-        </DocSection>
-
-        {/* Détail des prestations */}
-        <DocSection title="Détail des prestations">
-          <DataTable
-            columns={[
-              { key: "designation", header: "Désignation", flex: 3 },
-              { key: "qte", header: "Qté", flex: 0.8, align: "right" },
-              { key: "pu", header: "P.U. HT", flex: 1.4, align: "right" },
-              { key: "tva", header: "TVA", flex: 0.8, align: "right" },
-              { key: "total", header: "Total HT", flex: 1.4, align: "right" },
-            ]}
-            rows={data.lignes.map((ligne) => ({
-              designation: ligne.designation,
-              qte: String(ligne.quantite),
-              pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
-              tva: `${tauxLigne(ligne)} %`,
-              total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
-            }))}
-          />
-        </DocSection>
-
-        {/* Totaux — ventilation TVA par taux (régime de TVA appliqué) */}
-        <View style={styles.totalsBlock}>
-          <View style={styles.totalRow}>
-            <Text style={styles.totalLabel}>Total HT</Text>
-            <Text style={styles.totalValue}>{formatEurosFromCents(totaux.totalHtCents)}</Text>
+        {/* Deux cartes côte à côte : identifiants de facturation et client */}
+        <View style={styles.rangee}>
+          <View style={styles.colonne}>
+            {/* Identifiants de facturation — SIRET/NDA en `required` (jamais masqués) */}
+            <Carte titre="Informations de facturation">
+              <View>
+                {estAvoir && data.avoirSurNumero !== undefined && (
+                  <LigneChamp label="Avoir sur facture" value={data.avoirSurNumero} required />
+                )}
+                {estAvoir && data.motifAvoir !== undefined && (
+                  <LigneChamp label="Motif de la rectification" value={data.motifAvoir} />
+                )}
+                {data.refClient !== undefined && data.refClient !== "" && (
+                  <LigneChamp label="Référence client / commande" value={data.refClient} />
+                )}
+                <LigneChamp
+                  label="Date de réalisation de la prestation"
+                  value={data.periodePrestation ?? data.dateEmission}
+                />
+                <LigneChamp label="SIRET de l'organisme" value={identite.siret} required />
+                {/* F26 / D9-3-02 : forme juridique, capital, RCS, TVA intracom — `required`, jamais
+                masqués (une mention absente est une irrégularité, pas une donnée perdue). La TVA
+                intracommunautaire n'est exigée qu'en régime assujetti. Historique complet :
+                `archives/facture.v1.tsx`. */}
+                <LigneChamp
+                  label="Forme juridique"
+                  value={identite.formeJuridique ?? ""}
+                  required
+                />
+                <LigneChamp label="Capital social" value={identite.capitalSocial ?? ""} required />
+                <LigneChamp
+                  label="RCS"
+                  value={
+                    identite.rcsVille
+                      ? identite.siren
+                        ? `${identite.rcsVille} ${identite.siren}`
+                        : identite.rcsVille
+                      : ""
+                  }
+                  required
+                />
+                {data.regimeTva === "assujetti" ? (
+                  <LigneChamp
+                    label="N° TVA intracommunautaire"
+                    value={identite.tvaIntracom ?? ""}
+                    required
+                  />
+                ) : null}
+                {typeof identite.nda === "string" && identite.nda.trim() !== "" ? (
+                  <LigneChamp label="N° déclaration activité (NDA)" value={identite.nda.trim()} />
+                ) : null}
+                {identite.qualiopi ? (
+                  <LigneChamp label="Certification Qualiopi" value={identite.qualiopi} />
+                ) : null}
+              </View>
+            </Carte>
           </View>
-          {totaux.ventilation.map((v) => (
-            <View key={v.tauxPercent} style={styles.totalRow}>
-              <Text style={styles.totalLabel}>
-                {totaux.ventilation.length > 1
-                  ? `TVA ${v.tauxPercent} % (base ${formatEurosFromCents(v.baseHtCents)})`
-                  : `TVA (${v.tauxPercent} %)`}
-              </Text>
-              <Text style={styles.totalValue}>{formatEurosFromCents(v.montantTvaCents)}</Text>
-            </View>
-          ))}
-          <View style={styles.totalTtcRow}>
-            <Text style={styles.totalTtcLabel}>Total TTC</Text>
-            <Text style={styles.totalTtcValue}>{formatEurosFromCents(totaux.totalTtcCents)}</Text>
+          <View style={styles.separateur} />
+          <View style={styles.colonne}>
+            {/* Client — l'adresse est `required` (art. L.441-9 C. com.) : « Non renseigné » plutôt
+            qu'une ligne masquée. Le SIRET de l'acheteur reste conditionnel. */}
+            <Carte titre="Client" insecable>
+              <View>
+                <LigneChamp
+                  label={
+                    data.client.estPersonnePhysique === true ? "Nom et prénom" : "Raison sociale"
+                  }
+                  value={data.client.raisonSociale}
+                  required
+                />
+                {data.client.siret ? <LigneChamp label="SIRET" value={data.client.siret} /> : null}
+                <LigneChamp label="Adresse" value={data.client.adresse ?? ""} required />
+                {data.client.numeroTvaIntracom ? (
+                  <LigneChamp
+                    label="N° TVA intracommunautaire"
+                    value={data.client.numeroTvaIntracom}
+                  />
+                ) : null}
+                {data.client.email ? <LigneChamp label="Email" value={data.client.email} /> : null}
+              </View>
+            </Carte>
           </View>
         </View>
 
+        {/* Détail des prestations */}
+        <Text style={styles.sectionTitre} minPresenceAhead={60}>
+          Détail des prestations
+        </Text>
+        <Tableau
+          columns={[
+            { key: "designation", header: "Désignation", flex: 3 },
+            { key: "qte", header: "Qté", flex: 0.8, align: "right" },
+            { key: "pu", header: "P.U. HT", flex: 1.4, align: "right" },
+            { key: "tva", header: "TVA", flex: 0.8, align: "right" },
+            { key: "total", header: "Total HT", flex: 1.4, align: "right" },
+          ]}
+          rows={data.lignes.map((ligne) => ({
+            designation: ligne.designation,
+            qte: String(ligne.quantite),
+            pu: formatEurosFromCents(ligne.prixUnitaireHtCents),
+            tva: `${pct(tauxLigne(ligne))} %`,
+            total: formatEurosFromCents(ligne.quantite * ligne.prixUnitaireHtCents),
+          }))}
+        />
+
+        {/* Totaux — ventilation TVA par taux (régime de TVA appliqué) */}
+        <CarteTotaux lignes={lignesTotaux} />
+
         {/* Subrogation OPCO */}
         {data.subrogationOpco ? (
-          <LegalCallout variant="info" title="Subrogation de paiement OPCO">
-            {`Facture libellée à l'OPCO ${data.subrogationOpco.nomOpco} dans le cadre de la subrogation de paiement — N° dossier : ${data.subrogationOpco.numeroDossier}.`}
-          </LegalCallout>
+          <EncadreDoux titre="Subrogation de paiement OPCO">
+            <Text style={styles.legalLine}>
+              {`Facture libellée à l'OPCO ${data.subrogationOpco.nomOpco} dans le cadre de la subrogation de paiement — N° dossier : ${data.subrogationOpco.numeroDossier}.`}
+            </Text>
+          </EncadreDoux>
         ) : null}
 
         {/* RIB */}
         {data.rib ? (
-          <View
-            style={{
-              marginTop: S.lg,
-              padding: S.lg,
-              borderWidth: 1,
-              borderColor: brandColor("border-strong"),
-              borderRadius: S.radius,
-            }}
-          >
-            <Text style={styles.ribTitle}>Coordonnées bancaires</Text>
-            <FieldRow label="Titulaire" value={data.rib.titulaire} />
-            {data.rib.banque ? <FieldRow label="Banque" value={data.rib.banque} /> : null}
-            <FieldRow label="IBAN" value={data.rib.iban} />
-            <FieldRow label="BIC" value={data.rib.bic} />
-            {/* 🔴 La consigne de RÉFÉRENCE, sans laquelle tout rapprochement est
-                une devinette.
-
-                Un virement qui arrive sans référence n'est identifiable que par
-                son montant et son émetteur — ce qui suffit pour un client, pas
-                pour dix, et surtout pas pour deux factures du même montant. Le
-                champ `receivedReference` existe côté encaissement ; encore
-                faut-il que le client ait quelque chose à mettre.
-
-                ⚠️ Rendue DANS le bloc RIB : sans coordonnées bancaires, demander
-                une référence de virement n'aurait aucun sens. */}
-            <Text
-              style={{
-                fontSize: T.xs,
-                color: brandColor("fg-soft"),
-                marginTop: S.sm,
-              }}
-            >
-              {`Merci de rappeler la référence « ${data.numero} » dans le libellé de votre virement.`}
-            </Text>
-          </View>
+          <Carte titre="Coordonnées bancaires" insecable>
+            <View>
+              <LigneChamp label="Titulaire" value={data.rib.titulaire} />
+              {data.rib.banque ? <LigneChamp label="Banque" value={data.rib.banque} /> : null}
+              <LigneChamp label="IBAN" value={data.rib.iban} />
+              <LigneChamp label="BIC" value={data.rib.bic} />
+              {/* 🔴 La consigne de RÉFÉRENCE, sans laquelle tout rapprochement est une devinette :
+                  rendue DANS le bloc RIB (sans coordonnées, la demande n'aurait aucun sens). */}
+              <Text style={styles.noteRib}>
+                {`Merci de rappeler la référence « ${data.numero} » dans le libellé de votre virement.`}
+              </Text>
+            </View>
+          </Carte>
         ) : null}
 
         {/* Conditions de règlement + mentions légales obligatoires */}
-        <LegalCallout variant="legal" title="Conditions de règlement et mentions légales">
-          {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise
-              293 B). En régime assujetti : pas de mention d'exonération, la TVA
-              figure dans les totaux. */}
+        <EncadreDoux titre="Conditions de règlement et mentions légales">
+          {/* Mention de TVA selon le régime (exonération 261-4-4° ou franchise 293 B). En régime
+              assujetti : pas de mention d'exonération, la TVA figure dans les totaux. */}
           {mentionRegimeTva ? <Text style={styles.legalLine}>{mentionRegimeTva}</Text> : null}
-          {/* 🔴 Les trois mentions ci-dessous relevent du Code de commerce ENTRE
-              PROFESSIONNELS — penalites de retard (L.441-10), indemnite
-              forfaitaire de recouvrement de 40 € (D.441-5), absence d'escompte
-              (L.441-9). Aucune ne s'applique a un consommateur. Elles etaient
-              imprimees SANS CONDITION, y compris sur la facture d'un
-              particulier, et `legal-mentions.ts` nommait deja ce defaut.
-
-              ⛔ Pour un particulier, elles sont OMISES — pas remplacees. On
-              n'invente pas ici un texte consumeriste : ajouter une clause
-              absente du gabarit est precisement ce que le mandat interdit, et
-              `legal-mentions.ts` a deja ecarte le renvoi aux CGV comme une
-              AGGRAVATION du defaut plutot qu'un correctif. */}
+          {/* 🔴 Les trois mentions ci-dessous relèvent du Code de commerce ENTRE PROFESSIONNELS
+              (L.441-10, D.441-5, L.441-9) : pour un particulier elles sont OMISES, pas
+              remplacées — on n'invente pas de texte consumériste ici. */}
           {data.client.estPersonnePhysique === true ? null : (
             <>
               <Text style={styles.legalLine}>{LEGAL_MENTIONS.facturePenalitesRetard}</Text>
@@ -452,8 +375,8 @@ export function FacturePdf({ data }: { data: FactureData }): React.ReactElement 
               <Text style={styles.legalLine}>{LEGAL_MENTIONS.factureEscompte}</Text>
             </>
           )}
-        </LegalCallout>
-      </QualiopiPage>
+        </EncadreDoux>
+      </PageCharte>
     </Document>
   );
 }

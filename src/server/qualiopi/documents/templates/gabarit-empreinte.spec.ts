@@ -69,6 +69,7 @@ const SOURCE: Readonly<Record<TypeGabaritSignable, string>> = {
   lettre_mission: "lettre-mission.tsx",
   mandat_opco: "mandat-opco.tsx",
   autorisation_captation: "autorisation-captation.tsx",
+  facture: "facture.tsx",
 };
 
 /**
@@ -157,6 +158,12 @@ const EMPREINTES: Readonly<
     // v1 — 10/10/2026 (S6a) : entrée dans la table, texte d'origine relevé tel quel.
     sha: "6a15a48290dfd6fd336474e4148d41c46465b0a0c39a7b2523bb3e96e36bb687",
     version: 1,
+  },
+  facture: {
+    // v2 — 18/11/2026 : refonte au style de la charte 2027 (mise en page seule, intitulés,
+    // montants et mentions inchangés ; facture ET avoir) ; v1 archivée (`archives/facture.v1.tsx`).
+    sha: "1b610d823f1a3e64328eb021e61c698dcebccce5f5b4764d53c8181341d9ce6b",
+    version: 2,
   },
 };
 
@@ -330,6 +337,8 @@ const EMPREINTES_ARCHIVES: Readonly<Record<string, string>> = {
   // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027 (empreinte
   // identique à celle de l'ancienne v5 courante, d6eb37c8…).
   "devis.v5.tsx": "d6eb37c85d2826d7e4518ea54ec80b3ef5ac2908f87dd8c490d7201c2f72a141",
+  // 18/11/2026 : copie conforme du gabarit courant d'avant la refonte charte 2027.
+  "facture.v1.tsx": "457cd2272ed81f208e85388ba401a138dbb48a6b8454a817facdee3b91fc8d39",
   "contrat-formation.v1.tsx": "4afe9d19dac33437e8970ecbad091af861e8a5bce4f01b35ac4fceaed264e4cd",
   "releve-connexion.v1.tsx": "958909a208a6f56c286c67f68694982e9668b48232872553c683ac68aee44ae7",
   "mentions-figees.ts": "6f570713a14786affb5a2a2bc2dd73f61e0ff1546dcf9ab896917ff03eb6f199",
