@@ -8,7 +8,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { FORMATIONS_V2 } from "@/content/formations/catalog-v2";
+import { FORMATIONS_V2, FORMATIONS_V2_SOURCE } from "@/content/formations/catalog-v2";
 
 // Fourchette SERP anti-troncature — miroir des seuils canoniques de
 // `meta-length.ts` (zone génération de contenu, côté serveur). Valeurs
@@ -69,7 +69,9 @@ describe("catalogue V2 — SEO par formation", () => {
 
   it("au moins 3 FAQ par formation (longue traîne / FAQPage)", () => {
     for (const f of FORMATIONS_V2) {
-      expect(f.faqs.length, f.id).toBeGreaterThanOrEqual(3);
+      // Catalogue brut : les 2 questions communes de l'export ne comptent pas.
+      const brut = FORMATIONS_V2_SOURCE.find((x) => x.id === f.id);
+      expect(brut?.faqs.length, f.id).toBeGreaterThanOrEqual(3);
     }
   });
 });

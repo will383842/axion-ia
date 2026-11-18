@@ -11,6 +11,7 @@
 // Les espaces insécables (U+202F avant « ? : ; ! », U+00A0 avant « h », « % », « n° ») et les
 // apostrophes « ’ » sont ceux de la maquette : ne pas les « normaliser ».
 
+import { reponseReference } from "@/content/questions-reference";
 import {
   CONDITION_GARANTIE,
   EN_BREF_JOURNEE_IA,
@@ -274,8 +275,7 @@ export const CONTENU = {
     {
       id: "faq-audit-cout",
       question: "Combien coûte un audit IA pour une PME\u202f?",
-      reponse:
-        "Chez Axion-IA, l’audit commence par la Journée IA\u202f: 2 à 4\u00a0h d’audit le matin, comprises dans {{PRIX}} avec la formation de l’après-midi. Un audit plus poussé, sur plusieurs sites ou services, se fait sur devis.",
+      reponse: reponseReference("ref-audit-prix"),
     },
     {
       id: "faq-garantie",

@@ -22,6 +22,7 @@ import {
   MENTION_DECLARATION_OF,
 } from "@/content/journee-ia-commun";
 import { EFFECTIF_CIBLE, MICRO_TEXTE_RDV } from "@/content/offre";
+import { reponseReference } from "@/content/questions-reference";
 
 /** Titre de la page : porte la marque, donc rendu tel quel (`title.absolute`). */
 export const TITRE = "Axion-IA · Audit et formation IA pour PME et TPE";
@@ -284,8 +285,7 @@ export const CONTENU = {
       {
         id: "faq-prix",
         question: "Combien coûte la Journée IA ?",
-        reponse:
-          "{{PRIX}} la journée, dans vos locaux : un prix unique, sans remise. Rien ne se paie en ligne : le paiement est fixé dans votre devis, après un premier échange.",
+        reponse: reponseReference("ref-journee-prix"),
       },
       {
         id: "faq-garantie",
@@ -295,14 +295,13 @@ export const CONTENU = {
       {
         id: "faq-commencer",
         question: "Par où commencer avec l’IA dans une PME ?",
-        reponse:
-          "Par vos tâches, pas par un outil. Axion-IA cartographie l’entreprise service par service, fait le point avec vous sur vos priorités et chiffre vos plus gros gains. Premier pas gratuit : un diagnostic de 45 minutes.",
+        reponse: reponseReference("ref-commencer"),
       },
       {
         id: "faq-devis-relances",
         question: "Peut-on automatiser les devis et les relances avec l’IA ?",
         reponse:
-          "Oui. L’IA prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date validée. Vous relisez avant chaque envoi. La Journée IA chiffre d’abord le temps en jeu chez vous.",
+          "Oui, on peut automatiser les devis et les relances avec l’IA. Elle prépare le devis à partir de vos modèles et de vos notes ; les relances partent à la date que vous avez validée, et vous relisez avant chaque envoi. La Journée IA commence par chiffrer, chez vous, le temps réellement passé sur ces tâches, pour savoir si cela vaut la peine.",
       },
       {
         id: "faq-chatgpt",
@@ -313,8 +312,7 @@ export const CONTENU = {
       {
         id: "faq-ai-act",
         question: "Et l’AI Act, ça nous concerne ?",
-        reponse:
-          "Oui, si votre entreprise utilise des systèmes d’IA. L’article 4 du règlement européen sur l’IA, applicable depuis le 2 février 2025 et réécrit en juillet 2026, demande aux entreprises de prendre des mesures pour soutenir la maîtrise de l’IA de leur personnel, sans fixer de niveau à garantir pour chacun. L’après-midi de formation s’inscrit dans cet article 4 : une attestation de formation par participant.",
+        reponse: reponseReference("ref-ai-act-pme"),
       },
     ],
     liensDebut: "Pour aller plus loin :",

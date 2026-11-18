@@ -15,6 +15,7 @@ import { LocalCoverageSection } from "@/components/sections/LocalCoverageSection
 import { RelatedKnowledge } from "@/components/services/RelatedKnowledge";
 import { JsonLd } from "@/components/marketing/JsonLd";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
+import { faqItems } from "@/content/questions-reference";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { InterventionFormatCard } from "@/components/sections/InterventionFormatCard";
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
@@ -298,26 +299,31 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                       id: "pourquoi-1to1",
                       question: "Pourquoi un format 1-to-1 plutôt qu'une formation collective ?",
                       answer:
-                        "Parce que votre temps et vos décisions de dirigeant sont spécifiques. Le 1-to-1 se concentre sur VOUS : votre quotidien, vos dossiers, votre vision — pas sur un programme d'équipe standardisé.",
+                        "Le format 1-to-1 convient à un dirigeant parce que son temps et ses décisions sont spécifiques. Il se concentre sur vous : votre quotidien, vos dossiers, votre vision de l'entreprise, et non sur un programme d'équipe standardisé. Pour former plusieurs personnes à la fois, la formation collective ou la Journée IA est plus adaptée.",
                     },
                     {
                       id: "confidentiel",
                       question: "C'est vraiment confidentiel ?",
                       answer:
-                        "Oui, strictement. Vous êtes seul·e avec votre interlocuteur, sur vos vrais dossiers, y compris stratégiques. Aucune donnée n'est partagée ni réutilisée.",
+                        "Oui, le coaching IA 1-to-1 est strictement confidentiel : vous êtes en tête-à-tête avec votre interlocuteur, sur vos vrais dossiers, y compris stratégiques. Aucune donnée n'est partagée ni réutilisée en dehors de la journée. Un point confidentialité est fait au début, pour décider avec vous de ce qui peut être confié à l'IA.",
                     },
                     {
                       id: "choisir",
                       question: "Dirigeant ou collaborateur : quelle formule choisir ?",
                       answer:
-                        "La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 45 minutes permet de trancher.",
+                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 45 minutes permet de trancher.",
                     },
                     {
                       id: "repars",
                       question: "Qu'est-ce que je repars avec ?",
                       answer:
-                        "Une vision claire dès le soir même, puis, sous 7 jours, la note de cadrage stratégique : le panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence.",
+                        "Après un coaching IA dirigeant, vous repartez avec une vision claire dès le soir même, puis, sous 7 jours, avec la note de cadrage stratégique : le panorama IA de votre secteur, sourcé, et vos 5 à 10 leviers hiérarchisés par impact et urgence. Le tout est remis par écrit, pour pouvoir le relire.",
                     },
+                    ...faqItems(["ref-coaching-vs-formation"]).map(({ id, question, answer }) => ({
+                      id,
+                      question,
+                      answer,
+                    })),
                   ]
                 : [
                     {

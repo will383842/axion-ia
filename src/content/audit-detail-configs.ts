@@ -518,8 +518,8 @@ const PME_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Que contient le plan remis, et qui peut s'en servir ?",
     qEn: "What does the delivered plan contain, and who can use it?",
-    aFr: "Un document de 25 à 60 pages selon votre taille, remis et déroulé en restitution COMEX. Il réunit la cartographie des 2 à 4 services audités, une fiche par opportunité IA (gain estimé, complexité, délai, coût de mise en œuvre, cadre RGPD et catégorie AI Act), la roadmap 12-24 mois phasée avec ses points de décision, et le lot de 3 à 5 quick-wins activables sous 30 jours. Il sert à trois lectures différentes : la direction y trouve son dossier d'arbitrage budgétaire, les managers leur feuille de route par service, le DPO et le conseil juridique leurs annexes de conformité.",
-    aEn: "A 25 to 60 page document depending on your size, handed over and walked through in an EXCOM restitution. It brings together the map of the 2 to 4 audited departments, one sheet per AI opportunity (estimated gain, complexity, delay, implementation cost, GDPR framing and AI Act category), the phased 12-24 month roadmap with its decision points, and the batch of 3 to 5 quick-wins activable within 30 days. It serves three different readings: leadership finds its budget arbitration file, managers their department roadmap, the DPO and legal counsel their compliance annexes.",
+    aFr: "Le plan remis est un document de 25 à 60 pages, déroulé en restitution COMEX. Il réunit la cartographie des 2 à 4 services audités, une fiche par opportunité IA (gain estimé, complexité, délai, coût, cadre RGPD et catégorie AI Act), une roadmap de 12 à 24 mois et 3 à 5 quick-wins activables sous 30 jours. La direction, les managers et le DPO y trouvent chacun leur lecture.",
+    aEn: "The delivered plan is a 25 to 60 page document, walked through in an EXCOM restitution. It brings together the map of the 2 to 4 audited departments, one sheet per AI opportunity (estimated gain, complexity, delay, cost, GDPR framing and AI Act category), a 12 to 24 month roadmap and 3 to 5 quick-wins activable within 30 days. Leadership, managers and the DPO each find their own reading.",
   },
   {
     qFr: "Quelle charge interne pendant l'audit ?",
@@ -530,8 +530,8 @@ const PME_FAQ: ReadonlyArray<AuditFaq> = [
   {
     qFr: "Et après l'audit, comment passer à l'action ?",
     qEn: "After the audit, how do we move to action?",
-    aFr: "Le plan stratégique liste les quick-wins (activables seuls) et les chantiers structurants (qui nécessitent un sprint dédié). Pour ces derniers, on bascule vers le module Implémentation IA. Vos équipes peuvent aussi exécuter en autonomie — le plan est rédigé pour ça.",
-    aEn: "The strategic plan lists quick-wins (self-activable) and structuring projects (needing a dedicated sprint). For the latter, we switch to the AI Implementation module. Your teams can also execute autonomously — the plan is written for that.",
+    aFr: "Après l'audit, le plan stratégique distingue les quick-wins, activables seuls, et les chantiers structurants, qui demandent un sprint dédié. Pour ces derniers, vous pouvez passer au module Implémentation IA, sur devis écrit. Le plan est rédigé pour que vos équipes sachent quoi lancer en premier, dans quel ordre et avec quels outils, sans attendre.",
+    aEn: "After the audit, the strategic plan separates quick-wins, which can be activated on their own, from structuring projects, which need a dedicated sprint. For the latter you can move to the AI Implementation module, on a written quote. The plan is written so your teams know what to launch first, in which order and with which tools, without waiting.",
   },
 ];
 

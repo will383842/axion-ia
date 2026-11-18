@@ -31,6 +31,8 @@ import { buildSpeakableSpecification } from "@/lib/seo/speakable-universal";
 // page /tarifs vers laquelle la réponse renvoie (audit FAQ prix 2026-07-06).
 // Nom du fondateur via SSOT `FOUNDER` (displayName « Williams ») — Q/R PAA entité.
 import { FOUNDER, FOUNDER_PERSON_ID } from "@/lib/brand";
+import { DESCRIPTION_ENTITE_FR } from "@/content/journee-ia-commun";
+import { faqItems } from "@/content/questions-reference";
 // Flag divulgation OF (Qualiopi/financement) — les Q/R Qualiopi/financement ne
 // sont émises QUE si la Phase B est active (elles apparaîtront automatiquement
 // dès le passage du flag, sans retoucher le code). Doctrine financement respectée.
@@ -147,8 +149,7 @@ export default async function About({ params }: Props) {
         {
           id: "definition",
           question: "Qu'est-ce qu'Axion-IA ?",
-          answer:
-            "Axion-IA est un cabinet de conseil en intelligence artificielle opérationnelle, basé en France. Il accompagne les PME et les TPE sur l'audit IA, la formation, l'implémentation de solutions IA en production, le coaching 1-à-1 et les sites web augmentés, avec une approche centrée sur des résultats concrets et mesurables.",
+          answer: DESCRIPTION_ENTITE_FR,
         },
         {
           id: "siege",
@@ -185,12 +186,11 @@ export default async function About({ params }: Props) {
           answer:
             "Chaque demande de devis ou de contact est lue et traitée par un membre de notre équipe, jamais par un robot, sans engagement.",
         },
-        {
-          id: "prix-formation-ia",
-          question: "Combien coûte une formation IA en entreprise ?",
-          answer:
-            "Les formations IA en entreprise sont établies sur devis, par groupe : le prix dépend de la durée (de 4 h à 2 jours), du format et du nombre de participants. Le devis précis se construit après un échange sur votre contexte, sous 48 h ouvrées.",
-        },
+        ...faqItems(["ref-formation-prix"]).map(({ id, question, answer }) => ({
+          id,
+          question,
+          answer,
+        })),
         {
           id: "contact",
           question: "Comment contacter Axion-IA ?",

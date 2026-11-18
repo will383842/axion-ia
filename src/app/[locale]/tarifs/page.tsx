@@ -38,6 +38,7 @@ import { ANCRE_JOURNEE_IA, LIBELLE_RENDEZ_VOUS_RENVOI } from "@/content/renvoi-j
 import { getFormationsV2 } from "@/content/formations/catalog-v2";
 import { EFFECTIF_PLAGE_EN, EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
+import { faqItems as faqReference } from "@/content/questions-reference";
 
 // Page récap tarifs (Sprint Header refonte 2026-05-24, Will ; réalignée sur La
 // Journée IA après l'audit SEO/GEO du 11/11/2026).
@@ -238,16 +239,13 @@ export default async function PricingPage({ params }: Props) {
   // le balisage est identique au texte visible par construction.
   const faqItems = isFr
     ? [
-        {
-          id: "prix-journee-ia",
-          question: "Combien coûte La Journée IA ?",
-          answer: `${prixJournee}, prix unique. ${DEROULE_JOURNEE_IA} ${RAPPORT_COMPLET} ${GARANTIE_PHRASE} ${CONDITION_GARANTIE}`,
-        },
-        {
-          id: "prix-formation-ia",
-          question: "Combien coûte une formation IA en entreprise ?",
-          answer: `Le prix d'une formation est établi sur devis écrit, hors taxes, par groupe (${EFFECTIF_PLAGE_FR}) — jamais par personne. Il dépend de la formation retenue (offre générale, métier ou secteur), de sa durée (4 h à 2 jours) et du format (sur site ou à distance). Les conditions de paiement et d'annulation figurent dans nos conditions générales.`,
-        },
+        ...faqReference(["ref-journee-prix", "ref-formation-prix", "ref-automatisation-prix"]).map(
+          ({ id, question, answer }) => ({
+            id,
+            question,
+            answer,
+          }),
+        ),
         {
           id: "tarifs-publics",
           question: "Pourquoi un devis plutôt qu'une grille ?",

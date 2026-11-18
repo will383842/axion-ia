@@ -8,6 +8,7 @@
 import { describe, it, expect } from "vitest";
 import {
   FORMATIONS_V2,
+  FORMATIONS_V2_SOURCE,
   getFormationsV2,
   getSeminairesV2,
   getFormationV2,
@@ -41,7 +42,9 @@ describe("catalogue — cohérence interne", () => {
       expect(f.programme.length, f.id).toBeGreaterThanOrEqual(1);
       const totalSteps = f.programme.reduce((n, s) => n + s.steps.length, 0);
       expect(totalSteps, f.id).toBeGreaterThanOrEqual(3);
-      expect(f.faqs.length, f.id).toBeGreaterThanOrEqual(2);
+      // Compté sur le catalogue brut : les 2 questions communes ajoutées à l'export ne comptent pas.
+      const brut = FORMATIONS_V2_SOURCE.find((x) => x.id === f.id);
+      expect(brut?.faqs.length, f.id).toBeGreaterThanOrEqual(2);
       expect(f.termesSemantiquesFr.length, f.id).toBeGreaterThanOrEqual(3);
     }
   });
