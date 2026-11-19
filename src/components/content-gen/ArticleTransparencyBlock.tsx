@@ -55,7 +55,7 @@ export function ArticleTransparencyBlock({
             <span className="bg-sage h-2 w-2 rounded-full" />
           </span>
           <p>
-            {isFr ? "Mis à jour le " : "Updated on "}
+            {isFr ? "Sources vérifiées le " : "Sources checked on "}
             <time dateTime={iso} className="text-fg-soft font-semibold">
               {formatted}
             </time>
