@@ -45,6 +45,7 @@ import { InterEntreprisesSection } from "@/components/admin/qualiopi/InterEntrep
 import { listTrainers, isTrainerHabilite } from "@/server/qualiopi/trainers/trainers";
 import { listClients } from "@/server/qualiopi/crm/clients";
 import { countTrainees, listTrainees } from "@/server/qualiopi/trainees/trainees";
+import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
 import { DocumentsSection } from "@/components/admin/qualiopi/DocumentsSection";
 import {
   etatDocumentsOrganisme,
@@ -1361,6 +1362,7 @@ export default async function SessionHubPage({ params, searchParams }: PageProps
             enrollments={enrollmentsLight}
             documentsExistants={documentsSerialized}
             notesPieces={notesPieces}
+            certificationObtenue={isQualiopiCertificationObtenue()}
             // Lot 1ter §2/§5 — ce que ce dossier appelle reellement. Sans lui, les
             // ~20 boutons de generation s affichaient TOUS, sur TOUTES les
             // sessions : Kit OPCO sur un financement direct, Contrat de formation
