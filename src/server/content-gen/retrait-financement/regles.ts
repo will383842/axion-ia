@@ -290,6 +290,45 @@ const CONNECTEUR_DECOMPTE =
   /^[^,:;.]{0,80}?\b(?:sont|est|comprennent|comprend|incluent|inclut|reposent sur|repose sur)\s+/i;
 
 /**
+ * Nombre placé APRÈS la liste : « a, b, x et c : nos 4 offres ». Corrigé si la liste (tout ce qui
+ * précède le « : ») compte exactement le nombre annoncé, sinon ambigu. Aucun nombre : rien à faire.
+ */
+function decompteApresListe(
+  corps: string,
+  resultat: string,
+  debutRetrait: number,
+  retires: number,
+): { texte: string; ambigu?: string } {
+  let trouve: RegExpMatchArray | null = null;
+  for (const m of corps.matchAll(DECOMPTE)) {
+    const idx = m.index ?? 0;
+    if (idx < debutRetrait) continue;
+    if (/[:：]\s*(?:[a-zà-ÿ'’-]+\s+){0,2}$/i.test(corps.slice(0, idx))) {
+      trouve = m;
+      break;
+    }
+  }
+  if (!trouve || trouve.index === undefined) return { texte: resultat };
+  const pre = corps.slice(0, trouve.index).replace(/\s*[:：]\s*(?:[a-zà-ÿ'’-]+\s+){0,2}$/i, "");
+  const n = valeurNombre(trouve[1]!);
+  const elements = pre
+    .split(/,\s+(?:et\s+|ou\s+)?|\s+(?:et|ou)\s+/)
+    .filter((x) => x.trim() !== "").length;
+  const pos = resultat.lastIndexOf(trouve[0]);
+  if (elements !== n || n - retires < 2 || pos < 0)
+    return {
+      texte: resultat,
+      ambigu: `décompte à vérifier : « ${trouve[0]} » placé après la liste (${elements} éléments)`,
+    };
+  const nouveau = ecrireNombre(n - retires, trouve[1]!);
+  noter(`décompte corrigé : « ${trouve[1]} ${trouve[2]} » → « ${nouveau} ${trouve[2]} »`);
+  return {
+    texte:
+      resultat.slice(0, pos) + `${nouveau} ${trouve[2]}` + resultat.slice(pos + trouve[0].length),
+  };
+}
+
+/**
  * Corrige « sept étapes : a, b, x, c » ou « Les 3 piliers sont a, b et c » quand `retires` éléments
  * de la liste sont retirés. Un nombre annoncé devant l'énumération qui ne se vérifie pas (pas de
  * « : » ni de « sont » derrière, nombre d'éléments différent) rend la phrase ambiguë.
@@ -305,7 +344,8 @@ function corrigerDecompte(
   for (const re of [DECOMPTE, DECOMPTE_LISTE])
     for (const m of avant.matchAll(re))
       if (!dernier || (m.index ?? 0) >= (dernier.index ?? 0)) dernier = m;
-  if (!dernier || dernier.index === undefined) return { texte: resultat };
+  if (!dernier || dernier.index === undefined)
+    return decompteApresListe(corps, resultat, debutRetrait, retires);
   const suite = corps.slice(dernier.index + dernier[0].length);
   const apresDeuxPoints = /^\s*[:：]\s*/.exec(suite);
   const apresConnecteur = apresDeuxPoints ? null : CONNECTEUR_DECOMPTE.exec(suite);
@@ -370,13 +410,18 @@ function fragmenter(phrase: string): Fragment | null {
   // « x et y » est éclaté pour que « et la formation » ne parte pas avec l'élément visé.
   const segments = base.split(/,\s+/);
   let conjonction: string | null = null;
-  // Seulement quand un nombre est annoncé devant : sinon « x ou y peuvent être mobilisés » est un
-  // prédicat, pas un élément de liste.
-  // ... ou quand la phrase annonce une liste par « : » (« Nos offres : a, b, x et c »).
-  if (
-    segments.length > 1 &&
-    (new RegExp(DECOMPTE.source, "i").test(base) || /[:：]/.test(segments[0]!))
-  ) {
+  // TOUJOURS éclaté quand l'énumération compte au moins deux virgules : sinon le dernier segment
+  // « x et y » partirait en bloc avec un élément sans rapport. Sans nombre ni « : », seuls les
+  // éléments visés guident la coupe (le rendu est contrôlé par phraseCorrecte).
+  // Exception : un dernier segment qui porte un verbe (« x ou y peuvent être mobilisés ») est un
+  // prédicat, pas un élément de liste : ancien comportement (hors nombre annoncé ou « : »).
+  const annoncee = new RegExp(DECOMPTE.source, "i").test(base) || /[:：]/.test(segments[0]!);
+  const predicat =
+    !annoncee &&
+    /\b(?:peu(?:t|vent)|sont|est|[êe]tre|permet(?:tent)?|sera|seront|ont|sera|devr(?:a|ont)|doivent|doit|d[ée]pend(?:ent)?)\b/i.test(
+      segments[segments.length - 1]!,
+    );
+  if (segments.length > 1 && !predicat) {
     const dernierSeg = segments.pop()!;
     const tete = /^(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
     const milieu = tete ? null : /^([\s\S]+?)\s+(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
