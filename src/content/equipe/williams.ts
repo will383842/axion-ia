@@ -81,7 +81,7 @@ export const WILLIAMS_IDENTITE: ReadonlyArray<{ terme: string; valeur: string }>
   },
   { terme: "Langues de travail", valeur: "Français, anglais" },
   { terme: "Hébergement des données", valeur: "Union européenne" },
-  { terme: "Contact", valeur: "Formulaire du site ou appel de découverte" },
+  { terme: "Contact", valeur: "Formulaire du site ou Diagnostic IA" },
 ];
 
 /**
@@ -340,7 +340,7 @@ export function buildWilliamsFaq({
       id: "contact",
       question: "Comment contacter Williams Jullin ?",
       answer:
-        "Le plus direct est de réserver un appel de découverte depuis la page dédiée, sans engagement. Le formulaire de contact du site couvre également les demandes de devis, d'audit, de formation, d'implémentation et de partenariat, avec une réponse humaine.",
+        "Le plus direct est de réserver un Diagnostic IA depuis la page dédiée, sans engagement. Le formulaire de contact du site couvre également les demandes de devis, d'audit, de formation, d'implémentation et de partenariat, avec une réponse humaine.",
     },
   ];
 }

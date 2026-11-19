@@ -260,7 +260,7 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
   {
     id: "trame-echange-apporteur",
     icon: "MessagesSquare",
-    nom: "Trame de l'échange découverte apporteur (15 min)",
+    nom: "Trame de l'entretien apporteur (15 min)",
     format: "A4 portrait · 8 pages · usage interne",
     resume:
       "La trame pour conduire et noter l'échange de 15 minutes avec un candidat apporteur d'affaires : déroulé minute par minute, questions sur des faits vécus, présentation du réseau, réponses aux questions fréquentes, mots à dire et à bannir, critères éliminatoires fixés avant l'appel, et une fiche de notes à grille qui débouche sur une décision structurée juste après l'échange.",
@@ -295,12 +295,12 @@ export const IMPRIMES: ReadonlyArray<Imprime> = [
     nom: `Guide IA entreprise · ${GUIDE_IA_PAGES} pages`,
     format: `A4 portrait · 210 × 297 mm · ${GUIDE_IA_PAGES} pages, lecture à l'écran`,
     resume:
-      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un appel de découverte.",
+      "Le guide promis par la page /guide-ia : comprendre l'IA générative, les usages prouvés, les coûts réels, la gouvernance, le retour sur investissement et les écueils. Envoyé par e-mail dès la demande (page du guide ou encart de fin d'article), et proposé en lien dans la confirmation d'un Diagnostic IA.",
     fichiersPublics: [
       {
         chemin: GUIDE_IA_CHEMIN,
         nom: `Le PDF, ${GUIDE_IA_PAGES} pages`,
-        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un appel de découverte. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
+        role: "La cible du lien personnel de l'e-mail « Votre guide » (`/api/guide-ia/telecharger`, qui y redirige après le clic), de la page de confirmation de la lettre et de l'e-mail de confirmation d'un Diagnostic IA. ⚠️ Ne pas renommer : le chemin part dans des e-mails déjà envoyés. Une nouvelle édition remplace le fichier sous le même nom.",
       },
     ],
     fichiersHorsLigne: [

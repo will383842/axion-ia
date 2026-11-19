@@ -150,7 +150,7 @@ export const FICHE_RENNES: FicheLocale = {
     },
     {
       q: "Intervenez-vous dans toute la métropole rennaise ?",
-      a: "Oui, dans les 43 communes de Rennes Métropole. Nous venons dans vos locaux, sans bureau sur place. Le diagnostic gratuit de 45 minutes fixe la date et l’adresse ; le déroulé est identique à celui d’ailleurs en France. Exemples de communes concernées : Saint-Sulpice-la-Forêt, Thorigné-Fouillard, Vern-sur-Seiche, Vezin-le-Coquet.",
+      a: "Oui, dans les 43 communes de Rennes Métropole. Nous venons dans vos locaux, sans bureau sur place. Le Diagnostic IA gratuit de 45 minutes fixe la date et l’adresse ; le déroulé est identique à celui d’ailleurs en France. Exemples de communes concernées : Saint-Sulpice-la-Forêt, Thorigné-Fouillard, Vern-sur-Seiche, Vezin-le-Coquet.",
     },
     {
       q: "L’agroalimentaire est-il concerné par la Journée IA à Rennes ?",

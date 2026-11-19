@@ -140,7 +140,7 @@ export const FICHE_STRASBOURG: FicheLocale = {
     },
     {
       q: "Peut-on organiser la journée dans une commune de l’Eurométropole ?",
-      a: "Oui, dans les 33 communes de l’Eurométropole de Strasbourg. Nous n’avons pas de bureau sur place et venons chez vous. Le diagnostic gratuit de 45 minutes sert à choisir la date et l’adresse. Exemples de communes concernées : Schiltigheim, Souffelweyersheim, Vendenheim, Wolfisheim.",
+      a: "Oui, dans les 33 communes de l’Eurométropole de Strasbourg. Nous n’avons pas de bureau sur place et venons chez vous. Le Diagnostic IA gratuit de 45 minutes sert à choisir la date et l’adresse. Exemples de communes concernées : Schiltigheim, Souffelweyersheim, Vendenheim, Wolfisheim.",
     },
     {
       q: "Faut-il être dans le numérique pour y trouver sa place ?",

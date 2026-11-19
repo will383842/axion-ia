@@ -273,7 +273,7 @@ export function faqVille(v: VilleLocale): ReadonlyArray<{ q: string; a: string }
   return [
     {
       q: `La Journée IA peut-elle se tenir dans nos locaux ${a} ?`,
-      a: `Oui. Nous venons dans votre entreprise ${a}, comme partout en France. Nous n’avons pas de bureau sur place : la journée se déroule chez vous, avec vos équipes et vos dossiers, à la date fixée avec vous pendant le diagnostic gratuit de 45 minutes.`,
+      a: `Oui. Nous venons dans votre entreprise ${a}, comme partout en France. Nous n’avons pas de bureau sur place : la journée se déroule chez vous, avec vos équipes et vos dossiers, à la date fixée avec vous pendant le Diagnostic IA gratuit de 45 minutes.`,
     },
     {
       q: `Combien coûte la Journée IA ${a} ?`,
@@ -313,7 +313,7 @@ export function faqRegion(
     {
       id: "journee-ia-region-lieu",
       question: `La Journée IA est-elle possible ${en} ?`,
-      answer: `Oui. Nous menons la Journée IA ${en} comme partout en France, dans les locaux de votre entreprise. La date est fixée avec vous pendant le diagnostic gratuit de 45 minutes.`,
+      answer: `Oui. Nous menons la Journée IA ${en} comme partout en France, dans les locaux de votre entreprise. La date est fixée avec vous pendant le Diagnostic IA gratuit de 45 minutes.`,
     },
     {
       id: "journee-ia-region-prix",

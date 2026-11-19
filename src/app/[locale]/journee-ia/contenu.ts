@@ -55,7 +55,7 @@ export const CONTENU = {
       "Le matin, nous cartographions votre entreprise et faisons le point ensemble sur vos priorités\u202f: vos plus gros gains, chiffrés le jour même, ceux qui rapportent le plus et se mettent en place le plus vite. L’après-midi, nous formons vos équipes. Dans vos locaux, partout en France.",
     cta: LIBELLE_CTA,
     lienDecide: "Déjà décidé\u202f? Fixons la date ensemble",
-    microTexte: "Diagnostic IA gratuit · 45 minutes · en visio ou par téléphone · sans engagement",
+    microTexte: "Diagnostic IA · 45 minutes · en visio ou par téléphone · sans engagement",
     tuiles: [
       { valeur: JETON_PRIX, legende: "une fois, sans remise" },
       // Tuile mise en valeur (filet terracotta) : l’attestation remise à chaque personne formée.
@@ -352,7 +352,7 @@ export const CONTENU = {
   ],
   rendezVous: {
     surtitre: "Prochaine étape",
-    titre: "Diagnostic IA gratuit\u202f: 45 minutes pour commencer",
+    titre: "Diagnostic IA\u202f: 45 minutes pour commencer",
     etapes: [
       "Diagnostic IA, 45 min\u202f: une première tâche chiffrée",
       "Journée IA, chez vous",

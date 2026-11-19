@@ -158,7 +158,7 @@ export const FICHE_NICE: FicheLocale = {
     },
     {
       q: "Intervenez-vous hors de Nice, dans la métropole ?",
-      a: "Oui, dans les 51 communes de la Métropole Nice Côte d’Azur. Nous venons chez vous, sans bureau local. Le diagnostic gratuit de 45 minutes sert à fixer la date et l’adresse ; le déroulé reste le même qu’ailleurs en France. Exemples de communes concernées : Valdeblore, Venanson, Vence, Villefranche-sur-Mer.",
+      a: "Oui, dans les 51 communes de la Métropole Nice Côte d’Azur. Nous venons chez vous, sans bureau local. Le Diagnostic IA gratuit de 45 minutes sert à fixer la date et l’adresse ; le déroulé reste le même qu’ailleurs en France. Exemples de communes concernées : Valdeblore, Venanson, Vence, Villefranche-sur-Mer.",
     },
     {
       q: "Quels repères institutionnels pour l’innovation à Nice ?",

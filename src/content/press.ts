@@ -401,7 +401,7 @@ export const PRESS_RELEASES: ReadonlyArray<PressRelease> = [
     fr: {
       title: "Axion-IA publie sa méthode en quatre étapes",
       dek: "Cadrage, démonstration, plan chiffré, mise en production — pour passer de l'idée IA au déploiement opérationnel sans POC perdu.",
-      body: "Axion-IA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : cadrage 45 minutes gratuit pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
+      body: "Axion-IA détaille pour la presse sa méthode propriétaire en quatre étapes. Étape 1 : Diagnostic IA gratuit de 45 minutes pour qualifier le besoin. Étape 2 : démonstration sur site ou à distance, sur les vraies données du client. Étape 3 : plan chiffré priorisé livré sous 5 jours. Étape 4 : mise en production avec 30 jours de support inclus. Cette approche élimine les POC théoriques sans suite, traditionnellement responsables de 80 % des échecs IA en entreprise.",
     },
     en: {
       title: "Axion-IA publishes its four-step method",

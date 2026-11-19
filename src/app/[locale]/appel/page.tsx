@@ -80,7 +80,7 @@ interface Props {
 }
 
 /**
- * UN SEUL rendez-vous gratuit, le « Diagnostic IA gratuit » de 45 minutes (règle r10
+ * UN SEUL rendez-vous gratuit, l’« Diagnostic IA » de 45 minutes (règle r10
  * du Brain, décidée par Williams le 07/11/2026 ; avant : deux rendez-vous au choix,
  * chantier « Types de rendez-vous », L2, 2026-10-04).
  *
@@ -132,8 +132,8 @@ export async function generateMetadata({ params, searchParams }: Props): Promise
       // retirée en même temps que ce raccourcissement — le cliquet exige que le
       // chiffre reste exact, il rougit donc si l'un bouge sans l'autre.
       description: isFr
-        ? "Diagnostic IA gratuit, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA."
-        : "Diagnostic IA gratuit, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA.",
+        ? "Diagnostic IA, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA."
+        : "Diagnostic IA, 45 min, en visio ou par téléphone, sans engagement : on fait le point sur votre projet IA avec l’équipe d’Axion-IA.",
       alternates: { fr: "/appel", en: "/book-a-call" },
       // Image de partage dédiée (2026-09-27) : ce lien est épinglé dans la
       // « Sélection » du profil LinkedIn, où la vignette ne fait que ~190 px de
@@ -156,7 +156,7 @@ export default async function AppelPage({ params, searchParams }: Props) {
 
   const choixBrut = lireChoixRendezVous(sp[PARAM_RDV]);
   // Un seul rendez-vous public (règle r10 du Brain) : l'ancien échange projet s'affiche
-  // comme le Diagnostic IA gratuit.
+  // comme le Diagnostic IA.
   const choix = choixBrut === "projet" ? "diagnostic" : choixBrut;
   const depuis = lireDepuis(sp[PARAM_DEPUIS]);
   // Les UTM d'ARRIVÉE (L5a) : lus une fois, bornés, puis recopiés par chaque
@@ -218,10 +218,10 @@ export default async function AppelPage({ params, searchParams }: Props) {
   const jsonLd = buildServiceJsonLd({
     locale: locale as "fr" | "en",
     path: "/appel",
-    name: isFr ? "Diagnostic IA gratuit · Axion-IA" : "Diagnostic IA gratuit · Axion-IA",
+    name: isFr ? "Diagnostic IA · Axion-IA" : "Diagnostic IA · Axion-IA",
     description: isFr
-      ? "Diagnostic IA gratuit de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
-      : "Diagnostic IA gratuit de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
+      ? "Diagnostic IA de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement."
+      : "Diagnostic IA de 45 minutes, en visioconférence Google Meet ou par téléphone, avec l’équipe d’Axion-IA : on fait le point sur votre besoin — audit, formation, intégration et automatisation, coaching. Sans engagement.",
   });
 
   const breadcrumbJsonLd = {
@@ -354,7 +354,7 @@ function libelleDuree(resolu: ChoixResolu): string | null {
 }
 
 /**
- * L'ÉCRAN D'ENTRÉE — UNE SEULE carte : le Diagnostic IA gratuit de 45 minutes
+ * L'ÉCRAN D'ENTRÉE — UNE SEULE carte : le Diagnostic IA de 45 minutes
  * (audit harmonie A08, décision n° 12 ; règle r10 du Brain).
  *
  * 🔑 Elle mène au type `diagnostic`. Le type `projet` reste joignable par
@@ -400,7 +400,7 @@ function ChoixDuRendezVous({
               className="text-fg mt-4 text-2xl font-semibold tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              Diagnostic IA gratuit
+              Diagnostic IA
             </h2>
             <p className="text-terracotta-deep mt-1 text-sm font-semibold">
               Gratuit · 45 minutes · Sans engagement
@@ -428,7 +428,7 @@ function ChoixDuRendezVous({
                 data-cta="appel_choix_diagnostic"
                 className={`plausible-event-name=Appel+choix plausible-event-rdv=diagnostic ${classeDepuis(depuis)} bg-terracotta text-mocha-fg hover:bg-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full px-6 text-base font-semibold transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none`}
               >
-                Réserver mon diagnostic gratuit
+                Réserver mon Diagnostic IA
                 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </a>
             </div>

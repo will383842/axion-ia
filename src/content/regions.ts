@@ -137,17 +137,17 @@ export const REGIONS: ReadonlyArray<Region> = [
     publicationPhase: 1,
     noindex: false,
     pitchFr:
-      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
+      "2e région française par le PIB (274 Md€), dense en industrie, tech et conseil — Lyon, Clermont-Ferrand, Annecy. Axion-IA y déploie ses interventions IA sur site auprès des ETI industrielles et des écosystèmes deep-tech.",
     pitchEn:
-      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Grenoble, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
+      "France's 2nd region by GDP (€274 B), dense in industry, tech and consulting — Lyon, Clermont-Ferrand, Annecy. Axion-IA delivers on-site AI engagements to industrial mid-caps and deep-tech ecosystems.",
     metaTitleFr: "Auvergne-Rhône-Alpes · Architectes IA seniors · Audit, Formation, Coaching, SaaS",
     metaTitleEn: "Auvergne-Rhône-Alpes · Senior AI experts · Audit, Training, Coaching, SaaS",
     metaDescFr:
-      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Grenoble.",
+      "Architectes IA seniors en Auvergne-Rhône-Alpes pour PME, ETI deep-tech et grands groupes : audit IA, formation, implémentation, coaching. Lyon, Annecy.",
     metaDescEn:
-      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Grenoble, Annecy, Clermont.",
+      "Senior AI experts in Auvergne-Rhône-Alpes. 5 services for SMBs: AI audit, corporate training, implementation, 1-to-1 coaching, AI web platforms/SaaS. Deep-tech mid-caps also covered. Lyon, Annecy, Clermont.",
     audienceLocalFr:
-      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces grenoblois. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Grenoble, Saint-Étienne), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
+      "L'Auvergne-Rhône-Alpes compte plus de 700 000 TPE-PME, du Pays roannais aux vallées alpines. Restaurateurs et hôteliers à Annecy et Chamonix, artisans bouchers à Lyon Confluence, PME mécaniques de la Loire et de la plasturgie d'Oyonnax, cabinets de conseil sur Part-Dieu, e-commerces de Lyon et d’Annecy. Axion-IA accompagne ces dirigeants TPE-PME comme les ETI industrielles deep-tech (Saint-Étienne, Annecy), les sièges DSI lyonnais et les groupes deep-tech (CEA, ST Microelectronics, Schneider), avec le même standard premium senior.",
     audienceCaseStudyFr: {
       titleFr: "PME mécanique de la Loire",
       leadFr: "Devis chiffré en 12 min vs 2 h avant",
@@ -155,7 +155,7 @@ export const REGIONS: ReadonlyArray<Region> = [
         "Sous-traitant Tier 2 automobile près de Roanne : agent IA RAG sur leur catalogue de pièces + historique devis. Réponse client passée de 2 h à 12 min en moyenne, taux de transformation devis × 1,6 mesuré sur trimestre.",
     },
     audienceLocalEn:
-      "Auvergne-Rhône-Alpes counts over 700,000 SMBs, from the Roanne area to the Alpine valleys. Restaurateurs and hoteliers in Annecy and Chamonix, butchers in Lyon Confluence, mechanical SMBs in the Loire and Oyonnax plastics cluster, consulting firms on Part-Dieu, Grenoble e-commerces. Axion-IA serves these SMB executives first. Industrial deep-tech mid-caps (Grenoble, Saint-Étienne) are also supported.",
+      "Auvergne-Rhône-Alpes counts over 700,000 SMBs, from the Roanne area to the Alpine valleys. Restaurateurs and hoteliers in Annecy and Chamonix, butchers in Lyon Confluence, mechanical SMBs in the Loire and Oyonnax plastics cluster, consulting firms on Part-Dieu, Lyon and Annecy e-commerces. Axion-IA serves these SMB executives first. Industrial deep-tech mid-caps (Saint-Étienne, Annecy) are also supported.",
   },
   {
     slug: "provence-alpes-cote-d-azur",

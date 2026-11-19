@@ -131,10 +131,6 @@ export const TOURCOING_COPY: VilleCopy = {
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un atelier de textile technique du quartier de l'Union n'a rien à voir avec une session pour une équipe commerce de détail ou un studio de Plaine Images. Vos documents servent de support aux démos.",
           },
           {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
-          },
-          {
             q: "Que se passe-t-il en cas d'annulation ?",
             a: "Plus l'annulation est anticipée, plus elle est neutre. Très en amont, le créneau se reporte ou se rembourse intégralement. Quelques jours avant, une participation partielle aux frais consultant déjà bloqués peut s'appliquer. Très tardivement, la session est reportable une fois sur les semaines suivantes.",
           },
@@ -221,10 +217,6 @@ export const TOURCOING_COPY: VilleCopy = {
           {
             q: "Pouvez-vous adapter le contenu à notre secteur, textile ou commerce ?",
             a: "Oui, systématiquement. Le cadrage en amont nous permet d'ajuster vocabulaire, exemples et démos. Une session pour un atelier de textile technique du quartier de l'Union n'a rien à voir avec une session pour une équipe commerce de détail ou un studio de Plaine Images. Vos documents servent de support aux démos.",
-          },
-          {
-            q: "Vos formations sont-elles éligibles aux fonds de formation ?",
-            a: "Nos interventions sont facturées en direct sur devis HT et s'intègrent à votre plan de développement des compétences. Votre service RH ou comptable peut les traiter dans ce cadre. Nous ne garantissons pas un dispositif de financement particulier : les modalités dépendent de votre situation et de votre OPCO.",
           },
           {
             q: "Que se passe-t-il en cas d'annulation ?",

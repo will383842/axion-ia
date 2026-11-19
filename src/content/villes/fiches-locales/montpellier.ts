@@ -138,7 +138,7 @@ export const FICHE_MONTPELLIER: FicheLocale = {
     },
     {
       q: "La Journée IA est-elle possible dans les communes autour de Montpellier ?",
-      a: "Oui : Montpellier Méditerranée Métropole compte 31 communes et nous intervenons chez vous dans chacune. Pas de bureau sur place : la date et l’adresse sont fixées pendant le diagnostic gratuit de 45 minutes. Exemples de communes concernées : Saussan, Sussargues, Vendargues, Villeneuve-lès-Maguelone.",
+      a: "Oui : Montpellier Méditerranée Métropole compte 31 communes et nous intervenons chez vous dans chacune. Pas de bureau sur place : la date et l’adresse sont fixées pendant le Diagnostic IA gratuit de 45 minutes. Exemples de communes concernées : Saussan, Sussargues, Vendargues, Villeneuve-lès-Maguelone.",
     },
     {
       q: "Comment la journée s’articule-t-elle avec l’université locale ?",

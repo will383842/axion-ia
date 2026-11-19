@@ -151,7 +151,7 @@ export const FICHE_TOULOUSE: FicheLocale = {
     },
     {
       q: "Les autres communes de Toulouse Métropole sont-elles couvertes ?",
-      a: "Oui : Toulouse Métropole compte 37 communes, et la journée a lieu chez vous, où que vous soyez dans cette zone. Il n’y a pas de bureau à Toulouse, donc pas de lieu à rejoindre. La date et l’adresse se calent pendant le diagnostic gratuit de 45 minutes. Exemples de communes concernées : Saint-Orens-de-Gameville, Seilh, Tournefeuille, Villeneuve-Tolosane.",
+      a: "Oui : Toulouse Métropole compte 37 communes, et la journée a lieu chez vous, où que vous soyez dans cette zone. Il n’y a pas de bureau à Toulouse, donc pas de lieu à rejoindre. La date et l’adresse se calent pendant le Diagnostic IA gratuit de 45 minutes. Exemples de communes concernées : Saint-Orens-de-Gameville, Seilh, Tournefeuille, Villeneuve-Tolosane.",
     },
     {
       q: "Quels secteurs de bureau sont les plus présents à Toulouse ?",
