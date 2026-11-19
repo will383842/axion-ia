@@ -84,7 +84,7 @@ export function etatT2(): EtatAssistant {
         { mois: 12, remisePct: "5" },
       ],
       engagementMois: 12,
-      indemniteTauxPct: "50",
+      indemniteTauxPct: "0",
     },
   });
 }

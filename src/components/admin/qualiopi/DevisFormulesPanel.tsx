@@ -1,5 +1,5 @@
 "use client";
-// use-client: saisie interactive du devis à formules (cases, listes, champs montants, aperçu en euros de l'indemnité de sortie).
+// use-client: saisie interactive du devis à formules (cases, listes, champs montants).
 
 /**
  * Panneau « devis à formules » : formules proposées (A achat / B mise en place + abonnement),
@@ -10,7 +10,6 @@
 
 import type React from "react";
 import {
-  indemniteSortieAffichee,
   type Engagement,
   type LigneSaisie,
   type MoisPeriode,
@@ -40,10 +39,6 @@ const labelCls =
   "block text-[length:var(--text-admin-xs)] font-semibold uppercase tracking-wide text-[color:var(--color-admin-fg-muted)] mb-[var(--space-admin-1)]";
 const cardCls =
   "rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)]";
-
-function eur(cents: number): string {
-  return new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(cents / 100);
-}
 
 function Champ(props: {
   id: string;
@@ -248,7 +243,6 @@ export function DevisFormulesPanel({
 }: Props): React.ReactElement {
   const set = (patch: Partial<SaisieFormules>) => onChange({ ...saisie, ...patch });
   const { achat, abonnement } = saisie;
-  const indemnite = indemniteSortieAffichee(saisie);
 
   return (
     <div className="flex flex-col gap-[var(--space-admin-6)]">
@@ -625,28 +619,14 @@ export function DevisFormulesPanel({
                 ))}
               </select>
             </Champ>
-            <Champ id="b-indem" label="Indemnité de sortie (% des mensualités restantes)">
-              <input
-                id="b-indem"
-                className={inputCls}
-                inputMode="decimal"
-                value={abonnement.indemniteTauxPct}
-                disabled={disabled}
-                onChange={(e) =>
-                  set({ abonnement: { ...abonnement, indemniteTauxPct: e.target.value } })
-                }
-              />
-            </Champ>
           </div>
           <p
             role="status"
             className="mt-[var(--space-admin-3)] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg)]"
           >
-            {abonnement.engagementMois === 0
-              ? "Sans engagement : aucune indemnité de sortie."
-              : indemnite === null
-                ? "Indemnité de sortie maximale : renseignez le mensuel, les remises et le taux."
-                : `Indemnité de sortie maximale : ${eur(indemnite)} HT (au plus, en cas de départ dès le début de l'engagement).`}
+            Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ;
+            les périodes payées d&apos;avance ne sont pas remboursées et le service continue
+            jusqu&apos;à leur terme.
           </p>
         </section>
       ) : null}

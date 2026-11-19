@@ -288,10 +288,6 @@ export function controlerEtape(e: EtatAssistant, etape: Etape): string[] {
         if (ab.engagementMois > 0 && ab.periodes.some((x) => ab.engagementMois % x.mois !== 0)) {
           err.push("L'engagement doit être un multiple de chaque période proposée.");
         }
-        const di = defautPourcentage(ab.indemniteTauxPct);
-        if (di === "illisible") err.push("Indemnité de sortie : taux illisible.");
-        if (di === "hors_borne")
-          err.push("Indemnité de sortie : le taux doit être entre 0 et 100 %.");
       }
       return err;
     }

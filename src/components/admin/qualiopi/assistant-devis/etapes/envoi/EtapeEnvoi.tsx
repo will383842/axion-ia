@@ -7,7 +7,10 @@
  * rendu depuis la `VueApercuDevis`, et l'e-mail. Rien n'est envoyé tant que l'on ne clique pas.
  * Les actions (C4, C5) sont injectées : la page les branche en E17.
  */
+import { ChevronLeft } from "lucide-react";
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
+
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 
 import type { Etape } from "../../types";
 import type { VueApercuDevis } from "./ApercuDevis";
@@ -81,53 +84,51 @@ export function EtapeEnvoi({
   const prete = chargement.etat === "pret" ? chargement.prepare : null;
 
   return (
-    <div>
+    <div className="grid gap-[var(--space-admin-8)] lg:grid-cols-[minmax(0,1fr)_22rem] lg:items-start">
       <div
         data-testid="cadre-apercu"
         aria-busy={chargement.etat === "attente"}
-        className="h-[32rem] overflow-auto rounded border"
+        className="h-[440px] overflow-auto rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)]"
       >
         {chargement.etat === "attente" ? (
-          <div className="p-3" aria-hidden="true">
+          <div className="p-[var(--space-admin-5)]" aria-hidden="true">
             <div className="mb-2 h-6 w-1/2 rounded bg-[color:var(--color-admin-border)]" />
             <div className="mb-2 h-4 w-full rounded bg-[color:var(--color-admin-border)]" />
             <div className="h-4 w-3/4 rounded bg-[color:var(--color-admin-border)]" />
           </div>
         ) : null}
         {chargement.etat === "erreur" ? (
-          <div role="alert" className="p-3">
-            <p>{chargement.message}</p>
-            <button
-              type="button"
-              className="min-h-[44px] rounded border px-4"
-              onClick={() => void charger()}
-            >
+          <div role="alert" className="p-[var(--space-admin-5)]">
+            <p className="mb-[var(--space-admin-3)]">{chargement.message}</p>
+            <AdminButton variant="secondary" size="lg" onClick={() => void charger()}>
               Réessayer
-            </button>
+            </AdminButton>
           </div>
         ) : null}
         {prete ? (
-          <Suspense fallback={<p className="p-3">Chargement de l&apos;aperçu…</p>}>
+          <Suspense
+            fallback={<p className="p-[var(--space-admin-5)]">Chargement de l&apos;aperçu…</p>}
+          >
             <ApercuDevis vue={prete.vue} urlPdf={prete.apercuPdfUrl} />
           </Suspense>
         ) : null}
       </div>
-      {prete ? (
-        <EmailEnvoi
-          destinataire={destinataire}
-          salutation={salutation}
-          envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
-        />
-      ) : null}
-      {onModifier ? (
-        <button
-          type="button"
-          className="mt-3 min-h-[44px] rounded border px-4"
-          onClick={onModifier}
-        >
-          Modifier le devis
-        </button>
-      ) : null}
+      <div className="flex min-w-0 flex-col gap-[var(--space-admin-6)] lg:min-h-[440px]">
+        {prete ? (
+          <EmailEnvoi
+            destinataire={destinataire}
+            salutation={salutation}
+            envoyer={(email) => envoyer(prete.devisId, prete.majLe, email)}
+          />
+        ) : null}
+        {onModifier ? (
+          <div>
+            <AdminButton variant="secondary" size="lg" icon={ChevronLeft} onClick={onModifier}>
+              Modifier le devis
+            </AdminButton>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

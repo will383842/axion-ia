@@ -1,5 +1,5 @@
 /**
- * Lien de signature créé À L'ENVOI — MODULE NON BRANCHÉ (lot B2, PR 1 : aucun appelant).
+ * Lien de signature créé À L'ENVOI — branché par `approuverEmailAction` (corbeille d'e-mails).
  *
  * But : le lien ne naît que lorsque l'e-mail part (approbation de la corbeille), et non plus
  * quand on clique « Envoyer au client ». La ligne garée porte alors un MARQUEUR, sans identité,
@@ -25,6 +25,8 @@ import { sendTelegram } from "@/lib/telegram";
 import { logQualiopiActivity } from "@/server/actions/qualiopi/_guards";
 import type { AdminSession } from "@/server/actions/knowledge/_guards";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
 import { marquerDevisEnvoye } from "@/server/qualiopi/devis/marquer-devis-envoye";
 import { pasSigneParLeClient } from "@/server/qualiopi/devis/pas-signe-par-le-client";
 import {
@@ -234,7 +236,14 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
               replacesDevisId: true,
               replacesDevis: { select: { statut: true, documentGenereId: true } },
               dateValidite: true,
-              client: { select: { raisonSociale: true, contactNom: true, contactFonction: true } },
+              client: {
+                select: {
+                  raisonSociale: true,
+                  contactNom: true,
+                  contactFonction: true,
+                  type: true,
+                },
+              },
             },
           });
           if (!devis) return refus(MSG_INTROUVABLE);
@@ -253,6 +262,16 @@ async function premierEnvoi<R extends VerdictEnfilage>(a: {
           }
           if (devis.offre !== null && devis.offre !== undefined && !(await formulesActives())) {
             return refus(MSG_FORMULES);
+          }
+          // Règles commerciales D4/D6 à l'APPROBATION : un devis mis en attente avant leur mise
+          // en ligne, ou un client passé en particulier pendant l'attente, ne doit pas partir.
+          // (Le chemin de RENVOI ne les applique pas : un devis déjà émis reste tel quel.)
+          if (devis.offre !== null && devis.offre !== undefined) {
+            const o = offreDevisV1.safeParse(devis.offre);
+            if (o.success) {
+              const m = refusReglesFormules(o.data, devis.client.type);
+              if (m) return refus(m);
+            }
           }
           const piece = await tx.documentGenere.findUnique({
             where: { id: marqueur.documentGenereId },

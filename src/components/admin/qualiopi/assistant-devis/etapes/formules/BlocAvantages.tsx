@@ -5,6 +5,7 @@
  * Avantages et points d'attention d'une formule (fiche E14). AUCUN texte en dur : les
  * propositions viennent de la bibliothèque (props) ; l'état ne garde que ceux qui sont cochés.
  */
+import { Check } from "lucide-react";
 import { useId, type Dispatch } from "react";
 
 import type { ActionAssistant } from "../../etat";
@@ -17,6 +18,10 @@ export interface PropsBlocAvantages {
   avantagesPossibles: readonly string[];
   aSavoirPossibles: readonly string[];
 }
+
+// Pastille : vraie case à cocher masquée visuellement mais focusable ; cible de 44 px.
+const PASTILLE =
+  "group relative flex min-h-[44px] cursor-pointer items-center gap-2 rounded-full border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)]";
 
 export function BlocAvantages({
   formule,
@@ -35,20 +40,36 @@ export function BlocAvantages({
   };
   const groupe = (legende: string, textes: readonly string[]) =>
     textes.length === 0 ? null : (
-      <fieldset className="mb-3">
-        <legend>{legende}</legend>
-        {textes.map((t) => (
-          <label key={t} className="flex min-h-[44px] items-center gap-2">
-            <input type="checkbox" checked={choisis.includes(t)} onChange={() => basculer(t)} />
-            {t}
-          </label>
-        ))}
+      <fieldset className="mb-[var(--space-admin-5)]">
+        <legend className="mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)]">
+          {legende}
+        </legend>
+        <div className="flex flex-wrap gap-2">
+          {textes.map((t) => (
+            <label key={t} className={PASTILLE}>
+              <input
+                type="checkbox"
+                className="sr-only"
+                checked={choisis.includes(t)}
+                onChange={() => basculer(t)}
+              />
+              <Check
+                size={16}
+                aria-hidden="true"
+                className="shrink-0 opacity-0 group-has-[:checked]:opacity-100"
+              />
+              {t}
+            </label>
+          ))}
+        </div>
       </fieldset>
     );
   if (avantagesPossibles.length === 0 && aSavoirPossibles.length === 0) return null;
   return (
-    <div aria-labelledby={`${uid}-t`} role="group">
-      <p id={`${uid}-t`}>Afficher avantages et points d&apos;attention</p>
+    <div aria-labelledby={`${uid}-t`} role="group" className="mb-[var(--space-admin-8)]">
+      <p id={`${uid}-t`} className="mb-[var(--space-admin-3)] font-semibold">
+        Afficher avantages et points d&apos;attention
+      </p>
       {groupe("Avantages", avantagesPossibles)}
       {groupe("À savoir", aSavoirPossibles)}
     </div>
