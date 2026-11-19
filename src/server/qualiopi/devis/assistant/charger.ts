@@ -254,6 +254,13 @@ export async function chargerAssistantDevis(
       (lie.clientId !== null && lie.clientId !== devis.clientId)
     )
       return versFiche("Le client du brouillon ne correspond pas à celui du devis.");
+    // Brouillon périmé : le devis a bougé hors de l'assistant depuis la dernière synchronisation
+    // (même comparaison que le finaliseur). Lecture seule, rien n'est effacé.
+    const majLe = lu.payload.sync.devisMajLe;
+    if (majLe !== null && new Date(majLe).getTime() !== devis.updatedAt.getTime())
+      return versFiche(
+        "Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ouvrez sa fiche pour le corriger.",
+      );
     // Barrière seulement : une offre illisible ou une TVA non standard restent refusées ; le
     // contenu rouvert est TOUJOURS celui du brouillon, jamais une réhydratation du devis.
     const ouverture = devisVersPayload(
@@ -275,13 +282,26 @@ export async function chargerAssistantDevis(
     // Mis à l'écart : ne se rouvre pas, on ouvre un assistant vide.
     if (b?.statut === STATUT_BROUILLON_A_L_ECART) return { redirection: "/qualiopi/devis/new" };
     if (b?.devisId) {
-      // Lié à un devis déjà envoyé (ou plus brouillon) : on renvoie à la fiche, jamais d'édition.
+      // Brouillon LIÉ à un devis : jamais rouvert par ce chemin (un brouillon illisible s'ouvrirait
+      // vide et ferait un doublon). `?devis=` applique toutes les gardes et ne renvoie jamais ici.
       const lieDevis = await prisma.devis.findUnique({
         where: { id: b.devisId },
         select: { id: true, statut: true },
       });
-      if (lieDevis && lieDevis.statut !== "brouillon")
-        return { redirection: `/qualiopi/devis/${lieDevis.id}` };
+      if (!lieDevis)
+        return {
+          redirection: "/qualiopi/devis",
+          message: "Devis introuvable.",
+          libelleLien: "Retour à la liste des devis",
+        };
+      if (lieDevis.statut === "brouillon")
+        return { redirection: `/qualiopi/devis/new?devis=${lieDevis.id}` };
+      return {
+        redirection: `/qualiopi/devis/${lieDevis.id}`,
+        message:
+          "Ce brouillon est lié à un devis qui n'est plus un brouillon : il ne se rouvre pas.",
+        libelleLien: "Ouvrir la fiche du devis",
+      };
     }
     if (b) {
       const lu = lirePayload(b.payload);

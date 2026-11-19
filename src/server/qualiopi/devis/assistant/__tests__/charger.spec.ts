@@ -467,6 +467,28 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     expect(c.payloadInitial).toEqual(stocke);
   });
 
+  it("M3 — devis à jour (updatedAt = sync.devisMajLe) : l'assistant s'ouvre", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: "2026-11-08T09:00:00.000Z" };
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 7 });
+    aucuneEcriture();
+  });
+
+  it("M3 — devis modifié hors de l'assistant : carte vers la fiche, aucune écriture", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: "2026-11-07T09:00:00.000Z" };
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: FICHE,
+      message:
+        "Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ouvrez sa fiche pour le corriger.",
+      libelleLien: "Ouvrir la fiche du devis",
+    });
+    aucuneEcriture();
+  });
+
   it("CONTRE-TÉMOIN : une fiche d'essai est respectée (le client reste dans la liste, marqué essai)", async () => {
     db.client.findMany.mockResolvedValue([{ id: CLIENT }] as never);
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie());
@@ -491,31 +513,58 @@ describe("chargerAssistantDevis — ?brouillon=", () => {
     aucuneEcriture();
   });
 
-  it("?brouillon lié à un devis déjà envoyé : redirection vers la fiche", async () => {
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 1,
-      payload: JSON.parse(JSON.stringify(payloadVide(20))),
-      statut: "en_cours",
-      devisId: DEVIS,
-    });
+  const brouillonLie = () => ({
+    id: BROUILLON,
+    revision: 3,
+    payload: JSON.parse(JSON.stringify(payloadVide(20))),
+    statut: "en_cours",
+    devisId: DEVIS,
+  });
+
+  it("?brouillon lié à un devis déjà envoyé : la fiche, avec un message", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
     db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "envoye" });
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
+    expect((r as { message?: string }).message).toBeTruthy();
+    aucuneEcriture();
+  });
+
+  it("M1/M2 — ?brouillon lié à un devis encore brouillon : JAMAIS rouvert ici, renvoi vers ?devis= (gardes)", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
+    db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "brouillon" });
     expect(await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON })).toEqual({
-      redirection: `/qualiopi/devis/${DEVIS}`,
+      redirection: `/qualiopi/devis/new?devis=${DEVIS}`,
     });
     aucuneEcriture();
   });
 
-  it("?brouillon lié à un devis encore brouillon : ouvert normalement", async () => {
+  it("M1/M2 — ?brouillon lié, payload illisible : renvoi vers ?devis=, jamais un assistant vide", async () => {
     db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 3,
-      payload: JSON.parse(JSON.stringify(payloadVide(20))),
-      statut: "en_cours",
-      devisId: DEVIS,
+      ...brouillonLie(),
+      payload: { v: 9 },
     });
     db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "brouillon" });
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toEqual({ redirection: `/qualiopi/devis/new?devis=${DEVIS}` });
+  });
+
+  it("M1/M2 — ?brouillon lié à un devis disparu : la liste, avec un message", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
+    db.devis.findUnique.mockResolvedValue(null);
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toMatchObject({ redirection: "/qualiopi/devis", message: "Devis introuvable." });
+  });
+
+  it("CONTRE-TÉMOIN : ?brouillon NON lié (devisId nul) s'ouvre normalement", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue({ ...brouillonLie(), devisId: null });
     const c = await charge({ brouillonId: BROUILLON });
     expect(c.brouillon).toEqual({ id: BROUILLON, revision: 3 });
+  });
+
+  it("aucune boucle : ?devis= ne renvoie jamais vers ?brouillon=", async () => {
+    const fs = await import("node:fs");
+    const src = fs.readFileSync("src/server/qualiopi/devis/assistant/charger.ts", "utf8");
+    expect(src).not.toMatch(/redirection:\s*[`"'][^`"']*\?brouillon=/);
   });
 });

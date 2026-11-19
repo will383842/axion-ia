@@ -60,6 +60,8 @@ import { avertissementEstimationAdmin } from "@/server/qualiopi/financements/est
 import { getClient } from "@/server/qualiopi/crm/clients";
 import { libelleReglementDevis } from "@/server/qualiopi/devis/libelles-reglement";
 import { prisma } from "@/lib/prisma";
+import { LOT_DEVIS_ASSISTANT } from "@/server/qualiopi/devis/interrupteur-assistant";
+import { estActifPour, lireInterrupteurQualiopi } from "@/server/qualiopi/socle/interrupteurs";
 import { emailDevisEnAttente } from "@/server/qualiopi/devis/email-devis-en-attente";
 import { AccesRefuse } from "@/components/admin/ui/AccesRefuse";
 import { gardePage } from "@/server/auth/garde-page";
@@ -317,6 +319,28 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
   // Brouillon CLASSIQUE : « Modifier le brouillon » mène à /corriger (REPLI D7).
   const estClassique = devis.offre === null && devis.offreSha256 === null;
   const peutCorrigerClassique = peutCorrigerBrouillonClassique(devis);
+  // E19-2 : un brouillon qui a un brouillon d'assistant lié se rouvre dans l'assistant (même règle
+  // que `new/page.tsx` : allumé, ou « essai » sur une fiche d'essai). Lecture seule.
+  let rouvrirDansAssistant = false;
+  if (devis.statut === "brouillon" && peutCorrigerClassique) {
+    const etatAssistant = await lireInterrupteurQualiopi(LOT_DEVIS_ASSISTANT);
+    if (etatAssistant !== "eteint") {
+      const lie = await prisma.devisAssistantBrouillon.findUnique({
+        where: { devisId: devis.id },
+        select: { id: true },
+      });
+      if (lie) {
+        const ficheEssai =
+          etatAssistant === "essai"
+            ? (await prisma.client.findFirst({
+                where: { id: devis.clientId, testInterne: { isNot: null } },
+                select: { id: true },
+              })) !== null
+            : false;
+        rouvrirDansAssistant = estActifPour(etatAssistant, { estTestInterne: ficheEssai });
+      }
+    }
+  }
   const lignes = parseLignes(devis.lignes);
   // Devis à formules, interrupteur allumé et aucune formule retenue : le montant se détermine au
   // choix du client — on résume les formules au lieu d'afficher 0,00 € et « Aucune ligne ».
@@ -400,7 +424,14 @@ export default async function QualiopiDevisDetailPage({ params }: PageProps) {
               </AdminButton>
             ) : null}
             {peutCorrigerClassique ? (
-              <AdminButton variant="secondary" href={`${devisBase}/${devis.id}/corriger`}>
+              <AdminButton
+                variant="secondary"
+                href={
+                  rouvrirDansAssistant
+                    ? `${devisBase}/new?devis=${devis.id}`
+                    : `${devisBase}/${devis.id}/corriger`
+                }
+              >
                 Modifier le brouillon
               </AdminButton>
             ) : null}
