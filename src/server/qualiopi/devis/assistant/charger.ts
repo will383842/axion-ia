@@ -226,6 +226,20 @@ export async function chargerAssistantDevis(
         clientId: true,
       },
     });
+    // Refus APRÈS l'existence du lien : jamais vers la fiche (son bouton renvoie à l'assistant :
+    // cul-de-sac). Classique → écran de correction ; à formules → l'éditeur d'avant. Formules
+    // ÉTEINTES : l'éditeur d'avant n'existe pas (/modifier renverrait ici) → la fiche, qui
+    // n'affiche alors aucun bouton de modification : fin propre, pas de boucle.
+    const refus = (message: string): RedirectionAssistant =>
+      devis.offre === null
+        ? { redirection: `${fiche}/corriger`, message, libelleLien: "Corriger le brouillon" }
+        : !formulesOn
+          ? versFiche(message)
+          : {
+              redirection: `${fiche}/modifier?sans-assistant=1`,
+              message,
+              libelleLien: "Modifier sans l'assistant",
+            };
     const sansAssistant = "Ce devis a été préparé sans l'assistant : ";
     if (!lie) {
       // JAMAIS vers /modifier (il renvoie ici : boucle).
@@ -238,22 +252,35 @@ export async function chargerAssistantDevis(
       return versFiche(`${sansAssistant}modifiez-le depuis sa fiche.`);
     }
     if (lie.statut === STATUT_BROUILLON_A_L_ECART)
-      return versFiche("Le brouillon d'assistant de ce devis a été mis à l'écart.");
+      return refus("Le brouillon d'assistant de ce devis a été mis à l'écart.");
     if (lie.createdByAdminId !== i.adminId)
-      return versFiche(
+      return refus(
         "Ce devis a été préparé dans l'assistant par un autre compte : seul ce compte peut le rouvrir.",
       );
     const illisible = "Le brouillon d'assistant de ce devis est illisible ; rien n'a été modifié.";
     const lu = lirePayload(lie.payload);
-    if (!lu.ok) return versFiche(illisible);
+    if (!lu.ok) return refus(illisible);
     const etat = payloadVersEtat(lu.payload);
-    if (etat.source !== "ecran") return versFiche(illisible);
+    if (etat.source !== "ecran") return refus(illisible);
     if (
       lu.payload.clientId !== devis.clientId ||
       etat.etat.clientId !== devis.clientId ||
       (lie.clientId !== null && lie.clientId !== devis.clientId)
     )
-      return versFiche("Le client du brouillon ne correspond pas à celui du devis.");
+      return refus("Le client du brouillon ne correspond pas à celui du devis.");
+    // Brouillon périmé : le devis a bougé hors de l'assistant depuis la dernière synchronisation
+    // (même comparaison que le finaliseur). Lecture seule, rien n'est effacé.
+    const majLe = lu.payload.sync.devisMajLe;
+    if (majLe !== null && new Date(majLe).getTime() !== devis.updatedAt.getTime())
+      return refus(
+        `Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ${
+          devis.offre === null
+            ? "corrigez-le depuis son écran de correction."
+            : formulesOn
+              ? "modifiez-le sans l'assistant."
+              : "ouvrez sa fiche."
+        }`,
+      );
     // Barrière seulement : une offre illisible ou une TVA non standard restent refusées ; le
     // contenu rouvert est TOUJOURS celui du brouillon, jamais une réhydratation du devis.
     const ouverture = devisVersPayload(
@@ -261,7 +288,7 @@ export async function chargerAssistantDevis(
       tauxStandard,
       isQualiopiCertificationObtenue(),
     );
-    if ("refus" in ouverture && ouverture.motif !== "opco") return versFiche(ouverture.refus);
+    if ("refus" in ouverture && ouverture.motif !== "opco") return refus(ouverture.refus);
     payload = lu.payload;
     brouillon = { id: lie.id, revision: lie.revision };
   }
@@ -275,13 +302,26 @@ export async function chargerAssistantDevis(
     // Mis à l'écart : ne se rouvre pas, on ouvre un assistant vide.
     if (b?.statut === STATUT_BROUILLON_A_L_ECART) return { redirection: "/qualiopi/devis/new" };
     if (b?.devisId) {
-      // Lié à un devis déjà envoyé (ou plus brouillon) : on renvoie à la fiche, jamais d'édition.
+      // Brouillon LIÉ à un devis : jamais rouvert par ce chemin (un brouillon illisible s'ouvrirait
+      // vide et ferait un doublon). `?devis=` applique toutes les gardes et ne renvoie jamais ici.
       const lieDevis = await prisma.devis.findUnique({
         where: { id: b.devisId },
         select: { id: true, statut: true },
       });
-      if (lieDevis && lieDevis.statut !== "brouillon")
-        return { redirection: `/qualiopi/devis/${lieDevis.id}` };
+      if (!lieDevis)
+        return {
+          redirection: "/qualiopi/devis",
+          message: "Devis introuvable.",
+          libelleLien: "Retour à la liste des devis",
+        };
+      if (lieDevis.statut === "brouillon")
+        return { redirection: `/qualiopi/devis/new?devis=${lieDevis.id}` };
+      return {
+        redirection: `/qualiopi/devis/${lieDevis.id}`,
+        message:
+          "Ce brouillon est lié à un devis qui n'est plus un brouillon : il ne se rouvre pas.",
+        libelleLien: "Ouvrir la fiche du devis",
+      };
     }
     if (b) {
       const lu = lirePayload(b.payload);

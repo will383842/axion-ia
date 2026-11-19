@@ -310,6 +310,8 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     ...extra,
   });
   const FICHE = `/qualiopi/devis/${DEVIS}`;
+  // Devis CLASSIQUE lié : tout refus mène à l'écran de correction (jamais à la fiche → cul-de-sac).
+  const CORRIGER = `${FICHE}/corriger`;
   const MSG_ILLISIBLE =
     "Le brouillon d'assistant de ce devis est illisible ; rien n'a été modifié.";
 
@@ -372,9 +374,9 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
   it("brouillon d'assistant mis à l'écart : la fiche", async () => {
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ statut: "a_l_ecart" }));
     expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
-      redirection: FICHE,
+      redirection: CORRIGER,
       message: "Le brouillon d'assistant de ce devis a été mis à l'écart.",
-      libelleLien: "Ouvrir la fiche du devis",
+      libelleLien: "Corriger le brouillon",
     });
     aucuneEcriture();
   });
@@ -384,10 +386,10 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
       lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
     );
     expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
-      redirection: FICHE,
+      redirection: CORRIGER,
       message:
         "Ce devis a été préparé dans l'assistant par un autre compte : seul ce compte peut le rouvrir.",
-      libelleLien: "Ouvrir la fiche du devis",
+      libelleLien: "Corriger le brouillon",
     });
     aucuneEcriture();
   });
@@ -395,9 +397,9 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
   it("payload illisible (lirePayload en échec) : la fiche, l'assistant n'est jamais monté", async () => {
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: { v: 9 } }));
     expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
-      redirection: FICHE,
+      redirection: CORRIGER,
       message: MSG_ILLISIBLE,
-      libelleLien: "Ouvrir la fiche du devis",
+      libelleLien: "Corriger le brouillon",
     });
     aucuneEcriture();
   });
@@ -407,9 +409,9 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     p.clientId = CLIENT;
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
     expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
-      redirection: FICHE,
+      redirection: CORRIGER,
       message: MSG_ILLISIBLE,
-      libelleLien: "Ouvrir la fiche du devis",
+      libelleLien: "Corriger le brouillon",
     });
     aucuneEcriture();
   });
@@ -427,9 +429,9 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     for (const c of cas) {
       db.devisAssistantBrouillon.findUnique.mockResolvedValue(c);
       expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
-        redirection: FICHE,
+        redirection: CORRIGER,
         message: "Le client du brouillon ne correspond pas à celui du devis.",
-        libelleLien: "Ouvrir la fiche du devis",
+        libelleLien: "Corriger le brouillon",
       });
     }
     aucuneEcriture();
@@ -443,7 +445,15 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     ]) {
       db.devis.findUnique.mockResolvedValue(devisBrouillon(extra));
       const r = await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS });
-      expect(r, JSON.stringify(extra)).toMatchObject({ redirection: FICHE });
+      // Offre non nulle (à formules) → éditeur d'avant ; classique (TVA) → écran de correction.
+      expect(r, JSON.stringify(extra)).toMatchObject(
+        "offre" in extra
+          ? {
+              redirection: `${FICHE}/modifier?sans-assistant=1`,
+              libelleLien: "Modifier sans l'assistant",
+            }
+          : { redirection: CORRIGER, libelleLien: "Corriger le brouillon" },
+      );
       expect((r as { message?: string }).message).toMatch(/ne peut pas être rouvert/);
     }
     aucuneEcriture();
@@ -465,6 +475,100 @@ describe("chargerAssistantDevis — l'assistant ne rouvre que ses propres devis"
     db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: stocke }));
     const c = await charge({ devisId: DEVIS });
     expect(c.payloadInitial).toEqual(stocke);
+  });
+
+  it("M3 — devis à jour (updatedAt = sync.devisMajLe) : l'assistant s'ouvre", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: "2026-11-08T09:00:00.000Z" };
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 7 });
+    aucuneEcriture();
+  });
+
+  it("M3 — devis modifié hors de l'assistant : carte vers la fiche, aucune écriture", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: "2026-11-07T09:00:00.000Z" };
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toEqual({
+      redirection: CORRIGER,
+      message:
+        "Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : corrigez-le depuis son écran de correction.",
+      libelleLien: "Corriger le brouillon",
+    });
+    aucuneEcriture();
+  });
+
+  it("M3 — devis à formules périmé : modifier?sans-assistant=1, jamais la fiche", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: "2026-11-07T09:00:00.000Z" };
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre: { v: 1 } }));
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toMatchObject({
+      redirection: `${FICHE}/modifier?sans-assistant=1`,
+      libelleLien: "Modifier sans l'assistant",
+    });
+    aucuneEcriture();
+  });
+
+  it("devis à formules, brouillon lié d'un autre compte : modifier?sans-assistant=1", async () => {
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre: { v: 1 } }));
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(
+      lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
+    );
+    expect(await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })).toMatchObject({
+      redirection: `${FICHE}/modifier?sans-assistant=1`,
+      libelleLien: "Modifier sans l'assistant",
+    });
+  });
+
+  it("M3 — sync.devisMajLe nul : l'assistant s'ouvre (le finaliseur garde son verrou)", async () => {
+    const p = payloadEcran();
+    p.sync = { devisId: DEVIS, devisMajLe: null };
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(lie({ payload: p }));
+    const c = await charge({ devisId: DEVIS });
+    expect(c.brouillon).toEqual({ id: BROUILLON, revision: 7 });
+  });
+
+  it("aucun cul-de-sac : pour chaque refus d'un devis lié, la cible n'est ni ?devis= ni la fiche", async () => {
+    const perime = payloadEcran();
+    perime.sync = { devisId: DEVIS, devisMajLe: "2026-11-07T09:00:00.000Z" };
+    const cas = [
+      lie({ statut: "a_l_ecart" }),
+      lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
+      lie({ payload: { v: 9 } }),
+      lie({ clientId: "22222222-2222-4222-8222-222222222222" }),
+      lie({ payload: perime }),
+    ];
+    for (const offre of [null, { v: 1 }]) {
+      for (const c of cas) {
+        db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre }));
+        db.devisAssistantBrouillon.findUnique.mockResolvedValue(c);
+        const r = (await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })) as {
+          redirection: string;
+        };
+        expect(r.redirection).not.toBe(FICHE);
+        expect(r.redirection).not.toMatch(/new\?devis=/);
+        expect(r.redirection).toBe(
+          offre === null ? CORRIGER : `${FICHE}/modifier?sans-assistant=1`,
+        );
+      }
+    }
+    aucuneEcriture();
+  });
+
+  it("formules ÉTEINTES : un refus d'un devis à formules lié mène à la fiche, jamais à /modifier (boucle)", async () => {
+    formules.mockResolvedValue(false);
+    db.devis.findUnique.mockResolvedValue(devisBrouillon({ offre: { v: 1 } }));
+    db.devisAssistantBrouillon.findUnique.mockResolvedValue(
+      lie({ createdByAdminId: "99999999-9999-4999-8999-999999999999" }),
+    );
+    const r = (await chargerAssistantDevis({ adminId: ADMIN, devisId: DEVIS })) as {
+      redirection: string;
+    };
+    expect(r.redirection).toBe(FICHE);
+    expect(r.redirection).not.toMatch(/modifier|new\?devis=/);
+    aucuneEcriture();
   });
 
   it("CONTRE-TÉMOIN : une fiche d'essai est respectée (le client reste dans la liste, marqué essai)", async () => {
@@ -491,31 +595,58 @@ describe("chargerAssistantDevis — ?brouillon=", () => {
     aucuneEcriture();
   });
 
-  it("?brouillon lié à un devis déjà envoyé : redirection vers la fiche", async () => {
-    db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 1,
-      payload: JSON.parse(JSON.stringify(payloadVide(20))),
-      statut: "en_cours",
-      devisId: DEVIS,
-    });
+  const brouillonLie = () => ({
+    id: BROUILLON,
+    revision: 3,
+    payload: JSON.parse(JSON.stringify(payloadVide(20))),
+    statut: "en_cours",
+    devisId: DEVIS,
+  });
+
+  it("?brouillon lié à un devis déjà envoyé : la fiche, avec un message", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
     db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "envoye" });
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toMatchObject({ redirection: `/qualiopi/devis/${DEVIS}` });
+    expect((r as { message?: string }).message).toBeTruthy();
+    aucuneEcriture();
+  });
+
+  it("M1/M2 — ?brouillon lié à un devis encore brouillon : JAMAIS rouvert ici, renvoi vers ?devis= (gardes)", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
+    db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "brouillon" });
     expect(await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON })).toEqual({
-      redirection: `/qualiopi/devis/${DEVIS}`,
+      redirection: `/qualiopi/devis/new?devis=${DEVIS}`,
     });
     aucuneEcriture();
   });
 
-  it("?brouillon lié à un devis encore brouillon : ouvert normalement", async () => {
+  it("M1/M2 — ?brouillon lié, payload illisible : renvoi vers ?devis=, jamais un assistant vide", async () => {
     db.devisAssistantBrouillon.findFirst.mockResolvedValue({
-      id: BROUILLON,
-      revision: 3,
-      payload: JSON.parse(JSON.stringify(payloadVide(20))),
-      statut: "en_cours",
-      devisId: DEVIS,
+      ...brouillonLie(),
+      payload: { v: 9 },
     });
     db.devis.findUnique.mockResolvedValue({ id: DEVIS, statut: "brouillon" });
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toEqual({ redirection: `/qualiopi/devis/new?devis=${DEVIS}` });
+  });
+
+  it("M1/M2 — ?brouillon lié à un devis disparu : la liste, avec un message", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue(brouillonLie());
+    db.devis.findUnique.mockResolvedValue(null);
+    const r = await chargerAssistantDevis({ adminId: ADMIN, brouillonId: BROUILLON });
+    expect(r).toMatchObject({ redirection: "/qualiopi/devis", message: "Devis introuvable." });
+  });
+
+  it("CONTRE-TÉMOIN : ?brouillon NON lié (devisId nul) s'ouvre normalement", async () => {
+    db.devisAssistantBrouillon.findFirst.mockResolvedValue({ ...brouillonLie(), devisId: null });
     const c = await charge({ brouillonId: BROUILLON });
     expect(c.brouillon).toEqual({ id: BROUILLON, revision: 3 });
+  });
+
+  it("aucune boucle : ?devis= ne renvoie jamais vers ?brouillon=", async () => {
+    const fs = await import("node:fs");
+    const src = fs.readFileSync("src/server/qualiopi/devis/assistant/charger.ts", "utf8");
+    expect(src).not.toMatch(/redirection:\s*[`"'][^`"']*\?brouillon=/);
   });
 });
