@@ -10,8 +10,7 @@
 // répond 404 tant que `TOUR_PUBLIC` est faux, sauf aperçu par cookie).
 //
 // Polices : les mêmes fichiers que le site (`src/fonts/`), mêmes replis
-// métriques manuels (`globals.css`, « Fraunces Fallback », « Manrope Fallback »).
-// Fraunces 500 est PRÉCHARGÉE : c'est la police du H1, donc du LCP.
+// métriques manuels (`globals.css`, « Manrope Fallback »). Manrope seule.
 
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
@@ -53,10 +52,7 @@ export const viewport: Viewport = {
 
 export default function TourLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html
-      lang="fr"
-      className={`${manrope.variable} max-md:scroll-pb-28`}
-    >
+    <html lang="fr" className={`${manrope.variable} max-md:scroll-pb-28`}>
       <body className="bg-bg text-fg min-h-screen overflow-x-clip font-sans antialiased">
         {children}
       </body>

@@ -273,11 +273,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   const turnstileEnabled = !!env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
   return (
-    <html
-      lang={locale}
-      dir="ltr"
-      className={`${manrope.variable} h-full antialiased`}
-    >
+    <html lang={locale} dir="ltr" className={`${manrope.variable} h-full antialiased`}>
       <body className="bg-bg text-fg flex min-h-full flex-col font-sans">
         {/* P1-14 Resource Hints — React 19 hoist automatique vers <head>. */}
         {plausibleDomain ? (
