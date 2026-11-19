@@ -244,7 +244,16 @@ const NOMBRES: Record<string, number> = {
 };
 const MOTS_NOMBRES = Object.keys(NOMBRES);
 const DECOMPTE = new RegExp(
-  `\\b(\\d{1,2}|${MOTS_NOMBRES.join("|")})\\s+((?:é|e)tapes?|points?|leviers?|piliers?|axes?|phases?|crit[èe]res?|[ée]l[ée]ments?|facteurs?|principes?|volets?|dimensions?|moyens?|actions?|domaines?|modules?|blocs?|cl[ée]s|bonnes pratiques|r[èe]gles?|conseils?|raisons?|avantages?|b[ée]n[ée]fices?)\\b`,
+  `\\b(\\d{1,2}|${MOTS_NOMBRES.join("|")})\\s+((?:é|e)tapes?|points?|leviers?|piliers?|axes?|phases?|crit[èe]res?|[ée]l[ée]ments?|facteurs?|principes?|volets?|dimensions?|moyens?|actions?|domaines?|modules?|blocs?|cl[ée]s|bonnes pratiques|r[èe]gles?|conseils?|raisons?|avantages?|b[ée]n[ée]fices?|offres?|services?|formations?|prestations?|solutions?|options?|produits?|programmes?|formules?|parcours|outils?|atouts?|engagements?|missions?)\\b`,
+  "gi",
+);
+
+/**
+ * Nombre suivi d'un nom QUELCONQUE (jusqu'à trois mots) puis d'un « : » : « Nos 4 gammes : a, b, c, d ».
+ * Complète DECOMPTE, dont la liste de noms ne peut pas être exhaustive.
+ */
+const DECOMPTE_LISTE = new RegExp(
+  `\\b(\\d{1,2}|${MOTS_NOMBRES.join("|")})\\s+((?:[a-zà-ÿ'’-]+\\s+){0,2}[a-zà-ÿ'’-]+)(?=\\s*[:：])`,
   "gi",
 );
 
@@ -293,7 +302,9 @@ function corrigerDecompte(
 ): { texte: string; ambigu?: string } {
   const avant = corps.slice(0, debutRetrait);
   let dernier: RegExpMatchArray | null = null;
-  for (const m of avant.matchAll(DECOMPTE)) dernier = m;
+  for (const re of [DECOMPTE, DECOMPTE_LISTE])
+    for (const m of avant.matchAll(re))
+      if (!dernier || (m.index ?? 0) >= (dernier.index ?? 0)) dernier = m;
   if (!dernier || dernier.index === undefined) return { texte: resultat };
   const suite = corps.slice(dernier.index + dernier[0].length);
   const apresDeuxPoints = /^\s*[:：]\s*/.exec(suite);
@@ -361,7 +372,11 @@ function fragmenter(phrase: string): Fragment | null {
   let conjonction: string | null = null;
   // Seulement quand un nombre est annoncé devant : sinon « x ou y peuvent être mobilisés » est un
   // prédicat, pas un élément de liste.
-  if (segments.length > 1 && new RegExp(DECOMPTE.source, "i").test(base)) {
+  // ... ou quand la phrase annonce une liste par « : » (« Nos offres : a, b, x et c »).
+  if (
+    segments.length > 1 &&
+    (new RegExp(DECOMPTE.source, "i").test(base) || /[:：]/.test(segments[0]!))
+  ) {
     const dernierSeg = segments.pop()!;
     const tete = /^(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
     const milieu = tete ? null : /^([\s\S]+?)\s+(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
@@ -603,7 +618,12 @@ function nettoyerQuestion(q: string): string {
 }
 
 /** Question/réponse : visée → « Comment se passe le financement ? » + phrase standard. */
-export function reecrireFaq(f: Faq, langue: Langue): Resultat<Faq> {
+export function reecrireFaq(
+  f: Faq,
+  langue: Langue,
+): Resultat<Faq> & {
+  /** Sous-ensemble de `ambigus` qui porte sur la RÉPONSE. */ ambigusReponse: string[];
+} {
   const qVisee = estVisee(f.question);
   const rVisee = estVisee(htmlVersTexte(f.reponse));
   if (!qVisee && !rVisee) {
@@ -613,6 +633,7 @@ export function reecrireFaq(f: Faq, langue: Langue): Resultat<Faq> {
       valeur: { question: q.valeur, reponse: r.valeur },
       modifie: q.modifie || r.modifie || q.valeur !== f.question,
       ambigus: [...q.ambigus, ...r.ambigus],
+      ambigusReponse: r.ambigus,
     };
   }
   const parleDeFinancement = TITRE_FINANCEMENT.test(normaliser(f.question));
@@ -621,25 +642,25 @@ export function reecrireFaq(f: Faq, langue: Langue): Resultat<Faq> {
       valeur: { question: question(langue), reponse: phrase(langue) },
       modifie: true,
       ambigus: [],
+      ambigusReponse: [],
     };
   }
   // Question sans rapport, réponse visée : réécriture de la réponse seule, sinon ambigu.
   const questionPropre = nettoyerQuestion(f.question);
   const r = reecrireBloc(f.reponse, langue);
   if (r.ambigus.length > 0 || r.valeur.trim() === "" || r.valeur === phrase(langue)) {
-    return {
-      valeur: f,
-      modifie: false,
-      ambigus: [
-        ...r.ambigus,
-        `FAQ à relire (question étrangère au financement) : « ${f.question} »`,
-      ],
-    };
+    // C'est la RÉPONSE qui est visée : l'ambigu se tranche sur elle, pas sur la question.
+    const ambigus = [
+      ...r.ambigus,
+      `FAQ à relire (question étrangère au financement) : « ${f.question} »`,
+    ];
+    return { valeur: f, modifie: false, ambigus, ambigusReponse: ambigus };
   }
   return {
     valeur: { question: questionPropre, reponse: r.valeur },
     modifie: r.modifie || questionPropre !== f.question,
     ambigus: r.ambigus,
+    ambigusReponse: r.ambigus,
   };
 }
 
@@ -833,8 +854,9 @@ function corrigerIntroDecompte(
 }
 
 const INTRO_FINANCEMENT = /financ|\bfund|prise en charge/i;
-/** Une puce « parle de financement » : motif visé, ou vocabulaire d'argent (fonds, budget, coût…). */
-const PUCE_ARGENT = /financ|\bfund|\bfonds\b|subvention|budget|tarif|€|\bprix\b|co[uû]ts?\b/i;
+
+/** Puce qui parle de financement au sens organisme payeur (fonds, subvention, financé par…). */
+const PUCE_FINANCEUR = /financ|\bfund|\bfonds\b|subvention/i;
 
 function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: string[]): boolean {
   let modifie = false;
@@ -849,10 +871,12 @@ function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: st
     );
     if (visees.length === 0) continue;
     const intro = liste.previousElementSibling;
-    // Liste entière remplacée seulement si TOUTES ses puces parlent de financement.
+    // Liste entière remplacée seulement si TOUTES ses puces parlent de financement au sens
+    // ORGANISME PAYEUR : « coût », « budget », « tarif », « prix », « € » ne suffisent pas, la
+    // puce visée part seule.
     const introFinancement =
       items.every(
-        (li) => visees.includes(li) || PUCE_ARGENT.test(normaliser(htmlVersTexte(li.innerHTML))),
+        (li) => visees.includes(li) || PUCE_FINANCEUR.test(normaliser(htmlVersTexte(li.innerHTML))),
       ) &&
       !!intro &&
       intro.tagName === "P" &&

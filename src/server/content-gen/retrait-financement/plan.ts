@@ -248,8 +248,11 @@ export function proposerFaq(l: LigneFaq): Proposition | null {
     ["en", l.questionEn, l.answerEn, "questionEn", "answerEn"],
   ] as const) {
     const r = c.capter(kq, () => reecrireFaq({ question: q, reponse: a }, langue));
-    c.champ(kq, q, r.valeur.question, r.valeur.question !== q, r.ambigus);
-    c.champ(ka, a, r.valeur.reponse, r.valeur.reponse !== a, []);
+    // L'ambigu d'une réponse se range sous le champ RÉPONSE : un override sur la question seule
+    // ne doit pas lever le refus d'apply alors que le passage reste dans la réponse.
+    const surQuestion = r.ambigus.filter((x) => !r.ambigusReponse.includes(x));
+    c.champ(kq, q, r.valeur.question, r.valeur.question !== q, surQuestion);
+    c.champ(ka, a, r.valeur.reponse, r.valeur.reponse !== a, r.ambigusReponse);
   }
   c.texte("metaTitle", l.metaTitle, "fr", true);
   c.texte("metaDescription", l.metaDescription, "fr");
@@ -361,6 +364,42 @@ export function proposerOffre(l: LigneOffre): Proposition | null {
 
 // ───────────────────────────── overrides, empreinte ─────────────────────────────
 
+/** Champ HTML → champ de texte brut dérivé (recalculé quand le HTML est surchargé). */
+const CHAMP_TEXTE_DU_CORPS: Record<string, string> = {
+  body: "bodyText",
+  bodyFr: "bodyTextFr",
+  bodyEn: "bodyTextEn",
+};
+
+/**
+ * Comme `appliquerOverrides`, mais aussi pour un contenu SANS proposition (déjà traité, plus aucune
+ * mention) : un override présent est appliqué si son empreinte correspond, sinon signalé.
+ */
+export function integrerOverrides(
+  p: Proposition | null,
+  cle: string,
+  originaux: Champs,
+  overrides: Overrides,
+): { proposition: Proposition | null; ignores: string[] } {
+  if (p) return appliquerOverrides(p, originaux, overrides);
+  if (!overrides[cle]) return { proposition: null, ignores: [] };
+  const i = cle.indexOf(":");
+  const vide: Proposition = {
+    cle,
+    table: cle.slice(0, i) as Table,
+    id: cle.slice(i + 1),
+    avant: {},
+    apres: {},
+    ambigus: [],
+    conserves: [],
+  };
+  const r = appliquerOverrides(vide, originaux, overrides);
+  return {
+    proposition: Object.keys(r.proposition.apres).length > 0 ? r.proposition : null,
+    ignores: r.ignores,
+  };
+}
+
 /**
  * Applique les remplacements humains aux cas ambigus. Un override n'est pris que si l'empreinte
  * de la valeur d'ORIGINE correspond à la valeur lue maintenant : si le texte a changé depuis,
@@ -392,6 +431,14 @@ export function appliquerOverrides(
     avant[champ] = courant;
     apres[champ] = o.valeur;
     appliques.push(champ);
+    // Le corps réécrit à la main redevient la source du texte brut : bodyText* est recalculé,
+    // sinon il garderait le passage ambigu (indexation, recherche).
+    const texte = CHAMP_TEXTE_DU_CORPS[champ];
+    if (texte && texte in originaux && typeof o.valeur === "string") {
+      avant[texte] = originaux[texte];
+      apres[texte] = htmlVersTexte(o.valeur);
+      appliques.push(texte);
+    }
   }
   const ambigus = p.ambigus.filter(
     (a) =>

@@ -23,20 +23,14 @@
 import fs from "node:fs";
 import { Prisma, PrismaClient } from "../../prisma/generated/client";
 import {
-  ACTION_RESTAURATION,
-  ACTION_OVERRIDE,
-  ACTION_RESTAURATION_OVERRIDE,
-  ACTION_RETRAIT,
   ambigusNonCouverts,
   refuserSiAmbigus,
   type Champs,
   type Overrides,
   type Proposition,
   type Table,
-  appliquerOverrides,
-  champsARestaurer,
-  empreinte,
   empreintePlan,
+  integrerOverrides,
   proposerArticle,
   proposerFaq,
   proposerOffre,
@@ -44,6 +38,11 @@ import {
   rapportRestauration,
   resume,
 } from "../../src/server/content-gen/retrait-financement/plan";
+import {
+  type Depot,
+  appliquer,
+  restaurer,
+} from "../../src/server/content-gen/retrait-financement/ecriture";
 import { construireRapport } from "../../src/server/content-gen/retrait-financement/rapport";
 
 const prisma = new PrismaClient();
@@ -123,10 +122,13 @@ async function construirePlan(
   const propositions: Proposition[] = [];
   const ignores: string[] = [];
   const urls: string[] = [];
-  const ajouter = (p: Proposition | null, originaux: Champs, url: string | null) => {
-    if (!p) return;
-    const r = appliquerOverrides(p, originaux, overrides);
+  const vus = new Set<string>();
+  const ajouter = (p: Proposition | null, cle: string, originaux: Champs, url: string | null) => {
+    vus.add(cle);
+    // Un override présent est appliqué (ou signalé) même quand le contenu n'a plus rien à retirer.
+    const r = integrerOverrides(p, cle, originaux, overrides);
     ignores.push(...r.ignores);
+    if (!r.proposition) return;
     propositions.push(r.proposition);
     if (url && Object.keys(r.proposition.apres).length > 0) urls.push(url);
   };
@@ -134,7 +136,12 @@ async function construirePlan(
   for (const t of await prisma.articleTranslation.findMany()) {
     if (!garde(t.id)) continue;
     const p = proposerTraduction({ ...t, bodyJson: json(t.bodyJson) });
-    ajouter(p, t as unknown as Champs, `/${t.locale}/blog/${t.slug}`);
+    ajouter(
+      p,
+      `article_translation:${t.id}`,
+      t as unknown as Champs,
+      `/${t.locale}/blog/${t.slug}`,
+    );
   }
   for (const a of await prisma.article.findMany({
     select: {
@@ -150,14 +157,14 @@ async function construirePlan(
   })) {
     if (!garde(a.id)) continue;
     const p = proposerArticle({ ...a, faqJson: json(a.faqJson) });
-    ajouter(p, a as unknown as Champs, null);
+    ajouter(p, `article:${a.id}`, a as unknown as Champs, null);
     if (p && Object.keys(p.apres).length > 0)
       for (const t of a.translations) urls.push(`/${t.locale}/blog/${t.slug}`);
   }
   for (const f of await prisma.fAQ.findMany({ where: { parentArticleId: { not: null } } })) {
     if (!garde(f.id)) continue;
     const p = proposerFaq(f);
-    ajouter(p, f as unknown as Champs, null);
+    ajouter(p, `faq:${f.id}`, f as unknown as Champs, null);
     // La FAQ fille se rend sur la page de l'article parent : purger cette page aussi.
     if (p && Object.keys(p.apres).length > 0) urls.push(...(await urlsDe("faq", f)));
   }
@@ -168,8 +175,12 @@ async function construirePlan(
       bodyJsonFr: json(j.bodyJsonFr),
       bodyJsonEn: json(j.bodyJsonEn),
     });
-    ajouter(p, j as unknown as Champs, `/fr/carrieres/${j.slug}`);
+    ajouter(p, `job_offer:${j.id}`, j as unknown as Champs, `/fr/carrieres/${j.slug}`);
   }
+  // Un override dont le contenu n'a pas été lu (id inconnu, filtré par --only exclu) : jamais silencieux.
+  for (const cle of Object.keys(overrides))
+    if (!vus.has(cle) && garde(cle.slice(cle.indexOf(":") + 1)))
+      ignores.push(`${cle} : contenu introuvable (ou hors périmètre), override ignoré`);
   return { propositions, ignores, urls: [...new Set(urls)].sort() };
 }
 
@@ -199,153 +210,44 @@ function delegue(tx: Prisma.TransactionClient, table: Table): Delegue {
   return map[table] as unknown as Delegue;
 }
 
-/**
- * Override sur un contenu DÉJÀ traité : seuls les champs surchargés sont réécrits, avec leur propre
- * sauvegarde (action « override ») ; la sauvegarde du premier passage n'est jamais touchée.
- */
-async function appliquerOverride(p: Proposition): Promise<boolean> {
-  const champs = (p.surcharges ?? []).filter((c) => c in p.apres);
-  if (champs.length === 0) return false;
-  const avant: Champs = {};
-  const apres: Champs = {};
-  for (const c of champs) {
-    avant[c] = p.avant[c];
-    apres[c] = p.apres[c];
-  }
-  return prisma.$transaction(async (tx) => {
-    const d = delegue(tx, p.table);
-    const courant = await d.findUnique({ where: { id: p.id } });
-    if (!courant) throw new Error(`${p.cle} : ligne introuvable`);
-    // Déjà à la valeur voulue : rien à faire (relance idempotente).
-    if (champs.every((c) => empreinte(json(courant[c])) === empreinte(json(apres[c]))))
-      return false;
-    for (const c of champs)
-      if (empreinte(json(courant[c])) !== empreinte(json(avant[c])))
-        throw new Error(`${p.cle}.${c} : modifié depuis l'essai à blanc, refus`);
-    await tx.contentGenAuditLog.create({
-      data: {
-        action: ACTION_OVERRIDE,
-        settingKey: p.cle,
-        oldValue: avant as Prisma.InputJsonValue,
-        newValue: apres as Prisma.InputJsonValue,
-        actorEmail: ACTEUR,
-      },
-    });
-    await d.update({ where: { id: p.id }, data: donnees(apres) });
-    return true;
-  });
-}
-
-async function appliquer(propositions: Proposition[]): Promise<{ ecrits: number; deja: string[] }> {
-  let ecrits = 0;
-  const deja: string[] = [];
-  for (const p of propositions) {
-    if (Object.keys(p.apres).length === 0) continue;
-    // Jamais d'écrasement d'une sauvegarde existante : contenu déjà traité → on s'arrête là pour lui,
-    // sauf un override humain, qui est une réécriture ciblée avec sa propre sauvegarde.
-    const existe = await prisma.contentGenAuditLog.findFirst({
-      where: { action: ACTION_RETRAIT, settingKey: p.cle },
+/** Adaptateur Prisma du dépôt d'écriture (la logique, testée, est dans `ecriture.ts`). */
+const depot: Depot = {
+  existe: async (action, cle) =>
+    !!(await prisma.contentGenAuditLog.findFirst({
+      where: { action, settingKey: cle },
       select: { id: true },
-    });
-    if (existe) {
-      if (await appliquerOverride(p)) ecrits++;
-      else deja.push(p.cle);
-      continue;
-    }
-    await prisma.$transaction(async (tx) => {
-      const d = delegue(tx, p.table);
-      const courant = await d.findUnique({ where: { id: p.id } });
-      if (!courant) throw new Error(`${p.cle} : ligne introuvable`);
-      for (const [champ, ancien] of Object.entries(p.avant)) {
-        if (empreinte(json(courant[champ])) !== empreinte(json(ancien)))
-          throw new Error(`${p.cle}.${champ} : modifié depuis l'essai à blanc, refus`);
-      }
-      await tx.contentGenAuditLog.create({
-        data: {
-          action: ACTION_RETRAIT,
-          settingKey: p.cle,
-          oldValue: p.avant as Prisma.InputJsonValue,
-          newValue: p.apres as Prisma.InputJsonValue,
-          actorEmail: ACTEUR,
-        },
-      });
-      await d.update({ where: { id: p.id }, data: donnees(p.apres) });
-    });
-    ecrits++;
-  }
-  return { ecrits, deja };
-}
-
-async function restaurer(
-  only: Set<string> | null,
-): Promise<{ restaures: number; divergences: string[]; urls: string[]; lignes: string[] }> {
-  // Les overrides se défont AVANT le premier passage (le plus récent d'abord).
-  const lignes = (
-    await prisma.contentGenAuditLog.findMany({
-      where: { action: { in: [ACTION_OVERRIDE, ACTION_RETRAIT] } },
+    })),
+  existeApres: async (action, cle, apres) =>
+    !!(await prisma.contentGenAuditLog.findFirst({
+      where: { action, settingKey: cle, createdAt: { gt: apres } },
+      select: { id: true },
+    })),
+  lignes: (actions) =>
+    prisma.contentGenAuditLog.findMany({
+      where: { action: { in: actions } },
       orderBy: { createdAt: "desc" },
-    })
-  ).sort(
-    (a, b) =>
-      Number(b.action === ACTION_OVERRIDE) - Number(a.action === ACTION_OVERRIDE) ||
-      b.createdAt.getTime() - a.createdAt.getTime(),
-  );
-  let restaures = 0;
-  const divergences: string[] = [];
-  const urls: string[] = [];
-  const restaurees: string[] = [];
-  for (const l of lignes) {
-    const [table, id] = (l.settingKey ?? "").split(":") as [Table, string];
-    if (!table || !id || (only && !only.has(id))) continue;
-    const avant = (l.oldValue ?? {}) as Champs;
-    const apres = (l.newValue ?? {}) as Champs;
-    const actionRestauration =
-      l.action === ACTION_OVERRIDE ? ACTION_RESTAURATION_OVERRIDE : ACTION_RESTAURATION;
-    const deja = await prisma.contentGenAuditLog.findFirst({
-      where: {
-        action: actionRestauration,
-        settingKey: l.settingKey,
-        createdAt: { gt: l.createdAt },
-      },
-      select: { id: true },
-    });
-    if (deja) continue;
-    await prisma.$transaction(async (tx) => {
-      const d = delegue(tx, table);
-      const courant = await d.findUnique({ where: { id } });
-      if (!courant) {
-        divergences.push(`${l.settingKey} : ligne introuvable`);
-        return;
-      }
-      // Remet l'original SEULEMENT si la valeur actuelle est celle que le script a écrite.
-      const diverge = Object.keys(apres).filter(
-        (c) => empreinte(json(courant[c])) !== empreinte(json(apres[c])),
-      );
-      if (diverge.length > 0) {
-        divergences.push(
-          `${l.settingKey} : champs modifiés depuis (${diverge.join(", ")}), non restauré`,
-        );
-        return;
-      }
-      // Seuls les champs écrits par le script sont remis (la sauvegarde porte tous les champs).
-      const remis = champsARestaurer(avant, apres);
-      await d.update({ where: { id }, data: donnees(remis) });
-      await tx.contentGenAuditLog.create({
-        data: {
-          action: actionRestauration,
-          settingKey: l.settingKey,
-          oldValue: apres as Prisma.InputJsonValue,
-          newValue: remis as Prisma.InputJsonValue,
-          actorEmail: ACTEUR,
+    }),
+  transaction: (f) =>
+    prisma.$transaction((tx) =>
+      f({
+        lire: (table, id) => delegue(tx, table).findUnique({ where: { id } }),
+        ecrire: async (table, id, champs) => {
+          await delegue(tx, table).update({ where: { id }, data: donnees(champs) });
         },
-      });
-      restaures++;
-      restaurees.push(`${l.settingKey} : ${Object.keys(remis).join(", ")}`);
-      urls.push(...(await urlsDe(table, courant)));
-    });
-  }
-  return { restaures, divergences, urls: [...new Set(urls)].sort(), lignes: restaurees };
-}
+        journaliser: async (e) => {
+          await tx.contentGenAuditLog.create({
+            data: {
+              action: e.action,
+              settingKey: e.settingKey,
+              oldValue: e.oldValue as Prisma.InputJsonValue,
+              newValue: e.newValue as Prisma.InputJsonValue,
+              actorEmail: ACTEUR,
+            },
+          });
+        },
+      }),
+    ),
+};
 
 // ───────────────────────────── rapport ─────────────────────────────
 
@@ -367,7 +269,7 @@ async function main() {
   console.log(`── Retrait des mentions de financement : mode ${o.mode} ──`);
 
   if (o.mode === "restore") {
-    const r = await restaurer(o.only);
+    const r = await restaurer(depot, o.only, urlsDe);
     console.log(`Restaurés : ${r.restaures}`);
     for (const d of r.divergences) console.log(`⚠ ${d}`);
     // Le workflow purge le cache et notifie IndexNow à partir de ces fichiers, aussi en restore.
@@ -383,6 +285,7 @@ async function main() {
     `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire} · ambigus : ${r.ambigus}`,
   );
   console.log(`PLAN_SHA=${sha}`);
+  for (const i of ignores) console.log(`⚠ override ignoré : ${i}`);
   for (const x of ambigusNonCouverts(propositions))
     console.log(`⛔ ambigu non couvert : ${x.cle}.${x.champ}`);
   if (o.rapport) ecrireRapport(o.rapport, o, propositions, ignores, sha);
@@ -398,7 +301,7 @@ async function main() {
     throw new Error(
       `Empreinte du plan différente (essai à blanc ${o.planSha}, maintenant ${sha}) : refus. Relancer l'essai à blanc.`,
     );
-  const e = await appliquer(propositions);
+  const e = await appliquer(depot, propositions);
   console.log(
     `Écrits : ${e.ecrits} · déjà traités (sauvegarde existante, non écrasée) : ${e.deja.length}`,
   );
