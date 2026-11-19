@@ -4985,7 +4985,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un échange préalable de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
+            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },

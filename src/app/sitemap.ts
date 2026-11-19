@@ -232,6 +232,12 @@ const EXCLUDED_FROM_INDEX: ReadonlyArray<PathnameKey> = [
   // pages 200 (clés distinctes) → NON impactées par cette exclusion, elles restent
   // dans le sitemap. `/formations` (clé propre) reste émise normalement.
   "/interventions",
+  // V2-08 (GEO) — une seule page de référence pour le coaching individuel : `/fr/un-a-un`.
+  // Ces trois pages restent en ligne (aucune URL supprimée) mais leur canonical pointe vers
+  // elle ; une URL non canonique n'a pas sa place dans pages.xml. Liste : `coaching-reference.ts`.
+  "/interventions/individuel",
+  "/interventions/dirigeants",
+  "/interventions/dirigeant-vision-strategique",
   // Audit "page vide / noindexed in sitemap" 2026-06-15 — `/carrieres/widget`
   // (embed iframe, robots:noindex,nofollow) et `/carrieres/widget-builder`
   // (outil de configuration, robots:noindex) sont émis tels quels dans

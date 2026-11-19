@@ -21,14 +21,11 @@ import { InterventionFormatCard } from "@/components/sections/InterventionFormat
 import { getFamily, getFormatsByFamily } from "@/content/interventions-taxonomy";
 import {
   buildProductMetadata,
-  buildServiceJsonLd,
   buildItemListJsonLd,
-  buildWebPageJsonLd,
   buildPageImageGraphJsonLd,
-  buildPrimaryImageOfPage,
   SITE_URL,
 } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { metadataCanoniqueVersCoaching } from "@/lib/seo/coaching-canonical";
 
 // ============================================================================
 // Sprint 14.10.7 (Will 2026-05-12) — refactor en HUB FAMILLE Dirigeants.
@@ -48,7 +45,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  return buildProductMetadata({
+  const meta = await buildProductMetadata({
     locale,
     path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
     title:
@@ -61,6 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         : "A 1-on-1 day dedicated to the executive: strategic AI vision — sector landscape, prioritised levers, framing note within 7 days. For one executive, not a committee.",
     alternates: { fr: "/interventions/dirigeants", en: "/interventions/executives" },
   });
+  // V2-08 : une seule page de référence pour le coaching individuel.
+  return metadataCanoniqueVersCoaching(meta, locale);
 }
 
 export default async function DirigeantsFamilyPage({ params }: Props) {
@@ -81,18 +80,6 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
   ];
 
   const contactHref = `/interventions/demande?objet=${encodeURIComponent(CONTACT_OBJECT)}`;
-
-  const serviceJsonLd = buildServiceJsonLd({
-    locale: loc,
-    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
-    name: isFr
-      ? "Interventions dirigeants 1-to-1 · Axion-IA"
-      : "Executive 1-on-1 sessions · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    serviceType: "AI strategy · executives",
-    priceEur: 0,
-    areasServed: buildServiceAreasServed(loc),
-  });
 
   // ItemList JSON-LD — AEO/GEO 2026 : permet aux LLMs d'énumérer la liste
   // du format Dirigeants quand quelqu'un demande « formations IA pour
@@ -117,20 +104,8 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
     locale: loc,
     path: "/interventions/dirigeants",
   });
-  // Nœud WebPage — porteur VALIDE du `speakable` (h1/h2 + réponses) + `primaryImageOfPage`.
-  const webPageJsonLd = buildWebPageJsonLd({
-    locale: loc,
-    path: loc === "fr" ? "/interventions/dirigeants" : "/interventions/executives",
-    name: isFr
-      ? "Accompagnement 1-to-1 des dirigeants · Axion-IA"
-      : "1-on-1 executive AI support · Axion-IA",
-    description: isFr ? family.taglineFr : family.taglineEn,
-    speakable: true,
-    ...(buildPrimaryImageOfPage("/interventions/dirigeants")
-      ? { extra: { primaryImageOfPage: buildPrimaryImageOfPage("/interventions/dirigeants") } }
-      : {}),
-  });
-
+  // V2-08 : ni `Service` ni `WebPage` ici — le seul `Service` « coaching individuel » est celui de
+  // la page de référence `/un-a-un` (canonical ci-dessous).
   // 2 mini-blocs « pour qui » — deux angles du MÊME format (Vision IA stratégique).
   const audiences = [
     {
@@ -311,7 +286,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                       id: "choisir",
                       question: "Dirigeant ou collaborateur : quelle formule choisir ?",
                       answer:
-                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 45 minutes permet de trancher.",
+                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un Diagnostic IA de 45 minutes permet de trancher.",
                     },
                     {
                       id: "repars",
@@ -388,8 +363,6 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
-      <JsonLd data={webPageJsonLd} />
       <JsonLd data={itemListJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
     </>
