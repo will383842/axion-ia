@@ -46,10 +46,13 @@ import QualiopiDevisModifierPage from "../page";
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 
 const ID = "550e8400-e29b-41d4-a716-446655440002";
-const params = (id = ID) => ({
+const params = (id = ID, sansAssistant?: string) => ({
   params: Promise.resolve({ locale: "fr" as const, adminPrefix: "adm", id }),
+  searchParams: Promise.resolve(
+    sansAssistant === undefined ? {} : { "sans-assistant": sansAssistant },
+  ),
 });
-const cible = async (p = params()) => {
+const cible = async (p: ReturnType<typeof params> = params()) => {
   try {
     await QualiopiDevisModifierPage(p);
   } catch (e) {
@@ -147,6 +150,56 @@ describe("/modifier → assistant", () => {
     const ui = await QualiopiDevisModifierPage(params());
     render(ui);
     expect(m.actif).not.toHaveBeenCalled();
+    expect(m.devis).not.toHaveBeenCalled();
+  });
+});
+
+describe("/modifier?sans-assistant=1 (carte de refus du chargeur)", () => {
+  const LIE = { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb" };
+  const devisLie = (extra: Record<string, unknown> = {}) => ({
+    id: ID,
+    numero: "AXI-DEV-2026-007",
+    statut: "brouillon",
+    offre: offreFictive(),
+    updatedAt: new Date("2026-11-08T10:00:00Z"),
+    devisAssistantBrouillon: LIE,
+    ...extra,
+  });
+  beforeEach(() => m.actif.mockResolvedValue(true));
+
+  it("brouillon à formules lié, formules actives : l'éditeur d'avant, pas de renvoi à l'assistant", async () => {
+    m.devis.mockResolvedValue(devisLie());
+    render(await QualiopiDevisModifierPage(params(ID, "1")));
+    expect(screen.getByTestId("editeur-formules")).toBeTruthy();
+  });
+
+  it("sans le paramètre (ou autre valeur) : toujours l'assistant", async () => {
+    m.devis.mockResolvedValue(devisLie());
+    expect(await cible(params(ID))).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+    expect(await cible(params(ID, "0"))).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+  });
+
+  it("formules éteintes : le paramètre est ignoré (comportement actuel, assistant)", async () => {
+    m.devis.mockResolvedValue(devisLie());
+    m.formules.mockResolvedValue(false);
+    expect(await cible(params(ID, "1"))).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+  });
+
+  it("devis non brouillon : le paramètre est ignoré, renvoi vers la fiche", async () => {
+    m.devis.mockResolvedValue(devisLie({ statut: "envoye" }));
+    expect(await cible(params(ID, "1"))).toBe(`/fr/adm/qualiopi/devis/${ID}`);
+  });
+
+  it("devis classique lié : le paramètre ne monte pas l'éditeur de formules", async () => {
+    m.devis.mockResolvedValue(devisLie({ offre: null }));
+    expect(await cible(params(ID, "1"))).toBe(`/fr/adm/qualiopi/devis/new?devis=${ID}`);
+  });
+
+  it("accès refusé : le paramètre ne contourne pas la garde", async () => {
+    m.garde.mockResolvedValue({ autorise: false, motif: "ecriture" });
+    m.devis.mockResolvedValue(devisLie());
+    render(await QualiopiDevisModifierPage(params(ID, "1")));
+    expect(screen.queryByTestId("editeur-formules")).toBeNull();
     expect(m.devis).not.toHaveBeenCalled();
   });
 });

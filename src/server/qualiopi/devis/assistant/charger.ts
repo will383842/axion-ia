@@ -226,6 +226,16 @@ export async function chargerAssistantDevis(
         clientId: true,
       },
     });
+    // Refus APRÈS l'existence du lien : jamais vers la fiche (son bouton renvoie à l'assistant :
+    // cul-de-sac). Classique → écran de correction ; à formules → l'éditeur d'avant.
+    const refus = (message: string): RedirectionAssistant =>
+      devis.offre === null
+        ? { redirection: `${fiche}/corriger`, message, libelleLien: "Corriger le brouillon" }
+        : {
+            redirection: `${fiche}/modifier?sans-assistant=1`,
+            message,
+            libelleLien: "Modifier sans l'assistant",
+          };
     const sansAssistant = "Ce devis a été préparé sans l'assistant : ";
     if (!lie) {
       // JAMAIS vers /modifier (il renvoie ici : boucle).
@@ -238,28 +248,32 @@ export async function chargerAssistantDevis(
       return versFiche(`${sansAssistant}modifiez-le depuis sa fiche.`);
     }
     if (lie.statut === STATUT_BROUILLON_A_L_ECART)
-      return versFiche("Le brouillon d'assistant de ce devis a été mis à l'écart.");
+      return refus("Le brouillon d'assistant de ce devis a été mis à l'écart.");
     if (lie.createdByAdminId !== i.adminId)
-      return versFiche(
+      return refus(
         "Ce devis a été préparé dans l'assistant par un autre compte : seul ce compte peut le rouvrir.",
       );
     const illisible = "Le brouillon d'assistant de ce devis est illisible ; rien n'a été modifié.";
     const lu = lirePayload(lie.payload);
-    if (!lu.ok) return versFiche(illisible);
+    if (!lu.ok) return refus(illisible);
     const etat = payloadVersEtat(lu.payload);
-    if (etat.source !== "ecran") return versFiche(illisible);
+    if (etat.source !== "ecran") return refus(illisible);
     if (
       lu.payload.clientId !== devis.clientId ||
       etat.etat.clientId !== devis.clientId ||
       (lie.clientId !== null && lie.clientId !== devis.clientId)
     )
-      return versFiche("Le client du brouillon ne correspond pas à celui du devis.");
+      return refus("Le client du brouillon ne correspond pas à celui du devis.");
     // Brouillon périmé : le devis a bougé hors de l'assistant depuis la dernière synchronisation
     // (même comparaison que le finaliseur). Lecture seule, rien n'est effacé.
     const majLe = lu.payload.sync.devisMajLe;
     if (majLe !== null && new Date(majLe).getTime() !== devis.updatedAt.getTime())
-      return versFiche(
-        "Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ouvrez sa fiche pour le corriger.",
+      return refus(
+        `Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ${
+          devis.offre === null
+            ? "corrigez-le depuis son écran de correction."
+            : "ouvrez sa fiche pour le corriger."
+        }`,
       );
     // Barrière seulement : une offre illisible ou une TVA non standard restent refusées ; le
     // contenu rouvert est TOUJOURS celui du brouillon, jamais une réhydratation du devis.
@@ -268,7 +282,7 @@ export async function chargerAssistantDevis(
       tauxStandard,
       isQualiopiCertificationObtenue(),
     );
-    if ("refus" in ouverture && ouverture.motif !== "opco") return versFiche(ouverture.refus);
+    if ("refus" in ouverture && ouverture.motif !== "opco") return refus(ouverture.refus);
     payload = lu.payload;
     brouillon = { id: lie.id, revision: lie.revision };
   }

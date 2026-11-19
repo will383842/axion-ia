@@ -34,10 +34,12 @@ export const metadata: Metadata = {
 
 interface PageProps {
   params: Promise<{ locale: "fr" | "en"; adminPrefix: string; id: string }>;
+  searchParams?: Promise<{ "sans-assistant"?: string | string[] }>;
 }
 
-export default async function QualiopiDevisModifierPage({ params }: PageProps) {
+export default async function QualiopiDevisModifierPage({ params, searchParams }: PageProps) {
   const { locale, adminPrefix, id } = await params;
+  const sansAssistant = (await searchParams)?.["sans-assistant"] === "1";
   const acces = await gardePage("ecriture", `/${locale}/${adminPrefix}/login`);
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
@@ -64,7 +66,12 @@ export default async function QualiopiDevisModifierPage({ params }: PageProps) {
     if (devis.statut !== "brouillon") redirect(`${base}/${id}`);
     // L'assistant ne rouvre QUE les devis qu'il a créés (brouillon d'assistant lié) ; jamais
     // `/new?devis=` pour un autre : il renverrait ici (boucle).
-    if (devis.devisAssistantBrouillon !== null) redirect(`${base}/new?devis=${id}`);
+    // `?sans-assistant=1` (carte de refus du chargeur) : l'éditeur d'avant pour un brouillon à
+    // formules, seulement si les formules sont actives — aucune garde de droits ni de statut
+    // n'est contournée (accès et statut brouillon déjà vérifiés ci-dessus).
+    const editeurDAvant = sansAssistant && devis.offre !== null && (await formulesActives());
+    if (devis.devisAssistantBrouillon !== null && !editeurDAvant)
+      redirect(`${base}/new?devis=${id}`);
     if (devis.offre === null) redirect(`${base}/${id}/corriger`);
     // Devis à formules préparé hors assistant : la branche d'avant (ci-dessous).
   }
