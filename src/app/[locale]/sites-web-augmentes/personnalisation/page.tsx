@@ -6,6 +6,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { SitesWebLandingPage } from "@/components/services/sites-web/SitesWebLandingPage";
 import { getSitesWeb } from "@/content/sites-web";
 import { buildProductMetadata } from "@/lib/seo";
+import { TermesGlossaireLies } from "@/components/marketing/TermesGlossaireLies";
+import { termesPourOffre } from "@/content/maillage-glossaire";
 
 const SLUG = "personnalisation" as const;
 
@@ -37,5 +39,10 @@ export default async function Page({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
-  return <SitesWebLandingPage slug={SLUG} locale={locale as Locale} />;
+  return (
+    <>
+      <SitesWebLandingPage slug={SLUG} locale={locale as Locale} />
+      <TermesGlossaireLies locale={locale} termes={termesPourOffre("sites-web", SLUG)} />
+    </>
+  );
 }
