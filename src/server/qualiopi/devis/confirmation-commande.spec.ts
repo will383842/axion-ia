@@ -164,7 +164,7 @@ describe("envoyerConfirmationCommande", () => {
     const r = await envoyerConfirmationCommande(DEMANDE, d);
     expect(deposer).toHaveBeenCalledWith(cleCgvAcceptees("2026-11-18"), expect.any(Buffer));
     // Version en vigueur : rendu courant ; sortie de vigueur : texte archivé.
-    expect(archivee).toHaveBeenCalledTimes(CGV_VERSION === "2026-11-18" ? 0 : 1);
+    expect(archivee).toHaveBeenCalledTimes((CGV_VERSION as string) === "2026-11-18" ? 0 : 1);
     expect(r).toMatchObject({ envoye: true, cgvJointes: true, cgvVersionAcceptee: "2026-11-18" });
     const opts = (
       enfiler.mock.calls[0] as unknown as [string, string, string, unknown, never]

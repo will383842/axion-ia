@@ -7,21 +7,16 @@ import { LegalPageTemplate } from "@/components/sections/LegalPageTemplate";
 import { Container } from "@/components/layout/Container";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { getLegal } from "@/content/legal";
-import { CGV_VERSION, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
+import { CGV_DATE_ISO, CGV_VERSION_LIBELLE, CGV_VERSION_LIBELLE_EN } from "@/content/cgv-version";
 import { buildProductMetadata } from "@/lib/seo";
-import { buildDeclarationActiviteSection } from "@/components/qualiopi/certifications-section";
 
 interface Props {
   params: Promise<{ locale: string }>;
 }
 
 const SLUG = "conditions-generales" as const;
-// ISR — 2026-08-17. La page était intégralement figée au build. Elle porte
-// désormais la section « Déclaration d'activité », dont le numéro est lu au
-// runtime : sans revalidation, la mention serait absente du HTML jusqu'au
-// déploiement suivant (au build, la base est le stub `stub.invalid` et le
-// drapeau de divulgation n'est pas un build-arg). Même valeur et même motif que
-// `/mentions-legales`.
+// ISR conservé (2026-08-17 : la page lisait alors le numéro de déclaration d'activité en base ;
+// depuis la v3, l'article 1.2 le porte en dur). Même valeur que `/mentions-legales`.
 export const revalidate = 3600;
 // Date de dernière révision de FOND de cette page — à tenir à jour, les CGV
 // renvoyant elles-mêmes à cette date pour déterminer la version applicable.
@@ -46,6 +41,10 @@ export const revalidate = 3600;
 // 2026-10-04 : ajout de l'article « Financement par un opérateur de
 // compétences (OPCO) » (FR + EN) — dépôt de la demande, subrogation, refus,
 // heures d'absence, non-paiement par l'OPCO. Le texte rendu change, la date suit.
+//
+// 2026-11-20 : CGV v3 (60 articles, annexes) en remplacement du texte du 18 novembre 2026,
+// archivé. Les passages relatifs au financement et à la certification restent cachés tant que
+// `QUALIOPI_CERTIFICATION_OBTENUE` n'est pas « true » (`@/content/cgv-passages-financement`).
 // La date elle-même vit dans `@/content/cgv-version` (source unique, enregistrée à la signature).
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -70,14 +69,8 @@ export default async function ConditionsGenerales({ params }: Props) {
   const isFr = loc === "fr";
   const p = getLegal(SLUG);
   const copy = p[loc];
-  // Section « Déclaration d'activité » — le NDA est une mention due sur les
-  // documents contractuels et publicitaires (art. L.6352-4), et les CGV sont les
-  // deux à la fois. Ajoutée en fin de sections plutôt qu'insérée dans le corps
-  // de « Dispositions propres à la formation professionnelle » : y injecter du
-  // texte de configuration mêlerait une donnée runtime à une clause figée, et la
-  // clause resterait juste à sa place. `null` si le numéro n'est pas disponible.
-  const declaration = await buildDeclarationActiviteSection(isFr);
-  const sections = [...copy.sections, ...(declaration ? [declaration] : [])];
+  // La déclaration d'activité figure à l'article 1.2 : plus de section ajoutée au runtime.
+  const sections = copy.sections;
   // Breadcrumb visuel + JSON-LD intégré (composant unique). L'item "Accueil"
   // est ajouté automatiquement par le composant.
   const breadcrumbItems = [{ href: isFr ? p.pathFr : p.pathEn, label: copy.title }];
@@ -95,7 +88,8 @@ export default async function ConditionsGenerales({ params }: Props) {
         intro={copy.intro}
         sections={sections}
         lastUpdated={isFr ? CGV_VERSION_LIBELLE : CGV_VERSION_LIBELLE_EN}
-        lastUpdatedIso={CGV_VERSION}
+        lastUpdatedIso={CGV_DATE_ISO}
+        preserveLineBreaks
         relatedLinks={[
           { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
           {

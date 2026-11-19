@@ -138,7 +138,7 @@ export const cleCgvAcceptees = (version: string = CGV_VERSION): string =>
 /** « 2026-10-04 » → « 4 octobre 2026 » ; une version non datée est citée telle quelle. */
 function libelleVersionCgv(version: string): string {
   if (version === CGV_VERSION) return CGV_VERSION_LIBELLE;
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(version);
+  const m = /^(\d{4})-(\d{2})-(\d{2})(?:-f)?$/.exec(version);
   if (m === null) return version;
   const d = new Date(Date.UTC(Number(m[1]), Number(m[2]) - 1, Number(m[3])));
   return new Intl.DateTimeFormat("fr-FR", {

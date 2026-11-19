@@ -98,18 +98,19 @@ async function produireCgvPdf(fr: TexteCgvFr, version: string, libelle: string):
           </Text>
         ))}
         {fr.sections.map((sec, i) => (
-          <View key={i}>
-            <Text style={s.h2}>{nettoyer(sec.title)}</Text>
+          <React.Fragment key={i}>
+            <Text style={s.h2} minPresenceAhead={40}>
+              {nettoyer(sec.title)}
+            </Text>
             {paragraphes(sec.body).map((l, j) => (
               <Text key={j} style={s.p}>
                 {l}
               </Text>
             ))}
-          </View>
+          </React.Fragment>
         ))}
         <View style={s.pied} fixed>
           <Text>{`Conditions générales de vente · Axion-IA · version du ${libelle}`}</Text>
-          <Text render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`} />
         </View>
       </Page>
     </Document>
