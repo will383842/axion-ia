@@ -177,8 +177,8 @@ const ENRICHED: Record<string, ComparisonEnrichment> = {
       },
       {
         when: {
-          fr: "Vous démarrez et n'avez pas encore identifié de besoin spécifique au-delà des besoins spécifiques métier",
-          en: "You are starting out and have not yet identified a specific need beyond the domain-specific needs",
+          fr: "Vous démarrez et n'avez pas encore identifié de besoin spécifique à votre métier",
+          en: "You are starting out and have not yet identified a need specific to your business",
         },
         choose: {
           fr: "Commencez par le SaaS générique, puis escaladez au cabinet quand un besoin dépasse 5 k€",
