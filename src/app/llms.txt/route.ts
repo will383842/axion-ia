@@ -47,6 +47,7 @@ import {
   recollerMontantsMasques,
 } from "@/lib/seo/montant-public-texte";
 import { SERVICE_BY_ID } from "@/content/services";
+import { sectionReferenceLlms } from "@/app/_llms/reference";
 import { SITE_URL } from "@/lib/seo";
 import { EN_BREF_APPORTEURS } from "@/content/recrutement/en-bref-apporteurs";
 import { FOUNDER, founderUrl } from "@/lib/brand";
@@ -182,6 +183,7 @@ ${sectionVideos}${sectionTour}
 - [Page presse & dossier journalistes](${SITE_URL}/fr/presse) — kit média + contact dédié.
 - [Contact général](${SITE_URL}/fr/contact) — contact@axion-ia.com.
 
+${sectionReferenceLlms(SITE_URL, false)}
 ${sectionFaitsPratiquesLlms(SITE_URL)}
 
 ## Optional

@@ -37,6 +37,7 @@ import {
   recollerMontantsMasques,
 } from "@/lib/seo/montant-public-texte";
 import { collapsePriceProseDuplicates, resolvePriceTokens } from "@/content/pricing-tokens";
+import { sectionReferenceLlms } from "@/app/_llms/reference";
 import { SITE_URL } from "@/lib/seo";
 import {
   APPORTEURS_QUESTIONS_LLMS,
@@ -226,6 +227,7 @@ Pages : ${SITE_URL}/fr/devenir-commercial-ia · dossier de 3 minutes : ${SITE_UR
 
 URL : ${SITE_URL}/fr/methodologie
 ${sectionVideos}
+${sectionReferenceLlms(SITE_URL, true)}
 ${sectionFaitsPratiquesLlms(SITE_URL)}
 `;
 
