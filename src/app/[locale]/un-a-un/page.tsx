@@ -258,7 +258,7 @@ export default async function UnAUnHubPage({ params }: Props) {
       {
         name: isFr ? "Journée en tête-à-tête" : "One-on-one day",
         text: isFr
-          ? "Échange préalable de 45 minutes, puis votre coach passe la journée avec vous : journée stratégique pour un dirigeant (panorama IA de votre secteur, leviers hiérarchisés), journée de pratique sur vos vrais dossiers pour un collaborateur."
+          ? "Diagnostic IA de 45 minutes, puis votre coach passe la journée avec vous : journée stratégique pour un dirigeant (panorama IA de votre secteur, leviers hiérarchisés), journée de pratique sur vos vrais dossiers pour un collaborateur."
           : "A 45-minute preliminary call, then your coach spends the day with you: a strategy day for an executive (AI landscape of your sector, prioritised levers), a hands-on day on your real files for a team member.",
       },
       {

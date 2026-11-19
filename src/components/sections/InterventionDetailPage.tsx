@@ -341,8 +341,8 @@ export function InterventionDetailPage({ slug, locale }: Props): ReactNode {
                 ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Réservez directement votre date sur le calendrier. Acompte 50 % à la confirmation du créneau, solde après l'intervention.`
                 : "Sur devis. Réservez un appel : le devis et le planning suivent sous 48 h ouvrées."
               : prixVisible
-                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
-                : `Sur devis selon votre contexte. Cadrage par appel où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+                ? `${priceFr} pour ${config.groupSizeFr.toLowerCase()}. Diagnostic IA (45 min) où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
+                : `Sur devis selon votre contexte. Diagnostic IA (45 min) où l'on prend le temps de tout cadrer à la perfection, devis et planning sous 48 h ouvrées. Aucun engagement avant signature.`
             : isBookable
               ? prixVisible
                 ? `${priceEn} for ${config.groupSizeEn.toLowerCase()}. Book your date directly on the calendar. 50 % deposit on slot confirmation, balance after the session.`

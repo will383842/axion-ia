@@ -286,7 +286,7 @@ export default async function DirigeantsFamilyPage({ params }: Props) {
                       id: "choisir",
                       question: "Dirigeant ou collaborateur : quelle formule choisir ?",
                       answer:
-                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un échange préalable de 45 minutes permet de trancher.",
+                        "Pour choisir entre la formule dirigeant et la formule collaborateur, la question est : stratégie ou pratique ? La journée dirigeant est stratégique : elle porte sur votre marché, vos priorités et vos décisions. Le coaching collaborateur est pratique : une journée au poste de la personne, sur ses vrais dossiers. Un Diagnostic IA de 45 minutes permet de trancher.",
                     },
                     {
                       id: "repars",

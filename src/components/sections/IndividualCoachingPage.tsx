@@ -33,8 +33,7 @@ import {
   INTERVENTION_FORMATS,
   type InterventionFormatEntry,
 } from "@/content/interventions-taxonomy";
-import { buildServiceJsonLd, buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
-import { buildServiceAreasServed } from "@/lib/service-coverage";
+import { buildFaqJsonLd, buildHowToJsonLd } from "@/lib/seo";
 import { coachingFormulePath, coachingFormatPath } from "@/content/coaching-1to1";
 import { SERVICE_BY_ID, serviceOfficial } from "@/content/services";
 
@@ -252,16 +251,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
     },
   ];
 
-  // Service JSON-LD
-  const serviceJsonLd = buildServiceJsonLd({
-    locale,
-    path: formatPathFr,
-    name: `${isFr ? config.titleFr : config.titleEn} · Axion-IA`,
-    description: isFr ? config.promiseFr : config.promiseEn,
-    serviceType: "AI coaching",
-    priceEur: 0,
-    areasServed: buildServiceAreasServed(locale),
-  });
+  // Pas de Service JSON-LD : un seul Service de coaching existe, celui de /fr/un-a-un (GEO V2-08).
 
   // FAQPage JSON-LD pour AEO (via factory centralisée seo.ts).
   const faqJsonLd =
@@ -447,7 +437,7 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
 
       <CtaBlock
         eyebrow={isFr ? "Démarrer" : "Start"}
-        title={isFr ? "Échange préalable de 45 minutes" : "45-minute preliminary call"}
+        title={isFr ? "Diagnostic IA de 45 minutes" : "45-minute preliminary call"}
         description={
           isFr
             ? "On vous appelle, on comprend votre contexte et votre poste, on chiffre. Devis sous 48 h ouvrées. Aucun engagement avant signature."
@@ -466,7 +456,6 @@ export function IndividualCoachingPage({ slug, locale }: Props): ReactNode {
         tone="dark"
       />
 
-      <JsonLd data={serviceJsonLd} />
       {faqJsonLd ? <JsonLd data={faqJsonLd} /> : null}
       <JsonLd data={howToJsonLd} />
     </>

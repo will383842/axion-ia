@@ -9,7 +9,7 @@
  * - aucune promesse contradictoire (« 20 min » contre l'échange de 45 min), aucun prix de coaching,
  *   aucun mot interdit.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -74,9 +74,19 @@ describe("V2-08 — pages secondaires : canonical vers la référence", () => {
     },
   );
 
-  it("une seule page de coaching émet le Service « Coaching IA individuel »", () => {
-    const avecService = [HUB, ...SECONDAIRES].filter((f) => /buildServiceJsonLd\(/.test(lire(f)));
-    expect(avecService).toEqual([HUB]);
+  it("une seule page de coaching émet le Service « Coaching IA individuel » (tout src/app et src/components)", () => {
+    const parcourir = (dir: string): string[] =>
+      readdirSync(join(process.cwd(), dir), { withFileTypes: true }).flatMap((e) => {
+        const rel = `${dir}/${e.name}`;
+        if (e.isDirectory()) return parcourir(rel);
+        return /\.(tsx?|jsx?)$/.test(e.name) ? [rel] : [];
+      });
+    const fichiers = [...parcourir("src/app"), ...parcourir("src/components")];
+    const avecServiceCoaching = fichiers.filter((f) => {
+      const src = lire(f);
+      return /buildServiceJsonLd\(/.test(src) && /serviceType:\s*[^,\n]*coaching/i.test(src);
+    });
+    expect(avecServiceCoaching).toEqual([HUB]);
   });
 
   it("la page Vision IA stratégique n'émet pas de Service : le gabarit partagé le neutralise pour ce slug", () => {

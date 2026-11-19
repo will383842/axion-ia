@@ -165,7 +165,7 @@ export const COACHING_1TO1_DEROULE: ReadonlyArray<Coaching1to1Etape> = [
   },
   {
     id: "echange-prealable",
-    title: "Échange préalable de 45 minutes",
+    title: "Diagnostic IA de 45 minutes",
     detail:
       "Un point court pour caler ce qu'on vise et les dossiers réels sur lesquels on travaillera le jour J.",
   },
