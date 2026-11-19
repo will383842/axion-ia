@@ -6,12 +6,22 @@
  * ligne est remplie, focus rendu à la ligne voisine, dépendances de planning sans cycle.
  * Aucun calcul de montant ici (les totaux viennent de `calculs.ts`, dans l'aperçu direct).
  */
+import { Plus } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, type Dispatch } from "react";
+
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminCard } from "@/components/admin/ui/AdminCard";
+
+import { totauxLignes } from "../../calculs";
 
 import type { ActionAssistant } from "../../etat";
 import { appliquerOffre, noteDeLOffre, type OffreCatalogue } from "../../lignes";
 import type { EtatAssistant, LigneAssistant, TypeLigne } from "../../types";
+import { AideRepliable } from "./AideRepliable";
 import { LIBELLES_TYPE, LigneContenu, type AutreLigne } from "./LigneContenu";
+import { TITRE_BLOC } from "./styles";
+
+const EUROS = new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" });
 
 export interface PropsListeLignes {
   etat: EtatAssistant;
@@ -161,51 +171,79 @@ export function ListeLignes({ etat, dispatch, offres }: PropsListeLignes) {
     else refs.current.delete(id);
   }, []);
 
+  const totalHt = totauxLignes(lignes, 0).htCents;
   return (
-    <section aria-labelledby="titre-lignes" className="mb-[var(--space-admin-6,16px)]">
-      <h3 id="titre-lignes" className="mb-[var(--space-admin-3,6px)]">
-        Contenu du devis
-      </h3>
-      <p className="mb-2 text-[length:var(--text-admin-sm)]">
-        Autant de lignes que vous voulez. Chacune a son prix, son délai, ses champs libres. Toutes
-        les lignes sont comprises dans le prix.
-      </p>
-      <ol className="list-none p-0">
-        {lignes.map((l, i) => (
-          <LigneContenu
-            key={l.id}
-            ligne={l}
-            rang={i + 1}
-            autres={autresParLigne.get(l.id) ?? AUCUNE_AUTRE}
-            offres={offres}
-            note={l.offreCode !== "" ? noteDeLOffre(offres, l.offreCode) : null}
-            sansPrixFerme={sansPrix.has(l.id)}
-            confirmation={aSupprimer === l.id}
-            peutSupprimer={lignes.length > 1}
-            dispatch={dispatch}
-            onChoisirOffre={choisirOffre}
-            onDemanderSuppression={demander}
-            onConfirmerSuppression={supprimer}
-            onAnnulerSuppression={annuler}
-            enregistrerLibelle={enregistrerLibelle}
-          />
-        ))}
-      </ol>
-      <p role="status" aria-live="polite" className="mb-2 min-h-[1.5rem]">
-        {message}
-      </p>
-      <div className="flex flex-wrap gap-3">
-        {TYPES.map((t) => (
-          <button
-            key={t}
-            type="button"
-            className="min-h-[44px] rounded border px-3"
-            onClick={() => dispatch({ type: "ligne_ajouter", id: nouvelId(), typeLigne: t })}
-          >
-            + {LIBELLES_TYPE[t]}
-          </button>
-        ))}
+    <AdminCard as="section" variant="informational">
+      <div
+        role="group"
+        aria-labelledby="titre-lignes"
+        className="flex flex-col gap-[var(--space-admin-4,8px)]"
+      >
+        <div className="flex items-center justify-between gap-3">
+          <h3 id="titre-lignes" className={TITRE_BLOC}>
+            Contenu du devis
+          </h3>
+          <AideRepliable sujet="le contenu du devis">
+            Autant de lignes que vous voulez. Chacune a son prix, son délai, ses champs libres.
+            Toutes les lignes sont comprises dans le prix.
+          </AideRepliable>
+        </div>
+        <div
+          aria-hidden="true"
+          className={`hidden gap-3 px-3 text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)] lg:grid lg:grid-cols-[minmax(0,1fr)_5rem_8rem_6rem_8rem_2.75rem]`}
+        >
+          <span>Ligne</span>
+          <span>Qté</span>
+          <span>Prix HT</span>
+          <span>Délai</span>
+          <span className="text-right">Total HT</span>
+          <span />
+        </div>
+        <ol className="m-0 list-none p-0">
+          {lignes.map((l, i) => (
+            <LigneContenu
+              key={l.id}
+              ligne={l}
+              rang={i + 1}
+              autres={autresParLigne.get(l.id) ?? AUCUNE_AUTRE}
+              offres={offres}
+              note={l.offreCode !== "" ? noteDeLOffre(offres, l.offreCode) : null}
+              sansPrixFerme={sansPrix.has(l.id)}
+              confirmation={aSupprimer === l.id}
+              peutSupprimer={lignes.length > 1}
+              dispatch={dispatch}
+              onChoisirOffre={choisirOffre}
+              onDemanderSuppression={demander}
+              onConfirmerSuppression={supprimer}
+              onAnnulerSuppression={annuler}
+              enregistrerLibelle={enregistrerLibelle}
+            />
+          ))}
+        </ol>
+        <p role="status" aria-live="polite" className="m-0 min-h-[1.5rem]">
+          {message}
+        </p>
+        <div className="flex flex-wrap gap-3">
+          {TYPES.map((t) => (
+            <AdminButton
+              key={t}
+              variant="secondary"
+              size="lg"
+              icon={Plus}
+              aria-label={`+ ${LIBELLES_TYPE[t]}`}
+              onClick={() => dispatch({ type: "ligne_ajouter", id: nouvelId(), typeLigne: t })}
+            >
+              {LIBELLES_TYPE[t]}
+            </AdminButton>
+          ))}
+        </div>
+        <div className="flex items-center justify-end gap-4 border-t border-[color:var(--color-admin-border)] pt-3 text-[length:var(--text-admin-lg)] font-semibold">
+          <span>Total HT</span>
+          <span className="text-right whitespace-nowrap tabular-nums">
+            {EUROS.format(totalHt / 100)}
+          </span>
+        </div>
       </div>
-    </section>
+    </AdminCard>
   );
 }

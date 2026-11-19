@@ -25,6 +25,7 @@ const LIGNE = {
   detailHref: "/fr/x/contacts/messages/1",
   receivedAt: new Date("2026-11-01T10:00:00Z"),
   subject: "Audit IA",
+  nature: "audit",
   contactName: "Claire Martin",
   contactEmail: "claire@exemple.fr",
   context: "SCI Invest Sun",
@@ -85,11 +86,12 @@ describe("listerSourcesPourQuiAction (S13)", () => {
     expect("data" in r && r.note).toMatch(/incomplète.*appels réservés/);
   });
 
-  it("liste tronquée : note claire", async () => {
+  it("liste tronquée : note claire (moins de 10 éligibles)", async () => {
     const messages = Array.from({ length: 100 }, (_, i) => ({
       ...LIGNE,
       key: `m${i}`,
       sourceId: `m${i}`,
+      nature: i < 3 ? "audit" : "recrutement",
     }));
     listInbox.mockResolvedValue({ rows: messages, truncated: true, failedChannels: [] });
     const r = await listerSourcesPourQuiAction({ recherche: "" });
@@ -166,5 +168,57 @@ describe("listerSourcesPourQuiAction (S13)", () => {
     listInbox.mockRejectedValue(new Error("boom"));
     const r = await listerSourcesPourQuiAction({ recherche: "" });
     expect("error" in r).toBe(true);
+  });
+});
+
+describe("S13 — tri, plafond et troncature (demandes utiles)", () => {
+  const ligne = (i: number, nature: string, channel = "message") => ({
+    ...LIGNE,
+    key: `x${i}`,
+    sourceId: `x${i}`,
+    channel,
+    nature,
+    detailHref: `/fr/x/contacts/messages/${i}`,
+    contactEmail: `p${i}@exemple.fr`,
+  });
+
+  it("écarte recrutement, presse, apporteur et les lignes sans nature", async () => {
+    const sansNature = { ...LIGNE, key: "sn", nature: undefined };
+    listInbox.mockResolvedValue({
+      rows: [
+        ligne(1, "recrutement"),
+        ligne(2, "presse"),
+        ligne(3, "apporteur"),
+        sansNature,
+        ligne(4, "devis"),
+      ],
+      truncated: false,
+      failedChannels: [],
+    });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.data).toHaveLength(1);
+  });
+
+  it("le client choisi passe en premier ; 30 éligibles au plus", async () => {
+    const rows = Array.from({ length: 45 }, (_, i) => ligne(i, "audit"));
+    listInbox.mockResolvedValue({ rows, truncated: false, failedChannels: [] });
+    clientsParEmail.mockResolvedValue(
+      new Map([["p40@exemple.fr", { id: "c-40", numero: "CLI-40", raisonSociale: "X" }]]),
+    );
+    const r = await listerSourcesPourQuiAction({ recherche: "", clientId: "c-40" });
+    expect("data" in r && r.data).toHaveLength(30);
+    expect("data" in r && r.data[0]?.clientId).toBe("c-40");
+  });
+
+  it("troncature : note seulement si moins de 10 éligibles", async () => {
+    const cent = Array.from({ length: 100 }, (_, i) => ligne(i, "audit"));
+    listInbox.mockResolvedValue({ rows: cent, truncated: true, failedChannels: [] });
+    const beaucoup = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in beaucoup && beaucoup.note).toBeUndefined();
+
+    const peu = Array.from({ length: 100 }, (_, i) => ligne(i, i < 3 ? "audit" : "recrutement"));
+    listInbox.mockResolvedValue({ rows: peu, truncated: true, failedChannels: [] });
+    const r = await listerSourcesPourQuiAction({ recherche: "" });
+    expect("data" in r && r.note).toMatch(/incomplète/);
   });
 });

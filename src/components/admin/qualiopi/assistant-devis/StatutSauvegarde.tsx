@@ -62,14 +62,19 @@ export function StatutSauvegarde({
       <p
         role="status"
         aria-live="polite"
-        className="inline-block min-w-[18rem] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+        className={
+          "inline-block min-h-[1.5rem] min-w-[18rem] text-[length:var(--text-admin-sm)] " +
+          (statut === "enregistre"
+            ? "text-[color:var(--color-admin-success-fg)]"
+            : "text-[color:var(--color-admin-fg-muted)]")
+        }
       >
         {texte}
       </p>
       {/* Hors de la zone aria-live : le compteur change toutes les 5 s et ne doit pas être annoncé. */}
       <span
         data-testid="temps-ecoule"
-        className="inline-block min-w-[6rem] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-soft)]"
+        className="inline-block min-w-[6rem] text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
       >
         {temps}
       </span>
@@ -79,7 +84,7 @@ export function StatutSauvegarde({
           aria-label="Conflit de sauvegarde"
           ref={boite}
           tabIndex={-1}
-          className="mt-2 rounded border p-3"
+          className="mt-2 rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-destructive)] bg-[color:var(--color-admin-destructive-soft)] p-3"
         >
           <p>
             Vos dernières modifications n&apos;ont pas été enregistrées, pour ne pas écraser
@@ -89,7 +94,7 @@ export function StatutSauvegarde({
             <button
               ref={bouton}
               type="button"
-              className="mt-2 min-h-[44px] rounded border px-4"
+              className="admin-button-secondary admin-button-lg mt-2"
               onClick={onRecharger}
             >
               Recharger la dernière version

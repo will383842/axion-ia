@@ -44,36 +44,56 @@ export function ApercuDirect({ etat, tvaStandardPct, clientNom }: PropsApercuDir
     return () => document.removeEventListener("focusout", auDepart);
   }, [tvaStandardPct]);
 
+  const initiales = initialesDe(clientNom ?? "");
   return (
-    <aside aria-label="Aperçu en direct" className="w-full rounded border p-3 lg:w-[22rem]">
-      <p className="font-medium">Devis · brouillon</p>
-      {clientNom ? <p>{clientNom}</p> : null}
-      {intitule.trim() !== "" ? <p>{intitule}</p> : null}
-      <ul className="my-2 list-none p-0">
+    <aside
+      aria-label="Aperçu en direct"
+      className="w-full rounded-[var(--radius-admin-xl,16px)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-card,20px)] shadow-[var(--shadow-admin-1)] lg:w-[22rem]"
+    >
+      <div className="flex items-center justify-between gap-2">
+        <p className="font-semibold">Devis · brouillon</p>
+      </div>
+      {clientNom ? (
+        <div className="mt-3 flex items-center gap-3">
+          <span
+            aria-hidden="true"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[color:var(--color-admin-accent-track)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg)]"
+          >
+            {initiales}
+          </span>
+          <p className="font-medium">{clientNom}</p>
+        </div>
+      ) : null}
+      {intitule.trim() !== "" ? <p className="mt-2">{intitule}</p> : null}
+      <ul className="my-3 list-none divide-y divide-[color:var(--color-admin-border)] p-0">
         {lignes.map((l, i) => {
           const t = totauxLignes([l], tvaStandardPct);
           return (
-            <li key={l.id} className="flex justify-between gap-2">
-              <span>{l.libelle.trim() !== "" ? l.libelle : `Ligne ${i + 1}`}</span>
-              <span>{t.incomplet ? "—" : euros(t.htCents)}</span>
+            <li key={l.id} className="flex justify-between gap-2 py-2">
+              <span className="min-w-0">
+                {l.libelle.trim() !== "" ? l.libelle : `Ligne ${i + 1}`}
+              </span>
+              <span className="text-right whitespace-nowrap tabular-nums">
+                {t.incomplet ? "—" : euros(t.htCents)}
+              </span>
             </li>
           );
         })}
       </ul>
-      <div className="border-t pt-2">
-        <p className="flex justify-between">
-          <span>Total HT</span>
-          <span>{euros(total.htCents)}</span>
-        </p>
-        <p className="flex justify-between">
-          <span>TVA {String(tvaStandardPct).replace(".", ",")} %</span>
-          <span>{euros(total.tvaCents)}</span>
-        </p>
-        <p className="flex justify-between font-medium">
-          <span>Total TTC</span>
-          <span>{euros(total.ttcCents)}</span>
-        </p>
-      </div>
+      <dl className="border-t border-[color:var(--color-admin-border)] pt-3">
+        <div className="flex justify-between gap-2">
+          <dt>Total HT</dt>
+          <dd className="m-0 text-right whitespace-nowrap tabular-nums">{euros(total.htCents)}</dd>
+        </div>
+        <div className="flex justify-between gap-2">
+          <dt>TVA {String(tvaStandardPct).replace(".", ",")} %</dt>
+          <dd className="m-0 text-right whitespace-nowrap tabular-nums">{euros(total.tvaCents)}</dd>
+        </div>
+        <div className="mt-1 flex justify-between gap-2 text-[length:var(--text-admin-xl)] font-bold">
+          <dt>Total TTC</dt>
+          <dd className="m-0 text-right whitespace-nowrap tabular-nums">{euros(total.ttcCents)}</dd>
+        </div>
+      </dl>
       {total.incomplet ? (
         <p className="mt-2 text-[length:var(--text-admin-sm)]">
           Certaines lignes sont illisibles (prix ou quantité) : elles ne sont pas comptées ici.
@@ -84,4 +104,16 @@ export function ApercuDirect({ etat, tvaStandardPct, clientNom }: PropsApercuDir
       </p>
     </aside>
   );
+}
+
+/** Deux initiales au plus, pour l'avatar (décoratif). */
+function initialesDe(nom: string): string {
+  const mots = nom
+    .trim()
+    .split(/\s+/)
+    .filter((m) => m !== "");
+  return mots
+    .slice(0, 2)
+    .map((m) => m.charAt(0).toUpperCase())
+    .join("");
 }
