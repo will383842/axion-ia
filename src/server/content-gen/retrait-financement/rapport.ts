@@ -7,7 +7,7 @@
  */
 import { htmlVersBlocs, blocsTexteJson } from "./regles";
 import type { Proposition } from "./plan";
-import { resume } from "./plan";
+import { ambigusNonCouverts, gabaritOverrides, resume } from "./plan";
 
 export const CONTEXTE_CARACTERES = 150;
 const RETIRE_MAX = 800;
@@ -247,6 +247,45 @@ export function lignesModification(
   return lignes;
 }
 
+/** Passage ambigu COMPLET : le bloc de texte qui contient l'extrait cité, sinon tout le champ. */
+function texteComplet(valeur: unknown, message: string): string[] {
+  const blocs = blocsDe(valeur).map((b) => b.texte);
+  const cite = /«\s*([\s\S]*?)\s*(?:»|…)?\s*$/.exec(message)?.[1]?.replace(/…$/, "") ?? "";
+  const amorce = cite.slice(0, 60);
+  const trouves = amorce.length >= 8 ? blocs.filter((b) => b.includes(amorce)) : [];
+  return trouves.length > 0 ? trouves : blocs;
+}
+
+/** Section des ambigus : identifiant, champ, texte complet, puis gabarit d'overrides. */
+function sectionAmbigus(propositions: readonly Proposition[]): string[] {
+  const restants = ambigusNonCouverts(propositions);
+  const l = [
+    "",
+    "## Cas ambigus (à trancher dans `retrait-financement-overrides.json`)",
+    "",
+    restants.length === 0
+      ? "Aucun ambigu restant : `--apply` est possible."
+      : `⛔ ${restants.length} ambigu(s) non couvert(s) : \`--apply\` est REFUSÉ tant qu'il en reste.`,
+  ];
+  for (const a of restants) {
+    const p = propositions.find((x) => x.cle === a.cle);
+    l.push("", `- identifiant \`${a.cle}\` · champ \`${a.champ}\` : ${a.message}`);
+    l.push("  - texte complet du passage :");
+    for (const t of texteComplet(p?.avant[a.champ], a.message)) l.push(`    > ${t}`);
+  }
+  if (restants.length > 0) {
+    l.push(
+      "",
+      "Gabarit à copier dans `scripts/content-gen/retrait-financement-overrides.json` (`valeur` = texte FINAL du champ, à écrire ; une valeur vide est ignorée) :",
+      "",
+      "```json",
+      JSON.stringify(gabaritOverrides(propositions), null, 2),
+      "```",
+    );
+  }
+  return l;
+}
+
 /** Rapport complet de l'essai à blanc / de l'application. */
 export function construireRapport(
   mode: string,
@@ -271,8 +310,7 @@ export function construireRapport(
       l.push(...lignesModification(x.cle, c, x.avant[c], x.apres[c]));
   l.push("", "## Règles ciblées appliquées (fragments, décomptes, cellules, questions)");
   for (const x of propositions) for (const g of x.regles ?? []) l.push(`- \`${x.cle}\` · ${g}`);
-  l.push("", "## Cas ambigus (à trancher dans `retrait-financement-overrides.json`)");
-  for (const x of propositions) for (const a of x.ambigus) l.push(`- ${a}`);
+  l.push(...sectionAmbigus(propositions));
   l.push("", "## « prise en charge » conservées (hors financement)");
   for (const x of propositions) for (const c of x.conserves) l.push(`- \`${x.cle}\` : ${c}`);
   if (ignores.length > 0) l.push("", "## Overrides ignorés", ...ignores.map((i) => `- ${i}`));

@@ -80,8 +80,6 @@ const SENS_FINANCIER = new RegExp(
     "\\beligible",
     // « La prise en charge dépend de la certification de l'organisme formateur » : sens financier.
     "certification de l'organisme",
-    "organisme formateur",
-    "organisme de formation",
     "modalit[ée]s? de (?:la )?prise en charge",
     "(?:dossier|demande|accord) de prise en charge",
     "pris(?:e|es)? en charge (?:totale|partielle|financi[èe]re)",
@@ -278,7 +276,15 @@ interface Fragment {
   ambigu?: string;
 }
 
-/** Corrige « sept étapes : a, b, x, c » quand `retires` éléments de la liste sont retirés. */
+/** Connecteur entre un nombre annoncé et son énumération : « sont », « comprend »… */
+const CONNECTEUR_DECOMPTE =
+  /^[^,:;.]{0,80}?\b(?:sont|est|comprennent|comprend|incluent|inclut|reposent sur|repose sur)\s+/i;
+
+/**
+ * Corrige « sept étapes : a, b, x, c » ou « Les 3 piliers sont a, b et c » quand `retires` éléments
+ * de la liste sont retirés. Un nombre annoncé devant l'énumération qui ne se vérifie pas (pas de
+ * « : » ni de « sont » derrière, nombre d'éléments différent) rend la phrase ambiguë.
+ */
 function corrigerDecompte(
   corps: string,
   resultat: string,
@@ -290,11 +296,21 @@ function corrigerDecompte(
   for (const m of avant.matchAll(DECOMPTE)) dernier = m;
   if (!dernier || dernier.index === undefined) return { texte: resultat };
   const suite = corps.slice(dernier.index + dernier[0].length);
-  if (!/^\s*[:：]/.test(suite)) return { texte: resultat };
+  const apresDeuxPoints = /^\s*[:：]\s*/.exec(suite);
+  const apresConnecteur = apresDeuxPoints ? null : CONNECTEUR_DECOMPTE.exec(suite);
+  const liste = apresDeuxPoints
+    ? suite.slice(apresDeuxPoints[0].length)
+    : apresConnecteur
+      ? suite.slice(apresConnecteur[0].length)
+      : null;
+  if (liste === null)
+    return {
+      texte: resultat,
+      ambigu: `décompte à vérifier : « ${dernier[0]} » (énumération sans « : » ni « sont »)`,
+    };
   const n = valeurNombre(dernier[1]!);
-  const elements = suite
-    .replace(/^\s*[:：]\s*/, "")
-    .split(/,\s+(?:et\s+)?|\s+et\s+/)
+  const elements = liste
+    .split(/,\s+(?:et\s+|ou\s+)?|\s+(?:et|ou)\s+/)
     .filter((x) => x.trim() !== "").length;
   if (elements !== n || n - retires < 2)
     return {
@@ -339,24 +355,41 @@ function fragmenter(phrase: string): Fragment | null {
   }
   const base = sansParenthese !== corps0 ? sansParenthese : corps0;
 
-  // 2. Segments entre virgules (jamais le premier : il porte le sujet).
+  // 2. Segments entre virgules (jamais le premier : il porte le sujet). Le dernier élément
+  // « x et y » est éclaté pour que « et la formation » ne parte pas avec l'élément visé.
   const segments = base.split(/,\s+/);
+  let conjonction: string | null = null;
+  // Seulement quand un nombre est annoncé devant : sinon « x ou y peuvent être mobilisés » est un
+  // prédicat, pas un élément de liste.
+  if (segments.length > 1 && new RegExp(DECOMPTE.source, "i").test(base)) {
+    const dernierSeg = segments.pop()!;
+    const tete = /^(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
+    const milieu = tete ? null : /^([\s\S]+?)\s+(et|ou)\s+([\s\S]+)$/i.exec(dernierSeg);
+    if (tete) {
+      conjonction = tete[1]!;
+      segments.push(tete[2]!);
+    } else if (milieu) {
+      conjonction = milieu[2]!;
+      segments.push(milieu[1]!, milieu[3]!);
+    } else segments.push(dernierSeg);
+  }
   if (segments.length > 1 && !estVisee(segments[0]!)) {
     const visees = segments.map((s) => estVisee(s));
     if (visees.some(Boolean)) {
+      const gardes = segments.filter((_, i) => !visees[i]);
+      const retires = segments.length - gardes.length;
+      const premierRetire = visees.indexOf(true);
       let sortie = "";
-      let retires = 0;
-      let premierRetire = -1;
-      segments.forEach((s, i) => {
-        if (visees[i]) {
-          retires++;
-          if (premierRetire < 0) premierRetire = i;
-          return;
-        }
-        if (sortie === "") sortie = s;
-        else if (visees[i - 1] && /^(?:et|ou)\s/i.test(s)) sortie += ` ${s}`;
-        else sortie += `, ${s}`;
-      });
+      if (conjonction && gardes.length >= 2)
+        sortie = `${gardes.slice(0, -1).join(", ")} ${conjonction} ${gardes[gardes.length - 1]}`;
+      else if (conjonction) sortie = gardes.join(", ");
+      else
+        segments.forEach((s, i) => {
+          if (visees[i]) return;
+          if (sortie === "") sortie = s;
+          else if (visees[i - 1] && /^(?:et|ou)\s/i.test(s)) sortie += ` ${s}`;
+          else sortie += `, ${s}`;
+        });
       if (ok(sortie)) {
         const debut = segments.slice(0, premierRetire).join(", ").length;
         const c = corrigerDecompte(base, sortie, debut, retires);
@@ -800,6 +833,8 @@ function corrigerIntroDecompte(
 }
 
 const INTRO_FINANCEMENT = /financ|\bfund|prise en charge/i;
+/** Une puce « parle de financement » : motif visé, ou vocabulaire d'argent (fonds, budget, coût…). */
+const PUCE_ARGENT = /financ|\bfund|\bfonds\b|subvention|budget|tarif|€|\bprix\b|co[uû]ts?\b/i;
 
 function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: string[]): boolean {
   let modifie = false;
@@ -814,7 +849,11 @@ function traiterListes(racine: Element, d: Document, langue: Langue, ambigus: st
     );
     if (visees.length === 0) continue;
     const intro = liste.previousElementSibling;
+    // Liste entière remplacée seulement si TOUTES ses puces parlent de financement.
     const introFinancement =
+      items.every(
+        (li) => visees.includes(li) || PUCE_ARGENT.test(normaliser(htmlVersTexte(li.innerHTML))),
+      ) &&
       !!intro &&
       intro.tagName === "P" &&
       /:\s*$/.test((intro.textContent ?? "").trim()) &&

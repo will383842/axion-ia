@@ -20,6 +20,13 @@ import {
 
 export const ACTION_RETRAIT = "retrait-financement-2026-11";
 export const ACTION_RESTAURATION = "retrait-financement-2026-11-restauration";
+/**
+ * Override humain sur un contenu DÉJÀ traité : réécriture ciblée des seuls champs surchargés, avec
+ * sa propre sauvegarde (ancienne valeur) et sa propre restauration. Jamais mêlée à la sauvegarde
+ * du premier passage.
+ */
+export const ACTION_OVERRIDE = "retrait-financement-2026-11-override";
+export const ACTION_RESTAURATION_OVERRIDE = "retrait-financement-2026-11-override-restauration";
 
 /** Offres consacrées au financement : poste qu'Axion-IA ne propose pas → archivées (arbitrage 1). */
 export const SLUGS_OFFRES_ARCHIVEES: readonly string[] = [
@@ -49,6 +56,8 @@ export interface Proposition {
   conserves: string[];
   /** Règles ciblées appliquées (fragment retiré, décompte corrigé, cellule, question…). */
   regles?: string[];
+  /** Champs réécrits par un override humain (sous-ensemble de `apres`). */
+  surcharges?: string[];
 }
 
 /** Valeurs de remplacement validées par un humain pour un cas ambigu. */
@@ -367,7 +376,12 @@ export function appliquerOverrides(
   const avant = { ...p.avant };
   const apres = { ...p.apres };
   const ignores: string[] = [];
+  const appliques: string[] = [];
   for (const [champ, o] of Object.entries(surcharges)) {
+    if (o.valeur === "" || o.valeur === null || o.valeur === undefined) {
+      ignores.push(`${p.cle}.${champ} : valeur vide (gabarit non rempli), override ignoré`);
+      continue;
+    }
     const courant = champ in originaux ? originaux[champ] : undefined;
     if (empreinte(courant) !== o.origine) {
       ignores.push(
@@ -377,6 +391,7 @@ export function appliquerOverrides(
     }
     avant[champ] = courant;
     apres[champ] = o.valeur;
+    appliques.push(champ);
   }
   const ambigus = p.ambigus.filter(
     (a) =>
@@ -385,7 +400,67 @@ export function appliquerOverrides(
           a.startsWith(`${p.cle}.${champ} :`) && !ignores.some((i) => i.includes(`.${champ} :`)),
       ),
   );
-  return { proposition: { ...p, avant, apres, ambigus }, ignores };
+  return {
+    proposition: {
+      ...p,
+      avant,
+      apres,
+      ambigus,
+      surcharges: [...(p.surcharges ?? []), ...appliques],
+    },
+    ignores,
+  };
+}
+
+export interface AmbiguRestant {
+  cle: string;
+  champ: string;
+  message: string;
+}
+
+/** Ambigus non couverts par un override : l'application est refusée tant qu'il en reste. */
+export function ambigusNonCouverts(propositions: readonly Proposition[]): AmbiguRestant[] {
+  const out: AmbiguRestant[] = [];
+  for (const p of propositions)
+    for (const a of p.ambigus) {
+      const reste = a.startsWith(`${p.cle}.`) ? a.slice(p.cle.length + 1) : a;
+      const i = reste.indexOf(" : ");
+      out.push({
+        cle: p.cle,
+        champ: i < 0 ? reste : reste.slice(0, i),
+        message: i < 0 ? "" : reste.slice(i + 3),
+      });
+    }
+  return out;
+}
+
+/** `--apply` : lève une erreur claire tant qu'un ambigu n'est pas couvert par un override. */
+export function refuserSiAmbigus(
+  propositions: readonly Proposition[],
+  source: string | null,
+): void {
+  const restants = ambigusNonCouverts(propositions);
+  if (restants.length === 0) return;
+  const ids = [...new Set(restants.map((x) => `${x.cle}.${x.champ}`))];
+  throw new Error(
+    `--apply REFUSÉ : ${restants.length} ambigu(s) non couvert(s) par ${source ?? "retrait-financement-overrides.json"} ` +
+      `(${ids.slice(0, 5).join(", ")}${ids.length > 5 ? ", …" : ""}). ` +
+      "Le rapport (--report) liste chaque passage complet et le gabarit JSON à remplir.",
+  );
+}
+
+/**
+ * Gabarit JSON à remplir dans `retrait-financement-overrides.json` : une entrée par (contenu, champ)
+ * ambigu, avec l'empreinte de l'original ; `valeur` (texte FINAL du champ) est à écrire à la main.
+ */
+export function gabaritOverrides(propositions: readonly Proposition[]): Overrides {
+  const g: Overrides = {};
+  for (const r of ambigusNonCouverts(propositions)) {
+    const p = propositions.find((x) => x.cle === r.cle);
+    if (!p || !(r.champ in p.avant)) continue;
+    (g[r.cle] ??= {})[r.champ] = { origine: empreinte(p.avant[r.champ]), valeur: "" };
+  }
+  return g;
 }
 
 /**

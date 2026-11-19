@@ -6,7 +6,9 @@
  *
  * Modes (un seul à la fois) :
  *   --dry-run (DÉFAUT)             lit, calcule le plan, n'écrit RIEN en base. Affiche l'empreinte du plan.
- *   --apply --plan-sha=<sha>       écrit ; refuse si l'empreinte recalculée ≠ celle de l'essai à blanc.
+ *   --apply --plan-sha=<sha>       écrit ; refuse si l'empreinte recalculée ≠ celle de l'essai à blanc,
+ *                                  et REFUSE (sortie en erreur) tant qu'un contenu ambigu n'est pas
+ *                                  couvert par retrait-financement-overrides.json.
  *   --restore                      remet les valeurs d'origine (seulement si la valeur actuelle = celle écrite).
  * Options : --only=<id,id,…> (ids de lignes) · --report=<fichier> · --overrides=<fichier.json>.
  *
@@ -22,7 +24,11 @@ import fs from "node:fs";
 import { Prisma, PrismaClient } from "../../prisma/generated/client";
 import {
   ACTION_RESTAURATION,
+  ACTION_OVERRIDE,
+  ACTION_RESTAURATION_OVERRIDE,
   ACTION_RETRAIT,
+  ambigusNonCouverts,
+  refuserSiAmbigus,
   type Champs,
   type Overrides,
   type Proposition,
@@ -193,18 +199,57 @@ function delegue(tx: Prisma.TransactionClient, table: Table): Delegue {
   return map[table] as unknown as Delegue;
 }
 
+/**
+ * Override sur un contenu DÉJÀ traité : seuls les champs surchargés sont réécrits, avec leur propre
+ * sauvegarde (action « override ») ; la sauvegarde du premier passage n'est jamais touchée.
+ */
+async function appliquerOverride(p: Proposition): Promise<boolean> {
+  const champs = (p.surcharges ?? []).filter((c) => c in p.apres);
+  if (champs.length === 0) return false;
+  const avant: Champs = {};
+  const apres: Champs = {};
+  for (const c of champs) {
+    avant[c] = p.avant[c];
+    apres[c] = p.apres[c];
+  }
+  return prisma.$transaction(async (tx) => {
+    const d = delegue(tx, p.table);
+    const courant = await d.findUnique({ where: { id: p.id } });
+    if (!courant) throw new Error(`${p.cle} : ligne introuvable`);
+    // Déjà à la valeur voulue : rien à faire (relance idempotente).
+    if (champs.every((c) => empreinte(json(courant[c])) === empreinte(json(apres[c]))))
+      return false;
+    for (const c of champs)
+      if (empreinte(json(courant[c])) !== empreinte(json(avant[c])))
+        throw new Error(`${p.cle}.${c} : modifié depuis l'essai à blanc, refus`);
+    await tx.contentGenAuditLog.create({
+      data: {
+        action: ACTION_OVERRIDE,
+        settingKey: p.cle,
+        oldValue: avant as Prisma.InputJsonValue,
+        newValue: apres as Prisma.InputJsonValue,
+        actorEmail: ACTEUR,
+      },
+    });
+    await d.update({ where: { id: p.id }, data: donnees(apres) });
+    return true;
+  });
+}
+
 async function appliquer(propositions: Proposition[]): Promise<{ ecrits: number; deja: string[] }> {
   let ecrits = 0;
   const deja: string[] = [];
   for (const p of propositions) {
     if (Object.keys(p.apres).length === 0) continue;
-    // Jamais d'écrasement d'une sauvegarde existante : contenu déjà traité → on s'arrête là pour lui.
+    // Jamais d'écrasement d'une sauvegarde existante : contenu déjà traité → on s'arrête là pour lui,
+    // sauf un override humain, qui est une réécriture ciblée avec sa propre sauvegarde.
     const existe = await prisma.contentGenAuditLog.findFirst({
       where: { action: ACTION_RETRAIT, settingKey: p.cle },
       select: { id: true },
     });
     if (existe) {
-      deja.push(p.cle);
+      if (await appliquerOverride(p)) ecrits++;
+      else deja.push(p.cle);
       continue;
     }
     await prisma.$transaction(async (tx) => {
@@ -234,10 +279,17 @@ async function appliquer(propositions: Proposition[]): Promise<{ ecrits: number;
 async function restaurer(
   only: Set<string> | null,
 ): Promise<{ restaures: number; divergences: string[]; urls: string[]; lignes: string[] }> {
-  const lignes = await prisma.contentGenAuditLog.findMany({
-    where: { action: ACTION_RETRAIT },
-    orderBy: { createdAt: "asc" },
-  });
+  // Les overrides se défont AVANT le premier passage (le plus récent d'abord).
+  const lignes = (
+    await prisma.contentGenAuditLog.findMany({
+      where: { action: { in: [ACTION_OVERRIDE, ACTION_RETRAIT] } },
+      orderBy: { createdAt: "desc" },
+    })
+  ).sort(
+    (a, b) =>
+      Number(b.action === ACTION_OVERRIDE) - Number(a.action === ACTION_OVERRIDE) ||
+      b.createdAt.getTime() - a.createdAt.getTime(),
+  );
   let restaures = 0;
   const divergences: string[] = [];
   const urls: string[] = [];
@@ -247,9 +299,11 @@ async function restaurer(
     if (!table || !id || (only && !only.has(id))) continue;
     const avant = (l.oldValue ?? {}) as Champs;
     const apres = (l.newValue ?? {}) as Champs;
+    const actionRestauration =
+      l.action === ACTION_OVERRIDE ? ACTION_RESTAURATION_OVERRIDE : ACTION_RESTAURATION;
     const deja = await prisma.contentGenAuditLog.findFirst({
       where: {
-        action: ACTION_RESTAURATION,
+        action: actionRestauration,
         settingKey: l.settingKey,
         createdAt: { gt: l.createdAt },
       },
@@ -278,7 +332,7 @@ async function restaurer(
       await d.update({ where: { id }, data: donnees(remis) });
       await tx.contentGenAuditLog.create({
         data: {
-          action: ACTION_RESTAURATION,
+          action: actionRestauration,
           settingKey: l.settingKey,
           oldValue: apres as Prisma.InputJsonValue,
           newValue: remis as Prisma.InputJsonValue,
@@ -329,6 +383,8 @@ async function main() {
     `Contenus concernés : ${r.total} · à réécrire : ${r.a_reecrire} · ambigus : ${r.ambigus}`,
   );
   console.log(`PLAN_SHA=${sha}`);
+  for (const x of ambigusNonCouverts(propositions))
+    console.log(`⛔ ambigu non couvert : ${x.cle}.${x.champ}`);
   if (o.rapport) ecrireRapport(o.rapport, o, propositions, ignores, sha);
   if (o.urls) fs.writeFileSync(o.urls, `${urls.join("\n")}\n`);
 
@@ -336,6 +392,7 @@ async function main() {
     console.log("Essai à blanc : RIEN n'a été écrit en base.");
     return;
   }
+  refuserSiAmbigus(propositions, o.overrides);
   if (!o.planSha) throw new Error("--apply exige --plan-sha=<empreinte de l'essai à blanc>.");
   if (o.planSha !== sha)
     throw new Error(
