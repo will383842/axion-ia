@@ -27,7 +27,10 @@ import { CtaBlock } from "@/components/sections/CtaBlock";
 import { getFormationsV2ByCategorie, getSeminairesV2 } from "@/content/formations/catalog-v2";
 import { FORMATION_CATEGORIES_META, SUR_MESURE } from "@/content/formations/catalog-v2-meta";
 import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
-import { CONDITIONS_TARIFAIRES_FR } from "@/content/formations/conditions-tarifaires";
+import {
+  CONDITIONS_TARIFAIRES_FR,
+  CONDITION_TARIFAIRE_FINANCEMENT_EN_SOMMEIL_FR,
+} from "@/content/formations/conditions-tarifaires";
 import { EFFECTIF_PLAGE_FR } from "@/content/formations/effectif";
 import { buildProductMetadata } from "@/lib/seo";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
@@ -249,7 +252,12 @@ export default async function TarifsPage({ params }: { params: Promise<{ locale:
       >
         <Container>
           <dl className="mx-auto grid max-w-4xl gap-4 sm:grid-cols-2">
-            {CONDITIONS_TARIFAIRES_FR.map((c) => (
+            {[
+              ...CONDITIONS_TARIFAIRES_FR,
+              ...(isQualiopiCertificationObtenue()
+                ? [CONDITION_TARIFAIRE_FINANCEMENT_EN_SOMMEIL_FR]
+                : []),
+            ].map((c) => (
               <div key={c.titre} className="border-border bg-paper rounded-2xl border p-6">
                 <dt className="text-fg text-base font-semibold">{c.titre}</dt>
                 <dd className="text-fg-soft mt-2 text-[15px] leading-relaxed">{c.texte}</dd>

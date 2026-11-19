@@ -175,7 +175,10 @@ describe("les constantes disent la même chose que les CGV et le mécanisme", ()
   });
 
   it("les CGV : le contrat est formé à la contresignature, signature électronique simple (pas avancée ni qualifiée)", () => {
-    expect(cgv).toMatch(/Le contrat est formé à la contresignature d'Axion-IA/);
+    // v3 art. 6.2 : le contrat est formé lorsque les deux parties ont signé le devis.
+    expect(cgv).toMatch(
+      /formé lorsque les deux parties ont signé le devis[\s\S]*contresignature d'Axion-IA/,
+    );
     expect(cgv).toMatch(/signature électronique simple/);
     expect(cgv).toMatch(/ni une signature avancée, ni une signature qualifiée/);
     expect(cgv).toMatch(/RFC 3161/);

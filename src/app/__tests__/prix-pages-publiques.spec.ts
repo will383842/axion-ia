@@ -265,11 +265,6 @@ const EXCEPTIONS: ReadonlyArray<{ fichier: string; motif: RegExp; raison: string
     raison: "coût d'une agence SEO concurrente",
   },
   {
-    fichier: "content/formations/conditions-tarifaires.ts",
-    motif: /inférieure à 5 000 € HT/,
-    raison: "seuil des conditions de paiement (CGV), pas un prix d'offre",
-  },
-  {
     fichier: "content/transversal.ts",
     motif:
       /formatAmount\((auditFlashTier|auditCibleTier|auditPmeTier|auditEtiTier)\.price|Module 1 — On-site sessions \(1 day from \$\{formatAmount/,

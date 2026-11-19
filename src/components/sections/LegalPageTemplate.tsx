@@ -36,6 +36,11 @@ interface LegalPageTemplateProps {
   canonicalPath?: string;
   /** Locale active — requis pour `inLanguage` + URL du nœud WebPage. */
   locale?: Locale;
+  /**
+   * Conserve les retours à la ligne du texte de chaque section (`whitespace-pre-line`) :
+   * les CGV numérotent leurs alinéas (« 6.1 », « 6.2 »…) un par ligne. Faux par défaut.
+   */
+  preserveLineBreaks?: boolean;
 }
 
 // Au-delà de ce nombre de sections, on affiche un sommaire ancré sticky
@@ -94,6 +99,7 @@ export function LegalPageTemplate({
   relatedLinks,
   canonicalPath,
   locale,
+  preserveLineBreaks = false,
 }: LegalPageTemplateProps) {
   // WebPage JSON-LD optionnel (schema.org n'expose pas PrivacyPolicy/TermsOfService).
   // Émis uniquement si la page fournit canonicalPath + locale (rétro-compatible).
@@ -148,7 +154,12 @@ export function LegalPageTemplate({
             </a>
           </h2>
         </div>
-        <p className="text-fg-soft mt-4 text-[15px] leading-relaxed sm:pl-[3.25rem] sm:text-base">
+        <p
+          className={cn(
+            "text-fg-soft mt-4 text-[15px] leading-relaxed sm:pl-[3.25rem] sm:text-base",
+            preserveLineBreaks && "whitespace-pre-line",
+          )}
+        >
           {section.body}
         </p>
       </section>

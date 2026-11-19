@@ -32,19 +32,25 @@ export const CONDITIONS_TARIFAIRES_FR: ReadonlyArray<{ titre: string; texte: str
   {
     titre: "Paiement",
     texte:
-      "Par virement bancaire. Pour une prestation inférieure à 5 000 € HT, le paiement intervient à la commande ; au-delà, un échelonnement peut être convenu au devis. Aucun escompte en cas de paiement anticipé.",
+      "Par virement, selon les phases et l'échéancier fixés au devis. Aucun escompte en cas de paiement anticipé.",
   },
   {
     titre: "Annulation et report",
     texte:
-      "À plus de 15 jours ouvrés avant le début, aucune somme n'est due. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. La formation est reportable une fois sans frais, à une date convenue ensemble.",
-  },
-  {
-    titre: "Financement",
-    texte:
-      "Nous vous indiquons les solutions de financement possibles lors du premier échange. La formation reste due par l'entreprise dans les conditions prévues au devis.",
+      "À plus de 15 jours ouvrés avant le début, aucune somme n'est due. Entre 8 et 15 jours ouvrés, 50 % du prix HT restent dus ; à moins de 8 jours ouvrés, le prix HT reste dû en totalité. La formation est reportable une fois sans frais, à une date convenue ensemble dans les 3 mois.",
   },
 ];
+
+/**
+ * Ligne « Financement » : EN SOMMEIL. Elle parle de solutions de financement, que les CGV ne
+ * citent qu'une fois la certification obtenue : la page des tarifs ne l'affiche que si
+ * `isQualiopiCertificationObtenue()`.
+ */
+export const CONDITION_TARIFAIRE_FINANCEMENT_EN_SOMMEIL_FR: { titre: string; texte: string } = {
+  titre: "Financement",
+  texte:
+    "Nous vous indiquons les solutions de financement possibles lors du premier échange. La formation reste due par l'entreprise dans les conditions prévues au devis.",
+};
 
 /**
  * Slogans retirés, que le contenu public des formations ne doit plus porter.
