@@ -227,11 +227,15 @@ export async function chargerAssistantDevis(
       },
     });
     // Refus APRÈS l'existence du lien : jamais vers la fiche (son bouton renvoie à l'assistant :
-    // cul-de-sac). Classique → écran de correction ; à formules → l'éditeur d'avant.
+    // cul-de-sac). Classique → écran de correction ; à formules → l'éditeur d'avant. Formules
+    // ÉTEINTES : l'éditeur d'avant n'existe pas (/modifier renverrait ici) → la fiche, qui
+    // n'affiche alors aucun bouton de modification : fin propre, pas de boucle.
     const refus = (message: string): RedirectionAssistant =>
       devis.offre === null
         ? { redirection: `${fiche}/corriger`, message, libelleLien: "Corriger le brouillon" }
-        : {
+        : !formulesOn
+          ? versFiche(message)
+          : {
             redirection: `${fiche}/modifier?sans-assistant=1`,
             message,
             libelleLien: "Modifier sans l'assistant",
@@ -272,7 +276,9 @@ export async function chargerAssistantDevis(
         `Ce devis a été modifié hors de l'assistant depuis son dernier enregistrement ici : ${
           devis.offre === null
             ? "corrigez-le depuis son écran de correction."
-            : "ouvrez sa fiche pour le corriger."
+            : formulesOn
+              ? "modifiez-le sans l'assistant."
+              : "ouvrez sa fiche."
         }`,
       );
     // Barrière seulement : une offre illisible ou une TVA non standard restent refusées ; le
