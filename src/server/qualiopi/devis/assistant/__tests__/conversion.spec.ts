@@ -71,7 +71,7 @@ function formules(m: "A" | "B" | "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.lignes = [
     { libelle: "Mise en service et adaptation", quantite: "1", prixEur: "1 900", tauxTvaPct: "20" },
   ];
@@ -272,6 +272,8 @@ function devisDepuis(offre: OffreDevisV1): DevisPourAssistant {
 function offreStandard(): OffreDevisV1 {
   const o = offreFictive();
   o.achat!.lignes = o.achat!.lignes.map((l) => ({ ...l, tauxTvaBps: 2000 }));
+  // D4 : un nouveau devis porte une indemnité de sortie à zéro (surcharge locale de la fixture).
+  o.abonnement!.indemniteSortieTauxBps = 0;
   return o;
 }
 

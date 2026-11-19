@@ -51,7 +51,7 @@ describe("construireOffre", () => {
     if (r.ok) {
       expect(r.offre.formulesProposees).toEqual(["achat", "abonnement"]);
       expect(r.offre.achat?.lignes[0]?.prixHtCents).toBe(100000);
-      expect(r.offre.abonnement?.indemniteSortieTauxBps).toBe(5000);
+      expect(r.offre.abonnement?.indemniteSortieTauxBps).toBe(0);
       expect(r.offre.garantie.jours).toBe(30);
     }
   });

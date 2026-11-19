@@ -59,6 +59,8 @@ import {
   signatureClientDuDevis,
 } from "@/server/qualiopi/devis/signature-client-du-devis";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
+import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { refusReglesFormules } from "@/server/qualiopi/devis/regles-commerciales";
 import { salutationPourPayload } from "@/server/qualiopi/crm/salutation-payload";
 import {
   nomPourSalutationDevis,
@@ -435,6 +437,16 @@ export async function sendDevisAction(id: string): Promise<
             "Ce devis à formules ne peut pas être envoyé tant que les devis à formules sont désactivés dans la configuration. Gardez-le en brouillon.",
             "formules_eteintes",
           );
+        }
+        // (b bis) D4/D6, côté serveur : pas de formules pour un particulier, indemnité de sortie
+        // à zéro. Refus AVANT tout PDF, jeton ou courriel. Une offre illisible garde son message
+        // dédié (`offre_invalide`, plus bas) : on ne la juge pas ici.
+        if (aFormules) {
+          const o = offreDevisV1.safeParse(devis.offre);
+          if (o.success) {
+            const msg = refusReglesFormules(o.data, devis.client.type);
+            if (msg) throw new EnvoiRefuse(msg, "regle_formules");
+          }
         }
         // (c) Un devis CLASSIQUE à 0,00 € ne part pas en signature (le garde du formulaire ne
         // protège rien : l'action est appelable depuis un onglet resté ouvert). Un devis à

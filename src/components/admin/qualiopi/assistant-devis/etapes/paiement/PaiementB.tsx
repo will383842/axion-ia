@@ -5,11 +5,11 @@
  * Paiement de la formule B (fiche E15) : échéancier de la mise en service (éditeur compact,
  * montants du serveur), terme échu / à échoir, périodes (1, 2, 6, 12 mois : donc au plus 4,
  * avec remise), engagement multiple de chaque période (même message que le schéma),
- * reconduction, préavis, indemnité de sortie en euros. Les montants viennent de `calculs.ts`.
+ * reconduction, préavis, indemnité de sortie fixée à zéro (texte fixe). Les montants viennent de `calculs.ts`.
  */
 import { useId, type Dispatch } from "react";
 
-import { indemniteSortieMax, periodesAbonnement } from "../../calculs";
+import { periodesAbonnement } from "../../calculs";
 import { defautPourcentage } from "../../etat";
 import type { ActionAssistant } from "../../etat";
 import type { Engagement, EtatAssistant, MoisPeriode, Preavis } from "../../types";
@@ -50,7 +50,6 @@ export function PaiementB({ etat, dispatch, montants }: PropsPaiementB) {
   const maj = (patch: Partial<EtatAssistant["abonnement"]>) =>
     dispatch({ type: "abonnement", patch });
   const calcul = periodesAbonnement(etat);
-  const indemnite = indemniteSortieMax(etat);
   const multiple =
     ab.engagementMois === 0 || ab.periodes.every((p) => ab.engagementMois % p.mois === 0);
 
@@ -225,27 +224,10 @@ export function PaiementB({ etat, dispatch, montants }: PropsPaiementB) {
         </div>
       </fieldset>
 
-      <label className="mb-1 flex flex-col">
-        Indemnité de sortie (% des mensualités restantes ; 0 = aucune)
-        <input
-          inputMode="decimal"
-          className="min-h-[44px] rounded border px-2"
-          value={ab.indemniteTauxPct}
-          aria-invalid={defautPourcentage(ab.indemniteTauxPct) !== null}
-          aria-describedby={
-            defautPourcentage(ab.indemniteTauxPct) !== null ? `${uid}-indemnite-err` : undefined
-          }
-          onChange={(e) => maj({ indemniteTauxPct: e.target.value })}
-        />
-      </label>
-      {defautPourcentage(ab.indemniteTauxPct) !== null ? (
-        <p id={`${uid}-indemnite-err`} role="alert">
-          {messagePourcentage(defautPourcentage(ab.indemniteTauxPct))}
-        </p>
-      ) : null}
-      {indemnite !== null ? (
-        <p data-testid="indemnite">Indemnité de sortie maximale : {euros(indemnite)} HT.</p>
-      ) : null}
+      <p data-testid="indemnite">
+        Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ; les
+        périodes déjà payées ne sont pas remboursées.
+      </p>
       <p className="text-[length:var(--text-admin-sm)]">
         Le texte exact (reconduction, préavis, frais de sortie, restitution des données) est écrit
         dans les conditions générales. Aucune donnée n&apos;est détruite à l&apos;arrêt.

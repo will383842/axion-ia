@@ -2,12 +2,9 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useReducer } from "react";
 import { describe, expect, it } from "vitest";
 
-import { indemniteSortieMax } from "../../../calculs";
 import { controlerEtape, reducteur } from "../../../etat";
 import { etatT1, etatT2, etatT3, etatT4 } from "../../../fixtures";
 import type { EtatAssistant } from "../../../types";
-import { versSaisie } from "../../../vers-offre";
-import { indemniteSortieAffichee } from "../../../../devis-formules/saisie";
 import { ApercuClientVerra } from "../ApercuClientVerra";
 import { EtapePaiement } from "../EtapePaiement";
 import { PaiementA } from "../PaiementA";
@@ -145,21 +142,12 @@ describe("PaiementB", () => {
     expect(txt).toContain("2279,88€"); // période de 12 mois, 12 × 189,99
   });
 
-  it("l'indemnité de sortie maximale est affichée en euros et égale celle du moteur", () => {
-    const e = etatT2();
-    const moteur = indemniteSortieAffichee(versSaisie(e, TVA).saisie);
-    expect(moteur).toBe(119994);
-    expect(indemniteSortieMax(e)).toBe(moteur);
-    render(<Hote initial={e} vue="b" />);
-    expect(nettoyer(screen.getByTestId("indemnite").textContent!)).toContain("1199,94€");
-  });
-
-  it("sans indemnité (taux 0) : aucun montant d'indemnité affiché", () => {
-    const e = etatT2();
-    render(
-      <Hote initial={{ ...e, abonnement: { ...e.abonnement, indemniteTauxPct: "0" } }} vue="b" />,
+  it("D4 : aucun champ d'indemnité, texte fixe « aucune indemnité de sortie anticipée »", () => {
+    render(<Hote initial={etatT2()} vue="b" />);
+    expect(screen.queryByLabelText(/Indemnité/)).toBeNull();
+    expect(screen.getByTestId("indemnite").textContent!.replace(/\s+/g, " ").trim()).toBe(
+      "Aucune indemnité de sortie anticipée : le client peut arrêter avec le préavis choisi ; les périodes déjà payées ne sont pas remboursées.",
     );
-    expect(screen.queryByTestId("indemnite")).toBeNull();
   });
 
   it("reconduction et préavis sont des choix exclusifs", () => {
@@ -275,7 +263,7 @@ describe("E15 : onglets au clavier", () => {
   });
 });
 
-describe("E15 : remise et indemnité hors borne", () => {
+describe("E15 : remise hors borne", () => {
   it("remise 150 : aria-invalid, message relié, étape 3 refusée", () => {
     render(<Hote initial={etatT3()} vue="b" />);
     const champ = screen.getAllByLabelText(/Remise pour/)[0] as HTMLInputElement;
@@ -285,16 +273,5 @@ describe("E15 : remise et indemnité hors borne", () => {
       /entre 0 et 100/,
     );
     expect(controlerEtape(etat(), 3).join(" ")).toMatch(/remise/i);
-  });
-
-  it("indemnité illisible ou > 100 : message visible et étape refusée", () => {
-    render(<Hote initial={etatT3()} vue="b" />);
-    const champ = screen.getByLabelText(/Indemnité de sortie/) as HTMLInputElement;
-    fireEvent.change(champ, { target: { value: "abc" } });
-    expect(champ.getAttribute("aria-invalid")).toBe("true");
-    expect(screen.getAllByRole("alert").length).toBeGreaterThan(0);
-    expect(controlerEtape(etat(), 3).join(" ")).toMatch(/Indemnité/);
-    fireEvent.change(champ, { target: { value: "120" } });
-    expect(controlerEtape(etat(), 3).join(" ")).toMatch(/entre 0 et 100/);
   });
 });

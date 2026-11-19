@@ -50,7 +50,8 @@ vi.mock("@/server/qualiopi/crm/devis-projet", () => ({
 vi.mock("@/server/qualiopi/documents/documents-service", () => ({ generateDocument: vi.fn() }));
 vi.mock("@/server/qualiopi/config/site-settings", () => ({ getQualiopiConfig: vi.fn() }));
 vi.mock("@/server/qualiopi/legal/legal-mentions", () => ({ LEGAL_MENTIONS: {} }));
-vi.mock("@/server/qualiopi/legal/tva", () => ({
+vi.mock("@/server/qualiopi/legal/tva", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/legal/tva")>()),
   regimeTvaDepuisConfig: vi.fn(),
   mentionTva: vi.fn(),
 }));

@@ -72,7 +72,7 @@ function formules(m: "A" | "B" | "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.phases = [
     { libelle: "Signature", pourcentage: "50", declencheur: "signature" },
     { libelle: "Livraison", pourcentage: "50", declencheur: "livraison" },
@@ -304,13 +304,14 @@ describe("cas chiffrés de l'architecte (T1, T2, T3, T5)", () => {
     expect(versements(ap)).toEqual([95000, 95000]);
   });
 
-  it("T2 : mensuel net à 12 mois 18 999 ; période de 12 mois 227 988 HT ; indemnité maximale 119 994 ; 1 mois = 19 999", () => {
+  it("T2 : mensuel net à 12 mois 18 999 ; période de 12 mois 227 988 HT ; indemnité maximale nulle (D4) ; 1 mois = 19 999", () => {
     const ab = calculerApercu(lignes1900(formules("B")), CTX).formules!.formules[0]!.abonnement!;
     const p12 = ab.periodes.find((x) => x.mois === 12)!;
     expect(p12.mensuelNetHtCents).toBe(18999);
     expect(p12.prixPeriodeHtCents).toBe(227988);
     expect(ab.periodes.find((x) => x.mois === 1)!.prixPeriodeHtCents).toBe(19999);
-    expect(ab.indemniteSortieMaxHtCents).toBe(119994);
+    // D4 : plus d'indemnité de sortie, donc aucun maximum affiché.
+    expect(ab.indemniteSortieMaxHtCents).toBeNull();
   });
 
   it("T3 : A + B — avant le choix 0 ; choix A 448 393 / 89 679 / 538 072 ; choix B 190 000 / 38 000 / 228 000, sans ligne de L", () => {
