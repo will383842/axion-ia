@@ -1,5 +1,5 @@
 /**
- * Lien de signature créé À L'ENVOI (lot B2, PR 1 : module NON BRANCHÉ).
+ * Lien de signature créé À L'ENVOI (lot B2).
  * Mocks Prisma comme les specs voisines ; aucun fichier existant n'est modifié.
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -91,6 +91,11 @@ vi.mock("@/lib/public-url", () => ({
   publicUrl: (p: string) => new URL(p, "https://exemple.test"),
 }));
 
+import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import {
+  MSG_FORMULES_PARTICULIER,
+  MSG_INDEMNITE_SORTIE,
+} from "@/server/qualiopi/devis/regles-commerciales";
 import { VersionRemplaceeSigneeEntreTempsError } from "@/server/qualiopi/devis/version-remplacee";
 import {
   envoyerAvecLienALEnvoi,
@@ -148,7 +153,12 @@ function devisRelu(over: Record<string, unknown> = {}) {
     replacesDevis: null,
     dateValidite: new Date("2026-12-15T00:00:00Z"),
     documentGenereId: PIECE_ID,
-    client: { raisonSociale: "ACME", contactNom: "Contact", contactFonction: "Gérant" },
+    client: {
+      raisonSociale: "ACME",
+      contactNom: "Contact",
+      contactFonction: "Gérant",
+      type: "entreprise",
+    },
     ...over,
   };
 }
@@ -641,6 +651,13 @@ describe("devis-renvoi", () => {
     expect(payload).not.toHaveProperty("lienSignatureALEnvoi");
   });
 
+  it("renvoi d'un devis déjà envoyé à 5000 pb : accepté (règles D4/D6 non appliquées)", async () => {
+    h.txDevisFindUnique.mockResolvedValue(devisRelu({ statut: "envoye", offre: offreFictive() }));
+    const r = await lancer(vi.fn(enfileOk) as never);
+    expect(r).toEqual({ type: "envoi", res: { enqueued: true } });
+    expect(h.creerToken).toHaveBeenCalledTimes(1);
+  });
+
   it.each([
     [
       "statut non envoyé",
@@ -668,6 +685,55 @@ describe("devis-renvoi", () => {
     expect(r.type).toBe("refus");
     expect(h.creerToken).not.toHaveBeenCalled();
     expect(enfiler).not.toHaveBeenCalled();
+  });
+
+  describe("règles commerciales D4/D6 à l'approbation (premier envoi)", () => {
+    const lancer = (enfiler: (p: Record<string, unknown>) => Promise<never>) =>
+      envoyerAvecLienALEnvoi({
+        ligne: LIGNE,
+        payload: payloadAvec(marqueurPremier()),
+        acteur: ACTEUR,
+        enfiler: enfiler as never,
+      });
+    const offreA0 = () => {
+      const o = offreFictive();
+      return { ...o, abonnement: { ...o.abonnement!, indemniteSortieTauxBps: 0 } };
+    };
+    it.each([
+      [
+        "indemnité de sortie 5000 pb, client entreprise",
+        () => devisRelu({ offre: offreFictive() }),
+        MSG_INDEMNITE_SORTIE,
+      ],
+      [
+        "offre à formules, client particulier",
+        () =>
+          devisRelu({
+            offre: offreA0(),
+            client: {
+              raisonSociale: "P",
+              contactNom: null,
+              contactFonction: null,
+              type: "particulier",
+            },
+          }),
+        MSG_FORMULES_PARTICULIER,
+      ],
+    ])("%s : refus, aucun jeton, aucun enfilage, aucune écriture", async (_n, devis, message) => {
+      h.txDevisFindUnique.mockResolvedValue(devis());
+      const enfiler = vi.fn(enfileOk);
+      const r = await lancer(enfiler as never);
+      expect(r).toMatchObject({ type: "refus" });
+      expect(JSON.stringify(r)).toContain(message);
+      expect(h.creerToken).not.toHaveBeenCalled();
+      expect(enfiler).not.toHaveBeenCalled();
+      expect(h.marquer).not.toHaveBeenCalled();
+    });
+    it("offre conforme (indemnité 0, entreprise) : part", async () => {
+      h.txDevisFindUnique.mockResolvedValue(devisRelu({ offre: offreA0() }));
+      const r = await lancer(vi.fn(enfileOk) as never);
+      expect(r.type).toBe("envoi");
+    });
   });
 
   it("enfilage en échec (exception) : lien précédent rendu en mode « revoquer », erreur neutre relancée", async () => {

@@ -139,7 +139,8 @@ export function versSaisie(
       engagementMois: ab.engagementMois,
       reconduction: ab.reconduction,
       preavisMois: ab.preavisMois,
-      indemniteTauxPct: sansEspaces(ab.indemniteTauxPct),
+      // D4 : indemnité de sortie anticipée fixée à zéro.
+      indemniteTauxPct: "0",
     },
   };
   // Mise en service illisible : seulement si B est réellement proposée.

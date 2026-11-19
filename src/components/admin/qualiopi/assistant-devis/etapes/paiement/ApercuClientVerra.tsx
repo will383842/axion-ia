@@ -6,7 +6,10 @@
  * viennent de `calculs.ts` (HT ; le taux de TVA est reçu en paramètre). Aucun montant
  * d'exemple, aucune phrase d'engagement : le détail par phase vient de l'aperçu serveur.
  */
+import { FileText } from "lucide-react";
 import { useDeferredValue } from "react";
+
+import { AdminCard } from "@/components/admin/ui/AdminCard";
 
 import {
   eurosEnCents,
@@ -23,9 +26,15 @@ const euros = (c: number): string => EUROS.format(c / 100);
 
 function Ligne({ libelle, valeur }: { libelle: string; valeur: string }) {
   return (
-    <div className="flex justify-between gap-2">
-      <dt>{libelle}</dt>
-      <dd>{valeur}</dd>
+    <div
+      className={`flex items-baseline justify-between gap-[var(--space-admin-3)] py-[var(--space-admin-1)] ${
+        libelle === "Total TTC"
+          ? "mt-[var(--space-admin-2)] border-t border-[color:var(--color-admin-border)] pt-[var(--space-admin-3)] font-semibold"
+          : ""
+      }`}
+    >
+      <dt className="text-[color:var(--color-admin-fg-muted)]">{libelle}</dt>
+      <dd className="m-0 text-right whitespace-nowrap tabular-nums">{valeur}</dd>
     </div>
   );
 }
@@ -58,46 +67,51 @@ export function ApercuClientVerra({
   const a = p === "A" || p === "AB";
   const b = p === "B" || p === "AB";
   return (
-    <aside aria-label="Ce que le client verra" className="w-full rounded border p-3 lg:w-[22rem]">
-      <p className="font-medium">Ce que le client verra</p>
-      {p === "prix_unique" ? (
-        <dl>
-          <LignesTotaux t={totauxLignes(e.lignes, tvaStandardPct)} libelleHt="Total HT" />
-        </dl>
-      ) : null}
-      {a ? (
-        <section aria-label="Aperçu de la formule A">
-          <p className="font-medium">Formule A</p>
-          <dl>
-            <LignesTotaux t={totauxFormuleA(e, tvaStandardPct)} libelleHt="Mise en place (HT)" />
-            <Ligne
-              libelle={`Maintenance (${e.achat.maintenance.regle === "obligatoire" ? "obligatoire" : "facultative"})`}
-              valeur={`${montantLu(e.achat.maintenance.mensuelEur)} HT / mois`}
-            />
-            {e.achat.hebergement === "axion" && e.achat.hebergementMensuelEur.trim() !== "" ? (
+    <aside aria-label="Ce que le client verra" className="w-full shrink-0 lg:w-[22rem]">
+      <AdminCard as="div" className="flex flex-col gap-[var(--space-admin-6)]">
+        <p className="flex items-center gap-[var(--space-admin-3)] text-[length:var(--text-admin-lg)] font-semibold">
+          <FileText size={20} aria-hidden="true" className="shrink-0" />
+          Ce que le client verra
+        </p>
+        {p === "prix_unique" ? (
+          <dl className="m-0">
+            <LignesTotaux t={totauxLignes(e.lignes, tvaStandardPct)} libelleHt="Total HT" />
+          </dl>
+        ) : null}
+        {a ? (
+          <section aria-label="Aperçu de la formule A">
+            <p className="mb-[var(--space-admin-2)] font-semibold">Formule A</p>
+            <dl className="m-0">
+              <LignesTotaux t={totauxFormuleA(e, tvaStandardPct)} libelleHt="Mise en place (HT)" />
               <Ligne
-                libelle="Hébergement chez Axion-IA"
-                valeur={`${montantLu(e.achat.hebergementMensuelEur)} HT / mois`}
+                libelle={`Maintenance (${e.achat.maintenance.regle === "obligatoire" ? "obligatoire" : "facultative"})`}
+                valeur={`${montantLu(e.achat.maintenance.mensuelEur)} HT / mois`}
               />
-            ) : null}
-          </dl>
-        </section>
-      ) : null}
-      {b ? (
-        <section aria-label="Aperçu de la formule B">
-          <p className="font-medium">Formule B</p>
-          <dl>
-            <LignesTotaux
-              t={totauxMiseEnServiceB(e, tvaStandardPct)}
-              libelleHt="Mise en service (HT)"
-            />
-            <Ligne
-              libelle="Abonnement"
-              valeur={`${montantLu(e.abonnement.mensuelCatalogueEur)} HT / mois`}
-            />
-          </dl>
-        </section>
-      ) : null}
+              {e.achat.hebergement === "axion" && e.achat.hebergementMensuelEur.trim() !== "" ? (
+                <Ligne
+                  libelle="Hébergement chez Axion-IA"
+                  valeur={`${montantLu(e.achat.hebergementMensuelEur)} HT / mois`}
+                />
+              ) : null}
+            </dl>
+          </section>
+        ) : null}
+        {b ? (
+          <section aria-label="Aperçu de la formule B">
+            <p className="mb-[var(--space-admin-2)] font-semibold">Formule B</p>
+            <dl className="m-0">
+              <LignesTotaux
+                t={totauxMiseEnServiceB(e, tvaStandardPct)}
+                libelleHt="Mise en service (HT)"
+              />
+              <Ligne
+                libelle="Abonnement"
+                valeur={`${montantLu(e.abonnement.mensuelCatalogueEur)} HT / mois`}
+              />
+            </dl>
+          </section>
+        ) : null}
+      </AdminCard>
     </aside>
   );
 }

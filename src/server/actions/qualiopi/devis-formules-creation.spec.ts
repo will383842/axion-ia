@@ -1,6 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import type { OffreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
+import { MSG_INDEMNITE_SORTIE } from "@/server/qualiopi/devis/regles-commerciales";
+
+/** D4 : indemnité de sortie à zéro pour un nouveau devis (la fixture porte 5000, surchargée ici). */
+const offreSansIndemnite = (): OffreDevisV1 => {
+  const o = offreFictive();
+  return { ...o, abonnement: { ...o.abonnement!, indemniteSortieTauxBps: 0 } };
+};
 
 const clientFindUnique = vi.fn();
 const devisCreate = vi.fn();
@@ -43,7 +51,7 @@ const PROJET = "22222222-2222-4222-8222-222222222222";
 const appel = (over: Record<string, unknown> = {}) =>
   creerDevisFormulesAction({
     clientId: CLIENT,
-    offre: offreFictive(),
+    offre: offreSansIndemnite(),
     activite: "implementation",
     ...over,
   } as never);
@@ -125,5 +133,11 @@ describe("creerDevisFormulesAction", () => {
     const r = await appel({ projetId: PROJET });
     expect("error" in r && r.error).toMatch(/projet/i);
     expect(devisCreate).not.toHaveBeenCalled();
+  });
+  it("D4 : taux d'indemnité 5000 refusé à la création, aucune écriture", async () => {
+    const r = await appel({ offre: offreFictive() });
+    expect(r).toEqual({ error: MSG_INDEMNITE_SORTIE });
+    expect(devisCreate).not.toHaveBeenCalled();
+    expect(logActivity).not.toHaveBeenCalled();
   });
 });

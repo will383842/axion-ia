@@ -5,7 +5,17 @@
  */
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import { offreFictive as offreFictiveBrute } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
+import {
+  MSG_FORMULES_PARTICULIER,
+  MSG_INDEMNITE_SORTIE,
+} from "@/server/qualiopi/devis/regles-commerciales";
+
+/** D4 : indemnité de sortie à zéro pour un nouveau devis (la fixture porte 5000, surchargée ici). */
+const offreFictive = () => {
+  const o = offreFictiveBrute();
+  return { ...o, abonnement: { ...o.abonnement!, indemniteSortieTauxBps: 0 } };
+};
 
 const findUnique = vi.fn();
 const txDevisUpdateMany = vi.fn();
@@ -380,5 +390,29 @@ describe("sendDevisAction — la salutation de l'e-mail (B4)", () => {
     await sendDevisAction(ID);
     expect(payloadEnvoye()["clientNom"]).toBe("");
     expect(JSON.stringify(payloadEnvoye())).not.toContain("Camille");
+  });
+});
+
+describe("sendDevisAction — règles commerciales D4/D6 (refus avant PDF, jeton et courriel)", () => {
+  function rienNeSort() {
+    expect(generateDocument).not.toHaveBeenCalled();
+    expect(creerToken).not.toHaveBeenCalled();
+    expect(enqueueEmail).not.toHaveBeenCalled();
+    expect(txDevisUpdateMany).not.toHaveBeenCalled();
+  }
+
+  it("D6 : devis à formules d'un particulier refusé", async () => {
+    const d0 = devis();
+    findUnique.mockResolvedValue({ ...d0, client: { ...d0.client, type: "particulier" } });
+    const r = await sendDevisAction(ID);
+    expect(r).toEqual({ error: MSG_FORMULES_PARTICULIER });
+    rienNeSort();
+  });
+
+  it("D4 : taux d'indemnité 5000 refusé", async () => {
+    findUnique.mockResolvedValue(devis({ offre: offreFictiveBrute() }));
+    const r = await sendDevisAction(ID);
+    expect(r).toEqual({ error: MSG_INDEMNITE_SORTIE });
+    rienNeSort();
   });
 });

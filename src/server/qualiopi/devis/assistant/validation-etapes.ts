@@ -316,12 +316,6 @@ function validerFormules(p: PayloadAssistantV1, ctx: ContexteValidation, e: Erre
         "formules.abonnement.mensuelCatalogueEur",
         "Le mensuel de l'abonnement doit être supérieur à 0 €.",
       );
-    if (s.abonnement.indemniteTauxPct.trim() === "")
-      err(
-        e,
-        "formules.abonnement.indemniteTauxPct",
-        "Indiquez l'indemnité de sortie (0 pour aucune indemnité).",
-      );
   }
   const avant = e.length;
   const r = construireOffre(s, p.textes);

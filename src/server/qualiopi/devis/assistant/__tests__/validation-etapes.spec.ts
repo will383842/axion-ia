@@ -39,7 +39,7 @@ function formules(modele: "A" | "B" | "AB"): PayloadAssistantV1 {
     { mois: 12, remisePct: "5" },
   ];
   p.formules.abonnement.engagementMois = 12;
-  p.formules.abonnement.indemniteTauxPct = "50";
+  p.formules.abonnement.indemniteTauxPct = "0";
   p.formules.abonnement.lignes = [
     { libelle: "Mise en service et adaptation", quantite: "1", prixEur: "1 900", tauxTvaPct: "20" },
   ];
@@ -177,10 +177,10 @@ describe("étape 3 — formules", () => {
     p.formules.abonnement.engagementMois = 12;
     expect(champs(p, 3)).toContain("formules.abonnement.periodes");
   });
-  it("indemnité de sortie non saisie refusée", () => {
+  it("le taux d'indemnité n'est plus demandé", () => {
     const p = formules("B");
     p.formules.abonnement.indemniteTauxPct = "";
-    expect(champs(p, 3)).toContain("formules.abonnement.indemniteTauxPct");
+    expect(champs(p, 3)).not.toContain("formules.abonnement.indemniteTauxPct");
   });
   it("engagement non multiple des périodes : message du moteur repris", () => {
     const p = formules("B");

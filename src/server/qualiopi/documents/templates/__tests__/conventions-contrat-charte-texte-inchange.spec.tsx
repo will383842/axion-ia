@@ -128,7 +128,8 @@ const CAS: readonly Cas[] = [
     nom: "convention",
     Nouveau: ConventionPdf,
     Ancien: ConventionV6,
-    data: CONVENTION,
+    // v8 : clause financeur, 5 bis et ligne Qualiopi seulement si la certification est obtenue.
+    data: { ...CONVENTION, certificationObtenue: true },
     identite: IDENTITE,
     signature: "11. Signatures",
   },
@@ -138,6 +139,7 @@ const CAS: readonly Cas[] = [
     Ancien: ConventionV6,
     data: {
       ...CONVENTION,
+      certificationObtenue: true,
       acomptePercent: 0,
       stagiairesNommes: ["Camille Durand", "Alex Martin"],
       ecartEffectif: "3 inscrits pour 2 places prévues.",
@@ -151,7 +153,8 @@ const CAS: readonly Cas[] = [
     nom: "convention, régime de TVA et numéro Qualiopi saisis",
     Nouveau: ConventionPdf,
     Ancien: ConventionV6,
-    data: CONVENTION,
+    // v8 : clause financeur, 5 bis et ligne Qualiopi seulement si la certification est obtenue.
+    data: { ...CONVENTION, certificationObtenue: true },
     identite: { ...IDENTITE_TVA, qualiopi: "FR-2026-001" },
     signature: "11. Signatures",
   },
