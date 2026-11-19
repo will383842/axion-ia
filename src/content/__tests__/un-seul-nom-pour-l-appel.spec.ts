@@ -54,8 +54,8 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   // kb/interventions-formations.ts, kb/sites-web-augmentes.ts, category-hub-content.ts.
   /src\/content\/transversal\.ts$/,
   /src\/app\/\[locale\]\/secteurs\/\[secteur\]\/page\.tsx$/,
-  /src\/server\/content-gen\/kb\/(?:un-a-un|interventions-formations|sites-web-augmentes)\.ts$/,
-  /src\/server\/content-gen\/lib\/category-hub-content\.ts$/,
+  /src\/server\/content[-]gen\/kb\/(?:un-a-un|interventions-formations|sites-web-augmentes)\.ts$/,
+  /src\/server\/content[-]gen\/lib\/category-hub-content\.ts$/,
   // EN ATTENTE de fusion de PR ouvertes (à vider, une fois fusionnées) : PR 2134 (implantations),
   // PR 2136 (accueil, a-propos), PR 2137 (positionnement du générateur).
   /src\/app\/\[locale\]\/implantations\/page\.tsx$/,
