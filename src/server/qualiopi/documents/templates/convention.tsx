@@ -67,6 +67,14 @@ export interface ConventionData {
   stagiairesADesigner?: string | null;
   /** Mention d'écart entre l'effectif PRÉVU et les inscrits nommés. */
   ecartEffectif?: string | null;
+  /**
+   * Photo du réglage « certification Qualiopi obtenue » prise à la GÉNÉRATION
+   * (`isQualiopiCertificationObtenue()`). Absent = faux. Seul `true` fait imprimer la clause
+   * financeur (§ 5, 2e paragraphe), la clause « 5 bis » et la ligne « Certification Qualiopi » :
+   * avant la certification, la pièce n'affirme rien de tout cela. Le texte de ces clauses est
+   * GARDÉ ici, mot pour mot, pour le jour de la certification.
+   */
+  certificationObtenue?: boolean;
   // Conditions financières
   prixHt: number;
   acomptePercent?: number;
@@ -219,11 +227,16 @@ function ClauseConditionSuspensiveOpco({
 
 export function ConventionPdf({
   data,
-  identite,
+  identite: identiteRecue,
 }: {
   data: ConventionData;
   identite: OrganismeIdentite;
 }): React.ReactElement {
+  // v8 — le numéro Qualiopi ne s'imprime NULLE PART (ligne « Certification Qualiopi » ni pied de
+  // page de la mise en page commune) tant que la certification n'est pas obtenue : on le vide ici,
+  // en plus du producteur, pour qu'aucun appelant ne puisse le faire passer.
+  const identite =
+    data.certificationObtenue === true ? identiteRecue : { ...identiteRecue, qualiopi: "" };
   // 🔴 Réconciliation des sources de l'acompte, 2026-07-27.
   //
   // L'absence de plafond ici est VOULUE, et c'est la différence de fond avec
@@ -275,7 +288,7 @@ export function ConventionPdf({
             n'a simplement pas de numéro Qualiopi à porter, et la ligne n'a
             aucune raison d'exister. Même traitement que la facture et le devis.
           */}
-          {identite.qualiopi ? (
+          {identite.qualiopi && data.certificationObtenue === true ? (
             <Champ label="Certification Qualiopi" value={identite.qualiopi} />
           ) : null}
           <Champ label="Siège social" value={identite.adresseSiege} required />
@@ -507,24 +520,26 @@ export function ConventionPdf({
             par un avocat — pas plus que le reste de cette pièce. Elle vaut
             mieux que le silence, qui était l'état précédent.
           */}
-          <Text style={stylesPiece.paragraphe}>
-            Lorsque le client sollicite une prise en charge auprès d&apos;un financeur (opérateur de
-            compétences, France Travail ou tout autre organisme), cette démarche relève de la
-            relation entre le client et son financeur. Elle ne modifie ni le prix convenu, ni son
-            exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
-            client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
-            remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
-            non-paiement par le financeur, les sommes correspondantes demeurent dues par le client,
-            sous réserve des conditions de dédit et d&apos;abandon en cours d&apos;exécution prévues
-            aux conditions générales de vente, et sauf lorsque la réduction, la caducité ou le
-            non-paiement résulte d&apos;un manquement de l&apos;organisme à ses propres obligations
-            (inexécution de tout ou partie de l&apos;action, défaut des justificatifs de réalisation
-            qui lui incombent).
-          </Text>
+          {data.certificationObtenue === true ? (
+            <Text style={stylesPiece.paragraphe}>
+              Lorsque le client sollicite une prise en charge auprès d&apos;un financeur (opérateur
+              de compétences, France Travail ou tout autre organisme), cette démarche relève de la
+              relation entre le client et son financeur. Elle ne modifie ni le prix convenu, ni son
+              exigibilité : en l&apos;absence de subrogation de paiement expressément convenue, le
+              client règle l&apos;intégralité du prix à l&apos;organisme et fait son affaire du
+              remboursement. En cas de refus, de réduction, de caducité de l&apos;accord ou de
+              non-paiement par le financeur, les sommes correspondantes demeurent dues par le
+              client, sous réserve des conditions de dédit et d&apos;abandon en cours
+              d&apos;exécution prévues aux conditions générales de vente, et sauf lorsque la
+              réduction, la caducité ou le non-paiement résulte d&apos;un manquement de
+              l&apos;organisme à ses propres obligations (inexécution de tout ou partie de
+              l&apos;action, défaut des justificatifs de réalisation qui lui incombent).
+            </Text>
+          ) : null}
         </SectionCarte>
 
         {/* 5 bis. INT-T65-A — imprimée SEULEMENT si la case a été cochée. */}
-        {data.conditionSuspensiveOpco ? (
+        {data.conditionSuspensiveOpco && data.certificationObtenue === true ? (
           <ClauseConditionSuspensiveOpco p={data.conditionSuspensiveOpco} />
         ) : null}
 
