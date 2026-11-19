@@ -3,8 +3,8 @@
 // et 100% commission — non réutilisable pour une offre single-location salariée).
 // Gère : remote→TELECOMMUTE vs Place ; baseSalary vs incentiveCompensation ;
 // validThrough déterministe ; garde-fou published & !filled.
-import { BRAND_LOGO, SITE_URL } from "@/lib/seo";
-import { CONTACT_PUBLIC } from "@/lib/brand";
+import { BRAND_LOGO, ORGANIZATION_SAME_AS, SITE_URL } from "@/lib/seo";
+import { buildOrganizationSameAs } from "@/lib/seo/wikidata-sameas";
 import { sanitizeContentGenHtml } from "@/server/content-gen/shared/html-sanitizer";
 import { careerImage } from "@/content/careers/careers-images";
 import { applicantCountryLabel, normalizeApplicantCountries } from "@/lib/careers/format";
@@ -21,7 +21,8 @@ const HIRING_ORG = {
   // Vrai logo carré (`BRAND_LOGO`, 512×512), pas la bannière OpenGraph 1200×630
   // que Google for Jobs recadrait (audit SEO 2026-11-11, M3).
   logo: BRAND_LOGO.url,
-  sameAs: [CONTACT_PUBLIC.linkedinEntreprise],
+  // Identique au layout (`seo.ts`) : même liste, même ordre, aucune dérive d'entité.
+  sameAs: [...buildOrganizationSameAs(), ...ORGANIZATION_SAME_AS],
 } as const;
 
 /**

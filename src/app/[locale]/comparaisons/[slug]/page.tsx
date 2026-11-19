@@ -81,7 +81,7 @@ export default async function ComparisonPage({ params }: Props) {
     datePublished: updatedAt,
     dateModified: updatedAt,
     author: { "@id": `${SITE_URL}/${locale}/equipe/manon#person` },
-    publisher: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+    publisher: { "@id": `${SITE_URL}/#organization` },
     speakable: {
       "@type": "SpeakableSpecification",
       cssSelector: ["[data-answer]"],

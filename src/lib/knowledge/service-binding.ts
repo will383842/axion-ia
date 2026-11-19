@@ -102,11 +102,7 @@ export function buildServiceOfferJsonLd(slug: ServiceSlug): Record<string, unkno
       minPrice: offer.fromPriceEur,
     },
     availability: "https://schema.org/InStock",
-    seller: {
-      "@type": "Organization",
-      name: "Axion-IA",
-      url: SITE_URL,
-    },
+    seller: { "@id": `${SITE_URL}/#organization` },
   };
 }
 

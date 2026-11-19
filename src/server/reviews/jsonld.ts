@@ -77,7 +77,7 @@ export function serviceAggregateJsonLd(
     "@type": item.type,
     name: item.name,
     url,
-    ...(item.type === "Course" ? { provider: { "@type": "Organization", name: "Axion-IA" } } : {}),
+    ...(item.type === "Course" ? { provider: { "@id": `${SITE_URL}/#organization` } } : {}),
     aggregateRating: ar,
   } as const;
 }

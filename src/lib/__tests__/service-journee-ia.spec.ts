@@ -41,7 +41,8 @@ describe("buildServiceJsonLd : sortie inchangée sans les nouveaux paramètres",
       description: "Description de test.",
       url: `${SITE_URL}/fr/audit`,
       dateModified: "2026-01-02",
-      provider: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+      // V1-11 : le fournisseur par défaut cite l'entité unique par son @id.
+      provider: { "@id": `${SITE_URL}/#organization` },
       serviceType: "Audit",
       areaServed: [{ "@type": "Country", name: "France" }],
       availableChannel: [

@@ -143,7 +143,7 @@ export function buildClaimReviewJsonLd(input: ClaimReviewInput) {
     url: input.url,
     ...(input.datePublished ? { datePublished: input.datePublished } : {}),
     claimReviewed: input.claimReviewed,
-    author: { "@type": "Organization", name: "Axion-IA", url: SITE_URL },
+    author: { "@id": `${SITE_URL}/#organization` },
     reviewRating: {
       "@type": "Rating",
       ratingValue: input.reviewRating,
