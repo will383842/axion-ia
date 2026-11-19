@@ -108,9 +108,23 @@ export const STATUT_BROUILLON_A_L_ECART = "a_l_ecart";
  * Bibliothèque : textes non archivés et déjà validés (`aValider` faux). achat → A, abonnement → B ;
  * avantage → avantages, inconvénient → à savoir. Délais, garantie et plafond : la table n'a pas
  * de colonne de rubrique (la formule `commun` mêle prérequis et clauses) ; on ne devine pas, les
- * textes validés par le fondateur viennent du code (`textes-rubriques.ts`). Ils n'entrent que
- * dans les nouveaux brouillons : un devis déjà émis garde ses textes.
+ * textes validés par le fondateur viennent du code (`textes-rubriques.ts`). Ils s'appliquent aux
+ * nouveaux brouillons ET à tout brouillon d'assistant rouvert puis sauvegardé (`vers-payload.ts`
+ * remplace `textes` par `ctx.textes`) ; les devis déjà émis ne changent pas. Si la bibliothèque
+ * fournit déjà une clause active de la même rubrique, le texte du code n'est pas ajouté.
  */
+/** Motifs de rubrique : la table n'a pas de colonne de rubrique, on reconnaît le sujet du texte. */
+export const MOTIFS_RUBRIQUES = {
+  responsabilite: /responsabilit/i,
+  delais: /d[ée]lais?\b/i,
+  garantie: /garantie/i,
+  frais: /services? ext[ée]rieurs?|frais/i,
+} as const;
+
+export function rubriqueDejaCouverte(textes: readonly string[], motif: RegExp): boolean {
+  return textes.some((t) => motif.test(t));
+}
+
 async function chargerBibliotheque(): Promise<BibliothequeAssistant> {
   const b: BibliothequeAssistant = {
     avantages: { A: [], B: [] },
@@ -171,22 +185,36 @@ export async function chargerAssistantDevis(
     prixHtCents: o.prixHtEur === null ? null : Math.round(o.prixHtEur * 100),
     noteDevisFr: o.noteDevisFr,
   }));
+  const lignesParDefaut = formulesOn
+    ? await prisma.devisTexteBibliotheque.findMany({
+        where: { archiveAt: null, actifParDefaut: true },
+        orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
+        select: { id: true, version: true, texte: true },
+      })
+    : [];
+  const textesActifs = lignesParDefaut.map((t) => t.texte);
+  // Dédoublonnage : une clause active de la bibliothèque sur la même rubrique l'emporte.
+  if (rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.delais)) bibliotheque.delais = "";
+  if (rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.garantie)) bibliotheque.garantie = "";
+  if (rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.frais)) bibliotheque.plafond = "";
   const textesParDefaut: TexteCopie[] = formulesOn
     ? [
-        ...(
-          await prisma.devisTexteBibliotheque.findMany({
-            where: { archiveAt: null, actifParDefaut: true },
-            orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
-            select: { id: true, version: true, texte: true },
-          })
-        ).map((t) => ({
+        ...lignesParDefaut.map((t) => ({
           bibliothequeId: t.id,
           version: String(t.version),
           texte: t.texte,
           actif: true,
         })),
         // Clause de responsabilité : texte du code, sans ligne de bibliothèque (pas de bibliothequeId).
-        { version: VERSION_TEXTES_RUBRIQUES, texte: TEXTE_PLAFOND_RESPONSABILITE, actif: true },
+        ...(rubriqueDejaCouverte(textesActifs, MOTIFS_RUBRIQUES.responsabilite)
+          ? []
+          : [
+              {
+                version: VERSION_TEXTES_RUBRIQUES,
+                texte: TEXTE_PLAFOND_RESPONSABILITE,
+                actif: true,
+              },
+            ]),
       ]
     : [];
 

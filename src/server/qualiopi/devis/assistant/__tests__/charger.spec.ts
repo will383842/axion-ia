@@ -187,6 +187,20 @@ describe("chargerAssistantDevis", () => {
     expect(c.formulesActives).toBe(false);
   });
 
+  it("dédoublonnage : clause active de même rubrique dans la bibliothèque → pas de seconde clause", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, texte: "Notre responsabilité est limitée." },
+      { id: "t2", version: 1, texte: "Délais estimatifs." },
+    ] as never);
+    const c = await charge();
+    expect(c.textesParDefaut.map((t) => t.texte)).toEqual([
+      "Notre responsabilité est limitée.",
+      "Délais estimatifs.",
+    ]);
+    expect(c.bibliotheque.delais).toBe("");
+    expect(c.bibliotheque.garantie).toBe(TEXTE_GARANTIE);
+  });
+
   it("?modele inconnu ignoré ; connu appliqué (structure, aucun prix)", async () => {
     expect((await charge({ modele: "nimporte" })).payloadInitial.modeleId).toBeNull();
     const c = await charge({ modele: "site_web" });
