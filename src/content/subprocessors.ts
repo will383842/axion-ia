@@ -38,7 +38,7 @@ import { donneesMeet, stockageSonCloudflare } from "./visio-annonce-textes";
  * — bonne pratique transparence). Affichée en haut de `/sous-processeurs`.
  * Update à chaque ajout/modification d'entrée.
  */
-export const SUBPROCESSORS_LAST_UPDATED = "2026-11-14" as const;
+export const SUBPROCESSORS_LAST_UPDATED = "2026-11-19" as const;
 
 export type TransferFramework =
   "intra_eu" | "scc" | "adequacy_decision" | "self_hosted_eu" | "sans_donnee_personnelle";
@@ -291,9 +291,9 @@ export const SUBPROCESSORS: ReadonlyArray<Subprocessor> = [
     location: "Wurtzbourg, Allemagne",
     serversLocation: "États-Unis (Los Angeles, relevé du 19/11/2026)",
     purposeFr:
-      "Horodatage certifié (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service public gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
+      "Horodatage (norme RFC 3161) du sceau d'une signature de devis : l'autorité atteste que l'empreinte du sceau existait à l'instant indiqué. Service gratuit, sans contrat. Si l'autorité est injoignable, la signature reste valable et le jeton est redemandé plus tard.",
     purposeEn:
-      "Certified time-stamping (RFC 3161) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free public service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
+      "Timestamping (RFC 3161 standard) of a quote signature's seal: the authority attests that the seal's fingerprint existed at the stated time. Free service, no contract. If the authority is unreachable, the signature stays valid and the token is requested again later.",
     dataCategoriesFr:
       "Une empreinte numérique SHA-256 du sceau de la signature (64 caractères hexadécimaux, non réversible) et un nombre aléatoire à usage unique. Aucun nom, aucune adresse électronique, aucun montant ni document n'est transmis.",
     dataCategoriesEn:

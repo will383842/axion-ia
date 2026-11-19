@@ -51,4 +51,24 @@ describe("jeton réel FreeTSA (hors ligne)", () => {
       ErreurHorodatage,
     );
   });
+  it("refuse une ancre illisible", () => {
+    expect(() =>
+      verifierSignatureJeton({
+        reponse,
+        genTime: GEN_TIME,
+        ancresPem: ["-----BEGIN CERTIFICATE-----\nAAAA\n-----END CERTIFICATE-----"],
+      }),
+    ).toThrow(ErreurSignatureJeton);
+  });
+
+  it("refuse le jeton réel face à un autre nonce", () => {
+    expect(() =>
+      lireReponse(
+        reponse,
+        meta.empreinteHex,
+        Buffer.from("0000000000000000", "hex"),
+        new Date(meta.obtenuLe),
+      ),
+    ).toThrow(ErreurHorodatage);
+  });
 });
