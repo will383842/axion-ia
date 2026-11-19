@@ -232,3 +232,13 @@ describe("code client-safe", () => {
     }
   });
 });
+
+describe("etatInitial — type du client préchoisi", () => {
+  it("defaultClientType alimente clientType (sinon null)", () => {
+    expect(
+      etatInitial({ ...PARAMS, defaultClientId: "c-1", defaultClientType: "particulier" })
+        .clientType,
+    ).toBe("particulier");
+    expect(etatInitial({ ...PARAMS, defaultClientId: "c-1" }).clientType).toBeNull();
+  });
+});

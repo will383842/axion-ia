@@ -253,3 +253,36 @@ describe("listInbox", () => {
     expect(res.rows[0]?.channel).toBe("podcast");
   });
 });
+
+describe("listInbox — nature de la demande", () => {
+  it("message : unifiedType, sinon type ; apporteur reconnu", async () => {
+    const res = await listInbox({ channel: "message" });
+    expect(res.rows[0]?.nature).toBe("presse");
+    listSubmissionsMock.mockResolvedValueOnce({
+      items: [
+        {
+          id: "s2",
+          type: "quote_request",
+          unifiedType: null,
+          status: "new",
+          contactName: "A",
+          contactEmail: "a@x.fr",
+          companyName: null,
+          submittedAt: d("2026-07-21T10:00:00Z"),
+          replyCount: 0,
+        },
+      ],
+    });
+    const r2 = await listInbox({ channel: "message" });
+    expect(r2.rows[0]?.nature).toBe("quote_request");
+  });
+
+  it("appel : typeRendezVous ; absent = pas de nature", async () => {
+    const res = await listInbox({ channel: "appel" });
+    expect(res.rows[0]?.nature).toBeUndefined();
+    const base = (await listRendezVousMock()).rows[0];
+    listRendezVousMock.mockResolvedValueOnce({ rows: [{ ...base, typeRendezVous: "diagnostic" }] });
+    const r2 = await listInbox({ channel: "appel" });
+    expect(r2.rows[0]?.nature).toBe("diagnostic");
+  });
+});

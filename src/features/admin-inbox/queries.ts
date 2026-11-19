@@ -117,6 +117,9 @@ async function fetchMessages(): Promise<InboxItem[]> {
     ),
     receivedAt: s.submittedAt,
     subject: resolveSubmissionLabel(s.type, s.unifiedType),
+    nature: estApporteur({ unifiedType: s.unifiedType, subType: s.subType })
+      ? "apporteur"
+      : (s.unifiedType ?? s.type),
     contactName: s.contactName || null,
     contactEmail: s.contactEmail || null,
     // subType (slug formation du devis express, granularité audit/chatbot…)
@@ -165,6 +168,7 @@ async function fetchAppels(peutVoirAppels: boolean): Promise<InboxItem[]> {
     // place dans la chronologie au lieu de disparaître.
     receivedAt: r.createdAt,
     subject: r.title,
+    nature: r.typeRendezVous,
     contactName: peutVoirAppels ? r.contactName : null,
     contactEmail: peutVoirAppels ? r.contactEmail : null,
     context:

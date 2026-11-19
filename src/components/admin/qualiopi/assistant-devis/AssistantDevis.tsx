@@ -29,6 +29,7 @@ export interface PropsAssistantDevis {
   validiteParDefaut: string;
   formulesActives: boolean;
   defaultClientId?: string | undefined;
+  defaultClientType?: EtatAssistant["clientType"] | undefined;
   projetId?: string | undefined;
   rencontreId?: string | undefined;
   brouillonInitial?: { id: string; majLe: string; donnees: EtatSerialise } | undefined;
@@ -50,6 +51,7 @@ function depart(p: PropsAssistantDevis): {
 } {
   const neuf = etatInitial({
     defaultClientId: p.defaultClientId,
+    defaultClientType: p.defaultClientType,
     projetId: p.projetId,
     rencontreId: p.rencontreId,
     validiteParDefaut: p.validiteParDefaut,

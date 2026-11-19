@@ -18,6 +18,8 @@ import {
 
 export interface ParamsInitiaux {
   defaultClientId?: string | undefined;
+  /** Type du client préchoisi : posé d'emblée pour ne pas modifier l'état au montage. */
+  defaultClientType?: EtatAssistant["clientType"] | undefined;
   projetId?: string | undefined;
   rencontreId?: string | undefined;
   validiteParDefaut: string;
@@ -54,7 +56,7 @@ export function etatInitial(p: ParamsInitiaux): EtatAssistant {
   return {
     modele: null,
     clientId: p.defaultClientId ?? "",
-    clientType: null,
+    clientType: p.defaultClientType ?? null,
     intitule: "",
     validite: p.validiteParDefaut,
     origine: {

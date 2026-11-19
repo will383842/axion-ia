@@ -29,7 +29,8 @@ import {
 } from "@/server/actions/qualiopi/devis-assistant-finaliser";
 import { listerSourcesPourQuiAction } from "@/server/actions/qualiopi/devis-assistant-sources";
 import type { PayloadAssistantV1 } from "@/server/qualiopi/devis/assistant/payload";
-import type { SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import { ordonnerSources, type SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 import type { TexteCopie } from "../devis-formules/saisie";
 import {
@@ -86,9 +87,11 @@ const MSG_INATTENDU =
 
 function SourcesPourQuiPanneau({
   clients,
+  clientId,
   onChoisir,
 }: {
   clients: readonly ClientOption[];
+  clientId: string | undefined;
   onChoisir: (c: ClientOption) => void;
 }) {
   const [etat, setEtat] = useState<
@@ -99,7 +102,7 @@ function SourcesPourQuiPanneau({
 
   useEffect(() => {
     let actif = true;
-    listerSourcesPourQuiAction({ recherche: "" }).then(
+    listerSourcesPourQuiAction({ recherche: "", ...(clientId ? { clientId } : {}) }).then(
       (r) => {
         if (!actif) return;
         setEtat(
@@ -116,40 +119,51 @@ function SourcesPourQuiPanneau({
     return () => {
       actif = false;
     };
+    // Une seule lecture au montage : le client préchoisi ne change pas.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (etat.s === "attente") return null;
   if (etat.s === "erreur") return <p role="note">{etat.message}</p>;
+  const lignes = ordonnerSources(etat.sources, clientId, 10);
   return (
     <section aria-label="Demandes récentes" className="mb-4">
-      <h3>Demandes récentes</h3>
       {etat.note ? <p role="note">{etat.note}</p> : null}
-      <ul className="list-none p-0">
-        {etat.sources.map((s, i) => {
-          const client = s.clientId ? clients.find((c) => c.id === s.clientId) : undefined;
-          return (
-            <li key={`${s.lien}-${i}`} className="flex flex-wrap items-center gap-2">
-              <span>
-                {s.libelle}
-                {s.detail !== "" ? ` · ${s.detail}` : ""}
-              </span>
-              {client ? (
-                <button
-                  type="button"
-                  className="min-h-[44px] rounded border px-3"
-                  onClick={() => onChoisir(client)}
-                >
-                  Choisir ce client
-                </button>
-              ) : (
-                <a href={s.lien} className="underline">
-                  Ouvrir la demande
-                </a>
-              )}
-            </li>
-          );
-        })}
-      </ul>
+      <AdminBlocRepliable titre={`Demandes récentes (${lignes.length})`}>
+        <ul className="m-0 list-none p-0">
+          {lignes.map((s, i) => {
+            const client = s.clientId ? clients.find((c) => c.id === s.clientId) : undefined;
+            return (
+              <li
+                key={`${s.lien}-${i}`}
+                className="flex flex-wrap items-center justify-between gap-2 py-2"
+              >
+                <span className="min-w-0">
+                  <span className="block font-medium">{s.libelle}</span>
+                  {s.detail !== "" ? (
+                    <span className="block text-[length:var(--text-admin-xs)] text-[color:var(--color-admin-fg-muted)]">
+                      {s.detail}
+                    </span>
+                  ) : null}
+                </span>
+                {client ? (
+                  <button
+                    type="button"
+                    className="min-h-[44px] rounded border px-3"
+                    onClick={() => onChoisir(client)}
+                  >
+                    Choisir ce client
+                  </button>
+                ) : (
+                  <a href={s.lien} className="underline">
+                    Ouvrir la demande
+                  </a>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </AdminBlocRepliable>
     </section>
   );
 }
@@ -238,6 +252,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
   const dernier = useRef<Dernier | null>(
     initial ? { id: initial.id, revision: Number(initial.majLe) } : null,
   );
+  const defautClientId = props.defaultClientId ?? props.payloadInitial.clientId ?? undefined;
+  const defautClientType = props.clients.find((c) => c.id === defautClientId)?.type;
   const sauveur = useRef<Sauveur | null>(null);
   /** Révision du serveur inattendue (autre onglet ?) : plus aucune écriture ni envoi d'ici. */
   const enConflit = useRef(false);
@@ -445,6 +461,7 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
             <TypeClientAuMontage ctx={ctx} clients={props.clients} />
             <SourcesPourQuiPanneau
               clients={props.clients}
+              clientId={defautClientId}
               onChoisir={(c) => ctx.dispatch({ type: "client", id: c.id, clientType: c.type })}
             />
           </>
@@ -458,7 +475,8 @@ export function AssistantDevisBranche(props: PropsAssistantDevisBranche) {
     <AssistantDevis
       validiteParDefaut={props.validiteParDefaut}
       formulesActives={props.formulesActives}
-      defaultClientId={props.defaultClientId ?? props.payloadInitial.clientId ?? undefined}
+      defaultClientId={defautClientId}
+      defaultClientType={defautClientType}
       projetId={props.payloadInitial.projetId ?? undefined}
       rencontreId={props.payloadInitial.rencontreId ?? undefined}
       brouillonInitial={initial}

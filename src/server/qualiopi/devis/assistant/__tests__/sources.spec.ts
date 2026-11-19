@@ -8,6 +8,7 @@ function item(p: Partial<InboxItem> & { key: string }): InboxItem {
     detailHref: `/fr/x/contacts/messages/${p.key}`,
     receivedAt: new Date("2026-11-01T10:00:00Z"),
     subject: "Audit IA",
+    nature: "audit",
     contactName: "Claire Martin",
     contactEmail: "claire@exemple.fr",
     context: "SCI Invest Sun",
