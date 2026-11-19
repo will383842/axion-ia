@@ -16,7 +16,7 @@
  * Pas de DB, full server component, ISR statique 1j. Cf. ADR 0024.
  *
  * JSON-LD : WebPage (publisher Organization + datePublished + dateModified
- * SITE_EDITORIAL_DATE + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
+ * date réelle de la route (`dateRoute`) + speakable h1/FAQ) + FAQPage (via FaqAccordion). Lien retour
  * symétrique vers /charte-editoriale.
  */
 
@@ -35,7 +35,7 @@ import { JsonLd } from "@/components/marketing/JsonLd";
 import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import { Link } from "@/i18n/navigation";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { buildProductMetadata, buildWebPageJsonLd, SITE_EDITORIAL_DATE } from "@/lib/seo";
+import { buildProductMetadata, buildWebPageJsonLd } from "@/lib/seo";
 
 interface Props {
   params: Promise<{ locale: string }>;
@@ -176,7 +176,7 @@ export default async function TransparencePage({ params }: Props) {
           // cette question précise, sur une page dédiée à la transparence,
           // était l'écart le plus difficile à défendre de tout l'audit.
           answer:
-            "Pas systématiquement. Chaque contenu passe par des contrôles automatisés avant publication — vérification factuelle par un modèle tiers, contrôle éditorial et alignement avec notre charte. Une relecture humaine intervient sur les contenus sensibles et à la demande, mais elle n'est pas systématique sur l'ensemble de la production. Vous pouvez nous signaler toute erreur à contact@axion-ia.com : nous corrigeons sous 5 jours ouvrés.",
+            "Pas systématiquement. Chaque contenu passe par des contrôles automatisés avant publication (contrôle éditorial et alignement avec notre charte) ; les chiffres sont ensuite vérifiés par un modèle tiers après la mise en ligne. Une relecture humaine intervient lorsque ces contrôles bloquent un contenu, et sur signalement, mais elle n'est pas systématique sur l'ensemble de la production. Vous pouvez nous signaler toute erreur à contact@axion-ia.com : nous corrigeons sous 5 jours ouvrés.",
         },
       ]
     : [
@@ -201,13 +201,13 @@ export default async function TransparencePage({ params }: Props) {
           id: "supervision-humaine",
           question: "Is AI content reviewed by a human?",
           answer:
-            "Yes. Every AI-assisted content piece (Manon persona) is supervised by the Axion-IA team before publication: editorial review, factual verification and alignment with our editorial policy.",
+            "Not systematically. Every AI-assisted content piece (Manon persona) goes through automated checks before publication (editorial review and alignment with our editorial policy); figures are then fact-checked by a third-party model after it goes live. Human review applies when those checks block a piece, and when an error is reported, but it is not systematic across all production.",
         },
       ];
 
   // Aligné sur /charte-editoriale : publisher Organization (défaut factory) +
   // dates (freshness AEO). datePublished = création du hub (ADR 0024) ;
-  // dateModified = SITE_EDITORIAL_DATE. isPartOf #website = défaut factory.
+  // dateModified calculé par la fabrique depuis `path` (même source que le sitemap). isPartOf #website = défaut factory.
   const webPageJsonLd = buildWebPageJsonLd({
     locale: locale as Locale,
     path: isFr ? "/transparence" : "/transparency",
@@ -215,7 +215,6 @@ export default async function TransparencePage({ params }: Props) {
     description: tagline,
     inLanguage: isFr ? "fr-FR" : "en-US",
     datePublished: "2026-05-18",
-    dateModified: SITE_EDITORIAL_DATE,
     about: {
       "@type": "Thing",
       name: "EU AI Act 2024/1689 transparency",

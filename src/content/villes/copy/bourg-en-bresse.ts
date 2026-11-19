@@ -230,7 +230,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bourg-en-Bresse et dans la Bresse ?",
-      a: "Oui, Axion-IA intervient à Bourg-en-Bresse et dans toute la Bresse (Viriat, Péronnas, Saint-Denis-lès-Bourg). Nos consultants se déplacent depuis Lyon (1h) ou animent les sessions en visio.",
+      a: "Oui, Axion-IA intervient à Bourg-en-Bresse et dans toute la Bresse (Viriat, Péronnas, Saint-Denis-lès-Bourg). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous la filière volaille de Bresse AOP ?",
@@ -246,7 +246,7 @@ export const BOURG_EN_BRESSE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une intervention IA à Bourg-en-Bresse ?",
-      a: "Nos consultants se déplacent depuis Lyon (1h, A40/A42). L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
+      a: "Nous intervenons partout en France, sur place ou à distance. L'intervention dure au moins une journée, sous forme d'atelier pratique dans vos locaux, pour rendre vos équipes autonomes.",
     },
     {
       q: "Axion-IA respecte-t-il le RGPD lors de ses interventions à Bourg-en-Bresse ?",

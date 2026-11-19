@@ -2087,7 +2087,7 @@ const KW_ADMINISTRATION: KeywordSeed[] = [
     urlCible: "/fr/secteurs/administration-publique",
     canonicalParent: "/fr/secteurs/administration-publique",
     source: "manuel",
-    note: "P0 deadline AI Act art. 22 août 2026 ; schema.org Article + GovernmentOrganization",
+    note: "P0 AI Act, haut risque reporté au 2 décembre 2027 (l'art. 22 relève du RGPD) ; schema.org Article + GovernmentOrganization",
   },
   {
     keyword: "comment l'IA améliore le service public ?",

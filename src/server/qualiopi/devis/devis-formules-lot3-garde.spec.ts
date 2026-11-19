@@ -42,6 +42,14 @@ describe("lot 3 — une seule source de données", () => {
   });
 });
 
+describe("lot 3 — l'aperçu lit l'offre", () => {
+  it("🔑 SELECT_DEVIS_POUR_PDF contient offre: true (sinon aperçu vide à 0,00 €)", () => {
+    const src = SANS_COMMENTAIRES(lire("src/server/qualiopi/documents/donnees-pdf-devis.ts"));
+    const bloc = /SELECT_DEVIS_POUR_PDF\s*=\s*\{([\s\S]*?)\}\s*as const/.exec(src)?.[1] ?? "";
+    expect(bloc).toMatch(/\boffre:\s*true\b/);
+  });
+});
+
 describe("lot 3 — vocabulaire client", () => {
   it("🔑 ni « token » ni « jeton » dans les textes écrits pour le client (vue, e-mail, gabarit)", () => {
     for (const f of [

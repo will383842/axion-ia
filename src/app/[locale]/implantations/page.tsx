@@ -34,6 +34,7 @@ import {
   getTierById,
   getEntryPriceEur,
   formatAmount,
+  PRIX_PUBLICS_AFFICHES,
 } from "@/content/pricing";
 import { buildServiceAreasServed } from "@/lib/service-coverage";
 
@@ -131,6 +132,9 @@ export default async function ImplantationsHub({ params }: Props) {
   // canoniques (audit, interventions, un-a-un, implementation, sites-web).
   // Signal AEO/GEO fort : AI engines énumèrent les 5 services quand un
   // visiteur demande « que propose Axion-IA ? ».
+  // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA. Les
+  // fragments chiffrés ne sortent qu'interrupteur allumé ; sinon « sur devis ».
+  const tarif = (chiffre: string, repli: string) => (PRIX_PUBLICS_AFFICHES ? chiffre : repli);
   const servicesItemList = buildItemListJsonLd({
     locale: loc,
     path: "/implantations",
@@ -140,44 +144,46 @@ export default async function ImplantationsHub({ params }: Props) {
         position: 1,
         name: isFr ? "Audit IA" : "Audit IA",
         url: `${SITE_URL}/${loc}/audit`,
-        description: `Diagnostic IA chiffré, 4 niveaux (Flash ${formatAmount(
-          getTierById(AUDIT_TIERS, "audit-flash").priceFlat!,
-          loc,
-          { compact: true },
-        )} → Stratégique ETI dès ${formatAmount(
-          getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
-          loc,
-          { compact: true },
-        )}), plan d'action priorisé.`,
+        description: `Diagnostic IA chiffré, 4 niveaux ${tarif(
+          `(Flash ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, loc, {
+            compact: true,
+          })} → Stratégique ETI dès ${formatAmount(
+            getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!,
+            loc,
+            { compact: true },
+          )})`,
+          "(Flash → Stratégique ETI), sur devis",
+        )}, plan d'action priorisé.`,
       },
       {
         position: 2,
         name: isFr ? "Formation IA en entreprise" : "Formation IA en entreprise",
         url: `${SITE_URL}/${loc}/interventions`,
-        description: `Ateliers et interventions sur site, dès ${formatAmount(
-          getEntryPriceEur(INTERVENTION_TIERS)!,
-          loc,
-          { compact: true },
+        description: `Ateliers et interventions sur site, ${tarif(
+          `dès ${formatAmount(getEntryPriceEur(INTERVENTION_TIERS)!, loc, { compact: true })}`,
+          "sur devis",
         )}, groupes de 2 à 15 personnes, sur vos vraies données.`,
       },
       {
         position: 3,
         name: isFr ? "Coaching 1-to-1 dirigeants" : "Coaching 1-to-1 dirigeants",
         url: `${SITE_URL}/${loc}/un-a-un`,
-        description: `Journée 1-to-1 avec un dirigeant, ${formatAmount(
-          getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!,
-          loc,
-          { compact: true },
+        description: `Journée 1-to-1 avec un dirigeant, ${tarif(
+          formatAmount(getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!, loc, {
+            compact: true,
+          }),
+          "sur devis",
         )}, structurer l'entreprise et chiffrer les gains IA.`,
       },
       {
         position: 4,
         name: isFr ? "Implémentation IA" : "Implémentation IA",
         url: `${SITE_URL}/${loc}/implementation`,
-        description: `Pilote IA dès ${formatAmount(
-          getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!,
-          loc,
-          { compact: true },
+        description: `Pilote IA ${tarif(
+          `dès ${formatAmount(getTierById(IMPLEMENTATION_TIERS, "impl-poc").priceMin!, loc, {
+            compact: true,
+          })}`,
+          "sur devis",
         )}, chatbot RAG, agents IA, automatisations, IA custom d'entreprise.`,
       },
       {

@@ -49,7 +49,7 @@ export const CHANGE_53_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Changé en Mayenne ?",
-      a: "Oui, Axion-IA intervient à Changé (53) et dans toute l'agglomération lavalloise (Laval, Saint-Berthevin, Bonchamp-lès-Laval, L'Huisserie). Nos consultants sont basés en proximité, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Changé (53) et dans toute l'agglomération lavalloise (Laval, Saint-Berthevin, Bonchamp-lès-Laval, L'Huisserie). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les entreprises de Laval Mayenne Technopole ?",

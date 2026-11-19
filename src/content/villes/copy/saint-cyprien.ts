@@ -49,7 +49,7 @@ export const SAINT_CYPRIEN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Saint-Cyprien et dans le Sud Roussillon ?",
-      a: "Oui, Axion-IA intervient à Saint-Cyprien et tout le Sud Roussillon (Elne, Argelès-sur-Mer, Canet-en-Roussillon, Latour-Bas-Elne). Nos consultants sont basés à proximité de Perpignan (20 min).",
+      a: "Oui, Axion-IA intervient à Saint-Cyprien et tout le Sud Roussillon (Elne, Argelès-sur-Mer, Canet-en-Roussillon, Latour-Bas-Elne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme balnéaire premium ?",

@@ -54,8 +54,8 @@ Pour les industriels exportant vers les États-Unis ou soumis à inspection FDA,
 ### Guidance ANSM / EMA sur les logiciels IA
 L'Agence nationale de sécurité du médicament (ANSM) et l'Agence européenne des médicaments (EMA) ont publié des réflexions communes sur l'utilisation de l'IA dans le cycle de vie du médicament (EMA/CHMP/786999/2023). Les systèmes IA qualifiés de **Software as a Medical Device (SaMD)** tombent sous la réglementation MDR 2017/745 ou IVDR 2017/746 lorsqu'ils ont un usage diagnostique ou thérapeutique.
 
-### AI Act européen (applicable août 2026)
-Les systèmes IA utilisés dans des dispositifs médicaux de classe IIa/IIb/III ou dans la gestion de risques pharmaceutiques critiques seront classés **haut risque** au sens de l'AI Act (Règlement UE 2024/1689). Cela implique : documentation technique renforcée, conformité aux normes harmonisées (EN ISO 13485, IEC 62304), enregistrement dans la base EUID.
+### AI Act européen (haut risque : échéances reportées par le règlement (UE) 2026/1744)
+Les systèmes IA utilisés dans des dispositifs médicaux de classe IIa/IIb/III ou dans la gestion de risques pharmaceutiques critiques peuvent être classés **haut risque** au sens de l'AI Act (Règlement UE 2024/1689). Pour l'IA intégrée dans un produit réglementé (annexe I, dont les dispositifs médicaux), l'application est fixée au 2 août 2028 selon le règlement (UE) 2026/1744. Cela implique : documentation technique renforcée, alignement sur les normes harmonisées (EN ISO 13485, IEC 62304).
 
 ---
 
@@ -103,9 +103,11 @@ Les systèmes IA utilisés dans des dispositifs médicaux de classe IIa/IIb/III 
       "https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
       "https://www.ich.org/page/quality-guidelines",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ──────────────────────────────────────────────────────────────────────────
@@ -412,15 +414,17 @@ La réduction du temps de traitement a permis de **réabsorber la hausse de +35 
 2. **Validation logicielle obligatoire** : la validation GAMP 5 représente un investissement non négligeable (40–80 jours·homme selon la complexité) mais est **non négociable** dans un contexte GxP soumis aux inspections ANSM et EMA.
 3. **Gestion du changement** : deux pharmacovigilants juniors ont exprimé des craintes initiales sur l'évolution de leur poste. Un accompagnement spécifique (repositionnement sur l'analyse de signal et la veille réglementaire) a été nécessaire.
 4. **Maintenance du modèle** : les mises à jour de la terminologie MedDRA (publication annuelle en mars) nécessitent une revue et un re-entraînement partiel du modèle de codage.
-5. **Conformité AI Act 2026** : dans la mesure où le système assiste une décision ayant un impact sur la sécurité des patients, il sera vraisemblablement classé **haut risque** au sens du Règlement UE 2024/1689 (AI Act), applicable pleinement en août 2026. La documentation technique conforme devra être préparée.`,
+5. **Calendrier AI Act** : dans la mesure où le système assiste une décision ayant un impact sur la sécurité des patients, il peut être classé **haut risque** au sens du Règlement UE 2024/1689 (AI Act). Selon le règlement (UE) 2026/1744, les obligations s'appliquent à partir du 2 décembre 2027 (annexe III) ou du 2 août 2028 (annexe I, produits réglementés), à vérifier sur EUR-Lex selon votre cas. La documentation technique devra être préparée.`,
     sources: [
       "https://www.ema.europa.eu/en/human-regulatory-overview/pharmacovigilance-overview/good-pharmacovigilance-practices",
       "https://www.ansm.sante.fr/declarer-un-effet-indesirable/pharmacovigilance",
       "https://www.meddra.org/how-to-use/support-documentation",
       "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32024R1689",
       "https://ispe.org/initiatives/gamp",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 ];

@@ -22,6 +22,7 @@ import {
   IMPLEMENTATION_TIERS,
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
+  PRIX_PUBLICS_AFFICHES,
   formatAmount,
   getEntryPriceEur,
   type PricingTier,
@@ -69,7 +70,10 @@ export function getServiceOffer(slug: ServiceSlug): ServiceOffer | null {
     labelFr: def.labelFr,
     pageHref: def.pageHref,
     fromPriceEur,
-    fromPriceLabel: fromPriceEur !== null ? formatAmount(fromPriceEur, "fr") : null,
+    // R7 (ordre de Williams du 08/11/2026) : aucun montant public hors Journée IA. Le
+    // montant brut reste lisible (`fromPriceEur`) ; son libellé public est retenu.
+    fromPriceLabel:
+      fromPriceEur !== null && PRIX_PUBLICS_AFFICHES ? formatAmount(fromPriceEur, "fr") : null,
   };
 }
 
@@ -79,6 +83,8 @@ export function getServiceOffer(slug: ServiceSlug): ServiceOffer | null {
  * Le `price` est exprimé en EUR (lowPrice = prix d'entrée), `priceCurrency=EUR`.
  */
 export function buildServiceOfferJsonLd(slug: ServiceSlug): Record<string, unknown> | null {
+  // R7 : pas d'Offer chiffrée tant que l'interrupteur des prix publics est coupé.
+  if (!PRIX_PUBLICS_AFFICHES) return null;
   const offer = getServiceOffer(slug);
   if (!offer || offer.fromPriceEur === null) return null;
   const url = `${SITE_URL}/fr${offer.pageHref}`;

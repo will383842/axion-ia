@@ -14,7 +14,6 @@
 import type { ReactNode } from "react";
 import { Section } from "@/components/layout/Section";
 import { FaqAccordion } from "@/components/marketing/FaqAccordion";
-import { CODAGE_TIERS, getTierById, formatAmount } from "@/content/pricing";
 
 export interface SitesWebFaqProps {
   readonly isFr: boolean;
@@ -28,14 +27,6 @@ export function SitesWebFaq({
   villeContext,
   villeSpecificFaqs,
 }: SitesWebFaqProps): ReactNode {
-  const priceMin = formatAmount(
-    getTierById(CODAGE_TIERS, "codage-web").priceMin!,
-    isFr ? "fr" : "en",
-    {
-      compact: true,
-    },
-  );
-
   const canonicalFaqs = isFr
     ? [
         {
@@ -77,7 +68,7 @@ export function SitesWebFaq({
         {
           id: "q-delai-cout",
           question: "Combien de temps et quel budget prévoir ?",
-          answer: `Un chatbot RAG greffé sur un site existant : 2 à 3 semaines, à partir de ${priceMin}. Search sémantique : 1 à 2 semaines si le contenu est structuré. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon le périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.`,
+          answer: `Un chatbot RAG greffé sur un site existant : 2 à 3 semaines, sur devis. Search sémantique : 1 à 2 semaines si le contenu est structuré. Une plateforme sur mesure complète avec IA intégrée : 6 à 12 semaines, devis sur mesure selon le périmètre. Toujours en forfait fixe — pas de régie, pas de dépassement.`,
         },
         {
           id: "q-proprio",
@@ -126,7 +117,7 @@ export function SitesWebFaq({
         {
           id: "q-time-cost",
           question: "How long and what budget should I plan for?",
-          answer: `A RAG chatbot grafted onto an existing site: 2 to 3 weeks, from ${priceMin}. Semantic search: 1 to 2 weeks if content is structured. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.`,
+          answer: `A RAG chatbot grafted onto an existing site: 2 to 3 weeks, on quote. Semantic search: 1 to 2 weeks if content is structured. A complete custom platform with integrated AI: 6 to 12 weeks, custom quote based on scope. Always fixed fee — no time-and-materials, no overruns.`,
         },
         {
           id: "q-owner",

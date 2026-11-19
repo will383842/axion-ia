@@ -186,7 +186,6 @@ export function fautesDeVocabulaire(
 export const DOSSIERS_APPORTEUR = [
   "src/content/recrutement",
   "src/components/recrutement",
-  "src/components/services/devenir-commercial",
   "src/app/[locale]/devenir-commercial-ia",
   "src/app/[locale]/apporteur-affaires",
   "src/app/[locale]/apporteur-affaires-independant-formation-ia-entreprise",

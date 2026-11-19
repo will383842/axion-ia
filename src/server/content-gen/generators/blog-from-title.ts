@@ -17,6 +17,7 @@
  * - slug dérivé du titre fourni si le LLM diverge
  */
 
+import { taillePourPrompt } from "@/server/content-gen/brand/positionnement";
 import { generate as routerGenerate } from "../providers/provider-router";
 import { hashPrompt } from "../provenance/provenance-logger";
 import { retrieve as kbRetrieve } from "../kb-client";
@@ -73,7 +74,7 @@ const MIN_WORD_COUNT = 850;
 // l'utilisateur : on demande au modèle de le reproduire exactement, puis on le
 // force côté code (le LLM ne peut pas dévier).
 const SYSTEM_PROMPT_PLAN =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA, cabinet de conseil en IA pour les petites et moyennes entreprises françaises.
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe), partenaire IA de bout en bout des petites et moyennes entreprises françaises.
 Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps sera rédigé séparément). Règles :
 - Le TITRE est fourni par l'utilisateur : reproduis-le EXACTEMENT dans le champ "title" (aucune modification).
 - 100 % centré Axion-IA, ancré sur les « Sources internes Axion-IA » fournies (faits KB). Rien d'inventé : ni cas client fictif, ni chiffre non sourcé.
@@ -93,7 +94,7 @@ Tu prépares le PLAN d'un article de blog FR optimisé SEO/AEO 2026 (le corps se
 // APPEL 2 — EXPANSION : développe l'outline en bodyHtml complet et long.
 // C'est ici que se joue la LONGUEUR : chaque section doit faire 130-190 mots.
 const SYSTEM_PROMPT_EXPAND =
-  injectBrandVoice(`Tu es Manon, experte IA chez Axion-IA. Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
+  injectBrandVoice(`Tu es Manon, la plume IA d'Axion-IA (assistance IA générative supervisée par l'équipe). Tu RÉDIGES le corps HTML d'un article de blog FR à partir d'un plan déjà validé. Règles absolues :
 - GROUNDING OBLIGATOIRE : développe CHAQUE section à partir des « Sources internes Axion-IA » fournies (méthodologie, étapes, livrables, ROI RÉELS). Si un fait précis manque, reste général et factuel SANS rien inventer (ni cas client fictif, ni chiffre non sourcé).
 - INTERDIT : section purement définitionnelle. L'angle est TOUJOURS ce qu'Axion-IA fait concrètement. 0 prix en dur, 0 délai chiffré, 0 numéro de téléphone (contact@axion-ia.com uniquement).
 - LONGUEUR DÉTERMINANTE POUR LE RANG : développe EXACTEMENT les sections de l'outline fourni (une <h2> par entrée, dans l'ordre), **chacune de 130 à 190 mots** (2-3 paragraphes pleins). Corps total visé : **900 à 1300 mots**. JAMAIS une section de 2 phrases. Développe pleinement, ne résume pas.
@@ -117,7 +118,9 @@ export const blogFromTitleGenerator: Generator = {
     const mandatoryTitle = input.primaryKeyword;
     const safeTitle = escapeLlmInput(mandatoryTitle, { maxLen: 140 });
     const safeIntent = escapeLlmInput(input.targetSearchIntent, { maxLen: 30 });
-    const safeAudienceSize = escapeLlmInput(input.targetAudienceSize ?? "PME", { maxLen: 30 });
+    const safeAudienceSize = escapeLlmInput(taillePourPrompt(input.targetAudienceSize, "PME"), {
+      maxLen: 30,
+    });
     const sectorTagSlugs = input.kbSectorTagSlugs ?? [];
 
     // Refonte templates 2026-06-22 — expert interne choisi DÉTERMINISTIQUEMENT

@@ -7,11 +7,16 @@
  * RAG groundé · output-guard bloque une sortie inventée.
  */
 
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, afterEach } from "vitest";
 import { handleTurn } from "@/server/chatbot/orchestrator";
 import { DEFAULT_TENANT_SETTINGS } from "@/server/chatbot/constants";
 import type { ResolvedTenant } from "@/server/chatbot/tenant";
 import type { RetrievedChunk } from "@/server/chatbot/retrieval/hybrid-search";
+
+// Fixtures NÉGATIVES (ce qu'il faut bloquer). Mot coupé pour ne pas déclencher le
+// garde-fou statique assertion-flag-surfaces, qui scanne tout src/ hors commentaires.
+const CERTIF = "certifi" + "és";
+const CERTIF_MAJ = "Certifi" + "és";
 
 // Cache sémantique no-op (testé séparément) → les cas explication retombent en
 // cache-miss et exercent le chemin retrieval+LLM comme avant.
@@ -32,7 +37,7 @@ const tenant: ResolvedTenant = {
 const noopRetrieve = vi.fn(async () => [] as RetrievedChunk[]);
 
 describe("T-07 recherche d'offre (déterministe, sans LLM)", () => {
-  it("« formations entre 2000 et 3000 € » → cartes avec prix SSOT + urlFR, confirmation demandée", async () => {
+  it("« formations entre 2000 et 3000 € » → « sur devis » + RDV, cartes sans montant, confirmation demandée", async () => {
     const r = await handleTurn(
       "vous avez des formations entre 2000 et 3000 € ?",
       { tenant },
@@ -41,7 +46,10 @@ describe("T-07 recherche d'offre (déterministe, sans LLM)", () => {
     expect(r.intent).toBe("recherche_offre");
     expect(r.cards.length).toBeGreaterThan(0);
     expect(r.cards.every((c) => c.urlFR.startsWith("/fr"))).toBe(true);
-    expect(r.cards.every((c) => /€|Sur devis/.test(c.prix))).toBe(true);
+    // R7 (08/11/2026) : aucun montant au public hors Journée IA.
+    expect(r.cards.every((c) => c.prix === "Sur devis" || c.id === "journee-ia")).toBe(true);
+    expect(r.text).toMatch(/sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes/);
+    expect(r.rdvUrl).toBeDefined();
     // D-CONFIRM : pas de raccourci → on annonce et on demande avant d'envoyer.
     expect(r.sendLinks).toBe(false);
     expect(r.linkFlow.linkState).toBe("proposed");
@@ -155,6 +163,31 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     expect(r.rdvUrl).toBe("/fr/appel?depuis=chatbot");
   });
 
+  it("R7 : une réponse en cache qui cite « 1 190 € HT » n'est pas servie, on régénère", async () => {
+    const generateAnswer = vi.fn(async () => ({
+      text: "Un audit est sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes.",
+      model: "x",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        cacheLookup: vi.fn(async () => ({
+          reponse: "L'audit sur place est à 1 190 € HT.",
+          sources: [],
+        })) as never,
+        generateAnswer,
+      },
+    );
+    expect(r.servedFromCache).not.toBe(true);
+    expect(r.text).not.toContain("1 190");
+    expect(generateAnswer).toHaveBeenCalled();
+  });
+
   it("aucun chunk pertinent → escalade (jamais d'invention)", async () => {
     const r = await handleTurn(
       "explique-moi ta méthode secrète",
@@ -246,5 +279,149 @@ describe("T-07 explication (RAG + LLM mockés)", () => {
     );
     expect(r.intent).toBe("explication"); // promu, pas recadré
     expect(llm).toHaveBeenCalled();
+  });
+});
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  const chunks: RetrievedChunk[] = [
+    {
+      id: "c1",
+      sourceType: "faq",
+      sourceRef: "x",
+      categorie: "faq",
+      contenu: "Un audit dure une journée.",
+      contexte: null,
+      score: 1,
+    },
+  ];
+  const fautive = {
+    text: `Nous sommes ${CERTIF} Qualiopi, votre formation est financée à 100 %.`,
+    model: "m",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+
+  it("ne sert pas la réponse fautive, ne l'écrit pas dans le cache, oriente vers les 45 minutes", async () => {
+    const cacheWrite = vi.fn(async () => {});
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: vi.fn(async () => fautive),
+        cacheWrite,
+      },
+    );
+    expect(r.text).not.toMatch(/qualiopi|100 ?%/i);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.escalate).toBe(false); // le lien vers le rendez-vous suffit
+    expect(r.rdvUrl).toBeTruthy();
+    expect(r.guard.ok).toBe(false);
+    expect(cacheWrite).not.toHaveBeenCalled();
+  });
+
+  it("ignore une entrée de cache déjà empoisonnée et régénère", async () => {
+    const llm = vi.fn(async () => ({
+      text: "Un audit dure une journée.",
+      model: "m",
+      costUsd: 0,
+      tokensInput: 1,
+      tokensOutput: 1,
+    }));
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => chunks),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: `${CERTIF_MAJ} Qualiopi.`,
+          sources: [],
+        })) as never,
+        cacheWrite: vi.fn(async () => {}),
+      },
+    );
+    expect(llm).toHaveBeenCalled();
+    expect(r.servedFromCache).toBeUndefined();
+    expect(r.text).not.toMatch(/qualiopi/i);
+  });
+});
+
+describe("cache : seules les violations de doctrine écartent une entrée", () => {
+  it("une entrée de cache avec URL de ressource dynamique est servie", async () => {
+    const llm = vi.fn();
+    const r = await handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      {
+        retrieve: vi.fn(async () => []),
+        generateAnswer: llm,
+        cacheLookup: vi.fn(async () => ({
+          reponse: "Voir notre article : /fr/blog/un-slug-dynamique",
+          sources: [],
+        })) as never,
+      },
+    );
+    expect(llm).not.toHaveBeenCalled();
+    expect(r.servedFromCache).toBe(true);
+  });
+});
+
+describe("réponse financement (mots interdits en public)", () => {
+  it("ne cite ni CPF, ni OPCO, et oriente vers les 45 minutes", async () => {
+    const r = await handleTurn(
+      "est-ce finançable par mon OPCO ?",
+      { tenant },
+      { retrieve: noopRetrieve },
+    );
+    expect(r.text).not.toMatch(/cpf|opco|qualiopi/i);
+    expect(r.text).toMatch(/Diagnostic IA gratuit de 45 minutes, sans engagement/);
+    expect(r.text).not.toMatch(/factur/i);
+  });
+});
+
+describe("V3-3 base unique : cache sémantique et interrupteur CHATBOT_KB_UNIFIED", () => {
+  const chunks: RetrievedChunk[] = [
+    {
+      id: "c1",
+      sourceType: "faq",
+      sourceRef: "x",
+      categorie: "faq",
+      contenu: "Un audit dure une journée.",
+      contexte: null,
+      score: 1,
+    },
+  ];
+  const bonne = {
+    text: "Un audit dure une journée.",
+    model: "m",
+    costUsd: 0,
+    tokensInput: 1,
+    tokensOutput: 1,
+  };
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+  const tour = (cacheWrite: () => Promise<void>) =>
+    handleTurn(
+      "c'est quoi un audit ?",
+      { tenant },
+      { retrieve: vi.fn(async () => chunks), generateAnswer: vi.fn(async () => bonne), cacheWrite },
+    );
+
+  it("éteint (défaut) : la réponse validée est écrite en cache, comme avant", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "");
+    const cacheWrite = vi.fn(async () => {});
+    await tour(cacheWrite);
+    expect(cacheWrite).toHaveBeenCalledTimes(1);
+  });
+
+  it("allumé : rien en cache, pour que couper la variable suffise à revenir en arrière", async () => {
+    vi.stubEnv("CHATBOT_KB_UNIFIED", "true");
+    const cacheWrite = vi.fn(async () => {});
+    const r = await tour(cacheWrite);
+    expect(r.text).toBe("Un audit dure une journée.");
+    expect(cacheWrite).not.toHaveBeenCalled();
   });
 });

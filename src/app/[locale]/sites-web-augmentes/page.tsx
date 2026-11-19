@@ -193,14 +193,10 @@ export default async function SitesWebAugmentesHub({ params }: Props) {
 
   return (
     <>
-      {/* Service inline (SEO racine critique), ItemList différé afterInteractive. */}
+      {/* JSON-LD rendu dans le HTML servi (audit SEO 2026-11-11, I1) : visible des robots sans JS. */}
       <JsonLd data={serviceJsonLd} />
       <JsonLd data={sitesWebPageJsonLd} />
-      <JsonLd
-        data={itemListJsonLd}
-        strategy="afterInteractive"
-        scriptId="jsonld-sites-web-augmentes-itemlist"
-      />
+      <JsonLd data={itemListJsonLd} scriptId="jsonld-sites-web-augmentes-itemlist" />
       {sitesWebImagesJsonLd ? <JsonLd data={sitesWebImagesJsonLd} /> : null}
 
       <Container className="border-border border-b py-3">

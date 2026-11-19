@@ -18,9 +18,9 @@ export const SAINT_QUENTIN_FALLAVIER_COPY: VilleCopy = {
   ecosystemEn:
     "Saint-Quentin-Fallavier a une part importante de son territoire aménagée dans le cadre de la ville nouvelle de L'Isle-d'Abeau (CAPI), hébergeant l'une des plus importantes concentrations de zones d'activités logistique et industrielle de l'aire d'attraction est de Lyon. Tissu PME industrielles et logistiques (proximité aéroport Lyon-Saint-Exupéry à 10 min), TPE artisanat BTP, commerces et services.",
   distancesFr:
-    "Gare La Verpillière à 10 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 15 min. Grenoble centre à 1h.",
+    "Gare La Verpillière à 10 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 15 min.",
   distancesEn:
-    "Gare La Verpillière à 10 min (TER Lyon-Grenoble). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 15 min. Grenoble centre à 1h.",
+    "Gare La Verpillière à 10 min (TER vers Lyon). Aéroport Lyon-Saint-Exupéry à 10 min. Lyon centre à 35 min A43. Bourgoin-Jallieu à 15 min.",
   topSectorsNaf: [
     "Logistique massive & e-commerce (CAPI / Saint-Exupéry)",
     "Industrie manufacturière Nord-Isère",

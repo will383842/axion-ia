@@ -49,7 +49,7 @@ export const CARMAUX_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Carmaux ?",
-      a: "Oui, Axion-IA intervient à Carmaux et dans tout le Carmausin (Blaye-les-Mines, Saint-Benoît-de-Carmaux, Cagnac-les-Mines). Nos consultants se déplacent depuis Albi (15 min) ou Toulouse (1h).",
+      a: "Oui, Axion-IA intervient à Carmaux et dans tout le Carmausin (Blaye-les-Mines, Saint-Benoît-de-Carmaux, Cagnac-les-Mines). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Carmaux ?",

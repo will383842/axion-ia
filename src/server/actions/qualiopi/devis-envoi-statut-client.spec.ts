@@ -29,7 +29,8 @@ vi.mock("@/server/actions/qualiopi/_guards", () => ({
   logQualiopiActivity: vi.fn(),
 }));
 vi.mock("@/server/actions/qualiopi/documents", () => ({ genererConventionAction: vi.fn() }));
-vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", () => ({
+vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/server/qualiopi/documents/donnees-pdf-devis")>()),
   lireContextePdfDevis: vi.fn().mockResolvedValue({}),
   // Le rendu du PDF est fail-soft : on le fait échouer, l'envoi se poursuit sans pièce.
   donneesPdfDevis: vi.fn(() => {

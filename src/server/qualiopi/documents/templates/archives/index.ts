@@ -39,6 +39,7 @@ import { ConventionPdf as ConventionPdfV4 } from "./convention.v4";
 import { ConventionPdf as ConventionPdfV5 } from "./convention.v5";
 import { DevisPdf as DevisPdfV1 } from "./devis.v1";
 import { DevisPdf as DevisPdfV2 } from "./devis.v2";
+import { DevisPdf as DevisPdfV3 } from "./devis.v3";
 import { ConventionTripartitePdf as ConventionTripartitePdfV4 } from "./convention-tripartite.v4";
 import { ConventionTripartitePdf as ConventionTripartitePdfV5 } from "./convention-tripartite.v5";
 import { ContratFormationPdf as ContratFormationPdfV1 } from "./contrat-formation.v1";
@@ -82,6 +83,7 @@ export const GABARITS_ARCHIVES: Readonly<
   devis: {
     1: { fichier: "devis.v1.tsx", Composant: DevisPdfV1 as unknown as ComposantPiece },
     2: { fichier: "devis.v2.tsx", Composant: DevisPdfV2 as unknown as ComposantPiece },
+    3: { fichier: "devis.v3.tsx", Composant: DevisPdfV3 as unknown as ComposantPiece },
   },
   contrat_formation: {
     1: {

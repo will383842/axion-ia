@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { hasLocale } from "next-intl";
@@ -32,14 +33,6 @@ import {
   buildPrimaryImageOfPage,
 } from "@/lib/seo";
 import {
-  AUDIT_TIERS,
-  IMPLEMENTATION_TIERS,
-  INTERVENTION_TIERS,
-  formatAmount,
-  getEntryPriceEur,
-  getTierById,
-} from "@/content/pricing";
-import {
   CaseStudiesFilteredGrid,
   CaseStudiesFilterPills,
   type CaseDescriptor,
@@ -58,6 +51,7 @@ interface Props {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
+  if (!CAS_CONCRETS_AFFICHES) return {};
   const meta = await buildProductMetadata({
     locale,
     path: "/cas-concrets",
@@ -86,6 +80,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function CaseStudiesListing({ params }: Props) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
+  if (!CAS_CONCRETS_AFFICHES) notFound();
   setRequestLocale(locale);
   const loc = locale as Locale;
   const isFr = loc === "fr";
@@ -269,8 +264,8 @@ export default async function CaseStudiesListing({ params }: Props) {
         <Container className="max-w-3xl">
           <p className="text-fg-soft text-lg leading-relaxed">
             {isFr
-              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, ETI retail, grand compte bancaire — parce que la méthode Axion-IA s'adapte à chaque échelle, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} pour vérifier.`
-              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, industrial SME, retail mid-cap, large banking account — because the Axion-IA method adapts to each scale, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} to validate.`}
+              ? `Chaque cas publié ici représente une mission Axion-IA réellement livrée. Aucune fabrication, aucun pilote théorique. Les noms des clients sont anonymisés à leur demande, mais les chiffres, les délais et la méthode sont fidèles à la réalité du terrain. Vous y verrez des contextes très différents — TPE artisanale, PME industrielle, ETI retail, grand compte bancaire — parce que la méthode Axion-IA s'adapte à chaque échelle, à condition de cadrer le bon sujet. Si un cas vous parle, on peut sans doute reproduire l'approche chez vous : commencez par un audit ou par le format collectif (1 journée) pour vérifier.`
+              : `Each case study here represents an Axion-IA engagement actually delivered. No fabrication, no theoretical pilot. Client names are anonymised on request, but the numbers, timelines and methodology mirror the real fieldwork. You'll see very different contexts — small artisan business, industrial SME, retail mid-cap, large banking account — because the Axion-IA method adapts to each scale, provided the right scope is framed. If a case resonates, we can probably reproduce the approach for you: start with an audit or the group format to validate.`}
           </p>
         </Container>
       </Section>
@@ -312,14 +307,11 @@ export default async function CaseStudiesListing({ params }: Props) {
                   {isFr ? "Par budget" : "By budget"}
                 </CardTitle>
                 <CardDescription>
-                  {/* Prix 100 % dérivés du SSOT pricing.ts (décision Will : aucun
-                      prix hardcodé). Prix d'entrée par catégorie via getEntryPriceEur —
-                      audits dès 1 190 € (audit-flash), implémentations dès 990 €
-                      (impl-poc), paliers supérieurs sur devis. Aligner les bornes
-                      dans pricing.ts les propage ici automatiquement. */}
+                  {/* R7 (ordre de Williams du 08/11/2026) : plus aucun prix d'offre au
+                      public — formations, audits et implémentations sur devis. */}
                   {isFr
-                    ? `Le format collectif (1 journée) ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })}, audits à partir de ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "fr", { compact: true })}, implémentations à partir de ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "fr", { compact: true })}. ROI documenté à chaque palier.`
-                    : `Group format ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })}, audits from ${formatAmount(getEntryPriceEur(AUDIT_TIERS)!, "en", { compact: true })}, implementations from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS)!, "en", { compact: true })}. Documented ROI at every tier.`}
+                    ? "Du format collectif d'une journée à l'implémentation, en passant par l'audit : chaque palier sur devis, ROI documenté à chaque étape."
+                    : "From the one-day group format to implementation, via the audit: each tier on quote, documented ROI at every step."}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -369,8 +361,8 @@ export default async function CaseStudiesListing({ params }: Props) {
         title={isFr ? "Devenez le prochain cas concret" : "Become the next case study"}
         description={
           isFr
-            ? `Démarrez par une formation collective ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} pour identifier vos quick-wins.`
-            : `Start with a group training ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} to identify your quick-wins.`
+            ? "Démarrez par une formation collective pour identifier vos quick-wins."
+            : "Start with a group training to identify your quick-wins."
         }
         cta={
           <Cta href="/formations" size="lg">

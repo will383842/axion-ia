@@ -18,9 +18,9 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
   ecosystemEn:
     "Bourg-de-Péage est intégrée à Valence Romans Agglo, formant avec Romans-sur-Isère un bassin économique historique. Tradition industrielle filière chaussure (savoir-faire local maroquinerie/cuir), diversifiée vers PME industrielles diverses, tertiaire, TPE artisanat BTP, commerces et agriculture périphérique (vallée de l'Isère).",
   distancesFr:
-    "Gare Romans-Bourg-de-Péage à 5 min (TER Valence-Grenoble). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15. Grenoble à 1h.",
+    "Gare Romans-Bourg-de-Péage à 5 min (TER vers Valence). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15.",
   distancesEn:
-    "Gare Romans-Bourg-de-Péage à 5 min (TER Valence-Grenoble). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15. Grenoble à 1h.",
+    "Gare Romans-Bourg-de-Péage à 5 min (TER vers Valence). Valence centre à 20 min. Aéroport Lyon-Saint-Exupéry à 1h. Lyon centre à 1h15.",
   topSectorsNaf: [
     "Industrie filière chaussure / cuir (héritage)",
     "PME industrielles diversifiées",
@@ -65,7 +65,7 @@ export const BOURG_DE_PEAGE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lyon ou Paris ?",
-      a: "Nos consultants viennent de Lyon (1h15) ou Paris (TGV Valence 2h15 + 20 min voiture). Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Romans-Valence).",
     },
   ],
 };

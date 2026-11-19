@@ -605,6 +605,12 @@ export const config = {
     //
     // ⚠️ Les DEUX alternatives sont corrigees : `.txt` portait exactement le meme
     //    trou que les images. N'en traiter qu'une laisserait la porte entrouverte.
+    // `guide-reseau` exclu (lot S2, 2026-11-08) : la page « Recevoir le guide »
+    // (`src/app/guide-reseau/`), racine hors `[locale]` comme le questionnaire. Sans l'exclusion, la
+    // règle 0bis la 301 vers `/fr/guide-reseau?…` (404) et le lien envoyé en message privé ne mène
+    // nulle part. Le motif `guide-reseau(?:/|$)` couvre la page elle-même (`/guide-reseau?j=…`, sans
+    // barre) ET ses sous-chemins (`/guide-reseau/envoyer`), mais PAS un voisin (`/guide-reseaux`).
+    // En-têtes posés par `next.config.ts`.
     // `document/` exclu (ADR 0063, 2026-10-01) : lien public d'une page envoyée
     // au client (`src/app/document/[id]/[jeton]/route.ts`), route racine hors
     // `[locale]`. Sans l'exclusion, la règle 0bis la 301 vers `/fr/document/…`
@@ -618,6 +624,6 @@ export const config = {
     // `formateur/dossier/` exclu (lot L5, formateurs indépendants) : même raison, même
     // en-têtes (`next.config.ts`). `/fr/formateurs` et `/fr/espace-formateur/…` restent
     // couverts (le motif exige `formateur/dossier/` en tête).
-    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tour-france-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
+    "/((?!api/|widget/|qr/|videos/|medias/|questionnaire/|guide-reseau(?:/|$)|document/|apporteur/dossier/|formateur/dossier/|maintenance|_next/static|_next/image|favicon\\.ico|sitemap|opengraph-image|twitter-image|manifest\\.webmanifest|\\.well-known/|^icon$|^apple-icon$|(?!(?:fr|en)/).*\\.txt$|(?!(?:fr|en|tour-france-ia)/).*\\.(?:png|jpg|jpeg|svg|webp|avif|ico|woff2|woff|pdf|html|vcf)$).*)",
   ],
 };

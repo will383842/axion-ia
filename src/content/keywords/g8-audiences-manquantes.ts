@@ -532,7 +532,7 @@ const KW_COLLECTIVITE: KeywordSeed[] = [
     urlCible: "/fr/audit/collectivite",
     canonicalParent: "/fr/audit",
     source: "manuel",
-    note: "AEO — question directe ; deadline AI Act art. 22 août 2026 ; schema.org FAQPage",
+    note: "AEO — question directe ; AI Act, haut risque reporté au 2 décembre 2027 (l'art. 22 relève du RGPD) ; schema.org FAQPage",
   },
   // ── BÉNÉFICE (2 seeds) ────────────────────────────────────────────────────
   {

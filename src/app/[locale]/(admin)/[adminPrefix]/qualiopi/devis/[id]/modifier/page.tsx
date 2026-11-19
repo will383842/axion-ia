@@ -1,11 +1,16 @@
 /**
  * Admin — Qualiopi · Modifier un brouillon de devis à formules.
+ *
+ * Interrupteur `devis_assistant` ALLUMÉ : la page n'édite plus rien, elle renvoie vers
+ * l'assistant (`/qualiopi/devis/new?devis=<id>`, fiche S11) — un devis qui n'est plus brouillon
+ * va à sa fiche, jamais à l'édition. ÉTEINT : comportement d'avant, à l'identique.
+ *
  * Server Component — garde d'écriture, force-dynamic, noindex. 404 si l'interrupteur est
  * éteint, si le devis n'existe pas, n'est plus un brouillon ou n'a pas été créé en mode formules.
  */
 
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 
 import { AdminPageShell } from "@/components/admin/ui/AdminPageShell";
@@ -15,6 +20,7 @@ import { DevisFormulesEdition } from "@/components/admin/qualiopi/DevisFormulesE
 import { gardePage } from "@/server/auth/garde-page";
 import { prisma } from "@/lib/prisma";
 import { isUuid } from "@/lib/is-uuid";
+import { assistantDevisActif } from "@/server/qualiopi/devis/interrupteur-assistant";
 import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { offreDevisV1 } from "@/server/qualiopi/devis/offre-devis";
 import { offreVersSaisie } from "@/components/admin/qualiopi/devis-formules/saisie";
@@ -35,7 +41,16 @@ export default async function QualiopiDevisModifierPage({ params }: PageProps) {
   if (!acces.autorise) {
     return <AccesRefuse motif={acces.motif} retourHref={`/${locale}/${adminPrefix}`} />;
   }
-  if (!isUuid(id) || !(await formulesActives())) notFound();
+  if (!isUuid(id)) notFound();
+
+  if (await assistantDevisActif()) {
+    const existant = await prisma.devis.findUnique({ where: { id }, select: { statut: true } });
+    if (!existant) notFound();
+    const base = `/${locale}/${adminPrefix}/qualiopi/devis`;
+    redirect(existant.statut === "brouillon" ? `${base}/new?devis=${id}` : `${base}/${id}`);
+  }
+
+  if (!(await formulesActives())) notFound();
 
   const devis = await prisma.devis.findUnique({
     where: { id },

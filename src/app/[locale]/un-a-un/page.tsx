@@ -34,8 +34,10 @@ import { Breadcrumbs } from "@/components/nav/Breadcrumbs";
 import {
   INTERVENTION_TIERS,
   UN_A_UN_RECURRING_TIER,
-  formatAmount,
+  formatTierPrice,
   getTierById,
+  prixAffichable,
+  type PricingTier,
 } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -68,13 +70,21 @@ const TIGHT_X = "lg:px-6 xl:px-10";
 
 const DIRIGEANT_PRICE = getTierById(INTERVENTION_TIERS, "intervention-dirigeants").priceFlat!;
 const MEMBRE_PRICE = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe").priceFlat!;
-const RECURRING_PRICE = UN_A_UN_RECURRING_TIER.priceFlat!;
+
+// R7 (ordre de Williams du 08/11/2026) : aucun prix de coaching au public. `formatTierPrice`
+// lit l'interrupteur de pricing.ts : « Sur devis » tant qu'il est coupé ; rallumé, la
+// formule retrouve son « Dès 990 € HT ». Les montants bruts ci-dessus ne nourrissent plus
+// que le `priceEur` du JSON-LD (lot JSON-LD).
+function prixDes(tier: PricingTier, loc: "fr" | "en"): string {
+  const prix = formatTierPrice(tier, loc);
+  if (!prixAffichable(tier)) return prix;
+  return loc === "fr" ? `Dès ${prix}` : `From ${prix}`;
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return {};
   const loc: "fr" | "en" = locale === "fr" ? "fr" : "en";
-  const entry = formatAmount(Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE, RECURRING_PRICE), loc);
   return buildProductMetadata({
     locale,
     path: loc === "fr" ? "/un-a-un" : "/one-to-one",
@@ -85,7 +95,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     description:
       loc === "fr"
         ? "Coaching IA 1-to-1 — une journée 100% centrée sur vous : gain de temps, baisse de pression et hausse de productivité. Rapport personnalisé sous 7 jours."
-        : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. From ${entry}.`,
+        : `A one-on-one day with an AI expert: executive or team-member coaching. Quantified report within 7 days. Anywhere in France. Pricing on request.`,
     alternates: { fr: "/un-a-un", en: "/one-to-one" },
   });
 }
@@ -98,10 +108,11 @@ export default async function UnAUnHubPage({ params }: Props) {
   const isFr = loc === "fr";
   const path = isFr ? "/un-a-un" : "/one-to-one";
 
-  const dirigeantPrice = formatAmount(DIRIGEANT_PRICE, loc);
-  const membrePrice = formatAmount(MEMBRE_PRICE, loc);
-  const recurringPrice = formatAmount(RECURRING_PRICE, loc);
-  const entryPrice = formatAmount(Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE, RECURRING_PRICE), loc);
+  const dirigeantTier = getTierById(INTERVENTION_TIERS, "intervention-dirigeants");
+  const membreTier = getTierById(INTERVENTION_TIERS, "intervention-membre-equipe");
+  const recurringLabel = isFr
+    ? `${prixAffichable(UN_A_UN_RECURRING_TIER) ? `À partir de ${formatTierPrice(UN_A_UN_RECURRING_TIER, "fr")} / session` : "Sur devis"} · contrat 6, 12 ou 24 mois`
+    : `${prixAffichable(UN_A_UN_RECURRING_TIER) ? `From ${formatTierPrice(UN_A_UN_RECURRING_TIER, "en")} / session` : "On request"} · 6, 12 or 24-month contract`;
 
   const breadcrumbItems = [{ href: path, label: serviceOfficial(SERVICE_BY_ID.unAUn, isFr) }];
 
@@ -139,8 +150,8 @@ export default async function UnAUnHubPage({ params }: Props) {
         "Time saved — and money too",
         "Get your head above water, delegate to AI",
       ],
-      priceFr: `Dès ${dirigeantPrice}`,
-      priceEn: `From ${dirigeantPrice}`,
+      priceFr: prixDes(dirigeantTier, "fr"),
+      priceEn: prixDes(dirigeantTier, "en"),
       ctaFr: "Découvrir le coaching dirigeant",
       ctaEn: "Discover executive coaching",
     },
@@ -175,8 +186,8 @@ export default async function UnAUnHubPage({ params }: Props) {
         "Time savings spotted on their real tasks",
         "More autonomy, less friction",
       ],
-      priceFr: `Dès ${membrePrice}`,
-      priceEn: `From ${membrePrice}`,
+      priceFr: prixDes(membreTier, "fr"),
+      priceEn: prixDes(membreTier, "en"),
       ctaFr: "Découvrir le coaching collaborateur",
       ctaEn: "Discover team-member coaching",
     },
@@ -190,8 +201,8 @@ export default async function UnAUnHubPage({ params }: Props) {
     path,
     name: isFr ? "Coaching IA individuel 1-to-1" : "1-to-1 individual AI coaching",
     description: isFr
-      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée préparée en amont sur votre métier. Deux formules — dirigeant ou collaborateur. Sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action. Partout en France métropolitaine. Dès ${entryPrice}.`
-      : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day prepared in advance for your role. Two formats — executive or team member. Within 7 days, your personalised deliverable: strategic framing note, or prompt playbook and action plan. Across metropolitan France. From ${entryPrice}.`,
+      ? `Accompagnement IA en tête-à-tête : 1 personne, 1 expert Axion-IA, 1 journée préparée en amont sur votre métier. Deux formules — dirigeant ou collaborateur. Sous 7 jours, votre livrable personnalisé : note de cadrage stratégique, ou cahier de prompts et plan d'action. Partout en France métropolitaine. Sur devis.`
+      : `One-on-one AI coaching: 1 person, 1 Axion-IA expert, 1 day prepared in advance for your role. Two formats — executive or team member. Within 7 days, your personalised deliverable: strategic framing note, or prompt playbook and action plan. Across metropolitan France. On request.`,
     serviceType: isFr ? "Coaching IA individuel" : "Individual AI coaching",
     priceEur: Math.min(DIRIGEANT_PRICE, MEMBRE_PRICE),
     areasServed: buildServiceAreasServed(loc),
@@ -210,20 +221,12 @@ export default async function UnAUnHubPage({ params }: Props) {
     extra: { primaryImageOfPage: buildPrimaryImageOfPage("/un-a-un") },
   });
 
-  // Service, PAS Course : les kits 16/17 sont formels — « ce n'est pas une action
-  // de formation » (conseil, non finançable). Déclarer un Course aux moteurs/LLM
-  // contredirait le document contractuel remis au client.
-  const courseJsonLdArray = COACHING_TYPES.map((c) =>
-    buildServiceJsonLd({
-      locale: loc,
-      path: isFr ? c.hrefFr : c.hrefEn,
-      name: isFr ? c.labelFr : c.labelEn,
-      description: isFr ? c.taglineFr : c.taglineEn,
-      serviceType: isFr
-        ? "Accompagnement individuel IA (intervention de conseil)"
-        : "Individual AI coaching (consulting engagement)",
-    }),
-  );
+  // UN SEUL nœud `Service` sur ce hub (audit du site réel, 2026-11-11). Il y en
+  // avait trois — celui-ci plus un par formule —, chacun avec ~2 157 villes en
+  // `areaServed` : 1,45 Mo de JSON-LD. Les deux formules ont leur propre page,
+  // qui porte son propre `Service` ; ici, l'`ItemList` les énumère.
+  // (Toujours Service, jamais Course : les kits 16/17 sont formels — « ce n'est
+  // pas une action de formation ».)
 
   const howToReserverJsonLd = buildHowToJsonLd({
     locale: loc,
@@ -530,11 +533,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                 </ul>
                 <div className="bg-terracotta-soft text-terracotta-deep mt-6 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold">
                   <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
-                  <span>
-                    {isFr
-                      ? `À partir de ${recurringPrice} / session · contrat 6, 12 ou 24 mois`
-                      : `From ${recurringPrice} / session · 6, 12 or 24-month contract`}
-                  </span>
+                  <span>{recurringLabel}</span>
                 </div>
                 <div className="mt-auto pt-7">
                   <Cta
@@ -589,11 +588,7 @@ export default async function UnAUnHubPage({ params }: Props) {
                 </ul>
                 <div className="bg-sage-soft text-sage mt-6 inline-flex items-center gap-2 self-start rounded-full px-3 py-1.5 text-[12px] font-semibold">
                   <Sparkles aria-hidden="true" className="h-3.5 w-3.5" />
-                  <span>
-                    {isFr
-                      ? `À partir de ${recurringPrice} / session · contrat 6, 12 ou 24 mois`
-                      : `From ${recurringPrice} / session · 6, 12 or 24-month contract`}
-                  </span>
+                  <span>{recurringLabel}</span>
                 </div>
                 <div className="mt-auto pt-7">
                   <Cta
@@ -1059,9 +1054,6 @@ export default async function UnAUnHubPage({ params }: Props) {
       <JsonLd data={itemListJsonLd} />
       {imagesJsonLd ? <JsonLd data={imagesJsonLd} /> : null}
       <JsonLd data={howToReserverJsonLd} />
-      {courseJsonLdArray.map((course, idx) => (
-        <JsonLd key={`course-${idx}`} data={course} />
-      ))}
     </>
   );
 }

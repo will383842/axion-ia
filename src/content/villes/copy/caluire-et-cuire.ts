@@ -132,7 +132,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
           },
           {
             q: "Sous quel délai recevons-nous un devis ?",
-            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nos consultants viennent de Lyon (Part-Dieu à ~10 min) et se déplacent dans vos locaux à Caluire — centre-ville, Perica ou Poumeyrol.",
+            a: "À partir de 24 à 48 h selon la complexité, après un premier échange. Nous intervenons partout en France, sur place ou à distance.",
           },
         ],
         guarantees:
@@ -250,7 +250,7 @@ export const CALUIRE_ET_CUIRE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Caluire-et-Cuire ?",
-      a: "Nos consultants viennent de Lyon (10 min) et se déplacent dans vos locaux après un premier échange.",
+      a: "Nous intervenons partout en France, sur place ou à distance.",
     },
   ],
 };

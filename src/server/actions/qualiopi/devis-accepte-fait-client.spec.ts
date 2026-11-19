@@ -71,6 +71,7 @@ vi.mock("@/server/qualiopi/documents/templates/devis", () => ({ DevisPdf: {} }))
 vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", () => ({
   donneesPdfDevis: vi.fn(),
   lireContextePdfDevis: vi.fn(),
+  OffreDevisInvalideError: class extends Error {},
 }));
 vi.mock("@/lib/public-url", () => ({ publicUrl: vi.fn() }));
 vi.mock("@/server/qualiopi/documents/signature/token-document", () => ({

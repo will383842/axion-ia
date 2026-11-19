@@ -15,9 +15,15 @@ import {
 } from "@/server/chatbot/security/output-guard";
 
 describe("T-39 prix", () => {
-  it("laisse passer un prix SSOT (1 190 € HT)", () => {
-    const r = verifyOutput("L'audit sur place est à 1 190 € HT.");
+  it("laisse passer le seul prix public : la Journée IA (1 490 € HT)", () => {
+    const r = verifyOutput("La Journée IA est à 1 490 € HT.");
     expect(r.ok).toBe(true);
+  });
+
+  it("R7 : bloque un prix de la grille interne masqué au public (1 190 € HT)", () => {
+    const r = verifyOutput("L'audit sur place est à 1 190 € HT.");
+    expect(r.ok).toBe(false);
+    expect(r.violations[0]?.reason).toMatch(/sur devis/);
   });
 
   it("bloque un prix inventé (1 234 €)", () => {
@@ -26,14 +32,14 @@ describe("T-39 prix", () => {
     expect(r.violations.some((v) => v.type === "price" && v.value.includes("1234"))).toBe(true);
   });
 
-  it("valide les deux bornes d'un range (2 000 € → 30 000 €)", () => {
+  it("R7 : bloque les deux bornes d'un range masqué (2 000 € → 30 000 €)", () => {
     const r = verifyOutput("Le développement va de 2 000 € à 30 000 € HT.");
-    expect(r.ok).toBe(true);
+    expect(r.violations.filter((v) => v.type === "price")).toHaveLength(2);
   });
 
-  it("ne flague pas « /mois » dans « 290 € HT/mois »", () => {
+  it("ne flague pas « /mois » dans « 290 € HT/mois » comme URL", () => {
     const r = verifyOutput("La maintenance est à 290 € HT/mois.");
-    expect(r.ok).toBe(true);
+    expect(r.violations.some((v) => v.type === "url")).toBe(false);
   });
 
   it("extractCitedPrices normalise les espaces", () => {
@@ -91,8 +97,39 @@ describe("T-39 URL", () => {
 describe("T-39 combiné", () => {
   it("réponse 100 % groundée → ok", () => {
     const r = verifyOutput(
-      "La formation générale d'une journée (1 900 € HT) : voir /fr/formations pour les détails.",
+      "La Journée IA (1 490 € HT) ; les formations sont sur devis : voir /fr/formations pour les détails.",
     );
     expect(r.ok).toBe(true);
+  });
+});
+
+describe("doctrine des interdits en sortie (lot R3)", () => {
+  it("bloque une réponse qui cite Qualiopi", () => {
+    const r = verifyOutput(`Notre formation est ${"certifi" + "ée"} Qualiopi.`);
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit" && v.value === "qualiopi")).toBe(true);
+  });
+
+  it("bloque un financement présenté comme intégral", () => {
+    const r = verifyOutput("Votre formation est financée à 100 % par votre OPCO.");
+    expect(r.ok).toBe(false);
+    expect(r.violations.some((v) => v.type === "interdit")).toBe(true);
+  });
+
+  it("laisse passer « Réservez votre créneau de 45 minutes » (parcours principal)", () => {
+    expect(verifyOutput("Réservez votre créneau de 45 minutes.").ok).toBe(true);
+  });
+
+  // Indépendant de l'ordre de fusion avec le lot R6 (filtre local de l'étiquette).
+  it("laisse passer « …les TPE et PME… » et bloque l'étiquette « TPE/PME »", () => {
+    expect(verifyOutput("Axion-IA accompagne les TPE et PME françaises.").ok).toBe(true);
+    const r = verifyOutput("Axion-IA accompagne les TPE/PME françaises.");
+    expect(r.violations.some((v) => v.type === "interdit" && v.value === "etiquette-tpe-pme")).toBe(
+      true,
+    );
+  });
+
+  it("laisse passer une réponse propre", () => {
+    expect(verifyOutput("Réservons un rendez-vous gratuit de 45 minutes.").ok).toBe(true);
   });
 });

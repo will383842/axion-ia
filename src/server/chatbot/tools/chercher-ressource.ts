@@ -7,6 +7,7 @@
 
 import { z } from "zod";
 import { prisma } from "@/lib/prisma";
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { ToolContext } from "@/server/chatbot/tools/rechercher-offres";
 
 export const ChercherRessourceInputSchema = z
@@ -53,6 +54,10 @@ export async function chercherRessource(
     if (!t) return null;
     return { titre: t.title, url: `/fr/blog/${t.slug}`, extrait: t.excerpt, type };
   }
+
+  // cas_client — éteint tant que les cas concrets ne sont pas affichés (retrait juridique
+  // 2026-11-08) : on ne renvoie aucun lien vers une page en 404. Rien n'est effacé en base.
+  if (!CAS_CONCRETS_AFFICHES) return null;
 
   // cas_client — CaseStudyTranslation n'a pas d'extrait → null.
   const t = await prisma.caseStudyTranslation.findFirst({

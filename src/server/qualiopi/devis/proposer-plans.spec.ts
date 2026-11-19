@@ -31,6 +31,7 @@ import {
   compterPlansAttendus,
   evaluerPlansManquants,
   proposerPlansApresAcceptation,
+  proposerPlansApresAcceptationDetaille,
   proposerPlansRecurrentsDuDevis,
 } from "./proposer-plans";
 
@@ -222,6 +223,27 @@ describe("proposerPlansApresAcceptation (fail-soft)", () => {
       expect.any(String),
       expect.objectContaining({ tags: expect.objectContaining({ code: "aucune_formule" }) }),
     );
+  });
+
+  it("Détaillé : plan créé → proposes:true ; plan déjà présent → proposes:false (pas d'échec)", async () => {
+    h.p.devis.findUnique.mockResolvedValue(devisB());
+    expect(await proposerPlansApresAcceptationDetaille(DEVIS, "console")).toEqual({
+      echec: null,
+      proposes: true,
+    });
+    h.tx.planRecurrent.findMany.mockResolvedValue([{ nature: "abonnement" }]);
+    expect(await proposerPlansApresAcceptationDetaille(DEVIS, "console")).toEqual({
+      echec: null,
+      proposes: false,
+    });
+  });
+
+  it("Détaillé : refus → echec porte le code, proposes:false", async () => {
+    h.p.devis.findUnique.mockResolvedValue(devisB({ formuleRetenue: null }));
+    expect(await proposerPlansApresAcceptationDetaille(DEVIS, "console")).toEqual({
+      echec: "aucune_formule",
+      proposes: false,
+    });
   });
 
   it("interrupteur éteint : silence total", async () => {

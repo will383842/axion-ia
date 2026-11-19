@@ -65,7 +65,7 @@ export const BADEN_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission à Baden ?",
-      a: "Nos consultants viennent de Vannes (15 min) ou Auray (15 min). Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux ou en visio. Multi-jours possibles avec hébergement local.",
     },
   ],
 };

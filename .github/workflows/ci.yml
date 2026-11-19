@@ -24,15 +24,44 @@ on:
   # La PR garde alors sa dernière conclusion, calculée contre l'ANCIENNE base.
   # Avant de fusionner une pile, forcer un `synchronize` (un push, même un
   # rebase à vide) sur chaque PR pour que sa gate soit évaluée contre `main`.
-  pull_request:
+  #
+  # 🟢 2026-11-08 (CI-LOT1) — `types` EXPLICITES, avec `ready_for_review`.
+  # Les trois premiers sont les types PAR DÉFAUT de `pull_request` : rien ne
+  # change pour une PR prête. `ready_for_review` est ajouté parce que les jobs
+  # LOURDS (couverture ×3, Gate B ×2) sautent désormais tant que la PR est en
+  # BROUILLON (condition `draft == false` sur les tranches et sur gate-b SEULS).
+  # Sans ce type, passer une PR en « prête » ne relancerait rien.
+  #
+  # 🔴 Relecture Opus : les deux VERDICTS exigés (« Gate A · couverture » et
+  # « Gate B · per-PR ») ne portent PLUS cette condition. Un contexte exigé
+  # `skipped` compte comme RÉUSSI pour GitHub : en brouillon, puis
+  # `ready_for_review` sur le MÊME SHA, c'était une fenêtre où couverture et
+  # Gate B étaient contournées. Les verdicts tournent donc TOUJOURS et, en
+  # brouillon, leur première étape « Refus en brouillon » les rend ROUGES
+  # (« verdict non rendu »). Un brouillon est ainsi rouge sur ces deux
+  # contextes, jamais `skipped` ; `ready_for_review` les relance.
+  # Gate A (gitleaks, anti-SIREN, admin-gardes, types, lint…) et Gate D
+  # tournent TOUJOURS, brouillon ou non.
+  # ⚠️ « Re-run » d'un VIEUX run lancé en brouillon rejoue `draft: true` : les
+  # verdicts restent rouges. Ne relancer que le run de `ready_for_review`
+  # (ou pousser un commit).
+  #
+  # 🟡 `push: branches: [main]` est REMIS (relecture Opus). Le retirer privait
+  # `main` de Gate A et Gate D après chaque fusion (rien d'autre ne les rejoue
+  # avant le `schedule` quotidien). Gate A et Gate D tournent donc sur push ;
+  # couverture, Gate B et leurs verdicts n'y tournent pas (`!= 'push'`).
+  # `staging` n'existe plus sur `origin` : il n'est pas remis.
   push:
-    branches: [main, staging]
+    branches: [main]
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
   # File de fusion (2026-08-18). SANS ce déclencheur, une file activée attend
   # indéfiniment des checks qui ne se lancent jamais : elle se bloque au premier
   # usage. Il s'ajoute AVANT d'activer la file, jamais après.
   merge_group:
   # 2026-10-26 : un passage COMPLET par jour (10 h 15 Paris l'hiver, 11 h 15 l'été), car un push sur main ne relance plus
   # la couverture ×3 ni Gate C (doublon de la CI de PR, ~58 min-machine par push, voir plus bas).
+  # Depuis le 2026-11-08 (CI-LOT1), c'est le seul passage COMPLET (couverture, Gate B) sur `main` ; le push ne lance que Gate A et Gate D.
   schedule:
     - cron: "15 9 * * *"
   # 🔵 MESURE D'ACCESSIBILITÉ À LA DEMANDE (2026-09-12).
@@ -62,7 +91,8 @@ on:
 
 concurrency:
   # Le type d'événement entre dans le groupe : sans lui, un push sur main annulerait le passage
-  # quotidien (même ref).
+  # quotidien (même ref). Le type d'événement reste aussi dans le groupe
+  # pour qu'un dispatch manuel n'annule pas le passage quotidien.
   group: ci-${{ github.event_name }}-${{ github.ref }}
   cancel-in-progress: true
 
@@ -153,6 +183,17 @@ jobs:
       # TS7006 implicit-any across all admin features and email templates.
       - name: Generate Prisma client
         run: pnpm prisma:generate
+      # 🟢 2026-11-08 (CI-LOT1) — `next typegen` AVANT `tsc`. `tsconfig.json` inclut
+      # `.next/types/**/*.ts` (types de routes + `validator.ts` : props des pages et
+      # layouts, `params` en Promise, exports de segment). Sur un checkout À FROID ce
+      # dossier n'existe pas : `tsc` seul ne voyait donc PAS ces contrats, que seul le
+      # typecheck de `next build` (Gate B) vérifiait. Gate B le saute désormais
+      # (`SKIP_NEXT_TYPECHECK`) : c'est ici, sous un contexte EXIGÉ, qu'il est repris.
+      # Coût mesuré : ~1,5 s. `SKIP_ENV_VALIDATION` : next.config est chargé, sans secrets.
+      - name: Types de routes Next (next typegen)
+        run: pnpm exec next typegen
+        env:
+          SKIP_ENV_VALIDATION: "true"
       - name: TypeScript strict
         run: pnpm typecheck
         # 2026-09-29 (chantier visio, PR 4, #1225) — `tsc --noEmit` a dépassé le
@@ -327,7 +368,10 @@ jobs:
     timeout-minutes: 30
     # Pas sur un push vers main/staging : la PR l'a déjà passé (~48 min-machine économisées).
     # Il reste exécuté sur PR, file de fusion, passage quotidien et à la demande.
-    if: github.event_name != 'push'
+    # (`!= 'push'` : pas de couverture sur un push vers main ; la garde
+    # la-suite-vitest-tourne-une-fois l'exige.)
+    # 2026-11-08 (CI-LOT1) : ni sur une PR en BROUILLON (relancé par `ready_for_review`).
+    if: github.event_name != 'push' && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
     strategy:
       # Un morceau rouge n'annule pas les autres : une PR cassée rend TOUS ses
       # tests rouges en une seule passe (même doctrine que B/C/D sans `needs`).
@@ -366,10 +410,15 @@ jobs:
     # Sans lui, un morceau rouge le ferait `skipped` — et un contexte exigé
     # sauté n'est pas un contexte rouge. La première étape transforme tout
     # résultat autre que `success` (échec, annulation, saut) en rouge.
+    # Le verdict ne porte PAS la condition « brouillon » des morceaux (relecture Opus) :
+    # `skipped` compterait comme réussi. En brouillon, « Refus en brouillon » le rend rouge.
     if: always() && github.event_name != 'push'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Refus en brouillon
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft
+        run: 'echo "::error::PR en brouillon : verdict non rendu" && exit 1'
       - name: Les trois morceaux ont réussi
         env:
           RESULTAT: ${{ needs.gate-a-couverture-morceau.result }}
@@ -470,8 +519,11 @@ jobs:
     #
     # La condition sur `a11y_routes` est délibérée : un dispatch SANS routes ne
     # doit pas payer les ~37 min de Gate B pour rien.
+    #
+    # 2026-11-08 (CI-LOT1) : une PR en BROUILLON ne lance pas Gate B ; le
+    # passage en « prête » (`ready_for_review`) la relance.
     if: >-
-      github.event_name == 'pull_request' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.draft == false) ||
       github.event_name == 'merge_group' ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.a11y_routes != '')
     runs-on: ubuntu-latest
@@ -722,57 +774,11 @@ jobs:
           sudo mount --bind /mnt/axion-next .next
           sudo chown -R "$(id -u):$(id -g)" .next
           df -h / /mnt
-      # ═══════════════════════════════════════════════════════════════════
-      # 🔵 2026-10-17 (lot 8 CI, P4) — CACHE DE `.next/cache`, LIMITÉ À CE QUI EST SÛR.
-      #
-      # ⚠️ L'HYPOTHÈSE DE DÉPART ÉTAIT FAUSSE, ET `next.config.ts` LE DIT : le cache
-      # WEBPACK est coupé en build de prod (`config.cache = false`, recovery OOM du
-      # 2026-06-08 — il retenait ~17,6k routes de modules en mémoire). Il n'y a donc
-      # RIEN à rejouer côté compilation : `.next/cache/webpack` n'existe pas. Le
-      # rétablir rouvrirait le pic de heap que ce réglage a fermé ; hors périmètre,
-      # et surtout pas en passant.
-      #
-      # Ce que `.next/cache` contient réellement ici, build webpack à cache coupé :
-      #   · `.tsbuildinfo` — l'état du typecheck incrémental que Next lance pendant
-      #     le build (`tsconfig.json` : `incremental: true`) ;
-      #   · éventuellement `fetch-cache/` (cache de données de rendu) et `images/`.
-      #
-      # On ne persiste QUE `.tsbuildinfo`. Raisons, dans l'ordre :
-      #   1. `fetch-cache/` peut resservir au SSG d'une PR une donnée de rendu
-      #      calculée sur une autre version du code : c'est exactement un « build
-      #      périmé », et rien ne l'invaliderait. Écarté.
-      #   2. `.tsbuildinfo` est validé PAR TYPESCRIPT lui-même, par empreinte de
-      #      contenu (pas par date : un checkout remet tous les mtime à zéro), et
-      #      jeté s'il vient d'une autre version de `typescript`. Il ne contient
-      #      aucune sortie du build.
-      #   3. Il ne peut PAS fausser le contrôle de poids du bundle : `noEmit: true`,
-      #      il n'écrit pas un octet de JS ; `.next/static`, que lit `bundle:check`,
-      #      est reconstruit à CHAQUE build (`.next` est un montage neuf par job).
-      #   4. Il n'affaiblit pas le typecheck : « Gate A · per-commit » refait
-      #      `pnpm typecheck` À FROID (aucun cache) sur chaque PR, et c'est lui qui
-      #      est exigé par la protection de `main`.
-      #
-      # 🔑 PORTÉE : un cache GitHub créé par une PR n'est lisible que par cette PR
-      # (et par ce qui a été créé sur `main`, or Gate B ne tourne pas sur `push`).
-      # Le 1er passage d'une PR est donc TOUJOURS à froid ; le gain, s'il existe,
-      # est pour les passages suivants de la même PR.
-      #
-      # ⚠️ Gain NON MESURÉ à l'écriture de ce commentaire — voir la PR pour le
-      # relevé. Le diagnostic « Lister .next/cache » ci-dessous écrit dans le
-      # journal ce qui a vraiment été produit, pour que l'hypothèse se vérifie.
-      #
-      # Clé : lockfile (version de typescript), config (next.config + tsconfig),
-      # sources. `restore-keys` s'arrête à (lockfile + config) : jamais un cache
-      # d'un autre lockfile ni d'une autre config. Pour invalider à la main :
-      # changer `v1`.
-      - name: Restaurer le cache incrémental TypeScript (.next/cache/.tsbuildinfo)
-        id: cache-tsc
-        uses: actions/cache/restore@v6
-        with:
-          path: .next/cache/.tsbuildinfo
-          key: next-tsbuildinfo-v1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('next.config.*', 'tsconfig.json') }}-${{ hashFiles('src/**', 'prisma/**', 'scripts/**', 'tests/**', '*.ts', '*.mts') }}
-          restore-keys: |
-            next-tsbuildinfo-v1-${{ runner.os }}-${{ hashFiles('pnpm-lock.yaml') }}-${{ hashFiles('next.config.*', 'tsconfig.json') }}-
+      # 2026-11-08 (CI-LOT1) — le cache de `.next/cache/.tsbuildinfo` (lot 8 CI, P4,
+      # 2026-10-17) est RETIRÉ avec ses étapes de restauration, de diagnostic et de
+      # sauvegarde : ce fichier n'était produit que par la vérification des types de
+      # `next build`, qui ne tourne plus ici (`SKIP_NEXT_TYPECHECK`, cf. l'étape Build).
+      # Il n'y a plus rien à mettre en cache.
       - name: Build
         # `next build` DIRECT (pas `pnpm build`) pour SKIPPER le `postbuild` :
         # `scripts/precompress-static.ts` (Brotli-11 sur ~18k fichiers SSG) fait
@@ -822,25 +828,15 @@ jobs:
           # Le flag ne gate QUE VilleServicePageTemplate (pages service×ville) : les URLs
           # Lighthouse (pages HUB /implantations/<region>/<ville>) restent construites.
           BUILD_SSG_VILLES_INDEXABLE_ONLY: "true"
+          # 🟢 2026-11-08 (CI-LOT1) — vérification des types SORTIE de ce build, comme au
+          # déploiement (deploy-coolify.yml, `SKIP_NEXT_TYPECHECK=true` ; lu par
+          # next.config.ts → `typescript.ignoreBuildErrors`). Elle n'est PAS perdue :
+          # « Gate A · per-commit », contexte EXIGÉ, lance `pnpm typecheck` (`tsc --noEmit`,
+          # même tsconfig strict) à froid sur le même commit. La refaire ici coûtait
+          # ~2 min × 2 tranches par passage pour un verdict déjà rendu. La COMPILATION
+          # (webpack, SSG, bundle) reste intégralement vérifiée par ce build.
+          SKIP_NEXT_TYPECHECK: "true"
         run: pnpm exec next build --webpack
-      # Diagnostic (jamais bloquant) : ce que `.next/cache` contient APRÈS le
-      # build. Si `webpack/` y apparaît un jour, l'hypothèse du commentaire
-      # ci-dessus est périmée et le cache devra être réexaminé.
-      - name: Lister .next/cache (diagnostic du cache incrémental)
-        run: |
-          ls -la .next/cache || true
-          du -sh .next/cache/* .next/cache/.tsbuildinfo 2>/dev/null || true
-          echo "cache-hit=${{ steps.cache-tsc.outputs.cache-hit }} matched=${{ steps.cache-tsc.outputs.cache-matched-key }}"
-      # Sauvegarde seulement si le build a réussi (condition par défaut) et si la
-      # clé exacte n'existait pas : une clé de GitHub Actions est immuable.
-      # Tranche 1 seulement : les deux tranches calculent la MÊME clé, et une
-      # clé de cache est immuable — deux sauvegardes concurrentes se disputeraient.
-      - name: Sauver le cache incrémental TypeScript
-        if: ${{ steps.cache-tsc.outputs.cache-hit != 'true' && matrix.tranche == 1 }}
-        uses: actions/cache/save@v6
-        with:
-          path: .next/cache/.tsbuildinfo
-          key: ${{ steps.cache-tsc.outputs.cache-primary-key }}
       # ⚠️ Le paragraphe qui suit décrit une intention de 2026-05-22 (« Bundle delta
       # + LHCI passés en STRICT ») que le fichier CONTREDIT depuis : les deux portent
       # `continue-on-error: true`. AGENTS.md a d'ailleurs été corrigé le 2026-08-17
@@ -875,7 +871,7 @@ jobs:
       # (« Seuil aligné d'abord, blocage ensuite ») — elle n'avait simplement
       # jamais été appliquée à ce bucket.
       #
-      # Le bucket « Shell partagé » porte donc un CLIQUET à 138 KB (mesure
+      # Le bucket « Shell partagé » porte donc un CLIQUET à 138 KB (relevé à 139 KB le 2026-11-11, ADR 0075 ; mesure
       # 135,75 + ~2 KB de marge pour le bruit d'une montée de dépendance), et la
       # CIBLE de 100 KB reste écrite dans son nom : c'est une dette, pas un
       # budget atteint. Le cliquet n'excuse rien — il empêche la dette de
@@ -1225,17 +1221,20 @@ jobs:
     # `always()` : ce job doit TOUJOURS rendre un verdict sous le nom exigé.
     # Sans lui, une tranche rouge le ferait `skipped` — et un contexte exigé
     # sauté n'est pas un contexte rouge. L'étape transforme tout résultat autre
-    # que `success` (échec, annulation, saut) en rouge. Les trois autres
-    # conditions sont celles de `gate-b`, à l'identique : hors de ces
+    # que `success` (échec, annulation, saut) en rouge. Hors brouillon, les trois autres
+    # conditions sont celles de `gate-b` ; le brouillon est refusé par la 1re étape. Hors de ces
     # événements, Gate B n'a jamais tourné et ne tourne toujours pas.
     if: >-
       always() && (
-      github.event_name == 'pull_request' ||
+      (github.event_name == 'pull_request') ||
       github.event_name == 'merge_group' ||
       (github.event_name == 'workflow_dispatch' && github.event.inputs.a11y_routes != ''))
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - name: Refus en brouillon
+        if: github.event_name == 'pull_request' && github.event.pull_request.draft
+        run: 'echo "::error::PR en brouillon : verdict non rendu" && exit 1'
       - name: Les deux tranches ont réussi
         env:
           RESULTAT: ${{ needs.gate-b.result }}

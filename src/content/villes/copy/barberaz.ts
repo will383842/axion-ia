@@ -65,7 +65,7 @@ export const BARBERAZ_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Barberaz ?",
-      a: "Nos consultants seniors interviennent depuis Chambéry (5 min voiture). Saint-Alban-Leysse à 3 min. Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Coûts de déplacement à part, tarification transparente.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Saint-Alban-Leysse à 3 min. Pour les missions multi-jours, déplacement quotidien sans surcoût hébergement. Coûts de déplacement à part, tarification transparente.",
     },
   ],
 };

@@ -33,6 +33,13 @@ const maintenance = getTierById(MAINTENANCE_TIERS, "maintenance-standard");
 // fourchette (990–4 900 €).
 const poc = getTierById(IMPLEMENTATION_TIERS, "impl-poc");
 
+/**
+ * R7 (08/11/2026) : les jetons sont MASQUÉS par défaut (« sur devis »), sauf la Journée IA.
+ * Ces tests vérifient la MÉCANIQUE de formatage de la grille, donc en rendu brut ; le
+ * masquage est verrouillé par `src/content/__tests__/prix-publics-masques.spec.ts`.
+ */
+const BRUT = { masquer: false } as const;
+
 describe("hasPriceToken", () => {
   it("détecte un token, ignore le texte sans token", () => {
     expect(hasPriceToken("prix : {{price:audit-flash}}")).toBe(true);
@@ -42,68 +49,74 @@ describe("hasPriceToken", () => {
 
 describe("resolvePriceTokens — modes", () => {
   it("full (défaut) → formatPrice", () => {
-    expect(resolvePriceTokens("{{price:audit-flash}}", "fr")).toBe(formatPrice(flash, "fr"));
-    expect(resolvePriceTokens("{{price:audit-flash|full}}", "fr")).toBe(formatPrice(flash, "fr"));
+    expect(resolvePriceTokens("{{price:audit-flash}}", "fr", BRUT)).toBe(formatPrice(flash, "fr"));
+    expect(resolvePriceTokens("{{price:audit-flash|full}}", "fr", BRUT)).toBe(
+      formatPrice(flash, "fr"),
+    );
   });
 
   it("flat → formatAmount du priceFlat", () => {
-    expect(resolvePriceTokens("{{price:audit-flash|flat}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-flash|flat}}", "fr", BRUT)).toBe(
       formatAmount(flash.priceFlat!, "fr"),
     );
   });
 
   it("onsite → formatPriceWithOnsite", () => {
-    expect(resolvePriceTokens("{{price:audit-flash|onsite}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-flash|onsite}}", "fr", BRUT)).toBe(
       formatPriceWithOnsite(flash, "fr"),
     );
   });
 
   it("range → formatAmountRange des bornes", () => {
-    expect(resolvePriceTokens("{{price:impl-poc|range}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:impl-poc|range}}", "fr", BRUT)).toBe(
       formatAmountRange(poc.priceMin!, poc.priceMax!, "fr"),
     );
   });
 
   it("from → « À partir de » + prix d'entrée", () => {
-    expect(resolvePriceTokens("{{price:audit-cible|from}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-cible|from}}", "fr", BRUT)).toBe(
       `À partir de ${formatAmount(cible.priceMin!, "fr")}`,
     );
   });
 
   it("entry → montant d'entrée brut formaté", () => {
-    expect(resolvePriceTokens("{{price:audit-cible|entry}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-cible|entry}}", "fr", BRUT)).toBe(
       formatAmount(cible.priceMin!, "fr"),
     );
   });
 
   it("compact → montant sans « HT » (tier flat et sous-tier)", () => {
-    expect(resolvePriceTokens("{{price:audit-flash|compact}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-flash|compact}}", "fr", BRUT)).toBe(
       formatAmount(flash.priceFlat!, "fr", { compact: true }),
     );
-    expect(resolvePriceTokens("{{price:audit-cible-solo|compact}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-cible-solo|compact}}", "fr", BRUT)).toBe(
       formatAmount(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr", { compact: true }),
     );
   });
 
   it("num → nombre seul sans devise (1er membre d'un range « entre X et … »)", () => {
-    expect(resolvePriceTokens("{{price:audit-cible-solo|num}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-cible-solo|num}}", "fr", BRUT)).toBe(
       fmtNumber(getTierById(AUDIT_TIERS, "audit-cible").priceMin!, "fr"),
     );
-    expect(resolvePriceTokens("entre {{price:audit-cible-solo|num}} et X", "fr")).not.toContain(
-      "€",
-    );
+    expect(
+      resolvePriceTokens("entre {{price:audit-cible-solo|num}} et X", "fr", BRUT),
+    ).not.toContain("€");
   });
 
   it("tier onQuote → « Sur devis » / « On request »", () => {
-    expect(resolvePriceTokens("{{price:intervention-conference}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:intervention-conference}}", "fr", BRUT)).toBe(
       formatPrice(conference, "fr"),
     );
-    expect(resolvePriceTokens("{{price:intervention-conference|from}}", "fr")).toBe("Sur devis");
-    expect(resolvePriceTokens("{{price:intervention-conference|from}}", "en")).toBe("On request");
+    expect(resolvePriceTokens("{{price:intervention-conference|from}}", "fr", BRUT)).toBe(
+      "Sur devis",
+    );
+    expect(resolvePriceTokens("{{price:intervention-conference|from}}", "en", BRUT)).toBe(
+      "On request",
+    );
   });
 
   it("récurrence préservée (maintenance /mois)", () => {
-    expect(resolvePriceTokens("{{price:maintenance-standard}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:maintenance-standard}}", "fr", BRUT)).toBe(
       formatPrice(maintenance, "fr"),
     );
   });
@@ -112,20 +125,21 @@ describe("resolvePriceTokens — modes", () => {
     const standard = PRICE_TOKEN_REGISTRY.get("essentielle-standard");
     expect(standard).toBeDefined();
     if (standard?.kind === "subTier") {
-      expect(resolvePriceTokens("{{price:essentielle-standard}}", "fr")).toBe(
+      expect(resolvePriceTokens("{{price:essentielle-standard}}", "fr", BRUT)).toBe(
         formatAmount(standard.subTier.priceFlat, "fr"),
       );
     }
   });
 
   it("locale EN respectée", () => {
-    expect(resolvePriceTokens("{{price:audit-flash}}", "en")).toBe(formatPrice(flash, "en"));
+    expect(resolvePriceTokens("{{price:audit-flash}}", "en", BRUT)).toBe(formatPrice(flash, "en"));
   });
 
   it("plusieurs tokens dans une phrase", () => {
     const out = resolvePriceTokens(
       "Audit dès {{price:audit-flash|flat}}, coaching {{price:intervention-dirigeants|flat}}.",
       "fr",
+      BRUT,
     );
     expect(out).toContain(formatAmount(flash.priceFlat!, "fr"));
     expect(out).not.toContain("{{price:");
@@ -135,14 +149,16 @@ describe("resolvePriceTokens — modes", () => {
 describe("resolvePriceTokens — robustesse", () => {
   it("token à tier inconnu : laissé en l'état + warning", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(resolvePriceTokens("{{price:tier-inexistant}}", "fr")).toBe("{{price:tier-inexistant}}");
+    expect(resolvePriceTokens("{{price:tier-inexistant}}", "fr", BRUT)).toBe(
+      "{{price:tier-inexistant}}",
+    );
     expect(warn).toHaveBeenCalledOnce();
     warn.mockRestore();
   });
 
   it("mode inconnu : laissé en l'état + warning", () => {
     const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-    expect(resolvePriceTokens("{{price:audit-flash|bogus}}", "fr")).toBe(
+    expect(resolvePriceTokens("{{price:audit-flash|bogus}}", "fr", BRUT)).toBe(
       "{{price:audit-flash|bogus}}",
     );
     expect(warn).toHaveBeenCalledOnce();
@@ -150,7 +166,7 @@ describe("resolvePriceTokens — robustesse", () => {
   });
 
   it("texte sans token renvoyé inchangé", () => {
-    expect(resolvePriceTokens("aucun prix", "fr")).toBe("aucun prix");
+    expect(resolvePriceTokens("aucun prix", "fr", BRUT)).toBe("aucun prix");
   });
 });
 
@@ -162,7 +178,7 @@ describe("resolvePriceTokensDeep", () => {
       nested: { faq: ["Q ?", "Tarif {{price:impl-poc|range}}."] },
       keep: 42,
     };
-    const out = resolvePriceTokensDeep(input, "fr");
+    const out = resolvePriceTokensDeep(input, "fr", BRUT);
     expect(out.title).toBe("Offre");
     expect(out.price).toBe(formatAmount(flash.priceFlat!, "fr"));
     expect(out.nested.faq[1]).toContain(formatAmountRange(poc.priceMin!, poc.priceMax!, "fr"));

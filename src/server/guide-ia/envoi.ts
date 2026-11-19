@@ -60,6 +60,12 @@ export interface OptionsEnvoiGuide {
    * Les jetons de lettre sont alors ignorés même s'ils sont fournis.
    */
   readonly reseau?: boolean;
+  /**
+   * Demande venue de la page « Recevoir le guide » (lot S2) : même e-mail « réseau » (le guide,
+   * la politique de confidentialité, aucune lettre) AVEC un lien de désinscription — le jeton
+   * d'opposition de l'adresse. N'a d'effet que combiné à `reseau: true`.
+   */
+  readonly pageGuide?: { readonly oppositionToken: string };
   /** Phrase de reprise « inscrit avant la parution du guide » (envoi unique, lot L7). */
   readonly reprise?: boolean;
   readonly maintenant?: Date;
@@ -108,6 +114,10 @@ export async function mettreEnFileGuide(
   const payload: Record<string, unknown> = { downloadToken: demande.downloadToken };
   if (options.reseau === true) {
     payload["reseau"] = true;
+    if (options.pageGuide) {
+      payload["pageGuide"] = true;
+      payload["oppositionToken"] = options.pageGuide.oppositionToken;
+    }
   } else {
     if (options.confirmToken) payload["confirmToken"] = options.confirmToken;
     if (options.unsubscribeToken) payload["unsubscribeToken"] = options.unsubscribeToken;

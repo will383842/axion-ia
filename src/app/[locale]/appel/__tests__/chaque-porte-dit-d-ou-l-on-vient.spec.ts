@@ -42,6 +42,8 @@ const PORTES: ReadonlyArray<readonly [string, string, string]> = [
   ["src/app/[locale]/page.tsx", "accueil-mobile", "Échanger 45 min — sans engagement"],
   ["src/components/nav/Header.tsx", "entete", 't("cta.bookCall")'],
   ["src/components/nav/Header.tsx", "entete-mobile", 't("cta.bookCall")'],
+  // Refonte en-tête/pied du 2026-11-11 : le pied du méga-menu « Nos prestations ».
+  ["src/components/nav/Header.tsx", "entete-megamenu", "ou réservez un appel"],
   ["src/components/nav/Footer.tsx", "pied", "Réserver un appel"],
   ["src/components/services/audit/AuditHero.tsx", "page-audit", "Réserver un appel"],
   ["src/app/[locale]/formations/page.tsx", "page-formation", "Réserver un appel"],
@@ -97,7 +99,7 @@ describe("🔑 les e-mails mènent à /appel, avec leur emplacement", () => {
 describe("🔑 le clic sur chaque carte est mesuré dans Plausible, sans JS", () => {
   const page = sansCommentaires(lire("src/app/[locale]/appel/page.tsx"));
 
-  it.each(["diagnostic", "projet"])("carte %s", (choix) => {
+  it.each(["diagnostic"])("carte %s", (choix) => {
     const i = page.indexOf(`data-cta="appel_choix_${choix}"`);
     expect(i).toBeGreaterThan(-1);
     const lien = page.slice(page.lastIndexOf("<a", i), page.indexOf(">", i));
@@ -110,12 +112,15 @@ describe("🔑 le clic sur chaque carte est mesuré dans Plausible, sans JS", ()
   });
 });
 
-describe("🔑 la consigne du compte rendu visio dit les deux rendez-vous", () => {
+describe("🔑 la consigne du compte rendu visio dit UN seul rendez-vous gratuit, le Diagnostic IA de 45 minutes", () => {
   const consigne = lire("src/server/visio/consignes/commun.md");
 
-  it("Diagnostic IA 30 min, Échange projet 45 min", () => {
-    expect(consigne).not.toContain("diagnostic » gratuit de 45 minutes");
-    expect(consigne).toMatch(/Diagnostic IA[^.]*30 minutes/);
-    expect(consigne).toMatch(/Échange projet[^.]*45 minutes/);
+  it("45 minutes, un seul : ni « Échange projet » proposé, ni deux rendez-vous", () => {
+    expect(consigne).toContain(
+      "le plus souvent le Diagnostic IA gratuit de 45 minutes réservé sur le site",
+    );
+    expect(consigne).not.toMatch(/\b(15|20|30) minutes/);
+    expect(consigne).not.toMatch(/l'un des deux rendez-vous/);
+    expect(consigne).not.toMatch(/Diagnostic IA[^.]*30 minutes/);
   });
 });

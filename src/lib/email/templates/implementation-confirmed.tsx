@@ -1,5 +1,6 @@
 // Email — confirmation demande implementation (Sprint 15 / M8 step 4).
 
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { Text } from "@react-email/components";
 import { EmailLayout, emailStyles } from "./_layout";
 import { PiecesJointesRecues } from "./_pieces-jointes-recues";
@@ -57,7 +58,14 @@ export function ImplementationConfirmedEmail({
       signature
       preview={t.preview}
       title={t.title}
-      cta={{ label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }}
+      cta={
+        CAS_CONCRETS_AFFICHES
+          ? { label: t.cta, href: `${baseUrl}/${locale}/cas-concrets` }
+          : {
+              label: locale === "fr" ? "Notre méthode" : "Our method",
+              href: `${baseUrl}/${locale}/methodologie`,
+            }
+      }
       locale={locale}
     >
       <Text style={emailStyles.paragraphStyle}>{t.body(p.implType, p.budget)}</Text>

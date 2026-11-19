@@ -33,12 +33,13 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-002",
-    text: "L'AI Act (Règlement UE 2024/1689) impose depuis août 2026 une évaluation de conformité obligatoire pour les systèmes IA à haut risque déployés dans les RH, crédit, santé et infrastructure critique.",
-    source: "EUR-Lex — Règlement UE 2024/1689 (AI Act)",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-01",
+    text: "Le règlement européen sur l'IA (AI Act, Règlement UE 2024/1689) prévoit des obligations renforcées pour les systèmes d'IA dits « à haut risque » (par exemple recrutement et gestion du personnel, évaluation de la solvabilité), avec une évaluation de conformité à la charge du fournisseur du système. Le règlement (UE) 2026/1744 (« omnibus IA », en vigueur le 27 juillet 2026) a reporté ces obligations au 2 décembre 2027 pour les systèmes de l'annexe III et au 2 août 2028 pour l'IA intégrée dans des produits réglementés (annexe I). Vérifier le texte consolidé sur EUR-Lex avant de s'y engager.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.99,
+    confidence: 0.8,
   },
   {
     id: "audit-003",
@@ -69,7 +70,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-006",
-    text: "Un audit IA externe dure en moyenne 5 à 10 jours pour une PME (< 250 salariés) et couvre entre 3 et 8 cas d'usage IA déployés.",
+    text: "Un audit IA externe pour une PME (< 250 salariés) porte sur les cas d'usage IA déjà déployés ou envisagés ; sa durée dépend du périmètre.",
     source: "Axion-IA — Référentiel audit interne",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-01",
@@ -170,12 +171,12 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-017",
-    text: "Selon Stanford AI Index 2024, 41 % des modèles IA déployés en production présentent des biais démographiques significatifs (genre, âge, origine géographique), justifiant un audit de fairness obligatoire.",
+    text: "Selon Stanford AI Index 2024, une part significative des modèles IA déployés en production présente des biais démographiques (genre, âge, origine géographique), ce qui justifie de les tester avant usage.",
     source: "Stanford HAI — AI Index Report 2024",
     sourceUrl: "https://aiindex.stanford.edu/report/",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.88,
+    confidence: 0.7,
   },
   {
     id: "audit-018",
@@ -197,12 +198,12 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-020",
-    text: "L'explicabilité (XAI) est désormais un critère d'audit obligatoire pour les systèmes IA à haut risque selon l'AI Act art. 13 : le déployeur doit pouvoir fournir une explication interprétable de chaque décision automatisée.",
+    text: "L'AI Act (art. 13) demande aux fournisseurs de systèmes d'IA à haut risque de concevoir ces systèmes de façon assez transparente pour que l'entreprise qui les utilise puisse interpréter leurs résultats et s'en servir correctement, avec une notice d'utilisation. Il ne crée pas à lui seul une obligation d'audit d'« explicabilité » pour toute entreprise.",
     source: "EUR-Lex — Règlement UE 2024/1689 art. 13",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.98,
+    confidence: 0.8,
   },
   // ── Conformité RGPD et libertés ───────────────────────────────────────────
   {
@@ -253,39 +254,40 @@ export const KB_AUDITS: readonly KbFact[] = [
   // ── AI Act et conformité européenne ───────────────────────────────────────
   {
     id: "audit-026",
-    text: "L'AI Act art. 50 (obligations transparence) est applicable depuis le 2 août 2026 : tout contenu généré par IA destiné au public doit comporter une mention explicite — sujet d'audit obligatoire pour les sites web et médias.",
-    source: "EUR-Lex — Règlement UE 2024/1689 art. 50",
-    sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    text: "L'AI Act (art. 50) prévoit des obligations de transparence ciblées, applicables depuis le 2 août 2026 : informer la personne qu'elle échange avec une IA, signaler les hypertrucages (deepfakes) et certains textes d'information du public générés par IA sans relecture éditoriale humaine. Elles ne visent pas tous les contenus produits avec une IA ; l'art. 50(2) impose en outre aux fournisseurs de systèmes d'IA générative de marquer les contenus synthétiques de façon lisible par machine (obligation du fournisseur de l'outil, pas de l'entreprise qui publie). Selon le règlement (UE) 2026/1744, ce marquage bénéficie d'un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché : à vérifier sur EUR-Lex.",
+    source:
+      "EUR-Lex — Règlement (UE) 2024/1689, modifié par le règlement (UE) 2026/1744 (omnibus IA, JO du 24/07/2026)",
+    sourceUrl: "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.98,
+    confidence: 0.8,
   },
   {
     id: "audit-027",
-    text: "L'AI Act distingue 4 niveaux de risque IA : inacceptable (interdits — scoring social, manipulation), haut risque (audit conformité obligatoire), risque limité (transparence requise) et risque minimal (libre).",
+    text: "L'AI Act distingue 4 niveaux de risque IA : inacceptable (interdits — scoring social, manipulation), haut risque (exigences strictes et évaluation de conformité à la charge du fournisseur), risque limité (transparence requise) et risque minimal (libre).",
     source: "EUR-Lex — Règlement UE 2024/1689 art. 6-7",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.97,
+    confidence: 0.85,
   },
   {
     id: "audit-028",
-    text: "Pour un système IA à haut risque, l'AI Act art. 17 impose un système de gestion de la qualité documenté, l'art. 12 une journalisation continue (logs d'au moins 6 mois) et l'art. 14 une supervision humaine effective.",
+    text: "Pour un système IA à haut risque, l'AI Act art. 17 impose un système de gestion de la qualité documenté, l'art. 12 une journalisation automatique des événements (conservation des journaux d'au moins 6 mois selon les art. 19 et 26) et l'art. 14 une supervision humaine effective.",
     source: "EUR-Lex — Règlement UE 2024/1689 art. 12-14-17",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.97,
+    confidence: 0.85,
   },
   {
     id: "audit-029",
-    text: "Les modèles GPAI (General Purpose AI) entraînés avec plus de 10²⁵ FLOPs sont classés à risque systémique selon l'AI Act art. 51 — obligations d'audit annuel et de partage des évaluations avec l'Office IA européen.",
+    text: "Les modèles d'IA à usage général (GPAI) entraînés avec une puissance de calcul supérieure à 10²⁵ FLOPs sont présumés à risque systémique (AI Act art. 51). Leurs fournisseurs ont des obligations renforcées (art. 55) : évaluation des modèles, tests adverses, signalement des incidents graves et cybersécurité.",
     source: "EUR-Lex — Règlement UE 2024/1689 art. 51",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.92,
+    confidence: 0.8,
   },
   {
     id: "audit-030",
@@ -438,12 +440,12 @@ export const KB_AUDITS: readonly KbFact[] = [
   // ── Cas sectoriels (RH / finance / santé / industrie) ─────────────────────
   {
     id: "audit-046",
-    text: "Les systèmes IA de recrutement et d'évaluation des employés sont classés haut risque par l'AI Act (annexe III §4) : audit annuel obligatoire couvrant biais, transparence et droit de recours du candidat ou salarié.",
+    text: "Les systèmes d'IA utilisés pour le recrutement et la gestion des salariés sont classés « à haut risque » par l'AI Act (annexe III, point 4), sous réserve des exceptions de l'art. 6. Les obligations portent surtout sur le fournisseur (gestion des risques, documentation, évaluation de conformité) et, pour l'entreprise qui l'utilise, sur la supervision humaine, la conservation des journaux et l'information des salariés (art. 26). Le texte ne prévoit pas d'« audit annuel » obligatoire. Dates d'application : à vérifier sur EUR-Lex.",
     source: "EUR-Lex — Règlement UE 2024/1689 annexe III",
     sourceUrl: "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:32024R1689",
-    verifiedAt: "2026-05-22",
+    verifiedAt: "2026-11-08",
     verticales: ["audits"],
-    confidence: 0.97,
+    confidence: 0.8,
   },
   {
     id: "audit-047",
@@ -512,8 +514,9 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-054",
-    text: "Audit IA Axion-IA standard PME (3 cas d'usage, 5 jours) : {{price:audit-strategique-pme|from}}. Audit ETI (8 cas d'usage, 10 jours) : {{price:audit-strategique-eti|from}}.",
-    source: "Axion-IA — Grille tarifaire audit 2026",
+    // R7 (08/11/2026) : plus aucun montant au public hors Journée IA — sur devis.
+    text: "Audit IA Axion-IA pour PME (3 cas d'usage, 5 jours) : sur devis, parlons-en lors du rendez-vous gratuit de 45 minutes.",
+    source: "Axion-IA — Offre audit 2026",
     sourceUrl: "https://axion-ia.com/audits",
     verifiedAt: "2026-05-22",
     verticales: ["audits"],
@@ -543,7 +546,7 @@ export const KB_AUDITS: readonly KbFact[] = [
   },
   {
     id: "audit-057",
-    text: "Selon INSEE (enquête TIC 2024), 12 % des entreprises françaises de plus de 10 salariés utilisent l'IA, avec un taux qui atteint 41 % dans les ETI (250-5000 salariés) et 53 % dans les grandes entreprises (>5000).",
+    text: "Selon INSEE (enquête TIC 2024), 12 % des entreprises françaises de plus de 10 salariés utilisent l'IA.",
     source: "INSEE — Enquête TIC 2024",
     sourceUrl: "https://www.insee.fr",
     verifiedAt: "2026-05-22",

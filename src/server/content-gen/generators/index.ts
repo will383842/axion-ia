@@ -8,16 +8,18 @@
  * (`landing-ville-by-vertical-*`) + le pipeline partagé `landing-ville-shared.ts`
  * + le dispatcher `landing-ville.ts` ont été supprimés du code.
  *
- * Les generators ville `ville-hub-copy.ts` + `landing-ville-{cas-usage,
- * economic-data,ecosystem,faq-extended,secteurs}.ts` alimentent les sections du
- * hub ville (`/implantations/[region]/[ville]`).
+ * Les generators ville `ville-hub-copy.ts` et `landing-ville-economic-data.ts`
+ * servent le hub ville (`/implantations/[region]/[ville]`). Les 4 autres
+ * (`landing-ville-{cas-usage,ecosystem,faq-extended,secteurs}.ts`) sont hors
+ * registre, n'écrivent RIEN en base et sont gelés par
+ * `villes/generateurs-annexes-geles.ts`.
  *
  * ⚠️ DESIGN ASSUMÉ (audit content-gen 2026-06-15, P1-2) — Ces generators ville
  * NE sont VOLONTAIREMENT PAS enregistrés dans `REGISTRY` et ne sont donc PAS
  * atteignables par `getGenerator()` / le pipeline BullMQ (content-gen-worker).
  * Ils tournent EXCLUSIVEMENT via scripts CLI manuels
- * (`scripts/regen-villes-complete.ts`, `regen-villes-stratified.ts`), écrivent
- * dans la table `GeneratedVilleCopy`, puis sont consommés par le hub via
+ * (`scripts/regen-villes-complete.ts`, `regen-villes-stratified.ts`). Seul
+ * `ville-hub-copy` écrit dans `GeneratedVilleCopy`, consommée par le hub via
  * `resolve-with-copy.ts`. C'est un CHOIX (contrôle du coût ~$105 pour ~2100
  * villes/run + cadence manuelle décidée par Will), PAS un orphelin accidentel.
  * → Ne PAS les ajouter au REGISTRY sans décision explicite (sinon

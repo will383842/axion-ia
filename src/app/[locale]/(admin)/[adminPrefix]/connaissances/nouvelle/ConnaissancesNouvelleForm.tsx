@@ -235,7 +235,7 @@ export function ConnaissancesNouvelleForm({ adminPrefix }: Props) {
 
       {state?.error && state.error !== "validation" ? (
         <p className="admin-error" role="alert">
-          {messageErreurKb(state.error)}
+          {messageErreurKb(state.error, "reason" in state ? state.reason : null)}
         </p>
       ) : null}
       {state?.error === "validation" && state.fieldErrors ? (

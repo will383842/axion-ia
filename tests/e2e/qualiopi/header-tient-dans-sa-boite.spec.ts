@@ -19,6 +19,12 @@
  *
  * Un onglet ajouté, un libellé rallongé, une police changée : ce test rougit
  * avant la mise en ligne, en nommant la largeur fautive.
+ *
+ * 🔑 2026-11-11 — refonte en-tête/pied (maquette validée par Williams) : 4 onglets
+ * au lieu de 7, la nav horizontale apparaît à 1280 px (`--breakpoint-nav`) et la
+ * tagline à 1366 (`--breakpoint-navair`) ; `--breakpoint-navcta` a disparu. Les
+ * largeurs suivent les nouveaux seuils ; la réserve exigée ne change pas.
+ * Mesuré sous `next dev` : réserve de 95 px à 1280, 113 px à 1366.
  */
 
 import { test, expect } from "@playwright/test";
@@ -31,7 +37,7 @@ const RESERVE_MINIMALE = 16;
  * serrée, puisqu'un élément vient d'apparaître) et quelques tailles d'écran
  * réelles très répandues.
  */
-const LARGEURS = [1440, 1441, 1512, 1536, 1700, 1701, 1800, 1920];
+const LARGEURS = [1280, 1281, 1365, 1366, 1367, 1440, 1512, 1536, 1920];
 
 test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () => {
   // 🔴 2026-08-22 — UN DÉLAI PLUS LONG QUE SON BUDGET NE PEUT JAMAIS EXPIRER.
@@ -47,7 +53,7 @@ test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () =
   //
   // Ici : les deux tests naviguent avec `timeout: 90_000` sous un budget de
   // 30 s — le délai déclaré était mort-né. Arithmétique : 90 000 (goto) +
-  // 8 × 250 ms de bascules de viewport + les mesures `page.evaluate` < 150 000.
+  // 9 × 250 ms de bascules de viewport + les mesures `page.evaluate` < 150 000.
   // Si l'un des deux nombres bouge, bouger l'autre.
   test.describe.configure({ mode: "serial", timeout: 150_000 });
 
@@ -110,13 +116,13 @@ test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () =
     // Contre-témoin : sans lui, masquer la nav à toutes les largeurs rendrait le
     // test ci-dessus vert en n'ayant plus rien à mesurer.
     test.skip(info.project.name !== "chromium", "Géométrie : un moteur suffit.");
-    await page.setViewportSize({ width: 1439, height: 900 });
+    await page.setViewportSize({ width: 1279, height: 900 });
     await page.goto("/fr", { waitUntil: "networkidle", timeout: 90_000 });
     const enTiroir = await page.evaluate(() => {
       const groupe = document.querySelector("div.ml-auto");
       return groupe !== null && groupe.getBoundingClientRect().width === 0;
     });
-    expect(enTiroir, "à 1439 px la nav horizontale doit céder la place au tiroir").toBe(true);
+    expect(enTiroir, "à 1279 px la nav horizontale doit céder la place au tiroir").toBe(true);
   });
 
   test("sous le seuil : ☰ et « Réserver un appel » visibles, sans débordement", async ({
@@ -124,13 +130,13 @@ test.describe("@qualiopi-public le header tient dans sa boîte de contenu", () =
   }, info) => {
     // 🔴 2026-10-16 — entre 1280 et 1440 px, l'en-tête n'affichait QUE le logo :
     // le ☰ portait `xl:hidden` pendant que la nav attendait `nav`. Les deux tests
-    // ci-dessus ne regardaient qu'au-dessus de 1440 ; celui-ci couvre le reste,
-    // du téléphone au portable 14 pouces à 150 %.
+    // ci-dessus ne regardent qu'au-dessus du seuil `nav` (1280 depuis le
+    // 2026-11-11) ; celui-ci couvre le reste, du téléphone au portable 1279 px.
     test.skip(info.project.name !== "chromium", "Géométrie : un moteur suffit.");
     await page.goto("/fr", { waitUntil: "networkidle", timeout: 90_000 });
 
     const constats: string[] = [];
-    for (const largeur of [360, 390, 640, 768, 1024, 1280, 1366, 1439]) {
+    for (const largeur of [360, 390, 640, 768, 992, 1024, 1279]) {
       await page.setViewportSize({ width: largeur, height: 900 });
       await page.waitForTimeout(250);
       const m = await page.evaluate(() => {

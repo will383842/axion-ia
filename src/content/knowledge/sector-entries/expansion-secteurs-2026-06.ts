@@ -72,9 +72,11 @@ Un cabinet d'audit et de conseil IA peut accompagner ces acteurs sur la cartogra
       "https://www.eiopa.europa.eu/eiopa-publishes-opinion-ai-governance-and-risk-management-2025-08-06_en",
       "https://www.eiopa.europa.eu/publications/opinion-artificial-intelligence-governance-and-risk-management_en",
       "https://www.cnil.fr/fr/intelligence-artificielle",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -115,7 +117,7 @@ Le secteur cumule plusieurs cadres exigeants :
 
 - **Loi Hoguet** : tout outil intervenant dans l'entremise ou la gestion doit s'inscrire dans le cadre du mandat et des obligations professionnelles (carte, garantie financière, RCP, traçabilité des honoraires).
 - **RGPD** : le traitement de données de candidats locataires ou d'acquéreurs est sensible. L'article 22 du RGPD encadre les décisions « fondées exclusivement sur un traitement automatisé » produisant des effets juridiques ou significatifs. La CNIL rappelle le droit à l'intervention humaine, à la transparence et à la contestation. Un scoring de dossiers de location qui écarterait automatiquement des candidats appelle une vigilance particulière : supervision humaine effective, base légale solide, analyse d'impact, et prévention de tout effet discriminatoire.
-- **AI Act** (règlement (UE) 2024/1689) : entré en vigueur le 1er août 2024, avec une application progressive. Les systèmes à « risque inacceptable » sont interdits depuis le 2 février 2025 ; les obligations renforcées pour les systèmes à « haut risque » s'appliquent par paliers en 2026 et au-delà. Selon l'usage, un système d'IA dans l'immobilier peut relever de la catégorie « risque limité » (obligation de transparence, ex. chatbots) et doit, dans tous les cas, faire l'objet d'une qualification précise.
+- **AI Act** (règlement (UE) 2024/1689) : entré en vigueur le 1er août 2024, avec une application progressive. Les systèmes à « risque inacceptable » sont interdits depuis le 2 février 2025 ; les obligations renforcées pour les systèmes à « haut risque » s'appliquent par paliers : 2 décembre 2027 pour l'annexe III et 2 août 2028 pour l'annexe I, selon le règlement (UE) 2026/1744. Selon l'usage, un système d'IA dans l'immobilier peut relever de la catégorie « risque limité » (obligation de transparence, ex. chatbots) et doit, dans tous les cas, faire l'objet d'une qualification précise.
 - **Performance énergétique (DPE)** : depuis le 1er janvier 2025, les logements classés G en France métropolitaine ne peuvent plus être proposés à la location, l'interdiction s'étendant ensuite aux classes F puis E selon le calendrier en vigueur. Cette contrainte fait de la donnée énergétique un actif stratégique pour les foncières et gestionnaires.
 
 ## Opportunités identifiées
@@ -127,9 +129,11 @@ Pour les acteurs de l'immobilier professionnel, l'IA crée de la valeur surtout 
       "https://www.cnil.fr/fr/profilage-et-decision-entierement-automatisee",
       "https://www.service-public.gouv.fr/particuliers/actualites/A17154",
       "https://www.entreprises.gouv.fr/decryptages-de-nos-experts/le-reglement-europeen-sur-lintelligence-artificielle-publics-concernes",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -170,7 +174,7 @@ Le **secret professionnel** est l'enjeu central. Toute requête adressée à un 
 
 Le **RGPD** s'applique pleinement. La CNIL a publié le 7 février 2025 de nouvelles recommandations confirmant que le cadre du RGPD permet d'appréhender les spécificités de l'IA, notamment en matière d'information des personnes, d'exercice des droits et de privacy by design.
 
-L'**AI Act** (règlement (UE) 2024/1689), entré en vigueur le 1er août 2024, classe en haut risque les systèmes d'IA destinés à l'administration de la justice (annexe III). Ces systèmes seront soumis à des exigences renforcées — gestion des risques, qualité des données, documentation, supervision humaine — dont l'essentiel devient applicable au 2 août 2026.
+L'**AI Act** (règlement (UE) 2024/1689), entré en vigueur le 1er août 2024, classe en haut risque les systèmes d'IA destinés à l'administration de la justice (annexe III). Ces systèmes seront soumis à des exigences renforcées — gestion des risques, qualité des données, documentation, supervision humaine — dont l'essentiel devient applicable au 2 décembre 2027 selon le règlement (UE) 2026/1744 (initialement prévu en août 2026).
 
 S'y ajoute la **déontologie propre à chaque profession** : indépendance, compétence, prudence, information du client et juste tarification, rappelées par le CNB.
 
@@ -184,9 +188,11 @@ Le gain principal est le temps libéré sur les tâches documentaires répétiti
       "https://www.cnil.fr/fr/ia-et-rgpd-la-cnil-publie-ses-nouvelles-recommandations-pour-accompagner-une-innovation-responsable",
       "https://www.cnil.fr/fr/entree-en-vigueur-du-reglement-europeen-sur-lia-les-premieres-questions-reponses-de-la-cnil",
       "https://commissaire-justice.fr/profession-commissaire-de-justice/la-profession-en-chiffres/",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -225,7 +231,7 @@ L'IA est ici un outil d'augmentation des équipes créatives et analytiques, et 
 
 Quatre cadres se superposent et doivent être traités conjointement.
 
-**AI Act — transparence (article 50).** Le règlement européen sur l'IA impose, à compter du 2 août 2026, des obligations de transparence : les contenus de synthèse (audio, image, vidéo, texte) doivent être marqués comme générés ou manipulés artificiellement dans un format lisible par machine ; les deepfakes doivent être signalés de manière claire et distincte, sauf œuvres manifestement artistiques, satiriques ou fictionnelles ; les textes générés destinés à informer le public doivent être divulgués sauf relecture éditoriale humaine. Ces obligations concernent au premier chef les agences et médias produisant des contenus de synthèse.
+**AI Act — transparence (article 50).** Le règlement européen sur l'IA impose, depuis le 2 août 2026, des obligations de transparence (le marquage technique des contenus générés a un délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché) : le fournisseur de l'outil génératif doit marquer les contenus de synthèse (audio, image, vidéo, texte) comme générés ou manipulés artificiellement dans un format lisible par machine (art. 50 §2) ; l'utilisateur qui diffuse des hypertrucages doit les signaler de manière claire et distincte (obligation allégée pour les œuvres manifestement artistiques, satiriques ou fictionnelles) ; les textes générés destinés à informer le public doivent être divulgués sauf relecture éditoriale humaine. Le marquage relève du fournisseur de l'outil ; la divulgation (art. 50 §4) concerne surtout les agences et médias qui diffusent des contenus de synthèse.
 
 **Droit d'auteur et IA générative.** Le Conseil supérieur de la propriété littéraire et artistique (CSPLA) a conclu, dans son rapport de mission, que le droit d'auteur européen s'applique à l'entraînement et au déploiement des modèles d'IA commercialisés dans l'Union, indépendamment de la localisation des serveurs. Les agences doivent donc s'interroger sur les droits attachés aux données d'entraînement et aux contenus produits.
 
@@ -242,9 +248,11 @@ L'IA bien encadrée permet aux acteurs du secteur de raccourcir les cycles de pr
       "https://www.cnil.fr/fr/ia-et-rgpd-la-cnil-publie-ses-nouvelles-recommandations-pour-accompagner-une-innovation-responsable",
       "https://www.arpp.org/nous-consulter/regles/regles-de-deontologie/recommandation-communication-publicitaire-numerique/",
       "https://www.culture.gouv.fr/nous-connaitre/organisation-du-ministere/Conseil-superieur-de-la-propriete-litteraire-et-artistique-CSPLA/travaux-et-publications-du-cspla/missions-du-cspla/publication-du-rapport-de-mission-sur-la-loi-applicable-aux-modeles-d-ia-generative-commercialises-dans-l-union-europeenne",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -285,7 +293,7 @@ Ces usages s'inscrivent dans une logique d'industrialisation progressive : preuv
 
 L'automobile cumule plusieurs cadres exigeants qui structurent tout projet IA.
 
-**AI Act** : le règlement européen sur l'intelligence artificielle est entré en vigueur le 1er août 2024, avec une application progressive. L'interdiction des systèmes à risque inacceptable s'applique depuis le 2 février 2025, et l'application complète aux systèmes à haut risque déjà identifiés est prévue au 2 août 2026 (notamment infrastructures critiques, emploi, biométrie). Les systèmes IA intégrés à des produits soumis à homologation peuvent relever de catégories à risque élevé, avec obligations de gestion des risques, de documentation et de surveillance humaine.
+**AI Act** : le règlement européen sur l'intelligence artificielle est entré en vigueur le 1er août 2024, avec une application progressive. L'interdiction des systèmes à risque inacceptable s'applique depuis le 2 février 2025, et l'application aux systèmes à haut risque de l'annexe III (notamment infrastructures critiques, emploi, biométrie), initialement prévue en août 2026, est reportée au 2 décembre 2027 par le règlement (UE) 2026/1744. Les véhicules relèvent de l'annexe I, section B : les exigences de l'AI Act ne s'y appliquent pas directement, elles passent par les actes sectoriels (homologation).
 
 **Homologation et sécurité (ADAS)** : la mise sur le marché des fonctions d'aide à la conduite s'inscrit dans le cadre d'homologation européen et des règlements ONU élaborés au sein du WP.29 de l'UNECE, qui définissent des prescriptions de sécurité minimales. Tout système de perception ou de décision embarqué doit être validé selon ces exigences.
 
@@ -308,9 +316,11 @@ Un accompagnement structuré (audit des cas d'usage, cadrage réglementaire, feu
       "https://www.entreprises.gouv.fr/decryptages-de-nos-experts/le-reglement-europeen-sur-lintelligence-artificielle-publics-concernes",
       "https://www.cnil.fr/fr/vehicules-connectes-un-pack-de-conformite-pour-une-utilisation-responsable-des-donnees",
       "https://www.cnil.fr/sites/default/files/atoms/files/pack_vehicules_connectes_web.pdf",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -410,7 +420,7 @@ Le secteur énergie est l'un des plus encadrés, ce qui conditionne tout projet 
 
 - **Régulation du marché de l'énergie** : la CRE est l'autorité indépendante garantissant le bon fonctionnement des marchés français de l'énergie. Les usages liés au négoce et à la facturation doivent respecter les règles de marché applicables.
 - **Sûreté nucléaire** : tout usage IA touchant des installations nucléaires relève du contrôle de l'Autorité de sûreté nucléaire et de radioprotection et de l'expertise de l'IRSN ; les exigences de démonstration de sûreté y sont particulièrement strictes.
-- **AI Act (règlement UE 2024/1689)** : entré en vigueur le 1er août 2024, il classe en haut risque les systèmes d'IA utilisés comme composants de sécurité dans la gestion et l'exploitation des infrastructures critiques, dont l'approvisionnement en électricité et en gaz. Ces obligations (gestion des risques, supervision humaine, documentation) s'appliquent pleinement à compter du 2 août 2026.
+- **AI Act (règlement UE 2024/1689)** : entré en vigueur le 1er août 2024, il classe en haut risque les systèmes d'IA utilisés comme composants de sécurité dans la gestion et l'exploitation des infrastructures critiques, dont l'approvisionnement en électricité et en gaz. Ces obligations (gestion des risques, supervision humaine, documentation), initialement prévues en août 2026, sont reportées au 2 décembre 2027 par le règlement (UE) 2026/1744.
 - **Cybersécurité des infrastructures critiques (NIS2)** : la directive (UE) 2022/2555, en cours de transposition en France via le projet de loi « Résilience », renforce les obligations de cybersécurité des opérateurs essentiels, sous le contrôle de l'ANSSI.
 
 ## Opportunités identifiées
@@ -423,9 +433,11 @@ La conjonction d'une production électrique au plus haut, d'une part renouvelabl
       "https://www.entreprises.gouv.fr/decryptages-de-nos-experts/le-reglement-europeen-sur-lintelligence-artificielle-publics-concernes",
       "https://cyber.gouv.fr/reglementation/cybersecurite-systemes-dinformation/directives-nis-nis2-et-dispositif-saiv/directive-nis-2/",
       "https://www.cre.fr/actualites/toute-lactualite/la-cre-publie-son-observatoire-des-marches-de-detail-de-lenergie-du-quatrieme-trimestre-2025.html",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -523,7 +535,7 @@ Tout projet IA agricole s'inscrit dans plusieurs cadres :
 - **Politique agricole commune (PAC)** : la PAC soutient financièrement les exploitations et conditionne les aides au respect de normes environnementales et de sécurité alimentaire. Les outils numériques d'aide à la décision doivent rester compatibles avec ces exigences de conditionnalité et de déclaration.
 - **Traçabilité et sécurité sanitaire** : les filières animales et végétales sont soumises à des obligations de traçabilité ; les systèmes IA mobilisés (identification, suivi sanitaire) doivent préserver la fiabilité et l'auditabilité des données.
 - **Bien-être animal** : le monitoring du troupeau s'exerce dans le respect des exigences de bien-être animal, l'IA venant en appui de la décision humaine et non en substitution.
-- **AI Act (règlement UE 2024/1689)** : entré en vigueur le 1er août 2024, il impose une approche par les risques. Les systèmes classés « haut risque » (impact sur la santé, la sécurité ou les droits fondamentaux) sont soumis à des obligations de documentation technique, de gouvernance des données, de supervision humaine et de surveillance ; l'application complète à ces systèmes est prévue au 2 août 2026.
+- **AI Act (règlement UE 2024/1689)** : entré en vigueur le 1er août 2024, il impose une approche par les risques. Les systèmes classés « haut risque » (impact sur la santé, la sécurité ou les droits fondamentaux) sont soumis à des obligations de documentation technique, de gouvernance des données, de supervision humaine et de surveillance ; l'application à ces systèmes, initialement prévue en août 2026 (annexe III) et août 2027 (annexe I), est reportée au 2 décembre 2027 (annexe III) ou au 2 août 2028 (annexe I) par le règlement (UE) 2026/1744.
 - **Souveraineté et gouvernance des données agricoles** : les pouvoirs publics insistent sur l'importance d'un accès à des données fiables et adaptées aux réalités françaises, pour éviter une dépendance à des solutions importées peu adaptées et garantir la protection des données des exploitants (RGPD).
 
 ## Opportunités identifiées
@@ -536,9 +548,11 @@ Les opportunités sont concrètes pour les TPE et PME agricoles d'abord, puis le
       "https://chambres-agriculture.fr/actualites/actualite/les-chiffres-cles-2024-de-lagriculture-francaise",
       "https://www.inrae.fr/actualites/cooperation-intelligence-artificielle-atouts-du-robot-efficace-plein-champ",
       "https://www.entreprises.gouv.fr/decryptages-de-nos-experts/le-reglement-europeen-sur-lintelligence-artificielle-publics-concernes",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -580,7 +594,7 @@ Ces usages reposent sur des données déjà collectées (inscriptions, scans de 
 
 Le traitement de données personnelles est central. Inscriptions, badges scannés, comportements de navigation et interactions de networking relèvent du **RGPD** : l'organisateur doit définir une finalité explicite, appliquer la minimisation des données, informer les personnes et sécuriser les traitements. La CNIL rappelle les six grands principes du règlement et la nécessité d'une base légale adaptée (consentement ou intérêt légitime selon les cas). Les manquements exposent à des sanctions pouvant atteindre 20 millions d'euros ou 4 % du chiffre d'affaires annuel mondial.
 
-L'**AI Act** (règlement européen sur l'IA) introduit une classification par niveau de risque et des obligations de transparence ; certaines dispositions, notamment celles relatives à la transparence des systèmes d'IA, s'appliquent à compter d'août 2026. Les systèmes de personnalisation, de scoring de participants ou de chatbots doivent être documentés et, le cas échéant, signalés comme interactions avec une IA.
+L'**AI Act** (règlement européen sur l'IA) introduit une classification par niveau de risque et des obligations de transparence ; certaines dispositions, notamment celles relatives à la transparence des systèmes d'IA, s'appliquent depuis le 2 août 2026. Les systèmes de personnalisation, de scoring de participants ou de chatbots gagnent à être documentés et, le cas échéant, signalés comme interactions avec une IA.
 
 L'**accessibilité** numérique et physique des dispositifs (sites d'inscription, applications, signalétique) constitue une exigence transversale, à intégrer dès la conception des outils.
 
@@ -594,9 +608,11 @@ Pour les TPE, PME et ETI du secteur, plusieurs leviers se dégagent. La structur
       "https://presse.economie.gouv.fr/une-annee-2024-record-pour-le-tourisme-francais-grace-a-la-croissance-des-recettes-internationales-et-a-la-solidite-du-marche-domestique-qui-dessine-un-horizon-prometteur-pour-2025/",
       "https://www.cnil.fr/fr/reglement-europeen-protection-donnees",
       "https://artificialintelligenceact.eu/fr/",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -641,7 +657,7 @@ Trois cadres structurent l'usage de l'IA dans les métiers créatifs en France e
 
 **Données d'entraînement et droits des créateurs.** Le rapport CSPLA d'Alexandra Bensamoun (publié le 11 décembre 2024) porte sur l'obligation de transparence des données d'entraînement prévue par le règlement européen sur l'IA. Il propose un résumé détaillé, organisé par type de contenu, permettant aux titulaires de droits de vérifier le respect de leurs œuvres et des demandes d'exclusion (opt-out). Pour les créateurs, l'enjeu central est le respect de leurs œuvres dans les jeux de données et le partage de la valeur.
 
-**AI Act et transparence des contenus générés.** L'article 50 du règlement européen sur l'intelligence artificielle impose des obligations de transparence : informer les utilisateurs d'une interaction avec une IA, et marquer dans un format lisible par machine les contenus de synthèse (images, audio, vidéo, deepfakes) ainsi que certains textes d'intérêt public. Ces obligations s'appliquent à compter du 2 août 2026. Les studios diffusant des contenus partiellement générés doivent anticiper ces exigences de marquage.
+**AI Act et transparence des contenus générés.** L'article 50 du règlement européen sur l'intelligence artificielle impose des obligations de transparence : le fournisseur de l'outil marque dans un format lisible par machine les contenus de synthèse (images, audio, vidéo) ; l'utilisateur signale les hypertrucages et certains textes d'intérêt public générés. Ces obligations s'appliquent depuis le 2 août 2026 (marquage technique : délai jusqu'au 2 décembre 2026 pour les systèmes déjà sur le marché). Les studios diffusant des hypertrucages ou des textes d'intérêt public générés doivent anticiper la divulgation prévue à l'article 50 §4.
 
 ## Opportunités identifiées
 
@@ -649,7 +665,7 @@ L'enjeu n'est pas d'opposer IA et création, mais d'outiller les équipes tout e
 
 - **Cartographier les usages** : identifier où l'IA fait gagner du temps (itération, localisation, nettoyage technique) sans diluer la signature artistique.
 - **Sécuriser la chaîne de droits** : tracer l'apport humain, vérifier les conditions de licence des outils et de leurs données d'entraînement, encadrer les livrables clients.
-- **Anticiper la conformité AI Act** : préparer le marquage des contenus générés et les mentions de transparence avant l'échéance réglementaire.
+- **Se préparer à l'AI Act** : préparer le marquage des contenus générés et les mentions de transparence en s'appuyant sur le calendrier de l'article 50.
 - **Préserver la valeur créative** : positionner l'IA comme un accélérateur de production, la direction artistique humaine restant le différenciateur commercial.
 
 Un audit ciblé permet d'aligner gains de productivité, qualité créative et conformité juridique, adapté à la taille du studio et à ses contraintes de PI.
@@ -660,9 +676,11 @@ Un audit ciblé permet d'aligner gains de productivité, qualité créative et c
       "https://artificialintelligenceact.eu/article/50/",
       "https://www.culture.gouv.fr/nous-connaitre/organisation-du-ministere/conseil-superieur-de-la-propriete-litteraire-et-artistique-cspla/travaux-et-publications-du-cspla/missions-du-cspla/ia-et-transparence-des-donnees-d-entrainement-publication-du-rapport-d-alexandra-bensamoun-sur-la-mise-en-aeuvre-du-reglement-europeen-etablissant",
       "https://www.culture.gouv.fr/nous-connaitre/organisation-du-ministere/conseil-superieur-de-la-propriete-litteraire-et-artistique-cspla/travaux-et-publications-du-cspla/missions-du-cspla/le-cspla-lance-une-mission-relative-a-la-protection-des-contenus-generes-avec-le-recours-a-l-ia-generative",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -693,7 +711,7 @@ L'État met à disposition des briques mutualisées, opérées dans un cadre de 
 
 ## Contraintes réglementaires spécifiques
 
-Le secteur public concentre des usages classés à haut risque par le règlement européen sur l'IA (AI Act). L'annexe III, section 5, vise notamment les systèmes d'IA utilisés par les autorités publiques pour évaluer l'éligibilité de personnes physiques aux prestations et services d'aide publique essentiels, y compris en santé, et pour octroyer, réduire, révoquer ou récupérer ces prestations. Ces systèmes sont soumis à des obligations renforcées : gestion des risques, gouvernance des données, documentation et contrôle humain. L'essentiel des dispositions relatives aux systèmes à haut risque de l'annexe III s'applique à compter d'août 2026.
+Le secteur public concentre des usages classés à haut risque par le règlement européen sur l'IA (AI Act). L'annexe III, section 5, vise notamment les systèmes d'IA utilisés par les autorités publiques pour évaluer l'éligibilité de personnes physiques aux prestations et services d'aide publique essentiels, y compris en santé, et pour octroyer, réduire, révoquer ou récupérer ces prestations. Ces systèmes sont soumis à des obligations renforcées : gestion des risques, gouvernance des données, documentation et contrôle humain. Selon le règlement (UE) 2026/1744, l'essentiel des dispositions relatives aux systèmes à haut risque de l'annexe III s'applique à compter du 2 décembre 2027 (initialement prévu en août 2026).
 
 Le RGPD encadre les décisions individuelles automatisées (article 22) : une personne ne peut, en principe, faire l'objet d'une décision fondée exclusivement sur un traitement automatisé produisant des effets juridiques ou l'affectant de manière significative. Lorsque ces décisions sont admises, la personne dispose du droit d'obtenir une intervention humaine, d'exprimer son point de vue et de contester la décision.
 
@@ -713,8 +731,10 @@ Un cabinet de conseil accompagne ces organisations sur l'audit de conformité (A
       "https://labo.societenumerique.gouv.fr/fr/articles/dossier-intelligence-artificielle-et-services-publics-quelle-doctrine-dusage/",
       "https://artificialintelligenceact.eu/annex/3/",
       "https://www.cnil.fr/fr/vos-droits-lintervention-humaine-face-votre-profilage-ou-une-decision-automatisee",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-06-23",
-    reviewedBy: "claude-opus-4-8",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 ];

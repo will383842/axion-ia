@@ -65,7 +65,7 @@ export const BEAUMONT_SUR_OISE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Beaumont-sur-Oise ?",
-      a: "Nos consultants se déplacent à Beaumont-sur-Oise depuis Paris (45 min Gare du Nord, Transilien H). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Sessions en visio également possibles.",
     },
   ],
 };

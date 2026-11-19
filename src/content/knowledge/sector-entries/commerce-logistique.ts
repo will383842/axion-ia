@@ -181,7 +181,7 @@ Les maisons de maroquinerie (Hermès, Chanel Maroquinerie) ont des supply chains
 
 **Savoir-faire artisanal et traçabilité** : les maisons de luxe investissent dans la traçabilité IA (supply chain transparente, origine des matières) pour répondre aux attentes des consommateurs et aux exigences réglementaires (règlement européen sur la durabilité des produits, ESPR). Hermès publie depuis 2022 un passeport digital pour ses sacs iconiques.
 
-**IA responsable et représentation** : le secteur mode-luxe est scruté sur les biais algorithmiques (diversité des modèles dans les outils d'essayage virtuel, représentativité des données d'entraînement). L'AI Act européen (applicable août 2026) impose des obligations de transparence sur les systèmes d'IA à haut risque, notamment les outils de sélection de profils clients.
+**IA responsable et représentation** : le secteur mode-luxe est scruté sur les biais algorithmiques (diversité des modèles dans les outils d'essayage virtuel, représentativité des données d'entraînement). L'AI Act européen prévoit des obligations de transparence (article 50, applicable depuis le 2 août 2026) et des exigences renforcées pour les systèmes à haut risque, dont l'annexe III est reportée au 2 décembre 2027 par le règlement (UE) 2026/1744. Selon l'usage, un outil de sélection de profils clients peut relever ou non du haut risque : à vérifier sur EUR-Lex selon votre cas.
 
 ## Points d'entrée pour une intervention IA
 
@@ -195,9 +195,11 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
       "https://auraluxuryblockchain.com/",
       "https://www.euipo.europa.eu/en/ip-crime/ipr-infringement-in-the-eu",
       "https://www.heuritech.com/",
+      "https://eur-lex.europa.eu/eli/reg/2026/1744/oj",
+      "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
     ],
-    lastReviewedOn: "2026-05-20",
-    reviewedBy: "claude-sonnet-4-6",
+    lastReviewedOn: "2026-11-08",
+    reviewedBy: "relecture-ai-act-2026-11-08",
   },
 
   // ────────────────────────────────────────────────────────────────────────────
@@ -229,11 +231,11 @@ Axion-IA intervient typiquement sur : (1) audit de la maturité data de la maiso
 
 **R :** Pour une PME ou ETI française, le coût total se décompose en trois phases :
 
-- **Audit de faisabilité / cadrage** : 3 000 à 8 000 € HT (1 à 3 jours de diagnostic). Cette phase évalue la qualité des données, l'infrastructure existante et identifie les cas d'usage à ROI rapide.
-- **POC et implémentation** : 15 000 à 80 000 € HT selon la complexité. Un POC de prévision de la demande sur des données structurées propres se réalise en 4 à 6 semaines pour 15 000 à 25 000 €. Un déploiement d'un système de computer vision qualité sur une ligne de production représente 40 000 à 80 000 € en incluant l'intégration SCADA/MES.
-- **Run et maintenance** : 1 000 à 5 000 €/mois HT selon le niveau de supervision requis (monitoring des modèles, réentraînement périodique, support tier 2).
+- **Audit de faisabilité / cadrage** (1 à 3 jours de diagnostic) : évalue la qualité des données, l'infrastructure existante et identifie les cas d'usage à ROI rapide.
+- **POC et implémentation** : un POC de prévision de la demande sur des données structurées propres se réalise en 4 à 6 semaines ; un déploiement de computer vision qualité sur une ligne de production inclut l'intégration SCADA/MES.
+- **Run et maintenance** : selon le niveau de supervision requis (monitoring des modèles, réentraînement périodique, support tier 2).
 
-Le coût total sur 3 ans pour un projet PME standard se situe entre **80 000 et 200 000 € HT**, à comparer aux gains typiques de 150 000 à 500 000 € sur la même période pour une PME de 50 à 300 salariés. Des dispositifs de financement public (France 2030 via Bpifrance, crédit d'impôt innovation CII, aides régionales) peuvent couvrir 30 à 50 % de l'investissement initial.
+Chez Axion-IA, chaque phase est **sur devis** : parlons-en lors du rendez-vous gratuit de 45 minutes, qui sert à cadrer le périmètre et la mesure du ROI attendu. Des dispositifs de financement public (France 2030 via Bpifrance, crédit d'impôt innovation CII, aides régionales) peuvent couvrir 30 à 50 % de l'investissement initial.
 
 ---
 
@@ -317,7 +319,7 @@ Contrairement aux grandes entreprises dotées de centres de compétences data, l
 
 **Ressources mobilisées** : 1 consultant senior Axion-IA, 2 à 3 référents métier côté client (DG ou DAF, responsable production, DSI ou référent IT).
 
-**Engagement contractuel** : le cadrage est facturé forfaitairement (3 000 à 5 000 € HT). Si le client ne retient pas Axion-IA pour la suite, il dispose d'un livrable exploitable de manière indépendante.
+**Engagement contractuel** : le cadrage est facturé forfaitairement, sur devis. Si le client ne retient pas Axion-IA pour la suite, il dispose d'un livrable exploitable de manière indépendante.
 
 ---
 

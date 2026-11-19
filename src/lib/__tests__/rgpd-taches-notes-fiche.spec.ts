@@ -87,6 +87,9 @@ vi.mock("@/lib/prisma", () => {
   const contacts = [{ contactId: "contact-alice", emailHash: "h:alice@exemple.fr" }];
   const tx = {
     $executeRawUnsafe: async () => 0,
+    // Lot S2 : la mise à l'écart de `contacts_guide_reseau` précède tout (non enregistrée ici : elle
+    // n'est ni une écriture du dossier client ni sous le drapeau d'effacement).
+    contactGuideReseau: { updateMany: async () => ({ count: 0 }) },
     clientContactAdresse: modele("clientContactAdresse", contacts),
     clientContact: {
       ...modele("clientContact", [
@@ -117,6 +120,8 @@ vi.mock("@/lib/prisma", () => {
     questionnaireAvantAudit: modele("questionnaireAvantAudit"),
     questionnaireAvantAuditEnvoi: modele("questionnaireAvantAuditEnvoi"),
     emailSuivi: modele("emailSuivi"),
+    devisAssistantBrouillon: modele("devisAssistantBrouillon"),
+    clientFusion: modele("clientFusion"),
     projetContact: modele("projetContact"),
     projet: modele("projet"),
     enregistrementConsentement: modele("enregistrementConsentement"),

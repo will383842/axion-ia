@@ -72,6 +72,15 @@ on:
           # RENVOIE le code NAF (cible : site, route signée). Aucune suppression propagée.
           - "CRM_SYNC_DOSSIER_ENABLED"
           - "CRM_INBOUND_DOSSIER_ENABLED"
+          # Parcours viral — guides par réseau (docs/guides-reseau-interrupteurs.md). Cible : site seulement
+          # (lus par le conteneur app). Valeurs : true | false. Aucune donnée personnelle.
+          # OPPOSITIONS_RESEAU_ENABLED s'allume AVANT GUIDES_RESEAU_ENABLED et ne s'éteint JAMAIS sauf
+          # incident (un « stop » refusé en 503 serait perdu) : l'extinction exige `confirmer_extinction`.
+          - "OPPOSITIONS_RESEAU_ENABLED"
+          - "GUIDES_RESEAU_ENABLED"
+          # Page « Recevoir le guide » (lot S2) : `/guide-reseau?j=…` (404) et sa route d'envoi (503) tant
+          # que la valeur n'est pas exactement `true`. Cible : site seulement. Valeurs : true | false.
+          - "PAGE_GUIDE_RESEAU_ENABLED"
       valeur:
         description: "Valeur : true, false, essai, une date ISO (DOSSIER_FICHE_AUTO_DEPUIS), un identifiant de salon ou une adresse d'essai"
         required: true
@@ -86,6 +95,14 @@ on:
           - "les-deux"
           - "site"
           - "worker"
+      confirmer_extinction:
+        description: "Confirmer l'extinction de OPPOSITIONS_RESEAU_ENABLED (incident seulement ; ignoré pour les autres clés)"
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
       redeploy:
         description: "Redéployer après (Restart ne recharge pas les variables)"
         required: true
@@ -124,8 +141,16 @@ jobs:
           CLE: ${{ inputs.cle }}
           VALEUR: ${{ inputs.valeur }}
           CIBLE: ${{ inputs.cible }}
+          CONFIRMER_EXTINCTION: ${{ inputs.confirmer_extinction }}
         run: |
           set -euo pipefail
+          # Parcours viral : lus par le site seulement ; les oppositions ne s'éteignent pas sans confirmation.
+          if [[ "$CLE" =~ ^(GUIDES|OPPOSITIONS|PAGE_GUIDE)_RESEAU_ENABLED$ ]] && [ "$CIBLE" != "site" ]; then
+            echo "::error::$CLE se pose sur « site » seulement"; exit 1
+          fi
+          if [ "$CLE" = "OPPOSITIONS_RESEAU_ENABLED" ] && [ "$VALEUR" = "false" ] && [ "$CONFIRMER_EXTINCTION" != "true" ]; then
+            echo "::error::Refus : éteindre OPPOSITIONS_RESEAU_ENABLED ferait refuser (503) les « stop » des personnes. À éteindre uniquement en cas d'incident, avec confirmer_extinction=true (voir docs/guides-reseau-interrupteurs.md)."; exit 1
+          fi
           # Les interrupteurs du suivi du questionnaire se posent TOUJOURS sur les deux applications :
           # le worker agit, la console affiche le même état (sinon elle dirait « éteintes » à tort).
           if [[ "$CLE" =~ ^QUESTIONNAIRE_(RELANCES|CONFIRMATIONS|TELEGRAM)_ENABLED$ ]] && [ "$CIBLE" != "les-deux" ]; then

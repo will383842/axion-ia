@@ -13,6 +13,7 @@ const mockGenerateDocument = vi.fn();
 const mockUpload = vi.fn();
 const mockNextNumero = vi.fn();
 const mockPrismaEcriture = vi.fn();
+let formulesActivesTest = false;
 
 vi.mock("@/auth", () => ({ auth: () => mockAuth() }));
 
@@ -53,10 +54,13 @@ vi.mock("@/server/qualiopi/documents/donnees-pdf-devis", async (importOriginal) 
     regimeTva: "assujetti",
     tauxStandard: 20,
     certificationObtenue: false,
+    formulesActives: formulesActivesTest,
   }),
 }));
 
 import { GET } from "./route";
+import { SELECT_DEVIS_POUR_PDF } from "@/server/qualiopi/documents/donnees-pdf-devis";
+import { offreFictive } from "@/server/qualiopi/devis/offre-fixtures.spec-util";
 
 const ID = "550e8400-e29b-41d4-a716-446655440001";
 
@@ -91,6 +95,7 @@ function appeler(id = ID) {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  formulesActivesTest = false;
   mockAuth.mockResolvedValue({ user: { id: "u1", role: "admin" } });
   mockFindUnique.mockResolvedValue(DEVIS);
   mockRender.mockResolvedValue({
@@ -159,5 +164,31 @@ describe("GET /api/qualiopi/devis/[id]/apercu", () => {
     mockFindUnique.mockResolvedValue(null);
     expect((await appeler()).status).toBe(404);
     expect((await appeler("pas-un-uuid")).status).toBe(404);
+  });
+
+  it("le select lit `offre` (sinon l'aperçu d'un devis à formules est vide)", async () => {
+    await appeler();
+    expect(mockFindUnique.mock.calls[0]?.[0].select).toBe(SELECT_DEVIS_POUR_PDF);
+    expect(SELECT_DEVIS_POUR_PDF.offre).toBe(true);
+  });
+
+  it("offre valide + interrupteur allumé : les formules arrivent au gabarit", async () => {
+    formulesActivesTest = true;
+    mockFindUnique.mockResolvedValue({ ...DEVIS, lignes: [], offre: offreFictive() });
+    const res = await appeler();
+    expect(res.status).toBe(200);
+    const element = mockRender.mock.calls[0]?.[0];
+    const { collectPdfTextNormalized } =
+      await import("@/server/qualiopi/documents/collect-pdf-text");
+    expect(collectPdfTextNormalized(element)).toContain("Formule A");
+  });
+
+  it("offre illisible : 422 avec un message clair, pas de 500", async () => {
+    formulesActivesTest = true;
+    mockFindUnique.mockResolvedValue({ ...DEVIS, offre: { v: 99 } });
+    const res = await appeler();
+    expect(res.status).toBe(422);
+    expect((await res.json()).error).toContain("Offre du devis invalide");
+    expect(mockRender).not.toHaveBeenCalled();
   });
 });

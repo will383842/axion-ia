@@ -172,7 +172,7 @@ const BIEN_COMMENCER_4H: FormationV2 = {
   h1Fr: "Formation IA pour bien commencer : comprendre l'IA et l'utiliser dès aujourd'hui (4 heures)",
   metaTitleFr: "Formation IA pour bien commencer — 4h",
   metaDescriptionFr:
-    "Formation IA d'initiation en entreprise, 4 h, sans prérequis : comprendre l'IA, choisir le bon outil et l'utiliser dès aujourd'hui. 1 200 € HT par groupe.",
+    "Formation IA d'initiation en entreprise, 4 h, sans prérequis : comprendre l'IA, choisir le bon outil et l'utiliser dès aujourd'hui. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA débutant",
     "initiation intelligence artificielle entreprise",
@@ -399,7 +399,7 @@ const BIEN_COMMENCER_JOURNEE: FormationV2 = {
   h1Fr: "Formation IA pour bien commencer — journée complète : s'approprier l'IA sur ses propres tâches",
   metaTitleFr: "Formation IA pour bien commencer — 1 jour",
   metaDescriptionFr:
-    "Formation IA d'initiation sur une journée : autant de pratique que de théorie, sur les cas réels de chaque participant. 1 900 € HT par groupe, sans prérequis.",
+    "Formation IA d'initiation sur une journée : autant de pratique que de théorie, sur les cas réels de chaque participant. Sur devis, par groupe, sans prérequis.",
   termesSemantiquesFr: [
     "formation IA débutant 1 jour",
     "initiation IA entreprise",
@@ -705,7 +705,7 @@ const IA_POUR_LES_EQUIPES: FormationV2 = {
   h1Fr: "Formation IA pour les équipes : gagner du temps au quotidien",
   metaTitleFr: "Formation IA pour les équipes — 1 jour",
   metaDescriptionFr:
-    "Formation IA en entreprise, 1 jour : transformer des usages dispersés en pratique commune — rédaction, synthèse, prompts réutilisables. 1 900 € HT par groupe.",
+    "Formation IA en entreprise, 1 jour : transformer des usages dispersés en pratique commune — rédaction, synthèse, prompts réutilisables. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA équipe",
     "gagner du temps IA",
@@ -989,7 +989,7 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
   h1Fr: "Formation IA pour l'automatisation : vos premières automatisations concrètes (2 jours)",
   metaTitleFr: "Formation IA automatisation — 2 jours",
   metaDescriptionFr:
-    "Formation automatisation IA, 2 jours scindables : repérer les tâches répétitives et bâtir une première automatisation sur un cas réel. 3 600 € HT par groupe.",
+    "Formation automatisation IA, 2 jours scindables : repérer les tâches répétitives et bâtir une première automatisation sur un cas réel. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation automatisation IA",
     "automatiser tâches répétitives",
@@ -1103,7 +1103,7 @@ const IA_POUR_L_AUTOMATISATION: FormationV2 = {
           temps: "20'",
           type: "cadre",
           titre:
-            "Le test de qualification en 4 questions et les textes qui le fondent : données personnelles ? effet sur une personne ? décision sans relecture humaine (art. 22 du RGPD) ? suivi de l'activité de salariés (annexe III §4(b) du règlement européen sur l'IA, applicable depuis le 2 août 2026) ? — avec ce que chaque réponse déclenche : information des salariés, consultation du CSE (art. L.2312-8 II 4° du Code du travail), analyse d'impact (art. 35 du RGPD), ou arrêt pur et simple. Grille imprimée fournie",
+            "Le test de qualification en 4 questions et les textes qui le fondent : données personnelles ? effet sur une personne ? décision sans relecture humaine (art. 22 du RGPD) ? suivi de l'activité de salariés (annexe III §4(b) du règlement européen sur l'IA, applicable au 2 décembre 2027 après report par le règlement (UE) 2026/1744) ? — avec ce que chaque réponse déclenche : information des salariés, consultation du CSE (art. L.2312-8 II 4° du Code du travail), analyse d'impact (art. 35 du RGPD), ou arrêt pur et simple. Grille imprimée fournie",
         },
         {
           temps: "45'",
@@ -1319,7 +1319,7 @@ const IA_POUR_LES_RH: FormationV2 = {
   h1Fr: "Formation IA pour les RH : simplifier le quotidien de toute la fonction",
   metaTitleFr: "Formation IA pour les RH — 1 jour",
   metaDescriptionFr:
-    "Formation IA pour les RH (1 jour, intra) : offres et fiches de poste, tri des candidatures, communication interne, réflexes RGPD. 1 900 € HT par groupe.",
+    "Formation IA pour les RH (1 jour, intra) : offres et fiches de poste, tri des candidatures, communication interne, réflexes RGPD. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA RH",
     "IA recrutement",
@@ -1418,7 +1418,7 @@ const IA_POUR_LES_RH: FormationV2 = {
           temps: "15'",
           type: "cadre",
           titre:
-            "Ce que le droit impose AVANT d'ouvrir un CV, en clair (fiche de synthèse remise, sources datées dans le kit formateur) : le candidat doit être informé préalablement des méthodes et techniques d'aide au recrutement utilisées (L.1221-8) ; le CSE doit être informé préalablement à leur utilisation (L.2312-38) ; on ne demande que ce qui a un lien direct et nécessaire avec l'emploi (L.1221-6) ; les critères de discrimination interdits (L.1132-1 — liste sourcée et datée fournie au formateur, à ne jamais citer de mémoire) et la façon dont un prompt les réintroduit sans le dire ; et la qualification du règlement européen sur l'IA : le tri, le filtrage et l'évaluation de candidatures sont classés à HAUT RISQUE (annexe III, point 4 a), obligations applicables depuis le 2 août 2026 — pourquoi la présynthèse sous grille imposée, sans classement ni score, reste en dehors de ce régime",
+            "Ce que le droit impose AVANT d'ouvrir un CV, en clair (fiche de synthèse remise, sources datées dans le kit formateur) : le candidat doit être informé préalablement des méthodes et techniques d'aide au recrutement utilisées (L.1221-8) ; le CSE doit être informé préalablement à leur utilisation (L.2312-38) ; on ne demande que ce qui a un lien direct et nécessaire avec l'emploi (L.1221-6) ; les critères de discrimination interdits (L.1132-1 — liste sourcée et datée fournie au formateur, à ne jamais citer de mémoire) et la façon dont un prompt les réintroduit sans le dire ; et la qualification du règlement européen sur l'IA : le tri, le filtrage et l'évaluation de candidatures sont classés à HAUT RISQUE (annexe III, point 4 a), obligations applicables au 2 décembre 2027 après report par le règlement (UE) 2026/1744 — pourquoi la présynthèse sous grille imposée, sans classement ni score, peut sortir de ce régime sous conditions (art. 6 §3), à documenter et à faire valider par votre conseil ; jamais en cas de profilage",
         },
         {
           temps: "25'",
@@ -1616,7 +1616,7 @@ const IA_POUR_LE_MARKETING: FormationV2 = {
   h1Fr: "Formation IA pour le marketing : gagner en efficacité sur l'ensemble des missions",
   metaTitleFr: "Formation IA pour le marketing — 1 jour",
   metaDescriptionFr:
-    "Formation IA marketing (1 jour, intra) : génération de contenus, déclinaison multi-formats, analyse de campagnes, veille concurrentielle. 1 900 € HT par groupe.",
+    "Formation IA marketing (1 jour, intra) : génération de contenus, déclinaison multi-formats, analyse de campagnes, veille concurrentielle. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA marketing",
     "génération de contenu IA",
@@ -1919,7 +1919,7 @@ const IA_POUR_LES_COMMERCIAUX: FormationV2 = {
   h1Fr: "Formation IA pour les commerciaux : vendre plus, sur tous les fronts",
   metaTitleFr: "Formation IA pour les commerciaux — 1 jour",
   metaDescriptionFr:
-    "Formation IA commerciale (1 jour, intra) : préparation de rendez-vous, propositions percutantes, relances, qualification de prospects. 1 900 € HT par groupe.",
+    "Formation IA commerciale (1 jour, intra) : préparation de rendez-vous, propositions percutantes, relances, qualification de prospects. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA commerciaux",
     "IA vente",
@@ -2214,7 +2214,7 @@ const IA_POUR_LA_FINANCE: FormationV2 = {
   h1Fr: "Formation IA pour la finance : fiabiliser et accélérer le quotidien",
   metaTitleFr: "Formation IA pour la finance — 1 jour",
   metaDescriptionFr:
-    "Formation IA finance, 1 jour : analyse de documents financiers, rapprochements simples, rapports et tableaux de bord assistés par l'IA. 1 900 € HT par groupe.",
+    "Formation IA finance, 1 jour : analyse de documents financiers, rapprochements simples, rapports et tableaux de bord assistés par l'IA. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA finance",
     "IA comptabilité",
@@ -2516,7 +2516,7 @@ const IA_POUR_LE_JURIDIQUE: FormationV2 = {
   h1Fr: "Formation IA pour le juridique : sécuriser et accélérer le traitement des dossiers",
   metaTitleFr: "Formation IA pour le juridique — 1 jour",
   metaDescriptionFr:
-    "Formation IA juridique (1 jour, intra) : synthèse de contrats, repérage de clauses à risque, documents types, veille réglementaire. 1 900 € HT par groupe.",
+    "Formation IA juridique (1 jour, intra) : synthèse de contrats, repérage de clauses à risque, documents types, veille réglementaire. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA juridique",
     "analyse contrat IA",
@@ -2831,7 +2831,7 @@ const IA_POUR_LA_PRODUCTION: FormationV2 = {
   h1Fr: "Formation IA pour la production : optimiser l'ensemble des opérations (2 jours)",
   metaTitleFr: "Formation IA pour la production — 2 jours",
   metaDescriptionFr:
-    "Formation IA production, 2 jours scindables : suivi et reporting, documentation qualité, fiches de non-conformité, automatisations. 3 600 € HT par groupe.",
+    "Formation IA production, 2 jours scindables : suivi et reporting, documentation qualité, fiches de non-conformité, automatisations. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA production",
     "IA opérations",
@@ -3220,7 +3220,7 @@ const IA_POUR_LES_ACHATS: FormationV2 = {
   h1Fr: "Formation IA pour les achats : optimiser achats et logistique au quotidien",
   metaTitleFr: "Formation IA pour les achats — 1 jour",
   metaDescriptionFr:
-    "Formation IA achats et logistique (1 jour, intra) : comparer des offres, cahiers des charges, suivi de commandes, relances fournisseurs. 1 900 € HT par groupe.",
+    "Formation IA achats et logistique (1 jour, intra) : comparer des offres, cahiers des charges, suivi de commandes, relances fournisseurs. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA achats",
     "IA logistique",
@@ -3529,7 +3529,7 @@ const IA_POUR_LA_RELATION_CLIENT: FormationV2 = {
   h1Fr: "Formation IA pour la relation client : gagner en réactivité et en qualité",
   metaTitleFr: "Formation IA relation client — 1 jour",
   metaDescriptionFr:
-    "Formation IA relation client, 1 jour : réponses personnalisées, réclamations, synthèse des échanges, base de connaissances. 1 900 € HT par groupe.",
+    "Formation IA relation client, 1 jour : réponses personnalisées, réclamations, synthèse des échanges, base de connaissances. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA relation client",
     "IA service client",
@@ -3805,7 +3805,7 @@ const IA_POUR_L_IT: FormationV2 = {
   h1Fr: "Formation IA pour l'IT : accélérer l'ensemble des projets (2 jours)",
   metaTitleFr: "Formation IA pour l'IT — 2 jours",
   metaDescriptionFr:
-    "Formation IA pour l'IT, 2 jours scindables : assistance au code, documentation, débogage, spécifications, automatisation de tâches IT. 3 600 € HT par groupe.",
+    "Formation IA pour l'IT, 2 jours scindables : assistance au code, documentation, débogage, spécifications, automatisation de tâches IT. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA développeurs",
     "IA assistance code",
@@ -4143,7 +4143,7 @@ const IA_POUR_LA_SANTE: FormationV2 = {
   h1Fr: "Formation IA pour la santé : gagner en efficacité sur l'ensemble de l'activité",
   metaTitleFr: "Formation IA pour la santé — 1 jour",
   metaDescriptionFr:
-    "Formation IA santé, 1 jour : comptes-rendus, courriers, gestion administrative et confidentialité stricte des données de santé. 2 200 € HT par groupe.",
+    "Formation IA santé, 1 jour : comptes-rendus, courriers, gestion administrative et confidentialité stricte des données de santé. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA santé",
     "IA établissement de santé",
@@ -4468,7 +4468,7 @@ const IA_POUR_LE_BTP: FormationV2 = {
   h1Fr: "Formation IA pour le BTP : optimiser l'ensemble de son activité",
   metaTitleFr: "Formation IA pour le BTP — 1 jour",
   metaDescriptionFr:
-    "Formation IA BTP (1 jour, intra) : interroger un CCTP, rédiger un mémoire technique, comptes-rendus de chantier, vérifier ses sources. 2 200 € HT par groupe.",
+    "Formation IA BTP (1 jour, intra) : interroger un CCTP, rédiger un mémoire technique, comptes-rendus de chantier, vérifier ses sources. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA BTP",
     "IA construction",
@@ -4768,7 +4768,7 @@ const IA_POUR_L_IMMOBILIER: FormationV2 = {
   h1Fr: "Formation IA pour l'immobilier : gagner en efficacité sur l'ensemble de l'activité",
   metaTitleFr: "Formation IA pour l'immobilier — 1 jour",
   metaDescriptionFr:
-    "Formation IA immobilier, 1 jour : annonces et descriptifs de biens, estimations, réponses aux prospects, suivi des dossiers. 2 200 € HT par groupe.",
+    "Formation IA immobilier, 1 jour : annonces et descriptifs de biens, estimations, réponses aux prospects, suivi des dossiers. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA immobilier",
     "annonce immobilière IA",
@@ -5067,7 +5067,7 @@ const IA_POUR_LE_COMMERCE: FormationV2 = {
   h1Fr: "Formation IA pour le commerce : optimiser l'ensemble de son activité",
   metaTitleFr: "Formation IA pour le commerce — 1 jour",
   metaDescriptionFr:
-    "Formation IA commerce et retail, 1 jour : fiches produits, réponses aux avis clients, analyse des ventes, supports en point de vente. 2 200 € HT par groupe.",
+    "Formation IA commerce et retail, 1 jour : fiches produits, réponses aux avis clients, analyse des ventes, supports en point de vente. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA commerce",
     "IA retail",
@@ -5366,7 +5366,7 @@ const IA_POUR_L_HOTELLERIE_RESTAURATION: FormationV2 = {
   h1Fr: "Formation IA pour l'hôtellerie-restauration : gagner en efficacité au quotidien",
   metaTitleFr: "Formation IA hôtellerie-restauration — 1 jour",
   metaDescriptionFr:
-    "Formation IA hôtellerie-restauration (1 jour, intra) : réponses aux avis, échanges clients, descriptifs de carte, allergènes. 2 200 € HT par groupe.",
+    "Formation IA hôtellerie-restauration (1 jour, intra) : réponses aux avis, échanges clients, descriptifs de carte, allergènes. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA hôtellerie",
     "IA restauration",
@@ -5637,7 +5637,7 @@ const IA_POUR_L_INDUSTRIE: FormationV2 = {
   h1Fr: "Formation IA pour l'industrie : optimiser l'ensemble de la production (2 jours)",
   metaTitleFr: "Formation IA pour l'industrie — 2 jours",
   metaDescriptionFr:
-    "Formation IA industrie, 2 jours scindables : suivi qualité, reporting, documentation de maintenance, automatisation du suivi. 3 900 € HT par groupe.",
+    "Formation IA industrie, 2 jours scindables : suivi qualité, reporting, documentation de maintenance, automatisation du suivi. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA industrie",
     "IA usine",
@@ -6061,7 +6061,7 @@ const IA_POUR_LE_TRANSPORT_LOGISTIQUE: FormationV2 = {
   h1Fr: "Formation IA pour le transport et la logistique : optimiser l'ensemble de l'activité",
   metaTitleFr: "Formation IA transport et logistique — 1 jour",
   metaDescriptionFr:
-    "Formation IA transport et logistique, 1 jour : écrits d'une tournée, réserves et réclamations, reporting d'exploitation. 2 200 € HT par groupe.",
+    "Formation IA transport et logistique, 1 jour : écrits d'une tournée, réserves et réclamations, reporting d'exploitation. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA transport",
     "IA logistique",
@@ -6353,7 +6353,7 @@ const IA_POUR_LA_BANQUE_ASSURANCE: FormationV2 = {
   h1Fr: "Formation IA pour la banque et l'assurance : sécuriser et accélérer le quotidien",
   metaTitleFr: "Formation IA banque et assurance — 1 jour",
   metaDescriptionFr:
-    "Formation IA banque et assurance, 1 jour : synthèse de dossiers clients, courriers et propositions, confidentialité stricte des données. 2 200 € HT par groupe.",
+    "Formation IA banque et assurance, 1 jour : synthèse de dossiers clients, courriers et propositions, confidentialité stricte des données. Sur devis, par groupe.",
   termesSemantiquesFr: [
     "formation IA banque",
     "IA assurance",

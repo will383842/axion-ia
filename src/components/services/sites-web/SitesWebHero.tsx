@@ -131,7 +131,6 @@ export function SitesWebHero({ isFr, villeContext }: SitesWebHeroProps): ReactNo
       />
       <JsonLd
         data={speakableJsonLd}
-        strategy="afterInteractive"
         scriptId={
           villeContext
             ? `jsonld-sites-web-hero-speakable-${villeContext.villeSlug}`

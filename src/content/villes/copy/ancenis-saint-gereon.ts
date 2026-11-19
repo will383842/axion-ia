@@ -49,7 +49,7 @@ export const ANCENIS_SAINT_GEREON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ancenis-Saint-Géréon ?",
-      a: "Oui, Axion-IA intervient à Ancenis-Saint-Géréon et dans tout le pays d'Ancenis (Ligné, Oudon, Varades). Nos consultants se déplacent depuis Nantes (40 min) ou Angers (45 min).",
+      a: "Oui, Axion-IA intervient à Ancenis-Saint-Géréon et dans tout le pays d'Ancenis (Ligné, Oudon, Varades). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Ancenis  ?",

@@ -49,7 +49,7 @@ export const AMBAZAC_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Ambazac et dans les Monts d'Ambazac ?",
-      a: "Oui, Axion-IA intervient à Ambazac et dans tout le secteur des Monts d'Ambazac (Saint-Sylvestre, Compreignac, Bessines-sur-Gartempe). Nos consultants viennent de Limoges (20 min N20).",
+      a: "Oui, Axion-IA intervient à Ambazac et dans tout le secteur des Monts d'Ambazac (Saint-Sylvestre, Compreignac, Bessines-sur-Gartempe). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les entreprises de la filière bois et granit ?",
@@ -65,7 +65,7 @@ export const AMBAZAC_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission sur site à Ambazac ?",
-      a: "Nos consultants se déplacent à Ambazac depuis Limoges (20 min N20). Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention 1 journée minimum, format atelier pratique dans vos locaux.",
     },
   ],
 };

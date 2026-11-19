@@ -1,478 +1,349 @@
 import { getLocale, getTranslations } from "next-intl/server";
-import { Mail, Phone, Search } from "lucide-react";
+import {
+  ArrowRight,
+  CalendarDays,
+  Cog,
+  FileText,
+  Globe,
+  GraduationCap,
+  Mail,
+  MessagesSquare,
+  ScanSearch,
+  Search,
+  type LucideIcon,
+} from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { SERVICES, serviceNavShort } from "@/content/services";
 import { BRAND } from "@/lib/brand";
 import { ROUTES } from "@/lib/routes";
+import { JOURNEE_IA_TIER, formatTierPrice } from "@/content/pricing";
 import { MobileNav } from "./MobileNav";
 import { NavLink } from "./NavLink";
-import { HeaderResourcesMenu } from "./HeaderResourcesMenu";
-import { HeaderFormationsMenu } from "./HeaderFormationsMenu";
-import { FORMATION_DUREE_FACTS } from "@/content/formations/catalog-v2-facts";
-import {
-  getFormationsV2,
-  getFormationsV2ByCategorie,
-  getFormationV2EntryPrice,
-} from "@/content/formations/catalog-v2";
-import { formatAmount } from "@/content/pricing";
+import { HeaderPrestationsMenu } from "./HeaderPrestationsMenu";
+import { AI_ACT_NAV, PRESTATIONS_NAV, type IconePrestation } from "./prestations-nav";
 
-// Server Component. Header v5 2026-05-28 (Will) — layout 2026 dual-CTA :
-//   [Logo · Cabinet IA pour entreprises]   nav 6 items     [Nous écrire ghost] [Réserver un appel primary]
+// Server Component. En-tête v6 — refonte du 2026-11-11 d'après la maquette validée
+// par Williams (`_chantier-entete-pied/maquette-entete-pied.html`, décisions du
+// 08/11/2026 dans `CONSIGNES-WILLIAMS-ACCUEIL.md`) :
 //
-// Améliorations vs v4 :
-//   - Tagline B2B « Cabinet IA pour entreprises » à côté du logo → signal
-//     d'audience immédiat (le visiteur sait que c'est pour son entreprise).
-//   - 2e CTA secondaire ghost outlined « Nous écrire » → laisse le choix entre
-//     appel direct (engagement fort) et message (engagement plus doux).
-//     Pattern dual-CTA Linear/Stripe/Cal.com : ghost contre primary, hiérarchie
-//     visuelle préservée par les couleurs (transparent vs bleu glow).
+//   [Axion-IA · Partenaire IA des PME et TPE]  Accueil  (• La Journée IA)  Nos prestations ▾  Tarifs     (loupe) [Nous écrire] [Réserver un appel]
+//
+// - 4 onglets au lieu de 7 : « Ressources » sort de l'en-tête et va au pied de page ;
+//   les cinq services passent dans le méga-menu « Nos prestations ».
+// - La Journée IA, offre essentielle, est mise en avant (pastille entourée + point
+//   terracotta) : « il faudrait qu'elle soit bien visible, qu'elle ressorte ».
+// - Son prix est le SEUL montant de l'en-tête, lu dans `pricing.ts` (jamais en dur).
+// - Barre TERRACOTTA, comme avant la refonte : Williams a demandé que l'en-tête
+//   reste orange, et surtout pas blanc (correctif du 2026-11-11, après la PR 1916). Seul
+//   le méga-menu (panneau déroulant) et le tiroir mobile restent sur fond clair.
+//   Contrastes mesurés : `scripts/check-contrast.ts`, section « en-tête terracotta ».
+// - Interaction minimale côté client : `NavLink` (onglet actif), le méga-menu
+//   (`HeaderPrestationsMenu`, bouton de divulgation) et le tiroir (`MobileNav`,
+//   Radix). Tout le contenu est rendu ici, côté serveur.
+
+const ICONES: Record<IconePrestation, LucideIcon> = {
+  audit: ScanSearch,
+  formations: GraduationCap,
+  implementation: Cog,
+  coaching: MessagesSquare,
+  web: Globe,
+};
+
 export async function Header() {
   const t = await getTranslations();
   const locale = await getLocale();
   const isFr = locale === "fr";
 
-  // 6 items nav — cluster gauche, tous sur UNE seule ligne (Will 2026-06-08).
-  // Libellés = troncatures `navShort` du SSOT `src/content/services.ts` (le nom
-  // OFFICIEL complet, plus long, n'entre pas dans la barre single-line ; il est
-  // affiché en entier dans le footer/les pages). Plus de `.replace()` : la
-  // troncature est désormais explicite et centralisée. Tarifs n'est pas un
-  // service → ajouté à part. ⚠️ navShort « Implémentation IA » remplace l'ancien
-  // « Intégration IA » (cohérence avec le nom officiel « Implémentation &
-  // automatisation IA »).
-  const navItems = [
-    ...SERVICES.map((s) => ({
-      href: s.href,
-      label: serviceNavShort(s, isFr),
-      multiline: false,
-    })),
-    { href: "/tarifs", label: t("nav.pricing"), multiline: false },
-  ];
+  // Seul montant de l'en-tête — source unique des prix (« 1 490 € HT »).
+  const prixJournee = formatTierPrice(JOURNEE_IA_TIER, isFr ? "fr" : "en");
 
-  // Items supplémentaires uniquement dans le drawer mobile (pages stratégiques
-  // accessibles depuis mobile, pas seulement depuis le footer).
-  // 2026-07-10 (Will) : retirés du drawer → Implantations, Stack IA, Centre
-  // d'aide (accessibles via footer / méga-menu Ressources desktop).
-  const navMobileExtras = [
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
-    { href: "/blog", label: t("nav.blog") },
-    { href: "/faq", label: "FAQ" },
-    { href: "/a-propos", label: t("nav.about") },
-  ] as const;
+  // Les 4 onglets, dans l'ordre décidé par Williams (version précisée du 08/11) :
+  // Accueil · La Journée IA · Nos prestations ▾ · Tarifs. Le budget d'espace de la
+  // barre est mesuré pour CETTE liste (`Header.budget.spec.ts`).
+  const accueil = { href: ROUTES.home, label: t("nav.home") };
+  const journeeIa = { href: "/journee-ia" as const, label: isFr ? "La Journée IA" : "The AI Day" };
+  const prestationsLabel = isFr ? "Nos prestations" : "Our services";
+  const tarifs = { href: "/tarifs", label: t("nav.pricing") };
 
-  // Emoji par onglet du drawer mobile (clé = href) — repère visuel « type 2026 »
-  // dans chaque rangée. Affiché uniquement dans le drawer (cf. NavLink mobile).
-  const mobileNavEmoji: Record<string, string> = {
-    "/formations": "🎓",
-    "/un-a-un": "🤝",
-    "/audit": "🔍",
-    "/implementation": "⚙️",
-    "/sites-web-augmentes": "🌐",
-    "/cas-concrets": "💡",
-    "/blog": "✍️",
-    "/faq": "❓",
-    "/a-propos": "👋",
+  const prestations = PRESTATIONS_NAV.map((p) => ({
+    href: p.href,
+    label: isFr ? p.labelFr : p.labelEn,
+    description: isFr ? p.descriptionFr : p.descriptionEn,
+    Icone: ICONES[p.icone],
+  }));
+  const aiAct = {
+    href: AI_ACT_NAV.href,
+    label: isFr ? AI_ACT_NAV.labelFr : AI_ACT_NAV.labelEn,
+    description: isFr ? AI_ACT_NAV.descriptionFr : AI_ACT_NAV.descriptionEn,
   };
 
-  // Données du méga-menu « Formations IA » calculées CÔTÉ SERVEUR (le catalogue
-  // catalog-v2 reste hors du bundle client) et passées en props au composant
-  // client `HeaderFormationsMenu`. Refonte 2026-07-19 : les 4 offres générales
-  // (les 2 formats « bien commencer » séparés — Will) + 2 entrées catégorie
-  // (métiers / secteurs) — l'axe durée disparaît.
-  // Prix dérivés de la matrice (`formatAmount` non-compact porte déjà « € HT »).
-  const menuGenerales = getFormationsV2ByCategorie("generale").map((f) => {
-    const facts = FORMATION_DUREE_FACTS[f.duree];
-    const dureeLbl = f.duree === "4h" ? facts.heuresLabelFr : facts.joursLabelFr;
-    const prix = getFormationV2EntryPrice(f);
-    return {
-      href: `/formations/${f.slugFr}`,
-      label: f.titreFr,
-      sub: typeof prix === "number" ? `${dureeLbl} · ${formatAmount(prix, "fr")}` : dureeLbl,
-    };
-  });
-  const metiersCount = getFormationsV2ByCategorie("metier").length;
-  const secteursCount = getFormationsV2ByCategorie("secteur").length;
-  const menuCategories = [
-    {
-      href: "/formations/metiers",
-      label: isFr ? "Par métier" : "By role",
-      sub: isFr
-        ? `${metiersCount} formations · RH, marketing, commercial, finance…`
-        : `${metiersCount} trainings · HR, marketing, sales, finance…`,
-    },
-    {
-      href: "/formations/secteurs",
-      label: isFr ? "Par secteur d'activité" : "By industry",
-      sub: isFr
-        ? `${secteursCount} formations · santé, BTP, industrie, commerce…`
-        : `${secteursCount} trainings · healthcare, construction, industry…`,
-    },
-  ];
-  const formationsTotal = getFormationsV2().length;
+  const rechercheLabel = isFr ? "Rechercher sur le site" : "Search the site";
+  const ecrireLabel = isFr ? "Nous écrire" : "Email us";
+  const tagline = isFr ? "Partenaire IA des PME et TPE" : "AI partner for SMEs";
 
-  const taglineB2B = isFr ? "Cabinet IA pour entreprises" : "AI consultancy for companies";
+  // Anneau de focus de tout ce qui est posé SUR la barre terracotta : ivoire, décalé
+  // sur terracotta (`mocha-fg` sur terracotta : 5,24:1).
+  const focusBarre =
+    "focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+
+  // Boutons de la BARRE (fond terracotta).
+  // « Réserver un appel » : bleu plein, comme avant la refonte.
+  const btnBarrePrimaire = `bg-primary text-primary-fg hover:bg-primary-hover ${focusBarre} inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap shadow-subtle transition-colors`;
+  // Loupe et « Nous écrire » : pastille ivoire, texte terracotta (5,81:1).
+  const pastilleIvoire = `bg-paper text-terracotta shadow-subtle hover:shadow-card ${focusBarre} inline-flex items-center justify-center gap-2 rounded-full font-semibold whitespace-nowrap transition-shadow`;
+
+  // Boutons du TIROIR mobile (fond clair).
+  const btnPrimaire =
+    "bg-terracotta text-paper hover:bg-terracotta-deep focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex items-center justify-center gap-2 rounded-xl font-semibold whitespace-nowrap shadow-subtle transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+  const btnSecondaire =
+    "border-fg-muted text-fg hover:bg-sand focus-visible:ring-terracotta focus-visible:ring-offset-bg inline-flex items-center justify-center gap-2 rounded-xl border font-semibold whitespace-nowrap transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
 
   return (
+    // `data-tone="terracotta"` dit la couleur RÉELLE de la barre. C'est aussi la
+    // sentinelle que lisent `tests/e2e/a11y.spec.ts` (`header[data-tone]` prouve qu'on
+    // est sur une page du site et non sur une interstitielle) et
+    // `gate-a11y-cablage.spec.ts` ; `entete-terracotta.spec.tsx` vérifie qu'elle
+    // concorde avec `bg-terracotta`.
     <header
       data-tone="terracotta"
       className="bg-terracotta border-terracotta-deep text-mocha-fg supports-[backdrop-filter]:bg-terracotta/95 sticky top-0 z-40 border-b backdrop-blur-md"
     >
-      {/* Hairline mocha sous le header pour signature subtile */}
+      {/* Filet bas, comme l'ancien en-tête. */}
       <span
         aria-hidden="true"
         className="bg-mocha/30 pointer-events-none absolute inset-x-0 bottom-0 block h-px"
       />
-      {/* Layout 2026 : Logo + tagline + Nav clusterisés à GAUCHE | dual-CTA à
-          DROITE (Contact ghost + Appel primary), pattern Linear/Stripe.
+      {/* `h-[var(--header-h)]` : la barre latérale des espaces connectés se cale sur
+          ce jeton (`EspaceShell`). Une hauteur littérale ici divergerait un jour.
 
-          Largeur — 2026-06-08 (Will, révise l'Option A du 2026-06-03) : le
-          header est désormais EN PLEINE PAGE. Le contenu interne s'étend jusqu'aux
-          gouttières (rampe `px-4 sm:px-6 lg:px-10 xl:px-16`) avec un cap large
-          `max-w-[1920px] mx-auto` qui ne sert QU'en ultra-large (≥1920 px) pour
-          éviter d'étirer le logo/CTA sur un moniteur 2560 px+. Le fond terracotta
-          reste bord-à-bord. ⚠️ Volontairement PLUS large que `Container` (corps
-          plafonné à 1366) : sur grand écran, logo/nav/CTA dépassent les bords du
-          contenu — c'est le rendu « header pleine page » voulu (≠ alignement
-          strict header=contenu de l'ancienne Option A). Footer suit la même
-          logique (`Footer.tsx`). */}
-      {/* `h-[var(--header-h)]` (= 5rem, l'ancien `h-20`) et non plus une
-          hauteur littérale : la barre latérale des espaces connectés se cale
-          dessus (`EspaceShell`). Deux valeurs séparées divergeraient un jour,
-          et la barre repasserait sous le pli sans que rien ne le signale. */}
-      {/* 🔴 2026-08-21 — LES TROIS SEUILS COMPARAIENT LA RANGÉE AU VIEWPORT,
-          PAS À SA BOÎTE DE CONTENU. Ils oubliaient les 128 px de rembourrage.
-
-          Le commentaire du CTA « Nous écrire », plus bas, garde la mesure
-          d'origine : « la rangée réclame 1397 px sans ce CTA et 1547 px avec ».
-          Ces largeurs ont été comparées à 1440 et 1600 — les largeurs d'ÉCRAN.
-          Or à 1440 px le conteneur porte `xl:px-16`, soit 64 px de chaque côté :
-          la place réellement disponible n'est pas 1440 mais **1312**.
-
-          Mesuré avant correctif, à `/fr` :
-
-              1440 px   rangée 64 → 1436   (1372 px)   boîte de contenu 1312   → dépasse de 60, reste 4 px avant le bord
-              1600 px   rangée 64 → 1586   (1522 px)   boîte de contenu 1472   → dépasse de 50, reste 14 px
-              1700 px   rangée 64 → 1690   (1626 px)   boîte de contenu 1572   → dépasse de 54, reste 10 px
-
-          La rangée ne tenait donc dans AUCUNE des trois bandes : elle mangeait
-          son rembourrage et frôlait le bord. Windows et macOS passaient à 4 px
-          près ; le Chromium Linux de la CI, dont les chasses diffèrent d'environ
-          0,8 %, débordait de 5 px — sur 90 des 117 routes publiques, à chaque
-          exécution. Un défaut invisible sur le poste du développeur et
-          systématique ailleurs.
-
-          🔑 On ne relève PAS `--breakpoint-nav` : cela ferait basculer en tiroir
-          les portables 1440–1520 px, très répandus, pour un défaut dont la nav
-          n'est pas responsable. C'est l'espacement INTERNE qui cède
-          (`nav:gap-4` ici, `nav:gap-5` sur la nav), et seul `--breakpoint-navcta`
-          monte — le CTA « Nous écrire » est un bonus, pas de la navigation.
-
-          Après correctif, espace libre entre la nav et le groupe CTA, mesuré sur
-          treize largeurs de 1439 à 2560 px : **26 px au pire point** (1440), 96
-          à 1700, 244 à 1920. Aucun débordement nulle part, tiroir intact à 1439.
-          Garde : `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`.
-
-          🔴 2026-11-08 — MANROPE SEULE ÉLARGIT LES ONGLETS : la réserve de la
-          bande `nav` retombe sous le minimum de 16 px de la garde. Mesuré en CI
-          (Chromium Linux) : **11 px à 1440, 12 px à 1441**.
-          Correctif minimal : l'écart entre onglets de la SEULE bande `nav`
-          (1440–1699) passe de 20 px (`nav:gap-5`) à 18 px (`nav:gap-[18px]`).
-          La nav compte 7 entrées (5 services + Tarifs + Ressources), donc
-          6 écarts : 6 × 2 = **12 px récupérés**.
-
-              1440 px   réserve 11 + 12 = **23 px**   (minimum 16)
-              1441 px   réserve 12 + 12 = **24 px**
-
-          Les bandes `navcta` (gap-6) et `navair` (gap-8), le seuil de bascule
-          `--breakpoint-nav` (1440) et le rembourrage (`xl:px-16`) ne bougent pas :
-          l'aspect est inchangé à partir de 1700 px. Le contenu de la rangée de
-          la bande `nav` passe de 1286 à 1274 px, toujours sous 1440 − 128. */}
-      <div className="nav:gap-4 navcta:gap-6 navair:gap-8 relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-4 px-4 sm:px-6 lg:gap-8 lg:px-10 xl:gap-8 xl:px-16">
-        {/* Bloc identité : logo serif badge ivoire + tagline B2B EN DESSOUS.
-            Layout colonne → libère l'espace horizontal pour la nav (vs ancien
-            layout row qui occupait ~200px de plus). Visibilité de la tagline :
-            cf. classes du <span> ci-dessous (drawer 992–1280 + ≥1536). */}
-        <div className="flex shrink-0 flex-col items-start gap-1">
-          <Link
-            href={ROUTES.home}
-            aria-label={BRAND.name}
-            className="bg-paper text-fg shadow-subtle focus-visible:ring-mocha focus-visible:ring-offset-terracotta hover:shadow-card inline-flex shrink-0 items-center gap-1 rounded-xl px-4 py-2 transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-          >
-            <span
-              className="text-2xl leading-none font-medium tracking-tight"
-              style={{ fontFamily: "var(--font-serif)" }}
-            >
-              Axion
-              <span aria-hidden="true" className="text-fg/70 mx-0.5">
-                -
-              </span>
-              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
-                IA
-              </span>
-            </span>
-          </Link>
-          {/* Tagline B2B sous le logo — signal d'audience cible (TPE/PME/ETI).
-              Serif italique pour cohérence éditoriale avec le « IA » du logo.
-              Visibilité — simplifiée le 2026-08-04 : `lg:block`, sans trou.
-              Elle portait un `xl:hidden` + `min-[1400px]:block` destinés à
-              libérer de la place dans la bande 1280–1400 ; ce raccommodage ne
-              servait plus à rien, puisque la nav desktop ne se montre désormais
-              qu'à partir de 1440 px, seuil au-dessus duquel la mesure inclut
-              déjà cette tagline. Trois variantes concurrentes sur un même
-              élément se lisent mal — et se contredisaient à l'usage. */}
+          Rangée : rembourrage `lg:px-10` (40 px de chaque côté) dès 992 px, et non
+          plus `xl:px-16` — la place utile à 1280 px passe ainsi de 1152 à 1200 px.
+          Budget d'espace mesuré : voir `globals.css` (`--breakpoint-nav`) et
+          `tests/e2e/qualiopi/header-tient-dans-sa-boite.spec.ts`. */}
+      <div className="nav:gap-6 navair:gap-8 relative mx-auto flex h-[var(--header-h)] w-full max-w-[1920px] items-center gap-3 px-4 sm:px-6 lg:px-10">
+        <Link
+          href={ROUTES.home}
+          aria-label={isFr ? `${BRAND.name}, accueil` : `${BRAND.name}, home`}
+          className={`bg-paper text-fg shadow-subtle hover:shadow-card ${focusBarre} inline-flex min-h-11 shrink-0 flex-col justify-center rounded-xl px-3 py-1.5 transition-shadow`}
+        >
           <span
-            aria-hidden="true"
-            className="text-mocha-fg hidden pl-1 text-[12px] leading-none font-medium tracking-tight italic lg:block"
+            className="text-2xl leading-none font-medium tracking-tight"
             style={{ fontFamily: "var(--font-serif)" }}
           >
-            {taglineB2B}
+            Axion
+            <span aria-hidden="true" className="text-fg/70 mx-0.5">
+              -
+            </span>
+            <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+              IA
+            </span>
           </span>
-        </div>
+          {/* Dans le badge ivoire du logo (`fg-muted` sur `paper` : 7,96:1). Masquée
+              sous `navair` (maquette : sous 1 366 px) — elle reprend la place quand
+              la barre en a. */}
+          <span className="text-fg-muted navair:block mt-1 hidden text-xs leading-none font-semibold">
+            {tagline}
+          </span>
+        </Link>
 
-        {/* Nav principale clusterisée à GAUCHE (collée au logo) — pattern 2026.
-
-            Breakpoint — 2026-08-04, après mesure en production : la nav desktop
-            apparaît à `nav` (1440) et non plus à `xl` (1280). En dessous =
-            drawer (cf. trigger `nav:hidden`).
-
-            🔴 Pourquoi ce déplacement : la nav réclame 1397 px de rangée, elle
-            se montrait dès 1280. Le header débordait donc horizontalement — une
-            barre de défilement sur CHAQUE page — de 1280 jusqu'à ~1658 px, soit
-            la quasi-totalité des portables. Le budget d'origine était juste
-            quand il a été posé (« 6 items single-line ») ; un 7ᵉ onglet est
-            arrivé depuis (méga-menu Ressources) sans que le budget soit refait.
-
-            Espacement — l'intention de 2026-06-08 (Will : « onglets trop
-            serrés ») est CONSERVÉE : gap-8 par défaut, gap-12 quand il y a la
-            place. Seul le seuil du gap-12 change, de 1536 à `navair` (1700),
-            parce que cette variante réclame 1643 px.
-
-            Les trois seuils et leurs largeurs mesurées vivent dans globals.css. */}
+        {/* Navigation principale — visible au seuil `nav`, tiroir en dessous. */}
         <nav
           aria-label={t("nav.primaryLabel")}
-          // `nav:ml-4 navair:ml-6` (intention de Will, 2026-06-08) : un peu plus
-          // d'air entre le logo et le 1er onglet (« Formations IA ») UNIQUEMENT
-          // — s'ajoute au gap-8 du flex parent (→ ~48/56 px logo↔nav) sans
-          // toucher l'espacement entre onglets ni la position du dual-CTA.
-          className="navair:ml-6 nav:ml-4 nav:flex nav:gap-[18px] navcta:gap-6 navair:gap-8 hidden items-center gap-8"
+          className="nav:flex nav:ml-2 hidden items-center gap-1"
         >
-          {navItems.map((item) =>
-            item.href === "/formations" ? (
-              // Onglet « Formations IA » — méga-menu au survol (2026-07-05) : bloc
-              // phare « Toutes nos formations entreprises » + 4 raccourcis durée.
-              // Le clic sur le trigger reste dirigé vers le hub /formations.
-              <HeaderFormationsMenu
-                key={item.href}
-                isFr={isFr}
-                allHref="/formations/entreprise"
-                totalCount={formationsTotal}
-                generales={menuGenerales}
-                categories={menuCategories}
-              />
-            ) : (
-              <NavLink
-                key={item.href}
-                href={item.href}
-                label={item.label}
-                multiline={item.multiline}
-              />
-            ),
-          )}
-          {/* Méga-menu « Ressources » (audit maillage 2026-07-03) — expose les
-              hubs stratégiques (secteurs, guides, glossaire, cas concrets, stack
-              IA, implantations, observatoire, ROI) dans la nav desktop, jusqu'ici
-              accessibles seulement via footer/drawer. En parité avec
-              l'apparition de la nav desktop (seuil `nav`).
-
-              🔴 C'est CET onglet qui a fait déborder le header : ajouté en
-              7ᵉ position sans refaire le budget d'espace, calculé pour 6. Son
-              commentaire d'origine disait « à surveiller sur la bande
-              1280–1400 » — la surveillance n'a pas eu lieu, le débordement a
-              duré un mois. D'où le garde-fou de `Header.budget.spec.ts`. */}
-          <div className="nav:block hidden">
-            <HeaderResourcesMenu isFr={isFr} />
-          </div>
+          <NavLink href={accueil.href} label={accueil.label} />
+          <NavLink href={journeeIa.href} label={journeeIa.label} phare />
+          <HeaderPrestationsMenu label={prestationsLabel} panelLabel={prestationsLabel}>
+            <ul className="grid grid-cols-2 gap-x-3 gap-y-1 p-4">
+              {prestations.map(({ href, label, description, Icone }) => (
+                <li key={href}>
+                  <Link
+                    href={href as never}
+                    className="text-fg hover:bg-sand focus-visible:ring-terracotta flex min-h-11 items-start gap-3 rounded-xl px-3 py-2.5 focus-visible:ring-2 focus-visible:outline-none"
+                  >
+                    <Icone aria-hidden="true" className="text-terracotta mt-0.5 h-5 w-5 shrink-0" />
+                    <span>
+                      <span className="block text-base leading-snug font-semibold">{label}</span>
+                      <span className="text-fg-muted block text-sm leading-snug">
+                        {description}
+                      </span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+              <li className="border-border col-span-2 mt-1 border-t pt-1.5">
+                <Link
+                  href={aiAct.href as never}
+                  className="text-fg hover:bg-sand focus-visible:ring-terracotta flex min-h-11 items-start gap-3 rounded-xl px-3 py-2.5 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <FileText
+                    aria-hidden="true"
+                    className="text-terracotta mt-0.5 h-5 w-5 shrink-0"
+                  />
+                  <span>
+                    <span className="block text-base leading-snug font-semibold">
+                      {aiAct.label}
+                    </span>
+                    <span className="text-fg-muted block text-sm leading-snug">
+                      {aiAct.description}
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
+            {/* Pied du panneau : un lien texte, pas un deuxième bouton plein. */}
+            <div className="bg-bg border-border flex min-h-14 flex-wrap items-center justify-between gap-x-4 gap-y-1 border-t px-6 py-3 text-[15px]">
+              <span className="text-fg">
+                <b>{isFr ? "Pas sûr de ce qu’il vous faut ?" : "Not sure what you need?"}</b>{" "}
+                <Link
+                  href={journeeIa.href}
+                  className="text-terracotta hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-11 items-center gap-1 rounded-sm font-semibold underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  {isFr
+                    ? `Commencez par la Journée IA : audit le matin, formation l’après-midi, ${prixJournee}`
+                    : `Start with the AI Day: audit in the morning, training in the afternoon, ${prixJournee}`}
+                  <ArrowRight aria-hidden="true" className="h-4 w-4 shrink-0" />
+                </Link>
+              </span>
+              <Link
+                href={{ pathname: ROUTES.appel, query: { depuis: "entete-megamenu" } }}
+                data-cta="header-megamenu-appel"
+                data-cta-tracking="cta_header_book_call_click"
+                className="text-terracotta hover:text-terracotta-deep focus-visible:ring-terracotta inline-flex min-h-11 items-center rounded-sm font-semibold whitespace-nowrap underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+              >
+                {isFr ? "ou réservez un appel" : "or book a call"}
+              </Link>
+            </div>
+          </HeaderPrestationsMenu>
+          <NavLink href={tarifs.href} label={tarifs.label} />
         </nav>
 
-        {/* Bloc dual-CTA à DROITE — ml-auto pour pousser à l'extrême droite,
-            gap-3 entre les 2 CTAs pour les lire comme un groupe distinct.
-            Le bloc est visible au seuil `nav`, aligné sur l'apparition de la nav
-            desktop. Le CTA primaire « Réserver un appel » est TOUJOURS présent
-            (conversion). Le CTA secondaire « Nous écrire » attend `navcta`
-            (1600) : il coûte 150 px, qui ne rentrent qu'à partir de là. En
-            drawer (< `nav`) les deux CTA sont rendus dans le menu mobile. */}
+        {/* Boutons à DROITE, visibles au seuil `nav` (en dessous, ils sont dans le
+            tiroir). ⚠️ Ce `div.ml-auto` doit rester le PREMIER du header :
+            `header-tient-dans-sa-boite.spec.ts` le mesure. */}
         <div className="nav:flex ml-auto hidden shrink-0 items-center gap-3">
-          {/* Recherche site — lien-icône vers /recherche (2026-06-21). Server
-              Component, zéro JS, zéro CLS : la page /recherche porte le champ.
-              Permet au visiteur de chercher ville / mot / métier / besoin. */}
           <Link
             href={ROUTES.search}
-            aria-label={isFr ? "Rechercher sur le site" : "Search the site"}
+            aria-label={rechercheLabel}
             data-cta="header-search"
-            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta inline-flex h-11 w-11 items-center justify-center rounded-full transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${pastilleIvoire} h-11 w-11`}
           >
-            <Search className="h-4 w-4" aria-hidden="true" />
+            <Search className="h-5 w-5" aria-hidden="true" />
           </Link>
-
-          {/* CTA secondaire → /contact (formulaire).
-              Fond ivoire bg-paper + texte terracotta : cohérent avec le badge
-              logo, lisible sur fond terracotta du header. Engagement plus doux
-              que l'appel (asynchrone) — hiérarchie préservée car le CTA primary
-              porte le bleu + glow shadow (signal d'action fort).
-              Visibilité — `hidden` par défaut, révélé à `navcta:inline-flex`
-              (1600 px). Mesuré le 2026-08-04 : la rangée réclame 1397 px sans
-              ce CTA et 1547 px avec — il coûte 150 px à lui seul. Le seuil de
-              1400 px qu'il portait avant était donc trop bas de 165 px, et il
-              débordait le header partout entre 1400 et ~1562. En dessous, seul
-              le CTA primaire est affiché ; « Nous écrire » reste joignable dans
-              le drawer. */}
           <Link
-            href={ROUTES.contact}
+            href={{ pathname: ROUTES.contact, query: { depuis: "entete-ecrire" } }}
             aria-label={t("cta.contactAria")}
             data-cta="header-secondary"
             data-cta-tracking="cta_header_contact_click"
-            className="bg-paper text-terracotta shadow-subtle hover:shadow-card focus-visible:ring-mocha focus-visible:ring-offset-terracotta navcta:inline-flex hidden h-11 items-center gap-2 rounded-full px-4 text-sm font-semibold transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${pastilleIvoire} h-11 px-4 text-base`}
           >
             <Mail className="h-4 w-4" aria-hidden="true" />
-            <span>{isFr ? "Nous écrire" : "Email us"}</span>
+            <span>{ecrireLabel}</span>
           </Link>
-
-          {/* CTA primaire → /appel (réservation Calendly).
-              Fond bleu primary + glow shadow : signal d'action fort, conforme
-              aux standards 2026 (Linear, Stripe, Cal.com, Anthropic, Resend). */}
           <Link
             href={{ pathname: ROUTES.appel, query: { depuis: "entete" } }}
             aria-label={t("cta.bookCallAria")}
             data-cta="header-primary"
             data-cta-tracking="cta_header_book_call_click"
-            className="bg-primary text-primary-fg cta-lift hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta ring-mocha-fg/30 hover:ring-mocha-fg/60 inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] ring-2 ring-offset-0 transition-shadow hover:shadow-[0_12px_32px_-8px_rgba(26,77,217,0.7)] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`${btnBarrePrimaire} h-11 px-5 text-base`}
           >
-            <Phone className="h-4 w-4" aria-hidden="true" />
+            <CalendarDays className="h-4 w-4" aria-hidden="true" />
             <span>{t("cta.bookCall")}</span>
           </Link>
         </div>
 
-        {/* Déclencheur du drawer — affiché sous le seuil `nav` (1440).
-            Il couvre donc aussi la plage 1280–1440, où la nav horizontale
-            s'affichait jusqu'au 2026-08-04 en débordant du viewport. Le drawer
-            y rend la MÊME navigation, en entier : c'est un repli, pas une
-            amputation.
-
-            « Réserver un appel » reste visible À CÔTÉ du ☰ (Will, 2026-10-16) :
-            sur un portable 14 pouces à 150 % (1280 px) il n'était plus
-            joignable qu'en ouvrant le menu. Icône seule sous `sm` (la place
-            d'un téléphone 360 px : logo + 2 × 44 px), libellé complet au-dessus. */}
+        {/* Sous le seuil `nav` : « Réserver » + ☰. Le bouton d'appel reste visible à
+            côté du ☰ (Will, 2026-10-16). Libellé court « Réserver » sous `lg`
+            (téléphone 360 px : logo + bouton + ☰), libellé complet au-dessus ;
+            l'`aria-label` dit toujours « Réserver un appel ». */}
         <div className="nav:hidden ml-auto flex items-center gap-2">
           <Link
-            href={{ pathname: ROUTES.appel, query: { depuis: "entete" } }}
+            href={{ pathname: ROUTES.appel, query: { depuis: "entete-mobile" } }}
             aria-label={t("cta.bookCallAria")}
             data-cta="header-primary-compact"
             data-cta-tracking="cta_header_book_call_click"
-            className="bg-primary text-primary-fg hover:bg-primary-hover focus-visible:ring-mocha-fg focus-visible:ring-offset-terracotta inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-full text-sm font-bold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.6)] transition-shadow focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none sm:w-auto sm:px-5"
+            className={`${btnBarrePrimaire} h-11 px-4 text-[15px]`}
           >
-            <Phone className="h-4 w-4" aria-hidden="true" />
-            <span className="sr-only sm:not-sr-only">{t("cta.bookCall")}</span>
+            <CalendarDays className="h-4 w-4 max-[379px]:hidden" aria-hidden="true" />
+            <span className="lg:hidden">{isFr ? "Réserver" : "Book"}</span>
+            <span className="hidden lg:inline">{t("cta.bookCall")}</span>
           </Link>
           <MobileNav>
-            <nav aria-label={t("nav.primaryLabel")} className="flex flex-col text-base">
-              {/* Recherche site (mobile) — champ factice cliquable vers /recherche,
-                  style « search bar » 2026 en tête du drawer. */}
-              <Link
-                href={ROUTES.search}
-                aria-label={isFr ? "Rechercher sur le site" : "Search the site"}
-                className="border-border/70 bg-paper/70 text-fg-muted shadow-subtle hover:border-terracotta/40 focus-visible:ring-primary mb-4 flex items-center gap-3 rounded-2xl border px-3.5 py-3 text-[15px] font-medium transition-colors focus-visible:ring-2 focus-visible:outline-none"
-              >
-                <Search className="text-terracotta h-5 w-5 shrink-0" aria-hidden="true" />
-                <span>{isFr ? "Rechercher sur le site…" : "Search the site…"}</span>
-              </Link>
-
-              {/* Section « Nos services » — 5 services (Tarifs retiré du drawer,
-                  reste accessible en desktop + footer). */}
-              <p className="text-fg-muted px-2.5 pb-1 text-[11px] font-semibold tracking-[0.14em] uppercase">
-                {isFr ? "Nos services" : "Our services"}
-              </p>
-              {navItems
-                .filter((item) => item.href !== "/tarifs")
-                .map((item) => (
-                  <NavLink
-                    key={item.href}
-                    href={item.href}
-                    label={item.label}
-                    variant="mobile"
-                    icon={mobileNavEmoji[item.href]}
-                  />
-                ))}
-              {/* Sous-liens Formations (parité méga-menu desktop) — catalogue
-                  complet + 3 offres générales + 2 catégories (refonte 2026-07-19). */}
-              <ul className="border-border/70 mt-1 mb-1 ml-6 flex flex-col gap-0.5 border-l pl-3">
-                <li>
-                  <Link
-                    href={"/formations/entreprise" as never}
-                    className="text-fg hover:text-terracotta block rounded-md px-2 py-1.5 text-sm font-semibold"
-                  >
-                    {isFr ? "Toutes nos formations entreprises" : "All our corporate trainings"}
-                  </Link>
-                </li>
-                {menuGenerales.map((g) => (
-                  <li key={g.href}>
-                    <Link
-                      href={g.href as never}
-                      className="text-fg-soft hover:text-terracotta block rounded-md px-2 py-1.5 text-sm"
-                    >
-                      {g.label}
-                    </Link>
-                  </li>
-                ))}
-                {menuCategories.map((c) => (
-                  <li key={c.href}>
-                    <Link
-                      href={c.href as never}
-                      className="text-fg-soft hover:text-terracotta block rounded-md px-2 py-1.5 text-sm font-semibold"
-                    >
-                      {c.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-
-              {/* Section « Explorer » — pages stratégiques accessibles depuis mobile */}
-              <p className="text-fg-muted mt-4 px-2.5 pb-1 text-[11px] font-semibold tracking-[0.14em] uppercase">
-                {isFr ? "Explorer" : "Explore"}
-              </p>
-              {navMobileExtras.map((item) => (
-                <NavLink
-                  key={item.href}
-                  href={item.href}
-                  label={item.label}
-                  variant="mobile"
-                  icon={mobileNavEmoji[item.href]}
-                />
-              ))}
-
-              {/* Dual-CTA mobile — parité desktop : Appel primary + Contact ghost */}
+            <nav aria-label={t("nav.primaryLabel")} className="flex flex-col">
               <Link
                 href={{ pathname: ROUTES.appel, query: { depuis: "entete-mobile" } }}
                 aria-label={t("cta.bookCallAria")}
                 data-cta="header-mobile-primary"
                 data-cta-tracking="cta_header_book_call_click"
-                className="bg-primary text-primary-fg mt-5 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold shadow-[0_8px_24px_-8px_rgba(26,77,217,0.55)]"
+                className={`${btnPrimaire} mb-2 min-h-12 w-full px-5 text-base`}
               >
-                <Phone className="h-4 w-4" aria-hidden="true" />
+                <CalendarDays className="h-5 w-5" aria-hidden="true" />
                 <span>{t("cta.bookCall")}</span>
               </Link>
-              <Link
-                href={ROUTES.contact}
-                aria-label={t("cta.contactAria")}
-                data-cta="header-mobile-secondary"
-                data-cta-tracking="cta_header_contact_click"
-                className="bg-paper text-terracotta shadow-subtle mt-2 flex items-center justify-center gap-2 rounded-full px-5 py-3 text-base font-semibold"
-              >
-                <Mail className="h-4 w-4" aria-hidden="true" />
-                <span>{isFr ? "Nous écrire" : "Email us"}</span>
-              </Link>
-              {/* Tagline B2B en pied de drawer — signal d'audience (desktop xl-only) */}
-              <p className="text-fg-muted mt-5 px-2.5 text-center text-[12px] font-medium tracking-tight">
-                {taglineB2B}
-              </p>
+              <NavLink variant="mobile" href={accueil.href} label={accueil.label} />
+              <NavLink
+                variant="mobile"
+                href={journeeIa.href}
+                label={journeeIa.label}
+                phare
+                sub={
+                  isFr
+                    ? `Une journée chez vous · ${prixJournee}`
+                    : `One day with you · ${prixJournee}`
+                }
+              />
+              {/* Accordéon natif : zéro JavaScript, ouvert/fermé annoncé par le
+                  navigateur, fermé par défaut. */}
+              <details className="group border-border border-b">
+                <summary className="text-fg focus-visible:ring-terracotta flex min-h-12 cursor-pointer list-none items-center justify-between px-2 py-3 text-[17px] font-semibold tracking-tight focus-visible:ring-2 focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+                  {prestationsLabel}
+                  <ArrowRight
+                    aria-hidden="true"
+                    className="h-4 w-4 rotate-90 transition-transform group-open:-rotate-90 motion-reduce:transition-none"
+                  />
+                </summary>
+                <ul className="pb-2">
+                  {prestations.map(({ href, label, description }) => (
+                    <li key={href}>
+                      <Link
+                        href={href as never}
+                        className="text-fg hover:bg-sand/70 focus-visible:ring-terracotta block min-h-11 rounded-lg py-2.5 pr-2 pl-6 focus-visible:ring-2 focus-visible:outline-none"
+                      >
+                        {label}
+                        <span className="text-fg-muted block text-[13px]">{description}</span>
+                      </Link>
+                    </li>
+                  ))}
+                  <li className="border-border mt-1 border-t">
+                    <Link
+                      href={aiAct.href as never}
+                      className="text-fg hover:bg-sand/70 focus-visible:ring-terracotta block min-h-11 rounded-lg py-2.5 pr-2 pl-6 focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      {aiAct.label}
+                      <span className="text-fg-muted block text-[13px]">{aiAct.description}</span>
+                    </Link>
+                  </li>
+                </ul>
+              </details>
+              <NavLink variant="mobile" href={tarifs.href} label={tarifs.label} />
+              <div className="mt-4 grid gap-3">
+                <Link
+                  href={{ pathname: ROUTES.contact, query: { depuis: "entete-ecrire" } }}
+                  aria-label={t("cta.contactAria")}
+                  data-cta="header-mobile-secondary"
+                  data-cta-tracking="cta_header_contact_click"
+                  className={`${btnSecondaire} min-h-12 w-full px-5 text-base`}
+                >
+                  <Mail className="h-4 w-4" aria-hidden="true" />
+                  <span>{ecrireLabel}</span>
+                </Link>
+                <Link
+                  href={ROUTES.search}
+                  className="text-fg hover:text-terracotta focus-visible:ring-terracotta inline-flex min-h-11 items-center gap-2 rounded-lg px-2 focus-visible:ring-2 focus-visible:outline-none"
+                >
+                  <Search className="h-[18px] w-[18px]" aria-hidden="true" />
+                  {rechercheLabel}
+                </Link>
+              </div>
             </nav>
           </MobileNav>
         </div>

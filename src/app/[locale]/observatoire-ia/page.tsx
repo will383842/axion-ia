@@ -20,8 +20,8 @@ import {
   buildFaqSpeakableJsonLd,
   buildWebPageJsonLd,
   SITE_URL,
-  SITE_EDITORIAL_DATE,
 } from "@/lib/seo";
+import { dateRoute } from "@/lib/seo/fraicheur";
 import { KB_SECTOR_TAGS } from "@/content/knowledge/sector-tags";
 import {
   BAROMETER_QUESTIONS,
@@ -245,7 +245,7 @@ export default async function ObservatoirePage({ params, searchParams }: Props) 
     spatialCoverage: "France",
     variableMeasured: [...STUDY_VARIABLES_MEASURED],
     measurementTechnique: STUDY_MEASUREMENT_TECHNIQUE,
-    dateModified: SITE_EDITORIAL_DATE,
+    dateModified: dateRoute("/observatoire-ia"),
     creator: {
       "@type": "Organization",
       "@id": `${SITE_URL}/#organization`,

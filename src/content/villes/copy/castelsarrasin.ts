@@ -49,7 +49,7 @@ export const CASTELSARRASIN_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Castelsarrasin ?",
-      a: "Oui, Axion-IA intervient à Castelsarrasin et dans tout le Tarn-et-Garonne ouest (Moissac, Valence-d'Agen, Lauzerte). Nos consultants se déplacent depuis Toulouse (1h) ou Montauban (20 min).",
+      a: "Oui, Axion-IA intervient à Castelsarrasin et dans tout le Tarn-et-Garonne ouest (Moissac, Valence-d'Agen, Lauzerte). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA pour entreprises à Castelsarrasin  ?",

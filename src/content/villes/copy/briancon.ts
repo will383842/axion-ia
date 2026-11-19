@@ -18,9 +18,9 @@ export const BRIANCON_COPY: VilleCopy = {
   ecosystemEn:
     "Briançon est sous-préfecture des Hautes-Alpes (~11 400 hab), plus haute ville de France à 1 326 m d'altitude. Fortifications Vauban classées UNESCO (cité haute). Station Serre Chevalier (domaine 250 km pistes) et proximité Montgenèvre. Économie dominée par le tourisme hivernal/estival, PME hébergement/restauration, TPE artisans BTP montagne, commerces et centre hospitalier alpin.",
   distancesFr:
-    "Gare Briançon (terminus TER Marseille-Briançon via Gap, ~4h30 Marseille). Gap à 1h15 sud. Col du Montgenèvre vers Italie (Turin 1h30). Grenoble à 2h ouest (col du Lautaret). Aéroport Turin-Caselle à 1h45.",
+    "Gare Briançon (terminus TER Marseille-Briançon via Gap, ~4h30 Marseille). Gap à 1h15 sud. Col du Montgenèvre vers Italie (Turin 1h30). Aéroport Turin-Caselle à 1h45.",
   distancesEn:
-    "Gare Briançon (terminus TER Marseille-Briançon via Gap, ~4h30 Marseille). Gap à 1h15 sud. Col du Montgenèvre vers Italie (Turin 1h30). Grenoble à 2h ouest (col du Lautaret). Aéroport Turin-Caselle à 1h45.",
+    "Gare Briançon (terminus TER Marseille-Briançon via Gap, ~4h30 Marseille). Gap à 1h15 sud. Col du Montgenèvre vers Italie (Turin 1h30). Aéroport Turin-Caselle à 1h45.",
   topSectorsNaf: [
     "Tourisme & ski (Serre Chevalier, Montgenèvre)",
     "Hôtellerie & hébergement montagne",
@@ -49,7 +49,7 @@ export const BRIANCON_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Briançon et dans le Briançonnais ?",
-      a: "Oui, Axion-IA intervient à Briançon et dans tout le Briançonnais (Serre Chevalier, Montgenèvre, La Grave, Le Monêtier-les-Bains). Nos consultants viennent de Gap (1h15 sud) ou Grenoble (2h col du Lautaret).",
+      a: "Oui, Axion-IA intervient à Briançon et dans tout le Briançonnais (Serre Chevalier, Montgenèvre, La Grave, Le Monêtier-les-Bains). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les professionnels du tourisme de montagne ?",
@@ -65,7 +65,7 @@ export const BRIANCON_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Briançon en altitude ?",
-      a: "Nos consultants se déplacent sur site à Briançon depuis Gap (1h15) ou Grenoble (2h). Toute saison, hiver comme été. Hébergement local possible.",
+      a: "Sur place ou à distance, selon votre besoin. Toute saison, hiver comme été. Hébergement local possible.",
     },
   ],
 };

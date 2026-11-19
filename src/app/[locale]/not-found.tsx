@@ -1,3 +1,4 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { ArrowRight } from "lucide-react";
@@ -34,7 +35,7 @@ export default async function LocaleNotFound() {
   const suggestions = [
     { href: "/formations", label: t("notFoundLinkFormations") },
     { href: "/audit", label: t("notFoundLinkAudit") },
-    { href: "/cas-concrets", label: t("notFoundLinkCases") },
+    ...(CAS_CONCRETS_AFFICHES ? [{ href: "/cas-concrets", label: t("notFoundLinkCases") }] : []),
     { href: "/appel", label: t("notFoundLinkBook") },
   ] as const;
 

@@ -49,7 +49,7 @@ export const CAUSSADE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Caussade et en Quercy blanc ?",
-      a: "Oui, Axion-IA intervient à Caussade et dans tout le Quercy blanc tarn-et-garonnais (Septfonds, Molières, Puylaroque, Montpezat-de-Quercy). Nos consultants se déplacent depuis Montauban (25 min).",
+      a: "Oui, Axion-IA intervient à Caussade et dans tout le Quercy blanc tarn-et-garonnais (Septfonds, Molières, Puylaroque, Montpezat-de-Quercy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le tarif d'un audit IA pour une TPE à Caussade ?",

@@ -68,7 +68,11 @@ import {
 import { CONDITIONS_TARIFAIRES_RESUME_FR } from "@/content/formations/conditions-tarifaires";
 import { VISIO_FORMATIONS_A_DISTANCE } from "@/content/formations/materiel";
 import { ASSISTANCE_DISTANCE } from "@/server/qualiopi/legal/assistance-distance";
-import { formatAmount, type FormationBracket } from "@/content/pricing";
+import {
+  PRIX_PUBLICS_AFFICHES,
+  formatMontantPublic,
+  type FormationBracket,
+} from "@/content/pricing";
 import { CLIENT_SECTORS } from "@/content/sectors";
 import { getVillesCoreIndexableNow } from "@/content/villes/core";
 import { buildCourseJsonLd, buildHowToJsonLd, buildServiceJsonLd, SITE_URL } from "@/lib/seo";
@@ -161,11 +165,13 @@ export function FormationDetailPage({
   const ofPublic = isQualiopiCertificationObtenue();
   const mentionMarque = formatMentionMarqueQualiopi("Actions de formation");
 
-  // formatAmount renvoie déjà « … € HT » → NE PAS re-suffixer « HT ».
-  const priceValue = typeof entryPrice === "number" ? formatAmount(entryPrice, "fr") : "Sur devis";
+  // R7 (ordre de Williams du 08/11/2026) : « Sur devis » tant que l'interrupteur des prix
+  // publics de pricing.ts est coupé ; rallumé, « 1 900 € HT ».
+  const priceValue = formatMontantPublic(entryPrice, "fr");
   // Prix FIXE public par groupe (refonte 2026-07 : plus de « À partir de »).
   // « Tarif » pour le sur-devis (séminaire) → jamais « À partir de / Sur devis ».
-  const priceEyebrow = typeof entryPrice === "number" ? "Prix par groupe" : "Tarif";
+  const priceEyebrow =
+    PRIX_PUBLICS_AFFICHES && typeof entryPrice === "number" ? "Prix par groupe" : "Tarif";
   const modalitesLabel = formatModalitesFr(getFormationModalites(f));
   const materiel = getFormationMateriel(f);
   const effectif = getFormationEffectif(f);
@@ -1005,9 +1011,11 @@ export function FormationDetailPage({
                           className="text-fg text-[clamp(2.5rem,5vw,3.5rem)] leading-none font-medium tracking-tight tabular-nums"
                           style={{ fontFamily: "var(--font-serif)" }}
                         >
-                          {formatAmount(price, "fr", { compact: true })}
+                          {formatMontantPublic(price, "fr", { compact: true })}
                         </span>
-                        <span className="text-fg-muted text-sm font-semibold">HT</span>
+                        {PRIX_PUBLICS_AFFICHES ? (
+                          <span className="text-fg-muted text-sm font-semibold">HT</span>
+                        ) : null}
                       </p>
                       <p className="text-fg-soft mt-4 text-base leading-relaxed">
                         {formatDureeFr(f)}, dans vos locaux. {f.accrocheFr}

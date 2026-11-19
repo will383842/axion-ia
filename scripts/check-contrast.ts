@@ -194,6 +194,42 @@ const pairs: Pair[] = [
     bg: palette.terracotta,
     label: "primaryFg on terracotta (CTA terracotta)",
   },
+  // ── En-tête public : barre TERRACOTTA (correctif du 2026-11-11, après la PR 1916) ──
+  // Williams veut l'en-tête orange, pas blanc. Tout texte posé SUR la barre est
+  // listé ici ; le voile `supports-[backdrop-filter]:bg-terracotta/95` laisse
+  // transparaître la page, on vérifie donc aussi le pire cas (page blanche).
+  {
+    fg: palette.mochaFg,
+    bg: palette.terracotta,
+    label: "mocha-fg on terracotta (onglets en-tête)",
+  },
+  {
+    fg: palette.mochaFg,
+    bg: blend(palette.terracotta, palette.paper, 0.95),
+    label: "mocha-fg on terracotta/95 sur page blanche (onglets en-tête, voile)",
+  },
+  {
+    fg: palette.mochaFg,
+    bg: blend(palette.terracotta, palette.bg, 0.95),
+    label: "mocha-fg on terracotta/95 sur page ivoire (onglets en-tête, voile)",
+  },
+  {
+    fg: palette.mochaFg,
+    bg: palette.terracottaDeep,
+    label: "mocha-fg on terracotta-deep (bouton ☰ survolé)",
+  },
+  { fg: palette.mochaFg, bg: palette.mocha, label: "mocha-fg on mocha (pastille La Journée IA)" },
+  {
+    fg: palette.mochaFg,
+    bg: palette.mochaSoft,
+    label: "mocha-fg on mocha-soft (pastille La Journée IA survolée)",
+  },
+  {
+    fg: palette.terracotta,
+    bg: palette.paper,
+    label: "terracotta on paper (loupe et « Nous écrire » de l'en-tête)",
+  },
+  { fg: palette.fgMuted, bg: palette.paper, label: "fg-muted on paper (tagline du badge logo)" },
   // Badges (sand + terracotta-soft chips on cards)
   { fg: palette.fgSoft, bg: palette.sand, label: "fg-soft on sand (industry badge)" },
   {

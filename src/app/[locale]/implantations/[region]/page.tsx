@@ -31,9 +31,10 @@ import {
   INTERVENTION_TIERS,
   UN_A_UN_TIERS,
   IMPLEMENTATION_TIERS,
-  formatAmount,
+  formatTierPrice,
+  getEntryLabel,
   getTierById,
-  getEntryPriceEur,
+  prixAffichable,
 } from "@/content/pricing";
 import {
   buildProductMetadata,
@@ -103,10 +104,22 @@ export default async function RegionPage({ params }: Props) {
   const deptCount = new Set(villes.map((v) => v.departementLabel ?? v.departement)).size;
   // 3 plus grandes villes (factuel, sert d'exemples concrets dans la réponse).
   const topVilleNames = topVilles.slice(0, 3).map((v) => v.nameFr);
-  // Prix d'entrée audit IA (SSOT pricing — JAMAIS hardcodé).
-  const auditEntryEur = getEntryPriceEur(AUDIT_TIERS);
-  const auditEntryLabel =
-    auditEntryEur != null ? formatAmount(auditEntryEur, isFr ? "fr" : "en") : null;
+  // R7 (ordre de Williams du 08/11/2026) : aucun prix d'audit au public. La FAQ prix dit
+  // « sur devis » ; `prixAffichable` rend l'ancienne réponse chiffrée si l'interrupteur de
+  // pricing.ts est rallumé.
+  const auditFlashTier = getTierById(AUDIT_TIERS, "audit-flash");
+  const auditEntryLabel = prixAffichable(auditFlashTier)
+    ? formatTierPrice(auditFlashTier, isFr ? "fr" : "en")
+    : null;
+  // R7 : « · dès 990 € » n'apparaît qu'interrupteur rallumé ; coupé, « · sur devis ».
+  const desOuSurDevis = (label: string): string =>
+    label === "Sur devis" || label === "On request"
+      ? isFr
+        ? "sur devis"
+        : "on quote"
+      : isFr
+        ? label.replace(/^À partir de/, "dès")
+        : label.replace(/^Starting at/, "from");
 
   const breadcrumbItems = [
     { href: "/implantations", label: isFr ? "Implantations" : "Locations" },
@@ -326,8 +339,8 @@ export default async function RegionPage({ params }: Props) {
         titleEm={isFr ? `en ${region.nameFr}` : `in ${region.nameEn ?? region.nameFr}`}
         description={
           isFr
-            ? "Toutes nos prestations sont disponibles aux mêmes tarifs publics partout en France métropolitaine."
-            : "All our services are available at the same public pricing across all metropolitan France."
+            ? "Toutes nos prestations sont disponibles aux mêmes conditions partout en France métropolitaine, sur devis."
+            : "All our services are available on the same terms across all metropolitan France, on quote."
         }
         tone="sand"
       >
@@ -339,32 +352,32 @@ export default async function RegionPage({ params }: Props) {
                 href: "/formations" as const,
                 label: isFr ? "Formation IA" : "AI training",
                 detail: isFr
-                  ? `Sur site · dès ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "fr", { compact: true })} · groupes de 2 à 15`
-                  : `On-site · from ${formatAmount(getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!, "en", { compact: true })} · groups of 2 to 15`,
+                  ? `Sur site · ${desOuSurDevis(formatTierPrice(getTierById(INTERVENTION_TIERS, "formation-generale-1j"), "fr", { compact: true }))} · groupes de 2 à 15`
+                  : `On-site · ${desOuSurDevis(formatTierPrice(getTierById(INTERVENTION_TIERS, "formation-generale-1j"), "en", { compact: true }))} · groups of 2 to 15`,
               },
               {
                 serviceId: "unAUn",
                 href: "/un-a-un" as const,
                 label: isFr ? "Coaching 1-to-1" : "1-to-1 coaching",
                 detail: isFr
-                  ? `Journée 1-to-1 (dirigeant ou collaborateur) · dès ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "fr", { compact: true })} · ROI J+1`
-                  : `1-on-1 day (executive or team member) · from ${formatAmount(getEntryPriceEur(UN_A_UN_TIERS) ?? 0, "en", { compact: true })} · day-one ROI`,
+                  ? `Journée 1-to-1 (dirigeant ou collaborateur) · ${desOuSurDevis(getEntryLabel(UN_A_UN_TIERS, "fr", { compact: true }))} · ROI J+1`
+                  : `1-on-1 day (executive or team member) · ${desOuSurDevis(getEntryLabel(UN_A_UN_TIERS, "en", { compact: true }))} · day-one ROI`,
               },
               {
                 serviceId: "audit",
                 href: "/audit" as const,
                 label: isFr ? "Audit IA" : "AI audit",
                 detail: isFr
-                  ? `4 niveaux · Flash dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "fr", { compact: true })} → Stratégique ETI dès ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "fr", { compact: true })}`
-                  : `4 tiers · Flash from ${formatAmount(getTierById(AUDIT_TIERS, "audit-flash").priceFlat!, "en", { compact: true })} → Mid-cap strategic from ${formatAmount(getTierById(AUDIT_TIERS, "audit-strategique-eti").priceMin!, "en", { compact: true })}`,
+                  ? `4 niveaux · du Flash au Stratégique ETI · ${desOuSurDevis(getEntryLabel(AUDIT_TIERS, "fr", { compact: true }))}`
+                  : `4 tiers · from Flash to Mid-cap strategic · ${desOuSurDevis(getEntryLabel(AUDIT_TIERS, "en", { compact: true }))}`,
               },
               {
                 serviceId: "implementation",
                 href: "/implementation" as const,
                 label: isFr ? "Implémentation IA" : "AI implementation",
                 detail: isFr
-                  ? `Pilote IA dès ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "fr", { compact: true })} · production 6-12 sem.`
-                  : `AI pilot from ${formatAmount(getEntryPriceEur(IMPLEMENTATION_TIERS) ?? 0, "en", { compact: true })} · 6-12 wk production`,
+                  ? `Pilote IA · ${desOuSurDevis(getEntryLabel(IMPLEMENTATION_TIERS, "fr", { compact: true }))} · production 6-12 sem.`
+                  : `AI pilot · ${desOuSurDevis(getEntryLabel(IMPLEMENTATION_TIERS, "en", { compact: true }))} · 6-12 wk production`,
               },
               {
                 serviceId: "sitesWeb",
@@ -724,7 +737,7 @@ export default async function RegionPage({ params }: Props) {
           JSON-LD (Speakable auto-injecté) via `buildFaqJsonLd`.
           TODO(will): enrichir FAQ régionale hand-crafted par région (Q3+
           spécifiques au tissu économique local) quand priorisé. */}
-      {villes.length > 0 && auditEntryLabel ? (
+      {villes.length > 0 ? (
         <Section
           eyebrow={isFr ? "Questions fréquentes" : "Frequent questions"}
           title={isFr ? "L'IA" : "AI"}
@@ -745,7 +758,7 @@ export default async function RegionPage({ params }: Props) {
                       {
                         id: "prix-audit-region",
                         question: `Combien coûte un audit IA en ${region.nameFr} ?`,
-                        answer: `Nos audits IA démarrent à ${auditEntryLabel} (audit Flash), aux mêmes tarifs publics qu'ailleurs en France métropolitaine — sans surcoût géographique en ${region.nameFr}. Quatre niveaux d'audit existent selon la taille de votre organisation ; le détail et les livrables figurent sur la page Audit IA.`,
+                        answer: `${auditEntryLabel ? `Nos audits IA démarrent à ${auditEntryLabel} (audit Flash), aux mêmes tarifs qu'ailleurs` : "Nos audits IA sont établis sur devis, aux mêmes conditions qu'ailleurs"} en France métropolitaine — sans surcoût géographique en ${region.nameFr}. Quatre niveaux d'audit existent selon la taille de votre organisation ; le détail et les livrables figurent sur la page Audit IA.`,
                       },
                     ]
                   : [
@@ -757,7 +770,7 @@ export default async function RegionPage({ params }: Props) {
                       {
                         id: "prix-audit-region",
                         question: `How much does an AI audit cost in ${region.nameFr}?`,
-                        answer: `Our AI audits start at ${auditEntryLabel} (Flash audit), at the same public pricing as anywhere in metropolitan France — no geographic surcharge in ${region.nameFr}. Four audit tiers exist depending on the size of your organization; details and deliverables are on the AI audit page.`,
+                        answer: `${auditEntryLabel ? `Our AI audits start at ${auditEntryLabel} (Flash audit), at the same pricing as anywhere` : "Our AI audits are quoted, on the same terms as anywhere"} in metropolitan France — no geographic surcharge in ${region.nameFr}. Four audit tiers exist depending on the size of your organization; details and deliverables are on the AI audit page.`,
                       },
                     ]
               }
@@ -773,8 +786,8 @@ export default async function RegionPage({ params }: Props) {
         titleEm={isFr ? "Parlons-en." : "Let's talk."}
         description={
           isFr
-            ? `PME, ETI, grand groupe ou TPE — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Tarifs publics, calendrier temps réel, vos données restent chez vous.`
-            : `Micro-business, SMB, mid-market or large enterprise — in ${region.nameFr} as anywhere in France, you get the same premium senior standard. Public pricing, real-time calendar, your data stays yours.`
+            ? `PME, ETI, grand groupe ou TPE — en ${region.nameFr} comme partout en France, vous bénéficiez du même standard premium senior. Devis sous 48 h ouvrées, calendrier temps réel, vos données restent chez vous.`
+            : `Micro-business, SMB, mid-market or large enterprise — in ${region.nameFr} as anywhere in France, you get the same premium senior standard. Quote within 48 business hours, real-time calendar, your data stays yours.`
         }
         cta={
           <div className="flex flex-wrap items-center justify-center gap-3">

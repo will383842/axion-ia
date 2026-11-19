@@ -38,6 +38,8 @@ import { lire, lireModeles, RACINE, type ModeleLu } from "./sources-du-circuit-v
 const MODULE_EXPORT = "src/lib/rgpd-dossier-client.ts";
 // Le réseau d'apporteurs a son propre module d'export (il déchiffre ses champs, ce que le circuit de la parole interdit à `rgpd-dossier-client.ts`) : même export art. 15, deux fichiers.
 const MODULE_EXPORT_RESEAU = "src/lib/rgpd-reseau-apporteur.ts";
+// Page « Recevoir le guide » (lot S2) : son export déchiffre le prénom, comme le réseau d'apporteurs.
+const MODULE_EXPORT_GUIDE_RESEAU = "src/lib/rgpd-guide-reseau.ts";
 const MODULE_EFFACEMENT = "src/lib/rgpd-erase.ts";
 const ROUTE_EXPORT = "src/app/api/gdpr-export/route.ts";
 
@@ -112,7 +114,7 @@ describe("les tables du dossier client suivent la personne", () => {
   const creations = migrationDeCreation();
   const modeles = lireModeles();
   const sources = {
-    exporte: lire(MODULE_EXPORT) + lire(MODULE_EXPORT_RESEAU),
+    exporte: lire(MODULE_EXPORT) + lire(MODULE_EXPORT_RESEAU) + lire(MODULE_EXPORT_GUIDE_RESEAU),
     efface: lire(MODULE_EFFACEMENT),
   };
 
@@ -142,6 +144,8 @@ describe("les tables du dossier client suivent la personne", () => {
     // par l'effacement ; notes, profil, étiquettes sont des exclusions motivées). Une future table
     // créée par migration seule s'ajoute à `TABLES_SANS_ECRIVAIN` ET à une exception « sans écrivain ».
     // Paires { modele, table } : `table` = nom `@@map` du modèle (pour détecter aussi le SQL brut).
+    // Lot S2 (2026-11-08) : `contacts_guide_reseau` a maintenant un écrivain (la page « Recevoir le
+    // guide ») ; son export (`rgpd-guide-reseau.ts`) et sa mise à l'écart (`rgpd-erase.ts`) sont réels.
     const TABLES_SANS_ECRIVAIN: readonly { modele: string; table: string }[] = [];
     expect(sansEcrivain.map((m) => m[1]).sort()).toEqual(
       TABLES_SANS_ECRIVAIN.map((t) => t.modele).sort(),

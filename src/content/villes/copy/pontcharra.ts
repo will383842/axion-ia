@@ -14,13 +14,13 @@ export const PONTCHARRA_COPY: VilleCopy = {
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Pontcharra (38). Nous accompagnons tous types d'activités : PME industrielles du Grésivaudan / Combe de Savoie, TPE artisans BTP, commerçants, agriculteurs, indépendants, professions libérales et services aux entreprises de la limite Isère-Savoie.",
   seoHook: "industrielles vallée & agriculture élevage",
   ecosystemFr:
-    "Pontcharra occupe une position stratégique au débouché de la vallée du Grésivaudan vers la Combe de Savoie (frontière Isère-Savoie sur l'axe Grenoble-Chambéry). Site historique (lieu de naissance du chevalier Bayard XVIe siècle, château de Bayard à Pontcharra). Tissu PME industrielles, TPE artisanat BTP, agriculture vallée, commerces et services péri-urbains.",
+    "Pontcharra occupe une position stratégique au débouché de la vallée du Grésivaudan vers la Combe de Savoie (frontière Isère-Savoie). Site historique (lieu de naissance du chevalier Bayard XVIe siècle, château de Bayard à Pontcharra). Tissu PME industrielles, TPE artisanat BTP, agriculture vallée, commerces et services péri-urbains.",
   ecosystemEn:
-    "Pontcharra occupe une position stratégique au débouché de la vallée du Grésivaudan vers la Combe de Savoie (frontière Isère-Savoie sur l'axe Grenoble-Chambéry). Site historique (lieu de naissance du chevalier Bayard XVIe siècle, château de Bayard à Pontcharra). Tissu PME industrielles, TPE artisanat BTP, agriculture vallée, commerces et services péri-urbains.",
+    "Pontcharra occupe une position stratégique au débouché de la vallée du Grésivaudan vers la Combe de Savoie (frontière Isère-Savoie). Site historique (lieu de naissance du chevalier Bayard XVIe siècle, château de Bayard à Pontcharra). Tissu PME industrielles, TPE artisanat BTP, agriculture vallée, commerces et services péri-urbains.",
   distancesFr:
-    "Gare Pontcharra-sur-Bréda (TER Grenoble-Chambéry, 30 min Grenoble, 25 min Chambéry). Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Chambéry-Savoie à 30 min. Axe A41 vers Grenoble et Chambéry.",
+    "Gare Pontcharra-sur-Bréda (TER vers Chambéry, 25 min). Aéroport Chambéry-Savoie à 30 min. Axe A41 vers Chambéry.",
   distancesEn:
-    "Gare Pontcharra-sur-Bréda (TER Grenoble-Chambéry, 30 min Grenoble, 25 min Chambéry). Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Chambéry-Savoie à 30 min. Axe A41 vers Grenoble et Chambéry.",
+    "Gare Pontcharra-sur-Bréda (TER vers Chambéry, 25 min). Aéroport Chambéry-Savoie à 30 min. Axe A41 vers Chambéry.",
   topSectorsNaf: [
     "PME industrielles vallée Grésivaudan",
     "TPE artisanat BTP",
@@ -49,7 +49,7 @@ export const PONTCHARRA_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Pontcharra et Combe de Savoie ?",
-      a: "Oui, Axion-IA intervient à Pontcharra et toute la zone frontière Isère-Savoie (La Rochette, Le Touvet, Goncelin, Allevard). Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min).",
+      a: "Oui, Axion-IA intervient à Pontcharra et toute la zone frontière Isère-Savoie (La Rochette, Le Touvet, Goncelin, Allevard). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME industrielles du Grésivaudan ?",
@@ -64,8 +64,8 @@ export const PONTCHARRA_COPY: VilleCopy = {
       a: "Pour les TPE artisans BTP et agriculteurs à Pontcharra, audit sur place {{price:audit-flash|flat}}, intervention 1 journée formation. Cas typiques : automatisation devis, classification photos cultures/chantier, gestion stocks et planning.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (25 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Sur place ou à distance, selon votre besoin. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

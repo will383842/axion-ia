@@ -49,7 +49,7 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bréal-sous-Montfort ?",
-      a: "Oui, Axion-IA intervient à Bréal-sous-Montfort et dans tout le secteur ouest de Rennes Métropole (Montfort-sur-Meu, Mordelles, Le Rheu, Chavagne). Nos consultants viennent de Rennes centre (20 min) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Bréal-sous-Montfort et dans tout le secteur ouest de Rennes Métropole (Montfort-sur-Meu, Mordelles, Le Rheu, Chavagne). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE artisans BTP de Bréal-sous-Montfort ?",
@@ -65,7 +65,7 @@ export const BREAL_SOUS_MONTFORT_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Bréal-sous-Montfort ?",
-      a: "Nos consultants viennent de Rennes centre (20 min via N24 ou rocade sud-ouest). Intervention sur site dans vos locaux, bureau ou atelier. Tarifs publics et transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention sur site dans vos locaux, bureau ou atelier. Tarifs publics et transparents.",
     },
   ],
 };

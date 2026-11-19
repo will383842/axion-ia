@@ -79,7 +79,6 @@ export default async function ConfirmationPage({ params }: Props) {
           orderStatus: "http://schema.org/OrderProcessing",
           name: isFr ? "Demande de devis reçue · Axion-IA" : "Quote request received · Axion-IA",
         }}
-        strategy="afterInteractive"
         scriptId="jsonld-order-confirm"
       />
     </>

@@ -355,3 +355,35 @@ describe("🔴 DevisPdf — le PARAMÈTRE `signatures` doit rester CONSOMMÉ", (
     expect(text).toContain("reste établie");
   });
 });
+
+describe("DevisPdf — choix scellé du client (exemplaire signé d'un devis à formules)", () => {
+  const CHOIX = {
+    formuleLibelle: "Formule B · Mise en place + abonnement",
+    automatisations: ["Relance des impayés"],
+    totalPonctuelHtLisible: "1 000,00 € ",
+    totalPonctuelTtcLisible: "1 200,00 € ",
+    recurrent: ["Abonnement : 90,00 € HT / mois, payé 1 mois d'avance"],
+    empreinteChoix: "ab".repeat(32),
+  };
+
+  it("avec la prop : bloc « Formule retenue par le client », totaux, récurrent et empreinte", () => {
+    const t = collectPdfTextNormalized(
+      React.createElement(DevisPdf, { data: makeDevis({ choixRetenu: CHOIX }) }),
+    );
+    expect(t).toContain("Formule retenue par le client");
+    expect(t).toContain("Formule B · Mise en place + abonnement");
+    expect(t).toContain("Relance des impayés");
+    expect(t).toContain("1 000,00");
+    expect(t).toContain("1 200,00");
+    expect(t).toContain("Abonnement : 90,00");
+    expect(t).toContain(
+      `Choix scellé avec la signature du client - empreinte ${CHOIX.empreinteChoix}`,
+    );
+  });
+
+  it("sans la prop : aucun bloc, rendu identique", () => {
+    const sans = collectPdfTextNormalized(React.createElement(DevisPdf, { data: makeDevis() }));
+    expect(sans).not.toContain("Formule retenue par le client");
+    expect(sans).not.toContain("Choix scellé");
+  });
+});

@@ -28,25 +28,17 @@ import {
 import { nextNumero } from "@/server/qualiopi/numbering/allocate";
 import { withNumberRetry } from "@/server/qualiopi/numbering/retry";
 import {
-  dateDeReferenceDevis,
-  estimateOpcoCoverage,
-  type OrigineEstimationOpco,
-} from "@/server/qualiopi/crm/devis";
-import {
-  anneeParis,
-  consommationOpcoAnnee,
-} from "@/server/qualiopi/financements/consommation-opco";
-import { opcoDuClient } from "@/server/qualiopi/financements/opco-referentiel";
-import { effectifDuClient, idccValide } from "@/server/qualiopi/financements/bareme-opco-branche";
+  entreeDevisClassiqueSchema,
+  estimationOpcoDevis,
+  mentionTvaDevisClassique,
+  totalHtClassiqueCents,
+} from "@/server/qualiopi/devis/champs-classiques";
 import {
   lierDevisAuProjet,
   projetOuvrableDuClient,
   recopierLienProjet,
 } from "@/server/qualiopi/crm/devis-projet";
 import { generateDocument } from "@/server/qualiopi/documents/documents-service";
-import { getQualiopiConfig } from "@/server/qualiopi/config/site-settings";
-import { LEGAL_MENTIONS } from "@/server/qualiopi/legal/legal-mentions";
-import { regimeTvaDepuisConfig, mentionTva } from "@/server/qualiopi/legal/tva";
 import {
   emettreDevisEmis,
   emettreDevisSigne,
@@ -56,11 +48,13 @@ import { faireMonterLesFichesDesDevisSignes } from "@/features/dossier-client/de
 import { bandeauPourLeRole } from "@/server/partners/client-attributions";
 import { sirenDuClient } from "@/lib/siret";
 import { DevisPdf, type DevisData } from "@/server/qualiopi/documents/templates/devis";
+import { formulesActives } from "@/server/qualiopi/devis/interrupteur-formules";
 import { payloadDevisEnvoi } from "@/server/qualiopi/devis/email-devis-envoi";
 import type { VueFormules } from "@/server/qualiopi/devis/vue-formules";
 import {
   donneesPdfDevis,
   lireContextePdfDevis,
+  OffreDevisInvalideError,
 } from "@/server/qualiopi/documents/donnees-pdf-devis";
 import { publicUrl } from "@/lib/public-url";
 import {
@@ -80,91 +74,6 @@ const eurHt = (cents: number): string =>
 // ─────────────────────────────────────────────────────────────────────────────
 // Schémas Zod
 // ─────────────────────────────────────────────────────────────────────────────
-
-const ligneSchema = z.object({
-  designation: z.string().min(1).max(500),
-  quantite: z.number().positive(),
-  prixUnitaireHtCents: z.number().int().min(0),
-  /** Taux de TVA de la ligne (%) — devis mixtes (formation 0 % + conseil 20 %). */
-  tauxTvaPercent: z.number().min(0).max(100).optional(),
-  /**
-   * Référence à une offre du catalogue par son `tier_id` pricing.ts.
-   * Ne vaut QUE pour les offres legacy qui en ont un ; les offres du catalogue
-   * V2 ont `tier_id = NULL` et ne sont identifiables que par `offreCode`.
-   */
-  offreTierId: z.string().max(80).optional(),
-  /**
-   * Code AXI-OFF-NNN de l'offre catalogue — la référence qui vaut pour TOUTES
-   * les offres. Sans cette clé, Zod la STRIPPERAIT en silence (l'objet n'est pas
-   * `.strict()`) : la ligne serait persistée sans sa référence, sans erreur.
-   *
-   * Les lignes émises avant ce correctif rangeaient ce code dans `offreTierId`
-   * (le <select> émettait `tierId ?? code`), à côté de vrais tierId pour les
-   * offres legacy : la colonne est donc MIXTE. Aucune n'est réécrite — un devis
-   * émis est une pièce immuable. Tout futur reporting qui joint
-   * `lignes->>'offreTierId'` sur `offres_site.tier_id` doit tolérer les deux.
-   */
-  offreCode: z.string().max(40).optional(),
-});
-
-const FINANCEMENTS = ["direct", "opco", "cpf", "france_travail"] as const;
-
-/** Miroir de l'enum Prisma ActiviteFacturation (sélecteur du Hub). */
-const ACTIVITES = ["formation", "un_a_un", "audit", "implementation", "site_web"] as const;
-
-/**
- * Lot A7d (relecture) — `AAAA-MM-JJ` relu en date UTC et comparé à lui-même, puis
- * borné à [aujourd'hui − 1 an ; aujourd'hui + 3 ans]. Hors bornes, l'année du
- * barème et de l'enveloppe n'a plus de sens (an 1 → année NaN, an 9999).
- */
-function dateDebutSessionPrevueValide(valeur: string, maintenant = new Date()): boolean {
-  const d = new Date(`${valeur}T12:00:00Z`);
-  if (Number.isNaN(d.getTime()) || d.toISOString().slice(0, 10) !== valeur) return false;
-  const annee = maintenant.getUTCFullYear();
-  const min = new Date(maintenant);
-  min.setUTCFullYear(annee - 1);
-  const max = new Date(maintenant);
-  max.setUTCFullYear(annee + 3);
-  return d >= min && d <= max;
-}
-
-const createDevisSchema = z.object({
-  clientId: z.string().uuid(),
-  lignes: z.array(ligneSchema).min(1),
-  /** Activité facturée (pré-remplit régime TVA + mentions du Hub). */
-  activite: z.enum(ACTIVITES).optional(),
-  /** Référence client / n° de bon de commande (exigé ETI/grands comptes/OPCO). */
-  refClient: z.string().min(1).max(120).optional(),
-  financementSuggere: z.enum(FINANCEMENTS).optional(),
-  /** Nombre de participants (requis si financementSuggere === "opco"). */
-  nbParticipants: z.number().int().min(1).optional(),
-  /** Durée en heures (requis si financementSuggere === "opco"). */
-  dureeHeures: z.number().positive().optional(),
-  /** Modalité OPCO (requis si financementSuggere === "opco"). */
-  modaliteOpco: z.enum(["intra", "inter_presentiel", "inter_distanciel"]).optional(),
-  /** Enveloppe restante OPCO en centimes (optionnel). */
-  opcoEnveloppeRestanteCents: z.number().int().min(0).optional(),
-  /**
-   * Lot A7d — date de début PRÉVUE de la session (AAAA-MM-JJ, optionnel). Choisit
-   * le barème et l'année civile de l'enveloppe ; à défaut, la date de validité.
-   */
-  dateDebutSessionPrevue: z
-    .string()
-    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date de début prévue : format AAAA-MM-JJ attendu.")
-    // Date calendaire réelle (pas de 13e mois ni de 31 février) et bornée :
-    // l'action serveur est appelable sans le champ `type="date"` (relecture A7d).
-    .refine((v) => dateDebutSessionPrevueValide(v), {
-      message:
-        "Date de début prévue : indiquez une date réelle, au plus un an en arrière et trois ans en avant.",
-    })
-    .optional(),
-  /**
-   * Chantier visio (PR 7) : le projet d'où le devis a été ouvert. Seul le LIEN
-   * `projet_devis` est écrit, dans la transaction du devis — jamais une valeur
-   * pré-remplie (décision de Will du 29/09 : le devis s'ouvre vide).
-   */
-  projetId: z.string().uuid().optional(),
-});
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Actions
@@ -198,14 +107,14 @@ export async function lireBandeauAttributionAction(clientId: string): Promise<st
  *   → estimateOpcoCoverage renseigne montantOpcoEstimeCents/resteAChargeCents.
  */
 export async function createDevisAction(
-  input: z.infer<typeof createDevisSchema>,
+  input: z.infer<typeof entreeDevisClassiqueSchema>,
 ): Promise<ActionResult<{ id: string; numero: string }>> {
   // Stub-aware (build GH Actions) : aucune mutation au SSG.
   if (process.env["DATABASE_URL"]?.includes("stub.invalid")) {
     return { error: "Indisponible pendant le build" };
   }
   const session = await requireAdminWrite();
-  const parsed = createDevisSchema.safeParse(input);
+  const parsed = entreeDevisClassiqueSchema.safeParse(input);
   if (!parsed.success) return { error: "Données invalides" };
   const v = parsed.data;
   if (v.projetId !== undefined && !(await projetOuvrableDuClient(prisma, v.projetId, v.clientId))) {
@@ -213,10 +122,7 @@ export async function createDevisAction(
   }
 
   // Calculer le total HT en centimes
-  const montantTotalHtCents = v.lignes.reduce(
-    (acc, l) => acc + Math.round(l.quantite * l.prixUnitaireHtCents),
-    0,
-  );
+  const montantTotalHtCents = totalHtClassiqueCents(v.lignes);
 
   const year = new Date().getFullYear();
 
@@ -224,86 +130,16 @@ export async function createDevisAction(
   const dateValidite = new Date();
   dateValidite.setDate(dateValidite.getDate() + 30);
 
-  // Estimation OPCO si applicable
-  let montantOpcoEstimeCents: number | undefined;
-  let resteAChargeCents: number | undefined;
-  let opcoEstimationOrigine: OrigineEstimationOpco | undefined;
-  let opcoEstimationAvertissement: string | undefined;
+  // Estimation OPCO si applicable (extraction pure : champs-classiques.ts)
+  const {
+    montantOpcoEstimeCents,
+    opcoEstimationOrigine,
+    opcoEstimationAvertissement,
+    resteAChargeCents,
+  } = await estimationOpcoDevis(v, montantTotalHtCents, dateValidite);
 
-  if (
-    v.financementSuggere === "opco" &&
-    v.nbParticipants !== undefined &&
-    v.dureeHeures !== undefined &&
-    v.modaliteOpco !== undefined
-  ) {
-    // OPCO du client (Lot 5) : oriente la résolution du barème central versionné.
-    // Lot A4 : + IDCC (4 chiffres seulement) et effectif, qui choisissent le barème
-    // de branche et de tranche. Lecture SANS `select` : `Client.effectif` arrive
-    // par une PR parallèle, `effectifDuClient` le lit s'il existe.
-    // Fail-soft : null → estimation sur les réglages par défaut (comportement historique).
-    const client = await prisma.client.findUnique({ where: { id: v.clientId } }).catch(() => null);
-    const idccClient = idccValide(client?.idcc);
-    const effectifClient = effectifDuClient(client);
-    // Lot A7d — OPCO par la règle unique (typé d'abord, ancien texte à défaut).
-    const opcoClient = opcoDuClient(client);
-    // Lot A7d — barème et enveloppe de l'année de la SESSION, pas du jour.
-    const asOf = dateDeReferenceDevis({
-      debutSessionPrevue:
-        v.dateDebutSessionPrevue !== undefined
-          ? new Date(`${v.dateDebutSessionPrevue}T12:00:00.000Z`)
-          : null,
-      dateValidite,
-      maintenant: new Date(),
-    });
-    // Enveloppe : saisie sur le devis, sinon (enveloppe de la fiche client, à
-    // défaut plafond annuel du barème) − ce que l'OPCO a déjà pris en charge sur
-    // l'année. Consommation illisible → `null` → comportement antérieur.
-    const consommation =
-      v.opcoEnveloppeRestanteCents === undefined && opcoClient !== null
-        ? await consommationOpcoAnnee(v.clientId, opcoClient, anneeParis(asOf))
-        : null;
-    const coverage = await estimateOpcoCoverage({
-      nbParticipants: v.nbParticipants,
-      dureeHeures: v.dureeHeures,
-      modalite: v.modaliteOpco,
-      montantHtCents: montantTotalHtCents,
-      asOf,
-      ...(v.opcoEnveloppeRestanteCents !== undefined
-        ? { enveloppeRestanteCents: v.opcoEnveloppeRestanteCents }
-        : {}),
-      ...(client?.opcoEnveloppeAnnuelleCents != null
-        ? { enveloppeAnnuelleClientCents: client.opcoEnveloppeAnnuelleCents }
-        : {}),
-      ...(consommation !== null ? { consommationAnnee: consommation } : {}),
-      ...(opcoClient !== null ? { opco: opcoClient } : {}),
-      ...(idccClient ? { idcc: idccClient } : {}),
-      ...(effectifClient !== undefined ? { effectif: effectifClient } : {}),
-    });
-    montantOpcoEstimeCents = coverage.montantPriseEnChargeCents;
-    opcoEstimationOrigine = coverage.origine;
-    opcoEstimationAvertissement = coverage.avertissement;
-    resteAChargeCents = coverage.resteAChargeCents;
-  }
-
-  // 🔴 Audit certification 2026-07-26 (F25) — le régime de TVA se LIT, il ne se
-  // décrète pas ici.
-  //
-  // `mentionTva` était figé à l'exonération 261-4-4° à la création, quel que
-  // soit `regime_tva`. La production est pourtant configurée en « assujetti », et
-  // le PDF, lui, calcule bien la mention depuis le régime : l'écran du devis
-  // affichait donc « Exonéré de TVA » pendant que le PDF facturait 20 %. Les deux
-  // devis émis portent cette mention en base.
-  //
-  // L'exonération 261-4-4° exige l'attestation DREETS (Cerfa 3511) ; l'afficher
-  // sans l'avoir engage l'organisme sur un régime qu'il ne détient pas — et un
-  // devis accepté fait foi de l'offre.
-  const regimeTvaCreation = await getQualiopiConfig("regime_tva");
-  // `Devis.mentionTva` est NOT NULL et fige le régime de la pièce. `mentionTva()`
-  // rend `null` pour « assujetti » — c'est correct pour un PDF, qui n'a alors
-  // rien à afficher, mais pas pour une colonne d'archive : une chaîne vide
-  // rendrait « assujetti » et « non renseigné » indiscernables plus tard.
-  const mentionTvaCreation =
-    mentionTva(regimeTvaDepuisConfig(regimeTvaCreation)) ?? LEGAL_MENTIONS.factureTvaAssujetti;
+  // 🔴 Audit certification 2026-07-26 (F25) — le régime de TVA se LIT (cf. champs-classiques.ts).
+  const mentionTvaCreation = await mentionTvaDevisClassique();
 
   // Allocation numéro séquentiel + insertion, avec retry sur collision (R7).
   // Chantier visio (PR 7) : le devis et son lien au projet dans UNE transaction,
@@ -458,26 +294,37 @@ export async function sendDevisAction(
       error: `Seul un devis en brouillon peut être envoyé (statut actuel : ${devis.statut}).`,
     };
   }
-  // 🔴 Devis à formules : le circuit de signature (choix de la formule, mensualité, engagement,
-  // indemnité de sortie) n'est pas livré. Envoyé maintenant, le client signerait un PDF
-  // classique qui ne porte pas ces conditions. Refus tant que le lot de signature manque.
-  if (devis.offre !== null && devis.offre !== undefined) {
+  // Devis à formules : l'interrupteur `qualiopi.devis_formules.actif` doit être allumé. Éteint,
+  // le PDF ignorerait l'offre et le client recevrait un devis classique vide : échec FERMÉ.
+  const aFormules = devis.offre !== null && devis.offre !== undefined;
+  if (aFormules && !(await formulesActives())) {
     return {
       error:
-        "Un devis à formules ne peut pas encore être envoyé : le circuit de signature des formules (choix de la formule, mensualité, engagement, indemnité de sortie) n'est pas disponible. Gardez-le en brouillon.",
+        "Ce devis à formules ne peut pas être envoyé tant que les devis à formules sont désactivés dans la configuration. Gardez-le en brouillon.",
     };
   }
-  // Un devis à 0,00 € ne doit pas partir en signature.
+  // Un devis CLASSIQUE à 0,00 € ne doit pas partir en signature.
   //
   // Le garde côté formulaire ne protège rien : cette action est appelable depuis
   // un onglet resté ouvert, et `ligneSchema` accepte volontairement un PU à 0
   // (lignes offertes). C'est ICI que le montant total doit être vérifié — au-delà,
   // le PDF est rendu, un lien de signature est émis et le client reçoit une offre
   // ferme à zéro euro. `ligneSchema.min(0)` reste inchangé.
-  if (devis.montantTotalHtCents <= 0) {
+  // Un devis à formules n'a pas de total de lignes : son montant se détermine au choix du
+  // client, il est contrôlé sur les formules plus bas.
+  if (!aFormules && devis.montantTotalHtCents <= 0) {
     return {
       error:
         "Devis à 0,00 € HT : chiffrez les lignes avant l'envoi (une offre sans prix ferme ne pré-remplit aucun montant).",
+    };
+  }
+
+  // Devis à formules : sans e-mail de contact, pas de lien de signature, donc pas de choix de
+  // formule possible. Refus avant tout rendu.
+  if (aFormules && !devis.client.contactEmail) {
+    return {
+      error:
+        "Aucun email de contact client : un devis à formules ne peut pas être envoyé sans lien de signature (le client y choisit sa formule).",
     };
   }
 
@@ -500,6 +347,28 @@ export async function sendDevisAction(
     const data: DevisData = donneesPdfDevis(devis, contexte, new Date());
     formulesEnvoyees = data.formules;
 
+    if (aFormules) {
+      // Interrupteur allumé et offre présente : le PDF DOIT porter les formules.
+      if (data.formules === undefined) {
+        return { error: "Les formules du devis n'ont pas pu être construites : envoi refusé." };
+      }
+      // Remise 100 % — règle : une formule dont le TOTAL est <= 0 est refusée si l'abonnement
+      // n'a aucune période, OU si UNE SEULE période a une mensualité nette <= 0. Le client
+      // choisit sa période : une période à 0 €/mois (ex. [{1 mois, remise 100 %}, {12 mois, 0}])
+      // est un engagement ferme à zéro euro, même si une autre période est payante.
+      const formuleVide = data.formules.formules.some((f) => {
+        if (f.totalHtCents > 0) return false;
+        const periodes = f.abonnement?.periodes ?? [];
+        return periodes.length === 0 || periodes.some((p) => p.mensuelNetHtCents <= 0);
+      });
+      if (formuleVide) {
+        return {
+          error:
+            "Une formule du devis est à 0,00 € HT sans mensualité (ou avec une période à 0 €/mois) : chiffrez-la avant l'envoi.",
+        };
+      }
+    }
+
     const yearGeneration = new Date().getFullYear();
     const doc = await generateDocument({
       type: "devis",
@@ -512,7 +381,22 @@ export async function sendDevisAction(
     fichierPdfUrl = `documents/${yearGeneration}/devis/${doc.numero}.pdf`;
     documentGenereId = doc.id;
   } catch (err) {
-    console.warn("[sendDevisAction] génération PDF devis échouée (fail-soft)", err);
+    console.warn("[sendDevisAction] génération PDF devis échouée", err);
+    // Offre illisible : le message dit QUOI corriger, pas « PDF non généré ».
+    if (err instanceof OffreDevisInvalideError) return { error: err.message };
+    // Devis à formules : sans PDF, pas de pièce ni de lien de signature à envoyer. Le devis
+    // reste en brouillon, rien n'est écrit, aucun e-mail ne part. (Devis classique : fail-soft.)
+    if (aFormules) {
+      return {
+        error:
+          "Le PDF du devis à formules n'a pas pu être généré : envoi annulé, le devis reste en brouillon.",
+      };
+    }
+  }
+  if (aFormules && documentGenereId === null) {
+    return {
+      error: "Aucune pièce à signer n'a été produite : envoi annulé, le devis reste en brouillon.",
+    };
   }
 
   // ── 2. Signature électronique « bon pour accord » — CANAL MAISON ──
@@ -591,6 +475,15 @@ export async function sendDevisAction(
     }
   }
   const signatureCreee = signatureUrl !== null;
+  // Devis à formules : le choix de la formule passe PAR ce lien. Jamais « envoyé » sans lien
+  // (ni destinataire) : refus avant la transaction, aucun e-mail.
+  if (aFormules && !signatureCreee) {
+    return {
+      error: `Le lien de signature n'a pas pu être créé${
+        signatureErreur !== null ? ` (${signatureErreur})` : ""
+      } : un devis à formules ne peut pas être envoyé sans lien (le client y choisit sa formule). Le devis reste en brouillon.`,
+    };
+  }
 
   // ── 3. Transaction : envoye + statut client + expiration de la version remplacée ──
   // INT-T46-A : une transaction INTERACTIVE (et non plus un tableau), pour que le fait
@@ -701,7 +594,7 @@ export async function sendDevisAction(
   if (signatureAttendue && !signatureCreee) {
     const detail = signatureErreur !== null ? ` (${signatureErreur})` : "";
     const prefixe = note !== undefined ? `${note} ` : "Devis marqué envoyé. ";
-    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. Lui faire retourner le PDF signé, ou réviser le devis pour réessayer.`;
+    note = `${prefixe}⚠️ Le lien de signature n'a PAS pu être créé${detail} : le client ne peut pas signer en ligne. ${aFormules ? "Réviser le devis pour réessayer." : "Lui faire retourner le PDF signé, ou réviser le devis pour réessayer."}`;
   }
 
   await logQualiopiActivity({

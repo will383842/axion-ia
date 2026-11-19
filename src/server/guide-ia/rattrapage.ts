@@ -44,6 +44,7 @@
  */
 
 import { estOpposee } from "@/server/email/opposition";
+import { jetonOpposition } from "@/server/email/opposition-jeton";
 import { prisma } from "@/lib/prisma";
 import { verdictAvantEnvoi } from "@/server/email/verdict-envoi";
 import {
@@ -104,6 +105,25 @@ export async function etatJournal(
     envoye: envoyee ? (envoyee.sentAt ?? new Date()) : null,
     enFile: lignes.some((l) => l.status === "pending"),
   };
+}
+
+/**
+ * La demande vient-elle de la page « Recevoir le guide » ? Oui si une ligne
+ * `contacts_guide_reseau` lui est liée (`guide_request_id`, posé à la création
+ * par `page-confirmation.ts`). Table absente (fenêtre worker/app) = « non » :
+ * le rattrapage garde son comportement d'avant.
+ */
+async function vientDeLaPageGuide(demandeId: string): Promise<boolean> {
+  try {
+    const ligne = await prisma.contactGuideReseau.findFirst({
+      where: { guideRequestId: demandeId },
+      select: { id: true },
+    });
+    return ligne !== null;
+  } catch (e) {
+    if (estSchemaAbsent(e)) return false;
+    throw e;
+  }
 }
 
 export async function estGareeEnValidation(demandeId: string): Promise<boolean> {
@@ -197,7 +217,11 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
       }
 
       // Demande venue d'un réseau : le guide et rien d'autre (décision du 03/11/2026).
-      const reseau = (c.origine as string) === "message_prive";
+      // Venue de la page « Recevoir le guide » : même e-mail qu'au premier envoi, AVEC le lien de
+      // désinscription promis par la case (jeton d'opposition signé, sans adresse en clair —
+      // le même `jetonOpposition` que `page-confirmation.ts`). Sans ligne liée : inchangé.
+      const pageGuide = await vientDeLaPageGuide(c.id);
+      const reseau = pageGuide || (c.origine as string) === "message_prive";
       const lettre: Awaited<ReturnType<typeof lettreDansLEmail>> = reseau
         ? {}
         : await lettreDansLEmail(c.email);
@@ -210,6 +234,7 @@ export async function rattraperGuides(maintenant: Date = new Date()): Promise<Ra
         },
         {
           reseau,
+          ...(pageGuide ? { pageGuide: { oppositionToken: jetonOpposition(c.email) } } : {}),
           confirmToken: lettre.confirmToken ?? null,
           doubleAccordToken: lettre.doubleAccordToken ?? null,
           unsubscribeToken: lettre.unsubscribeToken ?? null,

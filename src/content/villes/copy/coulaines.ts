@@ -49,7 +49,7 @@ export const COULAINES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Coulaines et dans le nord du Mans ?",
-      a: "Oui, Axion-IA intervient à Coulaines et dans tout le nord de Le Mans Métropole (Saint-Pavace, Sargé-lès-le-Mans, Yvré-l'Évêque, Savigné-l'Évêque). Nos consultants sont basés en agglomération mancelle, déplacement rapide.",
+      a: "Oui, Axion-IA intervient à Coulaines et dans tout le nord de Le Mans Métropole (Saint-Pavace, Sargé-lès-le-Mans, Yvré-l'Évêque, Savigné-l'Évêque). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les artisans et professions libérales de Coulaines ?",

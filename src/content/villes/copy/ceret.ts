@@ -49,7 +49,7 @@ export const CERET_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Céret et dans le Vallespir ?",
-      a: "Oui, Axion-IA intervient à Céret et tout le Vallespir (Le Boulou à 10 min, Amélie-les-Bains, Arles-sur-Tech, Prats-de-Mollo). Nos consultants sont basés à proximité de Perpignan (30 min).",
+      a: "Oui, Axion-IA intervient à Céret et tout le Vallespir (Le Boulou à 10 min, Amélie-les-Bains, Arles-sur-Tech, Prats-de-Mollo). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les arboriculteurs et producteurs de cerises ?",

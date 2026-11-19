@@ -49,7 +49,7 @@ export const AVRANCHES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Avranches et autour du Mont-Saint-Michel ?",
-      a: "Oui, Axion-IA intervient à Avranches et dans tout le bocage avranchin (Granville, Villedieu-les-Poêles, Pontorson, Mont-Saint-Michel). Nos consultants se déplacent depuis Rennes (55 min A84) ou Caen (1 h 20), ou en visio.",
+      a: "Oui, Axion-IA intervient à Avranches et dans tout le bocage avranchin (Granville, Villedieu-les-Poêles, Pontorson, Mont-Saint-Michel). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE et PME agroalimentaires du bocage ?",
@@ -65,7 +65,7 @@ export const AVRANCHES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Avranches ?",
-      a: "Nos consultants viennent de Rennes (55 min A84) ou Caen (1 h 20). Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Gare d'Avranches (TER Caen-Granville). Multi-jours : hébergement local. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

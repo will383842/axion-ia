@@ -226,7 +226,7 @@ export const BRUGES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bruges et nord Métropole Bordeaux ?",
-      a: "Oui, Axion-IA intervient à Bruges et toute la Métropole Bordeaux (Bordeaux, Le Bouscat, Eysines, Bordeaux Lac, Mérignac, Pessac, Talence). Nos consultants viennent de Paris (TGV 2h) ou depuis Bordeaux centre (15 min tramway).",
+      a: "Oui, Axion-IA intervient à Bruges et toute la Métropole Bordeaux (Bordeaux, Le Bouscat, Eysines, Bordeaux Lac, Mérignac, Pessac, Talence). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec les PME de Bordeaux Lac ?",
@@ -242,7 +242,7 @@ export const BRUGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Paris ?",
-      a: "Nos consultants viennent de Paris en TGV (2h Bordeaux Saint-Jean + 20 min tramway) pour les missions sur site à Bruges. Pour les multi-jours, hébergement local possible (hôtels Bordeaux Lac à proximité).",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible (hôtels Bordeaux Lac à proximité).",
     },
   ],
 };

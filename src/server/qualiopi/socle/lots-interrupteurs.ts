@@ -131,6 +131,12 @@ export const LOTS_INTERRUPTEURS: ReadonlyArray<LotInterrupteur> = [
     description:
       "Permet de proposer au client un devis à une ou deux formules (achat, abonnement) et de recueillir son choix.",
   },
+  {
+    lot: "devis_assistant",
+    libelle: "Assistant de création de devis",
+    description:
+      "Remplace le formulaire de devis par l'assistant pas à pas ; éteint, les formulaires actuels restent en place.",
+  },
 ];
 
 const LOTS_CONNUS: ReadonlySet<string> = new Set(LOTS_INTERRUPTEURS.map((l) => l.lot));

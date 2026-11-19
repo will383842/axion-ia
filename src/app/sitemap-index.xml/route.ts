@@ -157,8 +157,10 @@ const EN_LOCALE_ENABLED = process.env["EN_LOCALE_ENABLED"] === "true";
  * sitemaps statiques/pSEO (pages, faq, help, villes, services-villes) se
  * déclaraient « modifiés » à CHAQUE deploy sans changement de contenu. Sur un
  * site jeune à faible crawl-budget, Google re-crawle alors de l'inchangé.
- * Fix : fallback figé sur une date éditoriale STABLE (= `EDITORIAL_BASELINE` de
- * `sitemap.ts`, gardée en sync manuellement). Les sources DB (news/knowledge/blog)
+ * Fix : fallback figé sur une date éditoriale STABLE. Elle n'est plus recopiée
+ * ici : elle vient de `editorialLastmodForSitemapId` (`sitemap.ts`), qui dérive
+ * de `EDITORIAL_BASELINE_ISO` (`@/lib/seo/fraicheur`, source unique) et de la
+ * fraîcheur réelle par famille (cf. bloc ci-dessous). Les sources DB (news/knowledge/blog)
  * conservent leur `MAX(updatedAt)` réel (signal honnête, gold-standard intact).
  * Cf. `_AUDIT/PLAN-FRESHNESS-EXHAUSTIF-2026-06-08.md`.
  */

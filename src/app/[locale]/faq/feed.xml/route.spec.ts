@@ -50,8 +50,13 @@ describe("feed FAQ — les descriptions servent des prix, pas des gabarits", () 
     expect(XML_FR).not.toContain("{{label:");
   });
 
-  it("sert des montants en euros résolus", () => {
-    expect(XML_FR).toMatch(/\d[  \s]?\d{3}\s?€/);
+  it("résout les jetons de prix en « sur devis » (R7 : aucun montant public hors Journée IA)", () => {
+    expect(XML_FR.toLowerCase()).toContain("sur devis");
+    expect(
+      XML_FR.replace(/1[\s\u00a0\u202f]?490[\s\u00a0\u202f]?€/g, "").match(
+        /(?:\d[\d\s\u00a0\u202f.,]*\s?k?€|€\s?\d)/g,
+      ) ?? [],
+    ).toEqual([]);
   });
 
   it("ne produit jamais « à partir de à partir de »", () => {

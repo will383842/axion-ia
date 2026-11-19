@@ -65,7 +65,7 @@ export const BEUVRAGES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ?",
-      a: "Nos consultants viennent de Lille (45 min). Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Tarifs publics.",
     },
   ],
 };

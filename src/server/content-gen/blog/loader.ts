@@ -17,6 +17,7 @@ import type { BlogPost } from "@/content/blog";
 import { resolveTier } from "@/content/blog";
 import { findArticleBySlug, listPublishedArticles } from "@/lib/knowledge/readers";
 import { prisma } from "@/lib/prisma";
+import { EDITORIAL_BASELINE_ISO } from "@/lib/seo/fraicheur";
 import { slugify } from "@/lib/slug";
 import { isRoutableArticleSlug } from "@/server/content-gen/blog/resolve-article-route";
 import { parseFaqItems } from "@/server/content-gen/shared/faq-items";
@@ -140,9 +141,10 @@ function adaptFsPostToView(post: BlogPost, locale: Locale): BlogArticleView {
 
 function isoDate(d: Date | null | undefined): string {
   // Audit fraîcheur 2026-06-08 : fallback DÉTERMINISTE (date éditoriale figée,
-  // sync avec SITE_EDITORIAL_DATE de @/lib/seo) au lieu de `new Date()`, qui
-  // datait un article DB sans publishedAt/updatedAt au timestamp du build.
-  if (!d) return "2026-06-08";
+  // `EDITORIAL_BASELINE_ISO` de `@/lib/seo/fraicheur`, source unique) au lieu de
+  // `new Date()`, qui datait un article DB sans publishedAt/updatedAt au
+  // timestamp du build.
+  if (!d) return EDITORIAL_BASELINE_ISO.slice(0, 10);
   return d.toISOString().slice(0, 10);
 }
 
@@ -362,7 +364,10 @@ export async function loadBlogIndexForView(
   // On trie donc sur le timestamp COMPLET côté DB (l'affichage garde la date
   // jour), avec un comparateur qui sait dire « égaux ».
   const fullTs = new Map<string, string>(
-    dbList.map((a) => [a.slug, a.publishedAt ? a.publishedAt.toISOString() : "2026-06-08"]),
+    dbList.map((a) => [
+      a.slug,
+      a.publishedAt ? a.publishedAt.toISOString() : EDITORIAL_BASELINE_ISO,
+    ]),
   );
   const sortKeyOf = (v: BlogArticleView): string => fullTs.get(v.slug) ?? v.publishedAt;
   return merged.sort((a, b) => {

@@ -4,14 +4,19 @@
 //
 // Construit la liste des entités Schema.org couvertes par Axion-IA :
 //   - Country FR (premier — racine sémantique)
-//   - 12 régions métropolitaines indexable (lien vers /implantations/[region])
-//   - Top 12 villes par population indexable (V1 = Paris seul)
+//   - les régions indexables, métropole + DROM (lien vers /implantations/[region])
+//
+// ⛔ AUCUNE ville ici (audit du site réel, 2026-11-11). La liste portait les
+// ~2 157 villes indexables, chacune avec son URL : ~248 Ko par nœud `Service`,
+// 1,45 Mo de JSON-LD sur /fr/un-a-un (3 nœuds), pour des URL en majorité
+// `noindex`. Le pays + les régions disent la même chose (« partout en France »)
+// en ~3 Ko. Une page VILLE qui veut nommer sa ville passe `areasServed`
+// explicitement à `buildServiceJsonLd`.
 //
 // Permet à Perplexity / Claude.ai / Google AI Overviews d'énumérer les zones
 // couvertes quand un utilisateur demande « où Axion-IA opère-t-il ? ».
 
 import { getIndexableRegions } from "@/content/regions";
-import { getIndexableVillesCore } from "@/content/villes/core";
 import { SITE_URL } from "@/lib/site-url";
 import type { Locale } from "@/i18n/routing";
 
@@ -34,14 +39,6 @@ export function buildServiceAreasServed(
       type: "AdministrativeArea",
       name: region.nameFr,
       url: localized(`/${region.slug}`),
-    });
-  }
-
-  for (const ville of getIndexableVillesCore()) {
-    out.push({
-      type: "City",
-      name: ville.nameFr,
-      url: localized(`/${ville.region}/${ville.slug}`),
     });
   }
 

@@ -15,20 +15,19 @@
 import type { ContentType } from "../../../../prisma/generated/client";
 import type { Generator, GeneratorBaseInput, GeneratorOutput } from "./types";
 import { runV7Phase8Pipeline, type V7Phase8GeneratorConfig } from "./v7-phase8-shared";
-import { INTERVENTION_TIERS, getTierById, formatAmount } from "@/content/pricing";
+import { INTERVENTION_TIERS, getTierById, formatPricePublic } from "@/content/pricing";
 
-// Prix de la formation d'une journée (FORMATION_PRICE_MATRIX) dérivé de la SSOT (pricing.ts) pour les CTA — évite
-// tout montant en dur. (Avant : « 490 € » en dur, faux : 490 = Audit Flash, et
-// la formation d'une journée vaut le prix ci-dessous.)
-const FORMATION_JOUR_CTA_PRICE = formatAmount(
-  getTierById(INTERVENTION_TIERS, "formation-generale-1j").priceFlat!,
+// Libellé prix de la formation d'une journée pour les CTA, dérivé de la SSOT (pricing.ts).
+// R7 (08/11/2026) : passe par l'interrupteur des prix publics → « Sur devis » tant que
+// seuls les montants de la Journée IA sont affichables (avant : montant brut injecté).
+const FORMATION_JOUR_CTA_PRICE = formatPricePublic(
+  getTierById(INTERVENTION_TIERS, "formation-generale-1j"),
   "fr",
-  { compact: true },
 );
 
 // Doctrine commune partagée par les 12 (rappel doctrine Manon brand-voice
 // + AI Act art. 50 disclosure + interdiction superlatifs marketing creux).
-const DOCTRINE_COMMUNE = `Tu es Manon, plume éditoriale d'Axion-IA (société française).
+const DOCTRINE_COMMUNE = `Tu es Manon, la plume IA d'Axion-IA (société française ; assistance IA générative supervisée par l'équipe).
 Cabinet IA opérationnel français. Doctrine v2.5 stricte :
 - Axion-IA-centric ≥ 90 % (méthodologie + cas concrets + tarifs SSOT)
 - Anti-doorway HCU 2024 : angle unique par contenu
@@ -64,7 +63,8 @@ const LONG_TAIL_KEYWORD_CONFIG = buildConfig(
   `## Focus LONG-TAIL KEYWORD
 Cible une requête longue (4-7 mots) avec intent informationnel ou commercial.
 Body : 1200-1800 mots, structure H2/H3 logique. FAQ × 6 répond aux variations
-de la requête. Mention tarif Axion-IA en CTA final.`,
+de la requête. CTA final : offre Axion-IA « sur devis, parlons-en lors du rendez-vous
+gratuit de 45 minutes » (aucun montant).`,
   "/audit",
   "Demander un audit IA",
 );

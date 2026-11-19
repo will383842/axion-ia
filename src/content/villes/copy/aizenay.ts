@@ -65,7 +65,7 @@ export const AIZENAY_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Aizenay ?",
-      a: "Nos consultants interviennent depuis La Roche-sur-Yon (20 min) ou Nantes (50 min). Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Carrefour vendéen bien desservi.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement sur site dans vos locaux professionnels, atelier ou exploitation. Carrefour vendéen bien desservi.",
     },
   ],
 };

@@ -45,7 +45,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA individuel à Saint-Étienne : accompagnement 1-to-1 ancré dans votre réalité stéphanoise — industrie, design, textile médical ou distribution. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. From €990 excl. VAT.",
+      en: "Individual AI coaching in Saint-Étienne: 1-to-1 support rooted in your Loire reality — manufacturing, design, medical textiles or distribution. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI stéphanoises — site vitrine premium pour acteurs design (Cité du Design, UNESCO Creative City) et textile médical, espace client pour PME industrielles et distribution (Casino, Thuasne), dashboard métier connecté à votre ERP industriel ou GMAO. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -736,7 +736,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données et plans techniques restent dans votre environnement. Conformité RGPD.",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Saint-Étienne is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to industrial executives, designers, medical textile managers and distribution leaders in the Loire.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Saint-Étienne is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. Price on request. Suited to industrial executives, designers, medical textile managers and distribution leaders in the Loire.",
         whyHere: [
           "Saint-Étienne is France's only UNESCO Creative City for design: profiles are highly specialised — mechanical engineer, industrial designer, medical textile quality manager — and need coaching rooted in their real work, not a generic course.",
           "Saint-Étienne's industrial fabric (precision mechanics, specialty steels, medical textiles) generates dense document workflows (technical drawings, quality records, purchase orders): each session works directly on your real documents.",
@@ -775,7 +775,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "Entry-level 1-to-1 coaching — Saint-Étienne artisan, independent designer, industrial or service micro-business executive.",
           },
@@ -821,7 +821,7 @@ export const SAINT_ETIENNE_COPY: VilleCopy = {
           },
           {
             q: "Is there a minimum duration or session commitment?",
-            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress.",
+            a: "No. No lock-in, no subscription contract. You start with a first session, priced on request. Continuation is decided after each session based on your progress.",
           },
         ],
         guarantees:

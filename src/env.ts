@@ -83,6 +83,10 @@ export const env = createEnv({
     // (`visio-balayage-worker.ts`). Passé à "true" après la reprise réelle de
     // l'historique Calendly.
     DOSSIER_BALAYAGE_ENABLED: z.enum(["true", "false"]).optional(),
+    // Dégel des 4 générateurs annexes de pages ville (écosystème, secteurs, FAQ
+    // étendue, cas d'usage), gelés par défaut : aucune page ne lit leurs tables.
+    // Actif SEULEMENT si "true" (villes/generateurs-annexes-geles.ts).
+    VILLES_GENERATEURS_ANNEXES_ACTIFS: z.enum(["true", "false"]).optional(),
     // Fiche prospect créée toute seule à la réservation d'un rendez-vous Calendly
     // de la liste blanche (décision de Will, 24/10/2026). Lu par le WORKER (balayage).
     // Actif SEULEMENT si "true" (comme DOSSIER_BALAYAGE_ENABLED) ; "essai" = à blanc
@@ -159,6 +163,8 @@ export const env = createEnv({
     CRM_SYNC_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
     // Retour du CRM vers le dossier client (25/10/2026) : FERMÉ par défaut.
     CRM_INBOUND_DOSSIER_ENABLED: z.enum(["true", "false"]).optional(),
+    // Base unique du chatbot (V3-3) : ÉTEINT par défaut, seule la valeur exacte "true" l'allume.
+    CHATBOT_KB_UNIFIED: z.enum(["true", "false"]).optional(),
     // Exclusions PERSISTANTES du flux lettre et guide (lot L4-S, décision D4) :
     // empreintes SHA-256 de l'adresse normalisée (trim + minuscules), séparées
     // par des virgules. Jamais une adresse en clair. Voir `crm-sync/exclusions.ts`.
@@ -758,6 +764,8 @@ export const env = createEnv({
     MAILWIZZ_API_KEY: process.env.MAILWIZZ_API_KEY,
     CRM_SYNC_ENABLED: process.env.CRM_SYNC_ENABLED,
     DOSSIER_BALAYAGE_ENABLED: process.env.DOSSIER_BALAYAGE_ENABLED,
+    CHATBOT_KB_UNIFIED: process.env.CHATBOT_KB_UNIFIED,
+    VILLES_GENERATEURS_ANNEXES_ACTIFS: process.env.VILLES_GENERATEURS_ANNEXES_ACTIFS,
     DOSSIER_FICHE_AUTO: process.env.DOSSIER_FICHE_AUTO,
     DOSSIER_FICHE_AUTO_DEPUIS: process.env.DOSSIER_FICHE_AUTO_DEPUIS,
     DOSSIER_FICHE_DEMANDE: process.env.DOSSIER_FICHE_DEMANDE,

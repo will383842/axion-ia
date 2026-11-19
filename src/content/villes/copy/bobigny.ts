@@ -18,9 +18,9 @@ export const BOBIGNY_COPY: VilleCopy = {
   ecosystemEn:
     "Bobigny concentre les fonctions de préfecture de la Seine-Saint-Denis : administration, tribunal, services publics départementaux et grands équipements. Bien reliée par le tramway T1, le métro et l'A86, la ville s'appuie sur un tissu de PME de services aux entreprises et aux administrations, complété par un commerce de proximité, des artisans du BTP et des acteurs de la santé et du transport. Ces TPE et PME, souvent en interface avec l'administration, croulent sous les tâches documentaires et la relation client : un terrain idéal pour des automatisations IA ciblées et un gain de temps mesurable.",
   distancesFr:
-    "Paris intra-muros à 15 min (métro ligne 5, tramway T1). Gare de Paris-Est à 8 km, aéroport de Roissy-CDG à 16 km, Paris-Orly à 25 km. Accès direct par l'A86 et l'A3. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio selon le format.",
+    "Paris intra-muros à 15 min (métro ligne 5, tramway T1). Gare de Paris-Est à 8 km, aéroport de Roissy-CDG à 16 km, Paris-Orly à 25 km. Accès direct par l'A86 et l'A3. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Paris intra-muros à 15 min (métro ligne 5, tramway T1). Gare de Paris-Est à 8 km, aéroport de Roissy-CDG à 16 km, Paris-Orly à 25 km. Accès direct par l'A86 et l'A3. Nos consultants se déplacent sur site depuis Paris, frais indiqués séparément, ou interviennent en visio selon le format.",
+    "Paris intra-muros à 15 min (métro ligne 5, tramway T1). Gare de Paris-Est à 8 km, aéroport de Roissy-CDG à 16 km, Paris-Orly à 25 km. Accès direct par l'A86 et l'A3. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Services aux entreprises et aux administrations",
     "Santé humaine et action sociale",
@@ -230,7 +230,7 @@ export const BOBIGNY_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Bobigny et en Seine-Saint-Denis ?",
-      a: "Oui. Nous couvrons Bobigny et le nord-est francilien (Drancy, Noisy-le-Sec, Pantin, Bondy). Nos consultants se déplacent sur site depuis Paris, à 15 min par le tramway ou le métro, ou interviennent en visio selon votre besoin.",
+      a: "Oui. Nous couvrons Bobigny et le nord-est francilien (Drancy, Noisy-le-Sec, Pantin, Bondy). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE de services, de commerce et du BTP ?",

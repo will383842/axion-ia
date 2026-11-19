@@ -39,7 +39,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
     },
     unAUn: {
       fr: "Coaching IA individuel à Montpellier : accompagnement 1-to-1 ancré dans votre réalité — santé/biotech, IT, jeux vidéo ou agroalimentaire. À partir de {{price:intervention-dirigeants|flat}}.",
-      en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. From €990 excl. VAT.",
+      en: "Individual AI coaching in Montpellier: 1-to-1 support rooted in your reality — health/biotech, IT, video games or agri-food. Price on request.",
     },
     sitesWeb: {
       fr: "Plateformes web et SaaS IA sur mesure pour PME/ETI héraultaises — site vitrine premium pour acteurs santé-biotech (Euromédecine, Sanofi R&D), portail client B2B pour scale-ups French Tech Méditerranée (Cap Omega, Cap Alpha), dashboard métier pour studios jeux vidéo et agritech connecté à votre CRM/ERP. Architectes seniors, design system Axion-IA, hébergement européen.",
@@ -734,7 +734,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           "Pas de lock-in : aucun engagement de durée imposé. Confidentialité stricte sans accord de confidentialité requis — vos données restent dans votre environnement. Conformité RGPD et secteur santé (HDS sur demande).",
       },
       en: {
-        hero: "Axion-IA's 1-to-1 AI coaching in Montpellier is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. From €990 excl. VAT. Suited to executives, managers and experts in health-biotech, IT, video games and agronomy across the Montpellier basin.",
+        hero: "Axion-IA's 1-to-1 AI coaching in Montpellier is an individual, bespoke engagement: you progress at your own pace, on your own business cases, with a dedicated consultant. Price on request. Suited to executives, managers and experts in health-biotech, IT, video games and agronomy across the Montpellier basin.",
         whyHere: [
           "Montpellier brings together very diverse profiles — a physician or data scientist at Sanofi, a studio director at Ubisoft, a technical lead at a Cap Omega SME — who have different paces and use cases: 1-to-1 is the only format that adapts to each.",
           "The Euromédecine health ecosystem imposes regulatory constraints (HDS, health GDPR, MDR) that only individual coaching can integrate into each practical exercise.",
@@ -773,7 +773,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
         pricing: [
           {
             sizeLabel: "Micro-business",
-            price: "From €990 excl. VAT",
+            price: "Price on request",
             detail:
               "Entry-level 1-to-1 coaching — executive, freelancer or expert in a digital, biotech or agronomy micro-business in the Montpellier basin.",
           },
@@ -819,7 +819,7 @@ export const MONTPELLIER_COPY: VilleCopy = {
           },
           {
             q: "Is there a minimum duration or session commitment?",
-            a: "No. No lock-in, no subscription contract. You start with the first session at €990 excl. VAT. Continuation is decided after each session based on your progress and needs.",
+            a: "No. No lock-in, no subscription contract. You start with a first session, priced on request. Continuation is decided after each session based on your progress and needs.",
           },
         ],
         guarantees:

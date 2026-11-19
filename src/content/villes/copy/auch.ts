@@ -226,7 +226,7 @@ export const AUCH_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Auch et dans le Gers ?",
-      a: "Oui, Axion-IA intervient à Auch et dans l'intercommunalité Grand Auch Cœur de Gascogne (Pavie, Preignan, Duran, Lavardens, Roquelaure…). Nos consultants se déplacent depuis Toulouse (69 km, ~1 h) ou interviennent en visio.",
+      a: "Oui, Axion-IA intervient à Auch et dans l'intercommunalité Grand Auch Cœur de Gascogne (Pavie, Preignan, Duran, Lavardens, Roquelaure…). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quels sont vos tarifs pour une mission à Auch ?",

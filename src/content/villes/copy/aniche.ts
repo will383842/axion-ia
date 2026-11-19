@@ -49,7 +49,7 @@ export const ANICHE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Aniche et bassin minier Nord ?",
-      a: "Oui, Axion-IA intervient à Aniche et tout l'arrondissement de Douai (Somain, Sin-le-Noble, Auberchicourt) ainsi que le Valenciennois. Nos consultants viennent de Lille (40 min A23/A1), Douai (15 min) ou en visio selon vos contraintes.",
+      a: "Oui, Axion-IA intervient à Aniche et tout l'arrondissement de Douai (Somain, Sin-le-Noble, Auberchicourt) ainsi que le Valenciennois. Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les artisans BTP du bassin minier reconverti ?",
@@ -65,7 +65,7 @@ export const ANICHE_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Lille ou Douai ?",
-      a: "Nos consultants viennent de Lille (40 min A23/A1), Douai (15 min) ou Valenciennes (20 min). Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible. Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

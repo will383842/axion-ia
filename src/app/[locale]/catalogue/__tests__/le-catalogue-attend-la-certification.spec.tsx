@@ -13,6 +13,19 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 
+// R7 (08/11/2026) : la page attend AUSSI que les prix publics soient affichés
+// (`PRIX_PUBLICS_AFFICHES`, faux depuis l'ordre de Williams). Le drapeau est piloté ici.
+const { prix } = vi.hoisted(() => ({ prix: { affiches: false } }));
+vi.mock("@/content/pricing", async (importOriginal) => {
+  const reel = await importOriginal<typeof import("@/content/pricing")>();
+  return {
+    ...reel,
+    get PRIX_PUBLICS_AFFICHES() {
+      return prix.affiches;
+    },
+  };
+});
+
 vi.mock("next-intl/server", () => ({ setRequestLocale: () => undefined }));
 vi.mock("@/components/nav/Breadcrumbs", () => ({ Breadcrumbs: () => null }));
 vi.mock("@/components/marketing/Cta", () => ({
@@ -35,6 +48,7 @@ const params = (locale: string) => ({ params: Promise.resolve({ locale }) });
 
 afterEach(() => {
   vi.unstubAllEnvs();
+  prix.affiches = false;
 });
 
 describe("/catalogue tant que la certification n'est pas délivrée", () => {
@@ -52,8 +66,14 @@ describe("/catalogue tant que la certification n'est pas délivrée", () => {
     await expect(Page(params("fr"))).rejects.toThrow("REDIRECT:/fr/formations");
   });
 
-  it("drapeau à true → la page revient, avec le feuilletoir", async () => {
+  it("R7 — certification délivrée MAIS prix publics masqués → redirection (le feuilletoir affiche des prix)", async () => {
     vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
+    await expect(Page(params("fr"))).rejects.toThrow("REDIRECT:/fr/formations");
+  });
+
+  it("drapeau à true ET prix publics affichés → la page revient, avec le feuilletoir", async () => {
+    vi.stubEnv("QUALIOPI_CERTIFICATION_OBTENUE", "true");
+    prix.affiches = true;
     const h = renderToStaticMarkup(await Page(params("fr")));
     expect(h).toContain('href="/catalogue/index.html"');
     expect(h).toContain("Feuilleter le catalogue");

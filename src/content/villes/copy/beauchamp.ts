@@ -49,7 +49,7 @@ export const BEAUCHAMP_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Beauchamp et dans la vallée de Montmorency ?",
-      a: "Oui, Axion-IA intervient à Beauchamp et dans toute la vallée de Montmorency (Taverny, Montmorency, Saint-Leu-la-Forêt, Pierrelaye). Nos consultants se déplacent depuis Paris Gare du Nord (30 min en Transilien H).",
+      a: "Oui, Axion-IA intervient à Beauchamp et dans toute la vallée de Montmorency (Taverny, Montmorency, Saint-Leu-la-Forêt, Pierrelaye). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Quel est le prix d'un audit IA à Beauchamp ?",
@@ -65,7 +65,7 @@ export const BEAUCHAMP_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission Axion-IA à Beauchamp ?",
-      a: "Nos consultants se déplacent à Beauchamp depuis Paris (30 min Transilien H, gare de Beauchamp). Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Intervention dans vos locaux, atelier pratique avec vos équipes, livraison d'outils configurés. Visio possible selon préférence.",
     },
   ],
 };

@@ -65,7 +65,7 @@ export const BLAINVILLE_SUR_ORNE_COPY: VilleCopy = {
     },
     {
       q: "Comment se déroule une mission IA à Blainville-sur-Orne ?",
-      a: "Nos consultants viennent de Caen (10 min). Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Coûts de déplacement séparés du forfait, tarifs transparents.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Déplacement direct sur site (entrepôt, atelier, bureau, commerce). Coûts de déplacement séparés du forfait, tarifs transparents.",
     },
   ],
 };

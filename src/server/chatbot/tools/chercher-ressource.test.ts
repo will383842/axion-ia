@@ -47,15 +47,11 @@ describe("T-13 chercher_ressource", () => {
     expect(where.article.status).toBe("published");
   });
 
-  it("cas client publié → titre + URL /fr/cas-concrets, extrait null", async () => {
+  it("cas client : null tant que les cas concrets sont éteints, sans requête en base", async () => {
     caseFindFirst.mockResolvedValue({ title: "PME industrielle", slug: "pme-industrielle" });
     const r = await chercherRessource({ sujet: "industrie", type: "cas_client" }, ctx);
-    expect(r).toEqual({
-      titre: "PME industrielle",
-      url: "/fr/cas-concrets/pme-industrielle",
-      extrait: null,
-      type: "cas_client",
-    });
+    expect(r).toBeNull();
+    expect(caseFindFirst).not.toHaveBeenCalled();
   });
 
   it("aucune ressource pertinente → null (jamais de lien inventé)", async () => {

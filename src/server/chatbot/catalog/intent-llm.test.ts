@@ -1,7 +1,7 @@
 // T-18 — classifieur d'intention LLM léger (raffinement hors_sujet).
 
 import { describe, it, expect, vi } from "vitest";
-import { isOnTopicViaLlm } from "@/server/chatbot/catalog/intent-llm";
+import { isOnTopicViaLlm, SYSTEM } from "@/server/chatbot/catalog/intent-llm";
 import type {
   GeneratedAnswer,
   GenerateAnswerOptions,
@@ -32,5 +32,12 @@ describe("isOnTopicViaLlm", () => {
       throw new Error("LLM down");
     });
     expect(await isOnTopicViaLlm("x", gen, "haiku")).toBe(false);
+  });
+});
+
+describe("SYSTEM du classifieur", () => {
+  it("ne cite ni « TPE/PME » ni ETI", () => {
+    expect(SYSTEM).not.toContain("TPE/PME");
+    expect(SYSTEM).not.toMatch(/\bETI\b/);
   });
 });

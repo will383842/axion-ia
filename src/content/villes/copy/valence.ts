@@ -18,9 +18,9 @@ export const VALENCE_COPY: VilleCopy = {
   ecosystemEn:
     "Valence tire parti de sa position de carrefour de la vallée du Rhône, axe majeur entre Lyon et la Méditerranée, pour développer une économie diversifiée. L'agroalimentaire et la viticulture s'appuient sur un terroir drômois réputé, tandis qu'une tradition d'électronique et de mécanique de précision, illustrée par des acteurs comme Crouzet, ancre un savoir-faire industriel durable. La logistique, le commerce et un tertiaire en croissance complètent ce tissu de TPE et PME, pour lesquelles l'IA peut optimiser la production, la traçabilité, la gestion administrative et la relation client.",
   distancesFr:
-    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Grenoble à 1h, Marseille à 1h30 et Avignon à 1h. Nos consultants se déplacent depuis Lyon et Grenoble.",
+    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Marseille à 1h30 et Avignon à 1h. Nous intervenons partout en France, sur place ou à distance.",
   distancesEn:
-    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Grenoble à 1h, Marseille à 1h30 et Avignon à 1h. Nos consultants se déplacent depuis Lyon et Grenoble.",
+    "Lyon à 1h en TGV, gare de Valence TGV à 15 min, Marseille à 1h30 et Avignon à 1h. Nous intervenons partout en France, sur place ou à distance.",
   topSectorsNaf: [
     "Agroalimentaire et viticulture drômoise",
     "Électronique et mécanique de précision",
@@ -58,7 +58,7 @@ export const VALENCE_COPY: VilleCopy = {
           "Valence concentre une industrie mécatronique et aéronautique exportatrice (Crouzet, Thales avionique hélicoptères, SKF Aerospace) qui a besoin de catalogues techniques multilingues, de portails de pièces et de configurateurs B2B — typiquement là où une couche IA (recherche sémantique sur références, génération de fiches) fait gagner du temps commercial.",
           "La filière agroalimentaire du bassin (≈27 % des entreprises agro de la Drôme : Agrana Fruit, Andros, Brioches Pasquier, Cafés Pivard, plus de nombreux producteurs en vente directe) demande des sites e-commerce avec fiches produits assistées, traçabilité affichée et tunnels de commande B2B/B2C que nous savons construire sur Shopify, WooCommerce ou headless.",
           "L'écoparc Rovaltain–Valence TGV (≈150 entreprises, pépinière de 1 000 m² à Alixan) et la French Tech Alpes Valence-Romans (Le Moulin Digital, Valence Romans Innov) regroupent des scale-ups et éditeurs pour qui nous développons des plateformes SaaS IA-native, pas de simples sites vitrines.",
-          "Le vivier d'ingénieurs Grenoble INP–Esisar (informatique, réseaux, cybersécurité, laboratoire LCIS) impose un niveau d'exigence technique et de sécurité élevé : nos livrables sont audités, documentés et repris en interne, sans dépendance Axion-IA.",
+          "Le vivier d'ingénieurs de l'Esisar (informatique, réseaux, cybersécurité, laboratoire LCIS) impose un niveau d'exigence technique et de sécurité élevé : nos livrables sont audités, documentés et repris en interne, sans dépendance Axion-IA.",
         ],
         methodology: [
           {
@@ -144,7 +144,7 @@ export const VALENCE_COPY: VilleCopy = {
           "Valence concentrates an exporting mechatronics and aerospace industry (Crouzet, Thales helicopter avionics, SKF Aerospace) that needs multilingual technical catalogues, parts portals and B2B configurators — exactly where an AI layer (semantic search on references, spec-sheet generation) saves sales time.",
           "The local food-processing sector (≈27% of the Drôme's agri-food companies: Agrana Fruit, Andros, Brioches Pasquier, Cafés Pivard, plus many direct-sale producers) needs e-commerce sites with AI-assisted product sheets, displayed traceability and B2B/B2C checkout flows that we build on Shopify, WooCommerce or headless.",
           "The Rovaltain–Valence TGV ecopark (≈150 companies, a 1,000 m² incubator in Alixan) and French Tech Alpes Valence-Romans (Le Moulin Digital, Valence Romans Innov) gather scale-ups and software publishers for whom we develop AI-native SaaS platforms, not mere showcase sites.",
-          "The Grenoble INP–Esisar engineering talent pool (computer science, networks, cybersecurity, LCIS lab) sets a high bar for technical quality and security: our deliverables are audited, documented and taken over in-house, with no Axion-IA dependency.",
+          "The Esisar engineering talent pool (computer science, networks, cybersecurity, LCIS lab) sets a high bar for technical quality and security: our deliverables are audited, documented and taken over in-house, with no Axion-IA dependency.",
         ],
         methodology: [
           {
@@ -230,7 +230,7 @@ export const VALENCE_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Valence et dans la Drôme ?",
-      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département. Nos consultants se déplacent depuis Lyon et Grenoble pour les missions sur site.",
+      a: "Oui, Axion-IA accompagne les TPE et PME de Valence, Romans-sur-Isère, Montélimar et tout le département, sur place ou à distance.",
     },
     {
       q: "Travaillez-vous avec l'agroalimentaire et la viticulture drômoise ?",

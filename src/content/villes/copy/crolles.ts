@@ -1,13 +1,13 @@
 // AUTO-GENERATED 2026-05-27 — T4 batch #2 Claude Code (Will).
-// Crolles (38, Isère) — vallée du Grésivaudan, tissu industriel microélectronique périphérique Grenoble.
+// Crolles (38, Isère) — vallée du Grésivaudan, tissu industriel microélectronique en périphérie grenobloise.
 
 import type { VilleCopy } from "./types";
 
 export const CROLLES_COPY: VilleCopy = {
   pitchFr:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de l'agglomération grenobloise. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   pitchEn:
-    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de Grenoble. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
+    "Crolles (38), petite ville de la vallée du Grésivaudan en Isère, abrite un tissu industriel microélectronique majeur en périphérie nord-est de l'agglomération grenobloise. Présence d'industries high-tech, TPE artisans BTP, commerces, agriculture résiduelle. Axion-IA y conduit ses missions auprès des entreprises locales du Grésivaudan.",
   directAnswerFr:
     "Axion-IA est un cabinet d'architectes seniors en intelligence artificielle qui intervient à Crolles (38). Nous accompagnons tous types d'activités : industriels microélectroniques et sous-traitants tech du Grésivaudan, TPE artisans BTP, commerçants, indépendants, professions libérales, PME tertiaires et agriculteurs de la vallée du Grésivaudan.",
   directAnswerEn:
@@ -18,9 +18,9 @@ export const CROLLES_COPY: VilleCopy = {
   ecosystemEn:
     "Crolles est positionnée dans la vallée du Grésivaudan, l'un des bassins industriels microélectroniques majeurs en France. Territoire essentiellement urbain mais conservant des zones rurales. Tissu industriel high-tech, sous-traitants tech, TPE artisanat BTP, commerces et services à la personne. La commune appartient au territoire historique du Dauphiné.",
   distancesFr:
-    "Gare Brignoud à 5 min (TER vallée Grenoble-Chambéry). Grenoble centre à 30 min A41. Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Lyon-Saint-Exupéry à 1h15. Chambéry à 50 min.",
+    "Gare Brignoud à 5 min (TER vallée du Grésivaudan). Aéroport Lyon-Saint-Exupéry à 1h15. Chambéry à 50 min.",
   distancesEn:
-    "Gare Brignoud à 5 min (TER vallée Grenoble-Chambéry). Grenoble centre à 30 min A41. Aéroport Grenoble-Alpes-Isère à 1h. Aéroport Lyon-Saint-Exupéry à 1h15. Chambéry à 50 min.",
+    "Gare Brignoud à 5 min (TER vallée du Grésivaudan). Aéroport Lyon-Saint-Exupéry à 1h15. Chambéry à 50 min.",
   topSectorsNaf: [
     "Industrie microélectronique & high-tech",
     "Sous-traitance industrielle tech",
@@ -49,7 +49,7 @@ export const CROLLES_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Crolles et vallée du Grésivaudan ?",
-      a: "Oui, Axion-IA intervient à Crolles et toute la vallée du Grésivaudan (Bernin, Saint-Ismier, Montbonnot-Saint-Martin, Villard-Bonnot, Le Versoud). Couverture également Grenoble-Alpes Métropole (30 min A41) et accès Chambéry à 50 min.",
+      a: "Oui, Axion-IA intervient à Crolles et toute la vallée du Grésivaudan (Bernin, Saint-Ismier, Montbonnot-Saint-Martin, Villard-Bonnot, Le Versoud). Couverture également de la métropole grenobloise et accès Chambéry à 50 min.",
     },
     {
       q: "Travaillez-vous avec les industriels microélectroniques du Grésivaudan ?",
@@ -64,8 +64,8 @@ export const CROLLES_COPY: VilleCopy = {
       a: "Pour les PME tertiaires de la vallée du Grésivaudan, nous proposons les 5 services Axion-IA : audit IA (Sur place à Stratégique), interventions sur site, implémentation IA (agents, automatisations), coaching 1-to-1 dirigeants, et plateformes web/SaaS IA sur mesure.",
     },
     {
-      q: "Comment se passe une mission depuis Grenoble ou Chambéry ?",
-      a: "Nos consultants viennent de Grenoble (30 min A41) ou Chambéry (50 min). Pour les multi-jours, hébergement local possible.",
+      q: "Comment se déroule une intervention ?",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

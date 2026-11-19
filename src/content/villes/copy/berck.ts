@@ -49,7 +49,7 @@ export const BERCK_COPY: VilleCopy = {
   faqGeolocalisee: [
     {
       q: "Axion-IA intervient-il à Berck et sur la Côte d'Opale ?",
-      a: "Oui, Axion-IA intervient à Berck et sur toute la Côte d'Opale (Le Touquet, Étaples, Boulogne-sur-Mer). Nos consultants se déplacent depuis Lille ou Boulogne selon vos contraintes, ou en visio.",
+      a: "Oui, Axion-IA intervient à Berck et sur toute la Côte d'Opale (Le Touquet, Étaples, Boulogne-sur-Mer). Nous intervenons partout en France, sur place ou à distance.",
     },
     {
       q: "Accompagnez-vous les TPE tourisme et hôtellerie de Berck ?",
@@ -65,7 +65,7 @@ export const BERCK_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission à Berck depuis Lille ou Boulogne ?",
-      a: "Nos consultants viennent de Boulogne-sur-Mer (30 min) ou Lille (1 h 30 A16). Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les missions multi-jours, hébergement local possible. Tarifs publics.",
     },
   ],
 };

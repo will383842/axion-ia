@@ -1,15 +1,39 @@
+import { CAS_CONCRETS_AFFICHES } from "@/content/preuves-sociales";
 import { getLocale, getTranslations } from "next-intl/server";
 import NextLink from "next/link";
 import { LogIn } from "lucide-react";
 import { Link } from "@/i18n/navigation";
-import { getTopRegionsByPib } from "@/content/regions";
-import { SERVICES, serviceOfficial } from "@/content/services";
 import { QualiopiBadge } from "@/components/qualiopi/QualiopiBadge";
 import { isQualiopiCertificationObtenue } from "@/server/qualiopi/config/flag";
+import { MENTION_NON_AGREMENT, NDA_NUMERO } from "@/server/qualiopi/legal/legal-mentions";
 import { BRAND } from "@/lib/brand";
+import { EMAIL_LEGAL } from "@/lib/email/legal-footer";
 import { ROUTES } from "@/lib/routes";
 import { avisPublies } from "@/server/reviews/presence";
+import { AI_ACT_NAV, PRESTATIONS_NAV } from "./prestations-nav";
 
+const EMAIL_CONTACT = EMAIL_LEGAL.contactEmail;
+
+/**
+ * Pied de page v6 — refonte du 2026-11-11 d'après la maquette validée par Williams
+ * (`_chantier-entete-pied/maquette-entete-pied.html`).
+ *
+ * - Quatre colonnes : Nos prestations · Ressources (sorties de l'en-tête) · Axion-IA ·
+ *   Informations légales. Les 18 régions sortent des colonnes : une seule ligne
+ *   « toutes nos régions » mène au hub `/implantations`.
+ * - Fond sable clair (il était mocha sombre) : la palette [d1] ne veut qu'un seul
+ *   bloc sombre par page, et c'est le contenu qui le porte.
+ * - Mentions : déclaration d'activité AVEC sa phrase obligatoire (art. L.6352-12 C.
+ *   trav., constantes de `legal-mentions.ts`), « Prix hors taxes. Prestations
+ *   réservées aux professionnels. », e-mail, LinkedIn, Facebook.
+ * - ⚠️ Pas de ligne « Page mise à jour le … » : le dépôt n'a aucune constante de
+ *   fraîcheur À L'ÉCHELLE DU SITE (seulement des dates par page, comme
+ *   `DATE_MISE_A_JOUR_JOURNEE_IA`). Une date écrite en dur sur ~17 600 routes
+ *   mentirait dès le lendemain : la ligne est omise.
+ * - Conservé du pied précédent : espaces formateur et apporteur, logo et liens
+ *   Qualiopi sous drapeau, avis et cas concrets sous interrupteur, badge CodeTrendy,
+ *   charte éditoriale / transparence / corrections / plan du site, `prefetch={false}`.
+ */
 export async function Footer() {
   const t = await getTranslations();
   const locale = await getLocale();
@@ -23,71 +47,53 @@ export async function Footer() {
   // automatique, src/content/preuves-sociales.ts ; compte en cache 5 min).
   const avisEnLigne = await avisPublies();
 
-  // Les 5 verticales (= les 5 services réels d'Axion-IA), via le SSOT
-  // `src/content/services.ts`, dans l'ordre canonique + Tarifs en clôture.
-  // 2026-07-28 : la variante `footer*` a été SUPPRIMÉE du SSOT (elle avait dérivé
-  // en un nom différent du nom officiel). Le footer affiche désormais le nom
-  // officiel, exactement comme les breadcrumbs, le JSON-LD et llms.txt.
-  // ❌ NE PAS réintroduire de libellé de service en dur ici ni « Essentielle »
-  // (un FORMAT de formation, pas un service).
+  // Les prestations : la Journée IA en tête, puis la même liste que le méga-menu de
+  // l'en-tête (`prestations-nav.ts` — libellés de la maquette, `href` du SSOT
+  // `services.ts`), la page AI Act, et Tarifs en clôture.
   const services = [
-    ...SERVICES.map((s) => ({ href: s.href, label: serviceOfficial(s, isFr) })),
+    { href: "/journee-ia", label: isFr ? "La Journée IA" : "The AI Day" },
+    ...PRESTATIONS_NAV.map((p) => ({ href: p.href, label: isFr ? p.labelFr : p.labelEn })),
+    { href: AI_ACT_NAV.href, label: isFr ? AI_ACT_NAV.labelFr : AI_ACT_NAV.labelEn },
     { href: "/tarifs", label: isFr ? "Tarifs" : "Pricing" },
   ];
 
-  // Contenus à lire / outils pour décider. « Simulateur ROI » rapatrié ici depuis
-  // « Entreprise » (2026-06-10) : c'est un outil interactif d'aide à la décision,
-  // pas une info corporate.
+  // Les ressources, sorties de l'en-tête (décision de Williams du 08/11/2026).
   const resources = [
-    { href: "/secteurs", label: isFr ? "L'IA par secteur" : "AI by sector" },
-    { href: "/stack-ia", label: isFr ? "Stack IA 2026" : "AI Stack 2026" },
     { href: "/guide-ia", label: isFr ? "Guide IA entreprise" : "Enterprise AI guide" },
+    { href: "/roi", label: isFr ? "Simulateur de gains" : "Savings simulator" },
+    { href: "/faq", label: isFr ? "Questions fréquentes" : "FAQ" },
     { href: "/blog", label: t("nav.blog") },
-    { href: "/blog/categorie", label: isFr ? "Catégories du blog" : "Blog categories" },
-    { href: "/actualites", label: isFr ? "Actualités de l'IA" : "AI news" },
-    { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
-    { href: "/cas-concrets", label: t("nav.caseStudies") },
-    { href: "/guides", label: isFr ? "Guides piliers" : "Pillar guides" },
+    { href: "/secteurs", label: isFr ? "L'IA par secteur" : "AI by sector" },
     { href: "/comparaisons", label: isFr ? "Comparatifs" : "Comparisons" },
-    { href: "/roi", label: isFr ? "Simulateur ROI" : "ROI simulator" },
-    { href: ROUTES.barometre, label: isFr ? "Observatoire IA 2026" : "AI Observatory 2026" },
-    { href: "/galerie", label: isFr ? "Banque d'images" : "Image bank" },
-    { href: "/faq", label: "FAQ" },
+    { href: "/glossaire", label: isFr ? "Glossaire" : "Glossary" },
+    { href: ROUTES.barometre, label: isFr ? "Observatoire IA" : "AI Observatory" },
+    ...(CAS_CONCRETS_AFFICHES ? [{ href: "/cas-concrets", label: t("nav.caseStudies") }] : []),
   ];
 
-  // Identité + contact. Le recrutement est sorti dans un sous-groupe « Carrières »
-  // distinct (Will 2026-06-10) pour mettre en avant l'embauche sans créer une 6e
-  // colonne. Ordonné : identité (qui/comment) → presse → joindre → réseau
-  // d'apporteurs d'affaires.
+  // Identité + contact.
   const company = [
     { href: "/a-propos", label: t("nav.about") },
     // Fiche fondateur (E-E-A-T / Knowledge Panel — audit 2026-07-06). FR only
     // (page `/equipe/williams` servie uniquement en FR).
-    ...(isFr ? [{ href: "/equipe/williams", label: "Fondateur" }] : []),
+    ...(isFr ? [{ href: "/equipe/williams", label: "Williams Jullin, fondateur" }] : []),
     { href: "/methodologie", label: isFr ? "Méthodologie" : "Methodology" },
-    // Hub /avis — indexable et alimenté, mais aucun lien de nav ne l'atteignait :
-    // seuls des fils d'Ariane internes et un lien de la home y menaient. Preuve
-    // sociale E-E-A-T, donc classée avec l'identité, avant la presse.
-    // Absent tant qu'aucun avis n'est publié (le hub rend alors 404).
+    // Hub /avis — absent tant qu'aucun avis n'est publié (le hub rend alors 404).
     ...(avisEnLigne ? [{ href: "/avis", label: isFr ? "Avis clients" : "Client reviews" }] : []),
     { href: "/presse", label: isFr ? "Presse" : "Press" },
-    { href: "/contact", label: t("nav.contact") },
-    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
-    { href: "/appel?depuis=pied", label: isFr ? "Réserver un appel" : "Book a call" },
-    // Réseau d'apporteurs d'affaires (déplacé ici depuis « Carrières » le
-    // 2026-09-19, décision Will B5). Un apporteur est un indépendant qui
-    // recommande, sans lien de subordination : le ranger parmi « Nos offres
-    // d'emploi », sur toutes les pages du site, le présentait comme un emploi.
-    // Le lien reste (maillage interne vers une page indexée), seul son rang change.
+    // Réseau d'apporteurs d'affaires (décision Will B5, 2026-09-19) : un apporteur
+    // est un indépendant qui recommande, pas un salarié — il n'est donc PAS rangé
+    // sous « Carrières ». Cible `/devenir-commercial-ia` (page indexée) et non la
+    // landing Facebook `/apporteur-affaires` de la maquette, qui est une page de
+    // canal publicitaire.
     {
       href: "/devenir-commercial-ia",
       label: isFr ? "Devenir apporteur d'affaires" : "Become a business referrer",
     },
+    { href: "/contact", label: isFr ? "Nous écrire" : "Email us" },
+    { href: "/appel?depuis=pied", label: isFr ? "Réserver un appel" : "Book a call" },
   ];
 
-  // Sous-groupe « Carrières » de la colonne Entreprise (intertitre + 1 lien) :
-  // les seuls emplois salariés. « Carrières » → /carrieres relabellisé « Nos
-  // offres d'emploi » car l'intertitre porte déjà « Carrières » (évite la redite).
+  // Sous-groupe « Carrières » de la colonne Axion-IA : les seuls emplois salariés.
   const careers = {
     title: isFr ? "Carrières" : "Careers",
     items: [{ href: "/carrieres", label: isFr ? "Nos offres d'emploi" : "Our job openings" }],
@@ -97,240 +103,148 @@ export async function Footer() {
     { href: "/mentions-legales", label: isFr ? "Mentions légales" : "Legal notice" },
     { href: "/conditions-generales", label: isFr ? "CGV" : "Terms" },
     { href: "/politique-confidentialite", label: isFr ? "Confidentialité" : "Privacy" },
+    { href: "/cookies", label: "Cookies" },
+    { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
     { href: "/reclamations", label: isFr ? "Réclamations" : "Complaints" },
     { href: "/reglement-interieur", label: isFr ? "Règlement intérieur" : "Internal regulations" },
-    { href: "/accessibilite", label: isFr ? "Accessibilité" : "Accessibility" },
-    { href: "/cookies", label: "Cookies" },
     { href: "/sous-processeurs", label: isFr ? "Sous-traitants" : "Subprocessors" },
   ];
 
-  // Top 6 régions par PIB + hub — maillage crawl sans surcharger le footer.
-  const topRegions = getTopRegionsByPib(6);
-  const implantationsLinks: Array<{ href: string; label: string }> = [
-    { href: "/implantations", label: isFr ? "Toutes les régions" : "All regions" },
-    ...topRegions.map((r) => ({
-      href: `/implantations/${r.slug}`,
-      label: r.nameFr,
-    })),
+  // Liens utilitaires de la barre du bas (conservés du pied précédent).
+  const utilitaires = [
+    { href: "/charte-editoriale", label: isFr ? "Charte éditoriale" : "Editorial policy" },
+    { href: "/transparence", label: isFr ? "Transparence IA" : "AI transparency" },
+    { href: "/corrections", label: "Corrections" },
+    { href: "/centre-aide", label: isFr ? "Centre d'aide" : "Help center" },
   ];
 
-  // A11y Sprint Phase 2 2026-05-29 : `/85` → `/100` pour passer WCAG 2.1 SC 1.4.3
-  // (4.5:1) sur le mocha-rich background. Ajout `min-h-[44px]` pour SC 2.5.5
-  // target size (44×44 mini cible mobile).
-  const linkCn =
-    "text-mocha-fg hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] items-center rounded-sm py-2 transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+  const lienTexteCn =
+    "text-fg hover:text-terracotta focus-visible:ring-terracotta focus-visible:ring-offset-sand inline-flex min-h-11 items-center rounded-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
+  const boutonEspaceCn =
+    "border-fg-muted text-fg hover:border-terracotta hover:text-terracotta focus-visible:ring-terracotta focus-visible:ring-offset-sand inline-flex min-h-11 shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none";
 
   return (
     <footer
-      data-tone="dark"
-      className="bg-mocha-rich text-mocha-fg relative isolate overflow-hidden"
+      className="bg-sand text-fg border-border relative isolate border-t text-sm"
       style={{
-        // V-04 P0h (Sprint Correctif 2026-05-22) — CSS containment.
-        // Isole les shifts internes du footer (font-swap Fraunces/Manrope sur
-        // bg mocha-rich) de la contribution CLS de la page → CLS footer
-        // maintenu ≤ 0.05 sur toutes les routes.
+        // V-04 P0h (Sprint Correctif 2026-05-22) — CSS containment : isole les
+        // décalages internes du pied (bascule de police) du CLS de la page.
         contain: "layout style",
       }}
     >
-      <span
-        aria-hidden="true"
-        className="bg-terracotta/40 pointer-events-none absolute inset-x-0 top-0 block h-px"
-      />
+      {/* Même largeur que l'en-tête (`max-w-[1920px]`, rembourrage `lg:px-10`). */}
+      <div className="mx-auto w-full max-w-[1920px] px-4 pt-12 pb-6 sm:px-6 lg:px-10 lg:pt-16">
+        <nav
+          aria-label={t("nav.footerLabel")}
+          className="grid grid-cols-1 gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4"
+        >
+          <FooterColumn title={t("footer.services")} items={services} />
+          <FooterColumn title={t("footer.resources")} items={resources} />
+          <FooterColumn title={t("footer.company")} items={company} subgroup={careers} />
+          <FooterColumn title={t("footer.legal")} items={legal} />
+        </nav>
 
-      {/* Largeur — 2026-06-08 (Will, révise l'Option A du 2026-06-03) : footer
-          EN PLEINE PAGE. Le contenu interne s'étend jusqu'aux gouttières (rampe
-          `px-4 sm:px-6 lg:px-10 xl:px-16`) avec un cap large `max-w-[1920px]
-          mx-auto` qui ne sert qu'en ultra-large (≥1920 px) pour ne pas étirer
-          les colonnes sur un moniteur 2560 px+. Le fond mocha-rich reste
-          bord-à-bord. ⚠️ Volontairement plus large que `Container` (corps
-          plafonné à 1366) : sur grand écran, les colonnes du footer dépassent les
-          bords du contenu — rendu « footer pleine page » voulu (cohérent avec
-          `Header.tsx`). Padding vertical py-10/lg:py-14 conservé. */}
-      <div className="mx-auto w-full max-w-[1920px] px-4 py-10 sm:px-6 lg:px-10 lg:py-14 xl:px-16">
-        <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-16 xl:gap-20">
-          {/* Brand */}
-          <div className="lg:w-60 lg:shrink-0">
-            <Link
-              href={ROUTES.home}
-              aria-label={BRAND.name}
-              className="text-mocha-fg focus-visible:ring-terracotta focus-visible:ring-offset-mocha mb-4 inline-flex items-center rounded-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-            >
-              <span
-                className="text-xl leading-none font-medium tracking-tight"
-                style={{ fontFamily: "var(--font-serif)" }}
-              >
-                Axion
-                <span aria-hidden="true" className="text-mocha-fg/60 mx-0.5">
-                  -
-                </span>
-                <span
-                  className="text-terracotta-soft italic"
-                  style={{ fontFamily: "var(--font-serif)" }}
-                >
-                  IA
-                </span>
-              </span>
-            </Link>
-            <p
-              className="text-mocha-fg/90 max-w-[14rem] text-sm leading-relaxed"
+        <p className="border-border-strong mt-10 border-t pt-4">
+          {isFr
+            ? "Partout en France, dans vos locaux ou à distance : "
+            : "Everywhere in France, at your premises or remotely: "}
+          <Link href="/implantations" prefetch={false} className={`${lienTexteCn} font-semibold`}>
+            {isFr ? "toutes nos régions" : "all our regions"}
+          </Link>
+        </p>
+
+        <div className="border-border-strong text-fg-soft mt-6 grid gap-2 border-t pt-4">
+          <p className="text-fg m-0 inline-flex flex-wrap items-baseline gap-x-3">
+            <span
+              className="text-xl leading-none font-medium tracking-tight"
               style={{ fontFamily: "var(--font-serif)" }}
             >
-              {isFr ? (
-                <>
-                  Le {BRAND.taglineFr}{" "}
-                  <span className="text-terracotta-soft italic">qui vous dit par où commencer</span>
-                  .
-                </>
-              ) : (
-                <>
-                  The {BRAND.taglineEn}{" "}
-                  <span className="text-terracotta-soft italic">that shows you where to start</span>
-                  .
-                </>
-              )}
-            </p>
-            <div className="mt-6">
-              <SocialLinks />
-            </div>
-            {/* Logo officiel Qualiopi seul (sans texte) — rendu uniquement en
-                Phase B (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné),
-                sinon null. Communication générale autorisée (jamais sur les
-                PDF/attestations). */}
-            <QualiopiBadge variant="logo" className="mt-6" />
-            <CodeTrendyBadge />
-            {/* Liens réassurance OF — Phase B uniquement (pages gatées, sinon 404). */}
-            {ofPublic ? (
-              <ul className="mt-3 flex flex-col">
-                <li>
-                  <Link href={"/certification-qualiopi" as never} className={linkCn}>
-                    {isFr ? "Certification Qualiopi" : "Qualiopi certification"}
-                  </Link>
-                </li>
-                <li>
-                  <Link href={"/financement-opco-france-travail" as never} className={linkCn}>
-                    {isFr ? "Financement OPCO / France Travail" : "OPCO / France Travail funding"}
-                  </Link>
-                </li>
-              </ul>
-            ) : null}
-          </div>
-
-          {/* Link columns */}
-          <nav
-            aria-label={t("nav.footerLabel")}
-            className="grid flex-1 grid-cols-2 gap-x-6 gap-y-10 md:grid-cols-3 lg:grid-cols-5 lg:gap-x-8 lg:gap-y-0"
-          >
-            <FooterColumn title={t("footer.services")} items={services} />
-            <FooterColumn title={t("footer.resources")} items={resources} />
-            <FooterColumn title={t("footer.company")} items={company} subgroup={careers} />
-            <FooterColumn title={t("nav.implantations")} items={implantationsLinks} />
-            <FooterColumn title={t("footer.legal")} items={legal} />
-          </nav>
-        </div>
-
-        {/* Bottom strip */}
-        {/* Trois zones depuis le 2026-08-01 (identité · liens utilitaires ·
-            accès aux espaces). `lg:gap-6` : avec un troisième bloc, le `gap-3`
-            d'origine laissait les groupes se toucher en 1280 px. Depuis le
-            2026-10-10 la troisième zone empile deux blocs (formateur, puis
-            apporteur en français) : toujours trois zones, pas quatre. */}
-        <div className="border-border-on-mocha text-mocha-fg/55 mt-12 flex flex-col gap-3 border-t pt-5 text-xs lg:flex-row lg:items-center lg:justify-between lg:gap-6">
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            <span className="text-mocha-fg/80 font-medium">{`© ${year} ${BRAND.legalName}`}</span>
-            <Dot />
-            <span>{isFr ? "Hébergé en UE" : "Hosted in EU"}</span>
-            <Dot />
-            <span>France</span>
-          </div>
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1.5">
-            <Link href="/charte-editoriale" className={linkCn}>
-              {isFr ? "Charte éditoriale" : "Editorial policy"}
-            </Link>
-            <Dot />
-            <Link href="/transparence" className={linkCn}>
-              {isFr ? "Transparence IA" : "AI transparency"}
-            </Link>
-            <Dot />
-            <Link href="/corrections" className={linkCn}>
-              {isFr ? "Corrections" : "Corrections"}
-            </Link>
-            <Dot />
-            <a href="/sitemap.xml" className={linkCn}>
-              {t("footer.siteMap")}
+              Axion
+              <span aria-hidden="true" className="text-fg/70 mx-0.5">
+                -
+              </span>
+              <span className="text-terracotta italic" style={{ fontFamily: "var(--font-serif)" }}>
+                IA
+              </span>
+            </span>
+            <span className="text-fg-soft text-xs font-semibold">
+              {isFr ? "Partenaire IA des PME et TPE" : "AI partner for SMEs"}
+            </span>
+          </p>
+          {/* Déclaration d'activité : numéro et phrase obligatoire SOUDÉS (art.
+              L.6352-12 C. trav.). Français seulement, comme la phrase légale. */}
+          {isFr ? (
+            <p className="m-0">{`Enregistré sous le numéro ${NDA_NUMERO}. ${MENTION_NON_AGREMENT}`}</p>
+          ) : null}
+          <p className="m-0">
+            {isFr
+              ? "Prix hors taxes. Prestations réservées aux professionnels."
+              : "Prices exclude VAT. Services for professionals only."}
+          </p>
+          <div className="flex flex-wrap items-center gap-x-4">
+            <span className="text-fg font-medium">{`© ${year} ${BRAND.legalName}`}</span>
+            <a href={`mailto:${EMAIL_CONTACT}`} className={lienTexteCn}>
+              {EMAIL_CONTACT}
             </a>
+            <SocialLinks lienCn={lienTexteCn} />
           </div>
+          <ul className="flex flex-wrap items-center gap-x-4">
+            {utilitaires.map((u) => (
+              <li key={u.href}>
+                <Link href={u.href as never} prefetch={false} className={lienTexteCn}>
+                  {u.label}
+                </Link>
+              </li>
+            ))}
+            <li>
+              <a href="/sitemap.xml" className={lienTexteCn}>
+                {t("footer.siteMap")}
+              </a>
+            </li>
+          </ul>
 
           {/*
             Espace formateur — ajouté 2026-07-28, REMONTÉ EN CTA le 2026-08-01.
+            Le lien magique reçu par e-mail vaut 15 minutes : sans cette porte,
+            un formateur qui revenait la semaine suivante n'avait aucun chemin de
+            retour. Bouton bordé et question adressée au formateur : trouvable d'un
+            coup d'œil, sans concurrencer « Réserver un appel ».
 
-            Il n'existait AUCUN chemin de retour : le lien magique reçu par
-            e-mail vaut 15 minutes et sert une seule fois, et l'adresse n'était
-            écrite nulle part sur le site. Un formateur qui revenait la semaine
-            suivante devait rappeler Will pour qu'il lui renvoie un lien.
-
-            🔴 La ligne de footer posée le 28/07 ne suffisait PAS. Constaté par
-            Will le 01/08 : « je ne trouve pas ça dans le footer ». Vérifié en
-            prod — le lien EXISTAIT, mais en 12 px, DERNIER des 52 liens du pied
-            de page, noyé entre « Corrections » et « Plan du site ». Un lien qui
-            existe mais que personne ne voit ne règle rien : à 200 formateurs,
-            chacun d'eux rappelle quand même.
-
-            D'où ce traitement distinct — question adressée au formateur +
-            bouton bordé, dans sa propre zone de la barre du bas. Convention web
-            habituelle pour une porte de connexion interne : trouvable d'un coup
-            d'œil par qui la cherche, sans venir concurrencer « Réserver un
-            appel » pour les 99 % de visiteurs qui sont des prospects.
-
-            `rel="nofollow"` : la cible est `noindex`, et ce footer est rendu sur
-            ~17 600 routes — sans cet attribut on créerait autant de liens vers
-            une page que les moteurs ne doivent pas explorer.
-
-            `prefetch={false}` : inutile de précharger un espace réservé que la
-            quasi-totalité des visiteurs n'ouvrira jamais. (Une balise `<a>`
-            aurait eu le même effet, mais `@next/next/no-html-link-for-pages`
-            l'interdit à juste titre sur une route interne.)
-
-            La cible reste `/espace-formateur` et NON la page de connexion : le
-            garde y redirige déjà si la session manque, si bien qu'un formateur
-            déjà connecté atterrit sur son tableau de bord au lieu d'un
-            formulaire qu'il n'a pas à remplir.
+            `rel="nofollow"` : la cible est `noindex`, et ce pied est rendu sur
+            ~17 600 routes. `prefetch={false}` : inutile de précharger un espace
+            que la quasi-totalité des visiteurs n'ouvrira jamais. La cible reste
+            `/espace-formateur` (le garde redirige vers la connexion si besoin).
           */}
-          <div className="flex flex-col gap-2">
+          <div className="mt-2 flex flex-col gap-2">
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-              <span className="text-mocha-fg/70">
-                {isFr ? "Vous êtes formateur ?" : "Are you a trainer?"}
-              </span>
+              <span>{isFr ? "Vous êtes formateur ?" : "Are you a trainer?"}</span>
               {/*
                 `as never` : l'espace formateur n'est pas déclaré dans les
                 `pathnames` de next-intl (outil interne, hors routage localisé).
-                Même échappement que `FooterLinkList` plus bas dans ce fichier.
               */}
               <Link
                 href={"/espace-formateur" as never}
                 prefetch={false}
                 rel="nofollow"
-                className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                className={boutonEspaceCn}
               >
                 <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
                 {isFr ? "Accéder à mon espace" : "Access my area"}
               </Link>
             </div>
             {/*
-              Espace apporteur — ajouté 2026-10-10. Même raison que l'espace
-              formateur ci-dessus : un lien que personne ne voit ne règle rien.
-              Un apporteur qui a supprimé ses e-mails n'avait aucun chemin vers
-              « Retrouver mon espace ». Français seulement (l'espace n'existe pas
-              en anglais). `NextLink` et NON le `Link` de `@/i18n/navigation` :
-              `/apporteur/*` est HORS du routage localisé (pas de préfixe `/fr`).
+              Espace apporteur — ajouté 2026-10-10, même raison. Français seulement
+              (l'espace n'existe pas en anglais). `NextLink` et NON le `Link` de
+              `@/i18n/navigation` : `/apporteur/*` est HORS du routage localisé.
             */}
             {isFr && (
               <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5">
-                <span className="text-mocha-fg/70">Vous êtes apporteur d&apos;affaires ?</span>
+                <span>Vous êtes apporteur d&apos;affaires ?</span>
                 <NextLink
                   href="/apporteur/dossier/retrouver"
                   prefetch={false}
                   rel="nofollow"
-                  className="border-terracotta/50 text-mocha-fg hover:border-terracotta hover:bg-terracotta/10 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[44px] shrink-0 items-center gap-2 rounded-full border px-4 font-medium transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  className={boutonEspaceCn}
                 >
                   <LogIn aria-hidden="true" className="h-3.5 w-3.5" />
                   Accéder à mon espace
@@ -338,38 +252,56 @@ export async function Footer() {
               </div>
             )}
           </div>
+
+          <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+            {/* Logo officiel Qualiopi seul (sans texte) — rendu uniquement en
+                Phase B (OF_PUBLIC_DISCLOSURE_ENABLED + certificat renseigné),
+                sinon null. Communication générale autorisée (jamais sur les
+                PDF/attestations). */}
+            <QualiopiBadge variant="logo" className="mt-4" />
+            <CodeTrendyBadge />
+          </div>
+          {/* Liens réassurance OF — Phase B uniquement (pages gatées, sinon 404). */}
+          {ofPublic ? (
+            <ul className="flex flex-wrap gap-x-4">
+              <li>
+                <Link href={"/certification-qualiopi" as never} className={lienTexteCn}>
+                  {isFr ? "Certification Qualiopi" : "Qualiopi certification"}
+                </Link>
+              </li>
+              <li>
+                <Link href={"/financement-opco-france-travail" as never} className={lienTexteCn}>
+                  {isFr ? "Financement OPCO / France Travail" : "OPCO / France Travail funding"}
+                </Link>
+              </li>
+            </ul>
+          ) : null}
         </div>
       </div>
     </footer>
   );
 }
 
-function Dot() {
-  return <span aria-hidden="true" className="bg-mocha-fg/30 inline-block h-1 w-1 rounded-full" />;
-}
-
 interface FooterColumnProps {
   title: string;
   items: ReadonlyArray<{ href: string; label: string }>;
   // Sous-section optionnelle sous la liste principale (intertitre + liens),
-  // ex. « Carrières » dans la colonne Entreprise.
+  // ex. « Carrières » dans la colonne Axion-IA.
   subgroup?: { title: string; items: ReadonlyArray<{ href: string; label: string }> };
 }
 function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
   return (
     <div>
-      {/* GEO-124 (audit GEO/AEO 2026-08-14) — `h2`/`h3` et non `h3`/`h4`.
-          Les colonnes du pied de page sont des sections de premier niveau du
-          document : demarrer a `h3` sautait le niveau `h2` sur toute page dont
-          le contenu principal s'arrete a `h1`. La taille est imposee par les
-          classes, pas par la balise — aucun changement visuel. */}
-      <h2 className="text-mocha-fg/50 mb-3 text-[11px] font-semibold tracking-[0.16em] uppercase">
+      {/* GEO-124 (audit GEO/AEO 2026-08-14) — `h2`/`h3` et non `h3`/`h4` : les
+          colonnes du pied sont des sections de premier niveau du document. La
+          taille est imposée par les classes, pas par la balise. */}
+      <h2 className="text-fg-soft mb-2 text-[13px] font-semibold tracking-[0.06em] uppercase">
         {title}
       </h2>
       <FooterLinkList items={items} />
       {subgroup ? (
         <>
-          <h3 className="text-mocha-fg/40 mt-5 mb-2 text-[10px] font-semibold tracking-[0.16em] uppercase">
+          <h3 className="text-fg-soft mt-4 mb-1 text-xs font-semibold tracking-[0.06em] uppercase">
             {subgroup.title}
           </h3>
           <FooterLinkList items={subgroup.items} />
@@ -379,93 +311,34 @@ function FooterColumn({ title, items, subgroup }: FooterColumnProps) {
   );
 }
 
-// Espacement resserré (Will 2026-06-10) : min-h 44→36px + écart vertical 10→6px.
-// La cible tactile reste ≥ 24px (WCAG 2.5.8 AA), juste moins aérée qu'avant.
+// Cibles tactiles de 44 px (`min-h-11`), WCAG 2.5.5.
 function FooterLinkList({ items }: { items: ReadonlyArray<{ href: string; label: string }> }) {
   return (
-    <ul className="space-y-1.5 text-sm">
+    <ul>
       {items.map((item) => (
         <li key={item.href}>
           {/*
-            🔴 `prefetch={false}` — POSE LE 2026-09-24, SUR MESURE.
+            🔴 `prefetch={false}` — POSÉ LE 2026-09-24, SUR MESURE.
 
-            Mesure du HTML servi par `/fr` : `/fr/contact` y figure **5 fois**,
-            `/fr/tarifs` et `/fr/audit` **4 fois** — menu bureau, menu mobile,
-            pied de page, corps. Chaque occurrence déclenche son propre
-            préchargement RSC.
-
-            Relevé au navigateur sur deux chargements distincts de la page
-            d'accueil : chaque URL était demandée deux fois, et la seconde
-            était affichée « 503 ». Une cinquantaine de requêtes doublées par
-            visite, à la charge de l'origine.
-
-            🔑 LE « 503 » N'ÉTAIT PAS UNE RÉPONSE DU SERVEUR (établi le
-            2026-09-25). L'outil de relevé — l'extension Chrome de Claude —
-            écrit `status = 503` sur TOUT évènement `Network.loadingFailed`.
-            Mesuré au protocole Chrome : la requête « en échec » avait reçu
-            un HTTP 200, puis le navigateur l'avait abandonnée
-            (`net::ERR_ABORTED`, `canceled: true`) sans qu'aucun code de la
-            page appelle `abort()` ni `cancel()`, et l'abandon disparaît quand
-            le corps est lu jusqu'au bout (0 cas sur 12 passes, contre ~45 %
-            sinon). Next ne produit aucun 503 ; six requêtes identiques
-            simultanées sur une connexion HTTP/2 rendent six 200. Le doublon,
-            lui, était bien réel — c'est ce que cette ligne retire : un lien
-            de pied de page est le moins probable des clics suivants.
-
-            Même motif que le lien « espace formateur » plus haut dans ce
-            fichier. L'en-tête, lui, garde son préchargement : c'est par là
-            qu'on navigue.
+            Le HTML servi par `/fr` répétait les mêmes URL (menu bureau, menu
+            mobile, pied de page, corps), et chaque occurrence déclenchait son
+            propre préchargement RSC : une cinquantaine de requêtes doublées par
+            visite. (Le « 503 » relevé à l'époque n'était pas une réponse du
+            serveur mais un artefact de l'outil de relevé — établi le 2026-09-25 ;
+            le doublon, lui, était réel.) Un lien de pied de page est le moins
+            probable des clics suivants. L'en-tête, lui, garde son préchargement :
+            c'est par là qu'on navigue.
           */}
           <Link
             href={item.href as never}
             prefetch={false}
-            className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex min-h-[36px] items-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className="text-fg hover:text-terracotta focus-visible:ring-terracotta focus-visible:ring-offset-sand inline-flex min-h-11 items-center rounded-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             {item.label}
           </Link>
         </li>
       ))}
     </ul>
-  );
-}
-
-function LinkedinIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <rect x="3" y="3" width="18" height="18" rx="3.5" />
-      <path d="M7 10v7" />
-      <circle cx="7" cy="7" r="0.5" fill="currentColor" stroke="none" strokeWidth="2" />
-      <path d="M11 17v-4.5a2.5 2.5 0 0 1 5 0V17" />
-      <path d="M11 10v7" />
-    </svg>
-  );
-}
-
-function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-      {...props}
-    >
-      <rect x="3" y="3" width="18" height="18" rx="3.5" />
-      <path d="M15.5 8H14a2 2 0 0 0-2 2v11" />
-      <path d="M9.5 13h5.5" />
-    </svg>
   );
 }
 
@@ -499,9 +372,10 @@ function FacebookIcon(props: React.SVGProps<SVGSVGElement>) {
     serait alors un navigateur headless qui attend un chargement réel plutôt qu'un
     simple `fetch` du HTML. Passer à `eager` avant de chercher ailleurs.
   - `style=dark` : leur variante sombre (carte bleu-nuit, texte blanc cassé,
-    accent doré), la seule lisible sur le fond mocha. `style=classic` est une
-    carte BLANCHE — vérifié au rendu, elle troue le footer. Tout style inconnu
-    retombe silencieusement sur `classic`. (Valeurs hex volontairement non
+    accent doré), choisie quand le pied était mocha. Gardée telle quelle sur le
+    fond sable de la refonte du 2026-11-11 : une carte sombre y reste lisible, et
+    changer de style n'apporte rien à l'annonce. Tout style inconnu retombe
+    silencieusement sur `classic` (carte blanche). (Valeurs hex volontairement non
     citées ici : `scripts/check-anti-hex.sh` scanne aussi les commentaires.)
 
   Pour couper le beacon une fois l'annonce approuvée : le SVG est autonome
@@ -527,7 +401,7 @@ function CodeTrendyBadge() {
       // dériver au-dessus du plafond de 8 px sans que rien ne rougisse.
       // (Valait 10 px jusqu'au 2026-08-27 : hors charte, et la garde criait
       // dans un script que rien n'exécutait.)
-      className="focus-visible:ring-terracotta focus-visible:ring-offset-mocha mt-6 inline-flex rounded-[8px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+      className="focus-visible:ring-terracotta focus-visible:ring-offset-sand mt-4 inline-flex rounded-[8px] focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -542,31 +416,27 @@ function CodeTrendyBadge() {
   );
 }
 
-function SocialLinks() {
+// LinkedIn et Facebook en liens texte (maquette) : lisibles sans icône, et la même
+// cible de 44 px que les autres liens de la barre du bas.
+function SocialLinks({ lienCn }: { lienCn: string }) {
   return (
-    <ul className="flex items-center gap-2">
-      <li>
-        <a
-          href="https://www.linkedin.com/company/axion-ia-france/"
-          target="_blank"
-          rel="noopener noreferrer external"
-          aria-label="LinkedIn"
-          className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          <LinkedinIcon className="h-[17px] w-[17px]" />
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://www.facebook.com/axioniacom"
-          target="_blank"
-          rel="noopener noreferrer external"
-          aria-label="Facebook"
-          className="text-mocha-fg/80 hover:text-terracotta-soft focus-visible:ring-terracotta focus-visible:ring-offset-mocha inline-flex h-11 w-11 items-center justify-center rounded-sm transition focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-        >
-          <FacebookIcon className="h-[17px] w-[17px]" />
-        </a>
-      </li>
-    </ul>
+    <>
+      <a
+        href="https://www.linkedin.com/company/axion-ia-france/"
+        target="_blank"
+        rel="me noopener noreferrer external"
+        className={lienCn}
+      >
+        LinkedIn
+      </a>
+      <a
+        href="https://www.facebook.com/axioniacom"
+        target="_blank"
+        rel="me noopener noreferrer external"
+        className={lienCn}
+      >
+        Facebook
+      </a>
+    </>
   );
 }

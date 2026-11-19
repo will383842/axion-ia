@@ -37,6 +37,10 @@ import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
  * informée, par quel texte (sa version) et quand. Ce n'est pas un `optin`, et
  * le registre ne doit jamais le laisser croire.
  *
+ * `consent` (lot S2, page « Recevoir le guide ») — la case unique de la page, cochée par la
+ * personne : accord de recevoir le guide ET des informations d'Axion-IA. Distinct de `optin`
+ * (double accord de la lettre) : aucune inscription à la lettre n'en découle.
+ *
  * `fin` (lot L6, relecture du 2026-09-25) — FIN de l'inscription à la lettre
  * constatée par la purge (inactivité, rebond, désinscription arrivée à son
  * terme). Ce n'est ni un accord ni un retrait : c'est la date à partir de
@@ -45,7 +49,7 @@ import { hashIp, hashUserAgent } from "@/lib/security/ip-hash";
  * ans serait purgée le lendemain de sa sortie. `occurredAt` = la date réelle de
  * la fin (rebond, désinscription), jamais celle de la purge si elle diffère.
  */
-export type ConsentAction = "optin" | "optout" | "information" | "fin";
+export type ConsentAction = "optin" | "optout" | "information" | "fin" | "consent";
 
 /**
  * Références FERMES des points de capture. Sans elles, deux consentements de

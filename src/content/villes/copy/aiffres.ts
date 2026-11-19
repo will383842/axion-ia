@@ -65,7 +65,7 @@ export const AIFFRES_COPY: VilleCopy = {
     },
     {
       q: "Comment se passe une mission depuis Poitiers ou La Rochelle ?",
-      a: "Nos consultants viennent de Poitiers (1h10) ou La Rochelle (1h). Pour les multi-jours, hébergement local possible.",
+      a: "Nous intervenons partout en France, sur place ou à distance. Pour les multi-jours, hébergement local possible.",
     },
   ],
 };

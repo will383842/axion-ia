@@ -183,6 +183,13 @@ export interface CrmSyncEvent {
     experiences?: unknown[];
     cv_ref?: string;
   };
+  /**
+   * Preuves de consentement portées à la RACINE (contrat v3, lot S3) : une entrée par accord
+   * recueilli (ex. la case de la page « Recevoir le guide »). Absent = aucun accord à consigner.
+   */
+  consentements?: Array<{ nature: string; date: string; source: string; version: string }>;
+  /** Guides remis à la personne (contrat v3, lot S3) : nom du guide et date de remise (clic). */
+  guides_recus?: Array<{ guide: string; date: string }>;
   /** Tags gouvernés supplémentaires (`namespace:valeur`). */
   tags?: string[];
   /** Métadonnées de timeline (page, UTM…). Jamais de PII hors des champs dédiés. */

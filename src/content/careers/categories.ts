@@ -99,7 +99,7 @@ export const CAREER_CATEGORIES: ReadonlyArray<CareerCategory> = [
     slug: "marketing",
     fr: "Marketing / Growth",
     en: "Marketing / Growth",
-    service: { href: "/cas-concrets", fr: "Cas concrets", en: "Case studies" },
+    service: { href: "/methodologie", fr: "Méthodologie", en: "Methodology" },
   },
   {
     slug: "operations",
