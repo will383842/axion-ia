@@ -48,8 +48,9 @@ const HORS_PERIMETRE: ReadonlyArray<RegExp> = [
   /src\/app\/\[locale\]\/demande-devis\/page\.tsx$/,
   /src\/app\/\[locale\]\/demande-devis\/confirmation\/page\.tsx$/,
   /src\/lib\/email\/templates\/quote-request-received\.tsx$/,
-  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : transversal.ts est modifié par
-  // les PR ouvertes 1979 et 1861 (1979 aussi pour _accueil/contenu.ts) ; les kb et category-hub-content, par d'autres lots.
+  // EN ATTENTE (même appel de 45 min, à passer en « Diagnostic IA ») : transversal.ts garde UNE occurrence
+  // (ligne 597, FAQ « Devis fixe, virement bancaire, facture ») que la PR 1861 modifie ; 1979 modifie aussi
+  // _accueil/contenu.ts ; les kb et category-hub-content, par d'autres lots.
   // À VIDER une fois ces PR fusionnées.
   /src\/content\/transversal\.ts$/,
   /src\/app\/\[locale\]\/_accueil\/contenu\.ts$/,

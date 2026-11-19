@@ -364,7 +364,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'Axion-IA ?",
       answer:
-        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un appel de cadrage de 45 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
+        "Axion-IA est un cabinet IA opérationnel pour entreprises, basé en France. Concrètement : des intervenants seniors qui viennent travailler sur vos outils, vos données et vos dossiers réels, plutôt que de livrer une présentation sur l'intelligence artificielle.\n\nL'offre tient en cinq prestations. Les Formations IA, en intra, de 4 heures à 2 journées, pour un groupe de 2 à 15 participants. Le Coaching IA 1-to-1, une journée de 7 à 8 heures avec une seule personne, sur son poste. L'Audit IA, qui cartographie vos process et chiffre les opportunités, sur quatre niveaux. L'Implémentation IA, qui met en production les automatisations retenues. Et les Sites web & SaaS IA, pour greffer chatbot, recherche sémantique ou agents sur votre plateforme.\n\nNous intervenons sur site dans les 13 régions métropolitaines et les 5 DROM, ou à distance. L'échange démarre par un Diagnostic IA de 45 minutes, sans engagement, et le devis suit sous 48 heures ouvrées.",
       keyPoints: [
         "Cabinet IA opérationnel basé en France, intervenants seniors",
         "Cinq prestations : formations, coaching 1-to-1, audit, implémentation, sites web & SaaS IA",
@@ -435,7 +435,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Ce ne sont pas des étapes obligatoires",
           detail:
-            "On peut commencer par une formation, par un audit ou directement par une implémentation. L'appel de cadrage de 45 minutes sert justement à choisir le bon point d'entrée.",
+            "On peut commencer par une formation, par un audit ou directement par une implémentation. Le Diagnostic IA de 45 minutes sert justement à choisir le bon point d'entrée.",
         },
         {
           title: "Le tarif dépend du format",
@@ -599,7 +599,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Devis détaillé valable 30 jours : la commande est ferme à la signature",
         "Règlement par virement bancaire, aucun abonnement ni engagement de durée",
         "Devis établis hors taxes — la TVA française à 20 % s'ajoute sur la facture",
-        "Devis personnalisé sous 48 h ouvrées après l'appel de cadrage",
+        "Devis personnalisé sous 48 h ouvrées après le Diagnostic IA",
         "Prestation reportable une fois sans frais en cas d'imprévu",
       ],
       facts: [
@@ -661,7 +661,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Par où commencer avec l'IA dans mon entreprise ?",
       answer:
-        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un appel de cadrage de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
+        "Par un cas réel, pas par un plan stratégique. La première étape recommandée est une intervention de découverte — une demi-journée ou une journée — qui identifie 3 à 5 process candidats à l'IA dans votre contexte. L'intervenant arrive avec ses modèles, travaille sur vos données et démontre des gains concrets avant tout engagement.\n\nEn amont, un Diagnostic IA de 45 minutes suffit à choisir le bon point d'entrée. Si vous voulez faire monter une équipe, ce sera une formation en intra. Si le sujet est votre propre poste, ce sera le coaching 1-to-1. Si vous cherchez une cartographie chiffrée de l'entreprise, ce sera l'audit IA.\n\nAucune compétence technique n'est requise, et aucune installation logicielle n'est demandée de votre côté, ni sur place ni à distance : la visioconférence se fait sur Zoom, depuis le navigateur. Le devis suit sous 48 heures ouvrées, et les équipes formées sont opérationnelles dès le lendemain.",
       keyPoints: [
         "Commencer par un cas réel, pas par une stratégie IA",
         "Appel de cadrage de 45 minutes pour choisir le point d'entrée",
@@ -670,7 +670,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Devis sous 48 h ouvrées, équipes opérationnelles dès le lendemain",
       ],
       facts: [
-        { figure: "45 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "de Diagnostic IA" },
         { figure: "3-5", label: "process identifiés" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "J+1", label: "équipes opérationnelles" },
@@ -1111,7 +1111,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Cadrage du périmètre",
           detail:
-            "Un appel de cadrage fixe le niveau et le périmètre : une TPE entière, un département, plusieurs services ou un groupe multi-BU.",
+            "Un Diagnostic IA fixe le niveau et le périmètre : une TPE entière, un département, plusieurs services ou un groupe multi-BU.",
         },
         {
           title: "Cartographie des processus",
@@ -1906,12 +1906,12 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment sont fixés les tarifs d'Axion-IA ?",
       answer:
-        "Sur devis, prestation par prestation. Coaching 1-to-1, formation collective pour 2 à 15 participants, audit IA, implémentation, plateforme web ou SaaS : le montant dépend de l'effectif, du périmètre et du format, et il est établi après un premier échange. Une seule prestation a un prix fixe affiché : la Journée IA, {{price:journee-ia|flat}}.\n\nUn devis Axion-IA n'est pas un prix opaque : il arrive sous 48 h ouvrées après l'appel de cadrage, avec le périmètre écrit, les livrables, les délais et un prix ferme. Tous les montants sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Le montant validé avant démarrage est celui que vous réglez.",
+        "Sur devis, prestation par prestation. Coaching 1-to-1, formation collective pour 2 à 15 participants, audit IA, implémentation, plateforme web ou SaaS : le montant dépend de l'effectif, du périmètre et du format, et il est établi après un premier échange. Une seule prestation a un prix fixe affiché : la Journée IA, {{price:journee-ia|flat}}.\n\nUn devis Axion-IA n'est pas un prix opaque : il arrive sous 48 h ouvrées après le Diagnostic IA, avec le périmètre écrit, les livrables, les délais et un prix ferme. Tous les montants sont hors taxes, la TVA s'ajoutant sur la facture, et les formats collectifs se lisent par groupe et non par personne. Le montant validé avant démarrage est celui que vous réglez.",
       keyPoints: [
         "Chaque prestation chiffrée sur devis, après un premier échange",
         "Formats collectifs facturés par groupe de 2 à 15 participants",
         "Seule la Journée IA a un prix fixe affiché",
-        "Devis détaillé sous 48 h ouvrées après l'appel de cadrage",
+        "Devis détaillé sous 48 h ouvrées après le Diagnostic IA",
         "Montants hors taxes : la TVA s'ajoute sur la facture",
       ],
       facts: [
@@ -1951,7 +1951,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Existe-t-il des aides ou subventions pour un projet IA ?",
       answer:
-        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et un éventuel financement public se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès l'appel de cadrage, avant même le devis.",
+        "Des dispositifs publics existent, mais aucun n'est automatique et aucun n'est porté par Axion-IA. Selon votre taille, votre secteur et votre région, un projet de transformation numérique peut relever d'un programme national ou d'un dispositif régional ; les développements réellement innovants peuvent, eux, entrer dans le champ des crédits d'impôt recherche et innovation. Chacun de ces mécanismes a ses propres critères, révisés régulièrement : l'éligibilité se vérifie auprès de l'organisme qui accorde l'aide, et votre expert-comptable reste le mieux placé pour trancher le volet fiscal.\n\nCe que nous pouvons faire, c'est vous remettre un dossier propre : un périmètre écrit, un devis détaillé, des livrables datés et un chiffrage des gains attendus — exactement les pièces qu'un financeur réclame. En revanche, aucune prestation n'est vendue comme financée ou subventionnée : le devis est un montant net que vous engagez, et un éventuel financement public se règle ensuite entre vous et l'organisme concerné. Si ce point conditionne votre décision, le plus simple est de l'aborder dès le Diagnostic IA, avant même le devis.",
       keyPoints: [
         "Des dispositifs nationaux, régionaux et fiscaux existent — aucun n'est automatique",
         "L'éligibilité dépend de votre taille, de votre secteur et de votre région",
@@ -1960,7 +1960,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         "Périmètre écrit, devis détaillé et gains chiffrés : les pièces utiles à un dossier",
       ],
       facts: [
-        { figure: "45 min", label: "d'appel de cadrage" },
+        { figure: "45 min", label: "de Diagnostic IA" },
         { figure: "48 h", label: "ouvrées pour le devis" },
         { figure: "30 j", label: "de validité du devis" },
       ],
@@ -2620,7 +2620,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se déroule une mission avec Axion-IA ?",
       answer:
-        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un appel de cadrage pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production, avec trente jours de support inclus. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
+        "En quatre temps, chacun produisant un livrable et chacun pouvant être le dernier. Tout commence par un Diagnostic IA pour cerner le besoin, avec un devis sous 48 heures ouvrées. Viennent ensuite les quatre étapes : identifier, auditer, implémenter, mesurer.\n\nIdentifier, c'est une journée sur site : 3 à 5 process candidats, des démonstrations sur vos données anonymisées, des quick-wins déployables sous trente jours, et une cartographie terrain en sortie. Auditer, c'est cinq jours pour chiffrer chaque opportunité et remettre un plan priorisé, sous forme d'un document de 25 à 40 pages et d'un atelier de restitution. Implémenter, c'est six à huit semaines du cadrage technique à la mise en production, avec trente jours de support inclus. Mesurer, c'est revenir compter les heures et les coûts réellement économisés, sur des indicateurs convenus avant le déploiement.\n\nLa méthode est découplée du contrat long : vous pouvez vous arrêter à la fin de n'importe quelle étape, et le même intervenant senior vous suit du cadrage à la livraison.",
       keyPoints: [
         "Quatre temps séparés, un livrable concret à chaque étape",
         "Appel de cadrage puis devis sous 48 h ouvrées",
@@ -3807,13 +3807,13 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Quel audit IA pour une TPE ou une PME ?",
       answer:
-        "Cela dépend surtout de votre effectif. Une TPE (moins de 10 salariés) ou une petite entreprise jusqu'à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un appel de cadrage permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
+        "Cela dépend surtout de votre effectif. Une TPE (moins de 10 salariés) ou une petite entreprise jusqu'à 19 salariés — artisan, commerçant, profession libérale, indépendant — relève de l'audit sur place : une journée complète dans vos locaux, de 9 h à 17 h. On cartographie toute l'activité, on teste l'IA en direct sur deux ou trois de vos vrais cas, et le rapport de synthèse suit sous 48 heures ouvrées.\n\nUne PME s'oriente vers l'audit Ciblé quand un seul département est concerné — marketing, RH, opérations, finance, juridique ou support — sur trois à quatre semaines. Quand plusieurs services le sont, c'est l'audit Stratégique PME : deux à quatre services cartographiés sur cinq à six semaines, avec une roadmap 12-24 mois et une restitution en COMEX.\n\nDans tous les cas, vous repartez avec une feuille de route priorisée et chiffrée, calibrée sur votre taille et votre secteur — pas un rapport théorique. Un Diagnostic IA permet de choisir le bon niveau avant tout devis : c'est le point de départ le plus sûr pour démarrer l'IA sans se disperser.",
       keyPoints: [
         "TPE et petites entreprises jusqu'à 19 salariés : audit sur place, 1 journée complète dans vos locaux",
         "PME, un seul département concerné : audit Ciblé, 3 à 4 semaines",
         "PME, plusieurs services : Stratégique PME, 5 à 6 semaines et roadmap 12-24 mois",
         "Rapport de synthèse sous 48 h ouvrées pour l'audit sur place",
-        "Un appel de cadrage fixe le bon niveau avant tout devis",
+        "Un Diagnostic IA fixe le bon niveau avant tout devis",
       ],
       facts: [
         { figure: "1-19", label: "salariés pour l'audit TPE" },
@@ -3823,7 +3823,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "L'appel de cadrage",
+          title: "Le Diagnostic IA",
           detail:
             "Un échange court pour décrire votre contexte et votre périmètre prioritaire. C'est là que se choisit le niveau d'audit adapté à votre taille.",
         },
@@ -3869,7 +3869,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Qu'est-ce qu'un audit de maturité IA d'entreprise ?",
       answer:
-        "C'est l'évaluation de votre point de départ, avant toute décision d'investissement. Un audit de maturité IA regarde cinq choses : les outils d'IA déjà utilisés dans l'entreprise, y compris les usages informels que personne n'a déclarés ; le niveau réel des équipes ; la qualité et l'accessibilité de vos données ; les processus automatisables ; et votre conformité, RGPD comme AI Act 2026.\n\nIl en sort une photographie objective de votre situation et les prochaines étapes prioritaires. L'intérêt est d'éviter deux erreurs symétriques : investir dans des outils que personne n'utilisera parce que le niveau des équipes n'y est pas, ou lancer une automatisation sur des données trop dispersées pour être exploitables.\n\nChez Axion-IA, cette évaluation n'est pas une prestation séparée : elle constitue la première phase de l'audit IA, quel que soit le niveau retenu. Les entretiens terrain et la collecte documentaire servent d'abord à situer votre maturité, avant de scorer les opportunités par ROI estimé et complexité technique. Un appel de cadrage permet de dimensionner le périmètre à couvrir.",
+        "C'est l'évaluation de votre point de départ, avant toute décision d'investissement. Un audit de maturité IA regarde cinq choses : les outils d'IA déjà utilisés dans l'entreprise, y compris les usages informels que personne n'a déclarés ; le niveau réel des équipes ; la qualité et l'accessibilité de vos données ; les processus automatisables ; et votre conformité, RGPD comme AI Act 2026.\n\nIl en sort une photographie objective de votre situation et les prochaines étapes prioritaires. L'intérêt est d'éviter deux erreurs symétriques : investir dans des outils que personne n'utilisera parce que le niveau des équipes n'y est pas, ou lancer une automatisation sur des données trop dispersées pour être exploitables.\n\nChez Axion-IA, cette évaluation n'est pas une prestation séparée : elle constitue la première phase de l'audit IA, quel que soit le niveau retenu. Les entretiens terrain et la collecte documentaire servent d'abord à situer votre maturité, avant de scorer les opportunités par ROI estimé et complexité technique. Un Diagnostic IA permet de dimensionner le périmètre à couvrir.",
       keyPoints: [
         "Cinq dimensions : outils en place, niveau des équipes, données, processus, conformité",
         "Les usages informels comptent autant que les outils officiels",
@@ -3913,7 +3913,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Combien coûte un audit IA pour une entreprise ?",
       answer:
-        "Les audits sont chiffrés sur devis, selon la taille et le périmètre, sans prix caché. Quatre formats existent : l'audit sur place pour une TPE, une journée complète dans vos locaux ; l'audit Ciblé sur un département ; les audits Stratégiques, PME comme ETI.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après l'appel de cadrage, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
+        "Les audits sont chiffrés sur devis, selon la taille et le périmètre, sans prix caché. Quatre formats existent : l'audit sur place pour une TPE, une journée complète dans vos locaux ; l'audit Ciblé sur un département ; les audits Stratégiques, PME comme ETI.\n\nCe qui fait varier le montant, ce n'est pas votre effectif en soi mais le périmètre réel : le nombre de services cartographiés, le nombre d'entretiens terrain, la profondeur des livrables, et la présence ou non d'un volet gouvernance. Un département simple traité à distance et un groupe multi-BU ne mobilisent pas le même travail.\n\nLe devis détaillé arrive sous 48 heures ouvrées après le Diagnostic IA, et il est ferme : vous savez exactement ce que vous payez, et pourquoi, avant tout engagement. Pour les groupes très grands, une phase de cadrage précède le devis afin de figer le périmètre.",
       keyPoints: [
         "Les audits sont chiffrés sur devis, selon la taille et le périmètre",
         "Audit sur place pour une TPE : une journée dans vos locaux",
@@ -3957,9 +3957,9 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Comment se passe un premier diagnostic IA ?",
       answer:
-        "Tout commence par un appel de cadrage, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
+        "Tout commence par un Diagnostic IA, court et sans engagement : vous décrivez votre activité, vos irritants et vos objectifs, et on détermine ensemble le niveau adapté. Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière, avec livrable écrit.\n\nIl se déroule ensuite en trois temps. On observe vos processus et vos outils tels qu'ils fonctionnent réellement, en entretiens terrain ou sur une journée complète dans vos locaux pour une TPE. On repère les tâches chronophages automatisables et on teste l'IA en direct sur deux ou trois de vos vrais cas, jamais sur une démonstration générique. On identifie enfin les cas d'usage à fort impact pour démarrer vite, chacun scoré par ROI estimé et complexité technique.\n\nVous ressortez avec des actions concrètes et un ordre de priorité clair, pas une liste de bonnes intentions : ce qui s'active tout de suite, ce qui peut attendre, ce qu'il vaut mieux abandonner. Le plan est rédigé pour que vos équipes puissent l'exécuter seules.",
       keyPoints: [
-        "Un appel de cadrage d'abord, pour caler le périmètre et le niveau",
+        "Un Diagnostic IA d'abord, pour caler le périmètre et le niveau",
         "Le diagnostic lui-même, c'est l'audit IA — une prestation à part entière",
         "Observation des processus réels, y compris les procédures orales",
         "2 à 3 cas d'usage à fort impact testés en direct sur vos vrais dossiers",
@@ -3972,7 +3972,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       steps: [
         {
-          title: "L'appel de cadrage",
+          title: "Le Diagnostic IA",
           detail:
             "Vous décrivez votre activité, vos irritants et vos objectifs. On en déduit le périmètre prioritaire et le niveau d'audit adapté à votre taille.",
         },
@@ -3994,7 +3994,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
       ],
       nuances: [
         {
-          title: "L'appel de cadrage n'est pas le diagnostic",
+          title: "Le Diagnostic IA n'est pas l'audit",
           detail:
             "L'appel sert à caler le périmètre et le bon niveau. Le diagnostic lui-même, c'est l'audit IA : une intervention sur le terrain avec un livrable écrit.",
         },
@@ -4779,7 +4779,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
     fr: {
       question: "Proposez-vous un accompagnement IA individuel pour dirigeant ?",
       answer:
-        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant ({{price:intervention-dirigeants|flat}}), déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un appel de cadrage d'une trentaine de minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
+        "Oui, et il est strictement individuel : une personne, un intervenant senior, aucune salle de formation. Le format de référence est la journée de 7 à 8 heures avec le dirigeant ({{price:intervention-dirigeants|flat}}), déclinable sur deux jours quand le périmètre le justifie. Elle se tient dans vos locaux, à distance ou en hybride, sur les 13 régions et les 5 DROM ; à l'international, nous intervenons dans les structures francophones sur des missions d'une semaine minimum.\n\nLa confidentialité fait partie du cadre : on travaille sur vos vrais dossiers, vos vrais comptes et vos vrais chiffres, et rien n'est conservé après la journée. C'est aussi le même expert du premier échange à la remise du livrable — vous n'expliquez jamais deux fois votre contexte, et personne ne repart avec la moitié de l'histoire. Concrètement, un Diagnostic IA d'une trentaine de minutes suffit à choisir le format et à caler la date ; le devis suit sous 48 h ouvrées, et la note de cadrage écrite arrive sous 7 jours après la journée.",
       keyPoints: [
         "Une seule personne accompagnée, par un intervenant senior",
         "Journée de 7 à 8 h, déclinable sur deux jours selon le périmètre",
@@ -4985,7 +4985,7 @@ export const FAQ_GLOBAL: ReadonlyArray<FaqEntry> = [
         {
           title: "Le tarif dépend du profil accompagné",
           detail:
-            "Journée avec un collaborateur : {{price:intervention-membre-equipe|flat}}. Journée avec le dirigeant : {{price:intervention-dirigeants|flat}}. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
+            "Prestation sur devis. Un Diagnostic IA de 45 minutes permet de trancher, et le devis suit sous 48 h ouvrées.",
         },
       ],
     },
