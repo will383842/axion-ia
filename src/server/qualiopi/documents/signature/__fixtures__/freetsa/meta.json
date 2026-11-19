@@ -2,11 +2,14 @@
   "source": "https://freetsa.org/tsr (récupéré le 2026-11-19 depuis le poste du fondateur, le cloud n'ayant pas accès à freetsa.org)",
   "donnee": "donnee.txt",
   "algorithme": "sha256",
-  "empreinte_donnee_hex": "eaff2e878e7c4976a5f99893bf3f5424ca9f7237ff5bf1629062037169394580e",
+  "empreinte_donnee_hex": "eaff2e878e7c4976a5f99893bf3f5424ca9f7237ff5bf162906203716939458e",
   "nonce": "0x44AC0C0C1976D9AD",
   "numero_serie": "0x0A328ABB",
   "heure_utc": "2026-11-19T06:14:16Z",
   "statut": "Granted",
   "cacert_sha256": "2151b61137ffa86bf664691ba67e7da0b19f98c758e3d228d5d8ebf27e044438",
-  "reponse_tsr_sha256": "168fbe9ee589f767905c256cf793844da877751a28b875e1c7ffe4ecee09a7c7"
+  "reponse_tsr_sha256": "168fbe9ee589f767905c256cf793844da877751a28b875e1c7ffe4ecee09a7c7",
+  "empreinteHex": "eaff2e878e7c4976a5f99893bf3f5424ca9f7237ff5bf162906203716939458e",
+  "nonceHex": "44ac0c0c1976d9ad",
+  "obtenuLe": "2026-11-19T06:14:16Z"
 }
