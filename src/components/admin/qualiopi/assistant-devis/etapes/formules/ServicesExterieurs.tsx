@@ -9,6 +9,9 @@
  */
 import { useId, type Dispatch } from "react";
 
+import { AdminBadge } from "@/components/admin/ui/AdminBadge";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
+import { AdminCard } from "@/components/admin/ui/AdminCard";
 import { eurosEnCents } from "../../calculs";
 import type { ActionAssistant } from "../../etat";
 import type { EtatAssistant } from "../../types";
@@ -19,6 +22,17 @@ export interface PropsServicesExterieurs {
   /** Texte actif de la bibliothèque qui accompagne le plafond. */
   textePlafond: string;
 }
+
+// Contrôle segmenté : vrai bouton radio masqué visuellement mais focusable ; le choix retenu porte
+// une bordure d'accent de même épaisseur que les autres (pas de saut de mise en page).
+const SEGMENT =
+  "relative flex min-h-[44px] cursor-pointer items-center rounded-[var(--radius-admin-md)] border-2 border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] motion-safe:transition-colors has-[:checked]:border-[color:var(--color-admin-accent)] has-[:checked]:shadow-[0_0_0_3px_var(--color-admin-accent-track)] has-[:focus-visible]:outline has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-[color:var(--color-admin-accent)] has-[:disabled]:cursor-not-allowed has-[:disabled]:text-[color:var(--color-admin-fg-muted)]";
+const GROUPE_SEGMENTS =
+  "inline-flex flex-wrap gap-1 rounded-[var(--radius-admin-lg)] bg-[color:var(--color-admin-surface-sunken)] p-1";
+const CHAMP =
+  "min-h-[44px] rounded-[var(--radius-admin-md)] border border-[color:var(--color-admin-control-border)] bg-[color:var(--color-admin-paper)] px-[var(--space-admin-4)]";
+const LEGENDE =
+  "mb-[var(--space-admin-2)] text-[length:var(--text-admin-sm)] font-semibold text-[color:var(--color-admin-fg-muted)]";
 
 type Service = EtatAssistant["servicesTiers"][number];
 
@@ -39,18 +53,26 @@ function Estimation({
   const illisible = !vide && eurosEnCents(saisie) === null;
   return (
     <div className="flex flex-col">
-      <label className="flex flex-col">
+      <label className="flex flex-col gap-1">
         Estimation du service {index + 1} (HT)
         <input
           inputMode="decimal"
-          className="min-h-[44px] rounded border px-2"
+          className={`${CHAMP} text-right whitespace-nowrap tabular-nums`}
           value={saisie}
           aria-invalid={illisible}
           aria-describedby={`${uid}-d`}
           onChange={(e) => onChange(e.target.value)}
         />
       </label>
-      <span id={`${uid}-d`} role={illisible ? "alert" : undefined}>
+      <span
+        id={`${uid}-d`}
+        role={illisible ? "alert" : undefined}
+        className={
+          illisible
+            ? "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-destructive-fg)]"
+            : "text-[length:var(--text-admin-sm)] text-[color:var(--color-admin-fg-muted)]"
+        }
+      >
         {illisible
           ? "Montant illisible : des euros avec 2 décimales au plus."
           : vide
@@ -127,108 +149,139 @@ export function ServicesExterieurs({ etat, dispatch, textePlafond }: PropsServic
   };
 
   return (
-    <section
-      aria-labelledby={`${uid}-t`}
-      className="mb-[var(--space-admin-6,16px)] rounded border p-3"
-    >
-      <h3 id={`${uid}-t`}>Services extérieurs nécessaires</h3>
-      <p className="text-[length:var(--text-admin-sm)]">
-        Le client les paie directement au fournisseur : ils ne sont pas dans notre prix. Le devis
-        les annonce avant la signature, avec un prix indicatif.
-      </p>
-      {services.map((s, i) => (
-        <div key={i} className="mb-3 grid gap-3 sm:grid-cols-2">
-          <label className="flex flex-col">
-            Nom du service {i + 1}
-            <input
-              className="min-h-[44px] rounded border px-2"
-              value={s.nom}
-              onChange={(e) => maj(i, { nom: e.target.value })}
-            />
-          </label>
-          <Estimation index={i} saisie={saisies[i] ?? ""} onChange={(v) => majEstimation(i, v)} />
-          <fieldset>
-            <legend>Service {i + 1} : obligatoire ou facultatif</legend>
-            <div className="flex gap-4">
-              <label className="flex min-h-[44px] items-center gap-2">
-                <input
-                  type="radio"
-                  name={`obl-${uid}-${i}`}
-                  checked={s.obligatoire}
-                  onChange={() => maj(i, { obligatoire: true })}
-                />
-                Obligatoire
-              </label>
-              <label className="flex min-h-[44px] items-center gap-2">
-                <input
-                  type="radio"
-                  name={`obl-${uid}-${i}`}
-                  checked={!s.obligatoire}
-                  onChange={() => maj(i, { obligatoire: false })}
-                />
-                Facultatif
-              </label>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend>Service {i + 1} : rythme</legend>
-            <div className="flex flex-wrap gap-4">
-              {(["ponctuel", "mensuel", "annuel"] as const).map((r) => (
-                <label key={r} className="flex min-h-[44px] items-center gap-2">
-                  <input
-                    type="radio"
-                    name={`rythme-${uid}-${i}`}
-                    checked={s.rythme === r}
-                    onChange={() => maj(i, { rythme: r })}
-                  />
-                  {r === "ponctuel" ? "Une fois" : r === "mensuel" ? "Par mois" : "Par an"}
-                </label>
-              ))}
-            </div>
-          </fieldset>
-          <button
-            type="button"
-            className="min-h-[44px] rounded border px-4"
-            onClick={() => retirer(i)}
-          >
-            Retirer le service {i + 1}
-          </button>
-        </div>
-      ))}
-      <button type="button" className="min-h-[44px] rounded border px-4" onClick={ajouter}>
-        + Ajouter un service
-      </button>
-
-      <div className="mt-4">
-        <label className="flex min-h-[44px] items-center gap-2">
-          <input
-            type="checkbox"
-            checked={plafondActif}
-            onChange={(e) => majPlafond(e.target.checked ? "" : null)}
-          />
-          Fixer un plafond pour les autres frais à confirmer
-        </label>
-        {plafondActif ? (
-          <label className="flex flex-col">
-            Plafond (HT)
-            <input
-              inputMode="decimal"
-              className="min-h-[44px] rounded border px-2"
-              value={plafondSaisie}
-              aria-invalid={plafondIllisible}
-              aria-describedby={plafondIllisible ? `${uid}-p` : undefined}
-              onChange={(e) => majPlafond(e.target.value)}
-            />
-            {plafondIllisible ? (
-              <span id={`${uid}-p`} role="alert">
-                {plafondVide
-                  ? "Saisissez un montant, ou décochez le plafond."
-                  : "Montant illisible : des euros avec 2 décimales au plus."}
+    <AdminCard as="div" className="mb-[var(--space-admin-8)]">
+      <section aria-labelledby={`${uid}-t`}>
+        <div className="mb-[var(--space-admin-5)] flex items-center gap-[var(--space-admin-2)]">
+          <h3 id={`${uid}-t`} className="text-[length:var(--text-admin-lg)] font-semibold">
+            Services extérieurs nécessaires
+          </h3>
+          <details className="relative inline-block">
+            <summary
+              aria-label="En savoir plus sur les services extérieurs"
+              className="grid h-11 w-11 cursor-pointer list-none place-items-center rounded-full focus-visible:ring-2 focus-visible:ring-[color:var(--color-admin-ring)] [&::-webkit-details-marker]:hidden"
+            >
+              <span
+                aria-hidden="true"
+                className="grid h-[22px] w-[22px] place-items-center rounded-full border border-[color:var(--color-admin-control-border)] text-[length:var(--text-admin-xs)] font-bold"
+              >
+                ?
               </span>
-            ) : null}
+            </summary>
+            <div className="absolute top-11 left-0 z-10 w-80 rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border-strong)] bg-[color:var(--color-admin-paper)] p-[var(--space-admin-5)] text-[length:var(--text-admin-sm)] shadow-[var(--shadow-admin-2)]">
+              Le client les paie directement au fournisseur : ils ne sont pas dans notre prix. Le
+              devis les annonce avant la signature, avec un prix indicatif.
+            </div>
+          </details>
+        </div>
+        {services.map((s, i) => (
+          <div
+            key={i}
+            className="mb-[var(--space-admin-5)] grid gap-[var(--space-admin-4)] rounded-[var(--radius-admin-lg)] border border-[color:var(--color-admin-border)] bg-[color:var(--color-admin-surface-sunken)] p-[var(--space-admin-5)] sm:grid-cols-2"
+          >
+            <label className="flex flex-col gap-1">
+              Nom du service {i + 1}
+              <input
+                className={CHAMP}
+                value={s.nom}
+                onChange={(e) => maj(i, { nom: e.target.value })}
+              />
+            </label>
+            <Estimation index={i} saisie={saisies[i] ?? ""} onChange={(v) => majEstimation(i, v)} />
+            <fieldset>
+              <legend className={LEGENDE}>Service {i + 1} : obligatoire ou facultatif</legend>
+              <div className="flex flex-wrap items-center gap-[var(--space-admin-3)]">
+                <div className={GROUPE_SEGMENTS}>
+                  <label className={SEGMENT}>
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      name={`obl-${uid}-${i}`}
+                      checked={s.obligatoire}
+                      onChange={() => maj(i, { obligatoire: true })}
+                    />
+                    Obligatoire
+                  </label>
+                  <label className={SEGMENT}>
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      name={`obl-${uid}-${i}`}
+                      checked={!s.obligatoire}
+                      onChange={() => maj(i, { obligatoire: false })}
+                    />
+                    Facultatif
+                  </label>
+                </div>
+                {s.obligatoire ? (
+                  <AdminBadge tone="warning">Obligatoire</AdminBadge>
+                ) : (
+                  <AdminBadge tone="neutral">Facultatif</AdminBadge>
+                )}
+              </div>
+            </fieldset>
+            <fieldset>
+              <legend className={LEGENDE}>Service {i + 1} : rythme</legend>
+              <div className={GROUPE_SEGMENTS}>
+                {(["ponctuel", "mensuel", "annuel"] as const).map((r) => (
+                  <label key={r} className={SEGMENT}>
+                    <input
+                      type="radio"
+                      className="sr-only"
+                      name={`rythme-${uid}-${i}`}
+                      checked={s.rythme === r}
+                      onChange={() => maj(i, { rythme: r })}
+                    />
+                    {r === "ponctuel" ? "Une fois" : r === "mensuel" ? "Par mois" : "Par an"}
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <div className="sm:col-span-2">
+              <AdminButton variant="secondary" size="sm" onClick={() => retirer(i)}>
+                Retirer le service {i + 1}
+              </AdminButton>
+            </div>
+          </div>
+        ))}
+        <AdminButton variant="secondary" onClick={ajouter}>
+          + Ajouter un service
+        </AdminButton>
+
+        <div className="mt-[var(--space-admin-6)]">
+          <label className="flex min-h-[44px] items-center gap-2">
+            <input
+              type="checkbox"
+              checked={plafondActif}
+              onChange={(e) => majPlafond(e.target.checked ? "" : null)}
+            />
+            Fixer un plafond pour les autres frais à confirmer
           </label>
-        ) : null}
-      </div>
-    </section>
+          {plafondActif ? (
+            <label className="mt-[var(--space-admin-3)] flex flex-col gap-1">
+              Plafond (HT)
+              <input
+                inputMode="decimal"
+                className={`${CHAMP} text-right whitespace-nowrap tabular-nums`}
+                value={plafondSaisie}
+                aria-invalid={plafondIllisible}
+                aria-describedby={plafondIllisible ? `${uid}-p` : undefined}
+                onChange={(e) => majPlafond(e.target.value)}
+              />
+              {plafondIllisible ? (
+                <span
+                  id={`${uid}-p`}
+                  role="alert"
+                  className="text-[color:var(--color-admin-destructive-fg)]"
+                >
+                  {plafondVide
+                    ? "Saisissez un montant, ou décochez le plafond."
+                    : "Montant illisible : des euros avec 2 décimales au plus."}
+                </span>
+              ) : null}
+            </label>
+          ) : null}
+        </div>
+      </section>
+    </AdminCard>
   );
 }
