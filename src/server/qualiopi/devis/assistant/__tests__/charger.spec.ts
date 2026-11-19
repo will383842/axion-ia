@@ -62,6 +62,13 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 import { chargerAssistantDevis, type ContexteAssistant } from "../charger";
+import {
+  TEXTE_DELAIS,
+  TEXTE_GARANTIE,
+  TEXTE_PLAFOND_FRAIS,
+  TEXTE_PLAFOND_RESPONSABILITE,
+  VERSION_TEXTES_RUBRIQUES,
+} from "../textes-rubriques";
 import { lirePayload, payloadVide, type PayloadAssistantV1 } from "../payload";
 import { etatInitial } from "@/components/admin/qualiopi/assistant-devis/etat";
 import { etatVersPayload } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
@@ -148,9 +155,9 @@ describe("chargerAssistantDevis", () => {
     expect(c.bibliotheque).toEqual({
       avantages: { A: ["a1"], B: ["b1"] },
       aSavoir: { A: ["a2"], B: ["b2"] },
-      delais: "",
-      garantie: "",
-      plafond: "",
+      delais: TEXTE_DELAIS,
+      garantie: TEXTE_GARANTIE,
+      plafond: TEXTE_PLAFOND_FRAIS,
     });
     expect(db.devisTexteBibliotheque.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { archiveAt: null, aValider: false } }),
@@ -172,6 +179,7 @@ describe("chargerAssistantDevis", () => {
     ] as never);
     expect((await charge()).textesParDefaut).toEqual([
       { bibliothequeId: "t1", version: "3", texte: "Texte", actif: true },
+      { version: VERSION_TEXTES_RUBRIQUES, texte: TEXTE_PLAFOND_RESPONSABILITE, actif: true },
     ]);
     formules.mockResolvedValue(false);
     const c = await charge();

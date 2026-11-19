@@ -22,6 +22,13 @@ import {
   TAUX_TVA_STANDARD,
   type RegimeTva,
 } from "@/server/qualiopi/legal/tva";
+import {
+  TEXTE_DELAIS,
+  TEXTE_GARANTIE,
+  TEXTE_PLAFOND_FRAIS,
+  TEXTE_PLAFOND_RESPONSABILITE,
+  VERSION_TEXTES_RUBRIQUES,
+} from "./textes-rubriques";
 import { devisVersPayload, type DevisPourAssistant } from "./conversion";
 import { MODELES_DEVIS, appliquerModele, type IdModeleDevis } from "./modeles";
 import { payloadVersEtat } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
@@ -99,18 +106,18 @@ export const STATUT_BROUILLON_A_L_ECART = "a_l_ecart";
 
 /**
  * Bibliothèque : textes non archivés et déjà validés (`aValider` faux). achat → A, abonnement → B ;
- * avantage → avantages, inconvénient → à savoir. Délais, garantie et plafond : la bibliothèque ne
- * porte aucun repère qui les distingue (la formule `commun` mêle prérequis et clauses, sans
- * rubrique) ; on ne devine pas, et aucune phrase n'est écrite ici : chaîne vide, l'écran
- * propose alors sa saisie libre.
+ * avantage → avantages, inconvénient → à savoir. Délais, garantie et plafond : la table n'a pas
+ * de colonne de rubrique (la formule `commun` mêle prérequis et clauses) ; on ne devine pas, les
+ * textes validés par le fondateur viennent du code (`textes-rubriques.ts`). Ils n'entrent que
+ * dans les nouveaux brouillons : un devis déjà émis garde ses textes.
  */
 async function chargerBibliotheque(): Promise<BibliothequeAssistant> {
   const b: BibliothequeAssistant = {
     avantages: { A: [], B: [] },
     aSavoir: { A: [], B: [] },
-    delais: "",
-    garantie: "",
-    plafond: "",
+    delais: TEXTE_DELAIS,
+    garantie: TEXTE_GARANTIE,
+    plafond: TEXTE_PLAFOND_FRAIS,
   };
   const lignes = await prisma.devisTexteBibliotheque.findMany({
     where: { archiveAt: null, aValider: false },
@@ -165,18 +172,22 @@ export async function chargerAssistantDevis(
     noteDevisFr: o.noteDevisFr,
   }));
   const textesParDefaut: TexteCopie[] = formulesOn
-    ? (
-        await prisma.devisTexteBibliotheque.findMany({
-          where: { archiveAt: null, actifParDefaut: true },
-          orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
-          select: { id: true, version: true, texte: true },
-        })
-      ).map((t) => ({
-        bibliothequeId: t.id,
-        version: String(t.version),
-        texte: t.texte,
-        actif: true,
-      }))
+    ? [
+        ...(
+          await prisma.devisTexteBibliotheque.findMany({
+            where: { archiveAt: null, actifParDefaut: true },
+            orderBy: [{ formule: "asc" }, { nature: "asc" }, { ordre: "asc" }],
+            select: { id: true, version: true, texte: true },
+          })
+        ).map((t) => ({
+          bibliothequeId: t.id,
+          version: String(t.version),
+          texte: t.texte,
+          actif: true,
+        })),
+        // Clause de responsabilité : texte du code, sans ligne de bibliothèque (pas de bibliothequeId).
+        { version: VERSION_TEXTES_RUBRIQUES, texte: TEXTE_PLAFOND_RESPONSABILITE, actif: true },
+      ]
     : [];
 
   let brouillon: ContexteAssistant["brouillon"] = null;
