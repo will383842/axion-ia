@@ -8,7 +8,7 @@
 // (sand + terracotta soft + border) pour que les pages restent on-brand
 // même en mode placeholder.
 
-import type { ReactNode } from "react";
+import { useId, type ReactNode } from "react";
 import { ImageIcon } from "lucide-react";
 
 export interface IllustrationPlaceholderProps {
@@ -41,6 +41,8 @@ export function IllustrationPlaceholder({
   ariaLabel,
   className,
 }: IllustrationPlaceholderProps): ReactNode {
+  // id unique par instance : plusieurs placeholders par page (évite les ids SVG dupliqués).
+  const gridId = useId();
   return (
     <figure
       role="img"
@@ -54,19 +56,24 @@ export function IllustrationPlaceholder({
           l'image réelle remplacera le placeholder. */}
       <div style={{ paddingTop: ratioToPaddingTop[aspectRatio] }} />
 
-      {/* Décor — grille subtile + halo terracotta, palette brand */}
-      <div
+      {/* Décor — grille subtile (aplat), palette brand */}
+      <svg
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0"
-        style={{
-          backgroundImage:
-            "linear-gradient(to right, var(--color-border-strong) 1px, transparent 1px), linear-gradient(to bottom, var(--color-border-strong) 1px, transparent 1px)",
-          backgroundSize: "24px 24px",
-          maskImage: "radial-gradient(ellipse at center, white 20%, transparent 70%)",
-          WebkitMaskImage: "radial-gradient(ellipse at center, white 20%, transparent 70%)",
-          opacity: 0.18,
-        }}
-      />
+        className="pointer-events-none absolute inset-0 h-full w-full opacity-[0.18]"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <defs>
+          <pattern id={gridId} width="24" height="24" patternUnits="userSpaceOnUse">
+            <path
+              d="M 24 0 L 0 0 0 24"
+              fill="none"
+              stroke="var(--color-border-strong)"
+              strokeWidth="1"
+            />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill={`url(#${gridId})`} />
+      </svg>
 
       {/* Contenu central — slot ID + caption + filename cible */}
       <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 p-4 text-center sm:gap-3 sm:p-6">

@@ -92,10 +92,10 @@
     /* =====================================================================
      * PALETTE D'IDENTITÉ — une teinte par FAMILLE MÉTIER (2026-08-02).
      * Réponse au retour « toujours du blanc et du terracotta » : la couleur
-     * SIGNIFIE — financier = or, planning = bleu, formateurs = violet… — la
-     * même famille porte la même teinte sur toutes les pages. Palette
-     * validée par le validateur dataviz (daltonisme, chroma, contraste) :
-     * ΔE CVD adjacent min 12,9 · tous ≥ 3:1 sur surface.
+     * SIGNIFIE — à l'origine financier = or, planning = bleu, formateurs =
+     * violet… Valeur actuelle : terracotta (#b23f16), sauge (#5e7050) ou gris
+     * (#5e5d59) ; plusieurs familles partagent désormais la même teinte — la
+     * validation dataviz d'origine (ΔE 12,9) ne s'applique plus.
      * Les STATUTS (succès/alerte/danger) restent une palette réservée.
      *
      * ⚠️ CONTRAT D'EMPLOI — LA TEINTE NE PORTE JAMAIS L'INFORMATION SEULE.
@@ -219,11 +219,11 @@
      * Vercel / Linear / Stripe). Ce n'est PAS un dark mode (doctrine light
      * only respectée : seul le rail de navigation est sombre, tout le reste
      * de l'admin demeure ivoire). Tokens cloisonnés `--color-admin-rail-*`.
-     * Contrastes vérifiés WCAG AA sur fond mocha #2a2520 :
-     *   - fg #f3ede2  → 13.4:1 (AAA)
-     *   - fg-soft #cbc1b2 → 8.6:1 (AAA)
-     *   - fg-muted #968b7b → 4.6:1 (AA)
-     *   - accent #e0683a (barre active + icône) → graphique, 3:1 OK
+     * Contrastes sur le fond du rail #141413 (valeurs en place) :
+     *   - fg #ffffff  → 18,4:1 (AAA)
+     *   - fg-soft #b0aea5 → 8,3:1 (AAA)
+     *   - fg-muted #b0aea5 → 8,3:1 (AAA)
+     *   - accent #d97757 (barre active + icône) → 5,9:1
      * ===================================================================== */
     --admin-topbar-h: 49px; /* hauteur topbar — sert au calc() de hauteur du rail */
 
@@ -264,8 +264,9 @@
      * maintenant, c'est refuser qu'un gate passe au vert par manque de données.
      * ===================================================================== */
 
-    /* Éclairci pour tenir 4,5:1 SUR LA TUILE ACTIVE (#4d3528 → 4,95) et non
-       seulement sur le fond du rail (#2a2520 → 6,64). */
+    /* Orange #d97757, posé sur le noir seulement : 5,9:1 sur le fond du rail
+       (#141413). Les valeurs #4d3528 / #2a2520 citées plus haut sont celles de
+       l'ancien rail mocha, gardées pour l'histoire de l'incident. */
     --color-admin-rail-accent: #d97757;
     /* Encre sombre pour les surfaces VIVES (accent, avatar, badge ambre), où le
        blanc ne peut pas tenir : 5,9:1 sur terracotta, 8,1:1 sur ambre. */
@@ -348,12 +349,10 @@
     --font-weight-admin-semibold: 600;
     --font-weight-admin-bold: 700;
 
-    /* Chasse fixe de la console. Les huit règles qui en ont besoin pointaient
-       `--font-inconsolata` en direct — un jeton déclaré par le layout du site
-       PUBLIC. La console emprunte encore la fonte (il n'y en a qu'une), mais
-       elle passe désormais par un jeton à elle : le jour où l'on change la
-       police de code de l'admin, ou celle du site, un seul endroit bouge. */
-    --font-admin-mono: var(--font-inconsolata, ui-monospace, monospace);
+    /* Chasse fixe de la console : charte 2027 = Manrope seule. Le jeton reste (les
+       règles de la console le pointent) mais vaut `--font-admin` ; l'alignement des
+       chiffres vient de `tabular-nums` (admin.css, règle de base du shell). */
+    --font-admin-mono: var(--font-admin);
     /* Texte de la console : Manrope, comme le site (V6-02). Emprunt unique,
        dans la déclaration du jeton, au même titre que la chasse fixe. */
     --font-admin: var(--font-manrope);
@@ -782,7 +781,8 @@
   .admin-rail ::-webkit-scrollbar-track {
     background: transparent;
   }
-  /* Focus visible adapté au fond sombre (le ring info bleu disparaît). */
+  /* Focus visible adapté au fond sombre (l'anneau par défaut, terracotta
+     à 45 %, y serait peu lisible). */
   .admin-rail a:focus-visible,
   .admin-rail button:focus-visible,
   .admin-rail input:focus-visible,
@@ -906,8 +906,8 @@
  * Modernisation appliquée (ex-override P0/P3, désormais baké à la source) :
  *  - rayons cartes/inputs/boutons/alertes 6-8px → 10-12px (tokens admin)
  *  - .admin-card : ombre douce --shadow-admin-1
- *  - .admin-layout : font-family retirée (Manrope géré plus haut, sinon Manrope
- *    réapparaîtrait par ordre source)
+ *  - .admin-layout : font-family retirée (Manrope est imposé plus haut ; la
+ *    redéclarer ici écraserait la pile de la console par ordre source)
  *  - largeur .admin-main : voir override P0 conservé plus haut
  * =============================================================*/
 /* =============================================================
@@ -923,8 +923,7 @@
   min-height: 100vh;
   background-color: var(--color-admin-paper-alt);
   /* font-family retirée à la relocalisation : Manrope est imposé plus haut
-     (`.admin-layout-v2, .admin-layout`). Sinon Manrope réapparaîtrait ici
-     par ordre source (régression police admin). */
+     (`.admin-layout-v2, .admin-layout`) ; ne pas redéclarer `font-family` ici. */
   color: var(--color-admin-fg);
 }
 .admin-header {
@@ -1188,11 +1187,6 @@
  * =============================================================*/
 .admin-button {
   box-shadow: var(--shadow-admin-1);
-  background-image: linear-gradient(
-    180deg,
-    color-mix(in srgb, white 14%, transparent),
-    transparent 55%
-  );
 
   display: inline-flex;
   align-items: center;
@@ -1907,13 +1901,10 @@
   border-radius: var(
     --radius-admin-md
   ); /* 10px — cohérence inputs (était hérité de .admin-input) */
-  /* 🔴 2026-09-06 — la police du site public (Manrope) est retiree ici.
-     Manrope est la police du site PUBLIC ; la console est en Manrope depuis la
-     refonte de juin 2026. Cette règle est hors couche, elle écrasait donc le
-     `font-family: inherit` posé par `@layer base` sur les contrôles : toutes
-     les zones de texte de la console (réponses aux contacts, gabarits) étaient
-     rendues dans une AUTRE police que les champs juste au-dessus. Ne rien
-     remettre ici — l'héritage donne Manrope. */
+  /* 🔴 2026-09-06 — une `font-family` codée en dur est retirée ici : hors couche,
+     elle écrasait le `font-family: inherit` posé par `@layer base` et les zones
+     de texte n'avaient pas la police des champs voisins. Ne rien remettre :
+     l'héritage donne Manrope. */
 }
 
 /* M9 T1.2 — Options admin urgency + boutons */

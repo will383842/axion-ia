@@ -811,7 +811,7 @@ export function FormationDetailPage({
               {f.resultatsFr.map((r) => (
                 <li
                   key={r.label}
-                  className="from-terracotta-soft border-terracotta/20 flex flex-col items-center gap-1 rounded-2xl border bg-gradient-to-b to-transparent p-6 text-center"
+                  className="bg-terracotta-soft border-terracotta/20 flex flex-col items-center gap-1 rounded-2xl border p-6 text-center"
                 >
                   <span
                     className="text-terracotta text-[clamp(2rem,4vw,2.75rem)] leading-none font-medium tabular-nums"

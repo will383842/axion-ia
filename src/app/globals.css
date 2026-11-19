@@ -18,7 +18,7 @@
 /* =============================================================
  * Axion-IA · Design System tokens v3 (Editorial Premium Light)
  * Direction "Anthropic / Mistral" : ivoire chaud + sand + mocha + terracotta,
- * serif Fraunces sur titres, pas de noir pur. Validée Will 2026-05-06.
+ * Manrope seule (charte 2027), pas de noir pur. Validée Williams 2026-05-06.
  *
  * Hex codes are intentionally hardcoded HERE — this is the single token file
  * (`anti-hex` linter excludes globals.css). Application code consumes these
@@ -32,12 +32,12 @@
  appelée par src: local() (Liberation = métriques Arial/Times New Roman, Regular/Bold/Italic/Bold Italic).
  ascent/descent-override = métrique hhea / unitsPerEm / size-adjust (exprimés avant ajustement, comme next/font).
  next/font fige les faces fixes 400 et 600 (Manrope) : le 500 s'affiche donc en wght 400.
- next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200,
- Fraunces = wght 900 → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
+ next/font calibre sinon son repli sur l'instance PAR DÉFAUT du fichier variable : Manrope = wght 200
+ → au swap le hero reflue (CLS prod 0,22-0,27 sur /formations, /implantations/…/paris).
  ⚠️ Jamais « étoile + barre oblique » dans ce commentaire : il le fermait, et le navigateur jetait la face Manrope 400 qui suit.
  Chrome n'accepte qu'un nom EXACT pour local() (pas de substitution fontconfig) : sans les noms Liberation, la face
  échouait en silence sur Linux (runner Lighthouse) et sur Android, et le CLS restait à 0,27 (run 40848411969).
- adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans / --font-serif). */
+ adjustFontFallback est donc coupé dans layout.tsx et ces faces prennent le relais (--font-sans). */
 @font-face {
   font-family: "Manrope Fallback";
   src: local("Arial"), local("ArialMT"), local("Liberation Sans"), local("LiberationSans");
@@ -58,78 +58,6 @@
   size-adjust: 99.27%;
   ascent-override: 107.38%;
   descent-override: 30.22%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 400;
-  font-style: normal;
-  size-adjust: 115.46%;
-  ascent-override: 84.71%;
-  descent-override: 22.09%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman"), local("TimesNewRomanPSMT"), local("Liberation Serif"),
-    local("LiberationSerif");
-  font-weight: 500;
-  font-style: normal;
-  size-adjust: 117.37%;
-  ascent-override: 83.33%;
-  descent-override: 21.73%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold"), local("TimesNewRomanPS-BoldMT"), local("Liberation Serif Bold"),
-    local("LiberationSerif-Bold");
-  font-weight: 600 900;
-  font-style: normal;
-  size-adjust: 112.22%;
-  ascent-override: 87.15%;
-  descent-override: 22.72%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 400;
-  font-style: italic;
-  size-adjust: 111.67%;
-  ascent-override: 87.58%;
-  descent-override: 22.84%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Italic"), local("TimesNewRomanPS-ItalicMT"),
-    local("Liberation Serif Italic"), local("LiberationSerif-Italic");
-  font-weight: 500;
-  font-style: italic;
-  size-adjust: 114.32%;
-  ascent-override: 85.55%;
-  descent-override: 22.3%;
-  line-gap-override: 0%;
-}
-@font-face {
-  font-family: "Fraunces Fallback";
-  src:
-    local("Times New Roman Bold Italic"), local("TimesNewRomanPS-BoldItalicMT"),
-    local("Liberation Serif Bold Italic"), local("LiberationSerif-BoldItalic");
-  font-weight: 600 900;
-  font-style: italic;
-  size-adjust: 114.07%;
-  ascent-override: 85.74%;
-  descent-override: 22.35%;
   line-gap-override: 0%;
 }
 
@@ -236,13 +164,11 @@
   --font-sans:
     var(--font-manrope), "Manrope Fallback", -apple-system, BlinkMacSystemFont, "Segoe UI",
     system-ui, sans-serif;
-  /* P-105 : chaîne désormais `--font-fraunces` (variable next/font renommée)
-     pour éviter l'auto-référence `--font-serif: var(--font-serif)` qui
-     empêchait les fallbacks intermédiaires d'être actifs. */
-  --font-serif:
-    var(--font-fraunces), "Fraunces Fallback", "Iowan Old Style", "Palatino Linotype", Palatino,
-    "URW Palladio L", P052, serif;
-  --font-mono: var(--font-inconsolata), ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Charte 2027 : police UNIQUE Manrope. `--font-serif` et `--font-mono` restent déclarés
+     (≈ 300 classes `font-serif` / `font-mono` les utilisent encore) mais valent Manrope ;
+     le nettoyage des classes est un lot ultérieur. Chiffres alignés : `tabular-nums`. */
+  --font-serif: var(--font-sans);
+  --font-mono: var(--font-sans);
 
   /* Type scale v3.2 — Modular hierarchy 2026 (ADR 0007, anchored body 18px Major Third 1.25)
    *
@@ -286,7 +212,7 @@
   --text-7xl--line-height: 1;
   --text-7xl--letter-spacing: -0.04em;
 
-  /* display Fraunces italique — capped 88 px (Stripe Press ceiling, ADR 0007) */
+  /* display Manrope — capped 88 px (Stripe Press ceiling, ADR 0007) */
   --text-display: 5.5rem; /* 88 px — était 112 px ; cap 2026 hero/body 4.89× */
   --text-display--line-height: 0.98;
   --text-display--letter-spacing: -0.04em;
@@ -475,20 +401,14 @@
  * Utilities — éditorial signature + halos
  * =============================================================*/
 @layer utilities {
-  /* Halo gradient sand → terracotta très doux (Hero, intro) */
+  /* Aplat ivoire (Hero, intro) — charte 2027 : plus de halo ni de dégradé (nom de classe conservé). */
   .bg-halo-warm {
     background-color: var(--color-bg);
-    background-image:
-      radial-gradient(at 92% 8%, rgba(194, 74, 27, 0.1) 0px, transparent 55%),
-      radial-gradient(at 8% 92%, rgba(26, 77, 217, 0.06) 0px, transparent 60%);
   }
 
-  /* Halo cool sand → ancien bleu (retiré de la palette), subtil (alternance) */
+  /* Aplat sable (alternance) — charte 2027 : plus de halo bleu ni de dégradé (nom de classe conservé). */
   .bg-halo-cool {
     background-color: var(--color-sand);
-    background-image:
-      radial-gradient(at 88% 88%, rgba(26, 77, 217, 0.08) 0px, transparent 55%),
-      radial-gradient(at 12% 12%, rgba(122, 136, 112, 0.06) 0px, transparent 50%);
   }
 
   /* Mocha section avec gradient subtil — alternative au noir */
@@ -604,7 +524,7 @@
     }
   }
 
-  /* Display giant — Fraunces italique + tracking serré (signature Anthropic).
+  /* Display giant — Manrope + tracking serré (signature Anthropic).
      v3.2 (ADR 0007) : cap 7rem→5.5rem (112→88 px) pour ratio hero/body 4.89× (médiane 2026 = 4.4×).
      v3.3 (2026-07-19, Will) : cap 5.5rem→4rem (88→64 px) + slope 7.5vw→4.5vw + min 3rem→2.5rem.
        Motif : les H1 français (souvent longs) débordaient sur les petits écrans laptop (1280-1366 px)
@@ -769,8 +689,8 @@
  *
  * Contraintes : tokens uniquement (anti-hex exclut globals.css), 100 % CSS
  * (0 JS / 0 CLS), aligné sur le design system « Editorial Premium Light »
- * (Manrope semibold sur Hn comme les <Section>, accents terracotta, Fraunces
- * italique sur citations). Largeur de lecture pilotée par le conteneur parent.
+ * (Manrope semibold sur Hn comme les <Section>, accents terracotta,
+ * citations en italique). Largeur de lecture pilotée par le conteneur parent.
  * =============================================================*/
 @layer components {
   .prose-axionia {
@@ -892,7 +812,7 @@
     margin: 0.5rem 0 0.5rem;
   }
 
-  /* Citations — Fraunces italique, filet terracotta */
+  /* Citations — Manrope italique, filet terracotta */
   .prose-axionia blockquote {
     margin: 2.25rem 0;
     padding: 1.15rem 1.5rem;
@@ -1132,6 +1052,7 @@
   /* Code */
   .prose-axionia :not(pre) > code {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     font-size: 0.9em;
     background: var(--color-sand);
     color: var(--color-terracotta-deep);
@@ -1150,6 +1071,7 @@
   }
   .prose-axionia pre code {
     font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
     background: transparent;
     color: inherit;
     padding: 0;

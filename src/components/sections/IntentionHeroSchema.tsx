@@ -609,11 +609,6 @@ export function IntentionHeroSchema({
         aria-hidden="true"
       >
         <defs>
-          <radialGradient id="ihs-halo" cx="50%" cy="46%" r="55%">
-            <stop offset="0%" stopColor="var(--color-terracotta)" stopOpacity={0.16} />
-            <stop offset="55%" stopColor="var(--color-terracotta)" stopOpacity={0.04} />
-            <stop offset="100%" stopColor="var(--color-terracotta)" stopOpacity={0} />
-          </radialGradient>
           <marker
             id="ihs-arrow"
             viewBox="0 0 10 10"
@@ -635,7 +630,6 @@ export function IntentionHeroSchema({
             />
           </filter>
         </defs>
-        <circle cx={280} cy={258} r={330} fill="url(#ihs-halo)" />
         <Diagram />
       </svg>
     </div>

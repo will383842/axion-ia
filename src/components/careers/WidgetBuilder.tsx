@@ -289,7 +289,7 @@ function FormatCard({ label, help, code, copied, onCopy, previewSrc, isFr }: For
             aria-label={isFr ? "Code d'intégration du widget" : "Widget embed code"}
             className="bg-mocha-rich text-mocha-fg focus-visible:ring-terracotta max-h-72 overflow-auto rounded-xl p-4 text-xs leading-relaxed focus-visible:ring-2 focus-visible:outline-none"
           >
-            <code style={{ fontFamily: "var(--font-mono, var(--font-inconsolata))" }}>{code}</code>
+            <code style={{ fontFamily: "var(--font-mono)" }}>{code}</code>
           </pre>
         </div>
 

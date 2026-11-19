@@ -120,10 +120,13 @@ describe("le build ne dépend d'aucun tiers pour ses fontes", () => {
   it("les deux layouts déclarent bien leurs fontes en local", () => {
     // L'inverse du test précédent : « plus de chargeur Google » serait aussi
     // vrai d'un layout qui ne déclarerait plus AUCUNE fonte.
-    for (const layout of LAYOUTS) {
-      expect(lire(layout)).toContain('from "next/font/local"');
-    }
-    expect(fontesDeclarees().length).toBeGreaterThanOrEqual(5);
+    // La console (layout admin) ne charge plus aucune fonte : elle hérite de
+    // Manrope via `--font-admin`. Seul le layout racine déclare la fonte.
+    expect(lire(LAYOUTS[0] as string)).toContain('from "next/font/local"');
+    expect(lire(LAYOUTS[1] as string)).not.toContain("next/font");
+    // Charte 2027 : Manrope seule. Ni Fraunces, ni Inconsolata, ni Inter ne
+    // doivent revenir : la liste déclarée est EXACTEMENT le fichier Manrope.
+    expect(fontesDeclarees()).toEqual(["manrope-latin-var.woff2"]);
   });
 
   it("chaque fichier de fonte déclaré existe réellement dans le dépôt", () => {

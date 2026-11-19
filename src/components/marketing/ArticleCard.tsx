@@ -68,7 +68,7 @@ export function ArticleCard({
             />
             <div
               aria-hidden="true"
-              className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              className="bg-ink/20 absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
           </div>
         ) : null}
