@@ -62,6 +62,13 @@ vi.mock("@/server/qualiopi/config/site-settings", () => ({
 }));
 
 import { chargerAssistantDevis, type ContexteAssistant } from "../charger";
+import {
+  TEXTE_DELAIS,
+  TEXTE_GARANTIE,
+  TEXTE_PLAFOND_FRAIS,
+  TEXTE_PLAFOND_RESPONSABILITE,
+  VERSION_TEXTES_RUBRIQUES,
+} from "../textes-rubriques";
 import { lirePayload, payloadVide, type PayloadAssistantV1 } from "../payload";
 import { etatInitial } from "@/components/admin/qualiopi/assistant-devis/etat";
 import { etatVersPayload } from "@/components/admin/qualiopi/assistant-devis/vers-payload";
@@ -148,9 +155,9 @@ describe("chargerAssistantDevis", () => {
     expect(c.bibliotheque).toEqual({
       avantages: { A: ["a1"], B: ["b1"] },
       aSavoir: { A: ["a2"], B: ["b2"] },
-      delais: "",
-      garantie: "",
-      plafond: "",
+      delais: TEXTE_DELAIS,
+      garantie: TEXTE_GARANTIE,
+      plafond: TEXTE_PLAFOND_FRAIS,
     });
     expect(db.devisTexteBibliotheque.findMany).toHaveBeenCalledWith(
       expect.objectContaining({ where: { archiveAt: null, aValider: false } }),
@@ -172,11 +179,48 @@ describe("chargerAssistantDevis", () => {
     ] as never);
     expect((await charge()).textesParDefaut).toEqual([
       { bibliothequeId: "t1", version: "3", texte: "Texte", actif: true },
+      { version: VERSION_TEXTES_RUBRIQUES, texte: TEXTE_PLAFOND_RESPONSABILITE, actif: true },
     ]);
     formules.mockResolvedValue(false);
     const c = await charge();
     expect(c.textesParDefaut).toEqual([]);
     expect(c.formulesActives).toBe(false);
+  });
+
+  it("dédoublonnage : clause active de même rubrique dans la bibliothèque → pas de seconde clause", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "clause", texte: "Notre responsabilité est limitée." },
+      { id: "t2", version: 1, nature: "clause", texte: "Délais estimatifs." },
+    ] as never);
+    const c = await charge();
+    expect(c.textesParDefaut.map((t) => t.texte)).toEqual([
+      "Notre responsabilité est limitée.",
+      "Délais estimatifs.",
+    ]);
+    expect(c.bibliotheque.delais).toBe("");
+    expect(c.bibliotheque.garantie).toBe(TEXTE_GARANTIE);
+  });
+
+  it("dédoublonnage : un avantage « frais » ne retire pas le texte des frais", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "avantage", texte: "Pas de frais de mise en service" },
+    ] as never);
+    expect((await charge()).bibliotheque.plafond).toBe(TEXTE_PLAFOND_FRAIS);
+  });
+
+  it("dédoublonnage : un inconvénient « délai » ne retire pas le texte des délais", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "inconvenient", texte: "Délai de préavis à respecter" },
+    ] as never);
+    expect((await charge()).bibliotheque.delais).toBe(TEXTE_DELAIS);
+  });
+
+  it("dédoublonnage : une clause active de responsabilité retire le texte du code", async () => {
+    db.devisTexteBibliotheque.findMany.mockResolvedValue([
+      { id: "t1", version: 1, nature: "clause", texte: "Notre responsabilité est limitée." },
+    ] as never);
+    const c = await charge();
+    expect(c.textesParDefaut.map((t) => t.texte)).toEqual(["Notre responsabilité est limitée."]);
   });
 
   it("?modele inconnu ignoré ; connu appliqué (structure, aucun prix)", async () => {
