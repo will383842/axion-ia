@@ -30,6 +30,8 @@ import {
 import { listerSourcesPourQuiAction } from "@/server/actions/qualiopi/devis-assistant-sources";
 import type { PayloadAssistantV1 } from "@/server/qualiopi/devis/assistant/payload";
 import { ordonnerSources, type SourcePourQui } from "@/server/qualiopi/devis/assistant/sources";
+import { Check } from "lucide-react";
+import { AdminButton } from "@/components/admin/ui/AdminButton";
 import { AdminBlocRepliable } from "@/components/admin/ui/AdminBlocRepliable";
 
 import type { TexteCopie } from "../devis-formules/saisie";
@@ -147,15 +149,16 @@ function SourcesPourQuiPanneau({
                   ) : null}
                 </span>
                 {client ? (
-                  <button
-                    type="button"
-                    className="min-h-[44px] rounded border px-3"
+                  <AdminButton
+                    variant="secondary"
+                    size="lg"
+                    icon={Check}
                     onClick={() => onChoisir(client)}
                   >
                     Choisir ce client
-                  </button>
+                  </AdminButton>
                 ) : (
-                  <a href={s.lien} className="underline">
+                  <a href={s.lien} className="admin-button-secondary admin-button-lg">
                     Ouvrir la demande
                   </a>
                 )}
